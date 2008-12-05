@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<collectionReaderDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+  <implementationName>org.cleartk.corpus.ace2005.Ace2005GoldReader</implementationName>
+  <processingResourceMetaData>
+    <name>Ace2005GoldReader</name>
+    <description/>
+    <version>1.0</version>
+    <vendor>Copyright 2007-2008 Regents of the University of Colorado.   All Rights Reserved.</vendor>
+    <configurationParameters searchStrategy="language_fallback">
+      <configurationParameter>
+        <name>AceCorpusDir</name>
+        <description>see javadoc for org.cleartk.ne.ace2005.Ace2005GoldReader.PARAM_ACE_CORPUS_DIR</description>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>AceFileNames</name>
+        <description>see javadoc for org.cleartk.ne.ace2005.Ace2005GoldReader.PARAM_ACE_FILE_NAMES</description>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+    </configurationParameters>
+    <configurationParameterSettings/>
+    <typeSystemDescription>
+      <imports>
+        <import location="../../TypeSystem.xml"/>
+      </imports>
+    </typeSystemDescription>
+    <typePriorities/>
+    <capabilities>
+      <capability>
+        <inputs/>
+        <outputs>
+          <type allAnnotatorFeatures="true">org.cleartk.type.Document</type>
+        </outputs>
+        <outputSofas>
+          <sofaName>APFView</sofaName>
+        </outputSofas>
+        <languagesSupported/>
+      </capability>
+    </capabilities>
+    <operationalProperties>
+      <modifiesCas>true</modifiesCas>
+      <multipleDeploymentAllowed>false</multipleDeploymentAllowed>
+      <outputsNewCASes>true</outputsNewCASes>
+    </operationalProperties>
+  </processingResourceMetaData>
+  <resourceManagerConfiguration/>
+</collectionReaderDescription>

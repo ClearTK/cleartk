@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cpeDescription xmlns="http://uima.apache.org/resourceSpecifier">
+<collectionReader>
+<collectionIterator>
+<descriptor>
+<import location="../syntax/treebank/TreebankGoldReader.xml"/>
+</descriptor>
+<configurationParameterSettings>
+<nameValuePair>
+<name>TreebankCorpusDirectory</name>
+<value>
+<string>data/treebank</string>
+</value>
+</nameValuePair>
+<nameValuePair>
+<name>WSJSections</name>
+<value>
+<string>02-03</string>
+</value>
+</nameValuePair>
+</configurationParameterSettings>
+</collectionIterator>
+</collectionReader>
+<casProcessors casPoolSize="3" processingUnitThreadCount="1">
+<casProcessor deployment="integrated" name="TreebankGoldAnnotator">
+<descriptor>
+<import location="../syntax/treebank/TreebankGoldAnnotator.xml"/>
+</descriptor>
+<deploymentParameters/>
+<errorHandling>
+<errorRateThreshold action="terminate" value="0/1000"/>
+<maxConsecutiveRestarts action="terminate" value="30"/>
+<timeout max="100000" default="-1"/>
+</errorHandling>
+<checkpoint batch="10000" time="1000ms"/>
+</casProcessor>
+<casProcessor deployment="integrated" name="SnowballStemmer">
+<descriptor>
+<import location="../token/snowball/SnowballStemmer.xml"/>
+</descriptor>
+<deploymentParameters/>
+<errorHandling>
+<errorRateThreshold action="terminate" value="0/1000"/>
+<maxConsecutiveRestarts action="terminate" value="30"/>
+<timeout max="100000" default="-1"/>
+</errorHandling>
+<checkpoint batch="10000" time="1000ms"/>
+</casProcessor>
+<casProcessor deployment="integrated" name="ExamplePOSDataWriter">
+<descriptor>
+<import location="ExamplePOSDataWriter.xml"/>
+</descriptor>
+<deploymentParameters/>
+<errorHandling>
+<errorRateThreshold action="terminate" value="0/1000"/>
+<maxConsecutiveRestarts action="terminate" value="30"/>
+<timeout max="100000" default="-1"/>
+</errorHandling>
+<checkpoint batch="10000" time="1000ms"/>
+<configurationParameterSettings/>
+</casProcessor>
+</casProcessors>
+<cpeConfig>
+<numToProcess>-1</numToProcess>
+<deployAs>immediate</deployAs>
+<checkpoint batch="0" time="300000ms"/>
+<timerImpl></timerImpl>
+</cpeConfig>
+</cpeDescription>

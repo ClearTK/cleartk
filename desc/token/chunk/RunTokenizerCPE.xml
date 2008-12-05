@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cpeDescription xmlns="http://uima.apache.org/resourceSpecifier">
+<collectionReader>
+<collectionIterator>
+<descriptor>
+<import location="../../util/PlainTextCollectionReader.xml"/>
+</descriptor>
+<configurationParameterSettings>
+<nameValuePair>
+<name>FileOrDirectory</name>
+<value>
+<string>example/data/2008_Sichuan_earthquake.txt</string>
+</value>
+</nameValuePair>
+<nameValuePair>
+<name>Encoding</name>
+<value>
+<string>UTF-8</string>
+</value>
+</nameValuePair>
+</configurationParameterSettings>
+</collectionIterator>
+</collectionReader>
+<casProcessors casPoolSize="3" processingUnitThreadCount="1">
+<casProcessor deployment="integrated" name="SentenceSegmenter">
+<descriptor>
+<import location="../../sentence/SentenceSegmenter.xml"/>
+</descriptor>
+<deploymentParameters/>
+<errorHandling>
+<errorRateThreshold action="terminate" value="0/1000"/>
+<maxConsecutiveRestarts action="terminate" value="30"/>
+<timeout max="100000" default="-1"/>
+</errorHandling>
+<checkpoint batch="10000" time="1000ms"/>
+<configurationParameterSettings>
+<nameValuePair>
+<name>SentenceModelFile</name>
+<value>
+<string>resources/models/OpenNLP.Sentence.English.bin.gz</string>
+</value>
+</nameValuePair>
+</configurationParameterSettings>
+</casProcessor>
+<casProcessor deployment="integrated" name="Subtokenizer">
+<descriptor>
+<import location="../../token/Subtokenizer.xml"/>
+</descriptor>
+<deploymentParameters/>
+<errorHandling>
+<errorRateThreshold action="terminate" value="0/1000"/>
+<maxConsecutiveRestarts action="terminate" value="30"/>
+<timeout max="100000" default="-1"/>
+</errorHandling>
+<checkpoint batch="10000" time="1000ms"/>
+<configurationParameterSettings>
+<nameValuePair>
+<name>TokenPositionFeature</name>
+<value>
+<string></string>
+</value>
+</nameValuePair>
+</configurationParameterSettings>
+</casProcessor>
+<casProcessor deployment="integrated" name="chunk-based tokenizer">
+<descriptor>
+<import location="../../token/chunk/ChunkTokenizer.xml"/>
+</descriptor>
+<deploymentParameters/>
+<errorHandling>
+<errorRateThreshold action="terminate" value="0/1000"/>
+<maxConsecutiveRestarts action="terminate" value="30"/>
+<timeout max="100000" default="-1"/>
+</errorHandling>
+<checkpoint batch="10000" time="1000ms"/>
+<configurationParameterSettings>
+<nameValuePair>
+<name>ClassifierJar</name>
+<value>
+<string>test/data/token/chunk/model.jar</string>
+</value>
+</nameValuePair>
+</configurationParameterSettings>
+</casProcessor>
+<casProcessor deployment="integrated" name="XWriter">
+<descriptor>
+<import location="../../util/XWriter.xml"/>
+</descriptor>
+<deploymentParameters/>
+<errorHandling>
+<errorRateThreshold action="terminate" value="0/1000"/>
+<maxConsecutiveRestarts action="terminate" value="30"/>
+<timeout max="100000" default="-1"/>
+</errorHandling>
+<checkpoint batch="10000" time="1000ms"/>
+<configurationParameterSettings>
+<nameValuePair>
+<name>OutputDirectory</name>
+<value>
+<string>test/data/token/chunk</string>
+</value>
+</nameValuePair>
+</configurationParameterSettings>
+</casProcessor>
+</casProcessors>
+<cpeConfig>
+<numToProcess>-1</numToProcess>
+<deployAs>immediate</deployAs>
+<checkpoint batch="0" time="300000ms"/>
+<timerImpl></timerImpl>
+</cpeConfig>
+</cpeDescription>
