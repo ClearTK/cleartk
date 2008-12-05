@@ -1,0 +1,11 @@
+# this file was created by Philip Ogren on Monday 10/27/2008
+# for more files like this please make your own
+
+A|This is the first sentence.
+B|This is the second sentence.  
+C|You are likely completely absorbed by the narrative at this point.
+D|... but too bad!        	
+
+EEEK|will it ever end?  yes - very soon...
+
+Z|Fin
