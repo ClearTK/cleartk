@@ -42,12 +42,6 @@
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>TermListListing</name>
-        <value>
-          <string>data/termlist/lexicons.txt</string>
-        </value>
-      </nameValuePair>
-      <nameValuePair>
         <name>TokenClass</name>
         <value>
           <string>org.cleartk.type.Token</string>
