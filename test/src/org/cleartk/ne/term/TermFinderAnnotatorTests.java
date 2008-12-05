@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,8 +20,10 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.ne.term;
+
+import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.util.List;
@@ -29,6 +31,7 @@ import java.util.List;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.ne.term.TermFinderAnnotator;
 import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.type.Sentence;
@@ -39,43 +42,58 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * 
  * @author Steven Bethard
  */
 public class TermFinderAnnotatorTests {
-	
+
 	@Test
 	public void test() throws UIMAException, IOException {
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				TermFinderAnnotator.class,
-				TestsUtil.getTypeSystem(Sentence.class, Token.class, NamedEntityMention.class),
-				TermFinderAnnotator.PARAM_TERM_LIST_LISTING, "data/termlist/lexicons.txt",
+				TermFinderAnnotator.class, TestsUtil.getTypeSystem(
+						Sentence.class, Token.class, NamedEntityMention.class),
+				TermFinderAnnotator.PARAM_TERM_LIST_LISTING,
+				"test/data/termlist/termlist.txt",
 				TermFinderAnnotator.PARAM_TOKEN_CLASS, Token.class.getName(),
-				TermFinderAnnotator.PARAM_TERM_MATCH_ANNOTATION_CLASS, NamedEntityMention.class.getName());
+				TermFinderAnnotator.PARAM_TERM_MATCH_ANNOTATION_CLASS,
+				NamedEntityMention.class.getName());
 		JCas jCas = engine.newJCas();
-		TestsUtil.createTokens(jCas,
-				"Smith is a nice guy.", 
-				"Smith is a nice guy .", null, null);
+		TestsUtil.createTokens(jCas, "I would like to visit Alaska.",
+				"I would like to visit Alaska .", null, null);
 		engine.process(jCas);
 		engine.collectionProcessComplete();
 		List<NamedEntityMention> mentions = AnnotationRetrieval.getAnnotations(
 				jCas, NamedEntityMention.class);
 		Assert.assertEquals(mentions.size(), 1);
 		NamedEntityMention mention = mentions.get(0);
-		Assert.assertEquals("Smith", mention.getCoveredText());
+		Assert.assertEquals("Alaska", mention.getCoveredText());
 	}
-	
+
 	@Test
-	public void testTermFinderAnnotatorDescriptor() throws UIMAException, IOException {
+	public void testTermFinderAnnotatorDescriptor() throws UIMAException,
+			IOException {
+
+		ResourceInitializationException rie = null;
+		try {
+
+			TestsUtil.getAnalysisEngine("desc/ne/term/TermFinderAnnotator.xml");
+		} catch (ResourceInitializationException e) {
+			rie = e;
+		}
+		assertNotNull(rie);
+
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				"desc/ne/term/TermFinderAnnotator.xml");
-		Object handler = engine.getConfigParameterValue(
-				TermFinderAnnotator.PARAM_TOKEN_CLASS);
+				"desc/ne/term/TermFinderAnnotator.xml",
+				TermFinderAnnotator.PARAM_TERM_LIST_LISTING,
+				"test/data/termlist/termlist.txt");
+		Object handler = engine
+				.getConfigParameterValue(TermFinderAnnotator.PARAM_TOKEN_CLASS);
 		Assert.assertEquals(Token.class.getName(), handler);
-		
+
 		engine.collectionProcessComplete();
 	}
 
