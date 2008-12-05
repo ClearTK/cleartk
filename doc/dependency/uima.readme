@@ -1,0 +1,8 @@
+Name: Apache UIMA
+Version: 2.2.2
+Homepage: http://incubator.apache.org/uima/
+License: Apache License, Version 2.0
+Notes: UIMA is not redistributed with ClearTK.  Please see this projects README for instructions on how to obtain and install UIMA.
+
+For the complete text of the Apache License, Version 2.0, please see APACHE-LICENSE-V2.
+

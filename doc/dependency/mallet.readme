@@ -1,0 +1,20 @@
+Name: Mallet
+Version: mallet-2.0-RC2 (but see note below)
+Homepage: http://mallet.cs.umass.edu/
+License: Common Public License Version 1.0 - please see mallet.license, the notes below, and mallet-deps.LICENSES
+Notes: 
+
+Mallet was built from source using the mercurial repository at:
+
+http://hg-iesl.cs.umass.edu/hg/mallet/file/
+
+It was last updated and built on 10/15/2008 with a single change made to
+
+cc.mallet.pipe.Csv2FeatureVector.java
+
+The line (about 65) with the following text was removed:
+
+java.util.Arrays.sort(keyIndices); 
+
+ 
+Mallet is distributed with a dependency called mallet-deps.jar.  The license information for the various dependencies that are found in mallet-deps.jar can be found in mallet-deps.LICENSES.  This is copied directly from a file distributed with mallet and has not been vetted by us.  Additionally, it is not necessarily the case that all libraries listed below actually end up in mallet-deps.jar.  ClearTK is only dependent on libraries that actually end up in mallet-deps.jar.  

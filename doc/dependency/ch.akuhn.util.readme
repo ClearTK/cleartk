@@ -1,0 +1,8 @@
+Name: ch.akuhn.util library
+Version: 
+Homepage: https://www.iam.unibe.ch/scg/svn_repos/Sources/ch.akuhn.util/src/ch/akuhn/util/Files.java
+License: LGPL
+Notes: 
+
+A single source file Files.java was copied from this project and modified for ClearTK.  Changes to this source code are documented in
+src/edu/colorado/cleartk/util/io/Files.java.  

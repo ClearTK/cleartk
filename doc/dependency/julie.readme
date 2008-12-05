@@ -1,0 +1,8 @@
+Name: JULIE NLP Toolsuite
+Version: 1.0
+Homepage: http://www.julielab.de/content/view/117/179/
+License: Common Public License, version 1.0
+Notes:
+
+No code from JULIE is used and there are no jar files from JULIE in the lib directory.  However, some of the unit tests in ClearTK depend on the Julie type system which is distributed as test/desc/JulieTypeSystem.xml.
+
