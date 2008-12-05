@@ -1,0 +1,100 @@
+ /** 
+ * Copyright (c) 2007-2008, Regents of the University of Colorado 
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. 
+ * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. 
+ * Neither the name of the University of Colorado at Boulder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. 
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE. 
+*/
+package org.cleartk.corpus.timeml;
+
+import java.io.IOException;
+
+import org.apache.uima.UIMAException;
+import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.collection.CollectionReader;
+import org.apache.uima.jcas.JCas;
+import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.corpus.timeml.TimeMLGoldAnnotator;
+import org.cleartk.corpus.timeml.TreebankAligningAnnotator;
+import org.cleartk.syntax.treebank.type.TreebankNode;
+import org.cleartk.util.AnnotationRetrieval;
+import org.cleartk.util.PlainTextCollectionReader;
+import org.cleartk.util.TestsUtil;
+import org.junit.Assert;
+import org.junit.Test;
+
+
+
+/**
+ * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
+ * <br>All rights reserved.
+
+ *
+ *
+ * @author Steven Bethard
+ */
+public class TreebankAligningAnnotatorTests {
+	
+	@Test
+	public void test() throws UIMAException, IOException {
+		CollectionReader reader = TestsUtil.getCollectionReader(
+				PlainTextCollectionReader.class, 
+				TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
+				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY,
+				"test/data/corpus/timeml/wsj_0106.tml",
+				PlainTextCollectionReader.PARAM_VIEW_NAME,
+				TimeMLGoldAnnotator.TIMEML_VIEW_NAME);
+		AnalysisEngine timemlEngine = TestsUtil.getAnalysisEngine(
+				TimeMLGoldAnnotator.class,
+				TestsUtil.getTypeSystem("desc/TypeSystem.xml"));
+		AnalysisEngine treebankEngine = TestsUtil.getAnalysisEngine(
+				TreebankAligningAnnotator.class,
+				TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
+				TreebankAligningAnnotator.PARAM_TREEBANK_DIRECTORY,
+				"data/treebank/wsj");
+		JCas jCas = new TestsUtil.JCasIterable(
+				reader, timemlEngine, treebankEngine).next();
+		int size = AnnotationRetrieval.getAnnotations(jCas, TreebankNode.class).size();
+		Assert.assertTrue(size > 0);
+		reader.close();
+		timemlEngine.collectionProcessComplete();
+		treebankEngine.collectionProcessComplete();
+	}
+
+	@Test
+	public void testDescriptor() throws UIMAException, IOException {
+		try {
+			TestsUtil.getAnalysisEngine(
+					"desc/corpus/timeml/TreebankAligningAnnotator.xml");
+			Assert.fail("expected exception with TreebankDirectory unspecified");
+		} catch (ResourceInitializationException e) {}
+		
+		String treebankPath = "data/treebank/wsj";
+		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+				"desc/corpus/timeml/TreebankAligningAnnotator.xml",
+				TreebankAligningAnnotator.PARAM_TREEBANK_DIRECTORY,
+				treebankPath);
+		
+		Object treebankDirectory = engine.getConfigParameterValue(
+				TreebankAligningAnnotator.PARAM_TREEBANK_DIRECTORY);
+		Assert.assertEquals(treebankPath, treebankDirectory);
+		
+		engine.collectionProcessComplete();
+	}
+}
