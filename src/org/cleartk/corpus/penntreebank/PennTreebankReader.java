@@ -74,7 +74,6 @@ import org.cleartk.util.UIMAUtil;
  * then please see the corresponding unit tests.
  * 
  * @see TreebankGoldAnnotator
- * @see PennTreebankReaderTest
  * 
  * @author Philip Ogren, Philipp Wetzler
  */
