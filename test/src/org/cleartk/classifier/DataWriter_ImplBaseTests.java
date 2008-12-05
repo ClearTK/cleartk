@@ -85,8 +85,8 @@ public class DataWriter_ImplBaseTests {
 	public void testManifest() throws UIMAException, IOException {
 		String expectedManifest = (
 				"Manifest-Version: 1.0\n" +
-				"classifierBuilderClass: org.cleartk.classifier.opennlp.Maxent\n" +
-				" ClassifierBuilder");
+				"classifierBuilderClass: org.cleartk.classifier.opennlp.MaxentClassifie\n" +
+				" rBuilder");
 		
 		this.process();
 		File manifestFile = new File(this.outputDir, "MANIFEST.MF");
