@@ -1,0 +1,1242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <name>JulieLab (http://www.julielab.de) UIMA Annotation Type System</name>
+  <description>This UIMA type system covers the annotation of the document meta information, the document structure, 
+the morpho-syntactic, syntactic, and semantic text information.</description>
+  <version>1.0</version>
+  <vendor/>
+  <types>
+    <typeDescription>
+      <name>de.julielab.jules.types.Annotation</name>
+      <description>The super-type for all types.</description>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>confidence</name>
+          <description>The component that made the annotation may put its confidence/score calculated internally here, O</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>componentId</name>
+          <description>Indicates which NLP component has been used to derive the annotation, C</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.DiscontinuousAnnotation</name>
+      <description>Chains annotations of the same type</description>
+      <supertypeName>de.julielab.jules.types.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>value</name>
+          <description>Annotations to be chained.</description>
+          <rangeTypeName>uima.cas.FSArray</rangeTypeName>
+          <elementType>de.julielab.jules.types.Annotation</elementType>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.ResourceEntry</name>
+      <description>The reference to an external resource</description>
+      <supertypeName>de.julielab.jules.types.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>source</name>
+          <description>The name of the resource, C</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>entryId</name>
+          <description>The identifier of the entry, C</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>version</name>
+          <description>The version of the resource, C</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.LexiconEntry</name>
+      <description>The reference to a lexicon entry.</description>
+      <supertypeName>de.julielab.jules.types.ResourceEntry</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.DBEntry</name>
+      <description>The reference to a database entry.</description>
+      <supertypeName>de.julielab.jules.types.ResourceEntry</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.OntologyEntry</name>
+      <description>The reference to an ontology entry.</description>
+      <supertypeName>de.julielab.jules.types.ResourceEntry</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.DocumentAnnotation</name>
+      <description>The super-type for the document annotation types (Header, Descriptor)</description>
+      <supertypeName>de.julielab.jules.types.Annotation</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.Header</name>
+      <description>The Header type stores the bibliographical document information.</description>
+      <supertypeName>de.julielab.jules.types.DocumentAnnotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>docType</name>
+          <description>The type of the document (e.g. abstract, fulltext, randomized), C</description>
+          <rangeTypeName>de.julielab.jules.types.DocType</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>source</name>
+          <description>The source of the document (e.g. WWW, Database), C</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>docId</name>
+          <description>The identifier of the document with respect to its source. E.g.: PMID in PubMed. In combination with the source, this is a unique identifier for a document, C</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>copyright</name>
+          <description>Copyright information, C</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>truncated</name>
+          <description>Indicates whether the document is truncated, C</description>
+          <rangeTypeName>uima.cas.Boolean</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>authors</name>
+          <description>The authors of the document, O</description>
+          <rangeTypeName>uima.cas.FSArray</rangeTypeName>
+          <elementType>de.julielab.jules.types.AuthorInfo</elementType>
+          <multipleReferencesAllowed>true</multipleReferencesAllowed>
+        </featureDescription>
+        <featureDescription>
+          <name>title</name>
+          <description>The title of the document, C</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>pubTypeList</name>
+          <description>The list of the publication types, O</description>
+          <rangeTypeName>uima.cas.FSArray</rangeTypeName>
+          <elementType>de.julielab.jules.types.PubType</elementType>
+        </featureDescription>
+        <featureDescription>
+          <name>language</name>
+          <description>The language of the document, O</description>
+          <rangeTypeName>de.julielab.jules.types.Language</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.pubmed.Header</name>
+      <description>The special Header for PubMed  (http://www.pubmed.org) documents</description>
+      <supertypeName>de.julielab.jules.types.Header</supertypeName>
+      <features>
+        <featureDescription>
+          <name>citationStatus</name>
+          <description>Indicates the status of citation of a PubMed document, O</description>
+          <rangeTypeName>de.julielab.jules.types.CitationStatus</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.PubType</name>
+      <description>An abstract type which should be used to store information on the publication. See subtypes Journal and an accumulative type (OtherPub)</description>
+      <supertypeName>de.julielab.jules.types.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>name</name>
+          <description>The name of the publication type (e.g. journal, technical report, book), C</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>pubDate</name>
+          <description>The date on which the document was published, O</description>
+          <rangeTypeName>de.julielab.jules.types.Date</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.Journal</name>
+      <description>This type contains attributes to describe a journal publication.</description>
+      <supertypeName>de.julielab.jules.types.PubType</supertypeName>
+      <features>
+        <featureDescription>
+          <name>ISSN</name>
+          <description>The international standard serial number, O</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>volume</name>
+          <description>The volume number of the journal in which the article was published, O</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>title</name>
+          <description>Full journal title, C</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>impactFactor</name>
+          <description>The impact factor of the journal at the time of publication, O</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.Date</name>
+      <description>Type to store dates</description>
+      <supertypeName>de.julielab.jules.types.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>day</name>
+          <description>day of the month, C</description>
+          <rangeTypeName>uima.cas.Integer</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>month</name>
+          <description>month of the year, C</description>
+          <rangeTypeName>uima.cas.Integer</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>year</name>
+          <description>full year (e.g. 2006 and NOT 06), C</description>
+          <rangeTypeName>uima.cas.Integer</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.OtherPub</name>
+      <description>Accumulative type for all other types of publications</description>
+      <supertypeName>de.julielab.jules.types.PubType</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.Descriptor</name>
+      <description>An abstract type for the document descriptors, there are two subclasses: one for automatically acquired meta information and one for meta information that was added manually (such as e.g. MeSH term lists)</description>
+      <supertypeName>de.julielab.jules.types.Annotation</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.AutoDescriptor</name>
+      <description>The descriptor type for automatically (i.e. algorithmically) acquired meta information. It can be refined and extended.</description>
+      <supertypeName>de.julielab.jules.types.Descriptor</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.ManualDescriptor</name>
+      <description>The descriptor type for the manually added information.</description>
+      <supertypeName>de.julielab.jules.types.Descriptor</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.pubmed.ManualDescriptor</name>
+      <description>The special type for PubMed documents</description>
+      <supertypeName>de.julielab.jules.types.ManualDescriptor</supertypeName>
+      <features>
+        <featureDescription>
+          <name>meSHList</name>
+          <description>A collection of objects of type uima.julielab.uima.MeSHHeading, O</description>
+          <rangeTypeName>uima.cas.FSArray</rangeTypeName>
+          <elementType>de.julielab.jules.types.MeshHeading</elementType>
+          <multipleReferencesAllowed>true</multipleReferencesAllowed>
+        </featureDescription>
+        <featureDescription>
+          <name>chemicalList</name>
+          <description>A collection of objects of type uima.julielab.uima.Chemical, O</description>
+          <rangeTypeName>uima.cas.FSArray</rangeTypeName>
+          <elementType>de.julielab.jules.types.Chemical</elementType>
+          <multipleReferencesAllowed>true</multipleReferencesAllowed>
+        </featureDescription>
+        <featureDescription>
+          <name>dBInfoList</name>
+          <description>A collection of objects of type uima.julielab.uima.DBInfo, O</description>
+          <rangeTypeName>uima.cas.FSArray</rangeTypeName>
+          <elementType>de.julielab.jules.types.DBInfo</elementType>
+          <multipleReferencesAllowed>true</multipleReferencesAllowed>
+        </featureDescription>
+        <featureDescription>
+          <name>keywordList</name>
+          <description>A collection of objects of type uima.julielab.uima.Keyword, O</description>
+          <rangeTypeName>uima.cas.FSArray</rangeTypeName>
+          <elementType>de.julielab.jules.types.Keyword</elementType>
+          <multipleReferencesAllowed>true</multipleReferencesAllowed>
+        </featureDescription>
+        <featureDescription>
+          <name>geneSymbolList</name>
+          <description>GeneSymbolList in PubMed</description>
+          <rangeTypeName>uima.cas.StringArray</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.MeshHeading</name>
+      <description>Medical Subject Headings, see NLM's MeSH for a detailed description.</description>
+      <supertypeName>de.julielab.jules.types.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>descriptorName</name>
+          <description>see MeSH</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>qualifierName</name>
+          <description>see MeSH</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>descriptorNameMajorTopic</name>
+          <description>see MeSH</description>
+          <rangeTypeName>uima.cas.Boolean</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>qualifierNameMajorTopic</name>
+          <description>see MeSH</description>
+          <rangeTypeName>uima.cas.Boolean</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.Chemical</name>
+      <description>A chemical type</description>
+      <supertypeName>de.julielab.jules.types.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>RegistryNumber</name>
+          <description>A unique 5 to 9 digit number in hyphenated format assigned by the Chemical Abstract Service to specify chemical substances, a zero is a valid number when an actual number cannot be located or is not yet available., C</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>NameOfSubstance</name>
+          <description>The name of the substance that the registry number or the E.C. number identifies, C</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.DBInfo</name>
+      <description>References to other databases, e.g. SwissProt, INTERPRO e.g.</description>
+      <supertypeName>de.julielab.jules.types.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>name</name>
+          <description>The name of the DB referred to</description>
+          <rangeTypeName>de.julielab.jules.types.DBName</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>acList</name>
+          <description>A list of accession numbers for this DB, C</description>
+          <rangeTypeName>uima.cas.StringArray</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.Keyword</name>
+      <description>A term of a controlled keyword list to describe the content of the publication.</description>
+      <supertypeName>de.julielab.jules.types.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>name</name>
+          <description>The name of the keyword, C</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>source</name>
+          <description>Tthe keyword source (terminology), O</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.DocType</name>
+      <description>The document type</description>
+      <supertypeName>uima.cas.String</supertypeName>
+      <allowedValues>
+        <value>
+          <string>abstract</string>
+          <description>abstract</description>
+        </value>
+        <value>
+          <string>fulltext</string>
+          <description>fulltext</description>
+        </value>
+        <value>
+          <string>randomized</string>
+          <description>randomized</description>
+        </value>
+      </allowedValues>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.Language</name>
+      <description>The language of the document. Possible values: based on ISO-639-1 language codes; we start with a first selection (which might be extended later).</description>
+      <supertypeName>uima.cas.String</supertypeName>
+      <allowedValues>
+        <value>
+          <string>de</string>
+          <description>German</description>
+        </value>
+        <value>
+          <string>en</string>
+          <description>English</description>
+        </value>
+        <value>
+          <string>es</string>
+          <description>Espagnol</description>
+        </value>
+        <value>
+          <string>fr</string>
+          <description>French</description>
+        </value>
+        <value>
+          <string>it</string>
+          <description>Italian</description>
+        </value>
+        <value>
+          <string>pt</string>
+          <description>Portuguese</description>
+        </value>
+        <value>
+          <string>other</string>
+          <description>Other languages</description>
+        </value>
+      </allowedValues>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.CitationStatus</name>
+      <description>A citation status (PubMed relevant)</description>
+      <supertypeName>uima.cas.String</supertypeName>
+      <allowedValues>
+        <value>
+          <string>completed</string>
+          <description>completed</description>
+        </value>
+        <value>
+          <string>in-process</string>
+          <description>in-process</description>
+        </value>
+        <value>
+          <string>pubmed-not-medline</string>
+          <description>pubmed-not-medline</description>
+        </value>
+        <value>
+          <string>in-data-review</string>
+          <description>in-data-review</description>
+        </value>
+        <value>
+          <string>publisher</string>
+          <description>publisher</description>
+        </value>
+        <value>
+          <string>medline</string>
+          <description>medline</description>
+        </value>
+        <value>
+          <string>oldmedline</string>
+          <description>oldmedline</description>
+        </value>
+        <value>
+          <string>other</string>
+          <description>other</description>
+        </value>
+      </allowedValues>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.DBName</name>
+      <description>The name of the DB referred to.</description>
+      <supertypeName>uima.cas.String</supertypeName>
+      <allowedValues>
+        <value>
+          <string>SwissProt</string>
+          <description>http://expasy.org/sprot/</description>
+        </value>
+        <value>
+          <string>INTERPRO</string>
+          <description>http://www.ebi.ac.uk/interpro/</description>
+        </value>
+      </allowedValues>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.Style</name>
+      <description>Text-markup information (italic, bold etc.) on any (e.g. character) level. Allows to keep the original style markup of the text, several style types might be set to same (or overlapping) range, when different styles are set to the same text region.</description>
+      <supertypeName>de.julielab.jules.types.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>styleName</name>
+          <description>the name of the style used.</description>
+          <rangeTypeName>de.julielab.jules.types.StyleName</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>encoding</name>
+          <description>the encoding used.</description>
+          <rangeTypeName>de.julielab.jules.types.Encoding</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.StyleName</name>
+      <description/>
+      <supertypeName>uima.cas.String</supertypeName>
+      <allowedValues>
+        <value>
+          <string>slanted</string>
+          <description/>
+        </value>
+        <value>
+          <string>italic</string>
+          <description/>
+        </value>
+        <value>
+          <string>bold</string>
+          <description/>
+        </value>
+        <value>
+          <string>underscore</string>
+          <description/>
+        </value>
+        <value>
+          <string>stricke-though</string>
+          <description/>
+        </value>
+      </allowedValues>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.Encoding</name>
+      <description>Encoding Information</description>
+      <supertypeName>uima.cas.String</supertypeName>
+      <allowedValues>
+        <value>
+          <string>UTF-8</string>
+          <description/>
+        </value>
+        <value>
+          <string>UTF-16</string>
+          <description/>
+        </value>
+      </allowedValues>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.Zone</name>
+      <description>A Zone is a distinct division of text. It is an abstract Type and provides a parent type for sub-types which represent various kinds of text zones.</description>
+      <supertypeName>de.julielab.jules.types.Annotation</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.Paragraph</name>
+      <description>A paragraph is a self-contained unit of discourse in a written text dealing with a particular point or idea.</description>
+      <supertypeName>de.julielab.jules.types.Annotation</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.Title</name>
+      <description>Title annotates titles covering various text units, including the whole paper, sections and subsections.</description>
+      <supertypeName>de.julielab.jules.types.Annotation</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.AuthorInfo</name>
+      <description>AuthorInfo Type annotates the text segments containing the information about an author and his/her affiliation information.</description>
+      <supertypeName>de.julielab.jules.types.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>foreName</name>
+          <description>An author’s forename,C</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>affiliation</name>
+          <description>Affiliation of the author, O</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>contact</name>
+          <description>Contact information (emails, phones, etc.), O</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>lastName</name>
+          <description>The last name of the author.</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.Sentence</name>
+      <description>This annotation marks the span of a sentence.</description>
+      <supertypeName>de.julielab.jules.types.Annotation</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.Token</name>
+      <description>Token annotation marks the span of a token and takes all additional annotations that are on the token level, including Part-of-Speech information, lemma, stemmed form,  grammatical features such as gender, number and orthographical information; furthemore, Token includes the information about dependency relations to other tokens (see correspondent annotation types for further infromation).</description>
+      <supertypeName>de.julielab.jules.types.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>lemma</name>
+          <description>the lemma information, O</description>
+          <rangeTypeName>de.julielab.jules.types.Lemma</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>posTag</name>
+          <description>List contains part-of-speech tags of different part-of-speech tagsets (see also POSTag and subtypes), O</description>
+          <rangeTypeName>uima.cas.FSArray</rangeTypeName>
+          <elementType>de.julielab.jules.types.POSTag</elementType>
+          <multipleReferencesAllowed>true</multipleReferencesAllowed>
+        </featureDescription>
+        <featureDescription>
+          <name>stemmedForm</name>
+          <description>Contains the stemmed form of token (see StemmedForm), O</description>
+          <rangeTypeName>de.julielab.jules.types.StemmedForm</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>feats</name>
+          <description>Contains grammatical features correspondent to the part-of-speech tag of current token (see GrammaticalFeats and subtypes), O</description>
+          <rangeTypeName>de.julielab.jules.types.GrammaticalFeats</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>orthogr</name>
+          <description>see de.julielab.jules.types.Orthogrpahy</description>
+          <rangeTypeName>de.julielab.jules.types.Orthography</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>depRel</name>
+          <description>Contains a list of syntactical dependencies, see DependencyRelation, O</description>
+          <rangeTypeName>uima.cas.FSArray</rangeTypeName>
+          <elementType>de.julielab.jules.types.DependencyRelation</elementType>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.POSTag</name>
+      <description>POS is a linguistic category of words (tokens) that are defined by their particular syntactic/morphological behaviours (e.g. noun, verb).</description>
+      <supertypeName>de.julielab.jules.types.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>tagsetId</name>
+          <description>Every POS tagset (see subtypes) has an identifier, C</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>language</name>
+          <description>The language identifer, C</description>
+          <rangeTypeName>de.julielab.jules.types.Language</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>value</name>
+          <description>The value of POS (NN, JJ etc.)</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.PennPOSTag</name>
+      <description>The Penn Treebank Tag Set* in Mitchell P. Marcus, Beatrice Santorini, and Mary Ann Marcinkiewicz: Building a Large Annotated Corpus of English: The Penn Treebank, in Computational Linguistics, Volume 19, Number 2 (June 1993), pp. 313--330 (Special Issue on Using Large Corpora). TagsetId 0</description>
+      <supertypeName>de.julielab.jules.types.POSTag</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.GeniaPOSTag</name>
+      <description>Genia Tag Set in Tateisi, Yuka and Jun'ichi Tsujii. (2004). Part-of-Speech Annotation of Biology Research Abstracts. In the Proceedings of 4th International Conference on Language Resource and Evaluation (LREC2004). IV. pp. 1267-1270. TagsetId 1</description>
+      <supertypeName>de.julielab.jules.types.POSTag</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.PennBioIEPOSTag</name>
+      <description>Mark A. Mandel. Integrated Annotation of Biomedical Text: Creating the PennBioIE Corpus. March 2006. Text Mining, Ontologies and Natural Language Processing in Biomedicine.</description>
+      <supertypeName>de.julielab.jules.types.POSTag</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.Lemma</name>
+      <description>Lemma is the canonical form of a lexeme. Lemma can be retrieved from lexicon or be produced by lemmatizer.</description>
+      <supertypeName>de.julielab.jules.types.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>value</name>
+          <description>The value of lemma,C</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>testFS</name>
+          <description>added by Philip Ogren soley for unit testing purposes
+
+</description>
+          <rangeTypeName>uima.cas.StringArray</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.StemmedForm</name>
+      <description>Represents a grammatical morpheme, identifies the morpheme's base form for the current token, activat- for activation. Different forms can be produced by stemmers.</description>
+      <supertypeName>de.julielab.jules.types.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>value</name>
+          <description>The value of the stemmed form, C</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.Simplex</name>
+      <description>Represents a morpheme of a compound.</description>
+      <supertypeName>de.julielab.jules.types.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>lemma</name>
+          <description>The lemma of the simplex, C</description>
+          <rangeTypeName>de.julielab.jules.types.Lemma</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.Abbreviation</name>
+      <description>An abbreviation is a letter or group of letters, taken from a word or words. For example, the word "abbreviation" can be abbreviated as "abbr." or "abbrev."</description>
+      <supertypeName>de.julielab.jules.types.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>expan</name>
+          <description>The full form of an abbreviation. For example he fullform, for example for HLA (human leukocyte antigen), O</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.Acronym</name>
+      <description>Abbreviation includes acronyms “written as the initial letter or letters of words, and pronounced on the basis of this abbreviated written form.”</description>
+      <supertypeName>de.julielab.jules.types.Abbreviation</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.GrammaticalFeats</name>
+      <description>Describes a word structure, default grammatical features dependent of a word category, see subtypes</description>
+      <supertypeName>de.julielab.jules.types.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>language</name>
+          <description>Language identifier, C</description>
+          <rangeTypeName>de.julielab.jules.types.Language</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.NounFeats</name>
+      <description>Describes a word structure, default grammatical features of a noun</description>
+      <supertypeName>de.julielab.jules.types.GrammaticalFeats</supertypeName>
+      <features>
+        <featureDescription>
+          <name>gender</name>
+          <description>Gender, C</description>
+          <rangeTypeName>de.julielab.jules.types.Gender</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>case</name>
+          <description>Case. C</description>
+          <rangeTypeName>de.julielab.jules.types.Case</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>number</name>
+          <description>Number, C</description>
+          <rangeTypeName>de.julielab.jules.types.Number</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.VerbFeats</name>
+      <description>Describes a word structure, default grammatical features of a verb</description>
+      <supertypeName>de.julielab.jules.types.GrammaticalFeats</supertypeName>
+      <features>
+        <featureDescription>
+          <name>tense</name>
+          <description>Tense</description>
+          <rangeTypeName>de.julielab.jules.types.Tense</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>person</name>
+          <description>Person</description>
+          <rangeTypeName>de.julielab.jules.types.Person</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>number</name>
+          <description>Number</description>
+          <rangeTypeName>de.julielab.jules.types.Number</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>voice</name>
+          <description>Voice</description>
+          <rangeTypeName>de.julielab.jules.types.Voice</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>aspect</name>
+          <description>Aspect</description>
+          <rangeTypeName>de.julielab.jules.types.Aspect</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.AdjectiveFeats</name>
+      <description>Describes a word structure, default grammatical features of a adjective</description>
+      <supertypeName>de.julielab.jules.types.GrammaticalFeats</supertypeName>
+      <features>
+        <featureDescription>
+          <name>degree</name>
+          <description>Degree</description>
+          <rangeTypeName>de.julielab.jules.types.Degree</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.PronounFeats</name>
+      <description>Describes a word structure, default grammatical features of  pronouns</description>
+      <supertypeName>de.julielab.jules.types.GrammaticalFeats</supertypeName>
+      <features>
+        <featureDescription>
+          <name>gender</name>
+          <description>Gender</description>
+          <rangeTypeName>de.julielab.jules.types.Gender</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>case</name>
+          <description>Case</description>
+          <rangeTypeName>de.julielab.jules.types.Case</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>number</name>
+          <description>Number</description>
+          <rangeTypeName>de.julielab.jules.types.Number</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>person</name>
+          <description>Person</description>
+          <rangeTypeName>de.julielab.jules.types.Person</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.Chunk</name>
+      <description>Results of the chunking (shallow Parsing (see Abney))</description>
+      <supertypeName>de.julielab.jules.types.Annotation</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.PhraseChunk</name>
+      <description>http://www.cnts.ua.ac.be/conll2000/chunking/</description>
+      <supertypeName>de.julielab.jules.types.Chunk</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.NP</name>
+      <description/>
+      <supertypeName>de.julielab.jules.types.PhraseChunk</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.VP</name>
+      <description/>
+      <supertypeName>de.julielab.jules.types.PhraseChunk</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.PP</name>
+      <description/>
+      <supertypeName>de.julielab.jules.types.PhraseChunk</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.ADJP</name>
+      <description/>
+      <supertypeName>de.julielab.jules.types.PhraseChunk</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.ADVP</name>
+      <description/>
+      <supertypeName>de.julielab.jules.types.PhraseChunk</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.LST</name>
+      <description/>
+      <supertypeName>de.julielab.jules.types.PhraseChunk</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.SBAR</name>
+      <description/>
+      <supertypeName>de.julielab.jules.types.PhraseChunk</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.CONJP</name>
+      <description/>
+      <supertypeName>de.julielab.jules.types.PhraseChunk</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.PRT</name>
+      <description/>
+      <supertypeName>de.julielab.jules.types.PhraseChunk</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.Relation</name>
+      <description>General relation between the annotation types.</description>
+      <supertypeName>de.julielab.jules.types.Annotation</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.DependencyRelation</name>
+      <description>Syntactic dependency relation annotation, see subtypes</description>
+      <supertypeName>de.julielab.jules.types.Relation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>head</name>
+          <description>Head (Token) of the analyzed dependency relation, C</description>
+          <rangeTypeName>de.julielab.jules.types.Token</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>projective</name>
+          <description>The dependency relations can be projective or not, C</description>
+          <rangeTypeName>uima.cas.Boolean</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>label</name>
+          <description>The label of the relation (e.g. SBJ, OBJ, DEP)</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.DepRelationSetA</name>
+      <description/>
+      <supertypeName>de.julielab.jules.types.DependencyRelation</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.Constituent</name>
+      <description>The super-type for the constituent annotation, see subtypes</description>
+      <supertypeName>de.julielab.jules.types.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>parent</name>
+          <description>The parent in a constituency tree, C</description>
+          <rangeTypeName>de.julielab.jules.types.Constituent</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>head</name>
+          <description>The head can be extracted with head rules, O</description>
+          <rangeTypeName>de.julielab.jules.types.Constituent</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>cat</name>
+          <description>The category of the constituent (e.g. NP, VP)</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.PTBConstituent</name>
+      <description>Penn Treebank constituent annotation (see Penn Treebank)</description>
+      <supertypeName>de.julielab.jules.types.Constituent</supertypeName>
+      <features>
+        <featureDescription>
+          <name>formFuncDisc</name>
+          <description>Form/function discrepancies, O</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>gramRole</name>
+          <description>Grammatical role, O</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>adv</name>
+          <description>Adverbials are generally VP adjuncts.</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>misc</name>
+          <description>Miscellaneous</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>nullElement</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>ref</name>
+          <description>Th reference from the null constituent to the corresponding lexicalized constituent, O</description>
+          <rangeTypeName>de.julielab.jules.types.Constituent</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>map</name>
+          <description>In the case of gapping the reference to the corresponding constituent, O</description>
+          <rangeTypeName>de.julielab.jules.types.Constituent</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>tpc</name>
+          <description>Marks elements that appear before the subject in a declarative sentence, O</description>
+          <rangeTypeName>uima.cas.Boolean</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.GENIAConstituent</name>
+      <description>Ohta, Tomoko, Yuka Tateisi, Hideki Mima and Jun'ichi Tsujii. (2002). GENIA Corpus: an Annotated Research Abstract Corpus in Molecular Biology Domain. In the Proceedings of he Human Language Technology Conference (HLT 2002). pp73--77.</description>
+      <supertypeName>de.julielab.jules.types.Constituent</supertypeName>
+      <features>
+        <featureDescription>
+          <name>syn</name>
+          <description>Marks coordinations, O</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.PennBioIEConstituent</name>
+      <description>Mark A. Mandel. Integrated Annotation of Biomedical Text: Creating the PennBioIE Corpus. March 2006. Text Mining, Ontologies and Natural Language Processing in Biomedicine.</description>
+      <supertypeName>de.julielab.jules.types.Constituent</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.Orthography</name>
+      <description>As more than one value might apply to a token, there is a StringList that can be filled with all values that apply for this token.</description>
+      <supertypeName>uima.cas.String</supertypeName>
+      <allowedValues>
+        <value>
+          <string>lowercase</string>
+          <description>Every character is a lowercase letter: token</description>
+        </value>
+        <value>
+          <string>uppercase</string>
+          <description>Every character is an uppercase letter: TOKEN</description>
+        </value>
+        <value>
+          <string>capitalized</string>
+          <description>The first character is an uppercase letter; all other characters are lowercase letters: Token</description>
+        </value>
+        <value>
+          <string>multicaps</string>
+          <description>There is more than one uppercase letter in the token: ToKEn</description>
+        </value>
+        <value>
+          <string>initcaps</string>
+          <description>The token is a single uppercase letter: T</description>
+        </value>
+        <value>
+          <string>hyphenated</string>
+          <description>with one or more hyphens: token-token</description>
+        </value>
+        <value>
+          <string>dotted</string>
+          <description>The token contains  dots: T.O.K.E.N.</description>
+        </value>
+        <value>
+          <string>initdot</string>
+          <description>The token is a single uppercase letter followed by a dot: T.</description>
+        </value>
+        <value>
+          <string>alphanumeric</string>
+          <description>e.g. p53</description>
+        </value>
+        <value>
+          <string>arithmetic</string>
+          <description>The token is an arithmetic or algebraic operator</description>
+        </value>
+        <value>
+          <string>apostrophe</string>
+          <description/>
+        </value>
+        <value>
+          <string>doublequote</string>
+          <description/>
+        </value>
+        <value>
+          <string>number</string>
+          <description>e.g. 12345 or .678</description>
+        </value>
+        <value>
+          <string>numberrange</string>
+          <description>123-456</description>
+        </value>
+        <value>
+          <string>bracket</string>
+          <description>The token is an opening or closing bracket, brace, parenthesis</description>
+        </value>
+        <value>
+          <string>punct</string>
+          <description>member of set [,.?!:;]</description>
+        </value>
+        <value>
+          <string>space</string>
+          <description>space, tab, newline, carriage return</description>
+        </value>
+        <value>
+          <string>other</string>
+          <description>The token is any sequence of characters that does not match any of the above descriptions</description>
+        </value>
+      </allowedValues>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.Gender</name>
+      <description/>
+      <supertypeName>uima.cas.String</supertypeName>
+      <allowedValues>
+        <value>
+          <string>masculine</string>
+          <description/>
+        </value>
+        <value>
+          <string>feminine</string>
+          <description/>
+        </value>
+        <value>
+          <string>neutrum</string>
+          <description/>
+        </value>
+      </allowedValues>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.Case</name>
+      <description/>
+      <supertypeName>uima.cas.String</supertypeName>
+      <allowedValues>
+        <value>
+          <string>common</string>
+          <description/>
+        </value>
+        <value>
+          <string>genitive</string>
+          <description/>
+        </value>
+      </allowedValues>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.Number</name>
+      <description/>
+      <supertypeName>uima.cas.String</supertypeName>
+      <allowedValues>
+        <value>
+          <string>singular</string>
+          <description/>
+        </value>
+        <value>
+          <string>plural</string>
+          <description/>
+        </value>
+      </allowedValues>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.Tense</name>
+      <description/>
+      <supertypeName>uima.cas.String</supertypeName>
+      <allowedValues>
+        <value>
+          <string>present</string>
+          <description/>
+        </value>
+        <value>
+          <string>past</string>
+          <description/>
+        </value>
+        <value>
+          <string>future</string>
+          <description/>
+        </value>
+      </allowedValues>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.Person</name>
+      <description/>
+      <supertypeName>uima.cas.String</supertypeName>
+      <allowedValues>
+        <value>
+          <string>1</string>
+          <description/>
+        </value>
+        <value>
+          <string>2</string>
+          <description/>
+        </value>
+        <value>
+          <string>3</string>
+          <description/>
+        </value>
+      </allowedValues>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.Voice</name>
+      <description/>
+      <supertypeName>uima.cas.String</supertypeName>
+      <allowedValues>
+        <value>
+          <string>passive</string>
+          <description/>
+        </value>
+        <value>
+          <string>active</string>
+          <description/>
+        </value>
+      </allowedValues>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.Aspect</name>
+      <description/>
+      <supertypeName>uima.cas.String</supertypeName>
+      <allowedValues>
+        <value>
+          <string>perfective</string>
+          <description/>
+        </value>
+        <value>
+          <string>progressive</string>
+          <description/>
+        </value>
+        <value>
+          <string>perfective_progressive</string>
+          <description/>
+        </value>
+      </allowedValues>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.Degree</name>
+      <description/>
+      <supertypeName>uima.cas.String</supertypeName>
+      <allowedValues>
+        <value>
+          <string>positive</string>
+          <description/>
+        </value>
+        <value>
+          <string>comparative</string>
+          <description/>
+        </value>
+        <value>
+          <string>superlative</string>
+          <description/>
+        </value>
+      </allowedValues>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.Entity</name>
+      <description>(Named) Entity (i.e. An entity is an object or set of objects in the world. Entities may be refrenced in a text by their name, indicated by a common noun or noun phrase, or represented by a pronoun) annotation</description>
+      <supertypeName>de.julielab.jules.types.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>dbEntries</name>
+          <description/>
+          <rangeTypeName>uima.cas.FSArray</rangeTypeName>
+          <elementType>de.julielab.jules.types.DBEntry</elementType>
+          <multipleReferencesAllowed>true</multipleReferencesAllowed>
+        </featureDescription>
+        <featureDescription>
+          <name>ontologyEntries</name>
+          <description/>
+          <rangeTypeName>uima.cas.FSArray</rangeTypeName>
+          <elementType>de.julielab.jules.types.OntologyEntry</elementType>
+          <multipleReferencesAllowed>true</multipleReferencesAllowed>
+        </featureDescription>
+        <featureDescription>
+          <name>specificType</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.BioEntity</name>
+      <description>Biomedical Entity (e.g. gene, organism, cell type)</description>
+      <supertypeName>de.julielab.jules.types.Entity</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.MUCEntity</name>
+      <description/>
+      <supertypeName>de.julielab.jules.types.Entity</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>de.julielab.jules.types.Organization</name>
+      <description/>
+      <supertypeName>de.julielab.jules.types.MUCEntity</supertypeName>
+    </typeDescription>
+  </types>
+</typeSystemDescription>
