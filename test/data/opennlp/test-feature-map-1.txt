@@ -1,0 +1,7 @@
+6
+!	5
+Goodbye	1
+Hello	0
+Please	2
+don't	3
+go	4
