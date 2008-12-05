@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <name>SemanticArgument</name>
+  <description/>
+  <version>1.0</version>
+  <vendor>Copyright 2007-2008 Regents of the University of Colorado.   All Rights Reserved.</vendor>
+  <imports>
+    <import name="org.cleartk.srl.type.Argument"/>
+    <import name="org.cleartk.type.SimpleAnnotation"/>
+  </imports>
+  <types>
+    <typeDescription>
+      <name>org.cleartk.srl.type.SemanticArgument</name>
+      <description/>
+      <supertypeName>org.cleartk.srl.type.Argument</supertypeName>
+      <features>
+        <featureDescription>
+          <name>label</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>feature</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>coreferenceAnnotations</name>
+          <description/>
+          <rangeTypeName>uima.cas.FSArray</rangeTypeName>
+          <elementType>org.cleartk.type.SimpleAnnotation</elementType>
+        </featureDescription>
+        <featureDescription>
+          <name>preposition</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>hyphenTag</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+  </types>
+</typeSystemDescription>

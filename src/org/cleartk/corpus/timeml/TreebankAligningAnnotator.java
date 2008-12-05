@@ -1,0 +1,178 @@
+ /** 
+ * Copyright (c) 2007-2008, Regents of the University of Colorado 
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. 
+ * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. 
+ * Neither the name of the University of Colorado at Boulder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. 
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE. 
+*/
+package org.cleartk.corpus.timeml;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
+import org.apache.uima.UimaContext;
+import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.jcas.JCas;
+import org.apache.uima.resource.ResourceInitializationException;
+import org.apache.uima.util.FileUtils;
+import org.cleartk.corpus.timeml.type.Text;
+import org.cleartk.syntax.treebank.type.TopTreebankNode;
+import org.cleartk.syntax.treebank.type.TreebankNode;
+import org.cleartk.syntax.treebank.util.TreebankFormatParser;
+import org.cleartk.syntax.treebank.util.TreebankNodeUtility;
+import org.cleartk.type.Sentence;
+import org.cleartk.type.Token;
+import org.cleartk.util.AnnotationRetrieval;
+import org.cleartk.util.DocumentUtil;
+import org.cleartk.util.UIMAUtil;
+
+
+/**
+ * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
+ * <br>All rights reserved.
+
+ *
+ *
+ * @author Steven Bethard
+ */
+public class TreebankAligningAnnotator extends JCasAnnotator_ImplBase {
+	
+	public static final String PARAM_TREEBANK_DIRECTORY = "TreebankDirectory";
+	
+	private File treebankDirectory;
+
+	@Override
+	public void initialize(UimaContext context) throws ResourceInitializationException {
+		super.initialize(context);
+		this.treebankDirectory = new File((String)UIMAUtil.getRequiredConfigParameterValue(
+				context, TreebankAligningAnnotator.PARAM_TREEBANK_DIRECTORY));
+	}
+
+	@Override
+	public void process(JCas jCas) throws AnalysisEngineProcessException {
+		
+		// determine the appropriate .mrg file name
+		String wsjName = DocumentUtil.getIdentifier(jCas);
+		String subdir = wsjName.substring(4, 6);
+		String mrgName = wsjName.replaceAll("\\.tml", ".mrg");
+		File mrgFile = new File(new File(this.treebankDirectory, subdir), mrgName);
+		
+		// read the parse text
+		String mrgText;
+		try {
+			mrgText = FileUtils.file2String(mrgFile);
+		} catch (IOException e) {
+			throw new AnalysisEngineProcessException(e);
+		}
+		
+		// we need a TEXT element to know where to start
+		List<Text> texts = AnnotationRetrieval.getAnnotations(jCas, Text.class);
+		if (texts.size() != 1) {
+			throw new AnalysisEngineProcessException(new RuntimeException(
+					"expected 1 TEXT element, found " + texts.size()));
+		}
+		
+		// add Token, Sentence and TreebankNode annotations for the text
+		int offset = texts.get(0).getBegin();
+		String text = jCas.getDocumentText();
+		for (String parseString: TreebankFormatParser.splitSentences(mrgText)) {
+			
+			// parse the string into a tree, then fix node offsets
+			org.cleartk.syntax.treebank.util.
+			TopTreebankNode utilTree = TreebankFormatParser.parse(parseString);
+			for (int i = 0; i < utilTree.getTerminalCount(); i ++) {
+				
+				// skip whitespace
+				while (offset < text.length() &&
+						Character.isWhitespace(text.charAt(offset))) {
+					offset ++;
+				}
+				
+				// get the leaf and clean up TreeBank errors
+				org.cleartk.syntax.treebank.util.
+				TreebankNode leaf = utilTree.getTerminal(i);
+				this.cleanLeaf(jCas, text, offset, leaf);
+				
+				// update the leaf offsets
+				leaf.setTextBegin(offset);
+				leaf.setTextEnd(offset + leaf.getText().length());
+				offset = leaf.getTextEnd();
+			}
+			
+			// propagate the leaf offset fixes to the rest of the tree
+			this.correctOffsets(utilTree);
+			
+			// create a Sentence and set its parse
+			TopTreebankNode tree = TreebankNodeUtility.convert(utilTree, jCas);
+			Sentence sentence = new Sentence(jCas, tree.getBegin(), tree.getEnd());
+			sentence.setConstituentParse(tree);
+			sentence.addToIndexes();
+
+			// create the Tokens and add them to the Sentence 
+			for (int i = 0; i < tree.getTerminals().size(); i++) {
+				TreebankNode leaf = tree.getTerminals(i);
+				if (leaf.getBegin() != leaf.getEnd()) {
+					Token token = new Token(jCas, leaf.getBegin(), leaf.getEnd());
+					token.setPos(leaf.getNodeType());
+					token.addToIndexes();
+				}
+			}
+		}
+	}
+
+	private void correctOffsets(org.cleartk.syntax.treebank.util.TreebankNode node) {
+		if (!node.isLeaf()) {
+			List<org.cleartk.syntax.treebank.util.TreebankNode> children = node.getChildren();
+			for (org.cleartk.syntax.treebank.util.TreebankNode child: children) {
+				this.correctOffsets(child);
+			}
+			node.setTextBegin(children.get(0).getParseBegin());
+			node.setTextEnd(children.get(children.size() - 1).getParseEnd());
+
+		}
+	}
+	
+	private void cleanLeaf(
+			JCas jCas, String text, int offset,
+			org.cleartk.syntax.treebank.util.TreebankNode leaf)
+	throws AnalysisEngineProcessException {
+		// the TreeBank does funny things with quotes and slashes 
+		String leafText = leaf.getText();
+		leafText = leafText.replace("``", "\"");
+		leafText = leafText.replace("''", "\"");
+		leafText = leafText.replace("\\/", "/");
+		
+		// the TreeBank sometimes introduces extra periods, e.g. U.S. at the
+		// end of a sentence could end up as (NNP U.S.) (. .)
+		if (!text.startsWith(leafText, offset)) {
+			if (leafText.equals(".")) {
+				leafText = "";
+			} else {
+				System.err.println(DocumentUtil.getIdentifier(jCas));
+				System.err.println("EXPECTED: " + leaf.getText());
+				System.err.println("FOUND: " + text.substring(offset));
+				throw new AnalysisEngineProcessException();
+			}
+		}
+		leaf.setText(leafText);
+	}
+
+}

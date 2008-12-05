@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <name>SimpleAnnotation</name>
+  <description/>
+  <version>1.0</version>
+  <vendor>Copyright 2007-2008 Regents of the University of Colorado.   All Rights Reserved.</vendor>
+  <types>
+    <typeDescription>
+      <name>org.cleartk.type.SimpleAnnotation</name>
+      <description/>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
+    </typeDescription>
+  </types>
+</typeSystemDescription>

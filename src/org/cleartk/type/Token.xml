@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <name>Token</name>
+  <description/>
+  <version>1.0</version>
+  <vendor>Copyright 2007-2008 Regents of the University of Colorado.   All Rights Reserved.</vendor>
+  <imports>
+    <import name="org.cleartk.type.ContiguousAnnotation"/>
+  </imports>
+  <types>
+    <typeDescription>
+      <name>org.cleartk.type.Token</name>
+      <description/>
+      <supertypeName>org.cleartk.type.ContiguousAnnotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>pos</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>stem</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+  </types>
+</typeSystemDescription>

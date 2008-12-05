@@ -1,0 +1,117 @@
+ /** 
+ * Copyright (c) 2007-2008, Regents of the University of Colorado 
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. 
+ * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. 
+ * Neither the name of the University of Colorado at Boulder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. 
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE. 
+*/
+package org.cleartk.classifier;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.jar.Attributes;
+import java.util.jar.JarFile;
+import java.util.jar.Manifest;
+
+/**
+ * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
+ * <br>All rights reserved.
+
+ * 
+ * @author Steven Bethard, Philipp Wetzler
+ */
+public class ClassifierManifest extends Manifest {
+	
+	private final Attributes.Name classifierBuilderAttribute = new Attributes.Name("classifierBuilderClass");
+	
+	private ClassifierBuilder<?> classifierBuilder;
+	
+	public ClassifierManifest() {
+		Attributes attributes = this.getMainAttributes();
+		attributes.put(Attributes.Name.MANIFEST_VERSION, "1.0");
+	}
+	
+	public ClassifierManifest(ClassifierBuilder<?> classifierBuilder) {
+		Attributes attributes = this.getMainAttributes();
+		attributes.put(Attributes.Name.MANIFEST_VERSION, "1.0");
+		attributes.put(this.classifierBuilderAttribute, classifierBuilder.getClass().getName());
+		this.classifierBuilder = classifierBuilder;
+	}
+	
+	public ClassifierManifest(File dir) throws IOException {
+		super(new FileInputStream(getFile(dir)));
+		this.loadClassifierBuilder(getFile(dir).getPath());
+	}
+	
+	public ClassifierManifest(JarFile jarFile) throws IOException {
+		super(jarFile.getManifest());
+		this.loadClassifierBuilder(jarFile.getName());
+	}
+	
+	public void write(File dir) throws IOException {
+		FileOutputStream manifestStream = new FileOutputStream(getFile(dir));
+		this.write(manifestStream);
+		manifestStream.close();
+	}
+	
+	public void setClassifierBuilder(ClassifierBuilder<?> classifierBuilder) {
+		Attributes attributes = this.getMainAttributes();
+		attributes.put(this.classifierBuilderAttribute, classifierBuilder.getClass().getName());
+		this.classifierBuilder = classifierBuilder;
+	}
+	
+	public ClassifierBuilder<?> getClassifierBuilder() {
+		return this.classifierBuilder;
+	}
+	
+	private void loadClassifierBuilder(String path) throws IOException {
+		Attributes attributes = this.getMainAttributes();
+		String classifierClassName = attributes.getValue(this.classifierBuilderAttribute);
+		if (classifierClassName == null) {
+			throw new IOException(String.format("Missing %s attribute in manifest %s",
+					this.classifierBuilderAttribute, path));
+		}
+		Exception exception = null;
+		try {
+			this.classifierBuilder = this.cast(Class.forName(classifierClassName)).newInstance();
+		} catch (ClassNotFoundException e) {
+			exception = e;
+		} catch (InstantiationException e) {
+			exception = e;
+		} catch (IllegalAccessException e) {
+			exception = e;
+		}
+		if (exception != null) {
+			throw new IOException(String.format("Invalid %s attribute in manifest %s",
+					this.classifierBuilderAttribute, path));
+		}
+	}
+	
+	private static File getFile(File dir) {
+		return new File(dir, "MANIFEST.MF");
+	}
+	
+	@SuppressWarnings("unchecked")
+	private Class<? extends ClassifierBuilder<?>> cast(Class<?> classifierBuilderClass) {
+		return (Class<? extends ClassifierBuilder<?>>)classifierBuilderClass.asSubclass(ClassifierBuilder.class);
+	}
+
+}

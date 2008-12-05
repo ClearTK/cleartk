@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <name>Document</name>
+  <description/>
+  <version>1.0</version>
+  <vendor>Copyright 2007-2008 Regents of the University of Colorado.   All Rights Reserved.</vendor>
+  <types>
+    <typeDescription>
+      <name>org.cleartk.type.Document</name>
+      <description/>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>identifier</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>path</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+  </types>
+</typeSystemDescription>

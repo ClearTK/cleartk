@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+  <primitive>false</primitive>
+  <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="TokenAnnotator">
+      <import name="org.cleartk.token.TokenAnnotator"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="SentenceSegmenter">
+      <import name="org.cleartk.sentence.SentenceSegmenter"/>
+    </delegateAnalysisEngine>
+  </delegateAnalysisEngineSpecifiers>
+  <analysisEngineMetaData>
+    <name>SentencesAndTokens</name>
+    <description>Copyright 2007 Regents of the University of Colorado.  
+ All Rights Reserved.
+
+ This software is provided under the terms of the CU Non-Profit Research
+ License Agreement, which can be found at: 
+ https://www.cusys.edu/techtransfer_edit/downloads/Bulletin-SourceCodeAgreementNonprofitResearch.pdf
+ The license is also provided with this distribution as "license.pdf"</description>
+    <version>1.0</version>
+    <vendor/>
+    <configurationParameters searchStrategy="language_fallback">
+      <configurationParameter>
+        <name>SentenceModelFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>SentenceSegmenter/SentenceModelFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>TokenType</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>TokenAnnotator/TokenType</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>Tokenizer</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>TokenAnnotator/Tokenizer</parameter>
+        </overrides>
+      </configurationParameter>
+    </configurationParameters>
+    <configurationParameterSettings>
+      <nameValuePair>
+        <name>SentenceModelFile</name>
+        <value>
+          <string>resources/models/OpenNLP.Sentence.English.bin.gz</string>
+        </value>
+      </nameValuePair>
+    </configurationParameterSettings>
+    <flowConstraints>
+      <fixedFlow>
+        <node>SentenceSegmenter</node>
+        <node>TokenAnnotator</node>
+      </fixedFlow>
+    </flowConstraints>
+    <typePriorities>
+      <priorityList>
+        <type>org.cleartk.type.Sentence</type>
+        <type>org.cleartk.type.Token</type>
+      </priorityList>
+    </typePriorities>
+    <fsIndexCollection/>
+    <capabilities>
+      <capability>
+        <inputs/>
+        <outputs/>
+        <languagesSupported/>
+      </capability>
+    </capabilities>
+    <operationalProperties>
+      <modifiesCas>true</modifiesCas>
+      <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+      <outputsNewCASes>false</outputsNewCASes>
+    </operationalProperties>
+  </analysisEngineMetaData>
+  <resourceManagerConfiguration/>
+</analysisEngineDescription>

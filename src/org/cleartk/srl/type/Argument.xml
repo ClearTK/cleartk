@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <name>Argument</name>
+  <description/>
+  <version>1.0</version>
+  <vendor>Copyright 2007-2008 Regents of the University of Colorado.   All Rights Reserved.</vendor>
+  <imports>
+    <import name="org.cleartk.type.SimpleAnnotation"/>
+  </imports>
+  <types>
+    <typeDescription>
+      <name>org.cleartk.srl.type.Argument</name>
+      <description/>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>annotation</name>
+          <description/>
+          <rangeTypeName>org.cleartk.type.SimpleAnnotation</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+  </types>
+</typeSystemDescription>
