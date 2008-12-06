@@ -221,7 +221,8 @@ import org.junit.Test;
 	
 	private List<TopTreebankNode> parseFile(String treebankFile) throws Exception {
 		String treebankText = FileUtils.file2String(new File(treebankFile));
-		return TreebankFormatParser.parseDocument(treebankText);
+		String inferredText = TreebankFormatParser.inferPlainText(treebankText);
+		return TreebankFormatParser.parseDocument(treebankText, 0, inferredText);
 		
 	}
 	
@@ -459,4 +460,17 @@ import org.junit.Test;
 		testNode(children.get(1), "chase cats", "VP", "(VP (VB chase ) (NP (NNS cats )))");
 	}
 
+	@Test
+	public void testParseDocument() {
+		String treebankText = "((S (VP (VB Run)) (. !))) ((S (RB Now) (. !)))";
+		String inferredText = "Run!\nNow!";
+		assertEquals(inferredText, TreebankFormatParser.inferPlainText(treebankText));
+		
+		List<TopTreebankNode> nodes;
+		nodes = TreebankFormatParser.parseDocument(treebankText, 0, inferredText);
+		assertEquals(0, nodes.get(0).getTextBegin());
+		assertEquals(4, nodes.get(0).getTextEnd());
+		assertEquals(5, nodes.get(1).getTextBegin());
+		assertEquals(9, nodes.get(1).getTextEnd());
+	}
 }

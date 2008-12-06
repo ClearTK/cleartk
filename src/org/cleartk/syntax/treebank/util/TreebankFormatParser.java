@@ -200,23 +200,31 @@ public class TreebankFormatParser {
 	 * 
 	 * @see #parse(String, String, int)
 	 * 
-	 * @param parse
+	 * @param treebankText One or more parses in Treebank parenthesized format.
 	 * @return a "best" guess of the original plain text given in the parse.   
 	 */
-	public static String inferPlainText(String parse) {
-		Matcher matcher = leafNodePattern.matcher(parse);
+	public static String inferPlainText(String treebankText) {
 		StringBuilder sb = new StringBuilder();
-		while (matcher.find()) {
-			TreebankNode node = getLeafNode(matcher.group());
-			if (node.getText() != null && node.getText().length() > 0) {
-				int lastIndex = sb.length() - 1;
-				if (lastIndex > 0 && !needsSpaceBefore(node.getText()) && sb.charAt(lastIndex) == ' ') {
-					sb.deleteCharAt(lastIndex);
+		for (String parse: splitSentences(treebankText)) {
+			Matcher matcher = leafNodePattern.matcher(parse);
+			while (matcher.find()) {
+				TreebankNode node = getLeafNode(matcher.group());
+				if (node.getText() != null && node.getText().length() > 0) {
+					int lastIndex = sb.length() - 1;
+					if (lastIndex > 0 && !needsSpaceBefore(node.getText()) && sb.charAt(lastIndex) == ' ') {
+						sb.deleteCharAt(lastIndex);
+					}
+					sb.append(node.getText());
+					if (needsSpaceAfter(node.getText())) {
+						sb.append(" ");
+					}
 				}
-				sb.append(node.getText());
-				if (needsSpaceAfter(node.getText())) sb.append(" ");
-
 			}
+			int lastIndex = sb.length() - 1;
+			if (sb.charAt(lastIndex) == ' ') {
+				sb.deleteCharAt(lastIndex);
+			}
+			sb.append('\n');
 		}
 		return sb.toString().trim();
 	}
@@ -458,24 +466,15 @@ public class TreebankFormatParser {
 		}
 	}
 
-	public static List<TopTreebankNode> parseDocument(String parse) {
-		List<TopTreebankNode> returnValues = new ArrayList<TopTreebankNode>();
-		String[] sentenceParses = splitSentences(parse);
-
-		for (String sentenceParse : sentenceParses) {
-			returnValues.add(parse(sentenceParse));
-		}
-		return returnValues;
-	}
-
 	/**
 	 * This method parses an entire documents worth of treebanked sentences.  
 	 * @param parse
 	 * @param textOffset
 	 *            a value that corresponds to the character offset of the first
 	 *            character of the document. The appropriate value for this method will typically be 0.  
-	 * @param text a single document provided as plain text.  If you do not have access to the original plain text of the document, then call
-	 *            {@link #parseDocument(String)}.  
+	 * @param text a single document provided as plain text.  If you do not have access to the
+	 *            original plain text of the document, you can generate some using
+	 *            {@link #inferPlainText(String)}.  
 	 */
 	public static List<TopTreebankNode> parseDocument(String parse, int textOffset, String text) {
 		List<TopTreebankNode> returnValues = new ArrayList<TopTreebankNode>();

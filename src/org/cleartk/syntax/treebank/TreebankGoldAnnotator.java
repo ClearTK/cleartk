@@ -64,19 +64,12 @@ public class TreebankGoldAnnotator extends JCasAnnotator_ImplBase {
 			String docText = jCas.getDocumentText(); 
 
 			Document tbDoc = DocumentUtil.getDocument(tbView);
-
-			
-			List<org.cleartk.syntax.treebank.util.TopTreebankNode> topNodes;
-			if(docText == null) {
-				topNodes =  TreebankFormatParser.parseDocument(tbText);
-				StringBuilder documentText = new StringBuilder();
-				for (org.cleartk.syntax.treebank.util.TopTreebankNode topNode : topNodes) {
-					documentText.append(topNode.getText() + "\n");
-				}
-				docView.setSofaDataString(documentText.toString(), "text/plain");
-			} else {
-				topNodes =  TreebankFormatParser.parseDocument(tbText, 0, docText);
+			if (docText == null) {
+				docText = TreebankFormatParser.inferPlainText(tbText);
+				docView.setSofaDataString(docText, "text/plain");
 			}
+			List<org.cleartk.syntax.treebank.util.TopTreebankNode> topNodes;
+			topNodes =  TreebankFormatParser.parseDocument(tbText, 0, docText);
 
 			for (org.cleartk.syntax.treebank.util.TopTreebankNode topNode : topNodes) {
 				TopTreebankNode uimaNode = org.cleartk.syntax.treebank.util.TreebankNodeUtility
