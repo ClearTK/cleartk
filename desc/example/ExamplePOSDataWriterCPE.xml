@@ -3,17 +3,17 @@
 <collectionReader>
 <collectionIterator>
 <descriptor>
-<import location="../syntax/treebank/TreebankGoldReader.xml"/>
+<import location="../corpus/penntreebank/PennTreebankReader.xml"/>
 </descriptor>
 <configurationParameterSettings>
 <nameValuePair>
-<name>TreebankCorpusDirectory</name>
+<name>CorpusDirectory</name>
 <value>
-<string>data/treebank</string>
+<string>C:/Data/treebank/wsj/mrg</string>
 </value>
 </nameValuePair>
 <nameValuePair>
-<name>WSJSections</name>
+<name>Sections</name>
 <value>
 <string>02-03</string>
 </value>
