@@ -1,0 +1,266 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>     /** <a name="line.1"></a>
+<FONT color="green">002</FONT>     * Copyright (c) 2007-2008, Regents of the University of Colorado <a name="line.2"></a>
+<FONT color="green">003</FONT>     * All rights reserved.<a name="line.3"></a>
+<FONT color="green">004</FONT>     * <a name="line.4"></a>
+<FONT color="green">005</FONT>     * Redistribution and use in source and binary forms, with or without<a name="line.5"></a>
+<FONT color="green">006</FONT>     * modification, are permitted provided that the following conditions are met:<a name="line.6"></a>
+<FONT color="green">007</FONT>     * <a name="line.7"></a>
+<FONT color="green">008</FONT>     * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. <a name="line.8"></a>
+<FONT color="green">009</FONT>     * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. <a name="line.9"></a>
+<FONT color="green">010</FONT>     * Neither the name of the University of Colorado at Boulder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. <a name="line.10"></a>
+<FONT color="green">011</FONT>     * <a name="line.11"></a>
+<FONT color="green">012</FONT>     * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"<a name="line.12"></a>
+<FONT color="green">013</FONT>     * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE<a name="line.13"></a>
+<FONT color="green">014</FONT>     * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE<a name="line.14"></a>
+<FONT color="green">015</FONT>     * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE<a name="line.15"></a>
+<FONT color="green">016</FONT>     * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR<a name="line.16"></a>
+<FONT color="green">017</FONT>     * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF<a name="line.17"></a>
+<FONT color="green">018</FONT>     * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS<a name="line.18"></a>
+<FONT color="green">019</FONT>     * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN<a name="line.19"></a>
+<FONT color="green">020</FONT>     * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)<a name="line.20"></a>
+<FONT color="green">021</FONT>     * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE<a name="line.21"></a>
+<FONT color="green">022</FONT>     * POSSIBILITY OF SUCH DAMAGE. <a name="line.22"></a>
+<FONT color="green">023</FONT>    */<a name="line.23"></a>
+<FONT color="green">024</FONT>    package org.cleartk.classifier.feature.extractor;<a name="line.24"></a>
+<FONT color="green">025</FONT>    <a name="line.25"></a>
+<FONT color="green">026</FONT>    import java.util.ArrayList;<a name="line.26"></a>
+<FONT color="green">027</FONT>    import java.util.List;<a name="line.27"></a>
+<FONT color="green">028</FONT>    import java.util.ListIterator;<a name="line.28"></a>
+<FONT color="green">029</FONT>    <a name="line.29"></a>
+<FONT color="green">030</FONT>    import org.apache.uima.jcas.JCas;<a name="line.30"></a>
+<FONT color="green">031</FONT>    import org.cleartk.classifier.Feature;<a name="line.31"></a>
+<FONT color="green">032</FONT>    import org.cleartk.syntax.treebank.type.TreebankNode;<a name="line.32"></a>
+<FONT color="green">033</FONT>    <a name="line.33"></a>
+<FONT color="green">034</FONT>    <a name="line.34"></a>
+<FONT color="green">035</FONT>    /**<a name="line.35"></a>
+<FONT color="green">036</FONT>     * &lt;br&gt;Copyright (c) 2007-2008, Regents of the University of Colorado <a name="line.36"></a>
+<FONT color="green">037</FONT>     * &lt;br&gt;All rights reserved.<a name="line.37"></a>
+<FONT color="green">038</FONT>    <a name="line.38"></a>
+<FONT color="green">039</FONT>     *<a name="line.39"></a>
+<FONT color="green">040</FONT>     * @author Philipp Wetzler<a name="line.40"></a>
+<FONT color="green">041</FONT>     *<a name="line.41"></a>
+<FONT color="green">042</FONT>     */<a name="line.42"></a>
+<FONT color="green">043</FONT>    public class SyntacticPathExtractor {<a name="line.43"></a>
+<FONT color="green">044</FONT>            protected final String UP_SEPARATOR = "::";<a name="line.44"></a>
+<FONT color="green">045</FONT>    <a name="line.45"></a>
+<FONT color="green">046</FONT>            protected final String DOWN_SEPARATOR = ";;";<a name="line.46"></a>
+<FONT color="green">047</FONT>    <a name="line.47"></a>
+<FONT color="green">048</FONT>            protected SimpleFeatureExtractor pathMemberExtractor;<a name="line.48"></a>
+<FONT color="green">049</FONT>    <a name="line.49"></a>
+<FONT color="green">050</FONT>            protected String name;<a name="line.50"></a>
+<FONT color="green">051</FONT>    <a name="line.51"></a>
+<FONT color="green">052</FONT>            protected boolean isPartial;<a name="line.52"></a>
+<FONT color="green">053</FONT>    <a name="line.53"></a>
+<FONT color="green">054</FONT>            /**<a name="line.54"></a>
+<FONT color="green">055</FONT>             * <a name="line.55"></a>
+<FONT color="green">056</FONT>             * @param name<a name="line.56"></a>
+<FONT color="green">057</FONT>             *            this name will be given to the context of the generated<a name="line.57"></a>
+<FONT color="green">058</FONT>             *            feature.<a name="line.58"></a>
+<FONT color="green">059</FONT>             * @param pathMemberExtractor<a name="line.59"></a>
+<FONT color="green">060</FONT>             *            this extractor will be used to get a feature for every node on<a name="line.60"></a>
+<FONT color="green">061</FONT>             *            the path, which will then be combined to form a single string.<a name="line.61"></a>
+<FONT color="green">062</FONT>             *            The extractor should preferably generate exactly one<a name="line.62"></a>
+<FONT color="green">063</FONT>             *            &lt;tt&gt;StringFeature&lt;/tt&gt;, but must generate at least one<a name="line.63"></a>
+<FONT color="green">064</FONT>             *            &lt;tt&gt;StringFeature&lt;/tt&gt;, &lt;tt&gt;LongFeature&lt;/tt&gt;,<a name="line.64"></a>
+<FONT color="green">065</FONT>             *            &lt;tt&gt;DoubleFeature&lt;/tt&gt;, or &lt;tt&gt;BooleanFeature&lt;/tt&gt;. Only<a name="line.65"></a>
+<FONT color="green">066</FONT>             *            the first feature will then be used and naively converted to a<a name="line.66"></a>
+<FONT color="green">067</FONT>             *            string.<a name="line.67"></a>
+<FONT color="green">068</FONT>             * @param partial<a name="line.68"></a>
+<FONT color="green">069</FONT>             *            if true, generate a partial path only, i.e. from the first<a name="line.69"></a>
+<FONT color="green">070</FONT>             *            node up to the lowest common ancestor of the two<a name="line.70"></a>
+<FONT color="green">071</FONT>             */<a name="line.71"></a>
+<FONT color="green">072</FONT>            public SyntacticPathExtractor(String name,<a name="line.72"></a>
+<FONT color="green">073</FONT>                            SimpleFeatureExtractor pathMemberExtractor, boolean partial) {<a name="line.73"></a>
+<FONT color="green">074</FONT>                    this.pathMemberExtractor = pathMemberExtractor;<a name="line.74"></a>
+<FONT color="green">075</FONT>                    this.name = name;<a name="line.75"></a>
+<FONT color="green">076</FONT>                    this.isPartial = partial;<a name="line.76"></a>
+<FONT color="green">077</FONT>            }<a name="line.77"></a>
+<FONT color="green">078</FONT>    <a name="line.78"></a>
+<FONT color="green">079</FONT>            /**<a name="line.79"></a>
+<FONT color="green">080</FONT>             * This constructor defaults to a full rather than a partial path.<a name="line.80"></a>
+<FONT color="green">081</FONT>             */<a name="line.81"></a>
+<FONT color="green">082</FONT>            public SyntacticPathExtractor(String name,<a name="line.82"></a>
+<FONT color="green">083</FONT>                            SimpleFeatureExtractor pathMemberExtractor) {<a name="line.83"></a>
+<FONT color="green">084</FONT>                    this(name, pathMemberExtractor, false);<a name="line.84"></a>
+<FONT color="green">085</FONT>            }<a name="line.85"></a>
+<FONT color="green">086</FONT>    <a name="line.86"></a>
+<FONT color="green">087</FONT>            /**<a name="line.87"></a>
+<FONT color="green">088</FONT>             * This constructor doesn't assign a name to the generated feature.<a name="line.88"></a>
+<FONT color="green">089</FONT>             */<a name="line.89"></a>
+<FONT color="green">090</FONT>            public SyntacticPathExtractor(SimpleFeatureExtractor pathMemberExtractor,<a name="line.90"></a>
+<FONT color="green">091</FONT>                            boolean partial) {<a name="line.91"></a>
+<FONT color="green">092</FONT>                    this(null, pathMemberExtractor, partial);<a name="line.92"></a>
+<FONT color="green">093</FONT>            }<a name="line.93"></a>
+<FONT color="green">094</FONT>    <a name="line.94"></a>
+<FONT color="green">095</FONT>            /**<a name="line.95"></a>
+<FONT color="green">096</FONT>             * This constructor doesn't assign a name to the generated feature and<a name="line.96"></a>
+<FONT color="green">097</FONT>             * default to a full rather than a partial path.<a name="line.97"></a>
+<FONT color="green">098</FONT>             */<a name="line.98"></a>
+<FONT color="green">099</FONT>            public SyntacticPathExtractor(SimpleFeatureExtractor pathMemberExtractor) {<a name="line.99"></a>
+<FONT color="green">100</FONT>                    this(null, pathMemberExtractor, false);<a name="line.100"></a>
+<FONT color="green">101</FONT>            }<a name="line.101"></a>
+<FONT color="green">102</FONT>    <a name="line.102"></a>
+<FONT color="green">103</FONT>            /**<a name="line.103"></a>
+<FONT color="green">104</FONT>             * Extract a string representation of a path feature.<a name="line.104"></a>
+<FONT color="green">105</FONT>             * <a name="line.105"></a>
+<FONT color="green">106</FONT>             * @param firstAnnotation<a name="line.106"></a>
+<FONT color="green">107</FONT>             *            the first node of the path<a name="line.107"></a>
+<FONT color="green">108</FONT>             * <a name="line.108"></a>
+<FONT color="green">109</FONT>             * @param lastAnnotation<a name="line.109"></a>
+<FONT color="green">110</FONT>             *            the last node of the path<a name="line.110"></a>
+<FONT color="green">111</FONT>             * <a name="line.111"></a>
+<FONT color="green">112</FONT>             * @return List of one &lt;em&gt;StringFeature&lt;/em&gt;, which contains a string<a name="line.112"></a>
+<FONT color="green">113</FONT>             *         representation of the path between the two nodes.<a name="line.113"></a>
+<FONT color="green">114</FONT>             * <a name="line.114"></a>
+<FONT color="green">115</FONT>             */<a name="line.115"></a>
+<FONT color="green">116</FONT>            public List&lt;Feature&gt; extract(JCas jCas, TreebankNode firstAnnotation,<a name="line.116"></a>
+<FONT color="green">117</FONT>                            TreebankNode lastAnnotation) {<a name="line.117"></a>
+<FONT color="green">118</FONT>                    List&lt;TreebankNode&gt; fromStart = getPathToRoot(firstAnnotation);<a name="line.118"></a>
+<FONT color="green">119</FONT>                    List&lt;TreebankNode&gt; fromEnd = getPathToRoot(lastAnnotation);<a name="line.119"></a>
+<FONT color="green">120</FONT>                    String pathFeatureName = null;<a name="line.120"></a>
+<FONT color="green">121</FONT>                    String lengthFeatureName = null;<a name="line.121"></a>
+<FONT color="green">122</FONT>    <a name="line.122"></a>
+<FONT color="green">123</FONT>                    fromEnd.remove(fromEnd.size() - 1);<a name="line.123"></a>
+<FONT color="green">124</FONT>                    while (fromStart.size() &gt; 1<a name="line.124"></a>
+<FONT color="green">125</FONT>                                    &amp;&amp; fromEnd.size() &gt; 0<a name="line.125"></a>
+<FONT color="green">126</FONT>                                    &amp;&amp; fromStart.get(fromStart.size() - 2) == fromEnd.get(fromEnd<a name="line.126"></a>
+<FONT color="green">127</FONT>                                                    .size() - 1)) {<a name="line.127"></a>
+<FONT color="green">128</FONT>                            fromStart.remove(fromStart.size() - 1);<a name="line.128"></a>
+<FONT color="green">129</FONT>                            fromEnd.remove(fromEnd.size() - 1);<a name="line.129"></a>
+<FONT color="green">130</FONT>                    }<a name="line.130"></a>
+<FONT color="green">131</FONT>                    <a name="line.131"></a>
+<FONT color="green">132</FONT>                    int length = fromStart.size();<a name="line.132"></a>
+<FONT color="green">133</FONT>                    if( !isPartial )<a name="line.133"></a>
+<FONT color="green">134</FONT>                            length += fromEnd.size();<a name="line.134"></a>
+<FONT color="green">135</FONT>    <a name="line.135"></a>
+<FONT color="green">136</FONT>                    try {<a name="line.136"></a>
+<FONT color="green">137</FONT>                            ListIterator&lt;TreebankNode&gt; it = fromStart.listIterator();<a name="line.137"></a>
+<FONT color="green">138</FONT>                            StringBuffer pathBuffer = new StringBuffer();<a name="line.138"></a>
+<FONT color="green">139</FONT>                            boolean first = true;<a name="line.139"></a>
+<FONT color="green">140</FONT>                            while (it.hasNext()) {<a name="line.140"></a>
+<FONT color="green">141</FONT>                                    Feature feature = this.pathMemberExtractor.extract(jCas,<a name="line.141"></a>
+<FONT color="green">142</FONT>                                                    it.next()).get(0);<a name="line.142"></a>
+<FONT color="green">143</FONT>                                    if (first) {<a name="line.143"></a>
+<FONT color="green">144</FONT>                                            String s = feature.getName();<a name="line.144"></a>
+<FONT color="green">145</FONT>                                            if( isPartial ) {<a name="line.145"></a>
+<FONT color="green">146</FONT>                                                    pathFeatureName = Feature.createName(name, "PartialSyntacticPath", s);<a name="line.146"></a>
+<FONT color="green">147</FONT>                                                    lengthFeatureName = Feature.createName(name, "PartialSyntacticPath", "Length");<a name="line.147"></a>
+<FONT color="green">148</FONT>                                            } else {<a name="line.148"></a>
+<FONT color="green">149</FONT>                                                    pathFeatureName = Feature.createName(name, "SyntacticPath", s);<a name="line.149"></a>
+<FONT color="green">150</FONT>                                                    lengthFeatureName = Feature.createName(name, "SyntacticPath", "Length");<a name="line.150"></a>
+<FONT color="green">151</FONT>                                            }<a name="line.151"></a>
+<FONT color="green">152</FONT>                                            first = false;<a name="line.152"></a>
+<FONT color="green">153</FONT>                                    } else {<a name="line.153"></a>
+<FONT color="green">154</FONT>                                            pathBuffer.append(this.UP_SEPARATOR);<a name="line.154"></a>
+<FONT color="green">155</FONT>                                    }<a name="line.155"></a>
+<FONT color="green">156</FONT>                                    pathBuffer.append(feature.getValue().toString());<a name="line.156"></a>
+<FONT color="green">157</FONT>                            }<a name="line.157"></a>
+<FONT color="green">158</FONT>    <a name="line.158"></a>
+<FONT color="green">159</FONT>                            if (!isPartial) {<a name="line.159"></a>
+<FONT color="green">160</FONT>                                    it = fromEnd.listIterator(fromEnd.size());<a name="line.160"></a>
+<FONT color="green">161</FONT>                                    while (it.hasPrevious()) {<a name="line.161"></a>
+<FONT color="green">162</FONT>                                            Feature feature = this.pathMemberExtractor.extract(jCas,<a name="line.162"></a>
+<FONT color="green">163</FONT>                                                            it.previous()).get(0);<a name="line.163"></a>
+<FONT color="green">164</FONT>                                            pathBuffer.append(this.DOWN_SEPARATOR);<a name="line.164"></a>
+<FONT color="green">165</FONT>                                            pathBuffer.append(feature.getValue().toString());<a name="line.165"></a>
+<FONT color="green">166</FONT>                                    }<a name="line.166"></a>
+<FONT color="green">167</FONT>                            }<a name="line.167"></a>
+<FONT color="green">168</FONT>                            <a name="line.168"></a>
+<FONT color="green">169</FONT>                            List&lt;Feature&gt; features = new ArrayList&lt;Feature&gt;(2);<a name="line.169"></a>
+<FONT color="green">170</FONT>                            features.add(new Feature(pathFeatureName, pathBuffer.toString()));<a name="line.170"></a>
+<FONT color="green">171</FONT>                            features.add(new Feature(lengthFeatureName,     (long) length));<a name="line.171"></a>
+<FONT color="green">172</FONT>                            <a name="line.172"></a>
+<FONT color="green">173</FONT>                            return features;<a name="line.173"></a>
+<FONT color="green">174</FONT>    <a name="line.174"></a>
+<FONT color="green">175</FONT>                    } catch (IndexOutOfBoundsException e) {<a name="line.175"></a>
+<FONT color="green">176</FONT>                            return new ArrayList&lt;Feature&gt;(0);<a name="line.176"></a>
+<FONT color="green">177</FONT>                    }<a name="line.177"></a>
+<FONT color="green">178</FONT>            }<a name="line.178"></a>
+<FONT color="green">179</FONT>    <a name="line.179"></a>
+<FONT color="green">180</FONT>            /**<a name="line.180"></a>
+<FONT color="green">181</FONT>             * Find the path from a TreebankNode to the root of the tree it belongs to.<a name="line.181"></a>
+<FONT color="green">182</FONT>             * <a name="line.182"></a>
+<FONT color="green">183</FONT>             * @param startNode<a name="line.183"></a>
+<FONT color="green">184</FONT>             *            The start node of the path<a name="line.184"></a>
+<FONT color="green">185</FONT>             * <a name="line.185"></a>
+<FONT color="green">186</FONT>             * @return A list of TreebankNodes that make up the path from &lt;b&gt;startNode&lt;/b&gt;<a name="line.186"></a>
+<FONT color="green">187</FONT>             *         to the root of the tree<a name="line.187"></a>
+<FONT color="green">188</FONT>             */<a name="line.188"></a>
+<FONT color="green">189</FONT>            protected static List&lt;TreebankNode&gt; getPathToRoot(TreebankNode startNode) {<a name="line.189"></a>
+<FONT color="green">190</FONT>                    List&lt;TreebankNode&gt; nlist = new ArrayList&lt;TreebankNode&gt;(20);<a name="line.190"></a>
+<FONT color="green">191</FONT>                    TreebankNode cursorNode = startNode;<a name="line.191"></a>
+<FONT color="green">192</FONT>    <a name="line.192"></a>
+<FONT color="green">193</FONT>                    while (cursorNode != null) {<a name="line.193"></a>
+<FONT color="green">194</FONT>                            nlist.add(cursorNode);<a name="line.194"></a>
+<FONT color="green">195</FONT>                            cursorNode = cursorNode.getParent();<a name="line.195"></a>
+<FONT color="green">196</FONT>                    }<a name="line.196"></a>
+<FONT color="green">197</FONT>    <a name="line.197"></a>
+<FONT color="green">198</FONT>                    return nlist;<a name="line.198"></a>
+<FONT color="green">199</FONT>            }<a name="line.199"></a>
+<FONT color="green">200</FONT>    }<a name="line.200"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>
