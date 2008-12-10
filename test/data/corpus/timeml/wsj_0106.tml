@@ -1,0 +1,65 @@
+<?xml version="1.0" ?>
+<TimeML
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../dtd/timeml_1.2.1.xsd">
+
+<DOCNO> WSJ891102-0086 </DOCNO>
+<DD> = 891102 </DD>
+<AN> 891102-0086. </AN>
+<HL> Financing Business:
+@  Rogers Communications Inc. </HL>
+<DD> <TIMEX3 tid="t26" type="DATE" value="1989-11-02" temporalFunction="false" functionInDocument="CREATION_TIME">11/02/89</TIMEX3> </DD>
+<SO> WALL STREET JOURNAL (J) </SO>
+<CO> RCI.B </CO>
+<TEXT>
+   <s><ENAMEX TYPE="ORGANIZATION">ROGERS COMMUNICATIONS Inc.</ENAMEX> <EVENT eid="e1" class="REPORTING">said</EVENT> it <EVENT eid="e2" class="I_STATE">plans</EVENT> to <EVENT eid="e4" class="OCCURRENCE">raise</EVENT> <CARDINAL>175 million</CARDINAL> to <NUMEX TYPE="MONEY">180 million Canadian dollars</NUMEX> (<ENAMEX TYPE="LOCATION">US</ENAMEX><NUMEX TYPE="MONEY">$148.9 million to $153.3 million</NUMEX>) through a private <EVENT eid="e5" class="OCCURRENCE">placement</EVENT> of perpetual preferred shares.</s> 
+<s>Perpetual preferred shares aren't retractable by the holders, the company <EVENT eid="e7" class="REPORTING">said</EVENT>.</s> 
+<s><ENAMEX TYPE="ORGANIZATION">Rogers</ENAMEX> <EVENT eid="e8" class="REPORTING">said</EVENT> the shares will be <EVENT eid="e27" class="OCCURRENCE">convertible</EVENT> into Class B shares, but that the company <EVENT eid="e29" class="STATE">has</EVENT> the <EVENT eid="e11" class="I_STATE">option</EVENT> to <EVENT eid="e13" class="OCCURRENCE">redeem</EVENT> the shares <SIGNAL sid="s15">before</SIGNAL> a <EVENT eid="e14" class="OCCURRENCE">conversion</EVENT> <EVENT eid="e16" class="OCCURRENCE">takes</EVENT> place.</s> 
+<s>A spokesman for the Toronto cable television and telecommunications concern <EVENT eid="e17" class="REPORTING">said</EVENT> the coupon rate has n't yet been <EVENT eid="e18" class="OCCURRENCE">fixed</EVENT>, but will probably be <EVENT eid="e20" class="OCCURRENCE">set</EVENT> at around <NUMEX TYPE="PERCENT">8%</NUMEX>.</s> 
+<s>He <EVENT eid="e21" class="I_ACTION">declined</EVENT> to <EVENT eid="e23" class="OCCURRENCE">discuss</EVENT> other terms of the issue.</s> 
+</TEXT>
+
+
+
+<MAKEINSTANCE eventID="e1" eiid="ei128" tense="PAST" aspect="NONE" polarity="POS" pos="VERB"/>
+<MAKEINSTANCE eventID="e2" eiid="ei129" tense="PRESENT" aspect="NONE" polarity="POS" pos="VERB"/>
+<MAKEINSTANCE eventID="e4" eiid="ei130" tense="INFINITIVE" aspect="NONE" polarity="POS" pos="VERB"/>
+<MAKEINSTANCE eventID="e5" eiid="ei131" tense="NONE" aspect="NONE" polarity="POS" pos="NOUN"/>
+<MAKEINSTANCE eventID="e7" eiid="ei132" tense="PAST" aspect="NONE" polarity="POS" pos="VERB"/>
+<MAKEINSTANCE eventID="e8" eiid="ei133" tense="PAST" aspect="NONE" polarity="POS" pos="VERB"/>
+<MAKEINSTANCE eventID="e27" eiid="ei134" tense="FUTURE" aspect="NONE" polarity="POS" pos="ADJECTIVE"/>
+<MAKEINSTANCE eventID="e29" eiid="ei135" tense="PRESENT" aspect="NONE" polarity="POS" pos="VERB"/>
+<MAKEINSTANCE eventID="e11" eiid="ei136" tense="NONE" aspect="NONE" polarity="POS" pos="NOUN"/>
+<MAKEINSTANCE eventID="e13" eiid="ei137" tense="INFINITIVE" aspect="NONE" polarity="POS" pos="VERB"/>
+<MAKEINSTANCE eventID="e14" eiid="ei138" tense="NONE" aspect="NONE" polarity="POS" pos="NOUN"/>
+<MAKEINSTANCE eventID="e16" eiid="ei139" tense="PRESENT" aspect="NONE" polarity="POS" pos="VERB"/>
+<MAKEINSTANCE eventID="e17" eiid="ei140" tense="PAST" aspect="NONE" polarity="POS" pos="VERB"/>
+<MAKEINSTANCE eventID="e18" eiid="ei141" tense="PRESENT" aspect="PERFECTIVE" polarity="NEG" pos="VERB"/>
+<MAKEINSTANCE eventID="e20" eiid="ei142" tense="FUTURE" aspect="NONE" polarity="POS" pos="VERB"/>
+<MAKEINSTANCE eventID="e21" eiid="ei143" tense="PAST" aspect="NONE" polarity="POS" pos="VERB"/>
+<MAKEINSTANCE eventID="e23" eiid="ei144" tense="INFINITIVE" aspect="NONE" polarity="POS" pos="VERB"/>
+
+<TLINK lid="l1" relType="BEFORE" eventInstanceID="ei128" relatedToTime="t26"/>
+<TLINK lid="l2" relType="SIMULTANEOUS" eventInstanceID="ei131" relatedToEventInstance="ei130"/>
+<TLINK lid="l3" relType="BEFORE" eventInstanceID="ei132" relatedToTime="t26"/>
+<TLINK lid="l4" relType="SIMULTANEOUS" eventInstanceID="ei132" relatedToEventInstance="ei128"/>
+<TLINK lid="l5" relType="SIMULTANEOUS" eventInstanceID="ei133" relatedToEventInstance="ei128"/>
+<TLINK lid="l6" relType="IDENTITY" eventInstanceID="ei135" relatedToEventInstance="ei136"/>
+<TLINK lid="l7" relType="BEFORE" eventInstanceID="ei137" relatedToEventInstance="ei138" signalID="s15"/>
+<TLINK lid="l8" relType="IDENTITY" eventInstanceID="ei138" relatedToEventInstance="ei139"/>
+<TLINK lid="l9" relType="INCLUDES" eventInstanceID="ei135" relatedToTime="t26"/>
+<TLINK lid="l10" relType="SIMULTANEOUS" eventInstanceID="ei140" relatedToEventInstance="ei128"/>
+
+<TLINK lid="l12" relType="AFTER" eventInstanceID="ei142" relatedToTime="t26"/>
+<TLINK lid="l13" relType="BEFORE" eventInstanceID="ei143" relatedToTime="t26"/>
+
+<SLINK lid="l14" relType="COUNTER_FACTIVE" eventInstanceID="ei143" subordinatedEventInstance="ei144"/>
+<SLINK lid="l15" relType="EVIDENTIAL" eventInstanceID="ei128" subordinatedEventInstance="ei129"/>
+<SLINK lid="l16" relType="MODAL" eventInstanceID="ei129" subordinatedEventInstance="ei130"/>
+<SLINK lid="l17" relType="EVIDENTIAL" eventInstanceID="ei133" subordinatedEventInstance="ei134"/>
+<SLINK lid="l18" relType="EVIDENTIAL" eventInstanceID="ei133" subordinatedEventInstance="ei135"/>
+<SLINK lid="l19" relType="MODAL" eventInstanceID="ei136" subordinatedEventInstance="ei137"/>
+<SLINK lid="l20" relType="EVIDENTIAL" eventInstanceID="ei140" subordinatedEventInstance="ei141"/>
+<SLINK lid="l21" relType="EVIDENTIAL" eventInstanceID="ei140" subordinatedEventInstance="ei142"/>
+
+</TimeML>
