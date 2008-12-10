@@ -47,7 +47,7 @@ public class ParseProbankTest {
 	@Test
 	public void testCorpusParse() throws IOException{
 		int total = 0;
-		BufferedReader input = new BufferedReader(new FileReader("data/propbank-1.0/prop.txt"));
+		BufferedReader input = new BufferedReader(new FileReader("test/data/corpus/propbank-1.0/prop.txt"));
 		String line = null;
 		try {
 			
