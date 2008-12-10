@@ -46,6 +46,7 @@ import org.cleartk.classifier.feature.proliferate.ProliferatingExtractor;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
+import org.cleartk.util.DocumentUtil;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -104,6 +105,7 @@ public class ExamplePOSAnnotationHandler implements AnnotationHandler<String> {
 	}
 	
 	public void process(JCas jCas, InstanceConsumer<String> consumer) {
+		System.out.println("processing "+DocumentUtil.getIdentifier(jCas));
 		
 		// generate a list of training instances for each sentence in the document
 		for (Sentence sentence: AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
