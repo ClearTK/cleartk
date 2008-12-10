@@ -57,7 +57,14 @@
 <timeout max="100000" default="-1"/>
 </errorHandling>
 <checkpoint batch="10000" time="1000ms"/>
-<configurationParameterSettings/>
+<configurationParameterSettings>
+<nameValuePair>
+<name>Compress</name>
+<value>
+<boolean>true</boolean>
+</value>
+</nameValuePair>
+</configurationParameterSettings>
 </casProcessor>
 </casProcessors>
 <cpeConfig>
