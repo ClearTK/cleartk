@@ -51,32 +51,7 @@ import org.junit.Test;
  */
 public class TreebankAligningAnnotatorTests {
 	
-	@Test
-	public void test() throws UIMAException, IOException {
-		CollectionReader reader = TestsUtil.getCollectionReader(
-				PlainTextCollectionReader.class, 
-				TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
-				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY,
-				"test/data/corpus/timeml/wsj_0106.tml",
-				PlainTextCollectionReader.PARAM_VIEW_NAME,
-				TimeMLGoldAnnotator.TIMEML_VIEW_NAME);
-		AnalysisEngine timemlEngine = TestsUtil.getAnalysisEngine(
-				TimeMLGoldAnnotator.class,
-				TestsUtil.getTypeSystem("desc/TypeSystem.xml"));
-		AnalysisEngine treebankEngine = TestsUtil.getAnalysisEngine(
-				TreebankAligningAnnotator.class,
-				TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
-				TreebankAligningAnnotator.PARAM_TREEBANK_DIRECTORY,
-				"data/treebank/wsj");
-		JCas jCas = new TestsUtil.JCasIterable(
-				reader, timemlEngine, treebankEngine).next();
-		int size = AnnotationRetrieval.getAnnotations(jCas, TreebankNode.class).size();
-		Assert.assertTrue(size > 0);
-		reader.close();
-		timemlEngine.collectionProcessComplete();
-		treebankEngine.collectionProcessComplete();
-	}
-
+	
 	@Test
 	public void testDescriptor() throws UIMAException, IOException {
 		try {
