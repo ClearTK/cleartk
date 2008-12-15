@@ -119,6 +119,12 @@ public class UIMAUtil
 		if (paramValue == null) {
 			String key = ResourceInitializationException.CONFIG_SETTING_ABSENT;
 			throw new ResourceInitializationException(key, new Object[]{paramName});
+		} else if(paramValue instanceof String) {
+			String str = (String) paramValue;
+			if(str.trim().equals("")) {
+				String key = ResourceInitializationException.CONFIG_SETTING_ABSENT;
+				throw new ResourceInitializationException(key, new Object[]{paramName});
+			}
 		}
 		return paramValue;
 	}
@@ -138,6 +144,10 @@ public class UIMAUtil
 		Object paramValue = context.getConfigParameterValue(paramName);
 		if (paramValue == null) {
 			paramValue = defaultValue;
+		} else if(paramValue instanceof String) {
+			String str = (String) paramValue;
+			if(str.trim().equals(""))
+				paramValue = defaultValue;
 		}
 		return paramValue;
 	}
