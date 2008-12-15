@@ -419,6 +419,14 @@ public class TestsUtil {
 		return engine.getUimaContext();
 	}
 
+	public static void createTokens(JCas jCas, String text) {
+		createTokens(jCas, text, null, null, null);
+	}
+
+	public static void createTokens(JCas jCas, String text, String tokensString) {
+		createTokens(jCas, text, tokensString, null, null);
+	}
+
 	/**
 	 * Add Token and Sentence annotations to the JCas.
 	 * 
