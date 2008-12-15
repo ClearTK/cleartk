@@ -27,8 +27,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.apache.uima.cas.ConstraintFactory;
 import org.apache.uima.cas.FSIndex;
+import org.apache.uima.cas.FSIntConstraint;
 import org.apache.uima.cas.FSIterator;
+import org.apache.uima.cas.FSMatchConstraint;
+import org.apache.uima.cas.FSTypeConstraint;
+import org.apache.uima.cas.Feature;
+import org.apache.uima.cas.FeaturePath;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationIndex;
@@ -521,6 +527,72 @@ public class AnnotationRetrieval {
 		}
 		return null;
 
+	}
+
+	public static <T extends Annotation> List<T> getOverlappingAnnotations(JCas jCas, Annotation focusAnnotation, Class<T> cls, boolean before) {
+		List<T> annotations = new ArrayList<T>();
+
+		ConstraintFactory constraintFactory = jCas.getConstraintFactory();
+
+		FSTypeConstraint typeConstraint = constraintFactory.createTypeConstraint();
+		Type type = UIMAUtil.getCasType(jCas, cls);
+		typeConstraint.add(type);
+		
+		
+		FSMatchConstraint overlapConstraint; 
+		if(before)
+			overlapConstraint = getOverlapBeforeConstraint(jCas, focusAnnotation, constraintFactory);
+		else
+			overlapConstraint = getOverlapAfterConstraint(jCas, focusAnnotation, constraintFactory);
+
+		FSIterator iterator = jCas.createFilteredIterator(jCas.getAnnotationIndex(type).iterator(), overlapConstraint);
+		while(iterator.hasNext()) {
+			T annotation = cls.cast(iterator.next()); 
+			annotations.add(annotation);
+		}
+		
+		return annotations;
+	}
+
+	private static FSMatchConstraint getOverlapBeforeConstraint(JCas jCas, Annotation focusAnnotation, ConstraintFactory constraintFactory) {
+
+		FSIntConstraint beginIntConstraint = constraintFactory.createIntConstraint();
+		beginIntConstraint.lt(focusAnnotation.getBegin());
+		FeaturePath beginPath = jCas.createFeaturePath();
+		Feature beginFeature = jCas.getTypeSystem().getFeatureByFullName("uima.tcas.Annotation:begin");
+		beginPath.addFeature(beginFeature);
+		FSMatchConstraint beginConstraint = constraintFactory.embedConstraint(beginPath, beginIntConstraint);
+		
+		FSIntConstraint endIntConstraint = constraintFactory.createIntConstraint();
+		endIntConstraint.gt(focusAnnotation.getBegin());
+		endIntConstraint.leq(focusAnnotation.getEnd());
+		FeaturePath endPath = jCas.createFeaturePath();
+		Feature endFeature = jCas.getTypeSystem().getFeatureByFullName("uima.tcas.Annotation:end");
+		endPath.addFeature(endFeature);
+		FSMatchConstraint endConstraint = constraintFactory.embedConstraint(endPath, endIntConstraint);
+
+		return constraintFactory.and(beginConstraint, endConstraint);
+	}
+
+	private static FSMatchConstraint getOverlapAfterConstraint(JCas jCas, Annotation focusAnnotation, ConstraintFactory constraintFactory) {
+
+		FSIntConstraint beginIntConstraint = constraintFactory.createIntConstraint();
+		beginIntConstraint.geq(focusAnnotation.getBegin());
+		beginIntConstraint.lt(focusAnnotation.getEnd());
+		
+		FeaturePath beginPath = jCas.createFeaturePath();
+		Feature beginFeature = jCas.getTypeSystem().getFeatureByFullName("uima.tcas.Annotation:begin");
+		beginPath.addFeature(beginFeature);
+		FSMatchConstraint beginConstraint = constraintFactory.embedConstraint(beginPath, beginIntConstraint);
+		
+		FSIntConstraint endIntConstraint = constraintFactory.createIntConstraint();
+		endIntConstraint.gt(focusAnnotation.getEnd());
+		FeaturePath endPath = jCas.createFeaturePath();
+		Feature endFeature = jCas.getTypeSystem().getFeatureByFullName("uima.tcas.Annotation:end");
+		endPath.addFeature(endFeature);
+		FSMatchConstraint endConstraint = constraintFactory.embedConstraint(endPath, endIntConstraint);
+
+		return constraintFactory.and(beginConstraint, endConstraint);
 	}
 
 	/**
