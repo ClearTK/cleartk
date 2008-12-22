@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.token.snowball;
 
 import net.sf.snowball.SnowballProgram;
@@ -34,45 +34,67 @@ import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.UIMAUtil;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
- * @author Philip Ogren
- *
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
  * 
- * This class borrows from org.apache.lucene.analysis.snowball.SnowballFilter
+ * 
+ * @author Philip Ogren
+ * 
+ * 
+ *         This class borrows from
+ *         org.apache.lucene.analysis.snowball.SnowballFilter
  * @see org.apache.lucene.analysis.snowball.SnowballFilter
  */
-public class SnowballStemmer extends JCasAnnotator_ImplBase
-{
+public class SnowballStemmer extends JCasAnnotator_ImplBase {
+	/**
+	 * "StemmerName" is required, string parameter that specifies which snowball
+	 * stemmer to use. Possible values are:
+	 * <ul>
+	 * <li>Danish</li>
+	 * <li>Dutch</li>
+	 * <li>English</li>
+	 * <li>Finnish</li>
+	 * <li>French</li>
+	 * <li>German2</li>
+	 * <li>German</li>
+	 * <li>Italian</li>
+	 * <li>Kp</li>
+	 * <li>Lovins</li>
+	 * <li>Norwegian</li>
+	 * <li>Porter</li>
+	 * <li>Portuguese</li>
+	 * <li>Russian</li>
+	 * <li>Spanish</li>
+	 * <li>Swedish</li>
+	 * </ul>
+	 */
 	public static final String PARAM_STEMMER_NAME = "StemmerName";
+
 	protected SnowballProgram stemmer;
-	
+
 	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException
-	{
-		String stemmerName = (String)UIMAUtil.getRequiredConfigParameterValue(
-				context, SnowballStemmer.PARAM_STEMMER_NAME);
+	public void initialize(UimaContext context) throws ResourceInitializationException {
+		String stemmerName = (String) UIMAUtil.getRequiredConfigParameterValue(context,
+				SnowballStemmer.PARAM_STEMMER_NAME);
 		String className = String.format("net.sf.snowball.ext.%sStemmer", stemmerName);
 		try {
-            this.stemmer = (SnowballProgram)Class.forName(className).newInstance();
-		} catch (Exception e) {
+			this.stemmer = (SnowballProgram) Class.forName(className).newInstance();
+		}
+		catch (Exception e) {
 			throw new ResourceInitializationException(e);
 		}
 	}
 
 	@Override
-	public void process(JCas jCas) throws AnalysisEngineProcessException
-	{
-		for (Token token: AnnotationRetrieval.getAnnotations(jCas, Token.class)) {
+	public void process(JCas jCas) throws AnalysisEngineProcessException {
+		for (Token token : AnnotationRetrieval.getAnnotations(jCas, Token.class)) {
 			stemmer.setCurrent(token.getCoveredText().toLowerCase());
 			stemmer.stem();
 			String stem = stemmer.getCurrent();
 			token.setStem(stem);
 		}
 	}
-	
+
 }
