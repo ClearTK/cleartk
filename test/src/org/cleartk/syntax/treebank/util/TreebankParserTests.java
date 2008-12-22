@@ -119,6 +119,12 @@ import org.junit.Test;
 		assertEquals("±", node.getText());
 		assertTrue(node.isLeaf());
 		
+		node = TreebankFormatParser.getLeafNode("(CC +\\/-)");
+		assertEquals("CC", node.getType());
+		assertEquals("+\\/-", node.getValue());
+		assertEquals("+\\/-", node.getText());
+		assertTrue(node.isLeaf());
+		
 
 	}
 
@@ -325,6 +331,12 @@ import org.junit.Test;
 		expectedText = "\"Howdy!\"";
 		actualText = TreebankFormatParser.inferPlainText(treebankParse);
 		assertEquals(expectedText, actualText);
+		
+		treebankParse = "(QP (CD 44.4) (CC +\\/-) (CD 4.4))";
+		expectedText = "44.4 +\\/- 4.4";
+		actualText = TreebankFormatParser.inferPlainText(treebankParse);
+		assertEquals(expectedText, actualText);
+		
 	}
 	
 	@Test
