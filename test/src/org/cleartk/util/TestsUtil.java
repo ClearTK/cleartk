@@ -79,7 +79,6 @@ import org.cleartk.type.Token;
 import org.cleartk.util.EmptyAnnotator;
 import org.cleartk.util.XReader;
 
-
 /**
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
@@ -91,41 +90,53 @@ import org.cleartk.util.XReader;
  * @author Steven Bethard
  */
 public class TestsUtil {
-	
+
 	public static class HideOutput extends OutputStream {
 		protected PrintStream out;
+
 		protected PrintStream err;
-		
+
 		public HideOutput() {
 			this.out = System.out;
 			this.err = System.err;
 			System.setOut(new PrintStream(this));
 			System.setErr(new PrintStream(this));
 		}
-		
+
 		public void restoreOutput() {
 			System.setOut(this.out);
 			System.setErr(this.err);
 		}
-		
+
 		@Override
 		public void write(int b) throws IOException {
 		}
 	}
 
-
 	public static JCas getJCas(String xmiFileName) throws UIMAException, IOException {
 		return getJCas(xmiFileName, getTypeSystem("desc/TypeSystem.xml"));
 	}
-	public static JCas getJCas(String xmiFileName, TypeSystemDescription typeSystemDescription) throws UIMAException, IOException {
-		CollectionReader reader = TestsUtil.getCollectionReader(
-				XReader.class, typeSystemDescription,
-				XReader.PARAM_XML_SCHEME, "XMI",
-				XReader.PARAM_FILE_OR_DIRECTORY, xmiFileName);
-		
-		return new TestsUtil.JCasIterable(reader).next();
+
+	public static JCas getJCas(String xmiFileName, TypeSystemDescription typeSystemDescription) throws UIMAException,
+			IOException {
+		return getJCas(xmiFileName, typeSystemDescription, true);
 	}
 
+	public static JCas getJCas(String xmiFileName, TypeSystemDescription typeSystemDescription, boolean isXmi)
+			throws UIMAException, IOException {
+		if (isXmi) {
+			CollectionReader reader = TestsUtil.getCollectionReader(XReader.class, typeSystemDescription,
+					XReader.PARAM_XML_SCHEME, "XMI", XReader.PARAM_FILE_OR_DIRECTORY, xmiFileName);
+
+			return new TestsUtil.JCasIterable(reader).next();
+		} else {
+			CollectionReader reader = TestsUtil.getCollectionReader(XReader.class, typeSystemDescription,
+					XReader.PARAM_XML_SCHEME, "XCAS", XReader.PARAM_FILE_OR_DIRECTORY, xmiFileName);
+
+			return new TestsUtil.JCasIterable(reader).next();
+			
+		}
+	}
 
 	/**
 	 * Disable UIMA logging.
