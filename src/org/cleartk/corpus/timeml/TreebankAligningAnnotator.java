@@ -93,32 +93,8 @@ public class TreebankAligningAnnotator extends JCasAnnotator_ImplBase {
 		// add Token, Sentence and TreebankNode annotations for the text
 		int offset = texts.get(0).getBegin();
 		String text = jCas.getDocumentText();
-		for (String parseString: TreebankFormatParser.splitSentences(mrgText)) {
-			
-			// parse the string into a tree, then fix node offsets
-			org.cleartk.syntax.treebank.util.
-			TopTreebankNode utilTree = TreebankFormatParser.parse(parseString);
-			for (int i = 0; i < utilTree.getTerminalCount(); i ++) {
-				
-				// skip whitespace
-				while (offset < text.length() &&
-						Character.isWhitespace(text.charAt(offset))) {
-					offset ++;
-				}
-				
-				// get the leaf and clean up TreeBank errors
-				org.cleartk.syntax.treebank.util.
-				TreebankNode leaf = utilTree.getTerminal(i);
-				this.cleanLeaf(jCas, text, offset, leaf);
-				
-				// update the leaf offsets
-				leaf.setTextBegin(offset);
-				leaf.setTextEnd(offset + leaf.getText().length());
-				offset = leaf.getTextEnd();
-			}
-			
-			// propagate the leaf offset fixes to the rest of the tree
-			this.correctOffsets(utilTree);
+		for (org.cleartk.syntax.treebank.util.TopTreebankNode utilTree:
+			 TreebankFormatParser.parseDocument(mrgText, offset, text)) {
 			
 			// create a Sentence and set its parse
 			TopTreebankNode tree = TreebankNodeUtility.convert(utilTree, jCas);
@@ -137,42 +113,4 @@ public class TreebankAligningAnnotator extends JCasAnnotator_ImplBase {
 			}
 		}
 	}
-
-	private void correctOffsets(org.cleartk.syntax.treebank.util.TreebankNode node) {
-		if (!node.isLeaf()) {
-			List<org.cleartk.syntax.treebank.util.TreebankNode> children = node.getChildren();
-			for (org.cleartk.syntax.treebank.util.TreebankNode child: children) {
-				this.correctOffsets(child);
-			}
-			node.setTextBegin(children.get(0).getParseBegin());
-			node.setTextEnd(children.get(children.size() - 1).getParseEnd());
-
-		}
-	}
-	
-	private void cleanLeaf(
-			JCas jCas, String text, int offset,
-			org.cleartk.syntax.treebank.util.TreebankNode leaf)
-	throws AnalysisEngineProcessException {
-		// the TreeBank does funny things with quotes and slashes 
-		String leafText = leaf.getText();
-		leafText = leafText.replace("``", "\"");
-		leafText = leafText.replace("''", "\"");
-		leafText = leafText.replace("\\/", "/");
-		
-		// the TreeBank sometimes introduces extra periods, e.g. U.S. at the
-		// end of a sentence could end up as (NNP U.S.) (. .)
-		if (!text.startsWith(leafText, offset)) {
-			if (leafText.equals(".")) {
-				leafText = "";
-			} else {
-				System.err.println(DocumentUtil.getIdentifier(jCas));
-				System.err.println("EXPECTED: " + leaf.getText());
-				System.err.println("FOUND: " + text.substring(offset));
-				throw new AnalysisEngineProcessException();
-			}
-		}
-		leaf.setText(leafText);
-	}
-
 }

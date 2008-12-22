@@ -27,14 +27,8 @@ import java.io.IOException;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.apache.uima.collection.CollectionReader;
-import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.corpus.timeml.TimeMLGoldAnnotator;
 import org.cleartk.corpus.timeml.TreebankAligningAnnotator;
-import org.cleartk.syntax.treebank.type.TreebankNode;
-import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.PlainTextCollectionReader;
 import org.cleartk.util.TestsUtil;
 import org.junit.Assert;
 import org.junit.Test;

@@ -69,7 +69,7 @@ import org.junit.Test;
 		node = TreebankFormatParser.getLeafNode("(CD 3\\/8)");
 		assertEquals("CD", node.getType());
 		assertEquals("3\\/8", node.getValue());
-		assertEquals("3\\/8", node.getText());
+		assertEquals("3/8", node.getText());
 		
 		node = TreebankFormatParser.getLeafNode("(-NONE- *)");
 		assertEquals("-NONE-", node.getType());
@@ -122,7 +122,7 @@ import org.junit.Test;
 		node = TreebankFormatParser.getLeafNode("(CC +\\/-)");
 		assertEquals("CC", node.getType());
 		assertEquals("+\\/-", node.getValue());
-		assertEquals("+\\/-", node.getText());
+		assertEquals("+/-", node.getText());
 		assertTrue(node.isLeaf());
 		
 
@@ -333,7 +333,7 @@ import org.junit.Test;
 		assertEquals(expectedText, actualText);
 		
 		treebankParse = "(QP (CD 44.4) (CC +\\/-) (CD 4.4))";
-		expectedText = "44.4 +\\/- 4.4";
+		expectedText = "44.4 +/- 4.4";
 		actualText = TreebankFormatParser.inferPlainText(treebankParse);
 		assertEquals(expectedText, actualText);
 		
@@ -484,5 +484,19 @@ import org.junit.Test;
 		assertEquals(4, nodes.get(0).getTextEnd());
 		assertEquals(5, nodes.get(1).getTextBegin());
 		assertEquals(9, nodes.get(1).getTextEnd());
+	}
+	
+	@Test
+	public void testSpecialCasePeriods() {
+		String parse = "(S (NP (DT The) (NNP U.S.)) (. .))";
+		String text = "The U.S. ";
+		TopTreebankNode topNode = TreebankFormatParser.parse(parse, text, 0);
+		testNode(topNode, "The U.S..", "S", parse);
+		testNode(topNode.getChildren().get(0).getChildren().get(1), "U.S.", "NNP", "(NNP U.S.)");
+
+		text = "The U.S..";
+		topNode = TreebankFormatParser.parse(parse, text, 0);
+		testNode(topNode, "The U.S..", "S", parse);
+		testNode(topNode.getChildren().get(0).getChildren().get(1), "U.S.", "NNP", "(NNP U.S.)");
 	}
 }

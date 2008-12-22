@@ -274,9 +274,19 @@ public class TreebankFormatParser {
 		int end = node.getTextEnd();
 		String text2 = text.substring(start, end);
 		if (!text1.equals(text2)) {
-			throw new IllegalArgumentException(
-					"plain text does not align with tokens in treebank parse.  node text = '" + text1
-							+ "'  plain text = '" + text2 + "'");
+			// TreeBank adds in (. .) nodes in odd places, e.g. when a sentence
+			// ends with U.S. (and no final period). As a result, we need to
+			// allow periods to match whitespace and adjust the node bounds.
+			String prefix1 = text1.substring(0, text1.length() - 1);
+			String prefix2 = text2.substring(0, text2.length() - 1);
+			if (text1.endsWith(".") && prefix1.equals(prefix2)) {
+				node.setTextEnd(node.getTextEnd() - 1);
+			}
+			else {
+				throw new IllegalArgumentException(
+						"plain text does not align with tokens in treebank parse.  node text = '" + text1
+								+ "'  plain text = '" + text2 + "'");
+			}
 		}
 	}
 
@@ -432,7 +442,11 @@ public class TreebankFormatParser {
 		if (value.equals("-LRB-")) return "(";
 		if (value.equals("-RSB-")) return "]";
 		if (value.equals("-LSB-")) return "[";
+		if (value.equals("``")) return "\"";
+		if (value.equals("''")) return "\"";
 		if (type.equals("-NONE-")) return "";
+		if (value.contains("\\/")) return value.replace("\\/", "/");
+
 		if (type.startsWith("Â")) {
 			System.out.println("type starts with Â");
 			return value.substring(1);
