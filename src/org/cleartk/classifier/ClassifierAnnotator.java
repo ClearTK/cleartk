@@ -138,5 +138,8 @@ public class ClassifierAnnotator<OUTCOME_TYPE> extends InstanceConsumer_ImplBase
 		return false;
 	}
 	
-	
+	public boolean isSequential() {
+		return classifier.isSequential();
+	}
+
 }
