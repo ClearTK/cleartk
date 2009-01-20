@@ -24,16 +24,16 @@
 package org.cleartk.util;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.util.List;
 
+import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.type.Token;
-import org.cleartk.util.EmptyAnnotator;
-import org.cleartk.util.UIMAUtil;
 import org.junit.Test;
 
 /**
@@ -63,6 +63,28 @@ public class UIMAUtilTests {
 		FSArray tokens = UIMAUtil.toFSArray(jCas, null); 
 		assertEquals(0, tokens.size());
 		
+	}
+	
+	@Test
+	public void testGetDefaultingConfigParamValue() throws Exception{
+		UimaContext context = TestsUtil.getUimaContext(PlainTextCollectionReader.PARAM_FILE_NAMES, new String[] {""});
+		
+		String[] stringArray = (String[]) UIMAUtil.getDefaultingConfigParameterValue(context, PlainTextCollectionReader.PARAM_FILE_NAMES, null);
+		assertNull(stringArray);
+
+		context = TestsUtil.getUimaContext(PlainTextCollectionReader.PARAM_FILE_NAMES, new String[0]);
+		stringArray = (String[]) UIMAUtil.getDefaultingConfigParameterValue(context, PlainTextCollectionReader.PARAM_FILE_NAMES, null);
+		assertNull(stringArray);
+
+		context = TestsUtil.getUimaContext(PlainTextCollectionReader.PARAM_FILE_NAMES, new String[] {"asdf"});
+		stringArray = (String[]) UIMAUtil.getDefaultingConfigParameterValue(context, PlainTextCollectionReader.PARAM_FILE_NAMES, null);
+		assertEquals(1, stringArray.length);
+		assertEquals("asdf", stringArray[0]);
+
+		context = TestsUtil.getUimaContext();
+		stringArray = (String[]) UIMAUtil.getDefaultingConfigParameterValue(context, PlainTextCollectionReader.PARAM_FILE_NAMES, null);
+		assertNull(stringArray);
+
 	}
 
 }
