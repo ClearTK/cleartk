@@ -25,7 +25,7 @@
         <name>OutputAnnotationClass</name>
         <type>String</type>
         <multiValued>false</multiValued>
-        <mandatory>true</mandatory>
+        <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
         <name>BlockAnnotationClass</name>
@@ -37,10 +37,16 @@
         <name>AnnotationWriterClass</name>
         <type>String</type>
         <multiValued>false</multiValued>
-        <mandatory>true</mandatory>
+        <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
         <name>FileSuffix</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>BlockWriterClass</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
