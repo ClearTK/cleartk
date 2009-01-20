@@ -138,8 +138,8 @@ public class TokenAnnotator extends JCasAnnotator_ImplBase {
 	}
 
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
-		if (!typesInitialized) initializeTypes(jCas);
 		try {
+			if (!typesInitialized) initializeTypes(jCas);
 			if (windowAnnotationType != null) {
 				FSIterator windows = jCas.getAnnotationIndex(windowAnnotationType).iterator();
 				while (windows.hasNext()) {
