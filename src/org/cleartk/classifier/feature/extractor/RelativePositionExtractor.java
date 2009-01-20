@@ -41,6 +41,15 @@ import org.cleartk.classifier.Feature;
  */
 
 public class RelativePositionExtractor {
+	
+	public static final String EQUALS = "EQUALS";
+	public static final String CONTAINS = "CONTAINS";
+	public static final String CONTAINEDBY = "CONTAINEDBY";
+	public static final String OVERLAPS_LEFT = "OVERLAPS_LEFT";
+	public static final String OVERLAPS_RIGHT = "OVERLAPS_RIGHT";
+	public static final String LEFTOF = "LEFTOF";
+	public static final String RIGHTOF = "RIGHTOF";
+	
 	private String name = null;
 	
 	public RelativePositionExtractor() {
@@ -53,19 +62,19 @@ public class RelativePositionExtractor {
 	public List<Feature> extract(JCas jCas, Annotation annotation1, Annotation annotation2) {
 		String result;
 		if( equals(annotation1, annotation2) ) {
-			result = "EQUALS";
+			result = EQUALS;
 		} else if( contains(annotation1, annotation2) ) {
-			result = "CONTAINS";
+			result = CONTAINS;
 		} else if( contains(annotation2, annotation1) ) {
-			result = "CONTAINEDBY";
+			result = CONTAINEDBY;
 		} else if( overlaps(annotation1, annotation2) && beginsFirst(annotation1, annotation2) ) {
-			result = "OVERLAPS_LEFT";
+			result = OVERLAPS_LEFT;
 		} else if( overlaps(annotation1, annotation2) ) {
-			result = "OVERLAPS_RIGHT";
+			result = OVERLAPS_RIGHT;
 		} else if( beginsFirst(annotation1, annotation2) ) {
-			result = "LEFTOF";
+			result = LEFTOF;
 		} else {
-			result = "RIGHTOF";
+			result = RIGHTOF;
 		}
 
 		String name = Feature.createName(this.name, "RelativePosition");
