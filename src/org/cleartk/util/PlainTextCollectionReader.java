@@ -93,10 +93,21 @@ public class PlainTextCollectionReader extends CollectionReader_ImplBase {
 
 	/**
 	 * "Suffixes" is a multiple, optional, string parameter that takes suffixes
-	 * (e.g. .txt) of the files that should be read in.
+	 * (e.g. .txt) of the files that should be read in.  This parameter can only be set if there is no value for "FileNames".
 	 */
 	public static final String PARAM_SUFFIXES = "Suffixes";
-	
+
+	/**
+	 * "FileNames" is a multiple, optional, string parameter that names files
+	 * which contain lists of file names. For example, if the value
+	 * "mydata/mylist.txt" is provided, then the file "mylist.txt" should
+	 * contain a line delimited list of file names. The file names in the list
+	 * should not have directory information but should just be the names of the
+	 * files. The directory is determined by "FileOrDirectory" parameter and the
+	 * files that are processed result from traversing the directory structure
+	 * provided and looking for files with a name found in the lists of file
+	 * names. This parameter can only be set if there is no value for "Suffixes".
+	 */
 	public static final String PARAM_FILE_NAMES = "FileNames";
 
 	@Override
@@ -104,20 +115,19 @@ public class PlainTextCollectionReader extends CollectionReader_ImplBase {
 		super.initialize();
 
 		// get the name of the CAS view to be added
-		this.viewName = (String) this.getConfigParameterValue(PlainTextCollectionReader.PARAM_VIEW_NAME);
+		this.viewName = (String) UIMAUtil.getDefaultingConfigParameterValue(getUimaContext(), PlainTextCollectionReader.PARAM_VIEW_NAME, null);
 
 		// get the language
-		this.language = (String) this.getConfigParameterValue(PlainTextCollectionReader.PARAM_LANGUAGE);
+		this.language = (String) UIMAUtil.getDefaultingConfigParameterValue(getUimaContext(), PlainTextCollectionReader.PARAM_LANGUAGE, null);
 
 		// get the encoding
-		this.encoding = (String) this.getConfigParameterValue(PlainTextCollectionReader.PARAM_ENCODING);
+		this.encoding = (String) UIMAUtil.getDefaultingConfigParameterValue(getUimaContext(), PlainTextCollectionReader.PARAM_ENCODING, null);
 
 		// get the input directory
 		String fileName = (String) UIMAUtil.getRequiredConfigParameterValue(this.getUimaContext(),
 				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY);
 		
 		this.rootFile = new File(fileName);
-
 
 		// raise an exception if the root file does not exist
 		if (!this.rootFile.exists()) {
@@ -126,15 +136,17 @@ public class PlainTextCollectionReader extends CollectionReader_ImplBase {
 			throw new ResourceInitializationException(new IOException(message));
 		}
 
-		String[] suffixNames = (String[]) this.getConfigParameterValue(PARAM_SUFFIXES);
-		if(suffixNames != null && suffixNames.length > 0) {
-			files = Files.getFiles(rootFile, suffixNames).iterator();
-		} else {
-			files = Files.getFiles(rootFile).iterator();
-		}
-		
+		String[] suffixNames = (String[]) UIMAUtil.getDefaultingConfigParameterValue(getUimaContext(), PARAM_SUFFIXES, null);
 		String[] fileNamesLists = (String[]) UIMAUtil.getDefaultingConfigParameterValue(getUimaContext(), PARAM_FILE_NAMES, null);
-		if (fileNamesLists != null) {
+
+		if (suffixNames != null && fileNamesLists != null) {
+				String message = String.format("One of the parameters %1$s or %2$s may be set but not both.", PARAM_SUFFIXES, PARAM_FILE_NAMES);
+				throw new ResourceInitializationException(new IllegalArgumentException(message));
+		}
+
+		if(suffixNames != null) {
+			files = Files.getFiles(rootFile, suffixNames).iterator();
+		} else if (fileNamesLists != null) {
 			Set<String> fileNames = new HashSet<String>();
 			try {
 				for(String fileNamesList : fileNamesLists) {
@@ -145,6 +157,10 @@ public class PlainTextCollectionReader extends CollectionReader_ImplBase {
 				throw new ResourceInitializationException(ioe);
 			}
 		}
+		else {
+			files = Files.getFiles(rootFile).iterator();
+		}
+		
 
 	}
 
