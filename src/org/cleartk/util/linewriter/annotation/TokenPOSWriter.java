@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -21,26 +21,26 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.util.linewriter;
+package org.cleartk.util.linewriter.annotation;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.type.Token;
+import org.cleartk.util.linewriter.AnnotationWriter;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
  * <br>All rights reserved.
-
- * <p>
+ *
+ * @author Philip Ogren
  */
-public class CoveredTextAnnotationWriter implements AnnotationWriter<Annotation> {
 
-	public void initialize(UimaContext context) throws ResourceInitializationException {
+public class TokenPOSWriter implements AnnotationWriter<Token> {
+
+	public void initialize(UimaContext context) throws ResourceInitializationException {}
+
+	public String writeAnnotation(JCas cas, Token token) {
+		return token.getCoveredText()+"\t"+token.getPos();
 	}
-
-	public String writeAnnotation(JCas jCas, Annotation annotation) {
-		return annotation.getCoveredText();
-	}
-
 }

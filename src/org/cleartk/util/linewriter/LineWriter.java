@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,30 +20,6 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
-/*
- * This file was copied from the Apache UIMA examples source code base from
- * org.apache.uima.examples.cpe.XCasWriterCasConsumer and modified.  The apache
- * licence that applies to the original work is provided in the next comment.
- */
-
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- * 
- *   http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
  */
 
 package org.cleartk.util.linewriter;
@@ -63,86 +39,47 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.util.DocumentUtil;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
-
+import org.cleartk.util.linewriter.annotation.CoveredTextAnnotationWriter;
+import org.cleartk.util.linewriter.block.BlankLineBlockWriter;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * <p>
  * 
  * This writer provides a way to write out annotations one-per-line to a plain
  * text file in a variety of ways configurable at run time.
  * 
- * <p>This class has no relation to LineReader - i.e. LineWriter does not provide "reverse functionality" of LineReader.
+ * <p>
+ * This class has no relation to LineReader - i.e. LineWriter does not provide
+ * "reverse functionality" of LineReader.
  * 
- * <p>If you mistook this class for a line rider, then please redirect to the
+ * <p>
+ * If you mistook this class for a line rider, then please redirect to the
  * completely unrelated, but totally awesome Line Rider at: http://linerider.com
  * 
  * @author Philip Ogren
  */
 
-public class LineWriter<T extends Annotation> extends JCasAnnotator_ImplBase {
+public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends Annotation> extends
+		JCasAnnotator_ImplBase {
 
 	/**
 	 * "OutputDirectory" is a single, optional, string parameter that takes a
 	 * path to directory into which output files will be written. If no value is
 	 * given for this parameter, then the parameter "OutputFile" is required. If
-	 * a value is given, then one file for each document will be created in the
-	 * output directory provided. If a value for both "OutputDirectory" and
-	 * "OutputFile" is given, then an exception will be thrown.
+	 * a value is given, then one file for each document/JCas will be created in
+	 * the output directory provided. If a value for both "OutputDirectory" and
+	 * "OutputFile" is given, then an exception will be thrown. Example values
+	 * that could be provided might look like:
+	 * <ul>
+	 * <li>/mydata/uima-output/</li> <li>C:\Documents and Settings\User\My
+	 * Documents\workspace\My Project\data\experiment\output</li>
+	 * </ul>
 	 */
 	public static final String PARAM_OUTPUT_DIRECTORY = "OutputDirectory";
-
-	/**
-	 * "OutputFile" is a single, optional, string parameter that takes a file
-	 * name to write results to. If no value is given for this parameter, then
-	 * the parameter "OutputDirectory" is required. If a value is given, then
-	 * one file for all documents will be created in the output directory
-	 * provided. If a value for both "OutputDirectory" and "OutputFile" is
-	 * given, then an exception will be thrown.
-	 */
-
-	public static final String PARAM_OUTPUT_FILE = "OutputFile";
-
-	/**
-	 * "OutputAnnotationClass" is a single, required, string parameter that
-	 * takes the name of the annotation class of the annotations that are to be
-	 * written out. The annotation class must be a subclass of
-	 * org.apache.uima.jcas.tcas.Annotation.
-	 * 
-	 * @see org.apache.uima.jcas.tcas.DocumentAnnotation
-	 */
-	public static final String PARAM_OUTPUT_ANNOTATION_CLASS = "OutputAnnotationClass";
-
-	/**
-	 * "BlockAnnotationClass" is a single, optional, string parameter that takes
-	 * the name of an annotation class that determines a "block" of lines in the
-	 * resulting output file(s). Each "block" of lines is separated by an extra
-	 * newline. If, for example, the value of "OutputAnnotationClass" is
-	 * "org.cleartk.type.Token" and the value for
-	 * "BlockAnnotationClass" is "org.cleartk.type.Sentence", then the
-	 * tokens in each sentence will be written out one per line with a blank
-	 * line between the last token of a sentence and the first token of the
-	 * following sentence. Note that setting this parameter may limit the number
-	 * of annotations that are written out if, for example, not all tokens are
-	 * found inside sentences. If no value is given, then there will be no blank
-	 * lines in the resulting file (assuming the AnnotationWriter does not
-	 * produce a blank line). If you want there to be a blank line between each
-	 * document (assuming the "OutputFile" is given a parameter), then this
-	 * parameter should be given the value
-	 * "org.apache.uima.jcas.tcas.DocumentAnnotation".
-	 */
-	public static final String PARAM_BLOCK_ANNOTATION_CLASS = "BlockAnnotationClass";
-
-	/**
-	 * "AnnotationWriterClass" is a single, required, string parameter that
-	 * provides the class name of a class that extends
-	 * org.cleartk.util.linewriter.AnnotationWriter
-	 * 
-	 * @see AnnotationWriter
-	 */
-	public static final String PARAM_ANNOTATION_WRITER_CLASS = "AnnotationWriterClass";
 
 	/**
 	 * "FileSuffix" is a single, optional, string parameter that provides a file
@@ -151,12 +88,116 @@ public class LineWriter<T extends Annotation> extends JCasAnnotator_ImplBase {
 	 * ignored. If "OutputDirectory" is given a value, then the generated files
 	 * will be named by the document ids and the suffix provided by this
 	 * parameter. If no value for this parameter is given, then the files will
-	 * be named the same as the document id.
+	 * be named the same as the document id. Example values that could be
+	 * provided might include:
+	 * <ul>
+	 * <li>.txt</li> <li>.tokens</li> <li>.annotations.txt</li>
+	 * </ul>
 	 * 
 	 * @see DocumentUtil#getDocument(JCas)
 	 * @see org.cleartk.type.Document#getIdentifier()
 	 */
 	public static final String PARAM_FILE_SUFFIX = "FileSuffix";
+
+	/**
+	 * "OutputFile" is a single, optional, string parameter that takes a file
+	 * name to write results to. If no value is given for this parameter, then
+	 * the parameter "OutputDirectory" is required. If a value is given, then
+	 * one file for all documents will be created in the output directory
+	 * provided. If a value for both "OutputDirectory" and "OutputFile" is
+	 * given, then an exception will be thrown. Example values that could be
+	 * provided might look like:
+	 * <ul>
+	 * <li>/mydata/uima-output/annotations.txt</li> <li>C:\Documents and
+	 * Settings\User\My Documents\workspace\My
+	 * Project\data\experiment\output\output.annotations</li>
+	 * </ul>
+	 */
+
+	public static final String PARAM_OUTPUT_FILE = "OutputFile";
+
+	/**
+	 * "OutputAnnotationClass" is a single, optional, string parameter that
+	 * takes the name of the annotation class of the annotations that are to be
+	 * written out. The annotation class must be a subclass of
+	 * org.apache.uima.jcas.tcas.Annotation. The manner in which annotations are
+	 * written out is determined by the {@link AnnotationWriter} as described
+	 * below. The {@link AnnotationWriter} interface is generically typed. The
+	 * class specified by this parameter must be the same as or a subclass of
+	 * the type specified by the implementation of AnnotationWriter. Example
+	 * values that could be provided might include:
+	 * <ul>
+	 * <li>org.apache.uima.jcas.tcas.Annotation (default)</li> <li>org.cleartk.type.Token
+	 * </li> <li>org.cleartk.type.Sentence</li> <li>
+	 * com.yourcompany.yourpackage.YourType</li>
+	 * </ul>
+	 */
+	public static final String PARAM_OUTPUT_ANNOTATION_CLASS = "OutputAnnotationClass";
+
+	/**
+	 * "AnnotationWriterClass" is a single, optional, string parameter that
+	 * provides the class name of a class that extends
+	 * org.cleartk.util.linewriter.AnnotationWriter. The AnnotationWriter
+	 * determines how annotations will be written. For example,
+	 * {@link CoveredTextAnnotationWriter} simply writes out the covered text of
+	 * an annotation. Example values that could be provided might include:
+	 * <ul>
+	 * <li>org.cleartk.util.linewriter.annotation.CoveredTextAnnotationWriter (default)
+	 * </li> <li>org.cleartk.util.linewriter.annotation.TokenPOSWriter</li>
+	 * </ul>
+	 * 
+	 * @see AnnotationWriter
+	 */
+	public static final String PARAM_ANNOTATION_WRITER_CLASS = "AnnotationWriterClass";
+
+	/**
+	 * "BlockAnnotationClass" is a single, optional, string parameter that takes
+	 * the name of an annotation class that determines a "block" of lines in the
+	 * resulting output file(s). Each "block" of lines is separated by some text
+	 * (such as a newline) as determined by the BlockWriter specified as
+	 * described below. If, for example, the value of "OutputAnnotationClass" is
+	 * "org.cleartk.type.Token" and the value for "BlockAnnotationClass" is
+	 * "org.cleartk.type.Sentence" and the "BlockWriter" is
+	 * "BlankLineBlockWriter" (the default), then the tokens in each sentence
+	 * will be written out one per line with a blank line between the last token
+	 * of a sentence and the first token of the following sentence. Note that
+	 * setting this parameter may limit the number of annotations that are
+	 * written out if, for example, not all tokens are found inside sentences.
+	 * If no value is given, then there will be no blank lines in the resulting
+	 * file (assuming the AnnotationWriter does not produce a blank line). If
+	 * you want there to be a blank line between each document (assuming the
+	 * "OutputFile" is given a parameter), then this parameter should be given
+	 * the value "org.apache.uima.jcas.tcas.DocumentAnnotation".
+	 * 
+	 * Example values that could be provided might include:
+	 * <ul>
+	 * <li>org.cleartk.type.Sentence</li> <li>
+	 * org.apache.uima.jcas.tcas.DocumentAnnotation</li> <li>
+	 * com.yourcompany.yourpackage.YourType</li>
+	 * </ul>
+	 * 
+	 * @see org.apache.uima.jcas.tcas.DocumentAnnotation
+	 */
+	public static final String PARAM_BLOCK_ANNOTATION_CLASS = "BlockAnnotationClass";
+
+	/**
+	 * "BlockWriterClass" is a single, optional, string parameter that provides
+	 * the class name of a class that extends
+	 * org.cleartk.util.linewriter.BlockWriter. The BlockWriter determines how
+	 * blocks of annotations will be delimited. For example,
+	 * {@link BlankLineBlockWriter} simply writes out a blank line between each
+	 * block of annotations. If a value for "BlockAnnotationClass" is given, and
+	 * no value for "BlockWriter" is given, then the default value will be
+	 * "org.cleartk.util.linewriter.block.BlankLineBlockWriter" Example values
+	 * that could be provided might include:
+	 * <ul>
+	 * <li>org.cleartk.util.linewriter.block.BlankLineBlockWriter</li> <li>
+	 * org.cleartk.util.linewriter.block.DocumentIdBlockWriter</li>
+	 * </ul>
+	 * 
+	 * @see AnnotationWriter
+	 */
+	public static final String PARAM_BLOCK_WRITER_CLASS = "BlockWriterClass";
 
 	private File outputDirectory;
 
@@ -172,7 +213,9 @@ public class LineWriter<T extends Annotation> extends JCasAnnotator_ImplBase {
 
 	boolean blockOnDocument = false;
 
-	AnnotationWriter<T> annotationWriter;
+	AnnotationWriter<ANNOTATION_TYPE> annotationWriter;
+
+	BlockWriter<BLOCK_TYPE> blockWriter;
 
 	PrintStream out;
 
@@ -180,25 +223,22 @@ public class LineWriter<T extends Annotation> extends JCasAnnotator_ImplBase {
 
 	private boolean typesInitialized = false;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		try {
 			super.initialize(context);
 
-			String outputDirectoryName = (String) context.getConfigParameterValue(PARAM_OUTPUT_DIRECTORY);
-			if (outputDirectoryName != null && outputDirectoryName.trim().length() == 0) outputDirectoryName = null;
-			String outputFileName = (String) context.getConfigParameterValue(PARAM_OUTPUT_FILE);
-			if (outputFileName != null && outputFileName.trim().length() == 0) outputFileName = null;
-
-			if (outputDirectoryName == null && outputFileName == null) {
-				String key = ResourceInitializationException.CONFIG_SETTING_ABSENT;
-				throw new ResourceInitializationException(key,
-						new Object[] { PARAM_OUTPUT_DIRECTORY, PARAM_OUTPUT_FILE });
-			}
-
-			if (outputDirectoryName != null && outputFileName != null) {
-				throw new ResourceInitializationException("One of the parameters " + PARAM_OUTPUT_DIRECTORY + " or "
-						+ PARAM_OUTPUT_FILE + " must be set but not both.", null);
+			String outputDirectoryName = (String) UIMAUtil.getDefaultingConfigParameterValue(context,
+					PARAM_OUTPUT_DIRECTORY, null);
+			
+			String outputFileName = (String) UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_OUTPUT_FILE, null);
+			
+			
+			if ((outputDirectoryName == null && outputFileName == null) ||
+				(outputDirectoryName != null && outputFileName != null)) {
+				String message = String.format("One of the parameters %1$s or %2$s must be set but not both: %1$s=%3$s %2$s=%4$s", PARAM_OUTPUT_DIRECTORY, PARAM_OUTPUT_FILE, outputDirectoryName, outputFileName);
+				throw new ResourceInitializationException(new IllegalArgumentException(message));
 			}
 
 			if (outputDirectoryName != null) {
@@ -216,40 +256,53 @@ public class LineWriter<T extends Annotation> extends JCasAnnotator_ImplBase {
 				out = new PrintStream(outputFile);
 			}
 
-			String outputAnnotationClassName = (String) context.getConfigParameterValue(PARAM_OUTPUT_ANNOTATION_CLASS);
+			String outputAnnotationClassName = (String) UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_OUTPUT_ANNOTATION_CLASS, "org.apache.uima.jcas.tcas.Annotation");
 			Class<?> cls = Class.forName(outputAnnotationClassName);
 			outputAnnotationClass = cls.asSubclass(Annotation.class);
 
-			String blockAnnotationClassName = (String) context.getConfigParameterValue(PARAM_BLOCK_ANNOTATION_CLASS);
+			String annotationWriterClassName = (String) UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_ANNOTATION_WRITER_CLASS, "org.cleartk.util.linewriter.annotation.CoveredTextAnnotationWriter");
+
+			cls = Class.forName(annotationWriterClassName);
+			Class<? extends AnnotationWriter> annotationWriterClass = cls.asSubclass(AnnotationWriter.class);
+			this.annotationWriter = (AnnotationWriter) annotationWriterClass.newInstance();
+			this.annotationWriter.initialize(context);
+
+			java.lang.reflect.Type annotationType = ReflectionUtil.getTypeArgument(AnnotationWriter.class,
+					"ANNOTATION_TYPE", this.annotationWriter);
+
+			if (!ReflectionUtil.isAssignableFrom(annotationType, outputAnnotationClass)) {
+				String message = String.format("ANNOTATION_TYPE of annotation writer is not assignable from output annotation class: %1$s=%2$s, %3$s=%4$s", PARAM_ANNOTATION_WRITER_CLASS, annotationWriterClassName, PARAM_OUTPUT_ANNOTATION_CLASS, outputAnnotationClassName);
+				throw new ResourceInitializationException(new IllegalArgumentException(message));
+			}
+
+			String blockAnnotationClassName = (String) UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_BLOCK_ANNOTATION_CLASS, null);
 			if (blockAnnotationClassName != null) {
+
+				String blockWriterClassName = (String) UIMAUtil.getDefaultingConfigParameterValue(context,
+						PARAM_BLOCK_WRITER_CLASS, "org.cleartk.util.linewriter.block.BlankLineBlockWriter");
+				cls = Class.forName(blockWriterClassName);
+				Class<? extends BlockWriter> blockWriterClass = cls.asSubclass(BlockWriter.class);
+				this.blockWriter = (BlockWriter) blockWriterClass.newInstance();
+				this.blockWriter.initialize(context);
+
 				if (blockAnnotationClassName.equals("org.apache.uima.jcas.tcas.DocumentAnnotation")) {
 					blockOnDocument = true;
 				}
 				else {
 					cls = Class.forName(blockAnnotationClassName);
 					blockAnnotationClass = cls.asSubclass(Annotation.class);
+
+					java.lang.reflect.Type blockType = ReflectionUtil.getTypeArgument(BlockWriter.class, "BLOCK_TYPE",
+							this.blockWriter);
+
+					if (!ReflectionUtil.isAssignableFrom(blockType, blockAnnotationClass)) {
+						String message = String.format("BLOCK_TYPE of block writer is not assignable from block annotation class: %1$s=%2$s, %3$s=%4$s", PARAM_BLOCK_WRITER_CLASS, blockWriterClassName, PARAM_BLOCK_ANNOTATION_CLASS, blockAnnotationClassName);
+						throw new ResourceInitializationException(new IllegalArgumentException(message));
+					}
 				}
 			}
 
-			String annotationWriterClassName = (String) UIMAUtil.getRequiredConfigParameterValue(context,
-					PARAM_ANNOTATION_WRITER_CLASS);
-
-			cls = Class.forName(annotationWriterClassName);
-			Class<?> annotationWriterClass = cls.asSubclass(AnnotationWriter.class);
-			@SuppressWarnings("unchecked")
-			AnnotationWriter<T> annotationWriter = (AnnotationWriter<T>) annotationWriterClass.newInstance();
-			this.annotationWriter = annotationWriter;
-
-			java.lang.reflect.Type annotationWriterType = ReflectionUtil.getTypeArgument(
-					AnnotationWriter.class, "T", this.annotationWriter);
-
-			if (!ReflectionUtil.isAssignableFrom(annotationWriterType, outputAnnotationClass)) {
-				throw new ResourceInitializationException("the class ", null);
-			}
-
-			this.annotationWriter.initialize(context);
-
-			fileSuffix = (String) context.getConfigParameterValue(PARAM_FILE_SUFFIX);
+			fileSuffix = (String) UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_FILE_SUFFIX, null);
 			if (fileSuffix == null) {
 				fileSuffix = "";
 			}
@@ -276,6 +329,7 @@ public class LineWriter<T extends Annotation> extends JCasAnnotator_ImplBase {
 		typesInitialized = true;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
 		if (!typesInitialized) initializeTypes(jCas);
@@ -283,40 +337,39 @@ public class LineWriter<T extends Annotation> extends JCasAnnotator_ImplBase {
 		try {
 			if (outputDirectory != null) {
 				String id = DocumentUtil.getIdentifier(jCas);
-				if (id.endsWith(".")) id = id.substring(0, id.length() - 1);
+				while (id.endsWith(".")) {
+					id = id.substring(0, id.length() - 1);
+				}
 				out = new PrintStream(new File(outputDirectory, id + fileSuffix));
 			}
 
 			if (blockOnDocument) {
+				BLOCK_TYPE documentAnnotation = (BLOCK_TYPE) jCas.getDocumentAnnotationFs();
+				out.print(blockWriter.writeBlock(jCas, documentAnnotation));
 				FSIterator outputAnnotations = jCas.getAnnotationIndex(outputAnnotationType).iterator();
 				while (outputAnnotations.hasNext()) {
-					@SuppressWarnings("unchecked")
-					T outputAnnotation = (T) outputAnnotations.next();
+					ANNOTATION_TYPE outputAnnotation = (ANNOTATION_TYPE) outputAnnotations.next();
 					out.println(annotationWriter.writeAnnotation(jCas, outputAnnotation));
-
 				}
-				out.println();
 			}
 			else if (blockAnnotationType != null) {
 				FSIterator blocks = jCas.getAnnotationIndex(blockAnnotationType).iterator();
 				while (blocks.hasNext()) {
-					Annotation blockAnnotation = (Annotation) blocks.next();
+					BLOCK_TYPE blockAnnotation = (BLOCK_TYPE) blocks.next();
+					out.print(blockWriter.writeBlock(jCas, blockAnnotation));
 					FSIterator outputAnnotations = jCas.getAnnotationIndex(outputAnnotationType).subiterator(
 							blockAnnotation);
 					while (outputAnnotations.hasNext()) {
-						@SuppressWarnings("unchecked")
-						T outputAnnotation = (T) outputAnnotations.next();
+						ANNOTATION_TYPE outputAnnotation = (ANNOTATION_TYPE) outputAnnotations.next();
 						out.println(annotationWriter.writeAnnotation(jCas, outputAnnotation));
 					}
-					out.println();
 				}
 			}
 
 			else {
 				FSIterator outputAnnotations = jCas.getAnnotationIndex(outputAnnotationType).iterator();
 				while (outputAnnotations.hasNext()) {
-					@SuppressWarnings("unchecked")
-					T outputAnnotation = (T) outputAnnotations.next();
+					ANNOTATION_TYPE outputAnnotation = (ANNOTATION_TYPE) outputAnnotations.next();
 					out.println(annotationWriter.writeAnnotation(jCas, outputAnnotation));
 				}
 			}
