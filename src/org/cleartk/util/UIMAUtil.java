@@ -148,6 +148,12 @@ public class UIMAUtil
 			String str = (String) paramValue;
 			if(str.trim().equals(""))
 				paramValue = defaultValue;
+		} else if(paramValue instanceof String[]) {
+			String[] strs = (String[]) paramValue;
+			if(strs.length == 0)
+				paramValue = defaultValue;
+			if(strs.length == 1 && strs[0].trim().equals(""))
+				paramValue = defaultValue;
 		}
 		return paramValue;
 	}
