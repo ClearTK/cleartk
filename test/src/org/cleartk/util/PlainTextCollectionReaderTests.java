@@ -233,6 +233,42 @@ public class PlainTextCollectionReaderTests {
 		Assert.assertTrue(pathsSet.isEmpty());
 	}
 
+	private final String[] fileNames = new String[]{
+			"11319941.tree",
+			"11597317.txt",
+			"watcha.txt",
+			"huckfinn.txt"};
+
+	@Test
+	public void testFileNames() throws IOException, UIMAException {
+		
+		// create the PlainTextCollectionReader with the HTML input directory  
+		CollectionReader reader = TestsUtil.getCollectionReader(
+				PlainTextCollectionReader.class,
+				TestsUtil.getTypeSystem(Document.class),
+				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY, "test/data/docs",
+				PlainTextCollectionReader.PARAM_FILE_NAMES, new String[] {"test/data/util/PlainTextFileNames.txt"});
+
+		// check that each path in the CAS matches a path on disk
+		Set<String> fileNamesSet = new HashSet<String>();
+		fileNamesSet.addAll(Arrays.asList(this.fileNames));
+		int i=0;
+		for (JCas jCas: new TestsUtil.JCasIterable(reader)) {
+			Document doc = DocumentUtil.getDocument(jCas);
+			String fileName = doc.getPath().replace('\\', '/');
+			fileName = fileName.substring(fileName.lastIndexOf("/")+1);
+			System.out.println("fileName="+fileName);
+			Assert.assertTrue(fileNamesSet.contains(fileName));
+			fileNamesSet.remove(fileName);
+			i++;
+		}
+		reader.close();
+		
+		Assert.assertEquals(4, i);
+		// check that all documents were seen
+		Assert.assertTrue(fileNamesSet.isEmpty());
+	}
+
 	
 	/**
 	 * Check that the reader works with just a single file.

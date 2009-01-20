@@ -26,12 +26,16 @@ package org.cleartk.util;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import org.apache.uima.cas.CAS;
 import org.apache.uima.collection.CollectionException;
 import org.apache.uima.collection.CollectionReader_ImplBase;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.pear.util.FileUtil;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.Progress;
@@ -92,6 +96,8 @@ public class PlainTextCollectionReader extends CollectionReader_ImplBase {
 	 * (e.g. .txt) of the files that should be read in.
 	 */
 	public static final String PARAM_SUFFIXES = "Suffixes";
+	
+	public static final String PARAM_FILE_NAMES = "FileNames";
 
 	@Override
 	public void initialize() throws ResourceInitializationException {
@@ -126,6 +132,20 @@ public class PlainTextCollectionReader extends CollectionReader_ImplBase {
 		} else {
 			files = Files.getFiles(rootFile).iterator();
 		}
+		
+		String[] fileNamesLists = (String[]) UIMAUtil.getDefaultingConfigParameterValue(getUimaContext(), PARAM_FILE_NAMES, null);
+		if (fileNamesLists != null) {
+			Set<String> fileNames = new HashSet<String>();
+			try {
+				for(String fileNamesList : fileNamesLists) {
+					fileNames.addAll(Arrays.asList(FileUtil.loadListOfStrings(new File(fileNamesList))));
+				}
+				files = Files.getFiles(rootFile, fileNames).iterator();
+			} catch(IOException ioe) {
+				throw new ResourceInitializationException(ioe);
+			}
+		}
+
 	}
 
 	public void getNext(CAS cas) throws IOException, CollectionException {
