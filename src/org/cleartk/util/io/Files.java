@@ -37,6 +37,7 @@ import java.io.FileFilter;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 
 
@@ -60,6 +61,54 @@ public class Files {
 		};
 	}
 
+	public static Iterable<File> getFiles(final File folder, final Set<String> fileNames) {
+		return new Iterable<File>() {
+
+			public Iterator<File> iterator() {
+				return new Iterator<File>() {
+					private LinkedList<File> queue = new LinkedList<File>();
+					{
+						queue.offer(folder);
+						processDirectories();
+					}
+
+					public boolean hasNext() {
+						this.processDirectories();
+						return !queue.isEmpty();
+					}
+
+					public File next() {
+						this.processDirectories();
+						if (queue.isEmpty())
+							throw new NoSuchElementException();
+						return queue.poll();
+					}
+
+					private void processDirectories() {
+						while (!queue.isEmpty()) {
+							if (!queue.peek().isDirectory())
+								break;
+							File next = queue.poll();
+							for (File file : next.listFiles()) {
+								String fileName = file.getName();
+								if(file.isHidden())
+									continue;
+								if (file.isDirectory() || fileNames.contains(fileName)) {
+									queue.offer(file);
+								}
+							}
+						}
+					}
+
+					public void remove() {
+						throw new UnsupportedOperationException();
+					}
+
+				};
+			}
+		};
+
+	}
 	public static Iterable<File> getFiles(final File folder, final FileFilter filter) {
 		return new Iterable<File>() {
 

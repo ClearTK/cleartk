@@ -27,9 +27,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
-import org.cleartk.util.io.Files;
 import org.junit.Test;
 
 /**
@@ -47,5 +48,24 @@ public class FilesTests {
 		assertTrue(filesIterator.hasNext());
 		File file = filesIterator.next();
 		assertEquals("test1.txt", file.getName());
+	}
+	
+	@Test
+	public void testNames() {
+		Set<String> fileNames = new HashSet<String>();
+		fileNames.add("2.1.html");
+		fileNames.add("4.1.1.html");
+		fileNames.add("X.html");
+		
+		Set<String> retrievedFileNames = new HashSet<String>();
+
+		Iterable<File> files = Files.getFiles(new File("test/data/html"), fileNames);
+		for(File file : files) {
+			retrievedFileNames.add(file.getName());
+		}
+		
+		assertEquals(2, retrievedFileNames.size());
+		assertTrue(retrievedFileNames.contains("2.1.html"));
+		assertTrue(retrievedFileNames.contains("4.1.1.html"));
 	}
 }
