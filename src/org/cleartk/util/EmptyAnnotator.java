@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.util;
 
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
@@ -28,16 +28,21 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
- *
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * @author Philip Ogren
- *
+ * 
+ *         For information on how this class can be used to initialize the CAS
+ *         Visual Debugger with a type system, please see the description in the
+ *         file This descriptor file is here only desc/util/EmptyAnnotator.xml.
+ * 
+ *         <P>It is often convenient to use this class in unit tests for e.g.
+ *         obtaining a uima configuration.
  */
-public class EmptyAnnotator extends JCasAnnotator_ImplBase
-{
-	public void process(JCas jCas) throws AnalysisEngineProcessException
-	{
-		//this annotator does nothing!
+public class EmptyAnnotator extends JCasAnnotator_ImplBase {
+	public void process(JCas jCas) throws AnalysisEngineProcessException {
+		// this annotator does nothing!
 	}
 }
