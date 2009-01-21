@@ -417,7 +417,7 @@ public class TreebankFormatParser {
 		return topNode;
 	}
 
-	private static final Pattern nonwhiteSpaceCharPattern = Pattern.compile("[^\\s+]");
+	private static final Pattern nonwhiteSpaceCharPattern = Pattern.compile("[^\\s]");
 
 	public static int movePastWhiteSpaceChars(String text, int textOffset) {
 		Matcher matcher = nonwhiteSpaceCharPattern.matcher(text);

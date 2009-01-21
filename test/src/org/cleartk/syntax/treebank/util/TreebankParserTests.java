@@ -293,6 +293,10 @@ import org.junit.Test;
 		assertEquals(5, TreebankFormatParser.movePastWhiteSpaceChars("     asdf", 0));
 		assertEquals(5, TreebankFormatParser.movePastWhiteSpaceChars(" \t\t\n\nasdf", 0));
 		assertEquals(5, TreebankFormatParser.movePastWhiteSpaceChars(" \t\t\n\nasdf", 2));
+
+		//the following assertions demonstrate the bug described in ticket 35
+		assertEquals(3, TreebankFormatParser.movePastWhiteSpaceChars(" \t\t+", 0));
+		assertEquals(5, TreebankFormatParser.movePastWhiteSpaceChars(" \t\t  +-_+", 2));
 	}
 
 	@Test
