@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.util;
+package org.cleartk.tfidf;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -41,13 +41,14 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter;
+import org.cleartk.tfidf.InverseDocumentFrequencyWriter;
 import org.cleartk.token.TokenAnnotator;
 import org.cleartk.token.snowball.SnowballStemmer;
 import org.cleartk.type.Document;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
-import org.cleartk.util.InverseDocumentFrequencyWriter;
 import org.cleartk.util.PlainTextCollectionReader;
+import org.cleartk.util.TestsUtil;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -132,7 +133,7 @@ public class InverseDocumentFrequencyWriterTests {
 	
 	@Test
 	public void testDescriptor() throws Exception {
-		String descPath = "src/org/cleartk/util/InverseDocumentFrequencyWriter.xml";
+		String descPath = "src/org/cleartk/tfidf/InverseDocumentFrequencyWriter.xml";
 		try {
 			TestsUtil.getAnalysisEngine(descPath);
 			Assert.fail("Expected exception with no OutputFile");

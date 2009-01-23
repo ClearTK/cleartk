@@ -2,7 +2,7 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
 <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
 <primitive>true</primitive>
-<annotatorImplementationName>org.cleartk.util.InverseDocumentFrequencyWriter</annotatorImplementationName>
+<annotatorImplementationName>org.cleartk.tfidf.InverseDocumentFrequencyWriter</annotatorImplementationName>
 <analysisEngineMetaData>
 <name>InverseDocumentFrequencyWriter</name>
 <description></description>
