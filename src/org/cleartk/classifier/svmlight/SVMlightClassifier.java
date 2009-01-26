@@ -30,6 +30,7 @@ import java.util.zip.ZipEntry;
 
 import org.cleartk.classifier.Classifier_ImplBase;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.ScoredValue;
 import org.cleartk.classifier.svmlight.model.SVMlightModel;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
@@ -61,6 +62,20 @@ public class SVMlightClassifier extends Classifier_ImplBase<Boolean,Boolean,Feat
 		boolean encodedResult = (prediction > 0);
 
 		return outcomeEncoder.decode(encodedResult);
+	}
+	
+	@Override
+	public ScoredValue<Boolean> score(List<Feature> features) {
+		FeatureVector featureVector = featuresEncoder.encodeAll(features);
+		
+		double prediction = model.evaluate(featureVector);
+		boolean encodedResult = (prediction > 0);
+
+		if( encodedResult ) {
+			return new ScoredValue<Boolean>(true, prediction);
+		} else {
+			return new ScoredValue<Boolean>(false, -prediction);
+		}
 	}
 
 	@Override
