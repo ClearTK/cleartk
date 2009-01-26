@@ -24,6 +24,7 @@
 package org.cleartk.classifier.svmlight;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
@@ -64,6 +65,20 @@ public class SVMlightClassifier extends Classifier_ImplBase<Boolean,Boolean,Feat
 		return outcomeEncoder.decode(encodedResult);
 	}
 	
+	@Override
+	public List<ScoredValue<Boolean>> score(List<Feature> features,
+			int maxResults) {
+		List<ScoredValue<Boolean>> resultList = new ArrayList<ScoredValue<Boolean>>();
+		if( maxResults > 0 )
+			resultList.add(this.score(features));
+		if( maxResults > 1 ) {
+			ScoredValue<Boolean> v1 = resultList.get(0);
+			ScoredValue<Boolean> v2 = new ScoredValue<Boolean>(!v1.getValue(), -v1.getScore());
+			resultList.add(v2);
+		}
+		return resultList;
+	}
+
 	@Override
 	public ScoredValue<Boolean> score(List<Feature> features) {
 		FeatureVector featureVector = featuresEncoder.encodeAll(features);
