@@ -48,31 +48,45 @@ import org.junit.Test;
 public class DescriptorCoverageTests {
 	
 	@Test
-	public void testNonCPEsAreCoveredByTests() throws Exception {
-		Set<String> descFilePaths = new HashSet<String>();
-		for (File file: this.getFiles(new File("desc"))) {
+	public void testSrcDescriptorsAreCoveredByTests() throws Exception {
+		
+		// collect the names of all .xml descriptors in the src directory
+		Set<String> descNames = new HashSet<String>();
+		for (File file: this.getFiles(new File("src"))) {
 			String path = file.getPath();
-			if (!path.contains("CPE") && path.endsWith(".xml")) {
-				descFilePaths.add(path.replace('\\', '/'));
+			if (path.endsWith(".xml")) {
+				// strip off "src/" and ".xml"
+				String name = path.substring(4, path.length() - 4);
+				// convert slashes to dots
+				name = name.replace('\\', '.').replace('/', '.');
+				// add the descriptor name to the set
+				descNames.add(name);
 			}
 		}
 
+		// walk through every .java file in the test/src directory
+		// and look for descriptor names
 		for (File testFile: this.getFiles(new File("test/src"))) {
-			String testText = FileUtils.file2String(testFile);
-			Set<String> toRemove = new HashSet<String>();
-			for (String descFilePath: descFilePaths) {
-				if (testText.contains(descFilePath)) {
-					toRemove.add(descFilePath);
+			if (testFile.getName().endsWith(".java")) {
+				String testText = FileUtils.file2String(testFile);
+				Set<String> toRemove = new HashSet<String>();
+				for (String descName: descNames) {
+					if (testText.contains(descName)) {
+						toRemove.add(descName);
+					}
 				}
+				
+				// have to remove the names all at once to avoid
+				// ConcurrentModificationException 
+				descNames.removeAll(toRemove);
 			}
-			descFilePaths.removeAll(toRemove);
 		}
 		
-		int untested = descFilePaths.size();
+		int untested = descNames.size();
 		if (untested != 0) {
 			String message = String.format("%d descriptors not tested", untested);
 			System.err.println(message);
-			List<String> untestedFileNames = new ArrayList<String>(descFilePaths);
+			List<String> untestedFileNames = new ArrayList<String>(descNames);
 			Collections.sort(untestedFileNames);
 			for (String descFileName: untestedFileNames) {
 				System.err.println(descFileName);
@@ -84,18 +98,17 @@ public class DescriptorCoverageTests {
 	@Test
 	public void testCPEsRaiseNoExceptions() throws Exception {
 		List<String> failingCPEs = new ArrayList<String>();
-		for (File file: this.getFiles(new File("desc"))) {
-			String path = file.getPath();
-			if (!path.contains("CPE") || !path.endsWith(".xml")) {
-				continue;
-			}
-			XMLInputSource xmlInput = new XMLInputSource(new File(path));
-			XMLParser parser = UIMAFramework.getXMLParser();
-			CpeDescription desc = parser.parseCpeDescription(xmlInput);
-			try {
-				UIMAFramework.produceCollectionProcessingEngine(desc);
-			} catch (ResourceInitializationException e) {
-				failingCPEs.add(path);
+		for (File file: this.getFiles(new File("cpe"))) {
+			if (file.getName().endsWith(".xml")) {
+				String path = file.getPath();
+				XMLInputSource xmlInput = new XMLInputSource(new File(path));
+				XMLParser parser = UIMAFramework.getXMLParser();
+				CpeDescription desc = parser.parseCpeDescription(xmlInput);
+				try {
+					UIMAFramework.produceCollectionProcessingEngine(desc);
+				} catch (ResourceInitializationException e) {
+					failingCPEs.add(path);
+				}
 			}
 		}
 		int failing = failingCPEs.size();
