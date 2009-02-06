@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.syntax.treebank.util;
 
 import java.util.ArrayList;
@@ -32,21 +32,18 @@ import org.apache.uima.jcas.cas.FSArray;
 import org.cleartk.util.UIMAUtil;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * 
  * @author Philip Ogren
- *
+ * 
  */
-public class TreebankNodeUtility
-{
-	public static org.cleartk.syntax.treebank.type.TopTreebankNode convert(TopTreebankNode pojoNode, JCas jCas)
-	{
-		org.cleartk.syntax.treebank.type.TopTreebankNode uimaNode = 
-			new org.cleartk.syntax.treebank.type.TopTreebankNode(jCas, 
-																	 pojoNode.getTextBegin(), 
-																	 pojoNode.getTextEnd());
+public class TreebankNodeUtility {
+	public static org.cleartk.syntax.treebank.type.TopTreebankNode convert(TopTreebankNode pojoNode, JCas jCas) {
+		org.cleartk.syntax.treebank.type.TopTreebankNode uimaNode = new org.cleartk.syntax.treebank.type.TopTreebankNode(
+				jCas, pojoNode.getTextBegin(), pojoNode.getTextEnd());
 		convert(pojoNode, jCas, uimaNode, null);
 		uimaNode.setTreebankParse(pojoNode.getTreebankParse());
 		initTerminalNodes(uimaNode, jCas);
@@ -54,59 +51,49 @@ public class TreebankNodeUtility
 		return uimaNode;
 	}
 
-	public static void initTerminalNodes(org.cleartk.syntax.treebank.type.TopTreebankNode uimaNode, JCas jCas)
-	{
-		List<org.cleartk.syntax.treebank.type.TreebankNode> terminals = 
-			new ArrayList<org.cleartk.syntax.treebank.type.TreebankNode>();
+	public static void initTerminalNodes(org.cleartk.syntax.treebank.type.TopTreebankNode uimaNode, JCas jCas) {
+		List<org.cleartk.syntax.treebank.type.TreebankNode> terminals = new ArrayList<org.cleartk.syntax.treebank.type.TreebankNode>();
 		_initTerminalNodes(uimaNode, terminals);
-		
+
 		FSArray terminalsFSArray = new FSArray(jCas, terminals.size());
-		terminalsFSArray.copyFromArray(terminals.toArray(new FeatureStructure[terminals.size()]), 0, 0, terminals.size());
+		terminalsFSArray.copyFromArray(terminals.toArray(new FeatureStructure[terminals.size()]), 0, 0, terminals
+				.size());
 		uimaNode.setTerminals(terminalsFSArray);
 	}
-	
+
 	private static void _initTerminalNodes(org.cleartk.syntax.treebank.type.TreebankNode node,
-									List<org.cleartk.syntax.treebank.type.TreebankNode> terminals)
-	{
+			List<org.cleartk.syntax.treebank.type.TreebankNode> terminals) {
 		FSArray children = node.getChildren();
-		for(int i=0; i<children.size(); i++)
-		{
-			org.cleartk.syntax.treebank.type.TreebankNode child = (org.cleartk.syntax.treebank.type.TreebankNode) children.get(i);
-			if(child.getLeaf())
-				terminals.add(child);
-			else
-				_initTerminalNodes(child, terminals);
+		for (int i = 0; i < children.size(); i++) {
+			org.cleartk.syntax.treebank.type.TreebankNode child = (org.cleartk.syntax.treebank.type.TreebankNode) children
+					.get(i);
+			if (child.getLeaf()) terminals.add(child);
+			else _initTerminalNodes(child, terminals);
 		}
 	}
 
-	
-	
-	public static org.cleartk.syntax.treebank.type.TreebankNode convert(TreebankNode pojoNode, 
-																     JCas jCas,
-																     org.cleartk.syntax.treebank.type.TreebankNode uimaNode,
-																     org.cleartk.syntax.treebank.type.TreebankNode parentNode)
-	{
+	public static org.cleartk.syntax.treebank.type.TreebankNode convert(TreebankNode pojoNode, JCas jCas,
+			org.cleartk.syntax.treebank.type.TreebankNode uimaNode,
+			org.cleartk.syntax.treebank.type.TreebankNode parentNode) {
 		uimaNode.setNodeType(pojoNode.getType());
 		uimaNode.setNodeTags(UIMAUtil.toStringArray(jCas, pojoNode.getTags()));
 		uimaNode.setNodeValue(pojoNode.getValue());
 		uimaNode.setLeaf(pojoNode.isLeaf());
 		uimaNode.setParent(parentNode);
-		
-		List<org.cleartk.syntax.treebank.type.TreebankNode> uimaChildren = 
-			new ArrayList<org.cleartk.syntax.treebank.type.TreebankNode>();
-		for(TreebankNode child : pojoNode.getChildren())
-		{
-			org.cleartk.syntax.treebank.type.TreebankNode childNode = 
-				new org.cleartk.syntax.treebank.type.TreebankNode(jCas, 
-														              child.getTextBegin(), 
-																	  child.getTextEnd());
+
+		List<org.cleartk.syntax.treebank.type.TreebankNode> uimaChildren = new ArrayList<org.cleartk.syntax.treebank.type.TreebankNode>();
+		for (TreebankNode child : pojoNode.getChildren()) {
+			org.cleartk.syntax.treebank.type.TreebankNode childNode = new org.cleartk.syntax.treebank.type.TreebankNode(
+					jCas, child.getTextBegin(), child.getTextEnd());
 			uimaChildren.add(convert(child, jCas, childNode, uimaNode));
 			childNode.addToIndexes();
 		}
 		FSArray uimaChildrenFSArray = new FSArray(jCas, uimaChildren.size());
-		uimaChildrenFSArray.copyFromArray(uimaChildren.toArray(new FeatureStructure[uimaChildren.size()]), 0, 0, uimaChildren.size());
+		uimaChildrenFSArray.copyFromArray(uimaChildren.toArray(new FeatureStructure[uimaChildren.size()]), 0, 0,
+				uimaChildren.size());
 		uimaNode.setChildren(uimaChildrenFSArray);
 		return uimaNode;
 	}
+
 	
 }
