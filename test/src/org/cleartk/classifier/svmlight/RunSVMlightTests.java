@@ -26,6 +26,9 @@ package org.cleartk.classifier.svmlight;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
 import java.util.List;
 
 import org.cleartk.classifier.ClassifierFactory;
@@ -34,10 +37,9 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.InstanceConsumer_ImplBase;
 import org.cleartk.classifier.Train;
-import org.cleartk.classifier.svmlight.OVASVMlightClassifier;
-import org.cleartk.classifier.svmlight.OVASVMlightDataWriter;
-import org.cleartk.classifier.svmlight.SVMlightClassifier;
-import org.cleartk.classifier.svmlight.SVMlightDataWriter;
+import org.cleartk.classifier.svmlight.model.SVMlightModel;
+import org.cleartk.classifier.util.featurevector.FeatureVector;
+import org.cleartk.classifier.util.featurevector.SparseFeatureVector;
 import org.cleartk.util.TestsUtil;
 import org.junit.After;
 import org.junit.Assert;
@@ -53,7 +55,8 @@ import org.junit.Test;
 */
 public class RunSVMlightTests {
 
-	protected String outputDirectory = "test/data/svmlight";
+	protected String outputDirectory = "test/data/svmlight/output";
+	protected String dataDirectory = "test/data/svmlight";
 	
 	
 	@After
@@ -61,6 +64,123 @@ public class RunSVMlightTests {
 		TestsUtil.emptyDirectory(new File(this.outputDirectory));
 	}
 	
+	@Test
+	public void testPath() throws Exception {
+		String[] command = new String[] {
+				"svm_learn"
+		};
+		
+		try {
+			Process process = Runtime.getRuntime().exec(command);
+			process.getOutputStream().write('\n');
+			process.getOutputStream().write('\n');
+			process.getOutputStream().close();
+			slurp(process.getInputStream());
+			slurp(process.getErrorStream());
+			process.waitFor();
+		} catch (IOException e) {
+			throw e;
+		}
+	}
+	
+	@Test
+	public void testLinearKernel() throws Exception {
+		File dir = new File(dataDirectory, "linear");
+		File trainingFile = new File(dir, "training-data.svmlight");
+		File testFile = new File(dir, "test-data.svmlight");
+
+		trainAndTest(trainingFile, testFile, new String[] {"-t", "0"}, "linear kernel");
+	}
+
+	@Test
+	public void testPolynomialKernel() throws Exception {
+		File dir = new File(dataDirectory, "nonlinear");
+		File trainingFile = new File(dir, "training-data.svmlight");
+		File testFile = new File(dir, "test-data.svmlight");
+
+		trainAndTest(trainingFile, testFile, new String[] {"-t", "1", "-d", "2"}, "quadratic kernel");
+		trainAndTest(trainingFile, testFile, new String[] {"-t", "1", "-d", "3"}, "cubic kernel");
+	}
+	
+	@Test
+	public void testRBFKernel() throws Exception {
+		File dir = new File(dataDirectory, "nonlinear");
+		File trainingFile = new File(dir, "training-data.svmlight");
+		File testFile = new File(dir, "test-data.svmlight");
+
+		trainAndTest(trainingFile, testFile, new String[] {"-t", "2"}, "RBF kernel");
+	}
+	
+//	@Test
+	public void testSigmoidKernel() throws Exception {
+		File dir = new File(dataDirectory, "nonlinear");
+		File trainingFile = new File(dir, "training-data.svmlight");
+		File testFile = new File(dir, "test-data.svmlight");
+
+		trainAndTest(trainingFile, testFile, new String[] {"-t", "3"}, "sigmoid kernel");
+	}
+
+	private void trainAndTest(File trainingFile, File testFile, String[] args, String name) throws IOException, InterruptedException {
+		File modelFile = new File(this.outputDirectory, "model.svmlight");
+		
+		String[] command = new String[3 + args.length];
+		command[0] = "svm_learn";
+		for( int i=0; i<args.length; i++ )
+			command[i+1] = args[i];
+		command[command.length-2] = trainingFile.getPath();
+		command[command.length-1] = modelFile.getPath();
+		                              		                              
+		Process process = Runtime.getRuntime().exec(command);
+		slurp(process.getInputStream());
+		output(process.getErrorStream(), System.err);
+		process.waitFor();
+		
+		SVMlightModel model = SVMlightModel.fromFile(modelFile);
+		BufferedReader r = new BufferedReader(new FileReader(testFile));
+		float total = 0;
+		float correct = 0;
+		String line;
+		while( (line = r.readLine()) != null ) {
+			String[] fields = line.split(" ");
+			
+			boolean expectedResult = fields[0].equals("+1");
+			
+			FeatureVector fv = new SparseFeatureVector();
+			for( int i=1; i<fields.length; i++ ) {
+				String[] parts = fields[i].split(":");
+				int featureIndex = Integer.valueOf(parts[0]);
+				double featureValue = Double.valueOf(parts[1]);
+				fv.set(featureIndex, featureValue);
+			}
+			
+			boolean actualResult = model.evaluate(fv) > 0;
+
+			total += 1;
+			if( expectedResult == actualResult )
+				correct += 1;
+		}
+		
+		if( correct < (total * 0.95) )
+			Assert.fail("model accuracy using " + name + " is below 95%");
+	}
+	
+	private static void output(InputStream input, PrintStream output) throws IOException {
+		byte[] buffer = new byte[128];
+		int count = input.read(buffer);
+		while (count != -1) {
+			output.write(buffer, 0, count);
+			count = input.read(buffer);
+		}
+	}
+	
+	private static void slurp(InputStream input) throws IOException {
+		byte[] buffer = new byte[128];
+		int count = input.read();
+		while( count != -1 ) {
+			count = input.read(buffer);
+		}
+	}
+
 	@Test
 	public void testSVMlight() throws Exception {
 		
