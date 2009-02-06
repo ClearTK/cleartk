@@ -65,14 +65,14 @@ public class TokenWriterTests {
 	public void testMissingParameter() throws Exception {
 		try {
 			TestsUtil.getAnalysisEngine(
-					TokenWriter.class, TestsUtil.getTypeSystem("desc/TypeSystem.xml"));
+					TokenWriter.class, TestsUtil.getTypeSystem("org.cleartk.TypeSystem"));
 			Assert.fail("expected error with no output directory specified");
 		} catch (ResourceInitializationException e) {}
 	}
 	@Test
 	public void testOutputFile() throws Exception {
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				TokenWriter.class, TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
+				TokenWriter.class, TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
 				TokenWriter.PARAM_OUTPUT_DIRECTORY, this.outputDir.getPath());
 		
 		JCas jCas = engine.newJCas();

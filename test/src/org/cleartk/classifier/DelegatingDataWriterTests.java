@@ -54,7 +54,7 @@ public class DelegatingDataWriterTests {
 	@Test
 	public void testDelegatingDataWriter() throws ResourceInitializationException, AnalysisEngineProcessException, IOException {
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				DelegatingDataWriter.class, TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
+				DelegatingDataWriter.class, TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
 				DelegatingDataWriter.PARAM_ANNOTATION_HANDLER, "org.cleartk.example.ExamplePOSAnnotationHandler",
 				DelegatingDataWriter.PARAM_OUTPUT_DIRECTORY, "test/data/delegatingDataWriter/mallet",
 				DelegatingDataWriter.PARAM_DATA_WRITER, "org.cleartk.classifier.mallet.MalletCRFDataWriter");

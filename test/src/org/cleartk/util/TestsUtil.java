@@ -115,7 +115,7 @@ public class TestsUtil {
 	}
 
 	public static JCas getJCas(String xmiFileName) throws UIMAException, IOException {
-		return getJCas(xmiFileName, getTypeSystem("desc/TypeSystem.xml"));
+		return getJCas(xmiFileName, getTypeSystem("org.cleartk.TypeSystem"));
 	}
 
 	public static JCas getJCas(String xmiFileName, TypeSystemDescription typeSystemDescription) throws UIMAException,
@@ -198,7 +198,7 @@ public class TestsUtil {
 	 */
 	public static JCas process(String fileNameOrText) throws IOException, UIMAException {
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(EmptyAnnotator.class, TestsUtil
-				.getTypeSystem("desc/TypeSystem.xml"));
+				.getTypeSystem("org.cleartk.TypeSystem"));
 		return TestsUtil.process(engine, fileNameOrText);
 	}
 
@@ -334,7 +334,7 @@ public class TestsUtil {
 		 * @throws IOException
 		 */
 		public JCasIterable(CollectionReader reader) throws UIMAException, IOException {
-			this(reader, getAnalysisEngine(EmptyAnnotator.class, getTypeSystem("desc/TypeSystem.xml")));
+			this(reader, getAnalysisEngine(EmptyAnnotator.class, getTypeSystem("org.cleartk.TypeSystem")));
 		}
 
 		/**
@@ -407,7 +407,7 @@ public class TestsUtil {
 	 * @throws UIMAException
 	 */
 	public static JCas newJCas() throws UIMAException {
-		return newJCas("desc/TypeSystem.xml");
+		return newJCas("org.cleartk.TypeSystem");
 	}
 
 	public static JCas newJCas(String typeSystemDescriptor) throws UIMAException {
@@ -752,19 +752,40 @@ public class TestsUtil {
 	}
 
 	/**
-	 * Creates a TypeSystemDescription from a descriptor file
+	 * Creates a TypeSystemDescription from descriptor names.
 	 * 
-	 * @param descriptorURIs
+	 * @param descriptorNames
+	 *            The fully qualified, Java-style, dotted descriptor names.
+	 * @return A TypeSystemDescription that includes the types from all of the
+	 *         specified files.
+	 */
+	public static TypeSystemDescription getTypeSystem(String... descriptorNames) {
+		TypeSystemDescription typeSystem = new TypeSystemDescription_impl();
+		List<Import> imports = new ArrayList<Import>();
+		for (String descriptorName : descriptorNames) {
+			Import imp = new Import_impl();
+			imp.setName(descriptorName);
+			imports.add(imp);
+		}
+		Import[] importArray = new Import[imports.size()];
+		typeSystem.setImports(imports.toArray(importArray));
+		return typeSystem;
+	}
+
+	/**
+	 * Creates a TypeSystemDescription from descriptor files.
+	 * 
+	 * @param descriptorPaths
 	 *            The descriptor file paths.
 	 * @return A TypeSystemDescription that includes the types from all of the
 	 *         specified files.
 	 */
-	public static TypeSystemDescription getTypeSystem(String... descriptorURIs) {
+	public static TypeSystemDescription getTypeSystemFromPath(String... descriptorPaths) {
 		TypeSystemDescription typeSystem = new TypeSystemDescription_impl();
 		List<Import> imports = new ArrayList<Import>();
-		for (String descriptorURI : descriptorURIs) {
+		for (String descriptorPath : descriptorPaths) {
 			Import imp = new Import_impl();
-			imp.setLocation(descriptorURI);
+			imp.setLocation(descriptorPath);
 			imports.add(imp);
 		}
 		Import[] importArray = new Import[imports.size()];

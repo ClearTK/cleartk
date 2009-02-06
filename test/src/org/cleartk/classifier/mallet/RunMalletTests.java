@@ -67,7 +67,7 @@ public class RunMalletTests {
 	public void runTest1() throws Exception {
 		String outputDirectory = "test/data/mallet/run-test-1"; 
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(EmptyAnnotator.class, 
-				TestsUtil.getTypeSystem("desc/TypeSystem.xml"), 
+				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"), 
 				MalletDataWriter.PARAM_ANNOTATION_HANDLER,
 				"org.cleartk.example.ExamplePOSAnnotationHandler",
 				MalletDataWriter.PARAM_OUTPUT_DIRECTORY,
@@ -158,7 +158,7 @@ public class RunMalletTests {
 	public void runTest2() throws Exception {
 		String outputDirectory = "test/data/mallet/run-test-2"; 
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(EmptyAnnotator.class, 
-				TestsUtil.getTypeSystem("desc/TypeSystem.xml"), 
+				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"), 
 				MalletDataWriter.PARAM_ANNOTATION_HANDLER,
 				"org.cleartk.example.ExamplePOSAnnotationHandler",
 				MalletDataWriter.PARAM_OUTPUT_DIRECTORY,

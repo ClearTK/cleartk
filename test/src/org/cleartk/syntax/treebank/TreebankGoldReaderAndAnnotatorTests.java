@@ -56,7 +56,7 @@ public class TreebankGoldReaderAndAnnotatorTests {
 		String expectedText = "Complex trait analysis of the mouse striatum: independent QTLs modulate volume and neuron number";
 
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				TreebankGoldAnnotator.class, TestsUtil.getTypeSystem("desc/TypeSystem.xml"));
+				TreebankGoldAnnotator.class, TestsUtil.getTypeSystem("org.cleartk.TypeSystem"));
 		TreebankGoldAnnotator treebankGoldAnnotator = new TreebankGoldAnnotator();
 		treebankGoldAnnotator.initialize(engine.getUimaContext());
 		

@@ -89,7 +89,7 @@ public class WhiteSpaceExtractorTests {
 	public void testExtract() throws Exception{
 			AnalysisEngine engine = TestsUtil.getAnalysisEngine(
 					WhiteSpaceExtractorTests.Annotator.class,
-					TestsUtil.getTypeSystem("desc/TypeSystem.xml"));
+					TestsUtil.getTypeSystem("org.cleartk.TypeSystem"));
 			JCas jCas = TestsUtil.process(engine,"This is some test text.");
 			FSIndex fsIndex = jCas.getAnnotationIndex(Token.type);
 

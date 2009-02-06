@@ -53,14 +53,14 @@ public class OpenNLPTreebankParserTests {
 		try {
 			TestsUtil.getAnalysisEngine(
 					OpenNLPTreebankParser.class,
-					TestsUtil.getTypeSystem("desc/TypeSystem.xml"));
+					TestsUtil.getTypeSystem("org.cleartk.TypeSystem"));
 			Assert.fail("expected error for missing parser parameters");
 		} catch (ResourceInitializationException e) {}
 
 		try {
 			TestsUtil.getAnalysisEngine(
 					OpenNLPTreebankParser.class,
-					TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
+					TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
 					"buildModelFile", "resources/test/models/fox_dog_parser/build.bin.gz");
 			Assert.fail("expected error for missing parser parameters");
 		} catch (ResourceInitializationException e) {}
@@ -68,7 +68,7 @@ public class OpenNLPTreebankParserTests {
 		try {
 			TestsUtil.getAnalysisEngine(
 					OpenNLPTreebankParser.class,
-					TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
+					TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
 					"buildModelFile", "resources/test/models/fox_dog_parser/build.bin.gz",
 					"checkModelFile", "resources/test/models/fox_dog_parser/check.bin.gz");
 			Assert.fail("expected error for missing parser parameters");
@@ -77,7 +77,7 @@ public class OpenNLPTreebankParserTests {
 		try {
 			TestsUtil.getAnalysisEngine(
 					OpenNLPTreebankParser.class,
-					TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
+					TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
 					"buildModelFile", "resources/test/models/fox_dog_parser/build.bin.gz",
 					"checkModelFile", "resources/test/models/fox_dog_parser/check.bin.gz",
 					"chunkModelFile", "resources/test/models/fox_dog_parser/chunk.bin.gz");
@@ -89,7 +89,7 @@ public class OpenNLPTreebankParserTests {
 	public void test() throws UIMAException {
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
 				OpenNLPTreebankParser.class,
-				TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
+				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
 				"buildModelFile", "test/models/fox_dog_parser/build.bin.gz",
 				"checkModelFile", "test/models/fox_dog_parser/check.bin.gz",
 				"chunkModelFile", "test/models/fox_dog_parser/chunk.bin.gz",
@@ -157,7 +157,7 @@ public class OpenNLPTreebankParserTests {
 	public void testNoPos() throws UIMAException {
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
 				OpenNLPTreebankParser.class,
-				TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
+				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
 				"buildModelFile", "test/models/fox_dog_parser/build.bin.gz",
 				"checkModelFile", "test/models/fox_dog_parser/check.bin.gz",
 				"chunkModelFile", "test/models/fox_dog_parser/chunk.bin.gz",
@@ -185,7 +185,7 @@ public class OpenNLPTreebankParserTests {
 	public void testLongParse() throws UIMAException {
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
 				OpenNLPTreebankParser.class,
-				TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
+				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
 				"buildModelFile", "test/models/fox_dog_parser/build.bin.gz",
 				"checkModelFile", "test/models/fox_dog_parser/check.bin.gz",
 				"chunkModelFile", "test/models/fox_dog_parser/chunk.bin.gz",

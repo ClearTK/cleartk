@@ -57,7 +57,7 @@ public class UIMAUtilTests {
 	public void testToFSArray() throws ResourceInitializationException {
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
 				EmptyAnnotator.class,
-				TestsUtil.getTypeSystem("desc/TypeSystem.xml"));
+				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"));
 		JCas jCas = engine.newJCas();
 
 		FSArray tokens = UIMAUtil.toFSArray(jCas, null); 

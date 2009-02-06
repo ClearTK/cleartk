@@ -72,7 +72,7 @@ public class XReaderTests {
 	public void testReaderXmi() throws IOException, UIMAException {
 
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				XWriter.class, TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
+				XWriter.class, TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
 				XWriter.PARAM_OUTPUT_DIRECTORY, this.inputDir.getPath());
 		JCas jCas = engine.newJCas();
 		TestsUtil.createTokens(jCas,
@@ -85,7 +85,7 @@ public class XReaderTests {
 
 		CollectionReader reader = TestsUtil.getCollectionReader(
 				XReader.class,
-				TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
+				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
 				XReader.PARAM_FILE_OR_DIRECTORY, new File(inputDir, "test.xmi").getPath());
 		
 		Assert.assertEquals(0, reader.getProgress()[0].getCompleted());
@@ -110,7 +110,7 @@ public class XReaderTests {
 	public void testReaderXcas() throws IOException, UIMAException {
 
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				XWriter.class, TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
+				XWriter.class, TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
 				XWriter.PARAM_OUTPUT_DIRECTORY, this.inputDir.getPath(),
 				XWriter.PARAM_XML_SCHEME, XWriter.XCAS);
 		JCas jCas = engine.newJCas();
@@ -124,7 +124,7 @@ public class XReaderTests {
 
 		CollectionReader reader = TestsUtil.getCollectionReader(
 				XReader.class,
-				TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
+				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
 				XReader.PARAM_FILE_OR_DIRECTORY, "test/data/xmi/test.xcas",
 				XReader.PARAM_XML_SCHEME, XReader.XCAS);
 		

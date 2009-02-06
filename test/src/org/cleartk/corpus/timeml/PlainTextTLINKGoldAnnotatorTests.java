@@ -64,18 +64,18 @@ public class PlainTextTLINKGoldAnnotatorTests {
 	public void test_wsj_0106() throws UIMAException, IOException {
 		CollectionReader reader = TestsUtil.getCollectionReader(
 				PlainTextCollectionReader.class, 
-				TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
+				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
 				PlainTextCollectionReader.PARAM_VIEW_NAME,
 				TimeMLGoldAnnotator.TIMEML_VIEW_NAME,
 				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY,
 				"test/data/corpus/timeml/wsj_0106.tml");
 		AnalysisEngine timemlEngine = TestsUtil.getAnalysisEngine(
 				TimeMLGoldAnnotator.class,
-				TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
+				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
 				TimeMLGoldAnnotator.PARAM_LOAD_TLINKS, false);
 		AnalysisEngine plainTextEngine = TestsUtil.getAnalysisEngine(
 				PlainTextTLINKGoldAnnotator.class,
-				TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
+				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
 				PlainTextTLINKGoldAnnotator.PARAM_TLINK_FILE_URL,
 				this.webUrl);
 		JCas jCas = new TestsUtil.JCasIterable(reader, timemlEngine, plainTextEngine).next();
@@ -118,18 +118,18 @@ public class PlainTextTLINKGoldAnnotatorTests {
 	public void test_wsj_0106_alternate() throws UIMAException, IOException {
 		CollectionReader reader = TestsUtil.getCollectionReader(
 				PlainTextCollectionReader.class, 
-				TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
+				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
 				PlainTextCollectionReader.PARAM_VIEW_NAME,
 				TimeMLGoldAnnotator.TIMEML_VIEW_NAME,
 				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY,
 				"test/data/corpus/timeml/wsj_0106.tml");
 		AnalysisEngine timemlEngine = TestsUtil.getAnalysisEngine(
 				TimeMLGoldAnnotator.class,
-				TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
+				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
 				TimeMLGoldAnnotator.PARAM_LOAD_TLINKS, false);
 		AnalysisEngine plainTextEngine = TestsUtil.getAnalysisEngine(
 				PlainTextTLINKGoldAnnotator.class,
-				TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
+				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
 				PlainTextTLINKGoldAnnotator.PARAM_TLINK_FILE_URL,
 				this.fileUrl);
 		JCas jCas = new TestsUtil.JCasIterable(reader, timemlEngine, plainTextEngine).next();

@@ -107,7 +107,7 @@ public class InstanceConsumer_ImplBaseTests {
 		try {
 			TestsUtil.getAnalysisEngine(
 					InstanceConsumer_ImplBaseTests.Consumer.class,
-					TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
+					TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
 					InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER, "Foo");
 			Assert.fail("expected exception with bad AnnotationHandler name");
 		} catch (ResourceInitializationException e) {}
@@ -119,7 +119,7 @@ public class InstanceConsumer_ImplBaseTests {
 		// get a UimaContext containing a producer class
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
 				EmptyAnnotator.class,
-				TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
+				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
 				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER,
 				InstanceConsumer_ImplBaseTests.HandlerOne.class.getName());
 		UimaContext context = engine.getUimaContext();
@@ -164,7 +164,7 @@ public class InstanceConsumer_ImplBaseTests {
 		// initialize a simple AnalysisEngine
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
 				EmptyAnnotator.class,
-				TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
+				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
 				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER,
 				producerClass.getName());
 		

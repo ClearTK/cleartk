@@ -58,7 +58,7 @@ public class RunMaxentTests {
 	public void runTest1() throws Exception {
 		String outputDirectory = "test/data/opennlp/runtest1"; 
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(MaxentDataWriter.class, 
-				TestsUtil.getTypeSystem("desc/TypeSystem.xml"), 
+				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"), 
 				ContextValueEncoderFactory.PARAM_COMPRESS,
 				false,
 				MaxentDataWriter.PARAM_ANNOTATION_HANDLER,
@@ -134,7 +134,7 @@ public class RunMaxentTests {
 	public void runTest2() throws Exception {
 		String outputDirectory = "test/data/opennlp/runtest2"; 
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(MaxentDataWriter.class, 
-				TestsUtil.getTypeSystem("desc/TypeSystem.xml"), 
+				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"), 
 				ContextValueEncoderFactory.PARAM_COMPRESS,
 				true,
 				MaxentDataWriter.PARAM_ANNOTATION_HANDLER,

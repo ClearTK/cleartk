@@ -50,7 +50,7 @@ public class TestsUtilTests {
 	public void testCreateTokens() throws ResourceInitializationException {
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
 				EmptyAnnotator.class,
-				TestsUtil.getTypeSystem("desc/TypeSystem.xml"));
+				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"));
 	
 		JCas jCas = engine.newJCas();
 		String text = "What if we built a rocket ship made of cheese?" +
@@ -146,7 +146,7 @@ public class TestsUtilTests {
 	@Test
 	public void testSetConfigurationParameters() throws ResourceInitializationException {
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				EmptyAnnotator.class, TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
+				EmptyAnnotator.class, TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
 				"myBoolean", true,
 				"myBooleans", new Boolean[] {true, false, true, false}, 
 				"myFloat", 1.0f,

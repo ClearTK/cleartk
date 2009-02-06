@@ -60,7 +60,7 @@ public class GeniaPosGoldReaderTests {
 	@Test
 	public void testReader() throws CASException, UIMAException, IOException {
 		CollectionReader reader = TestsUtil.getCollectionReader(GeniaPosGoldReader.class, TestsUtil
-				.getTypeSystem("desc/TypeSystem.xml"), GeniaPosGoldReader.PARAM_GENIA_CORPUS,
+				.getTypeSystem("org.cleartk.TypeSystem"), GeniaPosGoldReader.PARAM_GENIA_CORPUS,
 				"test/data/corpus/genia/GENIAcorpus3.02.articleA.pos.xml", GeniaPosGoldReader.PARAM_LOAD_TOKENS, true,
 				GeniaPosGoldReader.PARAM_LOAD_SENTENCES, true, GeniaPosGoldReader.PARAM_LOAD_POS_TAGS, true);
 
@@ -77,7 +77,7 @@ public class GeniaPosGoldReaderTests {
 		assertEquals("VBZ", token.getPos());
 
 		reader = TestsUtil.getCollectionReader(GeniaPosGoldReader.class, TestsUtil
-				.getTypeSystem("desc/TypeSystem.xml"), GeniaPosGoldReader.PARAM_GENIA_CORPUS,
+				.getTypeSystem("org.cleartk.TypeSystem"), GeniaPosGoldReader.PARAM_GENIA_CORPUS,
 				"test/data/corpus/genia/GENIAcorpus3.02.articleA.pos.xml", GeniaPosGoldReader.PARAM_LOAD_TOKENS, false,
 				GeniaPosGoldReader.PARAM_LOAD_SENTENCES, false, GeniaPosGoldReader.PARAM_LOAD_POS_TAGS, false);
 
@@ -95,7 +95,7 @@ public class GeniaPosGoldReaderTests {
 		IOException ioe = null;
 		try {
 			reader = TestsUtil.getCollectionReader(GeniaPosGoldReader.class, TestsUtil
-				.getTypeSystem("desc/TypeSystem.xml"), GeniaPosGoldReader.PARAM_GENIA_CORPUS,
+				.getTypeSystem("org.cleartk.TypeSystem"), GeniaPosGoldReader.PARAM_GENIA_CORPUS,
 				"test/data/corpus/genia/GENIAcorpus3.02.articleA.pos.xml", GeniaPosGoldReader.PARAM_LOAD_TOKENS, false,
 				GeniaPosGoldReader.PARAM_LOAD_SENTENCES, false, GeniaPosGoldReader.PARAM_LOAD_POS_TAGS, false,
 				GeniaPosGoldReader.PARAM_ARTICLE_IDS_LIST, "asdf");
@@ -107,7 +107,7 @@ public class GeniaPosGoldReaderTests {
 		JDOMException jde = null;
 		try {
 			reader = TestsUtil.getCollectionReader(GeniaPosGoldReader.class, TestsUtil
-				.getTypeSystem("desc/TypeSystem.xml"), GeniaPosGoldReader.PARAM_GENIA_CORPUS,
+				.getTypeSystem("org.cleartk.TypeSystem"), GeniaPosGoldReader.PARAM_GENIA_CORPUS,
 				"test/data/corpus/genia/article_ids.txt");
 		}catch (ResourceInitializationException rie) {
 			jde = (JDOMException) rie.getCause();
@@ -115,7 +115,7 @@ public class GeniaPosGoldReaderTests {
 		assertNotNull(jde);
 
 		reader = TestsUtil.getCollectionReader(GeniaPosGoldReader.class, TestsUtil
-				.getTypeSystem("desc/TypeSystem.xml"), GeniaPosGoldReader.PARAM_GENIA_CORPUS,
+				.getTypeSystem("org.cleartk.TypeSystem"), GeniaPosGoldReader.PARAM_GENIA_CORPUS,
 				"test/data/corpus/genia/GENIAcorpus3.02.articleA.pos.xml", GeniaPosGoldReader.PARAM_LOAD_TOKENS, false,
 				GeniaPosGoldReader.PARAM_LOAD_SENTENCES, false, GeniaPosGoldReader.PARAM_LOAD_POS_TAGS, false,
 				GeniaPosGoldReader.PARAM_ARTICLE_IDS_LIST, "test/data/corpus/genia/article_ids.txt");

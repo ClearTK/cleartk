@@ -457,7 +457,7 @@ public class PredicateArgumentHandlerTests {
 	private AnalysisEngine getEngine() throws ResourceInitializationException {
 		return TestsUtil.getAnalysisEngine(
 			EmptyAnnotator.class,
-			TestsUtil.getTypeSystem("desc/TypeSystem.xml"));	
+			TestsUtil.getTypeSystem("org.cleartk.TypeSystem"));	
 	}
 	
 	private void setTokens(JCas jCas) {

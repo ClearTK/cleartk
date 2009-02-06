@@ -67,7 +67,7 @@ public class ExamplePOSPlainTextWriterTests {
 	public void test() throws Exception {
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
 				ExamplePOSPlainTextWriter.class,
-				TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
+				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
 				ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY,
 				this.outputDirectory.getPath());
 		

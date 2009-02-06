@@ -76,7 +76,7 @@ public class FileSystemEncoderFactoryTests {
 	public void test() throws UIMAException, IOException {
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
 				EmptyAnnotator.class,
-				TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
+				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
 				DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY,
 				this.outputDirectory.getPath());
 		UimaContext context = engine.getUimaContext();

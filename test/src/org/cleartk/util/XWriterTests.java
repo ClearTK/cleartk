@@ -70,7 +70,7 @@ public class XWriterTests {
 	@Test
 	public void testXmi() throws Exception {
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				XWriter.class, TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
+				XWriter.class, TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
 				XWriter.PARAM_OUTPUT_DIRECTORY, this.outputDir.getPath());
 		JCas jCas = engine.newJCas();
 		TestsUtil.createTokens(jCas,
@@ -109,7 +109,7 @@ public class XWriterTests {
 	@Test
 	public void testXcas() throws Exception {
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				XWriter.class, TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
+				XWriter.class, TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
 				XWriter.PARAM_OUTPUT_DIRECTORY, this.outputDir.getPath(),
 				XWriter.PARAM_XML_SCHEME, XWriter.XCAS);
 		JCas jCas = engine.newJCas();

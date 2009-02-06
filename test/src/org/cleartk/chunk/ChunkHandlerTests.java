@@ -75,7 +75,7 @@ public class ChunkHandlerTests {
 	public void testChunkHandler() throws ResourceInitializationException, AnalysisEngineProcessException {
 		  AnalysisEngine engine = TestsUtil.getAnalysisEngine(
 				    EmptyAnnotator.class,
-				    TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
+				    TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
 		  			ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS, "org.cleartk.type.Token",
 		  			ChunkerHandler.PARAM_SEQUENCE_CLASS, "org.cleartk.type.Sentence",
 		  			ChunkerHandler.PARAM_CHUNK_LABELER_CLASS, "org.cleartk.chunk.DefaultChunkLabeler",

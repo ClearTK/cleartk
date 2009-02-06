@@ -66,7 +66,7 @@ public class LineWriterTests {
 	public void test1() throws Exception {
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
 					LineWriter.class,
-					TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
+					TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
 					LineWriter.PARAM_OUTPUT_DIRECTORY, this.outputDir.getPath(), 
 					LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS, "org.cleartk.type.Token",
 					LineWriter.PARAM_BLOCK_ANNOTATION_CLASS, "org.cleartk.type.Sentence",
@@ -156,7 +156,7 @@ public class LineWriterTests {
 	public void test2() throws Exception {
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
 					LineWriter.class,
-					TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
+					TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
 					LineWriter.PARAM_OUTPUT_FILE, new File(outputDir, "output.txt").getPath(), 
 					LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS, "org.cleartk.type.Token",
 					LineWriter.PARAM_ANNOTATION_WRITER_CLASS, "org.cleartk.util.linewriter.TestTokenWriter");
@@ -197,7 +197,7 @@ public class LineWriterTests {
 	public void test3() throws Exception {
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
 					LineWriter.class,
-					TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
+					TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
 					LineWriter.PARAM_OUTPUT_FILE, new File(outputDir, "output.txt").getPath(), 
 					LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS, "org.cleartk.type.Sentence",
 					LineWriter.PARAM_BLOCK_ANNOTATION_CLASS, "org.apache.uima.jcas.tcas.DocumentAnnotation",
@@ -355,7 +355,7 @@ public class LineWriterTests {
 	public void test4() throws Exception {
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
 					LineWriter.class,
-					TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
+					TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
 					LineWriter.PARAM_OUTPUT_FILE, new File(outputDir, "output.txt").getPath(), 
 					LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS, "org.cleartk.type.Token",
 					LineWriter.PARAM_ANNOTATION_WRITER_CLASS, "org.cleartk.util.linewriter.annotation.TokenPOSWriter",
@@ -400,7 +400,7 @@ public class LineWriterTests {
 	public void test5() throws Exception {
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
 					LineWriter.class,
-					TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
+					TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
 					LineWriter.PARAM_OUTPUT_DIRECTORY, outputDir.getPath(), 
 					LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS, "org.cleartk.type.Token",
 					LineWriter.PARAM_FILE_SUFFIX, "txt",

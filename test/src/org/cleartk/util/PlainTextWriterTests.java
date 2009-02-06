@@ -64,12 +64,12 @@ public class PlainTextWriterTests {
 		try {
 			TestsUtil.getAnalysisEngine(
 					PlainTextWriter.class,
-					TestsUtil.getTypeSystem("desc/TypeSystem.xml"));
+					TestsUtil.getTypeSystem("org.cleartk.TypeSystem"));
 			Assert.fail("expected exception with output directory not specified");
 		} catch (ResourceInitializationException e) {}
 		
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				PlainTextWriter.class, TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
+				PlainTextWriter.class, TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
 				PlainTextWriter.PARAM_OUTPUT_DIRECTORY, this.outputDir.getPath());
 		JCas jCas = engine.newJCas();
 		String text = "What if we built a large\r\n, wooden badger?";

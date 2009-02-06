@@ -87,7 +87,7 @@ public class VerbClauseTemporalHandlerTests {
 	public void test() throws UIMAException {
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
 				EmptyAnnotator.class,
-				TestsUtil.getTypeSystem("desc/TypeSystem.xml"));
+				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"));
 		JCas jCas = engine.newJCas();
 		DocumentUtil.createDocument(jCas, "bought-milk", "bought-milk");
 		TestsUtil.createTokens(jCas,

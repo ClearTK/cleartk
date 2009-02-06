@@ -54,7 +54,7 @@ public class DistanceExtractorTests {
 
 	@Test
 	public void test1() throws Exception {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(EmptyAnnotator.class, TestsUtil.getTypeSystem("desc/TypeSystem.xml"));
+		AnalysisEngine engine = TestsUtil.getAnalysisEngine(EmptyAnnotator.class, TestsUtil.getTypeSystem("org.cleartk.TypeSystem"));
 		JCas jCas = engine.newJCas();
 		
 		TestsUtil.createTokens(jCas, "A simple sentence to test the distance of tokens from each other.", "A simple sentence to test the distance of tokens from each other .", null, null);

@@ -59,7 +59,7 @@ public class DefaultChunkLabelerTests {
 	public void testClassifierAnnotator() throws ResourceInitializationException, AnalysisEngineProcessException {
 		  AnalysisEngine engine = TestsUtil.getAnalysisEngine(
 				    EmptyAnnotator.class,
-				    TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
+				    TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
 		  			"ChunkAnnotationClass", "org.cleartk.type.Token",
 		  			"LabeledAnnotationClass", "org.cleartk.token.chunk.type.Subtoken"
 		  			);
@@ -140,7 +140,7 @@ public class DefaultChunkLabelerTests {
 	public void testDataWriter() throws ResourceInitializationException, AnalysisEngineProcessException {
 		  AnalysisEngine engine = TestsUtil.getAnalysisEngine(
 				    EmptyAnnotator.class,
-				    TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
+				    TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
 		  			"ChunkAnnotationClass", "org.cleartk.type.Token",
 		  			"LabeledAnnotationClass", "org.cleartk.token.chunk.type.Subtoken"
 		  			);
@@ -203,7 +203,7 @@ public class DefaultChunkLabelerTests {
 	public void testGetChunkLabel() throws ResourceInitializationException, AnalysisEngineProcessException {
 		  AnalysisEngine engine = TestsUtil.getAnalysisEngine(
 				    EmptyAnnotator.class,
-				    TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
+				    TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
 		  			"ChunkAnnotationClass", "org.cleartk.ne.type.NamedEntityMention",
 		  			"ChunkLabelFeature", "mentionType",
 		  			"LabeledAnnotationClass", "org.cleartk.type.Token"

@@ -72,17 +72,17 @@ public class TimeMLWriterTests {
 	public void test() throws UIMAException, IOException, JDOMException {
 		CollectionReader reader = TestsUtil.getCollectionReader(
 				PlainTextCollectionReader.class, 
-				TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
+				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
 				PlainTextCollectionReader.PARAM_VIEW_NAME,
 				TimeMLGoldAnnotator.TIMEML_VIEW_NAME,
 				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY,
 				this.inputFile.getPath());
 		AnalysisEngine annotator = TestsUtil.getAnalysisEngine(
 				TimeMLGoldAnnotator.class,
-				TestsUtil.getTypeSystem("desc/TypeSystem.xml"));
+				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"));
 		AnalysisEngine writer = TestsUtil.getAnalysisEngine(
 				TimeMLWriter.class,
-				TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
+				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
 				TimeMLWriter.PARAM_OUTPUT_DIRECTORY,
 				this.outputDir.getPath());
 		

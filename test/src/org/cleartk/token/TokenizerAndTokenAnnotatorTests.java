@@ -232,7 +232,7 @@ public class TokenizerAndTokenAnnotatorTests {
 	@Test
 	public void ticket176() throws ResourceInitializationException, AnalysisEngineProcessException {
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(TokenAnnotator.class, TestsUtil
-				.getTypeSystem("desc/TypeSystem.xml"), TokenAnnotator.PARAM_TOKEN_TYPE,
+				.getTypeSystem("org.cleartk.TypeSystem"), TokenAnnotator.PARAM_TOKEN_TYPE,
 				"org.cleartk.token.chunk.type.Subtoken", TokenAnnotator.PARAM_TOKENIZER,
 				"org.cleartk.token.util.Subtokenizer");
 
@@ -302,7 +302,7 @@ public class TokenizerAndTokenAnnotatorTests {
 	// try {
 	// AnalysisEngine engine = TestsUtil.getAnalysisEngine(
 	// TokenAnnotator.class,
-	// TestsUtil.getTypeSystem("desc/TypeSystem.xml"),
+	// TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
 	// TokenAnnotator.PARAM_TOKEN_TYPE,
 	// "org.cleartk.token.chunk.type.Subtoken",
 	// TokenAnnotator.PARAM_TOKENIZER,

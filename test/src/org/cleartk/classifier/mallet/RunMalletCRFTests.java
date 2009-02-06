@@ -56,7 +56,7 @@ public class RunMalletCRFTests {
 	public void runTest1() throws Exception {
 		String outputDirectory = "test/data/mallet/run-crf-test-1"; 
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(MalletCRFDataWriter.class, 
-				TestsUtil.getTypeSystem("desc/TypeSystem.xml"), 
+				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"), 
 				MalletCRFDataWriter.PARAM_ANNOTATION_HANDLER,
 				"org.cleartk.example.ExamplePOSAnnotationHandler",
 				MalletCRFDataWriter.PARAM_OUTPUT_DIRECTORY,
