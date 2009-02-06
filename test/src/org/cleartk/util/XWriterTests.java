@@ -147,12 +147,12 @@ public class XWriterTests {
 	@Test
 	public void testDescriptor() throws UIMAException, IOException {
 		try {
-			TestsUtil.getAnalysisEngine("desc/util/XWriter.xml");
+			TestsUtil.getAnalysisEngine("src/org/cleartk/util/XWriter.xml");
 			Assert.fail("expected error when no output directory was specified");
 		} catch (ResourceInitializationException e) {}
 		
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				"desc/util/XWriter.xml",
+				"src/org/cleartk/util/XWriter.xml",
 				XWriter.PARAM_OUTPUT_DIRECTORY, this.outputDir.getPath());
 		Object dir = engine.getConfigParameterValue(XWriter.PARAM_OUTPUT_DIRECTORY);
 		Assert.assertEquals(this.outputDir.getPath(), dir);

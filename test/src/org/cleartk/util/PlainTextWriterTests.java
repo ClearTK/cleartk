@@ -102,12 +102,12 @@ public class PlainTextWriterTests {
 	@Test
 	public void testDescriptor() throws Exception {
 		try {
-			TestsUtil.getAnalysisEngine("desc/util/PlainTextWriter.xml");
+			TestsUtil.getAnalysisEngine("src/org/cleartk/util/PlainTextWriter.xml");
 			Assert.fail("expected exception with output directory not specified");
 		} catch (ResourceInitializationException e) {}
 
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				"desc/util/PlainTextWriter.xml",
+				"src/org/cleartk/util/PlainTextWriter.xml",
 				PlainTextWriter.PARAM_OUTPUT_DIRECTORY, this.outputDir.getPath());
 		engine.collectionProcessComplete();
 	}
