@@ -50,6 +50,10 @@ public class Feature {
 		this.name = name;
 		this.value = value;
 	}
+	
+	public static Feature createFeature(String namePrefix, Feature feature) {
+		return new Feature(createName(namePrefix, feature.name), feature.value);
+	}
 
 	public Object getValue() {
 		return value;
