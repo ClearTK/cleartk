@@ -168,17 +168,4 @@ public class TokenAnnotator extends JCasAnnotator_ImplBase {
 		}
 	}
 
-		
-//		try {
-//			String text = jCas.getDocumentText();
-//			List<Token> pojoTokens = tokenizer.getTokens(text);
-//			for (Token pojoToken : pojoTokens) {
-//				int tokenBegin = pojoToken.getBegin();
-//				int tokenEnd = pojoToken.getEnd();
-//				tokenConstructor.newInstance(jCas, tokenBegin, tokenEnd).addToIndexes();
-//			}
-//		} catch(Exception e) {
-//			throw new AnalysisEngineProcessException(e);
-//		}
-//	}
 }
