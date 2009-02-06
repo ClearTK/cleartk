@@ -336,7 +336,7 @@ public class LineWriterTests {
 	private ResourceInitializationException getResourceInitializationException(Object... params) throws Exception{
 		ResourceInitializationException rie = null;
 		try {
-			TestsUtil.getAnalysisEngine("desc/util/linewriter/LineWriter.xml", params);
+			TestsUtil.getAnalysisEngine("src/org/cleartk/util/linewriter/LineWriter.xml", params);
 		}
 		catch (ResourceInitializationException e) {
 			rie = e;
