@@ -28,6 +28,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.util.regex.Pattern;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
@@ -35,6 +36,8 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
+import org.cleartk.classifier.ClassifierAnnotator;
+import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.DocumentUtil;
@@ -442,4 +445,35 @@ public class LineWriterTests {
 		Assert.assertEquals(expectedText, actualText);
 	}
 
+	@Test
+	public void testLineWriterAfterChunkTokenizer() throws Exception {
+		AnalysisEngine[] engines = new AnalysisEngine[]{
+				TestsUtil.getAnalysisEngine("org.cleartk.sentence.SentenceSegmenter"),
+				TestsUtil.getAnalysisEngine("org.cleartk.token.Subtokenizer"),
+				TestsUtil.getAnalysisEngine("org.cleartk.token.chunk.ChunkTokenizer",
+						ClassifierAnnotator.PARAM_CLASSIFIER_JAR, "test/data/token/chunk/model.jar"),
+				TestsUtil.getAnalysisEngine("org.cleartk.util.linewriter.LineWriter",
+						LineWriter.PARAM_OUTPUT_DIRECTORY, this.outputDir.getPath(), 
+						LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS, "org.cleartk.type.Token")};
+		JCas jCas = TestsUtil.newJCas();
+		jCas.setDocumentText(
+				"Philip Ogren didn't write this sentence.\n" +
+				"ROIs are required for CD28-mediated activation of the NF-kappa B/CD28-responsive complex.");
+		DocumentUtil.createDocument(jCas, "id", "path");
+		for (AnalysisEngine engine: engines) {
+			engine.process(jCas);
+		}
+		for (AnalysisEngine engine: engines) {
+			engine.collectionProcessComplete();
+		}
+		
+		// make sure there were two sentences
+		int sentCount = AnnotationRetrieval.getAnnotations(jCas, Sentence.class).size();
+		Assert.assertEquals(2, sentCount);
+		
+		// make sure there no extra blank lines
+		String text = FileUtils.file2String(new File(this.outputDir, "id"));
+		boolean hasDoubleNewlines = Pattern.compile("\n\\s*\n").matcher(text).find();
+		Assert.assertFalse(hasDoubleNewlines);
+	}
 }
