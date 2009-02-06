@@ -67,13 +67,15 @@ public class TreebankGoldReaderAndAnnotatorTests {
 		
 		treebankGoldAnnotator.process(jCas);
 		
-		FSIndex sentenceIndex = jCas.getAnnotationIndex(Sentence.type);
+		JCas goldView = jCas.getView("GoldView");
+		
+		FSIndex sentenceIndex = goldView.getAnnotationIndex(Sentence.type);
 		assertEquals(1, sentenceIndex.size());
 		
-		Sentence firstSentence = AnnotationRetrieval.get(jCas, Sentence.class, 0);
+		Sentence firstSentence = AnnotationRetrieval.get(goldView, Sentence.class, 0);
 		assertEquals(expectedText, firstSentence.getCoveredText());
 		
-		FSIndex topNodeIndex = jCas.getAnnotationIndex(TopTreebankNode.type);
+		FSIndex topNodeIndex = goldView.getAnnotationIndex(TopTreebankNode.type);
 		TopTreebankNode topNode = (TopTreebankNode) topNodeIndex.iterator().next();
 		
 		int i = 0;
