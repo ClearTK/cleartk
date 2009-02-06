@@ -100,7 +100,7 @@ public class TreebankGoldReaderAndAnnotatorTests {
 	@Test
 	public void testAnnotatorDescriptor() throws UIMAException, IOException {
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				"desc/syntax/treebank/TreebankGoldAnnotator.xml");
+				"org.cleartk.syntax.treebank.TreebankGoldAnnotator");
 		engine.collectionProcessComplete();
 	}
 	

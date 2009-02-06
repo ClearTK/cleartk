@@ -61,7 +61,7 @@ public class WindowExtractorTests {
 		// TODO think about what the behavior should be if window annotation
 		// boundary does not fall at boundary
 		// of featureAnnotation
-		JCas jCas = TestsUtil.process("desc/sentence/SentencesAndTokens.xml", "test/data/docs/huckfinn.txt");
+		JCas jCas = TestsUtil.process("org.cleartk.sentence.SentencesAndTokens", "test/data/docs/huckfinn.txt");
 		WindowExtractor leftEx = new WindowExtractor(Token.class, new SpannedTextExtractor(),
 				WindowFeature.ORIENTATION_LEFT, 0, 3);
 		WindowExtractor rightEx = new WindowExtractor(Token.class, new SpannedTextExtractor(),
@@ -132,7 +132,7 @@ public class WindowExtractorTests {
 
 	@Test
 	public void testExtractLeft() throws IOException, UIMAException {
-		JCas jCas = TestsUtil.process("desc/sentence/SentencesAndTokens.xml", "test/data/docs/huckfinn.txt");
+		JCas jCas = TestsUtil.process("org.cleartk.sentence.SentencesAndTokens", "test/data/docs/huckfinn.txt");
 
 		WindowExtractor leftEx03 = new WindowExtractor(Token.class, new SpannedTextExtractor(),
 				WindowFeature.ORIENTATION_LEFT, 0, 3);
@@ -231,7 +231,7 @@ public class WindowExtractorTests {
 
 	@Test
 	public void testExtractRight() throws IOException, UIMAException {
-		JCas jCas = TestsUtil.process("desc/sentence/SentencesAndTokens.xml", "test/data/docs/huckfinn.txt");
+		JCas jCas = TestsUtil.process("org.cleartk.sentence.SentencesAndTokens", "test/data/docs/huckfinn.txt");
 
 		WindowExtractor rightEx03 = new WindowExtractor(Token.class, new SpannedTextExtractor(),
 				WindowFeature.ORIENTATION_RIGHT, 0, 3);
@@ -325,7 +325,7 @@ public class WindowExtractorTests {
 
 	@Test
 	public void testExtractMiddle() throws IOException, UIMAException {
-		JCas jCas = TestsUtil.process("desc/sentence/SentencesAndTokens.xml", "test/data/docs/huckfinn.txt");
+		JCas jCas = TestsUtil.process("org.cleartk.sentence.SentencesAndTokens", "test/data/docs/huckfinn.txt");
 
 		Annotation spanningToken = new Annotation(jCas);
 		spanningToken.setBegin(AnnotationRetrieval.get(jCas, Token.class, 44).getBegin());
@@ -352,7 +352,7 @@ public class WindowExtractorTests {
 
 	@Test
 	public void testTicket23() throws IOException, UIMAException {
-		JCas jCas = TestsUtil.process("desc/sentence/SentencesAndTokens.xml", "test/data/docs/huckfinn.txt");
+		JCas jCas = TestsUtil.process("org.cleartk.sentence.SentencesAndTokens", "test/data/docs/huckfinn.txt");
 
 		// token "place" in "wide. This place was a tolerable long,"
 		Token token = AnnotationRetrieval.get(jCas, Token.class, 60);

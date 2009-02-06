@@ -51,7 +51,7 @@ public class EmptyAnnotatorTests {
 	@Test
 	public void testDescriptor() throws Exception {
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				"src/org/cleartk/util/EmptyAnnotator.xml");
+				"org.cleartk.util.EmptyAnnotator");
 		engine.collectionProcessComplete();
 	}
 

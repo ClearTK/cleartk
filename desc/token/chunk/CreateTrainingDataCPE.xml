@@ -3,7 +3,7 @@
 <collectionReader>
 <collectionIterator>
 <descriptor>
-<import location="../../corpus/genia/GeniaPosGoldReader.xml"/>
+<import name="org.cleartk.corpus.genia.GeniaPosGoldReader"/>
 </descriptor>
 <configurationParameterSettings>
 <nameValuePair>
@@ -30,7 +30,7 @@
 <casProcessors casPoolSize="3" processingUnitThreadCount="1">
 <casProcessor deployment="integrated" name="Subtokenizer">
 <descriptor>
-<import location="../Subtokenizer.xml"/>
+<import name="org.cleartk.token.Subtokenizer"/>
 </descriptor>
 <deploymentParameters/>
 <errorHandling>
@@ -42,7 +42,7 @@
 </casProcessor>
 <casProcessor deployment="integrated" name="ChunkTokenizerDataWriter">
 <descriptor>
-<import location="ChunkTokenizerDataWriter.xml"/>
+<import name="org.cleartk.token.chunk.ChunkTokenizerDataWriter"/>
 </descriptor>
 <deploymentParameters/>
 <errorHandling>

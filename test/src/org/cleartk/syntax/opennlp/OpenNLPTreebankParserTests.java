@@ -217,7 +217,7 @@ public class OpenNLPTreebankParserTests {
 	@Test
 	public void testDescriptor() throws UIMAException, IOException {
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				"desc/syntax/opennlp/OpenNLPTreebankParser.xml");
+				"org.cleartk.syntax.opennlp.OpenNLPTreebankParser");
 		
 		Object buildModelFile = engine.getConfigParameterValue(
 				OpenNLPTreebankParser.PARAM_BUILD_MODEL_FILE);

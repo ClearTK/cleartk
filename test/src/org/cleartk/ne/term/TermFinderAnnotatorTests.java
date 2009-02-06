@@ -80,14 +80,14 @@ public class TermFinderAnnotatorTests {
 		ResourceInitializationException rie = null;
 		try {
 
-			TestsUtil.getAnalysisEngine("desc/ne/term/TermFinderAnnotator.xml");
+			TestsUtil.getAnalysisEngine("org.cleartk.ne.term.TermFinderAnnotator");
 		} catch (ResourceInitializationException e) {
 			rie = e;
 		}
 		assertNotNull(rie);
 
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				"desc/ne/term/TermFinderAnnotator.xml",
+				"org.cleartk.ne.term.TermFinderAnnotator",
 				TermFinderAnnotator.PARAM_TERM_LIST_LISTING,
 				"test/data/termlist/termlist.txt");
 		Object handler = engine

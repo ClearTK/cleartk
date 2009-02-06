@@ -3,7 +3,7 @@
     <collectionReader>
         <collectionIterator>
             <descriptor>
-                <import location="../util/PlainTextCollectionReader.xml"/>
+                <import name="org.cleartk.util.PlainTextCollectionReader"/>
             </descriptor>
             <configurationParameterSettings>
                 <nameValuePair>
@@ -24,7 +24,7 @@
     <casProcessors casPoolSize="3" processingUnitThreadCount="1">
         <casProcessor deployment="integrated" name="TimeMLGoldAnnotator">
             <descriptor>
-                <import location="../corpus/timeml/TimeMLGoldAnnotator.xml"/>
+                <import name="org.cleartk.corpus.timeml.TimeMLGoldAnnotator"/>
             </descriptor>
             <deploymentParameters/>
             <errorHandling>
@@ -44,7 +44,7 @@
         </casProcessor>
         <casProcessor deployment="integrated" name="StandoffPlainTextTLINKGoldAnnotator">
             <descriptor>
-                <import location="../corpus/timeml/PlainTextTLINKGoldAnnotator.xml"/>
+                <import name="org.cleartk.corpus.timeml.PlainTextTLINKGoldAnnotator"/>
             </descriptor>
             <deploymentParameters/>
             <errorHandling>
@@ -64,7 +64,7 @@
         </casProcessor>
         <casProcessor deployment="integrated" name="TreebankAligningAnnotator">
             <descriptor>
-                <import location="../corpus/timeml/TreebankAligningAnnotator.xml"/>
+                <import name="org.cleartk.corpus.timeml.TreebankAligningAnnotator"/>
             </descriptor>
             <deploymentParameters/>
             <errorHandling>
@@ -84,7 +84,7 @@
         </casProcessor>
         <casProcessor deployment="integrated" name="SnowballStemmer">
             <descriptor>
-                <import location="../token/snowball/SnowballStemmer.xml"/>
+                <import name="org.cleartk.token.snowball.SnowballStemmer"/>
             </descriptor>
             <deploymentParameters/>
             <errorHandling>
@@ -96,7 +96,7 @@
         </casProcessor>
         <casProcessor deployment="integrated" name="VerbClauseTemporalDataWriter">
             <descriptor>
-                <import location="VerbClauseTemporalDataWriter.xml"/>
+                <import name="org.cleartk.temporal.VerbClauseTemporalDataWriter"/>
             </descriptor>
             <deploymentParameters/>
             <errorHandling>

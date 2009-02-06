@@ -197,12 +197,12 @@ public class TimeMLGoldAnnotatorTests {
 	
 	@Test
 	public void testAnnotatorDescriptor() throws UIMAException, IOException {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine("desc/corpus/timeml/TimeMLGoldAnnotator.xml");
+		AnalysisEngine engine = TestsUtil.getAnalysisEngine("org.cleartk.corpus.timeml.TimeMLGoldAnnotator");
 		Boolean useTLINKs = (Boolean)engine.getConfigParameterValue(TimeMLGoldAnnotator.PARAM_LOAD_TLINKS);
 		Assert.assertEquals(true, useTLINKs);
 		engine.collectionProcessComplete();
 
-		engine = TestsUtil.getAnalysisEngine("desc/corpus/timeml/TimeMLGoldAnnotator.xml",
+		engine = TestsUtil.getAnalysisEngine("org.cleartk.corpus.timeml.TimeMLGoldAnnotator",
 				TimeMLGoldAnnotator.PARAM_LOAD_TLINKS, false);
 		useTLINKs = (Boolean)engine.getConfigParameterValue(TimeMLGoldAnnotator.PARAM_LOAD_TLINKS);
 		Assert.assertEquals(false, useTLINKs);

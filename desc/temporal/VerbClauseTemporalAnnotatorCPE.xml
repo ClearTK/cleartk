@@ -3,7 +3,7 @@
 <collectionReader>
 <collectionIterator>
 <descriptor>
-<import location="../util/PlainTextCollectionReader.xml"/>
+<import name="org.cleartk.util.PlainTextCollectionReader"/>
 </descriptor>
 <configurationParameterSettings>
 <nameValuePair>
@@ -18,7 +18,7 @@
 <casProcessors casPoolSize="3" processingUnitThreadCount="1">
 <casProcessor deployment="integrated" name="SentencesAndTokens">
 <descriptor>
-<import location="../sentence/SentencesAndTokens.xml"/>
+<import name="org.cleartk.sentence.SentencesAndTokens"/>
 </descriptor>
 <deploymentParameters/>
 <errorHandling>
@@ -30,7 +30,7 @@
 </casProcessor>
 <casProcessor deployment="integrated" name="OpenNLPPOSTagger">
 <descriptor>
-<import location="../token/opennlp/OpenNLPPOSTagger.xml"/>
+<import name="org.cleartk.token.opennlp.OpenNLPPOSTagger"/>
 </descriptor>
 <deploymentParameters/>
 <errorHandling>
@@ -42,7 +42,7 @@
 </casProcessor>
 <casProcessor deployment="integrated" name="SnowballStemmer">
 <descriptor>
-<import location="../token/snowball/SnowballStemmer.xml"/>
+<import name="org.cleartk.token.snowball.SnowballStemmer"/>
 </descriptor>
 <deploymentParameters/>
 <errorHandling>
@@ -54,7 +54,7 @@
 </casProcessor>
 <casProcessor deployment="integrated" name="OpenNLPTreebankParser">
 <descriptor>
-<import location="../syntax/opennlp/OpenNLPTreebankParser.xml"/>
+<import name="org.cleartk.syntax.opennlp.OpenNLPTreebankParser"/>
 </descriptor>
 <deploymentParameters/>
 <errorHandling>
@@ -66,7 +66,7 @@
 </casProcessor>
 <casProcessor deployment="integrated" name="VerbClauseTemporalAnnotator">
 <descriptor>
-<import location="VerbClauseTemporalAnnotator.xml"/>
+<import name="org.cleartk.temporal.VerbClauseTemporalAnnotator"/>
 </descriptor>
 <deploymentParameters/>
 <errorHandling>
@@ -78,7 +78,7 @@
 </casProcessor>
 <casProcessor deployment="integrated" name="TimeMLWriter">
 <descriptor>
-<import location="../corpus/timeml/TimeMLWriter.xml"/>
+<import name="org.cleartk.corpus.timeml.TimeMLWriter"/>
 </descriptor>
 <deploymentParameters/>
 <errorHandling>

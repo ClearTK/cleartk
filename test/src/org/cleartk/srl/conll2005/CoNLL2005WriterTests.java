@@ -44,12 +44,12 @@ public class CoNLL2005WriterTests {
 	@Test
 	public void testCoNLL2005WriterDescriptor() throws UIMAException, IOException {
 		try {
-			TestsUtil.getAnalysisEngine("desc/srl/conll2005/CoNLL2005Writer.xml");
+			TestsUtil.getAnalysisEngine("org.cleartk.srl.conll2005.CoNLL2005Writer");
 			Assert.fail("expected exception without output file parameter");
 		} catch (ResourceInitializationException e) {}
 
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				"desc/srl/conll2005/CoNLL2005Writer.xml",
+				"org.cleartk.srl.conll2005.CoNLL2005Writer",
 				SRLWriter.PARAM_OUTPUT_FILE, "test/data/srl/dev-set-result.txt");
 
 		engine.collectionProcessComplete();

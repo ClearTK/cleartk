@@ -139,13 +139,13 @@ public class GeniaPosGoldReaderTests {
 	public void testAnnotatorDescriptor() throws UIMAException, IOException {
 		AnalysisEngine engine;
 		try {
-			engine = TestsUtil.getAnalysisEngine("desc/corpus/genia/GeniaPosGoldReader.xml");
+			engine = TestsUtil.getAnalysisEngine("org.cleartk.corpus.genia.GeniaPosGoldReader");
 			Assert.fail("expected exception with output directory not specified");
 		}
 		catch (ResourceInitializationException e) {
 		}
 
-		engine = TestsUtil.getAnalysisEngine("desc/corpus/genia/GeniaPosGoldReader.xml",
+		engine = TestsUtil.getAnalysisEngine("org.cleartk.corpus.genia.GeniaPosGoldReader",
 				GeniaPosGoldReader.PARAM_GENIA_CORPUS, "test/data/corpus/genia/GENIAcorpus3.02.articleA.pos.xml");
 
 		String geniaCorpus = (String) engine.getConfigParameterValue(GeniaPosGoldReader.PARAM_GENIA_CORPUS);

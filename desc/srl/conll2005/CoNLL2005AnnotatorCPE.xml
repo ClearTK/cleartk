@@ -3,7 +3,7 @@
 <collectionReader>
 <collectionIterator>
 <descriptor>
-<import location="Conll2005GoldReader.xml"/>
+<import name="org.cleartk.srl.conll2005.Conll2005GoldReader"/>
 </descriptor>
 <configurationParameterSettings>
 <nameValuePair>
@@ -18,7 +18,7 @@
 <casProcessors casPoolSize="3" processingUnitThreadCount="1">
 <casProcessor deployment="integrated" name="Conll2005GoldAnnotator">
 <descriptor>
-<import location="Conll2005GoldAnnotator.xml"/>
+<import name="org.cleartk.srl.conll2005.Conll2005GoldAnnotator"/>
 </descriptor>
 <deploymentParameters/>
 <errorHandling>
@@ -30,7 +30,7 @@
 </casProcessor>
 <casProcessor deployment="integrated" name="SnowballStemmer">
 <descriptor>
-<import location="../../token/snowball/SnowballStemmer.xml"/>
+<import name="org.cleartk.token.snowball.SnowballStemmer"/>
 </descriptor>
 <deploymentParameters/>
 <errorHandling>
@@ -42,7 +42,7 @@
 </casProcessor>
 <casProcessor deployment="integrated" name="ArgumentAnnotator">
 <descriptor>
-<import location="../ArgumentAnnotator.xml"/>
+<import name="org.cleartk.srl.ArgumentAnnotator"/>
 </descriptor>
 <deploymentParameters/>
 <errorHandling>
@@ -62,7 +62,7 @@
 </casProcessor>
 <casProcessor deployment="integrated" name="CoNLL2005Writer">
 <descriptor>
-<import location="CoNLL2005Writer.xml"/>
+<import name="org.cleartk.srl.conll2005.CoNLL2005Writer"/>
 </descriptor>
 <deploymentParameters/>
 <errorHandling>

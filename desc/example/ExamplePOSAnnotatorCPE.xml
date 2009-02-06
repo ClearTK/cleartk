@@ -3,7 +3,7 @@
 <collectionReader>
 <collectionIterator>
 <descriptor>
-<import location="../util/PlainTextCollectionReader.xml"/>
+<import name="org.cleartk.util.PlainTextCollectionReader"/>
 </descriptor>
 <configurationParameterSettings>
 <nameValuePair>
@@ -18,7 +18,7 @@
 <casProcessors casPoolSize="3" processingUnitThreadCount="1">
 <casProcessor deployment="integrated" name="SentenceSegmenter">
 <descriptor>
-<import location="../sentence/SentenceSegmenter.xml"/>
+<import name="org.cleartk.sentence.SentenceSegmenter"/>
 </descriptor>
 <deploymentParameters/>
 <errorHandling>
@@ -30,7 +30,7 @@
 </casProcessor>
 <casProcessor deployment="integrated" name="Tokenizer">
 <descriptor>
-<import location="../token/TokenAnnotator.xml"/>
+<import name="org.cleartk.token.TokenAnnotator"/>
 </descriptor>
 <deploymentParameters/>
 <errorHandling>
@@ -42,7 +42,7 @@
 </casProcessor>
 <casProcessor deployment="integrated" name="SnowballStemmer">
 <descriptor>
-<import location="../token/snowball/SnowballStemmer.xml"/>
+<import name="org.cleartk.token.snowball.SnowballStemmer"/>
 </descriptor>
 <deploymentParameters/>
 <errorHandling>
@@ -54,7 +54,7 @@
 </casProcessor>
 <casProcessor deployment="integrated" name="ExamplePOSAnnotator">
 <descriptor>
-<import location="ExamplePOSAnnotator.xml"/>
+<import name="org.cleartk.example.ExamplePOSAnnotator"/>
 </descriptor>
 <deploymentParameters/>
 <errorHandling>
@@ -74,7 +74,7 @@
 </casProcessor>
 <casProcessor deployment="integrated" name="ExamplePOSPlainTextWriter">
 <descriptor>
-<import location="ExamplePOSPlainTextWriter.xml"/>
+<import name="org.cleartk.example.ExamplePOSPlainTextWriter"/>
 </descriptor>
 <deploymentParameters/>
 <errorHandling>

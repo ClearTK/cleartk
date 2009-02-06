@@ -109,7 +109,7 @@ public class SnowballStemmerTests {
 	@Test
 	public void testDescriptor() throws UIMAException, IOException {
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				"desc/token/snowball/SnowballStemmer.xml");
+				"org.cleartk.token.snowball.SnowballStemmer");
 		
 		Object stemmerName = engine.getConfigParameterValue(
 				SnowballStemmer.PARAM_STEMMER_NAME);

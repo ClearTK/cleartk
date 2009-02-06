@@ -3,7 +3,7 @@
 <collectionReader>
 <collectionIterator>
 <descriptor>
-<import location="../corpus/penntreebank/PennTreebankReader.xml"/>
+<import name="org.cleartk.corpus.penntreebank.PennTreebankReader"/>
 </descriptor>
 <configurationParameterSettings>
 <nameValuePair>
@@ -24,7 +24,7 @@
 <casProcessors casPoolSize="3" processingUnitThreadCount="1">
 <casProcessor deployment="integrated" name="TreebankGoldAnnotator">
 <descriptor>
-<import location="../syntax/treebank/TreebankGoldAnnotator.xml"/>
+<import name="org.cleartk.syntax.treebank.TreebankGoldAnnotator"/>
 </descriptor>
 <deploymentParameters/>
 <errorHandling>
@@ -36,7 +36,7 @@
 </casProcessor>
 <casProcessor deployment="integrated" name="SnowballStemmer">
 <descriptor>
-<import location="../token/snowball/SnowballStemmer.xml"/>
+<import name="org.cleartk.token.snowball.SnowballStemmer"/>
 </descriptor>
 <deploymentParameters/>
 <errorHandling>
@@ -48,7 +48,7 @@
 </casProcessor>
 <casProcessor deployment="integrated" name="ExamplePOSDataWriter">
 <descriptor>
-<import location="ExamplePOSDataWriter.xml"/>
+<import name="org.cleartk.example.ExamplePOSDataWriter"/>
 </descriptor>
 <deploymentParameters/>
 <errorHandling>

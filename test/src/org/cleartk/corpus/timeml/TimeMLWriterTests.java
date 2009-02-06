@@ -102,13 +102,13 @@ public class TimeMLWriterTests {
 	@Test
 	public void testDescriptor() throws UIMAException, IOException {
 		try {
-			TestsUtil.getAnalysisEngine("desc/corpus/timeml/TimeMLWriter.xml");
+			TestsUtil.getAnalysisEngine("org.cleartk.corpus.timeml.TimeMLWriter");
 			Assert.fail("expected failure with no OutputDirectory specified");
 		} catch (ResourceInitializationException e) {}
 		
 		
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				"desc/corpus/timeml/TimeMLWriter.xml",
+				"org.cleartk.corpus.timeml.TimeMLWriter",
 				TimeMLWriter.PARAM_OUTPUT_DIRECTORY, this.outputDir.getPath());
 		Assert.assertEquals(this.outputDir.getPath(), engine.getConfigParameterValue(
 				TimeMLWriter.PARAM_OUTPUT_DIRECTORY));

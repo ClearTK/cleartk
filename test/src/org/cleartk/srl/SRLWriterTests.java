@@ -44,12 +44,12 @@ public class SRLWriterTests {
 	@Test
 	public void testSRLWriterDescriptor() throws UIMAException, IOException {
 		try {
-			TestsUtil.getAnalysisEngine("desc/srl/SRLWriter.xml");
+			TestsUtil.getAnalysisEngine("org.cleartk.srl.SRLWriter");
 			Assert.fail("expected exception without output file parameter");
 		} catch (ResourceInitializationException e) {}
 
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				"desc/srl/SRLWriter.xml",
+				"org.cleartk.srl.SRLWriter",
 				SRLWriter.PARAM_OUTPUT_FILE, "test/data/srl/srl-output.txt");
 
 		engine.collectionProcessComplete();

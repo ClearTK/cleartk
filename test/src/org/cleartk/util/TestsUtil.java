@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -126,12 +127,12 @@ public class TestsUtil {
 			throws UIMAException, IOException {
 		if (isXmi) {
 			CollectionReader reader = TestsUtil.getCollectionReader(XReader.class, typeSystemDescription,
-					XReader.PARAM_XML_SCHEME, "XMI", XReader.PARAM_FILE_OR_DIRECTORY, xmiFileName);
+					XReader.PARAM_XML_SCHEME, "XMI", PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY, xmiFileName);
 
 			return new TestsUtil.JCasIterable(reader).next();
 		} else {
 			CollectionReader reader = TestsUtil.getCollectionReader(XReader.class, typeSystemDescription,
-					XReader.PARAM_XML_SCHEME, "XCAS", XReader.PARAM_FILE_OR_DIRECTORY, xmiFileName);
+					XReader.PARAM_XML_SCHEME, "XCAS", PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY, xmiFileName);
 
 			return new TestsUtil.JCasIterable(reader).next();
 			
@@ -562,13 +563,37 @@ public class TestsUtil {
 	 * @throws UIMAException
 	 * @throws IOException
 	 */
-	public static CollectionReader getCollectionReader(String descriptorPath, Object... parameters)
+	public static CollectionReader getCollectionReaderFromPath(String descriptorPath, Object... parameters)
 			throws UIMAException, IOException {
 		ResourceCreationSpecifier specifier;
 		specifier = TestsUtil.getResourceCreationSpecifier(descriptorPath, parameters);
 		return UIMAFramework.produceCollectionReader(specifier);
 	}
-
+	
+	/**
+	 * Get a CollectionReader from the name (Java-style, dotted) of an XML
+	 * descriptor file, and a set of configuration parameters.
+	 * 
+	 * @param descriptorName
+	 *            The fully qualified, Java-style, dotted name of the XML
+	 *            descriptor file.
+	 * @param parameters
+	 *            Any additional configuration parameters to be set. These
+	 *            should be supplied as (name, value) pairs, so there should
+	 *            always be an even number of parameters.
+	 * @return The AnalysisEngine created from the XML descriptor and the
+	 *         configuration parameters.
+	 * @throws UIMAException
+	 * @throws IOException
+	 */
+	public static CollectionReader getCollectionReader(String descriptorName, Object... parameters)
+	throws UIMAException, IOException {
+		Import_impl imp = new Import_impl();
+		imp.setName(descriptorName);
+		URL url = imp.findAbsoluteUrl(UIMAFramework.newDefaultResourceManager());
+		ResourceSpecifier specifier = TestsUtil.getResourceCreationSpecifier(url, parameters);
+		return UIMAFramework.produceCollectionReader(specifier);
+	}
 	/**
 	 * Get an AnalysisEngine from an XML descriptor file and a set of
 	 * configuration parameters.
@@ -584,10 +609,35 @@ public class TestsUtil {
 	 * @throws UIMAException
 	 * @throws IOException
 	 */
-	public static AnalysisEngine getAnalysisEngine(String descriptorPath, Object... parameters) throws UIMAException,
+	public static AnalysisEngine getAnalysisEngineFromPath(String descriptorPath, Object... parameters) throws UIMAException,
 			IOException {
 		ResourceSpecifier specifier;
 		specifier = TestsUtil.getResourceCreationSpecifier(descriptorPath, parameters);
+		return UIMAFramework.produceAnalysisEngine(specifier);
+	}
+	
+	/**
+	 * Get an AnalysisEngine from the name (Java-style, dotted) of an XML
+	 * descriptor file, and a set of configuration parameters.
+	 * 
+	 * @param descriptorName
+	 *            The fully qualified, Java-style, dotted name of the XML
+	 *            descriptor file.
+	 * @param parameters
+	 *            Any additional configuration parameters to be set. These
+	 *            should be supplied as (name, value) pairs, so there should
+	 *            always be an even number of parameters.
+	 * @return The AnalysisEngine created from the XML descriptor and the
+	 *         configuration parameters.
+	 * @throws UIMAException
+	 * @throws IOException
+	 */
+	public static AnalysisEngine getAnalysisEngine(String descriptorName, Object... parameters) throws UIMAException,
+			IOException {
+		Import_impl imp = new Import_impl();
+		imp.setName(descriptorName);
+		URL url = imp.findAbsoluteUrl(UIMAFramework.newDefaultResourceManager());
+		ResourceSpecifier specifier = TestsUtil.getResourceCreationSpecifier(url, parameters);
 		return UIMAFramework.produceAnalysisEngine(specifier);
 	}
 
@@ -738,13 +788,52 @@ public class TestsUtil {
 	 * @throws IOException
 	 */
 	public static ResourceCreationSpecifier getResourceCreationSpecifier(String descriptorPath, Object[] parameters)
-			throws UIMAException, IOException {
+	throws UIMAException, IOException {
+		return TestsUtil.getResourceCreationSpecifier(new XMLInputSource(descriptorPath), parameters);
+	}
+
+	/**
+	 * Parse a ResourceCreationSpecifier from the URL of an XML descriptor file,
+	 * setting additional configuration parameters as necessary.
+	 * 
+	 * @param descriptorURL
+	 *            The URL of the XML descriptor file.
+	 * @param parameters
+	 *            Any additional configuration parameters to be set. These
+	 *            should be supplied as (name, value) pairs, so there should
+	 *            always be an even number of parameters.
+	 * @return The ResourceCreationSpecifier for the XML descriptor with all the
+	 *         configuration parameters set.
+	 * @throws UIMAException
+	 * @throws IOException
+	 */
+	public static ResourceCreationSpecifier getResourceCreationSpecifier(URL descriptorURL, Object[] parameters)
+	throws UIMAException, IOException {
+		return TestsUtil.getResourceCreationSpecifier(new XMLInputSource(descriptorURL), parameters);
+	}
+	
+	/**
+	 * Parse a ResourceCreationSpecifier from XML descriptor file input,
+	 * setting additional configuration parameters as necessary.
+	 * 
+	 * @param xmlInput
+	 *            The descriptor file as an XMLInputSource.
+	 * @param parameters
+	 *            Any additional configuration parameters to be set. These
+	 *            should be supplied as (name, value) pairs, so there should
+	 *            always be an even number of parameters.
+	 * @return The ResourceCreationSpecifier for the XML descriptor with all the
+	 *         configuration parameters set.
+	 * @throws UIMAException
+	 * @throws IOException
+	 */
+	public static ResourceCreationSpecifier getResourceCreationSpecifier(XMLInputSource xmlInput, Object[] parameters)
+	throws UIMAException, IOException {
 		if (parameters.length % 2 != 0) {
 			String message = "a value must be specified for each parameter name";
 			throw new IllegalArgumentException(message);
 		}
 		ResourceCreationSpecifier specifier;
-		XMLInputSource xmlInput = new XMLInputSource(new File(descriptorPath));
 		XMLParser parser = UIMAFramework.getXMLParser();
 		specifier = (ResourceCreationSpecifier) parser.parseResourceSpecifier(xmlInput);
 		ResourceMetaData metaData = specifier.getMetaData();
@@ -754,7 +843,7 @@ public class TestsUtil {
 		}
 		return specifier;
 	}
-
+	
 	/**
 	 * Create configuration parameter declarations and settings from a list of
 	 * (name, value) pairs.

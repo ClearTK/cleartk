@@ -3,7 +3,7 @@
 <collectionReader>
 <collectionIterator>
 <descriptor>
-<import location="../util/PlainTextCollectionReader.xml"/>
+<import name="org.cleartk.util.PlainTextCollectionReader"/>
 </descriptor>
 <configurationParameterSettings>
 <nameValuePair>
@@ -18,7 +18,7 @@
 <casProcessors casPoolSize="3" processingUnitThreadCount="1">
 <casProcessor deployment="integrated" name="SentencesAndTokens">
 <descriptor>
-<import location="../sentence/SentencesAndTokens.xml"/>
+<import name="org.cleartk.sentence.SentencesAndTokens"/>
 </descriptor>
 <deploymentParameters/>
 <errorHandling>
@@ -30,7 +30,7 @@
 </casProcessor>
 <casProcessor deployment="integrated" name="OpenNLPTreebankParser">
 <descriptor>
-<import location="../syntax/opennlp/OpenNLPTreebankParser.xml"/>
+<import name="org.cleartk.syntax.opennlp.OpenNLPTreebankParser"/>
 </descriptor>
 <deploymentParameters/>
 <errorHandling>
@@ -42,7 +42,7 @@
 </casProcessor>
 <casProcessor deployment="integrated" name="PredicateAnnotator">
 <descriptor>
-<import location="PredicateAnnotator.xml"/>
+<import name="org.cleartk.srl.PredicateAnnotator"/>
 </descriptor>
 <deploymentParameters/>
 <errorHandling>
@@ -62,7 +62,7 @@
 </casProcessor>
 <casProcessor deployment="integrated" name="ArgumentAnnotator">
 <descriptor>
-<import location="ArgumentAnnotator.xml"/>
+<import name="org.cleartk.srl.ArgumentAnnotator"/>
 </descriptor>
 <deploymentParameters/>
 <errorHandling>

@@ -57,7 +57,7 @@ import org.junit.Test;
 
 public class TokenizerAndTokenAnnotatorTests {
 
-	String sentencesAndTokensDescriptor = "desc/sentence/SentencesAndTokens.xml";
+	String sentencesAndTokensDescriptor = "org.cleartk.sentence.SentencesAndTokens";
 
 	@Test
 	public void testMarysDog() throws UIMAException, IOException {
@@ -223,7 +223,7 @@ public class TokenizerAndTokenAnnotatorTests {
 
 	@Test
 	public void testDescriptor() throws UIMAException, IOException {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine("desc/token/TokenAnnotator.xml");
+		AnalysisEngine engine = TestsUtil.getAnalysisEngine("org.cleartk.token.TokenAnnotator");
 		assertEquals(null, engine.getConfigParameterValue(TokenAnnotator.PARAM_TOKENIZER));
 		assertEquals(null, engine.getConfigParameterValue(TokenAnnotator.PARAM_TOKEN_TYPE));
 		engine.collectionProcessComplete();

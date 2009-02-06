@@ -369,13 +369,13 @@ public class PredicateArgumentHandlerTests {
 	@Test
 	public void testPredicateDataWriterDescriptor() throws UIMAException, IOException {
 		try {
-			TestsUtil.getAnalysisEngine("desc/srl/PredicateDataWriter.xml");
+			TestsUtil.getAnalysisEngine("org.cleartk.srl.PredicateDataWriter");
 			Assert.fail("expected exception with missing output directory");
 		} catch (ResourceInitializationException e) {}
 			
 		String outputPath = this.predicateOutputDir.getPath();
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				"desc/srl/PredicateDataWriter.xml",
+				"org.cleartk.srl.PredicateDataWriter",
 				DelegatingDataWriter.PARAM_OUTPUT_DIRECTORY, outputPath);
 		
 		Object handler = engine.getConfigParameterValue(
@@ -396,12 +396,12 @@ public class PredicateArgumentHandlerTests {
 	@Test
 	public void testPredicateAnnotationDescriptor() throws UIMAException, IOException {
 		try {
-			TestsUtil.getAnalysisEngine("desc/srl/PredicateAnnotator.xml");
+			TestsUtil.getAnalysisEngine("org.cleartk.srl.PredicateAnnotator");
 			Assert.fail("expected exception with missing classifier jar");
 		} catch (ResourceInitializationException e) {}
 			
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				"desc/srl/PredicateAnnotator.xml",
+				"org.cleartk.srl.PredicateAnnotator",
 				ClassifierAnnotator.PARAM_CLASSIFIER_JAR, "test/data/srl/predicate/model.jar");
 		Object handler = engine.getConfigParameterValue(
 				ClassifierAnnotator.PARAM_ANNOTATION_HANDLER);
@@ -413,13 +413,13 @@ public class PredicateArgumentHandlerTests {
 	@Test
 	public void testArgumentDataWriterDescriptor() throws UIMAException, IOException {
 		try {
-			TestsUtil.getAnalysisEngine("desc/srl/ArgumentDataWriter.xml");
+			TestsUtil.getAnalysisEngine("org.cleartk.srl.ArgumentDataWriter");
 			Assert.fail("expected exception with missing output directory");
 		} catch (ResourceInitializationException e) {}
 			
 		String outputPath = this.argumentOutputDir.getPath();
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				"desc/srl/ArgumentDataWriter.xml",
+				"org.cleartk.srl.ArgumentDataWriter",
 				DelegatingDataWriter.PARAM_OUTPUT_DIRECTORY, outputPath);
 		
 		Object handler = engine.getConfigParameterValue(
@@ -440,12 +440,12 @@ public class PredicateArgumentHandlerTests {
 	@Test
 	public void testArgumentAnnotationDescriptor() throws UIMAException, IOException {
 		try {
-			TestsUtil.getAnalysisEngine("desc/srl/ArgumentAnnotator.xml");
+			TestsUtil.getAnalysisEngine("org.cleartk.srl.ArgumentAnnotator");
 			Assert.fail("expected exception with missing classifier jar");
 		} catch (ResourceInitializationException e) {}
 			
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				"desc/srl/ArgumentAnnotator.xml",
+				"org.cleartk.srl.ArgumentAnnotator",
 				ClassifierAnnotator.PARAM_CLASSIFIER_JAR, "test/data/srl/argument/model.jar");
 		Object handler = engine.getConfigParameterValue(
 				ClassifierAnnotator.PARAM_ANNOTATION_HANDLER);

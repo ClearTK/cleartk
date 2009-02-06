@@ -166,12 +166,12 @@ public class ChunkHandlerTests {
 	@Test
 	public void testChunkTokenizerDescriptor() throws UIMAException, IOException {
 		try {
-			TestsUtil.getAnalysisEngine("desc/token/chunk/ChunkTokenizer.xml");
+			TestsUtil.getAnalysisEngine("org.cleartk.token.chunk.ChunkTokenizer");
 			Assert.fail("expected exception with missing classifier jar");
 		} catch (ResourceInitializationException e) {}
 			
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				"desc/token/chunk/ChunkTokenizer.xml",
+				"org.cleartk.token.chunk.ChunkTokenizer",
 				ClassifierAnnotator.PARAM_CLASSIFIER_JAR, "test/data/token/chunk/model.jar");
 		Object handler = engine.getConfigParameterValue(
 				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER);
@@ -187,20 +187,20 @@ public class ChunkHandlerTests {
 
 		try {
 			TestsUtil.getAnalysisEngine(
-					"desc/token/chunk/ChunkTokenizerDataWriter.xml",
+					"org.cleartk.token.chunk.ChunkTokenizerDataWriter",
 					DelegatingDataWriter.PARAM_DATA_WRITER, MaxentDataWriter.class.getName());
 			Assert.fail("expected exception with missing output directory");
 		} catch (ResourceInitializationException e) {}
 			
 		try {
 			TestsUtil.getAnalysisEngine(
-					"desc/token/chunk/ChunkTokenizerDataWriter.xml",
+					"org.cleartk.token.chunk.ChunkTokenizerDataWriter",
 					DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY, outputPath);
 			Assert.fail("expected exception with missing data writer");
 		} catch (ResourceInitializationException e) {}
 			
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				"desc/token/chunk/ChunkTokenizerDataWriter.xml",
+				"org.cleartk.token.chunk.ChunkTokenizerDataWriter",
 				DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY, outputPath,
 				DelegatingDataWriter.PARAM_DATA_WRITER, MaxentDataWriter.class.getName());
 		

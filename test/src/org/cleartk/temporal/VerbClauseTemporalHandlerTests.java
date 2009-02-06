@@ -193,7 +193,7 @@ public class VerbClauseTemporalHandlerTests {
 	@Test
 	public void testDataWriterDescriptor() throws UIMAException, IOException {
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				"desc/temporal/VerbClauseTemporalDataWriter.xml");
+				"org.cleartk.temporal.VerbClauseTemporalDataWriter");
 		
 		Object handler = engine.getConfigParameterValue(
 				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER);
@@ -213,7 +213,7 @@ public class VerbClauseTemporalHandlerTests {
 	@Test
 	public void testAnnotationDescriptor() throws UIMAException, IOException {
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				"desc/temporal/VerbClauseTemporalAnnotator.xml");
+				"org.cleartk.temporal.VerbClauseTemporalAnnotator");
 		
 		Object handler = engine.getConfigParameterValue(
 				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER);

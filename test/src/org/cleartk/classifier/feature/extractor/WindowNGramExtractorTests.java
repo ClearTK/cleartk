@@ -49,7 +49,7 @@ public class WindowNGramExtractorTests {
 
 	@Test
 	public void testLeftGrams() throws IOException, UIMAException {
-		JCas jCas = TestsUtil.process("desc/token/Subtokenizer.xml", "test/data/docs/huckfinn.txt");    			
+		JCas jCas = TestsUtil.process("org.cleartk.token.Subtokenizer", "test/data/docs/huckfinn.txt");    			
 			
 		Sentence sentence = new Sentence(jCas, 72, 180);
 		sentence.addToIndexes();
@@ -176,7 +176,7 @@ public class WindowNGramExtractorTests {
 
 	@Test
 	public void testRightGrams()  throws IOException, UIMAException {
-		JCas jCas = TestsUtil.process("desc/token/Subtokenizer.xml", "test/data/docs/huckfinn.txt");    			
+		JCas jCas = TestsUtil.process("org.cleartk.token.Subtokenizer", "test/data/docs/huckfinn.txt");    			
 			
 			Sentence sentence = new Sentence(jCas, 72, 180);
 			sentence.addToIndexes();

@@ -328,12 +328,12 @@ public class PlainTextCollectionReaderTests {
 	@Test
 	public void testDescriptor() throws UIMAException, IOException {
 		try {
-			TestsUtil.getCollectionReader("src/org/cleartk/util/PlainTextCollectionReader.xml");
+			TestsUtil.getCollectionReader("org.cleartk.util.PlainTextCollectionReader");
 			Assert.fail("expected exception with no file or directory specified");
 		} catch (ResourceInitializationException e) {}
 		
 		CollectionReader reader = TestsUtil.getCollectionReader(
-				"src/org/cleartk/util/PlainTextCollectionReader.xml",
+				"org.cleartk.util.PlainTextCollectionReader",
 				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY, this.inputDir);
 		
 		Object fileOrDirectory = reader.getConfigParameterValue(

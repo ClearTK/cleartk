@@ -93,12 +93,12 @@ public class TokenWriterTests {
 	@Test
 	public void testDescriptor() throws UIMAException, IOException {
 		try {
-			TestsUtil.getAnalysisEngine("desc/token/TokenWriter.xml");
+			TestsUtil.getAnalysisEngine("org.cleartk.token.TokenWriter");
 			Assert.fail("expected exception with no output directory specified");
 		} catch (ResourceInitializationException e) {}
 		
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				"desc/token/TokenWriter.xml",
+				"org.cleartk.token.TokenWriter",
 				TokenWriter.PARAM_OUTPUT_DIRECTORY, this.outputDir.getPath());
 		
 		Object outputDir = engine.getConfigParameterValue(

@@ -172,13 +172,13 @@ public class PlainTextTLINKGoldAnnotatorTests {
 	public void testAnnotatorDescriptor() throws UIMAException, IOException {
 		try {
 			TestsUtil.getAnalysisEngine(
-					"desc/corpus/timeml/PlainTextTLINKGoldAnnotator.xml");
+					"org.cleartk.corpus.timeml.PlainTextTLINKGoldAnnotator");
 			Assert.fail("expected failure with no TlinkFileUrl specified");
 		} catch (ResourceInitializationException e) {}
 		
 		
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				"desc/corpus/timeml/PlainTextTLINKGoldAnnotator.xml",
+				"org.cleartk.corpus.timeml.PlainTextTLINKGoldAnnotator",
 				PlainTextTLINKGoldAnnotator.PARAM_TLINK_FILE_URL, this.webUrl);
 		Assert.assertEquals(this.webUrl, engine.getConfigParameterValue(
 				PlainTextTLINKGoldAnnotator.PARAM_TLINK_FILE_URL));

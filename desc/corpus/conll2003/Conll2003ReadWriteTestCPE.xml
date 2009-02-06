@@ -3,14 +3,14 @@
 <collectionReader>
 <collectionIterator>
 <descriptor>
-<import location="Conll2003GoldReader.xml"/>
+<import name="org.cleartk.corpus.conll2003.Conll2003GoldReader"/>
 </descriptor>
 </collectionIterator>
 </collectionReader>
 <casProcessors casPoolSize="3" processingUnitThreadCount="1">
 <casProcessor deployment="integrated" name="XWriter">
 <descriptor>
-<import location="../../util/XWriter.xml"/>
+<import name="org.cleartk.util.XWriter"/>
 </descriptor>
 <deploymentParameters/>
 <errorHandling>

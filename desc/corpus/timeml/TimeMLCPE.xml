@@ -3,7 +3,7 @@
 <collectionReader>
 <collectionIterator>
 <descriptor>
-<import location="../../util/PlainTextCollectionReader.xml"/>
+<import name="org.cleartk.util.PlainTextCollectionReader"/>
 </descriptor>
 <configurationParameterSettings>
 <nameValuePair>
@@ -32,7 +32,7 @@
 <casProcessors casPoolSize="3" processingUnitThreadCount="1">
 <casProcessor deployment="integrated" name="TimeMLGoldAnnotator">
 <descriptor>
-<import location="TimeMLGoldAnnotator.xml"/>
+<import name="org.cleartk.corpus.timeml.TimeMLGoldAnnotator"/>
 </descriptor>
 <deploymentParameters/>
 <errorHandling>
@@ -44,7 +44,7 @@
 </casProcessor>
 <casProcessor deployment="integrated" name="StandoffPlainTextTLINKGoldAnnotator">
 <descriptor>
-<import location="PlainTextTLINKGoldAnnotator.xml"/>
+<import name="org.cleartk.corpus.timeml.PlainTextTLINKGoldAnnotator"/>
 </descriptor>
 <deploymentParameters/>
 <errorHandling>
@@ -64,7 +64,7 @@
 </casProcessor>
 <casProcessor deployment="integrated" name="TimeMLWriter">
 <descriptor>
-<import location="TimeMLWriter.xml"/>
+<import name="org.cleartk.corpus.timeml.TimeMLWriter"/>
 </descriptor>
 <deploymentParameters/>
 <errorHandling>

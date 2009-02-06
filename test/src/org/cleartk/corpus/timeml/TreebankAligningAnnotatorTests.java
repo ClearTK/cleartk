@@ -50,13 +50,13 @@ public class TreebankAligningAnnotatorTests {
 	public void testDescriptor() throws UIMAException, IOException {
 		try {
 			TestsUtil.getAnalysisEngine(
-					"desc/corpus/timeml/TreebankAligningAnnotator.xml");
+					"org.cleartk.corpus.timeml.TreebankAligningAnnotator");
 			Assert.fail("expected exception with TreebankDirectory unspecified");
 		} catch (ResourceInitializationException e) {}
 		
 		String treebankPath = "data/treebank/wsj";
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				"desc/corpus/timeml/TreebankAligningAnnotator.xml",
+				"org.cleartk.corpus.timeml.TreebankAligningAnnotator",
 				TreebankAligningAnnotator.PARAM_TREEBANK_DIRECTORY,
 				treebankPath);
 		

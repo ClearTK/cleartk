@@ -3,7 +3,7 @@
 <collectionReader>
 <collectionIterator>
 <descriptor>
-<import location="propbank/PropbankGoldReader.xml"/>
+<import name="org.cleartk.srl.propbank.PropbankGoldReader"/>
 </descriptor>
 <configurationParameterSettings>
 <nameValuePair>
@@ -18,7 +18,7 @@
 <casProcessors casPoolSize="3" processingUnitThreadCount="1">
 <casProcessor deployment="integrated" name="TreebankPropbankGoldAnnotator">
 <descriptor>
-<import location="propbank/TreebankPropbankGoldAnnotator.xml"/>
+<import name="org.cleartk.srl.propbank.TreebankPropbankGoldAnnotator"/>
 </descriptor>
 <deploymentParameters/>
 <errorHandling>
@@ -30,7 +30,7 @@
 </casProcessor>
 <casProcessor deployment="integrated" name="PredicateDataWriter">
 <descriptor>
-<import location="PredicateDataWriter.xml"/>
+<import name="org.cleartk.srl.PredicateDataWriter"/>
 </descriptor>
 <deploymentParameters/>
 <errorHandling>
@@ -50,7 +50,7 @@
 </casProcessor>
 <casProcessor deployment="integrated" name="ArgumentDataWriter">
 <descriptor>
-<import location="ArgumentDataWriter.xml"/>
+<import name="org.cleartk.srl.ArgumentDataWriter"/>
 </descriptor>
 <deploymentParameters/>
 <errorHandling>

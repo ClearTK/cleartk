@@ -133,7 +133,7 @@ public class InverseDocumentFrequencyWriterTests {
 	
 	@Test
 	public void testDescriptor() throws Exception {
-		String descPath = "src/org/cleartk/tfidf/InverseDocumentFrequencyWriter.xml";
+		String descPath = "org.cleartk.tfidf.InverseDocumentFrequencyWriter";
 		try {
 			TestsUtil.getAnalysisEngine(descPath);
 			Assert.fail("Expected exception with no OutputFile");

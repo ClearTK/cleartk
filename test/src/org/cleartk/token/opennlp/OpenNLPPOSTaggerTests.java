@@ -78,7 +78,7 @@ public class OpenNLPPOSTaggerTests {
 	@Test
 	public void testDescriptor() throws UIMAException, IOException {
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				"desc/token/opennlp/OpenNLPPOSTagger.xml");
+				"org.cleartk.token.opennlp.OpenNLPPOSTagger");
 		
 		Object modelFile = engine.getConfigParameterValue(
 				OpenNLPPOSTagger.PARAM_POSTAG_MODEL_FILE);

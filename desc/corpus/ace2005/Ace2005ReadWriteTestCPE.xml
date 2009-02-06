@@ -3,7 +3,7 @@
 <collectionReader>
 <collectionIterator>
 <descriptor>
-<import location="Ace2005GoldReader.xml"/>
+<import name="org.cleartk.corpus.ace2005.Ace2005GoldReader"/>
 </descriptor>
 <configurationParameterSettings>
 <nameValuePair>
@@ -18,7 +18,7 @@
 <casProcessors casPoolSize="3" processingUnitThreadCount="1">
 <casProcessor deployment="integrated" name="ACE2005Parser">
 <descriptor>
-<import location="Ace2005GoldAnnotator.xml"/>
+<import name="org.cleartk.corpus.ace2005.Ace2005GoldAnnotator"/>
 </descriptor>
 <deploymentParameters/>
 <errorHandling>
@@ -30,7 +30,7 @@
 </casProcessor>
 <casProcessor deployment="integrated" name="Ace2005Writer">
 <descriptor>
-<import location="Ace2005Writer.xml"/>
+<import name="org.cleartk.corpus.ace2005.Ace2005Writer"/>
 </descriptor>
 <deploymentParameters/>
 <errorHandling>
@@ -50,7 +50,7 @@
 </casProcessor>
 <casProcessor deployment="integrated" name="XWriter">
 <descriptor>
-<import location="../../util/XWriter.xml"/>
+<import name="org.cleartk.util.XWriter"/>
 </descriptor>
 <deploymentParameters/>
 <errorHandling>

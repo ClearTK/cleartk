@@ -3,7 +3,7 @@
 <collectionReader>
 <collectionIterator>
 <descriptor>
-<import location="../../util/PlainTextCollectionReader.xml"/>
+<import name="org.cleartk.util.PlainTextCollectionReader"/>
 </descriptor>
 <configurationParameterSettings>
 <nameValuePair>
@@ -24,7 +24,7 @@
 <casProcessors casPoolSize="3" processingUnitThreadCount="1">
 <casProcessor deployment="integrated" name="SentenceSegmenter">
 <descriptor>
-<import location="../../sentence/SentenceSegmenter.xml"/>
+<import name="org.cleartk.sentence.SentenceSegmenter"/>
 </descriptor>
 <deploymentParameters/>
 <errorHandling>
@@ -44,7 +44,7 @@
 </casProcessor>
 <casProcessor deployment="integrated" name="Subtokenizer">
 <descriptor>
-<import location="../../token/Subtokenizer.xml"/>
+<import name="org.cleartk.token.Subtokenizer"/>
 </descriptor>
 <deploymentParameters/>
 <errorHandling>
@@ -64,7 +64,7 @@
 </casProcessor>
 <casProcessor deployment="integrated" name="chunk-based tokenizer">
 <descriptor>
-<import location="../../token/chunk/ChunkTokenizer.xml"/>
+<import name="org.cleartk.token.chunk.ChunkTokenizer"/>
 </descriptor>
 <deploymentParameters/>
 <errorHandling>
@@ -84,7 +84,7 @@
 </casProcessor>
 <casProcessor deployment="integrated" name="XWriter">
 <descriptor>
-<import location="../../util/XWriter.xml"/>
+<import name="org.cleartk.util.XWriter"/>
 </descriptor>
 <deploymentParameters/>
 <errorHandling>

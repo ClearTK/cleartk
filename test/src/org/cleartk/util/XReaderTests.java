@@ -150,12 +150,12 @@ public class XReaderTests {
 		@Test
 	public void testDescriptor() throws UIMAException, IOException {
 		try {
-			TestsUtil.getCollectionReader("src/org/cleartk/util/XReader.xml");
+			TestsUtil.getCollectionReader("org.cleartk.util.XReader");
 			Assert.fail("expected exception with no file or directory specified");
 		} catch (ResourceInitializationException e) {}
 		
 		CollectionReader reader = TestsUtil.getCollectionReader(
-				"src/org/cleartk/util/XReader.xml",
+				"org.cleartk.util.XReader",
 				XReader.PARAM_FILE_OR_DIRECTORY, inputDir.getPath());
 		
 		Object fileOrDirectory = reader.getConfigParameterValue(

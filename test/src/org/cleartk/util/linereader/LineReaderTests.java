@@ -143,12 +143,12 @@ public class LineReaderTests {
 		File inputDir = new File("test/data/docs/linereader/");
 		
 		try {
-			TestsUtil.getCollectionReader("src/org/cleartk/util/linereader/LineReader.xml");
+			TestsUtil.getCollectionReader("org.cleartk.util.linereader.LineReader");
 			Assert.fail("expected exception with no file or directory specified");
 		} catch (ResourceInitializationException e) {}
 		
 		CollectionReader reader = TestsUtil.getCollectionReader(
-				"src/org/cleartk/util/linereader/LineReader.xml",
+				"org.cleartk.util.linereader.LineReader",
 				LineReader.PARAM_FILE_OR_DIRECTORY, inputDir.getPath());
 		
 		Object fileOrDirectory = reader.getConfigParameterValue(
