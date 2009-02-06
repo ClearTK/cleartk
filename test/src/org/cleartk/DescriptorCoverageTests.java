@@ -54,13 +54,13 @@ public class DescriptorCoverageTests {
 		Set<String> descNames = new HashSet<String>();
 		for (File file: this.getFiles(new File("src"))) {
 			String path = file.getPath();
-			if (path.endsWith(".xml")) {
+			if (path.endsWith(".xml") && !path.contains("type")) {
 				// strip off "src/" and ".xml"
 				String name = path.substring(4, path.length() - 4);
 				// convert slashes to dots
 				name = name.replace('\\', '.').replace('/', '.');
 				// add the descriptor name to the set
-				descNames.add(name);
+				descNames.add("\"" + name + "\"");
 			}
 		}
 
