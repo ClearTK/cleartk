@@ -410,9 +410,16 @@ public class TestsUtil {
 		return newJCas("org.cleartk.TypeSystem");
 	}
 
-	public static JCas newJCas(String typeSystemDescriptor) throws UIMAException {
+	public static JCas newJCas(String typeSystemDescriptorName) throws UIMAException {
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(EmptyAnnotator.class, TestsUtil
-				.getTypeSystem(typeSystemDescriptor));
+				.getTypeSystem(typeSystemDescriptorName));
+		return engine.newJCas();
+
+	}
+
+	public static JCas newJCasFromPath(String typeSystemDescriptor) throws UIMAException {
+		AnalysisEngine engine = TestsUtil.getAnalysisEngine(EmptyAnnotator.class, TestsUtil
+				.getTypeSystemFromPath(typeSystemDescriptor));
 		return engine.newJCas();
 
 	}

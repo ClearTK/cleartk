@@ -123,7 +123,7 @@ public class TypePathExtractorTests {
 	public void testExtract() throws IOException, UIMAException {
 		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
 				TypePathExtractorTests.Annotator.class,
-				TestsUtil.getTypeSystem("test/desc/JulieTypeSystem.xml"));
+				TestsUtil.getTypeSystemFromPath("test/desc/JulieTypeSystem.xml"));
 		
 		//The text here was once upon a time some lyrics by a favorite singer which have since been obfuscated to avoid any copyright issues.
 		JCas jCas = TestsUtil.process(engine,
@@ -253,7 +253,7 @@ public class TypePathExtractorTests {
 
 	@Test
 	public void testIsValidatePath() throws IOException, UIMAException {
-		JCas jCas = TestsUtil.newJCas("test/desc/JulieTypeSystem.xml"); 
+		JCas jCas = TestsUtil.newJCasFromPath("test/desc/JulieTypeSystem.xml"); 
 		
 		assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(de.julielab.jules.types.ResourceEntry.type), "source",
 				jCas));
@@ -280,7 +280,7 @@ public class TypePathExtractorTests {
 
 	@Test
 	public void testIsValidType() throws IOException, UIMAException {
-		JCas jCas = TestsUtil.newJCas("test/desc/JulieTypeSystem.xml"); 
+		JCas jCas = TestsUtil.newJCasFromPath("test/desc/JulieTypeSystem.xml"); 
 
 		assertTrue(TypePathExtractor.isValidType(jCas.getCasType(de.julielab.jules.types.ResourceEntry.type), jCas
 				.getTypeSystem()));
