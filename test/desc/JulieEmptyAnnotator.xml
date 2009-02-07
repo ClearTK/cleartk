@@ -4,7 +4,7 @@
   <primitive>true</primitive>
   <annotatorImplementationName>org.cleartk.util.EmptyAnnotator</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>TestNullAnnotator</name>
+    <name>test empty annotator</name>
     <description/>
     <version>1.0</version>
     <vendor/>
