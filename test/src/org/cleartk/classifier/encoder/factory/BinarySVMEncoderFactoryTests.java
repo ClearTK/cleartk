@@ -26,13 +26,19 @@ package org.cleartk.classifier.encoder.factory;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import junit.framework.Assert;
+
+import org.apache.uima.UimaContext;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.encoder.EncoderFactory;
 import org.cleartk.classifier.encoder.factory.BinarySVMEncoderFactory;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
+import org.cleartk.util.TestsUtil;
 import org.junit.Test;
 
 
@@ -46,10 +52,12 @@ public class BinarySVMEncoderFactoryTests {
 
 	
 	@Test
-	public void testFeatureVectorFeatureEncoder() {
+	public void testFeatureVectorFeatureEncoder() throws Exception {
 		List<FeatureVector.Entry> entries;
 		
-		FeaturesEncoder<?> encoder = new BinarySVMEncoderFactory().createFeaturesEncoder(null);
+		UimaContext context = TestsUtil.getUimaContext();
+		EncoderFactory factory = new BinarySVMEncoderFactory();
+		FeaturesEncoder<?> encoder = factory.createFeaturesEncoder(context);
 
 		// add a numeric valued feature
 		entries = this.getVector(encoder, new Feature("A", 1));
@@ -105,7 +113,34 @@ public class BinarySVMEncoderFactoryTests {
 		assertEquals(0, entries.size());
 		
 	}
+	
+	@Test
+	public void testNormalizeFeatures() throws Exception {
+		UimaContext context = TestsUtil.getUimaContext(SVMEncoderFactory.NORMALIZE_VECTORS, true);
+		FeaturesEncoder<?> encoder = new BinarySVMEncoderFactory().createFeaturesEncoder(context);
+		FeatureVector vector = (FeatureVector)encoder.encodeAll(Arrays.asList(new Feature[]{
+				new Feature("A", 3),
+				new Feature("B", 4)
+		}));
+		Assert.assertEquals(3./5., vector.get(1), 1e-10);
+		Assert.assertEquals(4./5., vector.get(2), 1e-10);
+		Assert.assertEquals(0, vector.get(3), 1e-10);
 
+		vector = (FeatureVector)encoder.encodeAll(Arrays.asList(new Feature[]{
+				new Feature("B", 4),
+				new Feature("C", 2),
+				new Feature("D", 6),
+				new Feature("E", 2),
+				new Feature("F", 2)
+		}));
+		Assert.assertEquals(0, vector.get(1), 0);
+		Assert.assertEquals(4./8., vector.get(2), 0);
+		Assert.assertEquals(2./8., vector.get(3), 0);
+		Assert.assertEquals(6./8., vector.get(4), 0);
+		Assert.assertEquals(2./8., vector.get(5), 0);
+		Assert.assertEquals(2./8., vector.get(6), 0);
+		Assert.assertEquals(0., vector.get(7), 0);
+	}
 	
 	
 	private List<FeatureVector.Entry> getVector(FeaturesEncoder<?> encoder, Feature feature) {

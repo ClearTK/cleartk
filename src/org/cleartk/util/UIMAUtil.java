@@ -137,10 +137,8 @@ public class UIMAUtil
 	 * @param paramName    The name of the parameter.
 	 * @param defaultValue The value to use if the parameter was not specified.
 	 * @return             The value of the named parameter.
-	 * @throws ResourceInitializationException
 	 */
-	public static Object getDefaultingConfigParameterValue(UimaContext context, String paramName, Object defaultValue)
-	throws ResourceInitializationException {
+	public static Object getDefaultingConfigParameterValue(UimaContext context, String paramName, Object defaultValue) {
 		Object paramValue = context.getConfigParameterValue(paramName);
 		if (paramValue == null) {
 			paramValue = defaultValue;

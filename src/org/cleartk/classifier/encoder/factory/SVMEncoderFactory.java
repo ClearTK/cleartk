@@ -25,7 +25,6 @@ package org.cleartk.classifier.encoder.factory;
 
 import org.apache.uima.UimaContext;
 import org.cleartk.classifier.encoder.EncoderFactory;
-import org.cleartk.classifier.encoder.features.FeatureEncoder;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
 import org.cleartk.classifier.encoder.features.featurevector.DefaultBooleanEncoder;
@@ -33,8 +32,10 @@ import org.cleartk.classifier.encoder.features.featurevector.DefaultFeaturesEnco
 import org.cleartk.classifier.encoder.features.featurevector.DefaultNumberEncoder;
 import org.cleartk.classifier.encoder.features.featurevector.DefaultStringEncoder;
 import org.cleartk.classifier.encoder.features.featurevector.FeatureVectorElement;
+import org.cleartk.classifier.encoder.features.featurevector.RowNormalizingFeaturesEncoder;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
+import org.cleartk.util.UIMAUtil;
 
 
 /**
@@ -44,21 +45,26 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
 */
 
 public abstract class SVMEncoderFactory implements EncoderFactory {
+	
+	public static final String NORMALIZE_VECTORS = "NormalizeVectors";
 
 	public FeaturesEncoder<?> createFeaturesEncoder(UimaContext context) {
-		FeatureEncoder<FeatureVectorElement> fe;
-		FeaturesEncoder_ImplBase<FeatureVector,FeatureVectorElement> a = new DefaultFeaturesEncoder();
-
-		fe = new DefaultNumberEncoder();
-		a.addEncoder(fe);
-
-		fe = new DefaultBooleanEncoder();
-		a.addEncoder(fe);
 		
-		fe = new DefaultStringEncoder();
-		a.addEncoder(fe);
-		
-		return a;
+		// create either a default or vector-normalizing features encoder 
+		FeaturesEncoder_ImplBase<FeatureVector,FeatureVectorElement> featuresEncoder;
+		boolean normalizeVectors = (Boolean)UIMAUtil.getDefaultingConfigParameterValue(
+				context, SVMEncoderFactory.NORMALIZE_VECTORS, false);
+		if (normalizeVectors) {
+			featuresEncoder = new RowNormalizingFeaturesEncoder();
+		} else {
+			featuresEncoder = new DefaultFeaturesEncoder();
+		}
+
+		// add number, boolean and string encoder
+		featuresEncoder.addEncoder(new DefaultNumberEncoder());
+		featuresEncoder.addEncoder(new DefaultBooleanEncoder());
+		featuresEncoder.addEncoder(new DefaultStringEncoder());
+		return featuresEncoder;
 	}
 
 	public abstract OutcomeEncoder<?, ?> createOutcomeEncoder(UimaContext context);
