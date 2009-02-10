@@ -12,7 +12,7 @@
     <configurationParameterSettings/>
     <typeSystemDescription>
       <imports>
-        <import location="../../TypeSystem.xml"/>
+        <import name="org.cleartk.TypeSystem"/>
       </imports>
     </typeSystemDescription>
     <typePriorities/>
@@ -24,6 +24,9 @@
         <inputSofas>
           <sofaName>TreebankView</sofaName>
         </inputSofas>
+        <outputSofas>
+          <sofaName>_InitialView</sofaName>
+        </outputSofas>
         <languagesSupported/>
       </capability>
     </capabilities>
