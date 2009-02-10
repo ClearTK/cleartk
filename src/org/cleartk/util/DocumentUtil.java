@@ -25,6 +25,7 @@ package org.cleartk.util;
 
 import java.util.Iterator;
 
+import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.type.Document;
@@ -87,6 +88,17 @@ public class DocumentUtil
 			doc.setEnd(jCas.getSofaDataString().length());
 		}
 		doc.addToIndexes();
+		
+		try {
+			JCas initialView = jCas.getView("_InitialView");
+			if(!initialView.equals(jCas))
+				DocumentUtil.createDocument(initialView, identifier, path);
+		}
+		catch (CASException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 	
 	/**
