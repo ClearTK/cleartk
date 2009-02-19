@@ -21,25 +21,22 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.classifier.encoder.factory;
+package org.cleartk.classifier.encoder;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.ObjectOutputStream;
 
-import org.apache.uima.UIMAException;
 import org.apache.uima.UimaContext;
-import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.cleartk.classifier.DataWriter_ImplBase;
 import org.cleartk.classifier.encoder.EncoderFactory;
+import org.cleartk.classifier.encoder.EncoderFactory_ImplBase;
 import org.cleartk.classifier.encoder.factory.BinarySVMEncoderFactory;
-import org.cleartk.classifier.encoder.factory.FileSystemEncoderFactory;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
 import org.cleartk.classifier.encoder.features.featurevector.DefaultFeaturesEncoder;
+import org.cleartk.classifier.encoder.outcome.BooleanToBooleanOutcomeEncoder;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
-import org.cleartk.util.EmptyAnnotator;
 import org.cleartk.util.TestsUtil;
 import org.junit.After;
 import org.junit.Assert;
@@ -56,7 +53,7 @@ import org.junit.Test;
  *
  * @author Steven Bethard
  */
-public class FileSystemEncoderFactoryTests {
+public class EncoderFactory_ImplBaseTests {
 	
 	public final File outputDirectory = new File("test/data/encoder");
 	
@@ -73,16 +70,15 @@ public class FileSystemEncoderFactoryTests {
 	}
 	
 	@Test
-	public void test() throws UIMAException, IOException {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				EmptyAnnotator.class,
-				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
-				DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY,
-				this.outputDirectory.getPath());
-		UimaContext context = engine.getUimaContext();
+	public void test() throws Exception {
+		String outputDir = this.outputDirectory.getPath();
+		EncoderFactory fileSystemFactory = new EncoderFactory_ImplBase() {};
+		UimaContext context;
 		
-		EncoderFactory fileSystemFactory = new FileSystemEncoderFactory();
-		Assert.assertEquals(null, fileSystemFactory.createFeaturesEncoder(context));
+		// try to get an encoder with an empty output directory
+		context = TestsUtil.getUimaContext(
+				DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDir);
+		Assert.assertNull(fileSystemFactory.createFeaturesEncoder(context));
 		
 		// create and serialize an encoder in the output directory
 		EncoderFactory vectorFactory = new BinarySVMEncoderFactory();
@@ -94,12 +90,37 @@ public class FileSystemEncoderFactoryTests {
 		os.writeObject(outcomeEncoder);
 		os.close();
 		
-		fileSystemFactory = new FileSystemEncoderFactory();
-		TestsUtil.HideOutput hider = new TestsUtil.HideOutput();
+		// try to get an encoder without specifying the parameter
+		context = TestsUtil.getUimaContext(
+				DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDir);
+		Assert.assertNull(fileSystemFactory.createFeaturesEncoder(context));
+
+		// try specifying both true and false for the loading parameter
+		this.testParameter(fileSystemFactory, outputDir);
+		
+		// do it a second time to make sure the context is paid attention to
+		this.testParameter(fileSystemFactory, outputDir);
+	}
+	
+	public void testParameter(EncoderFactory fileSystemFactory, String outputDir) throws Exception {
+		UimaContext context;
+		
+		// try specifying no encoder
+		context = TestsUtil.getUimaContext(
+				DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDir,
+				EncoderFactory_ImplBase.PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM, false);
+		Assert.assertNull(fileSystemFactory.createFeaturesEncoder(context));
+		
+		// make sure the encoder is loaded when requested
+		context = TestsUtil.getUimaContext(
+				DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDir,
+				EncoderFactory_ImplBase.PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM, true);
 		Assert.assertTrue(
 				fileSystemFactory.createFeaturesEncoder(context)
 				instanceof DefaultFeaturesEncoder);
-		hider.restoreOutput();
+		Assert.assertTrue(
+				fileSystemFactory.createOutcomeEncoder(context)
+				instanceof BooleanToBooleanOutcomeEncoder);
 	}
 
 }

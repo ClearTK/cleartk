@@ -116,7 +116,7 @@ public class BinarySVMEncoderFactoryTests {
 	
 	@Test
 	public void testNormalizeFeatures() throws Exception {
-		UimaContext context = TestsUtil.getUimaContext(SVMEncoderFactory.NORMALIZE_VECTORS, true);
+		UimaContext context = TestsUtil.getUimaContext(SVMEncoderFactory.PARAM_NORMALIZE_VECTORS, true);
 		FeaturesEncoder<?> encoder = new BinarySVMEncoderFactory().createFeaturesEncoder(context);
 		FeatureVector vector = (FeatureVector)encoder.encodeAll(Arrays.asList(new Feature[]{
 				new Feature("A", 3),

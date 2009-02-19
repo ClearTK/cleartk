@@ -84,41 +84,33 @@ InstanceConsumer_ImplBase<INPUTOUTCOME_TYPE> {
 		// Initialize the Manifest
 		this.classifierManifest = new ClassifierManifest();
 
-		/*
-		 * Initialize Encoders:
-		 */
+		// Initialize Encoders, either using the one specified, or else using
+		// the default supplied by the DataWriter
 		String factoryClassName = (String)context.getConfigParameterValue(
 				DataWriter_ImplBase.PARAM_ENCODER_FACTORY_CLASS);
-		if (factoryClassName != null) {
-			try {
-				Class<?> factoryClass = Class.forName(factoryClassName);
-				EncoderFactory factory = (EncoderFactory) factoryClass.newInstance();
-				this.featuresEncoder = this.getFeaturesEncoder(factory, context);
-				this.outcomeEncoder = this.getOutcomeEncoder(factory, context);
-			} catch (ClassNotFoundException e) {
-				throw new ResourceInitializationException(e);
-			} catch (InstantiationException e) {
-				throw new ResourceInitializationException(e);
-			} catch (IllegalAccessException e) {
-				throw new ResourceInitializationException(e);
+		Class<?> factoryClass;
+		EncoderFactory factory;
+		try {
+			if (factoryClassName != null) {
+				factoryClass = Class.forName(factoryClassName);
+			} else {
+				factoryClass = this.getDefaultEncoderFactoryClass();
 			}
+			factory = (EncoderFactory)factoryClass.newInstance();
+		} catch (Exception e) {
+			throw new ResourceInitializationException(e);
 		}
-
-		// use default factory if none given or if one of the encoders is still null
-		if( this.featuresEncoder == null || this.outcomeEncoder == null ) {
-			try {
-				EncoderFactory defaultFactory = this.getDefaultEncoderFactoryClass().newInstance();
-				
-				if( this.featuresEncoder == null )
-					this.featuresEncoder = this.getFeaturesEncoder(defaultFactory, context);
-				
-				if( this.outcomeEncoder == null )
-					this.outcomeEncoder = this.getOutcomeEncoder(defaultFactory, context);
-			} catch (InstantiationException e) {
-				throw new ResourceInitializationException(e);
-			} catch (IllegalAccessException e) {
-				throw new ResourceInitializationException(e);
-			}
+		this.featuresEncoder = this.getFeaturesEncoder(factory, context);
+		this.outcomeEncoder = this.getOutcomeEncoder(factory, context);
+		
+		// Throw an informative exception if either encoder is missing
+		if (this.featuresEncoder == null) {
+			throw new ResourceInitializationException(new Exception(
+					"EncoderFactory returned a null FeaturesEncoder"));
+		}
+		if (this.outcomeEncoder == null) {
+			throw new ResourceInitializationException(new Exception(
+					"EncoderFactory returned a null OutcomeEncoder"));
 		}
 	}
 

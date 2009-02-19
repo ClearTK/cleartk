@@ -23,16 +23,14 @@
 */
 package org.cleartk.classifier.encoder.factory;
 
-import java.util.List;
-
 import org.apache.uima.UimaContext;
-import org.cleartk.classifier.encoder.EncoderFactory;
+import org.cleartk.classifier.encoder.EncoderFactory_ImplBase;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
-import org.cleartk.classifier.encoder.features.contextvalue.ContextValue;
 import org.cleartk.classifier.encoder.features.contextvalue.ContextValueFeatureEncoder;
 import org.cleartk.classifier.encoder.features.contextvalue.ContextValueFeaturesEncoder;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
+import org.cleartk.util.UIMAUtil;
 
 
 /**
@@ -41,18 +39,22 @@ import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
 
 */
 
-public class ContextValueEncoderFactory implements EncoderFactory {
+public class ContextValueEncoderFactory extends EncoderFactory_ImplBase {
 
 	public static final String PARAM_COMPRESS = "Compress";
 
-	public FeaturesEncoder<List<ContextValue>> createFeaturesEncoder(UimaContext context) {
-		Boolean compress = (Boolean) context.getConfigParameterValue(PARAM_COMPRESS);
-		if(compress == null)
-			compress = false;
-		
-		return new ContextValueFeaturesEncoder(new ContextValueFeatureEncoder(compress));
+	@Override
+	public FeaturesEncoder<?> createFeaturesEncoder(UimaContext context) {
+		FeaturesEncoder<?> featuresEncoder = super.createFeaturesEncoder(context);
+		if (featuresEncoder == null) {
+			boolean compress = (Boolean)UIMAUtil.getDefaultingConfigParameterValue(
+					context, ContextValueEncoderFactory.PARAM_COMPRESS, false);
+			featuresEncoder = new ContextValueFeaturesEncoder(new ContextValueFeatureEncoder(compress));
+		}
+		return featuresEncoder;
 	}
 
+	@Override
 	public OutcomeEncoder<?, ?> createOutcomeEncoder(UimaContext context) {
 		return new StringToStringOutcomeEncoder();
 	}

@@ -26,7 +26,7 @@ package org.cleartk.classifier.encoder.factory;
 import java.util.List;
 
 import org.apache.uima.UimaContext;
-import org.cleartk.classifier.encoder.EncoderFactory;
+import org.cleartk.classifier.encoder.EncoderFactory_ImplBase;
 import org.cleartk.classifier.encoder.features.FeatureEncoder;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
@@ -43,28 +43,33 @@ import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
 
 */
 
-public class StringEncoderFactory implements EncoderFactory {
+public class StringEncoderFactory extends EncoderFactory_ImplBase {
 
 	public static final String PARAM_COMPRESS = "Compress";
 
-	public FeaturesEncoder<List<String>> createFeaturesEncoder(UimaContext context) {
-		FeatureEncoder<String> e;
-		FeaturesEncoder_ImplBase<List<String>, String> a = new DefaultFeaturesEncoder();
-
-		// use either a compressing encoder or a simple one
-		Boolean compress = (Boolean) context.getConfigParameterValue(PARAM_COMPRESS);
-		if (compress != null && compress.booleanValue()) {
-			e = new CompressedStringEncoder();
+	@Override
+	public FeaturesEncoder<?> createFeaturesEncoder(UimaContext context) {
+		FeaturesEncoder<?> featuresEncoder = super.createFeaturesEncoder(context);
+		if (featuresEncoder == null) {
+			FeatureEncoder<String> e;
+			FeaturesEncoder_ImplBase<List<String>, String> a = new DefaultFeaturesEncoder();
+	
+			// use either a compressing encoder or a simple one
+			Boolean compress = (Boolean) context.getConfigParameterValue(PARAM_COMPRESS);
+			if (compress != null && compress.booleanValue()) {
+				e = new CompressedStringEncoder();
+			}
+			else {
+				e = new StringEncoder();
+			}
+	
+			a.addEncoder(e);
+			featuresEncoder = a;
 		}
-		else {
-			e = new StringEncoder();
-		}
-
-		a.addEncoder(e);
-
-		return a;
+		return featuresEncoder;
 	}
 
+	@Override
 	public OutcomeEncoder<?, ?> createOutcomeEncoder(UimaContext context) {
 		return new StringToStringOutcomeEncoder();
 	}

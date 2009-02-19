@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.classifier.encoder.factory;
+package org.cleartk.classifier.encoder;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,7 +29,6 @@ import java.io.ObjectInputStream;
 
 import org.apache.uima.UimaContext;
 import org.cleartk.classifier.DataWriter_ImplBase;
-import org.cleartk.classifier.encoder.EncoderFactory;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
@@ -39,51 +38,64 @@ import org.cleartk.util.UIMAUtil;
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
  * <br>All rights reserved.
-
+ * 
+ * Loads FeaturesEncoder and OutcomeEncoder objects from disk if the
+ * PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM parameter is set to true.
+ * Otherwise, the returned encoders will be null, a signal to subclasses that
+ * the encoders were not loaded and they should be created by the subclasses.
  *
- *
- * @author Steven Bethard
+ * @author Steven Bethard, Philipp Wetzler
  */
-public class FileSystemEncoderFactory implements EncoderFactory {
+public abstract class EncoderFactory_ImplBase implements EncoderFactory {
 	
+	public static final String PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM = "LoadEncodersFromFileSystem";
+
 	public FeaturesEncoder<?> createFeaturesEncoder(UimaContext context) {
-		if( !initialized )
-			initialize(context);
-		
-		return featuresEncoder;
+		if (this.context != context) {
+			this.initialize(context);
+		}
+		return this.featuresEncoder;
 	}
 
 	public OutcomeEncoder<?, ?> createOutcomeEncoder(UimaContext context) {
-		if( !initialized )
-			initialize(context);
-		
-		return outcomeEncoder;
+		if (this.context != context) {
+			this.initialize(context);
+		}
+		return this.outcomeEncoder;
 	}
 	
 	protected void initialize(UimaContext context) {
-		try {
-			String outputDirectory = (String)UIMAUtil.getRequiredConfigParameterValue(
-					context, DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY);
-			File encoderFile = new File(
-					outputDirectory, FeaturesEncoder_ImplBase.ENCODER_FILE_NAME);
-			
-			if (encoderFile.exists()) {
-				System.err.format("Found encoder '%s', loading it and disallowing new features\n", encoderFile.getPath());
+		boolean loadEncoders = (Boolean)UIMAUtil.getDefaultingConfigParameterValue(
+				context, EncoderFactory_ImplBase.PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM, false);
+		if (loadEncoders) {
+			try {
+				String outputDirectory = (String)UIMAUtil.getRequiredConfigParameterValue(
+						context, DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY);
+				File encoderFile = new File(
+						outputDirectory, FeaturesEncoder_ImplBase.ENCODER_FILE_NAME);
+				
+				if (!encoderFile.exists()) {
+					throw new RuntimeException(String.format(
+							"No encoder found in directory %s", outputDirectory));
+				}
+				
 				ObjectInputStream is = new ObjectInputStream(new FileInputStream(encoderFile));
-				featuresEncoder = (FeaturesEncoder<?>) is.readObject();
-				featuresEncoder.allowNewFeatures(false);
-				outcomeEncoder = (OutcomeEncoder<?,?>) is.readObject();
+				this.featuresEncoder = (FeaturesEncoder<?>) is.readObject();
+				this.featuresEncoder.allowNewFeatures(false);
+				this.outcomeEncoder = (OutcomeEncoder<?,?>) is.readObject();
 				is.close();
+			} catch (Exception e) {
+				// TODO: improve exception handling
+				throw new RuntimeException(e);
 			}
-			
-			initialized = true;
-		} catch (Exception e) {
-			// TODO: improve exception handling
-			throw new RuntimeException(e);
+		} else {
+			this.featuresEncoder = null;
+			this.outcomeEncoder = null;
 		}
+		this.context = context;
 	}
 	
-	boolean initialized = false;
-	FeaturesEncoder<?> featuresEncoder = null;
-	OutcomeEncoder<?,?> outcomeEncoder = null;
+	protected UimaContext context = null;
+	protected FeaturesEncoder<?> featuresEncoder = null;
+	protected OutcomeEncoder<?,?> outcomeEncoder = null;
 }

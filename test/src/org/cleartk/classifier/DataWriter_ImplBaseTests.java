@@ -129,16 +129,16 @@ public class DataWriter_ImplBaseTests {
 	
 	@Test
 	public void testNullFactory() throws UIMAException, IOException {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				Writer.class, null,				
-				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER, SingleProducer.class.getName(),
-				DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY, this.outputDir,
-				DataWriter_ImplBase.PARAM_ENCODER_FACTORY_CLASS, NullFactory.class.getName(),
-				Writer.PARAM_FILE_NAME, "foo.txt",
-				Writer.PARAM_STRING_TO_WRITE, "foo");
-		JCas jCas = engine.newJCas();
-		engine.process(jCas);
-		engine.collectionProcessComplete();
+		try {
+			TestsUtil.getAnalysisEngine(
+					Writer.class, null,				
+					InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER, SingleProducer.class.getName(),
+					DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY, this.outputDir,
+					DataWriter_ImplBase.PARAM_ENCODER_FACTORY_CLASS, NullFactory.class.getName(),
+					Writer.PARAM_FILE_NAME, "foo.txt",
+					Writer.PARAM_STRING_TO_WRITE, "foo");
+			Assert.fail("Expected exception with factory returning null encoders");
+		} catch (ResourceInitializationException e) {}
 	}
 	
 	public static class SingleProducer<T> implements AnnotationHandler<T> {
@@ -203,10 +203,10 @@ public class DataWriter_ImplBaseTests {
 	
 	public static class Factory implements EncoderFactory {
 		public FeaturesEncoder<?> createFeaturesEncoder(UimaContext context) {
-			return new Encoder();
+			return new EmptyFeaturesEncoder();
 		}
 		public OutcomeEncoder<?, ?> createOutcomeEncoder(UimaContext context) {
-			return null;
+			return new EmptyOutcomeEncoder();
 		}
 		
 	}
@@ -221,7 +221,7 @@ public class DataWriter_ImplBaseTests {
 		
 	}
 	
-	public static class Encoder implements FeaturesEncoder<Object> {
+	public static class EmptyFeaturesEncoder implements FeaturesEncoder<Object> {
 
 		private static final long serialVersionUID = 8574437254815448838L;
 
@@ -229,6 +229,19 @@ public class DataWriter_ImplBaseTests {
 		}
 
 		public Object encodeAll(Iterable<Feature> features) {
+			return null;
+		}
+	}
+	
+	public static class EmptyOutcomeEncoder implements OutcomeEncoder<Object, Object> {
+
+		private static final long serialVersionUID = -752385896104992463L;
+
+		public Object decode(Object outcome) {
+			return null;
+		}
+
+		public Object encode(Object outcome) {
 			return null;
 		}
 		

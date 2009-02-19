@@ -24,7 +24,7 @@
 package org.cleartk.classifier.encoder.factory;
 
 import org.apache.uima.UimaContext;
-import org.cleartk.classifier.encoder.EncoderFactory;
+import org.cleartk.classifier.encoder.EncoderFactory_ImplBase;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
 import org.cleartk.classifier.encoder.features.featurevector.DefaultBooleanEncoder;
@@ -44,28 +44,36 @@ import org.cleartk.util.UIMAUtil;
 
 */
 
-public abstract class SVMEncoderFactory implements EncoderFactory {
+public abstract class SVMEncoderFactory extends EncoderFactory_ImplBase {
 	
-	public static final String NORMALIZE_VECTORS = "NormalizeVectors";
+	public static final String PARAM_NORMALIZE_VECTORS = "NormalizeVectors";
 
+	@Override
 	public FeaturesEncoder<?> createFeaturesEncoder(UimaContext context) {
-		
-		// create either a default or vector-normalizing features encoder 
-		FeaturesEncoder_ImplBase<FeatureVector,FeatureVectorElement> featuresEncoder;
-		boolean normalizeVectors = (Boolean)UIMAUtil.getDefaultingConfigParameterValue(
-				context, SVMEncoderFactory.NORMALIZE_VECTORS, false);
-		if (normalizeVectors) {
-			featuresEncoder = new RowNormalizingFeaturesEncoder();
-		} else {
-			featuresEncoder = new DefaultFeaturesEncoder();
-		}
+		FeaturesEncoder<?> featuresEncoder = super.createFeaturesEncoder(context);
+		if (featuresEncoder == null) {
 
-		// add number, boolean and string encoder
-		featuresEncoder.addEncoder(new DefaultNumberEncoder());
-		featuresEncoder.addEncoder(new DefaultBooleanEncoder());
-		featuresEncoder.addEncoder(new DefaultStringEncoder());
+			// create either a default or vector-normalizing features encoder
+			FeaturesEncoder_ImplBase<FeatureVector, FeatureVectorElement> svmFeaturesEncoder;
+			boolean normalizeVectors = (Boolean)UIMAUtil.getDefaultingConfigParameterValue(
+					context, SVMEncoderFactory.PARAM_NORMALIZE_VECTORS, false);
+			if (normalizeVectors) {
+				svmFeaturesEncoder = new RowNormalizingFeaturesEncoder();
+			} else {
+				svmFeaturesEncoder = new DefaultFeaturesEncoder();
+			}
+	
+			// add number, boolean and string encoder
+			svmFeaturesEncoder.addEncoder(new DefaultNumberEncoder());
+			svmFeaturesEncoder.addEncoder(new DefaultBooleanEncoder());
+			svmFeaturesEncoder.addEncoder(new DefaultStringEncoder());
+			
+			// use the SVM features encoder
+			featuresEncoder = svmFeaturesEncoder;
+		}
 		return featuresEncoder;
 	}
 
+	@Override
 	public abstract OutcomeEncoder<?, ?> createOutcomeEncoder(UimaContext context);
 }
