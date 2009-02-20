@@ -41,10 +41,14 @@ import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.DocumentUtil;
-import org.cleartk.util.TestsUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
+import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.JCasFactory;
+import org.uutuc.factory.TokenFactory;
+import org.uutuc.factory.TypeSystemDescriptionFactory;
+import org.uutuc.util.TearDownUtil;
 
 
 /**
@@ -61,15 +65,15 @@ public class LineWriterTests {
 	
 	@After
 	public void tearDown() throws Exception {
-		TestsUtil.tearDown(outputDir);
+		TearDownUtil.removeDirectory(outputDir);
 	}
 
 	
 	@Test
 	public void test1() throws Exception {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 					LineWriter.class,
-					TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 					LineWriter.PARAM_OUTPUT_DIRECTORY, this.outputDir.getPath(), 
 					LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS, "org.cleartk.type.Token",
 					LineWriter.PARAM_BLOCK_ANNOTATION_CLASS, "org.cleartk.type.Sentence",
@@ -79,9 +83,9 @@ public class LineWriterTests {
 		JCas jCas = engine.newJCas();
 		String text = "What if we built a rocket ship made of cheese?"+newline +
 					  "We could fly it to the moon for repairs.";
-		TestsUtil.createTokens(jCas, text,
+		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class,
 				"What if we built a rocket ship made of cheese ?\nWe could fly it to the moon for repairs .",
-				"A B C D E F G H I J K L M N O P Q R S T U", null);
+				"A B C D E F G H I J K L M N O P Q R S T U", null, "org.cleartk.type.Token:pos", null);
 		DocumentUtil.createDocument(jCas, "1234", "1234");
 		engine.process(jCas);
 		engine.collectionProcessComplete();
@@ -115,9 +119,9 @@ public class LineWriterTests {
 		Assert.assertEquals(expectedText, actualText);
 		
 		jCas = engine.newJCas();
-		TestsUtil.createTokens(jCas, text,
+		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class,
 				"What if we \n built a rocket \n ship made of cheese ?\nWe could fly it \nto the moon for repairs .",
-				"A B C D E F G H I J K L M N O P Q R S T U", null);
+				"A B C D E F G H I J K L M N O P Q R S T U", null, "org.cleartk.type.Token:pos", null);
 		DocumentUtil.createDocument(jCas, "1234", "1234");
 		engine.process(jCas);
 		engine.collectionProcessComplete();
@@ -157,18 +161,18 @@ public class LineWriterTests {
 	
 	@Test
 	public void test2() throws Exception {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 					LineWriter.class,
-					TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 					LineWriter.PARAM_OUTPUT_FILE, new File(outputDir, "output.txt").getPath(), 
 					LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS, "org.cleartk.type.Token",
 					LineWriter.PARAM_ANNOTATION_WRITER_CLASS, "org.cleartk.util.linewriter.TestTokenWriter");
 		
 		JCas jCas = engine.newJCas();
 		String text = "Me and all my friends are non-conformists.  I will subjugate my freedom oppressor.";
-		TestsUtil.createTokens(jCas, text,
+		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class,
 				"Me and all my friends are non-conformists . \n I will subjugate my freedom oppressor . ",
-				"1 2 3 4 5 6 7 8 9 10 11 12 13 14 15", null);
+				"1 2 3 4 5 6 7 8 9 10 11 12 13 14 15", null, "org.cleartk.type.Token:pos", null);
 		DocumentUtil.createDocument(jCas, "1234", "1234");
 		engine.process(jCas);
 		engine.collectionProcessComplete();
@@ -198,9 +202,9 @@ public class LineWriterTests {
 
 	@Test
 	public void test3() throws Exception {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 					LineWriter.class,
-					TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 					LineWriter.PARAM_OUTPUT_FILE, new File(outputDir, "output.txt").getPath(), 
 					LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS, "org.cleartk.type.Sentence",
 					LineWriter.PARAM_BLOCK_ANNOTATION_CLASS, "org.apache.uima.jcas.tcas.DocumentAnnotation",
@@ -210,14 +214,14 @@ public class LineWriterTests {
 		
 		JCas jCas = engine.newJCas();
 		String text = "If you like line writer, then you should really check out line rider.";
-		TestsUtil.createTokens(jCas, text, null, null, null);
+		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class);
 		engine.process(jCas);
 		Token token = AnnotationRetrieval.get(jCas, Token.class, 0);
 		Assert.assertEquals("If", token.getCoveredText());
 
 		jCas = engine.newJCas();
 		text = "I highly recommend reading 'Three Cups of Tea' by Greg Mortenson.\n Swashbuckling action and inspirational story.";
-		TestsUtil.createTokens(jCas, text, null, null, null);
+		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class);
 		engine.process(jCas);
 
 		DocumentAnnotation da = AnnotationRetrieval.get(jCas, DocumentAnnotation.class, 0);
@@ -339,7 +343,7 @@ public class LineWriterTests {
 	private ResourceInitializationException getResourceInitializationException(Object... params) throws Exception{
 		ResourceInitializationException rie = null;
 		try {
-			TestsUtil.getAnalysisEngine("org.cleartk.util.linewriter.LineWriter", params);
+			AnalysisEngineFactory.createAnalysisEngine("org.cleartk.util.linewriter.LineWriter", params);
 		}
 		catch (ResourceInitializationException e) {
 			rie = e;
@@ -356,9 +360,9 @@ public class LineWriterTests {
 	
 	@Test
 	public void test4() throws Exception {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 					LineWriter.class,
-					TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 					LineWriter.PARAM_OUTPUT_FILE, new File(outputDir, "output.txt").getPath(), 
 					LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS, "org.cleartk.type.Token",
 					LineWriter.PARAM_ANNOTATION_WRITER_CLASS, "org.cleartk.util.linewriter.annotation.TokenPOSWriter",
@@ -367,9 +371,9 @@ public class LineWriterTests {
 		
 		JCas jCas = engine.newJCas();
 		String text = "Me and all my friends are non-conformists.  I will subjugate my freedom oppressor.";
-		TestsUtil.createTokens(jCas, text,
+		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class,
 				"Me and all my friends are non-conformists . \n I will subjugate my freedom oppressor . ",
-				"1 2 3 4 5 6 7 8 9 10 11 12 13 14 15", null);
+				"1 2 3 4 5 6 7 8 9 10 11 12 13 14 15", null, "org.cleartk.type.Token:pos", null);
 		DocumentUtil.createDocument(jCas, "1234", "1234");
 		engine.process(jCas);
 		engine.collectionProcessComplete();
@@ -401,9 +405,9 @@ public class LineWriterTests {
 
 	@Test
 	public void test5() throws Exception {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 					LineWriter.class,
-					TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 					LineWriter.PARAM_OUTPUT_DIRECTORY, outputDir.getPath(), 
 					LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS, "org.cleartk.type.Token",
 					LineWriter.PARAM_FILE_SUFFIX, "txt",
@@ -413,9 +417,9 @@ public class LineWriterTests {
 		
 		JCas jCas = engine.newJCas();
 		String text = "Me and all my friends are non-conformists.  I will subjugate my freedom oppressor.";
-		TestsUtil.createTokens(jCas, text,
+		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class,
 				"Me and all my friends are non-conformists . \n I will subjugate my freedom oppressor . ",
-				"1 2 3 4 5 6 7 8 9 10 11 12 13 14 15", null);
+				"1 2 3 4 5 6 7 8 9 10 11 12 13 14 15", null, "org.cleartk.type.Token:pos", null);
 		DocumentUtil.createDocument(jCas, "1234.", "1234.");
 		engine.process(jCas);
 		engine.collectionProcessComplete();
@@ -448,14 +452,14 @@ public class LineWriterTests {
 	@Test
 	public void testLineWriterAfterChunkTokenizer() throws Exception {
 		AnalysisEngine[] engines = new AnalysisEngine[]{
-				TestsUtil.getAnalysisEngine("org.cleartk.sentence.SentenceSegmenter"),
-				TestsUtil.getAnalysisEngine("org.cleartk.token.Subtokenizer"),
-				TestsUtil.getAnalysisEngine("org.cleartk.token.chunk.ChunkTokenizer",
+				AnalysisEngineFactory.createAnalysisEngine("org.cleartk.sentence.SentenceSegmenter"),
+				AnalysisEngineFactory.createAnalysisEngine("org.cleartk.token.Subtokenizer"),
+				AnalysisEngineFactory.createAnalysisEngine("org.cleartk.token.chunk.ChunkTokenizer",
 						ClassifierAnnotator.PARAM_CLASSIFIER_JAR, "test/data/token/chunk/model.jar"),
-				TestsUtil.getAnalysisEngine("org.cleartk.util.linewriter.LineWriter",
+				AnalysisEngineFactory.createAnalysisEngine("org.cleartk.util.linewriter.LineWriter",
 						LineWriter.PARAM_OUTPUT_DIRECTORY, this.outputDir.getPath(), 
 						LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS, "org.cleartk.type.Token")};
-		JCas jCas = TestsUtil.newJCas();
+		JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
 		jCas.setDocumentText(
 				"Philip Ogren didn't write this sentence.\n" +
 				"ROIs are required for CD28-mediated activation of the NF-kappa B/CD28-responsive complex.");

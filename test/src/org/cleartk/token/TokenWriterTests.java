@@ -32,12 +32,15 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
-import org.cleartk.token.TokenWriter;
+import org.cleartk.type.Sentence;
+import org.cleartk.type.Token;
 import org.cleartk.util.DocumentUtil;
-import org.cleartk.util.TestsUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
+import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.TokenFactory;
+import org.uutuc.factory.TypeSystemDescriptionFactory;
 
 
 /**
@@ -64,22 +67,23 @@ public class TokenWriterTests {
 	@Test
 	public void testMissingParameter() throws Exception {
 		try {
-			TestsUtil.getAnalysisEngine(
-					TokenWriter.class, TestsUtil.getTypeSystem("org.cleartk.TypeSystem"));
+			AnalysisEngineFactory.createAnalysisEngine(
+					TokenWriter.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
 			Assert.fail("expected error with no output directory specified");
 		} catch (ResourceInitializationException e) {}
 	}
 	@Test
 	public void testOutputFile() throws Exception {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				TokenWriter.class, TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+				TokenWriter.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				TokenWriter.PARAM_OUTPUT_DIRECTORY, this.outputDir.getPath());
 		
 		JCas jCas = engine.newJCas();
 		String spacedTokens = "What if we built a large , wooden badger ?\nHmm? ";
-		TestsUtil.createTokens(jCas,
-				"What if we built\na large, wooden badger? Hmm?", 
-				spacedTokens, null, null);
+		TokenFactory.createTokens(jCas,
+				"What if we built\na large, wooden badger? Hmm?",
+				Token.class, Sentence.class, 
+				spacedTokens);
 		DocumentUtil.createDocument(jCas, "identifier", "path");
 		engine.process(jCas);
 		engine.collectionProcessComplete();
@@ -93,11 +97,11 @@ public class TokenWriterTests {
 	@Test
 	public void testDescriptor() throws UIMAException, IOException {
 		try {
-			TestsUtil.getAnalysisEngine("org.cleartk.token.TokenWriter");
+			AnalysisEngineFactory.createAnalysisEngine("org.cleartk.token.TokenWriter");
 			Assert.fail("expected exception with no output directory specified");
 		} catch (ResourceInitializationException e) {}
 		
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.token.TokenWriter",
 				TokenWriter.PARAM_OUTPUT_DIRECTORY, this.outputDir.getPath());
 		

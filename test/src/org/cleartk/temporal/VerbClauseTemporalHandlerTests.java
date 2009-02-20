@@ -45,7 +45,6 @@ import org.cleartk.corpus.timeml.type.Event;
 import org.cleartk.corpus.timeml.type.TemporalLink;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
 import org.cleartk.syntax.treebank.type.TreebankNode;
-import org.cleartk.temporal.VerbClauseTemporalHandler;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
@@ -56,6 +55,10 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.TokenFactory;
+import org.uutuc.factory.TypeSystemDescriptionFactory;
+import org.uutuc.util.TearDownUtil;
 
 
 
@@ -80,21 +83,22 @@ public class VerbClauseTemporalHandlerTests {
 	
 	@After
 	public void tearDown() {
-		TestsUtil.emptyDirectory(this.outputDirectory);
+		TearDownUtil.emptyDirectory(this.outputDirectory);
 	}
 	
 	@Test
 	public void test() throws UIMAException {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				EmptyAnnotator.class,
-				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"));
+				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
 		JCas jCas = engine.newJCas();
 		DocumentUtil.createDocument(jCas, "bought-milk", "bought-milk");
-		TestsUtil.createTokens(jCas,
+		TokenFactory.createTokens(jCas,
 				"He said she bought milk.",
+				Token.class, Sentence.class, 
 				"He said she bought milk .", 
 				"PRP VBD PRP VBD NN .",
-				"he say she buy milk .");
+				"he say she buy milk .", "org.cleartk.type.Token:pos", "org.cleartk.type.Token:stem");
 		List<Token> tokens = AnnotationRetrieval.getAnnotations(jCas, Token.class);
 		
 		// create the Event and TemporalLink annotations
@@ -192,7 +196,7 @@ public class VerbClauseTemporalHandlerTests {
 	
 	@Test
 	public void testDataWriterDescriptor() throws UIMAException, IOException {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.temporal.VerbClauseTemporalDataWriter");
 		
 		Object handler = engine.getConfigParameterValue(
@@ -212,7 +216,7 @@ public class VerbClauseTemporalHandlerTests {
 
 	@Test
 	public void testAnnotationDescriptor() throws UIMAException, IOException {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.temporal.VerbClauseTemporalAnnotator");
 		
 		Object handler = engine.getConfigParameterValue(

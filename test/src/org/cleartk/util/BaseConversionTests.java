@@ -25,7 +25,6 @@ package org.cleartk.util;
 
 import static org.junit.Assert.assertEquals;
 
-import org.cleartk.util.BaseConversion;
 import org.junit.Test;
 
 /**

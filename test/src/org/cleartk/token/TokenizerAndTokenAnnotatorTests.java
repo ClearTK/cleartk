@@ -33,12 +33,12 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.FSIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.token.TokenAnnotator;
 import org.cleartk.token.chunk.type.Subtoken;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.TestsUtil;
 import org.junit.Test;
+import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.TypeSystemDescriptionFactory;
 
 
 /**
@@ -61,7 +61,7 @@ public class TokenizerAndTokenAnnotatorTests {
 
 	@Test
 	public void testMarysDog() throws UIMAException, IOException {
-		JCas jCas = TestsUtil.process(sentencesAndTokensDescriptor, "test/data/docs/tokens/marysdog.txt");
+		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokensDescriptor, "test/data/docs/tokens/marysdog.txt");
 		FSIndex tokenIndex = jCas.getAnnotationIndex(Token.type);
 		assertEquals(37, tokenIndex.size());
 
@@ -107,7 +107,7 @@ public class TokenizerAndTokenAnnotatorTests {
 
 	@Test
 	public void testWatcha() throws UIMAException, IOException {
-		JCas jCas = TestsUtil.process(sentencesAndTokensDescriptor, "test/data/docs/tokens/watcha.txt");
+		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokensDescriptor, "test/data/docs/tokens/watcha.txt");
 		FSIndex tokenIndex = jCas.getAnnotationIndex(Token.type);
 		assertEquals(31, tokenIndex.size());
 
@@ -147,7 +147,7 @@ public class TokenizerAndTokenAnnotatorTests {
 
 	@Test
 	public void testTimes() throws UIMAException, IOException {
-		JCas jCas = TestsUtil.process(sentencesAndTokensDescriptor, "test/data/docs/tokens/times.txt");
+		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokensDescriptor, "test/data/docs/tokens/times.txt");
 		FSIndex tokenIndex = jCas.getAnnotationIndex(Token.type);
 		assertEquals(16, tokenIndex.size());
 
@@ -172,7 +172,7 @@ public class TokenizerAndTokenAnnotatorTests {
 
 	@Test
 	public void testDollars() throws UIMAException, IOException {
-		JCas jCas = TestsUtil.process(sentencesAndTokensDescriptor, "test/data/docs/tokens/dollars.txt");
+		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokensDescriptor, "test/data/docs/tokens/dollars.txt");
 		FSIndex tokenIndex = jCas.getAnnotationIndex(Token.type);
 		assertEquals(16, tokenIndex.size());
 
@@ -197,7 +197,7 @@ public class TokenizerAndTokenAnnotatorTests {
 
 	@Test
 	public void testPercents() throws UIMAException, IOException {
-		JCas jCas = TestsUtil.process(sentencesAndTokensDescriptor,
+		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokensDescriptor,
 				" 1. Buy a new Chevrolet (37%-owned in the U.S..) . 15%");
 		FSIndex tokenIndex = jCas.getAnnotationIndex(Token.type);
 		assertEquals(16, tokenIndex.size());
@@ -223,7 +223,7 @@ public class TokenizerAndTokenAnnotatorTests {
 
 	@Test
 	public void testDescriptor() throws UIMAException, IOException {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine("org.cleartk.token.TokenAnnotator");
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine("org.cleartk.token.TokenAnnotator");
 		assertEquals(null, engine.getConfigParameterValue(TokenAnnotator.PARAM_TOKENIZER));
 		assertEquals(null, engine.getConfigParameterValue(TokenAnnotator.PARAM_TOKEN_TYPE));
 		engine.collectionProcessComplete();
@@ -231,8 +231,7 @@ public class TokenizerAndTokenAnnotatorTests {
 
 	@Test
 	public void ticket176() throws ResourceInitializationException, AnalysisEngineProcessException {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(TokenAnnotator.class, TestsUtil
-				.getTypeSystem("org.cleartk.TypeSystem"), TokenAnnotator.PARAM_TOKEN_TYPE,
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(TokenAnnotator.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"), TokenAnnotator.PARAM_TOKEN_TYPE,
 				"org.cleartk.token.chunk.type.Subtoken", TokenAnnotator.PARAM_TOKENIZER,
 				"org.cleartk.token.util.Subtokenizer");
 
@@ -273,7 +272,7 @@ public class TokenizerAndTokenAnnotatorTests {
 	 */
 	@Test
 	public void testPeriod() throws UIMAException, IOException {
-		JCas jCas = TestsUtil.process(sentencesAndTokensDescriptor, "The sides was so steep and the bushes so thick. We tramped and clumb. ");
+		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokensDescriptor, "The sides was so steep and the bushes so thick. We tramped and clumb. ");
 		int i=0;
 		assertEquals("The", getToken(jCas, i++).getCoveredText());
 		assertEquals("sides", getToken(jCas, i++).getCoveredText());
@@ -300,9 +299,9 @@ public class TokenizerAndTokenAnnotatorTests {
 	// @Test
 	// public void testExceptions() {
 	// try {
-	// AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+	// AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 	// TokenAnnotator.class,
-	// TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+	// TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 	// TokenAnnotator.PARAM_TOKEN_TYPE,
 	// "org.cleartk.token.chunk.type.Subtoken",
 	// TokenAnnotator.PARAM_TOKENIZER,

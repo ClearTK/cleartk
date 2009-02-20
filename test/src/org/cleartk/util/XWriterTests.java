@@ -35,8 +35,8 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
-import org.cleartk.util.DocumentUtil;
-import org.cleartk.util.XWriter;
+import org.cleartk.type.Sentence;
+import org.cleartk.type.Token;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -45,6 +45,10 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.TokenFactory;
+import org.uutuc.factory.TypeSystemDescriptionFactory;
+import org.uutuc.util.TearDownUtil;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -64,19 +68,20 @@ public class XWriterTests {
 
 	@After
 	public void tearDown() throws Exception {
-		TestsUtil.tearDown(outputDir);
+		TearDownUtil.removeDirectory(outputDir);
 	}
 
 	@Test
 	public void testXmi() throws Exception {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				XWriter.class, TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+				XWriter.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				XWriter.PARAM_OUTPUT_DIRECTORY, this.outputDir.getPath());
 		JCas jCas = engine.newJCas();
-		TestsUtil.createTokens(jCas,
+		TokenFactory.createTokens(jCas,
 				"I like\nspam!",
+				Token.class, Sentence.class, 
 				"I like spam !",
-				"PRP VB NN .", null);
+				"PRP VB NN .", null, "org.cleartk.type.Token:pos", null);
 		DocumentUtil.createDocument(jCas, "identifier", "path");
 		engine.process(jCas);
 		engine.collectionProcessComplete();
@@ -108,15 +113,16 @@ public class XWriterTests {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testXcas() throws Exception {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				XWriter.class, TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+				XWriter.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				XWriter.PARAM_OUTPUT_DIRECTORY, this.outputDir.getPath(),
 				XWriter.PARAM_XML_SCHEME, XWriter.XCAS);
 		JCas jCas = engine.newJCas();
-		TestsUtil.createTokens(jCas,
+		TokenFactory.createTokens(jCas,
 				"I like\nspam!",
+				Token.class, Sentence.class, 
 				"I like spam !",
-				"PRP VB NN .", null);
+				"PRP VB NN .", null, "org.cleartk.type.Token:pos", null);
 		DocumentUtil.createDocument(jCas, "identifier", "path");
 		engine.process(jCas);
 		engine.collectionProcessComplete();
@@ -147,11 +153,11 @@ public class XWriterTests {
 	@Test
 	public void testDescriptor() throws UIMAException, IOException {
 		try {
-			TestsUtil.getAnalysisEngine("org.cleartk.util.XWriter");
+			AnalysisEngineFactory.createAnalysisEngine("org.cleartk.util.XWriter");
 			Assert.fail("expected error when no output directory was specified");
 		} catch (ResourceInitializationException e) {}
 		
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.util.XWriter",
 				XWriter.PARAM_OUTPUT_DIRECTORY, this.outputDir.getPath());
 		Object dir = engine.getConfigParameterValue(XWriter.PARAM_OUTPUT_DIRECTORY);

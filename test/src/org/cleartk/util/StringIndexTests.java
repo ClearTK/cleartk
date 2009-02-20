@@ -28,7 +28,6 @@ import static org.junit.Assert.assertEquals;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-import org.cleartk.util.StringIndex;
 import org.junit.Test;
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 

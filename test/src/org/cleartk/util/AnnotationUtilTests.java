@@ -46,10 +46,11 @@ import org.cleartk.type.Sentence;
 import org.cleartk.type.SimpleAnnotation;
 import org.cleartk.type.SplitAnnotation;
 import org.cleartk.type.Token;
-import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.AnnotationUtil;
-import org.cleartk.util.UIMAUtil;
 import org.junit.Test;
+import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.JCasFactory;
+import org.uutuc.factory.TokenFactory;
+import org.uutuc.factory.TypeSystemDescriptionFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -63,9 +64,9 @@ public class AnnotationUtilTests {
 	public static class Annotator extends JCasAnnotator_ImplBase
 	{
 		public static JCas getProcessedJCas() throws UIMAException, IOException {
-			AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-					Annotator.class, TestsUtil.getTypeSystem("org.cleartk.TypeSystem"));
-			return TestsUtil.process(engine, "test/data/docs/huckfinn.txt");
+			AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+					Annotator.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
+			return AnalysisEngineFactory.process(engine, "test/data/docs/huckfinn.txt");
 	
 		}
 	
@@ -179,7 +180,7 @@ public class AnnotationUtilTests {
 
 	@Test
 	public void testOverlaps() throws UIMAException, IOException {
-		JCas jCas = TestsUtil.newJCas();
+		JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
 		
 		Token token1 = new Token(jCas, 0,0);
 		Token token2 = new Token(jCas, 0,0);
@@ -215,7 +216,7 @@ public class AnnotationUtilTests {
 
 	@Test
 	public void testSort() throws UIMAException {
-		JCas jCas = TestsUtil.newJCas();
+		JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
 		
 		List<Annotation> annotations = new ArrayList<Annotation>();
 		annotations.add(new Token(jCas, 19, 21));
@@ -246,8 +247,8 @@ public class AnnotationUtilTests {
 	
 	@Test
 	public void testGetSurroundingTexts() throws UIMAException {
-		JCas jCas = TestsUtil.newJCas();
-		TestsUtil.createTokens(jCas, "AAA BBB CCC DDDD EEEE FFFF", null, null, null);
+		JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
+		TokenFactory.createTokens(jCas, "AAA BBB CCC DDDD EEEE FFFF", Token.class, Sentence.class);
 		
 		SimpleAnnotation sa = new SimpleAnnotation(jCas, 8, 11);
 		sa.addToIndexes();

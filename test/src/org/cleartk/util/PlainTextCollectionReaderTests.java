@@ -37,10 +37,11 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
 import org.cleartk.type.Document;
-import org.cleartk.util.DocumentUtil;
-import org.cleartk.util.PlainTextCollectionReader;
 import org.junit.Assert;
 import org.junit.Test;
+import org.uutuc.factory.CollectionReaderFactory;
+import org.uutuc.factory.TypeSystemDescriptionFactory;
+import org.uutuc.util.JCasIterable;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -94,15 +95,15 @@ public class PlainTextCollectionReaderTests {
 		
 		// create the PlainTextCollectionReader with the HTML input directory
 		String languageCode = "en-us";
-		CollectionReader reader = TestsUtil.getCollectionReader(
+		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				PlainTextCollectionReader.class,
-				TestsUtil.getTypeSystem(Document.class),
+				TypeSystemDescriptionFactory.createTypeSystemDescription(Document.class),
 				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY, this.inputDir,
 				PlainTextCollectionReader.PARAM_LANGUAGE, languageCode);
 		Assert.assertEquals(0, reader.getProgress()[0].getCompleted());
 
 		// check that each document in the CAS matches the document on disk
-		for (JCas jCas: new TestsUtil.JCasIterable(reader)) {
+		for (JCas jCas: new JCasIterable(reader)) {
 			Assert.assertEquals(languageCode, jCas.getDocumentLanguage());
 			
 			String jCasText = jCas.getDocumentText();
@@ -131,14 +132,14 @@ public class PlainTextCollectionReaderTests {
 		for (String viewName: new String[]{"TestView", "OtherTestView"}) {
 			
 			// create the PlainTextCollectionReader with the current view name
-			CollectionReader reader = TestsUtil.getCollectionReader(
+			CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 					PlainTextCollectionReader.class,
-					TestsUtil.getTypeSystem(Document.class),
+					TypeSystemDescriptionFactory.createTypeSystemDescription(Document.class),
 					PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY, this.inputDir,
 					PlainTextCollectionReader.PARAM_VIEW_NAME, viewName);
 			
 			// check that each document in the JCas views matches the document on disk
-			for (JCas jCas: new TestsUtil.JCasIterable(reader)) {
+			for (JCas jCas: new JCasIterable(reader)) {
 				JCas view = jCas.getView(viewName);
 				String jCasText = view.getDocumentText();
 				String docText = this.getFileText(view);
@@ -163,15 +164,15 @@ public class PlainTextCollectionReaderTests {
 	public void testFilePaths() throws IOException, UIMAException {
 		
 		// create the PlainTextCollectionReader with the HTML input directory  
-		CollectionReader reader = TestsUtil.getCollectionReader(
+		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				PlainTextCollectionReader.class,
-				TestsUtil.getTypeSystem(Document.class),
+				TypeSystemDescriptionFactory.createTypeSystemDescription(Document.class),
 				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY, this.inputDir);
 
 		// check that each path in the CAS matches a path on disk
 		Set<String> pathsSet = new HashSet<String>();
 		pathsSet.addAll(Arrays.asList(this.paths));
-		for (JCas jCas: new TestsUtil.JCasIterable(reader)) {
+		for (JCas jCas: new JCasIterable(reader)) {
 			Document doc = DocumentUtil.getDocument(jCas);
 			String docPath = doc.getPath().replace('\\', '/');
 			Assert.assertTrue(pathsSet.contains(docPath));
@@ -187,16 +188,16 @@ public class PlainTextCollectionReaderTests {
 	public void testSuffixes() throws IOException, UIMAException {
 		
 		// create the PlainTextCollectionReader with the HTML input directory  
-		CollectionReader reader = TestsUtil.getCollectionReader(
+		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				PlainTextCollectionReader.class,
-				TestsUtil.getTypeSystem(Document.class),
+				TypeSystemDescriptionFactory.createTypeSystemDescription(Document.class),
 				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY, this.inputDir,
 				PlainTextCollectionReader.PARAM_SUFFIXES, new String[] {"1.html"});
 
 		// check that each path in the CAS matches a path on disk
 		Set<String> pathsSet = new HashSet<String>();
 		pathsSet.addAll(Arrays.asList(this.pathsSuffix1));
-		for (JCas jCas: new TestsUtil.JCasIterable(reader)) {
+		for (JCas jCas: new JCasIterable(reader)) {
 			Document doc = DocumentUtil.getDocument(jCas);
 			String docPath = doc.getPath().replace('\\', '/');
 			Assert.assertTrue(pathsSet.contains(docPath));
@@ -212,16 +213,16 @@ public class PlainTextCollectionReaderTests {
 	public void testSuffixes2() throws IOException, UIMAException {
 		
 		// create the PlainTextCollectionReader with the HTML input directory  
-		CollectionReader reader = TestsUtil.getCollectionReader(
+		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				PlainTextCollectionReader.class,
-				TestsUtil.getTypeSystem(Document.class),
+				TypeSystemDescriptionFactory.createTypeSystemDescription(Document.class),
 				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY, this.inputDir,
 				PlainTextCollectionReader.PARAM_SUFFIXES, new String[] {"1.html", "2.html"});
 
 		// check that each path in the CAS matches a path on disk
 		Set<String> pathsSet = new HashSet<String>();
 		pathsSet.addAll(Arrays.asList(this.pathsSuffix2));
-		for (JCas jCas: new TestsUtil.JCasIterable(reader)) {
+		for (JCas jCas: new JCasIterable(reader)) {
 			Document doc = DocumentUtil.getDocument(jCas);
 			String docPath = doc.getPath().replace('\\', '/');
 			Assert.assertTrue(pathsSet.contains(docPath));
@@ -243,9 +244,9 @@ public class PlainTextCollectionReaderTests {
 	public void testFileNames() throws IOException, UIMAException {
 		
 		// create the PlainTextCollectionReader with the HTML input directory  
-		CollectionReader reader = TestsUtil.getCollectionReader(
+		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				PlainTextCollectionReader.class,
-				TestsUtil.getTypeSystem(Document.class),
+				TypeSystemDescriptionFactory.createTypeSystemDescription(Document.class),
 				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY, "test/data/docs",
 				PlainTextCollectionReader.PARAM_FILE_NAMES, new String[] {"test/data/util/PlainTextFileNames.txt"});
 
@@ -253,7 +254,7 @@ public class PlainTextCollectionReaderTests {
 		Set<String> fileNamesSet = new HashSet<String>();
 		fileNamesSet.addAll(Arrays.asList(this.fileNames));
 		int i=0;
-		for (JCas jCas: new TestsUtil.JCasIterable(reader)) {
+		for (JCas jCas: new JCasIterable(reader)) {
 			Document doc = DocumentUtil.getDocument(jCas);
 			String fileName = doc.getPath().replace('\\', '/');
 			fileName = fileName.substring(fileName.lastIndexOf("/")+1);
@@ -279,13 +280,13 @@ public class PlainTextCollectionReaderTests {
 	@Test
 	public void testSingleFile()  throws IOException, UIMAException {
 		String path = "test/data/html/1.html";
-		CollectionReader reader = TestsUtil.getCollectionReader(
+		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				PlainTextCollectionReader.class,
-				TestsUtil.getTypeSystem(Document.class),
+				TypeSystemDescriptionFactory.createTypeSystemDescription(Document.class),
 				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY, path);
 		
 		List<String> paths = new ArrayList<String>();
-		for (JCas jCas: new TestsUtil.JCasIterable(reader)) {
+		for (JCas jCas: new JCasIterable(reader)) {
 			paths.add(DocumentUtil.getPath(jCas).replace('\\', '/'));
 		}
 		reader.close();
@@ -304,9 +305,9 @@ public class PlainTextCollectionReaderTests {
 	public void testBadFileException() throws IOException, UIMAException {
 		
 		try {
-			TestsUtil.getCollectionReader(
+			CollectionReaderFactory.createCollectionReader(
 					PlainTextCollectionReader.class,
-					TestsUtil.getTypeSystem(Document.class),
+					TypeSystemDescriptionFactory.createTypeSystemDescription(Document.class),
 					PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY, "data/hmtl");
 			Assert.fail("expected error for invalid path");
 		} catch (ResourceInitializationException e){}
@@ -328,11 +329,11 @@ public class PlainTextCollectionReaderTests {
 	@Test
 	public void testDescriptor() throws UIMAException, IOException {
 		try {
-			TestsUtil.getCollectionReader("org.cleartk.util.PlainTextCollectionReader");
+			CollectionReaderFactory.createCollectionReader("org.cleartk.util.PlainTextCollectionReader");
 			Assert.fail("expected exception with no file or directory specified");
 		} catch (ResourceInitializationException e) {}
 		
-		CollectionReader reader = TestsUtil.getCollectionReader(
+		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				"org.cleartk.util.PlainTextCollectionReader",
 				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY, this.inputDir);
 		

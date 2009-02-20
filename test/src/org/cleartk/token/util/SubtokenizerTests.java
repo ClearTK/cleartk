@@ -23,13 +23,11 @@
 */
 package org.cleartk.token.util;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.List;
 
-import org.cleartk.token.util.Subtokenizer;
-import org.cleartk.token.util.Token;
-import org.cleartk.token.util.Tokenizer;
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 

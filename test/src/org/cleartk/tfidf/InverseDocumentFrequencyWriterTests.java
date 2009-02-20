@@ -36,19 +36,20 @@ import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Test;
-
 import org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter;
-import org.cleartk.tfidf.InverseDocumentFrequencyWriter;
 import org.cleartk.token.TokenAnnotator;
 import org.cleartk.token.snowball.SnowballStemmer;
 import org.cleartk.type.Document;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.PlainTextCollectionReader;
-import org.cleartk.util.TestsUtil;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Test;
+import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.CollectionReaderFactory;
+import org.uutuc.factory.TypeSystemDescriptionFactory;
+import org.uutuc.util.JCasIterable;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -74,23 +75,23 @@ public class InverseDocumentFrequencyWriterTests {
 
 	@Test
 	public void test() throws Exception {
-		TypeSystemDescription typeSystem = TestsUtil.getTypeSystem(
+		TypeSystemDescription typeSystem = TypeSystemDescriptionFactory.createTypeSystemDescription(
 				Document.class, Sentence.class, Token.class);
-		CollectionReader reader = TestsUtil.getCollectionReader(
+		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				PlainTextCollectionReader.class, typeSystem,
 				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY, this.inputDir);
 		AnalysisEngine[] engines = new AnalysisEngine[] {
-				TestsUtil.getAnalysisEngine(OpenNLPSentenceSegmenter.class, typeSystem,
+				AnalysisEngineFactory.createAnalysisEngine(OpenNLPSentenceSegmenter.class, typeSystem,
 						OpenNLPSentenceSegmenter.SENTENCE_MODEL_FILE_PARAM,
 						"../ClearTK/resources/models/OpenNLP.Sentence.English.bin.gz"),
-				TestsUtil.getAnalysisEngine(TokenAnnotator.class, typeSystem),
-				TestsUtil.getAnalysisEngine(SnowballStemmer.class, typeSystem,
+				AnalysisEngineFactory.createAnalysisEngine(TokenAnnotator.class, typeSystem),
+				AnalysisEngineFactory.createAnalysisEngine(SnowballStemmer.class, typeSystem,
 						SnowballStemmer.PARAM_STEMMER_NAME, "English"),
-				TestsUtil.getAnalysisEngine(InverseDocumentFrequencyWriter.class, typeSystem,
+				AnalysisEngineFactory.createAnalysisEngine(InverseDocumentFrequencyWriter.class, typeSystem,
 						InverseDocumentFrequencyWriter.PARAM_OUTPUT_FILE, this.mapFileName),
 		};
 		
-		for (JCas jCas: new TestsUtil.JCasIterable(reader, engines)) {
+		for (JCas jCas: new JCasIterable(reader, engines)) {
 			Assert.assertFalse(jCas == null);
 		}
 		reader.close();
@@ -135,11 +136,11 @@ public class InverseDocumentFrequencyWriterTests {
 	public void testDescriptor() throws Exception {
 		String descPath = "org.cleartk.tfidf.InverseDocumentFrequencyWriter";
 		try {
-			TestsUtil.getAnalysisEngine(descPath);
+			AnalysisEngineFactory.createAnalysisEngine(descPath);
 			Assert.fail("Expected exception with no OutputFile");
 		} catch (ResourceInitializationException e) {}
 		
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(descPath,
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(descPath,
 				InverseDocumentFrequencyWriter.PARAM_OUTPUT_FILE, this.mapFileName);
 		String fileName = (String)engine.getConfigParameterValue(
 				InverseDocumentFrequencyWriter.PARAM_OUTPUT_FILE);

@@ -27,7 +27,6 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.type.Token;
-import org.cleartk.util.linewriter.AnnotationWriter;
 
 
 /**

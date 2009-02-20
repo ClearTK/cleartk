@@ -31,14 +31,15 @@ import java.util.List;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
-import org.cleartk.token.opennlp.OpenNLPPOSTagger;
 import org.cleartk.type.Document;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.TestsUtil;
 import org.junit.Assert;
 import org.junit.Test;
+import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.TokenFactory;
+import org.uutuc.factory.TypeSystemDescriptionFactory;
 
 
 /**
@@ -50,19 +51,19 @@ public class OpenNLPPOSTaggerTests {
 	
 	@Test
 	public void testSimple() throws UIMAException {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				OpenNLPPOSTagger.class,
-				TestsUtil.getTypeSystem(Document.class, Token.class, Sentence.class),
+				TypeSystemDescriptionFactory.createTypeSystemDescription(Document.class, Token.class, Sentence.class),
 				OpenNLPPOSTagger.PARAM_CASE_SENSITIVE, true,
 				OpenNLPPOSTagger.PARAM_POSTAG_MODEL_FILE,
 				"resources/models/OpenNLP.POSTags.English.bin.gz",
 				OpenNLPPOSTagger.PARAM_POSTAG_DICTIONARY_FILE,
 				"resources/models/OpenNLP.TagDict.txt");
 		JCas jCas = engine.newJCas();
-		TestsUtil.createTokens(jCas,
+		TokenFactory.createTokens(jCas,
 				"The brown fox jumped quickly over the lazy dog.",
-				"The brown fox jumped quickly over the lazy dog .",
-				null, null);
+				Token.class, Sentence.class, 
+				"The brown fox jumped quickly over the lazy dog .");
 		engine.process(jCas);
 		
 		List<String> expected = Arrays.asList(
@@ -77,7 +78,7 @@ public class OpenNLPPOSTaggerTests {
 
 	@Test
 	public void testDescriptor() throws UIMAException, IOException {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.token.opennlp.OpenNLPPOSTagger");
 		
 		Object modelFile = engine.getConfigParameterValue(

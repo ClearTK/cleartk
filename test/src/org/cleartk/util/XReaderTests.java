@@ -32,15 +32,18 @@ import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.type.Document;
+import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
-import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.DocumentUtil;
-import org.cleartk.util.XReader;
-import org.cleartk.util.XWriter;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.CollectionReaderFactory;
+import org.uutuc.factory.TokenFactory;
+import org.uutuc.factory.TypeSystemDescriptionFactory;
+import org.uutuc.util.JCasIterable;
+import org.uutuc.util.TearDownUtil;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -60,7 +63,7 @@ public class XReaderTests {
 
 	@After
 	public void tearDown() throws Exception {
-		TestsUtil.tearDown(inputDir);
+		TearDownUtil.removeDirectory(inputDir);
 	}
 
 	/**
@@ -71,26 +74,27 @@ public class XReaderTests {
 	@Test
 	public void testReaderXmi() throws IOException, UIMAException {
 
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				XWriter.class, TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+				XWriter.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				XWriter.PARAM_OUTPUT_DIRECTORY, this.inputDir.getPath());
 		JCas jCas = engine.newJCas();
-		TestsUtil.createTokens(jCas,
+		TokenFactory.createTokens(jCas,
 				"I like\nspam!",
+				Token.class, Sentence.class, 
 				"I like spam !",
-				"PRP VB NN .", null);
+				"PRP VB NN .", null, "org.cleartk.type.Token:pos", null);
 		DocumentUtil.createDocument(jCas, "test", "path");
 		engine.process(jCas);
 		engine.collectionProcessComplete();
 
-		CollectionReader reader = TestsUtil.getCollectionReader(
+		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				XReader.class,
-				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				XReader.PARAM_FILE_OR_DIRECTORY, new File(inputDir, "test.xmi").getPath());
 		
 		Assert.assertEquals(0, reader.getProgress()[0].getCompleted());
 
-		jCas = new TestsUtil.JCasIterable(reader).next();
+		jCas = new JCasIterable(reader).next();
 		
 		String jCasText = jCas.getDocumentText();
 		String docText = "I like\nspam!";
@@ -109,28 +113,29 @@ public class XReaderTests {
 	@Test
 	public void testReaderXcas() throws IOException, UIMAException {
 
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				XWriter.class, TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+				XWriter.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				XWriter.PARAM_OUTPUT_DIRECTORY, this.inputDir.getPath(),
 				XWriter.PARAM_XML_SCHEME, XWriter.XCAS);
 		JCas jCas = engine.newJCas();
-		TestsUtil.createTokens(jCas,
+		TokenFactory.createTokens(jCas,
 				"I like\nspam!",
+				Token.class, Sentence.class, 
 				"I like spam !",
-				"PRP VB NN .", null);
+				"PRP VB NN .", null, "org.cleartk.type.Token:pos", null);
 		DocumentUtil.createDocument(jCas, "test", "path");
 		engine.process(jCas);
 		engine.collectionProcessComplete();
 
-		CollectionReader reader = TestsUtil.getCollectionReader(
+		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				XReader.class,
-				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				XReader.PARAM_FILE_OR_DIRECTORY, "test/data/xmi/test.xcas",
 				XReader.PARAM_XML_SCHEME, XReader.XCAS);
 		
 		Assert.assertEquals(0, reader.getProgress()[0].getCompleted());
 
-		jCas = new TestsUtil.JCasIterable(reader).next();
+		jCas = new JCasIterable(reader).next();
 		
 		String jCasText = jCas.getDocumentText();
 		String docText = "I like\nspam!";
@@ -150,11 +155,11 @@ public class XReaderTests {
 		@Test
 	public void testDescriptor() throws UIMAException, IOException {
 		try {
-			TestsUtil.getCollectionReader("org.cleartk.util.XReader");
+			CollectionReaderFactory.createCollectionReader("org.cleartk.util.XReader");
 			Assert.fail("expected exception with no file or directory specified");
 		} catch (ResourceInitializationException e) {}
 		
-		CollectionReader reader = TestsUtil.getCollectionReader(
+		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				"org.cleartk.util.XReader",
 				XReader.PARAM_FILE_OR_DIRECTORY, inputDir.getPath());
 		

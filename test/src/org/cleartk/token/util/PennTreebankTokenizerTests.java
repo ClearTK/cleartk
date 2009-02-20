@@ -27,7 +27,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
-import org.cleartk.token.util.PennTreebankTokenizer;
 import org.junit.Test;
 
 /**

@@ -23,17 +23,16 @@
 */
 package org.cleartk.util.collection;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 
-import org.cleartk.util.collection.CompressedStringBidiMap;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 

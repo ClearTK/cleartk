@@ -35,6 +35,9 @@ import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.type.Token;
 import org.junit.Test;
+import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.TypeSystemDescriptionFactory;
+import org.uutuc.factory.UimaContextFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -55,9 +58,9 @@ public class UIMAUtilTests {
 	
 	@Test
 	public void testToFSArray() throws ResourceInitializationException {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				EmptyAnnotator.class,
-				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"));
+				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
 		JCas jCas = engine.newJCas();
 
 		FSArray tokens = UIMAUtil.toFSArray(jCas, null); 
@@ -67,21 +70,21 @@ public class UIMAUtilTests {
 	
 	@Test
 	public void testGetDefaultingConfigParamValue() throws Exception{
-		UimaContext context = TestsUtil.getUimaContext(PlainTextCollectionReader.PARAM_FILE_NAMES, new String[] {""});
+		UimaContext context = UimaContextFactory.createUimaContext(PlainTextCollectionReader.PARAM_FILE_NAMES, new String[] {""});
 		
 		String[] stringArray = (String[]) UIMAUtil.getDefaultingConfigParameterValue(context, PlainTextCollectionReader.PARAM_FILE_NAMES, null);
 		assertNull(stringArray);
 
-		context = TestsUtil.getUimaContext(PlainTextCollectionReader.PARAM_FILE_NAMES, new String[0]);
+		context = UimaContextFactory.createUimaContext(PlainTextCollectionReader.PARAM_FILE_NAMES, new String[0]);
 		stringArray = (String[]) UIMAUtil.getDefaultingConfigParameterValue(context, PlainTextCollectionReader.PARAM_FILE_NAMES, null);
 		assertNull(stringArray);
 
-		context = TestsUtil.getUimaContext(PlainTextCollectionReader.PARAM_FILE_NAMES, new String[] {"asdf"});
+		context = UimaContextFactory.createUimaContext(PlainTextCollectionReader.PARAM_FILE_NAMES, new String[] {"asdf"});
 		stringArray = (String[]) UIMAUtil.getDefaultingConfigParameterValue(context, PlainTextCollectionReader.PARAM_FILE_NAMES, null);
 		assertEquals(1, stringArray.length);
 		assertEquals("asdf", stringArray[0]);
 
-		context = TestsUtil.getUimaContext();
+		context = UimaContextFactory.createUimaContext();
 		stringArray = (String[]) UIMAUtil.getDefaultingConfigParameterValue(context, PlainTextCollectionReader.PARAM_FILE_NAMES, null);
 		assertNull(stringArray);
 

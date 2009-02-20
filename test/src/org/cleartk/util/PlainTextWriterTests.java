@@ -30,12 +30,15 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
-import org.cleartk.util.DocumentUtil;
-import org.cleartk.util.PlainTextWriter;
+import org.cleartk.type.Sentence;
+import org.cleartk.type.Token;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.TokenFactory;
+import org.uutuc.factory.TypeSystemDescriptionFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -62,20 +65,20 @@ public class PlainTextWriterTests {
 	@Test
 	public void test() throws Exception {
 		try {
-			TestsUtil.getAnalysisEngine(
+			AnalysisEngineFactory.createAnalysisEngine(
 					PlainTextWriter.class,
-					TestsUtil.getTypeSystem("org.cleartk.TypeSystem"));
+					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
 			Assert.fail("expected exception with output directory not specified");
 		} catch (ResourceInitializationException e) {}
 		
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				PlainTextWriter.class, TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+				PlainTextWriter.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				PlainTextWriter.PARAM_OUTPUT_DIRECTORY, this.outputDir.getPath());
 		JCas jCas = engine.newJCas();
 		String text = "What if we built a large\r\n, wooden badger?";
-		TestsUtil.createTokens(jCas, text,
+		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class, 
 				"What if we built a large \n, wooden badger ?",
-				"WDT TO PRP VBN DT JJ , JJ NN .", null);
+				"WDT TO PRP VBN DT JJ , JJ NN .", null, "org.cleartk.type.Token:pos", null);
 		DocumentUtil.createDocument(jCas, "identifier", "path");
 		engine.process(jCas);
 		engine.collectionProcessComplete();
@@ -86,9 +89,9 @@ public class PlainTextWriterTests {
 
 		jCas = engine.newJCas();
 		text = "What if we built a large\n, wooden badger?";
-		TestsUtil.createTokens(jCas, text,
+		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class,
 				"What if we built a large \n, wooden badger ?",
-				"WDT TO PRP VBN DT JJ , JJ NN .", null);
+				"WDT TO PRP VBN DT JJ , JJ NN .", null, "org.cleartk.type.Token:pos", null);
 		DocumentUtil.createDocument(jCas, "1234", "1234");
 		engine.process(jCas);
 		engine.collectionProcessComplete();
@@ -102,11 +105,11 @@ public class PlainTextWriterTests {
 	@Test
 	public void testDescriptor() throws Exception {
 		try {
-			TestsUtil.getAnalysisEngine("org.cleartk.util.PlainTextWriter");
+			AnalysisEngineFactory.createAnalysisEngine("org.cleartk.util.PlainTextWriter");
 			Assert.fail("expected exception with output directory not specified");
 		} catch (ResourceInitializationException e) {}
 
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.util.PlainTextWriter",
 				PlainTextWriter.PARAM_OUTPUT_DIRECTORY, this.outputDir.getPath());
 		engine.collectionProcessComplete();

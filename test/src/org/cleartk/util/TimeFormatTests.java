@@ -30,7 +30,6 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.cleartk.util.TimeFormat;
 import org.junit.Test;
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 

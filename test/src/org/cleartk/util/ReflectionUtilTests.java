@@ -31,7 +31,6 @@ import org.cleartk.classifier.DataWriter_ImplBase;
 import org.cleartk.classifier.InstanceConsumer;
 import org.cleartk.classifier.opennlp.MaxentDataWriter;
 import org.cleartk.example.ExamplePOSAnnotationHandler;
-import org.cleartk.util.ReflectionUtil;
 import org.junit.Assert;
 import org.junit.Test;
 

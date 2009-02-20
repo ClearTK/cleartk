@@ -35,12 +35,11 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.type.Document;
 import org.cleartk.util.DocumentUtil;
-import org.cleartk.util.TestsUtil;
-import org.cleartk.util.TestsUtil.JCasIterable;
-import org.cleartk.util.linereader.LineReader;
-import org.cleartk.util.linereader.SimpleLineHandler;
 import org.junit.Assert;
 import org.junit.Test;
+import org.uutuc.factory.CollectionReaderFactory;
+import org.uutuc.factory.TypeSystemDescriptionFactory;
+import org.uutuc.util.JCasIterable;
 
 
 /**
@@ -56,13 +55,12 @@ public class LineReaderTests {
 	@Test
 	public void test1() throws Exception {
 		String languageCode = "en-us";
-		CollectionReader reader = TestsUtil.getCollectionReader(LineReader.class, TestsUtil
-				.getTypeSystem(Document.class), LineReader.PARAM_FILE_OR_DIRECTORY, "test/data/docs/linereader",
+		CollectionReader reader = CollectionReaderFactory.createCollectionReader(LineReader.class, TypeSystemDescriptionFactory.createTypeSystemDescription(Document.class), LineReader.PARAM_FILE_OR_DIRECTORY, "test/data/docs/linereader",
 				LineReader.PARAM_LANGUAGE, languageCode);
 
 		Assert.assertEquals(0, reader.getProgress()[0].getCompleted());
 
-		JCasIterable jCasIterable = new TestsUtil.JCasIterable(reader);
+		JCasIterable jCasIterable = new JCasIterable(reader);
 
 		test(jCasIterable, "# this file was created by Philip Ogren on Monday 10/27/2008", "1", File.separator
 				+ "test1.txt");
@@ -84,15 +82,14 @@ public class LineReaderTests {
 
 	@Test
 	public void test2() throws Exception {
-		CollectionReader reader = TestsUtil.getCollectionReader(LineReader.class, TestsUtil
-				.getTypeSystem(Document.class), LineReader.PARAM_FILE_OR_DIRECTORY, "test/data/docs/linereader",
+		CollectionReader reader = CollectionReaderFactory.createCollectionReader(LineReader.class, TypeSystemDescriptionFactory.createTypeSystemDescription(Document.class), LineReader.PARAM_FILE_OR_DIRECTORY, "test/data/docs/linereader",
 				LineReader.PARAM_LINE_HANDLER, "org.cleartk.util.linereader.SimpleLineHandler",
 				SimpleLineHandler.PARAM_DELIMITER, "|", LineReader.PARAM_SUFFIXES, new String[] { ".txt", ".dat" },
 				LineReader.PARAM_COMMENT_SPECIFIER, new String[] { "#", "//" });
 
 		Assert.assertEquals(0, reader.getProgress()[0].getCompleted());
 
-		JCasIterable jCasIterable = new TestsUtil.JCasIterable(reader);
+		JCasIterable jCasIterable = new JCasIterable(reader);
 
 		test(jCasIterable, "This is the first sentence.", "A", File.separator + "test1.txt");
 		test(jCasIterable, "This is the second sentence.  ", "B", File.separator + "test1.txt");
@@ -109,15 +106,14 @@ public class LineReaderTests {
 	public void test3() throws Exception {
 		File file = new File("test/data/docs/linereader/test2.dat");
 
-		CollectionReader reader = TestsUtil.getCollectionReader(LineReader.class, TestsUtil
-				.getTypeSystem(Document.class), LineReader.PARAM_FILE_OR_DIRECTORY,
+		CollectionReader reader = CollectionReaderFactory.createCollectionReader(LineReader.class, TypeSystemDescriptionFactory.createTypeSystemDescription(Document.class), LineReader.PARAM_FILE_OR_DIRECTORY,
 				file.getPath(), LineReader.PARAM_COMMENT_SPECIFIER, new String[] { "//" },
 				LineReader.PARAM_SKIP_BLANK_LINES, false);
 
 		Assert.assertEquals(0, reader.getProgress()[0].getCompleted());
 
 		
-		JCasIterable jCasIterable = new TestsUtil.JCasIterable(reader);
+		JCasIterable jCasIterable = new JCasIterable(reader);
 
 		test(jCasIterable, "", "1", file.getPath());
 		test(jCasIterable, "", "2", file.getPath());
@@ -143,11 +139,11 @@ public class LineReaderTests {
 		File inputDir = new File("test/data/docs/linereader/");
 		
 		try {
-			TestsUtil.getCollectionReader("org.cleartk.util.linereader.LineReader");
+			CollectionReaderFactory.createCollectionReader("org.cleartk.util.linereader.LineReader");
 			Assert.fail("expected exception with no file or directory specified");
 		} catch (ResourceInitializationException e) {}
 		
-		CollectionReader reader = TestsUtil.getCollectionReader(
+		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				"org.cleartk.util.linereader.LineReader",
 				LineReader.PARAM_FILE_OR_DIRECTORY, inputDir.getPath());
 		

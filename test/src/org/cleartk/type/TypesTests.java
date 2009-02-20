@@ -27,16 +27,9 @@ import org.cleartk.syntax.treebank.type.TopTreebankNode;
 import org.cleartk.syntax.treebank.type.TreebankAnnotation;
 import org.cleartk.syntax.treebank.type.TreebankNode;
 import org.cleartk.token.chunk.type.Subtoken;
-import org.cleartk.type.Chunk;
-import org.cleartk.type.ContiguousAnnotation;
-import org.cleartk.type.Document;
-import org.cleartk.type.Sentence;
-import org.cleartk.type.SimpleAnnotation;
-import org.cleartk.type.SplitAnnotation;
-import org.cleartk.type.Token;
-import org.cleartk.util.TestsUtil;
 import org.junit.Assert;
 import org.junit.Test;
+import org.uutuc.factory.JCasFactory;
 
 
 /**
@@ -49,7 +42,7 @@ public class TypesTests {
 	
 	@Test
 	public void testTypes() throws Exception {
-		JCas jCas = TestsUtil.newJCas();
+		JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
 		this.testType(jCas, new Chunk(jCas));
 		this.testType(jCas, new ContiguousAnnotation(jCas));
 		this.testType(jCas, new Document(jCas));

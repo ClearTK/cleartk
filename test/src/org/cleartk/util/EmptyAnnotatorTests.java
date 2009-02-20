@@ -25,9 +25,9 @@ package org.cleartk.util;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
-import org.cleartk.util.EmptyAnnotator;
 import org.junit.Assert;
 import org.junit.Test;
+import org.uutuc.factory.AnalysisEngineFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -39,7 +39,7 @@ public class EmptyAnnotatorTests {
 	
 	@Test
 	public void test() throws Exception {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				EmptyAnnotator.class, null);
 		JCas jCas = engine.newJCas();
 		int startSize = jCas.getAnnotationIndex().size();
@@ -50,7 +50,7 @@ public class EmptyAnnotatorTests {
 	
 	@Test
 	public void testDescriptor() throws Exception {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.util.EmptyAnnotator");
 		engine.collectionProcessComplete();
 	}

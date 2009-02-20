@@ -32,14 +32,15 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.token.snowball.SnowballStemmer;
 import org.cleartk.type.Document;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.TestsUtil;
 import org.junit.Assert;
 import org.junit.Test;
+import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.TokenFactory;
+import org.uutuc.factory.TypeSystemDescriptionFactory;
 
 
 /**
@@ -52,9 +53,9 @@ public class SnowballStemmerTests {
 	@Test
 	public void testBadStemmerName() throws UIMAException {
 		try {
-			TestsUtil.getAnalysisEngine(
+			AnalysisEngineFactory.createAnalysisEngine(
 					SnowballStemmer.class,
-					TestsUtil.getTypeSystem(Document.class, Token.class, Sentence.class),
+					TypeSystemDescriptionFactory.createTypeSystemDescription(Document.class, Token.class, Sentence.class),
 					SnowballStemmer.PARAM_STEMMER_NAME, "FooBar");
 			Assert.fail("Expected exception for bad stemmer name");
 		} catch (ResourceInitializationException e) {}
@@ -62,15 +63,15 @@ public class SnowballStemmerTests {
 	
 	@Test
 	public void testSimple() throws UIMAException {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				SnowballStemmer.class,
-				TestsUtil.getTypeSystem(Document.class, Token.class, Sentence.class),
+				TypeSystemDescriptionFactory.createTypeSystemDescription(Document.class, Token.class, Sentence.class),
 				SnowballStemmer.PARAM_STEMMER_NAME, "English");
 		JCas jCas = engine.newJCas();
-		TestsUtil.createTokens(jCas,
+		TokenFactory.createTokens(jCas,
 				"The brown foxes jumped quickly over the lazy dog.",
-				"The brown foxes jumped quickly over the lazy dog .",
-				null, null);
+				Token.class, Sentence.class, 
+				"The brown foxes jumped quickly over the lazy dog .");
 		engine.process(jCas);
 		
 		List<String> expected = Arrays.asList(
@@ -85,15 +86,15 @@ public class SnowballStemmerTests {
 
 	@Test
 	public void testUppercase() throws UIMAException {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				SnowballStemmer.class,
-				TestsUtil.getTypeSystem(Document.class, Token.class, Sentence.class),
+				TypeSystemDescriptionFactory.createTypeSystemDescription(Document.class, Token.class, Sentence.class),
 				SnowballStemmer.PARAM_STEMMER_NAME, "English");
 		JCas jCas = engine.newJCas();
-		TestsUtil.createTokens(jCas,
+		TokenFactory.createTokens(jCas,
 				"The brown foxes JumPEd QUICKLy over the lazY dog.",
-				"The brown foxes JumPEd QUICKLy over the lazY dog .",
-				null, null);
+				Token.class, Sentence.class, 
+				"The brown foxes JumPEd QUICKLy over the lazY dog .");
 		engine.process(jCas);
 		
 		List<String> expected = Arrays.asList(
@@ -108,7 +109,7 @@ public class SnowballStemmerTests {
 
 	@Test
 	public void testDescriptor() throws UIMAException, IOException {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.token.snowball.SnowballStemmer");
 		
 		Object stemmerName = engine.getConfigParameterValue(
