@@ -38,10 +38,12 @@ import org.cleartk.corpus.ace2005.type.Document;
 import org.cleartk.ne.type.NamedEntity;
 import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.type.Chunk;
-import org.cleartk.util.TestsUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
+import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.TypeSystemDescriptionFactory;
+import org.uutuc.util.TearDownUtil;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -55,23 +57,23 @@ public class Ace2005WriterTests {
 
 	@After
 	public void tearDown() throws Exception {
-		TestsUtil.tearDown(this.outputDir);
+		TearDownUtil.removeDirectory(this.outputDir);
 	}
 
 	@Test
 	public void testMissingParameters() throws Exception {
 		try {
-			TestsUtil.getAnalysisEngine(
+			AnalysisEngineFactory.createAnalysisEngine(
 					Ace2005Writer.class,
-					TestsUtil.getTypeSystem("org.cleartk.TypeSystem"));
+					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
 			Assert.fail("expected exception with output directory not specified");
 		} catch (ResourceInitializationException e) {}		
 	}
 
 	@Test
 	public void testOutputFile() throws Exception {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				Ace2005Writer.class, TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+				Ace2005Writer.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				Ace2005Writer.PARAM_OUTPUT_DIRECTORY, this.outputDir.getPath());
 		
 		JCas jCas = engine.newJCas();
@@ -160,11 +162,11 @@ public class Ace2005WriterTests {
 	@Test
 	public void testDescriptor() throws UIMAException, IOException {
 		try {
-			TestsUtil.getAnalysisEngine("org.cleartk.corpus.ace2005.Ace2005Writer");
+			AnalysisEngineFactory.createAnalysisEngine("org.cleartk.corpus.ace2005.Ace2005Writer");
 			Assert.fail("expected exception with output directory not specified");
 		} catch (ResourceInitializationException e) {}
 		
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.corpus.ace2005.Ace2005Writer",
 				Ace2005Writer.PARAM_OUTPUT_DIRECTORY, this.outputDir.getPath());
 		Object outputDirectory = engine.getConfigParameterValue(

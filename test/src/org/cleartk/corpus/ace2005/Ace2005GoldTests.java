@@ -7,9 +7,11 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.util.TestsUtil;
 import org.junit.Assert;
 import org.junit.Test;
+import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.CollectionReaderFactory;
+import org.uutuc.factory.TypeSystemDescriptionFactory;
 
 public class Ace2005GoldTests {
 
@@ -18,16 +20,16 @@ public class Ace2005GoldTests {
 	@Test
 	public void testReaderInvalidParameters() throws Exception {
 		try {
-			TestsUtil.getCollectionReader(
-					CollectionReader.class, TestsUtil.getTypeSystem("org.cleartk.TypeSystem"));
+			CollectionReaderFactory.createCollectionReader(
+					CollectionReader.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
 			Assert.fail("expected error for invalid corpus directory");
 		}
 		catch (ResourceInitializationException e) {
 		}
 
 		try {
-			TestsUtil.getCollectionReader(
-					Ace2005GoldReader.class, TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+			CollectionReaderFactory.createCollectionReader(
+					Ace2005GoldReader.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 					Ace2005GoldReader.PARAM_ACE_CORPUS_DIR, "foo/bar");
 			Assert.fail("expected error for invalid corpus directory");
 		}
@@ -37,7 +39,7 @@ public class Ace2005GoldTests {
 
 	@Test
 	public void testAnnotatorDescriptor() throws UIMAException, IOException {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.corpus.ace2005.Ace2005GoldAnnotator");
 		engine.collectionProcessComplete();
 	}
@@ -45,11 +47,11 @@ public class Ace2005GoldTests {
 	@Test
 	public void testReaderDescriptor() throws UIMAException, IOException {
 		try {
-			TestsUtil.getCollectionReader("org.cleartk.corpus.ace2005.Ace2005GoldReader");
+			CollectionReaderFactory.createCollectionReader("org.cleartk.corpus.ace2005.Ace2005GoldReader");
 			Assert.fail("expected failure for no corpus directory specified");
 		} catch (ResourceInitializationException e) {}
 
-		CollectionReader reader = TestsUtil.getCollectionReader(
+		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				"org.cleartk.corpus.ace2005.Ace2005GoldReader",
 				Ace2005GoldReader.PARAM_ACE_CORPUS_DIR, this.rootDir.getPath());
 
