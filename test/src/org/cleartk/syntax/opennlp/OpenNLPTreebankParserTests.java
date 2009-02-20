@@ -31,14 +31,17 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.syntax.opennlp.OpenNLPTreebankParser;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
 import org.cleartk.syntax.treebank.type.TreebankNode;
 import org.cleartk.type.Sentence;
+import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.TestsUtil;
 import org.junit.Assert;
 import org.junit.Test;
+import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.TokenFactory;
+import org.uutuc.factory.TypeSystemDescriptionFactory;
+import org.uutuc.util.DisableLogging;
 
 
 /**
@@ -51,33 +54,33 @@ public class OpenNLPTreebankParserTests {
 	@Test
 	public void testMissingParameters() throws UIMAException {
 		try {
-			TestsUtil.getAnalysisEngine(
+			AnalysisEngineFactory.createAnalysisEngine(
 					OpenNLPTreebankParser.class,
-					TestsUtil.getTypeSystem("org.cleartk.TypeSystem"));
+					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
 			Assert.fail("expected error for missing parser parameters");
 		} catch (ResourceInitializationException e) {}
 
 		try {
-			TestsUtil.getAnalysisEngine(
+			AnalysisEngineFactory.createAnalysisEngine(
 					OpenNLPTreebankParser.class,
-					TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 					"buildModelFile", "resources/test/models/fox_dog_parser/build.bin.gz");
 			Assert.fail("expected error for missing parser parameters");
 		} catch (ResourceInitializationException e) {}
 
 		try {
-			TestsUtil.getAnalysisEngine(
+			AnalysisEngineFactory.createAnalysisEngine(
 					OpenNLPTreebankParser.class,
-					TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 					"buildModelFile", "resources/test/models/fox_dog_parser/build.bin.gz",
 					"checkModelFile", "resources/test/models/fox_dog_parser/check.bin.gz");
 			Assert.fail("expected error for missing parser parameters");
 		} catch (ResourceInitializationException e) {}
 
 		try {
-			TestsUtil.getAnalysisEngine(
+			AnalysisEngineFactory.createAnalysisEngine(
 					OpenNLPTreebankParser.class,
-					TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 					"buildModelFile", "resources/test/models/fox_dog_parser/build.bin.gz",
 					"checkModelFile", "resources/test/models/fox_dog_parser/check.bin.gz",
 					"chunkModelFile", "resources/test/models/fox_dog_parser/chunk.bin.gz");
@@ -87,19 +90,19 @@ public class OpenNLPTreebankParserTests {
 	
 	@Test
 	public void test() throws UIMAException {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				OpenNLPTreebankParser.class,
-				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				"buildModelFile", "test/models/fox_dog_parser/build.bin.gz",
 				"checkModelFile", "test/models/fox_dog_parser/check.bin.gz",
 				"chunkModelFile", "test/models/fox_dog_parser/chunk.bin.gz",
 				"headRulesFile", "test/models/fox_dog_parser/head_rules");
 		JCas jCas = engine.newJCas();
-		TestsUtil.createTokens(jCas,
-				"The brown fox jumped quickly over the lazy dog.",
+		TokenFactory.createTokens(jCas,
+				"The brown fox jumped quickly over the lazy dog.", Token.class, Sentence.class, 
 				"The brown fox jumped quickly over the lazy dog .",
 				"DT JJ NN VBZ RB IN DT JJ NN .",
-				null);
+				null, "org.cleartk.type.Token:pos", null);
 		
 		engine.process(jCas);
 		engine.collectionProcessComplete();
@@ -155,20 +158,19 @@ public class OpenNLPTreebankParserTests {
 	
 	@Test
 	public void testNoPos() throws UIMAException {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				OpenNLPTreebankParser.class,
-				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				"buildModelFile", "test/models/fox_dog_parser/build.bin.gz",
 				"checkModelFile", "test/models/fox_dog_parser/check.bin.gz",
 				"chunkModelFile", "test/models/fox_dog_parser/chunk.bin.gz",
 				"headRulesFile", "test/models/fox_dog_parser/head_rules");
 		JCas jCas = engine.newJCas();
-		TestsUtil.createTokens(jCas,
+		TokenFactory.createTokens(jCas,
 				"The brown fox jumped quickly over the lazy dog.",
-				"The brown fox jumped quickly over the lazy dog .",
-				null,
-				null);
-		Level level = TestsUtil.disableLogging();
+				Token.class, Sentence.class, 
+				"The brown fox jumped quickly over the lazy dog .");
+		Level level = DisableLogging.disableLogging();
 		try {
 			engine.process(jCas);
 		} catch (AnalysisEngineProcessException e) {
@@ -177,26 +179,27 @@ public class OpenNLPTreebankParserTests {
 			}
 		} finally {
 			engine.collectionProcessComplete();
-			TestsUtil.enableLogging(level);
+			DisableLogging.enableLogging(level);
 		}
 	}
 	
 	@Test
 	public void testLongParse() throws UIMAException {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				OpenNLPTreebankParser.class,
-				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				"buildModelFile", "test/models/fox_dog_parser/build.bin.gz",
 				"checkModelFile", "test/models/fox_dog_parser/check.bin.gz",
 				"chunkModelFile", "test/models/fox_dog_parser/chunk.bin.gz",
 				"headRulesFile", "test/models/fox_dog_parser/head_rules");
 		JCas jCas = engine.newJCas();
-		TestsUtil.createTokens(jCas,
+		TokenFactory.createTokens(jCas,
 				"The brown fox jumped quickly over the lazy dog " +
 				"who jumped quickly over the brown fox " +
 				"who jumped quickly over the lazy dog " +
 				"who jumped quickly over the brown fox " +
 				"who jumped quickly over the lazy dog.",
+				Token.class, Sentence.class, 
 				"The brown fox jumped quickly over the lazy dog " +
 				"who jumped quickly over the brown fox " +
 				"who jumped quickly over the lazy dog " +
@@ -207,7 +210,7 @@ public class OpenNLPTreebankParserTests {
 				"WDT VBZ RB IN DT JJ NN " +
 				"WDT VBZ RB IN DT JJ NN " +
 				"WDT VBZ RB IN DT JJ NN .",
-				null);
+				null, "org.cleartk.type.Token:pos", null);
 		engine.process(jCas);
 		engine.collectionProcessComplete();
 		Sentence sentence = AnnotationRetrieval.getAnnotations(jCas, Sentence.class).get(0);
@@ -216,7 +219,7 @@ public class OpenNLPTreebankParserTests {
 	
 	@Test
 	public void testDescriptor() throws UIMAException, IOException {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.syntax.opennlp.OpenNLPTreebankParser");
 		
 		Object buildModelFile = engine.getConfigParameterValue(
