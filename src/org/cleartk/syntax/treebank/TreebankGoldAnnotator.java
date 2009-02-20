@@ -26,11 +26,13 @@ package org.cleartk.syntax.treebank;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.collection.CollectionException;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
 import org.cleartk.syntax.treebank.type.TreebankNode;
 import org.cleartk.syntax.treebank.util.TreebankFormatParser;
@@ -55,6 +57,19 @@ import org.cleartk.util.UIMAUtil;
  */
 public class TreebankGoldAnnotator extends JCasAnnotator_ImplBase {
 
+	public static final String PARAM_POST_TREEBANK = "PostTreebank";
+
+	private boolean postTreebank = true;
+	
+	@Override
+	public void initialize(UimaContext context) throws ResourceInitializationException {
+	
+		postTreebank = (Boolean) UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_POST_TREEBANK, true);
+		super.initialize(context);
+	}
+
+
+
 	@Override
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
 		try {
@@ -74,7 +89,7 @@ public class TreebankGoldAnnotator extends JCasAnnotator_ImplBase {
 
 			for (org.cleartk.syntax.treebank.util.TopTreebankNode topNode : topNodes) {
 				TopTreebankNode uimaNode = org.cleartk.syntax.treebank.util.TreebankNodeUtility
-						.convert(topNode, docView);
+						.convert(topNode, docView, postTreebank);
 				Sentence uimaSentence = new Sentence(docView, uimaNode
 						.getBegin(), uimaNode.getEnd());
 				uimaSentence.setConstituentParse(uimaNode);
@@ -90,7 +105,6 @@ public class TreebankGoldAnnotator extends JCasAnnotator_ImplBase {
 					}
 				}
 			}
-
 
 			DocumentUtil.createDocument(docView, tbDoc.getIdentifier(), tbDoc.getPath());
 
