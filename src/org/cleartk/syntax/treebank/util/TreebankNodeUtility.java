@@ -41,13 +41,14 @@ import org.cleartk.util.UIMAUtil;
  * 
  */
 public class TreebankNodeUtility {
-	public static org.cleartk.syntax.treebank.type.TopTreebankNode convert(TopTreebankNode pojoNode, JCas jCas) {
+	public static org.cleartk.syntax.treebank.type.TopTreebankNode convert(TopTreebankNode pojoNode, JCas jCas, boolean addToIndexes) {
 		org.cleartk.syntax.treebank.type.TopTreebankNode uimaNode = new org.cleartk.syntax.treebank.type.TopTreebankNode(
 				jCas, pojoNode.getTextBegin(), pojoNode.getTextEnd());
-		convert(pojoNode, jCas, uimaNode, null);
+		convert(pojoNode, jCas, uimaNode, null, addToIndexes);
 		uimaNode.setTreebankParse(pojoNode.getTreebankParse());
 		initTerminalNodes(uimaNode, jCas);
-		uimaNode.addToIndexes();
+		if(addToIndexes)
+			uimaNode.addToIndexes();
 		return uimaNode;
 	}
 
@@ -74,7 +75,8 @@ public class TreebankNodeUtility {
 
 	public static org.cleartk.syntax.treebank.type.TreebankNode convert(TreebankNode pojoNode, JCas jCas,
 			org.cleartk.syntax.treebank.type.TreebankNode uimaNode,
-			org.cleartk.syntax.treebank.type.TreebankNode parentNode) {
+			org.cleartk.syntax.treebank.type.TreebankNode parentNode,
+			boolean addToIndexes) {
 		uimaNode.setNodeType(pojoNode.getType());
 		uimaNode.setNodeTags(UIMAUtil.toStringArray(jCas, pojoNode.getTags()));
 		uimaNode.setNodeValue(pojoNode.getValue());
@@ -85,8 +87,9 @@ public class TreebankNodeUtility {
 		for (TreebankNode child : pojoNode.getChildren()) {
 			org.cleartk.syntax.treebank.type.TreebankNode childNode = new org.cleartk.syntax.treebank.type.TreebankNode(
 					jCas, child.getTextBegin(), child.getTextEnd());
-			uimaChildren.add(convert(child, jCas, childNode, uimaNode));
-			childNode.addToIndexes();
+			uimaChildren.add(convert(child, jCas, childNode, uimaNode, addToIndexes));
+			if(addToIndexes)
+				childNode.addToIndexes();
 		}
 		FSArray uimaChildrenFSArray = new FSArray(jCas, uimaChildren.size());
 		uimaChildrenFSArray.copyFromArray(uimaChildren.toArray(new FeatureStructure[uimaChildren.size()]), 0, 0,
