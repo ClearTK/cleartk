@@ -14,5 +14,6 @@
 	<classpathentry kind="lib" path="lib/maxent-2.5.1.jar"/>
 	<classpathentry kind="lib" path="lib/opennlp-tools-1.4.1.jar"/>
 	<classpathentry kind="lib" path="lib/junit-4.5.jar"/>
+	<classpathentry kind="lib" path="lib/uutuc-0.9.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
