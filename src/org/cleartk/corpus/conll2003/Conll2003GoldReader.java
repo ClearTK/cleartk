@@ -92,8 +92,8 @@ public class Conll2003GoldReader extends CollectionReader_ImplBase
 	{
 		try
 		{
-			documentPath = (String) getConfigParameterValue(PARAM_CONLL_2003_DATA_FILE);
-			loadNamedEntities = (Boolean) getConfigParameterValue(PARAM_LOAD_NAMED_ENTITIES);
+			documentPath = (String) UIMAUtil.getRequiredConfigParameterValue(getUimaContext(), PARAM_CONLL_2003_DATA_FILE);
+			loadNamedEntities = (Boolean) UIMAUtil.getDefaultingConfigParameterValue(getUimaContext(), PARAM_LOAD_NAMED_ENTITIES, true);
 			
 			File conllFile = new File(documentPath);
 		    reader = new BufferedReader(new FileReader(conllFile));
