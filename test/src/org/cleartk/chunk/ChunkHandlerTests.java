@@ -31,26 +31,24 @@ import java.util.List;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.chunk.ChunkLabeler;
-import org.cleartk.chunk.ChunkLabeler_ImplBase;
-import org.cleartk.chunk.ChunkerHandler;
-import org.cleartk.chunk.DefaultChunkLabeler;
 import org.cleartk.classifier.ClassifierAnnotator;
 import org.cleartk.classifier.DataWriter_ImplBase;
 import org.cleartk.classifier.DelegatingDataWriter;
 import org.cleartk.classifier.InstanceConsumer_ImplBase;
 import org.cleartk.classifier.opennlp.MaxentDataWriter;
 import org.cleartk.type.Chunk;
+import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.EmptyAnnotator;
-import org.cleartk.util.TestsUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
+import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.TokenFactory;
+import org.uutuc.factory.TypeSystemDescriptionFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -72,10 +70,10 @@ public class ChunkHandlerTests {
 	}
 	
 	@Test
-	public void testChunkHandler() throws ResourceInitializationException, AnalysisEngineProcessException {
-		  AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+	public void testChunkHandler() throws UIMAException {
+		  AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				    EmptyAnnotator.class,
-				    TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+				    TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 		  			ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS, "org.cleartk.type.Token",
 		  			ChunkerHandler.PARAM_SEQUENCE_CLASS, "org.cleartk.type.Sentence",
 		  			ChunkerHandler.PARAM_CHUNK_LABELER_CLASS, "org.cleartk.chunk.DefaultChunkLabeler",
@@ -93,9 +91,9 @@ public class ChunkHandlerTests {
 
 		  String text = "What if we built a rocket ship made of cheese?" +
 			  "We could fly it to the moon for repairs";
-		  TestsUtil.createTokens(jCas, text,
+		  TokenFactory.createTokens(jCas, text, Token.class, Sentence.class,
 					"What if we built a rocket ship made of cheese ? We could fly it to the moon for repairs",
-					"A B C D E F G H I J K L M N O P Q R S T U", null);
+					"A B C D E F G H I J K L M N O P Q R S T U", null, "org.cleartk.type.Token:pos", null);
 		  List<Token> tokens = AnnotationRetrieval.getAnnotations(jCas, Token.class);
 		  for (int i = 0; i < tokens.size(); i++) {
 			Token token1 = tokens.get(i);
@@ -166,11 +164,11 @@ public class ChunkHandlerTests {
 	@Test
 	public void testChunkTokenizerDescriptor() throws UIMAException, IOException {
 		try {
-			TestsUtil.getAnalysisEngine("org.cleartk.token.chunk.ChunkTokenizer");
+			AnalysisEngineFactory.createAnalysisEngine("org.cleartk.token.chunk.ChunkTokenizer");
 			Assert.fail("expected exception with missing classifier jar");
 		} catch (ResourceInitializationException e) {}
 			
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.token.chunk.ChunkTokenizer",
 				ClassifierAnnotator.PARAM_CLASSIFIER_JAR, "test/data/token/chunk/model.jar");
 		Object handler = engine.getConfigParameterValue(
@@ -186,20 +184,20 @@ public class ChunkHandlerTests {
 		String outputPath = this.outputDir.getPath();
 
 		try {
-			TestsUtil.getAnalysisEngine(
+			AnalysisEngineFactory.createAnalysisEngine(
 					"org.cleartk.token.chunk.ChunkTokenizerDataWriter",
 					DelegatingDataWriter.PARAM_DATA_WRITER, MaxentDataWriter.class.getName());
 			Assert.fail("expected exception with missing output directory");
 		} catch (ResourceInitializationException e) {}
 			
 		try {
-			TestsUtil.getAnalysisEngine(
+			AnalysisEngineFactory.createAnalysisEngine(
 					"org.cleartk.token.chunk.ChunkTokenizerDataWriter",
 					DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY, outputPath);
 			Assert.fail("expected exception with missing data writer");
 		} catch (ResourceInitializationException e) {}
 			
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.token.chunk.ChunkTokenizerDataWriter",
 				DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY, outputPath,
 				DelegatingDataWriter.PARAM_DATA_WRITER, MaxentDataWriter.class.getName());

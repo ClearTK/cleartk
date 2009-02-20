@@ -27,20 +27,19 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
 
+import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.chunk.ChunkLabeler_ImplBase;
-import org.cleartk.chunk.DefaultChunkLabeler;
 import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.token.chunk.type.Subtoken;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.EmptyAnnotator;
-import org.cleartk.util.TestsUtil;
 import org.junit.Test;
+import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.AnnotationFactory;
+import org.uutuc.factory.TypeSystemDescriptionFactory;
 
 
 /**
@@ -54,12 +53,13 @@ public class DefaultChunkLabelerTests {
 
 	/**
 	 * these tests represent what would typically happen when the InstanceConsumer is ClassifierAnnotator
+	 * @throws UIMAException 
 	 */
 	@Test
-	public void testClassifierAnnotator() throws ResourceInitializationException, AnalysisEngineProcessException {
-		  AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+	public void testClassifierAnnotator() throws UIMAException {
+		  AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				    EmptyAnnotator.class,
-				    TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+				    TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 		  			"ChunkAnnotationClass", "org.cleartk.type.Token",
 		  			"LabeledAnnotationClass", "org.cleartk.token.chunk.type.Subtoken"
 		  			);
@@ -75,20 +75,20 @@ public class DefaultChunkLabelerTests {
 		  Sentence sentence = new Sentence(jCas, 0, 78);
 		  sentence.addToIndexes();
 		  
-		  Subtoken subtoken1 = TestsUtil.createAnnotation(jCas, 0, 13, Subtoken.class);  //Technological
-		  Subtoken subtoken2 = TestsUtil.createAnnotation(jCas, 14, 22, Subtoken.class); //progress
-		  Subtoken subtoken3 = TestsUtil.createAnnotation(jCas, 23, 25, Subtoken.class); //is
-		  Subtoken subtoken4 = TestsUtil.createAnnotation(jCas, 26, 30, Subtoken.class); //like
-		  Subtoken subtoken5 = TestsUtil.createAnnotation(jCas, 31, 33, Subtoken.class); //an
-		  Subtoken subtoken6 = TestsUtil.createAnnotation(jCas, 34, 37, Subtoken.class); //axe
-		  Subtoken subtoken7 = TestsUtil.createAnnotation(jCas, 38, 40, Subtoken.class); //in
-		  Subtoken subtoken8 = TestsUtil.createAnnotation(jCas, 41, 44, Subtoken.class); //the
-		  Subtoken subtoken9 = TestsUtil.createAnnotation(jCas, 45, 50, Subtoken.class); //hands
-		  Subtoken subtoken10 = TestsUtil.createAnnotation(jCas, 51, 53, Subtoken.class); //of
-		  Subtoken subtoken11 = TestsUtil.createAnnotation(jCas, 54, 55, Subtoken.class); //a
-		  Subtoken subtoken12 = TestsUtil.createAnnotation(jCas, 56, 68, Subtoken.class); //pathological
-		  Subtoken subtoken13 = TestsUtil.createAnnotation(jCas, 69, 77, Subtoken.class); //criminal
-		  Subtoken subtoken14 = TestsUtil.createAnnotation(jCas, 77, 78, Subtoken.class); //.
+		  Subtoken subtoken1 = AnnotationFactory.createAnnotation(jCas, 0, 13, Subtoken.class);  //Technological
+		  Subtoken subtoken2 = AnnotationFactory.createAnnotation(jCas, 14, 22, Subtoken.class); //progress
+		  Subtoken subtoken3 = AnnotationFactory.createAnnotation(jCas, 23, 25, Subtoken.class); //is
+		  Subtoken subtoken4 = AnnotationFactory.createAnnotation(jCas, 26, 30, Subtoken.class); //like
+		  Subtoken subtoken5 = AnnotationFactory.createAnnotation(jCas, 31, 33, Subtoken.class); //an
+		  Subtoken subtoken6 = AnnotationFactory.createAnnotation(jCas, 34, 37, Subtoken.class); //axe
+		  Subtoken subtoken7 = AnnotationFactory.createAnnotation(jCas, 38, 40, Subtoken.class); //in
+		  Subtoken subtoken8 = AnnotationFactory.createAnnotation(jCas, 41, 44, Subtoken.class); //the
+		  Subtoken subtoken9 = AnnotationFactory.createAnnotation(jCas, 45, 50, Subtoken.class); //hands
+		  Subtoken subtoken10 = AnnotationFactory.createAnnotation(jCas, 51, 53, Subtoken.class); //of
+		  Subtoken subtoken11 = AnnotationFactory.createAnnotation(jCas, 54, 55, Subtoken.class); //a
+		  Subtoken subtoken12 = AnnotationFactory.createAnnotation(jCas, 56, 68, Subtoken.class); //pathological
+		  Subtoken subtoken13 = AnnotationFactory.createAnnotation(jCas, 69, 77, Subtoken.class); //criminal
+		  Subtoken subtoken14 = AnnotationFactory.createAnnotation(jCas, 77, 78, Subtoken.class); //.
 		  defaultChunkLabeler.chunks2Labels(jCas, sentence);
 		  assertEquals(ChunkLabeler_ImplBase.OUTSIDE_LABEL, defaultChunkLabeler.getLabel(subtoken1));
 		  assertEquals(ChunkLabeler_ImplBase.OUTSIDE_LABEL, defaultChunkLabeler.getLabel(subtoken2));
@@ -134,13 +134,14 @@ public class DefaultChunkLabelerTests {
 
 	/**
 	 * these tests represent what would typically happen when the InstanceConsumer is a DataWriter
+	 * @throws UIMAException 
 	 */
 	
 	@Test
-	public void testDataWriter() throws ResourceInitializationException, AnalysisEngineProcessException {
-		  AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+	public void testDataWriter() throws UIMAException {
+		  AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				    EmptyAnnotator.class,
-				    TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+				    TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 		  			"ChunkAnnotationClass", "org.cleartk.type.Token",
 		  			"LabeledAnnotationClass", "org.cleartk.token.chunk.type.Subtoken"
 		  			);
@@ -156,29 +157,29 @@ public class DefaultChunkLabelerTests {
 		  Sentence sentence = new Sentence(jCas, 0, 78);
 		  sentence.addToIndexes();
 
-		  Subtoken subtoken1 = TestsUtil.createAnnotation(jCas, 0, 13, Subtoken.class);  //Technological
-		  Subtoken subtoken2 = TestsUtil.createAnnotation(jCas, 14, 22, Subtoken.class); //progress
-		  Subtoken subtoken3 = TestsUtil.createAnnotation(jCas, 23, 25, Subtoken.class); //is
-		  Subtoken subtoken4 = TestsUtil.createAnnotation(jCas, 26, 30, Subtoken.class); //like
-		  Subtoken subtoken5 = TestsUtil.createAnnotation(jCas, 31, 33, Subtoken.class); //an
-		  Subtoken subtoken6 = TestsUtil.createAnnotation(jCas, 34, 37, Subtoken.class); //axe
-		  Subtoken subtoken7 = TestsUtil.createAnnotation(jCas, 38, 40, Subtoken.class); //in
-		  Subtoken subtoken8 = TestsUtil.createAnnotation(jCas, 41, 44, Subtoken.class); //the
-		  Subtoken subtoken9 = TestsUtil.createAnnotation(jCas, 45, 50, Subtoken.class); //hands
-		  Subtoken subtoken10 = TestsUtil.createAnnotation(jCas, 51, 53, Subtoken.class); //of
-		  Subtoken subtoken11 = TestsUtil.createAnnotation(jCas, 54, 55, Subtoken.class); //a
-		  Subtoken subtoken12 = TestsUtil.createAnnotation(jCas, 56, 68, Subtoken.class); //pathological
-		  Subtoken subtoken13 = TestsUtil.createAnnotation(jCas, 69, 77, Subtoken.class); //criminal
-		  Subtoken subtoken14 = TestsUtil.createAnnotation(jCas, 77, 78, Subtoken.class); //.
+		  Subtoken subtoken1 = AnnotationFactory.createAnnotation(jCas, 0, 13, Subtoken.class);  //Technological
+		  Subtoken subtoken2 = AnnotationFactory.createAnnotation(jCas, 14, 22, Subtoken.class); //progress
+		  Subtoken subtoken3 = AnnotationFactory.createAnnotation(jCas, 23, 25, Subtoken.class); //is
+		  Subtoken subtoken4 = AnnotationFactory.createAnnotation(jCas, 26, 30, Subtoken.class); //like
+		  Subtoken subtoken5 = AnnotationFactory.createAnnotation(jCas, 31, 33, Subtoken.class); //an
+		  Subtoken subtoken6 = AnnotationFactory.createAnnotation(jCas, 34, 37, Subtoken.class); //axe
+		  Subtoken subtoken7 = AnnotationFactory.createAnnotation(jCas, 38, 40, Subtoken.class); //in
+		  Subtoken subtoken8 = AnnotationFactory.createAnnotation(jCas, 41, 44, Subtoken.class); //the
+		  Subtoken subtoken9 = AnnotationFactory.createAnnotation(jCas, 45, 50, Subtoken.class); //hands
+		  Subtoken subtoken10 = AnnotationFactory.createAnnotation(jCas, 51, 53, Subtoken.class); //of
+		  Subtoken subtoken11 = AnnotationFactory.createAnnotation(jCas, 54, 55, Subtoken.class); //a
+		  Subtoken subtoken12 = AnnotationFactory.createAnnotation(jCas, 56, 68, Subtoken.class); //pathological
+		  Subtoken subtoken13 = AnnotationFactory.createAnnotation(jCas, 69, 77, Subtoken.class); //criminal
+		  Subtoken subtoken14 = AnnotationFactory.createAnnotation(jCas, 77, 78, Subtoken.class); //.
 		  
-		  TestsUtil.createAnnotation(jCas, 0, 13, Token.class); //Technological
-		  TestsUtil.createAnnotation(jCas, 23, 25, Token.class); //is
-		  TestsUtil.createAnnotation(jCas, 26, 30, Token.class); //like
-		  TestsUtil.createAnnotation(jCas, 31, 40, Token.class); //an axe in
-		  TestsUtil.createAnnotation(jCas, 45, 53, Token.class); //hands of
-		  TestsUtil.createAnnotation(jCas, 54, 55, Token.class); //a
-		  TestsUtil.createAnnotation(jCas, 56, 68, Token.class); //pathological
-		  TestsUtil.createAnnotation(jCas, 77, 78, Token.class); //.
+		  AnnotationFactory.createAnnotation(jCas, 0, 13, Token.class); //Technological
+		  AnnotationFactory.createAnnotation(jCas, 23, 25, Token.class); //is
+		  AnnotationFactory.createAnnotation(jCas, 26, 30, Token.class); //like
+		  AnnotationFactory.createAnnotation(jCas, 31, 40, Token.class); //an axe in
+		  AnnotationFactory.createAnnotation(jCas, 45, 53, Token.class); //hands of
+		  AnnotationFactory.createAnnotation(jCas, 54, 55, Token.class); //a
+		  AnnotationFactory.createAnnotation(jCas, 56, 68, Token.class); //pathological
+		  AnnotationFactory.createAnnotation(jCas, 77, 78, Token.class); //.
 		  
 		  defaultChunkLabeler.chunks2Labels(jCas, sentence);
 		  assertEquals("B-Token", defaultChunkLabeler.getLabel(subtoken1));
@@ -200,10 +201,10 @@ public class DefaultChunkLabelerTests {
 
 	
 	@Test
-	public void testGetChunkLabel() throws ResourceInitializationException, AnalysisEngineProcessException {
-		  AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+	public void testGetChunkLabel() throws UIMAException {
+		  AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				    EmptyAnnotator.class,
-				    TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+				    TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 		  			"ChunkAnnotationClass", "org.cleartk.ne.type.NamedEntityMention",
 		  			"ChunkLabelFeature", "mentionType",
 		  			"LabeledAnnotationClass", "org.cleartk.type.Token"
@@ -218,16 +219,16 @@ public class DefaultChunkLabelerTests {
 		  jCas = engine.newJCas();
 		  jCas.setDocumentText("Technological progress is like an axe in the hands of a pathological criminal."); //Albert Einstein
 
-		  NamedEntityMention nem = TestsUtil.createAnnotation(jCas, 0, 22, NamedEntityMention.class);
+		  NamedEntityMention nem = AnnotationFactory.createAnnotation(jCas, 0, 22, NamedEntityMention.class);
 		  nem.setMentionType("THEME");
 		  
 		  assertEquals("THEME", defaultChunkLabeler.getChunkLabel(jCas, nem));
 		  
-		  TestsUtil.createAnnotation(jCas, 56, 13, Token.class); //Technological
-		  TestsUtil.createAnnotation(jCas, 23, 77, Token.class); //is
+		  AnnotationFactory.createAnnotation(jCas, 56, 13, Token.class); //Technological
+		  AnnotationFactory.createAnnotation(jCas, 23, 77, Token.class); //is
 		  
-		  Token token1 = TestsUtil.createAnnotation(jCas, 56, 68, Token.class); //pathological
-		  Token token2 = TestsUtil.createAnnotation(jCas, 69, 77, Token.class); //criminal
+		  Token token1 = AnnotationFactory.createAnnotation(jCas, 56, 68, Token.class); //pathological
+		  Token token2 = AnnotationFactory.createAnnotation(jCas, 69, 77, Token.class); //criminal
 		  
 		  defaultChunkLabeler.createChunk(jCas, Arrays.asList(token1, token2), "blue");
 		  
