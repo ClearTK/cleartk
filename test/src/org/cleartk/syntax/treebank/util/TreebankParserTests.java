@@ -24,6 +24,7 @@
 package org.cleartk.syntax.treebank.util;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -32,9 +33,6 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.uima.util.FileUtils;
-import org.cleartk.syntax.treebank.util.TopTreebankNode;
-import org.cleartk.syntax.treebank.util.TreebankFormatParser;
-import org.cleartk.syntax.treebank.util.TreebankNode;
 import org.junit.Test;
 
 /**
@@ -312,6 +310,20 @@ import org.junit.Test;
 		assertEquals(243, sentences.length);	
 		sentences = TreebankFormatParser.splitSentences(FileUtils.file2String(new File("test/data/docs/treebank/12585968.tree")));
 		assertEquals(283, sentences.length);	
+		
+		sentences = TreebankFormatParser.splitSentences("()\n()");
+		assertEquals(2, sentences.length);	
+		sentences = TreebankFormatParser.splitSentences("()\n()\r\n(NN train)");
+		assertEquals(3, sentences.length);
+		
+		IllegalArgumentException iae = null;
+		try {
+			sentences = TreebankFormatParser.splitSentences("())");
+		} catch (IllegalArgumentException e) {
+			iae = e;
+		}
+		assertNotNull(iae);
+		
 	}
 	
 	@Test
@@ -503,4 +515,29 @@ import org.junit.Test;
 		testNode(topNode, "The U.S..", "S", parse);
 		testNode(topNode.getChildren().get(0).getChildren().get(1), "U.S.", "NNP", "(NNP U.S.)");
 	}
+	
+	@Test
+	public void testNewlineSplit() {
+		String contents = "asdf \r\n fdsa";
+		String[] lines = contents.split("\r?\n");
+		assertEquals(2, lines.length);
+		assertEquals("asdf ", lines[0]);
+		assertEquals(" fdsa", lines[1]);
+
+		contents = "asdf\nfdsa";
+		lines = contents.split("\r?\n");
+		assertEquals(2, lines.length);
+		assertEquals("asdf", lines[0]);
+		assertEquals("fdsa", lines[1]);
+	}
+	
+	@Test 
+	public void testMatchingParens() {
+		assertTrue(TreebankFormatParser.parensMatch("(((())))"));
+		assertFalse(TreebankFormatParser.parensMatch("((())))"));
+		assertTrue(TreebankFormatParser.parensMatch("( (S (NP-SBJ-1 (DT The) (NN striatum)) (VP (VBZ plays) (NP (DT a) (JJ pivotal) (NN role)) (PP (IN in) (S-NOM (NP-SBJ-1 (-NONE- *PRO*)) (VP (VBG modulating) (NP (NP (NN motor) (NN activity)) (CC and) (NP (JJR higher) (JJ cognitive) (NN function))))))) (. .)) )"));
+		assertFalse(TreebankFormatParser.parensMatch("(NP-SBJ-1 (DT The) (NN striatum)) (VP (VBZ plays) (NP (DT a) (JJ pivotal) (NN role)) (PP (IN in) (S-NOM (NP-SBJ-1 (-NONE- *PRO*)) (VP (VBG modulating) (NP (NP (NN motor) (NN activity)) (CC and) (NP (JJR higher) (JJ cognitive) (NN function))))))) (. .)) )"));
+	}
+	
+	
 }

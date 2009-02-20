@@ -200,12 +200,13 @@ public class TreebankFormatParser {
 	 * 
 	 * @see #parse(String, String, int)
 	 * 
-	 * @param treebankText One or more parses in Treebank parenthesized format.
-	 * @return a "best" guess of the original plain text given in the parse.   
+	 * @param treebankText
+	 *            One or more parses in Treebank parenthesized format.
+	 * @return a "best" guess of the original plain text given in the parse.
 	 */
 	public static String inferPlainText(String treebankText) {
 		StringBuilder sb = new StringBuilder();
-		for (String parse: splitSentences(treebankText)) {
+		for (String parse : splitSentences(treebankText)) {
 			Matcher matcher = leafNodePattern.matcher(parse);
 			while (matcher.find()) {
 				TreebankNode node = getLeafNode(matcher.group());
@@ -252,12 +253,15 @@ public class TreebankFormatParser {
 	/**
 	 * Create TreebankNode objects corresponding to the given TreeBank format
 	 * parse, e.g.:
+	 * 
 	 * <PRE>
 	 * ( (X (NP (NP (NML (NN Complex ) (NN trait )) (NN analysis )) (PP (IN of ) (NP (DT the ) (NN mouse ) (NN striatum )))) (: : ) (S (NP-SBJ (JJ independent ) (NNS QTLs )) (VP (VBP modulate ) (NP (NP (NN volume )) (CC and ) (NP (NN neuron ) (NN number)))))) )
 	 * </PRE>
+	 * 
 	 * The text will be inferred automatically from the words in the parse.
 	 * 
-	 * @param parse A TreeBank formatted parse
+	 * @param parse
+	 *            A TreeBank formatted parse
 	 * @return The TreebankNode root of the parse tree
 	 * @see #inferPlainText(String)
 	 * @see #parse(String, String, int)
@@ -293,128 +297,137 @@ public class TreebankFormatParser {
 	/**
 	 * Create TreebankNode objects corresponding to the given TreeBank format
 	 * parse, e.g.:
+	 * 
 	 * <PRE>
 	 * ( (X (NP (NP (NML (NN Complex ) (NN trait )) (NN analysis )) (PP (IN of ) (NP (DT the ) (NN mouse ) (NN striatum )))) (: : ) (S (NP-SBJ (JJ independent ) (NNS QTLs )) (VP (VBP modulate ) (NP (NP (NN volume )) (CC and ) (NP (NN neuron ) (NN number)))))) )
 	 * </PRE>
+	 * 
 	 * The start and end offsets of each TreebankNode will be aligned to the
 	 * word offsets in the given text.
 	 * 
-	 * @param parse      A TreeBank formatted parse
-	 * @param text       The text to which the parse should be aligned
-	 * @param textOffset The character offset at which the parse text should
-	 *                   start to be aligned. For example, if the words of the
-	 *                   parse start right at the beginning of the text, the
-	 *                   appropriate textOffset is 0. 
-	 * @return The TreebankNode root of the parse tree. The root node will be
-	 *         a TopTreebankNode, and all its descendants will be TreebankNodes.
+	 * @param parse
+	 *            A TreeBank formatted parse
+	 * @param text
+	 *            The text to which the parse should be aligned
+	 * @param textOffset
+	 *            The character offset at which the parse text should start to
+	 *            be aligned. For example, if the words of the parse start right
+	 *            at the beginning of the text, the appropriate textOffset is 0.
+	 * @return The TreebankNode root of the parse tree. The root node will be a
+	 *         TopTreebankNode, and all its descendants will be TreebankNodes.
 	 * @see TopTreebankNode
 	 * @see TreebankNode
 	 */
 	public static TopTreebankNode parse(String parse, String text, int textOffset) {
-		TopTreebankNode topNode = new TopTreebankNode();
-		parse = prepareString(parse);
-		// used to capture the plain text of the sentence.
-		StringBuffer consumedText = new StringBuffer();
-		if (text != null) {
-			textOffset = movePastWhiteSpaceChars(text, textOffset);
-			consumedText.append(text.substring(0, textOffset));
-		}
-
-		Stack<Integer> parseOffsetStack = new Stack<Integer>();
-		Stack<Integer> plainTextOffsetStack = new Stack<Integer>();
-
-		// keeps the nodes that are waiting for their parents to be completed.
-		Stack<TreebankNode> parseStack = new Stack<TreebankNode>();
-
-		for (int ci = 0; ci < parse.length(); ci++) {
-			char c = parse.charAt(ci);
-			if (c == '(') {
-				// at the start of each constituent we will push the starting
-				// index of it
-				// w.r.t. the parse string.
-				parseOffsetStack.push(ci);
-				// also push the starting index w.r.t. the plain text of the
-				// sentence.
-				plainTextOffsetStack.push(consumedText.length());
+		try {
+			TopTreebankNode topNode = new TopTreebankNode();
+			parse = prepareString(parse);
+			// used to capture the plain text of the sentence.
+			StringBuffer consumedText = new StringBuffer();
+			if (text != null) {
+				textOffset = movePastWhiteSpaceChars(text, textOffset);
+				consumedText.append(text.substring(0, textOffset));
 			}
-			else if (c == ')') {
-				int begin = parseOffsetStack.pop();
-				int end = ci;
-				// the portion of the parse string that corresponds to the
-				// constituent that
-				// we found the left bracket for ')'.
-				String subParse = parse.substring(begin, end + 1);
-
-				int textBegin = plainTextOffsetStack.pop();
-
-				TreebankNode node = getLeafNode(subParse);
-				if (node != null) {
-					node.setTopNode(topNode);
-					node.setParseBegin(begin);
-					node.setParseEnd(end + 1);
-					String token = node.getText();
-
-					if (token.length() > 0) {
-						int realBegin = movePastWhiteSpaceChars(text, textBegin);
-						consumedText.append(text.substring(textBegin, realBegin));
-						consumedText.append(token);
-						node.setTextBegin(realBegin);
-						node.setTextEnd(realBegin + token.length());
-
+	
+			Stack<Integer> parseOffsetStack = new Stack<Integer>();
+			Stack<Integer> plainTextOffsetStack = new Stack<Integer>();
+	
+			// keeps the nodes that are waiting for their parents to be completed.
+			Stack<TreebankNode> parseStack = new Stack<TreebankNode>();
+	
+			for (int ci = 0; ci < parse.length(); ci++) {
+				char c = parse.charAt(ci);
+				if (c == '(') {
+					// at the start of each constituent we will push the starting
+					// index of it
+					// w.r.t. the parse string.
+					parseOffsetStack.push(ci);
+					// also push the starting index w.r.t. the plain text of the
+					// sentence.
+					plainTextOffsetStack.push(consumedText.length());
+				}
+				else if (c == ')') {
+					int begin = parseOffsetStack.pop();
+					int end = ci;
+					// the portion of the parse string that corresponds to the
+					// constituent that
+					// we found the left bracket for ')'.
+					String subParse = parse.substring(begin, end + 1);
+	
+					int textBegin = plainTextOffsetStack.pop();
+	
+					TreebankNode node = getLeafNode(subParse);
+					if (node != null) {
+						node.setTopNode(topNode);
+						node.setParseBegin(begin);
+						node.setParseEnd(end + 1);
+						String token = node.getText();
+	
+						if (token.length() > 0) {
+							int realBegin = movePastWhiteSpaceChars(text, textBegin);
+							consumedText.append(text.substring(textBegin, realBegin));
+							consumedText.append(token);
+							node.setTextBegin(realBegin);
+							node.setTextEnd(realBegin + token.length());
+	
+						}
+						else {
+							node.setTextBegin(textBegin);
+							node.setTextEnd(textBegin + token.length());
+						}
+						checkText(node, text);
+						parseStack.push(node);
 					}
 					else {
-						node.setTextBegin(textBegin);
-						node.setTextEnd(textBegin + token.length());
+						if (parse.lastIndexOf(')') == ci) // the last ')' is the top
+						// node.
+						node = topNode; // this is the instance that will be
+						// returned.
+						else node = new TreebankNode();
+						node.setTopNode(topNode);
+						node.setParseBegin(begin);
+						node.setParseEnd(end + 1);
+						String type = getType(subParse);
+						node.setType(getTypeFromType(type));
+						node.setTags(getTagsFromType(type));
+						node.setLeaf(false);
+						// keep adding the nodes on the stack until it is empty or
+						// the next node on the stack starts before the current node
+						// (i.e. has a different
+						// parent than the current node that will be completed
+						// later.)
+						while (parseStack.size() > 0 && parseStack.peek().getParseBegin() > node.getParseBegin()) {
+							TreebankNode child = parseStack.pop();
+							node.addChild(child);
+							child.setParent(node);
+						}
+						// we typically add a token followed by a space to
+						// plainText, except when the
+						// token is an empty string as it is when the corresponding
+						// type is -NONE-
+						int realBegin = movePastWhiteSpaceChars(text, textBegin);
+						node.setTextBegin(realBegin);
+						node.setTextEnd(Math.max(realBegin, consumedText.length()));
+	
+						try {
+							node.setText(consumedText.substring(node.getTextBegin(), node.getTextEnd()));
+						}
+						catch (StringIndexOutOfBoundsException sioobe) {
+							node.setText("");
+						}
+						checkText(node, text);
+						parseStack.push(node);
 					}
-					checkText(node, text);
-					parseStack.push(node);
-				}
-				else {
-					if (parse.lastIndexOf(')') == ci) // the last ')' is the top
-					// node.
-					node = topNode; // this is the instance that will be
-					// returned.
-					else node = new TreebankNode();
-					node.setTopNode(topNode);
-					node.setParseBegin(begin);
-					node.setParseEnd(end + 1);
-					String type = getType(subParse);
-					node.setType(getTypeFromType(type));
-					node.setTags(getTagsFromType(type));
-					node.setLeaf(false);
-					// keep adding the nodes on the stack until it is empty or
-					// the next node on the stack starts before the current node
-					// (i.e. has a different
-					// parent than the current node that will be completed
-					// later.)
-					while (parseStack.size() > 0 && parseStack.peek().getParseBegin() > node.getParseBegin()) {
-						TreebankNode child = parseStack.pop();
-						node.addChild(child);
-						child.setParent(node);
-					}
-					// we typically add a token followed by a space to
-					// plainText, except when the
-					// token is an empty string as it is when the corresponding
-					// type is -NONE-
-					int realBegin = movePastWhiteSpaceChars(text, textBegin);
-					node.setTextBegin(realBegin);
-					node.setTextEnd(Math.max(realBegin, consumedText.length()));
-
-					try {
-						node.setText(consumedText.substring(node.getTextBegin(), node.getTextEnd()));
-					}
-					catch (StringIndexOutOfBoundsException sioobe) {
-						node.setText("");
-					}
-					checkText(node, text);
-					parseStack.push(node);
 				}
 			}
+	
+			topNode.setTreebankParse(parse);
+			topNode.initTerminalNodes();
+			return topNode;
+		} catch (RuntimeException e) {
+			System.err.println("exception thrown when parsing the following: "+parse);
+			throw e;
 		}
-
-		topNode.setTreebankParse(parse);
-		topNode.initTerminalNodes();
-		return topNode;
 	}
 
 	private static final Pattern nonwhiteSpaceCharPattern = Pattern.compile("[^\\s]");
@@ -456,6 +469,13 @@ public class TreebankFormatParser {
 	}
 
 	/**
+	 * Generally speaking, we expect one treebanked sentence per line.  This method will 
+	 * simply return the lines of a document assuming that each line has matching parentheses.  However,
+	 * the native penn treebank data contains parsed sentences that are broken up across multiple lines.
+	 * Each sentence in the PTB starts with "( (S..." and so we split on this to get the sentences.
+	 * If this method sees "( (S...", then it will return the contents split on that pattern.  If not,
+	 * it will return the lines of the input string.    
+	 * 
 	 * Splits an .mrg file (e.g. wsj/mrg/00/wsj_0020.mrg) into sentence parses.
 	 * 
 	 * @param mrgContents
@@ -468,27 +488,53 @@ public class TreebankFormatParser {
 		// in the array to be an empty string if e.g. the first line of the file
 		// is blank
 		String[] contents = mrgContents.split("(?=\\(\\s*\\()");
-		if (contents.length > 0 && contents[0].trim().equals("")) {
-			String[] returnValues = new String[contents.length - 1];
-			System.arraycopy(contents, 1, returnValues, 0, returnValues.length);
-			return returnValues;
+		if (contents.length > 1) {
+			if (contents.length > 0 && contents[0].trim().equals("")) {
+				String[] returnValues = new String[contents.length - 1];
+				System.arraycopy(contents, 1, returnValues, 0, returnValues.length);
+				return returnValues;
+			}
+			else {
+				String[] returnValues = new String[contents.length];
+				System.arraycopy(contents, 0, returnValues, 0, returnValues.length);
+				return returnValues;
+			}
 		}
-		else {
-			String[] returnValues = new String[contents.length];
-			System.arraycopy(contents, 0, returnValues, 0, returnValues.length);
-			return returnValues;
+
+		String[] lines = mrgContents.split("\r?\n");
+		for (String line : lines) {
+			if (!parensMatch(line)) {
+				throw new IllegalArgumentException("Parentheses counts do not match for treebank sentence: " + line);
+			}
 		}
+		return lines;
+	}
+
+	public static boolean parensMatch(String contents) {
+		int leftParenCount = 0;
+		int rightParenCount = 0;
+
+		for (char c : contents.toCharArray()) {
+			if (c == '(') leftParenCount++;
+			if (c == ')') rightParenCount++;
+		}
+
+		return leftParenCount == rightParenCount;
+
 	}
 
 	/**
-	 * This method parses an entire documents worth of treebanked sentences.  
+	 * This method parses an entire documents worth of treebanked sentences.
+	 * 
 	 * @param parse
 	 * @param textOffset
 	 *            a value that corresponds to the character offset of the first
-	 *            character of the document. The appropriate value for this method will typically be 0.  
-	 * @param text a single document provided as plain text.  If you do not have access to the
-	 *            original plain text of the document, you can generate some using
-	 *            {@link #inferPlainText(String)}.  
+	 *            character of the document. The appropriate value for this
+	 *            method will typically be 0.
+	 * @param text
+	 *            a single document provided as plain text. If you do not have
+	 *            access to the original plain text of the document, you can
+	 *            generate some using {@link #inferPlainText(String)}.
 	 */
 	public static List<TopTreebankNode> parseDocument(String parse, int textOffset, String text) {
 		List<TopTreebankNode> returnValues = new ArrayList<TopTreebankNode>();
