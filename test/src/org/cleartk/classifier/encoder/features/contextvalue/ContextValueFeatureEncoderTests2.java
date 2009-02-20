@@ -31,8 +31,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.encoder.features.contextvalue.ContextValue;
-import org.cleartk.classifier.encoder.features.contextvalue.ContextValueFeatureEncoder;
 import org.junit.Test;
 
 

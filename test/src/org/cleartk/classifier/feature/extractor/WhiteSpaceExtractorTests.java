@@ -23,6 +23,8 @@
 */
 package org.cleartk.classifier.feature.extractor;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.List;
 
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
@@ -31,12 +33,10 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.FSIndex;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.WhiteSpaceExtractor;
 import org.cleartk.type.Token;
-import org.cleartk.util.TestsUtil;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
+import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.TypeSystemDescriptionFactory;
 
 
 /**
@@ -87,10 +87,10 @@ public class WhiteSpaceExtractorTests {
 
 	@Test
 	public void testExtract() throws Exception{
-			AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+			AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 					WhiteSpaceExtractorTests.Annotator.class,
-					TestsUtil.getTypeSystem("org.cleartk.TypeSystem"));
-			JCas jCas = TestsUtil.process(engine,"This is some test text.");
+					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
+			JCas jCas = AnalysisEngineFactory.process(engine,"This is some test text.");
 			FSIndex fsIndex = jCas.getAnnotationIndex(Token.type);
 
 			Token targetToken = new Token(jCas, 0, 4);

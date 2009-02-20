@@ -44,6 +44,9 @@ import org.cleartk.util.TestsUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
+import org.uutuc.factory.UimaContextFactory;
+import org.uutuc.util.HideOutput;
+import org.uutuc.util.TearDownUtil;
 
 
 
@@ -61,7 +64,7 @@ public class RunSVMlightTests {
 	
 	@After
 	public void tearDown() {
-		TestsUtil.emptyDirectory(new File(this.outputDirectory));
+		TearDownUtil.emptyDirectory(new File(this.outputDirectory));
 	}
 	
 	@Test
@@ -186,7 +189,7 @@ public class RunSVMlightTests {
 		
 		// create the data writer
 		SVMlightDataWriter dataWriter = new SVMlightDataWriter();
-		dataWriter.initialize(TestsUtil.getUimaContext(
+		dataWriter.initialize(UimaContextFactory.createUimaContext(
 				DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY,
 				this.outputDirectory,
 				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER,
@@ -206,7 +209,7 @@ public class RunSVMlightTests {
 		reader.close();
 		
 		// run the training command
-		TestsUtil.HideOutput hider = new TestsUtil.HideOutput();
+		HideOutput hider = new HideOutput();
 		Train.main(new String[] {this.outputDirectory, "-c", "1.0"});
 		hider.restoreOutput();
 		
@@ -225,7 +228,7 @@ public class RunSVMlightTests {
 		
 		// create the data writer
 		OVASVMlightDataWriter dataWriter = new OVASVMlightDataWriter();
-		dataWriter.initialize(TestsUtil.getUimaContext(
+		dataWriter.initialize(UimaContextFactory.createUimaContext(
 				DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY,
 				this.outputDirectory,
 				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER,
@@ -250,7 +253,7 @@ public class RunSVMlightTests {
 		}
 		
 		// run the training command
-		TestsUtil.HideOutput hider = new TestsUtil.HideOutput();
+		HideOutput hider = new HideOutput();
 		Train.main(new String[] {this.outputDirectory, "-c", "0.01", "-t", "2"});
 		hider.restoreOutput();
 		

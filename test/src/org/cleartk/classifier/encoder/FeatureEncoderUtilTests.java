@@ -23,10 +23,9 @@
 */
 package org.cleartk.classifier.encoder;
 
-import org.cleartk.classifier.encoder.FeatureEncoderUtil;
-import org.junit.Test;
-
 import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 

@@ -32,18 +32,13 @@ import org.apache.uima.jcas.JCas;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.SpannedTextExtractor;
-import org.cleartk.classifier.feature.proliferate.CapitalTypeProliferator;
-import org.cleartk.classifier.feature.proliferate.CharacterNGramProliferator;
-import org.cleartk.classifier.feature.proliferate.FeatureProliferator;
-import org.cleartk.classifier.feature.proliferate.LowerCaseProliferator;
-import org.cleartk.classifier.feature.proliferate.NumericTypeProliferator;
-import org.cleartk.classifier.feature.proliferate.ProliferatingExtractor;
 import org.cleartk.type.Document;
 import org.cleartk.type.Token;
 import org.cleartk.util.EmptyAnnotator;
-import org.cleartk.util.TestsUtil;
 import org.junit.Assert;
 import org.junit.Test;
+import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.TypeSystemDescriptionFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -146,9 +141,9 @@ public class FeatureProliferatorTests {
 
 	@Test
 	public void testProliferatingExtractor() throws UIMAException, IOException {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				EmptyAnnotator.class,
-				TestsUtil.getTypeSystem(Document.class, Token.class));
+				TypeSystemDescriptionFactory.createTypeSystemDescription(Document.class, Token.class));
 		JCas jCas = engine.newJCas();
 
 		jCas.setDocumentText("Hello World 2008!");

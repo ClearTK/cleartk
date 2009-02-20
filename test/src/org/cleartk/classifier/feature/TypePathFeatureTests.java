@@ -35,7 +35,6 @@ package org.cleartk.classifier.feature;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import org.cleartk.classifier.feature.TypePathFeature;
 import org.junit.Test;
 
 

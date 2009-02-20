@@ -31,9 +31,9 @@ import org.apache.uima.UIMAException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.TypePathFeature;
 import org.cleartk.classifier.feature.WindowFeature;
-import org.cleartk.util.TestsUtil;
 import org.junit.Before;
 import org.junit.Test;
+import org.uutuc.factory.AnalysisEngineFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -93,7 +93,8 @@ public class StringFeatureEncoderTests {
 
 	@Test
 	public void testTicket23() throws UIMAException, IOException {
-		TestsUtil.process("aaaaaaa bbbbbb cc ddddd e ffffff.  Ggggggg hhhhhh iiiiii.");
+		
+		AnalysisEngineFactory.process("org.uutuc.util.JCasAnnotatorAdapter", "aaaaaaa bbbbbb cc ddddd e ffffff.  Ggggggg hhhhhh iiiiii.");
 
 		Feature typePathFeature = new TypePathFeature(null, null, "pos");
 		this.testEncode("Window_L2OOB2_TypePath_Pos", new WindowFeature(

@@ -30,14 +30,14 @@ import java.util.List;
 import org.apache.uima.UIMAException;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.HeadWordExtractor;
-import org.cleartk.classifier.feature.extractor.SpannedTextExtractor;
-import org.cleartk.classifier.feature.extractor.TypePathExtractor;
 import org.cleartk.syntax.treebank.type.TreebankNode;
+import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.TestsUtil;
 import org.junit.Assert;
 import org.junit.Test;
+import org.uutuc.factory.JCasFactory;
+import org.uutuc.factory.TokenFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -52,7 +52,7 @@ public class HeadWordExtractorTests {
 	@Test
 	public void testNoTreebankNode() throws UIMAException {
 		HeadWordExtractor extractor = new HeadWordExtractor(null);
-		JCas jCas = TestsUtil.newJCas();
+		JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
 		jCas.setDocumentText("foo");
 		Token token = new Token(jCas, 0, 3);
 		token.addToIndexes();
@@ -63,7 +63,7 @@ public class HeadWordExtractorTests {
 	@Test
 	public void testNoTokens() throws UIMAException {
 		HeadWordExtractor extractor = new HeadWordExtractor(new SpannedTextExtractor(), true);
-		JCas jCas = TestsUtil.newJCas();
+		JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
 		jCas.setDocumentText("foo");
 		TreebankNode node = TestsUtil.newNode(jCas, 0, 3, "NN");
 
@@ -73,7 +73,7 @@ public class HeadWordExtractorTests {
 	@Test
 	public void testNoNodeTypes() throws UIMAException {
 		HeadWordExtractor extractor = new HeadWordExtractor(null);
-		JCas jCas = TestsUtil.newJCas();
+		JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
 		jCas.setDocumentText("foo");
 		TreebankNode parent = TestsUtil.newNode(jCas, null, TestsUtil.newNode(jCas, 0, 3, null));
 
@@ -82,8 +82,8 @@ public class HeadWordExtractorTests {
 	
 	@Test
 	public void testSimpleSentence() throws UIMAException {
-		JCas jCas = TestsUtil.newJCas();
-		TestsUtil.createTokens(jCas, "I ran home", null, "PRP VBD NN", null);
+		JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
+		TokenFactory.createTokens(jCas, "I ran home", Token.class, Sentence.class, null, "PRP VBD NN", null, "org.cleartk.type.Token:pos", null);
 		TreebankNode iNode = TestsUtil.newNode(jCas, 0, 1, "PRP");
 		TreebankNode ranNode = TestsUtil.newNode(jCas, 2, 5, "VBD");
 		TreebankNode homeNode = TestsUtil.newNode(jCas, 6, 10, "NN");
@@ -112,12 +112,12 @@ public class HeadWordExtractorTests {
 	
 	@Test
 	public void testNPandPP() throws UIMAException {
-		JCas jCas = TestsUtil.newJCas();
-		TestsUtil.createTokens(jCas,
-				"cat's toy under the box",
+		JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
+		TokenFactory.createTokens(jCas,
+				"cat's toy under the box", Token.class, Sentence.class, 
 				"cat 's toy under the box",
 				"NN POS NN IN DT NN",
-				null);
+				null, "org.cleartk.type.Token:pos", null);
 		TreebankNode catNode = TestsUtil.newNode(jCas, 0, 3, "NN");
 		TreebankNode sNode = TestsUtil.newNode(jCas, 3, 5, "POS");
 		TreebankNode catsNode = TestsUtil.newNode(jCas, "NP", catNode, sNode);

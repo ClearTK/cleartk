@@ -30,15 +30,14 @@ import java.util.List;
 import org.apache.uima.UIMAException;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.NGramExtractor;
-import org.cleartk.classifier.feature.extractor.SpannedTextExtractor;
-import org.cleartk.classifier.feature.extractor.TypePathExtractor;
 import org.cleartk.type.Document;
+import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.DocumentUtil;
-import org.cleartk.util.TestsUtil;
 import org.junit.Assert;
 import org.junit.Test;
+import org.uutuc.factory.JCasFactory;
+import org.uutuc.factory.TokenFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -52,12 +51,12 @@ public class NGramExtractorTests {
 
 	@Test
 	public void test() throws UIMAException {
-		JCas jCas = TestsUtil.newJCas();
-		TestsUtil.createTokens(jCas,
-				"She sells seashells by the sea shore",
+		JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
+		TokenFactory.createTokens(jCas,
+				"She sells seashells by the sea shore", Token.class, Sentence.class, 
 				null, 
 				"PRP VBZ NNS IN DT NN NN",
-				null);
+				null, "org.cleartk.type.Token:pos", null);
 		DocumentUtil.createDocument(jCas, "foo", "bar");
 		Document document = DocumentUtil.getDocument(jCas);
 		

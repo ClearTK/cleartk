@@ -32,12 +32,14 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.DistanceExtractor;
+import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.EmptyAnnotator;
-import org.cleartk.util.TestsUtil;
 import org.junit.Test;
+import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.TokenFactory;
+import org.uutuc.factory.TypeSystemDescriptionFactory;
 
 
 /**
@@ -54,10 +56,10 @@ public class DistanceExtractorTests {
 
 	@Test
 	public void test1() throws Exception {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(EmptyAnnotator.class, TestsUtil.getTypeSystem("org.cleartk.TypeSystem"));
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(EmptyAnnotator.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
 		JCas jCas = engine.newJCas();
 		
-		TestsUtil.createTokens(jCas, "A simple sentence to test the distance of tokens from each other.", "A simple sentence to test the distance of tokens from each other .", null, null);
+		TokenFactory.createTokens(jCas, "A simple sentence to test the distance of tokens from each other.", Token.class, Sentence.class,  "A simple sentence to test the distance of tokens from each other .");
 		
 				
 		DistanceExtractor extractor = new DistanceExtractor(null, Token.class);

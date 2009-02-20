@@ -37,10 +37,10 @@ import org.cleartk.classifier.ClassifierFactory;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.Train;
-import org.cleartk.classifier.mallet.MalletCRFClassifier;
-import org.cleartk.classifier.mallet.MalletCRFDataWriter;
-import org.cleartk.util.TestsUtil;
 import org.junit.Test;
+import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.TypeSystemDescriptionFactory;
+import org.uutuc.util.HideOutput;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -55,8 +55,8 @@ public class RunMalletCRFTests {
 	@Test
 	public void runTest1() throws Exception {
 		String outputDirectory = "test/data/mallet/run-crf-test-1"; 
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(MalletCRFDataWriter.class, 
-				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"), 
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(MalletCRFDataWriter.class, 
+				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"), 
 				MalletCRFDataWriter.PARAM_ANNOTATION_HANDLER,
 				"org.cleartk.example.ExamplePOSAnnotationHandler",
 				MalletCRFDataWriter.PARAM_OUTPUT_DIRECTORY,
@@ -117,7 +117,7 @@ public class RunMalletCRFTests {
 		BufferedReader reader = new BufferedReader(new FileReader(outputDirectory+"/training-data.malletcrf"));
 		reader.readLine();
 		reader.close();
-		TestsUtil.HideOutput hider = new TestsUtil.HideOutput();
+		HideOutput hider = new HideOutput();
 		Train.main(new String[] {outputDirectory});
 		hider.restoreOutput();
 		

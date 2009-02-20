@@ -35,17 +35,14 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.InstanceConsumer_ImplBase;
 import org.cleartk.classifier.Train;
-import org.cleartk.classifier.libsvm.BinaryLIBSVMClassifier;
-import org.cleartk.classifier.libsvm.BinaryLIBSVMDataWriter;
-import org.cleartk.classifier.libsvm.LIBLINEARClassifier;
-import org.cleartk.classifier.libsvm.LIBLINEARDataWriter;
-import org.cleartk.classifier.libsvm.MultiClassLIBSVMClassifier;
-import org.cleartk.classifier.libsvm.MultiClassLIBSVMDataWriter;
 import org.cleartk.util.TestsUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.uutuc.factory.UimaContextFactory;
+import org.uutuc.util.HideOutput;
+import org.uutuc.util.TearDownUtil;
 
 
 /**
@@ -66,7 +63,7 @@ public class RunLIBSVMTests {
 	
 	@After
 	public void tearDown() {
-		TestsUtil.emptyDirectory(new File(this.outputDirectory));
+		TearDownUtil.emptyDirectory(new File(this.outputDirectory));
 	}
 	
 	@Test
@@ -74,7 +71,7 @@ public class RunLIBSVMTests {
 		
 		// create the data writer
 		BinaryLIBSVMDataWriter dataWriter = new BinaryLIBSVMDataWriter();
-		dataWriter.initialize(TestsUtil.getUimaContext(
+		dataWriter.initialize(UimaContextFactory.createUimaContext(
 				DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY,
 				this.outputDirectory,
 				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER,
@@ -94,7 +91,7 @@ public class RunLIBSVMTests {
 		reader.close();
 		
 		// run the training command
-		TestsUtil.HideOutput hider = new TestsUtil.HideOutput();
+		HideOutput hider = new HideOutput();
 		Train.main(new String[] {this.outputDirectory, "-c", "1.0", "-s", "1"});
 		hider.restoreOutput();
 		
@@ -113,7 +110,7 @@ public class RunLIBSVMTests {
 		
 		// create the data writer
 		LIBLINEARDataWriter dataWriter = new LIBLINEARDataWriter();
-		dataWriter.initialize(TestsUtil.getUimaContext(
+		dataWriter.initialize(UimaContextFactory.createUimaContext(
 				DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY,
 				this.outputDirectory,
 				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER,
@@ -133,7 +130,7 @@ public class RunLIBSVMTests {
 		reader.close();
 		
 		// run the training command
-		TestsUtil.HideOutput hider = new TestsUtil.HideOutput();
+		HideOutput hider = new HideOutput();
 		Train.main(new String[] {this.outputDirectory, "-c", "1.0", "-s", "1"});
 		hider.restoreOutput();
 		
@@ -152,7 +149,7 @@ public class RunLIBSVMTests {
 		
 		// create the data writer
 		MultiClassLIBSVMDataWriter dataWriter = new MultiClassLIBSVMDataWriter();
-		dataWriter.initialize(TestsUtil.getUimaContext(
+		dataWriter.initialize(UimaContextFactory.createUimaContext(
 				DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY,
 				this.outputDirectory,
 				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER,
@@ -172,7 +169,7 @@ public class RunLIBSVMTests {
 		reader.close();
 		
 		// run the training command
-		TestsUtil.HideOutput hider = new TestsUtil.HideOutput();
+		HideOutput hider = new HideOutput();
 		Train.main(new String[] {this.outputDirectory, "-c", "1.0", "-t", "2"});
 		hider.restoreOutput();
 		

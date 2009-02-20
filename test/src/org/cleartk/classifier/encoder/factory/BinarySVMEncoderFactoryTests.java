@@ -35,11 +35,10 @@ import junit.framework.Assert;
 import org.apache.uima.UimaContext;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.encoder.EncoderFactory;
-import org.cleartk.classifier.encoder.factory.BinarySVMEncoderFactory;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
-import org.cleartk.util.TestsUtil;
 import org.junit.Test;
+import org.uutuc.factory.UimaContextFactory;
 
 
 /**
@@ -55,7 +54,7 @@ public class BinarySVMEncoderFactoryTests {
 	public void testFeatureVectorFeatureEncoder() throws Exception {
 		List<FeatureVector.Entry> entries;
 		
-		UimaContext context = TestsUtil.getUimaContext();
+		UimaContext context = UimaContextFactory.createUimaContext();
 		EncoderFactory factory = new BinarySVMEncoderFactory();
 		FeaturesEncoder<?> encoder = factory.createFeaturesEncoder(context);
 
@@ -116,7 +115,7 @@ public class BinarySVMEncoderFactoryTests {
 	
 	@Test
 	public void testNormalizeFeatures() throws Exception {
-		UimaContext context = TestsUtil.getUimaContext(SVMEncoderFactory.PARAM_NORMALIZE_VECTORS, true);
+		UimaContext context = UimaContextFactory.createUimaContext(SVMEncoderFactory.PARAM_NORMALIZE_VECTORS, true);
 		FeaturesEncoder<?> encoder = new BinarySVMEncoderFactory().createFeaturesEncoder(context);
 		FeatureVector vector = (FeatureVector)encoder.encodeAll(Arrays.asList(new Feature[]{
 				new Feature("A", 3),

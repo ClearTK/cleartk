@@ -27,22 +27,22 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.BagExtractor;
-import org.cleartk.classifier.feature.extractor.SpannedTextExtractor;
-import org.cleartk.classifier.feature.extractor.TypePathExtractor;
 import org.cleartk.type.Document;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.DocumentUtil;
 import org.cleartk.util.EmptyAnnotator;
-import org.cleartk.util.TestsUtil;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.TokenFactory;
+import org.uutuc.factory.TypeSystemDescriptionFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -56,9 +56,9 @@ public class BagExtractorTests {
 
 	@Before
 	public void setUp() throws Exception {
-		this.engine = TestsUtil.getAnalysisEngine(
+		this.engine = AnalysisEngineFactory.createAnalysisEngine(
 				EmptyAnnotator.class,
-				TestsUtil.getTypeSystem(Document.class, Token.class, Sentence.class));;
+				TypeSystemDescriptionFactory.createTypeSystemDescription(Document.class, Token.class, Sentence.class));;
 		this.jCasObjects = new ArrayList<JCas>();
 		this.expectedTokenLists = new ArrayList<List<String>>();
 		this.expectedPOSLists = new ArrayList<List<String>>();
@@ -148,7 +148,8 @@ public class BagExtractorTests {
 		this.expectedPOSLists.add(Arrays.asList(expectedPOSString.split(" ")));
 
 		// set the document text and add Token annotations as indicated
-		TestsUtil.createTokens(jCas, text, tokensString, posTagsString, null);
+		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class, tokensString, posTagsString, null,
+				"org.cleartk.type.Token:pos", null);
 		DocumentUtil.createDocument(jCas, "foo", "bar");
 	}
 

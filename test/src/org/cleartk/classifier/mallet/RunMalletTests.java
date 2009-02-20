@@ -39,12 +39,12 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.Train;
 import org.cleartk.classifier.encoder.factory.ContextValueEncoderFactory;
-import org.cleartk.classifier.mallet.MalletClassifier;
-import org.cleartk.classifier.mallet.MalletDataWriter;
 import org.cleartk.util.EmptyAnnotator;
-import org.cleartk.util.TestsUtil;
 import org.junit.Before;
 import org.junit.Test;
+import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.TypeSystemDescriptionFactory;
+import org.uutuc.util.HideOutput;
 
 import cc.mallet.types.FeatureVector;
 /**
@@ -66,8 +66,8 @@ public class RunMalletTests {
 	@Test
 	public void runTest1() throws Exception {
 		String outputDirectory = "test/data/mallet/run-test-1"; 
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(EmptyAnnotator.class, 
-				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"), 
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(EmptyAnnotator.class, 
+				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"), 
 				MalletDataWriter.PARAM_ANNOTATION_HANDLER,
 				"org.cleartk.example.ExamplePOSAnnotationHandler",
 				MalletDataWriter.PARAM_OUTPUT_DIRECTORY,
@@ -107,7 +107,7 @@ public class RunMalletTests {
 		}
 		assertNotNull(exception);
 		
-		TestsUtil.HideOutput hider = new TestsUtil.HideOutput();
+		HideOutput hider = new HideOutput();
 		Train.main(new String[] {outputDirectory, "C45"});
 		hider.restoreOutput();
 
@@ -157,8 +157,8 @@ public class RunMalletTests {
 	@Test
 	public void runTest2() throws Exception {
 		String outputDirectory = "test/data/mallet/run-test-2"; 
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(EmptyAnnotator.class, 
-				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"), 
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(EmptyAnnotator.class, 
+				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"), 
 				MalletDataWriter.PARAM_ANNOTATION_HANDLER,
 				"org.cleartk.example.ExamplePOSAnnotationHandler",
 				MalletDataWriter.PARAM_OUTPUT_DIRECTORY,
@@ -183,7 +183,7 @@ public class RunMalletTests {
 		reader.readLine();
 		reader.close();
 
-		TestsUtil.HideOutput hider = new TestsUtil.HideOutput();
+		HideOutput hider = new HideOutput();
 		Train.main(new String[] {outputDirectory, "C45"});
 		hider.restoreOutput();
 		

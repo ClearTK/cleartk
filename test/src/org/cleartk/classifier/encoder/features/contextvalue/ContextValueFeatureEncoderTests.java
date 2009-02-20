@@ -29,8 +29,6 @@ import static org.junit.Assert.assertNull;
 import java.util.List;
 
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.encoder.features.contextvalue.ContextValue;
-import org.cleartk.classifier.encoder.features.contextvalue.ContextValueFeatureEncoder;
 import org.cleartk.classifier.feature.TypePathFeature;
 import org.cleartk.classifier.feature.WindowFeature;
 import org.junit.Before;

@@ -30,7 +30,6 @@ import java.io.StringReader;
 import java.io.StringWriter;
 
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.encoder.features.string.CompressedStringEncoder;
 import org.junit.Test;
 
 

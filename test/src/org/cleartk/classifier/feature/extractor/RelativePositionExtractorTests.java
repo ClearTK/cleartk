@@ -29,10 +29,9 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.RelativePositionExtractor;
-import org.cleartk.util.TestsUtil;
 import org.junit.Assert;
 import org.junit.Test;
+import org.uutuc.factory.JCasFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -88,7 +87,7 @@ public class RelativePositionExtractorTests {
 	
 	private void testOne(int begin1, int end1, int begin2, int end2, String expected)
 	throws UIMAException {
-		JCas jCas = TestsUtil.newJCas();
+		JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
 		Annotation annotation1 = new Annotation(jCas, begin1, end1);
 		Annotation annotation2 = new Annotation(jCas, begin2, end2);
 		RelativePositionExtractor extractor;

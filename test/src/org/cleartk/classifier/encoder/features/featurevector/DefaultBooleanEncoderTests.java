@@ -26,7 +26,6 @@ package org.cleartk.classifier.encoder.features.featurevector;
 import static org.junit.Assert.assertEquals;
 
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.encoder.features.featurevector.DefaultBooleanEncoder;
 import org.junit.Assert;
 import org.junit.Test;
 

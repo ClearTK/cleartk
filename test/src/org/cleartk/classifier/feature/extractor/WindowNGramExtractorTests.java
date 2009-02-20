@@ -23,20 +23,19 @@
 */
 package org.cleartk.classifier.feature.extractor;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.WindowNGramFeature;
-import org.cleartk.classifier.feature.extractor.SpannedTextExtractor;
-import org.cleartk.classifier.feature.extractor.WindowNGramExtractor;
 import org.cleartk.token.chunk.type.Subtoken;
 import org.cleartk.type.Sentence;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.TestsUtil;
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
+import org.uutuc.factory.AnalysisEngineFactory;
 
 
 /**
@@ -49,7 +48,7 @@ public class WindowNGramExtractorTests {
 
 	@Test
 	public void testLeftGrams() throws IOException, UIMAException {
-		JCas jCas = TestsUtil.process("org.cleartk.token.Subtokenizer", "test/data/docs/huckfinn.txt");    			
+		JCas jCas = AnalysisEngineFactory.process("org.cleartk.token.Subtokenizer", "test/data/docs/huckfinn.txt");    			
 			
 		Sentence sentence = new Sentence(jCas, 72, 180);
 		sentence.addToIndexes();
@@ -176,7 +175,7 @@ public class WindowNGramExtractorTests {
 
 	@Test
 	public void testRightGrams()  throws IOException, UIMAException {
-		JCas jCas = TestsUtil.process("org.cleartk.token.Subtokenizer", "test/data/docs/huckfinn.txt");    			
+		JCas jCas = AnalysisEngineFactory.process("org.cleartk.token.Subtokenizer", "test/data/docs/huckfinn.txt");    			
 			
 			Sentence sentence = new Sentence(jCas, 72, 180);
 			sentence.addToIndexes();

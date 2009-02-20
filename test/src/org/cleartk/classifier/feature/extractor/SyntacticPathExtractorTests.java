@@ -28,13 +28,14 @@ import java.util.List;
 import org.apache.uima.UIMAException;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.SpannedTextExtractor;
-import org.cleartk.classifier.feature.extractor.SyntacticPathExtractor;
-import org.cleartk.classifier.feature.extractor.TypePathExtractor;
 import org.cleartk.syntax.treebank.type.TreebankNode;
+import org.cleartk.type.Sentence;
+import org.cleartk.type.Token;
 import org.cleartk.util.TestsUtil;
 import org.junit.Assert;
 import org.junit.Test;
+import org.uutuc.factory.JCasFactory;
+import org.uutuc.factory.TokenFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -48,8 +49,8 @@ public class SyntacticPathExtractorTests {
 
 	@Test
 	public void test() throws UIMAException {
-		JCas jCas = TestsUtil.newJCas();
-		TestsUtil.createTokens(jCas, "I ran home", null, "PRP VBD NN", null);
+		JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
+		TokenFactory.createTokens(jCas, "I ran home", Token.class, Sentence.class, null, "PRP VBD NN", null, "org.cleartk.type.Token:pos", null);
 		TreebankNode iNode = TestsUtil.newNode(jCas, 0, 1, "PRP");
 		TreebankNode inpNode = TestsUtil.newNode(jCas, "NP", iNode);
 		TreebankNode ranNode = TestsUtil.newNode(jCas, 2, 5, "VBD");

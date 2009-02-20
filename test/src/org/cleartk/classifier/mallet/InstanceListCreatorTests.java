@@ -30,7 +30,6 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 
-import org.cleartk.classifier.mallet.InstanceListCreator;
 import org.junit.Test;
 
 import cc.mallet.types.Alphabet;

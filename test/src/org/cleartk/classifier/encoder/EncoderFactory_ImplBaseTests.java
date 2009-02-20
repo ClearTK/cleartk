@@ -29,19 +29,18 @@ import java.io.ObjectOutputStream;
 
 import org.apache.uima.UimaContext;
 import org.cleartk.classifier.DataWriter_ImplBase;
-import org.cleartk.classifier.encoder.EncoderFactory;
-import org.cleartk.classifier.encoder.EncoderFactory_ImplBase;
 import org.cleartk.classifier.encoder.factory.BinarySVMEncoderFactory;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
 import org.cleartk.classifier.encoder.features.featurevector.DefaultFeaturesEncoder;
 import org.cleartk.classifier.encoder.outcome.BooleanToBooleanOutcomeEncoder;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
-import org.cleartk.util.TestsUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.uutuc.factory.UimaContextFactory;
+import org.uutuc.util.TearDownUtil;
 
 
 
@@ -66,7 +65,7 @@ public class EncoderFactory_ImplBaseTests {
 	
 	@After
 	public void tearDown() {
-		TestsUtil.tearDown(this.outputDirectory);
+		TearDownUtil.removeDirectory(this.outputDirectory);
 	}
 	
 	@Test
@@ -76,7 +75,7 @@ public class EncoderFactory_ImplBaseTests {
 		UimaContext context;
 		
 		// try to get an encoder with an empty output directory
-		context = TestsUtil.getUimaContext(
+		context = UimaContextFactory.createUimaContext(
 				DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDir);
 		Assert.assertNull(fileSystemFactory.createFeaturesEncoder(context));
 		
@@ -91,7 +90,7 @@ public class EncoderFactory_ImplBaseTests {
 		os.close();
 		
 		// try to get an encoder without specifying the parameter
-		context = TestsUtil.getUimaContext(
+		context = UimaContextFactory.createUimaContext(
 				DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDir);
 		Assert.assertNull(fileSystemFactory.createFeaturesEncoder(context));
 
@@ -106,13 +105,13 @@ public class EncoderFactory_ImplBaseTests {
 		UimaContext context;
 		
 		// try specifying no encoder
-		context = TestsUtil.getUimaContext(
+		context = UimaContextFactory.createUimaContext(
 				DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDir,
 				EncoderFactory_ImplBase.PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM, false);
 		Assert.assertNull(fileSystemFactory.createFeaturesEncoder(context));
 		
 		// make sure the encoder is loaded when requested
-		context = TestsUtil.getUimaContext(
+		context = UimaContextFactory.createUimaContext(
 				DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDir,
 				EncoderFactory_ImplBase.PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM, true);
 		Assert.assertTrue(

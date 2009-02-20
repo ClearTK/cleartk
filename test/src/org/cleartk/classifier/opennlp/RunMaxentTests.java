@@ -39,11 +39,10 @@ import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.ScoredValue;
 import org.cleartk.classifier.Train;
 import org.cleartk.classifier.encoder.factory.ContextValueEncoderFactory;
-import org.cleartk.classifier.opennlp.MaxentClassifier;
-import org.cleartk.classifier.opennlp.MaxentDataWriter;
-import org.cleartk.classifier.opennlp.MaxentEval;
-import org.cleartk.util.TestsUtil;
 import org.junit.Test;
+import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.TypeSystemDescriptionFactory;
+import org.uutuc.util.HideOutput;
 
 
 /**
@@ -57,8 +56,8 @@ public class RunMaxentTests {
 	@Test
 	public void runTest1() throws Exception {
 		String outputDirectory = "test/data/opennlp/runtest1"; 
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(MaxentDataWriter.class, 
-				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"), 
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(MaxentDataWriter.class, 
+				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"), 
 				ContextValueEncoderFactory.PARAM_COMPRESS,
 				false,
 				MaxentDataWriter.PARAM_ANNOTATION_HANDLER,
@@ -117,7 +116,7 @@ public class RunMaxentTests {
 		assertEquals("A hello=1234.0", line);
 		reader.close();
 		
-		TestsUtil.HideOutput hider = new TestsUtil.HideOutput();
+		HideOutput hider = new HideOutput();
 		Train.main(new String[] {outputDirectory});
 		hider.restoreOutput();
 		
@@ -133,8 +132,8 @@ public class RunMaxentTests {
 	@Test
 	public void runTest2() throws Exception {
 		String outputDirectory = "test/data/opennlp/runtest2"; 
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(MaxentDataWriter.class, 
-				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"), 
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(MaxentDataWriter.class, 
+				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"), 
 				ContextValueEncoderFactory.PARAM_COMPRESS,
 				true,
 				MaxentDataWriter.PARAM_ANNOTATION_HANDLER,
@@ -195,7 +194,7 @@ public class RunMaxentTests {
 		reader.readLine();
 		reader.close();
 		
-		TestsUtil.HideOutput hider = new TestsUtil.HideOutput();
+		HideOutput hider = new HideOutput();
 		Train.main(new String[] {outputDirectory+"/", "10", "1"});
 		hider.restoreOutput();
 		
@@ -244,7 +243,7 @@ public class RunMaxentTests {
 		assertEquals(2, scoredValues.size());
 
 		
-		hider = new TestsUtil.HideOutput();
+		hider = new HideOutput();
 		MaxentEval.main(new String[] {outputDirectory+"/training-data.maxent.bin.gz", outputDirectory+"/training-data.maxent"});
 		hider.restoreOutput();
 	}

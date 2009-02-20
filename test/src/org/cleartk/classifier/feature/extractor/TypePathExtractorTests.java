@@ -42,8 +42,10 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.encoder.features.string.StringEncoder;
 import org.cleartk.classifier.feature.TypePathFeature;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.TestsUtil;
 import org.junit.Test;
+import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.JCasFactory;
+import org.uutuc.factory.TypeSystemDescriptionFactory;
 
 import de.julielab.jules.types.DependencyRelation;
 import de.julielab.jules.types.Lemma;
@@ -121,12 +123,12 @@ public class TypePathExtractorTests {
 
 	@Test
 	public void testExtract() throws IOException, UIMAException {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				TypePathExtractorTests.Annotator.class,
-				TestsUtil.getTypeSystemFromPath("test/desc/JulieTypeSystem.xml"));
+				TypeSystemDescriptionFactory.createTypeSystemDescriptionFromPath("test/desc/JulieTypeSystem.xml"));
 		
 		//The text here was once upon a time some lyrics by a favorite singer which have since been obfuscated to avoid any copyright issues.
-		JCas jCas = TestsUtil.process(engine,
+		JCas jCas = AnalysisEngineFactory.process(engine,
 				"Wwwwwwww ii ss yyy mmmmm ttttt yyy hhhh " + "Yyy hhhh nnnnnnn tt llll "
 				+ "Ttttttt eeeee dddd aaa llllll ttttt " + "Tttt rrrr llll a ffff.");
 		FSIndex fsIndex = jCas.getAnnotationIndex(Token.type);
@@ -253,7 +255,7 @@ public class TypePathExtractorTests {
 
 	@Test
 	public void testIsValidatePath() throws IOException, UIMAException {
-		JCas jCas = TestsUtil.newJCasFromPath("test/desc/JulieTypeSystem.xml"); 
+		JCas jCas = JCasFactory.createJCasFromPath("test/desc/JulieTypeSystem.xml"); 
 		
 		assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(de.julielab.jules.types.ResourceEntry.type), "source",
 				jCas));
@@ -280,7 +282,7 @@ public class TypePathExtractorTests {
 
 	@Test
 	public void testIsValidType() throws IOException, UIMAException {
-		JCas jCas = TestsUtil.newJCasFromPath("test/desc/JulieTypeSystem.xml"); 
+		JCas jCas = JCasFactory.createJCasFromPath("test/desc/JulieTypeSystem.xml"); 
 
 		assertTrue(TypePathExtractor.isValidType(jCas.getCasType(de.julielab.jules.types.ResourceEntry.type), jCas
 				.getTypeSystem()));
@@ -300,7 +302,7 @@ public class TypePathExtractorTests {
 
 	@Test
 	public void testTicket23() throws IOException, UIMAException {
-		JCas jCas = TestsUtil.process("org.cleartk.sentence.SentencesAndTokens", "test/data/docs/huckfinn.txt");
+		JCas jCas = AnalysisEngineFactory.process("org.cleartk.sentence.SentencesAndTokens", "test/data/docs/huckfinn.txt");
 
 		// token "place" in "wide. This place was a tolerable long,");
 		org.cleartk.type.Token token = AnnotationRetrieval.get(jCas, org.cleartk.type.Token.class,
