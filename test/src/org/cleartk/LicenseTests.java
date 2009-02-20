@@ -70,27 +70,33 @@ public class LicenseTests {
 				continue;
 			}
 
-			if (fileText.indexOf("Copyright (c) 2007-2008, Regents of the University of Colorado") == -1
-					|| fileText
-							.indexOf("THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"") == -1) {
+			
+			if ((fileText.indexOf("Copyright (c) 2007-2008, Regents of the University of Colorado") == -1 &&
+				fileText.indexOf("Copyright (c) 2009, Regents of the University of Colorado") == -1 &&	
+				fileText.indexOf("Copyright (c) 2007-2009, Regents of the University of Colorado") == -1)	
+					|| fileText.indexOf("THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"") == -1) {
 				filesMissingLicense.add(file.getPath());
 			}
 			else {
 				int index = fileText.indexOf(" * Copyright (c) 2007-2008, Regents of the University of Colorado")+65;
-				if (fileText.indexOf("Copyright (c) 2007-2008, Regents of the University of Colorado", index) == -1) filesMissingLicense
-						.add(file.getPath());
+				if ((fileText.indexOf("Copyright (c) 2007-2008, Regents of the University of Colorado", index) == -1 &&
+						fileText.indexOf("Copyright (c) 2009, Regents of the University of Colorado", index) == -1 &&	
+						fileText.indexOf("Copyright (c) 2007-2009, Regents of the University of Colorado", index) == -1))	
+					filesMissingLicense.add(file.getPath());
 			}
 
-			if (filesMissingLicense.size() > 0) {
-				String message = String.format("%d source files with no license. ", filesMissingLicense.size());
-				System.err.println(message);
-				Collections.sort(filesMissingLicense);
-				for (String path : filesMissingLicense) {
-					System.err.println(path);
-				}
-				Assert.fail(message);
-			}
 		}
+
+		if (filesMissingLicense.size() > 0) {
+			String message = String.format("%d source files with no license. ", filesMissingLicense.size());
+			System.err.println(message);
+			Collections.sort(filesMissingLicense);
+			for (String path : filesMissingLicense) {
+				System.err.println(path);
+			}
+			Assert.fail(message);
+		}
+
 	}
 
 	public static void main(String[] args) throws IOException {
