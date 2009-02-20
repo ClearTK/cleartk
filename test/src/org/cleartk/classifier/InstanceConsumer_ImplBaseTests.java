@@ -32,14 +32,11 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.classifier.AnnotationHandler;
-import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.InstanceConsumer;
-import org.cleartk.classifier.InstanceConsumer_ImplBase;
 import org.cleartk.util.EmptyAnnotator;
-import org.cleartk.util.TestsUtil;
 import org.junit.Assert;
 import org.junit.Test;
+import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.TypeSystemDescriptionFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -105,9 +102,9 @@ public class InstanceConsumer_ImplBaseTests {
 	@Test
 	public void testBadHandlerName() {
 		try {
-			TestsUtil.getAnalysisEngine(
+			AnalysisEngineFactory.createAnalysisEngine(
 					InstanceConsumer_ImplBaseTests.Consumer.class,
-					TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 					InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER, "Foo");
 			Assert.fail("expected exception with bad AnnotationHandler name");
 		} catch (ResourceInitializationException e) {}
@@ -117,9 +114,9 @@ public class InstanceConsumer_ImplBaseTests {
 	public void testConsumerInitializesHandler() throws UIMAException, IOException {
 		
 		// get a UimaContext containing a producer class
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				EmptyAnnotator.class,
-				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER,
 				InstanceConsumer_ImplBaseTests.HandlerOne.class.getName());
 		UimaContext context = engine.getUimaContext();
@@ -162,9 +159,9 @@ public class InstanceConsumer_ImplBaseTests {
 	throws UIMAException, IOException {
 		
 		// initialize a simple AnalysisEngine
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				EmptyAnnotator.class,
-				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER,
 				producerClass.getName());
 		

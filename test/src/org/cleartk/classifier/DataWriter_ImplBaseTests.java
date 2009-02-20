@@ -35,23 +35,16 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
-import org.cleartk.classifier.AnnotationHandler;
-import org.cleartk.classifier.ClassifierBuilder;
-import org.cleartk.classifier.DataWriter_ImplBase;
-import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.InstanceConsumer;
-import org.cleartk.classifier.InstanceConsumer_ImplBase;
 import org.cleartk.classifier.encoder.EncoderFactory;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 import org.cleartk.classifier.opennlp.MaxentClassifierBuilder;
-import org.cleartk.util.TestsUtil;
 import org.cleartk.util.UIMAUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.uutuc.factory.AnalysisEngineFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -130,14 +123,15 @@ public class DataWriter_ImplBaseTests {
 	@Test
 	public void testNullFactory() throws UIMAException, IOException {
 		try {
-			TestsUtil.getAnalysisEngine(
-					Writer.class, null,				
-					InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER, SingleProducer.class.getName(),
-					DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY, this.outputDir,
-					DataWriter_ImplBase.PARAM_ENCODER_FACTORY_CLASS, NullFactory.class.getName(),
-					Writer.PARAM_FILE_NAME, "foo.txt",
-					Writer.PARAM_STRING_TO_WRITE, "foo");
-			Assert.fail("Expected exception with factory returning null encoders");
+			AnalysisEngineFactory.createAnalysisEngine(
+				Writer.class, null,				
+				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER, SingleProducer.class.getName(),
+				DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY, this.outputDir,
+				DataWriter_ImplBase.PARAM_ENCODER_FACTORY_CLASS, NullFactory.class.getName(),
+				Writer.PARAM_FILE_NAME, "foo.txt",
+				Writer.PARAM_STRING_TO_WRITE, "foo");
+
+		Assert.fail("Expected exception with factory returning null encoders");
 		} catch (ResourceInitializationException e) {}
 	}
 	
@@ -249,7 +243,7 @@ public class DataWriter_ImplBaseTests {
 	
 	private void process(Class<?> producerClass, String fileName, String toWrite)
 	throws UIMAException {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				Writer.class, null,				
 				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER, producerClass.getName(),
 				DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY, this.outputDir,

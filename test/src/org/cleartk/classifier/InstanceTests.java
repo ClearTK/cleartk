@@ -26,8 +26,6 @@ package org.cleartk.classifier;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.Instance;
 import org.junit.Assert;
 import org.junit.Test;
 

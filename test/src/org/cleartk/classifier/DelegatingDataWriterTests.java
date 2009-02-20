@@ -32,15 +32,18 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.classifier.DelegatingDataWriter;
+import org.cleartk.type.Sentence;
+import org.cleartk.type.Token;
 import org.cleartk.util.DocumentUtil;
-import org.cleartk.util.TestsUtil;
 import org.junit.After;
 import org.junit.Test;
+import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.TokenFactory;
+import org.uutuc.factory.TypeSystemDescriptionFactory;
+import org.uutuc.util.TearDownUtil;
 
 
 /**
@@ -52,9 +55,9 @@ import org.junit.Test;
 public class DelegatingDataWriterTests {
 
 	@Test
-	public void testDelegatingDataWriter() throws ResourceInitializationException, AnalysisEngineProcessException, IOException {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				DelegatingDataWriter.class, TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+	public void testDelegatingDataWriter() throws IOException, UIMAException {
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+				DelegatingDataWriter.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				DelegatingDataWriter.PARAM_ANNOTATION_HANDLER, "org.cleartk.example.ExamplePOSAnnotationHandler",
 				DelegatingDataWriter.PARAM_OUTPUT_DIRECTORY, "test/data/delegatingDataWriter/mallet",
 				DelegatingDataWriter.PARAM_DATA_WRITER, "org.cleartk.classifier.mallet.MalletCRFDataWriter");
@@ -64,9 +67,9 @@ public class DelegatingDataWriterTests {
 		
 		JCas jCas = engine.newJCas();
 		String text = "What if we built a large\r\n, wooden badger?";
-		TestsUtil.createTokens(jCas, text,
+		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class,
 				"What if we built a large \n, wooden badger ?",
-				"WDT TO PRP VBN DT JJ , JJ NN .", null);
+				"WDT TO PRP VBN DT JJ , JJ NN .", null, "org.cleartk.type.Token:pos", null);
 		DocumentUtil.createDocument(jCas, "identifier", "path");
 		engine.process(jCas);
 		engine.collectionProcessComplete();
@@ -108,6 +111,6 @@ public class DelegatingDataWriterTests {
 	
 	@After
 	public void tearDown() {
-		TestsUtil.tearDown(new File("test/data/delegatingDataWriter"));
+		TearDownUtil.removeDirectory(new File("test/data/delegatingDataWriter"));
 	}
 }
