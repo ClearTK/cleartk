@@ -97,7 +97,7 @@ public class TreebankAligningAnnotator extends JCasAnnotator_ImplBase {
 			 TreebankFormatParser.parseDocument(mrgText, offset, text)) {
 			
 			// create a Sentence and set its parse
-			TopTreebankNode tree = TreebankNodeUtility.convert(utilTree, jCas);
+			TopTreebankNode tree = TreebankNodeUtility.convert(utilTree, jCas, true);
 			Sentence sentence = new Sentence(jCas, tree.getBegin(), tree.getEnd());
 			sentence.setConstituentParse(tree);
 			sentence.addToIndexes();
