@@ -30,11 +30,11 @@ import java.io.IOException;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
-import org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter;
 import org.cleartk.type.Sentence;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.TestsUtil;
 import org.junit.Test;
+import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.TypeSystemDescriptionFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -48,9 +48,9 @@ public class SentenceSegmentorTests{
 	@Test
 	public void testManyNewlines() throws UIMAException {
 		// create the SentenceSegmenter
-		AnalysisEngine segmenter = TestsUtil.getAnalysisEngine(
+		AnalysisEngine segmenter = AnalysisEngineFactory.createAnalysisEngine(
 				OpenNLPSentenceSegmenter.class,
-				TestsUtil.getTypeSystem(Sentence.class),
+				TypeSystemDescriptionFactory.createTypeSystemDescription(Sentence.class),
 				OpenNLPSentenceSegmenter.SENTENCE_MODEL_FILE_PARAM,
 				"resources/models/OpenNLP.Sentence.English.bin.gz");
 
@@ -71,7 +71,7 @@ public class SentenceSegmentorTests{
 	@Test
 	public void testSentenceSegmentor() throws UIMAException, IOException
     {
-		JCas jCas = TestsUtil.process(
+		JCas jCas = AnalysisEngineFactory.process(
 				"org.cleartk.sentence.SentenceSegmenter",
 				"test/data/docs/youthful-precocity.txt");
 
@@ -104,7 +104,7 @@ public class SentenceSegmentorTests{
 	@Test
 	public void test1() throws UIMAException, IOException
     {
-		JCas jCas = TestsUtil.process(
+		JCas jCas = AnalysisEngineFactory.process(
 				"org.cleartk.sentence.SentenceSegmenter",
 				"test/data/docs/sentences/test1.txt"); 
 		
@@ -124,7 +124,7 @@ public class SentenceSegmentorTests{
 	@Test
 	public void test2() throws UIMAException, IOException
     {
-		JCas jCas = TestsUtil.process(
+		JCas jCas = AnalysisEngineFactory.process(
 				"org.cleartk.sentence.SentenceSegmenter",
 				"test/data/docs/sentences/test2.txt");
 		Sentence sentence = AnnotationRetrieval.get(jCas, Sentence.class, 0);
@@ -134,7 +134,7 @@ public class SentenceSegmentorTests{
 	@Test
 	public void test3() throws UIMAException, IOException
     {
-		JCas jCas = TestsUtil.process(
+		JCas jCas = AnalysisEngineFactory.process(
 				"org.cleartk.sentence.SentenceSegmenter",
 				"test/data/docs/sentences/test3.txt");
 		Sentence sentence = AnnotationRetrieval.get(jCas, Sentence.class, 0);
@@ -143,7 +143,7 @@ public class SentenceSegmentorTests{
 
 	@Test
 	public void test5() throws UIMAException, IOException{
-		JCas jCas = TestsUtil.process(
+		JCas jCas = AnalysisEngineFactory.process(
 				"org.cleartk.sentence.SentenceSegmenter",
 				"test/data/docs/sentences/test5.txt");
 		Sentence sentence = AnnotationRetrieval.get(jCas, Sentence.class, 0);
@@ -159,7 +159,7 @@ public class SentenceSegmentorTests{
 
 	@Test
 	public void test6() throws UIMAException, IOException{
-		JCas jCas = TestsUtil.process(
+		JCas jCas = AnalysisEngineFactory.process(
 				"org.cleartk.sentence.SentenceSegmenter",
 				"test/data/docs/sentences/test6.txt");
 		Sentence sentence = AnnotationRetrieval.get(jCas, Sentence.class, 0);
@@ -175,7 +175,7 @@ public class SentenceSegmentorTests{
 
 	@Test
 	public void test7() throws UIMAException, IOException{
-		JCas jCas = TestsUtil.process(
+		JCas jCas = AnalysisEngineFactory.process(
 				"org.cleartk.sentence.SentenceSegmenter",
 				"test/data/docs/sentences/test7.txt");
 		Sentence sentence = AnnotationRetrieval.get(jCas, Sentence.class, 0);

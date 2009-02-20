@@ -32,14 +32,15 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.ne.term.TermFinderAnnotator;
 import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.TestsUtil;
 import org.junit.Assert;
 import org.junit.Test;
+import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.TokenFactory;
+import org.uutuc.factory.TypeSystemDescriptionFactory;
 
 /**
  * <br>
@@ -53,8 +54,8 @@ public class TermFinderAnnotatorTests {
 
 	@Test
 	public void test() throws UIMAException, IOException {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
-				TermFinderAnnotator.class, TestsUtil.getTypeSystem(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+				TermFinderAnnotator.class, TypeSystemDescriptionFactory.createTypeSystemDescription(
 						Sentence.class, Token.class, NamedEntityMention.class),
 				TermFinderAnnotator.PARAM_TERM_LIST_LISTING,
 				"test/data/termlist/termlist.txt",
@@ -62,8 +63,8 @@ public class TermFinderAnnotatorTests {
 				TermFinderAnnotator.PARAM_TERM_MATCH_ANNOTATION_CLASS,
 				NamedEntityMention.class.getName());
 		JCas jCas = engine.newJCas();
-		TestsUtil.createTokens(jCas, "I would like to visit Alaska.",
-				"I would like to visit Alaska .", null, null);
+		TokenFactory.createTokens(jCas, "I would like to visit Alaska.",Token.class, Sentence.class, 
+				"I would like to visit Alaska .", null, null, null, null);
 		engine.process(jCas);
 		engine.collectionProcessComplete();
 		List<NamedEntityMention> mentions = AnnotationRetrieval.getAnnotations(
@@ -80,13 +81,13 @@ public class TermFinderAnnotatorTests {
 		ResourceInitializationException rie = null;
 		try {
 
-			TestsUtil.getAnalysisEngine("org.cleartk.ne.term.TermFinderAnnotator");
+			AnalysisEngineFactory.createAnalysisEngine("org.cleartk.ne.term.TermFinderAnnotator");
 		} catch (ResourceInitializationException e) {
 			rie = e;
 		}
 		assertNotNull(rie);
 
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.ne.term.TermFinderAnnotator",
 				TermFinderAnnotator.PARAM_TERM_LIST_LISTING,
 				"test/data/termlist/termlist.txt");

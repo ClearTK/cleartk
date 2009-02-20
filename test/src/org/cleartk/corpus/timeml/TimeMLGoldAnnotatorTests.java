@@ -30,15 +30,17 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
-import org.cleartk.corpus.timeml.TimeMLGoldAnnotator;
 import org.cleartk.corpus.timeml.type.Event;
 import org.cleartk.corpus.timeml.type.TemporalLink;
 import org.cleartk.corpus.timeml.type.Time;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.PlainTextCollectionReader;
-import org.cleartk.util.TestsUtil;
 import org.junit.Assert;
 import org.junit.Test;
+import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.CollectionReaderFactory;
+import org.uutuc.factory.TypeSystemDescriptionFactory;
+import org.uutuc.util.JCasIterable;
 
 
 
@@ -54,17 +56,17 @@ public class TimeMLGoldAnnotatorTests {
 	
 	@Test
 	public void testTimeBank() throws UIMAException, IOException {
-		CollectionReader reader = TestsUtil.getCollectionReader(
+		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				PlainTextCollectionReader.class, 
-				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				PlainTextCollectionReader.PARAM_VIEW_NAME,
 				TimeMLGoldAnnotator.TIMEML_VIEW_NAME,
 				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY,
 				"test/data/corpus/timeml/wsj_0106.tml");
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				TimeMLGoldAnnotator.class,
-				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"));
-		JCas jCas = new TestsUtil.JCasIterable(reader, engine).next();
+				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
+		JCas jCas = new JCasIterable(reader, engine).next();
 
 		// <EVENT eid="e1" class="REPORTING">said</EVENT>
 		// <MAKEINSTANCE eventID="e1" eiid="ei128" tense="PAST" aspect="NONE" polarity="POS" pos="VERB"/>
@@ -120,17 +122,17 @@ public class TimeMLGoldAnnotatorTests {
 	
 	@Test
 	public void testTempEval() throws UIMAException, IOException {
-		CollectionReader reader = TestsUtil.getCollectionReader(
+		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				PlainTextCollectionReader.class, 
-				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				PlainTextCollectionReader.PARAM_VIEW_NAME,
 				TimeMLGoldAnnotator.TIMEML_VIEW_NAME,
 				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY,
 				"test/data/corpus/timeml/AP900815-0044.tml");
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				TimeMLGoldAnnotator.class,
-				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"));
-		JCas jCas = new TestsUtil.JCasIterable(reader, engine).next();
+				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
+		JCas jCas = new JCasIterable(reader, engine).next();
 
 		// <EVENT eid="e5" class="STATE" stem="face" aspect="NONE" tense="PRESPART" polarity="POS" pos="VERB">facing</EVENT>
 		List<Event> events = AnnotationRetrieval.getAnnotations(jCas, Event.class);
@@ -172,20 +174,20 @@ public class TimeMLGoldAnnotatorTests {
 	
 	@Test
 	public void testNoTLINKs() throws UIMAException, IOException {
-		CollectionReader reader = TestsUtil.getCollectionReader(
+		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				PlainTextCollectionReader.class, 
-				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				PlainTextCollectionReader.PARAM_VIEW_NAME,
 				TimeMLGoldAnnotator.TIMEML_VIEW_NAME,
 				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY,
 				"test/data/corpus/timeml",
 				PlainTextCollectionReader.PARAM_SUFFIXES,
 				new String[]{".tml"});
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				TimeMLGoldAnnotator.class,
-				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				TimeMLGoldAnnotator.PARAM_LOAD_TLINKS, false);
-		for (JCas jCas: new TestsUtil.JCasIterable(reader, engine)) {
+		for (JCas jCas: new JCasIterable(reader, engine)) {
 			List<Event> events = AnnotationRetrieval.getAnnotations(jCas, Event.class); 
 			Assert.assertTrue(events.size() > 0);
 			List<Time> times = AnnotationRetrieval.getAnnotations(jCas, Time.class); 
@@ -197,12 +199,12 @@ public class TimeMLGoldAnnotatorTests {
 	
 	@Test
 	public void testAnnotatorDescriptor() throws UIMAException, IOException {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine("org.cleartk.corpus.timeml.TimeMLGoldAnnotator");
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine("org.cleartk.corpus.timeml.TimeMLGoldAnnotator");
 		Boolean useTLINKs = (Boolean)engine.getConfigParameterValue(TimeMLGoldAnnotator.PARAM_LOAD_TLINKS);
 		Assert.assertEquals(true, useTLINKs);
 		engine.collectionProcessComplete();
 
-		engine = TestsUtil.getAnalysisEngine("org.cleartk.corpus.timeml.TimeMLGoldAnnotator",
+		engine = AnalysisEngineFactory.createAnalysisEngine("org.cleartk.corpus.timeml.TimeMLGoldAnnotator",
 				TimeMLGoldAnnotator.PARAM_LOAD_TLINKS, false);
 		useTLINKs = (Boolean)engine.getConfigParameterValue(TimeMLGoldAnnotator.PARAM_LOAD_TLINKS);
 		Assert.assertEquals(false, useTLINKs);

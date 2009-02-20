@@ -34,14 +34,15 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.corpus.timeml.PlainTextTLINKGoldAnnotator;
-import org.cleartk.corpus.timeml.TimeMLGoldAnnotator;
 import org.cleartk.corpus.timeml.type.TemporalLink;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.PlainTextCollectionReader;
-import org.cleartk.util.TestsUtil;
 import org.junit.Assert;
 import org.junit.Test;
+import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.CollectionReaderFactory;
+import org.uutuc.factory.TypeSystemDescriptionFactory;
+import org.uutuc.util.JCasIterable;
 
 
 
@@ -62,23 +63,23 @@ public class PlainTextTLINKGoldAnnotatorTests {
 
 	@Test
 	public void test_wsj_0106() throws UIMAException, IOException {
-		CollectionReader reader = TestsUtil.getCollectionReader(
+		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				PlainTextCollectionReader.class, 
-				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				PlainTextCollectionReader.PARAM_VIEW_NAME,
 				TimeMLGoldAnnotator.TIMEML_VIEW_NAME,
 				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY,
 				"test/data/corpus/timeml/wsj_0106.tml");
-		AnalysisEngine timemlEngine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine timemlEngine = AnalysisEngineFactory.createAnalysisEngine(
 				TimeMLGoldAnnotator.class,
-				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				TimeMLGoldAnnotator.PARAM_LOAD_TLINKS, false);
-		AnalysisEngine plainTextEngine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine plainTextEngine = AnalysisEngineFactory.createAnalysisEngine(
 				PlainTextTLINKGoldAnnotator.class,
-				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				PlainTextTLINKGoldAnnotator.PARAM_TLINK_FILE_URL,
 				this.webUrl);
-		JCas jCas = new TestsUtil.JCasIterable(reader, timemlEngine, plainTextEngine).next();
+		JCas jCas = new JCasIterable(reader, timemlEngine, plainTextEngine).next();
 
 		List<TemporalLink> tlinks = AnnotationRetrieval.getAnnotations(jCas, TemporalLink.class);
 		Assert.assertEquals(6, tlinks.size());
@@ -116,23 +117,23 @@ public class PlainTextTLINKGoldAnnotatorTests {
 	
 	@Test
 	public void test_wsj_0106_alternate() throws UIMAException, IOException {
-		CollectionReader reader = TestsUtil.getCollectionReader(
+		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				PlainTextCollectionReader.class, 
-				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				PlainTextCollectionReader.PARAM_VIEW_NAME,
 				TimeMLGoldAnnotator.TIMEML_VIEW_NAME,
 				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY,
 				"test/data/corpus/timeml/wsj_0106.tml");
-		AnalysisEngine timemlEngine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine timemlEngine = AnalysisEngineFactory.createAnalysisEngine(
 				TimeMLGoldAnnotator.class,
-				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				TimeMLGoldAnnotator.PARAM_LOAD_TLINKS, false);
-		AnalysisEngine plainTextEngine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine plainTextEngine = AnalysisEngineFactory.createAnalysisEngine(
 				PlainTextTLINKGoldAnnotator.class,
-				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				PlainTextTLINKGoldAnnotator.PARAM_TLINK_FILE_URL,
 				this.fileUrl);
-		JCas jCas = new TestsUtil.JCasIterable(reader, timemlEngine, plainTextEngine).next();
+		JCas jCas = new JCasIterable(reader, timemlEngine, plainTextEngine).next();
 
 		List<TemporalLink> tlinks = AnnotationRetrieval.getAnnotations(jCas, TemporalLink.class);
 		Assert.assertEquals(2, tlinks.size());
@@ -171,13 +172,13 @@ public class PlainTextTLINKGoldAnnotatorTests {
 	@Test
 	public void testAnnotatorDescriptor() throws UIMAException, IOException {
 		try {
-			TestsUtil.getAnalysisEngine(
+			AnalysisEngineFactory.createAnalysisEngine(
 					"org.cleartk.corpus.timeml.PlainTextTLINKGoldAnnotator");
 			Assert.fail("expected failure with no TlinkFileUrl specified");
 		} catch (ResourceInitializationException e) {}
 		
 		
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.corpus.timeml.PlainTextTLINKGoldAnnotator",
 				PlainTextTLINKGoldAnnotator.PARAM_TLINK_FILE_URL, this.webUrl);
 		Assert.assertEquals(this.webUrl, engine.getConfigParameterValue(

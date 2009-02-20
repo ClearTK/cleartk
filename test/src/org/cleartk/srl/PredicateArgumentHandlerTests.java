@@ -41,10 +41,6 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.opennlp.MaxentDataWriter;
 import org.cleartk.classifier.svmlight.SVMlightDataWriter;
-import org.cleartk.srl.ArgumentAnnotationHandler;
-import org.cleartk.srl.ArgumentClassificationHandler;
-import org.cleartk.srl.ArgumentIdentificationHandler;
-import org.cleartk.srl.PredicateAnnotationHandler;
 import org.cleartk.srl.type.Predicate;
 import org.cleartk.srl.type.SemanticArgument;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
@@ -58,6 +54,9 @@ import org.cleartk.util.UIMAUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
+import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.TokenFactory;
+import org.uutuc.factory.TypeSystemDescriptionFactory;
 
 
 /**
@@ -369,12 +368,12 @@ public class PredicateArgumentHandlerTests {
 	@Test
 	public void testPredicateDataWriterDescriptor() throws UIMAException, IOException {
 		try {
-			TestsUtil.getAnalysisEngine("org.cleartk.srl.PredicateDataWriter");
+			AnalysisEngineFactory.createAnalysisEngine("org.cleartk.srl.PredicateDataWriter");
 			Assert.fail("expected exception with missing output directory");
 		} catch (ResourceInitializationException e) {}
 			
 		String outputPath = this.predicateOutputDir.getPath();
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.srl.PredicateDataWriter",
 				DelegatingDataWriter.PARAM_OUTPUT_DIRECTORY, outputPath);
 		
@@ -396,11 +395,11 @@ public class PredicateArgumentHandlerTests {
 	@Test
 	public void testPredicateAnnotationDescriptor() throws UIMAException, IOException {
 		try {
-			TestsUtil.getAnalysisEngine("org.cleartk.srl.PredicateAnnotator");
+			AnalysisEngineFactory.createAnalysisEngine("org.cleartk.srl.PredicateAnnotator");
 			Assert.fail("expected exception with missing classifier jar");
 		} catch (ResourceInitializationException e) {}
 			
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.srl.PredicateAnnotator",
 				ClassifierAnnotator.PARAM_CLASSIFIER_JAR, "test/data/srl/predicate/model.jar");
 		Object handler = engine.getConfigParameterValue(
@@ -413,12 +412,12 @@ public class PredicateArgumentHandlerTests {
 	@Test
 	public void testArgumentDataWriterDescriptor() throws UIMAException, IOException {
 		try {
-			TestsUtil.getAnalysisEngine("org.cleartk.srl.ArgumentDataWriter");
+			AnalysisEngineFactory.createAnalysisEngine("org.cleartk.srl.ArgumentDataWriter");
 			Assert.fail("expected exception with missing output directory");
 		} catch (ResourceInitializationException e) {}
 			
 		String outputPath = this.argumentOutputDir.getPath();
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.srl.ArgumentDataWriter",
 				DelegatingDataWriter.PARAM_OUTPUT_DIRECTORY, outputPath);
 		
@@ -440,11 +439,11 @@ public class PredicateArgumentHandlerTests {
 	@Test
 	public void testArgumentAnnotationDescriptor() throws UIMAException, IOException {
 		try {
-			TestsUtil.getAnalysisEngine("org.cleartk.srl.ArgumentAnnotator");
+			AnalysisEngineFactory.createAnalysisEngine("org.cleartk.srl.ArgumentAnnotator");
 			Assert.fail("expected exception with missing classifier jar");
 		} catch (ResourceInitializationException e) {}
 			
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.srl.ArgumentAnnotator",
 				ClassifierAnnotator.PARAM_CLASSIFIER_JAR, "test/data/srl/argument/model.jar");
 		Object handler = engine.getConfigParameterValue(
@@ -455,17 +454,17 @@ public class PredicateArgumentHandlerTests {
 	}
 
 	private AnalysisEngine getEngine() throws ResourceInitializationException {
-		return TestsUtil.getAnalysisEngine(
+		return AnalysisEngineFactory.createAnalysisEngine(
 			EmptyAnnotator.class,
-			TestsUtil.getTypeSystem("org.cleartk.TypeSystem"));	
+			TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));	
 	}
 	
-	private void setTokens(JCas jCas) {
-		TestsUtil.createTokens(jCas,
-				"John broke the lamp.",
+	private void setTokens(JCas jCas) throws UIMAException {
+		TokenFactory.createTokens(jCas,  
+				"John broke the lamp.",Token.class, Sentence.class,
 				"John broke the lamp .",
 				"NNP VBD DT NN .",
-				"John break the lamp .");
+				"John break the lamp .", "org.cleartk.type.Token:pos", "org.cleartk.type.Token:stem");
 	}
 	
 	private void setTrees(JCas jCas) {

@@ -38,14 +38,16 @@ import org.apache.uima.collection.CollectionException;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.corpus.genia.GeniaPosGoldReader;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.TestsUtil;
 import org.jdom.JDOMException;
 import org.junit.Assert;
 import org.junit.Test;
+import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.CollectionReaderFactory;
+import org.uutuc.factory.TypeSystemDescriptionFactory;
+import org.uutuc.util.JCasIterable;
 
 
 /**
@@ -59,12 +61,11 @@ public class GeniaPosGoldReaderTests {
 
 	@Test
 	public void testReader() throws CASException, UIMAException, IOException {
-		CollectionReader reader = TestsUtil.getCollectionReader(GeniaPosGoldReader.class, TestsUtil
-				.getTypeSystem("org.cleartk.TypeSystem"), GeniaPosGoldReader.PARAM_GENIA_CORPUS,
+		CollectionReader reader = CollectionReaderFactory.createCollectionReader(GeniaPosGoldReader.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"), GeniaPosGoldReader.PARAM_GENIA_CORPUS,
 				"test/data/corpus/genia/GENIAcorpus3.02.articleA.pos.xml", GeniaPosGoldReader.PARAM_LOAD_TOKENS, true,
 				GeniaPosGoldReader.PARAM_LOAD_SENTENCES, true, GeniaPosGoldReader.PARAM_LOAD_POS_TAGS, true);
 
-		JCas jCas = new TestsUtil.JCasIterable(reader).next();
+		JCas jCas = new JCasIterable(reader).next();
 		Token token = AnnotationRetrieval.get(jCas, Token.class, 0);
 		assertEquals("IL-2", token.getCoveredText());
 		assertEquals("NN", token.getPos());
@@ -76,12 +77,11 @@ public class GeniaPosGoldReaderTests {
 		assertEquals("requires", token.getCoveredText());
 		assertEquals("VBZ", token.getPos());
 
-		reader = TestsUtil.getCollectionReader(GeniaPosGoldReader.class, TestsUtil
-				.getTypeSystem("org.cleartk.TypeSystem"), GeniaPosGoldReader.PARAM_GENIA_CORPUS,
+		reader = CollectionReaderFactory.createCollectionReader(GeniaPosGoldReader.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"), GeniaPosGoldReader.PARAM_GENIA_CORPUS,
 				"test/data/corpus/genia/GENIAcorpus3.02.articleA.pos.xml", GeniaPosGoldReader.PARAM_LOAD_TOKENS, false,
 				GeniaPosGoldReader.PARAM_LOAD_SENTENCES, false, GeniaPosGoldReader.PARAM_LOAD_POS_TAGS, false);
 
-		jCas = new TestsUtil.JCasIterable(reader).next();
+		jCas = new JCasIterable(reader).next();
 		assertEquals(1, reader.getProgress()[0].getCompleted());
 		
 		token = AnnotationRetrieval.get(jCas, Token.class, 0);
@@ -94,8 +94,7 @@ public class GeniaPosGoldReaderTests {
 
 		IOException ioe = null;
 		try {
-			reader = TestsUtil.getCollectionReader(GeniaPosGoldReader.class, TestsUtil
-				.getTypeSystem("org.cleartk.TypeSystem"), GeniaPosGoldReader.PARAM_GENIA_CORPUS,
+			reader = CollectionReaderFactory.createCollectionReader(GeniaPosGoldReader.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"), GeniaPosGoldReader.PARAM_GENIA_CORPUS,
 				"test/data/corpus/genia/GENIAcorpus3.02.articleA.pos.xml", GeniaPosGoldReader.PARAM_LOAD_TOKENS, false,
 				GeniaPosGoldReader.PARAM_LOAD_SENTENCES, false, GeniaPosGoldReader.PARAM_LOAD_POS_TAGS, false,
 				GeniaPosGoldReader.PARAM_ARTICLE_IDS_LIST, "asdf");
@@ -106,20 +105,18 @@ public class GeniaPosGoldReaderTests {
 
 		JDOMException jde = null;
 		try {
-			reader = TestsUtil.getCollectionReader(GeniaPosGoldReader.class, TestsUtil
-				.getTypeSystem("org.cleartk.TypeSystem"), GeniaPosGoldReader.PARAM_GENIA_CORPUS,
+			reader = CollectionReaderFactory.createCollectionReader(GeniaPosGoldReader.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"), GeniaPosGoldReader.PARAM_GENIA_CORPUS,
 				"test/data/corpus/genia/article_ids.txt");
 		}catch (ResourceInitializationException rie) {
 			jde = (JDOMException) rie.getCause();
 		}
 		assertNotNull(jde);
 
-		reader = TestsUtil.getCollectionReader(GeniaPosGoldReader.class, TestsUtil
-				.getTypeSystem("org.cleartk.TypeSystem"), GeniaPosGoldReader.PARAM_GENIA_CORPUS,
+		reader = CollectionReaderFactory.createCollectionReader(GeniaPosGoldReader.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"), GeniaPosGoldReader.PARAM_GENIA_CORPUS,
 				"test/data/corpus/genia/GENIAcorpus3.02.articleA.pos.xml", GeniaPosGoldReader.PARAM_LOAD_TOKENS, false,
 				GeniaPosGoldReader.PARAM_LOAD_SENTENCES, false, GeniaPosGoldReader.PARAM_LOAD_POS_TAGS, false,
 				GeniaPosGoldReader.PARAM_ARTICLE_IDS_LIST, "test/data/corpus/genia/article_ids.txt");
-		jCas = new TestsUtil.JCasIterable(reader).next();
+		jCas = new JCasIterable(reader).next();
 		assertEquals(1, reader.getProgress()[0].getCompleted());
 		assertFalse(reader.hasNext());
 		
@@ -139,13 +136,13 @@ public class GeniaPosGoldReaderTests {
 	public void testAnnotatorDescriptor() throws UIMAException, IOException {
 		AnalysisEngine engine;
 		try {
-			engine = TestsUtil.getAnalysisEngine("org.cleartk.corpus.genia.GeniaPosGoldReader");
+			engine = AnalysisEngineFactory.createAnalysisEngine("org.cleartk.corpus.genia.GeniaPosGoldReader");
 			Assert.fail("expected exception with output directory not specified");
 		}
 		catch (ResourceInitializationException e) {
 		}
 
-		engine = TestsUtil.getAnalysisEngine("org.cleartk.corpus.genia.GeniaPosGoldReader",
+		engine = AnalysisEngineFactory.createAnalysisEngine("org.cleartk.corpus.genia.GeniaPosGoldReader",
 				GeniaPosGoldReader.PARAM_GENIA_CORPUS, "test/data/corpus/genia/GENIAcorpus3.02.articleA.pos.xml");
 
 		String geniaCorpus = (String) engine.getConfigParameterValue(GeniaPosGoldReader.PARAM_GENIA_CORPUS);

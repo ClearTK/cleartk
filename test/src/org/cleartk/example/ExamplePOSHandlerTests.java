@@ -38,7 +38,6 @@ import org.cleartk.classifier.DelegatingDataWriter;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.InstanceConsumer_ImplBase;
-import org.cleartk.example.ExamplePOSAnnotationHandler;
 import org.cleartk.type.Document;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
@@ -48,6 +47,9 @@ import org.cleartk.util.TestsUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
+import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.TokenFactory;
+import org.uutuc.factory.TypeSystemDescriptionFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -62,18 +64,18 @@ public class ExamplePOSHandlerTests {
 	public void testSimpleSentence() throws UIMAException {
 		
 		// create the engine and the cas
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				EmptyAnnotator.class,
-				TestsUtil.getTypeSystem(Document.class, Token.class, Sentence.class));
+				TypeSystemDescriptionFactory.createTypeSystemDescription(Document.class, Token.class, Sentence.class));
 		JCas jCas = engine.newJCas();
 		DocumentUtil.createDocument(jCas, "absurdis", "absurdis");
 		
 		// create some tokens, stems and part of speech tags
-		TestsUtil.createTokens(jCas,
-				"The Absurdis retreated in 2003.",
+		TokenFactory.createTokens(jCas,
+				"The Absurdis retreated in 2003.", Token.class, Sentence.class, 
 				"The Absurdis retreated in 2003 .",
 				"DT NNP VBD IN CD .",
-				"The Absurdi retreat in 2003 .");
+				"The Absurdi retreat in 2003 .", "org.cleartk.type.Token:pos", "org.cleartk.type.Token:stem");
 
 		List<Instance<String>> instances = TestsUtil.produceInstances(
 				new ExamplePOSAnnotationHandler(), engine, jCas);
@@ -190,7 +192,7 @@ public class ExamplePOSHandlerTests {
 	
 	@Test
 	public void testAnnotatorDescriptor() throws UIMAException, IOException {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.example.ExamplePOSAnnotator");
 		
 		String expectedName = ExamplePOSAnnotationHandler.class.getName();
@@ -207,7 +209,7 @@ public class ExamplePOSHandlerTests {
 	
 	@Test
 	public void testDataWriterDescriptor() throws UIMAException, IOException {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.example.ExamplePOSDataWriter");
 		
 		String expectedName = ExamplePOSAnnotationHandler.class.getName();

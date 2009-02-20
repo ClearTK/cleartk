@@ -29,9 +29,9 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.srl.SRLWriter;
-import org.cleartk.util.TestsUtil;
 import org.junit.Assert;
 import org.junit.Test;
+import org.uutuc.factory.AnalysisEngineFactory;
 
 
 /**
@@ -44,11 +44,11 @@ public class CoNLL2005WriterTests {
 	@Test
 	public void testCoNLL2005WriterDescriptor() throws UIMAException, IOException {
 		try {
-			TestsUtil.getAnalysisEngine("org.cleartk.srl.conll2005.CoNLL2005Writer");
+			AnalysisEngineFactory.createAnalysisEngine("org.cleartk.srl.conll2005.CoNLL2005Writer");
 			Assert.fail("expected exception without output file parameter");
 		} catch (ResourceInitializationException e) {}
 
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.srl.conll2005.CoNLL2005Writer",
 				SRLWriter.PARAM_OUTPUT_FILE, "test/data/srl/dev-set-result.txt");
 

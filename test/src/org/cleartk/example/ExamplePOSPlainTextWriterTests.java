@@ -31,13 +31,16 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.util.FileUtils;
-import org.cleartk.example.ExamplePOSPlainTextWriter;
+import org.cleartk.type.Sentence;
+import org.cleartk.type.Token;
 import org.cleartk.util.DocumentUtil;
-import org.cleartk.util.TestsUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.TokenFactory;
+import org.uutuc.factory.TypeSystemDescriptionFactory;
 
 
 /**
@@ -65,17 +68,17 @@ public class ExamplePOSPlainTextWriterTests {
 	
 	@Test
 	public void test() throws Exception {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				ExamplePOSPlainTextWriter.class,
-				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY,
 				this.outputDirectory.getPath());
 		
 		JCas jCas = engine.newJCas();
-		TestsUtil.createTokens(jCas,
-				"I walked home. It was a nice day!",
+		TokenFactory.createTokens(jCas,
+				"I walked home. It was a nice day!", Token.class, Sentence.class, 
 				"I walked home .\nIt was a nice day !",
-				"PRP VBD NN . PRP VBD DT JJ NN .", null);
+				"PRP VBD NN . PRP VBD DT JJ NN .", null, "org.cleartk.type.Token:pos", null);
 		DocumentUtil.createDocument(jCas, "xxx", "xxx");
 		engine.process(jCas);
 		engine.collectionProcessComplete();
@@ -87,7 +90,7 @@ public class ExamplePOSPlainTextWriterTests {
 
 	@Test
 	public void testDescriptor() throws UIMAException, IOException {
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.example.ExamplePOSPlainTextWriter");
 		Object outputDirectory = engine.getConfigParameterValue(
 				ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY);

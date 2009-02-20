@@ -29,16 +29,14 @@ import java.io.StringReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
-import org.cleartk.corpus.timeml.TimeMLGoldAnnotator;
-import org.cleartk.corpus.timeml.TimeMLWriter;
 import org.cleartk.util.PlainTextCollectionReader;
-import org.cleartk.util.TestsUtil;
 import org.jdom.Attribute;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -46,6 +44,11 @@ import org.jdom.input.SAXBuilder;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
+import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.CollectionReaderFactory;
+import org.uutuc.factory.TypeSystemDescriptionFactory;
+import org.uutuc.util.JCasIterable;
+import org.uutuc.util.TearDownUtil;
 
 
 
@@ -65,28 +68,28 @@ public class TimeMLWriterTests {
 	
 	@After
 	public void tearDown() {
-		TestsUtil.tearDown(this.outputDir);
+		TearDownUtil.removeDirectory(this.outputDir);
 	}
 	
 	@Test
 	public void test() throws UIMAException, IOException, JDOMException {
-		CollectionReader reader = TestsUtil.getCollectionReader(
+		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				PlainTextCollectionReader.class, 
-				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				PlainTextCollectionReader.PARAM_VIEW_NAME,
 				TimeMLGoldAnnotator.TIMEML_VIEW_NAME,
 				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY,
 				this.inputFile.getPath());
-		AnalysisEngine annotator = TestsUtil.getAnalysisEngine(
+		AnalysisEngine annotator = AnalysisEngineFactory.createAnalysisEngine(
 				TimeMLGoldAnnotator.class,
-				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"));
-		AnalysisEngine writer = TestsUtil.getAnalysisEngine(
+				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
+		AnalysisEngine writer = AnalysisEngineFactory.createAnalysisEngine(
 				TimeMLWriter.class,
-				TestsUtil.getTypeSystem("org.cleartk.TypeSystem"),
+				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				TimeMLWriter.PARAM_OUTPUT_DIRECTORY,
 				this.outputDir.getPath());
 		
-		for (JCas jCas: new TestsUtil.JCasIterable(reader, annotator, writer)) {
+		for (JCas jCas: new JCasIterable(reader, annotator, writer)) {
 			Assert.assertNotNull(jCas);
 		}
 		reader.close();
@@ -102,12 +105,12 @@ public class TimeMLWriterTests {
 	@Test
 	public void testDescriptor() throws UIMAException, IOException {
 		try {
-			TestsUtil.getAnalysisEngine("org.cleartk.corpus.timeml.TimeMLWriter");
+			AnalysisEngineFactory.createAnalysisEngine("org.cleartk.corpus.timeml.TimeMLWriter");
 			Assert.fail("expected failure with no OutputDirectory specified");
 		} catch (ResourceInitializationException e) {}
 		
 		
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.corpus.timeml.TimeMLWriter",
 				TimeMLWriter.PARAM_OUTPUT_DIRECTORY, this.outputDir.getPath());
 		Assert.assertEquals(this.outputDir.getPath(), engine.getConfigParameterValue(

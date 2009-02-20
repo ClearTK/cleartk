@@ -24,8 +24,8 @@
 package org.cleartk.ne.term.util;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -34,11 +34,6 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.uima.UIMAException;
-import org.cleartk.ne.term.util.SimpleTermFinder;
-import org.cleartk.ne.term.util.Term;
-import org.cleartk.ne.term.util.TermFinder;
-import org.cleartk.ne.term.util.TermList;
-import org.cleartk.ne.term.util.TermMatch;
 import org.cleartk.token.util.PennTreebankTokenizer;
 import org.cleartk.token.util.Token;
 import org.cleartk.token.util.Tokenizer;

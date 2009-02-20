@@ -28,10 +28,9 @@ import java.io.IOException;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.srl.SRLWriter;
-import org.cleartk.util.TestsUtil;
 import org.junit.Assert;
 import org.junit.Test;
+import org.uutuc.factory.AnalysisEngineFactory;
 
 
 /**
@@ -44,11 +43,11 @@ public class SRLWriterTests {
 	@Test
 	public void testSRLWriterDescriptor() throws UIMAException, IOException {
 		try {
-			TestsUtil.getAnalysisEngine("org.cleartk.srl.SRLWriter");
+			AnalysisEngineFactory.createAnalysisEngine("org.cleartk.srl.SRLWriter");
 			Assert.fail("expected exception without output file parameter");
 		} catch (ResourceInitializationException e) {}
 
-		AnalysisEngine engine = TestsUtil.getAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.srl.SRLWriter",
 				SRLWriter.PARAM_OUTPUT_FILE, "test/data/srl/srl-output.txt");
 
