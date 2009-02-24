@@ -56,9 +56,8 @@ public class PropbankGoldAnnotator extends JCasAnnotator_ImplBase {
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
 		try {
 			JCas pbView = jCas.getView("PropbankView");
-			JCas docView = jCas.getView("_InitialView");
-
-			List<Sentence> sentenceList = AnnotationRetrieval.getAnnotations(jCas, Sentence.class); 
+			JCas goldView = jCas.getView("GoldView");
+			List<Sentence> sentenceList = AnnotationRetrieval.getAnnotations(goldView, Sentence.class); 
 
 			for (String propbankDatum : UIMAUtil.readSofa(pbView).trim().split(
 					"\n")) {
@@ -67,7 +66,7 @@ public class PropbankGoldAnnotator extends JCasAnnotator_ImplBase {
 				Propbank propbank = Propbank.fromString(propbankDatum);
 				Sentence sentence = sentenceList.get(propbank
 						.getSentenceNumber());
-				propbank.convert(docView, sentence.getConstituentParse(),
+				propbank.convert(goldView, sentence.getConstituentParse(),
 						sentence);
 			}
 		} catch (CASException e) {
