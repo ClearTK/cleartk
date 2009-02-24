@@ -24,8 +24,6 @@
 package org.cleartk.srl.propbank;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
@@ -34,6 +32,7 @@ import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.srl.propbank.util.Propbank;
 import org.cleartk.type.Sentence;
+import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.UIMAUtil;
 
 
@@ -59,11 +58,7 @@ public class PropbankGoldAnnotator extends JCasAnnotator_ImplBase {
 			JCas pbView = jCas.getView("PropbankView");
 			JCas docView = jCas.getView("_InitialView");
 
-			List<Sentence> sentenceList = new ArrayList<Sentence>();
-			Iterator<?> it = docView.getAnnotationIndex(Sentence.type).iterator();
-			while (it.hasNext()) {
-				sentenceList.add((Sentence) it.next());
-			}
+			List<Sentence> sentenceList = AnnotationRetrieval.getAnnotations(jCas, Sentence.class); 
 
 			for (String propbankDatum : UIMAUtil.readSofa(pbView).trim().split(
 					"\n")) {
