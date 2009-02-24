@@ -108,7 +108,9 @@ public class PropbankGoldReader extends CollectionReader_ImplBase {
 			treebankDirectory = new File(
 					((String) getConfigParameterValue(PARAM_TREEBANK_CORPUS_DIRECTORY))
 							.trim());
-			PennTreebankReader.collectSections(treebankDirectory,
+			File wsjDirectory = new File(treebankDirectory.getPath()
+					+ File.separator + "wsj");
+			PennTreebankReader.collectSections(wsjDirectory,
 					this.treebankFiles, this.wsjSections);
 			Collections.sort(treebankFiles);
 			this.totalTreebankFiles = treebankFiles.size();
