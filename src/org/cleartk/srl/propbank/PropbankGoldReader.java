@@ -49,9 +49,6 @@ import org.cleartk.util.ListSpecification;
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
  * <br>All rights reserved.
 
- *
- * @author Philip Ogren
- *
  * 
  * <p>
  * PropbankCollectionReader reads all <tt>.mrg</tt> files of the WSJ part of
@@ -68,11 +65,6 @@ public class PropbankGoldReader extends CollectionReader_ImplBase {
 	 */
 	public static final String PARAM_PROPBANK_CORPUS_FILE = "PropbankCorpusFile";
 
-	/**
-	 * The top level directory of Treebank. There must be a directory
-	 * <tt>wsj</tt> under this, which contains subdirectories for the
-	 * sections.
-	 */
 	public static final String PARAM_TREEBANK_CORPUS_DIRECTORY = "TreebankCorpusDirectory";
 
 	/**
@@ -116,13 +108,11 @@ public class PropbankGoldReader extends CollectionReader_ImplBase {
 			treebankDirectory = new File(
 					((String) getConfigParameterValue(PARAM_TREEBANK_CORPUS_DIRECTORY))
 							.trim());
-			File wsjDirectory = new File(treebankDirectory.getPath()
-					+ File.separator + "wsj");
-			PennTreebankReader.collectSections(wsjDirectory,
+			PennTreebankReader.collectSections(treebankDirectory,
 					this.treebankFiles, this.wsjSections);
 			Collections.sort(treebankFiles);
 			this.totalTreebankFiles = treebankFiles.size();
-
+			
 			super.initialize();
 		} catch (FileNotFoundException fnfe) {
 			throw new ResourceInitializationException(fnfe);
