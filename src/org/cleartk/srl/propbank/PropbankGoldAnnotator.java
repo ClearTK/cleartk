@@ -30,6 +30,7 @@ import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
+import org.cleartk.ViewNames;
 import org.cleartk.srl.propbank.util.Propbank;
 import org.cleartk.type.Sentence;
 import org.cleartk.util.AnnotationRetrieval;
@@ -55,8 +56,8 @@ public class PropbankGoldAnnotator extends JCasAnnotator_ImplBase {
 	@Override
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
 		try {
-			JCas pbView = jCas.getView("PropbankView");
-			JCas goldView = jCas.getView("GoldView");
+			JCas pbView = jCas.getView(ViewNames.PROPBANK);
+			JCas goldView = jCas.getView(ViewNames.TREEBANK_ANNOTATIONS);
 			List<Sentence> sentenceList = AnnotationRetrieval.getAnnotations(goldView, Sentence.class); 
 
 			for (String propbankDatum : UIMAUtil.readSofa(pbView).trim().split(

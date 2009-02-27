@@ -39,6 +39,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
+import org.cleartk.ViewNames;
 import org.cleartk.util.DocumentUtil;
 
 /**
@@ -102,7 +103,7 @@ public class Conll2005GoldReader extends CollectionReader_ImplBase {
 
 	public void getNext(CAS cas) throws IOException, CollectionException {
 		try {
-			JCas conllView = cas.createView("CoNLL2005View").getJCas();
+			JCas conllView = cas.createView(ViewNames.CONLL_2005).getJCas();
 			
 			String lineBuffer;
 			StringBuffer docBuffer = new StringBuffer();

@@ -31,6 +31,7 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.cas.FSIndex;
 import org.apache.uima.jcas.JCas;
+import org.cleartk.ViewNames;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
 import org.cleartk.type.Sentence;
 import org.cleartk.util.AnnotationRetrieval;
@@ -61,13 +62,13 @@ public class TreebankGoldReaderAndAnnotatorTests {
 		treebankGoldAnnotator.initialize(engine.getUimaContext());
 		
 		JCas jCas = engine.newJCas();
-		JCas tbView = jCas.createView("TreebankView");
+		JCas tbView = jCas.createView(ViewNames.TREEBANK);
 		tbView.setDocumentText(treebankParse);
 		DocumentUtil.createDocument(tbView, "test-id", "test-path");
 		
 		treebankGoldAnnotator.process(jCas);
 		
-		JCas goldView = jCas.getView("GoldView");
+		JCas goldView = jCas.getView(ViewNames.TREEBANK_ANNOTATIONS);
 		
 		FSIndex sentenceIndex = goldView.getAnnotationIndex(Sentence.type);
 		assertEquals(1, sentenceIndex.size());

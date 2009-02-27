@@ -41,6 +41,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
+import org.cleartk.ViewNames;
 import org.cleartk.util.UIMAUtil;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -58,8 +59,6 @@ import org.jdom.input.SAXBuilder;
  */
 public class Ace2005GoldReader extends CollectionReader_ImplBase
 {
-	public static final String APF_VIEW_NAME = "APFView";
-	
 	/**
 	 * "AceCorpusDir" is a single, required string parameter that takes the
 	 * name of directory that contains ACE data.  Typically, a folder such
@@ -196,7 +195,7 @@ AFP_ENG_20030305.0918
 			
 			String sgmText = FileUtils.file2String(sgmFile);
 			
-			JCas initialView = jCas.getView("_InitialView");
+			JCas initialView = jCas.getView(ViewNames.ANNOTATIONS);
 			initialView.setDocumentText(getDocumentText(sgmText));
 
 //			org.cleartk.type.Document sgmDocument = new org.cleartk.type.Document(initialView);
@@ -223,7 +222,7 @@ AFP_ENG_20030305.0918
 			document.setAceType(type);
 			document.addToIndexes();
 		    
-			JCas apfView = jCas.createView(APF_VIEW_NAME);
+			JCas apfView = jCas.createView(ViewNames.ACE_APF);
 			apfView.setSofaDataURI(apfFile.toURI().toString(), null);
 			
 //			ACE2005Document apfDocument = new ACE2005Document(apfView);

@@ -28,6 +28,7 @@ import java.util.Iterator;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
+import org.cleartk.ViewNames;
 import org.cleartk.type.Document;
 
 
@@ -90,7 +91,7 @@ public class DocumentUtil
 		doc.addToIndexes();
 		
 		try {
-			JCas initialView = jCas.getView("_InitialView");
+			JCas initialView = jCas.getView(ViewNames.ANNOTATIONS);
 			if(!initialView.equals(jCas))
 				DocumentUtil.createDocument(initialView, identifier, path);
 		}

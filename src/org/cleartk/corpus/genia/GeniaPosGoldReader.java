@@ -38,6 +38,7 @@ import org.apache.uima.pear.util.FileUtil;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
+import org.cleartk.ViewNames;
 import org.cleartk.corpus.genia.util.GeniaPOSParser;
 import org.cleartk.corpus.genia.util.GeniaParse;
 import org.cleartk.corpus.genia.util.GeniaSentence;
@@ -59,8 +60,6 @@ import org.jdom.JDOMException;
  * @see GeniaPOSParser
  */
 public class GeniaPosGoldReader extends CollectionReader_ImplBase {
-
-	public static final String GENIA_POS_VIEW_NAME = "GeniaPOSView";
 
 	/**
 	 * "ArticleIdsList" is a single, optional, string parameter that names the
@@ -184,7 +183,7 @@ public class GeniaPosGoldReader extends CollectionReader_ImplBase {
 			document.setIdentifier(parse.getMedline());
 			document.addToIndexes();
 
-			JCas geniaView = jCas.createView(GENIA_POS_VIEW_NAME);
+			JCas geniaView = jCas.createView(ViewNames.GENIA_POS);
 			geniaView.setDocumentText(parse.getXml());
 
 			parse = null;

@@ -35,6 +35,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.ViewNames;
 import org.cleartk.corpus.timeml.type.Anchor;
 import org.cleartk.corpus.timeml.type.Event;
 import org.cleartk.corpus.timeml.type.TemporalLink;
@@ -61,8 +62,6 @@ public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
 	
 	public static final String PARAM_LOAD_TLINKS = "LoadTlinks";
 	
-	public static final String TIMEML_VIEW_NAME = "TimeMLView";
-	
 	private boolean loadTLINKs;
 
 	@Override
@@ -77,8 +76,8 @@ public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
 		JCas timemlView;
 		JCas initialView;
 		try {
-			timemlView = jCas.getView(TimeMLGoldAnnotator.TIMEML_VIEW_NAME);
-			initialView = jCas.getView("_InitialView");
+			timemlView = jCas.getView(ViewNames.TIMEML);
+			initialView = jCas.getView(ViewNames.ANNOTATIONS);
 		} catch (CASException e) {
 			throw new AnalysisEngineProcessException(e);
 		}

@@ -38,6 +38,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.ViewNames;
 import org.cleartk.ne.type.NamedEntity;
 import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.type.Chunk;
@@ -80,8 +81,8 @@ public class Ace2005GoldAnnotator extends JCasAnnotator_ImplBase
 		try
 		{
 			
-			JCas apfView = jCas.getView(Ace2005GoldReader.APF_VIEW_NAME);
-			JCas initialView = jCas.getView("_InitialView");
+			JCas apfView = jCas.getView(ViewNames.ACE_APF);
+			JCas initialView = jCas.getView(ViewNames.ANNOTATIONS);
 			String documentText = initialView.getDocumentText();
 			SAXBuilder builder = new SAXBuilder();
 			builder.setDTDHandler(null);

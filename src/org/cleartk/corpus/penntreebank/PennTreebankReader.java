@@ -39,6 +39,7 @@ import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.Level;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
+import org.cleartk.ViewNames;
 import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
 import org.cleartk.util.DocumentUtil;
 import org.cleartk.util.ListSpecification;
@@ -96,8 +97,6 @@ public class PennTreebankReader extends CollectionReader_ImplBase {
 	 */
 	public static final String PARAM_SECTIONS = "Sections";
 
-	public static final String TREEBANK_VIEW_NAME = "TreebankView";
-	
 	protected File directory;
 
 	protected LinkedList<File> files;
@@ -174,7 +173,7 @@ public class PennTreebankReader extends CollectionReader_ImplBase {
 	 */
 	public void getNext(CAS cas) throws IOException, CollectionException {
 		try {
-			JCas tbView = cas.createView(TREEBANK_VIEW_NAME).getJCas();
+			JCas tbView = cas.createView(ViewNames.TREEBANK).getJCas();
 			File treebankFile = files.removeFirst();
 
 			getUimaContext().getLogger().log(Level.FINEST, "reading treebank file: " + treebankFile.getPath());

@@ -37,6 +37,7 @@ import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
+import org.cleartk.ViewNames;
 import org.cleartk.srl.type.Predicate;
 import org.cleartk.srl.type.SemanticArgument;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
@@ -62,8 +63,8 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
 	@Override
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
 		try {
-			JCas conllView = jCas.getView("CoNLL2005View");
-			JCas initView = jCas.getView("_InitialView");
+			JCas conllView = jCas.getView(ViewNames.CONLL_2005);
+			JCas initView = jCas.getView(ViewNames.ANNOTATIONS);
 			
 			String conllText = conllView.getSofaDataString();
 

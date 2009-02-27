@@ -30,9 +30,9 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CASException;
-import org.apache.uima.collection.CollectionException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.ViewNames;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
 import org.cleartk.syntax.treebank.type.TreebankNode;
 import org.cleartk.syntax.treebank.util.TreebankFormatParser;
@@ -73,8 +73,8 @@ public class TreebankGoldAnnotator extends JCasAnnotator_ImplBase {
 	@Override
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
 		try {
-			JCas tbView = jCas.getView("TreebankView");
-			JCas docView = UIMAUtil.createJCasView(jCas.getCas(), "GoldView");
+			JCas tbView = jCas.getView(ViewNames.TREEBANK);
+			JCas docView = jCas.createView(ViewNames.TREEBANK_ANNOTATIONS);
 
 			String tbText = UIMAUtil.readSofa(tbView);
 			String docText = jCas.getDocumentText(); 
@@ -113,10 +113,6 @@ public class TreebankGoldAnnotator extends JCasAnnotator_ImplBase {
 		} catch (IOException e) {
 			throw new AnalysisEngineProcessException(e);
 		}
-		catch (CollectionException e) {
-			throw new AnalysisEngineProcessException(e);
-		}
-
 	}
 
 }

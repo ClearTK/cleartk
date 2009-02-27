@@ -39,6 +39,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
+import org.cleartk.ViewNames;
 import org.cleartk.corpus.penntreebank.PennTreebankReader;
 import org.cleartk.srl.propbank.util.Propbank;
 import org.cleartk.util.DocumentUtil;
@@ -134,8 +135,8 @@ public class PropbankGoldReader extends CollectionReader_ImplBase {
 	 */
 	public void getNext(CAS cas) throws IOException, CollectionException {
 		try {
-			JCas tbView = cas.createView("TreebankView").getJCas();
-			JCas pbView = cas.createView("PropbankView").getJCas();
+			JCas tbView = cas.createView(ViewNames.TREEBANK).getJCas();
+			JCas pbView = cas.createView(ViewNames.PROPBANK).getJCas();
 
 			File treebankFile = treebankFiles.removeFirst().getCanonicalFile();
 			tbView.setSofaDataURI(treebankFile.toURI().toASCIIString(),
