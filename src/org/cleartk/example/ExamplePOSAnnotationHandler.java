@@ -105,7 +105,7 @@ public class ExamplePOSAnnotationHandler implements AnnotationHandler<String> {
 	}
 	
 	public void process(JCas jCas, InstanceConsumer<String> consumer) {
-		System.out.println("processing "+DocumentUtil.getIdentifier(jCas));
+		System.out.println("ExamplePOSAnnotationHandler - processing "+DocumentUtil.getIdentifier(jCas));
 		
 		// generate a list of training instances for each sentence in the document
 		for (Sentence sentence: AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
