@@ -40,7 +40,7 @@ import java.util.jar.Manifest;
  */
 public class ClassifierManifest extends Manifest {
 	
-	private final Attributes.Name classifierBuilderAttribute = new Attributes.Name("classifierBuilderClass");
+	public static final Attributes.Name CLASSIFIER_BUILDER_ATTRIBUTE = new Attributes.Name("classifierBuilderClass");
 	
 	private ClassifierBuilder<?> classifierBuilder;
 	
@@ -52,7 +52,7 @@ public class ClassifierManifest extends Manifest {
 	public ClassifierManifest(ClassifierBuilder<?> classifierBuilder) {
 		Attributes attributes = this.getMainAttributes();
 		attributes.put(Attributes.Name.MANIFEST_VERSION, "1.0");
-		attributes.put(this.classifierBuilderAttribute, classifierBuilder.getClass().getName());
+		attributes.put(CLASSIFIER_BUILDER_ATTRIBUTE, classifierBuilder.getClass().getName());
 		this.classifierBuilder = classifierBuilder;
 	}
 	
@@ -74,7 +74,7 @@ public class ClassifierManifest extends Manifest {
 	
 	public void setClassifierBuilder(ClassifierBuilder<?> classifierBuilder) {
 		Attributes attributes = this.getMainAttributes();
-		attributes.put(this.classifierBuilderAttribute, classifierBuilder.getClass().getName());
+		attributes.put(this.CLASSIFIER_BUILDER_ATTRIBUTE, classifierBuilder.getClass().getName());
 		this.classifierBuilder = classifierBuilder;
 	}
 	
@@ -84,10 +84,10 @@ public class ClassifierManifest extends Manifest {
 	
 	private void loadClassifierBuilder(String path) throws IOException {
 		Attributes attributes = this.getMainAttributes();
-		String classifierClassName = attributes.getValue(this.classifierBuilderAttribute);
+		String classifierClassName = attributes.getValue(this.CLASSIFIER_BUILDER_ATTRIBUTE);
 		if (classifierClassName == null) {
 			throw new IOException(String.format("Missing %s attribute in manifest %s",
-					this.classifierBuilderAttribute, path));
+					this.CLASSIFIER_BUILDER_ATTRIBUTE, path));
 		}
 		Exception exception = null;
 		try {
@@ -101,7 +101,7 @@ public class ClassifierManifest extends Manifest {
 		}
 		if (exception != null) {
 			throw new IOException(String.format("Invalid %s attribute in manifest %s",
-					this.classifierBuilderAttribute, path));
+					this.CLASSIFIER_BUILDER_ATTRIBUTE, path));
 		}
 	}
 	
