@@ -46,6 +46,44 @@ import org.junit.Test;
 public class LicenseTests {
 
 	@Test
+	public void testLicenseStatedInDescriptors() throws Exception {
+		testDescriptors("src");
+	}
+
+	@Test
+	public void testLicenseStatedInTestDescriptors() throws Exception {
+		testDescriptors("test/src");
+	}
+
+	private void testDescriptors(String directory) throws IOException {
+		List<String> filesMissingLicense = new ArrayList<String>();
+		Iterable<File> files = Files.getFiles(directory, new String[] { ".xml" });
+		
+		for (File file : files) {
+			String fileText = FileUtils.file2String(file);
+
+			if ((fileText.indexOf("Copyright (c) 2007-2008, Regents of the University of Colorado") == -1 &&
+				fileText.indexOf("Copyright (c) 2007, Regents of the University of Colorado") == -1 &&	
+				fileText.indexOf("Copyright (c) 2008, Regents of the University of Colorado") == -1 &&	
+				fileText.indexOf("Copyright (c) 2009, Regents of the University of Colorado") == -1 &&	
+				fileText.indexOf("Copyright (c) 2007-2009, Regents of the University of Colorado") == -1)	
+					|| fileText.indexOf("THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"") == -1) {
+				filesMissingLicense.add(file.getPath());
+			}
+		}
+		
+		if (filesMissingLicense.size() > 0) {
+			String message = String.format("%d descriptor files with no license. ", filesMissingLicense.size());
+			System.err.println(message);
+			Collections.sort(filesMissingLicense);
+			for (String path : filesMissingLicense) {
+				System.err.println(path);
+			}
+			Assert.fail(message);
+		}
+	}
+	
+	@Test
 	public void testLicenseStatedInSource() throws Exception {
 		test("src");
 	}
@@ -72,15 +110,19 @@ public class LicenseTests {
 
 			
 			if ((fileText.indexOf("Copyright (c) 2007-2008, Regents of the University of Colorado") == -1 &&
-				fileText.indexOf("Copyright (c) 2009, Regents of the University of Colorado") == -1 &&	
-				fileText.indexOf("Copyright (c) 2007-2009, Regents of the University of Colorado") == -1)	
+					fileText.indexOf("Copyright (c) 2007, Regents of the University of Colorado") == -1 &&	
+					fileText.indexOf("Copyright (c) 2008, Regents of the University of Colorado") == -1 &&	
+					fileText.indexOf("Copyright (c) 2009, Regents of the University of Colorado") == -1 &&	
+					fileText.indexOf("Copyright (c) 2007-2009, Regents of the University of Colorado") == -1)	
 					|| fileText.indexOf("THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"") == -1) {
 				filesMissingLicense.add(file.getPath());
 			}
 			else {
-				int index = fileText.indexOf(" * Copyright (c) 2007-2008, Regents of the University of Colorado")+65;
+				int index = 300;
 				if ((fileText.indexOf("Copyright (c) 2007-2008, Regents of the University of Colorado", index) == -1 &&
-						fileText.indexOf("Copyright (c) 2009, Regents of the University of Colorado", index) == -1 &&	
+						fileText.indexOf("Copyright (c) 2007, Regents of the University of Colorado") == -1 &&	
+						fileText.indexOf("Copyright (c) 2008, Regents of the University of Colorado") == -1 &&	
+						fileText.indexOf("Copyright (c) 2009, Regents of the University of Colorado") == -1 &&	
 						fileText.indexOf("Copyright (c) 2007-2009, Regents of the University of Colorado", index) == -1))	
 					filesMissingLicense.add(file.getPath());
 			}
@@ -102,8 +144,6 @@ public class LicenseTests {
 	public static void main(String[] args) throws IOException {
 
 		for (File directory : new File[] { new File("src"), new File("test/src") }) {
-			// for(File directory : new File[] {new
-			// File("test/src/edu/colorado/cleartk/temporal")}) {
 			Iterable<File> files = Files.getFiles(directory, new String[] { ".java" });
 			;
 
@@ -174,43 +214,3 @@ public class LicenseTests {
 	}
 }
 
-// String htmlLicense =
-// " /** " + newline +
-// " * <br>Copyright (c) 2007-2008, Regents of the University of Colorado " +
-// newline +
-// " * <br>All rights reserved." + newline +
-// " * <p>" + newline +
-// " * Redistribution and use in source and binary forms, with or without" +
-// newline +
-// " * modification, are permitted provided that the following conditions are met:"
-// + newline +
-// " * <ul>" + newline +
-// " * <li>Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.</li> "
-// + newline +
-// " * <li>Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. </li> "
-// + newline +
-// " * <li>Neither the name of the University of Colorado at Boulder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. </li> "
-// + newline +
-// " * </ul>" + newline +
-// " * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\""
-// + newline +
-// " * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE"
-// + newline +
-// " * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE"
-// + newline +
-// " * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE"
-// + newline +
-// " * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR" +
-// newline +
-// " * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF" +
-// newline +
-// " * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS"
-// + newline +
-// " * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN"
-// + newline +
-// " * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)"
-// + newline +
-// " * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE"
-// + newline +
-// " * POSSIBILITY OF SUCH DAMAGE. "+newline+
-// "*/" + newline;
