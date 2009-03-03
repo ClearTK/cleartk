@@ -5,14 +5,37 @@
   <annotatorImplementationName>org.cleartk.util.EmptyAnnotator</annotatorImplementationName>
   <analysisEngineMetaData>
     <name>EmptyAnnotator</name>
-    <description>This descriptor file is here only because it is convenient to use with the CVD.  If you pass the argument "-desc desc/util/EmptyAnnotator.xml" into the CAS Visual Debugger, then it will load the ClearTK type system.  That way you don't need to do it manually and you can directly open an XCAS file.  It is possible that they have/will make it possible to pass in the type system descriptor, in which case we will no longer need this descriptor as it is not used anywhere.  </description>
+    <description>This descriptor file is here only because it is convenient to use with the CVD.  If you pass the argument "-desc desc/util/EmptyAnnotator.xml" into the CAS Visual Debugger, then it will load the ClearTK type system.  That way you don't need to do it manually and you can directly open an XCAS file.  It is possible that they have/will make it possible to pass in the type system descriptor, in which case we will no longer need this descriptor as it is not used anywhere.
+
+
+Copyright (c) 2009, Regents of the University of Colorado 
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. 
+Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. 
+Neither the name of the University of Colorado at Boulder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. 
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.</description>
     <version>1.0</version>
     <vendor/>
     <configurationParameters/>
     <configurationParameterSettings/>
     <typeSystemDescription>
       <imports>
-        <import location="../TypeSystem.xml"/>
+        <import name="org.cleartk.TypeSystem"/>
       </imports>
     </typeSystemDescription>
     <typePriorities/>
