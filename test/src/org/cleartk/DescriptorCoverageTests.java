@@ -24,6 +24,7 @@
 package org.cleartk;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -36,6 +37,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.XMLInputSource;
 import org.apache.uima.util.XMLParser;
+import org.cleartk.util.io.Files;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -46,6 +48,28 @@ import org.junit.Test;
 */
 
 public class DescriptorCoverageTests {
+	
+	@Test
+	public void testImportByLocation() throws IOException {
+		List<String> filesWithLocationImport = new ArrayList<String>();
+		Iterable<File> files = Files.getFiles("src", new String[] {".xml"});
+		for (File file : files) {
+			String fileText = FileUtils.file2String(file);
+			if(fileText.indexOf("<import location=") != -1) {
+				filesWithLocationImport.add(file.getPath());
+			}
+		}
+		if (filesWithLocationImport.size() > 0) {
+			String message = String.format("%d descriptor files with location imports. ", filesWithLocationImport.size());
+			System.err.println(message);
+			Collections.sort(filesWithLocationImport);
+			for (String path : filesWithLocationImport) {
+				System.err.println(path);
+			}
+			Assert.fail(message);
+		}
+
+	}
 	
 	@Test
 	public void testSrcDescriptorsAreCoveredByTests() throws Exception {
