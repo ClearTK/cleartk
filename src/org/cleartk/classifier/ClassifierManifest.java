@@ -74,7 +74,7 @@ public class ClassifierManifest extends Manifest {
 	
 	public void setClassifierBuilder(ClassifierBuilder<?> classifierBuilder) {
 		Attributes attributes = this.getMainAttributes();
-		attributes.put(this.CLASSIFIER_BUILDER_ATTRIBUTE, classifierBuilder.getClass().getName());
+		attributes.put(CLASSIFIER_BUILDER_ATTRIBUTE, classifierBuilder.getClass().getName());
 		this.classifierBuilder = classifierBuilder;
 	}
 	
@@ -84,10 +84,10 @@ public class ClassifierManifest extends Manifest {
 	
 	private void loadClassifierBuilder(String path) throws IOException {
 		Attributes attributes = this.getMainAttributes();
-		String classifierClassName = attributes.getValue(this.CLASSIFIER_BUILDER_ATTRIBUTE);
+		String classifierClassName = attributes.getValue(CLASSIFIER_BUILDER_ATTRIBUTE);
 		if (classifierClassName == null) {
 			throw new IOException(String.format("Missing %s attribute in manifest %s",
-					this.CLASSIFIER_BUILDER_ATTRIBUTE, path));
+					CLASSIFIER_BUILDER_ATTRIBUTE, path));
 		}
 		Exception exception = null;
 		try {
@@ -101,7 +101,7 @@ public class ClassifierManifest extends Manifest {
 		}
 		if (exception != null) {
 			throw new IOException(String.format("Invalid %s attribute in manifest %s",
-					this.CLASSIFIER_BUILDER_ATTRIBUTE, path));
+					CLASSIFIER_BUILDER_ATTRIBUTE, path));
 		}
 	}
 	
