@@ -39,18 +39,12 @@ import org.cleartk.classifier.encoder.EncoderFactory;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 import org.cleartk.classifier.opennlp.MaxentClassifierBuilder;
-import org.cleartk.classifier.opennlp.MaxentDataWriter;
-import org.cleartk.type.Sentence;
-import org.cleartk.type.Token;
-import org.cleartk.util.DocumentUtil;
 import org.cleartk.util.UIMAUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
-import org.uutuc.factory.TokenFactory;
-import org.uutuc.factory.TypeSystemDescriptionFactory;
 
 /**
  * <br>
