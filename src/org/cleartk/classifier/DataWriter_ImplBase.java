@@ -1,5 +1,5 @@
- /** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+/** 
+ * Copyright (c) 2007-2009, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier;
 
 import java.io.BufferedWriter;
@@ -42,25 +42,34 @@ import org.cleartk.classifier.encoder.EncoderFactory;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
+import org.cleartk.classifier.feature.extractor.outcome.OutcomeFeatureExtractor;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * 
  * @author Steven Bethard, Philipp Wetzler
  */
-public abstract class DataWriter_ImplBase<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE,FEATURES_TYPE> extends
-InstanceConsumer_ImplBase<INPUTOUTCOME_TYPE> {
+public abstract class DataWriter_ImplBase<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE, FEATURES_TYPE> extends
+		InstanceConsumer_ImplBase<INPUTOUTCOME_TYPE> {
 
 	protected String outputDir;
+
 	protected List<PrintWriter> writers;
+
 	protected ClassifierManifest classifierManifest;
 
 	protected FeaturesEncoder<FEATURES_TYPE> featuresEncoder;
-	protected OutcomeEncoder<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE> outcomeEncoder;
+
+	protected OutcomeEncoder<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE> outcomeEncoder;
+
+	private OutcomeFeatureExtractor[] outcomeFeatureExtractors;
+
+	public static final String OUTCOME_FEATURE_EXTRACTOR_FILE_NAME = "outcome-features-extractors.ser";
 
 	/**
 	 * The name of the directory where the training data will be written.
@@ -72,45 +81,80 @@ InstanceConsumer_ImplBase<INPUTOUTCOME_TYPE> {
 	 */
 	public static final String PARAM_ENCODER_FACTORY_CLASS = "EncoderFactoryClass";
 
+	/**
+	 * 
+	 * 
+	 * 
+	 * "org.cleartk.classifier.DataWriter_ImplBase.PARAM_OUTCOME_FEATURE_EXTRACTOR"
+	 * is an optional, multi-valued, string parameter that specifies which
+	 * OutcomeFeatureExtractors should be used. Each value of this parameter
+	 * should be the name of a class that implements
+	 * {@link OutcomeFeatureExtractor}. One valid value that you might use is"org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor"
+	 * .
+	 * 
+	 */
+	public static final String PARAM_OUTCOME_FEATURE_EXTRACTOR = "org.cleartk.classifier.DataWriter_ImplBase.PARAM_OUTCOME_FEATURE_EXTRACTOR";
+
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
 
 		// Initialize the output directory and list of output writers
 		this.writers = new ArrayList<PrintWriter>();
-		this.outputDir = (String)UIMAUtil.getRequiredConfigParameterValue(
-				context, DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY);
+		this.outputDir = (String) UIMAUtil.getRequiredConfigParameterValue(context,
+				DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY);
 
 		// Initialize the Manifest
 		this.classifierManifest = new ClassifierManifest();
 
 		// Initialize Encoders, either using the one specified, or else using
 		// the default supplied by the DataWriter
-		String factoryClassName = (String)context.getConfigParameterValue(
-				DataWriter_ImplBase.PARAM_ENCODER_FACTORY_CLASS);
+		String factoryClassName = (String) context
+				.getConfigParameterValue(DataWriter_ImplBase.PARAM_ENCODER_FACTORY_CLASS);
 		Class<?> factoryClass;
 		EncoderFactory factory;
 		try {
 			if (factoryClassName != null) {
 				factoryClass = Class.forName(factoryClassName);
-			} else {
+			}
+			else {
 				factoryClass = this.getDefaultEncoderFactoryClass();
 			}
-			factory = (EncoderFactory)factoryClass.newInstance();
-		} catch (Exception e) {
+			factory = (EncoderFactory) factoryClass.newInstance();
+		}
+		catch (Exception e) {
 			throw new ResourceInitializationException(e);
 		}
 		this.featuresEncoder = this.getFeaturesEncoder(factory, context);
 		this.outcomeEncoder = this.getOutcomeEncoder(factory, context);
-		
+
 		// Throw an informative exception if either encoder is missing
 		if (this.featuresEncoder == null) {
-			throw new ResourceInitializationException(new Exception(
-					"EncoderFactory returned a null FeaturesEncoder"));
+			throw new ResourceInitializationException(new Exception("EncoderFactory returned a null FeaturesEncoder"));
 		}
 		if (this.outcomeEncoder == null) {
-			throw new ResourceInitializationException(new Exception(
-					"EncoderFactory returned a null OutcomeEncoder"));
+			throw new ResourceInitializationException(new Exception("EncoderFactory returned a null OutcomeEncoder"));
+		}
+
+		try {
+			String[] outcomeFeatureExtractorNames = (String[]) UIMAUtil.getDefaultingConfigParameterValue(context,
+					PARAM_OUTCOME_FEATURE_EXTRACTOR, null);
+			if (outcomeFeatureExtractorNames == null) {
+				outcomeFeatureExtractors = new OutcomeFeatureExtractor[0];
+			}
+			else {
+				outcomeFeatureExtractors = new OutcomeFeatureExtractor[outcomeFeatureExtractorNames.length];
+				for (int i = 0; i < outcomeFeatureExtractorNames.length; i++) {
+					Class<?> cls = Class.forName(outcomeFeatureExtractorNames[i]);
+					Class<? extends OutcomeFeatureExtractor> outcomeFeatureExtractorClass = cls
+							.asSubclass(OutcomeFeatureExtractor.class);
+					outcomeFeatureExtractors[i] = outcomeFeatureExtractorClass.newInstance();
+					outcomeFeatureExtractors[i].initialize(context);
+				}
+			}
+		}
+		catch (Exception e) {
+			throw new ResourceInitializationException(e);
 		}
 	}
 
@@ -118,18 +162,17 @@ InstanceConsumer_ImplBase<INPUTOUTCOME_TYPE> {
 		return new File(this.outputDir, fileName);
 	}
 
-	public PrintWriter getPrintWriter(String fileName)
-	throws ResourceInitializationException {
+	public PrintWriter getPrintWriter(String fileName) throws ResourceInitializationException {
 		File file = this.getFile(fileName);
 		if (!file.getParentFile().exists()) {
 			file.getParentFile().mkdirs();
 		}
 		try {
-			PrintWriter writer = new PrintWriter(
-					new BufferedWriter(new FileWriter(file)));
+			PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(file)));
 			this.writers.add(writer);
 			return writer;
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			throw new ResourceInitializationException(e);
 		}
 	}
@@ -139,44 +182,59 @@ InstanceConsumer_ImplBase<INPUTOUTCOME_TYPE> {
 		super.collectionProcessComplete();
 
 		// close out the file writers
-		for (PrintWriter writer: this.writers) {
+		for (PrintWriter writer : this.writers) {
 			writer.flush();
 			writer.close();
 		}
 
 		// serialize the features encoder
 		try {
-			ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(getFile(
-					FeaturesEncoder_ImplBase.ENCODER_FILE_NAME)));
+			ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(
+					getFile(FeaturesEncoder_ImplBase.ENCODER_FILE_NAME)));
 			os.writeObject(this.featuresEncoder);
 			os.writeObject(this.outcomeEncoder);
 			os.close();
-		} catch (IOException e) {
+
+			os = new ObjectOutputStream(new FileOutputStream(new File(outputDir, OUTCOME_FEATURE_EXTRACTOR_FILE_NAME)));
+			os.writeObject(this.outcomeFeatureExtractors);
+			os.close();
+
+		}
+		catch (IOException e) {
 			throw new AnalysisEngineProcessException(e);
 		}
-		
+
 		// set manifest values
 		try {
-			Class<? extends ClassifierBuilder<? extends INPUTOUTCOME_TYPE>> classifierBuilderClass =
-				this.getDefaultClassifierBuilderClass();
+			Class<? extends ClassifierBuilder<? extends INPUTOUTCOME_TYPE>> classifierBuilderClass = this
+					.getDefaultClassifierBuilderClass();
 			this.classifierManifest.setClassifierBuilder(classifierBuilderClass.newInstance());
-		} catch (InstantiationException e) {
+		}
+		catch (InstantiationException e) {
 			throw new AnalysisEngineProcessException(e);
-		} catch (IllegalAccessException e) {
+		}
+		catch (IllegalAccessException e) {
 			throw new AnalysisEngineProcessException(e);
 		}
 
 		// write the manifest file
 		try {
 			classifierManifest.write(new File(this.outputDir));
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			throw new AnalysisEngineProcessException(e);
 		}
 	}
 
 	public List<INPUTOUTCOME_TYPE> consumeAll(List<Instance<INPUTOUTCOME_TYPE>> instances) {
-		for (Instance<INPUTOUTCOME_TYPE> instance: instances) {
-			this.consume(instance);
+		List<Object> outcomes = new ArrayList<Object>();
+		for (Instance<INPUTOUTCOME_TYPE> instance : instances) {
+			List<Feature> instanceFeatures = instance.getFeatures();
+			for (OutcomeFeatureExtractor outcomeFeatureExtractor : outcomeFeatureExtractors) {
+				instanceFeatures.addAll(outcomeFeatureExtractor.extractFeatures(outcomes));
+			}
+			outcomes.add(instance.getOutcome());
+			consume(instance);
 		}
 		return null;
 	}
@@ -188,54 +246,49 @@ InstanceConsumer_ImplBase<INPUTOUTCOME_TYPE> {
 	protected Class<?> getMyTypeArgument(String parameterName) {
 		return getTypeArgument(DataWriter_ImplBase.class, parameterName, this);
 	}
-	
-	protected  Class<?> getTypeArgument(Class<?> cls, String parameterName, Object instance) {
-		Map<String,Type> typeArguments = ReflectionUtil.getTypeArguments(cls, instance);
+
+	protected Class<?> getTypeArgument(Class<?> cls, String parameterName, Object instance) {
+		Map<String, Type> typeArguments = ReflectionUtil.getTypeArguments(cls, instance);
 		Type t = typeArguments.get(parameterName);
-		if( t instanceof Class )
-			return (Class<?>)t;
-		else
-			return null;
+		if (t instanceof Class) return (Class<?>) t;
+		else return null;
 	}
 
 	@SuppressWarnings("unchecked")
 	private FeaturesEncoder<FEATURES_TYPE> getFeaturesEncoder(EncoderFactory factory, UimaContext context)
-	throws ResourceInitializationException {
+			throws ResourceInitializationException {
 		FeaturesEncoder<?> genericEncoder = factory.createFeaturesEncoder(context);
-		if( genericEncoder == null )
-			return null;
+		if (genericEncoder == null) return null;
 
 		Class<?> myFEATURESTYPE = this.getMyTypeArgument("FEATURES_TYPE");
 		Class<?> encoderFEATURESTYPE = this.getTypeArgument(FeaturesEncoder.class, "FEATURES_TYPE", genericEncoder);
 
-		if( myFEATURESTYPE != encoderFEATURESTYPE )
-			throw new ClassCastException();
+		if (myFEATURESTYPE != encoderFEATURESTYPE) throw new ClassCastException();
 
 		return (FeaturesEncoder<FEATURES_TYPE>) genericEncoder;
 	}
-	
-	@SuppressWarnings({ "unchecked" })
-	private OutcomeEncoder<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE> getOutcomeEncoder(EncoderFactory factory, UimaContext context) 
-	throws ResourceInitializationException {
-		OutcomeEncoder<?,?> genericEncoder = factory.createOutcomeEncoder(context);
-		if( genericEncoder == null )
-			return null;
-		
+
+	@SuppressWarnings( { "unchecked" })
+	private OutcomeEncoder<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE> getOutcomeEncoder(EncoderFactory factory,
+			UimaContext context) throws ResourceInitializationException {
+		OutcomeEncoder<?, ?> genericEncoder = factory.createOutcomeEncoder(context);
+		if (genericEncoder == null) return null;
+
 		Class<?> myINPUTOUTCOME_TYPE = this.getMyTypeArgument("INPUTOUTCOME_TYPE");
 		Class<?> myOUTPUTOUTCOME_TYPE = this.getMyTypeArgument("OUTPUTOUTCOME_TYPE");
-		
-		Class<?> encoderINPUTOUTCOME_TYPE = this.getTypeArgument(OutcomeEncoder.class, "INPUTOUTCOME_TYPE", genericEncoder);
-		Class<?> encoderOUTPUTOUTCOME_TYPE = this.getTypeArgument(OutcomeEncoder.class, "OUTPUTOUTCOME_TYPE", genericEncoder);
-		
-		if( myINPUTOUTCOME_TYPE != encoderINPUTOUTCOME_TYPE )
-			throw new ClassCastException();
 
-		if( myOUTPUTOUTCOME_TYPE != encoderOUTPUTOUTCOME_TYPE )
-			throw new ClassCastException();
-		
-		return (OutcomeEncoder<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE>) genericEncoder;
-}
-	
+		Class<?> encoderINPUTOUTCOME_TYPE = this.getTypeArgument(OutcomeEncoder.class, "INPUTOUTCOME_TYPE",
+				genericEncoder);
+		Class<?> encoderOUTPUTOUTCOME_TYPE = this.getTypeArgument(OutcomeEncoder.class, "OUTPUTOUTCOME_TYPE",
+				genericEncoder);
+
+		if (myINPUTOUTCOME_TYPE != encoderINPUTOUTCOME_TYPE) throw new ClassCastException();
+
+		if (myOUTPUTOUTCOME_TYPE != encoderOUTPUTOUTCOME_TYPE) throw new ClassCastException();
+
+		return (OutcomeEncoder<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE>) genericEncoder;
+	}
+
 	public boolean expectsOutcomes() {
 		return true;
 	}

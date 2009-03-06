@@ -112,24 +112,11 @@ public class ClassifierAnnotator<OUTCOME_TYPE> extends InstanceConsumer_ImplBase
 	}
 	
 	public List<OUTCOME_TYPE> consumeAll(List<Instance<OUTCOME_TYPE>> instances) {
-
-		// sequential classifiers classify all instances in a sequence at once
-		if (this.classifier.isSequential()) {
-			List<List<Feature>> instanceFeatures = new ArrayList<List<Feature>>();
-			for (Instance<OUTCOME_TYPE> instance: instances) {
-				instanceFeatures.add(instance.getFeatures());
-			}
-			return this.classifier.classifySequence(instanceFeatures);
+		List<List<Feature>> instanceFeatures = new ArrayList<List<Feature>>();
+		for (Instance<OUTCOME_TYPE> instance: instances) {
+			instanceFeatures.add(instance.getFeatures());
 		}
-		
-		// non-sequential classifiers classify each instance individually
-		else {
-			List<OUTCOME_TYPE> labels = new ArrayList<OUTCOME_TYPE>();
-			for (Instance<OUTCOME_TYPE> instance: instances) {
-				labels.add(this.classifier.classify(instance.getFeatures()));
-			}
-			return labels;
-		}
+		return this.classifier.classifySequence(instanceFeatures);
 	}
 
 	private Classifier<OUTCOME_TYPE> classifier;

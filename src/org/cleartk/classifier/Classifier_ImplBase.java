@@ -35,6 +35,7 @@ import java.util.zip.ZipEntry;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
+import org.cleartk.classifier.feature.extractor.outcome.OutcomeFeatureExtractor;
 import org.cleartk.util.ReflectionUtil;
 
 
@@ -49,6 +50,8 @@ public abstract class Classifier_ImplBase<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE,F
 //	protected ClassifierManifest classifierManifest;
 	protected FeaturesEncoder<FEATURES_TYPE> featuresEncoder;
 	protected OutcomeEncoder<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE> outcomeEncoder;
+	private OutcomeFeatureExtractor[] outcomeFeatureExtractors;
+
 	
 	public Classifier_ImplBase(JarFile modelFile) throws IOException {
 		
@@ -56,8 +59,8 @@ public abstract class Classifier_ImplBase<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE,F
 //		classifierManifest = new ClassifierManifest(modelFile);
 		
 		// de-serialize the encoders
-		ZipEntry feEntry = modelFile.getEntry(FeaturesEncoder_ImplBase.ENCODER_FILE_NAME);
-		ObjectInputStream is = new ObjectInputStream(modelFile.getInputStream(feEntry));
+		ZipEntry zipEntry = modelFile.getEntry(FeaturesEncoder_ImplBase.ENCODER_FILE_NAME);
+		ObjectInputStream is = new ObjectInputStream(modelFile.getInputStream(zipEntry));
 		FeaturesEncoder<?> genericFeaturesEncoder;
 		OutcomeEncoder<?,?> genericOutcomeEncoder;
 		try {
@@ -71,14 +74,34 @@ public abstract class Classifier_ImplBase<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE,F
 		this.featuresEncoder = featuresEncoderCast(genericFeaturesEncoder);
 		this.featuresEncoder.allowNewFeatures(false);
 		this.outcomeEncoder = outcomeEncoderCast(genericOutcomeEncoder);
+		
+		zipEntry = modelFile.getEntry(DataWriter_ImplBase.OUTCOME_FEATURE_EXTRACTOR_FILE_NAME);
+		if(zipEntry == null) {
+			outcomeFeatureExtractors = new OutcomeFeatureExtractor[0];
+		} else {
+			is = new ObjectInputStream(modelFile.getInputStream(zipEntry));
+		
+			try {
+				outcomeFeatureExtractors = (OutcomeFeatureExtractor[]) is.readObject();
+			}
+			catch (ClassNotFoundException e) {
+				throw new RuntimeException(e);
+			}
+		}
 	}
 
 	public abstract INPUTOUTCOME_TYPE classify(List<Feature> features);
 
 	public List<INPUTOUTCOME_TYPE> classifySequence(List<List<Feature>> features) {
+		List<Object> outcomes = new ArrayList<Object>();
 		List<INPUTOUTCOME_TYPE> returnValues = new ArrayList<INPUTOUTCOME_TYPE>();
 		for (List<Feature> instanceFeatures : features) {
-			returnValues.add(classify(instanceFeatures));
+			for(OutcomeFeatureExtractor outcomeFeatureExtractor : outcomeFeatureExtractors) {
+				instanceFeatures.addAll(outcomeFeatureExtractor.extractFeatures(outcomes));
+			}
+			INPUTOUTCOME_TYPE outcome = classify(instanceFeatures);
+			outcomes.add(outcome);
+			returnValues.add(outcome);
 		}
 		return returnValues;
 	}
