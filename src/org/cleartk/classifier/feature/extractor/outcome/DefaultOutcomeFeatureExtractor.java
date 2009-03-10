@@ -45,6 +45,8 @@ import org.cleartk.util.UIMAUtil;
 
 public class DefaultOutcomeFeatureExtractor implements OutcomeFeatureExtractor{
 
+	private static final long serialVersionUID = 7476684786572310025L;
+
 	public static final String PARAM_MOST_RECENT_OUTCOME = "org.cleartk.classifier.nonsequential.DefaultOutcomesFeatureExtractor.PARAM_MOST_RECENT_OUTCOME";
 	
 	public static final String PARAM_LEAST_RECENT_OUTCOME = "org.cleartk.classifier.nonsequential.DefaultOutcomesFeatureExtractor.PARAM_LEAST_RECENT_OUTCOME";
