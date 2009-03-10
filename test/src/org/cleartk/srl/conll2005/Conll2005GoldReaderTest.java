@@ -39,7 +39,8 @@ import org.uutuc.factory.CollectionReaderFactory;
  */
 public class Conll2005GoldReaderTest {
 	
-	private final String oneSentencePath = "test/data/CoNLL2005.1.txt";
+	//pointer to random data file.  not an actual conll2005 file.
+	private final String oneSentencePath = "test/data/corpus/conll2003/eng.train";
 	
 	@Test
 	public void testDescriptor() throws UIMAException, IOException {
