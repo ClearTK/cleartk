@@ -37,12 +37,11 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.apache.uima.resource.ResourceInitializationException;
 
-import org.cleartk.type.Document;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.DocumentUtil;
 import org.cleartk.util.UIMAUtil;
 
 /**
@@ -71,7 +70,7 @@ public class InverseDocumentFrequencyWriter extends JCasAnnotator_ImplBase {
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
 		// iterate over each token in the document
 		Set<String> stemSet = new HashSet<String>();
-		Document doc = DocumentUtil.getDocument(jCas);
+		DocumentAnnotation doc = AnnotationRetrieval.getDocument(jCas);
 		for (Token token: AnnotationRetrieval.getAnnotations(jCas, doc, Token.class)) {
 			String stem = token.getStem();
 			if (stem == null) {

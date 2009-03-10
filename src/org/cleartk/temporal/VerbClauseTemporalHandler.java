@@ -50,7 +50,7 @@ import org.cleartk.syntax.treebank.type.TreebankNode;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.DocumentUtil;
+import org.cleartk.util.ViewURIUtil;
 
 
 /**
@@ -108,7 +108,7 @@ public class VerbClauseTemporalHandler implements AnnotationHandler<String> {
 			TopTreebankNode tree = sentence.getConstituentParse();
 			if (tree == null) {
 				throw new AnalysisEngineProcessException(new Exception(String.format(
-						"%s: missing syntactic parses", DocumentUtil.getIdentifier(jCas))));
+						"%s: missing syntactic parses", ViewURIUtil.getURI(jCas))));
 			}
 
 			// iterate over all verb-clause pairs

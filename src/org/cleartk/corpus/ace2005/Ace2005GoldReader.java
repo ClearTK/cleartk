@@ -42,6 +42,7 @@ import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 import org.cleartk.ViewNames;
+import org.cleartk.util.ViewURIUtil;
 import org.cleartk.util.UIMAUtil;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -214,23 +215,16 @@ AFP_ENG_20030305.0918
 			String source = apfSource.getAttributeValue("SOURCE");
 			String type = apfSource.getAttributeValue("TYPE");
 			
+			ViewURIUtil.setURI(cas, sgmFile.getName());
 			org.cleartk.corpus.ace2005.type.Document document = new org.cleartk.corpus.ace2005.type.Document(initialView);
-		    document.setIdentifier(sgmFile.getName());
-		    document.setPath(sgmFile.getName());
 			document.setAceUri(uri);
 			document.setAceSource(source);
 			document.setAceType(type);
 			document.addToIndexes();
 		    
-			JCas apfView = jCas.createView(ViewNames.ACE_APF);
-			apfView.setSofaDataURI(apfFile.toURI().toString(), null);
-			
-//			ACE2005Document apfDocument = new ACE2005Document(apfView);
-//			apfDocument.setIdentifier(apfFile.getName());
-//			apfDocument.setPath(apfFile.getName());
-//			apfDocument.addToIndexes();
-//			apfDocument.setAceUri(apfFile.getName());
-			
+			CAS apfUriView = cas.createView(ViewNames.ACE_APF_URI);
+			apfUriView.setSofaDataURI(apfFile.toURI().toString(), null);
+
 		}
 		catch(CASException ce)
 		{

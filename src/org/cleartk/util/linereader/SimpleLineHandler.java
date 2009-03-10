@@ -30,7 +30,7 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.collection.CollectionException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.util.DocumentUtil;
+import org.cleartk.util.ViewURIUtil;
 import org.cleartk.util.UIMAUtil;
 import org.cleartk.util.io.Files;
 
@@ -66,7 +66,8 @@ public class SimpleLineHandler implements LineHandler {
 		} else {
 			path = file.getPath();
 		}
-		DocumentUtil.createDocument(jCas, id, path);
+		String identifier = String.format("%s#%s", path, id);
+		ViewURIUtil.setURI(jCas, identifier);
 	}
 
 }

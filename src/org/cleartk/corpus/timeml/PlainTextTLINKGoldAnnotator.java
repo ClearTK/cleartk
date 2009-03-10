@@ -24,6 +24,7 @@
 package org.cleartk.corpus.timeml;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -42,7 +43,7 @@ import org.cleartk.corpus.timeml.type.Event;
 import org.cleartk.corpus.timeml.type.TemporalLink;
 import org.cleartk.corpus.timeml.type.Time;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.DocumentUtil;
+import org.cleartk.util.ViewURIUtil;
 import org.cleartk.util.UIMAUtil;
 
 
@@ -84,13 +85,12 @@ public class PlainTextTLINKGoldAnnotator extends JCasAnnotator_ImplBase {
 		} catch (IOException e) {
 			throw new ResourceInitializationException(e);
 		}
-
 	}
 
 	@Override
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
-		String fileName = DocumentUtil.getIdentifier(jCas);
-		String fileBase = fileName.replaceAll("\\..*", "");
+		String filePath = ViewURIUtil.getURI(jCas);
+		String fileBase = new File(filePath).getName().replaceAll("\\..*", "");
 		if (this.fileTLINKs.containsKey(fileBase)) {
 			Map<String, Anchor> anchors = new HashMap<String, Anchor>();
 			for (Anchor anchor: AnnotationRetrieval.getAnnotations(jCas, Anchor.class)) {

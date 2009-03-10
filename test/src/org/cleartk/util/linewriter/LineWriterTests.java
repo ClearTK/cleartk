@@ -40,7 +40,7 @@ import org.cleartk.classifier.ClassifierAnnotator;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.DocumentUtil;
+import org.cleartk.util.ViewURIUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
@@ -86,7 +86,7 @@ public class LineWriterTests {
 		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class,
 				"What if we built a rocket ship made of cheese ?\nWe could fly it to the moon for repairs .",
 				"A B C D E F G H I J K L M N O P Q R S T U", null, "org.cleartk.type.Token:pos", null);
-		DocumentUtil.createDocument(jCas, "1234", "1234");
+		ViewURIUtil.setURI(jCas, "1234");
 		engine.process(jCas);
 		engine.collectionProcessComplete();
 		
@@ -122,7 +122,7 @@ public class LineWriterTests {
 		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class,
 				"What if we \n built a rocket \n ship made of cheese ?\nWe could fly it \nto the moon for repairs .",
 				"A B C D E F G H I J K L M N O P Q R S T U", null, "org.cleartk.type.Token:pos", null);
-		DocumentUtil.createDocument(jCas, "1234", "1234");
+		ViewURIUtil.setURI(jCas, "1234");
 		engine.process(jCas);
 		engine.collectionProcessComplete();
 
@@ -173,7 +173,6 @@ public class LineWriterTests {
 		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class,
 				"Me and all my friends are non-conformists . \n I will subjugate my freedom oppressor . ",
 				"1 2 3 4 5 6 7 8 9 10 11 12 13 14 15", null, "org.cleartk.type.Token:pos", null);
-		DocumentUtil.createDocument(jCas, "1234", "1234");
 		engine.process(jCas);
 		engine.collectionProcessComplete();
 		
@@ -374,7 +373,6 @@ public class LineWriterTests {
 		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class,
 				"Me and all my friends are non-conformists . \n I will subjugate my freedom oppressor . ",
 				"1 2 3 4 5 6 7 8 9 10 11 12 13 14 15", null, "org.cleartk.type.Token:pos", null);
-		DocumentUtil.createDocument(jCas, "1234", "1234");
 		engine.process(jCas);
 		engine.collectionProcessComplete();
 		
@@ -420,12 +418,12 @@ public class LineWriterTests {
 		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class,
 				"Me and all my friends are non-conformists . \n I will subjugate my freedom oppressor . ",
 				"1 2 3 4 5 6 7 8 9 10 11 12 13 14 15", null, "org.cleartk.type.Token:pos", null);
-		DocumentUtil.createDocument(jCas, "1234.", "1234.");
+		ViewURIUtil.setURI(jCas, "1234");
 		engine.process(jCas);
 		engine.collectionProcessComplete();
 		
 		String expectedText =
-			"1234."+newline + 
+			"1234"+newline + 
 			"Me\t1"+newline +
 			"and\t2"+newline +
 			"all\t3"+newline +
@@ -463,7 +461,7 @@ public class LineWriterTests {
 		jCas.setDocumentText(
 				"Philip Ogren didn't write this sentence.\n" +
 				"ROIs are required for CD28-mediated activation of the NF-kappa B/CD28-responsive complex.");
-		DocumentUtil.createDocument(jCas, "id", "path");
+		ViewURIUtil.setURI(jCas, "id");
 		for (AnalysisEngine engine: engines) {
 			engine.process(jCas);
 		}

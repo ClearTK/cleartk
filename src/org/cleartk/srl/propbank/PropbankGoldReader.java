@@ -37,12 +37,13 @@ import org.apache.uima.collection.CollectionException;
 import org.apache.uima.collection.CollectionReader_ImplBase;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 import org.cleartk.ViewNames;
 import org.cleartk.corpus.penntreebank.PennTreebankReader;
 import org.cleartk.srl.propbank.util.Propbank;
-import org.cleartk.util.DocumentUtil;
+import org.cleartk.util.ViewURIUtil;
 import org.cleartk.util.ListSpecification;
 
 
@@ -89,6 +90,7 @@ public class PropbankGoldReader extends CollectionReader_ImplBase {
 
 	protected ListSpecification wsjSections;
 
+	@Override
 	public void initialize() throws ResourceInitializationException {
 		try {
 			this.wsjSections = new ListSpecification(
@@ -134,38 +136,37 @@ public class PropbankGoldReader extends CollectionReader_ImplBase {
 	 * @throws CollectionException
 	 */
 	public void getNext(CAS cas) throws IOException, CollectionException {
+		JCas tbView, pbView;
 		try {
-			JCas tbView = cas.createView(ViewNames.TREEBANK).getJCas();
-			JCas pbView = cas.createView(ViewNames.PROPBANK).getJCas();
-
-			File treebankFile = treebankFiles.removeFirst().getCanonicalFile();
-			tbView.setSofaDataURI(treebankFile.toURI().toASCIIString(),
-					"text/plain");
-
-			DocumentUtil.createDocument(tbView, treebankFile.getName(), treebankFile.getName());
-
-			StringBuffer propbankText = new StringBuffer();
-			while (propbankData.size() > 0) {
-				File nextPbFile = new File(treebankDirectory.getPath()
-						+ File.separator
-						+ Propbank.filenameFromString(propbankData.getFirst()))
-						.getCanonicalFile();
-
-				int c = treebankFile.compareTo(nextPbFile);
-				if (c < 0) {
-					break;
-				} else if (c > 0) {
-					propbankData.removeFirst();
-					continue;
-				}
-
-				propbankText.append(propbankData.removeFirst() + "\n");
-			}
-
-			pbView.setSofaDataString(propbankText.toString(), "text/plain");
+			tbView = cas.createView(ViewNames.TREEBANK).getJCas();
+			pbView = cas.createView(ViewNames.PROPBANK).getJCas();
 		} catch (CASException ce) {
 			throw new CollectionException(ce);
 		}
+
+		File treebankFile = treebankFiles.removeFirst();
+		ViewURIUtil.setURI(cas, treebankFile.getPath());
+		
+		StringBuffer propbankText = new StringBuffer();
+		while (propbankData.size() > 0) {
+			File nextPbFile = new File(treebankDirectory.getPath()
+					+ File.separator
+					+ Propbank.filenameFromString(propbankData.getFirst()))
+					.getCanonicalFile();
+
+			int c = treebankFile.getAbsoluteFile().compareTo(nextPbFile);
+			if (c < 0) {
+				break;
+			} else if (c > 0) {
+				propbankData.removeFirst();
+				continue;
+			}
+
+			propbankText.append(propbankData.removeFirst() + "\n");
+		}
+
+		tbView.setSofaDataString(FileUtils.file2String(treebankFile), "text/plain");
+		pbView.setSofaDataString(propbankText.toString(), "text/plain");
 	}
 
 	public void close() throws IOException {

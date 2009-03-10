@@ -187,8 +187,8 @@ public class PlainTextCollectionReader extends CollectionReader_ImplBase {
 			path = file.getPath();
 		}
 		
-		// create the ClearTK Document object
-		DocumentUtil.createDocument(view, file.getName(), path);
+		// set the document URI
+		ViewURIUtil.setURI(cas, path);
 		
 		completed++;
 	}

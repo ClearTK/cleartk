@@ -44,7 +44,7 @@ import org.cleartk.corpus.timeml.type.Event;
 import org.cleartk.corpus.timeml.type.TemporalLink;
 import org.cleartk.corpus.timeml.type.Time;
 import org.cleartk.corpus.timeml.util.TimeMLUtil;
-import org.cleartk.util.DocumentUtil;
+import org.cleartk.util.ViewURIUtil;
 import org.cleartk.util.UIMAUtil;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -124,7 +124,8 @@ public class TimeMLWriter extends JCasAnnotator_ImplBase {
 		xmlString = new XMLOutputter().outputString(document);
 
 		// write the TimeML to the output file
-		String fileName = DocumentUtil.getIdentifier(jCas);
+		String filePath = ViewURIUtil.getURI(jCas);
+		String fileName = new File(filePath).getName();
 		if (!fileName.endsWith(".tml")) {
 			fileName += ".tml";
 		}

@@ -82,7 +82,7 @@ public class XWriterTests {
 				Token.class, Sentence.class, 
 				"I like spam !",
 				"PRP VB NN .", null, "org.cleartk.type.Token:pos", null);
-		DocumentUtil.createDocument(jCas, "identifier", "path");
+		ViewURIUtil.setURI(jCas, "identifier");
 		engine.process(jCas);
 		engine.collectionProcessComplete();
 		
@@ -100,17 +100,13 @@ public class XWriterTests {
 			throw new AnalysisEngineProcessException(e);
 		}
 
-		@SuppressWarnings("unchecked")
-		List elements = root.getChildren("Document", root.getNamespace("type"));
-		Assert.assertEquals(1, elements.size());
-		elements = root.getChildren("Sentence", root.getNamespace("type"));
+		List<?> elements = root.getChildren("Sentence", root.getNamespace("type"));
 		Assert.assertEquals(1, elements.size());
 		elements = root.getChildren("Token", root.getNamespace("type"));
 		Assert.assertEquals(4, elements.size());
 		
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testXcas() throws Exception {
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
@@ -123,7 +119,7 @@ public class XWriterTests {
 				Token.class, Sentence.class, 
 				"I like spam !",
 				"PRP VB NN .", null, "org.cleartk.type.Token:pos", null);
-		DocumentUtil.createDocument(jCas, "identifier", "path");
+		ViewURIUtil.setURI(jCas, "identifier");
 		engine.process(jCas);
 		engine.collectionProcessComplete();
 		
@@ -141,9 +137,7 @@ public class XWriterTests {
 			throw new AnalysisEngineProcessException(e);
 		}
 
-		List elements = root.getChildren("org.cleartk.type.Document");
-		Assert.assertEquals(1, elements.size());
-		elements = root.getChildren("org.cleartk.type.Sentence");
+		List<?> elements = root.getChildren("org.cleartk.type.Sentence");
 		Assert.assertEquals(1, elements.size());
 		elements = root.getChildren("org.cleartk.type.Token");
 		Assert.assertEquals(4, elements.size());

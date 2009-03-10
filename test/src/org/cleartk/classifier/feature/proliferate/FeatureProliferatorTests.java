@@ -32,7 +32,6 @@ import org.apache.uima.jcas.JCas;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.SpannedTextExtractor;
-import org.cleartk.type.Document;
 import org.cleartk.type.Token;
 import org.cleartk.util.EmptyAnnotator;
 import org.junit.Assert;
@@ -143,7 +142,7 @@ public class FeatureProliferatorTests {
 	public void testProliferatingExtractor() throws UIMAException, IOException {
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				EmptyAnnotator.class,
-				TypeSystemDescriptionFactory.createTypeSystemDescription(Document.class, Token.class));
+				TypeSystemDescriptionFactory.createTypeSystemDescription(Token.class));
 		JCas jCas = engine.newJCas();
 
 		jCas.setDocumentText("Hello World 2008!");

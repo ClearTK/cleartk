@@ -39,7 +39,6 @@ import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter;
 import org.cleartk.token.TokenAnnotator;
 import org.cleartk.token.snowball.SnowballStemmer;
-import org.cleartk.type.Document;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.PlainTextCollectionReader;
@@ -76,7 +75,7 @@ public class InverseDocumentFrequencyWriterTests {
 	@Test
 	public void test() throws Exception {
 		TypeSystemDescription typeSystem = TypeSystemDescriptionFactory.createTypeSystemDescription(
-				Document.class, Sentence.class, Token.class);
+				Sentence.class, Token.class);
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				PlainTextCollectionReader.class, typeSystem,
 				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY, this.inputDir);

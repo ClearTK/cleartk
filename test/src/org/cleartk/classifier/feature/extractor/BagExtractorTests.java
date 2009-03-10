@@ -31,11 +31,11 @@ import java.util.List;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.cleartk.classifier.Feature;
-import org.cleartk.type.Document;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
-import org.cleartk.util.DocumentUtil;
+import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.EmptyAnnotator;
 import org.junit.Assert;
 import org.junit.Before;
@@ -58,7 +58,7 @@ public class BagExtractorTests {
 	public void setUp() throws Exception {
 		this.engine = AnalysisEngineFactory.createAnalysisEngine(
 				EmptyAnnotator.class,
-				TypeSystemDescriptionFactory.createTypeSystemDescription(Document.class, Token.class, Sentence.class));;
+				TypeSystemDescriptionFactory.createTypeSystemDescription(Token.class, Sentence.class));;
 		this.jCasObjects = new ArrayList<JCas>();
 		this.expectedTokenLists = new ArrayList<List<String>>();
 		this.expectedPOSLists = new ArrayList<List<String>>();
@@ -150,7 +150,6 @@ public class BagExtractorTests {
 		// set the document text and add Token annotations as indicated
 		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class, tokensString, posTagsString, null,
 				"org.cleartk.type.Token:pos", null);
-		DocumentUtil.createDocument(jCas, "foo", "bar");
 	}
 
 	private void testOne(
@@ -162,7 +161,7 @@ public class BagExtractorTests {
 		// run a BagExtractor on each document
 		for (int i = 0; i < this.jCasObjects.size(); i++) {
 			JCas jCas = this.jCasObjects.get(i);
-			Document document = DocumentUtil.getDocument(jCas);
+			DocumentAnnotation document = AnnotationRetrieval.getDocument(jCas);
 			
 			// collect all feature values, and check all feature names
 			List<String> actualValues = new ArrayList<String>();

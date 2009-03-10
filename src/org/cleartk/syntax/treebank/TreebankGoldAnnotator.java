@@ -23,7 +23,6 @@
 */
 package org.cleartk.syntax.treebank;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.apache.uima.UimaContext;
@@ -36,10 +35,8 @@ import org.cleartk.ViewNames;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
 import org.cleartk.syntax.treebank.type.TreebankNode;
 import org.cleartk.syntax.treebank.util.TreebankFormatParser;
-import org.cleartk.type.Document;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
-import org.cleartk.util.DocumentUtil;
 import org.cleartk.util.UIMAUtil;
 
 
@@ -72,46 +69,40 @@ public class TreebankGoldAnnotator extends JCasAnnotator_ImplBase {
 
 	@Override
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
+		JCas docView;
+		String tbText;
 		try {
-			JCas tbView = jCas.getView(ViewNames.TREEBANK);
-			JCas docView = jCas.createView(ViewNames.TREEBANK_ANNOTATIONS);
-
-			String tbText = UIMAUtil.readSofa(tbView);
-			String docText = jCas.getDocumentText(); 
-
-			Document tbDoc = DocumentUtil.getDocument(tbView);
-			if (docText == null) {
-				docText = TreebankFormatParser.inferPlainText(tbText);
-				docView.setSofaDataString(docText, "text/plain");
-			}
-			List<org.cleartk.syntax.treebank.util.TopTreebankNode> topNodes;
-			topNodes =  TreebankFormatParser.parseDocument(tbText, 0, docText);
-
-			for (org.cleartk.syntax.treebank.util.TopTreebankNode topNode : topNodes) {
-				TopTreebankNode uimaNode = org.cleartk.syntax.treebank.util.TreebankNodeUtility
-						.convert(topNode, docView, postTreebank);
-				Sentence uimaSentence = new Sentence(docView, uimaNode
-						.getBegin(), uimaNode.getEnd());
-				uimaSentence.setConstituentParse(uimaNode);
-				uimaSentence.addToIndexes();
-
-				for (TreebankNode terminal : UIMAUtil.toList(uimaNode
-						.getTerminals(), TreebankNode.class)) {
-					if (terminal.getBegin() != terminal.getEnd()) {
-						Token uimaToken = new Token(docView, terminal
-								.getBegin(), terminal.getEnd());
-						uimaToken.setPos(terminal.getNodeType());
-						uimaToken.addToIndexes();
-					}
-				}
-			}
-
-			DocumentUtil.createDocument(docView, tbDoc.getIdentifier(), tbDoc.getPath());
-
+			docView = jCas.createView(ViewNames.TREEBANK_ANNOTATIONS);
+			tbText = jCas.getView(ViewNames.TREEBANK).getDocumentText();
 		} catch (CASException e) {
 			throw new AnalysisEngineProcessException(e);
-		} catch (IOException e) {
-			throw new AnalysisEngineProcessException(e);
+		}
+		String docText = jCas.getDocumentText(); 
+
+		if (docText == null) {
+			docText = TreebankFormatParser.inferPlainText(tbText);
+			docView.setSofaDataString(docText, "text/plain");
+		}
+		List<org.cleartk.syntax.treebank.util.TopTreebankNode> topNodes;
+		topNodes =  TreebankFormatParser.parseDocument(tbText, 0, docText);
+
+		for (org.cleartk.syntax.treebank.util.TopTreebankNode topNode : topNodes) {
+			TopTreebankNode uimaNode = org.cleartk.syntax.treebank.util.TreebankNodeUtility
+					.convert(topNode, docView, postTreebank);
+			Sentence uimaSentence = new Sentence(docView, uimaNode
+					.getBegin(), uimaNode.getEnd());
+			uimaSentence.setConstituentParse(uimaNode);
+			uimaSentence.addToIndexes();
+
+			for (TreebankNode terminal : UIMAUtil.toList(uimaNode
+					.getTerminals(), TreebankNode.class)) {
+				if (terminal.getBegin() != terminal.getEnd()) {
+					Token uimaToken = new Token(docView, terminal
+							.getBegin(), terminal.getEnd());
+					uimaToken.setPos(terminal.getNodeType());
+					uimaToken.addToIndexes();
+				}
+			}
 		}
 	}
 

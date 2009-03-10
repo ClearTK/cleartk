@@ -35,6 +35,11 @@ package org.cleartk;
 public class ViewNames {
 	
 	/**
+	 * The view where the document Uniform Resource Identifier is placed.
+	 */
+	public static final String URI = "UriView";
+
+	/**
 	 * The view where annotations are placed by default.
 	 */
 	public static String ANNOTATIONS = "_InitialView";
@@ -47,7 +52,7 @@ public class ViewNames {
 	/**
 	 * The view containing the XML text of an ACE APF file. 
 	 */
-	public static String ACE_APF = "APFView";
+	public static String ACE_APF_URI = "ApfUriView";
 	
 	/**
 	 * The view containing the XML text of a TimeML file. 
@@ -74,6 +79,11 @@ public class ViewNames {
 	 */
 	public static String GENIA_POS = "GeniaPOSView";
 
+	/**
+	 * The view where the ACE identifier is placed.
+	 */
+	public static String ACE_URI = "AceUriView";
+	
 	/**
 	 * Private constructor to enforce un-instantiability.
 	 */

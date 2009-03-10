@@ -92,7 +92,7 @@ public class PlainTextWriter extends JCasAnnotator_ImplBase
 
 	@Override
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
-    	String id = DocumentUtil.getIdentifier(jCas);
+    	String id = ViewURIUtil.getURI(jCas);
 	    File outFile = new File(this.outputDir, id + ".txt");
 	    try {
 			FileUtils.saveString2File(jCas.getDocumentText(), outFile);

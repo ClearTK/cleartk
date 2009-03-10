@@ -80,13 +80,12 @@ public class Ace2005GoldAnnotator extends JCasAnnotator_ImplBase
 	{
 		try
 		{
-			
-			JCas apfView = jCas.getView(ViewNames.ACE_APF);
+			String apfUri = jCas.getView(ViewNames.ACE_APF_URI).getSofaDataURI();
 			JCas initialView = jCas.getView(ViewNames.ANNOTATIONS);
 			String documentText = initialView.getDocumentText();
 			SAXBuilder builder = new SAXBuilder();
 			builder.setDTDHandler(null);
-			URI sofaDataURI = new URI(apfView.getSofaDataURI());
+			URI sofaDataURI = new URI(apfUri);
 			Document doc = builder.build(new File(sofaDataURI));
 			
 			Element apfSource = doc.getRootElement();

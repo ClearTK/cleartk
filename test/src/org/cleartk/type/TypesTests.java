@@ -45,7 +45,6 @@ public class TypesTests {
 		JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
 		this.testType(jCas, new Chunk(jCas));
 		this.testType(jCas, new ContiguousAnnotation(jCas));
-		this.testType(jCas, new Document(jCas));
 		this.testType(jCas, new Sentence(jCas));
 		this.testType(jCas, new SimpleAnnotation(jCas));
 		this.testType(jCas, new SplitAnnotation(jCas));

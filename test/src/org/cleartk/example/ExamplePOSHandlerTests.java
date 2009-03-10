@@ -38,10 +38,8 @@ import org.cleartk.classifier.DelegatingDataWriter;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.InstanceConsumer_ImplBase;
-import org.cleartk.type.Document;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
-import org.cleartk.util.DocumentUtil;
 import org.cleartk.util.EmptyAnnotator;
 import org.cleartk.util.TestsUtil;
 import org.junit.After;
@@ -66,9 +64,8 @@ public class ExamplePOSHandlerTests {
 		// create the engine and the cas
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				EmptyAnnotator.class,
-				TypeSystemDescriptionFactory.createTypeSystemDescription(Document.class, Token.class, Sentence.class));
+				TypeSystemDescriptionFactory.createTypeSystemDescription(Token.class, Sentence.class));
 		JCas jCas = engine.newJCas();
-		DocumentUtil.createDocument(jCas, "absurdis", "absurdis");
 		
 		// create some tokens, stems and part of speech tags
 		TokenFactory.createTokens(jCas,

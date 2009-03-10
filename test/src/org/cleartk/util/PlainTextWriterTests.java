@@ -79,7 +79,7 @@ public class PlainTextWriterTests {
 		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class, 
 				"What if we built a large \n, wooden badger ?",
 				"WDT TO PRP VBN DT JJ , JJ NN .", null, "org.cleartk.type.Token:pos", null);
-		DocumentUtil.createDocument(jCas, "identifier", "path");
+		ViewURIUtil.setURI(jCas, "identifier");
 		engine.process(jCas);
 		engine.collectionProcessComplete();
 		
@@ -92,7 +92,7 @@ public class PlainTextWriterTests {
 		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class,
 				"What if we built a large \n, wooden badger ?",
 				"WDT TO PRP VBN DT JJ , JJ NN .", null, "org.cleartk.type.Token:pos", null);
-		DocumentUtil.createDocument(jCas, "1234", "1234");
+		ViewURIUtil.setURI(jCas, "1234");
 		engine.process(jCas);
 		engine.collectionProcessComplete();
 		

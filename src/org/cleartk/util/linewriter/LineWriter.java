@@ -36,7 +36,8 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.util.DocumentUtil;
+import org.cleartk.util.AnnotationRetrieval;
+import org.cleartk.util.ViewURIUtil;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
 import org.cleartk.util.linewriter.annotation.CoveredTextAnnotationWriter;
@@ -94,7 +95,7 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 	 * <li>.txt</li> <li>.tokens</li> <li>.annotations.txt</li>
 	 * </ul>
 	 * 
-	 * @see DocumentUtil#getDocument(JCas)
+	 * @see AnnotationRetrieval#getDocument(JCas)
 	 * @see org.cleartk.type.Document#getIdentifier()
 	 */
 	public static final String PARAM_FILE_SUFFIX = "FileSuffix";
@@ -336,7 +337,7 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 
 		try {
 			if (outputDirectory != null) {
-				String id = DocumentUtil.getIdentifier(jCas);
+				String id = ViewURIUtil.getURI(jCas);
 				while (id.endsWith(".")) {
 					id = id.substring(0, id.length() - 1);
 				}

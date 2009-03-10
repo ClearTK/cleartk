@@ -35,7 +35,6 @@ import org.cleartk.ViewNames;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
 import org.cleartk.type.Sentence;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.DocumentUtil;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.TypeSystemDescriptionFactory;
@@ -64,7 +63,6 @@ public class TreebankGoldReaderAndAnnotatorTests {
 		JCas jCas = engine.newJCas();
 		JCas tbView = jCas.createView(ViewNames.TREEBANK);
 		tbView.setDocumentText(treebankParse);
-		DocumentUtil.createDocument(tbView, "test-id", "test-path");
 		
 		treebankGoldAnnotator.process(jCas);
 		

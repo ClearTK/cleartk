@@ -41,7 +41,7 @@ import org.cleartk.syntax.treebank.util.TreebankNodeUtility;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.DocumentUtil;
+import org.cleartk.util.ViewURIUtil;
 import org.cleartk.util.UIMAUtil;
 
 
@@ -70,7 +70,8 @@ public class TreebankAligningAnnotator extends JCasAnnotator_ImplBase {
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
 		
 		// determine the appropriate .mrg file name
-		String wsjName = DocumentUtil.getIdentifier(jCas);
+		String wsjPath = ViewURIUtil.getURI(jCas);
+		String wsjName = new File(wsjPath).getName();
 		String subdir = wsjName.substring(4, 6);
 		String mrgName = wsjName.replaceAll("\\.tml", ".mrg");
 		File mrgFile = new File(new File(this.treebankDirectory, subdir), mrgName);

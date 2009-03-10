@@ -32,7 +32,6 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.type.Document;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
@@ -55,7 +54,7 @@ public class SnowballStemmerTests {
 		try {
 			AnalysisEngineFactory.createAnalysisEngine(
 					SnowballStemmer.class,
-					TypeSystemDescriptionFactory.createTypeSystemDescription(Document.class, Token.class, Sentence.class),
+					TypeSystemDescriptionFactory.createTypeSystemDescription(Token.class, Sentence.class),
 					SnowballStemmer.PARAM_STEMMER_NAME, "FooBar");
 			Assert.fail("Expected exception for bad stemmer name");
 		} catch (ResourceInitializationException e) {}
@@ -65,7 +64,7 @@ public class SnowballStemmerTests {
 	public void testSimple() throws UIMAException {
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				SnowballStemmer.class,
-				TypeSystemDescriptionFactory.createTypeSystemDescription(Document.class, Token.class, Sentence.class),
+				TypeSystemDescriptionFactory.createTypeSystemDescription(Token.class, Sentence.class),
 				SnowballStemmer.PARAM_STEMMER_NAME, "English");
 		JCas jCas = engine.newJCas();
 		TokenFactory.createTokens(jCas,
@@ -88,7 +87,7 @@ public class SnowballStemmerTests {
 	public void testUppercase() throws UIMAException {
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				SnowballStemmer.class,
-				TypeSystemDescriptionFactory.createTypeSystemDescription(Document.class, Token.class, Sentence.class),
+				TypeSystemDescriptionFactory.createTypeSystemDescription(Token.class, Sentence.class),
 				SnowballStemmer.PARAM_STEMMER_NAME, "English");
 		JCas jCas = engine.newJCas();
 		TokenFactory.createTokens(jCas,

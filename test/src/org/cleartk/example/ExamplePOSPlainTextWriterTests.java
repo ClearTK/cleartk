@@ -33,7 +33,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.util.FileUtils;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
-import org.cleartk.util.DocumentUtil;
+import org.cleartk.util.ViewURIUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -79,7 +79,7 @@ public class ExamplePOSPlainTextWriterTests {
 				"I walked home. It was a nice day!", Token.class, Sentence.class, 
 				"I walked home .\nIt was a nice day !",
 				"PRP VBD NN . PRP VBD DT JJ NN .", null, "org.cleartk.type.Token:pos", null);
-		DocumentUtil.createDocument(jCas, "xxx", "xxx");
+		ViewURIUtil.setURI(jCas, "xxx");
 		engine.process(jCas);
 		engine.collectionProcessComplete();
 		

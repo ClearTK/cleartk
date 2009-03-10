@@ -42,7 +42,6 @@ import org.cleartk.corpus.timeml.type.TemporalLink;
 import org.cleartk.corpus.timeml.type.Text;
 import org.cleartk.corpus.timeml.type.Time;
 import org.cleartk.corpus.timeml.util.TimeMLUtil;
-import org.cleartk.util.DocumentUtil;
 import org.cleartk.util.UIMAUtil;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -81,7 +80,6 @@ public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
 		} catch (CASException e) {
 			throw new AnalysisEngineProcessException(e);
 		}
-		DocumentUtil.copyDocument(timemlView, initialView);
 		
 		String timeML = timemlView.getDocumentText();
 		SAXBuilder builder = new SAXBuilder();
@@ -101,7 +99,6 @@ public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
 		Map<String, Anchor> anchors = new HashMap<String, Anchor>();
 		this.addAnnotations(jCas, root, textBuffer, anchors);
 		initialView.setDocumentText(textBuffer.toString());
-		DocumentUtil.updateDocument(initialView);
 		
 //		if (textBuffer.toString().contains("Air Force Lieutenant Colonel Eileen Collins")) {
 //			for (Annotation annotation: AnnotationRetrieval.getAnnotations(jCas, Annotation.class)) {

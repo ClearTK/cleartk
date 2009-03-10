@@ -28,7 +28,6 @@ POSSIBILITY OF SUCH DAMAGE.
   <vendor/>
   <imports>
     <import name="org.cleartk.type.Chunk"/>
-    <import name="org.cleartk.type.Document"/>
     <import name="org.cleartk.type.Sentence"/>
     <import name="org.cleartk.type.Token"/>
     <import name="org.cleartk.syntax.treebank.type.TopTreebankNode"/>

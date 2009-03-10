@@ -43,13 +43,11 @@ import org.cleartk.srl.type.SemanticArgument;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
 import org.cleartk.syntax.treebank.type.TreebankNode;
 import org.cleartk.type.Chunk;
-import org.cleartk.type.Document;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.SimpleAnnotation;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.AnnotationUtil;
-import org.cleartk.util.DocumentUtil;
 import org.cleartk.util.UIMAUtil;
 import org.junit.Assert;
 
@@ -117,9 +115,6 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
 				}
 			}
 			initView.setSofaDataString(docText.toString(), "text/plain");
-			
-			Document conllDoc = DocumentUtil.getDocument(conllView);
-			DocumentUtil.createDocument(initView, conllDoc.getIdentifier(), conllDoc.getPath());
 			
 			Sentence sentence = new Sentence(initView, 0, docText.toString().length());
 

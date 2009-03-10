@@ -35,14 +35,15 @@ import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.srl.type.Argument;
 import org.cleartk.srl.type.Predicate;
 import org.cleartk.srl.type.SemanticArgument;
-import org.cleartk.type.Document;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
+import org.cleartk.util.ViewURIUtil;
 import org.cleartk.util.ListSpecification;
 import org.cleartk.util.UIMAUtil;
 
@@ -87,8 +88,7 @@ public class SRLWriter extends JCasAnnotator_ImplBase {
 
 	@Override
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
-		Document doc = (Document) jCas.getAnnotationIndex(Document.type)
-				.iterator().get();
+		DocumentAnnotation doc = AnnotationRetrieval.getDocument(jCas);
 
 		List<Sentence> sentences = AnnotationRetrieval.getAnnotations(jCas,
 				doc, Sentence.class);
@@ -108,7 +108,7 @@ public class SRLWriter extends JCasAnnotator_ImplBase {
 						sentenceTokens);
 
 				StringBuffer line = new StringBuffer();
-				line.append(doc.getIdentifier());
+				line.append(ViewURIUtil.getURI(jCas));
 				line.append(" ");
 				line.append(sentenceIndex);
 				line.append(" ");

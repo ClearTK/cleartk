@@ -37,7 +37,6 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
-import org.cleartk.util.DocumentUtil;
 import org.junit.After;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
@@ -58,8 +57,8 @@ public class DelegatingDataWriterTests {
 	public void testDelegatingDataWriter() throws IOException, UIMAException {
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				DelegatingDataWriter.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-				DelegatingDataWriter.PARAM_ANNOTATION_HANDLER, "org.cleartk.example.ExamplePOSAnnotationHandler",
-				DelegatingDataWriter.PARAM_OUTPUT_DIRECTORY, "test/data/delegatingDataWriter/mallet",
+				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER, "org.cleartk.example.ExamplePOSAnnotationHandler",
+				DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY, "test/data/delegatingDataWriter/mallet",
 				DelegatingDataWriter.PARAM_DATA_WRITER, "org.cleartk.classifier.mallet.MalletCRFDataWriter");
 		
 		//create some tokens and sentences
@@ -70,7 +69,6 @@ public class DelegatingDataWriterTests {
 		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class,
 				"What if we built a large \n, wooden badger ?",
 				"WDT TO PRP VBN DT JJ , JJ NN .", null, "org.cleartk.type.Token:pos", null);
-		DocumentUtil.createDocument(jCas, "identifier", "path");
 		engine.process(jCas);
 		engine.collectionProcessComplete();
 

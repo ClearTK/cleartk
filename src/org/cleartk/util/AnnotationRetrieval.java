@@ -40,6 +40,7 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.cleartk.type.SplitAnnotation;
 
 
@@ -662,6 +663,16 @@ public class AnnotationRetrieval {
 
 	public static <T extends Annotation> AnnotationIndex getAnnotationIndex(JCas jCas, Class<T> cls) {
 		return jCas.getAnnotationIndex(UIMAUtil.getCasType(jCas, cls));
+	}
+
+	/**
+	 * Get the DocumentAnnotation for this JCas. 
+	 * @param jCas The JCas for the document.
+	 * @return     The DocumentAnnotation.
+	 */
+	public static DocumentAnnotation getDocument(JCas jCas)
+	{
+		return (DocumentAnnotation)jCas.getDocumentAnnotationFs();
 	}
 
 }

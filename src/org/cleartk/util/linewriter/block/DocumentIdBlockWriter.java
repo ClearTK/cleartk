@@ -24,10 +24,11 @@
 package org.cleartk.util.linewriter.block;
 
 import org.apache.uima.UimaContext;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.util.DocumentUtil;
+import org.cleartk.util.ViewURIUtil;
 import org.cleartk.util.linewriter.BlockWriter;
 
 /**
@@ -43,8 +44,8 @@ public class DocumentIdBlockWriter implements BlockWriter<Annotation> {
 
 	private static String newline = System.getProperty("line.separator");
 	
-	public String writeBlock(JCas jCas, Annotation blockAnnotation) {
-		return DocumentUtil.getIdentifier(jCas) + newline;
+	public String writeBlock(JCas jCas, Annotation blockAnnotation) throws AnalysisEngineProcessException {
+		return ViewURIUtil.getURI(jCas) + newline;
 	}
 
 }

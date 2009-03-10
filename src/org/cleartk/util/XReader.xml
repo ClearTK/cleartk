@@ -57,11 +57,7 @@ POSSIBILITY OF SUCH DAMAGE.
       </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings/>
-    <typeSystemDescription>
-      <imports>
-        <import name="org.cleartk.type.Document"/>
-      </imports>
-    </typeSystemDescription>
+    <typeSystemDescription/>
     <typePriorities/>
     <fsIndexCollection/>
     <capabilities>

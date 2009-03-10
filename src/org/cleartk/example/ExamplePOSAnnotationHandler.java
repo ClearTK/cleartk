@@ -28,6 +28,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.uima.UimaContext;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.AnnotationHandler;
@@ -46,7 +47,6 @@ import org.cleartk.classifier.feature.proliferate.ProliferatingExtractor;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.DocumentUtil;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -104,8 +104,7 @@ public class ExamplePOSAnnotationHandler implements AnnotationHandler<String> {
 		
 	}
 	
-	public void process(JCas jCas, InstanceConsumer<String> consumer) {
-		System.out.println("ExamplePOSAnnotationHandler - processing "+DocumentUtil.getIdentifier(jCas));
+	public void process(JCas jCas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException {
 		
 		// generate a list of training instances for each sentence in the document
 		for (Sentence sentence: AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {

@@ -41,7 +41,7 @@ import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 import org.cleartk.ViewNames;
 import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
-import org.cleartk.util.DocumentUtil;
+import org.cleartk.util.ViewURIUtil;
 import org.cleartk.util.ListSpecification;
 import org.cleartk.util.UIMAUtil;
 
@@ -172,19 +172,16 @@ public class PennTreebankReader extends CollectionReader_ImplBase {
 	 * @throws CollectionException
 	 */
 	public void getNext(CAS cas) throws IOException, CollectionException {
+		File treebankFile = files.removeFirst();
+		getUimaContext().getLogger().log(Level.FINEST, "reading treebank file: " + treebankFile.getPath());
+		ViewURIUtil.setURI(cas, treebankFile.getPath());
+		JCas jCas;
 		try {
-			JCas tbView = cas.createView(ViewNames.TREEBANK).getJCas();
-			File treebankFile = files.removeFirst();
-
-			getUimaContext().getLogger().log(Level.FINEST, "reading treebank file: " + treebankFile.getPath());
-
-			tbView.setSofaDataString(FileUtils.file2String(treebankFile, "ascii"), "text/plain");
-
-			DocumentUtil.createDocument(tbView, treebankFile.getName(), treebankFile.getName());
+			jCas = cas.createView(ViewNames.TREEBANK).getJCas();
+		} catch (CASException e) {
+			throw new CollectionException(e);
 		}
-		catch (CASException casException) {
-			throw new CollectionException(casException);
-		}
+		jCas.setSofaDataString(FileUtils.file2String(treebankFile), "text/plain");
 	}
 
 	public void close() throws IOException {

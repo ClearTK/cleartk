@@ -31,12 +31,12 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.type.Document;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.DocumentUtil;
+import org.cleartk.util.ViewURIUtil;
 import org.cleartk.util.UIMAUtil;
 
 /**
@@ -64,8 +64,8 @@ public class TokenWriter extends JCasAnnotator_ImplBase {
 	
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
-	    Document document = DocumentUtil.getDocument(jcas);
-		String id = document.getIdentifier();
+	    DocumentAnnotation document = AnnotationRetrieval.getDocument(jcas);
+		String id = ViewURIUtil.getURI(jcas);
 	    File outFile = new File(this.outputDir, id + ".txt");
 	    
 	    PrintWriter output;

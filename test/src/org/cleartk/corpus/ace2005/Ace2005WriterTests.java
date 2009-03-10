@@ -38,6 +38,7 @@ import org.cleartk.corpus.ace2005.type.Document;
 import org.cleartk.ne.type.NamedEntity;
 import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.type.Chunk;
+import org.cleartk.util.ViewURIUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
@@ -81,8 +82,6 @@ public class Ace2005WriterTests {
 		document.setAceSource("=source=");
 		document.setAceType("=type=");
 		document.setAceUri("uri.sgm");
-		document.setIdentifier("=identifier=");
-		document.setPath("=path=");
 		document.addToIndexes();
 		
 		jCas.setDocumentText("UCAR in North Boulder");
@@ -124,6 +123,7 @@ public class Ace2005WriterTests {
 			item.addToIndexes();
 		}
 		
+		ViewURIUtil.setURI(jCas, "uri.sgm");
 		engine.process(jCas);
 		engine.collectionProcessComplete();
 		

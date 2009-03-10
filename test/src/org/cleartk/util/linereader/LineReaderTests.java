@@ -33,12 +33,10 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.type.Document;
-import org.cleartk.util.DocumentUtil;
+import org.cleartk.util.ViewURIUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uutuc.factory.CollectionReaderFactory;
-import org.uutuc.factory.TypeSystemDescriptionFactory;
 import org.uutuc.util.JCasIterable;
 
 
@@ -55,7 +53,7 @@ public class LineReaderTests {
 	@Test
 	public void test1() throws Exception {
 		String languageCode = "en-us";
-		CollectionReader reader = CollectionReaderFactory.createCollectionReader(LineReader.class, TypeSystemDescriptionFactory.createTypeSystemDescription(Document.class), LineReader.PARAM_FILE_OR_DIRECTORY, "test/data/docs/linereader",
+		CollectionReader reader = CollectionReaderFactory.createCollectionReader(LineReader.class, null, LineReader.PARAM_FILE_OR_DIRECTORY, "test/data/docs/linereader",
 				LineReader.PARAM_LANGUAGE, languageCode);
 
 		Assert.assertEquals(0, reader.getProgress()[0].getCompleted());
@@ -82,7 +80,7 @@ public class LineReaderTests {
 
 	@Test
 	public void test2() throws Exception {
-		CollectionReader reader = CollectionReaderFactory.createCollectionReader(LineReader.class, TypeSystemDescriptionFactory.createTypeSystemDescription(Document.class), LineReader.PARAM_FILE_OR_DIRECTORY, "test/data/docs/linereader",
+		CollectionReader reader = CollectionReaderFactory.createCollectionReader(LineReader.class, null, LineReader.PARAM_FILE_OR_DIRECTORY, "test/data/docs/linereader",
 				LineReader.PARAM_LINE_HANDLER, "org.cleartk.util.linereader.SimpleLineHandler",
 				SimpleLineHandler.PARAM_DELIMITER, "|", LineReader.PARAM_SUFFIXES, new String[] { ".txt", ".dat" },
 				LineReader.PARAM_COMMENT_SPECIFIER, new String[] { "#", "//" });
@@ -106,7 +104,7 @@ public class LineReaderTests {
 	public void test3() throws Exception {
 		File file = new File("test/data/docs/linereader/test2.dat");
 
-		CollectionReader reader = CollectionReaderFactory.createCollectionReader(LineReader.class, TypeSystemDescriptionFactory.createTypeSystemDescription(Document.class), LineReader.PARAM_FILE_OR_DIRECTORY,
+		CollectionReader reader = CollectionReaderFactory.createCollectionReader(LineReader.class, null, LineReader.PARAM_FILE_OR_DIRECTORY,
 				file.getPath(), LineReader.PARAM_COMMENT_SPECIFIER, new String[] { "//" },
 				LineReader.PARAM_SKIP_BLANK_LINES, false);
 
@@ -124,13 +122,10 @@ public class LineReaderTests {
 		assertFalse(jCasIterable.hasNext());
 	}
 
-	private void test(JCasIterable jCasIterable, String text, String id, String path) {
+	private void test(JCasIterable jCasIterable, String text, String id, String path) throws Exception {
 		JCas jCas = jCasIterable.next();
-		Document doc = DocumentUtil.getDocument(jCas);
 		assertEquals(text, jCas.getDocumentText());
-		assertEquals(id, doc.getIdentifier());
-		assertEquals(path, doc.getPath());
-
+		assertEquals(String.format("%s#%s", path, id), ViewURIUtil.getURI(jCas));
 	}
 	
 	

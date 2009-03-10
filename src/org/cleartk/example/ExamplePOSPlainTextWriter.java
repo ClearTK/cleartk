@@ -35,7 +35,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.DocumentUtil;
+import org.cleartk.util.ViewURIUtil;
 import org.cleartk.util.UIMAUtil;
 
 
@@ -64,7 +64,7 @@ public class ExamplePOSPlainTextWriter extends JCasAnnotator_ImplBase {
 
 	@Override
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
-		String id = DocumentUtil.getIdentifier(jCas);
+		String id = ViewURIUtil.getURI(jCas);
 		PrintWriter outputWriter;
 		try {
 			outputWriter = new PrintWriter(new File(this.outputDir, id + ".pos"));

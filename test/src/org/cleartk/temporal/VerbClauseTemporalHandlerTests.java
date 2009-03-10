@@ -48,7 +48,6 @@ import org.cleartk.syntax.treebank.type.TreebankNode;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.DocumentUtil;
 import org.cleartk.util.EmptyAnnotator;
 import org.cleartk.util.TestsUtil;
 import org.junit.After;
@@ -92,7 +91,6 @@ public class VerbClauseTemporalHandlerTests {
 				EmptyAnnotator.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
 		JCas jCas = engine.newJCas();
-		DocumentUtil.createDocument(jCas, "bought-milk", "bought-milk");
 		TokenFactory.createTokens(jCas,
 				"He said she bought milk.",
 				Token.class, Sentence.class, 

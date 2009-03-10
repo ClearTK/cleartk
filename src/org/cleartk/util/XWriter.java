@@ -97,7 +97,7 @@ public class XWriter extends JCasAnnotator_ImplBase {
 
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
-		String id = DocumentUtil.getIdentifier(jcas);
+		String id = ViewURIUtil.getURI(jcas);
 		try {
 			if (useXMI) writeXmi(jcas.getCas(), id);
 			else writeXCas(jcas.getCas(), id);

@@ -35,10 +35,11 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.pear.util.FileUtil;
 import org.cleartk.classifier.ClassifierAnnotator;
+import org.cleartk.classifier.DataWriter_ImplBase;
+import org.cleartk.classifier.InstanceConsumer_ImplBase;
 import org.cleartk.classifier.Train;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
-import org.cleartk.util.DocumentUtil;
 import org.junit.After;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
@@ -69,9 +70,9 @@ public class MaxentDataWriterTests {
 	public void testConsumeAll() throws Exception {
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(MaxentDataWriter.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-				MaxentDataWriter.PARAM_ANNOTATION_HANDLER, "org.cleartk.example.ExamplePOSAnnotationHandler",
-				MaxentDataWriter.PARAM_OUTPUT_DIRECTORY, outputDirectory,
-				MaxentDataWriter.PARAM_OUTCOME_FEATURE_EXTRACTOR, new String[] {"org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor"});
+				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER, "org.cleartk.example.ExamplePOSAnnotationHandler",
+				DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				DataWriter_ImplBase.PARAM_OUTCOME_FEATURE_EXTRACTOR, new String[] {"org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor"});
 
 		JCas jCas = engine.newJCas();
 		String text = "Do I really have to come up with some creative text, or can I just write anything?";
@@ -79,7 +80,6 @@ public class MaxentDataWriterTests {
 				"Do I really have to come up with some creative text , or can I just write anything ?",
 				"D I R H T C U W S C T , O C I J W A ?", null, "org.cleartk.type.Token:pos", null);
 
-		DocumentUtil.createDocument(jCas, "identifier", "path");
 		engine.process(jCas);
 		engine.collectionProcessComplete();
 
@@ -95,7 +95,7 @@ public class MaxentDataWriterTests {
 		
 		engine = AnalysisEngineFactory.createAnalysisEngine(ClassifierAnnotator.class, 
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-				ClassifierAnnotator.PARAM_ANNOTATION_HANDLER, "org.cleartk.example.ExamplePOSAnnotationHandler",
+				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER, "org.cleartk.example.ExamplePOSAnnotationHandler",
 				ClassifierAnnotator.PARAM_CLASSIFIER_JAR, outputDirectory+File.separator+"model.jar");
 		
 		engine.process(jCas);

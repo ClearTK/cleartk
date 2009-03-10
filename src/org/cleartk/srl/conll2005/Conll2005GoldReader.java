@@ -40,7 +40,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 import org.cleartk.ViewNames;
-import org.cleartk.util.DocumentUtil;
+import org.cleartk.util.ViewURIUtil;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -127,7 +127,7 @@ public class Conll2005GoldReader extends CollectionReader_ImplBase {
 				finished = true;
 			
 			conllView.setSofaDataString(docBuffer.toString(), "text/plain");
-			DocumentUtil.createDocument(conllView, String.valueOf(documentNumber), String.valueOf(documentNumber) + ".conll05");
+			ViewURIUtil.setURI(cas, String.valueOf(documentNumber));
 		} catch (CASException e) {
 			throw new CollectionException(e);
 		}

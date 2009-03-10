@@ -44,9 +44,9 @@ import org.cleartk.corpus.genia.util.GeniaParse;
 import org.cleartk.corpus.genia.util.GeniaSentence;
 import org.cleartk.corpus.genia.util.GeniaTag;
 import org.cleartk.corpus.genia.util.Span;
-import org.cleartk.type.Document;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
+import org.cleartk.util.ViewURIUtil;
 import org.jdom.JDOMException;
 
 
@@ -179,9 +179,7 @@ public class GeniaPosGoldReader extends CollectionReader_ImplBase {
 				}
 			}
 
-			Document document = new Document(jCas);
-			document.setIdentifier(parse.getMedline());
-			document.addToIndexes();
+			ViewURIUtil.setURI(cas, parse.getMedline());
 
 			JCas geniaView = jCas.createView(ViewNames.GENIA_POS);
 			geniaView.setDocumentText(parse.getXml());

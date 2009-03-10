@@ -31,7 +31,6 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.type.Document;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.junit.After;
@@ -83,14 +82,14 @@ public class XReaderTests {
 				Token.class, Sentence.class, 
 				"I like spam !",
 				"PRP VB NN .", null, "org.cleartk.type.Token:pos", null);
-		DocumentUtil.createDocument(jCas, "test", "path");
+		ViewURIUtil.setURI(jCas, "test");
 		engine.process(jCas);
 		engine.collectionProcessComplete();
 
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				XReader.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-				XReader.PARAM_FILE_OR_DIRECTORY, new File(inputDir, "test.xmi").getPath());
+				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY, new File(inputDir, "test.xmi").getPath());
 		
 		Assert.assertEquals(0, reader.getProgress()[0].getCompleted());
 
@@ -100,10 +99,6 @@ public class XReaderTests {
 		String docText = "I like\nspam!";
 		Assert.assertEquals(jCasText, docText);
 			
-		Document doc = DocumentUtil.getDocument(jCas);
-		Assert.assertEquals(doc.getBegin(), 0);
-		Assert.assertEquals(doc.getEnd(), jCasText.length());
-		
 		Token token = AnnotationRetrieval.get(jCas, Token.class, 0);
 		Assert.assertEquals("I", token.getCoveredText());
 		reader.close();
@@ -123,14 +118,14 @@ public class XReaderTests {
 				Token.class, Sentence.class, 
 				"I like spam !",
 				"PRP VB NN .", null, "org.cleartk.type.Token:pos", null);
-		DocumentUtil.createDocument(jCas, "test", "path");
+		ViewURIUtil.setURI(jCas, "test");
 		engine.process(jCas);
 		engine.collectionProcessComplete();
 
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				XReader.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-				XReader.PARAM_FILE_OR_DIRECTORY, "test/data/xmi/test.xcas",
+				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY, "test/data/xmi/test.xcas",
 				XReader.PARAM_XML_SCHEME, XReader.XCAS);
 		
 		Assert.assertEquals(0, reader.getProgress()[0].getCompleted());
@@ -141,10 +136,6 @@ public class XReaderTests {
 		String docText = "I like\nspam!";
 		Assert.assertEquals(jCasText, docText);
 			
-		Document doc = DocumentUtil.getDocument(jCas);
-		Assert.assertEquals(doc.getBegin(), 0);
-		Assert.assertEquals(doc.getEnd(), jCasText.length());
-		
 		Token token = AnnotationRetrieval.get(jCas, Token.class, 0);
 		Assert.assertEquals("I", token.getCoveredText());
 		reader.close();
@@ -161,10 +152,10 @@ public class XReaderTests {
 		
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				"org.cleartk.util.XReader",
-				XReader.PARAM_FILE_OR_DIRECTORY, inputDir.getPath());
+				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY, inputDir.getPath());
 		
 		Object fileOrDirectory = reader.getConfigParameterValue(
-				XReader.PARAM_FILE_OR_DIRECTORY);
+				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY);
 		Assert.assertEquals(inputDir.getPath(), fileOrDirectory);
 		
 	}

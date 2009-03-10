@@ -29,11 +29,11 @@ import java.util.List;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.cleartk.classifier.Feature;
-import org.cleartk.type.Document;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
-import org.cleartk.util.DocumentUtil;
+import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uutuc.factory.JCasFactory;
@@ -57,8 +57,7 @@ public class NGramExtractorTests {
 				null, 
 				"PRP VBZ NNS IN DT NN NN",
 				null, "org.cleartk.type.Token:pos", null);
-		DocumentUtil.createDocument(jCas, "foo", "bar");
-		Document document = DocumentUtil.getDocument(jCas);
+		DocumentAnnotation document = AnnotationRetrieval.getDocument(jCas);
 		
 		SpannedTextExtractor textExtractor = new SpannedTextExtractor();
 		TypePathExtractor posExtractor = new TypePathExtractor(Token.class, "pos");

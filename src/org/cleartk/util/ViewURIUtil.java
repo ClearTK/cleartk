@@ -1,4 +1,4 @@
-/** 
+ /** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -21,13 +21,13 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.util.linewriter;
+package org.cleartk.util;
 
-import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.cas.CAS;
+import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.ViewNames;
 
 
 /**
@@ -35,12 +35,47 @@ import org.apache.uima.resource.ResourceInitializationException;
  * <br>All rights reserved.
  *
  * @author Philip Ogren
+ * @author Steven Bethard
+ *
  */
-
-public interface BlockWriter<BLOCK_TYPE extends Annotation> {
-
-	public void initialize(UimaContext context) throws ResourceInitializationException;
+public class ViewURIUtil {
 	
-	public String writeBlock(JCas jCas, BLOCK_TYPE blockAnnotation) throws AnalysisEngineProcessException;
-
+	/**
+	 * Set the primary Uniform Resource Identifier for this CAS and all its views.
+	 * This creates the view {@link ViewNames.URI} and assigns the URI there. 
+	 * 
+	 * @param cas  The CAS object.
+	 * @param uri  The primary URI for the CAS and all its views.
+	 */
+	public static void setURI(CAS cas, String uri) {
+		CAS view = cas.createView(ViewNames.URI);
+		view.setSofaDataURI(uri, null);
+	}
+	
+	/**
+	 * Set the primary Uniform Resource Identifier for this JCas and all its views.
+	 * This creates the view {@link ViewNames.URI} and assigns the URI there. 
+	 * 
+	 * @param jCas  The CAS object.
+	 * @param uri   The primary URI for the CAS and all its views.
+	 */
+	public static void setURI(JCas jCas, String uri) {
+		ViewURIUtil.setURI(jCas.getCas(), uri);
+	}
+	
+	/**
+	 * Get the primary Uniform Resource Identifier for this JCas and all its views.
+	 * This is obtained from the {@link ViewNames.URI} view of the JCas.
+	 * 
+	 * @param jCas   The JCas object.
+	 * @return       The primary URI for the JCas and all its views.
+	 * @throws CASException 
+	 */
+	public static String getURI(JCas jCas) throws AnalysisEngineProcessException {
+		try {
+			return jCas.getView(ViewNames.URI).getSofaDataURI();
+		} catch (CASException e) {
+			throw new AnalysisEngineProcessException(e);
+		}
+	}
 }

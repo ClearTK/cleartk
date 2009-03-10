@@ -46,7 +46,7 @@ import org.cleartk.type.Chunk;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.SimpleAnnotation;
 import org.cleartk.type.Token;
-import org.cleartk.util.DocumentUtil;
+import org.cleartk.util.ViewURIUtil;
 import org.cleartk.util.UIMAUtil;
 
 
@@ -227,7 +227,9 @@ public class Conll2003GoldReader extends CollectionReader_ImplBase
 			
 			jCas.setDocumentText(documentText.toString());
 			
-			DocumentUtil.createDocument(jCas, ""+documentIndex, documentPath+"_"+documentIndex++);
+			String identifier = String.format("%s#%s", documentPath, documentIndex);
+			ViewURIUtil.setURI(cas, identifier);
+			++documentIndex;
 
 		}
 		catch(CASException ce)

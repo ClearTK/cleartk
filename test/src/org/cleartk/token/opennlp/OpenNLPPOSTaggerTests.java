@@ -31,7 +31,6 @@ import java.util.List;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
-import org.cleartk.type.Document;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
@@ -53,7 +52,7 @@ public class OpenNLPPOSTaggerTests {
 	public void testSimple() throws UIMAException {
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				OpenNLPPOSTagger.class,
-				TypeSystemDescriptionFactory.createTypeSystemDescription(Document.class, Token.class, Sentence.class),
+				TypeSystemDescriptionFactory.createTypeSystemDescription(Token.class, Sentence.class),
 				OpenNLPPOSTagger.PARAM_CASE_SENSITIVE, true,
 				OpenNLPPOSTagger.PARAM_POSTAG_MODEL_FILE,
 				"resources/models/OpenNLP.POSTags.English.bin.gz",

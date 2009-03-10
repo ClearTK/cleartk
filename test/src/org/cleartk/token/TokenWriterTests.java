@@ -34,7 +34,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
-import org.cleartk.util.DocumentUtil;
+import org.cleartk.util.ViewURIUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
@@ -84,7 +84,7 @@ public class TokenWriterTests {
 				"What if we built\na large, wooden badger? Hmm?",
 				Token.class, Sentence.class, 
 				spacedTokens);
-		DocumentUtil.createDocument(jCas, "identifier", "path");
+		ViewURIUtil.setURI(jCas, "identifier");
 		engine.process(jCas);
 		engine.collectionProcessComplete();
 		
