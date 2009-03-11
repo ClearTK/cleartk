@@ -25,9 +25,7 @@ SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
 INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
 CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-POSSIBILITY OF SUCH DAMAGE. 
-
-</description>
+POSSIBILITY OF SUCH DAMAGE.</description>
     <version>1.0</version>
     <vendor/>
     <configurationParameters>
@@ -49,6 +47,12 @@ POSSIBILITY OF SUCH DAMAGE.
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
+      <configurationParameter>
+        <name>org.cleartk.classifier.encoder.factory.DefaultFeaturesEncoderFactory.PARAM_COMPRESS</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
@@ -61,6 +65,12 @@ POSSIBILITY OF SUCH DAMAGE.
         <name>DataWriter</name>
         <value>
           <string>org.cleartk.classifier.opennlp.MaxentDataWriter</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>org.cleartk.classifier.encoder.factory.DefaultFeaturesEncoderFactory.PARAM_COMPRESS</name>
+        <value>
+          <boolean>true</boolean>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
