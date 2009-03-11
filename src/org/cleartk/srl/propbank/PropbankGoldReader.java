@@ -43,8 +43,9 @@ import org.apache.uima.util.ProgressImpl;
 import org.cleartk.ViewNames;
 import org.cleartk.corpus.penntreebank.PennTreebankReader;
 import org.cleartk.srl.propbank.util.Propbank;
-import org.cleartk.util.ViewURIUtil;
 import org.cleartk.util.ListSpecification;
+import org.cleartk.util.UIMAUtil;
+import org.cleartk.util.ViewURIUtil;
 
 
 /**
@@ -62,19 +63,31 @@ import org.cleartk.util.ListSpecification;
  */
 public class PropbankGoldReader extends CollectionReader_ImplBase {
 	/**
-	 * The descriptor file should have a parameter called 'PropbankCorpusFile'
-	 * that points to propbank data (e.g. propbank-1.0/props.txt).
+	 * "org.cleartk.srl.propbank.PropbankGoldReader.PARAM_PROPBANK_FILE"
+	 * is a required, single, string parameter that points to propbank data
+	 * (e.g. "propbank-1.0/props.txt").
 	 */
-	public static final String PARAM_PROPBANK_CORPUS_FILE = "PropbankCorpusFile";
-
-	public static final String PARAM_TREEBANK_CORPUS_DIRECTORY = "TreebankCorpusDirectory";
+	public static final String PARAM_PROPBANK_FILE = "org.cleartk.srl.propbank.PropbankGoldReader.PARAM_PROPBANK_FILE";
 
 	/**
-	 * This determines which sections of WSJ will be used. The format allows for
-	 * comma-separated section numbers and section ranges, for example
-	 * "02,07-12,16".
+	 * 
+	 * "org.cleartk.srl.propbank.PropbankGoldReader.PARAM_PENNTREEBANK_DIRECTORY"
+	 * is a required, single, string parameter that points to the PennTreebank
+	 * corpus. The directory should contain subdirectories corresponding to the
+	 * sections (e.g. "00", "01", etc.) That is, if a local copy of PennTreebank
+	 * sits at C:\Data\PTB\wsj\mrg, then the the subdirectory
+	 * C:\Data\PTB\wsj\mrg\00 should exist. There are 24 sections in PTB
+	 * corresponding to the directories 00, 01, 02, ... 24.
 	 */
-	public static final String PARAM_WSJ_SECTIONS = "WSJSections";
+	public static final String PARAM_PENNTREEBANK_DIRECTORY = "org.cleartk.srl.propbank.PropbankGoldReader.PARAM_PENNTREEBANK_DIRECTORY";
+
+	/**
+	 * "org.cleartk.srl.propbank.PropbankGoldReader.PARAM_WSJ_SECTIONS" is a
+	 * required, single, string parameter that determines which sections of WSJ
+	 * will be used. The format allows for comma-separated section numbers and
+	 * section ranges, for example "02,07-12,16".
+	 */
+	public static final String PARAM_WSJ_SECTIONS = "org.cleartk.srl.propbank.PropbankGoldReader.PARAM_WSJ_SECTIONS";
 
 	/**
 	 * holds all of the propbank data from props.txt. One entry per line in the
@@ -93,13 +106,11 @@ public class PropbankGoldReader extends CollectionReader_ImplBase {
 	@Override
 	public void initialize() throws ResourceInitializationException {
 		try {
-			this.wsjSections = new ListSpecification(
-					(String) getConfigParameterValue(PARAM_WSJ_SECTIONS));
+			this.wsjSections = new ListSpecification((String) UIMAUtil.getRequiredConfigParameterValue(
+					getUimaContext(), PARAM_WSJ_SECTIONS));
 
-			File propbankFile = new File(
-					(String) getConfigParameterValue(PARAM_PROPBANK_CORPUS_FILE));
-			BufferedReader reader = new BufferedReader(new FileReader(
-					propbankFile));
+			File propbankFile = new File((String) UIMAUtil.getRequiredConfigParameterValue(getUimaContext(), PARAM_PROPBANK_FILE));
+			BufferedReader reader = new BufferedReader(new FileReader(propbankFile));
 			propbankData = new LinkedList<String>();
 			String line;
 			while ((line = reader.readLine()) != null) {
@@ -108,12 +119,10 @@ public class PropbankGoldReader extends CollectionReader_ImplBase {
 			Collections.sort(propbankData);
 
 			this.treebankFiles = new LinkedList<File>();
-			treebankDirectory = new File(
-					((String) getConfigParameterValue(PARAM_TREEBANK_CORPUS_DIRECTORY))
-							.trim());
-			File wsjDirectory = new File(treebankDirectory.getPath(), "wsj");
-			PennTreebankReader.collectSections(wsjDirectory,
-					this.treebankFiles, this.wsjSections);
+			treebankDirectory = new File(((String) UIMAUtil.getRequiredConfigParameterValue(getUimaContext(), PARAM_PENNTREEBANK_DIRECTORY)));
+			//don't forget that the paths in props.txt have "wsj" in the name.
+			File wsjDirectory = new File(treebankDirectory, "wsj");
+			PennTreebankReader.collectSections(wsjDirectory, this.treebankFiles, this.wsjSections);
 			Collections.sort(treebankFiles);
 			this.totalTreebankFiles = treebankFiles.size();
 			
@@ -146,15 +155,20 @@ public class PropbankGoldReader extends CollectionReader_ImplBase {
 
 		File treebankFile = treebankFiles.removeFirst();
 		ViewURIUtil.setURI(cas, treebankFile.getPath());
-		
+
 		StringBuffer propbankText = new StringBuffer();
+
+		/*
+		 * The logic here is rather fragile and should be rewritten and/or unit tested.
+		 * I changed the code so that the comparison is between the canonical paths.  (PVO) 
+		 */
 		while (propbankData.size() > 0) {
 			File nextPbFile = new File(treebankDirectory.getPath()
 					+ File.separator
 					+ Propbank.filenameFromString(propbankData.getFirst()))
 					.getCanonicalFile();
 
-			int c = treebankFile.getAbsoluteFile().compareTo(nextPbFile);
+			int c = treebankFile.getCanonicalFile().compareTo(nextPbFile);
 			if (c < 0) {
 				break;
 			} else if (c > 0) {
