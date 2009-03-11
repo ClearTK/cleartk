@@ -89,7 +89,7 @@ public abstract class DataWriter_ImplBase<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE,
 	 * is an optional, multi-valued, string parameter that specifies which
 	 * OutcomeFeatureExtractors should be used. Each value of this parameter
 	 * should be the name of a class that implements
-	 * {@link OutcomeFeatureExtractor}. One valid value that you might use is"org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor"
+	 * {@link OutcomeFeatureExtractor}. One valid value that you might use is "org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor"
 	 * .
 	 * 
 	 */
@@ -126,6 +126,8 @@ public abstract class DataWriter_ImplBase<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE,
 			throw new ResourceInitializationException(e);
 		}
 		this.featuresEncoder = this.getFeaturesEncoder(factory, context);
+		this.featuresEncoder.allowNewFeatures(true);
+
 		this.outcomeEncoder = this.getOutcomeEncoder(factory, context);
 
 		// Throw an informative exception if either encoder is missing
