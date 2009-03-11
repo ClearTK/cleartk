@@ -21,14 +21,13 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.classifier.encoder.features.featurevector;
+package org.cleartk.classifier.encoder.features;
 
+import java.util.Collections;
+import java.util.List;
 
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
-import org.cleartk.classifier.util.featurevector.FeatureVector;
-import org.cleartk.classifier.util.featurevector.SparseFeatureVector;
-import org.cleartk.util.StringIndex;
+
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -36,41 +35,21 @@ import org.cleartk.util.StringIndex;
 
 */
 
-public class DefaultFeaturesEncoder extends FeaturesEncoder_ImplBase<FeatureVector, FeatureVectorElement> {
+public class NumberEncoder implements FeatureEncoder<NameNumber> {
+
+	private static final long serialVersionUID = -2672054364576304344L;
+
 	
-	private static final long serialVersionUID = 6714456694285732480L;
-
-	@Override
-	public FeatureVector encodeAll(Iterable<Feature> features) {
-		SparseFeatureVector fv = new SparseFeatureVector();
-		
-		for( Feature feature : features ) {
-			for( FeatureVectorElement fve : this.encode(feature) ) {
-				String name = fve.name;
-				Number value = fve.value;
-
-				if( stringIndex.contains(name) ) {
-					int i = stringIndex.find(name);
-					double v = fv.get(i) + value.doubleValue();
-					fv.set(i, v);
-				} else if( expandIndex ) {
-					stringIndex.insert(name);
-					int i = stringIndex.find(name);
-					double v = fv.get(i) + value.doubleValue();
-					fv.set(i, v);
-				}
-			}
-		}
-
-		return fv;
-	}
+	public List<NameNumber> encode(Feature feature)
+			throws IllegalArgumentException {
+		String name = feature.getName();
+		Number number = (Number) feature.getValue();
 	
-	@Override
-	public void allowNewFeatures(boolean flag) {
-		expandIndex = flag;
+		return Collections.singletonList(new NameNumber(name, number));
 	}
 
-	private boolean expandIndex = true;
-	private StringIndex stringIndex = new StringIndex(1);
-	
+	public boolean encodes(Feature feature) {
+		return feature.getValue() instanceof Number;
+	}
+
 }

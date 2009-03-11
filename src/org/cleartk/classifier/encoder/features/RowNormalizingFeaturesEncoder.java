@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.classifier.encoder.features.featurevector;
+package org.cleartk.classifier.encoder.features;
 
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
@@ -33,7 +33,7 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
 */
 
 public class RowNormalizingFeaturesEncoder extends
-		DefaultFeaturesEncoder {
+		FeatureVectorFeaturesEncoder {
 
 	private static final long serialVersionUID = -4164440619756002460L;
 

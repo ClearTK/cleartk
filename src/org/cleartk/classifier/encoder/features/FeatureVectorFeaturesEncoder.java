@@ -21,14 +21,13 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.classifier.encoder.features.featurevector;
+package org.cleartk.classifier.encoder.features;
 
-import java.util.Collections;
-import java.util.List;
 
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.encoder.features.FeatureEncoder;
-
+import org.cleartk.classifier.util.featurevector.FeatureVector;
+import org.cleartk.classifier.util.featurevector.SparseFeatureVector;
+import org.cleartk.util.StringIndex;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -36,23 +35,44 @@ import org.cleartk.classifier.encoder.features.FeatureEncoder;
 
 */
 
-public class DefaultNumberEncoder implements FeatureEncoder<FeatureVectorElement> {
+public class FeatureVectorFeaturesEncoder extends FeaturesEncoder_ImplBase<FeatureVector, NameNumber> {
+	
+	private static final long serialVersionUID = 6714456694285732480L;
 
-	private static final long serialVersionUID = -2672054364576304344L;
-
-	public List<FeatureVectorElement> encode(Feature feature)
-			throws IllegalArgumentException {
-		String key = feature.getName();
-		Number value = (Number) feature.getValue();
+	@Override
+	public FeatureVector encodeAll(Iterable<Feature> features) {
+		SparseFeatureVector fv = new SparseFeatureVector();
 		
-		if( value.doubleValue() == 0.0 )
-			return Collections.emptyList();
-		else
-			return Collections.singletonList(new FeatureVectorElement(key, value));
+		for( Feature feature : features ) {
+			for( NameNumber nameValue : this.encode(feature) ) {
+				String name = nameValue.name;
+				Number number = nameValue.number;
+
+				if(number.doubleValue() == 0.0 ) {
+					continue;
+				}
+				if( stringIndex.contains(name) ) {
+					int i = stringIndex.find(name);
+					double v = fv.get(i) + number.doubleValue();
+					fv.set(i, v);
+				} else if( expandIndex ) {
+					stringIndex.insert(name);
+					int i = stringIndex.find(name);
+					double v = fv.get(i) + number.doubleValue();
+					fv.set(i, v);
+				}
+			}
+		}
+
+		return fv;
+	}
+	
+	@Override
+	public void allowNewFeatures(boolean flag) {
+		expandIndex = flag;
 	}
 
-	public boolean encodes(Feature feature) {
-		return feature.getValue() instanceof Number;
-	}
-
+	private boolean expandIndex = true;
+	private StringIndex stringIndex = new StringIndex(1);
+	
 }

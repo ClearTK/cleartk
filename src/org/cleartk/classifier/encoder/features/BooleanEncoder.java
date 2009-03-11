@@ -21,13 +21,12 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.classifier.encoder.features.featurevector;
+package org.cleartk.classifier.encoder.features;
 
 import java.util.Collections;
 import java.util.List;
 
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.encoder.features.FeatureEncoder;
 
 
 /**
@@ -36,30 +35,18 @@ import org.cleartk.classifier.encoder.features.FeatureEncoder;
 
 */
 
-public class DefaultStringEncoder implements FeatureEncoder<FeatureVectorElement> {
+public class BooleanEncoder implements FeatureEncoder<NameNumber> {
 
-	private static final long serialVersionUID = -4502656972853610200L;
+	private static final long serialVersionUID = -8610226952086030638L;
 
-	public List<FeatureVectorElement> encode(Feature feature) throws IllegalArgumentException {
-		StringBuffer buffer = new StringBuffer();
-		String name = feature.getName(); 
-		Object value = feature.getValue();
-		if (name != null) {
-			buffer.append(name);
-		}
-		if (value != null) {
-			if (name != null) {
-				buffer.append("_");
-			}
-			buffer.append(value.toString());
-		}
-		
-		FeatureVectorElement fve = new FeatureVectorElement(buffer.toString(), 1.0);
-		return Collections.singletonList(fve);
+	public List<NameNumber> encode(Feature feature) throws IllegalArgumentException {
+		String name = feature.getName();
+		Number number = ((Boolean) feature.getValue()).booleanValue() ? 1.0 : 0.0;
+		return Collections.singletonList(new NameNumber(name, number));
 	}
 
 	public boolean encodes(Feature feature) {
-		return true;
+		return feature.getValue() instanceof Boolean;
 	}
 
 }

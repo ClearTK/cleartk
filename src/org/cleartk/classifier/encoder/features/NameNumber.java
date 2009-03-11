@@ -21,14 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.classifier.encoder.features.featurevector;
-
-import java.util.Collections;
-import java.util.List;
-
-import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.encoder.features.FeatureEncoder;
-
+package org.cleartk.classifier.encoder.features;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -36,18 +29,14 @@ import org.cleartk.classifier.encoder.features.FeatureEncoder;
 
 */
 
-public class DefaultBooleanEncoder implements FeatureEncoder<FeatureVectorElement> {
+public class NameNumber {
 
-	private static final long serialVersionUID = -8610226952086030638L;
-
-	public List<FeatureVectorElement> encode(Feature feature) throws IllegalArgumentException {
-		String key = feature.getName();
-		Number value = ((Boolean) feature.getValue()).booleanValue() ? 1.0 : 0.0;
-		return Collections.singletonList(new FeatureVectorElement(key, value));
+	public NameNumber(String name, Number number) {
+		this.name = name;
+		this.number = number;
 	}
 
-	public boolean encodes(Feature feature) {
-		return feature.getValue() instanceof Boolean;
-	}
+	public String name;
+	public Number number;
 
 }

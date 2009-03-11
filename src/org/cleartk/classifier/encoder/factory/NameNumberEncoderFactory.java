@@ -26,15 +26,12 @@ package org.cleartk.classifier.encoder.factory;
 import org.apache.uima.UimaContext;
 import org.cleartk.classifier.encoder.EncoderFactory_ImplBase;
 import org.cleartk.classifier.encoder.features.BooleanEncoder;
-import org.cleartk.classifier.encoder.features.FeatureVectorFeaturesEncoder;
+import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 import org.cleartk.classifier.encoder.features.NumberEncoder;
 import org.cleartk.classifier.encoder.features.StringEncoder;
-import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
-import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
-import org.cleartk.classifier.encoder.features.RowNormalizingFeaturesEncoder;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
-import org.cleartk.classifier.util.featurevector.FeatureVector;
+import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
 import org.cleartk.util.UIMAUtil;
 
 
@@ -44,36 +41,30 @@ import org.cleartk.util.UIMAUtil;
 
 */
 
-public abstract class SVMEncoderFactory extends EncoderFactory_ImplBase {
-	
-	public static final String PARAM_NORMALIZE_VECTORS = "NormalizeVectors";
+public class NameNumberEncoderFactory extends EncoderFactory_ImplBase {
+
+	public static final String PARAM_COMPRESS = "org.cleartk.classifier.encoder.factory.DefaultFeaturesEncoderFactory.PARAM_COMPRESS";
+
+	public static final String PARAM_SORT_NAME_LOOKUP = "org.cleartk.classifier.encoder.factory.DefaultFeaturesEncoderFactory.PARAM_SORT_NAME_LOOKUP";
 
 	@Override
 	public FeaturesEncoder<?> createFeaturesEncoder(UimaContext context) {
 		FeaturesEncoder<?> featuresEncoder = super.createFeaturesEncoder(context);
 		if (featuresEncoder == null) {
-
-			// create either a default or vector-normalizing features encoder
-			FeaturesEncoder_ImplBase<FeatureVector, NameNumber> svmFeaturesEncoder;
-			boolean normalizeVectors = (Boolean)UIMAUtil.getDefaultingConfigParameterValue(
-					context, SVMEncoderFactory.PARAM_NORMALIZE_VECTORS, false);
-			if (normalizeVectors) {
-				svmFeaturesEncoder = new RowNormalizingFeaturesEncoder();
-			} else {
-				svmFeaturesEncoder = new FeatureVectorFeaturesEncoder();
-			}
-	
-			// add number, boolean and string encoder
-			svmFeaturesEncoder.addEncoder(new NumberEncoder());
-			svmFeaturesEncoder.addEncoder(new BooleanEncoder());
-			svmFeaturesEncoder.addEncoder(new StringEncoder());
-			
-			// use the SVM features encoder
-			featuresEncoder = svmFeaturesEncoder;
+			boolean compress = (Boolean)UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_COMPRESS, false);
+			boolean sort = (Boolean)UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_SORT_NAME_LOOKUP, false);
+			NameNumberFeaturesEncoder defaultFeaturesEncoder = new NameNumberFeaturesEncoder(compress, sort);
+			defaultFeaturesEncoder.addEncoder(new NumberEncoder());
+			defaultFeaturesEncoder.addEncoder(new BooleanEncoder());
+			defaultFeaturesEncoder.addEncoder(new StringEncoder());
+			featuresEncoder = defaultFeaturesEncoder;
 		}
 		return featuresEncoder;
 	}
 
 	@Override
-	public abstract OutcomeEncoder<?, ?> createOutcomeEncoder(UimaContext context);
+	public OutcomeEncoder<?, ?> createOutcomeEncoder(UimaContext context) {
+		return new StringToStringOutcomeEncoder();
+	}
+
 }
