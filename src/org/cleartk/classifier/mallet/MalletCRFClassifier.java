@@ -31,6 +31,7 @@ import java.util.zip.ZipEntry;
 
 import org.cleartk.classifier.Classifier_ImplBase;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.encoder.features.NameNumber;
 
 import cc.mallet.fst.Transducer;
 import cc.mallet.pipe.Pipe;
@@ -58,7 +59,7 @@ import cc.mallet.types.Sequence;
  * {@link MalletCRFDataWriter#consume(org.cleartk.classifier.Instance)}.
  * 
  */
-public class MalletCRFClassifier extends Classifier_ImplBase<String,String,List<String>>
+public class MalletCRFClassifier extends Classifier_ImplBase<String,String,List<NameNumber>>
 {
 	protected Transducer transducer;
 	
@@ -121,7 +122,11 @@ public class MalletCRFClassifier extends Classifier_ImplBase<String,String,List<
 	private String[][] toStrings(List<List<Feature>> features) {
 		List<List<String>> encodedFeatures = new ArrayList<List<String>>(features.size());
 		for( List<Feature> features1 : features ) {
-			List<String> encodedFeatures1 = this.featuresEncoder.encodeAll(features1);
+			List<NameNumber> nameNumbers = this.featuresEncoder.encodeAll(features1);
+			List<String> encodedFeatures1 = new ArrayList<String>();
+			for(NameNumber nameNumber : nameNumbers) {
+				encodedFeatures1.add(nameNumber.name);
+			}
 			encodedFeatures.add(encodedFeatures1);
 		}
 		

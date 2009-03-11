@@ -32,7 +32,7 @@ import java.util.zip.ZipEntry;
 
 import org.cleartk.classifier.Classifier_ImplBase;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.encoder.features.contextvalue.ContextValue;
+import org.cleartk.classifier.encoder.features.NameNumber;
 
 import cc.mallet.classify.Classification;
 import cc.mallet.classify.Classifier;
@@ -49,7 +49,7 @@ import cc.mallet.types.Instance;
  *
  * 
  */
-public class MalletClassifier extends Classifier_ImplBase<String,String,List<ContextValue>>
+public class MalletClassifier extends Classifier_ImplBase<String,String,List<NameNumber>>
 {
 	protected Classifier classifier;
 	Alphabet alphabet;
@@ -99,22 +99,22 @@ public class MalletClassifier extends Classifier_ImplBase<String,String,List<Con
 	}
 
 	public Instance toInstance(List<Feature> features) {
-		List<ContextValue> contexts = featuresEncoder.encodeAll(features);
+		List<NameNumber> nameNumbers = featuresEncoder.encodeAll(features);
 
-		Iterator<ContextValue> contextIterator = contexts.iterator();
-		while(contextIterator.hasNext()) {
-			ContextValue contextValue = contextIterator.next();
-			if(!alphabet.contains(contextValue.getContext()))
-				contextIterator.remove();
+		Iterator<NameNumber> nameNumberIterator = nameNumbers.iterator();
+		while(nameNumberIterator.hasNext()) {
+			NameNumber nameNumber = nameNumberIterator.next();
+			if(!alphabet.contains(nameNumber.name))
+				nameNumberIterator.remove();
 		}
 
-		String[] keys = new String[contexts.size()];
-		double[] values = new double[contexts.size()];
+		String[] keys = new String[nameNumbers.size()];
+		double[] values = new double[nameNumbers.size()];
 
-		for(int i=0; i<contexts.size(); i++) {
-			ContextValue contextValue = contexts.get(i);
-			keys[i] = contextValue.getContext();
-			values[i] = contextValue.getValue();
+		for(int i=0; i<nameNumbers.size(); i++) {
+			NameNumber nameNumber = nameNumbers.get(i);
+			keys[i] = nameNumber.name;
+			values[i] = nameNumber.number.doubleValue();
 		}
 
 		int[] keyIndices = FeatureVector.getObjectIndices(keys, alphabet, true);

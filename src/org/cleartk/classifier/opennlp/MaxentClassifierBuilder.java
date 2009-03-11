@@ -28,6 +28,7 @@ import java.io.File;
 import org.cleartk.classifier.BuildJar;
 import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.ClassifierBuilder;
+import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 
 import opennlp.maxent.RealValueFileEventStream;
 /**
@@ -49,9 +50,9 @@ public class MaxentClassifierBuilder implements ClassifierBuilder<String> {
 	public void buildJar(File dir, String[] args) throws Exception {
 		BuildJar.OutputStream stream = new BuildJar.OutputStream(dir);
 		stream.write("model.maxent", new File(dir, "training-data.maxent.bin.gz"));
-		File featureLookup = new File(dir, MaxentDataWriter.FEATURE_LOOKUP_FILE_NAME);
+		File featureLookup = new File(dir, NameNumberFeaturesEncoder.LOOKUP_FILE_NAME);
 		if (featureLookup.exists()) {
-			stream.write("feature-lookup.txt", featureLookup);
+			stream.write("name-lookup.txt", featureLookup);
 		}
 		stream.close();
 	}

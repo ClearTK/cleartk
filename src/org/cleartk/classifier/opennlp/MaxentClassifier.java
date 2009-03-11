@@ -35,7 +35,7 @@ import java.util.zip.ZipEntry;
 import org.cleartk.classifier.Classifier_ImplBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.ScoredValue;
-import org.cleartk.classifier.encoder.features.contextvalue.ContextValue;
+import org.cleartk.classifier.encoder.features.NameNumber;
 
 import opennlp.maxent.MaxentModel;
 import opennlp.maxent.io.BinaryGISModelReader;
@@ -48,7 +48,7 @@ import opennlp.maxent.io.BinaryGISModelReader;
  * @author Philip Ogren
  *
  */
-public class MaxentClassifier extends Classifier_ImplBase<String,String,List<ContextValue>> {
+public class MaxentClassifier extends Classifier_ImplBase<String,String,List<NameNumber>> {
 
 	protected MaxentModel model;
 	
@@ -106,12 +106,12 @@ public class MaxentClassifier extends Classifier_ImplBase<String,String,List<Con
 		String[] context = new String[features.size()];
 		float[] values = new float[features.size()];
 		
-		List<ContextValue> contexts = featuresEncoder.encodeAll(features);
+		List<NameNumber> contexts = featuresEncoder.encodeAll(features);
 		
 		for(int i=0; i<contexts.size(); i++) {
-			ContextValue contextValue = contexts.get(i);
-			context[i] = contextValue.getContext();
-			values[i] = contextValue.getValue();
+			NameNumber contextValue = contexts.get(i);
+			context[i] = contextValue.name;
+			values[i] = contextValue.number.floatValue();
 		}
 
 		return new EvalParams(context, values);

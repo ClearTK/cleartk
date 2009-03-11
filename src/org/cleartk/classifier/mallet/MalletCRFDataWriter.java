@@ -23,16 +23,20 @@
  */
 package org.cleartk.classifier.mallet;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
 import org.apache.uima.UimaContext;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.ClassifierBuilder;
 import org.cleartk.classifier.DataWriter_ImplBase;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.encoder.EncoderFactory;
-import org.cleartk.classifier.encoder.factory.StringEncoderFactory;
+import org.cleartk.classifier.encoder.factory.NameNumberEncoderFactory;
+import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
+import org.cleartk.classifier.encoder.features.NameNumber;
 
 
 /**
@@ -51,7 +55,7 @@ import org.cleartk.classifier.encoder.factory.StringEncoderFactory;
  * @author Philip Ogren
  * @author Steven Bethard
  */
-public class MalletCRFDataWriter extends DataWriter_ImplBase<String, String, List<String>> {
+public class MalletCRFDataWriter extends DataWriter_ImplBase<String, String, List<NameNumber>> {
 
 	protected PrintWriter trainingDataWriter;
 
@@ -79,9 +83,9 @@ public class MalletCRFDataWriter extends DataWriter_ImplBase<String, String, Lis
 	 * @see #consumeAll(List)
 	 */
 	public String consume(Instance<String> instance) {
-		List<String> featureStrings = this.featuresEncoder.encodeAll(instance.getFeatures());
-		for (String featureString : featureStrings) {
-			this.trainingDataWriter.print(featureString);
+		List<NameNumber> nameNumbers = this.featuresEncoder.encodeAll(instance.getFeatures());
+		for (NameNumber nameNumber : nameNumbers) {
+			this.trainingDataWriter.print(nameNumber.name);
 			this.trainingDataWriter.print(" ");
 		}
 
@@ -110,12 +114,32 @@ public class MalletCRFDataWriter extends DataWriter_ImplBase<String, String, Lis
 	}
 
 	@Override
+	public void collectionProcessComplete() throws AnalysisEngineProcessException {
+		if (featuresEncoder instanceof NameNumberFeaturesEncoder) {
+			try {
+				NameNumberFeaturesEncoder dfe = (NameNumberFeaturesEncoder) featuresEncoder;
+				if(dfe.isCompressFeatures())
+					dfe.writeNameLookup(this.getPrintWriter(NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
+			}
+			catch (ResourceInitializationException e) {
+				throw new AnalysisEngineProcessException(e);
+			}
+			catch (IOException e) {
+				throw new AnalysisEngineProcessException(e);
+			}
+		}
+		
+		super.collectionProcessComplete();
+	}
+
+	
+	@Override
 	protected Class<? extends ClassifierBuilder<? extends String>> getDefaultClassifierBuilderClass() {
 		return MalletCRFClassifierBuilder.class;
 	}
 
 	@Override
 	protected Class<? extends EncoderFactory> getDefaultEncoderFactoryClass() {
-		return StringEncoderFactory.class;
+		return NameNumberEncoderFactory.class;
 	}
 }

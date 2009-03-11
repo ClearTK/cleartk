@@ -36,9 +36,9 @@ import org.cleartk.classifier.ClassifierBuilder;
 import org.cleartk.classifier.DataWriter_ImplBase;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.encoder.EncoderFactory;
-import org.cleartk.classifier.encoder.factory.ContextValueEncoderFactory;
-import org.cleartk.classifier.encoder.features.contextvalue.ContextValue;
-import org.cleartk.classifier.encoder.features.contextvalue.ContextValueFeaturesEncoder;
+import org.cleartk.classifier.encoder.factory.NameNumberEncoderFactory;
+import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
+import org.cleartk.classifier.encoder.features.NameNumber;
 
 
 /**
@@ -63,9 +63,8 @@ import org.cleartk.classifier.encoder.features.contextvalue.ContextValueFeatures
  * @author Steven Bethard
  * @see RealValueFileEventStream
  */
-public class MaxentDataWriter extends DataWriter_ImplBase<String, String, List<ContextValue>> {
+public class MaxentDataWriter extends DataWriter_ImplBase<String, String, List<NameNumber>> {
 
-	public static final String FEATURE_LOOKUP_FILE_NAME = "feature-lookup.txt";
 
 	protected PrintWriter trainingDataWriter;
 
@@ -75,6 +74,7 @@ public class MaxentDataWriter extends DataWriter_ImplBase<String, String, List<C
 
 		// initialize output writer and Classifier class
 		this.trainingDataWriter = this.getPrintWriter("training-data.maxent");
+		
 	}
 
 	public String consume(Instance<String> instance) {
@@ -83,15 +83,15 @@ public class MaxentDataWriter extends DataWriter_ImplBase<String, String, List<C
 		this.trainingDataWriter.print(outcomeString);
 
 		// aggregate the features
-		List<ContextValue> features = this.featuresEncoder.encodeAll(instance.getFeatures());
+		List<NameNumber> featureVectorElements = this.featuresEncoder.encodeAll(instance.getFeatures());
 
 		// write each of the string features, encoded, into the training data
-		for (ContextValue contextValue : features) {
+		for (NameNumber featureVectorElement : featureVectorElements) {
 			this.trainingDataWriter.print(' ');
-			if(contextValue.getValue() == 1)
-				trainingDataWriter.print(contextValue.getContext());
+			if(featureVectorElement.number.equals(Integer.valueOf(1)))
+				trainingDataWriter.print(featureVectorElement.name);
 			else
-				trainingDataWriter.print(contextValue.getContext() + "=" + contextValue.getValue());
+				trainingDataWriter.print(featureVectorElement.name + "=" + featureVectorElement.number);
 
 		}
 
@@ -104,11 +104,11 @@ public class MaxentDataWriter extends DataWriter_ImplBase<String, String, List<C
 
 	@Override
 	public void collectionProcessComplete() throws AnalysisEngineProcessException {
-		if (featuresEncoder instanceof ContextValueFeaturesEncoder) {
+		if (featuresEncoder instanceof NameNumberFeaturesEncoder) {
 			try {
-				ContextValueFeaturesEncoder cvfe = (ContextValueFeaturesEncoder) featuresEncoder;
-				if(cvfe.isCompressFeatures())
-					cvfe.writeKeys(this.getPrintWriter(FEATURE_LOOKUP_FILE_NAME));
+				NameNumberFeaturesEncoder dfe = (NameNumberFeaturesEncoder) featuresEncoder;
+				if(dfe.isCompressFeatures())
+					dfe.writeNameLookup(this.getPrintWriter(NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
 			}
 			catch (ResourceInitializationException e) {
 				throw new AnalysisEngineProcessException(e);
@@ -128,6 +128,6 @@ public class MaxentDataWriter extends DataWriter_ImplBase<String, String, List<C
 
 	@Override
 	protected Class<? extends EncoderFactory> getDefaultEncoderFactoryClass() {
-		return ContextValueEncoderFactory.class;
+		return NameNumberEncoderFactory.class;
 	}
 }
