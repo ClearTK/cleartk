@@ -54,14 +54,23 @@ import org.cleartk.util.UIMAUtil;
  */
 public class TreebankGoldAnnotator extends JCasAnnotator_ImplBase {
 
-	public static final String PARAM_POST_TREEBANK = "PostTreebank";
+	/**
+	 * "org.cleartk.syntax.treebank.TreebankGoldAnnotator.PARAM_POST_TREES" is a
+	 * single, optional, boolean parameter that specifies whether or not to post
+	 * trees (i.e. annotations of type TreebankNode) to the CAS. Sometimes
+	 * treebank data is used only for the part-of-speech data that it contains.
+	 * For such uses, it is not necessary to post the entire constituent parse
+	 * to the CAS. Instead, this parameter can be set to false which results in
+	 * only the part-of-speech data being added.
+	 */
+	public static final String PARAM_POST_TREES = "org.cleartk.syntax.treebank.TreebankGoldAnnotator.PARAM_POST_TREES";
 
-	private boolean postTreebank = true;
-	
+	private boolean postTrees = true;
+
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-	
-		postTreebank = (Boolean) UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_POST_TREEBANK, true);
+
+		postTrees = (Boolean) UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_POST_TREES, true);
 		super.initialize(context);
 	}
 
@@ -88,7 +97,7 @@ public class TreebankGoldAnnotator extends JCasAnnotator_ImplBase {
 
 		for (org.cleartk.syntax.treebank.util.TopTreebankNode topNode : topNodes) {
 			TopTreebankNode uimaNode = org.cleartk.syntax.treebank.util.TreebankNodeUtility
-					.convert(topNode, docView, postTreebank);
+					.convert(topNode, docView, postTrees);
 			Sentence uimaSentence = new Sentence(docView, uimaNode
 					.getBegin(), uimaNode.getEnd());
 			uimaSentence.setConstituentParse(uimaNode);
