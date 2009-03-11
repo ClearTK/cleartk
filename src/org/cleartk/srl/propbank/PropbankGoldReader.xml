@@ -24,53 +24,30 @@ SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
 INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
 CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-POSSIBILITY OF SUCH DAMAGE. 
-
-</description>
+POSSIBILITY OF SUCH DAMAGE.</description>
     <version>1.0</version>
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>PropbankCorpusFile</name>
-        <description>should point to the propbank data (e.g. propbank-1.0/props.txt).</description>
+        <name>org.cleartk.srl.propbank.PropbankGoldReader.PARAM_PROPBANK_FILE</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>TreebankCorpusDirectory</name>
-        <description>Should point to treebank data.  The expectation is that the directory provided will have a subdirectory called 'wsj/mrg' such that e.g. 'wsj/mrg/00/wsj_0001.mrg' can be retrieved from the directory given in this parameter.</description>
+        <name>org.cleartk.srl.propbank.PropbankGoldReader.PARAM_PENNTREEBANK_DIRECTORY</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>WSJSections</name>
+        <name>org.cleartk.srl.propbank.PropbankGoldReader.PARAM_WSJ_SECTIONS</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
     </configurationParameters>
-    <configurationParameterSettings>
-      <nameValuePair>
-        <name>PropbankCorpusFile</name>
-        <value>
-          <string>data/propbank-1.0/prop.txt</string>
-        </value>
-      </nameValuePair>
-      <nameValuePair>
-        <name>TreebankCorpusDirectory</name>
-        <value>
-          <string>data/treebank</string>
-        </value>
-      </nameValuePair>
-      <nameValuePair>
-        <name>WSJSections</name>
-        <value>
-          <string>02-21</string>
-        </value>
-      </nameValuePair>
-    </configurationParameterSettings>
+    <configurationParameterSettings/>
     <typeSystemDescription>
       <imports>
         <import name="org.cleartk.TypeSystem"/>
