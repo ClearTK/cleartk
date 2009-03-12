@@ -53,6 +53,7 @@ public class LicenseTests {
 	@Test
 	public void testLicenseStatedInTestDescriptors() throws Exception {
 		testDescriptors("test/src");
+		testDescriptors("test/data");
 	}
 
 	private void testDescriptors(String directory) throws IOException {
@@ -68,6 +69,10 @@ public class LicenseTests {
 				fileText.indexOf("Copyright (c) 2009, Regents of the University of Colorado") == -1 &&	
 				fileText.indexOf("Copyright (c) 2007-2009, Regents of the University of Colorado") == -1)	
 					|| fileText.indexOf("THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"") == -1) {
+				
+				if(file.getName().equals("GENIAcorpus3.02.articleA.pos.xml"))
+					continue;
+					
 				filesMissingLicense.add(file.getPath());
 			}
 		}
