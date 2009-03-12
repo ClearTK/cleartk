@@ -23,6 +23,8 @@
 */
 package org.cleartk.token.snowball;
 
+import static org.junit.Assert.assertNotNull;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -108,11 +110,19 @@ public class SnowballStemmerTests {
 
 	@Test
 	public void testDescriptor() throws UIMAException, IOException {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-				"org.cleartk.token.snowball.SnowballStemmer");
+		ResourceInitializationException rie = null;
+		try {
+			AnalysisEngineFactory.createAnalysisEngine("org.cleartk.token.snowball.SnowballStemmer");
+		} catch(ResourceInitializationException e) {
+			rie = e;
+		}
 		
-		Object stemmerName = engine.getConfigParameterValue(
-				SnowballStemmer.PARAM_STEMMER_NAME);
+		assertNotNull(rie);
+		
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine("org.cleartk.token.snowball.SnowballStemmer",
+				SnowballStemmer.PARAM_STEMMER_NAME, "English");
+
+		Object stemmerName = engine.getConfigParameterValue(SnowballStemmer.PARAM_STEMMER_NAME);
 		Assert.assertEquals("English", stemmerName);
 		
 		engine.collectionProcessComplete();
