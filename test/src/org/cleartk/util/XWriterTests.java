@@ -82,7 +82,7 @@ public class XWriterTests {
 				Token.class, Sentence.class, 
 				"I like spam !",
 				"PRP VB NN .", null, "org.cleartk.type.Token:pos", null);
-		ViewURIUtil.setURI(jCas, "identifier");
+		ViewURIUtil.setURI(jCas, "..\\ClearTK Data\\data\\treebank\\identifier");
 		engine.process(jCas);
 		engine.collectionProcessComplete();
 		
@@ -143,6 +143,8 @@ public class XWriterTests {
 		Assert.assertEquals(4, elements.size());
 		
 	}
+	
+	
 	
 	@Test
 	public void testDescriptor() throws UIMAException, IOException {
