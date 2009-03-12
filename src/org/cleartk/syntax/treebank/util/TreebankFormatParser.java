@@ -425,8 +425,7 @@ public class TreebankFormatParser {
 			topNode.initTerminalNodes();
 			return topNode;
 		} catch (RuntimeException e) {
-			System.err.println("exception thrown when parsing the following: "+parse);
-			throw e;
+			throw new IllegalArgumentException("exception thrown when parsing the following: "+parse);
 		}
 	}
 
@@ -461,7 +460,6 @@ public class TreebankFormatParser {
 		if (value.contains("\\/")) return value.replace("\\/", "/");
 
 		if (type.startsWith("Â")) {
-			System.out.println("type starts with Â");
 			return value.substring(1);
 		}
 
