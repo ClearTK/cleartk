@@ -30,9 +30,9 @@ import java.io.ObjectOutputStream;
 import org.apache.uima.UimaContext;
 import org.cleartk.classifier.DataWriter_ImplBase;
 import org.cleartk.classifier.encoder.factory.BinarySVMEncoderFactory;
+import org.cleartk.classifier.encoder.features.FeatureVectorFeaturesEncoder;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
-import org.cleartk.classifier.encoder.features.featurevector.DefaultFeaturesEncoder;
 import org.cleartk.classifier.encoder.outcome.BooleanToBooleanOutcomeEncoder;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 import org.junit.After;
@@ -116,7 +116,7 @@ public class EncoderFactory_ImplBaseTests {
 				EncoderFactory_ImplBase.PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM, true);
 		Assert.assertTrue(
 				fileSystemFactory.createFeaturesEncoder(context)
-				instanceof DefaultFeaturesEncoder);
+				instanceof FeatureVectorFeaturesEncoder);
 		Assert.assertTrue(
 				fileSystemFactory.createOutcomeEncoder(context)
 				instanceof BooleanToBooleanOutcomeEncoder);
