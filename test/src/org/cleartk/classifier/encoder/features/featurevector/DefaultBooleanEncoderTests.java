@@ -26,6 +26,7 @@ package org.cleartk.classifier.encoder.features.featurevector;
 import static org.junit.Assert.assertEquals;
 
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.encoder.features.BooleanEncoder;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -43,7 +44,7 @@ public class DefaultBooleanEncoderTests {
 		this.testBoolean(1.0, new Feature("foo", true));
 		this.testBoolean(0.0, new Feature(false));
 		try {
-			new DefaultBooleanEncoder().encode(new Feature("bar"));
+			new BooleanEncoder().encode(new Feature("bar"));
 		} catch (ClassCastException e) {
 			return;
 		}
@@ -51,8 +52,8 @@ public class DefaultBooleanEncoderTests {
 	}
 
 	private void testBoolean(Number expected, Feature feature) {
-		DefaultBooleanEncoder encoder = new DefaultBooleanEncoder();
-		assertEquals(expected, encoder.encode(feature).get(0).value);
+		BooleanEncoder encoder = new BooleanEncoder();
+		assertEquals(expected, encoder.encode(feature).get(0).number);
 	}
 
 }
