@@ -93,6 +93,14 @@
                 <timeout max="100000" default="-1"/>
             </errorHandling>
             <checkpoint batch="10000" time="1000ms"/>
+            <configurationParameterSettings>
+                <nameValuePair>
+                    <name>org.cleartk.token.snowball.SnowballStemmer.PARAM_STEMMER_NAME</name>
+                    <value>
+                        <string>English</string>
+                    </value>
+                </nameValuePair>
+            </configurationParameterSettings>
         </casProcessor>
         <casProcessor deployment="integrated" name="VerbClauseTemporalDataWriter">
             <descriptor>
