@@ -66,9 +66,7 @@ public class BinarySVMEncoderFactoryTests {
 		
 		// use a boolean value with an existing feature
 		entries = this.getVector(encoder, new Feature("A", false));
-		assertEquals(1, entries.size());
-		assertEquals(1, entries.get(0).index);
-		assertEquals(0.0, entries.get(0).value, 0.01d);
+		assertEquals(0, entries.size());
 
 		// add a string valued feature
 		entries = this.getVector(encoder, new Feature("B", "spam"));
