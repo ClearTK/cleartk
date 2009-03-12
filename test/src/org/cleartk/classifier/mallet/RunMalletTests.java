@@ -38,7 +38,7 @@ import org.cleartk.classifier.ClassifierFactory;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.Train;
-import org.cleartk.classifier.encoder.factory.ContextValueEncoderFactory;
+import org.cleartk.classifier.encoder.factory.NameNumberEncoderFactory;
 import org.cleartk.util.EmptyAnnotator;
 import org.junit.Before;
 import org.junit.Test;
@@ -151,6 +151,7 @@ public class RunMalletTests {
 			instance.setOutcome("B");
 			instance.add(new Feature("hello", random.nextInt(100)));
 		}
+		
 		return instance;
 	}
 
@@ -163,7 +164,7 @@ public class RunMalletTests {
 				"org.cleartk.example.ExamplePOSAnnotationHandler",
 				MalletDataWriter.PARAM_OUTPUT_DIRECTORY,
 				outputDirectory,
-				ContextValueEncoderFactory.PARAM_COMPRESS,
+				NameNumberEncoderFactory.PARAM_COMPRESS,
 				true);
 		
 		MalletDataWriter dataWriter = new MalletDataWriter();
