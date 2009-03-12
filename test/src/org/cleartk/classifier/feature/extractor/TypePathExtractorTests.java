@@ -39,7 +39,6 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.cas.StringArray;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.encoder.features.string.StringEncoder;
 import org.cleartk.classifier.feature.TypePathFeature;
 import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Test;
@@ -316,17 +315,14 @@ public class TypePathExtractorTests {
 
 		TypePathExtractor posExtractor = new TypePathExtractor(org.cleartk.type.Token.class, "pos");
 
-		StringEncoder encoder = new StringEncoder();
 		Feature feature = posExtractor.extract(jCas, token).get(0);
 		assertEquals("A", feature.getValue().toString());
 		assertEquals("TypePath_Pos", feature.getName());
-		assertEquals("TypePath_Pos_A", encoder.encode(feature).get(0));
-
+		
 		feature = posExtractor.extract(jCas, tokenL0).get(0);
 		assertEquals("B", feature.getValue().toString());
 		assertEquals("TypePath_Pos", feature.getName());
-		assertEquals("TypePath_Pos_B", encoder.encode(feature).get(0));
-
+		
 	}
 
 }
