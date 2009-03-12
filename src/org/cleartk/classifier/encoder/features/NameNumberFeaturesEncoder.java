@@ -42,6 +42,8 @@ import org.cleartk.util.collection.CompressedStringBidiMap;
 
 public class NameNumberFeaturesEncoder extends FeaturesEncoder_ImplBase<List<NameNumber>, NameNumber> {
 
+	private static final long serialVersionUID = 7508330794260661987L;
+
 	public static final String LOOKUP_FILE_NAME = "names-lookup.txt";
 
 	private CompressedStringBidiMap csbm;
