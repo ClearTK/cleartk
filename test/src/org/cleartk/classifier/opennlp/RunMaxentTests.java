@@ -28,6 +28,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,11 +39,13 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.ScoredValue;
 import org.cleartk.classifier.Train;
-import org.cleartk.classifier.encoder.factory.ContextValueEncoderFactory;
+import org.cleartk.classifier.encoder.factory.NameNumberEncoderFactory;
+import org.junit.After;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.TypeSystemDescriptionFactory;
 import org.uutuc.util.HideOutput;
+import org.uutuc.util.TearDownUtil;
 
 
 /**
@@ -53,13 +56,22 @@ import org.uutuc.util.HideOutput;
 
 public class RunMaxentTests {
 	
+	String test1Dir = "test/data/opennlp/runtest1"; 
+	String test2Dir = "test/data/opennlp/runtest2"; 
+	
+	@After
+	public void tearDown() {
+		TearDownUtil.removeDirectory(new File(test1Dir));
+		TearDownUtil.removeDirectory(new File(test2Dir));
+		
+	}
+	
 	@Test
 	public void runTest1() throws Exception {
-		String outputDirectory = "test/data/opennlp/runtest1"; 
+		String outputDirectory = test1Dir; 
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(MaxentDataWriter.class, 
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"), 
-				ContextValueEncoderFactory.PARAM_COMPRESS,
-				false,
+				NameNumberEncoderFactory.PARAM_COMPRESS, false,
 				MaxentDataWriter.PARAM_ANNOTATION_HANDLER,
 				"org.cleartk.example.ExamplePOSAnnotationHandler",
 				MaxentDataWriter.PARAM_OUTPUT_DIRECTORY,
@@ -111,9 +123,9 @@ public class RunMaxentTests {
 		dataWriter.collectionProcessComplete();
 		engine.collectionProcessComplete();
 		
-		BufferedReader reader = new BufferedReader(new FileReader(outputDirectory+"/training-data.maxent"));
+		BufferedReader reader = new BufferedReader(new FileReader(new File(outputDirectory, "training-data.maxent")));
 		String line = reader.readLine();
-		assertEquals("A hello=1234.0", line);
+		assertEquals("A hello=1234", line);
 		reader.close();
 		
 		HideOutput hider = new HideOutput();
@@ -131,11 +143,10 @@ public class RunMaxentTests {
 
 	@Test
 	public void runTest2() throws Exception {
-		String outputDirectory = "test/data/opennlp/runtest2"; 
+		String outputDirectory = test2Dir; 
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(MaxentDataWriter.class, 
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"), 
-				ContextValueEncoderFactory.PARAM_COMPRESS,
-				true,
+				NameNumberEncoderFactory.PARAM_COMPRESS, true,
 				MaxentDataWriter.PARAM_ANNOTATION_HANDLER,
 				"org.cleartk.example.ExamplePOSAnnotationHandler",
 				MaxentDataWriter.PARAM_OUTPUT_DIRECTORY,
