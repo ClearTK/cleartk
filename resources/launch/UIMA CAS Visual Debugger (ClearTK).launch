@@ -10,5 +10,5 @@
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.apache.uima.tools.annot_view.Gladis"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-desc src/org/cleartk/util/EmptyAnnotator.xml"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="ClearTK"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="&quot;-Djava.util.logging.config.file=${env_var:UIMA_HOME}/config/Logger.properties&quot; &#13;&#10;-Xmx1150M"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="&quot;-Djava.util.logging.config.file=${env_var:UIMA_HOME}/config/Logger.properties&quot; &#13;&#10;-Xmx1135M"/>
 </launchConfiguration>
