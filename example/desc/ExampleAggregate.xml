@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+  <primitive>false</primitive>
+  <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="SnowballStemmer">
+      <import name="org.cleartk.token.snowball.SnowballStemmer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="TreebankGoldAnnotator">
+      <import name="org.cleartk.syntax.treebank.TreebankGoldAnnotator"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="ExamplePOSDataWriter">
+      <import name="org.cleartk.example.ExamplePOSDataWriter"/>
+    </delegateAnalysisEngine>
+  </delegateAnalysisEngineSpecifiers>
+  <analysisEngineMetaData>
+    <name>ExampleAggregate</name>
+    <description/>
+    <version>1.0</version>
+    <vendor/>
+    <configurationParameters searchStrategy="language_fallback">
+      <configurationParameter>
+        <name>org.cleartk.token.snowball.SnowballStemmer.PARAM_STEMMER_NAME</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>SnowballStemmer/org.cleartk.token.snowball.SnowballStemmer.PARAM_STEMMER_NAME</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>org.cleartk.syntax.treebank.TreebankGoldAnnotator.PARAM_POST_TREES</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>TreebankGoldAnnotator/org.cleartk.syntax.treebank.TreebankGoldAnnotator.PARAM_POST_TREES</parameter>
+        </overrides>
+      </configurationParameter>
+    </configurationParameters>
+    <configurationParameterSettings>
+      <nameValuePair>
+        <name>org.cleartk.token.snowball.SnowballStemmer.PARAM_STEMMER_NAME</name>
+        <value>
+          <string>English</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>org.cleartk.syntax.treebank.TreebankGoldAnnotator.PARAM_POST_TREES</name>
+        <value>
+          <boolean>false</boolean>
+        </value>
+      </nameValuePair>
+    </configurationParameterSettings>
+    <flowConstraints>
+      <fixedFlow>
+        <node>TreebankGoldAnnotator</node>
+        <node>SnowballStemmer</node>
+        <node>ExamplePOSDataWriter</node>
+      </fixedFlow>
+    </flowConstraints>
+    <typePriorities/>
+    <fsIndexCollection/>
+    <capabilities>
+      <capability>
+        <inputs/>
+        <outputs/>
+        <inputSofas>
+          <sofaName>TreebankView</sofaName>
+        </inputSofas>
+        <outputSofas>
+          <sofaName>GoldView</sofaName>
+        </outputSofas>
+        <languagesSupported/>
+      </capability>
+    </capabilities>
+    <operationalProperties>
+      <modifiesCas>true</modifiesCas>
+      <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+      <outputsNewCASes>false</outputsNewCASes>
+    </operationalProperties>
+  </analysisEngineMetaData>
+  <resourceManagerConfiguration/>
+  <sofaMappings>
+    <sofaMapping>
+      <componentKey>TreebankGoldAnnotator</componentKey>
+      <componentSofaName>GoldView</componentSofaName>
+      <aggregateSofaName>GoldView</aggregateSofaName>
+    </sofaMapping>
+    <sofaMapping>
+      <componentKey>TreebankGoldAnnotator</componentKey>
+      <componentSofaName>TreebankView</componentSofaName>
+      <aggregateSofaName>TreebankView</aggregateSofaName>
+    </sofaMapping>
+    <sofaMapping>
+      <componentKey>ExamplePOSDataWriter</componentKey>
+      <aggregateSofaName>GoldView</aggregateSofaName>
+    </sofaMapping>
+    <sofaMapping>
+      <componentKey>SnowballStemmer</componentKey>
+      <aggregateSofaName>GoldView</aggregateSofaName>
+    </sofaMapping>
+  </sofaMappings>
+</analysisEngineDescription>
