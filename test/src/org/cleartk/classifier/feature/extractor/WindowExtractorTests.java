@@ -33,7 +33,6 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.encoder.features.string.StringEncoder;
 import org.cleartk.classifier.feature.WindowFeature;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
@@ -369,18 +368,14 @@ public class WindowExtractorTests {
 		WindowExtractor leftPosExtractor = new WindowExtractor(Token.class, new TypePathExtractor(Token.class, "pos"),
 				WindowFeature.ORIENTATION_LEFT, 0, 5);
 
-		StringEncoder encoder = new StringEncoder();
 		List<Feature> features = leftPosExtractor.extract(jCas, token, Sentence.class);
 		assertEquals("B", features.get(0).getValue().toString());
 		assertEquals(0, ((WindowFeature) features.get(0)).getOutOfBoundsDistance());
 		assertEquals("Window_L0_TypePath_Pos", features.get(0).getName());
-		assertEquals("Window_L0_TypePath_Pos_B", encoder.encode(features.get(0)).get(0));
 		assertEquals(1, ((WindowFeature) features.get(1)).getOutOfBoundsDistance());
 		assertEquals("Window_L1OOB1", features.get(1).getName());
-		assertEquals("Window_L1OOB1", encoder.encode(features.get(1)).get(0));
 		assertEquals(2, ((WindowFeature) features.get(2)).getOutOfBoundsDistance());
 		assertEquals("Window_L2OOB2", ((WindowFeature) features.get(2)).getName());
-		assertEquals("Window_L2OOB2", encoder.encode(features.get(2)).get(0));
 	}
 
 }
