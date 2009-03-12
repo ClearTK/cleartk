@@ -131,7 +131,7 @@
 		<echo message="======================" />
 		
 		<java fork="true" classname="org.apache.uima.examples.cpe.SimpleRunCPE" classpathref="cpe.classpath" maxmemory="${max-memory}">
-			<arg value="desc/example/ExamplePOSDataWriterCPE.xml"/>
+			<arg value="example/desc/ExamplePOSDataWriterCPE.xml"/>
 		</java>
 		<java fork="true" classname="org.cleartk.classifier.Train" classpathref="run.classpath" maxmemory="${max-memory}">
 			<arg line="example/model" />
@@ -143,7 +143,7 @@
 		<echo message="Training SRL models" />
 		<echo message="===================" />
 		<java fork="true" classname="org.apache.uima.examples.cpe.SimpleRunCPE" classpathref="cpe.classpath" maxmemory="${max-memory}">
-			<arg value="desc/srl/PredicateArgumentDataWriterCPE.xml"/>
+			<arg value="test/data/srl/desc/PredicateArgumentDataWriterCPE.xml"/>
 		</java>
 		<java fork="true" classname="org.cleartk.classifier.Train" classpathref="run.classpath" maxmemory="${max-memory}">
 			<arg line="test/data/srl/predicate" />
@@ -159,7 +159,7 @@
 		<echo message="Training temporal model" />
 		<echo message="=======================" />
 		<java fork="true" classname="org.apache.uima.examples.cpe.SimpleRunCPE" classpathref="cpe.classpath" maxmemory="${max-memory}">
-			<arg value="desc/temporal/VerbClauseTemporalDataWriterCPE.xml"/>
+			<arg value="cpe/VerbClauseTemporalDataWriterCPE.xml"/>
 		</java>
 		<java fork="true" classname="org.cleartk.classifier.Train" classpathref="run.classpath" maxmemory="${max-memory}">
 			<arg line="test/data/temporal" />
@@ -172,7 +172,7 @@
 		<echo message="Training token/chunk model" />
 		<echo message="==========================" />
 		<java fork="true" classname="org.apache.uima.examples.cpe.SimpleRunCPE" classpathref="cpe.classpath" maxmemory="${max-memory}">
-			<arg value="desc/token/chunk/CreateTrainingDataCPE.xml"/>
+			<arg value="test/data/token/chunk/GeniaChunkTokenizerDataWriterCPE.xml"/>
 		</java>
 		<java fork="true" classname="org.cleartk.classifier.Train" classpathref="run.classpath" maxmemory="${max-memory}">
 			<arg line="test/data/token/chunk" />
