@@ -70,7 +70,7 @@ public class SnowballStemmer extends JCasAnnotator_ImplBase {
 	 * <li>Swedish</li>
 	 * </ul>
 	 */
-	public static final String PARAM_STEMMER_NAME = "StemmerName";
+	public static final String PARAM_STEMMER_NAME = "org.cleartk.token.snowball.SnowballStemmer.PARAM_STEMMER_NAME";
 
 	protected SnowballProgram stemmer;
 

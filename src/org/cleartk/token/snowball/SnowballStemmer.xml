@@ -25,45 +25,18 @@ SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
 INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
 CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-POSSIBILITY OF SUCH DAMAGE. 
-
-</description>
+POSSIBILITY OF SUCH DAMAGE.</description>
     <version>1.0</version>
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>StemmerName</name>
-        <description>value should be one of:
-
-Danish
-Dutch
-English
-Finnish
-French
-German2
-German
-Italian
-Kp
-Lovins
-Norwegian
-Porter
-Portuguese
-Russian
-Spanish
-Swedish</description>
+        <name>org.cleartk.token.snowball.SnowballStemmer.PARAM_STEMMER_NAME</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
     </configurationParameters>
-    <configurationParameterSettings>
-      <nameValuePair>
-        <name>StemmerName</name>
-        <value>
-          <string>English</string>
-        </value>
-      </nameValuePair>
-    </configurationParameterSettings>
+    <configurationParameterSettings/>
     <typeSystemDescription>
       <imports>
         <import name="org.cleartk.TypeSystem"/>
