@@ -65,6 +65,8 @@ public class ExamplePOSPlainTextWriter extends JCasAnnotator_ImplBase {
 	@Override
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
 		String id = ViewURIUtil.getURI(jCas);
+		int index = Math.max(id.lastIndexOf("/"), id.lastIndexOf("\\")) + 1;
+		id = id.substring(index);
 		PrintWriter outputWriter;
 		try {
 			outputWriter = new PrintWriter(new File(this.outputDir, id + ".pos"));
