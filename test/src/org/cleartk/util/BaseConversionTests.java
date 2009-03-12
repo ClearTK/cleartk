@@ -64,5 +64,12 @@ public class BaseConversionTests {
 		assertEquals("10", BaseConversion.convertBase(16, 16));
 		assertEquals("G", BaseConversion.convertBase(16, 17));
 
+		
+		assertEquals("4000", BaseConversion.convertBase(953312, 62));
+		assertEquals("C00", BaseConversion.convertBase(46128, 62));
+		assertEquals("90", BaseConversion.convertBase(558, 62));
+		assertEquals("2", BaseConversion.convertBase(2, 62));
+		assertEquals("4C92", BaseConversion.convertBase(1000000, 62));
+
 	}
 }
