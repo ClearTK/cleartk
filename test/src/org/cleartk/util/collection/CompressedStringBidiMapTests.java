@@ -45,7 +45,6 @@ public class CompressedStringBidiMapTests {
 	@Test
 	public void testSerialization() throws FileNotFoundException, IOException {
 		CompressedStringBidiMap map = new CompressedStringBidiMap();
-		map.setSortWriter(true);
 		map.getOrGenerateKey("one");
 		map.getOrGenerateKey("two");
 		map.getOrGenerateKey("three");
@@ -55,7 +54,7 @@ public class CompressedStringBidiMapTests {
 		
 		
         Writer writer = new FileWriter("test/data/util/collection/csbm-test.txt");
-		map.write(writer);
+		map.write(writer, true);
 
 		map = new CompressedStringBidiMap();
 		map.read(new FileReader("test/data/util/collection/csbm-test.txt"));
