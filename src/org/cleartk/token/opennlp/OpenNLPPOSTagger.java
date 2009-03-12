@@ -86,7 +86,6 @@ public class OpenNLPPOSTagger extends JCasAnnotator_ImplBase
 	
 	public void process(JCas jCas) throws AnalysisEngineProcessException 
 	{
-		long start = System.nanoTime();
 		FSIterator sentenceIterator = jCas.getAnnotationIndex(Sentence.type).iterator();
 		while(sentenceIterator.hasNext())
 		{
@@ -105,11 +104,5 @@ public class OpenNLPPOSTagger extends JCasAnnotator_ImplBase
 				((Token)tokenIterator.next()).setPos((String)tags.get(i));
 			}
 		}
-		long stop = System.nanoTime();
-		processTime +=  (stop - start);
-		
-//		System.out.println("OpenNLP pos tagger: processTime = "+processTime);
-//		System.out.println("OpenNLP pos tagger: tagTime = "+tagTime);
-		
 	}
 }
