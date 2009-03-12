@@ -83,15 +83,15 @@ public class MaxentDataWriter extends DataWriter_ImplBase<String, String, List<N
 		this.trainingDataWriter.print(outcomeString);
 
 		// aggregate the features
-		List<NameNumber> featureVectorElements = this.featuresEncoder.encodeAll(instance.getFeatures());
+		List<NameNumber> nameNumbers = this.featuresEncoder.encodeAll(instance.getFeatures());
 
 		// write each of the string features, encoded, into the training data
-		for (NameNumber featureVectorElement : featureVectorElements) {
+		for (NameNumber nameNumber : nameNumbers) {
 			this.trainingDataWriter.print(' ');
-			if(featureVectorElement.number.equals(Integer.valueOf(1)))
-				trainingDataWriter.print(featureVectorElement.name);
+			if(nameNumber.number.doubleValue() == 1.0)
+				trainingDataWriter.print(nameNumber.name);
 			else
-				trainingDataWriter.print(featureVectorElement.name + "=" + featureVectorElement.number);
+				trainingDataWriter.print(nameNumber.name + "=" + nameNumber.number);
 
 		}
 
