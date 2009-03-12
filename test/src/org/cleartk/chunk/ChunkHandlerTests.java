@@ -63,7 +63,8 @@ public class ChunkHandlerTests {
 	@After
 	public void tearDown() throws Exception {
 		for (File file: this.outputDir.listFiles()) {
-			if (!file.getName().equals("model.jar")) {
+			if (!file.getName().equals("model.jar") &&
+				!file.getName().equals("GeniaChunkTokenizerDataWriterCPE.xml")) {
 				file.delete();
 			}
 		}
