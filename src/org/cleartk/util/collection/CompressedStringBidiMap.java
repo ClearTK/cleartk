@@ -53,12 +53,6 @@ public class CompressedStringBidiMap extends DualHashBidiMap<String, String> imp
 
 	private int count = 0;
 
-	private boolean sortWriter = false;
-
-	public void setSortWriter(boolean sortWriter) {
-		this.sortWriter = sortWriter;
-	}
-
 	public String getOrGenerateKey(String value) {
 		if (containsValue(value)) return getKey(value);
 
@@ -86,7 +80,7 @@ public class CompressedStringBidiMap extends DualHashBidiMap<String, String> imp
 		int tempcount = Integer.parseInt(line);
 
 		while ((line = input.readLine()) != null) {
-			int tabLocation = line.indexOf('\t');
+			int tabLocation = line.lastIndexOf('\t');
 			String value = line.substring(0, tabLocation);
 			String key = line.substring(tabLocation + 1);
 			put(key, value);
@@ -97,9 +91,12 @@ public class CompressedStringBidiMap extends DualHashBidiMap<String, String> imp
 	}
 
 	public void write(Writer writer) throws IOException {
+		write(writer, false);
+	}
+	public void write(Writer writer, boolean sortOutput) throws IOException {
 		PrintWriter out = new PrintWriter(new BufferedWriter(writer));
 		out.println(count);
-		if (sortWriter) {
+		if (sortOutput) {
 			List<String> lookupList = new ArrayList<String>();
 			for (Map.Entry<String, String> entry : entrySet()) {
 				lookupList.add(String.format("%s\t%s", entry.getValue(), entry.getKey()));
