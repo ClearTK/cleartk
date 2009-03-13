@@ -24,6 +24,7 @@
 package org.cleartk.util.linewriter;
 
 import org.apache.uima.UimaContext;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -42,6 +43,6 @@ public interface AnnotationWriter<ANNOTATION_TYPE extends Annotation> {
 
 	public void initialize(UimaContext context) throws ResourceInitializationException;
 
-	public String writeAnnotation(JCas jCas, ANNOTATION_TYPE annotation);
+	public String writeAnnotation(JCas jCas, ANNOTATION_TYPE annotation) throws AnalysisEngineProcessException;
 
 }
