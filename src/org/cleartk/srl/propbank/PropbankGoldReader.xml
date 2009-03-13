@@ -58,6 +58,10 @@ POSSIBILITY OF SUCH DAMAGE.</description>
       <capability>
         <inputs/>
         <outputs/>
+        <outputSofas>
+          <sofaName>TreebankView</sofaName>
+          <sofaName>PropbankView</sofaName>
+        </outputSofas>
         <languagesSupported/>
       </capability>
     </capabilities>
