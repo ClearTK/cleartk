@@ -150,7 +150,7 @@ public class TypesTests {
 			String name = method.getName();
 			Class<?>[] types = method.getParameterTypes();
 			if (name.equals("get" + suffix) || name.equals("set" + suffix)) {
-				if (types.length != 1 || !types[0].equals(FSArray.class)) {
+				if (types.length != 1 || (!types[0].equals(FSArray.class) && !types[0].equals(StringArray.class))) {
 					Class<?>[] jcasTypes = new Class<?>[types.length + 1];
 					Object[] jcasTypeValues = new Object[types.length + 1];
 					Object[] values = new Object[types.length];
