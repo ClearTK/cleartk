@@ -24,7 +24,6 @@ import org.cleartk.srl.type.Argument;
 import org.cleartk.srl.type.Predicate;
 import org.cleartk.srl.type.SemanticArgument;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
-import org.cleartk.syntax.treebank.type.TreebankAnnotation;
 import org.cleartk.syntax.treebank.type.TreebankNode;
 import org.cleartk.token.chunk.type.Subtoken;
 import org.junit.Assert;
@@ -69,7 +68,6 @@ public class TypesTests {
 		// treebank
 		this.testType(jCas, new TopTreebankNode(jCas));
 		this.testType(jCas, new TreebankNode(jCas));
-		this.testType(jCas, new TreebankAnnotation(jCas));
 	}
 	
 	private void testType(JCas jCas, TOP top) throws Exception {
