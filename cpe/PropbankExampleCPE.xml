@@ -80,7 +80,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 <nameValuePair>
                     <name>OutputDirectory</name>
                     <value>
-                        <string>CHANGEME</string>
+                        <string></string>
                     </value>
                 </nameValuePair>
             </configurationParameterSettings>
