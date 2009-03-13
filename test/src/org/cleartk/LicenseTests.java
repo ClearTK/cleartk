@@ -48,12 +48,11 @@ public class LicenseTests {
 	@Test
 	public void testLicenseStatedInDescriptors() throws Exception {
 		testDescriptors("src");
-	}
-
-	@Test
-	public void testLicenseStatedInTestDescriptors() throws Exception {
 		testDescriptors("test/src");
 		testDescriptors("test/data");
+		testDescriptors("cpe");
+		testDescriptors("test/data");
+		testDescriptors("example/desc");
 	}
 
 	private void testDescriptors(String directory) throws IOException {
