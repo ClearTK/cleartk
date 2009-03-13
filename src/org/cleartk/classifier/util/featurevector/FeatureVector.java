@@ -24,6 +24,7 @@
 package org.cleartk.classifier.util.featurevector;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -57,10 +58,62 @@ public abstract class FeatureVector implements Iterable<FeatureVector.Entry>{
 		return Math.sqrt(l);
 	}
 	
+	@Override
+	public boolean equals(Object o) {
+		FeatureVector other;
+		try {
+			other = (FeatureVector) o;
+		} catch( ClassCastException e ) {
+			return false;
+		}
+		
+		Iterator<Entry> thisIt = this.iterator();
+		Iterator<Entry> otherIt = other.iterator();
+		while( thisIt.hasNext() || otherIt.hasNext() ) {
+			Entry thisEntry;
+			Entry otherEntry;
+			try {
+				thisEntry = thisIt.next();
+				otherEntry = otherIt.next();
+			} catch( NoSuchElementException e ) {
+				return false;
+			}
+			
+			if( ! thisEntry.equals(otherEntry) )
+				return false;
+		}
+		
+		return true;
+	}
+	
+	@Override
+	public int hashCode() {
+		int result = 1451;
+		for( Entry e : this ) {
+			result = 757 * result + e.hashCode();
+		}
+		return result;
+	}
+	
+	/**
+	 * Set the feature at index to value.
+	 * 
+	 * @param index
+	 * @param value
+	 */
 	public abstract void set(int index, double value);
 	
+	/**
+	 * Return the value at index.
+	 * 
+	 * @param index
+	 * @return value at index
+	 */
 	public abstract double get(int index);
 	
+	/**
+	 * Gives an iterator over the non-zero features.
+	 */
 	public abstract Iterator<Entry> iterator();
 	
 	public double innerProduct(FeatureVector other) {
@@ -77,6 +130,32 @@ public abstract class FeatureVector implements Iterable<FeatureVector.Entry>{
 		public Entry(int index, double value) {
 			this.index = index;
 			this.value = value;
+		}
+		
+		@Override
+		public boolean equals(Object o) {
+			Entry other;
+			try {
+				other = (Entry) o;
+			} catch( ClassCastException e ) {
+				return false;
+			}
+			
+			if( this.index != other.index )
+				return false;
+			
+			if( this.value != other.value )
+				return false;
+			
+			return true;
+		}
+		
+		@Override
+		public int hashCode() {
+			int result = 83;
+			result = 47 * result + this.index;
+			result = 47 * result + new Double(this.value).hashCode();
+			return result;
 		}
 		
 		public final int index;

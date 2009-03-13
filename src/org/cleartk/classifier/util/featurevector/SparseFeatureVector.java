@@ -68,7 +68,12 @@ public class SparseFeatureVector extends FeatureVector {
 	}
 
 	public void set(int index, double value) {
-		this.values.put(index, value);
+		if( value != 0.0 )
+			this.values.put(index, value);
+		else {
+			if( this.values.containsKey(index) )
+				this.values.remove(index);
+		}
 	}
 
 	

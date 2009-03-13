@@ -79,11 +79,12 @@ public class ArrayFeatureVector extends FeatureVector {
 		
 		int currentIndex;
 
-		java.util.Iterator<Double> subIterator;
+		java.util.ListIterator<Double> subIterator;
 		
 		public Iterator(List<Double> features) {
 			currentIndex = 0;
-			subIterator = features.iterator();
+			subIterator = features.listIterator();
+			moveToNext();
 		}
 		
 		public boolean hasNext() {
@@ -91,14 +92,25 @@ public class ArrayFeatureVector extends FeatureVector {
 		}
 
 		public Entry next() {
-			double value = subIterator.next();
-			currentIndex += 1;
+			int index = subIterator.nextIndex();
+			Double value = subIterator.next();
+			moveToNext();
 			
-			return new FeatureVector.Entry(currentIndex, value);
+			return new FeatureVector.Entry(index, value.doubleValue());
 		}
 
 		public void remove() {
 			throw new UnsupportedOperationException();
+		}
+		
+		private void moveToNext() {
+			while( subIterator.hasNext() ) {
+				Double d = subIterator.next();
+				if( d != null && d.doubleValue() != 0.0 ) {
+					subIterator.previous();
+					return;
+				}
+			}
 		}
 		
 	}
