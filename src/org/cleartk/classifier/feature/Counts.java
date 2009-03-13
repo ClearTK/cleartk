@@ -34,7 +34,7 @@ import java.util.Map;
  */
 public class Counts {
 	
-	public Counts(String featureName, Map<Object,Integer> countsMap) {
+	public Counts(String featureName, Map<? extends Object,Integer> countsMap) {
 		this.featureName = featureName;
 		this.countsMap = countsMap;
 	}
@@ -43,7 +43,7 @@ public class Counts {
 		return featureName;
 	}
 	
-	public Collection<Object> getValues() {
+	public Collection<? extends Object> getValues() {
 		return countsMap.keySet();
 	}
 	
@@ -60,5 +60,5 @@ public class Counts {
 	}
 	
 	private String featureName;
-	private Map<Object, Integer> countsMap;
+	private Map<? extends Object, Integer> countsMap;
 }
