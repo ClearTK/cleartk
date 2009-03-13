@@ -27,8 +27,6 @@ POSSIBILITY OF SUCH DAMAGE.
   <version>1.0</version>
   <vendor>Copyright 2007-2008 Regents of the University of Colorado.   All Rights Reserved.</vendor>
   <imports>
-    <import name="org.cleartk.syntax.treebank.type.TreebankAnnotation"/>
-    <import name="org.cleartk.syntax.treebank.type.TreebankNode"/>
     <import name="org.cleartk.type.SimpleAnnotation"/>
     <import name="org.cleartk.type.ContiguousAnnotation"/>
   </imports>
