@@ -83,47 +83,6 @@ public abstract class FeatureProliferator
 		return returnValues;
 	}
 	
-/**
- * 
- * @param feature the feature to "proliferate" - i.e. copy and modify in some way. 
- * @param featureName the name of the returned feature (if not null)
- * @return should return a feature that has the same context as the given feature but
- * will have a different value and name.  If the feature's value is inappropriate for
- * the proliferator, then it may return null.
- */	
-	@Deprecated
-	public Feature proliferate(Feature feature, String featureName) {
-		String oldFeatureName = this.featureName;
-		this.setFeatureName(featureName);
-		List<Feature> results = this.proliferate(feature);
-		Feature result;
-		if( results.size() > 0 )
-			result = results.get(0);
-		else
-			result = null;
-		this.setFeatureName(oldFeatureName);
-		return result;
-	}
-		
-	/**
-	 * This method iterates through a list of features calling proliferate on each
-	 * feature.  A list of all the non-null values is returned, therefore you should
-	 * not expect the returned list to have a one-to-one correspondence with the given
-	 * list.   
-	 * @param features the features to examine
-	 * @param featureName the name given to each of the returned features 
-	 */
-	@Deprecated
-	public List<Feature> proliferate(List<Feature> features, String featureName) {
-		List<Feature> returnValues = new ArrayList<Feature>();
-		for(Feature feature : features) {
-			Feature newFeature = proliferate(feature, featureName);
-			if(newFeature != null)
-				returnValues.add(newFeature);
-		}
-		return returnValues;
-	}
-	
 	/**
 	 * Return the name that will be assigned to all Features created.
 	 * 

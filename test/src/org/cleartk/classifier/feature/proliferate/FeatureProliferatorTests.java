@@ -182,171 +182,176 @@ public class FeatureProliferatorTests {
 	}
 
 	@Test
-	@SuppressWarnings("deprecation")
 	public void testDeprecatedLowerCaseProliferator() throws UIMAException, IOException {
 		Feature feature = new Feature("OrigName", "HI");
 
-		FeatureProliferator proliferator = new LowerCaseProliferator();
-		Feature lowerCaseFeature = proliferator.proliferate(feature, "NewName");
-		Assert.assertEquals("hi", lowerCaseFeature.getValue());
-		Assert.assertEquals("NewName_OrigName", lowerCaseFeature.getName());
+		FeatureProliferator proliferator = new LowerCaseProliferator("NewName");
+		List<Feature> lowerCaseFeatures = proliferator.proliferate(feature);
+		Assert.assertEquals(1, lowerCaseFeatures.size());
+		Assert.assertEquals("hi", lowerCaseFeatures.get(0).getValue());
+		Assert.assertEquals("NewName_OrigName", lowerCaseFeatures.get(0).getName());
 
 		feature.setValue("");
-		lowerCaseFeature = proliferator.proliferate(feature, "lowercase spanned text extractor");
-		Assert.assertEquals("", lowerCaseFeature.getValue());
-		Assert.assertEquals("lowercase spanned text extractor_OrigName", lowerCaseFeature.getName());
+		lowerCaseFeatures = proliferator.proliferate(feature);
+		Assert.assertEquals(1, lowerCaseFeatures.size());
+		Assert.assertEquals("", lowerCaseFeatures.get(0).getValue());
+		Assert.assertEquals("NewName_OrigName", lowerCaseFeatures.get(0).getName());
 	}
 
 	@Test
-	@SuppressWarnings("deprecation")
 	public void testDeprecatedCapitalTypeProliferator() throws UIMAException, IOException {
-		FeatureProliferator proliferator = new CapitalTypeProliferator();
+		FeatureProliferator proliferator = new CapitalTypeProliferator("NewName");
 		Feature feature = new Feature("OrigName", "HI");
-		Feature caseTypeFeature = proliferator.proliferate(feature, "NewName");
-		Assert.assertEquals(CapitalTypeProliferator.ALL_UPPERCASE, caseTypeFeature.getValue());
-		Assert.assertEquals("NewName_OrigName", caseTypeFeature.getName());
+		List<Feature> caseTypeFeatures = proliferator.proliferate(feature);
+		Assert.assertEquals(1, caseTypeFeatures.size());
+		Assert.assertEquals(CapitalTypeProliferator.ALL_UPPERCASE, caseTypeFeatures.get(0).getValue());
+		Assert.assertEquals("NewName_OrigName", caseTypeFeatures.get(0).getName());
 
 		feature.setValue("hi");
-		caseTypeFeature = proliferator.proliferate(feature, "NewName");
-		Assert.assertEquals(CapitalTypeProliferator.ALL_LOWERCASE, caseTypeFeature.getValue());
+		caseTypeFeatures = proliferator.proliferate(feature);
+		Assert.assertEquals(1, caseTypeFeatures.size());
+		Assert.assertEquals(CapitalTypeProliferator.ALL_LOWERCASE, caseTypeFeatures.get(0).getValue());
 
 		feature.setValue("Hi");
-		caseTypeFeature = proliferator.proliferate(feature, "NewName");
-		Assert.assertEquals(CapitalTypeProliferator.INITIAL_UPPERCASE, caseTypeFeature.getValue());
+		caseTypeFeatures = proliferator.proliferate(feature);
+		Assert.assertEquals(1, caseTypeFeatures.size());
+		Assert.assertEquals(CapitalTypeProliferator.INITIAL_UPPERCASE, caseTypeFeatures.get(0).getValue());
 
 		feature.setValue("HigH");
-		caseTypeFeature = proliferator.proliferate(feature, "NewName");
-		Assert.assertEquals(CapitalTypeProliferator.MIXED_CASE, caseTypeFeature.getValue());
+		caseTypeFeatures = proliferator.proliferate(feature);
+		Assert.assertEquals(1, caseTypeFeatures.size());
+		Assert.assertEquals(CapitalTypeProliferator.MIXED_CASE, caseTypeFeatures.get(0).getValue());
 
 		feature.setValue("!234");
-		caseTypeFeature = proliferator.proliferate(feature, "NewName");
-		Assert.assertEquals(null, caseTypeFeature);
+		caseTypeFeatures = proliferator.proliferate(feature);
+		Assert.assertEquals(0, caseTypeFeatures.size());
 
 		feature.setValue("!@#a@#\\$");
-		caseTypeFeature = proliferator.proliferate(feature, "NewName");
-		Assert.assertEquals(CapitalTypeProliferator.ALL_LOWERCASE, caseTypeFeature.getValue());
+		caseTypeFeatures = proliferator.proliferate(feature);
+		Assert.assertEquals(1, caseTypeFeatures.size());
+		Assert.assertEquals(CapitalTypeProliferator.ALL_LOWERCASE, caseTypeFeatures.get(0).getValue());
 
 		feature.setValue("\t\n");
-		caseTypeFeature = proliferator.proliferate(feature, "NewName");
-		Assert.assertEquals(null, caseTypeFeature);
+		caseTypeFeatures = proliferator.proliferate(feature);
+		Assert.assertEquals(0, caseTypeFeatures.size());
 
 	}
 
 	@Test
-	@SuppressWarnings("deprecation")
 	public void testDeprecatedNumericTypeProliferator() throws UIMAException, IOException {
-		FeatureProliferator proliferator = new NumericTypeProliferator();
+		FeatureProliferator proliferator = new NumericTypeProliferator("NumericName");
 
 		Feature feature = new Feature("OrigName", "HI");
-		Feature numericTypeFeature = proliferator.proliferate(feature, "NumericName");
-		Assert.assertEquals(null, numericTypeFeature);
+		List<Feature> numericTypeFeatures = proliferator.proliferate(feature);
+		Assert.assertEquals(0, numericTypeFeatures.size());
 
 		feature.setValue("");
-		numericTypeFeature = proliferator.proliferate(feature, "NumericName");
-		Assert.assertEquals(null, numericTypeFeature);
+		numericTypeFeatures = proliferator.proliferate(feature);
+		Assert.assertEquals(0, numericTypeFeatures.size());
 
 		feature.setValue("\t\t");
-		numericTypeFeature = proliferator.proliferate(feature, "NumericName");
-		Assert.assertEquals(null, numericTypeFeature);
+		numericTypeFeatures = proliferator.proliferate(feature);
+		Assert.assertEquals(0, numericTypeFeatures.size());
 
 		feature.setValue("HI2");
-		numericTypeFeature = proliferator.proliferate(feature, "NumericName");
-		Assert.assertEquals(NumericTypeProliferator.ALPHANUMERIC, numericTypeFeature.getValue());
-		Assert.assertEquals("NumericName_OrigName", numericTypeFeature.getName());
+		numericTypeFeatures = proliferator.proliferate(feature);
+		Assert.assertEquals(1, numericTypeFeatures.size());
+		Assert.assertEquals(NumericTypeProliferator.ALPHANUMERIC, numericTypeFeatures.get(0).getValue());
+		Assert.assertEquals("NumericName_OrigName", numericTypeFeatures.get(0).getName());
 
 		feature.setValue("222");
-		numericTypeFeature = proliferator.proliferate(feature, "NumericName");
-		Assert.assertEquals(NumericTypeProliferator.DIGITS, numericTypeFeature.getValue());
+		numericTypeFeatures = proliferator.proliferate(feature);
+		Assert.assertEquals(NumericTypeProliferator.DIGITS, numericTypeFeatures.get(0).getValue());
 
 		feature.setValue("2222");
-		numericTypeFeature = proliferator.proliferate(feature, "NumericName");
-		Assert.assertEquals(NumericTypeProliferator.DIGITS, numericTypeFeature.getValue());
+		numericTypeFeatures = proliferator.proliferate(feature);
+		Assert.assertEquals(NumericTypeProliferator.DIGITS, numericTypeFeatures.get(0).getValue());
 
 		feature.setValue("2122");
-		numericTypeFeature = proliferator.proliferate(feature, "NumericName");
-		Assert.assertEquals(NumericTypeProliferator.YEAR_DIGITS, numericTypeFeature.getValue());
+		numericTypeFeatures = proliferator.proliferate(feature);
+		Assert.assertEquals(NumericTypeProliferator.YEAR_DIGITS, numericTypeFeatures.get(0).getValue());
 
 		feature.setValue("2022");
-		numericTypeFeature = proliferator.proliferate(feature, "NumericName");
-		Assert.assertEquals(NumericTypeProliferator.YEAR_DIGITS, numericTypeFeature.getValue());
+		numericTypeFeatures = proliferator.proliferate(feature);
+		Assert.assertEquals(NumericTypeProliferator.YEAR_DIGITS, numericTypeFeatures.get(0).getValue());
 
 		feature.setValue("1022");
-		numericTypeFeature = proliferator.proliferate(feature, "NumericName");
-		Assert.assertEquals(NumericTypeProliferator.YEAR_DIGITS, numericTypeFeature.getValue());
+		numericTypeFeatures = proliferator.proliferate(feature);
+		Assert.assertEquals(NumericTypeProliferator.YEAR_DIGITS, numericTypeFeatures.get(0).getValue());
 
 		feature.setValue("0022");
-		numericTypeFeature = proliferator.proliferate(feature, "NumericName");
-		Assert.assertEquals(NumericTypeProliferator.DIGITS, numericTypeFeature.getValue());
+		numericTypeFeatures = proliferator.proliferate(feature);
+		Assert.assertEquals(NumericTypeProliferator.DIGITS, numericTypeFeatures.get(0).getValue());
 
 		feature.setValue("0");
-		numericTypeFeature = proliferator.proliferate(feature, "NumericName");
-		Assert.assertEquals(NumericTypeProliferator.DIGITS, numericTypeFeature.getValue());
+		numericTypeFeatures = proliferator.proliferate(feature);
+		Assert.assertEquals(NumericTypeProliferator.DIGITS, numericTypeFeatures.get(0).getValue());
 
 		feature.setValue("asdfASDF1234");
-		numericTypeFeature = proliferator.proliferate(feature, "NumericName");
-		Assert.assertEquals(NumericTypeProliferator.ALPHANUMERIC, numericTypeFeature.getValue());
+		numericTypeFeatures = proliferator.proliferate(feature);
+		Assert.assertEquals(NumericTypeProliferator.ALPHANUMERIC, numericTypeFeatures.get(0).getValue());
 
 		feature.setValue("1F1234");
-		numericTypeFeature = proliferator.proliferate(feature, "NumericName");
-		Assert.assertEquals(NumericTypeProliferator.ALPHANUMERIC, numericTypeFeature.getValue());
+		numericTypeFeatures = proliferator.proliferate(feature);
+		Assert.assertEquals(NumericTypeProliferator.ALPHANUMERIC, numericTypeFeatures.get(0).getValue());
 
 		feature.setValue("10-1234");
-		numericTypeFeature = proliferator.proliferate(feature, "NumericName");
-		Assert.assertEquals(NumericTypeProliferator.SOME_DIGITS, numericTypeFeature.getValue());
+		numericTypeFeatures = proliferator.proliferate(feature);
+		Assert.assertEquals(NumericTypeProliferator.SOME_DIGITS, numericTypeFeatures.get(0).getValue());
 
 		feature.setValue("1F1234!");
-		numericTypeFeature = proliferator.proliferate(feature, "NumericName");
-		Assert.assertEquals(NumericTypeProliferator.SOME_DIGITS, numericTypeFeature.getValue());
+		numericTypeFeatures = proliferator.proliferate(feature);
+		Assert.assertEquals(NumericTypeProliferator.SOME_DIGITS, numericTypeFeatures.get(0).getValue());
 
 		feature.setValue("!!12!");
-		numericTypeFeature = proliferator.proliferate(feature, "NumericName");
-		Assert.assertEquals(NumericTypeProliferator.SOME_DIGITS, numericTypeFeature.getValue());
+		numericTypeFeatures = proliferator.proliferate(feature);
+		Assert.assertEquals(NumericTypeProliferator.SOME_DIGITS, numericTypeFeatures.get(0).getValue());
 
 		feature.setValue("10,000");
-		numericTypeFeature = proliferator.proliferate(feature, "NumericName");
-		Assert.assertEquals(NumericTypeProliferator.SOME_DIGITS, numericTypeFeature.getValue());
+		numericTypeFeatures = proliferator.proliferate(feature);
+		Assert.assertEquals(NumericTypeProliferator.SOME_DIGITS, numericTypeFeatures.get(0).getValue());
 	}
 
 	@Test
-	@SuppressWarnings("deprecation")
 	public void testDeprecatedCharacterNGramProliferator() throws UIMAException, IOException {
-		FeatureProliferator proliferator = new CharacterNGramProliferator(CharacterNGramProliferator.RIGHT_TO_LEFT, 0,
+		FeatureProliferator proliferator = new CharacterNGramProliferator( "CharNGram", CharacterNGramProliferator.RIGHT_TO_LEFT, 0,
 				3, 7, false);
 
 		Feature feature = new Feature("OrigName", "emotion");
-		Feature ngramFeature = proliferator.proliferate(feature, "CharNGram");
-		Assert.assertEquals("ion", ngramFeature.getValue());
+		List<Feature> ngramFeatures = proliferator.proliferate(feature);
+		Assert.assertEquals(1, ngramFeatures.size());
+		Assert.assertEquals("ion", ngramFeatures.get(0).getValue());
 
 		feature = new Feature("OrigName", "motion");
-		ngramFeature = proliferator.proliferate(feature, "CharNGram");
-		Assert.assertEquals(null, ngramFeature);
+		ngramFeatures = proliferator.proliferate(feature);
+		Assert.assertEquals(0, ngramFeatures.size());
 
 		feature = new Feature("OrigName", "locomotive");
-		ngramFeature = proliferator.proliferate(feature, "CharNGram");
-		Assert.assertEquals("ive", ngramFeature.getValue());
+		ngramFeatures = proliferator.proliferate(feature);
+		Assert.assertEquals("ive", ngramFeatures.get(0).getValue());
 
 		proliferator = new CharacterNGramProliferator(CharacterNGramProliferator.LEFT_TO_RIGHT, 0, 3, 3, false);
 		feature = new Feature("OrigName", "locomotive");
-		ngramFeature = proliferator.proliferate(feature, "CharNGram");
-		Assert.assertEquals("loc", ngramFeature.getValue());
+		ngramFeatures = proliferator.proliferate(feature);
+		Assert.assertEquals("loc", ngramFeatures.get(0).getValue());
 
 		feature = new Feature("OrigName", "loc");
-		ngramFeature = proliferator.proliferate(feature, "CharNGram");
-		Assert.assertEquals("loc", ngramFeature.getValue());
+		ngramFeatures = proliferator.proliferate(feature);
+		Assert.assertEquals("loc", ngramFeatures.get(0).getValue());
 
 		feature = new Feature("OrigName", "lo");
-		ngramFeature = proliferator.proliferate(feature, "CharNGram");
-		Assert.assertEquals(null, ngramFeature);
+		ngramFeatures = proliferator.proliferate(feature);
+		Assert.assertEquals(0, ngramFeatures.size());
 
 		proliferator = new CharacterNGramProliferator(CharacterNGramProliferator.LEFT_TO_RIGHT, 1, 3, 8, false);
 		feature = new Feature("OrigName", "locomotive");
-		ngramFeature = proliferator.proliferate(feature, "CharNGram");
-		Assert.assertEquals("oc", ngramFeature.getValue());
+		ngramFeatures = proliferator.proliferate(feature);
+		Assert.assertEquals("oc", ngramFeatures.get(0).getValue());
 
 		proliferator = new CharacterNGramProliferator(CharacterNGramProliferator.LEFT_TO_RIGHT, 5, 6, 8, false);
 		feature = new Feature("OrigName", "abcdefghi");
-		ngramFeature = proliferator.proliferate(feature, "CharNGram");
-		Assert.assertEquals("f", ngramFeature.getValue());
+		ngramFeatures = proliferator.proliferate(feature);
+		Assert.assertEquals("f", ngramFeatures.get(0).getValue());
 
 	}
 }
