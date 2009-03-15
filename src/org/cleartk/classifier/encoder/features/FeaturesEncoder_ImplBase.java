@@ -34,6 +34,8 @@ import org.cleartk.classifier.Feature;
 
 public abstract class FeaturesEncoder_ImplBase<ENCODED_FEATURES_TYPE, ENCODED_FEATURE_TYPE> extends FeatureEncoderChain<ENCODED_FEATURE_TYPE> implements FeaturesEncoder<ENCODED_FEATURES_TYPE> {
 	
+	private static final long serialVersionUID = 2233783545101319775L;
+
 	public static final String ENCODER_FILE_NAME = "encoding.ser";
 
 	public abstract ENCODED_FEATURES_TYPE encodeAll(Iterable<Feature> features);
