@@ -1,5 +1,5 @@
- /** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+/** 
+ * Copyright (c) 2009, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -23,40 +23,21 @@
 */
 package org.cleartk.classifier.encoder.features;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.cleartk.classifier.Feature;
 
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
+ * <br>Copyright (c) 2009, Regents of the University of Colorado 
  * <br>All rights reserved.
+ *
+ */
 
-*/
-
-public abstract class FeaturesEncoder_ImplBase<T, U> implements FeaturesEncoder<T> {
-	
-	private static final long serialVersionUID = 7789468136107138541L;
+public abstract class FeaturesEncoder_ImplBase<ENCODED_FEATURES_TYPE, ENCODED_FEATURE_TYPE> extends FeatureEncoderChain<ENCODED_FEATURE_TYPE> implements FeaturesEncoder<ENCODED_FEATURES_TYPE> {
 	
 	public static final String ENCODER_FILE_NAME = "encoding.ser";
 
-	public abstract T encodeAll(Iterable<Feature> features);
-	
-	public void addEncoder(FeatureEncoder<U> encoder) {
-		featureEncoders.add(encoder);
-	}
+	public abstract ENCODED_FEATURES_TYPE encodeAll(Iterable<Feature> features);
 	
 	public void allowNewFeatures(boolean flag) {}
 
-	protected List<U> encode(Feature feature) {
-		for( FeatureEncoder<U> featureEncoder : featureEncoders ) {
-			if( featureEncoder.encodes(feature) )
-				return featureEncoder.encode(feature);
-		}
-		
-		throw new IllegalArgumentException();
-	}
-	
-	protected List<FeatureEncoder<U>> featureEncoders = new ArrayList<FeatureEncoder<U>>();
 }

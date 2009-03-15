@@ -156,9 +156,9 @@ public class GeniaPosGoldReader extends CollectionReader_ImplBase {
 		if(!hasNext()) 
 			throw new CollectionException("Should not be calling getNext() because hasNext returns false", null);
 		try {
-			JCas jCas = cas.getJCas();
+			JCas annotationsView = cas.getJCas().getView(ViewNames.ANNOTATIONS);
 			String text = parse.getText();
-			jCas.setDocumentText(text);
+			annotationsView.setDocumentText(text);
 
 			List<GeniaSentence> sentences = parse.getSentences();
 
@@ -167,13 +167,13 @@ public class GeniaPosGoldReader extends CollectionReader_ImplBase {
 					List<GeniaTag> posTags = geniaSentence.getPosTags();
 					for (GeniaTag posTag : posTags) {
 						Span tokenSpan = posTag.getSpans().get(0);
-						Token token = new Token(jCas, tokenSpan.getBegin(), tokenSpan.getEnd());
+						Token token = new Token(annotationsView, tokenSpan.getBegin(), tokenSpan.getEnd());
 						if (loadPOSTags) token.setPos(posTag.getLabel());
 						token.addToIndexes();
 					}
 				}
 				if (loadSentences) {
-					Sentence sentence = new Sentence(jCas, geniaSentence.getSpan().getBegin(), geniaSentence.getSpan()
+					Sentence sentence = new Sentence(annotationsView, geniaSentence.getSpan().getBegin(), geniaSentence.getSpan()
 							.getEnd());
 					sentence.addToIndexes();
 				}
@@ -181,7 +181,7 @@ public class GeniaPosGoldReader extends CollectionReader_ImplBase {
 
 			ViewURIUtil.setURI(cas, parse.getMedline());
 
-			JCas geniaView = jCas.createView(ViewNames.GENIA_POS);
+			JCas geniaView = cas.getJCas().createView(ViewNames.GENIA_POS);
 			geniaView.setDocumentText(parse.getXml());
 
 			parse = null;

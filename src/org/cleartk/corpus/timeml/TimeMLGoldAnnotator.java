@@ -97,7 +97,7 @@ public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
 		
 		StringBuffer textBuffer = new StringBuffer();
 		Map<String, Anchor> anchors = new HashMap<String, Anchor>();
-		this.addAnnotations(jCas, root, textBuffer, anchors);
+		this.addAnnotations(initialView, root, textBuffer, anchors);
 		initialView.setDocumentText(textBuffer.toString());
 		
 //		if (textBuffer.toString().contains("Air Force Lieutenant Colonel Eileen Collins")) {

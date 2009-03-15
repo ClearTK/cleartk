@@ -27,12 +27,14 @@ import org.apache.uima.UimaContext;
 import org.cleartk.classifier.encoder.EncoderFactory_ImplBase;
 import org.cleartk.classifier.encoder.features.BooleanEncoder;
 import org.cleartk.classifier.encoder.features.FeatureVectorFeaturesEncoder;
-import org.cleartk.classifier.encoder.features.NumberEncoder;
-import org.cleartk.classifier.encoder.features.StringEncoder;
-import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
-import org.cleartk.classifier.encoder.features.RowNormalizingFeaturesEncoder;
+import org.cleartk.classifier.encoder.features.NameNumber;
+import org.cleartk.classifier.encoder.features.NumberEncoder;
+import org.cleartk.classifier.encoder.features.StringEncoder;
+import org.cleartk.classifier.encoder.features.normalizer.EuclidianNormalizer;
+import org.cleartk.classifier.encoder.features.normalizer.NOPNormalizer;
+import org.cleartk.classifier.encoder.features.normalizer.NameNumberNormalizer;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 import org.cleartk.util.UIMAUtil;
@@ -57,11 +59,13 @@ public abstract class SVMEncoderFactory extends EncoderFactory_ImplBase {
 			FeaturesEncoder_ImplBase<FeatureVector, NameNumber> svmFeaturesEncoder;
 			boolean normalizeVectors = (Boolean)UIMAUtil.getDefaultingConfigParameterValue(
 					context, SVMEncoderFactory.PARAM_NORMALIZE_VECTORS, false);
+			NameNumberNormalizer normalizer;
 			if (normalizeVectors) {
-				svmFeaturesEncoder = new RowNormalizingFeaturesEncoder();
+				normalizer = new EuclidianNormalizer();
 			} else {
-				svmFeaturesEncoder = new FeatureVectorFeaturesEncoder();
+				normalizer = new NOPNormalizer();
 			}
+			svmFeaturesEncoder = new FeatureVectorFeaturesEncoder(normalizer);
 	
 			// add number, boolean and string encoder
 			svmFeaturesEncoder.addEncoder(new NumberEncoder());

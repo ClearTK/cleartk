@@ -1,5 +1,5 @@
- /** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+/** 
+ * Copyright (c) 2009, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -20,59 +20,83 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.encoder.features;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.encoder.features.NameNumber;
+import org.cleartk.classifier.encoder.features.normalizer.NOPNormalizer;
+import org.cleartk.classifier.encoder.features.normalizer.NameNumberNormalizer;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 import org.cleartk.classifier.util.featurevector.SparseFeatureVector;
 import org.cleartk.util.StringIndex;
 
+
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
+ * <br>Copyright (c) 2009, Regents of the University of Colorado 
  * <br>All rights reserved.
-
-*/
-
+ *
+ * @author Philipp Wetzler
+ */
 public class FeatureVectorFeaturesEncoder extends FeaturesEncoder_ImplBase<FeatureVector, NameNumber> {
-	
+
 	private static final long serialVersionUID = 6714456694285732480L;
+	
+	public FeatureVectorFeaturesEncoder(NameNumberNormalizer normalizer) {
+		this.normalizer = normalizer;
+	}
+	
+	public FeatureVectorFeaturesEncoder() {
+		this(new NOPNormalizer());
+	}
 
 	@Override
 	public FeatureVector encodeAll(Iterable<Feature> features) {
-		SparseFeatureVector fv = new SparseFeatureVector();
-		
+		List<NameNumber> fves = new ArrayList<NameNumber>();		
 		for( Feature feature : features ) {
-			for( NameNumber nameValue : this.encode(feature) ) {
-				String name = nameValue.name;
-				Number number = nameValue.number;
+			fves.addAll(this.encode(feature));
+		}
 
-				if(number.doubleValue() == 0.0 ) {
-					continue;
-				}
-				if( stringIndex.contains(name) ) {
-					int i = stringIndex.find(name);
-					double v = fv.get(i) + number.doubleValue();
-					fv.set(i, v);
-				} else if( expandIndex ) {
-					stringIndex.insert(name);
-					int i = stringIndex.find(name);
-					double v = fv.get(i) + number.doubleValue();
-					fv.set(i, v);
-				}
+		normalizer.normalize(fves);
+
+		SparseFeatureVector fv = new SparseFeatureVector();
+		for( NameNumber fve : fves ) {
+			String name = fve.name;
+			Number value = fve.number;
+			
+			if( value.doubleValue() == 0.0 )
+				continue;
+
+			if( stringIndex.contains(name) ) {
+				int i = stringIndex.find(name);
+				double v = fv.get(i) + value.doubleValue();
+				fv.set(i, v);
+			} else if( expandIndex ) {
+				stringIndex.insert(name);
+				int i = stringIndex.find(name);
+				double v = fv.get(i) + value.doubleValue();
+				fv.set(i, v);
 			}
 		}
 
 		return fv;
 	}
-	
+
 	@Override
 	public void allowNewFeatures(boolean flag) {
 		expandIndex = flag;
 	}
+	
+	public void setNormalizer(NameNumberNormalizer normalizer) {
+		this.normalizer = normalizer;
+	}
 
 	private boolean expandIndex = true;
 	private StringIndex stringIndex = new StringIndex(1);
-	
+	private NameNumberNormalizer normalizer;
+
 }
