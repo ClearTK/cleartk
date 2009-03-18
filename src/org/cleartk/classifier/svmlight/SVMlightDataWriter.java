@@ -72,10 +72,7 @@ DataWriter_ImplBase<Boolean,Boolean,FeatureVector> {
 			if( entry.value == 0.0 )
 				continue;
 
-			output.append(" ");
-			output.append(entry.index);
-			output.append(":");
-			output.append(entry.value);
+			output.append(String.format(" %d:%.7f", entry.index, entry.value));
 		}
 
 		outputWriter.println(output);

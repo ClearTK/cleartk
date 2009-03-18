@@ -85,10 +85,7 @@ public class OVASVMlightDataWriter extends
 		
 		StringBuffer featureString = new StringBuffer();
 		for( FeatureVector.Entry entry : featureVector ) {
-			featureString.append(" ");
-			featureString.append(entry.index);
-			featureString.append(":");
-			featureString.append(entry.value);
+			featureString.append(String.format(" %d:%.7f", entry.index, entry.value));
 		}
 		
 		StringBuffer output = new StringBuffer();
