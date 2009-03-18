@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cpeDescription xmlns="http://uima.apache.org/resourceSpecifier">
+<collectionReader>
+<collectionIterator>
+<descriptor>
+<import name="org.cleartk.util.PlainTextCollectionReader"/>
+</descriptor>
+<configurationParameterSettings>
+<nameValuePair>
+<name>FileOrDirectory</name>
+<value>
+<string>../ClearTK Data/data/20newsgroups/20news-bydate-test</string>
+</value>
+</nameValuePair>
+<nameValuePair>
+<name>Language</name>
+<value>
+<string>English</string>
+</value>
+</nameValuePair>
+<nameValuePair>
+<name>Encoding</name>
+<value>
+<string>ASCII</string>
+</value>
+</nameValuePair>
+</configurationParameterSettings>
+</collectionIterator>
+</collectionReader>
+<casProcessors casPoolSize="3" processingUnitThreadCount="1">
+<casProcessor deployment="integrated" name="SentencesAndTokens">
+<descriptor>
+<import name="org.cleartk.sentence.SentencesAndTokens"/>
+</descriptor>
+<deploymentParameters/>
+<errorHandling>
+<errorRateThreshold action="terminate" value="0/1000"/>
+<maxConsecutiveRestarts action="terminate" value="30"/>
+<timeout max="100000" default="-1"/>
+</errorHandling>
+<checkpoint batch="10000" time="1000ms"/>
+<configurationParameterSettings>
+<nameValuePair>
+<name>TokenType</name>
+<value>
+<string>org.cleartk.type.Token</string>
+</value>
+</nameValuePair>
+<nameValuePair>
+<name>Tokenizer</name>
+<value>
+<string>org.cleartk.token.util.PennTreebankTokenizer</string>
+</value>
+</nameValuePair>
+</configurationParameterSettings>
+</casProcessor>
+<casProcessor deployment="integrated" name="SnowballStemmer">
+<descriptor>
+<import name="org.cleartk.token.snowball.SnowballStemmer"/>
+</descriptor>
+<deploymentParameters/>
+<errorHandling>
+<errorRateThreshold action="terminate" value="0/1000"/>
+<maxConsecutiveRestarts action="terminate" value="30"/>
+<timeout max="100000" default="-1"/>
+</errorHandling>
+<checkpoint batch="10000" time="1000ms"/>
+<configurationParameterSettings>
+<nameValuePair>
+<name>org.cleartk.token.snowball.SnowballStemmer.PARAM_STEMMER_NAME</name>
+<value>
+<string>English</string>
+</value>
+</nameValuePair>
+</configurationParameterSettings>
+</casProcessor>
+<casProcessor deployment="integrated" name="GoldAnnotator">
+<descriptor>
+<import name="org.cleartk.example.documentclassification.GoldAnnotator"/>
+</descriptor>
+<deploymentParameters/>
+<errorHandling>
+<errorRateThreshold action="terminate" value="0/1000"/>
+<maxConsecutiveRestarts action="terminate" value="30"/>
+<timeout max="100000" default="-1"/>
+</errorHandling>
+<checkpoint batch="10000" time="1000ms"/>
+</casProcessor>
+<casProcessor deployment="integrated" name="ClassifierAnnotator">
+<descriptor>
+<import location="../../src/org/cleartk/classifier/ClassifierAnnotator.xml"/>
+</descriptor>
+<deploymentParameters/>
+<errorHandling>
+<errorRateThreshold action="terminate" value="0/1000"/>
+<maxConsecutiveRestarts action="terminate" value="30"/>
+<timeout max="100000" default="-1"/>
+</errorHandling>
+<checkpoint batch="10000" time="1000ms"/>
+<configurationParameterSettings>
+<nameValuePair>
+<name>ClassifierJar</name>
+<value>
+<string>example/documentclassification/model.jar</string>
+</value>
+</nameValuePair>
+<nameValuePair>
+<name>AnnotationHandler</name>
+<value>
+<string>org.cleartk.example.documentclassification.AnnotationHandler</string>
+</value>
+</nameValuePair>
+</configurationParameterSettings>
+</casProcessor>
+<casProcessor deployment="integrated" name="Evaluator">
+<descriptor>
+<import location="../../src/org/cleartk/example/documentclassification/Evaluator.xml"/>
+</descriptor>
+<deploymentParameters/>
+<errorHandling>
+<errorRateThreshold action="terminate" value="0/1000"/>
+<maxConsecutiveRestarts action="terminate" value="30"/>
+<timeout max="100000" default="-1"/>
+</errorHandling>
+<checkpoint batch="10000" time="1000ms"/>
+</casProcessor>
+</casProcessors>
+<cpeConfig>
+<numToProcess>-1</numToProcess>
+<deployAs>immediate</deployAs>
+<checkpoint batch="0" time="300000ms"/>
+<timerImpl></timerImpl>
+</cpeConfig>
+</cpeDescription>
