@@ -24,6 +24,7 @@
 package org.cleartk.classifier.svmlight;
 
 import java.io.PrintWriter;
+import java.util.Locale;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -72,7 +73,7 @@ DataWriter_ImplBase<Boolean,Boolean,FeatureVector> {
 			if( entry.value == 0.0 )
 				continue;
 
-			output.append(String.format(" %d:%.7f", entry.index, entry.value));
+			output.append(String.format(Locale.US, " %d:%.7f", entry.index, entry.value));
 		}
 
 		outputWriter.println(output);

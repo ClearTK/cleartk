@@ -32,6 +32,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.channels.FileChannel;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -85,7 +86,7 @@ public class OVASVMlightDataWriter extends
 		
 		StringBuffer featureString = new StringBuffer();
 		for( FeatureVector.Entry entry : featureVector ) {
-			featureString.append(String.format(" %d:%.7f", entry.index, entry.value));
+			featureString.append(String.format(Locale.US, " %d:%.7f", entry.index, entry.value));
 		}
 		
 		StringBuffer output = new StringBuffer();
