@@ -65,7 +65,7 @@ POSSIBILITY OF SUCH DAMAGE.</description>
       <configurationParameter>
         <name>FileNames</name>
         <type>String</type>
-        <multiValued>false</multiValued>
+        <multiValued>true</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
     </configurationParameters>
