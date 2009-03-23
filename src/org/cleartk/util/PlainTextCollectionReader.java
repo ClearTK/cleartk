@@ -146,6 +146,7 @@ public class PlainTextCollectionReader extends CollectionReader_ImplBase {
 
 		if(suffixNames != null) {
 			files = Files.getFiles(rootFile, suffixNames).iterator();
+			filesCount = countFiles(Files.getFiles(rootFile, suffixNames).iterator());
 		} else if (fileNamesLists != null) {
 			Set<String> fileNames = new HashSet<String>();
 			try {
@@ -153,12 +154,14 @@ public class PlainTextCollectionReader extends CollectionReader_ImplBase {
 					fileNames.addAll(Arrays.asList(FileUtil.loadListOfStrings(new File(fileNamesList))));
 				}
 				files = Files.getFiles(rootFile, fileNames).iterator();
+				filesCount = countFiles(Files.getFiles(rootFile, fileNames).iterator());
 			} catch(IOException ioe) {
 				throw new ResourceInitializationException(ioe);
 			}
 		}
 		else {
 			files = Files.getFiles(rootFile).iterator();
+			filesCount = countFiles(Files.getFiles(rootFile).iterator());
 		}
 		
 
@@ -193,9 +196,17 @@ public class PlainTextCollectionReader extends CollectionReader_ImplBase {
 		completed++;
 	}
 
+	protected int countFiles(Iterator<File> tempFiles) {
+		int count = 0;
+		while(tempFiles.hasNext()) {
+			tempFiles.next();
+			count++;
+		}
+		return count;
+	}
 
 	public Progress[] getProgress() {
-		Progress progress = new ProgressImpl(completed, 1000000, Progress.ENTITIES);
+		Progress progress = new ProgressImpl(completed, filesCount, Progress.ENTITIES);
 		return new Progress[] { progress };
 	}
 
@@ -214,6 +225,9 @@ public class PlainTextCollectionReader extends CollectionReader_ImplBase {
 	protected Iterator<File> files;
 
 	protected int completed = 0; 
+	
+	protected int filesCount = 0;
+	
 	public void close() throws IOException { }
 }
 

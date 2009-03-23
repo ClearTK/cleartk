@@ -164,6 +164,7 @@ public class PlainTextCollectionReaderTests {
 			Assert.assertTrue(pathsSet.contains(docPath));
 			pathsSet.remove(docPath);
 		}
+		
 		reader.close();
 		
 		// check that all documents were seen
@@ -238,16 +239,19 @@ public class PlainTextCollectionReaderTests {
 		for (JCas jCas: new JCasIterable(reader)) {
 			String fileName = ViewURIUtil.getURI(jCas).replace('\\', '/');
 			fileName = fileName.substring(fileName.lastIndexOf("/")+1);
-			System.out.println("fileName="+fileName);
 			Assert.assertTrue(fileNamesSet.contains(fileName));
 			fileNamesSet.remove(fileName);
 			i++;
 		}
+		
+		Assert.assertEquals(4, reader.getProgress()[0].getTotal());
+
 		reader.close();
 		
 		Assert.assertEquals(4, i);
 		// check that all documents were seen
 		Assert.assertTrue(fileNamesSet.isEmpty());
+
 	}
 
 	
@@ -330,5 +334,6 @@ public class PlainTextCollectionReaderTests {
 				PlainTextCollectionReader.PARAM_LANGUAGE);
 		Assert.assertEquals(null, language);
 	}
+	
 	
 }
