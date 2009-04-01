@@ -23,6 +23,8 @@
  */
 package org.cleartk;
 
+import org.apache.uima.cas.CAS;
+
 /**
  * Contains the view name constants used by ClearTK. 
  *
@@ -33,6 +35,8 @@ package org.cleartk;
  * All rights reserved.
  */
 public class ViewNames {
+	
+	public static final String INITIAL_VIEW = CAS.NAME_DEFAULT_SOFA;
 	
 	/**
 	 * The view where the document Uniform Resource Identifier is placed.
