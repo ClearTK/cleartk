@@ -62,7 +62,7 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
 		try {
 			JCas conllView = jCas.getView(ViewNames.CONLL_2005);
-			JCas initView = jCas.getView(ViewNames.ANNOTATIONS);
+			JCas initView = jCas.getView(ViewNames.DEFAULT);
 			
 			String conllText = conllView.getSofaDataString();
 

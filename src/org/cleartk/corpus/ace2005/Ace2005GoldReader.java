@@ -196,7 +196,7 @@ AFP_ENG_20030305.0918
 			
 			String sgmText = FileUtils.file2String(sgmFile);
 			
-			JCas initialView = jCas.getView(ViewNames.ANNOTATIONS);
+			JCas initialView = jCas.getView(ViewNames.DEFAULT);
 			initialView.setDocumentText(getDocumentText(sgmText));
 
 //			org.cleartk.type.Document sgmDocument = new org.cleartk.type.Document(initialView);

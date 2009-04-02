@@ -76,7 +76,7 @@ public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
 		JCas initialView;
 		try {
 			timemlView = jCas.getView(ViewNames.TIMEML);
-			initialView = jCas.getView(ViewNames.ANNOTATIONS);
+			initialView = jCas.getView(ViewNames.DEFAULT);
 		} catch (CASException e) {
 			throw new AnalysisEngineProcessException(e);
 		}

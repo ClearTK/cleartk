@@ -26,27 +26,30 @@ package org.cleartk;
 import org.apache.uima.cas.CAS;
 
 /**
- * Contains the view name constants used by ClearTK. 
- *
+ * Contains the view name constants used by ClearTK.
+ * 
  * @author Steven Bethard
  * 
  * <br>
- * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
- * All rights reserved.
+ *         Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ *         All rights reserved.
  */
 public class ViewNames {
-	
-	public static final String INITIAL_VIEW = CAS.NAME_DEFAULT_SOFA;
-	
+
 	/**
 	 * The view where the document Uniform Resource Identifier is placed.
 	 */
 	public static final String URI = "UriView";
 
 	/**
-	 * The view where annotations are placed by default.
+	 * The view where annotations are placed by default. This is equivalent to
+	 * the default view named "_InitialView" and is repeated here only for
+	 * convenience.  For more information on the "_InitialView" please see:
+	 * http://incubator.apache.org/uima/downloads/releaseDocs/2.2.2-incubating/docs/html/tools/tools.html#ugr.tools.cde.capabilities.sofa_name_mapping
+	 * 
+	 * @see CAS#NAME_DEFAULT_SOFA
 	 */
-	public static String ANNOTATIONS = "_InitialView";
+	public static String DEFAULT = CAS.NAME_DEFAULT_SOFA;
 
 	/**
 	 * The view where TreebankGoldAnnotator places annotations.
@@ -54,32 +57,32 @@ public class ViewNames {
 	public static String TREEBANK_ANNOTATIONS = "GoldView";
 
 	/**
-	 * The view containing the XML text of an ACE APF file. 
+	 * The view containing the XML text of an ACE APF file.
 	 */
 	public static String ACE_APF_URI = "ApfUriView";
-	
+
 	/**
-	 * The view containing the XML text of a TimeML file. 
+	 * The view containing the XML text of a TimeML file.
 	 */
 	public static String TIMEML = "TimeMLView";
-	
+
 	/**
-	 * The view containing CoNLL 2005 formatted text. 
+	 * The view containing CoNLL 2005 formatted text.
 	 */
 	public static String CONLL_2005 = "CoNLL2005View";
-	
+
 	/**
-	 * The view containing the text of a PropBank "prop.txt" file.  
+	 * The view containing the text of a PropBank "prop.txt" file.
 	 */
 	public static String PROPBANK = "PropbankView";
-	
+
 	/**
-	 * The view containing the parenthesized text of a TreeBank .mrg file. 
+	 * The view containing the parenthesized text of a TreeBank .mrg file.
 	 */
 	public static String TREEBANK = "TreebankView";
-	
+
 	/**
-	 * The view containing Genia part of speech formatted text. 
+	 * The view containing Genia part of speech formatted text.
 	 */
 	public static String GENIA_POS = "GeniaPOSView";
 
@@ -87,10 +90,11 @@ public class ViewNames {
 	 * The view where the ACE identifier is placed.
 	 */
 	public static String ACE_URI = "AceUriView";
-	
+
 	/**
 	 * Private constructor to enforce un-instantiability.
 	 */
-	private ViewNames() {}
+	private ViewNames() {
+	}
 
 }

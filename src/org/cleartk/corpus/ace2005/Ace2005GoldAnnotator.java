@@ -81,7 +81,7 @@ public class Ace2005GoldAnnotator extends JCasAnnotator_ImplBase
 		try
 		{
 			String apfUri = jCas.getView(ViewNames.ACE_APF_URI).getSofaDataURI();
-			JCas initialView = jCas.getView(ViewNames.ANNOTATIONS);
+			JCas initialView = jCas.getView(ViewNames.DEFAULT);
 			String documentText = initialView.getDocumentText();
 			SAXBuilder builder = new SAXBuilder();
 			builder.setDTDHandler(null);

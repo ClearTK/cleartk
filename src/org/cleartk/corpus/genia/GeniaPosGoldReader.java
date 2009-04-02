@@ -156,7 +156,7 @@ public class GeniaPosGoldReader extends CollectionReader_ImplBase {
 		if(!hasNext()) 
 			throw new CollectionException("Should not be calling getNext() because hasNext returns false", null);
 		try {
-			JCas annotationsView = cas.getJCas().getView(ViewNames.ANNOTATIONS);
+			JCas annotationsView = cas.getJCas().getView(ViewNames.DEFAULT);
 			String text = parse.getText();
 			annotationsView.setDocumentText(text);
 
