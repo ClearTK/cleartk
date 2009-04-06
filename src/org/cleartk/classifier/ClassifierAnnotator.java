@@ -30,6 +30,7 @@ import java.util.List;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.Initializable;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
 
@@ -92,6 +93,9 @@ public class ClassifierAnnotator<OUTCOME_TYPE> extends InstanceConsumer_ImplBase
 			}
 			
 			this.classifier = (Classifier<OUTCOME_TYPE>)untypedClassifier;
+			if(this.classifier instanceof Initializable) {
+				((Initializable)this.classifier).initialize(context);
+			}
 		} catch (IOException e) {
 			throw new ResourceInitializationException(e);
 		}
