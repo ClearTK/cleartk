@@ -187,7 +187,6 @@ public class Viterbi {
 
 		Collections.sort(nbestSequences);
 		if (nbestSequences.size() > 0) {
-			System.out.println(nbestSequences.get(0).getScore());
 			return nbestSequences.get(0).getValue();
 		}
 
