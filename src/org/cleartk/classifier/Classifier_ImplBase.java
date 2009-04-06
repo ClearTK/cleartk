@@ -50,7 +50,7 @@ public abstract class Classifier_ImplBase<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE,F
 //	protected ClassifierManifest classifierManifest;
 	protected FeaturesEncoder<FEATURES_TYPE> featuresEncoder;
 	protected OutcomeEncoder<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE> outcomeEncoder;
-	private OutcomeFeatureExtractor[] outcomeFeatureExtractors;
+	protected OutcomeFeatureExtractor[] outcomeFeatureExtractors;
 
 	
 	public Classifier_ImplBase(JarFile modelFile) throws IOException {
@@ -106,13 +106,10 @@ public abstract class Classifier_ImplBase<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE,F
 		return returnValues;
 	}
 
-	public ScoredValue<INPUTOUTCOME_TYPE> score(List<Feature> features) {
-		throw new UnsupportedOperationException("there is no default implementation of the score method.");
-	}
-
 	public List<ScoredValue<INPUTOUTCOME_TYPE>> score(List<Feature> features, int maxResults) {
 		throw new UnsupportedOperationException("there is no default implementation of the score method.");
 	}
+
 
 	public abstract boolean isSequential();
 	
