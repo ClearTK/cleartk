@@ -29,41 +29,47 @@ POSSIBILITY OF SUCH DAMAGE.</description>
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>FileOrDirectory</name>
+        <name>org.cleartk.util.PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY</name>
         <description>Root directory containing files to be read in.</description>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>ViewName</name>
+        <name>org.cleartk.util.PlainTextCollectionReader.PARAM_VIEW_NAME</name>
         <description>Name of the CAS view to be created for the document texts.</description>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>Language</name>
+        <name>org.cleartk.util.PlainTextCollectionReader.PARAM_LANGUAGE</name>
         <description>Language of the files being read in.</description>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>Encoding</name>
+        <name>org.cleartk.util.PlainTextCollectionReader.PARAM_ENCODING</name>
         <description>Encoding of the files being read in.</description>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>Suffixes</name>
+        <name>org.cleartk.util.PlainTextCollectionReader.PARAM_SUFFIXES</name>
         <type>String</type>
         <multiValued>true</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>FileNames</name>
+        <name>org.cleartk.util.PlainTextCollectionReader.PARAM_FILE_NAMES_FILES</name>
+        <type>String</type>
+        <multiValued>true</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>org.cleartk.util.PlainTextCollectionReader.PARAM_FILE_NAMES</name>
         <type>String</type>
         <multiValued>true</multiValued>
         <mandatory>false</mandatory>
