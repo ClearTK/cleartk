@@ -29,26 +29,32 @@ POSSIBILITY OF SUCH DAMAGE.</description>
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>FileOrDirectory</name>
+        <name>org.cleartk.util.PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY</name>
         <description>Root directory containing files to be read in.</description>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>Suffixes</name>
+        <name>org.cleartk.util.PlainTextCollectionReader.PARAM_SUFFIXES</name>
         <type>String</type>
         <multiValued>true</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>XMLScheme</name>
+        <name>org.cleartk.util.XReader.PARAM_XML_SCHEME</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>FileNames</name>
+        <name>org.cleartk.util.PlainTextCollectionReader.PARAM_FILE_NAMES_FILES</name>
+        <type>String</type>
+        <multiValued>true</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>org.cleartk.util.PlainTextCollectionReader.PARAM_FILE_NAMES</name>
         <type>String</type>
         <multiValued>true</multiValued>
         <mandatory>false</mandatory>
