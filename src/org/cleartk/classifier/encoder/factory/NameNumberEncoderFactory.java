@@ -43,9 +43,9 @@ import org.cleartk.util.UIMAUtil;
 
 public class NameNumberEncoderFactory extends EncoderFactory_ImplBase {
 
-	public static final String PARAM_COMPRESS = "org.cleartk.classifier.encoder.factory.DefaultFeaturesEncoderFactory.PARAM_COMPRESS";
+	public static final String PARAM_COMPRESS = "org.cleartk.classifier.encoder.factory.NameNumberEncoderFactory.PARAM_COMPRESS";
 
-	public static final String PARAM_SORT_NAME_LOOKUP = "org.cleartk.classifier.encoder.factory.DefaultFeaturesEncoderFactory.PARAM_SORT_NAME_LOOKUP";
+	public static final String PARAM_SORT_NAME_LOOKUP = "org.cleartk.classifier.encoder.factory.NameNumberEncoderFactory.PARAM_SORT_NAME_LOOKUP";
 
 	@Override
 	public FeaturesEncoder<?> createFeaturesEncoder(UimaContext context) {
