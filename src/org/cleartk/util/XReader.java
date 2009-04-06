@@ -43,14 +43,14 @@ import org.xml.sax.SAXException;
 public class XReader extends PlainTextCollectionReader {
 
 	/**
-	 * "XMLScheme" is a single, optional, string parameter that specifies the
+	 * "org.cleartk.util.XReader.PARAM_XML_SCHEME" is a single, optional, string parameter that specifies the
 	 * UIMA XML serialization scheme that should be used. Valid values for this
 	 * parameter are "XMI" (default) and "XCAS".
 	 * 
 	 * @see XmiCasSerializer
 	 * @see XCASSerializer
 	 */
-	public static final String PARAM_XML_SCHEME = "XMLScheme";
+	public static final String PARAM_XML_SCHEME = "org.cleartk.util.XReader.PARAM_XML_SCHEME";
 
 	public static final String XMI = "XMI";
 
