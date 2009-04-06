@@ -425,7 +425,7 @@ public class TreebankFormatParser {
 			topNode.initTerminalNodes();
 			return topNode;
 		} catch (RuntimeException e) {
-			throw new IllegalArgumentException("exception thrown when parsing the following: "+parse);
+			throw new IllegalArgumentException("exception thrown when parsing the following: "+parse, e);
 		}
 	}
 
@@ -448,19 +448,21 @@ public class TreebankFormatParser {
 	 * @return The string in its original textual representation.
 	 */
 	private static String getToken(String value, String type) {
-		if (value.equals("-RCB-")) return "}";
-		if (value.equals("-LCB-")) return "{";
-		if (value.equals("-RRB-")) return ")";
-		if (value.equals("-LRB-")) return "(";
-		if (value.equals("-RSB-")) return "]";
-		if (value.equals("-LSB-")) return "[";
-		if (value.equals("``")) return "\"";
-		if (value.equals("''")) return "\"";
+		value = value.replace("-RCB-", "}");
+		value = value.replace("-LCB-", "{");
+		value = value.replace("-RRB-", ")");
+		value = value.replace("-LRB-", "(");
+		value = value.replace("-RSB-", "]");
+		value = value.replace("-LSB-", "[");
+		value = value.replace("``", "\"");
+		value = value.replace("''", "\"");
+		
 		if (type.equals("-NONE-")) return "";
+
 		if (value.contains("\\/")) return value.replace("\\/", "/");
 
 		if (type.startsWith("Â")) {
-			return value.substring(1);
+			value = value.substring(1);
 		}
 
 		return value;
