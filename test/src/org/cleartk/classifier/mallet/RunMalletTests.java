@@ -83,7 +83,7 @@ public class RunMalletTests {
 		for(int i=0; i<1000; i++)
 			instances.add(generateInstance());
 			
-		dataWriter.consumeAll(instances);
+		dataWriter.consumeSequence(instances);
 		dataWriter.collectionProcessComplete();
 		engine.collectionProcessComplete();
 		
@@ -176,7 +176,7 @@ public class RunMalletTests {
 		for(int i=0; i<1000; i++)
 			instances.add(generateInstance());
 			
-		dataWriter.consumeAll(instances);
+		dataWriter.consumeSequence(instances);
 		dataWriter.collectionProcessComplete();
 		engine.collectionProcessComplete();
 

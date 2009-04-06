@@ -153,7 +153,7 @@ public class DataWriter_ImplBaseTests {
 			List<Instance<T>> instances = new ArrayList<Instance<T>>();
 			instances.add(new Instance<T>());
 			instances.add(new Instance<T>());
-			consumer.consumeAll(instances);
+			consumer.consumeSequence(instances);
 		}
 	}
 

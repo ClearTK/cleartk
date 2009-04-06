@@ -78,7 +78,7 @@ public class RunLIBSVMTests {
 				TestsUtil.EmptyBooleanHandler.class.getName()));
 		
 		// add a bunch of instances
-		dataWriter.consumeAll(TestsUtil.generateBooleanInstances(500));
+		dataWriter.consumeSequence(TestsUtil.generateBooleanInstances(500));
 		for (Instance<Boolean> instance: TestsUtil.generateBooleanInstances(500)) {
 			dataWriter.consume(instance);
 		}
@@ -117,7 +117,7 @@ public class RunLIBSVMTests {
 				TestsUtil.EmptyBooleanHandler.class.getName()));
 		
 		// add a bunch of instances
-		dataWriter.consumeAll(TestsUtil.generateBooleanInstances(500));
+		dataWriter.consumeSequence(TestsUtil.generateBooleanInstances(500));
 		for (Instance<Boolean> instance: TestsUtil.generateBooleanInstances(500)) {
 			dataWriter.consume(instance);
 		}
@@ -156,7 +156,7 @@ public class RunLIBSVMTests {
 				TestsUtil.EmptyStringHandler.class.getName()));
 		
 		// add a bunch of instances
-		dataWriter.consumeAll(TestsUtil.generateStringInstances(500));
+		dataWriter.consumeSequence(TestsUtil.generateStringInstances(500));
 		for (Instance<String> instance: TestsUtil.generateStringInstances(500)) {
 			dataWriter.consume(instance);
 		}

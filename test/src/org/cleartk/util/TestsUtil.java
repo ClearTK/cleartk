@@ -116,7 +116,7 @@ public class TestsUtil {
 			return this.returnValue;
 		}
 
-		public List<T> consumeAll(List<Instance<T>> instances) {
+		public List<T> consumeSequence(List<Instance<T>> instances) {
 			this.instances.addAll(instances);
 			List<T> result = null;
 			if (this.returnValue != null) {

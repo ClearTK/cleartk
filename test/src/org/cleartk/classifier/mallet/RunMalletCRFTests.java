@@ -110,7 +110,7 @@ public class RunMalletCRFTests {
 		instances.add(createInstance("O Word_. LCWord_. L0_cells L0_TypePath_Pos_NNS L0_TypePath_Stem_cell L1_3T6 L1_TypePath_Pos_CD L1_TypePath_Stem_3T6 R0OOB1 R1OOB2 TypePath_Pos_. TypePath_Stem_. PrevNEMTokenLabel_L0_O PrevNEMTokenLabel_L1_O"));
 		
 		for(int i=0; i<100; i++)
-			dataWriter.consumeAll(instances);
+			dataWriter.consumeSequence(instances);
 		dataWriter.collectionProcessComplete();
 		engine.collectionProcessComplete();
 		

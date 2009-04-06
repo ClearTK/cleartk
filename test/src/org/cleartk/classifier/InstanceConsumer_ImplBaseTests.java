@@ -69,7 +69,7 @@ public class InstanceConsumer_ImplBaseTests {
 	// class that calls the consumer's consumeAll method on the instances
 	public static class HandlerAll extends Handler {
 		public void process(JCas cas, InstanceConsumer<Object> consumer) {
-			consumer.consumeAll(InstanceConsumer_ImplBaseTests.instances);
+			consumer.consumeSequence(InstanceConsumer_ImplBaseTests.instances);
 		}
 	}
 
@@ -88,7 +88,7 @@ public class InstanceConsumer_ImplBaseTests {
 			this.instances.add(instance);
 			return null;
 		}
-		public List<Object> consumeAll(List<Instance<Object>> instances) {
+		public List<Object> consumeSequence(List<Instance<Object>> instances) {
 			this.consumeAllCount++;
 			this.instances.addAll(instances);
 			return null;
