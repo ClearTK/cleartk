@@ -23,6 +23,9 @@
 */
 package org.cleartk.util;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -230,7 +233,7 @@ public class PlainTextCollectionReaderTests {
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				PlainTextCollectionReader.class, null,
 				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY, "test/data/docs",
-				PlainTextCollectionReader.PARAM_FILE_NAMES, new String[] {"test/data/util/PlainTextFileNames.txt"});
+				PlainTextCollectionReader.PARAM_FILE_NAMES_FILES, new String[] {"test/data/util/PlainTextFileNames.txt"});
 
 		// check that each path in the CAS matches a path on disk
 		Set<String> fileNamesSet = new HashSet<String>();
@@ -335,5 +338,13 @@ public class PlainTextCollectionReaderTests {
 		Assert.assertEquals(null, language);
 	}
 	
+	@Test
+	public void testXOR() {
+		assertTrue(true ^ false ^ false);
+		assertFalse(true ^ true ^ false);
+		assertTrue(false ^ false ^ true);
+		assertFalse(true ^ false ^ true);
+		assertFalse(false ^ false ^ false);
+	}
 	
 }
