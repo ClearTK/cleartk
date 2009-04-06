@@ -70,22 +70,22 @@ public class UIMAUtilTests {
 	
 	@Test
 	public void testGetDefaultingConfigParamValue() throws Exception{
-		UimaContext context = UimaContextFactory.createUimaContext(PlainTextCollectionReader.PARAM_FILE_NAMES, new String[] {""});
+		UimaContext context = UimaContextFactory.createUimaContext(PlainTextCollectionReader.PARAM_FILE_NAMES_FILES, new String[] {""});
 		
-		String[] stringArray = (String[]) UIMAUtil.getDefaultingConfigParameterValue(context, PlainTextCollectionReader.PARAM_FILE_NAMES, null);
+		String[] stringArray = (String[]) UIMAUtil.getDefaultingConfigParameterValue(context, PlainTextCollectionReader.PARAM_FILE_NAMES_FILES, null);
 		assertNull(stringArray);
 
-		context = UimaContextFactory.createUimaContext(PlainTextCollectionReader.PARAM_FILE_NAMES, new String[0]);
-		stringArray = (String[]) UIMAUtil.getDefaultingConfigParameterValue(context, PlainTextCollectionReader.PARAM_FILE_NAMES, null);
+		context = UimaContextFactory.createUimaContext(PlainTextCollectionReader.PARAM_FILE_NAMES_FILES, new String[0]);
+		stringArray = (String[]) UIMAUtil.getDefaultingConfigParameterValue(context, PlainTextCollectionReader.PARAM_FILE_NAMES_FILES, null);
 		assertNull(stringArray);
 
-		context = UimaContextFactory.createUimaContext(PlainTextCollectionReader.PARAM_FILE_NAMES, new String[] {"asdf"});
-		stringArray = (String[]) UIMAUtil.getDefaultingConfigParameterValue(context, PlainTextCollectionReader.PARAM_FILE_NAMES, null);
+		context = UimaContextFactory.createUimaContext(PlainTextCollectionReader.PARAM_FILE_NAMES_FILES, new String[] {"asdf"});
+		stringArray = (String[]) UIMAUtil.getDefaultingConfigParameterValue(context, PlainTextCollectionReader.PARAM_FILE_NAMES_FILES, null);
 		assertEquals(1, stringArray.length);
 		assertEquals("asdf", stringArray[0]);
 
 		context = UimaContextFactory.createUimaContext();
-		stringArray = (String[]) UIMAUtil.getDefaultingConfigParameterValue(context, PlainTextCollectionReader.PARAM_FILE_NAMES, null);
+		stringArray = (String[]) UIMAUtil.getDefaultingConfigParameterValue(context, PlainTextCollectionReader.PARAM_FILE_NAMES_FILES, null);
 		assertNull(stringArray);
 
 	}
