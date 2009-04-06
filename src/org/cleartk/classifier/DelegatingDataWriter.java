@@ -88,8 +88,8 @@ public class DelegatingDataWriter extends DataWriter_ImplBase<Object,Object,Obje
 	}
 
 	@Override
-	public List<Object> consumeAll(List<Instance<Object>> instances) {
-		return this.dataWriter.consumeAll(instances);
+	public List<Object> consumeSequence(List<Instance<Object>> instances) {
+		return this.dataWriter.consumeSequence(instances);
 	}
 	@Override
 	public void collectionProcessComplete()

@@ -179,7 +179,7 @@ public class ChunkerHandler implements AnnotationHandler<String> {
 				instances.add(instance);
 			}
 
-			List<String> results = consumer.consumeAll(instances);
+			List<String> results = consumer.consumeSequence(instances);
 
 			if (results != null) {
 				consumerReturnsValues = true;

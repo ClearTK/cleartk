@@ -115,7 +115,7 @@ public class ClassifierAnnotator<OUTCOME_TYPE> extends InstanceConsumer_ImplBase
 		}
 	}
 	
-	public List<OUTCOME_TYPE> consumeAll(List<Instance<OUTCOME_TYPE>> instances) {
+	public List<OUTCOME_TYPE> consumeSequence(List<Instance<OUTCOME_TYPE>> instances) {
 		List<List<Feature>> instanceFeatures = new ArrayList<List<Feature>>();
 		for (Instance<OUTCOME_TYPE> instance: instances) {
 			instanceFeatures.add(instance.getFeatures());

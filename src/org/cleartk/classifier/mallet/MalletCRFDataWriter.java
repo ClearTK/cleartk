@@ -80,7 +80,7 @@ public class MalletCRFDataWriter extends DataWriter_ImplBase<String, String, Lis
 	 * 
 	 * 
 	 * <p>
-	 * @see #consumeAll(List)
+	 * @see #consumeSequence(List)
 	 */
 	public String consume(Instance<String> instance) {
 		List<NameNumber> nameNumbers = this.featuresEncoder.encodeAll(instance.getFeatures());
@@ -103,8 +103,8 @@ public class MalletCRFDataWriter extends DataWriter_ImplBase<String, String, Lis
 	 * calling consumeAll() (this method) and not consume().
 	 */
 	@Override
-	public List<String> consumeAll(List<Instance<String>> instances) {
-		List<String> result = super.consumeAll(instances);
+	public List<String> consumeSequence(List<Instance<String>> instances) {
+		List<String> result = super.consumeSequence(instances);
 
 		// add a newline after all instances
 		this.trainingDataWriter.println();

@@ -133,7 +133,7 @@ public class ExamplePOSAnnotationHandler implements AnnotationHandler<String> {
 			}
 			
 			// pass the instance list to the consumer and get back the list of labels
-			List<String> labels = consumer.consumeAll(instances);
+			List<String> labels = consumer.consumeSequence(instances);
 			if (labels != null) {
 				
 				// if the consumer returned labels, set each token's POS label

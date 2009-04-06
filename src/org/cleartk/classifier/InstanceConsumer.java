@@ -56,7 +56,7 @@ public interface InstanceConsumer<OUTCOME_TYPE> {
 	 * @return The assigned labels, or null if labels were not assigned. Labels
 	 *         should be in the same order as the original instances.
 	 */
-	public List<OUTCOME_TYPE> consumeAll(List<Instance<OUTCOME_TYPE>> instances);
+	public List<OUTCOME_TYPE> consumeSequence(List<Instance<OUTCOME_TYPE>> instances);
 
 	/**
 	 * This method provides an annotation handler (or anything else using an

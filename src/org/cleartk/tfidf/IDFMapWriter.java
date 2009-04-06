@@ -129,7 +129,7 @@ public class IDFMapWriter<OUTCOME_TYPE> extends InstanceConsumer_ImplBase<OUTCOM
 		}
 	}
 
-	public List<OUTCOME_TYPE> consumeAll(List<Instance<OUTCOME_TYPE>> instances) {
+	public List<OUTCOME_TYPE> consumeSequence(List<Instance<OUTCOME_TYPE>> instances) {
 		for( Instance<OUTCOME_TYPE> instance : instances )
 			consume(instance);
 		return null;

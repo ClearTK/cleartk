@@ -228,7 +228,7 @@ public abstract class DataWriter_ImplBase<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE,
 		}
 	}
 
-	public List<INPUTOUTCOME_TYPE> consumeAll(List<Instance<INPUTOUTCOME_TYPE>> instances) {
+	public List<INPUTOUTCOME_TYPE> consumeSequence(List<Instance<INPUTOUTCOME_TYPE>> instances) {
 		List<Object> outcomes = new ArrayList<Object>();
 		for (Instance<INPUTOUTCOME_TYPE> instance : instances) {
 			List<Feature> instanceFeatures = instance.getFeatures();
