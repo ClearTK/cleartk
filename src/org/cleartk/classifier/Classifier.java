@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier;
 
 import java.util.List;
@@ -29,9 +29,10 @@ import org.cleartk.classifier.mallet.MalletCRFClassifier;
 import org.cleartk.classifier.opennlp.MaxentClassifier;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * <p>
  * 
  * This class provides an abstraction for interfacing with various ML learning
@@ -79,23 +80,10 @@ public interface Classifier<OUTCOME_TYPE> {
 	public List<OUTCOME_TYPE> classifySequence(List<List<Feature>> features);
 
 	/**
-	 * Provides a way to get a score associated with a classification. The
-	 * 'score' in the scored value could be anything but is often a probability.
-	 * The only expectation is that a higher score should correspond to higher
+	 * Provides a way to get scores for the best N classifications. The 'score'
+	 * in the scored value could be anything but is often a probability. The
+	 * only expectation is that a higher score should correspond to higher
 	 * confidence in the classification. No other assumptions should be made.
-	 * 
-	 * @param features
-	 *            a list of features to be classified
-	 * @return the classification score
-	 */
-	public ScoredValue<OUTCOME_TYPE> score(List<Feature> features);
-
-	/**
-	 * Provides a way to get a scores associated with the top N scores for the
-	 * best N classifications. The 'score' in the scored value could be anything
-	 * but is often a probability. The only expectation is that a higher score
-	 * should correspond to higher confidence in the classification. No other
-	 * assumptions should be made.
 	 * 
 	 * @param features
 	 *            a list of features to be classified
@@ -105,6 +93,7 @@ public interface Classifier<OUTCOME_TYPE> {
 	 */
 	public List<ScoredValue<OUTCOME_TYPE>> score(List<Feature> features, int maxResults);
 
+
 	/**
 	 * A classifier that is based on a sequence of labels (i.e.
 	 * computes/optimizes label transition probabilities) such as the
@@ -113,8 +102,8 @@ public interface Classifier<OUTCOME_TYPE> {
 	 * Here is the expectation for implementors. If true is returned, then the
 	 * classifier may or may not implement
 	 * <code>classify(List&lt;Feature&gt;)</code> (usually not we expect) and
-	 * must override <code>classify(List&lt;List&lt;Feature&gt;&gt;)</code>.
-	 * If false is returned, then the classifier is required to implement
+	 * must override <code>classify(List&lt;List&lt;Feature&gt;&gt;)</code>. If
+	 * false is returned, then the classifier is required to implement
 	 * <code>classify(List&lt;Feature&gt;)</code> and may or many not override
 	 * <code>classify(List&lt;List&lt;Feature&gt;&gt;)</code>. If you do not
 	 * want to implement <code>classify(List&lt;Feature&gt;)</code> for your
@@ -128,3 +117,28 @@ public interface Classifier<OUTCOME_TYPE> {
 	public abstract boolean isSequential();
 
 }
+
+
+
+
+
+
+
+
+
+///**
+// * Provides a way to get scores for the best N sequence classifications. The
+// * 'score' in the scored value could be anything but is often something
+// * similar to a probability. The only expectation is that a higher score
+// * should correspond to higher confidence in the classification. No other
+// * assumptions should be made.
+// * 
+// * @param features
+// *            features for a sequence - i.e. for each member in the sequence
+// *            there is a list of features.
+// * @param maxResults
+// *            the maximum number of classifications to return.
+// * @return a sorted list of the best N sequence classifications with their
+// *         scores.
+// */
+//public List<ScoredValue<List<OUTCOME_TYPE>>> scoreSequence(List<List<Feature>> features, int maxResults);
