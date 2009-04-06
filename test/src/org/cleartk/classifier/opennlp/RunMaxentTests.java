@@ -226,11 +226,11 @@ public class RunMaxentTests {
 		assertEquals("B-GENE", sequenceClassification.get(0));
 		assertEquals("O", sequenceClassification.get(1));
 		
-		ScoredValue<String> scoredValue = classifier.score(features1);
+		ScoredValue<String> scoredValue = classifier.score(features1,1).get(0);
 		assertEquals("B-GENE", scoredValue.getValue());
 		assertTrue(scoredValue.getScore() <= 1.0f);
 		assertTrue(scoredValue.getScore() >= 0.0f);
-		scoredValue = classifier.score(features2);
+		scoredValue = classifier.score(features2, 1).get(0);
 		assertEquals("O", scoredValue.getValue());
 		assertTrue(scoredValue.getScore() <= 1.0f);
 		assertTrue(scoredValue.getScore() >= 0.0f);
