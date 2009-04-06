@@ -27,12 +27,12 @@ package org.cleartk.classifier;
  * <br>All rights reserved.
 
  */
-public class ScoredValue<OUTCOME_TYPE> implements Comparable<ScoredValue<OUTCOME_TYPE>>{
+public class ScoredOutcome<OUTCOME_TYPE> implements Comparable<ScoredOutcome<OUTCOME_TYPE>>{
 
 	OUTCOME_TYPE value;
 	double score;
 	
-	public ScoredValue(OUTCOME_TYPE value, double score) {
+	public ScoredOutcome(OUTCOME_TYPE value, double score) {
 		super();
 		this.value = value;
 		this.score = score;
@@ -55,7 +55,7 @@ public class ScoredValue<OUTCOME_TYPE> implements Comparable<ScoredValue<OUTCOME
 	/**
 	 * We want to sort in descending order
 	 */
-	public int compareTo(ScoredValue<OUTCOME_TYPE> arg0) {
+	public int compareTo(ScoredOutcome<OUTCOME_TYPE> arg0) {
 		return Double.compare(arg0.getScore(),this.getScore());
 	}
 

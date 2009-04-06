@@ -91,7 +91,7 @@ public interface Classifier<OUTCOME_TYPE> {
 	 *            the maximum number of classifications to return.
 	 * @return a sorted list of the best N classifications with their scores.
 	 */
-	public List<ScoredValue<OUTCOME_TYPE>> score(List<Feature> features, int maxResults);
+	public List<ScoredOutcome<OUTCOME_TYPE>> score(List<Feature> features, int maxResults);
 
 
 	/**

@@ -40,7 +40,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.Initializable;
 import org.cleartk.classifier.Classifier_ImplBase;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.ScoredValue;
+import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.Viterbi;
 import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.util.UIMAUtil;
@@ -80,23 +80,23 @@ public class MaxentClassifier extends Classifier_ImplBase<String, String, List<N
 	}
 
 	@Override
-	public List<ScoredValue<String>> score(List<Feature> features, int maxResults) {
+	public List<ScoredOutcome<String>> score(List<Feature> features, int maxResults) {
 		EvalParams evalParams = convertToEvalParams(features);
 		double[] evalResults = this.model.eval(evalParams.getContext(), evalParams.getValues());
 		String[] encodedOutcomes = (String[]) this.model.getDataStructures()[2];
 
-		List<ScoredValue<String>> returnValues = new ArrayList<ScoredValue<String>>();
+		List<ScoredOutcome<String>> returnValues = new ArrayList<ScoredOutcome<String>>();
 
 		if (maxResults == 1) {
 			String encodedBestOutcome = outcomeEncoder.decode(this.model.getBestOutcome(evalResults));
 			double bestResult = evalResults[this.model.getIndex(encodedBestOutcome)];
-			returnValues.add(new ScoredValue<String>(encodedBestOutcome, bestResult));
+			returnValues.add(new ScoredOutcome<String>(encodedBestOutcome, bestResult));
 			return returnValues;
 		}
 		else {
 				
 			for (int i = 0; i < evalResults.length; i++) {
-				returnValues.add(new ScoredValue<String>(outcomeEncoder.decode(encodedOutcomes[i]), evalResults[i]));
+				returnValues.add(new ScoredOutcome<String>(outcomeEncoder.decode(encodedOutcomes[i]), evalResults[i]));
 			}
 
 			Collections.sort(returnValues);

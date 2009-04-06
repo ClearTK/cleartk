@@ -106,7 +106,7 @@ public abstract class Classifier_ImplBase<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE,F
 		return returnValues;
 	}
 
-	public List<ScoredValue<INPUTOUTCOME_TYPE>> score(List<Feature> features, int maxResults) {
+	public List<ScoredOutcome<INPUTOUTCOME_TYPE>> score(List<Feature> features, int maxResults) {
 		throw new UnsupportedOperationException("there is no default implementation of the score method.");
 	}
 

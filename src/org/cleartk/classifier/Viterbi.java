@@ -92,18 +92,18 @@ public class Viterbi {
 			Class<OUTCOME_TYPE> cls, Classifier<OUTCOME_TYPE> classifier,
 			OutcomeFeatureExtractor[] outcomeFeatureExtractors, boolean addScores) {
 
-		List<ScoredValue<List<OUTCOME_TYPE>>> nbestSequences = new ArrayList<ScoredValue<List<OUTCOME_TYPE>>>();
+		List<ScoredOutcome<List<OUTCOME_TYPE>>> nbestSequences = new ArrayList<ScoredOutcome<List<OUTCOME_TYPE>>>();
 
 		if (features == null || features.size() == 0) {
 			return Collections.emptyList();
 		}
 
-		List<ScoredValue<OUTCOME_TYPE>> scoredOutcomes = classifier.score(features.get(0), beamSize);
-		for (ScoredValue<OUTCOME_TYPE> scoredOutcome : scoredOutcomes) {
+		List<ScoredOutcome<OUTCOME_TYPE>> scoredOutcomes = classifier.score(features.get(0), beamSize);
+		for (ScoredOutcome<OUTCOME_TYPE> scoredOutcome : scoredOutcomes) {
 			double score = scoredOutcome.getScore();
 			List<OUTCOME_TYPE> sequence = new ArrayList<OUTCOME_TYPE>();
 			sequence.add(scoredOutcome.getValue());
-			nbestSequences.add(new ScoredValue<List<OUTCOME_TYPE>>(sequence, score));
+			nbestSequences.add(new ScoredOutcome<List<OUTCOME_TYPE>>(sequence, score));
 		}
 
 		Map<OUTCOME_TYPE, Double> l = new HashMap<OUTCOME_TYPE, Double>();
@@ -114,7 +114,7 @@ public class Viterbi {
 			List<Feature> instanceFeatures = features.get(i);
 			l.clear();
 			m.clear();
-			for (ScoredValue<List<OUTCOME_TYPE>> scoredSequence : nbestSequences) {
+			for (ScoredOutcome<List<OUTCOME_TYPE>> scoredSequence : nbestSequences) {
 				// add features from previous outcomes from each scoredSequence
 				// in returnValues
 				int outcomeFeaturesCount = 0;
@@ -131,7 +131,7 @@ public class Viterbi {
 				// scoredSequence
 				instanceFeatures = instanceFeatures.subList(0, instanceFeatures.size() - outcomeFeaturesCount);
 
-				for (ScoredValue<OUTCOME_TYPE> scoredOutcome : scoredOutcomes) {
+				for (ScoredOutcome<OUTCOME_TYPE> scoredOutcome : scoredOutcomes) {
 
 					if (!l.containsKey(scoredOutcome.getValue())) {
 						double score = scoredSequence.getScore();
@@ -167,7 +167,7 @@ public class Viterbi {
 				List<OUTCOME_TYPE> outcomeSequence = m.get(outcome);
 				outcomeSequence.add(outcome);
 				double score = l.get(outcome);
-				ScoredValue<List<OUTCOME_TYPE>> returnValue = new ScoredValue<List<OUTCOME_TYPE>>(outcomeSequence,
+				ScoredOutcome<List<OUTCOME_TYPE>> returnValue = new ScoredOutcome<List<OUTCOME_TYPE>>(outcomeSequence,
 						score);
 				nbestSequences.add(returnValue);
 			}

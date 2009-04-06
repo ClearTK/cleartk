@@ -31,7 +31,7 @@ import java.util.zip.ZipEntry;
 
 import org.cleartk.classifier.Classifier_ImplBase;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.ScoredValue;
+import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.svmlight.model.SVMlightModel;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
@@ -66,30 +66,30 @@ public class SVMlightClassifier extends Classifier_ImplBase<Boolean,Boolean,Feat
 	}
 	
 	@Override
-	public List<ScoredValue<Boolean>> score(List<Feature> features,
+	public List<ScoredOutcome<Boolean>> score(List<Feature> features,
 			int maxResults) {
 		
-		List<ScoredValue<Boolean>> resultList = new ArrayList<ScoredValue<Boolean>>();
+		List<ScoredOutcome<Boolean>> resultList = new ArrayList<ScoredOutcome<Boolean>>();
 		if( maxResults > 0 )
 			resultList.add(this.score(features));
 		if( maxResults > 1 ) {
-			ScoredValue<Boolean> v1 = resultList.get(0);
-			ScoredValue<Boolean> v2 = new ScoredValue<Boolean>(!v1.getValue(), -v1.getScore());
+			ScoredOutcome<Boolean> v1 = resultList.get(0);
+			ScoredOutcome<Boolean> v2 = new ScoredOutcome<Boolean>(!v1.getValue(), -v1.getScore());
 			resultList.add(v2);
 		}
 		return resultList;
 	}
 
-	private ScoredValue<Boolean> score(List<Feature> features) {
+	private ScoredOutcome<Boolean> score(List<Feature> features) {
 		FeatureVector featureVector = featuresEncoder.encodeAll(features);
 		
 		double prediction = model.evaluate(featureVector);
 		boolean encodedResult = (prediction > 0);
 
 		if( encodedResult ) {
-			return new ScoredValue<Boolean>(true, prediction);
+			return new ScoredOutcome<Boolean>(true, prediction);
 		} else {
-			return new ScoredValue<Boolean>(false, -prediction);
+			return new ScoredOutcome<Boolean>(false, -prediction);
 		}
 	}
 
