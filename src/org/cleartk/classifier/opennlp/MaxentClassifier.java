@@ -58,6 +58,7 @@ public class MaxentClassifier extends Classifier_ImplBase<String, String, List<N
 
 	protected MaxentModel model;
 	int sequenceBeamSize = 1;
+	boolean viterbiAddScores = false;
 	
 	public MaxentClassifier(JarFile modelFile) throws IOException {
 		super(modelFile);
@@ -68,6 +69,7 @@ public class MaxentClassifier extends Classifier_ImplBase<String, String, List<N
 
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		sequenceBeamSize = (Integer) UIMAUtil.getDefaultingConfigParameterValue(context, Viterbi.PARAM_BEAM_SIZE, 1);
+		viterbiAddScores = (Boolean) UIMAUtil.getDefaultingConfigParameterValue(context, Viterbi.PARAM_BEAM_SIZE, false);
 	}
 
 	
@@ -114,7 +116,7 @@ public class MaxentClassifier extends Classifier_ImplBase<String, String, List<N
 		if(sequenceBeamSize == 1)
 			return super.classifySequence(features);
 		else {
-			return Viterbi.classifySequence(features, sequenceBeamSize, String.class, this, outcomeFeatureExtractors, false);	
+			return Viterbi.classifySequence(features, sequenceBeamSize, String.class, this, outcomeFeatureExtractors, viterbiAddScores);	
 		}
 	}
 

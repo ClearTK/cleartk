@@ -55,6 +55,16 @@ public class Viterbi {
 	public static String PARAM_BEAM_SIZE = "org.cleartk.classifier.Viterbi.PARAM_BEAM_SIZE";
 
 	/**
+	 * "org.cleartk.classifier.Viterbi.PARAM_ADD_SCORES" is an optional, single,
+	 * boolean parameter that specifies whether the scores of candidate sequence
+	 * classifications should be calculated by summing classfication scores for
+	 * each member of the sequence or by multiplying them. A value of true means
+	 * that the scores will be summed. A value of false means that the scores
+	 * will be multiplied. 
+	 */
+	public static String PARAM_ADD_SCORES = "org.cleartk.classifier.Viterbi.PARAM_ADD_SCORES";
+
+	/**
 	 * This implementation of Viterbi requires at most beamSize * sequenceLength
 	 * calls to the classifier. If this proves to be to expensive, then consider
 	 * using a smaller beam size.
@@ -177,6 +187,7 @@ public class Viterbi {
 
 		Collections.sort(nbestSequences);
 		if (nbestSequences.size() > 0) {
+			System.out.println(nbestSequences.get(0).getScore());
 			return nbestSequences.get(0).getValue();
 		}
 
