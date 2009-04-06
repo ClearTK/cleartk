@@ -84,6 +84,35 @@ public class ViterbiTest {
 
 	}
 
+	@Test
+	public void test1b() throws ResourceInitializationException {
+		List<List<Feature>> features = new ArrayList<List<Feature>>();
+		features.add(createFeatures("0"));
+		features.add(createFeatures("1"));
+		features.add(createFeatures("2"));
+		features.add(createFeatures("3"));
+		features.add(createFeatures("4"));
+
+		UimaContext uimaContext = UimaContextFactory.createUimaContext(
+				DefaultOutcomeFeatureExtractor.PARAM_MOST_RECENT_OUTCOME, 1,
+				DefaultOutcomeFeatureExtractor.PARAM_LEAST_RECENT_OUTCOME, 1,
+				DefaultOutcomeFeatureExtractor.PARAM_USE_BIGRAM, false,
+				DefaultOutcomeFeatureExtractor.PARAM_USE_TRIGRAM, false,
+				DefaultOutcomeFeatureExtractor.PARAM_USE_4GRAM, false);
+		DefaultOutcomeFeatureExtractor dofe = new DefaultOutcomeFeatureExtractor();
+		dofe.initialize(uimaContext);
+
+		List<String> bestSequence = Viterbi.classifySequence(features, 4, String.class, new TestClassifier(),
+				new OutcomeFeatureExtractor[] { dofe }, false);
+
+		assertEquals("C", bestSequence.get(0));
+		assertEquals("E", bestSequence.get(1));
+		assertEquals("G", bestSequence.get(2));
+		assertEquals("K", bestSequence.get(3));
+		assertEquals("O", bestSequence.get(4));
+
+	}
+
 	private List<Feature> createFeatures(String featureValue) {
 		List<Feature> instanceFeatures = new ArrayList<Feature>();
 		instanceFeatures.add(new Feature("position", featureValue));
@@ -219,6 +248,8 @@ public class ViterbiTest {
 		assertEquals("2", bestSequence.get(5));
 
 	}
+
+
 
 	private class Test2Classifier implements Classifier<String> {
 
