@@ -68,6 +68,7 @@ public class SVMlightClassifier extends Classifier_ImplBase<Boolean,Boolean,Feat
 	@Override
 	public List<ScoredValue<Boolean>> score(List<Feature> features,
 			int maxResults) {
+		
 		List<ScoredValue<Boolean>> resultList = new ArrayList<ScoredValue<Boolean>>();
 		if( maxResults > 0 )
 			resultList.add(this.score(features));
@@ -79,8 +80,7 @@ public class SVMlightClassifier extends Classifier_ImplBase<Boolean,Boolean,Feat
 		return resultList;
 	}
 
-	@Override
-	public ScoredValue<Boolean> score(List<Feature> features) {
+	private ScoredValue<Boolean> score(List<Feature> features) {
 		FeatureVector featureVector = featuresEncoder.encodeAll(features);
 		
 		double prediction = model.evaluate(featureVector);
