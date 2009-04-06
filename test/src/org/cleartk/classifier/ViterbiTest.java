@@ -125,14 +125,14 @@ public class ViterbiTest {
 			return false;
 		}
 
-		public List<ScoredValue<String>> score(List<Feature> features, int maxResults) {
-			List<ScoredValue<String>> scores = new ArrayList<ScoredValue<String>>();
+		public List<ScoredOutcome<String>> score(List<Feature> features, int maxResults) {
+			List<ScoredOutcome<String>> scores = new ArrayList<ScoredOutcome<String>>();
 
 			String position = (String) features.get(0).getValue();
 			if (features.size() == 1) {
-				scores.add(new ScoredValue<String>("A", 1));
-				scores.add(new ScoredValue<String>("B", 1));
-				scores.add(new ScoredValue<String>("C", 2));
+				scores.add(new ScoredOutcome<String>("A", 1));
+				scores.add(new ScoredOutcome<String>("B", 1));
+				scores.add(new ScoredOutcome<String>("C", 2));
 				return scores;
 			}
 
@@ -140,37 +140,37 @@ public class ViterbiTest {
 			int previousLabelWeight = previousLabelWeights.get(previousLabel);
 
 			if (position.equals("1")) {
-				scores.add(new ScoredValue<String>("D", 2 + previousLabelWeight));
-				scores.add(new ScoredValue<String>("E", 3 + previousLabelWeight));
-				scores.add(new ScoredValue<String>("F", 3 + previousLabelWeight));
+				scores.add(new ScoredOutcome<String>("D", 2 + previousLabelWeight));
+				scores.add(new ScoredOutcome<String>("E", 3 + previousLabelWeight));
+				scores.add(new ScoredOutcome<String>("F", 3 + previousLabelWeight));
 				return scores;
 			}
 
 			if (position.equals("2")) {
-				scores.add(new ScoredValue<String>("G", 4 + previousLabelWeight));
-				scores.add(new ScoredValue<String>("H", 4 + previousLabelWeight));
-				scores.add(new ScoredValue<String>("I", 5 + previousLabelWeight));
+				scores.add(new ScoredOutcome<String>("G", 4 + previousLabelWeight));
+				scores.add(new ScoredOutcome<String>("H", 4 + previousLabelWeight));
+				scores.add(new ScoredOutcome<String>("I", 5 + previousLabelWeight));
 				return scores;
 			}
 
 			if (position.equals("3")) {
-				scores.add(new ScoredValue<String>("J", 5 + previousLabelWeight));
-				scores.add(new ScoredValue<String>("K", 6 + previousLabelWeight));
-				scores.add(new ScoredValue<String>("L", 6 + previousLabelWeight));
+				scores.add(new ScoredOutcome<String>("J", 5 + previousLabelWeight));
+				scores.add(new ScoredOutcome<String>("K", 6 + previousLabelWeight));
+				scores.add(new ScoredOutcome<String>("L", 6 + previousLabelWeight));
 				return scores;
 			}
 
 			if (position.equals("4")) {
-				scores.add(new ScoredValue<String>("M", 7 + previousLabelWeight));
-				scores.add(new ScoredValue<String>("N", 7 + previousLabelWeight));
-				scores.add(new ScoredValue<String>("O", 8 + previousLabelWeight));
+				scores.add(new ScoredOutcome<String>("M", 7 + previousLabelWeight));
+				scores.add(new ScoredOutcome<String>("N", 7 + previousLabelWeight));
+				scores.add(new ScoredOutcome<String>("O", 8 + previousLabelWeight));
 				return scores;
 			}
 
 			throw new RuntimeException();
 		}
 
-		public List<ScoredValue<List<String>>> scoreSequence(List<List<Feature>> features, int maxResults) {
+		public List<ScoredOutcome<List<String>>> scoreSequence(List<List<Feature>> features, int maxResults) {
 			// TODO Auto-generated method stub
 			return null;
 		}
@@ -234,15 +234,15 @@ public class ViterbiTest {
 			return false;
 		}
 
-		public List<ScoredValue<String>> score(List<Feature> features, int maxResults) {
-			List<ScoredValue<String>> scores = new ArrayList<ScoredValue<String>>();
+		public List<ScoredOutcome<String>> score(List<Feature> features, int maxResults) {
+			List<ScoredOutcome<String>> scores = new ArrayList<ScoredOutcome<String>>();
 
 			String position = (String) features.get(0).getValue();
 			if (features.size() == 1) {
 				// if I am at position 1 then the label "1" corresponds to the
 				// 1st assembly line and the score is 2+7.
-				scores.add(new ScoredValue<String>("1", 9));
-				scores.add(new ScoredValue<String>("2", 12));
+				scores.add(new ScoredOutcome<String>("1", 9));
+				scores.add(new ScoredOutcome<String>("2", 12));
 				return scores;
 			}
 
@@ -251,65 +251,65 @@ public class ViterbiTest {
 				if (previousLabel.equals("1")) {
 					// if I am at position 2, and I was previously on the 1st
 					// assembly then cost to stay in the 1st assembly is 9
-					scores.add(new ScoredValue<String>("1", 9));
+					scores.add(new ScoredOutcome<String>("1", 9));
 					// if I am at position 2, and I was previously on the 2nd
 					// assembly then cost to move to the 1st assembly is 5 + 2
-					scores.add(new ScoredValue<String>("2", 5 + 2));
+					scores.add(new ScoredOutcome<String>("2", 5 + 2));
 				}
 				else if (previousLabel.equals("2")) {
-					scores.add(new ScoredValue<String>("1", 9 + 2));
-					scores.add(new ScoredValue<String>("2", 5));
+					scores.add(new ScoredOutcome<String>("1", 9 + 2));
+					scores.add(new ScoredOutcome<String>("2", 5));
 				}
 			}
 
 			if (position.equals("3")) {
 				if (previousLabel.equals("1")) {
-					scores.add(new ScoredValue<String>("1", 3));
-					scores.add(new ScoredValue<String>("2", 6 + 3));
+					scores.add(new ScoredOutcome<String>("1", 3));
+					scores.add(new ScoredOutcome<String>("2", 6 + 3));
 				}
 				else if (previousLabel.equals("2")) {
-					scores.add(new ScoredValue<String>("1", 3 + 1));
-					scores.add(new ScoredValue<String>("2", 6));
+					scores.add(new ScoredOutcome<String>("1", 3 + 1));
+					scores.add(new ScoredOutcome<String>("2", 6));
 				}
 			}
 
 			if (position.equals("4")) {
 				if (previousLabel.equals("1")) {
-					scores.add(new ScoredValue<String>("1", 4));
-					scores.add(new ScoredValue<String>("2", 4 + 1));
+					scores.add(new ScoredOutcome<String>("1", 4));
+					scores.add(new ScoredOutcome<String>("2", 4 + 1));
 				}
 				else if (previousLabel.equals("2")) {
-					scores.add(new ScoredValue<String>("1", 4 + 2));
-					scores.add(new ScoredValue<String>("2", 4));
+					scores.add(new ScoredOutcome<String>("1", 4 + 2));
+					scores.add(new ScoredOutcome<String>("2", 4));
 				}
 			}
 
 			if (position.equals("5")) {
 				if (previousLabel.equals("1")) {
-					scores.add(new ScoredValue<String>("1", 8));
-					scores.add(new ScoredValue<String>("2", 5 + 3));
+					scores.add(new ScoredOutcome<String>("1", 8));
+					scores.add(new ScoredOutcome<String>("2", 5 + 3));
 				}
 				else if (previousLabel.equals("2")) {
-					scores.add(new ScoredValue<String>("1", 8 + 2));
-					scores.add(new ScoredValue<String>("2", 5));
+					scores.add(new ScoredOutcome<String>("1", 8 + 2));
+					scores.add(new ScoredOutcome<String>("2", 5));
 				}
 			}
 
 			if (position.equals("6")) {
 				if (previousLabel.equals("1")) {
-					scores.add(new ScoredValue<String>("1", 4 + 3));
-					scores.add(new ScoredValue<String>("2", 7 + 2 + 4));
+					scores.add(new ScoredOutcome<String>("1", 4 + 3));
+					scores.add(new ScoredOutcome<String>("2", 7 + 2 + 4));
 				}
 				else if (previousLabel.equals("2")) {
-					scores.add(new ScoredValue<String>("1", 4 + 3 + 1));
-					scores.add(new ScoredValue<String>("2", 7 + 2));
+					scores.add(new ScoredOutcome<String>("1", 4 + 3 + 1));
+					scores.add(new ScoredOutcome<String>("2", 7 + 2));
 				}
 			}
 
 			return scores;
 		}
 
-		public List<ScoredValue<List<String>>> scoreSequence(List<List<Feature>> features, int maxResults) {
+		public List<ScoredOutcome<List<String>>> scoreSequence(List<List<Feature>> features, int maxResults) {
 			// TODO Auto-generated method stub
 			return null;
 		}

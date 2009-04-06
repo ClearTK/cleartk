@@ -22,37 +22,22 @@
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
-package org.cleartk.classifier;
-
-import static org.junit.Assert.assertEquals;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+package org.cleartk.token.pos.impl;
 
 import org.junit.Test;
 
 /**
- * <br>
- * Copyright (c) 2009, Regents of the University of Colorado <br>
- * All rights reserved.
+ * <br>Copyright (c) 2009, Regents of the University of Colorado 
+ * <br>All rights reserved.
+
+ *
  * @author Philip Ogren
- * 
+ *
  */
+public class DefaultPOSHandlerTest {
 
-public class ScoredValueTest {
-
-	@Test
-	public void testComparator() {
-		List<ScoredOutcome<String>> scoredValues = new ArrayList<ScoredOutcome<String>>();
-		scoredValues.add(new ScoredOutcome<String>("A", 1.0));
-		scoredValues.add(new ScoredOutcome<String>("B", 5.0));
-		scoredValues.add(new ScoredOutcome<String>("C", 0.0001));
-		scoredValues.add(new ScoredOutcome<String>("D", 20.0001));
-		Collections.sort(scoredValues);
-		assertEquals("D", scoredValues.get(0).getValue());
-		assertEquals("B", scoredValues.get(1).getValue());
-		assertEquals("A", scoredValues.get(2).getValue());
-		assertEquals("C", scoredValues.get(3).getValue());
-	}
+//	@Test
+//	public void test() {
+//		
+//	}
 }

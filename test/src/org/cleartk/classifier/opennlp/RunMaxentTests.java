@@ -37,7 +37,7 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.cleartk.classifier.ClassifierFactory;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.ScoredValue;
+import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.Train;
 import org.cleartk.classifier.encoder.factory.NameNumberEncoderFactory;
 import org.junit.After;
@@ -226,7 +226,7 @@ public class RunMaxentTests {
 		assertEquals("B-GENE", sequenceClassification.get(0));
 		assertEquals("O", sequenceClassification.get(1));
 		
-		ScoredValue<String> scoredValue = classifier.score(features1,1).get(0);
+		ScoredOutcome<String> scoredValue = classifier.score(features1,1).get(0);
 		assertEquals("B-GENE", scoredValue.getValue());
 		assertTrue(scoredValue.getScore() <= 1.0f);
 		assertTrue(scoredValue.getScore() >= 0.0f);
@@ -235,7 +235,7 @@ public class RunMaxentTests {
 		assertTrue(scoredValue.getScore() <= 1.0f);
 		assertTrue(scoredValue.getScore() >= 0.0f);
 
-		List<ScoredValue<String>> scoredValues = classifier.score(features1, 4);
+		List<ScoredOutcome<String>> scoredValues = classifier.score(features1, 4);
 		assertEquals(3, scoredValues.size());
 		scoredValue = scoredValues.get(0);
 		assertEquals("B-GENE", scoredValue.getValue());
