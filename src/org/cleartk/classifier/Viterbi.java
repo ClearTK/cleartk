@@ -43,16 +43,16 @@ import org.cleartk.classifier.feature.extractor.outcome.OutcomeFeatureExtractor;
 public class Viterbi {
 
 	/**
-	 * "org.cleartk.classifier.Viterbi.PARAM_BEAM_SIZE" is an optional, single,
+	 * "org.cleartk.classifier.Viterbi.PARAM_STACK_SIZE" is an optional, single,
 	 * integer parameter that specifies the maximum number of candidate paths to
 	 * keep track of. In general, this number should be higher than the number
 	 * of possible classifications at any given point in the sequence. This
 	 * guarantees that highest-possible scoring sequence will be returned. If,
 	 * however, the number of possible classifications is quite high and/or you
-	 * are concerned about performance, then you may want to reduce the number
+	 * are concerned about throughput performance, then you may want to reduce the number
 	 * of candidate paths to maintain.
 	 */
-	public static String PARAM_BEAM_SIZE = "org.cleartk.classifier.Viterbi.PARAM_BEAM_SIZE";
+	public static String PARAM_STACK_SIZE = "org.cleartk.classifier.Viterbi.PARAM_STACK_SIZE";
 
 	/**
 	 * "org.cleartk.classifier.Viterbi.PARAM_ADD_SCORES" is an optional, single,
@@ -65,9 +65,9 @@ public class Viterbi {
 	public static String PARAM_ADD_SCORES = "org.cleartk.classifier.Viterbi.PARAM_ADD_SCORES";
 
 	/**
-	 * This implementation of Viterbi requires at most beamSize * sequenceLength
+	 * This implementation of Viterbi requires at most stackSize * sequenceLength
 	 * calls to the classifier. If this proves to be to expensive, then consider
-	 * using a smaller beam size.
+	 * using a smaller stack size.
 	 * 
 	 * @param <OUTCOME_TYPE>
 	 *            the type of outcome that should be returned
@@ -75,9 +75,9 @@ public class Viterbi {
 	 *            a sequence-worth of features. Each List<Feature> in features
 	 *            should corresond to all of the features for a given element in
 	 *            a sequence to be classified.
-	 * @param beamSize
+	 * @param stackSize
 	 *            the number of candidate paths through the space of possible
-	 *            sequence paths. See note for PARAM_BEAM_SIZE above.
+	 *            sequence paths. See note for PARAM_STACK_SIZE above.
 	 * @param cls
 	 *            the class of the outcome type that should be returned
 	 * @param classifier
@@ -93,12 +93,12 @@ public class Viterbi {
 	 *            calculated by multiplying the scores together.
 	 * @return a list of outcomes (classifications) - one classification for
 	 *         each member of the sequence.
-	 * @see #PARAM_BEAM_SIZE
+	 * @see #PARAM_STACK_SIZE
 	 * @see OutcomeFeatureExtractor
 	 * @see Classifier_ImplBase#classifySequence(List)
 	 * @see MaxentClassifier#classifySequence(List)
 	 */
-	public static <OUTCOME_TYPE> List<OUTCOME_TYPE> classifySequence(List<List<Feature>> features, int beamSize,
+	public static <OUTCOME_TYPE> List<OUTCOME_TYPE> classifySequence(List<List<Feature>> features, int stackSize,
 			Class<OUTCOME_TYPE> cls, Classifier<OUTCOME_TYPE> classifier,
 			OutcomeFeatureExtractor[] outcomeFeatureExtractors, boolean addScores) {
 
@@ -108,7 +108,7 @@ public class Viterbi {
 			return Collections.emptyList();
 		}
 
-		List<ScoredOutcome<OUTCOME_TYPE>> scoredOutcomes = classifier.score(features.get(0), beamSize);
+		List<ScoredOutcome<OUTCOME_TYPE>> scoredOutcomes = classifier.score(features.get(0), stackSize);
 		for (ScoredOutcome<OUTCOME_TYPE> scoredOutcome : scoredOutcomes) {
 			double score = scoredOutcome.getScore();
 			List<OUTCOME_TYPE> sequence = new ArrayList<OUTCOME_TYPE>();
@@ -136,7 +136,7 @@ public class Viterbi {
 				}
 				// score the instance features using the features added by the
 				// outcomeFeatureExtractors
-				scoredOutcomes = classifier.score(instanceFeatures, beamSize);
+				scoredOutcomes = classifier.score(instanceFeatures, stackSize);
 				// remove the added features from previous outcomes for this
 				// scoredSequence
 				instanceFeatures = instanceFeatures.subList(0, instanceFeatures.size() - outcomeFeaturesCount);

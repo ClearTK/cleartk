@@ -57,7 +57,7 @@ import org.cleartk.util.UIMAUtil;
 public class MaxentClassifier extends Classifier_ImplBase<String, String, List<NameNumber>> implements Initializable {
 
 	protected MaxentModel model;
-	int sequenceBeamSize = 1;
+	int viterbiStackSize = 1;
 	boolean viterbiAddScores = false;
 	
 	public MaxentClassifier(JarFile modelFile) throws IOException {
@@ -68,8 +68,8 @@ public class MaxentClassifier extends Classifier_ImplBase<String, String, List<N
 	}
 
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-		sequenceBeamSize = (Integer) UIMAUtil.getDefaultingConfigParameterValue(context, Viterbi.PARAM_BEAM_SIZE, 1);
-		viterbiAddScores = (Boolean) UIMAUtil.getDefaultingConfigParameterValue(context, Viterbi.PARAM_BEAM_SIZE, false);
+		viterbiStackSize = (Integer) UIMAUtil.getDefaultingConfigParameterValue(context, Viterbi.PARAM_STACK_SIZE, 1);
+		viterbiAddScores = (Boolean) UIMAUtil.getDefaultingConfigParameterValue(context, Viterbi.PARAM_ADD_SCORES, false);
 	}
 
 	
@@ -113,10 +113,10 @@ public class MaxentClassifier extends Classifier_ImplBase<String, String, List<N
 
 	@Override
 	public List<String> classifySequence(List<List<Feature>> features){
-		if(sequenceBeamSize == 1)
+		if(viterbiStackSize == 1)
 			return super.classifySequence(features);
 		else {
-			return Viterbi.classifySequence(features, sequenceBeamSize, String.class, this, outcomeFeatureExtractors, viterbiAddScores);	
+			return Viterbi.classifySequence(features, viterbiStackSize, String.class, this, outcomeFeatureExtractors, viterbiAddScores);	
 		}
 	}
 
