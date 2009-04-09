@@ -73,7 +73,7 @@
              maxmemory="${max-memory}">
            <classpath refid="compile.classpath"/>
            <arg value="-jcasgeninput"/>
-           <arg value="${desc}/TypeSystem.xml"/>
+           <arg value="${src}/org/cleartk/TypeSystem.xml"/>
            <arg value="-jcasgenoutput"/>
            <arg value="${src}"/>
 		   <redirector output="${build}/ant.log"/>
