@@ -34,6 +34,7 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
@@ -64,25 +65,22 @@ public class SnowballStemmerTests {
 	
 	@Test
 	public void testSimple() throws UIMAException {
+		TypeSystemDescription typeSystemDescription = TypeSystemDescriptionFactory
+				.createTypeSystemDescription(Token.class, Sentence.class);
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-				SnowballStemmer.class,
-				TypeSystemDescriptionFactory.createTypeSystemDescription(Token.class, Sentence.class),
+				SnowballStemmer.class, typeSystemDescription,
 				SnowballStemmer.PARAM_STEMMER_NAME, "English");
 		JCas jCas = engine.newJCas();
-		TokenFactory.createTokens(jCas,
-				"The brown foxes jumped quickly over the lazy dog.",
-				Token.class, Sentence.class, 
-				"The brown foxes jumped quickly over the lazy dog .");
+		String text = "The brown foxes jumped quickly over the lazy dog.";
+		String tokens = "The brown foxes jumped quickly over the lazy dog .";
+		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class, tokens);
 		engine.process(jCas);
-		
-		List<String> expected = Arrays.asList(
-				"the brown fox jump quick over the lazi dog .".split(" "));
 		List<String> actual = new ArrayList<String>();
 		for (Token token: AnnotationRetrieval.getAnnotations(jCas, Token.class)) {
 			actual.add(token.getStem());
 		}
-		Assert.assertEquals(expected, actual);
-		
+		String expected = "the brown fox jump quick over the lazi dog .";
+		Assert.assertEquals(Arrays.asList(expected.split(" ")), actual);
 	}
 
 	@Test
