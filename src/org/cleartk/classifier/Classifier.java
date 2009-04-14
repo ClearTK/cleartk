@@ -25,9 +25,6 @@ package org.cleartk.classifier;
 
 import java.util.List;
 
-import org.cleartk.classifier.mallet.MalletCRFClassifier;
-import org.cleartk.classifier.opennlp.MaxentClassifier;
-
 /**
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
@@ -65,19 +62,6 @@ public interface Classifier<OUTCOME_TYPE> {
 	 */
 	public abstract OUTCOME_TYPE classify(List<Feature> features);
 
-	/**
-	 * This method provides a default implementation for classifying a bunch of
-	 * instances at once. The values returned are the same as they would if
-	 * <code>classify(List&lt;Feature&gt;)</code> was called individually on
-	 * each list of features. Sequential classifiers should override this
-	 * method.
-	 * 
-	 * @param features
-	 *            a list of lists of features.
-	 * @return a list of values corresponding to the classifications made.
-	 * @see MalletCRFClassifier#classify(List)
-	 */
-	public List<OUTCOME_TYPE> classifySequence(List<List<Feature>> features);
 
 	/**
 	 * Provides a way to get scores for the best N classifications. The 'score'
@@ -93,29 +77,6 @@ public interface Classifier<OUTCOME_TYPE> {
 	 */
 	public List<ScoredOutcome<OUTCOME_TYPE>> score(List<Feature> features, int maxResults);
 
-
-	/**
-	 * A classifier that is based on a sequence of labels (i.e.
-	 * computes/optimizes label transition probabilities) such as the
-	 * MalletCRFClassifier should return true.
-	 * 
-	 * Here is the expectation for implementors. If true is returned, then the
-	 * classifier may or may not implement
-	 * <code>classify(List&lt;Feature&gt;)</code> (usually not we expect) and
-	 * must override <code>classify(List&lt;List&lt;Feature&gt;&gt;)</code>. If
-	 * false is returned, then the classifier is required to implement
-	 * <code>classify(List&lt;Feature&gt;)</code> and may or many not override
-	 * <code>classify(List&lt;List&lt;Feature&gt;&gt;)</code>. If you do not
-	 * want to implement <code>classify(List&lt;Feature&gt;)</code> for your
-	 * sequential classifier, then simply throw an
-	 * UnsupportedOperationException.
-	 * 
-	 * @return true if this is a sequential classifier, false otherwise.
-	 * @see MalletCRFClassifier#isSequential()
-	 * @see MaxentClassifier#isSequential()
-	 */
-	public abstract boolean isSequential();
-
 }
 
 
@@ -124,21 +85,3 @@ public interface Classifier<OUTCOME_TYPE> {
 
 
 
-
-
-///**
-// * Provides a way to get scores for the best N sequence classifications. The
-// * 'score' in the scored value could be anything but is often something
-// * similar to a probability. The only expectation is that a higher score
-// * should correspond to higher confidence in the classification. No other
-// * assumptions should be made.
-// * 
-// * @param features
-// *            features for a sequence - i.e. for each member in the sequence
-// *            there is a list of features.
-// * @param maxResults
-// *            the maximum number of classifications to return.
-// * @return a sorted list of the best N sequence classifications with their
-// *         scores.
-// */
-//public List<ScoredValue<List<OUTCOME_TYPE>>> scoreSequence(List<List<Feature>> features, int maxResults);
