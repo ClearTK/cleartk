@@ -27,7 +27,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.InstanceConsumer;
+import org.cleartk.classifier.SequentialInstanceConsumer;
 
 
 /**
@@ -36,7 +36,7 @@ import org.cleartk.classifier.InstanceConsumer;
 
 */
 
-public class TestChunkHandlerInstanceConsumer implements InstanceConsumer<String> {
+public class TestChunkHandlerInstanceConsumer extends SequentialInstanceConsumer<String> {
 
 	boolean expectsOutcomes = false;
 	
@@ -48,6 +48,7 @@ public class TestChunkHandlerInstanceConsumer implements InstanceConsumer<String
 		return null;
 	}
 
+	@Override
 	public List<String> consumeSequence(List<Instance<String>> instances) {
 		if(!expectsOutcomes) {
 			return Arrays.asList(new String[] {"B-1", "I-1", "I-1","O","O","B-nice","I-nice","B-nice", "B-twice", "O", "I-twice", "B-2", "I-2", "O", "O", "O", "O", "O", "O", "O"});
@@ -55,6 +56,7 @@ public class TestChunkHandlerInstanceConsumer implements InstanceConsumer<String
 		return null;
 	}
 
+	@Override
 	public boolean expectsOutcomes() {
 		return expectsOutcomes;
 	}

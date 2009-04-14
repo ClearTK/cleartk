@@ -34,9 +34,8 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.ClassifierAnnotator;
-import org.cleartk.classifier.DataWriter_ImplBase;
-import org.cleartk.classifier.DelegatingDataWriter;
-import org.cleartk.classifier.InstanceConsumer_ImplBase;
+import org.cleartk.classifier.DataWriterAnnotator;
+import org.cleartk.classifier.InstanceConsumer;
 import org.cleartk.classifier.opennlp.MaxentDataWriter;
 import org.cleartk.type.Chunk;
 import org.cleartk.type.Sentence;
@@ -173,7 +172,7 @@ public class ChunkHandlerTests {
 				"org.cleartk.token.chunk.ChunkTokenizer",
 				ClassifierAnnotator.PARAM_CLASSIFIER_JAR, "test/data/token/chunk/model.jar");
 		Object handler = engine.getConfigParameterValue(
-				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER);
+				InstanceConsumer.PARAM_ANNOTATION_HANDLER);
 		Assert.assertEquals(ChunkerHandler.class.getName(), handler);
 		
 		engine.collectionProcessComplete();
@@ -187,32 +186,32 @@ public class ChunkHandlerTests {
 		try {
 			AnalysisEngineFactory.createAnalysisEngine(
 					"org.cleartk.token.chunk.ChunkTokenizerDataWriter",
-					DelegatingDataWriter.PARAM_DATA_WRITER, MaxentDataWriter.class.getName());
+					DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, MaxentDataWriter.class.getName());
 			Assert.fail("expected exception with missing output directory");
 		} catch (ResourceInitializationException e) {}
 			
 		try {
 			AnalysisEngineFactory.createAnalysisEngine(
 					"org.cleartk.token.chunk.ChunkTokenizerDataWriter",
-					DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY, outputPath);
+					DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputPath);
 			Assert.fail("expected exception with missing data writer");
 		} catch (ResourceInitializationException e) {}
 			
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.token.chunk.ChunkTokenizerDataWriter",
-				DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY, outputPath,
-				DelegatingDataWriter.PARAM_DATA_WRITER, MaxentDataWriter.class.getName());
+				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputPath,
+				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, MaxentDataWriter.class.getName());
 		
 		Object handler = engine.getConfigParameterValue(
-				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER);
+				InstanceConsumer.PARAM_ANNOTATION_HANDLER);
 		Assert.assertEquals(ChunkerHandler.class.getName(), handler);
 		
 		Object dataWriter = engine.getConfigParameterValue(
-				DelegatingDataWriter.PARAM_DATA_WRITER);
+				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS);
 		Assert.assertEquals(MaxentDataWriter.class.getName(), dataWriter);
 		
 		Object outputDir = engine.getConfigParameterValue(
-				DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY);
+				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY);
 		Assert.assertEquals(outputPath, outputDir);
 		
 		engine.collectionProcessComplete();
