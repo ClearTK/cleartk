@@ -1,5 +1,5 @@
  /** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+ * Copyright (c) 2009, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,7 @@ import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
+ * <br>Copyright (c) 2009, Regents of the University of Colorado 
  * <br>All rights reserved.
 
  *
