@@ -24,10 +24,8 @@
 package org.cleartk.classifier;
 
 import org.apache.uima.UimaContext;
-import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
-import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.Initializable;
 import org.cleartk.util.UIMAUtil;
 
 /**
@@ -37,45 +35,34 @@ import org.cleartk.util.UIMAUtil;
  * 
  * @author Steven Bethard
  */
-public abstract class InstanceConsumer_ImplBase<OUTCOME_TYPE> extends JCasAnnotator_ImplBase implements InstanceConsumer<OUTCOME_TYPE> {
+public class AnnotationHandlerFactory {
 
-	/**
-	 * The name of a AnnotationHandler which will generate classification
-	 * instances for each document.
-	 */
-	public static final String PARAM_ANNOTATION_HANDLER = "AnnotationHandler";
-
-	protected AnnotationHandler<OUTCOME_TYPE> annotationHandler;
-
-	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		super.initialize(context);
-
+	public static AnnotationHandler<?> createAnnotationHandler(UimaContext context, String paramName) throws ResourceInitializationException {
+		return create(context, paramName, AnnotationHandler.class);
+	}
+	
+	public static SequentialAnnotationHandler<?> createSequentialAnnotationHandler(UimaContext context, String paramName) throws ResourceInitializationException {
+		return create(context, paramName, SequentialAnnotationHandler.class);
+	}
+	
+	private static <T> T create(UimaContext context, String paramName, Class<T> superClass) throws ResourceInitializationException {
 		// get the class name from the parameter
-		Object className = UIMAUtil.getRequiredConfigParameterValue(context,
-				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER);
+		Object className = UIMAUtil.getRequiredConfigParameterValue(context, paramName);
 
-		// create a new instance of the AnnotationHandler
+		// create a new instance
+		T instance;
 		try {
 			Class<?> cls = Class.forName((String) className);
-			this.annotationHandler = this.getProducerClass(cls).newInstance();
+			instance = cls.asSubclass(superClass).newInstance();
 		} catch (Exception e) {
 			throw new ResourceInitializationException(e);
 		}
 		
-		// TODO: do a runtime type check of AnnotationHandler<OUTCOME_TYPE> vs. InstanceConsumer<OUTCOME_TYPE>
-
-		// initialize the AnnotationHandler
-		this.annotationHandler.initialize(context);
+		// initialize and return the SequentialAnnotationHandler
+		if (instance instanceof Initializable) {
+			((Initializable)instance).initialize(context);
+		}
+		return instance;
 	}
-
-	@Override
-	public void process(JCas jCas) throws AnalysisEngineProcessException {
-		this.annotationHandler.process(jCas, this);
-	}
-
-	@SuppressWarnings("unchecked")
-	private Class<? extends AnnotationHandler<OUTCOME_TYPE>> getProducerClass(Class<?> cls) {
-		return (Class<? extends AnnotationHandler<OUTCOME_TYPE>>) cls.asSubclass(AnnotationHandler.class);
-	}
+	
 }
