@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier;
 
 import java.io.IOException;
@@ -28,10 +28,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.jar.JarFile;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
-*/
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ */
 
 public class ClassifierFactory {
 
@@ -51,31 +51,44 @@ public class ClassifierFactory {
 	 * @return a classifier defined by the contents of the jar file.
 	 * @throws IOException
 	 */
-	public static Classifier<?> readFromJar(String jarFileName) throws IOException {
+	public static Classifier<?> createClassifierFromJar(String jarFileName) throws IOException {
+		return (Classifier<?>) _createClassifierFromJar(jarFileName);
+	}
+
+	public static SequentialClassifier<?> createSequentialClassifierFromJar(String jarFileName) throws IOException {
+		return (SequentialClassifier<?>) _createClassifierFromJar(jarFileName);
+	}
+
+	private static Object _createClassifierFromJar(String jarFileName) throws IOException {
 		// get the jar file manifest
 		JarFile modelFile = new JarFile(jarFileName);
 		ClassifierManifest manifest = new ClassifierManifest(modelFile);
-	
+
 		// get the classifier class
 		ClassifierBuilder<?> builder = manifest.getClassifierBuilder();
-		Class<? extends Classifier<?>> classifierClass = builder.getClassifierClass();
-		
+		Class<?> classifierClass = builder.getClassifierClass();
+
 		// create the classifier, passing in the jar file
 		try {
 			return classifierClass.getConstructor(JarFile.class).newInstance(modelFile);
-		} catch (InstantiationException e) {
+		}
+		catch (InstantiationException e) {
 			throw newIOException(e);
-		} catch (IllegalAccessException e) {
+		}
+		catch (IllegalAccessException e) {
 			throw newIOException(e);
-		} catch (InvocationTargetException e) {
+		}
+		catch (InvocationTargetException e) {
 			throw newIOException(e);
-		} catch (NoSuchMethodException e) {
+		}
+		catch (NoSuchMethodException e) {
 			throw newIOException(e);
-		} finally {
+		}
+		finally {
 			modelFile.close();
 		}
 	}
-	
+
 	private static IOException newIOException(Throwable cause) {
 		IOException exception = new IOException();
 		exception.initCause(cause);
