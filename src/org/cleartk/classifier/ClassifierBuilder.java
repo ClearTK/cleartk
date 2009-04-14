@@ -37,5 +37,5 @@ public interface ClassifierBuilder<OUTCOME_TYPE> {
 	
 	public void buildJar(File dir, String[] args) throws Exception;
 
-	public Class<? extends Classifier<OUTCOME_TYPE>> getClassifierClass();
+	public Class<?> getClassifierClass();
 }
