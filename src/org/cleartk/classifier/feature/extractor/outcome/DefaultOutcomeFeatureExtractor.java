@@ -47,15 +47,15 @@ public class DefaultOutcomeFeatureExtractor implements OutcomeFeatureExtractor{
 
 	private static final long serialVersionUID = 7476684786572310025L;
 
-	public static final String PARAM_MOST_RECENT_OUTCOME = "org.cleartk.classifier.nonsequential.DefaultOutcomesFeatureExtractor.PARAM_MOST_RECENT_OUTCOME";
+	public static final String PARAM_MOST_RECENT_OUTCOME = "org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor.PARAM_MOST_RECENT_OUTCOME";
 	
-	public static final String PARAM_LEAST_RECENT_OUTCOME = "org.cleartk.classifier.nonsequential.DefaultOutcomesFeatureExtractor.PARAM_LEAST_RECENT_OUTCOME";
+	public static final String PARAM_LEAST_RECENT_OUTCOME = "org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor.PARAM_LEAST_RECENT_OUTCOME";
 	
-	public static final String PARAM_USE_BIGRAM = "org.cleartk.classifier.nonsequential.DefaultOutcomesFeatureExtractor.PARAM_USE_BIGRAM";
+	public static final String PARAM_USE_BIGRAM = "org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor.PARAM_USE_BIGRAM";
 	
-	public static final String PARAM_USE_TRIGRAM = "org.cleartk.classifier.nonsequential.DefaultOutcomesFeatureExtractor.PARAM_USE_TRIGRAM";
+	public static final String PARAM_USE_TRIGRAM = "org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor.PARAM_USE_TRIGRAM";
 
-	public static final String PARAM_USE_4GRAM = "org.cleartk.classifier.nonsequential.DefaultOutcomesFeatureExtractor.PARAM_USE_4GRAM";
+	public static final String PARAM_USE_4GRAM = "org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor.PARAM_USE_4GRAM";
 
 	private int mostRecentOutcome;
 	private int leastRecentOutcome;
