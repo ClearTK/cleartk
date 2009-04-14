@@ -50,6 +50,7 @@ import java.util.List;
  * 
  * @author Philipp Wetzler
  * @author Philip Ogren
+ * @author Steven Bethard
  */
 
 public interface Classifier<OUTCOME_TYPE> {
