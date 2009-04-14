@@ -91,7 +91,7 @@ public class Files {
 							File next = queue.poll();
 							for (File file : next.listFiles()) {
 								String fileName = file.getName();
-								if(file.isHidden())
+								if(file.getName().startsWith("."))
 									continue;
 								if (file.isDirectory() || fileNames.contains(fileName)) {
 									queue.offer(file);
@@ -138,7 +138,7 @@ public class Files {
 								break;
 							File next = queue.poll();
 							for (File each : next.listFiles()) {
-								if(each.isHidden())
+								if(each.getName().startsWith("."))
 									continue;
 								if (each.isDirectory() || filter == null || filter.accept(each)) {
 									queue.offer(each);
