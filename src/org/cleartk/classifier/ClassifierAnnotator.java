@@ -28,7 +28,6 @@ import java.lang.reflect.Type;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.Initializable;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
 
@@ -69,6 +68,7 @@ public class ClassifierAnnotator<OUTCOME_TYPE> extends InstanceConsumer<OUTCOME_
 	 */
 	public static final String PARAM_CLASSIFIER_JAR = "org.cleartk.classifier.ClassifierAnnotator.PARAM_CLASSIFIER_JAR";
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
@@ -95,12 +95,14 @@ public class ClassifierAnnotator<OUTCOME_TYPE> extends InstanceConsumer<OUTCOME_
 		}
 	}
 
+	@Override
 	public OUTCOME_TYPE consume(Instance<OUTCOME_TYPE> instance) {
 			return this.classifier.classify(instance.getFeatures());
 	}
 	
 	private Classifier<OUTCOME_TYPE> classifier;
 
+	@Override
 	public boolean expectsOutcomes() {
 		return false;
 	}
