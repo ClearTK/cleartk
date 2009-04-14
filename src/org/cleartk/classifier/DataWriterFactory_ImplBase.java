@@ -13,7 +13,7 @@ import org.cleartk.util.UIMAUtil;
 
 public abstract class DataWriterFactory_ImplBase implements DataWriterFactory {
 
-	public static final String PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM = "LoadEncodersFromFileSystem";
+	public static final String PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM = "org.cleartk.classifier.DataWriterFactory_ImplBase.PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM";
 
 	public void initialize(UimaContext context) {
 		boolean loadEncoders = (Boolean)UIMAUtil.getDefaultingConfigParameterValue(
