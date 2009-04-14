@@ -29,18 +29,18 @@ package org.cleartk.classifier;
 
  * <p>
  * 
- * @author Steven Bethard
+ * @author Steven Bethard, Philip Ogren
  */
 public interface InstanceConsumer<OUTCOME_TYPE> {
 
 	/**
-	 * Consume the instance and return the label assigned to the instance. If
-	 * the consumer does not assign labels to instances (e.g. a training data
+	 * Consume the instance and return the outcome (classification) assigned to the instance. If
+	 * the consumer does not assign outcomes to instances (e.g. a training data
 	 * consumer), this method should return null.
 	 * 
 	 * @param instance
 	 *            The instance (features and label) to be consumed.
-	 * @return The assigned label, or null if a label was not assigned.
+	 * @return The assigned outcome (classification), or null if an outcome was not assigned.
 	 */
 	public OUTCOME_TYPE consume(Instance<OUTCOME_TYPE> instance);
 
@@ -54,10 +54,9 @@ public interface InstanceConsumer<OUTCOME_TYPE> {
 	 * annotation handler should not bother worrying about whether the instances
 	 * is passes to the consume method have outcomes or not.
 	 * 
-	 * This method says nothing about whether values are returned from consume
-	 * and consumeAll methods.
+	 * This method says nothing about whether values are returned from consume.
 	 * 
-	 * @return True if the consumer expects the classification Instances to have
+	 * @return true if the consumer expects the classification Instances to have
 	 *         outcomes, and false otherwise.
 	 */
 	public boolean expectsOutcomes();

@@ -31,7 +31,7 @@ import java.util.List;
 
  * <p>
  * 
- * @author Steven Bethard
+ * @author Steven Bethard, Philip Ogren
  */
 public interface SequentialInstanceConsumer<OUTCOME_TYPE> {
 
@@ -57,8 +57,7 @@ public interface SequentialInstanceConsumer<OUTCOME_TYPE> {
 	 * annotation handler should not bother worrying about whether the instances
 	 * is passes to the consume method have outcomes or not.
 	 * 
-	 * This method says nothing about whether values are returned from consume
-	 * and consumeAll methods.
+	 * This method says nothing about whether values are returned from consumSequence.
 	 * 
 	 * @return True if the consumer expects the classification Instances to have
 	 *         outcomes, and false otherwise.
