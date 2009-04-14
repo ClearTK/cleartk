@@ -32,6 +32,7 @@ public class DataWriterAnnotator<OUTCOME_TYPE> extends InstanceConsumer<OUTCOME_
 				context, PARAM_DATAWRITER_FACTORY_CLASS, DataWriterFactory.class);
 		this.dataWriter = ReflectionUtil.uncheckedCast(
 				dataWriterFactory.getDataWriter(outputDirectory));
+		UIMAUtil.initialize(this.dataWriter, context);
 	}
 
 	
