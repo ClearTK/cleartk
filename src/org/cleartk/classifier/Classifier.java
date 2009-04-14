@@ -59,7 +59,7 @@ public interface Classifier<OUTCOME_TYPE> {
 	 * @param features  a list of features to be classified
 	 * @return          the classification made
 	 */
-	public abstract OUTCOME_TYPE classify(List<Feature> features);
+	public  OUTCOME_TYPE classify(List<Feature> features);
 
 	/**
 	 * Get the N best classifications along with their scores.
