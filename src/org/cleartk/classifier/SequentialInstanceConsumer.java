@@ -1,5 +1,5 @@
  /** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+ * Copyright (c) 2007-2009, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -25,15 +25,32 @@ package org.cleartk.classifier;
 
 import java.util.List;
 
+import org.apache.uima.UimaContext;
+import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.jcas.JCas;
+import org.apache.uima.resource.ResourceInitializationException;
+
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
+ * <br>Copyright (c) 2007-2009, Regents of the University of Colorado 
  * <br>All rights reserved.
 
  * <p>
  * 
  * @author Steven Bethard, Philip Ogren
  */
-public interface SequentialInstanceConsumer<OUTCOME_TYPE> {
+public abstract class SequentialInstanceConsumer<OUTCOME_TYPE> extends JCasAnnotator_ImplBase {
+
+	public static final String PARAM_ANNOTATION_HANDLER = "org.cleartk.classifier.SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER";
+
+	protected SequentialAnnotationHandler<OUTCOME_TYPE> annotationHandler; 
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void initialize(UimaContext context) throws ResourceInitializationException {
+		annotationHandler = (SequentialAnnotationHandler<OUTCOME_TYPE>) AnnotationHandlerFactory.createSequentialAnnotationHandler(context, PARAM_ANNOTATION_HANDLER);
+	}
+
 
 	/**
 	 * Consume a sequence of instances and return classifier outcomes for the instances. If
@@ -45,7 +62,7 @@ public interface SequentialInstanceConsumer<OUTCOME_TYPE> {
 	 * @return The outcomes for the instances - one for each instance, or null if labels were not assigned. Outcomes
 	 *         should be in the same order as the original instances.
 	 */
-	public List<OUTCOME_TYPE> consumeSequence(List<Instance<OUTCOME_TYPE>> instances);
+	public abstract List<OUTCOME_TYPE> consumeSequence(List<Instance<OUTCOME_TYPE>> instances);
 
 	/**
 	 * This method provides an annotation handler (or anything else using an
@@ -62,5 +79,11 @@ public interface SequentialInstanceConsumer<OUTCOME_TYPE> {
 	 * @return True if the consumer expects the classification Instances to have
 	 *         outcomes, and false otherwise.
 	 */
-	public boolean expectsOutcomes();
+	public abstract boolean expectsOutcomes();
+	
+	  @Override
+	    public void process(JCas jCas) throws AnalysisEngineProcessException {
+	        this.annotationHandler.process(jCas, this);
+	    }
+
 }
