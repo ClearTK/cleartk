@@ -24,7 +24,6 @@
 package org.cleartk.classifier;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.jar.JarFile;
 
 /**
@@ -52,47 +51,31 @@ public class ClassifierFactory {
 	 * @throws IOException
 	 */
 	public static Classifier<?> createClassifierFromJar(String jarFileName) throws IOException {
-		return (Classifier<?>) _createClassifierFromJar(jarFileName);
+		return createClassifierFromJar(jarFileName, Classifier.class);
 	}
 
 	public static SequentialClassifier<?> createSequentialClassifierFromJar(String jarFileName) throws IOException {
-		return (SequentialClassifier<?>) _createClassifierFromJar(jarFileName);
+		return createClassifierFromJar(jarFileName, SequentialClassifier.class);
 	}
 
-	private static Object _createClassifierFromJar(String jarFileName) throws IOException {
+	private static <T> T createClassifierFromJar(String jarFileName, Class<T> cls) throws IOException {
 		// get the jar file manifest
 		JarFile modelFile = new JarFile(jarFileName);
 		ClassifierManifest manifest = new ClassifierManifest(modelFile);
 
 		// get the classifier class
 		ClassifierBuilder<?> builder = manifest.getClassifierBuilder();
-		Class<?> classifierClass = builder.getClassifierClass();
+		Class<? extends T> classifierClass = builder.getClassifierClass().asSubclass(cls);
 
 		// create the classifier, passing in the jar file
 		try {
 			return classifierClass.getConstructor(JarFile.class).newInstance(modelFile);
-		}
-		catch (InstantiationException e) {
-			throw newIOException(e);
-		}
-		catch (IllegalAccessException e) {
-			throw newIOException(e);
-		}
-		catch (InvocationTargetException e) {
-			throw newIOException(e);
-		}
-		catch (NoSuchMethodException e) {
-			throw newIOException(e);
-		}
-		finally {
+		} catch (Exception e) {
+			IOException exception = new IOException();
+			exception.initCause(e);
+			throw exception;
+		} finally {
 			modelFile.close();
 		}
 	}
-
-	private static IOException newIOException(Throwable cause) {
-		IOException exception = new IOException();
-		exception.initCause(cause);
-		return exception;
-	}
-
 }
