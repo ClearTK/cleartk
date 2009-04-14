@@ -24,22 +24,24 @@
 package org.cleartk.classifier.mallet;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.jar.JarFile;
 
-import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.cleartk.classifier.ClassifierFactory;
+import org.cleartk.classifier.DataWriterAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.InstanceConsumer;
+import org.cleartk.classifier.SequentialClassifier;
 import org.cleartk.classifier.Train;
+import org.cleartk.example.ExamplePOSAnnotationHandler;
 import org.junit.Test;
-import org.uutuc.factory.AnalysisEngineFactory;
-import org.uutuc.factory.TypeSystemDescriptionFactory;
+import org.uutuc.factory.UimaContextFactory;
 import org.uutuc.util.HideOutput;
 
 /**
@@ -55,15 +57,14 @@ public class RunMalletCRFTests {
 	@Test
 	public void runTest1() throws Exception {
 		String outputDirectory = "test/data/mallet/run-crf-test-1"; 
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(MalletCRFDataWriter.class, 
-				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"), 
-				MalletCRFDataWriter.PARAM_ANNOTATION_HANDLER,
-				"org.cleartk.example.ExamplePOSAnnotationHandler",
-				MalletCRFDataWriter.PARAM_OUTPUT_DIRECTORY,
-				outputDirectory);
-		
-		MalletCRFDataWriter dataWriter = new MalletCRFDataWriter();
-		dataWriter.initialize(engine.getUimaContext());
+		DataWriterAnnotator<Boolean> dataWriter = new DataWriterAnnotator<Boolean>();
+		dataWriter.initialize(UimaContextFactory.createUimaContext(
+				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
+				ExamplePOSAnnotationHandler.class.getName(),
+				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY,
+				outputDirectory,
+				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS,
+				MalletCRFDataWriter.class.getName()));
 		
 		List<Instance<String>> instances = new ArrayList<Instance<String>>();
 		instances.add(createInstance("O Word_Three LCWord_three CapitalType_INITIAL_UPPERCASE L0OOB1 L1OOB2 R0_sequence R0_TypePath_Pos_NN R0_TypePath_Stem_sequenc R1_elements R1_TypePath_Pos_NNS R1_TypePath_Stem_element TypePath_Pos_CD TypePath_Stem_Three PrevNEMTokenLabel_L0OOB1 PrevNEMTokenLabel_L1OOB2"));
@@ -112,7 +113,6 @@ public class RunMalletCRFTests {
 		for(int i=0; i<100; i++)
 			dataWriter.consumeSequence(instances);
 		dataWriter.collectionProcessComplete();
-		engine.collectionProcessComplete();
 		
 		BufferedReader reader = new BufferedReader(new FileReader(outputDirectory+"/training-data.malletcrf"));
 		reader.readLine();
@@ -121,17 +121,9 @@ public class RunMalletCRFTests {
 		Train.main(new String[] {outputDirectory});
 		hider.restoreOutput();
 		
-		MalletCRFClassifier classifier = (MalletCRFClassifier) ClassifierFactory.readFromJar(outputDirectory+"/model.jar");
-		assertTrue(classifier.isSequential());
-		
-		List<Feature> features1 = createInstance("B-GENE Word_pol LCWord_pol CapitalType_ALL_LOWERCASE L0_( L0_TypePath_Pos_-LRB- L0_TypePath_Stem_( L1_I L1_TypePath_Pos_PRP L1_TypePath_Stem_I R0_I R0_TypePath_Pos_PRP R0_TypePath_Stem_I R1_) R1_TypePath_Pos_-RRB- R1_TypePath_Stem_) TypePath_Pos_NN TypePath_Stem_pol PrevNEMTokenLabel_L0_O PrevNEMTokenLabel_L1_I-GENE Gazetteer_entrez_genes.txt").getFeatures();
-		UnsupportedOperationException uoe = null;
-		try {
-			classifier.classify(features1);
-		}catch(UnsupportedOperationException e) {
-			uoe = e;
-		}
-		assertNotNull(uoe);
+		JarFile modelFile = new JarFile(new File(outputDirectory, "model.jar"));
+		MalletCRFClassifier classifier = new MalletCRFClassifier(modelFile);
+		assertTrue(classifier instanceof SequentialClassifier);
 		
 		List<List<Feature>> sequenceFeatures = new ArrayList<List<Feature>>();
 		for(Instance<String> instance : instances) {
@@ -156,7 +148,7 @@ public class RunMalletCRFTests {
 		String[] columns = data.split(" ");
 		instance.setOutcome(columns[0]);
 		for(int i=1; i<columns.length; i++) {
-			instance.add(new Feature((String)columns[i]));
+			instance.add(new Feature(columns[i]));
 		}
 		return instance;
 	}
