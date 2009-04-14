@@ -28,12 +28,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.List;
 import java.util.Random;
+import java.util.jar.JarFile;
 
-import org.cleartk.classifier.ClassifierFactory;
-import org.cleartk.classifier.DataWriter_ImplBase;
+import org.cleartk.classifier.DataWriterAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.InstanceConsumer_ImplBase;
+import org.cleartk.classifier.InstanceConsumer;
 import org.cleartk.classifier.Train;
 import org.cleartk.util.TestsUtil;
 import org.junit.After;
@@ -70,12 +70,14 @@ public class RunLIBSVMTests {
 	public void testBinaryLIBSVM() throws Exception {
 		
 		// create the data writer
-		BinaryLIBSVMDataWriter dataWriter = new BinaryLIBSVMDataWriter();
+		DataWriterAnnotator<Boolean> dataWriter = new DataWriterAnnotator<Boolean>();
 		dataWriter.initialize(UimaContextFactory.createUimaContext(
-				DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY,
+				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
+				TestsUtil.EmptyBooleanHandler.class.getName(),
+				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY,
 				this.outputDirectory,
-				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER,
-				TestsUtil.EmptyBooleanHandler.class.getName()));
+				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS,
+				BinaryLIBSVMDataWriter.class.getName()));
 		
 		// add a bunch of instances
 		dataWriter.consumeSequence(TestsUtil.generateBooleanInstances(500));
@@ -96,8 +98,8 @@ public class RunLIBSVMTests {
 		hider.restoreOutput();
 		
 		// read in the classifier and test it on new instances
-		BinaryLIBSVMClassifier classifier = (BinaryLIBSVMClassifier)ClassifierFactory.readFromJar(
-				new File(this.outputDirectory, "model.jar").getPath());
+		BinaryLIBSVMClassifier classifier = new BinaryLIBSVMClassifier(
+				new JarFile(new File(this.outputDirectory, "model.jar")));
 		for (Instance<Boolean> instance: TestsUtil.generateBooleanInstances(1000)) {
 			List<Feature> features = instance.getFeatures();
 			Boolean outcome = instance.getOutcome();
@@ -109,12 +111,14 @@ public class RunLIBSVMTests {
 	public void testLIBLINEAR() throws Exception {
 		
 		// create the data writer
-		LIBLINEARDataWriter dataWriter = new LIBLINEARDataWriter();
+		DataWriterAnnotator<Boolean> dataWriter = new DataWriterAnnotator<Boolean>();
 		dataWriter.initialize(UimaContextFactory.createUimaContext(
-				DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY,
+				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
+				TestsUtil.EmptyBooleanHandler.class.getName(),
+				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY,
 				this.outputDirectory,
-				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER,
-				TestsUtil.EmptyBooleanHandler.class.getName()));
+				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS,
+				LIBLINEARDataWriter.class.getName()));
 		
 		// add a bunch of instances
 		dataWriter.consumeSequence(TestsUtil.generateBooleanInstances(500));
@@ -135,8 +139,8 @@ public class RunLIBSVMTests {
 		hider.restoreOutput();
 		
 		// read in the classifier and test it on new instances
-		LIBLINEARClassifier classifier = (LIBLINEARClassifier)ClassifierFactory.readFromJar(
-				new File(this.outputDirectory, "model.jar").getPath());
+		LIBLINEARClassifier classifier = new LIBLINEARClassifier(
+				new JarFile(new File(this.outputDirectory, "model.jar")));
 		for (Instance<Boolean> instance: TestsUtil.generateBooleanInstances(1000)) {
 			List<Feature> features = instance.getFeatures();
 			Boolean outcome = instance.getOutcome();
@@ -148,12 +152,14 @@ public class RunLIBSVMTests {
 	public void testMultiClassLIBSVM() throws Exception {
 		
 		// create the data writer
-		MultiClassLIBSVMDataWriter dataWriter = new MultiClassLIBSVMDataWriter();
+		DataWriterAnnotator<String> dataWriter = new DataWriterAnnotator<String>();
 		dataWriter.initialize(UimaContextFactory.createUimaContext(
-				DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY,
+				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
+				TestsUtil.EmptyStringHandler.class.getName(),
+				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY,
 				this.outputDirectory,
-				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER,
-				TestsUtil.EmptyStringHandler.class.getName()));
+				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS,
+				MultiClassLIBSVMDataWriter.class.getName()));
 		
 		// add a bunch of instances
 		dataWriter.consumeSequence(TestsUtil.generateStringInstances(500));
@@ -174,8 +180,8 @@ public class RunLIBSVMTests {
 		hider.restoreOutput();
 		
 		// read in the classifier and test it on new instances
-		MultiClassLIBSVMClassifier classifier = (MultiClassLIBSVMClassifier)ClassifierFactory.readFromJar(
-				new File(this.outputDirectory, "model.jar").getPath());
+		MultiClassLIBSVMClassifier classifier = new MultiClassLIBSVMClassifier(
+				new JarFile(new File(this.outputDirectory, "model.jar")));
 		for (Instance<String> instance: TestsUtil.generateStringInstances(1000)) {
 			List<Feature> features = instance.getFeatures();
 			String outcome = instance.getOutcome();
