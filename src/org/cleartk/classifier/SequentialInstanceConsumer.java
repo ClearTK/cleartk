@@ -36,13 +36,13 @@ import java.util.List;
 public interface SequentialInstanceConsumer<OUTCOME_TYPE> {
 
 	/**
-	 * Consume the instances and return the labels assigned to the instances. If
-	 * the consumer does not assign labels to instances (e.g. a training data
+	 * Consume a sequence of instances and return classifier outcomes for the instances. If
+	 * the consumer does not assign outcomes to instances (e.g. a training data
 	 * consumer), this method should return null.
 	 * 
 	 * @param instances
-	 *            The instances to be consumed.
-	 * @return The assigned labels, or null if labels were not assigned. Labels
+	 *            A sequence of instances to be consumed.
+	 * @return The outcomes for the instances - one for each instance, or null if labels were not assigned. Outcomes
 	 *         should be in the same order as the original instances.
 	 */
 	public List<OUTCOME_TYPE> consumeSequence(List<Instance<OUTCOME_TYPE>> instances);
