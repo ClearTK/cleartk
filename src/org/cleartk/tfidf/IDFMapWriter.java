@@ -38,7 +38,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.InstanceConsumer_ImplBase;
+import org.cleartk.classifier.InstanceConsumer;
 import org.cleartk.classifier.feature.Counts;
 import org.cleartk.util.UIMAUtil;
 
@@ -50,7 +50,7 @@ import org.cleartk.util.UIMAUtil;
  * @author Philipp G. Wetzler
  *
  */
-public class IDFMapWriter<OUTCOME_TYPE> extends InstanceConsumer_ImplBase<OUTCOME_TYPE> {
+public class IDFMapWriter<OUTCOME_TYPE> extends InstanceConsumer<OUTCOME_TYPE> {
 
 	public static final String PARAM_IDFMAP_FILE = "IDFMapFile";
 
