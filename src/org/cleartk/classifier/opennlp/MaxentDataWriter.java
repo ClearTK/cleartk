@@ -23,22 +23,17 @@
 */
 package org.cleartk.classifier.opennlp;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
 import opennlp.maxent.RealValueFileEventStream;
 
-import org.apache.uima.UimaContext;
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.ClassifierBuilder;
 import org.cleartk.classifier.DataWriter_ImplBase;
-import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.encoder.EncoderFactory;
-import org.cleartk.classifier.encoder.factory.NameNumberEncoderFactory;
-import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 import org.cleartk.classifier.encoder.features.NameNumber;
+import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 
 
 /**
@@ -66,24 +61,18 @@ import org.cleartk.classifier.encoder.features.NameNumber;
 public class MaxentDataWriter extends DataWriter_ImplBase<String, String, List<NameNumber>> {
 
 
-	protected PrintWriter trainingDataWriter;
-
-	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		super.initialize(context);
+	public MaxentDataWriter(File outputDirectory) throws IOException {
+		super(outputDirectory);
 
 		// initialize output writer and Classifier class
 		this.trainingDataWriter = this.getPrintWriter("training-data.maxent");
-		
 	}
 
-	public String consume(Instance<String> instance) {
-		// write the label
-		String outcomeString = this.outcomeEncoder.encode(instance.getOutcome());
-		this.trainingDataWriter.print(outcomeString);
+	protected PrintWriter trainingDataWriter;
 
-		// aggregate the features
-		List<NameNumber> nameNumbers = this.featuresEncoder.encodeAll(instance.getFeatures());
+	public void writeEncoded(List<NameNumber> nameNumbers, String outcomeString) {
+		// write the label
+		this.trainingDataWriter.print(outcomeString);
 
 		// write each of the string features, encoded, into the training data
 		for (NameNumber nameNumber : nameNumbers) {
@@ -97,37 +86,21 @@ public class MaxentDataWriter extends DataWriter_ImplBase<String, String, List<N
 
 		// complete the feature line
 		this.trainingDataWriter.println();
-
-		// no labels created, so return null
-		return null;
 	}
 
 	@Override
-	public void collectionProcessComplete() throws AnalysisEngineProcessException {
-		if (featuresEncoder instanceof NameNumberFeaturesEncoder) {
-			try {
-				NameNumberFeaturesEncoder dfe = (NameNumberFeaturesEncoder) featuresEncoder;
-				if(dfe.isCompressFeatures())
-					dfe.writeNameLookup(this.getPrintWriter(NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
-			}
-			catch (ResourceInitializationException e) {
-				throw new AnalysisEngineProcessException(e);
-			}
-			catch (IOException e) {
-				throw new AnalysisEngineProcessException(e);
-			}
-		}
+	public void finish() throws IOException {
+		super.finish();
 		
-		super.collectionProcessComplete();
+		if (featuresEncoder instanceof NameNumberFeaturesEncoder) {
+			NameNumberFeaturesEncoder dfe = (NameNumberFeaturesEncoder) featuresEncoder;
+			if(dfe.isCompressFeatures())
+				dfe.writeNameLookup(this.getPrintWriter(NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
+		}
 	}
 
-	@Override
-	protected Class<? extends ClassifierBuilder<? extends String>> getDefaultClassifierBuilderClass() {
+	public Class<? extends ClassifierBuilder<String>> getDefaultClassifierBuilderClass() {
 		return MaxentClassifierBuilder.class;
 	}
 
-	@Override
-	protected Class<? extends EncoderFactory> getDefaultEncoderFactoryClass() {
-		return NameNumberEncoderFactory.class;
-	}
 }
