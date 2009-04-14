@@ -25,18 +25,12 @@ package org.cleartk.classifier;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
-import org.cleartk.classifier.encoder.features.FeaturesEncoder;
-import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
-import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 import org.cleartk.classifier.feature.extractor.outcome.OutcomeFeatureExtractor;
-import org.cleartk.util.ReflectionUtil;
 
 
 /**
@@ -45,14 +39,15 @@ import org.cleartk.util.ReflectionUtil;
 
 */
 
-public abstract class DefaultSequentialClassifier<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE,FEATURES_TYPE> extends SequentialClassifier_ImplBase<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE,FEATURES_TYPE> {
+public abstract class DefaultSequentialClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUTCOME_TYPE> {
 
-	protected Classifier classifier;
+	protected Classifier<OUTCOME_TYPE> classifier;
 	protected OutcomeFeatureExtractor[] outcomeFeatureExtractors;
 
+	@SuppressWarnings("unchecked")
 	public DefaultSequentialClassifier(JarFile modelFile) throws IOException {
 		
-		classifier = ClassifierFactory.createClassifierFromJar(modelFile.getName());
+		classifier =(Classifier<OUTCOME_TYPE>) ClassifierFactory.createClassifierFromJar(modelFile.getName());
 		
 		ZipEntry zipEntry = modelFile.getEntry(DataWriter_ImplBase.OUTCOME_FEATURE_EXTRACTOR_FILE_NAME);
 		if(zipEntry == null) {
@@ -69,14 +64,14 @@ public abstract class DefaultSequentialClassifier<INPUTOUTCOME_TYPE,OUTPUTOUTCOM
 		}
 	}
 
-	public List<INPUTOUTCOME_TYPE> classifySequence(List<List<Feature>> features) {
+	public List<OUTCOME_TYPE> classifySequence(List<List<Feature>> features) {
 		List<Object> outcomes = new ArrayList<Object>();
-		List<INPUTOUTCOME_TYPE> returnValues = new ArrayList<INPUTOUTCOME_TYPE>();
+		List<OUTCOME_TYPE> returnValues = new ArrayList<OUTCOME_TYPE>();
 		for (List<Feature> instanceFeatures : features) {
 			for(OutcomeFeatureExtractor outcomeFeatureExtractor : outcomeFeatureExtractors) {
 				instanceFeatures.addAll(outcomeFeatureExtractor.extractFeatures(outcomes));
 			}
-			INPUTOUTCOME_TYPE outcome = classifier.classify(instanceFeatures);
+			OUTCOME_TYPE outcome = classifier.classify(instanceFeatures);
 			outcomes.add(outcome);
 			returnValues.add(outcome);
 		}
