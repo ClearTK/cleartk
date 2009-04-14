@@ -33,11 +33,11 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.classifier.ClassifierAnnotator;
+import org.cleartk.classifier.DataWriterAnnotator;
 import org.cleartk.classifier.DataWriter_ImplBase;
-import org.cleartk.classifier.DelegatingDataWriter;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.InstanceConsumer_ImplBase;
+import org.cleartk.classifier.InstanceConsumer;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.EmptyAnnotator;
@@ -194,7 +194,7 @@ public class ExamplePOSHandlerTests {
 		
 		String expectedName = ExamplePOSAnnotationHandler.class.getName();
 		Object annotationHandler = engine.getConfigParameterValue(
-				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER);
+				InstanceConsumer.PARAM_ANNOTATION_HANDLER);
 		Assert.assertEquals(expectedName, annotationHandler);
 
 		Object classifierJar = engine.getConfigParameterValue(
@@ -211,17 +211,17 @@ public class ExamplePOSHandlerTests {
 		
 		String expectedName = ExamplePOSAnnotationHandler.class.getName();
 		Object annotationHandler = engine.getConfigParameterValue(
-				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER);
+				InstanceConsumer.PARAM_ANNOTATION_HANDLER);
 		Assert.assertEquals(expectedName, annotationHandler);
 		
 		Object outputDir = engine.getConfigParameterValue(
-				DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY);
+				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY);
 		Assert.assertEquals("example/model", outputDir);
 		
 		String expectedDataWriter = (
 				"org.cleartk.classifier.opennlp.MaxentDataWriter");
 		Object dataWriter = engine.getConfigParameterValue(
-				DelegatingDataWriter.PARAM_DATA_WRITER);
+				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS);
 		Assert.assertEquals(expectedDataWriter, dataWriter);
 		engine.collectionProcessComplete();
 	}

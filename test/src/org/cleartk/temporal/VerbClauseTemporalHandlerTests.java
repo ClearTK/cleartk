@@ -35,11 +35,10 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.ClassifierAnnotator;
-import org.cleartk.classifier.DataWriter_ImplBase;
-import org.cleartk.classifier.DelegatingDataWriter;
+import org.cleartk.classifier.DataWriterAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.InstanceConsumer_ImplBase;
+import org.cleartk.classifier.InstanceConsumer;
 import org.cleartk.classifier.svmlight.OVASVMlightDataWriter;
 import org.cleartk.corpus.timeml.type.Event;
 import org.cleartk.corpus.timeml.type.TemporalLink;
@@ -198,15 +197,15 @@ public class VerbClauseTemporalHandlerTests {
 				"org.cleartk.temporal.VerbClauseTemporalDataWriter");
 		
 		Object handler = engine.getConfigParameterValue(
-				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER);
+				InstanceConsumer.PARAM_ANNOTATION_HANDLER);
 		Assert.assertEquals(VerbClauseTemporalHandler.class.getName(), handler);
 		
 		Object dataWriter = engine.getConfigParameterValue(
-				DelegatingDataWriter.PARAM_DATA_WRITER);
+				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS);
 		Assert.assertEquals(OVASVMlightDataWriter.class.getName(), dataWriter);
 		
 		Object outputDir = engine.getConfigParameterValue(
-				DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY);
+				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY);
 		Assert.assertEquals("test/data/temporal", outputDir);
 		
 		engine.collectionProcessComplete();
@@ -218,7 +217,7 @@ public class VerbClauseTemporalHandlerTests {
 				"org.cleartk.temporal.VerbClauseTemporalAnnotator");
 		
 		Object handler = engine.getConfigParameterValue(
-				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER);
+				InstanceConsumer.PARAM_ANNOTATION_HANDLER);
 		Assert.assertEquals(VerbClauseTemporalHandler.class.getName(), handler);
 		
 		Object modelJar = engine.getConfigParameterValue(

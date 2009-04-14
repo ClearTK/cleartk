@@ -105,7 +105,7 @@ public class InstanceConsumer_ImplBaseTests {
 			AnalysisEngineFactory.createAnalysisEngine(
 					InstanceConsumer_ImplBaseTests.Consumer.class,
 					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-					InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER, "Foo");
+					InstanceConsumer.PARAM_ANNOTATION_HANDLER, "Foo");
 			Assert.fail("expected exception with bad AnnotationHandler name");
 		} catch (ResourceInitializationException e) {}
 	}
@@ -117,7 +117,7 @@ public class InstanceConsumer_ImplBaseTests {
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				EmptyAnnotator.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER,
+				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
 				InstanceConsumer_ImplBaseTests.HandlerOne.class.getName());
 		UimaContext context = engine.getUimaContext();
 		
@@ -162,7 +162,7 @@ public class InstanceConsumer_ImplBaseTests {
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				EmptyAnnotator.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER,
+				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
 				producerClass.getName());
 		
 		// initialize the consumer

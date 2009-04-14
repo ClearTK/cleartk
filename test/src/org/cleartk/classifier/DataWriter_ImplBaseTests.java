@@ -125,8 +125,8 @@ public class DataWriter_ImplBaseTests {
 	public void testNullFactory() throws UIMAException, IOException {
 		try {
 			AnalysisEngineFactory.createAnalysisEngine(Writer.class, null,
-					InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER, SingleProducer.class.getName(),
-					DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY, this.outputDir,
+					InstanceConsumer.PARAM_ANNOTATION_HANDLER, SingleProducer.class.getName(),
+					DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, this.outputDir,
 					DataWriter_ImplBase.PARAM_ENCODER_FACTORY_CLASS, NullFactory.class.getName(),
 					Writer.PARAM_FILE_NAME, "foo.txt", Writer.PARAM_STRING_TO_WRITE, "foo");
 
@@ -252,8 +252,8 @@ public class DataWriter_ImplBaseTests {
 
 	private void process(Class<?> producerClass, String fileName, String toWrite) throws UIMAException {
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(Writer.class, null,
-				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER, producerClass.getName(),
-				DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY, this.outputDir, Writer.PARAM_FILE_NAME, fileName,
+				InstanceConsumer.PARAM_ANNOTATION_HANDLER, producerClass.getName(),
+				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, this.outputDir, Writer.PARAM_FILE_NAME, fileName,
 				Writer.PARAM_STRING_TO_WRITE, toWrite);
 		JCas jCas = engine.newJCas();
 		engine.process(jCas);

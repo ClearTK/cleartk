@@ -190,9 +190,9 @@ public class RunSVMlightTests {
 		// create the data writer
 		SVMlightDataWriter dataWriter = new SVMlightDataWriter();
 		dataWriter.initialize(UimaContextFactory.createUimaContext(
-				DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY,
+				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY,
 				this.outputDirectory,
-				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER,
+				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
 				TestsUtil.EmptyBooleanHandler.class.getName()));
 		
 		// add a bunch of instances
@@ -229,9 +229,9 @@ public class RunSVMlightTests {
 		// create the data writer
 		OVASVMlightDataWriter dataWriter = new OVASVMlightDataWriter();
 		dataWriter.initialize(UimaContextFactory.createUimaContext(
-				DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY,
+				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY,
 				this.outputDirectory,
-				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER,
+				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
 				TestsUtil.EmptyStringHandler.class.getName()));
 		
 		// add a bunch of instances

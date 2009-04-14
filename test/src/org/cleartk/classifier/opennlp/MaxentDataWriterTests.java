@@ -70,8 +70,8 @@ public class MaxentDataWriterTests {
 	public void testConsumeAll() throws Exception {
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(MaxentDataWriter.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER, "org.cleartk.example.ExamplePOSAnnotationHandler",
-				DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				InstanceConsumer.PARAM_ANNOTATION_HANDLER, "org.cleartk.example.ExamplePOSAnnotationHandler",
+				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				DataWriter_ImplBase.PARAM_OUTCOME_FEATURE_EXTRACTOR, new String[] {"org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor"});
 
 		JCas jCas = engine.newJCas();
@@ -95,7 +95,7 @@ public class MaxentDataWriterTests {
 		
 		engine = AnalysisEngineFactory.createAnalysisEngine(ClassifierAnnotator.class, 
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER, "org.cleartk.example.ExamplePOSAnnotationHandler",
+				InstanceConsumer.PARAM_ANNOTATION_HANDLER, "org.cleartk.example.ExamplePOSAnnotationHandler",
 				ClassifierAnnotator.PARAM_CLASSIFIER_JAR, outputDirectory+File.separator+"model.jar");
 		
 		engine.process(jCas);

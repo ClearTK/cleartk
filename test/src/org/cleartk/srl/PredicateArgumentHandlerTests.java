@@ -36,6 +36,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.ClassifierAnnotator;
+import org.cleartk.classifier.DataWriterAnnotator;
 import org.cleartk.classifier.DelegatingDataWriter;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
@@ -375,18 +376,18 @@ public class PredicateArgumentHandlerTests {
 		String outputPath = this.predicateOutputDir.getPath();
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.srl.PredicateDataWriter",
-				DelegatingDataWriter.PARAM_OUTPUT_DIRECTORY, outputPath);
+				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputPath);
 		
 		Object handler = engine.getConfigParameterValue(
-				DelegatingDataWriter.PARAM_ANNOTATION_HANDLER);
+				DataWriterAnnotator.PARAM_ANNOTATION_HANDLER);
 		Assert.assertEquals(PredicateAnnotationHandler.class.getName(), handler);
 		
 		Object dataWriter = engine.getConfigParameterValue(
-				DelegatingDataWriter.PARAM_DATA_WRITER);
+				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS);
 		Assert.assertEquals(SVMlightDataWriter.class.getName(), dataWriter);
 		
 		Object outputDir = engine.getConfigParameterValue(
-				DelegatingDataWriter.PARAM_OUTPUT_DIRECTORY);
+				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY);
 		Assert.assertEquals(outputPath, outputDir);
 		
 		engine.collectionProcessComplete();
@@ -426,7 +427,7 @@ public class PredicateArgumentHandlerTests {
 		Assert.assertEquals(ArgumentAnnotationHandler.class.getName(), handler);
 		
 		Object dataWriter = engine.getConfigParameterValue(
-				DelegatingDataWriter.PARAM_DATA_WRITER);
+				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS);
 		Assert.assertEquals(MaxentDataWriter.class.getName(), dataWriter);
 		
 		Object outputDir = engine.getConfigParameterValue(
