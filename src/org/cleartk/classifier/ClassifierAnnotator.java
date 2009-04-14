@@ -89,9 +89,7 @@ public class ClassifierAnnotator<OUTCOME_TYPE> extends InstanceConsumer<OUTCOME_
 			}
 			
 			this.classifier = (Classifier<OUTCOME_TYPE>)untypedClassifier;
-			if(this.classifier instanceof Initializable) {
-				((Initializable)this.classifier).initialize(context);
-			}
+			UIMAUtil.initialize(this.classifier, context);
 		} catch (IOException e) {
 			throw new ResourceInitializationException(e);
 		}

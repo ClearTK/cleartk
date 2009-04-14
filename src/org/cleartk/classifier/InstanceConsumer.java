@@ -28,6 +28,7 @@ import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.util.UIMAUtil;
 
 /**
  * <br>
@@ -48,8 +49,8 @@ public abstract class InstanceConsumer<OUTCOME_TYPE> extends JCasAnnotator_ImplB
 	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-		annotationHandler = (AnnotationHandler<OUTCOME_TYPE>) AnnotationHandlerFactory.createAnnotationHandler(context,
-				PARAM_ANNOTATION_HANDLER);
+		annotationHandler = (AnnotationHandler<OUTCOME_TYPE>)UIMAUtil.create(
+				context, PARAM_ANNOTATION_HANDLER, AnnotationHandler.class);
 	}
 
 	/**

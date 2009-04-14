@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.UimaContext;
+import org.apache.uima.analysis_component.AnalysisComponent;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.FeatureStructure;
@@ -39,6 +40,7 @@ import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.cas.StringArray;
 import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.Initializable;
 
 
 /**
@@ -175,6 +177,59 @@ public class UIMAUtil
 		} catch (CASException e) {
 			throw new CollectionException(e);
 		}		
+	}
+
+	/**
+	 * Take the name of a Java class from the UimaContext, instantiate the class,
+	 * and initialize it (if possible).
+	 * 
+	 * @param <T>            The supertype of the class which should be instantiated.
+	 * @param context        The UimaContext from which the parameter should be read.
+	 * @param classParamName The name of the the UimaContext parameter containing the
+	 *                       class name.
+	 * @param superClass     The superclass of the class which should be instantiated.
+	 * @return               An instance of the requested class, as a subtype of the
+	 *                       supplied superclass. The instance's initialize method
+	 *                       will be called if possible, using {@link initialize}
+	 * @throws ResourceInitializationException
+	 */
+	public static <T> T create(UimaContext context, String classParamName, Class<T> superClass) throws ResourceInitializationException {
+		// get the class name from the parameter
+		Object className = getRequiredConfigParameterValue(context, classParamName);
+	
+		// create a new instance
+		T instance;
+		try {
+			Class<?> cls = Class.forName((String) className);
+			instance = cls.asSubclass(superClass).newInstance();
+		} catch (Exception e) {
+			throw new ResourceInitializationException(e);
+		}
+		
+		// initialize and return the SequentialAnnotationHandler
+		UIMAUtil.initialize(instance, context);
+		return instance;
+	}
+	
+	
+	/**
+	 * Initialize the object using the UimaContext, if possible.
+	 * 
+	 * In particular, the current implementation will initialize any object
+	 * which is either an Initializable instance or an AnalysisComponent
+	 * instance.
+	 * 
+	 * @param object  The object to be initialized.
+	 * @param context The UimaContext used to initialize the object
+	 * @throws ResourceInitializationException
+	 */
+	public static void initialize(Object object, UimaContext context)
+	throws ResourceInitializationException {
+		if (object instanceof Initializable) {
+			((Initializable)object).initialize(context);
+		} else if (object instanceof AnalysisComponent) {
+			((AnalysisComponent)object).initialize(context);
+		}
 	}
 
 }
