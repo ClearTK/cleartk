@@ -61,7 +61,7 @@ import org.cleartk.util.UIMAUtil;
  * @author Steven Bethard
  * @author Philip Ogren
  */
-public class ClassifierAnnotator  extends InstanceConsumer {
+public class ClassifierAnnotator<OUTCOME_TYPE> extends InstanceConsumer<OUTCOME_TYPE> {
 
 	/**
 	 * The path to a jar file used to instantiate the classifier.
@@ -69,6 +69,7 @@ public class ClassifierAnnotator  extends InstanceConsumer {
 	public static final String PARAM_CLASSIFIER_JAR = "org.cleartk.classifier.ClassifierAnnotator.PARAM_CLASSIFIER_JAR";
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
 		// get the Classifier jar file path and load the Classifier
@@ -87,20 +88,19 @@ public class ClassifierAnnotator  extends InstanceConsumer {
 						classifierLabelType, annotationHandlerLabelType));
 			}
 			
-			this.classifier = (Classifier<?>)untypedClassifier;
+			this.classifier = (Classifier<OUTCOME_TYPE>)untypedClassifier;
 			UIMAUtil.initialize(this.classifier, context);
 		} catch (IOException e) {
 			throw new ResourceInitializationException(e);
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public <OUTCOME_TYPE> OUTCOME_TYPE consume(Instance<OUTCOME_TYPE> instance) {
-			return (OUTCOME_TYPE) this.classifier.classify(instance.getFeatures());
+	public OUTCOME_TYPE consume(Instance<OUTCOME_TYPE> instance) {
+			return this.classifier.classify(instance.getFeatures());
 	}
 	
-	private Classifier<?> classifier;
+	private Classifier<OUTCOME_TYPE> classifier;
 
 	@Override
 	public boolean expectsOutcomes() {
