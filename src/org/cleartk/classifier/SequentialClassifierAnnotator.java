@@ -1,5 +1,5 @@
  /** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+ * Copyright (c) 2009, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -35,7 +35,7 @@ import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
+ * <br>Copyright (c) 2009, Regents of the University of Colorado 
  * <br>All rights reserved.
 
  *
@@ -64,7 +64,7 @@ import org.cleartk.util.UIMAUtil;
  * @author Steven Bethard
  * @author Philip Ogren
  */
-public class SequentialClassifierAnnotator<OUTCOME_TYPE> implements SequentialInstanceConsumer<OUTCOME_TYPE>, Initializable{
+public class SequentialClassifierAnnotator<OUTCOME_TYPE> extends SequentialInstanceConsumer<OUTCOME_TYPE>{
 
 	/**
 	 * The path to a jar file used to instantiate the classifier.
@@ -73,12 +73,12 @@ public class SequentialClassifierAnnotator<OUTCOME_TYPE> implements SequentialIn
 
 	@SuppressWarnings("unchecked")
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-
+		super.initialize(context);
 		// get the Classifier jar file path and load the Classifier
 		String jarPath = (String)UIMAUtil.getRequiredConfigParameterValue(
-				context, SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR);
+				context, PARAM_CLASSIFIER_JAR);
 		try {
-			Classifier<?> untypedClassifier = ClassifierFactory.readFromJar(jarPath);
+			SequentialClassifier<?> untypedClassifier = ClassifierFactory.createSequentialClassifierFromJar(jarPath);
 			Type classifierLabelType = ReflectionUtil.getTypeArgument(
 					Classifier.class, "OUTCOME_TYPE", untypedClassifier);
 			Type annotationHandlerLabelType = ReflectionUtil.getTypeArgument(
