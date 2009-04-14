@@ -55,7 +55,6 @@ public class SVMlightClassifier extends Classifier_ImplBase<Boolean,Boolean,Feat
 		this.model = SVMlightModel.fromInputStream(modelFile.getInputStream(modelEntry));		
 	}
 
-	@Override
 	public Boolean classify(List<Feature> features) {
 		FeatureVector featureVector = featuresEncoder.encodeAll(features);
 		
@@ -92,10 +91,4 @@ public class SVMlightClassifier extends Classifier_ImplBase<Boolean,Boolean,Feat
 			return new ScoredOutcome<Boolean>(false, -prediction);
 		}
 	}
-
-	@Override
-	public boolean isSequential() {
-		return false;
-	}
-	
 }

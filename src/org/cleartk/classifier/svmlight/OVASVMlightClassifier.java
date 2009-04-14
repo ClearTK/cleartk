@@ -63,8 +63,6 @@ public class OVASVMlightClassifier extends Classifier_ImplBase<String,Integer,Fe
 		}
 	}
 
-
-	@Override
 	public String classify(List<Feature> features) {
 		FeatureVector featureVector = this.featuresEncoder.encodeAll(features);
 		
@@ -82,11 +80,4 @@ public class OVASVMlightClassifier extends Classifier_ImplBase<String,Integer,Fe
 		
 		return outcomeEncoder.decode(maxScoredIndex);
 	}
-	
-
-	@Override
-	public boolean isSequential() {
-		return false;
-	}
-
 }
