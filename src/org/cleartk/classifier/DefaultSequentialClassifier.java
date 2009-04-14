@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier;
 
 import java.io.IOException;
@@ -30,31 +30,40 @@ import java.util.List;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
+import org.apache.uima.UimaContext;
+import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.Initializable;
 import org.cleartk.classifier.feature.extractor.outcome.OutcomeFeatureExtractor;
-import org.cleartk.util.ReflectionUtil;
-
+import org.cleartk.util.UIMAUtil;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ */
 
-*/
-
-public abstract class DefaultSequentialClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUTCOME_TYPE> {
+public abstract class DefaultSequentialClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUTCOME_TYPE>,
+		Initializable {
 
 	protected Classifier<OUTCOME_TYPE> classifier;
+
 	protected OutcomeFeatureExtractor[] outcomeFeatureExtractors;
 
+	int viterbiStackSize = 1;
+
+	boolean viterbiAddScores = false;
+
 	public DefaultSequentialClassifier(JarFile modelFile) throws IOException {
-		
+
 		classifier = ReflectionUtil.uncheckedCast(ClassifierFactory.createClassifierFromJar(modelFile.getName()));
-		
+
 		ZipEntry zipEntry = modelFile.getEntry(DataWriter_ImplBase.OUTCOME_FEATURE_EXTRACTOR_FILE_NAME);
-		if(zipEntry == null) {
+		if (zipEntry == null) {
 			outcomeFeatureExtractors = new OutcomeFeatureExtractor[0];
-		} else {
+		}
+		else {
 			ObjectInputStream is = new ObjectInputStream(modelFile.getInputStream(zipEntry));
-		
+
 			try {
 				outcomeFeatureExtractors = (OutcomeFeatureExtractor[]) is.readObject();
 			}
@@ -64,18 +73,35 @@ public abstract class DefaultSequentialClassifier<OUTCOME_TYPE> implements Seque
 		}
 	}
 
-	public List<OUTCOME_TYPE> classifySequence(List<List<Feature>> features) {
-		List<Object> outcomes = new ArrayList<Object>();
-		List<OUTCOME_TYPE> returnValues = new ArrayList<OUTCOME_TYPE>();
-		for (List<Feature> instanceFeatures : features) {
-			for(OutcomeFeatureExtractor outcomeFeatureExtractor : outcomeFeatureExtractors) {
-				instanceFeatures.addAll(outcomeFeatureExtractor.extractFeatures(outcomes));
-			}
-			OUTCOME_TYPE outcome = classifier.classify(instanceFeatures);
-			outcomes.add(outcome);
-			returnValues.add(outcome);
+	public void initialize(UimaContext context) throws ResourceInitializationException {
+		viterbiStackSize = (Integer) UIMAUtil.getDefaultingConfigParameterValue(context, Viterbi.PARAM_STACK_SIZE, 1);
+		if (viterbiStackSize < 1) {
+			throw new ResourceInitializationException(new IllegalArgumentException(String.format(
+					"the parameter '%1$s' must be greater than 0.", Viterbi.PARAM_STACK_SIZE)));
 		}
-		return returnValues;
+		viterbiAddScores = (Boolean) UIMAUtil.getDefaultingConfigParameterValue(context, Viterbi.PARAM_ADD_SCORES,
+				false);
 	}
 
+	public List<OUTCOME_TYPE> classifySequence(List<List<Feature>> features) {
+		if (viterbiStackSize == 1) {
+			List<Object> outcomes = new ArrayList<Object>();
+			List<OUTCOME_TYPE> returnValues = new ArrayList<OUTCOME_TYPE>();
+			for (List<Feature> instanceFeatures : features) {
+				for (OutcomeFeatureExtractor outcomeFeatureExtractor : outcomeFeatureExtractors) {
+					instanceFeatures.addAll(outcomeFeatureExtractor.extractFeatures(outcomes));
+				}
+				OUTCOME_TYPE outcome = classifier.classify(instanceFeatures);
+				outcomes.add(outcome);
+				returnValues.add(outcome);
+			}
+			return returnValues;
+		}
+		else {
+			return Viterbi.classifySequence(features, viterbiStackSize, String.class, this, outcomeFeatureExtractors,
+					viterbiAddScores);
+		}
+
 	}
+
+}
