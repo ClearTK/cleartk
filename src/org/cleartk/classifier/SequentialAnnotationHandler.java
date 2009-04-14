@@ -1,5 +1,5 @@
  /** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+ * Copyright (c) 2009, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -27,11 +27,12 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
+ * <br>Copyright (c) 2009, Regents of the University of Colorado 
  * <br>All rights reserved.
 
  * 
  * @author Steven Bethard
+ * @author Philip Ogren
  */
 public interface SequentialAnnotationHandler<OUTCOME_TYPE> {
 	
