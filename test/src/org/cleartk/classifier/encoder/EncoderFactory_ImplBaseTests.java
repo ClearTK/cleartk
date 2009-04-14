@@ -28,7 +28,7 @@ import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 
 import org.apache.uima.UimaContext;
-import org.cleartk.classifier.DataWriter_ImplBase;
+import org.cleartk.classifier.DataWriterAnnotator;
 import org.cleartk.classifier.encoder.factory.BinarySVMEncoderFactory;
 import org.cleartk.classifier.encoder.features.FeatureVectorFeaturesEncoder;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
@@ -76,7 +76,7 @@ public class EncoderFactory_ImplBaseTests {
 		
 		// try to get an encoder with an empty output directory
 		context = UimaContextFactory.createUimaContext(
-				DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDir);
+				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDir);
 		Assert.assertNull(fileSystemFactory.createFeaturesEncoder(context));
 		
 		// create and serialize an encoder in the output directory
@@ -91,7 +91,7 @@ public class EncoderFactory_ImplBaseTests {
 		
 		// try to get an encoder without specifying the parameter
 		context = UimaContextFactory.createUimaContext(
-				DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDir);
+				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDir);
 		Assert.assertNull(fileSystemFactory.createFeaturesEncoder(context));
 
 		// try specifying both true and false for the loading parameter
@@ -106,13 +106,13 @@ public class EncoderFactory_ImplBaseTests {
 		
 		// try specifying no encoder
 		context = UimaContextFactory.createUimaContext(
-				DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDir,
+				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDir,
 				EncoderFactory_ImplBase.PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM, false);
 		Assert.assertNull(fileSystemFactory.createFeaturesEncoder(context));
 		
 		// make sure the encoder is loaded when requested
 		context = UimaContextFactory.createUimaContext(
-				DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDir,
+				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDir,
 				EncoderFactory_ImplBase.PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM, true);
 		Assert.assertTrue(
 				fileSystemFactory.createFeaturesEncoder(context)
