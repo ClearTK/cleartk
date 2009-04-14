@@ -26,7 +26,6 @@ package org.cleartk.classifier.mallet;
 import java.io.File;
 
 import org.cleartk.classifier.BuildJar;
-import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.ClassifierBuilder;
 
 import cc.mallet.fst.SimpleTagger;
@@ -61,7 +60,7 @@ public class MalletCRFClassifierBuilder implements ClassifierBuilder<String> {
 		stream.close();
 	}
 
-	public Class<? extends Classifier<String>> getClassifierClass() {
+	public Class<?> getClassifierClass() {
 		return MalletCRFClassifier.class;
 	}
 

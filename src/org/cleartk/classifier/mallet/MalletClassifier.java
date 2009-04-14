@@ -24,7 +24,6 @@
 package org.cleartk.classifier.mallet;
 
 import java.io.ObjectInputStream;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.jar.JarFile;
@@ -68,25 +67,11 @@ public class MalletClassifier extends Classifier_ImplBase<String,String,List<Nam
 	 * This method simply throws an UnsupportedOperationException because
 	 * CRF is a sequential classifier.
 	 */
-	@Override
 	public String classify(List<Feature> features) throws UnsupportedOperationException
 	{
 		Classification classification = classifier.classify(toInstance(features));
 		String returnValue = classification.getLabeling().getBestLabel().toString();
 		return outcomeEncoder.decode(returnValue);
-	}
-	
-	@Override
-	public List<String> classifySequence(List<List<Feature>> features) 
-	{
-		Classification[] classifications = classifier.classify(toInstances(features));
-		List<String> returnValues = new ArrayList<String>(features.size());
-		
-		for(Classification classification : classifications) {
-			String returnValue = classification.getLabeling().getBestLabel().toString();
-			returnValues.add(outcomeEncoder.decode(returnValue));
-		}
-		return returnValues;
 	}
 	
 	public Instance[] toInstances(List<List<Feature>> features) {
@@ -123,14 +108,4 @@ public class MalletClassifier extends Classifier_ImplBase<String,String,List<Nam
 		Instance instance = new Instance(fv, null, null, null);
 		return instance;
 	}
-	
-	/**
-	 * returns true
-	 */
-	@Override
-	public boolean isSequential() {
-		return false;
-	}
-	
-
 }

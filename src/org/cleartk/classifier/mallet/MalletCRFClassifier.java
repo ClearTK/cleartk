@@ -29,8 +29,8 @@ import java.util.List;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
-import org.cleartk.classifier.Classifier_ImplBase;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.SequentialClassifier_ImplBase;
 import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.util.ReflectionUtil;
 
@@ -60,7 +60,7 @@ import cc.mallet.types.Sequence;
  * {@link MalletCRFDataWriter#consume(org.cleartk.classifier.Instance)}.
  * 
  */
-public class MalletCRFClassifier extends Classifier_ImplBase<String,String,List<NameNumber>>
+public class MalletCRFClassifier extends SequentialClassifier_ImplBase<String,String,List<NameNumber>>
 {
 	protected Transducer transducer;
 	
@@ -73,16 +73,6 @@ public class MalletCRFClassifier extends Classifier_ImplBase<String,String,List<
     }
 	
 	/**
-	 * This method simply throws an UnsupportedOperationException because
-	 * CRF is a sequential classifier.
-	 */
-	@Override
-	public String classify(List<Feature> features) throws UnsupportedOperationException
-	{
-		throw new UnsupportedOperationException("Mallet CRF is a sequential learner which means that classifing one instance at a time does not work well.");
-	}
-
-	/**
 	 * This method classifies several instances at once
 	 * @param features a list of lists of features - each list 
 	 * in the list represents one instance to be classified.  The
@@ -90,7 +80,6 @@ public class MalletCRFClassifier extends Classifier_ImplBase<String,String,List<
 	 * to be classified (e.g. tokens in a sentence or lines in a document)
 	 * that corresponds to the model that has been built for this classifier.
 	 */
-	@Override
 	public List<String> classifySequence(List<List<Feature>> features)
 	{
 		String[][] featureStringArray = toStrings(features);
@@ -106,7 +95,7 @@ public class MalletCRFClassifier extends Classifier_ImplBase<String,String,List<
 		List<String> returnValues = new ArrayList<String>();
 		
 		for(int i=0; i<sequence.size(); i++) {
-			String encodedOutcome = (String) sequence.get(i);
+			String encodedOutcome = sequence.get(i);
 			returnValues.add(outcomeEncoder.decode(encodedOutcome));
 		}
 		return returnValues;
@@ -140,14 +129,4 @@ public class MalletCRFClassifier extends Classifier_ImplBase<String,String,List<
 		
 		return encodedFeaturesArray;
 	}
-	
-	/**
-	 * returns true
-	 */
-	@Override
-	public boolean isSequential() {
-		return true;
-	}
-	
-
 }

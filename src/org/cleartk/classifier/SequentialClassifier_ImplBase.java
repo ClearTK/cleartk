@@ -26,6 +26,7 @@ package org.cleartk.classifier;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Map;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
@@ -105,5 +106,11 @@ public abstract class SequentialClassifier_ImplBase<INPUTOUTCOME_TYPE,OUTPUTOUTC
 			throw new ClassCastException();
 		
 		return ReflectionUtil.uncheckedCast(encoder);
+	}
+	
+	
+
+	public List<ScoredOutcome<List<INPUTOUTCOME_TYPE>>> scoreSequence(List<List<Feature>> features, int maxResults) {
+		throw new UnsupportedOperationException("there is no default implementation of the score method.");
 	}
 }
