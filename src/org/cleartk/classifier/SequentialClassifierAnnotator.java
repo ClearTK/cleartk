@@ -69,7 +69,7 @@ public class SequentialClassifierAnnotator<OUTCOME_TYPE> implements SequentialIn
 	/**
 	 * The path to a jar file used to instantiate the classifier.
 	 */
-	public static final String PARAM_CLASSIFIER_JAR = "org.cleartk.classifier.SequentialClassifierAnnotator.ClassifierJar.PARAM_CLASSIFIER_JAR";
+	public static final String PARAM_CLASSIFIER_JAR = "org.cleartk.classifier.SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR";
 
 	@SuppressWarnings("unchecked")
 	public void initialize(UimaContext context) throws ResourceInitializationException {
