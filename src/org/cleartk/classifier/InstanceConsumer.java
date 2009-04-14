@@ -23,8 +23,6 @@
 */
 package org.cleartk.classifier;
 
-import java.util.List;
-
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
  * <br>All rights reserved.
@@ -45,18 +43,6 @@ public interface InstanceConsumer<OUTCOME_TYPE> {
 	 * @return The assigned label, or null if a label was not assigned.
 	 */
 	public OUTCOME_TYPE consume(Instance<OUTCOME_TYPE> instance);
-
-	/**
-	 * Consume the instances and return the labels assigned to the instances. If
-	 * the consumer does not assign labels to instances (e.g. a training data
-	 * consumer), this method should return null.
-	 * 
-	 * @param instances
-	 *            The instances to be consumed.
-	 * @return The assigned labels, or null if labels were not assigned. Labels
-	 *         should be in the same order as the original instances.
-	 */
-	public List<OUTCOME_TYPE> consumeSequence(List<Instance<OUTCOME_TYPE>> instances);
 
 	/**
 	 * This method provides an annotation handler (or anything else using an
