@@ -1,5 +1,5 @@
 /** 
- * Copyright (c) 2009, Regents of the University of Colorado 
+ * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -21,29 +21,36 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-
 package org.cleartk.classifier;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.jar.JarFile;
+import java.util.zip.ZipEntry;
 
+import org.apache.uima.UimaContext;
+import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.Initializable;
 import org.cleartk.classifier.feature.extractor.outcome.OutcomeFeatureExtractor;
+import org.cleartk.util.ReflectionUtil;
+import org.cleartk.util.UIMAUtil;
 
 /**
  * <br>
- * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
- * 
- * @author Philip Ogren
- * 
  */
-public class Viterbi {
+
+public abstract class ViterbiSequentialClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUTCOME_TYPE>,
+		Initializable {
 
 	/**
-	 * "org.cleartk.classifier.Viterbi.PARAM_STACK_SIZE" is an optional, single,
+	 * "org.cleartk.classifier.ViterbiSequentialClassifier.PARAM_STACK_SIZE" is an optional, single,
 	 * integer parameter that specifies the maximum number of candidate paths to
 	 * keep track of. In general, this number should be higher than the number
 	 * of possible classifications at any given point in the sequence. This
@@ -52,17 +59,77 @@ public class Viterbi {
 	 * are concerned about throughput performance, then you may want to reduce the number
 	 * of candidate paths to maintain.
 	 */
-	public static String PARAM_STACK_SIZE = "org.cleartk.classifier.Viterbi.PARAM_STACK_SIZE";
+	public static String PARAM_STACK_SIZE = "org.cleartk.classifier.ViterbiSequentialClassifier.PARAM_STACK_SIZE";
 
 	/**
-	 * "org.cleartk.classifier.Viterbi.PARAM_ADD_SCORES" is an optional, single,
+	 * "org.cleartk.classifier.ViterbiSequentialClassifier.PARAM_ADD_SCORES" is an optional, single,
 	 * boolean parameter that specifies whether the scores of candidate sequence
 	 * classifications should be calculated by summing classfication scores for
 	 * each member of the sequence or by multiplying them. A value of true means
 	 * that the scores will be summed. A value of false means that the scores
 	 * will be multiplied. 
 	 */
-	public static String PARAM_ADD_SCORES = "org.cleartk.classifier.Viterbi.PARAM_ADD_SCORES";
+	public static String PARAM_ADD_SCORES = "org.cleartk.classifier.ViterbiSequentialClassifier.PARAM_ADD_SCORES";
+
+	
+	protected Classifier<OUTCOME_TYPE> classifier;
+
+	protected OutcomeFeatureExtractor[] outcomeFeatureExtractors;
+
+	int viterbiStackSize = 1;
+
+	boolean viterbiAddScores = false;
+
+	public ViterbiSequentialClassifier(JarFile modelFile) throws IOException {
+
+		classifier = ReflectionUtil.uncheckedCast(ClassifierFactory.createClassifierFromJar(modelFile.getName()));
+
+		ZipEntry zipEntry = modelFile.getEntry(DataWriter_ImplBase.OUTCOME_FEATURE_EXTRACTOR_FILE_NAME);
+		if (zipEntry == null) {
+			outcomeFeatureExtractors = new OutcomeFeatureExtractor[0];
+		}
+		else {
+			ObjectInputStream is = new ObjectInputStream(modelFile.getInputStream(zipEntry));
+
+			try {
+				outcomeFeatureExtractors = (OutcomeFeatureExtractor[]) is.readObject();
+			}
+			catch (ClassNotFoundException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
+
+	public void initialize(UimaContext context) throws ResourceInitializationException {
+		viterbiStackSize = (Integer) UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_STACK_SIZE, 1);
+		if (viterbiStackSize < 1) {
+			throw new ResourceInitializationException(new IllegalArgumentException(String.format(
+					"the parameter '%1$s' must be greater than 0.", PARAM_STACK_SIZE)));
+		}
+		viterbiAddScores = (Boolean) UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_ADD_SCORES,
+				false);
+	}
+
+	public List<OUTCOME_TYPE> classifySequence(List<List<Feature>> features) {
+		if (viterbiStackSize == 1) {
+			List<Object> outcomes = new ArrayList<Object>();
+			List<OUTCOME_TYPE> returnValues = new ArrayList<OUTCOME_TYPE>();
+			for (List<Feature> instanceFeatures : features) {
+				for (OutcomeFeatureExtractor outcomeFeatureExtractor : outcomeFeatureExtractors) {
+					instanceFeatures.addAll(outcomeFeatureExtractor.extractFeatures(outcomes));
+				}
+				OUTCOME_TYPE outcome = classifier.classify(instanceFeatures);
+				outcomes.add(outcome);
+				returnValues.add(outcome);
+			}
+			return returnValues;
+		}
+		else {
+			return classifySequence(features, viterbiStackSize, outcomeFeatureExtractors,
+					viterbiAddScores);
+		}
+
+	}
 
 	/**
 	 * This implementation of Viterbi requires at most stackSize * sequenceLength
@@ -98,8 +165,7 @@ public class Viterbi {
 	 * @see Classifier_ImplBase#classifySequence(List)
 	 * @see MaxentClassifier#classifySequence(List)
 	 */
-	public static <OUTCOME_TYPE> List<OUTCOME_TYPE> classifySequence(List<List<Feature>> features, int stackSize,
-			Class<OUTCOME_TYPE> cls, Classifier<OUTCOME_TYPE> classifier,
+	private List<OUTCOME_TYPE> classifySequence(List<List<Feature>> features, int stackSize, 
 			OutcomeFeatureExtractor[] outcomeFeatureExtractors, boolean addScores) {
 
 		List<ScoredOutcome<List<OUTCOME_TYPE>>> nbestSequences = new ArrayList<ScoredOutcome<List<OUTCOME_TYPE>>>();
