@@ -37,13 +37,10 @@ import opennlp.maxent.io.BinaryGISModelReader;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.Initializable;
 import org.cleartk.classifier.Classifier_ImplBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.ScoredOutcome;
-import org.cleartk.classifier.Viterbi;
 import org.cleartk.classifier.encoder.features.NameNumber;
-import org.cleartk.util.UIMAUtil;
 
 /**
  * <br>
@@ -54,11 +51,9 @@ import org.cleartk.util.UIMAUtil;
  * @author Philip Ogren
  * 
  */
-public class MaxentClassifier extends Classifier_ImplBase<String, String, List<NameNumber>> implements Initializable {
+public class MaxentClassifier extends Classifier_ImplBase<String, String, List<NameNumber>>{
 
 	protected MaxentModel model;
-	int viterbiStackSize = 1;
-	boolean viterbiAddScores = false;
 	
 	public MaxentClassifier(JarFile modelFile) throws IOException {
 		super(modelFile);
@@ -67,17 +62,9 @@ public class MaxentClassifier extends Classifier_ImplBase<String, String, List<N
 				.getInputStream(modelEntry)))).getModel();
 	}
 
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		viterbiStackSize = (Integer) UIMAUtil.getDefaultingConfigParameterValue(context, Viterbi.PARAM_STACK_SIZE, 1);
-		viterbiAddScores = (Boolean) UIMAUtil.getDefaultingConfigParameterValue(context, Viterbi.PARAM_ADD_SCORES, false);
-	}
-
-	
-	@Override
 	public String classify(List<Feature> features) {
 		EvalParams evalParams = convertToEvalParams(features);
-		String encodedOutcome = this.model.getBestOutcome(this.model.eval(evalParams.getContext(), evalParams
-				.getValues()));
+		String encodedOutcome = this.model.getBestOutcome(this.model.eval(evalParams.getContext(), evalParams.getValues()));
 		return outcomeEncoder.decode(encodedOutcome);
 	}
 
@@ -109,23 +96,6 @@ public class MaxentClassifier extends Classifier_ImplBase<String, String, List<N
 				return returnValues;
 			}
 		}
-	}
-
-	@Override
-	public List<String> classifySequence(List<List<Feature>> features){
-		if(viterbiStackSize == 1)
-			return super.classifySequence(features);
-		else {
-			return Viterbi.classifySequence(features, viterbiStackSize, String.class, this, outcomeFeatureExtractors, viterbiAddScores);	
-		}
-	}
-
-	/**
-	 * @return false
-	 */
-	@Override
-	public boolean isSequential() {
-		return false;
 	}
 
 	private EvalParams convertToEvalParams(List<Feature> features) {
@@ -161,6 +131,11 @@ public class MaxentClassifier extends Classifier_ImplBase<String, String, List<N
 			this.values = values;
 		}
 
+	}
+
+	public void initialize(UimaContext context) throws ResourceInitializationException {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
