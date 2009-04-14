@@ -54,26 +54,20 @@ import java.util.List;
 
 public interface Classifier<OUTCOME_TYPE> {
 	/**
-	 * Classifies a list of features. This method may not be supported for
-	 * sequential classifiers.
+	 * Classifies a list of features.
 	 * 
-	 * @param features
-	 * @return A Value holding the classification result
+	 * @param features  a list of features to be classified
+	 * @return          the classification made
 	 */
 	public abstract OUTCOME_TYPE classify(List<Feature> features);
 
-
 	/**
-	 * Provides a way to get scores for the best N classifications. The 'score'
-	 * in the scored value could be anything but is often a probability. The
-	 * only expectation is that a higher score should correspond to higher
-	 * confidence in the classification. No other assumptions should be made.
+	 * Get the N best classifications along with their scores.
 	 * 
-	 * @param features
-	 *            a list of features to be classified
-	 * @param maxResults
-	 *            the maximum number of classifications to return.
-	 * @return a sorted list of the best N classifications with their scores.
+	 * @param features    a list of features to be classified
+	 * @param maxResults  the maximum number of classifications to return
+	 * @return            a sorted list of the best N classifications with
+	 *                    their scores
 	 */
 	public List<ScoredOutcome<OUTCOME_TYPE>> score(List<Feature> features, int maxResults);
 

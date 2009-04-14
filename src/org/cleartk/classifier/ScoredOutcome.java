@@ -26,6 +26,10 @@ package org.cleartk.classifier;
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
  * <br>All rights reserved.
 
+ * Associates the outcome (classification) of a classifier with a score. 
+ * This score conceptually could be almost anything but is often something
+ * similar to a probability. The only expectation is that a higher score
+ * should correspond to a better classification.
  */
 public class ScoredOutcome<OUTCOME_TYPE> implements Comparable<ScoredOutcome<OUTCOME_TYPE>>{
 
