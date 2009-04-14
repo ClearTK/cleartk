@@ -15,9 +15,9 @@ public class DataWriterAnnotator<OUTCOME_TYPE> extends InstanceConsumer<OUTCOME_
 	/**
 	 * The name of the directory where the training data will be written.
 	 */
-	public static final String PARAM_OUTPUT_DIRECTORY = "OutputDirectory";
+	public static final String PARAM_OUTPUT_DIRECTORY = "org.cleartk.classifier.DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY";
 	
-	public static final String PARAM_DATAWRITER_FACTORY_CLASS = "DataWriterFactoryClass";
+	public static final String PARAM_DATAWRITER_FACTORY_CLASS = "org.cleartk.classifier.DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS";
 
 	
 	@Override
