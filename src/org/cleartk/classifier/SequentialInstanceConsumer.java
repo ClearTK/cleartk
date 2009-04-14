@@ -40,11 +40,11 @@ import org.cleartk.util.UIMAUtil;
  * 
  * @author Steven Bethard, Philip Ogren
  */
-public abstract class SequentialInstanceConsumer extends JCasAnnotator_ImplBase {
+public abstract class SequentialInstanceConsumer<OUTCOME_TYPE> extends JCasAnnotator_ImplBase {
 
 	public static final String PARAM_ANNOTATION_HANDLER = "org.cleartk.classifier.SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER";
 
-	protected SequentialAnnotationHandler<?> annotationHandler; 
+	protected SequentialAnnotationHandler<OUTCOME_TYPE> annotationHandler; 
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -64,7 +64,7 @@ public abstract class SequentialInstanceConsumer extends JCasAnnotator_ImplBase 
 	 * @return The outcomes for the instances - one for each instance, or null if labels were not assigned. Outcomes
 	 *         should be in the same order as the original instances.
 	 */
-	public abstract <OUTCOME_TYPE> List<OUTCOME_TYPE> consumeSequence(List<Instance<OUTCOME_TYPE>> instances);
+	public abstract List<OUTCOME_TYPE> consumeSequence(List<Instance<OUTCOME_TYPE>> instances);
 
 	/**
 	 * This method provides an annotation handler (or anything else using an

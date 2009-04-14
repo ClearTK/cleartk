@@ -40,11 +40,11 @@ import org.cleartk.util.UIMAUtil;
  * @author Steven Bethard
  * @author Philip Ogren
  */
-public abstract class InstanceConsumer extends JCasAnnotator_ImplBase {
+public abstract class InstanceConsumer<OUTCOME_TYPE> extends JCasAnnotator_ImplBase {
 
 	public static final String PARAM_ANNOTATION_HANDLER = "org.cleartk.classifier.InstanceConsumer.PARAM_ANNOTATION_HANDLER";
 
-	protected AnnotationHandler<?> annotationHandler;
+	protected AnnotationHandler<OUTCOME_TYPE> annotationHandler;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -63,7 +63,7 @@ public abstract class InstanceConsumer extends JCasAnnotator_ImplBase {
 	 * @return The assigned outcome (classification), or null if an outcome was
 	 *         not assigned.
 	 */
-	public abstract <OUTCOME_TYPE> OUTCOME_TYPE consume(Instance<OUTCOME_TYPE> instance);
+	public abstract OUTCOME_TYPE consume(Instance<OUTCOME_TYPE> instance);
 
 	/**
 	 * This method provides an annotation handler (or anything else using an
