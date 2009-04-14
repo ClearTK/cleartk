@@ -23,6 +23,10 @@
 */
 package org.cleartk.classifier;
 
+import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.jcas.JCas;
+
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
  * <br>All rights reserved.
@@ -31,8 +35,12 @@ package org.cleartk.classifier;
  * 
  * @author Steven Bethard, Philip Ogren
  */
-public interface InstanceConsumer<OUTCOME_TYPE> {
+public abstract class InstanceConsumer<OUTCOME_TYPE> extends JCasAnnotator_ImplBase{
 
+	 public static final String PARAM_ANNOTATION_HANDLER = "AnnotationHandler"; 
+	
+	 protected AnnotationHandler<OUTCOME_TYPE> annotationHandler; 
+	 
 	/**
 	 * Consume the instance and return the outcome (classification) assigned to the instance. If
 	 * the consumer does not assign outcomes to instances (e.g. a training data
@@ -42,7 +50,7 @@ public interface InstanceConsumer<OUTCOME_TYPE> {
 	 *            The instance (features and label) to be consumed.
 	 * @return The assigned outcome (classification), or null if an outcome was not assigned.
 	 */
-	public OUTCOME_TYPE consume(Instance<OUTCOME_TYPE> instance);
+	public abstract OUTCOME_TYPE consume(Instance<OUTCOME_TYPE> instance);
 
 	/**
 	 * This method provides an annotation handler (or anything else using an
@@ -59,5 +67,14 @@ public interface InstanceConsumer<OUTCOME_TYPE> {
 	 * @return true if the consumer expects the classification Instances to have
 	 *         outcomes, and false otherwise.
 	 */
-	public boolean expectsOutcomes();
+	public abstract boolean expectsOutcomes();
+	
+	
+	  @Override
+	    public void process(JCas jCas) throws AnalysisEngineProcessException {
+	        this.annotationHandler.process(jCas, this);
+	    }
+
+	  
+	  
 }

@@ -25,8 +25,6 @@ package org.cleartk.classifier;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -64,7 +62,7 @@ import org.cleartk.util.UIMAUtil;
  * @author Steven Bethard
  * @author Philip Ogren
  */
-public class ClassifierAnnotator<OUTCOME_TYPE> implements InstanceConsumer<OUTCOME_TYPE>, Initializable {
+public class ClassifierAnnotator<OUTCOME_TYPE> extends InstanceConsumer<OUTCOME_TYPE> {
 
 	/**
 	 * The path to a jar file used to instantiate the classifier.
@@ -73,12 +71,12 @@ public class ClassifierAnnotator<OUTCOME_TYPE> implements InstanceConsumer<OUTCO
 
 	@SuppressWarnings("unchecked")
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-		
+		super.initialize(context);
 		// get the Classifier jar file path and load the Classifier
 		String jarPath = (String)UIMAUtil.getRequiredConfigParameterValue(
 				context, PARAM_CLASSIFIER_JAR);
 		try {
-			Classifier<?> untypedClassifier = ClassifierFactory.readFromJar(jarPath);
+			Classifier<?> untypedClassifier = ClassifierFactory.createClassifierFromJar(jarPath);
 			Type classifierLabelType = ReflectionUtil.getTypeArgument(
 					Classifier.class, "OUTCOME_TYPE", untypedClassifier);
 			Type annotationHandlerLabelType = ReflectionUtil.getTypeArgument(
