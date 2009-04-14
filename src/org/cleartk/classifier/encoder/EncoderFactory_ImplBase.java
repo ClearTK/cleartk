@@ -28,7 +28,7 @@ import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 
 import org.apache.uima.UimaContext;
-import org.cleartk.classifier.DataWriter_ImplBase;
+import org.cleartk.classifier.DataWriterAnnotator;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
@@ -70,7 +70,7 @@ public abstract class EncoderFactory_ImplBase implements EncoderFactory {
 		if (loadEncoders) {
 			try {
 				String outputDirectory = (String)UIMAUtil.getRequiredConfigParameterValue(
-						context, DataWriter_ImplBase.PARAM_OUTPUT_DIRECTORY);
+						context, DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY);
 				File encoderFile = new File(
 						outputDirectory, FeaturesEncoder_ImplBase.ENCODER_FILE_NAME);
 				

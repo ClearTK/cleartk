@@ -23,6 +23,9 @@
 */
 package org.cleartk.classifier.libsvm;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.cleartk.classifier.ClassifierBuilder;
 
 /**
@@ -30,8 +33,14 @@ import org.cleartk.classifier.ClassifierBuilder;
  * <br>All rights reserved.
  */
 public class LIBLINEARDataWriter extends BinaryLIBSVMDataWriter {
+	
+	public LIBLINEARDataWriter(File outputDirectory) throws IOException {
+		super(outputDirectory);
+	}
+
 	@Override
-	protected Class<? extends ClassifierBuilder<? extends Boolean>> getDefaultClassifierBuilderClass() {
+	public Class<? extends ClassifierBuilder<Boolean>> getDefaultClassifierBuilderClass() {
 		return LIBLINEARClassifierBuilder.class;
 	}
+
 }

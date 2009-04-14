@@ -23,20 +23,15 @@
 */
 package org.cleartk.classifier.mallet;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-import org.apache.uima.UimaContext;
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.ClassifierBuilder;
 import org.cleartk.classifier.DataWriter_ImplBase;
-import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.encoder.EncoderFactory;
-import org.cleartk.classifier.encoder.factory.NameNumberEncoderFactory;
-import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 import org.cleartk.classifier.encoder.features.NameNumber;
+import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -54,59 +49,45 @@ import org.cleartk.classifier.encoder.features.NameNumber;
  */
 public class MalletDataWriter extends DataWriter_ImplBase<String,String,List<NameNumber>> {
 
-	protected PrintWriter trainingDataWriter;
-	
-	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		super.initialize(context);
-		
+	public MalletDataWriter(File outputDirectory) throws IOException {
+		super(outputDirectory);
+
 		// initialize output writer and Classifier class
 		this.trainingDataWriter = this.getPrintWriter("training-data.mallet");
 		
 		this.featuresEncoder.allowNewFeatures(true);
 	}
 
-	public String consume(Instance<String> instance) {
-		String outcomeString = this.outcomeEncoder.encode(instance.getOutcome());
-		
-		List<NameNumber> nameNumbers = this.featuresEncoder.encodeAll(instance.getFeatures());
-		for (NameNumber nameNumber : nameNumbers) {
+	public void write(List<NameNumber> features, String outcome) {
+		for (NameNumber nameNumber : features) {
 			trainingDataWriter.print(nameNumber.name + ":" + nameNumber.number+" ");
 		}
-		this.trainingDataWriter.print(outcomeString);
+		this.trainingDataWriter.print(outcome);
 		this.trainingDataWriter.println();
-		
-		// no labels created
-		return null;
 	}
 
 	@Override
-	public void collectionProcessComplete() throws AnalysisEngineProcessException {
+	public void finish() throws IOException {
+		super.finish();
+		
 		if (featuresEncoder instanceof NameNumberFeaturesEncoder) {
-			try {
-				NameNumberFeaturesEncoder dfe = (NameNumberFeaturesEncoder) featuresEncoder;
-				if(dfe.isCompressFeatures())
-					dfe.writeNameLookup(this.getPrintWriter(NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
-			}
-			catch (ResourceInitializationException e) {
-				throw new AnalysisEngineProcessException(e);
-			}
-			catch (IOException e) {
-				throw new AnalysisEngineProcessException(e);
-			}
+			NameNumberFeaturesEncoder dfe = (NameNumberFeaturesEncoder) featuresEncoder;
+			if(dfe.isCompressFeatures())
+				dfe.writeNameLookup(this.getPrintWriter(NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
 		}
-		
-		super.collectionProcessComplete();
 	}
 
-	
+
 	@Override
-	protected Class<? extends ClassifierBuilder<? extends String>> getDefaultClassifierBuilderClass() {
+	public void writeEncoded(List<NameNumber> features, String outcome) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public Class<? extends ClassifierBuilder<String>> getDefaultClassifierBuilderClass() {
 		return MalletClassifierBuilder.class;
 	}
 
-	@Override
-	protected Class<? extends EncoderFactory> getDefaultEncoderFactoryClass() {
-		return NameNumberEncoderFactory.class;
-	}
+	protected PrintWriter trainingDataWriter;
+
 }
