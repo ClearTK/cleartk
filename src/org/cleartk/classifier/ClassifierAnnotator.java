@@ -64,21 +64,19 @@ import org.cleartk.util.UIMAUtil;
  * @author Steven Bethard
  * @author Philip Ogren
  */
-public class ClassifierAnnotator<OUTCOME_TYPE> extends InstanceConsumer_ImplBase<OUTCOME_TYPE> {
+public class ClassifierAnnotator<OUTCOME_TYPE> implements InstanceConsumer<OUTCOME_TYPE>, Initializable {
 
 	/**
 	 * The path to a jar file used to instantiate the classifier.
 	 */
-	public static final String PARAM_CLASSIFIER_JAR = "ClassifierJar";
+	public static final String PARAM_CLASSIFIER_JAR = "org.cleartk.classifier.ClassifierAnnotator.PARAM_CLASSIFIER_JAR";
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-		super.initialize(context);
-
+		
 		// get the Classifier jar file path and load the Classifier
 		String jarPath = (String)UIMAUtil.getRequiredConfigParameterValue(
-				context, ClassifierAnnotator.PARAM_CLASSIFIER_JAR);
+				context, PARAM_CLASSIFIER_JAR);
 		try {
 			Classifier<?> untypedClassifier = ClassifierFactory.readFromJar(jarPath);
 			Type classifierLabelType = ReflectionUtil.getTypeArgument(
@@ -102,35 +100,13 @@ public class ClassifierAnnotator<OUTCOME_TYPE> extends InstanceConsumer_ImplBase
 	}
 
 	public OUTCOME_TYPE consume(Instance<OUTCOME_TYPE> instance) {
-		
-		// sequential classifiers cannot handle a single instance at a time
-		if (this.classifier.isSequential()) {
-			String message = "Sequential classifiers cannot consume a single instance";
-			throw new UnsupportedOperationException(message);
-		}
-		
-		// non-sequential classifiers classify a single instance as usual
-		else {
 			return this.classifier.classify(instance.getFeatures());
-		}
 	}
 	
-	public List<OUTCOME_TYPE> consumeSequence(List<Instance<OUTCOME_TYPE>> instances) {
-		List<List<Feature>> instanceFeatures = new ArrayList<List<Feature>>();
-		for (Instance<OUTCOME_TYPE> instance: instances) {
-			instanceFeatures.add(instance.getFeatures());
-		}
-		return this.classifier.classifySequence(instanceFeatures);
-	}
-
 	private Classifier<OUTCOME_TYPE> classifier;
 
 	public boolean expectsOutcomes() {
 		return false;
 	}
 	
-	public boolean isSequential() {
-		return classifier.isSequential();
-	}
-
 }
