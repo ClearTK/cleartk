@@ -1,5 +1,5 @@
- /** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+/** 
+ * Copyright (c) 2009, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -20,35 +20,47 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier;
 
+import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.resource.ResourceInitializationException;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * <p>
  * 
- * @author Steven Bethard, Philip Ogren
+ * @author Steven Bethard
+ * @author Philip Ogren
  */
-public abstract class InstanceConsumer<OUTCOME_TYPE> extends JCasAnnotator_ImplBase{
+public abstract class InstanceConsumer<OUTCOME_TYPE> extends JCasAnnotator_ImplBase {
 
-	 public static final String PARAM_ANNOTATION_HANDLER = "AnnotationHandler"; 
-	
-	 protected AnnotationHandler<OUTCOME_TYPE> annotationHandler; 
-	 
+	public static final String PARAM_ANNOTATION_HANDLER = "org.cleartk.classifier.InstanceConsumer.PARAM_ANNOTATION_HANDLER";
+
+	protected AnnotationHandler<OUTCOME_TYPE> annotationHandler;
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void initialize(UimaContext context) throws ResourceInitializationException {
+		annotationHandler = (AnnotationHandler<OUTCOME_TYPE>) AnnotationHandlerFactory.createAnnotationHandler(context,
+				PARAM_ANNOTATION_HANDLER);
+	}
+
 	/**
-	 * Consume the instance and return the outcome (classification) assigned to the instance. If
-	 * the consumer does not assign outcomes to instances (e.g. a training data
-	 * consumer), this method should return null.
+	 * Consume the instance and return the outcome (classification) assigned to
+	 * the instance. If the consumer does not assign outcomes to instances (e.g.
+	 * a training data consumer), this method should return null.
 	 * 
 	 * @param instance
 	 *            The instance (features and label) to be consumed.
-	 * @return The assigned outcome (classification), or null if an outcome was not assigned.
+	 * @return The assigned outcome (classification), or null if an outcome was
+	 *         not assigned.
 	 */
 	public abstract OUTCOME_TYPE consume(Instance<OUTCOME_TYPE> instance);
 
@@ -68,13 +80,10 @@ public abstract class InstanceConsumer<OUTCOME_TYPE> extends JCasAnnotator_ImplB
 	 *         outcomes, and false otherwise.
 	 */
 	public abstract boolean expectsOutcomes();
-	
-	
-	  @Override
-	    public void process(JCas jCas) throws AnalysisEngineProcessException {
-	        this.annotationHandler.process(jCas, this);
-	    }
 
-	  
-	  
+	@Override
+	public void process(JCas jCas) throws AnalysisEngineProcessException {
+		this.annotationHandler.process(jCas, this);
+	}
+
 }
