@@ -66,7 +66,6 @@ public abstract class LIBSVMClassifier<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE> ext
 		}
 	}
 
-	@Override
 	public INPUTOUTCOME_TYPE classify(List<Feature> features) {
 		FeatureVector featureVector = this.featuresEncoder.encodeAll(features);
 
@@ -98,11 +97,6 @@ public abstract class LIBSVMClassifier<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE> ext
 		return nodes.toArray(new libsvm.svm_node[nodes.size()]);
 	}
 	
-	@Override
-	public boolean isSequential() {
-		return false;
-	}
-
 	protected abstract OUTPUTOUTCOME_TYPE decodePrediction(double prediction);
 
 	protected libsvm.svm_model model;

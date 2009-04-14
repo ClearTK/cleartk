@@ -55,17 +55,11 @@ public class LIBLINEARClassifier extends Classifier_ImplBase<Boolean,Boolean,Fea
 		this.model = LIBLINEARModel.fromInputStream(modelFile.getInputStream(modelEntry));
 	}
 
-	@Override
 	public Boolean classify(List<Feature> features) {
 		FeatureVector featureVector = this.featuresEncoder.encodeAll(features);
 
 		boolean encodedOutcome = (model.predict(featureVector) > 0);
 		return outcomeEncoder.decode(encodedOutcome);
-	}
-
-	@Override
-	public boolean isSequential() {
-		return false;
 	}
 
 }
