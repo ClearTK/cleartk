@@ -31,9 +31,9 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.classifier.AnnotationHandler;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.InstanceConsumer;
+import org.cleartk.classifier.SequentialAnnotationHandler;
+import org.cleartk.classifier.SequentialInstanceConsumer;
 import org.cleartk.classifier.feature.WindowFeature;
 import org.cleartk.classifier.feature.extractor.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.SpannedTextExtractor;
@@ -55,7 +55,7 @@ import org.cleartk.util.AnnotationRetrieval;
  * 
  * @author Steven Bethard
  */
-public class ExamplePOSAnnotationHandler implements AnnotationHandler<String> {
+public class ExamplePOSAnnotationHandler implements SequentialAnnotationHandler<String> {
 
 	private List<SimpleFeatureExtractor> tokenFeatureExtractors;
 	private List<WindowExtractor> tokenSentenceFeatureExtractors;
@@ -104,7 +104,7 @@ public class ExamplePOSAnnotationHandler implements AnnotationHandler<String> {
 		
 	}
 	
-	public void process(JCas jCas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException {
+	public void process(JCas jCas, SequentialInstanceConsumer<String> consumer) throws AnalysisEngineProcessException {
 		
 		// generate a list of training instances for each sentence in the document
 		for (Sentence sentence: AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
