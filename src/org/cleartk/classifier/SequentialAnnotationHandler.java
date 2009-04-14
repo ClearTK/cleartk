@@ -25,7 +25,6 @@ package org.cleartk.classifier;
 
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
-import org.cleartk.example.ExamplePOSAnnotationHandler;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -34,21 +33,20 @@ import org.cleartk.example.ExamplePOSAnnotationHandler;
  * 
  * @author Steven Bethard
  */
-public interface AnnotationHandler<OUTCOME_TYPE> {
+public interface SequentialAnnotationHandler<OUTCOME_TYPE> {
 	
 	/**
 	 * This method should provide the logic for feature extraction and
 	 * annotation updating/creating based on classifier results.
 	 * Typically, this method will iterate through annotations in the cas,
-	 * extract features, and then call consumer.consume() for each instance to be
+	 * extract features, and then call consumer.consumeSequence() for each sequence of instances to be
 	 * processed.
 	 * 
-	 * @see ExamplePOSAnnotationHandler
 	 * @param jCas     The JCas object from which ClassifierInstance objects
 	 *                 should be derived.
-	 * @param consumer The InstanceConsumer object to which the
-	 *                 Instance objects created should be passed.
+	 * @param consumer The SequentialInstanceConsumer object to which the
+	 *                 a sequence of Instance objects should be passed.
 	 */
-	public void process(JCas jCas, InstanceConsumer<OUTCOME_TYPE> consumer) throws AnalysisEngineProcessException;
+	public void process(JCas jCas, SequentialInstanceConsumer<OUTCOME_TYPE> consumer) throws AnalysisEngineProcessException;
 	
 }
