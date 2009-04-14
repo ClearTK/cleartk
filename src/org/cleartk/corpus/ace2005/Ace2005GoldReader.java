@@ -61,15 +61,15 @@ import org.jdom.input.SAXBuilder;
 public class Ace2005GoldReader extends CollectionReader_ImplBase
 {
 	/**
-	 * "AceCorpusDir" is a single, required string parameter that takes the
+	 * "org.cleartk.corpus.ace2005.Ace2005GoldReader.PARAM_ACE_CORPUS_DIR" is a single, required string parameter that takes the
 	 * name of directory that contains ACE data.  Typically, a folder such
 	 * as ".../ACE_2005/optimization/English/all".  The folder should contain 
 	 * files that come in pairs - i.e. for each .sgm file there should be a 
 	 * corresponding .apf.xml file.  
 	 */
-	public static final String PARAM_ACE_CORPUS_DIR = "AceCorpusDir";
+	public static final String PARAM_ACE_CORPUS_DIR = "org.cleartk.corpus.ace2005.Ace2005GoldReader.PARAM_ACE_CORPUS_DIR";
 	/**
-	 * "AceFileNames" is a single, optional string parameter that takes a 
+	 * "org.cleartk.corpus.ace2005.Ace2005GoldReader.PARAM_ACE_FILE_NAMES" is a single, optional string parameter that takes a 
 	 * file that contains the names of the files to read.  Recommended values
 	 * are:
 	 * <ul><li>data/ace/filenames/ACE2005/optimization_english_random_20.txt</li>
@@ -87,7 +87,7 @@ AFP_ENG_20030305.0918
 ...
 </pre>
 	 */
-	public static final String PARAM_ACE_FILE_NAMES = "AceFileNames";
+	public static final String PARAM_ACE_FILE_NAMES = "org.cleartk.corpus.ace2005.Ace2005GoldReader.PARAM_ACE_FILE_NAMES";
 	
 
 	File aceDirectory;

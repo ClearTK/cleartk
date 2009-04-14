@@ -31,14 +31,14 @@ POSSIBILITY OF SUCH DAMAGE.
     <vendor>Copyright 2007-2008 Regents of the University of Colorado.   All Rights Reserved.</vendor>
     <configurationParameters searchStrategy="language_fallback">
       <configurationParameter>
-        <name>AceCorpusDir</name>
+        <name>org.cleartk.corpus.ace2005.Ace2005GoldReader.PARAM_ACE_CORPUS_DIR</name>
         <description>see javadoc for org.cleartk.ne.ace2005.Ace2005GoldReader.PARAM_ACE_CORPUS_DIR</description>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>AceFileNames</name>
+        <name>org.cleartk.corpus.ace2005.Ace2005GoldReader.PARAM_ACE_FILE_NAMES</name>
         <description>see javadoc for org.cleartk.ne.ace2005.Ace2005GoldReader.PARAM_ACE_FILE_NAMES</description>
         <type>String</type>
         <multiValued>false</multiValued>
