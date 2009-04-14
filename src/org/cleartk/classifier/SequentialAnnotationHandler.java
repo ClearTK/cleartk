@@ -48,6 +48,6 @@ public interface SequentialAnnotationHandler<OUTCOME_TYPE> {
 	 * @param consumer The SequentialInstanceConsumer object to which the
 	 *                 a sequence of Instance objects should be passed.
 	 */
-	public void process(JCas jCas, SequentialInstanceConsumer<OUTCOME_TYPE> consumer) throws AnalysisEngineProcessException;
+	public void process(JCas jCas, SequentialInstanceConsumer consumer) throws AnalysisEngineProcessException;
 	
 }

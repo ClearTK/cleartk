@@ -30,7 +30,6 @@ import java.util.List;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.Initializable;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
 
@@ -71,6 +70,7 @@ public class SequentialClassifierAnnotator<OUTCOME_TYPE> extends SequentialInsta
 	 */
 	public static final String PARAM_CLASSIFIER_JAR = "org.cleartk.classifier.SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR";
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
@@ -91,14 +91,13 @@ public class SequentialClassifierAnnotator<OUTCOME_TYPE> extends SequentialInsta
 			}
 			
 			this.classifier = (SequentialClassifier<OUTCOME_TYPE>)untypedClassifier;
-			if(this.classifier instanceof Initializable) {
-				((Initializable)this.classifier).initialize(context);
-			}
+			UIMAUtil.initialize(this.classifier, context);
 		} catch (IOException e) {
 			throw new ResourceInitializationException(e);
 		}
 	}
 
+	@Override
 	public List<OUTCOME_TYPE> consumeSequence(List<Instance<OUTCOME_TYPE>> instances) {
 		List<List<Feature>> instanceFeatures = new ArrayList<List<Feature>>();
 		for (Instance<OUTCOME_TYPE> instance: instances) {
@@ -109,6 +108,7 @@ public class SequentialClassifierAnnotator<OUTCOME_TYPE> extends SequentialInsta
 
 	private SequentialClassifier<OUTCOME_TYPE> classifier;
 
+	@Override
 	public boolean expectsOutcomes() {
 		return false;
 	}

@@ -40,16 +40,16 @@ import org.cleartk.util.UIMAUtil;
  * 
  * @author Steven Bethard, Philip Ogren
  */
-public abstract class SequentialInstanceConsumer<OUTCOME_TYPE> extends JCasAnnotator_ImplBase {
+public abstract class SequentialInstanceConsumer extends JCasAnnotator_ImplBase {
 
 	public static final String PARAM_ANNOTATION_HANDLER = "org.cleartk.classifier.SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER";
 
-	protected SequentialAnnotationHandler<OUTCOME_TYPE> annotationHandler; 
+	protected SequentialAnnotationHandler<?> annotationHandler; 
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-		annotationHandler = (SequentialAnnotationHandler<OUTCOME_TYPE>)UIMAUtil.create(
+		annotationHandler = UIMAUtil.create(
 				context, PARAM_ANNOTATION_HANDLER, SequentialAnnotationHandler.class);
 	}
 
@@ -64,7 +64,7 @@ public abstract class SequentialInstanceConsumer<OUTCOME_TYPE> extends JCasAnnot
 	 * @return The outcomes for the instances - one for each instance, or null if labels were not assigned. Outcomes
 	 *         should be in the same order as the original instances.
 	 */
-	public abstract List<OUTCOME_TYPE> consumeSequence(List<Instance<OUTCOME_TYPE>> instances);
+	public abstract <OUTCOME_TYPE> List<OUTCOME_TYPE> consumeSequence(List<Instance<OUTCOME_TYPE>> instances);
 
 	/**
 	 * This method provides an annotation handler (or anything else using an
@@ -83,9 +83,9 @@ public abstract class SequentialInstanceConsumer<OUTCOME_TYPE> extends JCasAnnot
 	 */
 	public abstract boolean expectsOutcomes();
 	
-	  @Override
-	    public void process(JCas jCas) throws AnalysisEngineProcessException {
-	        this.annotationHandler.process(jCas, this);
-	    }
+	@Override
+	public void process(JCas jCas) throws AnalysisEngineProcessException {
+		this.annotationHandler.process(jCas, this);
+	}
 
 }

@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.UimaContext;
-import org.apache.uima.analysis_component.AnalysisComponent;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.FeatureStructure;
@@ -227,8 +226,6 @@ public class UIMAUtil
 	throws ResourceInitializationException {
 		if (object instanceof Initializable) {
 			((Initializable)object).initialize(context);
-		} else if (object instanceof AnalysisComponent) {
-			((AnalysisComponent)object).initialize(context);
 		}
 	}
 

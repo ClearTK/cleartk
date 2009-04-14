@@ -35,10 +35,10 @@ import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.Initializable;
-import org.cleartk.classifier.AnnotationHandler;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.InstanceConsumer;
+import org.cleartk.classifier.SequentialAnnotationHandler;
+import org.cleartk.classifier.SequentialInstanceConsumer;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
 
@@ -51,7 +51,7 @@ import org.cleartk.util.UIMAUtil;
  */
 
 public abstract class POSHandler<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation> implements
-		AnnotationHandler<String> {
+		SequentialAnnotationHandler<String> {
 
 	public static final String PARAM_FEATURE_EXTRACTOR_CLASS = "org.cleartk.token.pos.POSHandler.PARAM_FEATURE_EXTRACTOR_CLASS";
 
@@ -70,18 +70,14 @@ public abstract class POSHandler<TOKEN_TYPE extends Annotation, SENTENCE_TYPE ex
 	protected Type sentenceType;
 
 
-	@SuppressWarnings("unchecked")
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		try {
 			tokenClassType = ReflectionUtil.getTypeArgument(POSHandler.class, "TOKEN_TYPE", this);
 			sentenceClassType = ReflectionUtil.getTypeArgument(POSHandler.class, "SENTENCE_TYPE", this);
 			
-			String featureExtractorClassName = (String) UIMAUtil.getRequiredConfigParameterValue(context, PARAM_FEATURE_EXTRACTOR_CLASS);
-			Class<?> cls = Class.forName(featureExtractorClassName);
-			Class<? extends POSFeatureExtractor> featureExtractorClass = cls.asSubclass(POSFeatureExtractor.class);
-			featureExtractor = featureExtractorClass.newInstance();
-			if(featureExtractor instanceof Initializable)
-				((Initializable) featureExtractor).initialize(context);
+			featureExtractor = UIMAUtil.create(
+					context, PARAM_FEATURE_EXTRACTOR_CLASS, POSFeatureExtractor.class);
+			UIMAUtil.initialize(featureExtractor, context);
 			
 			java.lang.reflect.Type featureExtractorTokenClassType = ReflectionUtil.getTypeArgument(POSFeatureExtractor.class, "TOKEN_TYPE", featureExtractor);
 			
@@ -118,7 +114,6 @@ public abstract class POSHandler<TOKEN_TYPE extends Annotation, SENTENCE_TYPE ex
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	protected void initializeTypes(JCas jCas) throws AnalysisEngineProcessException {
 		try {
 			tokenType = UIMAUtil.getCasType(jCas, (Class<? extends TOP>) tokenClassType);
@@ -130,8 +125,7 @@ public abstract class POSHandler<TOKEN_TYPE extends Annotation, SENTENCE_TYPE ex
 		typesInitialized = true;
 	}
 
-	@SuppressWarnings("unchecked")
-	public void process(JCas jCas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException {
+	public void process(JCas jCas, SequentialInstanceConsumer<String> consumer) throws AnalysisEngineProcessException {
 		if (!typesInitialized) initializeTypes(jCas);
 		
 		FSIterator sentences = jCas.getAnnotationIndex(sentenceType).iterator();

@@ -49,6 +49,6 @@ public interface AnnotationHandler<OUTCOME_TYPE> {
 	 * @param consumer The InstanceConsumer object to which the
 	 *                 Instance objects created should be passed.
 	 */
-	public void process(JCas jCas, InstanceConsumer<OUTCOME_TYPE> consumer) throws AnalysisEngineProcessException;
+	public void process(JCas jCas, InstanceConsumer consumer) throws AnalysisEngineProcessException;
 	
 }
