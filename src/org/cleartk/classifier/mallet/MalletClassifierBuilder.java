@@ -31,6 +31,7 @@ import org.cleartk.classifier.BuildJar;
 import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.ClassifierBuilder;
 import org.cleartk.classifier.mallet.factory.ClassifierTrainerFactory;
+import org.cleartk.util.ReflectionUtil;
 
 import cc.mallet.classify.ClassifierTrainer;
 import cc.mallet.types.InstanceList;
@@ -46,7 +47,6 @@ import cc.mallet.types.InstanceList;
 
 public class MalletClassifierBuilder implements ClassifierBuilder<String> {
 
-	@SuppressWarnings("unchecked")
 	public void train(File dir, String[] args) throws Exception {
 
 		InstanceListCreator instanceListCreator = new InstanceListCreator();
@@ -54,7 +54,7 @@ public class MalletClassifierBuilder implements ClassifierBuilder<String> {
 		instanceList.save(new File(dir, "training-data.ser"));
 		
 		String factoryName = args[0];
-		Class<ClassifierTrainerFactory> factoryClass = createTrainerFactory(factoryName);
+		Class<ClassifierTrainerFactory<?>> factoryClass = createTrainerFactory(factoryName);
 		if(factoryClass == null) {
 			String factoryName2 = "org.cleartk.classifier.mallet.factory."+factoryName+"TrainerFactory";
 			factoryClass = createTrainerFactory(factoryName2);
@@ -66,8 +66,8 @@ public class MalletClassifierBuilder implements ClassifierBuilder<String> {
 		String[] factoryArgs = new String[args.length - 1];
 		System.arraycopy(args, 1, factoryArgs, 0, factoryArgs.length);
 
-		ClassifierTrainerFactory factory = factoryClass.newInstance();
-		ClassifierTrainer trainer = null;
+		ClassifierTrainerFactory<?> factory = factoryClass.newInstance();
+		ClassifierTrainer<?> trainer = null;
 		try {
 			trainer = factory.createTrainer(factoryArgs);
 		} catch(Throwable t) {
@@ -82,10 +82,9 @@ public class MalletClassifierBuilder implements ClassifierBuilder<String> {
 
 	}
 
-	@SuppressWarnings("unchecked")
-	private Class<ClassifierTrainerFactory> createTrainerFactory(String className){
+	private Class<ClassifierTrainerFactory<?>> createTrainerFactory(String className){
 		try {
-			return (Class<ClassifierTrainerFactory>)Class.forName(className);
+			return ReflectionUtil.uncheckedCast(Class.forName(className));
 		} catch(ClassNotFoundException cnfe) {
 			return null;
 		}

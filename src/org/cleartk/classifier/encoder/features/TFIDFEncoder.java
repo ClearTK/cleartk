@@ -39,6 +39,7 @@ import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.encoder.features.normalizer.EuclidianNormalizer;
 import org.cleartk.classifier.encoder.features.normalizer.NameNumberNormalizer;
 import org.cleartk.classifier.feature.Counts;
+import org.cleartk.util.ReflectionUtil;
 
 
 /**
@@ -117,10 +118,9 @@ public class TFIDFEncoder implements FeatureEncoder<NameNumber> {
 		return feature.getValue() instanceof Counts;
 	}
 
-	@SuppressWarnings("unchecked")
 	private static Map<String,Double> readObject(ObjectInput input) throws IOException {
 		try {
-			return (Map<String, Double>) input.readObject();
+			return ReflectionUtil.uncheckedCast(input.readObject());
 		} catch (ClassNotFoundException e) {
 			throw new IllegalArgumentException(e);
 		}

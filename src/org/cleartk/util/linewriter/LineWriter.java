@@ -224,7 +224,6 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 
 	private boolean typesInitialized = false;
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		try {
@@ -264,8 +263,8 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 			String annotationWriterClassName = (String) UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_ANNOTATION_WRITER_CLASS, "org.cleartk.util.linewriter.annotation.CoveredTextAnnotationWriter");
 
 			cls = Class.forName(annotationWriterClassName);
-			Class<? extends AnnotationWriter> annotationWriterClass = cls.asSubclass(AnnotationWriter.class);
-			this.annotationWriter = (AnnotationWriter) annotationWriterClass.newInstance();
+			Class<? extends AnnotationWriter<ANNOTATION_TYPE>> annotationWriterClass = ReflectionUtil.uncheckedCast(cls.asSubclass(AnnotationWriter.class));
+			this.annotationWriter = annotationWriterClass.newInstance();
 			this.annotationWriter.initialize(context);
 
 			java.lang.reflect.Type annotationType = ReflectionUtil.getTypeArgument(AnnotationWriter.class,
@@ -282,8 +281,8 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 				String blockWriterClassName = (String) UIMAUtil.getDefaultingConfigParameterValue(context,
 						PARAM_BLOCK_WRITER_CLASS, "org.cleartk.util.linewriter.block.BlankLineBlockWriter");
 				cls = Class.forName(blockWriterClassName);
-				Class<? extends BlockWriter> blockWriterClass = cls.asSubclass(BlockWriter.class);
-				this.blockWriter = (BlockWriter) blockWriterClass.newInstance();
+				Class<? extends BlockWriter<BLOCK_TYPE>> blockWriterClass = ReflectionUtil.uncheckedCast(cls.asSubclass(BlockWriter.class));
+				this.blockWriter = blockWriterClass.newInstance();
 				this.blockWriter.initialize(context);
 
 				if (blockAnnotationClassName.equals("org.apache.uima.jcas.tcas.DocumentAnnotation")) {
@@ -330,7 +329,6 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 		typesInitialized = true;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
 		if (!typesInitialized) initializeTypes(jCas);
@@ -345,23 +343,23 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 			}
 
 			if (blockOnDocument) {
-				BLOCK_TYPE documentAnnotation = (BLOCK_TYPE) jCas.getDocumentAnnotationFs();
+				BLOCK_TYPE documentAnnotation = ReflectionUtil.uncheckedCast(jCas.getDocumentAnnotationFs());
 				out.print(blockWriter.writeBlock(jCas, documentAnnotation));
 				FSIterator outputAnnotations = jCas.getAnnotationIndex(outputAnnotationType).iterator();
 				while (outputAnnotations.hasNext()) {
-					ANNOTATION_TYPE outputAnnotation = (ANNOTATION_TYPE) outputAnnotations.next();
+					ANNOTATION_TYPE outputAnnotation = ReflectionUtil.uncheckedCast(outputAnnotations.next());
 					out.println(annotationWriter.writeAnnotation(jCas, outputAnnotation));
 				}
 			}
 			else if (blockAnnotationType != null) {
 				FSIterator blocks = jCas.getAnnotationIndex(blockAnnotationType).iterator();
 				while (blocks.hasNext()) {
-					BLOCK_TYPE blockAnnotation = (BLOCK_TYPE) blocks.next();
+					BLOCK_TYPE blockAnnotation = ReflectionUtil.uncheckedCast(blocks.next());
 					out.print(blockWriter.writeBlock(jCas, blockAnnotation));
 					FSIterator outputAnnotations = jCas.getAnnotationIndex(outputAnnotationType).subiterator(
 							blockAnnotation);
 					while (outputAnnotations.hasNext()) {
-						ANNOTATION_TYPE outputAnnotation = (ANNOTATION_TYPE) outputAnnotations.next();
+						ANNOTATION_TYPE outputAnnotation = ReflectionUtil.uncheckedCast(outputAnnotations.next());
 						out.println(annotationWriter.writeAnnotation(jCas, outputAnnotation));
 					}
 				}
@@ -370,7 +368,7 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 			else {
 				FSIterator outputAnnotations = jCas.getAnnotationIndex(outputAnnotationType).iterator();
 				while (outputAnnotations.hasNext()) {
-					ANNOTATION_TYPE outputAnnotation = (ANNOTATION_TYPE) outputAnnotations.next();
+					ANNOTATION_TYPE outputAnnotation = ReflectionUtil.uncheckedCast(outputAnnotations.next());
 					out.println(annotationWriter.writeAnnotation(jCas, outputAnnotation));
 				}
 			}

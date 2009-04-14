@@ -24,8 +24,6 @@
 
 package org.cleartk.token.pos.impl;
 
-import org.junit.Test;
-
 /**
  * <br>Copyright (c) 2009, Regents of the University of Colorado 
  * <br>All rights reserved.

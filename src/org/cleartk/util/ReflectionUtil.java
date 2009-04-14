@@ -35,6 +35,18 @@ import java.util.TreeMap;
  */
 public class ReflectionUtil {
 	
+	/**
+	 * Perform an unchecked cast based on a type parameter.
+	 * 
+	 * @param <T> The type to which the object should be cast.
+	 * @param o   The object.
+	 * @return    The object, cast to the given type.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> T uncheckedCast(Object o) {
+		return (T)o;
+	}
+	
 	public static Type getTypeArgument(Class<?> genericType, String typeParameterName, Object obj) {
 		Map<String,Type> typeArguments = getTypeArguments(genericType, obj);
 		return typeArguments == null ? null : typeArguments.get(typeParameterName);

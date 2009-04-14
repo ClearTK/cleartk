@@ -31,6 +31,7 @@ import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
 import org.cleartk.classifier.feature.extractor.outcome.OutcomeFeatureExtractor;
+import org.cleartk.util.ReflectionUtil;
 
 
 /**
@@ -44,10 +45,9 @@ public abstract class DefaultSequentialClassifier<OUTCOME_TYPE> implements Seque
 	protected Classifier<OUTCOME_TYPE> classifier;
 	protected OutcomeFeatureExtractor[] outcomeFeatureExtractors;
 
-	@SuppressWarnings("unchecked")
 	public DefaultSequentialClassifier(JarFile modelFile) throws IOException {
 		
-		classifier =(Classifier<OUTCOME_TYPE>) ClassifierFactory.createClassifierFromJar(modelFile.getName());
+		classifier = ReflectionUtil.uncheckedCast(ClassifierFactory.createClassifierFromJar(modelFile.getName()));
 		
 		ZipEntry zipEntry = modelFile.getEntry(DataWriter_ImplBase.OUTCOME_FEATURE_EXTRACTOR_FILE_NAME);
 		if(zipEntry == null) {

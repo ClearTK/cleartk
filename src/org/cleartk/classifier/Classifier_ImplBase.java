@@ -87,7 +87,6 @@ public abstract class Classifier_ImplBase<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE,F
 			return null;
 	}
 	
-	@SuppressWarnings("unchecked")
 	protected FeaturesEncoder<FEATURES_TYPE> featuresEncoderCast(FeaturesEncoder<?> encoder) {
 		Class<?> myFEATURESTYPE = getMyTypeArgument("FEATURES_TYPE");
 		Class<?> feFEATURESTYPE = getTypeArgument(FeaturesEncoder.class, "FEATURES_TYPE", encoder);
@@ -95,10 +94,9 @@ public abstract class Classifier_ImplBase<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE,F
 		if( myFEATURESTYPE != feFEATURESTYPE )
 			throw new ClassCastException();
 
-		return (FeaturesEncoder<FEATURES_TYPE>) encoder;
+		return ReflectionUtil.uncheckedCast(encoder);
 	}
 	
-	@SuppressWarnings("unchecked")
 	protected OutcomeEncoder<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE> outcomeEncoderCast(OutcomeEncoder<?,?> encoder) {
 		Class<?> myINPUTOUTCOME_TYPE = getMyTypeArgument("INPUTOUTCOME_TYPE");
 		Class<?> oeINPUTOUTCOME_TYPE = getTypeArgument(OutcomeEncoder.class, "INPUTOUTCOME_TYPE", encoder);
@@ -112,6 +110,6 @@ public abstract class Classifier_ImplBase<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE,F
 		if( myOUTPUTOUTCOME_TYPE != oeOUTPUTOUTCOME_TYPE )
 			throw new ClassCastException();
 		
-		return (OutcomeEncoder<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE>) encoder;
+		return ReflectionUtil.uncheckedCast(encoder);
 	}
 }

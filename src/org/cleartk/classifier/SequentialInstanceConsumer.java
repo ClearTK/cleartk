@@ -30,6 +30,7 @@ import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
 
 /**
@@ -46,11 +47,10 @@ public abstract class SequentialInstanceConsumer<OUTCOME_TYPE> extends JCasAnnot
 
 	protected SequentialAnnotationHandler<OUTCOME_TYPE> annotationHandler; 
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-		annotationHandler = UIMAUtil.create(
-				context, PARAM_ANNOTATION_HANDLER, SequentialAnnotationHandler.class);
+		annotationHandler = ReflectionUtil.uncheckedCast(UIMAUtil.create(
+				context, PARAM_ANNOTATION_HANDLER, SequentialAnnotationHandler.class));
 	}
 
 

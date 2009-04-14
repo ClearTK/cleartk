@@ -97,9 +97,8 @@ public class DelegatingDataWriter extends DataWriter_ImplBase<Object,Object,Obje
 		this.dataWriter.collectionProcessComplete();
 	}
 	
-	@SuppressWarnings("unchecked")
 	private void setDataWriter(Class<?> cls) throws InstantiationException, IllegalAccessException {
-		this.dataWriter = (DataWriter_ImplBase<Object,Object,Object>)cls.newInstance();
+		this.dataWriter = ReflectionUtil.uncheckedCast(cls.newInstance());
 	}
 	
 	private DataWriter_ImplBase<Object,Object,Object> dataWriter;

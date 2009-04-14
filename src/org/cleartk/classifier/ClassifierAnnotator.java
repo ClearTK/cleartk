@@ -69,7 +69,6 @@ public class ClassifierAnnotator<OUTCOME_TYPE> extends InstanceConsumer<OUTCOME_
 	public static final String PARAM_CLASSIFIER_JAR = "org.cleartk.classifier.ClassifierAnnotator.PARAM_CLASSIFIER_JAR";
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
 		// get the Classifier jar file path and load the Classifier
@@ -88,7 +87,7 @@ public class ClassifierAnnotator<OUTCOME_TYPE> extends InstanceConsumer<OUTCOME_
 						classifierLabelType, annotationHandlerLabelType));
 			}
 			
-			this.classifier = (Classifier<OUTCOME_TYPE>)untypedClassifier;
+			this.classifier = ReflectionUtil.uncheckedCast(untypedClassifier);
 			UIMAUtil.initialize(this.classifier, context);
 		} catch (IOException e) {
 			throw new ResourceInitializationException(e);

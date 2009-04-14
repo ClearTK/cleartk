@@ -26,7 +26,6 @@ package org.cleartk.tfidf;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.util.Map;
@@ -42,6 +41,7 @@ import org.cleartk.token.snowball.SnowballStemmer;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.PlainTextCollectionReader;
+import org.cleartk.util.ReflectionUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
@@ -101,7 +101,7 @@ public class InverseDocumentFrequencyWriterTests {
 		// read the frequencies from the file
 		ObjectInput input = new ObjectInputStream(new BufferedInputStream(
 				new FileInputStream(this.mapFileName)));
-		this.frequencies = this.readObject(input);
+		this.frequencies = ReflectionUtil.uncheckedCast(input.readObject());
 		input.close();
 		
 		// check log(documentCount)
@@ -149,10 +149,4 @@ public class InverseDocumentFrequencyWriterTests {
 	private void checkCount(Double expected, String word) {
 		Assert.assertEquals(expected, this.frequencies.get(word));
 	}
-	
-	@SuppressWarnings("unchecked")
-	private <T> T readObject(ObjectInput input) throws ClassNotFoundException, IOException {
-		return (T)input.readObject();
-	}
-
 }

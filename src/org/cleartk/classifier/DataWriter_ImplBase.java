@@ -256,7 +256,6 @@ public abstract class DataWriter_ImplBase<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE,
 		else return null;
 	}
 
-	@SuppressWarnings("unchecked")
 	private FeaturesEncoder<FEATURES_TYPE> getFeaturesEncoder(EncoderFactory factory, UimaContext context)
 			throws ResourceInitializationException {
 		FeaturesEncoder<?> genericEncoder = factory.createFeaturesEncoder(context);
@@ -267,7 +266,7 @@ public abstract class DataWriter_ImplBase<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE,
 
 		if (myFEATURESTYPE != encoderFEATURESTYPE) throw new ClassCastException();
 
-		return (FeaturesEncoder<FEATURES_TYPE>) genericEncoder;
+		return ReflectionUtil.uncheckedCast(genericEncoder);
 	}
 
 	@SuppressWarnings( { "unchecked" })

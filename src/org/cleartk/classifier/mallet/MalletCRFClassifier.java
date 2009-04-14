@@ -32,6 +32,7 @@ import java.util.zip.ZipEntry;
 import org.cleartk.classifier.Classifier_ImplBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.encoder.features.NameNumber;
+import org.cleartk.util.ReflectionUtil;
 
 import cc.mallet.fst.Transducer;
 import cc.mallet.pipe.Pipe;
@@ -89,7 +90,6 @@ public class MalletCRFClassifier extends Classifier_ImplBase<String,String,List<
 	 * to be classified (e.g. tokens in a sentence or lines in a document)
 	 * that corresponds to the model that has been built for this classifier.
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<String> classifySequence(List<List<Feature>> features)
 	{
@@ -99,7 +99,9 @@ public class MalletCRFClassifier extends Classifier_ImplBase<String,String,List<
 		Instance instance = new Instance(featureStringArray, null, null, null); 
 		instance = pipe.instanceFrom(instance);
 		
-		Sequence<String> sequence = transducer.transduce((Sequence<String>)instance.getData());
+		Sequence<?> data = (Sequence<?>)instance.getData();
+		Sequence<?> untypedSequence = transducer.transduce(data);
+		Sequence<String> sequence = ReflectionUtil.uncheckedCast(untypedSequence);
 		
 		List<String> returnValues = new ArrayList<String>();
 		

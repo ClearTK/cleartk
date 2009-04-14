@@ -91,7 +91,7 @@ public class ClassifierManifest extends Manifest {
 		}
 		Exception exception = null;
 		try {
-			this.classifierBuilder = this.cast(Class.forName(classifierClassName)).newInstance();
+			this.classifierBuilder = Class.forName(classifierClassName).asSubclass(ClassifierBuilder.class).newInstance();
 		} catch (ClassNotFoundException e) {
 			exception = e;
 		} catch (InstantiationException e) {
@@ -109,9 +109,4 @@ public class ClassifierManifest extends Manifest {
 		return new File(dir, "MANIFEST.MF");
 	}
 	
-	@SuppressWarnings("unchecked")
-	private Class<? extends ClassifierBuilder<?>> cast(Class<?> classifierBuilderClass) {
-		return (Class<? extends ClassifierBuilder<?>>)classifierBuilderClass.asSubclass(ClassifierBuilder.class);
-	}
-
 }

@@ -90,7 +90,6 @@ public class AnnotationRetrieval {
 		return get(jCas, annotation, relativePosition, null);
 	}
 
-	@SuppressWarnings("unchecked")
 	public static <T extends Annotation> T get(JCas jCas, T annotation, int relativePosition,
 			Annotation windowAnnotation) {
 		FSIterator cursor = jCas.getAnnotationIndex(annotation.getType()).iterator();
@@ -107,7 +106,7 @@ public class AnnotationRetrieval {
 		if (cursor.isValid()) {
 			Annotation relativeAnnotation = (Annotation) cursor.get();
 
-			T returnValue = ((Class<T>) annotation.getClass()).cast(relativeAnnotation);
+			T returnValue = ReflectionUtil.<Class<T>>uncheckedCast(annotation.getClass()).cast(relativeAnnotation);
 
 			if (windowAnnotation != null) {
 				if (AnnotationUtil.contains(windowAnnotation, relativeAnnotation)) return returnValue;

@@ -111,8 +111,7 @@ public class FactoryTests {
 		assertTrue(factory.getClass().getName().endsWith("TrainerFactory"));
 	}
 
-	@SuppressWarnings("unchecked")
-	private void testBadConfig(ClassifierTrainerFactory factory, String... args) {
+	private void testBadConfig(ClassifierTrainerFactory<?> factory, String... args) {
 		IllegalArgumentException exception = null;
 		try {
 			factory.createTrainer(args);

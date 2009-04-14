@@ -71,7 +71,6 @@ public class SequentialClassifierAnnotator<OUTCOME_TYPE> extends SequentialInsta
 	public static final String PARAM_CLASSIFIER_JAR = "org.cleartk.classifier.SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR";
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
 		// get the Classifier jar file path and load the Classifier
@@ -90,7 +89,7 @@ public class SequentialClassifierAnnotator<OUTCOME_TYPE> extends SequentialInsta
 						classifierLabelType, annotationHandlerLabelType));
 			}
 			
-			this.classifier = (SequentialClassifier<OUTCOME_TYPE>)untypedClassifier;
+			this.classifier = ReflectionUtil.uncheckedCast(untypedClassifier);
 			UIMAUtil.initialize(this.classifier, context);
 		} catch (IOException e) {
 			throw new ResourceInitializationException(e);
