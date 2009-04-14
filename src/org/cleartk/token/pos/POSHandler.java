@@ -34,7 +34,6 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.Initializable;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.SequentialAnnotationHandler;
@@ -94,12 +93,7 @@ public abstract class POSHandler<TOKEN_TYPE extends Annotation, SENTENCE_TYPE ex
 						featureExtractorSentenceClassType, sentenceClassType));
 			}
 
-			String taggerClassName = (String) UIMAUtil.getRequiredConfigParameterValue(context, PARAM_TAGGER_CLASS);
-			cls = Class.forName(taggerClassName);
-			Class<? extends POSTagger> taggerClass = cls.asSubclass(POSTagger.class);
-			tagger = taggerClass.newInstance();
-			if(tagger instanceof Initializable)
-				((Initializable) tagger).initialize(context);
+			tagger = UIMAUtil.create(context, PARAM_TAGGER_CLASS, POSTagger.class);
 			
 			java.lang.reflect.Type taggerTokenClassType = ReflectionUtil.getTypeArgument(POSTagger.class, "TOKEN_TYPE", tagger);
 			if (!ReflectionUtil.isAssignableFrom(taggerTokenClassType, tokenClassType)) {
