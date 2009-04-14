@@ -48,7 +48,7 @@ import org.cleartk.util.UIMAUtil;
  */
 public abstract class EncoderFactory_ImplBase implements EncoderFactory {
 	
-	public static final String PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM = "LoadEncodersFromFileSystem";
+	public static final String PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM = "org.cleartk.classifier.encoder.EncoderFactory_ImplBase.PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM";
 
 	public FeaturesEncoder<?> createFeaturesEncoder(UimaContext context) {
 		if (this.context != context) {
