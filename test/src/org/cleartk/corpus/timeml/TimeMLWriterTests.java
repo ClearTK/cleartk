@@ -37,7 +37,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
 import org.cleartk.ViewNames;
-import org.cleartk.util.PlainTextCollectionReader;
+import org.cleartk.util.FilesCollectionReader;
 import org.jdom.Attribute;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -75,11 +75,11 @@ public class TimeMLWriterTests {
 	@Test
 	public void test() throws UIMAException, IOException, JDOMException {
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-				PlainTextCollectionReader.class, 
+				FilesCollectionReader.class, 
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-				PlainTextCollectionReader.PARAM_VIEW_NAME,
+				FilesCollectionReader.PARAM_VIEW_NAME,
 				ViewNames.TIMEML,
-				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY,
+				FilesCollectionReader.PARAM_FILE_OR_DIRECTORY,
 				this.inputFile.getPath());
 		AnalysisEngine annotator = AnalysisEngineFactory.createAnalysisEngine(
 				TimeMLGoldAnnotator.class,
