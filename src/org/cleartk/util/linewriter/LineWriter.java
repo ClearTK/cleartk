@@ -80,7 +80,7 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 	 * Documents\workspace\My Project\data\experiment\output</li>
 	 * </ul>
 	 */
-	public static final String PARAM_OUTPUT_DIRECTORY = "OutputDirectory";
+	public static final String PARAM_OUTPUT_DIRECTORY = "org.cleartk.util.linewriter.LineWriter.PARAM_OUTPUT_DIRECTORY";
 
 	/**
 	 * "FileSuffix" is a single, optional, string parameter that provides a file
@@ -98,7 +98,7 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 	 * @see AnnotationRetrieval#getDocument(JCas)
 	 * @see org.cleartk.type.Document#getIdentifier()
 	 */
-	public static final String PARAM_FILE_SUFFIX = "FileSuffix";
+	public static final String PARAM_FILE_SUFFIX = "org.cleartk.util.linewriter.LineWriter.PARAM_FILE_SUFFIX";
 
 	/**
 	 * "OutputFile" is a single, optional, string parameter that takes a file
@@ -115,7 +115,7 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 	 * </ul>
 	 */
 
-	public static final String PARAM_OUTPUT_FILE = "OutputFile";
+	public static final String PARAM_OUTPUT_FILE = "org.cleartk.util.linewriter.LineWriter.PARAM_OUTPUT_FILE";
 
 	/**
 	 * "OutputAnnotationClass" is a single, optional, string parameter that
@@ -133,7 +133,7 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 	 * com.yourcompany.yourpackage.YourType</li>
 	 * </ul>
 	 */
-	public static final String PARAM_OUTPUT_ANNOTATION_CLASS = "OutputAnnotationClass";
+	public static final String PARAM_OUTPUT_ANNOTATION_CLASS = "org.cleartk.util.linewriter.LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS";
 
 	/**
 	 * "AnnotationWriterClass" is a single, optional, string parameter that
@@ -149,7 +149,7 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 	 * 
 	 * @see AnnotationWriter
 	 */
-	public static final String PARAM_ANNOTATION_WRITER_CLASS = "AnnotationWriterClass";
+	public static final String PARAM_ANNOTATION_WRITER_CLASS = "org.cleartk.util.linewriter.LineWriter.PARAM_ANNOTATION_WRITER_CLASS";
 
 	/**
 	 * "BlockAnnotationClass" is a single, optional, string parameter that takes
@@ -179,7 +179,7 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 	 * 
 	 * @see org.apache.uima.jcas.tcas.DocumentAnnotation
 	 */
-	public static final String PARAM_BLOCK_ANNOTATION_CLASS = "BlockAnnotationClass";
+	public static final String PARAM_BLOCK_ANNOTATION_CLASS = "org.cleartk.util.linewriter.LineWriter.PARAM_BLOCK_ANNOTATION_CLASS";
 
 	/**
 	 * "BlockWriterClass" is a single, optional, string parameter that provides
@@ -198,7 +198,7 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 	 * 
 	 * @see AnnotationWriter
 	 */
-	public static final String PARAM_BLOCK_WRITER_CLASS = "BlockWriterClass";
+	public static final String PARAM_BLOCK_WRITER_CLASS = "org.cleartk.util.linewriter.LineWriter.PARAM_BLOCK_WRITER_CLASS";
 
 	private File outputDirectory;
 

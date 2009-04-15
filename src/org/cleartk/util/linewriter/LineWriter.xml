@@ -32,43 +32,43 @@ POSSIBILITY OF SUCH DAMAGE.
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>OutputDirectory</name>
+        <name>org.cleartk.util.linewriter.LineWriter.PARAM_OUTPUT_DIRECTORY</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>OutputFile</name>
+        <name>org.cleartk.util.linewriter.LineWriter.PARAM_OUTPUT_FILE</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>OutputAnnotationClass</name>
+        <name>org.cleartk.util.linewriter.LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>BlockAnnotationClass</name>
+        <name>org.cleartk.util.linewriter.LineWriter.PARAM_BLOCK_ANNOTATION_CLASS</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>AnnotationWriterClass</name>
+        <name>org.cleartk.util.linewriter.LineWriter.PARAM_ANNOTATION_WRITER_CLASS</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>FileSuffix</name>
+        <name>org.cleartk.util.linewriter.LineWriter.PARAM_FILE_SUFFIX</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>BlockWriterClass</name>
+        <name>org.cleartk.util.linewriter.LineWriter.PARAM_BLOCK_WRITER_CLASS</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
