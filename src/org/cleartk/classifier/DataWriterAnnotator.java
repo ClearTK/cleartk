@@ -2,8 +2,6 @@ package org.cleartk.classifier;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -60,11 +58,6 @@ public class DataWriterAnnotator<OUTCOME_TYPE> extends InstanceConsumer_ImplBase
 		catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		return null;
-	}
-
-	public List<?> consumeSequence(List<?> instances) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
