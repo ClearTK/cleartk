@@ -30,19 +30,19 @@ POSSIBILITY OF SUCH DAMAGE.</description>
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>AnnotationHandler</name>
+        <name>org.cleartk.classifier.InstanceConsumer.PARAM_ANNOTATION_HANDLER</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>OutputDirectory</name>
+        <name>org.cleartk.classifier.DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>DataWriter</name>
+        <name>org.cleartk.classifier.DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
@@ -62,19 +62,19 @@ POSSIBILITY OF SUCH DAMAGE.</description>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>AnnotationHandler</name>
+        <name>org.cleartk.classifier.InstanceConsumer.PARAM_ANNOTATION_HANDLER2</name>
         <value>
           <string>org.cleartk.example.ExamplePOSAnnotationHandler</string>
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>OutputDirectory</name>
+        <name>org.cleartk.classifier.DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY</name>
         <value>
           <string>example/model</string>
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>DataWriter</name>
+        <name>org.cleartk.classifier.DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS</name>
         <value>
           <string>org.cleartk.classifier.opennlp.MaxentDataWriter</string>
         </value>
