@@ -63,7 +63,7 @@ public class TokenAnnotator extends JCasAnnotator_ImplBase {
 	 * @see Tokenizer
 	 * @see PennTreebankTokenizer
 	 */
-	public static final String PARAM_TOKENIZER = "Tokenizer";
+	public static final String PARAM_TOKENIZER = "org.cleartk.token.TokenAnnotator.PARAM_TOKENIZER";
 
 	/**
 	 * "TokenType" is a single, optional, string parameter the class type of the
@@ -71,7 +71,7 @@ public class TokenAnnotator extends JCasAnnotator_ImplBase {
 	 * filled, then tokens of type org.cleartk.type.Token will be
 	 * created.
 	 */
-	public static final String PARAM_TOKEN_TYPE = "TokenType";
+	public static final String PARAM_TOKEN_TYPE = "org.cleartk.token.TokenAnnotator.PARAM_TOKEN_TYPE";
 
 	/**
 	 * "WindowType" is a single, optional, string parameter that specifies the
@@ -79,7 +79,7 @@ public class TokenAnnotator extends JCasAnnotator_ImplBase {
 	 * will be tokenized at once.  A good value for this parameter would be
 	 * <code>org.cleartk.type.Sentence</code> (especially when using the PennTreebankTokenizer).
 	 */
-	public static final String PARAM_WINDOW_TYPE = "WindowType";
+	public static final String PARAM_WINDOW_TYPE = "org.cleartk.token.TokenAnnotator.PARAM_WINDOW_TYPE";
 
 	Tokenizer tokenizer;
 

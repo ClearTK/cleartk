@@ -48,7 +48,7 @@ import org.cleartk.util.UIMAUtil;
  */
 public class TokenWriter extends JCasAnnotator_ImplBase {
 
-	public static final String PARAM_OUTPUT_DIRECTORY = "OutputDirectory";
+	public static final String PARAM_OUTPUT_DIRECTORY = "org.cleartk.token.TokenWriter.PARAM_OUTPUT_DIRECTORY";
 	
 	private File outputDir;
 
