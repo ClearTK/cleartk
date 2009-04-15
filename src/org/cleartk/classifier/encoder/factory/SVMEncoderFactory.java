@@ -48,7 +48,7 @@ import org.cleartk.util.UIMAUtil;
 
 public abstract class SVMEncoderFactory extends EncoderFactory_ImplBase {
 	
-	public static final String PARAM_NORMALIZE_VECTORS = "NormalizeVectors";
+	public static final String PARAM_NORMALIZE_VECTORS = "org.cleartk.classifier.encoder.factory.SVMEncoderFactory.PARAM_NORMALIZE_VECTORS";
 
 	@Override
 	public FeaturesEncoder<?> createFeaturesEncoder(UimaContext context) {
