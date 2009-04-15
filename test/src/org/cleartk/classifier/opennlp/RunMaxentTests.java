@@ -24,26 +24,25 @@
 package org.cleartk.classifier.opennlp;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.jar.JarFile;
 
-import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.cleartk.classifier.ClassifierFactory;
+import org.cleartk.classifier.DataWriterAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.InstanceConsumer;
 import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.Train;
 import org.cleartk.classifier.encoder.factory.NameNumberEncoderFactory;
+import org.cleartk.example.ExamplePOSAnnotationHandler;
 import org.junit.After;
 import org.junit.Test;
-import org.uutuc.factory.AnalysisEngineFactory;
-import org.uutuc.factory.TypeSystemDescriptionFactory;
+import org.uutuc.factory.UimaContextFactory;
 import org.uutuc.util.HideOutput;
 import org.uutuc.util.TearDownUtil;
 
@@ -69,16 +68,15 @@ public class RunMaxentTests {
 	@Test
 	public void runTest1() throws Exception {
 		String outputDirectory = test1Dir; 
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(MaxentDataWriter.class, 
-				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"), 
-				NameNumberEncoderFactory.PARAM_COMPRESS, false,
-				MaxentDataWriter.PARAM_ANNOTATION_HANDLER,
-				"org.cleartk.example.ExamplePOSAnnotationHandler",
-				MaxentDataWriter.PARAM_OUTPUT_DIRECTORY,
-				outputDirectory);
-		
-		MaxentDataWriter dataWriter = new MaxentDataWriter();
-		dataWriter.initialize(engine.getUimaContext());
+		DataWriterAnnotator<String> dataWriter = new DataWriterAnnotator<String>();
+		dataWriter.initialize(UimaContextFactory.createUimaContext(
+				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
+				ExamplePOSAnnotationHandler.class.getName(),
+				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY,
+				outputDirectory,
+				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS,
+				MaxentDataWriter.class.getName(),
+				NameNumberEncoderFactory.PARAM_COMPRESS, false));
 		
 		dataWriter.consume(createInstance("A", "hello", 1234));
 		dataWriter.consume(createInstance("A", "hello", 1000));
@@ -121,7 +119,6 @@ public class RunMaxentTests {
 
 
 		dataWriter.collectionProcessComplete();
-		engine.collectionProcessComplete();
 		
 		BufferedReader reader = new BufferedReader(new FileReader(new File(outputDirectory, "training-data.maxent")));
 		String line = reader.readLine();
@@ -132,8 +129,8 @@ public class RunMaxentTests {
 		Train.main(new String[] {outputDirectory});
 		hider.restoreOutput();
 		
-		MaxentClassifier classifier = (MaxentClassifier) ClassifierFactory.readFromJar(outputDirectory+"/model.jar");
-		assertFalse(classifier.isSequential());
+		JarFile modelFile = new JarFile(new File(outputDirectory, "model.jar"));
+		MaxentClassifier classifier = new MaxentClassifier(modelFile);
 		String classification = classifier.classify(createInstance(null, "hello", 1000).getFeatures());
 		classification = classifier.classify(createInstance(null, "hello", 1).getFeatures());
 		classification = classifier.classify(createInstance(null, "goodbye", 1).getFeatures());
@@ -144,16 +141,15 @@ public class RunMaxentTests {
 	@Test
 	public void runTest2() throws Exception {
 		String outputDirectory = test2Dir; 
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(MaxentDataWriter.class, 
-				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"), 
-				NameNumberEncoderFactory.PARAM_COMPRESS, true,
-				MaxentDataWriter.PARAM_ANNOTATION_HANDLER,
-				"org.cleartk.example.ExamplePOSAnnotationHandler",
-				MaxentDataWriter.PARAM_OUTPUT_DIRECTORY,
-				outputDirectory);
-		
-		MaxentDataWriter dataWriter = new MaxentDataWriter();
-		dataWriter.initialize(engine.getUimaContext());
+		DataWriterAnnotator<String> dataWriter = new DataWriterAnnotator<String>();
+		dataWriter.initialize(UimaContextFactory.createUimaContext(
+				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
+				ExamplePOSAnnotationHandler.class.getName(),
+				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY,
+				outputDirectory,
+				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS,
+				MaxentDataWriter.class.getName(),
+				NameNumberEncoderFactory.PARAM_COMPRESS, true));
 		 
 		dataWriter.consume(createInstance2("O Word_Three LCWord_three CapitalType_INITIAL_UPPERCASE L0OOB1 L1OOB2 R0_sequence R0_TypePath_Pos_NN R0_TypePath_Stem_sequenc R1_elements R1_TypePath_Pos_NNS R1_TypePath_Stem_element TypePath_Pos_CD TypePath_Stem_Three PrevNEMTokenLabel_L0OOB1 PrevNEMTokenLabel_L1OOB2"));
 		dataWriter.consume(createInstance2("O Word_sequence LCWord_sequence CapitalType_ALL_LOWERCASE Prefix3_seq Suffix3_nce Suffix4_ence Suffix5_uence L0_Three L0_TypePath_Pos_CD L0_TypePath_Stem_Three L1OOB1 R0_elements R0_TypePath_Pos_NNS R0_TypePath_Stem_element R1_are R1_TypePath_Pos_VBP R1_TypePath_Stem_are TypePath_Pos_NN TypePath_Stem_sequenc PrevNEMTokenLabel_L0_O PrevNEMTokenLabel_L1OOB1"));
@@ -209,7 +205,8 @@ public class RunMaxentTests {
 		Train.main(new String[] {outputDirectory+"/", "10", "1"});
 		hider.restoreOutput();
 		
-		MaxentClassifier classifier = (MaxentClassifier) ClassifierFactory.readFromJar(outputDirectory+"/model.jar");
+		JarFile modelFile = new JarFile(new File(outputDirectory, "model.jar"));
+		MaxentClassifier classifier = new MaxentClassifier(modelFile);
 		List<Feature> features1 = createInstance2("B-GENE Word_pol LCWord_pol CapitalType_ALL_LOWERCASE L0_( L0_TypePath_Pos_-LRB- L0_TypePath_Stem_( L1_I L1_TypePath_Pos_PRP L1_TypePath_Stem_I R0_I R0_TypePath_Pos_PRP R0_TypePath_Stem_I R1_) R1_TypePath_Pos_-RRB- R1_TypePath_Stem_) TypePath_Pos_NN TypePath_Stem_pol PrevNEMTokenLabel_L0_O PrevNEMTokenLabel_L1_I-GENE Gazetteer_entrez_genes.txt").getFeatures();
 		String classification = classifier.classify(features1);
 		assertEquals("B-GENE", classification);
@@ -217,14 +214,6 @@ public class RunMaxentTests {
 		List<Feature> features2 = createInstance2("O Word_cells LCWord_cells CapitalType_ALL_LOWERCASE L0_3T6 L0_TypePath_Pos_CD L0_TypePath_Stem_3T6 L1_into L1_TypePath_Pos_IN L1_TypePath_Stem_into R0_. R0_TypePath_Pos_. R0_TypePath_Stem_. R1OOB1 TypePath_Pos_NNS TypePath_Stem_cell PrevNEMTokenLabel_L0_O PrevNEMTokenLabel_L1_O").getFeatures();
 		classification = classifier.classify(features2);
 		assertEquals("O", classification);
-		
-		List<List<Feature>> sequenceFeatures = new ArrayList<List<Feature>>();
-		sequenceFeatures.add(features1);
-		sequenceFeatures.add(features2);
-		List<String> sequenceClassification = classifier.classifySequence(sequenceFeatures);
-		assertEquals(2, sequenceClassification.size());
-		assertEquals("B-GENE", sequenceClassification.get(0));
-		assertEquals("O", sequenceClassification.get(1));
 		
 		ScoredOutcome<String> scoredValue = classifier.score(features1,1).get(0);
 		assertEquals("B-GENE", scoredValue.getValue());

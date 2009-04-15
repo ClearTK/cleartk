@@ -56,7 +56,7 @@ public class DelegatingDataWriterTests {
 	@Test
 	public void testDelegatingDataWriter() throws IOException, UIMAException {
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-				DelegatingDataWriter.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
+				DataWriterAnnotator.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				InstanceConsumer.PARAM_ANNOTATION_HANDLER, "org.cleartk.example.ExamplePOSAnnotationHandler",
 				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, "test/data/delegatingDataWriter/mallet",
 				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, "org.cleartk.classifier.mallet.MalletCRFDataWriter");

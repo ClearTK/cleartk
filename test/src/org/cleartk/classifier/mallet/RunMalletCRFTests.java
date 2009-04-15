@@ -57,7 +57,7 @@ public class RunMalletCRFTests {
 	@Test
 	public void runTest1() throws Exception {
 		String outputDirectory = "test/data/mallet/run-crf-test-1"; 
-		DataWriterAnnotator<Boolean> dataWriter = new DataWriterAnnotator<Boolean>();
+		DataWriterAnnotator<String> dataWriter = new DataWriterAnnotator<String>();
 		dataWriter.initialize(UimaContextFactory.createUimaContext(
 				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
 				ExamplePOSAnnotationHandler.class.getName(),
@@ -110,8 +110,11 @@ public class RunMalletCRFTests {
 		instances.add(createInstance("O Word_cells LCWord_cells CapitalType_ALL_LOWERCASE L0_3T6 L0_TypePath_Pos_CD L0_TypePath_Stem_3T6 L1_into L1_TypePath_Pos_IN L1_TypePath_Stem_into R0_. R0_TypePath_Pos_. R0_TypePath_Stem_. R1OOB1 TypePath_Pos_NNS TypePath_Stem_cell PrevNEMTokenLabel_L0_O PrevNEMTokenLabel_L1_O"));
 		instances.add(createInstance("O Word_. LCWord_. L0_cells L0_TypePath_Pos_NNS L0_TypePath_Stem_cell L1_3T6 L1_TypePath_Pos_CD L1_TypePath_Stem_3T6 R0OOB1 R1OOB2 TypePath_Pos_. TypePath_Stem_. PrevNEMTokenLabel_L0_O PrevNEMTokenLabel_L1_O"));
 		
-		for(int i=0; i<100; i++)
-			dataWriter.consumeSequence(instances);
+		for(int i=0; i<100; i++) {
+			for (Instance<String> instance: instances) {
+				dataWriter.consume(instance);
+			}
+		}
 		dataWriter.collectionProcessComplete();
 		
 		BufferedReader reader = new BufferedReader(new FileReader(outputDirectory+"/training-data.malletcrf"));

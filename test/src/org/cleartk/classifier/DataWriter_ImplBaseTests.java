@@ -127,7 +127,7 @@ public class DataWriter_ImplBaseTests {
 			AnalysisEngineFactory.createAnalysisEngine(Writer.class, null,
 					InstanceConsumer.PARAM_ANNOTATION_HANDLER, SingleProducer.class.getName(),
 					DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, this.outputDir,
-					DataWriter_ImplBase.PARAM_ENCODER_FACTORY_CLASS, NullFactory.class.getName(),
+					DataWriterAnnotator.PARAM_ENCODER_FACTORY_CLASS, NullFactory.class.getName(),
 					Writer.PARAM_FILE_NAME, "foo.txt", Writer.PARAM_STRING_TO_WRITE, "foo");
 
 			Assert.fail("Expected exception with factory returning null encoders");
@@ -150,10 +150,8 @@ public class DataWriter_ImplBaseTests {
 		}
 
 		public void process(JCas cas, InstanceConsumer<T> consumer) {
-			List<Instance<T>> instances = new ArrayList<Instance<T>>();
-			instances.add(new Instance<T>());
-			instances.add(new Instance<T>());
-			consumer.consumeSequence(instances);
+			consumer.consume(new Instance<T>());
+			consumer.consume(new Instance<T>());
 		}
 	}
 

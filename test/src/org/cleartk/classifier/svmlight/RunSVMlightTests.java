@@ -30,12 +30,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.List;
+import java.util.jar.JarFile;
 
-import org.cleartk.classifier.ClassifierFactory;
-import org.cleartk.classifier.DataWriter_ImplBase;
+import org.cleartk.classifier.DataWriterAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.InstanceConsumer_ImplBase;
+import org.cleartk.classifier.InstanceConsumer;
 import org.cleartk.classifier.Train;
 import org.cleartk.classifier.svmlight.model.SVMlightModel;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
@@ -188,16 +188,17 @@ public class RunSVMlightTests {
 	public void testSVMlight() throws Exception {
 		
 		// create the data writer
-		SVMlightDataWriter dataWriter = new SVMlightDataWriter();
+		DataWriterAnnotator<Boolean> dataWriter = new DataWriterAnnotator<Boolean>();
 		dataWriter.initialize(UimaContextFactory.createUimaContext(
+				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
+				TestsUtil.EmptyBooleanHandler.class.getName(),
 				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY,
 				this.outputDirectory,
-				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
-				TestsUtil.EmptyBooleanHandler.class.getName()));
+				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS,
+				SVMlightDataWriter.class.getName()));
 		
 		// add a bunch of instances
-		dataWriter.consumeSequence(TestsUtil.generateBooleanInstances(500));
-		for (Instance<Boolean> instance: TestsUtil.generateBooleanInstances(500)) {
+		for (Instance<Boolean> instance: TestsUtil.generateBooleanInstances(1000)) {
 			dataWriter.consume(instance);
 		}
 		dataWriter.collectionProcessComplete();
@@ -214,8 +215,8 @@ public class RunSVMlightTests {
 		hider.restoreOutput();
 		
 		// read in the classifier and test it on new instances
-		SVMlightClassifier classifier = (SVMlightClassifier)ClassifierFactory.readFromJar(
-				new File(this.outputDirectory, "model.jar").getPath());
+		JarFile modelFile = new JarFile(new File(this.outputDirectory, "model.jar"));
+		SVMlightClassifier classifier = new SVMlightClassifier(modelFile);
 		for (Instance<Boolean> instance: TestsUtil.generateBooleanInstances(1000)) {
 			List<Feature> features = instance.getFeatures();
 			Boolean outcome = instance.getOutcome();
@@ -227,16 +228,17 @@ public class RunSVMlightTests {
 	public void testOVASVMlight() throws Exception {
 		
 		// create the data writer
-		OVASVMlightDataWriter dataWriter = new OVASVMlightDataWriter();
+		DataWriterAnnotator<String> dataWriter = new DataWriterAnnotator<String>();
 		dataWriter.initialize(UimaContextFactory.createUimaContext(
+				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
+				TestsUtil.EmptyStringHandler.class.getName(),
 				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY,
 				this.outputDirectory,
-				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
-				TestsUtil.EmptyStringHandler.class.getName()));
+				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS,
+				OVASVMlightDataWriter.class.getName()));
 		
 		// add a bunch of instances
-		dataWriter.consumeSequence(TestsUtil.generateStringInstances(500));
-		for (Instance<String> instance: TestsUtil.generateStringInstances(500)) {
+		for (Instance<String> instance: TestsUtil.generateStringInstances(1000)) {
 			dataWriter.consume(instance);
 		}
 		dataWriter.collectionProcessComplete();
@@ -258,8 +260,8 @@ public class RunSVMlightTests {
 		hider.restoreOutput();
 		
 		// read in the classifier and test it on new instances
-		OVASVMlightClassifier classifier = (OVASVMlightClassifier)ClassifierFactory.readFromJar(
-				new File(this.outputDirectory, "model.jar").getPath());
+		JarFile modelFile = new JarFile(new File(this.outputDirectory, "model.jar"));
+		OVASVMlightClassifier classifier = new OVASVMlightClassifier(modelFile);
 		for (Instance<String> instance: TestsUtil.generateStringInstances(1000)) {
 			List<Feature> features = instance.getFeatures();
 			String outcome = instance.getOutcome();

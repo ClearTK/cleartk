@@ -35,7 +35,9 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.pear.util.FileUtil;
 import org.cleartk.classifier.ClassifierAnnotator;
+import org.cleartk.classifier.DataWriterAnnotator;
 import org.cleartk.classifier.DataWriter_ImplBase;
+import org.cleartk.classifier.InstanceConsumer;
 import org.cleartk.classifier.InstanceConsumer_ImplBase;
 import org.cleartk.classifier.Train;
 import org.cleartk.type.Sentence;
@@ -72,7 +74,7 @@ public class MaxentDataWriterTests {
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				InstanceConsumer.PARAM_ANNOTATION_HANDLER, "org.cleartk.example.ExamplePOSAnnotationHandler",
 				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
-				DataWriter_ImplBase.PARAM_OUTCOME_FEATURE_EXTRACTOR, new String[] {"org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor"});
+				DataWriterAnnotator.PARAM_OUTCOME_FEATURE_EXTRACTOR, new String[] {"org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor"});
 
 		JCas jCas = engine.newJCas();
 		String text = "Do I really have to come up with some creative text, or can I just write anything?";

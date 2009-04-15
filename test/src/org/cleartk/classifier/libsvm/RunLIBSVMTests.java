@@ -80,8 +80,7 @@ public class RunLIBSVMTests {
 				BinaryLIBSVMDataWriter.class.getName()));
 		
 		// add a bunch of instances
-		dataWriter.consumeSequence(TestsUtil.generateBooleanInstances(500));
-		for (Instance<Boolean> instance: TestsUtil.generateBooleanInstances(500)) {
+		for (Instance<Boolean> instance: TestsUtil.generateBooleanInstances(1000)) {
 			dataWriter.consume(instance);
 		}
 		dataWriter.collectionProcessComplete();
@@ -121,8 +120,7 @@ public class RunLIBSVMTests {
 				LIBLINEARDataWriter.class.getName()));
 		
 		// add a bunch of instances
-		dataWriter.consumeSequence(TestsUtil.generateBooleanInstances(500));
-		for (Instance<Boolean> instance: TestsUtil.generateBooleanInstances(500)) {
+		for (Instance<Boolean> instance: TestsUtil.generateBooleanInstances(1000)) {
 			dataWriter.consume(instance);
 		}
 		dataWriter.collectionProcessComplete();
@@ -162,8 +160,7 @@ public class RunLIBSVMTests {
 				MultiClassLIBSVMDataWriter.class.getName()));
 		
 		// add a bunch of instances
-		dataWriter.consumeSequence(TestsUtil.generateStringInstances(500));
-		for (Instance<String> instance: TestsUtil.generateStringInstances(500)) {
+		for (Instance<String> instance: TestsUtil.generateStringInstances(1000)) {
 			dataWriter.consume(instance);
 		}
 		dataWriter.collectionProcessComplete();

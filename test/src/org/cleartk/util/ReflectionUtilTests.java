@@ -23,13 +23,15 @@
 */
 package org.cleartk.util;
 
+import java.io.File;
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.Type;
 
 import org.cleartk.classifier.AnnotationHandler;
+import org.cleartk.classifier.ClassifierBuilder;
 import org.cleartk.classifier.DataWriter_ImplBase;
+import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.InstanceConsumer;
-import org.cleartk.classifier.opennlp.MaxentDataWriter;
 import org.cleartk.example.ExamplePOSAnnotationHandler;
 import org.junit.Assert;
 import org.junit.Test;
@@ -49,6 +51,20 @@ public class ReflectionUtilTests {
 	}
 	public static class TestArraySubClass extends TestSuperClass<double[]> {
 	}
+	public static class TestInstanceConsumerOutcomeType implements InstanceConsumer<String> {
+		public String consume(Instance<String> instance) {return null;}
+		public boolean expectsOutcomes() {return false;}
+	}
+	public static class TestDataWriterOutcomeType extends DataWriter_ImplBase<String, Double, Boolean> {
+		public TestDataWriterOutcomeType(File outputDirectory) {
+			super(outputDirectory);
+		}
+		@Override
+		public void writeEncoded(Boolean features, Double outcome) {}
+		public Class<? extends ClassifierBuilder<String>> getDefaultClassifierBuilderClass() {
+			return null;
+		}
+	}
 
 	@Test
 	public void testGetTypeArgument() throws Exception {
@@ -66,10 +82,13 @@ public class ReflectionUtilTests {
 		type = ReflectionUtil.getTypeArgument(AnnotationHandler.class, "OUTCOME_TYPE", new ExamplePOSAnnotationHandler());
 		Assert.assertEquals(String.class, type);
 
-		type = ReflectionUtil.getTypeArgument(InstanceConsumer.class, "OUTCOME_TYPE", new MaxentDataWriter());
+		type = ReflectionUtil.getTypeArgument(InstanceConsumer.class, "OUTCOME_TYPE", new TestInstanceConsumerOutcomeType());
 		Assert.assertEquals(String.class, type);
 		
-		type = ReflectionUtil.getTypeArgument(DataWriter_ImplBase.class, "INPUTOUTCOME_TYPE", new MaxentDataWriter());
+		type = ReflectionUtil.getTypeArgument(DataWriter_ImplBase.class, "INPUTOUTCOME_TYPE", new TestDataWriterOutcomeType(null));
 		Assert.assertEquals(String.class, type);
+
+		type = ReflectionUtil.getTypeArgument(DataWriter_ImplBase.class, "OUTPUTOUTCOME_TYPE", new TestDataWriterOutcomeType(null));
+		Assert.assertEquals(Double.class, type);
 	}
 }

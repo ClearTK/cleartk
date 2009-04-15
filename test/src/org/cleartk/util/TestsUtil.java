@@ -39,6 +39,7 @@ import org.cleartk.classifier.AnnotationHandler;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.InstanceConsumer;
+import org.cleartk.classifier.SequentialInstanceConsumer;
 import org.cleartk.syntax.treebank.type.TreebankNode;
 import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.TypeSystemDescriptionFactory;
@@ -127,7 +128,7 @@ public class TestsUtil {
 			AnalysisEngine engine, JCas jCas) throws UIMAException {
 		UimaContext context = engine.getUimaContext();
 		AnnotatorConsumer<T> consumer = new AnnotatorConsumer<T>(returnValue);
-		producer.initialize(context);
+		UIMAUtil.initialize(producer, context);
 		producer.process(jCas, consumer);
 		return consumer.instances;
 	}
@@ -136,7 +137,8 @@ public class TestsUtil {
 	 * A simple instance consumer that stores all instances in a public
 	 * attribute. Intended primarily for testing.
 	 */
-	public static class AnnotatorConsumer<T> implements InstanceConsumer<T> {
+	public static class AnnotatorConsumer<T> 
+	implements InstanceConsumer<T>, SequentialInstanceConsumer<T> {
 		public List<Instance<T>> instances;
 
 		public T returnValue;

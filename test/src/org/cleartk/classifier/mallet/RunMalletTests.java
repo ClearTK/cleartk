@@ -67,7 +67,7 @@ public class RunMalletTests {
 	public void runTest1() throws Exception {
 		String outputDirectory = "test/data/mallet/run-test-1"; 
 
-		DataWriterAnnotator<Boolean> dataWriter = new DataWriterAnnotator<Boolean>();
+		DataWriterAnnotator<String> dataWriter = new DataWriterAnnotator<String>();
 		dataWriter.initialize(UimaContextFactory.createUimaContext(
 				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
 				ExamplePOSAnnotationHandler.class.getName(),
@@ -82,7 +82,9 @@ public class RunMalletTests {
 		for(int i=0; i<1000; i++)
 			instances.add(generateInstance());
 			
-		dataWriter.consumeSequence(instances);
+		for (Instance<String> instance: instances) {
+			dataWriter.consume(instance);
+		}
 		dataWriter.collectionProcessComplete();
 		
 		BufferedReader reader = new BufferedReader(new FileReader(outputDirectory+"/training-data.mallet"));
@@ -147,7 +149,7 @@ public class RunMalletTests {
 	@Test
 	public void runTest2() throws Exception {
 		String outputDirectory = "test/data/mallet/run-test-2"; 
-		DataWriterAnnotator<Boolean> dataWriter = new DataWriterAnnotator<Boolean>();
+		DataWriterAnnotator<String> dataWriter = new DataWriterAnnotator<String>();
 		dataWriter.initialize(UimaContextFactory.createUimaContext(
 				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
 				ExamplePOSAnnotationHandler.class.getName(),
@@ -164,7 +166,9 @@ public class RunMalletTests {
 		for(int i=0; i<1000; i++)
 			instances.add(generateInstance());
 			
-		dataWriter.consumeSequence(instances);
+		for (Instance<String> instance: instances) {
+			dataWriter.consume(instance);
+		}
 		dataWriter.collectionProcessComplete();
 
 		BufferedReader reader = new BufferedReader(new FileReader(outputDirectory+"/training-data.mallet"));
