@@ -132,6 +132,7 @@ public class ParametersTest {
 	public void testDescriptorParameters() throws ClassNotFoundException, IllegalArgumentException, IllegalAccessException,
 			JDOMException, IOException {
 		List<String> badParameters = new ArrayList<String>();
+		List<String> badParameterSettings = new ArrayList<String>();
 		Iterable<File> files = Files.getFiles("src", new String[] { ".xml" });
 
 		Namespace ns = Namespace.getNamespace("http://uima.apache.org/resourceSpecifier");
@@ -139,6 +140,13 @@ public class ParametersTest {
 			SAXBuilder builder = new SAXBuilder();
 			Document doc = builder.build(file);
 			Element root = doc.getRootElement();
+			
+			//skip file if it is an aggregate descriptor
+			Element primitive = root.getChild("primitive", ns);
+			if(primitive != null && !Boolean.parseBoolean(primitive.getText())) {
+				continue;
+			}
+
 			Element analysisEngineMetaData = root.getChild("analysisEngineMetaData", ns);
 			if(analysisEngineMetaData == null) {
 				continue;
@@ -153,6 +161,17 @@ public class ParametersTest {
 					}
 				}
 			}
+			
+			Element configurationParameterSettingsParent = analysisEngineMetaData.getChild("configurationParameterSettings", ns);
+			if (configurationParameterSettingsParent != null) {
+				List<?> nameValuePairs = configurationParameterSettingsParent.getChildren("nameValuePair", ns);
+				for (Object nameValuePair : nameValuePairs) {
+					String parameterName = ((Element) nameValuePair).getChildText("name", ns);
+					if (!validateParameterName(parameterName)) {
+						badParameterSettings.add("bad parameter setting '" + parameterName + "' in " + file.getPath());
+					}
+				}
+			}
 		}
 
 		if (badParameters.size() > 0) {
@@ -161,48 +180,23 @@ public class ParametersTest {
 			for (String badParameter : badParameters) {
 				System.err.println(badParameter);
 			}
-			Assert.fail(message);
-		}
-
-	}
-
-	@Test
-	public void testDescriptorParameterSettings() throws ClassNotFoundException, IllegalArgumentException, IllegalAccessException,
-			JDOMException, IOException {
-		List<String> badParameters = new ArrayList<String>();
-		Iterable<File> files = Files.getFiles("src", new String[] { ".xml" });
-
-		Namespace ns = Namespace.getNamespace("http://uima.apache.org/resourceSpecifier");
-		for (File file : files) {
-			SAXBuilder builder = new SAXBuilder();
-			Document doc = builder.build(file);
-			Element root = doc.getRootElement();
-			Element analysisEngineMetaData = root.getChild("analysisEngineMetaData", ns);
-			if(analysisEngineMetaData == null) {
-				continue;
-			}
-			Element configurationParametersParent = analysisEngineMetaData.getChild("configurationParameterSettings", ns);
-			if (configurationParametersParent != null) {
-				List<?> configurationParameters = configurationParametersParent.getChildren("nameValuePair", ns);
-				for (Object configurationParameter : configurationParameters) {
-					String parameterName = ((Element) configurationParameter).getChildText("name", ns);
-					if (!validateParameterName(parameterName)) {
-						badParameters.add("bad parameter setting '" + parameterName + "' in " + file.getPath());
-					}
-				}
-			}
 		}
 
 		if (badParameters.size() > 0) {
-			String message = String.format("%d descriptor parameter settings with bad names. ", badParameters.size());
+			String message = String.format("%d descriptor parameter settings with bad names. ", badParameterSettings.size());
 			System.err.println(message);
-			for (String badParameter : badParameters) {
-				System.err.println(badParameter);
+			for (String badParameterSetting: badParameterSettings) {
+				System.err.println(badParameterSetting);
 			}
-			Assert.fail(message);
+			
 		}
 
+		if(badParameters.size() > 0 || badParameterSettings.size() > 0) {
+			Assert.fail("bad parameter names found in descriptors");
+		}
+			
 	}
+
 
 	private boolean validateParameterName(String parameterName) {
 		if (parameterName.indexOf('.') == -1) {
