@@ -23,7 +23,13 @@
 */
 package org.cleartk.classifier;
 
-import java.util.List;
+import org.apache.uima.UimaContext;
+import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.jcas.JCas;
+import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.util.ReflectionUtil;
+import org.cleartk.util.UIMAUtil;
 
 /**
  * <br>Copyright (c) 2007-2009, Regents of the University of Colorado 
@@ -33,36 +39,19 @@ import java.util.List;
  * 
  * @author Steven Bethard, Philip Ogren
  */
-public interface SequentialInstanceConsumer<OUTCOME_TYPE> {
+public abstract class SequentialInstanceConsumer_ImplBase<OUTCOME_TYPE> extends JCasAnnotator_ImplBase implements SequentialInstanceConsumer<OUTCOME_TYPE>{
 
-	public static final String PARAM_ANNOTATION_HANDLER = "org.cleartk.classifier.SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER";
+	protected SequentialAnnotationHandler<OUTCOME_TYPE> annotationHandler; 
 
-	/**
-	 * Consume a sequence of instances and return classifier outcomes for the instances. If
-	 * the consumer does not assign outcomes to instances (e.g. a training data
-	 * consumer), this method should return null.
-	 * 
-	 * @param instances
-	 *            A sequence of instances to be consumed.
-	 * @return The outcomes for the instances - one for each instance, or null if labels were not assigned. Outcomes
-	 *         should be in the same order as the original instances.
-	 */
-	public abstract List<OUTCOME_TYPE> consumeSequence(List<Instance<OUTCOME_TYPE>> instances);
+	@Override
+	public void initialize(UimaContext context) throws ResourceInitializationException {
+		annotationHandler = ReflectionUtil.uncheckedCast(UIMAUtil.create(
+				context, PARAM_ANNOTATION_HANDLER, SequentialAnnotationHandler.class));
+	}
 
-	/**
-	 * This method provides an annotation handler (or anything else using an
-	 * InstanceConsumer) a way to determine whether or not the instance consumer
-	 * expects the Instances it consumes to have outcomes. For example, if your
-	 * instance consumer corresponds to a training data writer, then it will
-	 * expect outcomes. However, if your instance consumer is
-	 * ClassifierAnnotator, then it will not expect outcomes and therefore your
-	 * annotation handler should not bother worrying about whether the instances
-	 * is passes to the consume method have outcomes or not.
-	 * 
-	 * This method says nothing about whether values are returned from consumSequence.
-	 * 
-	 * @return True if the consumer expects the classification Instances to have
-	 *         outcomes, and false otherwise.
-	 */
-	public abstract boolean expectsOutcomes();
+	@Override
+	public void process(JCas jCas) throws AnalysisEngineProcessException {
+		this.annotationHandler.process(jCas, this);
+	}
+
 }

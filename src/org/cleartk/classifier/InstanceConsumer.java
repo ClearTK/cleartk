@@ -23,14 +23,6 @@
  */
 package org.cleartk.classifier;
 
-import org.apache.uima.UimaContext;
-import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
-import org.apache.uima.jcas.JCas;
-import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.util.ReflectionUtil;
-import org.cleartk.util.UIMAUtil;
-
 /**
  * <br>
  * Copyright (c) 2009, Regents of the University of Colorado <br>
@@ -41,17 +33,9 @@ import org.cleartk.util.UIMAUtil;
  * @author Steven Bethard
  * @author Philip Ogren
  */
-public abstract class InstanceConsumer<OUTCOME_TYPE> extends JCasAnnotator_ImplBase {
+public interface InstanceConsumer<OUTCOME_TYPE> {
 
 	public static final String PARAM_ANNOTATION_HANDLER = "org.cleartk.classifier.InstanceConsumer.PARAM_ANNOTATION_HANDLER";
-
-	protected AnnotationHandler<OUTCOME_TYPE> annotationHandler;
-
-	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		annotationHandler = ReflectionUtil.uncheckedCast(UIMAUtil.create(
-				context, PARAM_ANNOTATION_HANDLER, AnnotationHandler.class));
-	}
 
 	/**
 	 * Consume the instance and return the outcome (classification) assigned to
@@ -63,7 +47,7 @@ public abstract class InstanceConsumer<OUTCOME_TYPE> extends JCasAnnotator_ImplB
 	 * @return The assigned outcome (classification), or null if an outcome was
 	 *         not assigned.
 	 */
-	public abstract OUTCOME_TYPE consume(Instance<OUTCOME_TYPE> instance);
+	public OUTCOME_TYPE consume(Instance<OUTCOME_TYPE> instance);
 
 	/**
 	 * This method provides an annotation handler (or anything else using an
@@ -81,10 +65,4 @@ public abstract class InstanceConsumer<OUTCOME_TYPE> extends JCasAnnotator_ImplB
 	 *         outcomes, and false otherwise.
 	 */
 	public abstract boolean expectsOutcomes();
-
-	@Override
-	public void process(JCas jCas) throws AnalysisEngineProcessException {
-		this.annotationHandler.process(jCas, this);
-	}
-
 }

@@ -63,7 +63,7 @@ import org.cleartk.util.UIMAUtil;
  * @author Steven Bethard
  * @author Philip Ogren
  */
-public class SequentialClassifierAnnotator<OUTCOME_TYPE> extends SequentialInstanceConsumer<OUTCOME_TYPE>{
+public class SequentialClassifierAnnotator<OUTCOME_TYPE> extends SequentialInstanceConsumer_ImplBase<OUTCOME_TYPE>{
 
 	/**
 	 * The path to a jar file used to instantiate the classifier.
@@ -96,7 +96,6 @@ public class SequentialClassifierAnnotator<OUTCOME_TYPE> extends SequentialInsta
 		}
 	}
 
-	@Override
 	public List<OUTCOME_TYPE> consumeSequence(List<Instance<OUTCOME_TYPE>> instances) {
 		List<List<Feature>> instanceFeatures = new ArrayList<List<Feature>>();
 		for (Instance<OUTCOME_TYPE> instance: instances) {
@@ -107,7 +106,6 @@ public class SequentialClassifierAnnotator<OUTCOME_TYPE> extends SequentialInsta
 
 	private SequentialClassifier<OUTCOME_TYPE> classifier;
 
-	@Override
 	public boolean expectsOutcomes() {
 		return false;
 	}

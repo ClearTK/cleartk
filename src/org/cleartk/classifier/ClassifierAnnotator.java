@@ -61,7 +61,7 @@ import org.cleartk.util.UIMAUtil;
  * @author Steven Bethard
  * @author Philip Ogren
  */
-public class ClassifierAnnotator<OUTCOME_TYPE> extends InstanceConsumer<OUTCOME_TYPE> {
+public class ClassifierAnnotator<OUTCOME_TYPE> extends InstanceConsumer_ImplBase<OUTCOME_TYPE> {
 
 	/**
 	 * The path to a jar file used to instantiate the classifier.
@@ -94,14 +94,12 @@ public class ClassifierAnnotator<OUTCOME_TYPE> extends InstanceConsumer<OUTCOME_
 		}
 	}
 
-	@Override
 	public OUTCOME_TYPE consume(Instance<OUTCOME_TYPE> instance) {
-			return this.classifier.classify(instance.getFeatures());
+		return this.classifier.classify(instance.getFeatures());
 	}
 	
 	private Classifier<OUTCOME_TYPE> classifier;
 
-	@Override
 	public boolean expectsOutcomes() {
 		return false;
 	}

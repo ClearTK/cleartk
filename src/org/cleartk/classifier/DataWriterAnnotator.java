@@ -10,7 +10,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
 
-public class DataWriterAnnotator<OUTCOME_TYPE> extends InstanceConsumer<OUTCOME_TYPE> {
+public class DataWriterAnnotator<OUTCOME_TYPE> extends InstanceConsumer_ImplBase<OUTCOME_TYPE> {
 
 	/**
 	 * The name of the directory where the training data will be written.
@@ -30,8 +30,12 @@ public class DataWriterAnnotator<OUTCOME_TYPE> extends InstanceConsumer<OUTCOME_
 		// Instantiate the data writer
 		DataWriterFactory dataWriterFactory = UIMAUtil.create(
 				context, PARAM_DATAWRITER_FACTORY_CLASS, DataWriterFactory.class);
-		this.dataWriter = ReflectionUtil.uncheckedCast(
-				dataWriterFactory.getDataWriter(outputDirectory));
+		try {
+			this.dataWriter = ReflectionUtil.uncheckedCast(
+					dataWriterFactory.createDataWriter(outputDirectory));
+		} catch (IOException e) {
+			throw new ResourceInitializationException(e);
+		}
 		UIMAUtil.initialize(this.dataWriter, context);
 	}
 
