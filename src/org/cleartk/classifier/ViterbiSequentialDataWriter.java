@@ -23,20 +23,9 @@
 */
 package org.cleartk.classifier;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 
-import org.cleartk.classifier.encoder.features.FeaturesEncoder;
-import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
-import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
-import org.cleartk.util.ReflectionUtil;
+import org.cleartk.classifier.feature.extractor.outcome.OutcomeFeatureExtractor;
 
 public abstract class ViterbiSequentialDataWriter<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE, FEATURES_TYPE> implements DataWriter<INPUTOUTCOME_TYPE> {
 
