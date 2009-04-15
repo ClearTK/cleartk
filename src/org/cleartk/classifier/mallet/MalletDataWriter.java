@@ -58,13 +58,6 @@ public class MalletDataWriter extends DataWriter_ImplBase<String,String,List<Nam
 		this.featuresEncoder.allowNewFeatures(true);
 	}
 
-	public void write(List<NameNumber> features, String outcome) {
-		for (NameNumber nameNumber : features) {
-			trainingDataWriter.print(nameNumber.name + ":" + nameNumber.number+" ");
-		}
-		this.trainingDataWriter.print(outcome);
-		this.trainingDataWriter.println();
-	}
 
 	@Override
 	public void finish() throws IOException {
@@ -80,8 +73,11 @@ public class MalletDataWriter extends DataWriter_ImplBase<String,String,List<Nam
 
 	@Override
 	public void writeEncoded(List<NameNumber> features, String outcome) {
-		// TODO Auto-generated method stub
-		
+		for (NameNumber nameNumber : features) {
+			trainingDataWriter.print(nameNumber.name + ":" + nameNumber.number+" ");
+		}
+		this.trainingDataWriter.print(outcome);
+		this.trainingDataWriter.println();
 	}
 
 	public Class<? extends ClassifierBuilder<String>> getDefaultClassifierBuilderClass() {
