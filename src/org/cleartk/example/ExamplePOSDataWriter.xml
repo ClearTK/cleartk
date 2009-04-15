@@ -86,7 +86,7 @@ POSSIBILITY OF SUCH DAMAGE.</description>
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>org.cleartk.classifier.DataWriter_ImplBase.PARAM_OUTCOME_FEATURE_EXTRACTOR</name>
+        <name>org.cleartk.classifier.ViterbiSequentialDataWriter.PARAM_OUTCOME_FEATURE_EXTRACTOR</name>
         <value>
           <array>
             <string>org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor</string>

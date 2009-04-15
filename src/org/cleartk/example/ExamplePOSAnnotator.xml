@@ -38,7 +38,7 @@ POSSIBILITY OF SUCH DAMAGE.
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>org.cleartk.classifier.ClassifierAnnotator.PARAM_CLASSIFIER_JAR</name>
+        <name>org.cleartk.classifier.SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
@@ -52,7 +52,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>org.cleartk.classifier.ClassifierAnnotator.PARAM_CLASSIFIER_JAR</name>
+        <name>org.cleartk.classifier.SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR</name>
         <value>
           <string>example/model/model.jar</string>
         </value>
