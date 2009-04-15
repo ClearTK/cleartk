@@ -29,7 +29,7 @@ POSSIBILITY OF SUCH DAMAGE.</description>
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>CoNLL2005DataFile</name>
+        <name>org.cleartk.srl.conll2005.Conll2005GoldReader.PARAM_CONLL_2005_DATA_FILE</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>

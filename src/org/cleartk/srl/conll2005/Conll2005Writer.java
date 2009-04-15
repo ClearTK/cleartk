@@ -49,7 +49,7 @@ import org.cleartk.util.UIMAUtil;
  */
 public class Conll2005Writer extends JCasAnnotator_ImplBase {
 	
-	public static final String PARAM_OUTPUT_FILE = "OutputFile";
+	public static final String PARAM_OUTPUT_FILE = "org.cleartk.srl.conll2005.Conll2005Writer.PARAM_OUTPUT_FILE";
 
 	PrintWriter output;
 

@@ -49,7 +49,7 @@ import org.cleartk.util.ViewURIUtil;
  */
 public class Conll2005GoldReader extends CollectionReader_ImplBase {
 
-	public static final String PARAM_CONLL_2005_DATA_FILE = "CoNLL2005DataFile";
+	public static final String PARAM_CONLL_2005_DATA_FILE = "org.cleartk.srl.conll2005.Conll2005GoldReader.PARAM_CONLL_2005_DATA_FILE";
 										  
 	BufferedReader reader;
 	
