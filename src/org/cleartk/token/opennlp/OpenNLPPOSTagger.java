@@ -54,9 +54,9 @@ import org.cleartk.type.Token;
  */
 public class OpenNLPPOSTagger extends JCasAnnotator_ImplBase
 {
-	public static final String PARAM_POSTAG_MODEL_FILE = "PosModelFile";
-	public static final String PARAM_CASE_SENSITIVE = "PosDictionaryCaseSensitive";
-	public static final String PARAM_POSTAG_DICTIONARY_FILE = "PosDictionaryFile";
+	public static final String PARAM_POSTAG_MODEL_FILE = "org.cleartk.token.opennlp.OpenNLPPOSTagger.PARAM_POSTAG_MODEL_FILE";
+	public static final String PARAM_CASE_SENSITIVE = "org.cleartk.token.opennlp.OpenNLPPOSTagger.PARAM_CASE_SENSITIVE";
+	public static final String PARAM_POSTAG_DICTIONARY_FILE = "org.cleartk.token.opennlp.OpenNLPPOSTagger.PARAM_POSTAG_DICTIONARY_FILE";
 
 	protected POSTagger posTagger;
 	protected long processTime = 0;

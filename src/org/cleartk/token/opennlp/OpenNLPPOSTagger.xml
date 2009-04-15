@@ -32,19 +32,19 @@ POSSIBILITY OF SUCH DAMAGE.
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>PosDictionaryCaseSensitive</name>
+        <name>org.cleartk.token.opennlp.OpenNLPPOSTagger.PARAM_CASE_SENSITIVE</name>
         <type>Boolean</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>PosDictionaryFile</name>
+        <name>org.cleartk.token.opennlp.OpenNLPPOSTagger.PARAM_POSTAG_DICTIONARY_FILE</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>PosModelFile</name>
+        <name>org.cleartk.token.opennlp.OpenNLPPOSTagger.PARAM_POSTAG_MODEL_FILE</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
@@ -52,19 +52,19 @@ POSSIBILITY OF SUCH DAMAGE.
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>PosDictionaryCaseSensitive</name>
+        <name>org.cleartk.token.opennlp.OpenNLPPOSTagger.PARAM_CASE_SENSITIVE</name>
         <value>
           <boolean>true</boolean>
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>PosDictionaryFile</name>
+        <name>org.cleartk.token.opennlp.OpenNLPPOSTagger.PARAM_POSTAG_DICTIONARY_FILE</name>
         <value>
           <string>resources/models/OpenNLP.TagDict.txt</string>
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>PosModelFile</name>
+        <name>org.cleartk.token.opennlp.OpenNLPPOSTagger.PARAM_POSTAG_MODEL_FILE</name>
         <value>
           <string>resources/models/OpenNLP.POSTags.English.bin.gz</string>
         </value>
