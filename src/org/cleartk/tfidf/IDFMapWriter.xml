@@ -30,13 +30,13 @@ POSSIBILITY OF SUCH DAMAGE.</description>
 <vendor></vendor>
 <configurationParameters>
 <configurationParameter>
-<name>AnnotationHandler</name>
+<name>org.cleartk.classifier.InstanceConsumer.PARAM_ANNOTATION_HANDLER</name>
 <type>String</type>
 <multiValued>false</multiValued>
 <mandatory>true</mandatory>
 </configurationParameter>
 <configurationParameter>
-<name>IDFMapFile</name>
+<name>org.cleartk.tfidf.IDFMapWriter.PARAM_IDFMAP_FILE</name>
 <type>String</type>
 <multiValued>false</multiValued>
 <mandatory>true</mandatory>
