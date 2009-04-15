@@ -40,7 +40,7 @@ import org.xml.sax.SAXException;
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
  * <br>All rights reserved.
 */
-public class XReader extends PlainTextCollectionReader {
+public class XReader extends FilesCollectionReader {
 
 	/**
 	 * "org.cleartk.util.XReader.PARAM_XML_SCHEME" is a single, optional, string parameter that specifies the

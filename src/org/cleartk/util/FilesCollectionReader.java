@@ -57,7 +57,7 @@ import org.cleartk.util.io.Files;
  * @author Steven Bethard
  * @author Philip Ogren
  */
-public class PlainTextCollectionReader extends CollectionReader_ImplBase {
+public class FilesCollectionReader extends CollectionReader_ImplBase {
 
 	/**
 	 * "org.cleartk.util.PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY" is a
@@ -137,19 +137,19 @@ public class PlainTextCollectionReader extends CollectionReader_ImplBase {
 
 		// get the name of the CAS view to be added
 		this.viewName = (String) UIMAUtil.getDefaultingConfigParameterValue(getUimaContext(),
-				PlainTextCollectionReader.PARAM_VIEW_NAME, null);
+				FilesCollectionReader.PARAM_VIEW_NAME, null);
 
 		// get the language
 		this.language = (String) UIMAUtil.getDefaultingConfigParameterValue(getUimaContext(),
-				PlainTextCollectionReader.PARAM_LANGUAGE, null);
+				FilesCollectionReader.PARAM_LANGUAGE, null);
 
 		// get the encoding
 		this.encoding = (String) UIMAUtil.getDefaultingConfigParameterValue(getUimaContext(),
-				PlainTextCollectionReader.PARAM_ENCODING, null);
+				FilesCollectionReader.PARAM_ENCODING, null);
 
 		// get the input directory
 		String fileName = (String) UIMAUtil.getRequiredConfigParameterValue(this.getUimaContext(),
-				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY);
+				FilesCollectionReader.PARAM_FILE_OR_DIRECTORY);
 
 		this.rootFile = new File(fileName);
 

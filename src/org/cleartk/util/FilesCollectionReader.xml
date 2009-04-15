@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <collectionReaderDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
-  <implementationName>org.cleartk.util.PlainTextCollectionReader</implementationName>
+  <implementationName>org.cleartk.util.FilesCollectionReader</implementationName>
   <processingResourceMetaData>
-    <name>PlainTextCollectionReader</name>
+    <name>FilesCollectionReader</name>
     <description>Copyright (c) 2009, Regents of the University of Colorado 
 All rights reserved.
 
@@ -29,47 +29,47 @@ POSSIBILITY OF SUCH DAMAGE.</description>
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>org.cleartk.util.PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY</name>
+        <name>org.cleartk.util.FilesCollectionReader.PARAM_FILE_OR_DIRECTORY</name>
         <description>Root directory containing files to be read in.</description>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>org.cleartk.util.PlainTextCollectionReader.PARAM_VIEW_NAME</name>
+        <name>org.cleartk.util.FilesCollectionReader.PARAM_VIEW_NAME</name>
         <description>Name of the CAS view to be created for the document texts.</description>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>org.cleartk.util.PlainTextCollectionReader.PARAM_LANGUAGE</name>
+        <name>org.cleartk.util.FilesCollectionReader.PARAM_LANGUAGE</name>
         <description>Language of the files being read in.</description>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>org.cleartk.util.PlainTextCollectionReader.PARAM_ENCODING</name>
+        <name>org.cleartk.util.FilesCollectionReader.PARAM_ENCODING</name>
         <description>Encoding of the files being read in.</description>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>org.cleartk.util.PlainTextCollectionReader.PARAM_SUFFIXES</name>
+        <name>org.cleartk.util.FilesCollectionReader.PARAM_SUFFIXES</name>
         <type>String</type>
         <multiValued>true</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>org.cleartk.util.PlainTextCollectionReader.PARAM_FILE_NAMES_FILES</name>
+        <name>org.cleartk.util.FilesCollectionReader.PARAM_FILE_NAMES_FILES</name>
         <type>String</type>
         <multiValued>true</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>org.cleartk.util.PlainTextCollectionReader.PARAM_FILE_NAMES</name>
+        <name>org.cleartk.util.FilesCollectionReader.PARAM_FILE_NAMES</name>
         <type>String</type>
         <multiValued>true</multiValued>
         <mandatory>false</mandatory>
