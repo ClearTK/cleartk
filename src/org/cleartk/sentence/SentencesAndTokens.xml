@@ -44,7 +44,7 @@ POSSIBILITY OF SUCH DAMAGE.
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
         <overrides>
-          <parameter>SentenceSegmenter/SentenceModelFile</parameter>
+          <parameter>SentenceSegmenter/org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter.SENTENCE_MODEL_FILE_PARAM</parameter>
         </overrides>
       </configurationParameter>
       <configurationParameter>
@@ -53,7 +53,7 @@ POSSIBILITY OF SUCH DAMAGE.
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
         <overrides>
-          <parameter>TokenAnnotator/TokenType</parameter>
+          <parameter>TokenAnnotator/org.cleartk.token.TokenAnnotator.PARAM_TOKEN_TYPE</parameter>
         </overrides>
       </configurationParameter>
       <configurationParameter>
@@ -62,7 +62,7 @@ POSSIBILITY OF SUCH DAMAGE.
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
         <overrides>
-          <parameter>TokenAnnotator/Tokenizer</parameter>
+          <parameter>TokenAnnotator/org.cleartk.token.TokenAnnotator.PARAM_TOKENIZER</parameter>
         </overrides>
       </configurationParameter>
     </configurationParameters>

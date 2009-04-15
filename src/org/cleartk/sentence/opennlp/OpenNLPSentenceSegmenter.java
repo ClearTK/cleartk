@@ -61,7 +61,7 @@ import org.cleartk.type.Sentence;
 
 public class OpenNLPSentenceSegmenter extends JCasAnnotator_ImplBase
 { 
-	public static final String SENTENCE_MODEL_FILE_PARAM = "SentenceModelFile";
+	public static final String SENTENCE_MODEL_FILE_PARAM = "org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter.SENTENCE_MODEL_FILE_PARAM";
 	SentenceDetector sentenceDetector;
 	
 //	public static final String newlineRegex = "(?:\\n|\\r\\n|\\r|\\u0085|\\u2028|\\u2029)";

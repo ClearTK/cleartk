@@ -32,7 +32,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>SentenceModelFile</name>
+        <name>org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter.SENTENCE_MODEL_FILE_PARAM</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
@@ -40,7 +40,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>SentenceModelFile</name>
+        <name>org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter.SENTENCE_MODEL_FILE_PARAM</name>
         <value>
           <string>resources/models/OpenNLP.Sentence.English.bin.gz</string>
         </value>
