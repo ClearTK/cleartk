@@ -59,7 +59,7 @@ import org.jdom.input.SAXBuilder;
  */
 public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
 	
-	public static final String PARAM_LOAD_TLINKS = "LoadTlinks";
+	public static final String PARAM_LOAD_TLINKS = "org.cleartk.corpus.timeml.TimeMLGoldAnnotator.PARAM_LOAD_TLINKS";
 	
 	private boolean loadTLINKs;
 

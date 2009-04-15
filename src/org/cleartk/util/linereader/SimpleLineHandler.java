@@ -43,11 +43,11 @@ import org.cleartk.util.io.Files;
 public class SimpleLineHandler implements LineHandler {
 
 	/**
-	 * "Delimiter" is a single, optional, string parameter that specifies a
+	 * "org.cleartk.util.linereader.SimpleLineHandler.PARAM_DELIMITER" is a single, optional, string parameter that specifies a
 	 * string that delimits the id from the text. If no value is given, then a
 	 * vertical bar '|' is expected.
 	 */
-	public static final String PARAM_DELIMITER = "Delimiter";
+	public static final String PARAM_DELIMITER = "org.cleartk.util.linereader.SimpleLineHandler.PARAM_DELIMITER";
 
 	private String delimiter;
 

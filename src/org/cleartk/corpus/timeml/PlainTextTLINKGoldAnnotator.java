@@ -57,7 +57,7 @@ import org.cleartk.util.UIMAUtil;
  */
 public class PlainTextTLINKGoldAnnotator extends JCasAnnotator_ImplBase {
 	
-	public static final String PARAM_TLINK_FILE_URL = "TlinkFileUrl";
+	public static final String PARAM_TLINK_FILE_URL = "org.cleartk.corpus.timeml.PlainTextTLINKGoldAnnotator.PARAM_TLINK_FILE_URL";
 	
 	private Map<String, List<TLINK>> fileTLINKs;
 	
