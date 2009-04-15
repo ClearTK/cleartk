@@ -63,12 +63,12 @@ import org.cleartk.util.UIMAUtil;
 
 public class OpenNLPTreebankParser extends JCasAnnotator_ImplBase {
 	
-	public static final String PARAM_BUILD_MODEL_FILE = "buildModelFile";
-	public static final String PARAM_CHECK_MODEL_FILE = "checkModelFile";
-	public static final String PARAM_CHUNK_MODEL_FILE = "chunkModelFile";
-	public static final String PARAM_HEAD_RULES_FILE = "headRulesFile";
-	public static final String PARAM_BEAM_SIZE = "beamSize";
-	public static final String PARAM_ADVANCE_PERCENTAGE = "advancePercentage";
+	public static final String PARAM_BUILD_MODEL_FILE = "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_BUILD_MODEL_FILE";
+	public static final String PARAM_CHECK_MODEL_FILE = "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_CHECK_MODEL_FILE";
+	public static final String PARAM_CHUNK_MODEL_FILE = "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_CHUNK_MODEL_FILE";
+	public static final String PARAM_HEAD_RULES_FILE = "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_HEAD_RULES_FILE";
+	public static final String PARAM_BEAM_SIZE = "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_BEAM_SIZE";
+	public static final String PARAM_ADVANCE_PERCENTAGE = "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_ADVANCE_PERCENTAGE";
 
 	protected Parser parser;
 	protected OpenNLPDummyParserTagger tagger;

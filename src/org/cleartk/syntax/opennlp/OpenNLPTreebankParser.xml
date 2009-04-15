@@ -32,37 +32,37 @@ POSSIBILITY OF SUCH DAMAGE.
     <vendor/>
     <configurationParameters searchStrategy="language_fallback">
       <configurationParameter>
-        <name>buildModelFile</name>
+        <name>org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_BUILD_MODEL_FILE</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>checkModelFile</name>
+        <name>org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_CHECK_MODEL_FILE</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>chunkModelFile</name>
+        <name>org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_CHUNK_MODEL_FILE</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>headRulesFile</name>
+        <name>org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_HEAD_RULES_FILE</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>beamSize</name>
+        <name>org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_BEAM_SIZE</name>
         <type>Integer</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>advancePercentage</name>
+        <name>org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_ADVANCE_PERCENTAGE</name>
         <type>Float</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
@@ -70,25 +70,25 @@ POSSIBILITY OF SUCH DAMAGE.
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>buildModelFile</name>
+        <name>org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_BUILD_MODEL_FILE</name>
         <value>
           <string>resources/models/OpenNLP.Parser.English.Build.bin.gz</string>
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>chunkModelFile</name>
+        <name>org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_CHUNK_MODEL_FILE</name>
         <value>
           <string>resources/models/OpenNLP.Chunker.English.bin.gz</string>
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>headRulesFile</name>
+        <name>org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_HEAD_RULES_FILE</name>
         <value>
           <string>resources/models/OpenNLP.HeadRules.txt</string>
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>checkModelFile</name>
+        <name>org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_CHECK_MODEL_FILE</name>
         <value>
           <string>resources/models/OpenNLP.Parser.English.Check.bin.gz</string>
         </value>
