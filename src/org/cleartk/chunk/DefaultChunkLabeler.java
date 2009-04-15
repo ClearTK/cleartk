@@ -41,7 +41,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 public class DefaultChunkLabeler extends ChunkLabeler_ImplBase {
 
 	/**
-	 * "ChunkLabelFeature" is a single, optional, string parameter that names
+	 * "org.cleartk.chunk.DefaultChunkLabeler.PARAM_CHUNK_LABEL_FEATURE" is a single, optional, string parameter that names
 	 * the feature of the type system chunk type that provides a label for each
 	 * chunk. The feature is queried and the value of the feature is used as the
 	 * label for the chunk. If this parameter has no value, then the name of the
@@ -54,7 +54,7 @@ public class DefaultChunkLabeler extends ChunkLabeler_ImplBase {
 	 * <code>org.cleartk.type.Chunk</code> and no value is given for
 	 * this parameter, then the label will always be <code>Chunk</code>.
 	 */
-	public static final String PARAM_CHUNK_LABEL_FEATURE = "ChunkLabelFeature";
+	public static final String PARAM_CHUNK_LABEL_FEATURE = "org.cleartk.chunk.DefaultChunkLabeler.PARAM_CHUNK_LABEL_FEATURE";
 
 	private String chunkLabelFeatureName;
 

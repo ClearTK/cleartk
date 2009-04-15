@@ -49,14 +49,12 @@ import org.cleartk.util.UIMAUtil;
 public abstract class ChunkLabeler_ImplBase implements ChunkLabeler {
 
 	/**
-	 * "ChunkAnnotationClass" is a single, required, string parameter that names
+	 * "org.cleartk.chunk.ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS" is a single, required, string parameter that names
 	 * the class of the type system chunk annotation type. An example value
 	 * might be something like: <br>
 	 * <code>org.cleartk.type.ne.NamedEntityMention</code>
 	 */
-	public static final String PARAM_CHUNK_ANNOTATION_CLASS = "ChunkAnnotationClass";
-
-	public static final String PARAM_LABELED_ANNOTATION_CLASS = ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS;
+	public static final String PARAM_CHUNK_ANNOTATION_CLASS = "org.cleartk.chunk.ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS";
 
 	public static final String BEGIN_PREFIX = "B";
 
@@ -86,7 +84,7 @@ public abstract class ChunkLabeler_ImplBase implements ChunkLabeler {
 			chunkAnnotationClass = cls.asSubclass(Annotation.class);
 
 			String labeledAnnotationClassName = (String) context
-					.getConfigParameterValue(PARAM_LABELED_ANNOTATION_CLASS);
+					.getConfigParameterValue(ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS);
 			cls = Class.forName(labeledAnnotationClassName);
 			labeledAnnotationClass = cls.asSubclass(Annotation.class);
 

@@ -48,38 +48,38 @@ import org.cleartk.util.UIMAUtil;
 public class ChunkerHandler implements SequentialAnnotationHandler<String> {
 
 	/**
-	 * "LabeledAnnotationClass" is a single, required, string parameter that
+	 * "org.cleartk.chunk.ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS" is a single, required, string parameter that
 	 * names the class of the type system type used to associate B, I, and O (for example)
 	 * labels with. An example value might be: <br>
 	 * <code>org.cleartk.type.Token</code>
 	 */
-	public static final String PARAM_LABELED_ANNOTATION_CLASS = "LabeledAnnotationClass";
+	public static final String PARAM_LABELED_ANNOTATION_CLASS = "org.cleartk.chunk.ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS";
 
 	/**
-	 * "SequenceClass" is a single, required, string parameter that names the
+	 * "org.cleartk.chunk.ChunkerHandler.PARAM_SEQUENCE_CLASS" is a single, required, string parameter that names the
 	 * class of the type system type that specifies a 'sequence' of labels. An
 	 * example might be something like: <br>
 	 * <code>org.cleartk.type.Sentence</code>
 	 */
-	public static final String PARAM_SEQUENCE_CLASS = "SequenceClass";
+	public static final String PARAM_SEQUENCE_CLASS = "org.cleartk.chunk.ChunkerHandler.PARAM_SEQUENCE_CLASS";
 
 	/**
-	 * "ChunkLabelerClass" is a single, required, string parameter that
+	 * "org.cleartk.chunk.ChunkerHandler.PARAM_CHUNK_LABELER_CLASS" is a single, required, string parameter that
 	 * provides the class name of a class that extends
 	 * org.cleartk.chunk.ChunkLabeler.
 	 * 
 	 * @see ChunkLabeler
 	 */
-	public static final String PARAM_CHUNK_LABELER_CLASS = "ChunkLabelerClass";
+	public static final String PARAM_CHUNK_LABELER_CLASS = "org.cleartk.chunk.ChunkerHandler.PARAM_CHUNK_LABELER_CLASS";
 
 	/**
-	 * "ChunkerFeatureExtractorClass" is a single, required, string parameter that
+	 * "org.cleartk.chunk.ChunkerHandler.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS" is a single, required, string parameter that
 	 * provides the class name of a class that extends
 	 * org.cleartk.chunk.ChunkFeatureExtractor.
 	 * 
 	 * @see ChunkerFeatureExtractor
 	 */
-	public static final String PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS = "ChunkerFeatureExtractorClass";
+	public static final String PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS = "org.cleartk.chunk.ChunkerHandler.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS";
 
 	protected Class<? extends Annotation> labeledAnnotationClass;
 
