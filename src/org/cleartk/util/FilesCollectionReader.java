@@ -60,50 +60,50 @@ import org.cleartk.util.io.Files;
 public class FilesCollectionReader extends CollectionReader_ImplBase {
 
 	/**
-	 * "org.cleartk.util.PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY" is a
+	 * "org.cleartk.util.FilesCollectionReader.PARAM_FILE_OR_DIRECTORY" is a
 	 * single, required, string parameter that takes either the name of a single
 	 * file or the root directory containing all the files to be processed.
 	 */
-	public static final String PARAM_FILE_OR_DIRECTORY = "org.cleartk.util.PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY";
+	public static final String PARAM_FILE_OR_DIRECTORY = "org.cleartk.util.FilesCollectionReader.PARAM_FILE_OR_DIRECTORY";
 
 	/**
-	 * "org.cleartk.util.PlainTextCollectionReader.PARAM_VIEW_NAME" is a single,
+	 * "org.cleartk.util.FilesCollectionReader.PARAM_VIEW_NAME" is a single,
 	 * optional, string parameter that takes the the name that should be given
 	 * to the JCas view associated with the document texts.
 	 * 
 	 * @see UIMAUtil#createJCasView(CAS, String)
 	 */
-	public static final String PARAM_VIEW_NAME = "org.cleartk.util.PlainTextCollectionReader.PARAM_VIEW_NAME";
+	public static final String PARAM_VIEW_NAME = "org.cleartk.util.FilesCollectionReader.PARAM_VIEW_NAME";
 
 	/**
-	 * "org.cleartk.util.PlainTextCollectionReader.PARAM_LANGUAGE" is a single,
+	 * "org.cleartk.util.FilesCollectionReader.PARAM_LANGUAGE" is a single,
 	 * optional, string parameter that takes the language code corresponding to
 	 * the language of the documents being examined. The value of this parameter
 	 * is simply passed on to JCas.setDocumentLanguage(String).
 	 * 
 	 * @see JCas#setDocumentLanguage(String)
 	 */
-	public static final String PARAM_LANGUAGE = "org.cleartk.util.PlainTextCollectionReader.PARAM_LANGUAGE";
+	public static final String PARAM_LANGUAGE = "org.cleartk.util.FilesCollectionReader.PARAM_LANGUAGE";
 
 	/**
-	 * "org.cleartk.util.PlainTextCollectionReader.PARAM_ENCODING" is a single,
+	 * "org.cleartk.util.FilesCollectionReader.PARAM_ENCODING" is a single,
 	 * optional, string parameter that takes the encoding of the text files
 	 * (e.g. "UTF-8").
 	 * 
 	 * @see Charset for a list of encoding names.
 	 */
-	public static final String PARAM_ENCODING = "org.cleartk.util.PlainTextCollectionReader.PARAM_ENCODING";
+	public static final String PARAM_ENCODING = "org.cleartk.util.FilesCollectionReader.PARAM_ENCODING";
 
 	/**
-	 * "org.cleartk.util.PlainTextCollectionReader.PARAM_SUFFIXES" is a
+	 * "org.cleartk.util.FilesCollectionReader.PARAM_SUFFIXES" is a
 	 * multiple, optional, string parameter that takes suffixes (e.g. .txt) of
 	 * the files that should be read in. This parameter can only be set if there
 	 * is no value for PARAM_FILE_NAMES_FILES or PARAM_FILE_NAMES.
 	 */
-	public static final String PARAM_SUFFIXES = "org.cleartk.util.PlainTextCollectionReader.PARAM_SUFFIXES";
+	public static final String PARAM_SUFFIXES = "org.cleartk.util.FilesCollectionReader.PARAM_SUFFIXES";
 
 	/**
-	 * "org.cleartk.util.PlainTextCollectionReader.PARAM_FILE_NAMES_FILES" is a
+	 * "org.cleartk.util.FilesCollectionReader.PARAM_FILE_NAMES_FILES" is a
 	 * multiple, optional, string parameter that names files which contain lists
 	 * of file names. For example, if the value "mydata/mylist.txt" is provided,
 	 * then the file "mylist.txt" should contain a line delimited list of file
@@ -116,10 +116,10 @@ public class FilesCollectionReader extends CollectionReader_ImplBase {
 	 * This parameter can only be set if there is no value for PARAM_SUFFIXES or
 	 * PARAM_FILE_NAMES.
 	 */
-	public static final String PARAM_FILE_NAMES_FILES = "org.cleartk.util.PlainTextCollectionReader.PARAM_FILE_NAMES_FILES";
+	public static final String PARAM_FILE_NAMES_FILES = "org.cleartk.util.FilesCollectionReader.PARAM_FILE_NAMES_FILES";
 
 	/**
-	 * "org.cleartk.util.PlainTextCollectionReader.PARAM_FILE_NAMES" is a
+	 * "org.cleartk.util.FilesCollectionReader.PARAM_FILE_NAMES" is a
 	 * multiple, optional, string parameter that provides a list of file names
 	 * that should be read in. The directory of the file names is determined by
 	 * PARAM_FILE_OR_DIRECTORY and the files that are processed result from
@@ -129,7 +129,7 @@ public class FilesCollectionReader extends CollectionReader_ImplBase {
 	 * This parameter can only be set if there is no value for PARAM_SUFFIXES or
 	 * PARAM_FILE_NAMES_FILES.
 	 */
-	public static final String PARAM_FILE_NAMES = "org.cleartk.util.PlainTextCollectionReader.PARAM_FILE_NAMES";
+	public static final String PARAM_FILE_NAMES = "org.cleartk.util.FilesCollectionReader.PARAM_FILE_NAMES";
 
 	@Override
 	public void initialize() throws ResourceInitializationException {
