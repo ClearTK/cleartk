@@ -60,8 +60,8 @@ public class DefaultChunkLabelerTests {
 		  AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				    EmptyAnnotator.class,
 				    TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-		  			"ChunkAnnotationClass", "org.cleartk.type.Token",
-		  			"LabeledAnnotationClass", "org.cleartk.token.chunk.type.Subtoken"
+				    ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS, "org.cleartk.type.Token",
+				    ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS, "org.cleartk.token.chunk.type.Subtoken"
 		  			);
 		  
 		  DefaultChunkLabeler defaultChunkLabeler = new DefaultChunkLabeler();
@@ -142,8 +142,8 @@ public class DefaultChunkLabelerTests {
 		  AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				    EmptyAnnotator.class,
 				    TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-		  			"ChunkAnnotationClass", "org.cleartk.type.Token",
-		  			"LabeledAnnotationClass", "org.cleartk.token.chunk.type.Subtoken"
+				    ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS, "org.cleartk.type.Token",
+				    ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS, "org.cleartk.token.chunk.type.Subtoken"
 		  			);
 		  
 		  DefaultChunkLabeler defaultChunkLabeler = new DefaultChunkLabeler();
@@ -205,9 +205,9 @@ public class DefaultChunkLabelerTests {
 		  AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				    EmptyAnnotator.class,
 				    TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-		  			"ChunkAnnotationClass", "org.cleartk.ne.type.NamedEntityMention",
-		  			"ChunkLabelFeature", "mentionType",
-		  			"LabeledAnnotationClass", "org.cleartk.type.Token"
+				    ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS, "org.cleartk.ne.type.NamedEntityMention",
+				    DefaultChunkLabeler.PARAM_CHUNK_LABEL_FEATURE, "mentionType",
+		  			 ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS, "org.cleartk.type.Token"
 		  			);
 		  
 		  DefaultChunkLabeler defaultChunkLabeler = new DefaultChunkLabeler();
