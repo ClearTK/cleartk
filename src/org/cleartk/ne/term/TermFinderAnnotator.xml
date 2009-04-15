@@ -32,7 +32,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>TermListListing</name>
+        <name>org.cleartk.ne.term.TermFinderAnnotator.PARAM_TERM_LIST_LISTING</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
@@ -44,19 +44,19 @@ POSSIBILITY OF SUCH DAMAGE.
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>SentenceClass</name>
+        <name>org.cleartk.ne.term.TermFinderAnnotator.PARAM_SENTENCE_CLASS</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>TermMatchAnnotationCreator</name>
+        <name>org.cleartk.ne.term.TermFinderAnnotator.PARAM_TERM_MATCH_ANNOTATION_CREATOR</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>TermMatchAnnotationClass</name>
+        <name>org.cleartk.ne.term.TermFinderAnnotator.PARAM_TERM_MATCH_ANNOTATION_CLASS</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
@@ -64,19 +64,19 @@ POSSIBILITY OF SUCH DAMAGE.
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>TokenClass</name>
+        <name>org.cleartk.ne.term.TermFinderAnnotator.PARAM_TOKEN_CLASS</name>
         <value>
           <string>org.cleartk.type.Token</string>
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>SentenceClass</name>
+        <name>org.cleartk.ne.term.TermFinderAnnotator.PARAM_SENTENCE_CLASS</name>
         <value>
           <string>org.cleartk.type.Sentence</string>
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>TermMatchAnnotationClass</name>
+        <name>org.cleartk.ne.term.TermFinderAnnotator.PARAM_TERM_MATCH_ANNOTATION_CLASS</name>
         <value>
           <string>org.cleartk.type.Chunk</string>
         </value>

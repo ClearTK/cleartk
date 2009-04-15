@@ -71,7 +71,7 @@ public class TermFinderAnnotator extends JCasAnnotator_ImplBase {
 	 * should be tab delimited. Also, see data/lexicons/README
 	 */
 
-	public static final String PARAM_TERM_LIST_LISTING = "TermListListing";
+	public static final String PARAM_TERM_LIST_LISTING = "org.cleartk.ne.term.TermFinderAnnotator.PARAM_TERM_LIST_LISTING";
 
 	/**
 	 * "SentenceClass" is a single, optional, string parameter that names the
@@ -81,7 +81,7 @@ public class TermFinderAnnotator extends JCasAnnotator_ImplBase {
 	 * be searched. An example value might be: <br>
 	 * <code>org.cleartk.type.Sentence</code>
 	 */
-	public static final String PARAM_SENTENCE_CLASS = "SentenceClass";
+	public static final String PARAM_SENTENCE_CLASS = "org.cleartk.ne.term.TermFinderAnnotator.PARAM_SENTENCE_CLASS";
 
 	/**
 	 * "TokenClass" is a single, required, string parameter that names the class
@@ -89,7 +89,7 @@ public class TermFinderAnnotator extends JCasAnnotator_ImplBase {
 	 * would be: <br>
 	 * <code>org.cleartk.type.Token</code>
 	 */
-	public static final String PARAM_TOKEN_CLASS = "TokenClass";
+	public static final String PARAM_TOKEN_CLASS = "org.cleartk.ne.term.TermFinderAnnotator.PARAM_TOKEN_CLASS";
 
 	/**
 	 * "TermMatchAnnotationCreator" is a single, optional, string parameter that
@@ -98,7 +98,7 @@ public class TermFinderAnnotator extends JCasAnnotator_ImplBase {
 	 * not given a value, then the parameter PARAM_TERM_MATCH_ANNOTATION_CLASS
 	 * must be given a value.
 	 */
-	public static final String PARAM_TERM_MATCH_ANNOTATION_CREATOR = "TermMatchAnnotationCreator";
+	public static final String PARAM_TERM_MATCH_ANNOTATION_CREATOR = "org.cleartk.ne.term.TermFinderAnnotator.PARAM_TERM_MATCH_ANNOTATION_CREATOR";
 
 	/**
 	 * "TermMatchAnnotationClass" is a single, optional, string parameter that
@@ -109,7 +109,7 @@ public class TermFinderAnnotator extends JCasAnnotator_ImplBase {
 	 * example value might be something like: <br>
 	 * <code>org.cleartk.type.ne.NamedEntityMention</code>
 	 */
-	public static final String PARAM_TERM_MATCH_ANNOTATION_CLASS = "TermMatchAnnotationClass";
+	public static final String PARAM_TERM_MATCH_ANNOTATION_CLASS = "org.cleartk.ne.term.TermFinderAnnotator.PARAM_TERM_MATCH_ANNOTATION_CLASS";
 
 	TermFinder caseSensitiveTermFinder;
 
