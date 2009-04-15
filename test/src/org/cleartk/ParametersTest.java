@@ -46,7 +46,7 @@ import org.junit.Test;
  * 
  * @author Philip Ogren
  */
-public class ParameterNamesTest {
+public class ParametersTest {
 
 	@Test
 	public void testParameterDefinitions() throws ClassNotFoundException, IllegalArgumentException,
@@ -110,7 +110,7 @@ public class ParameterNamesTest {
 					}
 					index = fileContents.indexOf(actualValue, index+actualValue.length());
 					if(index == -1) {
-						badComments.add(actualValue+" in "+file.getPath()+" is not documented adequately.   The value of the param name should be provided along with the type (String, Boolean, Integer, Float), whether it is multi-valued, and whether it is mandatory along with a description of the parameter.");
+						badComments.add(actualValue+" in "+file.getPath()+" is not commented adequately.   The value of the parameter should be provided in quotes along with the type (String, Boolean, Integer, Float), whether it is multi-valued, and whether it is mandatory along with a description of the parameter.");
 					}
 				}
 			}
