@@ -57,7 +57,7 @@ import org.jdom.output.XMLOutputter;
 
 public class Ace2005Writer extends JCasAnnotator_ImplBase
 {
-	public static final String PARAM_OUTPUT_DIRECTORY = "OutputDirectory";
+	public static final String PARAM_OUTPUT_DIRECTORY = "org.cleartk.corpus.ace2005.Ace2005Writer.PARAM_OUTPUT_DIRECTORY";
 
 	private File outputDir;
 	private int idIndex = 0;

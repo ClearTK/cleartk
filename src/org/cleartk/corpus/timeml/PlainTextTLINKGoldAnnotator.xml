@@ -32,7 +32,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>TlinkFileUrl</name>
+        <name>org.cleartk.corpus.timeml.PlainTextTLINKGoldAnnotator.PARAM_TLINK_FILE_URL</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>

@@ -32,7 +32,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>TreebankDirectory</name>
+        <name>org.cleartk.corpus.timeml.TreebankAligningAnnotator.PARAM_TREEBANK_DIRECTORY</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>

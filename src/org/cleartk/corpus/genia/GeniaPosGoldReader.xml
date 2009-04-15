@@ -29,31 +29,31 @@ POSSIBILITY OF SUCH DAMAGE.</description>
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>ArticleIdsList</name>
+        <name>org.cleartk.corpus.genia.GeniaPosGoldReader.PARAM_ARTICLE_IDS_LIST</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>GeniaCorpus</name>
+        <name>org.cleartk.corpus.genia.GeniaPosGoldReader.PARAM_GENIA_CORPUS</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>LoadSentences</name>
+        <name>org.cleartk.corpus.genia.GeniaPosGoldReader.PARAM_LOAD_SENTENCES</name>
         <type>Boolean</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>LoadTokens</name>
+        <name>org.cleartk.corpus.genia.GeniaPosGoldReader.PARAM_LOAD_TOKENS</name>
         <type>Boolean</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>LoadPOSTags</name>
+        <name>org.cleartk.corpus.genia.GeniaPosGoldReader.PARAM_LOAD_POS_TAGS</name>
         <type>Boolean</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>

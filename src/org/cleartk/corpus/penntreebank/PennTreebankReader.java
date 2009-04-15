@@ -87,7 +87,7 @@ public class PennTreebankReader extends CollectionReader_ImplBase {
 	 * the subdirectory C:\Data\PTB\wsj\mrg\00 should exist. There are 24
 	 * sections in PTB corresponding to the directories 00, 01, 02, ... 24.
 	 */
-	public static final String PARAM_CORPUS_DIRECTORY = "CorpusDirectory";
+	public static final String PARAM_CORPUS_DIRECTORY = "org.cleartk.corpus.penntreebank.PennTreebankReader.PARAM_CORPUS_DIRECTORY";
 
 	/**
 	 * "Sections" is a single, optional, string parameter that specifies which
@@ -95,7 +95,7 @@ public class PennTreebankReader extends CollectionReader_ImplBase {
 	 * numbers and section ranges, for example "02,07-12,16". If not value is
 	 * given for this parameter, then a default value of "00-24" will be used.
 	 */
-	public static final String PARAM_SECTIONS = "Sections";
+	public static final String PARAM_SECTIONS = "org.cleartk.corpus.penntreebank.PennTreebankReader.PARAM_SECTIONS";
 
 	protected File directory;
 

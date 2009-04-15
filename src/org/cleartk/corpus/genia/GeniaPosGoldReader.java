@@ -65,28 +65,28 @@ public class GeniaPosGoldReader extends CollectionReader_ImplBase {
 	 * "ArticleIdsList" is a single, optional, string parameter that names the
 	 * file used to specify the article ids that should be read in.
 	 */
-	public static final String PARAM_ARTICLE_IDS_LIST = "ArticleIdsList";
+	public static final String PARAM_ARTICLE_IDS_LIST = "org.cleartk.corpus.genia.GeniaPosGoldReader.PARAM_ARTICLE_IDS_LIST";
 
 	/**
 	 * "GeniaCorpus" is a single, required, string parameter that names the file
 	 * that is the Genia corpus to be loaded. A good value is probably
 	 * "data/genia/GENIAcorpus3.02.pos.xml"
 	 */
-	public static final String PARAM_GENIA_CORPUS = "GeniaCorpus";
+	public static final String PARAM_GENIA_CORPUS = "org.cleartk.corpus.genia.GeniaPosGoldReader.PARAM_GENIA_CORPUS";
 
 	/**
 	 * "LoadSentences" is a single, optional, boolean parameter that determines
 	 * whether sentence annotations will be added from the Genia corpus. The
 	 * default value of "true" is used if this parameter is unspecified.
 	 */
-	public static final String PARAM_LOAD_SENTENCES = "LoadSentences";
+	public static final String PARAM_LOAD_SENTENCES = "org.cleartk.corpus.genia.GeniaPosGoldReader.PARAM_LOAD_SENTENCES";
 
 	/**
 	 * "LoadTokens" is a single, optional, boolean parameter that determines
 	 * whether tokens annotations will be added from the Genia corpus. The
 	 * default value of "true" is used if this parameter is unspecified.
 	 */
-	public static final String PARAM_LOAD_TOKENS = "LoadTokens";
+	public static final String PARAM_LOAD_TOKENS = "org.cleartk.corpus.genia.GeniaPosGoldReader.PARAM_LOAD_TOKENS";
 
 	/**
 	 * "LoadPOSTags" is a single, optional, boolean parameter that determines
@@ -95,7 +95,7 @@ public class GeniaPosGoldReader extends CollectionReader_ImplBase {
 	 * parameter is unspecified. If "LoadTokens" is 'false', then "LoadPOSTags"
 	 * will also be 'false' regardless of what is given in the descriptor file.
 	 */
-	public static final String PARAM_LOAD_POS_TAGS = "LoadPOSTags";
+	public static final String PARAM_LOAD_POS_TAGS = "org.cleartk.corpus.genia.GeniaPosGoldReader.PARAM_LOAD_POS_TAGS";
 
 	boolean filterArticles;
 

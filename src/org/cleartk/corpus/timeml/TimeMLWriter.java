@@ -63,7 +63,7 @@ import org.jdom.output.XMLOutputter;
  */
 public class TimeMLWriter extends JCasAnnotator_ImplBase {
 	
-	public static final String PARAM_OUTPUT_DIRECTORY = "OutputDirectory";
+	public static final String PARAM_OUTPUT_DIRECTORY = "org.cleartk.corpus.timeml.TimeMLWriter.PARAM_OUTPUT_DIRECTORY";
 	
 	private File outputDirectory;
 

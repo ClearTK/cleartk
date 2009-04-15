@@ -55,7 +55,7 @@ import org.cleartk.util.UIMAUtil;
  */
 public class TreebankAligningAnnotator extends JCasAnnotator_ImplBase {
 	
-	public static final String PARAM_TREEBANK_DIRECTORY = "TreebankDirectory";
+	public static final String PARAM_TREEBANK_DIRECTORY = "org.cleartk.corpus.timeml.TreebankAligningAnnotator.PARAM_TREEBANK_DIRECTORY";
 	
 	private File treebankDirectory;
 

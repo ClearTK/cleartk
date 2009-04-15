@@ -30,7 +30,7 @@ POSSIBILITY OF SUCH DAMAGE.</description>
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>LoadTlinks</name>
+        <name>org.cleartk.corpus.timeml.TimeMLGoldAnnotator.PARAM_LOAD_TLINKS</name>
         <type>Boolean</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
@@ -38,7 +38,7 @@ POSSIBILITY OF SUCH DAMAGE.</description>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>LoadTlinks</name>
+        <name>org.cleartk.corpus.timeml.TimeMLGoldAnnotator.PARAM_LOAD_TLINKS</name>
         <value>
           <boolean>true</boolean>
         </value>
