@@ -53,7 +53,7 @@ import org.uutuc.util.JCasIterable;
  * 
  * @author Steven Bethard
  */
-public class PlainTextCollectionReaderTests {
+public class FilesCollectionReaderTests {
 	
 	/**
 	 * The directory containing all the files to be loaded.
