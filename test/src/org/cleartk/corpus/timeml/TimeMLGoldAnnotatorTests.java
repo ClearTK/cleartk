@@ -35,7 +35,7 @@ import org.cleartk.corpus.timeml.type.Event;
 import org.cleartk.corpus.timeml.type.TemporalLink;
 import org.cleartk.corpus.timeml.type.Time;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.PlainTextCollectionReader;
+import org.cleartk.util.FilesCollectionReader;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
@@ -58,11 +58,11 @@ public class TimeMLGoldAnnotatorTests {
 	@Test
 	public void testTimeBank() throws UIMAException, IOException {
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-				PlainTextCollectionReader.class, 
+				FilesCollectionReader.class, 
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-				PlainTextCollectionReader.PARAM_VIEW_NAME,
+				FilesCollectionReader.PARAM_VIEW_NAME,
 				ViewNames.TIMEML,
-				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY,
+				FilesCollectionReader.PARAM_FILE_OR_DIRECTORY,
 				"test/data/corpus/timeml/wsj_0106.tml");
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				TimeMLGoldAnnotator.class,
@@ -124,11 +124,11 @@ public class TimeMLGoldAnnotatorTests {
 	@Test
 	public void testTempEval() throws UIMAException, IOException {
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-				PlainTextCollectionReader.class, 
+				FilesCollectionReader.class, 
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-				PlainTextCollectionReader.PARAM_VIEW_NAME,
+				FilesCollectionReader.PARAM_VIEW_NAME,
 				ViewNames.TIMEML,
-				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY,
+				FilesCollectionReader.PARAM_FILE_OR_DIRECTORY,
 				"test/data/corpus/timeml/AP900815-0044.tml");
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				TimeMLGoldAnnotator.class,
@@ -176,13 +176,13 @@ public class TimeMLGoldAnnotatorTests {
 	@Test
 	public void testNoTLINKs() throws UIMAException, IOException {
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-				PlainTextCollectionReader.class, 
+				FilesCollectionReader.class, 
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-				PlainTextCollectionReader.PARAM_VIEW_NAME,
+				FilesCollectionReader.PARAM_VIEW_NAME,
 				ViewNames.TIMEML,
-				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY,
+				FilesCollectionReader.PARAM_FILE_OR_DIRECTORY,
 				"test/data/corpus/timeml",
-				PlainTextCollectionReader.PARAM_SUFFIXES,
+				FilesCollectionReader.PARAM_SUFFIXES,
 				new String[]{".tml"});
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				TimeMLGoldAnnotator.class,
