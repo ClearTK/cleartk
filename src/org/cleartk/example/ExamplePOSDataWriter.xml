@@ -48,7 +48,7 @@ POSSIBILITY OF SUCH DAMAGE.</description>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>org.cleartk.classifier.encoder.factory.DefaultFeaturesEncoderFactory.PARAM_COMPRESS</name>
+        <name>org.cleartk.classifier.encoder.factory.NameNumberEncoderFactory.PARAM_COMPRESS</name>
         <type>Boolean</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
@@ -80,7 +80,7 @@ POSSIBILITY OF SUCH DAMAGE.</description>
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>org.cleartk.classifier.encoder.factory.DefaultFeaturesEncoderFactory.PARAM_COMPRESS</name>
+        <name>org.cleartk.classifier.encoder.factory.NameNumberEncoderFactory.PARAM_COMPRESS</name>
         <value>
           <boolean>true</boolean>
         </value>
