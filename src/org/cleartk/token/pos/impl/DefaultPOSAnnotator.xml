@@ -32,13 +32,13 @@ POSSIBILITY OF SUCH DAMAGE.
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>AnnotationHandler</name>
+        <name>org.cleartk.classifier.InstanceConsumer.PARAM_ANNOTATION_HANDLER</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>ClassifierJar</name>
+        <name>org.cleartk.classifier.ClassifierAnnotator.PARAM_CLASSIFIER_JAR</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
@@ -58,7 +58,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>AnnotationHandler</name>
+        <name>org.cleartk.classifier.InstanceConsumer.PARAM_ANNOTATION_HANDLER</name>
         <value>
           <string>org.cleartk.token.pos.impl.DefaultPOSHandler</string>
         </value>

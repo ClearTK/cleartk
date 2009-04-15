@@ -62,7 +62,7 @@ POSSIBILITY OF SUCH DAMAGE.</description>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>org.cleartk.classifier.InstanceConsumer.PARAM_ANNOTATION_HANDLER2</name>
+        <name>org.cleartk.classifier.InstanceConsumer.PARAM_ANNOTATION_HANDLER</name>
         <value>
           <string>org.cleartk.example.ExamplePOSAnnotationHandler</string>
         </value>

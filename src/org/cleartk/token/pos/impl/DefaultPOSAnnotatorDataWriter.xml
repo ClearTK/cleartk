@@ -30,25 +30,25 @@ POSSIBILITY OF SUCH DAMAGE.</description>
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>AnnotationHandler</name>
+        <name>org.cleartk.classifier.InstanceConsumer.PARAM_ANNOTATION_HANDLER</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>DataWriter</name>
+        <name>org.cleartk.classifier.DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>OutputDirectory</name>
+        <name>org.cleartk.classifier.DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>Compress</name>
+        <name>org.cleartk.classifier.encoder.factory.NameNumberEncoderFactory.PARAM_COMPRESS</name>
         <type>Boolean</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
@@ -66,7 +66,7 @@ POSSIBILITY OF SUCH DAMAGE.</description>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>org.cleartk.classifier.DataWriter_ImplBase.PARAM_OUTCOME_FEATURE_EXTRACTOR</name>
+        <name>org.cleartk.classifier.ViterbiSequentialDataWriter.PARAM_OUTCOME_FEATURE_EXTRACTOR</name>
         <type>String</type>
         <multiValued>true</multiValued>
         <mandatory>false</mandatory>
@@ -74,7 +74,7 @@ POSSIBILITY OF SUCH DAMAGE.</description>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>AnnotationHandler</name>
+        <name>org.cleartk.classifier.InstanceConsumer.PARAM_ANNOTATION_HANDLER</name>
         <value>
           <string>org.cleartk.token.pos.impl.DefaultPOSHandler</string>
         </value>
