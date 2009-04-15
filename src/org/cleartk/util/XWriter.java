@@ -58,7 +58,7 @@ public class XWriter extends JCasAnnotator_ImplBase {
 	 * "OutputDirectory" is a single, required string parameter that takes a
 	 * path to directory into which output files will be written.
 	 */
-	public static final String PARAM_OUTPUT_DIRECTORY = "OutputDirectory";
+	public static final String PARAM_OUTPUT_DIRECTORY = "org.cleartk.util.XWriter.PARAM_OUTPUT_DIRECTORY";
 
 	/**
 	 * "XMLScheme" is a single, optional, string parameter that specifies the
@@ -68,7 +68,7 @@ public class XWriter extends JCasAnnotator_ImplBase {
 	 * @see XmiCasSerializer
 	 * @see XCASSerializer
 	 */
-	public static final String PARAM_XML_SCHEME = "XMLScheme";
+	public static final String PARAM_XML_SCHEME = "org.cleartk.util.XWriter.PARAM_XML_SCHEME";
 
 	public static final String XMI = "XMI";
 

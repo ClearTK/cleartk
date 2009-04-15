@@ -76,7 +76,7 @@ public class PlainTextWriter extends JCasAnnotator_ImplBase
 	/** "OutputDirectory" is a single, required string parameter that takes a
 	 *  path to directory into which output files will be written.
 	 */
-	public static final String PARAM_OUTPUT_DIRECTORY = "OutputDirectory";
+	public static final String PARAM_OUTPUT_DIRECTORY = "org.cleartk.util.PlainTextWriter.PARAM_OUTPUT_DIRECTORY";
 
 	private File outputDir;
 

@@ -30,13 +30,13 @@ POSSIBILITY OF SUCH DAMAGE.</description>
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>OutputDirectory</name>
+        <name>org.cleartk.util.XWriter.PARAM_OUTPUT_DIRECTORY</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>XMLScheme</name>
+        <name>org.cleartk.util.XWriter.PARAM_XML_SCHEME</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
