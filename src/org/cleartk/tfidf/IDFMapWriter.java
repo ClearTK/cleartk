@@ -52,7 +52,7 @@ import org.cleartk.util.UIMAUtil;
  */
 public class IDFMapWriter<OUTCOME_TYPE> extends InstanceConsumer<OUTCOME_TYPE> {
 
-	public static final String PARAM_IDFMAP_FILE = "IDFMapFile";
+	public static final String PARAM_IDFMAP_FILE = "org.cleartk.tfidf.IDFMapWriter.PARAM_IDFMAP_FILE";
 
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {

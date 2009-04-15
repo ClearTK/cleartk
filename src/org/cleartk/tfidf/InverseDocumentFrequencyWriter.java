@@ -54,7 +54,7 @@ import org.cleartk.util.UIMAUtil;
  */
 public class InverseDocumentFrequencyWriter extends JCasAnnotator_ImplBase {
 	
-	public static final String PARAM_OUTPUT_FILE = "OutputFile";
+	public static final String PARAM_OUTPUT_FILE = "org.cleartk.tfidf.InverseDocumentFrequencyWriter.PARAM_OUTPUT_FILE";
 
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
