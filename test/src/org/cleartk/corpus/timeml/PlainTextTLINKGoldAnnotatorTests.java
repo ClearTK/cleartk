@@ -37,7 +37,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.ViewNames;
 import org.cleartk.corpus.timeml.type.TemporalLink;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.PlainTextCollectionReader;
+import org.cleartk.util.FilesCollectionReader;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
@@ -65,11 +65,11 @@ public class PlainTextTLINKGoldAnnotatorTests {
 	@Test
 	public void test_wsj_0106() throws UIMAException, IOException {
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-				PlainTextCollectionReader.class, 
+				FilesCollectionReader.class, 
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-				PlainTextCollectionReader.PARAM_VIEW_NAME,
+				FilesCollectionReader.PARAM_VIEW_NAME,
 				ViewNames.TIMEML,
-				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY,
+				FilesCollectionReader.PARAM_FILE_OR_DIRECTORY,
 				"test/data/corpus/timeml/wsj_0106.tml");
 		AnalysisEngine timemlEngine = AnalysisEngineFactory.createAnalysisEngine(
 				TimeMLGoldAnnotator.class,
@@ -119,11 +119,11 @@ public class PlainTextTLINKGoldAnnotatorTests {
 	@Test
 	public void test_wsj_0106_alternate() throws UIMAException, IOException {
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-				PlainTextCollectionReader.class, 
+				FilesCollectionReader.class, 
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-				PlainTextCollectionReader.PARAM_VIEW_NAME,
+				FilesCollectionReader.PARAM_VIEW_NAME,
 				ViewNames.TIMEML,
-				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY,
+				FilesCollectionReader.PARAM_FILE_OR_DIRECTORY,
 				"test/data/corpus/timeml/wsj_0106.tml");
 		AnalysisEngine timemlEngine = AnalysisEngineFactory.createAnalysisEngine(
 				TimeMLGoldAnnotator.class,
