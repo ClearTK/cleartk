@@ -82,7 +82,7 @@ public class LineReader extends CollectionReader_ImplBase {
 	 * either the name of a single file or the root directory containing all the
 	 * files to be processed.
 	 */
-	public static final String PARAM_FILE_OR_DIRECTORY = "FileOrDirectory";
+	public static final String PARAM_FILE_OR_DIRECTORY = "org.cleartk.util.linereader.LineReader.PARAM_FILE_OR_DIRECTORY";
 
 	/**
 	 * "ViewName" is a single, optional, string parameter that takes the the
@@ -91,7 +91,7 @@ public class LineReader extends CollectionReader_ImplBase {
 	 * 
 	 * @see UIMAUtil#createJCasView(CAS, String)
 	 */
-	public static final String PARAM_VIEW_NAME = "ViewName";
+	public static final String PARAM_VIEW_NAME = "org.cleartk.util.linereader.LineReader.PARAM_VIEW_NAME";
 
 	/**
 	 * "Language" is a single, optional, string parameter that takes the
@@ -101,7 +101,7 @@ public class LineReader extends CollectionReader_ImplBase {
 	 * 
 	 * @see JCas#setDocumentLanguage(String)
 	 */
-	public static final String PARAM_LANGUAGE = "Language";
+	public static final String PARAM_LANGUAGE = "org.cleartk.util.linereader.LineReader.PARAM_LANGUAGE";
 
 	/**
 	 * "Encoding" is a single, optional, string parameter that takes the
@@ -109,13 +109,13 @@ public class LineReader extends CollectionReader_ImplBase {
 	 * 
 	 * @see Charset for a list of encoding names.
 	 */
-	public static final String PARAM_ENCODING = "Encoding";
+	public static final String PARAM_ENCODING = "org.cleartk.util.linereader.LineReader.PARAM_ENCODING";
 
 	/**
 	 * "Suffixes" is a multiple, optional, string parameter that takes suffixes
 	 * (e.g. .txt) of the files that should be read in.
 	 */
-	public static final String PARAM_SUFFIXES = "Suffixes";
+	public static final String PARAM_SUFFIXES = "org.cleartk.util.linereader.LineReader.PARAM_SUFFIXES";
 
 	/**
 	 * "LineHandler" is a single, optional, string parameter that specifies the
@@ -125,7 +125,7 @@ public class LineReader extends CollectionReader_ImplBase {
 	 * @see SimpleLineHandler
 	 * 
 	 */
-	public static final String PARAM_LINE_HANDLER = "LineHandler";
+	public static final String PARAM_LINE_HANDLER = "org.cleartk.util.linereader.LineReader.PARAM_LINE_HANDLER";
 
 	/**
 	 * "CommentSpecifier" is a multiple, optional, string parameter that
@@ -133,7 +133,7 @@ public class LineReader extends CollectionReader_ImplBase {
 	 * should be skipped. Commented lines are those the start with one of the
 	 * values of this parameter.
 	 */
-	public static final String PARAM_COMMENT_SPECIFIER = "CommentSpecifier";
+	public static final String PARAM_COMMENT_SPECIFIER = "org.cleartk.util.linereader.LineReader.PARAM_COMMENT_SPECIFIER";
 
 	/**
 	 * "SkipBlankLines" is a single, optional, boolean parameter that specifies
@@ -142,7 +142,7 @@ public class LineReader extends CollectionReader_ImplBase {
 	 * that appear in the text files will be read in and given their own JCas.
 	 * Blank lines are those that consist of only whitespace.
 	 */
-	public static final String PARAM_SKIP_BLANK_LINES = "SkipBlankLines";
+	public static final String PARAM_SKIP_BLANK_LINES = "org.cleartk.util.linereader.LineReader.PARAM_SKIP_BLANK_LINES";
 	
 	File file;
 

@@ -31,53 +31,53 @@ POSSIBILITY OF SUCH DAMAGE.
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>FileOrDirectory</name>
+        <name>org.cleartk.util.linereader.LineReader.PARAM_FILE_OR_DIRECTORY</name>
         <description>Root directory containing files to be read in.</description>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>ViewName</name>
+        <name>org.cleartk.util.linereader.LineReader.PARAM_VIEW_NAME</name>
         <description>Name of the CAS view to be created for the document texts.</description>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>Language</name>
+        <name>org.cleartk.util.linereader.LineReader.PARAM_LANGUAGE</name>
         <description>Language of the files being read in.</description>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>Encoding</name>
+        <name>org.cleartk.util.linereader.LineReader.PARAM_ENCODING</name>
         <description>Encoding of the files being read in.</description>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>Suffixes</name>
+        <name>org.cleartk.util.linereader.LineReader.PARAM_SUFFIXES</name>
         <type>String</type>
         <multiValued>true</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>LineHandler</name>
+        <name>org.cleartk.util.linereader.LineReader.PARAM_LINE_HANDLER</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>CommentSpecifier</name>
+        <name>org.cleartk.util.linereader.LineReader.PARAM_COMMENT_SPECIFIER</name>
         <type>String</type>
         <multiValued>true</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>SkipBlankLines</name>
+        <name>org.cleartk.util.linereader.LineReader.PARAM_SKIP_BLANK_LINES</name>
         <type>Boolean</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
@@ -85,7 +85,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>SkipBlankLines</name>
+        <name>org.cleartk.util.linereader.LineReader.PARAM_SKIP_BLANK_LINES</name>
         <value>
           <boolean>true</boolean>
         </value>
