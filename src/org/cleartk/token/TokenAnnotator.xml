@@ -32,19 +32,19 @@ POSSIBILITY OF SUCH DAMAGE.
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>TokenType</name>
+        <name>org.cleartk.token.TokenAnnotator.PARAM_TOKEN_TYPE</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>Tokenizer</name>
+        <name>org.cleartk.token.TokenAnnotator.PARAM_TOKENIZER</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>WindowType</name>
+        <name>org.cleartk.token.TokenAnnotator.PARAM_WINDOW_TYPE</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
