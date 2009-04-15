@@ -74,8 +74,8 @@ public abstract class POSHandler<TOKEN_TYPE extends Annotation, SENTENCE_TYPE ex
 			tokenClassType = ReflectionUtil.getTypeArgument(POSHandler.class, "TOKEN_TYPE", this);
 			sentenceClassType = ReflectionUtil.getTypeArgument(POSHandler.class, "SENTENCE_TYPE", this);
 			
-			featureExtractor = UIMAUtil.create(
-					context, PARAM_FEATURE_EXTRACTOR_CLASS, POSFeatureExtractor.class);
+			featureExtractor = ReflectionUtil.uncheckedCast(UIMAUtil.create(
+					context, PARAM_FEATURE_EXTRACTOR_CLASS, POSFeatureExtractor.class));
 			UIMAUtil.initialize(featureExtractor, context);
 			
 			java.lang.reflect.Type featureExtractorTokenClassType = ReflectionUtil.getTypeArgument(POSFeatureExtractor.class, "TOKEN_TYPE", featureExtractor);
@@ -93,7 +93,7 @@ public abstract class POSHandler<TOKEN_TYPE extends Annotation, SENTENCE_TYPE ex
 						featureExtractorSentenceClassType, sentenceClassType));
 			}
 
-			tagger = UIMAUtil.create(context, PARAM_TAGGER_CLASS, POSTagger.class);
+			tagger = ReflectionUtil.uncheckedCast(UIMAUtil.create(context, PARAM_TAGGER_CLASS, POSTagger.class));
 			
 			java.lang.reflect.Type taggerTokenClassType = ReflectionUtil.getTypeArgument(POSTagger.class, "TOKEN_TYPE", tagger);
 			if (!ReflectionUtil.isAssignableFrom(taggerTokenClassType, tokenClassType)) {
@@ -110,8 +110,8 @@ public abstract class POSHandler<TOKEN_TYPE extends Annotation, SENTENCE_TYPE ex
 
 	protected void initializeTypes(JCas jCas) throws AnalysisEngineProcessException {
 		try {
-			tokenType = UIMAUtil.getCasType(jCas, (Class<? extends TOP>) tokenClassType);
-			sentenceType = UIMAUtil.getCasType(jCas, (Class<? extends TOP>) sentenceClassType);
+			tokenType = UIMAUtil.getCasType(jCas, ReflectionUtil.<Class<? extends TOP>>uncheckedCast(tokenClassType));
+			sentenceType = UIMAUtil.getCasType(jCas, ReflectionUtil.<Class<? extends TOP>>uncheckedCast(sentenceClassType));
 		}
 		catch (Exception e) {
 			throw new AnalysisEngineProcessException(e);
@@ -124,14 +124,14 @@ public abstract class POSHandler<TOKEN_TYPE extends Annotation, SENTENCE_TYPE ex
 		
 		FSIterator sentences = jCas.getAnnotationIndex(sentenceType).iterator();
 		while (sentences.hasNext()) {
-			SENTENCE_TYPE sentence = (SENTENCE_TYPE) sentences.next();
+			SENTENCE_TYPE sentence = ReflectionUtil.uncheckedCast(sentences.next());
 
 			List<Instance<String>> instances = new ArrayList<Instance<String>>();
 			
 			FSIterator tokens = jCas.getAnnotationIndex(tokenType).subiterator(sentence);
 
 			while (tokens.hasNext()) {
-				TOKEN_TYPE token = (TOKEN_TYPE) tokens.next();
+				TOKEN_TYPE token = ReflectionUtil.uncheckedCast(tokens.next());
 				List<Feature> features = featureExtractor.extractFeatures(jCas, token, sentence);
 				Instance<String> instance = new Instance<String>();
 				instance.addAll(features);
@@ -143,7 +143,7 @@ public abstract class POSHandler<TOKEN_TYPE extends Annotation, SENTENCE_TYPE ex
 			if (tags != null) {
 				tokens.moveToFirst();
 				for(int i=0; tokens.hasNext(); i++) {
-					TOKEN_TYPE token = (TOKEN_TYPE) tokens.next();
+					TOKEN_TYPE token = ReflectionUtil.uncheckedCast(tokens.next());
 					tagger.setTag(jCas, token, tags.get(i));
 				}
 			}
