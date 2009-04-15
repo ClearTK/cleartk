@@ -30,7 +30,7 @@ POSSIBILITY OF SUCH DAMAGE.</description>
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>OutputFile</name>
+        <name>org.cleartk.srl.SRLWriter.PARAM_OUTPUT_FILE</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
