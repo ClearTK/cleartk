@@ -71,7 +71,7 @@ public class BuildJar {
 			super(getOutputStream(dir), new ClassifierManifest(dir));
 			String fileName = FeaturesEncoder_ImplBase.ENCODER_FILE_NAME;
 			this.write(fileName, new File(dir, fileName));
-			fileName = DataWriter_ImplBase.OUTCOME_FEATURE_EXTRACTOR_FILE_NAME;
+			fileName = ViterbiSequentialDataWriter.OUTCOME_FEATURE_EXTRACTOR_FILE_NAME;
 			this.write(fileName, new File(dir, fileName));
 		}
 		

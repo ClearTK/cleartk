@@ -84,7 +84,7 @@ public abstract class ViterbiSequentialClassifier<OUTCOME_TYPE> implements Seque
 
 		classifier = ReflectionUtil.uncheckedCast(ClassifierFactory.createClassifierFromJar(modelFile.getName()));
 
-		ZipEntry zipEntry = modelFile.getEntry(DataWriter_ImplBase.OUTCOME_FEATURE_EXTRACTOR_FILE_NAME);
+		ZipEntry zipEntry = modelFile.getEntry(ViterbiSequentialDataWriter.OUTCOME_FEATURE_EXTRACTOR_FILE_NAME);
 		if (zipEntry == null) {
 			outcomeFeatureExtractors = new OutcomeFeatureExtractor[0];
 		}

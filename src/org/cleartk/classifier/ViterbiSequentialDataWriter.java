@@ -21,51 +21,39 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.classifier.svmlight;
+package org.cleartk.classifier;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
-import java.util.Locale;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.cleartk.classifier.ClassifierBuilder;
-import org.cleartk.classifier.DataWriter_ImplBase;
-import org.cleartk.classifier.util.featurevector.FeatureVector;
+import org.cleartk.classifier.encoder.features.FeaturesEncoder;
+import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
+import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
+import org.cleartk.util.ReflectionUtil;
 
-public class SVMlightDataWriter extends DataWriter_ImplBase<Boolean,Boolean,FeatureVector> {
+public abstract class ViterbiSequentialDataWriter<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE, FEATURES_TYPE> implements DataWriter<INPUTOUTCOME_TYPE> {
 
-	public SVMlightDataWriter(File outputDirectory) throws IOException {
-		super(outputDirectory);
-		this.outputWriter = getPrintWriter("training-data.svmlight");
+	public static final String OUTCOME_FEATURE_EXTRACTOR_FILE_NAME = "outcome-features-extractors.ser";
+
+	/**
+	 * "org.cleartk.classifier.ViterbiSequentialDataWriter.PARAM_OUTCOME_FEATURE_EXTRACTOR"
+	 * is an optional, multi-valued, string parameter that specifies which
+	 * OutcomeFeatureExtractors should be used. Each value of this parameter
+	 * should be the name of a class that implements
+	 * {@link OutcomeFeatureExtractor}. One valid value that you might use is "org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor".
+	 */
+	public static final String PARAM_OUTCOME_FEATURE_EXTRACTOR = "org.cleartk.classifier.ViterbiSequentialDataWriter.PARAM_OUTCOME_FEATURE_EXTRACTOR";
+
+	protected DataWriter dataWriter;
+	
+	public ViterbiSequentialDataWriter(File outputDirectory) {
 	}
-
-	@Override
-	public void writeEncoded(FeatureVector features, Boolean outcome) {
-		StringBuffer output = new StringBuffer();
-		
-		if( outcome == null )
-			return;
-			
-		if( outcome.booleanValue() ) {
-			output.append("+1");
-		} else {
-			output.append("-1");
-		}
-
-		for( FeatureVector.Entry entry : features ) {
-			if( entry.value == 0.0 )
-				continue;
-
-			output.append(String.format(Locale.US, " %d:%.7f", entry.index, entry.value));
-		}
-
-		outputWriter.println(output);
-	}
-
-	public Class<? extends ClassifierBuilder<Boolean>> getDefaultClassifierBuilderClass() {
-		return SVMlightClassifierBuilder.class;
-	}
-
-	private PrintWriter outputWriter;
 
 }
