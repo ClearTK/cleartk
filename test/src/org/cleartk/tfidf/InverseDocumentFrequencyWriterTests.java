@@ -40,7 +40,7 @@ import org.cleartk.token.TokenAnnotator;
 import org.cleartk.token.snowball.SnowballStemmer;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
-import org.cleartk.util.PlainTextCollectionReader;
+import org.cleartk.util.FilesCollectionReader;
 import org.cleartk.util.ReflectionUtil;
 import org.junit.After;
 import org.junit.Assert;
@@ -77,8 +77,8 @@ public class InverseDocumentFrequencyWriterTests {
 		TypeSystemDescription typeSystem = TypeSystemDescriptionFactory.createTypeSystemDescription(
 				Sentence.class, Token.class);
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-				PlainTextCollectionReader.class, typeSystem,
-				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY, this.inputDir);
+				FilesCollectionReader.class, typeSystem,
+				FilesCollectionReader.PARAM_FILE_OR_DIRECTORY, this.inputDir);
 		AnalysisEngine[] engines = new AnalysisEngine[] {
 				AnalysisEngineFactory.createAnalysisEngine(OpenNLPSentenceSegmenter.class, typeSystem,
 						OpenNLPSentenceSegmenter.SENTENCE_MODEL_FILE_PARAM,

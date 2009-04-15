@@ -97,9 +97,9 @@ public class PlainTextCollectionReaderTests {
 		// create the PlainTextCollectionReader with the HTML input directory
 		String languageCode = "en-us";
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-				PlainTextCollectionReader.class, null,
-				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY, this.inputDir,
-				PlainTextCollectionReader.PARAM_LANGUAGE, languageCode);
+				FilesCollectionReader.class, null,
+				FilesCollectionReader.PARAM_FILE_OR_DIRECTORY, this.inputDir,
+				FilesCollectionReader.PARAM_LANGUAGE, languageCode);
 		Assert.assertEquals(0, reader.getProgress()[0].getCompleted());
 
 		// check that each document in the CAS matches the document on disk
@@ -129,9 +129,9 @@ public class PlainTextCollectionReaderTests {
 			
 			// create the PlainTextCollectionReader with the current view name
 			CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-					PlainTextCollectionReader.class, null,
-					PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY, this.inputDir,
-					PlainTextCollectionReader.PARAM_VIEW_NAME, viewName);
+					FilesCollectionReader.class, null,
+					FilesCollectionReader.PARAM_FILE_OR_DIRECTORY, this.inputDir,
+					FilesCollectionReader.PARAM_VIEW_NAME, viewName);
 			
 			// check that each document in the JCas views matches the document on disk
 			for (JCas jCas: new JCasIterable(reader)) {
@@ -156,8 +156,8 @@ public class PlainTextCollectionReaderTests {
 		
 		// create the PlainTextCollectionReader with the HTML input directory  
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-				PlainTextCollectionReader.class, null,
-				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY, this.inputDir);
+				FilesCollectionReader.class, null,
+				FilesCollectionReader.PARAM_FILE_OR_DIRECTORY, this.inputDir);
 
 		// check that each path in the CAS matches a path on disk
 		Set<String> pathsSet = new HashSet<String>();
@@ -179,9 +179,9 @@ public class PlainTextCollectionReaderTests {
 		
 		// create the PlainTextCollectionReader with the HTML input directory  
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-				PlainTextCollectionReader.class, null,
-				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY, this.inputDir,
-				PlainTextCollectionReader.PARAM_SUFFIXES, new String[] {"1.html"});
+				FilesCollectionReader.class, null,
+				FilesCollectionReader.PARAM_FILE_OR_DIRECTORY, this.inputDir,
+				FilesCollectionReader.PARAM_SUFFIXES, new String[] {"1.html"});
 
 		// check that each path in the CAS matches a path on disk
 		Set<String> pathsSet = new HashSet<String>();
@@ -202,9 +202,9 @@ public class PlainTextCollectionReaderTests {
 		
 		// create the PlainTextCollectionReader with the HTML input directory  
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-				PlainTextCollectionReader.class, null,
-				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY, this.inputDir,
-				PlainTextCollectionReader.PARAM_SUFFIXES, new String[] {"1.html", "2.html"});
+				FilesCollectionReader.class, null,
+				FilesCollectionReader.PARAM_FILE_OR_DIRECTORY, this.inputDir,
+				FilesCollectionReader.PARAM_SUFFIXES, new String[] {"1.html", "2.html"});
 
 		// check that each path in the CAS matches a path on disk
 		Set<String> pathsSet = new HashSet<String>();
@@ -231,9 +231,9 @@ public class PlainTextCollectionReaderTests {
 		
 		// create the PlainTextCollectionReader with the HTML input directory  
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-				PlainTextCollectionReader.class, null,
-				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY, "test/data/docs",
-				PlainTextCollectionReader.PARAM_FILE_NAMES_FILES, new String[] {"test/data/util/PlainTextFileNames.txt"});
+				FilesCollectionReader.class, null,
+				FilesCollectionReader.PARAM_FILE_OR_DIRECTORY, "test/data/docs",
+				FilesCollectionReader.PARAM_FILE_NAMES_FILES, new String[] {"test/data/util/PlainTextFileNames.txt"});
 
 		// check that each path in the CAS matches a path on disk
 		Set<String> fileNamesSet = new HashSet<String>();
@@ -268,8 +268,8 @@ public class PlainTextCollectionReaderTests {
 	public void testSingleFile()  throws IOException, UIMAException {
 		String path = "test/data/html/1.html";
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-				PlainTextCollectionReader.class, null,
-				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY, path);
+				FilesCollectionReader.class, null,
+				FilesCollectionReader.PARAM_FILE_OR_DIRECTORY, path);
 		
 		List<String> paths = new ArrayList<String>();
 		for (JCas jCas: new JCasIterable(reader)) {
@@ -292,8 +292,8 @@ public class PlainTextCollectionReaderTests {
 		
 		try {
 			CollectionReaderFactory.createCollectionReader(
-					PlainTextCollectionReader.class, null,
-					PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY, "data/hmtl");
+					FilesCollectionReader.class, null,
+					FilesCollectionReader.PARAM_FILE_OR_DIRECTORY, "data/hmtl");
 			Assert.fail("expected error for invalid path");
 		} catch (ResourceInitializationException e){}
 	}
@@ -319,22 +319,22 @@ public class PlainTextCollectionReaderTests {
 		
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				"org.cleartk.util.PlainTextCollectionReader",
-				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY, this.inputDir);
+				FilesCollectionReader.PARAM_FILE_OR_DIRECTORY, this.inputDir);
 		
 		Object fileOrDirectory = reader.getConfigParameterValue(
-				PlainTextCollectionReader.PARAM_FILE_OR_DIRECTORY);
+				FilesCollectionReader.PARAM_FILE_OR_DIRECTORY);
 		Assert.assertEquals(this.inputDir, fileOrDirectory);
 		
 		Object viewName = reader.getConfigParameterValue(
-				PlainTextCollectionReader.PARAM_VIEW_NAME);
+				FilesCollectionReader.PARAM_VIEW_NAME);
 		Assert.assertEquals(null, viewName);
 		
 		Object encoding = reader.getConfigParameterValue(
-				PlainTextCollectionReader.PARAM_ENCODING);
+				FilesCollectionReader.PARAM_ENCODING);
 		Assert.assertEquals(null, encoding);
 
 		Object language = reader.getConfigParameterValue(
-				PlainTextCollectionReader.PARAM_LANGUAGE);
+				FilesCollectionReader.PARAM_LANGUAGE);
 		Assert.assertEquals(null, language);
 	}
 	
