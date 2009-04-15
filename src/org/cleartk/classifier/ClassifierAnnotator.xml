@@ -32,13 +32,13 @@ POSSIBILITY OF SUCH DAMAGE.
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>ClassifierJar</name>
+        <name>org.cleartk.classifier.ClassifierAnnotator.PARAM_CLASSIFIER_JAR</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>AnnotationHandler</name>
+        <name>org.cleartk.classifier.InstanceConsumer.PARAM_ANNOTATION_HANDLER</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
