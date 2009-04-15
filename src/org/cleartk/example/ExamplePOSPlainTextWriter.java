@@ -48,7 +48,7 @@ import org.cleartk.util.UIMAUtil;
  */
 public class ExamplePOSPlainTextWriter extends JCasAnnotator_ImplBase {
 
-	public static final String PARAM_OUTPUT_DIRECTORY = "OutputDirectory";
+	public static final String PARAM_OUTPUT_DIRECTORY = "org.cleartk.example.ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY";
 	
 	protected File outputDir;
 

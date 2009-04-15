@@ -70,7 +70,7 @@ import org.cleartk.util.UIMAUtil;
  */
 public class SRLWriter extends JCasAnnotator_ImplBase {
 
-	public static final String PARAM_OUTPUT_FILE = "OutputFile";
+	public static final String PARAM_OUTPUT_FILE = "org.cleartk.srl.SRLWriter.PARAM_OUTPUT_FILE";
 
 	PrintWriter output;
 
