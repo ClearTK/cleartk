@@ -64,7 +64,7 @@ POSSIBILITY OF SUCH DAMAGE.</description>
       <nameValuePair>
         <name>org.cleartk.classifier.InstanceConsumer.PARAM_ANNOTATION_HANDLER</name>
         <value>
-          <string>org.cleartk.example.ExamplePOSAnnotationHandler</string>
+          <string>org.cleartk.example.pos.ExamplePOSAnnotationHandler</string>
         </value>
       </nameValuePair>
       <nameValuePair>
@@ -86,7 +86,7 @@ POSSIBILITY OF SUCH DAMAGE.</description>
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>org.cleartk.classifier.ViterbiSequentialDataWriter.PARAM_OUTCOME_FEATURE_EXTRACTOR</name>
+        <name>org.cleartk.classifier.viterbi.ViterbiSequentialDataWriter.PARAM_OUTCOME_FEATURE_EXTRACTOR</name>
         <value>
           <array>
             <string>org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor</string>

@@ -32,7 +32,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>org.cleartk.example.ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY</name>
+        <name>org.cleartk.example.pos.ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
@@ -40,7 +40,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>org.cleartk.example.ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY</name>
+        <name>org.cleartk.example.pos.ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY</name>
         <value>
           <string>example/data</string>
         </value>
