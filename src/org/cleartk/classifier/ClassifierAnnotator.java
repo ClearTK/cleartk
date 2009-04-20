@@ -56,7 +56,7 @@ import org.cleartk.util.UIMAUtil;
  * 
  * @see org.cleartk.classifier.Classifier
  * @see org.cleartk.classifier.AnnotationHandler
- * @see org.cleartk.example.ExamplePOSAnnotationHandler
+ * @see org.cleartk.example.pos.ExamplePOSAnnotationHandler
  * 
  * @author Steven Bethard
  * @author Philip Ogren
