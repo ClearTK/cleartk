@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.example;
+package org.cleartk.example.pos;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,6 +38,7 @@ import org.cleartk.classifier.DataWriter_ImplBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.InstanceConsumer;
+import org.cleartk.example.pos.ExamplePOSAnnotationHandler;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.EmptyAnnotator;
