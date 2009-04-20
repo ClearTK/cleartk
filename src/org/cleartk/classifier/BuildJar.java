@@ -31,6 +31,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
 
 import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
+import org.cleartk.classifier.viterbi.ViterbiSequentialDataWriter;
 
 
 /**

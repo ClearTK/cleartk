@@ -21,10 +21,11 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.classifier;
+package org.cleartk.classifier.viterbi;
 
 import java.io.File;
 
+import org.cleartk.classifier.DataWriter;
 import org.cleartk.classifier.feature.extractor.outcome.OutcomeFeatureExtractor;
 
 public abstract class ViterbiSequentialDataWriter<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE, FEATURES_TYPE> implements DataWriter<INPUTOUTCOME_TYPE> {

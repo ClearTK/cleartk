@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.classifier;
+package org.cleartk.classifier.viterbi;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -36,6 +36,12 @@ import java.util.zip.ZipEntry;
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.Initializable;
+import org.cleartk.classifier.Classifier;
+import org.cleartk.classifier.ClassifierFactory;
+import org.cleartk.classifier.Classifier_ImplBase;
+import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.ScoredOutcome;
+import org.cleartk.classifier.SequentialClassifier;
 import org.cleartk.classifier.feature.extractor.outcome.OutcomeFeatureExtractor;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
