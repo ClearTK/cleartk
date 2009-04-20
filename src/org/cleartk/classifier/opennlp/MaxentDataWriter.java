@@ -92,10 +92,11 @@ public class MaxentDataWriter extends DataWriter_ImplBase<String, String, List<N
 	public void finish() throws IOException {
 		super.finish();
 		
+		//TODO - this seems a little strange - shouldn't there be a mechanism to allow the feature encoder to finish itself?
 		if (featuresEncoder instanceof NameNumberFeaturesEncoder) {
-			NameNumberFeaturesEncoder dfe = (NameNumberFeaturesEncoder) featuresEncoder;
-			if(dfe.isCompressFeatures())
-				dfe.writeNameLookup(this.getPrintWriter(NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
+			NameNumberFeaturesEncoder nnfe = (NameNumberFeaturesEncoder) featuresEncoder;
+			if(nnfe.isCompressFeatures())
+				nnfe.writeNameLookup(this.getPrintWriter(NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
 		}
 	}
 
