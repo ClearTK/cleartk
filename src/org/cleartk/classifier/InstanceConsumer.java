@@ -35,6 +35,8 @@ package org.cleartk.classifier;
  */
 public interface InstanceConsumer<OUTCOME_TYPE> {
 
+	public static final String PARAM_ANNOTATION_HANDLER = "org.cleartk.classifier.InstanceConsumer.PARAM_ANNOTATION_HANDLER";
+
 	/**
 	 * Consume the instance and return the outcome (classification) assigned to
 	 * the instance. If the consumer does not assign outcomes to instances (e.g.

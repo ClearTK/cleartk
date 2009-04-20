@@ -43,8 +43,6 @@ import org.cleartk.util.UIMAUtil;
  */
 public abstract class InstanceConsumer_ImplBase<OUTCOME_TYPE> extends JCasAnnotator_ImplBase implements InstanceConsumer<OUTCOME_TYPE>{
 
-	public static final String PARAM_ANNOTATION_HANDLER = "org.cleartk.classifier.InstanceConsumer.PARAM_ANNOTATION_HANDLER";
-
 	protected AnnotationHandler<OUTCOME_TYPE> annotationHandler;
 
 	@Override
