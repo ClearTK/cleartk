@@ -32,7 +32,7 @@ import org.cleartk.classifier.ClassifierBuilder;
 import org.cleartk.classifier.DataWriter_ImplBase;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.InstanceConsumer;
-import org.cleartk.example.ExamplePOSAnnotationHandler;
+import org.cleartk.example.pos.ExamplePOSAnnotationHandler;
 import org.junit.Assert;
 import org.junit.Test;
 
