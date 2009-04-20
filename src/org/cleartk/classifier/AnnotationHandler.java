@@ -25,7 +25,7 @@ package org.cleartk.classifier;
 
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
-import org.cleartk.example.ExamplePOSAnnotationHandler;
+import org.cleartk.example.pos.ExamplePOSAnnotationHandler;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
