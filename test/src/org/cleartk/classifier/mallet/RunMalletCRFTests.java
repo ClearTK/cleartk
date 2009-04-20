@@ -39,7 +39,7 @@ import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.InstanceConsumer;
 import org.cleartk.classifier.SequentialClassifier;
 import org.cleartk.classifier.Train;
-import org.cleartk.example.ExamplePOSAnnotationHandler;
+import org.cleartk.example.pos.ExamplePOSAnnotationHandler;
 import org.junit.Test;
 import org.uutuc.factory.UimaContextFactory;
 import org.uutuc.util.HideOutput;
