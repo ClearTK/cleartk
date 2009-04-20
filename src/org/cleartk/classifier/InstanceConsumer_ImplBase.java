@@ -43,12 +43,13 @@ import org.cleartk.util.UIMAUtil;
  */
 public abstract class InstanceConsumer_ImplBase<OUTCOME_TYPE> extends JCasAnnotator_ImplBase implements InstanceConsumer<OUTCOME_TYPE>{
 
+	public static final String PARAM_ANNOTATION_HANDLER = "org.cleartk.classifier.InstanceConsumer.PARAM_ANNOTATION_HANDLER";
+
 	protected AnnotationHandler<OUTCOME_TYPE> annotationHandler;
 
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-		annotationHandler = ReflectionUtil.uncheckedCast(UIMAUtil.create(
-				context, PARAM_ANNOTATION_HANDLER, AnnotationHandler.class));
+		annotationHandler = ReflectionUtil.uncheckedCast(UIMAUtil.create(context, PARAM_ANNOTATION_HANDLER, AnnotationHandler.class));
 	}
 
 	@Override
