@@ -70,10 +70,11 @@ public class MaxentDataWriterTests {
 	
 	@Test
 	public void testConsumeAll() throws Exception {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(MaxentDataWriter.class,
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(DataWriterAnnotator.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				InstanceConsumer.PARAM_ANNOTATION_HANDLER, "org.cleartk.example.ExamplePOSAnnotationHandler",
 				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, DefaultMaxentDataWriterFactory.class.getName(),
 				DataWriterAnnotator.PARAM_OUTCOME_FEATURE_EXTRACTOR, new String[] {"org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor"});
 
 		JCas jCas = engine.newJCas();
