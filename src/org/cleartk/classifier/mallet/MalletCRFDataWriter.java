@@ -52,16 +52,18 @@ import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
  */
 public class MalletCRFDataWriter extends SequentialDataWriter_ImplBase<String, String, List<NameNumber>> {
 
+	public static final String TRAINING_DATA_FILE_NAME ="training-data.malletcrf"; 
+
 	protected PrintWriter trainingDataWriter;
 
 	public MalletCRFDataWriter(File outputDirectory) throws IOException {
 		super(outputDirectory);
-		// initialize output writer and Classifier class
-		this.trainingDataWriter = this.getPrintWriter("training-data.malletcrf");
+		this.trainingDataWriter = this.getPrintWriter(TRAINING_DATA_FILE_NAME);
 	}
 	
 	@Override
 	public void finish() throws IOException {
+		super.finish();
 		if (featuresEncoder instanceof NameNumberFeaturesEncoder) {
 				NameNumberFeaturesEncoder dfe = (NameNumberFeaturesEncoder) featuresEncoder;
 				if(dfe.isCompressFeatures())
