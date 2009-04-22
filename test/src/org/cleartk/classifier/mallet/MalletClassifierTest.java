@@ -29,22 +29,25 @@ import static org.junit.Assert.assertNotNull;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import java.util.jar.JarFile;
 
+import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.jcas.JCas;
+import org.cleartk.classifier.AnnotationHandler;
 import org.cleartk.classifier.DataWriterAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.InstanceConsumer;
 import org.cleartk.classifier.Train;
-import org.cleartk.classifier.encoder.factory.NameNumberEncoderFactory;
-import org.cleartk.example.pos.ExamplePOSAnnotationHandler;
+import org.cleartk.util.TestsUtil;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.uutuc.factory.UimaContextFactory;
+import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.util.HideOutput;
+import org.uutuc.util.TearDownUtil;
 
 import cc.mallet.types.FeatureVector;
 /**
@@ -55,39 +58,57 @@ import cc.mallet.types.FeatureVector;
 * @author Philip Ogren
 */
 
-public class RunMalletTests {
-	Random random;
+public class MalletClassifierTest {
+	private Random random;
+	private String outputDirectory = "test/data/mallet/mallet-classifier";
 	
 	@Before
 	public void setUp() {
 		random = new Random(System.currentTimeMillis());
 	}
+
+	@After
+	public void tearDown() {
+		TearDownUtil.removeDirectory(new File(outputDirectory));
+	}
+
+	private static Instance<String> generateInstance(Random random){
+		Instance<String> instance = new Instance<String>();
+		
+		int outcome = random.nextInt(2);
+		if(outcome == 0) {
+			instance.setOutcome("A");
+			instance.add(new Feature("hello", random.nextInt(1000)+1000));
+		} else {
+			instance.setOutcome("B");
+			instance.add(new Feature("hello", random.nextInt(100)));
+		}
+		
+		return instance;
+	}
+
+	
+	public class TestHandler implements AnnotationHandler<String>{
+		Random random = new Random(System.currentTimeMillis());
+
+		public void process(JCas cas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException {
+			for(int i=0; i<1000; i++)
+				consumer.consume(generateInstance(random));
+		}
+	}
 	
 	@Test
 	public void runTest1() throws Exception {
-		String outputDirectory = "test/data/mallet/run-test-1"; 
+		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createAnalysisEngine(DataWriterAnnotator.class,
+				TestsUtil.getTypeSystemDescription(), InstanceConsumer.PARAM_ANNOTATION_HANDLER, TestHandler.class
+						.getName(), DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, DefaultMalletDataWriterFactory.class.getName());
 
-		DataWriterAnnotator<String> dataWriter = new DataWriterAnnotator<String>();
-		dataWriter.initialize(UimaContextFactory.createUimaContext(
-				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
-				ExamplePOSAnnotationHandler.class.getName(),
-				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY,
-				outputDirectory,
-				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS,
-				MalletDataWriter.class.getName()));
-		
-		List<Instance<String>> instances = new ArrayList<Instance<String>>();
-		
-		
-		for(int i=0; i<1000; i++)
-			instances.add(generateInstance());
-			
-		for (Instance<String> instance: instances) {
-			dataWriter.consume(instance);
-		}
-		dataWriter.collectionProcessComplete();
-		
-		BufferedReader reader = new BufferedReader(new FileReader(outputDirectory+"/training-data.mallet"));
+		JCas jCas = TestsUtil.getJCas();
+		dataWriterAnnotator.process(jCas);
+		dataWriterAnnotator.collectionProcessComplete();
+
+		BufferedReader reader = new BufferedReader(new FileReader(new File(outputDirectory, MalletDataWriter.TRAINING_DATA_FILE_NAME)));
 		reader.readLine();
 		reader.close();
 
@@ -114,7 +135,6 @@ public class RunMalletTests {
 		JarFile modelFile = new JarFile(new File(outputDirectory, "model.jar"));
 		MalletClassifier classifier = new MalletClassifier(modelFile);
 		
-		//they aren't the same because MaxEnt can't discriminate on a single feature
 		Instance<String> testInstance = new Instance<String>();
 		testInstance.add(new Feature("hello", random.nextInt(1000)+1000));
 		String outcome = classifier.classify(testInstance.getFeatures());
@@ -122,7 +142,6 @@ public class RunMalletTests {
 
 		testInstance = new Instance<String>();
 		testInstance.add(new Feature("hello", 95));
-		testInstance.add(new Feature("goodbye", 95));
 		outcome = classifier.classify(testInstance.getFeatures());
 		assertEquals("B", outcome);
 		
@@ -131,72 +150,4 @@ public class RunMalletTests {
 		assertEquals(95.0, fv.value("hello"), 0.001);
 	}
 
-	private Instance<String> generateInstance(){
-		Instance<String> instance = new Instance<String>();
-		
-		int outcome = random.nextInt(2);
-		if(outcome == 0) {
-			instance.setOutcome("A");
-			instance.add(new Feature("hello", random.nextInt(1000)+1000));
-		} else {
-			instance.setOutcome("B");
-			instance.add(new Feature("hello", random.nextInt(100)));
-		}
-		
-		return instance;
-	}
-
-	@Test
-	public void runTest2() throws Exception {
-		String outputDirectory = "test/data/mallet/run-test-2"; 
-		DataWriterAnnotator<String> dataWriter = new DataWriterAnnotator<String>();
-		dataWriter.initialize(UimaContextFactory.createUimaContext(
-				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
-				ExamplePOSAnnotationHandler.class.getName(),
-				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY,
-				outputDirectory,
-				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS,
-				MalletDataWriter.class.getName(),
-				NameNumberEncoderFactory.PARAM_COMPRESS,
-				true));
-		
-		List<Instance<String>> instances = new ArrayList<Instance<String>>();
-		
-		
-		for(int i=0; i<1000; i++)
-			instances.add(generateInstance());
-			
-		for (Instance<String> instance: instances) {
-			dataWriter.consume(instance);
-		}
-		dataWriter.collectionProcessComplete();
-
-		BufferedReader reader = new BufferedReader(new FileReader(outputDirectory+"/training-data.mallet"));
-		reader.readLine();
-		reader.close();
-
-		HideOutput hider = new HideOutput();
-		Train.main(new String[] {outputDirectory, "C45"});
-		hider.restoreOutput();
-		
-		JarFile modelFile = new JarFile(new File(outputDirectory, "model.jar"));
-		MalletClassifier classifier = new MalletClassifier(modelFile);
-		
-		//they aren't the same because MaxEnt can't discriminate on a single feature
-		Instance<String> testInstance = new Instance<String>();
-		testInstance.add(new Feature("hello", random.nextInt(1000)+1000));
-		String outcome = classifier.classify(testInstance.getFeatures());
-		assertEquals("A", outcome);
-
-		testInstance = new Instance<String>();
-		testInstance.add(new Feature("hello", 95));
-		testInstance.add(new Feature("goodbye", 95));
-		outcome = classifier.classify(testInstance.getFeatures());
-		assertEquals("B", outcome);
-		
-		cc.mallet.types.Instance malletInstance = classifier.toInstance(testInstance.getFeatures());
-		FeatureVector fv = (FeatureVector) malletInstance.getData();
-		assertEquals(95.0, fv.value("0"), 0.001);
-
-	}
 }
