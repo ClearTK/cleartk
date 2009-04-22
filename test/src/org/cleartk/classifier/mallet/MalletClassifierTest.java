@@ -36,6 +36,7 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.classifier.AnnotationHandler;
+import org.cleartk.classifier.ClassifierAnnotator;
 import org.cleartk.classifier.DataWriterAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
@@ -97,6 +98,22 @@ public class MalletClassifierTest {
 		}
 	}
 	
+	public class TestHandler1 implements AnnotationHandler<String>{
+		Random random = new Random(System.currentTimeMillis());
+
+		public void process(JCas cas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException {
+			Instance<String> testInstance = new Instance<String>();
+			testInstance.add(new Feature("hello", random.nextInt(1000)+1000));
+			String outcome = consumer.consume(testInstance);
+			assertEquals("A", outcome);
+
+			testInstance = new Instance<String>();
+			testInstance.add(new Feature("hello", 95));
+			outcome = consumer.consume(testInstance);
+			assertEquals("B", outcome);
+		}
+	}
+	
 	@Test
 	public void runTest1() throws Exception {
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createAnalysisEngine(DataWriterAnnotator.class,
@@ -148,6 +165,14 @@ public class MalletClassifierTest {
 		cc.mallet.types.Instance malletInstance = classifier.toInstance(testInstance.getFeatures());
 		FeatureVector fv = (FeatureVector) malletInstance.getData();
 		assertEquals(95.0, fv.value("hello"), 0.001);
+		
+		AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createAnalysisEngine(ClassifierAnnotator.class, TestsUtil.getTypeSystemDescription(),
+				InstanceConsumer.PARAM_ANNOTATION_HANDLER, TestHandler1.class.getName(),
+				ClassifierAnnotator.PARAM_CLASSIFIER_JAR, outputDirectory+"/model.jar");
+		jCas.reset();
+		classifierAnnotator.process(jCas);
+		classifierAnnotator.collectionProcessComplete();
+
 	}
 
 }
