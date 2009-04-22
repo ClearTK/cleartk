@@ -31,7 +31,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
 
 import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
-import org.cleartk.classifier.viterbi.ViterbiSequentialDataWriter;
+import org.cleartk.classifier.viterbi.ViterbiDataWriter;
 
 
 /**
@@ -72,7 +72,7 @@ public class BuildJar {
 			super(getOutputStream(dir), new ClassifierManifest(dir));
 			String fileName = FeaturesEncoder_ImplBase.ENCODER_FILE_NAME;
 			this.write(fileName, new File(dir, fileName));
-			fileName = ViterbiSequentialDataWriter.OUTCOME_FEATURE_EXTRACTOR_FILE_NAME;
+			fileName = ViterbiDataWriter.OUTCOME_FEATURE_EXTRACTOR_FILE_NAME;
 			this.write(fileName, new File(dir, fileName));
 		}
 		
