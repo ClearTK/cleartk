@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.mallet;
 
 import java.io.File;
@@ -34,47 +34,50 @@ import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
- * This training data consumer produces training data suitable for 
- * <a href="http://mallet.cs.umass.edu/index.php/SimpleTagger_example">
- * Mallet Conditional Random Field (CRF) tagger</a>.  
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
  * 
- * Each line of the training data contains a string representation of each feature followed
- * by the label/result for that instance.  
+ * 
+ * This training data consumer produces training data suitable for <a
+ * href="http://mallet.cs.umass.edu/index.php/SimpleTagger_example"> Mallet
+ * Conditional Random Field (CRF) tagger</a>.
+ * 
+ * Each line of the training data contains a string representation of each
+ * feature followed by the label/result for that instance.
  * 
  * @author Philip Ogren
  */
-public class MalletDataWriter extends DataWriter_ImplBase<String,String,List<NameNumber>> {
+public class MalletDataWriter extends DataWriter_ImplBase<String, String, List<NameNumber>> {
 
 	public MalletDataWriter(File outputDirectory) throws IOException {
 		super(outputDirectory);
 
 		// initialize output writer and Classifier class
 		this.trainingDataWriter = this.getPrintWriter("training-data.mallet");
-		
-		this.featuresEncoder.allowNewFeatures(true);
-	}
 
+	}
 
 	@Override
 	public void finish() throws IOException {
 		super.finish();
-		
+
 		if (featuresEncoder instanceof NameNumberFeaturesEncoder) {
 			NameNumberFeaturesEncoder dfe = (NameNumberFeaturesEncoder) featuresEncoder;
-			if(dfe.isCompressFeatures())
-				dfe.writeNameLookup(this.getPrintWriter(NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
+			if (dfe.isCompressFeatures()) dfe.writeNameLookup(this
+					.getPrintWriter(NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
 		}
 	}
 
-
 	@Override
-	public void writeEncoded(List<NameNumber> features, String outcome) {
-		for (NameNumber nameNumber : features) {
-			trainingDataWriter.print(nameNumber.name + ":" + nameNumber.number+" ");
+	public void writeEncoded(List<NameNumber> features, String outcome)  throws IOException{
+		if (features.size() == 0) {
+			trainingDataWriter.print("null:0 ");
+		}
+		else {
+			for (NameNumber nameNumber : features) {
+				trainingDataWriter.print(nameNumber.name + ":" + nameNumber.number + " ");
+			}
 		}
 		this.trainingDataWriter.print(outcome);
 		this.trainingDataWriter.println();
