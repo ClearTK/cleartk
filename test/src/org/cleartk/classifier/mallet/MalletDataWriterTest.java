@@ -34,7 +34,6 @@ public class MalletDataWriterTest {
 	@After
 	public void tearDown() {
 		TearDownUtil.removeDirectory(new File(outputDirectory));
-
 	}
 
 	public class TestHandler1 implements AnnotationHandler<String> {
