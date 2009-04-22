@@ -36,7 +36,7 @@ public abstract class FeaturesEncoder_ImplBase<ENCODED_FEATURES_TYPE, ENCODED_FE
 	
 	private static final long serialVersionUID = 2233783545101319775L;
 
-	public static final String ENCODER_FILE_NAME = "encoding.ser";
+	public static final String ENCODERS_FILE_NAME = "encoders.ser";
 
 	public abstract ENCODED_FEATURES_TYPE encodeAll(Iterable<Feature> features);
 	

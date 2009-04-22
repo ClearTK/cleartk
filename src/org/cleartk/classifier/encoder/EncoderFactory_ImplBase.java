@@ -72,7 +72,7 @@ public abstract class EncoderFactory_ImplBase implements EncoderFactory {
 				String outputDirectory = (String)UIMAUtil.getRequiredConfigParameterValue(
 						context, DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY);
 				File encoderFile = new File(
-						outputDirectory, FeaturesEncoder_ImplBase.ENCODER_FILE_NAME);
+						outputDirectory, FeaturesEncoder_ImplBase.ENCODERS_FILE_NAME);
 				
 				if (!encoderFile.exists()) {
 					throw new RuntimeException(String.format(

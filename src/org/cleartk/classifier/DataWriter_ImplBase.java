@@ -69,7 +69,7 @@ public abstract class DataWriter_ImplBase<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE,
 
 		// serialize the features encoder
 		ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(
-				getFile(FeaturesEncoder_ImplBase.ENCODER_FILE_NAME)));
+				getFile(FeaturesEncoder_ImplBase.ENCODERS_FILE_NAME)));
 		os.writeObject(this.featuresEncoder);
 		os.writeObject(this.outcomeEncoder);
 		os.close();

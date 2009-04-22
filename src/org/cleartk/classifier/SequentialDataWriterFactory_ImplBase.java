@@ -47,7 +47,7 @@ public abstract class SequentialDataWriterFactory_ImplBase implements Sequential
 				String outputDirectory = (String)UIMAUtil.getRequiredConfigParameterValue(
 						context, SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY);
 				File encoderFile = new File(
-						outputDirectory, FeaturesEncoder_ImplBase.ENCODER_FILE_NAME);
+						outputDirectory, FeaturesEncoder_ImplBase.ENCODERS_FILE_NAME);
 				
 				if (!encoderFile.exists()) {
 					throw new RuntimeException(String.format(

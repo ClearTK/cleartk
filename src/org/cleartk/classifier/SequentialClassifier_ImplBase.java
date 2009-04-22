@@ -51,7 +51,7 @@ public abstract class SequentialClassifier_ImplBase<INPUTOUTCOME_TYPE,OUTPUTOUTC
 	public SequentialClassifier_ImplBase(JarFile modelFile) throws IOException {
 		
 		// de-serialize the encoders
-		ZipEntry zipEntry = modelFile.getEntry(FeaturesEncoder_ImplBase.ENCODER_FILE_NAME);
+		ZipEntry zipEntry = modelFile.getEntry(FeaturesEncoder_ImplBase.ENCODERS_FILE_NAME);
 		ObjectInputStream is = new ObjectInputStream(modelFile.getInputStream(zipEntry));
 		FeaturesEncoder<?> genericFeaturesEncoder;
 		OutcomeEncoder<?,?> genericOutcomeEncoder;
