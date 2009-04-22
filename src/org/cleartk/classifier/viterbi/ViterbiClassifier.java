@@ -52,7 +52,7 @@ import org.cleartk.util.UIMAUtil;
  * All rights reserved.
  */
 
-public abstract class ViterbiSequentialClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUTCOME_TYPE>,
+public abstract class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUTCOME_TYPE>,
 		Initializable {
 
 	/**
@@ -86,11 +86,11 @@ public abstract class ViterbiSequentialClassifier<OUTCOME_TYPE> implements Seque
 
 	boolean viterbiAddScores = false;
 
-	public ViterbiSequentialClassifier(JarFile modelFile) throws IOException {
+	public ViterbiClassifier(JarFile modelFile) throws IOException {
 
 		classifier = ReflectionUtil.uncheckedCast(ClassifierFactory.createClassifierFromJar(modelFile.getName()));
 
-		ZipEntry zipEntry = modelFile.getEntry(ViterbiSequentialDataWriter.OUTCOME_FEATURE_EXTRACTOR_FILE_NAME);
+		ZipEntry zipEntry = modelFile.getEntry(ViterbiDataWriter.OUTCOME_FEATURE_EXTRACTOR_FILE_NAME);
 		if (zipEntry == null) {
 			outcomeFeatureExtractors = new OutcomeFeatureExtractor[0];
 		}
