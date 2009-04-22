@@ -23,20 +23,15 @@
  */
 package org.cleartk.classifier.mallet;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-import org.apache.uima.UimaContext;
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.ClassifierBuilder;
-import org.cleartk.classifier.DataWriter_ImplBase;
-import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.encoder.EncoderFactory;
-import org.cleartk.classifier.encoder.factory.NameNumberEncoderFactory;
-import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
+import org.cleartk.classifier.SequentialDataWriter_ImplBase;
 import org.cleartk.classifier.encoder.features.NameNumber;
+import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 
 
 /**
@@ -55,91 +50,43 @@ import org.cleartk.classifier.encoder.features.NameNumber;
  * @author Philip Ogren
  * @author Steven Bethard
  */
-public class MalletCRFDataWriter extends DataWriter_ImplBase<String, String, List<NameNumber>> {
+public class MalletCRFDataWriter extends SequentialDataWriter_ImplBase<String, String, List<NameNumber>> {
 
 	protected PrintWriter trainingDataWriter;
 
-	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		super.initialize(context);
-
+	public MalletCRFDataWriter(File outputDirectory) throws IOException {
+		super(outputDirectory);
 		// initialize output writer and Classifier class
 		this.trainingDataWriter = this.getPrintWriter("training-data.malletcrf");
 	}
+	
+	@Override
+	public void finish() throws IOException {
+		if (featuresEncoder instanceof NameNumberFeaturesEncoder) {
+				NameNumberFeaturesEncoder dfe = (NameNumberFeaturesEncoder) featuresEncoder;
+				if(dfe.isCompressFeatures())
+					dfe.writeNameLookup(this.getPrintWriter(NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
+		}
+	}
 
-	/**
-	 * Please do not call this method from your annotation handler. It is public
-	 * as a side-effect of the API. Instead, please call consumeAll().   
-	 * 
-	 * Generating
-	 * training data for a sequential learner is essentially the same as it is
-	 * for non-sequential learner. However, it does not make sense to include
-	 * previous tags as features as you would for e.g. maxent or svm. The
-	 * annotator that calls this method should know whether the training data
-	 * consumer is sequential or not.
-	 * 
-	 * 
-	 * <p>
-	 * @see #consumeSequence(List)
-	 */
-	public String consume(Instance<String> instance) {
-		List<NameNumber> nameNumbers = this.featuresEncoder.encodeAll(instance.getFeatures());
-		for (NameNumber nameNumber : nameNumbers) {
+	public Class<? extends ClassifierBuilder<String>> getDefaultClassifierBuilderClass() {
+		return MalletCRFClassifierBuilder.class;
+	}
+
+
+	@Override
+	public void writeEncoded(List<NameNumber> features, String outcome) {
+		for (NameNumber nameNumber : features) {
 			this.trainingDataWriter.print(nameNumber.name);
 			this.trainingDataWriter.print(" ");
 		}
 
-		String outcomeString = this.outcomeEncoder.encode(instance.getOutcome());
-
-		this.trainingDataWriter.print(outcomeString);
+		this.trainingDataWriter.print(outcome);
 		this.trainingDataWriter.println();
-
-		// no labels created
-		return null;
 	}
 
-	/**
-	 * A blank line must separate each sequence which this method provides.   Make sure you are
-	 * calling consumeAll() (this method) and not consume().
-	 */
 	@Override
-	public List<String> consumeSequence(List<Instance<String>> instances) {
-		List<String> result = super.consumeSequence(instances);
-
-		// add a newline after all instances
+	public void writeEndSequence() {
 		this.trainingDataWriter.println();
-
-		// return whatever the superclass returned
-		return result;
-	}
-
-	@Override
-	public void collectionProcessComplete() throws AnalysisEngineProcessException {
-		if (featuresEncoder instanceof NameNumberFeaturesEncoder) {
-			try {
-				NameNumberFeaturesEncoder dfe = (NameNumberFeaturesEncoder) featuresEncoder;
-				if(dfe.isCompressFeatures())
-					dfe.writeNameLookup(this.getPrintWriter(NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
-			}
-			catch (ResourceInitializationException e) {
-				throw new AnalysisEngineProcessException(e);
-			}
-			catch (IOException e) {
-				throw new AnalysisEngineProcessException(e);
-			}
-		}
-		
-		super.collectionProcessComplete();
-	}
-
-	
-	@Override
-	protected Class<? extends ClassifierBuilder<? extends String>> getDefaultClassifierBuilderClass() {
-		return MalletCRFClassifierBuilder.class;
-	}
-
-	@Override
-	protected Class<? extends EncoderFactory> getDefaultEncoderFactoryClass() {
-		return NameNumberEncoderFactory.class;
 	}
 }
