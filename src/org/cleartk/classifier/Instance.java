@@ -42,9 +42,23 @@ public class Instance<OUTCOME_TYPE> {
 	 */
 	public Instance() {
 		this.features = new ArrayList<Feature>();
-		this.outcome = null;
 	}
 	
+	public Instance(OUTCOME_TYPE outcome) {
+		this();
+		this.outcome = outcome;
+	}
+
+	public Instance(OUTCOME_TYPE outcome, 	Collection<Feature> features) {
+		this(outcome);
+		addAll(features);
+	}
+
+	public Instance(Collection<Feature> features) {
+		this();
+		addAll(features);
+	}
+
 	/**
 	 * Get the list of features for this instance.
 	 * @return The list of features
@@ -86,6 +100,6 @@ public class Instance<OUTCOME_TYPE> {
 	}
 
 	private List<Feature> features;
-	private OUTCOME_TYPE outcome;
+	private OUTCOME_TYPE outcome = null;
 	
 }
