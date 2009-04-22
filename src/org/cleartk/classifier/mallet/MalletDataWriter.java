@@ -50,11 +50,12 @@ import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
  */
 public class MalletDataWriter extends DataWriter_ImplBase<String, String, List<NameNumber>> {
 
+	public static final String TRAINING_DATA_FILE_NAME ="training-data.mallet"; 
 	public MalletDataWriter(File outputDirectory) throws IOException {
 		super(outputDirectory);
 
 		// initialize output writer and Classifier class
-		this.trainingDataWriter = this.getPrintWriter("training-data.mallet");
+		this.trainingDataWriter = this.getPrintWriter(TRAINING_DATA_FILE_NAME);
 
 	}
 
@@ -71,6 +72,9 @@ public class MalletDataWriter extends DataWriter_ImplBase<String, String, List<N
 
 	@Override
 	public void writeEncoded(List<NameNumber> features, String outcome)  throws IOException{
+		if(outcome == null) {
+			throw new IOException("all consumed instances must have an outcome.  outcome="+outcome);
+		}
 		if (features.size() == 0) {
 			trainingDataWriter.print("null:0 ");
 		}
