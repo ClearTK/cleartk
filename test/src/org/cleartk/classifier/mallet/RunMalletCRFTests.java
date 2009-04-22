@@ -33,11 +33,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.jar.JarFile;
 
-import org.cleartk.classifier.DataWriterAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.InstanceConsumer;
 import org.cleartk.classifier.SequentialClassifier;
+import org.cleartk.classifier.SequentialDataWriterAnnotator;
+import org.cleartk.classifier.SequentialInstanceConsumer;
 import org.cleartk.classifier.Train;
 import org.cleartk.example.pos.ExamplePOSAnnotationHandler;
 import org.junit.Test;
@@ -57,14 +57,12 @@ public class RunMalletCRFTests {
 	@Test
 	public void runTest1() throws Exception {
 		String outputDirectory = "test/data/mallet/run-crf-test-1"; 
-		DataWriterAnnotator<String> dataWriter = new DataWriterAnnotator<String>();
+
+		SequentialDataWriterAnnotator<String> dataWriter = new SequentialDataWriterAnnotator<String>();
 		dataWriter.initialize(UimaContextFactory.createUimaContext(
-				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
-				ExamplePOSAnnotationHandler.class.getName(),
-				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY,
-				outputDirectory,
-				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS,
-				MalletCRFDataWriter.class.getName()));
+				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER, ExamplePOSAnnotationHandler.class.getName(),
+				SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				SequentialDataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, DefaultMalletCRFDataWriterFactory.class.getName()));
 		
 		List<Instance<String>> instances = new ArrayList<Instance<String>>();
 		instances.add(createInstance("O Word_Three LCWord_three CapitalType_INITIAL_UPPERCASE L0OOB1 L1OOB2 R0_sequence R0_TypePath_Pos_NN R0_TypePath_Stem_sequenc R1_elements R1_TypePath_Pos_NNS R1_TypePath_Stem_element TypePath_Pos_CD TypePath_Stem_Three PrevNEMTokenLabel_L0OOB1 PrevNEMTokenLabel_L1OOB2"));
@@ -111,9 +109,7 @@ public class RunMalletCRFTests {
 		instances.add(createInstance("O Word_. LCWord_. L0_cells L0_TypePath_Pos_NNS L0_TypePath_Stem_cell L1_3T6 L1_TypePath_Pos_CD L1_TypePath_Stem_3T6 R0OOB1 R1OOB2 TypePath_Pos_. TypePath_Stem_. PrevNEMTokenLabel_L0_O PrevNEMTokenLabel_L1_O"));
 		
 		for(int i=0; i<100; i++) {
-			for (Instance<String> instance: instances) {
-				dataWriter.consume(instance);
-			}
+			dataWriter.consumeSequence(instances);
 		}
 		dataWriter.collectionProcessComplete();
 		
