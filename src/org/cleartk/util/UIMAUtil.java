@@ -199,8 +199,15 @@ public class UIMAUtil
 		// create a new instance
 		T instance;
 		try {
-			Class<?> cls = Class.forName((String) className);
-			instance = cls.asSubclass(superClass).newInstance();
+			Class<? extends T> cls = Class.forName((String) className).asSubclass(superClass);
+			
+			if(cls.isMemberClass()) {
+				Class<?> declaringClass = cls.getDeclaringClass();
+				Object declaringInstance = declaringClass.newInstance();
+				instance =cls.getConstructor(new Class[]{declaringInstance.getClass()}).newInstance(new Object[]{declaringInstance});
+			} else {
+				instance = cls.newInstance();
+			}
 		} catch (Exception e) {
 			throw new ResourceInitializationException(e);
 		}

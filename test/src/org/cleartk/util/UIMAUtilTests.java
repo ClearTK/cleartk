@@ -24,15 +24,20 @@
 package org.cleartk.util;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.util.List;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.classifier.AnnotationHandler;
+import org.cleartk.classifier.InstanceConsumer;
+import org.cleartk.classifier.mallet.DefaultMalletDataWriterFactory;
 import org.cleartk.type.Token;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
@@ -90,4 +95,27 @@ public class UIMAUtilTests {
 
 	}
 
+
+	public class TestHandler implements AnnotationHandler<String>{
+
+		public void process(JCas cas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException {
+		}
+		
+	}
+
+	@Test
+	public void testCreate() throws ResourceInitializationException {
+		UimaContext context = UimaContextFactory.createUimaContext("StringParam", "java.lang.String");
+		String createdString = UIMAUtil.create(context, "StringParam", String.class);
+		assertNotNull(createdString);
+		
+		context = UimaContextFactory.createUimaContext(InstanceConsumer.PARAM_ANNOTATION_HANDLER, TestHandler.class.getName());
+		AnnotationHandler<?> annotationHandler = UIMAUtil.create(context, InstanceConsumer.PARAM_ANNOTATION_HANDLER, AnnotationHandler.class);
+		assertNotNull(annotationHandler);
+
+		context = UimaContextFactory.createUimaContext(InstanceConsumer.PARAM_ANNOTATION_HANDLER, "org.cleartk.util.UIMAUtilTests$TestHandler");
+		annotationHandler = UIMAUtil.create(context, InstanceConsumer.PARAM_ANNOTATION_HANDLER, AnnotationHandler.class);
+		assertNotNull(annotationHandler);
+
+	}
 }
