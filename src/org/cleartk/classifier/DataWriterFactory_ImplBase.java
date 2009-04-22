@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 
 import org.apache.uima.UimaContext;
+import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
@@ -38,7 +39,7 @@ public abstract class DataWriterFactory_ImplBase implements DataWriterFactory {
 
 	public static final String PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM = "org.cleartk.classifier.DataWriterFactory_ImplBase.PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM";
 
-	public void initialize(UimaContext context) {
+	public void initialize(UimaContext context)  throws ResourceInitializationException{
 		boolean loadEncoders = (Boolean)UIMAUtil.getDefaultingConfigParameterValue(
 				context, DataWriterFactory_ImplBase.PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM, false);
 		if (loadEncoders) {
@@ -59,8 +60,7 @@ public abstract class DataWriterFactory_ImplBase implements DataWriterFactory {
 				this.outcomeEncoder = (OutcomeEncoder<?,?>) is.readObject();
 				is.close();
 			} catch (Exception e) {
-				// FIXME: improve exception handling
-				throw new RuntimeException(e);
+				throw new ResourceInitializationException(e);
 			}
 		} else {
 			this.featuresEncoder = null;
