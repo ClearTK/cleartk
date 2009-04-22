@@ -33,37 +33,130 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.jar.JarFile;
 
+import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.jcas.JCas;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.SequentialAnnotationHandler;
 import org.cleartk.classifier.SequentialClassifier;
+import org.cleartk.classifier.SequentialClassifierAnnotator;
 import org.cleartk.classifier.SequentialDataWriterAnnotator;
 import org.cleartk.classifier.SequentialInstanceConsumer;
 import org.cleartk.classifier.Train;
-import org.cleartk.example.pos.ExamplePOSAnnotationHandler;
+import org.cleartk.util.TestsUtil;
+import org.junit.After;
 import org.junit.Test;
-import org.uutuc.factory.UimaContextFactory;
+import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.util.HideOutput;
+import org.uutuc.util.TearDownUtil;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
-* 
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * One thing that may seem confusing about the code below is why I didn't create
+ * a single List of instances to be shared by the two annotation handlers and
+ * the test method. The reason is that there are three instances of
+ * MalletCRFClassifierTest that are created when this test is run. The first can
+ * be accessed with 'this' in the test method. The other two are created when
+ * the annotation handler is created by UIMAUtil.create(). Therefore, sharing
+ * instance data at the MalletCRFClassifierTest level is not going to work.
+ * 
  * @author Philip Ogren
  */
 
-public class RunMalletCRFTests {
+public class MalletCRFClassifierTest {
 
+	public class TestHandler implements SequentialAnnotationHandler<String>{
+		public void process(JCas cas, SequentialInstanceConsumer<String> consumer) throws AnalysisEngineProcessException {
+			List<Instance<String>> instances =  createInstances();
+			//consume 100 identical sequences
+			for(int i=0; i<100; i++) {
+				consumer.consumeSequence(instances);
+			}
+		}
+	}
+	
+	public class TestHandler1 implements SequentialAnnotationHandler<String>{
+		public void process(JCas cas, SequentialInstanceConsumer<String> consumer) throws AnalysisEngineProcessException {
+			List<Instance<String>> instances =  createInstances();
+			List<String> outcomes =	consumer.consumeSequence(instances);
+			assertEquals(instances.size(), outcomes.size());
+			testLabels(outcomes, "O O O O O O O O O O O O O O O B-GENE I-GENE I-GENE O B-GENE I-GENE O O O O O O O O O O O O O O O O O O O O O");
+		}
+	}
+
+	private String outputDirectory = "test/data/mallet/mallet-crf-classifier";
+
+	@After
+	public void tearDown() {
+		TearDownUtil.removeDirectory(new File(outputDirectory));
+	}
+	
 	@Test
 	public void runTest1() throws Exception {
-		String outputDirectory = "test/data/mallet/run-crf-test-1"; 
 
-		SequentialDataWriterAnnotator<String> dataWriter = new SequentialDataWriterAnnotator<String>();
-		dataWriter.initialize(UimaContextFactory.createUimaContext(
-				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER, ExamplePOSAnnotationHandler.class.getName(),
+		AnalysisEngine sequentialDataWriterAnnotator = AnalysisEngineFactory.createAnalysisEngine(SequentialDataWriterAnnotator.class,
+				TestsUtil.getTypeSystemDescription(), 
+				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER, TestHandler.class.getName(), 
 				SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
-				SequentialDataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, DefaultMalletCRFDataWriterFactory.class.getName()));
+				SequentialDataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, DefaultMalletCRFDataWriterFactory.class.getName());
+
+		JCas jCas = TestsUtil.getJCas();
+		sequentialDataWriterAnnotator.process(jCas);
+		sequentialDataWriterAnnotator.collectionProcessComplete();
+
+		BufferedReader reader = new BufferedReader(new FileReader(new File(outputDirectory, MalletCRFDataWriter.TRAINING_DATA_FILE_NAME)));
+		reader.readLine();
+		reader.close();
+		HideOutput hider = new HideOutput();
+		Train.main(new String[] {outputDirectory});
+		hider.restoreOutput();
 		
+		
+		JarFile modelFile = new JarFile(new File(outputDirectory, "model.jar"));
+		MalletCRFClassifier classifier = new MalletCRFClassifier(modelFile);
+		assertTrue(classifier instanceof SequentialClassifier);
+		
+		List<List<Feature>> sequenceFeatures = new ArrayList<List<Feature>>();
+		List<Instance<String>> instances = createInstances();
+		for(Instance<String> instance : instances) {
+			sequenceFeatures.add(instance.getFeatures());
+		}
+		
+		List<String> outcomes = classifier.classifySequence(sequenceFeatures);
+		assertEquals(sequenceFeatures.size(), outcomes.size());
+		testLabels(outcomes, "O O O O O O O O O O O O O O O B-GENE I-GENE I-GENE O B-GENE I-GENE O O O O O O O O O O O O O O O O O O O O O");
+		
+		AnalysisEngine sequentialClassifierAnnotator = AnalysisEngineFactory.createAnalysisEngine(SequentialClassifierAnnotator.class, TestsUtil.getTypeSystemDescription(),
+				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER, TestHandler1.class.getName(),
+				SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR, outputDirectory+"/model.jar");
+		jCas.reset();
+		sequentialClassifierAnnotator.process(jCas);
+		sequentialClassifierAnnotator.collectionProcessComplete();
+
+	}
+
+	private void testLabels(List<String> outcomes, String expectedData) {
+		String[] expectedValues = expectedData.split(" ");
+		assertEquals(expectedValues.length, outcomes.size());
+		for(int i=0; i<expectedValues.length; i++) {
+			assertEquals(String.format("missed label %1$d:", i),expectedValues[i], outcomes.get(i));
+		}
+	}
+	private static Instance<String> createInstance(String data){
+		Instance<String> instance = new Instance<String>();
+		String[] columns = data.split(" ");
+		instance.setOutcome(columns[0]);
+		for(int i=1; i<columns.length; i++) {
+			instance.add(new Feature(columns[i]));
+		}
+		return instance;
+	}
+
+	private static List<Instance<String>> createInstances(){
 		List<Instance<String>> instances = new ArrayList<Instance<String>>();
 		instances.add(createInstance("O Word_Three LCWord_three CapitalType_INITIAL_UPPERCASE L0OOB1 L1OOB2 R0_sequence R0_TypePath_Pos_NN R0_TypePath_Stem_sequenc R1_elements R1_TypePath_Pos_NNS R1_TypePath_Stem_element TypePath_Pos_CD TypePath_Stem_Three PrevNEMTokenLabel_L0OOB1 PrevNEMTokenLabel_L1OOB2"));
 		instances.add(createInstance("O Word_sequence LCWord_sequence CapitalType_ALL_LOWERCASE Prefix3_seq Suffix3_nce Suffix4_ence Suffix5_uence L0_Three L0_TypePath_Pos_CD L0_TypePath_Stem_Three L1OOB1 R0_elements R0_TypePath_Pos_NNS R0_TypePath_Stem_element R1_are R1_TypePath_Pos_VBP R1_TypePath_Stem_are TypePath_Pos_NN TypePath_Stem_sequenc PrevNEMTokenLabel_L0_O PrevNEMTokenLabel_L1OOB1"));
@@ -107,49 +200,7 @@ public class RunMalletCRFTests {
 		instances.add(createInstance("O Word_3T6 LCWord_3t6 CapitalType_ALL_UPPERCASE NumericType_ALPHANUMERIC L0_into L0_TypePath_Pos_IN L0_TypePath_Stem_into L1_constructs L1_TypePath_Pos_NNS L1_TypePath_Stem_construct R0_cells R0_TypePath_Pos_NNS R0_TypePath_Stem_cell R1_. R1_TypePath_Pos_. R1_TypePath_Stem_. TypePath_Pos_CD TypePath_Stem_3T6 PrevNEMTokenLabel_L0_O PrevNEMTokenLabel_L1_O"));
 		instances.add(createInstance("O Word_cells LCWord_cells CapitalType_ALL_LOWERCASE L0_3T6 L0_TypePath_Pos_CD L0_TypePath_Stem_3T6 L1_into L1_TypePath_Pos_IN L1_TypePath_Stem_into R0_. R0_TypePath_Pos_. R0_TypePath_Stem_. R1OOB1 TypePath_Pos_NNS TypePath_Stem_cell PrevNEMTokenLabel_L0_O PrevNEMTokenLabel_L1_O"));
 		instances.add(createInstance("O Word_. LCWord_. L0_cells L0_TypePath_Pos_NNS L0_TypePath_Stem_cell L1_3T6 L1_TypePath_Pos_CD L1_TypePath_Stem_3T6 R0OOB1 R1OOB2 TypePath_Pos_. TypePath_Stem_. PrevNEMTokenLabel_L0_O PrevNEMTokenLabel_L1_O"));
-		
-		for(int i=0; i<100; i++) {
-			dataWriter.consumeSequence(instances);
-		}
-		dataWriter.collectionProcessComplete();
-		
-		BufferedReader reader = new BufferedReader(new FileReader(outputDirectory+"/training-data.malletcrf"));
-		reader.readLine();
-		reader.close();
-		HideOutput hider = new HideOutput();
-		Train.main(new String[] {outputDirectory});
-		hider.restoreOutput();
-		
-		JarFile modelFile = new JarFile(new File(outputDirectory, "model.jar"));
-		MalletCRFClassifier classifier = new MalletCRFClassifier(modelFile);
-		assertTrue(classifier instanceof SequentialClassifier);
-		
-		List<List<Feature>> sequenceFeatures = new ArrayList<List<Feature>>();
-		for(Instance<String> instance : instances) {
-			sequenceFeatures.add(instance.getFeatures());
-		}
-		
-		List<String> outcomes = classifier.classifySequence(sequenceFeatures);
-		assertEquals(sequenceFeatures.size(), outcomes.size());
-		testLabels(outcomes, "O O O O O O O O O O O O O O O B-GENE I-GENE I-GENE O B-GENE I-GENE O O O O O O O O O O O O O O O O O O O O O");
-
-	}
-
-	private void testLabels(List<String> outcomes, String expectedData) {
-		String[] expectedValues = expectedData.split(" ");
-		assertEquals(expectedValues.length, outcomes.size());
-		for(int i=0; i<expectedValues.length; i++) {
-			assertEquals(String.format("missed label %1$d:", i),expectedValues[i], outcomes.get(i));
-		}
-	}
-	private Instance<String> createInstance(String data){
-		Instance<String> instance = new Instance<String>();
-		String[] columns = data.split(" ");
-		instance.setOutcome(columns[0]);
-		for(int i=1; i<columns.length; i++) {
-			instance.add(new Feature(columns[i]));
-		}
-		return instance;
+		return instances;
 	}
 
 }
