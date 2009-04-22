@@ -60,7 +60,7 @@ public class MalletClassifierBuilder implements ClassifierBuilder<String> {
 			factoryClass = createTrainerFactory(factoryName2);
 		}
 		if(factoryClass == null) {
-			throw new IllegalArgumentException(String.format("name for classifier trainer factory is not valid: name given ='%1$s'", factoryName));
+			throw new IllegalArgumentException(String.format("name for classifier trainer factory is not valid: name given ='%s'.  Valid classifier names include: %s, %s, %s, and %s", factoryName, ClassifierTrainerFactory.NAMES[0], ClassifierTrainerFactory.NAMES[1], ClassifierTrainerFactory.NAMES[2], ClassifierTrainerFactory.NAMES[3]));
 		}
 		
 		String[] factoryArgs = new String[args.length - 1];
