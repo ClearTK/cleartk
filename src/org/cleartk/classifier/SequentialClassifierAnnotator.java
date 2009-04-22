@@ -79,14 +79,14 @@ public class SequentialClassifierAnnotator<OUTCOME_TYPE> extends SequentialInsta
 		try {
 			SequentialClassifier<?> untypedClassifier = ClassifierFactory.createSequentialClassifierFromJar(jarPath);
 			Type classifierLabelType = ReflectionUtil.getTypeArgument(
-					Classifier.class, "OUTCOME_TYPE", untypedClassifier);
+					SequentialClassifier.class, "OUTCOME_TYPE", untypedClassifier);
 			Type annotationHandlerLabelType = ReflectionUtil.getTypeArgument(
-					AnnotationHandler.class, "OUTCOME_TYPE", annotationHandler);
+					SequentialAnnotationHandler.class, "OUTCOME_TYPE", annotationHandler);
 
 			if (!ReflectionUtil.isAssignableFrom(annotationHandlerLabelType, classifierLabelType)) {
-				throw new RuntimeException(String.format(
+				throw new ResourceInitializationException(String.format(
 						"%s classifier is incompatible with %s annotation handler",
-						classifierLabelType, annotationHandlerLabelType));
+						classifierLabelType, annotationHandlerLabelType), null);
 			}
 			
 			this.classifier = ReflectionUtil.uncheckedCast(untypedClassifier);
