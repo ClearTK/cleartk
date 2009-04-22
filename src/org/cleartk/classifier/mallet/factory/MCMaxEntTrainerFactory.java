@@ -37,6 +37,8 @@ import cc.mallet.classify.MCMaxEntTrainer;
 
 public class MCMaxEntTrainerFactory implements ClassifierTrainerFactory<MCMaxEnt> {
 
+	public static final String NAME = "MCMaxEnt";
+
 	public ClassifierTrainer<MCMaxEnt> createTrainer(String... args) {
 		MCMaxEntTrainer trainer = new MCMaxEntTrainer();
 		if(args != null) {

@@ -37,6 +37,8 @@ import cc.mallet.classify.NaiveBayesTrainer;
 
 public class NaiveBayesTrainerFactory implements ClassifierTrainerFactory<NaiveBayes> {
 
+	public static final String NAME = "NaiveBayes";
+
 	public ClassifierTrainer<NaiveBayes> createTrainer(String... args) {
 		NaiveBayesTrainer trainer = new NaiveBayesTrainer();
 		if(args != null) {

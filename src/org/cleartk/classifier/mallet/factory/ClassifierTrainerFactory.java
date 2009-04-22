@@ -36,6 +36,7 @@ import cc.mallet.classify.ClassifierTrainer;
 
 public interface ClassifierTrainerFactory <C extends Classifier>{
 
+	public static final String[] NAMES = new String[] { C45TrainerFactory.NAME, MaxEntTrainerFactory.NAME, MCMaxEntTrainerFactory.NAME, NaiveBayesTrainerFactory.NAME};
 	public ClassifierTrainer<C> createTrainer(String...args);
 	
 	public String getUsageMessage();

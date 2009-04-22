@@ -37,6 +37,8 @@ import cc.mallet.classify.ClassifierTrainer;
 
 public class C45TrainerFactory implements ClassifierTrainerFactory<C45> {
 
+	public static final String NAME = "C45";
+	
 	public ClassifierTrainer<C45> createTrainer(String... args) {
 		C45Trainer trainer = new C45Trainer();
 		if(args != null) {

@@ -37,6 +37,8 @@ import cc.mallet.classify.MaxEntTrainer;
 
 public class MaxEntTrainerFactory implements ClassifierTrainerFactory<MaxEnt>{
 
+	public static final String NAME = "MaxEnt";
+	
 	public ClassifierTrainer<MaxEnt> createTrainer(String... args) {
 		MaxEntTrainer trainer = new MaxEntTrainer();
 		if(args != null) {
