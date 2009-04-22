@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.util;
 
 import java.io.IOException;
@@ -41,90 +41,92 @@ import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.Initializable;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * 
  * @author Philip Ogren
  * @author Philipp Wetzler
  * @author Steven Bethard
- *
+ * 
  */
-public class UIMAUtil
-{
-	public static FSArray toFSArray(JCas jCas, List<? extends FeatureStructure> fsList)
-	{
-		if(fsList == null) {
+public class UIMAUtil {
+	public static FSArray toFSArray(JCas jCas, List<? extends FeatureStructure> fsList) {
+		if (fsList == null) {
 			return new FSArray(jCas, 0);
 		}
 		FSArray fsArray = new FSArray(jCas, fsList.size());
 		fsArray.copyFromArray(fsList.toArray(new FeatureStructure[fsList.size()]), 0, 0, fsList.size());
 		return fsArray;
 	}
-	
+
 	public static StringArray toStringArray(JCas jCas, String[] sArray) {
 		StringArray uimaSArray = new StringArray(jCas, sArray.length);
 		uimaSArray.copyFromArray(sArray, 0, 0, sArray.length);
 		return uimaSArray;
 	}
-	
+
 	public static <T extends FeatureStructure> List<T> toList(FSArray fsArray, Class<T> cls) {
 		List<T> list = new ArrayList<T>();
-		
-		if(fsArray == null) {
+
+		if (fsArray == null) {
 			return list;
 		}
-		
-		for( FeatureStructure fs : fsArray.toArray() ) {
-			list.add( cls.cast(fs) );
+
+		for (FeatureStructure fs : fsArray.toArray()) {
+			list.add(cls.cast(fs));
 		}
 		return list;
-		
+
 	}
-	
+
 	public static Type getCasType(JCas jCas, Class<? extends TOP> cls) {
 		try {
 			return jCas.getCasType(cls.getField("type").getInt(null));
-		} catch (IllegalAccessException e) {
+		}
+		catch (IllegalAccessException e) {
 			throw new IllegalArgumentException(e);
-		} catch (NoSuchFieldException e) {
+		}
+		catch (NoSuchFieldException e) {
 			throw new IllegalArgumentException(e);
 		}
 	}
-	
-	public static String readSofa(JCas view) throws IOException
-	{
+
+	public static String readSofa(JCas view) throws IOException {
 		InputStream in = view.getSofaDataStream();
 		StringBuffer tmp = new StringBuffer();
-	    byte[] b = new byte[4096];
-	    for (int n; (n = in.read(b)) != -1;) {
-	        tmp.append(new String(b, 0, n));
-	    }
+		byte[] b = new byte[4096];
+		for (int n; (n = in.read(b)) != -1;) {
+			tmp.append(new String(b, 0, n));
+		}
 		return tmp.toString();
 	}
-	
+
 	/**
 	 * Get a configuration parameter value, raising an exception if it was not
 	 * specified.
 	 * 
-	 * @param context   The UIMAContext where the parameter should be defined.
-	 * @param paramName The name of the parameter.
-	 * @return          The value of the named parameter.
+	 * @param context
+	 *            The UIMAContext where the parameter should be defined.
+	 * @param paramName
+	 *            The name of the parameter.
+	 * @return The value of the named parameter.
 	 * @throws ResourceInitializationException
 	 */
 	public static Object getRequiredConfigParameterValue(UimaContext context, String paramName)
-	throws ResourceInitializationException {
+			throws ResourceInitializationException {
 		Object paramValue = context.getConfigParameterValue(paramName);
 		if (paramValue == null) {
 			String key = ResourceInitializationException.CONFIG_SETTING_ABSENT;
-			throw new ResourceInitializationException(key, new Object[]{paramName});
-		} else if(paramValue instanceof String) {
+			throw new ResourceInitializationException(key, new Object[] { paramName });
+		}
+		else if (paramValue instanceof String) {
 			String str = (String) paramValue;
-			if(str.trim().equals("")) {
+			if (str.trim().equals("")) {
 				String key = ResourceInitializationException.CONFIG_SETTING_ABSENT;
-				throw new ResourceInitializationException(key, new Object[]{paramName});
+				throw new ResourceInitializationException(key, new Object[] { paramName });
 			}
 		}
 		return paramValue;
@@ -134,25 +136,27 @@ public class UIMAUtil
 	 * Get a configuration parameter value, supplying a default if it was not
 	 * specified.
 	 * 
-	 * @param context      The UIMAContext where the parameter should be defined.
-	 * @param paramName    The name of the parameter.
-	 * @param defaultValue The value to use if the parameter was not specified.
-	 * @return             The value of the named parameter.
+	 * @param context
+	 *            The UIMAContext where the parameter should be defined.
+	 * @param paramName
+	 *            The name of the parameter.
+	 * @param defaultValue
+	 *            The value to use if the parameter was not specified.
+	 * @return The value of the named parameter.
 	 */
 	public static Object getDefaultingConfigParameterValue(UimaContext context, String paramName, Object defaultValue) {
 		Object paramValue = context.getConfigParameterValue(paramName);
 		if (paramValue == null) {
 			paramValue = defaultValue;
-		} else if(paramValue instanceof String) {
+		}
+		else if (paramValue instanceof String) {
 			String str = (String) paramValue;
-			if(str.trim().equals(""))
-				paramValue = defaultValue;
-		} else if(paramValue instanceof String[]) {
+			if (str.trim().equals("")) paramValue = defaultValue;
+		}
+		else if (paramValue instanceof String[]) {
 			String[] strs = (String[]) paramValue;
-			if(strs.length == 0)
-				paramValue = defaultValue;
-			if(strs.length == 1 && strs[0].trim().equals(""))
-				paramValue = defaultValue;
+			if (strs.length == 0) paramValue = defaultValue;
+			if (strs.length == 1 && strs[0].trim().equals("")) paramValue = defaultValue;
 		}
 		return paramValue;
 	}
@@ -160,64 +164,86 @@ public class UIMAUtil
 	/**
 	 * Create a JCas view from a CAS for a given view name.
 	 * 
-	 * @param cas      The CAS object from which the JCas view should be derived.
-	 * @param viewName The name of the JCas view. If null, the default JCas view
-	 *                 will be returned instead. (No new view will be created.) 
-	 * @return         The JCas view.
+	 * @param cas
+	 *            The CAS object from which the JCas view should be derived.
+	 * @param viewName
+	 *            The name of the JCas view. If null, the default JCas view will
+	 *            be returned instead. (No new view will be created.)
+	 * @return The JCas view.
 	 * @throws CollectionException
 	 */
 	public static JCas createJCasView(CAS cas, String viewName) throws CollectionException {
 		try {
 			if (viewName == null || viewName.trim().equals("")) {
 				return cas.getJCas();
-			} else {
+			}
+			else {
 				return cas.createView(viewName).getJCas();
 			}
-		} catch (CASException e) {
+		}
+		catch (CASException e) {
 			throw new CollectionException(e);
-		}		
+		}
 	}
 
 	/**
-	 * Take the name of a Java class from the UimaContext, instantiate the class,
-	 * and initialize it (if possible).
+	 * Take the name of a Java class from the UimaContext, instantiate the
+	 * class, and initialize it (if possible).
+	 * <p>
+	 * This method was enhanced to handle instantiation of declared (member)
+	 * classes so that e.g. one could instantiate an annotation handler defined
+	 * as a member class in a unit test using the
+	 * InstanceConsumer_ImplBase.initialize method. While this is quite
+	 * convenient, make note that the referring to MyUnitTest.this in your unit
+	 * test code will not work correctly in that inner class that is the test
+	 * annotation handler because an instance of your unit test will be created
+	 * by JUnit to run the test and another instance will be created in this
+	 * method. The latter is what is available inside your inner class and is,
+	 * in general, not the "this" that you want.
 	 * 
-	 * @param <T>            The supertype of the class which should be instantiated.
-	 * @param context        The UimaContext from which the parameter should be read.
-	 * @param classParamName The name of the the UimaContext parameter containing the
-	 *                       class name.
-	 * @param superClass     The superclass of the class which should be instantiated.
-	 * @return               An instance of the requested class, as a subtype of the
-	 *                       supplied superclass. The instance's initialize method
-	 *                       will be called if possible, using {@link initialize}
+	 * @param <T>
+	 *            The supertype of the class which should be instantiated.
+	 * @param context
+	 *            The UimaContext from which the parameter should be read.
+	 * @param classParamName
+	 *            The name of the the UimaContext parameter containing the class
+	 *            name.
+	 * @param superClass
+	 *            The superclass of the class which should be instantiated.
+	 * @return An instance of the requested class, as a subtype of the supplied
+	 *         superclass. The instance's initialize method will be called if
+	 *         possible, using {@link initialize}
 	 * @throws ResourceInitializationException
 	 */
-	public static <T> T create(UimaContext context, String classParamName, Class<T> superClass) throws ResourceInitializationException {
+	public static <T> T create(UimaContext context, String classParamName, Class<T> superClass)
+			throws ResourceInitializationException {
 		// get the class name from the parameter
 		Object className = getRequiredConfigParameterValue(context, classParamName);
-	
+
 		// create a new instance
 		T instance;
 		try {
 			Class<? extends T> cls = Class.forName((String) className).asSubclass(superClass);
-			
-			if(cls.isMemberClass()) {
+
+			if (cls.isMemberClass()) {
 				Class<?> declaringClass = cls.getDeclaringClass();
 				Object declaringInstance = declaringClass.newInstance();
-				instance =cls.getConstructor(new Class[]{declaringInstance.getClass()}).newInstance(new Object[]{declaringInstance});
-			} else {
+				instance = cls.getConstructor(new Class[] { declaringInstance.getClass() }).newInstance(
+						new Object[] { declaringInstance });
+			}
+			else {
 				instance = cls.newInstance();
 			}
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			throw new ResourceInitializationException(e);
 		}
-		
+
 		// initialize and return the SequentialAnnotationHandler
 		UIMAUtil.initialize(instance, context);
 		return instance;
 	}
-	
-	
+
 	/**
 	 * Initialize the object using the UimaContext, if possible.
 	 * 
@@ -225,14 +251,15 @@ public class UIMAUtil
 	 * which is either an Initializable instance or an AnalysisComponent
 	 * instance.
 	 * 
-	 * @param object  The object to be initialized.
-	 * @param context The UimaContext used to initialize the object
+	 * @param object
+	 *            The object to be initialized.
+	 * @param context
+	 *            The UimaContext used to initialize the object
 	 * @throws ResourceInitializationException
 	 */
-	public static void initialize(Object object, UimaContext context)
-	throws ResourceInitializationException {
+	public static void initialize(Object object, UimaContext context) throws ResourceInitializationException {
 		if (object instanceof Initializable) {
-			((Initializable)object).initialize(context);
+			((Initializable) object).initialize(context);
 		}
 	}
 
