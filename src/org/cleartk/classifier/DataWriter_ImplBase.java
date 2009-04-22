@@ -58,7 +58,7 @@ public abstract class DataWriter_ImplBase<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE,
 		writeEncoded(features, outcome);
 	}
 
-	public abstract void writeEncoded(FEATURES_TYPE features, OUTPUTOUTCOME_TYPE outcome);
+	public abstract void writeEncoded(FEATURES_TYPE features, OUTPUTOUTCOME_TYPE outcome) throws IOException;
 
 	public void finish() throws IOException {
 		// close out the file writers
@@ -97,6 +97,10 @@ public abstract class DataWriter_ImplBase<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE,
 
 	public void setOutcomeEncoder(OutcomeEncoder<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE> outcomeEncoder) {
 		this.outcomeEncoder = outcomeEncoder;
+	}
+
+	public ClassifierManifest getClassifierManifest() {
+		return classifierManifest;
 	}
 
 	protected File getFile(String fileName) {
