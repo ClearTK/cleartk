@@ -84,7 +84,7 @@ public class EncoderFactory_ImplBaseTests {
 		FeaturesEncoder<?> featuresEncoder = vectorFactory.createFeaturesEncoder(context);
 		OutcomeEncoder<?,?> outcomeEncoder = vectorFactory.createOutcomeEncoder(context);
 		ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(new File(
-				this.outputDirectory, FeaturesEncoder_ImplBase.ENCODER_FILE_NAME)));
+				this.outputDirectory, FeaturesEncoder_ImplBase.ENCODERS_FILE_NAME)));
 		os.writeObject(featuresEncoder);
 		os.writeObject(outcomeEncoder);
 		os.close();
