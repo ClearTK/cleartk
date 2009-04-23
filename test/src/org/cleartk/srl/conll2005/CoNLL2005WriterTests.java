@@ -28,7 +28,6 @@ import java.io.IOException;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.srl.SRLWriter;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
@@ -50,7 +49,7 @@ public class CoNLL2005WriterTests {
 
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.srl.conll2005.CoNLL2005Writer",
-				SRLWriter.PARAM_OUTPUT_FILE, "test/data/srl/dev-set-result.txt");
+				Conll2005Writer.PARAM_OUTPUT_FILE, "test/data/srl/dev-set-result.txt");
 
 		engine.collectionProcessComplete();
 	}
