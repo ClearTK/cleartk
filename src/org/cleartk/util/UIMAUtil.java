@@ -25,6 +25,7 @@ package org.cleartk.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -225,11 +226,11 @@ public class UIMAUtil {
 		try {
 			Class<? extends T> cls = Class.forName((String) className).asSubclass(superClass);
 
-			if (cls.isMemberClass()) {
+			if (cls.isMemberClass() && (cls.getModifiers() & Modifier.STATIC) == 0) {
 				Class<?> declaringClass = cls.getDeclaringClass();
 				Object declaringInstance = declaringClass.newInstance();
 				instance = cls.getConstructor(new Class[] { declaringInstance.getClass() }).newInstance(
-						new Object[] { declaringInstance });
+				new Object[] { declaringInstance });
 			}
 			else {
 				instance = cls.newInstance();
