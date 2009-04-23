@@ -36,6 +36,7 @@ import java.util.jar.JarFile;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.SequentialAnnotationHandler;
@@ -70,7 +71,7 @@ import org.uutuc.util.TearDownUtil;
 public class MalletCRFClassifierTest {
 
 	public class TestHandler implements SequentialAnnotationHandler<String>{
-		public void process(JCas cas, SequentialInstanceConsumer<String> consumer) throws AnalysisEngineProcessException {
+		public void process(JCas cas, SequentialInstanceConsumer<String> consumer) throws AnalysisEngineProcessException, CleartkException {
 			List<Instance<String>> instances =  createInstances();
 			//consume 100 identical sequences
 			for(int i=0; i<100; i++) {
@@ -80,7 +81,7 @@ public class MalletCRFClassifierTest {
 	}
 	
 	public class TestHandler1 implements SequentialAnnotationHandler<String>{
-		public void process(JCas cas, SequentialInstanceConsumer<String> consumer) throws AnalysisEngineProcessException {
+		public void process(JCas cas, SequentialInstanceConsumer<String> consumer) throws AnalysisEngineProcessException, CleartkException {
 			List<Instance<String>> instances =  createInstances();
 			List<String> outcomes =	consumer.consumeSequence(instances);
 			assertEquals(instances.size(), outcomes.size());

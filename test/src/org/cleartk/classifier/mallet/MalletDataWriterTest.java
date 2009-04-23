@@ -11,15 +11,20 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.pear.util.FileUtil;
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.AnnotationHandler;
 import org.cleartk.classifier.DataWriterAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.InstanceConsumer;
+import org.cleartk.classifier.InstanceFactory;
 import org.cleartk.classifier.Train;
 import org.cleartk.classifier.encoder.factory.NameNumberEncoderFactory;
 import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 import org.cleartk.classifier.mallet.factory.ClassifierTrainerFactory;
+import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
+import org.cleartk.classifier.opennlp.MaxentDataWriter;
+import org.cleartk.classifier.opennlp.MaxentDataWriterTest.TestHandler5;
 import org.cleartk.util.TestsUtil;
 import org.junit.After;
 import org.junit.Test;
@@ -38,7 +43,7 @@ public class MalletDataWriterTest {
 
 	public class TestHandler1 implements AnnotationHandler<String> {
 
-		public void process(JCas cas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException {
+		public void process(JCas cas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException, CleartkException {
 			List<Feature> features = Arrays.asList(new Feature("pos", "NN"), new Feature("distance", 3.0), new Feature(
 					"precision", 1.234));
 			Instance<String> instance = new Instance<String>("A", features);
@@ -175,7 +180,7 @@ public class MalletDataWriterTest {
 
 	public class TestHandler4 implements AnnotationHandler<String> {
 
-		public void process(JCas cas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException {
+		public void process(JCas cas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException, CleartkException {
 			List<Feature> features = Arrays.asList(new Feature("pos", "NN"), new Feature("distance", 3.0), new Feature(
 					"precision", 1.234));
 			Instance<String> instance = new Instance<String>(features);
@@ -207,6 +212,34 @@ public class MalletDataWriterTest {
 			aepe = e;
 		}
 		assertNotNull(aepe);
+	}
+
+	public class TestHandler5 implements AnnotationHandler<String> {
+
+		public void process(JCas cas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException, CleartkException {
+			Instance<String> instance = InstanceFactory.createInstance("a", "b c d");
+			consumer.consume(instance);
+		}
+	}
+
+	/**
+	 * This test is identical to test1 except that the features are compressed by NameNumberFeaturesEncoder.
+	 * @throws Exception
+	 */
+	@Test
+	public void test5() throws Exception {
+		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createAnalysisEngine(DataWriterAnnotator.class,
+				TestsUtil.getTypeSystemDescription(), InstanceConsumer.PARAM_ANNOTATION_HANDLER, TestHandler5.class
+						.getName(), DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, DefaultMalletDataWriterFactory.class.getName(),
+				NameNumberEncoderFactory.PARAM_COMPRESS, true);
+
+		JCas jCas = TestsUtil.getJCas();
+		dataWriterAnnotator.process(jCas);
+		dataWriterAnnotator.collectionProcessComplete();
+
+		String[] lines = FileUtil.loadListOfStrings(new File(outputDirectory, MalletDataWriter.TRAINING_DATA_FILE_NAME));
+		assertEquals("0:1.0 1:1.0 2:1.0 a", lines[0]);
 	}
 
 }

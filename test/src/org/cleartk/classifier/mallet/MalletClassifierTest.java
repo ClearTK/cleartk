@@ -35,6 +35,7 @@ import java.util.jar.JarFile;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.AnnotationHandler;
 import org.cleartk.classifier.ClassifierAnnotator;
 import org.cleartk.classifier.DataWriterAnnotator;
@@ -92,7 +93,7 @@ public class MalletClassifierTest {
 	public class TestHandler implements AnnotationHandler<String>{
 		Random random = new Random(System.currentTimeMillis());
 
-		public void process(JCas cas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException {
+		public void process(JCas cas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException, CleartkException {
 			for(int i=0; i<1000; i++)
 				consumer.consume(generateInstance(random));
 		}
@@ -101,7 +102,7 @@ public class MalletClassifierTest {
 	public class TestHandler1 implements AnnotationHandler<String>{
 		Random random = new Random(System.currentTimeMillis());
 
-		public void process(JCas cas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException {
+		public void process(JCas cas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException, CleartkException {
 			Instance<String> testInstance = new Instance<String>();
 			testInstance.add(new Feature("hello", random.nextInt(1000)+1000));
 			String outcome = consumer.consume(testInstance);
