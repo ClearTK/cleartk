@@ -27,11 +27,11 @@ import java.io.File;
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.Type;
 
-import org.cleartk.classifier.AnnotationHandler;
 import org.cleartk.classifier.ClassifierBuilder;
 import org.cleartk.classifier.DataWriter_ImplBase;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.InstanceConsumer;
+import org.cleartk.classifier.SequentialAnnotationHandler;
 import org.cleartk.example.pos.ExamplePOSAnnotationHandler;
 import org.junit.Assert;
 import org.junit.Test;
@@ -79,7 +79,7 @@ public class ReflectionUtilTests {
 		Assert.assertTrue(type instanceof GenericArrayType);
 		Assert.assertEquals(double.class, ((GenericArrayType)type).getGenericComponentType());
 
-		type = ReflectionUtil.getTypeArgument(AnnotationHandler.class, "OUTCOME_TYPE", new ExamplePOSAnnotationHandler());
+		type = ReflectionUtil.getTypeArgument(SequentialAnnotationHandler.class, "OUTCOME_TYPE", new ExamplePOSAnnotationHandler());
 		Assert.assertEquals(String.class, type);
 
 		type = ReflectionUtil.getTypeArgument(InstanceConsumer.class, "OUTCOME_TYPE", new TestInstanceConsumerOutcomeType());
