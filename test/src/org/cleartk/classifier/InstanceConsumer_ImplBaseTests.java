@@ -32,6 +32,7 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.CleartkException;
 import org.cleartk.util.EmptyAnnotator;
 import org.junit.Assert;
 import org.junit.Test;
@@ -59,7 +60,7 @@ public class InstanceConsumer_ImplBaseTests {
 
 	// class that calls the consumer's consume method on each instance
 	public static class HandlerOne extends Handler {
-		public void process(JCas cas, InstanceConsumer<Object> consumer) {
+		public void process(JCas cas, InstanceConsumer<Object> consumer) throws CleartkException {
 			for (Instance<Object> instance: InstanceConsumer_ImplBaseTests.instances) {
 				consumer.consume(instance);
 			}
@@ -68,7 +69,7 @@ public class InstanceConsumer_ImplBaseTests {
 
 	// class that calls the consumer's consumeAll method on the instances
 	public static class HandlerAll extends Handler {
-		public void process(JCas cas, InstanceConsumer<Object> consumer) {
+		public void process(JCas cas, InstanceConsumer<Object> consumer) throws CleartkException{
 			consumer.consumeSequence(InstanceConsumer_ImplBaseTests.instances);
 		}
 	}
