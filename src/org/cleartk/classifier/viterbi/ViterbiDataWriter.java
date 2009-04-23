@@ -33,6 +33,7 @@ import java.util.jar.Attributes;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.CleartkException;
 import org.cleartk.Initializable;
 import org.cleartk.classifier.ClassifierBuilder;
 import org.cleartk.classifier.ClassifierManifest;
@@ -109,28 +110,32 @@ public class ViterbiDataWriter<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE, FEATURES_T
 
 	}
 
-	public void finish() throws IOException {
-		this.dataWriter.finish();
-
-		ObjectOutputStream 	os = new ObjectOutputStream(new FileOutputStream(new File(outputDirectory, OUTCOME_FEATURE_EXTRACTOR_FILE_NAME)));
-		os.writeObject(this.outcomeFeatureExtractors);
-		os.close();
-
+	public void finish() throws CleartkException {
 		try {
-			ClassifierManifest classifierManifest = new ClassifierManifest(outputDirectory);
-			ClassifierBuilder<?> delegatedClassifierBuilder  = classifierManifest.getClassifierBuilder();
-			Attributes attributes = classifierManifest.getMainAttributes();
-			attributes.put(DELEGATED_CLASSIFIER_BUILDER_ATTRIBUTE, delegatedClassifierBuilder.getClass().getName());
-
-			Class<? extends ClassifierBuilder<? extends INPUTOUTCOME_TYPE>> classifierBuilderClass = this.getDefaultClassifierBuilderClass();
-			classifierManifest.setClassifierBuilder(classifierBuilderClass.newInstance());
-			
-		}
-		catch (InstantiationException e) {
-			throw new RuntimeException(e);
-		}
-		catch (IllegalAccessException e) {
-			throw new RuntimeException(e);
+			this.dataWriter.finish();
+	
+			ObjectOutputStream 	os = new ObjectOutputStream(new FileOutputStream(new File(outputDirectory, OUTCOME_FEATURE_EXTRACTOR_FILE_NAME)));
+			os.writeObject(this.outcomeFeatureExtractors);
+			os.close();
+	
+			try {
+				ClassifierManifest classifierManifest = new ClassifierManifest(outputDirectory);
+				ClassifierBuilder<?> delegatedClassifierBuilder  = classifierManifest.getClassifierBuilder();
+				Attributes attributes = classifierManifest.getMainAttributes();
+				attributes.put(DELEGATED_CLASSIFIER_BUILDER_ATTRIBUTE, delegatedClassifierBuilder.getClass().getName());
+	
+				Class<? extends ClassifierBuilder<? extends INPUTOUTCOME_TYPE>> classifierBuilderClass = this.getDefaultClassifierBuilderClass();
+				classifierManifest.setClassifierBuilder(classifierBuilderClass.newInstance());
+				
+			}
+			catch (InstantiationException e) {
+				throw new RuntimeException(e);
+			}
+			catch (IllegalAccessException e) {
+				throw new RuntimeException(e);
+			}
+		} catch(IOException ioe) { 
+			throw new CleartkException(ioe);
 		}
 	}
 
@@ -138,7 +143,7 @@ public class ViterbiDataWriter<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE, FEATURES_T
 		return (Class<? extends ClassifierBuilder<INPUTOUTCOME_TYPE>>) ViterbiClassifierBuilder.class;
 	}
 
-	public void writeSequence(List<Instance<INPUTOUTCOME_TYPE>> instances) throws IOException {
+	public void writeSequence(List<Instance<INPUTOUTCOME_TYPE>> instances) throws CleartkException {
 		List<Object> outcomes = new ArrayList<Object>();
 		for (Instance<INPUTOUTCOME_TYPE> instance : instances) {
 			List<Feature> instanceFeatures = instance.getFeatures();

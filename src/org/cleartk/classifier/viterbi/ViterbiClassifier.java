@@ -35,6 +35,7 @@ import java.util.zip.ZipEntry;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.CleartkException;
 import org.cleartk.Initializable;
 import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.ClassifierFactory;
@@ -116,7 +117,7 @@ public abstract class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClass
 				false);
 	}
 
-	public List<OUTCOME_TYPE> classifySequence(List<List<Feature>> features) {
+	public List<OUTCOME_TYPE> classifySequence(List<List<Feature>> features) throws CleartkException {
 		if (viterbiStackSize == 1) {
 			List<Object> outcomes = new ArrayList<Object>();
 			List<OUTCOME_TYPE> returnValues = new ArrayList<OUTCOME_TYPE>();
@@ -172,7 +173,7 @@ public abstract class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClass
 	 * @see MaxentClassifier#classifySequence(List)
 	 */
 	private List<OUTCOME_TYPE> classifySequence(List<List<Feature>> features, int stackSize, 
-			OutcomeFeatureExtractor[] outcomeFeatureExtractors, boolean addScores) {
+			OutcomeFeatureExtractor[] outcomeFeatureExtractors, boolean addScores) throws CleartkException {
 
 		List<ScoredOutcome<List<OUTCOME_TYPE>>> nbestSequences = new ArrayList<ScoredOutcome<List<OUTCOME_TYPE>>>();
 

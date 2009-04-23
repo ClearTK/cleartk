@@ -1,7 +1,6 @@
 package org.cleartk.classifier.viterbi;
 
 import java.io.File;
-import java.util.jar.Attributes;
 
 import org.cleartk.classifier.ClassifierBuilder;
 
