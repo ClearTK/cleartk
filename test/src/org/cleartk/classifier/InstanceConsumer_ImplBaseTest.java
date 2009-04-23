@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier;
 
 import java.io.IOException;
@@ -33,6 +33,7 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
+import org.cleartk.Initializable;
 import org.cleartk.util.EmptyAnnotator;
 import org.junit.Assert;
 import org.junit.Test;
@@ -40,60 +41,50 @@ import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.TypeSystemDescriptionFactory;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * 
  * @author Steven Bethard
  */
-public class InstanceConsumer_ImplBaseTests {
-	
-	// class that sets the class-level producer variables
-	private static abstract class Handler implements AnnotationHandler<Object> {
-		public Handler() {
-			InstanceConsumer_ImplBaseTests.producer = this;
-		}
-		public void initialize(UimaContext context) throws ResourceInitializationException {
-			InstanceConsumer_ImplBaseTests.producerIsInitialized = true;
-		}
-	}
+public class InstanceConsumer_ImplBaseTest {
 
-	// class that calls the consumer's consume method on each instance
-	public static class HandlerOne extends Handler {
+	// class that sets the class-level producer variables
+	public static class Handler implements AnnotationHandler<Object>, Initializable {
+		public Handler() {
+			InstanceConsumer_ImplBaseTest.producer = this;
+		}
+
+		public void initialize(UimaContext context) throws ResourceInitializationException {
+			InstanceConsumer_ImplBaseTest.producerIsInitialized = true;
+		}
+
 		public void process(JCas cas, InstanceConsumer<Object> consumer) throws CleartkException {
-			for (Instance<Object> instance: InstanceConsumer_ImplBaseTests.instances) {
+			for (Instance<Object> instance : InstanceConsumer_ImplBaseTest.instances) {
 				consumer.consume(instance);
 			}
 		}
-	}
 
-	// class that calls the consumer's consumeAll method on the instances
-	public static class HandlerAll extends Handler {
-		public void process(JCas cas, InstanceConsumer<Object> consumer) throws CleartkException{
-			consumer.consumeSequence(InstanceConsumer_ImplBaseTests.instances);
-		}
 	}
 
 	// class that tracks calls to methods and stores observed instances
 	public class Consumer extends InstanceConsumer_ImplBase<Object> {
-	
+
 		public int consumeCount = 0;
-		public int consumeAllCount = 0;
+
 		public List<Instance<Object>> instances;
-		
+
 		public Consumer() {
 			this.instances = new ArrayList<Instance<Object>>();
 		}
+
 		public Object consume(Instance<Object> instance) {
 			this.consumeCount++;
 			this.instances.add(instance);
 			return null;
 		}
-		public List<Object> consumeSequence(List<Instance<Object>> instances) {
-			this.consumeAllCount++;
-			this.instances.addAll(instances);
-			return null;
-		}
+
 		public boolean expectsOutcomes() {
 			return false;
 		}
@@ -103,96 +94,78 @@ public class InstanceConsumer_ImplBaseTests {
 	@Test
 	public void testBadHandlerName() {
 		try {
-			AnalysisEngineFactory.createAnalysisEngine(
-					InstanceConsumer_ImplBaseTests.Consumer.class,
+			AnalysisEngineFactory.createAnalysisEngine(InstanceConsumer_ImplBaseTest.Consumer.class,
 					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 					InstanceConsumer.PARAM_ANNOTATION_HANDLER, "Foo");
 			Assert.fail("expected exception with bad AnnotationHandler name");
-		} catch (ResourceInitializationException e) {}
+		}
+		catch (ResourceInitializationException e) {
+		}
 	}
-	
+
 	@Test
 	public void testConsumerInitializesHandler() throws UIMAException, IOException {
-		
+
 		// get a UimaContext containing a producer class
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-				EmptyAnnotator.class,
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(EmptyAnnotator.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
-				InstanceConsumer_ImplBaseTests.HandlerOne.class.getName());
+				InstanceConsumer.PARAM_ANNOTATION_HANDLER, InstanceConsumer_ImplBaseTest.Handler.class.getName());
 		UimaContext context = engine.getUimaContext();
-		
+
 		// create the consumer
 		Consumer consumer = new Consumer();
 
 		// unset producer variables
-		InstanceConsumer_ImplBaseTests.producer = null;
-		InstanceConsumer_ImplBaseTests.producerIsInitialized = false;
-		
+		InstanceConsumer_ImplBaseTest.producer = null;
+		InstanceConsumer_ImplBaseTest.producerIsInitialized = false;
+
 		// initialize the consumer
 		consumer.initialize(context);
-		
+
 		// make sure the producer was initialized
-		Assert.assertNotNull(InstanceConsumer_ImplBaseTests.producer);
-		Assert.assertTrue(InstanceConsumer_ImplBaseTests.producerIsInitialized);
+		Assert.assertNotNull(InstanceConsumer_ImplBaseTest.producer);
+		Assert.assertTrue(InstanceConsumer_ImplBaseTest.producerIsInitialized);
 	}
-	
+
 	@Test
 	public void testProcessCallsHandlerOne() throws UIMAException, IOException {
-		
-		// for 2 instances, expect 2 calls to consume() and 0 calls to consumeAll()
-		this.testProcessCallsHandler(
-				InstanceConsumer_ImplBaseTests.HandlerOne.class, 2, 2, 0);
-	}
-	
-	@Test
-	public void testProcessCallsHandlerAll() throws UIMAException, IOException {
+		Class<? extends AnnotationHandler<Object>> producerClass = InstanceConsumer_ImplBaseTest.Handler.class;
+		int instanceCount = 2;
+		int consumeCount = 2;
 
-		// for 2 instances, expect 0 calls to consume() and 1 call to consumeAll()
-		this.testProcessCallsHandler(
-				InstanceConsumer_ImplBaseTests.HandlerAll.class, 2, 0, 1);
-	}
-	
-	// helper method for testing that AnnotatorConsumer.process calls the Producers 
-	private void testProcessCallsHandler(
-			Class<? extends AnnotationHandler<Object>> producerClass,
-			int instanceCount, int consumeCount, int consumeAllCount)
-	throws UIMAException, IOException {
-		
 		// initialize a simple AnalysisEngine
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-				EmptyAnnotator.class,
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(EmptyAnnotator.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
-				producerClass.getName());
-		
+				InstanceConsumer.PARAM_ANNOTATION_HANDLER, producerClass.getName());
+
 		// initialize the consumer
 		UimaContext context = engine.getUimaContext();
 		Consumer consumer = new Consumer();
 		consumer.initialize(context);
-		
+
 		// set up some classification instances
 		List<Instance<Object>> instances = new ArrayList<Instance<Object>>();
 		for (int i = 0; i < instanceCount; i++) {
 			instances.add(new Instance<Object>());
 		}
-		InstanceConsumer_ImplBaseTests.instances = instances;
-		
-		// make sure process calls the producer and that consume() or consumeAll()
+		InstanceConsumer_ImplBaseTest.instances = instances;
+
+		// make sure process calls the producer and that consume() 
 		// is called the expected number of times
 		consumer.process(engine.newJCas());
 		Assert.assertEquals(consumeCount, consumer.consumeCount);
-		Assert.assertEquals(consumeAllCount, consumer.consumeAllCount);
-		
+
 		// make sure all instances were observed
 		Assert.assertEquals(instanceCount, consumer.instances.size());
 		for (int i = 0; i < instanceCount; i++) {
 			Assert.assertEquals(instances.get(i), consumer.instances.get(i));
 		}
 	}
-	
+
 	private static AnnotationHandler<Object> producer;
+
 	private static boolean producerIsInitialized;
+
 	private static List<Instance<Object>> instances;
 
 }
