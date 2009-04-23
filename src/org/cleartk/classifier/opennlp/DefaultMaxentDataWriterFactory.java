@@ -18,6 +18,7 @@ public class DefaultMaxentDataWriterFactory extends DataWriterFactory_ImplBase {
 	public void initialize(UimaContext context) {
 		NameNumberEncoderFactory nnef = new NameNumberEncoderFactory();
 		featuresEncoder = nnef.createFeaturesEncoder(context);
+		featuresEncoder.allowNewFeatures(true);
 		outcomeEncoder = nnef.createOutcomeEncoder(context);
 	}
 	
