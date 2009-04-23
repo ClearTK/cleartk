@@ -36,6 +36,7 @@ import java.util.jar.JarFile;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.AnnotationHandler;
 import org.cleartk.classifier.ClassifierAnnotator;
 import org.cleartk.classifier.DataWriterAnnotator;
@@ -46,6 +47,7 @@ import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.Train;
 import org.cleartk.classifier.encoder.factory.NameNumberEncoderFactory;
 import org.cleartk.util.TestsUtil;
+import org.junit.After;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.util.HideOutput;
@@ -61,14 +63,14 @@ public class MaxentClassifierTest {
 	
 	String outputDirectory = "test/data/opennlp/maxent-classifier"; 
 	
-//	@After
+	@After
 	public void tearDown() {
 		TearDownUtil.removeDirectory(new File(outputDirectory));
 	}
 	
 	public class TestHandler1T  implements AnnotationHandler<String>{
 
-		public void process(JCas cas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException {
+		public void process(JCas cas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException, CleartkException {
 			consumer.consume(createInstance("A", "hello", 1234));
 			consumer.consume(createInstance("A", "hello", 1000));
 			consumer.consume(createInstance("A", "hello", 900));
@@ -114,7 +116,7 @@ public class MaxentClassifierTest {
 	
 	public class TestHandler1C  implements AnnotationHandler<String>{
 
-		public void process(JCas cas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException {
+		public void process(JCas cas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException, CleartkException {
 			String classification = consumer.consume(createInstance("", "hello", 1000));
 			assertEquals("A", classification);
 			classification = consumer.consume(createInstance("", "hello", 1));
@@ -166,7 +168,7 @@ public class MaxentClassifierTest {
 	
 	public class TestHandler2T  implements AnnotationHandler<String>{
 
-		public void process(JCas cas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException {
+		public void process(JCas cas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException, CleartkException {
 			consumer.consume(createInstance("O", "Word_Three LCWord_three CapitalType_INITIAL_UPPERCASE L0OOB1 L1OOB2 R0_sequence R0_TypePath_Pos_NN R0_TypePath_Stem_sequenc R1_elements R1_TypePath_Pos_NNS R1_TypePath_Stem_element TypePath_Pos_CD TypePath_Stem_Three PrevNEMTokenLabel_L0OOB1 PrevNEMTokenLabel_L1OOB2"));
 			consumer.consume(createInstance("O", "Word_sequence LCWord_sequence CapitalType_ALL_LOWERCASE Prefix3_seq Suffix3_nce Suffix4_ence Suffix5_uence L0_Three L0_TypePath_Pos_CD L0_TypePath_Stem_Three L1OOB1 R0_elements R0_TypePath_Pos_NNS R0_TypePath_Stem_element R1_are R1_TypePath_Pos_VBP R1_TypePath_Stem_are TypePath_Pos_NN TypePath_Stem_sequenc PrevNEMTokenLabel_L0_O PrevNEMTokenLabel_L1OOB1"));
 			consumer.consume(createInstance("O", "Word_elements LCWord_elements CapitalType_ALL_LOWERCASE Prefix3_ele Suffix3_nts Suffix4_ents Suffix5_ments L0_sequence L0_TypePath_Pos_NN L0_TypePath_Stem_sequenc L1_Three L1_TypePath_Pos_CD L1_TypePath_Stem_Three R0_are R0_TypePath_Pos_VBP R0_TypePath_Stem_are R1_shown R1_TypePath_Pos_VBN R1_TypePath_Stem_shown TypePath_Pos_NNS TypePath_Stem_element PrevNEMTokenLabel_L0_O PrevNEMTokenLabel_L1_O"));
@@ -214,7 +216,7 @@ public class MaxentClassifierTest {
 	
 	public class TestHandler2C  implements AnnotationHandler<String>{
 
-		public void process(JCas cas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException {
+		public void process(JCas cas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException, CleartkException {
 			Instance<String> instance = createInstance("B-GENE", "Word_pol LCWord_pol CapitalType_ALL_LOWERCASE L0_( L0_TypePath_Pos_-LRB- L0_TypePath_Stem_( L1_I L1_TypePath_Pos_PRP L1_TypePath_Stem_I R0_I R0_TypePath_Pos_PRP R0_TypePath_Stem_I R1_) R1_TypePath_Pos_-RRB- R1_TypePath_Stem_) TypePath_Pos_NN TypePath_Stem_pol PrevNEMTokenLabel_L0_O PrevNEMTokenLabel_L1_I-GENE Gazetteer_entrez_genes.txt");
 			String outcome = consumer.consume(instance);
 			assertEquals("B-GENE", outcome);
