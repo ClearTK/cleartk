@@ -30,6 +30,7 @@ import java.util.List;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.CleartkException;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
 
@@ -70,8 +71,8 @@ public class SequentialDataWriterAnnotator<OUTCOME_TYPE> extends SequentialInsta
 		try {
 			sequentialDataWriter.finish();
 		}
-		catch (IOException e) {
-			throw new AnalysisEngineProcessException(e);
+		catch (CleartkException ctke) {
+			throw new AnalysisEngineProcessException(ctke);
 		}
 	}
 
@@ -79,13 +80,9 @@ public class SequentialDataWriterAnnotator<OUTCOME_TYPE> extends SequentialInsta
 		return true;
 	}
 	
-	public List<OUTCOME_TYPE> consumeSequence(List<Instance<OUTCOME_TYPE>> instances) {
-		try {
+	public List<OUTCOME_TYPE> consumeSequence(List<Instance<OUTCOME_TYPE>> instances)  throws CleartkException{
 			sequentialDataWriter.writeSequence(instances);
-		} catch(IOException ioe) {
-			throw new RuntimeException(ioe);
-		}
-		return null;
+			return null;
 	}
 
 }

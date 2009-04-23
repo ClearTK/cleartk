@@ -29,6 +29,7 @@ import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.InstanceConsumer;
 import org.cleartk.classifier.feature.extractor.CountsExtractor;
@@ -52,7 +53,7 @@ public class AnnotationHandler implements org.cleartk.classifier.AnnotationHandl
 		extractor = new CountsExtractor(Token.class, subExtractor);
 	}
 
-	public void process(JCas jCas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException {
+	public void process(JCas jCas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException, CleartkException {
 		try {
 			DocumentAnnotation doc = (DocumentAnnotation) jCas.getDocumentAnnotationFs();
 

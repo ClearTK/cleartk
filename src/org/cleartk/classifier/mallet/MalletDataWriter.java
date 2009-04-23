@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.ClassifierBuilder;
 import org.cleartk.classifier.DataWriter_ImplBase;
 import org.cleartk.classifier.encoder.features.NameNumber;
@@ -60,20 +61,26 @@ public class MalletDataWriter extends DataWriter_ImplBase<String, String, List<N
 	}
 
 	@Override
-	public void finish() throws IOException {
+	public void finish() throws CleartkException {
 		super.finish();
 
-		if (featuresEncoder instanceof NameNumberFeaturesEncoder) {
-			NameNumberFeaturesEncoder dfe = (NameNumberFeaturesEncoder) featuresEncoder;
-			if (dfe.isCompressFeatures()) dfe.writeNameLookup(this
-					.getPrintWriter(NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
+		try {
+			if (featuresEncoder instanceof NameNumberFeaturesEncoder) {
+				NameNumberFeaturesEncoder dfe = (NameNumberFeaturesEncoder) featuresEncoder;
+				if (dfe.isCompressFeatures()) dfe.writeNameLookup(this
+						.getPrintWriter(NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
+			}
 		}
+		catch (IOException ioe) {
+			throw new CleartkException(ioe);
+		}
+
 	}
 
 	@Override
-	public void writeEncoded(List<NameNumber> features, String outcome)  throws IOException{
+	public void writeEncoded(List<NameNumber> features, String outcome)  throws CleartkException{
 		if(outcome == null) {
-			throw new IOException("all consumed instances must have an outcome.  outcome="+outcome);
+			throw new CleartkException("all consumed instances must have an outcome.  outcome="+outcome);
 		}
 		if (features.size() == 0) {
 			trainingDataWriter.print("null:0 ");

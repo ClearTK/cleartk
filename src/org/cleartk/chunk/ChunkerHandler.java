@@ -33,6 +33,7 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.SequentialAnnotationHandler;
 import org.cleartk.classifier.SequentialInstanceConsumer;
@@ -147,7 +148,7 @@ public class ChunkerHandler implements SequentialAnnotationHandler<String> {
 		return jCas.getAnnotationIndex(labeledAnnotationType).subiterator(sequence);
 	}
 	
-	public void process(JCas jCas, SequentialInstanceConsumer<String> consumer) throws AnalysisEngineProcessException {
+	public void process(JCas jCas, SequentialInstanceConsumer<String> consumer) throws AnalysisEngineProcessException, CleartkException {
 		if (!typesInitialized) initializeTypes(jCas);
 
 

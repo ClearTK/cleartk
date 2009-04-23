@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
@@ -49,27 +50,25 @@ public abstract class Classifier_ImplBase<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE,F
 	protected OutcomeEncoder<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE> outcomeEncoder;
 	
 	public Classifier_ImplBase(JarFile modelFile) throws IOException {
-		
-		// de-serialize the encoders
-		ZipEntry zipEntry = modelFile.getEntry(FeaturesEncoder_ImplBase.ENCODERS_FILE_NAME);
-		ObjectInputStream is = new ObjectInputStream(modelFile.getInputStream(zipEntry));
-		FeaturesEncoder<?> genericFeaturesEncoder;
-		OutcomeEncoder<?,?> genericOutcomeEncoder;
-		try {
-			genericFeaturesEncoder = (FeaturesEncoder<?>) is.readObject();
-			genericOutcomeEncoder = (OutcomeEncoder<?,?>) is.readObject();
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException(e);
-		} finally {
-			is.close();
-		}
-		this.featuresEncoder = featuresEncoderCast(genericFeaturesEncoder);
-		this.featuresEncoder.allowNewFeatures(false);
-		this.outcomeEncoder = outcomeEncoderCast(genericOutcomeEncoder);
-		
+			// de-serialize the encoders
+			ZipEntry zipEntry = modelFile.getEntry(FeaturesEncoder_ImplBase.ENCODERS_FILE_NAME);
+			ObjectInputStream is = new ObjectInputStream(modelFile.getInputStream(zipEntry));
+			FeaturesEncoder<?> genericFeaturesEncoder;
+			OutcomeEncoder<?,?> genericOutcomeEncoder;
+			try {
+				genericFeaturesEncoder = (FeaturesEncoder<?>) is.readObject();
+				genericOutcomeEncoder = (OutcomeEncoder<?,?>) is.readObject();
+			} catch (ClassNotFoundException e) {
+				throw new RuntimeException(e);
+			} finally {
+				is.close();
+			}
+			this.featuresEncoder = featuresEncoderCast(genericFeaturesEncoder);
+			this.featuresEncoder.allowNewFeatures(false);
+			this.outcomeEncoder = outcomeEncoderCast(genericOutcomeEncoder);
 	}
 
-	public List<ScoredOutcome<INPUTOUTCOME_TYPE>> score(List<Feature> features, int maxResults) {
+	public List<ScoredOutcome<INPUTOUTCOME_TYPE>> score(List<Feature> features, int maxResults) throws CleartkException{
 		throw new UnsupportedOperationException("there is no default implementation of the score method.");
 	}
 

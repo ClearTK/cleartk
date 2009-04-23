@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2009, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier;
 
 import org.apache.uima.UimaContext;
@@ -28,30 +28,39 @@ import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.CleartkException;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
 
 /**
- * <br>Copyright (c) 2007-2009, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * <p>
  * 
  * @author Steven Bethard, Philip Ogren
  */
-public abstract class SequentialInstanceConsumer_ImplBase<OUTCOME_TYPE> extends JCasAnnotator_ImplBase implements SequentialInstanceConsumer<OUTCOME_TYPE>{
+public abstract class SequentialInstanceConsumer_ImplBase<OUTCOME_TYPE> extends JCasAnnotator_ImplBase implements
+		SequentialInstanceConsumer<OUTCOME_TYPE> {
 
-	protected SequentialAnnotationHandler<OUTCOME_TYPE> annotationHandler; 
+	protected SequentialAnnotationHandler<OUTCOME_TYPE> annotationHandler;
 
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-		annotationHandler = ReflectionUtil.uncheckedCast(UIMAUtil.create(
-				context, PARAM_ANNOTATION_HANDLER, SequentialAnnotationHandler.class));
+		annotationHandler = ReflectionUtil.uncheckedCast(UIMAUtil.create(context, PARAM_ANNOTATION_HANDLER,
+				SequentialAnnotationHandler.class));
 	}
 
 	@Override
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
-		this.annotationHandler.process(jCas, this);
+		try {
+			this.annotationHandler.process(jCas, this);
+		}
+		catch (CleartkException ctke) {
+			throw new AnalysisEngineProcessException(ctke);
+		}
+
 	}
 
 }

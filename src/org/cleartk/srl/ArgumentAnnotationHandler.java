@@ -29,6 +29,7 @@ import java.util.List;
 import org.apache.uima.UimaContext;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.AnnotationHandler;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
@@ -106,7 +107,7 @@ public class ArgumentAnnotationHandler implements AnnotationHandler<String> {
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 	}
 
-	public void process(JCas jCas, InstanceConsumer<String> consumer) {
+	public void process(JCas jCas, InstanceConsumer<String> consumer) throws CleartkException{
 		List<Sentence> sentences = AnnotationRetrieval.getAnnotations(jCas, Sentence.class);
 	
 		for( Sentence sentence : sentences ) {
@@ -114,7 +115,7 @@ public class ArgumentAnnotationHandler implements AnnotationHandler<String> {
 		}		
 	}
 
-	public void processSentence(JCas jCas, Sentence sentence, InstanceConsumer<String> consumer) {
+	public void processSentence(JCas jCas, Sentence sentence, InstanceConsumer<String> consumer) throws CleartkException{
 
 		List<TreebankNode> sentenceConstituents = new ArrayList<TreebankNode>(
 				80);
@@ -138,7 +139,7 @@ public class ArgumentAnnotationHandler implements AnnotationHandler<String> {
 
 	void processPredicate(JCas jCas, Sentence sentence, Predicate predicate,
 			List<TreebankNode> constituents,
-			List<List<Feature>> constituentFeatures, InstanceConsumer<String> consumer) {
+			List<List<Feature>> constituentFeatures, InstanceConsumer<String> consumer) throws CleartkException{
 		TreebankNode predicateNode = AnnotationRetrieval.getMatchingAnnotation(
 				jCas, predicate.getAnnotation(), TreebankNode.class);
 		Token predicateToken = AnnotationRetrieval.getMatchingAnnotation(jCas,

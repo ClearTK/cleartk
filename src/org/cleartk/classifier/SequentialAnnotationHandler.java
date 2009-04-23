@@ -25,6 +25,7 @@ package org.cleartk.classifier;
 
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
+import org.cleartk.CleartkException;
 
 /**
  * <br>Copyright (c) 2009, Regents of the University of Colorado 
@@ -48,6 +49,6 @@ public interface SequentialAnnotationHandler<OUTCOME_TYPE> {
 	 * @param consumer The SequentialInstanceConsumer object to which the
 	 *                 a sequence of Instance objects should be passed.
 	 */
-	public void process(JCas jCas, SequentialInstanceConsumer<OUTCOME_TYPE> consumer) throws AnalysisEngineProcessException;
+	public void process(JCas jCas, SequentialInstanceConsumer<OUTCOME_TYPE> consumer) throws AnalysisEngineProcessException, CleartkException;
 	
 }

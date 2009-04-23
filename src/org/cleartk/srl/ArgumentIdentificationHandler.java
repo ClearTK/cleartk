@@ -33,6 +33,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.AnnotationHandler;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
@@ -123,7 +124,7 @@ public class ArgumentIdentificationHandler implements AnnotationHandler<Boolean>
 			this.filterMode = true;
 	}
 
-	public void process(JCas jCas, InstanceConsumer<Boolean> consumer) {
+	public void process(JCas jCas, InstanceConsumer<Boolean> consumer) throws CleartkException{
 		/*
 		 * Iterate over sentences in document
 		 */
@@ -134,7 +135,7 @@ public class ArgumentIdentificationHandler implements AnnotationHandler<Boolean>
 		}
 	}
 
-	void processSentence(JCas jCas, Sentence sentence, InstanceConsumer<Boolean> consumer) {
+	void processSentence(JCas jCas, Sentence sentence, InstanceConsumer<Boolean> consumer) throws CleartkException{
 
 		/*
 		 * Pre-compute sentence level data: sentenceConstituents: list of all
@@ -168,7 +169,7 @@ public class ArgumentIdentificationHandler implements AnnotationHandler<Boolean>
 	public void processPredicate(JCas jCas, Predicate predicate,
 			List<TreebankNode> sentenceConstituents,
 			List<List<Feature>> sentenceConstituentFeatures,
-			InstanceConsumer<Boolean> consumer) {
+			InstanceConsumer<Boolean> consumer) throws CleartkException{
 		/*
 		 * Pre-compute predicate level data: predicateArguments: all semantic
 		 * arguments of the predicate predicateNode: the constituent of the

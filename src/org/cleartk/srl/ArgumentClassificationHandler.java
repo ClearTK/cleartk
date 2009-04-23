@@ -33,6 +33,7 @@ import java.util.Map;
 import org.apache.uima.UimaContext;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.AnnotationHandler;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
@@ -94,7 +95,7 @@ public class ArgumentClassificationHandler implements AnnotationHandler<String> 
 	throws ResourceInitializationException {
 	}
 
-	public void process(JCas jCas, InstanceConsumer<String> consumer) {
+	public void process(JCas jCas, InstanceConsumer<String> consumer) throws CleartkException{
 		List<Sentence> sentences = AnnotationRetrieval.getAnnotations(jCas, Sentence.class);
 
 		for( Sentence sentence : sentences ) {

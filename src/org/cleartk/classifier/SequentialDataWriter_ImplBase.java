@@ -33,9 +33,9 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
-import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 
 /**
@@ -54,7 +54,7 @@ public abstract class SequentialDataWriter_ImplBase<INPUTOUTCOME_TYPE, OUTPUTOUT
 	}
 
 	
-	public void writeSequence(List<Instance<INPUTOUTCOME_TYPE>> instances) throws IOException{
+	public void writeSequence(List<Instance<INPUTOUTCOME_TYPE>> instances) throws CleartkException{
 		for (Instance<INPUTOUTCOME_TYPE> instance : instances) {
 			FEATURES_TYPE features = featuresEncoder.encodeAll(instance.getFeatures());
 			OUTPUTOUTCOME_TYPE outcome = outcomeEncoder.encode(instance.getOutcome());
@@ -67,35 +67,40 @@ public abstract class SequentialDataWriter_ImplBase<INPUTOUTCOME_TYPE, OUTPUTOUT
 	
 	public abstract void writeEndSequence();
 
-	public void finish() throws IOException {
-		// close out the file writers
-		for (PrintWriter writer : this.writers) {
-			writer.flush();
-			writer.close();
-		}
-
-		// serialize the features encoder
-		ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(
-				getFile(FeaturesEncoder_ImplBase.ENCODERS_FILE_NAME)));
-		os.writeObject(this.featuresEncoder);
-		os.writeObject(this.outcomeEncoder);
-		os.close();
-
-		// set manifest values
+	public void finish() throws CleartkException {
 		try {
-			Class<? extends ClassifierBuilder<? extends INPUTOUTCOME_TYPE>> classifierBuilderClass = this
-					.getDefaultClassifierBuilderClass();
-			this.classifierManifest.setClassifierBuilder(classifierBuilderClass.newInstance());
-		}
-		catch (InstantiationException e) {
-			throw new RuntimeException(e);
-		}
-		catch (IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
+			// close out the file writers
+			for (PrintWriter writer : this.writers) {
+				writer.flush();
+				writer.close();
+			}
 
-		// write the manifest file
-		classifierManifest.write(this.outputDirectory);
+			// serialize the features encoder
+			ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(
+					getFile(FeaturesEncoder_ImplBase.ENCODERS_FILE_NAME)));
+			os.writeObject(this.featuresEncoder);
+			os.writeObject(this.outcomeEncoder);
+			os.close();
+
+			// set manifest values
+			try {
+				Class<? extends ClassifierBuilder<? extends INPUTOUTCOME_TYPE>> classifierBuilderClass = this
+						.getDefaultClassifierBuilderClass();
+				this.classifierManifest.setClassifierBuilder(classifierBuilderClass.newInstance());
+			}
+			catch (InstantiationException e) {
+				throw new RuntimeException(e);
+			}
+			catch (IllegalAccessException e) {
+				throw new RuntimeException(e);
+			}
+
+			// write the manifest file
+			classifierManifest.write(this.outputDirectory);
+		}
+		catch (IOException ioe) {
+			throw new CleartkException(ioe);
+		}
 	}
 
 	public void setFeaturesEncoder(FeaturesEncoder<FEATURES_TYPE> featuresEncoder) {

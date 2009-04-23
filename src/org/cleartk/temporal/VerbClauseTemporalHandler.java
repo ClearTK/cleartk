@@ -35,6 +35,7 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.AnnotationHandler;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.InstanceConsumer;
@@ -94,7 +95,7 @@ public class VerbClauseTemporalHandler implements AnnotationHandler<String> {
 	}
 
 	public void process(JCas jCas, InstanceConsumer<String> consumer)
-			throws AnalysisEngineProcessException {
+			throws AnalysisEngineProcessException, CleartkException {
 		int docEnd = jCas.getDocumentText().length();
 
 		// collect TLINKs if necessary

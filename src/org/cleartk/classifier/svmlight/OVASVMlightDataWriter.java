@@ -35,6 +35,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.ClassifierBuilder;
 import org.cleartk.classifier.DataWriter_ImplBase;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
@@ -84,7 +85,7 @@ public class OVASVMlightDataWriter extends DataWriter_ImplBase<String,Integer,Fe
 	
 
 	@Override
-	public void finish() throws IOException {
+	public void finish() throws CleartkException{
 		super.finish();
 
 		// close and remove all-false file

@@ -25,6 +25,7 @@ package org.cleartk.classifier;
 
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
+import org.cleartk.CleartkException;
 import org.cleartk.example.pos.ExamplePOSAnnotationHandler;
 
 /**
@@ -49,6 +50,6 @@ public interface AnnotationHandler<OUTCOME_TYPE> {
 	 * @param consumer The InstanceConsumer object to which the
 	 *                 Instance objects created should be passed.
 	 */
-	public void process(JCas jCas, InstanceConsumer<OUTCOME_TYPE> consumer) throws AnalysisEngineProcessException;
+	public void process(JCas jCas, InstanceConsumer<OUTCOME_TYPE> consumer) throws AnalysisEngineProcessException, CleartkException;
 	
 }

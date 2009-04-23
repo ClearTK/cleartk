@@ -25,6 +25,8 @@ package org.cleartk.classifier;
 
 import java.util.List;
 
+import org.cleartk.CleartkException;
+
 /**
  * <br>Copyright (c) 2007-2009, Regents of the University of Colorado 
  * <br>All rights reserved.
@@ -47,7 +49,7 @@ public interface SequentialInstanceConsumer<OUTCOME_TYPE> {
 	 * @return The outcomes for the instances - one for each instance, or null if labels were not assigned. Outcomes
 	 *         should be in the same order as the original instances.
 	 */
-	public abstract List<OUTCOME_TYPE> consumeSequence(List<Instance<OUTCOME_TYPE>> instances);
+	public abstract List<OUTCOME_TYPE> consumeSequence(List<Instance<OUTCOME_TYPE>> instances) throws CleartkException;
 
 	/**
 	 * This method provides an annotation handler (or anything else using an

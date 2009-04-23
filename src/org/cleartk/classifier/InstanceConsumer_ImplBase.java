@@ -28,6 +28,7 @@ import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.CleartkException;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
 
@@ -52,7 +53,11 @@ public abstract class InstanceConsumer_ImplBase<OUTCOME_TYPE> extends JCasAnnota
 
 	@Override
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
-		this.annotationHandler.process(jCas, this);
+		try {
+			this.annotationHandler.process(jCas, this);
+		} catch (CleartkException ctke) {
+			throw new AnalysisEngineProcessException(ctke);
+		}
 	}
 
 }

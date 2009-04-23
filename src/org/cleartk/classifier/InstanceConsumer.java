@@ -23,6 +23,8 @@
  */
 package org.cleartk.classifier;
 
+import org.cleartk.CleartkException;
+
 /**
  * <br>
  * Copyright (c) 2009, Regents of the University of Colorado <br>
@@ -47,7 +49,7 @@ public interface InstanceConsumer<OUTCOME_TYPE> {
 	 * @return The assigned outcome (classification), or null if an outcome was
 	 *         not assigned.
 	 */
-	public OUTCOME_TYPE consume(Instance<OUTCOME_TYPE> instance);
+	public OUTCOME_TYPE consume(Instance<OUTCOME_TYPE> instance) throws CleartkException;
 
 	/**
 	 * This method provides an annotation handler (or anything else using an

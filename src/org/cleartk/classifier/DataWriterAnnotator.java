@@ -25,9 +25,11 @@ package org.cleartk.classifier;
 
 import java.io.File;
 import java.io.IOException;
+
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.CleartkException;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
 
@@ -68,19 +70,14 @@ public class DataWriterAnnotator<OUTCOME_TYPE> extends InstanceConsumer_ImplBase
 		try {
 			dataWriter.finish();
 		}
-		catch (IOException e) {
-			throw new AnalysisEngineProcessException(e);
+		catch (CleartkException ctke) {
+			throw new AnalysisEngineProcessException(ctke);
 		}
 	}
 
 	
-	public OUTCOME_TYPE consume(Instance<OUTCOME_TYPE> instance) {
-		try {
-			dataWriter.write(instance);
-		}
-		catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+	public OUTCOME_TYPE consume(Instance<OUTCOME_TYPE> instance)  throws CleartkException{
+		dataWriter.write(instance);
 		return null;
 	}
 

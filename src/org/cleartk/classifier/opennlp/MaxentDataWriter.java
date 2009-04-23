@@ -30,6 +30,7 @@ import java.util.List;
 
 import opennlp.maxent.RealValueFileEventStream;
 
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.ClassifierBuilder;
 import org.cleartk.classifier.DataWriter_ImplBase;
 import org.cleartk.classifier.encoder.features.NameNumber;
@@ -60,22 +61,28 @@ import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
  */
 public class MaxentDataWriter extends DataWriter_ImplBase<String, String, List<NameNumber>> {
 
+	public static final String TRAINING_DATA_FILE_NAME ="training-data.maxent"; 
 
 	public MaxentDataWriter(File outputDirectory) throws IOException {
 		super(outputDirectory);
-
 		// initialize output writer and Classifier class
-		this.trainingDataWriter = this.getPrintWriter("training-data.maxent");
+		this.trainingDataWriter = this.getPrintWriter(TRAINING_DATA_FILE_NAME);
 	}
 
 	protected PrintWriter trainingDataWriter;
 
-	public void writeEncoded(List<NameNumber> nameNumbers, String outcomeString) {
-		// write the label
-		this.trainingDataWriter.print(outcomeString);
+	public void writeEncoded(List<NameNumber> features, String outcome) throws CleartkException{
+		if(outcome == null) {
+			throw new CleartkException("all consumed instances must have an outcome.  outcome="+outcome);
+		}
+		this.trainingDataWriter.print(outcome);
+
+		if (features.size() == 0) {
+			trainingDataWriter.print(" null=0");
+		}
 
 		// write each of the string features, encoded, into the training data
-		for (NameNumber nameNumber : nameNumbers) {
+		for (NameNumber nameNumber : features) {
 			this.trainingDataWriter.print(' ');
 			if(nameNumber.number.doubleValue() == 1.0)
 				trainingDataWriter.print(nameNumber.name);
@@ -89,14 +96,18 @@ public class MaxentDataWriter extends DataWriter_ImplBase<String, String, List<N
 	}
 
 	@Override
-	public void finish() throws IOException {
+	public void finish() throws CleartkException {
 		super.finish();
 		
-		//TODO - this seems a little strange - shouldn't there be a mechanism to allow the feature encoder to finish itself?
-		if (featuresEncoder instanceof NameNumberFeaturesEncoder) {
-			NameNumberFeaturesEncoder nnfe = (NameNumberFeaturesEncoder) featuresEncoder;
-			if(nnfe.isCompressFeatures())
-				nnfe.writeNameLookup(this.getPrintWriter(NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
+		try {
+			//TODO - this seems a little strange - shouldn't there be a mechanism to allow the feature encoder to finish itself?
+			if (featuresEncoder instanceof NameNumberFeaturesEncoder) {
+				NameNumberFeaturesEncoder nnfe = (NameNumberFeaturesEncoder) featuresEncoder;
+				if(nnfe.isCompressFeatures())
+					nnfe.writeNameLookup(this.getPrintWriter(NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
+			}
+		} catch(IOException ioe) {
+			throw new CleartkException(ioe);
 		}
 	}
 

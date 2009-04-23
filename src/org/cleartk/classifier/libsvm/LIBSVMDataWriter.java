@@ -29,6 +29,7 @@ import java.io.PrintWriter;
 import java.util.Map;
 import java.util.jar.Attributes;
 
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.ClassifierBuilder;
 import org.cleartk.classifier.DataWriter_ImplBase;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
@@ -75,7 +76,7 @@ public abstract class LIBSVMDataWriter<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE> ext
 	}
 
 	@Override
-	public void finish() throws IOException {
+	public void finish() throws CleartkException {
 		super.finish();
 
 		// flush and close writer

@@ -28,6 +28,7 @@ import java.lang.reflect.Type;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.CleartkException;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
 
@@ -94,7 +95,7 @@ public class ClassifierAnnotator<OUTCOME_TYPE> extends InstanceConsumer_ImplBase
 		}
 	}
 
-	public OUTCOME_TYPE consume(Instance<OUTCOME_TYPE> instance) {
+	public OUTCOME_TYPE consume(Instance<OUTCOME_TYPE> instance) throws CleartkException {
 		return this.classifier.classify(instance.getFeatures());
 	}
 	

@@ -30,6 +30,7 @@ import java.util.List;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.CleartkException;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
 
@@ -96,7 +97,7 @@ public class SequentialClassifierAnnotator<OUTCOME_TYPE> extends SequentialInsta
 		}
 	}
 
-	public List<OUTCOME_TYPE> consumeSequence(List<Instance<OUTCOME_TYPE>> instances) {
+	public List<OUTCOME_TYPE> consumeSequence(List<Instance<OUTCOME_TYPE>> instances) throws CleartkException {
 		List<List<Feature>> instanceFeatures = new ArrayList<List<Feature>>();
 		for (Instance<OUTCOME_TYPE> instance: instances) {
 			instanceFeatures.add(instance.getFeatures());

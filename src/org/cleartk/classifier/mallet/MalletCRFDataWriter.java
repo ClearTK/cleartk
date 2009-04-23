@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.ClassifierBuilder;
 import org.cleartk.classifier.SequentialDataWriter_ImplBase;
 import org.cleartk.classifier.encoder.features.NameNumber;
@@ -62,12 +63,16 @@ public class MalletCRFDataWriter extends SequentialDataWriter_ImplBase<String, S
 	}
 	
 	@Override
-	public void finish() throws IOException {
+	public void finish() throws CleartkException {
 		super.finish();
+		try {
 		if (featuresEncoder instanceof NameNumberFeaturesEncoder) {
 				NameNumberFeaturesEncoder dfe = (NameNumberFeaturesEncoder) featuresEncoder;
 				if(dfe.isCompressFeatures())
 					dfe.writeNameLookup(this.getPrintWriter(NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
+		}
+		}catch(IOException ioe) {
+			throw new CleartkException(ioe);
 		}
 	}
 

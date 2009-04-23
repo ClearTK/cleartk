@@ -23,12 +23,12 @@
 */
 package org.cleartk.classifier;
 
-import java.io.IOException;
+import org.cleartk.CleartkException;
 
 public interface DataWriter<OUTCOME_TYPE> {
-	public void write(Instance<OUTCOME_TYPE> instance) throws IOException;
+	public void write(Instance<OUTCOME_TYPE> instance) throws CleartkException;
 	
-	public void finish() throws IOException;
+	public void finish() throws CleartkException;
 	
 	public Class<? extends ClassifierBuilder<OUTCOME_TYPE>> getDefaultClassifierBuilderClass();
 	
