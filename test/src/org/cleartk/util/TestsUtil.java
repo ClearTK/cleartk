@@ -35,6 +35,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.AnnotationHandler;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
@@ -105,7 +106,7 @@ public class TestsUtil {
 	 * @throws UIMAException
 	 */
 	public static <T> List<Instance<T>> produceInstances(AnnotationHandler<T> producer, AnalysisEngine engine, JCas jCas)
-			throws UIMAException {
+			throws UIMAException, CleartkException {
 		return produceInstances(producer, null, engine, jCas);
 	}
 
@@ -125,7 +126,7 @@ public class TestsUtil {
 	 * @throws UIMAException
 	 */
 	public static <T> List<Instance<T>> produceInstances(AnnotationHandler<T> producer, T returnValue,
-			AnalysisEngine engine, JCas jCas) throws UIMAException {
+			AnalysisEngine engine, JCas jCas) throws UIMAException, CleartkException {
 		UimaContext context = engine.getUimaContext();
 		AnnotatorConsumer<T> consumer = new AnnotatorConsumer<T>(returnValue);
 		UIMAUtil.initialize(producer, context);
