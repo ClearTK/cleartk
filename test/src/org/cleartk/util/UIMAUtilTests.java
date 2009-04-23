@@ -37,7 +37,6 @@ import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.AnnotationHandler;
 import org.cleartk.classifier.InstanceConsumer;
-import org.cleartk.classifier.mallet.DefaultMalletDataWriterFactory;
 import org.cleartk.type.Token;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
@@ -103,6 +102,13 @@ public class UIMAUtilTests {
 		
 	}
 
+	public static class TestHandler2 implements AnnotationHandler<String>{
+
+		public void process(JCas cas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException {
+		}
+		
+	}
+
 	@Test
 	public void testCreate() throws ResourceInitializationException {
 		UimaContext context = UimaContextFactory.createUimaContext("StringParam", "java.lang.String");
@@ -114,6 +120,10 @@ public class UIMAUtilTests {
 		assertNotNull(annotationHandler);
 
 		context = UimaContextFactory.createUimaContext(InstanceConsumer.PARAM_ANNOTATION_HANDLER, "org.cleartk.util.UIMAUtilTests$TestHandler");
+		annotationHandler = UIMAUtil.create(context, InstanceConsumer.PARAM_ANNOTATION_HANDLER, AnnotationHandler.class);
+		assertNotNull(annotationHandler);
+
+		context = UimaContextFactory.createUimaContext(InstanceConsumer.PARAM_ANNOTATION_HANDLER, "org.cleartk.util.UIMAUtilTests$TestHandler2");
 		annotationHandler = UIMAUtil.create(context, InstanceConsumer.PARAM_ANNOTATION_HANDLER, AnnotationHandler.class);
 		assertNotNull(annotationHandler);
 
