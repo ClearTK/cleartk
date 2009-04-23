@@ -24,6 +24,30 @@
 
 package org.cleartk.token.pos.impl;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.uima.analysis_component.AnalysisComponent;
+import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.analysis_engine.metadata.SofaMapping;
+import org.apache.uima.collection.CollectionReader;
+import org.apache.uima.jcas.JCas;
+import org.apache.uima.resource.metadata.TypePriorities;
+import org.apache.uima.resource.metadata.TypeSystemDescription;
+import org.cleartk.ViewNames;
+import org.cleartk.classifier.DataWriterAnnotator;
+import org.cleartk.classifier.Train;
+import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
+import org.cleartk.token.pos.POSHandler;
+import org.cleartk.util.FilesCollectionReader;
+import org.cleartk.util.TestsUtil;
+import org.junit.Before;
+import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.CollectionReaderFactory;
+import org.uutuc.factory.SofaMappingFactory;
+import org.uutuc.util.JCasIterable;
+
 /**
  * <br>Copyright (c) 2009, Regents of the University of Colorado 
  * <br>All rights reserved.
@@ -34,8 +58,53 @@ package org.cleartk.token.pos.impl;
  */
 public class DefaultPOSHandlerTest {
 
-//	@Test
-//	public void test() {
-//		
+	private File outputDirectory = new File("test/data/token/poshandler");
+	
+	@Before
+	public void setUp() {
+		outputDirectory.mkdirs();
+	}
+	
+//	@After
+//	public void tearDown() {
+//		TearDownUtil.removeDirectory(outputDirectory);
 //	}
+	
+//	@Test
+	public void testCraft() throws Exception {
+		
+		TypeSystemDescription defaultTypeSystemDescription = TestsUtil.getTypeSystemDescription();
+		CollectionReader reader = CollectionReaderFactory.createCollectionReader(FilesCollectionReader.class, defaultTypeSystemDescription, 
+				FilesCollectionReader.PARAM_FILE_OR_DIRECTORY, "test/data/docs/treebank",
+				FilesCollectionReader.PARAM_SUFFIXES, new String[] {".tree"},
+				FilesCollectionReader.PARAM_VIEW_NAME, ViewNames.TREEBANK);
+		
+		SofaMapping[] sofaMappings = new SofaMapping[] {
+				SofaMappingFactory.createSofaMapping(ViewNames.TREEBANK, TreebankGoldAnnotator.class, ViewNames.TREEBANK),
+				SofaMappingFactory.createSofaMapping(ViewNames.TREEBANK_ANNOTATIONS, TreebankGoldAnnotator.class, ViewNames.TREEBANK_ANNOTATIONS),
+				SofaMappingFactory.createSofaMapping(ViewNames.TREEBANK_ANNOTATIONS, DataWriterAnnotator.class, ViewNames.DEFAULT)
+		};
+		
+		List<Class<? extends AnalysisComponent>> aggregatedClasses = new ArrayList<Class<? extends AnalysisComponent>>();
+		aggregatedClasses.add(TreebankGoldAnnotator.class);
+		aggregatedClasses.add(DataWriterAnnotator.class);
+
+		AnalysisEngine aggregateEngine = AnalysisEngineFactory.createAggregateAnalysisEngine(aggregatedClasses, 
+				defaultTypeSystemDescription, (TypePriorities)null, sofaMappings,
+				TreebankGoldAnnotator.PARAM_POST_TREES, false,
+				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, "org.cleartk.classifier.opennlp.org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory",
+				DataWriterAnnotator.PARAM_ANNOTATION_HANDLER, "org.cleartk.token.pos.impl.DefaultPOSHandler",
+				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory.getPath(),
+				POSHandler.PARAM_FEATURE_EXTRACTOR_CLASS, "org.cleartk.token.pos.impl.DefaultFeatureExtractor",
+				POSHandler.PARAM_TAGGER_CLASS, "org.cleartk.token.pos.impl.DefaultTagger");
+		
+		for(@SuppressWarnings("unused") JCas jCas : new JCasIterable(reader, aggregateEngine));
+		
+		aggregateEngine.collectionProcessComplete();
+		
+		
+		Train.main(new String[] {outputDirectory.getPath(), "100", "5"});
+		
+		
+	}
 }
