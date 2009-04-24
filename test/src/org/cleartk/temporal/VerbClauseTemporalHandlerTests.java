@@ -34,6 +34,7 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.ClassifierAnnotator;
 import org.cleartk.classifier.DataWriterAnnotator;
 import org.cleartk.classifier.Feature;
@@ -85,7 +86,7 @@ public class VerbClauseTemporalHandlerTests {
 	}
 	
 	@Test
-	public void test() throws UIMAException {
+	public void test() throws UIMAException, CleartkException {
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				EmptyAnnotator.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
