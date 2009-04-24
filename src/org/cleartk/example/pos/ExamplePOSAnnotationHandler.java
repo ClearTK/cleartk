@@ -32,6 +32,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
+import org.cleartk.Initializable;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.SequentialAnnotationHandler;
 import org.cleartk.classifier.SequentialInstanceConsumer;
@@ -56,7 +57,7 @@ import org.cleartk.util.AnnotationRetrieval;
  * 
  * @author Steven Bethard
  */
-public class ExamplePOSAnnotationHandler implements SequentialAnnotationHandler<String> {
+public class ExamplePOSAnnotationHandler implements SequentialAnnotationHandler<String>, Initializable {
 
 	private List<SimpleFeatureExtractor> tokenFeatureExtractors;
 	private List<WindowExtractor> tokenSentenceFeatureExtractors;
