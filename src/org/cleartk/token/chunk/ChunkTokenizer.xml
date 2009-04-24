@@ -2,7 +2,7 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>org.cleartk.classifier.ClassifierAnnotator</annotatorImplementationName>
+  <annotatorImplementationName>org.cleartk.classifier.SequentialClassifierAnnotator</annotatorImplementationName>
   <analysisEngineMetaData>
     <name>chunk-based tokenizer</name>
     <description>Copyright (c) 2009, Regents of the University of Colorado 
@@ -32,7 +32,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>org.cleartk.classifier.InstanceConsumer.PARAM_ANNOTATION_HANDLER</name>
+        <name>org.cleartk.classifier.SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
@@ -73,16 +73,10 @@ POSSIBILITY OF SUCH DAMAGE.
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
-      <configurationParameter>
-        <name>org.cleartk.chunk.DefaultChunkLabeler.PARAM_CHUNK_LABEL_FEATURE</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
-      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>org.cleartk.classifier.InstanceConsumer.PARAM_ANNOTATION_HANDLER</name>
+        <name>org.cleartk.classifier.SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER</name>
         <value>
           <string>org.cleartk.chunk.ChunkerHandler</string>
         </value>
