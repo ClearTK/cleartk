@@ -23,6 +23,8 @@
  */
 package org.cleartk.classifier;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -35,16 +37,24 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.encoder.EncoderFactory;
+import org.cleartk.classifier.encoder.factory.NameNumberEncoderFactory;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
+import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
+import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
+import org.cleartk.classifier.mallet.MalletDataWriter;
 import org.cleartk.classifier.opennlp.MaxentClassifierBuilder;
+import org.cleartk.classifier.opennlp.MaxentDataWriter;
 import org.cleartk.util.UIMAUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.UimaContextFactory;
+import org.uutuc.util.TearDownUtil;
 
 /**
  * <br>
@@ -56,219 +66,57 @@ import org.uutuc.factory.AnalysisEngineFactory;
  */
 public class DataWriter_ImplBaseTests {
 
-	@Before
-	public void setUp() throws Exception {
-		new File(this.outputDir).mkdir();
-	}
-
 	@After
 	public void tearDown() throws Exception {
-		this.delete(new File(this.outputDir));
-	}
-
-	private void delete(File file) {
-		if (file.isDirectory()) {
-			for (File child : file.listFiles()) {
-				this.delete(child);
-			}
-		}
-		file.delete();
+		TearDownUtil.removeDirectory(outputDirectory);
 	}
 
 	@Test
-	public void testManifest() throws UIMAException, IOException {
+	public void testManifest() throws UIMAException, IOException, CleartkException {
 		String expectedManifest = ("Manifest-Version: 1.0\n"
 				+ "classifierBuilderClass: org.cleartk.classifier.opennlp.MaxentClassifie\n" + " rBuilder");
 
-		this.process();
-		File manifestFile = new File(this.outputDir, "MANIFEST.MF");
+		DataWriter_ImplBase<String, String, List<NameNumber>> dataWriter = new MaxentDataWriter(outputDirectory);
+		dataWriter.finish();
+		File manifestFile = new File(outputDirectory, "MANIFEST.MF");
 		String actualManifest = FileUtils.file2String(manifestFile);
 		Assert.assertEquals(expectedManifest, actualManifest.replaceAll("\r", "").trim());
 	}
 
 	@Test
-	public void testConsumeAll() throws UIMAException {
-		DataWriter_ImplBaseTests.consumeCount = 0;
-		this.process(SingleProducer.class);
-		Assert.assertEquals(1, DataWriter_ImplBaseTests.consumeCount);
+	public void testPrintWriter() throws UIMAException, IOException, CleartkException {
 
-		DataWriter_ImplBaseTests.consumeCount = 0;
-		this.process(MultiProducer.class);
-		Assert.assertEquals(2, DataWriter_ImplBaseTests.consumeCount);
-	}
-
-	@Test
-	public void testPrintWriter() throws UIMAException, IOException {
-		String actualText;
-
-		this.process(SingleProducer.class, "foo.txt", "foo");
-		actualText = FileUtils.file2String(new File(this.outputDir, "foo.txt"));
+		DataWriter_ImplBase<String, String, List<NameNumber>> dataWriter = new MaxentDataWriter(outputDirectory);
+		PrintWriter printWriter = dataWriter.getPrintWriter("foo.txt");
+		printWriter.println("foo");
+		dataWriter.finish();
+		String actualText = FileUtils.file2String(new File(outputDirectory, "foo.txt"));
 		Assert.assertEquals("foo\n", actualText.replaceAll("\r", ""));
 
-		this.process(MultiProducer.class, "bar.txt", "bar");
-		actualText = FileUtils.file2String(new File(this.outputDir, "bar.txt"));
-		Assert.assertEquals("bar\nbar\n", actualText.replaceAll("\r", ""));
-
-		this.process(MultiProducer.class, "foo/bar.txt", "bar");
-		actualText = FileUtils.file2String(new File(this.outputDir, "foo/bar.txt"));
-		Assert.assertEquals("bar\nbar\n", actualText.replaceAll("\r", ""));
-
 		try {
-			this.process(SingleProducer.class, ".", "shouldn't work");
+			printWriter = dataWriter.getPrintWriter(".");
 			Assert.fail("expected exception on bad file name");
 		}
-		catch (ResourceInitializationException e) {
-		}
+		catch (IOException ioe) { }
 	}
 
 	@Test
-	public void testNullFactory() throws UIMAException, IOException {
-		try {
-			AnalysisEngineFactory.createAnalysisEngine(Writer.class, null,
-					InstanceConsumer.PARAM_ANNOTATION_HANDLER, SingleProducer.class.getName(),
-					DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, this.outputDir,
-					DataWriterAnnotator.PARAM_ENCODER_FACTORY_CLASS, NullFactory.class.getName(),
-					Writer.PARAM_FILE_NAME, "foo.txt", Writer.PARAM_STRING_TO_WRITE, "foo");
+	public void testFinish() throws UIMAException, IOException, CleartkException {
 
-			Assert.fail("Expected exception with factory returning null encoders");
-		}
-		catch (ResourceInitializationException e) {
-		}
+		DataWriter_ImplBase<String, String, List<NameNumber>> dataWriter = new MalletDataWriter(outputDirectory);
+		NameNumberEncoderFactory nnef = new NameNumberEncoderFactory();
+		UimaContext uimaContext = UimaContextFactory.createUimaContext();
+		dataWriter.setFeaturesEncoder((FeaturesEncoder<List<NameNumber>>)(nnef.createFeaturesEncoder(uimaContext)));
+		dataWriter.setOutcomeEncoder((OutcomeEncoder<String, String>)(nnef.createOutcomeEncoder(uimaContext)));
+		dataWriter.finish();
+		assertTrue(new File(outputDirectory, FeaturesEncoder_ImplBase.ENCODERS_FILE_NAME).exists());
+		
 	}
 
-	public static class SingleProducer<T> implements AnnotationHandler<T> {
-		public void initialize(UimaContext context) throws ResourceInitializationException {
-		}
 
-		public void process(JCas cas, InstanceConsumer<T> consumer) {
-			consumer.consume(new Instance<T>());
-		}
-	}
+	private final String outputDirectoryName = "test/data/classifiers"; 
+	private final File outputDirectory = new File(outputDirectoryName);
 
-	public static class MultiProducer<T> implements AnnotationHandler<T> {
-		public void initialize(UimaContext context) throws ResourceInitializationException {
-		}
-
-		public void process(JCas cas, InstanceConsumer<T> consumer) {
-			consumer.consume(new Instance<T>());
-			consumer.consume(new Instance<T>());
-		}
-	}
-
-	public static class Writer extends DataWriter_ImplBase<Object, Object, Object> {
-
-		public static final String PARAM_FILE_NAME = "FileName";
-
-		public static final String PARAM_STRING_TO_WRITE = "StringToWrite";
-
-		@Override
-		public void initialize(UimaContext context) throws ResourceInitializationException {
-			super.initialize(context);
-
-			String fileName = (String) UIMAUtil.getRequiredConfigParameterValue(context,
-					DataWriter_ImplBaseTests.Writer.PARAM_FILE_NAME);
-			this.fooWriter = this.getPrintWriter(fileName);
-			this.toWrite = (String) UIMAUtil.getRequiredConfigParameterValue(context,
-					DataWriter_ImplBaseTests.Writer.PARAM_STRING_TO_WRITE);
-		}
-
-		public Object consume(Instance<Object> instance) {
-			DataWriter_ImplBaseTests.consumeCount++;
-
-			// write to the print writer
-			this.fooWriter.println(this.toWrite);
-
-			// use the feature encoder
-			this.featuresEncoder.encodeAll(instance.getFeatures());
-
-			// return null
-			return null;
-		}
-
-		private PrintWriter fooWriter;
-
-		private String toWrite;
-
-		@Override
-		protected Class<? extends ClassifierBuilder<? extends Object>> getDefaultClassifierBuilderClass() {
-			return MaxentClassifierBuilder.class;
-		}
-
-		@Override
-		protected Class<? extends EncoderFactory> getDefaultEncoderFactoryClass() {
-			return Factory.class;
-		}
-	}
-
-	public static class Factory implements EncoderFactory {
-		public FeaturesEncoder<?> createFeaturesEncoder(UimaContext context) {
-			return new EmptyFeaturesEncoder();
-		}
-
-		public OutcomeEncoder<?, ?> createOutcomeEncoder(UimaContext context) {
-			return new EmptyOutcomeEncoder();
-		}
-
-	}
-
-	public static class NullFactory implements EncoderFactory {
-		public FeaturesEncoder<?> createFeaturesEncoder(UimaContext context) {
-			return null;
-		}
-
-		public OutcomeEncoder<?, ?> createOutcomeEncoder(UimaContext context) {
-			return null;
-		}
-
-	}
-
-	public static class EmptyFeaturesEncoder implements FeaturesEncoder<Object> {
-
-		private static final long serialVersionUID = 8574437254815448838L;
-
-		public void allowNewFeatures(boolean flag) {
-		}
-
-		public Object encodeAll(Iterable<Feature> features) {
-			return null;
-		}
-	}
-
-	public static class EmptyOutcomeEncoder implements OutcomeEncoder<Object, Object> {
-
-		private static final long serialVersionUID = -752385896104992463L;
-
-		public Object decode(Object outcome) {
-			return null;
-		}
-
-		public Object encode(Object outcome) {
-			return null;
-		}
-
-	}
-
-	private void process(Class<?> producerClass, String fileName, String toWrite) throws UIMAException {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(Writer.class, null,
-				InstanceConsumer.PARAM_ANNOTATION_HANDLER, producerClass.getName(),
-				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, this.outputDir, Writer.PARAM_FILE_NAME, fileName,
-				Writer.PARAM_STRING_TO_WRITE, toWrite);
-		JCas jCas = engine.newJCas();
-		engine.process(jCas);
-		engine.collectionProcessComplete();
-	}
-
-	private void process(Class<?> producerClass) throws UIMAException {
-		this.process(producerClass, "foo.txt", "foo");
-	}
-
-	private void process() throws UIMAException {
-		this.process(SingleProducer.class);
-	}
-
-	private final String outputDir = "test/data/classifiers";
-
-	private static int consumeCount;
 
 
 }
