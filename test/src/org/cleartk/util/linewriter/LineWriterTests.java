@@ -36,7 +36,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
-import org.cleartk.classifier.ClassifierAnnotator;
+import org.cleartk.classifier.SequentialClassifierAnnotator;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
@@ -453,7 +453,7 @@ public class LineWriterTests {
 				AnalysisEngineFactory.createAnalysisEngine("org.cleartk.sentence.SentenceSegmenter"),
 				AnalysisEngineFactory.createAnalysisEngine("org.cleartk.token.Subtokenizer"),
 				AnalysisEngineFactory.createAnalysisEngine("org.cleartk.token.chunk.ChunkTokenizer",
-						ClassifierAnnotator.PARAM_CLASSIFIER_JAR, "test/data/token/chunk/model.jar"),
+						SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR, "test/data/token/chunk/model.jar"),
 				AnalysisEngineFactory.createAnalysisEngine("org.cleartk.util.linewriter.LineWriter",
 						LineWriter.PARAM_OUTPUT_DIRECTORY, this.outputDir.getPath(), 
 						LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS, "org.cleartk.type.Token")};
