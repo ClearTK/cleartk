@@ -2,7 +2,7 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>org.cleartk.classifier.DelegatingDataWriter</annotatorImplementationName>
+  <annotatorImplementationName>org.cleartk.classifier.SequentialDataWriterAnnotator</annotatorImplementationName>
   <analysisEngineMetaData>
     <name>ChunkTokenizerDataWriter</name>
     <description>Copyright (c) 2009, Regents of the University of Colorado 
@@ -25,26 +25,24 @@ SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
 INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
 CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-POSSIBILITY OF SUCH DAMAGE. 
-
-</description>
+POSSIBILITY OF SUCH DAMAGE.</description>
     <version>1.0</version>
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>org.cleartk.classifier.InstanceConsumer.PARAM_ANNOTATION_HANDLER</name>
+        <name>org.cleartk.classifier.SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>org.cleartk.classifier.DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY</name>
+        <name>org.cleartk.classifier.SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>org.cleartk.classifier.DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS</name>
+        <name>org.cleartk.classifier.SequentialDataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
@@ -80,12 +78,6 @@ POSSIBILITY OF SUCH DAMAGE.
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>org.cleartk.chunk.DefaultChunkLabeler.PARAM_CHUNK_LABEL_FEATURE</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
-      </configurationParameter>
-      <configurationParameter>
         <name>org.cleartk.classifier.encoder.factory.NameNumberEncoderFactory.PARAM_COMPRESS</name>
         <type>Boolean</type>
         <multiValued>false</multiValued>
@@ -94,7 +86,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>org.cleartk.classifier.InstanceConsumer.PARAM_ANNOTATION_HANDLER</name>
+        <name>org.cleartk.classifier.SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER</name>
         <value>
           <string>org.cleartk.chunk.ChunkerHandler</string>
         </value>
