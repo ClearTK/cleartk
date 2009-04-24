@@ -23,10 +23,9 @@
 */
 package org.cleartk.chunk;
 
-import org.apache.uima.UimaContext;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.Initializable;
 import org.cleartk.classifier.Instance;
 
 
@@ -36,9 +35,7 @@ import org.cleartk.classifier.Instance;
 
 */
 
-public interface ChunkerFeatureExtractor {
-
-	public void initialize(UimaContext context, ChunkLabeler chunkLabeler) throws ResourceInitializationException;
+public interface ChunkerFeatureExtractor extends Initializable{
 
 	public Instance<String> extractFeatures(JCas jCas, Annotation labeledAnnotation, Annotation sequence);
 		
