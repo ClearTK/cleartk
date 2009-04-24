@@ -30,7 +30,6 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.chunk.ChunkLabeler;
 import org.cleartk.chunk.ChunkerFeatureExtractor;
 import org.cleartk.chunk.ChunkerHandler;
 import org.cleartk.classifier.Instance;
@@ -47,7 +46,7 @@ import org.cleartk.classifier.feature.proliferate.ContainsHyphenProliferator;
 import org.cleartk.classifier.feature.proliferate.LowerCaseProliferator;
 import org.cleartk.classifier.feature.proliferate.NumericTypeProliferator;
 import org.cleartk.classifier.feature.proliferate.ProliferatingExtractor;
-import org.cleartk.token.chunk.type.Subtoken;
+import org.cleartk.util.UIMAUtil;
 
 
 /**
@@ -59,7 +58,7 @@ import org.cleartk.token.chunk.type.Subtoken;
  * @author Philip
  * 
  */
-public class SequentialFeatureExtractor implements ChunkerFeatureExtractor {
+public class ChunkTokenizerFeatureExtractor implements ChunkerFeatureExtractor {
 
 	private List<SimpleFeatureExtractor> simpleFeatureExtractors;
 
@@ -67,14 +66,12 @@ public class SequentialFeatureExtractor implements ChunkerFeatureExtractor {
 
 	private List<WindowNGramExtractor> windowNGramExtractors;
 
-	public void initialize(UimaContext context, ChunkLabeler chunkLabeler) throws ResourceInitializationException {
+	protected Class<? extends Annotation> labeledAnnotationClass;
 
-		String labeledAnnotationClass = (String) context
-				.getConfigParameterValue(ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS);
-		if (!labeledAnnotationClass.equals(Subtoken.class.getName())) throw new ResourceInitializationException(
-				"parameter " + ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS + " should be given the value: "
-						+ Subtoken.class.getName(), null);
+	public void initialize(UimaContext context) throws ResourceInitializationException {
 
+		labeledAnnotationClass = UIMAUtil.getClass(context, ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS, Annotation.class);
+		
 		this.simpleFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
 		this.windowExtractors = new ArrayList<WindowExtractor>();
 		this.windowNGramExtractors = new ArrayList<WindowNGramExtractor>();
@@ -94,15 +91,15 @@ public class SequentialFeatureExtractor implements ChunkerFeatureExtractor {
 		this.simpleFeatureExtractors.add(new WhiteSpaceExtractor());
 
 		// add 2 stems to the left and right
-		this.windowExtractors.add(new WindowExtractor(Subtoken.class, wordExtractor, WindowFeature.ORIENTATION_RIGHT,
+		this.windowExtractors.add(new WindowExtractor(labeledAnnotationClass, wordExtractor, WindowFeature.ORIENTATION_RIGHT,
 				0, 2));
-		this.windowExtractors.add(new WindowExtractor(Subtoken.class, wordExtractor, WindowFeature.ORIENTATION_LEFT, 0,
+		this.windowExtractors.add(new WindowExtractor(labeledAnnotationClass, wordExtractor, WindowFeature.ORIENTATION_LEFT, 0,
 				2));
 
-		this.windowNGramExtractors.add(new WindowNGramExtractor(Subtoken.class, wordExtractor,
+		this.windowNGramExtractors.add(new WindowNGramExtractor(labeledAnnotationClass, wordExtractor,
 				WindowNGramFeature.ORIENTATION_LEFT, WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT, "_", 0, 2));
 
-		this.windowNGramExtractors.add(new WindowNGramExtractor(Subtoken.class, wordExtractor,
+		this.windowNGramExtractors.add(new WindowNGramExtractor(labeledAnnotationClass, wordExtractor,
 				WindowNGramFeature.ORIENTATION_RIGHT, WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT, "_", 0, 2));
 	}
 
