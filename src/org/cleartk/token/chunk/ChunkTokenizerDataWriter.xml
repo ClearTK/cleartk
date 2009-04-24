@@ -27,7 +27,7 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.</description>
     <version>1.0</version>
-    <vendor/>
+    <vendor> </vendor>
     <configurationParameters>
       <configurationParameter>
         <name>org.cleartk.classifier.SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER</name>
@@ -118,7 +118,7 @@ POSSIBILITY OF SUCH DAMAGE.</description>
       <nameValuePair>
         <name>org.cleartk.chunk.ChunkerHandler.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS</name>
         <value>
-          <string>org.cleartk.token.chunk.SequentialFeatureExtractor</string>
+          <string>org.cleartk.token.chunk.ChunkTokenizerFeatureExtractor</string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
