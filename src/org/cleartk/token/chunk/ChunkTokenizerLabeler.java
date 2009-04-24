@@ -26,12 +26,10 @@ package org.cleartk.token.chunk;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.chunk.DefaultChunkLabeler;
 import org.cleartk.util.AnnotationRetrieval;
 
@@ -43,10 +41,6 @@ import org.cleartk.util.AnnotationRetrieval;
  * <p>
  */
 public class ChunkTokenizerLabeler extends DefaultChunkLabeler {
-
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		super.initialize(context);
-	}
 
 	/**
 	 * In general, the chunks will be annotations of type Token and the labeled
