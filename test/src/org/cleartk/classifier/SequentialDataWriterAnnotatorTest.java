@@ -35,13 +35,16 @@ import java.io.IOException;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
+import org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory;
+import org.cleartk.classifier.mallet.MalletCRFDataWriter;
+import org.cleartk.example.pos.ExamplePOSAnnotationHandler;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
+import org.cleartk.util.TestsUtil;
 import org.junit.After;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.TokenFactory;
-import org.uutuc.factory.TypeSystemDescriptionFactory;
 import org.uutuc.util.TearDownUtil;
 
 
@@ -51,20 +54,21 @@ import org.uutuc.util.TearDownUtil;
 
 */
 
-public class DelegatingDataWriterTests {
+public class SequentialDataWriterAnnotatorTest {
 
+	private String outputDirectory = "test/data/sequentialDataWriterAnnotator";
 	@Test
-	public void testDelegatingDataWriter() throws IOException, UIMAException {
+	public void testSequentialDataWriterAnnotator() throws IOException, UIMAException {
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-				DataWriterAnnotator.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-				InstanceConsumer.PARAM_ANNOTATION_HANDLER, "org.cleartk.example.ExamplePOSAnnotationHandler",
-				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, "test/data/delegatingDataWriter/mallet",
-				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, "org.cleartk.classifier.mallet.MalletCRFDataWriter");
+				SequentialDataWriterAnnotator.class, TestsUtil.getTypeSystemDescription(),
+				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER, ExamplePOSAnnotationHandler.class.getName(),
+				SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				SequentialDataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, DefaultMalletCRFDataWriterFactory.class.getName());
 		
 		//create some tokens and sentences
 		//add part-of-speech and stems to tokens
 		
-		JCas jCas = engine.newJCas();
+		JCas jCas = TestsUtil.getJCas();
 		String text = "What if we built a large\r\n, wooden badger?";
 		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class,
 				"What if we built a large \n, wooden badger ?",
@@ -72,7 +76,7 @@ public class DelegatingDataWriterTests {
 		engine.process(jCas);
 		engine.collectionProcessComplete();
 
-		BufferedReader input = new BufferedReader(new FileReader("test/data/delegatingDataWriter/mallet/training-data.malletcrf"));
+		BufferedReader input = new BufferedReader(new FileReader(new File(outputDirectory, MalletCRFDataWriter.TRAINING_DATA_FILE_NAME)));
 		String line = input.readLine();
 		assertNotNull(line);
 		assertTrue(line.endsWith(" WDT"));
@@ -109,6 +113,6 @@ public class DelegatingDataWriterTests {
 	
 	@After
 	public void tearDown() {
-		TearDownUtil.removeDirectory(new File("test/data/delegatingDataWriter"));
+		TearDownUtil.removeDirectory(new File(outputDirectory));
 	}
 }
