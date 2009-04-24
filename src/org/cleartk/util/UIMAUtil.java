@@ -218,19 +218,17 @@ public class UIMAUtil {
 	 */
 	public static <T> T create(UimaContext context, String classParamName, Class<T> superClass)
 			throws ResourceInitializationException {
-		// get the class name from the parameter
-		Object className = getRequiredConfigParameterValue(context, classParamName);
+
+		Class<? extends T> cls = getClass(context, classParamName, superClass);
 
 		// create a new instance
 		T instance;
 		try {
-			Class<? extends T> cls = Class.forName((String) className).asSubclass(superClass);
-
 			if (cls.isMemberClass() && (cls.getModifiers() & Modifier.STATIC) == 0) {
 				Class<?> declaringClass = cls.getDeclaringClass();
 				Object declaringInstance = declaringClass.newInstance();
 				instance = cls.getConstructor(new Class[] { declaringInstance.getClass() }).newInstance(
-				new Object[] { declaringInstance });
+						new Object[] { declaringInstance });
 			}
 			else {
 				instance = cls.newInstance();
@@ -243,6 +241,21 @@ public class UIMAUtil {
 		// initialize and return the SequentialAnnotationHandler
 		UIMAUtil.initialize(instance, context);
 		return instance;
+	}
+
+	public static <T> Class<? extends T> getClass(UimaContext context, String classParamName, Class<T> superClass)
+			throws ResourceInitializationException {
+		// get the class name from the parameter
+		Object className = getRequiredConfigParameterValue(context, classParamName);
+
+		try {
+			Class<? extends T> cls = Class.forName((String) className).asSubclass(superClass);
+			return cls;
+		}
+		catch (Exception e) {
+			throw new ResourceInitializationException(e);
+		}
+
 	}
 
 	/**
