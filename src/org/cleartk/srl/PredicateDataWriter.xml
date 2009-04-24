@@ -2,7 +2,7 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>org.cleartk.classifier.DelegatingDataWriter</annotatorImplementationName>
+  <annotatorImplementationName>org.cleartk.classifier.DataWriterAnnotator</annotatorImplementationName>
   <analysisEngineMetaData>
     <name>PredicateDataWriter</name>
     <description>Copyright (c) 2009, Regents of the University of Colorado 
@@ -25,9 +25,7 @@ SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
 INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
 CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-POSSIBILITY OF SUCH DAMAGE. 
-
-</description>
+POSSIBILITY OF SUCH DAMAGE.</description>
     <version>1.0</version>
     <vendor/>
     <configurationParameters>
