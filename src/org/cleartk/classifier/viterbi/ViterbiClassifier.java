@@ -57,7 +57,7 @@ public abstract class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClass
 		Initializable {
 
 	/**
-	 * "org.cleartk.classifier.ViterbiSequentialClassifier.PARAM_STACK_SIZE" is an optional, single,
+	 * "org.cleartk.classifier.ViterbiClassifier.PARAM_STACK_SIZE" is an optional, single,
 	 * integer parameter that specifies the maximum number of candidate paths to
 	 * keep track of. In general, this number should be higher than the number
 	 * of possible classifications at any given point in the sequence. This
@@ -66,17 +66,17 @@ public abstract class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClass
 	 * are concerned about throughput performance, then you may want to reduce the number
 	 * of candidate paths to maintain.
 	 */
-	public static String PARAM_STACK_SIZE = "org.cleartk.classifier.ViterbiSequentialClassifier.PARAM_STACK_SIZE";
+	public static String PARAM_STACK_SIZE = "org.cleartk.classifier.ViterbiClassifier.PARAM_STACK_SIZE";
 
 	/**
-	 * "org.cleartk.classifier.ViterbiSequentialClassifier.PARAM_ADD_SCORES" is an optional, single,
+	 * "org.cleartk.classifier.ViterbiClassifier.PARAM_ADD_SCORES" is an optional, single,
 	 * boolean parameter that specifies whether the scores of candidate sequence
 	 * classifications should be calculated by summing classfication scores for
 	 * each member of the sequence or by multiplying them. A value of true means
 	 * that the scores will be summed. A value of false means that the scores
 	 * will be multiplied. 
 	 */
-	public static String PARAM_ADD_SCORES = "org.cleartk.classifier.ViterbiSequentialClassifier.PARAM_ADD_SCORES";
+	public static String PARAM_ADD_SCORES = "org.cleartk.classifier.ViterbiClassifier.PARAM_ADD_SCORES";
 
 	
 	protected Classifier<OUTCOME_TYPE> classifier;

@@ -52,7 +52,7 @@ public class ViterbiDataWriter<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE, FEATURES_T
 	public static final String OUTCOME_FEATURE_EXTRACTOR_FILE_NAME = "outcome-features-extractors.ser";
 
 	/**
-	 * "org.cleartk.classifier.ViterbiSequentialDataWriter.PARAM_OUTCOME_FEATURE_EXTRACTOR"
+	 * "org.cleartk.classifier.ViterbiDataWriter.PARAM_OUTCOME_FEATURE_EXTRACTOR"
 	 * is an optional, multi-valued, string parameter that specifies which
 	 * OutcomeFeatureExtractors should be used. Each value of this parameter
 	 * should be the name of a class that implements
