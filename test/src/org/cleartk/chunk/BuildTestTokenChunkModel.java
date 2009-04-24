@@ -69,6 +69,7 @@ public class BuildTestTokenChunkModel {
 		
 		for(@SuppressWarnings("unused") JCas jCas : jCases) { }
 		
+		chunkTokenizerDataWriter.collectionProcessComplete();
 		org.cleartk.classifier.Train.main(new String[] {"test/data/token/chunk"});
 
 	}
