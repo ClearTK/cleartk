@@ -35,6 +35,7 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.Initializable;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.UIMAUtil;
 
@@ -46,7 +47,7 @@ import org.cleartk.util.UIMAUtil;
 
 */
 
-public abstract class ChunkLabeler_ImplBase implements ChunkLabeler {
+public abstract class ChunkLabeler_ImplBase implements ChunkLabeler, Initializable  {
 
 	/**
 	 * "org.cleartk.chunk.ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS" is a single, required, string parameter that names
@@ -79,15 +80,8 @@ public abstract class ChunkLabeler_ImplBase implements ChunkLabeler {
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		try {
 
-			String chunkAnnotationClassName = (String) context.getConfigParameterValue(PARAM_CHUNK_ANNOTATION_CLASS);
-			Class<?> cls = Class.forName(chunkAnnotationClassName);
-			chunkAnnotationClass = cls.asSubclass(Annotation.class);
-
-			String labeledAnnotationClassName = (String) context
-					.getConfigParameterValue(ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS);
-			cls = Class.forName(labeledAnnotationClassName);
-			labeledAnnotationClass = cls.asSubclass(Annotation.class);
-
+			chunkAnnotationClass = UIMAUtil.getClass(context, PARAM_CHUNK_ANNOTATION_CLASS, Annotation.class);
+			labeledAnnotationClass = UIMAUtil.getClass(context, ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS, Annotation.class);
 			annotationLabels = new HashMap<Annotation, String>();
 		}
 		catch (Exception e) {
