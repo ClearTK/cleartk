@@ -25,11 +25,9 @@ package org.cleartk.chunk;
 
 import java.util.List;
 
-import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.resource.ResourceInitializationException;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -39,11 +37,9 @@ import org.apache.uima.resource.ResourceInitializationException;
 
 public interface ChunkLabeler {
 
-	public void initialize(UimaContext context) throws ResourceInitializationException;
-	
-	public void chunks2Labels(JCas jCas, Annotation sequence) throws AnalysisEngineProcessException;
+	public void chunks2Labels(JCas jCas, Annotation sequenceAnnotation) throws AnalysisEngineProcessException;
 
-	public List<Annotation> labels2Chunks(JCas jCas, Annotation sequence) throws AnalysisEngineProcessException;
+	public List<Annotation> labels2Chunks(JCas jCas, Annotation sequenceAnnotation) throws AnalysisEngineProcessException;
 	
 	public String getLabel(Annotation labeledAnnotation) throws AnalysisEngineProcessException;
 
