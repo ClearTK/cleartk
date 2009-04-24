@@ -35,6 +35,7 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.ClassifierAnnotator;
 import org.cleartk.classifier.DataWriterAnnotator;
 import org.cleartk.classifier.Feature;
@@ -81,7 +82,7 @@ public class PredicateArgumentHandlerTests {
 	}
 
 	@Test
-	public void testArgumentAnnotationNoPredicate() throws UIMAException {
+	public void testArgumentAnnotationNoPredicate() throws UIMAException, CleartkException {
 		// create the document
 		AnalysisEngine engine = this.getEngine();
 		JCas jCas = engine.newJCas();
@@ -95,7 +96,7 @@ public class PredicateArgumentHandlerTests {
 	}
 		
 	@Test
-	public void testArgumentIdentificationNoPredicate() throws UIMAException {
+	public void testArgumentIdentificationNoPredicate() throws UIMAException, CleartkException {
 		// create the document
 		AnalysisEngine engine = this.getEngine();
 		JCas jCas = engine.newJCas();
@@ -109,7 +110,7 @@ public class PredicateArgumentHandlerTests {
 	}
 		
 	@Test
-	public void testArgumentClassificationNoPredicate() throws UIMAException {
+	public void testArgumentClassificationNoPredicate() throws UIMAException, CleartkException {
 		// create the document
 		AnalysisEngine engine = this.getEngine();
 		JCas jCas = engine.newJCas();
@@ -123,7 +124,7 @@ public class PredicateArgumentHandlerTests {
 	}
 		
 	@Test
-	public void testArgumentAnnotationNoTree() throws UIMAException {
+	public void testArgumentAnnotationNoTree() throws UIMAException, CleartkException {
 		// create the document
 		AnalysisEngine engine = this.getEngine();
 		JCas jCas = engine.newJCas();
@@ -139,7 +140,7 @@ public class PredicateArgumentHandlerTests {
 	}
 		
 	@Test
-	public void testArgumentIdentificationNoTree() throws UIMAException {
+	public void testArgumentIdentificationNoTree() throws UIMAException, CleartkException {
 		// create the document
 		AnalysisEngine engine = this.getEngine();
 		JCas jCas = engine.newJCas();
@@ -155,7 +156,7 @@ public class PredicateArgumentHandlerTests {
 	}
 		
 	@Test
-	public void testArgumentClassificationNoTree() throws UIMAException {
+	public void testArgumentClassificationNoTree() throws UIMAException, CleartkException {
 		// create the document
 		AnalysisEngine engine = this.getEngine();
 		JCas jCas = engine.newJCas();
@@ -171,7 +172,7 @@ public class PredicateArgumentHandlerTests {
 	}
 		
 	@Test
-	public void testPredicateAnnotation() throws UIMAException {
+	public void testPredicateAnnotation() throws UIMAException, CleartkException {
 		// create the document
 		AnalysisEngine engine = this.getEngine();
 		JCas jCas = engine.newJCas();
@@ -213,7 +214,7 @@ public class PredicateArgumentHandlerTests {
 	}
 		
 	@Test
-	public void testArgumentAnnotation() throws UIMAException {
+	public void testArgumentAnnotation() throws UIMAException, CleartkException {
 		// create the document
 		AnalysisEngine engine = this.getEngine();
 		JCas jCas = engine.newJCas();
@@ -270,7 +271,7 @@ public class PredicateArgumentHandlerTests {
 	}
 	
 	@Test
-	public void testArgumentIdentification() throws UIMAException {
+	public void testArgumentIdentification() throws UIMAException, CleartkException {
 		// create the document
 		AnalysisEngine engine = this.getEngine();
 		JCas jCas = engine.newJCas();
@@ -320,7 +321,7 @@ public class PredicateArgumentHandlerTests {
 	}
 	
 	@Test
-	public void testArgumentClassification() throws UIMAException {
+	public void testArgumentClassification() throws UIMAException, CleartkException {
 		// create the document
 		AnalysisEngine engine = this.getEngine();
 		JCas jCas = engine.newJCas();
