@@ -68,7 +68,7 @@ public class TestChunkFeatureExtractor implements ChunkerFeatureExtractor {
 		return instance;
 	}
 
-	public void initialize(UimaContext context, ChunkLabeler chunkLabeler) throws ResourceInitializationException {
+	public void initialize(UimaContext context) throws ResourceInitializationException {
 				this.simpleFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
 		this.windowExtractors = new ArrayList<WindowExtractor>();
 		

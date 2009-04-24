@@ -33,15 +33,18 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.classifier.ClassifierAnnotator;
-import org.cleartk.classifier.DataWriterAnnotator;
-import org.cleartk.classifier.InstanceConsumer;
-import org.cleartk.classifier.opennlp.MaxentDataWriter;
+import org.cleartk.CleartkException;
+import org.cleartk.classifier.SequentialClassifierAnnotator;
+import org.cleartk.classifier.SequentialDataWriterAnnotator;
+import org.cleartk.classifier.SequentialInstanceConsumer;
+import org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory;
 import org.cleartk.type.Chunk;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.EmptyAnnotator;
+import org.cleartk.util.TestsUtil;
+import org.cleartk.util.UIMAUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
@@ -55,7 +58,7 @@ import org.uutuc.factory.TypeSystemDescriptionFactory;
 
 */
 
-public class ChunkHandlerTests {
+public class ChunkTokenizerTest {
 	
 	private final File outputDir = new File("test/data/token/chunk");
 
@@ -70,7 +73,7 @@ public class ChunkHandlerTests {
 	}
 	
 	@Test
-	public void testChunkHandler() throws UIMAException {
+	public void testChunkHandler() throws UIMAException, CleartkException {
 		  AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				    EmptyAnnotator.class,
 				    TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
@@ -87,7 +90,7 @@ public class ChunkHandlerTests {
 		  
 		  ChunkLabeler chunkLabeler = chunkerHandler.chunkLabeler;
 		  
-		  JCas jCas = engine.newJCas();
+		  JCas jCas = TestsUtil.getJCas();
 
 		  String text = "What if we built a rocket ship made of cheese?" +
 			  "We could fly it to the moon for repairs";
@@ -103,9 +106,6 @@ public class ChunkHandlerTests {
 			chunk.addToIndexes();
 		  }
 		  
-//		new Sentence(jCas, 0, 46).addToIndexes();
-//		new Sentence(jCas,46, 85).addToIndexes();
-		
 		chunkerHandler.process(jCas, new TestChunkHandlerInstanceConsumer(true));
 		
 		Token token = tokens.get(0);
@@ -129,7 +129,7 @@ public class ChunkHandlerTests {
 		 chunks = AnnotationRetrieval.getAnnotations(jCas, Chunk.class);
 		 assertEquals(0, chunks.size());
 		 
-		chunkLabeler.initialize(engine.getUimaContext());
+		 UIMAUtil.initialize(chunkLabeler, engine.getUimaContext());
 		chunkerHandler.process(jCas, new TestChunkHandlerInstanceConsumer(false));
 		
 		chunks = AnnotationRetrieval.getAnnotations(jCas, Chunk.class);
@@ -170,9 +170,9 @@ public class ChunkHandlerTests {
 			
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.token.chunk.ChunkTokenizer",
-				ClassifierAnnotator.PARAM_CLASSIFIER_JAR, "test/data/token/chunk/model.jar");
+				SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR, "test/data/token/chunk/model.jar");
 		Object handler = engine.getConfigParameterValue(
-				InstanceConsumer.PARAM_ANNOTATION_HANDLER);
+				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER);
 		Assert.assertEquals(ChunkerHandler.class.getName(), handler);
 		
 		engine.collectionProcessComplete();
@@ -186,32 +186,32 @@ public class ChunkHandlerTests {
 		try {
 			AnalysisEngineFactory.createAnalysisEngine(
 					"org.cleartk.token.chunk.ChunkTokenizerDataWriter",
-					DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, MaxentDataWriter.class.getName());
+					SequentialDataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, DefaultMalletCRFDataWriterFactory.class.getName());
 			Assert.fail("expected exception with missing output directory");
 		} catch (ResourceInitializationException e) {}
 			
 		try {
 			AnalysisEngineFactory.createAnalysisEngine(
 					"org.cleartk.token.chunk.ChunkTokenizerDataWriter",
-					DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputPath);
+					SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputPath);
 			Assert.fail("expected exception with missing data writer");
 		} catch (ResourceInitializationException e) {}
 			
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.token.chunk.ChunkTokenizerDataWriter",
-				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputPath,
-				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, MaxentDataWriter.class.getName());
+				SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputPath,
+				SequentialDataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, DefaultMalletCRFDataWriterFactory.class.getName());
 		
 		Object handler = engine.getConfigParameterValue(
-				InstanceConsumer.PARAM_ANNOTATION_HANDLER);
+				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER);
 		Assert.assertEquals(ChunkerHandler.class.getName(), handler);
 		
 		Object dataWriter = engine.getConfigParameterValue(
-				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS);
-		Assert.assertEquals(MaxentDataWriter.class.getName(), dataWriter);
+				SequentialDataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS);
+		Assert.assertEquals(DefaultMalletCRFDataWriterFactory.class.getName(), dataWriter);
 		
 		Object outputDir = engine.getConfigParameterValue(
-				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY);
+				SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY);
 		Assert.assertEquals(outputPath, outputDir);
 		
 		engine.collectionProcessComplete();

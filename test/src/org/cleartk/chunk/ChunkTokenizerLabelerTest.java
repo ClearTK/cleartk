@@ -48,7 +48,7 @@ import org.uutuc.factory.TypeSystemDescriptionFactory;
 
 */
 
-public class DefaultChunkLabelerTests {
+public class ChunkTokenizerLabelerTest {
 
 
 	/**
