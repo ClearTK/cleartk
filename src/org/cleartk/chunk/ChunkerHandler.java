@@ -34,6 +34,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
+import org.cleartk.Initializable;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.SequentialAnnotationHandler;
 import org.cleartk.classifier.SequentialInstanceConsumer;
@@ -46,7 +47,7 @@ import org.cleartk.util.UIMAUtil;
 
 */
 
-public class ChunkerHandler implements SequentialAnnotationHandler<String> {
+public class ChunkerHandler implements SequentialAnnotationHandler<String>, Initializable {
 
 	/**
 	 * "org.cleartk.chunk.ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS" is a single, required, string parameter that
@@ -98,30 +99,10 @@ public class ChunkerHandler implements SequentialAnnotationHandler<String> {
 
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		try {
-			String labeledAnnotationClassName = (String) context
-					.getConfigParameterValue(PARAM_LABELED_ANNOTATION_CLASS);
-			Class<?> cls = Class.forName(labeledAnnotationClassName);
-			labeledAnnotationClass = cls.asSubclass(Annotation.class);
-
-			String sequenceClassName = (String) context.getConfigParameterValue(PARAM_SEQUENCE_CLASS);
-			cls = Class.forName(sequenceClassName);
-			sequenceClass = cls.asSubclass(Annotation.class);
-
-			String chunkLabelerClassName = (String) context
-					.getConfigParameterValue(PARAM_CHUNK_LABELER_CLASS);
-			cls = Class.forName(chunkLabelerClassName);
-			Class<? extends ChunkLabeler> chunkLabelerClass = cls.asSubclass(ChunkLabeler.class);
-			chunkLabeler = chunkLabelerClass.newInstance();
-			chunkLabeler.initialize(context);
-
-			String featureExtractorClassName = (String) context
-					.getConfigParameterValue(PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS);
-			cls = Class.forName(featureExtractorClassName);
-			Class<? extends ChunkerFeatureExtractor> featureExtractorClass = cls
-					.asSubclass(ChunkerFeatureExtractor.class);
-			featureExtractor = featureExtractorClass.newInstance();
-			featureExtractor.initialize(context, chunkLabeler);
-
+			labeledAnnotationClass = UIMAUtil.getClass(context, PARAM_LABELED_ANNOTATION_CLASS, Annotation.class);
+			sequenceClass = UIMAUtil.getClass(context, PARAM_SEQUENCE_CLASS, Annotation.class);
+			chunkLabeler = UIMAUtil.create(context, PARAM_CHUNK_LABELER_CLASS, ChunkLabeler.class);
+			featureExtractor = UIMAUtil.create(context, PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS, ChunkerFeatureExtractor.class);
 		}
 		catch (Exception e) {
 			throw new ResourceInitializationException(e);
