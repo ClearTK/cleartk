@@ -168,15 +168,10 @@
 	</target>
 
 	<target name="build-test-token-chunk-model">
-		<echo message="==========================" />
-		<echo message="Training token/chunk model" />
-		<echo message="==========================" />
-		<java fork="true" classname="org.apache.uima.examples.cpe.SimpleRunCPE" classpathref="cpe.classpath" maxmemory="${max-memory}">
-			<arg value="test/data/token/chunk/GeniaChunkTokenizerDataWriterCPE.xml"/>
-		</java>
-		<java fork="true" classname="org.cleartk.classifier.Train" classpathref="run.classpath" maxmemory="${max-memory}">
-			<arg line="test/data/token/chunk" />
-        </java>
+		<echo message="=================================================" />
+		<echo message="Building /ClearTK/test/data/token/chunk/model.jar" />
+		<echo message="=================================================" />
+		<java fork="true" classname="org.cleartk.chunk.BuildTestTokenChunkModel" classpathref="cpe.classpath" maxmemory="${max-memory}"/>
 	</target>
 	
 	<target name="build-test-models" depends="build-test-example-model, build-test-srl-model, build-test-temporal-model, build-test-token-chunk-model"/>
