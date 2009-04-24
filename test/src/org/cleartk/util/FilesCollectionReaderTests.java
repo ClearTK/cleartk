@@ -313,12 +313,12 @@ public class FilesCollectionReaderTests {
 	@Test
 	public void testDescriptor() throws UIMAException, IOException {
 		try {
-			CollectionReaderFactory.createCollectionReader("org.cleartk.util.PlainTextCollectionReader");
+			CollectionReaderFactory.createCollectionReader("org.cleartk.util.FilesCollectionReader");
 			Assert.fail("expected exception with no file or directory specified");
 		} catch (ResourceInitializationException e) {}
 		
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-				"org.cleartk.util.PlainTextCollectionReader",
+				"org.cleartk.util.FilesCollectionReader",
 				FilesCollectionReader.PARAM_FILE_OR_DIRECTORY, this.inputDir);
 		
 		Object fileOrDirectory = reader.getConfigParameterValue(
