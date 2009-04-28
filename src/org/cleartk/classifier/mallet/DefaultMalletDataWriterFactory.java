@@ -31,9 +31,7 @@ import org.apache.uima.UimaContext;
 import org.cleartk.classifier.DataWriter;
 import org.cleartk.classifier.DataWriterFactory_ImplBase;
 import org.cleartk.classifier.encoder.factory.NameNumberEncoderFactory;
-import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.NameNumber;
-import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 
 /**
  * <br>
@@ -43,7 +41,7 @@ import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
  * 
  */
 
-public class DefaultMalletDataWriterFactory extends DataWriterFactory_ImplBase {
+public class DefaultMalletDataWriterFactory extends DataWriterFactory_ImplBase<List<NameNumber>, String, String> {
 
 	@Override
 	public void initialize(UimaContext context) {
@@ -53,12 +51,10 @@ public class DefaultMalletDataWriterFactory extends DataWriterFactory_ImplBase {
 		outcomeEncoder = nnef.createOutcomeEncoder(context);
 	}
 	
-	@Override
-	public DataWriter<?> createDataWriter(File outputDirectory) throws IOException {
+	public DataWriter<String> createDataWriter(File outputDirectory) throws IOException {
 		MalletDataWriter mdw = new MalletDataWriter(outputDirectory);
-		mdw.setFeaturesEncoder((FeaturesEncoder<List<NameNumber>>)getFeaturesEncoder());
-		mdw.setOutcomeEncoder((OutcomeEncoder<String, String>)getOutcomeEncoder());
-
+		mdw.setFeaturesEncoder(getFeaturesEncoder());
+		mdw.setOutcomeEncoder(getOutcomeEncoder());
 		return mdw;
 	}
 

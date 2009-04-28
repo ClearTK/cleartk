@@ -43,7 +43,7 @@ import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
  * 
  */
 
-public class DefaultMaxentDataWriterFactory extends DataWriterFactory_ImplBase {
+public class DefaultMaxentDataWriterFactory extends DataWriterFactory_ImplBase<List<NameNumber>, String, String> {
 
 	@Override
 	public void initialize(UimaContext context) {
@@ -53,8 +53,7 @@ public class DefaultMaxentDataWriterFactory extends DataWriterFactory_ImplBase {
 		outcomeEncoder = nnef.createOutcomeEncoder(context);
 	}
 	
-	@Override
-	public DataWriter<?> createDataWriter(File outputDirectory) throws IOException {
+	public DataWriter<String> createDataWriter(File outputDirectory) throws IOException {
 		MaxentDataWriter mdw = new MaxentDataWriter(outputDirectory);
 		mdw.setFeaturesEncoder((FeaturesEncoder<List<NameNumber>>)getFeaturesEncoder());
 		mdw.setOutcomeEncoder((OutcomeEncoder<String, String>)getOutcomeEncoder());

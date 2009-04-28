@@ -25,7 +25,6 @@ package org.cleartk.classifier;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 
 import org.apache.uima.UimaContext;
@@ -35,7 +34,7 @@ import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 import org.cleartk.util.UIMAUtil;
 
-public abstract class DataWriterFactory_ImplBase implements DataWriterFactory {
+public abstract class DataWriterFactory_ImplBase<FEATURES_OUT_TYPE, OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE> implements DataWriterFactory<OUTCOME_IN_TYPE> {
 
 	public static final String PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM = "org.cleartk.classifier.DataWriterFactory_ImplBase.PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM";
 
@@ -55,9 +54,9 @@ public abstract class DataWriterFactory_ImplBase implements DataWriterFactory {
 				}
 				
 				ObjectInputStream is = new ObjectInputStream(new FileInputStream(encoderFile));
-				this.featuresEncoder = (FeaturesEncoder<?>) is.readObject();
+				this.featuresEncoder = (FeaturesEncoder<FEATURES_OUT_TYPE>) is.readObject();
 				this.featuresEncoder.allowNewFeatures(false);
-				this.outcomeEncoder = (OutcomeEncoder<?,?>) is.readObject();
+				this.outcomeEncoder = (OutcomeEncoder<OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE>) is.readObject();
 				is.close();
 			} catch (Exception e) {
 				throw new ResourceInitializationException(e);
@@ -69,17 +68,15 @@ public abstract class DataWriterFactory_ImplBase implements DataWriterFactory {
 		this.context = context;
 	}
 
-	public abstract DataWriter<?> createDataWriter(File outputDirectory) throws IOException;
-	
-	protected FeaturesEncoder<?> getFeaturesEncoder() {
+	protected FeaturesEncoder<FEATURES_OUT_TYPE> getFeaturesEncoder() {
 		return this.featuresEncoder;		
 	}
 
-	protected OutcomeEncoder<?, ?> getOutcomeEncoder() {
+	protected OutcomeEncoder<OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE> getOutcomeEncoder() {
 		return this.outcomeEncoder;
 	}
 	
 	protected UimaContext context = null;
-	protected FeaturesEncoder<?> featuresEncoder = null;
-	protected OutcomeEncoder<?,?> outcomeEncoder = null;
+	protected FeaturesEncoder<FEATURES_OUT_TYPE> featuresEncoder = null;
+	protected OutcomeEncoder<OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE> outcomeEncoder = null;
 }

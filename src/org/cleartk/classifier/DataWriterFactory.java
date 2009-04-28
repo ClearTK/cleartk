@@ -29,8 +29,8 @@ import java.io.IOException;
 
 import org.cleartk.Initializable;
 
-public interface DataWriterFactory extends Initializable {
+public interface DataWriterFactory<OUTCOME_TYPE> extends Initializable {
 	
-	public DataWriter<?> createDataWriter(File outputDirectory) throws IOException;
+	public DataWriter<OUTCOME_TYPE> createDataWriter(File outputDirectory) throws IOException;
 
 }

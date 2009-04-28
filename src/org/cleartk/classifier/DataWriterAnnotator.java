@@ -51,7 +51,7 @@ public class DataWriterAnnotator<OUTCOME_TYPE> extends InstanceConsumer_ImplBase
 		File outputDirectory = new File(outputDirectoryPath);
 
 		// Instantiate the data writer
-		DataWriterFactory dataWriterFactory = UIMAUtil.create(
+		DataWriterFactory<OUTCOME_TYPE> dataWriterFactory = UIMAUtil.create(
 				context, PARAM_DATAWRITER_FACTORY_CLASS, DataWriterFactory.class);
 		try {
 			this.dataWriter = ReflectionUtil.uncheckedCast(

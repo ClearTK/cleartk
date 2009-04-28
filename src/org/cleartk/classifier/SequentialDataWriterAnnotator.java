@@ -53,7 +53,8 @@ public class SequentialDataWriterAnnotator<OUTCOME_TYPE> extends SequentialInsta
 		File outputDirectory = new File(outputDirectoryPath);
 
 		// Instantiate the sequential data writer
-		SequentialDataWriterFactory sequentialDataWriterFactory = UIMAUtil.create(context, PARAM_DATAWRITER_FACTORY_CLASS, SequentialDataWriterFactory.class);
+		SequentialDataWriterFactory<OUTCOME_TYPE> sequentialDataWriterFactory = UIMAUtil.create(
+				context, PARAM_DATAWRITER_FACTORY_CLASS, SequentialDataWriterFactory.class);
 		try {
 			this.sequentialDataWriter = ReflectionUtil.uncheckedCast(
 					sequentialDataWriterFactory.createSequentialDataWriter(outputDirectory));

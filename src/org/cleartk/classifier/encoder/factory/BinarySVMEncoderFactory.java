@@ -33,10 +33,10 @@ import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
  * <br>All rights reserved.
 
 */
-public class BinarySVMEncoderFactory extends SVMEncoderFactory {
+public class BinarySVMEncoderFactory extends SVMEncoderFactory<Boolean, Boolean> {
 
 	@Override
-	public OutcomeEncoder<?, ?> createOutcomeEncoder(UimaContext context) {
+	public OutcomeEncoder<Boolean, Boolean> createOutcomeEncoder(UimaContext context) {
 		return new BooleanToBooleanOutcomeEncoder();
 	}
 

@@ -23,9 +23,12 @@
 */
 package org.cleartk.classifier.encoder.factory;
 
+import java.util.List;
+
 import org.apache.uima.UimaContext;
 import org.cleartk.classifier.encoder.EncoderFactory_ImplBase;
 import org.cleartk.classifier.encoder.features.BooleanEncoder;
+import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 import org.cleartk.classifier.encoder.features.NumberEncoder;
 import org.cleartk.classifier.encoder.features.StringEncoder;
@@ -41,15 +44,15 @@ import org.cleartk.util.UIMAUtil;
 
 */
 
-public class NameNumberEncoderFactory extends EncoderFactory_ImplBase {
+public class NameNumberEncoderFactory extends EncoderFactory_ImplBase<List<NameNumber>, String, String> {
 
 	public static final String PARAM_COMPRESS = "org.cleartk.classifier.encoder.factory.NameNumberEncoderFactory.PARAM_COMPRESS";
 
 	public static final String PARAM_SORT_NAME_LOOKUP = "org.cleartk.classifier.encoder.factory.NameNumberEncoderFactory.PARAM_SORT_NAME_LOOKUP";
 
 	@Override
-	public FeaturesEncoder<?> createFeaturesEncoder(UimaContext context) {
-		FeaturesEncoder<?> featuresEncoder = super.createFeaturesEncoder(context);
+	public FeaturesEncoder<List<NameNumber>> createFeaturesEncoder(UimaContext context) {
+		FeaturesEncoder<List<NameNumber>> featuresEncoder = super.createFeaturesEncoder(context);
 		if (featuresEncoder == null) {
 			boolean compress = (Boolean)UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_COMPRESS, false);
 			boolean sort = (Boolean)UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_SORT_NAME_LOOKUP, false);
@@ -63,7 +66,7 @@ public class NameNumberEncoderFactory extends EncoderFactory_ImplBase {
 	}
 
 	@Override
-	public OutcomeEncoder<?, ?> createOutcomeEncoder(UimaContext context) {
+	public OutcomeEncoder<String, String> createOutcomeEncoder(UimaContext context) {
 		return new StringToStringOutcomeEncoder();
 	}
 

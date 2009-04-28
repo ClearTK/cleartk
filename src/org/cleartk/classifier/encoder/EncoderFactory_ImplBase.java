@@ -46,18 +46,18 @@ import org.cleartk.util.UIMAUtil;
  *
  * @author Steven Bethard, Philipp Wetzler
  */
-public abstract class EncoderFactory_ImplBase implements EncoderFactory {
+public abstract class EncoderFactory_ImplBase<FEATURES_OUT_TYPE, OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE> implements EncoderFactory {
 	
 	public static final String PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM = "org.cleartk.classifier.encoder.EncoderFactory_ImplBase.PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM";
 
-	public FeaturesEncoder<?> createFeaturesEncoder(UimaContext context) {
+	public FeaturesEncoder<FEATURES_OUT_TYPE> createFeaturesEncoder(UimaContext context) {
 		if (this.context != context) {
 			this.initialize(context);
 		}
 		return this.featuresEncoder;
 	}
 
-	public OutcomeEncoder<?, ?> createOutcomeEncoder(UimaContext context) {
+	public OutcomeEncoder<OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE> createOutcomeEncoder(UimaContext context) {
 		if (this.context != context) {
 			this.initialize(context);
 		}
@@ -80,9 +80,9 @@ public abstract class EncoderFactory_ImplBase implements EncoderFactory {
 				}
 				
 				ObjectInputStream is = new ObjectInputStream(new FileInputStream(encoderFile));
-				this.featuresEncoder = (FeaturesEncoder<?>) is.readObject();
+				this.featuresEncoder = (FeaturesEncoder<FEATURES_OUT_TYPE>) is.readObject();
 				this.featuresEncoder.allowNewFeatures(false);
-				this.outcomeEncoder = (OutcomeEncoder<?,?>) is.readObject();
+				this.outcomeEncoder = (OutcomeEncoder<OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE>) is.readObject();
 				is.close();
 			} catch (Exception e) {
 				// TODO: improve exception handling
@@ -96,6 +96,6 @@ public abstract class EncoderFactory_ImplBase implements EncoderFactory {
 	}
 	
 	protected UimaContext context = null;
-	protected FeaturesEncoder<?> featuresEncoder = null;
-	protected OutcomeEncoder<?,?> outcomeEncoder = null;
+	protected FeaturesEncoder<FEATURES_OUT_TYPE> featuresEncoder = null;
+	protected OutcomeEncoder<OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE> outcomeEncoder = null;
 }

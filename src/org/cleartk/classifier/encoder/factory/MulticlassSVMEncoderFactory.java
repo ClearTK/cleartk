@@ -32,10 +32,10 @@ import org.cleartk.classifier.encoder.outcome.StringToIntegerOutcomeEncoder;
  * <br>All rights reserved.
 
 */
-public class MulticlassSVMEncoderFactory extends SVMEncoderFactory {
+public class MulticlassSVMEncoderFactory extends SVMEncoderFactory<String,Integer> {
 
 	@Override
-	public OutcomeEncoder<?, ?> createOutcomeEncoder(UimaContext context) {
+	public OutcomeEncoder<String,Integer> createOutcomeEncoder(UimaContext context) {
 		return new StringToIntegerOutcomeEncoder();
 	}
 

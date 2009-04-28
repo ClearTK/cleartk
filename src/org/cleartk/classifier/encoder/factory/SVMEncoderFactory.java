@@ -46,13 +46,13 @@ import org.cleartk.util.UIMAUtil;
 
 */
 
-public abstract class SVMEncoderFactory extends EncoderFactory_ImplBase {
+public abstract class SVMEncoderFactory<OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE> extends EncoderFactory_ImplBase<FeatureVector, OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE> {
 	
 	public static final String PARAM_NORMALIZE_VECTORS = "org.cleartk.classifier.encoder.factory.SVMEncoderFactory.PARAM_NORMALIZE_VECTORS";
 
 	@Override
-	public FeaturesEncoder<?> createFeaturesEncoder(UimaContext context) {
-		FeaturesEncoder<?> featuresEncoder = super.createFeaturesEncoder(context);
+	public FeaturesEncoder<FeatureVector> createFeaturesEncoder(UimaContext context) {
+		FeaturesEncoder<FeatureVector> featuresEncoder = super.createFeaturesEncoder(context);
 		if (featuresEncoder == null) {
 
 			// create either a default or vector-normalizing features encoder
@@ -79,5 +79,5 @@ public abstract class SVMEncoderFactory extends EncoderFactory_ImplBase {
 	}
 
 	@Override
-	public abstract OutcomeEncoder<?, ?> createOutcomeEncoder(UimaContext context);
+	public abstract OutcomeEncoder<OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE> createOutcomeEncoder(UimaContext context);
 }
