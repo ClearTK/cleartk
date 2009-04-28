@@ -40,6 +40,7 @@ import org.cleartk.classifier.AnnotationHandler;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.InstanceConsumer;
+import org.cleartk.classifier.SequentialAnnotationHandler;
 import org.cleartk.classifier.SequentialInstanceConsumer;
 import org.cleartk.syntax.treebank.type.TreebankNode;
 import org.uutuc.factory.AnalysisEngineFactory;
@@ -112,6 +113,24 @@ public class TestsUtil {
 
 	/**
 	 * Initializes the instance producer with the AnalysisEngine's context, and
+	 * returns all instances created by the producer for the given JCas. The
+	 * value null will be returned for each instance.
+	 * 
+	 * @param producer
+	 *            The object for producing ClassifierInstances from a JCas
+	 * @param engine
+	 *            The AnalysisEngine with the context for initialization.
+	 * @param jCas
+	 *            The JCas to be processed.
+	 * @return The list of ClassifierInstances created by the producer.
+	 * @throws UIMAException
+	 */
+	public static <T> List<Instance<T>> produceInstances(SequentialAnnotationHandler<T> producer, AnalysisEngine engine, JCas jCas)
+			throws UIMAException, CleartkException {
+		return produceInstances(producer, null, engine, jCas);
+	}
+	/**
+	 * Initializes the instance producer with the AnalysisEngine's context, and
 	 * returns all instances created by the producer for the given JCas.
 	 * 
 	 * @param producer
@@ -126,6 +145,30 @@ public class TestsUtil {
 	 * @throws UIMAException
 	 */
 	public static <T> List<Instance<T>> produceInstances(AnnotationHandler<T> producer, T returnValue,
+			AnalysisEngine engine, JCas jCas) throws UIMAException, CleartkException {
+		UimaContext context = engine.getUimaContext();
+		AnnotatorConsumer<T> consumer = new AnnotatorConsumer<T>(returnValue);
+		UIMAUtil.initialize(producer, context);
+		producer.process(jCas, consumer);
+		return consumer.instances;
+	}
+
+	/**
+	 * Initializes the instance producer with the AnalysisEngine's context, and
+	 * returns all instances created by the producer for the given JCas.
+	 * 
+	 * @param producer
+	 *            The object for producing ClassifierInstances from a JCas
+	 * @param returnValue
+	 *            The value that should be returned for each instance
+	 * @param engine
+	 *            The AnalysisEngine with the context for initialization.
+	 * @param jCas
+	 *            The JCas to be processed.
+	 * @return The list of ClassifierInstances created by the producer.
+	 * @throws UIMAException
+	 */
+	public static <T> List<Instance<T>> produceInstances(SequentialAnnotationHandler<T> producer, T returnValue,
 			AnalysisEngine engine, JCas jCas) throws UIMAException, CleartkException {
 		UimaContext context = engine.getUimaContext();
 		AnnotatorConsumer<T> consumer = new AnnotatorConsumer<T>(returnValue);

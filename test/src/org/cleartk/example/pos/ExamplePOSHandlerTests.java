@@ -34,7 +34,6 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.classifier.ClassifierAnnotator;
 import org.cleartk.classifier.DataWriterAnnotator;
-import org.cleartk.classifier.DataWriter_ImplBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.InstanceConsumer;
@@ -60,7 +59,7 @@ import org.uutuc.factory.TypeSystemDescriptionFactory;
 public class ExamplePOSHandlerTests {
 	
 	@Test
-	public void testSimpleSentence() throws UIMAException {
+	public void testSimpleSentence() throws Exception {
 		
 		// create the engine and the cas
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
