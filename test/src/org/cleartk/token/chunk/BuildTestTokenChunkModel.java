@@ -22,7 +22,7 @@
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
-package org.cleartk.chunk;
+package org.cleartk.token.chunk;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;

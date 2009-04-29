@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.chunk;
+package org.cleartk.token.chunk;
 
 import java.util.Arrays;
 import java.util.List;

@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.chunk;
+package org.cleartk.token.chunk;
 
 import static org.junit.Assert.assertEquals;
 
@@ -30,6 +30,9 @@ import java.util.Arrays;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
+import org.cleartk.chunk.ChunkLabeler_ImplBase;
+import org.cleartk.chunk.ChunkerHandler;
+import org.cleartk.chunk.DefaultChunkLabeler;
 import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.token.chunk.type.Subtoken;
 import org.cleartk.type.Sentence;

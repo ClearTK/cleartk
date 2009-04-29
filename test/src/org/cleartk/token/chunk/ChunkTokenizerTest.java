@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.chunk;
+package org.cleartk.token.chunk;
 
 import static org.junit.Assert.assertEquals;
 
@@ -34,6 +34,10 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
+import org.cleartk.chunk.ChunkLabeler;
+import org.cleartk.chunk.ChunkLabeler_ImplBase;
+import org.cleartk.chunk.ChunkerHandler;
+import org.cleartk.chunk.DefaultChunkLabeler;
 import org.cleartk.classifier.SequentialClassifierAnnotator;
 import org.cleartk.classifier.SequentialDataWriterAnnotator;
 import org.cleartk.classifier.SequentialInstanceConsumer;
@@ -72,6 +76,12 @@ public class ChunkTokenizerTest {
 		}
 	}
 	
+	public static class TestChunkerHandler extends ChunkerHandler {
+		public ChunkLabeler getChunkLabeler() {
+			return chunkLabeler;
+		}
+	}
+	
 	@Test
 	public void testChunkHandler() throws UIMAException, CleartkException {
 		  AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
@@ -80,15 +90,16 @@ public class ChunkTokenizerTest {
 		  			ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS, "org.cleartk.type.Token",
 		  			ChunkerHandler.PARAM_SEQUENCE_CLASS, "org.cleartk.type.Sentence",
 		  			ChunkerHandler.PARAM_CHUNK_LABELER_CLASS, "org.cleartk.chunk.DefaultChunkLabeler",
-		  			ChunkerHandler.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS, "org.cleartk.chunk.TestChunkFeatureExtractor",
+		  			ChunkerHandler.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS, TestChunkFeatureExtractor.class.getName(),
 		  			ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS, "org.cleartk.type.Chunk",
 		  			DefaultChunkLabeler.PARAM_CHUNK_LABEL_FEATURE, "chunkType"
 		  );
 
-		  ChunkerHandler chunkerHandler = new ChunkerHandler();
+		  TestChunkerHandler chunkerHandler = new TestChunkerHandler();
 		  chunkerHandler.initialize(engine.getUimaContext());
 		  
-		  ChunkLabeler chunkLabeler = chunkerHandler.chunkLabeler;
+		  ChunkLabeler chunkLabeler = chunkerHandler.getChunkLabeler();
+
 		  
 		  JCas jCas = TestsUtil.getJCas();
 

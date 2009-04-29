@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.chunk;
+package org.cleartk.token.chunk;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +30,7 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.chunk.ChunkerFeatureExtractor;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.WindowFeature;
 import org.cleartk.classifier.feature.extractor.SimpleFeatureExtractor;
