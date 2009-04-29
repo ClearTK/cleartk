@@ -70,7 +70,7 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
 	 * are concerned about throughput performance, then you may want to reduce the number
 	 * of candidate paths to maintain.
 	 */
-	public static String PARAM_STACK_SIZE = "org.cleartk.classifier.ViterbiClassifier.PARAM_STACK_SIZE";
+	public static String PARAM_STACK_SIZE = "org.cleartk.classifier.viterbi.ViterbiClassifier.PARAM_STACK_SIZE";
 
 	/**
 	 * "org.cleartk.classifier.ViterbiClassifier.PARAM_ADD_SCORES" is an optional, single,
@@ -80,7 +80,7 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
 	 * that the scores will be summed. A value of false means that the scores
 	 * will be multiplied. 
 	 */
-	public static String PARAM_ADD_SCORES = "org.cleartk.classifier.ViterbiClassifier.PARAM_ADD_SCORES";
+	public static String PARAM_ADD_SCORES = "org.cleartk.classifier.viterbi.ViterbiClassifier.PARAM_ADD_SCORES";
 
 	
 	protected Classifier<OUTCOME_TYPE> delegatedClassifier;
