@@ -190,7 +190,7 @@ public class ExamplePOSHandlerTests {
 	@Test
 	public void testAnnotatorDescriptor() throws UIMAException, IOException {
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-				"org.cleartk.example.ExamplePOSAnnotator");
+				"org.cleartk.example.pos.ExamplePOSAnnotator");
 		
 		String expectedName = ExamplePOSAnnotationHandler.class.getName();
 		Object annotationHandler = engine.getConfigParameterValue(
@@ -207,7 +207,7 @@ public class ExamplePOSHandlerTests {
 	@Test
 	public void testDataWriterDescriptor() throws UIMAException, IOException {
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-				"org.cleartk.example.ExamplePOSDataWriter");
+				"org.cleartk.example.pos.ExamplePOSDataWriter");
 		
 		String expectedName = ExamplePOSAnnotationHandler.class.getName();
 		Object annotationHandler = engine.getConfigParameterValue(
