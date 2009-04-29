@@ -82,7 +82,7 @@ public class ViterbiDataWriter<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE, FEATURES_T
 
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		try {
-			DataWriterFactory dataWriterFactory = UIMAUtil.create(context, PARAM_DELEGATED_DATAWRITER_FACTORY_CLASS,
+			DataWriterFactory<?> dataWriterFactory = UIMAUtil.create(context, PARAM_DELEGATED_DATAWRITER_FACTORY_CLASS,
 					DataWriterFactory.class);
 			this.delegatedDataWriter = ReflectionUtil.uncheckedCast(dataWriterFactory.createDataWriter(delegatedOutputDirectory));
 			UIMAUtil.initialize(this.delegatedDataWriter, context);
