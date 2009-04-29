@@ -61,9 +61,9 @@ public class ViterbiDataWriter<OUTCOME_TYPE> implements
 	 * {@link OutcomeFeatureExtractor}. One valid value that you might use is"org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor"
 	 * .
 	 */
-	public static final String PARAM_OUTCOME_FEATURE_EXTRACTOR = "org.cleartk.classifier.viterbi.ViterbiDataWriter.PARAM_OUTCOME_FEATURE_EXTRACTOR";
+	public static final String PARAM_OUTCOME_FEATURE_EXTRACTORS = "org.cleartk.classifier.viterbi.ViterbiDataWriter.PARAM_OUTCOME_FEATURE_EXTRACTORS";
 
-	public static final String PARAM_DELEGATED_DATAWRITER_FACTORY_CLASS = "org.cleartk.classifier.viterbi.ViterbiDataWriter.PARAM_DATAWRITER_FACTORY_CLASS";
+	public static final String PARAM_DELEGATED_DATAWRITER_FACTORY_CLASS = "org.cleartk.classifier.viterbi.ViterbiDataWriter.PARAM_DELEGATED_DATAWRITER_FACTORY_CLASS";
 
 	public static final Attributes.Name DELEGATED_CLASSIFIER_BUILDER_ATTRIBUTE = new Attributes.Name(
 			"delegatedClassifierBuilderClass");
@@ -88,7 +88,7 @@ public class ViterbiDataWriter<OUTCOME_TYPE> implements
 			UIMAUtil.initialize(this.delegatedDataWriter, context);
 	
 			String[] outcomeFeatureExtractorNames = (String[]) UIMAUtil.getDefaultingConfigParameterValue(context,
-					PARAM_OUTCOME_FEATURE_EXTRACTOR, null);
+					PARAM_OUTCOME_FEATURE_EXTRACTORS, null);
 			if (outcomeFeatureExtractorNames == null) {
 				outcomeFeatureExtractors = new OutcomeFeatureExtractor[0];
 			}
