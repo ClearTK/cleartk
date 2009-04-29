@@ -84,14 +84,14 @@ public class ClassifierManifest extends Manifest {
 	
 	private void loadClassifierBuilder(String path) throws IOException {
 		Attributes attributes = this.getMainAttributes();
-		String classifierClassName = attributes.getValue(CLASSIFIER_BUILDER_ATTRIBUTE);
-		if (classifierClassName == null) {
+		String classifierBuilderClassName = attributes.getValue(CLASSIFIER_BUILDER_ATTRIBUTE);
+		if (classifierBuilderClassName == null) {
 			throw new IOException(String.format("Missing %s attribute in manifest %s",
 					CLASSIFIER_BUILDER_ATTRIBUTE, path));
 		}
 		Exception exception = null;
 		try {
-			this.classifierBuilder = Class.forName(classifierClassName).asSubclass(ClassifierBuilder.class).newInstance();
+			this.classifierBuilder = Class.forName(classifierBuilderClassName).asSubclass(ClassifierBuilder.class).newInstance();
 		} catch (ClassNotFoundException e) {
 			exception = e;
 		} catch (InstantiationException e) {
