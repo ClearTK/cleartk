@@ -45,8 +45,8 @@ import org.cleartk.classifier.feature.extractor.outcome.OutcomeFeatureExtractor;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
 
-public class ViterbiDataWriter<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE, FEATURES_TYPE> implements
-		SequentialDataWriter<INPUTOUTCOME_TYPE>, Initializable {
+public class ViterbiDataWriter<OUTCOME_TYPE> implements
+		SequentialDataWriter<OUTCOME_TYPE>, Initializable {
 
 	public static final String OUTCOME_FEATURE_EXTRACTOR_FILE_NAME = "outcome-features-extractors.ser";
 
@@ -68,7 +68,7 @@ public class ViterbiDataWriter<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE, FEATURES_T
 	public static final Attributes.Name DELEGATED_CLASSIFIER_BUILDER_ATTRIBUTE = new Attributes.Name(
 			"delegatedClassifierBuilderClass");
 
-	protected DataWriter<INPUTOUTCOME_TYPE> delegatedDataWriter;
+	protected DataWriter<OUTCOME_TYPE> delegatedDataWriter;
 
 	private File outputDirectory;
 	private File delegatedOutputDirectory;
@@ -108,9 +108,9 @@ public class ViterbiDataWriter<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE, FEATURES_T
 		}
 	}
 
-	public void writeSequence(List<Instance<INPUTOUTCOME_TYPE>> instances) throws CleartkException {
+	public void writeSequence(List<Instance<OUTCOME_TYPE>> instances) throws CleartkException {
 		List<Object> outcomes = new ArrayList<Object>();
-		for (Instance<INPUTOUTCOME_TYPE> instance : instances) {
+		for (Instance<OUTCOME_TYPE> instance : instances) {
 			List<Feature> instanceFeatures = instance.getFeatures();
 			for (OutcomeFeatureExtractor outcomeFeatureExtractor : outcomeFeatureExtractors) {
 				instanceFeatures.addAll(outcomeFeatureExtractor.extractFeatures(outcomes));
@@ -131,7 +131,7 @@ public class ViterbiDataWriter<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE, FEATURES_T
 			os.close();
 
 			ClassifierManifest classifierManifest = new ClassifierManifest();
-			Class<? extends ClassifierBuilder<? extends INPUTOUTCOME_TYPE>> classifierBuilderClass = this.getDefaultClassifierBuilderClass();
+			Class<? extends ClassifierBuilder<? extends OUTCOME_TYPE>> classifierBuilderClass = this.getDefaultClassifierBuilderClass();
 			classifierManifest.setClassifierBuilder(classifierBuilderClass.newInstance());
 			classifierManifest.write(this.outputDirectory);
 
@@ -141,8 +141,8 @@ public class ViterbiDataWriter<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE, FEATURES_T
 		}
 	}
 
-	public Class<? extends ClassifierBuilder<INPUTOUTCOME_TYPE>> getDefaultClassifierBuilderClass() {
-		return (Class<? extends ClassifierBuilder<INPUTOUTCOME_TYPE>>) ViterbiClassifierBuilder.class;
+	public Class<? extends ClassifierBuilder<OUTCOME_TYPE>> getDefaultClassifierBuilderClass() {
+		return (Class<? extends ClassifierBuilder<OUTCOME_TYPE>>) ViterbiClassifierBuilder.class;
 	}
 
 
