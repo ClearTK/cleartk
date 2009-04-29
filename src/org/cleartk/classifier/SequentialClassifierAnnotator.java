@@ -85,9 +85,9 @@ public class SequentialClassifierAnnotator<OUTCOME_TYPE> extends SequentialInsta
 					SequentialAnnotationHandler.class, "OUTCOME_TYPE", annotationHandler);
 
 			if (!ReflectionUtil.isAssignableFrom(annotationHandlerLabelType, classifierLabelType)) {
-				throw new ResourceInitializationException(String.format(
+				throw new ResourceInitializationException(new Exception(String.format(
 						"%s classifier is incompatible with %s annotation handler",
-						classifierLabelType, annotationHandlerLabelType), null);
+						classifierLabelType, annotationHandlerLabelType)));
 			}
 			
 			this.classifier = ReflectionUtil.uncheckedCast(untypedClassifier);
