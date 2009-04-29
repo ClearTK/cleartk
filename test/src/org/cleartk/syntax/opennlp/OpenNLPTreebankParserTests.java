@@ -93,10 +93,10 @@ public class OpenNLPTreebankParserTests {
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				OpenNLPTreebankParser.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-				"buildModelFile", "test/models/fox_dog_parser/build.bin.gz",
-				"checkModelFile", "test/models/fox_dog_parser/check.bin.gz",
-				"chunkModelFile", "test/models/fox_dog_parser/chunk.bin.gz",
-				"headRulesFile", "test/models/fox_dog_parser/head_rules");
+				OpenNLPTreebankParser.PARAM_BUILD_MODEL_FILE, "test/models/fox_dog_parser/build.bin.gz",
+				OpenNLPTreebankParser.PARAM_CHECK_MODEL_FILE, "test/models/fox_dog_parser/check.bin.gz",
+				OpenNLPTreebankParser.PARAM_CHUNK_MODEL_FILE, "test/models/fox_dog_parser/chunk.bin.gz",
+				OpenNLPTreebankParser.PARAM_HEAD_RULES_FILE, "test/models/fox_dog_parser/head_rules");
 		JCas jCas = engine.newJCas();
 		TokenFactory.createTokens(jCas,
 				"The brown fox jumped quickly over the lazy dog.", Token.class, Sentence.class, 
@@ -161,10 +161,10 @@ public class OpenNLPTreebankParserTests {
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				OpenNLPTreebankParser.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-				"buildModelFile", "test/models/fox_dog_parser/build.bin.gz",
-				"checkModelFile", "test/models/fox_dog_parser/check.bin.gz",
-				"chunkModelFile", "test/models/fox_dog_parser/chunk.bin.gz",
-				"headRulesFile", "test/models/fox_dog_parser/head_rules");
+				OpenNLPTreebankParser.PARAM_BUILD_MODEL_FILE, "test/models/fox_dog_parser/build.bin.gz",
+				OpenNLPTreebankParser.PARAM_CHECK_MODEL_FILE, "test/models/fox_dog_parser/check.bin.gz",
+				OpenNLPTreebankParser.PARAM_CHUNK_MODEL_FILE, "test/models/fox_dog_parser/chunk.bin.gz",
+				OpenNLPTreebankParser.PARAM_HEAD_RULES_FILE, "test/models/fox_dog_parser/head_rules");
 		JCas jCas = engine.newJCas();
 		TokenFactory.createTokens(jCas,
 				"The brown fox jumped quickly over the lazy dog.",
@@ -188,10 +188,10 @@ public class OpenNLPTreebankParserTests {
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				OpenNLPTreebankParser.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-				"buildModelFile", "test/models/fox_dog_parser/build.bin.gz",
-				"checkModelFile", "test/models/fox_dog_parser/check.bin.gz",
-				"chunkModelFile", "test/models/fox_dog_parser/chunk.bin.gz",
-				"headRulesFile", "test/models/fox_dog_parser/head_rules");
+				OpenNLPTreebankParser.PARAM_BUILD_MODEL_FILE, "test/models/fox_dog_parser/build.bin.gz",
+				OpenNLPTreebankParser.PARAM_CHECK_MODEL_FILE, "test/models/fox_dog_parser/check.bin.gz",
+				OpenNLPTreebankParser.PARAM_CHUNK_MODEL_FILE, "test/models/fox_dog_parser/chunk.bin.gz",
+				OpenNLPTreebankParser.PARAM_HEAD_RULES_FILE, "test/models/fox_dog_parser/head_rules");
 		JCas jCas = engine.newJCas();
 		TokenFactory.createTokens(jCas,
 				"The brown fox jumped quickly over the lazy dog " +
