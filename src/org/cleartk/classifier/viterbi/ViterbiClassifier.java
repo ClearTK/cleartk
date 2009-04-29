@@ -26,6 +26,7 @@ package org.cleartk.classifier.viterbi;
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -86,19 +87,16 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
 
 	protected OutcomeFeatureExtractor[] outcomeFeatureExtractors;
 
-	int viterbiStackSize = 1;
+	protected int viterbiStackSize = 1;
 
-	boolean viterbiAddScores = false;
+	protected boolean viterbiAddScores = false;
 
 	public ViterbiClassifier(JarFile modelFile) throws IOException {
-		System.out.println("ViterbiClassifier constructor");
 		File modelFileDirectory = new File(modelFile.getName()).getParentFile();
 		modelFile.getInputStream(modelFile.getEntry(ViterbiClassifierBuilder.DELEGATED_MODEL_FILE_NAME));
 		FileUtil.extractFilesWithExtFromJar(modelFile, ".jar", modelFileDirectory);
 		
 		File delegatedModelFile = new File(modelFileDirectory, ViterbiClassifierBuilder.DELEGATED_MODEL_FILE_NAME);
-		System.out.println(delegatedModelFile.getPath());
-		System.out.println(delegatedModelFile.exists());
 		delegatedClassifier = ReflectionUtil.uncheckedCast(ClassifierFactory.createClassifierFromJar(delegatedModelFile.getPath()));
 
 		ZipEntry zipEntry = modelFile.getEntry(ViterbiDataWriter.OUTCOME_FEATURE_EXTRACTOR_FILE_NAME);
@@ -117,6 +115,13 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
 		}
 	}
 
+	public ViterbiClassifier() {
+		// you generally do not want call this constructor.
+	}
+	
+	public Type getOutputLabelType() {
+		return ReflectionUtil.getTypeArgument(Classifier.class, "OUTCOME_TYPE", delegatedClassifier);
+	}
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		viterbiStackSize = (Integer) UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_STACK_SIZE, 1);
 		if (viterbiStackSize < 1) {
@@ -142,8 +147,7 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
 			return returnValues;
 		}
 		else {
-			return classifySequence(features, viterbiStackSize, outcomeFeatureExtractors,
-					viterbiAddScores);
+			return viterbi(features);
 		}
 
 	}
@@ -182,8 +186,7 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
 	 * @see Classifier_ImplBase#classifySequence(List)
 	 * @see MaxentClassifier#classifySequence(List)
 	 */
-	private List<OUTCOME_TYPE> classifySequence(List<List<Feature>> features, int stackSize, 
-			OutcomeFeatureExtractor[] outcomeFeatureExtractors, boolean addScores) throws CleartkException {
+	public List<OUTCOME_TYPE> viterbi(List<List<Feature>> features) throws CleartkException {
 
 		List<ScoredOutcome<List<OUTCOME_TYPE>>> nbestSequences = new ArrayList<ScoredOutcome<List<OUTCOME_TYPE>>>();
 
@@ -191,7 +194,7 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
 			return Collections.emptyList();
 		}
 
-		List<ScoredOutcome<OUTCOME_TYPE>> scoredOutcomes = delegatedClassifier.score(features.get(0), stackSize);
+		List<ScoredOutcome<OUTCOME_TYPE>> scoredOutcomes = delegatedClassifier.score(features.get(0), viterbiStackSize);
 		for (ScoredOutcome<OUTCOME_TYPE> scoredOutcome : scoredOutcomes) {
 			double score = scoredOutcome.getScore();
 			List<OUTCOME_TYPE> sequence = new ArrayList<OUTCOME_TYPE>();
@@ -219,7 +222,7 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
 				}
 				// score the instance features using the features added by the
 				// outcomeFeatureExtractors
-				scoredOutcomes = delegatedClassifier.score(instanceFeatures, stackSize);
+				scoredOutcomes = delegatedClassifier.score(instanceFeatures, viterbiStackSize);
 				// remove the added features from previous outcomes for this
 				// scoredSequence
 				instanceFeatures = instanceFeatures.subList(0, instanceFeatures.size() - outcomeFeaturesCount);
@@ -228,7 +231,7 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
 
 					if (!l.containsKey(scoredOutcome.getValue())) {
 						double score = scoredSequence.getScore();
-						if (addScores) {
+						if (viterbiAddScores) {
 							score = score + scoredOutcome.getScore();
 						}
 						else {
@@ -239,7 +242,7 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
 					}
 					else {
 						double newScore = scoredSequence.getScore();
-						if (addScores) {
+						if (viterbiAddScores) {
 							newScore = newScore + scoredOutcome.getScore();
 						}
 						else {
