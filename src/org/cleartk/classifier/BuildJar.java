@@ -41,6 +41,8 @@ import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
 
 public class BuildJar {
 	
+	public static final String MODEL_FILE_NAME = "model.jar";
+	
 	public static void main(String[] args) throws Exception {
 		String programName = BuildJar.class.getName();
 		String usage = String.format(
@@ -69,8 +71,10 @@ public class BuildJar {
 	public static class OutputStream extends JarOutputStream {
 		public OutputStream(File dir) throws IOException {
 			super(getOutputStream(dir), new ClassifierManifest(dir));
-			String fileName = FeaturesEncoder_ImplBase.ENCODERS_FILE_NAME;
-			this.write(fileName, new File(dir, fileName));
+			String encodersFileName = FeaturesEncoder_ImplBase.ENCODERS_FILE_NAME;
+			File encodersFile = new File(dir, encodersFileName);
+			if(encodersFile.exists())
+				this.write(encodersFileName, encodersFile);
 		}
 		
 		public void write(String entryName, File file) throws IOException {
@@ -82,7 +86,7 @@ public class BuildJar {
 		}
 		
 		private static FileOutputStream getOutputStream(File dir) throws IOException {
-			return new FileOutputStream(new File(dir, "model.jar"));
+			return new FileOutputStream(new File(dir, MODEL_FILE_NAME));
 		}
 	}
 
