@@ -66,7 +66,7 @@ POSSIBILITY OF SUCH DAMAGE.</description>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>org.cleartk.classifier.ViterbiSequentialDataWriter.PARAM_OUTCOME_FEATURE_EXTRACTOR</name>
+        <name>org.cleartk.classifier.viterbi.ViterbiDataWriter.PARAM_OUTCOME_FEATURE_EXTRACTORS</name>
         <type>String</type>
         <multiValued>true</multiValued>
         <mandatory>false</mandatory>
