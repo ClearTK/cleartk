@@ -25,9 +25,6 @@ package org.cleartk.classifier;
 
 import java.io.File;
 
-import org.cleartk.classifier.viterbi.ViterbiClassifierBuilder;
-import org.cleartk.classifier.viterbi.ViterbiDataWriter;
-
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
  * <br>All rights reserved.
@@ -53,21 +50,11 @@ public class Train {
 		ClassifierManifest manifest = new ClassifierManifest(dir);
 		ClassifierBuilder<?> classifierBuilder = manifest.getClassifierBuilder();
 		
-		if(classifierBuilder instanceof ViterbiClassifierBuilder) {
-			File delegatedOutputDirectory = new File(dir, ViterbiDataWriter.DELEGATED_MODEL_DIRECTORY_NAME);
-			args[0] = delegatedOutputDirectory.getPath();
-			main(args);
-			String[] remainingArgs = new String[args.length - 1];
-			System.arraycopy(args, 1, remainingArgs, 0, remainingArgs.length);
-			classifierBuilder.buildJar(dir, remainingArgs);
-		}
-		else {
-			// clip the first item off the command line arguments, and call train
-			String[] remainingArgs = new String[args.length - 1];
-			System.arraycopy(args, 1, remainingArgs, 0, remainingArgs.length);
-			classifierBuilder.train(dir, remainingArgs);
-			classifierBuilder.buildJar(dir, remainingArgs);
-		}
+		// clip the first item off the command line arguments, and call train
+		String[] remainingArgs = new String[args.length - 1];
+		System.arraycopy(args, 1, remainingArgs, 0, remainingArgs.length);
+		classifierBuilder.train(dir, remainingArgs);
+		classifierBuilder.buildJar(dir, remainingArgs);
 	}
 	
 }
