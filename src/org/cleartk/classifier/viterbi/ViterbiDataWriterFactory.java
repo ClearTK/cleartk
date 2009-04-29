@@ -41,13 +41,12 @@ import org.cleartk.classifier.SequentialDataWriterFactory;
 
 public class ViterbiDataWriterFactory  implements SequentialDataWriterFactory {
 
+	
 	public SequentialDataWriter<?> createSequentialDataWriter(File outputDirectory) throws IOException {
 		return new ViterbiDataWriter(outputDirectory);
 	}
 
-
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-		// TODO Auto-generated method stub
-		
 	}
+
 }
