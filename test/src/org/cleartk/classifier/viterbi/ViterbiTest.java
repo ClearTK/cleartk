@@ -22,10 +22,11 @@
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
-package org.cleartk.classifier;
+package org.cleartk.classifier.viterbi;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +34,7 @@ import java.util.Map;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.ScoredOutcome;
@@ -57,9 +59,11 @@ public class ViterbiTest {
 	 * paper and solved by hand before implementing here.
 	 * 
 	 * @throws ResourceInitializationException
+	 * @throws IOException 
+	 * @throws CleartkException 
 	 */
 	@Test
-	public void test1() throws ResourceInitializationException {
+	public void test1() throws ResourceInitializationException, IOException, CleartkException {
 		List<List<Feature>> features = new ArrayList<List<Feature>>();
 		features.add(createFeatures("0"));
 		features.add(createFeatures("1"));
@@ -76,8 +80,12 @@ public class ViterbiTest {
 		DefaultOutcomeFeatureExtractor dofe = new DefaultOutcomeFeatureExtractor();
 		dofe.initialize(uimaContext);
 
-		List<String> bestSequence = Viterbi.classifySequence(features, 4, String.class, new TestClassifier(),
-				new OutcomeFeatureExtractor[] { dofe }, true);
+		TestViterbiClassifier tvc = new TestViterbiClassifier();
+		tvc.setOutcomeFeatureExctractors(new OutcomeFeatureExtractor[] { dofe });
+		tvc.setStackSize(4);
+		tvc.setAddScores(true);
+		tvc.setDelegatedClassifier(new TestClassifier());
+		List<String> bestSequence = tvc.viterbi(features);
 
 		assertEquals("A", bestSequence.get(0));
 		assertEquals("E", bestSequence.get(1));
@@ -88,7 +96,7 @@ public class ViterbiTest {
 	}
 
 	@Test
-	public void test1b() throws ResourceInitializationException {
+	public void test1b() throws ResourceInitializationException, IOException, CleartkException {
 		List<List<Feature>> features = new ArrayList<List<Feature>>();
 		features.add(createFeatures("0"));
 		features.add(createFeatures("1"));
@@ -105,8 +113,12 @@ public class ViterbiTest {
 		DefaultOutcomeFeatureExtractor dofe = new DefaultOutcomeFeatureExtractor();
 		dofe.initialize(uimaContext);
 
-		List<String> bestSequence = Viterbi.classifySequence(features, 4, String.class, new TestClassifier(),
-				new OutcomeFeatureExtractor[] { dofe }, false);
+		TestViterbiClassifier tvc = new TestViterbiClassifier();
+		tvc.setOutcomeFeatureExctractors(new OutcomeFeatureExtractor[] { dofe });
+		tvc.setStackSize(4);
+		tvc.setAddScores(false);
+		tvc.setDelegatedClassifier(new TestClassifier());
+		List<String> bestSequence = tvc.viterbi(features);
 
 		assertEquals("C", bestSequence.get(0));
 		assertEquals("E", bestSequence.get(1));
@@ -220,9 +232,11 @@ public class ViterbiTest {
 	 * the most expensive path through the factory.
 	 * 
 	 * @throws ResourceInitializationException
+	 * @throws CleartkException 
+	 * @throws IOException 
 	 */
 	@Test
-	public void test2() throws ResourceInitializationException {
+	public void test2() throws ResourceInitializationException, CleartkException, IOException {
 		List<List<Feature>> features = new ArrayList<List<Feature>>();
 		features.add(createFeatures("1"));
 		features.add(createFeatures("2"));
@@ -240,8 +254,12 @@ public class ViterbiTest {
 		DefaultOutcomeFeatureExtractor dofe = new DefaultOutcomeFeatureExtractor();
 		dofe.initialize(uimaContext);
 
-		List<String> bestSequence = Viterbi.classifySequence(features, 2, String.class, new Test2Classifier(),
-				new OutcomeFeatureExtractor[] { dofe }, true);
+		TestViterbiClassifier tvc = new TestViterbiClassifier();
+		tvc.setOutcomeFeatureExctractors(new OutcomeFeatureExtractor[] { dofe });
+		tvc.setStackSize(2);
+		tvc.setAddScores(true);
+		tvc.setDelegatedClassifier(new Test2Classifier());
+		List<String> bestSequence = tvc.viterbi(features);
 
 		assertEquals("2", bestSequence.get(0));
 		assertEquals("1", bestSequence.get(1));
@@ -355,4 +373,23 @@ public class ViterbiTest {
 
 	}
 
+	public static class TestViterbiClassifier extends ViterbiClassifier<String> {
+
+		public TestViterbiClassifier() throws IOException {
+			super();
+		}
+		
+		public void setOutcomeFeatureExctractors(OutcomeFeatureExtractor[] ofes) {
+			outcomeFeatureExtractors = ofes;
+		}
+		public void setStackSize(int stackSize) {
+			viterbiStackSize = stackSize;
+		}
+		public void setAddScores(boolean addScores) {
+			viterbiAddScores = addScores;
+		}
+		public void setDelegatedClassifier(Classifier<String> classifier) {
+			delegatedClassifier = classifier;
+		}
+	}
 }
