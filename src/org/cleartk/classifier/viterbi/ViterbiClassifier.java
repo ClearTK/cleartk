@@ -23,6 +23,7 @@
  */
 package org.cleartk.classifier.viterbi;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
 import org.apache.uima.UimaContext;
+import org.apache.uima.pear.util.FileUtil;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
 import org.cleartk.Initializable;
@@ -44,6 +46,7 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.SequentialClassifier;
 import org.cleartk.classifier.feature.extractor.outcome.OutcomeFeatureExtractor;
+import org.cleartk.classifier.opennlp.MaxentClassifier;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
 
@@ -53,7 +56,7 @@ import org.cleartk.util.UIMAUtil;
  * All rights reserved.
  */
 
-public abstract class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUTCOME_TYPE>,
+public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUTCOME_TYPE>,
 		Initializable {
 
 	/**
@@ -79,7 +82,7 @@ public abstract class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClass
 	public static String PARAM_ADD_SCORES = "org.cleartk.classifier.ViterbiClassifier.PARAM_ADD_SCORES";
 
 	
-	protected Classifier<OUTCOME_TYPE> classifier;
+	protected Classifier<OUTCOME_TYPE> delegatedClassifier;
 
 	protected OutcomeFeatureExtractor[] outcomeFeatureExtractors;
 
@@ -88,8 +91,15 @@ public abstract class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClass
 	boolean viterbiAddScores = false;
 
 	public ViterbiClassifier(JarFile modelFile) throws IOException {
-
-		classifier = ReflectionUtil.uncheckedCast(ClassifierFactory.createClassifierFromJar(modelFile.getName()));
+		System.out.println("ViterbiClassifier constructor");
+		File modelFileDirectory = new File(modelFile.getName()).getParentFile();
+		modelFile.getInputStream(modelFile.getEntry(ViterbiClassifierBuilder.DELEGATED_MODEL_FILE_NAME));
+		FileUtil.extractFilesWithExtFromJar(modelFile, ".jar", modelFileDirectory);
+		
+		File delegatedModelFile = new File(modelFileDirectory, ViterbiClassifierBuilder.DELEGATED_MODEL_FILE_NAME);
+		System.out.println(delegatedModelFile.getPath());
+		System.out.println(delegatedModelFile.exists());
+		delegatedClassifier = ReflectionUtil.uncheckedCast(ClassifierFactory.createClassifierFromJar(delegatedModelFile.getPath()));
 
 		ZipEntry zipEntry = modelFile.getEntry(ViterbiDataWriter.OUTCOME_FEATURE_EXTRACTOR_FILE_NAME);
 		if (zipEntry == null) {
@@ -125,7 +135,7 @@ public abstract class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClass
 				for (OutcomeFeatureExtractor outcomeFeatureExtractor : outcomeFeatureExtractors) {
 					instanceFeatures.addAll(outcomeFeatureExtractor.extractFeatures(outcomes));
 				}
-				OUTCOME_TYPE outcome = classifier.classify(instanceFeatures);
+				OUTCOME_TYPE outcome = delegatedClassifier.classify(instanceFeatures);
 				outcomes.add(outcome);
 				returnValues.add(outcome);
 			}
@@ -154,7 +164,7 @@ public abstract class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClass
 	 *            sequence paths. See note for PARAM_STACK_SIZE above.
 	 * @param cls
 	 *            the class of the outcome type that should be returned
-	 * @param classifier
+	 * @param delegatedClassifier
 	 *            a classifier that implements the score(List<Feature>, int)
 	 *            method.
 	 * @param outcomeFeatureExtractors
@@ -181,7 +191,7 @@ public abstract class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClass
 			return Collections.emptyList();
 		}
 
-		List<ScoredOutcome<OUTCOME_TYPE>> scoredOutcomes = classifier.score(features.get(0), stackSize);
+		List<ScoredOutcome<OUTCOME_TYPE>> scoredOutcomes = delegatedClassifier.score(features.get(0), stackSize);
 		for (ScoredOutcome<OUTCOME_TYPE> scoredOutcome : scoredOutcomes) {
 			double score = scoredOutcome.getScore();
 			List<OUTCOME_TYPE> sequence = new ArrayList<OUTCOME_TYPE>();
@@ -209,7 +219,7 @@ public abstract class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClass
 				}
 				// score the instance features using the features added by the
 				// outcomeFeatureExtractors
-				scoredOutcomes = classifier.score(instanceFeatures, stackSize);
+				scoredOutcomes = delegatedClassifier.score(instanceFeatures, stackSize);
 				// remove the added features from previous outcomes for this
 				// scoredSequence
 				instanceFeatures = instanceFeatures.subList(0, instanceFeatures.size() - outcomeFeaturesCount);
@@ -263,6 +273,12 @@ public abstract class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClass
 			return nbestSequences.get(0).getValue();
 		}
 
+		return null;
+	}
+
+	public List<ScoredOutcome<List<OUTCOME_TYPE>>> scoreSequence(List<List<Feature>> features, int maxResults)
+			throws CleartkException {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
