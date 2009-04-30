@@ -31,10 +31,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.AnnotationHandler;
 import org.cleartk.classifier.Instance;
@@ -83,8 +81,7 @@ public class VerbClauseTemporalHandler implements AnnotationHandler<String> {
 	private int eventID;
 
 	
-	
-	public void initialize(UimaContext context) throws ResourceInitializationException {
+	public VerbClauseTemporalHandler() {
 		this.eventID = 1;
 		this.tokenFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
 		this.tokenFeatureExtractors.add(new SpannedTextExtractor());
