@@ -142,7 +142,7 @@ public class ViterbiDataWriter<OUTCOME_TYPE> implements
 	}
 
 	public Class<? extends ClassifierBuilder<OUTCOME_TYPE>> getDefaultClassifierBuilderClass() {
-		return (Class<? extends ClassifierBuilder<OUTCOME_TYPE>>) ViterbiClassifierBuilder.class;
+		return ReflectionUtil.uncheckedCast(ViterbiClassifierBuilder.class);
 	}
 
 

@@ -71,7 +71,7 @@ public class EncoderFactory_ImplBaseTests {
 	@Test
 	public void test() throws Exception {
 		String outputDir = this.outputDirectory.getPath();
-		EncoderFactory fileSystemFactory = new EncoderFactory_ImplBase() {};
+		EncoderFactory fileSystemFactory = new EncoderFactory_ImplBase<Object, Object, Object>() {};
 		UimaContext context;
 		
 		// try to get an encoder with an empty output directory

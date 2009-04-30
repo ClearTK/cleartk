@@ -34,6 +34,8 @@ package org.cleartk;
 
 public class CleartkException extends Exception{
 
+	private static final long serialVersionUID = -6504625185622947813L;
+
 	public CleartkException() {
 		super();
 	}
