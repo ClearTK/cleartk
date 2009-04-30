@@ -126,16 +126,10 @@
 	
 	<!-- to get this task to run open desc/example/ExamplePOSDataWriterCPE.xml in a text editor and set the string value of the CorpusDirectory parameter to some value appropriate to your environment - i.e. give it the path to your local copy of the WSJ PennTreebank.-->
 	<target name="build-test-example-model">
-		<echo message="======================" />
-		<echo message="Training example model" />
-		<echo message="======================" />
-		
-		<java fork="true" classname="org.apache.uima.examples.cpe.SimpleRunCPE" classpathref="cpe.classpath" maxmemory="${max-memory}">
-			<arg value="example/desc/ExamplePOSDataWriterCPE.xml"/>
-		</java>
-		<java fork="true" classname="org.cleartk.classifier.Train" classpathref="run.classpath" maxmemory="${max-memory}">
-			<arg line="example/model" />
-        </java>
+		<echo message="=========================================" />
+		<echo message="Building /ClearTK/example/model/model.jar" />
+		<echo message="=========================================" />
+		<java fork="true" classname="org.cleartk.example.pos.BuildTestExamplePosModel" classpathref="cpe.classpath" maxmemory="${max-memory}"/>
 	</target>	
 
 	<target name="build-test-srl-model">
