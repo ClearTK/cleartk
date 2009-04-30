@@ -2,7 +2,7 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>org.cleartk.classifier.DelegatingDataWriter</annotatorImplementationName>
+  <annotatorImplementationName>org.cleartk.classifier.SequentialDataWriterAnnotator</annotatorImplementationName>
   <analysisEngineMetaData>
     <name>ExamplePOSDataWriter</name>
     <description>Copyright (c) 2009, Regents of the University of Colorado 
@@ -30,19 +30,19 @@ POSSIBILITY OF SUCH DAMAGE.</description>
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>org.cleartk.classifier.InstanceConsumer.PARAM_ANNOTATION_HANDLER</name>
+        <name>org.cleartk.classifier.SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>org.cleartk.classifier.DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY</name>
+        <name>org.cleartk.classifier.SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>org.cleartk.classifier.DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS</name>
+        <name>org.cleartk.classifier.SequentialDataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
@@ -59,26 +59,14 @@ POSSIBILITY OF SUCH DAMAGE.</description>
         <multiValued>true</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
+      <configurationParameter>
+        <name>org.cleartk.classifier.viterbi.ViterbiDataWriter.PARAM_DELEGATED_DATAWRITER_FACTORY_CLASS</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
-      <nameValuePair>
-        <name>org.cleartk.classifier.InstanceConsumer.PARAM_ANNOTATION_HANDLER</name>
-        <value>
-          <string>org.cleartk.example.pos.ExamplePOSAnnotationHandler</string>
-        </value>
-      </nameValuePair>
-      <nameValuePair>
-        <name>org.cleartk.classifier.DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY</name>
-        <value>
-          <string>example/model</string>
-        </value>
-      </nameValuePair>
-      <nameValuePair>
-        <name>org.cleartk.classifier.DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS</name>
-        <value>
-          <string>org.cleartk.classifier.opennlp.MaxentDataWriter</string>
-        </value>
-      </nameValuePair>
       <nameValuePair>
         <name>org.cleartk.classifier.encoder.factory.NameNumberEncoderFactory.PARAM_COMPRESS</name>
         <value>
@@ -91,6 +79,30 @@ POSSIBILITY OF SUCH DAMAGE.</description>
           <array>
             <string>org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor</string>
           </array>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>org.cleartk.classifier.SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER</name>
+        <value>
+          <string>org.cleartk.example.pos.ExamplePOSAnnotationHandler</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>org.cleartk.classifier.SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY</name>
+        <value>
+          <string>example/model</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>org.cleartk.classifier.SequentialDataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS</name>
+        <value>
+          <string>org.cleartk.classifier.viterbi.ViterbiDataWriterFactory</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>org.cleartk.classifier.viterbi.ViterbiDataWriter.PARAM_DELEGATED_DATAWRITER_FACTORY_CLASS</name>
+        <value>
+          <string>org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory</string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
