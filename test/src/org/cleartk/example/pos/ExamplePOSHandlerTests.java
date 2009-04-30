@@ -37,6 +37,10 @@ import org.cleartk.classifier.DataWriterAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.InstanceConsumer;
+import org.cleartk.classifier.SequentialClassifierAnnotator;
+import org.cleartk.classifier.SequentialDataWriterAnnotator;
+import org.cleartk.classifier.SequentialInstanceConsumer;
+import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
 import org.cleartk.example.pos.ExamplePOSAnnotationHandler;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
@@ -194,11 +198,11 @@ public class ExamplePOSHandlerTests {
 		
 		String expectedName = ExamplePOSAnnotationHandler.class.getName();
 		Object annotationHandler = engine.getConfigParameterValue(
-				InstanceConsumer.PARAM_ANNOTATION_HANDLER);
+				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER);
 		Assert.assertEquals(expectedName, annotationHandler);
 
 		Object classifierJar = engine.getConfigParameterValue(
-				ClassifierAnnotator.PARAM_CLASSIFIER_JAR);
+				SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR);
 		Assert.assertEquals("example/model/model.jar", classifierJar);
 		
 		engine.collectionProcessComplete();
@@ -211,18 +215,18 @@ public class ExamplePOSHandlerTests {
 		
 		String expectedName = ExamplePOSAnnotationHandler.class.getName();
 		Object annotationHandler = engine.getConfigParameterValue(
-				InstanceConsumer.PARAM_ANNOTATION_HANDLER);
+				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER);
 		Assert.assertEquals(expectedName, annotationHandler);
 		
 		Object outputDir = engine.getConfigParameterValue(
-				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY);
+				SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY);
 		Assert.assertEquals("example/model", outputDir);
 		
-		String expectedDataWriter = (
-				"org.cleartk.classifier.opennlp.MaxentDataWriter");
+		String expectedDataWriterFactory = (
+				ViterbiDataWriterFactory.class.getName());
 		Object dataWriter = engine.getConfigParameterValue(
-				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS);
-		Assert.assertEquals(expectedDataWriter, dataWriter);
+				SequentialDataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS);
+		Assert.assertEquals(expectedDataWriterFactory, dataWriter);
 		engine.collectionProcessComplete();
 	}
 	
