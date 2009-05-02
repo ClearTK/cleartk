@@ -33,14 +33,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.uima.UIMAException;
-import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.encoder.factory.NameNumberEncoderFactory;
 import org.cleartk.classifier.feature.TypePathFeature;
 import org.cleartk.classifier.feature.WindowFeature;
 import org.junit.Test;
-import org.uutuc.factory.UimaContextFactory;
 
 
 /**
@@ -55,10 +52,7 @@ public class NameNumberFeatureEncoderTest {
 	@Test
 	public void testEncodeCompress() throws IOException, ResourceInitializationException {
 		
-		UimaContext uimaContext = UimaContextFactory.createUimaContext(NameNumberEncoderFactory.PARAM_COMPRESS, true,
-				NameNumberEncoderFactory.PARAM_SORT_NAME_LOOKUP, true);
-		NameNumberEncoderFactory nnef = new NameNumberEncoderFactory();
-		NameNumberFeaturesEncoder nnfe = (NameNumberFeaturesEncoder) nnef.createFeaturesEncoder(uimaContext);
+		NameNumberFeaturesEncoder nnfe = getDefaultEncoder(true, true);
 		nnfe.allowNewFeatures(true);
 		
 		testNN("0", 1.0f, new Feature("Hello"), nnfe);
@@ -93,9 +87,7 @@ public class NameNumberFeatureEncoderTest {
 	
 	@Test
 	public void testOnTypePathFeatures() throws ResourceInitializationException {
-		UimaContext uimaContext = UimaContextFactory.createUimaContext(NameNumberEncoderFactory.PARAM_COMPRESS, false);
-		NameNumberEncoderFactory nnef = new NameNumberEncoderFactory();
-		NameNumberFeaturesEncoder nnfe = (NameNumberFeaturesEncoder) nnef.createFeaturesEncoder(uimaContext);
+		NameNumberFeaturesEncoder nnfe = getDefaultEncoder(false, false);
 		nnfe.allowNewFeatures(true);
 		
 		testNN("_hello", 1.0f, new Feature("", "hello"), nnfe);
@@ -127,9 +119,7 @@ public class NameNumberFeatureEncoderTest {
 	
 	@Test
 	public void testOnWindowFeatures() throws UIMAException, IOException {
-		UimaContext uimaContext = UimaContextFactory.createUimaContext();
-		NameNumberEncoderFactory nnef = new NameNumberEncoderFactory();
-		NameNumberFeaturesEncoder nnfe = (NameNumberFeaturesEncoder) nnef.createFeaturesEncoder(uimaContext);
+		NameNumberFeaturesEncoder nnfe = getDefaultEncoder(false, false);
 		nnfe.allowNewFeatures(true);
 		
 		testNN("Ccccccc_aaaaaa", 1.0f, new Feature("Ccccccc", "aaaaaa"), nnfe);
@@ -166,5 +156,13 @@ public class NameNumberFeatureEncoderTest {
 		NameNumber nameNumber = cvs.get(0);
 		assertEquals(name, nameNumber.name);
 		assertEquals(number.floatValue(), nameNumber.number.floatValue(), 0.01d);
+	}
+	
+	private NameNumberFeaturesEncoder getDefaultEncoder(boolean compress, boolean sort) {
+		NameNumberFeaturesEncoder featuresEncoder = new NameNumberFeaturesEncoder(compress, sort);
+		featuresEncoder.addEncoder(new NumberEncoder());
+		featuresEncoder.addEncoder(new BooleanEncoder());
+		featuresEncoder.addEncoder(new StringEncoder());
+		return featuresEncoder;
 	}
 }

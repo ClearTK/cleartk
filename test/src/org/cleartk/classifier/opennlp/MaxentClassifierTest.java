@@ -45,7 +45,6 @@ import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.InstanceConsumer;
 import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.Train;
-import org.cleartk.classifier.encoder.factory.NameNumberEncoderFactory;
 import org.cleartk.util.TestsUtil;
 import org.junit.After;
 import org.junit.Test;
@@ -233,7 +232,7 @@ public class MaxentClassifierTest {
 				InstanceConsumer.PARAM_ANNOTATION_HANDLER, TestHandler2T.class.getName(), 
 				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, DefaultMaxentDataWriterFactory.class.getName(),
-				NameNumberEncoderFactory.PARAM_COMPRESS, false);
+				DefaultMaxentDataWriterFactory.PARAM_COMPRESS, false);
 		
 		JCas jCas = TestsUtil.getJCas();
 		dataWriterAnnotator.process(jCas);

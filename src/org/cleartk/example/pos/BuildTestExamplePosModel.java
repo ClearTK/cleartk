@@ -37,7 +37,6 @@ import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.cleartk.ViewNames;
 import org.cleartk.classifier.SequentialDataWriterAnnotator;
 import org.cleartk.classifier.SequentialInstanceConsumer;
-import org.cleartk.classifier.encoder.factory.NameNumberEncoderFactory;
 import org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.classifier.viterbi.ViterbiDataWriter;
@@ -87,7 +86,7 @@ public class BuildTestExamplePosModel {
 				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER, ExamplePOSAnnotationHandler.class.getName(),
 				SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, "example/model",
 				SequentialDataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, ViterbiDataWriterFactory.class.getName(),
-				NameNumberEncoderFactory.PARAM_COMPRESS, true,
+				DefaultMaxentDataWriterFactory.PARAM_COMPRESS, true,
 				ViterbiDataWriter.PARAM_OUTCOME_FEATURE_EXTRACTORS,  new String[] {DefaultOutcomeFeatureExtractor.class.getName()},
 				ViterbiDataWriter.PARAM_DELEGATED_DATAWRITER_FACTORY_CLASS, DefaultMaxentDataWriterFactory.class.getName()
 		);

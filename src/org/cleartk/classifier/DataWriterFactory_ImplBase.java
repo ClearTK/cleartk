@@ -29,12 +29,13 @@ import java.io.ObjectInputStream;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.Initializable;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 import org.cleartk.util.UIMAUtil;
 
-public abstract class DataWriterFactory_ImplBase<FEATURES_OUT_TYPE, OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE> implements DataWriterFactory<OUTCOME_IN_TYPE> {
+public abstract class DataWriterFactory_ImplBase<FEATURES_OUT_TYPE, OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE> implements DataWriterFactory<OUTCOME_IN_TYPE>, Initializable {
 
 	public static final String PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM = "org.cleartk.classifier.DataWriterFactory_ImplBase.PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM";
 
@@ -65,18 +66,8 @@ public abstract class DataWriterFactory_ImplBase<FEATURES_OUT_TYPE, OUTCOME_IN_T
 			this.featuresEncoder = null;
 			this.outcomeEncoder = null;
 		}
-		this.context = context;
 	}
 
-	protected FeaturesEncoder<FEATURES_OUT_TYPE> getFeaturesEncoder() {
-		return this.featuresEncoder;		
-	}
-
-	protected OutcomeEncoder<OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE> getOutcomeEncoder() {
-		return this.outcomeEncoder;
-	}
-	
-	protected UimaContext context = null;
 	protected FeaturesEncoder<FEATURES_OUT_TYPE> featuresEncoder = null;
 	protected OutcomeEncoder<OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE> outcomeEncoder = null;
 }

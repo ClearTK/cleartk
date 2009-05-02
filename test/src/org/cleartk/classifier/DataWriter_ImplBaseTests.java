@@ -34,10 +34,9 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.UimaContext;
 import org.apache.uima.util.FileUtils;
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.encoder.factory.NameNumberEncoderFactory;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
 import org.cleartk.classifier.encoder.features.NameNumber;
-import org.cleartk.classifier.mallet.MalletDataWriter;
+import org.cleartk.classifier.mallet.DefaultMalletDataWriterFactory;
 import org.cleartk.classifier.opennlp.MaxentDataWriter;
 import org.junit.After;
 import org.junit.Assert;
@@ -92,11 +91,10 @@ public class DataWriter_ImplBaseTests {
 	@Test
 	public void testFinish() throws UIMAException, IOException, CleartkException {
 
-		DataWriter_ImplBase<String, String, List<NameNumber>> dataWriter = new MalletDataWriter(outputDirectory);
-		NameNumberEncoderFactory nnef = new NameNumberEncoderFactory();
 		UimaContext uimaContext = UimaContextFactory.createUimaContext();
-		dataWriter.setFeaturesEncoder((nnef.createFeaturesEncoder(uimaContext)));
-		dataWriter.setOutcomeEncoder((nnef.createOutcomeEncoder(uimaContext)));
+		DefaultMalletDataWriterFactory factory = new DefaultMalletDataWriterFactory();
+		factory.initialize(uimaContext);
+		DataWriter<String> dataWriter = factory.createDataWriter(outputDirectory);
 		dataWriter.finish();
 		assertTrue(new File(outputDirectory, FeaturesEncoder_ImplBase.ENCODERS_FILE_NAME).exists());
 		

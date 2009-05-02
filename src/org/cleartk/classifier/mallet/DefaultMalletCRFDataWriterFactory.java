@@ -29,32 +29,64 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.uima.UimaContext;
+import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.SequentialDataWriter;
 import org.cleartk.classifier.SequentialDataWriterFactory_ImplBase;
-import org.cleartk.classifier.encoder.factory.NameNumberEncoderFactory;
+import org.cleartk.classifier.encoder.features.BooleanEncoder;
 import org.cleartk.classifier.encoder.features.NameNumber;
+import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
+import org.cleartk.classifier.encoder.features.NumberEncoder;
+import org.cleartk.classifier.encoder.features.StringEncoder;
+import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
+import org.cleartk.util.UIMAUtil;
 
 /**
  * <br>
  * Copyright (c) 2009, Regents of the University of Colorado <br>
  * All rights reserved.
- * @author Philip Ogren
+ * @author Philip Ogren, Philipp Wetzler
  * 
  */
 
 public class DefaultMalletCRFDataWriterFactory extends SequentialDataWriterFactory_ImplBase<List<NameNumber>, String, String> {
 
+	public static final String PARAM_COMPRESS = "org.cleartk.classifier.opennlp.DefaultMalletCRFDataWriterFactory.PARAM_COMPRESS";
+
+	public static final String PARAM_SORT_NAME_LOOKUP = "org.cleartk.classifier.opennlp.DefaultMalletCRFDataWriterFactory.PARAM_SORT_NAME_LOOKUP";
+
 	@Override
-	public void initialize(UimaContext context) {
-		NameNumberEncoderFactory nnef = new NameNumberEncoderFactory();
-		featuresEncoder = nnef.createFeaturesEncoder(context);
-		outcomeEncoder = nnef.createOutcomeEncoder(context);
+	public void initialize(UimaContext context) throws ResourceInitializationException {
+		super.initialize(context);
+		compress = (Boolean)UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_COMPRESS, false);
+		sort = (Boolean)UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_SORT_NAME_LOOKUP, false);
 	}
 	
 	public SequentialDataWriter<String> createSequentialDataWriter(File outputDirectory) throws IOException {
 		MalletCRFDataWriter mdw = new MalletCRFDataWriter(outputDirectory);
-		mdw.setFeaturesEncoder(getFeaturesEncoder());
-		mdw.setOutcomeEncoder(getOutcomeEncoder());
+		
+		if( this.featuresEncoder != null && this.outcomeEncoder != null ) {
+			/* The superclass has been able to load a features encoder
+			 * and an outcome encoder from disk. Use those instead of
+			 * creating new ones.
+			 */
+			mdw.setFeaturesEncoder(this.featuresEncoder);
+			mdw.setOutcomeEncoder(this.outcomeEncoder);
+		} else {
+			/* Create features encoder and outcome encoder from scratch.
+			 */
+			NameNumberFeaturesEncoder featuresEncoder = new NameNumberFeaturesEncoder(compress, sort);
+			featuresEncoder.addEncoder(new NumberEncoder());
+			featuresEncoder.addEncoder(new BooleanEncoder());
+			featuresEncoder.addEncoder(new StringEncoder());
+			mdw.setFeaturesEncoder(featuresEncoder);
+			
+			mdw.setOutcomeEncoder(new StringToStringOutcomeEncoder());
+		}
+
 		return mdw;
 	}
+
+	private boolean compress;
+	private boolean sort;
+
 }

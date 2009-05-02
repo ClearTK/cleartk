@@ -43,7 +43,6 @@ import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.InstanceConsumer;
 import org.cleartk.classifier.InstanceFactory;
 import org.cleartk.classifier.Train;
-import org.cleartk.classifier.encoder.factory.NameNumberEncoderFactory;
 import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 import org.cleartk.classifier.mallet.factory.ClassifierTrainerFactory;
 import org.cleartk.util.TestsUtil;
@@ -135,7 +134,7 @@ public class MalletDataWriterTest {
 				TestsUtil.getTypeSystemDescription(), InstanceConsumer.PARAM_ANNOTATION_HANDLER, TestHandler1.class
 						.getName(), DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, DefaultMalletDataWriterFactory.class.getName(),
-				NameNumberEncoderFactory.PARAM_COMPRESS, true);
+				DefaultMalletDataWriterFactory.PARAM_COMPRESS, true);
 
 		JCas jCas = TestsUtil.getJCas();
 		dataWriterAnnotator.process(jCas);
@@ -176,7 +175,7 @@ public class MalletDataWriterTest {
 				TestsUtil.getTypeSystemDescription(), InstanceConsumer.PARAM_ANNOTATION_HANDLER, TestHandler1.class
 						.getName(), DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, DefaultMalletDataWriterFactory.class.getName(),
-				NameNumberEncoderFactory.PARAM_COMPRESS, true, NameNumberEncoderFactory.PARAM_SORT_NAME_LOOKUP, true);
+				DefaultMalletDataWriterFactory.PARAM_COMPRESS, true, DefaultMalletDataWriterFactory.PARAM_SORT_NAME_LOOKUP, true);
 
 		JCas jCas = TestsUtil.getJCas();
 		dataWriterAnnotator.process(jCas);
@@ -229,7 +228,7 @@ public class MalletDataWriterTest {
 				TestsUtil.getTypeSystemDescription(), InstanceConsumer.PARAM_ANNOTATION_HANDLER, TestHandler4.class
 						.getName(), DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, DefaultMalletDataWriterFactory.class.getName(),
-				NameNumberEncoderFactory.PARAM_COMPRESS, true, NameNumberEncoderFactory.PARAM_SORT_NAME_LOOKUP, true);
+				DefaultMalletDataWriterFactory.PARAM_COMPRESS, true, DefaultMalletDataWriterFactory.PARAM_SORT_NAME_LOOKUP, true);
 
 		JCas jCas = TestsUtil.getJCas();
 		AnalysisEngineProcessException aepe = null;
@@ -260,7 +259,7 @@ public class MalletDataWriterTest {
 				TestsUtil.getTypeSystemDescription(), InstanceConsumer.PARAM_ANNOTATION_HANDLER, TestHandler5.class
 						.getName(), DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, DefaultMalletDataWriterFactory.class.getName(),
-				NameNumberEncoderFactory.PARAM_COMPRESS, true);
+				DefaultMalletDataWriterFactory.PARAM_COMPRESS, true);
 
 		JCas jCas = TestsUtil.getJCas();
 		dataWriterAnnotator.process(jCas);

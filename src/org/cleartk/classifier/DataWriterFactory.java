@@ -27,9 +27,7 @@ package org.cleartk.classifier;
 import java.io.File;
 import java.io.IOException;
 
-import org.cleartk.Initializable;
-
-public interface DataWriterFactory<OUTCOME_TYPE> extends Initializable {
+public interface DataWriterFactory<OUTCOME_TYPE> {
 	
 	public DataWriter<OUTCOME_TYPE> createDataWriter(File outputDirectory) throws IOException;
 
