@@ -49,9 +49,9 @@ import org.cleartk.util.UIMAUtil;
 
 public class DefaultMalletDataWriterFactory extends DataWriterFactory_ImplBase<List<NameNumber>, String, String> {
 
-	public static final String PARAM_COMPRESS = "org.cleartk.classifier.opennlp.DefaultMalletDataWriterFactory.PARAM_COMPRESS";
+	public static final String PARAM_COMPRESS = "org.cleartk.classifier.mallet.DefaultMalletDataWriterFactory.PARAM_COMPRESS";
 
-	public static final String PARAM_SORT_NAME_LOOKUP = "org.cleartk.classifier.opennlp.DefaultMalletDataWriterFactory.PARAM_SORT_NAME_LOOKUP";
+	public static final String PARAM_SORT_NAME_LOOKUP = "org.cleartk.classifier.mallet.DefaultMalletDataWriterFactory.PARAM_SORT_NAME_LOOKUP";
 
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {

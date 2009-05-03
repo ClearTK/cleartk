@@ -50,9 +50,9 @@ import org.cleartk.util.UIMAUtil;
 
 public class DefaultMalletCRFDataWriterFactory extends SequentialDataWriterFactory_ImplBase<List<NameNumber>, String, String> {
 
-	public static final String PARAM_COMPRESS = "org.cleartk.classifier.opennlp.DefaultMalletCRFDataWriterFactory.PARAM_COMPRESS";
+	public static final String PARAM_COMPRESS = "org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory.PARAM_COMPRESS";
 
-	public static final String PARAM_SORT_NAME_LOOKUP = "org.cleartk.classifier.opennlp.DefaultMalletCRFDataWriterFactory.PARAM_SORT_NAME_LOOKUP";
+	public static final String PARAM_SORT_NAME_LOOKUP = "org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory.PARAM_SORT_NAME_LOOKUP";
 
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
