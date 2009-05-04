@@ -2,14 +2,14 @@
 	<property file="build.properties"/>
 	<property environment="env" />
 	<property name="UIMA_HOME" value="${env.UIMA_HOME}" />
-		
 	<property name="Name" value="Clear Toolkit"/>
-    <property name="name" value="cleartk"/>
-    <property name="max-memory" value="512m"/>
+	<property name="name" value="cleartk"/>
+	<property name="max-memory" value="512m"/>
 
-	<property name="build" value="${basedir}/build"/>
+	<property name="build" value="${basedir}"/>
 	<property name="lib" value="${basedir}/lib"/>
-	<property name="bin" value="${basedir}/build/bin"/>
+	<property name="bin" value="${basedir}/bin"/>
+	<property name="test-bin" value="${basedir}/test/bin"/>
 	<property name="resources" value="${basedir}/resources"/>
 	<property name="src" value="${basedir}/src"/>
 	<property name="test-src" value="${basedir}/test/src"/>
@@ -19,42 +19,55 @@
 	<target name="build" depends="clean, compile, compile-tests, build-jar, build-javadoc" />
 		
 	<target name="prepare">
-		<mkdir dir="${build}"/>
-        <mkdir dir="${bin}"/>
-        <copy includeemptydirs="false" todir="${bin}">
-            <fileset dir="${resources}"/>
-        </copy>
-	    <copy includeemptydirs="false" todir="${bin}">
-        	<fileset dir="${src}" excludes="**/*.java"/>
-    	</copy>
+		<mkdir dir="${bin}"/>
+		<copy includeemptydirs="false" todir="${bin}">
+			<fileset dir="${resources}"/>
+		</copy>
+		<copy includeemptydirs="false" todir="${bin}">
+			<fileset dir="${src}" excludes="**/*.java"/>
+		</copy>
 	</target>
 		
 	<target name="clean">
-        <delete dir="${build}" />
-        <delete dir="${doc}/api" />
-    </target>
+		<delete dir="${doc}/api" />
+	</target>
 
 	
 	<!--========== UIMA classpath ==========-->
 	<path id="uima.classpath">
 		<pathelement location="${UIMA_HOME}/lib/uima-core.jar"/>
-    	<pathelement location="${UIMA_HOME}/lib/uima-tools.jar"/>
+	<pathelement location="${UIMA_HOME}/lib/uima-tools.jar"/>
 		<pathelement location="${UIMA_HOME}/lib/uima-document-annotation.jar"/>
 	</path>					
 
 	<!--========== compile classpath ==========-->
 	<path id="compile.classpath">
-	     <path refid="uima.classpath"/>
-	     <fileset dir="${lib}">
-	       <include name="**/*.jar"/>
-	     </fileset>
-	     <pathelement location="${src}"/>
-    </path>
+		<path refid="uima.classpath"/>
+		<fileset dir="${lib}">
+			<include name="**/*.jar"/>
+		</fileset>
+		<pathelement location="${src}"/>
+	</path>
+	
+	<!--========== test-compile classpath ==========-->
+	<path id="test-compile.classpath">
+		<path refid="compile.classpath"/>
+		<pathelement location="${test-src}"/>
+	</path>
 	
 	<!--========== run classpath ==========-->
 	<path id="run.classpath">
-	     <path refid="compile.classpath"/>
-	     <pathelement location="${bin}"/>
+		<path refid="uima.classpath"/>
+		<fileset dir="${lib}">
+			<include name="**/*.jar"/>
+		</fileset>
+		<pathelement location="${bin}"/>
+	</path>
+		
+	<!--========== test-run classpath ==========-->
+	<path id="test-run.classpath">
+		<path refid="run.classpath"/>
+		<pathelement location="${test-bin}"/>
 	</path>
 		
 	<!--========== run CPE classpath ==========-->
@@ -65,35 +78,35 @@
 	</path>
 
 	
-    <!--========== run jcasgen to create type system java files==========-->
+	<!--========== run jcasgen to create type system java files==========-->
 	<target name="compile-type-system">
-        <echo message="Creating type system JCas files"/>
-		<java fork="true"
-             classname="org.apache.uima.tools.jcasgen.Jg"
-             maxmemory="${max-memory}">
-           <classpath refid="compile.classpath"/>
-           <arg value="-jcasgeninput"/>
-           <arg value="${src}/org/cleartk/TypeSystem.xml"/>
-           <arg value="-jcasgenoutput"/>
-           <arg value="${src}"/>
-		   <redirector output="${build}/ant.log"/>
-       </java>
-    </target>
+		<echo message="Creating type system JCas files"/>
+		<java fork="true" 
+				classname="org.apache.uima.tools.jcasgen.Jg"
+				maxmemory="${max-memory}">
+			<classpath refid="compile.classpath"/>
+			<arg value="-jcasgeninput"/>
+			<arg value="${src}/org/cleartk/TypeSystem.xml"/>
+			<arg value="-jcasgenoutput"/>
+			<arg value="${src}"/>
+			<redirector output="${build}/ant.log"/>
+		</java>
+	</target>
 	
 	<!-- compile all of the source code that isn't unit tests -->
 	<target name="compile" depends="prepare,compile-type-system"
-	      description="Compiles the source code">
-	      <echo message="Compiling the source code...."/>
-	  	  <echo message="compile.classpath"/>
+			description="Compiles the source code">
+		<echo message="Compiling the source code...."/>
+		<echo message="compile.classpath"/>
 
-	      <javac srcdir="${src}"
-	             destdir="${bin}"
-	             debug="true"
-	             deprecation="on">
-	             <include name="org/cleartk/**"/>
-	             <classpath refid="compile.classpath"/>
-	      </javac>
-	 </target>
+		<javac srcdir="${src}"
+				destdir="${bin}"
+				debug="true"
+				deprecation="on">
+			<include name="org/cleartk/**"/>
+			<classpath refid="compile.classpath"/>
+		</javac>
+	</target>
 
 	<!-- compile the unit tests -->
 	<target name="compile-tests" depends="compile">
@@ -102,49 +115,56 @@
 			     generate the type system java files with jcasgen first -->
 		<echo message="generating jcasgen files for julie type system..."/>
 		<java fork="true"
-	 	             classname="org.apache.uima.tools.jcasgen.Jg"
-	 	             maxmemory="${max-memory}">
-	 	           <classpath refid="compile.classpath"/>
-	 	           <arg value="-jcasgeninput"/>
-	 	           <arg value="${basedir}/test/desc/JulieTypeSystem.xml"/>
-	 	           <arg value="-jcasgenoutput"/>
-	 	           <arg value="${test-src}"/>
-			       <redirector output="${build}/ant.log"/>
-	 	       </java>
+				classname="org.apache.uima.tools.jcasgen.Jg"
+				maxmemory="${max-memory}">
+			<classpath refid="compile.classpath"/>
+			<arg value="-jcasgeninput"/>
+			<arg value="${basedir}/test/desc/JulieTypeSystem.xml"/>
+			<arg value="-jcasgenoutput"/>
+			<arg value="${test-src}"/>
+			<redirector output="${build}/ant.log"/>
+		</java>
 		<echo message="...done."/>
 		<!-- compile the Julie type system java files and any java files written specifically
 		     to support the unit tests (e.g. TypePathExtractorTestAnnotator.java)-->
 		<javac srcdir="${test-src}"
-	             destdir="${bin}"
-	             debug="true"
-	             deprecation="on">
-	             <include name="org/cleartk/**/*.java"/>
-	        	 <include name="de/julielab/jules/types/*.java"/>
-		         <classpath refid="run.classpath"/>
-	      </javac>
-	 </target>
+				destdir="${test-bin}"
+				debug="true"
+				deprecation="on">
+			<include name="org/cleartk/**/*.java"/>
+			<include name="de/julielab/jules/types/*.java"/>
+			<classpath refid="test-compile.classpath"/>
+		</javac>
+	</target>
 	
-	<!-- to get this task to run open desc/example/ExamplePOSDataWriterCPE.xml in a text editor and set the string value of the CorpusDirectory parameter to some value appropriate to your environment - i.e. give it the path to your local copy of the WSJ PennTreebank.-->
+	<!-- to get this task to run open desc/example/ExamplePOSDataWriterCPE.xml in a text editor 
+			and set the string value of the CorpusDirectory parameter to some value appropriate 
+			to your environment - i.e. give it the path to your local copy of the WSJ PennTreebank.-->
 	<target name="build-test-example-model">
 		<echo message="=========================================" />
 		<echo message="Building /ClearTK/example/model/model.jar" />
 		<echo message="=========================================" />
-		<java fork="true" classname="org.cleartk.example.pos.BuildTestExamplePosModel" classpathref="cpe.classpath" maxmemory="${max-memory}"/>
+		<java fork="true" 
+				classname="org.cleartk.example.pos.BuildTestExamplePosModel" 
+				classpathref="test-run.classpath" maxmemory="${max-memory}"/>
 	</target>	
 
 	<target name="build-test-srl-model">
 		<echo message="===================" />
 		<echo message="Training SRL models" />
 		<echo message="===================" />
-		<java fork="true" classname="org.apache.uima.examples.cpe.SimpleRunCPE" classpathref="cpe.classpath" maxmemory="${max-memory}">
+		<java fork="true" classname="org.apache.uima.examples.cpe.SimpleRunCPE" 
+				classpathref="cpe.classpath" maxmemory="${max-memory}">
 			<arg value="test/data/srl/desc/PredicateArgumentDataWriterCPE.xml"/>
 		</java>
-		<java fork="true" classname="org.cleartk.classifier.Train" classpathref="run.classpath" maxmemory="${max-memory}">
+		<java fork="true" classname="org.cleartk.classifier.Train" 
+				classpathref="run.classpath" maxmemory="${max-memory}">
 			<arg line="test/data/srl/predicate" />
-        </java>
-		<java fork="true" classname="org.cleartk.classifier.Train" classpathref="run.classpath" maxmemory="${max-memory}">
+		</java>
+		<java fork="true" classname="org.cleartk.classifier.Train" 
+				classpathref="run.classpath" maxmemory="${max-memory}">
 			<arg line="test/data/srl/argument" />
-        </java>
+		</java>
 	</target>
 	
 	<target name="build-test-temporal-model">
@@ -157,7 +177,7 @@
 		</java>
 		<java fork="true" classname="org.cleartk.classifier.Train" classpathref="run.classpath" maxmemory="${max-memory}">
 			<arg line="test/data/temporal" />
-        </java>
+		</java>
 		<move file="test/data/temporal/model.jar" tofile="resources/models/verb-clause-temporal-model.jar" />
 	</target>
 
@@ -173,7 +193,7 @@
 	<!-- run all the junit tests in the test-src directory -->
 	<target name="run-tests" depends="compile-tests">
 		<junit maxmemory="${max-memory}">
-			<classpath refid="run.classpath" />
+			<classpath refid="test-run.classpath" />
 			<formatter type="brief" usefile="false" />
 			<batchtest fork="yes">
 				<fileset dir="${test-src}">
@@ -186,50 +206,49 @@
 	</target>
 	
 	<target name="build-jar" depends="compile"
-		description="builds ClearTK jar file">
+			description="builds ClearTK jar file">
 		<echo message="Creating ClearTK.jar file"/>
-		<jar destfile="${build}/ClearTK.jar"
-			 basedir="${bin}"/>
+		<jar destfile="${build}/ClearTK.jar" basedir="${bin}"/>
 	</target>
 		
-    <target name="build-javadoc">
-        <javadoc
-            packagenames = "org.cleartk.*"
-            excludepackagenames = "de.julielab.*"
-            sourcepath = "${src}"
-            destdir = "${doc}/api"
-            windowtitle = "ClearTK API (${version})"
-            linksource = "true"
-        	private="true"
-            classpathref="compile.classpath">
-            <link href="http://java.sun.com/j2se/1.5.0/docs/api/"/>
-         	<link href="http://maxent.sourceforge.net/api/"/>
-        	<link href="http://opennlp.sourceforge.net/api/"/>
-        	<link href="http://trove4j.sourceforge.net/javadocs/"/>
-        	<link href="http://www.jdom.org/docs/apidocs/"/>
-            <link href="http://incubator.apache.org/uima/apidocs/"/>
-            <link href="http://mallet.cs.umass.edu/api/"/>
-        	<link href="http://lucene.apache.org/java/2_2_0/api/"/>
-        	<doctitle><![CDATA[<h1>ClearTK (${version})</h1>]]></doctitle>
-        	<tag name="generated"/>
-        	<tag name="ordered"/>
-        	<tag name="modifiable"/>
-        </javadoc>
-    </target>
+	<target name="build-javadoc">
+		<javadoc
+				packagenames = "org.cleartk.*"
+				excludepackagenames = "de.julielab.*"
+				sourcepath = "${src}"
+				destdir = "${doc}/api"
+				windowtitle = "ClearTK API (${version})"
+				linksource = "true"
+				private="true"
+				classpathref="compile.classpath">
+			<link href="http://java.sun.com/j2se/1.5.0/docs/api/"/>
+			<link href="http://maxent.sourceforge.net/api/"/>
+			<link href="http://opennlp.sourceforge.net/api/"/>
+			<link href="http://trove4j.sourceforge.net/javadocs/"/>
+			<link href="http://www.jdom.org/docs/apidocs/"/>
+			<link href="http://incubator.apache.org/uima/apidocs/"/>
+			<link href="http://mallet.cs.umass.edu/api/"/>
+			<link href="http://lucene.apache.org/java/2_2_0/api/"/>
+			<doctitle><![CDATA[<h1>ClearTK (${version})</h1>]]></doctitle>
+			<tag name="generated"/>
+			<tag name="ordered"/>
+			<tag name="modifiable"/>
+		</javadoc>
+	</target>
 	
-    <!--========== train a classifier ==========-->
-    <target name="train-classifier">
+	<!--========== train a classifier ==========-->
+	<target name="train-classifier">
 		<java fork="true" classname="org.cleartk.classifier.Train" maxmemory="${max-memory}">
 			<classpath refid="run.classpath"/>
 			<arg line="${args}" />
-        </java>
+		</java>
 	</target>
 	
-    <!--========== build a jar file from classifier models ==========-->
-    <target name="build-classifier-jar">
+	<!--========== build a jar file from classifier models ==========-->
+	<target name="build-classifier-jar">
 		<java fork="true" classname="org.cleartk.classifier.BuildJar">
 			<classpath refid="run.classpath"/>
 			<arg line="${args}" />
-        </java>
+		</java>
 	</target>
 </project>

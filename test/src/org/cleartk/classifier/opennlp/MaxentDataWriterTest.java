@@ -26,10 +26,13 @@ package org.cleartk.classifier.opennlp;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -135,14 +138,18 @@ public class MaxentDataWriterTest {
 		assertEquals("A 5", lines[3]);
 
 		lines = FileUtil.loadListOfStrings(new File(outputDirectory, NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
-		int i = 0;
-		assertEquals("6", lines[i++]);
-		assertEquals("name_2PO\t3", lines[i++]);
-		assertEquals("precision\t2", lines[i++]);
-		assertEquals("distance\t1", lines[i++]);
-		assertEquals("pos_NN\t0", lines[i++]);
-		assertEquals("A_B_AB\t5", lines[i++]);
-		assertEquals("p's\t4", lines[i++]);
+		Set<String> lineSet = new HashSet<String>();
+		for( int i=0; i<lines.length; i++)
+			lineSet.add(lines[i]);
+		assertEquals("6", lines[0]);
+		assertTrue(lineSet.contains("6"));
+		assertTrue(lineSet.contains("name_2PO\t3"));
+		assertTrue(lineSet.contains("precision\t2"));
+		assertTrue(lineSet.contains("distance\t1"));
+		assertTrue(lineSet.contains("pos_NN\t0"));
+		assertTrue(lineSet.contains("A_B_AB\t5"));
+		assertTrue(lineSet.contains("p's\t4"));
+		assertEquals(7, lineSet.size());
 
 		HideOutput hider = new HideOutput();
 		Train.main(new String[] { outputDirectory, "10", "1" });

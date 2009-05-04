@@ -41,7 +41,7 @@ import org.cleartk.classifier.DataWriterAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.opennlp.MaxentDataWriter;
-import org.cleartk.classifier.svmlight.SVMlightDataWriter;
+import org.cleartk.classifier.svmlight.DefaultSVMlightDataWriterFactory;
 import org.cleartk.srl.type.Predicate;
 import org.cleartk.srl.type.SemanticArgument;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
@@ -382,9 +382,9 @@ public class PredicateArgumentHandlerTests {
 				DataWriterAnnotator.PARAM_ANNOTATION_HANDLER);
 		Assert.assertEquals(PredicateAnnotationHandler.class.getName(), handler);
 		
-		Object dataWriter = engine.getConfigParameterValue(
+		Object dataWriterFactory = engine.getConfigParameterValue(
 				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS);
-		Assert.assertEquals(SVMlightDataWriter.class.getName(), dataWriter);
+		Assert.assertEquals(DefaultSVMlightDataWriterFactory.class.getName(), dataWriterFactory);
 		
 		Object outputDir = engine.getConfigParameterValue(
 				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY);

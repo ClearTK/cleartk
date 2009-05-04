@@ -82,7 +82,7 @@ public class InverseDocumentFrequencyWriterTests {
 		AnalysisEngine[] engines = new AnalysisEngine[] {
 				AnalysisEngineFactory.createAnalysisEngine(OpenNLPSentenceSegmenter.class, typeSystem,
 						OpenNLPSentenceSegmenter.SENTENCE_MODEL_FILE_PARAM,
-						"../ClearTK/resources/models/OpenNLP.Sentence.English.bin.gz"),
+						"./resources/models/OpenNLP.Sentence.English.bin.gz"),
 				AnalysisEngineFactory.createAnalysisEngine(TokenAnnotator.class, typeSystem),
 				AnalysisEngineFactory.createAnalysisEngine(SnowballStemmer.class, typeSystem,
 						SnowballStemmer.PARAM_STEMMER_NAME, "English"),

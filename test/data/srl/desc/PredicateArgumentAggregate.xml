@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
-  <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
-  <primitive>false</primitive>
-  <delegateAnalysisEngineSpecifiers>
-    <delegateAnalysisEngine key="PredicateDataWriter">
-      <import name="org.cleartk.srl.PredicateDataWriter"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="TreebankPropbankGoldAnnotator">
-      <import name="org.cleartk.srl.propbank.TreebankPropbankGoldAnnotator"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="ArgumentDataWriter">
-      <import name="org.cleartk.srl.ArgumentDataWriter"/>
-    </delegateAnalysisEngine>
-  </delegateAnalysisEngineSpecifiers>
-  <analysisEngineMetaData>
-    <name>PredicateArgumentAggregate</name>
-    <description>Copyright (c) 2009, Regents of the University of Colorado 
+<frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+<primitive>false</primitive>
+<delegateAnalysisEngineSpecifiers>
+<delegateAnalysisEngine key="ArgumentDataWriter">
+<import name="org.cleartk.srl.ArgumentDataWriter"/>
+</delegateAnalysisEngine>
+<delegateAnalysisEngine key="TreebankPropbankGoldAnnotator">
+<import name="org.cleartk.srl.propbank.TreebankPropbankGoldAnnotator"/>
+</delegateAnalysisEngine>
+<delegateAnalysisEngine key="PredicateDataWriter">
+<import name="org.cleartk.srl.PredicateDataWriter"/>
+</delegateAnalysisEngine>
+</delegateAnalysisEngineSpecifiers>
+<analysisEngineMetaData>
+<name>PredicateArgumentAggregate</name>
+<description>Copyright (c) 2009, Regents of the University of Colorado 
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -36,94 +36,94 @@ INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
 CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.</description>
-    <version>1.0</version>
-    <vendor/>
-    <configurationParameters>
-      <configurationParameter>
-        <name>PredicateOutputDirectory</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>true</mandatory>
-        <overrides>
-          <parameter>PredicateDataWriter/OutputDirectory</parameter>
-        </overrides>
-      </configurationParameter>
-      <configurationParameter>
-        <name>ArgumentOutputDirectory</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>true</mandatory>
-        <overrides>
-          <parameter>ArgumentDataWriter/OutputDirectory</parameter>
-        </overrides>
-      </configurationParameter>
-    </configurationParameters>
-    <configurationParameterSettings>
-      <nameValuePair>
-        <name>PredicateOutputDirectory</name>
-        <value>
-          <string>test/data/srl/predicate</string>
-        </value>
-      </nameValuePair>
-      <nameValuePair>
-        <name>ArgumentOutputDirectory</name>
-        <value>
-          <string>test/data/srl/argument</string>
-        </value>
-      </nameValuePair>
-    </configurationParameterSettings>
-    <flowConstraints>
-      <fixedFlow>
-        <node>TreebankPropbankGoldAnnotator</node>
-        <node>PredicateDataWriter</node>
-        <node>ArgumentDataWriter</node>
-      </fixedFlow>
-    </flowConstraints>
-    <fsIndexCollection/>
-    <capabilities>
-      <capability>
-        <inputs/>
-        <outputs/>
-        <inputSofas>
-          <sofaName>PropbankView</sofaName>
-          <sofaName>TreebankView</sofaName>
-        </inputSofas>
-        <outputSofas>
-          <sofaName>GoldView</sofaName>
-        </outputSofas>
-        <languagesSupported/>
-      </capability>
-    </capabilities>
-    <operationalProperties>
-      <modifiesCas>true</modifiesCas>
-      <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
-      <outputsNewCASes>false</outputsNewCASes>
-    </operationalProperties>
-  </analysisEngineMetaData>
-  <resourceManagerConfiguration/>
-  <sofaMappings>
-    <sofaMapping>
-      <componentKey>TreebankPropbankGoldAnnotator</componentKey>
-      <componentSofaName>PropbankView</componentSofaName>
-      <aggregateSofaName>PropbankView</aggregateSofaName>
-    </sofaMapping>
-    <sofaMapping>
-      <componentKey>TreebankPropbankGoldAnnotator</componentKey>
-      <componentSofaName>TreebankView</componentSofaName>
-      <aggregateSofaName>TreebankView</aggregateSofaName>
-    </sofaMapping>
-    <sofaMapping>
-      <componentKey>ArgumentDataWriter</componentKey>
-      <aggregateSofaName>GoldView</aggregateSofaName>
-    </sofaMapping>
-    <sofaMapping>
-      <componentKey>PredicateDataWriter</componentKey>
-      <aggregateSofaName>GoldView</aggregateSofaName>
-    </sofaMapping>
-    <sofaMapping>
-      <componentKey>TreebankPropbankGoldAnnotator</componentKey>
-      <componentSofaName>GoldView</componentSofaName>
-      <aggregateSofaName>GoldView</aggregateSofaName>
-    </sofaMapping>
-  </sofaMappings>
+<version>1.0</version>
+<vendor></vendor>
+<configurationParameters searchStrategy="language_fallback">
+<configurationParameter>
+<name>PredicateOutputDirectory</name>
+<type>String</type>
+<multiValued>false</multiValued>
+<mandatory>true</mandatory>
+<overrides>
+<parameter>PredicateDataWriter/org.cleartk.classifier.DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY</parameter>
+</overrides>
+</configurationParameter>
+<configurationParameter>
+<name>ArgumentOutputDirectory</name>
+<type>String</type>
+<multiValued>false</multiValued>
+<mandatory>true</mandatory>
+<overrides>
+<parameter>ArgumentDataWriter/org.cleartk.classifier.DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY</parameter>
+</overrides>
+</configurationParameter>
+</configurationParameters>
+<configurationParameterSettings>
+<nameValuePair>
+<name>PredicateOutputDirectory</name>
+<value>
+<string>test/data/srl/predicate</string>
+</value>
+</nameValuePair>
+<nameValuePair>
+<name>ArgumentOutputDirectory</name>
+<value>
+<string>test/data/srl/argument</string>
+</value>
+</nameValuePair>
+</configurationParameterSettings>
+<flowConstraints>
+<fixedFlow>
+<node>TreebankPropbankGoldAnnotator</node>
+<node>PredicateDataWriter</node>
+<node>ArgumentDataWriter</node>
+</fixedFlow>
+</flowConstraints>
+<fsIndexCollection/>
+<capabilities>
+<capability>
+<inputs/>
+<outputs/>
+<inputSofas>
+<sofaName>PropbankView</sofaName>
+<sofaName>TreebankView</sofaName>
+</inputSofas>
+<outputSofas>
+<sofaName>GoldView</sofaName>
+</outputSofas>
+<languagesSupported/>
+</capability>
+</capabilities>
+<operationalProperties>
+<modifiesCas>true</modifiesCas>
+<multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+<outputsNewCASes>false</outputsNewCASes>
+</operationalProperties>
+</analysisEngineMetaData>
+<resourceManagerConfiguration/>
+<sofaMappings>
+<sofaMapping>
+<componentKey>TreebankPropbankGoldAnnotator</componentKey>
+<componentSofaName>PropbankView</componentSofaName>
+<aggregateSofaName>PropbankView</aggregateSofaName>
+</sofaMapping>
+<sofaMapping>
+<componentKey>TreebankPropbankGoldAnnotator</componentKey>
+<componentSofaName>TreebankView</componentSofaName>
+<aggregateSofaName>TreebankView</aggregateSofaName>
+</sofaMapping>
+<sofaMapping>
+<componentKey>ArgumentDataWriter</componentKey>
+<aggregateSofaName>GoldView</aggregateSofaName>
+</sofaMapping>
+<sofaMapping>
+<componentKey>PredicateDataWriter</componentKey>
+<aggregateSofaName>GoldView</aggregateSofaName>
+</sofaMapping>
+<sofaMapping>
+<componentKey>TreebankPropbankGoldAnnotator</componentKey>
+<componentSofaName>GoldView</componentSofaName>
+<aggregateSofaName>GoldView</aggregateSofaName>
+</sofaMapping>
+</sofaMappings>
 </analysisEngineDescription>
