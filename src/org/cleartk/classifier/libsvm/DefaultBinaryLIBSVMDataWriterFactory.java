@@ -51,16 +51,7 @@ public class DefaultBinaryLIBSVMDataWriterFactory extends DataWriterFactory_Impl
 	public DataWriter<Boolean> createDataWriter(File outputDirectory) throws IOException {
 		BinaryLIBSVMDataWriter dataWriter = new BinaryLIBSVMDataWriter(outputDirectory);
 
-		if( this.featuresEncoder != null && this.outcomeEncoder != null ) {
-			/* The superclass has been able to load a features encoder
-			 * and an outcome encoder from disk. Use those instead of
-			 * creating new ones.
-			 */
-			dataWriter.setFeaturesEncoder(this.featuresEncoder);
-			dataWriter.setOutcomeEncoder(this.outcomeEncoder);
-		} else {
-			/* Create features encoder and outcome encoder from scratch.
-			 */
+		if(!this.setEncodersFromFileSystem(dataWriter)) {
 			NameNumberNormalizer normalizer = new EuclidianNormalizer();
 			FeatureVectorFeaturesEncoder featuresEncoder = new FeatureVectorFeaturesEncoder(normalizer);
 			featuresEncoder.addEncoder(new NumberEncoder());

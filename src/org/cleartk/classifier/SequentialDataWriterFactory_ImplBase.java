@@ -37,6 +37,12 @@ import org.cleartk.util.UIMAUtil;
 
 public abstract class SequentialDataWriterFactory_ImplBase<FEATURES_OUT_TYPE, OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE> implements SequentialDataWriterFactory<OUTCOME_IN_TYPE> {
 
+	/**
+	 * "org.cleartk.classifier.SequentialDataWriterFactory_ImplBase.PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM"
+	 * is a single, optional, boolean parameter, defaulting to false, that when true
+	 * indicates that the FeaturesEncoder and OutcomeEncoder should be loaded from the
+	 * file system instead of being created by the DataWriterFactory.
+	 */
 	public static final String PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM = "org.cleartk.classifier.SequentialDataWriterFactory_ImplBase.PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM";
 
 	public void initialize(UimaContext context)  throws ResourceInitializationException{
@@ -86,14 +92,17 @@ public abstract class SequentialDataWriterFactory_ImplBase<FEATURES_OUT_TYPE, OU
 		this.context = context;
 	}
 
-	protected FeaturesEncoder<FEATURES_OUT_TYPE> getFeaturesEncoder() {
-		return this.featuresEncoder;		
+	protected boolean setEncodersFromFileSystem(
+			SequentialDataWriter_ImplBase<OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE, FEATURES_OUT_TYPE> dataWriter) {
+		if( this.featuresEncoder != null && this.outcomeEncoder != null ) {
+			dataWriter.setFeaturesEncoder(this.featuresEncoder);
+			dataWriter.setOutcomeEncoder(this.outcomeEncoder);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
-	protected OutcomeEncoder<OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE> getOutcomeEncoder() {
-		return this.outcomeEncoder;
-	}
-	
 	protected UimaContext context = null;
 	protected FeaturesEncoder<FEATURES_OUT_TYPE> featuresEncoder = null;
 	protected OutcomeEncoder<OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE> outcomeEncoder = null;

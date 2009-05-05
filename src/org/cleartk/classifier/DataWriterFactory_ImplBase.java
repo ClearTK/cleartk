@@ -91,6 +91,17 @@ public abstract class DataWriterFactory_ImplBase<FEATURES_OUT_TYPE, OUTCOME_IN_T
 			this.outcomeEncoder = null;
 		}
 	}
+	
+	protected boolean setEncodersFromFileSystem(
+			DataWriter_ImplBase<OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE, FEATURES_OUT_TYPE> dataWriter) {
+		if( this.featuresEncoder != null && this.outcomeEncoder != null ) {
+			dataWriter.setFeaturesEncoder(this.featuresEncoder);
+			dataWriter.setOutcomeEncoder(this.outcomeEncoder);
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	protected FeaturesEncoder<FEATURES_OUT_TYPE> featuresEncoder = null;
 	protected OutcomeEncoder<OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE> outcomeEncoder = null;

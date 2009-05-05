@@ -63,16 +63,7 @@ public class DefaultMaxentDataWriterFactory extends DataWriterFactory_ImplBase<L
 	public DataWriter<String> createDataWriter(File outputDirectory) throws IOException {
 		MaxentDataWriter mdw = new MaxentDataWriter(outputDirectory);
 		
-		if( this.featuresEncoder != null && this.outcomeEncoder != null ) {
-			/* The superclass has been able to load a features encoder
-			 * and an outcome encoder from disk. Use those instead of
-			 * creating new ones.
-			 */
-			mdw.setFeaturesEncoder(this.featuresEncoder);
-			mdw.setOutcomeEncoder(this.outcomeEncoder);
-		} else {
-			/* Create features encoder and outcome encoder from scratch.
-			 */
+		if(!this.setEncodersFromFileSystem(mdw)) {
 			NameNumberFeaturesEncoder featuresEncoder = new NameNumberFeaturesEncoder(compress, sort);
 			featuresEncoder.addEncoder(new NumberEncoder());
 			featuresEncoder.addEncoder(new BooleanEncoder());
