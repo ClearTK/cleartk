@@ -38,6 +38,12 @@ import org.cleartk.util.UIMAUtil;
 
 public abstract class DataWriterFactory_ImplBase<FEATURES_OUT_TYPE, OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE> implements DataWriterFactory<OUTCOME_IN_TYPE>, Initializable {
 
+	/**
+	 * "org.cleartk.classifier.DataWriterFactory_ImplBase.PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM"
+	 * is a single, optional, boolean parameter, defaulting to false, that when true
+	 * indicates that the FeaturesEncoder and OutcomeEncoder should be loaded from the
+	 * file system instead of being created by the DataWriterFactory.
+	 */
 	public static final String PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM = "org.cleartk.classifier.DataWriterFactory_ImplBase.PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM";
 
 	public void initialize(UimaContext context)  throws ResourceInitializationException{

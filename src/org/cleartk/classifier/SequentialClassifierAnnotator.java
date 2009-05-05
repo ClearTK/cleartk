@@ -66,7 +66,9 @@ import org.cleartk.util.UIMAUtil;
 public class SequentialClassifierAnnotator<OUTCOME_TYPE> extends SequentialInstanceConsumer_ImplBase<OUTCOME_TYPE> {
 
 	/**
-	 * The path to a jar file used to instantiate the classifier.
+	 * "org.cleartk.classifier.SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR"
+	 * is a single, required, string parameter that provides the path to the
+	 * jar file that should be used to instantiate the classifier.
 	 */
 	public static final String PARAM_CLASSIFIER_JAR = "org.cleartk.classifier.SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR";
 

@@ -36,10 +36,17 @@ import org.cleartk.util.UIMAUtil;
 public class DataWriterAnnotator<OUTCOME_TYPE> extends InstanceConsumer_ImplBase<OUTCOME_TYPE> {
 
 	/**
-	 * The name of the directory where the training data will be written.
+	 * "org.cleartk.classifier.DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY"
+	 * is a single, required, string parameter that provides the name of the
+	 * directory where the training data will be written.
 	 */
 	public static final String PARAM_OUTPUT_DIRECTORY = "org.cleartk.classifier.DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY";
 	
+	/**
+	 * "org.cleartk.classifier.DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS"
+	 * is a single, required, string parameter that provides the full name of
+	 * the DataWriterFactory class to be used.  
+	 */
 	public static final String PARAM_DATAWRITER_FACTORY_CLASS = "org.cleartk.classifier.DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS";
 
 	

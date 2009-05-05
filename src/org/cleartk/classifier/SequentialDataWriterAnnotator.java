@@ -37,10 +37,17 @@ import org.cleartk.util.UIMAUtil;
 public class SequentialDataWriterAnnotator<OUTCOME_TYPE> extends SequentialInstanceConsumer_ImplBase<OUTCOME_TYPE> {
 
 	/**
-	 * The name of the directory where the training data will be written.
+	 * "org.cleartk.classifier.SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY"
+	 * is a single, required, string parameter that provides the name of the
+	 * directory where the training data will be written.
 	 */
 	public static final String PARAM_OUTPUT_DIRECTORY = "org.cleartk.classifier.SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY";
 	
+	/**
+	 * "org.cleartk.classifier.SequentialDataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS"
+	 * is a single, required, string parameter that provides the full name of
+	 * the SequentialDataWriterFactory class to be used.  
+	 */
 	public static final String PARAM_DATAWRITER_FACTORY_CLASS = "org.cleartk.classifier.SequentialDataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS";
 
 	private SequentialDataWriter<OUTCOME_TYPE> sequentialDataWriter;
@@ -49,7 +56,8 @@ public class SequentialDataWriterAnnotator<OUTCOME_TYPE> extends SequentialInsta
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
 		
-		String outputDirectoryPath = (String) UIMAUtil.getRequiredConfigParameterValue(context, PARAM_OUTPUT_DIRECTORY);
+		String outputDirectoryPath = (String) UIMAUtil.getRequiredConfigParameterValue(
+				context, PARAM_OUTPUT_DIRECTORY);
 		File outputDirectory = new File(outputDirectoryPath);
 
 		// create the factory and instantiate the data writer
