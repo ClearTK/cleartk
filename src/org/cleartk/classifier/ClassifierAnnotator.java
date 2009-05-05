@@ -63,7 +63,7 @@ import org.cleartk.util.UIMAUtil;
 public class ClassifierAnnotator<OUTCOME_TYPE> extends InstanceConsumer_ImplBase<OUTCOME_TYPE> {
 
 	/**
-	 * The path to a jar file used to instantiate the classifier.
+	 * "org.cleartk.classifier.ClassifierAnnotator.PARAM_CLASSIFIER_JAR" is a single, required, string parameter that provides the filename of the classifier file (e.g. "model.jar")
 	 */
 	public static final String PARAM_CLASSIFIER_JAR = "org.cleartk.classifier.ClassifierAnnotator.PARAM_CLASSIFIER_JAR";
 
