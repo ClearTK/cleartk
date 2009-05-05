@@ -46,6 +46,7 @@ import org.cleartk.corpus.genia.util.GeniaTag;
 import org.cleartk.corpus.genia.util.Span;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
+import org.cleartk.util.UIMAUtil;
 import org.cleartk.util.ViewURIUtil;
 import org.jdom.JDOMException;
 
@@ -135,12 +136,9 @@ public class GeniaPosGoldReader extends CollectionReader_ImplBase {
 			String geniaCorpus = (String) getConfigParameterValue(PARAM_GENIA_CORPUS);
 			parser = new GeniaPOSParser(new File(geniaCorpus));
 
-			Boolean bool = (Boolean) getConfigParameterValue(PARAM_LOAD_SENTENCES);
-			if (bool != null) loadSentences = bool;
-			bool = (Boolean) getConfigParameterValue(PARAM_LOAD_TOKENS);
-			if (bool != null) loadTokens = bool;
-			bool = (Boolean) getConfigParameterValue(PARAM_LOAD_POS_TAGS);
-			if (bool != null) loadPOSTags = bool;
+			loadSentences = (Boolean) UIMAUtil.getDefaultingConfigParameterValue(getUimaContext(), PARAM_LOAD_SENTENCES, true);
+			loadTokens = (Boolean) UIMAUtil.getDefaultingConfigParameterValue(getUimaContext(), PARAM_LOAD_TOKENS, true);
+			loadPOSTags = (Boolean) UIMAUtil.getDefaultingConfigParameterValue(getUimaContext(), PARAM_LOAD_POS_TAGS, true);
 			loadPOSTags = loadTokens & loadPOSTags;
 
 		}
