@@ -80,7 +80,8 @@ import org.cleartk.util.UIMAUtil;
  */
 public class PennTreebankReader extends CollectionReader_ImplBase {
 	/**
-	 * "CorpusDirectory" is a single, required, string parameter that species
+	 * "org.cleartk.corpus.penntreebank.PennTreebankReader.PARAM_CORPUS_DIRECTORY"
+	 * is a single, required, string parameter that specifies
 	 * the location of the treebank files. The directory should contain
 	 * subdirectories corresponding to the sections (e.g. "00", "01", etc.) That
 	 * is, if a local copy of PennTreebank sits at C:\Data\PTB\wsj\mrg, then the
@@ -90,7 +91,8 @@ public class PennTreebankReader extends CollectionReader_ImplBase {
 	public static final String PARAM_CORPUS_DIRECTORY = "org.cleartk.corpus.penntreebank.PennTreebankReader.PARAM_CORPUS_DIRECTORY";
 
 	/**
-	 * "Sections" is a single, optional, string parameter that specifies which
+	 * "org.cleartk.corpus.penntreebank.PennTreebankReader.PARAM_SECTIONS"
+	 * is a single, optional, string parameter that specifies which
 	 * sections of PTB to read in. The format allows for comma-separated section
 	 * numbers and section ranges, for example "02,07-12,16". If not value is
 	 * given for this parameter, then a default value of "00-24" will be used.

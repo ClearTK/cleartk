@@ -63,34 +63,39 @@ import org.jdom.JDOMException;
 public class GeniaPosGoldReader extends CollectionReader_ImplBase {
 
 	/**
-	 * "ArticleIdsList" is a single, optional, string parameter that names the
-	 * file used to specify the article ids that should be read in.
+	 * "org.cleartk.corpus.genia.GeniaPosGoldReader.PARAM_ARTICLE_IDS_LIST"
+	 * is a single, optional, string parameter that names the file used to specify
+	 * the article ids that should be read in.
 	 */
 	public static final String PARAM_ARTICLE_IDS_LIST = "org.cleartk.corpus.genia.GeniaPosGoldReader.PARAM_ARTICLE_IDS_LIST";
 
 	/**
-	 * "GeniaCorpus" is a single, required, string parameter that names the file
+	 * "org.cleartk.corpus.genia.GeniaPosGoldReader.PARAM_GENIA_CORPUS"
+	 * is a single, required, string parameter that names the file
 	 * that is the Genia corpus to be loaded. A good value is probably
 	 * "data/genia/GENIAcorpus3.02.pos.xml"
 	 */
 	public static final String PARAM_GENIA_CORPUS = "org.cleartk.corpus.genia.GeniaPosGoldReader.PARAM_GENIA_CORPUS";
 
 	/**
-	 * "LoadSentences" is a single, optional, boolean parameter that determines
+	 * "org.cleartk.corpus.genia.GeniaPosGoldReader.PARAM_LOAD_SENTENCES"
+	 * is a single, optional, boolean parameter that determines
 	 * whether sentence annotations will be added from the Genia corpus. The
 	 * default value of "true" is used if this parameter is unspecified.
 	 */
 	public static final String PARAM_LOAD_SENTENCES = "org.cleartk.corpus.genia.GeniaPosGoldReader.PARAM_LOAD_SENTENCES";
 
 	/**
-	 * "LoadTokens" is a single, optional, boolean parameter that determines
+	 * "org.cleartk.corpus.genia.GeniaPosGoldReader.PARAM_LOAD_TOKENS"
+	 * is a single, optional, boolean parameter that determines
 	 * whether tokens annotations will be added from the Genia corpus. The
 	 * default value of "true" is used if this parameter is unspecified.
 	 */
 	public static final String PARAM_LOAD_TOKENS = "org.cleartk.corpus.genia.GeniaPosGoldReader.PARAM_LOAD_TOKENS";
 
 	/**
-	 * "LoadPOSTags" is a single, optional, boolean parameter that determines
+	 * "org.cleartk.corpus.genia.GeniaPosGoldReader.PARAM_LOAD_POS_TAGS"
+	 * is a single, optional, boolean parameter that determines
 	 * whether the part of speech tags assigned to each token in the genia
 	 * corpus will be loaded. The default value of "true" is used if this
 	 * parameter is unspecified. If "LoadTokens" is 'false', then "LoadPOSTags"

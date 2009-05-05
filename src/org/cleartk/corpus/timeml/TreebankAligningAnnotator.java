@@ -55,6 +55,11 @@ import org.cleartk.util.UIMAUtil;
  */
 public class TreebankAligningAnnotator extends JCasAnnotator_ImplBase {
 	
+	/**
+	 * "org.cleartk.corpus.timeml.TreebankAligningAnnotator.PARAM_TREEBANK_DIRECTORY"
+	 * is a single, required, string parameter which provides the path to the
+	 * treebank directory containing the XX/wsj_XXXX.mrg files. 
+	 */
 	public static final String PARAM_TREEBANK_DIRECTORY = "org.cleartk.corpus.timeml.TreebankAligningAnnotator.PARAM_TREEBANK_DIRECTORY";
 	
 	private File treebankDirectory;

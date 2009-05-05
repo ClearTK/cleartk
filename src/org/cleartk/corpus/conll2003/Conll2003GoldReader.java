@@ -65,15 +65,17 @@ import org.cleartk.util.UIMAUtil;
 public class Conll2003GoldReader extends CollectionReader_ImplBase
 {
 	/**
-	 * "CoNLL2003DataFile" is a single, required string parameter that 
-	 * points to CoNLL data (e.g. ner/eng.train).
+	 * "org.cleartk.corpus.conll2003.Conll2003GoldReader.PARAM_CONLL_2003_DATA_FILE"
+	 * is a single, required string parameter that points to CoNLL data
+	 * (e.g. ner/eng.train).
 	 */
 	public static final String PARAM_CONLL_2003_DATA_FILE = "org.cleartk.corpus.conll2003.Conll2003GoldReader.PARAM_CONLL_2003_DATA_FILE";
+
 	/**
-	 * "LoadNamedEntities" is a single, required boolean parameter that 
-	 * determines if the named entities are loaded (i.e. named entity mention
-	 * annotations are created) or if just the plain text from the files is 
-	 * loaded.
+	 * "org.cleartk.corpus.conll2003.Conll2003GoldReader.PARAM_LOAD_NAMED_ENTITIES"
+	 * is a single, required boolean parameter that determines if the named entities
+	 * are loaded (i.e. named entity mention annotations are created) or if just the
+	 * plain text from the files is loaded.
 	 */
 	public static final String PARAM_LOAD_NAMED_ENTITIES = "org.cleartk.corpus.conll2003.Conll2003GoldReader.PARAM_LOAD_NAMED_ENTITIES";
 	public static final String DOCSTART = "-DOCSTART-";

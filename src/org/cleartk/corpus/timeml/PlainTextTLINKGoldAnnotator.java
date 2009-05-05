@@ -57,6 +57,12 @@ import org.cleartk.util.UIMAUtil;
  */
 public class PlainTextTLINKGoldAnnotator extends JCasAnnotator_ImplBase {
 	
+	/**
+	 * "org.cleartk.corpus.timeml.PlainTextTLINKGoldAnnotator.PARAM_TLINK_FILE_URL"
+	 * is a single, required, string parameter that provides the URL to a
+	 * plain-text TLINK file, e.g.
+	 *   http://www.stanford.edu/~bethard/data/timebank-verb-clause.txt
+	 */
 	public static final String PARAM_TLINK_FILE_URL = "org.cleartk.corpus.timeml.PlainTextTLINKGoldAnnotator.PARAM_TLINK_FILE_URL";
 	
 	private Map<String, List<TLINK>> fileTLINKs;

@@ -57,6 +57,11 @@ import org.jdom.output.XMLOutputter;
 
 public class Ace2005Writer extends JCasAnnotator_ImplBase
 {
+	/**
+	 * "org.cleartk.corpus.ace2005.Ace2005Writer.PARAM_OUTPUT_DIRECTORY"
+	 * is a single, required, string parameter that provides the path of the
+	 * directory where the XML files should be written.
+	 */
 	public static final String PARAM_OUTPUT_DIRECTORY = "org.cleartk.corpus.ace2005.Ace2005Writer.PARAM_OUTPUT_DIRECTORY";
 
 	private File outputDir;

@@ -59,6 +59,12 @@ import org.jdom.input.SAXBuilder;
  */
 public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
 	
+	/**
+	 * "org.cleartk.corpus.timeml.TimeMLGoldAnnotator.PARAM_LOAD_TLINKS"
+	 * is a single, optional, boolean parameter, defaulting to true, that when false
+	 * indicates that annotation should not be created for TLINKs (though annotations
+	 * will still be created for TIMEX3s, EVENTs, etc.). 
+	 */
 	public static final String PARAM_LOAD_TLINKS = "org.cleartk.corpus.timeml.TimeMLGoldAnnotator.PARAM_LOAD_TLINKS";
 	
 	private boolean loadTLINKs;
@@ -99,13 +105,6 @@ public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
 		Map<String, Anchor> anchors = new HashMap<String, Anchor>();
 		this.addAnnotations(initialView, root, textBuffer, anchors);
 		initialView.setDocumentText(textBuffer.toString());
-		
-//		if (textBuffer.toString().contains("Air Force Lieutenant Colonel Eileen Collins")) {
-//			for (Annotation annotation: AnnotationRetrieval.getAnnotations(jCas, Annotation.class)) {
-//				System.err.println(annotation.getCoveredText());
-//				System.err.println(annotation);
-//			}
-//		}
 	}
 	
 	private void addAnnotations(
