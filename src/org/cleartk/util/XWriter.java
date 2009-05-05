@@ -55,13 +55,15 @@ import org.xml.sax.SAXException;
 
 public class XWriter extends JCasAnnotator_ImplBase {
 	/**
-	 * "OutputDirectory" is a single, required string parameter that takes a
+	 * "org.cleartk.util.XWriter.PARAM_OUTPUT_DIRECTORY"
+	 * is a single, required string parameter that takes a
 	 * path to directory into which output files will be written.
 	 */
 	public static final String PARAM_OUTPUT_DIRECTORY = "org.cleartk.util.XWriter.PARAM_OUTPUT_DIRECTORY";
 
 	/**
-	 * "XMLScheme" is a single, optional, string parameter that specifies the
+	 * "org.cleartk.util.XWriter.PARAM_XML_SCHEME"
+	 * is a single, optional, string parameter that specifies the
 	 * UIMA XML serialization scheme that should be used. Valid values for this
 	 * parameter are "XMI" (default) and "XCAS".
 	 * 

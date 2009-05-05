@@ -56,7 +56,7 @@ public class ViterbiDataWriter<OUTCOME_TYPE> implements
 	public static final String DELEGATED_MODEL_DIRECTORY_NAME = "delegated-model";
 
 	/**
-	 * "org.cleartk.classifier.viterbi.ViterbiDataWriter.PARAM_OUTCOME_FEATURE_EXTRACTOR"
+	 * "org.cleartk.classifier.viterbi.ViterbiDataWriter.PARAM_OUTCOME_FEATURE_EXTRACTORS"
 	 * is an optional, multi-valued, string parameter that specifies which
 	 * OutcomeFeatureExtractors should be used. Each value of this parameter
 	 * should be the name of a class that implements

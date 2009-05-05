@@ -78,23 +78,24 @@ import org.cleartk.util.io.Files;
 public class LineReader extends CollectionReader_ImplBase {
 
 	/**
-	 * "FileOrDirectory" is a single, required, string parameter that takes
-	 * either the name of a single file or the root directory containing all the
-	 * files to be processed.
+	 * "org.cleartk.util.linereader.LineReader.PARAM_FILE_OR_DIRECTORY"
+	 * is a single, required, string parameter that takes either the name of a
+	 * single file or the root directory containing all the files to be processed.
 	 */
 	public static final String PARAM_FILE_OR_DIRECTORY = "org.cleartk.util.linereader.LineReader.PARAM_FILE_OR_DIRECTORY";
 
 	/**
-	 * "ViewName" is a single, optional, string parameter that takes the the
-	 * name that should be given to the JCas view associated with the document
-	 * texts.
+	 * "org.cleartk.util.linereader.LineReader.PARAM_VIEW_NAME"
+	 * is a single, optional, string parameter that takes the the name that should
+	 * be given to the JCas view associated with the document texts.
 	 * 
 	 * @see UIMAUtil#createJCasView(CAS, String)
 	 */
 	public static final String PARAM_VIEW_NAME = "org.cleartk.util.linereader.LineReader.PARAM_VIEW_NAME";
 
 	/**
-	 * "Language" is a single, optional, string parameter that takes the
+	 * "org.cleartk.util.linereader.LineReader.PARAM_LANGUAGE"
+	 * is a single, optional, string parameter that takes the
 	 * language code corresponding to the language of the documents being
 	 * examined. The value of this parameter is simply passed on to
 	 * JCas.setDocumentLanguage(String).
@@ -104,7 +105,8 @@ public class LineReader extends CollectionReader_ImplBase {
 	public static final String PARAM_LANGUAGE = "org.cleartk.util.linereader.LineReader.PARAM_LANGUAGE";
 
 	/**
-	 * "Encoding" is a single, optional, string parameter that takes the
+	 * "org.cleartk.util.linereader.LineReader.PARAM_ENCODING"
+	 * is a single, optional, string parameter that takes the
 	 * encoding of the text files (e.g. "UTF-8").
 	 * 
 	 * @see Charset for a list of encoding names.
@@ -112,13 +114,15 @@ public class LineReader extends CollectionReader_ImplBase {
 	public static final String PARAM_ENCODING = "org.cleartk.util.linereader.LineReader.PARAM_ENCODING";
 
 	/**
-	 * "Suffixes" is a multiple, optional, string parameter that takes suffixes
+	 * "org.cleartk.util.linereader.LineReader.PARAM_SUFFIXES"
+	 * is a multiple, optional, string parameter that takes suffixes
 	 * (e.g. .txt) of the files that should be read in.
 	 */
 	public static final String PARAM_SUFFIXES = "org.cleartk.util.linereader.LineReader.PARAM_SUFFIXES";
 
 	/**
-	 * "LineHandler" is a single, optional, string parameter that specifies the
+	 * "org.cleartk.util.linereader.LineReader.PARAM_LINE_HANDLER"
+	 * is a single, optional, string parameter that specifies the
 	 * class name of the LineHandler. If one is not specified, then the
 	 * SimpleLineHandler will be used.
 	 * 
@@ -128,7 +132,8 @@ public class LineReader extends CollectionReader_ImplBase {
 	public static final String PARAM_LINE_HANDLER = "org.cleartk.util.linereader.LineReader.PARAM_LINE_HANDLER";
 
 	/**
-	 * "CommentSpecifier" is a multiple, optional, string parameter that
+	 * "org.cleartk.util.linereader.LineReader.PARAM_COMMENT_SPECIFIER"
+	 * is a multiple, optional, string parameter that
 	 * specifies lines that should be considered "comments" - i.e. lines that
 	 * should be skipped. Commented lines are those the start with one of the
 	 * values of this parameter.
@@ -136,7 +141,8 @@ public class LineReader extends CollectionReader_ImplBase {
 	public static final String PARAM_COMMENT_SPECIFIER = "org.cleartk.util.linereader.LineReader.PARAM_COMMENT_SPECIFIER";
 
 	/**
-	 * "SkipBlankLines" is a single, optional, boolean parameter that specifies
+	 * "org.cleartk.util.linereader.LineReader.PARAM_SKIP_BLANK_LINES"
+	 * is a single, optional, boolean parameter that specifies
 	 * whether blank lines should be skipped or not. The default value is true
 	 * if no value is given. If this parameter is set to false, then blank lines
 	 * that appear in the text files will be read in and given their own JCas.
