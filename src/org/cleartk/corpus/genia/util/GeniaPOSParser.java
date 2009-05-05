@@ -171,8 +171,8 @@ public class GeniaPOSParser implements Iterator<GeniaParse> {
 				}
 				else if (content instanceof Element) {
 					Element wordElement = (Element) content;
-					if (!wordElement.getName().equals("w")) System.out.println("non-word element in sentence: "
-							+ wordElement);
+					if (!wordElement.getName().equals("w")) 
+						throw new RuntimeException("non-word element in sentence: "	+ wordElement);
 					String wordText = wordElement.getText();
 					text.append(wordText);
 					String pos = wordElement.getAttributeValue("c");
@@ -191,9 +191,6 @@ public class GeniaPOSParser implements Iterator<GeniaParse> {
 						sentencePosTags.add(posTag);
 					}
 					offset += wordText.length();
-				}
-				else {
-					System.out.println("content = " + content.getClass().getCanonicalName());
 				}
 			}
 
