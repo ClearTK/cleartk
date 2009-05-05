@@ -176,19 +176,6 @@ public class Files {
 		return getFiles(file, createSuffixFilter(suffixes));
 	}
 
-	public static void main(String[] args) {
-		String directoryName = args[0];
-		String[] suffixes = new String[args.length-1];
-		System.arraycopy(args, 1, suffixes, 0, suffixes.length);
-		Iterable<File> files = getFiles(directoryName, suffixes);
-		int i=0;
-		for(File file : files) {
-			System.out.println(file.getPath());
-			i++;
-		}
-		System.out.println("files visited: "+i);
-		
-	}
 
 	/**
 	 * Makes the file name relative to the root directory by stripping the input
