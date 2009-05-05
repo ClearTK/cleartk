@@ -63,6 +63,7 @@ import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.CollectionReaderFactory;
 import org.uutuc.factory.SofaMappingFactory;
 import org.uutuc.factory.TokenFactory;
+import org.uutuc.util.HideOutput;
 import org.uutuc.util.JCasIterable;
 import org.uutuc.util.TearDownUtil;
 
@@ -122,7 +123,9 @@ public class DefaultPOSHandlerTest {
 		aggregateEngine.collectionProcessComplete();
 		
 		
+		HideOutput hider = new HideOutput();
 		Train.main(new String[] {outputDirectory.getPath(), "20", "5"});
+		hider.restoreOutput();
 		
 		AnalysisEngine tagger = AnalysisEngineFactory.createAnalysisEngine("org.cleartk.token.pos.impl.DefaultPOSAnnotator", 
 				SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR, new File(outputDirectory, BuildJar.MODEL_FILE_NAME).getPath());
@@ -134,9 +137,7 @@ public class DefaultPOSHandlerTest {
 		assertEquals("NN", AnnotationRetrieval.get(jCas, Token.class, 1).getPos());
 		assertEquals("NN", AnnotationRetrieval.get(jCas, Token.class, 2).getPos());
 		
-		for(Token token : AnnotationRetrieval.getAnnotations(jCas, Token.class)) {
-			System.out.println(token.getCoveredText()+": "+token.getPos());
-		}
+	
 	}
 	
 	@Test
