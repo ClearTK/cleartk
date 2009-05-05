@@ -49,8 +49,20 @@ import org.cleartk.util.UIMAUtil;
 
 public class DefaultMalletDataWriterFactory extends DataWriterFactory_ImplBase<List<NameNumber>, String, String> {
 
+	/**
+	 * "org.cleartk.classifier.mallet.DefaultMalletDataWriterFactory.PARAM_COMPRESS"
+	 * is a single, optional, boolean parameter, defaulting to false, that when true
+	 * indicates that the FeaturesEncoder should compress the feature names.
+	 * @see NameNumberFeaturesEncoder
+	 */
 	public static final String PARAM_COMPRESS = "org.cleartk.classifier.mallet.DefaultMalletDataWriterFactory.PARAM_COMPRESS";
 
+	/**
+	 * "org.cleartk.classifier.mallet.DefaultMalletDataWriterFactory.PARAM_SORT_NAME_LOOKUP"
+	 * is a single, optional, boolean parameter, defaulting to false, that when true
+	 * indicates that the FeaturesEncoder should write the feature names in sorted order.
+	 * @see NameNumberFeaturesEncoder
+	 */
 	public static final String PARAM_SORT_NAME_LOOKUP = "org.cleartk.classifier.mallet.DefaultMalletDataWriterFactory.PARAM_SORT_NAME_LOOKUP";
 
 	@Override

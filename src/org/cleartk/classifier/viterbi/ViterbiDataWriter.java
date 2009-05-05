@@ -56,8 +56,7 @@ public class ViterbiDataWriter<OUTCOME_TYPE> implements
 	public static final String DELEGATED_MODEL_DIRECTORY_NAME = "delegated-model";
 
 	/**
-	 * 
-	 * "org.cleartk.classifier.ViterbiDataWriter.PARAM_OUTCOME_FEATURE_EXTRACTOR"
+	 * "org.cleartk.classifier.viterbi.ViterbiDataWriter.PARAM_OUTCOME_FEATURE_EXTRACTOR"
 	 * is an optional, multi-valued, string parameter that specifies which
 	 * OutcomeFeatureExtractors should be used. Each value of this parameter
 	 * should be the name of a class that implements
@@ -66,6 +65,11 @@ public class ViterbiDataWriter<OUTCOME_TYPE> implements
 	 */
 	public static final String PARAM_OUTCOME_FEATURE_EXTRACTORS = "org.cleartk.classifier.viterbi.ViterbiDataWriter.PARAM_OUTCOME_FEATURE_EXTRACTORS";
 
+	/**
+	 * "org.cleartk.classifier.viterbi.ViterbiDataWriter.PARAM_DELEGATED_DATAWRITER_FACTORY_CLASS"
+	 * is a single, required, string parameter that provides the full name of
+	 * the DataWriterFactory class that will be wrapped.
+	 */
 	public static final String PARAM_DELEGATED_DATAWRITER_FACTORY_CLASS = "org.cleartk.classifier.viterbi.ViterbiDataWriter.PARAM_DELEGATED_DATAWRITER_FACTORY_CLASS";
 
 	public static final Attributes.Name DELEGATED_CLASSIFIER_BUILDER_ATTRIBUTE = new Attributes.Name(

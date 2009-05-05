@@ -47,14 +47,43 @@ public class DefaultOutcomeFeatureExtractor implements OutcomeFeatureExtractor{
 
 	private static final long serialVersionUID = 7476684786572310025L;
 
+	/**
+	 * "org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor.PARAM_MOST_RECENT_OUTCOME"
+	 * is a single, optional, integer parameter, defaulting to 1, that indicates the
+	 * position of the first outcome to include. For example, the default value of 1
+	 * means that if the outcomes produced so far by the classifier were [A, B, C, D],
+	 * then the first outcome to be used as a feature would be D.
+	 */
 	public static final String PARAM_MOST_RECENT_OUTCOME = "org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor.PARAM_MOST_RECENT_OUTCOME";
 	
+	/**
+	 * "org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor.PARAM_LEAST_RECENT_OUTCOME"
+	 * is a single, optional, integer parameter, defaulting to 3, that indicates the
+	 * position of the last outcome to include. For example, the default value of 3
+	 * means that if the outcomes produced so far by the classifier were [A, B, C, D],
+	 * then the last outcome to be used as a feature would be B.
+	 */
 	public static final String PARAM_LEAST_RECENT_OUTCOME = "org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor.PARAM_LEAST_RECENT_OUTCOME";
 	
+	/**
+	 * "org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor.PARAM_USE_BIGRAM"
+	 * is a single, optional, boolean parameter, defaulting to true, that when true
+	 * indicates that bigrams of outcomes should be included as features.
+	 */
 	public static final String PARAM_USE_BIGRAM = "org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor.PARAM_USE_BIGRAM";
 	
+	/**
+	 * "org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor.PARAM_USE_TRIGRAM"
+	 * is a single, optional, boolean parameter, defaulting to true, that when true
+	 * indicates that trigrams of outcomes should be included as features.
+	 */
 	public static final String PARAM_USE_TRIGRAM = "org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor.PARAM_USE_TRIGRAM";
 
+	/**
+	 * "org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor.PARAM_USE_4GRAM"
+	 * is a single, optional, boolean parameter, defaulting to true, that when true
+	 * indicates that 4-grams of outcomes should be included as features.
+	 */
 	public static final String PARAM_USE_4GRAM = "org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor.PARAM_USE_4GRAM";
 
 	private int mostRecentOutcome;

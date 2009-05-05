@@ -37,6 +37,12 @@ import org.cleartk.CleartkException;
  */
 public interface SequentialInstanceConsumer<OUTCOME_TYPE> {
 
+	/**
+	 * "org.cleartk.classifier.SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER"
+	 * is a single, required, string parameter that provides the full name of
+	 * the SequentialAnnotationHandler class that will be used with this
+	 * SequentialInstanceConsumer.
+	 */
 	public static final String PARAM_ANNOTATION_HANDLER = "org.cleartk.classifier.SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER";
 
 	/**
