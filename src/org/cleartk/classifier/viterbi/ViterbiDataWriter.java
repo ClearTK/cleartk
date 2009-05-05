@@ -26,6 +26,7 @@ package org.cleartk.classifier.viterbi;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.jar.Attributes;
@@ -145,5 +146,7 @@ public class ViterbiDataWriter<OUTCOME_TYPE> implements
 		return ReflectionUtil.uncheckedCast(ViterbiClassifierBuilder.class);
 	}
 
-
+	public Type getOutputLabelType() {
+		return ReflectionUtil.getTypeArgument(DataWriter.class, "OUTCOME_TYPE", delegatedDataWriter);
+	}
 }

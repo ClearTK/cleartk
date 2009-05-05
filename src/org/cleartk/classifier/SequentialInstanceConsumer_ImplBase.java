@@ -28,6 +28,7 @@ import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.apache.uima.util.Logger;
 import org.cleartk.CleartkException;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
@@ -44,12 +45,14 @@ import org.cleartk.util.UIMAUtil;
 public abstract class SequentialInstanceConsumer_ImplBase<OUTCOME_TYPE> extends JCasAnnotator_ImplBase implements
 		SequentialInstanceConsumer<OUTCOME_TYPE> {
 
+			protected Logger logger;
 	protected SequentialAnnotationHandler<OUTCOME_TYPE> annotationHandler;
 
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-		annotationHandler = ReflectionUtil.uncheckedCast(UIMAUtil.create(context, PARAM_ANNOTATION_HANDLER,
-				SequentialAnnotationHandler.class));
+		this.annotationHandler = ReflectionUtil.uncheckedCast(UIMAUtil.create(
+				context, PARAM_ANNOTATION_HANDLER, SequentialAnnotationHandler.class));
+		this.logger = context.getLogger();
 	}
 
 	@Override
@@ -61,6 +64,13 @@ public abstract class SequentialInstanceConsumer_ImplBase<OUTCOME_TYPE> extends 
 			throw new AnalysisEngineProcessException(ctke);
 		}
 
+	}
+
+	protected <T> void checkOutcomeType(Class<T> cls, String parameterName, T object)
+	throws ResourceInitializationException {
+		UIMAUtil.checkTypeParameterIsAssignable(
+				SequentialAnnotationHandler.class, "OUTCOME_TYPE", this.annotationHandler,
+				cls, parameterName, object, this.logger);
 	}
 
 }

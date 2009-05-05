@@ -47,7 +47,7 @@ public class ReflectionUtil {
 		return (T)o;
 	}
 	
-	public static Type getTypeArgument(Class<?> genericType, String typeParameterName, Object obj) {
+	public static <T> Type getTypeArgument(Class<T> genericType, String typeParameterName, T obj) {
 		Map<String,Type> typeArguments = getTypeArguments(genericType, obj);
 		return typeArguments == null ? null : typeArguments.get(typeParameterName);
 	}

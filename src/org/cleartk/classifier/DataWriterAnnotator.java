@@ -50,15 +50,19 @@ public class DataWriterAnnotator<OUTCOME_TYPE> extends InstanceConsumer_ImplBase
 		String outputDirectoryPath = (String) UIMAUtil.getRequiredConfigParameterValue(context, PARAM_OUTPUT_DIRECTORY);
 		File outputDirectory = new File(outputDirectoryPath);
 
-		// Instantiate the data writer
-		DataWriterFactory<OUTCOME_TYPE> dataWriterFactory = UIMAUtil.create(
+		// create the factory and instantiate the data writer
+		DataWriterFactory<?> factory = UIMAUtil.create(
 				context, PARAM_DATAWRITER_FACTORY_CLASS, DataWriterFactory.class);
+		DataWriter<?> untypedDataWriter;
 		try {
-			this.dataWriter = ReflectionUtil.uncheckedCast(
-					dataWriterFactory.createDataWriter(outputDirectory));
+			untypedDataWriter = factory.createDataWriter(outputDirectory);
 		} catch (IOException e) {
 			throw new ResourceInitializationException(e);
 		}
+		
+		// check the type of the DataWriter and assign the instance variable
+		this.checkOutcomeType(DataWriter.class, "OUTCOME_TYPE", untypedDataWriter);
+		this.dataWriter = ReflectionUtil.uncheckedCast(untypedDataWriter);
 		UIMAUtil.initialize(this.dataWriter, context);
 	}
 

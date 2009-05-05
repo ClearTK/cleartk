@@ -24,8 +24,6 @@
 package org.cleartk.classifier;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
-
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
@@ -75,24 +73,17 @@ public class ClassifierAnnotator<OUTCOME_TYPE> extends InstanceConsumer_ImplBase
 		// get the Classifier jar file path and load the Classifier
 		String jarPath = (String)UIMAUtil.getRequiredConfigParameterValue(
 				context, PARAM_CLASSIFIER_JAR);
+		Classifier<?> untypedClassifier;
 		try {
-			Classifier<?> untypedClassifier = ClassifierFactory.createClassifierFromJar(jarPath);
-			Type classifierLabelType = ReflectionUtil.getTypeArgument(
-					Classifier.class, "OUTCOME_TYPE", untypedClassifier);
-			Type annotationHandlerLabelType = ReflectionUtil.getTypeArgument(
-					AnnotationHandler.class, "OUTCOME_TYPE", annotationHandler);
-
-			if (!ReflectionUtil.isAssignableFrom(annotationHandlerLabelType, classifierLabelType)) {
-				throw new RuntimeException(String.format(
-						"%s classifier is incompatible with %s annotation handler",
-						classifierLabelType, annotationHandlerLabelType));
-			}
-			
-			this.classifier = ReflectionUtil.uncheckedCast(untypedClassifier);
-			UIMAUtil.initialize(this.classifier, context);
+			untypedClassifier = ClassifierFactory.createClassifierFromJar(jarPath);
 		} catch (IOException e) {
 			throw new ResourceInitializationException(e);
 		}
+		
+		// check that the Classifier matches the AnnotationHandler type
+		this.checkOutcomeType(Classifier.class, "OUTCOME_TYPE", untypedClassifier);
+		this.classifier = ReflectionUtil.uncheckedCast(untypedClassifier);
+		UIMAUtil.initialize(this.classifier, context);
 	}
 
 	public OUTCOME_TYPE consume(Instance<OUTCOME_TYPE> instance) throws CleartkException {

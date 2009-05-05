@@ -52,15 +52,19 @@ public class SequentialDataWriterAnnotator<OUTCOME_TYPE> extends SequentialInsta
 		String outputDirectoryPath = (String) UIMAUtil.getRequiredConfigParameterValue(context, PARAM_OUTPUT_DIRECTORY);
 		File outputDirectory = new File(outputDirectoryPath);
 
-		// Instantiate the sequential data writer
-		SequentialDataWriterFactory<OUTCOME_TYPE> sequentialDataWriterFactory = UIMAUtil.create(
+		// create the factory and instantiate the data writer
+		SequentialDataWriterFactory<?> factory = UIMAUtil.create(
 				context, PARAM_DATAWRITER_FACTORY_CLASS, SequentialDataWriterFactory.class);
+		SequentialDataWriter<?> untypedDataWriter;
 		try {
-			this.sequentialDataWriter = ReflectionUtil.uncheckedCast(
-					sequentialDataWriterFactory.createSequentialDataWriter(outputDirectory));
+			untypedDataWriter = factory.createSequentialDataWriter(outputDirectory);
 		} catch (IOException e) {
 			throw new ResourceInitializationException(e);
 		}
+		
+		// check the type of the DataWriter and assign the instance variable
+		this.checkOutcomeType(SequentialDataWriter.class, "OUTCOME_TYPE", untypedDataWriter);
+		this.sequentialDataWriter = ReflectionUtil.uncheckedCast(untypedDataWriter);
 		UIMAUtil.initialize(this.sequentialDataWriter, context);
 	}
 
