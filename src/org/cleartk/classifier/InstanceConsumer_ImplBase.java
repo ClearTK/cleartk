@@ -68,7 +68,7 @@ public abstract class InstanceConsumer_ImplBase<OUTCOME_TYPE> extends JCasAnnota
 	throws ResourceInitializationException {
 		UIMAUtil.checkTypeParameterIsAssignable(
 				AnnotationHandler.class, "OUTCOME_TYPE", this.annotationHandler,
-				cls, parameterName, object, this.logger);
+				cls, parameterName, object);
 	}
 
 }

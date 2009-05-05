@@ -29,6 +29,7 @@ import java.io.ObjectOutputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.jar.Attributes;
 
 import org.apache.uima.UimaContext;
@@ -45,9 +46,10 @@ import org.cleartk.classifier.SequentialDataWriter;
 import org.cleartk.classifier.feature.extractor.outcome.OutcomeFeatureExtractor;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
+import org.cleartk.util.ReflectionUtil.TypeArgumentDelegator;
 
 public class ViterbiDataWriter<OUTCOME_TYPE> implements
-		SequentialDataWriter<OUTCOME_TYPE>, Initializable {
+		SequentialDataWriter<OUTCOME_TYPE>, Initializable, TypeArgumentDelegator {
 
 	public static final String OUTCOME_FEATURE_EXTRACTOR_FILE_NAME = "outcome-features-extractors.ser";
 
@@ -146,7 +148,10 @@ public class ViterbiDataWriter<OUTCOME_TYPE> implements
 		return ReflectionUtil.uncheckedCast(ViterbiClassifierBuilder.class);
 	}
 
-	public Type getOutputLabelType() {
-		return ReflectionUtil.getTypeArgument(DataWriter.class, "OUTCOME_TYPE", delegatedDataWriter);
+	public Map<String, Type> getTypeArguments(Class<?> genericType) {
+		if (genericType.equals(SequentialDataWriter.class)) {
+			genericType = DataWriter.class;
+		}
+		return ReflectionUtil.getTypeArguments(genericType, this.delegatedDataWriter);
 	}
 }

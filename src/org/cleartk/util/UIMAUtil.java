@@ -40,11 +40,7 @@ import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.cas.StringArray;
 import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.apache.uima.util.Level;
-import org.apache.uima.util.Logger;
 import org.cleartk.Initializable;
-import org.cleartk.classifier.viterbi.ViterbiClassifier;
-import org.cleartk.classifier.viterbi.ViterbiDataWriter;
 
 /**
  * <br>
@@ -281,39 +277,42 @@ public class UIMAUtil {
 		}
 	}
 
+	/**
+	 * Checks that the given type parameters of the given objects are compatible.
+	 * 
+	 * Type parameters are identified by providing the class in which the type
+	 * parameter is defined, and the declared name of the type parameter.
+	 * 
+	 * Throws a ResourceInitializationException if the type parameters are not
+	 * compatible.
+	 * 
+	 * @param <T> Type of the class declaring the first type parameter
+	 * @param <U> Type of the class declaring the second type parameter
+	 * @param paramDefiningClass1 The class declaring the first type parameter
+	 * @param paramName1          The declared name of the first type parameter
+	 * @param object1             The target object
+	 * @param paramDefiningClass2 The class declaring the second type parameter
+	 * @param paramName2          The declared name of the second type parameter
+	 * @param object2             The source object
+	 * @throws ResourceInitializationException 
+	 */
 	public static <T, U> void checkTypeParameterIsAssignable(
-			Class<T> cls1, String parameterName1, T object1,
-			Class<U> cls2, String parameterName2, U object2,
-			Logger logger) throws ResourceInitializationException {
+			Class<T> paramDefiningClass1, String paramName1, T object1,
+			Class<U> paramDefiningClass2, String paramName2, U object2)
+	throws ResourceInitializationException {
 		
 		// get the type arguments from the objects
-		java.lang.reflect.Type type1, type2;
-		type1 = ReflectionUtil.getTypeArgument(cls1, parameterName1, object1);
-		type2 = ReflectionUtil.getTypeArgument(cls2, parameterName2, object2);
-		
-		// Here we have singled out ViterbiClassifier and ViterbiDataWriter
-		// because they can only determine their output types by checking the
-		// object that they delegate to. If we find more cases where this is
-		// the case, we may want a more general solution to this problem.
-		if (type2 instanceof ViterbiClassifier) {
-			type2 = ((ViterbiClassifier<?>)object2).getOutputLabelType();
-		} else if (type2 instanceof ViterbiDataWriter) {
-			type2 = ((ViterbiDataWriter<?>)object2).getOutputLabelType();
-		}
-		
-		// if either type is null, log a warning
-		if (type1 == null || type2 == null) {
-			logger.log(Level.WARNING, String.format(
-					"unable to verify that %s is compatible with %s",
-					cls1.getSimpleName(), cls2.getSimpleName()));
-		}
+		java.lang.reflect.Type type1 = ReflectionUtil.getTypeArgument(
+				paramDefiningClass1, paramName1, object1);
+		java.lang.reflect.Type type2 = ReflectionUtil.getTypeArgument(
+				paramDefiningClass2, paramName2, object2);
 		
 		// if the second type is not assignable to the first, raise an exception
-		else if (!ReflectionUtil.isAssignableFrom(type1, type2)) {
+		if (type1 == null || type2 == null || !ReflectionUtil.isAssignableFrom(type1, type2)) {
 			throw new ResourceInitializationException(new RuntimeException(String.format(
 					"%s with %s %s is incompatible with %s with %s %s",
-					cls1.getSimpleName(), parameterName1, type1,
-					cls2.getSimpleName(), parameterName2, type2)));
+					object1.getClass().getSimpleName(), paramName1, type1,
+					object2.getClass().getSimpleName(), paramName2, type2)));
 		}
 	}
 

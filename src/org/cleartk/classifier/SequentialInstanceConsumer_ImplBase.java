@@ -70,7 +70,7 @@ public abstract class SequentialInstanceConsumer_ImplBase<OUTCOME_TYPE> extends 
 	throws ResourceInitializationException {
 		UIMAUtil.checkTypeParameterIsAssignable(
 				SequentialAnnotationHandler.class, "OUTCOME_TYPE", this.annotationHandler,
-				cls, parameterName, object, this.logger);
+				cls, parameterName, object);
 	}
 
 }

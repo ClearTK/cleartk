@@ -33,6 +33,7 @@ import org.cleartk.Initializable;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
+import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
 
 public abstract class DataWriterFactory_ImplBase<FEATURES_OUT_TYPE, OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE> implements DataWriterFactory<OUTCOME_IN_TYPE>, Initializable {
@@ -55,9 +56,26 @@ public abstract class DataWriterFactory_ImplBase<FEATURES_OUT_TYPE, OUTCOME_IN_T
 				}
 				
 				ObjectInputStream is = new ObjectInputStream(new FileInputStream(encoderFile));
-				this.featuresEncoder = (FeaturesEncoder<FEATURES_OUT_TYPE>) is.readObject();
+				
+				// read the FeaturesEncoder and check the types
+				FeaturesEncoder<?> untypedFeaturesEncoder = FeaturesEncoder.class.cast(is.readObject());
+				UIMAUtil.checkTypeParameterIsAssignable(
+						FeaturesEncoder.class, "FEATURES_OUT_TYPE", untypedFeaturesEncoder,
+						DataWriterFactory_ImplBase.class, "FEATURES_OUT_TYPE", this);
+				
+				// read the OutcomeEncoder and check the types
+				OutcomeEncoder<?, ?> untypedOutcomeEncoder = OutcomeEncoder.class.cast(is.readObject());
+				UIMAUtil.checkTypeParameterIsAssignable(
+						OutcomeEncoder.class, "OUTCOME_IN_TYPE", untypedOutcomeEncoder,
+						DataWriterFactory_ImplBase.class, "OUTCOME_IN_TYPE", this);
+				UIMAUtil.checkTypeParameterIsAssignable(
+						OutcomeEncoder.class, "OUTCOME_OUT_TYPE", untypedOutcomeEncoder,
+						DataWriterFactory_ImplBase.class, "OUTCOME_OUT_TYPE", this);
+				
+				// assign the encoders to the instance variables
+				this.featuresEncoder = ReflectionUtil.uncheckedCast(untypedFeaturesEncoder);
 				this.featuresEncoder.allowNewFeatures(false);
-				this.outcomeEncoder = (OutcomeEncoder<OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE>) is.readObject();
+				this.outcomeEncoder = ReflectionUtil.uncheckedCast(untypedOutcomeEncoder);
 				is.close();
 			} catch (Exception e) {
 				throw new ResourceInitializationException(e);

@@ -27,17 +27,20 @@ package org.cleartk.classifier;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.jar.JarFile;
 
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
+import org.cleartk.util.ReflectionUtil.TypeArgumentDelegator;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -122,19 +125,10 @@ public class ClassifierAnnotatorTest {
 		BuildJar.main(new String[] { outputDirectory });
 
 		ClassifierAnnotator<String> classifierAnnotator = new ClassifierAnnotator<String>();
-
-		ResourceInitializationException rie = null;
-
-		try {
-			classifierAnnotator.initialize(UimaContextFactory.createUimaContext(
-					ClassifierAnnotator.PARAM_CLASSIFIER_JAR, new File(outputDirectory, "model.jar").getPath(),
-					ClassifierAnnotator.PARAM_ANNOTATION_HANDLER, Test1Handler.class.getName()));
-			classifierAnnotator.consume(InstanceFactory.createInstance("hello", 1, 1));
-		}
-		catch (ResourceInitializationException e) {
-			rie = e;
-		}
-		assertNull(rie);
+		classifierAnnotator.initialize(UimaContextFactory.createUimaContext(
+				ClassifierAnnotator.PARAM_CLASSIFIER_JAR, new File(outputDirectory, "model.jar").getPath(),
+				ClassifierAnnotator.PARAM_ANNOTATION_HANDLER, Test1Handler.class.getName()));
+		classifierAnnotator.consume(InstanceFactory.createInstance("hello", 1, 1));
 	}
 
 	public static class Test1Classifier implements Classifier<String> {
@@ -247,18 +241,9 @@ public class ClassifierAnnotatorTest {
 		BuildJar.main(new String[] { outputDirectory });
 
 		ClassifierAnnotator<String> classifierAnnotator = new ClassifierAnnotator<String>();
-
-		ResourceInitializationException rie = null;
-
-		try {
-			classifierAnnotator.initialize(UimaContextFactory.createUimaContext(
-					ClassifierAnnotator.PARAM_CLASSIFIER_JAR, new File(outputDirectory, "model.jar").getPath(),
-					ClassifierAnnotator.PARAM_ANNOTATION_HANDLER, Test3Handler.class.getName()));
-		}
-		catch (ResourceInitializationException e) {
-			rie = e;
-		}
-		assertNull(rie);
+		classifierAnnotator.initialize(UimaContextFactory.createUimaContext(
+				ClassifierAnnotator.PARAM_CLASSIFIER_JAR, new File(outputDirectory, "model.jar").getPath(),
+				ClassifierAnnotator.PARAM_ANNOTATION_HANDLER, Test3Handler.class.getName()));
 	}
 
 	public class A {
@@ -376,21 +361,12 @@ public class ClassifierAnnotatorTest {
 		BuildJar.main(new String[] { outputDirectory });
 
 		ClassifierAnnotator<String> classifierAnnotator = new ClassifierAnnotator<String>();
-
-		ResourceInitializationException rie = null;
-
-		try {
-			classifierAnnotator.initialize(UimaContextFactory.createUimaContext(
-					ClassifierAnnotator.PARAM_CLASSIFIER_JAR, new File(outputDirectory, "model.jar").getPath(),
-					ClassifierAnnotator.PARAM_ANNOTATION_HANDLER, Test5Handler.class.getName()));
-		}
-		catch (ResourceInitializationException e) {
-			rie = e;
-		}
-		assertNull(rie);
+		classifierAnnotator.initialize(UimaContextFactory.createUimaContext(
+				ClassifierAnnotator.PARAM_CLASSIFIER_JAR, new File(outputDirectory, "model.jar").getPath(),
+				ClassifierAnnotator.PARAM_ANNOTATION_HANDLER, Test5Handler.class.getName()));
 	}
 
-	public static class Test5Classifier<OUTCOME_TYPE> implements Classifier<OUTCOME_TYPE> {
+	public static class Test5Classifier<OUTCOME_TYPE> implements Classifier<OUTCOME_TYPE>, TypeArgumentDelegator {
 
 		public Test5Classifier(JarFile modelFile) throws IOException {
 		}
@@ -402,12 +378,24 @@ public class ClassifierAnnotatorTest {
 		public List<ScoredOutcome<OUTCOME_TYPE>> score(List<Feature> features, int maxResults) throws CleartkException {
 			return null;
 		}
+
+		public Map<String, Type> getTypeArguments(Class<?> genericType) {
+			Map<String, Type> map = new HashMap<String, Type>();
+			map.put("OUTCOME_TYPE", Object.class);
+			return map;
+		}
 	}
 
-	public static class Test5Handler<T> implements AnnotationHandler<T> {
+	public static class Test5Handler<T> implements AnnotationHandler<T>, TypeArgumentDelegator {
 
 		public void process(JCas cas, InstanceConsumer<T> consumer) throws AnalysisEngineProcessException,
 				CleartkException {
+		}
+
+		public Map<String, Type> getTypeArguments(Class<?> genericType) {
+			Map<String, Type> map = new HashMap<String, Type>();
+			map.put("OUTCOME_TYPE", Object.class);
+			return map;
 		}
 
 	}
@@ -425,7 +413,6 @@ public class ClassifierAnnotatorTest {
 
 		public void train(File dir, String[] args) throws Exception {
 		}
-
 	}
 
 }

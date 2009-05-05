@@ -50,6 +50,7 @@ import org.cleartk.classifier.feature.extractor.outcome.OutcomeFeatureExtractor;
 import org.cleartk.classifier.opennlp.MaxentClassifier;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
+import org.cleartk.util.ReflectionUtil.TypeArgumentDelegator;
 
 /**
  * <br>
@@ -58,7 +59,7 @@ import org.cleartk.util.UIMAUtil;
  */
 
 public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUTCOME_TYPE>,
-		Initializable {
+		Initializable, TypeArgumentDelegator {
 
 	/**
 	 * "org.cleartk.classifier.ViterbiClassifier.PARAM_STACK_SIZE" is an optional, single,
@@ -119,9 +120,6 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
 		// you generally do not want call this constructor.
 	}
 	
-	public Type getOutputLabelType() {
-		return ReflectionUtil.getTypeArgument(Classifier.class, "OUTCOME_TYPE", delegatedClassifier);
-	}
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		viterbiStackSize = (Integer) UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_STACK_SIZE, 1);
 		if (viterbiStackSize < 1) {
@@ -283,6 +281,13 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
 			throws CleartkException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public Map<String, Type> getTypeArguments(Class<?> genericType) {
+		if (genericType.equals(SequentialClassifier.class)) {
+			genericType = Classifier.class;
+		}
+		return ReflectionUtil.getTypeArguments(genericType, this.delegatedClassifier);
 	}
 
 }

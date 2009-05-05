@@ -47,6 +47,10 @@ public class ReflectionUtil {
 		return (T)o;
 	}
 	
+	public static interface TypeArgumentDelegator {
+		public Map<String,Type> getTypeArguments(Class<?> genericType);
+	}
+	
 	public static <T> Type getTypeArgument(Class<T> genericType, String typeParameterName, T obj) {
 		Map<String,Type> typeArguments = getTypeArguments(genericType, obj);
 		return typeArguments == null ? null : typeArguments.get(typeParameterName);
@@ -62,6 +66,9 @@ public class ReflectionUtil {
 	 * 						the type they are instantiated as in obj
 	 */
 	public static Map<String,Type> getTypeArguments(Class<?> genericType, Object obj) {
+		if (obj instanceof TypeArgumentDelegator) {
+			return ((TypeArgumentDelegator)obj).getTypeArguments(genericType);
+		}
 		Map<String,Type> typeMap = new TreeMap<String,Type>();
 		return getTypeArguments(genericType, obj.getClass(), typeMap);
 	}
@@ -131,4 +138,5 @@ public class ReflectionUtil {
 	private static String typevarString(TypeVariable<?> tv) {
 		return tv.getGenericDeclaration().toString() + " " + tv.getName();
 	}
+
 }

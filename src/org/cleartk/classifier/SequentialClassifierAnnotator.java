@@ -24,14 +24,12 @@
 package org.cleartk.classifier;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.viterbi.ViterbiClassifier;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
 
@@ -75,40 +73,20 @@ public class SequentialClassifierAnnotator<OUTCOME_TYPE> extends SequentialInsta
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
-		// get the Classifier jar file path and load the Classifier
-		String jarPath = (String) UIMAUtil.getRequiredConfigParameterValue(context, PARAM_CLASSIFIER_JAR);
+		// get the SequentialClassifier jar file path and load the SequentialClassifier
+		String jarPath = (String)UIMAUtil.getRequiredConfigParameterValue(
+				context, PARAM_CLASSIFIER_JAR);
+		SequentialClassifier<?> untypedClassifier;
 		try {
-			SequentialClassifier<?> untypedClassifier = ClassifierFactory.createSequentialClassifierFromJar(jarPath);
-			Type classifierLabelType = ReflectionUtil.getTypeArgument(SequentialClassifier.class, "OUTCOME_TYPE",
-					untypedClassifier);
-			Type annotationHandlerLabelType = ReflectionUtil.getTypeArgument(SequentialAnnotationHandler.class,
-					"OUTCOME_TYPE", annotationHandler);
-
-			/*
-			 * Here we have singled out ViterbiClassifier because it is the only
-			 * classifier thus far that we do not have the output type at
-			 * runtime and can only get it from the delegated classifier. If we
-			 * discover that ViterbiClassifier is not exceptional in this
-			 * respect, then we will consider providing a more generic mechanism
-			 * for the classifier to provide its output label. We (Philip and
-			 * Steve) decided that it was unclear what such a generic mechanism
-			 * should be with this single use case.
-			 */
-			if (untypedClassifier instanceof ViterbiClassifier) {
-				classifierLabelType = ((ViterbiClassifier<?>) untypedClassifier).getOutputLabelType();
-			}
-			else if (!ReflectionUtil.isAssignableFrom(annotationHandlerLabelType, classifierLabelType)) {
-				throw new ResourceInitializationException(new Exception(String.format(
-						"%s classifier is incompatible with %s annotation handler", classifierLabelType,
-						annotationHandlerLabelType)));
-			}
-
-			this.classifier = ReflectionUtil.uncheckedCast(untypedClassifier);
-			UIMAUtil.initialize(this.classifier, context);
-		}
-		catch (IOException e) {
+			untypedClassifier = ClassifierFactory.createSequentialClassifierFromJar(jarPath);
+		} catch (IOException e) {
 			throw new ResourceInitializationException(e);
 		}
+		
+		// check that the SequentialClassifier matches the AnnotationHandler type
+		this.checkOutcomeType(SequentialClassifier.class, "OUTCOME_TYPE", untypedClassifier);
+		this.classifier = ReflectionUtil.uncheckedCast(untypedClassifier);
+		UIMAUtil.initialize(this.classifier, context);
 	}
 
 	public List<OUTCOME_TYPE> consumeSequence(List<Instance<OUTCOME_TYPE>> instances) throws CleartkException {

@@ -61,11 +61,11 @@ public class SequentialDataWriterAnnotator<OUTCOME_TYPE> extends SequentialInsta
 		} catch (IOException e) {
 			throw new ResourceInitializationException(e);
 		}
+		UIMAUtil.initialize(untypedDataWriter, context);
 		
 		// check the type of the DataWriter and assign the instance variable
 		this.checkOutcomeType(SequentialDataWriter.class, "OUTCOME_TYPE", untypedDataWriter);
 		this.sequentialDataWriter = ReflectionUtil.uncheckedCast(untypedDataWriter);
-		UIMAUtil.initialize(this.sequentialDataWriter, context);
 	}
 
 	

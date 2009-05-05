@@ -59,11 +59,11 @@ public class DataWriterAnnotator<OUTCOME_TYPE> extends InstanceConsumer_ImplBase
 		} catch (IOException e) {
 			throw new ResourceInitializationException(e);
 		}
+		UIMAUtil.initialize(untypedDataWriter, context);
 		
 		// check the type of the DataWriter and assign the instance variable
 		this.checkOutcomeType(DataWriter.class, "OUTCOME_TYPE", untypedDataWriter);
 		this.dataWriter = ReflectionUtil.uncheckedCast(untypedDataWriter);
-		UIMAUtil.initialize(this.dataWriter, context);
 	}
 
 	
