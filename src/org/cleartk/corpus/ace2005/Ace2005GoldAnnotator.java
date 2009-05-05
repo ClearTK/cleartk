@@ -136,15 +136,16 @@ public class Ace2005GoldAnnotator extends JCasAnnotator_ImplBase
 					givenText = givenText.replaceAll("\\s+", " ");
 					parsedText = givenText.replaceAll("\\s+", " ");
 
-					if(!givenText.equals(parsedText))
-					{
-						System.out.println("given text and parsed text differ.");
-						System.out.println(givenText);
-						System.out.println(parsedText);
-						System.out.println(apfDocument.getAttributeValue("DOCID"));
-						System.out.println(apfEntity.getAttributeValue("ID"));
-						System.out.println(documentText);
-					}
+//					if(!givenText.equals(parsedText))
+//					{
+//						
+//						System.out.println("given text and parsed text differ.");
+//						System.out.println(givenText);
+//						System.out.println(parsedText);
+//						System.out.println(apfDocument.getAttributeValue("DOCID"));
+//						System.out.println(apfEntity.getAttributeValue("ID"));
+//						System.out.println(documentText);
+//					}
 				}
 				namedEntity.setMentions(UIMAUtil.toFSArray(jCas, mentions));
 			}
