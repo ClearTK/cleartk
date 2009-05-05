@@ -44,7 +44,7 @@ POSSIBILITY OF SUCH DAMAGE.
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
         <overrides>
-          <parameter>SentenceSegmenter/org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter.SENTENCE_MODEL_FILE_PARAM</parameter>
+          <parameter>SentenceSegmenter/org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter.PARAM_SENTENCE_MODEL_FILE</parameter>
         </overrides>
       </configurationParameter>
       <configurationParameter>

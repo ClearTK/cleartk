@@ -61,14 +61,17 @@ import org.cleartk.type.Sentence;
 
 public class OpenNLPSentenceSegmenter extends JCasAnnotator_ImplBase
 { 
-	public static final String SENTENCE_MODEL_FILE_PARAM = "org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter.SENTENCE_MODEL_FILE_PARAM";
-	SentenceDetector sentenceDetector;
-	
-//	public static final String newlineRegex = "(?:\\n|\\r\\n|\\r|\\u0085|\\u2028|\\u2029)";
-//	public static final String multipleNewlinesRegex = "\\s*?"+newlineRegex+"(?:\\s*?"+newlineRegex+")+\\s*";
-//	public static final String multipleNewlinesRegex = "\\s*?(?:\\n|\\r\\n)(?:\\s*?(?:\\n|\\r\\n))+\\s*";
-//	public static final String multipleNewlinesRegex = "[^\\S\\n]*\\n(?:[^\\S\\n]*\\n)+\\s*";
+	/**
+	 * "org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter.PARAM_SENTENCE_MODEL_FILE"
+	 * is a single, required, string parameter that provides the path of the
+	 * OpenNLP sentence segmenter model file, e.g.
+	 *   resources/models/OpenNLP.Sentence.English.bin.gz
+	 * @see opennlp.maxent.io.SuffixSensitiveGISModelReader
+	 */
+	public static final String PARAM_SENTENCE_MODEL_FILE = "org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter.PARAM_SENTENCE_MODEL_FILE";
 	public static final String multipleNewlinesRegex = "\\s*\\n\\s*\\n\\s*";
+
+	SentenceDetector sentenceDetector;
 	Pattern multipleNewlinesPattern;
 	Pattern leadingWhitespacePattern;
 	Pattern trailingWhitespacePattern;
@@ -77,7 +80,7 @@ public class OpenNLPSentenceSegmenter extends JCasAnnotator_ImplBase
 	{
 		super.initialize(uimaContext);
 		try {
-			String sentenceModelFile = (String) uimaContext.getConfigParameterValue(SENTENCE_MODEL_FILE_PARAM);
+			String sentenceModelFile = (String) uimaContext.getConfigParameterValue(PARAM_SENTENCE_MODEL_FILE);
 			MaxentModel model = new SuffixSensitiveGISModelReader(new File(sentenceModelFile)).getModel();
 			sentenceDetector = new SentenceDetectorME(model);
 			multipleNewlinesPattern = Pattern.compile(multipleNewlinesRegex, Pattern.MULTILINE | Pattern.DOTALL);

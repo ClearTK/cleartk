@@ -51,7 +51,7 @@ public class SentenceSegmentorTests{
 		AnalysisEngine segmenter = AnalysisEngineFactory.createAnalysisEngine(
 				OpenNLPSentenceSegmenter.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription(Sentence.class),
-				OpenNLPSentenceSegmenter.SENTENCE_MODEL_FILE_PARAM,
+				OpenNLPSentenceSegmenter.PARAM_SENTENCE_MODEL_FILE,
 				"resources/models/OpenNLP.Sentence.English.bin.gz");
 
 		// fill the JCas with newlines to provoke a StackOverflowError

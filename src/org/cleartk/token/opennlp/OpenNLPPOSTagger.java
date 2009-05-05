@@ -43,6 +43,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
+import org.cleartk.util.UIMAUtil;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -54,9 +55,31 @@ import org.cleartk.type.Token;
  */
 public class OpenNLPPOSTagger extends JCasAnnotator_ImplBase
 {
+	/**
+	 * "org.cleartk.token.opennlp.OpenNLPPOSTagger.PARAM_POSTAG_MODEL_FILE"
+	 * is a single, required, string parameter that provides the path of the
+	 * OpenNLP part-of-speech tagger model file, e.g.
+	 *   resources/models/OpenNLP.POSTags.English.bin.gz
+	 * @see opennlp.maxent.io.SuffixSensitiveGISModelReader
+	 */
 	public static final String PARAM_POSTAG_MODEL_FILE = "org.cleartk.token.opennlp.OpenNLPPOSTagger.PARAM_POSTAG_MODEL_FILE";
-	public static final String PARAM_CASE_SENSITIVE = "org.cleartk.token.opennlp.OpenNLPPOSTagger.PARAM_CASE_SENSITIVE";
+
+	/**
+	 * "org.cleartk.token.opennlp.OpenNLPPOSTagger.PARAM_POSTAG_DICTIONARY_FILE"
+	 * is a single, required, string parameter that provides the path of the
+	 * OpenNLP part-of-speech tagger dictionary file, e.g.
+	 *   resources/models/OpenNLP.TagDict.txt
+	 * @see opennlp.tools.postag.POSDictionary
+	 */
 	public static final String PARAM_POSTAG_DICTIONARY_FILE = "org.cleartk.token.opennlp.OpenNLPPOSTagger.PARAM_POSTAG_DICTIONARY_FILE";
+
+	/**
+	 * "org.cleartk.token.opennlp.OpenNLPPOSTagger.PARAM_CASE_SENSITIVE"
+	 * is a single, optional, boolean parameter, defaulting to true, that when false
+	 * indicates that the (@link POSDictionary} should ignore case.
+	 * @see opennlp.tools.postag.POSDictionary
+	 */
+	public static final String PARAM_CASE_SENSITIVE = "org.cleartk.token.opennlp.OpenNLPPOSTagger.PARAM_CASE_SENSITIVE";
 
 	protected POSTagger posTagger;
 	protected long processTime = 0;
@@ -68,14 +91,15 @@ public class OpenNLPPOSTagger extends JCasAnnotator_ImplBase
 	
 		try
 		{
-			String postagModelFile = (String) uimaContext.getConfigParameterValue(PARAM_POSTAG_MODEL_FILE);
+			String postagModelFile = (String)UIMAUtil.getRequiredConfigParameterValue(
+					uimaContext, PARAM_POSTAG_MODEL_FILE);
+			String postagDictionaryFile = (String)UIMAUtil.getRequiredConfigParameterValue(
+					uimaContext, PARAM_POSTAG_DICTIONARY_FILE);
+			boolean caseSensitive = (Boolean)UIMAUtil.getDefaultingConfigParameterValue(
+					uimaContext, PARAM_CASE_SENSITIVE, true);
+
 			MaxentModel model = new SuffixSensitiveGISModelReader(new File(postagModelFile)).getModel();
- 
-			String postagDictionaryFile = (String) uimaContext.getConfigParameterValue(PARAM_POSTAG_DICTIONARY_FILE);
-			boolean caseSensitive = (Boolean) uimaContext.getConfigParameterValue(PARAM_CASE_SENSITIVE);
-
 			POSDictionary posDictionary = new POSDictionary(postagDictionaryFile, caseSensitive);
-
 			posTagger = new POSTaggerME(model, new DefaultPOSContextGenerator(null), posDictionary);
 		}
 		catch(IOException ioe)

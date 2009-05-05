@@ -63,11 +63,58 @@ import org.cleartk.util.UIMAUtil;
 
 public class OpenNLPTreebankParser extends JCasAnnotator_ImplBase {
 	
+	/**
+	 * "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_BUILD_MODEL_FILE"
+	 * is a single, required, string parameter that provides the path of the
+	 * OpenNLP parser model build file, e.g.
+	 *   resources/models/OpenNLP.Parser.English.Build.bin.gz
+	 * @see opennlp.tools.parser.chunking.Parser
+	 */
 	public static final String PARAM_BUILD_MODEL_FILE = "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_BUILD_MODEL_FILE";
+
+	/**
+	 * "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_CHECK_MODEL_FILE"
+	 * is a single, required, string parameter that provides the path of the
+	 * OpenNLP parser model check file, e.g.
+	 *   resources/models/OpenNLP.Parser.English.Check.bin.gz
+	 * @see opennlp.tools.parser.chunking.Parser
+	 */
 	public static final String PARAM_CHECK_MODEL_FILE = "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_CHECK_MODEL_FILE";
+
+	/**
+	 * "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_CHUNK_MODEL_FILE"
+	 * is a single, required, string parameter that provides the path of the
+	 * OpenNLP chunker model file, e.g.
+	 *   resources/models/OpenNLP.Chunker.English.bin.gz
+	 * @see opennlp.tools.lang.english.ParserChunker
+	 */
 	public static final String PARAM_CHUNK_MODEL_FILE = "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_CHUNK_MODEL_FILE";
+
+	/**
+	 * "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_HEAD_RULES_FILE"
+	 * is a single, required, string parameter that provides the path of the
+	 * OpenNLP head rules file, e.g.
+	 *   resources/models/OpenNLP.HeadRules.txt
+	 * @see opennlp.tools.lang.english.HeadRules
+	 */
 	public static final String PARAM_HEAD_RULES_FILE = "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_HEAD_RULES_FILE";
+
+	/**
+	 * "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_BEAM_SIZE"
+	 * is a single, optional, integer parameter, defaulting to
+	 * {@link Parser.defaultBeamSize}, that indicates the beam size that
+	 * should be used in the parser's search.
+	 * @see opennlp.tools.parser.chunking.Parser
+	 */
 	public static final String PARAM_BEAM_SIZE = "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_BEAM_SIZE";
+
+	/**
+	 * "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_ADVANCE_PERCENTAGE""
+	 * is a single, optional, double parameter, defaulting to
+	 * {@link Parser.defaultAdvancePercentage}, that indicates "the amount of
+	 * probability mass required of advanced outcomes"
+	 * @see opennlp.tools.parser.chunking.Parser
+	 */
 	public static final String PARAM_ADVANCE_PERCENTAGE = "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_ADVANCE_PERCENTAGE";
 
 	protected Parser parser;
@@ -180,19 +227,10 @@ public class OpenNLPTreebankParser extends JCasAnnotator_ImplBase {
 				ctx, OpenNLPTreebankParser.PARAM_CHUNK_MODEL_FILE);
 		String headRulesFile = (String)UIMAUtil.getRequiredConfigParameterValue(
 				ctx, OpenNLPTreebankParser.PARAM_HEAD_RULES_FILE);
-		
-		Integer beamSize = (Integer)ctx.getConfigParameterValue(
-				OpenNLPTreebankParser.PARAM_BEAM_SIZE);
-		if (beamSize == null) {
-			beamSize = new Integer(Parser.defaultBeamSize);
-		}
-		
-		Double advancePercentage = (Double)ctx.getConfigParameterValue(
-				OpenNLPTreebankParser.PARAM_ADVANCE_PERCENTAGE);
-		if (advancePercentage == null) {
-			advancePercentage = new Double(Parser.defaultAdvancePercentage);
-		}
-		
+		int beamSize = (Integer)UIMAUtil.getDefaultingConfigParameterValue(
+				ctx, OpenNLPTreebankParser.PARAM_BEAM_SIZE, Parser.defaultBeamSize);
+		double advancePercentage = (Double)UIMAUtil.getDefaultingConfigParameterValue(
+				ctx, OpenNLPTreebankParser.PARAM_ADVANCE_PERCENTAGE, Parser.defaultAdvancePercentage);
 		
 		try {
 			MaxentModel buildModel = new SuffixSensitiveGISModelReader(new File(buildModelFile)).getModel();
@@ -205,7 +243,7 @@ public class OpenNLPTreebankParser extends JCasAnnotator_ImplBase {
 			HeadRules hrules = new HeadRules(headRulesFile);
 			
 			this.parser = new Parser(buildModel, checkModel, tagger, chunker, hrules,
-				        	beamSize.intValue(), advancePercentage.doubleValue());
+				        	beamSize, advancePercentage);
 		} catch (IOException e) {
 			throw new ResourceInitializationException(e);
 		}
