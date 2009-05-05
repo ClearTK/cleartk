@@ -35,6 +35,7 @@ import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
+import org.cleartk.Initializable;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.SequentialAnnotationHandler;
@@ -51,7 +52,7 @@ import org.cleartk.util.UIMAUtil;
  */
 
 public abstract class POSHandler<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation> implements
-		SequentialAnnotationHandler<String> {
+		SequentialAnnotationHandler<String>, Initializable {
 
 	public static final String PARAM_FEATURE_EXTRACTOR_CLASS = "org.cleartk.token.pos.POSHandler.PARAM_FEATURE_EXTRACTOR_CLASS";
 
