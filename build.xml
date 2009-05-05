@@ -153,18 +153,9 @@
 		<echo message="===================" />
 		<echo message="Training SRL models" />
 		<echo message="===================" />
-		<java fork="true" classname="org.apache.uima.examples.cpe.SimpleRunCPE" 
-				classpathref="cpe.classpath" maxmemory="${max-memory}">
-			<arg value="test/data/srl/desc/PredicateArgumentDataWriterCPE.xml"/>
-		</java>
-		<java fork="true" classname="org.cleartk.classifier.Train" 
-				classpathref="run.classpath" maxmemory="${max-memory}">
-			<arg line="test/data/srl/predicate" />
-		</java>
-		<java fork="true" classname="org.cleartk.classifier.Train" 
-				classpathref="run.classpath" maxmemory="${max-memory}">
-			<arg line="test/data/srl/argument" />
-		</java>
+		<java fork="true" 
+				classname="org.cleartk.srl.BuildTestSRLModel"
+				classpathref="test-run.classpath" maxmemory="1024m"/>
 	</target>
 	
 	<target name="build-test-temporal-model">
