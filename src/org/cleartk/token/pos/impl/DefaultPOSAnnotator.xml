@@ -2,7 +2,7 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>org.cleartk.classifier.ClassifierAnnotator</annotatorImplementationName>
+  <annotatorImplementationName>org.cleartk.classifier.SequentialClassifierAnnotator</annotatorImplementationName>
   <analysisEngineMetaData>
     <name>POSAnnotator</name>
     <description>Copyright (c) 2009, Regents of the University of Colorado 
@@ -25,20 +25,18 @@ SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
 INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
 CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-POSSIBILITY OF SUCH DAMAGE. 
-
-</description>
+POSSIBILITY OF SUCH DAMAGE.</description>
     <version>1.0</version>
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>org.cleartk.classifier.InstanceConsumer.PARAM_ANNOTATION_HANDLER</name>
+        <name>org.cleartk.classifier.SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>org.cleartk.classifier.ClassifierAnnotator.PARAM_CLASSIFIER_JAR</name>
+        <name>org.cleartk.classifier.SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
@@ -58,7 +56,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>org.cleartk.classifier.InstanceConsumer.PARAM_ANNOTATION_HANDLER</name>
+        <name>org.cleartk.classifier.SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER</name>
         <value>
           <string>org.cleartk.token.pos.impl.DefaultPOSHandler</string>
         </value>
