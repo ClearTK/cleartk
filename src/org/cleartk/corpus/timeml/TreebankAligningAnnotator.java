@@ -99,8 +99,14 @@ public class TreebankAligningAnnotator extends JCasAnnotator_ImplBase {
 		// add Token, Sentence and TreebankNode annotations for the text
 		int offset = texts.get(0).getBegin();
 		String text = jCas.getDocumentText();
-		for (org.cleartk.syntax.treebank.util.TopTreebankNode utilTree:
-			 TreebankFormatParser.parseDocument(mrgText, offset, text)) {
+		List<org.cleartk.syntax.treebank.util.TopTreebankNode> utilTrees;
+		try {
+			utilTrees = TreebankFormatParser.parseDocument(mrgText, offset, text);
+		} catch (Exception e) {
+			throw new AnalysisEngineProcessException(new Exception(
+					"error in " + wsjName, e));
+		}
+		for (org.cleartk.syntax.treebank.util.TopTreebankNode utilTree: utilTrees) {
 			
 			// create a Sentence and set its parse
 			TopTreebankNode tree = TreebankNodeUtility.convert(utilTree, jCas, true);
