@@ -40,7 +40,7 @@ import org.cleartk.classifier.ClassifierAnnotator;
 import org.cleartk.classifier.DataWriterAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.opennlp.MaxentDataWriter;
+import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.classifier.svmlight.DefaultSVMlightDataWriterFactory;
 import org.cleartk.srl.type.Predicate;
 import org.cleartk.srl.type.SemanticArgument;
@@ -428,7 +428,7 @@ public class PredicateArgumentHandlerTests {
 		
 		Object dataWriter = engine.getConfigParameterValue(
 				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS);
-		Assert.assertEquals(MaxentDataWriter.class.getName(), dataWriter);
+		Assert.assertEquals(DefaultMaxentDataWriterFactory.class.getName(), dataWriter);
 		
 		Object outputDir = engine.getConfigParameterValue(
 				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY);
