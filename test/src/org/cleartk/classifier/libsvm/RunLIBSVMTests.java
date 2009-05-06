@@ -77,7 +77,7 @@ public class RunLIBSVMTests {
 				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY,
 				this.outputDirectory,
 				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS,
-				BinaryLIBSVMDataWriter.class.getName()));
+				DefaultBinaryLIBSVMDataWriterFactory.class.getName()));
 		
 		// add a bunch of instances
 		for (Instance<Boolean> instance: TestsUtil.generateBooleanInstances(1000)) {
@@ -157,7 +157,7 @@ public class RunLIBSVMTests {
 				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY,
 				this.outputDirectory,
 				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS,
-				MultiClassLIBSVMDataWriter.class.getName()));
+				DefaultMultiClassLIBSVMDataWriterFactory.class.getName()));
 		
 		// add a bunch of instances
 		for (Instance<String> instance: TestsUtil.generateStringInstances(1000)) {

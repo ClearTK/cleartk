@@ -195,7 +195,7 @@ public class RunSVMlightTests {
 				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY,
 				this.outputDirectory,
 				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS,
-				SVMlightDataWriter.class.getName()));
+				DefaultSVMlightDataWriterFactory.class.getName()));
 		
 		// add a bunch of instances
 		for (Instance<Boolean> instance: TestsUtil.generateBooleanInstances(1000)) {
@@ -235,7 +235,7 @@ public class RunSVMlightTests {
 				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY,
 				this.outputDirectory,
 				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS,
-				OVASVMlightDataWriter.class.getName()));
+				DefaultOVASVMlightDataWriterFactory.class.getName()));
 		
 		// add a bunch of instances
 		for (Instance<String> instance: TestsUtil.generateStringInstances(1000)) {
