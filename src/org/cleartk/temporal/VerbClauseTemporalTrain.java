@@ -26,9 +26,6 @@ package org.cleartk.temporal;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.apache.uima.collection.CollectionReader;
-import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.Level;
@@ -43,17 +40,16 @@ import org.cleartk.corpus.timeml.TimeMLGoldAnnotator;
 import org.cleartk.corpus.timeml.TreebankAligningAnnotator;
 import org.cleartk.token.snowball.SnowballStemmer;
 import org.cleartk.util.FilesCollectionReader;
+import org.cleartk.util.UIMAUtil;
 import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.CollectionReaderFactory;
 import org.uutuc.factory.TypeSystemDescriptionFactory;
 import org.uutuc.factory.UimaContextFactory;
-import org.uutuc.util.JCasIterable;
 
 /**
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
- * 
  * 
  * @author Steven Bethard
  */
@@ -92,7 +88,7 @@ public class VerbClauseTemporalTrain {
 					"org.cleartk.TypeSystem");
 
 		// run the components that write out the training data
-		run(
+		UIMAUtil.runUIMAPipeline(
 				CollectionReaderFactory.createCollectionReader(
 						FilesCollectionReader.class, typeSystem,
 						FilesCollectionReader.PARAM_FILE_OR_DIRECTORY, timeBankDir,
@@ -125,16 +121,6 @@ public class VerbClauseTemporalTrain {
 		// train the model
 		Train.main(new String[]{outputDir});
 		
-	}
-	
-	private static void run(CollectionReader reader, AnalysisEngine ... engines)
-	throws Exception {
-		for (JCas jCas: new JCasIterable(reader, engines)) {
-			assert jCas != null;
-		}
-		for (AnalysisEngine engine: engines) {
-			engine.collectionProcessComplete();
-		}
 	}
 	
 	public static File getCleanedTimeBankDir(String timeBankDir) throws IOException {

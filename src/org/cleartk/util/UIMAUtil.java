@@ -29,18 +29,22 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.uima.UIMAException;
 import org.apache.uima.UimaContext;
+import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.collection.CollectionException;
+import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.cas.StringArray;
 import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.Initializable;
+import org.uutuc.util.JCasIterable;
 
 /**
  * <br>
@@ -314,6 +318,23 @@ public class UIMAUtil {
 					object1.getClass().getSimpleName(), paramName1, type1,
 					object2.getClass().getSimpleName(), paramName2, type2)));
 		}
+	}
+
+	/**
+	 * Run the CollectionReader and AnalysisEngines as a pipeline.
+	 * 
+	 * @param reader   The CollectionReader that loads the documents into the CAS.
+	 * @param engines  The AnalysisEngines that process the CAS, in order.
+	 */
+	public static void runUIMAPipeline(CollectionReader reader, AnalysisEngine ... engines)
+	throws UIMAException, IOException {
+		for (JCas jCas: new JCasIterable(reader, engines)) {
+			assert jCas != null;
+		}
+		for (AnalysisEngine engine: engines) {
+			engine.collectionProcessComplete();
+		}
+		reader.close();
 	}
 
 }
