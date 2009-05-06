@@ -49,7 +49,8 @@ import org.cleartk.util.UIMAUtil;
  */
 public class SnowballStemmer extends JCasAnnotator_ImplBase {
 	/**
-	 * "StemmerName" is required, string parameter that specifies which snowball
+	 * "org.cleartk.token.snowball.SnowballStemmer.PARAM_STEMMER_NAME"
+	 * is a required, string parameter that specifies which snowball
 	 * stemmer to use. Possible values are:
 	 * <ul>
 	 * <li>Danish</li>

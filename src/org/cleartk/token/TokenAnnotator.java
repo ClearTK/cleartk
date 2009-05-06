@@ -53,7 +53,8 @@ import org.cleartk.util.UIMAUtil;
  */
 public class TokenAnnotator extends JCasAnnotator_ImplBase {
 	/**
-	 * "Tokenenizer" is a single, optional, string parameter that specifies the
+	 * "org.cleartk.token.TokenAnnotator.PARAM_TOKENIZER"
+	 * is a single, optional, string parameter that specifies the
 	 * class type of the tokenizer that will be used by this annotator. If this
 	 * parameter is not filled, then the default tokenenizer
 	 * (org.cleartk.token.util.PennTreebankTokenizer) is used. A
@@ -66,7 +67,8 @@ public class TokenAnnotator extends JCasAnnotator_ImplBase {
 	public static final String PARAM_TOKENIZER = "org.cleartk.token.TokenAnnotator.PARAM_TOKENIZER";
 
 	/**
-	 * "TokenType" is a single, optional, string parameter the class type of the
+	 * "org.cleartk.token.TokenAnnotator.PARAM_TOKEN_TYPE"
+	 * is a single, optional, string parameter the class type of the
 	 * tokens that are created by this annotator. If this parameter is not
 	 * filled, then tokens of type org.cleartk.type.Token will be
 	 * created.
@@ -74,7 +76,8 @@ public class TokenAnnotator extends JCasAnnotator_ImplBase {
 	public static final String PARAM_TOKEN_TYPE = "org.cleartk.token.TokenAnnotator.PARAM_TOKEN_TYPE";
 
 	/**
-	 * "WindowType" is a single, optional, string parameter that specifies the
+	 * "org.cleartk.token.TokenAnnotator.PARAM_WINDOW_TYPE"
+	 * is a single, optional, string parameter that specifies the
 	 * class type of annotations that will be tokenized. If no value is given, then the entire document
 	 * will be tokenized at once.  A good value for this parameter would be
 	 * <code>org.cleartk.type.Sentence</code> (especially when using the PennTreebankTokenizer).

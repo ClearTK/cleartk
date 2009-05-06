@@ -54,6 +54,11 @@ import org.cleartk.util.UIMAUtil;
  */
 public class InverseDocumentFrequencyWriter extends JCasAnnotator_ImplBase {
 	
+	/**
+	 * "org.cleartk.tfidf.InverseDocumentFrequencyWriter.PARAM_OUTPUT_FILE"
+	 * is a single, required, string parameter that provides the path where the
+	 * Map<String, Double> of inverse document frequencies should be written.
+	 */
 	public static final String PARAM_OUTPUT_FILE = "org.cleartk.tfidf.InverseDocumentFrequencyWriter.PARAM_OUTPUT_FILE";
 
 	@Override

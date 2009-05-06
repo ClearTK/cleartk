@@ -42,12 +42,16 @@ import org.cleartk.util.UIMAUtil;
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
  * <br>All rights reserved.
-
  * 
  * @author Steven Bethard
  */
 public class ExamplePOSPlainTextWriter extends JCasAnnotator_ImplBase {
 
+	/**
+	 * "org.cleartk.example.pos.ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY"
+	 * is a single, required, string parameter that provides the directory
+	 * where the token/pos text files will be written.
+	 */
 	public static final String PARAM_OUTPUT_DIRECTORY = "org.cleartk.example.pos.ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY";
 	
 	protected File outputDir;

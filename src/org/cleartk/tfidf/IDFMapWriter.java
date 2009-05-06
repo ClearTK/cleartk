@@ -52,6 +52,11 @@ import org.cleartk.util.UIMAUtil;
  */
 public class IDFMapWriter<OUTCOME_TYPE> extends InstanceConsumer_ImplBase<OUTCOME_TYPE> {
 
+	/**
+	 * "org.cleartk.tfidf.IDFMapWriter.PARAM_IDFMAP_FILE"
+	 * is a single, required, string parameter that provides the path where the
+	 * Map<String, Double> of inverse document frequencies should be written.
+	 */
 	public static final String PARAM_IDFMAP_FILE = "org.cleartk.tfidf.IDFMapWriter.PARAM_IDFMAP_FILE";
 
 	@Override

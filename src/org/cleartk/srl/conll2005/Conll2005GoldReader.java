@@ -40,6 +40,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 import org.cleartk.ViewNames;
+import org.cleartk.util.UIMAUtil;
 import org.cleartk.util.ViewURIUtil;
 
 /**
@@ -49,6 +50,11 @@ import org.cleartk.util.ViewURIUtil;
  */
 public class Conll2005GoldReader extends CollectionReader_ImplBase {
 
+	/**
+	 * "org.cleartk.srl.conll2005.Conll2005GoldReader.PARAM_CONLL_2005_DATA_FILE"
+	 * is a single, required, string parameter that provides the path of the
+	 * CoNLL 2005 data file.
+	 */
 	public static final String PARAM_CONLL_2005_DATA_FILE = "org.cleartk.srl.conll2005.Conll2005GoldReader.PARAM_CONLL_2005_DATA_FILE";
 										  
 	BufferedReader reader;
@@ -64,7 +70,8 @@ public class Conll2005GoldReader extends CollectionReader_ImplBase {
 	{
 		try
 		{
-			File dataFile = new File((String) getConfigParameterValue(PARAM_CONLL_2005_DATA_FILE));
+			File dataFile = new File((String)UIMAUtil.getRequiredConfigParameterValue(
+					this.getUimaContext(), PARAM_CONLL_2005_DATA_FILE));
 
 			InputStream in;
 			if( dataFile.getName().endsWith(".gz") )

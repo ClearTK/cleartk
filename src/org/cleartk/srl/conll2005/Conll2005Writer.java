@@ -49,6 +49,11 @@ import org.cleartk.util.UIMAUtil;
  */
 public class Conll2005Writer extends JCasAnnotator_ImplBase {
 	
+	/**
+	 * "org.cleartk.srl.conll2005.Conll2005Writer.PARAM_OUTPUT_FILE";
+	 * is a single, required, string parameter that provides the path where the
+	 * CoNLL-2005-formatted text file should be written.
+	 */
 	public static final String PARAM_OUTPUT_FILE = "org.cleartk.srl.conll2005.Conll2005Writer.PARAM_OUTPUT_FILE";
 
 	PrintWriter output;
@@ -59,8 +64,8 @@ public class Conll2005Writer extends JCasAnnotator_ImplBase {
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
 		try {
-			File outputFile = new File(
-					(String)context.getConfigParameterValue(PARAM_OUTPUT_FILE));
+			File outputFile = new File((String)UIMAUtil.getRequiredConfigParameterValue(
+							context, PARAM_OUTPUT_FILE));
 			output = new PrintWriter(outputFile);
 			first = true;
 		} catch (FileNotFoundException e) {

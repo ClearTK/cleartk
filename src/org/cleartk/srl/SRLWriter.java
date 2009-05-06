@@ -70,6 +70,11 @@ import org.cleartk.util.UIMAUtil;
  */
 public class SRLWriter extends JCasAnnotator_ImplBase {
 
+	/**
+	 * "org.cleartk.srl.SRLWriter.PARAM_OUTPUT_FILE"
+	 * is a single, required, string parameter that provides the path
+	 * where the PropBank-style file should be written.
+	 */
 	public static final String PARAM_OUTPUT_FILE = "org.cleartk.srl.SRLWriter.PARAM_OUTPUT_FILE";
 
 	PrintWriter output;
@@ -78,8 +83,8 @@ public class SRLWriter extends JCasAnnotator_ImplBase {
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
 		try {
-			File outputFile = new File(
-					(String)context.getConfigParameterValue(PARAM_OUTPUT_FILE));
+			File outputFile = new File((String)UIMAUtil.getRequiredConfigParameterValue(
+					context, PARAM_OUTPUT_FILE));
 			output = new PrintWriter(outputFile);
 		} catch (FileNotFoundException e) {
 			throw new ResourceInitializationException(e);

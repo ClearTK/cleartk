@@ -48,6 +48,11 @@ import org.cleartk.util.UIMAUtil;
  */
 public class TokenWriter extends JCasAnnotator_ImplBase {
 
+	/**
+	 * "org.cleartk.token.TokenWriter.PARAM_OUTPUT_DIRECTORY"
+	 * is a single, required, string parameter that provides the directory
+	 * where the one-token-per-line files should be written.
+	 */
 	public static final String PARAM_OUTPUT_DIRECTORY = "org.cleartk.token.TokenWriter.PARAM_OUTPUT_DIRECTORY";
 	
 	private File outputDir;

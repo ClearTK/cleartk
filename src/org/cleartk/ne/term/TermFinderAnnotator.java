@@ -61,7 +61,8 @@ import org.cleartk.util.UIMAUtil;
 public class TermFinderAnnotator extends JCasAnnotator_ImplBase {
 
 	/**
-	 * "TermListListing" is a single, required string parameter that points to a
+	 * "org.cleartk.ne.term.TermFinderAnnotator.PARAM_TERM_LIST_LISTING"
+	 * is a single, required string parameter that points to a
 	 * file that contains a listing of term list files that are to be loaded.
 	 * Each line of the file should contain the name of a term list followed by
 	 * the name of the file that contains the terms, a boolean ('true' or
@@ -74,7 +75,8 @@ public class TermFinderAnnotator extends JCasAnnotator_ImplBase {
 	public static final String PARAM_TERM_LIST_LISTING = "org.cleartk.ne.term.TermFinderAnnotator.PARAM_TERM_LIST_LISTING";
 
 	/**
-	 * "SentenceClass" is a single, optional, string parameter that names the
+	 * "org.cleartk.ne.term.TermFinderAnnotator.PARAM_SENTENCE_CLASS"
+	 * is a single, optional, string parameter that names the
 	 * class of the type system type from which to extract tokens. Any
 	 * annotation that contains tokens can be used (e.g. sentence, paragraph,
 	 * document). If no value is given for this parameter, then all tokens will
@@ -84,7 +86,8 @@ public class TermFinderAnnotator extends JCasAnnotator_ImplBase {
 	public static final String PARAM_SENTENCE_CLASS = "org.cleartk.ne.term.TermFinderAnnotator.PARAM_SENTENCE_CLASS";
 
 	/**
-	 * "TokenClass" is a single, required, string parameter that names the class
+	 * "org.cleartk.ne.term.TermFinderAnnotator.PARAM_TOKEN_CLASS"
+	 * is a single, required, string parameter that names the class
 	 * of the type system type corresponding to tokens. A good value for this
 	 * would be: <br>
 	 * <code>org.cleartk.type.Token</code>
@@ -92,7 +95,8 @@ public class TermFinderAnnotator extends JCasAnnotator_ImplBase {
 	public static final String PARAM_TOKEN_CLASS = "org.cleartk.ne.term.TermFinderAnnotator.PARAM_TOKEN_CLASS";
 
 	/**
-	 * "TermMatchAnnotationCreator" is a single, optional, string parameter that
+	 * "org.cleartk.ne.term.TermFinderAnnotator.PARAM_TERM_MATCH_ANNOTATION_CREATOR"
+	 * is a single, optional, string parameter that
 	 * provides the class name of a class that extends
 	 * org.cleartk.bio.TermMatchAnnotationCreator. If this parameter is
 	 * not given a value, then the parameter PARAM_TERM_MATCH_ANNOTATION_CLASS
@@ -101,7 +105,8 @@ public class TermFinderAnnotator extends JCasAnnotator_ImplBase {
 	public static final String PARAM_TERM_MATCH_ANNOTATION_CREATOR = "org.cleartk.ne.term.TermFinderAnnotator.PARAM_TERM_MATCH_ANNOTATION_CREATOR";
 
 	/**
-	 * "TermMatchAnnotationClass" is a single, optional, string parameter that
+	 * "org.cleartk.ne.term.TermFinderAnnotator.PARAM_TERM_MATCH_ANNOTATION_CLASS"
+	 * is a single, optional, string parameter that
 	 * names the class of the type system type that specifies the annotations
 	 * created of found term matches. One annotation is created for each term
 	 * match found of the given type specified by this parameter. This parameter
