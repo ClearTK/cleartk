@@ -52,24 +52,32 @@ import org.uutuc.util.JCasIterable;
 public class BuildIDFMap {
 
 	public static void main(String[] args) throws UIMAException, IOException {
+		String trainingDataDirectory;
+		if(args.length < 0) {
+			trainingDataDirectory="../ClearTK Data/data/20newsgroups/20news-bydate-train";
+		} else {
+			trainingDataDirectory= args[0];
+		}
+
 		TypeSystemDescription typeSystemDescription = TestsUtil.getTypeSystemDescription();
 
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(FilesCollectionReader.class,
 				typeSystemDescription, FilesCollectionReader.PARAM_FILE_OR_DIRECTORY,
-				"../ClearTK Data/data/20newsgroups/20news-bydate-train");
+				trainingDataDirectory);
 
 		AnalysisEngine sentenceSegmenter = AnalysisEngineFactory.createAnalysisEngine(
-				"org.cleartk.sentence.SentenceSegmenter", typeSystemDescription);
+				"org.cleartk.sentence.SentenceSegmenter");
 
 		AnalysisEngine tokenizer = AnalysisEngineFactory.createAnalysisEngine(TokenAnnotator.class,
 				typeSystemDescription);
 
 		AnalysisEngine stemmer = AnalysisEngineFactory.createAnalysisEngine(SnowballStemmer.class,
-				typeSystemDescription);
+				typeSystemDescription,
+				SnowballStemmer.PARAM_STEMMER_NAME, "English");
 
 		AnalysisEngine idfMapWriter = AnalysisEngineFactory.createAnalysisEngine(IDFMapWriter.class,
 				typeSystemDescription, args, IDFMapWriter.PARAM_IDFMAP_FILE, "example/documentclassification/idfmap",
-				IDFMapWriter.PARAM_ANNOTATION_HANDLER, AnnotationHandler.class);
+				IDFMapWriter.PARAM_ANNOTATION_HANDLER, AnnotationHandler.class.getName());
 
 		JCasIterable jCases = new JCasIterable(reader, sentenceSegmenter, tokenizer, stemmer, idfMapWriter);
 
