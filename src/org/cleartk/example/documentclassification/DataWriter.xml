@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
-<frameworkImplementation>org.apache.uima.java</frameworkImplementation>
-<primitive>true</primitive>
-<annotatorImplementationName>org.cleartk.classifier.svmlight.OVASVMlightDataWriter</annotatorImplementationName>
-<analysisEngineMetaData>
-<name>org.cleartk.classifier.DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS</name>
-<description>Copyright (c) 2009, Regents of the University of Colorado 
+  <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+  <primitive>true</primitive>
+  <annotatorImplementationName>org.cleartk.classifier.DataWriterAnnotator</annotatorImplementationName>
+  <analysisEngineMetaData>
+    <name>org.cleartk.classifier.DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS</name>
+    <description>Copyright (c) 2009, Regents of the University of Colorado 
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -26,55 +26,67 @@ INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
 CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.</description>
-<version>1.0</version>
-<vendor></vendor>
-<configurationParameters>
-<configurationParameter>
-<name>org.cleartk.classifier.DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY</name>
-<type>String</type>
-<multiValued>false</multiValued>
-<mandatory>true</mandatory>
-</configurationParameter>
-<configurationParameter>
-<name>org.cleartk.classifier.InstanceConsumer.PARAM_ANNOTATION_HANDLER</name>
-<type>String</type>
-<multiValued>false</multiValued>
-<mandatory>true</mandatory>
-</configurationParameter>
-</configurationParameters>
-<configurationParameterSettings>
-<nameValuePair>
-<name>org.cleartk.classifier.DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY</name>
-<value>
-<string>example/documentclassification/</string>
-</value>
-</nameValuePair>
-<nameValuePair>
-<name>org.cleartk.classifier.InstanceConsumer.PARAM_ANNOTATION_HANDLER</name>
-<value>
-<string>org.cleartk.example.documentclassification.AnnotationHandler</string>
-</value>
-</nameValuePair>
-</configurationParameterSettings>
-<typeSystemDescription>
-<imports>
-<import name="org.cleartk.TypeSystem"/>
-</imports>
-</typeSystemDescription>
-<typePriorities/>
-<fsIndexCollection/>
-<capabilities>
-<capability>
-<inputs/>
-<outputs/>
-<languagesSupported/>
-</capability>
-</capabilities>
-<operationalProperties>
-<modifiesCas>false</modifiesCas>
-<multipleDeploymentAllowed>false</multipleDeploymentAllowed>
-<outputsNewCASes>false</outputsNewCASes>
-</operationalProperties>
-</analysisEngineMetaData>
-<resourceManagerConfiguration/>
+    <version>1.0</version>
+    <vendor/>
+    <configurationParameters>
+      <configurationParameter>
+        <name>org.cleartk.classifier.DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>org.cleartk.classifier.InstanceConsumer.PARAM_ANNOTATION_HANDLER</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>org.cleartk.classifier.DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+      </configurationParameter>
+    </configurationParameters>
+    <configurationParameterSettings>
+      <nameValuePair>
+        <name>org.cleartk.classifier.DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY</name>
+        <value>
+          <string>example/documentclassification/</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>org.cleartk.classifier.InstanceConsumer.PARAM_ANNOTATION_HANDLER</name>
+        <value>
+          <string>org.cleartk.example.documentclassification.AnnotationHandler</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>org.cleartk.classifier.DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS</name>
+        <value>
+          <string>org.cleartk.example.documentclassification.DataWriterFactory</string>
+        </value>
+      </nameValuePair>
+    </configurationParameterSettings>
+    <typeSystemDescription>
+      <imports>
+        <import name="org.cleartk.TypeSystem"/>
+      </imports>
+    </typeSystemDescription>
+    <typePriorities/>
+    <fsIndexCollection/>
+    <capabilities>
+      <capability>
+        <inputs/>
+        <outputs/>
+        <languagesSupported/>
+      </capability>
+    </capabilities>
+    <operationalProperties>
+      <modifiesCas>false</modifiesCas>
+      <multipleDeploymentAllowed>false</multipleDeploymentAllowed>
+      <outputsNewCASes>false</outputsNewCASes>
+    </operationalProperties>
+  </analysisEngineMetaData>
+  <resourceManagerConfiguration/>
 </analysisEngineDescription>
