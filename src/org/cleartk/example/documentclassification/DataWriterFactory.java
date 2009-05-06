@@ -46,13 +46,13 @@ import org.cleartk.classifier.svmlight.OVASVMlightDataWriter;
  */
 
 public class DataWriterFactory implements org.cleartk.classifier.DataWriterFactory<String> {
-
+public static final String IDFMAP = "example/documentclassification/idfmap";
 	public DataWriter<String> createDataWriter(File outputDirectory) throws IOException {
 		OVASVMlightDataWriter dataWriter = new OVASVMlightDataWriter(outputDirectory);
 
 			NameNumberNormalizer normalizer = new EuclidianNormalizer();
 			FeatureVectorFeaturesEncoder featuresEncoder = new FeatureVectorFeaturesEncoder(normalizer);
-			featuresEncoder.addEncoder(new TFIDFEncoder(new File("example/documentclassification/idfmap")));
+			featuresEncoder.addEncoder(new TFIDFEncoder(new File(IDFMAP)));
 			featuresEncoder.addEncoder(new NumberEncoder());
 			featuresEncoder.addEncoder(new BooleanEncoder());
 			featuresEncoder.addEncoder(new StringEncoder());
