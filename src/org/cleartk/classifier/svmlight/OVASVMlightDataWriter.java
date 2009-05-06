@@ -50,7 +50,7 @@ public class OVASVMlightDataWriter extends DataWriter_ImplBase<String,Integer,Fe
 		allFalseFile.delete();		
 
 		// create the output writers
-		allFalseWriter = new PrintWriter(allFalseFile);
+		allFalseWriter = this.getPrintWriter(allFalseFile.getPath());
 		trainingDataWriters = new TreeMap<Integer,PrintWriter>();
 	}
 
