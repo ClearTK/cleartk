@@ -158,16 +158,16 @@
 				classpathref="test-run.classpath" maxmemory="1024m"/>
 	</target>
 	
-	<target name="build-test-temporal-model">
-		<!-- temporal model -->
+	<target name="build-verb-clause-temporal-model">
 		<echo message="=======================" />
 		<echo message="Training temporal model" />
 		<echo message="=======================" />
-		<java fork="true" classname="org.apache.uima.examples.cpe.SimpleRunCPE" classpathref="cpe.classpath" maxmemory="${max-memory}">
-			<arg value="cpe/VerbClauseTemporalDataWriterCPE.xml"/>
-		</java>
-		<java fork="true" classname="org.cleartk.classifier.Train" classpathref="run.classpath" maxmemory="${max-memory}">
-			<arg line="test/data/temporal" />
+		<java fork="true" 
+				classname="org.cleartk.temporal.VerbClauseTemporalTrain"
+				classpathref="test-run.classpath" maxmemory="1024m">
+			<arg value="../ClearTK Data/data/timebank_1.2/data/extra"/>
+			<arg value="../ClearTK Data/data/treebank\wsj"/>
+			<arg value="test/data/temporal"/>
 		</java>
 		<move file="test/data/temporal/model.jar" tofile="resources/models/verb-clause-temporal-model.jar" />
 	</target>
@@ -179,7 +179,7 @@
 		<java fork="true" classname="org.cleartk.chunk.BuildTestTokenChunkModel" classpathref="cpe.classpath" maxmemory="${max-memory}"/>
 	</target>
 	
-	<target name="build-test-models" depends="build-test-example-model, build-test-srl-model, build-test-temporal-model, build-test-token-chunk-model"/>
+	<target name="build-test-models" depends="build-test-example-model, build-test-srl-model, build-verb-clause-temporal-model, build-test-token-chunk-model"/>
 	
 	<!-- run all the junit tests in the test-src directory -->
 	<target name="run-tests" depends="compile-tests">

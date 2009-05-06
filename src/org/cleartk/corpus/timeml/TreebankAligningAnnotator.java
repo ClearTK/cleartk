@@ -26,13 +26,13 @@ package org.cleartk.corpus.timeml;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
+import org.apache.uima.util.Level;
 import org.cleartk.corpus.timeml.type.Text;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
 import org.cleartk.syntax.treebank.type.TreebankNode;
@@ -95,17 +95,20 @@ public class TreebankAligningAnnotator extends JCasAnnotator_ImplBase {
 			throw new AnalysisEngineProcessException(new RuntimeException(
 					"expected 1 TEXT element, found " + texts.size()));
 		}
-		
-		// add Token, Sentence and TreebankNode annotations for the text
+
+		// parse the trees, skipping the document if there are alignment problems
 		int offset = texts.get(0).getBegin();
 		String text = jCas.getDocumentText();
 		List<org.cleartk.syntax.treebank.util.TopTreebankNode> utilTrees;
 		try {
 			utilTrees = TreebankFormatParser.parseDocument(mrgText, offset, text);
 		} catch (Exception e) {
-			throw new AnalysisEngineProcessException(new Exception(
-					"error in " + wsjName, e));
+			this.getContext().getLogger().log(Level.WARNING, String.format(
+					"Skipping %s due to alignment problems", wsjPath), e);
+			return;
 		}
+
+		// add Token, Sentence and TreebankNode annotations for the text
 		for (org.cleartk.syntax.treebank.util.TopTreebankNode utilTree: utilTrees) {
 			
 			// create a Sentence and set its parse
