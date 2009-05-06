@@ -46,11 +46,12 @@ public class OVASVMlightDataWriter extends DataWriter_ImplBase<String,Integer,Fe
 		super(outputDirectory);
 
 		// prepare output files
-		allFalseFile = getFile("training-data-allfalse.svmlight");
+		String allFalseName = "training-data-allfalse.svmlight";
+		allFalseFile = getFile(allFalseName);
 		allFalseFile.delete();		
 
 		// create the output writers
-		allFalseWriter = this.getPrintWriter(allFalseFile.getPath());
+		allFalseWriter = this.getPrintWriter(allFalseName);
 		trainingDataWriters = new TreeMap<Integer,PrintWriter>();
 	}
 
