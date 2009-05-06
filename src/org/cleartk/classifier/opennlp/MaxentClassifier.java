@@ -37,6 +37,7 @@ import opennlp.maxent.io.BinaryGISModelReader;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.Classifier_ImplBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.ScoredOutcome;
@@ -62,14 +63,14 @@ public class MaxentClassifier extends Classifier_ImplBase<String, String, List<N
 				.getInputStream(modelEntry)))).getModel();
 	}
 
-	public String classify(List<Feature> features) {
+	public String classify(List<Feature> features) throws CleartkException {
 		EvalParams evalParams = convertToEvalParams(features);
 		String encodedOutcome = this.model.getBestOutcome(this.model.eval(evalParams.getContext(), evalParams.getValues()));
 		return outcomeEncoder.decode(encodedOutcome);
 	}
 
 	@Override
-	public List<ScoredOutcome<String>> score(List<Feature> features, int maxResults) {
+	public List<ScoredOutcome<String>> score(List<Feature> features, int maxResults) throws CleartkException {
 		EvalParams evalParams = convertToEvalParams(features);
 		double[] evalResults = this.model.eval(evalParams.getContext(), evalParams.getValues());
 		String[] encodedOutcomes = (String[]) this.model.getDataStructures()[2];
@@ -98,7 +99,7 @@ public class MaxentClassifier extends Classifier_ImplBase<String, String, List<N
 		}
 	}
 
-	private EvalParams convertToEvalParams(List<Feature> features) {
+	private EvalParams convertToEvalParams(List<Feature> features) throws CleartkException {
 		String[] context = new String[features.size()];
 		float[] values = new float[features.size()];
 

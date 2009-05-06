@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.Classifier_ImplBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
@@ -66,7 +67,7 @@ public abstract class LIBSVMClassifier<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE> ext
 		}
 	}
 
-	public INPUTOUTCOME_TYPE classify(List<Feature> features) {
+	public INPUTOUTCOME_TYPE classify(List<Feature> features) throws CleartkException {
 		FeatureVector featureVector = this.featuresEncoder.encodeAll(features);
 
 		OUTPUTOUTCOME_TYPE encodedOutcome = decodePrediction(libsvm.svm.svm_predict(this.model, convertToLIBSVM(featureVector)));

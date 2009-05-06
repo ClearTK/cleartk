@@ -26,6 +26,7 @@ package org.cleartk.classifier.libsvm;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.jar.JarFile;
@@ -80,7 +81,7 @@ public class RunLIBSVMTests {
 				DefaultBinaryLIBSVMDataWriterFactory.class.getName()));
 		
 		// add a bunch of instances
-		for (Instance<Boolean> instance: TestsUtil.generateBooleanInstances(1000)) {
+		for (Instance<Boolean> instance: generateBooleanInstances(1000)) {
 			dataWriter.consume(instance);
 		}
 		dataWriter.collectionProcessComplete();
@@ -93,13 +94,13 @@ public class RunLIBSVMTests {
 		
 		// run the training command
 		HideOutput hider = new HideOutput();
-		Train.main(new String[] {this.outputDirectory, "-c", "1.0", "-s", "1"});
+		Train.main(new String[] {this.outputDirectory, "-c", "1.0", "-s", "0", "-t", "0"});
 		hider.restoreOutput();
 		
 		// read in the classifier and test it on new instances
 		BinaryLIBSVMClassifier classifier = new BinaryLIBSVMClassifier(
 				new JarFile(new File(this.outputDirectory, "model.jar")));
-		for (Instance<Boolean> instance: TestsUtil.generateBooleanInstances(1000)) {
+		for (Instance<Boolean> instance: generateBooleanInstances(1000)) {
 			List<Feature> features = instance.getFeatures();
 			Boolean outcome = instance.getOutcome();
 			Assert.assertEquals(outcome, classifier.classify(features));
@@ -117,10 +118,10 @@ public class RunLIBSVMTests {
 				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY,
 				this.outputDirectory,
 				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS,
-				LIBLINEARDataWriter.class.getName()));
+				DefaultLIBLINEARDataWriterFactory.class.getName()));
 		
 		// add a bunch of instances
-		for (Instance<Boolean> instance: TestsUtil.generateBooleanInstances(1000)) {
+		for (Instance<Boolean> instance: generateBooleanInstances(1000)) {
 			dataWriter.consume(instance);
 		}
 		dataWriter.collectionProcessComplete();
@@ -139,7 +140,7 @@ public class RunLIBSVMTests {
 		// read in the classifier and test it on new instances
 		LIBLINEARClassifier classifier = new LIBLINEARClassifier(
 				new JarFile(new File(this.outputDirectory, "model.jar")));
-		for (Instance<Boolean> instance: TestsUtil.generateBooleanInstances(1000)) {
+		for (Instance<Boolean> instance: generateBooleanInstances(1000)) {
 			List<Feature> features = instance.getFeatures();
 			Boolean outcome = instance.getOutcome();
 			Assert.assertEquals(outcome, classifier.classify(features));
@@ -160,7 +161,7 @@ public class RunLIBSVMTests {
 				DefaultMultiClassLIBSVMDataWriterFactory.class.getName()));
 		
 		// add a bunch of instances
-		for (Instance<String> instance: TestsUtil.generateStringInstances(1000)) {
+		for (Instance<String> instance: generateStringInstances(1000)) {
 			dataWriter.consume(instance);
 		}
 		dataWriter.collectionProcessComplete();
@@ -179,10 +180,58 @@ public class RunLIBSVMTests {
 		// read in the classifier and test it on new instances
 		MultiClassLIBSVMClassifier classifier = new MultiClassLIBSVMClassifier(
 				new JarFile(new File(this.outputDirectory, "model.jar")));
-		for (Instance<String> instance: TestsUtil.generateStringInstances(1000)) {
+		for (Instance<String> instance: generateStringInstances(1000)) {
 			List<Feature> features = instance.getFeatures();
 			String outcome = instance.getOutcome();
 			Assert.assertEquals(outcome, classifier.classify(features));
 		}
+	}
+	
+	private static List<Instance<Boolean>> generateBooleanInstances(int n) {
+		Random random = new Random(42);
+		List<Instance<Boolean>> instances = new ArrayList<Instance<Boolean>>();
+		for (int i = 0; i < n; i++) {
+			Instance<Boolean> instance = new Instance<Boolean>();
+			if (random.nextInt(2) == 0) {
+				instance.setOutcome(true);
+				instance.add(new Feature("hello", random.nextInt(100) + 1000));
+				instance.add(new Feature("goodbye", 500));
+			}
+			else {
+				instance.setOutcome(false);
+				instance.add(new Feature("hello", random.nextInt(100)));
+				instance.add(new Feature("goodbye", 500));
+			}
+			instances.add(instance);
+		}
+		return instances;
+	}
+	
+	private static List<Instance<String>> generateStringInstances(int n) {
+		Random random = new Random(42);
+		List<Instance<String>> instances = new ArrayList<Instance<String>>();
+		for (int i = 0; i < n; i++) {
+			Instance<String> instance = new Instance<String>();
+			int c = random.nextInt(3);
+			if ( c == 0 ) {
+				instance.setOutcome("A");
+				instance.add(new Feature("hello", random.nextInt(100) + 950));
+				instance.add(new Feature("goodbye", random.nextInt(100)));
+				instance.add(new Feature("farewell", random.nextInt(100)));
+			}
+			else if( c == 1 ) {
+				instance.setOutcome("B");
+				instance.add(new Feature("hello", random.nextInt(100)));
+				instance.add(new Feature("goodbye", random.nextInt(100) + 950));
+				instance.add(new Feature("farewell", random.nextInt(100)));
+			} else {
+				instance.setOutcome("C");
+				instance.add(new Feature("hello", random.nextInt(100)));
+				instance.add(new Feature("goodbye", random.nextInt(100)));
+				instance.add(new Feature("farewell", random.nextInt(100) + 950));
+			}
+			instances.add(instance);
+		}
+		return instances;
 	}
 }

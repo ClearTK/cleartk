@@ -26,6 +26,7 @@ package org.cleartk.classifier.libsvm;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Locale;
 import java.util.Map;
 import java.util.jar.Attributes;
 
@@ -58,7 +59,7 @@ public abstract class LIBSVMDataWriter<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE> ext
 	}
 
 	@Override
-	public void writeEncoded(FeatureVector features, OUTPUTOUTCOME_TYPE outcome) {
+	public void writeEncoded(FeatureVector features, OUTPUTOUTCOME_TYPE outcome) throws CleartkException {
 		String classString = encode(outcome);
 				
 		StringBuffer output = new StringBuffer();
@@ -66,10 +67,9 @@ public abstract class LIBSVMDataWriter<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE> ext
 		output.append(classString);		
 		
 		for( FeatureVector.Entry entry : features ) {
-			output.append(" ");
-			output.append(entry.index);
-			output.append(":");
-			output.append(entry.value);
+			if( Double.isInfinite(entry.value) || Double.isNaN(entry.value) )
+				throw new CleartkException(String.format("illegal value in entry %d:%.7f", entry.index, entry.value));
+			output.append(String.format(Locale.US, " %d:%.7f", entry.index, entry.value));
 		}
 		
 		trainingDataWriter.println(output);

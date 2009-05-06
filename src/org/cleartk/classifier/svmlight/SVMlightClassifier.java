@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.Classifier_ImplBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.ScoredOutcome;
@@ -48,14 +49,14 @@ public class SVMlightClassifier extends Classifier_ImplBase<Boolean,Boolean,Feat
 	
 	SVMlightModel model;
 	
-	public SVMlightClassifier(JarFile modelFile) throws IOException {
+	public SVMlightClassifier(JarFile modelFile) throws IOException, CleartkException {
 		super(modelFile);
 		
 		ZipEntry modelEntry = modelFile.getEntry("model.svmlight");
 		this.model = SVMlightModel.fromInputStream(modelFile.getInputStream(modelEntry));		
 	}
 
-	public Boolean classify(List<Feature> features) {
+	public Boolean classify(List<Feature> features) throws CleartkException {
 		FeatureVector featureVector = featuresEncoder.encodeAll(features);
 		
 		double prediction = model.evaluate(featureVector);
@@ -66,7 +67,7 @@ public class SVMlightClassifier extends Classifier_ImplBase<Boolean,Boolean,Feat
 	
 	@Override
 	public List<ScoredOutcome<Boolean>> score(List<Feature> features,
-			int maxResults) {
+			int maxResults) throws CleartkException {
 		
 		List<ScoredOutcome<Boolean>> resultList = new ArrayList<ScoredOutcome<Boolean>>();
 		if( maxResults > 0 )
@@ -79,7 +80,7 @@ public class SVMlightClassifier extends Classifier_ImplBase<Boolean,Boolean,Feat
 		return resultList;
 	}
 
-	private ScoredOutcome<Boolean> score(List<Feature> features) {
+	private ScoredOutcome<Boolean> score(List<Feature> features) throws CleartkException {
 		FeatureVector featureVector = featuresEncoder.encodeAll(features);
 		
 		double prediction = model.evaluate(featureVector);

@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.Classifier_ImplBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.encoder.features.NameNumber;
@@ -66,15 +67,16 @@ public class MalletClassifier extends Classifier_ImplBase<String,String,List<Nam
 	/**
 	 * This method simply throws an UnsupportedOperationException because
 	 * CRF is a sequential classifier.
+	 * @throws CleartkException 
 	 */
-	public String classify(List<Feature> features) throws UnsupportedOperationException
+	public String classify(List<Feature> features) throws UnsupportedOperationException, CleartkException
 	{
 		Classification classification = classifier.classify(toInstance(features));
 		String returnValue = classification.getLabeling().getBestLabel().toString();
 		return outcomeEncoder.decode(returnValue);
 	}
 	
-	public Instance[] toInstances(List<List<Feature>> features) {
+	public Instance[] toInstances(List<List<Feature>> features) throws CleartkException {
 	
 		Instance[] instances = new Instance[features.size()];
 		for(int i=0; i<features.size(); i++) {
@@ -83,7 +85,7 @@ public class MalletClassifier extends Classifier_ImplBase<String,String,List<Nam
 		return instances;
 	}
 
-	public Instance toInstance(List<Feature> features) {
+	public Instance toInstance(List<Feature> features) throws CleartkException {
 		List<NameNumber> nameNumbers = featuresEncoder.encodeAll(features);
 
 		Iterator<NameNumber> nameNumberIterator = nameNumbers.iterator();

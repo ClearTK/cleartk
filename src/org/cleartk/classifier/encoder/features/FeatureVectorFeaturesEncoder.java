@@ -27,6 +27,7 @@ package org.cleartk.classifier.encoder.features;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.encoder.features.normalizer.NOPNormalizer;
@@ -55,7 +56,7 @@ public class FeatureVectorFeaturesEncoder extends FeaturesEncoder_ImplBase<Featu
 	}
 
 	@Override
-	public FeatureVector encodeAll(Iterable<Feature> features) {
+	public FeatureVector encodeAll(Iterable<Feature> features) throws CleartkException {
 		List<NameNumber> fves = new ArrayList<NameNumber>();		
 		for( Feature feature : features ) {
 			fves.addAll(this.encode(feature));

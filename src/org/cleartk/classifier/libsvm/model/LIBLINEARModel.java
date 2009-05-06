@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.util.featurevector.ArrayFeatureVector;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
@@ -45,14 +46,14 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
 
 public class LIBLINEARModel {
 	
-	public static LIBLINEARModel fromFile(File modelFile) throws IOException {
+	public static LIBLINEARModel fromFile(File modelFile) throws IOException, CleartkException {
 		InputStream modelStream = new FileInputStream(modelFile);
 		LIBLINEARModel model = fromInputStream(modelStream);
 		modelStream.close();
 		return model;
 	}
 	
-	public static LIBLINEARModel fromInputStream(InputStream modelStream) throws IOException {
+	public static LIBLINEARModel fromInputStream(InputStream modelStream) throws IOException, CleartkException {
 		LIBLINEARModel model = new LIBLINEARModel();
 		
 		BufferedReader in = new BufferedReader(new InputStreamReader(modelStream));

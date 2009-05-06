@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.jar.JarFile;
 
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.DataWriterAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
@@ -125,7 +126,7 @@ public class RunSVMlightTests {
 		trainAndTest(trainingFile, testFile, new String[] {"-t", "3"}, "sigmoid kernel");
 	}
 
-	private void trainAndTest(File trainingFile, File testFile, String[] args, String name) throws IOException, InterruptedException {
+	private void trainAndTest(File trainingFile, File testFile, String[] args, String name) throws IOException, InterruptedException, CleartkException {
 		File modelFile = new File(this.outputDirectory, "model.svmlight");
 		
 		String[] command = new String[3 + args.length];

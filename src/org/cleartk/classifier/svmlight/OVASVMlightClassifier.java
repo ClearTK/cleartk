@@ -30,6 +30,7 @@ import java.util.TreeMap;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.Classifier_ImplBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.svmlight.model.SVMlightModel;
@@ -45,7 +46,7 @@ public class OVASVMlightClassifier extends Classifier_ImplBase<String,Integer,Fe
 	Map<Integer, SVMlightModel> models;
 	
 
-	public OVASVMlightClassifier(JarFile modelFile) throws IOException {
+	public OVASVMlightClassifier(JarFile modelFile) throws IOException, CleartkException {
 		super(modelFile);
 		this.models = new TreeMap<Integer,SVMlightModel>();
 		
@@ -63,7 +64,7 @@ public class OVASVMlightClassifier extends Classifier_ImplBase<String,Integer,Fe
 		}
 	}
 
-	public String classify(List<Feature> features) {
+	public String classify(List<Feature> features) throws CleartkException {
 		FeatureVector featureVector = this.featuresEncoder.encodeAll(features);
 		
 		int maxScoredIndex = 0;

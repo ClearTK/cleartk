@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.SequentialClassifier_ImplBase;
 import org.cleartk.classifier.encoder.features.NameNumber;
@@ -79,8 +80,9 @@ public class MalletCRFClassifier extends SequentialClassifier_ImplBase<String,St
 	 * list should correspond to some logical sequence of instances
 	 * to be classified (e.g. tokens in a sentence or lines in a document)
 	 * that corresponds to the model that has been built for this classifier.
+	 * @throws CleartkException 
 	 */
-	public List<String> classifySequence(List<List<Feature>> features)
+	public List<String> classifySequence(List<List<Feature>> features) throws CleartkException
 	{
 		String[][] featureStringArray = toStrings(features);
 		Pipe pipe = transducer.getInputPipe();
@@ -109,8 +111,9 @@ public class MalletCRFClassifier extends SequentialClassifier_ImplBase<String,St
 	 * where the last element in each string array is an empty string.
 	 * @param features the features to be converted.  
 	 * @return a 2D string array that Mallet can use. 
+	 * @throws CleartkException 
 	 */
-	private String[][] toStrings(List<List<Feature>> features) {
+	private String[][] toStrings(List<List<Feature>> features) throws CleartkException {
 		List<List<String>> encodedFeatures = new ArrayList<List<String>>(features.size());
 		for( List<Feature> features1 : features ) {
 			List<NameNumber> nameNumbers = this.featuresEncoder.encodeAll(features1);

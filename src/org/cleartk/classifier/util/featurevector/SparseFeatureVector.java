@@ -27,6 +27,8 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.cleartk.CleartkException;
+
 
 
 
@@ -47,7 +49,7 @@ public class SparseFeatureVector extends FeatureVector {
 		values = new TreeMap<Integer, Double>();
 	}
 	
-	public SparseFeatureVector(FeatureVector fv) {
+	public SparseFeatureVector(FeatureVector fv) throws CleartkException {
 		this();
 		for( FeatureVector.Entry entry : fv ) {
 			this.set(entry.index, entry.value);
@@ -67,7 +69,10 @@ public class SparseFeatureVector extends FeatureVector {
 		return new Iterator(this.values);
 	}
 
-	public void set(int index, double value) {
+	public void set(int index, double value) throws CleartkException {
+		if( Double.isInfinite(value) || Double.isNaN(value) )
+			throw new CleartkException(String.format("trying to set illegal value in %d:%.7f", index, value));
+
 		if( value != 0.0 )
 			this.values.put(index, value);
 		else {

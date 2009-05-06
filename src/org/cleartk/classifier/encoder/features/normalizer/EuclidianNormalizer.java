@@ -48,8 +48,10 @@ public class EuclidianNormalizer implements NameNumberNormalizer {
 		
 		d = Math.sqrt(d);
 		
-		for( NameNumber fve : fves ) {
-			fve.number = fve.number.doubleValue() / d;
+		if( d > 0 ) {
+			for( NameNumber fve : fves ) {
+				fve.number = fve.number.doubleValue() / d;
+			}
 		}
 	}
 

@@ -20,52 +20,49 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
-package org.cleartk.classifier.svmlight;
+ */
+
+package org.cleartk.classifier.libsvm;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Locale;
 
-import org.cleartk.CleartkException;
-import org.cleartk.classifier.ClassifierBuilder;
-import org.cleartk.classifier.DataWriter_ImplBase;
+import org.cleartk.classifier.DataWriter;
+import org.cleartk.classifier.DataWriterFactory_ImplBase;
+import org.cleartk.classifier.encoder.features.BooleanEncoder;
+import org.cleartk.classifier.encoder.features.FeatureVectorFeaturesEncoder;
+import org.cleartk.classifier.encoder.features.NumberEncoder;
+import org.cleartk.classifier.encoder.features.StringEncoder;
+import org.cleartk.classifier.encoder.features.normalizer.EuclidianNormalizer;
+import org.cleartk.classifier.encoder.features.normalizer.NameNumberNormalizer;
+import org.cleartk.classifier.encoder.outcome.BooleanToBooleanOutcomeEncoder;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
-public class SVMlightDataWriter extends DataWriter_ImplBase<Boolean,Boolean,FeatureVector> {
+/**
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * @author Philipp Wetzler
+ * 
+ */
 
-	public SVMlightDataWriter(File outputDirectory) throws IOException {
-		super(outputDirectory);
-		this.outputWriter = getPrintWriter("training-data.svmlight");
-	}
+public class DefaultLIBLINEARDataWriterFactory extends DataWriterFactory_ImplBase<FeatureVector, Boolean, Boolean> {
 
-	@Override
-	public void writeEncoded(FeatureVector features, Boolean outcome) throws CleartkException {
-		StringBuffer output = new StringBuffer();
-		
-		if( outcome == null )
-			return;
-			
-		if( outcome.booleanValue() ) {
-			output.append("+1");
-		} else {
-			output.append("-1");
+	public DataWriter<Boolean> createDataWriter(File outputDirectory) throws IOException {
+		LIBLINEARDataWriter dataWriter = new LIBLINEARDataWriter(outputDirectory);
+
+		if(!this.setEncodersFromFileSystem(dataWriter)) {
+			NameNumberNormalizer normalizer = new EuclidianNormalizer();
+			FeatureVectorFeaturesEncoder featuresEncoder = new FeatureVectorFeaturesEncoder(normalizer);
+			featuresEncoder.addEncoder(new NumberEncoder());
+			featuresEncoder.addEncoder(new BooleanEncoder());
+			featuresEncoder.addEncoder(new StringEncoder());
+			dataWriter.setFeaturesEncoder(featuresEncoder);
+
+			dataWriter.setOutcomeEncoder(new BooleanToBooleanOutcomeEncoder());
 		}
 
-		for( FeatureVector.Entry entry : features ) {
-			if( Double.isInfinite(entry.value) || Double.isNaN(entry.value) )
-				throw new CleartkException(String.format("illegal value in entry %d:%.7f", entry.index, entry.value));
-			output.append(String.format(Locale.US, " %d:%.7f", entry.index, entry.value));
-		}
-
-		outputWriter.println(output);
+		return dataWriter;
 	}
-
-	public Class<? extends ClassifierBuilder<Boolean>> getDefaultClassifierBuilderClass() {
-		return SVMlightClassifierBuilder.class;
-	}
-
-	private PrintWriter outputWriter;
 
 }

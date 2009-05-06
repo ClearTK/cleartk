@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.Classifier_ImplBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.libsvm.model.LIBLINEARModel;
@@ -48,14 +49,14 @@ public class LIBLINEARClassifier extends Classifier_ImplBase<Boolean,Boolean,Fea
 	public static final String MODEL_NAME = "model.liblinear";
 	LIBLINEARModel model;
 
-	public LIBLINEARClassifier(JarFile modelFile) throws IOException {
+	public LIBLINEARClassifier(JarFile modelFile) throws IOException, CleartkException {
 		super(modelFile);
 		
 		ZipEntry modelEntry = modelFile.getEntry(LIBLINEARClassifier.MODEL_NAME);
 		this.model = LIBLINEARModel.fromInputStream(modelFile.getInputStream(modelEntry));
 	}
 
-	public Boolean classify(List<Feature> features) {
+	public Boolean classify(List<Feature> features) throws CleartkException {
 		FeatureVector featureVector = this.featuresEncoder.encodeAll(features);
 
 		boolean encodedOutcome = (model.predict(featureVector) > 0);

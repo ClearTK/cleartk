@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 import org.cleartk.classifier.util.featurevector.SparseFeatureVector;
 
@@ -40,14 +41,14 @@ import org.cleartk.classifier.util.featurevector.SparseFeatureVector;
 
  */
 public class SVMlightModel {
-	public static SVMlightModel fromFile(File modelFile) throws IOException {
+	public static SVMlightModel fromFile(File modelFile) throws IOException, CleartkException {
 		InputStream modelStream = new FileInputStream(modelFile);
 		SVMlightModel model = fromInputStream(modelStream);
 		modelStream.close();
 		return model;
 	}
 	
-	public static SVMlightModel fromInputStream(InputStream modelStream) throws IOException {
+	public static SVMlightModel fromInputStream(InputStream modelStream) throws IOException, CleartkException {
 		SVMlightModel model = new SVMlightModel();
 		
 		SVMlightReader in = new SVMlightReader(modelStream);
@@ -126,7 +127,7 @@ public class SVMlightModel {
 		return result;
 	}
 	
-	private static SupportVector readSV(SVMlightReader in) throws IOException {
+	private static SupportVector readSV(SVMlightReader in) throws IOException, CleartkException {
 		String[] fields = in.readLine().split(" ");
 		double alpha_y = Double.valueOf(fields[0]);
 		
@@ -142,7 +143,7 @@ public class SVMlightModel {
 		return new SupportVector(alpha_y, fv);
 	}
 	
-	private void compress() {
+	private void compress() throws CleartkException {
 		if( ! (kernel instanceof LinearKernel) )
 			return;
 		
