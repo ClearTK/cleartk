@@ -54,68 +54,67 @@ import org.cleartk.util.UIMAUtil;
 public abstract class POSHandler<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation> implements
 		SequentialAnnotationHandler<String>, Initializable {
 
+	/**
+	 * "org.cleartk.token.pos.POSHandler.PARAM_FEATURE_EXTRACTOR_CLASS"
+	 * is a single, required, string parameter that provides the full name of the
+	 * {@link POSFeatureExtractor} class that will be used to extract features.
+	 */
 	public static final String PARAM_FEATURE_EXTRACTOR_CLASS = "org.cleartk.token.pos.POSHandler.PARAM_FEATURE_EXTRACTOR_CLASS";
 
+	/**
+	 * "org.cleartk.token.pos.POSHandler.PARAM_TAGGER_CLASS"
+	 * is a single, required, string parameter that provides the full name of the
+	 * {@link POSTagger} class that will be used to get and set part-of-speech tags
+	 * on the tokens in the CAS.
+	 */
 	public static final String PARAM_TAGGER_CLASS = "org.cleartk.token.pos.POSHandler.PARAM_TAGGER_CLASS";
 
-	protected boolean typesInitialized = false;
 
 	protected POSFeatureExtractor<TOKEN_TYPE, SENTENCE_TYPE> featureExtractor;
-
 	protected POSTagger<TOKEN_TYPE> tagger;
 
-	private java.lang.reflect.Type tokenClassType; 
-	protected Type tokenType;
+	private Class<? extends TOP> tokenClass; 
+	private Class<? extends TOP> sentenceClass;
 
-	private java.lang.reflect.Type sentenceClassType;
+	protected boolean typesInitialized = false;
+	protected Type tokenType;
 	protected Type sentenceType;
 
 
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-		try {
-			tokenClassType = ReflectionUtil.getTypeArgument(POSHandler.class, "TOKEN_TYPE", this);
-			sentenceClassType = ReflectionUtil.getTypeArgument(POSHandler.class, "SENTENCE_TYPE", this);
-			
-			featureExtractor = ReflectionUtil.uncheckedCast(UIMAUtil.create(
-					context, PARAM_FEATURE_EXTRACTOR_CLASS, POSFeatureExtractor.class));
-			UIMAUtil.initialize(featureExtractor, context);
-			
-			java.lang.reflect.Type featureExtractorTokenClassType = ReflectionUtil.getTypeArgument(POSFeatureExtractor.class, "TOKEN_TYPE", featureExtractor);
-			
-			if (!ReflectionUtil.isAssignableFrom(featureExtractorTokenClassType, tokenClassType)) {
-				throw new RuntimeException(String.format(
-						"feature extractor token type, %s, is incompatible with POS handler token type, %s.",
-						featureExtractorTokenClassType, tokenClassType));
-			}
+		// extract the token and sentence classes from the type parameters 
+		this.tokenClass = ReflectionUtil.<Class<? extends TOP>>uncheckedCast(
+				ReflectionUtil.getTypeArgument(POSHandler.class, "TOKEN_TYPE", this));
+		this.sentenceClass = ReflectionUtil.<Class<? extends TOP>>uncheckedCast(
+				ReflectionUtil.getTypeArgument(POSHandler.class, "SENTENCE_TYPE", this));
 
-			java.lang.reflect.Type featureExtractorSentenceClassType = ReflectionUtil.getTypeArgument(POSFeatureExtractor.class, "SENTENCE_TYPE", featureExtractor);
-			if (!ReflectionUtil.isAssignableFrom(featureExtractorSentenceClassType, sentenceClassType)) {
-				throw new RuntimeException(String.format(
-						"feature extractor sentence type, %s, is incompatible with POS handler sentence type, %s.",
-						featureExtractorSentenceClassType, sentenceClassType));
-			}
+		// create the feature extractor and tagger
+		POSFeatureExtractor<?, ?> untypedExtractor = UIMAUtil.create(
+				context, PARAM_FEATURE_EXTRACTOR_CLASS, POSFeatureExtractor.class);
+		POSTagger<?> untypedTagger = UIMAUtil.create(
+				context, PARAM_TAGGER_CLASS, POSTagger.class);
 
-			tagger = ReflectionUtil.uncheckedCast(UIMAUtil.create(context, PARAM_TAGGER_CLASS, POSTagger.class));
-			
-			java.lang.reflect.Type taggerTokenClassType = ReflectionUtil.getTypeArgument(POSTagger.class, "TOKEN_TYPE", tagger);
-			if (!ReflectionUtil.isAssignableFrom(taggerTokenClassType, tokenClassType)) {
-				throw new RuntimeException(String.format(
-						"tagger token type, %s, is incompatible with POS handler token type, %s.",
-						taggerTokenClassType, tokenClassType));
-			}
-
-		}
-		catch (Exception e) {
-			throw new ResourceInitializationException(e);
-		}
+		// check that the type parameters are compatible 
+		UIMAUtil.checkTypeParameterIsAssignable(
+				POSFeatureExtractor.class, "TOKEN_TYPE", untypedExtractor, 
+				POSHandler.class, "TOKEN_TYPE", this);
+		UIMAUtil.checkTypeParameterIsAssignable(
+				POSFeatureExtractor.class, "SENTENCE_TYPE", untypedExtractor, 
+				POSHandler.class, "SENTENCE_TYPE", this);
+		UIMAUtil.checkTypeParameterIsAssignable(
+				POSTagger.class, "TOKEN_TYPE", untypedTagger, 
+				POSHandler.class, "TOKEN_TYPE", this);
+		
+		// set the instance variables
+		this.featureExtractor = ReflectionUtil.uncheckedCast(untypedExtractor);
+		this.tagger = ReflectionUtil.uncheckedCast(untypedTagger);
 	}
 
 	protected void initializeTypes(JCas jCas) throws AnalysisEngineProcessException {
 		try {
-			tokenType = UIMAUtil.getCasType(jCas, ReflectionUtil.<Class<? extends TOP>>uncheckedCast(tokenClassType));
-			sentenceType = UIMAUtil.getCasType(jCas, ReflectionUtil.<Class<? extends TOP>>uncheckedCast(sentenceClassType));
-		}
-		catch (Exception e) {
+			tokenType = UIMAUtil.getCasType(jCas, this.tokenClass);
+			sentenceType = UIMAUtil.getCasType(jCas, this.sentenceClass);
+		} catch (Exception e) {
 			throw new AnalysisEngineProcessException(e);
 		}
 		typesInitialized = true;
