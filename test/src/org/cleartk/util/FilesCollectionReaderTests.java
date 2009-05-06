@@ -220,6 +220,32 @@ public class FilesCollectionReaderTests {
 		Assert.assertTrue(pathsSet.isEmpty());
 	}
 
+	@Test
+	public void testPatterns() throws IOException, UIMAException {
+		
+		// create the PlainTextCollectionReader with the HTML input directory  
+		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
+				FilesCollectionReader.class, null,
+				FilesCollectionReader.PARAM_FILE_OR_DIRECTORY, this.inputDir,
+				FilesCollectionReader.PARAM_PATTERNS, new String[] {"[.]1[.]", "3"});
+		
+		// the expected files
+		Set<String> expected = new HashSet<String>();
+		expected.add("/2/2.1.html");
+		expected.add("/3.html");
+		expected.add("/4/1/4.1.1.html");
+
+		// collect paths from the CAS
+		Set<String> actual = new HashSet<String>();
+		for (JCas jCas: new JCasIterable(reader)) {
+			actual.add(ViewURIUtil.getURI(jCas).replace('\\', '/'));
+		}
+		reader.close();
+		
+		// check that the expected paths were in the CAS
+		Assert.assertEquals(expected, actual);
+	}
+
 	private final String[] fileNames = new String[]{
 			"11319941.tree",
 			"11597317.txt",

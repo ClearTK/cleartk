@@ -38,10 +38,35 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 
 
 public class Files {
+	
+	public static FileFilter createPatternFilter(final String[] patternStrings) {
+		int length = patternStrings == null ? 0 : patternStrings.length;
+		final Pattern[] patterns = new Pattern[length];
+		for (int i = 0; i < length; ++i) {
+			patterns[i] = Pattern.compile(patternStrings[i]);
+		}
+		return new FileFilter() {
+			public boolean accept(File file) {
+				if (patterns.length == 0) {
+					return true;
+				} else {
+					String path = file.getName();
+					for (Pattern pattern: patterns) {
+						if (pattern.matcher(path).find()) {
+							return true;
+						}
+					}
+					return false;
+				}
+			}
+		};
+	}
+	
 	public static FileFilter createSuffixFilter(final String[] suffixes) {
 		return new FileFilter() {
 

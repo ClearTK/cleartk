@@ -27,11 +27,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
+import org.uutuc.util.TearDownUtil;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -68,4 +73,40 @@ public class FilesTests {
 		assertTrue(retrievedFileNames.contains("2.1.html"));
 		assertTrue(retrievedFileNames.contains("4.1.1.html"));
 	}
+	
+	@Test
+	public void testPatternFilter() {
+		String[] patterns = {"[.]txt", "^abc[.]def$"};
+		Set<String> expected = new HashSet<String>();
+		expected.add("abc.def");
+		expected.add("abc.txt");
+		expected.add("abc.txt.def");
+		
+		
+		FileFilter filter = Files.createPatternFilter(patterns);
+		Set<String> actual = new HashSet<String>();
+		for (File file: Files.getFiles(OUTPUT_DIR, filter)) {
+			actual.add(file.getName());
+		}
+		assertEquals(expected, actual);
+	}
+	
+	@Before
+	public void setUp() throws IOException {
+		if (!OUTPUT_DIR.exists()) {
+			OUTPUT_DIR.mkdirs();
+		}
+		new File(OUTPUT_DIR, "txt").createNewFile();
+		new File(OUTPUT_DIR, "abc.def").createNewFile();
+		new File(OUTPUT_DIR, "abc.txt").createNewFile();
+		new File(OUTPUT_DIR, "abc.def.ghi").createNewFile();
+		new File(OUTPUT_DIR, "abc.txt.def").createNewFile();
+	}
+	
+	@After
+	public void tearDown() {
+		TearDownUtil.removeDirectory(OUTPUT_DIR);
+	}
+	
+	protected static final File OUTPUT_DIR = new File("test/data/files");
 }

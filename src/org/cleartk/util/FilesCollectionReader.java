@@ -24,6 +24,7 @@
 package org.cleartk.util;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
@@ -98,9 +99,20 @@ public class FilesCollectionReader extends CollectionReader_ImplBase {
 	 * "org.cleartk.util.FilesCollectionReader.PARAM_SUFFIXES" is a
 	 * multiple, optional, string parameter that takes suffixes (e.g. .txt) of
 	 * the files that should be read in. This parameter can only be set if there
-	 * is no value for PARAM_FILE_NAMES_FILES or PARAM_FILE_NAMES.
+	 * is no value for PARAM_FILE_NAMES_FILES, PARAM_FILE_NAMES or PARAM_PATTERNS.
 	 */
 	public static final String PARAM_SUFFIXES = "org.cleartk.util.FilesCollectionReader.PARAM_SUFFIXES";
+
+	/**
+	 * "org.cleartk.util.FilesCollectionReader.PARAM_PATTERNS" is a
+	 * multiple, optional, string parameter that takes regular expressions for 
+	 * matching the files that should be read in. Note that these will be searched
+	 * for using (@link Matcher.find), so if you want to make sure the entire file
+	 * name matches a pattern, you should start the string with ^ and end the string
+	 * with $. This parameter can only be set if there is no value for
+	 * PARAM_FILE_NAMES_FILES, PARAM_FILE_NAMES or PARAM_SUFFIXES.
+	 */
+	public static final String PARAM_PATTERNS = "org.cleartk.util.FilesCollectionReader.PARAM_PATTERNS";
 
 	/**
 	 * "org.cleartk.util.FilesCollectionReader.PARAM_FILE_NAMES_FILES" is a
@@ -113,8 +125,8 @@ public class FilesCollectionReader extends CollectionReader_ImplBase {
 	 * traversing the directory structure provided and looking for files with a
 	 * name found in the lists of file names. That is, no exception will be
 	 * thrown if a file name in the list does not actually correspond to a file.
-	 * This parameter can only be set if there is no value for PARAM_SUFFIXES or
-	 * PARAM_FILE_NAMES.
+	 * This parameter can only be set if there is no value for PARAM_SUFFIXES,
+	 * PARAM_PATTERNS or PARAM_FILE_NAMES.
 	 */
 	public static final String PARAM_FILE_NAMES_FILES = "org.cleartk.util.FilesCollectionReader.PARAM_FILE_NAMES_FILES";
 
@@ -126,8 +138,8 @@ public class FilesCollectionReader extends CollectionReader_ImplBase {
 	 * traversing the directory structure provided and looking for files with a
 	 * name found in the list of file names. That is, no exception will be
 	 * thrown if a file name in the list does not actually correspond to a file.
-	 * This parameter can only be set if there is no value for PARAM_SUFFIXES or
-	 * PARAM_FILE_NAMES_FILES.
+	 * This parameter can only be set if there is no value for PARAM_SUFFIXES,
+	 * PARAM_PATTERNS or PARAM_FILE_NAMES_FILES.
 	 */
 	public static final String PARAM_FILE_NAMES = "org.cleartk.util.FilesCollectionReader.PARAM_FILE_NAMES";
 
@@ -160,26 +172,31 @@ public class FilesCollectionReader extends CollectionReader_ImplBase {
 			throw new ResourceInitializationException(new IOException(message));
 		}
 
-		String[] suffixNames = (String[]) UIMAUtil.getDefaultingConfigParameterValue(getUimaContext(), PARAM_SUFFIXES,
-				null);
-		String[] fileNamesLists = (String[]) UIMAUtil.getDefaultingConfigParameterValue(getUimaContext(),
-				PARAM_FILE_NAMES_FILES, null);
-		String[] fileNames = (String[]) UIMAUtil.getDefaultingConfigParameterValue(getUimaContext(), PARAM_FILE_NAMES,
-				null);
+		String[] suffixNames = (String[]) UIMAUtil.getDefaultingConfigParameterValue(
+				this.getUimaContext(), PARAM_SUFFIXES, null);
+		String[] patterns = (String[]) UIMAUtil.getDefaultingConfigParameterValue(
+				this.getUimaContext(), PARAM_PATTERNS, null);
+		String[] fileNamesLists = (String[]) UIMAUtil.getDefaultingConfigParameterValue(
+				this.getUimaContext(), PARAM_FILE_NAMES_FILES, null);
+		String[] fileNames = (String[]) UIMAUtil.getDefaultingConfigParameterValue(
+				this.getUimaContext(), PARAM_FILE_NAMES, null);
 
-		if (!(suffixNames != null ^ fileNamesLists != null ^ fileNames != null)
-				&& (suffixNames != null || fileNamesLists != null || fileNames != null)) {
+		if (!(suffixNames != null ^ patterns != null ^ fileNamesLists != null ^ fileNames != null)
+				&& (suffixNames != null || patterns != null || fileNamesLists != null || fileNames != null)) {
 			String message = String.format(
-					"One of the parameters %1$s, %2$s, or %3$s may be set but not more than one of them.",
-					PARAM_SUFFIXES, PARAM_FILE_NAMES_FILES, PARAM_FILE_NAMES);
+					"One of the parameters %1$s, %2$s, %3$s or %4$s may be set but not more than one of them.",
+					PARAM_SUFFIXES, PARAM_PATTERNS, PARAM_FILE_NAMES_FILES, PARAM_FILE_NAMES);
 			throw new ResourceInitializationException(new IllegalArgumentException(message));
 		}
 
 		if (suffixNames != null) {
 			files = Files.getFiles(rootFile, suffixNames).iterator();
 			filesCount = countFiles(Files.getFiles(rootFile, suffixNames).iterator());
-		}
-		else if (fileNamesLists != null) {
+		} else if (patterns != null) {
+			FileFilter patternFilter = Files.createPatternFilter(patterns);
+			files = Files.getFiles(rootFile, patternFilter).iterator();
+			filesCount = countFiles(Files.getFiles(rootFile, patternFilter).iterator());
+		} else if (fileNamesLists != null) {
 			Set<String> fileNamesFromLists = new HashSet<String>();
 			try {
 				for (String fileNamesList : fileNamesLists) {
