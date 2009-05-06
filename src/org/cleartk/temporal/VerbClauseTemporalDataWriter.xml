@@ -64,7 +64,7 @@ POSSIBILITY OF SUCH DAMAGE.</description>
       <nameValuePair>
         <name>org.cleartk.classifier.DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS</name>
         <value>
-          <string>org.cleartk.classifier.svmlight.OVASVMlightDataWriter</string>
+          <string>org.cleartk.classifier.svmlight.DefaultOVASVMlightDataWriterFactory</string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>

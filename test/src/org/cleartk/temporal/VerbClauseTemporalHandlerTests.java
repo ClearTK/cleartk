@@ -40,7 +40,7 @@ import org.cleartk.classifier.DataWriterAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.InstanceConsumer;
-import org.cleartk.classifier.svmlight.OVASVMlightDataWriter;
+import org.cleartk.classifier.svmlight.DefaultOVASVMlightDataWriterFactory;
 import org.cleartk.corpus.timeml.type.Event;
 import org.cleartk.corpus.timeml.type.TemporalLink;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
@@ -203,7 +203,7 @@ public class VerbClauseTemporalHandlerTests {
 		
 		Object dataWriter = engine.getConfigParameterValue(
 				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS);
-		Assert.assertEquals(OVASVMlightDataWriter.class.getName(), dataWriter);
+		Assert.assertEquals(DefaultOVASVMlightDataWriterFactory.class.getName(), dataWriter);
 		
 		Object outputDir = engine.getConfigParameterValue(
 				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY);
