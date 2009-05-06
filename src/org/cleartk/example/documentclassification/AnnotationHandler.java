@@ -30,6 +30,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
+import org.cleartk.Initializable;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.InstanceConsumer;
 import org.cleartk.classifier.feature.extractor.CountsExtractor;
@@ -44,7 +45,7 @@ import org.cleartk.type.Token;
  * @author Philipp G. Wetzler
  *
  */
-public class AnnotationHandler implements org.cleartk.classifier.AnnotationHandler<String> {
+public class AnnotationHandler implements org.cleartk.classifier.AnnotationHandler<String> , Initializable{
 
 	public static final String PREDICTION_VIEW_NAME = "ExampleDocumentClassificationPredictionView";
 
