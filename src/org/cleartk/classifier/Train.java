@@ -32,7 +32,7 @@ import java.io.File;
 */
 
 public class Train {
-	public static void main(String[] args) throws Exception {
+	public static void main(String ... args) throws Exception {
 		String programName = Train.class.getName();
 		String usage = String.format(
 				"usage: java %s DIR\n\n" + 

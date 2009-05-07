@@ -87,7 +87,7 @@ public class VerbClauseTemporalTrain {
 		FileUtils.deleteRecursive(cleanedTimeBankDir);
 
 		// train the model
-		Train.main(new String[]{outputDir});
+		Train.main(outputDir);
 		
 	}
 	

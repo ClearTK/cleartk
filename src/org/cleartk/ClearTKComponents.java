@@ -37,6 +37,8 @@ import org.cleartk.corpus.timeml.TimeMLGoldAnnotator;
 import org.cleartk.corpus.timeml.TimeMLWriter;
 import org.cleartk.corpus.timeml.TreebankAligningAnnotator;
 import org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter;
+import org.cleartk.srl.conll2005.Conll2005GoldAnnotator;
+import org.cleartk.srl.conll2005.Conll2005GoldReader;
 import org.cleartk.syntax.opennlp.OpenNLPTreebankParser;
 import org.cleartk.token.TokenAnnotator;
 import org.cleartk.token.opennlp.OpenNLPPOSTagger;
@@ -190,6 +192,19 @@ public class ClearTKComponents {
 				TimeMLWriter.class, TYPE_SYSTEM_DESCRIPTION,
 				TimeMLWriter.PARAM_OUTPUT_DIRECTORY, outputDir);
 
+	}
+	
+	public static CollectionReader createConll2005GoldReader(String conll2005DataFile)
+	throws ResourceInitializationException {
+		return CollectionReaderFactory.createCollectionReader(
+				Conll2005GoldReader.class, TYPE_SYSTEM_DESCRIPTION,
+				Conll2005GoldReader.PARAM_CONLL_2005_DATA_FILE, conll2005DataFile);
+	}
+	
+	public static AnalysisEngine createConll2005GoldAnnotator()
+	throws ResourceInitializationException {
+		return AnalysisEngineFactory.createAnalysisEngine(
+				Conll2005GoldAnnotator.class, TYPE_SYSTEM_DESCRIPTION);
 	}
 
 	private static String getParameterValue(String paramName, String defaultValue) {
