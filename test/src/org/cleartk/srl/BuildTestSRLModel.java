@@ -30,13 +30,12 @@ import java.util.Arrays;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-import org.apache.uima.analysis_engine.metadata.SofaMapping;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.metadata.TypePriorities;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
-import org.cleartk.ViewNames;
 import org.cleartk.classifier.DataWriterAnnotator;
+import org.cleartk.classifier.InstanceConsumer;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.classifier.svmlight.DefaultSVMlightDataWriterFactory;
 import org.cleartk.srl.propbank.PropbankGoldAnnotator;
@@ -45,7 +44,6 @@ import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
 import org.cleartk.util.TestsUtil;
 import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.CollectionReaderFactory;
-import org.uutuc.factory.SofaMappingFactory;
 import org.uutuc.util.JCasIterable;
 
 
@@ -82,22 +80,18 @@ public class BuildTestSRLModel {
 				DataWriterAnnotator.class, typeSystemDescription, null, 
 				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, "test/data/srl/predicate",
 				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, DefaultSVMlightDataWriterFactory.class.getName(),
-				DataWriterAnnotator.PARAM_ANNOTATION_HANDLER, PredicateAnnotationHandler.class.getName());
+				InstanceConsumer.PARAM_ANNOTATION_HANDLER, PredicateAnnotationHandler.class.getName());
 		
 		AnalysisEngineDescription argumentDWA = AnalysisEngineFactory.createPrimitiveAnalysisEngineDescription(
 				DataWriterAnnotator.class, typeSystemDescription, null,
 				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, "test/data/srl/argument",
 				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, DefaultMaxentDataWriterFactory.class.getName(),
-				DataWriterAnnotator.PARAM_ANNOTATION_HANDLER, ArgumentAnnotationHandler.class.getName());
+				InstanceConsumer.PARAM_ANNOTATION_HANDLER, ArgumentAnnotationHandler.class.getName());
 		
 		AnalysisEngine aggregateAE = AnalysisEngineFactory.createAggregateAnalysisEngine(
 				Arrays.asList(tbAnnotator, pbAnnotator, predicateDWA, argumentDWA), 
 				Arrays.asList("tbAnnotator", "pbAnnotator", "predicateDWA", "argumentDWA"),
-				typeSystemDescription, (TypePriorities) null, 
-				new SofaMapping[] {
-					SofaMappingFactory.createSofaMapping(ViewNames.TREEBANK_ANNOTATIONS, "predicateDWA", ViewNames.DEFAULT),
-					SofaMappingFactory.createSofaMapping(ViewNames.TREEBANK_ANNOTATIONS, "argumentDWA", ViewNames.DEFAULT),
-				});
+				typeSystemDescription, (TypePriorities) null, null);
 
 		JCasIterable jCases = new JCasIterable(reader, aggregateAE);
 		
@@ -115,13 +109,13 @@ public class BuildTestSRLModel {
 		System.out.println("Train Predicate Model");
 		System.out.println("---------------------");
 
-		org.cleartk.classifier.Train.main(new String[] {"test/data/srl/predicate"});
+		org.cleartk.classifier.Train.main("test/data/srl/predicate");
 
 		System.out.println("--------------------");
 		System.out.println("Train Argument Model");
 		System.out.println("--------------------");
 
-		org.cleartk.classifier.Train.main(new String[] {"test/data/srl/argument"});
+		org.cleartk.classifier.Train.main("test/data/srl/argument");
 	}
 
 }

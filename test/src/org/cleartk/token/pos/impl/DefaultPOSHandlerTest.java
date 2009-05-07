@@ -34,7 +34,6 @@ import java.util.List;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_component.AnalysisComponent;
 import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.apache.uima.analysis_engine.metadata.SofaMapping;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.metadata.TypePriorities;
@@ -43,6 +42,7 @@ import org.cleartk.ViewNames;
 import org.cleartk.classifier.BuildJar;
 import org.cleartk.classifier.SequentialClassifierAnnotator;
 import org.cleartk.classifier.SequentialDataWriterAnnotator;
+import org.cleartk.classifier.SequentialInstanceConsumer;
 import org.cleartk.classifier.Train;
 import org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
@@ -61,7 +61,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.CollectionReaderFactory;
-import org.uutuc.factory.SofaMappingFactory;
 import org.uutuc.factory.TokenFactory;
 import org.uutuc.util.HideOutput;
 import org.uutuc.util.JCasIterable;
@@ -98,22 +97,16 @@ public class DefaultPOSHandlerTest {
 				FilesCollectionReader.PARAM_SUFFIXES, new String[] {".tree"},
 				FilesCollectionReader.PARAM_VIEW_NAME, ViewNames.TREEBANK);
 		
-		SofaMapping[] sofaMappings = new SofaMapping[] {
-				SofaMappingFactory.createSofaMapping(ViewNames.TREEBANK, TreebankGoldAnnotator.class, ViewNames.TREEBANK),
-				SofaMappingFactory.createSofaMapping(ViewNames.TREEBANK_ANNOTATIONS, TreebankGoldAnnotator.class, ViewNames.TREEBANK_ANNOTATIONS),
-				SofaMappingFactory.createSofaMapping(ViewNames.TREEBANK_ANNOTATIONS, SequentialDataWriterAnnotator.class, ViewNames.DEFAULT)
-		};
-		
 		List<Class<? extends AnalysisComponent>> aggregatedClasses = new ArrayList<Class<? extends AnalysisComponent>>();
 		aggregatedClasses.add(TreebankGoldAnnotator.class);
 		aggregatedClasses.add(SequentialDataWriterAnnotator.class);
 
 		AnalysisEngine aggregateEngine = AnalysisEngineFactory.createAggregateAnalysisEngine(aggregatedClasses, 
-				defaultTypeSystemDescription, (TypePriorities)null, sofaMappings,
+				defaultTypeSystemDescription, (TypePriorities)null, null,
 				TreebankGoldAnnotator.PARAM_POST_TREES, false,
 				SequentialDataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, ViterbiDataWriterFactory.class.getName(),
 				ViterbiDataWriter.PARAM_DELEGATED_DATAWRITER_FACTORY_CLASS, DefaultMaxentDataWriterFactory.class.getName(),
-				SequentialDataWriterAnnotator.PARAM_ANNOTATION_HANDLER, DefaultPOSHandler.class.getName(),
+				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER, DefaultPOSHandler.class.getName(),
 				SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory.getPath(),
 				POSHandler.PARAM_FEATURE_EXTRACTOR_CLASS, DefaultFeatureExtractor.class.getName(),
 				POSHandler.PARAM_TAGGER_CLASS, DefaultTagger.class.getName());
@@ -153,7 +146,7 @@ public class DefaultPOSHandlerTest {
 		
 		String expected = DefaultPOSHandler.class.getName();
 		Object actual = engine.getConfigParameterValue(
-				SequentialDataWriterAnnotator.PARAM_ANNOTATION_HANDLER);
+				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER);
 		Assert.assertEquals(expected, actual);
 
 		expected= DefaultFeatureExtractor.class.getName();

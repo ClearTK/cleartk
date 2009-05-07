@@ -40,6 +40,7 @@ import org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter;
 import org.cleartk.srl.conll2005.Conll2005GoldAnnotator;
 import org.cleartk.srl.conll2005.Conll2005GoldReader;
 import org.cleartk.syntax.opennlp.OpenNLPTreebankParser;
+import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
 import org.cleartk.token.TokenAnnotator;
 import org.cleartk.token.opennlp.OpenNLPPOSTagger;
 import org.cleartk.token.snowball.SnowballStemmer;
@@ -191,7 +192,6 @@ public class ClearTKComponents {
 		return AnalysisEngineFactory.createAnalysisEngine(
 				TimeMLWriter.class, TYPE_SYSTEM_DESCRIPTION,
 				TimeMLWriter.PARAM_OUTPUT_DIRECTORY, outputDir);
-
 	}
 	
 	public static CollectionReader createConll2005GoldReader(String conll2005DataFile)
@@ -205,6 +205,14 @@ public class ClearTKComponents {
 	throws ResourceInitializationException {
 		return AnalysisEngineFactory.createAnalysisEngine(
 				Conll2005GoldAnnotator.class, TYPE_SYSTEM_DESCRIPTION);
+	}
+	
+	public static AnalysisEngine createTreebankGoldAnnotator(boolean postTrees)
+	throws ResourceInitializationException {
+		return AnalysisEngineFactory.createAnalysisEngine(
+				TreebankGoldAnnotator.class, TYPE_SYSTEM_DESCRIPTION,
+				TreebankGoldAnnotator.PARAM_POST_TREES, postTrees);
+
 	}
 
 	private static String getParameterValue(String paramName, String defaultValue) {

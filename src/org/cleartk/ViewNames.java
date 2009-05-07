@@ -52,11 +52,6 @@ public class ViewNames {
 	public static String DEFAULT = CAS.NAME_DEFAULT_SOFA;
 
 	/**
-	 * The view where TreebankGoldAnnotator places annotations.
-	 */
-	public static String TREEBANK_ANNOTATIONS = "GoldView";
-
-	/**
 	 * The view containing the XML text of an ACE APF file.
 	 */
 	public static String ACE_APF_URI = "ApfUriView";

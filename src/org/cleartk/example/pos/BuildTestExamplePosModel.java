@@ -24,17 +24,8 @@
 
 package org.cleartk.example.pos;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.uima.analysis_component.AnalysisComponent;
-import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.apache.uima.analysis_engine.metadata.SofaMapping;
-import org.apache.uima.collection.CollectionReader;
-import org.apache.uima.jcas.JCas;
-import org.apache.uima.resource.metadata.TypePriorities;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
-import org.cleartk.ViewNames;
+import org.cleartk.ClearTKComponents;
 import org.cleartk.classifier.SequentialDataWriterAnnotator;
 import org.cleartk.classifier.SequentialInstanceConsumer;
 import org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor;
@@ -42,13 +33,10 @@ import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.classifier.viterbi.ViterbiDataWriter;
 import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
 import org.cleartk.corpus.penntreebank.PennTreebankReader;
-import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
-import org.cleartk.token.snowball.SnowballStemmer;
 import org.cleartk.util.TestsUtil;
+import org.cleartk.util.UIMAUtil;
 import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.CollectionReaderFactory;
-import org.uutuc.factory.SofaMappingFactory;
-import org.uutuc.util.JCasIterable;
 
 /**
  * <br>
@@ -64,39 +52,22 @@ public class BuildTestExamplePosModel {
 		
 		TypeSystemDescription typeSystemDescription = TestsUtil.getTypeSystemDescription();
 		
-		CollectionReader reader = CollectionReaderFactory.createCollectionReader(PennTreebankReader.class, typeSystemDescription, 
-				PennTreebankReader.PARAM_CORPUS_DIRECTORY, "../ClearTK Data/data/treebank/wsj",
-				PennTreebankReader.PARAM_SECTIONS, "02-03");
-		
-		SofaMapping[] sofaMappings = new SofaMapping[] {
-				SofaMappingFactory.createSofaMapping(ViewNames.TREEBANK, TreebankGoldAnnotator.class, ViewNames.TREEBANK),
-				SofaMappingFactory.createSofaMapping(ViewNames.TREEBANK_ANNOTATIONS, TreebankGoldAnnotator.class, ViewNames.TREEBANK_ANNOTATIONS),
-				SofaMappingFactory.createSofaMapping(ViewNames.TREEBANK_ANNOTATIONS, SequentialDataWriterAnnotator.class, ViewNames.DEFAULT),
-				SofaMappingFactory.createSofaMapping(ViewNames.TREEBANK_ANNOTATIONS, SnowballStemmer.class, ViewNames.DEFAULT)
-			};
-
-		List<Class<? extends AnalysisComponent>> analysisEngines= new ArrayList<Class<? extends AnalysisComponent>>();
-		analysisEngines.add(TreebankGoldAnnotator.class);
-		analysisEngines.add(SnowballStemmer.class);
-		analysisEngines.add(SequentialDataWriterAnnotator.class);
-		
-		AnalysisEngine aggregateEngine = AnalysisEngineFactory.createAggregateAnalysisEngine(analysisEngines, typeSystemDescription, (TypePriorities) null, sofaMappings, 
-				TreebankGoldAnnotator.PARAM_POST_TREES, false,
-				SnowballStemmer.PARAM_STEMMER_NAME, "English",
-				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER, ExamplePOSAnnotationHandler.class.getName(),
-				SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, "example/model",
-				SequentialDataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, ViterbiDataWriterFactory.class.getName(),
-				DefaultMaxentDataWriterFactory.PARAM_COMPRESS, true,
-				ViterbiDataWriter.PARAM_OUTCOME_FEATURE_EXTRACTORS,  new String[] {DefaultOutcomeFeatureExtractor.class.getName()},
-				ViterbiDataWriter.PARAM_DELEGATED_DATAWRITER_FACTORY_CLASS, DefaultMaxentDataWriterFactory.class.getName()
-		);
-		
-		JCasIterable jCases = new JCasIterable(reader, aggregateEngine);
-		
-		for(@SuppressWarnings("unused") JCas jCas : jCases) { }
-		
-		aggregateEngine.collectionProcessComplete();
-		org.cleartk.classifier.Train.main(new String[] {"example/model"});
+		UIMAUtil.runUIMAPipeline(
+				CollectionReaderFactory.createCollectionReader(PennTreebankReader.class, typeSystemDescription, 
+						PennTreebankReader.PARAM_CORPUS_DIRECTORY, "../ClearTK Data/data/treebank/wsj",
+						PennTreebankReader.PARAM_SECTIONS, "02-03"),
+				ClearTKComponents.createTreebankGoldAnnotator(false),
+				ClearTKComponents.createSnowballStemmer("English"),
+				AnalysisEngineFactory.createAnalysisEngine(
+						SequentialDataWriterAnnotator.class, typeSystemDescription,
+						SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER, ExamplePOSAnnotationHandler.class.getName(),
+						SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, "example/model",
+						SequentialDataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, ViterbiDataWriterFactory.class.getName(),
+						DefaultMaxentDataWriterFactory.PARAM_COMPRESS, true,
+						ViterbiDataWriter.PARAM_OUTCOME_FEATURE_EXTRACTORS,  new String[] {DefaultOutcomeFeatureExtractor.class.getName()},
+						ViterbiDataWriter.PARAM_DELEGATED_DATAWRITER_FACTORY_CLASS, DefaultMaxentDataWriterFactory.class.getName()));
+				
+		org.cleartk.classifier.Train.main("example/model");
 
 	}
 }

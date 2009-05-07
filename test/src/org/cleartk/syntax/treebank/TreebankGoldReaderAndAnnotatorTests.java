@@ -66,7 +66,7 @@ public class TreebankGoldReaderAndAnnotatorTests {
 		
 		treebankGoldAnnotator.process(jCas);
 		
-		JCas goldView = jCas.getView(ViewNames.TREEBANK_ANNOTATIONS);
+		JCas goldView = jCas.getView(ViewNames.DEFAULT);
 		
 		FSIndex sentenceIndex = goldView.getAnnotationIndex(Sentence.type);
 		assertEquals(1, sentenceIndex.size());

@@ -81,7 +81,7 @@ public class TreebankGoldAnnotator extends JCasAnnotator_ImplBase {
 		JCas docView;
 		String tbText;
 		try {
-			docView = jCas.createView(ViewNames.TREEBANK_ANNOTATIONS);
+			docView = jCas.getView(ViewNames.DEFAULT);
 			tbText = jCas.getView(ViewNames.TREEBANK).getDocumentText();
 		} catch (CASException e) {
 			throw new AnalysisEngineProcessException(e);
