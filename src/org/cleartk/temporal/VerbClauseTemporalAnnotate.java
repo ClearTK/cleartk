@@ -25,22 +25,10 @@ package org.cleartk.temporal;
 
 import java.io.File;
 
-import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.util.Level;
 import org.apache.uima.util.Logger;
-import org.cleartk.classifier.ClassifierAnnotator;
-import org.cleartk.classifier.InstanceConsumer;
-import org.cleartk.corpus.timeml.TimeMLWriter;
-import org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter;
-import org.cleartk.syntax.opennlp.OpenNLPTreebankParser;
-import org.cleartk.token.TokenAnnotator;
-import org.cleartk.token.opennlp.OpenNLPPOSTagger;
-import org.cleartk.token.snowball.SnowballStemmer;
-import org.cleartk.util.FilesCollectionReader;
+import org.cleartk.ClearTKComponents;
 import org.cleartk.util.UIMAUtil;
-import org.uutuc.factory.AnalysisEngineFactory;
-import org.uutuc.factory.CollectionReaderFactory;
-import org.uutuc.factory.TypeSystemDescriptionFactory;
 import org.uutuc.factory.UimaContextFactory;
 
 /**
@@ -79,49 +67,17 @@ public class VerbClauseTemporalAnnotate {
 			outputDir.mkdirs();
 		}
 		
-		// use the common ClearTk type system
-		TypeSystemDescription typeSystem =
-			TypeSystemDescriptionFactory.createTypeSystemDescription(
-					"org.cleartk.TypeSystem");
-
 		// run the components on the selected documents
 		UIMAUtil.runUIMAPipeline(
-				CollectionReaderFactory.createCollectionReader(
-						FilesCollectionReader.class, typeSystem,
-						FilesCollectionReader.PARAM_FILE_OR_DIRECTORY, inputFileOrDir),
-				AnalysisEngineFactory.createAnalysisEngine(
-						OpenNLPSentenceSegmenter.class, typeSystem,
-						OpenNLPSentenceSegmenter.PARAM_SENTENCE_MODEL_FILE,
-						"resources/models/OpenNLP.Sentence.English.bin.gz"),
-				AnalysisEngineFactory.createAnalysisEngine(
-						TokenAnnotator.class, typeSystem),
-				AnalysisEngineFactory.createAnalysisEngine(
-						OpenNLPPOSTagger.class, typeSystem,
-						OpenNLPPOSTagger.PARAM_POSTAG_DICTIONARY_FILE,
-						"resources/models/OpenNLP.TagDict.txt",
-						OpenNLPPOSTagger.PARAM_POSTAG_MODEL_FILE,
-						"resources/models/OpenNLP.POSTags.English.bin.gz"),
-				AnalysisEngineFactory.createAnalysisEngine(
-						SnowballStemmer.class, typeSystem,
-						SnowballStemmer.PARAM_STEMMER_NAME, "English"),
-				AnalysisEngineFactory.createAnalysisEngine(
-						OpenNLPTreebankParser.class, typeSystem,
-						OpenNLPTreebankParser.PARAM_BUILD_MODEL_FILE,
-						"resources/models/OpenNLP.Parser.English.Build.bin.gz",
-						OpenNLPTreebankParser.PARAM_CHECK_MODEL_FILE,
-						"resources/models/OpenNLP.Parser.English.Check.bin.gz",
-						OpenNLPTreebankParser.PARAM_CHUNK_MODEL_FILE,
-						"resources/models/OpenNLP.Chunker.English.bin.gz",
-						OpenNLPTreebankParser.PARAM_HEAD_RULES_FILE,
-						"resources/models/OpenNLP.HeadRules.txt"),
-				AnalysisEngineFactory.createAnalysisEngine(
-						ClassifierAnnotator.class, typeSystem,
-						InstanceConsumer.PARAM_ANNOTATION_HANDLER,
-						VerbClauseTemporalHandler.class.getName(),
-						ClassifierAnnotator.PARAM_CLASSIFIER_JAR,
+				ClearTKComponents.createFilesCollectionReader(inputFileOrDir),
+				ClearTKComponents.createOpenNLPSentenceSegmenter(),
+				ClearTKComponents.createTokenAnnotator(),
+				ClearTKComponents.createOpenNLPPOSTagger(),
+				ClearTKComponents.createSnowballStemmer("English"),
+				ClearTKComponents.createOpenNLPTreebankParser(),
+				ClearTKComponents.createClassifierAnnotator(
+						VerbClauseTemporalHandler.class,
 						"resources/models/verb-clause-temporal-model.jar"),
-				AnalysisEngineFactory.createAnalysisEngine(
-						TimeMLWriter.class, typeSystem,
-						TimeMLWriter.PARAM_OUTPUT_DIRECTORY, outputDir.getPath()));
+				ClearTKComponents.createTimeMLWriter(outputDir.getPath()));
 	}
 }

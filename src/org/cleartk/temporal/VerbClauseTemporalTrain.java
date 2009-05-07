@@ -26,24 +26,14 @@ package org.cleartk.temporal;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.Level;
 import org.apache.uima.util.Logger;
+import org.cleartk.ClearTKComponents;
 import org.cleartk.ViewNames;
-import org.cleartk.classifier.DataWriterAnnotator;
-import org.cleartk.classifier.InstanceConsumer;
 import org.cleartk.classifier.Train;
 import org.cleartk.classifier.svmlight.DefaultOVASVMlightDataWriterFactory;
-import org.cleartk.corpus.timeml.PlainTextTLINKGoldAnnotator;
-import org.cleartk.corpus.timeml.TimeMLGoldAnnotator;
-import org.cleartk.corpus.timeml.TreebankAligningAnnotator;
-import org.cleartk.token.snowball.SnowballStemmer;
-import org.cleartk.util.FilesCollectionReader;
 import org.cleartk.util.UIMAUtil;
-import org.uutuc.factory.AnalysisEngineFactory;
-import org.uutuc.factory.CollectionReaderFactory;
-import org.uutuc.factory.TypeSystemDescriptionFactory;
 import org.uutuc.factory.UimaContextFactory;
 
 /**
@@ -72,8 +62,6 @@ public class VerbClauseTemporalTrain {
 		} else if (!new File(args[1]).exists()) {
 			error("TreeBank directory not found: " + args[1]);
 		}
-		
-		
 		String timeBankDir = args[0];
 		String treeBankDir = args[1];
 		String outputDir = args[2];
@@ -82,38 +70,18 @@ public class VerbClauseTemporalTrain {
 		File cleanedTimeBankDir = getCleanedTimeBankDir(timeBankDir);
 		timeBankDir = cleanedTimeBankDir.getPath();
 		
-		// use the common ClearTk type system
-		TypeSystemDescription typeSystem =
-			TypeSystemDescriptionFactory.createTypeSystemDescription(
-					"org.cleartk.TypeSystem");
-
 		// run the components that write out the training data
 		UIMAUtil.runUIMAPipeline(
-				CollectionReaderFactory.createCollectionReader(
-						FilesCollectionReader.class, typeSystem,
-						FilesCollectionReader.PARAM_FILE_OR_DIRECTORY, timeBankDir,
-						FilesCollectionReader.PARAM_PATTERNS, new String[]{"wsj"},
-						FilesCollectionReader.PARAM_VIEW_NAME, ViewNames.TIMEML),
-				AnalysisEngineFactory.createAnalysisEngine(
-						TimeMLGoldAnnotator.class, typeSystem,
-						TimeMLGoldAnnotator.PARAM_LOAD_TLINKS, false),
-				AnalysisEngineFactory.createAnalysisEngine(
-						PlainTextTLINKGoldAnnotator.class, typeSystem,
-						PlainTextTLINKGoldAnnotator.PARAM_TLINK_FILE_URL,
-						"http://www.stanford.edu/~bethard/data/timebank-verb-clause.txt"),
-				AnalysisEngineFactory.createAnalysisEngine(
-						TreebankAligningAnnotator.class, typeSystem,
-						TreebankAligningAnnotator.PARAM_TREEBANK_DIRECTORY, treeBankDir),
-				AnalysisEngineFactory.createAnalysisEngine(
-						SnowballStemmer.class, typeSystem,
-						SnowballStemmer.PARAM_STEMMER_NAME, "English"),
-				AnalysisEngineFactory.createAnalysisEngine(
-						DataWriterAnnotator.class, typeSystem,
-						InstanceConsumer.PARAM_ANNOTATION_HANDLER,
-						VerbClauseTemporalHandler.class.getName(),
-						DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS,
-						DefaultOVASVMlightDataWriterFactory.class.getName(),
-						DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDir));
+				ClearTKComponents.createFilesCollectionReaderWithPatterns(
+						timeBankDir, ViewNames.TIMEML, "wsj"),
+				ClearTKComponents.createTimeMLGoldAnnotator(false),
+				ClearTKComponents.createPlainTextTLINKGoldAnnotator(),
+				ClearTKComponents.createTreebankAligningAnnotator(treeBankDir),
+				ClearTKComponents.createSnowballStemmer("English"),
+				ClearTKComponents.createDataWriterAnnotator(
+						VerbClauseTemporalHandler.class,
+						DefaultOVASVMlightDataWriterFactory.class,
+						outputDir));
 		
 		// remove the temporary directory containing the cleaned up TimeBank
 		FileUtils.deleteRecursive(cleanedTimeBankDir);
