@@ -32,6 +32,7 @@ import java.util.List;
 import org.apache.uima.UIMAException;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.FeatureStructure;
@@ -44,6 +45,7 @@ import org.apache.uima.jcas.cas.StringArray;
 import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.Initializable;
+import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.util.JCasIterable;
 
 /**
@@ -326,8 +328,12 @@ public class UIMAUtil {
 	 * @param reader   The CollectionReader that loads the documents into the CAS.
 	 * @param engines  The AnalysisEngines that process the CAS, in order.
 	 */
-	public static void runUIMAPipeline(CollectionReader reader, AnalysisEngine ... engines)
+	public static void runUIMAPipeline(CollectionReader reader, AnalysisEngineDescription ... descs)
 	throws UIMAException, IOException {
+		AnalysisEngine[] engines = new AnalysisEngine[descs.length];
+		for (int i = 0; i < engines.length; ++i) {
+			engines[i] = AnalysisEngineFactory.createPrimitiveAnalysisEngine(descs[i]);
+		}
 		for (JCas jCas: new JCasIterable(reader, engines)) {
 			assert jCas != null;
 		}

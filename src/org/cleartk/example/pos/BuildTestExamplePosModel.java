@@ -26,16 +26,10 @@ package org.cleartk.example.pos;
 
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.cleartk.ClearTKComponents;
-import org.cleartk.classifier.SequentialDataWriterAnnotator;
-import org.cleartk.classifier.SequentialInstanceConsumer;
-import org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
-import org.cleartk.classifier.viterbi.ViterbiDataWriter;
-import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
 import org.cleartk.corpus.penntreebank.PennTreebankReader;
 import org.cleartk.util.TestsUtil;
 import org.cleartk.util.UIMAUtil;
-import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.CollectionReaderFactory;
 
 /**
@@ -58,14 +52,11 @@ public class BuildTestExamplePosModel {
 						PennTreebankReader.PARAM_SECTIONS, "02-03"),
 				ClearTKComponents.createTreebankGoldAnnotator(false),
 				ClearTKComponents.createSnowballStemmer("English"),
-				AnalysisEngineFactory.createAnalysisEngine(
-						SequentialDataWriterAnnotator.class, typeSystemDescription,
-						SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER, ExamplePOSAnnotationHandler.class.getName(),
-						SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, "example/model",
-						SequentialDataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, ViterbiDataWriterFactory.class.getName(),
-						DefaultMaxentDataWriterFactory.PARAM_COMPRESS, true,
-						ViterbiDataWriter.PARAM_OUTCOME_FEATURE_EXTRACTORS,  new String[] {DefaultOutcomeFeatureExtractor.class.getName()},
-						ViterbiDataWriter.PARAM_DELEGATED_DATAWRITER_FACTORY_CLASS, DefaultMaxentDataWriterFactory.class.getName()));
+				ClearTKComponents.createViterbiDataWriterAnnotator(
+						ExamplePOSAnnotationHandler.class,
+						DefaultMaxentDataWriterFactory.class,
+						"example/model",
+						DefaultMaxentDataWriterFactory.PARAM_COMPRESS, true));
 				
 		org.cleartk.classifier.Train.main("example/model");
 
