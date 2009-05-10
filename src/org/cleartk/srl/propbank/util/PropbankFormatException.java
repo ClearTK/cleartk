@@ -29,8 +29,9 @@ package org.cleartk.srl.propbank.util;
 
  * <p>
  */
-@SuppressWarnings("serial")
 public class PropbankFormatException extends IllegalArgumentException {
+
+	private static final long serialVersionUID = 3194744657398295811L;
 
 	public PropbankFormatException() {
 		super();

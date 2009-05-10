@@ -143,7 +143,7 @@ public class MaxentClassifierTest {
 		reader.close();
 		
 		HideOutput hider = new HideOutput();
-		Train.main(new String[] {outputDirectory});
+		Train.main(outputDirectory);
 		hider.restoreOutput();
 		
 		
@@ -243,7 +243,7 @@ public class MaxentClassifierTest {
 		reader.close();
 		
 		HideOutput hider = new HideOutput();
-		Train.main(new String[] {outputDirectory+"/", "10", "1"});
+		Train.main(outputDirectory+"/", "10", "1");
 		hider.restoreOutput();
 		
 		JarFile modelFile = new JarFile(new File(outputDirectory, "model.jar"));

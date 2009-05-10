@@ -96,7 +96,8 @@ public class BuildTestSRLModel {
 		JCasIterable jCases = new JCasIterable(reader, aggregateAE);
 		
 		int i=0;
-		for(@SuppressWarnings("unused") JCas jCas : jCases) { 
+		for(JCas jCas : jCases) {
+			assert jCas != null;
 			i+=1;
 			if( i % 10 == 0 && jCases.hasNext() )
 				System.out.format("%d...\n", i);

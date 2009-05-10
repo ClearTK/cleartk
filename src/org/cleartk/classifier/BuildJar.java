@@ -43,7 +43,7 @@ public class BuildJar {
 	
 	public static final String MODEL_FILE_NAME = "model.jar";
 	
-	public static void main(String[] args) throws Exception {
+	public static void main(String ... args) throws Exception {
 		String programName = BuildJar.class.getName();
 		String usage = String.format(
 				"usage: java %s DIR\n\n" + 

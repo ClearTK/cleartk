@@ -132,7 +132,7 @@ public class MalletClassifierTest {
 
 		IllegalArgumentException exception = null;
 		try {
-			Train.main(new String[] {outputDirectory, "asdf"});
+			Train.main(outputDirectory, "asdf");
 		} catch(IllegalArgumentException iae) {
 			exception = iae;
 		}
@@ -140,7 +140,7 @@ public class MalletClassifierTest {
 		
 		exception = null;
 		try {
-			Train.main(new String[] {outputDirectory, "MaxEnt", "10", "asdf"});
+			Train.main(outputDirectory, "MaxEnt", "10", "asdf");
 		} catch(IllegalArgumentException iae) {
 			exception = iae;
 		}

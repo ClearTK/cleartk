@@ -214,7 +214,7 @@ public class RunSVMlightTests {
 		
 		// run the training command
 		HideOutput hider = new HideOutput();
-		Train.main(new String[] {this.outputDirectory, "-c", "1.0"});
+		Train.main(this.outputDirectory, "-c", "1.0");
 		hider.restoreOutput();
 		
 		// read in the classifier and test it on new instances
@@ -259,7 +259,7 @@ public class RunSVMlightTests {
 		
 		// run the training command
 		HideOutput hider = new HideOutput();
-		Train.main(new String[] {this.outputDirectory, "-c", "0.01", "-t", "1", "-d", "2"});
+		Train.main(this.outputDirectory, "-c", "0.01", "-t", "1", "-d", "2");
 		hider.restoreOutput();
 		
 		

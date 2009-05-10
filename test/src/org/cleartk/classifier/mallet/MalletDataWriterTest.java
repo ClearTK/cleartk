@@ -113,13 +113,13 @@ public class MalletDataWriterTest {
 		//simply train four different models where each one writes over the previous
 		HideOutput hider = new HideOutput();
 		for(String classifierName : ClassifierTrainerFactory.NAMES) {
-			Train.main(new String[] { outputDirectory, classifierName });
+			Train.main(outputDirectory, classifierName);
 		}
 		hider.restoreOutput();
 		
 		IllegalArgumentException iae = null;
 		try {
-			Train.main(new String[] { outputDirectory, "AutoTrophic" });
+			Train.main(outputDirectory, "AutoTrophic");
 		} catch(IllegalArgumentException e) {
 			iae = e;
 		}
@@ -166,7 +166,7 @@ public class MalletDataWriterTest {
 
 		HideOutput hider = new HideOutput();
 		for(String classifierName : ClassifierTrainerFactory.NAMES) {
-			Train.main(new String[] { outputDirectory, classifierName });
+			Train.main(outputDirectory, classifierName);
 		}
 		hider.restoreOutput();
 	}
@@ -207,7 +207,7 @@ public class MalletDataWriterTest {
 
 		HideOutput hider = new HideOutput();
 		for(String classifierName : ClassifierTrainerFactory.NAMES) {
-			Train.main(new String[] { outputDirectory, classifierName });
+			Train.main(outputDirectory, classifierName);
 		}
 		hider.restoreOutput();
 	}

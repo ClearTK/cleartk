@@ -110,7 +110,7 @@ public class MaxentDataWriterTest {
 
 		//simply train four different models where each one writes over the previous
 		HideOutput hider = new HideOutput();
-		Train.main(new String[] { outputDirectory, "10", "1"});
+		Train.main(outputDirectory, "10", "1");
 		hider.restoreOutput();
 		
 	}
@@ -152,7 +152,7 @@ public class MaxentDataWriterTest {
 		assertEquals(7, lineSet.size());
 
 		HideOutput hider = new HideOutput();
-		Train.main(new String[] { outputDirectory, "10", "1" });
+		Train.main(outputDirectory, "10", "1");
 		hider.restoreOutput();
 	}
 
@@ -191,7 +191,7 @@ public class MaxentDataWriterTest {
 		assertEquals("precision	2", lines[i++]);
 
 		HideOutput hider = new HideOutput();
-		Train.main(new String[] { outputDirectory, "10", "1" });
+		Train.main(outputDirectory, "10", "1");
 		hider.restoreOutput();
 	}
 

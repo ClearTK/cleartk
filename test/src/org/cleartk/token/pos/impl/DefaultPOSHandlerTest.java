@@ -111,13 +111,15 @@ public class DefaultPOSHandlerTest {
 				POSHandler.PARAM_FEATURE_EXTRACTOR_CLASS, DefaultFeatureExtractor.class.getName(),
 				POSHandler.PARAM_TAGGER_CLASS, DefaultTagger.class.getName());
 		
-		for(@SuppressWarnings("unused") JCas jCas : new JCasIterable(reader, aggregateEngine));
+		for(JCas jCas : new JCasIterable(reader, aggregateEngine)) {
+			assert jCas != null;
+		}
 		
 		aggregateEngine.collectionProcessComplete();
 		
 		
 		HideOutput hider = new HideOutput();
-		Train.main(new String[] {outputDirectory.getPath(), "20", "5"});
+		Train.main(outputDirectory.getPath(), "20", "5");
 		hider.restoreOutput();
 		
 		AnalysisEngine tagger = AnalysisEngineFactory.createAnalysisEngine("org.cleartk.token.pos.impl.DefaultPOSAnnotator", 

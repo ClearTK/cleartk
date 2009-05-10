@@ -28,6 +28,6 @@ package org.cleartk.classifier.svmlight.model;
 
  */
 
-@SuppressWarnings("serial")
 public class UnsupportedKernelError extends ModelError {
+	private static final long serialVersionUID = -8144090522958739216L;
 }

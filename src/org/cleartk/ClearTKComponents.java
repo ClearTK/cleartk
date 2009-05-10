@@ -34,6 +34,7 @@ import org.cleartk.classifier.DataWriterAnnotator;
 import org.cleartk.classifier.DataWriterFactory;
 import org.cleartk.classifier.InstanceConsumer;
 import org.cleartk.classifier.SequentialAnnotationHandler;
+import org.cleartk.classifier.SequentialClassifierAnnotator;
 import org.cleartk.classifier.SequentialDataWriterAnnotator;
 import org.cleartk.classifier.SequentialDataWriterFactory;
 import org.cleartk.classifier.SequentialInstanceConsumer;
@@ -202,6 +203,16 @@ public class ClearTKComponents {
 				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
 				annotationHandlerClass.getName(),
 				ClassifierAnnotator.PARAM_CLASSIFIER_JAR, classifierJar);
+	}
+	
+	public static <OUTCOME_TYPE> AnalysisEngineDescription createSequentialClassifierAnnotator(
+			Class<? extends SequentialAnnotationHandler<OUTCOME_TYPE>> annotationHandlerClass,
+			String classifierJar) throws ResourceInitializationException {
+		return AnalysisEngineFactory.createPrimitiveAnalysisEngineDescription(
+				SequentialClassifierAnnotator.class, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES,
+				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER,
+				annotationHandlerClass.getName(),
+				SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR, classifierJar);
 	}
 	
 	public static AnalysisEngineDescription createTimeMLGoldAnnotator(boolean loadTLinks)

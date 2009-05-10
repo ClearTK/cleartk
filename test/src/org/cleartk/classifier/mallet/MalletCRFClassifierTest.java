@@ -113,7 +113,7 @@ public class MalletCRFClassifierTest {
 		reader.readLine();
 		reader.close();
 		HideOutput hider = new HideOutput();
-		Train.main(new String[] {outputDirectory});
+		Train.main(outputDirectory);
 		hider.restoreOutput();
 		
 		

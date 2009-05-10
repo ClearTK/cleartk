@@ -104,7 +104,7 @@ public class ViterbiDataWriterTest {
 		testFeatures(trainingData[4], "PreviousOutcome_L1_H", "PreviousOutcome_L2_R", "PreviousOutcome_L3_I", "PreviousOutcomes_L1_2gram_L2R_H_R", "PreviousOutcomes_L1_3gram_L2R_H_R_I");
 		
 		HideOutput hider = new HideOutput();
-		Train.main(new String[] {outputDirectory+"/", "10", "1"});
+		Train.main(outputDirectory+"/", "10", "1");
 		hider.restoreOutput();
 		
 		engine = AnalysisEngineFactory.createAnalysisEngine(SequentialClassifierAnnotator.class, 

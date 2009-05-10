@@ -90,7 +90,7 @@ public class ClassifierAnnotatorTest {
 		ClassifierManifest manifest = new ClassifierManifest();
 		manifest.setClassifierBuilder(new Test1Builder());
 		manifest.write(new File(outputDirectory));
-		BuildJar.main(new String[] { outputDirectory });
+		BuildJar.main(outputDirectory);
 
 		AnalysisEngineFactory
 				.createAnalysisEngine("org.cleartk.classifier.ClassifierAnnotator",
@@ -122,7 +122,7 @@ public class ClassifierAnnotatorTest {
 		ClassifierManifest manifest = new ClassifierManifest();
 		manifest.setClassifierBuilder(new Test1Builder());
 		manifest.write(new File(outputDirectory));
-		BuildJar.main(new String[] { outputDirectory });
+		BuildJar.main(outputDirectory);
 
 		ClassifierAnnotator<String> classifierAnnotator = new ClassifierAnnotator<String>();
 		classifierAnnotator.initialize(UimaContextFactory.createUimaContext(
@@ -352,11 +352,10 @@ public class ClassifierAnnotatorTest {
 
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void test5() throws Exception {
 		ClassifierManifest manifest = new ClassifierManifest();
-		manifest.setClassifierBuilder(new Test5Builder());
+		manifest.setClassifierBuilder(new Test5Builder<Object>());
 		manifest.write(new File(outputDirectory));
 		BuildJar.main(new String[] { outputDirectory });
 

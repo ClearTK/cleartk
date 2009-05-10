@@ -94,7 +94,7 @@ public class RunLIBSVMTests {
 		
 		// run the training command
 		HideOutput hider = new HideOutput();
-		Train.main(new String[] {this.outputDirectory, "-c", "1.0", "-s", "0", "-t", "0"});
+		Train.main(this.outputDirectory, "-c", "1.0", "-s", "0", "-t", "0");
 		hider.restoreOutput();
 		
 		// read in the classifier and test it on new instances
@@ -134,7 +134,7 @@ public class RunLIBSVMTests {
 		
 		// run the training command
 		HideOutput hider = new HideOutput();
-		Train.main(new String[] {this.outputDirectory, "-c", "1.0", "-s", "1"});
+		Train.main(this.outputDirectory, "-c", "1.0", "-s", "1");
 		hider.restoreOutput();
 		
 		// read in the classifier and test it on new instances
@@ -174,7 +174,7 @@ public class RunLIBSVMTests {
 		
 		// run the training command
 		HideOutput hider = new HideOutput();
-		Train.main(new String[] {this.outputDirectory, "-c", "1.0", "-t", "2"});
+		Train.main(this.outputDirectory, "-c", "1.0", "-t", "2");
 		hider.restoreOutput();
 		
 		// read in the classifier and test it on new instances

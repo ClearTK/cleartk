@@ -67,10 +67,12 @@ public class BuildTestTokenChunkModel {
 
 		JCasIterable jCases = new JCasIterable(reader, subtokenizer, chunkTokenizerDataWriter);
 		
-		for(@SuppressWarnings("unused") JCas jCas : jCases) { }
+		for(JCas jCas : jCases) {
+			assert jCas != null;
+		}
 		
 		chunkTokenizerDataWriter.collectionProcessComplete();
-		org.cleartk.classifier.Train.main(new String[] {"test/data/token/chunk"});
+		org.cleartk.classifier.Train.main("test/data/token/chunk");
 
 	}
 }

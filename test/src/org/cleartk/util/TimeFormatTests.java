@@ -56,6 +56,6 @@ public class TimeFormatTests {
 		//added first line while experimenting with EclEmma to see
 		//if I could get 100% coverage.
 		TimeFormat format = new TimeFormat();
-		format.getClass(); //added this line just to avoid a compile warning
+		assertTrue(format != null);
 	}
 }

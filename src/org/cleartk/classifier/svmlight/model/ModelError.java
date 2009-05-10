@@ -29,6 +29,6 @@ import java.io.IOException;
  * <br>All rights reserved.
 
  */
-@SuppressWarnings("serial")
 public class ModelError extends IOException {
+	private static final long serialVersionUID = 5220773273533842309L;
 }
