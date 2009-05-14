@@ -296,20 +296,5 @@ public class TokenizerAndTokenAnnotatorTests {
 	private Token getToken(JCas jCas, int i) {
 		return AnnotationRetrieval.get(jCas, Token.class, i);
 	}
-	// @Test
-	// public void testExceptions() {
-	// try {
-	// AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-	// TokenAnnotator.class,
-	// TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-	// TokenAnnotator.PARAM_TOKEN_TYPE,
-	// "org.cleartk.token.chunk.type.Subtoken",
-	// TokenAnnotator.PARAM_TOKENIZER,
-	// "org.cleartk.token.util.Subtokenizer",
-	// TokenAnnotator.PARAM_TOKEN_POSITION_FEATURE, "  ");
-	//		
-	// Assert.fail("expected exception with output directory not specified");
-	// } catch (ResourceInitializationException e) {}
-	//
-	// }
+	
 }
