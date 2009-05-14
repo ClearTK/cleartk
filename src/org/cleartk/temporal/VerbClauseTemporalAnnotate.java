@@ -28,6 +28,7 @@ import java.io.File;
 import org.apache.uima.util.Level;
 import org.apache.uima.util.Logger;
 import org.cleartk.ClearTKComponents;
+import org.cleartk.token.TokenAnnotator;
 import org.cleartk.util.UIMAUtil;
 import org.uutuc.factory.UimaContextFactory;
 
@@ -71,7 +72,7 @@ public class VerbClauseTemporalAnnotate {
 		UIMAUtil.runUIMAPipeline(
 				ClearTKComponents.createFilesCollectionReader(inputFileOrDir),
 				ClearTKComponents.createOpenNLPSentenceSegmenter(),
-				ClearTKComponents.createTokenAnnotator(),
+				TokenAnnotator.getDescription(), 
 				ClearTKComponents.createOpenNLPPOSTagger(),
 				ClearTKComponents.createSnowballStemmer("English"),
 				ClearTKComponents.createOpenNLPTreebankParser(),

@@ -1,6 +1,7 @@
 package org.cleartk.example.pos;
 
 import org.cleartk.ClearTKComponents;
+import org.cleartk.token.TokenAnnotator;
 import org.cleartk.util.UIMAUtil;
 import org.uutuc.factory.AnalysisEngineFactory;
 
@@ -42,7 +43,7 @@ public class RunExamplePOSAnnotator {
 		UIMAUtil.runUIMAPipeline(
 				ClearTKComponents.createFilesCollectionReader("example/data/2008_Sichuan_earthquake.txt"),
 				ClearTKComponents.createOpenNLPSentenceSegmenter(),
-				ClearTKComponents.createTokenAnnotator(),
+				TokenAnnotator.getDescription(), 
 				ClearTKComponents.createSnowballStemmer("English"),
 				ClearTKComponents.createSequentialClassifierAnnotator(
 						ExamplePOSAnnotationHandler.class, "example/model/model.jar"),

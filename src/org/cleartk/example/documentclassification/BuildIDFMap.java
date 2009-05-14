@@ -30,6 +30,7 @@ import org.apache.uima.UIMAException;
 import org.cleartk.ClearTKComponents;
 import org.cleartk.classifier.InstanceConsumer;
 import org.cleartk.tfidf.IDFMapWriter;
+import org.cleartk.token.TokenAnnotator;
 import org.cleartk.util.UIMAUtil;
 import org.uutuc.factory.AnalysisEngineFactory;
 
@@ -55,7 +56,7 @@ public class BuildIDFMap {
 		UIMAUtil.runUIMAPipeline(
 				ClearTKComponents.createFilesCollectionReader(trainingDataDirectory),
 				ClearTKComponents.createOpenNLPSentenceSegmenter(),
-				ClearTKComponents.createTokenAnnotator(),
+				TokenAnnotator.getDescription(), 
 				ClearTKComponents.createSnowballStemmer("English"),
 				AnalysisEngineFactory.createPrimitiveAnalysisEngineDescription(IDFMapWriter.class,
 						ClearTKComponents.TYPE_SYSTEM_DESCRIPTION, ClearTKComponents.TYPE_PRIORITIES,

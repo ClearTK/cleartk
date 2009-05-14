@@ -50,7 +50,6 @@ import org.cleartk.srl.conll2005.Conll2005GoldAnnotator;
 import org.cleartk.srl.conll2005.Conll2005GoldReader;
 import org.cleartk.syntax.opennlp.OpenNLPTreebankParser;
 import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
-import org.cleartk.token.TokenAnnotator;
 import org.cleartk.token.opennlp.OpenNLPPOSTagger;
 import org.cleartk.token.snowball.SnowballStemmer;
 import org.cleartk.util.FilesCollectionReader;
@@ -99,12 +98,6 @@ public class ClearTKComponents {
 						"resources/models/OpenNLP.Sentence.English.bin.gz"));
 	}
 	
-	public static AnalysisEngineDescription createTokenAnnotator()
-	throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveAnalysisEngineDescription(
-				TokenAnnotator.class, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES);
-
-	}
 	
 	public static AnalysisEngineDescription createSnowballStemmer(String stemmerName)
 	throws ResourceInitializationException {
