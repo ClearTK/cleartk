@@ -120,19 +120,20 @@ public abstract class POSHandler<TOKEN_TYPE extends Annotation, SENTENCE_TYPE ex
 		typesInitialized = true;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void process(JCas jCas, SequentialInstanceConsumer<String> consumer) throws AnalysisEngineProcessException, CleartkException {
 		if (!typesInitialized) initializeTypes(jCas);
 		
 		FSIterator sentences = jCas.getAnnotationIndex(sentenceType).iterator();
 		while (sentences.hasNext()) {
-			SENTENCE_TYPE sentence = ReflectionUtil.uncheckedCast(sentences.next());
+			SENTENCE_TYPE sentence = (SENTENCE_TYPE) sentences.next();
 
 			List<Instance<String>> instances = new ArrayList<Instance<String>>();
 			
 			FSIterator tokens = jCas.getAnnotationIndex(tokenType).subiterator(sentence);
 
 			while (tokens.hasNext()) {
-				TOKEN_TYPE token = ReflectionUtil.uncheckedCast(tokens.next());
+				TOKEN_TYPE token = (TOKEN_TYPE) tokens.next();
 				List<Feature> features = featureExtractor.extractFeatures(jCas, token, sentence);
 				Instance<String> instance = new Instance<String>();
 				instance.addAll(features);
@@ -144,7 +145,7 @@ public abstract class POSHandler<TOKEN_TYPE extends Annotation, SENTENCE_TYPE ex
 			if (tags != null) {
 				tokens.moveToFirst();
 				for(int i=0; tokens.hasNext(); i++) {
-					TOKEN_TYPE token = ReflectionUtil.uncheckedCast(tokens.next());
+					TOKEN_TYPE token = (TOKEN_TYPE) tokens.next();
 					tagger.setTag(jCas, token, tags.get(i));
 				}
 			}

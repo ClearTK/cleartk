@@ -336,6 +336,7 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 		typesInitialized = true;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
 		if (!typesInitialized) initializeTypes(jCas);
@@ -350,23 +351,23 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 			}
 
 			if (blockOnDocument) {
-				BLOCK_TYPE documentAnnotation = ReflectionUtil.uncheckedCast(jCas.getDocumentAnnotationFs());
+				BLOCK_TYPE documentAnnotation = (BLOCK_TYPE) jCas.getDocumentAnnotationFs();
 				out.print(blockWriter.writeBlock(jCas, documentAnnotation));
 				FSIterator outputAnnotations = jCas.getAnnotationIndex(outputAnnotationType).iterator();
 				while (outputAnnotations.hasNext()) {
-					ANNOTATION_TYPE outputAnnotation = ReflectionUtil.uncheckedCast(outputAnnotations.next());
+					ANNOTATION_TYPE outputAnnotation = (ANNOTATION_TYPE) outputAnnotations.next();
 					out.println(annotationWriter.writeAnnotation(jCas, outputAnnotation));
 				}
 			}
 			else if (blockAnnotationType != null) {
 				FSIterator blocks = jCas.getAnnotationIndex(blockAnnotationType).iterator();
 				while (blocks.hasNext()) {
-					BLOCK_TYPE blockAnnotation = ReflectionUtil.uncheckedCast(blocks.next());
+					BLOCK_TYPE blockAnnotation = (BLOCK_TYPE) blocks.next();
 					out.print(blockWriter.writeBlock(jCas, blockAnnotation));
 					FSIterator outputAnnotations = jCas.getAnnotationIndex(outputAnnotationType).subiterator(
 							blockAnnotation);
 					while (outputAnnotations.hasNext()) {
-						ANNOTATION_TYPE outputAnnotation = ReflectionUtil.uncheckedCast(outputAnnotations.next());
+						ANNOTATION_TYPE outputAnnotation = (ANNOTATION_TYPE) outputAnnotations.next();
 						out.println(annotationWriter.writeAnnotation(jCas, outputAnnotation));
 					}
 				}
@@ -375,7 +376,7 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 			else {
 				FSIterator outputAnnotations = jCas.getAnnotationIndex(outputAnnotationType).iterator();
 				while (outputAnnotations.hasNext()) {
-					ANNOTATION_TYPE outputAnnotation = ReflectionUtil.uncheckedCast(outputAnnotations.next());
+					ANNOTATION_TYPE outputAnnotation = (ANNOTATION_TYPE) outputAnnotations.next();
 					out.println(annotationWriter.writeAnnotation(jCas, outputAnnotation));
 				}
 			}
