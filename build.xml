@@ -20,6 +20,7 @@
 		
 	<target name="prepare">
 		<mkdir dir="${bin}"/>
+	    <mkdir dir="${test-bin}"/>
 		<copy includeemptydirs="false" todir="${bin}">
 			<fileset dir="${resources}"/>
 		</copy>
@@ -208,7 +209,7 @@
 	<target name="build-javadoc">
 		<javadoc
 				packagenames = "org.cleartk.*"
-				excludepackagenames = "de.julielab.*"
+				excludepackagenames = "de.julielab.*,org.cleartk.syntax.treebank.opennlp.*"
 				sourcepath = "${src}"
 				destdir = "${doc}/api"
 				windowtitle = "ClearTK API (${version})"
