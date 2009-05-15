@@ -1,0 +1,318 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>     /** <a name="line.1"></a>
+<FONT color="green">002</FONT>     * Copyright (c) 2007-2008, Regents of the University of Colorado <a name="line.2"></a>
+<FONT color="green">003</FONT>     * All rights reserved.<a name="line.3"></a>
+<FONT color="green">004</FONT>     * <a name="line.4"></a>
+<FONT color="green">005</FONT>     * Redistribution and use in source and binary forms, with or without<a name="line.5"></a>
+<FONT color="green">006</FONT>     * modification, are permitted provided that the following conditions are met:<a name="line.6"></a>
+<FONT color="green">007</FONT>     * <a name="line.7"></a>
+<FONT color="green">008</FONT>     * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. <a name="line.8"></a>
+<FONT color="green">009</FONT>     * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. <a name="line.9"></a>
+<FONT color="green">010</FONT>     * Neither the name of the University of Colorado at Boulder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. <a name="line.10"></a>
+<FONT color="green">011</FONT>     * <a name="line.11"></a>
+<FONT color="green">012</FONT>     * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"<a name="line.12"></a>
+<FONT color="green">013</FONT>     * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE<a name="line.13"></a>
+<FONT color="green">014</FONT>     * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE<a name="line.14"></a>
+<FONT color="green">015</FONT>     * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE<a name="line.15"></a>
+<FONT color="green">016</FONT>     * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR<a name="line.16"></a>
+<FONT color="green">017</FONT>     * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF<a name="line.17"></a>
+<FONT color="green">018</FONT>     * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS<a name="line.18"></a>
+<FONT color="green">019</FONT>     * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN<a name="line.19"></a>
+<FONT color="green">020</FONT>     * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)<a name="line.20"></a>
+<FONT color="green">021</FONT>     * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE<a name="line.21"></a>
+<FONT color="green">022</FONT>     * POSSIBILITY OF SUCH DAMAGE. <a name="line.22"></a>
+<FONT color="green">023</FONT>    */<a name="line.23"></a>
+<FONT color="green">024</FONT>    package org.cleartk.syntax.opennlp;<a name="line.24"></a>
+<FONT color="green">025</FONT>    <a name="line.25"></a>
+<FONT color="green">026</FONT>    import java.io.File;<a name="line.26"></a>
+<FONT color="green">027</FONT>    import java.io.IOException;<a name="line.27"></a>
+<FONT color="green">028</FONT>    import java.util.ArrayList;<a name="line.28"></a>
+<FONT color="green">029</FONT>    import java.util.Arrays;<a name="line.29"></a>
+<FONT color="green">030</FONT>    import java.util.List;<a name="line.30"></a>
+<FONT color="green">031</FONT>    <a name="line.31"></a>
+<FONT color="green">032</FONT>    import opennlp.maxent.MaxentModel;<a name="line.32"></a>
+<FONT color="green">033</FONT>    import opennlp.maxent.io.SuffixSensitiveGISModelReader;<a name="line.33"></a>
+<FONT color="green">034</FONT>    import opennlp.tools.lang.english.HeadRules;<a name="line.34"></a>
+<FONT color="green">035</FONT>    import opennlp.tools.lang.english.ParserChunker;<a name="line.35"></a>
+<FONT color="green">036</FONT>    import opennlp.tools.parser.Parse;<a name="line.36"></a>
+<FONT color="green">037</FONT>    import opennlp.tools.parser.chunking.Parser;<a name="line.37"></a>
+<FONT color="green">038</FONT>    import opennlp.tools.util.Span;<a name="line.38"></a>
+<FONT color="green">039</FONT>    <a name="line.39"></a>
+<FONT color="green">040</FONT>    import org.apache.uima.UimaContext;<a name="line.40"></a>
+<FONT color="green">041</FONT>    import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;<a name="line.41"></a>
+<FONT color="green">042</FONT>    import org.apache.uima.analysis_engine.AnalysisEngineProcessException;<a name="line.42"></a>
+<FONT color="green">043</FONT>    import org.apache.uima.cas.FSIterator;<a name="line.43"></a>
+<FONT color="green">044</FONT>    import org.apache.uima.cas.FeatureStructure;<a name="line.44"></a>
+<FONT color="green">045</FONT>    import org.apache.uima.jcas.JCas;<a name="line.45"></a>
+<FONT color="green">046</FONT>    import org.apache.uima.jcas.cas.FSArray;<a name="line.46"></a>
+<FONT color="green">047</FONT>    import org.apache.uima.resource.ResourceInitializationException;<a name="line.47"></a>
+<FONT color="green">048</FONT>    import org.cleartk.syntax.treebank.type.TopTreebankNode;<a name="line.48"></a>
+<FONT color="green">049</FONT>    import org.cleartk.syntax.treebank.type.TreebankNode;<a name="line.49"></a>
+<FONT color="green">050</FONT>    import org.cleartk.type.Sentence;<a name="line.50"></a>
+<FONT color="green">051</FONT>    import org.cleartk.type.Token;<a name="line.51"></a>
+<FONT color="green">052</FONT>    import org.cleartk.util.AnnotationRetrieval;<a name="line.52"></a>
+<FONT color="green">053</FONT>    import org.cleartk.util.UIMAUtil;<a name="line.53"></a>
+<FONT color="green">054</FONT>    <a name="line.54"></a>
+<FONT color="green">055</FONT>    <a name="line.55"></a>
+<FONT color="green">056</FONT>    /**<a name="line.56"></a>
+<FONT color="green">057</FONT>     * &lt;br&gt;Copyright (c) 2007-2008, Regents of the University of Colorado <a name="line.57"></a>
+<FONT color="green">058</FONT>     * &lt;br&gt;All rights reserved.<a name="line.58"></a>
+<FONT color="green">059</FONT>    <a name="line.59"></a>
+<FONT color="green">060</FONT>     *<a name="line.60"></a>
+<FONT color="green">061</FONT>     * @author Philipp Wetzler<a name="line.61"></a>
+<FONT color="green">062</FONT>     */<a name="line.62"></a>
+<FONT color="green">063</FONT>    <a name="line.63"></a>
+<FONT color="green">064</FONT>    public class OpenNLPTreebankParser extends JCasAnnotator_ImplBase {<a name="line.64"></a>
+<FONT color="green">065</FONT>            <a name="line.65"></a>
+<FONT color="green">066</FONT>            /**<a name="line.66"></a>
+<FONT color="green">067</FONT>             * "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_BUILD_MODEL_FILE"<a name="line.67"></a>
+<FONT color="green">068</FONT>             * is a single, required, string parameter that provides the path of the<a name="line.68"></a>
+<FONT color="green">069</FONT>             * OpenNLP parser model build file, e.g.<a name="line.69"></a>
+<FONT color="green">070</FONT>             *   resources/models/OpenNLP.Parser.English.Build.bin.gz<a name="line.70"></a>
+<FONT color="green">071</FONT>             * @see opennlp.tools.parser.chunking.Parser<a name="line.71"></a>
+<FONT color="green">072</FONT>             */<a name="line.72"></a>
+<FONT color="green">073</FONT>            public static final String PARAM_BUILD_MODEL_FILE = "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_BUILD_MODEL_FILE";<a name="line.73"></a>
+<FONT color="green">074</FONT>    <a name="line.74"></a>
+<FONT color="green">075</FONT>            /**<a name="line.75"></a>
+<FONT color="green">076</FONT>             * "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_CHECK_MODEL_FILE"<a name="line.76"></a>
+<FONT color="green">077</FONT>             * is a single, required, string parameter that provides the path of the<a name="line.77"></a>
+<FONT color="green">078</FONT>             * OpenNLP parser model check file, e.g.<a name="line.78"></a>
+<FONT color="green">079</FONT>             *   resources/models/OpenNLP.Parser.English.Check.bin.gz<a name="line.79"></a>
+<FONT color="green">080</FONT>             * @see opennlp.tools.parser.chunking.Parser<a name="line.80"></a>
+<FONT color="green">081</FONT>             */<a name="line.81"></a>
+<FONT color="green">082</FONT>            public static final String PARAM_CHECK_MODEL_FILE = "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_CHECK_MODEL_FILE";<a name="line.82"></a>
+<FONT color="green">083</FONT>    <a name="line.83"></a>
+<FONT color="green">084</FONT>            /**<a name="line.84"></a>
+<FONT color="green">085</FONT>             * "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_CHUNK_MODEL_FILE"<a name="line.85"></a>
+<FONT color="green">086</FONT>             * is a single, required, string parameter that provides the path of the<a name="line.86"></a>
+<FONT color="green">087</FONT>             * OpenNLP chunker model file, e.g.<a name="line.87"></a>
+<FONT color="green">088</FONT>             *   resources/models/OpenNLP.Chunker.English.bin.gz<a name="line.88"></a>
+<FONT color="green">089</FONT>             * @see opennlp.tools.lang.english.ParserChunker<a name="line.89"></a>
+<FONT color="green">090</FONT>             */<a name="line.90"></a>
+<FONT color="green">091</FONT>            public static final String PARAM_CHUNK_MODEL_FILE = "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_CHUNK_MODEL_FILE";<a name="line.91"></a>
+<FONT color="green">092</FONT>    <a name="line.92"></a>
+<FONT color="green">093</FONT>            /**<a name="line.93"></a>
+<FONT color="green">094</FONT>             * "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_HEAD_RULES_FILE"<a name="line.94"></a>
+<FONT color="green">095</FONT>             * is a single, required, string parameter that provides the path of the<a name="line.95"></a>
+<FONT color="green">096</FONT>             * OpenNLP head rules file, e.g.<a name="line.96"></a>
+<FONT color="green">097</FONT>             *   resources/models/OpenNLP.HeadRules.txt<a name="line.97"></a>
+<FONT color="green">098</FONT>             * @see opennlp.tools.lang.english.HeadRules<a name="line.98"></a>
+<FONT color="green">099</FONT>             */<a name="line.99"></a>
+<FONT color="green">100</FONT>            public static final String PARAM_HEAD_RULES_FILE = "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_HEAD_RULES_FILE";<a name="line.100"></a>
+<FONT color="green">101</FONT>    <a name="line.101"></a>
+<FONT color="green">102</FONT>            /**<a name="line.102"></a>
+<FONT color="green">103</FONT>             * "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_BEAM_SIZE"<a name="line.103"></a>
+<FONT color="green">104</FONT>             * is a single, optional, integer parameter, defaulting to<a name="line.104"></a>
+<FONT color="green">105</FONT>             * {@link Parser.defaultBeamSize}, that indicates the beam size that<a name="line.105"></a>
+<FONT color="green">106</FONT>             * should be used in the parser's search.<a name="line.106"></a>
+<FONT color="green">107</FONT>             * @see opennlp.tools.parser.chunking.Parser<a name="line.107"></a>
+<FONT color="green">108</FONT>             */<a name="line.108"></a>
+<FONT color="green">109</FONT>            public static final String PARAM_BEAM_SIZE = "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_BEAM_SIZE";<a name="line.109"></a>
+<FONT color="green">110</FONT>    <a name="line.110"></a>
+<FONT color="green">111</FONT>            /**<a name="line.111"></a>
+<FONT color="green">112</FONT>             * "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_ADVANCE_PERCENTAGE""<a name="line.112"></a>
+<FONT color="green">113</FONT>             * is a single, optional, double parameter, defaulting to<a name="line.113"></a>
+<FONT color="green">114</FONT>             * {@link Parser.defaultAdvancePercentage}, that indicates "the amount of<a name="line.114"></a>
+<FONT color="green">115</FONT>             * probability mass required of advanced outcomes"<a name="line.115"></a>
+<FONT color="green">116</FONT>             * @see opennlp.tools.parser.chunking.Parser<a name="line.116"></a>
+<FONT color="green">117</FONT>             */<a name="line.117"></a>
+<FONT color="green">118</FONT>            public static final String PARAM_ADVANCE_PERCENTAGE = "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_ADVANCE_PERCENTAGE";<a name="line.118"></a>
+<FONT color="green">119</FONT>    <a name="line.119"></a>
+<FONT color="green">120</FONT>            protected Parser parser;<a name="line.120"></a>
+<FONT color="green">121</FONT>            protected OpenNLPDummyParserTagger tagger;<a name="line.121"></a>
+<FONT color="green">122</FONT>    <a name="line.122"></a>
+<FONT color="green">123</FONT>            @Override<a name="line.123"></a>
+<FONT color="green">124</FONT>            public void process(JCas jCas) throws AnalysisEngineProcessException {<a name="line.124"></a>
+<FONT color="green">125</FONT>                    String text = jCas.getDocumentText();<a name="line.125"></a>
+<FONT color="green">126</FONT>                    <a name="line.126"></a>
+<FONT color="green">127</FONT>                    FSIterator sentences = jCas.getJFSIndexRepository().getAnnotationIndex(Sentence.type).iterator();<a name="line.127"></a>
+<FONT color="green">128</FONT>                    while( sentences.hasNext() ) {<a name="line.128"></a>
+<FONT color="green">129</FONT>                            Sentence sentence = (Sentence) sentences.next();<a name="line.129"></a>
+<FONT color="green">130</FONT>                            <a name="line.130"></a>
+<FONT color="green">131</FONT>                            Parse parse = new Parse(text, new Span(sentence.getBegin(), sentence.getEnd()), "INC", 1, null);<a name="line.131"></a>
+<FONT color="green">132</FONT>                            <a name="line.132"></a>
+<FONT color="green">133</FONT>                            List&lt;Token&gt; tokenList = AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class); <a name="line.133"></a>
+<FONT color="green">134</FONT>                            Token[] tokens = tokenList.toArray(new Token[tokenList.size()]);<a name="line.134"></a>
+<FONT color="green">135</FONT>                            for( Token token : tokens ) {<a name="line.135"></a>
+<FONT color="green">136</FONT>                                    //TODO i'm not sure what the value of p should be - so I just put in 1.0f as an initial guess.<a name="line.136"></a>
+<FONT color="green">137</FONT>                                    parse.insert(new Parse(text, new Span(token.getBegin(), token.getEnd()), Parser.TOK_NODE, 1.0f, 0));<a name="line.137"></a>
+<FONT color="green">138</FONT>                            }       <a name="line.138"></a>
+<FONT color="green">139</FONT>    <a name="line.139"></a>
+<FONT color="green">140</FONT>                            this.tagger.setTokens(tokens);<a name="line.140"></a>
+<FONT color="green">141</FONT>                            parse = this.parser.parse(parse);<a name="line.141"></a>
+<FONT color="green">142</FONT>                            <a name="line.142"></a>
+<FONT color="green">143</FONT>                            // if the sentence was successfully parsed, add the tree to the sentence<a name="line.143"></a>
+<FONT color="green">144</FONT>                            if (parse.getType() == Parser.TOP_NODE) {<a name="line.144"></a>
+<FONT color="green">145</FONT>                                    TopTreebankNode topNode = (TopTreebankNode) buildAnnotation(parse, jCas);<a name="line.145"></a>
+<FONT color="green">146</FONT>                                    topNode.addToIndexes();<a name="line.146"></a>
+<FONT color="green">147</FONT>                                    sentence.setConstituentParse(topNode);<a name="line.147"></a>
+<FONT color="green">148</FONT>                            }<a name="line.148"></a>
+<FONT color="green">149</FONT>                    }<a name="line.149"></a>
+<FONT color="green">150</FONT>            }<a name="line.150"></a>
+<FONT color="green">151</FONT>            <a name="line.151"></a>
+<FONT color="green">152</FONT>            protected static TreebankNode buildAnnotation(Parse p, JCas jCas) {<a name="line.152"></a>
+<FONT color="green">153</FONT>                    TreebankNode myNode;<a name="line.153"></a>
+<FONT color="green">154</FONT>                    if( p.getType() == Parser.TOP_NODE ) {<a name="line.154"></a>
+<FONT color="green">155</FONT>                            TopTreebankNode topNode = new TopTreebankNode(jCas);<a name="line.155"></a>
+<FONT color="green">156</FONT>                            topNode.setParent(null);<a name="line.156"></a>
+<FONT color="green">157</FONT>    <a name="line.157"></a>
+<FONT color="green">158</FONT>                            StringBuffer sb = new StringBuffer();<a name="line.158"></a>
+<FONT color="green">159</FONT>                            p.show(sb);<a name="line.159"></a>
+<FONT color="green">160</FONT>                            topNode.setTreebankParse(sb.toString());<a name="line.160"></a>
+<FONT color="green">161</FONT>                            <a name="line.161"></a>
+<FONT color="green">162</FONT>                            myNode = topNode;<a name="line.162"></a>
+<FONT color="green">163</FONT>                    } else {<a name="line.163"></a>
+<FONT color="green">164</FONT>                            myNode = new TreebankNode(jCas);<a name="line.164"></a>
+<FONT color="green">165</FONT>                    }<a name="line.165"></a>
+<FONT color="green">166</FONT>                    <a name="line.166"></a>
+<FONT color="green">167</FONT>                    myNode.setNodeType(p.getType());<a name="line.167"></a>
+<FONT color="green">168</FONT>                    myNode.setBegin(p.getSpan().getStart());<a name="line.168"></a>
+<FONT color="green">169</FONT>                    myNode.setEnd(p.getSpan().getEnd());<a name="line.169"></a>
+<FONT color="green">170</FONT>    <a name="line.170"></a>
+<FONT color="green">171</FONT>                    if( p.getChildCount() == 1 &amp;&amp; p.getChildren()[0].getType() == Parser.TOK_NODE ) {<a name="line.171"></a>
+<FONT color="green">172</FONT>                            myNode.setLeaf(true);<a name="line.172"></a>
+<FONT color="green">173</FONT>                            myNode.setNodeValue(p.getChildren()[0].toString());<a name="line.173"></a>
+<FONT color="green">174</FONT>                            myNode.setChildren(new FSArray(jCas, 0));<a name="line.174"></a>
+<FONT color="green">175</FONT>                    } else {<a name="line.175"></a>
+<FONT color="green">176</FONT>                            myNode.setNodeValue(null);<a name="line.176"></a>
+<FONT color="green">177</FONT>                            myNode.setLeaf(false);<a name="line.177"></a>
+<FONT color="green">178</FONT>                            <a name="line.178"></a>
+<FONT color="green">179</FONT>                            List&lt;FeatureStructure&gt; cArray = new ArrayList&lt;FeatureStructure&gt;(p.getChildCount());<a name="line.179"></a>
+<FONT color="green">180</FONT>                            <a name="line.180"></a>
+<FONT color="green">181</FONT>                            for( Parse cp : p.getChildren() ) {<a name="line.181"></a>
+<FONT color="green">182</FONT>                                    TreebankNode cNode = buildAnnotation(cp, jCas);<a name="line.182"></a>
+<FONT color="green">183</FONT>                                    cNode.setParent(myNode);<a name="line.183"></a>
+<FONT color="green">184</FONT>                                    cNode.addToIndexes();<a name="line.184"></a>
+<FONT color="green">185</FONT>                                    cArray.add(cNode);<a name="line.185"></a>
+<FONT color="green">186</FONT>                            }<a name="line.186"></a>
+<FONT color="green">187</FONT>                            <a name="line.187"></a>
+<FONT color="green">188</FONT>                            FSArray cFSArray = new FSArray(jCas, cArray.size());<a name="line.188"></a>
+<FONT color="green">189</FONT>                            cFSArray.copyFromArray(cArray.toArray(new FeatureStructure[cArray.size()]), 0, 0, cArray.size());<a name="line.189"></a>
+<FONT color="green">190</FONT>                            myNode.setChildren(cFSArray);<a name="line.190"></a>
+<FONT color="green">191</FONT>                    }<a name="line.191"></a>
+<FONT color="green">192</FONT>                    <a name="line.192"></a>
+<FONT color="green">193</FONT>                    if( p.getType() == Parser.TOP_NODE ) {<a name="line.193"></a>
+<FONT color="green">194</FONT>                            List&lt;TreebankNode&gt; tList = getTerminals(myNode);<a name="line.194"></a>
+<FONT color="green">195</FONT>                            FSArray tfsa = new FSArray(jCas, tList.size());<a name="line.195"></a>
+<FONT color="green">196</FONT>                            tfsa.copyFromArray(tList.toArray(new FeatureStructure[tList.size()]), 0, 0, tList.size());<a name="line.196"></a>
+<FONT color="green">197</FONT>                            ((TopTreebankNode) myNode).setTerminals(tfsa);<a name="line.197"></a>
+<FONT color="green">198</FONT>                    }<a name="line.198"></a>
+<FONT color="green">199</FONT>                    return myNode;<a name="line.199"></a>
+<FONT color="green">200</FONT>            }<a name="line.200"></a>
+<FONT color="green">201</FONT>            <a name="line.201"></a>
+<FONT color="green">202</FONT>            protected static List&lt;TreebankNode&gt; getTerminals(TreebankNode node) {<a name="line.202"></a>
+<FONT color="green">203</FONT>                    List&lt;TreebankNode&gt; tList = new ArrayList&lt;TreebankNode&gt;();<a name="line.203"></a>
+<FONT color="green">204</FONT>    <a name="line.204"></a>
+<FONT color="green">205</FONT>                    if( node.getChildren().size() == 0 ) {<a name="line.205"></a>
+<FONT color="green">206</FONT>                            tList.add(node);<a name="line.206"></a>
+<FONT color="green">207</FONT>                            return tList;<a name="line.207"></a>
+<FONT color="green">208</FONT>                    }<a name="line.208"></a>
+<FONT color="green">209</FONT>                    <a name="line.209"></a>
+<FONT color="green">210</FONT>                    TreebankNode[] children = Arrays.asList(node.getChildren().toArray()).toArray(new TreebankNode[node.getChildren().size()]);<a name="line.210"></a>
+<FONT color="green">211</FONT>    <a name="line.211"></a>
+<FONT color="green">212</FONT>                    for( TreebankNode child : children ) {<a name="line.212"></a>
+<FONT color="green">213</FONT>                            tList.addAll(getTerminals(child));<a name="line.213"></a>
+<FONT color="green">214</FONT>                    }<a name="line.214"></a>
+<FONT color="green">215</FONT>                    return tList;<a name="line.215"></a>
+<FONT color="green">216</FONT>            }<a name="line.216"></a>
+<FONT color="green">217</FONT>    <a name="line.217"></a>
+<FONT color="green">218</FONT>            @Override<a name="line.218"></a>
+<FONT color="green">219</FONT>            public void initialize(UimaContext ctx) throws ResourceInitializationException {<a name="line.219"></a>
+<FONT color="green">220</FONT>                    super.initialize(ctx);<a name="line.220"></a>
+<FONT color="green">221</FONT>                    <a name="line.221"></a>
+<FONT color="green">222</FONT>                    String buildModelFile = (String)UIMAUtil.getRequiredConfigParameterValue(<a name="line.222"></a>
+<FONT color="green">223</FONT>                                    ctx, OpenNLPTreebankParser.PARAM_BUILD_MODEL_FILE);<a name="line.223"></a>
+<FONT color="green">224</FONT>                    String checkModelFile = (String)UIMAUtil.getRequiredConfigParameterValue(<a name="line.224"></a>
+<FONT color="green">225</FONT>                                    ctx, OpenNLPTreebankParser.PARAM_CHECK_MODEL_FILE);<a name="line.225"></a>
+<FONT color="green">226</FONT>                    String chunkModelFile = (String)UIMAUtil.getRequiredConfigParameterValue(<a name="line.226"></a>
+<FONT color="green">227</FONT>                                    ctx, OpenNLPTreebankParser.PARAM_CHUNK_MODEL_FILE);<a name="line.227"></a>
+<FONT color="green">228</FONT>                    String headRulesFile = (String)UIMAUtil.getRequiredConfigParameterValue(<a name="line.228"></a>
+<FONT color="green">229</FONT>                                    ctx, OpenNLPTreebankParser.PARAM_HEAD_RULES_FILE);<a name="line.229"></a>
+<FONT color="green">230</FONT>                    int beamSize = (Integer)UIMAUtil.getDefaultingConfigParameterValue(<a name="line.230"></a>
+<FONT color="green">231</FONT>                                    ctx, OpenNLPTreebankParser.PARAM_BEAM_SIZE, Parser.defaultBeamSize);<a name="line.231"></a>
+<FONT color="green">232</FONT>                    double advancePercentage = (Double)UIMAUtil.getDefaultingConfigParameterValue(<a name="line.232"></a>
+<FONT color="green">233</FONT>                                    ctx, OpenNLPTreebankParser.PARAM_ADVANCE_PERCENTAGE, Parser.defaultAdvancePercentage);<a name="line.233"></a>
+<FONT color="green">234</FONT>                    <a name="line.234"></a>
+<FONT color="green">235</FONT>                    try {<a name="line.235"></a>
+<FONT color="green">236</FONT>                            MaxentModel buildModel = new SuffixSensitiveGISModelReader(new File(buildModelFile)).getModel();<a name="line.236"></a>
+<FONT color="green">237</FONT>                            MaxentModel checkModel = new SuffixSensitiveGISModelReader(new File(checkModelFile)).getModel();<a name="line.237"></a>
+<FONT color="green">238</FONT>                            <a name="line.238"></a>
+<FONT color="green">239</FONT>                            this.tagger = new OpenNLPDummyParserTagger();<a name="line.239"></a>
+<FONT color="green">240</FONT>                            <a name="line.240"></a>
+<FONT color="green">241</FONT>                            ParserChunker chunker = new ParserChunker(chunkModelFile);<a name="line.241"></a>
+<FONT color="green">242</FONT>                            <a name="line.242"></a>
+<FONT color="green">243</FONT>                            HeadRules hrules = new HeadRules(headRulesFile);<a name="line.243"></a>
+<FONT color="green">244</FONT>                            <a name="line.244"></a>
+<FONT color="green">245</FONT>                            this.parser = new Parser(buildModel, checkModel, tagger, chunker, hrules,<a name="line.245"></a>
+<FONT color="green">246</FONT>                                                    beamSize, advancePercentage);<a name="line.246"></a>
+<FONT color="green">247</FONT>                    } catch (IOException e) {<a name="line.247"></a>
+<FONT color="green">248</FONT>                            throw new ResourceInitializationException(e);<a name="line.248"></a>
+<FONT color="green">249</FONT>                    }<a name="line.249"></a>
+<FONT color="green">250</FONT>            }<a name="line.250"></a>
+<FONT color="green">251</FONT>    <a name="line.251"></a>
+<FONT color="green">252</FONT>    }<a name="line.252"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>
