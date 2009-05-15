@@ -6,9 +6,9 @@
 	<property name="name" value="cleartk"/>
 	<property name="max-memory" value="512m"/>
 
-	<property name="build" value="${basedir}"/>
+	<property name="build" value="${basedir}/build"/>
 	<property name="lib" value="${basedir}/lib"/>
-	<property name="bin" value="${basedir}/bin"/>
+	<property name="bin" value="${build}/bin"/>
 	<property name="test-bin" value="${basedir}/test/bin"/>
 	<property name="resources" value="${basedir}/resources"/>
 	<property name="src" value="${basedir}/src"/>
@@ -30,6 +30,7 @@
 		
 	<target name="clean">
 		<delete dir="${doc}/api" />
+		<delete dir="${bin}" />
 	</target>
 
 	
@@ -102,8 +103,10 @@
 		<javac srcdir="${src}"
 				destdir="${bin}"
 				debug="true"
-				deprecation="on">
+				deprecation="on"
+				compiler="javac1.5">
 			<include name="org/cleartk/**"/>
+			<exclude name="org/cleartk/syntax/treebank/opennlp/**"/>
 			<classpath refid="compile.classpath"/>
 		</javac>
 	</target>
