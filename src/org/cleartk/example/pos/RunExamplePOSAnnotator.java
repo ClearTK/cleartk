@@ -1,10 +1,3 @@
-package org.cleartk.example.pos;
-
-import org.cleartk.ClearTKComponents;
-import org.cleartk.token.TokenAnnotator;
-import org.cleartk.util.UIMAUtil;
-import org.uutuc.factory.AnalysisEngineFactory;
-
 /** 
  * Copyright (c) 2009, Regents of the University of Colorado 
  * All rights reserved.
@@ -28,16 +21,24 @@ import org.uutuc.factory.AnalysisEngineFactory;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
+package org.cleartk.example.pos;
+
+import org.cleartk.ClearTKComponents;
+import org.cleartk.token.TokenAnnotator;
+import org.cleartk.util.UIMAUtil;
+import org.uutuc.factory.AnalysisEngineFactory;
+
+/**
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * @author Philip Ogren
+ * 
+ */
 
 public class RunExamplePOSAnnotator {
 
-	/**
-	 * <br>
-	 * Copyright (c) 2009, Regents of the University of Colorado <br>
-	 * All rights reserved.
-	 * @author Philip Ogren
-	 * 
-	 */
+
 
 	public static void main(String[] args)  throws Exception {
 		UIMAUtil.runUIMAPipeline(

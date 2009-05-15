@@ -219,7 +219,7 @@ public class UIMAUtil {
 	 *            The superclass of the class which should be instantiated.
 	 * @return An instance of the requested class, as a subtype of the supplied
 	 *         superclass. The instance's initialize method will be called if
-	 *         possible, using {@link initialize}
+	 *         possible, using {@link #initialize(Object, UimaContext)}
 	 * @throws ResourceInitializationException
 	 */
 	public static <T> T create(UimaContext context, String classParamName, Class<T> superClass)
@@ -326,7 +326,7 @@ public class UIMAUtil {
 	 * Run the CollectionReader and AnalysisEngines as a pipeline.
 	 * 
 	 * @param reader   The CollectionReader that loads the documents into the CAS.
-	 * @param engines  The AnalysisEngines that process the CAS, in order.
+	 * @param descs  The AnalysisEngines that process the CAS, in order.
 	 */
 	public static void runUIMAPipeline(CollectionReader reader, AnalysisEngineDescription ... descs)
 	throws UIMAException, IOException {

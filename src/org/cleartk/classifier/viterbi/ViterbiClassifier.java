@@ -152,37 +152,17 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
 
 	/**
 	 * This implementation of Viterbi requires at most stackSize * sequenceLength
-	 * calls to the classifier. If this proves to be to expensive, then consider
+	 * calls to the classifier. If this proves to be too expensive, then consider
 	 * using a smaller stack size.
 	 * 
-	 * @param <OUTCOME_TYPE>
-	 *            the type of outcome that should be returned
 	 * @param features
 	 *            a sequence-worth of features. Each List<Feature> in features
 	 *            should corresond to all of the features for a given element in
 	 *            a sequence to be classified.
-	 * @param stackSize
-	 *            the number of candidate paths through the space of possible
-	 *            sequence paths. See note for PARAM_STACK_SIZE above.
-	 * @param cls
-	 *            the class of the outcome type that should be returned
-	 * @param delegatedClassifier
-	 *            a classifier that implements the score(List<Feature>, int)
-	 *            method.
-	 * @param outcomeFeatureExtractors
-	 *            an array of feature extractors that create features from
-	 *            previous classifications.
-	 * @param addScores
-	 *            if true, then candidate sequence classification scores will be
-	 *            calculated by summing the scores for each classification of
-	 *            each member of the sequence. If false, then the scores will be
-	 *            calculated by multiplying the scores together.
 	 * @return a list of outcomes (classifications) - one classification for
 	 *         each member of the sequence.
 	 * @see #PARAM_STACK_SIZE
 	 * @see OutcomeFeatureExtractor
-	 * @see Classifier_ImplBase#classifySequence(List)
-	 * @see MaxentClassifier#classifySequence(List)
 	 */
 	public List<OUTCOME_TYPE> viterbi(List<List<Feature>> features) throws CleartkException {
 

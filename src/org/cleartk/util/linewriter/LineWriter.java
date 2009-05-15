@@ -97,8 +97,8 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 	 * <li>.txt</li> <li>.tokens</li> <li>.annotations.txt</li>
 	 * </ul>
 	 * 
-	 * @see AnnotationRetrieval#getDocument(JCas)
-	 * @see org.cleartk.type.Document#getIdentifier()
+	 * 		 	
+	 * 
 	 */
 	public static final String PARAM_FILE_SUFFIX = "org.cleartk.util.linewriter.LineWriter.PARAM_FILE_SUFFIX";
 

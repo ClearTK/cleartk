@@ -51,15 +51,7 @@ import cc.mallet.types.Sequence;
  * <a href="http://mallet.cs.umass.edu/index.php/SimpleTagger_example">
  * Mallet Conditional Random Field (CRF) tagger</a>.  
  * Annotators that use a sequential learner such as this one will need to 
- * support classification of a sequence of instances.  There are two main 
- * considerations that need to be addressed.  The first is that the annotator
- * should call this classifier with a sequence of "instances" (i.e. lists of features,
- * one list of features per instance).  For example, all the tokens in a sentence
- * could be classified for pos tags or named entity chunk tags - rather than passing
- * in one token at a time.  The other consideration is has to do with creating the training
- * data which is discussed in the
- * {@link MalletCRFDataWriter#consume(org.cleartk.classifier.Instance)}.
- * 
+ * support classification of a sequence of instances.  
  */
 public class MalletCRFClassifier extends SequentialClassifier_ImplBase<String,String,List<NameNumber>>
 {
