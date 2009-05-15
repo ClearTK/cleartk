@@ -28,7 +28,6 @@ import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.cleartk.ClearTKComponents;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.corpus.penntreebank.PennTreebankReader;
-import org.cleartk.util.TestsUtil;
 import org.cleartk.util.UIMAUtil;
 import org.uutuc.factory.CollectionReaderFactory;
 
@@ -44,7 +43,7 @@ public class BuildTestExamplePosModel {
 
 	public static void main(String[] args) throws Exception {
 		
-		TypeSystemDescription typeSystemDescription = TestsUtil.getTypeSystemDescription();
+		TypeSystemDescription typeSystemDescription = ClearTKComponents.TYPE_SYSTEM_DESCRIPTION;
 		
 		UIMAUtil.runUIMAPipeline(
 				CollectionReaderFactory.createCollectionReader(PennTreebankReader.class, typeSystemDescription, 
