@@ -36,7 +36,20 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.corpus.ace2005.type.Document;
+import org.cleartk.corpus.timeml.type.Event;
+import org.cleartk.corpus.timeml.type.TemporalLink;
+import org.cleartk.corpus.timeml.type.Text;
+import org.cleartk.corpus.timeml.type.Time;
+import org.cleartk.ne.type.GazetteerNamedEntityMention;
+import org.cleartk.ne.type.NamedEntity;
 import org.cleartk.ne.type.NamedEntityMention;
+import org.cleartk.srl.type.Argument;
+import org.cleartk.srl.type.Predicate;
+import org.cleartk.srl.type.SemanticArgument;
+import org.cleartk.syntax.treebank.type.TopTreebankNode;
+import org.cleartk.syntax.treebank.type.TreebankNode;
+import org.cleartk.token.chunk.type.Subtoken;
 import org.cleartk.type.Chunk;
 import org.cleartk.type.ContiguousAnnotation;
 import org.cleartk.type.Sentence;
@@ -83,7 +96,7 @@ public class AnnotationRetrievalTests {
 	
 	@Test
 	public void testTypedGet() throws UIMAException {
-		JCas jCas = JCasFactory.createJCas(TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
+		JCas jCas = TestsUtil.getJCas();
 		TokenFactory.createTokens(jCas, "A B C D E F G H I J", Token.class, Sentence.class);
 		
 		ContiguousAnnotation ca = new ContiguousAnnotation(jCas, 10, 13);
@@ -264,11 +277,7 @@ public class AnnotationRetrievalTests {
 
 	@Test
 	public void testGetContainingAnnotationExclusive() throws UIMAException {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-				EmptyAnnotator.class,
-				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
-	
-		JCas jCas = engine.newJCas();
+		JCas jCas = TestsUtil.getJCas();
 		String text = "What if we built a rocket ship made of cheese?\n"+
 					  "We could fly it to the moon for repairs.";
 		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class);
@@ -566,10 +575,7 @@ public class AnnotationRetrievalTests {
 	
 	@Test 
 	public void testGetAnnotationIndex() throws UIMAException, IOException {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-				EmptyAnnotator.class,
-				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
-		JCas jCas = engine.newJCas();
+		JCas jCas = TestsUtil.getJCas();
 		//original joke by Philip Ogren
 		String text = "Police Officer: Put down that gun!\n"+
 					  "Hooligan (turning toward his gun): Stupid gun!";
@@ -590,11 +596,7 @@ public class AnnotationRetrievalTests {
 	
 	@Test
 	public void testGetAtIndex() throws ResourceInitializationException {
-
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-				EmptyAnnotator.class,
-				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
-		JCas jCas = engine.newJCas();
+		JCas jCas = TestsUtil.getJCas();
 		//original joke by Philip Ogren
 		String text = "Police Officer: Put down that gun!\n"+
 					  "Hooligan (turning toward his gun): Stupid gun!";
@@ -613,10 +615,7 @@ public class AnnotationRetrievalTests {
 	
 	@Test
 	public void testGetAnnotationsExact() throws ResourceInitializationException {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-				EmptyAnnotator.class,
-				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
-		JCas jCas = engine.newJCas();
+		JCas jCas = TestsUtil.getJCas();
 		//from http://www.gutenberg.org/files/17192/17192-h/17192-h.htm
 		jCas.setDocumentText("Quoth the Raven, \"Nevermore.\"");
 		Token token = new Token(jCas, 10, 15);
@@ -656,6 +655,46 @@ public class AnnotationRetrievalTests {
 		Assert.assertEquals(1, exactTokens.size());
 		Assert.assertEquals("Quoth", exactTokens.get(0).getCoveredText());
 
+	}
+
+	@Test
+	public void testGetAnnotationsExact2() throws UIMAException {
+		JCas jCas =  TestsUtil.getJCas();
+		testIssue98(jCas);
+		
+		jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
+		testIssue98(jCas);
+		
+		jCas = JCasFactory.createJCas(Chunk.class, Sentence.class, Token.class, TopTreebankNode.class,
+				TreebankNode.class, SplitAnnotation.class, GazetteerNamedEntityMention.class, NamedEntityMention.class,
+				NamedEntity.class, Predicate.class, Argument.class, SemanticArgument.class,
+				ContiguousAnnotation.class, SimpleAnnotation.class, Document.class, Subtoken.class, Event.class,
+				Time.class, TemporalLink.class, Text.class);
+		testIssue98(jCas);
+
+		//does work - why?
+		jCas = JCasFactory.createJCas(Token.class, Chunk.class, Sentence.class, 
+				GazetteerNamedEntityMention.class);
+		testIssue98(jCas);
+
+		//doesn't work!
+		jCas = JCasFactory.createJCas(Token.class, ContiguousAnnotation.class, SimpleAnnotation.class);
+		testIssue98(jCas);
+		
+		//doesn't work 
+		jCas = JCasFactory.createJCas(Token.class);
+		testIssue98(jCas);
+		
+	}
+	public void testIssue98(JCas jCas) {
+		//from http://www.gutenberg.org/files/17192/17192-h/17192-h.htm
+		jCas.setDocumentText("Quoth the Raven, \"Nevermore.\"");
+		Token token = new Token(jCas, 10, 15);
+		token.addToIndexes();
+		Assert.assertEquals("Raven", token.getCoveredText());
+		List<Token> exactTokens = AnnotationRetrieval.getAnnotations(jCas, 10, 15, Token.class, true);
+		Assert.assertEquals(1, exactTokens.size());
+		Assert.assertEquals("Raven", exactTokens.get(0).getCoveredText());
 	}
 
 }
