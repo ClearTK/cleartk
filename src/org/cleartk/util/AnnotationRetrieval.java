@@ -396,8 +396,7 @@ public class AnnotationRetrieval {
 
 	public static <T extends Annotation> List<T> getAnnotations(JCas jCas, int begin, int end, Class<T> cls,
 			boolean exactSpan) {
-		if(begin > end)
-			return null;
+		if (begin > end) return null;
 		if (!exactSpan) {
 			return getAnnotations(jCas, begin, end, cls);
 		}
