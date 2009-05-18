@@ -658,7 +658,7 @@ public class AnnotationRetrievalTests {
 	}
 
 	@Test
-	public void testGetAnnotationsExact2() throws UIMAException {
+	public void testIssue98() throws UIMAException {
 		JCas jCas =  TestsUtil.getJCas();
 		testIssue98(jCas);
 		
