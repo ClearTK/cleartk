@@ -6,9 +6,8 @@
 	<property name="name" value="cleartk"/>
 	<property name="max-memory" value="512m"/>
 
-	<property name="build" value="${basedir}/build"/>
 	<property name="lib" value="${basedir}/lib"/>
-	<property name="bin" value="${build}/bin"/>
+	<property name="bin" value="${basedir}/bin"/>
 	<property name="test-bin" value="${basedir}/test/bin"/>
 	<property name="resources" value="${basedir}/resources"/>
 	<property name="src" value="${basedir}/src"/>
@@ -91,7 +90,7 @@
 			<arg value="${src}/org/cleartk/TypeSystem.xml"/>
 			<arg value="-jcasgenoutput"/>
 			<arg value="${src}"/>
-			<redirector output="${build}/ant.log"/>
+			<redirector output="${basedir}/ant.log"/>
 		</java>
 	</target>
 	
@@ -126,7 +125,7 @@
 			<arg value="${basedir}/test/desc/JulieTypeSystem.xml"/>
 			<arg value="-jcasgenoutput"/>
 			<arg value="${test-src}"/>
-			<redirector output="${build}/ant.log"/>
+			<redirector output="${basedir}/ant.log"/>
 		</java>
 		<echo message="...done."/>
 		<!-- compile the Julie type system java files and any java files written specifically
@@ -203,7 +202,7 @@
 	<target name="build-jar" depends="compile"
 			description="builds ClearTK jar file">
 		<echo message="Creating ClearTK.jar file"/>
-		<jar destfile="${build}/ClearTK.jar" basedir="${bin}"/>
+		<jar destfile="${basedir}/ClearTK.jar" basedir="${bin}"/>
 	</target>
 		
 	<target name="build-javadoc">
