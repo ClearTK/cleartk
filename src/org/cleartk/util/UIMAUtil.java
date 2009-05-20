@@ -334,6 +334,11 @@ public class UIMAUtil {
 		for (int i = 0; i < engines.length; ++i) {
 			engines[i] = AnalysisEngineFactory.createPrimitiveAnalysisEngine(descs[i]);
 		}
+		runUIMAPipeline(reader, engines);
+	}
+
+	public static void runUIMAPipeline(CollectionReader reader, AnalysisEngine... engines)
+	throws UIMAException, IOException {
 		for (JCas jCas: new JCasIterable(reader, engines)) {
 			assert jCas != null;
 		}
