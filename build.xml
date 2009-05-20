@@ -30,6 +30,7 @@
 		
 	<target name="clean">
 		<delete dir="${bin}" />
+		<delete dir="${test-bin}"/>
 	</target>
 
 	
@@ -52,6 +53,7 @@
 	<!--========== test-compile classpath ==========-->
 	<path id="test-compile.classpath">
 		<path refid="compile.classpath"/>
+		<pathelement location="${bin}"/>
 		<pathelement location="${test-src}"/>
 	</path>
 	
