@@ -337,16 +337,21 @@
 <FONT color="green">334</FONT>                    for (int i = 0; i &lt; engines.length; ++i) {<a name="line.334"></a>
 <FONT color="green">335</FONT>                            engines[i] = AnalysisEngineFactory.createPrimitiveAnalysisEngine(descs[i]);<a name="line.335"></a>
 <FONT color="green">336</FONT>                    }<a name="line.336"></a>
-<FONT color="green">337</FONT>                    for (JCas jCas: new JCasIterable(reader, engines)) {<a name="line.337"></a>
-<FONT color="green">338</FONT>                            assert jCas != null;<a name="line.338"></a>
-<FONT color="green">339</FONT>                    }<a name="line.339"></a>
-<FONT color="green">340</FONT>                    for (AnalysisEngine engine: engines) {<a name="line.340"></a>
-<FONT color="green">341</FONT>                            engine.collectionProcessComplete();<a name="line.341"></a>
-<FONT color="green">342</FONT>                    }<a name="line.342"></a>
-<FONT color="green">343</FONT>                    reader.close();<a name="line.343"></a>
-<FONT color="green">344</FONT>            }<a name="line.344"></a>
-<FONT color="green">345</FONT>    <a name="line.345"></a>
-<FONT color="green">346</FONT>    }<a name="line.346"></a>
+<FONT color="green">337</FONT>                    runUIMAPipeline(reader, engines);<a name="line.337"></a>
+<FONT color="green">338</FONT>            }<a name="line.338"></a>
+<FONT color="green">339</FONT>    <a name="line.339"></a>
+<FONT color="green">340</FONT>            public static void runUIMAPipeline(CollectionReader reader, AnalysisEngine... engines)<a name="line.340"></a>
+<FONT color="green">341</FONT>            throws UIMAException, IOException {<a name="line.341"></a>
+<FONT color="green">342</FONT>                    for (JCas jCas: new JCasIterable(reader, engines)) {<a name="line.342"></a>
+<FONT color="green">343</FONT>                            assert jCas != null;<a name="line.343"></a>
+<FONT color="green">344</FONT>                    }<a name="line.344"></a>
+<FONT color="green">345</FONT>                    for (AnalysisEngine engine: engines) {<a name="line.345"></a>
+<FONT color="green">346</FONT>                            engine.collectionProcessComplete();<a name="line.346"></a>
+<FONT color="green">347</FONT>                    }<a name="line.347"></a>
+<FONT color="green">348</FONT>                    reader.close();<a name="line.348"></a>
+<FONT color="green">349</FONT>            }<a name="line.349"></a>
+<FONT color="green">350</FONT>    <a name="line.350"></a>
+<FONT color="green">351</FONT>    }<a name="line.351"></a>
 
 
 

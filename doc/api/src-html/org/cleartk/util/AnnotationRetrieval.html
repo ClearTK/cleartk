@@ -399,286 +399,285 @@
 <FONT color="green">396</FONT>    <a name="line.396"></a>
 <FONT color="green">397</FONT>            public static &lt;T extends Annotation&gt; List&lt;T&gt; getAnnotations(JCas jCas, int begin, int end, Class&lt;T&gt; cls,<a name="line.397"></a>
 <FONT color="green">398</FONT>                            boolean exactSpan) {<a name="line.398"></a>
-<FONT color="green">399</FONT>                    if(begin &gt; end)<a name="line.399"></a>
-<FONT color="green">400</FONT>                            return null;<a name="line.400"></a>
-<FONT color="green">401</FONT>                    if (!exactSpan) {<a name="line.401"></a>
-<FONT color="green">402</FONT>                            return getAnnotations(jCas, begin, end, cls);<a name="line.402"></a>
-<FONT color="green">403</FONT>                    }<a name="line.403"></a>
-<FONT color="green">404</FONT>                    else {<a name="line.404"></a>
-<FONT color="green">405</FONT>                            return getAnnotations(jCas, new Annotation(jCas, begin, end), cls, exactSpan);<a name="line.405"></a>
-<FONT color="green">406</FONT>                    }<a name="line.406"></a>
-<FONT color="green">407</FONT>    <a name="line.407"></a>
-<FONT color="green">408</FONT>            }<a name="line.408"></a>
-<FONT color="green">409</FONT>    <a name="line.409"></a>
-<FONT color="green">410</FONT>            public static &lt;T extends Annotation&gt; List&lt;T&gt; getAnnotations(JCas jCas, SplitAnnotation splitAnnotation, Class&lt;T&gt; cls) {<a name="line.410"></a>
-<FONT color="green">411</FONT>                    List&lt;T&gt; returnValues = new ArrayList&lt;T&gt;();<a name="line.411"></a>
-<FONT color="green">412</FONT>    <a name="line.412"></a>
-<FONT color="green">413</FONT>                    for (FeatureStructure subAnnotation : splitAnnotation.getAnnotations().toArray()) {<a name="line.413"></a>
-<FONT color="green">414</FONT>                            returnValues.addAll(getAnnotations(jCas, (Annotation) subAnnotation, cls));<a name="line.414"></a>
-<FONT color="green">415</FONT>                    }<a name="line.415"></a>
-<FONT color="green">416</FONT>    <a name="line.416"></a>
-<FONT color="green">417</FONT>                    return returnValues;<a name="line.417"></a>
-<FONT color="green">418</FONT>            }<a name="line.418"></a>
-<FONT color="green">419</FONT>    <a name="line.419"></a>
-<FONT color="green">420</FONT>            public static &lt;T extends Annotation&gt; List&lt;T&gt; getAnnotations(JCas jCas, int begin, int end, Class&lt;T&gt; cls) {<a name="line.420"></a>
-<FONT color="green">421</FONT>                    if(begin &gt; end)<a name="line.421"></a>
-<FONT color="green">422</FONT>                            return null;<a name="line.422"></a>
-<FONT color="green">423</FONT>                    Annotation annotation = new Annotation(jCas, begin, end);<a name="line.423"></a>
-<FONT color="green">424</FONT>                    return getAnnotations(jCas, annotation, cls);<a name="line.424"></a>
-<FONT color="green">425</FONT>            }<a name="line.425"></a>
-<FONT color="green">426</FONT>    <a name="line.426"></a>
-<FONT color="green">427</FONT>            /**<a name="line.427"></a>
-<FONT color="green">428</FONT>             * This method provides a way to have multiple annotations define the window<a name="line.428"></a>
-<FONT color="green">429</FONT>             * that is used to constrain the annotations in the returned list. The<a name="line.429"></a>
-<FONT color="green">430</FONT>             * intersection of the windows is determined and used. This method will<a name="line.430"></a>
-<FONT color="green">431</FONT>             * treat any split annotations in the list as a contiguous annotation.<a name="line.431"></a>
-<FONT color="green">432</FONT>             * <a name="line.432"></a>
-<FONT color="green">433</FONT>             * @see #getAnnotations(JCas, Annotation, Class)<a name="line.433"></a>
-<FONT color="green">434</FONT>             * @see #getAnnotations(JCas, SplitAnnotation, Class)<a name="line.434"></a>
-<FONT color="green">435</FONT>             */<a name="line.435"></a>
-<FONT color="green">436</FONT>            public static &lt;T extends Annotation&gt; List&lt;T&gt; getAnnotations(JCas jCas, List&lt;Annotation&gt; windowAnnotations,<a name="line.436"></a>
-<FONT color="green">437</FONT>                            Class&lt;T&gt; cls) {<a name="line.437"></a>
-<FONT color="green">438</FONT>                    if (windowAnnotations == null || windowAnnotations.size() == 0) return null;<a name="line.438"></a>
-<FONT color="green">439</FONT>    <a name="line.439"></a>
-<FONT color="green">440</FONT>                    int windowBegin = Integer.MIN_VALUE;<a name="line.440"></a>
-<FONT color="green">441</FONT>                    int windowEnd = Integer.MAX_VALUE;<a name="line.441"></a>
-<FONT color="green">442</FONT>                    for (Annotation windowAnnotation : windowAnnotations) {<a name="line.442"></a>
-<FONT color="green">443</FONT>                            if (windowAnnotation.getBegin() &gt; windowBegin) windowBegin = windowAnnotation.getBegin();<a name="line.443"></a>
-<FONT color="green">444</FONT>                            if (windowAnnotation.getEnd() &lt; windowEnd) windowEnd = windowAnnotation.getEnd();<a name="line.444"></a>
-<FONT color="green">445</FONT>                    }<a name="line.445"></a>
-<FONT color="green">446</FONT>                    return getAnnotations(jCas, windowBegin, windowEnd, cls);<a name="line.446"></a>
-<FONT color="green">447</FONT>            }<a name="line.447"></a>
-<FONT color="green">448</FONT>    <a name="line.448"></a>
-<FONT color="green">449</FONT>            // TODO think about how to make this method faster by avoiding using a<a name="line.449"></a>
-<FONT color="green">450</FONT>            // constrained iterator. See TODO note for<a name="line.450"></a>
-<FONT color="green">451</FONT>            // get adjacent annotation.<a name="line.451"></a>
-<FONT color="green">452</FONT>            /**<a name="line.452"></a>
-<FONT color="green">453</FONT>             * returns getContainingAnnotation(jCas, focusAnnotation, cls, false)<a name="line.453"></a>
-<FONT color="green">454</FONT>             */<a name="line.454"></a>
-<FONT color="green">455</FONT>            public static &lt;T extends Annotation&gt; T getContainingAnnotation(JCas jCas, Annotation focusAnnotation, Class&lt;T&gt; cls) {<a name="line.455"></a>
-<FONT color="green">456</FONT>                    return getContainingAnnotation(jCas, focusAnnotation, cls, false);<a name="line.456"></a>
-<FONT color="green">457</FONT>            }<a name="line.457"></a>
-<FONT color="green">458</FONT>    <a name="line.458"></a>
-<FONT color="green">459</FONT>            /**<a name="line.459"></a>
-<FONT color="green">460</FONT>             * This method finds the smallest annotation of type cls that contains the<a name="line.460"></a>
-<FONT color="green">461</FONT>             * focus annotation.<a name="line.461"></a>
-<FONT color="green">462</FONT>             * <a name="line.462"></a>
-<FONT color="green">463</FONT>             * @param jCas<a name="line.463"></a>
-<FONT color="green">464</FONT>             * @param focusAnnotation<a name="line.464"></a>
-<FONT color="green">465</FONT>             *            an annotation that will be contained by the returned value<a name="line.465"></a>
-<FONT color="green">466</FONT>             * @param cls<a name="line.466"></a>
-<FONT color="green">467</FONT>             *            determines the type of the returned annotation<a name="line.467"></a>
-<FONT color="green">468</FONT>             * @param exclusiveContain<a name="line.468"></a>
-<FONT color="green">469</FONT>             *            if true, then the method will only return an annotation if it<a name="line.469"></a>
-<FONT color="green">470</FONT>             *            is larger than the focus annotation. If false, then an<a name="line.470"></a>
-<FONT color="green">471</FONT>             *            annotation of the same size can be returned if one exists of<a name="line.471"></a>
-<FONT color="green">472</FONT>             *            the type specified by the cls param. This may be undesirable<a name="line.472"></a>
-<FONT color="green">473</FONT>             *            if the focus annotation is the same type as the cls param<a name="line.473"></a>
-<FONT color="green">474</FONT>             *            because it will return the focus annotation when you might<a name="line.474"></a>
-<FONT color="green">475</FONT>             *            actually want the next biggest annotation that contains the<a name="line.475"></a>
-<FONT color="green">476</FONT>             *            focus annotation.<a name="line.476"></a>
-<FONT color="green">477</FONT>             * @return an annotation of type cls that contains the focus annotation or<a name="line.477"></a>
-<FONT color="green">478</FONT>             *         null it one does not exist.<a name="line.478"></a>
-<FONT color="green">479</FONT>             */<a name="line.479"></a>
-<FONT color="green">480</FONT>    <a name="line.480"></a>
-<FONT color="green">481</FONT>            public static &lt;T extends Annotation&gt; T getContainingAnnotation(JCas jCas, Annotation focusAnnotation, Class&lt;T&gt; cls,<a name="line.481"></a>
-<FONT color="green">482</FONT>                            boolean exclusiveContain) {<a name="line.482"></a>
-<FONT color="green">483</FONT>    <a name="line.483"></a>
-<FONT color="green">484</FONT>                    if(focusAnnotation == null)<a name="line.484"></a>
-<FONT color="green">485</FONT>                            throw new IllegalArgumentException("focus annotation may not be null");<a name="line.485"></a>
+<FONT color="green">399</FONT>                    if (begin &gt; end) return null;<a name="line.399"></a>
+<FONT color="green">400</FONT>                    if (!exactSpan) {<a name="line.400"></a>
+<FONT color="green">401</FONT>                            return getAnnotations(jCas, begin, end, cls);<a name="line.401"></a>
+<FONT color="green">402</FONT>                    }<a name="line.402"></a>
+<FONT color="green">403</FONT>                    else {<a name="line.403"></a>
+<FONT color="green">404</FONT>                            return getAnnotations(jCas, new Annotation(jCas, begin, end), cls, exactSpan);<a name="line.404"></a>
+<FONT color="green">405</FONT>                    }<a name="line.405"></a>
+<FONT color="green">406</FONT>    <a name="line.406"></a>
+<FONT color="green">407</FONT>            }<a name="line.407"></a>
+<FONT color="green">408</FONT>    <a name="line.408"></a>
+<FONT color="green">409</FONT>            public static &lt;T extends Annotation&gt; List&lt;T&gt; getAnnotations(JCas jCas, SplitAnnotation splitAnnotation, Class&lt;T&gt; cls) {<a name="line.409"></a>
+<FONT color="green">410</FONT>                    List&lt;T&gt; returnValues = new ArrayList&lt;T&gt;();<a name="line.410"></a>
+<FONT color="green">411</FONT>    <a name="line.411"></a>
+<FONT color="green">412</FONT>                    for (FeatureStructure subAnnotation : splitAnnotation.getAnnotations().toArray()) {<a name="line.412"></a>
+<FONT color="green">413</FONT>                            returnValues.addAll(getAnnotations(jCas, (Annotation) subAnnotation, cls));<a name="line.413"></a>
+<FONT color="green">414</FONT>                    }<a name="line.414"></a>
+<FONT color="green">415</FONT>    <a name="line.415"></a>
+<FONT color="green">416</FONT>                    return returnValues;<a name="line.416"></a>
+<FONT color="green">417</FONT>            }<a name="line.417"></a>
+<FONT color="green">418</FONT>    <a name="line.418"></a>
+<FONT color="green">419</FONT>            public static &lt;T extends Annotation&gt; List&lt;T&gt; getAnnotations(JCas jCas, int begin, int end, Class&lt;T&gt; cls) {<a name="line.419"></a>
+<FONT color="green">420</FONT>                    if(begin &gt; end)<a name="line.420"></a>
+<FONT color="green">421</FONT>                            return null;<a name="line.421"></a>
+<FONT color="green">422</FONT>                    Annotation annotation = new Annotation(jCas, begin, end);<a name="line.422"></a>
+<FONT color="green">423</FONT>                    return getAnnotations(jCas, annotation, cls);<a name="line.423"></a>
+<FONT color="green">424</FONT>            }<a name="line.424"></a>
+<FONT color="green">425</FONT>    <a name="line.425"></a>
+<FONT color="green">426</FONT>            /**<a name="line.426"></a>
+<FONT color="green">427</FONT>             * This method provides a way to have multiple annotations define the window<a name="line.427"></a>
+<FONT color="green">428</FONT>             * that is used to constrain the annotations in the returned list. The<a name="line.428"></a>
+<FONT color="green">429</FONT>             * intersection of the windows is determined and used. This method will<a name="line.429"></a>
+<FONT color="green">430</FONT>             * treat any split annotations in the list as a contiguous annotation.<a name="line.430"></a>
+<FONT color="green">431</FONT>             * <a name="line.431"></a>
+<FONT color="green">432</FONT>             * @see #getAnnotations(JCas, Annotation, Class)<a name="line.432"></a>
+<FONT color="green">433</FONT>             * @see #getAnnotations(JCas, SplitAnnotation, Class)<a name="line.433"></a>
+<FONT color="green">434</FONT>             */<a name="line.434"></a>
+<FONT color="green">435</FONT>            public static &lt;T extends Annotation&gt; List&lt;T&gt; getAnnotations(JCas jCas, List&lt;Annotation&gt; windowAnnotations,<a name="line.435"></a>
+<FONT color="green">436</FONT>                            Class&lt;T&gt; cls) {<a name="line.436"></a>
+<FONT color="green">437</FONT>                    if (windowAnnotations == null || windowAnnotations.size() == 0) return null;<a name="line.437"></a>
+<FONT color="green">438</FONT>    <a name="line.438"></a>
+<FONT color="green">439</FONT>                    int windowBegin = Integer.MIN_VALUE;<a name="line.439"></a>
+<FONT color="green">440</FONT>                    int windowEnd = Integer.MAX_VALUE;<a name="line.440"></a>
+<FONT color="green">441</FONT>                    for (Annotation windowAnnotation : windowAnnotations) {<a name="line.441"></a>
+<FONT color="green">442</FONT>                            if (windowAnnotation.getBegin() &gt; windowBegin) windowBegin = windowAnnotation.getBegin();<a name="line.442"></a>
+<FONT color="green">443</FONT>                            if (windowAnnotation.getEnd() &lt; windowEnd) windowEnd = windowAnnotation.getEnd();<a name="line.443"></a>
+<FONT color="green">444</FONT>                    }<a name="line.444"></a>
+<FONT color="green">445</FONT>                    return getAnnotations(jCas, windowBegin, windowEnd, cls);<a name="line.445"></a>
+<FONT color="green">446</FONT>            }<a name="line.446"></a>
+<FONT color="green">447</FONT>    <a name="line.447"></a>
+<FONT color="green">448</FONT>            // TODO think about how to make this method faster by avoiding using a<a name="line.448"></a>
+<FONT color="green">449</FONT>            // constrained iterator. See TODO note for<a name="line.449"></a>
+<FONT color="green">450</FONT>            // get adjacent annotation.<a name="line.450"></a>
+<FONT color="green">451</FONT>            /**<a name="line.451"></a>
+<FONT color="green">452</FONT>             * returns getContainingAnnotation(jCas, focusAnnotation, cls, false)<a name="line.452"></a>
+<FONT color="green">453</FONT>             */<a name="line.453"></a>
+<FONT color="green">454</FONT>            public static &lt;T extends Annotation&gt; T getContainingAnnotation(JCas jCas, Annotation focusAnnotation, Class&lt;T&gt; cls) {<a name="line.454"></a>
+<FONT color="green">455</FONT>                    return getContainingAnnotation(jCas, focusAnnotation, cls, false);<a name="line.455"></a>
+<FONT color="green">456</FONT>            }<a name="line.456"></a>
+<FONT color="green">457</FONT>    <a name="line.457"></a>
+<FONT color="green">458</FONT>            /**<a name="line.458"></a>
+<FONT color="green">459</FONT>             * This method finds the smallest annotation of type cls that contains the<a name="line.459"></a>
+<FONT color="green">460</FONT>             * focus annotation.<a name="line.460"></a>
+<FONT color="green">461</FONT>             * <a name="line.461"></a>
+<FONT color="green">462</FONT>             * @param jCas<a name="line.462"></a>
+<FONT color="green">463</FONT>             * @param focusAnnotation<a name="line.463"></a>
+<FONT color="green">464</FONT>             *            an annotation that will be contained by the returned value<a name="line.464"></a>
+<FONT color="green">465</FONT>             * @param cls<a name="line.465"></a>
+<FONT color="green">466</FONT>             *            determines the type of the returned annotation<a name="line.466"></a>
+<FONT color="green">467</FONT>             * @param exclusiveContain<a name="line.467"></a>
+<FONT color="green">468</FONT>             *            if true, then the method will only return an annotation if it<a name="line.468"></a>
+<FONT color="green">469</FONT>             *            is larger than the focus annotation. If false, then an<a name="line.469"></a>
+<FONT color="green">470</FONT>             *            annotation of the same size can be returned if one exists of<a name="line.470"></a>
+<FONT color="green">471</FONT>             *            the type specified by the cls param. This may be undesirable<a name="line.471"></a>
+<FONT color="green">472</FONT>             *            if the focus annotation is the same type as the cls param<a name="line.472"></a>
+<FONT color="green">473</FONT>             *            because it will return the focus annotation when you might<a name="line.473"></a>
+<FONT color="green">474</FONT>             *            actually want the next biggest annotation that contains the<a name="line.474"></a>
+<FONT color="green">475</FONT>             *            focus annotation.<a name="line.475"></a>
+<FONT color="green">476</FONT>             * @return an annotation of type cls that contains the focus annotation or<a name="line.476"></a>
+<FONT color="green">477</FONT>             *         null it one does not exist.<a name="line.477"></a>
+<FONT color="green">478</FONT>             */<a name="line.478"></a>
+<FONT color="green">479</FONT>    <a name="line.479"></a>
+<FONT color="green">480</FONT>            public static &lt;T extends Annotation&gt; T getContainingAnnotation(JCas jCas, Annotation focusAnnotation, Class&lt;T&gt; cls,<a name="line.480"></a>
+<FONT color="green">481</FONT>                            boolean exclusiveContain) {<a name="line.481"></a>
+<FONT color="green">482</FONT>    <a name="line.482"></a>
+<FONT color="green">483</FONT>                    if(focusAnnotation == null)<a name="line.483"></a>
+<FONT color="green">484</FONT>                            throw new IllegalArgumentException("focus annotation may not be null");<a name="line.484"></a>
+<FONT color="green">485</FONT>    <a name="line.485"></a>
 <FONT color="green">486</FONT>    <a name="line.486"></a>
-<FONT color="green">487</FONT>    <a name="line.487"></a>
-<FONT color="green">488</FONT>                    FSIterator cursor = jCas.getAnnotationIndex().iterator();<a name="line.488"></a>
-<FONT color="green">489</FONT>    <a name="line.489"></a>
-<FONT color="green">490</FONT>                    //the goal is to move the cursor to the last annotation that begins at the same index as the focus annotation <a name="line.490"></a>
-<FONT color="green">491</FONT>                    cursor.moveTo(focusAnnotation);<a name="line.491"></a>
-<FONT color="green">492</FONT>                    while (cursor.isValid()) {<a name="line.492"></a>
-<FONT color="green">493</FONT>                            cursor.moveToNext();<a name="line.493"></a>
-<FONT color="green">494</FONT>    <a name="line.494"></a>
-<FONT color="green">495</FONT>                            //if we have moved past the last element, then move cursor to last element and be done<a name="line.495"></a>
-<FONT color="green">496</FONT>                            if(!cursor.isValid()) {<a name="line.496"></a>
-<FONT color="green">497</FONT>                                    cursor.moveToLast();<a name="line.497"></a>
-<FONT color="green">498</FONT>                                    break;<a name="line.498"></a>
-<FONT color="green">499</FONT>                            }<a name="line.499"></a>
-<FONT color="green">500</FONT>    <a name="line.500"></a>
-<FONT color="green">501</FONT>                            //if we have moved to an annotation that does not be begin at the same index as the focus annotation,<a name="line.501"></a>
-<FONT color="green">502</FONT>                            //then move to previous.  <a name="line.502"></a>
-<FONT color="green">503</FONT>                            Annotation nextAnnotation = (Annotation) cursor.get();<a name="line.503"></a>
-<FONT color="green">504</FONT>                            if(nextAnnotation.getBegin() != focusAnnotation.getBegin()) {<a name="line.504"></a>
-<FONT color="green">505</FONT>                                    cursor.moveToPrevious();<a name="line.505"></a>
-<FONT color="green">506</FONT>                                    break;<a name="line.506"></a>
-<FONT color="green">507</FONT>                            }<a name="line.507"></a>
-<FONT color="green">508</FONT>                    }<a name="line.508"></a>
+<FONT color="green">487</FONT>                    FSIterator cursor = jCas.getAnnotationIndex().iterator();<a name="line.487"></a>
+<FONT color="green">488</FONT>    <a name="line.488"></a>
+<FONT color="green">489</FONT>                    //the goal is to move the cursor to the last annotation that begins at the same index as the focus annotation <a name="line.489"></a>
+<FONT color="green">490</FONT>                    cursor.moveTo(focusAnnotation);<a name="line.490"></a>
+<FONT color="green">491</FONT>                    while (cursor.isValid()) {<a name="line.491"></a>
+<FONT color="green">492</FONT>                            cursor.moveToNext();<a name="line.492"></a>
+<FONT color="green">493</FONT>    <a name="line.493"></a>
+<FONT color="green">494</FONT>                            //if we have moved past the last element, then move cursor to last element and be done<a name="line.494"></a>
+<FONT color="green">495</FONT>                            if(!cursor.isValid()) {<a name="line.495"></a>
+<FONT color="green">496</FONT>                                    cursor.moveToLast();<a name="line.496"></a>
+<FONT color="green">497</FONT>                                    break;<a name="line.497"></a>
+<FONT color="green">498</FONT>                            }<a name="line.498"></a>
+<FONT color="green">499</FONT>    <a name="line.499"></a>
+<FONT color="green">500</FONT>                            //if we have moved to an annotation that does not be begin at the same index as the focus annotation,<a name="line.500"></a>
+<FONT color="green">501</FONT>                            //then move to previous.  <a name="line.501"></a>
+<FONT color="green">502</FONT>                            Annotation nextAnnotation = (Annotation) cursor.get();<a name="line.502"></a>
+<FONT color="green">503</FONT>                            if(nextAnnotation.getBegin() != focusAnnotation.getBegin()) {<a name="line.503"></a>
+<FONT color="green">504</FONT>                                    cursor.moveToPrevious();<a name="line.504"></a>
+<FONT color="green">505</FONT>                                    break;<a name="line.505"></a>
+<FONT color="green">506</FONT>                            }<a name="line.506"></a>
+<FONT color="green">507</FONT>                    }<a name="line.507"></a>
+<FONT color="green">508</FONT>    <a name="line.508"></a>
 <FONT color="green">509</FONT>    <a name="line.509"></a>
-<FONT color="green">510</FONT>    <a name="line.510"></a>
-<FONT color="green">511</FONT>                    while (cursor.isValid()) {<a name="line.511"></a>
-<FONT color="green">512</FONT>                            Annotation annotation = (Annotation) cursor.get();<a name="line.512"></a>
-<FONT color="green">513</FONT>                            if (exclusiveContain) {<a name="line.513"></a>
-<FONT color="green">514</FONT>                                    if (cls.isInstance(annotation) &amp;&amp; annotation.getBegin() &lt;= focusAnnotation.getBegin()<a name="line.514"></a>
-<FONT color="green">515</FONT>                                                    &amp;&amp; annotation.getEnd() &gt;= focusAnnotation.getEnd()<a name="line.515"></a>
-<FONT color="green">516</FONT>                                                    &amp;&amp; AnnotationUtil.size(annotation) &gt; AnnotationUtil.size(focusAnnotation)) {<a name="line.516"></a>
-<FONT color="green">517</FONT>                                            return cls.cast(annotation);<a name="line.517"></a>
-<FONT color="green">518</FONT>                                    }<a name="line.518"></a>
-<FONT color="green">519</FONT>                            }<a name="line.519"></a>
-<FONT color="green">520</FONT>                            else {<a name="line.520"></a>
-<FONT color="green">521</FONT>                                    if (cls.isInstance(annotation) &amp;&amp; annotation.getBegin() &lt;= focusAnnotation.getBegin()<a name="line.521"></a>
-<FONT color="green">522</FONT>                                                    &amp;&amp; annotation.getEnd() &gt;= focusAnnotation.getEnd()) {<a name="line.522"></a>
-<FONT color="green">523</FONT>                                            return cls.cast(annotation);<a name="line.523"></a>
-<FONT color="green">524</FONT>                                    }<a name="line.524"></a>
-<FONT color="green">525</FONT>                            }<a name="line.525"></a>
-<FONT color="green">526</FONT>                            cursor.moveToPrevious();<a name="line.526"></a>
-<FONT color="green">527</FONT>                    }<a name="line.527"></a>
-<FONT color="green">528</FONT>                    return null;<a name="line.528"></a>
-<FONT color="green">529</FONT>    <a name="line.529"></a>
-<FONT color="green">530</FONT>            }<a name="line.530"></a>
-<FONT color="green">531</FONT>    <a name="line.531"></a>
-<FONT color="green">532</FONT>            public static &lt;T extends Annotation&gt; List&lt;T&gt; getOverlappingAnnotations(JCas jCas, Annotation focusAnnotation, Class&lt;T&gt; cls, boolean before) {<a name="line.532"></a>
-<FONT color="green">533</FONT>                    List&lt;T&gt; annotations = new ArrayList&lt;T&gt;();<a name="line.533"></a>
-<FONT color="green">534</FONT>    <a name="line.534"></a>
-<FONT color="green">535</FONT>                    ConstraintFactory constraintFactory = jCas.getConstraintFactory();<a name="line.535"></a>
-<FONT color="green">536</FONT>    <a name="line.536"></a>
-<FONT color="green">537</FONT>                    FSTypeConstraint typeConstraint = constraintFactory.createTypeConstraint();<a name="line.537"></a>
-<FONT color="green">538</FONT>                    Type type = UIMAUtil.getCasType(jCas, cls);<a name="line.538"></a>
-<FONT color="green">539</FONT>                    typeConstraint.add(type);<a name="line.539"></a>
+<FONT color="green">510</FONT>                    while (cursor.isValid()) {<a name="line.510"></a>
+<FONT color="green">511</FONT>                            Annotation annotation = (Annotation) cursor.get();<a name="line.511"></a>
+<FONT color="green">512</FONT>                            if (exclusiveContain) {<a name="line.512"></a>
+<FONT color="green">513</FONT>                                    if (cls.isInstance(annotation) &amp;&amp; annotation.getBegin() &lt;= focusAnnotation.getBegin()<a name="line.513"></a>
+<FONT color="green">514</FONT>                                                    &amp;&amp; annotation.getEnd() &gt;= focusAnnotation.getEnd()<a name="line.514"></a>
+<FONT color="green">515</FONT>                                                    &amp;&amp; AnnotationUtil.size(annotation) &gt; AnnotationUtil.size(focusAnnotation)) {<a name="line.515"></a>
+<FONT color="green">516</FONT>                                            return cls.cast(annotation);<a name="line.516"></a>
+<FONT color="green">517</FONT>                                    }<a name="line.517"></a>
+<FONT color="green">518</FONT>                            }<a name="line.518"></a>
+<FONT color="green">519</FONT>                            else {<a name="line.519"></a>
+<FONT color="green">520</FONT>                                    if (cls.isInstance(annotation) &amp;&amp; annotation.getBegin() &lt;= focusAnnotation.getBegin()<a name="line.520"></a>
+<FONT color="green">521</FONT>                                                    &amp;&amp; annotation.getEnd() &gt;= focusAnnotation.getEnd()) {<a name="line.521"></a>
+<FONT color="green">522</FONT>                                            return cls.cast(annotation);<a name="line.522"></a>
+<FONT color="green">523</FONT>                                    }<a name="line.523"></a>
+<FONT color="green">524</FONT>                            }<a name="line.524"></a>
+<FONT color="green">525</FONT>                            cursor.moveToPrevious();<a name="line.525"></a>
+<FONT color="green">526</FONT>                    }<a name="line.526"></a>
+<FONT color="green">527</FONT>                    return null;<a name="line.527"></a>
+<FONT color="green">528</FONT>    <a name="line.528"></a>
+<FONT color="green">529</FONT>            }<a name="line.529"></a>
+<FONT color="green">530</FONT>    <a name="line.530"></a>
+<FONT color="green">531</FONT>            public static &lt;T extends Annotation&gt; List&lt;T&gt; getOverlappingAnnotations(JCas jCas, Annotation focusAnnotation, Class&lt;T&gt; cls, boolean before) {<a name="line.531"></a>
+<FONT color="green">532</FONT>                    List&lt;T&gt; annotations = new ArrayList&lt;T&gt;();<a name="line.532"></a>
+<FONT color="green">533</FONT>    <a name="line.533"></a>
+<FONT color="green">534</FONT>                    ConstraintFactory constraintFactory = jCas.getConstraintFactory();<a name="line.534"></a>
+<FONT color="green">535</FONT>    <a name="line.535"></a>
+<FONT color="green">536</FONT>                    FSTypeConstraint typeConstraint = constraintFactory.createTypeConstraint();<a name="line.536"></a>
+<FONT color="green">537</FONT>                    Type type = UIMAUtil.getCasType(jCas, cls);<a name="line.537"></a>
+<FONT color="green">538</FONT>                    typeConstraint.add(type);<a name="line.538"></a>
+<FONT color="green">539</FONT>                    <a name="line.539"></a>
 <FONT color="green">540</FONT>                    <a name="line.540"></a>
-<FONT color="green">541</FONT>                    <a name="line.541"></a>
-<FONT color="green">542</FONT>                    FSMatchConstraint overlapConstraint; <a name="line.542"></a>
-<FONT color="green">543</FONT>                    if(before)<a name="line.543"></a>
-<FONT color="green">544</FONT>                            overlapConstraint = getOverlapBeforeConstraint(jCas, focusAnnotation, constraintFactory);<a name="line.544"></a>
-<FONT color="green">545</FONT>                    else<a name="line.545"></a>
-<FONT color="green">546</FONT>                            overlapConstraint = getOverlapAfterConstraint(jCas, focusAnnotation, constraintFactory);<a name="line.546"></a>
-<FONT color="green">547</FONT>    <a name="line.547"></a>
-<FONT color="green">548</FONT>                    FSIterator iterator = jCas.createFilteredIterator(jCas.getAnnotationIndex(type).iterator(), overlapConstraint);<a name="line.548"></a>
-<FONT color="green">549</FONT>                    while(iterator.hasNext()) {<a name="line.549"></a>
-<FONT color="green">550</FONT>                            T annotation = cls.cast(iterator.next()); <a name="line.550"></a>
-<FONT color="green">551</FONT>                            annotations.add(annotation);<a name="line.551"></a>
-<FONT color="green">552</FONT>                    }<a name="line.552"></a>
-<FONT color="green">553</FONT>                    <a name="line.553"></a>
-<FONT color="green">554</FONT>                    return annotations;<a name="line.554"></a>
-<FONT color="green">555</FONT>            }<a name="line.555"></a>
-<FONT color="green">556</FONT>    <a name="line.556"></a>
-<FONT color="green">557</FONT>            private static FSMatchConstraint getOverlapBeforeConstraint(JCas jCas, Annotation focusAnnotation, ConstraintFactory constraintFactory) {<a name="line.557"></a>
-<FONT color="green">558</FONT>    <a name="line.558"></a>
-<FONT color="green">559</FONT>                    FSIntConstraint beginIntConstraint = constraintFactory.createIntConstraint();<a name="line.559"></a>
-<FONT color="green">560</FONT>                    beginIntConstraint.lt(focusAnnotation.getBegin());<a name="line.560"></a>
-<FONT color="green">561</FONT>                    FeaturePath beginPath = jCas.createFeaturePath();<a name="line.561"></a>
-<FONT color="green">562</FONT>                    Feature beginFeature = jCas.getTypeSystem().getFeatureByFullName("uima.tcas.Annotation:begin");<a name="line.562"></a>
-<FONT color="green">563</FONT>                    beginPath.addFeature(beginFeature);<a name="line.563"></a>
-<FONT color="green">564</FONT>                    FSMatchConstraint beginConstraint = constraintFactory.embedConstraint(beginPath, beginIntConstraint);<a name="line.564"></a>
-<FONT color="green">565</FONT>                    <a name="line.565"></a>
-<FONT color="green">566</FONT>                    FSIntConstraint endIntConstraint = constraintFactory.createIntConstraint();<a name="line.566"></a>
-<FONT color="green">567</FONT>                    endIntConstraint.gt(focusAnnotation.getBegin());<a name="line.567"></a>
-<FONT color="green">568</FONT>                    endIntConstraint.leq(focusAnnotation.getEnd());<a name="line.568"></a>
-<FONT color="green">569</FONT>                    FeaturePath endPath = jCas.createFeaturePath();<a name="line.569"></a>
-<FONT color="green">570</FONT>                    Feature endFeature = jCas.getTypeSystem().getFeatureByFullName("uima.tcas.Annotation:end");<a name="line.570"></a>
-<FONT color="green">571</FONT>                    endPath.addFeature(endFeature);<a name="line.571"></a>
-<FONT color="green">572</FONT>                    FSMatchConstraint endConstraint = constraintFactory.embedConstraint(endPath, endIntConstraint);<a name="line.572"></a>
-<FONT color="green">573</FONT>    <a name="line.573"></a>
-<FONT color="green">574</FONT>                    return constraintFactory.and(beginConstraint, endConstraint);<a name="line.574"></a>
-<FONT color="green">575</FONT>            }<a name="line.575"></a>
-<FONT color="green">576</FONT>    <a name="line.576"></a>
-<FONT color="green">577</FONT>            private static FSMatchConstraint getOverlapAfterConstraint(JCas jCas, Annotation focusAnnotation, ConstraintFactory constraintFactory) {<a name="line.577"></a>
-<FONT color="green">578</FONT>    <a name="line.578"></a>
-<FONT color="green">579</FONT>                    FSIntConstraint beginIntConstraint = constraintFactory.createIntConstraint();<a name="line.579"></a>
-<FONT color="green">580</FONT>                    beginIntConstraint.geq(focusAnnotation.getBegin());<a name="line.580"></a>
-<FONT color="green">581</FONT>                    beginIntConstraint.lt(focusAnnotation.getEnd());<a name="line.581"></a>
-<FONT color="green">582</FONT>                    <a name="line.582"></a>
-<FONT color="green">583</FONT>                    FeaturePath beginPath = jCas.createFeaturePath();<a name="line.583"></a>
-<FONT color="green">584</FONT>                    Feature beginFeature = jCas.getTypeSystem().getFeatureByFullName("uima.tcas.Annotation:begin");<a name="line.584"></a>
-<FONT color="green">585</FONT>                    beginPath.addFeature(beginFeature);<a name="line.585"></a>
-<FONT color="green">586</FONT>                    FSMatchConstraint beginConstraint = constraintFactory.embedConstraint(beginPath, beginIntConstraint);<a name="line.586"></a>
-<FONT color="green">587</FONT>                    <a name="line.587"></a>
-<FONT color="green">588</FONT>                    FSIntConstraint endIntConstraint = constraintFactory.createIntConstraint();<a name="line.588"></a>
-<FONT color="green">589</FONT>                    endIntConstraint.gt(focusAnnotation.getEnd());<a name="line.589"></a>
-<FONT color="green">590</FONT>                    FeaturePath endPath = jCas.createFeaturePath();<a name="line.590"></a>
-<FONT color="green">591</FONT>                    Feature endFeature = jCas.getTypeSystem().getFeatureByFullName("uima.tcas.Annotation:end");<a name="line.591"></a>
-<FONT color="green">592</FONT>                    endPath.addFeature(endFeature);<a name="line.592"></a>
-<FONT color="green">593</FONT>                    FSMatchConstraint endConstraint = constraintFactory.embedConstraint(endPath, endIntConstraint);<a name="line.593"></a>
-<FONT color="green">594</FONT>    <a name="line.594"></a>
-<FONT color="green">595</FONT>                    return constraintFactory.and(beginConstraint, endConstraint);<a name="line.595"></a>
-<FONT color="green">596</FONT>            }<a name="line.596"></a>
-<FONT color="green">597</FONT>    <a name="line.597"></a>
-<FONT color="green">598</FONT>            /**<a name="line.598"></a>
-<FONT color="green">599</FONT>             * Finds and returns the annotation of the provided type that is adjacent to<a name="line.599"></a>
-<FONT color="green">600</FONT>             * the focus annotation in either to the left or right. Adjacent simply<a name="line.600"></a>
-<FONT color="green">601</FONT>             * means the last annotation of the passed in type that ends before the<a name="line.601"></a>
-<FONT color="green">602</FONT>             * start of the focus annotation (for the left side) or the first annotation<a name="line.602"></a>
-<FONT color="green">603</FONT>             * that starts after the end of the focus annotation (for the right side).<a name="line.603"></a>
-<FONT color="green">604</FONT>             * Thus, adacent refers to order of annotations at the annotation level<a name="line.604"></a>
-<FONT color="green">605</FONT>             * (e.g. give me the first annotation of type x to the left of the focus<a name="line.605"></a>
-<FONT color="green">606</FONT>             * annotation) and does not mean that the annotations are adjacenct at the<a name="line.606"></a>
-<FONT color="green">607</FONT>             * character offset level.<a name="line.607"></a>
-<FONT color="green">608</FONT>             * <a name="line.608"></a>
-<FONT color="green">609</FONT>             * &lt;br&gt;<a name="line.609"></a>
-<FONT color="green">610</FONT>             * &lt;b&gt;note:&lt;/b&gt; This method runs &lt;b&gt;much&lt;/b&gt; faster if the type of the<a name="line.610"></a>
-<FONT color="green">611</FONT>             * passed in annotation and the passed in type are the same.<a name="line.611"></a>
-<FONT color="green">612</FONT>             * <a name="line.612"></a>
-<FONT color="green">613</FONT>             * @param jCas<a name="line.613"></a>
-<FONT color="green">614</FONT>             * @param focusAnnotation<a name="line.614"></a>
-<FONT color="green">615</FONT>             *            an annotation that you want to find an annotation adjacent to<a name="line.615"></a>
-<FONT color="green">616</FONT>             *            this.<a name="line.616"></a>
-<FONT color="green">617</FONT>             * @param adjacentClass<a name="line.617"></a>
-<FONT color="green">618</FONT>             *            the type of annotation that you want to find<a name="line.618"></a>
-<FONT color="green">619</FONT>             * @param adjacentBefore<a name="line.619"></a>
-<FONT color="green">620</FONT>             *            if true then returns an annotation to the left of the passed<a name="line.620"></a>
-<FONT color="green">621</FONT>             *            in annotation, otherwise an annotation to the right will be<a name="line.621"></a>
-<FONT color="green">622</FONT>             *            returned.<a name="line.622"></a>
-<FONT color="green">623</FONT>             * @return an annotation of type adjacentType or null<a name="line.623"></a>
-<FONT color="green">624</FONT>             */<a name="line.624"></a>
-<FONT color="green">625</FONT>            public static &lt;T extends Annotation&gt; T getAdjacentAnnotation(JCas jCas, Annotation focusAnnotation,<a name="line.625"></a>
-<FONT color="green">626</FONT>                            Class&lt;T&gt; adjacentClass, boolean adjacentBefore) {<a name="line.626"></a>
-<FONT color="green">627</FONT>                    try {<a name="line.627"></a>
-<FONT color="green">628</FONT>                            Type adjacentType = UIMAUtil.getCasType(jCas, adjacentClass);<a name="line.628"></a>
-<FONT color="green">629</FONT>                            if (focusAnnotation.getType().equals(adjacentType)) {<a name="line.629"></a>
-<FONT color="green">630</FONT>                                    FSIterator iterator = jCas.getAnnotationIndex(adjacentType).iterator();<a name="line.630"></a>
-<FONT color="green">631</FONT>                                    iterator.moveTo(focusAnnotation);<a name="line.631"></a>
-<FONT color="green">632</FONT>                                    if (adjacentBefore) iterator.moveToPrevious();<a name="line.632"></a>
-<FONT color="green">633</FONT>                                    else iterator.moveToNext();<a name="line.633"></a>
-<FONT color="green">634</FONT>                                    return adjacentClass.cast(iterator.get());<a name="line.634"></a>
-<FONT color="green">635</FONT>                            }<a name="line.635"></a>
-<FONT color="green">636</FONT>                            else {<a name="line.636"></a>
-<FONT color="green">637</FONT>                                    FSIterator cursor = jCas.getAnnotationIndex().iterator();<a name="line.637"></a>
-<FONT color="green">638</FONT>                                    cursor.moveTo(focusAnnotation);<a name="line.638"></a>
-<FONT color="green">639</FONT>                                    if (adjacentBefore) {<a name="line.639"></a>
-<FONT color="green">640</FONT>                                            while (cursor.isValid()) {<a name="line.640"></a>
-<FONT color="green">641</FONT>                                                    cursor.moveToPrevious();<a name="line.641"></a>
-<FONT color="green">642</FONT>                                                    Annotation annotation = (Annotation) cursor.get();<a name="line.642"></a>
-<FONT color="green">643</FONT>                                                    if (adjacentClass.isInstance(annotation) &amp;&amp; annotation.getEnd() &lt;= focusAnnotation.getBegin()) return adjacentClass<a name="line.643"></a>
-<FONT color="green">644</FONT>                                                    .cast(annotation);<a name="line.644"></a>
-<FONT color="green">645</FONT>                                            }<a name="line.645"></a>
-<FONT color="green">646</FONT>                                    }<a name="line.646"></a>
-<FONT color="green">647</FONT>                                    else {<a name="line.647"></a>
-<FONT color="green">648</FONT>                                            while (cursor.isValid()) {<a name="line.648"></a>
-<FONT color="green">649</FONT>                                                    cursor.moveToNext();<a name="line.649"></a>
-<FONT color="green">650</FONT>                                                    Annotation annotation = (Annotation) cursor.get();<a name="line.650"></a>
-<FONT color="green">651</FONT>                                                    if (adjacentClass.isInstance(annotation) &amp;&amp; annotation.getBegin() &gt;= focusAnnotation.getEnd()) return adjacentClass<a name="line.651"></a>
-<FONT color="green">652</FONT>                                                    .cast(annotation);<a name="line.652"></a>
-<FONT color="green">653</FONT>                                            }<a name="line.653"></a>
-<FONT color="green">654</FONT>                                    }<a name="line.654"></a>
-<FONT color="green">655</FONT>                            }<a name="line.655"></a>
-<FONT color="green">656</FONT>                    }<a name="line.656"></a>
-<FONT color="green">657</FONT>                    catch (NoSuchElementException nsee) {<a name="line.657"></a>
-<FONT color="green">658</FONT>                            return null;<a name="line.658"></a>
-<FONT color="green">659</FONT>                    }<a name="line.659"></a>
-<FONT color="green">660</FONT>                    return null;<a name="line.660"></a>
-<FONT color="green">661</FONT>            }<a name="line.661"></a>
-<FONT color="green">662</FONT>    <a name="line.662"></a>
-<FONT color="green">663</FONT>            public static &lt;T extends Annotation&gt; AnnotationIndex getAnnotationIndex(JCas jCas, Class&lt;T&gt; cls) {<a name="line.663"></a>
-<FONT color="green">664</FONT>                    return jCas.getAnnotationIndex(UIMAUtil.getCasType(jCas, cls));<a name="line.664"></a>
-<FONT color="green">665</FONT>            }<a name="line.665"></a>
-<FONT color="green">666</FONT>    <a name="line.666"></a>
-<FONT color="green">667</FONT>            /**<a name="line.667"></a>
-<FONT color="green">668</FONT>             * Get the DocumentAnnotation for this JCas. <a name="line.668"></a>
-<FONT color="green">669</FONT>             * @param jCas The JCas for the document.<a name="line.669"></a>
-<FONT color="green">670</FONT>             * @return     The DocumentAnnotation.<a name="line.670"></a>
-<FONT color="green">671</FONT>             */<a name="line.671"></a>
-<FONT color="green">672</FONT>            public static DocumentAnnotation getDocument(JCas jCas)<a name="line.672"></a>
-<FONT color="green">673</FONT>            {<a name="line.673"></a>
-<FONT color="green">674</FONT>                    return (DocumentAnnotation)jCas.getDocumentAnnotationFs();<a name="line.674"></a>
-<FONT color="green">675</FONT>            }<a name="line.675"></a>
-<FONT color="green">676</FONT>    <a name="line.676"></a>
-<FONT color="green">677</FONT>    }<a name="line.677"></a>
-<FONT color="green">678</FONT>    <a name="line.678"></a>
+<FONT color="green">541</FONT>                    FSMatchConstraint overlapConstraint; <a name="line.541"></a>
+<FONT color="green">542</FONT>                    if(before)<a name="line.542"></a>
+<FONT color="green">543</FONT>                            overlapConstraint = getOverlapBeforeConstraint(jCas, focusAnnotation, constraintFactory);<a name="line.543"></a>
+<FONT color="green">544</FONT>                    else<a name="line.544"></a>
+<FONT color="green">545</FONT>                            overlapConstraint = getOverlapAfterConstraint(jCas, focusAnnotation, constraintFactory);<a name="line.545"></a>
+<FONT color="green">546</FONT>    <a name="line.546"></a>
+<FONT color="green">547</FONT>                    FSIterator iterator = jCas.createFilteredIterator(jCas.getAnnotationIndex(type).iterator(), overlapConstraint);<a name="line.547"></a>
+<FONT color="green">548</FONT>                    while(iterator.hasNext()) {<a name="line.548"></a>
+<FONT color="green">549</FONT>                            T annotation = cls.cast(iterator.next()); <a name="line.549"></a>
+<FONT color="green">550</FONT>                            annotations.add(annotation);<a name="line.550"></a>
+<FONT color="green">551</FONT>                    }<a name="line.551"></a>
+<FONT color="green">552</FONT>                    <a name="line.552"></a>
+<FONT color="green">553</FONT>                    return annotations;<a name="line.553"></a>
+<FONT color="green">554</FONT>            }<a name="line.554"></a>
+<FONT color="green">555</FONT>    <a name="line.555"></a>
+<FONT color="green">556</FONT>            private static FSMatchConstraint getOverlapBeforeConstraint(JCas jCas, Annotation focusAnnotation, ConstraintFactory constraintFactory) {<a name="line.556"></a>
+<FONT color="green">557</FONT>    <a name="line.557"></a>
+<FONT color="green">558</FONT>                    FSIntConstraint beginIntConstraint = constraintFactory.createIntConstraint();<a name="line.558"></a>
+<FONT color="green">559</FONT>                    beginIntConstraint.lt(focusAnnotation.getBegin());<a name="line.559"></a>
+<FONT color="green">560</FONT>                    FeaturePath beginPath = jCas.createFeaturePath();<a name="line.560"></a>
+<FONT color="green">561</FONT>                    Feature beginFeature = jCas.getTypeSystem().getFeatureByFullName("uima.tcas.Annotation:begin");<a name="line.561"></a>
+<FONT color="green">562</FONT>                    beginPath.addFeature(beginFeature);<a name="line.562"></a>
+<FONT color="green">563</FONT>                    FSMatchConstraint beginConstraint = constraintFactory.embedConstraint(beginPath, beginIntConstraint);<a name="line.563"></a>
+<FONT color="green">564</FONT>                    <a name="line.564"></a>
+<FONT color="green">565</FONT>                    FSIntConstraint endIntConstraint = constraintFactory.createIntConstraint();<a name="line.565"></a>
+<FONT color="green">566</FONT>                    endIntConstraint.gt(focusAnnotation.getBegin());<a name="line.566"></a>
+<FONT color="green">567</FONT>                    endIntConstraint.leq(focusAnnotation.getEnd());<a name="line.567"></a>
+<FONT color="green">568</FONT>                    FeaturePath endPath = jCas.createFeaturePath();<a name="line.568"></a>
+<FONT color="green">569</FONT>                    Feature endFeature = jCas.getTypeSystem().getFeatureByFullName("uima.tcas.Annotation:end");<a name="line.569"></a>
+<FONT color="green">570</FONT>                    endPath.addFeature(endFeature);<a name="line.570"></a>
+<FONT color="green">571</FONT>                    FSMatchConstraint endConstraint = constraintFactory.embedConstraint(endPath, endIntConstraint);<a name="line.571"></a>
+<FONT color="green">572</FONT>    <a name="line.572"></a>
+<FONT color="green">573</FONT>                    return constraintFactory.and(beginConstraint, endConstraint);<a name="line.573"></a>
+<FONT color="green">574</FONT>            }<a name="line.574"></a>
+<FONT color="green">575</FONT>    <a name="line.575"></a>
+<FONT color="green">576</FONT>            private static FSMatchConstraint getOverlapAfterConstraint(JCas jCas, Annotation focusAnnotation, ConstraintFactory constraintFactory) {<a name="line.576"></a>
+<FONT color="green">577</FONT>    <a name="line.577"></a>
+<FONT color="green">578</FONT>                    FSIntConstraint beginIntConstraint = constraintFactory.createIntConstraint();<a name="line.578"></a>
+<FONT color="green">579</FONT>                    beginIntConstraint.geq(focusAnnotation.getBegin());<a name="line.579"></a>
+<FONT color="green">580</FONT>                    beginIntConstraint.lt(focusAnnotation.getEnd());<a name="line.580"></a>
+<FONT color="green">581</FONT>                    <a name="line.581"></a>
+<FONT color="green">582</FONT>                    FeaturePath beginPath = jCas.createFeaturePath();<a name="line.582"></a>
+<FONT color="green">583</FONT>                    Feature beginFeature = jCas.getTypeSystem().getFeatureByFullName("uima.tcas.Annotation:begin");<a name="line.583"></a>
+<FONT color="green">584</FONT>                    beginPath.addFeature(beginFeature);<a name="line.584"></a>
+<FONT color="green">585</FONT>                    FSMatchConstraint beginConstraint = constraintFactory.embedConstraint(beginPath, beginIntConstraint);<a name="line.585"></a>
+<FONT color="green">586</FONT>                    <a name="line.586"></a>
+<FONT color="green">587</FONT>                    FSIntConstraint endIntConstraint = constraintFactory.createIntConstraint();<a name="line.587"></a>
+<FONT color="green">588</FONT>                    endIntConstraint.gt(focusAnnotation.getEnd());<a name="line.588"></a>
+<FONT color="green">589</FONT>                    FeaturePath endPath = jCas.createFeaturePath();<a name="line.589"></a>
+<FONT color="green">590</FONT>                    Feature endFeature = jCas.getTypeSystem().getFeatureByFullName("uima.tcas.Annotation:end");<a name="line.590"></a>
+<FONT color="green">591</FONT>                    endPath.addFeature(endFeature);<a name="line.591"></a>
+<FONT color="green">592</FONT>                    FSMatchConstraint endConstraint = constraintFactory.embedConstraint(endPath, endIntConstraint);<a name="line.592"></a>
+<FONT color="green">593</FONT>    <a name="line.593"></a>
+<FONT color="green">594</FONT>                    return constraintFactory.and(beginConstraint, endConstraint);<a name="line.594"></a>
+<FONT color="green">595</FONT>            }<a name="line.595"></a>
+<FONT color="green">596</FONT>    <a name="line.596"></a>
+<FONT color="green">597</FONT>            /**<a name="line.597"></a>
+<FONT color="green">598</FONT>             * Finds and returns the annotation of the provided type that is adjacent to<a name="line.598"></a>
+<FONT color="green">599</FONT>             * the focus annotation in either to the left or right. Adjacent simply<a name="line.599"></a>
+<FONT color="green">600</FONT>             * means the last annotation of the passed in type that ends before the<a name="line.600"></a>
+<FONT color="green">601</FONT>             * start of the focus annotation (for the left side) or the first annotation<a name="line.601"></a>
+<FONT color="green">602</FONT>             * that starts after the end of the focus annotation (for the right side).<a name="line.602"></a>
+<FONT color="green">603</FONT>             * Thus, adacent refers to order of annotations at the annotation level<a name="line.603"></a>
+<FONT color="green">604</FONT>             * (e.g. give me the first annotation of type x to the left of the focus<a name="line.604"></a>
+<FONT color="green">605</FONT>             * annotation) and does not mean that the annotations are adjacenct at the<a name="line.605"></a>
+<FONT color="green">606</FONT>             * character offset level.<a name="line.606"></a>
+<FONT color="green">607</FONT>             * <a name="line.607"></a>
+<FONT color="green">608</FONT>             * &lt;br&gt;<a name="line.608"></a>
+<FONT color="green">609</FONT>             * &lt;b&gt;note:&lt;/b&gt; This method runs &lt;b&gt;much&lt;/b&gt; faster if the type of the<a name="line.609"></a>
+<FONT color="green">610</FONT>             * passed in annotation and the passed in type are the same.<a name="line.610"></a>
+<FONT color="green">611</FONT>             * <a name="line.611"></a>
+<FONT color="green">612</FONT>             * @param jCas<a name="line.612"></a>
+<FONT color="green">613</FONT>             * @param focusAnnotation<a name="line.613"></a>
+<FONT color="green">614</FONT>             *            an annotation that you want to find an annotation adjacent to<a name="line.614"></a>
+<FONT color="green">615</FONT>             *            this.<a name="line.615"></a>
+<FONT color="green">616</FONT>             * @param adjacentClass<a name="line.616"></a>
+<FONT color="green">617</FONT>             *            the type of annotation that you want to find<a name="line.617"></a>
+<FONT color="green">618</FONT>             * @param adjacentBefore<a name="line.618"></a>
+<FONT color="green">619</FONT>             *            if true then returns an annotation to the left of the passed<a name="line.619"></a>
+<FONT color="green">620</FONT>             *            in annotation, otherwise an annotation to the right will be<a name="line.620"></a>
+<FONT color="green">621</FONT>             *            returned.<a name="line.621"></a>
+<FONT color="green">622</FONT>             * @return an annotation of type adjacentType or null<a name="line.622"></a>
+<FONT color="green">623</FONT>             */<a name="line.623"></a>
+<FONT color="green">624</FONT>            public static &lt;T extends Annotation&gt; T getAdjacentAnnotation(JCas jCas, Annotation focusAnnotation,<a name="line.624"></a>
+<FONT color="green">625</FONT>                            Class&lt;T&gt; adjacentClass, boolean adjacentBefore) {<a name="line.625"></a>
+<FONT color="green">626</FONT>                    try {<a name="line.626"></a>
+<FONT color="green">627</FONT>                            Type adjacentType = UIMAUtil.getCasType(jCas, adjacentClass);<a name="line.627"></a>
+<FONT color="green">628</FONT>                            if (focusAnnotation.getType().equals(adjacentType)) {<a name="line.628"></a>
+<FONT color="green">629</FONT>                                    FSIterator iterator = jCas.getAnnotationIndex(adjacentType).iterator();<a name="line.629"></a>
+<FONT color="green">630</FONT>                                    iterator.moveTo(focusAnnotation);<a name="line.630"></a>
+<FONT color="green">631</FONT>                                    if (adjacentBefore) iterator.moveToPrevious();<a name="line.631"></a>
+<FONT color="green">632</FONT>                                    else iterator.moveToNext();<a name="line.632"></a>
+<FONT color="green">633</FONT>                                    return adjacentClass.cast(iterator.get());<a name="line.633"></a>
+<FONT color="green">634</FONT>                            }<a name="line.634"></a>
+<FONT color="green">635</FONT>                            else {<a name="line.635"></a>
+<FONT color="green">636</FONT>                                    FSIterator cursor = jCas.getAnnotationIndex().iterator();<a name="line.636"></a>
+<FONT color="green">637</FONT>                                    cursor.moveTo(focusAnnotation);<a name="line.637"></a>
+<FONT color="green">638</FONT>                                    if (adjacentBefore) {<a name="line.638"></a>
+<FONT color="green">639</FONT>                                            while (cursor.isValid()) {<a name="line.639"></a>
+<FONT color="green">640</FONT>                                                    cursor.moveToPrevious();<a name="line.640"></a>
+<FONT color="green">641</FONT>                                                    Annotation annotation = (Annotation) cursor.get();<a name="line.641"></a>
+<FONT color="green">642</FONT>                                                    if (adjacentClass.isInstance(annotation) &amp;&amp; annotation.getEnd() &lt;= focusAnnotation.getBegin()) return adjacentClass<a name="line.642"></a>
+<FONT color="green">643</FONT>                                                    .cast(annotation);<a name="line.643"></a>
+<FONT color="green">644</FONT>                                            }<a name="line.644"></a>
+<FONT color="green">645</FONT>                                    }<a name="line.645"></a>
+<FONT color="green">646</FONT>                                    else {<a name="line.646"></a>
+<FONT color="green">647</FONT>                                            while (cursor.isValid()) {<a name="line.647"></a>
+<FONT color="green">648</FONT>                                                    cursor.moveToNext();<a name="line.648"></a>
+<FONT color="green">649</FONT>                                                    Annotation annotation = (Annotation) cursor.get();<a name="line.649"></a>
+<FONT color="green">650</FONT>                                                    if (adjacentClass.isInstance(annotation) &amp;&amp; annotation.getBegin() &gt;= focusAnnotation.getEnd()) return adjacentClass<a name="line.650"></a>
+<FONT color="green">651</FONT>                                                    .cast(annotation);<a name="line.651"></a>
+<FONT color="green">652</FONT>                                            }<a name="line.652"></a>
+<FONT color="green">653</FONT>                                    }<a name="line.653"></a>
+<FONT color="green">654</FONT>                            }<a name="line.654"></a>
+<FONT color="green">655</FONT>                    }<a name="line.655"></a>
+<FONT color="green">656</FONT>                    catch (NoSuchElementException nsee) {<a name="line.656"></a>
+<FONT color="green">657</FONT>                            return null;<a name="line.657"></a>
+<FONT color="green">658</FONT>                    }<a name="line.658"></a>
+<FONT color="green">659</FONT>                    return null;<a name="line.659"></a>
+<FONT color="green">660</FONT>            }<a name="line.660"></a>
+<FONT color="green">661</FONT>    <a name="line.661"></a>
+<FONT color="green">662</FONT>            public static &lt;T extends Annotation&gt; AnnotationIndex getAnnotationIndex(JCas jCas, Class&lt;T&gt; cls) {<a name="line.662"></a>
+<FONT color="green">663</FONT>                    return jCas.getAnnotationIndex(UIMAUtil.getCasType(jCas, cls));<a name="line.663"></a>
+<FONT color="green">664</FONT>            }<a name="line.664"></a>
+<FONT color="green">665</FONT>    <a name="line.665"></a>
+<FONT color="green">666</FONT>            /**<a name="line.666"></a>
+<FONT color="green">667</FONT>             * Get the DocumentAnnotation for this JCas. <a name="line.667"></a>
+<FONT color="green">668</FONT>             * @param jCas The JCas for the document.<a name="line.668"></a>
+<FONT color="green">669</FONT>             * @return     The DocumentAnnotation.<a name="line.669"></a>
+<FONT color="green">670</FONT>             */<a name="line.670"></a>
+<FONT color="green">671</FONT>            public static DocumentAnnotation getDocument(JCas jCas)<a name="line.671"></a>
+<FONT color="green">672</FONT>            {<a name="line.672"></a>
+<FONT color="green">673</FONT>                    return (DocumentAnnotation)jCas.getDocumentAnnotationFs();<a name="line.673"></a>
+<FONT color="green">674</FONT>            }<a name="line.674"></a>
+<FONT color="green">675</FONT>    <a name="line.675"></a>
+<FONT color="green">676</FONT>    }<a name="line.676"></a>
+<FONT color="green">677</FONT>    <a name="line.677"></a>
 
 
 
