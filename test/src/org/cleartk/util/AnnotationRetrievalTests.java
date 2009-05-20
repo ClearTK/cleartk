@@ -24,6 +24,7 @@
 package org.cleartk.util;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -32,6 +33,7 @@ import java.util.List;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.cas.FSIterator;
+import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
@@ -679,6 +681,8 @@ public class AnnotationRetrievalTests {
 
 		//doesn't work!
 		jCas = JCasFactory.createJCas(Token.class, ContiguousAnnotation.class, SimpleAnnotation.class);
+		Type type = jCas.getTypeSystem().getType("org.cleartk.type.Token");
+		assertNotNull(type);
 		testIssue98(jCas);
 		
 		//doesn't work 
