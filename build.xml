@@ -15,7 +15,7 @@
 	<property name="desc" value="${basedir}/desc"/>
 	<property name="doc" value="${basedir}/doc"/>
 		
-	<target name="build" depends="clean, compile, compile-tests, build-jar, build-javadoc" />
+	<target name="build" depends="clean, compile, compile-tests, build-jar" />
 		
 	<target name="prepare">
 		<mkdir dir="${bin}"/>
@@ -29,7 +29,6 @@
 	</target>
 		
 	<target name="clean">
-		<delete dir="${doc}/api" />
 		<delete dir="${bin}" />
 	</target>
 
