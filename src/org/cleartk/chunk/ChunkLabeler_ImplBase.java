@@ -161,7 +161,9 @@ public abstract class ChunkLabeler_ImplBase implements ChunkLabeler, Initializab
 		}
 
 		if (currentLabeledAnnotations.size() > 0) {
-			returnValues.add(createChunk(jCas, currentLabeledAnnotations, currentLabelValue));
+			Annotation chunk = createChunk(jCas, currentLabeledAnnotations, currentLabelValue); 
+			if(chunk != null)
+				returnValues.add(chunk);
 		}
 		return returnValues;
 	}
