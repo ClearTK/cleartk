@@ -76,7 +76,7 @@ public class GeniaPosGoldReader extends CollectionReader_ImplBase {
 	 * "org.cleartk.corpus.genia.GeniaPosGoldReader.PARAM_GENIA_CORPUS"
 	 * is a single, required, string parameter that names the file
 	 * that is the Genia corpus to be loaded. A good value is probably
-	 * "data/genia/GENIAcorpus3.02.pos.xml"
+	 * "data/genia/GENIAcorpus3.02.pos.xml".  Please see README in this directory for edits that you may need to make to this file manually.  
 	 */
 	public static final String PARAM_GENIA_CORPUS = "org.cleartk.corpus.genia.GeniaPosGoldReader.PARAM_GENIA_CORPUS";
 
