@@ -32,7 +32,6 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 
 import org.apache.uima.UIMAException;
-import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.collection.CollectionException;
 import org.apache.uima.collection.CollectionReader;
@@ -42,9 +41,7 @@ import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.jdom.JDOMException;
-import org.junit.Assert;
 import org.junit.Test;
-import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.CollectionReaderFactory;
 import org.uutuc.factory.TypeSystemDescriptionFactory;
 import org.uutuc.util.JCasIterable;
