@@ -53,10 +53,13 @@ import java.io.IOException;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
+import org.cleartk.ClearTKComponents;
+import org.uutuc.factory.AnalysisEngineFactory;
 
 
 /**
@@ -101,5 +104,10 @@ public class PlainTextWriter extends JCasAnnotator_ImplBase
 		} catch (IOException e) {
 			throw new AnalysisEngineProcessException(e);
 		}
+	}
+	
+	public static AnalysisEngineDescription getDescription(String outputDirectory) throws ResourceInitializationException {
+		return AnalysisEngineFactory.createPrimitiveAnalysisEngineDescription(PlainTextWriter.class, ClearTKComponents.TYPE_SYSTEM_DESCRIPTION, PlainTextWriter.PARAM_OUTPUT_DIRECTORY, outputDirectory);
+		
 	}
 }
