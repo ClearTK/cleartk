@@ -48,6 +48,7 @@ import org.cleartk.type.SplitAnnotation;
 import org.cleartk.type.Token;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.AnnotationFactory;
 import org.uutuc.factory.JCasFactory;
 import org.uutuc.factory.TokenFactory;
 import org.uutuc.factory.TypeSystemDescriptionFactory;
@@ -67,84 +68,52 @@ public class AnnotationUtilTests {
 			AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 					Annotator.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
 			return AnalysisEngineFactory.process(engine, "test/data/docs/huckfinn.txt");
-	
 		}
 	
-		/**
-		 * Assumes that we are processing the text test/data/docs/huckfinn.txt
-		 * 
-		 */
 		@Override
 		public void process(JCas jCas) throws AnalysisEngineProcessException
 		{
-			Token token0 = new Token(jCas, 0,4);
-			token0.addToIndexes();
 			
-			NamedEntityMention nem0 = new NamedEntityMention(jCas, 0, 4);
-			nem0.addToIndexes();
-			
-			NamedEntityMention nem1 = new NamedEntityMention(jCas, 0, 13);
-			nem1.addToIndexes();
-			
-			
-			Token token1 = new Token(jCas, 20, 25);
-			token1.addToIndexes();
-			Token token2 = new Token(jCas, 21, 25);
-			token2.addToIndexes();
-			Token token3 = new Token(jCas, 24, 25);
-			token3.addToIndexes();
-			Token token4 = new Token(jCas, 25, 28);
-			token4.addToIndexes();
-			Token token5 = new Token(jCas, 26, 30);
-			token5.addToIndexes();
-			
-			NamedEntityMention nem2 = new NamedEntityMention(jCas, 19, 31);
-			nem2.addToIndexes();
-			NamedEntityMention nem3 = new NamedEntityMention(jCas, 20, 30);
-			nem3.addToIndexes();
-			NamedEntityMention nem4 = new NamedEntityMention(jCas, 21, 29);
-			nem4.addToIndexes();
-			NamedEntityMention nem5 = new NamedEntityMention(jCas, 21, 24);
-			nem5.addToIndexes();
-			NamedEntityMention nem6 = new NamedEntityMention(jCas, 24, 28);
-			nem6.addToIndexes();
-			NamedEntityMention nem7 = new NamedEntityMention(jCas, 25, 28);
-			nem7.addToIndexes();
-			
-			
-			NamedEntityMention nem8 = new NamedEntityMention(jCas, 49, 61);
-			nem8.addToIndexes();
-			NamedEntityMention nem9 = new NamedEntityMention(jCas, 50, 60);
-			nem9.addToIndexes();
-			NamedEntityMention nem10 = new NamedEntityMention(jCas, 50, 55);
-			nem10.addToIndexes();
-			NamedEntityMention nem11 = new NamedEntityMention(jCas, 55, 60);
-			nem11.addToIndexes();
-	
-			
-			//add some annotations that will allow us to test a split annotation
-			Token token6 = new Token(jCas, 100, 104);
-			token6.addToIndexes();
-			Token token7 = new Token(jCas, 105, 109);
-			token7.addToIndexes();
-			Token token8 = new Token(jCas, 110, 114);
-			token8.addToIndexes();
-			Token token9 = new Token(jCas, 115, 119);
-			token9.addToIndexes();
-			Token token10 = new Token(jCas, 120, 124);
-			token10.addToIndexes();
-			
-			Chunk chunk0 = new Chunk(jCas, 100, 109);
-			chunk0.addToIndexes();
-			Chunk chunk1 = new Chunk(jCas, 115, 124);
-			chunk1.addToIndexes();
-			
-			SplitAnnotation split0 = new SplitAnnotation(jCas, 100, 124);
-			split0.setAnnotations(UIMAUtil.toFSArray(jCas, Arrays.asList(new Chunk[] {chunk0, chunk1})));
-			split0.addToIndexes();
-			
-			
-			
+			try {
+				AnnotationFactory.createAnnotation(jCas, 0, 4, Token.class);
+				AnnotationFactory.createAnnotation(jCas, 0, 4, NamedEntityMention.class);
+				AnnotationFactory.createAnnotation(jCas, 0, 13, NamedEntityMention.class);
+				AnnotationFactory.createAnnotation(jCas, 20, 25, Token.class);
+				AnnotationFactory.createAnnotation(jCas, 21, 25, Token.class);
+				AnnotationFactory.createAnnotation(jCas, 24, 25, Token.class);
+				AnnotationFactory.createAnnotation(jCas, 25, 28, Token.class);
+				AnnotationFactory.createAnnotation(jCas, 26, 30, Token.class);
+				
+				AnnotationFactory.createAnnotation(jCas, 19, 31, NamedEntityMention.class);
+				AnnotationFactory.createAnnotation(jCas, 20, 30, NamedEntityMention.class);
+				AnnotationFactory.createAnnotation(jCas, 21, 29, NamedEntityMention.class);
+				AnnotationFactory.createAnnotation(jCas, 21, 24, NamedEntityMention.class);
+				AnnotationFactory.createAnnotation(jCas, 24, 28, NamedEntityMention.class);
+				AnnotationFactory.createAnnotation(jCas, 25, 28, NamedEntityMention.class);
+				
+				AnnotationFactory.createAnnotation(jCas, 49, 61, NamedEntityMention.class);
+				AnnotationFactory.createAnnotation(jCas, 50, 60, NamedEntityMention.class);
+				AnnotationFactory.createAnnotation(jCas, 50, 55, NamedEntityMention.class);
+				AnnotationFactory.createAnnotation(jCas, 55, 60, NamedEntityMention.class);
+				
+				//add some annotations that will allow us to test a split annotation
+				AnnotationFactory.createAnnotation(jCas, 100, 104, Token.class);
+				AnnotationFactory.createAnnotation(jCas, 105, 109, Token.class);
+				AnnotationFactory.createAnnotation(jCas, 110, 114, Token.class);
+				AnnotationFactory.createAnnotation(jCas, 115, 119, Token.class);
+				AnnotationFactory.createAnnotation(jCas, 120, 124, Token.class);
+				
+				Chunk chunk0 = AnnotationFactory.createAnnotation(jCas, 100, 109, Chunk.class);
+				Chunk chunk1 = AnnotationFactory.createAnnotation(jCas, 115, 124, Chunk.class);
+				
+				SplitAnnotation split0 = AnnotationFactory.createAnnotation(jCas, 100, 124, SplitAnnotation.class);
+				split0.setAnnotations(UIMAUtil.toFSArray(jCas, Arrays.asList(new Chunk[] {chunk0, chunk1})));
+				
+			}
+			catch (UIMAException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
 		}
 	
 	}
