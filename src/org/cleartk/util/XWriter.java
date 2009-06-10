@@ -151,7 +151,7 @@ public class XWriter extends JCasAnnotator_ImplBase {
 	}
 
 	public static AnalysisEngineDescription getDescription(String outputDirectory) throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveAnalysisEngineDescription(
+		return AnalysisEngineFactory.createPrimitiveDescription(
 				XWriter.class, ClearTKComponents.TYPE_SYSTEM_DESCRIPTION, 
 				ClearTKComponents.TYPE_PRIORITIES,
 				XWriter.PARAM_OUTPUT_DIRECTORY, outputDirectory);

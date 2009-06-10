@@ -29,8 +29,8 @@ import org.apache.uima.util.Level;
 import org.apache.uima.util.Logger;
 import org.cleartk.ClearTKComponents;
 import org.cleartk.token.TokenAnnotator;
-import org.cleartk.util.UIMAUtil;
 import org.uutuc.factory.UimaContextFactory;
+import org.uutuc.util.SimplePipeline;
 
 /**
  * <br>
@@ -69,7 +69,7 @@ public class VerbClauseTemporalAnnotate {
 		}
 		
 		// run the components on the selected documents
-		UIMAUtil.runUIMAPipeline(
+		SimplePipeline.runPipeline(
 				ClearTKComponents.createFilesCollectionReader(inputFileOrDir),
 				ClearTKComponents.createOpenNLPSentenceSegmenter(),
 				TokenAnnotator.getDescription(), 

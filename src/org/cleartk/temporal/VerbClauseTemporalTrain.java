@@ -33,8 +33,8 @@ import org.cleartk.ClearTKComponents;
 import org.cleartk.ViewNames;
 import org.cleartk.classifier.Train;
 import org.cleartk.classifier.svmlight.DefaultOVASVMlightDataWriterFactory;
-import org.cleartk.util.UIMAUtil;
 import org.uutuc.factory.UimaContextFactory;
+import org.uutuc.util.SimplePipeline;
 
 /**
  * <br>
@@ -71,7 +71,7 @@ public class VerbClauseTemporalTrain {
 		timeBankDir = cleanedTimeBankDir.getPath();
 		
 		// run the components that write out the training data
-		UIMAUtil.runUIMAPipeline(
+		SimplePipeline.runPipeline(
 				ClearTKComponents.createFilesCollectionReaderWithPatterns(
 						timeBankDir, ViewNames.TIMEML, "wsj"),
 				ClearTKComponents.createTimeMLGoldAnnotator(false),

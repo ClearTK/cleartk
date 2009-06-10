@@ -28,8 +28,8 @@ import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.cleartk.ClearTKComponents;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.corpus.penntreebank.PennTreebankReader;
-import org.cleartk.util.UIMAUtil;
 import org.uutuc.factory.CollectionReaderFactory;
+import org.uutuc.util.SimplePipeline;
 
 /**
  * <br>
@@ -45,7 +45,7 @@ public class BuildTestExamplePosModel {
 		
 		TypeSystemDescription typeSystemDescription = ClearTKComponents.TYPE_SYSTEM_DESCRIPTION;
 		
-		UIMAUtil.runUIMAPipeline(
+		SimplePipeline.runPipeline(
 				CollectionReaderFactory.createCollectionReader(PennTreebankReader.class, typeSystemDescription, 
 						PennTreebankReader.PARAM_CORPUS_DIRECTORY, "../ClearTK Data/data/treebank/wsj",
 						PennTreebankReader.PARAM_SECTIONS, "02-03"),

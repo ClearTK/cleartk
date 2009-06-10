@@ -31,8 +31,8 @@ import org.cleartk.ClearTKComponents;
 import org.cleartk.classifier.Train;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.srl.ArgumentAnnotationHandler;
-import org.cleartk.util.UIMAUtil;
 import org.uutuc.factory.UimaContextFactory;
+import org.uutuc.util.SimplePipeline;
 
 /**
  * <br>
@@ -61,7 +61,7 @@ public class Conll2005Train {
 		String outputDir = args[1];
 		
 		// run the components to write the training data
-		UIMAUtil.runUIMAPipeline(
+		SimplePipeline.runPipeline(
 				ClearTKComponents.createConll2005GoldReader(conll2005File),
 				ClearTKComponents.createConll2005GoldAnnotator(),
 				ClearTKComponents.createSnowballStemmer("English"),

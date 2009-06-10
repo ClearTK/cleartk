@@ -23,6 +23,8 @@
  */
 package org.cleartk;
 
+import java.util.Arrays;
+
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -50,6 +52,7 @@ import org.cleartk.srl.conll2005.Conll2005GoldAnnotator;
 import org.cleartk.srl.conll2005.Conll2005GoldReader;
 import org.cleartk.syntax.opennlp.OpenNLPTreebankParser;
 import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
+import org.cleartk.token.TokenAnnotator;
 import org.cleartk.token.opennlp.OpenNLPPOSTagger;
 import org.cleartk.token.snowball.SnowballStemmer;
 import org.cleartk.util.FilesCollectionReader;
@@ -90,7 +93,7 @@ public class ClearTKComponents {
 	
 	public static AnalysisEngineDescription createOpenNLPSentenceSegmenter()
 	throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveAnalysisEngineDescription(
+		return AnalysisEngineFactory.createPrimitiveDescription(
 				OpenNLPSentenceSegmenter.class, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES,
 				OpenNLPSentenceSegmenter.PARAM_SENTENCE_MODEL_FILE,
 				getParameterValue(
@@ -101,14 +104,14 @@ public class ClearTKComponents {
 	
 	public static AnalysisEngineDescription createSnowballStemmer(String stemmerName)
 	throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveAnalysisEngineDescription(
+		return AnalysisEngineFactory.createPrimitiveDescription(
 				SnowballStemmer.class, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES,
 				SnowballStemmer.PARAM_STEMMER_NAME, stemmerName);
 	}
 	
 	public static AnalysisEngineDescription createOpenNLPPOSTagger()
 	throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveAnalysisEngineDescription(
+		return AnalysisEngineFactory.createPrimitiveDescription(
 				OpenNLPPOSTagger.class, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES,
 				OpenNLPPOSTagger.PARAM_POSTAG_DICTIONARY_FILE,
 				getParameterValue(
@@ -122,7 +125,7 @@ public class ClearTKComponents {
 	
 	public static AnalysisEngineDescription createOpenNLPTreebankParser()
 	throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveAnalysisEngineDescription(
+		return AnalysisEngineFactory.createPrimitiveDescription(
 				OpenNLPTreebankParser.class, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES,
 				OpenNLPTreebankParser.PARAM_BUILD_MODEL_FILE,
 				getParameterValue(
@@ -147,7 +150,7 @@ public class ClearTKComponents {
 			Class<? extends AnnotationHandler<OUTCOME_TYPE>> annotationHandlerClass,
 			Class<? extends DataWriterFactory<OUTCOME_TYPE>> dataWriterFactoryClass,
 			String outputDir) throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveAnalysisEngineDescription(
+		return AnalysisEngineFactory.createPrimitiveDescription(
 				DataWriterAnnotator.class, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES,
 				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
 				annotationHandlerClass.getName(),
@@ -160,7 +163,7 @@ public class ClearTKComponents {
 			Class<? extends SequentialAnnotationHandler<OUTCOME_TYPE>> annotationHandlerClass,
 			Class<? extends SequentialDataWriterFactory<OUTCOME_TYPE>> dataWriterFactoryClass,
 			String outputDir) throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveAnalysisEngineDescription(
+		return AnalysisEngineFactory.createPrimitiveDescription(
 				SequentialDataWriterAnnotator.class, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES,
 				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER,
 				annotationHandlerClass.getName(),
@@ -174,7 +177,7 @@ public class ClearTKComponents {
 			Class<? extends DataWriterFactory<OUTCOME_TYPE>> delegatedDataWriterFactoryClass,
 			String outputDir, Object ... configurationParameters)
 	throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveAnalysisEngineDescription(
+		return AnalysisEngineFactory.createPrimitiveDescription(
 				SequentialDataWriterAnnotator.class, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES,
 				combineParams(configurationParameters,
 						SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER,
@@ -191,7 +194,7 @@ public class ClearTKComponents {
 	public static <OUTCOME_TYPE> AnalysisEngineDescription createClassifierAnnotator(
 			Class<? extends AnnotationHandler<OUTCOME_TYPE>> annotationHandlerClass,
 			String classifierJar) throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveAnalysisEngineDescription(
+		return AnalysisEngineFactory.createPrimitiveDescription(
 				ClassifierAnnotator.class, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES,
 				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
 				annotationHandlerClass.getName(),
@@ -201,7 +204,7 @@ public class ClearTKComponents {
 	public static <OUTCOME_TYPE> AnalysisEngineDescription createSequentialClassifierAnnotator(
 			Class<? extends SequentialAnnotationHandler<OUTCOME_TYPE>> annotationHandlerClass,
 			String classifierJar) throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveAnalysisEngineDescription(
+		return AnalysisEngineFactory.createPrimitiveDescription(
 				SequentialClassifierAnnotator.class, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES,
 				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER,
 				annotationHandlerClass.getName(),
@@ -210,14 +213,14 @@ public class ClearTKComponents {
 	
 	public static AnalysisEngineDescription createTimeMLGoldAnnotator(boolean loadTLinks)
 	throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveAnalysisEngineDescription(
+		return AnalysisEngineFactory.createPrimitiveDescription(
 				TimeMLGoldAnnotator.class, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES,
 				TimeMLGoldAnnotator.PARAM_LOAD_TLINKS, loadTLinks);
 	}
 	
 	public static AnalysisEngineDescription createPlainTextTLINKGoldAnnotator()
 	throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveAnalysisEngineDescription(
+		return AnalysisEngineFactory.createPrimitiveDescription(
 				PlainTextTLINKGoldAnnotator.class, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES,
 				PlainTextTLINKGoldAnnotator.PARAM_TLINK_FILE_URL,
 				getParameterValue(
@@ -227,7 +230,7 @@ public class ClearTKComponents {
 	
 	public static AnalysisEngineDescription createTreebankAligningAnnotator(String treeBankDir)
 	throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveAnalysisEngineDescription(
+		return AnalysisEngineFactory.createPrimitiveDescription(
 				TreebankAligningAnnotator.class, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES,
 				TreebankAligningAnnotator.PARAM_TREEBANK_DIRECTORY, treeBankDir);
 
@@ -235,7 +238,7 @@ public class ClearTKComponents {
 	
 	public static AnalysisEngineDescription createTimeMLWriter(String outputDir)
 	throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveAnalysisEngineDescription(
+		return AnalysisEngineFactory.createPrimitiveDescription(
 				TimeMLWriter.class, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES,
 				TimeMLWriter.PARAM_OUTPUT_DIRECTORY, outputDir);
 	}
@@ -249,18 +252,25 @@ public class ClearTKComponents {
 	
 	public static AnalysisEngineDescription createConll2005GoldAnnotator()
 	throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveAnalysisEngineDescription(
+		return AnalysisEngineFactory.createPrimitiveDescription(
 				Conll2005GoldAnnotator.class, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES);
 	}
 	
 	public static AnalysisEngineDescription createTreebankGoldAnnotator(boolean postTrees)
 	throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveAnalysisEngineDescription(
+		return AnalysisEngineFactory.createPrimitiveDescription(
 				TreebankGoldAnnotator.class, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES,
 				TreebankGoldAnnotator.PARAM_POST_TREES, postTrees);
 
 	}
 
+	public static AnalysisEngineDescription createSentencesAndTokens() throws ResourceInitializationException {
+		AnalysisEngineDescription sentences = createOpenNLPSentenceSegmenter();
+		AnalysisEngineDescription tokenizer = TokenAnnotator.getDescription();
+		return AnalysisEngineFactory.createAggregateDescription(Arrays.asList(sentences, tokenizer), Arrays.asList("SentenceSegmenter", "TokenAnnotator"),
+				TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES, null);
+
+	}
 	private static String getParameterValue(String paramName, String defaultValue) {
 		String value = System.getProperty(paramName);
 		if (value == null) {

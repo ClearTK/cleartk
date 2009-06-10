@@ -107,7 +107,7 @@ public class PlainTextWriter extends JCasAnnotator_ImplBase
 	}
 	
 	public static AnalysisEngineDescription getDescription(String outputDirectory) throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveAnalysisEngineDescription(PlainTextWriter.class, ClearTKComponents.TYPE_SYSTEM_DESCRIPTION, PlainTextWriter.PARAM_OUTPUT_DIRECTORY, outputDirectory);
+		return AnalysisEngineFactory.createPrimitiveDescription(PlainTextWriter.class, ClearTKComponents.TYPE_SYSTEM_DESCRIPTION, PlainTextWriter.PARAM_OUTPUT_DIRECTORY, outputDirectory);
 		
 	}
 }

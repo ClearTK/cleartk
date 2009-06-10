@@ -29,24 +29,18 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.UIMAException;
 import org.apache.uima.UimaContext;
-import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.collection.CollectionException;
-import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.cas.StringArray;
 import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.Initializable;
-import org.uutuc.factory.AnalysisEngineFactory;
-import org.uutuc.util.JCasIterable;
 
 /**
  * <br>
@@ -223,9 +217,14 @@ public class UIMAUtil {
 	 * @throws ResourceInitializationException
 	 */
 	public static <T> T create(UimaContext context, String classParamName, Class<T> superClass)
+	throws ResourceInitializationException {
+		return create(context, classParamName, superClass, null);
+	}
+	
+	public static <T> T create(UimaContext context, String classParamName, Class<T> superClass, Class<? extends T> defaultClass)
 			throws ResourceInitializationException {
 
-		Class<? extends T> cls = getClass(context, classParamName, superClass);
+		Class<? extends T> cls = getClass(context, classParamName, superClass, defaultClass);
 
 		// create a new instance
 		T instance;
@@ -251,11 +250,21 @@ public class UIMAUtil {
 
 	public static <T> Class<? extends T> getClass(UimaContext context, String classParamName, Class<T> superClass)
 			throws ResourceInitializationException {
+		return getClass(context, classParamName, superClass, null);
+	}
+
+	public static <T> Class<? extends T> getClass(UimaContext context, String classParamName, Class<T> superClass, Class<? extends T> defaultClass)
+			throws ResourceInitializationException {
 		// get the class name from the parameter
-		Object className = getRequiredConfigParameterValue(context, classParamName);
+		String className;
+		if(defaultClass != null) {
+			className = (String) getDefaultingConfigParameterValue(context, classParamName, defaultClass.getName());
+		} else { 
+			className = (String) getRequiredConfigParameterValue(context, classParamName);
+		}
 
 		try {
-			Class<? extends T> cls = Class.forName((String) className).asSubclass(superClass);
+			Class<? extends T> cls = Class.forName(className).asSubclass(superClass);
 			return cls;
 		}
 		catch (Exception e) {
@@ -284,7 +293,8 @@ public class UIMAUtil {
 	}
 
 	/**
-	 * Checks that the given type parameters of the given objects are compatible.
+	 * Checks that the given type parameters of the given objects are
+	 * compatible.
 	 * 
 	 * Type parameters are identified by providing the class in which the type
 	 * parameter is defined, and the declared name of the type parameter.
@@ -292,60 +302,39 @@ public class UIMAUtil {
 	 * Throws a ResourceInitializationException if the type parameters are not
 	 * compatible.
 	 * 
-	 * @param <T> Type of the class declaring the first type parameter
-	 * @param <U> Type of the class declaring the second type parameter
-	 * @param paramDefiningClass1 The class declaring the first type parameter
-	 * @param paramName1          The declared name of the first type parameter
-	 * @param object1             The target object
-	 * @param paramDefiningClass2 The class declaring the second type parameter
-	 * @param paramName2          The declared name of the second type parameter
-	 * @param object2             The source object
-	 * @throws ResourceInitializationException 
+	 * @param <T>
+	 *            Type of the class declaring the first type parameter
+	 * @param <U>
+	 *            Type of the class declaring the second type parameter
+	 * @param paramDefiningClass1
+	 *            The class declaring the first type parameter
+	 * @param paramName1
+	 *            The declared name of the first type parameter
+	 * @param object1
+	 *            The target object
+	 * @param paramDefiningClass2
+	 *            The class declaring the second type parameter
+	 * @param paramName2
+	 *            The declared name of the second type parameter
+	 * @param object2
+	 *            The source object
+	 * @throws ResourceInitializationException
 	 */
-	public static <T, U> void checkTypeParameterIsAssignable(
-			Class<T> paramDefiningClass1, String paramName1, T object1,
-			Class<U> paramDefiningClass2, String paramName2, U object2)
-	throws ResourceInitializationException {
-		
+	public static <T, U> void checkTypeParameterIsAssignable(Class<T> paramDefiningClass1, String paramName1,
+			T object1, Class<U> paramDefiningClass2, String paramName2, U object2)
+			throws ResourceInitializationException {
+
 		// get the type arguments from the objects
-		java.lang.reflect.Type type1 = ReflectionUtil.getTypeArgument(
-				paramDefiningClass1, paramName1, object1);
-		java.lang.reflect.Type type2 = ReflectionUtil.getTypeArgument(
-				paramDefiningClass2, paramName2, object2);
-		
+		java.lang.reflect.Type type1 = ReflectionUtil.getTypeArgument(paramDefiningClass1, paramName1, object1);
+		java.lang.reflect.Type type2 = ReflectionUtil.getTypeArgument(paramDefiningClass2, paramName2, object2);
+
 		// if the second type is not assignable to the first, raise an exception
 		if (type1 == null || type2 == null || !ReflectionUtil.isAssignableFrom(type1, type2)) {
 			throw new ResourceInitializationException(new RuntimeException(String.format(
-					"%s with %s %s is incompatible with %s with %s %s",
-					object1.getClass().getSimpleName(), paramName1, type1,
-					object2.getClass().getSimpleName(), paramName2, type2)));
+					"%s with %s %s is incompatible with %s with %s %s", object1.getClass().getSimpleName(), paramName1,
+					type1, object2.getClass().getSimpleName(), paramName2, type2)));
 		}
 	}
 
-	/**
-	 * Run the CollectionReader and AnalysisEngines as a pipeline.
-	 * 
-	 * @param reader   The CollectionReader that loads the documents into the CAS.
-	 * @param descs  The AnalysisEngines that process the CAS, in order.
-	 */
-	public static void runUIMAPipeline(CollectionReader reader, AnalysisEngineDescription ... descs)
-	throws UIMAException, IOException {
-		AnalysisEngine[] engines = new AnalysisEngine[descs.length];
-		for (int i = 0; i < engines.length; ++i) {
-			engines[i] = AnalysisEngineFactory.createPrimitiveAnalysisEngine(descs[i]);
-		}
-		runUIMAPipeline(reader, engines);
-	}
-
-	public static void runUIMAPipeline(CollectionReader reader, AnalysisEngine... engines)
-	throws UIMAException, IOException {
-		for (JCas jCas: new JCasIterable(reader, engines)) {
-			assert jCas != null;
-		}
-		for (AnalysisEngine engine: engines) {
-			engine.collectionProcessComplete();
-		}
-		reader.close();
-	}
 
 }

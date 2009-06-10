@@ -31,8 +31,8 @@ import org.cleartk.ClearTKComponents;
 import org.cleartk.classifier.InstanceConsumer;
 import org.cleartk.tfidf.IDFMapWriter;
 import org.cleartk.token.TokenAnnotator;
-import org.cleartk.util.UIMAUtil;
 import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.util.SimplePipeline;
 
 
 /**
@@ -53,12 +53,12 @@ public class BuildIDFMap {
 			trainingDataDirectory= args[0];
 		}
 
-		UIMAUtil.runUIMAPipeline(
+		SimplePipeline.runPipeline(
 				ClearTKComponents.createFilesCollectionReader(trainingDataDirectory),
 				ClearTKComponents.createOpenNLPSentenceSegmenter(),
 				TokenAnnotator.getDescription(), 
 				ClearTKComponents.createSnowballStemmer("English"),
-				AnalysisEngineFactory.createPrimitiveAnalysisEngineDescription(IDFMapWriter.class,
+				AnalysisEngineFactory.createPrimitiveDescription(IDFMapWriter.class,
 						ClearTKComponents.TYPE_SYSTEM_DESCRIPTION, ClearTKComponents.TYPE_PRIORITIES,
 						IDFMapWriter.PARAM_IDFMAP_FILE, "example/documentclassification/idfmap",
 						InstanceConsumer.PARAM_ANNOTATION_HANDLER, AnnotationHandler.class.getName()));
