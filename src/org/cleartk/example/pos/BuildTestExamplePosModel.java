@@ -26,8 +26,10 @@ package org.cleartk.example.pos;
 
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.cleartk.ClearTKComponents;
+import org.cleartk.ViewNames;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
-import org.cleartk.corpus.penntreebank.PennTreebankReader;
+import org.cleartk.util.FilesCollectionReader;
+import org.cleartk.util.XWriter;
 import org.uutuc.factory.CollectionReaderFactory;
 import org.uutuc.util.SimplePipeline;
 
@@ -46,16 +48,19 @@ public class BuildTestExamplePosModel {
 		TypeSystemDescription typeSystemDescription = ClearTKComponents.TYPE_SYSTEM_DESCRIPTION;
 		
 		SimplePipeline.runPipeline(
-				CollectionReaderFactory.createCollectionReader(PennTreebankReader.class, typeSystemDescription, 
-						PennTreebankReader.PARAM_CORPUS_DIRECTORY, "../ClearTK Data/data/treebank/wsj",
-						PennTreebankReader.PARAM_SECTIONS, "02-03"),
+				CollectionReaderFactory.createCollectionReader(
+						FilesCollectionReader.class, typeSystemDescription,
+						FilesCollectionReader.PARAM_FILE_OR_DIRECTORY, "test/data/docs/treebank",
+						FilesCollectionReader.PARAM_SUFFIXES,  new String[] { ".tree" },
+						FilesCollectionReader.PARAM_VIEW_NAME, ViewNames.TREEBANK),
 				ClearTKComponents.createTreebankGoldAnnotator(false),
 				ClearTKComponents.createSnowballStemmer("English"),
 				ClearTKComponents.createViterbiDataWriterAnnotator(
 						ExamplePOSAnnotationHandler.class,
 						DefaultMaxentDataWriterFactory.class,
 						"example/model",
-						DefaultMaxentDataWriterFactory.PARAM_COMPRESS, true));
+						DefaultMaxentDataWriterFactory.PARAM_COMPRESS, true),
+				XWriter.getDescription("example/xmi"));
 				
 		org.cleartk.classifier.Train.main("example/model");
 
