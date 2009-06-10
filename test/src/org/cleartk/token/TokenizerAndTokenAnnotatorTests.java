@@ -36,7 +36,6 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.ClearTKComponents;
 import org.cleartk.token.chunk.type.Subtoken;
 import org.cleartk.token.util.Subtokenizer;
-import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.TestsUtil;
