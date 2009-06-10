@@ -43,7 +43,7 @@ public class DescriptorFiles {
 	 */
 
 	public static void main(String[] args) throws SAXException, IOException, ResourceInitializationException {
-		String outputDirectoryName = args[0];
+		String outputDirectoryName = "desc";
 		File outputDirectory = new File(outputDirectoryName);
 		if(!outputDirectory.exists()) {
 			outputDirectory.mkdirs();
