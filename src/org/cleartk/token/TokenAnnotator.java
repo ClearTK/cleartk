@@ -94,9 +94,9 @@ public class TokenAnnotator extends JCasAnnotator_ImplBase {
 
 	Constructor<? extends Annotation> tokenConstructor;
 
-	private Class<? extends Annotation> windowAnnotationClass;
+	private Class<? extends Annotation> windowClass;
 
-	private Type windowAnnotationType = null;
+	private Type windowType = null;
 
 	private boolean typesInitialized = false;
 
@@ -104,32 +104,16 @@ public class TokenAnnotator extends JCasAnnotator_ImplBase {
 		try {
 			super.initialize(uimaContext);
 
-			String tokenCreatorClassName = (String) uimaContext.getConfigParameterValue(PARAM_TOKENIZER);
-			if (tokenCreatorClassName != null && !tokenCreatorClassName.trim().equals("")) {
-				Class<?> cls = Class.forName(tokenCreatorClassName);
-				Class<? extends Tokenizer> tokensClass = cls.asSubclass(Tokenizer.class);
-				tokenizer = tokensClass.newInstance();
-			}
-			else {
-				tokenizer = new PennTreebankTokenizer();
-				windowAnnotationClass = Sentence.class;
-			}
-			String tokenClassName = (String) uimaContext.getConfigParameterValue(PARAM_TOKEN_TYPE);
-			if (tokenClassName != null && !tokenClassName.trim().equals("")) {
-				Class<?> cls = Class.forName(tokenClassName);
-				tokenClass = cls.asSubclass(Annotation.class);
-			}
-			else {
-				tokenClass = org.cleartk.type.Token.class;
-			}
+			tokenizer = UIMAUtil.create(uimaContext, PARAM_TOKENIZER, Tokenizer.class, PennTreebankTokenizer.class);
+			
+			tokenClass = UIMAUtil.getClass(uimaContext, PARAM_TOKEN_TYPE, Annotation.class,
+					org.cleartk.type.Token.class);
 			tokenConstructor = tokenClass.getConstructor(new Class[] { JCas.class, Integer.TYPE, Integer.TYPE });
-
-			String windowAnnotationClassName = (String) uimaContext.getConfigParameterValue(PARAM_WINDOW_TYPE);
-			if (windowAnnotationClassName != null && !windowAnnotationClassName.trim().equals("")) {
-				Class<?> cls = Class.forName(windowAnnotationClassName);
-				windowAnnotationClass = cls.asSubclass(Annotation.class);
-			}
-
+			
+			String windowClassParam = (String) UIMAUtil.getDefaultingConfigParameterValue(uimaContext, PARAM_WINDOW_TYPE, null);
+			if(windowClassParam != null)
+				windowClass = UIMAUtil.getClass(uimaContext, PARAM_WINDOW_TYPE, Annotation.class);
+			
 		}
 		catch (Exception e) {
 			throw new ResourceInitializationException(e);
@@ -138,8 +122,8 @@ public class TokenAnnotator extends JCasAnnotator_ImplBase {
 	}
 
 	private void initializeTypes(JCas jCas) throws AnalysisEngineProcessException {
-		if (windowAnnotationClass != null) {
-			windowAnnotationType = UIMAUtil.getCasType(jCas, windowAnnotationClass);
+		if (windowClass != null) {
+			windowType = UIMAUtil.getCasType(jCas, windowClass);
 		}
 		typesInitialized = true;
 	}
@@ -147,8 +131,8 @@ public class TokenAnnotator extends JCasAnnotator_ImplBase {
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
 		try {
 			if (!typesInitialized) initializeTypes(jCas);
-			if (windowAnnotationType != null) {
-				FSIterator windows = jCas.getAnnotationIndex(windowAnnotationType).iterator();
+			if (windowType != null) {
+				FSIterator windows = jCas.getAnnotationIndex(windowType).iterator();
 				while (windows.hasNext()) {
 					Annotation window = (Annotation) windows.next();
 					List<Token> pojoTokens = tokenizer.getTokens(window.getCoveredText());
@@ -176,19 +160,12 @@ public class TokenAnnotator extends JCasAnnotator_ImplBase {
 	}
 
 	public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveAnalysisEngineDescription(TokenAnnotator.class,
-				ClearTKComponents.TYPE_SYSTEM_DESCRIPTION, ClearTKComponents.TYPE_PRIORITIES);
-
-	}
-
-	public static AnalysisEngineDescription getDescription(TypeSystemDescription typeSystemDescription,
-			TypePriorities typePriorities, Class<? extends Tokenizer> tokenizerClass,
-			Class<? extends Annotation> tokenClass, Class<? extends Annotation> windowClass)
-			throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveAnalysisEngineDescription(TokenAnnotator.class,
-				typeSystemDescription, typePriorities, TokenAnnotator.PARAM_TOKENIZER, tokenizerClass.getName(),
-				TokenAnnotator.PARAM_TOKEN_TYPE, tokenClass.getName(), TokenAnnotator.PARAM_WINDOW_TYPE, windowClass
-						.getName());
+		return AnalysisEngineFactory.createPrimitiveDescription(TokenAnnotator.class,
+				ClearTKComponents.TYPE_SYSTEM_DESCRIPTION, ClearTKComponents.TYPE_PRIORITIES,
+				PARAM_TOKENIZER, PennTreebankTokenizer.class.getName(),
+				PARAM_TOKEN_TYPE, org.cleartk.type.Token.class.getName(),
+				PARAM_WINDOW_TYPE, Sentence.class.getName()
+		);
 	}
 
 }
