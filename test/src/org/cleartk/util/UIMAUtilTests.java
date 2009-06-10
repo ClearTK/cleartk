@@ -62,7 +62,7 @@ public class UIMAUtilTests {
 	
 	@Test
 	public void testToFSArray() throws ResourceInitializationException {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				EmptyAnnotator.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
 		JCas jCas = engine.newJCas();

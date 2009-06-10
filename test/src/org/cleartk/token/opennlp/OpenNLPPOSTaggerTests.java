@@ -50,7 +50,7 @@ public class OpenNLPPOSTaggerTests {
 	
 	@Test
 	public void testSimple() throws UIMAException {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				OpenNLPPOSTagger.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription(Token.class, Sentence.class),
 				OpenNLPPOSTagger.PARAM_CASE_SENSITIVE, true,

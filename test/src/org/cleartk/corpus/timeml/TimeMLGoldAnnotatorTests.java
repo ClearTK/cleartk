@@ -64,7 +64,7 @@ public class TimeMLGoldAnnotatorTests {
 				ViewNames.TIMEML,
 				FilesCollectionReader.PARAM_FILE_OR_DIRECTORY,
 				"test/data/corpus/timeml/wsj_0106.tml");
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				TimeMLGoldAnnotator.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
 		JCas jCas = new JCasIterable(reader, engine).next();
@@ -130,7 +130,7 @@ public class TimeMLGoldAnnotatorTests {
 				ViewNames.TIMEML,
 				FilesCollectionReader.PARAM_FILE_OR_DIRECTORY,
 				"test/data/corpus/timeml/AP900815-0044.tml");
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				TimeMLGoldAnnotator.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
 		JCas jCas = new JCasIterable(reader, engine).next();
@@ -184,7 +184,7 @@ public class TimeMLGoldAnnotatorTests {
 				"test/data/corpus/timeml",
 				FilesCollectionReader.PARAM_SUFFIXES,
 				new String[]{".tml"});
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				TimeMLGoldAnnotator.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				TimeMLGoldAnnotator.PARAM_LOAD_TLINKS, false);

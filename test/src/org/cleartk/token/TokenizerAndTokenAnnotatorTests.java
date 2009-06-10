@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.token;
 
 import static org.junit.Assert.assertEquals;
@@ -33,18 +33,21 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.FSIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.ClearTKComponents;
 import org.cleartk.token.chunk.type.Subtoken;
+import org.cleartk.token.util.Subtokenizer;
+import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
+import org.cleartk.util.TestsUtil;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
-import org.uutuc.factory.TypeSystemDescriptionFactory;
-
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * <p>
  * 
  * @author Philip Ogren
@@ -57,11 +60,18 @@ import org.uutuc.factory.TypeSystemDescriptionFactory;
 
 public class TokenizerAndTokenAnnotatorTests {
 
-	String sentencesAndTokensDescriptor = "org.cleartk.sentence.SentencesAndTokens";
-
+	private static AnalysisEngine sentencesAndTokens; 
+	
+	static {
+	try {
+		sentencesAndTokens = AnalysisEngineFactory.createAggregate(ClearTKComponents.createSentencesAndTokens());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	@Test
 	public void testMarysDog() throws UIMAException, IOException {
-		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokensDescriptor, "test/data/docs/tokens/marysdog.txt");
+		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokens, "test/data/docs/tokens/marysdog.txt");
 		FSIndex tokenIndex = jCas.getAnnotationIndex(Token.type);
 		assertEquals(37, tokenIndex.size());
 
@@ -107,7 +117,7 @@ public class TokenizerAndTokenAnnotatorTests {
 
 	@Test
 	public void testWatcha() throws UIMAException, IOException {
-		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokensDescriptor, "test/data/docs/tokens/watcha.txt");
+		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokens, "test/data/docs/tokens/watcha.txt");
 		FSIndex tokenIndex = jCas.getAnnotationIndex(Token.type);
 		assertEquals(31, tokenIndex.size());
 
@@ -147,7 +157,7 @@ public class TokenizerAndTokenAnnotatorTests {
 
 	@Test
 	public void testTimes() throws UIMAException, IOException {
-		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokensDescriptor, "test/data/docs/tokens/times.txt");
+		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokens, "test/data/docs/tokens/times.txt");
 		FSIndex tokenIndex = jCas.getAnnotationIndex(Token.type);
 		assertEquals(16, tokenIndex.size());
 
@@ -172,7 +182,7 @@ public class TokenizerAndTokenAnnotatorTests {
 
 	@Test
 	public void testDollars() throws UIMAException, IOException {
-		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokensDescriptor, "test/data/docs/tokens/dollars.txt");
+		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokens, "test/data/docs/tokens/dollars.txt");
 		FSIndex tokenIndex = jCas.getAnnotationIndex(Token.type);
 		assertEquals(16, tokenIndex.size());
 
@@ -197,7 +207,7 @@ public class TokenizerAndTokenAnnotatorTests {
 
 	@Test
 	public void testPercents() throws UIMAException, IOException {
-		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokensDescriptor,
+		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokens,
 				" 1. Buy a new Chevrolet (37%-owned in the U.S..) . 15%");
 		FSIndex tokenIndex = jCas.getAnnotationIndex(Token.type);
 		assertEquals(16, tokenIndex.size());
@@ -231,11 +241,11 @@ public class TokenizerAndTokenAnnotatorTests {
 
 	@Test
 	public void ticket176() throws ResourceInitializationException, AnalysisEngineProcessException {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(TokenAnnotator.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"), TokenAnnotator.PARAM_TOKEN_TYPE,
-				"org.cleartk.token.chunk.type.Subtoken", TokenAnnotator.PARAM_TOKENIZER,
-				"org.cleartk.token.util.Subtokenizer");
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TokenAnnotator.class,
+				ClearTKComponents.TYPE_SYSTEM_DESCRIPTION, TokenAnnotator.PARAM_TOKEN_TYPE, Subtoken.class.getName(),
+				TokenAnnotator.PARAM_TOKENIZER, Subtokenizer.class.getName());
 
-		JCas jCas = engine.newJCas();
+		JCas jCas = TestsUtil.getJCas();
 		jCas.setDocumentText("AA;BB-CC   DD!@#$EE(FF)GGG \tH,.");
 		engine.process(jCas);
 
@@ -265,15 +275,20 @@ public class TokenizerAndTokenAnnotatorTests {
 	 * This test ensures that the default tokenizer will handle periods right.
 	 * This is important because if, for some reason, you do not run the default
 	 * tokenizer (PennTreebankTokenizer) over sentences, then it does not handle
-	 * tokenization correctly.
-	 * This sentence was chosen because this is exactly where it failed when I took out the iterating over sentences in the TokenAnnotator. 
+	 * tokenization correctly. This sentence was chosen because this is exactly
+	 * where it failed when I took out the iterating over sentences in the
+	 * TokenAnnotator.
+	 * 
 	 * @throws UIMAException
 	 * @throws IOException
 	 */
 	@Test
 	public void testPeriod() throws UIMAException, IOException {
-		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokensDescriptor, "The sides was so steep and the bushes so thick. We tramped and clumb. ");
-		int i=0;
+		
+		AnalysisEngine tokenAnnotator = AnalysisEngineFactory.createAggregate(ClearTKComponents.createSentencesAndTokens());
+		JCas jCas = AnalysisEngineFactory.process(tokenAnnotator,
+				"The sides was so steep and the bushes so thick. We tramped and clumb. ");
+		int i = 0;
 		assertEquals("The", getToken(jCas, i++).getCoveredText());
 		assertEquals("sides", getToken(jCas, i++).getCoveredText());
 		assertEquals("was", getToken(jCas, i++).getCoveredText());
@@ -290,11 +305,11 @@ public class TokenizerAndTokenAnnotatorTests {
 		assertEquals("and", getToken(jCas, i++).getCoveredText());
 		assertEquals("clumb", getToken(jCas, i++).getCoveredText());
 		assertEquals(".", getToken(jCas, i++).getCoveredText());
-		
+
 	}
-	
+
 	private Token getToken(JCas jCas, int i) {
 		return AnnotationRetrieval.get(jCas, Token.class, i);
 	}
-	
+
 }

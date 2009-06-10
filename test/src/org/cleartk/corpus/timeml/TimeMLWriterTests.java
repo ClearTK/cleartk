@@ -81,10 +81,10 @@ public class TimeMLWriterTests {
 				ViewNames.TIMEML,
 				FilesCollectionReader.PARAM_FILE_OR_DIRECTORY,
 				this.inputFile.getPath());
-		AnalysisEngine annotator = AnalysisEngineFactory.createAnalysisEngine(
+		AnalysisEngine annotator = AnalysisEngineFactory.createPrimitive(
 				TimeMLGoldAnnotator.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
-		AnalysisEngine writer = AnalysisEngineFactory.createAnalysisEngine(
+		AnalysisEngine writer = AnalysisEngineFactory.createPrimitive(
 				TimeMLWriter.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				TimeMLWriter.PARAM_OUTPUT_DIRECTORY,

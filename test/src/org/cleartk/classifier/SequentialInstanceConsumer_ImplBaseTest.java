@@ -87,7 +87,7 @@ public class SequentialInstanceConsumer_ImplBaseTest {
 	@Test
 	public void testBadHandlerName() {
 		try {
-			AnalysisEngineFactory.createAnalysisEngine(
+			AnalysisEngineFactory.createPrimitive(
 					SequentialInstanceConsumer_ImplBaseTest.Consumer.class,
 					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 					InstanceConsumer.PARAM_ANNOTATION_HANDLER, "Foo");
@@ -99,7 +99,7 @@ public class SequentialInstanceConsumer_ImplBaseTest {
 	public void testConsumerInitializesHandler() throws UIMAException, IOException {
 		
 		// get a UimaContext containing a producer class
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				EmptyAnnotator.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER,
@@ -128,7 +128,7 @@ public class SequentialInstanceConsumer_ImplBaseTest {
 		int consumeAllCount = 1;
 
 		// initialize a simple AnalysisEngine
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				EmptyAnnotator.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER,

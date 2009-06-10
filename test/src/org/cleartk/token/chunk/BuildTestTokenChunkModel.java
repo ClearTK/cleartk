@@ -56,7 +56,7 @@ public class BuildTestTokenChunkModel {
 				GeniaPosGoldReader.PARAM_GENIA_CORPUS, "test/data/corpus/genia/GENIAcorpus3.02.articleA.pos.xml",
 				GeniaPosGoldReader.PARAM_LOAD_SENTENCES, true);
 		
-		AnalysisEngine subtokenizer = AnalysisEngineFactory.createAnalysisEngine(TokenAnnotator.class, typeSystemDescription, 
+		AnalysisEngine subtokenizer = AnalysisEngineFactory.createPrimitive(TokenAnnotator.class, typeSystemDescription, 
 				TokenAnnotator.PARAM_TOKEN_TYPE, Subtoken.class.getName(),
 				TokenAnnotator.PARAM_TOKENIZER, Subtokenizer.class.getName());
 		 

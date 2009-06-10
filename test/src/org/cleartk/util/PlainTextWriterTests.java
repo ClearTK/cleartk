@@ -65,13 +65,13 @@ public class PlainTextWriterTests {
 	@Test
 	public void test() throws Exception {
 		try {
-			AnalysisEngineFactory.createAnalysisEngine(
+			AnalysisEngineFactory.createPrimitive(
 					PlainTextWriter.class,
 					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
 			Assert.fail("expected exception with output directory not specified");
 		} catch (ResourceInitializationException e) {}
 		
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				PlainTextWriter.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				PlainTextWriter.PARAM_OUTPUT_DIRECTORY, this.outputDir.getPath());
 		JCas jCas = engine.newJCas();

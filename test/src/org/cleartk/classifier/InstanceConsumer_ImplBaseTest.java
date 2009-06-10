@@ -94,7 +94,7 @@ public class InstanceConsumer_ImplBaseTest {
 	@Test
 	public void testBadHandlerName() {
 		try {
-			AnalysisEngineFactory.createAnalysisEngine(InstanceConsumer_ImplBaseTest.Consumer.class,
+			AnalysisEngineFactory.createPrimitive(InstanceConsumer_ImplBaseTest.Consumer.class,
 					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 					InstanceConsumer.PARAM_ANNOTATION_HANDLER, "Foo");
 			Assert.fail("expected exception with bad AnnotationHandler name");
@@ -107,7 +107,7 @@ public class InstanceConsumer_ImplBaseTest {
 	public void testConsumerInitializesHandler() throws UIMAException, IOException {
 
 		// get a UimaContext containing a producer class
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(EmptyAnnotator.class,
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(EmptyAnnotator.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				InstanceConsumer.PARAM_ANNOTATION_HANDLER, InstanceConsumer_ImplBaseTest.Handler.class.getName());
 		UimaContext context = engine.getUimaContext();
@@ -134,7 +134,7 @@ public class InstanceConsumer_ImplBaseTest {
 		int consumeCount = 2;
 
 		// initialize a simple AnalysisEngine
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(EmptyAnnotator.class,
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(EmptyAnnotator.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				InstanceConsumer.PARAM_ANNOTATION_HANDLER, producerClass.getName());
 

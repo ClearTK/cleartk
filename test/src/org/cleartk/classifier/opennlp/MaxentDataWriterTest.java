@@ -93,7 +93,7 @@ public class MaxentDataWriterTest {
 
 	@Test
 	public void test1() throws Exception {
-		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createAnalysisEngine(DataWriterAnnotator.class,
+		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(DataWriterAnnotator.class,
 				TestsUtil.getTypeSystemDescription(), InstanceConsumer.PARAM_ANNOTATION_HANDLER, TestHandler1.class
 						.getName(), DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, DefaultMaxentDataWriterFactory.class.getName());
@@ -121,7 +121,7 @@ public class MaxentDataWriterTest {
 	 */
 	@Test
 	public void test2() throws Exception {
-		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createAnalysisEngine(DataWriterAnnotator.class,
+		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(DataWriterAnnotator.class,
 				TestsUtil.getTypeSystemDescription(), InstanceConsumer.PARAM_ANNOTATION_HANDLER, TestHandler1.class
 						.getName(), DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, DefaultMaxentDataWriterFactory.class.getName(),
@@ -163,7 +163,7 @@ public class MaxentDataWriterTest {
 
 	@Test
 	public void test3() throws Exception {
-		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createAnalysisEngine(DataWriterAnnotator.class,
+		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(DataWriterAnnotator.class,
 				TestsUtil.getTypeSystemDescription(), InstanceConsumer.PARAM_ANNOTATION_HANDLER, TestHandler1.class
 						.getName(), DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, DefaultMaxentDataWriterFactory.class.getName(),
@@ -216,7 +216,7 @@ public class MaxentDataWriterTest {
 		HideOutput hider = new HideOutput();
 		String outputDirectory = "test/data/mallet/mallet-data-writer";
 
-		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createAnalysisEngine(DataWriterAnnotator.class,
+		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(DataWriterAnnotator.class,
 				TestsUtil.getTypeSystemDescription(), InstanceConsumer.PARAM_ANNOTATION_HANDLER, TestHandler4.class
 						.getName(), DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, DefaultMaxentDataWriterFactory.class.getName(),
@@ -250,7 +250,7 @@ public class MaxentDataWriterTest {
 	 */
 	@Test
 	public void test5() throws Exception {
-		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createAnalysisEngine(DataWriterAnnotator.class,
+		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(DataWriterAnnotator.class,
 				TestsUtil.getTypeSystemDescription(), InstanceConsumer.PARAM_ANNOTATION_HANDLER, TestHandler5.class
 						.getName(), DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, DefaultMaxentDataWriterFactory.class.getName(),

@@ -101,7 +101,7 @@ public class DefaultPOSHandlerTest {
 		aggregatedClasses.add(TreebankGoldAnnotator.class);
 		aggregatedClasses.add(SequentialDataWriterAnnotator.class);
 
-		AnalysisEngine aggregateEngine = AnalysisEngineFactory.createAggregateAnalysisEngine(aggregatedClasses, 
+		AnalysisEngine aggregateEngine = AnalysisEngineFactory.createAggregate(aggregatedClasses, 
 				defaultTypeSystemDescription, (TypePriorities)null, null,
 				TreebankGoldAnnotator.PARAM_POST_TREES, false,
 				SequentialDataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, ViterbiDataWriterFactory.class.getName(),

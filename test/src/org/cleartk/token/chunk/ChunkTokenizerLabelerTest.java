@@ -60,7 +60,7 @@ public class ChunkTokenizerLabelerTest {
 	 */
 	@Test
 	public void testClassifierAnnotator() throws UIMAException {
-		  AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+		  AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				    EmptyAnnotator.class,
 				    TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				    ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS, "org.cleartk.type.Token",
@@ -142,7 +142,7 @@ public class ChunkTokenizerLabelerTest {
 	
 	@Test
 	public void testDataWriter() throws UIMAException {
-		  AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+		  AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				    EmptyAnnotator.class,
 				    TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				    ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS, "org.cleartk.type.Token",
@@ -205,7 +205,7 @@ public class ChunkTokenizerLabelerTest {
 	
 	@Test
 	public void testGetChunkLabel() throws UIMAException {
-		  AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+		  AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				    EmptyAnnotator.class,
 				    TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				    ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS, "org.cleartk.ne.type.NamedEntityMention",

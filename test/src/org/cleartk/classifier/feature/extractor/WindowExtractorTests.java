@@ -30,8 +30,10 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.uima.UIMAException;
+import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.cleartk.ClearTKComponents;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.WindowFeature;
 import org.cleartk.type.Sentence;
@@ -52,12 +54,23 @@ import org.uutuc.factory.AnalysisEngineFactory;
  */
 public class WindowExtractorTests {
 
+	private static AnalysisEngine sentencesAndTokens; 
+	
+	static {
+	try {
+		sentencesAndTokens = AnalysisEngineFactory.createAggregate(ClearTKComponents.createSentencesAndTokens());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	@Test
 	public void testGetStartAnnotation() throws IOException, UIMAException {
 		// TODO think about what the behavior should be if window annotation
 		// boundary does not fall at boundary
 		// of featureAnnotation
-		JCas jCas = AnalysisEngineFactory.process("org.cleartk.sentence.SentencesAndTokens", "test/data/docs/huckfinn.txt");
+		AnalysisEngine tokenAnnotator = AnalysisEngineFactory.createAggregate(ClearTKComponents.createSentencesAndTokens());
+		JCas jCas = AnalysisEngineFactory.process(tokenAnnotator, "test/data/docs/huckfinn.txt");
 		WindowExtractor leftEx = new WindowExtractor(Token.class, new SpannedTextExtractor(),
 				WindowFeature.ORIENTATION_LEFT, 0, 3);
 		WindowExtractor rightEx = new WindowExtractor(Token.class, new SpannedTextExtractor(),
@@ -128,7 +141,7 @@ public class WindowExtractorTests {
 
 	@Test
 	public void testExtractLeft() throws IOException, UIMAException {
-		JCas jCas = AnalysisEngineFactory.process("org.cleartk.sentence.SentencesAndTokens", "test/data/docs/huckfinn.txt");
+		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokens, "test/data/docs/huckfinn.txt");
 
 		WindowExtractor leftEx03 = new WindowExtractor(Token.class, new SpannedTextExtractor(),
 				WindowFeature.ORIENTATION_LEFT, 0, 3);
@@ -227,7 +240,7 @@ public class WindowExtractorTests {
 
 	@Test
 	public void testExtractRight() throws IOException, UIMAException {
-		JCas jCas = AnalysisEngineFactory.process("org.cleartk.sentence.SentencesAndTokens", "test/data/docs/huckfinn.txt");
+		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokens, "test/data/docs/huckfinn.txt");
 
 		WindowExtractor rightEx03 = new WindowExtractor(Token.class, new SpannedTextExtractor(),
 				WindowFeature.ORIENTATION_RIGHT, 0, 3);
@@ -321,7 +334,7 @@ public class WindowExtractorTests {
 
 	@Test
 	public void testExtractMiddle() throws IOException, UIMAException {
-		JCas jCas = AnalysisEngineFactory.process("org.cleartk.sentence.SentencesAndTokens", "test/data/docs/huckfinn.txt");
+		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokens, "test/data/docs/huckfinn.txt");
 
 		Annotation spanningToken = new Annotation(jCas);
 		spanningToken.setBegin(AnnotationRetrieval.get(jCas, Token.class, 44).getBegin());
@@ -348,7 +361,7 @@ public class WindowExtractorTests {
 
 	@Test
 	public void testTicket23() throws IOException, UIMAException {
-		JCas jCas = AnalysisEngineFactory.process("org.cleartk.sentence.SentencesAndTokens", "test/data/docs/huckfinn.txt");
+		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokens, "test/data/docs/huckfinn.txt");
 
 		// token "place" in "wide. This place was a tolerable long,"
 		Token token = AnnotationRetrieval.get(jCas, Token.class, 60);

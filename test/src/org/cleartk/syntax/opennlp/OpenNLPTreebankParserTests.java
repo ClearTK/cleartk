@@ -54,14 +54,14 @@ public class OpenNLPTreebankParserTests {
 	@Test
 	public void testMissingParameters() throws UIMAException {
 		try {
-			AnalysisEngineFactory.createAnalysisEngine(
+			AnalysisEngineFactory.createPrimitive(
 					OpenNLPTreebankParser.class,
 					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
 			Assert.fail("expected error for missing parser parameters");
 		} catch (ResourceInitializationException e) {}
 
 		try {
-			AnalysisEngineFactory.createAnalysisEngine(
+			AnalysisEngineFactory.createPrimitive(
 					OpenNLPTreebankParser.class,
 					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 					"buildModelFile", "resources/test/models/fox_dog_parser/build.bin.gz");
@@ -69,7 +69,7 @@ public class OpenNLPTreebankParserTests {
 		} catch (ResourceInitializationException e) {}
 
 		try {
-			AnalysisEngineFactory.createAnalysisEngine(
+			AnalysisEngineFactory.createPrimitive(
 					OpenNLPTreebankParser.class,
 					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 					"buildModelFile", "resources/test/models/fox_dog_parser/build.bin.gz",
@@ -78,7 +78,7 @@ public class OpenNLPTreebankParserTests {
 		} catch (ResourceInitializationException e) {}
 
 		try {
-			AnalysisEngineFactory.createAnalysisEngine(
+			AnalysisEngineFactory.createPrimitive(
 					OpenNLPTreebankParser.class,
 					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 					"buildModelFile", "resources/test/models/fox_dog_parser/build.bin.gz",
@@ -90,7 +90,7 @@ public class OpenNLPTreebankParserTests {
 	
 	@Test
 	public void test() throws UIMAException {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				OpenNLPTreebankParser.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				OpenNLPTreebankParser.PARAM_BUILD_MODEL_FILE, "test/models/fox_dog_parser/build.bin.gz",
@@ -158,7 +158,7 @@ public class OpenNLPTreebankParserTests {
 	
 	@Test
 	public void testNoPos() throws UIMAException {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				OpenNLPTreebankParser.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				OpenNLPTreebankParser.PARAM_BUILD_MODEL_FILE, "test/models/fox_dog_parser/build.bin.gz",
@@ -185,7 +185,7 @@ public class OpenNLPTreebankParserTests {
 	
 	@Test
 	public void testLongParse() throws UIMAException {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				OpenNLPTreebankParser.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				OpenNLPTreebankParser.PARAM_BUILD_MODEL_FILE, "test/models/fox_dog_parser/build.bin.gz",

@@ -87,7 +87,7 @@ public class WhiteSpaceExtractorTests {
 
 	@Test
 	public void testExtract() throws Exception{
-			AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+			AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 					WhiteSpaceExtractorTests.Annotator.class,
 					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
 			JCas jCas = AnalysisEngineFactory.process(engine,"This is some test text.");

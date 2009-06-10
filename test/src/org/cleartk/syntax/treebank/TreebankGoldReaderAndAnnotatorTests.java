@@ -55,7 +55,7 @@ public class TreebankGoldReaderAndAnnotatorTests {
 		String treebankParse = "( (X (NP (NP (NML (NN Complex ) (NN trait )) (NN analysis )) (PP (IN of ) (NP (DT the ) (NN mouse ) (NN striatum )))) (: : ) (S (NP-SBJ (JJ independent ) (NNS QTLs )) (VP (VBP modulate ) (NP (NP (NN volume )) (CC and ) (NP (NN neuron ) (NN number)))))) )";
 		String expectedText = "Complex trait analysis of the mouse striatum: independent QTLs modulate volume and neuron number";
 
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				TreebankGoldAnnotator.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
 		TreebankGoldAnnotator treebankGoldAnnotator = new TreebankGoldAnnotator();
 		treebankGoldAnnotator.initialize(engine.getUimaContext());

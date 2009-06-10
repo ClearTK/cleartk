@@ -55,7 +55,7 @@ public class SnowballStemmerTests {
 	@Test
 	public void testBadStemmerName() throws UIMAException {
 		try {
-			AnalysisEngineFactory.createAnalysisEngine(
+			AnalysisEngineFactory.createPrimitive(
 					SnowballStemmer.class,
 					TypeSystemDescriptionFactory.createTypeSystemDescription(Token.class, Sentence.class),
 					SnowballStemmer.PARAM_STEMMER_NAME, "FooBar");
@@ -67,7 +67,7 @@ public class SnowballStemmerTests {
 	public void testSimple() throws UIMAException {
 		TypeSystemDescription typeSystemDescription = TypeSystemDescriptionFactory
 				.createTypeSystemDescription(Token.class, Sentence.class);
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				SnowballStemmer.class, typeSystemDescription,
 				SnowballStemmer.PARAM_STEMMER_NAME, "English");
 		JCas jCas = engine.newJCas();
@@ -85,7 +85,7 @@ public class SnowballStemmerTests {
 
 	@Test
 	public void testUppercase() throws UIMAException {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				SnowballStemmer.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription(Token.class, Sentence.class),
 				SnowballStemmer.PARAM_STEMMER_NAME, "English");

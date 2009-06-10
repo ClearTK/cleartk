@@ -67,14 +67,14 @@ public class TokenWriterTests {
 	@Test
 	public void testMissingParameter() throws Exception {
 		try {
-			AnalysisEngineFactory.createAnalysisEngine(
+			AnalysisEngineFactory.createPrimitive(
 					TokenWriter.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
 			Assert.fail("expected error with no output directory specified");
 		} catch (ResourceInitializationException e) {}
 	}
 	@Test
 	public void testOutputFile() throws Exception {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				TokenWriter.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				TokenWriter.PARAM_OUTPUT_DIRECTORY, this.outputDir.getPath());
 		

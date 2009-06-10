@@ -62,7 +62,7 @@ public class ExamplePOSHandlerTests {
 	public void testSimpleSentence() throws Exception {
 		
 		// create the engine and the cas
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				EmptyAnnotator.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription(Token.class, Sentence.class));
 		JCas jCas = engine.newJCas();

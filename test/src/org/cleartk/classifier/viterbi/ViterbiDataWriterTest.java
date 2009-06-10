@@ -70,7 +70,7 @@ public class ViterbiDataWriterTest {
 	@Test
 	public void testConsumeAll() throws Exception {
 
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(SequentialDataWriterAnnotator.class,
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(SequentialDataWriterAnnotator.class,
 				TestsUtil.getTypeSystemDescription(),
 				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER, ExamplePOSAnnotationHandler.class.getName(),
 				SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
@@ -107,7 +107,7 @@ public class ViterbiDataWriterTest {
 		Train.main(outputDirectory+"/", "10", "1");
 		hider.restoreOutput();
 		
-		engine = AnalysisEngineFactory.createAnalysisEngine(SequentialClassifierAnnotator.class, 
+		engine = AnalysisEngineFactory.createPrimitive(SequentialClassifierAnnotator.class, 
 				TestsUtil.getTypeSystemDescription(),
 				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER, ExamplePOSAnnotationHandler.class.getName(),
 				SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR, new File(outputDirectory, "model.jar").getPath());

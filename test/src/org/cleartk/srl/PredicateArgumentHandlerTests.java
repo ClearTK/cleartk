@@ -455,7 +455,7 @@ public class PredicateArgumentHandlerTests {
 	}
 
 	private AnalysisEngine getEngine() throws ResourceInitializationException {
-		return AnalysisEngineFactory.createAnalysisEngine(
+		return AnalysisEngineFactory.createPrimitive(
 			EmptyAnnotator.class,
 			TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));	
 	}

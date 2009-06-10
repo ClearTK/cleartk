@@ -69,26 +69,26 @@ public class BuildTestSRLModel {
 				PropbankGoldReader.PARAM_PENNTREEBANK_DIRECTORY, "../ClearTK Data/data/treebank",
 				PropbankGoldReader.PARAM_WSJ_SECTIONS, "02");
 
-		AnalysisEngineDescription tbAnnotator = AnalysisEngineFactory.createPrimitiveAnalysisEngineDescription(
+		AnalysisEngineDescription tbAnnotator = AnalysisEngineFactory.createPrimitiveDescription(
 				TreebankGoldAnnotator.class, typeSystemDescription, (TypePriorities) null);
 		
-		AnalysisEngineDescription pbAnnotator = AnalysisEngineFactory.createPrimitiveAnalysisEngineDescription(
+		AnalysisEngineDescription pbAnnotator = AnalysisEngineFactory.createPrimitiveDescription(
 				PropbankGoldAnnotator.class, typeSystemDescription, (TypePriorities) null);
 		
 		
-		AnalysisEngineDescription predicateDWA = AnalysisEngineFactory.createPrimitiveAnalysisEngineDescription(
+		AnalysisEngineDescription predicateDWA = AnalysisEngineFactory.createPrimitiveDescription(
 				DataWriterAnnotator.class, typeSystemDescription, null, 
 				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, "test/data/srl/predicate",
 				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, DefaultSVMlightDataWriterFactory.class.getName(),
 				InstanceConsumer.PARAM_ANNOTATION_HANDLER, PredicateAnnotationHandler.class.getName());
 		
-		AnalysisEngineDescription argumentDWA = AnalysisEngineFactory.createPrimitiveAnalysisEngineDescription(
+		AnalysisEngineDescription argumentDWA = AnalysisEngineFactory.createPrimitiveDescription(
 				DataWriterAnnotator.class, typeSystemDescription, null,
 				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, "test/data/srl/argument",
 				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, DefaultMaxentDataWriterFactory.class.getName(),
 				InstanceConsumer.PARAM_ANNOTATION_HANDLER, ArgumentAnnotationHandler.class.getName());
 		
-		AnalysisEngine aggregateAE = AnalysisEngineFactory.createAggregateAnalysisEngine(
+		AnalysisEngine aggregateAE = AnalysisEngineFactory.createAggregate(
 				Arrays.asList(tbAnnotator, pbAnnotator, predicateDWA, argumentDWA), 
 				Arrays.asList("tbAnnotator", "pbAnnotator", "predicateDWA", "argumentDWA"),
 				typeSystemDescription, (TypePriorities) null, null);

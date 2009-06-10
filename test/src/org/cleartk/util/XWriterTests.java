@@ -73,7 +73,7 @@ public class XWriterTests {
 
 	@Test
 	public void testXmi() throws Exception {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				XWriter.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				XWriter.PARAM_OUTPUT_DIRECTORY, this.outputDir.getPath());
 		JCas jCas = engine.newJCas();
@@ -109,7 +109,7 @@ public class XWriterTests {
 
 	@Test
 	public void testXcas() throws Exception {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				XWriter.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				XWriter.PARAM_OUTPUT_DIRECTORY, this.outputDir.getPath(),
 				XWriter.PARAM_XML_SCHEME, XWriter.XCAS);

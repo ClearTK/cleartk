@@ -38,6 +38,7 @@ import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.cas.StringArray;
+import org.cleartk.ClearTKComponents;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.TypePathFeature;
 import org.cleartk.util.AnnotationRetrieval;
@@ -122,7 +123,7 @@ public class TypePathExtractorTests {
 
 	@Test
 	public void testExtract() throws IOException, UIMAException {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				TypePathExtractorTests.Annotator.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescriptionFromPath("test/desc/JulieTypeSystem.xml"));
 		
@@ -301,7 +302,8 @@ public class TypePathExtractorTests {
 
 	@Test
 	public void testTicket23() throws IOException, UIMAException {
-		JCas jCas = AnalysisEngineFactory.process("org.cleartk.sentence.SentencesAndTokens", "test/data/docs/huckfinn.txt");
+		AnalysisEngine sentencesAndTokens = AnalysisEngineFactory.createAggregate(ClearTKComponents.createSentencesAndTokens());
+		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokens, "test/data/docs/huckfinn.txt");
 
 		// token "place" in "wide. This place was a tolerable long,");
 		org.cleartk.type.Token token = AnnotationRetrieval.get(jCas, org.cleartk.type.Token.class,

@@ -38,6 +38,7 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.ClearTKComponents;
 import org.cleartk.corpus.ace2005.type.Document;
 import org.cleartk.corpus.timeml.type.Event;
 import org.cleartk.corpus.timeml.type.TemporalLink;
@@ -77,9 +78,20 @@ import de.julielab.jules.types.Entity;
  */
 public class AnnotationRetrievalTests {
 
+	
+		private static AnalysisEngine sentencesAndTokens; 
+	
+		static {
+		try {
+			sentencesAndTokens = AnalysisEngineFactory.createAggregate(ClearTKComponents.createSentencesAndTokens());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
 	@Test
 	public void testGet() throws UIMAException, IOException {
-		JCas jCas = AnalysisEngineFactory.process("org.cleartk.sentence.SentencesAndTokens", "test/data/docs/youthful-precocity.txt");
+		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokens, "test/data/docs/youthful-precocity.txt");
 		Token token = AnnotationRetrieval.get(jCas, Token.class, 23);
 		Assert.assertEquals("genius", token.getCoveredText());
 		Assert.assertEquals("a", AnnotationRetrieval.get(jCas, token, -1).getCoveredText());
@@ -158,14 +170,14 @@ public class AnnotationRetrievalTests {
 
 	@Test
 	public void testGetContainingAnnotation() throws UIMAException, IOException {
-		JCas jCas = AnalysisEngineFactory.process("org.cleartk.sentence.SentencesAndTokens",
+		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokens,
 				"Were your just trippin', just ego tripping.");
 		Token token = AnnotationRetrieval.get(jCas, Token.class, 3);
 		Assert.assertEquals("trippin", token.getCoveredText());
 		Sentence sentence = AnnotationRetrieval.getContainingAnnotation(jCas, token, Sentence.class);
 		Assert.assertEquals("Were your just trippin', just ego tripping.", sentence.getCoveredText());
 
-		jCas = AnalysisEngineFactory.process("org.cleartk.sentence.SentencesAndTokens",
+		jCas = AnalysisEngineFactory.process(sentencesAndTokens,
 				"Ffff's a pppppppp ttttt, bbbb ii ccc tttt yyyy hhhhh bbbbb yyy ccc ttttt. "
 						+ "It'll tttt yyyy ggg ffffff ssss aaa ffff tt wwww ddddls nnd ddst.");
 		token = AnnotationRetrieval.get(jCas, Token.class, 28);
@@ -237,7 +249,7 @@ public class AnnotationRetrievalTests {
 		nem = AnnotationRetrieval.getContainingAnnotation(jCas, token5, NamedEntityMention.class);
 		Assert.assertEquals(nem, nem3);
 		
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				EmptyAnnotator.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
 		jCas = engine.newJCas();
 		String text = "word";
@@ -330,7 +342,8 @@ public class AnnotationRetrievalTests {
 
 	@Test
 	public void testGetAdjacentAnnotation() throws UIMAException, IOException {
-		JCas jCas = AnalysisEngineFactory.process("org.cleartk.sentence.SentencesAndTokens",
+		
+		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokens,
 				"Swwww thh sii, biiiii thh taaaa in my moooo. " + "I see seeee tooooo, buu I onnn see onn waa ouu. "
 						+ "Yoo goooo crr wiiiiii weeeeee, taaa wiiiiii sppppppp "
 						+ "Sccccc wiiiiii raaaaaa yooo voooo. " + "Yoo knnn I tooo thh pooooo, frrr thh pooooo sttttt "
@@ -392,7 +405,7 @@ public class AnnotationRetrievalTests {
 		adjacentSentence = AnnotationRetrieval.getAdjacentAnnotation(jCas, sentence, Sentence.class, false);
 		Assert.assertTrue(adjacentSentence.getCoveredText().startsWith("I see"));
 
-		jCas = AnalysisEngineFactory.process("org.cleartk.sentence.SentencesAndTokens", "test/data/docs/huckfinn.txt");
+		jCas = AnalysisEngineFactory.process(sentencesAndTokens, "test/data/docs/huckfinn.txt");
 		Annotation annotation = new Annotation(jCas, 404, 449);
 		Assert.assertEquals("top, the sides was so steep and the bushes so", annotation.getCoveredText());
 		adjacentToken = AnnotationRetrieval.getAdjacentAnnotation(jCas, annotation, Token.class, false);
@@ -411,7 +424,7 @@ public class AnnotationRetrievalTests {
 	
 	@Test
 	public void testGetAnnotationsWithBeginEnd() throws UIMAException, IOException {
-		JCas jCas = AnalysisEngineFactory.process("org.cleartk.sentence.SentencesAndTokens", "test/data/docs/huckfinn.txt");
+		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokens, "test/data/docs/huckfinn.txt");
 
 		List<Token> tokens = AnnotationRetrieval.getAnnotations(jCas, 1200, 1500, Token.class);
 		Assert.assertEquals(tokens.size(), 67);

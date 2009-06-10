@@ -64,7 +64,7 @@ public class Ace2005WriterTests {
 	@Test
 	public void testMissingParameters() throws Exception {
 		try {
-			AnalysisEngineFactory.createAnalysisEngine(
+			AnalysisEngineFactory.createPrimitive(
 					Ace2005Writer.class,
 					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
 			Assert.fail("expected exception with output directory not specified");
@@ -73,7 +73,7 @@ public class Ace2005WriterTests {
 
 	@Test
 	public void testOutputFile() throws Exception {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				Ace2005Writer.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				Ace2005Writer.PARAM_OUTPUT_DIRECTORY, this.outputDir.getPath());
 		

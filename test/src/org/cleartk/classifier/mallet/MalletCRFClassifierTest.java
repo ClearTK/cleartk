@@ -99,7 +99,7 @@ public class MalletCRFClassifierTest {
 	@Test
 	public void runTest1() throws Exception {
 
-		AnalysisEngine sequentialDataWriterAnnotator = AnalysisEngineFactory.createAnalysisEngine(SequentialDataWriterAnnotator.class,
+		AnalysisEngine sequentialDataWriterAnnotator = AnalysisEngineFactory.createPrimitive(SequentialDataWriterAnnotator.class,
 				TestsUtil.getTypeSystemDescription(), 
 				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER, TestHandler.class.getName(), 
 				SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
@@ -131,7 +131,7 @@ public class MalletCRFClassifierTest {
 		assertEquals(sequenceFeatures.size(), outcomes.size());
 		testLabels(outcomes, "O O O O O O O O O O O O O O O B-GENE I-GENE I-GENE O B-GENE I-GENE O O O O O O O O O O O O O O O O O O O O O");
 		
-		AnalysisEngine sequentialClassifierAnnotator = AnalysisEngineFactory.createAnalysisEngine(SequentialClassifierAnnotator.class, TestsUtil.getTypeSystemDescription(),
+		AnalysisEngine sequentialClassifierAnnotator = AnalysisEngineFactory.createPrimitive(SequentialClassifierAnnotator.class, TestsUtil.getTypeSystemDescription(),
 				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER, TestHandler1.class.getName(),
 				SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR, outputDirectory+"/model.jar");
 		jCas.reset();

@@ -84,7 +84,7 @@ public class ChunkTokenizerTest {
 	
 	@Test
 	public void testChunkHandler() throws UIMAException, CleartkException {
-		  AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+		  AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				    EmptyAnnotator.class,
 				    TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 		  			ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS, "org.cleartk.type.Token",

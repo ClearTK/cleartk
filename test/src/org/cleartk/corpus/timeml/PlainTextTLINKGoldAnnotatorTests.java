@@ -71,11 +71,11 @@ public class PlainTextTLINKGoldAnnotatorTests {
 				ViewNames.TIMEML,
 				FilesCollectionReader.PARAM_FILE_OR_DIRECTORY,
 				"test/data/corpus/timeml/wsj_0106.tml");
-		AnalysisEngine timemlEngine = AnalysisEngineFactory.createAnalysisEngine(
+		AnalysisEngine timemlEngine = AnalysisEngineFactory.createPrimitive(
 				TimeMLGoldAnnotator.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				TimeMLGoldAnnotator.PARAM_LOAD_TLINKS, false);
-		AnalysisEngine plainTextEngine = AnalysisEngineFactory.createAnalysisEngine(
+		AnalysisEngine plainTextEngine = AnalysisEngineFactory.createPrimitive(
 				PlainTextTLINKGoldAnnotator.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				PlainTextTLINKGoldAnnotator.PARAM_TLINK_FILE_URL,
@@ -125,11 +125,11 @@ public class PlainTextTLINKGoldAnnotatorTests {
 				ViewNames.TIMEML,
 				FilesCollectionReader.PARAM_FILE_OR_DIRECTORY,
 				"test/data/corpus/timeml/wsj_0106.tml");
-		AnalysisEngine timemlEngine = AnalysisEngineFactory.createAnalysisEngine(
+		AnalysisEngine timemlEngine = AnalysisEngineFactory.createPrimitive(
 				TimeMLGoldAnnotator.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				TimeMLGoldAnnotator.PARAM_LOAD_TLINKS, false);
-		AnalysisEngine plainTextEngine = AnalysisEngineFactory.createAnalysisEngine(
+		AnalysisEngine plainTextEngine = AnalysisEngineFactory.createPrimitive(
 				PlainTextTLINKGoldAnnotator.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				PlainTextTLINKGoldAnnotator.PARAM_TLINK_FILE_URL,

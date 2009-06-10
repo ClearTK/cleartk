@@ -87,7 +87,7 @@ public class VerbClauseTemporalHandlerTests {
 	
 	@Test
 	public void test() throws UIMAException, CleartkException {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				EmptyAnnotator.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
 		JCas jCas = engine.newJCas();

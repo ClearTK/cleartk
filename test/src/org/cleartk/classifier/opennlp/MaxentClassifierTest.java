@@ -128,7 +128,7 @@ public class MaxentClassifierTest {
 	
 	@Test
 	public void test1() throws Exception {
-		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createAnalysisEngine(DataWriterAnnotator.class, TestsUtil.getTypeSystemDescription(), 
+		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(DataWriterAnnotator.class, TestsUtil.getTypeSystemDescription(), 
 				InstanceConsumer.PARAM_ANNOTATION_HANDLER, TestHandler1T.class.getName(), 
 				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, DefaultMaxentDataWriterFactory.class.getName());
@@ -156,7 +156,7 @@ public class MaxentClassifierTest {
 		classification = classifier.classify(createInstance(null, "goodbye", 1).getFeatures());
 		assertEquals("C", classification);
 
-		AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createAnalysisEngine(ClassifierAnnotator.class, TestsUtil.getTypeSystemDescription(),
+		AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createPrimitive(ClassifierAnnotator.class, TestsUtil.getTypeSystemDescription(),
 				InstanceConsumer.PARAM_ANNOTATION_HANDLER, TestHandler1C.class.getName(),
 				ClassifierAnnotator.PARAM_CLASSIFIER_JAR, outputDirectory+"/model.jar");
 		jCas.reset();
@@ -228,7 +228,7 @@ public class MaxentClassifierTest {
 	
 	@Test
 	public void test2() throws Exception {
-		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createAnalysisEngine(DataWriterAnnotator.class, TestsUtil.getTypeSystemDescription(), 
+		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(DataWriterAnnotator.class, TestsUtil.getTypeSystemDescription(), 
 				InstanceConsumer.PARAM_ANNOTATION_HANDLER, TestHandler2T.class.getName(), 
 				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, DefaultMaxentDataWriterFactory.class.getName(),
@@ -289,7 +289,7 @@ public class MaxentClassifierTest {
 		hider.restoreOutput();
 		
 
-		AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createAnalysisEngine(ClassifierAnnotator.class, TestsUtil.getTypeSystemDescription(),
+		AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createPrimitive(ClassifierAnnotator.class, TestsUtil.getTypeSystemDescription(),
 				InstanceConsumer.PARAM_ANNOTATION_HANDLER, TestHandler2C.class.getName(),
 				ClassifierAnnotator.PARAM_CLASSIFIER_JAR, outputDirectory+"/model.jar");
 		jCas.reset();

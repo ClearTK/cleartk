@@ -80,13 +80,13 @@ public class InverseDocumentFrequencyWriterTests {
 				FilesCollectionReader.class, typeSystem,
 				FilesCollectionReader.PARAM_FILE_OR_DIRECTORY, this.inputDir);
 		AnalysisEngine[] engines = new AnalysisEngine[] {
-				AnalysisEngineFactory.createAnalysisEngine(OpenNLPSentenceSegmenter.class, typeSystem,
+				AnalysisEngineFactory.createPrimitive(OpenNLPSentenceSegmenter.class, typeSystem,
 						OpenNLPSentenceSegmenter.PARAM_SENTENCE_MODEL_FILE,
 						"./resources/models/OpenNLP.Sentence.English.bin.gz"),
-				AnalysisEngineFactory.createAnalysisEngine(TokenAnnotator.class, typeSystem),
-				AnalysisEngineFactory.createAnalysisEngine(SnowballStemmer.class, typeSystem,
+				AnalysisEngineFactory.createPrimitive(TokenAnnotator.class, typeSystem),
+				AnalysisEngineFactory.createPrimitive(SnowballStemmer.class, typeSystem,
 						SnowballStemmer.PARAM_STEMMER_NAME, "English"),
-				AnalysisEngineFactory.createAnalysisEngine(InverseDocumentFrequencyWriter.class, typeSystem,
+				AnalysisEngineFactory.createPrimitive(InverseDocumentFrequencyWriter.class, typeSystem,
 						InverseDocumentFrequencyWriter.PARAM_OUTPUT_FILE, this.mapFileName),
 		};
 		

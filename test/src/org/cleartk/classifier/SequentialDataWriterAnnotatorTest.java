@@ -59,7 +59,7 @@ public class SequentialDataWriterAnnotatorTest {
 	private String outputDirectory = "test/data/sequentialDataWriterAnnotator";
 	@Test
 	public void testSequentialDataWriterAnnotator() throws IOException, UIMAException {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				SequentialDataWriterAnnotator.class, TestsUtil.getTypeSystemDescription(),
 				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER, ExamplePOSAnnotationHandler.class.getName(),
 				SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,

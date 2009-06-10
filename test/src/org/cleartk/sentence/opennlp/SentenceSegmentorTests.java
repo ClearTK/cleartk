@@ -48,7 +48,7 @@ public class SentenceSegmentorTests{
 	@Test
 	public void testManyNewlines() throws UIMAException {
 		// create the SentenceSegmenter
-		AnalysisEngine segmenter = AnalysisEngineFactory.createAnalysisEngine(
+		AnalysisEngine segmenter = AnalysisEngineFactory.createPrimitive(
 				OpenNLPSentenceSegmenter.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription(Sentence.class),
 				OpenNLPSentenceSegmenter.PARAM_SENTENCE_MODEL_FILE,

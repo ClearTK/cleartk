@@ -71,7 +71,7 @@ public class LineWriterTests {
 	
 	@Test
 	public void test1() throws Exception {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 					LineWriter.class,
 					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 					LineWriter.PARAM_OUTPUT_DIRECTORY, this.outputDir.getPath(), 
@@ -161,7 +161,7 @@ public class LineWriterTests {
 	
 	@Test
 	public void test2() throws Exception {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 					LineWriter.class,
 					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 					LineWriter.PARAM_OUTPUT_FILE, new File(outputDir, "output.txt").getPath(), 
@@ -201,7 +201,7 @@ public class LineWriterTests {
 
 	@Test
 	public void test3() throws Exception {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 					LineWriter.class,
 					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 					LineWriter.PARAM_OUTPUT_FILE, new File(outputDir, "output.txt").getPath(), 
@@ -359,7 +359,7 @@ public class LineWriterTests {
 	
 	@Test
 	public void test4() throws Exception {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 					LineWriter.class,
 					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 					LineWriter.PARAM_OUTPUT_FILE, new File(outputDir, "output.txt").getPath(), 
@@ -403,7 +403,7 @@ public class LineWriterTests {
 
 	@Test
 	public void test5() throws Exception {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 					LineWriter.class,
 					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 					LineWriter.PARAM_OUTPUT_DIRECTORY, outputDir.getPath(), 

@@ -56,7 +56,7 @@ public class BagExtractorTests {
 
 	@Before
 	public void setUp() throws Exception {
-		this.engine = AnalysisEngineFactory.createAnalysisEngine(
+		this.engine = AnalysisEngineFactory.createPrimitive(
 				EmptyAnnotator.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription(Token.class, Sentence.class));;
 		this.jCasObjects = new ArrayList<JCas>();

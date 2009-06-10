@@ -65,7 +65,7 @@ public class AnnotationUtilTests {
 	public static class Annotator extends JCasAnnotator_ImplBase
 	{
 		public static JCas getProcessedJCas() throws UIMAException, IOException {
-			AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+			AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 					Annotator.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
 			return AnalysisEngineFactory.process(engine, "test/data/docs/huckfinn.txt");
 		}

@@ -69,7 +69,7 @@ public class ExamplePOSPlainTextWriterTests {
 	
 	@Test
 	public void test() throws Exception {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				ExamplePOSPlainTextWriter.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY,

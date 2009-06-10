@@ -117,7 +117,7 @@ public class MalletClassifierTest {
 	
 	@Test
 	public void runTest1() throws Exception {
-		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createAnalysisEngine(DataWriterAnnotator.class,
+		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(DataWriterAnnotator.class,
 				TestsUtil.getTypeSystemDescription(), InstanceConsumer.PARAM_ANNOTATION_HANDLER, TestHandler.class
 						.getName(), DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, DefaultMalletDataWriterFactory.class.getName());
@@ -167,7 +167,7 @@ public class MalletClassifierTest {
 		FeatureVector fv = (FeatureVector) malletInstance.getData();
 		assertEquals(95.0, fv.value("hello"), 0.001);
 		
-		AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createAnalysisEngine(ClassifierAnnotator.class, TestsUtil.getTypeSystemDescription(),
+		AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createPrimitive(ClassifierAnnotator.class, TestsUtil.getTypeSystemDescription(),
 				InstanceConsumer.PARAM_ANNOTATION_HANDLER, TestHandler1.class.getName(),
 				ClassifierAnnotator.PARAM_CLASSIFIER_JAR, outputDirectory+"/model.jar");
 		jCas.reset();

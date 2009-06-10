@@ -68,7 +68,7 @@ public class TestsUtil {
 			TypeSystemDescription tsd = TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem");
 			TYPE_SYSTEM.set(tsd);
 
-			AnalysisEngine aeAdapter = AnalysisEngineFactory.createAnalysisEngine(
+			AnalysisEngine aeAdapter = AnalysisEngineFactory.createPrimitive(
 					JCasAnnotatorAdapter.class,
 					tsd);
 			AE_ADAPTER.set(aeAdapter);

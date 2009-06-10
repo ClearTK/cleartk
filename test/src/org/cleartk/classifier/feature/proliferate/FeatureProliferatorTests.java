@@ -140,7 +140,7 @@ public class FeatureProliferatorTests {
 
 	@Test
 	public void testProliferatingExtractor() throws UIMAException, IOException {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				EmptyAnnotator.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription(Token.class));
 		JCas jCas = engine.newJCas();

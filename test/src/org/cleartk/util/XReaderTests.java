@@ -73,7 +73,7 @@ public class XReaderTests {
 	@Test
 	public void testReaderXmi() throws IOException, UIMAException {
 
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				XWriter.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				XWriter.PARAM_OUTPUT_DIRECTORY, this.inputDir.getPath());
 		JCas jCas = engine.newJCas();
@@ -108,7 +108,7 @@ public class XReaderTests {
 	@Test
 	public void testReaderXcas() throws IOException, UIMAException {
 
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				XWriter.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				XWriter.PARAM_OUTPUT_DIRECTORY, this.inputDir.getPath(),
 				XWriter.PARAM_XML_SCHEME, XWriter.XCAS);

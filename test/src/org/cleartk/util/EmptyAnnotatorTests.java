@@ -39,7 +39,7 @@ public class EmptyAnnotatorTests {
 	
 	@Test
 	public void test() throws Exception {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				EmptyAnnotator.class, null);
 		JCas jCas = engine.newJCas();
 		int startSize = jCas.getAnnotationIndex().size();

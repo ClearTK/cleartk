@@ -56,7 +56,7 @@ public class DistanceExtractorTests {
 
 	@Test
 	public void test1() throws Exception {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(EmptyAnnotator.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(EmptyAnnotator.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
 		JCas jCas = engine.newJCas();
 		
 		TokenFactory.createTokens(jCas, "A simple sentence to test the distance of tokens from each other.", Token.class, Sentence.class,  "A simple sentence to test the distance of tokens from each other .");

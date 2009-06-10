@@ -54,7 +54,7 @@ public class TermFinderAnnotatorTests {
 
 	@Test
 	public void test() throws UIMAException, IOException {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				TermFinderAnnotator.class, TypeSystemDescriptionFactory.createTypeSystemDescription(
 						Sentence.class, Token.class, NamedEntityMention.class),
 				TermFinderAnnotator.PARAM_TERM_LIST_LISTING,
