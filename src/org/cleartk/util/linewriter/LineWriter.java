@@ -36,10 +36,9 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.ViewURIUtil;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
+import org.cleartk.util.ViewURIUtil;
 import org.cleartk.util.linewriter.annotation.CoveredTextAnnotationWriter;
 import org.cleartk.util.linewriter.block.BlankLineBlockWriter;
 
