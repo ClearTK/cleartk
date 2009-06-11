@@ -31,7 +31,6 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.util.FileUtils;
-import org.cleartk.example.pos.ExamplePOSPlainTextWriter;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.ViewURIUtil;
@@ -41,7 +40,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.TokenFactory;
-import org.uutuc.factory.TypeSystemDescriptionFactory;
 
 
 /**
@@ -69,11 +67,9 @@ public class ExamplePOSPlainTextWriterTests {
 	
 	@Test
 	public void test() throws Exception {
+		
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				ExamplePOSPlainTextWriter.class,
-				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-				ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY,
-				this.outputDirectory.getPath());
+				ExamplePOSPlainTextWriter.getDescription(this.outputDirectory.getPath())); 
 		
 		JCas jCas = engine.newJCas();
 		TokenFactory.createTokens(jCas,
@@ -91,8 +87,8 @@ public class ExamplePOSPlainTextWriterTests {
 
 	@Test
 	public void testDescriptor() throws UIMAException, IOException {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-				"org.cleartk.example.pos.ExamplePOSPlainTextWriter");
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+				ExamplePOSPlainTextWriter.getDescription(ExamplePOSPlainTextWriter.DEFAULT_OUTPUT_DIRECTORY));
 		Object outputDirectory = engine.getConfigParameterValue(
 				ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY);
 		Assert.assertEquals("example/data", outputDirectory);
