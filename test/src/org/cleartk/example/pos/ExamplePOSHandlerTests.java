@@ -31,6 +31,7 @@ import java.util.List;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
@@ -84,14 +85,11 @@ public class ExamplePOSHandlerTests {
 				"the",					// lower case
 				"INITIAL_UPPERCASE",	// capital type
 										// numeric type
-				"Th",					// first 2 chars
-				"The",					// first 3 chars
 				"he",					// last 2 chars
 				"The",					// last 3 chars
 				"The",					// stem (thrown away if null)
 				null, null,				// left 2 stems
 				"Absurdi", "retreat",	// right 2 stems
-				null, null, null,		// left 3 POS tags
 		});
 		Assert.assertEquals(featureValues, this.getFeatureValues(instances.get(0)));
 		Assert.assertEquals("DT", instances.get(0).getOutcome());
@@ -102,14 +100,11 @@ public class ExamplePOSHandlerTests {
 				"absurdis",				// lower case
 				"INITIAL_UPPERCASE",	// capital type
 										// numeric type
-				"Ab",					// first 2 chars
-				"Abs",					// first 3 chars
 				"is",					// last 2 chars
 				"dis",					// last 3 chars
 				"Absurdi",				// stem (thrown away if null)
 				"The", null,			// left 2 stems
 				"retreat", "in",		// right 2 stems
-				"DT", null, null,		// left 3 POS tags
 		});
 		Assert.assertEquals(featureValues, this.getFeatureValues(instances.get(1)));
 		Assert.assertEquals("NNP", instances.get(1).getOutcome());
@@ -120,14 +115,11 @@ public class ExamplePOSHandlerTests {
 				"retreated",			// lower case
 				"ALL_LOWERCASE",		// capital type
 										// numeric type
-				"re",					// first 2 chars
-				"ret",					// first 3 chars
 				"ed",					// last 2 chars
 				"ted",					// last 3 chars
 				"retreat",				// stem (thrown away if null)
 				"Absurdi", "The",		// left 2 stems
 				"in", "2003",			// right 2 stems
-				"NNP", "DT", null,		// left 3 POS tags
 		});
 		Assert.assertEquals(featureValues, this.getFeatureValues(instances.get(2)));
 		Assert.assertEquals("VBD", instances.get(2).getOutcome());
@@ -138,14 +130,11 @@ public class ExamplePOSHandlerTests {
 				"in",					// lower case
 				"ALL_LOWERCASE",		// capital type
 										// numeric type
-				"in",					// first 2 chars
-										// first 3 chars
 				"in",					// last 2 chars
 										// last 3 chars
 				"in",					// stem (thrown away if null)
 				"retreat", "Absurdi",	// left 2 stems
 				"2003", ".",			// right 2 stems
-				"VBD", "NNP", "DT",		// left 3 POS tags
 		});
 		Assert.assertEquals(featureValues, this.getFeatureValues(instances.get(3)));
 		Assert.assertEquals("IN", instances.get(3).getOutcome());
@@ -156,14 +145,11 @@ public class ExamplePOSHandlerTests {
 				"2003",					// lower case
 										// capital type
 				"YEAR_DIGITS",			// numeric type
-				"20",					// first 2 chars
-				"200",					// first 3 chars
 				"03",					// last 2 chars
 				"003",					// last 3 chars
 				"2003",					// stem (thrown away if null)
 				"in", "retreat",		// left 2 stems
 				".", null,			// right 2 stems
-				"IN", "VBD", "NNP",		// left 3 POS tags
 		});
 		Assert.assertEquals(featureValues, this.getFeatureValues(instances.get(4)));
 		Assert.assertEquals("CD", instances.get(4).getOutcome());
@@ -174,14 +160,11 @@ public class ExamplePOSHandlerTests {
 				".",					// lower case
 										// capital type
 										// numeric type
-										// first 2 chars
-										// first 3 chars
 										// last 2 chars
 										// last 3 chars
 				".",					// stem (thrown away if null)
 				"2003", "in",			// left 2 stems
 				null, null,				// right 2 stems
-				"CD", "IN", "VBD",		// left 3 POS tags
 		});
 		Assert.assertEquals(featureValues, this.getFeatureValues(instances.get(5)));
 		Assert.assertEquals(".", instances.get(5).getOutcome());
@@ -189,8 +172,8 @@ public class ExamplePOSHandlerTests {
 	
 	@Test
 	public void testAnnotatorDescriptor() throws UIMAException, IOException {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-				"org.cleartk.example.pos.ExamplePOSAnnotator");
+		AnalysisEngineDescription posTaggerDescription = ExamplePOSAnnotationHandler.getClassifierDescription(ExamplePOSAnnotationHandler.DEFAULT_MODEL);
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(posTaggerDescription);
 		
 		String expectedName = ExamplePOSAnnotationHandler.class.getName();
 		Object annotationHandler = engine.getConfigParameterValue(
@@ -206,8 +189,8 @@ public class ExamplePOSHandlerTests {
 	
 	@Test
 	public void testDataWriterDescriptor() throws UIMAException, IOException {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-				"org.cleartk.example.pos.ExamplePOSDataWriter");
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+				ExamplePOSAnnotationHandler.getWriterDescription(ExamplePOSAnnotationHandler.DEFAULT_OUTPUT_DIRECTORY));
 		
 		String expectedName = ExamplePOSAnnotationHandler.class.getName();
 		Object annotationHandler = engine.getConfigParameterValue(
