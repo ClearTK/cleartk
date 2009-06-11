@@ -30,6 +30,8 @@ import java.io.IOException;
 
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.example.pos.ExamplePOSAnnotationHandler;
+import org.cleartk.example.pos.ExamplePOSPlainTextWriter;
 import org.cleartk.token.TokenAnnotator;
 import org.xml.sax.SAXException;
 
@@ -43,7 +45,7 @@ public class DescriptorFiles {
 	 */
 
 	public static void main(String[] args) throws SAXException, IOException, ResourceInitializationException {
-		String outputDirectoryName = "desc";
+		String outputDirectoryName = "src/org/cleartk/descriptor";
 		File outputDirectory = new File(outputDirectoryName);
 		if(!outputDirectory.exists()) {
 			outputDirectory.mkdirs();
@@ -53,5 +55,14 @@ public class DescriptorFiles {
 
 		description = ClearTKComponents.createSentencesAndTokens();
 		description.toXML(new FileWriter(new File(outputDirectory, "SentencesAndTokens.xml")));
-	}
+
+		description = ExamplePOSAnnotationHandler.getClassifierDescription(ExamplePOSAnnotationHandler.DEFAULT_MODEL);
+		description.toXML(new FileWriter(new File(outputDirectory, "ExamplePOSAnnotator.xml")));
+
+		description = ExamplePOSAnnotationHandler.getWriterDescription(ExamplePOSAnnotationHandler.DEFAULT_OUTPUT_DIRECTORY);
+		description.toXML(new FileWriter(new File(outputDirectory, "ExamplePOSDataWriter.xml")));
+
+		description = ExamplePOSPlainTextWriter.getDescription(ExamplePOSPlainTextWriter.DEFAULT_OUTPUT_DIRECTORY);
+		description.toXML(new FileWriter(new File(outputDirectory, "ExamplePOSPlainTextWriter.xml")));
+}
 }
