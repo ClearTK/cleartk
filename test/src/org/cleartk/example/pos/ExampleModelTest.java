@@ -29,8 +29,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.jcas.JCas;
-import org.cleartk.classifier.SequentialClassifierAnnotator;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.TestsUtil;
@@ -50,8 +50,8 @@ public class ExampleModelTest {
 
 	@Test
 	public void testModel() throws Exception {
-		AnalysisEngine posTagger = AnalysisEngineFactory.createAnalysisEngine("org.cleartk.example.pos.ExamplePOSAnnotator", 
-				SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR, "example/model/model.jar");
+		AnalysisEngineDescription posTaggerDescription = ExamplePOSAnnotationHandler.getClassifierDescription(ExamplePOSAnnotationHandler.DEFAULT_MODEL);
+		AnalysisEngine posTagger = AnalysisEngineFactory.createPrimitive(posTaggerDescription);
 		
 		JCas jCas = TestsUtil.getJCas();
 		
@@ -67,9 +67,9 @@ public class ExampleModelTest {
 		posTagger.process(jCas);
 		token = AnnotationRetrieval.get(jCas, Token.class, 0);
 		assertNotNull(token.getPos());
-		assertEquals("WP", token.getPos());
+		assertEquals("IN", token.getPos());
 		token = AnnotationRetrieval.get(jCas, Token.class, 5);
 		assertNotNull(token.getPos());
-		assertEquals("PRP", token.getPos());
+		assertEquals("NN", token.getPos());
 	}
 }
