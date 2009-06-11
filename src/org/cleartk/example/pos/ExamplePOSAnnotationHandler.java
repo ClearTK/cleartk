@@ -70,13 +70,11 @@ public class ExamplePOSAnnotationHandler implements SequentialAnnotationHandler<
 		this.tokenSentenceFeatureExtractors = new ArrayList<WindowExtractor>();
 		
 		// basic feature extractors for word, stem and part-of-speech
-		SimpleFeatureExtractor wordExtractor, stemExtractor, posExtractor;
+		SimpleFeatureExtractor wordExtractor, stemExtractor;
 		wordExtractor = new SpannedTextExtractor();
 		stemExtractor = new TypePathExtractor(Token.class, "stem");
-		posExtractor = new TypePathExtractor(Token.class, "pos");
 		
 		// aliases for NGram feature parameters
-		int fromLeft = CharacterNGramProliferator.LEFT_TO_RIGHT;
 		int fromRight = CharacterNGramProliferator.RIGHT_TO_LEFT;
 		
 		// add the feature extractor for the word itself
@@ -86,8 +84,6 @@ public class ExamplePOSAnnotationHandler implements SequentialAnnotationHandler<
 				new LowerCaseProliferator(),
 				new CapitalTypeProliferator(),
 				new NumericTypeProliferator(),
-				new CharacterNGramProliferator(fromLeft, 0, 2),
-				new CharacterNGramProliferator(fromLeft, 0, 3),
 				new CharacterNGramProliferator(fromRight, 0, 2),
 				new CharacterNGramProliferator(fromRight, 0, 3)));
 		
@@ -99,10 +95,6 @@ public class ExamplePOSAnnotationHandler implements SequentialAnnotationHandler<
 				Token.class, stemExtractor, WindowFeature.ORIENTATION_LEFT, 0, 2));
 		this.tokenSentenceFeatureExtractors.add(new WindowExtractor(
 				Token.class, stemExtractor, WindowFeature.ORIENTATION_RIGHT, 0, 2));
-		
-		// add 3 part of speech tags to the left
-		this.tokenSentenceFeatureExtractors.add(new WindowExtractor(
-				Token.class, posExtractor, WindowFeature.ORIENTATION_LEFT, 0, 3));
 		
 	}
 	
