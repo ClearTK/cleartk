@@ -29,7 +29,6 @@ import org.cleartk.ClearTKComponents;
 import org.cleartk.ViewNames;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.util.FilesCollectionReader;
-import org.cleartk.util.XWriter;
 import org.uutuc.factory.CollectionReaderFactory;
 import org.uutuc.util.SimplePipeline;
 
@@ -59,8 +58,7 @@ public class BuildTestExamplePosModel {
 						ExamplePOSAnnotationHandler.class,
 						DefaultMaxentDataWriterFactory.class,
 						"example/model",
-						DefaultMaxentDataWriterFactory.PARAM_COMPRESS, true),
-				XWriter.getDescription("example/xmi"));
+						DefaultMaxentDataWriterFactory.PARAM_COMPRESS, true));
 				
 		org.cleartk.classifier.Train.main("example/model");
 
