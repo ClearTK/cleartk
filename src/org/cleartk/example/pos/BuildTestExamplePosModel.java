@@ -27,7 +27,6 @@ package org.cleartk.example.pos;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.cleartk.ClearTKComponents;
 import org.cleartk.ViewNames;
-import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.util.FilesCollectionReader;
 import org.uutuc.factory.CollectionReaderFactory;
 import org.uutuc.util.SimplePipeline;
@@ -54,11 +53,7 @@ public class BuildTestExamplePosModel {
 						FilesCollectionReader.PARAM_VIEW_NAME, ViewNames.TREEBANK),
 				ClearTKComponents.createTreebankGoldAnnotator(false),
 				ClearTKComponents.createSnowballStemmer("English"),
-				ClearTKComponents.createViterbiDataWriterAnnotator(
-						ExamplePOSAnnotationHandler.class,
-						DefaultMaxentDataWriterFactory.class,
-						"example/model",
-						DefaultMaxentDataWriterFactory.PARAM_COMPRESS, true));
+				ExamplePOSAnnotationHandler.getWriterDescription(ExamplePOSAnnotationHandler.DEFAULT_OUTPUT_DIRECTORY));
 				
 		org.cleartk.classifier.Train.main("example/model");
 
