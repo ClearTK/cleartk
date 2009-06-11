@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.example.pos;
 
 import java.io.File;
@@ -29,38 +29,43 @@ import java.io.PrintWriter;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.ClearTKComponents;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.ViewURIUtil;
 import org.cleartk.util.UIMAUtil;
-
+import org.cleartk.util.ViewURIUtil;
+import org.uutuc.factory.AnalysisEngineFactory;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
  * 
  * @author Steven Bethard
  */
 public class ExamplePOSPlainTextWriter extends JCasAnnotator_ImplBase {
 
+	public static final String DEFAULT_OUTPUT_DIRECTORY = "example/data";
 	/**
+	 * 
 	 * "org.cleartk.example.pos.ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY"
-	 * is a single, required, string parameter that provides the directory
-	 * where the token/pos text files will be written.
+	 * is a single, required, string parameter that provides the directory where
+	 * the token/pos text files will be written.
 	 */
 	public static final String PARAM_OUTPUT_DIRECTORY = "org.cleartk.example.pos.ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY";
-	
+
 	protected File outputDir;
 
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
-		this.outputDir = new File((String)UIMAUtil.getRequiredConfigParameterValue(
-				context, ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY));
+		this.outputDir = new File((String) UIMAUtil.getRequiredConfigParameterValue(context,
+				ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY));
 		if (!this.outputDir.exists()) {
 			this.outputDir.mkdirs();
 		}
@@ -74,11 +79,12 @@ public class ExamplePOSPlainTextWriter extends JCasAnnotator_ImplBase {
 		PrintWriter outputWriter;
 		try {
 			outputWriter = new PrintWriter(new File(this.outputDir, id + ".pos"));
-		} catch (FileNotFoundException e) {
+		}
+		catch (FileNotFoundException e) {
 			throw new AnalysisEngineProcessException(e);
 		}
-		for (Sentence sentence: AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
-			for (Token token: AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class)) {
+		for (Sentence sentence : AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
+			for (Token token : AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class)) {
 				outputWriter.print(token.getCoveredText());
 				outputWriter.print('/');
 				outputWriter.print(token.getPos());
@@ -89,4 +95,9 @@ public class ExamplePOSPlainTextWriter extends JCasAnnotator_ImplBase {
 		outputWriter.close();
 	}
 
+	public static AnalysisEngineDescription getDescription(String outputDirectory) throws ResourceInitializationException {
+		return AnalysisEngineFactory.createPrimitiveDescription(ExamplePOSPlainTextWriter.class,
+				ClearTKComponents.TYPE_SYSTEM_DESCRIPTION, ClearTKComponents.TYPE_PRIORITIES,
+				ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY, outputDirectory);
+	}
 }

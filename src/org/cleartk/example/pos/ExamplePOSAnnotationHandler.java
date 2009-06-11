@@ -28,9 +28,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.uima.UimaContext;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.ClearTKComponents;
 import org.cleartk.CleartkException;
 import org.cleartk.Initializable;
 import org.cleartk.classifier.Instance;
@@ -46,6 +48,7 @@ import org.cleartk.classifier.feature.proliferate.CharacterNGramProliferator;
 import org.cleartk.classifier.feature.proliferate.LowerCaseProliferator;
 import org.cleartk.classifier.feature.proliferate.NumericTypeProliferator;
 import org.cleartk.classifier.feature.proliferate.ProliferatingExtractor;
+import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
@@ -59,6 +62,9 @@ import org.cleartk.util.AnnotationRetrieval;
  */
 public class ExamplePOSAnnotationHandler implements SequentialAnnotationHandler<String>, Initializable {
 
+	public static final String DEFAULT_OUTPUT_DIRECTORY = "example/model";
+	public static final String DEFAULT_MODEL = "example/model/model.jar";
+	
 	private List<SimpleFeatureExtractor> tokenFeatureExtractors;
 	private List<WindowExtractor> tokenSentenceFeatureExtractors;
 	
@@ -137,5 +143,18 @@ public class ExamplePOSAnnotationHandler implements SequentialAnnotationHandler<
 				}
 			}
 		}
+	}
+	
+	public static AnalysisEngineDescription getClassifierDescription(String modelFileName) throws ResourceInitializationException {
+		return ClearTKComponents.createSequentialClassifierAnnotator(
+				ExamplePOSAnnotationHandler.class, modelFileName);
+	}
+	
+	public static AnalysisEngineDescription getWriterDescription(String outputDirectory) throws ResourceInitializationException {
+		return ClearTKComponents.createViterbiDataWriterAnnotator(
+				ExamplePOSAnnotationHandler.class,
+				DefaultMaxentDataWriterFactory.class,
+				outputDirectory,
+				DefaultMaxentDataWriterFactory.PARAM_COMPRESS, true);
 	}
 }
