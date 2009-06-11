@@ -71,7 +71,8 @@ public class LicenseTests {
 				
 				if(file.getName().equals("GENIAcorpus3.02.articleA.pos.xml"))
 					continue;
-					
+				if(file.getParent().equals("src/org/cleartk/descriptor".replace('/', File.separatorChar)))
+					continue;
 				filesMissingLicense.add(file.getPath());
 			}
 		}
