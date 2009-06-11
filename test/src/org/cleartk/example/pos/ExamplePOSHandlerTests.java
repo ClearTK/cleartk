@@ -23,7 +23,6 @@
 */
 package org.cleartk.example.pos;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,7 +42,6 @@ import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.EmptyAnnotator;
 import org.cleartk.util.TestsUtil;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
@@ -182,7 +180,7 @@ public class ExamplePOSHandlerTests {
 
 		Object classifierJar = engine.getConfigParameterValue(
 				SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR);
-		Assert.assertEquals("example/model/model.jar", classifierJar);
+		Assert.assertEquals(ExamplePOSAnnotationHandler.DEFAULT_MODEL, classifierJar);
 		
 		engine.collectionProcessComplete();
 	}
@@ -199,7 +197,7 @@ public class ExamplePOSHandlerTests {
 		
 		Object outputDir = engine.getConfigParameterValue(
 				SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY);
-		Assert.assertEquals("example/model", outputDir);
+		Assert.assertEquals(ExamplePOSAnnotationHandler.DEFAULT_OUTPUT_DIRECTORY, outputDir);
 		
 		String expectedDataWriterFactory = (
 				ViterbiDataWriterFactory.class.getName());
@@ -209,15 +207,6 @@ public class ExamplePOSHandlerTests {
 		engine.collectionProcessComplete();
 	}
 	
-	@After
-	public void tearDown() throws Exception {
-		for (File file: new File("example/model").listFiles()) {
-			if (!file.getName().equals("model.jar")) {
-				file.delete();
-			}
-		}
-	}
-
 	private List<String> getFeatureValues(Instance<String> instance) {
 		List<String> values = new ArrayList<String>();
 		for (Feature feature: instance.getFeatures()) {
