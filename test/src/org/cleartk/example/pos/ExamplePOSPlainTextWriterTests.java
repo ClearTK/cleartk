@@ -91,6 +91,6 @@ public class ExamplePOSPlainTextWriterTests {
 				ExamplePOSPlainTextWriter.getDescription(ExamplePOSPlainTextWriter.DEFAULT_OUTPUT_DIRECTORY));
 		Object outputDirectory = engine.getConfigParameterValue(
 				ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY);
-		Assert.assertEquals("example/data", outputDirectory);
+		Assert.assertEquals(ExamplePOSPlainTextWriter.DEFAULT_OUTPUT_DIRECTORY, outputDirectory);
 	}
 }
