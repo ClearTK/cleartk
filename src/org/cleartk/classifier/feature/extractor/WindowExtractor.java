@@ -46,6 +46,8 @@ import org.cleartk.util.UIMAUtil;
  * 
  * @author Philip Ogren
  * 
+ * This class may change significantly per issue 19 as described here:
+ * http://code.google.com/p/cleartk/issues/detail?id=19
  */
 
 public class WindowExtractor {

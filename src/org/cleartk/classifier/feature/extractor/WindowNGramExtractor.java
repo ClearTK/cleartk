@@ -45,6 +45,9 @@ import org.cleartk.util.UIMAUtil;
  * 
  * @author Philip Ogren
  * 
+ *  This class may change significantly per issue 19 as described here:
+ * http://code.google.com/p/cleartk/issues/detail?id=19
+<p>
  *         This class is very similar to the WindowExtractor in the ClearTK
  *         project, except that instead of getting individual features for each
  *         index in the window (as WindowExtractor does) it creates a single
