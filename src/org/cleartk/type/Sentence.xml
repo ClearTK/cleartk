@@ -21,26 +21,17 @@ SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
 INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
 CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-POSSIBILITY OF SUCH DAMAGE. 
-
-</description>
+POSSIBILITY OF SUCH DAMAGE.</description>
   <version>1.0</version>
   <vendor>Copyright 2007-2008 Regents of the University of Colorado.   All Rights Reserved.</vendor>
   <imports>
-    <import name="org.cleartk.syntax.treebank.type.TopTreebankNode"/>
+    <import name="org.cleartk.type.ContiguousAnnotation"/>
   </imports>
   <types>
     <typeDescription>
       <name>org.cleartk.type.Sentence</name>
       <description/>
       <supertypeName>org.cleartk.type.ContiguousAnnotation</supertypeName>
-      <features>
-        <featureDescription>
-          <name>constituentParse</name>
-          <description/>
-          <rangeTypeName>org.cleartk.syntax.treebank.type.TopTreebankNode</rangeTypeName>
-        </featureDescription>
-      </features>
     </typeDescription>
   </types>
 </typeSystemDescription>

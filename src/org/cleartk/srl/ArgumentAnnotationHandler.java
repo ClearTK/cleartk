@@ -119,7 +119,7 @@ public class ArgumentAnnotationHandler implements AnnotationHandler<String> {
 
 		List<TreebankNode> sentenceConstituents = new ArrayList<TreebankNode>(
 				80);
-		collectConstituents(sentence.getConstituentParse(),
+		collectConstituents(AnnotationRetrieval.getContainingAnnotation(jCas, sentence, TopTreebankNode.class, false),
 				sentenceConstituents);
 
 		List<List<Feature>> sentenceConstituentFeatures = new ArrayList<List<Feature>>(

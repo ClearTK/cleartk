@@ -127,7 +127,7 @@ public class OpenNLPTreebankParserTests {
 		    (. .)))
 		*/
 		Sentence sentence = AnnotationRetrieval.getAnnotations(jCas, Sentence.class).get(0); 
-		TopTreebankNode tree = sentence.getConstituentParse();
+		TopTreebankNode tree = AnnotationRetrieval.getContainingAnnotation(jCas, sentence, TopTreebankNode.class, false);
 		Assert.assertNotNull(tree);
 		Assert.assertEquals("TOP", tree.getNodeType());
 		Assert.assertEquals(1, tree.getChildren().size());
@@ -214,7 +214,7 @@ public class OpenNLPTreebankParserTests {
 		engine.process(jCas);
 		engine.collectionProcessComplete();
 		Sentence sentence = AnnotationRetrieval.getAnnotations(jCas, Sentence.class).get(0);
-		Assert.assertNotNull(sentence.getConstituentParse());
+		Assert.assertNotNull(AnnotationRetrieval.getContainingAnnotation(jCas, sentence, TopTreebankNode.class, false));
 	}
 	
 	@Test

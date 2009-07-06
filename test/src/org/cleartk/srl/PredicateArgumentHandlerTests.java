@@ -479,12 +479,10 @@ public class PredicateArgumentHandlerTests {
 								TestsUtil.newNode(jCas, 15, 19, "NN"))),
 				TestsUtil.newNode(jCas, 19, 20, "."));
 
-		Sentence sentence = AnnotationRetrieval.getAnnotations(jCas, Sentence.class).get(0);
 		TopTreebankNode topNode = new TopTreebankNode(jCas, sNode.getBegin(), sNode.getEnd());
 		topNode.setNodeType("TOP");
 		topNode.setChildren(UIMAUtil.toFSArray(jCas, Collections.singletonList(sNode)));
 		topNode.addToIndexes();
-		sentence.setConstituentParse(topNode);
 	}
 	
 	private void setPredicates(JCas jCas) {

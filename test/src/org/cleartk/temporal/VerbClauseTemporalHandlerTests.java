@@ -125,14 +125,15 @@ public class VerbClauseTemporalHandlerTests {
 										TestsUtil.newNode(jCas, "NP",
 												this.newNode(jCas, tokens.get(4)))))));
 		
+		Sentence sentence = AnnotationRetrieval.getAnnotations(jCas, Sentence.class).get(0);
+
 		// set the Sentence's constitutentParse feature
-		TopTreebankNode tree = new TopTreebankNode(jCas, root.getBegin(), root.getEnd());
+		TopTreebankNode tree = new TopTreebankNode(jCas, sentence.getBegin(), sentence.getEnd());
 		tree.setNodeType("TOP");
 		tree.setChildren(new FSArray(jCas, 1));
 		tree.setChildren(0, root);
 		tree.addToIndexes();
-		Sentence sentence = AnnotationRetrieval.getAnnotations(jCas, Sentence.class).get(0);
-		sentence.setConstituentParse(tree);
+//		sentence.setConstituentParse(tree);
 		
 		// collect the single instance from the handler
 		List<Instance<String>> instances;

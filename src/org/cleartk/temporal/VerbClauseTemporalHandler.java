@@ -103,7 +103,7 @@ public class VerbClauseTemporalHandler implements AnnotationHandler<String> {
 
 		// look for verb-clause pairs in each sentence in the document
 		for (Sentence sentence: AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
-			TopTreebankNode tree = sentence.getConstituentParse();
+			TopTreebankNode tree = AnnotationRetrieval.getContainingAnnotation(jCas, sentence, TopTreebankNode.class, false);
 			if (tree == null) {
 				throw new AnalysisEngineProcessException(new Exception(String.format(
 						"%s: missing syntactic parses", ViewURIUtil.getURI(jCas))));

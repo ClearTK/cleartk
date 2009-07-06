@@ -117,10 +117,9 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
 			initView.setSofaDataString(docText.toString(), "text/plain");
 			
 			Sentence sentence = new Sentence(initView, 0, docText.toString().length());
-
-			TopTreebankNode constituentParse = parser.makeParse();
-			sentence.setConstituentParse(constituentParse);
 			sentence.addToIndexes();
+			
+			parser.makeParse();
 			
 			for( PredicateParser predicateParser : predicateParsers )
 				predicateParser.makePredicate();

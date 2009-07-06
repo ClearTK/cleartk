@@ -100,7 +100,6 @@ public class TreebankGoldAnnotator extends JCasAnnotator_ImplBase {
 					.convert(topNode, docView, postTrees);
 			Sentence uimaSentence = new Sentence(docView, uimaNode
 					.getBegin(), uimaNode.getEnd());
-			uimaSentence.setConstituentParse(uimaNode);
 			uimaSentence.addToIndexes();
 
 			for (TreebankNode terminal : UIMAUtil.toList(uimaNode

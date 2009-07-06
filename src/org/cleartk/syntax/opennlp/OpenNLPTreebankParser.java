@@ -144,7 +144,6 @@ public class OpenNLPTreebankParser extends JCasAnnotator_ImplBase {
 			if (parse.getType() == Parser.TOP_NODE) {
 				TopTreebankNode topNode = (TopTreebankNode) buildAnnotation(parse, jCas);
 				topNode.addToIndexes();
-				sentence.setConstituentParse(topNode);
 			}
 		}
 	}

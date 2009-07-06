@@ -32,6 +32,7 @@ import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.ViewNames;
 import org.cleartk.srl.propbank.util.Propbank;
+import org.cleartk.syntax.treebank.type.TopTreebankNode;
 import org.cleartk.type.Sentence;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.UIMAUtil;
@@ -67,7 +68,7 @@ public class PropbankGoldAnnotator extends JCasAnnotator_ImplBase {
 				Propbank propbank = Propbank.fromString(propbankDatum);
 				Sentence sentence = sentenceList.get(propbank
 						.getSentenceNumber());
-				propbank.convert(goldView, sentence.getConstituentParse(),
+				propbank.convert(goldView, AnnotationRetrieval.getContainingAnnotation(jCas, sentence, TopTreebankNode.class, false),
 						sentence);
 			}
 		} catch (CASException e) {

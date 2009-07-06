@@ -143,7 +143,7 @@ public class ArgumentIdentificationHandler implements AnnotationHandler<Boolean>
 		 */
 		List<TreebankNode> sentenceConstituents = new ArrayList<TreebankNode>(
 				200);
-		collectConstituents(sentence.getConstituentParse(),
+		collectConstituents(AnnotationRetrieval.getContainingAnnotation(jCas, sentence, TopTreebankNode.class, false),
 				sentenceConstituents);
 
 		/*
