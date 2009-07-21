@@ -29,6 +29,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +41,7 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.InstanceConsumer_ImplBase;
 import org.cleartk.classifier.feature.Counts;
+import org.cleartk.classifier.feature.FeatureCollection;
 import org.cleartk.util.UIMAUtil;
 
 
@@ -58,28 +60,46 @@ public class IDFMapWriter<OUTCOME_TYPE> extends InstanceConsumer_ImplBase<OUTCOM
 	 * Map<String, Double> of inverse document frequencies should be written.
 	 */
 	public static final String PARAM_IDFMAP_FILE = "org.cleartk.tfidf.IDFMapWriter.PARAM_IDFMAP_FILE";
+	
+	/**
+	 * "org.cleartk.tfidf.IDFMapWriter.PARAM_IDFMAP_IDENTIFIER"
+	 * is a single, optional string parameter. If it is given, it restricts the
+	 * Counts features used for populating the IDF map to only those that have
+	 * that specific identifier.
+	 */
+	public static final String PARAM_IDFMAP_IDENTIFIER = "org.cleartk.tfidf.IDFMapWriter.PARAM_IDFMAP_IDENTIIER";
 
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
 
-		idfMapFile = new File((String)UIMAUtil.getRequiredConfigParameterValue(
-				context, PARAM_IDFMAP_FILE)).getAbsoluteFile();
+		idfMapFile = new File((String)UIMAUtil.getRequiredConfigParameterValue(context, PARAM_IDFMAP_FILE)).getAbsoluteFile();
 
 		if( ! idfMapFile.getParentFile().exists() )
 			throw new ResourceInitializationException();
+		
+		identifier = (String) UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_IDFMAP_IDENTIFIER, null);
+		counter = new IDFCounter();
 	}
 
 	public OUTCOME_TYPE consume(Instance<OUTCOME_TYPE> instance) {
-		for( Feature feature : instance.getFeatures() ) {
-			if( feature.getValue() instanceof Counts ) {
-				String name = feature.getName();
-				Counts counts = (Counts) feature.getValue();
-				consumeCountsFeature(name, counts);
-			}
-		}
+		consumeFeatures(instance.getFeatures());
 
 		return null;
+	}
+	
+	public void consumeFeatures(Collection<Feature> features) {
+		for( Feature feature : features ) {
+			if( feature.getValue() instanceof Counts ) {
+				Counts counts = (Counts) feature.getValue();
+				
+				if( identifier == null || identifier.equals(counts.getIdentifier()) )
+					consumeCountsFeature(counts);
+			} else if( feature.getValue() instanceof FeatureCollection ) {
+				FeatureCollection fc = (FeatureCollection) feature.getValue();
+				consumeFeatures(fc.getFeatures());
+			}
+		}
 	}
 
 	@Override
@@ -87,18 +107,8 @@ public class IDFMapWriter<OUTCOME_TYPE> extends InstanceConsumer_ImplBase<OUTCOM
 		super.collectionProcessComplete();
 
 		try {
-			if( counters.size() == 1 ) {
-				IDFCounter counter = counters.values().iterator().next();
-				writeMap(counter, idfMapFile);
-			} else {
-				for( String name : counters.keySet() ) {
-					File outputFile = new File(idfMapFile.getParentFile(), idfMapFile.getName() + "-" + name);
-					IDFCounter counter = counters.get(name);
-					writeMap(counter, outputFile);
-				}
-			}
-		}
-		catch (IOException e) {
+			writeMap(counter, idfMapFile);
+		} catch (IOException e) {
 			throw new AnalysisEngineProcessException(e);
 		}
 	}
@@ -113,24 +123,11 @@ public class IDFMapWriter<OUTCOME_TYPE> extends InstanceConsumer_ImplBase<OUTCOM
 		}
 	}
 
-	private void consumeCountsFeature(String name, Counts counts) {
-		String indexedName = name + "__" + counts.getFeatureName();
-
-		IDFCounter counter = getCounter(indexedName);
+	private void consumeCountsFeature(Counts counts) {
 		for( Object o : counts.getValues() ) {
 			String key = o.toString();
 			int count = counts.getCount(o);
-			counter.increment(key, count);
-		}
-	}
-
-	private IDFCounter getCounter(String name) {
-		if( counters.containsKey(name) )
-			return counters.get(name);
-		else {
-			IDFCounter counter = new IDFCounter();
-			counters.put(name, counter);
-			return counter;
+			counter.incrementBy(key, count);
 		}
 	}
 
@@ -144,12 +141,13 @@ public class IDFMapWriter<OUTCOME_TYPE> extends InstanceConsumer_ImplBase<OUTCOM
 		return false;
 	}
 
-	private Map<String, IDFCounter> counters = new HashMap<String, IDFCounter>();
+	private IDFCounter counter;
 	private File idfMapFile;
+	private String identifier;
 
 	private static class IDFCounter {
 
-		public void increment(String key, int c) {
+		public void incrementBy(String key, int c) {
 			int count = 0;
 			if( documentFrequencies.containsKey(key) )
 				count = documentFrequencies.get(key);
@@ -158,10 +156,6 @@ public class IDFMapWriter<OUTCOME_TYPE> extends InstanceConsumer_ImplBase<OUTCOM
 			documentCount += c;
 
 			documentFrequencies.put(key, count);
-		}
-
-		public void increment(String key) {
-			increment(key, 1);
 		}
 
 		public Map<String, Double> getIDFMap() {

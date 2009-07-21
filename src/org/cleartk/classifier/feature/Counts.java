@@ -34,13 +34,22 @@ import java.util.Map;
  */
 public class Counts {
 	
-	public Counts(String featureName, Map<? extends Object,Integer> countsMap) {
+	public Counts(String featureName, String identifier, Map<? extends Object,Integer> countsMap) {
 		this.featureName = featureName;
+		this.identifier = identifier;
 		this.countsMap = countsMap;
+	}
+	
+	public Counts(String featureName, Map<? extends Object,Integer> countsMap) {
+		this(featureName, null, countsMap);
 	}
 	
 	public String getFeatureName() {
 		return featureName;
+	}
+	
+	public String getIdentifier() {
+		return identifier;
 	}
 	
 	public Collection<? extends Object> getValues() {
@@ -60,5 +69,6 @@ public class Counts {
 	}
 	
 	private String featureName;
+	private String identifier;
 	private Map<? extends Object, Integer> countsMap;
 }
