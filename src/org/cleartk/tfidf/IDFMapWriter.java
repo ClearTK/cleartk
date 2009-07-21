@@ -128,7 +128,8 @@ public class IDFMapWriter<OUTCOME_TYPE> extends InstanceConsumer_ImplBase<OUTCOM
 	private static IDFCounter readMap(File inputFile) throws IOException {
 		ObjectInput input = new ObjectInputStream(new FileInputStream(inputFile));
 		try {
-			IDFCounter c = (IDFCounter) input.readObject();
+			Map<String, Double> idfMap = (Map<String, Double>) input.readObject();
+			IDFCounter c = IDFCounter.fromIDFMap(idfMap);
 			return c;
 		} catch( ClassNotFoundException e ) {
 			throw new IOException(e.toString());
@@ -173,6 +174,18 @@ public class IDFMapWriter<OUTCOME_TYPE> extends InstanceConsumer_ImplBase<OUTCOM
 	private String identifier;
 
 	private static class IDFCounter {
+		
+		public static IDFCounter fromIDFMap(Map<String, Double> idfMap) {
+			double documentCount = Math.exp(idfMap.get(null));
+			IDFCounter counter = new IDFCounter();
+			for( String key : idfMap.keySet() ) {
+				double inverseDocumentFrequency = idfMap.get(key);
+				int documentFrequency = (int) (documentCount / inverseDocumentFrequency);
+				counter.incrementBy(key, documentFrequency);
+			}
+			
+			return counter;
+		}
 
 		public void incrementBy(String key, int c) {
 			int count = 0;
