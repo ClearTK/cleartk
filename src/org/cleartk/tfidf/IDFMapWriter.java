@@ -25,8 +25,11 @@ package org.cleartk.tfidf;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.util.Collection;
@@ -71,15 +74,24 @@ public class IDFMapWriter<OUTCOME_TYPE> extends InstanceConsumer_ImplBase<OUTCOM
 
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-		super.initialize(context);
+		try {
+			super.initialize(context);
 
-		idfMapFile = new File((String)UIMAUtil.getRequiredConfigParameterValue(context, PARAM_IDFMAP_FILE)).getAbsoluteFile();
+			idfMapFile = new File((String)UIMAUtil.getRequiredConfigParameterValue(context, PARAM_IDFMAP_FILE)).getAbsoluteFile();
 
-		if( ! idfMapFile.getParentFile().exists() )
-			throw new ResourceInitializationException();
-		
-		identifier = (String) UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_IDFMAP_IDENTIFIER, null);
-		counter = new IDFCounter();
+			if( ! idfMapFile.getParentFile().exists() )
+				throw new ResourceInitializationException();
+			
+			if( idfMapFile.exists() )
+				counter = readMap(idfMapFile);
+			else
+				counter = new IDFCounter();
+			
+			identifier = (String) UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_IDFMAP_IDENTIFIER, null);
+		}
+		catch (IOException e) {
+			throw new ResourceInitializationException(e);
+		}
 	}
 
 	public OUTCOME_TYPE consume(Instance<OUTCOME_TYPE> instance) {
@@ -112,10 +124,25 @@ public class IDFMapWriter<OUTCOME_TYPE> extends InstanceConsumer_ImplBase<OUTCOM
 			throw new AnalysisEngineProcessException(e);
 		}
 	}
+	
+	private static IDFCounter readMap(File inputFile) throws IOException {
+		ObjectInput input = new ObjectInputStream(new FileInputStream(inputFile));
+		try {
+			IDFCounter c = (IDFCounter) input.readObject();
+			return c;
+		} catch( ClassNotFoundException e ) {
+			throw new IOException(e.toString());
+		} finally {
+			input.close();
+		}
+	}
 
-	private void writeMap(IDFCounter counter, File outputFile) throws IOException {
+	private static void writeMap(IDFCounter counter, File outputFile) throws IOException {
+		if( outputFile.exists() )
+			outputFile.delete();
+		
 		ObjectOutput output = new ObjectOutputStream(new BufferedOutputStream(
-				new FileOutputStream(idfMapFile)));
+				new FileOutputStream(outputFile)));
 		try {
 			output.writeObject(counter.getIDFMap());
 		} finally {
