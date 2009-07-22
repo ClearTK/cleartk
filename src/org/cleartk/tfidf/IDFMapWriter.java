@@ -70,7 +70,7 @@ public class IDFMapWriter<OUTCOME_TYPE> extends InstanceConsumer_ImplBase<OUTCOM
 	 * Counts features used for populating the IDF map to only those that have
 	 * that specific identifier.
 	 */
-	public static final String PARAM_IDFMAP_IDENTIFIER = "org.cleartk.tfidf.IDFMapWriter.PARAM_IDFMAP_IDENTIIER";
+	public static final String PARAM_IDFMAP_IDENTIFIER = "org.cleartk.tfidf.IDFMapWriter.PARAM_IDFMAP_IDENTIFIER";
 
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
