@@ -4,10 +4,10 @@
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
     <delegateAnalysisEngine key="TreebankGoldAnnotator">
-      <import name="org.cleartk.syntax.treebank.TreebankGoldAnnotator"/>
+      <import name="org.cleartk.descriptor.TreebankGoldAnnotator"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="PropbankGoldAnnotator">
-      <import name="org.cleartk.srl.propbank.PropbankGoldAnnotator"/>
+      <import name="org.cleartk.descriptor.PropbankGoldAnnotator"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
@@ -35,7 +35,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.</description>
     <version>1.0</version>
     <vendor/>
-    <configurationParameters/>
+    <configurationParameters searchStrategy="language_fallback"/>
     <configurationParameterSettings/>
     <flowConstraints>
       <fixedFlow>
@@ -52,10 +52,8 @@ POSSIBILITY OF SUCH DAMAGE.</description>
         <inputSofas>
           <sofaName>PropbankView</sofaName>
           <sofaName>TreebankView</sofaName>
+          <sofaName>_InitialView</sofaName>
         </inputSofas>
-        <outputSofas>
-          <sofaName>GoldView</sofaName>
-        </outputSofas>
         <languagesSupported/>
       </capability>
     </capabilities>
@@ -79,8 +77,8 @@ POSSIBILITY OF SUCH DAMAGE.</description>
     </sofaMapping>
     <sofaMapping>
       <componentKey>TreebankGoldAnnotator</componentKey>
-      <componentSofaName>GoldView</componentSofaName>
-      <aggregateSofaName>GoldView</aggregateSofaName>
+      <componentSofaName>_InitialView</componentSofaName>
+      <aggregateSofaName>_InitialView</aggregateSofaName>
     </sofaMapping>
   </sofaMappings>
 </analysisEngineDescription>

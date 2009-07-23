@@ -36,6 +36,7 @@ import org.cleartk.syntax.treebank.type.TopTreebankNode;
 import org.cleartk.type.Sentence;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.UIMAUtil;
+import org.uutuc.descriptor.SofaCapability;
 
 
 /**
@@ -52,6 +53,8 @@ import org.cleartk.util.UIMAUtil;
  * 
  * @author Philipp Wetzler, Philip Ogren
  */
+
+@SofaCapability(inputSofas= {ViewNames.PROPBANK, ViewNames.DEFAULT})
 public class PropbankGoldAnnotator extends JCasAnnotator_ImplBase {
 
 	@Override
