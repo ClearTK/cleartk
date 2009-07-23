@@ -27,6 +27,8 @@ package org.cleartk.example.pos;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.cleartk.ClearTKComponents;
 import org.cleartk.ViewNames;
+import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
+import org.cleartk.token.snowball.SnowballStemmer;
 import org.cleartk.util.FilesCollectionReader;
 import org.uutuc.factory.CollectionReaderFactory;
 import org.uutuc.util.SimplePipeline;
@@ -51,8 +53,8 @@ public class BuildTestExamplePosModel {
 						FilesCollectionReader.PARAM_FILE_OR_DIRECTORY, "test/data/docs/treebank",
 						FilesCollectionReader.PARAM_SUFFIXES,  new String[] { ".tree" },
 						FilesCollectionReader.PARAM_VIEW_NAME, ViewNames.TREEBANK),
-				ClearTKComponents.createTreebankGoldAnnotator(false),
-				ClearTKComponents.createSnowballStemmer("English"),
+				ClearTKComponents.createPrimitiveDescription(TreebankGoldAnnotator.class, TreebankGoldAnnotator.PARAM_POST_TREES, false),
+				ClearTKComponents.createPrimitiveDescription(SnowballStemmer.class, SnowballStemmer.PARAM_STEMMER_NAME, "English"),
 				ExamplePOSAnnotationHandler.getWriterDescription(ExamplePOSAnnotationHandler.DEFAULT_OUTPUT_DIRECTORY));
 				
 		org.cleartk.classifier.Train.main("example/model");
