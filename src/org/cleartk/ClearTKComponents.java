@@ -25,8 +25,11 @@ package org.cleartk;
 
 import java.util.Arrays;
 
+import org.apache.uima.analysis_component.AnalysisComponent;
+import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.collection.CollectionReader;
+import org.apache.uima.collection.CollectionReaderDescription;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.TypePriorities;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
@@ -51,7 +54,6 @@ import org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter;
 import org.cleartk.srl.conll2005.Conll2005GoldAnnotator;
 import org.cleartk.srl.conll2005.Conll2005GoldReader;
 import org.cleartk.syntax.opennlp.OpenNLPTreebankParser;
-import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
 import org.cleartk.token.TokenAnnotator;
 import org.cleartk.token.opennlp.OpenNLPPOSTagger;
 import org.cleartk.token.snowball.SnowballStemmer;
@@ -256,14 +258,7 @@ public class ClearTKComponents {
 				Conll2005GoldAnnotator.class, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES);
 	}
 	
-	public static AnalysisEngineDescription createTreebankGoldAnnotator(boolean postTrees)
-	throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveDescription(
-				TreebankGoldAnnotator.class, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES,
-				TreebankGoldAnnotator.PARAM_POST_TREES, postTrees);
-
-	}
-
+	
 	public static AnalysisEngineDescription createSentencesAndTokens() throws ResourceInitializationException {
 		AnalysisEngineDescription sentences = createOpenNLPSentenceSegmenter();
 		AnalysisEngineDescription tokenizer = TokenAnnotator.getDescription();
@@ -285,5 +280,29 @@ public class ClearTKComponents {
 		System.arraycopy(newParams, 0, combined, oldParams.length, newParams.length);
 		return combined;
 	}
+
+	public static AnalysisEngineDescription createPrimitiveDescription(Class<? extends AnalysisComponent> componentClass, Object... configurationData) throws ResourceInitializationException {
+		AnalysisEngineDescription aed = AnalysisEngineFactory.reflectPrimitiveDescription(componentClass, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES, configurationData);
+		aed.getMetaData().setName(componentClass.getSimpleName());
+		return aed;
+	}
+	
+	public static AnalysisEngine createPrimitive(Class<? extends AnalysisComponent> componentClass, Object... configurationData) throws ResourceInitializationException {
+		AnalysisEngineDescription aed = AnalysisEngineFactory.reflectPrimitiveDescription(componentClass, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES, configurationData);
+		aed.getMetaData().setName(componentClass.getSimpleName());
+		return AnalysisEngineFactory.createPrimitive(aed);
+	}
+	
+	public static CollectionReaderDescription createCollectionReaderDescription(Class<? extends CollectionReader> readerClass, Object... configurationData) throws ResourceInitializationException {
+		CollectionReaderDescription crd = CollectionReaderFactory.reflectDescription(readerClass, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES, configurationData);
+		crd.getMetaData().setName(readerClass.getSimpleName());
+		return crd;
+	}
+	
+	public static CollectionReader createCollectionReader(Class<? extends CollectionReader> readerClass, Object... configurationData) throws ResourceInitializationException {
+		CollectionReaderDescription crd = CollectionReaderFactory.reflectDescription(readerClass, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES, configurationData);
+		crd.getMetaData().setName(readerClass.getSimpleName());
+		return CollectionReaderFactory.createCollectionReader(crd);
+	}	
 
 }
