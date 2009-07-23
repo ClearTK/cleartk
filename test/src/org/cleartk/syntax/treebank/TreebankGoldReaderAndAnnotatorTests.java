@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.syntax.treebank;
 
 import static org.junit.Assert.assertEquals;
@@ -29,54 +29,58 @@ import java.io.IOException;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.cas.FSIndex;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.ClearTKComponents;
 import org.cleartk.ViewNames;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
 import org.cleartk.type.Sentence;
 import org.cleartk.util.AnnotationRetrieval;
+import org.cleartk.util.TestsUtil;
+import org.junit.Assert;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
-import org.uutuc.factory.TypeSystemDescriptionFactory;
-
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * 
  * @author Philip Ogren
- *
+ * 
  */
 public class TreebankGoldReaderAndAnnotatorTests {
-	
+
 	@Test
 	public void craftTest1() throws Exception {
 		String treebankParse = "( (X (NP (NP (NML (NN Complex ) (NN trait )) (NN analysis )) (PP (IN of ) (NP (DT the ) (NN mouse ) (NN striatum )))) (: : ) (S (NP-SBJ (JJ independent ) (NNS QTLs )) (VP (VBP modulate ) (NP (NP (NN volume )) (CC and ) (NP (NN neuron ) (NN number)))))) )";
 		String expectedText = "Complex trait analysis of the mouse striatum: independent QTLs modulate volume and neuron number";
 
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				TreebankGoldAnnotator.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TreebankGoldAnnotator.class, TestsUtil
+				.getTypeSystemDescription());
 		TreebankGoldAnnotator treebankGoldAnnotator = new TreebankGoldAnnotator();
 		treebankGoldAnnotator.initialize(engine.getUimaContext());
-		
-		JCas jCas = engine.newJCas();
+
+		JCas jCas = TestsUtil.getJCas();
 		JCas tbView = jCas.createView(ViewNames.TREEBANK);
 		tbView.setDocumentText(treebankParse);
-		
+
 		treebankGoldAnnotator.process(jCas);
-		
+
 		JCas goldView = jCas.getView(ViewNames.DEFAULT);
-		
+
 		FSIndex sentenceIndex = goldView.getAnnotationIndex(Sentence.type);
 		assertEquals(1, sentenceIndex.size());
-		
+
 		Sentence firstSentence = AnnotationRetrieval.get(goldView, Sentence.class, 0);
 		assertEquals(expectedText, firstSentence.getCoveredText());
-		
+
 		FSIndex topNodeIndex = goldView.getAnnotationIndex(TopTreebankNode.type);
 		TopTreebankNode topNode = (TopTreebankNode) topNodeIndex.iterator().next();
-		
+
 		int i = 0;
 		assertEquals("Complex", topNode.getTerminals(i++).getCoveredText());
 		assertEquals("trait", topNode.getTerminals(i++).getCoveredText());
@@ -94,14 +98,20 @@ public class TreebankGoldReaderAndAnnotatorTests {
 		assertEquals("neuron", topNode.getTerminals(i++).getCoveredText());
 		assertEquals("number", topNode.getTerminals(i++).getCoveredText());
 	}
-	
-	
-	@Test
-	public void testAnnotatorDescriptor() throws UIMAException, IOException {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-				"org.cleartk.syntax.treebank.TreebankGoldAnnotator");
-		engine.collectionProcessComplete();
-	}
-	
 
+	@Test
+	public void testAED() throws UIMAException, IOException {
+		AnalysisEngineDescription description = ClearTKComponents.createPrimitiveDescription(TreebankGoldAnnotator.class);
+		Boolean postTrees = (Boolean) description.getAnalysisEngineMetaData().getConfigurationParameterSettings().getParameterValue(TreebankGoldAnnotator.PARAM_POST_TREES);
+		Assert.assertTrue(postTrees.booleanValue());
+		String[] inputSofas = description.getAnalysisEngineMetaData().getCapabilities()[0].getInputSofas();
+		assertEquals(ViewNames.TREEBANK, inputSofas[0]);
+		assertEquals(ViewNames.DEFAULT, inputSofas[1]);
+	}
+
+	@Test
+	public void testInitialize() throws ResourceInitializationException {
+		AnalysisEngineFactory.createPrimitive(ClearTKComponents.createPrimitiveDescription(TreebankGoldAnnotator.class, TreebankGoldAnnotator.PARAM_POST_TREES, true));
+
+	}
 }

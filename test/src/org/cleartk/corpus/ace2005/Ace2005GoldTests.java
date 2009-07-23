@@ -31,6 +31,7 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.ClearTKComponents;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
@@ -79,12 +80,11 @@ public class Ace2005GoldTests {
 	@Test
 	public void testReaderDescriptor() throws UIMAException, IOException {
 		try {
-			CollectionReaderFactory.createCollectionReader("org.cleartk.corpus.ace2005.Ace2005GoldReader");
+			ClearTKComponents.createCollectionReader(Ace2005GoldReader.class);
 			Assert.fail("expected failure for no corpus directory specified");
 		} catch (ResourceInitializationException e) {}
 
-		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-				"org.cleartk.corpus.ace2005.Ace2005GoldReader",
+		CollectionReader reader = 			ClearTKComponents.createCollectionReader(Ace2005GoldReader.class,
 				Ace2005GoldReader.PARAM_ACE_CORPUS_DIR, this.rootDir.getPath());
 
 		Object corpusDir = reader.getConfigParameterValue(
