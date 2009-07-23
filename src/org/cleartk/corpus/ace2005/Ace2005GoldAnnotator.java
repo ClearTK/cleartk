@@ -42,8 +42,6 @@ import org.cleartk.ViewNames;
 import org.cleartk.ne.type.NamedEntity;
 import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.type.Chunk;
-import org.cleartk.type.Token;
-import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.UIMAUtil;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -119,15 +117,11 @@ public class Ace2005GoldAnnotator extends JCasAnnotator_ImplBase
 					mention.setMentionedEntity(namedEntity);
 					
 					Chunk chunk = new Chunk(initialView, start, end+1);
-					List<Token> chunkTokens = AnnotationRetrieval.getAnnotations(initialView, chunk, Token.class);
-					chunk.setTokens(UIMAUtil.toFSArray(initialView, chunkTokens));
 					mention.setAnnotation(chunk);
 					
 					int headStart = Integer.parseInt(entityMention.getChild("head").getChild("charseq").getAttributeValue("START"));
 					int headEnd = Integer.parseInt(entityMention.getChild("head").getChild("charseq").getAttributeValue("END"));
 					Chunk head = new Chunk(initialView, headStart, headEnd+1);
-					List<Token> headTokens = AnnotationRetrieval.getAnnotations(initialView, head, Token.class);
-					head.setTokens(UIMAUtil.toFSArray(initialView, headTokens));
 					mention.setHead(head);
 					
 					mention.addToIndexes();

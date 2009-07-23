@@ -254,7 +254,6 @@ public class Conll2003GoldReader extends CollectionReader_ImplBase
 		{
 			Chunk chunk = new Chunk(jCas, chunkStart, documentText.length()-1);
 			chunk.setChunkType(currentChunkType.substring(2));
-			chunk.setTokens(UIMAUtil.toFSArray(jCas, chunkTokens));
 			chunk.addToIndexes();
 			sentenceChunks.add(chunk);
 		}

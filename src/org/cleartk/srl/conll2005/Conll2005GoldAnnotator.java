@@ -298,7 +298,6 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
 						SimpleAnnotation relation = AnnotationRetrieval.getMatchingAnnotation(jCas, arg, TreebankNode.class);
 						if( relation == null ) {
 							Chunk chunk = new Chunk(jCas, span.getStart(), span.getEnd());
-							chunk.setTokens(UIMAUtil.toFSArray(jCas, this.argumentTokens));
 							relation = chunk;
 						}
 						arg.setAnnotation(relation);
