@@ -43,11 +43,13 @@ import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 import org.cleartk.ViewNames;
 import org.cleartk.util.ViewURIUtil;
-import org.cleartk.util.UIMAUtil;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
+import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.descriptor.SofaCapability;
+import org.uutuc.util.InitializeUtil;
 
 
 /**
@@ -58,39 +60,33 @@ import org.jdom.input.SAXBuilder;
  * @author Philip Ogren
  *
  */
+
+@SofaCapability(outputSofas= ViewNames.ACE_APF_URI)
 public class Ace2005GoldReader extends CollectionReader_ImplBase
 {
-	/**
-	 * "org.cleartk.corpus.ace2005.Ace2005GoldReader.PARAM_ACE_CORPUS_DIR" is a single, required string parameter that takes the
-	 * name of directory that contains ACE data.  Typically, a folder such
-	 * as ".../ACE_2005/optimization/English/all".  The folder should contain 
-	 * files that come in pairs - i.e. for each .sgm file there should be a 
-	 * corresponding .apf.xml file.  
-	 */
 	public static final String PARAM_ACE_CORPUS_DIR = "org.cleartk.corpus.ace2005.Ace2005GoldReader.PARAM_ACE_CORPUS_DIR";
-	/**
-	 * "org.cleartk.corpus.ace2005.Ace2005GoldReader.PARAM_ACE_FILE_NAMES" is a single, optional string parameter that takes a 
-	 * file that contains the names of the files to read.  Recommended values
-	 * are:
-	 * <ul><li>data/ace/filenames/ACE2005/optimization_english_random_20.txt</li>
-	 * <li>data/ace/filenames/ACE2005/optimization_english_random_80.txt</li>
-	 * <li>data/ace/filenames/ACE2005/optimization_english_all_random.txt</li>
-	 * </ul>
-	 * 
-	 * The file should contain a list of the files in AceCorpusDir (one file name per line) 
-	 * that you want read in. File names should not include the last suffix(es) (e.g. ".sgm" or "apf.xml")
-	 * If parameter value is not given, then all files will be 
-	 * read in. An example file might look like this:
-<pre>
-AFP_ENG_20030304.0250
-AFP_ENG_20030305.0918
-...
-</pre>
-	 */
+
+	@ConfigurationParameter(
+			name = PARAM_ACE_CORPUS_DIR,
+			mandatory = true,
+			description = "Takes the name of directory that contains ACE data.  Typically, a folder such as \".../ACE_2005/optimization/English/all\".  The folder should contain files that come in pairs - i.e. for each .sgm file there should be a corresponding .apf.xml file.")
+	private String aceDirectoryName;
+
+	private static final String PARAM_ACE_FILE_NAMES_DESCRIPTION = "takes a file that contains the names of the files to read.   \n" +
+			"The file should contain a list of the files in AceCorpusDir (one file name per line) \n" +
+			"that you want read in. File names should not include the last suffix(es) (e.g. \".sgm\" or \"apf.xml\") \n" +
+			"If parameter value is not given, then all files will be read in. An example file might look like this: \n\n" +
+			"AFP_ENG_20030304.0250\n" +
+			"AFP_ENG_20030305.0918\n" +
+			"...\n";
+
 	public static final String PARAM_ACE_FILE_NAMES = "org.cleartk.corpus.ace2005.Ace2005GoldReader.PARAM_ACE_FILE_NAMES";
 	
-
-	File aceDirectory;
+	@ConfigurationParameter(
+			name = PARAM_ACE_FILE_NAMES,
+			description = PARAM_ACE_FILE_NAMES_DESCRIPTION) 
+	private String aceFileNamesFile;
+	
 	File[] aceFiles;
 	int aceFileIndex;
 	int aceFileCount;
@@ -100,13 +96,12 @@ AFP_ENG_20030305.0918
 	Pattern tagPattern;
 	
 	public void initialize() throws ResourceInitializationException	{
-		String aceDirectoryName = (String)UIMAUtil.getRequiredConfigParameterValue(
-				this.getUimaContext(), PARAM_ACE_CORPUS_DIR);
+		InitializeUtil.initialize(this, getUimaContext());
+		
 		if (!new File(aceDirectoryName).exists()) {
 			throw new ResourceInitializationException(new IOException(String.format(
 					"directory %s does not exist", aceDirectoryName)));
 		}
-		String aceFileNamesFile = (String) getConfigParameterValue(PARAM_ACE_FILE_NAMES);
 		File aceDirectory = new File(aceDirectoryName);
 
 		if(aceFileNamesFile != null && !aceFileNamesFile.trim().equals("")) {
@@ -258,6 +253,15 @@ AFP_ENG_20030305.0918
 	{
 		return getNextSGMFile() != null;
 	}
+
+	public void setAceDirectoryName(String aceDirectoryName) {
+		this.aceDirectoryName = aceDirectoryName;
+	}
+
+	public void setAceFileNamesFile(String aceFileNamesFile) {
+		this.aceFileNamesFile = aceFileNamesFile;
+	}
+
 
 }
 
