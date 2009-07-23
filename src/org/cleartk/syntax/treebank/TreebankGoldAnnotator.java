@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.syntax.treebank;
 
 import java.util.List;
@@ -38,43 +38,47 @@ import org.cleartk.syntax.treebank.util.TreebankFormatParser;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.UIMAUtil;
-
+import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.descriptor.SofaCapability;
+import org.uutuc.util.InitializeUtil;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * 
  * <p>
- * The TreebankFormatParser AnalysisEngine populates the "_InitialView" SOFA from the
- * "TreebankView" SOFA, creating all the appropriate Treebank annotations.
+ * The TreebankFormatParser AnalysisEngine populates the "_InitialView" SOFA
+ * from the "TreebankView" SOFA, creating all the appropriate Treebank
+ * annotations.
  * </p>
  * 
  * @author Philipp Wetzler
  */
+
+@SofaCapability(inputSofas = {ViewNames.TREEBANK, ViewNames.DEFAULT}, outputSofas = {})
 public class TreebankGoldAnnotator extends JCasAnnotator_ImplBase {
 
-	/**
-	 * "org.cleartk.syntax.treebank.TreebankGoldAnnotator.PARAM_POST_TREES" is a
-	 * single, optional, boolean parameter that specifies whether or not to post
-	 * trees (i.e. annotations of type TreebankNode) to the CAS. Sometimes
-	 * treebank data is used only for the part-of-speech data that it contains.
-	 * For such uses, it is not necessary to post the entire constituent parse
-	 * to the CAS. Instead, this parameter can be set to false which results in
-	 * only the part-of-speech data being added.
-	 */
 	public static final String PARAM_POST_TREES = "org.cleartk.syntax.treebank.TreebankGoldAnnotator.PARAM_POST_TREES";
 
-	private boolean postTrees = true;
+	private static final String POST_TREES_DESCRIPTION = "specifies whether or not to post trees (i.e. annotations of type TreebankNode) to the CAS.  " +
+			"Sometimes treebank data is used only for the part-of-speech data that it contains.  " +
+			"For such uses, it is not necessary to post the entire constituent parse to the CAS. " +
+			"Instead, this parameter can be set to false which results in  only the part-of-speech data being added.";
+
+	@ConfigurationParameter(
+			name = PARAM_POST_TREES, 
+			description = POST_TREES_DESCRIPTION, 
+			mandatory = false, 
+			defaultValue = "true")
+	private boolean postTrees;
 
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-
-		postTrees = (Boolean) UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_POST_TREES, true);
+		InitializeUtil.initialize(this, context);
 		super.initialize(context);
 	}
-
-
 
 	@Override
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
@@ -83,30 +87,28 @@ public class TreebankGoldAnnotator extends JCasAnnotator_ImplBase {
 		try {
 			docView = jCas.getView(ViewNames.DEFAULT);
 			tbText = jCas.getView(ViewNames.TREEBANK).getDocumentText();
-		} catch (CASException e) {
+		}
+		catch (CASException e) {
 			throw new AnalysisEngineProcessException(e);
 		}
-		String docText = jCas.getDocumentText(); 
+		String docText = jCas.getDocumentText();
 
 		if (docText == null) {
 			docText = TreebankFormatParser.inferPlainText(tbText);
 			docView.setSofaDataString(docText, "text/plain");
 		}
 		List<org.cleartk.syntax.treebank.util.TopTreebankNode> topNodes;
-		topNodes =  TreebankFormatParser.parseDocument(tbText, 0, docText);
+		topNodes = TreebankFormatParser.parseDocument(tbText, 0, docText);
 
 		for (org.cleartk.syntax.treebank.util.TopTreebankNode topNode : topNodes) {
-			TopTreebankNode uimaNode = org.cleartk.syntax.treebank.util.TreebankNodeUtility
-					.convert(topNode, docView, postTrees);
-			Sentence uimaSentence = new Sentence(docView, uimaNode
-					.getBegin(), uimaNode.getEnd());
+			TopTreebankNode uimaNode = org.cleartk.syntax.treebank.util.TreebankNodeUtility.convert(topNode, docView,
+					postTrees);
+			Sentence uimaSentence = new Sentence(docView, uimaNode.getBegin(), uimaNode.getEnd());
 			uimaSentence.addToIndexes();
 
-			for (TreebankNode terminal : UIMAUtil.toList(uimaNode
-					.getTerminals(), TreebankNode.class)) {
+			for (TreebankNode terminal : UIMAUtil.toList(uimaNode.getTerminals(), TreebankNode.class)) {
 				if (terminal.getBegin() != terminal.getEnd()) {
-					Token uimaToken = new Token(docView, terminal
-							.getBegin(), terminal.getEnd());
+					Token uimaToken = new Token(docView, terminal.getBegin(), terminal.getEnd());
 					uimaToken.setPos(terminal.getNodeType());
 					uimaToken.addToIndexes();
 				}
@@ -114,4 +116,9 @@ public class TreebankGoldAnnotator extends JCasAnnotator_ImplBase {
 		}
 	}
 
+	public void setPostTrees(boolean postTrees) {
+		this.postTrees = postTrees;
+	}
+
+	
 }
