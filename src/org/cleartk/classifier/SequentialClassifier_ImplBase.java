@@ -76,7 +76,7 @@ public abstract class SequentialClassifier_ImplBase<INPUTOUTCOME_TYPE,OUTPUTOUTC
 	protected  Class<?> getTypeArgument(Class<?> cls, String parameterName, Object instance) {
 		Map<String,Type> typeArguments = ReflectionUtil.getTypeArguments(cls, instance);
 		Type t = typeArguments.get(parameterName);
-		if( t instanceof Class )
+		if( t instanceof Class<?> )
 			return (Class<?>)t;
 		else
 			return null;

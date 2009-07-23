@@ -84,7 +84,7 @@ public class ReflectionUtil {
 	private static Map<String,Type> getTypeArguments(Class<?> genericType, Type type, Map<String,Type> typeMap) {
 		if( type instanceof ParameterizedType ) {
 			return getTypeArguments(genericType, (ParameterizedType)type, typeMap);
-		} else 	if( type instanceof Class ) {
+		} else 	if( type instanceof Class<?> ) {
 			return getTypeArguments(genericType, (Class<?>) type, typeMap);
 		} else {
 			throw new IllegalArgumentException();
@@ -116,7 +116,7 @@ public class ReflectionUtil {
 			Type actualTypes[] = paramType.getActualTypeArguments();
 			Map<String,Type> result = new TreeMap<String,Type>();
 			for( int i=0; i<actualTypes.length; i++ ) {
-				while( actualTypes[i] != null && actualTypes[i] instanceof TypeVariable ) {
+				while( actualTypes[i] != null && actualTypes[i] instanceof TypeVariable<?> ) {
 					String key = typevarString((TypeVariable<?>) actualTypes[i]);
 					if( typeMap.containsKey(key) )
 						actualTypes[i] = typeMap.get(key);
