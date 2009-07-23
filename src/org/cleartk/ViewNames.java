@@ -49,42 +49,42 @@ public class ViewNames {
 	 * 
 	 * @see CAS#NAME_DEFAULT_SOFA
 	 */
-	public static String DEFAULT = CAS.NAME_DEFAULT_SOFA;
+	public static final String DEFAULT = CAS.NAME_DEFAULT_SOFA;
 
 	/**
 	 * The view containing the XML text of an ACE APF file.
 	 */
-	public static String ACE_APF_URI = "ApfUriView";
+	public static final String ACE_APF_URI = "ApfUriView";
 
 	/**
 	 * The view containing the XML text of a TimeML file.
 	 */
-	public static String TIMEML = "TimeMLView";
+	public static final String TIMEML = "TimeMLView";
 
 	/**
 	 * The view containing CoNLL 2005 formatted text.
 	 */
-	public static String CONLL_2005 = "CoNLL2005View";
+	public static final String CONLL_2005 = "CoNLL2005View";
 
 	/**
 	 * The view containing the text of a PropBank "prop.txt" file.
 	 */
-	public static String PROPBANK = "PropbankView";
+	public static final String PROPBANK = "PropbankView";
 
 	/**
 	 * The view containing the parenthesized text of a TreeBank .mrg file.
 	 */
-	public static String TREEBANK = "TreebankView";
+	public static final String TREEBANK = "TreebankView";
 
 	/**
 	 * The view containing Genia part of speech formatted text.
 	 */
-	public static String GENIA_POS = "GeniaPOSView";
+	public static final String GENIA_POS = "GeniaPOSView";
 
 	/**
 	 * The view where the ACE identifier is placed.
 	 */
-	public static String ACE_URI = "AceUriView";
+	public static final String ACE_URI = "AceUriView";
 
 	/**
 	 * Private constructor to enforce un-instantiability.
