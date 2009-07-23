@@ -45,12 +45,13 @@ import org.cleartk.corpus.timeml.type.TemporalLink;
 import org.cleartk.corpus.timeml.type.Time;
 import org.cleartk.corpus.timeml.util.TimeMLUtil;
 import org.cleartk.util.ViewURIUtil;
-import org.cleartk.util.UIMAUtil;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.XMLOutputter;
+import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.util.InitializeUtil;
 
 
 /**
@@ -63,22 +64,22 @@ import org.jdom.output.XMLOutputter;
  */
 public class TimeMLWriter extends JCasAnnotator_ImplBase {
 	
-	/**
-	 * "org.cleartk.corpus.timeml.TimeMLWriter.PARAM_OUTPUT_DIRECTORY"
-	 * is a single, required, string parameter which provides the path where the
-	 * TimeML documents should be written.
-	 */
 	public static final String PARAM_OUTPUT_DIRECTORY = "org.cleartk.corpus.timeml.TimeMLWriter.PARAM_OUTPUT_DIRECTORY";
+	
+	@ConfigurationParameter(
+			name = PARAM_OUTPUT_DIRECTORY,
+			description = "Provides the path where the TimeML documents should be written.",
+			mandatory = true)
+	private String outputDirectoryName;
 	
 	private File outputDirectory;
 
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
+		InitializeUtil.initialize(this, context);
 		
-		// read the output directory parameter and create it if necessary
-		this.outputDirectory = new File((String)UIMAUtil.getRequiredConfigParameterValue(
-				context, TimeMLWriter.PARAM_OUTPUT_DIRECTORY));
+		this.outputDirectory = new File(outputDirectoryName);
 		if (!this.outputDirectory.exists()) {
 			this.outputDirectory.mkdirs();
 		}
@@ -142,6 +143,10 @@ public class TimeMLWriter extends JCasAnnotator_ImplBase {
 		} catch (IOException e) {
 			throw new AnalysisEngineProcessException(e);
 		}
+	}
+
+	public void setOutputDirectoryName(String outputDirectoryName) {
+		this.outputDirectoryName = outputDirectoryName;
 	}
 
 }

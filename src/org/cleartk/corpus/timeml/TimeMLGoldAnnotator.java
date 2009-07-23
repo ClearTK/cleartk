@@ -42,11 +42,13 @@ import org.cleartk.corpus.timeml.type.TemporalLink;
 import org.cleartk.corpus.timeml.type.Text;
 import org.cleartk.corpus.timeml.type.Time;
 import org.cleartk.corpus.timeml.util.TimeMLUtil;
-import org.cleartk.util.UIMAUtil;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
+import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.descriptor.SofaCapability;
+import org.uutuc.util.InitializeUtil;
 
 
 /**
@@ -57,23 +59,22 @@ import org.jdom.input.SAXBuilder;
  * @author Steven Bethard
  *
  */
+@SofaCapability(inputSofas= {ViewNames.TIMEML, ViewNames.DEFAULT})
 public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
 	
-	/**
-	 * "org.cleartk.corpus.timeml.TimeMLGoldAnnotator.PARAM_LOAD_TLINKS"
-	 * is a single, optional, boolean parameter, defaulting to true, that when false
-	 * indicates that annotation should not be created for TLINKs (though annotations
-	 * will still be created for TIMEX3s, EVENTs, etc.). 
-	 */
 	public static final String PARAM_LOAD_TLINKS = "org.cleartk.corpus.timeml.TimeMLGoldAnnotator.PARAM_LOAD_TLINKS";
 	
+	@ConfigurationParameter(
+			name = PARAM_LOAD_TLINKS,
+			description = "when false indicates that annotation should not be created for TLINKs (though annotations will still be created for TIMEX3s, EVENTs, etc.).",
+			defaultValue = "true")
 	private boolean loadTLINKs;
+
 
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
-		this.loadTLINKs = (Boolean)UIMAUtil.getDefaultingConfigParameterValue(
-				context, TimeMLGoldAnnotator.PARAM_LOAD_TLINKS, true);
+		InitializeUtil.initialize(this, context);
 	}
 
 	@Override
@@ -187,4 +188,9 @@ public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
 		}
 		return anchor;
 	}
+	
+	public void setLoadTLINKs(boolean loadTLINKs) {
+		this.loadTLINKs = loadTLINKs;
+	}
+
 }
