@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.classifier.feature.extractor;
+package org.cleartk.syntax.feature;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,6 +34,7 @@ import java.util.Set;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.feature.extractor.SimpleFeatureExtractor;
 import org.cleartk.syntax.treebank.type.TreebankNode;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;

@@ -30,6 +30,7 @@ import java.util.List;
 import org.apache.uima.UIMAException;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.classifier.Feature;
+import org.cleartk.syntax.feature.HeadWordExtractor;
 import org.cleartk.syntax.treebank.type.TreebankNode;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
