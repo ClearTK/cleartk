@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2009, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.feature.extractor;
 
 import java.util.Collections;
@@ -45,24 +45,24 @@ import org.cleartk.util.AnnotationRetrieval;
 public class CountsExtractor implements SimpleFeatureExtractor {
 
 	public CountsExtractor(
-			String extractorName,
+			String identifier,
 			Class<? extends Annotation> annotationClass,
 			SimpleFeatureExtractor subExtractor) {
 		this.annotationClass = annotationClass;
 		this.subExtractor = subExtractor;
 		String simpleAnnotationName = annotationClass.getSimpleName();
-		this.extractorName = Feature.createName(extractorName, "Bagged" + simpleAnnotationName);
-		this.frequenciesMap = new HashMap<Object,Integer>();
+		this.extractorName = String.format("Count(%s)", simpleAnnotationName);
+		this.identifier = identifier;
 	}
-	
+
 	public CountsExtractor(
 			Class<? extends Annotation> annotationClass,
 			SimpleFeatureExtractor subExtractor) {
 		this(null, annotationClass, subExtractor);
 	}
-	
-	public List<Feature> extract(JCas jCas, Annotation windowAnnotation)
-			throws UnsupportedOperationException {
+
+	public List<Feature> extract(JCas jCas, Annotation windowAnnotation) throws UnsupportedOperationException {
+		Map<Object, Integer> countsMap = new HashMap<Object, Integer>();
 		String featureName = null;
 
 		for( Annotation annotation : AnnotationRetrieval.getAnnotations(jCas, windowAnnotation, annotationClass) ) {
@@ -73,22 +73,21 @@ public class CountsExtractor implements SimpleFeatureExtractor {
 					throw new UnsupportedOperationException("sub-extractor of FrequenciesExtractor must only extract features of one name");
 
 				Object o = feature.getValue();
-				if( frequenciesMap.containsKey(o) )
-					frequenciesMap.put(o, frequenciesMap.get(o) + 1);
+				if( countsMap.containsKey(o) )
+					countsMap.put(o, countsMap.get(o) + 1);
 				else
-					frequenciesMap.put(o, 1);
+					countsMap.put(o, 1);
 			}
 		}
-		Counts frequencies = new Counts(featureName, frequenciesMap);
+		Counts frequencies = new Counts(featureName, identifier, countsMap);
 		Feature feature = new Feature(extractorName, frequencies);
-		
+
 		return Collections.singletonList(feature);
 	}
 
 	private Class<? extends Annotation> annotationClass;
 	private SimpleFeatureExtractor subExtractor;
 	private String extractorName;
-	
-	private Map<Object,Integer> frequenciesMap;
+	private String identifier;
 
 }

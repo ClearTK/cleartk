@@ -23,19 +23,9 @@
  */
 package org.cleartk.tfidf;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -79,13 +69,15 @@ public class IDFMapWriter<OUTCOME_TYPE> extends InstanceConsumer_ImplBase<OUTCOM
 
 			idfMapFile = new File((String)UIMAUtil.getRequiredConfigParameterValue(context, PARAM_IDFMAP_FILE)).getAbsoluteFile();
 
-			if( ! idfMapFile.getParentFile().exists() )
-				throw new ResourceInitializationException();
 			
-			if( idfMapFile.exists() )
-				counter = readMap(idfMapFile);
-			else
-				counter = new IDFCounter();
+			if( idfMapFile.exists() ) {
+				idfMap = IDFMap.read(idfMapFile);
+			} else {
+				if( ! idfMapFile.getParentFile().exists() )
+					throw new ResourceInitializationException();
+				
+				idfMap = new IDFMap();
+			}
 			
 			identifier = (String) UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_IDFMAP_IDENTIFIER, null);
 		}
@@ -106,7 +98,7 @@ public class IDFMapWriter<OUTCOME_TYPE> extends InstanceConsumer_ImplBase<OUTCOM
 				Counts counts = (Counts) feature.getValue();
 				
 				if( identifier == null || identifier.equals(counts.getIdentifier()) )
-					consumeCountsFeature(counts);
+					idfMap.consume(counts);
 			} else if( feature.getValue() instanceof FeatureCollection ) {
 				FeatureCollection fc = (FeatureCollection) feature.getValue();
 				consumeFeatures(fc.getFeatures());
@@ -119,99 +111,18 @@ public class IDFMapWriter<OUTCOME_TYPE> extends InstanceConsumer_ImplBase<OUTCOM
 		super.collectionProcessComplete();
 
 		try {
-			writeMap(counter, idfMapFile);
+			idfMap.write(idfMapFile);
 		} catch (IOException e) {
 			throw new AnalysisEngineProcessException(e);
 		}
 	}
 	
-	private static IDFCounter readMap(File inputFile) throws IOException {
-		ObjectInput input = new ObjectInputStream(new FileInputStream(inputFile));
-		try {
-			Map<String, Double> idfMap = (Map<String, Double>) input.readObject();
-			IDFCounter c = IDFCounter.fromIDFMap(idfMap);
-			return c;
-		} catch( ClassNotFoundException e ) {
-			throw new IOException(e.toString());
-		} finally {
-			input.close();
-		}
-	}
-
-	private static void writeMap(IDFCounter counter, File outputFile) throws IOException {
-		if( outputFile.exists() )
-			outputFile.delete();
-		
-		ObjectOutput output = new ObjectOutputStream(new BufferedOutputStream(
-				new FileOutputStream(outputFile)));
-		try {
-			output.writeObject(counter.getIDFMap());
-		} finally {
-			output.close();
-		}
-	}
-
-	private void consumeCountsFeature(Counts counts) {
-		for( Object o : counts.getValues() ) {
-			String key = o.toString();
-			int count = counts.getCount(o);
-			counter.incrementBy(key, count);
-		}
-	}
-
-	public List<OUTCOME_TYPE> consumeSequence(List<Instance<OUTCOME_TYPE>> instances) {
-		for( Instance<OUTCOME_TYPE> instance : instances )
-			consume(instance);
-		return null;
-	}
-
 	public boolean expectsOutcomes() {
 		return false;
 	}
 
-	private IDFCounter counter;
+	private IDFMap idfMap;
 	private File idfMapFile;
 	private String identifier;
-
-	private static class IDFCounter {
-		
-		public static IDFCounter fromIDFMap(Map<String, Double> idfMap) {
-			double documentCount = Math.exp(idfMap.get(null));
-			IDFCounter counter = new IDFCounter();
-			for( String key : idfMap.keySet() ) {
-				double inverseDocumentFrequency = idfMap.get(key);
-				int documentFrequency = (int) (documentCount / inverseDocumentFrequency);
-				counter.incrementBy(key, documentFrequency);
-			}
-			
-			return counter;
-		}
-
-		public void incrementBy(String key, int c) {
-			int count = 0;
-			if( documentFrequencies.containsKey(key) )
-				count = documentFrequencies.get(key);
-
-			count += c;
-			documentCount += c;
-
-			documentFrequencies.put(key, count);
-		}
-
-		public Map<String, Double> getIDFMap() {
-			Map<String, Double> idfMap = new HashMap<String, Double>();
-			for( String key : documentFrequencies.keySet() ) {
-				int documentFrequency = documentFrequencies.get(key);
-				double inverseDocumentFrequency = documentCount / documentFrequency;
-				idfMap.put(key, inverseDocumentFrequency);
-			}
-			idfMap.put(null, Math.log(documentCount));
-
-			return idfMap;
-		}
-
-		private Map<String, Integer> documentFrequencies = new HashMap<String, Integer>();
-		private int documentCount = 0;
-	}
 
 }

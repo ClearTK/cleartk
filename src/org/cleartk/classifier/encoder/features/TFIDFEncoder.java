@@ -23,23 +23,16 @@
 */
 package org.cleartk.classifier.encoder.features;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.encoder.features.FeatureEncoder;
-import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.encoder.features.normalizer.EuclidianNormalizer;
 import org.cleartk.classifier.encoder.features.normalizer.NameNumberNormalizer;
 import org.cleartk.classifier.feature.Counts;
-import org.cleartk.util.ReflectionUtil;
+import org.cleartk.tfidf.IDFMap;
 
 
 /**
@@ -61,22 +54,15 @@ public class TFIDFEncoder implements FeatureEncoder<NameNumber> {
 
 	private static final long serialVersionUID = -5280514188425612793L;
 	
-	public TFIDFEncoder(String name, File idfFile, NameNumberNormalizer normalizer) throws IOException {
-		this.name = name;
+	public TFIDFEncoder(String identifier, File idfMapFile, NameNumberNormalizer normalizer) throws IOException {
+		this.identifier = identifier;
 		this.normalizer = normalizer;
 		
-		ObjectInput input = new ObjectInputStream(new BufferedInputStream(new FileInputStream(idfFile)));
-		inverseDocumentFrequencies = readObject(input);
-		input.close();
-		
-		if (! inverseDocumentFrequencies.containsKey(null)) {
-			String message = "IDF map must contain a null key for unseen terms";
-			throw new IllegalArgumentException(message);
-		}
+		this.idfMap = IDFMap.read(idfMapFile);
 	}
 
-	public TFIDFEncoder(String name, File idfFile) throws IOException {
-		this(name, idfFile, new EuclidianNormalizer());
+	public TFIDFEncoder(String identifier, File idfFile) throws IOException {
+		this(identifier, idfFile, new EuclidianNormalizer());
 	}
 
 	public TFIDFEncoder(File idfFile, NameNumberNormalizer normalizer) throws IOException {
@@ -91,18 +77,13 @@ public class TFIDFEncoder implements FeatureEncoder<NameNumber> {
 		List<NameNumber> fves = new ArrayList<NameNumber>();
 		Counts counts = (Counts) feature.getValue();
 		String prefix = Feature.createName(feature.getName(), "TFIDF", counts.getFeatureName());
-		double total = counts.getTotalCount();
 
-		for( Object value : counts.getValues() ) {
-			String name = Feature.createName(prefix, value.toString());
+		for( Object key : counts.getValues() ) {
+			double tf = getTF(counts, key);
+			double idf = idfMap.getIDF(key);
 			
-			double frequency = counts.getCount(value) / total;
-			String key = value.toString();
-			if( ! inverseDocumentFrequencies.containsKey(key) )
-				key = null;
-			double idf = inverseDocumentFrequencies.get(key);
-			
-			NameNumber fve = new NameNumber(name, frequency * idf);
+			String name = Feature.createName(prefix, key.toString());
+			NameNumber fve = new NameNumber(name, tf * idf);
 			fves.add(fve);
 		}
 
@@ -112,22 +93,26 @@ public class TFIDFEncoder implements FeatureEncoder<NameNumber> {
 	}
 
 	public boolean encodes(Feature feature) {
-		if( name != null && ! name.equals(feature.getName()) )
+		if( ! (feature.getValue() instanceof Counts) )
 			return false;
-
-		return feature.getValue() instanceof Counts;
+		
+		Counts counts = (Counts) feature.getValue();
+		
+		if( identifier == null )
+			return true;
+		
+		if( identifier.equals(counts.getIdentifier()))
+			return true;
+		
+		return false;
+	}
+	
+	private static double getTF(Counts counts, Object key) {
+		return (double) counts.getCount(key) / (double) counts.getTotalCount();
 	}
 
-	private static Map<String,Double> readObject(ObjectInput input) throws IOException {
-		try {
-			return ReflectionUtil.uncheckedCast(input.readObject());
-		} catch (ClassNotFoundException e) {
-			throw new IllegalArgumentException(e);
-		}
-	}
-
-	private String name;
+	private String identifier;
 	private NameNumberNormalizer normalizer;
-	private Map<String,Double> inverseDocumentFrequencies;
+	private IDFMap idfMap;
 
 }
