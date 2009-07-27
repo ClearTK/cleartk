@@ -37,15 +37,17 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
 
 public abstract class LIBSVMDataWriter<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE> extends DataWriter_ImplBase<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE,FeatureVector> {
 
+	public static final String TRAINING_DATA_FILE_NAME ="training-data.libsvm"; 
+
 	public LIBSVMDataWriter(File outputDirectory) throws IOException {
 		super(outputDirectory);
 
 		// set up files
-		File trainingDataFile = getFile("training-data.libsvm");
+		File trainingDataFile = getFile(TRAINING_DATA_FILE_NAME);
 		trainingDataFile.delete();
 
 		// set up writer
-		trainingDataWriter = new PrintWriter(trainingDataFile);
+		trainingDataWriter = this.getPrintWriter(TRAINING_DATA_FILE_NAME);
 
 		// set manifest attributes for classifier
 		Map<String, Attributes> entries = classifierManifest.getEntries();
