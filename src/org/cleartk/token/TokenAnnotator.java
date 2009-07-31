@@ -29,20 +29,17 @@ import java.util.List;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
-import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.ClearTKComponents;
-import org.cleartk.token.util.PennTreebankTokenizer;
 import org.cleartk.token.util.Token;
 import org.cleartk.token.util.Tokenizer;
-import org.cleartk.type.Sentence;
 import org.cleartk.util.UIMAUtil;
-import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.util.InitializeUtil;
 
 /**
  * <br>
@@ -55,37 +52,39 @@ import org.uutuc.factory.AnalysisEngineFactory;
  * 
  */
 public class TokenAnnotator extends JCasAnnotator_ImplBase {
-	/**
-	 * "org.cleartk.token.TokenAnnotator.PARAM_TOKENIZER" is a single, optional,
-	 * string parameter that specifies the class type of the tokenizer that will
-	 * be used by this annotator. If this parameter is not filled, then the
-	 * default tokenenizer (org.cleartk.token.util.PennTreebankTokenizer) is
-	 * used. A tokenenizer is defined as any implementation of the interface
-	 * defined by org.cleartk.token.util.Tokenizer.
-	 * 
-	 * @see Tokenizer
-	 * @see PennTreebankTokenizer
-	 */
 	public static final String PARAM_TOKENIZER = "org.cleartk.token.TokenAnnotator.PARAM_TOKENIZER";
 
-	/**
-	 * "org.cleartk.token.TokenAnnotator.PARAM_TOKEN_TYPE" is a single,
-	 * optional, string parameter the class type of the tokens that are created
-	 * by this annotator. If this parameter is not filled, then tokens of type
-	 * org.cleartk.type.Token will be created.
-	 */
+	private static final String TOKENIZER_DESCRIPTION = "specifies the class type of the tokenizer that will be used by this annotator. " +
+			"If this parameter is not filled, then the default tokenenizer (org.cleartk.token.util.PennTreebankTokenizer) is used. " +
+			"A tokenenizer is defined as any implementation of the interface defined by org.cleartk.token.util.Tokenizer."; 
+	@ConfigurationParameter (
+			name = PARAM_TOKENIZER,
+			description = TOKENIZER_DESCRIPTION,
+			defaultValue = "org.cleartk.token.util.PennTreebankTokenizer")
+	private String tokenizerName;
+	
 	public static final String PARAM_TOKEN_TYPE = "org.cleartk.token.TokenAnnotator.PARAM_TOKEN_TYPE";
 
-	/**
-	 * "org.cleartk.token.TokenAnnotator.PARAM_WINDOW_TYPE" is a single,
-	 * optional, string parameter that specifies the class type of annotations
-	 * that will be tokenized. If no value is given, then the entire document
-	 * will be tokenized at once. A good value for this parameter would be
-	 * <code>org.cleartk.type.Sentence</code> (especially when using the
-	 * PennTreebankTokenizer).
-	 */
+	@ConfigurationParameter (
+			name = PARAM_TOKEN_TYPE,
+			description = "class type of the tokens that are created by this annotator. If this parameter is not filled, then tokens of type org.cleartk.type.Token will be created.",
+			defaultValue = "org.cleartk.type.Token")
+	private String tokenTypeName;
+	
 	public static final String PARAM_WINDOW_TYPE = "org.cleartk.token.TokenAnnotator.PARAM_WINDOW_TYPE";
-
+	private static final String WINDOW_TYPE_DESCRIPTION = "specifies the class type of annotations that will be tokenized. " +
+			"If no value is given, then the entire document will be tokenized at once. " +
+			"A good value for this parameter would be 'org.cleartk.type.Sentence' " +
+			" (especially when using the PennTreebankTokenizer).";
+	
+	//do not set the default value to 'org.cleartk.type.Sentence'.  If you do, then unit tests will break.  The symptom will be a tokenizer that doesn't generate any tokens (because there
+	//are no sentences to iterate over.
+	@ConfigurationParameter (
+			name = PARAM_WINDOW_TYPE,
+			description = WINDOW_TYPE_DESCRIPTION
+			)
+	private String windowTypeName;
+	
 	Tokenizer tokenizer;
 
 	Class<? extends Annotation> tokenClass;
@@ -101,22 +100,16 @@ public class TokenAnnotator extends JCasAnnotator_ImplBase {
 	public void initialize(UimaContext uimaContext) throws ResourceInitializationException {
 		try {
 			super.initialize(uimaContext);
-
-			tokenizer = UIMAUtil.create(uimaContext, PARAM_TOKENIZER, Tokenizer.class, PennTreebankTokenizer.class);
-			
-			tokenClass = UIMAUtil.getClass(uimaContext, PARAM_TOKEN_TYPE, Annotation.class,
-					org.cleartk.type.Token.class);
+			InitializeUtil.initialize(this, uimaContext);
+			tokenizer = 	UIMAUtil.create(tokenizerName, Tokenizer.class, uimaContext);
+			tokenClass = UIMAUtil.getClass(tokenTypeName, Annotation.class);
 			tokenConstructor = tokenClass.getConstructor(new Class[] { JCas.class, Integer.TYPE, Integer.TYPE });
-			
-			String windowClassParam = (String) UIMAUtil.getDefaultingConfigParameterValue(uimaContext, PARAM_WINDOW_TYPE, null);
-			if(windowClassParam != null)
-				windowClass = UIMAUtil.getClass(uimaContext, PARAM_WINDOW_TYPE, Annotation.class);
-			
+			if(windowTypeName != null)
+				windowClass = UIMAUtil.getClass(windowTypeName, Annotation.class);
 		}
 		catch (Exception e) {
 			throw new ResourceInitializationException(e);
 		}
-
 	}
 
 	private void initializeTypes(JCas jCas) throws AnalysisEngineProcessException {
@@ -157,13 +150,16 @@ public class TokenAnnotator extends JCasAnnotator_ImplBase {
 		}
 	}
 
-	public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveDescription(TokenAnnotator.class,
-				ClearTKComponents.TYPE_SYSTEM_DESCRIPTION, ClearTKComponents.TYPE_PRIORITIES,
-				PARAM_TOKENIZER, PennTreebankTokenizer.class.getName(),
-				PARAM_TOKEN_TYPE, org.cleartk.type.Token.class.getName(),
-				PARAM_WINDOW_TYPE, Sentence.class.getName()
-		);
+	public void setTokenizerName(String tokenizerName) {
+		this.tokenizerName = tokenizerName;
+	}
+
+	public void setTokenTypeName(String tokenTypeName) {
+		this.tokenTypeName = tokenTypeName;
+	}
+
+	public void setWindowTypeName(String windowTypeName) {
+		this.windowTypeName = windowTypeName;
 	}
 
 }
