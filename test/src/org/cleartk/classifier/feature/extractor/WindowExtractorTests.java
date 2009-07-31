@@ -33,7 +33,7 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.ClearTKComponents;
+import org.cleartk.CleartkComponents;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.WindowFeature;
 import org.cleartk.type.Sentence;
@@ -58,7 +58,7 @@ public class WindowExtractorTests {
 	
 	static {
 	try {
-		sentencesAndTokens = AnalysisEngineFactory.createAggregate(ClearTKComponents.createSentencesAndTokens());
+		sentencesAndTokens = AnalysisEngineFactory.createAggregate(CleartkComponents.createSentencesAndTokens());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -69,7 +69,7 @@ public class WindowExtractorTests {
 		// TODO think about what the behavior should be if window annotation
 		// boundary does not fall at boundary
 		// of featureAnnotation
-		AnalysisEngine tokenAnnotator = AnalysisEngineFactory.createAggregate(ClearTKComponents.createSentencesAndTokens());
+		AnalysisEngine tokenAnnotator = AnalysisEngineFactory.createAggregate(CleartkComponents.createSentencesAndTokens());
 		JCas jCas = AnalysisEngineFactory.process(tokenAnnotator, "test/data/docs/huckfinn.txt");
 		WindowExtractor leftEx = new WindowExtractor(Token.class, new SpannedTextExtractor(),
 				WindowFeature.ORIENTATION_LEFT, 0, 3);

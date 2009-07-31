@@ -38,7 +38,7 @@ import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.cas.StringArray;
-import org.cleartk.ClearTKComponents;
+import org.cleartk.CleartkComponents;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.TypePathFeature;
 import org.cleartk.util.AnnotationRetrieval;
@@ -302,7 +302,7 @@ public class TypePathExtractorTests {
 
 	@Test
 	public void testTicket23() throws IOException, UIMAException {
-		AnalysisEngine sentencesAndTokens = AnalysisEngineFactory.createAggregate(ClearTKComponents.createSentencesAndTokens());
+		AnalysisEngine sentencesAndTokens = AnalysisEngineFactory.createAggregate(CleartkComponents.createSentencesAndTokens());
 		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokens, "test/data/docs/huckfinn.txt");
 
 		// token "place" in "wide. This place was a tolerable long,");
