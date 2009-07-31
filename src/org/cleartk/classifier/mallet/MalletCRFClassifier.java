@@ -63,6 +63,7 @@ public class MalletCRFClassifier extends SequentialClassifier_ImplBase<String,St
 		ZipEntry modelEntry = modelFile.getEntry("model.malletcrf");
 		ObjectInputStream objectStream = new ObjectInputStream(modelFile.getInputStream(modelEntry));
 		this.transducer = (Transducer) objectStream.readObject();
+		this.featuresEncoder.allowNewFeatures(true);
     }
 	
 	/**
