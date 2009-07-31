@@ -32,7 +32,8 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.UIMAUtil;
+import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.util.InitializeUtil;
 
 /**
  * <br>
@@ -48,37 +49,23 @@ import org.cleartk.util.UIMAUtil;
  * @see org.apache.lucene.analysis.snowball.SnowballFilter
  */
 public class SnowballStemmer extends JCasAnnotator_ImplBase {
-	/**
-	 * "org.cleartk.token.snowball.SnowballStemmer.PARAM_STEMMER_NAME"
-	 * is a required, string parameter that specifies which snowball
-	 * stemmer to use. Possible values are:
-	 * <ul>
-	 * <li>Danish</li>
-	 * <li>Dutch</li>
-	 * <li>English</li>
-	 * <li>Finnish</li>
-	 * <li>French</li>
-	 * <li>German2</li>
-	 * <li>German</li>
-	 * <li>Italian</li>
-	 * <li>Kp</li>
-	 * <li>Lovins</li>
-	 * <li>Norwegian</li>
-	 * <li>Porter</li>
-	 * <li>Portuguese</li>
-	 * <li>Russian</li>
-	 * <li>Spanish</li>
-	 * <li>Swedish</li>
-	 * </ul>
-	 */
+
 	public static final String PARAM_STEMMER_NAME = "org.cleartk.token.snowball.SnowballStemmer.PARAM_STEMMER_NAME";
 
+	private static final String STEMMER_NAME_DESCRIPTION = "specifies which snowball stemmer to use. Possible values are: " +
+			"Danish, Dutch, English, Finnish, French, German2, German, Italian, Kp, Lovins, Norwegian, Porter, Portuguese, Russian, Spanish, Swedish"; 
+	@ConfigurationParameter(
+			name = PARAM_STEMMER_NAME,
+			description = STEMMER_NAME_DESCRIPTION, 
+			mandatory = true)
+	private String stemmerName;
+	
 	protected SnowballProgram stemmer;
 
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-		String stemmerName = (String) UIMAUtil.getRequiredConfigParameterValue(context,
-				SnowballStemmer.PARAM_STEMMER_NAME);
+		InitializeUtil.initialize(this, context);
+		
 		String className = String.format("net.sf.snowball.ext.%sStemmer", stemmerName);
 		try {
 			this.stemmer = (SnowballProgram) Class.forName(className).newInstance();
@@ -97,5 +84,10 @@ public class SnowballStemmer extends JCasAnnotator_ImplBase {
 			token.setStem(stem);
 		}
 	}
+
+	public void setStemmerName(String stemmerName) {
+		this.stemmerName = stemmerName;
+	}
+
 
 }
