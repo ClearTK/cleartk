@@ -24,6 +24,8 @@
 package org.cleartk.classifier.mallet;
 
 import java.io.ObjectInputStream;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.jar.JarFile;
@@ -32,6 +34,7 @@ import java.util.zip.ZipEntry;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.Classifier_ImplBase;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.encoder.features.NameNumber;
 
 import cc.mallet.classify.Classification;
@@ -39,6 +42,7 @@ import cc.mallet.classify.Classifier;
 import cc.mallet.types.Alphabet;
 import cc.mallet.types.FeatureVector;
 import cc.mallet.types.Instance;
+import cc.mallet.types.Labeling;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -76,6 +80,35 @@ public class MalletClassifier extends Classifier_ImplBase<String,String,List<Nam
 		return outcomeEncoder.decode(returnValue);
 	}
 	
+	@Override
+	public List<ScoredOutcome<String>> score(List<Feature> features, int maxResults) throws CleartkException {
+		Classification classification = classifier.classify(toInstance(features));
+		List<ScoredOutcome<String>> returnValues = new ArrayList<ScoredOutcome<String>>(maxResults);
+		Labeling labeling = classification.getLabeling();
+		
+		if (maxResults == 1) {
+			String outcome = labeling.getBestLabel().toString();
+			double score = labeling.getBestValue();
+			returnValues.add(new ScoredOutcome<String>(outcome, score));
+			return returnValues;
+		}
+
+		for(int i=0; i<labeling.numLocations(); i++) {
+			String outcome = labeling.getLabelAtRank(i).toString();
+			double score = labeling.getValueAtRank(i);
+			returnValues.add(new ScoredOutcome<String>(outcome, score));
+		}
+		
+		Collections.sort(returnValues);
+		if (returnValues.size() > maxResults) {
+			return returnValues.subList(0, maxResults);
+		}
+		else {
+			return returnValues;
+		}
+
+	}
+
 	public Instance[] toInstances(List<List<Feature>> features) throws CleartkException {
 	
 		Instance[] instances = new Instance[features.size()];
