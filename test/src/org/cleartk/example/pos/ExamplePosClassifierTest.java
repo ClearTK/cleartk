@@ -24,10 +24,10 @@
 
 package org.cleartk.example.pos;
 
-import java.io.File;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+
+import java.io.File;
 
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.pear.util.FileUtil;
@@ -38,16 +38,19 @@ import org.cleartk.classifier.libsvm.DefaultMultiClassLIBSVMDataWriterFactory;
 import org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory;
 import org.cleartk.classifier.mallet.DefaultMalletDataWriterFactory;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
+import org.cleartk.classifier.svmlight.DefaultOVASVMlightDataWriterFactory;
 import org.cleartk.classifier.viterbi.ViterbiClassifier;
 import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
 import org.cleartk.token.TokenAnnotator;
 import org.cleartk.token.snowball.SnowballStemmer;
 import org.cleartk.util.FilesCollectionReader;
+import org.junit.After;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.CollectionReaderFactory;
 import org.uutuc.util.HideOutput;
 import org.uutuc.util.SimplePipeline;
+import org.uutuc.util.TearDownUtil;
 
 /**
  * <br>
@@ -61,6 +64,10 @@ public class ExamplePosClassifierTest {
 
 	private String baseDirectory = "test/data/example/pos";
 	
+	@After
+	public void tearDown() {
+		TearDownUtil.removeDirectory(new File(baseDirectory));
+	}
 	@Test
 	public void testLibsvm() throws Exception {
 		System.out.println(" running test org.cleartk.example.pos.ExamplePosClassifierTest.testLibsvm()");
@@ -214,6 +221,25 @@ public class ExamplePosClassifierTest {
 		assertEquals("2008/CD Sichuan/JJ earthquake/NN From/NN Wikipedia/NN ,/, the/DT free/NN encyclopedia/NN", firstLine);
 	}
 
+	@Test
+	public void testSVMLIGHT() throws Exception {
+		System.out.println(" running test org.cleartk.example.pos.ExamplePosClassifierTest.testSVMLIGHT()");
+
+		String outputDirectory = baseDirectory+"/svmlight";
+		AnalysisEngineDescription dataWriter = CleartkComponents.createViterbiDataWriterAnnotator(
+				ExamplePOSAnnotationHandler.class, DefaultOVASVMlightDataWriterFactory.class,
+				outputDirectory);
+
+		testClassifier(dataWriter, outputDirectory, 1);
+
+		String firstLine = FileUtil.loadListOfStrings(new File(outputDirectory + "/2008_Sichuan_earthquake.txt.pos"))[0].trim();
+		boolean badTags = firstLine.equals("2008/NN Sichuan/NN earthquake/NN From/NN Wikipedia/NN ,/NN the/NN free/NN encyclopedia/NN");
+		assertFalse(badTags);
+		
+		assertEquals("2008/CD Sichuan/NNP earthquake/NNS From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/IN", firstLine);
+	}
+
+	
 	
 	
 	private void testClassifier(AnalysisEngineDescription dataWriter, String outputDirectory, int stackSize, String... trainingArgs) throws Exception {
@@ -245,8 +271,9 @@ public class ExamplePosClassifierTest {
 		org.cleartk.classifier.Train.main(args);
 		hider.restoreOutput();
 		System.out.println("done");
+
 		
-		AnalysisEngineDescription taggerDescription =ExamplePOSAnnotationHandler.getClassifierDescription(outputDirectory + "/model.jar");
+		AnalysisEngineDescription taggerDescription = ExamplePOSAnnotationHandler.getClassifierDescription(outputDirectory + "/model.jar");
 		AnalysisEngineFactory.setConfigurationParameters(taggerDescription, ViterbiClassifier.PARAM_STACK_SIZE, stackSize);
 		
 		System.out.print("tagging data...");
