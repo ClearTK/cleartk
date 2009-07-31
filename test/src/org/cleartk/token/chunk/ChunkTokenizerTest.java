@@ -46,7 +46,6 @@ import org.cleartk.type.Chunk;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.EmptyAnnotator;
 import org.cleartk.util.TestsUtil;
 import org.cleartk.util.UIMAUtil;
 import org.junit.After;
@@ -55,6 +54,7 @@ import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.TokenFactory;
 import org.uutuc.factory.TypeSystemDescriptionFactory;
+import org.uutuc.util.JCasAnnotatorAdapter;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -80,12 +80,13 @@ public class ChunkTokenizerTest {
 		public ChunkLabeler getChunkLabeler() {
 			return chunkLabeler;
 		}
+		
 	}
 	
 	@Test
 	public void testChunkHandler() throws UIMAException, CleartkException {
 		  AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				    EmptyAnnotator.class,
+				    JCasAnnotatorAdapter.class,
 				    TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 		  			ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS, "org.cleartk.type.Token",
 		  			ChunkerHandler.PARAM_SEQUENCE_CLASS, "org.cleartk.type.Sentence",
