@@ -27,10 +27,11 @@ package org.cleartk.example.documentclassification;
 import java.io.IOException;
 
 import org.apache.uima.UIMAException;
-import org.cleartk.ClearTKComponents;
+import org.cleartk.CleartkComponents;
 import org.cleartk.classifier.InstanceConsumer;
 import org.cleartk.tfidf.IDFMapWriter;
 import org.cleartk.token.TokenAnnotator;
+import org.cleartk.token.snowball.SnowballStemmer;
 import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.util.SimplePipeline;
 
@@ -54,12 +55,12 @@ public class BuildIDFMap {
 		}
 
 		SimplePipeline.runPipeline(
-				ClearTKComponents.createFilesCollectionReader(trainingDataDirectory),
-				ClearTKComponents.createOpenNLPSentenceSegmenter(),
-				TokenAnnotator.getDescription(), 
-				ClearTKComponents.createSnowballStemmer("English"),
+				CleartkComponents.createFilesCollectionReader(trainingDataDirectory),
+				CleartkComponents.createOpenNLPSentenceSegmenter(),
+				CleartkComponents.createPrimitiveDescription(TokenAnnotator.class), 
+				CleartkComponents.createPrimitiveDescription(SnowballStemmer.class, SnowballStemmer.PARAM_STEMMER_NAME, "English"),
 				AnalysisEngineFactory.createPrimitiveDescription(IDFMapWriter.class,
-						ClearTKComponents.TYPE_SYSTEM_DESCRIPTION, ClearTKComponents.TYPE_PRIORITIES,
+						CleartkComponents.TYPE_SYSTEM_DESCRIPTION, CleartkComponents.TYPE_PRIORITIES,
 						IDFMapWriter.PARAM_IDFMAP_FILE, "example/documentclassification/idfmap",
 						InstanceConsumer.PARAM_ANNOTATION_HANDLER, AnnotationHandler.class.getName()));
 	}
