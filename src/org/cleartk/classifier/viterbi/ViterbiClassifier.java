@@ -67,7 +67,8 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
 	 * guarantees that highest-possible scoring sequence will be returned. If,
 	 * however, the number of possible classifications is quite high and/or you
 	 * are concerned about throughput performance, then you may want to reduce the number
-	 * of candidate paths to maintain.
+	 * of candidate paths to maintain.  If Classifier.score is not implemented for the given delegated classifier, then
+	 * the value of this parameter must be 1.  
 	 */
 	public static String PARAM_STACK_SIZE = "org.cleartk.classifier.viterbi.ViterbiClassifier.PARAM_STACK_SIZE";
 
@@ -143,7 +144,11 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
 			return returnValues;
 		}
 		else {
-			return viterbi(features);
+			try {
+				return viterbi(features);
+			} catch (UnsupportedOperationException uoe) {
+				throw new IllegalArgumentException("The configuration parameter "+PARAM_STACK_SIZE+" must be set to 1 if the delegated classifier does not implement the score method.  The classifier you are using is: "+delegatedClassifier.getClass().getName());
+			}
 		}
 
 	}
