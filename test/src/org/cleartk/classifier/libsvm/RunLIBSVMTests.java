@@ -31,16 +31,25 @@ import java.util.List;
 import java.util.Random;
 import java.util.jar.JarFile;
 
+import org.apache.uima.UimaContext;
+import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.jcas.JCas;
+import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.CleartkComponents;
+import org.cleartk.CleartkException;
+import org.cleartk.classifier.AnnotationHandler;
 import org.cleartk.classifier.DataWriterAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.InstanceConsumer;
 import org.cleartk.classifier.Train;
 import org.cleartk.util.TestsUtil;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.UimaContextFactory;
 import org.uutuc.util.HideOutput;
 import org.uutuc.util.TearDownUtil;
@@ -62,7 +71,7 @@ public class RunLIBSVMTests {
 		random = new Random(System.currentTimeMillis());
 	}
 	
-	@After
+//	@After
 	public void tearDown() {
 		TearDownUtil.emptyDirectory(new File(this.outputDirectory));
 	}
@@ -180,12 +189,79 @@ public class RunLIBSVMTests {
 		// read in the classifier and test it on new instances
 		MultiClassLIBSVMClassifier classifier = new MultiClassLIBSVMClassifier(
 				new JarFile(new File(this.outputDirectory, "model.jar")));
+
 		for (Instance<String> instance: generateStringInstances(1000)) {
 			List<Feature> features = instance.getFeatures();
 			String outcome = instance.getOutcome();
 			Assert.assertEquals(outcome, classifier.classify(features));
 		}
 	}
+	
+	@Test
+	public void testMultiClassLIBSVM2() throws Exception {
+		
+		AnalysisEngineDescription dataWriterDescription = CleartkComponents.createDataWriterAnnotator(
+				TestMultiClassLIBSVM2Handler.class, DefaultMultiClassLIBSVMDataWriterFactory.class,
+				outputDirectory);
+
+		AnalysisEngine dataWriter = AnalysisEngineFactory.createPrimitive(dataWriterDescription);
+		
+		JCas jCas = TestsUtil.getJCas();
+		
+		dataWriter.process(jCas);
+		
+		dataWriter.collectionProcessComplete();
+		
+		// check that the output files were written for each class
+		BufferedReader reader = new BufferedReader(new FileReader(new File(
+				this.outputDirectory, "training-data.libsvm")));
+		Assert.assertTrue(reader.readLine().length() > 0);
+		reader.close();
+		
+		// run the training command
+		HideOutput hider = new HideOutput();
+		Train.main(this.outputDirectory, "-c", "1.0", "-t", "2");
+		hider.restoreOutput();
+		
+		AnalysisEngineDescription classifierDescription = CleartkComponents.createClassifierAnnotator(
+				TestMultiClassLIBSVM2HandlerB.class, outputDirectory +"/model.jar");
+		AnalysisEngine classifier = AnalysisEngineFactory.createPrimitive(classifierDescription);
+		
+		jCas.reset();
+		
+		classifier.process(jCas);
+		
+	}
+
+public static class TestMultiClassLIBSVM2Handler implements AnnotationHandler<String> {
+		public void initialize(UimaContext context) throws ResourceInitializationException {
+		}
+
+		public void process(JCas cas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException, CleartkException {
+			for (Instance<String> instance: generateStringInstances2(1000)) {
+				consumer.consume(instance);
+			}
+
+		}
+	}
+
+	/**
+	 * A simple do-nothing AnnotationHandler that expects String outcomes.
+	 * Useful primarily for testing DataWriter objects which require some
+	 * annotation handler to be specified.
+	 */
+	public static class TestMultiClassLIBSVM2HandlerB implements AnnotationHandler<String> {
+		public void initialize(UimaContext context) throws ResourceInitializationException {
+		}
+
+		public void process(JCas cas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException, CleartkException {
+			for (Instance<String> instance: generateStringInstances2(1000)) {
+				String outcome = instance.getOutcome();
+				Assert.assertEquals(outcome, consumer.consume(instance));
+			}
+		}
+	}
+
 	
 	private static List<Instance<Boolean>> generateBooleanInstances(int n) {
 		Random random = new Random(42);
@@ -234,4 +310,33 @@ public class RunLIBSVMTests {
 		}
 		return instances;
 	}
+	
+	private static List<Instance<String>> generateStringInstances2(int n) {
+		Random random = new Random(42);
+		List<Instance<String>> instances = new ArrayList<Instance<String>>();
+		for (int i = 0; i < n; i++) {
+			Instance<String> instance = new Instance<String>();
+			int c = random.nextInt(3);
+			if ( c == 0 ) {
+				instance.setOutcome("A");
+				instance.add(new Feature("aardvark", 1));
+				instance.add(new Feature("apple", 1));
+				instance.add(new Feature("algorithm", 1));
+			}
+			else if( c == 1 ) {
+				instance.setOutcome("B");
+				instance.add(new Feature("bat", 1));
+				instance.add(new Feature("banana", 1));
+				instance.add(new Feature("bayes", 1));
+			} else {
+				instance.setOutcome("C");
+				instance.add(new Feature("cat", 1));
+				instance.add(new Feature("coconut", 1));
+				instance.add(new Feature("calculus", 1));
+			}
+			instances.add(instance);
+		}
+		return instances;
+	}
+
 }
