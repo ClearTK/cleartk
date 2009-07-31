@@ -27,8 +27,9 @@ import java.io.File;
 
 import org.apache.uima.util.Level;
 import org.apache.uima.util.Logger;
-import org.cleartk.ClearTKComponents;
+import org.cleartk.CleartkComponents;
 import org.cleartk.token.TokenAnnotator;
+import org.cleartk.token.snowball.SnowballStemmer;
 import org.uutuc.factory.UimaContextFactory;
 import org.uutuc.util.SimplePipeline;
 
@@ -70,15 +71,15 @@ public class VerbClauseTemporalAnnotate {
 		
 		// run the components on the selected documents
 		SimplePipeline.runPipeline(
-				ClearTKComponents.createFilesCollectionReader(inputFileOrDir),
-				ClearTKComponents.createOpenNLPSentenceSegmenter(),
-				TokenAnnotator.getDescription(), 
-				ClearTKComponents.createOpenNLPPOSTagger(),
-				ClearTKComponents.createSnowballStemmer("English"),
-				ClearTKComponents.createOpenNLPTreebankParser(),
-				ClearTKComponents.createClassifierAnnotator(
+				CleartkComponents.createFilesCollectionReader(inputFileOrDir),
+				CleartkComponents.createOpenNLPSentenceSegmenter(),
+				CleartkComponents.createPrimitiveDescription(TokenAnnotator.class), 
+				CleartkComponents.createOpenNLPPOSTagger(),
+				CleartkComponents.createPrimitiveDescription(SnowballStemmer.class, SnowballStemmer.PARAM_STEMMER_NAME, "English"),
+				CleartkComponents.createOpenNLPTreebankParser(),
+				CleartkComponents.createClassifierAnnotator(
 						VerbClauseTemporalHandler.class,
 						"resources/models/verb-clause-temporal-model.jar"),
-				ClearTKComponents.createTimeMLWriter(outputDir.getPath()));
+				CleartkComponents.createTimeMLWriter(outputDir.getPath()));
 	}
 }
