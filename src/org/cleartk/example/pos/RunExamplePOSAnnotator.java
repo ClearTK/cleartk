@@ -32,8 +32,12 @@ import org.uutuc.util.SimplePipeline;
  * <br>
  * Copyright (c) 2009, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
  * @author Philip Ogren
  * 
+ *         For examples of using the ExamplePOSAnnotationHandler using different
+ *         classifiers, please see
+ *         org.cleartk.example.pos.ExamplePosClassifierTest
  */
 
 public class RunExamplePOSAnnotator {
