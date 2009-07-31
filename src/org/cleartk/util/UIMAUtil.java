@@ -223,9 +223,18 @@ public class UIMAUtil {
 	
 	public static <T> T create(UimaContext context, String classParamName, Class<T> superClass, Class<? extends T> defaultClass)
 			throws ResourceInitializationException {
-
 		Class<? extends T> cls = getClass(context, classParamName, superClass, defaultClass);
+		return create(context, cls);
+	}
 
+	public static <T> T create(String className, Class<T> superClass, UimaContext context)
+	throws ResourceInitializationException {
+		Class<? extends T> cls = getClass(className, superClass);
+		return create(context, cls);
+}
+
+	
+	public static <T> T create(UimaContext context, Class<? extends T> cls) throws ResourceInitializationException{
 		// create a new instance
 		T instance;
 		try {
@@ -248,6 +257,7 @@ public class UIMAUtil {
 		return instance;
 	}
 
+	
 	public static <T> Class<? extends T> getClass(UimaContext context, String classParamName, Class<T> superClass)
 			throws ResourceInitializationException {
 		return getClass(context, classParamName, superClass, null);
@@ -263,6 +273,10 @@ public class UIMAUtil {
 			className = (String) getRequiredConfigParameterValue(context, classParamName);
 		}
 
+		return getClass(className, superClass);
+	}
+	
+	public static <T> Class<? extends T> getClass(String className, Class<T> superClass) throws ResourceInitializationException {
 		try {
 			Class<? extends T> cls = Class.forName(className).asSubclass(superClass);
 			return cls;
@@ -270,8 +284,9 @@ public class UIMAUtil {
 		catch (Exception e) {
 			throw new ResourceInitializationException(e);
 		}
-
+	
 	}
+	
 
 	/**
 	 * Initialize the object using the UimaContext, if possible.
