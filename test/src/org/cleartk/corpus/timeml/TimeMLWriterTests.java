@@ -36,7 +36,7 @@ import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
-import org.cleartk.ClearTKComponents;
+import org.cleartk.CleartkComponents;
 import org.cleartk.ViewNames;
 import org.cleartk.util.FilesCollectionReader;
 import org.jdom.Attribute;
@@ -107,12 +107,12 @@ public class TimeMLWriterTests {
 	@Test
 	public void testDescriptor() throws UIMAException, IOException {
 		try {
-			ClearTKComponents.createPrimitive(TimeMLWriter.class);
+			CleartkComponents.createPrimitive(TimeMLWriter.class);
 			Assert.fail("expected failure with no OutputDirectory specified");
 		} catch (ResourceInitializationException e) {}
 		
 		
-		AnalysisEngine engine = ClearTKComponents.createPrimitive(TimeMLWriter.class, TimeMLWriter.PARAM_OUTPUT_DIRECTORY, this.outputDir.getPath());
+		AnalysisEngine engine = CleartkComponents.createPrimitive(TimeMLWriter.class, TimeMLWriter.PARAM_OUTPUT_DIRECTORY, this.outputDir.getPath());
 		Assert.assertEquals(this.outputDir.getPath(), engine.getConfigParameterValue(TimeMLWriter.PARAM_OUTPUT_DIRECTORY));
 		engine.collectionProcessComplete();
 	}
