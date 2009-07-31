@@ -38,6 +38,8 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.Initializable;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.UIMAUtil;
+import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.util.InitializeUtil;
 
 
 
@@ -49,13 +51,19 @@ import org.cleartk.util.UIMAUtil;
 
 public abstract class ChunkLabeler_ImplBase implements ChunkLabeler, Initializable  {
 
-	/**
-	 * "org.cleartk.chunk.ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS" is a single, required, string parameter that names
-	 * the class of the type system chunk annotation type. An example value
-	 * might be something like: <br>
-	 * <code>org.cleartk.type.ne.NamedEntityMention</code>
-	 */
 	public static final String PARAM_CHUNK_ANNOTATION_CLASS = "org.cleartk.chunk.ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS";
+
+	@ConfigurationParameter(
+			name = PARAM_CHUNK_ANNOTATION_CLASS,
+			mandatory = true,
+			description = "names the class of the type system chunk annotation type. An example value might be something like: 'org.cleartk.type.ne.NamedEntityMention'")
+	private String chunkAnnotationClassName;
+
+	@ConfigurationParameter(
+			name = ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS,
+			mandatory = true,
+			description = "names the class of the type system type used to associate B, I, and O (for example) labels with.  An example value might be 'org.cleartk.type.Token'")
+	 private String labeledAnnotationClassName;
 
 	public static final String BEGIN_PREFIX = "B";
 
@@ -78,15 +86,10 @@ public abstract class ChunkLabeler_ImplBase implements ChunkLabeler, Initializab
 	protected Map<Annotation, String> annotationLabels;
 
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-		try {
-
-			chunkAnnotationClass = UIMAUtil.getClass(context, PARAM_CHUNK_ANNOTATION_CLASS, Annotation.class);
-			labeledAnnotationClass = UIMAUtil.getClass(context, ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS, Annotation.class);
-			annotationLabels = new HashMap<Annotation, String>();
-		}
-		catch (Exception e) {
-			throw new ResourceInitializationException(e);
-		}
+		InitializeUtil.initialize(this, context);
+		labeledAnnotationClass = UIMAUtil.getClass(labeledAnnotationClassName, Annotation.class);
+		chunkAnnotationClass = UIMAUtil.getClass(chunkAnnotationClassName, Annotation.class);
+		annotationLabels = new HashMap<Annotation, String>();
 	}
 
 	public abstract String getChunkLabel(JCas jCas, Annotation chunkAnnotation) throws AnalysisEngineProcessException;
@@ -177,5 +180,14 @@ public abstract class ChunkLabeler_ImplBase implements ChunkLabeler, Initializab
 	public void setLabel(Annotation labeledAnnotation, String label) throws AnalysisEngineProcessException {
 		annotationLabels.put(labeledAnnotation, label);
 	}
+
+	public void setChunkAnnotationClassName(String chunkAnnotationClassName) {
+		this.chunkAnnotationClassName = chunkAnnotationClassName;
+	}
+
+	public void setLabeledAnnotationClassName(String labeledAnnotationClassName) {
+		this.labeledAnnotationClassName = labeledAnnotationClassName;
+	}
+
 
 }

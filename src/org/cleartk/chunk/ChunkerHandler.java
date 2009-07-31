@@ -39,6 +39,8 @@ import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.SequentialAnnotationHandler;
 import org.cleartk.classifier.SequentialInstanceConsumer;
 import org.cleartk.util.UIMAUtil;
+import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.util.InitializeUtil;
 
 
 /**
@@ -49,40 +51,37 @@ import org.cleartk.util.UIMAUtil;
 
 public class ChunkerHandler implements SequentialAnnotationHandler<String>, Initializable {
 
-	/**
-	 * "org.cleartk.chunk.ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS" is a single, required, string parameter that
-	 * names the class of the type system type used to associate B, I, and O (for example)
-	 * labels with. An example value might be: <br>
-	 * <code>org.cleartk.type.Token</code>
-	 */
 	public static final String PARAM_LABELED_ANNOTATION_CLASS = "org.cleartk.chunk.ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS";
+	@ConfigurationParameter(
+			name = PARAM_LABELED_ANNOTATION_CLASS,
+			mandatory = true,
+			description = "names the class of the type system type used to associate B, I, and O (for example) labels with.  An example value might be 'org.cleartk.type.Token'")
+	 private String labeledAnnotationClassName;
 
-	/**
-	 * "org.cleartk.chunk.ChunkerHandler.PARAM_SEQUENCE_CLASS" is a single, required, string parameter that names the
-	 * class of the type system type that specifies a 'sequence' of labels. An
-	 * example might be something like: <br>
-	 * <code>org.cleartk.type.Sentence</code>
-	 */
 	public static final String PARAM_SEQUENCE_CLASS = "org.cleartk.chunk.ChunkerHandler.PARAM_SEQUENCE_CLASS";
 
-	/**
-	 * "org.cleartk.chunk.ChunkerHandler.PARAM_CHUNK_LABELER_CLASS" is a single, required, string parameter that
-	 * provides the class name of a class that extends
-	 * org.cleartk.chunk.ChunkLabeler.
-	 * 
-	 * @see ChunkLabeler
-	 */
+	@ConfigurationParameter(
+			name = PARAM_SEQUENCE_CLASS,
+			mandatory = true,
+			description = "names the class of the type system type that specifies a 'sequence' of labels.  An example might be something like 'org.cleartk.type.Sentence'")
+	private String sequenceClassName;
+	
 	public static final String PARAM_CHUNK_LABELER_CLASS = "org.cleartk.chunk.ChunkerHandler.PARAM_CHUNK_LABELER_CLASS";
 
-	/**
-	 * "org.cleartk.chunk.ChunkerHandler.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS" is a single, required, string parameter that
-	 * provides the class name of a class that extends
-	 * org.cleartk.chunk.ChunkFeatureExtractor.
-	 * 
-	 * @see ChunkerFeatureExtractor
-	 */
+	@ConfigurationParameter(
+			name = PARAM_CHUNK_LABELER_CLASS,
+			mandatory = true,
+			description = "provides the class name of a class that extends org.cleartk.chunk.ChunkLabeler.")
+	private String chunkLabelerClassName;
+	
 	public static final String PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS = "org.cleartk.chunk.ChunkerHandler.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS";
-
+	
+	@ConfigurationParameter(
+			name = PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS,
+			mandatory = true,
+			description = "provides the class name of a class that extends org.cleartk.chunk.ChunkFeatureExtractor.")
+	private String chunkerFeatureExtractorClassName;
+	
 	protected Class<? extends Annotation> labeledAnnotationClass;
 
 	private Type labeledAnnotationType;
@@ -98,16 +97,11 @@ public class ChunkerHandler implements SequentialAnnotationHandler<String>, Init
 	protected boolean typesInitialized = false;
 
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-		try {
-			labeledAnnotationClass = UIMAUtil.getClass(context, PARAM_LABELED_ANNOTATION_CLASS, Annotation.class);
-			sequenceClass = UIMAUtil.getClass(context, PARAM_SEQUENCE_CLASS, Annotation.class);
-			chunkLabeler = UIMAUtil.create(context, PARAM_CHUNK_LABELER_CLASS, ChunkLabeler.class);
-			featureExtractor = UIMAUtil.create(context, PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS, ChunkerFeatureExtractor.class);
-		}
-		catch (Exception e) {
-			throw new ResourceInitializationException(e);
-		}
-
+		InitializeUtil.initialize(this, context);
+		labeledAnnotationClass = UIMAUtil.getClass(labeledAnnotationClassName, Annotation.class);
+		sequenceClass = UIMAUtil.getClass(sequenceClassName, Annotation.class);
+		chunkLabeler = UIMAUtil.create(chunkLabelerClassName, ChunkLabeler.class, context);
+		featureExtractor = UIMAUtil.create(chunkerFeatureExtractorClassName, ChunkerFeatureExtractor.class, context);
 	}
 
 	protected void initializeTypes(JCas jCas) throws AnalysisEngineProcessException {
@@ -179,5 +173,22 @@ public class ChunkerHandler implements SequentialAnnotationHandler<String>, Init
 		
 
 	}
+	
+	public void setLabeledAnnotationClassName(String labeledAnnotationClassName) {
+		this.labeledAnnotationClassName = labeledAnnotationClassName;
+	}
+
+	public void setSequenceClassName(String sequenceClassName) {
+		this.sequenceClassName = sequenceClassName;
+	}
+
+	public void setChunkLabelerClassName(String chunkLabelerClassName) {
+		this.chunkLabelerClassName = chunkLabelerClassName;
+	}
+
+	public void setChunkerFeatureExtractorClassName(String chunkerFeatureExtractorClassName) {
+		this.chunkerFeatureExtractorClassName = chunkerFeatureExtractorClassName;
+	}
+
 }
 

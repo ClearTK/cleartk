@@ -31,6 +31,8 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.util.InitializeUtil;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -40,23 +42,23 @@ import org.apache.uima.resource.ResourceInitializationException;
 
 public class DefaultChunkLabeler extends ChunkLabeler_ImplBase {
 
-	/**
-	 * "org.cleartk.chunk.DefaultChunkLabeler.PARAM_CHUNK_LABEL_FEATURE" is a single, optional, string parameter that names
-	 * the feature of the type system chunk type that provides a label for each
-	 * chunk. The feature is queried and the value of the feature is used as the
-	 * label for the chunk. If this parameter has no value, then the name of the
-	 * chunk type will be used as a label. For example, if the value of the
-	 * parameter "ChunkAnnotationClass" is
-	 * <code>org.cleartk.type.Chunk</code>, then a good value for
-	 * this parameter would be <code>chunkType</code>. This would result in
-	 * labels corresponding to the values found in the type system feature
-	 * chunkType. If the value of the parameter "ChunkAnnotationClass" is
-	 * <code>org.cleartk.type.Chunk</code> and no value is given for
-	 * this parameter, then the label will always be <code>Chunk</code>.
-	 */
 	public static final String PARAM_CHUNK_LABEL_FEATURE = "org.cleartk.chunk.DefaultChunkLabeler.PARAM_CHUNK_LABEL_FEATURE";
 
+	private static final String CHUNK_LABEL_FEATURE_DESCRIPTION = "names  the feature of the type system chunk type that provides a label for each " +
+			"chunk. The feature is queried and the value of the feature is used as the label for the chunk.  If this parameter has no value, then the name of the " +
+			"chunk type will be used as a label. For example, if the value of the parameter '"+PARAM_CHUNK_ANNOTATION_CLASS+"' is 'org.cleartk.type.Chunk', " +
+			"then a good value for this parameter would be 'chunkType'.  This would result in labels corresponding to the values found in the type system feature " +
+			"chunkType.  If the value of the parameter '"+PARAM_CHUNK_ANNOTATION_CLASS+"' is 'org.cleartk.type.Chunk' and no value is given for " +
+			"this parameter, then the label will always be 'Chunk'";
+	
+	@ConfigurationParameter(
+			name = PARAM_CHUNK_LABEL_FEATURE,
+			description = CHUNK_LABEL_FEATURE_DESCRIPTION)
 	private String chunkLabelFeatureName;
+
+	public void setChunkLabelFeatureName(String chunkLabelFeatureName) {
+		this.chunkLabelFeatureName = chunkLabelFeatureName;
+	}
 
 	private org.apache.uima.cas.Feature chunkLabelFeature;
 
@@ -65,10 +67,13 @@ public class DefaultChunkLabeler extends ChunkLabeler_ImplBase {
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
+		InitializeUtil.initialize(this, context);
+		
+		if(chunkLabelFeatureName != null) {
+			chunkLabelFeatureName = chunkAnnotationClass.getCanonicalName() + ":" + chunkLabelFeatureName;
+		}
+		
 		try {
-			String paramValue = (String) context.getConfigParameterValue(PARAM_CHUNK_LABEL_FEATURE);
-			if (paramValue != null) chunkLabelFeatureName = chunkAnnotationClass.getCanonicalName() + ":" + paramValue;
-
 			chunkAnnotationConstructor = chunkAnnotationClass.getConstructor(new Class[] { JCas.class,
 					java.lang.Integer.TYPE, java.lang.Integer.TYPE });
 		}
