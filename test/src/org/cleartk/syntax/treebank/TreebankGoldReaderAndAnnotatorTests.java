@@ -33,7 +33,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.cas.FSIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.ClearTKComponents;
+import org.cleartk.CleartkComponents;
 import org.cleartk.ViewNames;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
 import org.cleartk.type.Sentence;
@@ -101,7 +101,7 @@ public class TreebankGoldReaderAndAnnotatorTests {
 
 	@Test
 	public void testAED() throws UIMAException, IOException {
-		AnalysisEngineDescription description = ClearTKComponents.createPrimitiveDescription(TreebankGoldAnnotator.class);
+		AnalysisEngineDescription description = CleartkComponents.createPrimitiveDescription(TreebankGoldAnnotator.class);
 		Boolean postTrees = (Boolean) description.getAnalysisEngineMetaData().getConfigurationParameterSettings().getParameterValue(TreebankGoldAnnotator.PARAM_POST_TREES);
 		Assert.assertTrue(postTrees.booleanValue());
 		String[] inputSofas = description.getAnalysisEngineMetaData().getCapabilities()[0].getInputSofas();
@@ -111,7 +111,7 @@ public class TreebankGoldReaderAndAnnotatorTests {
 
 	@Test
 	public void testInitialize() throws ResourceInitializationException {
-		AnalysisEngineFactory.createPrimitive(ClearTKComponents.createPrimitiveDescription(TreebankGoldAnnotator.class, TreebankGoldAnnotator.PARAM_POST_TREES, true));
+		AnalysisEngineFactory.createPrimitive(CleartkComponents.createPrimitiveDescription(TreebankGoldAnnotator.class, TreebankGoldAnnotator.PARAM_POST_TREES, true));
 
 	}
 }
