@@ -68,18 +68,41 @@ import org.uutuc.factory.TypeSystemDescriptionFactory;
  * All rights reserved.
  * @author Steven Bethard
  */
-public class ClearTKComponents {
+public class CleartkComponents {
 	
 	public static TypeSystemDescription TYPE_SYSTEM_DESCRIPTION =
 		TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem");
 	
 	public static TypePriorities TYPE_PRIORITIES = null;
+//	TypePrioritiesFactory.createTypePriorities(new String[] {
+//			"org.cleartk.corpus.ace2005.type.Document",
+//			"org.cleartk.type.SimpleAnnotation",
+//			"org.cleartk.type.ContiguousAnnotation",
+//			"org.cleartk.type.SplitAnnotation",
+//			"org.cleartk.type.Sentence",
+//			"org.cleartk.type.Chunk",
+//			"org.cleartk.syntax.treebank.type.TopTreebankNode",
+//			"org.cleartk.syntax.treebank.type.TreebankNode",
+//			"org.cleartk.ne.type.GazetteerNamedEntityMention",
+//			"org.cleartk.ne.type.NamedEntityMention",
+//			"org.cleartk.ne.type.NamedEntity",
+//			"org.cleartk.ne.type.NamedEntityClass",
+//			"org.cleartk.srl.type.Predicate",
+//			"org.cleartk.srl.type.Argument",
+//			"org.cleartk.srl.type.SemanticArgument",
+//			"org.cleartk.corpus.timeml.type.Event",
+//			"org.cleartk.corpus.timeml.type.Time",
+//			"org.cleartk.corpus.timeml.type.TemporalLink",
+//			"org.cleartk.corpus.timeml.type.Text",
+//			"org.cleartk.type.Token",
+//			"org.cleartk.token.chunk.type.Subtoken"
+//	});
 	
 	public static CollectionReader createFilesCollectionReader(String fileOrDir)
 	throws ResourceInitializationException {
 		return CollectionReaderFactory.createCollectionReader(
 				FilesCollectionReader.class,
-				ClearTKComponents.TYPE_SYSTEM_DESCRIPTION,
+				CleartkComponents.TYPE_SYSTEM_DESCRIPTION,
 				FilesCollectionReader.PARAM_FILE_OR_DIRECTORY, fileOrDir);
 	}
 	
@@ -101,14 +124,6 @@ public class ClearTKComponents {
 				getParameterValue(
 						OpenNLPSentenceSegmenter.PARAM_SENTENCE_MODEL_FILE,
 						"resources/models/OpenNLP.Sentence.English.bin.gz"));
-	}
-	
-	
-	public static AnalysisEngineDescription createSnowballStemmer(String stemmerName)
-	throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveDescription(
-				SnowballStemmer.class, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES,
-				SnowballStemmer.PARAM_STEMMER_NAME, stemmerName);
 	}
 	
 	public static AnalysisEngineDescription createOpenNLPPOSTagger()
@@ -261,11 +276,15 @@ public class ClearTKComponents {
 	
 	public static AnalysisEngineDescription createSentencesAndTokens() throws ResourceInitializationException {
 		AnalysisEngineDescription sentences = createOpenNLPSentenceSegmenter();
-		AnalysisEngineDescription tokenizer = TokenAnnotator.getDescription();
-		return AnalysisEngineFactory.createAggregateDescription(Arrays.asList(sentences, tokenizer), Arrays.asList("SentenceSegmenter", "TokenAnnotator"),
+		AnalysisEngineDescription tokenizer = CleartkComponents.createPrimitiveDescription(
+				TokenAnnotator.class, 
+				TokenAnnotator.PARAM_WINDOW_TYPE, org.cleartk.type.Sentence.class.getName());
+		return AnalysisEngineFactory.createAggregateDescription(
+				Arrays.asList(sentences, tokenizer), 
+				Arrays.asList("SentenceSegmenter", "TokenAnnotator"),
 				TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES, null);
-
 	}
+	
 	private static String getParameterValue(String paramName, String defaultValue) {
 		String value = System.getProperty(paramName);
 		if (value == null) {
