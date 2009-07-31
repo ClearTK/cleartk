@@ -58,7 +58,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
-import org.cleartk.ClearTKComponents;
+import org.cleartk.CleartkComponents;
 import org.uutuc.factory.AnalysisEngineFactory;
 
 
@@ -107,7 +107,7 @@ public class PlainTextWriter extends JCasAnnotator_ImplBase
 	}
 	
 	public static AnalysisEngineDescription getDescription(String outputDirectory) throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveDescription(PlainTextWriter.class, ClearTKComponents.TYPE_SYSTEM_DESCRIPTION, PlainTextWriter.PARAM_OUTPUT_DIRECTORY, outputDirectory);
+		return AnalysisEngineFactory.createPrimitiveDescription(PlainTextWriter.class, CleartkComponents.TYPE_SYSTEM_DESCRIPTION, PlainTextWriter.PARAM_OUTPUT_DIRECTORY, outputDirectory);
 		
 	}
 }
