@@ -27,10 +27,11 @@ import java.io.File;
 
 import org.apache.uima.util.Level;
 import org.apache.uima.util.Logger;
-import org.cleartk.ClearTKComponents;
+import org.cleartk.CleartkComponents;
 import org.cleartk.classifier.Train;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.srl.ArgumentAnnotationHandler;
+import org.cleartk.token.snowball.SnowballStemmer;
 import org.uutuc.factory.UimaContextFactory;
 import org.uutuc.util.SimplePipeline;
 
@@ -62,10 +63,10 @@ public class Conll2005Train {
 		
 		// run the components to write the training data
 		SimplePipeline.runPipeline(
-				ClearTKComponents.createConll2005GoldReader(conll2005File),
-				ClearTKComponents.createConll2005GoldAnnotator(),
-				ClearTKComponents.createSnowballStemmer("English"),
-				ClearTKComponents.createDataWriterAnnotator(
+				CleartkComponents.createConll2005GoldReader(conll2005File),
+				CleartkComponents.createConll2005GoldAnnotator(),
+				CleartkComponents.createPrimitiveDescription(SnowballStemmer.class, SnowballStemmer.PARAM_STEMMER_NAME, "English"),
+				CleartkComponents.createDataWriterAnnotator(
 						ArgumentAnnotationHandler.class,
 						DefaultMaxentDataWriterFactory.class,
 						outputDir));
