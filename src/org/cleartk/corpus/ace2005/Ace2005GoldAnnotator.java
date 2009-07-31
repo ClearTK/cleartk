@@ -47,6 +47,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
+import org.uutuc.descriptor.SofaCapability;
 
 
 /**
@@ -62,6 +63,7 @@ import org.jdom.input.SAXBuilder;
  * @author Philip Ogren
  *
  */
+@SofaCapability(inputSofas = {ViewNames.ACE_APF_URI, ViewNames.DEFAULT}, outputSofas = {})
 public class Ace2005GoldAnnotator extends JCasAnnotator_ImplBase
 {
 

@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.corpus.ace2005;
 
 import java.io.File;
@@ -39,111 +39,118 @@ import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.type.SimpleAnnotation;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.ViewURIUtil;
-import org.cleartk.util.UIMAUtil;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
-
+import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.util.InitializeUtil;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * 
  * @author Philip Ogren
- *
+ * 
  */
 
-public class Ace2005Writer extends JCasAnnotator_ImplBase
-{
-	/**
-	 * "org.cleartk.corpus.ace2005.Ace2005Writer.PARAM_OUTPUT_DIRECTORY"
-	 * is a single, required, string parameter that provides the path of the
-	 * directory where the XML files should be written.
-	 */
+public class Ace2005Writer extends JCasAnnotator_ImplBase {
+
 	public static final String PARAM_OUTPUT_DIRECTORY = "org.cleartk.corpus.ace2005.Ace2005Writer.PARAM_OUTPUT_DIRECTORY";
 
-	private File outputDir;
+	@ConfigurationParameter(
+			name = PARAM_OUTPUT_DIRECTORY, 
+			mandatory = true, 
+			description = "provides the path of the directory where the XML files should be written.")
+	private String outputDirectoryName;
+
+	private File outputDirectory;
+
 	private int idIndex = 0;
 
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
-		outputDir = new File((String)UIMAUtil.getRequiredConfigParameterValue(
-				context, Ace2005Writer.PARAM_OUTPUT_DIRECTORY));
-		if (!outputDir.exists())
-		{
-			outputDir.mkdirs();
+		InitializeUtil.initialize(this, context);
+		
+		outputDirectory = new File(outputDirectoryName);
+		if (!outputDirectory.exists()) {
+			outputDirectory.mkdirs();
 		}
 	}
 
 	private Element createExtentElement(String elementName, SimpleAnnotation annotation) {
 		Element extent = new Element(elementName);
 		Element charseq = new Element("charseq");
-		charseq.setAttribute("START", ""+annotation.getBegin());
-		charseq.setAttribute("END", ""+(annotation.getEnd()-1));
+		charseq.setAttribute("START", "" + annotation.getBegin());
+		charseq.setAttribute("END", "" + (annotation.getEnd() - 1));
 		charseq.setText(annotation.getCoveredText());
 		extent.addContent(charseq);
 		return extent;
 	}
-	
+
 	@Override
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
 		String uri = ViewURIUtil.getURI(jCas);
 		String docId = uri.substring(0, uri.indexOf(".sgm"));
 		org.cleartk.corpus.ace2005.type.Document document;
-		document = AnnotationRetrieval.getAnnotations(jCas,
-				org.cleartk.corpus.ace2005.type.Document.class).iterator().next();
-		
+		document = AnnotationRetrieval.getAnnotations(jCas, org.cleartk.corpus.ace2005.type.Document.class).iterator()
+				.next();
+
 		Document xml = new Document();
-		
+
 		Element sourceFileElement = new Element("source_file");
 		sourceFileElement.setAttribute("URI", uri);
 		sourceFileElement.setAttribute("SOURCE", document.getAceSource());
 		sourceFileElement.setAttribute("TYPE", document.getAceType());
 		xml.addContent(sourceFileElement);
-		
+
 		Element documentElement = new Element("document");
 		documentElement.setAttribute("DOCID", docId);
 		sourceFileElement.addContent(documentElement);
-		
+
 		FSIterator namedEntities = jCas.getFSIndexRepository().getAllIndexedFS(jCas.getCasType(NamedEntity.type));
-		while(namedEntities.hasNext()) {
+		while (namedEntities.hasNext()) {
 			NamedEntity namedEntity = (NamedEntity) namedEntities.next();
 			Element namedEntityElement = new Element("entity");
-			namedEntityElement.setAttribute("ID", ""+idIndex++);
+			namedEntityElement.setAttribute("ID", "" + idIndex++);
 			namedEntityElement.setAttribute("TYPE", namedEntity.getEntityType());
 			String entitySubtype = namedEntity.getEntitySubtype();
-			if(entitySubtype != null)
-				namedEntityElement.setAttribute("SUBTYPE", entitySubtype);
+			if (entitySubtype != null) namedEntityElement.setAttribute("SUBTYPE", entitySubtype);
 			String entityClass = namedEntity.getEntityClass();
-			if(entityClass != null)
-				namedEntityElement.setAttribute("CLASS", entityClass);
-			
+			if (entityClass != null) namedEntityElement.setAttribute("CLASS", entityClass);
+
 			FSArray namedEntityMentions = namedEntity.getMentions();
-			for (int i=0; i<namedEntityMentions.size(); i++) {
+			for (int i = 0; i < namedEntityMentions.size(); i++) {
 				NamedEntityMention namedEntityMention = (NamedEntityMention) namedEntityMentions.get(i);
 				Element namedEntityMentionElement = new Element("entity_mention");
-				namedEntityMentionElement.setAttribute("ID", ""+idIndex++);
+				namedEntityMentionElement.setAttribute("ID", "" + idIndex++);
 				namedEntityMentionElement.setAttribute("TYPE", namedEntityMention.getMentionType());
-				
+
 				namedEntityMentionElement.addContent(createExtentElement("extent", namedEntityMention.getAnnotation()));
 				namedEntityMentionElement.addContent(createExtentElement("head", namedEntityMention.getHead()));
 				namedEntityElement.addContent(namedEntityMentionElement);
 			}
 			documentElement.addContent(namedEntityElement);
 		}
-		
-    	XMLOutputter xmlOut = new XMLOutputter(Format.getPrettyFormat());
-    	try {
-    		FileOutputStream stream = new FileOutputStream(new File(outputDir, docId+".cleartk.xml"));
+
+		XMLOutputter xmlOut = new XMLOutputter(Format.getPrettyFormat());
+		try {
+			FileOutputStream stream = new FileOutputStream(new File(outputDirectory, docId + ".cleartk.xml"));
 			xmlOut.output(xml, stream);
-    		stream.close();
-		} catch (IOException e) {
+			stream.close();
+		}
+		catch (IOException e) {
 			throw new AnalysisEngineProcessException(e);
 		}
-		
+
 	}
+
+	public void setOutputDirectoryName(String outputDirectoryName) {
+		this.outputDirectoryName = outputDirectoryName;
+	}
+
 
 }
