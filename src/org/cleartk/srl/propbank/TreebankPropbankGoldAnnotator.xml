@@ -4,10 +4,10 @@
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
     <delegateAnalysisEngine key="TreebankGoldAnnotator">
-      <import name="org.cleartk.descriptor.TreebankGoldAnnotator"/>
+      <import name="org.cleartk.syntax.treebank.TreebankGoldAnnotator"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="PropbankGoldAnnotator">
-      <import name="org.cleartk.descriptor.PropbankGoldAnnotator"/>
+      <import name="org.cleartk.srl.propbank.PropbankGoldAnnotator"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
