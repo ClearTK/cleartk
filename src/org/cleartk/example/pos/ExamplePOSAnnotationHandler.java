@@ -32,7 +32,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.ClearTKComponents;
+import org.cleartk.CleartkComponents;
 import org.cleartk.CleartkException;
 import org.cleartk.Initializable;
 import org.cleartk.classifier.Instance;
@@ -146,12 +146,12 @@ public class ExamplePOSAnnotationHandler implements SequentialAnnotationHandler<
 	}
 	
 	public static AnalysisEngineDescription getClassifierDescription(String modelFileName) throws ResourceInitializationException {
-		return ClearTKComponents.createSequentialClassifierAnnotator(
+		return CleartkComponents.createSequentialClassifierAnnotator(
 				ExamplePOSAnnotationHandler.class, modelFileName);
 	}
 	
 	public static AnalysisEngineDescription getWriterDescription(String outputDirectory) throws ResourceInitializationException {
-		return ClearTKComponents.createViterbiDataWriterAnnotator(
+		return CleartkComponents.createViterbiDataWriterAnnotator(
 				ExamplePOSAnnotationHandler.class,
 				DefaultMaxentDataWriterFactory.class,
 				outputDirectory,

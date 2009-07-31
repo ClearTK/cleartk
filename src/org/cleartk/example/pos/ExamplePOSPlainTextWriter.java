@@ -33,7 +33,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.ClearTKComponents;
+import org.cleartk.CleartkComponents;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
@@ -97,7 +97,7 @@ public class ExamplePOSPlainTextWriter extends JCasAnnotator_ImplBase {
 
 	public static AnalysisEngineDescription getDescription(String outputDirectory) throws ResourceInitializationException {
 		return AnalysisEngineFactory.createPrimitiveDescription(ExamplePOSPlainTextWriter.class,
-				ClearTKComponents.TYPE_SYSTEM_DESCRIPTION, ClearTKComponents.TYPE_PRIORITIES,
+				CleartkComponents.TYPE_SYSTEM_DESCRIPTION, CleartkComponents.TYPE_PRIORITIES,
 				ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY, outputDirectory);
 	}
 }
