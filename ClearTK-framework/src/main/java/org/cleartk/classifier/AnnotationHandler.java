@@ -26,7 +26,6 @@ package org.cleartk.classifier;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.CleartkException;
-import org.cleartk.example.pos.ExamplePOSAnnotationHandler;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -44,7 +43,6 @@ public interface AnnotationHandler<OUTCOME_TYPE> {
 	 * extract features, and then call consumer.consume() for each instance to be
 	 * processed.
 	 * 
-	 * @see ExamplePOSAnnotationHandler
 	 * @param jCas     The JCas object from which ClassifierInstance objects
 	 *                 should be derived.
 	 * @param consumer The InstanceConsumer object to which the
