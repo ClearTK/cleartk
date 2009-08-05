@@ -41,9 +41,11 @@ import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 import org.cleartk.ViewNames;
 import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
-import org.cleartk.util.ViewURIUtil;
 import org.cleartk.util.ListSpecification;
-import org.cleartk.util.UIMAUtil;
+import org.cleartk.util.ViewURIUtil;
+import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.descriptor.SofaCapability;
+import org.uutuc.util.InitializeUtil;
 
 
 /**
@@ -78,27 +80,31 @@ import org.cleartk.util.UIMAUtil;
  * 
  * @author Philip Ogren, Philipp Wetzler
  */
+
+@SofaCapability(outputSofas=ViewNames.TREEBANK)
 public class PennTreebankReader extends CollectionReader_ImplBase {
-	/**
-	 * "org.cleartk.corpus.penntreebank.PennTreebankReader.PARAM_CORPUS_DIRECTORY"
-	 * is a single, required, string parameter that specifies
-	 * the location of the treebank files. The directory should contain
-	 * subdirectories corresponding to the sections (e.g. "00", "01", etc.) That
-	 * is, if a local copy of PennTreebank sits at C:\Data\PTB\wsj\mrg, then the
-	 * the subdirectory C:\Data\PTB\wsj\mrg\00 should exist. There are 24
-	 * sections in PTB corresponding to the directories 00, 01, 02, ... 24.
-	 */
 	public static final String PARAM_CORPUS_DIRECTORY = "org.cleartk.corpus.penntreebank.PennTreebankReader.PARAM_CORPUS_DIRECTORY";
+	private static final String CORPUS_DIRECTORY_DESCRIPTION = "Specifies the location of WSJ/PennTreebank treebank files.  " +
+			"The directory should contain subdirectories corresponding to the sections (e.g. '00', '01', etc.) " +
+			"That is, if a local copy of PennTreebank sits at C:/Data/PTB/wsj/mrg, then the the subdirectory C:/Data/PTB/wsj/mrg/00 should exist. " +
+			"There are 24 sections in PTB corresponding to the directories 00, 01, 02, ... 24. ";
 
-	/**
-	 * "org.cleartk.corpus.penntreebank.PennTreebankReader.PARAM_SECTIONS"
-	 * is a single, optional, string parameter that specifies which
-	 * sections of PTB to read in. The format allows for comma-separated section
-	 * numbers and section ranges, for example "02,07-12,16". If not value is
-	 * given for this parameter, then a default value of "00-24" will be used.
-	 */
+	@ConfigurationParameter(
+			name = PARAM_CORPUS_DIRECTORY,
+			mandatory = true,
+			description = CORPUS_DIRECTORY_DESCRIPTION)
+	private String corpusDirectoryName;
+
 	public static final String PARAM_SECTIONS = "org.cleartk.corpus.penntreebank.PennTreebankReader.PARAM_SECTIONS";
-
+	private static final String SECTIONS_DESCRIPTION = "specifies which sections of PTB to read in.  " +
+			"The required format for values of this parameter allows for comma-separated section numbers and section ranges, " +
+			"for example '02,07-12,16'.";
+	@ConfigurationParameter(
+			name = PARAM_SECTIONS,
+			defaultValue = "00-24",
+			description = SECTIONS_DESCRIPTION)
+	private String sectionsString;
+	
 	protected File directory;
 
 	protected LinkedList<File> files;
@@ -109,12 +115,10 @@ public class PennTreebankReader extends CollectionReader_ImplBase {
 
 	@Override
 	public void initialize() throws ResourceInitializationException {
-		String sectionsParam = (String) UIMAUtil.getDefaultingConfigParameterValue(getUimaContext(), PARAM_SECTIONS, "00-24");
-		this.sections = new ListSpecification(sectionsParam);
+		InitializeUtil.initialize(this, getUimaContext());
+		this.sections = new ListSpecification(sectionsString);
 
-		String directoryName = (String) UIMAUtil.getRequiredConfigParameterValue(getUimaContext(), PARAM_CORPUS_DIRECTORY);
-		
-		this.directory = new File(directoryName);
+		this.directory = new File(corpusDirectoryName);
 		this.files = new LinkedList<File>();
 		collectSections(new File(directory.getPath()), this.files, this.sections);
 		Collections.sort(files);
@@ -197,5 +201,14 @@ public class PennTreebankReader extends CollectionReader_ImplBase {
 		if (files.size() > 0) return true;
 		else return false;
 	}
+
+	public void setCorpusDirectoryName(String corpusDirectoryName) {
+		this.corpusDirectoryName = corpusDirectoryName;
+	}
+
+	public void setSectionsString(String sectionsString) {
+		this.sectionsString = sectionsString;
+	}
+
 
 }
