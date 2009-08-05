@@ -1,5 +1,5 @@
 /** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+ * Copyright (c) 2007-2009, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -28,16 +28,19 @@ import net.sf.snowball.SnowballProgram;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.cas.FSIterator;
+import org.apache.uima.cas.Type;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.type.Token;
-import org.cleartk.util.AnnotationRetrieval;
+import org.cleartk.util.ReflectionUtil;
+import org.cleartk.util.UIMAUtil;
 import org.uutuc.descriptor.ConfigurationParameter;
 import org.uutuc.util.InitializeUtil;
 
 /**
  * <br>
- * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * Copyright (c) 2007-2009, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
  * 
@@ -48,7 +51,7 @@ import org.uutuc.util.InitializeUtil;
  *         org.apache.lucene.analysis.snowball.SnowballFilter
  * @see org.apache.lucene.analysis.snowball.SnowballFilter
  */
-public class SnowballStemmer extends JCasAnnotator_ImplBase {
+public abstract class SnowballStemmer<TOKEN_TYPE extends Annotation> extends JCasAnnotator_ImplBase {
 
 	public static final String PARAM_STEMMER_NAME = "org.cleartk.token.snowball.SnowballStemmer.PARAM_STEMMER_NAME";
 
@@ -58,36 +61,52 @@ public class SnowballStemmer extends JCasAnnotator_ImplBase {
 			name = PARAM_STEMMER_NAME,
 			description = STEMMER_NAME_DESCRIPTION, 
 			mandatory = true)
-	private String stemmerName;
+	public String stemmerName;
 	
-	protected SnowballProgram stemmer;
+	private SnowballProgram stemmer;
+
+	private Class<? extends Annotation> tokenClass;
+	private Type tokenType = null;
+
+	private boolean typesInitialized = false;
 
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		InitializeUtil.initialize(this, context);
-		
 		String className = String.format("net.sf.snowball.ext.%sStemmer", stemmerName);
-		try {
-			this.stemmer = (SnowballProgram) Class.forName(className).newInstance();
-		}
-		catch (Exception e) {
-			throw new ResourceInitializationException(e);
-		}
+		this.stemmer = UIMAUtil.create(className, SnowballProgram.class, null);
+		
+		this.tokenClass = ReflectionUtil.<Class<? extends Annotation>>uncheckedCast(
+				ReflectionUtil.getTypeArgument(SnowballStemmer.class, "TOKEN_TYPE", this));
 	}
 
+	private void initializeTypes(JCas jCas) throws AnalysisEngineProcessException {
+		if (tokenClass != null) {
+			tokenType = UIMAUtil.getCasType(jCas, tokenClass);
+		}
+		typesInitialized = true;
+	}
+
+	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
-		for (Token token : AnnotationRetrieval.getAnnotations(jCas, Token.class)) {
+		if (!typesInitialized) initializeTypes(jCas);
+
+		FSIterator tokens = jCas.getAnnotationIndex(tokenType).iterator();
+		while (tokens.hasNext()) {
+			TOKEN_TYPE token = (TOKEN_TYPE) tokens.next();
 			stemmer.setCurrent(token.getCoveredText().toLowerCase());
 			stemmer.stem();
 			String stem = stemmer.getCurrent();
-			token.setStem(stem);
+			setStem(token, stem);
 		}
 	}
 
+	public abstract void setStem(TOKEN_TYPE token, String stem);
+	
 	public void setStemmerName(String stemmerName) {
 		this.stemmerName = stemmerName;
 	}
-
 
 }
