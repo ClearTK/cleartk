@@ -35,6 +35,7 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
+import org.cleartk.CleartkComponents;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
@@ -68,8 +69,8 @@ public class SnowballStemmerTests {
 		TypeSystemDescription typeSystemDescription = TypeSystemDescriptionFactory
 				.createTypeSystemDescription(Token.class, Sentence.class);
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				SnowballStemmer.class, typeSystemDescription,
-				SnowballStemmer.PARAM_STEMMER_NAME, "English");
+				DefaultSnowballStemmer.class, typeSystemDescription,
+				DefaultSnowballStemmer.PARAM_STEMMER_NAME, "English");
 		JCas jCas = engine.newJCas();
 		String text = "The brown foxes jumped quickly over the lazy dog.";
 		String tokens = "The brown foxes jumped quickly over the lazy dog .";
@@ -86,7 +87,7 @@ public class SnowballStemmerTests {
 	@Test
 	public void testUppercase() throws UIMAException {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				SnowballStemmer.class,
+				DefaultSnowballStemmer.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription(Token.class, Sentence.class),
 				SnowballStemmer.PARAM_STEMMER_NAME, "English");
 		JCas jCas = engine.newJCas();
@@ -110,14 +111,14 @@ public class SnowballStemmerTests {
 	public void testDescriptor() throws UIMAException, IOException {
 		ResourceInitializationException rie = null;
 		try {
-			AnalysisEngineFactory.createAnalysisEngine("org.cleartk.token.snowball.SnowballStemmer");
+			CleartkComponents.createPrimitive(DefaultSnowballStemmer.class);
 		} catch(ResourceInitializationException e) {
 			rie = e;
 		}
 		
 		assertNotNull(rie);
 		
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine("org.cleartk.token.snowball.SnowballStemmer",
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine("org.cleartk.token.snowball.DefaultSnowballStemmer",
 				SnowballStemmer.PARAM_STEMMER_NAME, "English");
 
 		Object stemmerName = engine.getConfigParameterValue(SnowballStemmer.PARAM_STEMMER_NAME);
@@ -125,4 +126,13 @@ public class SnowballStemmerTests {
 		
 		engine.collectionProcessComplete();
 	}
+	
+	
+	
+	
 }
+
+
+
+
+

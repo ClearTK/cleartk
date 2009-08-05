@@ -39,6 +39,7 @@ import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.classifier.svmlight.DefaultOVASVMlightDataWriterFactory;
 import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
 import org.cleartk.token.TokenAnnotator;
+import org.cleartk.token.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.snowball.SnowballStemmer;
 import org.cleartk.util.FilesCollectionReader;
 import org.junit.After;
@@ -126,7 +127,7 @@ public class NonSequentialExamplePOSAnnotationHandlerTest {
 						FilesCollectionReader.PARAM_FILE_OR_DIRECTORY, "test/data/docs/treebank/11597317.tree",
 						FilesCollectionReader.PARAM_VIEW_NAME, ViewNames.TREEBANK),
 				CleartkComponents.createPrimitiveDescription(TreebankGoldAnnotator.class, TreebankGoldAnnotator.PARAM_POST_TREES, false),
-				CleartkComponents.createPrimitiveDescription(SnowballStemmer.class, SnowballStemmer.PARAM_STEMMER_NAME, "English"),
+				CleartkComponents.createPrimitiveDescription(DefaultSnowballStemmer.class, SnowballStemmer.PARAM_STEMMER_NAME, "English"),
 				dataWriter);
 		System.out.println("done");
 				
@@ -152,7 +153,7 @@ public class NonSequentialExamplePOSAnnotationHandlerTest {
 				CleartkComponents.createFilesCollectionReader("example/data/2008_Sichuan_earthquake.txt"),
 				CleartkComponents.createOpenNLPSentenceSegmenter(),
 				CleartkComponents.createPrimitiveDescription(TokenAnnotator.class), 
-				CleartkComponents.createPrimitiveDescription(SnowballStemmer.class, SnowballStemmer.PARAM_STEMMER_NAME, "English"),
+				CleartkComponents.createPrimitiveDescription(DefaultSnowballStemmer.class, SnowballStemmer.PARAM_STEMMER_NAME, "English"),
 				taggerDescription,
 				ExamplePOSPlainTextWriter.getDescription(outputDirectory));
 		

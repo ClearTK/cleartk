@@ -37,6 +37,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter;
 import org.cleartk.token.TokenAnnotator;
+import org.cleartk.token.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.snowball.SnowballStemmer;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
@@ -84,7 +85,7 @@ public class InverseDocumentFrequencyWriterTests {
 						OpenNLPSentenceSegmenter.PARAM_SENTENCE_MODEL_FILE,
 						"./resources/models/OpenNLP.Sentence.English.bin.gz"),
 				AnalysisEngineFactory.createPrimitive(TokenAnnotator.class, typeSystem),
-				AnalysisEngineFactory.createPrimitive(SnowballStemmer.class, typeSystem,
+				AnalysisEngineFactory.createPrimitive(DefaultSnowballStemmer.class, typeSystem,
 						SnowballStemmer.PARAM_STEMMER_NAME, "English"),
 				AnalysisEngineFactory.createPrimitive(InverseDocumentFrequencyWriter.class, typeSystem,
 						InverseDocumentFrequencyWriter.PARAM_OUTPUT_FILE, this.mapFileName),
