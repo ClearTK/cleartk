@@ -31,6 +31,7 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.util.FileUtils;
+import org.cleartk.CleartkComponents;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.ViewURIUtil;
@@ -68,9 +69,8 @@ public class ExamplePOSPlainTextWriterTests {
 	@Test
 	public void test() throws Exception {
 		
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				ExamplePOSPlainTextWriter.getDescription(this.outputDirectory.getPath())); 
-		
+		AnalysisEngine engine = CleartkComponents.createPrimitive(ExamplePOSPlainTextWriter.class, ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY, this.outputDirectory.getPath());
+
 		JCas jCas = engine.newJCas();
 		TokenFactory.createTokens(jCas,
 				"I walked home. It was a nice day!", Token.class, Sentence.class, 
@@ -87,8 +87,7 @@ public class ExamplePOSPlainTextWriterTests {
 
 	@Test
 	public void testDescriptor() throws UIMAException, IOException {
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				ExamplePOSPlainTextWriter.getDescription(ExamplePOSPlainTextWriter.DEFAULT_OUTPUT_DIRECTORY));
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine("org.cleartk.example.pos.ExamplePOSPlainTextWriter");
 		Object outputDirectory = engine.getConfigParameterValue(
 				ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY);
 		Assert.assertEquals(ExamplePOSPlainTextWriter.DEFAULT_OUTPUT_DIRECTORY, outputDirectory);
