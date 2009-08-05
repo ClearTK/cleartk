@@ -38,6 +38,7 @@ import org.cleartk.CleartkComponents;
 import org.cleartk.corpus.ace2005.Ace2005GoldAnnotator;
 import org.cleartk.corpus.ace2005.Ace2005GoldReader;
 import org.cleartk.corpus.ace2005.Ace2005Writer;
+import org.cleartk.corpus.penntreebank.PennTreebankReader;
 import org.cleartk.corpus.timeml.TimeMLGoldAnnotator;
 import org.cleartk.corpus.timeml.TimeMLWriter;
 import org.cleartk.example.pos.ExamplePOSAnnotationHandler;
@@ -46,7 +47,7 @@ import org.cleartk.srl.propbank.PropbankGoldAnnotator;
 import org.cleartk.srl.propbank.PropbankGoldReader;
 import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
 import org.cleartk.token.TokenAnnotator;
-import org.cleartk.token.snowball.SnowballStemmer;
+import org.cleartk.token.snowball.DefaultSnowballStemmer;
 import org.xml.sax.SAXException;
 
 public class GenerateDescriptorFiles {
@@ -69,17 +70,18 @@ public class GenerateDescriptorFiles {
 		updateDescription(aed.getMetaData());
 		aed.toXML(new FileWriter(new File(outputDirectory, "SentencesAndTokens.xml")));
 
+		File examplePosDescDirectory = new File(outputDirectory, "org/cleartk/example/pos");
+		if(!examplePosDescDirectory.exists())
+			examplePosDescDirectory.mkdirs();
 		aed = ExamplePOSAnnotationHandler.getClassifierDescription(ExamplePOSAnnotationHandler.DEFAULT_MODEL);
 		updateDescription(aed.getMetaData());
-		aed.toXML(new FileWriter(new File(outputDirectory, "ExamplePOSAnnotator.xml")));
+		aed.toXML(new FileWriter(new File(examplePosDescDirectory, "ExamplePOSAnnotator.xml")));
 
 		aed = ExamplePOSAnnotationHandler.getWriterDescription(ExamplePOSAnnotationHandler.DEFAULT_OUTPUT_DIRECTORY);
 		updateDescription(aed.getMetaData());
-		aed.toXML(new FileWriter(new File(outputDirectory, "ExamplePOSDataWriter.xml")));
+		aed.toXML(new FileWriter(new File(examplePosDescDirectory, "ExamplePOSDataWriter.xml")));
 
-		aed = ExamplePOSPlainTextWriter.getDescription(ExamplePOSPlainTextWriter.DEFAULT_OUTPUT_DIRECTORY);
-		updateDescription(aed.getMetaData());
-		aed.toXML(new FileWriter(new File(outputDirectory, ExamplePOSPlainTextWriter.class.getSimpleName()+".xml")));
+		writePrimitiveDescription(ExamplePOSPlainTextWriter.class, outputDirectory);
 
 		writeCollectionReader(Ace2005GoldReader.class, outputDirectory);
 		writePrimitiveDescription(Ace2005GoldAnnotator.class, outputDirectory);
@@ -90,7 +92,9 @@ public class GenerateDescriptorFiles {
 		writeCollectionReader(PropbankGoldReader.class, outputDirectory);
 		writePrimitiveDescription(PropbankGoldAnnotator.class, outputDirectory);
 		writePrimitiveDescription(TokenAnnotator.class, outputDirectory);
-		writePrimitiveDescription(SnowballStemmer.class, outputDirectory);
+		writePrimitiveDescription(DefaultSnowballStemmer.class, outputDirectory);
+		writeCollectionReader(PennTreebankReader.class, outputDirectory);
+		
 
 	}
 	
@@ -123,7 +127,7 @@ public class GenerateDescriptorFiles {
 		String description = rmd.getDescription();
 		if(description == null)
 			description = "";
-		rmd.setDescription("This descriptor file was generated automatically by org.cleartk.descriptor.GenerateDescriptorFiles. \n\n"+
+		rmd.setDescription("This descriptor file was generated automatically by "+GenerateDescriptorFiles.class.getName()+". \n\n"+
 				license+description);
 	}
 
