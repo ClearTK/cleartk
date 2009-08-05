@@ -25,6 +25,7 @@ package org.cleartk.example.pos;
 
 import org.cleartk.CleartkComponents;
 import org.cleartk.token.TokenAnnotator;
+import org.cleartk.token.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.snowball.SnowballStemmer;
 import org.uutuc.util.SimplePipeline;
 
@@ -49,7 +50,7 @@ public class RunExamplePOSAnnotator {
 				CleartkComponents.createFilesCollectionReader("example/data/2008_Sichuan_earthquake.txt"),
 				CleartkComponents.createOpenNLPSentenceSegmenter(),
 				CleartkComponents.createPrimitiveDescription(TokenAnnotator.class), 
-				CleartkComponents.createPrimitiveDescription(SnowballStemmer.class, SnowballStemmer.PARAM_STEMMER_NAME, "English"),
+				CleartkComponents.createPrimitiveDescription(DefaultSnowballStemmer.class, SnowballStemmer.PARAM_STEMMER_NAME, "English"),
 				ExamplePOSAnnotationHandler.getClassifierDescription(ExamplePOSAnnotationHandler.DEFAULT_MODEL),
 				ExamplePOSPlainTextWriter.getDescription(ExamplePOSPlainTextWriter.DEFAULT_OUTPUT_DIRECTORY));
 
