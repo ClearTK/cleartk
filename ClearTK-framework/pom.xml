@@ -20,5 +20,19 @@
     	<version>2.2.2-incubating</version>
     	<optional>false</optional>
     </dependency>
+    <dependency>
+        <groupId>net.sourceforge.opennlp</groupId>
+        <artifactId>maxent</artifactId>
+        <version>2.5.1</version>
+        <scope>system</scope>
+        <systemPath>${basedir}/lib/maxent-2.5.1.jar</systemPath>
+    </dependency>
+    <dependency>
+        <groupId>cc.mallet</groupId>
+        <artifactId>mallet</artifactId>
+        <version>2.0-RC2</version>
+        <scope>system</scope>
+        <systemPath>${basedir}/lib/mallet.jar</systemPath>
+    </dependency>
   </dependencies>
 </project>
