@@ -35,7 +35,7 @@ import org.apache.uima.jcas.JCas;
 import org.cleartk.srl.type.SemanticArgument;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
 import org.cleartk.type.SimpleAnnotation;
-import org.cleartk.util.AnnotationUtil;
+import org.cleartk.util.AnnotationUtil2;
 import org.cleartk.util.UIMAUtil;
 
 
@@ -201,7 +201,7 @@ public class Proplabel {
 			argument.setCoreferenceAnnotations(UIMAUtil.toFSArray(view,
 					annotations));
 
-			Span extent = AnnotationUtil
+			Span extent = AnnotationUtil2
 					.getAnnotationsExtent(substantiveAnnotations);
 			argument.setBegin(extent.getStart());
 			argument.setEnd(extent.getEnd());

@@ -32,7 +32,7 @@ import org.apache.uima.jcas.JCas;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
 import org.cleartk.type.SimpleAnnotation;
 import org.cleartk.type.SplitAnnotation;
-import org.cleartk.util.AnnotationUtil;
+import org.cleartk.util.AnnotationUtil2;
 import org.cleartk.util.UIMAUtil;
 
 
@@ -82,7 +82,7 @@ public class PropbankSplitRelation extends PropbankRelation {
 			subAnnotations.add(rel.convert(view, topNode));
 		}
 		annotation.setAnnotations(UIMAUtil.toFSArray(view, subAnnotations));
-		Span extent = AnnotationUtil.getAnnotationsExtent(subAnnotations);
+		Span extent = AnnotationUtil2.getAnnotationsExtent(subAnnotations);
 		annotation.setBegin(extent.getStart());
 		annotation.setEnd(extent.getEnd());
 		annotation.addToIndexes();
