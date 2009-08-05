@@ -34,11 +34,11 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
 import org.cleartk.Initializable;
-import org.cleartk.util.EmptyAnnotator;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.TypeSystemDescriptionFactory;
+import org.uutuc.util.JCasAnnotatorAdapter;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -100,7 +100,7 @@ public class SequentialInstanceConsumer_ImplBaseTest {
 		
 		// get a UimaContext containing a producer class
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				EmptyAnnotator.class,
+				JCasAnnotatorAdapter.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER,
 				SequentialInstanceConsumer_ImplBaseTest.Handler.class.getName());
@@ -129,7 +129,7 @@ public class SequentialInstanceConsumer_ImplBaseTest {
 
 		// initialize a simple AnalysisEngine
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				EmptyAnnotator.class,
+				JCasAnnotatorAdapter.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER,
 				producerClass.getName());
