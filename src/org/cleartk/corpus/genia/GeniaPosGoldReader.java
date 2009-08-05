@@ -39,7 +39,7 @@ import org.apache.uima.pear.util.FileUtil;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
-import org.cleartk.ClearTKComponents;
+import org.cleartk.CleartkComponents;
 import org.cleartk.ViewNames;
 import org.cleartk.corpus.genia.util.GeniaPOSParser;
 import org.cleartk.corpus.genia.util.GeniaParse;
@@ -229,7 +229,7 @@ public class GeniaPosGoldReader extends CollectionReader_ImplBase {
 	public static CollectionReader getDescription(String geniaCorpusFile)
 	throws ResourceInitializationException {
 		return CollectionReaderFactory.createCollectionReader(
-				GeniaPosGoldReader.class, ClearTKComponents.TYPE_SYSTEM_DESCRIPTION,
+				GeniaPosGoldReader.class, CleartkComponents.TYPE_SYSTEM_DESCRIPTION,
 				GeniaPosGoldReader.PARAM_GENIA_CORPUS,geniaCorpusFile);
 	}
 
