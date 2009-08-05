@@ -5,7 +5,7 @@
     <annotatorImplementationName>org.cleartk.corpus.timeml.TimeMLGoldAnnotator</annotatorImplementationName>
     <analysisEngineMetaData>
         <name>TimeMLGoldAnnotator</name>
-        <description>This descriptor file was generated automatically by org.cleartk.descriptor.GenerateDescriptorFiles. 
+        <description>This descriptor file was generated automatically by org.cleartk.util.GenerateDescriptorFiles. 
 
 Copyright (c) 2009, Regents of the University of Colorado 
 All rights reserved.
