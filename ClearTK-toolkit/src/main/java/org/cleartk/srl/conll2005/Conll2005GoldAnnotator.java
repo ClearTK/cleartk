@@ -47,7 +47,7 @@ import org.cleartk.type.Sentence;
 import org.cleartk.type.SimpleAnnotation;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.AnnotationUtil;
+import org.cleartk.util.AnnotationUtil2;
 import org.cleartk.util.UIMAUtil;
 import org.junit.Assert;
 
@@ -175,7 +175,7 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
 			if( this.type.equals("S1") ) {
 				return this.children.get(0);
 			} else {
-				Span span = AnnotationUtil.getAnnotationsExtent(this.children);
+				Span span = AnnotationUtil2.getAnnotationsExtent(this.children);
 				TreebankNode node = new TreebankNode(jCas, span.getStart(), span.getEnd());
 				node.setNodeType(this.type);
 				node.setChildren(UIMAUtil.toFSArray(jCas, this.children));
@@ -225,7 +225,7 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
 		}
 		
 		public TopTreebankNode makeParse() {
-			Span span = AnnotationUtil.getAnnotationsExtent(this.terminals);
+			Span span = AnnotationUtil2.getAnnotationsExtent(this.terminals);
 			TopTreebankNode node = new TopTreebankNode(jCas, span.getStart(), span.getEnd());
 			node.setNodeType("TOP");
 			node.setChildren(UIMAUtil.toFSArray(jCas, parseStack.peek().children));
@@ -292,7 +292,7 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
 						this.argumentType = readArgumentType(r);
 						break;
 					case ')':
-						Span span = AnnotationUtil.getAnnotationsExtent(this.argumentTokens);
+						Span span = AnnotationUtil2.getAnnotationsExtent(this.argumentTokens);
 						SemanticArgument arg = new SemanticArgument(jCas, span.getStart(), span.getEnd());
 						arg.addToIndexes();
 						SimpleAnnotation relation = AnnotationRetrieval.getMatchingAnnotation(jCas, arg, TreebankNode.class);
