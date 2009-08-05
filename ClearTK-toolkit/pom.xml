@@ -7,7 +7,23 @@
   <version>0.9.5</version>
   <name>ClearTK-toolkit</name>
   <url>http://maven.apache.org</url>
+   <repositories>
+  	<repository>
+  		<snapshots>
+  			<enabled>false</enabled>
+  		</snapshots>
+  		<id>apache-m2-incubating-repository</id>
+  		<name>Apache m2-incubating-repository</name>
+  		<url>http://people.apache.org/repo/m2-incubating-repository/</url>
+  	</repository>
+  </repositories>
   <dependencies>
+    <dependency>
+    	<groupId>org.apache.uima</groupId>
+    	<artifactId>uimaj-document-annotation</artifactId>
+    	<version>2.2.2-incubating</version>
+    	<optional>false</optional>
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
