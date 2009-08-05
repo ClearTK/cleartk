@@ -41,5 +41,12 @@
         <scope>system</scope>
         <systemPath>${basedir}/lib/libsvm-2.89.jar</systemPath>
     </dependency>
+    <dependency>
+    	<groupId>org.uutuc</groupId>
+    	<artifactId>uutuc</artifactId>
+    	<version>0.9.6</version>
+        <scope>system</scope>
+        <systemPath>${basedir}/lib/uutuc-0.9.6.jar</systemPath>
+    </dependency>
   </dependencies>
 </project>
