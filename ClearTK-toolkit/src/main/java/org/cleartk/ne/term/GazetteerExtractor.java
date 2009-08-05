@@ -33,7 +33,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
 import org.cleartk.ne.type.GazetteerNamedEntityMention;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.AnnotationUtil;
+import org.cleartk.util.AnnotationUtil2;
 
 
 /**
@@ -62,7 +62,7 @@ public class GazetteerExtractor
 		List<GazetteerNamedEntityMention> gnems = AnnotationRetrieval.getAnnotations(jCas, windowAnnotation, GazetteerNamedEntityMention.class);
 		for(GazetteerNamedEntityMention gnem : gnems) {
 			if(gazetteerNames.contains(gnem.getMentionedEntity().getEntityType()) &&
-				AnnotationUtil.contains(gnem, focusAnnotation)) 
+				AnnotationUtil2.contains(gnem, focusAnnotation)) 
 			{
 				String entityType = gnem.getMentionedEntity().getEntityType();
 				Feature feature = new Feature("Gazetteer", entityType);
