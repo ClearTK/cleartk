@@ -11,7 +11,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>3.8.1</version>
+      <version>4.5</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -48,5 +48,10 @@
         <scope>system</scope>
         <systemPath>${basedir}/lib/uutuc-0.9.6.jar</systemPath>
     </dependency>
+    <dependency>
+    <groupId>net.sourceforge.collections</groupId>
+    <artifactId>collections-generic</artifactId>
+    <version>4.01</version>
+</dependency> 
   </dependencies>
 </project>
