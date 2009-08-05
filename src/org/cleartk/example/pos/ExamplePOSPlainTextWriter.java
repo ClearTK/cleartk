@@ -37,9 +37,10 @@ import org.cleartk.CleartkComponents;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.UIMAUtil;
 import org.cleartk.util.ViewURIUtil;
+import org.uutuc.descriptor.ConfigurationParameter;
 import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.util.InitializeUtil;
 
 /**
  * <br>
@@ -51,21 +52,23 @@ import org.uutuc.factory.AnalysisEngineFactory;
 public class ExamplePOSPlainTextWriter extends JCasAnnotator_ImplBase {
 
 	public static final String DEFAULT_OUTPUT_DIRECTORY = "example/data";
-	/**
-	 * 
-	 * "org.cleartk.example.pos.ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY"
-	 * is a single, required, string parameter that provides the directory where
-	 * the token/pos text files will be written.
-	 */
-	public static final String PARAM_OUTPUT_DIRECTORY = "org.cleartk.example.pos.ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY";
 
+	public static final String PARAM_OUTPUT_DIRECTORY = "org.cleartk.example.pos.ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY";
+	
+	@ConfigurationParameter(
+			name = PARAM_OUTPUT_DIRECTORY,
+			mandatory = true,
+			defaultValue = DEFAULT_OUTPUT_DIRECTORY,
+			description = "provides the directory where the token/pos text files will be written")
+	private String outputDirectoryName;
+	
 	protected File outputDir;
 
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
-		this.outputDir = new File((String) UIMAUtil.getRequiredConfigParameterValue(context,
-				ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY));
+		InitializeUtil.initialize(this, context);
+		this.outputDir = new File(outputDirectoryName);
 		if (!this.outputDir.exists()) {
 			this.outputDir.mkdirs();
 		}
@@ -100,4 +103,9 @@ public class ExamplePOSPlainTextWriter extends JCasAnnotator_ImplBase {
 				CleartkComponents.TYPE_SYSTEM_DESCRIPTION, CleartkComponents.TYPE_PRIORITIES,
 				ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY, outputDirectory);
 	}
+	
+	public void setOutputDirectoryName(String outputDirectoryName) {
+		this.outputDirectoryName = outputDirectoryName;
+	}
+
 }
