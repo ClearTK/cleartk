@@ -34,5 +34,12 @@
         <scope>system</scope>
         <systemPath>${basedir}/lib/mallet.jar</systemPath>
     </dependency>
+    <dependency>
+        <groupId>libsvm</groupId>
+        <artifactId>libsvm</artifactId>
+        <version>2.89</version>
+        <scope>system</scope>
+        <systemPath>${basedir}/lib/libsvm-2.89.jar</systemPath>
+    </dependency>
   </dependencies>
 </project>
