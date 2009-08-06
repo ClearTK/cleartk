@@ -63,7 +63,7 @@ public class TestsUtil {
 
 	static {
 		try {
-			TypeSystemDescription tsd = TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem");
+			TypeSystemDescription tsd = TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TestTypeSystem");
 			TYPE_SYSTEM.set(tsd);
 
 			AnalysisEngine aeAdapter = AnalysisEngineFactory.createPrimitive(
