@@ -82,6 +82,7 @@ public class BuildJar {
 			FileInputStream stream = new FileInputStream(file);
 			byte[] byteArray = new byte[stream.available()];
 			stream.read(byteArray);
+			stream.close();
 			this.write(byteArray);
 		}
 		

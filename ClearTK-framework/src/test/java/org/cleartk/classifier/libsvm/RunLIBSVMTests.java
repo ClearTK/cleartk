@@ -46,6 +46,7 @@ import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.InstanceConsumer;
 import org.cleartk.classifier.Train;
 import org.cleartk.util.TestsUtil;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -71,9 +72,14 @@ public class RunLIBSVMTests {
 		random = new Random(System.currentTimeMillis());
 	}
 	
-//	@After
-	public void tearDown() {
-		TearDownUtil.emptyDirectory(new File(this.outputDirectory));
+	@After
+	public void tearDown() throws Exception {
+		File outputDirectory = new File(this.outputDirectory);
+		TearDownUtil.removeDirectory(outputDirectory);
+		if (outputDirectory.exists()) {
+			System.in.read();
+		}
+		Assert.assertFalse(outputDirectory.exists());
 	}
 	
 	@Test
@@ -107,8 +113,9 @@ public class RunLIBSVMTests {
 		hider.restoreOutput();
 		
 		// read in the classifier and test it on new instances
-		BinaryLIBSVMClassifier classifier = new BinaryLIBSVMClassifier(
-				new JarFile(new File(this.outputDirectory, "model.jar")));
+		JarFile modelFile = new JarFile(new File(this.outputDirectory, "model.jar")); 
+		BinaryLIBSVMClassifier classifier = new BinaryLIBSVMClassifier(modelFile);
+		modelFile.close();
 		for (Instance<Boolean> instance: generateBooleanInstances(1000)) {
 			List<Feature> features = instance.getFeatures();
 			Boolean outcome = instance.getOutcome();
@@ -147,8 +154,9 @@ public class RunLIBSVMTests {
 		hider.restoreOutput();
 		
 		// read in the classifier and test it on new instances
-		LIBLINEARClassifier classifier = new LIBLINEARClassifier(
-				new JarFile(new File(this.outputDirectory, "model.jar")));
+		JarFile modelFile = new JarFile(new File(this.outputDirectory, "model.jar")); 
+		LIBLINEARClassifier classifier = new LIBLINEARClassifier(modelFile);
+		modelFile.close();
 		for (Instance<Boolean> instance: generateBooleanInstances(1000)) {
 			List<Feature> features = instance.getFeatures();
 			Boolean outcome = instance.getOutcome();
@@ -187,8 +195,9 @@ public class RunLIBSVMTests {
 		hider.restoreOutput();
 		
 		// read in the classifier and test it on new instances
-		MultiClassLIBSVMClassifier classifier = new MultiClassLIBSVMClassifier(
-				new JarFile(new File(this.outputDirectory, "model.jar")));
+		JarFile modelFile = new JarFile(new File(this.outputDirectory, "model.jar")); 
+		MultiClassLIBSVMClassifier classifier = new MultiClassLIBSVMClassifier(modelFile);
+		modelFile.close();
 
 		for (Instance<String> instance: generateStringInstances(1000)) {
 			List<Feature> features = instance.getFeatures();
