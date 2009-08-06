@@ -159,16 +159,6 @@ public class ViterbiTest {
 			return null;
 		}
 
-		public List<String> classifySequence(List<List<Feature>> features) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		public boolean isSequential() {
-			// TODO Auto-generated method stub
-			return false;
-		}
-
 		public List<ScoredOutcome<String>> score(List<Feature> features, int maxResults) {
 			List<ScoredOutcome<String>> scores = new ArrayList<ScoredOutcome<String>>();
 
@@ -212,16 +202,6 @@ public class ViterbiTest {
 			}
 
 			throw new RuntimeException();
-		}
-
-		public List<ScoredOutcome<List<String>>> scoreSequence(List<List<Feature>> features, int maxResults) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		public void initialize(UimaContext context) throws ResourceInitializationException {
-			// TODO Auto-generated method stub
-
 		}
 
 	}
@@ -276,14 +256,6 @@ public class ViterbiTest {
 
 		public String classify(List<Feature> features) {
 			return null;
-		}
-
-		public List<String> classifySequence(List<List<Feature>> features) {
-			return null;
-		}
-
-		public boolean isSequential() {
-			return false;
 		}
 
 		public List<ScoredOutcome<String>> score(List<Feature> features, int maxResults) {
@@ -360,17 +332,6 @@ public class ViterbiTest {
 
 			return scores;
 		}
-
-		public List<ScoredOutcome<List<String>>> scoreSequence(List<List<Feature>> features, int maxResults) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		public void initialize(UimaContext context) throws ResourceInitializationException {
-			// TODO Auto-generated method stub
-
-		}
-
 	}
 
 	public static class TestViterbiClassifier extends ViterbiClassifier<String> {
