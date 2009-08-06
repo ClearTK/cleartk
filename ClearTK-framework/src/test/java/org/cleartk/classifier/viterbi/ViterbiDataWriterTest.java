@@ -52,11 +52,13 @@ import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.TestsUtil;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.TokenFactory;
 import org.uutuc.util.HideOutput;
+import org.uutuc.util.TearDownUtil;
 
 /**
  * <br>Copyright (c) 2009, Regents of the University of Colorado 
@@ -91,10 +93,15 @@ public class ViterbiDataWriterTest {
 
 	private String outputDirectory = "test/data/viterbi";
 	
-//	@After
-//	public void tearDown() {
-//		TearDownUtil.removeDirectory(new File(outputDirectory));
-//	}
+	@After
+	public void tearDown() throws Exception {
+		File outputDirectory = new File(this.outputDirectory);
+		TearDownUtil.removeDirectory(outputDirectory);
+		// Some files will get left around because maxent doesn't close its
+		// handle on the training-data.maxent file. If this ever gets fixed,
+		// we should uncomment the following line:
+		// Assert.assertFalse(outputDirectory.exists());
+	}
 	
 	@Test
 	public void testConsumeAll() throws Exception {
