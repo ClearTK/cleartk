@@ -37,9 +37,9 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.CleartkComponents;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.AnnotationHandler;
+import org.cleartk.classifier.ClassifierAnnotator;
 import org.cleartk.classifier.DataWriterAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
@@ -200,9 +200,13 @@ public class RunLIBSVMTests {
 	@Test
 	public void testMultiClassLIBSVM2() throws Exception {
 		
-		AnalysisEngineDescription dataWriterDescription = CleartkComponents.createDataWriterAnnotator(
-				TestMultiClassLIBSVM2Handler.class, DefaultMultiClassLIBSVMDataWriterFactory.class,
-				outputDirectory);
+		AnalysisEngineDescription dataWriterDescription = AnalysisEngineFactory.createPrimitiveDescription(
+				DataWriterAnnotator.class, null, null,
+				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
+				TestMultiClassLIBSVM2Handler.class.getName(),
+				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS,
+				DefaultMultiClassLIBSVMDataWriterFactory.class.getName(),
+				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory);
 
 		AnalysisEngine dataWriter = AnalysisEngineFactory.createPrimitive(dataWriterDescription);
 		
@@ -223,8 +227,11 @@ public class RunLIBSVMTests {
 		Train.main(this.outputDirectory, "-c", "1.0", "-t", "2");
 		hider.restoreOutput();
 		
-		AnalysisEngineDescription classifierDescription = CleartkComponents.createClassifierAnnotator(
-				TestMultiClassLIBSVM2HandlerB.class, outputDirectory +"/model.jar");
+		AnalysisEngineDescription classifierDescription = AnalysisEngineFactory.createPrimitiveDescription(
+				ClassifierAnnotator.class, null, null,
+				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
+				TestMultiClassLIBSVM2HandlerB.class.getName(),
+				ClassifierAnnotator.PARAM_CLASSIFIER_JAR, outputDirectory +"/model.jar");
 		AnalysisEngine classifier = AnalysisEngineFactory.createPrimitive(classifierDescription);
 		
 		jCas.reset();
