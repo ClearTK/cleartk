@@ -119,7 +119,7 @@ public class MalletCRFClassifierTest {
 		
 		JarFile modelFile = new JarFile(new File(outputDirectory, "model.jar"));
 		MalletCRFClassifier classifier = new MalletCRFClassifier(modelFile);
-		assertTrue(classifier instanceof SequentialClassifier);
+		assertTrue(classifier instanceof SequentialClassifier<?>);
 		
 		List<List<Feature>> sequenceFeatures = new ArrayList<List<Feature>>();
 		List<Instance<String>> instances = createInstances();
