@@ -32,7 +32,7 @@ import org.apache.uima.jcas.JCas;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.WindowNGramFeature;
 import org.cleartk.token.chunk.type.Subtoken;
-import org.cleartk.type.Sentence;
+import org.cleartk.type.test.Sentence;
 import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;

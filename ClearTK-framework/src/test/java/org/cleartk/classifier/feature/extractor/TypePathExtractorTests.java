@@ -38,19 +38,22 @@ import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.cas.StringArray;
-import org.cleartk.CleartkComponents;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.TypePathFeature;
+import org.cleartk.type.test.DependencyRelation;
+import org.cleartk.type.test.Header;
+import org.cleartk.type.test.POSTag;
+import org.cleartk.type.test.Sentence;
+import org.cleartk.type.test.Token;
+import org.cleartk.type.test.Lemma;
 import org.cleartk.util.AnnotationRetrieval;
+import org.cleartk.util.TestsUtil;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.JCasFactory;
+import org.uutuc.factory.TokenFactory;
 import org.uutuc.factory.TypeSystemDescriptionFactory;
 
-import de.julielab.jules.types.DependencyRelation;
-import de.julielab.jules.types.Lemma;
-import de.julielab.jules.types.POSTag;
-import de.julielab.jules.types.Token;
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
  * <br>All rights reserved.
@@ -61,12 +64,11 @@ import de.julielab.jules.types.Token;
 public class TypePathExtractorTests {
 
 	public static class Annotator extends JCasAnnotator_ImplBase {
-		/**
-		 * Assumes that we are processing the text: "Whatever it is you might think
-		 * you have You have nothing to lose Through every dead and living thing
-		 * Time runs like a fuse."
-		 */
 		public void process(JCas jCas) throws AnalysisEngineProcessException {
+			//The text here was once upon a time some lyrics by a favorite singer which have since been obfuscated to avoid any copyright issues.
+			jCas.setDocumentText(
+					"Wwwwwwww ii ss yyy mmmmm ttttt yyy hhhh " + "Yyy hhhh nnnnnnn tt llll "
+					+ "Ttttttt eeeee dddd aaa llllll ttttt " + "Tttt rrrr llll a ffff.");
 			Token token1 = new Token(jCas, 0, 8);
 			token1.addToIndexes();
 			Lemma lemma = new Lemma(jCas);
@@ -125,12 +127,11 @@ public class TypePathExtractorTests {
 	public void testExtract() throws IOException, UIMAException {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				TypePathExtractorTests.Annotator.class,
-				TypeSystemDescriptionFactory.createTypeSystemDescriptionFromPath("test/desc/JulieTypeSystem.xml"));
+				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TestTypeSystem"));
 		
-		//The text here was once upon a time some lyrics by a favorite singer which have since been obfuscated to avoid any copyright issues.
-		JCas jCas = AnalysisEngineFactory.process(engine,
-				"Wwwwwwww ii ss yyy mmmmm ttttt yyy hhhh " + "Yyy hhhh nnnnnnn tt llll "
-				+ "Ttttttt eeeee dddd aaa llllll ttttt " + "Tttt rrrr llll a ffff.");
+		JCas jCas = TestsUtil.getJCas();
+		engine.process(jCas);
+		engine.collectionProcessComplete();
 		FSIndex fsIndex = jCas.getAnnotationIndex(Token.type);
 
 		assertTrue(jCas.getTypeSystem().subsumes(jCas.getTypeSystem().getType("uima.tcas.Annotation"),
@@ -255,38 +256,38 @@ public class TypePathExtractorTests {
 
 	@Test
 	public void testIsValidatePath() throws IOException, UIMAException {
-		JCas jCas = JCasFactory.createJCasFromPath("test/desc/JulieTypeSystem.xml"); 
+		JCas jCas = JCasFactory.createJCas("org.cleartk.TestTypeSystem.xml"); 
 		
-		assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(de.julielab.jules.types.ResourceEntry.type), "source",
+		assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(POSTag.type), "value",
 				jCas));
-		assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(de.julielab.jules.types.Header.type),
+		assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(Header.type),
 				"authors/lastName", jCas));
-		assertTrue(!TypePathExtractor.isValidPath(jCas.getCasType(de.julielab.jules.types.Header.type),
+		assertTrue(!TypePathExtractor.isValidPath(jCas.getCasType(Header.type),
 				"authors/lastNames", jCas));
-		assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(de.julielab.jules.types.Token.type),
+		assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(Token.type),
 				"posTag/language", jCas));
-		assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(de.julielab.jules.types.Token.type), "posTag", jCas));
-		assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(de.julielab.jules.types.Token.type),
+		assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(Token.type), "posTag", jCas));
+		assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(Token.type),
 				"depRel/head/depRel/projective", jCas));
-		assertTrue(!TypePathExtractor.isValidPath(jCas.getCasType(de.julielab.jules.types.Token.type),
+		assertTrue(!TypePathExtractor.isValidPath(jCas.getCasType(Token.type),
 				"depRel/head/projective", jCas));
-		assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(de.julielab.jules.types.Token.type),
+		assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(Token.type),
 				"depRel/head/orthogr", jCas));
-		assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(de.julielab.jules.types.Token.type),
+		assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(Token.type),
 				"depRel/projective", jCas));
-		assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(de.julielab.jules.types.Token.type),
+		assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(Token.type),
 				"depRel/head/depRel/projective", jCas));
-		assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(de.julielab.jules.types.Token.type),
+		assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(Token.type),
 				"depRel/head/posTag/tagsetId", jCas));
 	}
 
 	@Test
 	public void testIsValidType() throws IOException, UIMAException {
-		JCas jCas = JCasFactory.createJCasFromPath("test/desc/JulieTypeSystem.xml"); 
+		JCas jCas = JCasFactory.createJCas("org.cleartk.TestTypeSystem.xml"); 
 
-		assertTrue(TypePathExtractor.isValidType(jCas.getCasType(de.julielab.jules.types.ResourceEntry.type), jCas
+		assertTrue(TypePathExtractor.isValidType(jCas.getCasType(POSTag.type), jCas
 				.getTypeSystem()));
-		assertTrue(TypePathExtractor.isValidType(jCas.getCasType(de.julielab.jules.types.Annotation.type), jCas
+		assertTrue(TypePathExtractor.isValidType(jCas.getCasType(Token.type), jCas
 				.getTypeSystem()));
 
 		// subtypes of uima.cas.String do not have JCas class generated for them
@@ -302,20 +303,19 @@ public class TypePathExtractorTests {
 
 	@Test
 	public void testTicket23() throws IOException, UIMAException {
-		AnalysisEngine sentencesAndTokens = AnalysisEngineFactory.createAggregate(CleartkComponents.createSentencesAndTokens());
-		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokens, "test/data/docs/huckfinn.txt");
 
 		// token "place" in "wide. This place was a tolerable long,");
-		org.cleartk.type.Token token = AnnotationRetrieval.get(jCas, org.cleartk.type.Token.class,
-				60);
+		JCas jCas = TestsUtil.getJCas();
+		TokenFactory.createTokens(jCas, "wide .\nThis place was a tolerable long ,",
+				Token.class, Sentence.class);
+		Token token = AnnotationRetrieval.get(jCas, Token.class, 3);
 
 		assertEquals("place", token.getCoveredText());
 		token.setPos("A");
-		org.cleartk.type.Token tokenL0 = AnnotationRetrieval.get(jCas,
-				org.cleartk.type.Token.class, 59);
+		Token tokenL0 = AnnotationRetrieval.get(jCas, Token.class, 2);
 		tokenL0.setPos("B");
 
-		TypePathExtractor posExtractor = new TypePathExtractor(org.cleartk.type.Token.class, "pos");
+		TypePathExtractor posExtractor = new TypePathExtractor(Token.class, "pos");
 
 		Feature feature = posExtractor.extract(jCas, token).get(0);
 		assertEquals("A", feature.getValue().toString());
