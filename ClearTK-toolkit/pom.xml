@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.cleartk</groupId>
-	<artifactId>ClearTK-toolkit</artifactId>
+	<artifactId>cleartk-toolkit</artifactId>
 	<packaging>jar</packaging>
 	<version>0.9.5</version>
 	<name>ClearTK-toolkit</name>
@@ -38,7 +38,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
-			<artifactId>ClearTK-framework</artifactId>
+			<artifactId>cleartk-framework</artifactId>
 			<version>0.9.5</version>
 			<optional>false</optional>
 		</dependency>
