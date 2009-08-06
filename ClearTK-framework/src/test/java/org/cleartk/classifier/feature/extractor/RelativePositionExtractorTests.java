@@ -87,7 +87,7 @@ public class RelativePositionExtractorTests {
 	
 	private void testOne(int begin1, int end1, int begin2, int end2, String expected)
 	throws UIMAException {
-		JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
+		JCas jCas = JCasFactory.createJCas("org.cleartk.TestTypeSystem");
 		Annotation annotation1 = new Annotation(jCas, begin1, end1);
 		Annotation annotation2 = new Annotation(jCas, begin2, end2);
 		RelativePositionExtractor extractor;

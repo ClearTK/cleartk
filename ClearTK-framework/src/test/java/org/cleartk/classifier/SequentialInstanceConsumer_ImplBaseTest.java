@@ -101,7 +101,7 @@ public class SequentialInstanceConsumer_ImplBaseTest {
 		// get a UimaContext containing a producer class
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				JCasAnnotatorAdapter.class,
-				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
+				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TestTypeSystem"),
 				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER,
 				SequentialInstanceConsumer_ImplBaseTest.Handler.class.getName());
 		UimaContext context = engine.getUimaContext();
@@ -130,7 +130,7 @@ public class SequentialInstanceConsumer_ImplBaseTest {
 		// initialize a simple AnalysisEngine
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				JCasAnnotatorAdapter.class,
-				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
+				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TestTypeSystem"),
 				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER,
 				producerClass.getName());
 		

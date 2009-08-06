@@ -58,7 +58,7 @@ public class BagExtractorTests {
 	public void setUp() throws Exception {
 		this.engine = AnalysisEngineFactory.createPrimitive(
 				JCasAnnotatorAdapter.class,
-				TypeSystemDescriptionFactory.createTypeSystemDescription(Token.class, Sentence.class));;
+				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TestTypeSystem"));;
 		this.jCasObjects = new ArrayList<JCas>();
 		this.expectedTokenLists = new ArrayList<List<String>>();
 		this.expectedPOSLists = new ArrayList<List<String>>();
@@ -149,7 +149,7 @@ public class BagExtractorTests {
 
 		// set the document text and add Token annotations as indicated
 		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class, tokensString, posTagsString, null,
-				"org.cleartk.type.Token:pos", null);
+				"org.cleartk.type.test.Token:pos", null);
 	}
 
 	private void testOne(

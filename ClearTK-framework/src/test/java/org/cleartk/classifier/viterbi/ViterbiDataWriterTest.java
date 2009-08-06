@@ -111,7 +111,7 @@ public class ViterbiDataWriterTest {
 		String text = "Do I really have to come up with some creative text, or can I just write anything?";
 		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class,
 				"Do I really have to come up with some creative text , or can I just write anything ?",
-				"D I R H T C U W S C T , O C I J W A ?", null, "org.cleartk.type.Token:pos", null);
+				"D I R H T C U W S C T , O C I J W A ?", null, "org.cleartk.type.test.Token:pos", null);
 
 		engine.process(jCas);
 		engine.collectionProcessComplete();

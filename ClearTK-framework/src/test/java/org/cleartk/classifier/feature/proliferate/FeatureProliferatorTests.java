@@ -142,7 +142,7 @@ public class FeatureProliferatorTests {
 	public void testProliferatingExtractor() throws UIMAException, IOException {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				JCasAnnotatorAdapter.class,
-				TypeSystemDescriptionFactory.createTypeSystemDescription(Token.class));
+				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TestTypeSystem"));
 		JCas jCas = engine.newJCas();
 
 		jCas.setDocumentText("Hello World 2008!");

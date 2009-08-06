@@ -256,7 +256,7 @@ public class TypePathExtractorTests {
 
 	@Test
 	public void testIsValidatePath() throws IOException, UIMAException {
-		JCas jCas = JCasFactory.createJCas("org.cleartk.TestTypeSystem.xml"); 
+		JCas jCas = JCasFactory.createJCas("org.cleartk.TestTypeSystem"); 
 		
 		assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(POSTag.type), "value",
 				jCas));
@@ -283,7 +283,7 @@ public class TypePathExtractorTests {
 
 	@Test
 	public void testIsValidType() throws IOException, UIMAException {
-		JCas jCas = JCasFactory.createJCas("org.cleartk.TestTypeSystem.xml"); 
+		JCas jCas = JCasFactory.createJCas("org.cleartk.TestTypeSystem"); 
 
 		assertTrue(TypePathExtractor.isValidType(jCas.getCasType(POSTag.type), jCas
 				.getTypeSystem()));

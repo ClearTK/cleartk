@@ -51,12 +51,12 @@ public class NGramExtractorTests {
 
 	@Test
 	public void test() throws UIMAException {
-		JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
+		JCas jCas = JCasFactory.createJCas("org.cleartk.TestTypeSystem");
 		TokenFactory.createTokens(jCas,
 				"She sells seashells by the sea shore", Token.class, Sentence.class, 
 				null, 
 				"PRP VBZ NNS IN DT NN NN",
-				null, "org.cleartk.type.Token:pos", null);
+				null, "org.cleartk.type.test.Token:pos", null);
 		DocumentAnnotation document = AnnotationRetrieval.getDocument(jCas);
 		
 		SpannedTextExtractor textExtractor = new SpannedTextExtractor();
