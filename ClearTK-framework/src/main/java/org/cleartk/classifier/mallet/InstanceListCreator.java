@@ -64,6 +64,7 @@ public class InstanceListCreator {
 
 		Reader fileReader = new FileReader (dataFile);
 		instanceList.addThruPipe (new DataIterator (fileReader));
+		fileReader.close();
 
 		return instanceList;
 		

@@ -50,6 +50,7 @@ import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 import org.cleartk.classifier.mallet.factory.ClassifierTrainerFactory;
 import org.cleartk.util.TestsUtil;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.util.HideOutput;
@@ -67,8 +68,10 @@ public class MalletDataWriterTest {
 	private String outputDirectory = "test/data/mallet/mallet-data-writer";
 
 	@After
-	public void tearDown() {
-		TearDownUtil.removeDirectory(new File(outputDirectory));
+	public void tearDown() throws Exception {
+		File outputDirectory = new File(this.outputDirectory);
+		TearDownUtil.removeDirectory(outputDirectory);
+		Assert.assertFalse(outputDirectory.exists());
 	}
 
 	public class TestHandler1 implements AnnotationHandler<String> {
@@ -245,6 +248,7 @@ public class MalletDataWriterTest {
 		catch (AnalysisEngineProcessException e) {
 			aepe = e;
 		}
+		dataWriterAnnotator.collectionProcessComplete();
 		assertNotNull(aepe);
 	}
 

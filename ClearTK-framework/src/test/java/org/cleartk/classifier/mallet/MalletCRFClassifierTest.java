@@ -92,8 +92,13 @@ public class MalletCRFClassifierTest {
 	private String outputDirectory = "test/data/mallet/mallet-crf-classifier";
 
 	@After
-	public void tearDown() {
-		TearDownUtil.removeDirectory(new File(outputDirectory));
+	public void tearDown() throws Exception {
+		File outputDirectory = new File(this.outputDirectory);
+		TearDownUtil.removeDirectory(outputDirectory);
+		// Some files will get left around because mallet CRF doesn't close its
+		// handle on the training-data.maxent file. If this ever gets fixed,
+		// we should uncomment the following line:
+		// Assert.assertFalse(outputDirectory.exists());
 	}
 	
 	@Test
@@ -119,6 +124,7 @@ public class MalletCRFClassifierTest {
 		
 		JarFile modelFile = new JarFile(new File(outputDirectory, "model.jar"));
 		MalletCRFClassifier classifier = new MalletCRFClassifier(modelFile);
+		modelFile.close();
 		assertTrue(classifier instanceof SequentialClassifier<?>);
 		
 		List<List<Feature>> sequenceFeatures = new ArrayList<List<Feature>>();

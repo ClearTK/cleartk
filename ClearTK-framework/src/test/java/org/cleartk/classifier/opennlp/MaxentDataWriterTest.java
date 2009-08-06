@@ -220,7 +220,6 @@ public class MaxentDataWriterTest {
 	public void test4() throws Exception {
 
 		HideOutput hider = new HideOutput();
-		String outputDirectory = "test/data/mallet/mallet-data-writer";
 
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(DataWriterAnnotator.class,
 				TestsUtil.getTypeSystemDescription(), InstanceConsumer.PARAM_ANNOTATION_HANDLER, TestHandler4.class
@@ -236,6 +235,7 @@ public class MaxentDataWriterTest {
 		catch (AnalysisEngineProcessException e) {
 			aepe = e;
 		}
+		dataWriterAnnotator.collectionProcessComplete();
 		assertNotNull(aepe);
 		hider.restoreOutput();
 		

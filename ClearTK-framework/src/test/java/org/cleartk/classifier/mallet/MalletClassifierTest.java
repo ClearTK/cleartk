@@ -45,6 +45,7 @@ import org.cleartk.classifier.InstanceConsumer;
 import org.cleartk.classifier.Train;
 import org.cleartk.util.TestsUtil;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
@@ -70,8 +71,10 @@ public class MalletClassifierTest {
 	}
 
 	@After
-	public void tearDown() {
-		TearDownUtil.removeDirectory(new File(outputDirectory));
+	public void tearDown() throws Exception {
+		File outputDirectory = new File(this.outputDirectory);
+		TearDownUtil.removeDirectory(outputDirectory);
+		Assert.assertFalse(outputDirectory.exists());
 	}
 
 	private static Instance<String> generateInstance(Random random){
@@ -152,6 +155,7 @@ public class MalletClassifierTest {
 
 		JarFile modelFile = new JarFile(new File(outputDirectory, "model.jar"));
 		MalletClassifier classifier = new MalletClassifier(modelFile);
+		modelFile.close();
 		
 		Instance<String> testInstance = new Instance<String>();
 		testInstance.add(new Feature("hello", random.nextInt(1000)+1000));
