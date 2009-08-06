@@ -66,8 +66,6 @@ import org.uutuc.factory.JCasFactory;
 import org.uutuc.factory.TokenFactory;
 import org.uutuc.factory.TypeSystemDescriptionFactory;
 
-import de.julielab.jules.types.Entity;
-
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
  * <br>All rights reserved.
@@ -324,16 +322,16 @@ public class AnnotationRetrievalTests {
 		JCas jCas = JCasFactory.createJCasFromPath("test/desc/JulieTypeSystem.xml");
 		jCas.setDocumentText("This is text that supports the above bug report: Alls lls. ");
 		
-		Entity entity = new Entity(jCas, 50, 53);
+		NamedEntityMention entity = new NamedEntityMention(jCas, 50, 53);
 		entity.addToIndexes();
 		Assert.assertEquals("lls", entity.getCoveredText());
 		
-		de.julielab.jules.types.Token token = new de.julielab.jules.types.Token(jCas, 49, 53);
+		Token token = new Token(jCas, 49, 53);
 		token.addToIndexes();
 		
 		Assert.assertEquals("Alls", token.getCoveredText());
 		
-		de.julielab.jules.types.Token containingToken = AnnotationRetrieval.getContainingAnnotation(jCas, entity, de.julielab.jules.types.Token.class);
+		Token containingToken = AnnotationRetrieval.getContainingAnnotation(jCas, entity, Token.class);
 		
 		Assert.assertNotNull(containingToken);
 		Assert.assertEquals("Alls", containingToken.getCoveredText());
