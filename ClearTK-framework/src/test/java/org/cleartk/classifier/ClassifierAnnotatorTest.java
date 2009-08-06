@@ -44,7 +44,6 @@ import org.cleartk.util.ReflectionUtil.TypeArgumentDelegator;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.UimaContextFactory;
 import org.uutuc.util.TearDownUtil;
 
@@ -77,37 +76,13 @@ public class ClassifierAnnotatorTest {
 	}
 
 	@Test
-	public void testDescriptor() throws Exception {
-		ResourceInitializationException rie = null;
-		try {
-			AnalysisEngineFactory.createAnalysisEngine("org.cleartk.classifier.ClassifierAnnotator");
-		}
-		catch (ResourceInitializationException e) {
-			rie = e;
-		}
-		assertNotNull(rie);
-
-		ClassifierManifest manifest = new ClassifierManifest();
-		manifest.setClassifierBuilder(new Test1Builder());
-		manifest.write(new File(outputDirectory));
-		BuildJar.main(outputDirectory);
-
-		AnalysisEngineFactory
-				.createAnalysisEngine("org.cleartk.classifier.ClassifierAnnotator",
-						ClassifierAnnotator.PARAM_ANNOTATION_HANDLER, Test1Handler.class.getName(),
-						ClassifierAnnotator.PARAM_CLASSIFIER_JAR, new File(outputDirectory, BuildJar.MODEL_FILE_NAME)
-								.getPath());
-
-	}
-
-	@Test
 	public void testBadFileName() throws CleartkException {
 		IOException ioe = null;
 		try {
 			ClassifierAnnotator<String> classifierAnnotator = new ClassifierAnnotator<String>();
 			classifierAnnotator.initialize(UimaContextFactory.createUimaContext(
 					ClassifierAnnotator.PARAM_CLASSIFIER_JAR, new File(outputDirectory, "asdf.jar").getPath(),
-					ClassifierAnnotator.PARAM_ANNOTATION_HANDLER, Test1Handler.class.getName()));
+					InstanceConsumer.PARAM_ANNOTATION_HANDLER, Test1Handler.class.getName()));
 			classifierAnnotator.consume(InstanceFactory.createInstance("hello", 1, 1));
 		}
 		catch (ResourceInitializationException e) {
@@ -127,7 +102,7 @@ public class ClassifierAnnotatorTest {
 		ClassifierAnnotator<String> classifierAnnotator = new ClassifierAnnotator<String>();
 		classifierAnnotator.initialize(UimaContextFactory.createUimaContext(
 				ClassifierAnnotator.PARAM_CLASSIFIER_JAR, new File(outputDirectory, "model.jar").getPath(),
-				ClassifierAnnotator.PARAM_ANNOTATION_HANDLER, Test1Handler.class.getName()));
+				InstanceConsumer.PARAM_ANNOTATION_HANDLER, Test1Handler.class.getName()));
 		classifierAnnotator.consume(InstanceFactory.createInstance("hello", 1, 1));
 	}
 
@@ -185,7 +160,7 @@ public class ClassifierAnnotatorTest {
 		try {
 			classifierAnnotator.initialize(UimaContextFactory.createUimaContext(
 					ClassifierAnnotator.PARAM_CLASSIFIER_JAR, new File(outputDirectory, "model.jar").getPath(),
-					ClassifierAnnotator.PARAM_ANNOTATION_HANDLER, Test2Handler.class.getName()));
+					InstanceConsumer.PARAM_ANNOTATION_HANDLER, Test2Handler.class.getName()));
 		}
 		catch (ResourceInitializationException e) {
 			rie = e;
@@ -243,7 +218,7 @@ public class ClassifierAnnotatorTest {
 		ClassifierAnnotator<String> classifierAnnotator = new ClassifierAnnotator<String>();
 		classifierAnnotator.initialize(UimaContextFactory.createUimaContext(
 				ClassifierAnnotator.PARAM_CLASSIFIER_JAR, new File(outputDirectory, "model.jar").getPath(),
-				ClassifierAnnotator.PARAM_ANNOTATION_HANDLER, Test3Handler.class.getName()));
+				InstanceConsumer.PARAM_ANNOTATION_HANDLER, Test3Handler.class.getName()));
 	}
 
 	public class A {
@@ -306,7 +281,7 @@ public class ClassifierAnnotatorTest {
 		try {
 			classifierAnnotator.initialize(UimaContextFactory.createUimaContext(
 					ClassifierAnnotator.PARAM_CLASSIFIER_JAR, new File(outputDirectory, "model.jar").getPath(),
-					ClassifierAnnotator.PARAM_ANNOTATION_HANDLER, Test4Handler.class.getName()));
+					InstanceConsumer.PARAM_ANNOTATION_HANDLER, Test4Handler.class.getName()));
 		}
 		catch (ResourceInitializationException e) {
 			rie = e;
@@ -362,7 +337,7 @@ public class ClassifierAnnotatorTest {
 		ClassifierAnnotator<String> classifierAnnotator = new ClassifierAnnotator<String>();
 		classifierAnnotator.initialize(UimaContextFactory.createUimaContext(
 				ClassifierAnnotator.PARAM_CLASSIFIER_JAR, new File(outputDirectory, "model.jar").getPath(),
-				ClassifierAnnotator.PARAM_ANNOTATION_HANDLER, Test5Handler.class.getName()));
+				InstanceConsumer.PARAM_ANNOTATION_HANDLER, Test5Handler.class.getName()));
 	}
 
 	public static class Test5Classifier<OUTCOME_TYPE> implements Classifier<OUTCOME_TYPE>, TypeArgumentDelegator {
