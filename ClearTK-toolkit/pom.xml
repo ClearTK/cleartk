@@ -37,6 +37,12 @@
 			<optional>false</optional>
 		</dependency>
 		<dependency>
+			<groupId>org.cleartk</groupId>
+			<artifactId>ClearTK-framework</artifactId>
+			<version>0.9.5</version>
+			<optional>false</optional>
+		</dependency>
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.5</version>
