@@ -16,6 +16,14 @@
   		<name>Apache m2-incubating-repository</name>
   		<url>http://people.apache.org/repo/m2-incubating-repository/</url>
   	</repository>
+  	<repository>
+  		<snapshots>
+  			<enabled>false</enabled>
+  		</snapshots>
+  		<id>uutuc-googlecode</id>
+  		<name>uutuc Google Code repository</name>
+  		<url>https://uutuc.googlecode.com/svn/repo/</url>
+  	</repository>
   </repositories>
   <dependencies>
     <dependency>
@@ -51,6 +59,13 @@
         <systemPath>${basedir}/lib/mallet.jar</systemPath>
     </dependency>
     <dependency>
+        <groupId>cc.mallet</groupId>
+        <artifactId>mallet-deps</artifactId>
+        <version>2.0-RC2</version>
+        <scope>system</scope>
+        <systemPath>${basedir}/lib/mallet-deps.jar</systemPath>
+    </dependency>
+    <dependency>
         <groupId>libsvm</groupId>
         <artifactId>libsvm</artifactId>
         <version>2.89</version>
@@ -61,8 +76,6 @@
     	<groupId>org.uutuc</groupId>
     	<artifactId>uutuc</artifactId>
     	<version>0.9.6</version>
-        <scope>system</scope>
-        <systemPath>${basedir}/lib/uutuc-0.9.6.jar</systemPath>
     </dependency>
     <dependency>
     <groupId>net.sourceforge.collections</groupId>
@@ -70,4 +83,16 @@
     <version>4.01</version>
 </dependency> 
   </dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
