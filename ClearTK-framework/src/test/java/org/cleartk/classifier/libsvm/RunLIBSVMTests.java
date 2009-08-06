@@ -76,9 +76,6 @@ public class RunLIBSVMTests {
 	public void tearDown() throws Exception {
 		File outputDirectory = new File(this.outputDirectory);
 		TearDownUtil.removeDirectory(outputDirectory);
-		if (outputDirectory.exists()) {
-			System.in.read();
-		}
 		Assert.assertFalse(outputDirectory.exists());
 	}
 	
