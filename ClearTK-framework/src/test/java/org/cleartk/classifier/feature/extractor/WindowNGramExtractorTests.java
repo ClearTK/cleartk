@@ -104,6 +104,7 @@ public class WindowNGramExtractorTests {
 				WindowNGramFeature.ORIENTATION_LEFT,
 				WindowNGramFeature.DIRECTION_RIGHT_TO_LEFT, " ", 0, 3);
 
+		jCas.reset();
 		TokenFactory.createTokens(jCas,
 				"text obtained from gutenberg\n" +
 				"I WANTED to go and look at a place right about the middle of " +
@@ -144,6 +145,7 @@ public class WindowNGramExtractorTests {
 				WindowNGramFeature.ORIENTATION_LEFT,
 				WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT, " ", 2, 4);
 
+		jCas.reset();
 		TokenFactory.createTokens(jCas,
 				"text obtained from gutenberg\n" +
 				"I WANTED to go and look at a place right about the middle of " +
@@ -244,6 +246,7 @@ public class WindowNGramExtractorTests {
 				WindowNGramFeature.DIRECTION_RIGHT_TO_LEFT, " ", 2, 8);
 
 		// feature extraction on "island" in "...because the island was only..."
+		jCas.reset();
 		TokenFactory.createTokens(jCas,
 				"text obtained from gutenberg\n" +
 				"I WANTED to go and look at a place right about the middle of " +
