@@ -26,6 +26,7 @@ package org.cleartk.classifier.encoder.features;
 import static org.junit.Assert.assertEquals;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -37,7 +38,11 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.TypePathFeature;
 import org.cleartk.classifier.feature.WindowFeature;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
+import org.uutuc.util.TearDownUtil;
 
 
 /**
@@ -47,6 +52,21 @@ import org.junit.Test;
 */
 
 public class NameNumberFeatureEncoderTest {
+	
+	private final File outputDir = new File("test/data/NameNumberFeatureEncoderTest");
+	
+	@Before
+	public void setUp() {
+		if (!this.outputDir.exists()) {
+			this.outputDir.mkdirs();
+		}
+	}
+	
+	@After
+	public void tearDown() {
+		TearDownUtil.removeDirectory(this.outputDir);
+		Assert.assertFalse(this.outputDir.exists());
+	}
 
 	
 	@Test
@@ -70,10 +90,12 @@ public class NameNumberFeatureEncoderTest {
 		testNN("5", 15.0f, new Feature("!", 15), nnfe);
 
 		
-		FileWriter writer = new FileWriter("test/data/opennlp/test-feature-map-1.txt");
+		File featureMapFile = new File(this.outputDir, "test-feature-map-1.txt");
+		FileWriter writer = new FileWriter(featureMapFile);
 		nnfe.writeNameLookup(writer);
+		writer.close();
 		
-		BufferedReader reader = new BufferedReader(new FileReader("test/data/opennlp/test-feature-map-1.txt"));
+		BufferedReader reader = new BufferedReader(new FileReader(featureMapFile));
 		assertEquals("6", reader.readLine());
 		assertEquals("!\t5", reader.readLine());
 		assertEquals("Goodbye\t1", reader.readLine());
@@ -81,6 +103,7 @@ public class NameNumberFeatureEncoderTest {
 		assertEquals("Please\t2", reader.readLine());
 		assertEquals("don't\t3", reader.readLine());
 		assertEquals("go\t4", reader.readLine());
+		reader.close();
 		
 	}
 	
