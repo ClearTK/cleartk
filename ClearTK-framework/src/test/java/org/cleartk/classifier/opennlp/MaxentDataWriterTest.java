@@ -48,6 +48,7 @@ import org.cleartk.classifier.InstanceFactory;
 import org.cleartk.classifier.Train;
 import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 import org.cleartk.util.TestsUtil;
+import org.junit.After;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.util.HideOutput;
@@ -65,9 +66,14 @@ public class MaxentDataWriterTest {
 
 	String outputDirectory = "test/data/opennlp/maxent-data-writer"; 
 
-//	@After
-	public void tearDown() {
-		TearDownUtil.removeDirectory(new File(outputDirectory));
+	@After
+	public void tearDown() throws Exception {
+		File outputDirectory = new File(this.outputDirectory);
+		TearDownUtil.removeDirectory(outputDirectory);
+		// Some files will get left around because maxent doesn't close its
+		// handle on the training-data.maxent file. If this ever gets fixed,
+		// we should uncomment the following line:
+		// Assert.assertFalse(outputDirectory.exists());
 	}
 
 	public class TestHandler1 implements AnnotationHandler<String> {

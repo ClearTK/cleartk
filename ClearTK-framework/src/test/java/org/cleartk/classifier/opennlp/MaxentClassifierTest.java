@@ -63,8 +63,13 @@ public class MaxentClassifierTest {
 	String outputDirectory = "test/data/opennlp/maxent-classifier"; 
 	
 	@After
-	public void tearDown() {
-		TearDownUtil.removeDirectory(new File(outputDirectory));
+	public void tearDown() throws Exception {
+		File outputDirectory = new File(this.outputDirectory);
+		TearDownUtil.removeDirectory(outputDirectory);
+		// Some files will get left around because maxent doesn't close its
+		// handle on the training-data.maxent file. If this ever gets fixed,
+		// we should uncomment the following line:
+		// Assert.assertFalse(outputDirectory.exists());
 	}
 	
 	public class TestHandler1T  implements AnnotationHandler<String>{
@@ -149,6 +154,7 @@ public class MaxentClassifierTest {
 		
 		JarFile modelFile = new JarFile(new File(outputDirectory, "model.jar"));
 		MaxentClassifier classifier = new MaxentClassifier(modelFile);
+		modelFile.close();
 		String classification = classifier.classify(createInstance(null, "hello", 1000).getFeatures());
 		assertEquals("A", classification);
 		classification = classifier.classify(createInstance(null, "hello", 1).getFeatures());
@@ -248,6 +254,7 @@ public class MaxentClassifierTest {
 		
 		JarFile modelFile = new JarFile(new File(outputDirectory, "model.jar"));
 		MaxentClassifier classifier = new MaxentClassifier(modelFile);
+		modelFile.close();
 		List<Feature> features1 = createInstance("B-GENE", "Word_pol LCWord_pol CapitalType_ALL_LOWERCASE L0_( L0_TypePath_Pos_-LRB- L0_TypePath_Stem_( L1_I L1_TypePath_Pos_PRP L1_TypePath_Stem_I R0_I R0_TypePath_Pos_PRP R0_TypePath_Stem_I R1_) R1_TypePath_Pos_-RRB- R1_TypePath_Stem_) TypePath_Pos_NN TypePath_Stem_pol PrevNEMTokenLabel_L0_O PrevNEMTokenLabel_L1_I-GENE Gazetteer_entrez_genes.txt").getFeatures();
 		String classification = classifier.classify(features1);
 		assertEquals("B-GENE", classification);
