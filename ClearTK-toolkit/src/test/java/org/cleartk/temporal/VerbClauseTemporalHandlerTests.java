@@ -43,6 +43,7 @@ import org.cleartk.classifier.InstanceConsumer;
 import org.cleartk.classifier.svmlight.DefaultOVASVMlightDataWriterFactory;
 import org.cleartk.corpus.timeml.type.Event;
 import org.cleartk.corpus.timeml.type.TemporalLink;
+import org.cleartk.syntax.TreebankTestsUtil;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
 import org.cleartk.syntax.treebank.type.TreebankNode;
 import org.cleartk.type.Sentence;
@@ -112,18 +113,13 @@ public class VerbClauseTemporalHandlerTests {
 		}
 		
 		// create the TreebankNode annotations
-		TreebankNode root = TestsUtil.newNode(jCas, "S",
-				TestsUtil.newNode(jCas, "NP",
-						this.newNode(jCas, tokens.get(0))),
-				TestsUtil.newNode(jCas, "VP", 
-						this.newNode(jCas, tokens.get(1)),
-						TestsUtil.newNode(jCas, "SBAR", 
-								TestsUtil.newNode(jCas, "NP",
-										this.newNode(jCas, tokens.get(2))),
-								TestsUtil.newNode(jCas, "VP", 
-										this.newNode(jCas, tokens.get(3)),
-										TestsUtil.newNode(jCas, "NP",
-												this.newNode(jCas, tokens.get(4)))))));
+		TreebankNode root = TreebankTestsUtil.newNode(jCas, "S",
+				TreebankTestsUtil.newNode(jCas, "NP", this.newNode(jCas, tokens.get(0))),
+				TreebankTestsUtil.newNode(jCas, "VP", this.newNode(jCas, tokens.get(1)),
+						TreebankTestsUtil.newNode(jCas, "SBAR", 
+								TreebankTestsUtil.newNode(jCas, "NP", this.newNode(jCas, tokens.get(2))),
+								TreebankTestsUtil.newNode(jCas, "VP", this.newNode(jCas, tokens.get(3)),
+										TreebankTestsUtil.newNode(jCas, "NP", this.newNode(jCas, tokens.get(4)))))));
 		
 		Sentence sentence = AnnotationRetrieval.getAnnotations(jCas, Sentence.class).get(0);
 
@@ -190,7 +186,7 @@ public class VerbClauseTemporalHandlerTests {
 	}
 	
 	private TreebankNode newNode(JCas jCas, Token token) {
-		return TestsUtil.newNode(jCas, token.getBegin(), token.getEnd(), token.getPos());
+		return TreebankTestsUtil.newNode(jCas, token.getBegin(), token.getEnd(), token.getPos());
 	}
 	
 	@Test

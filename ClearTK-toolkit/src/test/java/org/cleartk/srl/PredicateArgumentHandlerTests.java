@@ -44,6 +44,7 @@ import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.classifier.svmlight.DefaultSVMlightDataWriterFactory;
 import org.cleartk.srl.type.Predicate;
 import org.cleartk.srl.type.SemanticArgument;
+import org.cleartk.syntax.TreebankTestsUtil;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
 import org.cleartk.syntax.treebank.type.TreebankNode;
 import org.cleartk.type.Sentence;
@@ -469,15 +470,15 @@ public class PredicateArgumentHandlerTests {
 	}
 	
 	private void setTrees(JCas jCas) {
-		TreebankNode sNode = TestsUtil.newNode(jCas, "S",
-				TestsUtil.newNode(jCas, "NP",
-						TestsUtil.newNode(jCas, 0, 4, "NNP")),
-				TestsUtil.newNode(jCas, "VP",
-						TestsUtil.newNode(jCas, 5, 10, "VBD"),
-						TestsUtil.newNode(jCas, "NP",
-								TestsUtil.newNode(jCas, 11, 14, "DT"),
-								TestsUtil.newNode(jCas, 15, 19, "NN"))),
-				TestsUtil.newNode(jCas, 19, 20, "."));
+		TreebankNode sNode = TreebankTestsUtil.newNode(jCas, "S",
+				TreebankTestsUtil.newNode(jCas, "NP",
+						TreebankTestsUtil.newNode(jCas, 0, 4, "NNP")),
+						TreebankTestsUtil.newNode(jCas, "VP",
+								TreebankTestsUtil.newNode(jCas, 5, 10, "VBD"),
+								TreebankTestsUtil.newNode(jCas, "NP",
+										TreebankTestsUtil.newNode(jCas, 11, 14, "DT"),
+										TreebankTestsUtil.newNode(jCas, 15, 19, "NN"))),
+										TreebankTestsUtil.newNode(jCas, 19, 20, "."));
 
 		TopTreebankNode topNode = new TopTreebankNode(jCas, sNode.getBegin(), sNode.getEnd());
 		topNode.setNodeType("TOP");
