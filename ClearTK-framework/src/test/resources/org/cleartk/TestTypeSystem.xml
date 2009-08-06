@@ -37,6 +37,11 @@
           <rangeTypeName>uima.cas.FSArray</rangeTypeName>
           <elementType>org.cleartk.type.test.DependencyRelation</elementType>
         </featureDescription>
+        <featureDescription>
+          <name>orthogr</name>
+          <description/>
+          <rangeTypeName>org.cleartk.type.test.Orthography</rangeTypeName>
+        </featureDescription>
       </features>
     </typeDescription>
     <typeDescription>
@@ -63,6 +68,11 @@
       <features>
         <featureDescription>
           <name>value</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>language</name>
           <description/>
           <rangeTypeName>uima.cas.String</rangeTypeName>
         </featureDescription>
@@ -114,6 +124,16 @@
           <rangeTypeName>uima.cas.String</rangeTypeName>
         </featureDescription>
       </features>
+    </typeDescription>
+    <typeDescription>
+      <name>org.cleartk.type.test.Orthography</name>
+      <description/>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>org.cleartk.type.test.Language</name>
+      <description/>
+      <supertypeName>uima.cas.String</supertypeName>
     </typeDescription>
   </types>
 </typeSystemDescription>

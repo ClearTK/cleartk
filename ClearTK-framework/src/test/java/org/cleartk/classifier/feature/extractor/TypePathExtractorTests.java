@@ -277,8 +277,6 @@ public class TypePathExtractorTests {
 				"depRel/projective", jCas));
 		assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(Token.type),
 				"depRel/head/depRel/projective", jCas));
-		assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(Token.type),
-				"depRel/head/posTag/tagsetId", jCas));
 	}
 
 	@Test
@@ -291,9 +289,7 @@ public class TypePathExtractorTests {
 				.getTypeSystem()));
 
 		// subtypes of uima.cas.String do not have JCas class generated for them
-		assertTrue(TypePathExtractor.isValidType(jCas.getTypeSystem().getType("de.julielab.jules.types.Language"), jCas
-				.getTypeSystem()));
-		assertTrue(TypePathExtractor.isValidType(jCas.getTypeSystem().getType("de.julielab.jules.types.Person"), jCas
+		assertTrue(TypePathExtractor.isValidType(jCas.getTypeSystem().getType("org.cleartk.type.test.Language"), jCas
 				.getTypeSystem()));
 
 		assertTrue(TypePathExtractor.isValidType(jCas.getTypeSystem().getType("uima.cas.String"), jCas.getTypeSystem()));
