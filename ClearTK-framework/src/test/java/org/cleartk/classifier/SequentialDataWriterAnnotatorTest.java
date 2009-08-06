@@ -99,7 +99,7 @@ public class SequentialDataWriterAnnotatorTest {
 		String text = "What if we built a large\r\n, wooden badger?";
 		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class,
 				"What if we built a large \n, wooden badger ?",
-				"WDT TO PRP VBN DT JJ , JJ NN .", null, "org.cleartk.type.Token:pos", null);
+				"WDT TO PRP VBN DT JJ , JJ NN .", null, "org.cleartk.type.test.Token:pos", null);
 		engine.process(jCas);
 		engine.collectionProcessComplete();
 
