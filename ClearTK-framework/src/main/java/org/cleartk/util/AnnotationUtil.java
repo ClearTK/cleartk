@@ -28,7 +28,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
 
 
@@ -42,6 +41,13 @@ import org.apache.uima.jcas.tcas.Annotation;
  * 
  */
 public class AnnotationUtil {
+
+	public static boolean contains(Annotation bigAnnotation, Annotation smallAnnotation) {
+		if (bigAnnotation == null || smallAnnotation == null) return false;
+		if (bigAnnotation.getBegin() <= smallAnnotation.getBegin()
+				&& bigAnnotation.getEnd() >= smallAnnotation.getEnd()) return true;
+		else return false;
+	}
 
 	public static boolean overlaps(Annotation annotation1, Annotation annotation2) {
 		Annotation firstAnnotation, secondAnnotation;

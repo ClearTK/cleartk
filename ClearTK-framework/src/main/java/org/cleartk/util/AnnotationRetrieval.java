@@ -35,13 +35,11 @@ import org.apache.uima.cas.FSMatchConstraint;
 import org.apache.uima.cas.FSTypeConstraint;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeaturePath;
-import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.jcas.tcas.DocumentAnnotation;
-import org.cleartk.type.SplitAnnotation;
 
 
 /**
@@ -355,8 +353,8 @@ public class AnnotationRetrieval {
 	 * @see AnnotationIndex#subiterator(org.apache.uima.cas.text.AnnotationFS)
 	 */
 	public static <T extends Annotation> List<T> getAnnotations(JCas jCas, Annotation windowAnnotation, Class<T> cls) {
-		if (windowAnnotation instanceof SplitAnnotation) return getAnnotations(jCas,
-				(SplitAnnotation) windowAnnotation, cls);
+//		if (windowAnnotation instanceof SplitAnnotation) return getAnnotations(jCas,
+//				(SplitAnnotation) windowAnnotation, cls);
 
 		FSIterator cursor = initializeWindowCursor(jCas, windowAnnotation);
 
@@ -374,8 +372,8 @@ public class AnnotationRetrieval {
 
 	public static <T extends Annotation> List<T> getAnnotations(JCas jCas, Annotation windowAnnotation, Class<T> cls,
 			boolean exactSpan) {
-		if (windowAnnotation instanceof SplitAnnotation) return getAnnotations(jCas,
-				(SplitAnnotation) windowAnnotation, cls);
+//		if (windowAnnotation instanceof SplitAnnotation) return getAnnotations(jCas,
+//				(SplitAnnotation) windowAnnotation, cls);
 
 		if (!exactSpan) return getAnnotations(jCas, windowAnnotation, cls);
 		else {
@@ -406,15 +404,15 @@ public class AnnotationRetrieval {
 
 	}
 
-	public static <T extends Annotation> List<T> getAnnotations(JCas jCas, SplitAnnotation splitAnnotation, Class<T> cls) {
-		List<T> returnValues = new ArrayList<T>();
-
-		for (FeatureStructure subAnnotation : splitAnnotation.getAnnotations().toArray()) {
-			returnValues.addAll(getAnnotations(jCas, (Annotation) subAnnotation, cls));
-		}
-
-		return returnValues;
-	}
+//	public static <T extends Annotation> List<T> getAnnotations(JCas jCas, SplitAnnotation splitAnnotation, Class<T> cls) {
+//		List<T> returnValues = new ArrayList<T>();
+//
+//		for (FeatureStructure subAnnotation : splitAnnotation.getAnnotations().toArray()) {
+//			returnValues.addAll(getAnnotations(jCas, (Annotation) subAnnotation, cls));
+//		}
+//
+//		return returnValues;
+//	}
 
 	public static <T extends Annotation> List<T> getAnnotations(JCas jCas, int begin, int end, Class<T> cls) {
 		if(begin > end)
