@@ -28,11 +28,13 @@ import java.util.List;
 import org.apache.uima.UIMAException;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.feature.extractor.SpannedTextExtractor;
+import org.cleartk.classifier.feature.extractor.TypePathExtractor;
+import org.cleartk.syntax.TreebankTestsUtil;
 import org.cleartk.syntax.feature.SyntacticPathExtractor;
 import org.cleartk.syntax.treebank.type.TreebankNode;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
-import org.cleartk.util.TestsUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uutuc.factory.JCasFactory;
@@ -52,13 +54,13 @@ public class SyntacticPathExtractorTests {
 	public void test() throws UIMAException {
 		JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
 		TokenFactory.createTokens(jCas, "I ran home", Token.class, Sentence.class, null, "PRP VBD NN", null, "org.cleartk.type.Token:pos", null);
-		TreebankNode iNode = TestsUtil.newNode(jCas, 0, 1, "PRP");
-		TreebankNode inpNode = TestsUtil.newNode(jCas, "NP", iNode);
-		TreebankNode ranNode = TestsUtil.newNode(jCas, 2, 5, "VBD");
-		TreebankNode homeNode = TestsUtil.newNode(jCas, 6, 10, "NN");
-		TreebankNode homenpNode = TestsUtil.newNode(jCas, "NP", homeNode);
-		TreebankNode ranvpNode = TestsUtil.newNode(jCas, "VP", ranNode, homenpNode);
-		TreebankNode topNode = TestsUtil.newNode(jCas, "S", inpNode, ranvpNode);
+		TreebankNode iNode = TreebankTestsUtil.newNode(jCas, 0, 1, "PRP");
+		TreebankNode inpNode = TreebankTestsUtil.newNode(jCas, "NP", iNode);
+		TreebankNode ranNode = TreebankTestsUtil.newNode(jCas, 2, 5, "VBD");
+		TreebankNode homeNode = TreebankTestsUtil.newNode(jCas, 6, 10, "NN");
+		TreebankNode homenpNode = TreebankTestsUtil.newNode(jCas, "NP", homeNode);
+		TreebankNode ranvpNode = TreebankTestsUtil.newNode(jCas, "VP", ranNode, homenpNode);
+		TreebankNode topNode = TreebankTestsUtil.newNode(jCas, "S", inpNode, ranvpNode);
 		
 		SpannedTextExtractor textExtractor = new SpannedTextExtractor();
 		TypePathExtractor tagExtractor = new TypePathExtractor(TreebankNode.class, "nodeType");

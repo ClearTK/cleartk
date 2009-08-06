@@ -23,29 +23,9 @@
  */
 package org.cleartk.syntax;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-import org.apache.uima.UIMAException;
-import org.apache.uima.UimaContext;
-import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
-import org.apache.uima.resource.ResourceInitializationException;
-import org.apache.uima.resource.metadata.TypeSystemDescription;
-import org.cleartk.CleartkException;
-import org.cleartk.classifier.AnnotationHandler;
-import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.InstanceConsumer;
-import org.cleartk.classifier.SequentialAnnotationHandler;
-import org.cleartk.classifier.SequentialInstanceConsumer;
 import org.cleartk.syntax.treebank.type.TreebankNode;
-import org.uutuc.factory.AnalysisEngineFactory;
-import org.uutuc.factory.TypeSystemDescriptionFactory;
-import org.uutuc.util.JCasAnnotatorAdapter;
 
 /**
  * <br>
@@ -57,7 +37,7 @@ import org.uutuc.util.JCasAnnotatorAdapter;
  * @author Philip Ogren
  * @author Steven Bethard
  */
-public class TestsUtil {
+public class TreebankTestsUtil {
 
 	/**
 	 * Create a leaf TreebankNode in a JCas.
