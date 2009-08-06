@@ -30,17 +30,16 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.uima.UIMAException;
-import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.CleartkComponents;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.WindowFeature;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
+import org.cleartk.util.TestsUtil;
 import org.junit.Test;
-import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.TokenFactory;
 
 
 /**
@@ -54,23 +53,11 @@ import org.uutuc.factory.AnalysisEngineFactory;
  */
 public class WindowExtractorTests {
 
-	private static AnalysisEngine sentencesAndTokens; 
-	
-	static {
-	try {
-		sentencesAndTokens = AnalysisEngineFactory.createAggregate(CleartkComponents.createSentencesAndTokens());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 	@Test
 	public void testGetStartAnnotation() throws IOException, UIMAException {
 		// TODO think about what the behavior should be if window annotation
 		// boundary does not fall at boundary
 		// of featureAnnotation
-		AnalysisEngine tokenAnnotator = AnalysisEngineFactory.createAggregate(CleartkComponents.createSentencesAndTokens());
-		JCas jCas = AnalysisEngineFactory.process(tokenAnnotator, "test/data/docs/huckfinn.txt");
 		WindowExtractor leftEx = new WindowExtractor(Token.class, new SpannedTextExtractor(),
 				WindowFeature.ORIENTATION_LEFT, 0, 3);
 		WindowExtractor rightEx = new WindowExtractor(Token.class, new SpannedTextExtractor(),
@@ -80,7 +67,9 @@ public class WindowExtractorTests {
 		WindowExtractor middleRevEx = new WindowExtractor(Token.class, new SpannedTextExtractor(),
 				WindowFeature.ORIENTATION_MIDDLE_REVERSE, 0, 3);
 
-		Annotation focusAnnotation = AnnotationRetrieval.get(jCas, Token.class, 45);
+		JCas jCas = TestsUtil.getJCas();
+		TokenFactory.createTokens(jCas, "because the island was only", Token.class, Sentence.class);
+		Annotation focusAnnotation = AnnotationRetrieval.get(jCas, Token.class, 2);
 		assertEquals("island", focusAnnotation.getCoveredText());
 		Annotation startAnnotation = leftEx.getStartAnnotation(jCas, focusAnnotation);
 		assertEquals("the", startAnnotation.getCoveredText());
@@ -91,7 +80,11 @@ public class WindowExtractorTests {
 		startAnnotation = middleRevEx.getStartAnnotation(jCas, focusAnnotation);
 		assertEquals("island", startAnnotation.getCoveredText());
 
-		focusAnnotation = new Annotation(jCas, 404, 449);
+		jCas.reset();
+		TokenFactory.createTokens(jCas,
+				"to the top , the sides was so steep and the bushes so thick .",
+				Token.class, Sentence.class);
+		focusAnnotation = new Annotation(jCas, 7, 52);
 		assertEquals("top, the sides was so steep and the bushes so", focusAnnotation.getCoveredText());
 		startAnnotation = leftEx.getStartAnnotation(jCas, focusAnnotation);
 		assertEquals("the", startAnnotation.getCoveredText());
@@ -102,7 +95,12 @@ public class WindowExtractorTests {
 		startAnnotation = middleRevEx.getStartAnnotation(jCas, focusAnnotation);
 		assertEquals("so", startAnnotation.getCoveredText());
 
-		focusAnnotation = AnnotationRetrieval.get(jCas, Sentence.class, 5);
+		jCas.reset();
+		TokenFactory.createTokens(jCas,
+				"the side towards Illinois .\n" +
+				"The cavern was as big as two or three rooms bunched together , and Jim could stand up straight in it.\n" +
+				"It was cool in there .", Token.class, Sentence.class);
+		focusAnnotation = AnnotationRetrieval.get(jCas, Sentence.class, 1);
 		assertEquals(
 				"The cavern was as big as two or three rooms bunched together, and Jim could stand up straight in it.",
 				focusAnnotation.getCoveredText());
@@ -115,6 +113,8 @@ public class WindowExtractorTests {
 		startAnnotation = middleRevEx.getStartAnnotation(jCas, focusAnnotation);
 		assertEquals(".", startAnnotation.getCoveredText());
 
+		jCas.reset();
+		TokenFactory.createTokens(jCas, "text obtained from", Token.class, Sentence.class);
 		focusAnnotation = AnnotationRetrieval.get(jCas, Token.class, 0);
 		assertEquals("text", focusAnnotation.getCoveredText());
 		startAnnotation = leftEx.getStartAnnotation(jCas, focusAnnotation);
@@ -126,6 +126,9 @@ public class WindowExtractorTests {
 		startAnnotation = middleRevEx.getStartAnnotation(jCas, focusAnnotation);
 		assertEquals("text", startAnnotation.getCoveredText());
 
+		jCas.reset();
+		TokenFactory.createTokens(jCas, "and cooked dinner .",
+				Token.class, Sentence.class);
 		focusAnnotation = AnnotationRetrieval.get(jCas, Token.class, -1);
 		assertEquals(".", focusAnnotation.getCoveredText());
 		startAnnotation = leftEx.getStartAnnotation(jCas, focusAnnotation);
@@ -141,15 +144,16 @@ public class WindowExtractorTests {
 
 	@Test
 	public void testExtractLeft() throws IOException, UIMAException {
-		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokens, "test/data/docs/huckfinn.txt");
-
 		WindowExtractor leftEx03 = new WindowExtractor(Token.class, new SpannedTextExtractor(),
 				WindowFeature.ORIENTATION_LEFT, 0, 3);
 		WindowExtractor leftEx24 = new WindowExtractor(Token.class, new SpannedTextExtractor(),
 				WindowFeature.ORIENTATION_LEFT, 2, 4);
 
 		// feature extraction on "island" in "...because the island was only..."
-		Token token = AnnotationRetrieval.get(jCas, Token.class, 45);
+		JCas jCas = TestsUtil.getJCas();
+		TokenFactory.createTokens(jCas, "it , because the island was only",
+				Token.class, Sentence.class);
+		Token token = AnnotationRetrieval.get(jCas, Token.class, 4);
 		assertEquals("island", token.getCoveredText());
 		List<Feature> features = leftEx03.extract(jCas, token, Sentence.class);
 		assertEquals(3, features.size());
@@ -179,7 +183,10 @@ public class WindowExtractorTests {
 		assertEquals("it", feature.getValue().toString());
 
 		// Feature extraction on "place" in "...This place was a tolerable..."
-		token = AnnotationRetrieval.get(jCas, Token.class, 60);
+		jCas.reset();
+		TokenFactory.createTokens(jCas, "a mile wide .\nThis place was a tolerable long",
+				Token.class, Sentence.class);
+		token = AnnotationRetrieval.get(jCas, Token.class, 5);
 		assertEquals("place", token.getCoveredText());
 		features = leftEx03.extract(jCas, token, Sentence.class);
 		assertEquals(3, features.size());
@@ -205,6 +212,8 @@ public class WindowExtractorTests {
 		assertEquals(3, feature.getOutOfBoundsDistance());
 
 		// Feature extraction on the first word of the file
+		jCas.reset();
+		TokenFactory.createTokens(jCas, "text obtained from", Token.class, Sentence.class);
 		token = AnnotationRetrieval.get(jCas, Token.class, 0);
 		assertEquals("text", token.getCoveredText());
 		features = leftEx03.extract(jCas, token, Sentence.class);
@@ -219,6 +228,9 @@ public class WindowExtractorTests {
 		assertEquals(4, ((WindowFeature) features.get(1)).getOutOfBoundsDistance());
 
 		// Feature extraction on the last word of the file
+		jCas.reset();
+		TokenFactory.createTokens(jCas, "and cooked dinner .",
+				Token.class, Sentence.class);
 		token = AnnotationRetrieval.get(jCas, Token.class, -1);
 		assertEquals(".", token.getCoveredText());
 		features = leftEx03.extract(jCas, token, Sentence.class);
@@ -227,7 +239,8 @@ public class WindowExtractorTests {
 		assertEquals("cooked", features.get(1).getValue().toString());
 		assertEquals("and", features.get(2).getValue().toString());
 
-		token = new Token(jCas, 1649, 1649);
+		int end = jCas.getDocumentText().length();
+		token = new Token(jCas, end, end);
 		token.addToIndexes();
 		assertEquals("", token.getCoveredText());
 		features = leftEx03.extract(jCas, token, Sentence.class);
@@ -240,15 +253,18 @@ public class WindowExtractorTests {
 
 	@Test
 	public void testExtractRight() throws IOException, UIMAException {
-		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokens, "test/data/docs/huckfinn.txt");
-
 		WindowExtractor rightEx03 = new WindowExtractor(Token.class, new SpannedTextExtractor(),
 				WindowFeature.ORIENTATION_RIGHT, 0, 3);
 		WindowExtractor rightEx1030 = new WindowExtractor(Token.class, new SpannedTextExtractor(),
 				WindowFeature.ORIENTATION_RIGHT, 10, 30);
 
 		// feature extraction on "island" in "...because the island was only..."
-		Token token = AnnotationRetrieval.get(jCas, Token.class, 45);
+		JCas jCas = TestsUtil.getJCas();
+		TokenFactory.createTokens(jCas,
+				"because the island was only three miles long and a quarter of a mile wide .\n" +
+				"This place was a tolerable long, steep hill or ridge about forty foot high .",
+				Token.class, Sentence.class);
+		Token token = AnnotationRetrieval.get(jCas, Token.class, 2);
 		assertEquals("island", token.getCoveredText());
 		List<Feature> features = rightEx03.extract(jCas, token, Sentence.class);
 		assertEquals(3, features.size());
@@ -273,8 +289,7 @@ public class WindowExtractorTests {
 		assertEquals(17, ((WindowFeature) features.get(19)).getOutOfBoundsDistance());
 
 		// Feature extraction on "mile" in "...and a quarter of a mile wide...."
-
-		token = AnnotationRetrieval.get(jCas, Token.class, 56);
+		token = AnnotationRetrieval.get(jCas, Token.class, 13);
 		assertEquals("mile", token.getCoveredText());
 		features = rightEx03.extract(jCas, token, Sentence.class);
 		assertEquals(3, features.size());
@@ -298,20 +313,29 @@ public class WindowExtractorTests {
 		assertEquals(28, ((WindowFeature) features.get(19)).getOutOfBoundsDistance());
 
 		// Feature extraction on the first word of the file
+		jCas.reset();
+		TokenFactory.createTokens(jCas,
+				"text obtained from gutenberg\n" +
+				"I WANTED to go and", Token.class, Sentence.class);
 		token = AnnotationRetrieval.get(jCas, Token.class, 0);
 		assertEquals("text", token.getCoveredText());
 		features = rightEx03.extract(jCas, token, Sentence.class);
 		assertEquals(3, features.size());
 		assertEquals("obtained", features.get(0).getValue().toString());
 		assertEquals("from", features.get(1).getValue().toString());
-		assertEquals("http", features.get(2).getValue().toString());
+		assertEquals("gutenberg", features.get(2).getValue().toString());
 
 		features = rightEx1030.extract(jCas, token, Sentence.class);
 		assertEquals(20, features.size());
 		assertEquals(3, ((WindowFeature) features.get(0)).getOutOfBoundsDistance());
 
 		// feature extraction on spanless annotation at end of file
-		token = new Token(jCas, 1649, 1649);
+		jCas.reset();
+		TokenFactory.createTokens(jCas, "and cooked dinner .",
+				Token.class, Sentence.class);
+		int end = jCas.getDocumentText().length();
+		token = new Token(jCas, end, end);
+		token.addToIndexes();
 		assertEquals("", token.getCoveredText());
 		features = rightEx03.extract(jCas, token, Sentence.class);
 		assertEquals(3, features.size());
@@ -334,11 +358,11 @@ public class WindowExtractorTests {
 
 	@Test
 	public void testExtractMiddle() throws IOException, UIMAException {
-		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokens, "test/data/docs/huckfinn.txt");
-
+		JCas jCas = TestsUtil.getJCas();
+		TokenFactory.createTokens(jCas, "because the island was only", Token.class, Sentence.class);
 		Annotation spanningToken = new Annotation(jCas);
-		spanningToken.setBegin(AnnotationRetrieval.get(jCas, Token.class, 44).getBegin());
-		spanningToken.setEnd(AnnotationRetrieval.get(jCas, Token.class, 46).getEnd());
+		spanningToken.setBegin(AnnotationRetrieval.get(jCas, Token.class, 1).getBegin());
+		spanningToken.setEnd(AnnotationRetrieval.get(jCas, Token.class, 3).getEnd());
 		assertEquals("the island was", spanningToken.getCoveredText());
 		WindowExtractor windowExtractor = new WindowExtractor(Token.class, new SpannedTextExtractor(),
 				WindowFeature.ORIENTATION_MIDDLE, 0, 2);
@@ -361,21 +385,22 @@ public class WindowExtractorTests {
 
 	@Test
 	public void testTicket23() throws IOException, UIMAException {
-		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokens, "test/data/docs/huckfinn.txt");
-
 		// token "place" in "wide. This place was a tolerable long,"
-		Token token = AnnotationRetrieval.get(jCas, Token.class, 60);
+		JCas jCas = TestsUtil.getJCas();
+		TokenFactory.createTokens(jCas, "a mile wide . This place was a tolerable long ,",
+				Token.class, Sentence.class);
+		Token token = AnnotationRetrieval.get(jCas, Token.class, 5);
 		assertEquals("place", token.getCoveredText());
 		token.setPos("A");
-		Token tokenL0 = AnnotationRetrieval.get(jCas, Token.class, 59);
+		Token tokenL0 = AnnotationRetrieval.get(jCas, Token.class, 4);
 		tokenL0.setPos("B");
-		Token tokenL1 = AnnotationRetrieval.get(jCas, Token.class, 58);
+		Token tokenL1 = AnnotationRetrieval.get(jCas, Token.class, 3);
 		tokenL1.setPos("C");
-		Token tokenL2 = AnnotationRetrieval.get(jCas, Token.class, 57);
+		Token tokenL2 = AnnotationRetrieval.get(jCas, Token.class, 2);
 		tokenL2.setPos("D");
-		Token tokenL3 = AnnotationRetrieval.get(jCas, Token.class, 56);
+		Token tokenL3 = AnnotationRetrieval.get(jCas, Token.class, 1);
 		tokenL3.setPos("E");
-		Token tokenL4 = AnnotationRetrieval.get(jCas, Token.class, 55);
+		Token tokenL4 = AnnotationRetrieval.get(jCas, Token.class, 0);
 		tokenL4.setPos("F");
 
 		WindowExtractor leftPosExtractor = new WindowExtractor(Token.class, new TypePathExtractor(Token.class, "pos"),
