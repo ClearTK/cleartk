@@ -27,21 +27,30 @@ package org.cleartk.classifier.viterbi;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.pear.util.FileUtil;
 import org.apache.uima.util.FileUtils;
+import org.cleartk.CleartkException;
+import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.SequentialAnnotationHandler;
 import org.cleartk.classifier.SequentialClassifierAnnotator;
 import org.cleartk.classifier.SequentialDataWriterAnnotator;
 import org.cleartk.classifier.SequentialInstanceConsumer;
 import org.cleartk.classifier.Train;
+import org.cleartk.classifier.feature.extractor.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.SpannedTextExtractor;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
+import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.TestsUtil;
 import org.junit.Assert;
 import org.junit.Test;
@@ -59,6 +68,27 @@ import org.uutuc.util.HideOutput;
 
 public class ViterbiDataWriterTest {
 	
+	public static class TestAnnotationHandler implements SequentialAnnotationHandler<String> {
+		
+		private SimpleFeatureExtractor extractor = new SpannedTextExtractor();
+
+		public void process(JCas jCas, SequentialInstanceConsumer<String> consumer)
+		throws AnalysisEngineProcessException, CleartkException {
+			for (Sentence sentence: AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
+				List<Instance<String>> instances = new ArrayList<Instance<String>>();
+				List<Token> tokens = AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class);
+				for (Token token: tokens) {
+					Instance<String> instance = new Instance<String>();
+					instance.addAll(this.extractor.extract(jCas, token));
+					instance.setOutcome(token.getPos());
+					instances.add(instance);
+				}
+				consumer.consumeSequence(instances);
+			}
+		}
+		
+	}
+
 	private String outputDirectory = "test/data/viterbi";
 	
 //	@After
@@ -71,7 +101,7 @@ public class ViterbiDataWriterTest {
 
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(SequentialDataWriterAnnotator.class,
 				TestsUtil.getTypeSystemDescription(),
-				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER, ExamplePOSAnnotationHandler.class.getName(),
+				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER, TestAnnotationHandler.class.getName(),
 				SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				SequentialDataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, ViterbiDataWriterFactory.class.getName(),
 				ViterbiDataWriter.PARAM_DELEGATED_DATAWRITER_FACTORY_CLASS, DefaultMaxentDataWriterFactory.class.getName(),
@@ -108,7 +138,7 @@ public class ViterbiDataWriterTest {
 		
 		engine = AnalysisEngineFactory.createPrimitive(SequentialClassifierAnnotator.class, 
 				TestsUtil.getTypeSystemDescription(),
-				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER, ExamplePOSAnnotationHandler.class.getName(),
+				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER, TestAnnotationHandler.class.getName(),
 				SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR, new File(outputDirectory, "model.jar").getPath());
 		
 		engine.process(jCas);

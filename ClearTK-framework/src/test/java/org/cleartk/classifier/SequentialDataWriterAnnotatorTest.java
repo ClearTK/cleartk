@@ -31,14 +31,21 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
+import org.cleartk.CleartkException;
+import org.cleartk.classifier.feature.extractor.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.SpannedTextExtractor;
 import org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory;
 import org.cleartk.classifier.mallet.MalletCRFDataWriter;
 import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
+import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.TestsUtil;
 import org.junit.After;
 import org.junit.Test;
@@ -54,13 +61,34 @@ import org.uutuc.util.TearDownUtil;
 */
 
 public class SequentialDataWriterAnnotatorTest {
+	
+	public static class TestAnnotationHandler implements SequentialAnnotationHandler<String> {
+		
+		private SimpleFeatureExtractor extractor = new SpannedTextExtractor();
+
+		public void process(JCas jCas, SequentialInstanceConsumer<String> consumer)
+		throws AnalysisEngineProcessException, CleartkException {
+			for (Sentence sentence: AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
+				List<Instance<String>> instances = new ArrayList<Instance<String>>();
+				List<Token> tokens = AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class);
+				for (Token token: tokens) {
+					Instance<String> instance = new Instance<String>();
+					instance.addAll(this.extractor.extract(jCas, token));
+					instance.setOutcome(token.getPos());
+					instances.add(instance);
+				}
+				consumer.consumeSequence(instances);
+			}
+		}
+		
+	}
 
 	private String outputDirectory = "test/data/sequentialDataWriterAnnotator";
 	@Test
 	public void testSequentialDataWriterAnnotator() throws IOException, UIMAException {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				SequentialDataWriterAnnotator.class, TestsUtil.getTypeSystemDescription(),
-				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER, ExamplePOSAnnotationHandler.class.getName(),
+				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER, TestAnnotationHandler.class.getName(),
 				SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				SequentialDataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, DefaultMalletCRFDataWriterFactory.class.getName());
 		
