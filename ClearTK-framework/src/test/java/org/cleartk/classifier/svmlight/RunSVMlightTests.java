@@ -46,6 +46,7 @@ import org.cleartk.classifier.util.featurevector.SparseFeatureVector;
 import org.cleartk.util.TestsUtil;
 import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.uutuc.factory.UimaContextFactory;
 import org.uutuc.util.HideOutput;
@@ -64,10 +65,23 @@ public class RunSVMlightTests {
 	protected String outputDirectory = "test/data/svmlight/output";
 	protected String dataDirectory = "test/data/svmlight";
 	
+	@Before
+	public void setUpt() {
+		File outputDirectory = new File(this.outputDirectory);
+		if (!outputDirectory.exists()) {
+			outputDirectory.mkdirs();
+		}
+	}
+	
 	
 	@After
-	public void tearDown() {
-		TearDownUtil.emptyDirectory(new File(this.outputDirectory));
+	public void tearDown() throws Exception {
+		File outputDirectory = new File(this.outputDirectory);
+		TearDownUtil.removeDirectory(outputDirectory);
+		if (outputDirectory.exists()) {
+			System.in.read();
+		}
+		Assert.assertFalse(outputDirectory.exists());
 	}
 	
 	@Test
@@ -165,6 +179,7 @@ public class RunSVMlightTests {
 			if( expectedResult == actualResult )
 				correct += 1;
 		}
+		r.close();
 		
 		if( correct < (total * 0.95) )
 			Assert.fail("model accuracy using " + name + " is below 95%");
@@ -220,6 +235,7 @@ public class RunSVMlightTests {
 		// read in the classifier and test it on new instances
 		JarFile modelFile = new JarFile(new File(this.outputDirectory, "model.jar"));
 		SVMlightClassifier classifier = new SVMlightClassifier(modelFile);
+		modelFile.close();
 		for (Instance<Boolean> instance: generateBooleanInstances(1000)) {
 			List<Feature> features = instance.getFeatures();
 			Boolean outcome = instance.getOutcome();
@@ -266,6 +282,7 @@ public class RunSVMlightTests {
 		// read in the classifier and test it on new instances
 		JarFile modelFile = new JarFile(new File(this.outputDirectory, "model.jar"));
 		OVASVMlightClassifier classifier = new OVASVMlightClassifier(modelFile);
+		modelFile.close();
 		for (Instance<String> instance: generateStringInstances(1000)) {
 			List<Feature> features = instance.getFeatures();
 			String outcome = instance.getOutcome();

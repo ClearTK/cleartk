@@ -56,8 +56,13 @@ public class ClassifierManifest extends Manifest {
 		this.classifierBuilder = classifierBuilder;
 	}
 	
+	private ClassifierManifest(FileInputStream stream) throws IOException {
+		super(stream);
+		stream.close();
+	}
+	
 	public ClassifierManifest(File dir) throws IOException {
-		super(new FileInputStream(getFile(dir)));
+		this(new FileInputStream(getFile(dir)));
 		this.loadClassifierBuilder(getFile(dir).getPath());
 	}
 	
