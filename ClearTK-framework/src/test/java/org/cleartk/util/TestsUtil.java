@@ -32,7 +32,6 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.cleartk.CleartkException;
@@ -42,7 +41,6 @@ import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.InstanceConsumer;
 import org.cleartk.classifier.SequentialAnnotationHandler;
 import org.cleartk.classifier.SequentialInstanceConsumer;
-import org.cleartk.syntax.treebank.type.TreebankNode;
 import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.TypeSystemDescriptionFactory;
 import org.uutuc.util.JCasAnnotatorAdapter;
@@ -213,57 +211,6 @@ public class TestsUtil {
 			return this.returnValue == null;
 		}
 	}
-
-
-	/**
-	 * Create a leaf TreebankNode in a JCas.
-	 * 
-	 * @param jCas
-	 *            The JCas which the annotation should be added to.
-	 * @param begin
-	 *            The begin offset of the node.
-	 * @param end
-	 *            The end offset of the node.
-	 * @param nodeType
-	 *            The part of speech tag of the node.
-	 * @return The TreebankNode which was added to the JCas.
-	 */
-	public static TreebankNode newNode(JCas jCas, int begin, int end, String nodeType) {
-		TreebankNode node = new TreebankNode(jCas, begin, end);
-		node.setNodeType(nodeType);
-		node.setChildren(new FSArray(jCas, 0));
-		node.setLeaf(true);
-		node.addToIndexes();
-		return node;
-	}
-
-	/**
-	 * Create a branch TreebankNode in a JCas. The offsets of this node will be
-	 * determined by its children.
-	 * 
-	 * @param jCas
-	 *            The JCas which the annotation should be added to.
-	 * @param nodeType
-	 *            The phrase type tag of the node.
-	 * @param children
-	 *            The TreebankNode children of the node.
-	 * @return The TreebankNode which was added to the JCas.
-	 */
-	public static TreebankNode newNode(JCas jCas, String nodeType, TreebankNode... children) {
-		int begin = children[0].getBegin();
-		int end = children[children.length - 1].getEnd();
-		TreebankNode node = new TreebankNode(jCas, begin, end);
-		node.setNodeType(nodeType);
-		node.addToIndexes();
-		FSArray fsArray = new FSArray(jCas, children.length);
-		fsArray.copyFromArray(children, 0, 0, children.length);
-		node.setChildren(fsArray);
-		for (TreebankNode child : children) {
-			child.setParent(node);
-		}
-		return node;
-	}
-
 
 
 	/**
