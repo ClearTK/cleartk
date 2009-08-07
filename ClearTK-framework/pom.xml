@@ -30,20 +30,8 @@
 	</repositories>
 	<dependencies>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.5</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.apache.uima</groupId>
 			<artifactId>uimaj-core</artifactId>
-			<version>2.2.2-incubating</version>
-			<optional>false</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.uima</groupId>
-			<artifactId>uimaj-tools</artifactId>
 			<version>2.2.2-incubating</version>
 			<optional>false</optional>
 		</dependency>
@@ -91,6 +79,19 @@
 			<artifactId>collections-generic</artifactId>
 			<version>4.01</version>
 		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.5</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.uima</groupId>
+			<artifactId>uimaj-tools</artifactId>
+			<version>2.2.2-incubating</version>
+			<optional>false</optional>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -107,13 +108,14 @@
 				<artifactId>exec-maven-plugin</artifactId>
 				<executions>
 					<execution>
-						<phase>validate</phase>
+						<phase>process-test-resources</phase>
 						<goals>
 							<goal>java</goal>
 						</goals>
 					</execution>
 				</executions>
 				<configuration>
+					<classpathScope>test</classpathScope>
 					<mainClass>org.apache.uima.tools.jcasgen.Jg</mainClass>
 					<arguments>
 						<argument>-jcasgeninput</argument>
