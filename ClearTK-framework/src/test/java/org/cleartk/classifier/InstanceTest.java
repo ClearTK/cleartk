@@ -36,7 +36,7 @@ import org.junit.Test;
  * 
  * @author Steven Bethard
  */
-public class InstanceTests {
+public class InstanceTest {
 	
 	@Test
 	public void testFeatures() {

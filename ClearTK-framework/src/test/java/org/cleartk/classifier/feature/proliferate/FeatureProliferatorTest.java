@@ -47,7 +47,7 @@ import org.uutuc.util.JCasAnnotatorAdapter;
  * @author Steven Bethard
  * @author Philip Ogren
  */
-public class FeatureProliferatorTests {
+public class FeatureProliferatorTest {
 
 	private void testOne(FeatureProliferator proliferator, String origName, String origValue, String newName,
 			String newValue) {

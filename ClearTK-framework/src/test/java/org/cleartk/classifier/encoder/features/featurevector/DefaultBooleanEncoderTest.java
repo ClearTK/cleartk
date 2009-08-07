@@ -37,7 +37,7 @@ import org.junit.Test;
 
 */
 
-public class DefaultBooleanEncoderTests {
+public class DefaultBooleanEncoderTest {
 
 	@Test
 	public void testBooleanFeatureEncoder() {

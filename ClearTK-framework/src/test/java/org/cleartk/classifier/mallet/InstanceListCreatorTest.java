@@ -45,7 +45,7 @@ import cc.mallet.types.InstanceList;
  * @author Philip Ogren
  */
 
-public class InstanceListCreatorTests {
+public class InstanceListCreatorTest {
 
 	
 	@Test

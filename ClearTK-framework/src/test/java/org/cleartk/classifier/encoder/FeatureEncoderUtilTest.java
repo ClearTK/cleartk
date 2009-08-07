@@ -33,7 +33,7 @@ import org.junit.Test;
 
 */
 
-public class FeatureEncoderUtilTests {
+public class FeatureEncoderUtilTest {
 
 	@Test
 	public void testEscape() {

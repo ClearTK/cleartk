@@ -23,15 +23,21 @@
 */
 package org.cleartk.classifier.feature.extractor;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.jcas.tcas.Annotation;
+import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.cleartk.classifier.Feature;
+import org.cleartk.type.test.Sentence;
+import org.cleartk.type.test.Token;
+import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uutuc.factory.JCasFactory;
+import org.uutuc.factory.TokenFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -41,69 +47,52 @@ import org.uutuc.factory.JCasFactory;
  * @author Steven Bethard
  */
 
-public class RelativePositionExtractorTests {
-	
-	@Test
-	public void testEquals() throws UIMAException {
-		this.testOne(5, 8, 5, 8, "EQUALS");
-	}
-	
-	@Test
-	public void testContains() throws UIMAException {
-		this.testOne(5, 8, 6, 7, "CONTAINS");
-		this.testOne(5, 8, 5, 7, "CONTAINS");
-		this.testOne(5, 8, 6, 8, "CONTAINS");
-	}
+public class NGramExtractorTest {
 
 	@Test
-	public void testContainedBy() throws UIMAException {
-		this.testOne(5, 8, 3, 8, "CONTAINEDBY");
-	}
-
-	@Test
-	public void testOverlapsLeft() throws UIMAException {
-		this.testOne(0, 3, 1, 4, "OVERLAPS_LEFT");
-		this.testOne(0, 2, 1, 4, "OVERLAPS_LEFT");
-	}
-	
-	@Test
-	public void testOverlapsRight() throws UIMAException {
-		this.testOne(19, 21, 10, 20, "OVERLAPS_RIGHT");
-		this.testOne(15, 25, 10, 20, "OVERLAPS_RIGHT");
-	}
-	
-	@Test
-	public void testLeftOf() throws UIMAException {
-		this.testOne(1, 3, 4, 6, "LEFTOF");
-		this.testOne(2, 4, 4, 6, "LEFTOF");
-	}
-	
-	@Test
-	public void testRightOf() throws UIMAException {
-		this.testOne(6, 10, 4, 6, "RIGHTOF");
-		this.testOne(6, 10, 2, 5, "RIGHTOF");
-	}
-	
-	
-	private void testOne(int begin1, int end1, int begin2, int end2, String expected)
-	throws UIMAException {
+	public void test() throws UIMAException {
 		JCas jCas = JCasFactory.createJCas("org.cleartk.TestTypeSystem");
-		Annotation annotation1 = new Annotation(jCas, begin1, end1);
-		Annotation annotation2 = new Annotation(jCas, begin2, end2);
-		RelativePositionExtractor extractor;
+		TokenFactory.createTokens(jCas,
+				"She sells seashells by the sea shore", Token.class, Sentence.class, 
+				null, 
+				"PRP VBZ NNS IN DT NN NN",
+				null, "org.cleartk.type.test.Token:pos", null);
+		DocumentAnnotation document = AnnotationRetrieval.getDocument(jCas);
+		
+		SpannedTextExtractor textExtractor = new SpannedTextExtractor();
+		TypePathExtractor posExtractor = new TypePathExtractor(Token.class, "pos");
+		NGramExtractor extractor;
 		List<Feature> features;
 		
-		extractor = new RelativePositionExtractor();
-		features = extractor.extract(jCas, annotation1, annotation2);
-		Assert.assertEquals(1, features.size());
-		Assert.assertEquals("RelativePosition", features.get(0).getName());
-		Assert.assertEquals(expected, features.get(0).getValue());
-
-		extractor = new RelativePositionExtractor("Foo");
-		features = extractor.extract(jCas, annotation1, annotation2);
-		Assert.assertEquals(1, features.size());
-		Assert.assertEquals("Foo_RelativePosition", features.get(0).getName());
-		Assert.assertEquals(expected, features.get(0).getValue());
-}
-
+		extractor = new NGramExtractor(2, Token.class, textExtractor);
+		Assert.assertEquals("|", extractor.getValueSeparator());
+		features = extractor.extract(jCas, document);
+		Assert.assertEquals(6, features.size());
+		this.checkFeatures(
+				features, "Ngram_SpannedText_SpannedText",
+				"She|sells", "sells|seashells", "seashells|by",
+				"by|the", "the|sea", "sea|shore");
+		
+		extractor = new NGramExtractor("Foo", 3, Token.class, posExtractor);
+		extractor.setValueSeparator("@");
+		Assert.assertEquals("@", extractor.getValueSeparator());
+		features = extractor.extract(jCas, document);
+		Assert.assertEquals(5, features.size());
+		this.checkFeatures(
+				features, "Foo_Ngram_TypePath_Pos_TypePath_Pos_TypePath_Pos",
+				"PRP@VBZ@NNS", "VBZ@NNS@IN", "NNS@IN@DT", "IN@DT@NN", "DT@NN@NN");
+		
+	}
+	
+	private void checkFeatures(
+			List<Feature> features,
+			String expectedName,
+			Object ... expectedValues) {
+		List<Object> actualValues = new ArrayList<Object>();
+		for (Feature feature: features) {
+			Assert.assertEquals(expectedName, feature.getName());
+			actualValues.add(feature.getValue());
+		}
+		Assert.assertEquals(Arrays.asList(expectedValues), actualValues);
+	}
 }

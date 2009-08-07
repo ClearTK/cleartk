@@ -45,7 +45,7 @@ import org.cleartk.classifier.SequentialClassifierAnnotator;
 import org.cleartk.classifier.SequentialDataWriterAnnotator;
 import org.cleartk.classifier.SequentialInstanceConsumer;
 import org.cleartk.classifier.Train;
-import org.cleartk.util.TestsUtil;
+import org.cleartk.util.JCasUtil;
 import org.junit.After;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
@@ -105,12 +105,12 @@ public class MalletCRFClassifierTest {
 	public void runTest1() throws Exception {
 
 		AnalysisEngine sequentialDataWriterAnnotator = AnalysisEngineFactory.createPrimitive(SequentialDataWriterAnnotator.class,
-				TestsUtil.getTypeSystemDescription(), 
+				JCasUtil.getTypeSystemDescription(), 
 				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER, TestHandler.class.getName(), 
 				SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				SequentialDataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, DefaultMalletCRFDataWriterFactory.class.getName());
 
-		JCas jCas = TestsUtil.getJCas();
+		JCas jCas = JCasUtil.getJCas();
 		sequentialDataWriterAnnotator.process(jCas);
 		sequentialDataWriterAnnotator.collectionProcessComplete();
 
@@ -137,7 +137,7 @@ public class MalletCRFClassifierTest {
 		assertEquals(sequenceFeatures.size(), outcomes.size());
 		testLabels(outcomes, "O O O O O O O O O O O O O O O B-GENE I-GENE I-GENE O B-GENE I-GENE O O O O O O O O O O O O O O O O O O O O O");
 		
-		AnalysisEngine sequentialClassifierAnnotator = AnalysisEngineFactory.createPrimitive(SequentialClassifierAnnotator.class, TestsUtil.getTypeSystemDescription(),
+		AnalysisEngine sequentialClassifierAnnotator = AnalysisEngineFactory.createPrimitive(SequentialClassifierAnnotator.class, JCasUtil.getTypeSystemDescription(),
 				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER, TestHandler1.class.getName(),
 				SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR, outputDirectory+"/model.jar");
 		jCas.reset();

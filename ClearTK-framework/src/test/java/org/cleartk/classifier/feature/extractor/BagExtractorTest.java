@@ -52,7 +52,7 @@ import org.uutuc.util.JCasAnnotatorAdapter;
  * 
  * @author Steven Bethard
  */
-public class BagExtractorTests {
+public class BagExtractorTest {
 
 	@Before
 	public void setUp() throws Exception {

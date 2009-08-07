@@ -39,7 +39,7 @@ import org.junit.Test;
  * 
  * @author Philipp G. Wetzler
  */
-public class ArrayFeatureVectorTests {
+public class ArrayFeatureVectorTest {
 	
 	@Before
 	public void setUp() throws CleartkException {

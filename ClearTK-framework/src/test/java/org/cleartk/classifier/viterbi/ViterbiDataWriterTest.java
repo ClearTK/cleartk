@@ -51,7 +51,7 @@ import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.TestsUtil;
+import org.cleartk.util.JCasUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
@@ -107,7 +107,7 @@ public class ViterbiDataWriterTest {
 	public void testConsumeAll() throws Exception {
 
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(SequentialDataWriterAnnotator.class,
-				TestsUtil.getTypeSystemDescription(),
+				JCasUtil.getTypeSystemDescription(),
 				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER, TestAnnotationHandler.class.getName(),
 				SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				SequentialDataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, ViterbiDataWriterFactory.class.getName(),
@@ -144,7 +144,7 @@ public class ViterbiDataWriterTest {
 		hider.restoreOutput();
 		
 		engine = AnalysisEngineFactory.createPrimitive(SequentialClassifierAnnotator.class, 
-				TestsUtil.getTypeSystemDescription(),
+				JCasUtil.getTypeSystemDescription(),
 				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER, TestAnnotationHandler.class.getName(),
 				SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR, new File(outputDirectory, "model.jar").getPath());
 		

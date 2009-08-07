@@ -43,7 +43,7 @@ import org.cleartk.classifier.Train;
 import org.cleartk.classifier.svmlight.model.SVMlightModel;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 import org.cleartk.classifier.util.featurevector.SparseFeatureVector;
-import org.cleartk.util.TestsUtil;
+import org.cleartk.util.AnnotationHandlerTestUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -60,7 +60,7 @@ import org.uutuc.util.TearDownUtil;
  * 
  * @author Steven Bethard, Philipp Wetzler
 */
-public class RunSVMlightTests {
+public class RunSVMlightTest {
 
 	protected String outputDirectory = "test/data/svmlight/output";
 	protected String dataDirectory = "test/data/svmlight";
@@ -209,7 +209,7 @@ public class RunSVMlightTests {
 		DataWriterAnnotator<Boolean> dataWriter = new DataWriterAnnotator<Boolean>();
 		dataWriter.initialize(UimaContextFactory.createUimaContext(
 				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
-				TestsUtil.EmptyBooleanHandler.class.getName(),
+				AnnotationHandlerTestUtil.EmptyBooleanHandler.class.getName(),
 				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY,
 				this.outputDirectory,
 				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS,
@@ -250,7 +250,7 @@ public class RunSVMlightTests {
 		DataWriterAnnotator<String> dataWriter = new DataWriterAnnotator<String>();
 		dataWriter.initialize(UimaContextFactory.createUimaContext(
 				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
-				TestsUtil.EmptyStringHandler.class.getName(),
+				AnnotationHandlerTestUtil.EmptyStringHandler.class.getName(),
 				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY,
 				this.outputDirectory,
 				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS,

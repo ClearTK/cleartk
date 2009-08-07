@@ -21,12 +21,9 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-
 package org.cleartk.classifier.feature.extractor;
 
 import static org.junit.Assert.assertEquals;
-
-import java.util.List;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
@@ -47,12 +44,10 @@ import org.uutuc.util.JCasAnnotatorAdapter;
  * <br>All rights reserved.
 
  *
- * Unit tests for org.cleartk.readers.DirectoryCollectionReader.
- * 
  * @author Philip Ogren
  */
 
-public class DistanceExtractorTests {
+public class DirectedDistanceExtractorTest {
 
 	@Test
 	public void test1() throws Exception {
@@ -60,10 +55,10 @@ public class DistanceExtractorTests {
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TestTypeSystem"));
 		JCas jCas = engine.newJCas();
 		
-		TokenFactory.createTokens(jCas, "A simple sentence to test the distance of tokens from each other.", Token.class, Sentence.class,  "A simple sentence to test the distance of tokens from each other .");
+		TokenFactory.createTokens(jCas, "A simple sentence to test the distance of tokens from each other.", Token.class, Sentence.class, "A simple sentence to test the distance of tokens from each other .");
 		
 				
-		DistanceExtractor extractor = new DistanceExtractor(null, Token.class);
+		DirectedDistanceExtractor extractor = new DirectedDistanceExtractor(null, Token.class);
 		
 		Token token1 = AnnotationRetrieval.get(jCas, Token.class, 0);
 		Token token2 = AnnotationRetrieval.get(jCas, Token.class, 1);
@@ -71,42 +66,44 @@ public class DistanceExtractorTests {
 		Token token4 = AnnotationRetrieval.get(jCas, Token.class, 3);
 		Token token5 = AnnotationRetrieval.get(jCas, Token.class, 4);
 		
-		List<Feature> features = extractor.extract(jCas, token1, token2);
-		assertEquals(0, features.get(0).getValue());
+		Feature feature = extractor.extract(jCas, token1, token2);
+		assertEquals(1, feature.getValue());
+		feature = extractor.extract(jCas, token2, token1);
+		assertEquals(-1, feature.getValue());
 
-		features = extractor.extract(jCas, token1, token3);
-		assertEquals(1, features.get(0).getValue());
-		features = extractor.extract(jCas, token3, token1);
-		assertEquals(1, features.get(0).getValue());
+		feature = extractor.extract(jCas, token1, token3);
+		assertEquals(2, feature.getValue());
+		feature = extractor.extract(jCas, token3, token1);
+		assertEquals(-2, feature.getValue());
 
-		features = extractor.extract(jCas, token1, token5);
-		assertEquals(3, features.get(0).getValue());
-		features = extractor.extract(jCas, token5, token1);
-		assertEquals(3, features.get(0).getValue());
+		feature = extractor.extract(jCas, token1, token5);
+		assertEquals(4, feature.getValue());
+		feature = extractor.extract(jCas, token5, token1);
+		assertEquals(-4, feature.getValue());
 
-		features = extractor.extract(jCas, token4, token5);
-		assertEquals(0, features.get(0).getValue());
-		features = extractor.extract(jCas, token5, token4);
-		assertEquals(0, features.get(0).getValue());
+		feature = extractor.extract(jCas, token4, token5);
+		assertEquals(1, feature.getValue());
+		feature = extractor.extract(jCas, token5, token4);
+		assertEquals(-1, feature.getValue());
 
-		features = extractor.extract(jCas, token5, token5);
-		assertEquals(0, features.get(0).getValue());
+		feature = extractor.extract(jCas, token5, token5);
+		assertEquals(0, feature.getValue());
 		
-		features = extractor.extract(jCas, new Annotation(jCas, 0,3), token1);
-		assertEquals(0, features.get(0).getValue());
-		features = extractor.extract(jCas, new Annotation(jCas, 0,3), token2);
-		assertEquals(0, features.get(0).getValue());
-		features = extractor.extract(jCas, new Annotation(jCas, 0,3), token3);
-		assertEquals(0, features.get(0).getValue());
-		features = extractor.extract(jCas, new Annotation(jCas, 0,3), token4);
-		assertEquals(1, features.get(0).getValue());
-		features = extractor.extract(jCas, new Annotation(jCas, 0,3), token5);
-		assertEquals(2, features.get(0).getValue());
+		feature = extractor.extract(jCas, new Annotation(jCas, 0,3), token1);
+		assertEquals(0, feature.getValue());
+		feature = extractor.extract(jCas, new Annotation(jCas, 0,3), token2);
+		assertEquals(0, feature.getValue());
+		feature = extractor.extract(jCas, new Annotation(jCas, 0,3), token3);
+		assertEquals(1, feature.getValue());
+		feature = extractor.extract(jCas, new Annotation(jCas, 0,3), token4);
+		assertEquals(2, feature.getValue());
+		feature = extractor.extract(jCas, new Annotation(jCas, 0,3), token5);
+		assertEquals(3, feature.getValue());
 		
 		Annotation annotation = new Annotation(jCas, 64, 65);
 		assertEquals(".", annotation.getCoveredText());
-		features = extractor.extract(jCas, annotation, token1);
-		assertEquals(11, features.get(0).getValue());
+		feature = extractor.extract(jCas, annotation, token1);
+		assertEquals(-12, feature.getValue());
 
 	}
 }

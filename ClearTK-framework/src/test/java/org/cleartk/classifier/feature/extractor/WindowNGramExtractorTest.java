@@ -34,7 +34,7 @@ import org.cleartk.classifier.feature.WindowNGramFeature;
 import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.TestsUtil;
+import org.cleartk.util.JCasUtil;
 import org.junit.Test;
 import org.uutuc.factory.TokenFactory;
 
@@ -44,7 +44,7 @@ import org.uutuc.factory.TokenFactory;
  * All rights reserved.
  */
 
-public class WindowNGramExtractorTests {
+public class WindowNGramExtractorTest {
 
 	@Test
 	public void testLeftGrams() throws IOException, UIMAException {
@@ -54,7 +54,7 @@ public class WindowNGramExtractorTests {
 				WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT, " ", 0, 3);
 
 		// feature extraction on "island" in "...middle of the island..."
-		JCas jCas = TestsUtil.getJCas();
+		JCas jCas = JCasUtil.getJCas();
 		TokenFactory.createTokens(jCas,
 				"text obtained from gutenberg\n" +
 				"I WANTED to go and look at a place right about the middle of " +
@@ -195,7 +195,7 @@ public class WindowNGramExtractorTests {
 				WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT, " ", 0, 3);
 
 		// feature extraction on "island" in "...because the island was only..."
-		JCas jCas = TestsUtil.getJCas();
+		JCas jCas = JCasUtil.getJCas();
 		TokenFactory.createTokens(jCas,
 				"text obtained from gutenberg\n" +
 				"I WANTED to go and look at a place right about the middle of " +

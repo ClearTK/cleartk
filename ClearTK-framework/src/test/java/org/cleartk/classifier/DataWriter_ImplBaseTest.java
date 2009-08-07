@@ -52,7 +52,7 @@ import org.uutuc.util.TearDownUtil;
  * 
  * @author Steven Bethard
  */
-public class DataWriter_ImplBaseTests {
+public class DataWriter_ImplBaseTest {
 
 	@After
 	public void tearDown() throws Exception {

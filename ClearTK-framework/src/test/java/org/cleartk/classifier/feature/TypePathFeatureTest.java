@@ -38,7 +38,7 @@ import static org.junit.Assert.assertNull;
 import org.junit.Test;
 
 
-public class TypePathFeatureTests {
+public class TypePathFeatureTest {
 
 	@Test
 	public void testgetName() {

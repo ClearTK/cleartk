@@ -45,7 +45,7 @@ import org.uutuc.factory.TypeSystemDescriptionFactory;
 
 */
 
-public class WhiteSpaceExtractorTests {
+public class WhiteSpaceExtractorTest {
 
 	public static class Annotator extends JCasAnnotator_ImplBase {
 
@@ -88,7 +88,7 @@ public class WhiteSpaceExtractorTests {
 	@Test
 	public void testExtract() throws Exception{
 			AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-					WhiteSpaceExtractorTests.Annotator.class,
+					WhiteSpaceExtractorTest.Annotator.class,
 					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TestTypeSystem"));
 			JCas jCas = AnalysisEngineFactory.process(engine,"This is some test text.");
 			FSIndex fsIndex = jCas.getAnnotationIndex(Token.type);

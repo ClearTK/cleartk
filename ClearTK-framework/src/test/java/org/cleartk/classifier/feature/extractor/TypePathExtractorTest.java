@@ -47,7 +47,7 @@ import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
 import org.cleartk.type.test.Lemma;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.TestsUtil;
+import org.cleartk.util.JCasUtil;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.JCasFactory;
@@ -61,7 +61,7 @@ import org.uutuc.factory.TypeSystemDescriptionFactory;
  * 
  * @author Philip Ogren
  */
-public class TypePathExtractorTests {
+public class TypePathExtractorTest {
 
 	public static class Annotator extends JCasAnnotator_ImplBase {
 		public void process(JCas jCas) throws AnalysisEngineProcessException {
@@ -126,10 +126,10 @@ public class TypePathExtractorTests {
 	@Test
 	public void testExtract() throws IOException, UIMAException {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				TypePathExtractorTests.Annotator.class,
+				TypePathExtractorTest.Annotator.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TestTypeSystem"));
 		
-		JCas jCas = TestsUtil.getJCas();
+		JCas jCas = JCasUtil.getJCas();
 		engine.process(jCas);
 		engine.collectionProcessComplete();
 		FSIndex fsIndex = jCas.getAnnotationIndex(Token.type);
@@ -301,7 +301,7 @@ public class TypePathExtractorTests {
 	public void testTicket23() throws IOException, UIMAException {
 
 		// token "place" in "wide. This place was a tolerable long,");
-		JCas jCas = TestsUtil.getJCas();
+		JCas jCas = JCasUtil.getJCas();
 		TokenFactory.createTokens(jCas, "wide .\nThis place was a tolerable long ,",
 				Token.class, Sentence.class);
 		Token token = AnnotationRetrieval.get(jCas, Token.class, 3);

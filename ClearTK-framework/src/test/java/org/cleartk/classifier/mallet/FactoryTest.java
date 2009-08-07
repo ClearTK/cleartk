@@ -46,7 +46,7 @@ import cc.mallet.classify.NaiveBayesTrainer;
  * @author Philip Ogren
  */
 
-public class FactoryTests {
+public class FactoryTest {
 
 	@Test
 	public void testC45TrainerFactory() {

@@ -45,7 +45,8 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.InstanceConsumer;
 import org.cleartk.classifier.Train;
-import org.cleartk.util.TestsUtil;
+import org.cleartk.util.JCasUtil;
+import org.cleartk.util.AnnotationHandlerTestUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -62,7 +63,7 @@ import org.uutuc.util.TearDownUtil;
  * 
  * @author Steven Bethard
 */
-public class RunLIBSVMTests {
+public class RunLIBSVMTest {
 
 	protected Random random;
 	protected String outputDirectory = "test/data/libsvm";
@@ -86,7 +87,7 @@ public class RunLIBSVMTests {
 		DataWriterAnnotator<Boolean> dataWriter = new DataWriterAnnotator<Boolean>();
 		dataWriter.initialize(UimaContextFactory.createUimaContext(
 				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
-				TestsUtil.EmptyBooleanHandler.class.getName(),
+				AnnotationHandlerTestUtil.EmptyBooleanHandler.class.getName(),
 				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY,
 				this.outputDirectory,
 				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS,
@@ -127,7 +128,7 @@ public class RunLIBSVMTests {
 		DataWriterAnnotator<Boolean> dataWriter = new DataWriterAnnotator<Boolean>();
 		dataWriter.initialize(UimaContextFactory.createUimaContext(
 				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
-				TestsUtil.EmptyBooleanHandler.class.getName(),
+				AnnotationHandlerTestUtil.EmptyBooleanHandler.class.getName(),
 				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY,
 				this.outputDirectory,
 				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS,
@@ -168,7 +169,7 @@ public class RunLIBSVMTests {
 		DataWriterAnnotator<String> dataWriter = new DataWriterAnnotator<String>();
 		dataWriter.initialize(UimaContextFactory.createUimaContext(
 				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
-				TestsUtil.EmptyStringHandler.class.getName(),
+				AnnotationHandlerTestUtil.EmptyStringHandler.class.getName(),
 				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY,
 				this.outputDirectory,
 				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS,
@@ -216,7 +217,7 @@ public class RunLIBSVMTests {
 
 		AnalysisEngine dataWriter = AnalysisEngineFactory.createPrimitive(dataWriterDescription);
 		
-		JCas jCas = TestsUtil.getJCas();
+		JCas jCas = JCasUtil.getJCas();
 		
 		dataWriter.process(jCas);
 		
