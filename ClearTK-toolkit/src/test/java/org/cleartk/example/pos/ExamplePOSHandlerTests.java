@@ -41,7 +41,7 @@ import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.EmptyAnnotator;
-import org.cleartk.util.TestsUtil;
+import org.cleartk.util.AnnotationHandlerTestUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
@@ -73,7 +73,7 @@ public class ExamplePOSHandlerTests {
 				"DT NNP VBD IN CD .",
 				"The Absurdi retreat in 2003 .", "org.cleartk.type.Token:pos", "org.cleartk.type.Token:stem");
 
-		List<Instance<String>> instances = TestsUtil.produceInstances(
+		List<Instance<String>> instances = AnnotationHandlerTestUtil.produceInstances(
 				new ExamplePOSAnnotationHandler(), engine, jCas);
 		List<String> featureValues;
 		

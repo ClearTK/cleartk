@@ -39,7 +39,7 @@ import org.cleartk.token.util.PennTreebankTokenizer;
 import org.cleartk.token.util.Subtokenizer;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.TestsUtil;
+import org.cleartk.util.JCasUtil;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
 
@@ -244,7 +244,7 @@ public class TokenizerAndTokenAnnotatorTests {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TokenAnnotator.class,
 				CleartkComponents.TYPE_SYSTEM_DESCRIPTION, TokenAnnotator.PARAM_TOKEN_TYPE, Subtoken.class.getName(),
 				TokenAnnotator.PARAM_TOKENIZER, Subtokenizer.class.getName());
-		JCas jCas = TestsUtil.getJCas();
+		JCas jCas = JCasUtil.getJCas();
 		jCas.setDocumentText("AA;BB-CC   DD!@#$EE(FF)GGG \tH,.");
 		engine.process(jCas);
 

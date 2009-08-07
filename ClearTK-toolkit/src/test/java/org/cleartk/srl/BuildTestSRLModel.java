@@ -41,7 +41,7 @@ import org.cleartk.classifier.svmlight.DefaultSVMlightDataWriterFactory;
 import org.cleartk.srl.propbank.PropbankGoldAnnotator;
 import org.cleartk.srl.propbank.PropbankGoldReader;
 import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
-import org.cleartk.util.TestsUtil;
+import org.cleartk.util.JCasUtil;
 import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.CollectionReaderFactory;
 import org.uutuc.util.JCasIterable;
@@ -63,7 +63,7 @@ public class BuildTestSRLModel {
 		System.out.println("Create Training Data");
 		System.out.println("--------------------");
 		
-		TypeSystemDescription typeSystemDescription = TestsUtil.getTypeSystemDescription();
+		TypeSystemDescription typeSystemDescription = JCasUtil.getTypeSystemDescription();
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(PropbankGoldReader.class, typeSystemDescription,
 				PropbankGoldReader.PARAM_PROPBANK_FILE, "../ClearTK Data/data/propbank-1.0/prop.txt",
 				PropbankGoldReader.PARAM_PENNTREEBANK_DIRECTORY, "../ClearTK Data/data/treebank",

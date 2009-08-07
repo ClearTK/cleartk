@@ -50,7 +50,7 @@ import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.EmptyAnnotator;
-import org.cleartk.util.TestsUtil;
+import org.cleartk.util.AnnotationHandlerTestUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -133,7 +133,7 @@ public class VerbClauseTemporalHandlerTests {
 		
 		// collect the single instance from the handler
 		List<Instance<String>> instances;
-		instances = TestsUtil.produceInstances(
+		instances = AnnotationHandlerTestUtil.produceInstances(
 				new VerbClauseTemporalHandler(), engine, jCas);
 		Assert.assertEquals(1, instances.size());
 		
@@ -169,7 +169,7 @@ public class VerbClauseTemporalHandlerTests {
 		Assert.assertEquals(0, tlinks.size());
 		
 		// and run the handler again, asking it to annotate this time
-		instances = TestsUtil.produceInstances(
+		instances = AnnotationHandlerTestUtil.produceInstances(
 				new VerbClauseTemporalHandler(), "AFTER-NEW", engine, jCas);
 		Assert.assertEquals(1, instances.size());
 		

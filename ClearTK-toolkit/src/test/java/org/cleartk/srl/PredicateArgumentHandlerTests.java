@@ -51,7 +51,7 @@ import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.EmptyAnnotator;
-import org.cleartk.util.TestsUtil;
+import org.cleartk.util.AnnotationHandlerTestUtil;
 import org.cleartk.util.UIMAUtil;
 import org.junit.After;
 import org.junit.Assert;
@@ -91,7 +91,7 @@ public class PredicateArgumentHandlerTests {
 		this.setTrees(jCas);
 		
 		// make sure the handler produces no instances
-		List<Instance<String>> instances = TestsUtil.produceInstances(
+		List<Instance<String>> instances = AnnotationHandlerTestUtil.produceInstances(
 				new ArgumentAnnotationHandler(), engine, jCas);
 		Assert.assertEquals(0, instances.size());
 	}
@@ -105,7 +105,7 @@ public class PredicateArgumentHandlerTests {
 		this.setTrees(jCas);
 		
 		// make sure the handler produces no instances
-		List<Instance<Boolean>> instances = TestsUtil.produceInstances(
+		List<Instance<Boolean>> instances = AnnotationHandlerTestUtil.produceInstances(
 				new ArgumentIdentificationHandler(), engine, jCas);
 		Assert.assertEquals(0, instances.size());
 	}
@@ -119,7 +119,7 @@ public class PredicateArgumentHandlerTests {
 		this.setTrees(jCas);
 		
 		// make sure the handler produces no instances
-		List<Instance<String>> instances = TestsUtil.produceInstances(
+		List<Instance<String>> instances = AnnotationHandlerTestUtil.produceInstances(
 				new ArgumentClassificationHandler(), engine, jCas);
 		Assert.assertEquals(0, instances.size());
 	}
@@ -134,7 +134,7 @@ public class PredicateArgumentHandlerTests {
 		
 		// make sure the handler produces an exception
 		try {
-			TestsUtil.produceInstances(
+			AnnotationHandlerTestUtil.produceInstances(
 				new ArgumentAnnotationHandler(), engine, jCas);
 			Assert.fail("expected exception for missing TopTreebankNode");
 		} catch (IllegalArgumentException e) {}
@@ -150,7 +150,7 @@ public class PredicateArgumentHandlerTests {
 		
 		// make sure the handler produces an exception
 		try {
-			TestsUtil.produceInstances(
+			AnnotationHandlerTestUtil.produceInstances(
 				new ArgumentIdentificationHandler(), engine, jCas);
 			Assert.fail("expected exception for missing TopTreebankNode");
 		} catch (IllegalArgumentException e) {}
@@ -166,7 +166,7 @@ public class PredicateArgumentHandlerTests {
 		
 		// make sure the handler produces an exception
 		try {
-			TestsUtil.produceInstances(
+			AnnotationHandlerTestUtil.produceInstances(
 				new ArgumentClassificationHandler(), engine, jCas);
 			Assert.fail("expected exception for missing TopTreebankNode");
 		} catch (IllegalArgumentException e) {}
@@ -182,7 +182,7 @@ public class PredicateArgumentHandlerTests {
 		this.setPredicates(jCas);
 		
 		// get the instances produced by the handler
-		List<Instance<Boolean>> instances = TestsUtil.produceInstances(
+		List<Instance<Boolean>> instances = AnnotationHandlerTestUtil.produceInstances(
 				new PredicateAnnotationHandler(), engine, jCas);
 		Assert.assertEquals(5, instances.size());
 		Object[] featureValues;
@@ -224,7 +224,7 @@ public class PredicateArgumentHandlerTests {
 		this.setPredicates(jCas);
 		
 		// get the instances produced by the handler 
-		List<Instance<String>> instances = TestsUtil.produceInstances(
+		List<Instance<String>> instances = AnnotationHandlerTestUtil.produceInstances(
 				new ArgumentAnnotationHandler(), engine, jCas);
 		String featuresString;
 		Assert.assertEquals(9, instances.size());
@@ -281,7 +281,7 @@ public class PredicateArgumentHandlerTests {
 		this.setPredicates(jCas);
 		
 		// get the instances produced by the handler 
-		List<Instance<Boolean>> instances = TestsUtil.produceInstances(
+		List<Instance<Boolean>> instances = AnnotationHandlerTestUtil.produceInstances(
 				new ArgumentIdentificationHandler(), engine, jCas);
 		String featuresString;
 		Assert.assertEquals(9, instances.size());
@@ -331,7 +331,7 @@ public class PredicateArgumentHandlerTests {
 		this.setPredicates(jCas);
 		
 		// get the instances produced by the handler 
-		List<Instance<String>> instances = TestsUtil.produceInstances(
+		List<Instance<String>> instances = AnnotationHandlerTestUtil.produceInstances(
 				new ArgumentClassificationHandler(), engine, jCas);
 		String featuresString;
 		Assert.assertEquals(2, instances.size());
