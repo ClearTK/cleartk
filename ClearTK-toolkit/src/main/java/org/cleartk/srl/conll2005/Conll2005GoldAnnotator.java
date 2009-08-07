@@ -49,7 +49,6 @@ import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.AnnotationUtil2;
 import org.cleartk.util.UIMAUtil;
-import org.junit.Assert;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -83,7 +82,10 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
 				predicateParsers[i] = new PredicateParser(initView);
 
 			for( CoNLL2005Line line : conll2005Lines.toArray(new CoNLL2005Line[0])) {
-				Assert.assertEquals(line.argumentSegments.length, numberOfPredicates);
+				if (line.argumentSegments.length != numberOfPredicates) {
+					throw new RuntimeException(String.format("expected %d segments, found %d",
+							numberOfPredicates, line.argumentSegments.length));
+				}
 				
 				if( docText.length() > 0 && line.word.length() > 0 )
 					docText.append(" ");
@@ -273,7 +275,9 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
 		}
 		
 		void feedInfo(String tokenText, String baseForm, String sense, Token token) {
-			Assert.assertNotNull(token);
+			if (token == null) {
+				throw new RuntimeException(String.format("token for \"%s\" is null", tokenText));
+			}
 			this.token = tokenText;
 			this.baseForm = baseForm;
 			this.sense = sense;
@@ -318,7 +322,9 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
 		}
 		
 		Predicate makePredicate() {
-			Assert.assertNotNull(this.predicateToken);
+			if (this.predicateToken == null) {
+				throw new RuntimeException("no predicateToken found yet");
+			}
 			Predicate predicate = new Predicate(jCas, this.predicateToken.getBegin(), this.predicateToken.getEnd());
 			predicate.setAnnotation(this.predicateToken);
 			predicate.setArguments(UIMAUtil.toFSArray(jCas, this.arguments));

@@ -19,6 +19,12 @@
 	</repositories>
 	<dependencies>
 		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.5</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.uima</groupId>
 			<artifactId>uimaj-core</artifactId>
 			<version>2.2.2-incubating</version>
@@ -43,12 +49,6 @@
 			<optional>false</optional>
 		</dependency>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.5</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>jdom</groupId>
 			<artifactId>jdom</artifactId>
 			<version>1.1</version>
@@ -57,8 +57,6 @@
 			<groupId>org.uutuc</groupId>
 			<artifactId>uutuc</artifactId>
 			<version>0.9.6</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/../ClearTK-framework/lib/uutuc-0.9.6.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>net.sourceforge.opennlp</groupId>
