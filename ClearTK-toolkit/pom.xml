@@ -16,6 +16,22 @@
 			<name>Apache m2-incubating-repository</name>
 			<url>http://people.apache.org/repo/m2-incubating-repository/</url>
 		</repository>
+		<repository>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>uutuc-googlecode</id>
+			<name>uutuc Google Code repository</name>
+			<url>http://uutuc.googlecode.com/svn/repo/</url>
+		</repository>
+		<repository>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>cleartk-googlecode</id>
+			<name>ClearTK Google Code repository</name>
+			<url>http://cleartk.googlecode.com/svn/repo/</url>
+		</repository>
 	</repositories>
 	<dependencies>
 		<dependency>
@@ -112,5 +128,19 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<extensions>
+			<extension>
+				<groupId>org.jvnet.wagon-svn</groupId>
+				<artifactId>wagon-svn</artifactId>
+				<version>1.8</version>
+			</extension>
+		</extensions>
 	</build>
+	<distributionManagement>
+		<repository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>googlecode</id>
+			<url>svn:https://cleartk.googlecode.com/svn/repo</url>
+		</repository>
+	</distributionManagement>
 </project>
