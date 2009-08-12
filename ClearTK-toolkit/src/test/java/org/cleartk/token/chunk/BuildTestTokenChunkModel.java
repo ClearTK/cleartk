@@ -34,7 +34,7 @@ import org.cleartk.corpus.genia.GeniaPosGoldReader;
 import org.cleartk.token.TokenAnnotator;
 import org.cleartk.token.chunk.type.Subtoken;
 import org.cleartk.token.util.Subtokenizer;
-import org.cleartk.util.JCasUtil;
+import org.cleartk.util.ReusableUIMAObjects;
 import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.CollectionReaderFactory;
 import org.uutuc.util.JCasIterable;
@@ -51,7 +51,7 @@ public class BuildTestTokenChunkModel {
 
 	public static void main(String[] args) throws Exception {
 		
-		TypeSystemDescription typeSystemDescription = JCasUtil.getTypeSystemDescription();
+		TypeSystemDescription typeSystemDescription = ReusableUIMAObjects.getTypeSystemDescription();
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(GeniaPosGoldReader.class, typeSystemDescription, 
 				GeniaPosGoldReader.PARAM_GENIA_CORPUS, "test/data/corpus/genia/GENIAcorpus3.02.articleA.pos.xml",
 				GeniaPosGoldReader.PARAM_LOAD_SENTENCES, true);

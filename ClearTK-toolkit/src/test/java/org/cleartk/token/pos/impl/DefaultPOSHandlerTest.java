@@ -54,7 +54,7 @@ import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.FilesCollectionReader;
-import org.cleartk.util.JCasUtil;
+import org.cleartk.util.ReusableUIMAObjects;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -91,7 +91,7 @@ public class DefaultPOSHandlerTest {
 	@Test
 	public void testCraft() throws Exception {
 		
-		TypeSystemDescription defaultTypeSystemDescription = JCasUtil.getTypeSystemDescription();
+		TypeSystemDescription defaultTypeSystemDescription = ReusableUIMAObjects.getTypeSystemDescription();
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(FilesCollectionReader.class, defaultTypeSystemDescription, 
 				FilesCollectionReader.PARAM_FILE_OR_DIRECTORY, "test/data/docs/treebank",
 				FilesCollectionReader.PARAM_SUFFIXES, new String[] {".tree"},
@@ -125,7 +125,7 @@ public class DefaultPOSHandlerTest {
 		AnalysisEngine tagger = AnalysisEngineFactory.createAnalysisEngine("org.cleartk.token.pos.impl.DefaultPOSAnnotator", 
 				SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR, new File(outputDirectory, BuildJar.MODEL_FILE_NAME).getPath());
 
-		JCas jCas = JCasUtil.getJCas();
+		JCas jCas = ReusableUIMAObjects.getJCas();
 		TokenFactory.createTokens(jCas, "What kitchen utensil is like a vampire ? Spatula", Token.class, Sentence.class );
 		tagger.process(jCas);
 		assertEquals("WP", AnnotationRetrieval.get(jCas, Token.class, 0).getPos());

@@ -46,7 +46,7 @@ import org.cleartk.type.Chunk;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.JCasUtil;
+import org.cleartk.util.ReusableUIMAObjects;
 import org.cleartk.util.UIMAUtil;
 import org.junit.After;
 import org.junit.Assert;
@@ -102,7 +102,7 @@ public class ChunkTokenizerTest {
 		  ChunkLabeler chunkLabeler = chunkerHandler.getChunkLabeler();
 
 		  
-		  JCas jCas = JCasUtil.getJCas();
+		  JCas jCas = ReusableUIMAObjects.getJCas();
 
 		  String text = "What if we built a rocket ship made of cheese?" +
 			  "We could fly it to the moon for repairs";
