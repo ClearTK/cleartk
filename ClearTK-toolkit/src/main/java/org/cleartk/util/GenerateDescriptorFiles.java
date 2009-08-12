@@ -60,7 +60,7 @@ public class GenerateDescriptorFiles {
 	 */
 
 	public static void main(String[] args) throws SAXException, IOException, ResourceInitializationException {
-		String outputDirectoryName = "desc";
+		String outputDirectoryName = "src/main/resources";
 		File outputDirectory = new File(outputDirectoryName);
 		if(!outputDirectory.exists()) {
 			outputDirectory.mkdirs();
