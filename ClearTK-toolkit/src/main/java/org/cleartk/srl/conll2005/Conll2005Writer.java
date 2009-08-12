@@ -105,6 +105,16 @@ public class Conll2005Writer extends JCasAnnotator_ImplBase {
 		output.flush();
 	}
 	
+	
+	
+	@Override
+	public void collectionProcessComplete() throws AnalysisEngineProcessException {
+		output.close();
+		super.collectionProcessComplete();
+	}
+
+
+
 	private static class CoNLL05Line {
 		String lexeme;
 		String pos;
