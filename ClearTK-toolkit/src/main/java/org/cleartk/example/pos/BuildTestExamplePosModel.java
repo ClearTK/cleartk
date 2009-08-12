@@ -63,7 +63,7 @@ public class BuildTestExamplePosModel {
 				CleartkComponents.createPrimitiveDescription(DefaultSnowballStemmer.class, SnowballStemmer.PARAM_STEMMER_NAME, "English"),
 				ExamplePOSAnnotationHandler.getWriterDescription(ExamplePOSAnnotationHandler.DEFAULT_OUTPUT_DIRECTORY));
 				
-		org.cleartk.classifier.Train.main("example/model");
+		org.cleartk.classifier.Train.main("example/pos/model");
 
 	}
 }
