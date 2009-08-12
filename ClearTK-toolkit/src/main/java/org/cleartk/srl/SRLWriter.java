@@ -85,6 +85,9 @@ public class SRLWriter extends JCasAnnotator_ImplBase {
 		try {
 			File outputFile = new File((String)UIMAUtil.getRequiredConfigParameterValue(
 					context, PARAM_OUTPUT_FILE));
+			if(!outputFile.getParentFile().exists()) {
+				outputFile.getParentFile().mkdirs();
+			}
 			output = new PrintWriter(outputFile);
 		} catch (FileNotFoundException e) {
 			throw new ResourceInitializationException(e);

@@ -23,14 +23,17 @@
 */
 package org.cleartk.srl;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.util.TearDownUtil;
 
 
 /**
@@ -39,6 +42,14 @@ import org.uutuc.factory.AnalysisEngineFactory;
 
  */
 public class SRLWriterTest {
+	
+	private final File outputFile = new File("test/data/srl-writer-test/srl-output.txt");
+	
+	@After
+	public void tearDown() {
+		TearDownUtil.removeDirectory(outputFile.getParentFile());
+		Assert.assertFalse(outputFile.getParentFile().exists());
+	}
 	
 	@Test
 	public void testSRLWriterDescriptor() throws UIMAException, IOException {
