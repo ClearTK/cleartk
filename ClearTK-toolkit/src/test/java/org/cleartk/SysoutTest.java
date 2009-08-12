@@ -44,7 +44,7 @@ public class SysoutTest {
 	@Test
 	public void testSysout() throws IOException {
 		List<String> violatingFiles = new ArrayList<String>();
-		Iterable<File> files = Files.getFiles("src", new String[] { ".java" });
+		Iterable<File> files = Files.getFiles("src/main", new String[] { ".java" });
 
 		for (File file : files) {
 			if(file.getName().equals("BuildJar.java") ||
