@@ -108,7 +108,7 @@ public class AnnotationRetrievalTest {
 	
 	@Test
 	public void testTypedGet() throws UIMAException {
-		JCas jCas = JCasUtil.getJCas();
+		JCas jCas = ReusableUIMAObjects.getJCas();
 		TokenFactory.createTokens(jCas, "A B C D E F G H I J", Token.class, Sentence.class);
 		
 		ContiguousAnnotation ca = new ContiguousAnnotation(jCas, 10, 13);
@@ -289,7 +289,7 @@ public class AnnotationRetrievalTest {
 
 	@Test
 	public void testGetContainingAnnotationExclusive() throws UIMAException {
-		JCas jCas = JCasUtil.getJCas();
+		JCas jCas = ReusableUIMAObjects.getJCas();
 		String text = "What if we built a rocket ship made of cheese?\n"+
 					  "We could fly it to the moon for repairs.";
 		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class);
@@ -588,7 +588,7 @@ public class AnnotationRetrievalTest {
 	
 	@Test 
 	public void testGetAnnotationIndex() throws UIMAException, IOException {
-		JCas jCas = JCasUtil.getJCas();
+		JCas jCas = ReusableUIMAObjects.getJCas();
 		//original joke by Philip Ogren
 		String text = "Police Officer: Put down that gun!\n"+
 					  "Hooligan (turning toward his gun): Stupid gun!";
@@ -609,7 +609,7 @@ public class AnnotationRetrievalTest {
 	
 	@Test
 	public void testGetAtIndex() throws ResourceInitializationException {
-		JCas jCas = JCasUtil.getJCas();
+		JCas jCas = ReusableUIMAObjects.getJCas();
 		//original joke by Philip Ogren
 		String text = "Police Officer: Put down that gun!\n"+
 					  "Hooligan (turning toward his gun): Stupid gun!";
@@ -628,7 +628,7 @@ public class AnnotationRetrievalTest {
 	
 	@Test
 	public void testGetAnnotationsExact() throws ResourceInitializationException {
-		JCas jCas = JCasUtil.getJCas();
+		JCas jCas = ReusableUIMAObjects.getJCas();
 		//from http://www.gutenberg.org/files/17192/17192-h/17192-h.htm
 		jCas.setDocumentText("Quoth the Raven, \"Nevermore.\"");
 		Token token = new Token(jCas, 10, 15);
@@ -672,7 +672,7 @@ public class AnnotationRetrievalTest {
 
 	@Test
 	public void testIssue98() throws UIMAException {
-		JCas jCas =  JCasUtil.getJCas();
+		JCas jCas =  ReusableUIMAObjects.getJCas();
 		testIssue98(jCas);
 		
 		jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
