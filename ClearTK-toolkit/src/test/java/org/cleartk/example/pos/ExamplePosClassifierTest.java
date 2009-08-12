@@ -65,6 +65,8 @@ public class ExamplePosClassifierTest {
 
 	private String baseDirectory = "test/data/example/pos";
 	
+	public static boolean runLongTests = false;
+	
 	@After
 	public void tearDown() {
 		TearDownUtil.removeDirectory(new File(baseDirectory));
@@ -79,17 +81,19 @@ public class ExamplePosClassifierTest {
 				outputDirectory,
 				DefaultMultiClassLIBSVMDataWriterFactory.PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM, false);
 
-		testClassifier(dataWriter, outputDirectory, 1); //MultiClassLIBSVMClassifier.score is not implemented so we cannot have a stack size greater than 1.
+		testClassifier(dataWriter, outputDirectory, 1, "-t", "0"); //MultiClassLIBSVMClassifier.score is not implemented so we cannot have a stack size greater than 1.
 		String firstLine = FileUtil.loadListOfStrings(new File(outputDirectory + "/2008_Sichuan_earthquake.txt.pos"))[0].trim();
 		boolean badTags = firstLine.equals("2008/NN Sichuan/NN earthquake/NN From/NN Wikipedia/NN ,/NN the/NN free/NN encyclopedia/NN");
 		assertFalse(badTags);
+		assertEquals("2008/NN Sichuan/NN earthquake/NN From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/NN", firstLine);
+		
 	}
 
 	@Test
 	public void testMalletCRF() throws Exception {
 		System.out.println("running test org.cleartk.example.pos.ExamplePosClassifierTest.testMalletCRF()");
 
-		if(true) {
+		if(!runLongTests) {
 			System.out.println("skipping because training takes ~2 minutes. please modify the source to run this test.");
 			return;
 		}
@@ -110,7 +114,7 @@ public class ExamplePosClassifierTest {
 	public void testMalletCRF2() throws Exception {
 		System.out.println("running test org.cleartk.example.pos.ExamplePosClassifierTest.testMalletCRF2()");
 
-		if(true) {
+		if(!runLongTests) {
 			System.out.println("skipping because training takes ~2 minutes.  please modify the source to run this test.");
 			return;
 		}
@@ -207,7 +211,7 @@ public class ExamplePosClassifierTest {
 	public void testMalletC45() throws Exception {
 		System.out.println("running test org.cleartk.example.pos.ExamplePosClassifierTest.testMalletC45()");
 
-		if(true) {
+		if(!runLongTests) {
 			System.out.println("skipping because training takes ~20 minutes. please modify the source to run this test.");
 			return;
 		}
