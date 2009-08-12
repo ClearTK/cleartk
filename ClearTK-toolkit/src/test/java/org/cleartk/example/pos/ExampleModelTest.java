@@ -33,7 +33,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
-import org.cleartk.util.JCasUtil;
+import org.cleartk.util.ReusableUIMAObjects;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.TokenFactory;
@@ -53,7 +53,7 @@ public class ExampleModelTest {
 		AnalysisEngineDescription posTaggerDescription = ExamplePOSAnnotationHandler.getClassifierDescription(ExamplePOSAnnotationHandler.DEFAULT_MODEL);
 		AnalysisEngine posTagger = AnalysisEngineFactory.createPrimitive(posTaggerDescription);
 		
-		JCas jCas = JCasUtil.getJCas();
+		JCas jCas = ReusableUIMAObjects.getJCas();
 		
 		TokenFactory.createTokens(jCas,
 				"What would you do if I sang in tune?  Would you listen then?", Token.class, Sentence.class, 
