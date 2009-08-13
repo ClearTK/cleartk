@@ -26,13 +26,18 @@ package org.cleartk.util.collection;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
+import org.uutuc.util.TearDownUtil;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -42,6 +47,20 @@ import org.junit.Test;
 
 public class CompressedStringBidiMapTest {
 
+	private final File outputDirectory = new File("test/data/util/collection");
+	
+	@Before
+	public void setUp() {
+		if(!outputDirectory.exists())
+			outputDirectory.mkdirs();
+	}
+	
+	@After
+	public void tearDown() {
+		TearDownUtil.removeDirectory(outputDirectory);
+		Assert.assertFalse(outputDirectory.exists());
+	}
+	
 	@Test
 	public void testSerialization() throws FileNotFoundException, IOException {
 		CompressedStringBidiMap map = new CompressedStringBidiMap();
@@ -79,6 +98,8 @@ public class CompressedStringBidiMapTest {
 		map.read(new FileReader("test/data/util/collection/csbm-test.txt"));
 		assertEquals("7", map.getOrGenerateKey("one"));
 		assertEquals("8", map.getOrGenerateKey("eight"));
+		
+
 
 	}
 }
