@@ -116,20 +116,20 @@ public class Conll2005Writer extends JCasAnnotator_ImplBase {
 
 
 	private static class CoNLL05Line {
-		String lexeme;
-		String pos;
-		String syntaxSegment;
-		String neSegment;
-		String predicateFrameset;
+//		String lexeme;
+//		String pos;
+//		String syntaxSegment;
+//		String neSegment;
+//		String predicateFrameset;
 		String predicateBaseform;
 		List<String> argumentRoles;
 		
 		public CoNLL05Line() {
-			lexeme = "<empty>";
-			pos = "<empty>";
-			syntaxSegment = "*";
-			neSegment = "*";
-			predicateFrameset = "-";
+//			lexeme = "<empty>";
+//			pos = "<empty>";
+//			syntaxSegment = "*";
+//			neSegment = "*";
+//			predicateFrameset = "-";
 			predicateBaseform = "-";
 			argumentRoles = new ArrayList<String>();
 		}
@@ -156,28 +156,28 @@ public class Conll2005Writer extends JCasAnnotator_ImplBase {
 			return buffer.toString();
 		}
 
-		public void setLexeme(String lexeme) {
-			this.lexeme = lexeme;
-		}
+//		public void setLexeme(String lexeme) {
+//			this.lexeme = lexeme;
+//		}
+//
+//		public void setPos(String pos) {
+//			this.pos = pos;
+//		}
 
-		public void setPos(String pos) {
-			this.pos = pos;
-		}
+//		public void setSyntaxSegment(String syntaxSegment) {
+//			this.syntaxSegment = syntaxSegment;
+//		}
 
-		public void setSyntaxSegment(String syntaxSegment) {
-			this.syntaxSegment = syntaxSegment;
-		}
-
-		public void setNeSegment(String neSegment) {
-			this.neSegment = neSegment;
-		}
+//		public void setNeSegment(String neSegment) {
+//			this.neSegment = neSegment;
+//		}
 
 		public void setPredicateFrameset(Integer predicateFrameset) {
-			if( predicateFrameset == null ) {
-				this.predicateFrameset = "-";
-			} else {
-				this.predicateFrameset = String.format("%2d", predicateFrameset);
-			}
+//			if( predicateFrameset == null ) {
+//				this.predicateFrameset = "-";
+//			} else {
+//				this.predicateFrameset = String.format("%2d", predicateFrameset);
+//			}
 		}
 
 		public void setPredicateBaseform(String predicateBaseform) {
