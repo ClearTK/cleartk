@@ -137,7 +137,7 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
 		String word;
 		String pos;
 		String charniakParseSegment;
-		String neSegment;
+//		String neSegment;
 		String verbSenseTag;
 		String verbBaseForm;
 		String argumentSegments[];
@@ -147,7 +147,7 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
 			this.word = fields[0].trim();
 			this.pos = fields[1].trim();
 			this.charniakParseSegment = fields[2].trim();
-			this.neSegment = fields[3].trim();
+//			this.neSegment = fields[3].trim();
 			this.verbSenseTag = fields[4].trim();
 			this.verbBaseForm = fields[5].trim();
 			this.argumentSegments = new String[fields.length - 6];
@@ -165,9 +165,9 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
 			this.children = new ArrayList<TreebankNode>();
 		}
 		
-		Constituent() {
-			this(null);
-		}
+//		Constituent() {
+//			this(null);
+//		}
 		
 		public void addChild(TreebankNode newChild) {
 			this.children.add(newChild);
@@ -260,9 +260,9 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
 	private static class PredicateParser {
 		JCas jCas;
 		
-		String token;
+//		String token;
 		String baseForm;
-		String sense;
+//		String sense;
 		Token predicateToken;
 		
 		List<SemanticArgument> arguments;
@@ -278,9 +278,9 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
 			if (token == null) {
 				throw new RuntimeException(String.format("token for \"%s\" is null", tokenText));
 			}
-			this.token = tokenText;
+//			this.token = tokenText;
 			this.baseForm = baseForm;
-			this.sense = sense;
+//			this.sense = sense;
 			this.predicateToken = token;
 		}
 		
