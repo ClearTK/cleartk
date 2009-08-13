@@ -44,7 +44,7 @@ import org.uutuc.util.TearDownUtil;
  */
 public class CoNLL2005WriterTest {
 
-	private final File outputDir = new File("test/data/srl");
+	private final File outputDir = new File("test/data/srl/conll2005");
 
 	@Before
 	public void setUp() {
