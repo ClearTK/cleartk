@@ -50,6 +50,27 @@ import org.junit.Test;
 public class DescriptorCoverageTest {
 	
 	@Test
+	public void testNoDescriptorsInSrcMain() {
+		// collect the names of all .xml descriptors in the src directory
+		Set<String> descNames = new HashSet<String>();
+		for (File file: Files.getFiles(new File("src/main/java"), new String[] {".xml"})) {
+			descNames.add(file.getPath());
+		}
+		
+		if(descNames.size() > 0) {
+			String message = String.format("%d descriptors in src/main/java", descNames.size());
+			System.err.println(message);
+			List<String> sortedFileNames = new ArrayList<String>(descNames);
+			Collections.sort(sortedFileNames);
+			for (String name: sortedFileNames) {
+				System.err.println(name);
+			}
+			Assert.fail(message);
+		}
+		
+	}
+	
+	@Test
 	public void testImportByLocation() throws IOException {
 		List<String> filesWithLocationImport = new ArrayList<String>();
 		Iterable<File> files = Files.getFiles("src", new String[] {".xml"});
@@ -76,13 +97,13 @@ public class DescriptorCoverageTest {
 		
 		// collect the names of all .xml descriptors in the src directory
 		Set<String> descNames = new HashSet<String>();
-		for (File file: this.getFiles(new File("src"))) {
+		for (File file: Files.getFiles(new File("src/main/resources"), new String[] {".xml"})) {
 			String path = file.getPath();
-			if (path.endsWith(".xml") && !path.contains("type") && !file.getParent().equals("src/org/cleartk/descriptor".replace('/', File.separatorChar))){
-				// strip off "src/" and ".xml"
-				String name = path.substring(4, path.length() - 4);
+			if (!path.contains("type") && !file.getParent().equals("src/org/cleartk/descriptor".replace('/', File.separatorChar))){
+				// strip off "src/main/resources" and ".xml"
+				String name = path.substring(19, path.length() - 4);
 				// convert slashes to dots
-				name = name.replace('\\', '.').replace('/', '.');
+				name = name.replace(File.separatorChar, '.');
 				// add the descriptor name to the set
 				descNames.add("\"" + name + "\"");
 			}
@@ -90,8 +111,7 @@ public class DescriptorCoverageTest {
 
 		// walk through every .java file in the test/src directory
 		// and look for descriptor names
-		for (File testFile: this.getFiles(new File("test/src"))) {
-			if (testFile.getName().endsWith(".java")) {
+		for (File testFile: Files.getFiles(new File("src/test/java"), new String[] {".java"})) {
 				String testText = FileUtils.file2String(testFile);
 				Set<String> toRemove = new HashSet<String>();
 				for (String descName: descNames) {
@@ -103,7 +123,6 @@ public class DescriptorCoverageTest {
 				// have to remove the names all at once to avoid
 				// ConcurrentModificationException 
 				descNames.removeAll(toRemove);
-			}
 		}
 		
 		int untested = descNames.size();
@@ -119,48 +138,4 @@ public class DescriptorCoverageTest {
 		}
 	}
 	
-	@Test
-	public void testCPEsRaiseNoExceptions() throws Exception {
-		List<String> failingCPEs = new ArrayList<String>();
-		for (File file: this.getFiles(new File("cpe"))) {
-			if (file.getName().endsWith(".xml")) {
-				String path = file.getPath();
-				XMLInputSource xmlInput = new XMLInputSource(new File(path));
-				XMLParser parser = UIMAFramework.getXMLParser();
-				CpeDescription desc = parser.parseCpeDescription(xmlInput);
-				try {
-					UIMAFramework.produceCollectionProcessingEngine(desc);
-				} catch (ResourceInitializationException e) {
-					failingCPEs.add(path);
-				}
-			}
-		}
-		int failing = failingCPEs.size();
-		if (failing > 0) {
-			String message = String.format("%d failing CPEs", failing);
-			System.err.println(message);
-			Collections.sort(failingCPEs);
-			for (String path: failingCPEs) {
-				System.err.println(path);
-			}
-			Assert.fail(message);
-		}
-	}
-	
-	private List<File> getFiles(File root) {
-		List<File> files = new ArrayList<File>();
-		this.collectFiles(root, files);
-		return files;
-	}
-		
-	private void collectFiles(File root, List<File> collectedFiles) {
-		for (File file: root.listFiles()) {
-			if (file.isDirectory()) {
-				this.collectFiles(file, collectedFiles);
-			} else {
-				collectedFiles.add(file);
-			}
-		}
-	}
-
 }
