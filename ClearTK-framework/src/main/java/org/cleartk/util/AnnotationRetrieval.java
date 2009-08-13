@@ -353,9 +353,6 @@ public class AnnotationRetrieval {
 	 * @see AnnotationIndex#subiterator(org.apache.uima.cas.text.AnnotationFS)
 	 */
 	public static <T extends Annotation> List<T> getAnnotations(JCas jCas, Annotation windowAnnotation, Class<T> cls) {
-//		if (windowAnnotation instanceof SplitAnnotation) return getAnnotations(jCas,
-//				(SplitAnnotation) windowAnnotation, cls);
-
 		FSIterator cursor = initializeWindowCursor(jCas, windowAnnotation);
 
 		List<T> annotations = new ArrayList<T>();
@@ -372,8 +369,6 @@ public class AnnotationRetrieval {
 
 	public static <T extends Annotation> List<T> getAnnotations(JCas jCas, Annotation windowAnnotation, Class<T> cls,
 			boolean exactSpan) {
-//		if (windowAnnotation instanceof SplitAnnotation) return getAnnotations(jCas,
-//				(SplitAnnotation) windowAnnotation, cls);
 
 		if (!exactSpan) return getAnnotations(jCas, windowAnnotation, cls);
 		else {
@@ -404,16 +399,6 @@ public class AnnotationRetrieval {
 
 	}
 
-//	public static <T extends Annotation> List<T> getAnnotations(JCas jCas, SplitAnnotation splitAnnotation, Class<T> cls) {
-//		List<T> returnValues = new ArrayList<T>();
-//
-//		for (FeatureStructure subAnnotation : splitAnnotation.getAnnotations().toArray()) {
-//			returnValues.addAll(getAnnotations(jCas, (Annotation) subAnnotation, cls));
-//		}
-//
-//		return returnValues;
-//	}
-
 	public static <T extends Annotation> List<T> getAnnotations(JCas jCas, int begin, int end, Class<T> cls) {
 		if(begin > end)
 			return null;
@@ -424,11 +409,9 @@ public class AnnotationRetrieval {
 	/**
 	 * This method provides a way to have multiple annotations define the window
 	 * that is used to constrain the annotations in the returned list. The
-	 * intersection of the windows is determined and used. This method will
-	 * treat any split annotations in the list as a contiguous annotation.
+	 * intersection of the windows is determined and used. 
 	 * 
 	 * @see #getAnnotations(JCas, Annotation, Class)
-	 * @see #getAnnotations(JCas, SplitAnnotation, Class)
 	 */
 	public static <T extends Annotation> List<T> getAnnotations(JCas jCas, List<Annotation> windowAnnotations,
 			Class<T> cls) {
