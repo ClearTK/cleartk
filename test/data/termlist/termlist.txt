@@ -1,2 +1,0 @@
-US States	test/data/termlist/US_States.txt	true
-N States	test/data/termlist/N_States.txt	true
