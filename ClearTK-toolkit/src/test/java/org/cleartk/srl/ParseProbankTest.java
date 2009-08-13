@@ -59,7 +59,6 @@ public class ParseProbankTest {
 			System.out.println(line);
 			fail("Parser unable to parser line="+total+": "+line);
 		}
-		System.out.println("total PropBank lines parsed = "+total);
 	}
 	
 }
