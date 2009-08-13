@@ -87,6 +87,7 @@ public class CompressedStringBidiMap extends DualHashBidiMap<String, String> imp
 		}
 
 		count = tempcount;
+		input.close();
 
 	}
 
