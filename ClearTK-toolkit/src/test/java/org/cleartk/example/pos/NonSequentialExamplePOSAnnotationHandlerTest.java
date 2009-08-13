@@ -73,7 +73,7 @@ public class NonSequentialExamplePOSAnnotationHandlerTest {
 		String outputDirectory = baseDirectory+"/libsvm";
 		AnalysisEngineDescription dataWriter = 	CleartkComponents.createDataWriterAnnotator(NonSequentialExamplePOSAnnotationHandler.class,
 				DefaultMultiClassLIBSVMDataWriterFactory.class, outputDirectory);
-		testClassifier(dataWriter, outputDirectory);
+		testClassifier(dataWriter, outputDirectory, "-t", "0");
 
 		String firstLine = FileUtil.loadListOfStrings(new File(outputDirectory + "/2008_Sichuan_earthquake.txt.pos"))[0].trim();
 		boolean badTags = firstLine.equals("2008/NN Sichuan/NN earthquake/NN From/NN Wikipedia/NN ,/NN the/NN free/NN encyclopedia/NN");
