@@ -143,4 +143,16 @@ public class AnnotationUtil {
 			}
 		});
 	}
+	
+	public static int[] getAnnotationsExtent(List<? extends Annotation> annotations) {
+		int start = Integer.MAX_VALUE;
+		int end = 0;
+
+		for (Annotation annotation : annotations) {
+			if (annotation.getBegin() < start) start = annotation.getBegin();
+			if (annotation.getEnd() > end) end = annotation.getEnd();
+		}
+
+		return new int[] {start, end};
+	}
 }
