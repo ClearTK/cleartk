@@ -31,12 +31,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.uima.UIMAFramework;
-import org.apache.uima.collection.metadata.CpeDescription;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
-import org.apache.uima.util.XMLInputSource;
-import org.apache.uima.util.XMLParser;
 import org.cleartk.util.io.Files;
 import org.junit.Assert;
 import org.junit.Test;
