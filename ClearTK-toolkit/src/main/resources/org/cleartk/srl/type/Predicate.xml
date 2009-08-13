@@ -29,7 +29,6 @@ POSSIBILITY OF SUCH DAMAGE.
   <imports>
     <import name="org.cleartk.srl.type.Argument"/>
     <import name="org.cleartk.type.Sentence"/>
-    <import name="org.cleartk.type.SimpleAnnotation"/>
   </imports>
   <types>
     <typeDescription>
@@ -40,7 +39,7 @@ POSSIBILITY OF SUCH DAMAGE.
         <featureDescription>
           <name>annotation</name>
           <description/>
-          <rangeTypeName>org.cleartk.type.SimpleAnnotation</rangeTypeName>
+          <rangeTypeName>uima.tcas.Annotation</rangeTypeName>
         </featureDescription>
         <featureDescription>
           <name>arguments</name>

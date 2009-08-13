@@ -43,10 +43,7 @@ public class TypesTest {
 	public void testTypes() throws Exception {
 		JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
 		this.testType(jCas, new Chunk(jCas));
-		this.testType(jCas, new ContiguousAnnotation(jCas));
 		this.testType(jCas, new Sentence(jCas));
-		this.testType(jCas, new SimpleAnnotation(jCas));
-		this.testType(jCas, new SplitAnnotation(jCas));
 		this.testType(jCas, new Token(jCas));
 		// ace2005
 		this.testType(jCas, new org.cleartk.corpus.ace2005.type.Document(jCas));

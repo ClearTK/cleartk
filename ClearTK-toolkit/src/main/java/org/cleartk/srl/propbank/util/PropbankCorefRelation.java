@@ -27,8 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
-import org.cleartk.type.SimpleAnnotation;
 
 
 /**
@@ -76,7 +76,7 @@ public class PropbankCorefRelation extends PropbankRelation {
 	 * @throws UnsupportedOperationException
 	 */
 	@Override
-	public SimpleAnnotation convert(JCas jCas, TopTreebankNode topNode) {
+	public Annotation convert(JCas jCas, TopTreebankNode topNode) {
 		throw new UnsupportedOperationException();
 	}
 

@@ -32,9 +32,9 @@ import java.util.Set;
 import opennlp.tools.util.Span;
 
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.srl.type.SemanticArgument;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
-import org.cleartk.type.SimpleAnnotation;
 import org.cleartk.util.AnnotationUtil2;
 import org.cleartk.util.UIMAUtil;
 
@@ -188,12 +188,12 @@ public class Proplabel {
 		argument.setPreposition(this.preposition);
 		argument.setHyphenTag(this.hyphenTag);
 		if (this.relation instanceof PropbankCorefRelation) {
-			List<SimpleAnnotation> annotations = new ArrayList<SimpleAnnotation>();
-			List<SimpleAnnotation> substantiveAnnotations = new ArrayList<SimpleAnnotation>();
+			List<Annotation> annotations = new ArrayList<Annotation>();
+			List<Annotation> substantiveAnnotations = new ArrayList<Annotation>();
 
 			for (PropbankRelation rel : ((PropbankCorefRelation) this.relation)
 					.getCorefRelations()) {
-				SimpleAnnotation a = rel.convert(view, topNode);
+				Annotation a = rel.convert(view, topNode);
 				annotations.add(a);
 				if (a.getBegin() != a.getEnd())
 					substantiveAnnotations.add(a);

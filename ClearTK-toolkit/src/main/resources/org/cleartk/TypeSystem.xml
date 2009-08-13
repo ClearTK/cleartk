@@ -21,9 +21,7 @@ SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
 INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
 CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-POSSIBILITY OF SUCH DAMAGE. 
-
-</description>
+POSSIBILITY OF SUCH DAMAGE.</description>
   <version>1.0</version>
   <vendor/>
   <imports>
@@ -32,7 +30,6 @@ POSSIBILITY OF SUCH DAMAGE.
     <import name="org.cleartk.type.Token"/>
     <import name="org.cleartk.syntax.treebank.type.TopTreebankNode"/>
     <import name="org.cleartk.syntax.treebank.type.TreebankNode"/>
-    <import name="org.cleartk.type.SplitAnnotation"/>
     <import name="org.cleartk.ne.type.GazetteerNamedEntityMention"/>
     <import name="org.cleartk.ne.type.NamedEntityMention"/>
     <import name="org.cleartk.ne.type.NamedEntity"/>
@@ -40,13 +37,12 @@ POSSIBILITY OF SUCH DAMAGE.
     <import name="org.cleartk.srl.type.Predicate"/>
     <import name="org.cleartk.srl.type.Argument"/>
     <import name="org.cleartk.srl.type.SemanticArgument"/>
-    <import name="org.cleartk.type.ContiguousAnnotation"/>
-    <import name="org.cleartk.type.SimpleAnnotation"/>
     <import name="org.cleartk.corpus.ace2005.type.Document"/>
     <import name="org.cleartk.token.chunk.type.Subtoken"/>
     <import name="org.cleartk.corpus.timeml.type.Event"/>
     <import name="org.cleartk.corpus.timeml.type.Time"/>
     <import name="org.cleartk.corpus.timeml.type.TemporalLink"/>
     <import name="org.cleartk.corpus.timeml.type.Text"/>
+    <import name="org.cleartk.corpus.timeml.type.Anchor"/>
   </imports>
 </typeSystemDescription>

@@ -33,10 +33,10 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.ne.type.NamedEntity;
 import org.cleartk.ne.type.NamedEntityMention;
-import org.cleartk.type.SimpleAnnotation;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.ViewURIUtil;
 import org.jdom.Document;
@@ -81,7 +81,7 @@ public class Ace2005Writer extends JCasAnnotator_ImplBase {
 		}
 	}
 
-	private Element createExtentElement(String elementName, SimpleAnnotation annotation) {
+	private Element createExtentElement(String elementName, Annotation annotation) {
 		Element extent = new Element(elementName);
 		Element charseq = new Element("charseq");
 		charseq.setAttribute("START", "" + annotation.getBegin());

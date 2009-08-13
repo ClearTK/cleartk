@@ -37,6 +37,7 @@ import org.apache.uima.cas.CASException;
 import org.apache.uima.collection.CollectionException;
 import org.apache.uima.collection.CollectionReader_ImplBase;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
@@ -44,10 +45,9 @@ import org.cleartk.ne.type.NamedEntity;
 import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.type.Chunk;
 import org.cleartk.type.Sentence;
-import org.cleartk.type.SimpleAnnotation;
 import org.cleartk.type.Token;
-import org.cleartk.util.ViewURIUtil;
 import org.cleartk.util.UIMAUtil;
+import org.cleartk.util.ViewURIUtil;
 
 
 /**
@@ -279,7 +279,7 @@ public class Conll2003GoldReader extends CollectionReader_ImplBase
 			
 			NamedEntityMention nem = new NamedEntityMention(jCas, namedEntityStart, documentText.length()-1);
 			nem.setMentionType("NAM");
-			SimpleAnnotation annotation = new SimpleAnnotation(jCas, namedEntityStart, documentText.length()-1);
+			Annotation annotation = new Annotation(jCas, namedEntityStart, documentText.length()-1);
 			annotation.addToIndexes();
 //			Chunk chunk = new Chunk(jCas, namedEntityStart, documentText.length()-1);
 //			chunk.setTokens(UIMAUtil.toFSArray(jCas, namedEntityTokens));

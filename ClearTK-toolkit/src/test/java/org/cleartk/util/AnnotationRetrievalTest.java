@@ -54,10 +54,7 @@ import org.cleartk.syntax.treebank.type.TopTreebankNode;
 import org.cleartk.syntax.treebank.type.TreebankNode;
 import org.cleartk.token.chunk.type.Subtoken;
 import org.cleartk.type.Chunk;
-import org.cleartk.type.ContiguousAnnotation;
 import org.cleartk.type.Sentence;
-import org.cleartk.type.SimpleAnnotation;
-import org.cleartk.type.SplitAnnotation;
 import org.cleartk.type.Token;
 import org.junit.Assert;
 import org.junit.Test;
@@ -111,7 +108,7 @@ public class AnnotationRetrievalTest {
 		JCas jCas = ReusableUIMAObjects.getJCas();
 		TokenFactory.createTokens(jCas, "A B C D E F G H I J", Token.class, Sentence.class);
 		
-		ContiguousAnnotation ca = new ContiguousAnnotation(jCas, 10, 13);
+		Annotation ca = new Annotation(jCas, 10, 13);
 		Assert.assertEquals("F G", ca.getCoveredText());
 		Token token = AnnotationRetrieval.get(jCas, ca, Token.class, 0);
 		Assert.assertEquals("F", token.getCoveredText());
@@ -138,7 +135,7 @@ public class AnnotationRetrievalTest {
 
 		jCas.reset();
 		TokenFactory.createTokens(jCas, "AAA BBB CCC DDDD EEEE FFFF", Token.class, Sentence.class);
-		ca = new ContiguousAnnotation(jCas, 6, 9);
+		ca = new Annotation(jCas, 6, 9);
 		Assert.assertEquals("B C", ca.getCoveredText());
 		token = AnnotationRetrieval.get(jCas, ca, Token.class, 0);
 		Assert.assertNull(token);
@@ -158,7 +155,7 @@ public class AnnotationRetrievalTest {
 		jCas.reset();
 		TokenFactory.createTokens(jCas, "AAA BBB CCC DDDD EEEE FFFF", Token.class, Sentence.class);
 		
-		SimpleAnnotation sa = new SimpleAnnotation(jCas, 8, 11);
+		Annotation sa = new Annotation(jCas, 8, 11);
 		sa.addToIndexes();
 		assertEquals("CCC", sa.getCoveredText());
 		assertEquals("DDDD", AnnotationRetrieval.getAdjacentAnnotation(jCas, sa, Token.class, false).getCoveredText());
@@ -412,7 +409,7 @@ public class AnnotationRetrievalTest {
 		jCas.reset();
 		TokenFactory.createTokens(jCas, "AAA BBB CCC DDDD EEEE FFFF", Token.class, Sentence.class);
 		
-		SimpleAnnotation sa = new SimpleAnnotation(jCas, 8, 11);
+		Annotation sa = new Annotation(jCas, 8, 11);
 		sa.addToIndexes();
 		assertEquals("CCC", sa.getCoveredText());
 		assertEquals("BBB", AnnotationRetrieval.getAdjacentAnnotation(jCas, sa, Token.class, true).getCoveredText());
@@ -535,9 +532,6 @@ public class AnnotationRetrievalTest {
 		List<Chunk> chunkAnns = AnnotationRetrieval.getAnnotations(jCas, Chunk.class);
 		this.testOneGetAnnotations(chunkOffsets, chunkAnns);
 
-		int[][] splitOffsets = { { 100, 124 } };
-		List<SplitAnnotation> splitAnns = AnnotationRetrieval.getAnnotations(jCas, SplitAnnotation.class);
-		this.testOneGetAnnotations(splitOffsets, splitAnns);
 	}
 
 	private <T extends Annotation> void testOneGetAnnotations(int[][] expectedOffsetPairs, List<T> actualAnnotations) {
@@ -644,9 +638,9 @@ public class AnnotationRetrievalTest {
 		testIssue98(jCas);
 		
 		jCas = JCasFactory.createJCas(Chunk.class, Sentence.class, Token.class, TopTreebankNode.class,
-				TreebankNode.class, SplitAnnotation.class, GazetteerNamedEntityMention.class, NamedEntityMention.class,
+				TreebankNode.class, GazetteerNamedEntityMention.class, NamedEntityMention.class,
 				NamedEntity.class, Predicate.class, Argument.class, SemanticArgument.class,
-				ContiguousAnnotation.class, SimpleAnnotation.class, Document.class, Subtoken.class, Event.class,
+				Document.class, Subtoken.class, Event.class,
 				Time.class, TemporalLink.class, Text.class);
 		testIssue98(jCas);
 
@@ -656,7 +650,7 @@ public class AnnotationRetrievalTest {
 		testIssue98(jCas);
 
 		//doesn't work!
-		jCas = JCasFactory.createJCas(Token.class, ContiguousAnnotation.class, SimpleAnnotation.class);
+		jCas = JCasFactory.createJCas(Token.class, Annotation.class);
 		Type type = jCas.getTypeSystem().getType("org.cleartk.type.Token");
 		assertNotNull(type);
 		testIssue98(jCas);

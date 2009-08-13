@@ -24,8 +24,8 @@
 package org.cleartk.srl.propbank.util;
 
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
-import org.cleartk.type.SimpleAnnotation;
 
 
 /**
@@ -73,7 +73,7 @@ public abstract class PropbankRelation {
 	 *            the top node annotation of the corresponding Treebank parse
 	 * @return the corresponding annotation
 	 */
-	public abstract SimpleAnnotation convert(JCas jCas, TopTreebankNode topNode);
+	public abstract Annotation convert(JCas jCas, TopTreebankNode topNode);
 
 	/**
 	 * Re-generate the text that this object was parsed from.

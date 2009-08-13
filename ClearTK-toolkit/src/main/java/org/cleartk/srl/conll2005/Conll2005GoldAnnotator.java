@@ -37,6 +37,7 @@ import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.ViewNames;
 import org.cleartk.srl.type.Predicate;
 import org.cleartk.srl.type.SemanticArgument;
@@ -44,7 +45,6 @@ import org.cleartk.syntax.treebank.type.TopTreebankNode;
 import org.cleartk.syntax.treebank.type.TreebankNode;
 import org.cleartk.type.Chunk;
 import org.cleartk.type.Sentence;
-import org.cleartk.type.SimpleAnnotation;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.AnnotationUtil2;
@@ -299,7 +299,7 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
 						Span span = AnnotationUtil2.getAnnotationsExtent(this.argumentTokens);
 						SemanticArgument arg = new SemanticArgument(jCas, span.getStart(), span.getEnd());
 						arg.addToIndexes();
-						SimpleAnnotation relation = AnnotationRetrieval.getMatchingAnnotation(jCas, arg, TreebankNode.class);
+						Annotation relation = AnnotationRetrieval.getMatchingAnnotation(jCas, arg, TreebankNode.class);
 						if( relation == null ) {
 							Chunk chunk = new Chunk(jCas, span.getStart(), span.getEnd());
 							relation = chunk;

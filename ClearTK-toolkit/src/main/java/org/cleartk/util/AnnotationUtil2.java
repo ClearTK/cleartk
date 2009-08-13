@@ -28,10 +28,7 @@ import java.util.List;
 
 import opennlp.tools.util.Span;
 
-import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.type.ContiguousAnnotation;
-import org.cleartk.type.SplitAnnotation;
 
 /**
  * <br>
@@ -62,15 +59,6 @@ public class AnnotationUtil2 {
 	 * 
 	 */
 	public static boolean contains(Annotation bigAnnotation, Annotation smallAnnotation) {
-		if (bigAnnotation instanceof SplitAnnotation) {
-			FSArray splits = ((SplitAnnotation) bigAnnotation).getAnnotations();
-
-			for (int i = 0; i < splits.size(); i++) {
-				ContiguousAnnotation split = (ContiguousAnnotation) splits.get(i);
-				if (contains(split, smallAnnotation)) return true;
-			}
-			return false;
-		}
 
 		if (bigAnnotation == null || smallAnnotation == null) return false;
 		if (bigAnnotation.getBegin() <= smallAnnotation.getBegin()

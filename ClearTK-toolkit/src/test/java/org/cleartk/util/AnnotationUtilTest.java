@@ -30,7 +30,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.uima.UIMAException;
@@ -41,10 +40,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.type.Chunk;
-import org.cleartk.type.ContiguousAnnotation;
 import org.cleartk.type.Sentence;
-import org.cleartk.type.SimpleAnnotation;
-import org.cleartk.type.SplitAnnotation;
 import org.cleartk.type.Token;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
@@ -103,11 +99,8 @@ public class AnnotationUtilTest {
 				AnnotationFactory.createAnnotation(jCas, 115, 119, Token.class);
 				AnnotationFactory.createAnnotation(jCas, 120, 124, Token.class);
 				
-				Chunk chunk0 = AnnotationFactory.createAnnotation(jCas, 100, 109, Chunk.class);
-				Chunk chunk1 = AnnotationFactory.createAnnotation(jCas, 115, 124, Chunk.class);
-				
-				SplitAnnotation split0 = AnnotationFactory.createAnnotation(jCas, 100, 124, SplitAnnotation.class);
-				split0.setAnnotations(UIMAUtil.toFSArray(jCas, Arrays.asList(new Chunk[] {chunk0, chunk1})));
+				AnnotationFactory.createAnnotation(jCas, 100, 109, Chunk.class);
+				AnnotationFactory.createAnnotation(jCas, 115, 124, Chunk.class);
 				
 			}
 			catch (UIMAException e) {
@@ -129,7 +122,6 @@ public class AnnotationUtilTest {
 		Token token10 = AnnotationRetrieval.get(jCas, Token.class, 10);
 		Chunk chunk0 = AnnotationRetrieval.get(jCas, Chunk.class, 0);
 		Chunk chunk1 = AnnotationRetrieval.get(jCas, Chunk.class, 1);
-		SplitAnnotation split0 = AnnotationRetrieval.get(jCas, SplitAnnotation.class, 0);
 
 		assertTrue(AnnotationUtil2.contains(token6, token6));
 		assertTrue(AnnotationUtil2.contains(chunk0, token6));
@@ -140,11 +132,6 @@ public class AnnotationUtilTest {
 		assertTrue(AnnotationUtil2.contains(chunk1, token9));
 		assertTrue(AnnotationUtil2.contains(chunk1, token10));
 		
-		assertTrue(AnnotationUtil2.contains(split0, token6));
-		assertTrue(AnnotationUtil2.contains(split0, token7));
-		assertFalse(AnnotationUtil2.contains(split0, token8));
-		assertTrue(AnnotationUtil2.contains(split0, token9));
-		assertTrue(AnnotationUtil2.contains(split0, token10));
 	}
 
 	@Test
@@ -192,9 +179,9 @@ public class AnnotationUtilTest {
 		annotations.add(new Token(jCas, 0, 15));
 		annotations.add(new Sentence(jCas, 0, 30));
 		annotations.add(new Sentence(jCas, 16, 30));
-		annotations.add(new ContiguousAnnotation(jCas, 1, 35));
-		annotations.add(new ContiguousAnnotation(jCas, 1, 34));
-		annotations.add(new ContiguousAnnotation(jCas, 1, 36));
+		annotations.add(new Annotation(jCas, 1, 35));
+		annotations.add(new Annotation(jCas, 1, 34));
+		annotations.add(new Annotation(jCas, 1, 36));
 		
 		AnnotationUtil.sort(annotations);
 		assertEquals(0, annotations.get(0).getBegin());
@@ -219,7 +206,7 @@ public class AnnotationUtilTest {
 		JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
 		TokenFactory.createTokens(jCas, "AAA BBB CCC DDDD EEEE FFFF", Token.class, Sentence.class);
 		
-		SimpleAnnotation sa = new SimpleAnnotation(jCas, 8, 11);
+		Annotation sa = new Annotation(jCas, 8, 11);
 		sa.addToIndexes();
 		assertEquals("CCC", sa.getCoveredText());
 		assertEquals("BBB ", AnnotationUtil.getSurroundingText(jCas, sa, Token.class, 1, true));

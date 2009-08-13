@@ -28,7 +28,6 @@ POSSIBILITY OF SUCH DAMAGE.
   <vendor>Copyright 2007-2008 Regents of the University of Colorado.   All Rights Reserved.</vendor>
   <imports>
     <import name="org.cleartk.srl.type.Argument"/>
-    <import name="org.cleartk.type.SimpleAnnotation"/>
   </imports>
   <types>
     <typeDescription>
@@ -50,7 +49,7 @@ POSSIBILITY OF SUCH DAMAGE.
           <name>coreferenceAnnotations</name>
           <description/>
           <rangeTypeName>uima.cas.FSArray</rangeTypeName>
-          <elementType>org.cleartk.type.SimpleAnnotation</elementType>
+          <elementType>uima.tcas.Annotation</elementType>
         </featureDescription>
         <featureDescription>
           <name>preposition</name>
