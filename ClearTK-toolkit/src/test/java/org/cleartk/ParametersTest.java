@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.util.FileUtils;
-import org.cleartk.util.io.Files;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -39,6 +38,7 @@ import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 import org.junit.Assert;
 import org.junit.Test;
+import org.uutuc.util.io.Files;
 
 /**
  * <br>

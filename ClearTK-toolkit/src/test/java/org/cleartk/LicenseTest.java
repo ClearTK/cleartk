@@ -32,9 +32,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.uima.util.FileUtils;
-import org.cleartk.util.io.Files;
 import org.junit.Assert;
 import org.junit.Test;
+import org.uutuc.util.io.Files;
 
 
 /**

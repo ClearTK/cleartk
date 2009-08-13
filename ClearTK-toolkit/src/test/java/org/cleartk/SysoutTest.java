@@ -29,9 +29,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.pear.util.FileUtil;
-import org.cleartk.util.io.Files;
 import org.junit.Assert;
 import org.junit.Test;
+import org.uutuc.util.io.Files;
 
 /**
  * <br>Copyright (c) 2007-2009, Regents of the University of Colorado 

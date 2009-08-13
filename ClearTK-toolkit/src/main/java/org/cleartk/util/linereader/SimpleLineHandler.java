@@ -30,9 +30,9 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.collection.CollectionException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.util.ViewURIUtil;
 import org.cleartk.util.UIMAUtil;
-import org.cleartk.util.io.Files;
+import org.cleartk.util.ViewURIUtil;
+import org.uutuc.util.io.Files;
 
 
 /**
