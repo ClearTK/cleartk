@@ -55,7 +55,6 @@ import org.cleartk.util.EmptyAnnotator;
 import org.cleartk.util.UIMAUtil;
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.TokenFactory;
