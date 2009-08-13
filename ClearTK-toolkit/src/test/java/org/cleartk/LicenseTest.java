@@ -90,12 +90,12 @@ public class LicenseTest {
 	
 	@Test
 	public void testLicenseStatedInSource() throws Exception {
-		test("src");
+		test("src/main/java");
 	}
 
 	@Test
 	public void testLicenseStatedInTestSource() throws Exception {
-		test("test/src");
+		test("src/test/java");
 
 	}
 
