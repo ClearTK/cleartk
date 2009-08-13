@@ -122,7 +122,7 @@ public class SimpleTermFinder implements TermFinder {
 		while (candidatesIterator.hasNext()) {
 			Candidate candidate = candidatesIterator.next();
 			if (candidate.node.containsChild(token)) {
-				candidate.tokens.add(token);
+				candidate.addToken(token);
 				Node childNode = candidate.node.getChild(token);
 
 				List<Term> entries = childNode.entries;
