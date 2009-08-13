@@ -53,14 +53,13 @@ public class ParametersTest {
 	public void testParameterDefinitions() throws ClassNotFoundException, IllegalArgumentException,
 			IllegalAccessException {
 		List<String> badParameters = new ArrayList<String>();
-		Iterable<File> files = Files.getFiles("src", new String[] { ".java" });
+		Iterable<File> files = Files.getFiles("src/main/java", new String[] { ".java" });
 
 		for (File file : files) {
 			String className = file.getPath();
-			className = className.substring(4);
+			className = className.substring(14);
 			className = className.substring(0, className.length() - 5);
 			className = className.replace(File.separatorChar, '.');
-
 			Class<?> cls = Class.forName(className);
 			Field[] fields = cls.getDeclaredFields();
 			for (Field field : fields) {
