@@ -1,5 +1,0 @@
-#To compile and run the code in ClearTK, you will need to install
-#Apache UIMA.  
-UIMA_HOME=C:/Program Files/apache-uima-2.1.0
-max-memory=1024m
-version=0.9
