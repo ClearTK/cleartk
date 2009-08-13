@@ -119,11 +119,11 @@ public class UIMAUtilTest {
 		AnnotationHandler<?> annotationHandler = UIMAUtil.create(context, InstanceConsumer.PARAM_ANNOTATION_HANDLER, AnnotationHandler.class);
 		assertNotNull(annotationHandler);
 
-		context = UimaContextFactory.createUimaContext(InstanceConsumer.PARAM_ANNOTATION_HANDLER, "org.cleartk.util.UIMAUtilTests$TestHandler");
+		context = UimaContextFactory.createUimaContext(InstanceConsumer.PARAM_ANNOTATION_HANDLER, TestHandler2.class.getName());
 		annotationHandler = UIMAUtil.create(context, InstanceConsumer.PARAM_ANNOTATION_HANDLER, AnnotationHandler.class);
 		assertNotNull(annotationHandler);
 
-		context = UimaContextFactory.createUimaContext(InstanceConsumer.PARAM_ANNOTATION_HANDLER, "org.cleartk.util.UIMAUtilTests$TestHandler2");
+		context = UimaContextFactory.createUimaContext(InstanceConsumer.PARAM_ANNOTATION_HANDLER, TestHandler2.class.getName());
 		annotationHandler = UIMAUtil.create(context, InstanceConsumer.PARAM_ANNOTATION_HANDLER, AnnotationHandler.class);
 		assertNotNull(annotationHandler);
 
