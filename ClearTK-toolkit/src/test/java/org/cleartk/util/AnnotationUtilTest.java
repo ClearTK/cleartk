@@ -123,14 +123,14 @@ public class AnnotationUtilTest {
 		Chunk chunk0 = AnnotationRetrieval.get(jCas, Chunk.class, 0);
 		Chunk chunk1 = AnnotationRetrieval.get(jCas, Chunk.class, 1);
 
-		assertTrue(AnnotationUtil2.contains(token6, token6));
-		assertTrue(AnnotationUtil2.contains(chunk0, token6));
-		assertTrue(AnnotationUtil2.contains(chunk0, token7));
-		assertFalse(AnnotationUtil2.contains(chunk0, token8));
-		assertTrue(AnnotationUtil2.contains(chunk0, chunk0));
-		assertFalse(AnnotationUtil2.contains(chunk1, token8));
-		assertTrue(AnnotationUtil2.contains(chunk1, token9));
-		assertTrue(AnnotationUtil2.contains(chunk1, token10));
+		assertTrue(AnnotationUtil.contains(token6, token6));
+		assertTrue(AnnotationUtil.contains(chunk0, token6));
+		assertTrue(AnnotationUtil.contains(chunk0, token7));
+		assertFalse(AnnotationUtil.contains(chunk0, token8));
+		assertTrue(AnnotationUtil.contains(chunk0, chunk0));
+		assertFalse(AnnotationUtil.contains(chunk1, token8));
+		assertTrue(AnnotationUtil.contains(chunk1, token9));
+		assertTrue(AnnotationUtil.contains(chunk1, token10));
 		
 	}
 

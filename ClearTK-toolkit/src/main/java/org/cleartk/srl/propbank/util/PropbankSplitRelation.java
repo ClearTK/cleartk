@@ -26,12 +26,10 @@ package org.cleartk.srl.propbank.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import opennlp.tools.util.Span;
-
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
-import org.cleartk.util.AnnotationUtil2;
+import org.cleartk.util.AnnotationUtil;
 
 
 /**
@@ -80,9 +78,9 @@ public class PropbankSplitRelation extends PropbankRelation {
 			subAnnotations.add(rel.convert(view, topNode));
 		}
 //		annotation.setAnnotations(UIMAUtil.toFSArray(view, subAnnotations));
-		Span extent = AnnotationUtil2.getAnnotationsExtent(subAnnotations);
-		annotation.setBegin(extent.getStart());
-		annotation.setEnd(extent.getEnd());
+		int[] span = AnnotationUtil.getAnnotationsExtent(subAnnotations);
+		annotation.setBegin(span[0]);
+		annotation.setEnd(span[1]);
 		annotation.addToIndexes();
 
 		return annotation;

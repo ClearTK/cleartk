@@ -29,13 +29,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import opennlp.tools.util.Span;
-
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.srl.type.SemanticArgument;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
-import org.cleartk.util.AnnotationUtil2;
+import org.cleartk.util.AnnotationUtil;
 import org.cleartk.util.UIMAUtil;
 
 
@@ -201,10 +199,10 @@ public class Proplabel {
 			argument.setCoreferenceAnnotations(UIMAUtil.toFSArray(view,
 					annotations));
 
-			Span extent = AnnotationUtil2
+			int[] extent = AnnotationUtil
 					.getAnnotationsExtent(substantiveAnnotations);
-			argument.setBegin(extent.getStart());
-			argument.setEnd(extent.getEnd());
+			argument.setBegin(extent[0]);
+			argument.setEnd(extent[1]);
 
 			if (substantiveAnnotations.size() == 1) {
 				argument.setAnnotation(substantiveAnnotations.get(0));

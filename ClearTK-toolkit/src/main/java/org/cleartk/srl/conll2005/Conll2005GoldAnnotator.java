@@ -31,8 +31,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 
-import opennlp.tools.util.Span;
-
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CASException;
@@ -47,7 +45,7 @@ import org.cleartk.type.Chunk;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.AnnotationUtil2;
+import org.cleartk.util.AnnotationUtil;
 import org.cleartk.util.UIMAUtil;
 
 /**
@@ -177,8 +175,8 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
 			if( this.type.equals("S1") ) {
 				return this.children.get(0);
 			} else {
-				Span span = AnnotationUtil2.getAnnotationsExtent(this.children);
-				TreebankNode node = new TreebankNode(jCas, span.getStart(), span.getEnd());
+				int[] span = AnnotationUtil.getAnnotationsExtent(this.children);
+				TreebankNode node = new TreebankNode(jCas, span[0], span[1]);
 				node.setNodeType(this.type);
 				node.setChildren(UIMAUtil.toFSArray(jCas, this.children));
 				for( TreebankNode child : this.children )
@@ -227,8 +225,8 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
 		}
 		
 		public TopTreebankNode makeParse() {
-			Span span = AnnotationUtil2.getAnnotationsExtent(this.terminals);
-			TopTreebankNode node = new TopTreebankNode(jCas, span.getStart(), span.getEnd());
+			int[] span = AnnotationUtil.getAnnotationsExtent(this.terminals);
+			TopTreebankNode node = new TopTreebankNode(jCas, span[0], span[1]);
 			node.setNodeType("TOP");
 			node.setChildren(UIMAUtil.toFSArray(jCas, parseStack.peek().children));
 			for( TreebankNode child : parseStack.peek().children )
@@ -296,12 +294,12 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
 						this.argumentType = readArgumentType(r);
 						break;
 					case ')':
-						Span span = AnnotationUtil2.getAnnotationsExtent(this.argumentTokens);
-						SemanticArgument arg = new SemanticArgument(jCas, span.getStart(), span.getEnd());
+						int[] span = AnnotationUtil.getAnnotationsExtent(this.argumentTokens);
+						SemanticArgument arg = new SemanticArgument(jCas, span[0], span[1]);
 						arg.addToIndexes();
 						Annotation relation = AnnotationRetrieval.getMatchingAnnotation(jCas, arg, TreebankNode.class);
 						if( relation == null ) {
-							Chunk chunk = new Chunk(jCas, span.getStart(), span.getEnd());
+							Chunk chunk = new Chunk(jCas, span[0], span[1]);
 							relation = chunk;
 						}
 						arg.setAnnotation(relation);
