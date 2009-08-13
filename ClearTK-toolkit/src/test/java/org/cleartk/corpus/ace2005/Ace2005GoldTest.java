@@ -32,11 +32,14 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkComponents;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.CollectionReaderFactory;
 import org.uutuc.factory.TypeSystemDescriptionFactory;
+import org.uutuc.util.TearDownUtil;
 
 /**
  * <br>Copyright (c) 2009, Regents of the University of Colorado 
@@ -50,6 +53,18 @@ public class Ace2005GoldTest {
 
 	private final File rootDir = new File("test/data/corpus/ace2005");
 
+	@Before
+	public void setUp() {
+		if(!rootDir.exists())
+			rootDir.mkdirs();
+	}
+	
+	@After
+	public void tearDown() {
+		TearDownUtil.removeDirectory(rootDir);
+		Assert.assertFalse(rootDir.exists());
+	}
+	
 	@Test
 	public void testReaderInvalidParameters() throws Exception {
 		try {
