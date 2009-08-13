@@ -517,41 +517,6 @@ public class AnnotationRetrievalTest {
 	}
 
 	@Test
-	public void testGetAnnotationsWithSplit() throws UIMAException, IOException {
-
-		JCas jCas = AnnotationUtilTest.Annotator.getProcessedJCas();
-
-		AnnotationRetrieval.get(jCas, Token.class, 6);
-		AnnotationRetrieval.get(jCas, Token.class, 7);
-		AnnotationRetrieval.get(jCas, Token.class, 8);
-		AnnotationRetrieval.get(jCas, Token.class, 9);
-		AnnotationRetrieval.get(jCas, Token.class, 10);
-		AnnotationRetrieval.get(jCas, Chunk.class, 0);
-		AnnotationRetrieval.get(jCas, Chunk.class, 1);
-		SplitAnnotation split0 = AnnotationRetrieval.get(jCas, SplitAnnotation.class, 0);
-
-		List<Token> annotations = AnnotationRetrieval.getAnnotations(jCas, split0, Token.class);
-		Assert.assertEquals(4, annotations.size());
-		Assert.assertEquals(100, annotations.get(0).getBegin());
-		Assert.assertEquals(105, annotations.get(1).getBegin());
-		Assert.assertEquals(115, annotations.get(2).getBegin());
-		Assert.assertEquals(120, annotations.get(3).getBegin());
-
-		List<Chunk> chunkAnnotations = AnnotationRetrieval.getAnnotations(jCas, split0, Chunk.class);
-		Assert.assertEquals(2, chunkAnnotations.size());
-		Assert.assertEquals(100, chunkAnnotations.get(0).getBegin());
-		Assert.assertEquals(115, chunkAnnotations.get(1).getBegin());
-
-		annotations = AnnotationRetrieval.getAnnotations(jCas, (Annotation) split0, Token.class);
-		Assert.assertEquals(4, annotations.size());
-		Assert.assertEquals(100, annotations.get(0).getBegin());
-		Assert.assertEquals(105, annotations.get(1).getBegin());
-		Assert.assertEquals(115, annotations.get(2).getBegin());
-		Assert.assertEquals(120, annotations.get(3).getBegin());
-
-	}
-
-	@Test
 	public void testGetAnnotations() throws UIMAException, IOException {
 
 		JCas jCas = AnnotationUtilTest.Annotator.getProcessedJCas();
