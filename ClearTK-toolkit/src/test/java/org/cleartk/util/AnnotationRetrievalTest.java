@@ -319,7 +319,7 @@ public class AnnotationRetrievalTest {
 	 */
 	@Test 
 	public void testTokenBug() throws UIMAException, IOException {
-		JCas jCas = JCasFactory.createJCasFromPath("test/desc/JulieTypeSystem.xml");
+		JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
 		jCas.setDocumentText("This is text that supports the above bug report: Alls lls. ");
 		
 		NamedEntityMention entity = new NamedEntityMention(jCas, 50, 53);
