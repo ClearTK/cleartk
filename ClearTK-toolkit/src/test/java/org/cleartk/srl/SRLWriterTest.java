@@ -60,7 +60,7 @@ public class SRLWriterTest {
 
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.srl.SRLWriter",
-				SRLWriter.PARAM_OUTPUT_FILE, "test/data/srl/srl-output.txt");
+				SRLWriter.PARAM_OUTPUT_FILE, outputFile.getPath());
 
 		engine.collectionProcessComplete();
 	}
