@@ -205,7 +205,7 @@ public class PennTreebankReader extends CollectionReader_ImplBase {
 		this.corpusDirectoryName = corpusDirectoryName;
 	}
 
-	public void setSectionsString(String sectionsString) {
+	public void setSectionsSpecifier(String sectionsString) {
 		this.sectionsSpecifier = sectionsString;
 	}
 
