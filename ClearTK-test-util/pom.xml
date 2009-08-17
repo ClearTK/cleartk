@@ -61,6 +61,11 @@
 			<scope>test</scope>
 			<optional>false</optional>
 		</dependency>
+		<dependency>
+			<groupId>jdom</groupId>
+			<artifactId>jdom</artifactId>
+			<version>1.1</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<extensions>
