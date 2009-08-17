@@ -20,21 +20,21 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 </description>
         <configurationParameters>
             <configurationParameter>
-                <name>org.cleartk.srl.propbank.PropbankGoldReader.PARAM_PROPBANK_FILE</name>
+                <name>org.cleartk.srl.propbank.PropbankGoldReader.propbankFileName</name>
                 <description>points to propbank data file</description>
                 <type>String</type>
                 <multiValued>false</multiValued>
                 <mandatory>true</mandatory>
             </configurationParameter>
             <configurationParameter>
-                <name>org.cleartk.srl.propbank.PropbankGoldReader.PARAM_PENNTREEBANK_DIRECTORY</name>
+                <name>org.cleartk.srl.propbank.PropbankGoldReader.penntreebankDirectoryName</name>
                 <description>points to the PennTreebank corpus. The directory should contain subdirectories corresponding to the sections (e.g. "00", "01", etc.)  That is, if a local copy of PennTreebank sits at C:/Data/PTB/wsj/mrg, then the subdirectory C:/Data/PTB/wsj/mrg/00 should exist. There are 24 sections in PTB corresponding to the directories 00, 01, 02, ... 24.</description>
                 <type>String</type>
                 <multiValued>false</multiValued>
                 <mandatory>true</mandatory>
             </configurationParameter>
             <configurationParameter>
-                <name>org.cleartk.srl.propbank.PropbankGoldReader.PARAM_WSJ_SECTIONS</name>
+                <name>org.cleartk.srl.propbank.PropbankGoldReader.wsjSections</name>
                 <description>Determines which sections of WSJ will be used.  The format allows for comma-separated section numbers and section ranges, for example "02,07-12,16".</description>
                 <type>String</type>
                 <multiValued>false</multiValued>

@@ -21,7 +21,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 </description>
         <configurationParameters>
             <configurationParameter>
-                <name>org.cleartk.corpus.timeml.TimeMLGoldAnnotator.PARAM_LOAD_TLINKS</name>
+                <name>org.cleartk.corpus.timeml.TimeMLGoldAnnotator.loadTlinks</name>
                 <description>when false indicates that annotation should not be created for TLINKs (though annotations will still be created for TIMEX3s, EVENTs, etc.).</description>
                 <type>Boolean</type>
                 <multiValued>false</multiValued>
@@ -30,7 +30,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         </configurationParameters>
         <configurationParameterSettings>
             <nameValuePair>
-                <name>org.cleartk.corpus.timeml.TimeMLGoldAnnotator.PARAM_LOAD_TLINKS</name>
+                <name>org.cleartk.corpus.timeml.TimeMLGoldAnnotator.loadTlinks</name>
                 <value>
                     <boolean>true</boolean>
                 </value>

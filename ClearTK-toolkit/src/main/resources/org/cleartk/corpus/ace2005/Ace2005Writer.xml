@@ -21,7 +21,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 </description>
         <configurationParameters>
             <configurationParameter>
-                <name>org.cleartk.corpus.ace2005.Ace2005Writer.PARAM_OUTPUT_DIRECTORY</name>
+                <name>org.cleartk.corpus.ace2005.Ace2005Writer.outputDirectoryName</name>
                 <description>provides the path of the directory where the XML files should be written.</description>
                 <type>String</type>
                 <multiValued>false</multiValued>

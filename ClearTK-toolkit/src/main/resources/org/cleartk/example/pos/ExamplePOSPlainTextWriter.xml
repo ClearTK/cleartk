@@ -21,7 +21,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 </description>
         <configurationParameters>
             <configurationParameter>
-                <name>org.cleartk.example.pos.ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY</name>
+                <name>org.cleartk.example.pos.ExamplePOSPlainTextWriter.outputDirectoryName</name>
                 <description>provides the directory where the token/pos text files will be written</description>
                 <type>String</type>
                 <multiValued>false</multiValued>
@@ -30,7 +30,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         </configurationParameters>
         <configurationParameterSettings>
             <nameValuePair>
-                <name>org.cleartk.example.pos.ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY</name>
+                <name>org.cleartk.example.pos.ExamplePOSPlainTextWriter.outputDirectoryName</name>
                 <value>
                     <string>example/data</string>
                 </value>

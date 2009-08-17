@@ -21,7 +21,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 </description>
         <configurationParameters>
             <configurationParameter>
-                <name>org.cleartk.token.snowball.SnowballStemmer.PARAM_STEMMER_NAME</name>
+                <name>org.cleartk.token.snowball.SnowballStemmer.stemmerName</name>
                 <description>specifies which snowball stemmer to use. Possible values are: Danish, Dutch, English, Finnish, French, German2, German, Italian, Kp, Lovins, Norwegian, Porter, Portuguese, Russian, Spanish, Swedish</description>
                 <type>String</type>
                 <multiValued>false</multiValued>

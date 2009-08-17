@@ -20,14 +20,14 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 </description>
         <configurationParameters>
             <configurationParameter>
-                <name>org.cleartk.corpus.ace2005.Ace2005GoldReader.PARAM_ACE_CORPUS_DIR</name>
+                <name>org.cleartk.corpus.ace2005.Ace2005GoldReader.aceDirectoryName</name>
                 <description>Takes the name of directory that contains ACE data.  Typically, a folder such as ".../ACE_2005/optimization/English/all".  The folder should contain files that come in pairs - i.e. for each .sgm file there should be a corresponding .apf.xml file.</description>
                 <type>String</type>
                 <multiValued>false</multiValued>
                 <mandatory>true</mandatory>
             </configurationParameter>
             <configurationParameter>
-                <name>org.cleartk.corpus.ace2005.Ace2005GoldReader.PARAM_ACE_FILE_NAMES</name>
+                <name>org.cleartk.corpus.ace2005.Ace2005GoldReader.aceFileNamesFile</name>
                 <description>takes a file that contains the names of the files to read.   
 The file should contain a list of the files in AceCorpusDir (one file name per line) 
 that you want read in. File names should not include the last suffix(es) (e.g. ".sgm" or "apf.xml") 

@@ -21,7 +21,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 </description>
         <configurationParameters>
             <configurationParameter>
-                <name>org.cleartk.syntax.treebank.TreebankGoldAnnotator.PARAM_POST_TREES</name>
+                <name>org.cleartk.syntax.treebank.TreebankGoldAnnotator.postTrees</name>
                 <description>specifies whether or not to post trees (i.e. annotations of type TreebankNode) to the CAS.  Sometimes treebank data is used only for the part-of-speech data that it contains.  For such uses, it is not necessary to post the entire constituent parse to the CAS. Instead, this parameter can be set to false which results in  only the part-of-speech data being added.</description>
                 <type>Boolean</type>
                 <multiValued>false</multiValued>
@@ -30,7 +30,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         </configurationParameters>
         <configurationParameterSettings>
             <nameValuePair>
-                <name>org.cleartk.syntax.treebank.TreebankGoldAnnotator.PARAM_POST_TREES</name>
+                <name>org.cleartk.syntax.treebank.TreebankGoldAnnotator.postTrees</name>
                 <value>
                     <boolean>true</boolean>
                 </value>

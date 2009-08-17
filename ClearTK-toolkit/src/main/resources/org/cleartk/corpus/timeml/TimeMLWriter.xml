@@ -21,7 +21,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 </description>
         <configurationParameters>
             <configurationParameter>
-                <name>org.cleartk.corpus.timeml.TimeMLWriter.PARAM_OUTPUT_DIRECTORY</name>
+                <name>org.cleartk.corpus.timeml.TimeMLWriter.outputDirectoryName</name>
                 <description>Provides the path where the TimeML documents should be written.</description>
                 <type>String</type>
                 <multiValued>false</multiValued>
