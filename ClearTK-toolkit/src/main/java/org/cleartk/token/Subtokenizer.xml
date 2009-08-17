@@ -30,13 +30,13 @@ POSSIBILITY OF SUCH DAMAGE.</description>
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>org.cleartk.token.TokenAnnotator.PARAM_TOKEN_TYPE</name>
+        <name>org.cleartk.token.TokenAnnotator.tokenTypeName</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>org.cleartk.token.TokenAnnotator.PARAM_TOKENIZER</name>
+        <name>org.cleartk.token.TokenAnnotator.tokenizerName</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
@@ -44,13 +44,13 @@ POSSIBILITY OF SUCH DAMAGE.</description>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>org.cleartk.token.TokenAnnotator.PARAM_TOKENIZER</name>
+        <name>org.cleartk.token.TokenAnnotator.tokenizerName</name>
         <value>
           <string>org.cleartk.token.util.Subtokenizer</string>
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>org.cleartk.token.TokenAnnotator.PARAM_TOKEN_TYPE</name>
+        <name>org.cleartk.token.TokenAnnotator.tokenTypeName</name>
         <value>
           <string>org.cleartk.token.chunk.type.Subtoken</string>
         </value>
