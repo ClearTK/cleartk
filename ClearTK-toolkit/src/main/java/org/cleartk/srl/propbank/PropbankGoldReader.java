@@ -210,7 +210,7 @@ public class PropbankGoldReader extends CollectionReader_ImplBase {
 		this.propbankFileName = propbankFileName;
 	}
 
-	public void setTreebankDirectoryName(String treebankDirectoryName) {
+	public void setPenntreebankDirectoryName(String treebankDirectoryName) {
 		this.penntreebankDirectoryName = treebankDirectoryName;
 	}
 
