@@ -46,7 +46,7 @@ import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.InstanceConsumer;
 import org.cleartk.classifier.Train;
 import org.cleartk.util.JCasUtil;
-import org.cleartk.util.AnnotationHandlerTestUtil;
+import org.cleartk.util.EmptyHandlerUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -87,7 +87,7 @@ public class RunLIBSVMTest {
 		DataWriterAnnotator<Boolean> dataWriter = new DataWriterAnnotator<Boolean>();
 		dataWriter.initialize(UimaContextFactory.createUimaContext(
 				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
-				AnnotationHandlerTestUtil.EmptyBooleanHandler.class.getName(),
+				EmptyHandlerUtil.EmptyBooleanHandler.class.getName(),
 				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY,
 				this.outputDirectory,
 				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS,
@@ -128,7 +128,7 @@ public class RunLIBSVMTest {
 		DataWriterAnnotator<Boolean> dataWriter = new DataWriterAnnotator<Boolean>();
 		dataWriter.initialize(UimaContextFactory.createUimaContext(
 				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
-				AnnotationHandlerTestUtil.EmptyBooleanHandler.class.getName(),
+				EmptyHandlerUtil.EmptyBooleanHandler.class.getName(),
 				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY,
 				this.outputDirectory,
 				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS,
@@ -169,7 +169,7 @@ public class RunLIBSVMTest {
 		DataWriterAnnotator<String> dataWriter = new DataWriterAnnotator<String>();
 		dataWriter.initialize(UimaContextFactory.createUimaContext(
 				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
-				AnnotationHandlerTestUtil.EmptyStringHandler.class.getName(),
+				EmptyHandlerUtil.EmptyStringHandler.class.getName(),
 				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY,
 				this.outputDirectory,
 				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS,
