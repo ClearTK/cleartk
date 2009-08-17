@@ -42,31 +42,31 @@ POSSIBILITY OF SUCH DAMAGE.</description>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>org.cleartk.chunk.ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS</name>
+        <name>org.cleartk.chunk.ChunkerHandler.labeledAnnotationClassName</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>org.cleartk.chunk.ChunkerHandler.PARAM_SEQUENCE_CLASS</name>
+        <name>org.cleartk.chunk.ChunkerHandler.sequenceClassName</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>org.cleartk.chunk.ChunkerHandler.PARAM_CHUNK_LABELER_CLASS</name>
+        <name>org.cleartk.chunk.ChunkerHandler.chunkLabelerClassName</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>org.cleartk.chunk.ChunkerHandler.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS</name>
+        <name>org.cleartk.chunk.ChunkerHandler.chunkerFeatureExtractorClassName</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>org.cleartk.chunk.ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS</name>
+        <name>org.cleartk.chunk.ChunkLabeler_ImplBase.chunkAnnotationClassName</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
@@ -80,31 +80,31 @@ POSSIBILITY OF SUCH DAMAGE.</description>
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>org.cleartk.chunk.ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS</name>
+        <name>org.cleartk.chunk.ChunkerHandler.labeledAnnotationClassName</name>
         <value>
           <string>org.cleartk.token.chunk.type.Subtoken</string>
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>org.cleartk.chunk.ChunkerHandler.PARAM_SEQUENCE_CLASS</name>
+        <name>org.cleartk.chunk.ChunkerHandler.sequenceClassName</name>
         <value>
           <string>org.cleartk.type.Sentence</string>
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>org.cleartk.chunk.ChunkerHandler.PARAM_CHUNK_LABELER_CLASS</name>
+        <name>org.cleartk.chunk.ChunkerHandler.chunkLabelerClassName</name>
         <value>
           <string>org.cleartk.token.chunk.ChunkTokenizerLabeler</string>
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>org.cleartk.chunk.ChunkerHandler.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS</name>
+        <name>org.cleartk.chunk.ChunkerHandler.chunkerFeatureExtractorClassName</name>
         <value>
           <string>org.cleartk.token.chunk.ChunkTokenizerFeatureExtractor</string>
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>org.cleartk.chunk.ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS</name>
+        <name>org.cleartk.chunk.ChunkLabeler_ImplBase.chunkAnnotationClassName</name>
         <value>
           <string>org.cleartk.type.Token</string>
         </value>
