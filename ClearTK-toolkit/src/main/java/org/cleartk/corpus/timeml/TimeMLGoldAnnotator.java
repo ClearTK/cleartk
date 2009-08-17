@@ -189,7 +189,7 @@ public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
 		return anchor;
 	}
 	
-	public void setLoadTLINKs(boolean loadTLINKs) {
+	public void setLoadTlinks(boolean loadTLINKs) {
 		this.loadTlinks = loadTLINKs;
 	}
 
