@@ -64,10 +64,10 @@ import org.uutuc.util.InitializeUtil;
  */
 public class TimeMLWriter extends JCasAnnotator_ImplBase {
 	
-	public static final String PARAM_OUTPUT_DIRECTORY = "org.cleartk.corpus.timeml.TimeMLWriter.PARAM_OUTPUT_DIRECTORY";
+	public static final String PARAM_OUTPUT_DIRECTORY_NAME = "org.cleartk.corpus.timeml.TimeMLWriter.outputDirectoryName";
 	
 	@ConfigurationParameter(
-			name = PARAM_OUTPUT_DIRECTORY,
+			name = PARAM_OUTPUT_DIRECTORY_NAME,
 			description = "Provides the path where the TimeML documents should be written.",
 			mandatory = true)
 	private String outputDirectoryName;

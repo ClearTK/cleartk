@@ -78,7 +78,7 @@ public class Ace2005GoldTest {
 		try {
 			CollectionReaderFactory.createCollectionReader(
 					Ace2005GoldReader.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-					Ace2005GoldReader.PARAM_ACE_CORPUS_DIR, "foo/bar");
+					Ace2005GoldReader.PARAM_ACE_DIRECTORY_NAME, "foo/bar");
 			Assert.fail("expected error for invalid corpus directory");
 		}
 		catch (ResourceInitializationException e) {
@@ -100,14 +100,14 @@ public class Ace2005GoldTest {
 		} catch (ResourceInitializationException e) {}
 
 		CollectionReader reader = 			CleartkComponents.createCollectionReader(Ace2005GoldReader.class,
-				Ace2005GoldReader.PARAM_ACE_CORPUS_DIR, this.rootDir.getPath());
+				Ace2005GoldReader.PARAM_ACE_DIRECTORY_NAME, this.rootDir.getPath());
 
 		Object corpusDir = reader.getConfigParameterValue(
-				Ace2005GoldReader.PARAM_ACE_CORPUS_DIR);
+				Ace2005GoldReader.PARAM_ACE_DIRECTORY_NAME);
 		Assert.assertEquals(this.rootDir.getPath(), corpusDir);
 
 		Object loadNamedEntities = reader.getConfigParameterValue(
-				Ace2005GoldReader.PARAM_ACE_FILE_NAMES);
+				Ace2005GoldReader.PARAM_ACE_FILE_NAMES_FILE);
 		Assert.assertEquals(null, loadNamedEntities);
 	}
 

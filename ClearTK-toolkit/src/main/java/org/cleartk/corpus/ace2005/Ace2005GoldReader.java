@@ -64,10 +64,10 @@ import org.uutuc.util.InitializeUtil;
 @SofaCapability(outputSofas= ViewNames.ACE_APF_URI)
 public class Ace2005GoldReader extends CollectionReader_ImplBase
 {
-	public static final String PARAM_ACE_CORPUS_DIR = "org.cleartk.corpus.ace2005.Ace2005GoldReader.PARAM_ACE_CORPUS_DIR";
+	public static final String PARAM_ACE_DIRECTORY_NAME = "org.cleartk.corpus.ace2005.Ace2005GoldReader.aceDirectoryName";
 
 	@ConfigurationParameter(
-			name = PARAM_ACE_CORPUS_DIR,
+			name = PARAM_ACE_DIRECTORY_NAME,
 			mandatory = true,
 			description = "Takes the name of directory that contains ACE data.  Typically, a folder such as \".../ACE_2005/optimization/English/all\".  The folder should contain files that come in pairs - i.e. for each .sgm file there should be a corresponding .apf.xml file.")
 	private String aceDirectoryName;
@@ -80,10 +80,10 @@ public class Ace2005GoldReader extends CollectionReader_ImplBase
 			"AFP_ENG_20030305.0918\n" +
 			"...\n";
 
-	public static final String PARAM_ACE_FILE_NAMES = "org.cleartk.corpus.ace2005.Ace2005GoldReader.PARAM_ACE_FILE_NAMES";
+	public static final String PARAM_ACE_FILE_NAMES_FILE = "org.cleartk.corpus.ace2005.Ace2005GoldReader.aceFileNamesFile";
 	
 	@ConfigurationParameter(
-			name = PARAM_ACE_FILE_NAMES,
+			name = PARAM_ACE_FILE_NAMES_FILE,
 			description = PARAM_ACE_FILE_NAMES_DESCRIPTION) 
 	private String aceFileNamesFile;
 	

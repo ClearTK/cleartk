@@ -75,7 +75,7 @@ public class Ace2005WriterTest {
 	public void testOutputFile() throws Exception {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				Ace2005Writer.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-				Ace2005Writer.PARAM_OUTPUT_DIRECTORY, this.outputDir.getPath());
+				Ace2005Writer.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDir.getPath());
 		
 		JCas jCas = engine.newJCas();
 		Document document = new Document(jCas);
@@ -168,9 +168,9 @@ public class Ace2005WriterTest {
 		
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.corpus.ace2005.Ace2005Writer",
-				Ace2005Writer.PARAM_OUTPUT_DIRECTORY, this.outputDir.getPath());
+				Ace2005Writer.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDir.getPath());
 		Object outputDirectory = engine.getConfigParameterValue(
-				Ace2005Writer.PARAM_OUTPUT_DIRECTORY);
+				Ace2005Writer.PARAM_OUTPUT_DIRECTORY_NAME);
 		Assert.assertEquals(this.outputDir.getPath(), outputDirectory);
 		
 		engine.collectionProcessComplete();

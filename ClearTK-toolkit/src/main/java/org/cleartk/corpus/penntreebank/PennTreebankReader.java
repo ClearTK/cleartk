@@ -83,27 +83,26 @@ import org.uutuc.util.InitializeUtil;
 
 @SofaCapability(outputSofas=ViewNames.TREEBANK)
 public class PennTreebankReader extends CollectionReader_ImplBase {
-	public static final String PARAM_CORPUS_DIRECTORY = "org.cleartk.corpus.penntreebank.PennTreebankReader.PARAM_CORPUS_DIRECTORY";
+	public static final String PARAM_CORPUS_DIRECTORY_NAME = "org.cleartk.corpus.penntreebank.PennTreebankReader.corpusDirectoryName";
 	private static final String CORPUS_DIRECTORY_DESCRIPTION = "Specifies the location of WSJ/PennTreebank treebank files.  " +
 			"The directory should contain subdirectories corresponding to the sections (e.g. '00', '01', etc.) " +
 			"That is, if a local copy of PennTreebank sits at C:/Data/PTB/wsj/mrg, then the the subdirectory C:/Data/PTB/wsj/mrg/00 should exist. " +
 			"There are 24 sections in PTB corresponding to the directories 00, 01, 02, ... 24. ";
-
 	@ConfigurationParameter(
-			name = PARAM_CORPUS_DIRECTORY,
+			name = PARAM_CORPUS_DIRECTORY_NAME,
 			mandatory = true,
 			description = CORPUS_DIRECTORY_DESCRIPTION)
 	private String corpusDirectoryName;
 
-	public static final String PARAM_SECTIONS = "org.cleartk.corpus.penntreebank.PennTreebankReader.PARAM_SECTIONS";
+	public static final String PARAM_SECTIONS_SPECIFIER = "org.cleartk.corpus.penntreebank.PennTreebankReader.sectionsSpecifier";
 	private static final String SECTIONS_DESCRIPTION = "specifies which sections of PTB to read in.  " +
 			"The required format for values of this parameter allows for comma-separated section numbers and section ranges, " +
 			"for example '02,07-12,16'.";
 	@ConfigurationParameter(
-			name = PARAM_SECTIONS,
+			name = PARAM_SECTIONS_SPECIFIER,
 			defaultValue = "00-24",
 			description = SECTIONS_DESCRIPTION)
-	private String sectionsString;
+	private String sectionsSpecifier;
 	
 	protected File directory;
 
@@ -116,7 +115,7 @@ public class PennTreebankReader extends CollectionReader_ImplBase {
 	@Override
 	public void initialize() throws ResourceInitializationException {
 		InitializeUtil.initialize(this, getUimaContext());
-		this.sections = new ListSpecification(sectionsString);
+		this.sections = new ListSpecification(sectionsSpecifier);
 
 		this.directory = new File(corpusDirectoryName);
 		this.files = new LinkedList<File>();
@@ -207,7 +206,7 @@ public class PennTreebankReader extends CollectionReader_ImplBase {
 	}
 
 	public void setSectionsString(String sectionsString) {
-		this.sectionsString = sectionsString;
+		this.sectionsSpecifier = sectionsString;
 	}
 
 

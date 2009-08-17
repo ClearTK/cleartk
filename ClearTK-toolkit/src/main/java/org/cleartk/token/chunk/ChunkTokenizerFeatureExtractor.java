@@ -70,7 +70,7 @@ public class ChunkTokenizerFeatureExtractor implements ChunkerFeatureExtractor {
 
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 
-		labeledAnnotationClass = UIMAUtil.getClass(context, ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS, Annotation.class);
+		labeledAnnotationClass = UIMAUtil.getClass(context, ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS_NAME, Annotation.class);
 		
 		this.simpleFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
 		this.windowExtractors = new ArrayList<WindowExtractor>();

@@ -52,26 +52,26 @@ import org.uutuc.util.InitializeUtil;
  * 
  */
 public class TokenAnnotator extends JCasAnnotator_ImplBase {
-	public static final String PARAM_TOKENIZER = "org.cleartk.token.TokenAnnotator.PARAM_TOKENIZER";
+	public static final String PARAM_TOKENIZER_NAME = "org.cleartk.token.TokenAnnotator.tokenizerName";
 
 	private static final String TOKENIZER_DESCRIPTION = "specifies the class type of the tokenizer that will be used by this annotator. " +
 			"If this parameter is not filled, then the default tokenenizer (org.cleartk.token.util.PennTreebankTokenizer) is used. " +
 			"A tokenenizer is defined as any implementation of the interface defined by org.cleartk.token.util.Tokenizer."; 
 	@ConfigurationParameter (
-			name = PARAM_TOKENIZER,
+			name = PARAM_TOKENIZER_NAME,
 			description = TOKENIZER_DESCRIPTION,
 			defaultValue = "org.cleartk.token.util.PennTreebankTokenizer")
 	private String tokenizerName;
 	
-	public static final String PARAM_TOKEN_TYPE = "org.cleartk.token.TokenAnnotator.PARAM_TOKEN_TYPE";
+	public static final String PARAM_TOKEN_TYPE_NAME = "org.cleartk.token.TokenAnnotator.tokenTypeName";
 
 	@ConfigurationParameter (
-			name = PARAM_TOKEN_TYPE,
+			name = PARAM_TOKEN_TYPE_NAME,
 			description = "class type of the tokens that are created by this annotator. If this parameter is not filled, then tokens of type org.cleartk.type.Token will be created.",
 			defaultValue = "org.cleartk.type.Token")
 	private String tokenTypeName;
 	
-	public static final String PARAM_WINDOW_TYPE = "org.cleartk.token.TokenAnnotator.PARAM_WINDOW_TYPE";
+	public static final String PARAM_WINDOW_TYPE_NAME = "org.cleartk.token.TokenAnnotator.windowTypeName";
 	private static final String WINDOW_TYPE_DESCRIPTION = "specifies the class type of annotations that will be tokenized. " +
 			"If no value is given, then the entire document will be tokenized at once. " +
 			"A good value for this parameter would be 'org.cleartk.type.Sentence' " +
@@ -80,7 +80,7 @@ public class TokenAnnotator extends JCasAnnotator_ImplBase {
 	//do not set the default value to 'org.cleartk.type.Sentence'.  If you do, then unit tests will break.  The symptom will be a tokenizer that doesn't generate any tokens (because there
 	//are no sentences to iterate over.
 	@ConfigurationParameter (
-			name = PARAM_WINDOW_TYPE,
+			name = PARAM_WINDOW_TYPE_NAME,
 			description = WINDOW_TYPE_DESCRIPTION
 			)
 	private String windowTypeName;

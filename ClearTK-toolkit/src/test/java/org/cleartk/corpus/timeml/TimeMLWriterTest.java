@@ -88,7 +88,7 @@ public class TimeMLWriterTest {
 		AnalysisEngine writer = AnalysisEngineFactory.createPrimitive(
 				TimeMLWriter.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-				TimeMLWriter.PARAM_OUTPUT_DIRECTORY,
+				TimeMLWriter.PARAM_OUTPUT_DIRECTORY_NAME,
 				this.outputDir.getPath());
 		
 		for (JCas jCas: new JCasIterable(reader, annotator, writer)) {
@@ -112,8 +112,8 @@ public class TimeMLWriterTest {
 		} catch (ResourceInitializationException e) {}
 		
 		
-		AnalysisEngine engine = CleartkComponents.createPrimitive(TimeMLWriter.class, TimeMLWriter.PARAM_OUTPUT_DIRECTORY, this.outputDir.getPath());
-		Assert.assertEquals(this.outputDir.getPath(), engine.getConfigParameterValue(TimeMLWriter.PARAM_OUTPUT_DIRECTORY));
+		AnalysisEngine engine = CleartkComponents.createPrimitive(TimeMLWriter.class, TimeMLWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDir.getPath());
+		Assert.assertEquals(this.outputDir.getPath(), engine.getConfigParameterValue(TimeMLWriter.PARAM_OUTPUT_DIRECTORY_NAME));
 		engine.collectionProcessComplete();
 	}
 

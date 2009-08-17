@@ -51,33 +51,30 @@ import org.uutuc.util.InitializeUtil;
 
 public class ChunkerHandler implements SequentialAnnotationHandler<String>, Initializable {
 
-	public static final String PARAM_LABELED_ANNOTATION_CLASS = "org.cleartk.chunk.ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS";
+	public static final String PARAM_LABELED_ANNOTATION_CLASS_NAME = "org.cleartk.chunk.ChunkerHandler.labeledAnnotationClassName";
 	@ConfigurationParameter(
-			name = PARAM_LABELED_ANNOTATION_CLASS,
+			name = PARAM_LABELED_ANNOTATION_CLASS_NAME,
 			mandatory = true,
 			description = "names the class of the type system type used to associate B, I, and O (for example) labels with.  An example value might be 'org.cleartk.type.Token'")
-	 private String labeledAnnotationClassName;
+	 protected String labeledAnnotationClassName;
 
-	public static final String PARAM_SEQUENCE_CLASS = "org.cleartk.chunk.ChunkerHandler.PARAM_SEQUENCE_CLASS";
-
+	public static final String PARAM_SEQUENCE_CLASS_NAME = "org.cleartk.chunk.ChunkerHandler.sequenceClassName";
 	@ConfigurationParameter(
-			name = PARAM_SEQUENCE_CLASS,
+			name = PARAM_SEQUENCE_CLASS_NAME,
 			mandatory = true,
 			description = "names the class of the type system type that specifies a 'sequence' of labels.  An example might be something like 'org.cleartk.type.Sentence'")
 	private String sequenceClassName;
 	
-	public static final String PARAM_CHUNK_LABELER_CLASS = "org.cleartk.chunk.ChunkerHandler.PARAM_CHUNK_LABELER_CLASS";
-
+	public static final String PARAM_CHUNK_LABELER_CLASS_NAME = "org.cleartk.chunk.ChunkerHandler.chunkLabelerClassName";
 	@ConfigurationParameter(
-			name = PARAM_CHUNK_LABELER_CLASS,
+			name = PARAM_CHUNK_LABELER_CLASS_NAME,
 			mandatory = true,
 			description = "provides the class name of a class that extends org.cleartk.chunk.ChunkLabeler.")
 	private String chunkLabelerClassName;
 	
-	public static final String PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS = "org.cleartk.chunk.ChunkerHandler.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS";
-	
+	public static final String PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME = "org.cleartk.chunk.ChunkerHandler.chunkerFeatureExtractorClassName";
 	@ConfigurationParameter(
-			name = PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS,
+			name = PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME,
 			mandatory = true,
 			description = "provides the class name of a class that extends org.cleartk.chunk.ChunkFeatureExtractor.")
 	private String chunkerFeatureExtractorClassName;

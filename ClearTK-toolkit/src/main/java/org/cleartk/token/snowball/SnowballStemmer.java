@@ -53,7 +53,7 @@ import org.uutuc.util.InitializeUtil;
  */
 public abstract class SnowballStemmer<TOKEN_TYPE extends Annotation> extends JCasAnnotator_ImplBase {
 
-	public static final String PARAM_STEMMER_NAME = "org.cleartk.token.snowball.SnowballStemmer.PARAM_STEMMER_NAME";
+	public static final String PARAM_STEMMER_NAME = "org.cleartk.token.snowball.SnowballStemmer.stemmerName";
 
 	private static final String STEMMER_NAME_DESCRIPTION = "specifies which snowball stemmer to use. Possible values are: " +
 			"Danish, Dutch, English, Finnish, French, German2, German, Italian, Kp, Lovins, Norwegian, Porter, Portuguese, Russian, Spanish, Swedish"; 

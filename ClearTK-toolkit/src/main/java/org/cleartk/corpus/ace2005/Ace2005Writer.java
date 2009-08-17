@@ -58,10 +58,10 @@ import org.uutuc.util.InitializeUtil;
 
 public class Ace2005Writer extends JCasAnnotator_ImplBase {
 
-	public static final String PARAM_OUTPUT_DIRECTORY = "org.cleartk.corpus.ace2005.Ace2005Writer.PARAM_OUTPUT_DIRECTORY";
+	public static final String PARAM_OUTPUT_DIRECTORY_NAME = "org.cleartk.corpus.ace2005.Ace2005Writer.outputDirectoryName";
 
 	@ConfigurationParameter(
-			name = PARAM_OUTPUT_DIRECTORY, 
+			name = PARAM_OUTPUT_DIRECTORY_NAME, 
 			mandatory = true, 
 			description = "provides the path of the directory where the XML files should be written.")
 	private String outputDirectoryName;

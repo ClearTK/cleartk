@@ -61,13 +61,13 @@ public class PennTreebankReaderTest {
 		catch (ResourceInitializationException e) {
 		}
 
-		CollectionReader reader = CollectionReaderFactory.createCollectionReader(descriptor, PennTreebankReader.PARAM_CORPUS_DIRECTORY,
-				this.inputDir, PennTreebankReader.PARAM_SECTIONS, "02-21");
+		CollectionReader reader = CollectionReaderFactory.createCollectionReader(descriptor, PennTreebankReader.PARAM_CORPUS_DIRECTORY_NAME,
+				this.inputDir, PennTreebankReader.PARAM_SECTIONS_SPECIFIER, "02-21");
 
-		Object directory = reader.getConfigParameterValue(PennTreebankReader.PARAM_CORPUS_DIRECTORY);
+		Object directory = reader.getConfigParameterValue(PennTreebankReader.PARAM_CORPUS_DIRECTORY_NAME);
 		Assert.assertEquals(this.inputDir, directory);
 
-		Object sections = reader.getConfigParameterValue(PennTreebankReader.PARAM_SECTIONS);
+		Object sections = reader.getConfigParameterValue(PennTreebankReader.PARAM_SECTIONS_SPECIFIER);
 		Assert.assertEquals("02-21", sections);
 	}
 

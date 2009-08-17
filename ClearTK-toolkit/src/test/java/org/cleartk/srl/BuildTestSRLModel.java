@@ -65,8 +65,8 @@ public class BuildTestSRLModel {
 		
 		TypeSystemDescription typeSystemDescription = ReusableUIMAObjects.getTypeSystemDescription();
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(PropbankGoldReader.class, typeSystemDescription,
-				PropbankGoldReader.PARAM_PROPBANK_FILE, "../ClearTK Data/data/propbank-1.0/prop.txt",
-				PropbankGoldReader.PARAM_PENNTREEBANK_DIRECTORY, "../ClearTK Data/data/treebank",
+				PropbankGoldReader.PARAM_PROPBANK_FILE_NAME, "../ClearTK Data/data/propbank-1.0/prop.txt",
+				PropbankGoldReader.PARAM_PENNTREEBANK_DIRECTORY_NAME, "../ClearTK Data/data/treebank",
 				PropbankGoldReader.PARAM_WSJ_SECTIONS, "02");
 
 		AnalysisEngineDescription tbAnnotator = AnalysisEngineFactory.createPrimitiveDescription(

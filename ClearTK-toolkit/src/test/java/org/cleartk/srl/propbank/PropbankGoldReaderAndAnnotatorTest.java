@@ -69,7 +69,7 @@ public class PropbankGoldReaderAndAnnotatorTest {
 		try {
 			reader = CleartkComponents.createCollectionReader(PropbankGoldReader.class,
 				PropbankGoldReader.PARAM_WSJ_SECTIONS, "02-21",
-			PropbankGoldReader.PARAM_PROPBANK_FILE, "data/propbank-1.0/prop.txt");
+			PropbankGoldReader.PARAM_PROPBANK_FILE_NAME, "data/propbank-1.0/prop.txt");
 		} catch (ResourceInitializationException e) {
 			rie = e;
 		}
@@ -77,15 +77,15 @@ public class PropbankGoldReaderAndAnnotatorTest {
 
 		reader = CleartkComponents.createCollectionReader(PropbankGoldReader.class,
 				PropbankGoldReader.PARAM_WSJ_SECTIONS, "02-21",
-				PropbankGoldReader.PARAM_PROPBANK_FILE, "test/data/corpus/propbank-1.0/prop.txt",
-				PropbankGoldReader.PARAM_PENNTREEBANK_DIRECTORY, "data/treebank");
+				PropbankGoldReader.PARAM_PROPBANK_FILE_NAME, "test/data/corpus/propbank-1.0/prop.txt",
+				PropbankGoldReader.PARAM_PENNTREEBANK_DIRECTORY_NAME, "data/treebank");
 		
 		Object propbankCorpusFile = reader.getConfigParameterValue(
-				PropbankGoldReader.PARAM_PROPBANK_FILE);
+				PropbankGoldReader.PARAM_PROPBANK_FILE_NAME);
 		Assert.assertEquals("test/data/corpus/propbank-1.0/prop.txt", propbankCorpusFile);
 		
 		Object treebankCorpusDirectory = reader.getConfigParameterValue(
-				PropbankGoldReader.PARAM_PENNTREEBANK_DIRECTORY);
+				PropbankGoldReader.PARAM_PENNTREEBANK_DIRECTORY_NAME);
 		Assert.assertEquals("data/treebank", treebankCorpusDirectory);
 		
 		Object wsjSections = reader.getConfigParameterValue(

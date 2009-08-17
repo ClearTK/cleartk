@@ -69,7 +69,7 @@ public class ExamplePOSPlainTextWriterTest {
 	@Test
 	public void test() throws Exception {
 		
-		AnalysisEngine engine = CleartkComponents.createPrimitive(ExamplePOSPlainTextWriter.class, ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY, this.outputDirectory.getPath());
+		AnalysisEngine engine = CleartkComponents.createPrimitive(ExamplePOSPlainTextWriter.class, ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDirectory.getPath());
 
 		JCas jCas = engine.newJCas();
 		TokenFactory.createTokens(jCas,
@@ -89,7 +89,7 @@ public class ExamplePOSPlainTextWriterTest {
 	public void testDescriptor() throws UIMAException, IOException {
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine("org.cleartk.example.pos.ExamplePOSPlainTextWriter");
 		Object outputDirectory = engine.getConfigParameterValue(
-				ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY);
+				ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME);
 		Assert.assertEquals(ExamplePOSPlainTextWriter.DEFAULT_OUTPUT_DIRECTORY, outputDirectory);
 	}
 }

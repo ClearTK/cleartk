@@ -88,12 +88,12 @@ public class ChunkTokenizerTest {
 		  AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				    JCasAnnotatorAdapter.class,
 				    TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-		  			ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS, "org.cleartk.type.Token",
-		  			ChunkerHandler.PARAM_SEQUENCE_CLASS, "org.cleartk.type.Sentence",
-		  			ChunkerHandler.PARAM_CHUNK_LABELER_CLASS, "org.cleartk.chunk.DefaultChunkLabeler",
-		  			ChunkerHandler.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS, TestChunkFeatureExtractor.class.getName(),
-		  			ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS, "org.cleartk.type.Chunk",
-		  			DefaultChunkLabeler.PARAM_CHUNK_LABEL_FEATURE, "chunkType"
+		  			ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token",
+		  			ChunkerHandler.PARAM_SEQUENCE_CLASS_NAME, "org.cleartk.type.Sentence",
+		  			ChunkerHandler.PARAM_CHUNK_LABELER_CLASS_NAME, "org.cleartk.chunk.DefaultChunkLabeler",
+		  			ChunkerHandler.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME, TestChunkFeatureExtractor.class.getName(),
+		  			ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME, "org.cleartk.type.Chunk",
+		  			DefaultChunkLabeler.PARAM_CHUNK_LABEL_FEATURE_NAME, "chunkType"
 		  );
 
 		  TestChunkerHandler chunkerHandler = new TestChunkerHandler();

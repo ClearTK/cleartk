@@ -60,7 +60,7 @@ import org.uutuc.util.InitializeUtil;
 @SofaCapability(inputSofas = {ViewNames.TREEBANK, ViewNames.DEFAULT}, outputSofas = {})
 public class TreebankGoldAnnotator extends JCasAnnotator_ImplBase {
 
-	public static final String PARAM_POST_TREES = "org.cleartk.syntax.treebank.TreebankGoldAnnotator.PARAM_POST_TREES";
+	public static final String PARAM_POST_TREES = "org.cleartk.syntax.treebank.TreebankGoldAnnotator.postTrees";
 
 	private static final String POST_TREES_DESCRIPTION = "specifies whether or not to post trees (i.e. annotations of type TreebankNode) to the CAS.  " +
 			"Sometimes treebank data is used only for the part-of-speech data that it contains.  " +

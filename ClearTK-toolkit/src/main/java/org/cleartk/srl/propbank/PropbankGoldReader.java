@@ -67,15 +67,15 @@ import org.uutuc.util.InitializeUtil;
 @SofaCapability(outputSofas= {ViewNames.PROPBANK, ViewNames.TREEBANK})
 public class PropbankGoldReader extends CollectionReader_ImplBase {
 	
-	public static final String PARAM_PROPBANK_FILE = "org.cleartk.srl.propbank.PropbankGoldReader.PARAM_PROPBANK_FILE";
+	public static final String PARAM_PROPBANK_FILE_NAME = "org.cleartk.srl.propbank.PropbankGoldReader.propbankFileName";
 
 	@ConfigurationParameter(
-			name = PARAM_PROPBANK_FILE,
+			name = PARAM_PROPBANK_FILE_NAME,
 			description = "points to propbank data file",
 			mandatory = true)
 	private String propbankFileName;
 	
-	public static final String PARAM_PENNTREEBANK_DIRECTORY = "org.cleartk.srl.propbank.PropbankGoldReader.PARAM_PENNTREEBANK_DIRECTORY";
+	public static final String PARAM_PENNTREEBANK_DIRECTORY_NAME = "org.cleartk.srl.propbank.PropbankGoldReader.penntreebankDirectoryName";
 
 	private static final String PENN_TREEBANK_DIRECTORY_DESCRIPTION = "points to the PennTreebank corpus. " +
 			"The directory should contain subdirectories corresponding to the sections (e.g. \"00\", \"01\", etc.)  " +
@@ -83,12 +83,12 @@ public class PropbankGoldReader extends CollectionReader_ImplBase {
 			"There are 24 sections in PTB corresponding to the directories 00, 01, 02, ... 24.";
 	
 	@ConfigurationParameter(
-			name = PARAM_PENNTREEBANK_DIRECTORY,
+			name = PARAM_PENNTREEBANK_DIRECTORY_NAME,
 			description = PENN_TREEBANK_DIRECTORY_DESCRIPTION,
 			mandatory = true)
-	private String treebankDirectoryName;
+	private String penntreebankDirectoryName;
 	
-	public static final String PARAM_WSJ_SECTIONS = "org.cleartk.srl.propbank.PropbankGoldReader.PARAM_WSJ_SECTIONS";
+	public static final String PARAM_WSJ_SECTIONS = "org.cleartk.srl.propbank.PropbankGoldReader.wsjSections";
 
 	@ConfigurationParameter(
 			name = PARAM_WSJ_SECTIONS,
@@ -127,7 +127,7 @@ public class PropbankGoldReader extends CollectionReader_ImplBase {
 			Collections.sort(propbankData);
 
 			this.treebankFiles = new LinkedList<File>();
-			treebankDirectory = new File(treebankDirectoryName);
+			treebankDirectory = new File(penntreebankDirectoryName);
 			//don't forget that the paths in props.txt have "wsj" in the name.
 			File wsjDirectory = new File(treebankDirectory, "wsj");
 			PennTreebankReader.collectSections(wsjDirectory, this.treebankFiles, this.wsjSpecification);
@@ -211,7 +211,7 @@ public class PropbankGoldReader extends CollectionReader_ImplBase {
 	}
 
 	public void setTreebankDirectoryName(String treebankDirectoryName) {
-		this.treebankDirectoryName = treebankDirectoryName;
+		this.penntreebankDirectoryName = treebankDirectoryName;
 	}
 
 	public void setWsjSections(String wsjSections) {

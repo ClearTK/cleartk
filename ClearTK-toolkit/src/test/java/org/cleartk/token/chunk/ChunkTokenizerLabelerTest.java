@@ -63,8 +63,8 @@ public class ChunkTokenizerLabelerTest {
 		  AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				    EmptyAnnotator.class,
 				    TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-				    ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS, "org.cleartk.type.Token",
-				    ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS, "org.cleartk.token.chunk.type.Subtoken"
+				    ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token",
+				    ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS_NAME, "org.cleartk.token.chunk.type.Subtoken"
 		  			);
 		  
 		  DefaultChunkLabeler defaultChunkLabeler = new DefaultChunkLabeler();
@@ -145,8 +145,8 @@ public class ChunkTokenizerLabelerTest {
 		  AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				    EmptyAnnotator.class,
 				    TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-				    ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS, "org.cleartk.type.Token",
-				    ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS, "org.cleartk.token.chunk.type.Subtoken"
+				    ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token",
+				    ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS_NAME, "org.cleartk.token.chunk.type.Subtoken"
 		  			);
 		  
 		  DefaultChunkLabeler defaultChunkLabeler = new DefaultChunkLabeler();
@@ -208,9 +208,9 @@ public class ChunkTokenizerLabelerTest {
 		  AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				    EmptyAnnotator.class,
 				    TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-				    ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS, "org.cleartk.ne.type.NamedEntityMention",
-				    DefaultChunkLabeler.PARAM_CHUNK_LABEL_FEATURE, "mentionType",
-		  			 ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS, "org.cleartk.type.Token"
+				    ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME, "org.cleartk.ne.type.NamedEntityMention",
+				    DefaultChunkLabeler.PARAM_CHUNK_LABEL_FEATURE_NAME, "mentionType",
+		  			 ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token"
 		  			);
 		  
 		  DefaultChunkLabeler defaultChunkLabeler = new DefaultChunkLabeler();

@@ -50,10 +50,10 @@ public class ExamplePOSPlainTextWriter extends JCasAnnotator_ImplBase {
 
 	public static final String DEFAULT_OUTPUT_DIRECTORY = "example/data";
 
-	public static final String PARAM_OUTPUT_DIRECTORY = "org.cleartk.example.pos.ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY";
+	public static final String PARAM_OUTPUT_DIRECTORY_NAME = "org.cleartk.example.pos.ExamplePOSPlainTextWriter.outputDirectoryName";
 	
 	@ConfigurationParameter(
-			name = PARAM_OUTPUT_DIRECTORY,
+			name = PARAM_OUTPUT_DIRECTORY_NAME,
 			mandatory = true,
 			defaultValue = DEFAULT_OUTPUT_DIRECTORY,
 			description = "provides the directory where the token/pos text files will be written")

@@ -62,13 +62,13 @@ import org.uutuc.util.InitializeUtil;
 @SofaCapability(inputSofas= {ViewNames.TIMEML, ViewNames.DEFAULT})
 public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
 	
-	public static final String PARAM_LOAD_TLINKS = "org.cleartk.corpus.timeml.TimeMLGoldAnnotator.PARAM_LOAD_TLINKS";
+	public static final String PARAM_LOAD_TLINKS = "org.cleartk.corpus.timeml.TimeMLGoldAnnotator.loadTlinks";
 	
 	@ConfigurationParameter(
 			name = PARAM_LOAD_TLINKS,
 			description = "when false indicates that annotation should not be created for TLINKs (though annotations will still be created for TIMEX3s, EVENTs, etc.).",
 			defaultValue = "true")
-	private boolean loadTLINKs;
+	private boolean loadTlinks;
 
 
 	@Override
@@ -145,7 +145,7 @@ public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
 				event.setId(eventID);
 				event.setEventInstanceID(eventInstanceID);
 			}
-		} else if (element.getName().equals("TLINK") && this.loadTLINKs) {
+		} else if (element.getName().equals("TLINK") && this.loadTlinks) {
 			TemporalLink temporalLink = new TemporalLink(jCas, startOffset, endOffset);
 			TimeMLUtil.copyAttributes(element, temporalLink, jCas);
 			String sourceID = this.getOneOf(element,
@@ -190,7 +190,7 @@ public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
 	}
 	
 	public void setLoadTLINKs(boolean loadTLINKs) {
-		this.loadTLINKs = loadTLINKs;
+		this.loadTlinks = loadTLINKs;
 	}
 
 }

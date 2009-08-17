@@ -256,7 +256,7 @@ public class CleartkComponents {
 	throws ResourceInitializationException {
 		return AnalysisEngineFactory.createPrimitiveDescription(
 				TimeMLWriter.class, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES,
-				TimeMLWriter.PARAM_OUTPUT_DIRECTORY, outputDir);
+				TimeMLWriter.PARAM_OUTPUT_DIRECTORY_NAME, outputDir);
 	}
 	
 	public static CollectionReader createConll2005GoldReader(String conll2005DataFile)
@@ -277,7 +277,7 @@ public class CleartkComponents {
 		AnalysisEngineDescription sentences = createOpenNLPSentenceSegmenter();
 		AnalysisEngineDescription tokenizer = CleartkComponents.createPrimitiveDescription(
 				TokenAnnotator.class, 
-				TokenAnnotator.PARAM_WINDOW_TYPE, org.cleartk.type.Sentence.class.getName());
+				TokenAnnotator.PARAM_WINDOW_TYPE_NAME, org.cleartk.type.Sentence.class.getName());
 		return AnalysisEngineFactory.createAggregateDescription(
 				Arrays.asList(sentences, tokenizer), 
 				Arrays.asList("SentenceSegmenter", "TokenAnnotator"),

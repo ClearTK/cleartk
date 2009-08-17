@@ -51,16 +51,16 @@ import org.uutuc.util.InitializeUtil;
 
 public abstract class ChunkLabeler_ImplBase implements ChunkLabeler, Initializable  {
 
-	public static final String PARAM_CHUNK_ANNOTATION_CLASS = "org.cleartk.chunk.ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS";
+	public static final String PARAM_CHUNK_ANNOTATION_CLASS_NAME = "org.cleartk.chunk.ChunkLabeler_ImplBase.chunkAnnotationClassName";
 
 	@ConfigurationParameter(
-			name = PARAM_CHUNK_ANNOTATION_CLASS,
+			name = PARAM_CHUNK_ANNOTATION_CLASS_NAME,
 			mandatory = true,
 			description = "names the class of the type system chunk annotation type. An example value might be something like: 'org.cleartk.type.ne.NamedEntityMention'")
 	private String chunkAnnotationClassName;
 
 	@ConfigurationParameter(
-			name = ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS,
+			name = ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS_NAME,
 			mandatory = true,
 			description = "names the class of the type system type used to associate B, I, and O (for example) labels with.  An example value might be 'org.cleartk.type.Token'")
 	 private String labeledAnnotationClassName;

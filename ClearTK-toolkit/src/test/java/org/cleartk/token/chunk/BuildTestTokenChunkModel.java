@@ -57,8 +57,8 @@ public class BuildTestTokenChunkModel {
 				GeniaPosGoldReader.PARAM_LOAD_SENTENCES, true);
 		
 		AnalysisEngine subtokenizer = AnalysisEngineFactory.createPrimitive(TokenAnnotator.class, typeSystemDescription, 
-				TokenAnnotator.PARAM_TOKEN_TYPE, Subtoken.class.getName(),
-				TokenAnnotator.PARAM_TOKENIZER, Subtokenizer.class.getName());
+				TokenAnnotator.PARAM_TOKEN_TYPE_NAME, Subtoken.class.getName(),
+				TokenAnnotator.PARAM_TOKENIZER_NAME, Subtokenizer.class.getName());
 		 
 		AnalysisEngine chunkTokenizerDataWriter = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.token.chunk.ChunkTokenizerDataWriter",

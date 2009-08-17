@@ -156,7 +156,7 @@ public class NonSequentialExamplePOSAnnotationHandlerTest {
 				CleartkComponents.createPrimitiveDescription(TokenAnnotator.class), 
 				CleartkComponents.createPrimitiveDescription(DefaultSnowballStemmer.class, SnowballStemmer.PARAM_STEMMER_NAME, "English"),
 				taggerDescription,
-				CleartkComponents.createPrimitiveDescription(ExamplePOSPlainTextWriter.class, ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY, outputDirectory));
+				CleartkComponents.createPrimitiveDescription(ExamplePOSPlainTextWriter.class, ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME, outputDirectory));
 		
 		System.out.println("done");
 
