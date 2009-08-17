@@ -83,7 +83,8 @@ public class VerbClauseTemporalHandlerTest {
 	
 	@After
 	public void tearDown() {
-		TearDownUtil.emptyDirectory(this.outputDirectory);
+		TearDownUtil.removeDirectory(this.outputDirectory);
+		Assert.assertFalse(this.outputDirectory.exists());
 	}
 	
 	@Test

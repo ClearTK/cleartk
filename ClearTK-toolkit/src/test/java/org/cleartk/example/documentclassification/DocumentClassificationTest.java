@@ -23,12 +23,16 @@
  */
 package org.cleartk.example.documentclassification;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.apache.uima.UIMAException;
 import org.cleartk.classifier.DataWriterAnnotator;
+import org.junit.After;
+import org.junit.Assert;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.util.TearDownUtil;
 /**
  * <br>Copyright (c) 2009, Regents of the University of Colorado 
  * <br>All rights reserved.
@@ -39,9 +43,18 @@ import org.uutuc.factory.AnalysisEngineFactory;
 
 public class DocumentClassificationTest {
 
+	private String outputDirectory = "test/data/documentclassification";
+
+	@After
+	public void tearDown() {
+		TearDownUtil.removeDirectory(new File(outputDirectory));
+		Assert.assertFalse(new File(outputDirectory).exists());
+		
+	}
+	
 	@Test
 	public void testDataWriterDescriptor() throws UIMAException, IOException {
-		AnalysisEngineFactory.createAnalysisEngine("org.cleartk.example.documentclassification.DataWriter", DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, "test/data/documentclassification");
+		AnalysisEngineFactory.createAnalysisEngine("org.cleartk.example.documentclassification.DataWriter", DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory);
 	}
 	
 	@Test

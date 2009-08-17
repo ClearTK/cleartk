@@ -63,7 +63,7 @@ public class NonSequentialExamplePOSAnnotationHandlerTest {
 	
 	@After
 	public void tearDown() {
-		TearDownUtil.removeDirectory(new File(baseDirectory));
+		TearDownUtil.removeDirectory(new File("test/data/example"));
 	}
 	
 	@Test

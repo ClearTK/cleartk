@@ -69,7 +69,8 @@ public class ExamplePosClassifierTest {
 	
 	@After
 	public void tearDown() {
-		TearDownUtil.removeDirectory(new File(baseDirectory));
+		TearDownUtil.removeDirectory(new File(baseDirectory).getParentFile());
+//		TearDownUtil.removeDirectory(new File(baseDirectory));
 	}
 	@Test
 	public void testLibsvm() throws Exception {

@@ -23,12 +23,17 @@
  */
 package org.cleartk.tfidf;
 
+import java.io.File;
+
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.example.documentclassification.AnnotationHandler;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.util.TearDownUtil;
 /**
  * <br>Copyright (c) 2009, Regents of the University of Colorado 
  * <br>All rights reserved.
@@ -39,6 +44,22 @@ import org.uutuc.factory.AnalysisEngineFactory;
 
 public class IDFMapWriterTest {
 
+	private File outputDirectory = new File("test/data/documentclassification");
+	
+	@Before
+	public void setUp() {
+		if(!outputDirectory.exists()) {
+			outputDirectory.mkdirs();
+		}
+	}
+
+	@After
+	public void tearDown() {
+		TearDownUtil.removeDirectory(outputDirectory);
+		Assert.assertFalse(outputDirectory.exists());
+	}
+
+	
 	@Test
 	public void testDescriptor() throws Exception {
 		String descPath = "org.cleartk.tfidf.IDFMapWriter";
@@ -48,10 +69,11 @@ public class IDFMapWriterTest {
 		} catch (ResourceInitializationException e) {}
 		
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(descPath,
-				IDFMapWriter.PARAM_IDFMAP_FILE, "test/data/documentclassification/idfmap",
+				IDFMapWriter.PARAM_IDFMAP_FILE, new File(outputDirectory, "idfmap").getPath(),
 				IDFMapWriter.PARAM_ANNOTATION_HANDLER, AnnotationHandler.class.getName());
 		String fileName = (String)engine.getConfigParameterValue(
 				IDFMapWriter.PARAM_IDFMAP_FILE);
-		Assert.assertEquals("test/data/documentclassification/idfmap", fileName);
+		Assert.assertEquals(new File(outputDirectory, "idfmap").getPath(), fileName);
 	}
+	
 }
