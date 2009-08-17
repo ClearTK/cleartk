@@ -29,9 +29,7 @@ import java.util.List;
 import org.apache.uima.UIMAException;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.AnnotationHandler;
 import org.cleartk.classifier.Instance;
@@ -49,7 +47,7 @@ import org.cleartk.classifier.SequentialInstanceConsumer;
  * @author Philip Ogren
  * @author Steven Bethard
  */
-public class AnnotationHandlerTestUtil2 {
+public class InstanceProducerUtil {
 
 	/**
 	 * Initializes the instance producer with the AnalysisEngine's context, and
@@ -174,29 +172,5 @@ public class AnnotationHandlerTestUtil2 {
 	}
 
 
-	/**
-	 * A simple do-nothing AnnotationHandler that expects Boolean outcomes.
-	 * Useful primarily for testing DataWriter objects which require some
-	 * annotation handler to be specified.
-	 */
-	public static class EmptyBooleanHandler implements AnnotationHandler<Boolean> {
-		public void initialize(UimaContext context) throws ResourceInitializationException {
-		}
 
-		public void process(JCas cas, InstanceConsumer<Boolean> consumer) throws AnalysisEngineProcessException {
-		}
-	}
-
-	/**
-	 * A simple do-nothing AnnotationHandler that expects String outcomes.
-	 * Useful primarily for testing DataWriter objects which require some
-	 * annotation handler to be specified.
-	 */
-	public static class EmptyStringHandler implements AnnotationHandler<String> {
-		public void initialize(UimaContext context) throws ResourceInitializationException {
-		}
-
-		public void process(JCas cas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException {
-		}
-	}
 }
