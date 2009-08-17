@@ -38,7 +38,6 @@ public class LicenseTest {
 	@Test
 	public void testLicenseStatedInDescriptors() throws Exception {
 		LicenseTestUtil.testDescriptorFiles("src");
-		LicenseTestUtil.testDescriptorFiles("test/data");
 		LicenseTestUtil.testDescriptorFiles("example");
 	}
 	
