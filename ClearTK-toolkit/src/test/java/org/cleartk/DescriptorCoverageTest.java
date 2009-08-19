@@ -92,11 +92,11 @@ public class DescriptorCoverageTest {
 		
 		// collect the names of all .xml descriptors in the src directory
 		Set<String> descNames = new HashSet<String>();
-		for (File file: Files.getFiles(new File("src/main/resources"), new String[] {".xml"})) {
+		for (File file: Files.getFiles(new File("src/main/java"), new String[] {".xml"})) {
 			String path = file.getPath();
-			if (!path.contains("type") && !file.getParent().equals("src/org/cleartk/descriptor".replace('/', File.separatorChar))){
+			if (!path.contains("type")){
 				// strip off "src/main/resources" and ".xml"
-				String name = path.substring(19, path.length() - 4);
+				String name = path.substring(14, path.length() - 4);
 				// convert slashes to dots
 				name = name.replace(File.separatorChar, '.');
 				// add the descriptor name to the set
