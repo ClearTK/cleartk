@@ -30,7 +30,6 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
-import org.cleartk.CleartkComponents;
 import org.cleartk.ViewNames;
 import org.cleartk.corpus.timeml.type.Event;
 import org.cleartk.corpus.timeml.type.TemporalLink;
@@ -199,18 +198,6 @@ public class TimeMLGoldAnnotatorTest {
 		}
 	}
 	
-	@Test
-	public void testAnnotatorDescriptor() throws UIMAException, IOException {
-		AnalysisEngine engine = CleartkComponents.createPrimitive(TimeMLGoldAnnotator.class);
-		Boolean useTLINKs = (Boolean)engine.getConfigParameterValue(TimeMLGoldAnnotator.PARAM_LOAD_TLINKS);
-		Assert.assertEquals(true, useTLINKs);
-		engine.collectionProcessComplete();
-
-		engine = CleartkComponents.createPrimitive(TimeMLGoldAnnotator.class, TimeMLGoldAnnotator.PARAM_LOAD_TLINKS, false);
-		useTLINKs = (Boolean)engine.getConfigParameterValue(TimeMLGoldAnnotator.PARAM_LOAD_TLINKS);
-		Assert.assertEquals(false, useTLINKs);
-		engine.collectionProcessComplete();
-	}
 	
 
 }
