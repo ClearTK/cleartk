@@ -48,6 +48,7 @@ import org.cleartk.srl.propbank.PropbankGoldReader;
 import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
 import org.cleartk.token.TokenAnnotator;
 import org.cleartk.token.snowball.DefaultSnowballStemmer;
+import org.cleartk.util.linewriter.LineWriter;
 import org.xml.sax.SAXException;
 
 public class GenerateDescriptorFiles {
@@ -95,6 +96,7 @@ public class GenerateDescriptorFiles {
 		writePrimitiveDescription(DefaultSnowballStemmer.class, outputDirectory);
 		writeCollectionReader(PennTreebankReader.class, outputDirectory);
 		
+		writePrimitiveDescription(LineWriter.class, outputDirectory);
 
 	}
 	

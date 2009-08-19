@@ -74,10 +74,10 @@ public class LineWriterTest {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 					LineWriter.class,
 					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-					LineWriter.PARAM_OUTPUT_DIRECTORY, this.outputDir.getPath(), 
-					LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS, "org.cleartk.type.Token",
-					LineWriter.PARAM_BLOCK_ANNOTATION_CLASS, "org.cleartk.type.Sentence",
-					LineWriter.PARAM_ANNOTATION_WRITER_CLASS, "org.cleartk.util.linewriter.annotation.CoveredTextAnnotationWriter",
+					LineWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDir.getPath(), 
+					LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token",
+					LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME, "org.cleartk.type.Sentence",
+					LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME, "org.cleartk.util.linewriter.annotation.CoveredTextAnnotationWriter",
 					LineWriter.PARAM_FILE_SUFFIX, ".txt");
 		
 		JCas jCas = engine.newJCas();
@@ -164,9 +164,9 @@ public class LineWriterTest {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 					LineWriter.class,
 					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-					LineWriter.PARAM_OUTPUT_FILE, new File(outputDir, "output.txt").getPath(), 
-					LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS, "org.cleartk.type.Token",
-					LineWriter.PARAM_ANNOTATION_WRITER_CLASS, "org.cleartk.util.linewriter.TestTokenWriter");
+					LineWriter.PARAM_OUTPUT_FILE_NAME, new File(outputDir, "output.txt").getPath(), 
+					LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token",
+					LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME, "org.cleartk.util.linewriter.TestTokenWriter");
 		
 		JCas jCas = engine.newJCas();
 		String text = "Me and all my friends are non-conformists.  I will subjugate my freedom oppressor.";
@@ -204,11 +204,11 @@ public class LineWriterTest {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 					LineWriter.class,
 					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-					LineWriter.PARAM_OUTPUT_FILE, new File(outputDir, "output.txt").getPath(), 
-					LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS, "org.cleartk.type.Sentence",
-					LineWriter.PARAM_BLOCK_ANNOTATION_CLASS, "org.apache.uima.jcas.tcas.DocumentAnnotation",
-					LineWriter.PARAM_BLOCK_WRITER_CLASS, "org.cleartk.util.linewriter.block.DoNothingBlockWriter",
-					LineWriter.PARAM_ANNOTATION_WRITER_CLASS, "org.cleartk.util.linewriter.annotation.CoveredTextAnnotationWriter");
+					LineWriter.PARAM_OUTPUT_FILE_NAME, new File(outputDir, "output.txt").getPath(), 
+					LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, "org.cleartk.type.Sentence",
+					LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME, "org.apache.uima.jcas.tcas.DocumentAnnotation",
+					LineWriter.PARAM_BLOCK_WRITER_CLASS_NAME, "org.cleartk.util.linewriter.block.DoNothingBlockWriter",
+					LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME, "org.cleartk.util.linewriter.annotation.CoveredTextAnnotationWriter");
 
 		
 		JCas jCas = engine.newJCas();
@@ -246,96 +246,96 @@ public class LineWriterTest {
 		ResourceInitializationException rie = getResourceInitializationException();
 		assertNotNull(rie);
 
-		rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS, "org.cleartk.type.Token",
-												 LineWriter.PARAM_OUTPUT_DIRECTORY, "test/data/linewriter", 
-					 							 LineWriter.PARAM_OUTPUT_FILE, "test/data/linewriter/linewriter.txt");
+		rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token",
+												 LineWriter.PARAM_OUTPUT_DIRECTORY_NAME, "test/data/linewriter", 
+					 							 LineWriter.PARAM_OUTPUT_FILE_NAME, "test/data/linewriter/linewriter.txt");
 		assertNotNull(rie);
 
-		rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_DIRECTORY, "test/data/linewriter", 
-				LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS, "edu.cleartk.");
+		rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_DIRECTORY_NAME, "test/data/linewriter", 
+				LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, "edu.cleartk.");
 		assertNotNull(rie);
 
-		rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_DIRECTORY, "test/data/linewriter", 
-				LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS, "org.cleartk.type.Token");
+		rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_DIRECTORY_NAME, "test/data/linewriter", 
+				LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token");
 		assertNull(rie);
 
-		rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_DIRECTORY, "test/data/linewriter", 
-				LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS, "org.cleartk.type.Token",
-				LineWriter.PARAM_ANNOTATION_WRITER_CLASS, "org.cleartk.type.Token");
+		rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_DIRECTORY_NAME, "test/data/linewriter", 
+				LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token",
+				LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME, "org.cleartk.type.Token");
 		assertNotNull(rie);
 
-		rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_DIRECTORY, "test/data/linewriter", 
-				LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS, "org.cleartk.type.Token",
-				LineWriter.PARAM_ANNOTATION_WRITER_CLASS, "org.cleartk.util.linewriter.annotation.CoveredTextAnnotationWriter");
+		rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_DIRECTORY_NAME, "test/data/linewriter", 
+				LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token",
+				LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME, "org.cleartk.util.linewriter.annotation.CoveredTextAnnotationWriter");
 		assertNull(rie);
 
-		rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_FILE, "test/data/linewriter/linewriter.txt", 
-				LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS, "org.cleartk.type.Token",
-				LineWriter.PARAM_ANNOTATION_WRITER_CLASS, "org.cleartk.util.linewriter.annotation.CoveredTextAnnotationWriter");
+		rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_FILE_NAME, "test/data/linewriter/linewriter.txt", 
+				LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token",
+				LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME, "org.cleartk.util.linewriter.annotation.CoveredTextAnnotationWriter");
 		assertNull(rie);
 
-		rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_FILE, "test/data/linewriter/linewriter.txt", 
-				LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS, "org.cleartk.type.Token",
-				LineWriter.PARAM_BLOCK_ANNOTATION_CLASS, "org.cleartk.type.Sentence",
-				LineWriter.PARAM_ANNOTATION_WRITER_CLASS, "org.cleartk.util.linewriter.annotation.CoveredTextAnnotationWriter",
+		rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_FILE_NAME, "test/data/linewriter/linewriter.txt", 
+				LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token",
+				LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME, "org.cleartk.type.Sentence",
+				LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME, "org.cleartk.util.linewriter.annotation.CoveredTextAnnotationWriter",
 				LineWriter.PARAM_FILE_SUFFIX, ".txt");
 		assertNull(rie);
 
-		rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_FILE, "test/data/linewriter/linewriter.txt", 
-				LineWriter.PARAM_OUTPUT_DIRECTORY, "",
-				LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS, "org.cleartk.type.Token",
-				LineWriter.PARAM_BLOCK_ANNOTATION_CLASS, "org.cleartk.type.Sentence",
-				LineWriter.PARAM_ANNOTATION_WRITER_CLASS, "org.cleartk.util.linewriter.annotation.CoveredTextAnnotationWriter",
+		rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_FILE_NAME, "test/data/linewriter/linewriter.txt", 
+				LineWriter.PARAM_OUTPUT_DIRECTORY_NAME, "",
+				LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token",
+				LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME, "org.cleartk.type.Sentence",
+				LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME, "org.cleartk.util.linewriter.annotation.CoveredTextAnnotationWriter",
 				LineWriter.PARAM_FILE_SUFFIX, ".txt");
 		assertNull(rie);
 
-		rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_FILE, "", 
-				LineWriter.PARAM_OUTPUT_DIRECTORY, "test/data/linewriter",
-				LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS, "org.cleartk.type.Token",
-				LineWriter.PARAM_BLOCK_ANNOTATION_CLASS, "org.cleartk.type.Sentence",
-				LineWriter.PARAM_ANNOTATION_WRITER_CLASS, "org.cleartk.util.linewriter.annotation.CoveredTextAnnotationWriter",
+		rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_FILE_NAME, "", 
+				LineWriter.PARAM_OUTPUT_DIRECTORY_NAME, "test/data/linewriter",
+				LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token",
+				LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME, "org.cleartk.type.Sentence",
+				LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME, "org.cleartk.util.linewriter.annotation.CoveredTextAnnotationWriter",
 				LineWriter.PARAM_FILE_SUFFIX, ".txt");
 		assertNull(rie);
 
-		rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_FILE, "", 
-				LineWriter.PARAM_OUTPUT_DIRECTORY, "test/data/linewriter",
-				LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS, "org.apache.uima.jcas.tcas.Annotation",
-				LineWriter.PARAM_ANNOTATION_WRITER_CLASS, "org.cleartk.util.linewriter.annotation.CoveredTextAnnotationWriter",
+		rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_FILE_NAME, "", 
+				LineWriter.PARAM_OUTPUT_DIRECTORY_NAME, "test/data/linewriter",
+				LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, "org.apache.uima.jcas.tcas.Annotation",
+				LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME, "org.cleartk.util.linewriter.annotation.CoveredTextAnnotationWriter",
 				LineWriter.PARAM_FILE_SUFFIX, ".txt");
 		assertNull(rie);
 
 		
-		rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_FILE, "test/data/linewriter/linewriter.txt", 
-				LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS, "org.cleartk.type.Token",
-				LineWriter.PARAM_BLOCK_ANNOTATION_CLASS, "java.lang.String",
-				LineWriter.PARAM_ANNOTATION_WRITER_CLASS, "org.cleartk.util.linewriter.annotation.CoveredTextAnnotationWriter",
+		rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_FILE_NAME, "test/data/linewriter/linewriter.txt", 
+				LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token",
+				LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME, "java.lang.String",
+				LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME, "org.cleartk.util.linewriter.annotation.CoveredTextAnnotationWriter",
 				LineWriter.PARAM_FILE_SUFFIX, ".txt");
 		assertNotNull(rie);
 
-		rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_DIRECTORY, "test/data/linewriter", 
-				LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS, "org.cleartk.type.Token",
-				LineWriter.PARAM_BLOCK_ANNOTATION_CLASS, "org.cleartk.type.Sentence",
-				LineWriter.PARAM_ANNOTATION_WRITER_CLASS, "org.cleartk.chunk.DefaultChunkLabeler",
+		rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_DIRECTORY_NAME, "test/data/linewriter", 
+				LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token",
+				LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME, "org.cleartk.type.Sentence",
+				LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME, "org.cleartk.chunk.DefaultChunkLabeler",
 				LineWriter.PARAM_FILE_SUFFIX, ".txt");
 		assertNotNull(rie);
 
-		rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_DIRECTORY, "test/data/linewriter", 
-				LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS, "org.cleartk.type.Token",
-				LineWriter.PARAM_BLOCK_ANNOTATION_CLASS, "org.cleartk.type.Sentence",
-				LineWriter.PARAM_BLOCK_WRITER_CLASS, "org.cleartk.util.linewriter.SillyBlockWriter",
+		rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_DIRECTORY_NAME, "test/data/linewriter", 
+				LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token",
+				LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME, "org.cleartk.type.Sentence",
+				LineWriter.PARAM_BLOCK_WRITER_CLASS_NAME, "org.cleartk.util.linewriter.SillyBlockWriter",
 				LineWriter.PARAM_FILE_SUFFIX, ".txt");
 		assertNotNull(rie);
 
-		rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_DIRECTORY, "test/data/linewriter", 
-				LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS, "org.cleartk.type.Token",
-				LineWriter.PARAM_BLOCK_ANNOTATION_CLASS, "org.cleartk.type.Sentence",
-				LineWriter.PARAM_BLOCK_WRITER_CLASS, "org.cleartk.util.linewriter.block.BlankLineBlockWriter",
+		rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_DIRECTORY_NAME, "test/data/linewriter", 
+				LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token",
+				LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME, "org.cleartk.type.Sentence",
+				LineWriter.PARAM_BLOCK_WRITER_CLASS_NAME, "org.cleartk.util.linewriter.block.BlankLineBlockWriter",
 				LineWriter.PARAM_FILE_SUFFIX, ".txt");
 		assertNull(rie);
 
-		rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_DIRECTORY, "test/data/linewriter", 
-				LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS, "org.cleartk.type.Sentence",
-				LineWriter.PARAM_ANNOTATION_WRITER_CLASS, "org.cleartk.util.linewriter.TestTokenWriter");
+		rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_DIRECTORY_NAME, "test/data/linewriter", 
+				LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, "org.cleartk.type.Sentence",
+				LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME, "org.cleartk.util.linewriter.TestTokenWriter");
 		assertNotNull(rie);
 	}
 
@@ -362,11 +362,11 @@ public class LineWriterTest {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 					LineWriter.class,
 					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-					LineWriter.PARAM_OUTPUT_FILE, new File(outputDir, "output.txt").getPath(), 
-					LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS, "org.cleartk.type.Token",
-					LineWriter.PARAM_ANNOTATION_WRITER_CLASS, "org.cleartk.util.linewriter.annotation.TokenPOSWriter",
-					LineWriter.PARAM_BLOCK_ANNOTATION_CLASS, "org.cleartk.type.Sentence",
-					LineWriter.PARAM_BLOCK_WRITER_CLASS, "org.cleartk.util.linewriter.block.BlankLineBlockWriter");
+					LineWriter.PARAM_OUTPUT_FILE_NAME, new File(outputDir, "output.txt").getPath(), 
+					LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token",
+					LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME, "org.cleartk.util.linewriter.annotation.TokenPOSWriter",
+					LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME, "org.cleartk.type.Sentence",
+					LineWriter.PARAM_BLOCK_WRITER_CLASS_NAME, "org.cleartk.util.linewriter.block.BlankLineBlockWriter");
 		
 		JCas jCas = engine.newJCas();
 		String text = "Me and all my friends are non-conformists.  I will subjugate my freedom oppressor.";
@@ -406,12 +406,12 @@ public class LineWriterTest {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 					LineWriter.class,
 					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-					LineWriter.PARAM_OUTPUT_DIRECTORY, outputDir.getPath(), 
-					LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS, "org.cleartk.type.Token",
+					LineWriter.PARAM_OUTPUT_DIRECTORY_NAME, outputDir.getPath(), 
+					LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token",
 					LineWriter.PARAM_FILE_SUFFIX, "txt",
-					LineWriter.PARAM_ANNOTATION_WRITER_CLASS, "org.cleartk.util.linewriter.annotation.TokenPOSWriter",
-					LineWriter.PARAM_BLOCK_ANNOTATION_CLASS, "org.apache.uima.jcas.tcas.DocumentAnnotation",
-					LineWriter.PARAM_BLOCK_WRITER_CLASS, "org.cleartk.util.linewriter.block.DocumentIdBlockWriter");
+					LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME, "org.cleartk.util.linewriter.annotation.TokenPOSWriter",
+					LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME, "org.apache.uima.jcas.tcas.DocumentAnnotation",
+					LineWriter.PARAM_BLOCK_WRITER_CLASS_NAME, "org.cleartk.util.linewriter.block.DocumentIdBlockWriter");
 		
 		JCas jCas = engine.newJCas();
 		String text = "Me and all my friends are non-conformists.  I will subjugate my freedom oppressor.";
@@ -455,8 +455,8 @@ public class LineWriterTest {
 				AnalysisEngineFactory.createAnalysisEngine("org.cleartk.token.chunk.ChunkTokenizer",
 						SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR, "test/data/token/chunk/model.jar"),
 				AnalysisEngineFactory.createAnalysisEngine("org.cleartk.util.linewriter.LineWriter",
-						LineWriter.PARAM_OUTPUT_DIRECTORY, this.outputDir.getPath(), 
-						LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS, "org.cleartk.type.Token")};
+						LineWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDir.getPath(), 
+						LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token")};
 		JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
 		jCas.setDocumentText(
 				"Philip Ogren didn't write this sentence.\n" +
