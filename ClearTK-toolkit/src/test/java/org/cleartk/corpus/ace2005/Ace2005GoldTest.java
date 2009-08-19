@@ -25,18 +25,13 @@
 package org.cleartk.corpus.ace2005;
 
 import java.io.File;
-import java.io.IOException;
 
-import org.apache.uima.UIMAException;
-import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.CleartkComponents;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.CollectionReaderFactory;
 import org.uutuc.factory.TypeSystemDescriptionFactory;
 import org.uutuc.util.TearDownUtil;
@@ -49,7 +44,7 @@ import org.uutuc.util.TearDownUtil;
  *
  */
 
-public class Ace2005GoldTest {
+public class Ace2005GoldTest{
 
 	private final File rootDir = new File("test/data/corpus/ace2005");
 
@@ -84,31 +79,4 @@ public class Ace2005GoldTest {
 		catch (ResourceInitializationException e) {
 		}
 	}
-
-	@Test
-	public void testAnnotatorDescriptor() throws UIMAException, IOException {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-				"org.cleartk.corpus.ace2005.Ace2005GoldAnnotator");
-		engine.collectionProcessComplete();
-	}
-
-	@Test
-	public void testReaderDescriptor() throws UIMAException, IOException {
-		try {
-			CleartkComponents.createCollectionReader(Ace2005GoldReader.class);
-			Assert.fail("expected failure for no corpus directory specified");
-		} catch (ResourceInitializationException e) {}
-
-		CollectionReader reader = 			CleartkComponents.createCollectionReader(Ace2005GoldReader.class,
-				Ace2005GoldReader.PARAM_ACE_DIRECTORY_NAME, this.rootDir.getPath());
-
-		Object corpusDir = reader.getConfigParameterValue(
-				Ace2005GoldReader.PARAM_ACE_DIRECTORY_NAME);
-		Assert.assertEquals(this.rootDir.getPath(), corpusDir);
-
-		Object loadNamedEntities = reader.getConfigParameterValue(
-				Ace2005GoldReader.PARAM_ACE_FILE_NAMES_FILE);
-		Assert.assertEquals(null, loadNamedEntities);
-	}
-
 }
