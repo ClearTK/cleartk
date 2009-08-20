@@ -38,11 +38,11 @@ import org.cleartk.token.chunk.type.Subtoken;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.EmptyAnnotator;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.AnnotationFactory;
 import org.uutuc.factory.TypeSystemDescriptionFactory;
+import org.uutuc.util.JCasAnnotatorAdapter;
 
 
 /**
@@ -61,7 +61,7 @@ public class ChunkTokenizerLabelerTest {
 	@Test
 	public void testClassifierAnnotator() throws UIMAException {
 		  AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				    EmptyAnnotator.class,
+				  JCasAnnotatorAdapter.class,
 				    TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				    ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token",
 				    ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS_NAME, "org.cleartk.token.chunk.type.Subtoken"
@@ -143,7 +143,7 @@ public class ChunkTokenizerLabelerTest {
 	@Test
 	public void testDataWriter() throws UIMAException {
 		  AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				    EmptyAnnotator.class,
+				  JCasAnnotatorAdapter.class,
 				    TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				    ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token",
 				    ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS_NAME, "org.cleartk.token.chunk.type.Subtoken"
@@ -206,7 +206,7 @@ public class ChunkTokenizerLabelerTest {
 	@Test
 	public void testGetChunkLabel() throws UIMAException {
 		  AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				    EmptyAnnotator.class,
+				  JCasAnnotatorAdapter.class,
 				    TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				    ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME, "org.cleartk.ne.type.NamedEntityMention",
 				    DefaultChunkLabeler.PARAM_CHUNK_LABEL_FEATURE_NAME, "mentionType",

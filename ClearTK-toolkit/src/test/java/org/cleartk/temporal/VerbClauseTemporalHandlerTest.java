@@ -49,7 +49,6 @@ import org.cleartk.syntax.treebank.type.TreebankNode;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.EmptyAnnotator;
 import org.cleartk.util.InstanceProducerUtil;
 import org.junit.After;
 import org.junit.Assert;
@@ -58,6 +57,7 @@ import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.TokenFactory;
 import org.uutuc.factory.TypeSystemDescriptionFactory;
+import org.uutuc.util.JCasAnnotatorAdapter;
 import org.uutuc.util.TearDownUtil;
 
 
@@ -90,7 +90,7 @@ public class VerbClauseTemporalHandlerTest {
 	@Test
 	public void test() throws UIMAException, CleartkException {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				EmptyAnnotator.class,
+				JCasAnnotatorAdapter.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
 		JCas jCas = engine.newJCas();
 		TokenFactory.createTokens(jCas,

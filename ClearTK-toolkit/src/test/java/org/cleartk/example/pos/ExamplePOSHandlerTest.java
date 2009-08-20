@@ -40,13 +40,13 @@ import org.cleartk.classifier.SequentialInstanceConsumer;
 import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
-import org.cleartk.util.EmptyAnnotator;
 import org.cleartk.util.InstanceProducerUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.TokenFactory;
 import org.uutuc.factory.TypeSystemDescriptionFactory;
+import org.uutuc.util.JCasAnnotatorAdapter;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -62,7 +62,7 @@ public class ExamplePOSHandlerTest {
 		
 		// create the engine and the cas
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				EmptyAnnotator.class,
+				JCasAnnotatorAdapter.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription(Token.class, Sentence.class));
 		JCas jCas = engine.newJCas();
 		

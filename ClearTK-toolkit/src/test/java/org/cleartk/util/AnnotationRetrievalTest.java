@@ -62,6 +62,7 @@ import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.JCasFactory;
 import org.uutuc.factory.TokenFactory;
 import org.uutuc.factory.TypeSystemDescriptionFactory;
+import org.uutuc.util.JCasAnnotatorAdapter;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -245,7 +246,7 @@ public class AnnotationRetrievalTest {
 		Assert.assertEquals(nem, nem3);
 		
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				EmptyAnnotator.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
+				JCasAnnotatorAdapter.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
 		jCas = engine.newJCas();
 		String text = "word";
 		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class);

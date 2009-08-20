@@ -49,9 +49,8 @@ import org.cleartk.syntax.treebank.type.TopTreebankNode;
 import org.cleartk.syntax.treebank.type.TreebankNode;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
-import org.cleartk.util.InstanceProducerUtil;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.EmptyAnnotator;
+import org.cleartk.util.InstanceProducerUtil;
 import org.cleartk.util.UIMAUtil;
 import org.junit.After;
 import org.junit.Assert;
@@ -59,6 +58,7 @@ import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.TokenFactory;
 import org.uutuc.factory.TypeSystemDescriptionFactory;
+import org.uutuc.util.JCasAnnotatorAdapter;
 import org.uutuc.util.TearDownUtil;
 
 
@@ -455,7 +455,7 @@ public class PredicateArgumentHandlerTest {
 
 	private AnalysisEngine getEngine() throws ResourceInitializationException {
 		return AnalysisEngineFactory.createPrimitive(
-			EmptyAnnotator.class,
+			JCasAnnotatorAdapter.class,
 			TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));	
 	}
 	

@@ -42,6 +42,7 @@ import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.TypeSystemDescriptionFactory;
 import org.uutuc.factory.UimaContextFactory;
+import org.uutuc.util.JCasAnnotatorAdapter;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -63,7 +64,7 @@ public class UIMAUtilTest {
 	@Test
 	public void testToFSArray() throws ResourceInitializationException {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				EmptyAnnotator.class,
+				JCasAnnotatorAdapter.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
 		JCas jCas = engine.newJCas();
 
