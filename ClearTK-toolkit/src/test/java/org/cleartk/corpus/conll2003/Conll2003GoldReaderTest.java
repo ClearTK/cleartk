@@ -23,8 +23,6 @@
 */
 package org.cleartk.corpus.conll2003;
 
-import static org.junit.Assert.assertNotNull;
-
 import java.io.IOException;
 import java.util.Iterator;
 
@@ -32,7 +30,6 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.cas.FSIndex;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.ne.type.NamedEntity;
 import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.type.Chunk;
@@ -55,33 +52,12 @@ import org.uutuc.util.JCasIterable;
  */
 public class Conll2003GoldReaderTest {
 	
-	
-	@Test
-	public void testDescriptor() throws UIMAException, IOException {
-		ResourceInitializationException rie = null;
-		try {
-			CollectionReaderFactory.createCollectionReader(
-				"org.cleartk.corpus.conll2003.Conll2003GoldReader");
-		} catch(ResourceInitializationException e) {
-			rie = e;
-		}
-		assertNotNull(rie);
-
-		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-				"org.cleartk.corpus.conll2003.Conll2003GoldReader",
-				Conll2003GoldReader.PARAM_CONLL_2003_DATA_FILE, "test/data/corpus/conll2003/eng.train");
-
-		String documentPath = (String) reader.getConfigParameterValue(Conll2003GoldReader.PARAM_CONLL_2003_DATA_FILE);
-		Assert.assertEquals("test/data/corpus/conll2003/eng.train", documentPath);
-
-	}
-
 	@Test
 	public void testFakeTrainDocs() throws UIMAException, IOException 
 	{
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				Conll2003GoldReader.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-				Conll2003GoldReader.PARAM_CONLL_2003_DATA_FILE, "test/data/corpus/conll2003/eng.train",
+				Conll2003GoldReader.PARAM_DATA_FILE_NAME, "test/data/corpus/conll2003/eng.train",
 				Conll2003GoldReader.PARAM_LOAD_NAMED_ENTITIES, true);
 		
 		Iterator<JCas> iterator = new JCasIterable(reader).iterator();
