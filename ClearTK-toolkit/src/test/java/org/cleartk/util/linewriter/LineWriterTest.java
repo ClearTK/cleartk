@@ -36,11 +36,14 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
+import org.cleartk.CleartkComponents;
 import org.cleartk.classifier.SequentialClassifierAnnotator;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.ViewURIUtil;
+import org.cleartk.util.linewriter.annotation.CoveredTextAnnotationWriter;
+import org.cleartk.util.linewriter.block.BlankLineBlockWriter;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
@@ -450,7 +453,7 @@ public class LineWriterTest {
 	@Test
 	public void testLineWriterAfterChunkTokenizer() throws Exception {
 		AnalysisEngine[] engines = new AnalysisEngine[]{
-				AnalysisEngineFactory.createAnalysisEngine("org.cleartk.sentence.SentenceSegmenter"),
+				AnalysisEngineFactory.createAnalysisEngine("org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter"),
 				AnalysisEngineFactory.createAnalysisEngine("org.cleartk.token.Subtokenizer"),
 				AnalysisEngineFactory.createAnalysisEngine("org.cleartk.token.chunk.ChunkTokenizer",
 						SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR, "test/data/token/chunk/model.jar"),
@@ -478,4 +481,31 @@ public class LineWriterTest {
 		boolean hasDoubleNewlines = Pattern.compile("\n\\s*\n").matcher(text).find();
 		Assert.assertFalse(hasDoubleNewlines);
 	}
+	
+	@Test
+	public void testTokenWriter() throws Exception {
+		AnalysisEngine engine = CleartkComponents.createPrimitive(LineWriter.class, 
+				LineWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDir.getPath(),
+				LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME, Sentence.class.getName(),
+				LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, Token.class.getName(),
+				LineWriter.PARAM_FILE_SUFFIX, "txt",
+				LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME, CoveredTextAnnotationWriter.class.getName(),
+				LineWriter.PARAM_BLOCK_WRITER_CLASS_NAME, BlankLineBlockWriter.class.getName());
+		
+		JCas jCas = engine.newJCas();
+		String spacedTokens = "What if we built a large , wooden badger ?\nHmm? ";
+		TokenFactory.createTokens(jCas,
+				"What if we built\na large, wooden badger? Hmm?",
+				Token.class, Sentence.class, 
+				spacedTokens);
+		ViewURIUtil.setURI(jCas, "identifier");
+		engine.process(jCas);
+		engine.collectionProcessComplete();
+		
+		String expected = "\n"+spacedTokens.replace("\n", "\n\n").replace(' ', '\n');
+		File outputFile = new File(this.outputDir, "identifier.txt");
+		String actual = FileUtils.file2String(outputFile).replace("\r", "");
+		Assert.assertEquals(expected, actual);
+	}
+
 }
