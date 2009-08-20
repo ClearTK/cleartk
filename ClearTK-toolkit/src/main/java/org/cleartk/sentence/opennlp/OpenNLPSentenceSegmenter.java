@@ -42,6 +42,8 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.type.Sentence;
+import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.util.InitializeUtil;
 
 
 /**
@@ -61,14 +63,15 @@ import org.cleartk.type.Sentence;
 
 public class OpenNLPSentenceSegmenter extends JCasAnnotator_ImplBase
 { 
-	/**
-	 * "org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter.PARAM_SENTENCE_MODEL_FILE"
-	 * is a single, required, string parameter that provides the path of the
-	 * OpenNLP sentence segmenter model file, e.g.
-	 *   resources/models/OpenNLP.Sentence.English.bin.gz
-	 * @see opennlp.maxent.io.SuffixSensitiveGISModelReader
-	 */
-	public static final String PARAM_SENTENCE_MODEL_FILE = "org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter.PARAM_SENTENCE_MODEL_FILE";
+	public static final String PARAM_SENTENCE_MODEL_FILE_NAME = "org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter.sentenceModelFileName";
+	@ConfigurationParameter(
+			name = PARAM_SENTENCE_MODEL_FILE_NAME,
+			mandatory = true,
+			defaultValue = "resources/models/OpenNLP.Sentence.English.bin.gz",
+			description = "provides the path of the OpenNLP sentence segmenter model file")
+	private String sentenceModelFileName;
+	
+
 	public static final String multipleNewlinesRegex = "\\s*\\n\\s*\\n\\s*";
 
 	SentenceDetector sentenceDetector;
@@ -79,14 +82,15 @@ public class OpenNLPSentenceSegmenter extends JCasAnnotator_ImplBase
 	public void initialize(UimaContext uimaContext) throws ResourceInitializationException
 	{
 		super.initialize(uimaContext);
+		InitializeUtil.initialize(this, uimaContext);
+		
 		try {
-			String sentenceModelFile = (String) uimaContext.getConfigParameterValue(PARAM_SENTENCE_MODEL_FILE);
-			MaxentModel model = new SuffixSensitiveGISModelReader(new File(sentenceModelFile)).getModel();
+			MaxentModel model = new SuffixSensitiveGISModelReader(new File(sentenceModelFileName)).getModel();
 			sentenceDetector = new SentenceDetectorME(model);
 			multipleNewlinesPattern = Pattern.compile(multipleNewlinesRegex, Pattern.MULTILINE | Pattern.DOTALL);
 			leadingWhitespacePattern = Pattern.compile("^\\s+");
 			trailingWhitespacePattern = Pattern.compile("\\s+$");
-		}catch(IOException ioe) {
+		} catch(IOException ioe) {
 			throw new ResourceInitializationException(ioe);
 		}
 	}
@@ -161,4 +165,9 @@ public class OpenNLPSentenceSegmenter extends JCasAnnotator_ImplBase
 		Collections.sort(offsets);
 		return offsets;
 	}
+	
+	public void setSentenceModelFileName(String sentenceModelFileName) {
+		this.sentenceModelFileName = sentenceModelFileName;
+	}
+
 }

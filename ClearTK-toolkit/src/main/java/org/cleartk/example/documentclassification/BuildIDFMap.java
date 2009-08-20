@@ -29,6 +29,7 @@ import java.io.IOException;
 import org.apache.uima.UIMAException;
 import org.cleartk.CleartkComponents;
 import org.cleartk.classifier.InstanceConsumer;
+import org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter;
 import org.cleartk.tfidf.IDFMapWriter;
 import org.cleartk.token.TokenAnnotator;
 import org.cleartk.token.snowball.DefaultSnowballStemmer;
@@ -57,7 +58,7 @@ public class BuildIDFMap {
 
 		SimplePipeline.runPipeline(
 				CleartkComponents.createFilesCollectionReader(trainingDataDirectory),
-				CleartkComponents.createOpenNLPSentenceSegmenter(),
+				CleartkComponents.createPrimitiveDescription(OpenNLPSentenceSegmenter.class),
 				CleartkComponents.createPrimitiveDescription(TokenAnnotator.class), 
 				CleartkComponents.createPrimitiveDescription(DefaultSnowballStemmer.class, SnowballStemmer.PARAM_STEMMER_NAME, "English"),
 				AnalysisEngineFactory.createPrimitiveDescription(IDFMapWriter.class,

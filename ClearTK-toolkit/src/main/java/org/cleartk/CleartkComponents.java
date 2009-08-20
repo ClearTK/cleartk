@@ -115,16 +115,6 @@ public class CleartkComponents {
 				FilesCollectionReader.PARAM_PATTERNS, patterns);
 	}
 	
-	public static AnalysisEngineDescription createOpenNLPSentenceSegmenter()
-	throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveDescription(
-				OpenNLPSentenceSegmenter.class, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES,
-				OpenNLPSentenceSegmenter.PARAM_SENTENCE_MODEL_FILE,
-				getParameterValue(
-						OpenNLPSentenceSegmenter.PARAM_SENTENCE_MODEL_FILE,
-						"resources/models/OpenNLP.Sentence.English.bin.gz"));
-	}
-	
 	public static AnalysisEngineDescription createOpenNLPPOSTagger()
 	throws ResourceInitializationException {
 		return AnalysisEngineFactory.createPrimitiveDescription(
@@ -274,7 +264,7 @@ public class CleartkComponents {
 	
 	
 	public static AnalysisEngineDescription createSentencesAndTokens() throws ResourceInitializationException {
-		AnalysisEngineDescription sentences = createOpenNLPSentenceSegmenter();
+		AnalysisEngineDescription sentences = createPrimitiveDescription(OpenNLPSentenceSegmenter.class);
 		AnalysisEngineDescription tokenizer = CleartkComponents.createPrimitiveDescription(
 				TokenAnnotator.class, 
 				TokenAnnotator.PARAM_WINDOW_TYPE_NAME, org.cleartk.type.Sentence.class.getName());

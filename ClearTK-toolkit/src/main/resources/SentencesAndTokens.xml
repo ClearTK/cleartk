@@ -76,7 +76,7 @@
                     <name/>
                     <configurationParameters>
                         <configurationParameter>
-                            <name>org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter.PARAM_SENTENCE_MODEL_FILE</name>
+                            <name>org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter.sentenceModelFileName</name>
                             <type>String</type>
                             <multiValued>false</multiValued>
                             <mandatory>false</mandatory>
@@ -84,7 +84,7 @@
                     </configurationParameters>
                     <configurationParameterSettings>
                         <nameValuePair>
-                            <name>org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter.PARAM_SENTENCE_MODEL_FILE</name>
+                            <name>org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter.sentenceModelFileName</name>
                             <value>
                                 <string>resources/models/OpenNLP.Sentence.English.bin.gz</string>
                             </value>

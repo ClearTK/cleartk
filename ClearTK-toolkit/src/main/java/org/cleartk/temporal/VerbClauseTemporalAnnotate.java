@@ -28,6 +28,7 @@ import java.io.File;
 import org.apache.uima.util.Level;
 import org.apache.uima.util.Logger;
 import org.cleartk.CleartkComponents;
+import org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter;
 import org.cleartk.token.TokenAnnotator;
 import org.cleartk.token.snowball.SnowballStemmer;
 import org.uutuc.factory.UimaContextFactory;
@@ -72,7 +73,7 @@ public class VerbClauseTemporalAnnotate {
 		// run the components on the selected documents
 		SimplePipeline.runPipeline(
 				CleartkComponents.createFilesCollectionReader(inputFileOrDir),
-				CleartkComponents.createOpenNLPSentenceSegmenter(),
+				CleartkComponents.createPrimitiveDescription(OpenNLPSentenceSegmenter.class),
 				CleartkComponents.createPrimitiveDescription(TokenAnnotator.class), 
 				CleartkComponents.createOpenNLPPOSTagger(),
 				CleartkComponents.createPrimitiveDescription(SnowballStemmer.class, SnowballStemmer.PARAM_STEMMER_NAME, "English"),

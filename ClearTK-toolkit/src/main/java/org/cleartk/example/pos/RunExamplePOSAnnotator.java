@@ -24,6 +24,7 @@
 package org.cleartk.example.pos;
 
 import org.cleartk.CleartkComponents;
+import org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter;
 import org.cleartk.token.TokenAnnotator;
 import org.cleartk.token.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.snowball.SnowballStemmer;
@@ -48,7 +49,7 @@ public class RunExamplePOSAnnotator {
 	public static void main(String[] args)  throws Exception {
 		SimplePipeline.runPipeline(
 				CleartkComponents.createFilesCollectionReader("example/data/2008_Sichuan_earthquake.txt"),
-				CleartkComponents.createOpenNLPSentenceSegmenter(),
+				CleartkComponents.createPrimitiveDescription(OpenNLPSentenceSegmenter.class),
 				CleartkComponents.createPrimitiveDescription(TokenAnnotator.class), 
 				CleartkComponents.createPrimitiveDescription(DefaultSnowballStemmer.class, SnowballStemmer.PARAM_STEMMER_NAME, "English"),
 				ExamplePOSAnnotationHandler.getClassifierDescription(ExamplePOSAnnotationHandler.DEFAULT_MODEL),

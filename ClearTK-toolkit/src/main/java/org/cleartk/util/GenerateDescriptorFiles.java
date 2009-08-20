@@ -38,11 +38,13 @@ import org.cleartk.CleartkComponents;
 import org.cleartk.corpus.ace2005.Ace2005GoldAnnotator;
 import org.cleartk.corpus.ace2005.Ace2005GoldReader;
 import org.cleartk.corpus.ace2005.Ace2005Writer;
+import org.cleartk.corpus.conll2003.Conll2003GoldReader;
 import org.cleartk.corpus.penntreebank.PennTreebankReader;
 import org.cleartk.corpus.timeml.TimeMLGoldAnnotator;
 import org.cleartk.corpus.timeml.TimeMLWriter;
 import org.cleartk.example.pos.ExamplePOSAnnotationHandler;
 import org.cleartk.example.pos.ExamplePOSPlainTextWriter;
+import org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter;
 import org.cleartk.srl.propbank.PropbankGoldAnnotator;
 import org.cleartk.srl.propbank.PropbankGoldReader;
 import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
@@ -97,6 +99,8 @@ public class GenerateDescriptorFiles {
 		writeCollectionReader(PennTreebankReader.class, outputDirectory);
 		
 		writePrimitiveDescription(LineWriter.class, outputDirectory);
+		writePrimitiveDescription(OpenNLPSentenceSegmenter.class, outputDirectory);
+		writeCollectionReader(Conll2003GoldReader.class, outputDirectory);
 
 	}
 	

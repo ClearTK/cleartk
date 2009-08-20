@@ -40,6 +40,7 @@ import org.cleartk.classifier.mallet.DefaultMalletDataWriterFactory;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.classifier.svmlight.DefaultOVASVMlightDataWriterFactory;
 import org.cleartk.classifier.viterbi.ViterbiClassifier;
+import org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter;
 import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
 import org.cleartk.token.TokenAnnotator;
 import org.cleartk.token.snowball.DefaultSnowballStemmer;
@@ -285,7 +286,7 @@ public class ExamplePosClassifierTest {
 		System.out.print("tagging data...");
 		SimplePipeline.runPipeline(
 				CleartkComponents.createFilesCollectionReader("example/data/2008_Sichuan_earthquake.txt"), 
-				CleartkComponents.createOpenNLPSentenceSegmenter(), 
+				CleartkComponents.createPrimitiveDescription(OpenNLPSentenceSegmenter.class),
 				CleartkComponents.createPrimitiveDescription(TokenAnnotator.class),
 				CleartkComponents.createPrimitiveDescription(DefaultSnowballStemmer.class, SnowballStemmer.PARAM_STEMMER_NAME, "English"),
 				taggerDescription, 
