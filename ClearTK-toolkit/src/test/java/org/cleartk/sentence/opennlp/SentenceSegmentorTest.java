@@ -51,7 +51,7 @@ public class SentenceSegmentorTest{
 		AnalysisEngine segmenter = AnalysisEngineFactory.createPrimitive(
 				OpenNLPSentenceSegmenter.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription(Sentence.class),
-				OpenNLPSentenceSegmenter.PARAM_SENTENCE_MODEL_FILE,
+				OpenNLPSentenceSegmenter.PARAM_SENTENCE_MODEL_FILE_NAME,
 				"resources/models/OpenNLP.Sentence.English.bin.gz");
 
 		// fill the JCas with newlines to provoke a StackOverflowError
@@ -72,7 +72,7 @@ public class SentenceSegmentorTest{
 	public void testSentenceSegmentor() throws UIMAException, IOException
     {
 		JCas jCas = AnalysisEngineFactory.process(
-				"org.cleartk.sentence.SentenceSegmenter",
+				"org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter",
 				"test/data/docs/youthful-precocity.txt");
 
 		Sentence sentence = AnnotationRetrieval.get(jCas, Sentence.class, 0);
@@ -105,7 +105,7 @@ public class SentenceSegmentorTest{
 	public void test1() throws UIMAException, IOException
     {
 		JCas jCas = AnalysisEngineFactory.process(
-				"org.cleartk.sentence.SentenceSegmenter",
+				"org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter",
 				"test/data/docs/sentences/test1.txt"); 
 		
 		Sentence sentence = AnnotationRetrieval.get(jCas, Sentence.class, 0);
@@ -125,7 +125,7 @@ public class SentenceSegmentorTest{
 	public void test2() throws UIMAException, IOException
     {
 		JCas jCas = AnalysisEngineFactory.process(
-				"org.cleartk.sentence.SentenceSegmenter",
+				"org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter",
 				"test/data/docs/sentences/test2.txt");
 		Sentence sentence = AnnotationRetrieval.get(jCas, Sentence.class, 0);
 		assertEquals( "I don't understand this.", sentence.getCoveredText());
@@ -135,7 +135,7 @@ public class SentenceSegmentorTest{
 	public void test3() throws UIMAException, IOException
     {
 		JCas jCas = AnalysisEngineFactory.process(
-				"org.cleartk.sentence.SentenceSegmenter",
+				"org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter",
 				"test/data/docs/sentences/test3.txt");
 		Sentence sentence = AnnotationRetrieval.get(jCas, Sentence.class, 0);
 		assertEquals( "test", sentence.getCoveredText());
@@ -144,7 +144,7 @@ public class SentenceSegmentorTest{
 	@Test
 	public void test5() throws UIMAException, IOException{
 		JCas jCas = AnalysisEngineFactory.process(
-				"org.cleartk.sentence.SentenceSegmenter",
+				"org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter",
 				"test/data/docs/sentences/test5.txt");
 		Sentence sentence = AnnotationRetrieval.get(jCas, Sentence.class, 0);
 		assertEquals( "a", sentence.getCoveredText());
@@ -160,7 +160,7 @@ public class SentenceSegmentorTest{
 	@Test
 	public void test6() throws UIMAException, IOException{
 		JCas jCas = AnalysisEngineFactory.process(
-				"org.cleartk.sentence.SentenceSegmenter",
+				"org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter",
 				"test/data/docs/sentences/test6.txt");
 		Sentence sentence = AnnotationRetrieval.get(jCas, Sentence.class, 0);
 		assertEquals( "a", sentence.getCoveredText());
@@ -176,7 +176,7 @@ public class SentenceSegmentorTest{
 	@Test
 	public void test7() throws UIMAException, IOException{
 		JCas jCas = AnalysisEngineFactory.process(
-				"org.cleartk.sentence.SentenceSegmenter",
+				"org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter",
 				"test/data/docs/sentences/test7.txt");
 		Sentence sentence = AnnotationRetrieval.get(jCas, Sentence.class, 0);
 		assertEquals( "It was a Wednesday morning.", sentence.getCoveredText());
