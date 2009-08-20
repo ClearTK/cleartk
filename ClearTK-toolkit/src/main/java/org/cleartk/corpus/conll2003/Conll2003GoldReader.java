@@ -48,6 +48,8 @@ import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.UIMAUtil;
 import org.cleartk.util.ViewURIUtil;
+import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.util.InitializeUtil;
 
 
 /**
@@ -64,20 +66,21 @@ import org.cleartk.util.ViewURIUtil;
  */
 public class Conll2003GoldReader extends CollectionReader_ImplBase
 {
-	/**
-	 * "org.cleartk.corpus.conll2003.Conll2003GoldReader.PARAM_CONLL_2003_DATA_FILE"
-	 * is a single, required string parameter that points to CoNLL data
-	 * (e.g. ner/eng.train).
-	 */
-	public static final String PARAM_CONLL_2003_DATA_FILE = "org.cleartk.corpus.conll2003.Conll2003GoldReader.PARAM_CONLL_2003_DATA_FILE";
+	public static final String PARAM_DATA_FILE_NAME = "org.cleartk.corpus.conll2003.Conll2003GoldReader.dataFileName";
+	@ConfigurationParameter(
+			name = PARAM_DATA_FILE_NAME,
+			mandatory = true,
+			description = "Points to CoNLL data (e.g. ner/eng.train).")
+	private String dataFileName;
+	
+	public static final String PARAM_LOAD_NAMED_ENTITIES = "org.cleartk.corpus.conll2003.Conll2003GoldReader.loadNamedEntities";
+	@ConfigurationParameter(
+			name = PARAM_LOAD_NAMED_ENTITIES,
+			mandatory = true,
+			description = "determines if the named entities are loaded (i.e. named entity mention annotations are created) or if just plain text from the files is loaded.",
+			defaultValue = "true")
+	private boolean loadNamedEntities;
 
-	/**
-	 * "org.cleartk.corpus.conll2003.Conll2003GoldReader.PARAM_LOAD_NAMED_ENTITIES"
-	 * is a single, required boolean parameter that determines if the named entities
-	 * are loaded (i.e. named entity mention annotations are created) or if just the
-	 * plain text from the files is loaded.
-	 */
-	public static final String PARAM_LOAD_NAMED_ENTITIES = "org.cleartk.corpus.conll2003.Conll2003GoldReader.PARAM_LOAD_NAMED_ENTITIES";
 	public static final String DOCSTART = "-DOCSTART-";
 										  
 	BufferedReader reader;
@@ -85,19 +88,16 @@ public class Conll2003GoldReader extends CollectionReader_ImplBase
 	boolean hasNext = true;
 	
 	int documentIndex = 0;
-	String documentPath;
 	
-	boolean loadNamedEntities = true;
 	int entityIdIndex = 0;
 	
 	public void initialize() throws ResourceInitializationException
 	{
+		InitializeUtil.initialize(this, getUimaContext());
+		
 		try
 		{
-			documentPath = (String) UIMAUtil.getRequiredConfigParameterValue(getUimaContext(), PARAM_CONLL_2003_DATA_FILE);
-			loadNamedEntities = (Boolean) UIMAUtil.getDefaultingConfigParameterValue(getUimaContext(), PARAM_LOAD_NAMED_ENTITIES, true);
-			
-			File conllFile = new File(documentPath);
+			File conllFile = new File(dataFileName);
 		    reader = new BufferedReader(new FileReader(conllFile));
 			//advance the reader past the first occurrence of a document start and
 		    //blank line.
@@ -229,7 +229,7 @@ public class Conll2003GoldReader extends CollectionReader_ImplBase
 			
 			jCas.setDocumentText(documentText.toString());
 			
-			String identifier = String.format("%s#%s", documentPath, documentIndex);
+			String identifier = String.format("%s#%s", dataFileName, documentIndex);
 			ViewURIUtil.setURI(cas, identifier);
 			++documentIndex;
 
@@ -335,5 +335,14 @@ public class Conll2003GoldReader extends CollectionReader_ImplBase
 	{
 		return hasNext;
 	}
+
+	public void setDataFileName(String dataFileName) {
+		this.dataFileName = dataFileName;
+	}
+
+	public void setLoadNamedEntities(boolean loadNamedEntities) {
+		this.loadNamedEntities = loadNamedEntities;
+	}
+
 
 }
