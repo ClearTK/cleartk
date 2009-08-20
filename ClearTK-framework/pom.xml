@@ -78,6 +78,7 @@
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-test-util</artifactId>
 			<version>0.1</version>
+			<optional>false</optional>
 		</dependency>
 		<dependency>
 			<groupId>net.sourceforge.collections</groupId>
