@@ -82,7 +82,8 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 			"path to directory into which output files will be written. If no value is " +
 			"given for this parameter, then the parameter '"+PARAM_OUTPUT_FILE_NAME+ "' " +
 			"is required. If a value is given, then one file for each document/JCas will be created in " +
-			"the output directory provided. If a value for both '"+PARAM_OUTPUT_DIRECTORY_NAME+ "' and '" +
+			"the output directory provided.   The name of each file will be given by the value returned by ViewURIUtil.getURI(jCas). " +
+			"If a value for both '"+PARAM_OUTPUT_DIRECTORY_NAME+ "' and '" +
 			PARAM_OUTPUT_FILE_NAME+ "'  is given, then an exception will be thrown. Example values " +
 			"that could be provided might look like: \n\n" + 
 			"\t/mydata/uima-output/\n" +
