@@ -27,11 +27,9 @@ package org.cleartk.token.pos.impl;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_component.AnalysisComponent;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;
@@ -44,7 +42,6 @@ import org.cleartk.classifier.SequentialClassifierAnnotator;
 import org.cleartk.classifier.SequentialDataWriterAnnotator;
 import org.cleartk.classifier.SequentialInstanceConsumer;
 import org.cleartk.classifier.Train;
-import org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.classifier.viterbi.ViterbiDataWriter;
 import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
@@ -56,7 +53,6 @@ import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.FilesCollectionReader;
 import org.cleartk.util.ReusableUIMAObjects;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
@@ -108,8 +104,7 @@ public class DefaultPOSHandlerTest {
 				ViterbiDataWriter.PARAM_DELEGATED_DATAWRITER_FACTORY_CLASS, DefaultMaxentDataWriterFactory.class.getName(),
 				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER, DefaultPOSHandler.class.getName(),
 				SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory.getPath(),
-				POSHandler.PARAM_FEATURE_EXTRACTOR_CLASS, DefaultFeatureExtractor.class.getName(),
-				POSHandler.PARAM_TAGGER_CLASS, DefaultTagger.class.getName());
+				POSHandler.PARAM_FEATURE_EXTRACTOR_CLASS_NAME, DefaultFeatureExtractor.class.getName());
 		
 		for(JCas jCas : new JCasIterable(reader, aggregateEngine)) {
 			assert jCas != null;
@@ -133,33 +128,5 @@ public class DefaultPOSHandlerTest {
 		assertEquals("NN", AnnotationRetrieval.get(jCas, Token.class, 2).getPos());
 		
 	
-	}
-	
-	@Test
-	public void testWriterDescriptor() throws UIMAException, IOException {
-		try {
-			AnalysisEngineFactory.createAnalysisEngine("org.cleartk.token.pos.impl.DefaultPOSAnnotatorDataWriter");
-			Assert.fail("an exception should be thrown here.");
-		} catch(Exception e) {}
-		
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine("org.cleartk.token.pos.impl.DefaultPOSAnnotatorDataWriter",
-				SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory.getPath(),
-				SequentialDataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, DefaultMalletCRFDataWriterFactory.class.getName());
-		
-		String expected = DefaultPOSHandler.class.getName();
-		Object actual = engine.getConfigParameterValue(
-				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER);
-		Assert.assertEquals(expected, actual);
-
-		expected= DefaultFeatureExtractor.class.getName();
-		actual= engine.getConfigParameterValue(
-				POSHandler.PARAM_FEATURE_EXTRACTOR_CLASS);
-		Assert.assertEquals(expected, actual);
-
-		expected= DefaultTagger.class.getName();
-		actual= engine.getConfigParameterValue(
-				POSHandler.PARAM_TAGGER_CLASS);
-		Assert.assertEquals(expected, actual);
-
 	}
 }
