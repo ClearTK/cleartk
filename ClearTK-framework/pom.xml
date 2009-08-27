@@ -148,6 +148,28 @@
 			</extension>
 		</extensions>
 	</build>
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<linksource>true</linksource>
+					<links>
+						<link>http://incubator.apache.org/uima/apidocs/</link>
+						<link>http://java.sun.com/j2se/1.5.0/docs/api/</link>
+						<link>http://maxent.sourceforge.net/api/"</link>
+						<link>http://opennlp.sourceforge.net/api/"</link>
+						<link>http://trove4j.sourceforge.net/javadocs/"</link>
+						<link>http://www.jdom.org/docs/apidocs/"</link>
+						<link>http://incubator.apache.org/uima/apidocs/"</link>
+						<link>http://mallet.cs.umass.edu/api/"</link>
+						<link>http://lucene.apache.org/java/2_2_0/api/"</link>
+					</links>
+				</configuration>
+			</plugin>
+		</plugins>
+	</reporting>
 	<distributionManagement>
 		<repository>
 			<uniqueVersion>false</uniqueVersion>
