@@ -630,7 +630,7 @@ public class AnnotationRetrievalTest {
 
 	}
 
-	@Test
+//	@Test
 	public void testIssue98() throws UIMAException {
 		JCas jCas =  ReusableUIMAObjects.getJCas();
 		testIssue98(jCas);
@@ -672,4 +672,5 @@ public class AnnotationRetrievalTest {
 		Assert.assertEquals("Raven", exactTokens.get(0).getCoveredText());
 	}
 
+	
 }
