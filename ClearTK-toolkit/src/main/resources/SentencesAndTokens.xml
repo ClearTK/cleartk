@@ -73,13 +73,14 @@
                 <primitive>true</primitive>
                 <annotatorImplementationName>org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter</annotatorImplementationName>
                 <analysisEngineMetaData>
-                    <name/>
+                    <name>OpenNLPSentenceSegmenter</name>
                     <configurationParameters>
                         <configurationParameter>
                             <name>org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter.sentenceModelFileName</name>
+                            <description>provides the path of the OpenNLP sentence segmenter model file</description>
                             <type>String</type>
                             <multiValued>false</multiValued>
-                            <mandatory>false</mandatory>
+                            <mandatory>true</mandatory>
                         </configurationParameter>
                     </configurationParameters>
                     <configurationParameterSettings>
