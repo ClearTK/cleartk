@@ -22,7 +22,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         <configurationParameters>
             <configurationParameter>
                 <name>org.cleartk.util.linewriter.LineWriter.outputDirectoryName</name>
-                <description>takes a path to directory into which output files will be written. If no value is given for this parameter, then the parameter 'org.cleartk.util.linewriter.LineWriter.outputFileName' is required. If a value is given, then one file for each document/JCas will be created in the output directory provided. If a value for both 'org.cleartk.util.linewriter.LineWriter.outputDirectoryName' and 'org.cleartk.util.linewriter.LineWriter.outputFileName'  is given, then an exception will be thrown. Example values that could be provided might look like: 
+                <description>takes a path to directory into which output files will be written. If no value is given for this parameter, then the parameter 'org.cleartk.util.linewriter.LineWriter.outputFileName' is required. If a value is given, then one file for each document/JCas will be created in the output directory provided.   The name of each file will be given by the value returned by ViewURIUtil.getURI(jCas). If a value for both 'org.cleartk.util.linewriter.LineWriter.outputDirectoryName' and 'org.cleartk.util.linewriter.LineWriter.outputFileName'  is given, then an exception will be thrown. Example values that could be provided might look like: 
 
 	/mydata/uima-output/
 	C:/Documents and Settings/User/My Documents/workspace/My Project/data/experiment/output
