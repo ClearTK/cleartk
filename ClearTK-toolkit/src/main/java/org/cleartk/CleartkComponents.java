@@ -209,12 +209,13 @@ public class CleartkComponents {
 	
 	public static <OUTCOME_TYPE> AnalysisEngineDescription createSequentialClassifierAnnotator(
 			Class<? extends SequentialAnnotationHandler<OUTCOME_TYPE>> annotationHandlerClass,
-			String classifierJar) throws ResourceInitializationException {
+			String classifierJar, Object ... configurationData) throws ResourceInitializationException {
 		return AnalysisEngineFactory.createPrimitiveDescription(
 				SequentialClassifierAnnotator.class, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES,
+				combineParams(configurationData, 
 				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER,
 				annotationHandlerClass.getName(),
-				SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR, classifierJar);
+				SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR, classifierJar));
 	}
 	
 	public static AnalysisEngineDescription createTimeMLGoldAnnotator(boolean loadTLinks)
