@@ -42,6 +42,8 @@ import org.cleartk.classifier.SequentialAnnotationHandler;
 import org.cleartk.classifier.SequentialInstanceConsumer;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
+import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.util.InitializeUtil;
 
 /**
  * <br>Copyright (c) 2009, Regents of the University of Colorado 
@@ -54,24 +56,16 @@ import org.cleartk.util.UIMAUtil;
 public abstract class POSHandler<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation> implements
 		SequentialAnnotationHandler<String>, Initializable {
 
-	/**
-	 * "org.cleartk.token.pos.POSHandler.PARAM_FEATURE_EXTRACTOR_CLASS"
-	 * is a single, required, string parameter that provides the full name of the
-	 * {@link POSFeatureExtractor} class that will be used to extract features.
-	 */
-	public static final String PARAM_FEATURE_EXTRACTOR_CLASS = "org.cleartk.token.pos.POSHandler.PARAM_FEATURE_EXTRACTOR_CLASS";
-
-	/**
-	 * "org.cleartk.token.pos.POSHandler.PARAM_TAGGER_CLASS"
-	 * is a single, required, string parameter that provides the full name of the
-	 * {@link POSTagger} class that will be used to get and set part-of-speech tags
-	 * on the tokens in the CAS.
-	 */
-	public static final String PARAM_TAGGER_CLASS = "org.cleartk.token.pos.POSHandler.PARAM_TAGGER_CLASS";
-
-
+	public static final String PARAM_FEATURE_EXTRACTOR_CLASS_NAME = "org.cleartk.token.pos.POSHandler.featureExtractorClassName";
+	
+	@ConfigurationParameter(
+			name = PARAM_FEATURE_EXTRACTOR_CLASS_NAME,
+			mandatory = true,
+			description = "provides the full name of the class that will be used to extract features",
+			defaultValue = "org.cleartk.token.pos.impl.DefaultFeatureExtractor")
+	private String featureExtractorClassName;
+	
 	protected POSFeatureExtractor<TOKEN_TYPE, SENTENCE_TYPE> featureExtractor;
-	protected POSTagger<TOKEN_TYPE> tagger;
 
 	private Class<? extends TOP> tokenClass; 
 	private Class<? extends TOP> sentenceClass;
@@ -82,6 +76,8 @@ public abstract class POSHandler<TOKEN_TYPE extends Annotation, SENTENCE_TYPE ex
 
 
 	public void initialize(UimaContext context) throws ResourceInitializationException {
+		InitializeUtil.initialize(this, context);
+		
 		// extract the token and sentence classes from the type parameters 
 		this.tokenClass = ReflectionUtil.<Class<? extends TOP>>uncheckedCast(
 				ReflectionUtil.getTypeArgument(POSHandler.class, "TOKEN_TYPE", this));
@@ -89,10 +85,7 @@ public abstract class POSHandler<TOKEN_TYPE extends Annotation, SENTENCE_TYPE ex
 				ReflectionUtil.getTypeArgument(POSHandler.class, "SENTENCE_TYPE", this));
 
 		// create the feature extractor and tagger
-		POSFeatureExtractor<?, ?> untypedExtractor = UIMAUtil.create(
-				context, PARAM_FEATURE_EXTRACTOR_CLASS, POSFeatureExtractor.class);
-		POSTagger<?> untypedTagger = UIMAUtil.create(
-				context, PARAM_TAGGER_CLASS, POSTagger.class);
+		POSFeatureExtractor<?, ?> untypedExtractor = UIMAUtil.create(featureExtractorClassName, POSFeatureExtractor.class, context);
 
 		// check that the type parameters are compatible 
 		UIMAUtil.checkTypeParameterIsAssignable(
@@ -101,13 +94,9 @@ public abstract class POSHandler<TOKEN_TYPE extends Annotation, SENTENCE_TYPE ex
 		UIMAUtil.checkTypeParameterIsAssignable(
 				POSFeatureExtractor.class, "SENTENCE_TYPE", untypedExtractor, 
 				POSHandler.class, "SENTENCE_TYPE", this);
-		UIMAUtil.checkTypeParameterIsAssignable(
-				POSTagger.class, "TOKEN_TYPE", untypedTagger, 
-				POSHandler.class, "TOKEN_TYPE", this);
 		
 		// set the instance variables
 		this.featureExtractor = ReflectionUtil.uncheckedCast(untypedExtractor);
-		this.tagger = ReflectionUtil.uncheckedCast(untypedTagger);
 	}
 
 	protected void initializeTypes(JCas jCas) throws AnalysisEngineProcessException {
@@ -137,7 +126,7 @@ public abstract class POSHandler<TOKEN_TYPE extends Annotation, SENTENCE_TYPE ex
 				List<Feature> features = featureExtractor.extractFeatures(jCas, token, sentence);
 				Instance<String> instance = new Instance<String>();
 				instance.addAll(features);
-				instance.setOutcome(tagger.getTag(jCas, token));
+				instance.setOutcome(getTag(jCas, token));
 				instances.add(instance);
 			}
 
@@ -146,11 +135,19 @@ public abstract class POSHandler<TOKEN_TYPE extends Annotation, SENTENCE_TYPE ex
 				tokens.moveToFirst();
 				for(int i=0; tokens.hasNext(); i++) {
 					TOKEN_TYPE token = (TOKEN_TYPE) tokens.next();
-					tagger.setTag(jCas, token, tags.get(i));
+					setTag(jCas, token, tags.get(i));
 				}
 			}
 		}
 	}
 
+	public abstract void setTag(JCas jCas, TOKEN_TYPE token, String tag);
+
+	public abstract String getTag(JCas jCas, TOKEN_TYPE token);
 	
+	public void setFeatureExtractorClassName(String featureExtractorClassName) {
+		this.featureExtractorClassName = featureExtractorClassName;
+	}
+
+
 }

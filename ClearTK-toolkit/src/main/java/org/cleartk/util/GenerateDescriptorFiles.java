@@ -49,6 +49,7 @@ import org.cleartk.srl.propbank.PropbankGoldAnnotator;
 import org.cleartk.srl.propbank.PropbankGoldReader;
 import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
 import org.cleartk.token.TokenAnnotator;
+import org.cleartk.token.pos.impl.DefaultPOSHandler;
 import org.cleartk.token.snowball.DefaultSnowballStemmer;
 import org.cleartk.util.linewriter.LineWriter;
 import org.xml.sax.SAXException;
@@ -73,17 +74,28 @@ public class GenerateDescriptorFiles {
 		updateDescription(aed.getMetaData());
 		aed.toXML(new FileWriter(new File(outputDirectory, "SentencesAndTokens.xml")));
 
-		File examplePosDescDirectory = new File(outputDirectory, "org/cleartk/example/pos");
-		if(!examplePosDescDirectory.exists())
-			examplePosDescDirectory.mkdirs();
+		File descDirectory = new File(outputDirectory, "org/cleartk/example/pos");
+		if(!descDirectory.exists())
+			descDirectory.mkdirs();
 		aed = ExamplePOSAnnotationHandler.getClassifierDescription(ExamplePOSAnnotationHandler.DEFAULT_MODEL);
 		updateDescription(aed.getMetaData());
-		aed.toXML(new FileWriter(new File(examplePosDescDirectory, "ExamplePOSAnnotator.xml")));
+		aed.toXML(new FileWriter(new File(descDirectory, "ExamplePOSAnnotator.xml")));
 
 		aed = ExamplePOSAnnotationHandler.getWriterDescription(ExamplePOSAnnotationHandler.DEFAULT_OUTPUT_DIRECTORY);
 		updateDescription(aed.getMetaData());
-		aed.toXML(new FileWriter(new File(examplePosDescDirectory, "ExamplePOSDataWriter.xml")));
+		aed.toXML(new FileWriter(new File(descDirectory, "ExamplePOSDataWriter.xml")));
 
+		descDirectory = new File(outputDirectory, "org/cleartk/token/pos/impl");
+		if(!descDirectory.exists())
+			descDirectory.mkdirs();
+		aed = DefaultPOSHandler.getWriterDescription();
+		updateDescription(aed.getMetaData());
+		aed.toXML(new FileWriter(new File(descDirectory, "DefaultPOSDataWriter.xml")));
+		aed = DefaultPOSHandler.getAnnotatorDescription();
+		updateDescription(aed.getMetaData());
+		aed.toXML(new FileWriter(new File(descDirectory, "DefaultPOSAnnotator.xml")));
+
+		
 		writePrimitiveDescription(ExamplePOSPlainTextWriter.class, outputDirectory);
 
 		writeCollectionReader(Ace2005GoldReader.class, outputDirectory);
