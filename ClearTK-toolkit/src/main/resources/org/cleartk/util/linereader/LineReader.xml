@@ -34,6 +34,13 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 <mandatory>false</mandatory>
             </configurationParameter>
             <configurationParameter>
+                <name>org.cleartk.util.linereader.LineReader.language</name>
+                <description>takes the language code corresponding to the language of the documents being examined. The value of this parameter is simply passed on to JCas.setDocumentLanguage(String)</description>
+                <type>String</type>
+                <multiValued>false</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
+            <configurationParameter>
                 <name>org.cleartk.util.linereader.LineReader.encoding</name>
                 <description>takes the encoding of the text files (e.g. 'UTF-8').  See apidocs for java.nio.charset.Charset for a list of encoding names.</description>
                 <type>String</type>
