@@ -77,13 +77,6 @@
 		</dependency>
 		<dependency>
 			<groupId>net.sourceforge.opennlp</groupId>
-			<artifactId>maxent</artifactId>
-			<version>2.5.1</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/maxent-2.5.1.jar</systemPath>
-		</dependency>
-		<dependency>
-			<groupId>net.sourceforge.opennlp</groupId>
 			<artifactId>opennlp-tools</artifactId>
 			<version>1.4.1</version>
 			<scope>system</scope>
