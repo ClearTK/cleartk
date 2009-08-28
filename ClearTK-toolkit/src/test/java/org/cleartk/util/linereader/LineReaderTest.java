@@ -27,12 +27,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import java.io.File;
-import java.io.IOException;
 
-import org.apache.uima.UIMAException;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.util.ViewURIUtil;
 import org.junit.Assert;
 import org.junit.Test;
@@ -53,7 +50,7 @@ public class LineReaderTest {
 	@Test
 	public void test1() throws Exception {
 		String languageCode = "en-us";
-		CollectionReader reader = CollectionReaderFactory.createCollectionReader(LineReader.class, null, LineReader.PARAM_FILE_OR_DIRECTORY, "test/data/docs/linereader",
+		CollectionReader reader = CollectionReaderFactory.createCollectionReader(LineReader.class, null, LineReader.PARAM_FILE_OR_DIRECTORY_NAME, "test/data/docs/linereader",
 				LineReader.PARAM_LANGUAGE, languageCode);
 
 		Assert.assertEquals(0, reader.getProgress()[0].getCompleted());
@@ -80,10 +77,10 @@ public class LineReaderTest {
 
 	@Test
 	public void test2() throws Exception {
-		CollectionReader reader = CollectionReaderFactory.createCollectionReader(LineReader.class, null, LineReader.PARAM_FILE_OR_DIRECTORY, "test/data/docs/linereader",
-				LineReader.PARAM_LINE_HANDLER, "org.cleartk.util.linereader.SimpleLineHandler",
+		CollectionReader reader = CollectionReaderFactory.createCollectionReader(LineReader.class, null, LineReader.PARAM_FILE_OR_DIRECTORY_NAME, "test/data/docs/linereader",
+				LineReader.PARAM_LINE_HANDLER_CLASS_NAME, "org.cleartk.util.linereader.SimpleLineHandler",
 				SimpleLineHandler.PARAM_DELIMITER, "|", LineReader.PARAM_SUFFIXES, new String[] { ".txt", ".dat" },
-				LineReader.PARAM_COMMENT_SPECIFIER, new String[] { "#", "//" });
+				LineReader.PARAM_COMMENT_SPECIFIERS, new String[] { "#", "//" });
 
 		Assert.assertEquals(0, reader.getProgress()[0].getCompleted());
 
@@ -104,8 +101,8 @@ public class LineReaderTest {
 	public void test3() throws Exception {
 		File file = new File("test/data/docs/linereader/test2.dat");
 
-		CollectionReader reader = CollectionReaderFactory.createCollectionReader(LineReader.class, null, LineReader.PARAM_FILE_OR_DIRECTORY,
-				file.getPath(), LineReader.PARAM_COMMENT_SPECIFIER, new String[] { "//" },
+		CollectionReader reader = CollectionReaderFactory.createCollectionReader(LineReader.class, null, LineReader.PARAM_FILE_OR_DIRECTORY_NAME,
+				file.getPath(), LineReader.PARAM_COMMENT_SPECIFIERS, new String[] { "//" },
 				LineReader.PARAM_SKIP_BLANK_LINES, false);
 
 		Assert.assertEquals(0, reader.getProgress()[0].getCompleted());
@@ -128,44 +125,4 @@ public class LineReaderTest {
 		assertEquals(String.format("%s#%s", path, id), ViewURIUtil.getURI(jCas));
 	}
 	
-	
-	@Test
-	public void testDescriptor() throws UIMAException, IOException {
-		File inputDir = new File("test/data/docs/linereader/");
-		
-		try {
-			CollectionReaderFactory.createCollectionReader("org.cleartk.util.linereader.LineReader");
-			Assert.fail("expected exception with no file or directory specified");
-		} catch (ResourceInitializationException e) {}
-		
-		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-				"org.cleartk.util.linereader.LineReader",
-				LineReader.PARAM_FILE_OR_DIRECTORY, inputDir.getPath());
-		
-		Object fileOrDirectory = reader.getConfigParameterValue(
-				LineReader.PARAM_FILE_OR_DIRECTORY);
-		Assert.assertEquals(inputDir.getPath(), fileOrDirectory);
-		
-		Object viewName = reader.getConfigParameterValue(
-				LineReader.PARAM_VIEW_NAME);
-		Assert.assertEquals(null, viewName);
-		
-		Object encoding = reader.getConfigParameterValue(
-				LineReader.PARAM_ENCODING);
-		Assert.assertEquals(null, encoding);
-
-		Object language = reader.getConfigParameterValue(
-				LineReader.PARAM_LANGUAGE);
-		Assert.assertEquals(null, language);
-		
-		Object suffixes = reader.getConfigParameterValue(
-				LineReader.PARAM_SUFFIXES);
-		Assert.assertEquals(null, suffixes);
-
-		Object comments = reader.getConfigParameterValue(
-				LineReader.PARAM_COMMENT_SPECIFIER);
-		Assert.assertEquals(null, comments);
-
-	}
-
 }

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<collectionReaderDescription xmlns="http://uima.apache.org/resourceSpecifier">
+    <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+    <implementationName>org.cleartk.util.linereader.LineReader</implementationName>
+    <processingResourceMetaData>
+        <name>LineReader</name>
+        <description>This descriptor file was generated automatically by org.cleartk.util.GenerateDescriptorFiles. 
+
+Copyright (c) 2009, Regents of the University of Colorado 
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+
+ - Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. 
+ - Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. 
+ - Neither the name of the University of Colorado at Boulder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. 
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+
+</description>
+        <configurationParameters>
+            <configurationParameter>
+                <name>org.cleartk.util.linereader.LineReader.fileOrDirectoryName</name>
+                <description>Takes either the name of a single file or the root directory containing all the files to be processed.</description>
+                <type>String</type>
+                <multiValued>false</multiValued>
+                <mandatory>true</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>org.cleartk.util.linereader.LineReader.viewName</name>
+                <description>takes the the name that should be given to the JCas view associated with the document texts.</description>
+                <type>String</type>
+                <multiValued>false</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>org.cleartk.util.linereader.LineReader.encoding</name>
+                <description>takes the encoding of the text files (e.g. 'UTF-8').  See apidocs for java.nio.charset.Charset for a list of encoding names.</description>
+                <type>String</type>
+                <multiValued>false</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>org.cleartk.util.linereader.LineReader.suffixes</name>
+                <description>Takes suffixes (e.g. .txt) of the files that should be read in.</description>
+                <type>String</type>
+                <multiValued>true</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>org.cleartk.util.linereader.LineReader.lineHandlerClassName</name>
+                <description>specifies the class name of the LineHandler. If one is not specified, then the SimpleLineHandler will be used.</description>
+                <type>String</type>
+                <multiValued>false</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>org.cleartk.util.linereader.LineReader.commentSpecifiers</name>
+                <description>Specifies lines that should be considered 'comments' - i.e. lines that should be skipped. Commented lines are those the start with one of the values of this parameter.</description>
+                <type>String</type>
+                <multiValued>true</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>org.cleartk.util.linereader.LineReader.skipBlankLines</name>
+                <description>Specifies whether blank lines should be skipped or not. The default value is true if no value is given. If this parameter is set to false, then blank lines that appear in the text files will be read in and given their own JCas.  Blank lines are those that consist of only whitespace.</description>
+                <type>Boolean</type>
+                <multiValued>false</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
+        </configurationParameters>
+        <configurationParameterSettings>
+            <nameValuePair>
+                <name>org.cleartk.util.linereader.LineReader.lineHandlerClassName</name>
+                <value>
+                    <string>org.cleartk.util.linereader.DefaultLineHandler</string>
+                </value>
+            </nameValuePair>
+            <nameValuePair>
+                <name>org.cleartk.util.linereader.LineReader.skipBlankLines</name>
+                <value>
+                    <boolean>true</boolean>
+                </value>
+            </nameValuePair>
+        </configurationParameterSettings>
+        <typeSystemDescription>
+            <imports>
+                <import name="org.cleartk.TypeSystem"/>
+            </imports>
+        </typeSystemDescription>
+        <capabilities/>
+        <operationalProperties>
+            <modifiesCas>true</modifiesCas>
+            <multipleDeploymentAllowed>false</multipleDeploymentAllowed>
+            <outputsNewCASes>true</outputsNewCASes>
+        </operationalProperties>
+    </processingResourceMetaData>
+</collectionReaderDescription>

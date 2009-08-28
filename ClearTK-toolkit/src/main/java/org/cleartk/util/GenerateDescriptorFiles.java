@@ -51,6 +51,7 @@ import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
 import org.cleartk.token.TokenAnnotator;
 import org.cleartk.token.pos.impl.DefaultPOSHandler;
 import org.cleartk.token.snowball.DefaultSnowballStemmer;
+import org.cleartk.util.linereader.LineReader;
 import org.cleartk.util.linewriter.LineWriter;
 import org.xml.sax.SAXException;
 
@@ -113,7 +114,7 @@ public class GenerateDescriptorFiles {
 		writePrimitiveDescription(LineWriter.class, outputDirectory);
 		writePrimitiveDescription(OpenNLPSentenceSegmenter.class, outputDirectory);
 		writeCollectionReader(Conll2003GoldReader.class, outputDirectory);
-
+		writeCollectionReader(LineReader.class, outputDirectory);
 	}
 	
 	private static File updateOutputDirectory(Class<?> cls, File outputDirectory) {

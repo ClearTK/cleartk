@@ -30,7 +30,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 import java.util.Iterator;
 
 import org.apache.uima.cas.CAS;
@@ -41,6 +40,8 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 import org.cleartk.util.UIMAUtil;
+import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.util.InitializeUtil;
 import org.uutuc.util.io.Files;
 
 
@@ -77,78 +78,56 @@ import org.uutuc.util.io.Files;
  */
 public class LineReader extends CollectionReader_ImplBase {
 
-	/**
-	 * "org.cleartk.util.linereader.LineReader.PARAM_FILE_OR_DIRECTORY"
-	 * is a single, required, string parameter that takes either the name of a
-	 * single file or the root directory containing all the files to be processed.
-	 */
-	public static final String PARAM_FILE_OR_DIRECTORY = "org.cleartk.util.linereader.LineReader.PARAM_FILE_OR_DIRECTORY";
+	public static final String PARAM_FILE_OR_DIRECTORY_NAME = "org.cleartk.util.linereader.LineReader.fileOrDirectoryName";
+	@ConfigurationParameter(
+			name = PARAM_FILE_OR_DIRECTORY_NAME,
+			mandatory = true,
+			description = "Takes either the name of a single file or the root directory containing all the files to be processed.")
+	private String fileOrDirectoryName; 
 
-	/**
-	 * "org.cleartk.util.linereader.LineReader.PARAM_VIEW_NAME"
-	 * is a single, optional, string parameter that takes the the name that should
-	 * be given to the JCas view associated with the document texts.
-	 * 
-	 * @see UIMAUtil#createJCasView(CAS, String)
-	 */
-	public static final String PARAM_VIEW_NAME = "org.cleartk.util.linereader.LineReader.PARAM_VIEW_NAME";
-
-	/**
-	 * "org.cleartk.util.linereader.LineReader.PARAM_LANGUAGE"
-	 * is a single, optional, string parameter that takes the
-	 * language code corresponding to the language of the documents being
-	 * examined. The value of this parameter is simply passed on to
-	 * JCas.setDocumentLanguage(String).
-	 * 
-	 * @see JCas#setDocumentLanguage(String)
-	 */
-	public static final String PARAM_LANGUAGE = "org.cleartk.util.linereader.LineReader.PARAM_LANGUAGE";
-
-	/**
-	 * "org.cleartk.util.linereader.LineReader.PARAM_ENCODING"
-	 * is a single, optional, string parameter that takes the
-	 * encoding of the text files (e.g. "UTF-8").
-	 * 
-	 * @see Charset for a list of encoding names.
-	 */
-	public static final String PARAM_ENCODING = "org.cleartk.util.linereader.LineReader.PARAM_ENCODING";
-
-	/**
-	 * "org.cleartk.util.linereader.LineReader.PARAM_SUFFIXES"
-	 * is a multiple, optional, string parameter that takes suffixes
-	 * (e.g. .txt) of the files that should be read in.
-	 */
-	public static final String PARAM_SUFFIXES = "org.cleartk.util.linereader.LineReader.PARAM_SUFFIXES";
-
-	/**
-	 * "org.cleartk.util.linereader.LineReader.PARAM_LINE_HANDLER"
-	 * is a single, optional, string parameter that specifies the
-	 * class name of the LineHandler. If one is not specified, then the
-	 * SimpleLineHandler will be used.
-	 * 
-	 * @see SimpleLineHandler
-	 * 
-	 */
-	public static final String PARAM_LINE_HANDLER = "org.cleartk.util.linereader.LineReader.PARAM_LINE_HANDLER";
-
-	/**
-	 * "org.cleartk.util.linereader.LineReader.PARAM_COMMENT_SPECIFIER"
-	 * is a multiple, optional, string parameter that
-	 * specifies lines that should be considered "comments" - i.e. lines that
-	 * should be skipped. Commented lines are those the start with one of the
-	 * values of this parameter.
-	 */
-	public static final String PARAM_COMMENT_SPECIFIER = "org.cleartk.util.linereader.LineReader.PARAM_COMMENT_SPECIFIER";
-
-	/**
-	 * "org.cleartk.util.linereader.LineReader.PARAM_SKIP_BLANK_LINES"
-	 * is a single, optional, boolean parameter that specifies
-	 * whether blank lines should be skipped or not. The default value is true
-	 * if no value is given. If this parameter is set to false, then blank lines
-	 * that appear in the text files will be read in and given their own JCas.
-	 * Blank lines are those that consist of only whitespace.
-	 */
-	public static final String PARAM_SKIP_BLANK_LINES = "org.cleartk.util.linereader.LineReader.PARAM_SKIP_BLANK_LINES";
+	public static final String PARAM_VIEW_NAME = "org.cleartk.util.linereader.LineReader.viewName";
+	@ConfigurationParameter(
+			name = PARAM_VIEW_NAME,
+			description = "takes the the name that should be given to the JCas view associated with the document texts.")
+	private String viewName;
+	
+	public static final String PARAM_LANGUAGE = "org.cleartk.util.linereader.LineReader.language";
+	@ConfigurationParameter(
+			name = PARAM_LANGUAGE,
+			description = "takes the language code corresponding to the language of the documents being examined. The value of this parameter is simply passed on to JCas.setDocumentLanguage(String)")
+	private String language;
+	
+	public static final String PARAM_ENCODING = "org.cleartk.util.linereader.LineReader.encoding";
+	@ConfigurationParameter(
+			name = PARAM_ENCODING,
+			description = "takes the encoding of the text files (e.g. 'UTF-8').  See apidocs for java.nio.charset.Charset for a list of encoding names.")
+	private String encoding;
+	
+	public static final String PARAM_SUFFIXES = "org.cleartk.util.linereader.LineReader.suffixes";
+	@ConfigurationParameter(
+			name = PARAM_SUFFIXES,
+			description = "Takes suffixes (e.g. .txt) of the files that should be read in.")
+	private String[] suffixes;
+	
+	public static final String PARAM_LINE_HANDLER_CLASS_NAME = "org.cleartk.util.linereader.LineReader.lineHandlerClassName";
+	@ConfigurationParameter(
+			name = PARAM_LINE_HANDLER_CLASS_NAME,
+			description = "specifies the class name of the LineHandler. If one is not specified, then the SimpleLineHandler will be used.",
+			defaultValue = "org.cleartk.util.linereader.DefaultLineHandler")
+	private String lineHandlerClassName;
+	
+	public static final String PARAM_COMMENT_SPECIFIERS = "org.cleartk.util.linereader.LineReader.commentSpecifiers";
+	@ConfigurationParameter(
+			name = PARAM_COMMENT_SPECIFIERS,
+			description = "Specifies lines that should be considered 'comments' - i.e. lines that should be skipped. Commented lines are those the start with one of the values of this parameter.")
+	private String[] commentSpecifiers;
+	
+	public static final String PARAM_SKIP_BLANK_LINES = "org.cleartk.util.linereader.LineReader.skipBlankLines";
+	@ConfigurationParameter(
+			name = PARAM_SKIP_BLANK_LINES,
+			description = "Specifies whether blank lines should be skipped or not. The default value is true if no value is given. If this parameter is set to false, then blank lines that appear in the text files will be read in and given their own JCas.  Blank lines are those that consist of only whitespace.",
+			defaultValue = "true")
+   private boolean skipBlankLines;
 	
 	File file;
 
@@ -160,56 +139,32 @@ public class LineReader extends CollectionReader_ImplBase {
 
 	LineHandler lineHandler;
 
-	String[] commentSpecifiers;
-
-	boolean skipBlankLines;
 	@Override
 	public void initialize() throws ResourceInitializationException {
+		InitializeUtil.initialize(this, getUimaContext());
 		try {
-			// get the name of the CAS view to be added
-			this.viewName = (String) this.getConfigParameterValue(LineReader.PARAM_VIEW_NAME);
-
-			// get the language
-			this.language = (String) this.getConfigParameterValue(LineReader.PARAM_LANGUAGE);
-
-			// get the encoding
-			this.encoding = (String) this.getConfigParameterValue(LineReader.PARAM_ENCODING);
-
-			// get the input directory
-			String fileName = (String) UIMAUtil.getRequiredConfigParameterValue(this.getUimaContext(),
-					LineReader.PARAM_FILE_OR_DIRECTORY);
-
-			this.rootFile = new File(fileName);
+		
+			this.rootFile = new File(fileOrDirectoryName);
 
 			// raise an exception if the root file does not exist
 			if (!this.rootFile.exists()) {
 				String format = "file or directory %s does not exist";
-				String message = String.format(format, fileName);
+				String message = String.format(format, fileOrDirectoryName);
 				throw new ResourceInitializationException(new IOException(message));
 			}
 
-			String[] suffixNames = (String[]) this.getConfigParameterValue(PARAM_SUFFIXES);
-			if (suffixNames != null && suffixNames.length > 0) {
-				files = Files.getFiles(rootFile, suffixNames).iterator();
+			if (suffixes != null && suffixes.length > 0) {
+				files = Files.getFiles(rootFile, suffixes).iterator();
 			}
 			else {
 				files = Files.getFiles(rootFile).iterator();
 			}
 
-			commentSpecifiers = (String[]) this.getConfigParameterValue(PARAM_COMMENT_SPECIFIER);
 			if (commentSpecifiers == null) {
 				commentSpecifiers = new String[0];
 			}
 
-			String lineHandlerClassName = (String) UIMAUtil.getDefaultingConfigParameterValue(getUimaContext(),
-					PARAM_LINE_HANDLER, "org.cleartk.util.linereader.DefaultLineHandler");
-			Class<?> cls = Class.forName(lineHandlerClassName);
-			Class<? extends LineHandler> lineHandlerClass = cls.asSubclass(LineHandler.class);
-			lineHandler = lineHandlerClass.newInstance();
-			lineHandler.initialize(getUimaContext());
-
-			skipBlankLines = (Boolean) UIMAUtil.getDefaultingConfigParameterValue(getUimaContext(), PARAM_SKIP_BLANK_LINES, true);
-			
+			lineHandler = UIMAUtil.create(lineHandlerClassName, LineHandler.class, getUimaContext());
 			moveToNextFile();
 		}
 		catch (Exception fnfe) {
@@ -278,16 +233,44 @@ public class LineReader extends CollectionReader_ImplBase {
 
 	private File rootFile;
 
-	private String viewName;
-
-	private String language;
-
-	private String encoding;
-
 	private Iterator<File> files;
 
 	private int completed = 0;
 
 	public void close() throws IOException {
 	}
+	
+	public void setFileOrDirectoryName(String fileOrDirectoryName) {
+		this.fileOrDirectoryName = fileOrDirectoryName;
+	}
+
+	public void setViewName(String viewName) {
+		this.viewName = viewName;
+	}
+
+	public void setLanguage(String language) {
+		this.language = language;
+	}
+
+	public void setEncoding(String encoding) {
+		this.encoding = encoding;
+	}
+
+	public void setSuffixes(String[] suffixes) {
+		this.suffixes = suffixes;
+	}
+
+	public void setLineHandlerClassName(String lineHandlerClassName) {
+		this.lineHandlerClassName = lineHandlerClassName;
+	}
+
+	public void setCommentSpecifiers(String[] commentSpecifiers) {
+		this.commentSpecifiers = commentSpecifiers;
+	}
+
+	public void setSkipBlankLines(boolean skipBlankLines) {
+		this.skipBlankLines = skipBlankLines;
+	}
+
+
 }
