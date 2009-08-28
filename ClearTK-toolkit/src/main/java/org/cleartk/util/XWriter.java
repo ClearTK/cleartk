@@ -36,7 +36,6 @@ import java.io.IOException;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
-import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.impl.XCASSerializer;
@@ -44,8 +43,8 @@ import org.apache.uima.cas.impl.XmiCasSerializer;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.XMLSerializer;
-import org.cleartk.CleartkComponents;
-import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.util.InitializeUtil;
 import org.xml.sax.SAXException;
 
 /**
@@ -57,24 +56,21 @@ import org.xml.sax.SAXException;
  */
 
 public class XWriter extends JCasAnnotator_ImplBase {
-	/**
-	 * "org.cleartk.util.XWriter.PARAM_OUTPUT_DIRECTORY"
-	 * is a single, required string parameter that takes a
-	 * path to directory into which output files will be written.
-	 */
-	public static final String PARAM_OUTPUT_DIRECTORY = "org.cleartk.util.XWriter.PARAM_OUTPUT_DIRECTORY";
-
-	/**
-	 * "org.cleartk.util.XWriter.PARAM_XML_SCHEME"
-	 * is a single, optional, string parameter that specifies the
-	 * UIMA XML serialization scheme that should be used. Valid values for this
-	 * parameter are "XMI" (default) and "XCAS".
-	 * 
-	 * @see XmiCasSerializer
-	 * @see XCASSerializer
-	 */
-	public static final String PARAM_XML_SCHEME = "org.cleartk.util.XWriter.PARAM_XML_SCHEME";
-
+	
+	public static final String PARAM_OUTPUT_DIRECTORY_NAME = "org.cleartk.util.XWriter.outputDirectoryName";
+	@ConfigurationParameter(
+			name = PARAM_OUTPUT_DIRECTORY_NAME,
+			mandatory = true,
+			description = "takes a path to directory into which output files will be written.")
+	private String outputDirectoryName;
+	
+	public static final String PARAM_XML_SCHEME_NAME = "org.cleartk.util.XWriter.xmlSchemeName";
+	@ConfigurationParameter(
+			name = PARAM_XML_SCHEME_NAME,
+			defaultValue = "XMI",
+			description = "specifies the UIMA XML serialization scheme that should be used. Valid values for this parameter are 'XMI' (default) and 'XCAS'.")
+	private String xmlSchemeName;
+	
 	public static final String XMI = "XMI";
 
 	public static final String XCAS = "XCAS";
@@ -86,17 +82,17 @@ public class XWriter extends JCasAnnotator_ImplBase {
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
-		outputDirectory = new File((String) context.getConfigParameterValue(PARAM_OUTPUT_DIRECTORY));
+		InitializeUtil.initialize(this, context);
+
+		outputDirectory = new File(outputDirectoryName);
 		if (!outputDirectory.exists()) {
 			outputDirectory.mkdirs();
 		}
 
-		String xmlScheme = (String) UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_XML_SCHEME, XMI);
-
-		if (xmlScheme.equals(XMI)) useXMI = true;
-		else if (xmlScheme.equals(XCAS)) useXMI = false;
+		if (xmlSchemeName.equals(XMI)) useXMI = true;
+		else if (xmlSchemeName.equals(XCAS)) useXMI = false;
 		else throw new ResourceInitializationException(String.format(
-				"parameter '%1$s' must be either '%2$s' or '%3$s' or left empty.", PARAM_XML_SCHEME, XMI, XCAS), null);
+				"parameter '%1$s' must be either '%2$s' or '%3$s'.", PARAM_XML_SCHEME_NAME, XMI, XCAS), null);
 
 	}
 
@@ -150,10 +146,14 @@ public class XWriter extends JCasAnnotator_ImplBase {
 		}
 	}
 
-	public static AnalysisEngineDescription getDescription(String outputDirectory) throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveDescription(
-				XWriter.class, CleartkComponents.TYPE_SYSTEM_DESCRIPTION, 
-				CleartkComponents.TYPE_PRIORITIES,
-				XWriter.PARAM_OUTPUT_DIRECTORY, outputDirectory);
+	
+	public void setXmlSchemeName(String xmlSchemeName) {
+		this.xmlSchemeName = xmlSchemeName;
 	}
+
+	public void setOutputDirectoryName(String outputDirectoryName) {
+		this.outputDirectoryName = outputDirectoryName;
+	}
+
+
 }

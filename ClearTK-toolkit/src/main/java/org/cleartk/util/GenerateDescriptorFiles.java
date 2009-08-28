@@ -116,6 +116,7 @@ public class GenerateDescriptorFiles {
 		writeCollectionReader(Conll2003GoldReader.class, outputDirectory);
 		writeCollectionReader(LineReader.class, outputDirectory);
 		writePrimitiveDescription(PlainTextWriter.class, outputDirectory);
+		writePrimitiveDescription(XWriter.class, outputDirectory);
 	}
 	
 	private static File updateOutputDirectory(Class<?> cls, File outputDirectory) {

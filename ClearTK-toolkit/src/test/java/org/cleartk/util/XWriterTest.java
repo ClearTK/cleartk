@@ -29,11 +29,9 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.List;
 
-import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
@@ -75,7 +73,7 @@ public class XWriterTest {
 	public void testXmi() throws Exception {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				XWriter.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-				XWriter.PARAM_OUTPUT_DIRECTORY, this.outputDir.getPath());
+				XWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDir.getPath());
 		JCas jCas = engine.newJCas();
 		TokenFactory.createTokens(jCas,
 				"I like\nspam!",
@@ -111,8 +109,8 @@ public class XWriterTest {
 	public void testXcas() throws Exception {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				XWriter.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-				XWriter.PARAM_OUTPUT_DIRECTORY, this.outputDir.getPath(),
-				XWriter.PARAM_XML_SCHEME, XWriter.XCAS);
+				XWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDir.getPath(),
+				XWriter.PARAM_XML_SCHEME_NAME, XWriter.XCAS);
 		JCas jCas = engine.newJCas();
 		TokenFactory.createTokens(jCas,
 				"I like\nspam!",
@@ -144,21 +142,4 @@ public class XWriterTest {
 		
 	}
 	
-	
-	
-	@Test
-	public void testDescriptor() throws UIMAException, IOException {
-		try {
-			AnalysisEngineFactory.createAnalysisEngine("org.cleartk.util.XWriter");
-			Assert.fail("expected error when no output directory was specified");
-		} catch (ResourceInitializationException e) {}
-		
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-				"org.cleartk.util.XWriter",
-				XWriter.PARAM_OUTPUT_DIRECTORY, this.outputDir.getPath());
-		Object dir = engine.getConfigParameterValue(XWriter.PARAM_OUTPUT_DIRECTORY);
-		Assert.assertEquals(this.outputDir.getPath(), dir);
-		
-		engine.collectionProcessComplete();
-	}
 }
