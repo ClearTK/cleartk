@@ -73,7 +73,7 @@ public class PlainTextWriterTest {
 		
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				PlainTextWriter.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-				PlainTextWriter.PARAM_OUTPUT_DIRECTORY, this.outputDir.getPath());
+				PlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDir.getPath());
 		JCas jCas = engine.newJCas();
 		String text = "What if we built a large\r\n, wooden badger?";
 		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class, 
@@ -102,17 +102,6 @@ public class PlainTextWriterTest {
 		
 	}
 	
-	@Test
-	public void testDescriptor() throws Exception {
-		try {
-			AnalysisEngineFactory.createAnalysisEngine("org.cleartk.util.PlainTextWriter");
-			Assert.fail("expected exception with output directory not specified");
-		} catch (ResourceInitializationException e) {}
-
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-				"org.cleartk.util.PlainTextWriter",
-				PlainTextWriter.PARAM_OUTPUT_DIRECTORY, this.outputDir.getPath());
-		engine.collectionProcessComplete();
-	}
+	
 
 }

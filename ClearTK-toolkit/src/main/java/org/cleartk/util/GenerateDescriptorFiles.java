@@ -115,6 +115,7 @@ public class GenerateDescriptorFiles {
 		writePrimitiveDescription(OpenNLPSentenceSegmenter.class, outputDirectory);
 		writeCollectionReader(Conll2003GoldReader.class, outputDirectory);
 		writeCollectionReader(LineReader.class, outputDirectory);
+		writePrimitiveDescription(PlainTextWriter.class, outputDirectory);
 	}
 	
 	private static File updateOutputDirectory(Class<?> cls, File outputDirectory) {

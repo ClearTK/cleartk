@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 /*
  * This file was copied from the Apache UIMA examples source code base from
  * org.apache.uima.examples.cpe.XCasWriterCasConsumer and modified.  The apache
@@ -53,61 +53,59 @@ import java.io.IOException;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
-import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
-import org.cleartk.CleartkComponents;
-import org.uutuc.factory.AnalysisEngineFactory;
-
+import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.util.InitializeUtil;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
- *
- * A simple CAS consumer that creates plain text files from the document text 
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * 
+ * 
+ * A simple CAS consumer that creates plain text files from the document text
  * given to each CAS
  * 
  * @author Philip Ogren
  */
 
-public class PlainTextWriter extends JCasAnnotator_ImplBase
-{
-	/** 
-	 * "org.cleartk.util.PlainTextWriter.PARAM_OUTPUT_DIRECTORY"
-	 * is a single, required string parameter that takes a
-	 * path to directory into which output files will be written.
-	 */
-	public static final String PARAM_OUTPUT_DIRECTORY = "org.cleartk.util.PlainTextWriter.PARAM_OUTPUT_DIRECTORY";
+public class PlainTextWriter extends JCasAnnotator_ImplBase {
+	public static final String PARAM_OUTPUT_DIRECTORY_NAME = "org.cleartk.util.PlainTextWriter.outputDirectoryName";
 
-	private File outputDir;
+	@ConfigurationParameter(name = PARAM_OUTPUT_DIRECTORY_NAME, mandatory = true, description = "takes a path to directory into which output files will be written.")
+	private String outputDirectoryName;
+
+	private File outputDirectory;
 
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
-		this.outputDir = new File((String)UIMAUtil.getRequiredConfigParameterValue(
-				context, PlainTextWriter.PARAM_OUTPUT_DIRECTORY));
-		if (!this.outputDir.exists()) {
-			this.outputDir.mkdirs();
+		InitializeUtil.initialize(this, context);
+
+		this.outputDirectory = new File(outputDirectoryName);
+		if (!this.outputDirectory.exists()) {
+			this.outputDirectory.mkdirs();
 		}
 	}
 
 	@Override
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
-    	String id = ViewURIUtil.getURI(jCas);
-	    File outFile = new File(this.outputDir, id + ".txt");
-	    try {
+		String id = ViewURIUtil.getURI(jCas);
+		File outFile = new File(this.outputDirectory, id + ".txt");
+		try {
 			FileUtils.saveString2File(jCas.getDocumentText(), outFile);
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			throw new AnalysisEngineProcessException(e);
 		}
 	}
-	
-	public static AnalysisEngineDescription getDescription(String outputDirectory) throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveDescription(PlainTextWriter.class, CleartkComponents.TYPE_SYSTEM_DESCRIPTION, PlainTextWriter.PARAM_OUTPUT_DIRECTORY, outputDirectory);
-		
+
+	public void setOutputDirectoryName(String outputDirectoryName) {
+		this.outputDirectoryName = outputDirectoryName;
 	}
+
 }
