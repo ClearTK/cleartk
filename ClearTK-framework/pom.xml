@@ -17,7 +17,7 @@
 			</snapshots>
 			<id>apache-m2-incubating-repository</id>
 			<name>Apache m2-incubating-repository</name>
-			<url>http://people.apache.org/repo/m2-incubating-repository/</url>
+			<url>http://people.apache.org/repo/m2-incubating-repository</url>
 		</repository>
 		<repository>
 			<snapshots>
@@ -25,7 +25,7 @@
 			</snapshots>
 			<id>uutuc-googlecode</id>
 			<name>uutuc Google Code repository</name>
-			<url>http://uutuc.googlecode.com/svn/repo/</url>
+			<url>http://uutuc.googlecode.com/svn/repo</url>
 		</repository>
 		<repository>
 			<snapshots>
@@ -33,7 +33,7 @@
 			</snapshots>
 			<id>cleartk-googlecode</id>
 			<name>ClearTK Google Code repository</name>
-			<url>http://cleartk.googlecode.com/svn/repo/</url>
+			<url>http://cleartk.googlecode.com/svn/repo</url>
 		</repository>
 	</repositories>
 	<dependencies>
@@ -81,8 +81,6 @@
 			<artifactId>libsvm</artifactId>
 			<version>2.89</version>
 			<type>jar</type>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/libsvm-2.89.jar</systemPath>
 			<optional>false</optional>
 		</dependency>
 		<dependency>
