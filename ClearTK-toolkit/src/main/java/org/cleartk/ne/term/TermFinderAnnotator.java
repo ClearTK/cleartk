@@ -45,6 +45,8 @@ import org.cleartk.ne.term.util.TermMatch;
 import org.cleartk.token.util.PennTreebankTokenizer;
 import org.cleartk.token.util.Token;
 import org.cleartk.util.UIMAUtil;
+import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.util.InitializeUtil;
 
 
 /**
@@ -60,62 +62,50 @@ import org.cleartk.util.UIMAUtil;
 
 public class TermFinderAnnotator extends JCasAnnotator_ImplBase {
 
-	/**
-	 * "org.cleartk.ne.term.TermFinderAnnotator.PARAM_TERM_LIST_LISTING"
-	 * is a single, required string parameter that points to a
-	 * file that contains a listing of term list files that are to be loaded.
-	 * Each line of the file should contain the name of a term list followed by
-	 * the name of the file that contains the terms, a boolean ('true' or
-	 * 'false') that indicates whether the file should be treated as case
-	 * sensitive followed optionally by separator string to be used to separate
-	 * an id from a term if the file contains ids. The values on each line
-	 * should be tab delimited. Also, see data/lexicons/README
-	 */
-
-	public static final String PARAM_TERM_LIST_LISTING = "org.cleartk.ne.term.TermFinderAnnotator.PARAM_TERM_LIST_LISTING";
-
-	/**
-	 * "org.cleartk.ne.term.TermFinderAnnotator.PARAM_SENTENCE_CLASS"
-	 * is a single, optional, string parameter that names the
-	 * class of the type system type from which to extract tokens. Any
-	 * annotation that contains tokens can be used (e.g. sentence, paragraph,
-	 * document). If no value is given for this parameter, then all tokens will
-	 * be searched. An example value might be: <br>
-	 * <code>org.cleartk.type.Sentence</code>
-	 */
-	public static final String PARAM_SENTENCE_CLASS = "org.cleartk.ne.term.TermFinderAnnotator.PARAM_SENTENCE_CLASS";
-
-	/**
-	 * "org.cleartk.ne.term.TermFinderAnnotator.PARAM_TOKEN_CLASS"
-	 * is a single, required, string parameter that names the class
-	 * of the type system type corresponding to tokens. A good value for this
-	 * would be: <br>
-	 * <code>org.cleartk.type.Token</code>
-	 */
-	public static final String PARAM_TOKEN_CLASS = "org.cleartk.ne.term.TermFinderAnnotator.PARAM_TOKEN_CLASS";
-
-	/**
-	 * "org.cleartk.ne.term.TermFinderAnnotator.PARAM_TERM_MATCH_ANNOTATION_CREATOR"
-	 * is a single, optional, string parameter that
-	 * provides the class name of a class that extends
-	 * org.cleartk.bio.TermMatchAnnotationCreator. If this parameter is
-	 * not given a value, then the parameter PARAM_TERM_MATCH_ANNOTATION_CLASS
-	 * must be given a value.
-	 */
-	public static final String PARAM_TERM_MATCH_ANNOTATION_CREATOR = "org.cleartk.ne.term.TermFinderAnnotator.PARAM_TERM_MATCH_ANNOTATION_CREATOR";
-
-	/**
-	 * "org.cleartk.ne.term.TermFinderAnnotator.PARAM_TERM_MATCH_ANNOTATION_CLASS"
-	 * is a single, optional, string parameter that
-	 * names the class of the type system type that specifies the annotations
-	 * created of found term matches. One annotation is created for each term
-	 * match found of the given type specified by this parameter. This parameter
-	 * is ignored if PARAM_TERM_MATCH_ANNOTATION_CREATOR is given a value. An
-	 * example value might be something like: <br>
-	 * <code>org.cleartk.type.ne.NamedEntityMention</code>
-	 */
-	public static final String PARAM_TERM_MATCH_ANNOTATION_CLASS = "org.cleartk.ne.term.TermFinderAnnotator.PARAM_TERM_MATCH_ANNOTATION_CLASS";
-
+	public static final String PARAM_TERM_LIST_FILE_NAMES_FILE_NAME = "org.cleartk.ne.term.TermFinderAnnotator.termListFileNamesFileName";
+	public static final String TERM_LIST_FILE_NAMES_FILE_NAME_DESCRIPTION = "Provides the name of a file that contains file names of term lists that are to be loaded. " +
+			"Each line of the file should contain the name of a term list followed by the name of the file that contains the terms, a boolean ('true' or 'false')  " +
+			"that indicates whether the file should be treated as case sensitive followed optionally by separator string to be used to separate  " +
+			"an id from a term if the file contains ids. The values on each line should be tab delimited. ";
+	@ConfigurationParameter(
+			name = PARAM_TERM_LIST_FILE_NAMES_FILE_NAME,
+			mandatory = true,
+			description = TERM_LIST_FILE_NAMES_FILE_NAME_DESCRIPTION)
+	public String termListFileNamesFileName;
+	
+	public static final String PARAM_WINDOW_CLASS_NAME = "org.cleartk.ne.term.TermFinderAnnotator.windowClassName";
+	@ConfigurationParameter(
+			name = PARAM_WINDOW_CLASS_NAME,
+			description = "names the class of the type system type from which to extract tokens. " +
+					"Any annotation that contains tokens can be used (e.g. sentence, paragraph, document).  " +
+					"If no value is given for this parameter, then all tokens will be searched. An example value might be 'org.cleartk.type.Sentence'")
+	private String windowClassName;
+	
+	public static final String PARAM_TOKEN_CLASS_NAME = "org.cleartk.ne.term.TermFinderAnnotator.tokenClassName";
+	@ConfigurationParameter(
+			name = PARAM_TOKEN_CLASS_NAME,
+			mandatory = true,
+			defaultValue = "org.cleartk.type.Token",
+			description = "names the class of the type system type corresponding to tokens. ")
+	private String tokenClassName;
+	
+	public static final String PARAM_TERM_MATCH_ANNOTATION_CLASS_NAME = "org.cleartk.ne.term.TermFinderAnnotator.termMatchAnnotationClassName";
+	public static final String PARAM_TERM_MATCH_ANNOTATION_CREATOR_CLASS_NAME = "org.cleartk.ne.term.TermFinderAnnotator.termMatchAnnotationCreatorClassName";
+	@ConfigurationParameter(
+			name = PARAM_TERM_MATCH_ANNOTATION_CREATOR_CLASS_NAME,
+			description = "provides the class name of a class that extends org.cleartk.ne.term.TermMatchAnnotationCreator. If this parameter is " +
+					"not given a value, then the parameter '"+ PARAM_TERM_MATCH_ANNOTATION_CLASS_NAME+"'  must be given a value.")
+	private String termMatchAnnotationCreatorClassName;
+	
+	@ConfigurationParameter(
+			name = PARAM_TERM_MATCH_ANNOTATION_CLASS_NAME,
+			defaultValue = "org.cleartk.ne.type.NamedEntityMention",
+			description = "names the class of the type system type that specifies the annotations " +
+					"created of found term matches. One annotation is created for each term " +
+					"match found of the given type specified by this parameter. This parameter is ignored if '" +
+					PARAM_TERM_MATCH_ANNOTATION_CREATOR_CLASS_NAME+"' is given a value.")
+	private String termMatchAnnotationClassName;
+	
 	TermFinder caseSensitiveTermFinder;
 
 	TermFinder caseInsensitiveTermFinder;
@@ -139,9 +129,10 @@ public class TermFinderAnnotator extends JCasAnnotator_ImplBase {
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		try {
+			InitializeUtil.initialize(this, context);
+			
 			// load the term lists
-			String termLists = (String) context.getConfigParameterValue(PARAM_TERM_LIST_LISTING);
-			BufferedReader input = new BufferedReader(new FileReader(termLists));
+			BufferedReader input = new BufferedReader(new FileReader(termListFileNamesFileName));
 			String line;
 			while ((line = input.readLine()) != null) {
 				line = line.trim();
@@ -161,37 +152,19 @@ public class TermFinderAnnotator extends JCasAnnotator_ImplBase {
 				else caseInsensitiveTermFinder.addTermList(termList);
 			}
 
-			// sentence class
-			String sentenceClassName = (String) context.getConfigParameterValue(PARAM_SENTENCE_CLASS);
-			if (sentenceClassName != null) {
+			if (windowClassName != null) {
 				allTokens = false;
-				Class<?> cls = Class.forName(sentenceClassName);
-				sentenceClass = cls.asSubclass(Annotation.class);
+				sentenceClass = UIMAUtil.getClass(windowClassName,  Annotation.class);
 			}
 
-			// token class
-			String tokenClassName = (String) context.getConfigParameterValue(PARAM_TOKEN_CLASS);
-			Class<?> cls = Class.forName(tokenClassName);
-			tokenClass = cls.asSubclass(Annotation.class);
+			tokenClass = UIMAUtil.getClass(tokenClassName, Annotation.class);
 
-			// annotation creator or constructor
-			String termMatchAnnotationCreatorClassName = (String) context
-					.getConfigParameterValue(PARAM_TERM_MATCH_ANNOTATION_CREATOR);
 			if (termMatchAnnotationCreatorClassName != null && !termMatchAnnotationCreatorClassName.equals("")) {
-				cls = Class.forName(termMatchAnnotationCreatorClassName);
-				Class<? extends TermMatchAnnotationCreator> annotationCreatorClass = cls
-						.asSubclass(TermMatchAnnotationCreator.class);
-				annotationCreator = annotationCreatorClass.newInstance();
-				annotationCreator.initialize(context);
+				annotationCreator = UIMAUtil.create(termMatchAnnotationCreatorClassName, TermMatchAnnotationCreator.class, context);
 			}
 			else {
-				// annotationConstructor
-				String annotationClassName = (String) context
-						.getConfigParameterValue(PARAM_TERM_MATCH_ANNOTATION_CLASS);
-				cls = Class.forName(annotationClassName);
-				Class<? extends Annotation> annotationClass = cls.asSubclass(Annotation.class);
-				annotationConstructor = annotationClass.getConstructor(new Class[] { JCas.class,
-						java.lang.Integer.TYPE, java.lang.Integer.TYPE });
+				Class<? extends Annotation> annotationClass = UIMAUtil.getClass(termMatchAnnotationClassName, Annotation.class);
+				annotationConstructor = annotationClass.getConstructor(new Class[] { JCas.class, java.lang.Integer.TYPE, java.lang.Integer.TYPE });
 			}
 		}
 		catch (Exception e) {
@@ -267,6 +240,26 @@ public class TermFinderAnnotator extends JCasAnnotator_ImplBase {
 			}
 
 		}
+	}
+
+	public void setTermListFileNamesFileName(String termListFileNamesFileName) {
+		this.termListFileNamesFileName = termListFileNamesFileName;
+	}
+
+	public void setWindowClassName(String windowClassName) {
+		this.windowClassName = windowClassName;
+	}
+
+	public void setTokenClassName(String tokenClassName) {
+		this.tokenClassName = tokenClassName;
+	}
+
+	public void setTermMatchAnnotationCreatorClassName(String termMatchAnnotationCreatorClassName) {
+		this.termMatchAnnotationCreatorClassName = termMatchAnnotationCreatorClassName;
+	}
+
+	public void setTermMatchAnnotationClassName(String termMatchAnnotationClassName) {
+		this.termMatchAnnotationClassName = termMatchAnnotationClassName;
 	}
 
 }

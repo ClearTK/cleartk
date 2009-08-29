@@ -44,6 +44,7 @@ import org.cleartk.corpus.timeml.TimeMLGoldAnnotator;
 import org.cleartk.corpus.timeml.TimeMLWriter;
 import org.cleartk.example.pos.ExamplePOSAnnotationHandler;
 import org.cleartk.example.pos.ExamplePOSPlainTextWriter;
+import org.cleartk.ne.term.TermFinderAnnotator;
 import org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter;
 import org.cleartk.srl.propbank.PropbankGoldAnnotator;
 import org.cleartk.srl.propbank.PropbankGoldReader;
@@ -117,6 +118,7 @@ public class GenerateDescriptorFiles {
 		writeCollectionReader(LineReader.class, outputDirectory);
 		writePrimitiveDescription(PlainTextWriter.class, outputDirectory);
 		writePrimitiveDescription(XWriter.class, outputDirectory);
+		writePrimitiveDescription(TermFinderAnnotator.class, outputDirectory);
 	}
 	
 	private static File updateOutputDirectory(Class<?> cls, File outputDirectory) {

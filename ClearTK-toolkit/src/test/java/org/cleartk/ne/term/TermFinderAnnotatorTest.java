@@ -23,15 +23,12 @@
  */
 package org.cleartk.ne.term;
 
-import static org.junit.Assert.assertNotNull;
-
 import java.io.IOException;
 import java.util.List;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
@@ -57,10 +54,10 @@ public class TermFinderAnnotatorTest {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				TermFinderAnnotator.class, TypeSystemDescriptionFactory.createTypeSystemDescription(
 						Sentence.class, Token.class, NamedEntityMention.class),
-				TermFinderAnnotator.PARAM_TERM_LIST_LISTING,
+				TermFinderAnnotator.PARAM_TERM_LIST_FILE_NAMES_FILE_NAME,
 				"test/data/termlist/termlist.txt",
-				TermFinderAnnotator.PARAM_TOKEN_CLASS, Token.class.getName(),
-				TermFinderAnnotator.PARAM_TERM_MATCH_ANNOTATION_CLASS,
+				TermFinderAnnotator.PARAM_TOKEN_CLASS_NAME, Token.class.getName(),
+				TermFinderAnnotator.PARAM_TERM_MATCH_ANNOTATION_CLASS_NAME,
 				NamedEntityMention.class.getName());
 		JCas jCas = engine.newJCas();
 		TokenFactory.createTokens(jCas, "I would like to visit Alaska.",Token.class, Sentence.class, 
@@ -72,30 +69,6 @@ public class TermFinderAnnotatorTest {
 		Assert.assertEquals(mentions.size(), 1);
 		NamedEntityMention mention = mentions.get(0);
 		Assert.assertEquals("Alaska", mention.getCoveredText());
-	}
-
-	@Test
-	public void testTermFinderAnnotatorDescriptor() throws UIMAException,
-			IOException {
-
-		ResourceInitializationException rie = null;
-		try {
-
-			AnalysisEngineFactory.createAnalysisEngine("org.cleartk.ne.term.TermFinderAnnotator");
-		} catch (ResourceInitializationException e) {
-			rie = e;
-		}
-		assertNotNull(rie);
-
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-				"org.cleartk.ne.term.TermFinderAnnotator",
-				TermFinderAnnotator.PARAM_TERM_LIST_LISTING,
-				"test/data/termlist/termlist.txt");
-		Object handler = engine
-				.getConfigParameterValue(TermFinderAnnotator.PARAM_TOKEN_CLASS);
-		Assert.assertEquals(Token.class.getName(), handler);
-
-		engine.collectionProcessComplete();
 	}
 
 }

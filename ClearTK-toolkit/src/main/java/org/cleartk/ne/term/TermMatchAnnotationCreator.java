@@ -27,6 +27,7 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.Initializable;
 import org.cleartk.ne.term.util.TermMatch;
 
 
@@ -36,7 +37,7 @@ import org.cleartk.ne.term.util.TermMatch;
 
 */
 
-public interface TermMatchAnnotationCreator {
+public interface TermMatchAnnotationCreator extends Initializable {
 
 	public Annotation createTermMatchAnnotation(JCas jCas, TermMatch termMatch);
 

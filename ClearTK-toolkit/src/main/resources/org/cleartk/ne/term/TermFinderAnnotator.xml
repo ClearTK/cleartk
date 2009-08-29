@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+    <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+    <primitive>true</primitive>
+    <annotatorImplementationName>org.cleartk.ne.term.TermFinderAnnotator</annotatorImplementationName>
+    <analysisEngineMetaData>
+        <name>TermFinderAnnotator</name>
+        <description>This descriptor file was generated automatically by org.cleartk.util.GenerateDescriptorFiles. 
+
+Copyright (c) 2009, Regents of the University of Colorado 
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+
+ - Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. 
+ - Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. 
+ - Neither the name of the University of Colorado at Boulder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. 
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+
+</description>
+        <configurationParameters>
+            <configurationParameter>
+                <name>org.cleartk.ne.term.TermFinderAnnotator.termListFileNamesFileName</name>
+                <description>Provides the name of a file that contains file names of term lists that are to be loaded. Each line of the file should contain the name of a term list followed by the name of the file that contains the terms, a boolean ('true' or 'false')  that indicates whether the file should be treated as case sensitive followed optionally by separator string to be used to separate  an id from a term if the file contains ids. The values on each line should be tab delimited. </description>
+                <type>String</type>
+                <multiValued>false</multiValued>
+                <mandatory>true</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>org.cleartk.ne.term.TermFinderAnnotator.windowClassName</name>
+                <description>names the class of the type system type from which to extract tokens. Any annotation that contains tokens can be used (e.g. sentence, paragraph, document).  If no value is given for this parameter, then all tokens will be searched. An example value might be 'org.cleartk.type.Sentence'</description>
+                <type>String</type>
+                <multiValued>false</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>org.cleartk.ne.term.TermFinderAnnotator.tokenClassName</name>
+                <description>names the class of the type system type corresponding to tokens. </description>
+                <type>String</type>
+                <multiValued>false</multiValued>
+                <mandatory>true</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>org.cleartk.ne.term.TermFinderAnnotator.termMatchAnnotationCreatorClassName</name>
+                <description>provides the class name of a class that extends org.cleartk.ne.term.TermMatchAnnotationCreator. If this parameter is not given a value, then the parameter 'org.cleartk.ne.term.TermFinderAnnotator.termMatchAnnotationClassName'  must be given a value.</description>
+                <type>String</type>
+                <multiValued>false</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>org.cleartk.ne.term.TermFinderAnnotator.termMatchAnnotationClassName</name>
+                <description>names the class of the type system type that specifies the annotations created of found term matches. One annotation is created for each term match found of the given type specified by this parameter. This parameter is ignored if 'org.cleartk.ne.term.TermFinderAnnotator.termMatchAnnotationCreatorClassName' is given a value.</description>
+                <type>String</type>
+                <multiValued>false</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
+        </configurationParameters>
+        <configurationParameterSettings>
+            <nameValuePair>
+                <name>org.cleartk.ne.term.TermFinderAnnotator.tokenClassName</name>
+                <value>
+                    <string>org.cleartk.type.Token</string>
+                </value>
+            </nameValuePair>
+            <nameValuePair>
+                <name>org.cleartk.ne.term.TermFinderAnnotator.termMatchAnnotationClassName</name>
+                <value>
+                    <string>org.cleartk.ne.type.NamedEntityMention</string>
+                </value>
+            </nameValuePair>
+        </configurationParameterSettings>
+        <typeSystemDescription>
+            <imports>
+                <import name="org.cleartk.TypeSystem"/>
+            </imports>
+        </typeSystemDescription>
+        <capabilities/>
+        <operationalProperties>
+            <modifiesCas>true</modifiesCas>
+            <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+            <outputsNewCASes>false</outputsNewCASes>
+        </operationalProperties>
+    </analysisEngineMetaData>
+</analysisEngineDescription>
