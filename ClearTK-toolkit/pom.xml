@@ -83,18 +83,14 @@
 			<optional>false</optional>
 		</dependency>
 		<dependency>
-			<groupId>net.sourceforge.opennlp</groupId>
-			<artifactId>opennlp-tools</artifactId>
+			<groupId>opennlp</groupId>
+			<artifactId>tools</artifactId>
 			<version>1.4.1</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/opennlp-tools-1.4.1.jar</systemPath>
 		</dependency>
 		<dependency>
-			<groupId>snowball</groupId>
+			<groupId>lucene</groupId>
 			<artifactId>snowball</artifactId>
-			<version>2.2.0</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/lucene-snowball-2.2.0-cleartk-modified.jar</systemPath>
+			<version>2.2.0-cleartk-modified</version>
 		</dependency>
 		<dependency>
 			<groupId>org.uutuc</groupId>
