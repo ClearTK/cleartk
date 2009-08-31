@@ -54,6 +54,7 @@ import org.cleartk.token.pos.impl.DefaultPOSHandler;
 import org.cleartk.token.snowball.DefaultSnowballStemmer;
 import org.cleartk.util.linereader.LineReader;
 import org.cleartk.util.linewriter.LineWriter;
+import org.uutuc.util.JCasAnnotatorAdapter;
 import org.xml.sax.SAXException;
 
 public class GenerateDescriptorFiles {
@@ -119,6 +120,7 @@ public class GenerateDescriptorFiles {
 		writePrimitiveDescription(PlainTextWriter.class, outputDirectory);
 		writePrimitiveDescription(XWriter.class, outputDirectory);
 		writePrimitiveDescription(TermFinderAnnotator.class, outputDirectory);
+		writePrimitiveDescription(JCasAnnotatorAdapter.class, outputDirectory);
 	}
 	
 	private static File updateOutputDirectory(Class<?> cls, File outputDirectory) {
