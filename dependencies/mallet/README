@@ -1,0 +1,57 @@
+Name: Mallet
+Version: mallet-2.0-RC4 (but see note below)
+Homepage: http://mallet.cs.umass.edu/
+License: Common Public License Version 1.0 - please see mallet.license, the notes below, and mallet-deps.LICENSES
+Notes: 
+
+Mallet was built from source using the 2.0-RC4 source release.  
+
+The following changes were made:
+
+cc.mallet.pipe.Csv2FeatureVector.java 
+The line (about 65) with the following text was removed:
+
+java.util.Arrays.sort(keyIndices); 
+
+removed cc.mallet.fst.LabelDistributionEvaluator -  
+removed cc.mallet.util.resources.wn.Examples - removes need for jwnl-1.3.jar
+
+The only remaining dependencies for Mallet are given in the pom file.  
+ 
+Here is how I determined the dependencies.  First I created a Java project in Eclipse 
+with the contents of the downloadable mallet-2.0-RC4.tar.gz using the Eclipse new project 
+wizard called "Java Project from Existing Ant Buildfile".  This created a project that compiles but 
+has all of the jar files in the lib directory on the classpath.  I removed all of the jar files not listed
+in lib/Makefile.  I then removed additional jar files that I didn't think would be needed.  These were:
+jwnl-1.3.jar
+openjgraph.jar
+secondstring-serializable.jar
+xml-apis.jar 
+xmlParserAPIs.jar 
+
+I then made the changes detailed above to the source code.  Next, I rebuilt mallet-deps.jar using lib/Makefile after
+making the obvious edits to the Makefile.  I then rebuilt mallet.jar using the Makefile in the top-level directory.  I put
+the rebuilt mallet.jar and mallet-deps.jar into ClearTK-framework/lib directory and added them to the classpath by adding
+the following snippet of xml to the pom file:
+
+		<dependency>
+			<groupId>mallet</groupId>
+			<artifactId>mallet</artifactId>
+			<version>2.0-RC4</version>
+			<type>jar</type>
+			<optional>false</optional>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/mallet.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>mallet</groupId>
+			<artifactId>mallet-deps</artifactId>
+			<version>2.0-RC4</version>
+			<type>jar</type>
+			<optional>false</optional>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/mallet-deps.jar</systemPath>
+		</dependency>
+
+I then made sure a clean compile of both ClearTK-framework and ClearTK-toolkit was performed and then I ran all the unit tests.  
+I then felt confident I had all of the dependencies accounted for and created the pom file found here.  
