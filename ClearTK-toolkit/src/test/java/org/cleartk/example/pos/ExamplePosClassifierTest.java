@@ -108,7 +108,7 @@ public class ExamplePosClassifierTest {
 		testClassifier(dataWriter, outputDirectory, -1); //viterbi stack size is meaningless here so pass in an invalid value to make sure it is ignored.
 
 		String firstLine = FileUtil.loadListOfStrings(new File(outputDirectory + "/2008_Sichuan_earthquake.txt.pos"))[0].trim();
-		assertEquals("2008/NN Sichuan/JJ earthquake/NNS From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/NN", firstLine);
+		assertEquals("2008/NN Sichuan/JJ earthquake/NNS From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/IN", firstLine);
 		
 	}
 
@@ -128,7 +128,7 @@ public class ExamplePosClassifierTest {
 		testClassifier(dataWriter, outputDirectory, -1); //viterbi stack size is meaningless here so pass in an invalid value to make sure it is ignored.
 		
 		String firstLine = FileUtil.loadListOfStrings(new File(outputDirectory + "/2008_Sichuan_earthquake.txt.pos"))[0].trim();
-		assertEquals("2008/IN Sichuan/JJ earthquake/NNS From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/NN", firstLine);
+		assertEquals("2008/IN Sichuan/JJ earthquake/NNS From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/IN", firstLine);
 	}
 
 	@Test
