@@ -35,7 +35,7 @@ import org.cleartk.type.Token;
 
 */
 
-public class TestTokenWriter implements AnnotationWriter<Token> {
+public class ExampleTokenWriter implements AnnotationWriter<Token> {
 
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		// TODO Auto-generated method stub

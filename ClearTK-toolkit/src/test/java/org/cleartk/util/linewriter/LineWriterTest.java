@@ -169,7 +169,7 @@ public class LineWriterTest {
 					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 					LineWriter.PARAM_OUTPUT_FILE_NAME, new File(outputDir, "output.txt").getPath(), 
 					LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token",
-					LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME, "org.cleartk.util.linewriter.TestTokenWriter");
+					LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME, ExampleTokenWriter.class.getName());
 		
 		JCas jCas = engine.newJCas();
 		String text = "Me and all my friends are non-conformists.  I will subjugate my freedom oppressor.";
@@ -338,7 +338,7 @@ public class LineWriterTest {
 
 		rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_DIRECTORY_NAME, "test/data/linewriter", 
 				LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, "org.cleartk.type.Sentence",
-				LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME, "org.cleartk.util.linewriter.TestTokenWriter");
+				LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME, ExampleTokenWriter.class.getName());
 		assertNotNull(rie);
 	}
 
