@@ -1,0 +1,5 @@
+JGraphT is hosted at http://jgrapht.sourceforge.net/ and is released under the LGPL.  Please see
+http://jgrapht.sourceforge.net/LGPL.html.
+
+version 0.6.0 is used only because that is what mallet-2.0-RC4 requires.  
+
