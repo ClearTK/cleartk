@@ -36,11 +36,11 @@ import org.cleartk.classifier.SequentialInstanceConsumer;
 
 */
 
-public class TestChunkHandlerInstanceConsumer implements SequentialInstanceConsumer<String> {
+public class ExampleChunkHandlerInstanceConsumer implements SequentialInstanceConsumer<String> {
 
 	boolean expectsOutcomes = false;
 	
-	public TestChunkHandlerInstanceConsumer(boolean expectsOutcomes) {
+	public ExampleChunkHandlerInstanceConsumer(boolean expectsOutcomes) {
 		this.expectsOutcomes = expectsOutcomes;
 	}
 	

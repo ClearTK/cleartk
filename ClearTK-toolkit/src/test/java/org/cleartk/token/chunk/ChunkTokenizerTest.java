@@ -91,7 +91,7 @@ public class ChunkTokenizerTest {
 		  			ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token",
 		  			ChunkerHandler.PARAM_SEQUENCE_CLASS_NAME, "org.cleartk.type.Sentence",
 		  			ChunkerHandler.PARAM_CHUNK_LABELER_CLASS_NAME, "org.cleartk.chunk.DefaultChunkLabeler",
-		  			ChunkerHandler.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME, TestChunkFeatureExtractor.class.getName(),
+		  			ChunkerHandler.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME, ExampleChunkFeatureExtractor.class.getName(),
 		  			ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME, "org.cleartk.type.Chunk",
 		  			DefaultChunkLabeler.PARAM_CHUNK_LABEL_FEATURE_NAME, "chunkType"
 		  );
@@ -118,7 +118,7 @@ public class ChunkTokenizerTest {
 			chunk.addToIndexes();
 		  }
 		  
-		chunkerHandler.process(jCas, new TestChunkHandlerInstanceConsumer(true));
+		chunkerHandler.process(jCas, new ExampleChunkHandlerInstanceConsumer(true));
 		
 		Token token = tokens.get(0);
 		assertEquals("B-chunk1", chunkLabeler.getLabel(token));
@@ -142,7 +142,7 @@ public class ChunkTokenizerTest {
 		 assertEquals(0, chunks.size());
 		 
 		 UIMAUtil.initialize(chunkLabeler, engine.getUimaContext());
-		chunkerHandler.process(jCas, new TestChunkHandlerInstanceConsumer(false));
+		chunkerHandler.process(jCas, new ExampleChunkHandlerInstanceConsumer(false));
 		
 		chunks = AnnotationRetrieval.getAnnotations(jCas, Chunk.class);
 		assertEquals(6, chunks.size());

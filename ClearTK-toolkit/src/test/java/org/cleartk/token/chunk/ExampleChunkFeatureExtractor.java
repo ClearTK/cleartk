@@ -48,7 +48,7 @@ import org.cleartk.type.Token;
 
 */
 
-public class TestChunkFeatureExtractor implements ChunkerFeatureExtractor {
+public class ExampleChunkFeatureExtractor implements ChunkerFeatureExtractor {
 
 	private List<SimpleFeatureExtractor> simpleFeatureExtractors;
 	private List<WindowExtractor> windowExtractors;
