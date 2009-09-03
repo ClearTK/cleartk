@@ -87,7 +87,7 @@ public class LineReaderTest {
 	public void test2() throws Exception {
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(LineReader.class, null, LineReader.PARAM_FILE_OR_DIRECTORY_NAME, "test/data/docs/linereader",
 				LineReader.PARAM_LINE_HANDLER_CLASS_NAME, SimpleLineHandler.class.getName(),
-				SimpleLineHandler.PARAM_DELIMITER, "|", LineReader.PARAM_SUFFIXES, new String[] { ".txt", ".dat" },
+				SimpleLineHandler.PARAM_DELIMITER, "|", LineReader.PARAM_SUFFIXES, new String[] { ".txt"},
 				LineReader.PARAM_COMMENT_SPECIFIERS, new String[] { "#", "//" });
 
 		Assert.assertEquals(0, reader.getProgress()[0].getCompleted());
@@ -101,6 +101,13 @@ public class LineReaderTest {
 		test(jCasIterable, "... but too bad!        	", "D", File.separator + "a-test1.txt");
 		test(jCasIterable, "will it ever end?  yes - very soon...", "EEEK", File.separator + "a-test1.txt");
 		test(jCasIterable, "Fin", "Z", File.separator + "a-test1.txt");
+		
+		
+		reader = CollectionReaderFactory.createCollectionReader(LineReader.class, null, LineReader.PARAM_FILE_OR_DIRECTORY_NAME, "test/data/docs/linereader",
+				LineReader.PARAM_LINE_HANDLER_CLASS_NAME, SimpleLineHandler.class.getName(),
+				SimpleLineHandler.PARAM_DELIMITER, "|", LineReader.PARAM_SUFFIXES, new String[] { ".dat"},
+				LineReader.PARAM_COMMENT_SPECIFIERS, new String[] { "#", "//" });
+		jCasIterable = new JCasIterable(reader);
 		test(jCasIterable, "a bc def ghij klmno pqrstu vwxyz", "1234", File.separator + "b-test2.dat");
 		assertFalse(jCasIterable.hasNext());
 	}
