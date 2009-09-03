@@ -118,6 +118,9 @@ public class PropbankGoldReader extends CollectionReader_ImplBase {
 			this.wsjSpecification = new ListSpecification(wsjSections);
 
 			File propbankFile = new File(propbankFileName);
+			if(!propbankFile.exists()) {
+				throw new ResourceInitializationException(new IllegalArgumentException("could not find file: "+propbankFile.getPath()));
+			}
 			BufferedReader reader = new BufferedReader(new FileReader(propbankFile));
 			propbankData = new LinkedList<String>();
 			String line;
@@ -130,6 +133,9 @@ public class PropbankGoldReader extends CollectionReader_ImplBase {
 			treebankDirectory = new File(penntreebankDirectoryName);
 			//don't forget that the paths in props.txt have "wsj" in the name.
 			File wsjDirectory = new File(treebankDirectory, "wsj");
+			if(!wsjDirectory.exists()) {
+				throw new ResourceInitializationException(new IllegalArgumentException("could not find file: "+treebankDirectory.getPath()+" or this directory does not contain a sub-directory named 'wsj' as expected by propbank data."));
+			}
 			PennTreebankReader.collectSections(wsjDirectory, this.treebankFiles, this.wsjSpecification);
 			Collections.sort(treebankFiles);
 			this.totalTreebankFiles = treebankFiles.size();
