@@ -1,0 +1,9 @@
+Name: OpenNLP Tools
+Version: please see note below
+	maxent-2.5.1 
+Homepage: 
+	https://sourceforge.net/projects/opennlp/
+License: LGPL - please see opennlp.license
+Notes:
+
+opennlp-tools-1.4.1.jar was compiled from source as downloaded from sourceforge on October 15th, 2008.  The source was obtained from the official release downloads (not the repository) for this version.  No changes were made to the source code.  However, compilation was done using trove-2.0.4.jar rather than the version distributed with these versions of the opennlp libraries.  
