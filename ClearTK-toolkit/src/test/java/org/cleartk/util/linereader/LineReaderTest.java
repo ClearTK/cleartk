@@ -51,7 +51,7 @@ public class LineReaderTest {
 	public void test1() throws Exception {
 		String languageCode = "en-us";
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(LineReader.class, null, LineReader.PARAM_FILE_OR_DIRECTORY_NAME, "test/data/docs/linereader",
-				LineReader.PARAM_LANGUAGE, languageCode);
+				LineReader.PARAM_LANGUAGE, languageCode, LineReader.PARAM_SUFFIXES, new String[] {".txt"});
 
 		Assert.assertEquals(0, reader.getProgress()[0].getCompleted());
 
@@ -67,11 +67,19 @@ public class LineReaderTest {
 		test(jCasIterable, "D|... but too bad!        	", "6", File.separator + "a-test1.txt");
 		test(jCasIterable, "EEEK|will it ever end?  yes - very soon...", "7", File.separator + "a-test1.txt");
 		test(jCasIterable, "Z|Fin", "8", File.separator + "a-test1.txt");
-		test(jCasIterable, "//this file was also created on Monday 10/27/2008", "9", File.separator + "b-test2.dat");
-		test(jCasIterable, "//please see a-test1.txt for an introduction to the material contained in this file.", "10",
+
+		reader = CollectionReaderFactory.createCollectionReader(LineReader.class, null, LineReader.PARAM_FILE_OR_DIRECTORY_NAME, "test/data/docs/linereader",
+				LineReader.PARAM_LANGUAGE, languageCode, LineReader.PARAM_SUFFIXES, new String[] {".dat"});
+
+		Assert.assertEquals(0, reader.getProgress()[0].getCompleted());
+
+		jCasIterable = new JCasIterable(reader);
+
+		test(jCasIterable, "//this file was also created on Monday 10/27/2008", "1", File.separator + "b-test2.dat");
+		test(jCasIterable, "//please see a-test1.txt for an introduction to the material contained in this file.", "2",
 				File.separator + "b-test2.dat");
-		test(jCasIterable, "// another comment", "11", File.separator + "b-test2.dat");
-		test(jCasIterable, "1234|a bc def ghij klmno pqrstu vwxyz", "12", File.separator + "b-test2.dat");
+		test(jCasIterable, "// another comment", "3", File.separator + "b-test2.dat");
+		test(jCasIterable, "1234|a bc def ghij klmno pqrstu vwxyz", "4", File.separator + "b-test2.dat");
 		assertFalse(jCasIterable.hasNext());
 	}
 
