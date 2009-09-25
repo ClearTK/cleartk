@@ -23,11 +23,23 @@
 */
 package org.cleartk.classifier.svmlight;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.BuildJar;
 import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.ClassifierBuilder;
+import org.cleartk.classifier.svmlight.model.SVMlightModel;
+import org.cleartk.classifier.util.LinWengPlatt;
+import org.cleartk.classifier.util.LinWengPlatt.Sigmoid;
+import org.cleartk.classifier.util.featurevector.FeatureVector;
+import org.cleartk.classifier.util.featurevector.SparseFeatureVector;
 
 
 /**
@@ -42,6 +54,33 @@ public class OVASVMlightClassifierBuilder implements ClassifierBuilder<String> {
 		for (File file: dir.listFiles()) {
 			if (file.getName().matches("training-data-\\d+.svmlight")) {
 				SVMlightClassifierBuilder.train(file.getPath(), args);
+				
+				SVMlightModel model = SVMlightModel.fromFile(new File(file.toString() + ".model"));
+				
+				BufferedReader r = new BufferedReader(new FileReader(file));
+				int lines = 0;
+				while( r.readLine() != null )
+					lines += 1;
+				r.close();
+				
+				boolean[] labels = new boolean[lines];
+				double[] decisionValues = new double[lines];
+				int i=0;
+				r = new BufferedReader(new FileReader(file));
+				String line = r.readLine();
+				while( line != null ) {
+					TrainingInstance ti = parseTI(line.trim());
+					labels[i] = ti.getLabel();
+					decisionValues[i] = model.evaluate(ti.getFeatureVector());
+					line = r.readLine();
+				}
+				r.close();
+				
+				Sigmoid s = LinWengPlatt.fit(decisionValues, labels);
+				
+				ObjectOutput o = new ObjectOutputStream(new FileOutputStream(new File(file.toString() + ".sigmoid")));
+				o.writeObject(s);
+				o.close();
 			}
 		}
 	}
@@ -54,6 +93,11 @@ public class OVASVMlightClassifierBuilder implements ClassifierBuilder<String> {
 				name = name.replaceAll("training-data", "model");
 				name = name.replaceAll(".model", "");
 				stream.write(name, file);
+			} else if( file.getName().matches("training-data-\\d+.svmlight.sigmoid")) {
+				String name = file.getName();
+				name = name.replaceAll("training-data", "sigmoid");
+				name = name.replaceAll(".model", "");
+				stream.write(name, file);
 			}
 		}
 		stream.close();
@@ -61,6 +105,42 @@ public class OVASVMlightClassifierBuilder implements ClassifierBuilder<String> {
 
 	public Class<? extends Classifier<String>> getClassifierClass() {
 		return OVASVMlightClassifier.class;
+	}
+	
+	private static TrainingInstance parseTI(String line) throws IOException, CleartkException {
+		String[] fields = line.split(" ");
+		int labeli = Integer.valueOf(fields[0]);
+		boolean label = labeli > 0;
+		
+		FeatureVector fv = new SparseFeatureVector();
+		
+		for( int i=1; i<fields.length; i++ ) {
+			String[] parts = fields[i].split(":");
+			int featureIndex = Integer.valueOf(parts[0]);
+			double featureValue = Double.valueOf(parts[1]);
+			fv.set(featureIndex, featureValue);
+		}
+		
+		return new TrainingInstance(label, fv);
+	}
+	
+	private static class TrainingInstance {
+		
+		public TrainingInstance(boolean label, FeatureVector featureVector) {
+			this.label = label;
+			this.featureVector = featureVector;
+		}
+		
+		public boolean getLabel() {
+			return label;
+		}
+		
+		public FeatureVector getFeatureVector() {
+			return featureVector;
+		}
+		
+		private boolean label;
+		private FeatureVector featureVector;
 	}
 
 }

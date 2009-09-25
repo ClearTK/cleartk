@@ -24,6 +24,8 @@
 package org.cleartk.classifier.svmlight;
 
 import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -34,6 +36,7 @@ import org.cleartk.CleartkException;
 import org.cleartk.classifier.Classifier_ImplBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.svmlight.model.SVMlightModel;
+import org.cleartk.classifier.util.LinWengPlatt.Sigmoid;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
 /**
@@ -44,23 +47,34 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
 public class OVASVMlightClassifier extends Classifier_ImplBase<String,Integer,FeatureVector> {
 	
 	Map<Integer, SVMlightModel> models;
+	Map<Integer, Sigmoid> sigmoids;
 	
 
 	public OVASVMlightClassifier(JarFile modelFile) throws IOException, CleartkException {
 		super(modelFile);
 		this.models = new TreeMap<Integer,SVMlightModel>();
+		this.sigmoids = new TreeMap<Integer,Sigmoid>();
 		
-		int i = 1;
-		ZipEntry modelEntry = modelFile.getEntry(String.format("model-%d.svmlight", i));
-		while( modelEntry != null ) {
-			SVMlightModel m = SVMlightModel.fromInputStream(modelFile.getInputStream(modelEntry));
-			this.models.put(i, m);
-			i += 1;
-			modelEntry = modelFile.getEntry(String.format("model-%d.svmlight", i));
-		}
-		
-		if (this.models.isEmpty()) {
-			throw new IOException(String.format("no models found in %s", modelFile.getName()));
+		try {
+			int i = 1;
+			ZipEntry modelEntry = modelFile.getEntry(String.format("model-%d.svmlight", i));
+			while( modelEntry != null ) {
+				SVMlightModel m = SVMlightModel.fromInputStream(modelFile.getInputStream(modelEntry));
+				this.models.put(i, m);
+				modelEntry = modelFile.getEntry(String.format("sigmoid-%d.svmlight", i));
+				ObjectInput in = new ObjectInputStream(modelFile.getInputStream(modelEntry));
+				this.sigmoids.put(i, (Sigmoid) in.readObject());
+				in.close();
+				
+				i += 1;
+				modelEntry = modelFile.getEntry(String.format("model-%d.svmlight", i));
+			}
+			
+			if (this.models.isEmpty()) {
+				throw new IOException(String.format("no models found in %s", modelFile.getName()));
+			}
+		} catch (ClassNotFoundException e) {
+			throw new CleartkException(e);
 		}
 	}
 
@@ -71,7 +85,7 @@ public class OVASVMlightClassifier extends Classifier_ImplBase<String,Integer,Fe
 		double maxScore = 0;
 		boolean first = true;
 		for( int i : models.keySet() ) {
-			double score = models.get(i).evaluate(featureVector);
+			double score = this.sigmoids.get(i).evaluate(models.get(i).evaluate(featureVector));
 			if( first || score > maxScore ) {
 				first = false;
 				maxScore = score;
