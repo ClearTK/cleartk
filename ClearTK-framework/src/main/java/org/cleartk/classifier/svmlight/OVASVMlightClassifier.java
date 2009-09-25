@@ -61,7 +61,7 @@ public class OVASVMlightClassifier extends Classifier_ImplBase<String,Integer,Fe
 			while( modelEntry != null ) {
 				SVMlightModel m = SVMlightModel.fromInputStream(modelFile.getInputStream(modelEntry));
 				this.models.put(i, m);
-				modelEntry = modelFile.getEntry(String.format("sigmoid-%d.svmlight", i));
+				modelEntry = modelFile.getEntry(String.format("model-%d.sigmoid", i));
 				ObjectInput in = new ObjectInputStream(modelFile.getInputStream(modelEntry));
 				this.sigmoids.put(i, (Sigmoid) in.readObject());
 				in.close();

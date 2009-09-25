@@ -23,6 +23,9 @@
 */
 package org.cleartk.classifier.util;
 
+import java.io.Serializable;
+import java.util.logging.Logger;
+
 /**
  * <br>Copyright (c) 2009, Regents of the University of Colorado 
  * <br>All rights reserved.
@@ -40,7 +43,7 @@ package org.cleartk.classifier.util;
  */
 public class LinWengPlatt {
 
-	public static Sigmoid fit(double[] decisionValues, boolean[] labels) throws LineSearchFailure, ConvergenceFailure {
+	public static Sigmoid fit(double[] decisionValues, boolean[] labels) throws ConvergenceFailure {
 		
 		assert(decisionValues.length == labels.length);
 		
@@ -137,7 +140,9 @@ public class LinWengPlatt {
 			}
 			
 			if (stepsize < minimumStepsize) {
-				throw new LineSearchFailure();
+				Logger logger = Logger.getLogger("org.cleartk.classifier.util.LinWengPlatt");
+				logger.info("line search failure");
+				break;
 			}
 		}
 		
@@ -148,7 +153,10 @@ public class LinWengPlatt {
 	}
 
 	
-	public static class Sigmoid {
+	public static class Sigmoid implements Serializable {
+
+		private static final long serialVersionUID = 3780856549630884460L;
+
 		public Sigmoid(double A, double B) {
 			this.A = A;
 			this.B = B;
@@ -168,20 +176,6 @@ public class LinWengPlatt {
 		
 		private double A;
 		private double B;
-	}
-	
-	public static class LineSearchFailure extends Exception {
-		
-		private static final long serialVersionUID = 630919311534319778L;
-
-		public LineSearchFailure() {
-			super();
-		}
-		
-		public LineSearchFailure(String message) {
-			super(message);
-		}
-		
 	}
 	
 	public static class ConvergenceFailure extends Exception {

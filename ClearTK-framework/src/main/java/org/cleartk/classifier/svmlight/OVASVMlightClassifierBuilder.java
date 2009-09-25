@@ -30,6 +30,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.BuildJar;
@@ -72,6 +74,7 @@ public class OVASVMlightClassifierBuilder implements ClassifierBuilder<String> {
 					TrainingInstance ti = parseTI(line.trim());
 					labels[i] = ti.getLabel();
 					decisionValues[i] = model.evaluate(ti.getFeatureVector());
+					i += 1;
 					line = r.readLine();
 				}
 				r.close();
@@ -87,16 +90,20 @@ public class OVASVMlightClassifierBuilder implements ClassifierBuilder<String> {
 
 	public void buildJar(File dir, String[] args) throws Exception {
 		BuildJar.OutputStream stream = new BuildJar.OutputStream(dir);
+		
+		Pattern modelPattern = Pattern.compile("training-data-(\\d+)\\.svmlight\\.model");
+		Matcher modelMatcher;
+		Pattern sigmoidPattern = Pattern.compile("training-data-(\\d+)\\.svmlight\\.sigmoid");
+		Matcher sigmoidMatcher;
+		
 		for (File file: dir.listFiles()) {
-			if (file.getName().matches("training-data-\\d+.svmlight.model")) {
-				String name = file.getName();
-				name = name.replaceAll("training-data", "model");
-				name = name.replaceAll(".model", "");
+			modelMatcher = modelPattern.matcher(file.getName());
+			sigmoidMatcher = sigmoidPattern.matcher(file.getName());
+			if( modelMatcher.matches() ) {
+				String name = String.format("model-%d.svmlight", new Integer(modelMatcher.group(1)));
 				stream.write(name, file);
-			} else if( file.getName().matches("training-data-\\d+.svmlight.sigmoid")) {
-				String name = file.getName();
-				name = name.replaceAll("training-data", "sigmoid");
-				name = name.replaceAll(".model", "");
+			} else if( sigmoidMatcher.matches() ) {
+				String name = String.format("model-%d.sigmoid", new Integer(sigmoidMatcher.group(1)));
 				stream.write(name, file);
 			}
 		}
@@ -109,8 +116,8 @@ public class OVASVMlightClassifierBuilder implements ClassifierBuilder<String> {
 	
 	private static TrainingInstance parseTI(String line) throws IOException, CleartkException {
 		String[] fields = line.split(" ");
-		int labeli = Integer.valueOf(fields[0]);
-		boolean label = labeli > 0;
+		
+		boolean label = fields[0].trim().equals("+1");
 		
 		FeatureVector fv = new SparseFeatureVector();
 		
