@@ -40,6 +40,7 @@ import org.cleartk.corpus.ace2005.Ace2005GoldReader;
 import org.cleartk.corpus.ace2005.Ace2005Writer;
 import org.cleartk.corpus.conll2003.Conll2003GoldReader;
 import org.cleartk.corpus.penntreebank.PennTreebankReader;
+import org.cleartk.corpus.timeml.PlainTextTLINKGoldAnnotator;
 import org.cleartk.corpus.timeml.TimeMLGoldAnnotator;
 import org.cleartk.corpus.timeml.TimeMLWriter;
 import org.cleartk.example.pos.ExamplePOSAnnotationHandler;
@@ -107,6 +108,7 @@ public class GenerateDescriptorFiles {
 		writePrimitiveDescription(TreebankGoldAnnotator.class, outputDirectory);
 		writePrimitiveDescription(TimeMLWriter.class, outputDirectory);
 		writePrimitiveDescription(TimeMLGoldAnnotator.class, outputDirectory);
+		writePrimitiveDescription(PlainTextTLINKGoldAnnotator.class, outputDirectory);
 		writeCollectionReader(PropbankGoldReader.class, outputDirectory);
 		writePrimitiveDescription(PropbankGoldAnnotator.class, outputDirectory);
 		writePrimitiveDescription(TokenAnnotator.class, outputDirectory);

@@ -44,7 +44,8 @@ import org.cleartk.corpus.timeml.type.TemporalLink;
 import org.cleartk.corpus.timeml.type.Time;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.ViewURIUtil;
-import org.cleartk.util.UIMAUtil;
+import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.util.InitializeUtil;
 
 
 /**
@@ -57,26 +58,28 @@ import org.cleartk.util.UIMAUtil;
  */
 public class PlainTextTLINKGoldAnnotator extends JCasAnnotator_ImplBase {
 	
-	/**
-	 * "org.cleartk.corpus.timeml.PlainTextTLINKGoldAnnotator.PARAM_TLINK_FILE_URL"
-	 * is a single, required, string parameter that provides the URL to a
-	 * plain-text TLINK file, e.g.
-	 *   http://www.stanford.edu/~bethard/data/timebank-verb-clause.txt
-	 */
-	public static final String PARAM_TLINK_FILE_URL = "org.cleartk.corpus.timeml.PlainTextTLINKGoldAnnotator.PARAM_TLINK_FILE_URL";
+	public static final String PARAM_TLINK_FILE_URL = "org.cleartk.corpus.timeml.PlainTextTLINKGoldAnnotator.tlinkFileUrl";
+	
+	@ConfigurationParameter(
+			name = PARAM_TLINK_FILE_URL,
+			description = "the URL to a plain-text TLINK file, e.g." +
+			"http://www.stanford.edu/~bethard/data/timebank-verb-clause.txt")
+	private String tlinkFileUrl;
+	public void setTlinkFileUrl(String tlinkFileUrl) {
+		this.tlinkFileUrl = tlinkFileUrl;
+	}
 	
 	private Map<String, List<TLINK>> fileTLINKs;
 	
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
-		String tlinkFileUrl = (String)UIMAUtil.getRequiredConfigParameterValue(
-				context, PlainTextTLINKGoldAnnotator.PARAM_TLINK_FILE_URL);
+		InitializeUtil.initialize(this, context);
 
 		this.fileTLINKs = new HashMap<String, List<TLINK>>();
 		try {
 			BufferedReader tlinkFileReader = new BufferedReader(
-					new InputStreamReader(new URL(tlinkFileUrl).openStream()));
+					new InputStreamReader(new URL(this.tlinkFileUrl).openStream()));
 			String line;
 			while ((line = tlinkFileReader.readLine()) != null)
 			    if (!line.startsWith("#")) {
@@ -148,6 +151,7 @@ public class PlainTextTLINKGoldAnnotator extends JCasAnnotator_ImplBase {
 			this.targetID = targetID;
 			this.relationType = relationType;
 		}
+		@Override
 		public String toString() {
 			return String.format("TLINK(%s, %s, %s)", 
 					this.sourceID, this.targetID, this.relationType);
