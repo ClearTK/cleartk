@@ -62,6 +62,7 @@ public class PlainTextTLINKGoldAnnotator extends JCasAnnotator_ImplBase {
 	
 	@ConfigurationParameter(
 			name = PARAM_TLINK_FILE_URL,
+			mandatory = true,
 			description = "the URL to a plain-text TLINK file, e.g." +
 			"http://www.stanford.edu/~bethard/data/timebank-verb-clause.txt")
 	private String tlinkFileUrl;

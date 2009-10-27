@@ -42,7 +42,8 @@ import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.ViewURIUtil;
-import org.cleartk.util.UIMAUtil;
+import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.util.InitializeUtil;
 
 
 /**
@@ -55,20 +56,23 @@ import org.cleartk.util.UIMAUtil;
  */
 public class TreebankAligningAnnotator extends JCasAnnotator_ImplBase {
 	
-	/**
-	 * "org.cleartk.corpus.timeml.TreebankAligningAnnotator.PARAM_TREEBANK_DIRECTORY"
-	 * is a single, required, string parameter which provides the path to the
-	 * treebank directory containing the XX/wsj_XXXX.mrg files. 
-	 */
-	public static final String PARAM_TREEBANK_DIRECTORY = "org.cleartk.corpus.timeml.TreebankAligningAnnotator.PARAM_TREEBANK_DIRECTORY";
-	
+	public static final String PARAM_TREEBANK_DIRECTORY = "org.cleartk.corpus.timeml.TreebankAligningAnnotator.treebankDirectoryName";
+	@ConfigurationParameter(
+			name = PARAM_TREEBANK_DIRECTORY,
+			mandatory = true,
+			description = "the path to the treebank directory containing the XX/wsj_XXXX.mrg files.")
+	private String treebankDirectoryName;
+	public void setTreebankDirectoryName(String treebankDirectoryName) {
+		this.treebankDirectoryName = treebankDirectoryName;
+	}
+
 	private File treebankDirectory;
 
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
-		this.treebankDirectory = new File((String)UIMAUtil.getRequiredConfigParameterValue(
-				context, TreebankAligningAnnotator.PARAM_TREEBANK_DIRECTORY));
+		InitializeUtil.initialize(this, context);
+		this.treebankDirectory = new File(this.treebankDirectoryName);
 	}
 
 	@Override
