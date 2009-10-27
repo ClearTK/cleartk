@@ -23,6 +23,8 @@
 */
 package org.cleartk.classifier.encoder.outcome;
 
+import java.io.File;
+
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
  * <br>All rights reserved.
@@ -38,6 +40,9 @@ public class StringToStringOutcomeEncoder implements OutcomeEncoder<String,Strin
 
 	public String decode(String outcome) {
 		return outcome;
+	}
+	
+	public void finalizeOutcomeSet(File outputDirectory) {
 	}
 
 }

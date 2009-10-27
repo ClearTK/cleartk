@@ -23,12 +23,6 @@
 */
 package org.cleartk.util;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-
-import org.junit.Test;
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
  * <br>All rights reserved.
@@ -37,12 +31,5 @@ import org.junit.Test;
  * @author Philip Ogren
  */
 public class StringIndexTest {
-
-	@Test
-	public void testRead() throws IOException {
-		StringIndex featureMapIndex = StringIndex.fromInputStream(new FileInputStream("test/data/docs/string index/test.string.index"));
-		assertEquals(8402, featureMapIndex.find("Word_HIV1 -infected"));
-		assertEquals(3092, featureMapIndex.find("Word_asthmatic"));
-	}
 
 }

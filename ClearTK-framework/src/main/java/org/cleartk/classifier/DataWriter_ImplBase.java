@@ -71,6 +71,7 @@ public abstract class DataWriter_ImplBase<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE,
 			
 			// finalize the features encoder feature set
 			featuresEncoder.finalizeFeatureSet(outputDirectory);
+			outcomeEncoder.finalizeOutcomeSet(outputDirectory);
 	
 			// serialize the features encoder
 			ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(

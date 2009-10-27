@@ -23,7 +23,10 @@
 */
 package org.cleartk.classifier.encoder.outcome;
 
+import java.io.File;
 import java.io.Serializable;
+
+import org.cleartk.CleartkException;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -34,4 +37,6 @@ public interface OutcomeEncoder<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE> extends Se
 	public OUTPUTOUTCOME_TYPE encode(INPUTOUTCOME_TYPE outcome);
 	
 	public INPUTOUTCOME_TYPE decode(OUTPUTOUTCOME_TYPE outcome);
+	
+	public void finalizeOutcomeSet(File outputDirectory) throws CleartkException;
 }

@@ -77,6 +77,7 @@ public abstract class SequentialDataWriter_ImplBase<INPUTOUTCOME_TYPE, OUTPUTOUT
 			
 			// finalize the feature set
 			featuresEncoder.finalizeFeatureSet(outputDirectory);
+			outcomeEncoder.finalizeOutcomeSet(outputDirectory);
 
 			// serialize the features encoder
 			ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(

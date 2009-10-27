@@ -23,8 +23,16 @@
 */
 package org.cleartk.classifier.encoder.outcome;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+
+import org.cleartk.CleartkException;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -34,6 +42,8 @@ import java.util.TreeMap;
 public class StringToIntegerOutcomeEncoder implements OutcomeEncoder<String,Integer> {
 	
 	private static final long serialVersionUID = -4592095619017878663L;
+	
+	public static final String LOOKUP_FILE_NAME = "outcome-lookup.txt";
 	
 	public StringToIntegerOutcomeEncoder() {
 		nextIndex = 1;
@@ -55,6 +65,23 @@ public class StringToIntegerOutcomeEncoder implements OutcomeEncoder<String,Inte
 
 	public String decode(Integer outcome) {
 		return reverseMap.get(outcome);
+	}
+	
+	public void finalizeOutcomeSet(File outputDirectory) throws CleartkException {
+		try {
+			File outputFile = new File(outputDirectory, LOOKUP_FILE_NAME);
+			PrintWriter writer = new PrintWriter(outputFile);
+			List<Integer> values = new ArrayList<Integer>(map.values());
+			Collections.sort(values);
+			
+			for( int value : values ) {
+				writer.format("%d %s\n", value, reverseMap.get(value));
+			}
+			
+			writer.close();
+		} catch (FileNotFoundException e) {
+			throw new CleartkException(e);
+		}
 	}
 
 	private Map<String,Integer> map = new TreeMap<String,Integer>();

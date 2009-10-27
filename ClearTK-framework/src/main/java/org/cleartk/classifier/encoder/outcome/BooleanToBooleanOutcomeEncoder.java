@@ -23,6 +23,8 @@
 */
 package org.cleartk.classifier.encoder.outcome;
 
+import java.io.File;
+
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
  * <br>All rights reserved.
@@ -40,4 +42,6 @@ public class BooleanToBooleanOutcomeEncoder implements OutcomeEncoder<Boolean,Bo
 		return outcome;
 	}
 
+	public void finalizeOutcomeSet(File outputDirectory) {
+	}
 }

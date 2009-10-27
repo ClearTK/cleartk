@@ -23,18 +23,17 @@
 */
 package org.cleartk.util;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -51,19 +50,6 @@ public class StringIndex implements Iterable<String>, Serializable {
 	
 	private static final long serialVersionUID = 8794282308665576153L;
 
-	public static StringIndex fromFile(File inputFile) throws IOException {
-		StringIndex index = new StringIndex();
-		index.read(inputFile);
-		return index;
-	}
-	
-	public static StringIndex fromInputStream(InputStream inputStream) throws IOException {
-		StringIndex index = new StringIndex();
-		index.read(inputStream);
-		return index;
-	}
-	
-	
 	Map<String, Integer> indexMap;
 	int nextIndex;
 	
@@ -112,38 +98,13 @@ public class StringIndex implements Iterable<String>, Serializable {
 	public void write(OutputStream outputStream) throws IOException {
 		PrintWriter output = new PrintWriter(outputStream);
 		
-		for( String key : this ) {
-			output.format("%s %d\n", key, this.find(key));
+		List<Integer> values = new ArrayList<Integer>(indexMap.values());
+		Collections.sort(values);
+		for( int value : values ) {
+			output.format("%d %s\n", value, indexMap.get(value));
 		}
 		
 		output.flush();
-	}
-	
-	public void read(File inputFile) throws IOException {
-		InputStream input = new FileInputStream(inputFile);
-		this.read(input);
-		input.close();
-	}
-	
-	public void read(InputStream inputStream) throws IOException {
-		BufferedReader input = new BufferedReader(new InputStreamReader(inputStream));
-
-		this.indexMap = new TreeMap<String, Integer>();
-		this.nextIndex = 0;
-		
-		String line;
-		while( (line = input.readLine()) != null ) {
-			int split = line.lastIndexOf(" ");
-			String key = line.substring(0, split);
-			int index = Integer.valueOf(line.substring(split+1));
-//			String[] fields = line.split(" ");
-//			String key = fields[0];
-//			int index = Integer.valueOf(fields[1]);
-			
-			this.indexMap.put(key, index);
-			if( index >= this.nextIndex )
-				this.nextIndex = index + 1;
-		}
 	}
 	
 	public Iterator<String> iterator() {

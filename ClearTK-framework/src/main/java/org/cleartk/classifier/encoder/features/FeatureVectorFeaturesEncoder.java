@@ -25,6 +25,8 @@ package org.cleartk.classifier.encoder.features;
 
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +48,8 @@ import org.cleartk.util.StringIndex;
 public class FeatureVectorFeaturesEncoder extends FeaturesEncoder_ImplBase<FeatureVector, NameNumber> {
 
 	private static final long serialVersionUID = 6714456694285732480L;
+	
+	public static final String LOOKUP_FILE_NAME = "features-lookup.txt";
 	
 	public FeatureVectorFeaturesEncoder(NameNumberNormalizer normalizer) {
 		this.normalizer = normalizer;
@@ -88,8 +92,17 @@ public class FeatureVectorFeaturesEncoder extends FeaturesEncoder_ImplBase<Featu
 	}
 
 	@Override
-	public void finalizeFeatureSet(File ouptutDirectory) throws CleartkException {
-		expandIndex = false;
+	public void finalizeFeatureSet(File outputDirectory) throws CleartkException {
+		try {
+			expandIndex = false;
+			
+			File outputFile = new File(outputDirectory, LOOKUP_FILE_NAME);
+			stringIndex.write(outputFile);
+		} catch (FileNotFoundException e) {
+			throw new CleartkException(e);
+		} catch (IOException e) {
+			throw new CleartkException(e);
+		}
 	}
 	
 	public void setNormalizer(NameNumberNormalizer normalizer) {
