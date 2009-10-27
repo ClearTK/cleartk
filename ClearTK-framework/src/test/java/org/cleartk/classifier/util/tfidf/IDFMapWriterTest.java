@@ -21,18 +21,32 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.tfidf;
+package org.cleartk.classifier.util.tfidf;
 
 import java.io.File;
 
+import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.cas.CASException;
+import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.example.documentclassification.AnnotationHandler;
+import org.apache.uima.resource.metadata.TypeSystemDescription;
+import org.cleartk.CleartkException;
+import org.cleartk.Initializable;
+import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.InstanceConsumer;
+import org.cleartk.classifier.feature.extractor.CountsExtractor;
+import org.cleartk.classifier.feature.extractor.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.TypePathExtractor;
+import org.cleartk.type.test.Token;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.TypeSystemDescriptionFactory;
 import org.uutuc.util.TearDownUtil;
 /**
  * <br>Copyright (c) 2009, Regents of the University of Colorado 
@@ -62,13 +76,17 @@ public class IDFMapWriterTest {
 	
 	@Test
 	public void testDescriptor() throws Exception {
-		String descPath = "org.cleartk.tfidf.IDFMapWriter";
+		TypeSystemDescription typeSystemDescription = 
+			TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TestTypeSystem");
 		try {
-			AnalysisEngineFactory.createAnalysisEngine(descPath);
+			AnalysisEngineFactory.createPrimitive(
+					IDFMapWriter.class, 
+					typeSystemDescription);
 			Assert.fail("Expected exception with no value for "+IDFMapWriter.PARAM_IDFMAP_FILE+" specified");
 		} catch (ResourceInitializationException e) {}
 		
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(descPath,
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+				IDFMapWriter.class, typeSystemDescription,
 				IDFMapWriter.PARAM_IDFMAP_FILE, new File(outputDirectory, "idfmap").getPath(),
 				IDFMapWriter.PARAM_ANNOTATION_HANDLER, AnnotationHandler.class.getName());
 		String fileName = (String)engine.getConfigParameterValue(
@@ -76,4 +94,34 @@ public class IDFMapWriterTest {
 		Assert.assertEquals(new File(outputDirectory, "idfmap").getPath(), fileName);
 	}
 	
+	public static class AnnotationHandler implements org.cleartk.classifier.AnnotationHandler<String> , Initializable{
+
+		public static final String PREDICTION_VIEW_NAME = "ExampleDocumentClassificationPredictionView";
+
+		public void initialize(UimaContext context) throws ResourceInitializationException {
+			SimpleFeatureExtractor subExtractor = new TypePathExtractor(Token.class, "stem", false, false, true);
+			extractor = new CountsExtractor(Token.class, subExtractor);
+		}
+
+		public void process(JCas jCas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException, CleartkException {
+			try {
+				DocumentAnnotation doc = (DocumentAnnotation) jCas.getDocumentAnnotationFs();
+
+				Instance<String> instance = new Instance<String>();
+				instance.addAll(extractor.extract(jCas, doc));
+
+				String result = consumer.consume(instance);
+				
+				if( result != null ) {
+					JCas predictionView = jCas.createView(PREDICTION_VIEW_NAME);
+					predictionView.setSofaDataString(result, "text/plain");
+				}
+			} catch (CASException e) {
+				throw new AnalysisEngineProcessException(e);
+			}
+		}
+
+		private CountsExtractor extractor;
+
+	}
 }

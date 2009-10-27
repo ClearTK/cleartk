@@ -32,7 +32,7 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.encoder.features.normalizer.EuclidianNormalizer;
 import org.cleartk.classifier.encoder.features.normalizer.NameNumberNormalizer;
 import org.cleartk.classifier.feature.Counts;
-import org.cleartk.tfidf.IDFMap;
+import org.cleartk.classifier.util.tfidf.IDFMap;
 
 
 /**

@@ -2,7 +2,7 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
 <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
 <primitive>true</primitive>
-<annotatorImplementationName>org.cleartk.tfidf.IDFMapWriter</annotatorImplementationName>
+<annotatorImplementationName>org.cleartk.classifier.util.tfidf.IDFMapWriter</annotatorImplementationName>
 <analysisEngineMetaData>
 <name>IDFMapWriter</name>
 <description>Copyright (c) 2009, Regents of the University of Colorado 
@@ -36,7 +36,7 @@ POSSIBILITY OF SUCH DAMAGE.</description>
 <mandatory>true</mandatory>
 </configurationParameter>
 <configurationParameter>
-<name>org.cleartk.tfidf.IDFMapWriter.PARAM_IDFMAP_FILE</name>
+<name>org.cleartk.classifier.util.tfidf.IDFMapWriter.PARAM_IDFMAP_FILE</name>
 <type>String</type>
 <multiValued>false</multiValued>
 <mandatory>true</mandatory>
