@@ -44,7 +44,7 @@ import org.uutuc.util.io.Files;
 
 public class DescriptorCoverageTest {
 	
-//	@Test
+	@Test
 	public void testNoDescriptorsInSrcMain() {
 		// collect the names of all .xml descriptors in the src directory
 		Set<String> descNames = new HashSet<String>();
