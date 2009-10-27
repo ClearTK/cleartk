@@ -102,11 +102,7 @@ public class ViterbiDataWriter<OUTCOME_TYPE> implements
 			else {
 				outcomeFeatureExtractors = new OutcomeFeatureExtractor[outcomeFeatureExtractorNames.length];
 				for (int i = 0; i < outcomeFeatureExtractorNames.length; i++) {
-					Class<?> cls = Class.forName(outcomeFeatureExtractorNames[i]);
-					Class<? extends OutcomeFeatureExtractor> outcomeFeatureExtractorClass = cls
-							.asSubclass(OutcomeFeatureExtractor.class);
-					outcomeFeatureExtractors[i] = outcomeFeatureExtractorClass.newInstance();
-					outcomeFeatureExtractors[i].initialize(context);
+					outcomeFeatureExtractors[i] = UIMAUtil.create(outcomeFeatureExtractorNames[i], OutcomeFeatureExtractor.class, context);
 				}
 			}
 		}
