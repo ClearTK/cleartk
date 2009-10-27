@@ -4,7 +4,7 @@
 	<groupId>org.cleartk</groupId>
 	<artifactId>cleartk-toolkit</artifactId>
 	<packaging>jar</packaging>
-	<version>0.9.5</version>
+	<version>0.9.6-SNAPSHOT</version>
 	<name>ClearTK-toolkit</name>
 	<url>http://maven.apache.org</url>
 <properties>
@@ -171,8 +171,4 @@
 			<url>svn:https://cleartk.googlecode.com/svn/repo</url>
 		</repository>
 	</distributionManagement>
-	<!--properties>
-		<maven.test.error.ignore>true</maven.test.error.ignore>
-		<maven.test.failure.ignore>true</maven.test.failure.ignore>
-	</properties-->
 </project>
