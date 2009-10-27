@@ -17,4 +17,7 @@ The line (about 65) with the following text was removed:
 java.util.Arrays.sort(keyIndices); 
 
  
-Mallet is distributed with a dependency called mallet-deps.jar.  The license information for the various dependencies that are found in mallet-deps.jar can be found in mallet-deps.LICENSES.  This is copied directly from a file distributed with mallet and has not been vetted by us.  Additionally, it is not necessarily the case that all libraries listed below actually end up in mallet-deps.jar.  ClearTK is only dependent on libraries that actually end up in mallet-deps.jar.  
+Mallet is distributed with a dependency called mallet-deps.jar.  ClearTK does not use this file however.  Instead maven manages all of the dependencies that we need (e.g. trove or jgrapht).  In some cases, a pom.xml file for the dependencies can be found from a publicly available maven repository.  In others, however, we had to create a pom.xml file ourselves and publish here on the google code repository.  For information about these dependencies please see: 
+
+http://code.google.com/p/cleartk/source/browse/#svn/repo
+
