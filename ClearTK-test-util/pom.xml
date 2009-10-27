@@ -4,7 +4,7 @@
 	<groupId>org.cleartk</groupId>
 	<artifactId>cleartk-test-util</artifactId>
 	<packaging>jar</packaging>
-	<version>0.1</version>
+	<version>0.2-SNAPSHOT</version>
 	<name>ClearTK-test-util</name>
 	<url>http://maven.apache.org</url>
 	<properties>
