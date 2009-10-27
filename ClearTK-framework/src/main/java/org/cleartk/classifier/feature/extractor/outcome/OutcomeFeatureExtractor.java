@@ -28,6 +28,7 @@ import java.util.List;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.Initializable;
 import org.cleartk.classifier.Feature;
 
 /**
@@ -41,7 +42,7 @@ import org.cleartk.classifier.Feature;
  * @author Philip Ogren
  * 
  */
-public interface OutcomeFeatureExtractor extends Serializable {
+public interface OutcomeFeatureExtractor extends Serializable, Initializable{
 
 	public void initialize(UimaContext context) throws ResourceInitializationException;
 
