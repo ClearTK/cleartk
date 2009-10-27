@@ -6,7 +6,12 @@
 	<packaging>jar</packaging>
 	<version>0.9.6-SNAPSHOT</version>
 	<name>ClearTK-framework</name>
-	<url>http://maven.apache.org</url>
+	<url>http://cleartk.googlecode.com/</url>
+	<scm>
+		<connection>scm:svn:http://cleartk.googlecode.com/svn/trunk/ClearTK-framework/</connection>
+		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/trunk/ClearTK-framework/</developerConnection>
+		<url>http://cleartk.googlecode.com/svn/</url>
+	</scm>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
