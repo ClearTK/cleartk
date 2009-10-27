@@ -64,13 +64,13 @@
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-test-util</artifactId>
-			<version>0.1</version>
+			<version>0.2-SNAPSHOT</version>
 			<optional>false</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-framework</artifactId>
-			<version>0.9.5</version>
+			<version>0.9.6-SNAPSHOT</version>
 			<optional>false</optional>
 		</dependency>
 		<dependency>
