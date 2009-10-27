@@ -7,10 +7,10 @@
 	<version>0.9.6-SNAPSHOT</version>
 	<name>ClearTK-toolkit</name>
 	<url>http://maven.apache.org</url>
-<properties>
+	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-		<repositories>
+	<repositories>
 		<repository>
 			<snapshots>
 				<enabled>false</enabled>
@@ -150,7 +150,7 @@
 			</extension>
 		</extensions>
 	</build>
-		<reporting>
+	<reporting>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
