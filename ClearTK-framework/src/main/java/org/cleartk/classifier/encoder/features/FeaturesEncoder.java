@@ -23,6 +23,7 @@
 */
 package org.cleartk.classifier.encoder.features;
 
+import java.io.File;
 import java.io.Serializable;
 
 import org.cleartk.CleartkException;
@@ -38,5 +39,5 @@ import org.cleartk.classifier.Feature;
 public interface FeaturesEncoder<FEATURES_TYPE> extends Serializable {
 	public FEATURES_TYPE encodeAll(Iterable<Feature> features) throws CleartkException;
 	
-	public void allowNewFeatures(boolean flag);
+	public void finalizeFeatureSet(File outputDirectory) throws CleartkException;
 }

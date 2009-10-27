@@ -23,11 +23,14 @@
 */
 package org.cleartk.classifier.encoder.features;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.Writer;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.encoder.FeatureEncoderUtil;
 import org.cleartk.util.collection.CompressedStringBidiMap;
@@ -54,7 +57,7 @@ public class NameNumberFeaturesEncoder extends FeaturesEncoder_ImplBase<List<Nam
 		return compressFeatures;
 	}
 
-	private boolean allowNewFeatures;
+	private boolean allowNewFeatures = true;
 
 	private boolean sortNameLookup;
 
@@ -83,8 +86,21 @@ public class NameNumberFeaturesEncoder extends FeaturesEncoder_ImplBase<List<Nam
 	}
 
 	@Override
-	public void allowNewFeatures(boolean flag) {
-		this.allowNewFeatures = flag;
+	public void finalizeFeatureSet(File outputDirectory) throws CleartkException {
+		try {
+			this.allowNewFeatures = false;
+			
+			if (compressFeatures) {
+				File lookupFile = new File(outputDirectory, LOOKUP_FILE_NAME);
+				PrintWriter writer = new PrintWriter(lookupFile);
+				csbm.write(writer, sortNameLookup);
+				writer.close();
+			}
+		} catch (FileNotFoundException e) {
+			throw new CleartkException(e);
+		} catch (IOException e) {
+			throw new CleartkException(e);
+		}
 	}
 
 	private String escape(String string) {
@@ -101,11 +117,5 @@ public class NameNumberFeaturesEncoder extends FeaturesEncoder_ImplBase<List<Nam
 			}
 		}
 		return featureString;
-	}
-
-	public void writeNameLookup(Writer writer) throws IOException {
-		if (compressFeatures) {
-			csbm.write(writer, sortNameLookup);
-		}
 	}
 }

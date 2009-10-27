@@ -64,7 +64,6 @@ public abstract class SequentialClassifier_ImplBase<INPUTOUTCOME_TYPE,OUTPUTOUTC
 			is.close();
 		}
 		this.featuresEncoder = featuresEncoderCast(genericFeaturesEncoder);
-		this.featuresEncoder.allowNewFeatures(false);
 		this.outcomeEncoder = outcomeEncoderCast(genericOutcomeEncoder);
 		
 	}

@@ -79,7 +79,6 @@ public abstract class SequentialDataWriterFactory_ImplBase<FEATURES_OUT_TYPE, OU
 				
 				// assign the encoders to the instance variables
 				this.featuresEncoder = ReflectionUtil.uncheckedCast(untypedFeaturesEncoder);
-				this.featuresEncoder.allowNewFeatures(false);
 				this.outcomeEncoder = ReflectionUtil.uncheckedCast(untypedOutcomeEncoder);
 				is.close();
 			} catch (Exception e) {

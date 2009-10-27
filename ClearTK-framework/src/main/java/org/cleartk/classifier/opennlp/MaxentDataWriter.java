@@ -34,7 +34,6 @@ import org.cleartk.CleartkException;
 import org.cleartk.classifier.ClassifierBuilder;
 import org.cleartk.classifier.DataWriter_ImplBase;
 import org.cleartk.classifier.encoder.features.NameNumber;
-import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 
 
 /**
@@ -93,22 +92,6 @@ public class MaxentDataWriter extends DataWriter_ImplBase<String, String, List<N
 
 		// complete the feature line
 		this.trainingDataWriter.println();
-	}
-
-	@Override
-	public void finish() throws CleartkException {
-		super.finish();
-		
-		try {
-			//TODO - this seems a little strange - shouldn't there be a mechanism to allow the feature encoder to finish itself?
-			if (featuresEncoder instanceof NameNumberFeaturesEncoder) {
-				NameNumberFeaturesEncoder nnfe = (NameNumberFeaturesEncoder) featuresEncoder;
-				if(nnfe.isCompressFeatures())
-					nnfe.writeNameLookup(this.getPrintWriter(NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
-			}
-		} catch(IOException ioe) {
-			throw new CleartkException(ioe);
-		}
 	}
 
 	public Class<? extends ClassifierBuilder<String>> getDefaultClassifierBuilderClass() {

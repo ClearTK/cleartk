@@ -78,7 +78,6 @@ public class DefaultMalletCRFDataWriterFactory extends SequentialDataWriterFacto
 		
 		if(!this.setEncodersFromFileSystem(mdw)) {
 			NameNumberFeaturesEncoder featuresEncoder = new NameNumberFeaturesEncoder(compress, sort);
-			featuresEncoder.allowNewFeatures(true);
 			featuresEncoder.addEncoder(new NumberEncoder());
 			featuresEncoder.addEncoder(new BooleanEncoder());
 			featuresEncoder.addEncoder(new StringEncoder());

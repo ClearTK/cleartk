@@ -43,8 +43,6 @@ public class FeatureEncoderChain<ENCODED_TYPE> implements FeatureEncoder<ENCODED
 		featureEncoders.add(encoder);
 	}
 	
-	public void allowNewFeatures(boolean flag) {}
-
 	public List<ENCODED_TYPE> encode(Feature feature) {
 		for( FeatureEncoder<ENCODED_TYPE> featureEncoder : featureEncoders ) {
 			if( featureEncoder.encodes(feature) )

@@ -24,12 +24,12 @@
 package org.cleartk.classifier.encoder.features;
 
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.encoder.features.normalizer.NOPNormalizer;
 import org.cleartk.classifier.encoder.features.normalizer.NameNumberNormalizer;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
@@ -88,8 +88,8 @@ public class FeatureVectorFeaturesEncoder extends FeaturesEncoder_ImplBase<Featu
 	}
 
 	@Override
-	public void allowNewFeatures(boolean flag) {
-		expandIndex = flag;
+	public void finalizeFeatureSet(File ouptutDirectory) throws CleartkException {
+		expandIndex = false;
 	}
 	
 	public void setNormalizer(NameNumberNormalizer normalizer) {

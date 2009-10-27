@@ -23,6 +23,8 @@
 */
 package org.cleartk.classifier.encoder.features;
 
+import java.io.File;
+
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 
@@ -41,6 +43,6 @@ public abstract class FeaturesEncoder_ImplBase<ENCODED_FEATURES_TYPE, ENCODED_FE
 
 	public abstract ENCODED_FEATURES_TYPE encodeAll(Iterable<Feature> features) throws CleartkException;
 	
-	public void allowNewFeatures(boolean flag) {}
+	public void finalizeFeatureSet(File outputDirectory) throws CleartkException {}
 
 }

@@ -28,13 +28,13 @@ import static org.junit.Assert.assertEquals;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.TypePathFeature;
 import org.cleartk.classifier.feature.WindowFeature;
@@ -70,10 +70,9 @@ public class NameNumberFeatureEncoderTest {
 
 	
 	@Test
-	public void testEncodeCompress() throws IOException, ResourceInitializationException {
+	public void testEncodeCompress() throws CleartkException, ResourceInitializationException, IOException {
 		
 		NameNumberFeaturesEncoder nnfe = getDefaultEncoder(true, true);
-		nnfe.allowNewFeatures(true);
 		
 		testNN("0", 1.0f, new Feature("Hello"), nnfe);
 		
@@ -89,11 +88,8 @@ public class NameNumberFeatureEncoderTest {
 
 		testNN("5", 15.0f, new Feature("!", 15), nnfe);
 
-		
-		File featureMapFile = new File(this.outputDir, "test-feature-map-1.txt");
-		FileWriter writer = new FileWriter(featureMapFile);
-		nnfe.writeNameLookup(writer);
-		writer.close();
+		nnfe.finalizeFeatureSet(this.outputDir);
+		File featureMapFile = new File(this.outputDir, NameNumberFeaturesEncoder.LOOKUP_FILE_NAME);
 		
 		BufferedReader reader = new BufferedReader(new FileReader(featureMapFile));
 		assertEquals("6", reader.readLine());
@@ -111,7 +107,6 @@ public class NameNumberFeatureEncoderTest {
 	@Test
 	public void testOnTypePathFeatures() throws ResourceInitializationException {
 		NameNumberFeaturesEncoder nnfe = getDefaultEncoder(false, false);
-		nnfe.allowNewFeatures(true);
 		
 		testNN("_hello", 1.0f, new Feature("", "hello"), nnfe);
 		testNN("hello_", 1.0f, new Feature("hello", ""), nnfe);
@@ -143,7 +138,6 @@ public class NameNumberFeatureEncoderTest {
 	@Test
 	public void testOnWindowFeatures() throws UIMAException, IOException {
 		NameNumberFeaturesEncoder nnfe = getDefaultEncoder(false, false);
-		nnfe.allowNewFeatures(true);
 		
 		testNN("Ccccccc_aaaaaa", 1.0f, new Feature("Ccccccc", "aaaaaa"), nnfe);
 

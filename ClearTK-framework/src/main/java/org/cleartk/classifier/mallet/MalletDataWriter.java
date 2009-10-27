@@ -32,7 +32,6 @@ import org.cleartk.CleartkException;
 import org.cleartk.classifier.ClassifierBuilder;
 import org.cleartk.classifier.DataWriter_ImplBase;
 import org.cleartk.classifier.encoder.features.NameNumber;
-import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 
 /**
  * <br>
@@ -57,23 +56,6 @@ public class MalletDataWriter extends DataWriter_ImplBase<String, String, List<N
 
 		// initialize output writer and Classifier class
 		this.trainingDataWriter = this.getPrintWriter(TRAINING_DATA_FILE_NAME);
-
-	}
-
-	@Override
-	public void finish() throws CleartkException {
-		super.finish();
-
-		try {
-			if (featuresEncoder instanceof NameNumberFeaturesEncoder) {
-				NameNumberFeaturesEncoder dfe = (NameNumberFeaturesEncoder) featuresEncoder;
-				if (dfe.isCompressFeatures()) dfe.writeNameLookup(this
-						.getPrintWriter(NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
-			}
-		}
-		catch (IOException ioe) {
-			throw new CleartkException(ioe);
-		}
 
 	}
 

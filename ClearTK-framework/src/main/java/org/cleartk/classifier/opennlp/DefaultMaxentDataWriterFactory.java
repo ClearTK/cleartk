@@ -80,7 +80,6 @@ public class DefaultMaxentDataWriterFactory extends DataWriterFactory_ImplBase<L
 			featuresEncoder.addEncoder(new NumberEncoder());
 			featuresEncoder.addEncoder(new BooleanEncoder());
 			featuresEncoder.addEncoder(new StringEncoder());
-			featuresEncoder.allowNewFeatures(true);
 			mdw.setFeaturesEncoder(featuresEncoder);
 			
 			mdw.setOutcomeEncoder(new StringToStringOutcomeEncoder());

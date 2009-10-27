@@ -68,6 +68,9 @@ public abstract class DataWriter_ImplBase<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE,
 				writer.flush();
 				writer.close();
 			}
+			
+			// finalize the features encoder feature set
+			featuresEncoder.finalizeFeatureSet(outputDirectory);
 	
 			// serialize the features encoder
 			ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(
@@ -123,7 +126,7 @@ public abstract class DataWriter_ImplBase<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE,
 		return writer;
 	}
 
-	private File outputDirectory;
+	protected File outputDirectory;
 	private List<PrintWriter> writers;
 	protected ClassifierManifest classifierManifest;
 	protected FeaturesEncoder<FEATURES_TYPE> featuresEncoder;

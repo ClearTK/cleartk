@@ -36,6 +36,7 @@ import org.apache.uima.util.FileUtils;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
 import org.cleartk.classifier.encoder.features.NameNumber;
+import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 import org.cleartk.classifier.mallet.DefaultMalletDataWriterFactory;
 import org.cleartk.classifier.opennlp.MaxentDataWriter;
 import org.junit.After;
@@ -65,6 +66,7 @@ public class DataWriter_ImplBaseTest {
 				+ "classifierBuilderClass: org.cleartk.classifier.opennlp.MaxentClassifie\n" + " rBuilder");
 
 		DataWriter_ImplBase<String, String, List<NameNumber>> dataWriter = new MaxentDataWriter(outputDirectory);
+		dataWriter.setFeaturesEncoder(new NameNumberFeaturesEncoder(false, false));
 		dataWriter.finish();
 		File manifestFile = new File(outputDirectory, "MANIFEST.MF");
 		String actualManifest = FileUtils.file2String(manifestFile);
@@ -75,6 +77,7 @@ public class DataWriter_ImplBaseTest {
 	public void testPrintWriter() throws UIMAException, IOException, CleartkException {
 
 		DataWriter_ImplBase<String, String, List<NameNumber>> dataWriter = new MaxentDataWriter(outputDirectory);
+		dataWriter.setFeaturesEncoder(new NameNumberFeaturesEncoder(false, false));
 		PrintWriter printWriter = dataWriter.getPrintWriter("foo.txt");
 		printWriter.println("foo");
 		dataWriter.finish();

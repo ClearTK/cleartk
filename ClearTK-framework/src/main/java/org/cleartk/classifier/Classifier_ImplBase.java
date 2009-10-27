@@ -64,7 +64,6 @@ public abstract class Classifier_ImplBase<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE,F
 				is.close();
 			}
 			this.featuresEncoder = featuresEncoderCast(genericFeaturesEncoder);
-			this.featuresEncoder.allowNewFeatures(false);
 			this.outcomeEncoder = outcomeEncoderCast(genericOutcomeEncoder);
 	}
 

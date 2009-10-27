@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2009, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.encoder.features;
 
 import java.util.ArrayList;
@@ -50,14 +50,14 @@ import org.cleartk.classifier.feature.Counts;
 public class BagEncoder implements FeatureEncoder<NameNumber> {
 
 	private static final long serialVersionUID = -5280514188425612793L;
-	
-	public BagEncoder(String name, NameNumberNormalizer normalizer) {
-		this.name = name;
+
+	public BagEncoder(String identifier, NameNumberNormalizer normalizer) {
+		this.identifier = identifier;
 		this.normalizer = normalizer;
 	}
 
-	public BagEncoder(String name) {
-		this(name, new NOPNormalizer());
+	public BagEncoder(String identifier) {
+		this(identifier, new NOPNormalizer());
 	}
 
 	public BagEncoder(NameNumberNormalizer normalizer) {
@@ -71,12 +71,14 @@ public class BagEncoder implements FeatureEncoder<NameNumber> {
 	public List<NameNumber> encode(Feature feature) {
 		List<NameNumber> fves = new ArrayList<NameNumber>();
 		Counts frequencies = (Counts) feature.getValue();
-		String prefix = Feature.createName(feature.getName(), frequencies.getFeatureName());
+		String prefix = Feature.createName(feature.getName(), "Bag", frequencies.getFeatureName());
 
-		for( Object o : frequencies.getValues() ) {
-			String name = Feature.createName(prefix, o.toString());
-			NameNumber fve = new NameNumber(name, 1);
-			fves.add(fve);
+		for( Object key : frequencies.getValues() ) {
+			if( frequencies.getCount(key) > 0 ) {
+				String name = Feature.createName(prefix, key.toString());
+				NameNumber fve = new NameNumber(name, 1);
+				fves.add(fve);
+			}
 		}
 
 		normalizer.normalize(fves);
@@ -85,13 +87,21 @@ public class BagEncoder implements FeatureEncoder<NameNumber> {
 	}
 
 	public boolean encodes(Feature feature) {
-		if( name != null && ! name.equals(feature.getName()) )
+		if( ! (feature.getValue() instanceof Counts) )
 			return false;
 
-		return feature.getValue() instanceof Counts;
+		Counts counts = (Counts) feature.getValue();
+
+		if( identifier == null )
+			return true;
+
+		if( identifier.equals(counts.getIdentifier()))
+			return true;
+
+		return false;
 	}
 
-	private String name;
+	private String identifier;
 	private NameNumberNormalizer normalizer;
 
 }
