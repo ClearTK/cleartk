@@ -114,6 +114,11 @@
 			<version>0.9.7</version>
 			<optional>false</optional>
 		</dependency>
+		<dependency>
+			<groupId>org.xerial</groupId>
+			<artifactId>sqlite-jdbc</artifactId>
+			<version>3.6.16</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -140,7 +145,8 @@
 					<mainClass>org.apache.uima.tools.jcasgen.Jg</mainClass>
 					<arguments>
 						<argument>-jcasgeninput</argument>
-						<argument>${basedir}/src/main/resources/org/cleartk/TypeSystem.xml</argument>
+						<argument>${basedir}/src/main/resources/org/cleartk/TypeSystem.xml
+						</argument>
 						<argument>-jcasgenoutput</argument>
 						<argument>${basedir}/src/main/java</argument>
 					</arguments>
