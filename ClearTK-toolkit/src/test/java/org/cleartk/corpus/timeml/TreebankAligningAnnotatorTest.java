@@ -56,11 +56,11 @@ public class TreebankAligningAnnotatorTest {
 		String treebankPath = "data/treebank/wsj";
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.corpus.timeml.TreebankAligningAnnotator",
-				TreebankAligningAnnotator.PARAM_TREEBANK_DIRECTORY,
+				TreebankAligningAnnotator.PARAM_TREEBANK_DIRECTORY_NAME,
 				treebankPath);
 		
 		Object treebankDirectory = engine.getConfigParameterValue(
-				TreebankAligningAnnotator.PARAM_TREEBANK_DIRECTORY);
+				TreebankAligningAnnotator.PARAM_TREEBANK_DIRECTORY_NAME);
 		Assert.assertEquals(treebankPath, treebankDirectory);
 		
 		engine.collectionProcessComplete();

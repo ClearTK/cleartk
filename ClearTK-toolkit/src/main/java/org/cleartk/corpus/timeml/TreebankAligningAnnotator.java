@@ -56,9 +56,9 @@ import org.uutuc.util.InitializeUtil;
  */
 public class TreebankAligningAnnotator extends JCasAnnotator_ImplBase {
 	
-	public static final String PARAM_TREEBANK_DIRECTORY = "org.cleartk.corpus.timeml.TreebankAligningAnnotator.treebankDirectoryName";
+	public static final String PARAM_TREEBANK_DIRECTORY_NAME = "org.cleartk.corpus.timeml.TreebankAligningAnnotator.treebankDirectoryName";
 	@ConfigurationParameter(
-			name = PARAM_TREEBANK_DIRECTORY,
+			name = PARAM_TREEBANK_DIRECTORY_NAME,
 			mandatory = true,
 			description = "the path to the treebank directory containing the XX/wsj_XXXX.mrg files.")
 	private String treebankDirectoryName;

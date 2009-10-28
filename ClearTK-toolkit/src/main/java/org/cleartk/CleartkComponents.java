@@ -239,7 +239,7 @@ public class CleartkComponents {
 	throws ResourceInitializationException {
 		return AnalysisEngineFactory.createPrimitiveDescription(
 				TreebankAligningAnnotator.class, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES,
-				TreebankAligningAnnotator.PARAM_TREEBANK_DIRECTORY, treeBankDir);
+				TreebankAligningAnnotator.PARAM_TREEBANK_DIRECTORY_NAME, treeBankDir);
 
 	}
 	
