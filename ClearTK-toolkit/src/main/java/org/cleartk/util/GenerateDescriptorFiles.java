@@ -51,6 +51,7 @@ import org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter;
 import org.cleartk.srl.propbank.PropbankGoldAnnotator;
 import org.cleartk.srl.propbank.PropbankGoldReader;
 import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
+import org.cleartk.temporal.VerbClauseTemporalHandler;
 import org.cleartk.token.TokenAnnotator;
 import org.cleartk.token.pos.impl.DefaultPOSHandler;
 import org.cleartk.token.snowball.DefaultSnowballStemmer;
@@ -99,7 +100,16 @@ public class GenerateDescriptorFiles {
 		aed = DefaultPOSHandler.getAnnotatorDescription();
 		updateDescription(aed.getMetaData());
 		aed.toXML(new FileWriter(new File(descDirectory, "DefaultPOSAnnotator.xml")));
-
+		
+		descDirectory = new File(outputDirectory, "org/cleartk/temporal");
+		if(!descDirectory.exists())
+			descDirectory.mkdirs();
+		aed = VerbClauseTemporalHandler.getWriterDescription("test/data/temporal");
+		updateDescription(aed.getMetaData());
+		aed.toXML(new FileWriter(new File(descDirectory, "VerbClauseTemporalDataWriter.xml")));
+		aed = VerbClauseTemporalHandler.getAnnotatorDescription();
+		updateDescription(aed.getMetaData());
+		aed.toXML(new FileWriter(new File(descDirectory, "VerbClauseTemporalAnnotator.xml")));
 		
 		writePrimitiveDescription(ExamplePOSPlainTextWriter.class, outputDirectory);
 

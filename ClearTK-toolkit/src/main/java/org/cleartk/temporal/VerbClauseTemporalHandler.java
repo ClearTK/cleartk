@@ -31,8 +31,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.CleartkComponents;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.AnnotationHandler;
 import org.cleartk.classifier.Instance;
@@ -40,6 +43,7 @@ import org.cleartk.classifier.InstanceConsumer;
 import org.cleartk.classifier.feature.extractor.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.TypePathExtractor;
+import org.cleartk.classifier.svmlight.DefaultOVASVMlightDataWriterFactory;
 import org.cleartk.corpus.timeml.type.Anchor;
 import org.cleartk.corpus.timeml.type.Event;
 import org.cleartk.corpus.timeml.type.TemporalLink;
@@ -81,6 +85,21 @@ public class VerbClauseTemporalHandler implements AnnotationHandler<String> {
 	private int eventID;
 
 	
+	public static AnalysisEngineDescription getWriterDescription(String outputDir)
+	throws ResourceInitializationException {
+		return CleartkComponents.createDataWriterAnnotator(
+				VerbClauseTemporalHandler.class,
+				DefaultOVASVMlightDataWriterFactory.class,
+				outputDir);
+	}
+
+	public static AnalysisEngineDescription getAnnotatorDescription()
+	throws ResourceInitializationException {
+		return CleartkComponents.createClassifierAnnotator(
+				VerbClauseTemporalHandler.class,
+				"resources/models/verb-clause-temporal-model.jar");
+	}
+
 	public VerbClauseTemporalHandler() {
 		this.eventID = 1;
 		this.tokenFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
