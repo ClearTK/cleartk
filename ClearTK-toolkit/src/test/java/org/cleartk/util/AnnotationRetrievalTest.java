@@ -587,7 +587,7 @@ public class AnnotationRetrievalTest {
 	}
 	
 	@Test
-	public void testGetAnnotationsExact() throws ResourceInitializationException {
+	public void testGetAnnotationsExact() throws Exception {
 		JCas jCas = ReusableUIMAObjects.getJCas();
 		//from http://www.gutenberg.org/files/17192/17192-h/17192-h.htm
 		jCas.setDocumentText("Quoth the Raven, \"Nevermore.\"");
@@ -630,6 +630,21 @@ public class AnnotationRetrievalTest {
 
 	}
 
+	@Test
+	public void testGetAnnotationsExact2() throws Exception {
+		JCas jCas = JCasFactory.createJCas(Token.class, Sentence.class);
+		JCas myView = jCas.createView("MyView");
+		TokenFactory.createTokens(myView, "red and blue cars and tipsy motorcycles", Token.class, Sentence.class);
+		Token token = AnnotationRetrieval.get(myView, Token.class, 6);
+		assertEquals("motorcycles", token.getCoveredText());
+		assertEquals(28, token.getBegin());
+		assertEquals(39, token.getEnd());
+		token = AnnotationRetrieval.getAnnotations(myView, 22, 27, Token.class, true).get(0);
+		assertEquals("tipsy", token.getCoveredText());
+		token = AnnotationRetrieval.getAnnotations(myView, 28, 39, Token.class, true).get(0);
+		assertEquals("motorcycles", token.getCoveredText());
+	}
+	
 //	@Test
 	public void testIssue98() throws UIMAException {
 		JCas jCas =  ReusableUIMAObjects.getJCas();

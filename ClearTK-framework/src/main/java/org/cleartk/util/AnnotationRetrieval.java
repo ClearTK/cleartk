@@ -155,8 +155,12 @@ public class AnnotationRetrieval {
 		cursor.moveTo(windowAnnotation);
 		
 		// if cursor is invalid now we're past the end of the index
+		// so move to the last annotation.  This will happen if the windowAnnotation is not 
+		// in the index - but if it were would be at the end of the index.  
+		// see org.cleartk.util.AnnotationRetrievalTest.testGetAnnotationsExact2() for a test that does not 
+		// pass when we simply return the cursor here.
 		if( !cursor.isValid() )
-			return cursor;
+			cursor.moveToLast();
 
 		while (cursor.isValid() && ((Annotation) cursor.get()).getBegin() >= windowAnnotation.getBegin()) {
 			cursor.moveToPrevious();
@@ -369,11 +373,9 @@ public class AnnotationRetrieval {
 
 	public static <T extends Annotation> List<T> getAnnotations(JCas jCas, Annotation windowAnnotation, Class<T> cls,
 			boolean exactSpan) {
-
 		if (!exactSpan) return getAnnotations(jCas, windowAnnotation, cls);
 		else {
 			FSIterator cursor = initializeWindowCursor(jCas, windowAnnotation);
-
 			List<T> annotations = new ArrayList<T>();
 			while (cursor.isValid() && ((Annotation) cursor.get()).getBegin() <= windowAnnotation.getEnd()) {
 				Annotation annotation = (Annotation) cursor.get();
@@ -413,7 +415,7 @@ public class AnnotationRetrieval {
 	 * 
 	 * @see #getAnnotations(JCas, Annotation, Class)
 	 */
-	public static <T extends Annotation> List<T> getAnnotations(JCas jCas, List<Annotation> windowAnnotations,
+	public static <T extends Annotation> List<T> getAnnotations(JCas jCas, List<? extends Annotation> windowAnnotations,
 			Class<T> cls) {
 		if (windowAnnotations == null || windowAnnotations.size() == 0) return null;
 
