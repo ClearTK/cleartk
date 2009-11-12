@@ -291,25 +291,25 @@ public class CleartkComponents {
 	}
 
 	public static AnalysisEngineDescription createPrimitiveDescription(Class<? extends AnalysisComponent> componentClass, Object... configurationData) throws ResourceInitializationException {
-		AnalysisEngineDescription aed = AnalysisEngineFactory.reflectPrimitiveDescription(componentClass, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES, configurationData);
+		AnalysisEngineDescription aed = AnalysisEngineFactory.createPrimitiveDescription(componentClass, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES, configurationData);
 		aed.getMetaData().setName(componentClass.getSimpleName());
 		return aed;
 	}
 	
 	public static AnalysisEngine createPrimitive(Class<? extends AnalysisComponent> componentClass, Object... configurationData) throws ResourceInitializationException {
-		AnalysisEngineDescription aed = AnalysisEngineFactory.reflectPrimitiveDescription(componentClass, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES, configurationData);
+		AnalysisEngineDescription aed = AnalysisEngineFactory.createPrimitiveDescription(componentClass, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES, configurationData);
 		aed.getMetaData().setName(componentClass.getSimpleName());
 		return AnalysisEngineFactory.createPrimitive(aed);
 	}
 	
 	public static CollectionReaderDescription createCollectionReaderDescription(Class<? extends CollectionReader> readerClass, Object... configurationData) throws ResourceInitializationException {
-		CollectionReaderDescription crd = CollectionReaderFactory.reflectDescription(readerClass, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES, configurationData);
+		CollectionReaderDescription crd = CollectionReaderFactory.createDescription(readerClass, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES, configurationData);
 		crd.getMetaData().setName(readerClass.getSimpleName());
 		return crd;
 	}
 	
 	public static CollectionReader createCollectionReader(Class<? extends CollectionReader> readerClass, Object... configurationData) throws ResourceInitializationException {
-		CollectionReaderDescription crd = CollectionReaderFactory.reflectDescription(readerClass, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES, configurationData);
+		CollectionReaderDescription crd = CollectionReaderFactory.createDescription(readerClass, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES, configurationData);
 		crd.getMetaData().setName(readerClass.getSimpleName());
 		return CollectionReaderFactory.createCollectionReader(crd);
 	}	
