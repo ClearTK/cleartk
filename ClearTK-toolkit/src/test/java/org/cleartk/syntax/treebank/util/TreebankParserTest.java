@@ -36,7 +36,7 @@ import org.apache.uima.util.FileUtils;
 import org.junit.Test;
 
 /**
- * <br>
+ * <br> 
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
@@ -385,6 +385,11 @@ public class TreebankParserTest {
 
 		treebankParse = "(NP (NP (NN dexamethasone))(PRN (LRB -LRB-)(NP (NN Dex))(RRB -RRB-)))";
 		expectedText = "dexamethasone (Dex)";
+		actualText = TreebankFormatParser.inferPlainText(treebankParse);
+		assertEquals(expectedText, actualText);
+
+		treebankParse = "(PRN (: --) (CC and) (ADVP (RB randomly) ) (PP (IN with) (NP-LGS (DT the) (NNP Cccccc) (NNP Bbbbbb) (NNP Aaaaaa) )) (: --) )";
+		expectedText = "-- and randomly with the Cccccc Bbbbbb Aaaaaa --";
 		actualText = TreebankFormatParser.inferPlainText(treebankParse);
 		assertEquals(expectedText, actualText);
 
