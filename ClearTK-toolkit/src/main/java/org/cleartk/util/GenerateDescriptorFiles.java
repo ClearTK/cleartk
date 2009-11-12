@@ -135,6 +135,7 @@ public class GenerateDescriptorFiles {
 		writePrimitiveDescription(XWriter.class, outputDirectory);
 		writePrimitiveDescription(TermFinderAnnotator.class, outputDirectory);
 		writePrimitiveDescription(JCasAnnotatorAdapter.class, outputDirectory);
+		writeCollectionReader(XReader.class, outputDirectory);
 	}
 	
 	private static File updateOutputDirectory(Class<?> cls, File outputDirectory) {

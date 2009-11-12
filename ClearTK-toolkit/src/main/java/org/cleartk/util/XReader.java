@@ -34,42 +34,42 @@ import org.apache.uima.cas.impl.XmiCasDeserializer;
 import org.apache.uima.cas.impl.XmiCasSerializer;
 import org.apache.uima.collection.CollectionException;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.test.util.ConfigurationParameterNameFactory;
+import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.util.InitializeUtil;
 import org.xml.sax.SAXException;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
  * <br>All rights reserved.
+ * @see XmiCasSerializer
+ * @see XCASSerializer
 */
-public class XReader extends FilesCollectionReader {
 
-	/**
-	 * "org.cleartk.util.XReader.PARAM_XML_SCHEME" is a single, optional, string parameter that specifies the
-	 * UIMA XML serialization scheme that should be used. Valid values for this
-	 * parameter are "XMI" (default) and "XCAS".
-	 * 
-	 * @see XmiCasSerializer
-	 * @see XCASSerializer
-	 */
-	public static final String PARAM_XML_SCHEME = "org.cleartk.util.XReader.PARAM_XML_SCHEME";
+public class XReader extends FilesCollectionReader {
 
 	public static final String XMI = "XMI";
 
 	public static final String XCAS = "XCAS";
 
-	private boolean useXMI = true;
+	public static final String PARAM_XML_SCHEME;
+	static {
+			PARAM_XML_SCHEME =	 ConfigurationParameterNameFactory.createConfigurationParameterName(	XReader.class, "xmlScheme");
+	}
 	
+	@ConfigurationParameter(
+			defaultValue = "XMI",
+			description = "specifies the UIMA XML serialization scheme that should be used. Valid values for this parameter are 'XMI' and 'XCAS'")	
+	private String xmlScheme;
+
 	@Override
 	public void initialize() throws ResourceInitializationException {
 		super.initialize();
-		
-		String xmlScheme = (String) UIMAUtil.getDefaultingConfigParameterValue(getUimaContext(), PARAM_XML_SCHEME, XMI);
+		InitializeUtil.initialize(this, getUimaContext());
 
-		if (xmlScheme.equals(XMI)) useXMI = true;
-		else if (xmlScheme.equals(XCAS)) useXMI = false;
-		else throw new ResourceInitializationException(String.format(
-				"parameter '%1$s' must be either '%2$s' or '%3$s' or left empty.", PARAM_XML_SCHEME, XMI, XCAS), null);
-
-		
+		if (!xmlScheme.equals(XMI) && !xmlScheme.equals(XCAS)) 
+			throw new ResourceInitializationException(new IllegalArgumentException(String.format(
+				"parameter '%1$s' must be either '%2$s' or '%3$s' or left empty.", PARAM_XML_SCHEME, XMI, XCAS)));
 	}
 
 	public void getNext(CAS cas) throws IOException, CollectionException {
@@ -77,7 +77,7 @@ public class XReader extends FilesCollectionReader {
 		FileInputStream inputStream = new FileInputStream(currentFile);
 		
 		try {
-			if(useXMI)
+			if(xmlScheme.equals(XMI))
 				XmiCasDeserializer.deserialize(inputStream, cas);
 			else
 				XCASDeserializer.deserialize(inputStream, cas);
