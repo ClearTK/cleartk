@@ -78,7 +78,7 @@ public class PropbankGoldReaderAndAnnotatorTest {
 		reader = CleartkComponents.createCollectionReader(PropbankGoldReader.class,
 				PropbankGoldReader.PARAM_WSJ_SECTIONS, "02-21",
 				PropbankGoldReader.PARAM_PROPBANK_FILE_NAME, "test/data/corpus/propbank-1.0/prop.txt",
-				PropbankGoldReader.PARAM_PENNTREEBANK_DIRECTORY_NAME, "data/treebank");
+				PropbankGoldReader.PARAM_PENNTREEBANK_DIRECTORY_NAME, "test/data/corpus/propbank-1.0/treebank");
 		
 		Object propbankCorpusFile = reader.getConfigParameterValue(
 				PropbankGoldReader.PARAM_PROPBANK_FILE_NAME);
@@ -86,7 +86,7 @@ public class PropbankGoldReaderAndAnnotatorTest {
 		
 		Object treebankCorpusDirectory = reader.getConfigParameterValue(
 				PropbankGoldReader.PARAM_PENNTREEBANK_DIRECTORY_NAME);
-		Assert.assertEquals("data/treebank", treebankCorpusDirectory);
+		Assert.assertEquals("test/data/corpus/propbank-1.0/treebank", treebankCorpusDirectory);
 		
 		Object wsjSections = reader.getConfigParameterValue(
 				PropbankGoldReader.PARAM_WSJ_SECTIONS);
