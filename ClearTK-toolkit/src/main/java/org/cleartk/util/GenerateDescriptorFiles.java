@@ -66,13 +66,14 @@ public class GenerateDescriptorFiles {
 	 * <br>
 	 * Copyright (c) 2009, Regents of the University of Colorado <br>
 	 * All rights reserved.
+	 * 
 	 * @author Philip Ogren
 	 */
 
 	public static void main(String[] args) throws SAXException, IOException, ResourceInitializationException {
 		String outputDirectoryName = "src/main/resources";
 		File outputDirectory = new File(outputDirectoryName);
-		if(!outputDirectory.exists()) {
+		if (!outputDirectory.exists()) {
 			outputDirectory.mkdirs();
 		}
 
@@ -81,8 +82,7 @@ public class GenerateDescriptorFiles {
 		aed.toXML(new FileWriter(new File(outputDirectory, "SentencesAndTokens.xml")));
 
 		File descDirectory = new File(outputDirectory, "org/cleartk/example/pos");
-		if(!descDirectory.exists())
-			descDirectory.mkdirs();
+		if (!descDirectory.exists()) descDirectory.mkdirs();
 		aed = ExamplePOSAnnotationHandler.getClassifierDescription(ExamplePOSAnnotationHandler.DEFAULT_MODEL);
 		updateDescription(aed.getMetaData());
 		aed.toXML(new FileWriter(new File(descDirectory, "ExamplePOSAnnotator.xml")));
@@ -92,25 +92,23 @@ public class GenerateDescriptorFiles {
 		aed.toXML(new FileWriter(new File(descDirectory, "ExamplePOSDataWriter.xml")));
 
 		descDirectory = new File(outputDirectory, "org/cleartk/token/pos/impl");
-		if(!descDirectory.exists())
-			descDirectory.mkdirs();
+		if (!descDirectory.exists()) descDirectory.mkdirs();
 		aed = DefaultPOSHandler.getWriterDescription();
 		updateDescription(aed.getMetaData());
 		aed.toXML(new FileWriter(new File(descDirectory, "DefaultPOSDataWriter.xml")));
 		aed = DefaultPOSHandler.getAnnotatorDescription();
 		updateDescription(aed.getMetaData());
 		aed.toXML(new FileWriter(new File(descDirectory, "DefaultPOSAnnotator.xml")));
-		
+
 		descDirectory = new File(outputDirectory, "org/cleartk/temporal");
-		if(!descDirectory.exists())
-			descDirectory.mkdirs();
+		if (!descDirectory.exists()) descDirectory.mkdirs();
 		aed = VerbClauseTemporalHandler.getWriterDescription("test/data/temporal");
 		updateDescription(aed.getMetaData());
 		aed.toXML(new FileWriter(new File(descDirectory, "VerbClauseTemporalDataWriter.xml")));
 		aed = VerbClauseTemporalHandler.getAnnotatorDescription();
 		updateDescription(aed.getMetaData());
 		aed.toXML(new FileWriter(new File(descDirectory, "VerbClauseTemporalAnnotator.xml")));
-		
+
 		writePrimitiveDescription(ExamplePOSPlainTextWriter.class, outputDirectory);
 
 		writeCollectionReader(Ace2005GoldReader.class, outputDirectory);
@@ -126,7 +124,7 @@ public class GenerateDescriptorFiles {
 		writePrimitiveDescription(TokenAnnotator.class, outputDirectory);
 		writePrimitiveDescription(DefaultSnowballStemmer.class, outputDirectory);
 		writeCollectionReader(PennTreebankReader.class, outputDirectory);
-		
+
 		writePrimitiveDescription(LineWriter.class, outputDirectory);
 		writePrimitiveDescription(OpenNLPSentenceSegmenter.class, outputDirectory);
 		writeCollectionReader(Conll2003GoldReader.class, outputDirectory);
@@ -137,73 +135,82 @@ public class GenerateDescriptorFiles {
 		writePrimitiveDescription(JCasAnnotatorAdapter.class, outputDirectory);
 		writeCollectionReader(XReader.class, outputDirectory);
 		writeCollectionReader(FilesCollectionReader.class, outputDirectory);
+
+		aed = CleartkComponents.createPrimitiveDescription(TokenAnnotator.class, TokenAnnotator.PARAM_TOKEN_TYPE_NAME,
+				"org.cleartk.token.chunk.type.Subtoken", TokenAnnotator.PARAM_TOKENIZER_NAME,
+				"org.cleartk.token.util.Subtokenizer");
+		updateDescription(aed.getMetaData());
+		descDirectory = new File(outputDirectory, "org/cleartk/token");
+		if (!descDirectory.exists()) descDirectory.mkdirs();
+		aed.toXML(new FileWriter(new File(descDirectory, "Subtokenizer.xml")));
+
 	}
-	
+
 	private static File updateOutputDirectory(Class<?> cls, File outputDirectory) {
 		String packageName = cls.getName();
-		packageName = packageName.substring(0, packageName.length()- cls.getSimpleName().length() - 1);
+		packageName = packageName.substring(0, packageName.length() - cls.getSimpleName().length() - 1);
 		packageName = packageName.replace('.', File.separatorChar);
 		outputDirectory = new File(outputDirectory, packageName);
-		if(!outputDirectory.exists()) {
+		if (!outputDirectory.exists()) {
 			outputDirectory.mkdirs();
 		}
 		return outputDirectory;
 	}
-	
-	private static void writeCollectionReader(Class<? extends CollectionReader> readerClass, File outputDirectory) throws ResourceInitializationException, SAXException, IOException {
+
+	private static void writeCollectionReader(Class<? extends CollectionReader> readerClass, File outputDirectory)
+			throws ResourceInitializationException, SAXException, IOException {
 		CollectionReaderDescription crd = CleartkComponents.createCollectionReaderDescription(readerClass);
 		updateDescription(crd.getMetaData());
 		outputDirectory = updateOutputDirectory(readerClass, outputDirectory);
-		crd.toXML(new FileWriter(new File(outputDirectory, readerClass.getSimpleName()+".xml")));
+		crd.toXML(new FileWriter(new File(outputDirectory, readerClass.getSimpleName() + ".xml")));
 	}
-	
-	private static void writePrimitiveDescription(Class<? extends AnalysisComponent> componentClass, File outputDirectory) throws ResourceInitializationException, SAXException, IOException {
+
+	private static void writePrimitiveDescription(Class<? extends AnalysisComponent> componentClass,
+			File outputDirectory) throws ResourceInitializationException, SAXException, IOException {
 		AnalysisEngineDescription aed = CleartkComponents.createPrimitiveDescription(componentClass);
 		updateDescription(aed.getMetaData());
 		outputDirectory = updateOutputDirectory(componentClass, outputDirectory);
-		aed.toXML(new FileWriter(new File(outputDirectory, componentClass.getSimpleName()+".xml")));
+		aed.toXML(new FileWriter(new File(outputDirectory, componentClass.getSimpleName() + ".xml")));
 	}
-	
+
 	private static void updateDescription(ResourceMetaData rmd) {
 		String description = rmd.getDescription();
-		if(description == null)
-			description = "";
-		rmd.setDescription("This descriptor file was generated automatically by "+GenerateDescriptorFiles.class.getName()+". \n\n"+
-				license+description);
+		if (description == null) description = "";
+		rmd.setDescription("This descriptor file was generated automatically by "
+				+ GenerateDescriptorFiles.class.getName() + ". \n\n" + license + description);
 	}
 
-	public static final String newline = "\n";//System.getProperty("line.separator");
-	public static final String license = 
-		  "Copyright (c) 2009, Regents of the University of Colorado "
-		+ newline 
-		+ "All rights reserved."
-		+ newline
-		+ ""
-		+ newline
-		+ "Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:"
-		+ newline
-		+ ""
-		+ newline
-		+ " - Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. "
-		+ newline
-		+ " - Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. "
-		+ newline
-		+ " - Neither the name of the University of Colorado at Boulder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. "
-		+ newline + newline
-		+ "THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE "
-		+ "IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE "
-		+ "ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE "
-		+ "LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR " 
-		+ "CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF "
-		+ "SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS "
-		+ "INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN "
-		+ "CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) "
-		+ "ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE "
-		+ "POSSIBILITY OF SUCH DAMAGE. " + newline + newline;
+	public static final String newline = "\n";// System.getProperty("line.separator");
+
+	public static final String license = "Copyright (c) 2009, Regents of the University of Colorado "
+			+ newline
+			+ "All rights reserved."
+			+ newline
+			+ ""
+			+ newline
+			+ "Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:"
+			+ newline
+			+ ""
+			+ newline
+			+ " - Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. "
+			+ newline
+			+ " - Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. "
+			+ newline
+			+ " - Neither the name of the University of Colorado at Boulder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. "
+			+ newline
+			+ newline
+			+ "THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE "
+			+ "IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE "
+			+ "ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE "
+			+ "LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR "
+			+ "CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF "
+			+ "SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS "
+			+ "INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN "
+			+ "CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) "
+			+ "ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE "
+			+ "POSSIBILITY OF SUCH DAMAGE. " + newline + newline;
 
 	public static final String copyright = "Copyright (c) 2009, Regents of the University of Colorado " + newline
-		+ "All rights reserved." + newline;
+			+ "All rights reserved." + newline;
 
 }
-
-
