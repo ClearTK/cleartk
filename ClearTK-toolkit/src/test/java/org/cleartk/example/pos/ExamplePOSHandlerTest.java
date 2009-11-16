@@ -36,7 +36,7 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.SequentialClassifierAnnotator;
 import org.cleartk.classifier.SequentialDataWriterAnnotator;
-import org.cleartk.classifier.SequentialInstanceConsumer;
+import org.cleartk.classifier.SequentialInstanceConsumer_ImplBase;
 import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
@@ -175,11 +175,11 @@ public class ExamplePOSHandlerTest {
 		
 		String expectedName = ExamplePOSAnnotationHandler.class.getName();
 		Object annotationHandler = engine.getConfigParameterValue(
-				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER);
+				SequentialInstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME);
 		Assert.assertEquals(expectedName, annotationHandler);
 
 		Object classifierJar = engine.getConfigParameterValue(
-				SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR);
+				SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR_PATH);
 		Assert.assertEquals(ExamplePOSAnnotationHandler.DEFAULT_MODEL, classifierJar);
 		
 		engine.collectionProcessComplete();
@@ -192,7 +192,7 @@ public class ExamplePOSHandlerTest {
 		
 		String expectedName = ExamplePOSAnnotationHandler.class.getName();
 		Object annotationHandler = engine.getConfigParameterValue(
-				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER);
+				SequentialInstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME);
 		Assert.assertEquals(expectedName, annotationHandler);
 		
 		Object outputDir = engine.getConfigParameterValue(
@@ -202,7 +202,7 @@ public class ExamplePOSHandlerTest {
 		String expectedDataWriterFactory = (
 				ViterbiDataWriterFactory.class.getName());
 		Object dataWriter = engine.getConfigParameterValue(
-				SequentialDataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS);
+				SequentialDataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME);
 		Assert.assertEquals(expectedDataWriterFactory, dataWriter);
 		engine.collectionProcessComplete();
 	}

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+    <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+    <primitive>true</primitive>
+    <annotatorImplementationName>org.cleartk.classifier.SequentialClassifierAnnotator</annotatorImplementationName>
+    <analysisEngineMetaData>
+        <name/>
+        <description>This descriptor file was generated automatically by org.cleartk.util.GenerateDescriptorFiles. 
+
+Copyright (c) 2009, Regents of the University of Colorado 
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+
+ - Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. 
+ - Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. 
+ - Neither the name of the University of Colorado at Boulder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. 
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+
+</description>
+        <configurationParameters>
+            <configurationParameter>
+                <name>org.cleartk.classifier.SequentialClassifierAnnotator.classifierJarPath</name>
+                <description>provides the path to the jar file that should be used to instantiate the classifier.</description>
+                <type>String</type>
+                <multiValued>false</multiValued>
+                <mandatory>true</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>org.cleartk.classifier.SequentialInstanceConsumer_ImplBase.annotationHandlerName</name>
+                <description>provides the full name of the SequentialAnnotationHandler class that will be used with this SequentialInstanceConsumer.</description>
+                <type>String</type>
+                <multiValued>false</multiValued>
+                <mandatory>true</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>org.cleartk.chunk.ChunkerHandler.labeledAnnotationClassName</name>
+                <description>names the class of the type system type used to associate B, I, and O (for example) labels with.  An example value might be 'org.cleartk.type.Token'</description>
+                <type>String</type>
+                <multiValued>false</multiValued>
+                <mandatory>true</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>org.cleartk.chunk.ChunkerHandler.sequenceClassName</name>
+                <description>names the class of the type system type that specifies a 'sequence' of labels.  An example might be something like 'org.cleartk.type.Sentence'</description>
+                <type>String</type>
+                <multiValued>false</multiValued>
+                <mandatory>true</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>org.cleartk.chunk.ChunkerHandler.chunkLabelerClassName</name>
+                <description>provides the class name of a class that extends org.cleartk.chunk.ChunkLabeler.</description>
+                <type>String</type>
+                <multiValued>false</multiValued>
+                <mandatory>true</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>org.cleartk.chunk.ChunkerHandler.chunkerFeatureExtractorClassName</name>
+                <description>provides the class name of a class that extends org.cleartk.chunk.ChunkFeatureExtractor.</description>
+                <type>String</type>
+                <multiValued>false</multiValued>
+                <mandatory>true</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>org.cleartk.chunk.DefaultChunkLabeler.chunkLabelFeatureName</name>
+                <description>names  the feature of the type system chunk type that provides a label for each chunk. The feature is queried and the value of the feature is used as the label for the chunk.  If this parameter has no value, then the name of the chunk type will be used as a label. For example, if the value of the parameter 'org.cleartk.chunk.ChunkLabeler_ImplBase.chunkAnnotationClassName' is 'org.cleartk.type.Chunk', then a good value for this parameter would be 'chunkType'.  This would result in labels corresponding to the values found in the type system feature chunkType.  If the value of the parameter 'org.cleartk.chunk.ChunkLabeler_ImplBase.chunkAnnotationClassName' is 'org.cleartk.type.Chunk' and no value is given for this parameter, then the label will always be 'Chunk'</description>
+                <type>String</type>
+                <multiValued>false</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>org.cleartk.chunk.ChunkLabeler_ImplBase.chunkAnnotationClassName</name>
+                <description>names the class of the type system chunk annotation type. An example value might be something like: 'org.cleartk.type.ne.NamedEntityMention'</description>
+                <type>String</type>
+                <multiValued>false</multiValued>
+                <mandatory>true</mandatory>
+            </configurationParameter>
+        </configurationParameters>
+        <configurationParameterSettings>
+            <nameValuePair>
+                <name>org.cleartk.classifier.SequentialInstanceConsumer_ImplBase.annotationHandlerName</name>
+                <value>
+                    <string>org.cleartk.chunk.ChunkerHandler</string>
+                </value>
+            </nameValuePair>
+            <nameValuePair>
+                <name>org.cleartk.classifier.SequentialClassifierAnnotator.classifierJarPath</name>
+                <value>
+                    <string>CHANGEME</string>
+                </value>
+            </nameValuePair>
+            <nameValuePair>
+                <name>org.cleartk.chunk.ChunkerHandler.labeledAnnotationClassName</name>
+                <value>
+                    <string>org.cleartk.token.chunk.type.Subtoken</string>
+                </value>
+            </nameValuePair>
+            <nameValuePair>
+                <name>org.cleartk.chunk.ChunkerHandler.sequenceClassName</name>
+                <value>
+                    <string>org.cleartk.type.Sentence</string>
+                </value>
+            </nameValuePair>
+            <nameValuePair>
+                <name>org.cleartk.chunk.ChunkerHandler.chunkLabelerClassName</name>
+                <value>
+                    <string>org.cleartk.token.chunk.ChunkTokenizerLabeler</string>
+                </value>
+            </nameValuePair>
+            <nameValuePair>
+                <name>org.cleartk.chunk.ChunkerHandler.chunkerFeatureExtractorClassName</name>
+                <value>
+                    <string>org.cleartk.token.chunk.ChunkTokenizerFeatureExtractor</string>
+                </value>
+            </nameValuePair>
+            <nameValuePair>
+                <name>org.cleartk.chunk.ChunkLabeler_ImplBase.chunkAnnotationClassName</name>
+                <value>
+                    <string>org.cleartk.type.Token</string>
+                </value>
+            </nameValuePair>
+        </configurationParameterSettings>
+        <typeSystemDescription>
+            <imports>
+                <import name="org.cleartk.TypeSystem"/>
+            </imports>
+        </typeSystemDescription>
+        <capabilities/>
+        <operationalProperties>
+            <modifiesCas>true</modifiesCas>
+            <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+            <outputsNewCASes>false</outputsNewCASes>
+        </operationalProperties>
+    </analysisEngineMetaData>
+</analysisEngineDescription>

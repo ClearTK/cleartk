@@ -21,25 +21,28 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 </description>
         <configurationParameters>
             <configurationParameter>
+                <name>org.cleartk.classifier.SequentialDataWriterAnnotator.outputDirectory</name>
+                <description>provides the name of the directory where the training data will be written.</description>
+                <type>String</type>
+                <multiValued>false</multiValued>
+                <mandatory>true</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>org.cleartk.classifier.SequentialDataWriterAnnotator.dataWriterFactoryClassName</name>
+                <description>provides the full name of the SequentialDataWriterFactory class to be used.</description>
+                <type>String</type>
+                <multiValued>false</multiValued>
+                <mandatory>true</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>org.cleartk.classifier.SequentialInstanceConsumer_ImplBase.annotationHandlerName</name>
+                <description>provides the full name of the SequentialAnnotationHandler class that will be used with this SequentialInstanceConsumer.</description>
+                <type>String</type>
+                <multiValued>false</multiValued>
+                <mandatory>true</mandatory>
+            </configurationParameter>
+            <configurationParameter>
                 <name>org.cleartk.token.pos.POSHandler.featureExtractorClassName</name>
-                <type>String</type>
-                <multiValued>false</multiValued>
-                <mandatory>false</mandatory>
-            </configurationParameter>
-            <configurationParameter>
-                <name>org.cleartk.classifier.SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER</name>
-                <type>String</type>
-                <multiValued>false</multiValued>
-                <mandatory>false</mandatory>
-            </configurationParameter>
-            <configurationParameter>
-                <name>org.cleartk.classifier.SequentialDataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS</name>
-                <type>String</type>
-                <multiValued>false</multiValued>
-                <mandatory>false</mandatory>
-            </configurationParameter>
-            <configurationParameter>
-                <name>org.cleartk.classifier.SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY</name>
                 <type>String</type>
                 <multiValued>false</multiValued>
                 <mandatory>false</mandatory>
@@ -65,19 +68,19 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 </value>
             </nameValuePair>
             <nameValuePair>
-                <name>org.cleartk.classifier.SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER</name>
+                <name>org.cleartk.classifier.SequentialInstanceConsumer_ImplBase.annotationHandlerName</name>
                 <value>
                     <string>org.cleartk.token.pos.impl.DefaultPOSHandler</string>
                 </value>
             </nameValuePair>
             <nameValuePair>
-                <name>org.cleartk.classifier.SequentialDataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS</name>
+                <name>org.cleartk.classifier.SequentialDataWriterAnnotator.dataWriterFactoryClassName</name>
                 <value>
                     <string>org.cleartk.classifier.viterbi.ViterbiDataWriterFactory</string>
                 </value>
             </nameValuePair>
             <nameValuePair>
-                <name>org.cleartk.classifier.SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY</name>
+                <name>org.cleartk.classifier.SequentialDataWriterAnnotator.outputDirectory</name>
                 <value>
                     <string/>
                 </value>

@@ -21,27 +21,29 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 </description>
         <configurationParameters>
             <configurationParameter>
-                <name>org.cleartk.classifier.InstanceConsumer.PARAM_ANNOTATION_HANDLER</name>
+                <name>org.cleartk.classifier.ClassifierAnnotator.classifierJarPath</name>
+                <description>provides the path to the jar file that should be used to instantiate the classifier.</description>
                 <type>String</type>
                 <multiValued>false</multiValued>
-                <mandatory>false</mandatory>
+                <mandatory>true</mandatory>
             </configurationParameter>
             <configurationParameter>
-                <name>org.cleartk.classifier.ClassifierAnnotator.PARAM_CLASSIFIER_JAR</name>
+                <name>org.cleartk.classifier.InstanceConsumer_ImplBase.annotationHandlerName</name>
+                <description>provides the full name of the AnnotationHandler class that will be used with this InstanceConsumer</description>
                 <type>String</type>
                 <multiValued>false</multiValued>
-                <mandatory>false</mandatory>
+                <mandatory>true</mandatory>
             </configurationParameter>
         </configurationParameters>
         <configurationParameterSettings>
             <nameValuePair>
-                <name>org.cleartk.classifier.InstanceConsumer.PARAM_ANNOTATION_HANDLER</name>
+                <name>org.cleartk.classifier.InstanceConsumer_ImplBase.annotationHandlerName</name>
                 <value>
                     <string>org.cleartk.temporal.VerbClauseTemporalHandler</string>
                 </value>
             </nameValuePair>
             <nameValuePair>
-                <name>org.cleartk.classifier.ClassifierAnnotator.PARAM_CLASSIFIER_JAR</name>
+                <name>org.cleartk.classifier.ClassifierAnnotator.classifierJarPath</name>
                 <value>
                     <string>resources/models/verb-clause-temporal-model.jar</string>
                 </value>

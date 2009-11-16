@@ -147,7 +147,7 @@ public class ExamplePOSAnnotationHandler implements SequentialAnnotationHandler<
 	
 	public static AnalysisEngineDescription getClassifierDescription(String modelFileName) throws ResourceInitializationException {
 		return CleartkComponents.createSequentialClassifierAnnotator(
-				ExamplePOSAnnotationHandler.class, modelFileName);
+				ExamplePOSAnnotationHandler.class, modelFileName, null);
 	}
 	
 	public static AnalysisEngineDescription getWriterDescription(String outputDirectory) throws ResourceInitializationException {

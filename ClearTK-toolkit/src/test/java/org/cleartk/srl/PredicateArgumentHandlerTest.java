@@ -40,6 +40,7 @@ import org.cleartk.classifier.ClassifierAnnotator;
 import org.cleartk.classifier.DataWriterAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.InstanceConsumer_ImplBase;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.classifier.svmlight.DefaultSVMlightDataWriterFactory;
 import org.cleartk.srl.type.Predicate;
@@ -378,11 +379,11 @@ public class PredicateArgumentHandlerTest {
 				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputPath);
 		
 		Object handler = engine.getConfigParameterValue(
-				DataWriterAnnotator.PARAM_ANNOTATION_HANDLER);
+				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME);
 		Assert.assertEquals(PredicateAnnotationHandler.class.getName(), handler);
 		
 		Object dataWriterFactory = engine.getConfigParameterValue(
-				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS);
+				DataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME);
 		Assert.assertEquals(DefaultSVMlightDataWriterFactory.class.getName(), dataWriterFactory);
 		
 		Object outputDir = engine.getConfigParameterValue(
@@ -401,9 +402,9 @@ public class PredicateArgumentHandlerTest {
 			
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.srl.PredicateAnnotator",
-				ClassifierAnnotator.PARAM_CLASSIFIER_JAR, "test/data/srl/predicate/model.jar");
+				ClassifierAnnotator.PARAM_CLASSIFIER_JAR_PATH, "test/data/srl/predicate/model.jar");
 		Object handler = engine.getConfigParameterValue(
-				ClassifierAnnotator.PARAM_ANNOTATION_HANDLER);
+				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME);
 		Assert.assertEquals(PredicateAnnotationHandler.class.getName(), handler);
 		
 		engine.collectionProcessComplete();
@@ -422,11 +423,11 @@ public class PredicateArgumentHandlerTest {
 				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputPath);
 		
 		Object handler = engine.getConfigParameterValue(
-				DataWriterAnnotator.PARAM_ANNOTATION_HANDLER);
+				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME);
 		Assert.assertEquals(ArgumentAnnotationHandler.class.getName(), handler);
 		
 		Object dataWriter = engine.getConfigParameterValue(
-				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS);
+				DataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME);
 		Assert.assertEquals(DefaultMaxentDataWriterFactory.class.getName(), dataWriter);
 		
 		Object outputDir = engine.getConfigParameterValue(
@@ -445,9 +446,9 @@ public class PredicateArgumentHandlerTest {
 			
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.srl.ArgumentAnnotator",
-				ClassifierAnnotator.PARAM_CLASSIFIER_JAR, "test/data/srl/argument/model.jar");
+				ClassifierAnnotator.PARAM_CLASSIFIER_JAR_PATH, "test/data/srl/argument/model.jar");
 		Object handler = engine.getConfigParameterValue(
-				ClassifierAnnotator.PARAM_ANNOTATION_HANDLER);
+				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME);
 		Assert.assertEquals(ArgumentAnnotationHandler.class.getName(), handler);
 		
 		engine.collectionProcessComplete();

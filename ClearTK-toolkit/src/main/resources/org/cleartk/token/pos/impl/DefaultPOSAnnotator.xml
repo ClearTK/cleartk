@@ -21,19 +21,21 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 </description>
         <configurationParameters>
             <configurationParameter>
+                <name>org.cleartk.classifier.SequentialClassifierAnnotator.classifierJarPath</name>
+                <description>provides the path to the jar file that should be used to instantiate the classifier.</description>
+                <type>String</type>
+                <multiValued>false</multiValued>
+                <mandatory>true</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>org.cleartk.classifier.SequentialInstanceConsumer_ImplBase.annotationHandlerName</name>
+                <description>provides the full name of the SequentialAnnotationHandler class that will be used with this SequentialInstanceConsumer.</description>
+                <type>String</type>
+                <multiValued>false</multiValued>
+                <mandatory>true</mandatory>
+            </configurationParameter>
+            <configurationParameter>
                 <name>org.cleartk.token.pos.POSHandler.featureExtractorClassName</name>
-                <type>String</type>
-                <multiValued>false</multiValued>
-                <mandatory>false</mandatory>
-            </configurationParameter>
-            <configurationParameter>
-                <name>org.cleartk.classifier.SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER</name>
-                <type>String</type>
-                <multiValued>false</multiValued>
-                <mandatory>false</mandatory>
-            </configurationParameter>
-            <configurationParameter>
-                <name>org.cleartk.classifier.SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR</name>
                 <type>String</type>
                 <multiValued>false</multiValued>
                 <mandatory>false</mandatory>
@@ -41,21 +43,21 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         </configurationParameters>
         <configurationParameterSettings>
             <nameValuePair>
-                <name>org.cleartk.token.pos.POSHandler.featureExtractorClassName</name>
-                <value>
-                    <string>org.cleartk.token.pos.impl.DefaultFeatureExtractor</string>
-                </value>
-            </nameValuePair>
-            <nameValuePair>
-                <name>org.cleartk.classifier.SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER</name>
+                <name>org.cleartk.classifier.SequentialInstanceConsumer_ImplBase.annotationHandlerName</name>
                 <value>
                     <string>org.cleartk.token.pos.impl.DefaultPOSHandler</string>
                 </value>
             </nameValuePair>
             <nameValuePair>
-                <name>org.cleartk.classifier.SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR</name>
+                <name>org.cleartk.classifier.SequentialClassifierAnnotator.classifierJarPath</name>
                 <value>
                     <string/>
+                </value>
+            </nameValuePair>
+            <nameValuePair>
+                <name>org.cleartk.token.pos.POSHandler.featureExtractorClassName</name>
+                <value>
+                    <string>org.cleartk.token.pos.impl.DefaultFeatureExtractor</string>
                 </value>
             </nameValuePair>
         </configurationParameterSettings>

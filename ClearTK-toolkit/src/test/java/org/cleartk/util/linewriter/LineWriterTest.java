@@ -455,7 +455,7 @@ public class LineWriterTest {
 				AnalysisEngineFactory.createAnalysisEngine("org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter"),
 				AnalysisEngineFactory.createAnalysisEngine("org.cleartk.token.Subtokenizer"),
 				AnalysisEngineFactory.createAnalysisEngine("org.cleartk.token.chunk.ChunkTokenizer",
-						SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR, "test/data/token/chunk/model.jar"),
+						SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR_PATH, "test/data/token/chunk/model.jar"),
 				AnalysisEngineFactory.createAnalysisEngine("org.cleartk.util.linewriter.LineWriter",
 						LineWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDir.getPath(), 
 						LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token")};

@@ -39,7 +39,7 @@ import org.cleartk.classifier.ClassifierAnnotator;
 import org.cleartk.classifier.DataWriterAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.InstanceConsumer;
+import org.cleartk.classifier.InstanceConsumer_ImplBase;
 import org.cleartk.classifier.svmlight.DefaultOVASVMlightDataWriterFactory;
 import org.cleartk.corpus.timeml.type.Event;
 import org.cleartk.corpus.timeml.type.TemporalLink;
@@ -197,11 +197,11 @@ public class VerbClauseTemporalHandlerTest {
 				"org.cleartk.temporal.VerbClauseTemporalDataWriter");
 		
 		Object handler = engine.getConfigParameterValue(
-				InstanceConsumer.PARAM_ANNOTATION_HANDLER);
+				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME);
 		Assert.assertEquals(VerbClauseTemporalHandler.class.getName(), handler);
 		
 		Object dataWriter = engine.getConfigParameterValue(
-				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS);
+				DataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME);
 		Assert.assertEquals(DefaultOVASVMlightDataWriterFactory.class.getName(), dataWriter);
 		
 		Object outputDir = engine.getConfigParameterValue(
@@ -217,11 +217,11 @@ public class VerbClauseTemporalHandlerTest {
 				"org.cleartk.temporal.VerbClauseTemporalAnnotator");
 		
 		Object handler = engine.getConfigParameterValue(
-				InstanceConsumer.PARAM_ANNOTATION_HANDLER);
+				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME);
 		Assert.assertEquals(VerbClauseTemporalHandler.class.getName(), handler);
 		
 		Object modelJar = engine.getConfigParameterValue(
-				ClassifierAnnotator.PARAM_CLASSIFIER_JAR);
+				ClassifierAnnotator.PARAM_CLASSIFIER_JAR_PATH);
 		Assert.assertEquals("resources/models/verb-clause-temporal-model.jar", modelJar);
 		
 		engine.collectionProcessComplete();

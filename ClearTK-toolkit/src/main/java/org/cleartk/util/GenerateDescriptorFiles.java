@@ -54,6 +54,7 @@ import org.cleartk.syntax.opennlp.OpenNLPTreebankParser;
 import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
 import org.cleartk.temporal.VerbClauseTemporalHandler;
 import org.cleartk.token.TokenAnnotator;
+import org.cleartk.token.chunk.ChunkTokenizerFactory;
 import org.cleartk.token.opennlp.OpenNLPPOSTagger;
 import org.cleartk.token.pos.impl.DefaultPOSHandler;
 import org.cleartk.token.snowball.DefaultSnowballStemmer;
@@ -148,6 +149,13 @@ public class GenerateDescriptorFiles {
 
 		writePrimitiveDescription(OpenNLPTreebankParser.class, outputDirectory);
 		writePrimitiveDescription(OpenNLPPOSTagger.class, outputDirectory);
+		
+		aed = ChunkTokenizerFactory.createChunkTokenizerDescription();
+		updateDescription(aed.getMetaData());
+		descDirectory = new File(outputDirectory, "org/cleartk/token/chunk");
+		if (!descDirectory.exists()) descDirectory.mkdirs();
+		aed.toXML(new FileWriter(new File(descDirectory, "ChunkTokenizer.xml")));
+
 	}
 
 	private static File updateOutputDirectory(Class<?> cls, File outputDirectory) {

@@ -40,7 +40,7 @@ import org.cleartk.ViewNames;
 import org.cleartk.classifier.BuildJar;
 import org.cleartk.classifier.SequentialClassifierAnnotator;
 import org.cleartk.classifier.SequentialDataWriterAnnotator;
-import org.cleartk.classifier.SequentialInstanceConsumer;
+import org.cleartk.classifier.SequentialInstanceConsumer_ImplBase;
 import org.cleartk.classifier.Train;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.classifier.viterbi.ViterbiDataWriter;
@@ -100,9 +100,9 @@ public class DefaultPOSHandlerTest {
 		AnalysisEngine aggregateEngine = AnalysisEngineFactory.createAggregate(aggregatedClasses, 
 				defaultTypeSystemDescription, (TypePriorities)null, null,
 				TreebankGoldAnnotator.PARAM_POST_TREES, false,
-				SequentialDataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, ViterbiDataWriterFactory.class.getName(),
+				SequentialDataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, ViterbiDataWriterFactory.class.getName(),
 				ViterbiDataWriter.PARAM_DELEGATED_DATAWRITER_FACTORY_CLASS, DefaultMaxentDataWriterFactory.class.getName(),
-				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER, DefaultPOSHandler.class.getName(),
+				SequentialInstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, DefaultPOSHandler.class.getName(),
 				SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory.getPath(),
 				POSHandler.PARAM_FEATURE_EXTRACTOR_CLASS_NAME, DefaultFeatureExtractor.class.getName());
 		
@@ -118,7 +118,7 @@ public class DefaultPOSHandlerTest {
 		hider.restoreOutput();
 		
 		AnalysisEngine tagger = AnalysisEngineFactory.createAnalysisEngine("org.cleartk.token.pos.impl.DefaultPOSAnnotator", 
-				SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR, new File(outputDirectory, BuildJar.MODEL_FILE_NAME).getPath());
+				SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR_PATH, new File(outputDirectory, BuildJar.MODEL_FILE_NAME).getPath());
 
 		JCas jCas = ReusableUIMAObjects.getJCas();
 		TokenFactory.createTokens(jCas, "What kitchen utensil is like a vampire ? Spatula", Token.class, Sentence.class );

@@ -54,7 +54,7 @@ public class DefaultPOSHandler extends POSHandler<Token, Sentence> {
 	}
 	
 	public static AnalysisEngineDescription getAnnotatorDescription() throws ResourceInitializationException {
-		return CleartkComponents.createSequentialClassifierAnnotator(DefaultPOSHandler.class, "", POSHandler.PARAM_FEATURE_EXTRACTOR_CLASS_NAME, DefaultFeatureExtractor.class.getName());
+		return CleartkComponents.createSequentialClassifierAnnotator(DefaultPOSHandler.class, "", null, POSHandler.PARAM_FEATURE_EXTRACTOR_CLASS_NAME, DefaultFeatureExtractor.class.getName());
 	}
 
 	

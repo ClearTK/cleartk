@@ -40,7 +40,7 @@ import org.cleartk.chunk.ChunkerHandler;
 import org.cleartk.chunk.DefaultChunkLabeler;
 import org.cleartk.classifier.SequentialClassifierAnnotator;
 import org.cleartk.classifier.SequentialDataWriterAnnotator;
-import org.cleartk.classifier.SequentialInstanceConsumer;
+import org.cleartk.classifier.SequentialInstanceConsumer_ImplBase;
 import org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory;
 import org.cleartk.type.Chunk;
 import org.cleartk.type.Sentence;
@@ -182,9 +182,9 @@ public class ChunkTokenizerTest {
 			
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.token.chunk.ChunkTokenizer",
-				SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR, "test/data/token/chunk/model.jar");
+				SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR_PATH, "test/data/token/chunk/model.jar");
 		Object handler = engine.getConfigParameterValue(
-				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER);
+				SequentialInstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME);
 		Assert.assertEquals(ChunkerHandler.class.getName(), handler);
 		
 		engine.collectionProcessComplete();
@@ -198,7 +198,7 @@ public class ChunkTokenizerTest {
 		try {
 			AnalysisEngineFactory.createAnalysisEngine(
 					"org.cleartk.token.chunk.ChunkTokenizerDataWriter",
-					SequentialDataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, DefaultMalletCRFDataWriterFactory.class.getName());
+					SequentialDataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletCRFDataWriterFactory.class.getName());
 			Assert.fail("expected exception with missing output directory");
 		} catch (ResourceInitializationException e) {}
 			
@@ -212,14 +212,14 @@ public class ChunkTokenizerTest {
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.token.chunk.ChunkTokenizerDataWriter",
 				SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputPath,
-				SequentialDataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, DefaultMalletCRFDataWriterFactory.class.getName());
+				SequentialDataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletCRFDataWriterFactory.class.getName());
 		
 		Object handler = engine.getConfigParameterValue(
-				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER);
+				SequentialInstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME);
 		Assert.assertEquals(ChunkerHandler.class.getName(), handler);
 		
 		Object dataWriter = engine.getConfigParameterValue(
-				SequentialDataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS);
+				SequentialDataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME);
 		Assert.assertEquals(DefaultMalletCRFDataWriterFactory.class.getName(), dataWriter);
 		
 		Object outputDir = engine.getConfigParameterValue(

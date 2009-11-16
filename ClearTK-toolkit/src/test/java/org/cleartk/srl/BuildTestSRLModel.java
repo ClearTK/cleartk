@@ -35,7 +35,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.metadata.TypePriorities;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.cleartk.classifier.DataWriterAnnotator;
-import org.cleartk.classifier.InstanceConsumer;
+import org.cleartk.classifier.InstanceConsumer_ImplBase;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.classifier.svmlight.DefaultSVMlightDataWriterFactory;
 import org.cleartk.srl.propbank.PropbankGoldAnnotator;
@@ -79,14 +79,14 @@ public class BuildTestSRLModel {
 		AnalysisEngineDescription predicateDWA = AnalysisEngineFactory.createPrimitiveDescription(
 				DataWriterAnnotator.class, typeSystemDescription, null, 
 				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, "test/data/srl/predicate",
-				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, DefaultSVMlightDataWriterFactory.class.getName(),
-				InstanceConsumer.PARAM_ANNOTATION_HANDLER, PredicateAnnotationHandler.class.getName());
+				DataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultSVMlightDataWriterFactory.class.getName(),
+				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, PredicateAnnotationHandler.class.getName());
 		
 		AnalysisEngineDescription argumentDWA = AnalysisEngineFactory.createPrimitiveDescription(
 				DataWriterAnnotator.class, typeSystemDescription, null,
 				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, "test/data/srl/argument",
-				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, DefaultMaxentDataWriterFactory.class.getName(),
-				InstanceConsumer.PARAM_ANNOTATION_HANDLER, ArgumentAnnotationHandler.class.getName());
+				DataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMaxentDataWriterFactory.class.getName(),
+				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, ArgumentAnnotationHandler.class.getName());
 		
 		AnalysisEngine aggregateAE = AnalysisEngineFactory.createAggregate(
 				Arrays.asList(tbAnnotator, pbAnnotator, predicateDWA, argumentDWA), 

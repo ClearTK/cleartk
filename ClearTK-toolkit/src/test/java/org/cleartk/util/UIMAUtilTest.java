@@ -37,6 +37,7 @@ import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.AnnotationHandler;
 import org.cleartk.classifier.InstanceConsumer;
+import org.cleartk.classifier.InstanceConsumer_ImplBase;
 import org.cleartk.type.Token;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
@@ -116,16 +117,16 @@ public class UIMAUtilTest {
 		String createdString = UIMAUtil.create(context, "StringParam", String.class);
 		assertNotNull(createdString);
 		
-		context = UimaContextFactory.createUimaContext(InstanceConsumer.PARAM_ANNOTATION_HANDLER, TestHandler.class.getName());
-		AnnotationHandler<?> annotationHandler = UIMAUtil.create(context, InstanceConsumer.PARAM_ANNOTATION_HANDLER, AnnotationHandler.class);
+		context = UimaContextFactory.createUimaContext(InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, TestHandler.class.getName());
+		AnnotationHandler<?> annotationHandler = UIMAUtil.create(context, InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, AnnotationHandler.class);
 		assertNotNull(annotationHandler);
 
-		context = UimaContextFactory.createUimaContext(InstanceConsumer.PARAM_ANNOTATION_HANDLER, TestHandler2.class.getName());
-		annotationHandler = UIMAUtil.create(context, InstanceConsumer.PARAM_ANNOTATION_HANDLER, AnnotationHandler.class);
+		context = UimaContextFactory.createUimaContext(InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, TestHandler2.class.getName());
+		annotationHandler = UIMAUtil.create(context, InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, AnnotationHandler.class);
 		assertNotNull(annotationHandler);
 
-		context = UimaContextFactory.createUimaContext(InstanceConsumer.PARAM_ANNOTATION_HANDLER, TestHandler2.class.getName());
-		annotationHandler = UIMAUtil.create(context, InstanceConsumer.PARAM_ANNOTATION_HANDLER, AnnotationHandler.class);
+		context = UimaContextFactory.createUimaContext(InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, TestHandler2.class.getName());
+		annotationHandler = UIMAUtil.create(context, InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, AnnotationHandler.class);
 		assertNotNull(annotationHandler);
 
 	}

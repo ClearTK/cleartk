@@ -28,7 +28,7 @@ import java.io.IOException;
 
 import org.apache.uima.UIMAException;
 import org.cleartk.CleartkComponents;
-import org.cleartk.classifier.InstanceConsumer;
+import org.cleartk.classifier.InstanceConsumer_ImplBase;
 import org.cleartk.classifier.util.tfidf.IDFMapWriter;
 import org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter;
 import org.cleartk.token.TokenAnnotator;
@@ -64,6 +64,6 @@ public class BuildIDFMap {
 				AnalysisEngineFactory.createPrimitiveDescription(IDFMapWriter.class,
 						CleartkComponents.TYPE_SYSTEM_DESCRIPTION, CleartkComponents.TYPE_PRIORITIES,
 						IDFMapWriter.PARAM_IDFMAP_FILE, "example/documentclassification/idfmap",
-						InstanceConsumer.PARAM_ANNOTATION_HANDLER, AnnotationHandler.class.getName()));
+						InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, AnnotationHandler.class.getName()));
 	}
 }
