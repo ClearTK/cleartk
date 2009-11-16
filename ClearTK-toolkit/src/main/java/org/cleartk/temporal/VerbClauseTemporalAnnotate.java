@@ -30,6 +30,7 @@ import org.apache.uima.util.Logger;
 import org.cleartk.CleartkComponents;
 import org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter;
 import org.cleartk.token.TokenAnnotator;
+import org.cleartk.token.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.snowball.SnowballStemmer;
 import org.uutuc.factory.UimaContextFactory;
 import org.uutuc.util.SimplePipeline;
@@ -76,7 +77,7 @@ public class VerbClauseTemporalAnnotate {
 				CleartkComponents.createPrimitiveDescription(OpenNLPSentenceSegmenter.class),
 				CleartkComponents.createPrimitiveDescription(TokenAnnotator.class), 
 				CleartkComponents.createOpenNLPPOSTagger(),
-				CleartkComponents.createPrimitiveDescription(SnowballStemmer.class, SnowballStemmer.PARAM_STEMMER_NAME, "English"),
+				CleartkComponents.createPrimitiveDescription(DefaultSnowballStemmer.class, SnowballStemmer.PARAM_STEMMER_NAME, "English"),
 				CleartkComponents.createOpenNLPTreebankParser(),
 				CleartkComponents.createClassifierAnnotator(
 						VerbClauseTemporalHandler.class,

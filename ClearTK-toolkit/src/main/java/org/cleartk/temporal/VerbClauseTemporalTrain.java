@@ -33,6 +33,7 @@ import org.cleartk.CleartkComponents;
 import org.cleartk.ViewNames;
 import org.cleartk.classifier.Train;
 import org.cleartk.classifier.svmlight.DefaultOVASVMlightDataWriterFactory;
+import org.cleartk.token.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.snowball.SnowballStemmer;
 import org.uutuc.factory.UimaContextFactory;
 import org.uutuc.util.SimplePipeline;
@@ -78,11 +79,12 @@ public class VerbClauseTemporalTrain {
 				CleartkComponents.createTimeMLGoldAnnotator(false),
 				CleartkComponents.createPlainTextTLINKGoldAnnotator(),
 				CleartkComponents.createTreebankAligningAnnotator(treeBankDir),
-				CleartkComponents.createPrimitiveDescription(SnowballStemmer.class, SnowballStemmer.PARAM_STEMMER_NAME, "English"),
+				CleartkComponents.createPrimitiveDescription(
+						DefaultSnowballStemmer.class,
+						SnowballStemmer.PARAM_STEMMER_NAME, "English"),
 				CleartkComponents.createDataWriterAnnotator(
 						VerbClauseTemporalHandler.class,
-						DefaultOVASVMlightDataWriterFactory.class,
-						outputDir));
+						DefaultOVASVMlightDataWriterFactory.class, outputDir));
 		
 		// remove the temporary directory containing the cleaned up TimeBank
 		FileUtils.deleteRecursive(cleanedTimeBankDir);

@@ -50,6 +50,7 @@ import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.InstanceProducerUtil;
+import org.cleartk.util.ReusableUIMAObjects;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -224,6 +225,54 @@ public class VerbClauseTemporalHandlerTest {
 		Assert.assertEquals("resources/models/verb-clause-temporal-model.jar", modelJar);
 		
 		engine.collectionProcessComplete();
+	}
+	
+	@Test
+	public void testModel() throws Exception {
+		JCas jCas = ReusableUIMAObjects.getJCas();
+		
+		// fill in text and tokens
+		TokenFactory.createTokens(jCas,
+				"He said he sold the stocks yesterday.",
+				Token.class, Sentence.class, 
+				"He said he sold the stocks yesterday .", 
+				"PRP VBD PRP VBD DT NNS RB .",
+				"he say he sell the stock yesterday .",
+				"org.cleartk.type.Token:pos", "org.cleartk.type.Token:stem");
+		List<Token> tokens = AnnotationRetrieval.getAnnotations(jCas, Token.class);
+
+		// fill in tree
+		TreebankNode root = TreebankTestsUtil.newNode(jCas, "S",
+				TreebankTestsUtil.newNode(jCas, "NP", this.newNode(jCas, tokens.get(0))),
+				TreebankTestsUtil.newNode(jCas, "VP", this.newNode(jCas, tokens.get(1)),
+						TreebankTestsUtil.newNode(jCas, "SBAR", 
+								TreebankTestsUtil.newNode(jCas, "NP", this.newNode(jCas, tokens.get(2))),
+								TreebankTestsUtil.newNode(jCas, "VP", this.newNode(jCas, tokens.get(3)),
+										TreebankTestsUtil.newNode(jCas, "NP",
+												this.newNode(jCas, tokens.get(4)),
+												this.newNode(jCas, tokens.get(5))),
+										this.newNode(jCas, tokens.get(6))))),
+						this.newNode(jCas, tokens.get(7)));
+		Sentence sentence = AnnotationRetrieval.getAnnotations(jCas, Sentence.class).get(0);
+		TopTreebankNode tree = new TopTreebankNode(jCas, sentence.getBegin(), sentence.getEnd());
+		tree.setNodeType("TOP");
+		tree.setChildren(new FSArray(jCas, 1));
+		tree.setChildren(0, root);
+		tree.addToIndexes();
+		System.err.println(tree.getTreebankParse());
+		
+		// run annotator
+		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
+				"org.cleartk.temporal.VerbClauseTemporalAnnotator");
+		engine.process(jCas);
+		
+		// check output
+		List<TemporalLink> tlinks = AnnotationRetrieval.getAnnotations(jCas, TemporalLink.class);
+		Assert.assertEquals(1, tlinks.size());
+		Assert.assertEquals("said", tlinks.get(0).getSource().getCoveredText());
+		Assert.assertEquals("sold", tlinks.get(0).getTarget().getCoveredText());
+		Assert.assertEquals("AFTER", tlinks.get(0).getRelationType());
+
 	}
 
 
