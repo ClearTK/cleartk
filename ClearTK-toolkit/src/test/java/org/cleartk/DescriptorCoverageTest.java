@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.uima.util.FileUtils;
+import org.cleartk.test.util.DescriptorCoverageTestUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uutuc.util.io.Files;
@@ -46,23 +47,7 @@ public class DescriptorCoverageTest {
 	
 	@Test
 	public void testNoDescriptorsInSrcMain() {
-		// collect the names of all .xml descriptors in the src directory
-		Set<String> descNames = new HashSet<String>();
-		for (File file: Files.getFiles(new File("src/main/java"), new String[] {".xml"})) {
-			descNames.add(file.getPath());
-		}
-		
-		if(descNames.size() > 0) {
-			String message = String.format("%d descriptors in src/main/java", descNames.size());
-			System.err.println(message);
-			List<String> sortedFileNames = new ArrayList<String>(descNames);
-			Collections.sort(sortedFileNames);
-			for (String name: sortedFileNames) {
-				System.err.println(name);
-			}
-			Assert.fail(message);
-		}
-		
+		DescriptorCoverageTestUtil.testNoDescriptorsInSrc("src/main/java");
 	}
 	
 	@Test
