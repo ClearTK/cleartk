@@ -54,6 +54,7 @@ import org.cleartk.syntax.opennlp.OpenNLPTreebankParser;
 import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
 import org.cleartk.temporal.VerbClauseTemporalHandler;
 import org.cleartk.token.TokenAnnotator;
+import org.cleartk.token.opennlp.OpenNLPPOSTagger;
 import org.cleartk.token.pos.impl.DefaultPOSHandler;
 import org.cleartk.token.snowball.DefaultSnowballStemmer;
 import org.cleartk.util.linereader.LineReader;
@@ -146,6 +147,7 @@ public class GenerateDescriptorFiles {
 		aed.toXML(new FileWriter(new File(descDirectory, "Subtokenizer.xml")));
 
 		writePrimitiveDescription(OpenNLPTreebankParser.class, outputDirectory);
+		writePrimitiveDescription(OpenNLPPOSTagger.class, outputDirectory);
 	}
 
 	private static File updateOutputDirectory(Class<?> cls, File outputDirectory) {

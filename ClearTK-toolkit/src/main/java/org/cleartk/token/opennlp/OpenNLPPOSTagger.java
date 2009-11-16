@@ -41,9 +41,11 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
-import org.cleartk.util.UIMAUtil;
+import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.util.InitializeUtil;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -55,31 +57,26 @@ import org.cleartk.util.UIMAUtil;
  */
 public class OpenNLPPOSTagger extends JCasAnnotator_ImplBase
 {
-	/**
-	 * "org.cleartk.token.opennlp.OpenNLPPOSTagger.PARAM_POSTAG_MODEL_FILE"
-	 * is a single, required, string parameter that provides the path of the
-	 * OpenNLP part-of-speech tagger model file, e.g.
-	 *   resources/models/OpenNLP.POSTags.English.bin.gz
-	 * @see opennlp.maxent.io.SuffixSensitiveGISModelReader
-	 */
-	public static final String PARAM_POSTAG_MODEL_FILE = "org.cleartk.token.opennlp.OpenNLPPOSTagger.PARAM_POSTAG_MODEL_FILE";
+	public static final String PARAM_POSTAG_MODEL_FILE = ConfigurationParameterNameFactory.createConfigurationParameterName(
+			OpenNLPPOSTagger.class, "postagModelFile");
+	@ConfigurationParameter(
+			mandatory = true,
+			description = "provides the path of the OpenNLP part-of-speech tagger model file, e.g.  resources/models/OpenNLP.POSTags.English.bin.gz.  See javadoc for opennlp.maxent.io.SuffixSensitiveGISModelReader.")
+	private String postagModelFile;
 
-	/**
-	 * "org.cleartk.token.opennlp.OpenNLPPOSTagger.PARAM_POSTAG_DICTIONARY_FILE"
-	 * is a single, required, string parameter that provides the path of the
-	 * OpenNLP part-of-speech tagger dictionary file, e.g.
-	 *   resources/models/OpenNLP.TagDict.txt
-	 * @see opennlp.tools.postag.POSDictionary
-	 */
-	public static final String PARAM_POSTAG_DICTIONARY_FILE = "org.cleartk.token.opennlp.OpenNLPPOSTagger.PARAM_POSTAG_DICTIONARY_FILE";
+	public static final String PARAM_POSTAG_DICTIONARY_FILE = ConfigurationParameterNameFactory.createConfigurationParameterName(
+			OpenNLPPOSTagger.class, "postagDictionaryFile");
+	@ConfigurationParameter(
+			mandatory = true,
+			description = "provides the path of the OpenNLP part-of-speech tagger dictionary file, e.g. resources/models/OpenNLP.TagDict.txt.  See javadoc for opennlp.tools.postag.POSDictionary.")
+	private String postagDictionaryFile;
 
-	/**
-	 * "org.cleartk.token.opennlp.OpenNLPPOSTagger.PARAM_CASE_SENSITIVE"
-	 * is a single, optional, boolean parameter, defaulting to true, that when false
-	 * indicates that the (@link POSDictionary} should ignore case.
-	 * @see opennlp.tools.postag.POSDictionary
-	 */
-	public static final String PARAM_CASE_SENSITIVE = "org.cleartk.token.opennlp.OpenNLPPOSTagger.PARAM_CASE_SENSITIVE";
+	public static final String PARAM_CASE_SENSITIVE = ConfigurationParameterNameFactory.createConfigurationParameterName(
+			OpenNLPPOSTagger.class, "caseSensitive");
+	@ConfigurationParameter(
+			defaultValue = "true",
+			description = "when false indicates that the POSDictionary should ignore case.  See javadoc for opennlp.tools.postag.POSDictionary.")
+	private boolean caseSensitive;
 
 	protected POSTagger posTagger;
 	protected long processTime = 0;
@@ -88,16 +85,9 @@ public class OpenNLPPOSTagger extends JCasAnnotator_ImplBase
 	public void initialize(UimaContext uimaContext) throws ResourceInitializationException
 	{
 		super.initialize(uimaContext);
-	
+		InitializeUtil.initialize(this, uimaContext);
 		try
 		{
-			String postagModelFile = (String)UIMAUtil.getRequiredConfigParameterValue(
-					uimaContext, PARAM_POSTAG_MODEL_FILE);
-			String postagDictionaryFile = (String)UIMAUtil.getRequiredConfigParameterValue(
-					uimaContext, PARAM_POSTAG_DICTIONARY_FILE);
-			boolean caseSensitive = (Boolean)UIMAUtil.getDefaultingConfigParameterValue(
-					uimaContext, PARAM_CASE_SENSITIVE, true);
-
 			MaxentModel model = new SuffixSensitiveGISModelReader(new File(postagModelFile)).getModel();
 			POSDictionary posDictionary = new POSDictionary(postagDictionaryFile, caseSensitive);
 			posTagger = new POSTaggerME(model, new DefaultPOSContextGenerator(null), posDictionary);

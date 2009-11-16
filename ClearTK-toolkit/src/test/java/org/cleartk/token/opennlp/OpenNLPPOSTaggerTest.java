@@ -78,7 +78,12 @@ public class OpenNLPPOSTaggerTest {
 	@Test
 	public void testDescriptor() throws UIMAException, IOException {
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-				"org.cleartk.token.opennlp.OpenNLPPOSTagger");
+				"org.cleartk.token.opennlp.OpenNLPPOSTagger",
+				OpenNLPPOSTagger.PARAM_CASE_SENSITIVE, true,
+				OpenNLPPOSTagger.PARAM_POSTAG_MODEL_FILE,
+				"resources/models/OpenNLP.POSTags.English.bin.gz",
+				OpenNLPPOSTagger.PARAM_POSTAG_DICTIONARY_FILE,
+				"resources/models/OpenNLP.TagDict.txt");
 		
 		Object modelFile = engine.getConfigParameterValue(
 				OpenNLPPOSTagger.PARAM_POSTAG_MODEL_FILE);
