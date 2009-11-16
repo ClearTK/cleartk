@@ -102,7 +102,7 @@ public class CleartkComponents {
 		return CollectionReaderFactory.createCollectionReader(
 				FilesCollectionReader.class,
 				CleartkComponents.TYPE_SYSTEM_DESCRIPTION,
-				FilesCollectionReader.PARAM_FILE_OR_DIRECTORY, fileOrDir);
+				FilesCollectionReader.PARAM_ROOT_FILE, fileOrDir);
 	}
 	
 	public static CollectionReader createFilesCollectionReaderWithPatterns(
@@ -110,7 +110,7 @@ public class CleartkComponents {
 	throws ResourceInitializationException {
 		return CollectionReaderFactory.createCollectionReader(
 				FilesCollectionReader.class, TYPE_SYSTEM_DESCRIPTION,
-				FilesCollectionReader.PARAM_FILE_OR_DIRECTORY, dir,
+				FilesCollectionReader.PARAM_ROOT_FILE, dir,
 				FilesCollectionReader.PARAM_VIEW_NAME, viewName,
 				FilesCollectionReader.PARAM_PATTERNS, patterns);
 	}

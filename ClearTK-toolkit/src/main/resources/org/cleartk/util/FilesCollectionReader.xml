@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <collectionReaderDescription xmlns="http://uima.apache.org/resourceSpecifier">
     <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
-    <implementationName>org.cleartk.util.XReader</implementationName>
+    <implementationName>org.cleartk.util.FilesCollectionReader</implementationName>
     <processingResourceMetaData>
-        <name>XReader</name>
+        <name>FilesCollectionReader</name>
         <description>This descriptor file was generated automatically by org.cleartk.util.GenerateDescriptorFiles. 
 
 Copyright (c) 2009, Regents of the University of Colorado 
@@ -19,13 +19,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 </description>
         <configurationParameters>
-            <configurationParameter>
-                <name>org.cleartk.util.XReader.xmlScheme</name>
-                <description>specifies the UIMA XML serialization scheme that should be used. Valid values for this parameter are 'XMI' and 'XCAS'</description>
-                <type>String</type>
-                <multiValued>false</multiValued>
-                <mandatory>false</mandatory>
-            </configurationParameter>
             <configurationParameter>
                 <name>org.cleartk.util.FilesCollectionReader.rootFile</name>
                 <description>takes either the name of a single file or the root directory containing all the files to be processed.</description>
@@ -83,14 +76,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 <mandatory>false</mandatory>
             </configurationParameter>
         </configurationParameters>
-        <configurationParameterSettings>
-            <nameValuePair>
-                <name>org.cleartk.util.XReader.xmlScheme</name>
-                <value>
-                    <string>XMI</string>
-                </value>
-            </nameValuePair>
-        </configurationParameterSettings>
+        <configurationParameterSettings/>
         <typeSystemDescription>
             <imports>
                 <import name="org.cleartk.TypeSystem"/>

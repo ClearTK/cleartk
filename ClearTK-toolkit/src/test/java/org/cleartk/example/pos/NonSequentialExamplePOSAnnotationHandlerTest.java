@@ -126,7 +126,7 @@ public class NonSequentialExamplePOSAnnotationHandlerTest {
 		SimplePipeline.runPipeline(
 				CollectionReaderFactory.createCollectionReader(
 						FilesCollectionReader.class, typeSystemDescription,
-						FilesCollectionReader.PARAM_FILE_OR_DIRECTORY, "test/data/docs/treebank/11597317.tree",
+						FilesCollectionReader.PARAM_ROOT_FILE, "test/data/docs/treebank/11597317.tree",
 						FilesCollectionReader.PARAM_VIEW_NAME, ViewNames.TREEBANK),
 				CleartkComponents.createPrimitiveDescription(TreebankGoldAnnotator.class, TreebankGoldAnnotator.PARAM_POST_TREES, false),
 				CleartkComponents.createPrimitiveDescription(DefaultSnowballStemmer.class, SnowballStemmer.PARAM_STEMMER_NAME, "English"),

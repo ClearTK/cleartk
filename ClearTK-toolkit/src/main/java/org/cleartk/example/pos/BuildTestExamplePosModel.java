@@ -56,7 +56,7 @@ public class BuildTestExamplePosModel {
 		SimplePipeline.runPipeline(
 				CollectionReaderFactory.createCollectionReader(
 						FilesCollectionReader.class, typeSystemDescription,
-						FilesCollectionReader.PARAM_FILE_OR_DIRECTORY, "test/data/docs/treebank",
+						FilesCollectionReader.PARAM_ROOT_FILE, "test/data/docs/treebank",
 						FilesCollectionReader.PARAM_SUFFIXES,  new String[] { ".tree" },
 						FilesCollectionReader.PARAM_VIEW_NAME, ViewNames.TREEBANK),
 				CleartkComponents.createPrimitiveDescription(TreebankGoldAnnotator.class, TreebankGoldAnnotator.PARAM_POST_TREES, false),

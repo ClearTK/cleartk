@@ -48,7 +48,7 @@ public class Docs2Sentences {
 		String inputDirectoryName = args[0];
 		String outputFileName = args[1];
 		
-		CollectionReader filesReader = CleartkComponents.createCollectionReader(FilesCollectionReader.class, FilesCollectionReader.PARAM_FILE_OR_DIRECTORY, inputDirectoryName);
+		CollectionReader filesReader = CleartkComponents.createCollectionReader(FilesCollectionReader.class, FilesCollectionReader.PARAM_ROOT_FILE, inputDirectoryName);
 		AnalysisEngine sentences = CleartkComponents.createPrimitive(OpenNLPSentenceSegmenter.class);
 		AnalysisEngine lineWriter = CleartkComponents.createPrimitive(LineWriter.class, LineWriter.PARAM_OUTPUT_FILE_NAME, outputFileName, LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, Sentence.class.getName());
 

@@ -69,7 +69,7 @@ public class PlainTextTLINKGoldAnnotatorTest {
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				FilesCollectionReader.PARAM_VIEW_NAME,
 				ViewNames.TIMEML,
-				FilesCollectionReader.PARAM_FILE_OR_DIRECTORY,
+				FilesCollectionReader.PARAM_ROOT_FILE,
 				"test/data/corpus/timeml/wsj_0106.tml");
 		AnalysisEngine timemlEngine = AnalysisEngineFactory.createPrimitive(
 				TimeMLGoldAnnotator.class,
@@ -123,7 +123,7 @@ public class PlainTextTLINKGoldAnnotatorTest {
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				FilesCollectionReader.PARAM_VIEW_NAME,
 				ViewNames.TIMEML,
-				FilesCollectionReader.PARAM_FILE_OR_DIRECTORY,
+				FilesCollectionReader.PARAM_ROOT_FILE,
 				"test/data/corpus/timeml/wsj_0106.tml");
 		AnalysisEngine timemlEngine = AnalysisEngineFactory.createPrimitive(
 				TimeMLGoldAnnotator.class,

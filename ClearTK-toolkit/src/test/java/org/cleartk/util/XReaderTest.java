@@ -89,7 +89,7 @@ public class XReaderTest {
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				XReader.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-				FilesCollectionReader.PARAM_FILE_OR_DIRECTORY, new File(inputDir, "test.xmi").getPath());
+				FilesCollectionReader.PARAM_ROOT_FILE, new File(inputDir, "test.xmi").getPath());
 		
 		Assert.assertEquals(0, reader.getProgress()[0].getCompleted());
 
@@ -125,7 +125,7 @@ public class XReaderTest {
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				XReader.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-				FilesCollectionReader.PARAM_FILE_OR_DIRECTORY, "test/data/xmi/test.xcas",
+				FilesCollectionReader.PARAM_ROOT_FILE, "test/data/xmi/test.xcas",
 				XReader.PARAM_XML_SCHEME, XReader.XCAS);
 		
 		Assert.assertEquals(0, reader.getProgress()[0].getCompleted());
@@ -152,10 +152,10 @@ public class XReaderTest {
 		
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				"org.cleartk.util.XReader",
-				FilesCollectionReader.PARAM_FILE_OR_DIRECTORY, inputDir.getPath());
+				FilesCollectionReader.PARAM_ROOT_FILE, inputDir.getPath());
 		
 		Object fileOrDirectory = reader.getConfigParameterValue(
-				FilesCollectionReader.PARAM_FILE_OR_DIRECTORY);
+				FilesCollectionReader.PARAM_ROOT_FILE);
 		Assert.assertEquals(inputDir.getPath(), fileOrDirectory);
 		
 	}

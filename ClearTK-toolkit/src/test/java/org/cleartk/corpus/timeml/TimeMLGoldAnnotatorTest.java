@@ -62,7 +62,7 @@ public class TimeMLGoldAnnotatorTest {
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				FilesCollectionReader.PARAM_VIEW_NAME,
 				ViewNames.TIMEML,
-				FilesCollectionReader.PARAM_FILE_OR_DIRECTORY,
+				FilesCollectionReader.PARAM_ROOT_FILE,
 				"test/data/corpus/timeml/wsj_0106.tml");
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				TimeMLGoldAnnotator.class,
@@ -128,7 +128,7 @@ public class TimeMLGoldAnnotatorTest {
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				FilesCollectionReader.PARAM_VIEW_NAME,
 				ViewNames.TIMEML,
-				FilesCollectionReader.PARAM_FILE_OR_DIRECTORY,
+				FilesCollectionReader.PARAM_ROOT_FILE,
 				"test/data/corpus/timeml/AP900815-0044.tml");
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				TimeMLGoldAnnotator.class,
@@ -180,7 +180,7 @@ public class TimeMLGoldAnnotatorTest {
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				FilesCollectionReader.PARAM_VIEW_NAME,
 				ViewNames.TIMEML,
-				FilesCollectionReader.PARAM_FILE_OR_DIRECTORY,
+				FilesCollectionReader.PARAM_ROOT_FILE,
 				"test/data/corpus/timeml",
 				FilesCollectionReader.PARAM_SUFFIXES,
 				new String[]{".tml"});
