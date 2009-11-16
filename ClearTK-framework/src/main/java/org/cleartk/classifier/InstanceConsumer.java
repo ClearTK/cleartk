@@ -38,13 +38,6 @@ import org.cleartk.CleartkException;
 public interface InstanceConsumer<OUTCOME_TYPE> {
 
 	/**
-	 * "org.cleartk.classifier.InstanceConsumer.PARAM_ANNOTATION_HANDLER"
-	 * is a single, required, string parameter that provides the full name of
-	 * the AnnotationHandler class that will be used with this InstanceConsumer.
-	 */
-	public static final String PARAM_ANNOTATION_HANDLER = "org.cleartk.classifier.InstanceConsumer.PARAM_ANNOTATION_HANDLER";
-
-	/**
 	 * Consume the instance and return the outcome (classification) assigned to
 	 * the instance. If the consumer does not assign outcomes to instances (e.g.
 	 * a training data consumer), this method should return null.

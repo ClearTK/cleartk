@@ -42,6 +42,7 @@ import org.cleartk.classifier.DataWriterAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.InstanceConsumer;
+import org.cleartk.classifier.InstanceConsumer_ImplBase;
 import org.cleartk.classifier.Train;
 import org.cleartk.util.JCasUtil;
 import org.junit.After;
@@ -121,9 +122,9 @@ public class MalletClassifierTest {
 	@Test
 	public void runTest1() throws Exception {
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(DataWriterAnnotator.class,
-				JCasUtil.getTypeSystemDescription(), InstanceConsumer.PARAM_ANNOTATION_HANDLER, TestHandler.class
+				JCasUtil.getTypeSystemDescription(), InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, TestHandler.class
 						.getName(), DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
-				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, DefaultMalletDataWriterFactory.class.getName());
+				DataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletDataWriterFactory.class.getName());
 
 		JCas jCas = JCasUtil.getJCas();
 		dataWriterAnnotator.process(jCas);
@@ -172,8 +173,8 @@ public class MalletClassifierTest {
 		assertEquals(95.0, fv.value("hello"), 0.001);
 		
 		AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createPrimitive(ClassifierAnnotator.class, JCasUtil.getTypeSystemDescription(),
-				InstanceConsumer.PARAM_ANNOTATION_HANDLER, TestHandler1.class.getName(),
-				ClassifierAnnotator.PARAM_CLASSIFIER_JAR, outputDirectory+"/model.jar");
+				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, TestHandler1.class.getName(),
+				ClassifierAnnotator.PARAM_CLASSIFIER_JAR_PATH, outputDirectory+"/model.jar");
 		jCas.reset();
 		classifierAnnotator.process(jCas);
 		classifierAnnotator.collectionProcessComplete();

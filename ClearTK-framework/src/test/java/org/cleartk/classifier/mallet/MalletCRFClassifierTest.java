@@ -44,6 +44,7 @@ import org.cleartk.classifier.SequentialClassifier;
 import org.cleartk.classifier.SequentialClassifierAnnotator;
 import org.cleartk.classifier.SequentialDataWriterAnnotator;
 import org.cleartk.classifier.SequentialInstanceConsumer;
+import org.cleartk.classifier.SequentialInstanceConsumer_ImplBase;
 import org.cleartk.classifier.Train;
 import org.cleartk.util.JCasUtil;
 import org.junit.After;
@@ -106,9 +107,9 @@ public class MalletCRFClassifierTest {
 
 		AnalysisEngine sequentialDataWriterAnnotator = AnalysisEngineFactory.createPrimitive(SequentialDataWriterAnnotator.class,
 				JCasUtil.getTypeSystemDescription(), 
-				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER, TestHandler.class.getName(), 
+				SequentialInstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, TestHandler.class.getName(), 
 				SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
-				SequentialDataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, DefaultMalletCRFDataWriterFactory.class.getName());
+				SequentialDataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletCRFDataWriterFactory.class.getName());
 
 		JCas jCas = JCasUtil.getJCas();
 		sequentialDataWriterAnnotator.process(jCas);
@@ -138,8 +139,8 @@ public class MalletCRFClassifierTest {
 		testLabels(outcomes, "O O O O O O O O O O O O O O O B-GENE I-GENE I-GENE O B-GENE I-GENE O O O O O O O O O O O O O O O O O O O O O");
 		
 		AnalysisEngine sequentialClassifierAnnotator = AnalysisEngineFactory.createPrimitive(SequentialClassifierAnnotator.class, JCasUtil.getTypeSystemDescription(),
-				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER, TestHandler1.class.getName(),
-				SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR, outputDirectory+"/model.jar");
+				SequentialInstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, TestHandler1.class.getName(),
+				SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR_PATH, outputDirectory+"/model.jar");
 		jCas.reset();
 		sequentialClassifierAnnotator.process(jCas);
 		sequentialClassifierAnnotator.collectionProcessComplete();

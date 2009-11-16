@@ -30,8 +30,11 @@ import java.util.List;
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
+import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
+import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.util.InitializeUtil;
 
 /**
  * <br>
@@ -65,22 +68,22 @@ import org.cleartk.util.UIMAUtil;
  */
 public class SequentialClassifierAnnotator<OUTCOME_TYPE> extends SequentialInstanceConsumer_ImplBase<OUTCOME_TYPE> {
 
-	/**
-	 * "org.cleartk.classifier.SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR"
-	 * is a single, required, string parameter that provides the path to the
-	 * jar file that should be used to instantiate the classifier.
-	 */
-	public static final String PARAM_CLASSIFIER_JAR = "org.cleartk.classifier.SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR";
+	public static final String PARAM_CLASSIFIER_JAR_PATH = ConfigurationParameterNameFactory.createConfigurationParameterName(
+			SequentialClassifierAnnotator.class, "classifierJarPath");
 
+	@ConfigurationParameter(
+			mandatory = true,
+			description = "provides the path to the jar file that should be used to instantiate the classifier.")
+	private String classifierJarPath;
+	
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
-		// get the SequentialClassifier jar file path and load the SequentialClassifier
-		String jarPath = (String)UIMAUtil.getRequiredConfigParameterValue(
-				context, PARAM_CLASSIFIER_JAR);
+		InitializeUtil.initialize(this, context);
+
 		SequentialClassifier<?> untypedClassifier;
 		try {
-			untypedClassifier = ClassifierFactory.createSequentialClassifierFromJar(jarPath);
+			untypedClassifier = ClassifierFactory.createSequentialClassifierFromJar(classifierJarPath);
 		} catch (IOException e) {
 			throw new ResourceInitializationException(e);
 		}

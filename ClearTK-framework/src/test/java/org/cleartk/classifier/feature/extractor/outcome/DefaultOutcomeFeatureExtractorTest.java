@@ -124,7 +124,7 @@ public class DefaultOutcomeFeatureExtractorTest {
 		
 		context = UimaContextFactory.createUimaContext(DefaultOutcomeFeatureExtractor.PARAM_MOST_RECENT_OUTCOME, 2,
 				DefaultOutcomeFeatureExtractor.PARAM_LEAST_RECENT_OUTCOME, 3,
-				DefaultOutcomeFeatureExtractor.PARAM_USE_4GRAM, true,
+				DefaultOutcomeFeatureExtractor.PARAM_USE4GRAM, true,
 				DefaultOutcomeFeatureExtractor.PARAM_USE_BIGRAM, false);
 		ofe = new DefaultOutcomeFeatureExtractor();
 		ofe.initialize(context);

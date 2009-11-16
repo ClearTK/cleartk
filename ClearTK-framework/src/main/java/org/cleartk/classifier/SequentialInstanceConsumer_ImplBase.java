@@ -30,8 +30,11 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Logger;
 import org.cleartk.CleartkException;
+import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
+import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.util.InitializeUtil;
 
 /**
  * <br>
@@ -45,13 +48,21 @@ import org.cleartk.util.UIMAUtil;
 public abstract class SequentialInstanceConsumer_ImplBase<OUTCOME_TYPE> extends JCasAnnotator_ImplBase implements
 		SequentialInstanceConsumer<OUTCOME_TYPE> {
 
-			protected Logger logger;
+	public static final String PARAM_ANNOTATION_HANDLER_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(
+			SequentialInstanceConsumer_ImplBase.class, "annotationHandlerName");
+	@ConfigurationParameter(
+			mandatory = true,
+			description = "provides the full name of the SequentialAnnotationHandler class that will be used with this SequentialInstanceConsumer.")
+	private String annotationHandlerName;
+
+	protected Logger logger;
+
 	protected SequentialAnnotationHandler<OUTCOME_TYPE> annotationHandler;
 
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-		this.annotationHandler = ReflectionUtil.uncheckedCast(UIMAUtil.create(
-				context, PARAM_ANNOTATION_HANDLER, SequentialAnnotationHandler.class));
+		InitializeUtil.initialize(this, context);
+		this.annotationHandler = ReflectionUtil.uncheckedCast(UIMAUtil.create(annotationHandlerName, SequentialAnnotationHandler.class, context));
 		this.logger = context.getLogger();
 	}
 
@@ -67,10 +78,9 @@ public abstract class SequentialInstanceConsumer_ImplBase<OUTCOME_TYPE> extends 
 	}
 
 	protected <T> void checkOutcomeType(Class<T> cls, String parameterName, T object)
-	throws ResourceInitializationException {
-		UIMAUtil.checkTypeParameterIsAssignable(
-				SequentialAnnotationHandler.class, "OUTCOME_TYPE", this.annotationHandler,
-				cls, parameterName, object);
+			throws ResourceInitializationException {
+		UIMAUtil.checkTypeParameterIsAssignable(SequentialAnnotationHandler.class, "OUTCOME_TYPE",
+				this.annotationHandler, cls, parameterName, object);
 	}
 
 }

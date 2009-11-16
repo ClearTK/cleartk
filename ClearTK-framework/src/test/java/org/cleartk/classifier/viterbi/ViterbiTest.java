@@ -76,7 +76,7 @@ public class ViterbiTest {
 				DefaultOutcomeFeatureExtractor.PARAM_LEAST_RECENT_OUTCOME, 1,
 				DefaultOutcomeFeatureExtractor.PARAM_USE_BIGRAM, false,
 				DefaultOutcomeFeatureExtractor.PARAM_USE_TRIGRAM, false,
-				DefaultOutcomeFeatureExtractor.PARAM_USE_4GRAM, false);
+				DefaultOutcomeFeatureExtractor.PARAM_USE4GRAM, false);
 		DefaultOutcomeFeatureExtractor dofe = new DefaultOutcomeFeatureExtractor();
 		dofe.initialize(uimaContext);
 
@@ -109,7 +109,7 @@ public class ViterbiTest {
 				DefaultOutcomeFeatureExtractor.PARAM_LEAST_RECENT_OUTCOME, 1,
 				DefaultOutcomeFeatureExtractor.PARAM_USE_BIGRAM, false,
 				DefaultOutcomeFeatureExtractor.PARAM_USE_TRIGRAM, false,
-				DefaultOutcomeFeatureExtractor.PARAM_USE_4GRAM, false);
+				DefaultOutcomeFeatureExtractor.PARAM_USE4GRAM, false);
 		DefaultOutcomeFeatureExtractor dofe = new DefaultOutcomeFeatureExtractor();
 		dofe.initialize(uimaContext);
 
@@ -230,7 +230,7 @@ public class ViterbiTest {
 				DefaultOutcomeFeatureExtractor.PARAM_LEAST_RECENT_OUTCOME, 1,
 				DefaultOutcomeFeatureExtractor.PARAM_USE_BIGRAM, false,
 				DefaultOutcomeFeatureExtractor.PARAM_USE_TRIGRAM, false,
-				DefaultOutcomeFeatureExtractor.PARAM_USE_4GRAM, false);
+				DefaultOutcomeFeatureExtractor.PARAM_USE4GRAM, false);
 		DefaultOutcomeFeatureExtractor dofe = new DefaultOutcomeFeatureExtractor();
 		dofe.initialize(uimaContext);
 

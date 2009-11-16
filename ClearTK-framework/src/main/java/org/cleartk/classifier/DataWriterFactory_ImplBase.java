@@ -33,23 +33,24 @@ import org.cleartk.Initializable;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
+import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
+import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.util.InitializeUtil;
 
 public abstract class DataWriterFactory_ImplBase<FEATURES_OUT_TYPE, OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE> implements DataWriterFactory<OUTCOME_IN_TYPE>, Initializable {
 
-	/**
-	 * "org.cleartk.classifier.DataWriterFactory_ImplBase.PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM"
-	 * is a single, optional, boolean parameter, defaulting to false, that when true
-	 * indicates that the FeaturesEncoder and OutcomeEncoder should be loaded from the
-	 * file system instead of being created by the DataWriterFactory.
-	 */
-	public static final String PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM = "org.cleartk.classifier.DataWriterFactory_ImplBase.PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM";
-
+	public static final String PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM = ConfigurationParameterNameFactory.createConfigurationParameterName(
+			DataWriterFactory_ImplBase.class, "loadEncodersFromFileSystem");
+	@ConfigurationParameter(
+			description = "when true indicates that the FeaturesEncoder and OutcomeEncoder should be loaded from the file system instead of being created by the DataWriterFactory",
+			defaultValue = "false")
+	private boolean loadEncodersFromFileSystem = false;
+	
 	public void initialize(UimaContext context)  throws ResourceInitializationException{
-		boolean loadEncoders = (Boolean)UIMAUtil.getDefaultingConfigParameterValue(
-				context, DataWriterFactory_ImplBase.PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM, false);
-		if (loadEncoders) {
+		InitializeUtil.initialize(this, context);
+		if (loadEncodersFromFileSystem) {
 			try {
 				String outputDirectory = (String)UIMAUtil.getRequiredConfigParameterValue(
 						context, DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY);

@@ -24,11 +24,15 @@
 package org.cleartk.classifier;
 
 import java.io.IOException;
+
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
+import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
+import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.util.InitializeUtil;
 
 /**
  * <br>Copyright (c) 2009, Regents of the University of Colorado 
@@ -62,20 +66,22 @@ import org.cleartk.util.UIMAUtil;
  */
 public class ClassifierAnnotator<OUTCOME_TYPE> extends InstanceConsumer_ImplBase<OUTCOME_TYPE> {
 
-	/**
-	 * "org.cleartk.classifier.ClassifierAnnotator.PARAM_CLASSIFIER_JAR" is a single, required, string parameter that provides the filename of the classifier file (e.g. "model.jar")
-	 */
-	public static final String PARAM_CLASSIFIER_JAR = "org.cleartk.classifier.ClassifierAnnotator.PARAM_CLASSIFIER_JAR";
 
+	public static final String PARAM_CLASSIFIER_JAR_PATH = ConfigurationParameterNameFactory.createConfigurationParameterName(
+			ClassifierAnnotator.class, "classifierJarPath");
+	@ConfigurationParameter(
+			mandatory = true,
+			description = "provides the path to the jar file that should be used to instantiate the classifier.")
+	private String classifierJarPath;
+	
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
-		// get the Classifier jar file path and load the Classifier
-		String jarPath = (String)UIMAUtil.getRequiredConfigParameterValue(
-				context, PARAM_CLASSIFIER_JAR);
+		InitializeUtil.initialize(this, context);
+
 		Classifier<?> untypedClassifier;
 		try {
-			untypedClassifier = ClassifierFactory.createClassifierFromJar(jarPath);
+			untypedClassifier = ClassifierFactory.createClassifierFromJar(classifierJarPath);
 		} catch (IOException e) {
 			throw new ResourceInitializationException(e);
 		}

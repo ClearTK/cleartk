@@ -37,6 +37,7 @@ import org.cleartk.CleartkException;
 import org.cleartk.Initializable;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.InstanceConsumer;
+import org.cleartk.classifier.InstanceConsumer_ImplBase;
 import org.cleartk.classifier.feature.extractor.CountsExtractor;
 import org.cleartk.classifier.feature.extractor.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.TypePathExtractor;
@@ -88,7 +89,7 @@ public class IDFMapWriterTest {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				IDFMapWriter.class, typeSystemDescription,
 				IDFMapWriter.PARAM_IDFMAP_FILE, new File(outputDirectory, "idfmap").getPath(),
-				IDFMapWriter.PARAM_ANNOTATION_HANDLER, AnnotationHandler.class.getName());
+				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, AnnotationHandler.class.getName());
 		String fileName = (String)engine.getConfigParameterValue(
 				IDFMapWriter.PARAM_IDFMAP_FILE);
 		Assert.assertEquals(new File(outputDirectory, "idfmap").getPath(), fileName);

@@ -44,6 +44,7 @@ import org.cleartk.classifier.DataWriterAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.InstanceConsumer;
+import org.cleartk.classifier.InstanceConsumer_ImplBase;
 import org.cleartk.classifier.Train;
 import org.cleartk.util.JCasUtil;
 import org.cleartk.util.EmptyHandlerUtil;
@@ -86,11 +87,11 @@ public class RunLIBSVMTest {
 		// create the data writer
 		DataWriterAnnotator<Boolean> dataWriter = new DataWriterAnnotator<Boolean>();
 		dataWriter.initialize(UimaContextFactory.createUimaContext(
-				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
+				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME,
 				EmptyHandlerUtil.EmptyBooleanHandler.class.getName(),
 				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY,
 				this.outputDirectory,
-				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS,
+				DataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
 				DefaultBinaryLIBSVMDataWriterFactory.class.getName()));
 		
 		// add a bunch of instances
@@ -127,11 +128,11 @@ public class RunLIBSVMTest {
 		// create the data writer
 		DataWriterAnnotator<Boolean> dataWriter = new DataWriterAnnotator<Boolean>();
 		dataWriter.initialize(UimaContextFactory.createUimaContext(
-				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
+				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME,
 				EmptyHandlerUtil.EmptyBooleanHandler.class.getName(),
 				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY,
 				this.outputDirectory,
-				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS,
+				DataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
 				DefaultLIBLINEARDataWriterFactory.class.getName()));
 		
 		// add a bunch of instances
@@ -168,11 +169,11 @@ public class RunLIBSVMTest {
 		// create the data writer
 		DataWriterAnnotator<String> dataWriter = new DataWriterAnnotator<String>();
 		dataWriter.initialize(UimaContextFactory.createUimaContext(
-				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
+				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME,
 				EmptyHandlerUtil.EmptyStringHandler.class.getName(),
 				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY,
 				this.outputDirectory,
-				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS,
+				DataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
 				DefaultMultiClassLIBSVMDataWriterFactory.class.getName()));
 		
 		// add a bunch of instances
@@ -209,9 +210,9 @@ public class RunLIBSVMTest {
 		
 		AnalysisEngineDescription dataWriterDescription = AnalysisEngineFactory.createPrimitiveDescription(
 				DataWriterAnnotator.class, null, null,
-				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
+				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME,
 				TestMultiClassLIBSVM2Handler.class.getName(),
-				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS,
+				DataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
 				DefaultMultiClassLIBSVMDataWriterFactory.class.getName(),
 				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory);
 
@@ -236,9 +237,9 @@ public class RunLIBSVMTest {
 		
 		AnalysisEngineDescription classifierDescription = AnalysisEngineFactory.createPrimitiveDescription(
 				ClassifierAnnotator.class, null, null,
-				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
+				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME,
 				TestMultiClassLIBSVM2HandlerB.class.getName(),
-				ClassifierAnnotator.PARAM_CLASSIFIER_JAR, outputDirectory +"/model.jar");
+				ClassifierAnnotator.PARAM_CLASSIFIER_JAR_PATH, outputDirectory +"/model.jar");
 		AnalysisEngine classifier = AnalysisEngineFactory.createPrimitive(classifierDescription);
 		
 		jCas.reset();

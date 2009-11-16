@@ -43,6 +43,7 @@ import org.cleartk.classifier.DataWriterAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.InstanceConsumer;
+import org.cleartk.classifier.InstanceConsumer_ImplBase;
 import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.Train;
 import org.cleartk.util.JCasUtil;
@@ -134,9 +135,9 @@ public class MaxentClassifierTest {
 	@Test
 	public void test1() throws Exception {
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(DataWriterAnnotator.class, JCasUtil.getTypeSystemDescription(), 
-				InstanceConsumer.PARAM_ANNOTATION_HANDLER, TestHandler1T.class.getName(), 
+				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, TestHandler1T.class.getName(), 
 				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
-				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, DefaultMaxentDataWriterFactory.class.getName());
+				DataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMaxentDataWriterFactory.class.getName());
 
 		JCas jCas = JCasUtil.getJCas();
 		dataWriterAnnotator.process(jCas);
@@ -163,8 +164,8 @@ public class MaxentClassifierTest {
 		assertEquals("C", classification);
 
 		AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createPrimitive(ClassifierAnnotator.class, JCasUtil.getTypeSystemDescription(),
-				InstanceConsumer.PARAM_ANNOTATION_HANDLER, TestHandler1C.class.getName(),
-				ClassifierAnnotator.PARAM_CLASSIFIER_JAR, outputDirectory+"/model.jar");
+				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, TestHandler1C.class.getName(),
+				ClassifierAnnotator.PARAM_CLASSIFIER_JAR_PATH, outputDirectory+"/model.jar");
 		jCas.reset();
 		classifierAnnotator.process(jCas);
 		classifierAnnotator.collectionProcessComplete();
@@ -235,9 +236,9 @@ public class MaxentClassifierTest {
 	@Test
 	public void test2() throws Exception {
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(DataWriterAnnotator.class, JCasUtil.getTypeSystemDescription(), 
-				InstanceConsumer.PARAM_ANNOTATION_HANDLER, TestHandler2T.class.getName(), 
+				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, TestHandler2T.class.getName(), 
 				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
-				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, DefaultMaxentDataWriterFactory.class.getName(),
+				DataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMaxentDataWriterFactory.class.getName(),
 				DefaultMaxentDataWriterFactory.PARAM_COMPRESS, false);
 		
 		JCas jCas = JCasUtil.getJCas();
@@ -297,8 +298,8 @@ public class MaxentClassifierTest {
 		
 
 		AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createPrimitive(ClassifierAnnotator.class, JCasUtil.getTypeSystemDescription(),
-				InstanceConsumer.PARAM_ANNOTATION_HANDLER, TestHandler2C.class.getName(),
-				ClassifierAnnotator.PARAM_CLASSIFIER_JAR, outputDirectory+"/model.jar");
+				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, TestHandler2C.class.getName(),
+				ClassifierAnnotator.PARAM_CLASSIFIER_JAR_PATH, outputDirectory+"/model.jar");
 		jCas.reset();
 		classifierAnnotator.process(jCas);
 		classifierAnnotator.collectionProcessComplete();

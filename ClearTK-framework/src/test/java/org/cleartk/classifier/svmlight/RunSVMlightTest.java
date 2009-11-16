@@ -38,7 +38,7 @@ import org.cleartk.CleartkException;
 import org.cleartk.classifier.DataWriterAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.InstanceConsumer;
+import org.cleartk.classifier.InstanceConsumer_ImplBase;
 import org.cleartk.classifier.Train;
 import org.cleartk.classifier.svmlight.model.SVMlightModel;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
@@ -208,11 +208,11 @@ public class RunSVMlightTest {
 		// create the data writer
 		DataWriterAnnotator<Boolean> dataWriter = new DataWriterAnnotator<Boolean>();
 		dataWriter.initialize(UimaContextFactory.createUimaContext(
-				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
+				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME,
 				EmptyHandlerUtil.EmptyBooleanHandler.class.getName(),
 				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY,
 				this.outputDirectory,
-				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS,
+				DataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
 				DefaultSVMlightDataWriterFactory.class.getName()));
 		
 		// add a bunch of instances
@@ -249,11 +249,11 @@ public class RunSVMlightTest {
 		// create the data writer
 		DataWriterAnnotator<String> dataWriter = new DataWriterAnnotator<String>();
 		dataWriter.initialize(UimaContextFactory.createUimaContext(
-				InstanceConsumer.PARAM_ANNOTATION_HANDLER,
+				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME,
 				EmptyHandlerUtil.EmptyStringHandler.class.getName(),
 				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY,
 				this.outputDirectory,
-				DataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS,
+				DataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
 				DefaultOVASVMlightDataWriterFactory.class.getName()));
 		
 		// add a bunch of instances

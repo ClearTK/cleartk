@@ -44,6 +44,7 @@ import org.cleartk.classifier.SequentialAnnotationHandler;
 import org.cleartk.classifier.SequentialClassifierAnnotator;
 import org.cleartk.classifier.SequentialDataWriterAnnotator;
 import org.cleartk.classifier.SequentialInstanceConsumer;
+import org.cleartk.classifier.SequentialInstanceConsumer_ImplBase;
 import org.cleartk.classifier.Train;
 import org.cleartk.classifier.feature.extractor.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.SpannedTextExtractor;
@@ -108,9 +109,9 @@ public class ViterbiDataWriterTest {
 
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(SequentialDataWriterAnnotator.class,
 				JCasUtil.getTypeSystemDescription(),
-				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER, TestAnnotationHandler.class.getName(),
+				SequentialInstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, TestAnnotationHandler.class.getName(),
 				SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
-				SequentialDataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS, ViterbiDataWriterFactory.class.getName(),
+				SequentialDataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, ViterbiDataWriterFactory.class.getName(),
 				ViterbiDataWriter.PARAM_DELEGATED_DATAWRITER_FACTORY_CLASS, DefaultMaxentDataWriterFactory.class.getName(),
 				ViterbiDataWriter.PARAM_OUTCOME_FEATURE_EXTRACTORS, new String[] {"org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor"});
 
@@ -145,8 +146,8 @@ public class ViterbiDataWriterTest {
 		
 		engine = AnalysisEngineFactory.createPrimitive(SequentialClassifierAnnotator.class, 
 				JCasUtil.getTypeSystemDescription(),
-				SequentialInstanceConsumer.PARAM_ANNOTATION_HANDLER, TestAnnotationHandler.class.getName(),
-				SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR, new File(outputDirectory, "model.jar").getPath());
+				SequentialInstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, TestAnnotationHandler.class.getName(),
+				SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR_PATH, new File(outputDirectory, "model.jar").getPath());
 		
 		engine.process(jCas);
 		engine.collectionProcessComplete();

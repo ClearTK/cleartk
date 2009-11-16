@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier;
 
 import java.io.File;
@@ -32,59 +32,57 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
+import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
+import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.util.InitializeUtil;
 
-public abstract class SequentialDataWriterFactory_ImplBase<FEATURES_OUT_TYPE, OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE> implements SequentialDataWriterFactory<OUTCOME_IN_TYPE> {
+public abstract class SequentialDataWriterFactory_ImplBase<FEATURES_OUT_TYPE, OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE>
+		implements SequentialDataWriterFactory<OUTCOME_IN_TYPE> {
 
-	/**
-	 * "org.cleartk.classifier.SequentialDataWriterFactory_ImplBase.PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM"
-	 * is a single, optional, boolean parameter, defaulting to false, that when true
-	 * indicates that the FeaturesEncoder and OutcomeEncoder should be loaded from the
-	 * file system instead of being created by the DataWriterFactory.
-	 */
-	public static final String PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM = "org.cleartk.classifier.SequentialDataWriterFactory_ImplBase.PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM";
+	public static final String PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM = ConfigurationParameterNameFactory
+			.createConfigurationParameterName(SequentialDataWriterFactory_ImplBase.class, "loadEncodersFromFileSystem");
 
-	public void initialize(UimaContext context)  throws ResourceInitializationException{
-		boolean loadEncoders = (Boolean)UIMAUtil.getDefaultingConfigParameterValue(
-				context, SequentialDataWriterFactory_ImplBase.PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM, false);
-		if (loadEncoders) {
+	@ConfigurationParameter(description = "when true indicates that the FeaturesEncoder and OutcomeEncoder should be loaded from the file system instead of being created by the DataWriterFactory", defaultValue = "false")
+	private boolean loadEncodersFromFileSystem = false;
+
+	public void initialize(UimaContext context) throws ResourceInitializationException {
+		InitializeUtil.initialize(this, context);
+		if (loadEncodersFromFileSystem) {
 			try {
-				String outputDirectory = (String)UIMAUtil.getRequiredConfigParameterValue(
-						context, SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY);
-				File encoderFile = new File(
-						outputDirectory, FeaturesEncoder_ImplBase.ENCODERS_FILE_NAME);
-				
+				String outputDirectory = (String) UIMAUtil.getRequiredConfigParameterValue(context,
+						SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY);
+				File encoderFile = new File(outputDirectory, FeaturesEncoder_ImplBase.ENCODERS_FILE_NAME);
+
 				if (!encoderFile.exists()) {
-					throw new RuntimeException(String.format(
-							"No encoder found in directory %s", outputDirectory));
+					throw new RuntimeException(String.format("No encoder found in directory %s", outputDirectory));
 				}
-				
+
 				ObjectInputStream is = new ObjectInputStream(new FileInputStream(encoderFile));
-				
+
 				// read the FeaturesEncoder and check the types
 				FeaturesEncoder<?> untypedFeaturesEncoder = FeaturesEncoder.class.cast(is.readObject());
-				UIMAUtil.checkTypeParameterIsAssignable(
-						FeaturesEncoder.class, "FEATURES_OUT_TYPE", untypedFeaturesEncoder,
-						SequentialDataWriterFactory_ImplBase.class, "FEATURES_OUT_TYPE", this);
-				
+				UIMAUtil.checkTypeParameterIsAssignable(FeaturesEncoder.class, "FEATURES_OUT_TYPE",
+						untypedFeaturesEncoder, SequentialDataWriterFactory_ImplBase.class, "FEATURES_OUT_TYPE", this);
+
 				// read the OutcomeEncoder and check the types
 				OutcomeEncoder<?, ?> untypedOutcomeEncoder = OutcomeEncoder.class.cast(is.readObject());
-				UIMAUtil.checkTypeParameterIsAssignable(
-						OutcomeEncoder.class, "OUTCOME_IN_TYPE", untypedOutcomeEncoder,
+				UIMAUtil.checkTypeParameterIsAssignable(OutcomeEncoder.class, "OUTCOME_IN_TYPE", untypedOutcomeEncoder,
 						SequentialDataWriterFactory_ImplBase.class, "OUTCOME_IN_TYPE", this);
-				UIMAUtil.checkTypeParameterIsAssignable(
-						OutcomeEncoder.class, "OUTCOME_OUT_TYPE", untypedOutcomeEncoder,
-						SequentialDataWriterFactory_ImplBase.class, "OUTCOME_OUT_TYPE", this);
-				
+				UIMAUtil.checkTypeParameterIsAssignable(OutcomeEncoder.class, "OUTCOME_OUT_TYPE",
+						untypedOutcomeEncoder, SequentialDataWriterFactory_ImplBase.class, "OUTCOME_OUT_TYPE", this);
+
 				// assign the encoders to the instance variables
 				this.featuresEncoder = ReflectionUtil.uncheckedCast(untypedFeaturesEncoder);
 				this.outcomeEncoder = ReflectionUtil.uncheckedCast(untypedOutcomeEncoder);
 				is.close();
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				throw new ResourceInitializationException(e);
 			}
-		} else {
+		}
+		else {
 			this.featuresEncoder = null;
 			this.outcomeEncoder = null;
 		}
@@ -93,16 +91,19 @@ public abstract class SequentialDataWriterFactory_ImplBase<FEATURES_OUT_TYPE, OU
 
 	protected boolean setEncodersFromFileSystem(
 			SequentialDataWriter_ImplBase<OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE, FEATURES_OUT_TYPE> dataWriter) {
-		if( this.featuresEncoder != null && this.outcomeEncoder != null ) {
+		if (this.featuresEncoder != null && this.outcomeEncoder != null) {
 			dataWriter.setFeaturesEncoder(this.featuresEncoder);
 			dataWriter.setOutcomeEncoder(this.outcomeEncoder);
 			return true;
-		} else {
+		}
+		else {
 			return false;
 		}
 	}
 
 	protected UimaContext context = null;
+
 	protected FeaturesEncoder<FEATURES_OUT_TYPE> featuresEncoder = null;
+
 	protected OutcomeEncoder<OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE> outcomeEncoder = null;
 }

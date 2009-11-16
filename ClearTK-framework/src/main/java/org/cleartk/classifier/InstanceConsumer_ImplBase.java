@@ -30,8 +30,11 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Logger;
 import org.cleartk.CleartkException;
+import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
+import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.util.InitializeUtil;
 
 /**
  * <br>
@@ -45,13 +48,24 @@ import org.cleartk.util.UIMAUtil;
  */
 public abstract class InstanceConsumer_ImplBase<OUTCOME_TYPE> extends JCasAnnotator_ImplBase implements InstanceConsumer<OUTCOME_TYPE>{
 
+	/**
+	 * "org.cleartk.classifier.InstanceConsumer.PARAM_ANNOTATION_HANDLER"
+	 * is a single, required, string parameter that provides the full name of the AnnotationHandler class that will be used with this InstanceConsumer.
+	 */
+	public static final String PARAM_ANNOTATION_HANDLER_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(
+			InstanceConsumer_ImplBase.class, "annotationHandlerName");
+	@ConfigurationParameter(
+			mandatory = true,
+			description = "provides the full name of the AnnotationHandler class that will be used with this InstanceConsumer")
+	private String annotationHandlerName;
+	
 	protected Logger logger;
 	protected AnnotationHandler<OUTCOME_TYPE> annotationHandler;
-
+	
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-		this.annotationHandler = ReflectionUtil.uncheckedCast(UIMAUtil.create(
-				context, PARAM_ANNOTATION_HANDLER, AnnotationHandler.class));
+		InitializeUtil.initialize(this, context);
+		this.annotationHandler = ReflectionUtil.uncheckedCast(UIMAUtil.create(annotationHandlerName, AnnotationHandler.class, context));
 		this.logger = context.getLogger();
 	}
 

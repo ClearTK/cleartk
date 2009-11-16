@@ -31,38 +31,38 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
+import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
+import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.util.InitializeUtil;
 
 public class SequentialDataWriterAnnotator<OUTCOME_TYPE> extends SequentialInstanceConsumer_ImplBase<OUTCOME_TYPE> {
 
-	/**
-	 * "org.cleartk.classifier.SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY"
-	 * is a single, required, string parameter that provides the name of the
-	 * directory where the training data will be written.
-	 */
-	public static final String PARAM_OUTPUT_DIRECTORY = "org.cleartk.classifier.SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY";
-	
-	/**
-	 * "org.cleartk.classifier.SequentialDataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS"
-	 * is a single, required, string parameter that provides the full name of
-	 * the SequentialDataWriterFactory class to be used.  
-	 */
-	public static final String PARAM_DATAWRITER_FACTORY_CLASS = "org.cleartk.classifier.SequentialDataWriterAnnotator.PARAM_DATAWRITER_FACTORY_CLASS";
 
+	public static final String PARAM_OUTPUT_DIRECTORY = ConfigurationParameterNameFactory.createConfigurationParameterName(
+			SequentialDataWriterAnnotator.class, "outputDirectory");
+	@ConfigurationParameter(
+			mandatory = true,
+			description = "provides the name of the directory where the training data will be written.")
+	private File outputDirectory;
+
+	public static final String PARAM_DATA_WRITER_FACTORY_CLASS_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(
+			SequentialDataWriterAnnotator.class, "dataWriterFactoryClassName");
+	@ConfigurationParameter(
+			mandatory = true,
+			description = "provides the full name of the SequentialDataWriterFactory class to be used.")
+	private String dataWriterFactoryClassName;
+	
 	private SequentialDataWriter<OUTCOME_TYPE> sequentialDataWriter;
 	
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
-		
-		String outputDirectoryPath = (String) UIMAUtil.getRequiredConfigParameterValue(
-				context, PARAM_OUTPUT_DIRECTORY);
-		File outputDirectory = new File(outputDirectoryPath);
+		InitializeUtil.initialize(this, context);
 
 		// create the factory and instantiate the data writer
-		SequentialDataWriterFactory<?> factory = UIMAUtil.create(
-				context, PARAM_DATAWRITER_FACTORY_CLASS, SequentialDataWriterFactory.class);
+		SequentialDataWriterFactory<?> factory = UIMAUtil.create(dataWriterFactoryClassName, SequentialDataWriterFactory.class, context);
 		SequentialDataWriter<?> untypedDataWriter;
 		try {
 			untypedDataWriter = factory.createSequentialDataWriter(outputDirectory);
