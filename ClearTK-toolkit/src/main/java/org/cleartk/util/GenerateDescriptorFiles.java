@@ -50,6 +50,7 @@ import org.cleartk.ne.term.TermFinderAnnotator;
 import org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter;
 import org.cleartk.srl.propbank.PropbankGoldAnnotator;
 import org.cleartk.srl.propbank.PropbankGoldReader;
+import org.cleartk.syntax.opennlp.OpenNLPTreebankParser;
 import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
 import org.cleartk.temporal.VerbClauseTemporalHandler;
 import org.cleartk.token.TokenAnnotator;
@@ -144,6 +145,7 @@ public class GenerateDescriptorFiles {
 		if (!descDirectory.exists()) descDirectory.mkdirs();
 		aed.toXML(new FileWriter(new File(descDirectory, "Subtokenizer.xml")));
 
+		writePrimitiveDescription(OpenNLPTreebankParser.class, outputDirectory);
 	}
 
 	private static File updateOutputDirectory(Class<?> cls, File outputDirectory) {

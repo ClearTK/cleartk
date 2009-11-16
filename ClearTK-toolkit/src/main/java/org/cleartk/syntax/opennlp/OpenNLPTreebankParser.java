@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.syntax.opennlp;
 
 import java.io.File;
@@ -47,149 +47,146 @@ import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
 import org.cleartk.syntax.treebank.type.TreebankNode;
+import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.UIMAUtil;
-
+import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.util.InitializeUtil;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * 
  * @author Philipp Wetzler
  */
 
 public class OpenNLPTreebankParser extends JCasAnnotator_ImplBase {
+
+	public static final String PARAM_BUILD_MODEL_FILE = ConfigurationParameterNameFactory.createConfigurationParameterName(
+			OpenNLPTreebankParser.class, "buildModelFile");
+	@ConfigurationParameter(
+			mandatory = true,
+			description = "provides the path of the OpenNLP parser model build file, e.g. resources/models/OpenNLP.Parser.English.Build.bin.gz.  See javadoc for opennlp.tools.parser.chunking.Parser.")
+	private String buildModelFile;
+
+	public static final String PARAM_CHECK_MODEL_FILE = ConfigurationParameterNameFactory.createConfigurationParameterName(
+			OpenNLPTreebankParser.class, "checkModelFile");
+	@ConfigurationParameter(
+			mandatory = true,
+			description = "provides the path of the OpenNLP parser model check file, e.g. resources/models/OpenNLP.Parser.English.Check.bin.gz. See javadoc for opennlp.tools.parser.chunking.Parser.")
+	private String checkModelFile;
+
+	public static final String PARAM_CHUNK_MODEL_FILE = ConfigurationParameterNameFactory.createConfigurationParameterName(
+			OpenNLPTreebankParser.class, "chunkModelFile");
+	@ConfigurationParameter(
+			mandatory = true,
+			description = "provides the path of the OpenNLP chunker model file, e.g. resources/models/OpenNLP.Chunker.English.bin.gz. See javadoc for opennlp.tools.lang.english.ParserChunker.")
+	private String chunkModelFile;
+
+	public static final String PARAM_HEAD_RULES_FILE = ConfigurationParameterNameFactory.createConfigurationParameterName(
+			OpenNLPTreebankParser.class, "headRulesFile");
+	@ConfigurationParameter(
+			mandatory = true,
+			description = "provides the path of the OpenNLP head rules file, e.g. resources/models/OpenNLP.HeadRules.txt. See javadoc for opennlp.tools.lang.english.HeadRules.")
+	private String headRulesFile;
+
+	public static final String PARAM_BEAM_SIZE = ConfigurationParameterNameFactory.createConfigurationParameterName(
+			OpenNLPTreebankParser.class, "beamSize");
+	@ConfigurationParameter(
+			mandatory = true,
+			defaultValue = ""+Parser.defaultBeamSize,
+			description = "indicates the beam size that should be used in the parser's search.  See javadoc for opennlp.tools.parser.chunking.Parser.")
+	private int beamSize;
+
+	public static final String PARAM_ADVANCE_PERCENTAGE = ConfigurationParameterNameFactory.createConfigurationParameterName(
+			OpenNLPTreebankParser.class, "advancePercentage");
+	@ConfigurationParameter(
+			mandatory = true,
+			defaultValue = ""+Parser.defaultAdvancePercentage,
+			description = "indicates \"the amount of probability mass required of advanced outcomes\".  See javadoc for opennlp.tools.parser.chunking.Parser.")
+	private float advancePercentage;
 	
-	/**
-	 * "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_BUILD_MODEL_FILE"
-	 * is a single, required, string parameter that provides the path of the
-	 * OpenNLP parser model build file, e.g.
-	 *   resources/models/OpenNLP.Parser.English.Build.bin.gz
-	 * @see opennlp.tools.parser.chunking.Parser
-	 */
-	public static final String PARAM_BUILD_MODEL_FILE = "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_BUILD_MODEL_FILE";
-
-	/**
-	 * "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_CHECK_MODEL_FILE"
-	 * is a single, required, string parameter that provides the path of the
-	 * OpenNLP parser model check file, e.g.
-	 *   resources/models/OpenNLP.Parser.English.Check.bin.gz
-	 * @see opennlp.tools.parser.chunking.Parser
-	 */
-	public static final String PARAM_CHECK_MODEL_FILE = "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_CHECK_MODEL_FILE";
-
-	/**
-	 * "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_CHUNK_MODEL_FILE"
-	 * is a single, required, string parameter that provides the path of the
-	 * OpenNLP chunker model file, e.g.
-	 *   resources/models/OpenNLP.Chunker.English.bin.gz
-	 * @see opennlp.tools.lang.english.ParserChunker
-	 */
-	public static final String PARAM_CHUNK_MODEL_FILE = "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_CHUNK_MODEL_FILE";
-
-	/**
-	 * "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_HEAD_RULES_FILE"
-	 * is a single, required, string parameter that provides the path of the
-	 * OpenNLP head rules file, e.g.
-	 *   resources/models/OpenNLP.HeadRules.txt
-	 * @see opennlp.tools.lang.english.HeadRules
-	 */
-	public static final String PARAM_HEAD_RULES_FILE = "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_HEAD_RULES_FILE";
-
-	/**
-	 * "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_BEAM_SIZE"
-	 * is a single, optional, integer parameter, defaulting to
-	 * {@link Parser.defaultBeamSize}, that indicates the beam size that
-	 * should be used in the parser's search.
-	 * @see opennlp.tools.parser.chunking.Parser
-	 */
-	public static final String PARAM_BEAM_SIZE = "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_BEAM_SIZE";
-
-	/**
-	 * "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_ADVANCE_PERCENTAGE""
-	 * is a single, optional, double parameter, defaulting to
-	 * {@link Parser.defaultAdvancePercentage}, that indicates "the amount of
-	 * probability mass required of advanced outcomes"
-	 * @see opennlp.tools.parser.chunking.Parser
-	 */
-	public static final String PARAM_ADVANCE_PERCENTAGE = "org.cleartk.syntax.opennlp.OpenNLPTreebankParser.PARAM_ADVANCE_PERCENTAGE";
-
 	protected Parser parser;
+
 	protected OpenNLPDummyParserTagger tagger;
 
 	@Override
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
 		String text = jCas.getDocumentText();
-		
+
 		FSIterator sentences = jCas.getJFSIndexRepository().getAnnotationIndex(Sentence.type).iterator();
-		while( sentences.hasNext() ) {
+		while (sentences.hasNext()) {
 			Sentence sentence = (Sentence) sentences.next();
-			
+
 			Parse parse = new Parse(text, new Span(sentence.getBegin(), sentence.getEnd()), "INC", 1, null);
-			
-			List<Token> tokenList = AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class); 
+
+			List<Token> tokenList = AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class);
 			Token[] tokens = tokenList.toArray(new Token[tokenList.size()]);
-			for( Token token : tokens ) {
-				//TODO i'm not sure what the value of p should be - so I just put in 1.0f as an initial guess.
+			for (Token token : tokens) {
+				// TODO i'm not sure what the value of p should be - so I just
+				// put in 1.0f as an initial guess.
 				parse.insert(new Parse(text, new Span(token.getBegin(), token.getEnd()), Parser.TOK_NODE, 1.0f, 0));
-			}	
+			}
 
 			this.tagger.setTokens(tokens);
 			parse = this.parser.parse(parse);
-			
-			// if the sentence was successfully parsed, add the tree to the sentence
+
+			// if the sentence was successfully parsed, add the tree to the
+			// sentence
 			if (parse.getType() == Parser.TOP_NODE) {
 				TopTreebankNode topNode = (TopTreebankNode) buildAnnotation(parse, jCas);
 				topNode.addToIndexes();
 			}
 		}
 	}
-	
+
 	protected static TreebankNode buildAnnotation(Parse p, JCas jCas) {
 		TreebankNode myNode;
-		if( p.getType() == Parser.TOP_NODE ) {
+		if (p.getType() == Parser.TOP_NODE) {
 			TopTreebankNode topNode = new TopTreebankNode(jCas);
 			topNode.setParent(null);
 
 			StringBuffer sb = new StringBuffer();
 			p.show(sb);
 			topNode.setTreebankParse(sb.toString());
-			
+
 			myNode = topNode;
-		} else {
+		}
+		else {
 			myNode = new TreebankNode(jCas);
 		}
-		
+
 		myNode.setNodeType(p.getType());
 		myNode.setBegin(p.getSpan().getStart());
 		myNode.setEnd(p.getSpan().getEnd());
 
-		if( p.getChildCount() == 1 && p.getChildren()[0].getType() == Parser.TOK_NODE ) {
+		if (p.getChildCount() == 1 && p.getChildren()[0].getType() == Parser.TOK_NODE) {
 			myNode.setLeaf(true);
 			myNode.setNodeValue(p.getChildren()[0].toString());
 			myNode.setChildren(new FSArray(jCas, 0));
-		} else {
+		}
+		else {
 			myNode.setNodeValue(null);
 			myNode.setLeaf(false);
-			
+
 			List<FeatureStructure> cArray = new ArrayList<FeatureStructure>(p.getChildCount());
-			
-			for( Parse cp : p.getChildren() ) {
+
+			for (Parse cp : p.getChildren()) {
 				TreebankNode cNode = buildAnnotation(cp, jCas);
 				cNode.setParent(myNode);
 				cNode.addToIndexes();
 				cArray.add(cNode);
 			}
-			
+
 			FSArray cFSArray = new FSArray(jCas, cArray.size());
 			cFSArray.copyFromArray(cArray.toArray(new FeatureStructure[cArray.size()]), 0, 0, cArray.size());
 			myNode.setChildren(cFSArray);
 		}
-		
-		if( p.getType() == Parser.TOP_NODE ) {
+
+		if (p.getType() == Parser.TOP_NODE) {
 			List<TreebankNode> tList = getTerminals(myNode);
 			FSArray tfsa = new FSArray(jCas, tList.size());
 			tfsa.copyFromArray(tList.toArray(new FeatureStructure[tList.size()]), 0, 0, tList.size());
@@ -197,18 +194,19 @@ public class OpenNLPTreebankParser extends JCasAnnotator_ImplBase {
 		}
 		return myNode;
 	}
-	
+
 	protected static List<TreebankNode> getTerminals(TreebankNode node) {
 		List<TreebankNode> tList = new ArrayList<TreebankNode>();
 
-		if( node.getChildren().size() == 0 ) {
+		if (node.getChildren().size() == 0) {
 			tList.add(node);
 			return tList;
 		}
-		
-		TreebankNode[] children = Arrays.asList(node.getChildren().toArray()).toArray(new TreebankNode[node.getChildren().size()]);
 
-		for( TreebankNode child : children ) {
+		TreebankNode[] children = Arrays.asList(node.getChildren().toArray()).toArray(
+				new TreebankNode[node.getChildren().size()]);
+
+		for (TreebankNode child : children) {
 			tList.addAll(getTerminals(child));
 		}
 		return tList;
@@ -217,33 +215,22 @@ public class OpenNLPTreebankParser extends JCasAnnotator_ImplBase {
 	@Override
 	public void initialize(UimaContext ctx) throws ResourceInitializationException {
 		super.initialize(ctx);
-		
-		String buildModelFile = (String)UIMAUtil.getRequiredConfigParameterValue(
-				ctx, OpenNLPTreebankParser.PARAM_BUILD_MODEL_FILE);
-		String checkModelFile = (String)UIMAUtil.getRequiredConfigParameterValue(
-				ctx, OpenNLPTreebankParser.PARAM_CHECK_MODEL_FILE);
-		String chunkModelFile = (String)UIMAUtil.getRequiredConfigParameterValue(
-				ctx, OpenNLPTreebankParser.PARAM_CHUNK_MODEL_FILE);
-		String headRulesFile = (String)UIMAUtil.getRequiredConfigParameterValue(
-				ctx, OpenNLPTreebankParser.PARAM_HEAD_RULES_FILE);
-		int beamSize = (Integer)UIMAUtil.getDefaultingConfigParameterValue(
-				ctx, OpenNLPTreebankParser.PARAM_BEAM_SIZE, Parser.defaultBeamSize);
-		double advancePercentage = (Double)UIMAUtil.getDefaultingConfigParameterValue(
-				ctx, OpenNLPTreebankParser.PARAM_ADVANCE_PERCENTAGE, Parser.defaultAdvancePercentage);
+
+		InitializeUtil.initialize(this, ctx);
 		
 		try {
 			MaxentModel buildModel = new SuffixSensitiveGISModelReader(new File(buildModelFile)).getModel();
 			MaxentModel checkModel = new SuffixSensitiveGISModelReader(new File(checkModelFile)).getModel();
-			
+
 			this.tagger = new OpenNLPDummyParserTagger();
-			
+
 			ParserChunker chunker = new ParserChunker(chunkModelFile);
-			
+
 			HeadRules hrules = new HeadRules(headRulesFile);
-			
-			this.parser = new Parser(buildModel, checkModel, tagger, chunker, hrules,
-				        	beamSize, advancePercentage);
-		} catch (IOException e) {
+
+			this.parser = new Parser(buildModel, checkModel, tagger, chunker, hrules, beamSize, advancePercentage);
+		}
+		catch (IOException e) {
 			throw new ResourceInitializationException(e);
 		}
 	}

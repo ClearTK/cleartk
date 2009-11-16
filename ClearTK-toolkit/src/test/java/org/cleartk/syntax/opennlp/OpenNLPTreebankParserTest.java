@@ -220,31 +220,11 @@ public class OpenNLPTreebankParserTest {
 	@Test
 	public void testDescriptor() throws UIMAException, IOException {
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-				"org.cleartk.syntax.opennlp.OpenNLPTreebankParser");
-		
-		Object buildModelFile = engine.getConfigParameterValue(
-				OpenNLPTreebankParser.PARAM_BUILD_MODEL_FILE);
-		Assert.assertEquals("resources/models/OpenNLP.Parser.English.Build.bin.gz", buildModelFile);
-		
-		Object checkModelFile = engine.getConfigParameterValue(
-				OpenNLPTreebankParser.PARAM_CHECK_MODEL_FILE);
-		Assert.assertEquals("resources/models/OpenNLP.Parser.English.Check.bin.gz", checkModelFile);
-		
-		Object chunkModelFile = engine.getConfigParameterValue(
-				OpenNLPTreebankParser.PARAM_CHUNK_MODEL_FILE);
-		Assert.assertEquals("resources/models/OpenNLP.Chunker.English.bin.gz", chunkModelFile);
-		
-		Object headRulesFile = engine.getConfigParameterValue(
-				OpenNLPTreebankParser.PARAM_HEAD_RULES_FILE);
-		Assert.assertEquals("resources/models/OpenNLP.HeadRules.txt", headRulesFile);
-		
-		Object beamSize = engine.getConfigParameterValue(OpenNLPTreebankParser.PARAM_BEAM_SIZE);
-		Assert.assertEquals(null, beamSize);
-		
-		Object advancePercentage = engine.getConfigParameterValue(
-				OpenNLPTreebankParser.PARAM_ADVANCE_PERCENTAGE);
-		Assert.assertEquals(null, advancePercentage);
-		
+				"org.cleartk.syntax.opennlp.OpenNLPTreebankParser",
+				OpenNLPTreebankParser.PARAM_BUILD_MODEL_FILE, "test/models/fox_dog_parser/build.bin.gz",
+				OpenNLPTreebankParser.PARAM_CHECK_MODEL_FILE, "test/models/fox_dog_parser/check.bin.gz",
+				OpenNLPTreebankParser.PARAM_CHUNK_MODEL_FILE, "test/models/fox_dog_parser/chunk.bin.gz",
+				OpenNLPTreebankParser.PARAM_HEAD_RULES_FILE, "test/models/fox_dog_parser/head_rules");
 		engine.collectionProcessComplete();
 	}
 }
