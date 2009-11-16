@@ -57,9 +57,13 @@ public class ParametersTestUtil {
 					org.uutuc.descriptor.ConfigurationParameter annotation = field.getAnnotation(org.uutuc.descriptor.ConfigurationParameter.class);
 					String parameterName = annotation.name();
 					String expectedName = className + "." + field.getName();
+					if(parameterName.equals(org.uutuc.descriptor.ConfigurationParameter.USE_FIELD_NAME))
+						expectedName = org.uutuc.descriptor.ConfigurationParameter.USE_FIELD_NAME;
 					if (!expectedName.equals(parameterName)) {
 						badParameters.add("'" + parameterName + "' should be '" + expectedName+ "'");
 					}
+					
+					expectedName = className + "." + field.getName();  //change it back to the real parameter name
 					String fieldName = getParameterNameField(expectedName);
 					try {
 						Field fld = cls.getDeclaredField(fieldName);
