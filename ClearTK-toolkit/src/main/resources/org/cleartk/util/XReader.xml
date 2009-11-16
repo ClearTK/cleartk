@@ -55,7 +55,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 <mandatory>false</mandatory>
             </configurationParameter>
             <configurationParameter>
-                <name>org.cleartk.util.FilesCollectionReader.suffixNames</name>
+                <name>org.cleartk.util.FilesCollectionReader.suffixes</name>
                 <description>takes suffixes (e.g. .txt) of the files that should be read in.  This parameter can only be set if there is no value for 'nameFilesFileNames', 'fileNames', or 'patterns'.</description>
                 <type>String</type>
                 <multiValued>true</multiValued>
