@@ -61,75 +61,63 @@ import org.uutuc.util.io.Files;
  * @author Philip Ogren
  */
 public class FilesCollectionReader extends CollectionReader_ImplBase {
-	
-	public static final String PARAM_ROOT_FILE;
 
-	public static final String PARAM_VIEW_NAME;
-
-	public static final String PARAM_LANGUAGE;
-
-	public static final String PARAM_ENCODING;
-
-	public static final String PARAM_SUFFIXES;
-	
-	public static final String PARAM_PATTERNS;
-	
-	public static final String PARAM_NAME_FILES_FILE_NAMES;
-
-	public static final String PARAM_FILE_NAMES;
-
-	static {
-		PARAM_ROOT_FILE = ConfigurationParameterNameFactory.createConfigurationParameterName(FilesCollectionReader.class, "rootFile");
-		PARAM_VIEW_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(FilesCollectionReader.class, "viewName");
-		PARAM_LANGUAGE = ConfigurationParameterNameFactory.createConfigurationParameterName(FilesCollectionReader.class, "language");
-		PARAM_ENCODING = ConfigurationParameterNameFactory.createConfigurationParameterName(FilesCollectionReader.class, "encoding");
-		PARAM_SUFFIXES = ConfigurationParameterNameFactory.createConfigurationParameterName(FilesCollectionReader.class, "suffixNames");
-		PARAM_PATTERNS = ConfigurationParameterNameFactory.createConfigurationParameterName(FilesCollectionReader.class, "patterns");
-		PARAM_NAME_FILES_FILE_NAMES = ConfigurationParameterNameFactory.createConfigurationParameterName(FilesCollectionReader.class, "nameFilesFileNames");
-		PARAM_FILE_NAMES = ConfigurationParameterNameFactory.createConfigurationParameterName(FilesCollectionReader.class, "fileNames");
-	}
-
+	public static final String PARAM_ROOT_FILE = ConfigurationParameterNameFactory.createConfigurationParameterName(
+			FilesCollectionReader.class, "rootFile");
 	@ConfigurationParameter(mandatory = true, description = "takes either the name of a single file or the root directory containing all the files to be processed.")
 	protected File rootFile;
 
+	public static final String PARAM_VIEW_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(
+			FilesCollectionReader.class, "viewName");
 	@ConfigurationParameter(description = "takes the the name that should be given to the JCas view that the document texts should be set to.")
 	private String viewName;
 
+	public static final String PARAM_LANGUAGE = ConfigurationParameterNameFactory.createConfigurationParameterName(
+			FilesCollectionReader.class, "language");
 	@ConfigurationParameter(description = "takes the language code corresponding to the language of the documents being examined.  The value of this parameter "
 			+ "is simply passed on to JCas.setDocumentLanguage(String).")
 	private String language;
 
+	public static final String PARAM_ENCODING = ConfigurationParameterNameFactory.createConfigurationParameterName(
+			FilesCollectionReader.class, "encoding");
 	@ConfigurationParameter(description = "takes the encoding of the text files (e.g. \"UTF-8\").  See javadoc for java.nio.charset.Charset for a list of encoding names.")
 	private String encoding;
 
+	public static final String PARAM_SUFFIXES = ConfigurationParameterNameFactory.createConfigurationParameterName(
+			FilesCollectionReader.class, "suffixNames");
 	@ConfigurationParameter(description = "takes suffixes (e.g. .txt) of the files that should be read in.  This parameter can only be set if there"
 			+ " is no value for 'nameFilesFileNames', 'fileNames', or 'patterns'.")
-	private String[] suffixNames;
+	private String[] suffixes;
 
-	@ConfigurationParameter(description = "	takes regular expressions for matching the files that should be read in. Note that these will be searched for" +
-			" using java.util. regex.Matcher.find, so if you want to make sure the entire file name matches a pattern, you should start the string with ^ and end the" +
-			" string with $. This parameter can only be set if there is no value for 'nameFilesFileNames', 'fileNames', or 'suffixes'.")
+	public static final String PARAM_PATTERNS = ConfigurationParameterNameFactory.createConfigurationParameterName(
+			FilesCollectionReader.class, "patterns");
+	@ConfigurationParameter(description = "	takes regular expressions for matching the files that should be read in. Note that these will be searched for"
+			+ " using java.util. regex.Matcher.find, so if you want to make sure the entire file name matches a pattern, you should start the string with ^ and end the"
+			+ " string with $. This parameter can only be set if there is no value for 'nameFilesFileNames', 'fileNames', or 'suffixes'.")
 	private String[] patterns;
-	
-	@ConfigurationParameter(description = "names files which contain lists of file names. For example, if the value 'mydata/mylist.txt' is provided, "+
-			"then the file 'mylist.txt' should contain a line delimited list of file names.  The file names in the list should not have directory information "+
-			"but should just be the names of the files. The directory is determined by 'rootFile' and the files that are processed result from "+
-			"traversing the directory structure provided and looking for files with a name found in the lists of file names. That is, no exception will be "+
-			"thrown if a file name in the list does not actually correspond to a file.  This parameter can only be set if there is no value for 'suffixes', 'patterns', or 'fileNames'.")
+
+	public static final String PARAM_NAME_FILES_FILE_NAMES = ConfigurationParameterNameFactory
+			.createConfigurationParameterName(FilesCollectionReader.class, "nameFilesFileNames");
+	@ConfigurationParameter(description = "names files which contain lists of file names. For example, if the value 'mydata/mylist.txt' is provided, "
+			+ "then the file 'mylist.txt' should contain a line delimited list of file names.  The file names in the list should not have directory information "
+			+ "but should just be the names of the files. The directory is determined by 'rootFile' and the files that are processed result from "
+			+ "traversing the directory structure provided and looking for files with a name found in the lists of file names. That is, no exception will be "
+			+ "thrown if a file name in the list does not actually correspond to a file.  This parameter can only be set if there is no value for 'suffixes', 'patterns', or 'fileNames'.")
 	private String[] nameFilesFileNames;
 
-	@ConfigurationParameter( description = "provides a list of file names that should be read in. The directory of the file names is determined by "+
-			"'rootFile' and the files that are processed result from traversing the directory structure provided and looking for files with a name found in the list of file names. " +
-			"That is, no exception will be thrown if a file name in the list does not actually correspond to a file.  This parameter can only be set if there is no value for 'suffixes', " +
-			"'patterns', or 'nameFilesFileNames'.")
+	public static final String PARAM_FILE_NAMES = ConfigurationParameterNameFactory.createConfigurationParameterName(
+			FilesCollectionReader.class, "fileNames");
+	@ConfigurationParameter(description = "provides a list of file names that should be read in. The directory of the file names is determined by "
+			+ "'rootFile' and the files that are processed result from traversing the directory structure provided and looking for files with a name found in the list of file names. "
+			+ "That is, no exception will be thrown if a file name in the list does not actually correspond to a file.  This parameter can only be set if there is no value for 'suffixes', "
+			+ "'patterns', or 'nameFilesFileNames'.")
 	private String[] fileNames;
-
 
 	@Override
 	public void initialize() throws ResourceInitializationException {
 		super.initialize();
 		InitializeUtil.initialize(this, getUimaContext());
-		
+
 		// raise an exception if the root file does not exist
 		if (!this.rootFile.exists()) {
 			String format = "file or directory %s does not exist";
@@ -137,17 +125,17 @@ public class FilesCollectionReader extends CollectionReader_ImplBase {
 			throw new ResourceInitializationException(new IOException(message));
 		}
 
-		if (!(suffixNames != null ^ patterns != null ^ nameFilesFileNames != null ^ fileNames != null)
-				&& (suffixNames != null || patterns != null || nameFilesFileNames != null || fileNames != null)) {
+		if (!(suffixes != null ^ patterns != null ^ nameFilesFileNames != null ^ fileNames != null)
+				&& (suffixes != null || patterns != null || nameFilesFileNames != null || fileNames != null)) {
 			String message = String.format(
 					"One of the parameters %1$s, %2$s, %3$s or %4$s may be set but not more than one of them.",
 					PARAM_SUFFIXES, PARAM_PATTERNS, PARAM_NAME_FILES_FILE_NAMES, PARAM_FILE_NAMES);
 			throw new ResourceInitializationException(new IllegalArgumentException(message));
 		}
 
-		if (suffixNames != null) {
-			files = Files.getFiles(rootFile, suffixNames).iterator();
-			filesCount = countFiles(Files.getFiles(rootFile, suffixNames).iterator());
+		if (suffixes != null) {
+			files = Files.getFiles(rootFile, suffixes).iterator();
+			filesCount = countFiles(Files.getFiles(rootFile, suffixes).iterator());
 		}
 		else if (patterns != null) {
 			FileFilter patternFilter = Files.createPatternFilter(patterns);
