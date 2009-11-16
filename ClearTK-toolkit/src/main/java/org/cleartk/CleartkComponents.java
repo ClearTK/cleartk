@@ -237,7 +237,7 @@ public class CleartkComponents {
 	public static CollectionReader createConll2005GoldReader(String conll2005DataFile)
 			throws ResourceInitializationException {
 		return CollectionReaderFactory.createCollectionReader(Conll2005GoldReader.class, TYPE_SYSTEM_DESCRIPTION,
-				Conll2005GoldReader.PARAM_CONLL_2005_DATA_FILE, conll2005DataFile);
+				Conll2005GoldReader.PARAM_CONLL2005_DATA_FILE, conll2005DataFile);
 	}
 
 	public static AnalysisEngineDescription createConll2005GoldAnnotator() throws ResourceInitializationException {

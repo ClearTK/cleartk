@@ -48,6 +48,9 @@ import org.cleartk.example.pos.ExamplePOSAnnotationHandler;
 import org.cleartk.example.pos.ExamplePOSPlainTextWriter;
 import org.cleartk.ne.term.TermFinderAnnotator;
 import org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter;
+import org.cleartk.srl.conll2005.Conll2005GoldAnnotator;
+import org.cleartk.srl.conll2005.Conll2005GoldReader;
+import org.cleartk.srl.conll2005.Conll2005Writer;
 import org.cleartk.srl.propbank.PropbankGoldAnnotator;
 import org.cleartk.srl.propbank.PropbankGoldReader;
 import org.cleartk.syntax.opennlp.OpenNLPTreebankParser;
@@ -149,13 +152,15 @@ public class GenerateDescriptorFiles {
 
 		writePrimitiveDescription(OpenNLPTreebankParser.class, outputDirectory);
 		writePrimitiveDescription(OpenNLPPOSTagger.class, outputDirectory);
-		
+		writeCollectionReader(Conll2005GoldReader.class, outputDirectory);
+		writePrimitiveDescription(Conll2005GoldAnnotator.class, outputDirectory);
+		writePrimitiveDescription(Conll2005Writer.class, outputDirectory);
+
 		aed = ChunkTokenizerFactory.createChunkTokenizerDescription();
 		updateDescription(aed.getMetaData());
 		descDirectory = new File(outputDirectory, "org/cleartk/token/chunk");
 		if (!descDirectory.exists()) descDirectory.mkdirs();
 		aed.toXML(new FileWriter(new File(descDirectory, "ChunkTokenizer.xml")));
-
 	}
 
 	private static File updateOutputDirectory(Class<?> cls, File outputDirectory) {

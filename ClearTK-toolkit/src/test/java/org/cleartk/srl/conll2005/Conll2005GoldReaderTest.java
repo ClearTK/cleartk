@@ -51,9 +51,9 @@ public class Conll2005GoldReaderTest {
 		
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				"org.cleartk.srl.conll2005.Conll2005GoldReader",
-				Conll2005GoldReader.PARAM_CONLL_2005_DATA_FILE, this.oneSentencePath);
+				Conll2005GoldReader.PARAM_CONLL2005_DATA_FILE, this.oneSentencePath);
 		Object dataFileName = reader.getConfigParameterValue(
-				Conll2005GoldReader.PARAM_CONLL_2005_DATA_FILE);
+				Conll2005GoldReader.PARAM_CONLL2005_DATA_FILE);
 		Assert.assertEquals(this.oneSentencePath, dataFileName);
 	}
 }

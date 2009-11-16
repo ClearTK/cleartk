@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.srl.conll2005;
 
 import java.io.BufferedReader;
@@ -40,99 +40,100 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 import org.cleartk.ViewNames;
-import org.cleartk.util.UIMAUtil;
+import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.util.ViewURIUtil;
+import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.descriptor.SofaCapability;
+import org.uutuc.util.InitializeUtil;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
  */
+@SofaCapability(inputSofas = {}, outputSofas = { ViewNames.CONLL_2005 })
 public class Conll2005GoldReader extends CollectionReader_ImplBase {
 
-	/**
-	 * "org.cleartk.srl.conll2005.Conll2005GoldReader.PARAM_CONLL_2005_DATA_FILE"
-	 * is a single, required, string parameter that provides the path of the
-	 * CoNLL 2005 data file.
-	 */
-	public static final String PARAM_CONLL_2005_DATA_FILE = "org.cleartk.srl.conll2005.Conll2005GoldReader.PARAM_CONLL_2005_DATA_FILE";
-										  
-	BufferedReader reader;
-	
-	boolean finished = false;
-	
-	int documentNumber;
-	
-	int totalDocuments;
-	
-	@Override
-	public void initialize() throws ResourceInitializationException
-	{
-		try
-		{
-			File dataFile = new File((String)UIMAUtil.getRequiredConfigParameterValue(
-					this.getUimaContext(), PARAM_CONLL_2005_DATA_FILE));
+	@ConfigurationParameter(mandatory = true, description = "the path of the CoNLL 2005 data file")
+	private File conll2005DataFile;
+	public static final String PARAM_CONLL2005_DATA_FILE = ConfigurationParameterNameFactory
+			.createConfigurationParameterName(Conll2005GoldReader.class, "conll2005DataFile");
 
-			InputStream in;
-			if( dataFile.getName().endsWith(".gz") )
-				in = new GZIPInputStream(new FileInputStream(dataFile));
-			else
-				in = new FileInputStream(dataFile);
-			reader = new BufferedReader(new InputStreamReader(in));
+	private BufferedReader reader;
+	private boolean finished = false;
+	private int documentNumber;
+	private int totalDocuments;
+
+	@Override
+	public void initialize() throws ResourceInitializationException {
+		InitializeUtil.initialize(this, this.getUimaContext());
+		try {
+			this.reader = this.getBufferedReader();
 			String line;
-			totalDocuments = 0;
+			this.totalDocuments = 0;
 			do {
-				line = reader.readLine();
-				while( line != null && line.trim().length() == 0 )
-					line = reader.readLine();
-				
-				if( line == null )
+				line = this.reader.readLine();
+				while (line != null && line.trim().length() == 0) {
+					line = this.reader.readLine();
+				}
+				if (line == null) {
 					break;
-				
-				totalDocuments += 1;
-				while( line != null && line.trim().length() > 0 )
-					line = reader.readLine();
-			} while( line != null );			
-			reader.close();
-			
-			if( dataFile.getName().endsWith(".gz") )
-				in = new GZIPInputStream(new FileInputStream(dataFile));
-			else
-				in = new FileInputStream(dataFile);
-			reader = new BufferedReader(new InputStreamReader(in));
+				}
+				this.totalDocuments += 1;
+				while (line != null && line.trim().length() > 0) {
+					line = this.reader.readLine();
+				}
+			} while (line != null);
+			this.reader.close();
+
+			this.reader = this.getBufferedReader();
 			documentNumber = 0;
-			
+
 			super.initialize();
 		} catch (IOException e) {
 			throw new ResourceInitializationException(e);
 		}
 	}
 
+	private BufferedReader getBufferedReader() throws IOException {
+		InputStream in;
+		if (this.conll2005DataFile.getName().endsWith(".gz")) {
+			in = new GZIPInputStream(
+					new FileInputStream(this.conll2005DataFile));
+		} else {
+			in = new FileInputStream(this.conll2005DataFile);
+		}
+		return new BufferedReader(new InputStreamReader(in));
+	}
+
 	public void getNext(CAS cas) throws IOException, CollectionException {
 		try {
 			JCas conllView = cas.createView(ViewNames.CONLL_2005).getJCas();
-			
+
 			String lineBuffer;
 			StringBuffer docBuffer = new StringBuffer();
-			
+
 			lineBuffer = reader.readLine();
-			while( lineBuffer != null && lineBuffer.trim().length() == 0 )
+			while (lineBuffer != null && lineBuffer.trim().length() == 0) {
 				lineBuffer = reader.readLine();
-			
-			if( lineBuffer == null )
+			}
+
+			if (lineBuffer == null) {
 				throw new CollectionException("unexpected end of input", null);
-			
-			while( lineBuffer != null && lineBuffer.trim().length() != 0 ) {
+			}
+
+			while (lineBuffer != null && lineBuffer.trim().length() != 0) {
 				docBuffer.append(lineBuffer.trim());
 				docBuffer.append("\n");
 				lineBuffer = reader.readLine();
 			}
-			
+
 			documentNumber += 1;
-			
-			if( documentNumber == totalDocuments )
+
+			if (documentNumber == totalDocuments) {
 				finished = true;
-			
+			}
+
 			conllView.setSofaDataString(docBuffer.toString(), "text/plain");
 			ViewURIUtil.setURI(cas, String.valueOf(documentNumber));
 		} catch (CASException e) {
@@ -145,7 +146,8 @@ public class Conll2005GoldReader extends CollectionReader_ImplBase {
 	}
 
 	public Progress[] getProgress() {
-		return new Progress[] { new ProgressImpl(documentNumber, totalDocuments, Progress.ENTITIES) };
+		return new Progress[] { new ProgressImpl(documentNumber,
+				totalDocuments, Progress.ENTITIES) };
 	}
 
 	public boolean hasNext() throws IOException, CollectionException {
