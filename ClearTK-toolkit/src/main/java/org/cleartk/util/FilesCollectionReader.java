@@ -84,7 +84,7 @@ public class FilesCollectionReader extends CollectionReader_ImplBase {
 	private String encoding;
 
 	public static final String PARAM_SUFFIXES = ConfigurationParameterNameFactory.createConfigurationParameterName(
-			FilesCollectionReader.class, "suffixNames");
+			FilesCollectionReader.class, "suffixes");
 	@ConfigurationParameter(description = "takes suffixes (e.g. .txt) of the files that should be read in.  This parameter can only be set if there"
 			+ " is no value for 'nameFilesFileNames', 'fileNames', or 'patterns'.")
 	private String[] suffixes;
