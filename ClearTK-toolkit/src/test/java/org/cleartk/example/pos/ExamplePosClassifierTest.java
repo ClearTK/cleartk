@@ -243,7 +243,7 @@ public class ExamplePosClassifierTest {
 		boolean badTags = firstLine.equals("2008/NN Sichuan/NN earthquake/NN From/NN Wikipedia/NN ,/NN the/NN free/NN encyclopedia/NN");
 		assertFalse(badTags);
 		
-		assertEquals("2008/CD Sichuan/NNP earthquake/NNS From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/IN", firstLine);
+		assertEquals("2008/CD Sichuan/JJ earthquake/NNS From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/IN", firstLine);
 	}
 
 	
