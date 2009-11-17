@@ -25,10 +25,11 @@ package org.cleartk.srl;
 
 import java.util.List;
 
-import org.apache.uima.UimaContext;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.CleartkComponents;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.AnnotationHandler;
 import org.cleartk.classifier.Feature;
@@ -40,6 +41,7 @@ import org.cleartk.classifier.feature.extractor.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.TypePathExtractor;
 import org.cleartk.classifier.feature.extractor.WindowExtractor;
+import org.cleartk.classifier.svmlight.DefaultSVMlightDataWriterFactory;
 import org.cleartk.srl.type.Predicate;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
@@ -55,6 +57,19 @@ import org.cleartk.util.AnnotationRetrieval;
  *
  */
 public class PredicateAnnotationHandler implements AnnotationHandler<Boolean> {
+
+	public static AnalysisEngineDescription createPredicateDataWriter(String outputDirectory)
+	throws ResourceInitializationException {
+		return CleartkComponents.createDataWriterAnnotator(
+				PredicateAnnotationHandler.class,
+				DefaultSVMlightDataWriterFactory.class, outputDirectory);
+	}
+
+	public static AnalysisEngineDescription createPredicateAnnotator(String classifierJar)
+	throws ResourceInitializationException {
+		return CleartkComponents.createClassifierAnnotator(
+				PredicateAnnotationHandler.class, classifierJar);
+	}
 
 	public PredicateAnnotationHandler() {
 		SimpleFeatureExtractor[] tokenExtractors = {
@@ -72,10 +87,6 @@ public class PredicateAnnotationHandler implements AnnotationHandler<Boolean> {
 				new CombinedExtractor( tokenExtractors ),
 				WindowFeature.ORIENTATION_RIGHT,
 				0, 2);
-	}
-
-	public void initialize(UimaContext context)
-	throws ResourceInitializationException {
 	}
 
 	public void process(JCas jCas, InstanceConsumer<Boolean> consumer) throws CleartkException {

@@ -53,9 +53,12 @@ import org.cleartk.syntax.feature.SubCategorizationExtractor;
 import org.cleartk.syntax.feature.SyntacticPathExtractor;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
 import org.cleartk.syntax.treebank.type.TreebankNode;
+import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
+import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.util.InitializeUtil;
 
 
 /**
@@ -79,7 +82,12 @@ import org.cleartk.util.AnnotationRetrieval;
  * @author Philipp Wetzler, Philip Ogren
  */
 public class ArgumentIdentificationHandler implements AnnotationHandler<Boolean> {
-
+	
+	@ConfigurationParameter
+	private boolean filterMode;
+	public static final String PARAM_FILTER_MODE = ConfigurationParameterNameFactory
+		.createConfigurationParameterName(ArgumentIdentificationHandler.class, "filterMode");
+	
 	public ArgumentIdentificationHandler() {
 		SimpleFeatureExtractor[] tokenExtractors = {
 				new SpannedTextExtractor(),
@@ -117,11 +125,8 @@ public class ArgumentIdentificationHandler implements AnnotationHandler<Boolean>
 		relPosExtractor = new RelativePositionExtractor("ConstituentPredicate");
 	}
 
-	public void initialize(UimaContext context)
-	throws ResourceInitializationException {
-		Boolean value = (Boolean) context.getConfigParameterValue("FilterMode");
-		if (value != null && value)
-			this.filterMode = true;
+	public void initialize(UimaContext context) throws ResourceInitializationException {
+		InitializeUtil.initialize(this, context);
 	}
 
 	public void process(JCas jCas, InstanceConsumer<Boolean> consumer) throws CleartkException{
@@ -370,8 +375,6 @@ public class ArgumentIdentificationHandler implements AnnotationHandler<Boolean>
 	// private SimpleFeatureExtractor parentExtractor;
 
 	private RelativePositionExtractor relPosExtractor;
-
-	private boolean filterMode = false;
 
 
 }

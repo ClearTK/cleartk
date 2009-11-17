@@ -48,6 +48,9 @@ import org.cleartk.example.pos.ExamplePOSAnnotationHandler;
 import org.cleartk.example.pos.ExamplePOSPlainTextWriter;
 import org.cleartk.ne.term.TermFinderAnnotator;
 import org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter;
+import org.cleartk.srl.ArgumentAnnotationHandler;
+import org.cleartk.srl.PredicateAnnotationHandler;
+import org.cleartk.srl.SRLWriter;
 import org.cleartk.srl.conll2005.Conll2005GoldAnnotator;
 import org.cleartk.srl.conll2005.Conll2005GoldReader;
 import org.cleartk.srl.conll2005.Conll2005Writer;
@@ -161,11 +164,28 @@ public class GenerateDescriptorFiles {
 		descDirectory = new File(outputDirectory, "org/cleartk/token/chunk");
 		if (!descDirectory.exists()) descDirectory.mkdirs();
 		aed.toXML(new FileWriter(new File(descDirectory, "ChunkTokenizer.xml")));
+		
+		writePrimitiveDescription(SRLWriter.class, outputDirectory);
+		writePrimitiveDescription(
+				ArgumentAnnotationHandler.class,
+				ArgumentAnnotationHandler.createArgumentDataWriter(""),
+				"ArgumentDataWriter.xml", outputDirectory);
+		writePrimitiveDescription(
+				ArgumentAnnotationHandler.class,
+				ArgumentAnnotationHandler.createArgumentAnnotator(""),
+				"ArgumentAnnotator.xml", outputDirectory);
+		writePrimitiveDescription(
+				PredicateAnnotationHandler.class,
+				PredicateAnnotationHandler.createPredicateDataWriter(""),
+				"PredicateDataWriter.xml", outputDirectory);
+		writePrimitiveDescription(
+				PredicateAnnotationHandler.class,
+				PredicateAnnotationHandler.createPredicateAnnotator(""),
+				"PredicateAnnotator.xml", outputDirectory);
 	}
 
 	private static File updateOutputDirectory(Class<?> cls, File outputDirectory) {
-		String packageName = cls.getName();
-		packageName = packageName.substring(0, packageName.length() - cls.getSimpleName().length() - 1);
+		String packageName = cls.getPackage().getName();
 		packageName = packageName.replace('.', File.separatorChar);
 		outputDirectory = new File(outputDirectory, packageName);
 		if (!outputDirectory.exists()) {
@@ -185,9 +205,18 @@ public class GenerateDescriptorFiles {
 	private static void writePrimitiveDescription(Class<? extends AnalysisComponent> componentClass,
 			File outputDirectory) throws ResourceInitializationException, SAXException, IOException {
 		AnalysisEngineDescription aed = CleartkComponents.createPrimitiveDescription(componentClass);
+		String fileName = componentClass.getSimpleName() + ".xml";
+		writePrimitiveDescription(componentClass, aed, fileName, outputDirectory);
+	}
+	
+	private static void writePrimitiveDescription(
+			Class<?> packageClass,
+			AnalysisEngineDescription aed,
+			String fileName,
+			File outputDirectory) throws SAXException, IOException {
 		updateDescription(aed.getMetaData());
-		outputDirectory = updateOutputDirectory(componentClass, outputDirectory);
-		aed.toXML(new FileWriter(new File(outputDirectory, componentClass.getSimpleName() + ".xml")));
+		outputDirectory = updateOutputDirectory(packageClass, outputDirectory);
+		aed.toXML(new FileWriter(new File(outputDirectory, fileName)));
 	}
 
 	private static void updateDescription(ResourceMetaData rmd) {

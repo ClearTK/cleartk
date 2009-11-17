@@ -26,9 +26,10 @@ package org.cleartk.srl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.UimaContext;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.CleartkComponents;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.AnnotationHandler;
 import org.cleartk.classifier.Feature;
@@ -42,6 +43,7 @@ import org.cleartk.classifier.feature.extractor.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.TypePathExtractor;
 import org.cleartk.classifier.feature.extractor.WindowExtractor;
+import org.cleartk.classifier.svmlight.DefaultOVASVMlightDataWriterFactory;
 import org.cleartk.srl.type.Argument;
 import org.cleartk.srl.type.Predicate;
 import org.cleartk.srl.type.SemanticArgument;
@@ -66,6 +68,19 @@ import org.cleartk.util.UIMAUtil;
 
 public class ArgumentAnnotationHandler implements AnnotationHandler<String> {
 	
+	public static AnalysisEngineDescription createArgumentDataWriter(String outputDirectory)
+	throws ResourceInitializationException {
+		return CleartkComponents.createDataWriterAnnotator(
+				ArgumentAnnotationHandler.class,
+				DefaultOVASVMlightDataWriterFactory.class, outputDirectory);
+	}
+
+	public static AnalysisEngineDescription createArgumentAnnotator(String classifierJar)
+	throws ResourceInitializationException {
+		return CleartkComponents.createClassifierAnnotator(
+				ArgumentAnnotationHandler.class, classifierJar);
+	}
+
 	public ArgumentAnnotationHandler() {
 		SimpleFeatureExtractor[] tokenExtractors = {
 				new SpannedTextExtractor(),
@@ -102,9 +117,6 @@ public class ArgumentAnnotationHandler implements AnnotationHandler<String> {
 		lastWordExtractor = new WindowExtractor("Constituent", Token.class,
 				new CombinedExtractor(tokenExtractors),
 				WindowFeature.ORIENTATION_MIDDLE_REVERSE, 0, 1);
-	}
-
-	public void initialize(UimaContext context) throws ResourceInitializationException {
 	}
 
 	public void process(JCas jCas, InstanceConsumer<String> consumer) throws CleartkException{

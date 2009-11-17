@@ -30,9 +30,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
-import org.apache.uima.UimaContext;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.AnnotationHandler;
 import org.cleartk.classifier.Feature;
@@ -91,10 +89,6 @@ public class ArgumentClassificationHandler implements AnnotationHandler<String> 
 		relPosExtractor = new RelativePositionExtractor("ConstituentPredicate");
 	}
 	
-	public void initialize(UimaContext context)
-	throws ResourceInitializationException {
-	}
-
 	public void process(JCas jCas, InstanceConsumer<String> consumer) throws CleartkException{
 		List<Sentence> sentences = AnnotationRetrieval.getAnnotations(jCas, Sentence.class);
 

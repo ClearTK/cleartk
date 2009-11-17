@@ -40,12 +40,15 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.srl.type.Argument;
 import org.cleartk.srl.type.Predicate;
 import org.cleartk.srl.type.SemanticArgument;
+import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.ViewURIUtil;
 import org.cleartk.util.ListSpecification;
 import org.cleartk.util.UIMAUtil;
+import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.util.InitializeUtil;
 
 
 /**
@@ -70,25 +73,25 @@ import org.cleartk.util.UIMAUtil;
  */
 public class SRLWriter extends JCasAnnotator_ImplBase {
 
-	/**
-	 * "org.cleartk.srl.SRLWriter.PARAM_OUTPUT_FILE"
-	 * is a single, required, string parameter that provides the path
-	 * where the PropBank-style file should be written.
-	 */
-	public static final String PARAM_OUTPUT_FILE = "org.cleartk.srl.SRLWriter.PARAM_OUTPUT_FILE";
 
-	PrintWriter output;
+	@ConfigurationParameter(
+			mandatory = true,
+			description = "path where the PropBank-style file should be written")
+	private File outputFile;
+	public static final String PARAM_OUTPUT_FILE = ConfigurationParameterNameFactory
+			.createConfigurationParameterName(SRLWriter.class, "outputFile");
+
+	private PrintWriter output;
 
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
+		InitializeUtil.initialize(this, context);
+		if (!this.outputFile.getParentFile().exists()) {
+			this.outputFile.getParentFile().mkdirs();
+		}
 		try {
-			File outputFile = new File((String)UIMAUtil.getRequiredConfigParameterValue(
-					context, PARAM_OUTPUT_FILE));
-			if(!outputFile.getParentFile().exists()) {
-				outputFile.getParentFile().mkdirs();
-			}
-			output = new PrintWriter(outputFile);
+			this.output = new PrintWriter(this.outputFile);
 		} catch (FileNotFoundException e) {
 			throw new ResourceInitializationException(e);
 		}
