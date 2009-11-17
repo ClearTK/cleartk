@@ -85,12 +85,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 </value>
             </nameValuePair>
             <nameValuePair>
-                <name>org.cleartk.classifier.SequentialClassifierAnnotator.classifierJarPath</name>
-                <value>
-                    <string>CHANGEME</string>
-                </value>
-            </nameValuePair>
-            <nameValuePair>
                 <name>org.cleartk.chunk.ChunkerHandler.labeledAnnotationClassName</name>
                 <value>
                     <string>org.cleartk.token.chunk.type.Subtoken</string>
