@@ -48,7 +48,7 @@ public class ChunkTokenizerFactory {
 		dynamicallyLoadedClasses.add(ChunkerHandler.class);
 		dynamicallyLoadedClasses.add(ChunkTokenizerLabeler.class);
 		
-		return CleartkComponents.createSequentialClassifierAnnotator(ChunkerHandler.class, "CHANGEME", 
+		return CleartkComponents.createSequentialClassifierAnnotator(ChunkerHandler.class, null, 
 				dynamicallyLoadedClasses,
 			ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS_NAME, Subtoken.class.getName(),
 			ChunkerHandler.PARAM_SEQUENCE_CLASS_NAME, Sentence.class.getName(),
