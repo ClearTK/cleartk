@@ -31,6 +31,7 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.collection.CollectionReaderDescription;
+import org.apache.uima.resource.ResourceCreationSpecifier;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.TypePriorities;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
@@ -149,17 +150,7 @@ public class CleartkComponents {
 				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDir);
 	}
 
-	public static <OUTCOME_TYPE> AnalysisEngineDescription createSequentialDataWriterAnnotator(
-			Class<? extends SequentialAnnotationHandler<OUTCOME_TYPE>> annotationHandlerClass,
-			Class<? extends SequentialDataWriterFactory<OUTCOME_TYPE>> dataWriterFactoryClass, String outputDir)
-			throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveDescription(SequentialDataWriterAnnotator.class,
-				TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES, SequentialInstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME,
-				annotationHandlerClass.getName(), SequentialDataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-				dataWriterFactoryClass.getName(), SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDir);
-	}
-
-	public static <OUTCOME_TYPE> AnalysisEngineDescription createViterbiDataWriterAnnotator(
+		public static <OUTCOME_TYPE> AnalysisEngineDescription createViterbiDataWriterAnnotator(
 			Class<? extends SequentialAnnotationHandler<OUTCOME_TYPE>> annotationHandlerClass,
 			Class<? extends DataWriterFactory<OUTCOME_TYPE>> delegatedDataWriterFactoryClass, String outputDir,
 			Object... configurationParameters) throws ResourceInitializationException {
@@ -186,27 +177,58 @@ public class CleartkComponents {
 			List<Class<?>> dynamicallyLoadedClasses, Object... configurationData)
 			throws ResourceInitializationException {
 
-		AnalysisEngineDescription aed = AnalysisEngineFactory.createPrimitiveDescription(
-				SequentialClassifierAnnotator.class, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES,
-				SequentialInstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, annotationHandlerClass.getName(),
-				SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR_PATH, classifierJar);
-
+		AnalysisEngineDescription aed = AnalysisEngineFactory.createPrimitiveDescription(SequentialClassifierAnnotator.class, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES);
+		
 		if (dynamicallyLoadedClasses != null) {
-			for (Class<?> dynamicallyLoadedClass : dynamicallyLoadedClasses) {
-				ConfigurationData reflectedConfigurationData = ConfigurationParameterFactory
-						.createConfigurationData(dynamicallyLoadedClass);
-				ResourceCreationSpecifierFactory.setConfigurationParameters(aed,
-						reflectedConfigurationData.configurationParameters,
-						reflectedConfigurationData.configurationValues);
-			}
+			addConfigurationParameters(aed, dynamicallyLoadedClasses);
+		}
+		
+		if(annotationHandlerClass != null) {
+			addConfigurationParameter(aed, SequentialInstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, annotationHandlerClass.getName());
+		}
+		if(classifierJar != null) {	
+			addConfigurationParameter(aed, SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR_PATH, classifierJar);
 		}
 		if (configurationData != null) {
-			ConfigurationData cdata = ConfigurationParameterFactory.createConfigurationData(configurationData);
-			ResourceCreationSpecifierFactory.setConfigurationParameters(aed, cdata.configurationParameters,
-					cdata.configurationValues);
+			addConfigurationParameters(aed, configurationData);
 		}
 		return aed;
 	}
+
+	private static void addConfigurationParameters(ResourceCreationSpecifier specifier, Object... configurationData) {
+		ConfigurationData cdata = ConfigurationParameterFactory.createConfigurationData(configurationData);
+		ResourceCreationSpecifierFactory.setConfigurationParameters(specifier, cdata.configurationParameters,
+				cdata.configurationValues);
+	}
+
+	private static void addConfigurationParameters(ResourceCreationSpecifier specifier, List<Class<?>> dynamicallyLoadedClasses) {
+		for (Class<?> dynamicallyLoadedClass : dynamicallyLoadedClasses) {
+			ConfigurationData reflectedConfigurationData = ConfigurationParameterFactory
+					.createConfigurationData(dynamicallyLoadedClass);
+			ResourceCreationSpecifierFactory.setConfigurationParameters(specifier,
+					reflectedConfigurationData.configurationParameters,
+					reflectedConfigurationData.configurationValues);
+		}
+
+	}
+
+	private static void addConfigurationParameter(ResourceCreationSpecifier specifier, String name, Object value) {
+		ConfigurationData cdata = ConfigurationParameterFactory.createConfigurationData(name, value);
+		ResourceCreationSpecifierFactory.setConfigurationParameters(specifier, cdata.configurationParameters,
+				cdata.configurationValues);
+		
+	}
+	
+	public static <OUTCOME_TYPE> AnalysisEngineDescription createSequentialDataWriterAnnotator(
+			Class<? extends SequentialAnnotationHandler<OUTCOME_TYPE>> annotationHandlerClass,
+			Class<? extends SequentialDataWriterFactory<OUTCOME_TYPE>> dataWriterFactoryClass, String outputDir)
+			throws ResourceInitializationException {
+		return AnalysisEngineFactory.createPrimitiveDescription(SequentialDataWriterAnnotator.class,
+				TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES, SequentialInstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME,
+				annotationHandlerClass.getName(), SequentialDataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+				dataWriterFactoryClass.getName(), SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDir);
+	}
+
 
 	public static AnalysisEngineDescription createTimeMLGoldAnnotator(boolean loadTLinks)
 			throws ResourceInitializationException {
