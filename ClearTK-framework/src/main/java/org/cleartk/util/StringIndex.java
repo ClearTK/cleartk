@@ -97,11 +97,12 @@ public class StringIndex implements Iterable<String>, Serializable {
 	
 	public void write(OutputStream outputStream) throws IOException {
 		PrintWriter output = new PrintWriter(outputStream);
+		Map<Integer,String> rMap = reverseMap();
 		
-		List<Integer> values = new ArrayList<Integer>(indexMap.values());
-		Collections.sort(values);
-		for( int value : values ) {
-			output.format("%d %s\n", value, indexMap.get(value));
+		List<Integer> keys = new ArrayList<Integer>(rMap.keySet());
+		Collections.sort(keys);
+		for( int key : keys ) {
+			output.format("%d %s\n", key, rMap.get(key));
 		}
 		
 		output.flush();
