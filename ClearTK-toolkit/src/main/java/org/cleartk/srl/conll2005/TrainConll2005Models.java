@@ -38,11 +38,11 @@ import org.uutuc.util.SimplePipeline;
  * <br>
  * Copyright (c) 2009, Regents of the University of Colorado <br>
  * All rights reserved.
- * @author Steven Bethard
+ * @author Steven Bethard, Philipp Wetzler
  */
-public class Conll2005Train {
+public class TrainConll2005Models {
 	
-	private static final File conll2005File = new File("../../ClearTK-data/data/conll2005/train-set-small");
+	private static final File conll2005File = new File("../../ClearTK-data/data/conll2005/train-set-15-18");
 	private static final File argumentIdentificationOutputDirectory = new File("scratch/CoNLL2005/argumentIdentification");
 	private static final File argumentClassificationOutputDirectory = new File("scratch/CoNLL2005/argumentClassification");
 
@@ -55,11 +55,11 @@ public class Conll2005Train {
 				CleartkComponents.createDataWriterAnnotator(
 						ArgumentIdentificationHandler.class,
 						DefaultSVMlightDataWriterFactory.class,
-						argumentIdentificationOutputDirectory.toString()),
-				CleartkComponents.createDataWriterAnnotator(
-						ArgumentClassificationHandler.class,
-						DefaultMultiClassLIBSVMDataWriterFactory.class,
-						argumentClassificationOutputDirectory.toString())
+						argumentIdentificationOutputDirectory.toString())//,
+//				CleartkComponents.createDataWriterAnnotator(
+//						ArgumentClassificationHandler.class,
+//						DefaultMultiClassLIBSVMDataWriterFactory.class,
+//						argumentClassificationOutputDirectory.toString())
 		);
 		
 		// train the model on the training data

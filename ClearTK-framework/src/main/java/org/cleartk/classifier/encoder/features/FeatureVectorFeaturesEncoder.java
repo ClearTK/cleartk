@@ -36,7 +36,9 @@ import org.cleartk.classifier.encoder.features.normalizer.NOPNormalizer;
 import org.cleartk.classifier.encoder.features.normalizer.NameNumberNormalizer;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 import org.cleartk.classifier.util.featurevector.SparseFeatureVector;
-import org.cleartk.util.StringIndex;
+import org.cleartk.util.collection.GenKeyBidiMap;
+import org.cleartk.util.collection.IntStringBidiMap;
+import org.cleartk.util.collection.Writable;
 
 
 /**
@@ -76,13 +78,12 @@ public class FeatureVectorFeaturesEncoder extends FeaturesEncoder_ImplBase<Featu
 			if( value.doubleValue() == 0.0 )
 				continue;
 
-			if( stringIndex.contains(name) ) {
-				int i = stringIndex.find(name);
+			if( expandIndex ) {
+				int i = stringMap.getOrGenerateKey(name);
 				double v = fv.get(i) + value.doubleValue();
 				fv.set(i, v);
-			} else if( expandIndex ) {
-				stringIndex.insert(name);
-				int i = stringIndex.find(name);
+			} else if( stringMap.containsValue(name) ) {
+				int i = stringMap.getKey(name);
 				double v = fv.get(i) + value.doubleValue();
 				fv.set(i, v);
 			}
@@ -96,8 +97,11 @@ public class FeatureVectorFeaturesEncoder extends FeaturesEncoder_ImplBase<Featu
 		try {
 			expandIndex = false;
 			
-			File outputFile = new File(outputDirectory, LOOKUP_FILE_NAME);
-			stringIndex.write(outputFile);
+			if( stringMap instanceof Writable ) {
+				Writable writableMap = (Writable) stringMap;
+				File outputFile = new File(outputDirectory, LOOKUP_FILE_NAME);
+				writableMap.write(outputFile);
+			}
 		} catch (FileNotFoundException e) {
 			throw new CleartkException(e);
 		} catch (IOException e) {
@@ -110,7 +114,7 @@ public class FeatureVectorFeaturesEncoder extends FeaturesEncoder_ImplBase<Featu
 	}
 
 	private boolean expandIndex = true;
-	private StringIndex stringIndex = new StringIndex(1);
+	private GenKeyBidiMap<Integer,String> stringMap = new IntStringBidiMap(1);
 	private NameNumberNormalizer normalizer;
 
 }
