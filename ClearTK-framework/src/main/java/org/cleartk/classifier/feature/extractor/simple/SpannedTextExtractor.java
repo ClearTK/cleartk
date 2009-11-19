@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.classifier.feature.extractor;
+package org.cleartk.classifier.feature.extractor.simple;
 
 import java.util.Collections;
 import java.util.List;
@@ -29,48 +29,24 @@ import java.util.List;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
-import org.cleartk.util.AnnotationRetrieval;
 
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
  * <br>All rights reserved.
 
- *
- * @author Philipp Wetzler
- *
+ * <p>
+ * 
+ * @author Philip Ogren
+ * 
  */
 
-public class DistanceExtractor {
-	String name;
-	Class<? extends Annotation> unitClass;
-	
-	public DistanceExtractor(String name, Class<? extends Annotation>unitClass) {
-		this.name = name;
-		this.unitClass = unitClass;
-	}
-	
-	public List<Feature> extract(JCas jCas, Annotation annotation1, Annotation annotation2) {
-		Annotation firstAnnotation, secondAnnotation;
-		
-		if( annotation1.getBegin() <= annotation2.getBegin() ) {
-			firstAnnotation = annotation1;
-			secondAnnotation = annotation2;
-		} else {
-			firstAnnotation = annotation2;
-			secondAnnotation = annotation1;
-		}
-		
-		String featureName = Feature.createName(
-				this.name, "Distance", this.unitClass.getSimpleName());
-		int featureValue;
-		if( secondAnnotation.getBegin() <= firstAnnotation.getEnd() ) {
-			featureValue = 0;
-		} else {
-			List<? extends Annotation> annotations = AnnotationRetrieval.getAnnotations(jCas, firstAnnotation.getEnd(), secondAnnotation.getBegin(), unitClass);
-			featureValue = annotations.size();
-		}
-		
-		return Collections.singletonList(new Feature(featureName, featureValue));
+public class SpannedTextExtractor implements SimpleFeatureExtractor {
+
+	public List<Feature> extract(JCas jCas, Annotation focusAnnotation) {
+		String spannedText = focusAnnotation.getCoveredText();
+
+		Feature feature = new Feature(spannedText);
+		return Collections.singletonList(feature);
 	}
 }

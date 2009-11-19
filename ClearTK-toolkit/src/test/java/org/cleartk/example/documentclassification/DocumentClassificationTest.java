@@ -24,14 +24,9 @@
 package org.cleartk.example.documentclassification;
 
 import java.io.File;
-import java.io.IOException;
 
-import org.apache.uima.UIMAException;
-import org.cleartk.classifier.DataWriterAnnotator;
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Test;
-import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.util.TearDownUtil;
 /**
  * <br>Copyright (c) 2009, Regents of the University of Colorado 
@@ -52,21 +47,4 @@ public class DocumentClassificationTest {
 		
 	}
 	
-	@Test
-	public void testDataWriterDescriptor() throws UIMAException, IOException {
-		AnalysisEngineFactory.createAnalysisEngine("org.cleartk.example.documentclassification.DataWriter", DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory);
-	}
-	
-	@Test
-	public void testGoldAnnotatorDescriptor() throws UIMAException, IOException {
-		AnalysisEngineFactory.createAnalysisEngine("org.cleartk.example.documentclassification.GoldAnnotator");
-		
-	}
-	
-	@Test
-	public void testEvaluatorDescriptor() throws UIMAException, IOException {
-		AnalysisEngineFactory.createAnalysisEngine("org.cleartk.example.documentclassification.Evaluator");
-		
-	}
-
 }

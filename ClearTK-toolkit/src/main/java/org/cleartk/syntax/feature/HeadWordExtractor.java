@@ -33,11 +33,10 @@ import java.util.Set;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.syntax.treebank.type.TreebankNode;
-import org.cleartk.type.Token;
-import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.UIMAUtil;
 
 
@@ -237,38 +236,22 @@ public class HeadWordExtractor implements SimpleFeatureExtractor {
 	
 	
 	SimpleFeatureExtractor subExtractor;
-	String name;
-	boolean extractToken;
 	boolean includePPHead;
 	
 	
-	public HeadWordExtractor(String name, SimpleFeatureExtractor subExtractor, boolean extractToken, boolean includePPHead) {
-		this.name = name;
+	public HeadWordExtractor(SimpleFeatureExtractor subExtractor, boolean includePPHead) {
 		this.subExtractor = subExtractor;
-		this.extractToken = extractToken;
 		this.includePPHead = includePPHead;
 		HeadWordExtractor.buildSets();
 	}
 	
-	public HeadWordExtractor(SimpleFeatureExtractor subExtractor, boolean extractToken, boolean includePPHead) {
-		this(null, subExtractor, extractToken, includePPHead);
-	}
-	
-	public HeadWordExtractor(SimpleFeatureExtractor subExtractor, boolean extractToken) {
-		this(null, subExtractor, extractToken, false);
+	public HeadWordExtractor(SimpleFeatureExtractor subExtractor) {
+		this(subExtractor, false);
 	}
 
-	public HeadWordExtractor(String name, SimpleFeatureExtractor subExtractor) {
-		this(name, subExtractor, true, false);
-	}
-		
-	public HeadWordExtractor(SimpleFeatureExtractor subExtractor) {
-		this(null, subExtractor, true, false);
-	}
-	
 	
 	public List<Feature> extract(JCas jCas, Annotation focusAnnotation)
-			throws UnsupportedOperationException {
+			throws CleartkException {
 		if( !(focusAnnotation instanceof TreebankNode) )
 			return new ArrayList<Feature>();
 
@@ -291,16 +274,8 @@ public class HeadWordExtractor implements SimpleFeatureExtractor {
 		return features;
 	}
 	
-	List<Feature> extractNode(JCas jCas, TreebankNode node, boolean specialCasePP) {
-		List<Feature> features = new ArrayList<Feature>();
-		if( extractToken ) {
-			Token token = AnnotationRetrieval.getMatchingAnnotation(jCas, node, Token.class);
-			if (token != null) {
-				features.addAll(subExtractor.extract(jCas, token));
-			}
-		} else {
-			features.addAll(subExtractor.extract(jCas, node));
-		}		
+	List<Feature> extractNode(JCas jCas, TreebankNode node, boolean specialCasePP) throws CleartkException {
+		List<Feature> features = subExtractor.extract(jCas, node);
 
 		for( Feature feature : features ) {
 			feature.setName(createName(specialCasePP, feature));
@@ -390,11 +365,6 @@ public class HeadWordExtractor implements SimpleFeatureExtractor {
 		
 		buffer.append("HeadWord");
 		
-		if( extractToken )
-			buffer.append(":Token");
-		else
-			buffer.append(":Node");
-		
-		return Feature.createName(name, buffer.toString(), subFeature.getName());
+		return Feature.createName(buffer.toString(), subFeature.getName());
 	}	
 }

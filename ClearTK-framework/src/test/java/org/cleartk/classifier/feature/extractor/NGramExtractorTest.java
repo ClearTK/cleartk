@@ -30,7 +30,11 @@ import java.util.List;
 import org.apache.uima.UIMAException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.DocumentAnnotation;
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.feature.extractor.simple.NGramExtractor;
+import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
+import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
 import org.cleartk.util.AnnotationRetrieval;
@@ -50,7 +54,7 @@ import org.uutuc.factory.TokenFactory;
 public class NGramExtractorTest {
 
 	@Test
-	public void test() throws UIMAException {
+	public void test() throws UIMAException, CleartkException {
 		JCas jCas = JCasFactory.createJCas("org.cleartk.TestTypeSystem");
 		TokenFactory.createTokens(jCas,
 				"She sells seashells by the sea shore", Token.class, Sentence.class, 
@@ -69,17 +73,17 @@ public class NGramExtractorTest {
 		features = extractor.extract(jCas, document);
 		Assert.assertEquals(6, features.size());
 		this.checkFeatures(
-				features, "Ngram_SpannedText_SpannedText",
+				features, "Ngram(Token,null,null)",
 				"She|sells", "sells|seashells", "seashells|by",
 				"by|the", "the|sea", "sea|shore");
 		
-		extractor = new NGramExtractor("Foo", 3, Token.class, posExtractor);
+		extractor = new NGramExtractor(3, Token.class, posExtractor);
 		extractor.setValueSeparator("@");
 		Assert.assertEquals("@", extractor.getValueSeparator());
 		features = extractor.extract(jCas, document);
 		Assert.assertEquals(5, features.size());
 		this.checkFeatures(
-				features, "Foo_Ngram_TypePath_Pos_TypePath_Pos_TypePath_Pos",
+				features, "Ngram(Token,TypePath(Pos),TypePath(Pos),TypePath(Pos))",
 				"PRP@VBZ@NNS", "VBZ@NNS@IN", "NNS@IN@DT", "IN@DT@NN", "DT@NN@NN");
 		
 	}

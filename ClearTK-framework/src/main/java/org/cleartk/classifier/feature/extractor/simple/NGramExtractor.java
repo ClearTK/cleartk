@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.classifier.feature.extractor;
+package org.cleartk.classifier.feature.extractor.simple;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,6 +30,7 @@ import java.util.Map;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.util.AnnotationRetrieval;
 
@@ -44,34 +45,24 @@ import org.cleartk.util.AnnotationRetrieval;
 public class NGramExtractor implements SimpleFeatureExtractor {
 	
 	public NGramExtractor(
-			String name,
 			int n,
 			Class<? extends Annotation> annotationClass, 
 			SimpleFeatureExtractor subExtractor) {
-		this.name = name;
 		this.n = n;
 		this.subExtractor = subExtractor;
 		this.annotationClass = annotationClass;
 	}
 
-	public NGramExtractor(
-			int n,
-			Class<? extends Annotation> annotationClass, 
-			SimpleFeatureExtractor subExtractor) {
-		this(null, n, annotationClass, subExtractor);
-	}
-
-	public List<Feature> extract(JCas jCas, Annotation focusAnnotation)
-			throws UnsupportedOperationException {
+	public List<Feature> extract(JCas view, Annotation focusAnnotation)	throws CleartkException {
 		List<? extends Annotation> annotations;
 		
 		List<Feature> ngramFeatures = new ArrayList<Feature>();
 
-		annotations = AnnotationRetrieval.getAnnotations(jCas, focusAnnotation, annotationClass);
+		annotations = AnnotationRetrieval.getAnnotations(view, focusAnnotation, annotationClass);
 
 		Map<Annotation, List<Feature>> annotationFeatures = new HashMap<Annotation, List<Feature>>();
 		for( Annotation annotation : annotations ) {
-			List<Feature> features = this.subExtractor.extract(jCas, annotation);
+			List<Feature> features = this.subExtractor.extract(view, annotation);
 			annotationFeatures.put(annotation, features);
 		}
 		
@@ -85,8 +76,6 @@ public class NGramExtractor implements SimpleFeatureExtractor {
 			List<String> values = new ArrayList<String>(n);
 			List<String> names = new ArrayList<String>(n + 1);
 
-			names.add(this.name);
-			names.add("Ngram");
 			for( Annotation annotation : slice ) {
 				for( Feature feature : annotationFeatures.get(annotation) ) {
 					values.add(feature.getValue().toString());
@@ -95,8 +84,14 @@ public class NGramExtractor implements SimpleFeatureExtractor {
 			}
 			
 			// create name
-			String[] nameArray = new String[names.size()];
-			String name = Feature.createName(names.toArray(nameArray));
+			StringBuffer nameBuffer = new StringBuffer();
+			for( String n : names ) {
+				if( nameBuffer.toString().length() > 0 )
+					nameBuffer.append(",");
+				nameBuffer.append(n);
+			}
+			
+			String name = String.format("Ngram(%s,%s)", this.annotationClass.getSimpleName(), nameBuffer.toString());
 
 			// create value
 			StringBuffer valueBuffer = new StringBuffer();
@@ -115,7 +110,6 @@ public class NGramExtractor implements SimpleFeatureExtractor {
 		return ngramFeatures;
 	}
 	
-	private String name;
 	private SimpleFeatureExtractor subExtractor;
 	private int n;
 	Class<? extends Annotation> annotationClass;

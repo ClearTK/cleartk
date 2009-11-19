@@ -25,14 +25,13 @@ package org.cleartk.srl.conll2005;
 
 import java.io.File;
 
-import org.apache.uima.util.Level;
-import org.apache.uima.util.Logger;
 import org.cleartk.CleartkComponents;
-import org.cleartk.classifier.Train;
-import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
-import org.cleartk.srl.ArgumentAnnotationHandler;
+import org.cleartk.classifier.libsvm.DefaultMultiClassLIBSVMDataWriterFactory;
+import org.cleartk.classifier.svmlight.DefaultSVMlightDataWriterFactory;
+import org.cleartk.srl.ArgumentClassificationHandler;
+import org.cleartk.srl.ArgumentIdentificationHandler;
+import org.cleartk.token.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.snowball.SnowballStemmer;
-import org.uutuc.factory.UimaContextFactory;
 import org.uutuc.util.SimplePipeline;
 
 /**
@@ -42,37 +41,29 @@ import org.uutuc.util.SimplePipeline;
  * @author Steven Bethard
  */
 public class Conll2005Train {
-
-	private static void error(String message) throws Exception {
-		Logger logger = UimaContextFactory.createUimaContext().getLogger();
-		logger.log(Level.SEVERE, String.format("%s\nusage: " +
-				"%s train-set-file output-dir",
-				message, Conll2005Train.class.getSimpleName()));
-		System.exit(1);
-	}
+	
+	private static final File conll2005File = new File("../../ClearTK-data/data/conll2005/train-set-small");
+	private static final File argumentIdentificationOutputDirectory = new File("scratch/CoNLL2005/argumentIdentification");
+	private static final File argumentClassificationOutputDirectory = new File("scratch/CoNLL2005/argumentClassification");
 
 	public static void main(String[] args) throws Exception {
-		// check arguments
-		if (args.length != 2) {
-			error("wrong number of arguments");
-		} else if (!new File(args[0]).exists()) {
-			error("CoNLL 2005 train-set file not found: " + args[0]);
-		}
-		String conll2005File = args[0];
-		String outputDir = args[1];
-		
 		// run the components to write the training data
 		SimplePipeline.runPipeline(
-				CleartkComponents.createConll2005GoldReader(conll2005File),
+				CleartkComponents.createConll2005GoldReader(conll2005File.toString()),
 				CleartkComponents.createConll2005GoldAnnotator(),
-				CleartkComponents.createPrimitiveDescription(SnowballStemmer.class, SnowballStemmer.PARAM_STEMMER_NAME, "English"),
+				CleartkComponents.createPrimitiveDescription(DefaultSnowballStemmer.class, SnowballStemmer.PARAM_STEMMER_NAME, "English"),
 				CleartkComponents.createDataWriterAnnotator(
-						ArgumentAnnotationHandler.class,
-						DefaultMaxentDataWriterFactory.class,
-						outputDir));
+						ArgumentIdentificationHandler.class,
+						DefaultSVMlightDataWriterFactory.class,
+						argumentIdentificationOutputDirectory.toString()),
+				CleartkComponents.createDataWriterAnnotator(
+						ArgumentClassificationHandler.class,
+						DefaultMultiClassLIBSVMDataWriterFactory.class,
+						argumentClassificationOutputDirectory.toString())
+		);
 		
 		// train the model on the training data
-		Train.main(outputDir);
+//		Train.main(outputDirectory.toString());
 	}
 
 }

@@ -28,8 +28,11 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.Annotation;
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.annotationpair.AnnotationPairFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.syntax.treebank.type.TreebankNode;
 
 
@@ -41,7 +44,7 @@ import org.cleartk.syntax.treebank.type.TreebankNode;
  * @author Philipp Wetzler
  *
  */
-public class SyntacticPathExtractor {
+public class SyntacticPathExtractor implements AnnotationPairFeatureExtractor {
 	protected final String UP_SEPARATOR = "::";
 
 	protected final String DOWN_SEPARATOR = ";;";
@@ -54,9 +57,6 @@ public class SyntacticPathExtractor {
 
 	/**
 	 * 
-	 * @param name
-	 *            this name will be given to the context of the generated
-	 *            feature.
 	 * @param pathMemberExtractor
 	 *            this extractor will be used to get a feature for every node on
 	 *            the path, which will then be combined to form a single string.
@@ -70,54 +70,43 @@ public class SyntacticPathExtractor {
 	 *            if true, generate a partial path only, i.e. from the first
 	 *            node up to the lowest common ancestor of the two
 	 */
-	public SyntacticPathExtractor(String name,
-			SimpleFeatureExtractor pathMemberExtractor, boolean partial) {
+	public SyntacticPathExtractor(SimpleFeatureExtractor pathMemberExtractor, boolean partial) {
 		this.pathMemberExtractor = pathMemberExtractor;
-		this.name = name;
 		this.isPartial = partial;
 	}
 
 	/**
 	 * This constructor defaults to a full rather than a partial path.
 	 */
-	public SyntacticPathExtractor(String name,
-			SimpleFeatureExtractor pathMemberExtractor) {
-		this(name, pathMemberExtractor, false);
-	}
-
-	/**
-	 * This constructor doesn't assign a name to the generated feature.
-	 */
-	public SyntacticPathExtractor(SimpleFeatureExtractor pathMemberExtractor,
-			boolean partial) {
-		this(null, pathMemberExtractor, partial);
-	}
-
-	/**
-	 * This constructor doesn't assign a name to the generated feature and
-	 * default to a full rather than a partial path.
-	 */
 	public SyntacticPathExtractor(SimpleFeatureExtractor pathMemberExtractor) {
-		this(null, pathMemberExtractor, false);
+		this(pathMemberExtractor, false);
 	}
 
 	/**
 	 * Extract a string representation of a path feature.
 	 * 
-	 * @param firstAnnotation
+	 * @param leftAnnotation
 	 *            the first node of the path
 	 * 
-	 * @param lastAnnotation
+	 * @param rightAnnotation
 	 *            the last node of the path
 	 * 
 	 * @return List of one <em>StringFeature</em>, which contains a string
 	 *         representation of the path between the two nodes.
 	 * 
 	 */
-	public List<Feature> extract(JCas jCas, TreebankNode firstAnnotation,
-			TreebankNode lastAnnotation) {
-		List<TreebankNode> fromStart = getPathToRoot(firstAnnotation);
-		List<TreebankNode> fromEnd = getPathToRoot(lastAnnotation);
+	public List<Feature> extract(JCas view, Annotation leftAnnotation, Annotation rightAnnotation) throws CleartkException {
+		TreebankNode leftConstituent;
+		TreebankNode rightConstituent;
+		try {
+			leftConstituent = (TreebankNode) leftAnnotation;
+			rightConstituent = (TreebankNode) rightAnnotation;
+		} catch( ClassCastException e ) {
+			throw new CleartkException("annotation is not of type TreebankNode");
+		}
+		
+		List<TreebankNode> fromStart = getPathToRoot(leftConstituent);
+		List<TreebankNode> fromEnd = getPathToRoot(rightConstituent);
 		String pathFeatureName = null;
 		String lengthFeatureName = null;
 
@@ -139,15 +128,14 @@ public class SyntacticPathExtractor {
 			StringBuffer pathBuffer = new StringBuffer();
 			boolean first = true;
 			while (it.hasNext()) {
-				Feature feature = this.pathMemberExtractor.extract(jCas,
-						it.next()).get(0);
+				Feature feature = this.pathMemberExtractor.extract(view, it.next()).get(0);
 				if (first) {
 					String s = feature.getName();
 					if( isPartial ) {
-						pathFeatureName = Feature.createName(name, "PartialSyntacticPath", s);
+						pathFeatureName = Feature.createName(name, "PartialSyntacticPath(" + s + ")");
 						lengthFeatureName = Feature.createName(name, "PartialSyntacticPath", "Length");
 					} else {
-						pathFeatureName = Feature.createName(name, "SyntacticPath", s);
+						pathFeatureName = Feature.createName(name, "SyntacticPath(" + s + ")");
 						lengthFeatureName = Feature.createName(name, "SyntacticPath", "Length");
 					}
 					first = false;
@@ -160,7 +148,7 @@ public class SyntacticPathExtractor {
 			if (!isPartial) {
 				it = fromEnd.listIterator(fromEnd.size());
 				while (it.hasPrevious()) {
-					Feature feature = this.pathMemberExtractor.extract(jCas,
+					Feature feature = this.pathMemberExtractor.extract(view,
 							it.previous()).get(0);
 					pathBuffer.append(this.DOWN_SEPARATOR);
 					pathBuffer.append(feature.getValue().toString());

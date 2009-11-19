@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,31 +20,34 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.srl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.logging.Logger;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.jcas.cas.FSArray;
-import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.AnnotationHandler;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.InstanceConsumer;
-import org.cleartk.classifier.feature.WindowFeature;
-import org.cleartk.classifier.feature.extractor.CombinedExtractor;
-import org.cleartk.classifier.feature.extractor.RelativePositionExtractor;
-import org.cleartk.classifier.feature.extractor.SimpleFeatureExtractor;
-import org.cleartk.classifier.feature.extractor.SpannedTextExtractor;
-import org.cleartk.classifier.feature.extractor.TypePathExtractor;
-import org.cleartk.classifier.feature.extractor.WindowExtractor;
+import org.cleartk.classifier.feature.extractor.annotationpair.AnnotationPairFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.annotationpair.MatchingAnnotationPairExtractor;
+import org.cleartk.classifier.feature.extractor.annotationpair.NamingAnnotationPairFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.annotationpair.RelativePositionExtractor;
+import org.cleartk.classifier.feature.extractor.simple.FirstInstanceExtractor;
+import org.cleartk.classifier.feature.extractor.simple.LastInstanceExtractor;
+import org.cleartk.classifier.feature.extractor.simple.MatchingAnnotationExtractor;
+import org.cleartk.classifier.feature.extractor.simple.NamingExtractor;
+import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
+import org.cleartk.srl.feature.NodeTypeExtractor;
+import org.cleartk.srl.feature.POSExtractor;
+import org.cleartk.srl.feature.StemExtractor;
 import org.cleartk.srl.type.Argument;
 import org.cleartk.srl.type.Predicate;
 import org.cleartk.srl.type.SemanticArgument;
@@ -53,11 +56,10 @@ import org.cleartk.syntax.feature.SubCategorizationExtractor;
 import org.cleartk.syntax.feature.SyntacticPathExtractor;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
 import org.cleartk.syntax.treebank.type.TreebankNode;
-import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.uutuc.descriptor.ConfigurationParameter;
+import org.cleartk.util.UIMAUtil;
 import org.uutuc.util.InitializeUtil;
 
 
@@ -82,47 +84,46 @@ import org.uutuc.util.InitializeUtil;
  * @author Philipp Wetzler, Philip Ogren
  */
 public class ArgumentIdentificationHandler implements AnnotationHandler<Boolean> {
-	
-	@ConfigurationParameter
-	private boolean filterMode;
-	public static final String PARAM_FILTER_MODE = ConfigurationParameterNameFactory
-		.createConfigurationParameterName(ArgumentIdentificationHandler.class, "filterMode");
-	
+
 	public ArgumentIdentificationHandler() {
-		SimpleFeatureExtractor[] tokenExtractors = {
+
+		SimpleFeatureExtractor defaultTokenExtractorSet = new MatchingAnnotationExtractor(Token.class,
 				new SpannedTextExtractor(),
-				new TypePathExtractor(Token.class, "stem"),
-				new TypePathExtractor(Token.class, "pos") };
+				new StemExtractor(),
+				new POSExtractor()
+		);
 
-		SimpleFeatureExtractor[] constituentExtractors = {
-				new TypePathExtractor(TreebankNode.class, "nodeType"),
+		this.perPredicateExtractor = new NamingExtractor("Predicate",
+				new MatchingAnnotationExtractor(Token.class,
+						defaultTokenExtractorSet
+				),
+				new MatchingAnnotationExtractor(TreebankNode.class,
+						new SubCategorizationExtractor()
+				)
+		);
+
+		this.perConstituentExtractor = new NamingExtractor("Constituent",
+				new NodeTypeExtractor(),
 				// new TypePathExtractor(TreebankNode.class, "nodeTags"),
-				new HeadWordExtractor(new CombinedExtractor(tokenExtractors)) };
+				new HeadWordExtractor(
+						defaultTokenExtractorSet
+				),
+				new FirstInstanceExtractor(Token.class,
+						defaultTokenExtractorSet
+				),
+				new LastInstanceExtractor(Token.class,
+						defaultTokenExtractorSet
+				)
+		);
 
-		predicateTokenExtractor = new CombinedExtractor("PredicateToken",
-				tokenExtractors);
-		predicateNodeExtractor = new SubCategorizationExtractor("PredicateNode");
-
-		constituentExtractor = new CombinedExtractor("Constituent",
-				constituentExtractors);
-		// leftSiblingExtractor = new CombinedExtractor("LeftSibling",
-		// constituentExtractors);
-		// rightSiblingExtractor = new CombinedExtractor("RightSibling",
-		// constituentExtractors);
-		// parentExtractor = new CombinedExtractor("Parent",
-		// constituentExtractors);
-
-		firstWordExtractor = new WindowExtractor("Constituent", Token.class,
-				new CombinedExtractor(tokenExtractors),
-				WindowFeature.ORIENTATION_MIDDLE, 0, 1);
-
-		lastWordExtractor = new WindowExtractor("Constituent", Token.class,
-				new CombinedExtractor(tokenExtractors),
-				WindowFeature.ORIENTATION_MIDDLE_REVERSE, 0, 1);
-
-		pathExtractor = new SyntacticPathExtractor("ConstituentPredicate",
-				new TypePathExtractor(TreebankNode.class, "nodeType"));
-		relPosExtractor = new RelativePositionExtractor("ConstituentPredicate");
+		this.perPredicatAndConstituentExtractor = new NamingAnnotationPairFeatureExtractor("PredicateAndConstituent",
+				new MatchingAnnotationPairExtractor(TreebankNode.class, TreebankNode.class,
+						new SyntacticPathExtractor(
+								new NodeTypeExtractor()
+						),
+						new RelativePositionExtractor()
+				)
+		);
 	}
 
 	public void initialize(UimaContext context) throws ResourceInitializationException {
@@ -142,6 +143,11 @@ public class ArgumentIdentificationHandler implements AnnotationHandler<Boolean>
 
 	void processSentence(JCas jCas, Sentence sentence, InstanceConsumer<Boolean> consumer) throws CleartkException{
 
+		if( sentence.getCoveredText().length() > 40 )
+			logger.info(String.format("process sentence \"%s ...\"", sentence.getCoveredText().substring(0, 39)));
+		else
+			logger.info(String.format("process sentence \"%s\"", sentence.getCoveredText()));
+		
 		/*
 		 * Pre-compute sentence level data: sentenceConstituents: list of all
 		 * constituents in sentence
@@ -157,7 +163,7 @@ public class ArgumentIdentificationHandler implements AnnotationHandler<Boolean>
 		List<List<Feature>> sentenceConstituentFeatures = new ArrayList<List<Feature>>(
 				sentenceConstituents.size());
 		for (TreebankNode constituent : sentenceConstituents) {
-			sentenceConstituentFeatures.add(extractConstituentFeatures(jCas, constituent, sentence));
+			sentenceConstituentFeatures.add(perConstituentExtractor.extract(jCas, constituent));
 		}
 
 		/*
@@ -175,40 +181,15 @@ public class ArgumentIdentificationHandler implements AnnotationHandler<Boolean>
 			List<TreebankNode> sentenceConstituents,
 			List<List<Feature>> sentenceConstituentFeatures,
 			InstanceConsumer<Boolean> consumer) throws CleartkException{
-		/*
-		 * Pre-compute predicate level data: predicateArguments: all semantic
-		 * arguments of the predicate predicateNode: the constituent of the
-		 * predicate predicateToken: the token of the predicate (first if there
-		 * are multiple)
-		 */
-		Map<Integer, SemanticArgument> predicateArguments = new TreeMap<Integer, SemanticArgument>();
-		int numberOfArgs = predicate.getArguments().size();
-		for (int i = 0; i < numberOfArgs; i++) {
-			Argument arg = predicate.getArguments(i);
-			if (arg instanceof SemanticArgument
-					&& arg.getAnnotation() instanceof TreebankNode) {
-				predicateArguments.put(buildKey(arg.getAnnotation()),
-						(SemanticArgument) arg);
-			}
-		}
-		boolean modifiedPredicateArguments = false;
 
-
-		TreebankNode predicateNode = AnnotationRetrieval.getMatchingAnnotation(
-				jCas, predicate.getAnnotation(), TreebankNode.class);
-		Token predicateToken = AnnotationRetrieval.getMatchingAnnotation(jCas,
-				predicate.getAnnotation(), Token.class);
+		logger.info(String.format("process predicate \"%s\"", predicate.getCoveredText()));
 
 
 		/*
-		 * Compute predicate features: predicateTokenFeatures
-		 * predicateNodeFeatures
+		 * Compute predicate features
 		 */
 		List<Feature> predicateFeatures = new ArrayList<Feature>(12);
-		predicateFeatures.addAll(predicateTokenExtractor.extract(jCas,
-				predicateToken));
-		predicateFeatures.addAll(predicateNodeExtractor.extract(jCas,
-				predicateNode));
+		predicateFeatures.addAll(perPredicateExtractor.extract(jCas, predicate.getAnnotation()));
 
 
 		/*
@@ -220,13 +201,9 @@ public class ArgumentIdentificationHandler implements AnnotationHandler<Boolean>
 			Instance<Boolean> instance = new Instance<Boolean>();
 
 			/*
-			 * Compute predicate-constituent features: relPosFeatures
-			 * pathFeatures
+			 * Compute predicate-constituent features
 			 */
-			instance.addAll(relPosExtractor.extract(jCas, constituent,
-					predicate.getAnnotation()));
-			instance.addAll(pathExtractor.extract(jCas, constituent,
-					predicateNode));
+			instance.addAll(perPredicatAndConstituentExtractor.extract(jCas, constituent, predicate.getAnnotation()));
 
 			/*
 			 * Add constituent features
@@ -238,67 +215,38 @@ public class ArgumentIdentificationHandler implements AnnotationHandler<Boolean>
 			 */
 			instance.addAll(predicateFeatures);
 
-			instance.setOutcome(predicateArguments.containsKey(buildKey(constituent)));
+			if( consumer.expectsOutcomes() ) {
+				instance.setOutcome(false);
+
+				for( int j=0; j<predicate.getArguments().size(); j++ ) {
+					Argument arg = predicate.getArguments(j);
+					if( arg.getAnnotation().equals(constituent) ) {
+						instance.setOutcome(true);
+						break;
+					}
+				}
+			}
 
 
 			Boolean outcome = consumer.consume(instance);
-
 			if( outcome != null ) {
-				if (this.filterMode) {
-					boolean isIdentified = outcome;
-					boolean isArgument = predicateArguments
-					.containsKey(buildKey(constituent));
+				boolean isArgument = outcome;
 
-					if (!isIdentified && isArgument) {
-						predicateArguments.get(buildKey(constituent))
-						.removeFromIndexes();
-
-						predicateArguments.remove(buildKey(constituent));
-						modifiedPredicateArguments = true;
-					} else if (isIdentified && !isArgument) {
-						SemanticArgument arg = new SemanticArgument(jCas);
-						arg.setAnnotation(constituent);
-						arg.setBegin(constituent.getBegin());
-						arg.setEnd(constituent.getEnd());
-						arg.setLabel("NULL");
-						arg.addToIndexes();
-
-						predicateArguments.put(buildKey(constituent), arg);
-						modifiedPredicateArguments = true;
-					}
-				} else {
-					boolean isArgument = outcome;
-
-					if (isArgument) {
-						SemanticArgument arg = new SemanticArgument(jCas);
-						arg.setAnnotation(constituent);
-						arg.setBegin(constituent.getBegin());
-						arg.setEnd(constituent.getEnd());
-						arg.setLabel("?");
-						arg.addToIndexes();
-
-						predicateArguments.put(buildKey(constituent), arg);
-					}
+				if (isArgument) {
+					SemanticArgument arg = new SemanticArgument(jCas);
+					arg.setAnnotation(constituent);
+					arg.setBegin(constituent.getBegin());
+					arg.setEnd(constituent.getEnd());
+					arg.setLabel("?");
+					arg.addToIndexes();
+					
+					List<Argument> args = UIMAUtil.toList(predicate.getArguments(), Argument.class);
+					args.add(arg);
+					predicate.setArguments(UIMAUtil.toFSArray(jCas, args));
 				}
 			}
 
-			/*
-			 * Update predicates list of arguments in the CAS, if it was modified
-			 */
-			if (modifiedPredicateArguments) {
-				FSArray args = new FSArray(jCas, predicateArguments.size());
-				int index = 0;
-				for (SemanticArgument arg : predicateArguments.values()) {
-					args.set(index, arg);
-					index += 1;
-				}
-				predicate.setArguments(args);
-			}
 		}
-	}
-
-	Integer buildKey(Annotation annotation) {
-		return annotation.getAddress();
 	}
 
 	/**
@@ -327,54 +275,11 @@ public class ArgumentIdentificationHandler implements AnnotationHandler<Boolean>
 		}
 	}
 
-	protected List<Feature> extractConstituentFeatures(JCas jCas, TreebankNode constituent, Sentence sentence) {
-		List<Feature> features = new ArrayList<Feature>(40);
-		features.addAll(this.constituentExtractor
-				.extract(jCas, constituent));
-		features.addAll(this.firstWordExtractor.extract(jCas, constituent, sentence));
-		features.addAll(this.lastWordExtractor.extract(jCas, constituent, sentence));
 
-		// TreebankNode parent = constituent.getParent();
-		// if (parent != null) {
-		// features.addAll(this.parentExtractor.extract(jCas, parent));
-		//
-		// int constituentPosition = 0;
-		// while (parent.getChildren(constituentPosition) !=
-		// constituent)
-		// constituentPosition += 1;
-		//
-		// if (constituentPosition > 0)
-		// features.addAll(this.leftSiblingExtractor.extract(jCas,
-		// parent.getChildren(constituentPosition - 1)));
-		// if (constituentPosition < parent.getChildren().size() - 1)
-		// features.addAll(this.rightSiblingExtractor.extract(
-		// jCas, parent
-		// .getChildren(constituentPosition + 1)));
-		// }
+	private SimpleFeatureExtractor perPredicateExtractor;
+	private SimpleFeatureExtractor perConstituentExtractor;
+	private AnnotationPairFeatureExtractor perPredicatAndConstituentExtractor;
 
-		return features;
-	}
-
-
-	private SimpleFeatureExtractor predicateTokenExtractor;
-
-	private SimpleFeatureExtractor predicateNodeExtractor;
-
-	private SyntacticPathExtractor pathExtractor;
-
-	private SimpleFeatureExtractor constituentExtractor;
-
-	private WindowExtractor firstWordExtractor;
-
-	private WindowExtractor lastWordExtractor;
-
-	// private SimpleFeatureExtractor leftSiblingExtractor;
-	//
-	// private SimpleFeatureExtractor rightSiblingExtractor;
-	//
-	// private SimpleFeatureExtractor parentExtractor;
-
-	private RelativePositionExtractor relPosExtractor;
-
+	private Logger logger = Logger.getLogger(this.getClass().getName());
 
 }

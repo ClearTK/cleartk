@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.classifier.feature.extractor;
+package org.cleartk.classifier.feature.extractor.simple;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,6 +46,7 @@ import org.apache.uima.jcas.cas.LongArray;
 import org.apache.uima.jcas.cas.ShortArray;
 import org.apache.uima.jcas.cas.StringArray;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.cleartk.CleartkException;
 import org.cleartk.util.UIMAUtil;
 
 
@@ -77,8 +78,6 @@ public class TypePathExtractor implements SimpleFeatureExtractor {
 	boolean pathChecked = false;
 
 	TypeSystem typeSystem;
-
-	protected String name;
 
 	Logger logger = Logger.getLogger(TypePathExtractor.class.getName());
 
@@ -137,12 +136,6 @@ public class TypePathExtractor implements SimpleFeatureExtractor {
 		this.uniqueValues = uniqueValues;
 	}
 
-	public TypePathExtractor(String name, Class<? extends Annotation> focusClass, String typePath,
-			boolean traverseAllPaths, boolean returnAllValues, boolean uniqueValues) {
-		this(focusClass, typePath, traverseAllPaths, returnAllValues, uniqueValues);
-		this.name = name;
-	}
-
 	/**
 	 * calls this(type, typePath, false, false, true, jCas)
 	 */
@@ -150,23 +143,17 @@ public class TypePathExtractor implements SimpleFeatureExtractor {
 		this(focusClass, typePath, false, false, true);
 	}
 
-	public TypePathExtractor(String name, Class<? extends Annotation> focusClass, String typePath)
-			throws IllegalArgumentException {
-		this(focusClass, typePath, false, false, true);
-		this.name = name;
-	}
+	public List<org.cleartk.classifier.Feature> extract(JCas view, Annotation focusAnnotation) throws CleartkException {
+		if (this.type == null) this.type = UIMAUtil.getCasType(view, this.focusClass);
 
-	public List<org.cleartk.classifier.Feature> extract(JCas jCas, Annotation focusAnnotation) {
-		if (this.type == null) this.type = UIMAUtil.getCasType(jCas, this.focusClass);
+		this.typeSystem = view.getTypeSystem();
 
-		this.typeSystem = jCas.getTypeSystem();
-
-		if (!isValidPath(jCas)) throw new IllegalArgumentException("The path " + path + " is not valid for the type "
+		if (!isValidPath(view)) throw new IllegalArgumentException("The path " + path + " is not valid for the type "
 				+ type.getName());
 
 		String[] pathMembers = path.split("/");
 		List<Object> pathValues = new ArrayList<Object>();
-		_extract(jCas, focusAnnotation, pathMembers, pathValues);
+		_extract(view, focusAnnotation, pathMembers, pathValues);
 
 		List<org.cleartk.classifier.Feature> returnValues = new ArrayList<org.cleartk.classifier.Feature>();
 		Set<Object> values = new HashSet<Object>();
@@ -174,14 +161,14 @@ public class TypePathExtractor implements SimpleFeatureExtractor {
 			if (uniqueValues) {
 				if (!values.contains(pathValue)) {
 					org.cleartk.classifier.Feature feature = new org.cleartk.classifier.feature.TypePathFeature(
-							this.name, pathValue, this.path);
+							null, pathValue, this.path);
 					returnValues.add(feature);
 					values.add(pathValue);
 				}
 			}
 			else {
 				org.cleartk.classifier.Feature feature = new org.cleartk.classifier.feature.TypePathFeature(
-						this.name, pathValue, this.path);
+						null, pathValue, this.path);
 				returnValues.add(feature);
 			}
 		}
@@ -189,7 +176,7 @@ public class TypePathExtractor implements SimpleFeatureExtractor {
 		return returnValues;
 	}
 
-	private void _extract(JCas jCas, FeatureStructure featureStructure, String[] pathMembers, List<Object> pathValues) {
+	private void _extract(JCas view, FeatureStructure featureStructure, String[] pathMembers, List<Object> pathValues) {
 		if (pathMembers.length == 1) {
 			Feature feature = featureStructure.getType().getFeatureByBaseName(pathMembers[0]);
 			if (feature == null) {
@@ -197,7 +184,7 @@ public class TypePathExtractor implements SimpleFeatureExtractor {
 			}
 			Type type = feature.getRange();
 			if (type.isPrimitive()) {
-				Object pathValue = getPrimitiveFeatureValue(jCas, featureStructure, feature);
+				Object pathValue = getPrimitiveFeatureValue(view, featureStructure, feature);
 				if (pathValue != null) pathValues.add(pathValue);
 			}
 			else if (typeSystem.subsumes(typeSystem.getType("uima.tcas.Annotation"), type)) {
@@ -207,7 +194,7 @@ public class TypePathExtractor implements SimpleFeatureExtractor {
 			else if (type.isArray()) {
 				Type componentType = type.getComponentType();
 				if (componentType.isPrimitive()) {
-					Object[] values = getPrimitiveArrayFeatureValue(jCas, featureStructure, feature);
+					Object[] values = getPrimitiveArrayFeatureValue(view, featureStructure, feature);
 					if (allValues) pathValues.addAll(Arrays.asList(values));
 					else if (values.length > 0) pathValues.add(values[0]);
 				}
@@ -237,23 +224,23 @@ public class TypePathExtractor implements SimpleFeatureExtractor {
 				if (allPaths) {
 					for (int i = 0; i < fsArray.size(); i++) {
 						FeatureStructure fs = fsArray.get(i);
-						_extract(jCas, fs, remainingPathMembers, pathValues);
+						_extract(view, fs, remainingPathMembers, pathValues);
 					}
 				}
 				else {
-					if (fsArray.size() > 0) _extract(jCas, fsArray.get(0), remainingPathMembers, pathValues);
+					if (fsArray.size() > 0) _extract(view, fsArray.get(0), remainingPathMembers, pathValues);
 				}
 			}
 			// TODO else if(featureValue instanceof FSList)
 			else {
-				_extract(jCas, featureValue, remainingPathMembers, pathValues);
+				_extract(view, featureValue, remainingPathMembers, pathValues);
 			}
 		}
 	}
 
-	private boolean isValidPath(JCas jCas) {
+	private boolean isValidPath(JCas view) {
 		if (!pathChecked) {
-			boolean validPath = isValidPath(type, path, jCas);
+			boolean validPath = isValidPath(type, path, view);
 			if (validPath) pathChecked = true;
 			return validPath;
 		}
@@ -263,7 +250,7 @@ public class TypePathExtractor implements SimpleFeatureExtractor {
 	// TODO should be possible to just get the Feature from the type system and
 	// return
 	// true if it is not null.
-	public static boolean isValidPath(Type type, String path, JCas jCas) {
+	public static boolean isValidPath(Type type, String path, JCas view) {
 		String[] pathMembers = path.split("/");
 		Type pathMemberType = type; // will be set to type of last path member
 		// feature type
@@ -275,7 +262,7 @@ public class TypePathExtractor implements SimpleFeatureExtractor {
 			pathMemberType = feature.getRange();
 			if (pathMemberType.isArray()) pathMemberType = pathMemberType.getComponentType();
 		}
-		return isValidType(pathMemberType, jCas.getTypeSystem());
+		return isValidType(pathMemberType, view.getTypeSystem());
 	}
 
 	private static final String[] HANDLED_TYPES = new String[] { "uima.cas.Boolean", "uima.cas.BooleanArray",
@@ -300,13 +287,13 @@ public class TypePathExtractor implements SimpleFeatureExtractor {
 	/**
 	 * see section 4.2.1 of the UIMA References documentation.
 	 * 
-	 * @param jCas
+	 * @param view
 	 * @param featureStructure
 	 * @param feature
 	 * @return The feature value.
 	 */
-	private static Object getPrimitiveFeatureValue(JCas jCas, FeatureStructure featureStructure, Feature feature) {
-		TypeSystem typeSystem = jCas.getTypeSystem();
+	private static Object getPrimitiveFeatureValue(JCas view, FeatureStructure featureStructure, Feature feature) {
+		TypeSystem typeSystem = view.getTypeSystem();
 		Type type = feature.getRange();
 		if (type.equals(typeSystem.getType("uima.cas.Boolean"))) return featureStructure.getBooleanValue(feature);
 		else if (type.equals(typeSystem.getType("uima.cas.Double"))) return featureStructure.getDoubleValue(feature);
@@ -320,8 +307,8 @@ public class TypePathExtractor implements SimpleFeatureExtractor {
 				+ "Feature domain type = " + feature.getDomain() + ".  Feature range type = " + feature.getRange());
 	}
 
-	private static Object[] getPrimitiveArrayFeatureValue(JCas jCas, FeatureStructure featureStructure, Feature feature) {
-		TypeSystem typeSystem = jCas.getTypeSystem();
+	private static Object[] getPrimitiveArrayFeatureValue(JCas view, FeatureStructure featureStructure, Feature feature) {
+		TypeSystem typeSystem = view.getTypeSystem();
 		Type type = feature.getRange();
 		if (type.isArray()) {
 			Type componentType = type.getComponentType();
@@ -359,10 +346,6 @@ public class TypePathExtractor implements SimpleFeatureExtractor {
 
 	public Class<? extends Annotation> getFocusClass() {
 		return focusClass;
-	}
-
-	public String getName() {
-		return name;
 	}
 
 	public String getPath() {

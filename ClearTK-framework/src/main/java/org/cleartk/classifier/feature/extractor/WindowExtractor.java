@@ -31,8 +31,10 @@ import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.WindowFeature;
+import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.AnnotationUtil;
 import org.cleartk.util.UIMAUtil;
@@ -111,12 +113,12 @@ public class WindowExtractor {
 		this.name = name;
 	}
 
-	public List<Feature> extract(JCas jCas, Annotation focusAnnotation, Class<? extends Annotation> cls) {
+	public List<Feature> extract(JCas jCas, Annotation focusAnnotation, Class<? extends Annotation> cls) throws CleartkException {
 		Annotation windowAnnotation = AnnotationRetrieval.getContainingAnnotation(jCas, focusAnnotation, cls);
 		return extract(jCas, focusAnnotation, windowAnnotation);
 	}
 
-	public List<Feature> extract(JCas jCas, Annotation focusAnnotation, Annotation windowAnnotation) {
+	public List<Feature> extract(JCas jCas, Annotation focusAnnotation, Annotation windowAnnotation) throws CleartkException {
 		if (this.featureType == null) this.featureType = UIMAUtil.getCasType(jCas, this.featureClass);
 
 		List<Feature> returnValues = new ArrayList<Feature>();
@@ -173,7 +175,7 @@ public class WindowExtractor {
 				|| windowOrientation.equals(WindowFeature.ORIENTATION_MIDDLE)) windowIterator.moveToNext();
 	}
 
-	private List<Feature> extractWindowedFeatures(JCas jCas, int i, Annotation annotation) {
+	private List<Feature> extractWindowedFeatures(JCas jCas, int i, Annotation annotation) throws CleartkException {
 		List<Feature> windowedFeatures = featureExtractor.extract(jCas, annotation);
 		List<Feature> returnValues = new ArrayList<Feature>();
 		if (windowedFeatures != null && windowedFeatures.size() > 0) {

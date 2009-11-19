@@ -30,12 +30,13 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.CleartkException;
 import org.cleartk.chunk.ChunkerFeatureExtractor;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.WindowFeature;
-import org.cleartk.classifier.feature.extractor.SimpleFeatureExtractor;
-import org.cleartk.classifier.feature.extractor.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.WindowExtractor;
+import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.proliferate.CharacterNGramProliferator;
 import org.cleartk.classifier.feature.proliferate.LowerCaseProliferator;
 import org.cleartk.classifier.feature.proliferate.ProliferatingExtractor;
@@ -53,7 +54,7 @@ public class ExampleChunkFeatureExtractor implements ChunkerFeatureExtractor {
 	private List<SimpleFeatureExtractor> simpleFeatureExtractors;
 	private List<WindowExtractor> windowExtractors;
 
-	public Instance<String> extractFeatures(JCas jCas, Annotation labeledAnnotation, Annotation sequence) {
+	public Instance<String> extractFeatures(JCas jCas, Annotation labeledAnnotation, Annotation sequence) throws CleartkException {
 		Instance<String> instance = new Instance<String>();
 		
 		// extract all features that require only the token annotation

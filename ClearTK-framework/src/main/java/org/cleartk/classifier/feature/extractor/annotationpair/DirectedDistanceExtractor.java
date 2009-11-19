@@ -21,8 +21,9 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.classifier.feature.extractor;
+package org.cleartk.classifier.feature.extractor.annotationpair;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.uima.jcas.JCas;
@@ -44,7 +45,7 @@ import org.cleartk.util.AnnotationUtil;
  * </ul>
  */
 
-public class DirectedDistanceExtractor {
+public class DirectedDistanceExtractor implements AnnotationPairFeatureExtractor {
 	String name;
 	Class<? extends Annotation> unitClass;
 	
@@ -54,7 +55,7 @@ public class DirectedDistanceExtractor {
 		this.unitClass = unitClass;
 	}
 	
-	public Feature extract(JCas jCas, Annotation annotation1, Annotation annotation2) {
+	public List<Feature> extract(JCas jCas, Annotation annotation1, Annotation annotation2) {
 		String featureName = Feature.createName(
 				this.name, "DDistance", this.unitClass.getSimpleName());
 
@@ -81,6 +82,6 @@ public class DirectedDistanceExtractor {
 		if(negate)
 			featureValue = -featureValue;
 		
-		return new Feature(featureName, featureValue);
+		return Collections.singletonList(new Feature(featureName, featureValue));
 	}
 }

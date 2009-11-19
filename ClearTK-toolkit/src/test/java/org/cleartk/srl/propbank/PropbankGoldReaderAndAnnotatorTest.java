@@ -35,7 +35,6 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkComponents;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uutuc.factory.AnalysisEngineFactory;
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
  * <br>All rights reserved.
@@ -100,12 +99,4 @@ public class PropbankGoldReaderAndAnnotatorTest {
 		engine.collectionProcessComplete();
 	}
 	
-	@Test
-	public void testCombinedAnnotatorDescriptor() throws UIMAException, IOException {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-				"org.cleartk.srl.propbank.TreebankPropbankGoldAnnotator");
-		engine.collectionProcessComplete();
-	}
-	
-
 }

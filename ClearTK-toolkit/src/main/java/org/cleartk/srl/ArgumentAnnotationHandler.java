@@ -36,13 +36,13 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.InstanceConsumer;
 import org.cleartk.classifier.feature.WindowFeature;
-import org.cleartk.classifier.feature.extractor.CombinedExtractor;
-import org.cleartk.classifier.feature.extractor.DistanceExtractor;
-import org.cleartk.classifier.feature.extractor.RelativePositionExtractor;
-import org.cleartk.classifier.feature.extractor.SimpleFeatureExtractor;
-import org.cleartk.classifier.feature.extractor.SpannedTextExtractor;
-import org.cleartk.classifier.feature.extractor.TypePathExtractor;
 import org.cleartk.classifier.feature.extractor.WindowExtractor;
+import org.cleartk.classifier.feature.extractor.annotationpair.DistanceExtractor;
+import org.cleartk.classifier.feature.extractor.annotationpair.RelativePositionExtractor;
+import org.cleartk.classifier.feature.extractor.simple.CombinedExtractor;
+import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
+import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.svmlight.DefaultOVASVMlightDataWriterFactory;
 import org.cleartk.srl.type.Argument;
 import org.cleartk.srl.type.Predicate;
@@ -90,27 +90,24 @@ public class ArgumentAnnotationHandler implements AnnotationHandler<String> {
 		SimpleFeatureExtractor[] constituentExtractors = {
 				new TypePathExtractor(TreebankNode.class, "nodeType"),
 				// new TypePathExtractor(TreebankNode.class, "nodeTags"),
-				new HeadWordExtractor(new CombinedExtractor(tokenExtractors), true, true) };
+				new HeadWordExtractor(new CombinedExtractor(tokenExtractors), true) };
 
-		predicateTokenExtractor = new CombinedExtractor("PredicateToken",
+		predicateTokenExtractor = new CombinedExtractor(
 				tokenExtractors);
 		predicateNodeExtractor = new SubCategorizationExtractor("PredicateNode");
 
-		pathExtractor = new SyntacticPathExtractor("ConstituentPredicate",
+		pathExtractor = new SyntacticPathExtractor(
 				new TypePathExtractor(TreebankNode.class, "nodeType"));
-		partialPathExtractor = new SyntacticPathExtractor("ConstituentPredicate",
+		partialPathExtractor = new SyntacticPathExtractor(
 				new TypePathExtractor(TreebankNode.class, "nodeType"),
 				true);
-		relPosExtractor = new RelativePositionExtractor("ConstituentPredicate");
+		relPosExtractor = new RelativePositionExtractor();
 		distanceExtractor = new DistanceExtractor("ConstituentPredicate", Token.class);
 
-		constituentExtractor = new CombinedExtractor("Constituent",
-				constituentExtractors);
-		leftSiblingExtractor = new CombinedExtractor("LeftSibling",
-				constituentExtractors);
-		rightSiblingExtractor = new CombinedExtractor("RightSibling",
-				constituentExtractors);
-		parentExtractor = new CombinedExtractor("Parent", constituentExtractors);
+		constituentExtractor = new CombinedExtractor(constituentExtractors);
+		leftSiblingExtractor = new CombinedExtractor(constituentExtractors);
+		rightSiblingExtractor = new CombinedExtractor(constituentExtractors);
+		parentExtractor = new CombinedExtractor(constituentExtractors);
 		firstWordExtractor = new WindowExtractor("Constituent", Token.class,
 				new CombinedExtractor(tokenExtractors),
 				WindowFeature.ORIENTATION_MIDDLE, 0, 1);
@@ -230,7 +227,7 @@ public class ArgumentAnnotationHandler implements AnnotationHandler<String> {
 	}
 
 	List<Feature> extractConstituentFeatures(JCas jCas,
-			TreebankNode constituent, Sentence sentence) {
+			TreebankNode constituent, Sentence sentence) throws CleartkException {
 		List<Feature> features = new ArrayList<Feature>(20);
 		features.addAll(constituentExtractor.extract(jCas, constituent));
 		features

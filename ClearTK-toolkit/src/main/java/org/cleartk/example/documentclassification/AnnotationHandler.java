@@ -33,9 +33,9 @@ import org.cleartk.CleartkException;
 import org.cleartk.Initializable;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.InstanceConsumer;
-import org.cleartk.classifier.feature.extractor.CountsExtractor;
-import org.cleartk.classifier.feature.extractor.SimpleFeatureExtractor;
-import org.cleartk.classifier.feature.extractor.TypePathExtractor;
+import org.cleartk.classifier.feature.extractor.simple.CountsExtractor;
+import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.type.Token;
 
 /**

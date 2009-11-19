@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.classifier.feature.extractor;
+package org.cleartk.classifier.feature.extractor.simple;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -30,6 +30,7 @@ import java.util.Set;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.util.AnnotationRetrieval;
 
@@ -50,35 +51,19 @@ public class BagExtractor implements SimpleFeatureExtractor {
 	 * Extracts bag-of-words style features, running a feature extractor over all
 	 * "word" Annotations within the focus Annotation.
 	 * 
-	 * @param extractorName    A name identifying this extractor, which will be prefixed
-	 *                         to the context string of all features extracted.
 	 * @param annotationClass  The class of Annotation representing "words".
-	 * @param featureExtractor The feature extractor to be applied to each "word".
+	 * @param subExtractor The feature extractor to be applied to each "word".
 	 */
 	public BagExtractor(
-			String extractorName,
 			Class<? extends Annotation> annotationClass,
-			SimpleFeatureExtractor featureExtractor) {
+			SimpleFeatureExtractor subExtractor) {
 		this.annotationClass = annotationClass;
 		this.simpleAnnotationName = annotationClass.getSimpleName();
-		this.featureExtractor = featureExtractor;
-		this.extractorName = extractorName;
+		this.subExtractor = subExtractor;
+		this.extractorName = String.format("Bag(%s)", this.simpleAnnotationName);
 	}
 
-	/**
-	 * Extracts bag-of-words style features, running a feature extractor over all
-	 * "word" Annotations within the focus Annotation.
-	 * 
-	 * @param annotationClass  The class of Annotation representing "words".
-	 * @param featureExtractor The feature extractor to be applied to each "word".
-	 */
-	public BagExtractor(
-			Class<? extends Annotation> annotationClass,
-			SimpleFeatureExtractor featureExtractor) {
-		this(null, annotationClass, featureExtractor);
-	}
-
-	public List<Feature> extract(JCas jCas, Annotation focusAnnotation) {
+	public List<Feature> extract(JCas view, Annotation focusAnnotation) throws CleartkException {
 		
 		// list for collecting features and set of values seen
 		List<Feature> features = new ArrayList<Feature>();
@@ -86,15 +71,13 @@ public class BagExtractor implements SimpleFeatureExtractor {
 
 		// get the Type of the chosen Annotation
 		for (Annotation ann: AnnotationRetrieval.getAnnotations(
-				jCas, focusAnnotation, this.annotationClass)) {
-			for (Feature feature: this.featureExtractor.extract(jCas, ann)) {
+				view, focusAnnotation, this.annotationClass)) {
+			for (Feature feature: this.subExtractor.extract(view, ann)) {
 				String featureValue = feature.getValue().toString();
 				if (!seenValues.contains(featureValue)) {
 					String featureName = Feature.createName(
-							"BagOf",
-							this.simpleAnnotationName,
-							feature.getName(),
-							this.extractorName);
+							this.extractorName,
+							feature.getName());
 					features.add(new Feature(featureName, featureValue));
 					seenValues.add(featureValue);
 				}
@@ -106,7 +89,7 @@ public class BagExtractor implements SimpleFeatureExtractor {
 	}
 	private Class<? extends Annotation> annotationClass;
 	private String simpleAnnotationName;
-	private SimpleFeatureExtractor featureExtractor;
+	private SimpleFeatureExtractor subExtractor;
 	private String extractorName;
 
 }

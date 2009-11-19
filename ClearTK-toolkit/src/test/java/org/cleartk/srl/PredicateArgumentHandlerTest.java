@@ -24,7 +24,6 @@
 package org.cleartk.srl;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -36,13 +35,8 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.ClassifierAnnotator;
-import org.cleartk.classifier.DataWriterAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.InstanceConsumer_ImplBase;
-import org.cleartk.classifier.svmlight.DefaultOVASVMlightDataWriterFactory;
-import org.cleartk.classifier.svmlight.DefaultSVMlightDataWriterFactory;
 import org.cleartk.srl.type.Predicate;
 import org.cleartk.srl.type.SemanticArgument;
 import org.cleartk.syntax.TreebankTestsUtil;
@@ -212,247 +206,12 @@ public class PredicateArgumentHandlerTest {
 				this.getFeatureValues(lampInstance));
 		Assert.assertEquals(false, lampInstance.getOutcome());
 	}
-		
-	@Test
-	public void testArgumentAnnotation() throws UIMAException, CleartkException {
-		// create the document
-		AnalysisEngine engine = this.getEngine();
-		JCas jCas = engine.newJCas();
-		this.setTokens(jCas);
-		this.setTrees(jCas);
-		this.setPredicates(jCas);
-		
-		// get the instances produced by the handler 
-		List<Instance<String>> instances = InstanceProducerUtil.produceInstances(
-				new ArgumentAnnotationHandler(), engine, jCas);
-		String featuresString;
-		Assert.assertEquals(9, instances.size());
-		
-		// check "John"
-		Instance<String> johnInstance = instances.get(2);
-		featuresString = (
-				"broke break VBD " +
-				"VP->VBD-NP " +
-				"NNP John John NNP " +
-				"John John NNP " +
-				"John John NNP " +
-				"NP John John NNP " +
-				"LEFTOF " +
-				"NNP::NP::S;;VP;;VBD 5 " +
-				"NNP::NP::S 3 " +
-				"0");
-		Assert.assertEquals(
-				Arrays.asList(featuresString.split(" ")),
-				this.getFeatureValues(johnInstance));
-		/* 
-		 * This is testing the NNP node of the John token,
-		 * not the NP. The NP is an argument, the token is not.
-		 */
-		Assert.assertEquals("NULL", johnInstance.getOutcome());
 
-		// check "the lamp"
-		Instance<String> theLampInstance = instances.get(5);
-		featuresString = (
-				"broke break VBD " +
-				"VP->VBD-NP " +
-				"NP lamp lamp NN " +
-				"the the DT " +
-				"lamp lamp NN " +
-				"VP broke break VBD " +
-				"VBD broke break VBD " +
-				"RIGHTOF " +
-				"NP::VP;;VBD 3 " +
-				"NP::VP 2 " +
-				"0");
-		Assert.assertEquals(
-				Arrays.asList(featuresString.split(" ")),
-				this.getFeatureValues(theLampInstance));
-		Assert.assertEquals("ARG1", theLampInstance.getOutcome());
-	}
-	
-	@Test
-	public void testArgumentIdentification() throws UIMAException, CleartkException {
-		// create the document
-		AnalysisEngine engine = this.getEngine();
-		JCas jCas = engine.newJCas();
-		this.setTokens(jCas);
-		this.setTrees(jCas);
-		this.setPredicates(jCas);
-		
-		// get the instances produced by the handler 
-		List<Instance<Boolean>> instances = InstanceProducerUtil.produceInstances(
-				new ArgumentIdentificationHandler(), engine, jCas);
-		String featuresString;
-		Assert.assertEquals(9, instances.size());
-		
-		// check "John"
-		Instance<Boolean> johnInstance = instances.get(2);
-		featuresString = (
-				"LEFTOF " +
-				"NNP::NP::S;;VP;;VBD 5 " +
-				"NNP John John NNP " +
-				"John John NNP " +
-				"John John NNP " +
-				"broke break VBD " +
-				"VP->VBD-NP");
-		Assert.assertEquals(
-				Arrays.asList(featuresString.split(" ")),
-				this.getFeatureValues(johnInstance));
-		/* 
-		 * This is testing the NNP node of the John token,
-		 * not the NP. The NP is an argument, the token is not.
-		 */
-		Assert.assertEquals(false, johnInstance.getOutcome());
-
-		// check "the lamp"
-		Instance<Boolean> theLampInstance = instances.get(5);
-		featuresString = (
-				"RIGHTOF " +
-				"NP::VP;;VBD 3 " +
-				"NP lamp lamp NN " +
-				"the the DT " +
-				"lamp lamp NN " +
-				"broke break VBD " +
-				"VP->VBD-NP");
-		Assert.assertEquals(
-				Arrays.asList(featuresString.split(" ")),
-				this.getFeatureValues(theLampInstance));
-		Assert.assertEquals(true, theLampInstance.getOutcome());
-	}
-	
-	@Test
-	public void testArgumentClassification() throws UIMAException, CleartkException {
-		// create the document
-		AnalysisEngine engine = this.getEngine();
-		JCas jCas = engine.newJCas();
-		this.setTokens(jCas);
-		this.setTrees(jCas);
-		this.setPredicates(jCas);
-		
-		// get the instances produced by the handler 
-		List<Instance<String>> instances = InstanceProducerUtil.produceInstances(
-				new ArgumentClassificationHandler(), engine, jCas);
-		String featuresString;
-		Assert.assertEquals(2, instances.size());
-		
-		// check "John"
-		Instance<String> johnInstance = instances.get(0);
-		featuresString = (
-				"broke break VBD " +
-				"VP->VBD-NP " +
-				"NP John John NNP " + 
-				"S broke break VBD " +
-				"VP broke break VBD " +
-				"LEFTOF " +
-				"NP::S;;VP;;VBD 4");
-		Assert.assertEquals(
-				Arrays.asList(featuresString.split(" ")),
-				this.getFeatureValues(johnInstance));
-		Assert.assertEquals("ARG0-XXX", johnInstance.getOutcome());
-
-		// check "the lamp"
-		Instance<String> theLampInstance = instances.get(1);
-		featuresString = (
-				"broke break VBD " +
-				"VP->VBD-NP " +
-				"NP lamp lamp NN " +
-				"VP broke break VBD " +
-				"VBD broke break VBD " +
-				"RIGHTOF " +
-				"NP::VP;;VBD 3 ");
-		Assert.assertEquals(
-				Arrays.asList(featuresString.split(" ")),
-				this.getFeatureValues(theLampInstance));
-		Assert.assertEquals("ARG1", theLampInstance.getOutcome());
-	}
-	
-	@Test
-	public void testPredicateDataWriterDescriptor() throws UIMAException, IOException {
-		try {
-			AnalysisEngineFactory.createAnalysisEngine("org.cleartk.srl.PredicateDataWriter");
-			Assert.fail("expected exception with missing output directory");
-		} catch (ResourceInitializationException e) {}
-			
-		String outputPath = this.predicateOutputDir.getPath();
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-				"org.cleartk.srl.PredicateDataWriter",
-				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputPath);
-		
-		Object handler = engine.getConfigParameterValue(
-				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME);
-		Assert.assertEquals(PredicateAnnotationHandler.class.getName(), handler);
-		
-		Object dataWriterFactory = engine.getConfigParameterValue(
-				DataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME);
-		Assert.assertEquals(DefaultSVMlightDataWriterFactory.class.getName(), dataWriterFactory);
-		
-		Object outputDir = engine.getConfigParameterValue(
-				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY);
-		Assert.assertEquals(outputPath, outputDir);
-		
-		engine.collectionProcessComplete();
-	}
-	
-	@Test
-	public void testPredicateAnnotationDescriptor() throws UIMAException, IOException {
-		try {
-			AnalysisEngineFactory.createAnalysisEngine("org.cleartk.srl.PredicateAnnotator");
-			Assert.fail("expected exception with missing classifier jar");
-		} catch (ResourceInitializationException e) {}
-			
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-				"org.cleartk.srl.PredicateAnnotator",
-				ClassifierAnnotator.PARAM_CLASSIFIER_JAR_PATH, "test/data/srl/predicate/model.jar");
-		Object handler = engine.getConfigParameterValue(
-				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME);
-		Assert.assertEquals(PredicateAnnotationHandler.class.getName(), handler);
-		
-		engine.collectionProcessComplete();
-	}
-
-	@Test
-	public void testArgumentDataWriterDescriptor() throws UIMAException, IOException {
-		try {
-			AnalysisEngineFactory.createAnalysisEngine("org.cleartk.srl.ArgumentDataWriter");
-			Assert.fail("expected exception with missing output directory");
-		} catch (ResourceInitializationException e) {}
-			
-		String outputPath = this.argumentOutputDir.getPath();
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-				"org.cleartk.srl.ArgumentDataWriter",
-				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputPath);
-		
-		Object handler = engine.getConfigParameterValue(
-				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME);
-		Assert.assertEquals(ArgumentAnnotationHandler.class.getName(), handler);
-		
-		Object dataWriter = engine.getConfigParameterValue(
-				DataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME);
-		Assert.assertEquals(DefaultOVASVMlightDataWriterFactory.class.getName(), dataWriter);
-		
-		Object outputDir = engine.getConfigParameterValue(
-				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY);
-		Assert.assertEquals(outputPath, outputDir);
-		
-		engine.collectionProcessComplete();
-	}
-
-	@Test
-	public void testArgumentAnnotationDescriptor() throws UIMAException, IOException {
-		try {
-			AnalysisEngineFactory.createAnalysisEngine("org.cleartk.srl.ArgumentAnnotator");
-			Assert.fail("expected exception with missing classifier jar");
-		} catch (ResourceInitializationException e) {}
-			
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-				"org.cleartk.srl.ArgumentAnnotator",
-				ClassifierAnnotator.PARAM_CLASSIFIER_JAR_PATH, "test/data/srl/argument/model.jar");
-		Object handler = engine.getConfigParameterValue(
-				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME);
-		Assert.assertEquals(ArgumentAnnotationHandler.class.getName(), handler);
-		
-		engine.collectionProcessComplete();
-	}
+	/* 
+	 * removed a few tests:
+	 * makes no sense to test that produced features match an exact expectation --
+	 * that's not part of the specification
+	 */	
 
 	private AnalysisEngine getEngine() throws ResourceInitializationException {
 		return AnalysisEngineFactory.createPrimitive(

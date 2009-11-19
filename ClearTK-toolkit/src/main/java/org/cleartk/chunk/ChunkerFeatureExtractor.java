@@ -25,6 +25,7 @@ package org.cleartk.chunk;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.cleartk.CleartkException;
 import org.cleartk.Initializable;
 import org.cleartk.classifier.Instance;
 
@@ -37,6 +38,6 @@ import org.cleartk.classifier.Instance;
 
 public interface ChunkerFeatureExtractor extends Initializable{
 
-	public Instance<String> extractFeatures(JCas jCas, Annotation labeledAnnotation, Annotation sequence);
+	public Instance<String> extractFeatures(JCas jCas, Annotation labeledAnnotation, Annotation sequence) throws CleartkException;
 		
 }

@@ -29,8 +29,10 @@ import java.io.IOException;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.jcas.JCas;
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.WindowNGramFeature;
+import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
 import org.cleartk.util.AnnotationRetrieval;
@@ -47,7 +49,7 @@ import org.uutuc.factory.TokenFactory;
 public class WindowNGramExtractorTest {
 
 	@Test
-	public void testLeftGrams() throws IOException, UIMAException {
+	public void testLeftGrams() throws IOException, UIMAException, CleartkException {
 		WindowNGramExtractor extractor = new WindowNGramExtractor(
 				Token.class, new SpannedTextExtractor(),
 				WindowNGramFeature.ORIENTATION_LEFT,
@@ -63,7 +65,7 @@ public class WindowNGramExtractorTest {
 		Token token = AnnotationRetrieval.get(jCas, Token.class, 19);
 		assertEquals("island", token.getCoveredText());
 		Feature feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals("WindowNGram_L0_3gram_L2R_SpannedText", feature.getName());
+		assertEquals("WindowNGram_L0_3gram_L2R", feature.getName());
 		assertEquals("of the island", feature.getValue().toString());
 
 		// "I" - the first word of the sentence
@@ -113,7 +115,7 @@ public class WindowNGramExtractorTest {
 		token = AnnotationRetrieval.get(jCas, Token.class, 19);
 		assertEquals("island", token.getCoveredText());
 		feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals("WindowNGram_L0_3gram_R2L_SpannedText", feature.getName());
+		assertEquals("WindowNGram_L0_3gram_R2L", feature.getName());
 		assertEquals("island the of", feature.getValue().toString());
 
 		token = AnnotationRetrieval.get(jCas, Token.class, 4);
@@ -154,7 +156,7 @@ public class WindowNGramExtractorTest {
 		token = AnnotationRetrieval.get(jCas, Token.class, 19);
 		assertEquals("island", token.getCoveredText());
 		feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals("WindowNGram_L2_2gram_L2R_SpannedText", feature.getName());
+		assertEquals("WindowNGram_L2_2gram_L2R", feature.getName());
 		assertEquals("middle of", feature.getValue().toString());
 
 		token = AnnotationRetrieval.get(jCas, Token.class, 4);
@@ -188,7 +190,7 @@ public class WindowNGramExtractorTest {
 	}
 
 	@Test
-	public void testRightGrams() throws IOException, UIMAException {
+	public void testRightGrams() throws IOException, UIMAException, CleartkException {
 		WindowNGramExtractor extractor = new WindowNGramExtractor(
 				Token.class, new SpannedTextExtractor(),
 				WindowNGramFeature.ORIENTATION_RIGHT,
@@ -204,7 +206,7 @@ public class WindowNGramExtractorTest {
 		Token token = AnnotationRetrieval.get(jCas, Token.class, 19);
 		assertEquals("island", token.getCoveredText());
 		Feature feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals("WindowNGram_R0_3gram_L2R_SpannedText", feature.getName());
+		assertEquals("WindowNGram_R0_3gram_L2R", feature.getName());
 		assertEquals("island that I", feature.getValue().toString());
 
 		// "I" - the first word of the sentence
@@ -255,7 +257,7 @@ public class WindowNGramExtractorTest {
 		token = AnnotationRetrieval.get(jCas, Token.class, 19);
 		assertEquals("island", token.getCoveredText());
 		feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals("WindowNGram_R2_6gram_R2L_SpannedText", feature.getName());
+		assertEquals("WindowNGram_R2_6gram_R2L", feature.getName());
 		assertEquals("I when found d ' I", feature.getValue().toString());
 
 		// "I" - the first word of the sentence

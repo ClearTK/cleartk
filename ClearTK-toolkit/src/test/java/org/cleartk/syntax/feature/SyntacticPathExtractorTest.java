@@ -27,11 +27,11 @@ import java.util.List;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.jcas.JCas;
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.SpannedTextExtractor;
-import org.cleartk.classifier.feature.extractor.TypePathExtractor;
+import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
+import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.syntax.TreebankTestsUtil;
-import org.cleartk.syntax.feature.SyntacticPathExtractor;
 import org.cleartk.syntax.treebank.type.TreebankNode;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
@@ -51,7 +51,7 @@ import org.uutuc.factory.TokenFactory;
 public class SyntacticPathExtractorTest {
 
 	@Test
-	public void test() throws UIMAException {
+	public void test() throws UIMAException, CleartkException {
 		JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
 		TokenFactory.createTokens(jCas, "I ran home", Token.class, Sentence.class, null, "PRP VBD NN", null, "org.cleartk.type.Token:pos", null);
 		TreebankNode iNode = TreebankTestsUtil.newNode(jCas, 0, 1, "PRP");
@@ -70,17 +70,17 @@ public class SyntacticPathExtractorTest {
 		extractor = new SyntacticPathExtractor(tagExtractor);
 		features = extractor.extract(jCas, iNode, ranNode);
 		Assert.assertEquals(2, features.size());
-		Assert.assertEquals("SyntacticPath_TypePath_NodeType", features.get(0).getName());
+		Assert.assertEquals("SyntacticPath(TypePath(NodeType))", features.get(0).getName());
 		Assert.assertEquals("PRP::NP::S;;VP;;VBD", features.get(0).getValue());
 		Assert.assertEquals("SyntacticPath_Length", features.get(1).getName());
 		Assert.assertEquals(5, ((Long)features.get(1).getValue()).intValue());
 
-		extractor = new SyntacticPathExtractor("Foo", tagExtractor);
+		extractor = new SyntacticPathExtractor(tagExtractor);
 		features = extractor.extract(jCas, topNode, homenpNode);
 		Assert.assertEquals(2, features.size());
-		Assert.assertEquals("Foo_SyntacticPath_TypePath_NodeType", features.get(0).getName());
+		Assert.assertEquals("SyntacticPath_TypePath_NodeType", features.get(0).getName());
 		Assert.assertEquals("S;;VP;;NP", features.get(0).getValue());
-		Assert.assertEquals("Foo_SyntacticPath_Length", features.get(1).getName());
+		Assert.assertEquals("SyntacticPath_Length", features.get(1).getName());
 		Assert.assertEquals(3, ((Long)features.get(1).getValue()).intValue());
 
 		extractor = new SyntacticPathExtractor(textExtractor, true);

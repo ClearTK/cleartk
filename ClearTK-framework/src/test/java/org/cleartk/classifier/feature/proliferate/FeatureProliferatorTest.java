@@ -29,9 +29,10 @@ import java.util.List;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.SimpleFeatureExtractor;
-import org.cleartk.classifier.feature.extractor.SpannedTextExtractor;
+import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.type.test.Token;
 import org.junit.Assert;
 import org.junit.Test;
@@ -139,7 +140,7 @@ public class FeatureProliferatorTest {
 	}
 
 	@Test
-	public void testProliferatingExtractor() throws UIMAException, IOException {
+	public void testProliferatingExtractor() throws UIMAException, IOException, CleartkException {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				JCasAnnotatorAdapter.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TestTypeSystem"));
@@ -153,31 +154,31 @@ public class FeatureProliferatorTest {
 				new LowerCaseProliferator());
 		List<Feature> features = textAndLower.extract(jCas, hello);
 		Assert.assertEquals(2, features.size());
-		Assert.assertEquals("SpannedText", features.get(0).getName());
+		Assert.assertEquals(null, features.get(0).getName());
 		Assert.assertEquals("Hello", features.get(0).getValue());
-		Assert.assertEquals("LowerCase_SpannedText", features.get(1).getName());
+		Assert.assertEquals("LowerCase", features.get(1).getName());
 		Assert.assertEquals("hello", features.get(1).getValue());
 
 		String yearDigits = NumericTypeProliferator.YEAR_DIGITS;
-		SimpleFeatureExtractor textAndCapsAndNums = new ProliferatingExtractor(new SpannedTextExtractor("SpannedText"),
+		SimpleFeatureExtractor textAndCapsAndNums = new ProliferatingExtractor(new SpannedTextExtractor(),
 				new CapitalTypeProliferator(), new NumericTypeProliferator());
 		features = textAndCapsAndNums.extract(jCas, year);
 		Assert.assertEquals(2, features.size());
-		Assert.assertEquals("SpannedText", features.get(0).getName());
+		Assert.assertEquals(null, features.get(0).getName());
 		Assert.assertEquals("2008", features.get(0).getValue());
-		Assert.assertEquals("NumericType_SpannedText", features.get(1).getName());
+		Assert.assertEquals("NumericType", features.get(1).getName());
 		Assert.assertEquals(yearDigits, features.get(1).getValue());
 
 		String initialUpper = CapitalTypeProliferator.INITIAL_UPPERCASE;
 		SimpleFeatureExtractor textAndCapsAndLower = new ProliferatingExtractor(
-				new SpannedTextExtractor("SpannedText"), new CapitalTypeProliferator(), new LowerCaseProliferator());
+				new SpannedTextExtractor(), new CapitalTypeProliferator(), new LowerCaseProliferator());
 		features = textAndCapsAndLower.extract(jCas, hello);
 		Assert.assertEquals(3, features.size());
-		Assert.assertEquals("SpannedText", features.get(0).getName());
+		Assert.assertEquals(null, features.get(0).getName());
 		Assert.assertEquals("Hello", features.get(0).getValue());
-		Assert.assertEquals("CapitalType_SpannedText", features.get(1).getName());
+		Assert.assertEquals("CapitalType", features.get(1).getName());
 		Assert.assertEquals(initialUpper, features.get(1).getValue());
-		Assert.assertEquals("LowerCase_SpannedText", features.get(2).getName());
+		Assert.assertEquals("LowerCase", features.get(2).getName());
 		Assert.assertEquals("hello", features.get(2).getValue());
 	}
 

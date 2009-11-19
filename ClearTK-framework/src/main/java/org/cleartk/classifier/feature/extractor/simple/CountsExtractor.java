@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.classifier.feature.extractor;
+package org.cleartk.classifier.feature.extractor.simple;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -30,9 +30,9 @@ import java.util.Map;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.Counts;
-import org.cleartk.classifier.feature.extractor.SimpleFeatureExtractor;
 import org.cleartk.util.AnnotationRetrieval;
 
 
@@ -61,12 +61,12 @@ public class CountsExtractor implements SimpleFeatureExtractor {
 		this(null, annotationClass, subExtractor);
 	}
 
-	public List<Feature> extract(JCas jCas, Annotation windowAnnotation) throws UnsupportedOperationException {
+	public List<Feature> extract(JCas view, Annotation windowAnnotation) throws CleartkException {
 		Map<Object, Integer> countsMap = new HashMap<Object, Integer>();
 		String featureName = null;
 
-		for( Annotation annotation : AnnotationRetrieval.getAnnotations(jCas, windowAnnotation, annotationClass) ) {
-			for( Feature feature : subExtractor.extract(jCas, annotation) ) {
+		for( Annotation annotation : AnnotationRetrieval.getAnnotations(view, windowAnnotation, annotationClass) ) {
+			for( Feature feature : subExtractor.extract(view, annotation) ) {
 				if( featureName == null )
 					featureName = feature.getName();
 				else if( ! featureName.equals(feature.getName()) )

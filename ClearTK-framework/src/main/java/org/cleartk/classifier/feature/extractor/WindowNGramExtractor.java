@@ -30,8 +30,10 @@ import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.WindowNGramFeature;
+import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.AnnotationUtil;
 import org.cleartk.util.UIMAUtil;
@@ -132,12 +134,12 @@ public class WindowNGramExtractor {
 		this.name = name;
 	}
 
-	public Feature extract(JCas jCas, Annotation focusAnnotation, Class<? extends Annotation> cls) {
+	public Feature extract(JCas jCas, Annotation focusAnnotation, Class<? extends Annotation> cls) throws CleartkException {
 		Annotation ngramAnnotation = AnnotationRetrieval.getContainingAnnotation(jCas, focusAnnotation, cls);
 		return extract(jCas, focusAnnotation, ngramAnnotation);
 	}
 
-	public Feature extract(JCas jCas, Annotation focusAnnotation, Annotation ngramAnnotation) {
+	public Feature extract(JCas jCas, Annotation focusAnnotation, Annotation ngramAnnotation) throws CleartkException {
 		if (this.featureType == null) this.featureType = UIMAUtil.getCasType(jCas, this.featureClass);
 
 		List<String> ngramValues = new ArrayList<String>();
@@ -221,7 +223,7 @@ public class WindowNGramExtractor {
 				|| orientation.equals(WindowNGramFeature.ORIENTATION_MIDDLE)) ngramIterator.moveToNext();
 	}
 
-	private Feature extactNGrammedFeature(JCas jCas, int i, Annotation annotation) {
+	private Feature extactNGrammedFeature(JCas jCas, int i, Annotation annotation) throws CleartkException {
 		List<Feature> ngramedFeatures = featureExtractor.extract(jCas, annotation);
 
 		if (ngramedFeatures != null && ngramedFeatures.size() > 0) {

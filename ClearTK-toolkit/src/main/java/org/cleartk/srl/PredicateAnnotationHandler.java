@@ -36,11 +36,11 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.InstanceConsumer;
 import org.cleartk.classifier.feature.WindowFeature;
-import org.cleartk.classifier.feature.extractor.CombinedExtractor;
-import org.cleartk.classifier.feature.extractor.SimpleFeatureExtractor;
-import org.cleartk.classifier.feature.extractor.SpannedTextExtractor;
-import org.cleartk.classifier.feature.extractor.TypePathExtractor;
 import org.cleartk.classifier.feature.extractor.WindowExtractor;
+import org.cleartk.classifier.feature.extractor.simple.CombinedExtractor;
+import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
+import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.svmlight.DefaultSVMlightDataWriterFactory;
 import org.cleartk.srl.type.Predicate;
 import org.cleartk.type.Sentence;
@@ -77,7 +77,7 @@ public class PredicateAnnotationHandler implements AnnotationHandler<Boolean> {
 						new TypePathExtractor(Token.class, "stem"),
 						new TypePathExtractor(Token.class, "pos") };
 
-		tokenExtractor = new CombinedExtractor("Token", tokenExtractors);
+		tokenExtractor = new CombinedExtractor(tokenExtractors);
 		
 		leftWindowExtractor = new WindowExtractor("Token", Token.class,
 				new CombinedExtractor( tokenExtractors ),

@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.syntax.feature;
 
 import java.util.ArrayList;
@@ -29,11 +29,11 @@ import java.util.List;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.jcas.JCas;
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.SpannedTextExtractor;
-import org.cleartk.classifier.feature.extractor.TypePathExtractor;
+import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
+import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.syntax.TreebankTestsUtil;
-import org.cleartk.syntax.feature.HeadWordExtractor;
 import org.cleartk.syntax.treebank.type.TreebankNode;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
@@ -53,7 +53,7 @@ import org.uutuc.factory.TokenFactory;
 public class HeadWordExtractorTest {
 
 	@Test
-	public void testNoTreebankNode() throws UIMAException {
+	public void testNoTreebankNode() throws UIMAException, CleartkException {
 		HeadWordExtractor extractor = new HeadWordExtractor(null);
 		JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
 		jCas.setDocumentText("foo");
@@ -62,59 +62,69 @@ public class HeadWordExtractorTest {
 
 		this.checkFeatures(extractor.extract(jCas, token), null);
 	}
-	
+
 	@Test
-	public void testNoTokens() throws UIMAException {
+	public void testNoTokens() throws UIMAException, CleartkException {
 		HeadWordExtractor extractor = new HeadWordExtractor(new SpannedTextExtractor(), true);
 		JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
 		jCas.setDocumentText("foo");
 		TreebankNode node = TreebankTestsUtil.newNode(jCas, 0, 3, "NN");
 
-		this.checkFeatures(extractor.extract(jCas, node), null);
+		this.checkFeatures(extractor.extract(jCas, node), "HeadWord", "foo");
 	}
-	
-	@Test
-	public void testNoNodeTypes() throws UIMAException {
-		HeadWordExtractor extractor = new HeadWordExtractor(null);
-		JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
-		jCas.setDocumentText("foo");
-		TreebankNode parent = TreebankTestsUtil.newNode(jCas, null, TreebankTestsUtil.newNode(jCas, 0, 3, null));
 
-		this.checkFeatures(extractor.extract(jCas, parent), null);
-	}
-	
 	@Test
-	public void testSimpleSentence() throws UIMAException {
+	public void testNoNodeTypes() throws UIMAException, CleartkException {
+		try {
+			HeadWordExtractor extractor = new HeadWordExtractor(null);
+			JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
+			jCas.setDocumentText("foo");
+			TreebankNode parent = TreebankTestsUtil.newNode(jCas, null, TreebankTestsUtil.newNode(jCas, 0, 3, null));
+
+			this.checkFeatures(extractor.extract(jCas, parent), null);
+		} catch( NullPointerException e ) {
+			// that's what we should expect when passing in a null extractor!
+			return;
+		} catch( CleartkException e ) {
+			// this is ok, too
+			return;
+		}
+
+		Assert.fail("should throw an exception when configuring a null extractor");
+	}
+
+	@Test
+	public void testSimpleSentence() throws UIMAException, CleartkException {
 		JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
 		TokenFactory.createTokens(jCas, "I ran home", Token.class, Sentence.class, null, "PRP VBD NN", null, "org.cleartk.type.Token:pos", null);
 		TreebankNode iNode = TreebankTestsUtil.newNode(jCas, 0, 1, "PRP");
 		TreebankNode ranNode = TreebankTestsUtil.newNode(jCas, 2, 5, "VBD");
 		TreebankNode homeNode = TreebankTestsUtil.newNode(jCas, 6, 10, "NN");
 		TreebankNode vpNode = TreebankTestsUtil.newNode(jCas, "VP", ranNode, homeNode);
-		
+
 		SpannedTextExtractor textExtractor = new SpannedTextExtractor();
 		TypePathExtractor posExtractor = new TypePathExtractor(Token.class, "pos");
-		HeadWordExtractor extractor = new HeadWordExtractor("Foo", textExtractor);
-		
+		HeadWordExtractor extractor = new HeadWordExtractor(textExtractor);
+
 		this.checkFeatures(
 				extractor.extract(jCas, iNode),
-				"Foo_HeadWord:Token_SpannedText", "I");
-		
+				"HeadWord", "I");
+
 		this.checkFeatures(
 				extractor.extract(jCas, vpNode),
-				"Foo_HeadWord:Token_SpannedText", "ran");
-		
+				"HeadWord", "ran");
+
 		this.checkFeatures(
 				new HeadWordExtractor(textExtractor, false).extract(jCas, vpNode),
-				"HeadWord:Node_SpannedText", "ran");
+				"HeadWord", "ran");
 
 		this.checkFeatures(
 				new HeadWordExtractor(posExtractor).extract(jCas, vpNode),
-				"HeadWord:Token_TypePath_Pos", "VBD");
-}
-	
+				"HeadWord_TypePath(Pos)", "VBD");
+	}
+
 	@Test
-	public void testNPandPP() throws UIMAException {
+	public void testNPandPP() throws UIMAException, CleartkException {
 		JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
 		TokenFactory.createTokens(jCas,
 				"cat's toy under the box", Token.class, Sentence.class, 
@@ -132,33 +142,33 @@ public class HeadWordExtractorTest {
 		TreebankNode theboxNode = TreebankTestsUtil.newNode(jCas, "NP", theNode, boxNode);
 		TreebankNode undertheboxNode = TreebankTestsUtil.newNode(jCas, "PP", underNode, theboxNode);
 		TreebankNode tree = TreebankTestsUtil.newNode(jCas, "NP", catstoyNode, undertheboxNode);
-		
+
 		SpannedTextExtractor textExtractor = new SpannedTextExtractor();
 		TypePathExtractor posExtractor = new TypePathExtractor(Token.class, "pos");
 		HeadWordExtractor extractor;
-		
-		extractor = new HeadWordExtractor(posExtractor, true, true);
+
+		extractor = new HeadWordExtractor(posExtractor, true);
 		this.checkFeatures(
 				extractor.extract(jCas, tree),
-				"HeadWord:Token_TypePath_Pos", "NN");
+				"HeadWord_TypePath(Pos)", "NN");
 		this.checkFeatures(
 				extractor.extract(jCas, undertheboxNode),
-				"HeadWord:Token_TypePath_Pos", "IN");
-		
-		extractor = new HeadWordExtractor(textExtractor, false, true);
+				"HeadWord_TypePath(Pos)", "IN");
+
+		extractor = new HeadWordExtractor(textExtractor, true);
 		this.checkFeatures(
 				extractor.extract(jCas, tree),
-				"HeadWord:Node_SpannedText", "toy");
-		
+				"HeadWord", "toy");
+
 		List<Feature> features = extractor.extract(jCas, undertheboxNode);
 		Assert.assertEquals(2, features.size());
-		Assert.assertEquals("HeadWord:Node_SpannedText", features.get(0).getName());
+		Assert.assertEquals("HeadWord", features.get(0).getName());
 		Assert.assertEquals("under", features.get(0).getValue());
-		Assert.assertEquals("PPHeadWord:Node_SpannedText", features.get(1).getName());
+		Assert.assertEquals("PPHeadWord", features.get(1).getName());
 		Assert.assertEquals("the box", features.get(1).getValue());
 
 	}
-	
+
 	private void checkFeatures(List<Feature> features, String expectedName, Object ... expectedValues) {
 		List<Object> actualValues = new ArrayList<Object>();
 		for (Feature feature: features) {
@@ -166,7 +176,7 @@ public class HeadWordExtractorTest {
 			actualValues.add(feature.getValue());
 		}
 		Assert.assertEquals(Arrays.asList(expectedValues), actualValues);
-		
+
 	}
-	
+
 }

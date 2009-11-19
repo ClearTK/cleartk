@@ -68,9 +68,9 @@ public class TypePathFeature extends Feature {
 
 		// may not be > 0 if path is "" or "/"
 		if (sb.length() > 0) sb.replace(0, 1, sb.substring(0, 1).toUpperCase());
-
+		
 		if (sb.length() > 0) {
-			return Feature.createName(name, sb.toString());
+			return String.format("%s(%s)", name, sb.toString());
 		}
 		else {
 			return null;

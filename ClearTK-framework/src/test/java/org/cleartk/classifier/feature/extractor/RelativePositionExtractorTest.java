@@ -29,6 +29,7 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.feature.extractor.annotationpair.RelativePositionExtractor;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uutuc.factory.JCasFactory;
@@ -99,10 +100,10 @@ public class RelativePositionExtractorTest {
 		Assert.assertEquals("RelativePosition", features.get(0).getName());
 		Assert.assertEquals(expected, features.get(0).getValue());
 
-		extractor = new RelativePositionExtractor("Foo");
+		extractor = new RelativePositionExtractor();
 		features = extractor.extract(jCas, annotation1, annotation2);
 		Assert.assertEquals(1, features.size());
-		Assert.assertEquals("Foo_RelativePosition", features.get(0).getName());
+		Assert.assertEquals("RelativePosition", features.get(0).getName());
 		Assert.assertEquals(expected, features.get(0).getValue());
 }
 

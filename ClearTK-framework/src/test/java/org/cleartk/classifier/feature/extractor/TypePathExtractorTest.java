@@ -38,14 +38,16 @@ import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.cas.StringArray;
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.TypePathFeature;
+import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.type.test.DependencyRelation;
 import org.cleartk.type.test.Header;
+import org.cleartk.type.test.Lemma;
 import org.cleartk.type.test.POSTag;
 import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
-import org.cleartk.type.test.Lemma;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.JCasUtil;
 import org.junit.Test;
@@ -124,7 +126,7 @@ public class TypePathExtractorTest {
 	}
 
 	@Test
-	public void testExtract() throws IOException, UIMAException {
+	public void testExtract() throws IOException, UIMAException, CleartkException {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				TypePathExtractorTest.Annotator.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TestTypeSystem"));
@@ -298,7 +300,7 @@ public class TypePathExtractorTest {
 	}
 
 	@Test
-	public void testTicket23() throws IOException, UIMAException {
+	public void testTicket23() throws IOException, UIMAException, CleartkException {
 
 		// token "place" in "wide. This place was a tolerable long,");
 		JCas jCas = JCasUtil.getJCas();
@@ -315,11 +317,11 @@ public class TypePathExtractorTest {
 
 		Feature feature = posExtractor.extract(jCas, token).get(0);
 		assertEquals("A", feature.getValue().toString());
-		assertEquals("TypePath_Pos", feature.getName());
+		assertEquals("TypePath(Pos)", feature.getName());
 		
 		feature = posExtractor.extract(jCas, tokenL0).get(0);
 		assertEquals("B", feature.getValue().toString());
-		assertEquals("TypePath_Pos", feature.getName());
+		assertEquals("TypePath(Pos)", feature.getName());
 		
 	}
 

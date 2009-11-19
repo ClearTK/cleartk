@@ -27,6 +27,7 @@ import java.util.List;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 
 /**
@@ -41,6 +42,6 @@ import org.cleartk.classifier.Feature;
 
 public interface POSFeatureExtractor<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation> {
 	
-	public List<Feature> extractFeatures(JCas jCas, TOKEN_TYPE token, SENTENCE_TYPE sentence);
+	public List<Feature> extractFeatures(JCas jCas, TOKEN_TYPE token, SENTENCE_TYPE sentence) throws CleartkException;
 
 }

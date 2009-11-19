@@ -30,16 +30,17 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.CleartkException;
 import org.cleartk.chunk.ChunkerFeatureExtractor;
 import org.cleartk.chunk.ChunkerHandler;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.WindowFeature;
 import org.cleartk.classifier.feature.WindowNGramFeature;
-import org.cleartk.classifier.feature.extractor.SimpleFeatureExtractor;
-import org.cleartk.classifier.feature.extractor.SpannedTextExtractor;
-import org.cleartk.classifier.feature.extractor.WhiteSpaceExtractor;
 import org.cleartk.classifier.feature.extractor.WindowExtractor;
 import org.cleartk.classifier.feature.extractor.WindowNGramExtractor;
+import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
+import org.cleartk.classifier.feature.extractor.simple.WhiteSpaceExtractor;
 import org.cleartk.classifier.feature.proliferate.CapitalTypeProliferator;
 import org.cleartk.classifier.feature.proliferate.CharacterNGramProliferator;
 import org.cleartk.classifier.feature.proliferate.ContainsHyphenProliferator;
@@ -103,7 +104,7 @@ public class ChunkTokenizerFeatureExtractor implements ChunkerFeatureExtractor {
 				WindowNGramFeature.ORIENTATION_RIGHT, WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT, "_", 0, 2));
 	}
 
-	public Instance<String> extractFeatures(JCas jCas, Annotation labeledAnnotation, Annotation sequence) {
+	public Instance<String> extractFeatures(JCas jCas, Annotation labeledAnnotation, Annotation sequence) throws CleartkException {
 
 		Instance<String> instance = new Instance<String>();
 

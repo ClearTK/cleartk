@@ -32,8 +32,11 @@ import java.util.List;
 import org.apache.uima.UIMAException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.WindowFeature;
+import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
+import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
 import org.cleartk.util.AnnotationRetrieval;
@@ -143,7 +146,7 @@ public class WindowExtractorTest {
 	}
 
 	@Test
-	public void testExtractLeft() throws IOException, UIMAException {
+	public void testExtractLeft() throws IOException, UIMAException, CleartkException {
 		WindowExtractor leftEx03 = new WindowExtractor(Token.class, new SpannedTextExtractor(),
 				WindowFeature.ORIENTATION_LEFT, 0, 3);
 		WindowExtractor leftEx24 = new WindowExtractor(Token.class, new SpannedTextExtractor(),
@@ -161,17 +164,17 @@ public class WindowExtractorTest {
 		assertEquals(WindowFeature.ORIENTATION_LEFT, feature.getOrientation());
 		assertEquals(0, feature.getPosition());
 		assertEquals("the", feature.getValue().toString().toString());
-		assertEquals("Window_L0_SpannedText", feature.getName());
+		assertEquals("Window_L0", feature.getName());
 		feature = (WindowFeature) features.get(1);
 		assertEquals(WindowFeature.ORIENTATION_LEFT, feature.getOrientation());
 		assertEquals(1, feature.getPosition());
 		assertEquals("because", feature.getValue().toString());
-		assertEquals("Window_L1_SpannedText", feature.getName());
+		assertEquals("Window_L1", feature.getName());
 		feature = (WindowFeature) features.get(2);
 		assertEquals(WindowFeature.ORIENTATION_LEFT, feature.getOrientation());
 		assertEquals(2, feature.getPosition());
 		assertEquals(",", feature.getValue().toString());
-		assertEquals("Window_L2_SpannedText", feature.getName());
+		assertEquals("Window_L2", feature.getName());
 
 		features = leftEx24.extract(jCas, token, Sentence.class);
 		assertEquals(2, features.size());
@@ -252,7 +255,7 @@ public class WindowExtractorTest {
 	}
 
 	@Test
-	public void testExtractRight() throws IOException, UIMAException {
+	public void testExtractRight() throws IOException, UIMAException, CleartkException {
 		WindowExtractor rightEx03 = new WindowExtractor(Token.class, new SpannedTextExtractor(),
 				WindowFeature.ORIENTATION_RIGHT, 0, 3);
 		WindowExtractor rightEx1030 = new WindowExtractor(Token.class, new SpannedTextExtractor(),
@@ -356,7 +359,7 @@ public class WindowExtractorTest {
 	}
 
 	@Test
-	public void testExtractMiddle() throws IOException, UIMAException {
+	public void testExtractMiddle() throws IOException, UIMAException, CleartkException {
 		JCas jCas = JCasUtil.getJCas();
 		TokenFactory.createTokens(jCas, "because the island was only", Token.class, Sentence.class);
 		Annotation spanningToken = new Annotation(jCas);
@@ -383,7 +386,7 @@ public class WindowExtractorTest {
 	}
 
 	@Test
-	public void testTicket23() throws IOException, UIMAException {
+	public void testTicket23() throws IOException, UIMAException, CleartkException {
 		// token "place" in "wide. This place was a tolerable long,"
 		JCas jCas = JCasUtil.getJCas();
 		TokenFactory.createTokens(jCas, "a mile wide .\nThis place was a tolerable long ,",
@@ -408,7 +411,7 @@ public class WindowExtractorTest {
 		List<Feature> features = leftPosExtractor.extract(jCas, token, Sentence.class);
 		assertEquals("B", features.get(0).getValue().toString());
 		assertEquals(0, ((WindowFeature) features.get(0)).getOutOfBoundsDistance());
-		assertEquals("Window_L0_TypePath_Pos", features.get(0).getName());
+		assertEquals("Window_L0_TypePath(Pos)", features.get(0).getName());
 		assertEquals(1, ((WindowFeature) features.get(1)).getOutOfBoundsDistance());
 		assertEquals("Window_L1OOB1", features.get(1).getName());
 		assertEquals(2, ((WindowFeature) features.get(2)).getOutOfBoundsDistance());

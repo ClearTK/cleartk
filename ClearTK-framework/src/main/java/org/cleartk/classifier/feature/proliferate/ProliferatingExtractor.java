@@ -28,8 +28,9 @@ import java.util.List;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -55,8 +56,7 @@ public class ProliferatingExtractor implements SimpleFeatureExtractor {
 		this.proliferators = proliferators;
 	}
 
-	public List<Feature> extract(JCas jCas, Annotation focusAnnotation)
-			throws UnsupportedOperationException {
+	public List<Feature> extract(JCas jCas, Annotation focusAnnotation)	throws CleartkException {
 		List<Feature> features = new ArrayList<Feature>();
 		List<Feature> baseFeatures = this.extractor.extract(jCas, focusAnnotation);
 		features.addAll(baseFeatures);
