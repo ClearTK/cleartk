@@ -26,7 +26,6 @@ package org.cleartk.corpus.ace2005;
 
 import java.io.File;
 
-import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.junit.After;
 import org.junit.Assert;
@@ -64,7 +63,7 @@ public class Ace2005GoldTest{
 	public void testReaderInvalidParameters() throws Exception {
 		try {
 			CollectionReaderFactory.createCollectionReader(
-					CollectionReader.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
+					Ace2005GoldReader.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
 			Assert.fail("expected error for invalid corpus directory");
 		}
 		catch (ResourceInitializationException e) {
