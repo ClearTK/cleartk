@@ -62,8 +62,8 @@ import org.cleartk.util.AnnotationRetrieval;
  */
 public class ExamplePOSAnnotationHandler implements SequentialAnnotationHandler<String>, Initializable {
 
-	public static final String DEFAULT_OUTPUT_DIRECTORY = "example/model";
-	public static final String DEFAULT_MODEL = "example/model/model.jar";
+	public static final String DEFAULT_OUTPUT_DIRECTORY = "example/pos/model";
+	public static final String DEFAULT_MODEL = "example/pos/model/model.jar";
 	
 	private List<SimpleFeatureExtractor> tokenFeatureExtractors;
 	private List<WindowExtractor> tokenSentenceFeatureExtractors;
