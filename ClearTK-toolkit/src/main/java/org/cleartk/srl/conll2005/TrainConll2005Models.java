@@ -26,9 +26,7 @@ package org.cleartk.srl.conll2005;
 import java.io.File;
 
 import org.cleartk.CleartkComponents;
-import org.cleartk.classifier.libsvm.DefaultMultiClassLIBSVMDataWriterFactory;
 import org.cleartk.classifier.svmlight.DefaultSVMlightDataWriterFactory;
-import org.cleartk.srl.ArgumentClassificationHandler;
 import org.cleartk.srl.ArgumentIdentificationHandler;
 import org.cleartk.token.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.snowball.SnowballStemmer;
@@ -55,7 +53,8 @@ public class TrainConll2005Models {
 				CleartkComponents.createDataWriterAnnotator(
 						ArgumentIdentificationHandler.class,
 						DefaultSVMlightDataWriterFactory.class,
-						argumentIdentificationOutputDirectory.toString())//,
+						argumentIdentificationOutputDirectory.toString(),
+						null)//,
 //				CleartkComponents.createDataWriterAnnotator(
 //						ArgumentClassificationHandler.class,
 //						DefaultMultiClassLIBSVMDataWriterFactory.class,

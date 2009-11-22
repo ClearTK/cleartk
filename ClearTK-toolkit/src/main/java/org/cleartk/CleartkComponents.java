@@ -140,16 +140,6 @@ public class CleartkComponents {
 
 	}
 
-	public static <OUTCOME_TYPE> AnalysisEngineDescription createDataWriterAnnotator(
-			Class<? extends AnnotationHandler<OUTCOME_TYPE>> annotationHandlerClass,
-			Class<? extends DataWriterFactory<OUTCOME_TYPE>> dataWriterFactoryClass, String outputDir)
-			throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveDescription(DataWriterAnnotator.class, TYPE_SYSTEM_DESCRIPTION,
-				TYPE_PRIORITIES, InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, annotationHandlerClass.getName(),
-				DataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, dataWriterFactoryClass.getName(),
-				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDir);
-	}
-
 		public static <OUTCOME_TYPE> AnalysisEngineDescription createViterbiDataWriterAnnotator(
 			Class<? extends SequentialAnnotationHandler<OUTCOME_TYPE>> annotationHandlerClass,
 			Class<? extends DataWriterFactory<OUTCOME_TYPE>> delegatedDataWriterFactoryClass, String outputDir,
@@ -171,6 +161,33 @@ public class CleartkComponents {
 				TYPE_PRIORITIES, InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, annotationHandlerClass.getName(),
 				ClassifierAnnotator.PARAM_CLASSIFIER_JAR_PATH, classifierJar);
 	}
+
+	public static <OUTCOME_TYPE> AnalysisEngineDescription createDataWriterAnnotator(
+			Class<? extends AnnotationHandler<OUTCOME_TYPE>> annotationHandlerClass,
+			Class<? extends DataWriterFactory<OUTCOME_TYPE>> dataWriterFactoryClass, String outputDir,
+			List<Class<?>> dynamicallyLoadedClasses, Object... configurationData)
+			throws ResourceInitializationException {
+		AnalysisEngineDescription aed =  AnalysisEngineFactory.createPrimitiveDescription(DataWriterAnnotator.class, TYPE_SYSTEM_DESCRIPTION,
+				TYPE_PRIORITIES);
+		
+		if (dynamicallyLoadedClasses != null) {
+			addConfigurationParameters(aed, dynamicallyLoadedClasses);
+		}
+		if(annotationHandlerClass != null) {
+			addConfigurationParameter(aed, InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, annotationHandlerClass.getName());
+		}
+		if(dataWriterFactoryClass != null) {	
+			addConfigurationParameter(aed, DataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, dataWriterFactoryClass.getName());
+		}
+		if(outputDir != null) {
+			addConfigurationParameter(aed, DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDir);
+		}
+		if (configurationData != null) {
+			addConfigurationParameters(aed, configurationData);
+		}
+		return aed;
+	}
+
 
 	public static <OUTCOME_TYPE> AnalysisEngineDescription createSequentialClassifierAnnotator(
 			Class<? extends SequentialAnnotationHandler<OUTCOME_TYPE>> annotationHandlerClass, String classifierJar,

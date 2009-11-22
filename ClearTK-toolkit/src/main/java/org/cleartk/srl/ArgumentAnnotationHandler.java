@@ -72,7 +72,7 @@ public class ArgumentAnnotationHandler implements AnnotationHandler<String> {
 	throws ResourceInitializationException {
 		return CleartkComponents.createDataWriterAnnotator(
 				ArgumentAnnotationHandler.class,
-				DefaultOVASVMlightDataWriterFactory.class, outputDirectory);
+				DefaultOVASVMlightDataWriterFactory.class, outputDirectory, null);
 	}
 
 	public static AnalysisEngineDescription createArgumentAnnotator(String classifierJar)

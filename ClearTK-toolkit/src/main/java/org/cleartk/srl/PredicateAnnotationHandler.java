@@ -62,7 +62,7 @@ public class PredicateAnnotationHandler implements AnnotationHandler<Boolean> {
 	throws ResourceInitializationException {
 		return CleartkComponents.createDataWriterAnnotator(
 				PredicateAnnotationHandler.class,
-				DefaultSVMlightDataWriterFactory.class, outputDirectory);
+				DefaultSVMlightDataWriterFactory.class, outputDirectory, null);
 	}
 
 	public static AnalysisEngineDescription createPredicateAnnotator(String classifierJar)

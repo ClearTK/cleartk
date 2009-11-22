@@ -73,7 +73,7 @@ public class NonSequentialExamplePOSAnnotationHandlerTest {
 
 		String outputDirectory = baseDirectory+"/libsvm";
 		AnalysisEngineDescription dataWriter = 	CleartkComponents.createDataWriterAnnotator(NonSequentialExamplePOSAnnotationHandler.class,
-				DefaultMultiClassLIBSVMDataWriterFactory.class, outputDirectory);
+				DefaultMultiClassLIBSVMDataWriterFactory.class, outputDirectory, null);
 		testClassifier(dataWriter, outputDirectory, "-t", "0");
 
 		String firstLine = FileUtil.loadListOfStrings(new File(outputDirectory + "/2008_Sichuan_earthquake.txt.pos"))[0].trim();
@@ -88,7 +88,7 @@ public class NonSequentialExamplePOSAnnotationHandlerTest {
 
 		String outputDirectory = baseDirectory+"/maxent";
 		AnalysisEngineDescription dataWriter = 	CleartkComponents.createDataWriterAnnotator(NonSequentialExamplePOSAnnotationHandler.class,
-				DefaultMaxentDataWriterFactory.class, outputDirectory);
+				DefaultMaxentDataWriterFactory.class, outputDirectory, null);
 		testClassifier(dataWriter, outputDirectory);
 
 		String firstLine = FileUtil.loadListOfStrings(new File(outputDirectory + "/2008_Sichuan_earthquake.txt.pos"))[0].trim();
@@ -105,7 +105,7 @@ public class NonSequentialExamplePOSAnnotationHandlerTest {
 
 		String outputDirectory = baseDirectory+"/svmlight";
 		AnalysisEngineDescription dataWriter = 	CleartkComponents.createDataWriterAnnotator(NonSequentialExamplePOSAnnotationHandler.class,
-				DefaultOVASVMlightDataWriterFactory.class, outputDirectory);
+				DefaultOVASVMlightDataWriterFactory.class, outputDirectory, null);
 		testClassifier(dataWriter, outputDirectory);
 
 		String firstLine = FileUtil.loadListOfStrings(new File(outputDirectory + "/2008_Sichuan_earthquake.txt.pos"))[0].trim();

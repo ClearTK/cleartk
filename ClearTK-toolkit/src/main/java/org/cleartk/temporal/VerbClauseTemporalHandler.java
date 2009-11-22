@@ -90,7 +90,7 @@ public class VerbClauseTemporalHandler implements AnnotationHandler<String> {
 		return CleartkComponents.createDataWriterAnnotator(
 				VerbClauseTemporalHandler.class,
 				DefaultOVASVMlightDataWriterFactory.class,
-				outputDir);
+				outputDir, null);
 	}
 
 	public static AnalysisEngineDescription getAnnotatorDescription()

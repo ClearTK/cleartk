@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <collectionReaderDescription xmlns="http://uima.apache.org/resourceSpecifier">
-<frameworkImplementation>org.apache.uima.java</frameworkImplementation>
-<implementationName>org.cleartk.srl.conll2005.Conll2005GoldReader</implementationName>
-<processingResourceMetaData>
-<name>Conll2005GoldReader</name>
-<description>This descriptor file was generated automatically by org.cleartk.util.GenerateDescriptorFiles. 
+    <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+    <implementationName>org.cleartk.srl.conll2005.Conll2005GoldReader</implementationName>
+    <processingResourceMetaData>
+        <name>Conll2005GoldReader</name>
+        <description>This descriptor file was generated automatically by org.cleartk.util.GenerateDescriptorFiles. 
 
 Copyright (c) 2009, Regents of the University of Colorado 
 All rights reserved.
@@ -18,35 +18,35 @@ Redistribution and use in source and binary forms, with or without modification,
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 
 </description>
-<configurationParameters>
-<configurationParameter>
-<name>org.cleartk.srl.conll2005.Conll2005GoldReader.conll2005DataFile</name>
-<description>the path of the CoNLL 2005 data file</description>
-<type>String</type>
-<multiValued>false</multiValued>
-<mandatory>true</mandatory>
-</configurationParameter>
-</configurationParameters>
-<configurationParameterSettings/>
-<typeSystemDescription>
-<imports>
-<import name="org.cleartk.TypeSystem"/>
-</imports>
-</typeSystemDescription>
-<capabilities>
-<capability>
-<inputs/>
-<outputs/>
-<outputSofas>
-<sofaName>CoNLL2005View</sofaName>
-</outputSofas>
-<languagesSupported/>
-</capability>
-</capabilities>
-<operationalProperties>
-<modifiesCas>true</modifiesCas>
-<multipleDeploymentAllowed>false</multipleDeploymentAllowed>
-<outputsNewCASes>true</outputsNewCASes>
-</operationalProperties>
-</processingResourceMetaData>
+        <configurationParameters>
+            <configurationParameter>
+                <name>org.cleartk.srl.conll2005.Conll2005GoldReader.conll2005DataFile</name>
+                <description>the path of the CoNLL 2005 data file</description>
+                <type>String</type>
+                <multiValued>false</multiValued>
+                <mandatory>true</mandatory>
+            </configurationParameter>
+        </configurationParameters>
+        <configurationParameterSettings/>
+        <typeSystemDescription>
+            <imports>
+                <import name="org.cleartk.TypeSystem"/>
+            </imports>
+        </typeSystemDescription>
+        <capabilities>
+            <capability>
+                <inputs/>
+                <outputs/>
+                <outputSofas>
+                    <sofaName>CoNLL2005View</sofaName>
+                </outputSofas>
+                <languagesSupported/>
+            </capability>
+        </capabilities>
+        <operationalProperties>
+            <modifiesCas>true</modifiesCas>
+            <multipleDeploymentAllowed>false</multipleDeploymentAllowed>
+            <outputsNewCASes>true</outputsNewCASes>
+        </operationalProperties>
+    </processingResourceMetaData>
 </collectionReaderDescription>

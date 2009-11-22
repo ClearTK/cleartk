@@ -24,11 +24,13 @@
 package org.cleartk.example.documentclassification;
 
 import org.apache.uima.UimaContext;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.CleartkComponents;
 import org.cleartk.CleartkException;
 import org.cleartk.Initializable;
 import org.cleartk.classifier.Instance;
@@ -78,5 +80,13 @@ public class AnnotationHandler implements org.cleartk.classifier.AnnotationHandl
 	}
 
 	private CountsExtractor extractor;
+
+	public static AnalysisEngineDescription getWriterDescription(String outputDirectory) throws ResourceInitializationException {
+		return CleartkComponents.createDataWriterAnnotator(
+				AnnotationHandler.class,
+				DataWriterFactory.class,
+				outputDirectory,
+				null);
+	}
 
 }

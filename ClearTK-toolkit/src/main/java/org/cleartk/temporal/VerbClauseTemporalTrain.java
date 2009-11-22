@@ -84,7 +84,7 @@ public class VerbClauseTemporalTrain {
 						SnowballStemmer.PARAM_STEMMER_NAME, "English"),
 				CleartkComponents.createDataWriterAnnotator(
 						VerbClauseTemporalHandler.class,
-						DefaultOVASVMlightDataWriterFactory.class, outputDir));
+						DefaultOVASVMlightDataWriterFactory.class, outputDir, null));
 		
 		// remove the temporary directory containing the cleaned up TimeBank
 		FileUtils.deleteRecursive(cleanedTimeBankDir);

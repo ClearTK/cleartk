@@ -46,19 +46,19 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             <nameValuePair>
                 <name>org.cleartk.classifier.InstanceConsumer_ImplBase.annotationHandlerName</name>
                 <value>
-                    <string>org.cleartk.srl.ArgumentAnnotationHandler</string>
+                    <string>org.cleartk.example.documentclassification.AnnotationHandler</string>
                 </value>
             </nameValuePair>
             <nameValuePair>
                 <name>org.cleartk.classifier.DataWriterAnnotator.dataWriterFactoryClassName</name>
                 <value>
-                    <string>org.cleartk.classifier.svmlight.DefaultOVASVMlightDataWriterFactory</string>
+                    <string>org.cleartk.example.documentclassification.DataWriterFactory</string>
                 </value>
             </nameValuePair>
             <nameValuePair>
                 <name>org.cleartk.classifier.DataWriterAnnotator.outputDirectory</name>
                 <value>
-                    <string/>
+                    <string>example/documentclassification/</string>
                 </value>
             </nameValuePair>
         </configurationParameterSettings>
