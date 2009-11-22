@@ -231,7 +231,7 @@ public class TreebankFormatParser {
 	}
 
 	private static boolean needsSpaceBefore(String tokenText) {
-		String[] noSpaceTokens = new String[] { ".", ",", ":", ";", "?", "'s", "'t", "\"", "!", ")" };
+		String[] noSpaceTokens = new String[] { ".", ",", ":", ";", "?", "'s", "'t", "\"", "!", ")", "]" };
 		for (String noSpaceToken : noSpaceTokens) {
 			if (tokenText.equals(noSpaceToken)) {
 				return false;
@@ -241,7 +241,7 @@ public class TreebankFormatParser {
 	}
 
 	private static boolean needsSpaceAfter(String tokenText) {
-		String[] noSpaceTokens = new String[] { "\"","(" };
+		String[] noSpaceTokens = new String[] { "\"","(", "[" };
 		for (String noSpaceToken : noSpaceTokens) {
 			if (tokenText.equals(noSpaceToken)) {
 				return false;
