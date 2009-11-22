@@ -98,5 +98,17 @@ public class TreebankNodeUtility {
 		return uimaNode;
 	}
 
-	
+	public static org.cleartk.syntax.treebank.type.TopTreebankNode getTopNode(org.cleartk.syntax.treebank.type.TreebankNode node){
+		if(node instanceof org.cleartk.syntax.treebank.type.TopTreebankNode)
+			return (org.cleartk.syntax.treebank.type.TopTreebankNode) node;
+		
+		org.cleartk.syntax.treebank.type.TreebankNode parent = node.getParent();
+		while(parent != null) {
+			if(parent instanceof org.cleartk.syntax.treebank.type.TopTreebankNode)
+				return (org.cleartk.syntax.treebank.type.TopTreebankNode) parent;
+			node = parent;
+			parent = node.getParent();
+		}
+		return null;
+	}
 }
