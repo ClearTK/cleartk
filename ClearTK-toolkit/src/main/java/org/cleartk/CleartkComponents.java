@@ -212,7 +212,7 @@ public class CleartkComponents {
 		return aed;
 	}
 
-	private static void addConfigurationParameters(ResourceCreationSpecifier specifier, Object... configurationData) {
+	public static void addConfigurationParameters(ResourceCreationSpecifier specifier, Object... configurationData) {
 		ConfigurationData cdata = ConfigurationParameterFactory.createConfigurationData(configurationData);
 		ResourceCreationSpecifierFactory.setConfigurationParameters(specifier, cdata.configurationParameters,
 				cdata.configurationValues);
