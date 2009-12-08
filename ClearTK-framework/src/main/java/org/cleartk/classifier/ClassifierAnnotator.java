@@ -96,7 +96,7 @@ public class ClassifierAnnotator<OUTCOME_TYPE> extends InstanceConsumer_ImplBase
 		return this.classifier.classify(instance.getFeatures());
 	}
 	
-	private Classifier<OUTCOME_TYPE> classifier;
+	protected Classifier<OUTCOME_TYPE> classifier;
 
 	public boolean expectsOutcomes() {
 		return false;
