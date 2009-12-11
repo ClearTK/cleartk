@@ -54,9 +54,13 @@ public class MatchingAnnotationExtractor implements SimpleFeatureExtractor {
 			throws CleartkException {
 		
 		if( ! annotationType.isInstance(focusAnnotation) ) {
-			focusAnnotation = AnnotationRetrieval.getMatchingAnnotation(view, focusAnnotation, annotationType);
-			if( focusAnnotation == null )
-				throw new UnsupportedOperationException(String.format("no matching %s annotation", annotationType.getSimpleName()));
+			Annotation newFocusAnnotation = AnnotationRetrieval.getMatchingAnnotation(
+					view, focusAnnotation, annotationType);
+			if (newFocusAnnotation == null)
+				throw new IllegalArgumentException(String.format(
+						"no matching %s for annotation %s",
+						annotationType.getSimpleName(), focusAnnotation));
+			focusAnnotation = newFocusAnnotation;
 		}
 
 		return subExtractor.extract(view, focusAnnotation);

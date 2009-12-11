@@ -90,4 +90,27 @@ public class Feature {
 		return String.format("%s(<%s>, <%s>)", className, this.name, this.value);
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Feature) {
+			Feature other = (Feature) obj;
+			boolean nameMatch = (this.name == null && other.name == null) ||
+			                    (this.name != null && this.name.equals(other.name));
+			boolean valueMatch = (this.value == null && other.value == null) ||
+			                     (this.value != null && this.value.equals(other.value));
+			return nameMatch && valueMatch; 
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		int hash = 1;
+		hash = hash * 31 + (this.name == null ? 0 : this.name.hashCode());
+		hash = hash * 31 + (this.value == null ? 0 : this.value.hashCode());
+		return hash;
+	}
+	
+	
 }

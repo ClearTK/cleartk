@@ -25,12 +25,15 @@ package org.cleartk.syntax.feature;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.feature.extractor.simple.MatchingAnnotationExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.syntax.TreebankTestsUtil;
@@ -103,7 +106,8 @@ public class HeadWordExtractorTest {
 		TreebankNode vpNode = TreebankTestsUtil.newNode(jCas, "VP", ranNode, homeNode);
 
 		SpannedTextExtractor textExtractor = new SpannedTextExtractor();
-		TypePathExtractor posExtractor = new TypePathExtractor(Token.class, "pos");
+		MatchingAnnotationExtractor posExtractor = new MatchingAnnotationExtractor(
+				Token.class, new TypePathExtractor(Token.class, "pos"));
 		HeadWordExtractor extractor = new HeadWordExtractor(textExtractor);
 
 		this.checkFeatures(
@@ -144,28 +148,31 @@ public class HeadWordExtractorTest {
 		TreebankNode tree = TreebankTestsUtil.newNode(jCas, "NP", catstoyNode, undertheboxNode);
 
 		SpannedTextExtractor textExtractor = new SpannedTextExtractor();
-		TypePathExtractor posExtractor = new TypePathExtractor(Token.class, "pos");
+		MatchingAnnotationExtractor posExtractor = new MatchingAnnotationExtractor(
+				Token.class, new TypePathExtractor(Token.class, "pos"));
 		HeadWordExtractor extractor;
 
 		extractor = new HeadWordExtractor(posExtractor, true);
 		this.checkFeatures(
 				extractor.extract(jCas, tree),
 				"HeadWord_TypePath(Pos)", "NN");
-		this.checkFeatures(
-				extractor.extract(jCas, undertheboxNode),
-				"HeadWord_TypePath(Pos)", "IN");
+		Set<Feature> expectedFeatures = new HashSet<Feature>();
+		expectedFeatures.add(new Feature("HeadWord_TypePath(Pos)", "IN"));
+		expectedFeatures.add(new Feature("PPHeadWord_TypePath(Pos)", "NN"));
+		List<Feature> features = extractor.extract(jCas, undertheboxNode);
+		Assert.assertEquals(expectedFeatures, new HashSet<Feature>(features));
 
 		extractor = new HeadWordExtractor(textExtractor, true);
 		this.checkFeatures(
 				extractor.extract(jCas, tree),
 				"HeadWord", "toy");
 
-		List<Feature> features = extractor.extract(jCas, undertheboxNode);
+		features = extractor.extract(jCas, undertheboxNode);
 		Assert.assertEquals(2, features.size());
 		Assert.assertEquals("HeadWord", features.get(0).getName());
 		Assert.assertEquals("under", features.get(0).getValue());
 		Assert.assertEquals("PPHeadWord", features.get(1).getName());
-		Assert.assertEquals("the box", features.get(1).getValue());
+		Assert.assertEquals("box", features.get(1).getValue());
 
 	}
 

@@ -265,7 +265,8 @@ public class HeadWordExtractor implements SimpleFeatureExtractor {
 				TreebankNode child = constituent.getChildren(i);
 				
 				if( child.getNodeType().equals("NP") ) {
-					features.addAll(extractNode(jCas, child, true));
+					features = new ArrayList<Feature>(features);
+					features.addAll(extractNode(jCas, findHead(child), true));
 					break;
 				}
 			}
