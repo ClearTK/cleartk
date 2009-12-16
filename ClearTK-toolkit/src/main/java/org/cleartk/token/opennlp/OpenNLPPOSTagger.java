@@ -37,14 +37,17 @@ import opennlp.tools.postag.POSTaggerME;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.CleartkComponents;
 import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.util.InitializeUtil;
 
 /**
@@ -55,8 +58,17 @@ import org.uutuc.util.InitializeUtil;
  * @author Philip Ogren
  *
  */
-public class OpenNLPPOSTagger extends JCasAnnotator_ImplBase
-{
+public class OpenNLPPOSTagger extends JCasAnnotator_ImplBase {
+
+	public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
+		return AnalysisEngineFactory.createPrimitiveDescription(OpenNLPPOSTagger.class,
+				CleartkComponents.TYPE_SYSTEM_DESCRIPTION, CleartkComponents.TYPE_PRIORITIES,
+				PARAM_POSTAG_DICTIONARY_FILE, CleartkComponents.getParameterValue(
+						PARAM_POSTAG_DICTIONARY_FILE, "resources/models/OpenNLP.TagDict.txt"),
+				PARAM_POSTAG_MODEL_FILE, CleartkComponents.getParameterValue(PARAM_POSTAG_MODEL_FILE,
+						"resources/models/OpenNLP.POSTags.English.bin.gz"));
+	}
+
 	public static final String PARAM_POSTAG_MODEL_FILE = ConfigurationParameterNameFactory.createConfigurationParameterName(
 			OpenNLPPOSTagger.class, "postagModelFile");
 	@ConfigurationParameter(

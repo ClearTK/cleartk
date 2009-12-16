@@ -32,21 +32,18 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.jcas.JCas;
+import org.cleartk.CleartkComponents;
+import org.cleartk.classifier.CleartkSequentialAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.SequentialClassifierAnnotator;
-import org.cleartk.classifier.SequentialDataWriterAnnotator;
-import org.cleartk.classifier.SequentialInstanceConsumer_ImplBase;
 import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
-import org.cleartk.util.InstanceProducerUtil;
+import org.cleartk.util.InstanceCollector;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.TokenFactory;
-import org.uutuc.factory.TypeSystemDescriptionFactory;
-import org.uutuc.util.JCasAnnotatorAdapter;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -55,15 +52,17 @@ import org.uutuc.util.JCasAnnotatorAdapter;
  * 
  * @author Steven Bethard
  */
-public class ExamplePOSHandlerTest {
+public class ExamplePOSAnnotatorTest {
 	
 	@Test
 	public void testSimpleSentence() throws Exception {
 		
-		// create the engine and the cas
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				JCasAnnotatorAdapter.class,
-				TypeSystemDescriptionFactory.createTypeSystemDescription(Token.class, Sentence.class));
+		AnalysisEngineDescription desc = CleartkComponents.createCleartkSequentialAnnotator(
+				ExamplePOSAnnotator.class,
+				InstanceCollector.StringFactory.class,
+				".");
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(desc);
+
 		JCas jCas = engine.newJCas();
 		
 		// create some tokens, stems and part of speech tags
@@ -73,8 +72,8 @@ public class ExamplePOSHandlerTest {
 				"DT NNP VBD IN CD .",
 				"The Absurdi retreat in 2003 .", "org.cleartk.type.Token:pos", "org.cleartk.type.Token:stem");
 
-		List<Instance<String>> instances = InstanceProducerUtil.produceInstances(
-				new ExamplePOSAnnotationHandler(), engine, jCas);
+		List<Instance<String>> 	instances = InstanceCollector.StringFactory.collectInstances(engine, jCas);
+
 		List<String> featureValues;
 		
 		// check "The"
@@ -170,17 +169,13 @@ public class ExamplePOSHandlerTest {
 	
 	@Test
 	public void testAnnotatorDescriptor() throws UIMAException, IOException {
-		AnalysisEngineDescription posTaggerDescription = ExamplePOSAnnotationHandler.getClassifierDescription(ExamplePOSAnnotationHandler.DEFAULT_MODEL);
+		AnalysisEngineDescription posTaggerDescription = ExamplePOSAnnotator.getClassifierDescription(ExamplePOSAnnotator.DEFAULT_MODEL);
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(posTaggerDescription);
 		
-		String expectedName = ExamplePOSAnnotationHandler.class.getName();
-		Object annotationHandler = engine.getConfigParameterValue(
-				SequentialInstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME);
-		Assert.assertEquals(expectedName, annotationHandler);
 
 		Object classifierJar = engine.getConfigParameterValue(
-				SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR_PATH);
-		Assert.assertEquals(ExamplePOSAnnotationHandler.DEFAULT_MODEL, classifierJar);
+				CleartkSequentialAnnotator.PARAM_CLASSIFIER_JAR_PATH);
+		Assert.assertEquals(ExamplePOSAnnotator.DEFAULT_MODEL, classifierJar);
 		
 		engine.collectionProcessComplete();
 	}
@@ -188,21 +183,16 @@ public class ExamplePOSHandlerTest {
 	@Test
 	public void testDataWriterDescriptor() throws UIMAException, IOException {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				ExamplePOSAnnotationHandler.getWriterDescription(ExamplePOSAnnotationHandler.DEFAULT_OUTPUT_DIRECTORY));
-		
-		String expectedName = ExamplePOSAnnotationHandler.class.getName();
-		Object annotationHandler = engine.getConfigParameterValue(
-				SequentialInstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME);
-		Assert.assertEquals(expectedName, annotationHandler);
+				ExamplePOSAnnotator.getWriterDescription(ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY));
 		
 		Object outputDir = engine.getConfigParameterValue(
-				SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY);
-		Assert.assertEquals(ExamplePOSAnnotationHandler.DEFAULT_OUTPUT_DIRECTORY, outputDir);
+				CleartkSequentialAnnotator.PARAM_OUTPUT_DIRECTORY);
+		Assert.assertEquals(ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY, outputDir);
 		
 		String expectedDataWriterFactory = (
 				ViterbiDataWriterFactory.class.getName());
 		Object dataWriter = engine.getConfigParameterValue(
-				SequentialDataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME);
+				CleartkSequentialAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME);
 		Assert.assertEquals(expectedDataWriterFactory, dataWriter);
 		engine.collectionProcessComplete();
 	}

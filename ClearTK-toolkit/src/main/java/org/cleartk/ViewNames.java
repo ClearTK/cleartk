@@ -82,11 +82,6 @@ public class ViewNames {
 	public static final String GENIA_POS = "GeniaPOSView";
 
 	/**
-	 * The view where the ACE identifier is placed.
-	 */
-	public static final String ACE_URI = "AceUriView";
-
-	/**
 	 * Private constructor to enforce un-instantiability.
 	 */
 	private ViewNames() {

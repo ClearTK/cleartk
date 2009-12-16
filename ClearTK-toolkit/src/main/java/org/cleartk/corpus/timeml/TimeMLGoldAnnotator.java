@@ -31,10 +31,12 @@ import java.util.Map;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.CleartkComponents;
 import org.cleartk.ViewNames;
 import org.cleartk.corpus.timeml.type.Anchor;
 import org.cleartk.corpus.timeml.type.Event;
@@ -42,12 +44,14 @@ import org.cleartk.corpus.timeml.type.TemporalLink;
 import org.cleartk.corpus.timeml.type.Text;
 import org.cleartk.corpus.timeml.type.Time;
 import org.cleartk.corpus.timeml.util.TimeMLUtil;
+import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.uutuc.descriptor.ConfigurationParameter;
 import org.uutuc.descriptor.SofaCapability;
+import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.util.InitializeUtil;
 
 
@@ -62,14 +66,29 @@ import org.uutuc.util.InitializeUtil;
 @SofaCapability(inputSofas= {ViewNames.TIMEML, ViewNames.DEFAULT})
 public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
 	
-	public static final String PARAM_LOAD_TLINKS = "org.cleartk.corpus.timeml.TimeMLGoldAnnotator.loadTlinks";
+	public static final String PARAM_LOAD_TLINKS = ConfigurationParameterNameFactory.createConfigurationParameterName(TimeMLGoldAnnotator.class, "loadTlinks");
 	
 	@ConfigurationParameter(
-			name = PARAM_LOAD_TLINKS,
 			description = "when false indicates that annotation should not be created for TLINKs (though annotations will still be created for TIMEX3s, EVENTs, etc.).",
 			defaultValue = "true")
 	private boolean loadTlinks;
 
+	public static AnalysisEngineDescription getDescription()
+			throws ResourceInitializationException {
+		return AnalysisEngineFactory.createPrimitiveDescription(
+				TimeMLGoldAnnotator.class,
+				CleartkComponents.TYPE_SYSTEM_DESCRIPTION,
+				CleartkComponents.TYPE_PRIORITIES);
+	}
+
+	public static AnalysisEngineDescription getDescriptionNoTLINKs()
+	throws ResourceInitializationException {
+return AnalysisEngineFactory.createPrimitiveDescription(
+		TimeMLGoldAnnotator.class,
+		CleartkComponents.TYPE_SYSTEM_DESCRIPTION,
+		CleartkComponents.TYPE_PRIORITIES, 
+		PARAM_LOAD_TLINKS, false);
+}
 
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
@@ -192,5 +211,4 @@ public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
 	public void setLoadTlinks(boolean loadTLINKs) {
 		this.loadTlinks = loadTLINKs;
 	}
-
 }

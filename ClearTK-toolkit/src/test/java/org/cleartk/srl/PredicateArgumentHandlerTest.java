@@ -28,12 +28,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Handler;
+import java.util.logging.Logger;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
-import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.CleartkComponents;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
@@ -45,15 +48,13 @@ import org.cleartk.syntax.treebank.type.TreebankNode;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.InstanceProducerUtil;
+import org.cleartk.util.InstanceCollector;
 import org.cleartk.util.UIMAUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.TokenFactory;
-import org.uutuc.factory.TypeSystemDescriptionFactory;
-import org.uutuc.util.JCasAnnotatorAdapter;
 import org.uutuc.util.TearDownUtil;
 
 
@@ -78,105 +79,124 @@ public class PredicateArgumentHandlerTest {
 	@Test
 	public void testArgumentAnnotationNoPredicate() throws UIMAException, CleartkException {
 		// create the document
-		AnalysisEngine engine = this.getEngine();
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+				CleartkComponents.createCleartkAnnotator(
+						ArgumentAnnotator.class, InstanceCollector.StringFactory.class, "."));
 		JCas jCas = engine.newJCas();
 		this.setTokens(jCas);
 		this.setTrees(jCas);
 		
 		// make sure the handler produces no instances
-		List<Instance<String>> instances = InstanceProducerUtil.produceInstances(
-				new ArgumentAnnotationHandler(), engine, jCas);
+		List<Instance<String>> instances = InstanceCollector.StringFactory.collectInstances(engine, jCas);
 		Assert.assertEquals(0, instances.size());
 	}
 		
 	@Test
 	public void testArgumentIdentificationNoPredicate() throws UIMAException, CleartkException {
 		// create the document
-		AnalysisEngine engine = this.getEngine();
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+				CleartkComponents.createCleartkAnnotator(
+						ArgumentIdentifier.class, InstanceCollector.BooleanFactory.class, "."));
 		JCas jCas = engine.newJCas();
 		this.setTokens(jCas);
 		this.setTrees(jCas);
 		
 		// make sure the handler produces no instances
-		List<Instance<Boolean>> instances = InstanceProducerUtil.produceInstances(
-				new ArgumentIdentificationHandler(), engine, jCas);
+		List<Instance<Boolean>> instances = InstanceCollector.BooleanFactory.collectInstances(engine, jCas);
 		Assert.assertEquals(0, instances.size());
 	}
 		
 	@Test
 	public void testArgumentClassificationNoPredicate() throws UIMAException, CleartkException {
 		// create the document
-		AnalysisEngine engine = this.getEngine();
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+				CleartkComponents.createCleartkAnnotator(
+						ArgumentClassifier.class, InstanceCollector.StringFactory.class, "."));
 		JCas jCas = engine.newJCas();
 		this.setTokens(jCas);
 		this.setTrees(jCas);
 		
 		// make sure the handler produces no instances
-		List<Instance<String>> instances = InstanceProducerUtil.produceInstances(
-				new ArgumentClassificationHandler(), engine, jCas);
+		List<Instance<String>> instances = InstanceCollector.StringFactory.collectInstances(engine, jCas);
 		Assert.assertEquals(0, instances.size());
 	}
 		
 	@Test
 	public void testArgumentAnnotationNoTree() throws UIMAException, CleartkException {
 		// create the document
-		AnalysisEngine engine = this.getEngine();
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+				CleartkComponents.createCleartkAnnotator(
+						ArgumentAnnotator.class, InstanceCollector.StringFactory.class, "."));
 		JCas jCas = engine.newJCas();
 		this.setTokens(jCas);
 		this.setPredicates(jCas);
 		
 		// make sure the handler produces an exception
+	    HideLogging hider = new HideLogging();
 		try {
-			InstanceProducerUtil.produceInstances(
-				new ArgumentAnnotationHandler(), engine, jCas);
+			InstanceCollector.StringFactory.collectInstances(engine, jCas);
 			Assert.fail("expected exception for missing TopTreebankNode");
-		} catch (IllegalArgumentException e) {}
+		} catch (AnalysisEngineProcessException e) {
+		} finally {
+			hider.restoreLogging();
+		}
 	}
 		
 	@Test
 	public void testArgumentIdentificationNoTree() throws UIMAException, CleartkException {
 		// create the document
-		AnalysisEngine engine = this.getEngine();
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+				CleartkComponents.createCleartkAnnotator(
+						ArgumentIdentifier.class, InstanceCollector.BooleanFactory.class, "."));
 		JCas jCas = engine.newJCas();
 		this.setTokens(jCas);
 		this.setPredicates(jCas);
 		
 		// make sure the handler produces an exception
+	    HideLogging hider = new HideLogging();
 		try {
-			InstanceProducerUtil.produceInstances(
-				new ArgumentIdentificationHandler(), engine, jCas);
+			InstanceCollector.BooleanFactory.collectInstances(engine, jCas);
 			Assert.fail("expected exception for missing TopTreebankNode");
-		} catch (IllegalArgumentException e) {}
+		} catch (AnalysisEngineProcessException e) {
+		} finally {
+			hider.restoreLogging();
+		}
 	}
 		
 	@Test
 	public void testArgumentClassificationNoTree() throws UIMAException, CleartkException {
 		// create the document
-		AnalysisEngine engine = this.getEngine();
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+				CleartkComponents.createCleartkAnnotator(
+						ArgumentClassifier.class, InstanceCollector.StringFactory.class, "."));
 		JCas jCas = engine.newJCas();
 		this.setTokens(jCas);
 		this.setPredicates(jCas);
 		
 		// make sure the handler produces an exception
+	    HideLogging hider = new HideLogging();
 		try {
-			InstanceProducerUtil.produceInstances(
-				new ArgumentClassificationHandler(), engine, jCas);
+			InstanceCollector.StringFactory.collectInstances(engine, jCas);
 			Assert.fail("expected exception for missing TopTreebankNode");
-		} catch (IllegalArgumentException e) {}
+		} catch (AnalysisEngineProcessException e) {
+		} finally {
+			hider.restoreLogging();
+		}
 	}
 		
 	@Test
 	public void testPredicateAnnotation() throws UIMAException, CleartkException {
 		// create the document
-		AnalysisEngine engine = this.getEngine();
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+				CleartkComponents.createCleartkAnnotator(
+						PredicateAnnotator.class, InstanceCollector.BooleanFactory.class, "."));
 		JCas jCas = engine.newJCas();
 		this.setTokens(jCas);
 		this.setTrees(jCas);
 		this.setPredicates(jCas);
 		
 		// get the instances produced by the handler
-		List<Instance<Boolean>> instances = InstanceProducerUtil.produceInstances(
-				new PredicateAnnotationHandler(), engine, jCas);
+		List<Instance<Boolean>> instances = InstanceCollector.BooleanFactory.collectInstances(engine, jCas);
 		Assert.assertEquals(5, instances.size());
 		Object[] featureValues;
 		
@@ -213,12 +233,6 @@ public class PredicateArgumentHandlerTest {
 	 * that's not part of the specification
 	 */	
 
-	private AnalysisEngine getEngine() throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitive(
-			JCasAnnotatorAdapter.class,
-			TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));	
-	}
-	
 	private void setTokens(JCas jCas) throws UIMAException {
 		TokenFactory.createTokens(jCas,  
 				"John broke the lamp.",Token.class, Sentence.class,
@@ -279,6 +293,25 @@ public class PredicateArgumentHandlerTest {
 			values.add(value == null ? null : value.toString());
 		}
 		return values;
+	}
+	
+	private static class HideLogging {
+		private Logger root;
+		private Handler[] handlers;
+
+		public HideLogging() {
+			this.root = Logger.getLogger("");
+			this.handlers = root.getHandlers();
+			for (Handler handler : this.handlers) {
+				root.removeHandler(handler);
+			}
+		}
+
+		public void restoreLogging() {
+			for (Handler handler : this.handlers) {
+				this.root.addHandler(handler);
+			}
+		}
 	}
 
 }

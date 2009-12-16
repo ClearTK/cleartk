@@ -23,18 +23,22 @@
  */
 package org.cleartk.srl;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
 import org.apache.uima.UimaContext;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.CleartkComponents;
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.AnnotationHandler;
+import org.cleartk.classifier.CleartkAnnotator;
+import org.cleartk.classifier.DataWriterFactory;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.InstanceConsumer;
 import org.cleartk.classifier.feature.extractor.annotationpair.AnnotationPairFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.annotationpair.MatchingAnnotationPairExtractor;
 import org.cleartk.classifier.feature.extractor.annotationpair.NamingAnnotationPairFeatureExtractor;
@@ -83,9 +87,28 @@ import org.uutuc.util.InitializeUtil;
  * 
  * @author Philipp Wetzler, Philip Ogren
  */
-public class ArgumentIdentificationHandler implements AnnotationHandler<Boolean> {
+public class ArgumentIdentifier extends CleartkAnnotator<Boolean> {
 
-	public ArgumentIdentificationHandler() {
+	public static AnalysisEngineDescription getWriterDescription(
+			Class<? extends DataWriterFactory<Boolean>> dataWriterFactoryClass, File outputDirectory)
+	throws ResourceInitializationException {
+		return CleartkComponents.createPrimitiveDescription(
+				ArgumentIdentifier.class,
+				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, dataWriterFactoryClass.getName(),
+				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory.toString());
+	}
+
+	public static AnalysisEngineDescription getClassifierDescription(File classifierJar)
+	throws ResourceInitializationException {
+		return CleartkComponents.createPrimitiveDescription(
+				ArgumentIdentifier.class,
+				CleartkAnnotator.PARAM_CLASSIFIER_JAR_PATH, classifierJar.toString());
+	}
+
+	@Override
+	public void initialize(UimaContext context) throws ResourceInitializationException {
+		super.initialize(context);
+		InitializeUtil.initialize(this, context);
 
 		SimpleFeatureExtractor defaultTokenExtractorSet = new MatchingAnnotationExtractor(Token.class,
 				new SpannedTextExtractor(),
@@ -126,27 +149,28 @@ public class ArgumentIdentificationHandler implements AnnotationHandler<Boolean>
 		);
 	}
 
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		InitializeUtil.initialize(this, context);
-	}
-
-	public void process(JCas jCas, InstanceConsumer<Boolean> consumer) throws CleartkException{
+	@Override
+	public void process(JCas jCas) throws AnalysisEngineProcessException {
 		/*
 		 * Iterate over sentences in document
 		 */
 		List<Sentence> sentences = AnnotationRetrieval.getAnnotations(jCas, Sentence.class);
 
-		for( Sentence sentence : sentences ) {
-			processSentence(jCas, sentence, consumer);
+		try {
+			for( Sentence sentence : sentences ) {
+				processSentence(jCas, sentence);
+			}
+		} catch (CleartkException e) {
+			throw new AnalysisEngineProcessException(e);
 		}
 	}
 
-	void processSentence(JCas jCas, Sentence sentence, InstanceConsumer<Boolean> consumer) throws CleartkException{
+	void processSentence(JCas jCas, Sentence sentence) throws CleartkException{
 
 		if( sentence.getCoveredText().length() > 40 )
-			logger.info(String.format("process sentence \"%s ...\"", sentence.getCoveredText().substring(0, 39)));
+			logger.fine(String.format("process sentence \"%s ...\"", sentence.getCoveredText().substring(0, 39)));
 		else
-			logger.info(String.format("process sentence \"%s\"", sentence.getCoveredText()));
+			logger.fine(String.format("process sentence \"%s\"", sentence.getCoveredText()));
 		
 		/*
 		 * Pre-compute sentence level data: sentenceConstituents: list of all
@@ -173,14 +197,13 @@ public class ArgumentIdentificationHandler implements AnnotationHandler<Boolean>
 				sentence, Predicate.class);
 		for (Predicate predicate : predicates) {
 			processPredicate(jCas, predicate, sentenceConstituents,
-					sentenceConstituentFeatures, consumer);
+					sentenceConstituentFeatures);
 		}
 	}
 
 	public void processPredicate(JCas jCas, Predicate predicate,
 			List<TreebankNode> sentenceConstituents,
-			List<List<Feature>> sentenceConstituentFeatures,
-			InstanceConsumer<Boolean> consumer) throws CleartkException{
+			List<List<Feature>> sentenceConstituentFeatures) throws CleartkException{
 
 		logger.info(String.format("process predicate \"%s\"", predicate.getCoveredText()));
 
@@ -215,7 +238,7 @@ public class ArgumentIdentificationHandler implements AnnotationHandler<Boolean>
 			 */
 			instance.addAll(predicateFeatures);
 
-			if( consumer.expectsOutcomes() ) {
+			if( isTraining() ) {
 				instance.setOutcome(false);
 
 				for( int j=0; j<predicate.getArguments().size(); j++ ) {
@@ -228,9 +251,10 @@ public class ArgumentIdentificationHandler implements AnnotationHandler<Boolean>
 			}
 
 
-			Boolean outcome = consumer.consume(instance);
-			if( outcome != null ) {
-				boolean isArgument = outcome;
+			if (this.isTraining()) {
+				this.dataWriter.write(instance);
+			} else {
+				boolean isArgument = this.classifier.classify(instance.getFeatures());
 
 				if (isArgument) {
 					SemanticArgument arg = new SemanticArgument(jCas);

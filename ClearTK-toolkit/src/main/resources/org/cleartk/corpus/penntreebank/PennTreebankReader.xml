@@ -53,6 +53,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 <outputs/>
                 <outputSofas>
                     <sofaName>TreebankView</sofaName>
+                    <sofaName>UriView</sofaName>
                 </outputSofas>
                 <languagesSupported/>
             </capability>

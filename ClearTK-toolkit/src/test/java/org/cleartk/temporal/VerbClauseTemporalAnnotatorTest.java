@@ -28,18 +28,24 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.jar.JarFile;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.cleartk.CleartkComponents;
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.ClassifierAnnotator;
-import org.cleartk.classifier.DataWriterAnnotator;
+import org.cleartk.classifier.BuildJar;
+import org.cleartk.classifier.Classifier;
+import org.cleartk.classifier.ClassifierBuilder;
+import org.cleartk.classifier.ClassifierManifest;
+import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.InstanceConsumer_ImplBase;
+import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.svmlight.DefaultOVASVMlightDataWriterFactory;
 import org.cleartk.corpus.timeml.type.Event;
 import org.cleartk.corpus.timeml.type.TemporalLink;
@@ -49,7 +55,7 @@ import org.cleartk.syntax.treebank.type.TreebankNode;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.InstanceProducerUtil;
+import org.cleartk.util.InstanceCollector;
 import org.cleartk.util.ReusableUIMAObjects;
 import org.junit.After;
 import org.junit.Assert;
@@ -57,8 +63,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.TokenFactory;
-import org.uutuc.factory.TypeSystemDescriptionFactory;
-import org.uutuc.util.JCasAnnotatorAdapter;
 import org.uutuc.util.TearDownUtil;
 
 
@@ -71,15 +75,39 @@ import org.uutuc.util.TearDownUtil;
  *
  * @author Steven Bethard
  */
-public class VerbClauseTemporalHandlerTest {
+public class VerbClauseTemporalAnnotatorTest {
 	
 	private final File outputDirectory = new File("test/data/temporal");
 	
+	public static class AfterNewClassifier implements Classifier<String> {
+		public AfterNewClassifier(JarFile modelFile) {}
+		public String classify(List<Feature> features) throws CleartkException {
+			return "AFTER-NEW";
+		}
+		public List<ScoredOutcome<String>> score(List<Feature> features, int maxResults)
+		throws CleartkException {
+			return null;
+		}
+	}
+	public static class AfterNewClassifierBuilder implements ClassifierBuilder<String> {
+		public Class<? extends Classifier<String>> getClassifierClass() {
+			return AfterNewClassifier.class;
+		}
+		public void train(File dir, String[] args) throws Exception {}
+		public void buildJar(File dir, String[] args) throws Exception {
+			new BuildJar.OutputStream(dir).close();
+		}
+	}
+	
 	@Before
-	public void setUp() {
+	public void setUp() throws Exception {
 		if (!this.outputDirectory.exists()) {
 			this.outputDirectory.mkdirs();
 		}
+		ClassifierManifest manifest = new ClassifierManifest();
+		manifest.setClassifierBuilder(new AfterNewClassifierBuilder());
+		manifest.write(this.outputDirectory);
+		BuildJar.main(this.outputDirectory.getPath());
 	}
 	
 	@After
@@ -90,9 +118,12 @@ public class VerbClauseTemporalHandlerTest {
 	
 	@Test
 	public void test() throws UIMAException, CleartkException {
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				JCasAnnotatorAdapter.class,
-				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
+		AnalysisEngineDescription desc = CleartkComponents.createCleartkAnnotator(
+				VerbClauseTemporalAnnotator.class,
+				InstanceCollector.StringFactory.class,
+				".");
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(desc);
+		
 		JCas jCas = engine.newJCas();
 		TokenFactory.createTokens(jCas,
 				"He said she bought milk.",
@@ -131,19 +162,17 @@ public class VerbClauseTemporalHandlerTest {
 		tree.setChildren(new FSArray(jCas, 1));
 		tree.setChildren(0, root);
 		tree.addToIndexes();
-//		sentence.setConstituentParse(tree);
 		
-		// collect the single instance from the handler
+		// collect the single instance from the annotator
 		List<Instance<String>> instances;
-		instances = InstanceProducerUtil.produceInstances(
-				new VerbClauseTemporalHandler(), engine, jCas);
+		instances = InstanceCollector.StringFactory.collectInstances(engine, jCas);
 		Assert.assertEquals(1, instances.size());
 		
 		// check the outcome
 		Assert.assertEquals("AFTER", instances.get(0).getOutcome());
 
 		// check the feature values
-		List<Object> expectedFeatureValues = Arrays.asList(new Object[]{
+		List<Object> expectedFeatureValues = Arrays.<Object>asList(
 				"said",						// source token
 				"bought",					// target token
 				"VBD",						// source pos
@@ -151,8 +180,8 @@ public class VerbClauseTemporalHandlerTest {
 				"say",						// source stem
 				"buy",						// target stem
 				"VBD::VP;;SBAR;;VP;;VBD",	// path
-				5L,							// path length
-		});
+				5L 							// path length
+		);
 		List<Object> actualFeatureValues = new ArrayList<Object>();
 		for (Feature feature: instances.get(0).getFeatures()) {
 			actualFeatureValues.add(feature.getValue());
@@ -170,10 +199,13 @@ public class VerbClauseTemporalHandlerTest {
 		Assert.assertEquals(0, events.size());
 		Assert.assertEquals(0, tlinks.size());
 		
-		// and run the handler again, asking it to annotate this time
-		instances = InstanceProducerUtil.produceInstances(
-				new VerbClauseTemporalHandler(), "AFTER-NEW", engine, jCas);
-		Assert.assertEquals(1, instances.size());
+		// and run the annotator again, asking it to annotate this time
+		desc = CleartkComponents.createCleartkAnnotator(
+				VerbClauseTemporalAnnotator.class,
+				new File(this.outputDirectory, "model.jar").getPath());
+		engine = AnalysisEngineFactory.createPrimitive(desc);
+		engine.process(jCas);
+		engine.collectionProcessComplete();
 		
 		// check the resulting TimeML annotations
 		events = AnnotationRetrieval.getAnnotations(jCas, Event.class);
@@ -196,16 +228,12 @@ public class VerbClauseTemporalHandlerTest {
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.temporal.VerbClauseTemporalDataWriter");
 		
-		Object handler = engine.getConfigParameterValue(
-				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME);
-		Assert.assertEquals(VerbClauseTemporalHandler.class.getName(), handler);
-		
 		Object dataWriter = engine.getConfigParameterValue(
-				DataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME);
+				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME);
 		Assert.assertEquals(DefaultOVASVMlightDataWriterFactory.class.getName(), dataWriter);
 		
 		Object outputDir = engine.getConfigParameterValue(
-				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY);
+				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY);
 		Assert.assertEquals("test/data/temporal", outputDir);
 		
 		engine.collectionProcessComplete();
@@ -216,12 +244,8 @@ public class VerbClauseTemporalHandlerTest {
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.temporal.VerbClauseTemporalAnnotator");
 		
-		Object handler = engine.getConfigParameterValue(
-				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME);
-		Assert.assertEquals(VerbClauseTemporalHandler.class.getName(), handler);
-		
 		Object modelJar = engine.getConfigParameterValue(
-				ClassifierAnnotator.PARAM_CLASSIFIER_JAR_PATH);
+				CleartkAnnotator.PARAM_CLASSIFIER_JAR_PATH);
 		Assert.assertEquals("resources/models/verb-clause-temporal-model.jar", modelJar);
 		
 		engine.collectionProcessComplete();
@@ -259,7 +283,6 @@ public class VerbClauseTemporalHandlerTest {
 		tree.setChildren(new FSArray(jCas, 1));
 		tree.setChildren(0, root);
 		tree.addToIndexes();
-		System.err.println(tree.getTreebankParse());
 		
 		// run annotator
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(

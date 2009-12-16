@@ -23,6 +23,8 @@
  */
 package org.cleartk.example.documentclassification;
 
+import java.io.File;
+
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -32,9 +34,8 @@ import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkComponents;
 import org.cleartk.CleartkException;
-import org.cleartk.Initializable;
+import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.InstanceConsumer;
 import org.cleartk.classifier.feature.extractor.simple.CountsExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
@@ -47,46 +48,54 @@ import org.cleartk.type.Token;
  * @author Philipp G. Wetzler
  *
  */
-public class AnnotationHandler implements org.cleartk.classifier.AnnotationHandler<String> , Initializable{
+public class Annotator extends CleartkAnnotator<String> {
 
 	public static final String PREDICTION_VIEW_NAME = "ExampleDocumentClassificationPredictionView";
+
+	public static AnalysisEngineDescription getWriterDescription(
+			Class<? extends org.cleartk.classifier.DataWriterFactory<String>> dataWriterFactoryClass,
+			File outputDirectory) throws ResourceInitializationException {
+		return CleartkComponents.createPrimitiveDescription(
+				Annotator.class,
+				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, dataWriterFactoryClass.getName(),
+				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory.toString());
+	}
+
+	public static AnalysisEngineDescription getClassifierDescription(
+			File classifierJarFile) throws ResourceInitializationException {
+		return CleartkComponents.createPrimitiveDescription(
+				Annotator.class,
+				CleartkAnnotator.PARAM_CLASSIFIER_JAR_PATH, classifierJarFile.toString());
+	}
 
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		SimpleFeatureExtractor subExtractor = new TypePathExtractor(Token.class, "stem", false, false, true);
 		extractor = new CountsExtractor(Token.class, subExtractor);
 	}
 
-	public void process(JCas jCas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException, CleartkException {
+	public void process(JCas jCas) throws AnalysisEngineProcessException {
 		try {
 			DocumentAnnotation doc = (DocumentAnnotation) jCas.getDocumentAnnotationFs();
 
 			Instance<String> instance = new Instance<String>();
 			instance.addAll(extractor.extract(jCas, doc));
 
-			if( consumer.expectsOutcomes() ) {
+			if( isTraining() ) {
 				JCas goldView = jCas.getView(GoldAnnotator.GOLD_VIEW_NAME);
 				instance.setOutcome(goldView.getSofaDataString());
-			}
-
-			String result = consumer.consume(instance);
-			
-			if( result != null ) {
+				this.dataWriter.write(instance);
+			} else {
+				String result = this.classifier.classify(instance.getFeatures());
 				JCas predictionView = jCas.createView(PREDICTION_VIEW_NAME);
 				predictionView.setSofaDataString(result, "text/plain");
 			}
 		} catch (CASException e) {
 			throw new AnalysisEngineProcessException(e);
+		} catch (CleartkException e) {
+			throw new AnalysisEngineProcessException(e);
 		}
 	}
 
 	private CountsExtractor extractor;
-
-	public static AnalysisEngineDescription getWriterDescription(String outputDirectory) throws ResourceInitializationException {
-		return CleartkComponents.createDataWriterAnnotator(
-				AnnotationHandler.class,
-				DataWriterFactory.class,
-				outputDirectory,
-				null);
-	}
 
 }

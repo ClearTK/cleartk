@@ -26,13 +26,16 @@ package org.cleartk.util;
 import java.io.File;
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.Type;
+import java.util.List;
 
+import org.cleartk.CleartkException;
+import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.ClassifierBuilder;
+import org.cleartk.classifier.CleartkSequentialAnnotator;
 import org.cleartk.classifier.DataWriter_ImplBase;
-import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.InstanceConsumer;
-import org.cleartk.classifier.SequentialAnnotationHandler;
-import org.cleartk.example.pos.ExamplePOSAnnotationHandler;
+import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.ScoredOutcome;
+import org.cleartk.example.pos.ExamplePOSAnnotator;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -51,9 +54,9 @@ public class ReflectionUtilTest {
 	}
 	public static class TestArraySubClass extends TestSuperClass<double[]> {
 	}
-	public static class TestInstanceConsumerOutcomeType implements InstanceConsumer<String> {
-		public String consume(Instance<String> instance) {return null;}
-		public boolean expectsOutcomes() {return false;}
+	public static class TestClassifierOutcomeType implements Classifier<String> {
+		public String classify(List<Feature> features) throws CleartkException {return null;}
+		public List<ScoredOutcome<String>> score(List<Feature> features,int maxResults) throws CleartkException {return null;}
 	}
 	public static class TestDataWriterOutcomeType extends DataWriter_ImplBase<String, Double, Boolean> {
 		public TestDataWriterOutcomeType(File outputDirectory) {
@@ -79,10 +82,10 @@ public class ReflectionUtilTest {
 		Assert.assertTrue(type instanceof GenericArrayType);
 		Assert.assertEquals(double.class, ((GenericArrayType)type).getGenericComponentType());
 
-		type = ReflectionUtil.getTypeArgument(SequentialAnnotationHandler.class, "OUTCOME_TYPE", new ExamplePOSAnnotationHandler());
+		type = ReflectionUtil.getTypeArgument(CleartkSequentialAnnotator.class, "OUTCOME_TYPE", new ExamplePOSAnnotator());
 		Assert.assertEquals(String.class, type);
 
-		type = ReflectionUtil.getTypeArgument(InstanceConsumer.class, "OUTCOME_TYPE", new TestInstanceConsumerOutcomeType());
+		type = ReflectionUtil.getTypeArgument(Classifier.class, "OUTCOME_TYPE", new TestClassifierOutcomeType());
 		Assert.assertEquals(String.class, type);
 		
 		type = ReflectionUtil.getTypeArgument(DataWriter_ImplBase.class, "INPUTOUTCOME_TYPE", new TestDataWriterOutcomeType(null));

@@ -342,7 +342,12 @@ public class UIMAUtil {
 		// get the type arguments from the objects
 		java.lang.reflect.Type type1 = ReflectionUtil.getTypeArgument(paramDefiningClass1, paramName1, object1);
 		java.lang.reflect.Type type2 = ReflectionUtil.getTypeArgument(paramDefiningClass2, paramName2, object2);
-
+		
+		// both arguments missing is compatible
+		if (type1 == null && type2 == null) {
+			return;
+		}
+		
 		// if the second type is not assignable to the first, raise an exception
 		if (type1 == null || type2 == null || !ReflectionUtil.isAssignableFrom(type1, type2)) {
 			throw new ResourceInitializationException(new RuntimeException(String.format(

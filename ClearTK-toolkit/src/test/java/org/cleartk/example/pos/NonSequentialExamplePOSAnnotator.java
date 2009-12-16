@@ -32,9 +32,8 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
 import org.cleartk.Initializable;
-import org.cleartk.classifier.AnnotationHandler;
+import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.InstanceConsumer;
 import org.cleartk.classifier.feature.WindowFeature;
 import org.cleartk.classifier.feature.extractor.WindowExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
@@ -56,7 +55,7 @@ import org.cleartk.util.AnnotationRetrieval;
  * 
  * @author Steven Bethard
  */
-public class NonSequentialExamplePOSAnnotationHandler implements AnnotationHandler<String>, Initializable {
+public class NonSequentialExamplePOSAnnotator extends CleartkAnnotator<String> implements Initializable {
 
 	public static final String DEFAULT_OUTPUT_DIRECTORY = "example/model";
 	public static final String DEFAULT_MODEL = "example/model/model.jar";
@@ -65,6 +64,8 @@ public class NonSequentialExamplePOSAnnotationHandler implements AnnotationHandl
 	private List<WindowExtractor> tokenSentenceFeatureExtractors;
 	
 	public void initialize(UimaContext context) throws ResourceInitializationException{
+		super.initialize(context);
+		
 		// a list of feature extractors that require only the token
 		this.tokenFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
 		
@@ -100,8 +101,8 @@ public class NonSequentialExamplePOSAnnotationHandler implements AnnotationHandl
 		
 	}
 	
-	public void process(JCas jCas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException, CleartkException {
-		
+	public void process(JCas jCas) throws AnalysisEngineProcessException {
+		try {
 		// generate a list of training instances for each sentence in the document
 		for (Sentence sentence: AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
 			List<Token> tokens = AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class);
@@ -120,16 +121,21 @@ public class NonSequentialExamplePOSAnnotationHandler implements AnnotationHandl
 					instance.addAll(extractor.extract(jCas, token, sentence));
 				}
 				
-				// set the instance label from the token's part of speech
-				instance.setOutcome(token.getPos());
 				
-				String label = consumer.consume(instance);
-				
-				if (label != null) {
-					token.setPos(label);
+				// during training, set the outcome from the CAS and write the instance
+				if (this.isTraining()) {
+					instance.setOutcome(token.getPos());
+					this.dataWriter.write(instance);
 				}
-
+				
+				// during classification, set the POS from the classifier's outcome
+				else {
+					token.setPos(this.classifier.classify(instance.getFeatures()));
+				}
 			}
+			
+		}
+		}catch (CleartkException ce) {
 			
 		}
 	}

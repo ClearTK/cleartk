@@ -95,7 +95,16 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 <import name="org.cleartk.TypeSystem"/>
             </imports>
         </typeSystemDescription>
-        <capabilities/>
+        <capabilities>
+            <capability>
+                <inputs/>
+                <outputs/>
+                <outputSofas>
+                    <sofaName>UriView</sofaName>
+                </outputSofas>
+                <languagesSupported/>
+            </capability>
+        </capabilities>
         <operationalProperties>
             <modifiesCas>true</modifiesCas>
             <multipleDeploymentAllowed>false</multipleDeploymentAllowed>

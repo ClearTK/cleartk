@@ -39,12 +39,9 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.pear.util.FileUtil;
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.AnnotationHandler;
-import org.cleartk.classifier.DataWriterAnnotator;
+import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.InstanceConsumer;
-import org.cleartk.classifier.InstanceConsumer_ImplBase;
 import org.cleartk.classifier.InstanceFactory;
 import org.cleartk.classifier.Train;
 import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
@@ -75,33 +72,40 @@ public class MalletDataWriterTest {
 		Assert.assertFalse(outputDirectory.exists());
 	}
 
-	public class TestHandler1 implements AnnotationHandler<String> {
+	public static class Test1Annotator extends CleartkAnnotator<String> {
 
-		public void process(JCas cas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException, CleartkException {
+		public void process(JCas cas) throws AnalysisEngineProcessException {
+			try {
+				this.processSimple(cas);
+			} catch (CleartkException e) {
+				throw new AnalysisEngineProcessException(e);
+			}
+		}
+		public void processSimple(JCas cas) throws AnalysisEngineProcessException, CleartkException {
 			List<Feature> features = Arrays.asList(new Feature("pos", "NN"), new Feature("distance", 3.0), new Feature(
 					"precision", 1.234));
 			Instance<String> instance = new Instance<String>("A", features);
-			consumer.consume(instance);
+			this.dataWriter.write(instance);
 
 			features = Arrays.asList(new Feature("name", "2PO"), new Feature("p's", 2));
 			instance = new Instance<String>("B", features);
-			consumer.consume(instance);
+			this.dataWriter.write(instance);
 
 			instance = new Instance<String>("Z");
-			consumer.consume(instance);
+			this.dataWriter.write(instance);
 
 			features = Arrays.asList(new Feature("A_B", "AB"));
 			instance = new Instance<String>("A", features);
-			consumer.consume(instance);
+			this.dataWriter.write(instance);
 		}
 	}
 
 	@Test
 	public void test1() throws Exception {
-		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(DataWriterAnnotator.class,
-				JCasUtil.getTypeSystemDescription(), InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, TestHandler1.class
-						.getName(), DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
-				DataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletDataWriterFactory.class.getName());
+		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
+				Test1Annotator.class, JCasUtil.getTypeSystemDescription(),
+				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletDataWriterFactory.class.getName());
 
 		JCas jCas = JCasUtil.getJCas();
 		dataWriterAnnotator.process(jCas);
@@ -137,10 +141,10 @@ public class MalletDataWriterTest {
 	 */
 	@Test
 	public void test2() throws Exception {
-		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(DataWriterAnnotator.class,
-				JCasUtil.getTypeSystemDescription(), InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, TestHandler1.class
-						.getName(), DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
-				DataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletDataWriterFactory.class.getName(),
+		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
+				Test1Annotator.class, JCasUtil.getTypeSystemDescription(),
+				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletDataWriterFactory.class.getName(),
 				DefaultMalletDataWriterFactory.PARAM_COMPRESS, true);
 
 		JCas jCas = JCasUtil.getJCas();
@@ -182,11 +186,12 @@ public class MalletDataWriterTest {
 
 	@Test
 	public void test3() throws Exception {
-		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(DataWriterAnnotator.class,
-				JCasUtil.getTypeSystemDescription(), InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, TestHandler1.class
-						.getName(), DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
-				DataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletDataWriterFactory.class.getName(),
-				DefaultMalletDataWriterFactory.PARAM_COMPRESS, true, DefaultMalletDataWriterFactory.PARAM_SORT_NAME_LOOKUP, true);
+		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
+				Test1Annotator.class, JCasUtil.getTypeSystemDescription(),
+				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletDataWriterFactory.class.getName(),
+				DefaultMalletDataWriterFactory.PARAM_COMPRESS, true,
+				DefaultMalletDataWriterFactory.PARAM_SORT_NAME_LOOKUP, true);
 
 		JCas jCas = JCasUtil.getJCas();
 		dataWriterAnnotator.process(jCas);
@@ -216,13 +221,19 @@ public class MalletDataWriterTest {
 		hider.restoreOutput();
 	}
 
-	public class TestHandler4 implements AnnotationHandler<String> {
-
-		public void process(JCas cas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException, CleartkException {
+	public static class Test4Annotator extends CleartkAnnotator<String> {
+		public void process(JCas cas) throws AnalysisEngineProcessException {
+			try {
+				this.processSimple(cas);
+			} catch (CleartkException e) {
+				throw new AnalysisEngineProcessException(e);
+			}
+		}
+		public void processSimple(JCas cas) throws AnalysisEngineProcessException, CleartkException {
 			List<Feature> features = Arrays.asList(new Feature("pos", "NN"), new Feature("distance", 3.0), new Feature(
 					"precision", 1.234));
 			Instance<String> instance = new Instance<String>(features);
-			consumer.consume(instance);
+			this.dataWriter.write(instance);
 		}
 
 	}
@@ -235,11 +246,12 @@ public class MalletDataWriterTest {
 	public void test4() throws Exception {
 		String outputDirectory = "test/data/mallet/mallet-data-writer";
 
-		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(DataWriterAnnotator.class,
-				JCasUtil.getTypeSystemDescription(), InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, TestHandler4.class
-						.getName(), DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
-				DataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletDataWriterFactory.class.getName(),
-				DefaultMalletDataWriterFactory.PARAM_COMPRESS, true, DefaultMalletDataWriterFactory.PARAM_SORT_NAME_LOOKUP, true);
+		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
+				Test4Annotator.class, JCasUtil.getTypeSystemDescription(),
+				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletDataWriterFactory.class.getName(),
+				DefaultMalletDataWriterFactory.PARAM_COMPRESS, true,
+				DefaultMalletDataWriterFactory.PARAM_SORT_NAME_LOOKUP, true);
 
 		JCas jCas = JCasUtil.getJCas();
 		AnalysisEngineProcessException aepe = null;
@@ -253,11 +265,17 @@ public class MalletDataWriterTest {
 		assertNotNull(aepe);
 	}
 
-	public class TestHandler5 implements AnnotationHandler<String> {
-
-		public void process(JCas cas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException, CleartkException {
+	public static class Test5Annotator extends CleartkAnnotator<String> {
+		public void process(JCas cas) throws AnalysisEngineProcessException {
+			try {
+				this.processSimple(cas);
+			} catch (CleartkException e) {
+				throw new AnalysisEngineProcessException(e);
+			}
+		}
+		public void processSimple(JCas cas) throws AnalysisEngineProcessException, CleartkException {
 			Instance<String> instance = InstanceFactory.createInstance("a", "b c d");
-			consumer.consume(instance);
+			this.dataWriter.write(instance);
 		}
 	}
 
@@ -267,10 +285,10 @@ public class MalletDataWriterTest {
 	 */
 	@Test
 	public void test5() throws Exception {
-		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(DataWriterAnnotator.class,
-				JCasUtil.getTypeSystemDescription(), InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, TestHandler5.class
-						.getName(), DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
-				DataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletDataWriterFactory.class.getName(),
+		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
+				Test5Annotator.class, JCasUtil.getTypeSystemDescription(),
+				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletDataWriterFactory.class.getName(),
 				DefaultMalletDataWriterFactory.PARAM_COMPRESS, true);
 
 		JCas jCas = JCasUtil.getJCas();

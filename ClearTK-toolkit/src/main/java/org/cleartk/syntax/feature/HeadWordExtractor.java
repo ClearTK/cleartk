@@ -258,7 +258,7 @@ public class HeadWordExtractor implements SimpleFeatureExtractor {
 		TreebankNode constituent = (TreebankNode) focusAnnotation;
 		
 		TreebankNode headNode = findHead(constituent);
-		List<Feature> features = extractNode(jCas, headNode, false);
+		List<Feature> features = new ArrayList<Feature>(extractNode(jCas, headNode, false));
 
 		if( includePPHead && constituent.getNodeType().equals("PP") ) {
 			for( int i=0; i<constituent.getChildren().size(); i++ ) {

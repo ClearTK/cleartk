@@ -36,17 +36,16 @@ import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.metadata.TypePriorities;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
+import org.cleartk.CleartkComponents;
 import org.cleartk.ViewNames;
 import org.cleartk.classifier.BuildJar;
-import org.cleartk.classifier.SequentialClassifierAnnotator;
-import org.cleartk.classifier.SequentialDataWriterAnnotator;
-import org.cleartk.classifier.SequentialInstanceConsumer_ImplBase;
+import org.cleartk.classifier.CleartkSequentialAnnotator;
 import org.cleartk.classifier.Train;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.classifier.viterbi.ViterbiDataWriter;
 import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
 import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
-import org.cleartk.token.pos.POSHandler;
+import org.cleartk.token.pos.POSAnnotator;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
@@ -70,7 +69,7 @@ import org.uutuc.util.TearDownUtil;
  * @author Philip Ogren
  *
  */
-public class DefaultPOSHandlerTest {
+public class DefaultPOSAnnotatorTest {
 
 	private File outputDirectory = new File("test/data/token/poshandler");
 	
@@ -95,16 +94,15 @@ public class DefaultPOSHandlerTest {
 		
 		List<Class<? extends AnalysisComponent>> aggregatedClasses = new ArrayList<Class<? extends AnalysisComponent>>();
 		aggregatedClasses.add(TreebankGoldAnnotator.class);
-		aggregatedClasses.add(SequentialDataWriterAnnotator.class);
+		aggregatedClasses.add(DefaultPOSAnnotator.class);
 
 		AnalysisEngine aggregateEngine = AnalysisEngineFactory.createAggregate(aggregatedClasses, 
 				defaultTypeSystemDescription, (TypePriorities)null, null,
 				TreebankGoldAnnotator.PARAM_POST_TREES, false,
-				SequentialDataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, ViterbiDataWriterFactory.class.getName(),
+				CleartkSequentialAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, ViterbiDataWriterFactory.class.getName(),
 				ViterbiDataWriter.PARAM_DELEGATED_DATAWRITER_FACTORY_CLASS, DefaultMaxentDataWriterFactory.class.getName(),
-				SequentialInstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, DefaultPOSHandler.class.getName(),
-				SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory.getPath(),
-				POSHandler.PARAM_FEATURE_EXTRACTOR_CLASS_NAME, DefaultFeatureExtractor.class.getName());
+				CleartkSequentialAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory.getPath(),
+				POSAnnotator.PARAM_FEATURE_EXTRACTOR_CLASS_NAME, DefaultFeatureExtractor.class.getName());
 		
 		for(JCas jCas : new JCasIterable(reader, aggregateEngine)) {
 			assert jCas != null;
@@ -117,8 +115,8 @@ public class DefaultPOSHandlerTest {
 		Train.main(outputDirectory.getPath(), "20", "5");
 		hider.restoreOutput();
 		
-		AnalysisEngine tagger = AnalysisEngineFactory.createAnalysisEngine("org.cleartk.token.pos.impl.DefaultPOSAnnotator", 
-				SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR_PATH, new File(outputDirectory, BuildJar.MODEL_FILE_NAME).getPath());
+		AnalysisEngine tagger = CleartkComponents.createPrimitive(DefaultPOSAnnotator.class, 
+				CleartkSequentialAnnotator.PARAM_CLASSIFIER_JAR_PATH, new File(outputDirectory, BuildJar.MODEL_FILE_NAME).getPath());
 
 		JCas jCas = ReusableUIMAObjects.getJCas();
 		TokenFactory.createTokens(jCas, "What kitchen utensil is like a vampire ? Spatula", Token.class, Sentence.class );

@@ -46,7 +46,7 @@ public class Evaluator extends JCasAnnotator_ImplBase {
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
 		try {
 			JCas goldView = jCas.getView(GoldAnnotator.GOLD_VIEW_NAME);
-			JCas predictionView = jCas.getView(AnnotationHandler.PREDICTION_VIEW_NAME);
+			JCas predictionView = jCas.getView(Annotator.PREDICTION_VIEW_NAME);
 
 			String gold = goldView.getSofaDataString();
 			String prediction = predictionView.getSofaDataString();

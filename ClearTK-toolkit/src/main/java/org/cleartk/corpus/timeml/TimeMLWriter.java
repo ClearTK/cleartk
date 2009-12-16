@@ -33,6 +33,7 @@ import java.util.Set;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.FSMatchConstraint;
@@ -40,10 +41,12 @@ import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.CasToInlineXml;
+import org.cleartk.CleartkComponents;
 import org.cleartk.corpus.timeml.type.Event;
 import org.cleartk.corpus.timeml.type.TemporalLink;
 import org.cleartk.corpus.timeml.type.Time;
 import org.cleartk.corpus.timeml.util.TimeMLUtil;
+import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.util.ViewURIUtil;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -51,6 +54,7 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.XMLOutputter;
 import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.util.InitializeUtil;
 
 
@@ -64,14 +68,22 @@ import org.uutuc.util.InitializeUtil;
  */
 public class TimeMLWriter extends JCasAnnotator_ImplBase {
 	
-	public static final String PARAM_OUTPUT_DIRECTORY_NAME = "org.cleartk.corpus.timeml.TimeMLWriter.outputDirectoryName";
+	public static final String PARAM_OUTPUT_DIRECTORY_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(TimeMLWriter.class, "outputDirectoryName");
 	
 	@ConfigurationParameter(
-			name = PARAM_OUTPUT_DIRECTORY_NAME,
 			description = "Provides the path where the TimeML documents should be written.",
 			mandatory = true)
 	private String outputDirectoryName;
 	
+	public static AnalysisEngineDescription getDescription(String outputDir)
+	throws ResourceInitializationException {
+		return AnalysisEngineFactory.createPrimitiveDescription(
+				TimeMLWriter.class,
+				CleartkComponents.TYPE_SYSTEM_DESCRIPTION,
+				CleartkComponents.TYPE_PRIORITIES,
+				PARAM_OUTPUT_DIRECTORY_NAME, outputDir);
+	}
+
 	private File outputDirectory;
 
 	@Override
@@ -148,5 +160,4 @@ public class TimeMLWriter extends JCasAnnotator_ImplBase {
 	public void setOutputDirectoryName(String outputDirectoryName) {
 		this.outputDirectoryName = outputDirectoryName;
 	}
-
 }

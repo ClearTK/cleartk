@@ -32,7 +32,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
 import org.cleartk.chunk.ChunkerFeatureExtractor;
-import org.cleartk.chunk.ChunkerHandler;
+import org.cleartk.chunk.ChunkerAnnotator;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.WindowFeature;
 import org.cleartk.classifier.feature.WindowNGramFeature;
@@ -71,7 +71,7 @@ public class ChunkTokenizerFeatureExtractor implements ChunkerFeatureExtractor {
 
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 
-		labeledAnnotationClass = UIMAUtil.getClass(context, ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS_NAME, Annotation.class);
+		labeledAnnotationClass = UIMAUtil.getClass(context, ChunkerAnnotator.PARAM_LABELED_ANNOTATION_CLASS_NAME, Annotation.class);
 		
 		this.simpleFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
 		this.windowExtractors = new ArrayList<WindowExtractor>();

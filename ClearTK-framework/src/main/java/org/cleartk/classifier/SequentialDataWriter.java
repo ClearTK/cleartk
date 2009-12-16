@@ -29,7 +29,7 @@ import org.cleartk.CleartkException;
 
 public interface SequentialDataWriter<OUTCOME_TYPE> {
 	
-	public void writeSequence(List<Instance<OUTCOME_TYPE>> instance) throws CleartkException;
+	public void writeSequence(List<Instance<OUTCOME_TYPE>> instances) throws CleartkException;
 	
 	public void finish() throws CleartkException;
 	

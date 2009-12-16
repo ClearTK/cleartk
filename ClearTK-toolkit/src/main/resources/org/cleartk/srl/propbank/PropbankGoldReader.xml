@@ -54,6 +54,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 <outputSofas>
                     <sofaName>PropbankView</sofaName>
                     <sofaName>TreebankView</sofaName>
+                    <sofaName>UriView</sofaName>
                 </outputSofas>
                 <languagesSupported/>
             </capability>

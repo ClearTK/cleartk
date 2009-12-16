@@ -52,10 +52,7 @@ public class XReader extends FilesCollectionReader {
 
 	public static final String XCAS = "XCAS";
 
-	public static final String PARAM_XML_SCHEME;
-	static {
-			PARAM_XML_SCHEME =	 ConfigurationParameterNameFactory.createConfigurationParameterName(	XReader.class, "xmlScheme");
-	}
+	public static final String PARAM_XML_SCHEME = ConfigurationParameterNameFactory.createConfigurationParameterName(XReader.class, "xmlScheme");
 	
 	@ConfigurationParameter(
 			defaultValue = "XMI",

@@ -36,13 +36,9 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.AnnotationHandler;
-import org.cleartk.classifier.ClassifierAnnotator;
-import org.cleartk.classifier.DataWriterAnnotator;
+import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.InstanceConsumer;
-import org.cleartk.classifier.InstanceConsumer_ImplBase;
 import org.cleartk.classifier.Train;
 import org.cleartk.util.JCasUtil;
 import org.junit.After;
@@ -94,37 +90,41 @@ public class MalletClassifierTest {
 	}
 
 	
-	public class TestHandler implements AnnotationHandler<String>{
+	public static class TestAnnotator extends CleartkAnnotator<String>{
 		Random random = new Random(System.currentTimeMillis());
 
-		public void process(JCas cas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException, CleartkException {
-			for(int i=0; i<1000; i++)
-				consumer.consume(generateInstance(random));
+		public void process(JCas cas) throws AnalysisEngineProcessException {
+			try {
+				this.processSimple(cas);
+			} catch (CleartkException e) {
+				throw new AnalysisEngineProcessException(e);
+			}
 		}
-	}
-	
-	public class TestHandler1 implements AnnotationHandler<String>{
-		Random random = new Random(System.currentTimeMillis());
+		public void processSimple(JCas cas) throws AnalysisEngineProcessException, CleartkException {
+			if (this.isTraining()) {
+				for(int i=0; i<1000; i++) {
+					this.dataWriter.write(generateInstance(random));
+				}
+			} else {
+				Instance<String> testInstance = new Instance<String>();
+				testInstance.add(new Feature("hello", random.nextInt(1000)+1000));
+				String outcome = this.classifier.classify(testInstance.getFeatures());
+				assertEquals("A", outcome);
 
-		public void process(JCas cas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException, CleartkException {
-			Instance<String> testInstance = new Instance<String>();
-			testInstance.add(new Feature("hello", random.nextInt(1000)+1000));
-			String outcome = consumer.consume(testInstance);
-			assertEquals("A", outcome);
-
-			testInstance = new Instance<String>();
-			testInstance.add(new Feature("hello", 95));
-			outcome = consumer.consume(testInstance);
-			assertEquals("B", outcome);
+				testInstance = new Instance<String>();
+				testInstance.add(new Feature("hello", 95));
+				outcome = this.classifier.classify(testInstance.getFeatures());
+				assertEquals("B", outcome);
+			}
 		}
 	}
 	
 	@Test
 	public void runTest1() throws Exception {
-		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(DataWriterAnnotator.class,
-				JCasUtil.getTypeSystemDescription(), InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, TestHandler.class
-						.getName(), DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
-				DataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletDataWriterFactory.class.getName());
+		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
+				TestAnnotator.class, JCasUtil.getTypeSystemDescription(),
+				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletDataWriterFactory.class.getName());
 
 		JCas jCas = JCasUtil.getJCas();
 		dataWriterAnnotator.process(jCas);
@@ -172,9 +172,9 @@ public class MalletClassifierTest {
 		FeatureVector fv = (FeatureVector) malletInstance.getData();
 		assertEquals(95.0, fv.value("hello"), 0.001);
 		
-		AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createPrimitive(ClassifierAnnotator.class, JCasUtil.getTypeSystemDescription(),
-				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, TestHandler1.class.getName(),
-				ClassifierAnnotator.PARAM_CLASSIFIER_JAR_PATH, outputDirectory+"/model.jar");
+		AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createPrimitive(
+				TestAnnotator.class, JCasUtil.getTypeSystemDescription(),
+				CleartkAnnotator.PARAM_CLASSIFIER_JAR_PATH, outputDirectory+"/model.jar");
 		jCas.reset();
 		classifierAnnotator.process(jCas);
 		classifierAnnotator.collectionProcessComplete();

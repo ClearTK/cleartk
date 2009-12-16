@@ -43,6 +43,7 @@ import org.apache.uima.cas.impl.XmiCasSerializer;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.XMLSerializer;
+import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.uutuc.descriptor.ConfigurationParameter;
 import org.uutuc.util.InitializeUtil;
 import org.xml.sax.SAXException;
@@ -57,16 +58,14 @@ import org.xml.sax.SAXException;
 
 public class XWriter extends JCasAnnotator_ImplBase {
 	
-	public static final String PARAM_OUTPUT_DIRECTORY_NAME = "org.cleartk.util.XWriter.outputDirectoryName";
+	public static final String PARAM_OUTPUT_DIRECTORY_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(XWriter.class, "outputDirectoryName");
 	@ConfigurationParameter(
-			name = PARAM_OUTPUT_DIRECTORY_NAME,
 			mandatory = true,
 			description = "takes a path to directory into which output files will be written.")
 	private String outputDirectoryName;
 	
-	public static final String PARAM_XML_SCHEME_NAME = "org.cleartk.util.XWriter.xmlSchemeName";
+	public static final String PARAM_XML_SCHEME_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(XWriter.class, "xmlSchemeName");
 	@ConfigurationParameter(
-			name = PARAM_XML_SCHEME_NAME,
 			defaultValue = "XMI",
 			description = "specifies the UIMA XML serialization scheme that should be used. Valid values for this parameter are 'XMI' (default) and 'XCAS'.")
 	private String xmlSchemeName;

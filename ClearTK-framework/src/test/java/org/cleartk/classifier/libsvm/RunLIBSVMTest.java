@@ -31,28 +31,17 @@ import java.util.List;
 import java.util.Random;
 import java.util.jar.JarFile;
 
-import org.apache.uima.UimaContext;
-import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.AnnotationHandler;
-import org.cleartk.classifier.ClassifierAnnotator;
-import org.cleartk.classifier.DataWriterAnnotator;
+import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.InstanceConsumer;
-import org.cleartk.classifier.InstanceConsumer_ImplBase;
 import org.cleartk.classifier.Train;
-import org.cleartk.util.JCasUtil;
-import org.cleartk.util.EmptyHandlerUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.UimaContextFactory;
 import org.uutuc.util.HideOutput;
 import org.uutuc.util.TearDownUtil;
@@ -85,20 +74,15 @@ public class RunLIBSVMTest {
 	public void testBinaryLIBSVM() throws Exception {
 		
 		// create the data writer
-		DataWriterAnnotator<Boolean> dataWriter = new DataWriterAnnotator<Boolean>();
-		dataWriter.initialize(UimaContextFactory.createUimaContext(
-				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME,
-				EmptyHandlerUtil.EmptyBooleanHandler.class.getName(),
-				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY,
-				this.outputDirectory,
-				DataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-				DefaultBinaryLIBSVMDataWriterFactory.class.getName()));
+		BinaryAnnotator annotator = new BinaryAnnotator();		
+		annotator.initialize(UimaContextFactory.createUimaContext(
+				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY, this.outputDirectory,
+				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultBinaryLIBSVMDataWriterFactory.class.getName()));
 		
-		// add a bunch of instances
-		for (Instance<Boolean> instance: generateBooleanInstances(1000)) {
-			dataWriter.consume(instance);
-		}
-		dataWriter.collectionProcessComplete();
+		// run process to produce a bunch of instances
+		annotator.process(null);
+		
+		annotator.collectionProcessComplete();
 		
 		// check that the output file was written and is not empty
 		BufferedReader reader = new BufferedReader(new FileReader(new File(
@@ -126,20 +110,15 @@ public class RunLIBSVMTest {
 	public void testLIBLINEAR() throws Exception {
 		
 		// create the data writer
-		DataWriterAnnotator<Boolean> dataWriter = new DataWriterAnnotator<Boolean>();
-		dataWriter.initialize(UimaContextFactory.createUimaContext(
-				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME,
-				EmptyHandlerUtil.EmptyBooleanHandler.class.getName(),
-				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY,
-				this.outputDirectory,
-				DataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-				DefaultLIBLINEARDataWriterFactory.class.getName()));
+		BinaryAnnotator annotator = new BinaryAnnotator();		
+		annotator.initialize(UimaContextFactory.createUimaContext(
+				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY, this.outputDirectory,
+				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultLIBLINEARDataWriterFactory.class.getName()));
 		
-		// add a bunch of instances
-		for (Instance<Boolean> instance: generateBooleanInstances(1000)) {
-			dataWriter.consume(instance);
-		}
-		dataWriter.collectionProcessComplete();
+		// run process to produce a bunch of instances
+		annotator.process(null);
+		
+		annotator.collectionProcessComplete();
 		
 		// check that the output file was written and is not empty
 		BufferedReader reader = new BufferedReader(new FileReader(new File(
@@ -167,21 +146,16 @@ public class RunLIBSVMTest {
 	public void testMultiClassLIBSVM() throws Exception {
 		
 		// create the data writer
-		DataWriterAnnotator<String> dataWriter = new DataWriterAnnotator<String>();
-		dataWriter.initialize(UimaContextFactory.createUimaContext(
-				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME,
-				EmptyHandlerUtil.EmptyStringHandler.class.getName(),
-				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY,
-				this.outputDirectory,
-				DataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-				DefaultMultiClassLIBSVMDataWriterFactory.class.getName()));
+		StringAnnotator annotator = new StringAnnotator();		
+		annotator.initialize(UimaContextFactory.createUimaContext(
+				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY, this.outputDirectory,
+				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMultiClassLIBSVMDataWriterFactory.class.getName()));
 		
-		// add a bunch of instances
-		for (Instance<String> instance: generateStringInstances(1000)) {
-			dataWriter.consume(instance);
-		}
-		dataWriter.collectionProcessComplete();
+		// run process to produce a bunch of instances
+		annotator.process(null);
 		
+		annotator.collectionProcessComplete();
+
 		// check that the output files were written for each class
 		BufferedReader reader = new BufferedReader(new FileReader(new File(
 				this.outputDirectory, "training-data.libsvm")));
@@ -205,79 +179,7 @@ public class RunLIBSVMTest {
 		}
 	}
 	
-	@Test
-	public void testMultiClassLIBSVM2() throws Exception {
-		
-		AnalysisEngineDescription dataWriterDescription = AnalysisEngineFactory.createPrimitiveDescription(
-				DataWriterAnnotator.class, null, null,
-				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME,
-				TestMultiClassLIBSVM2Handler.class.getName(),
-				DataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-				DefaultMultiClassLIBSVMDataWriterFactory.class.getName(),
-				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory);
 
-		AnalysisEngine dataWriter = AnalysisEngineFactory.createPrimitive(dataWriterDescription);
-		
-		JCas jCas = JCasUtil.getJCas();
-		
-		dataWriter.process(jCas);
-		
-		dataWriter.collectionProcessComplete();
-		
-		// check that the output files were written for each class
-		BufferedReader reader = new BufferedReader(new FileReader(new File(
-				this.outputDirectory, "training-data.libsvm")));
-		Assert.assertTrue(reader.readLine().length() > 0);
-		reader.close();
-		
-		// run the training command
-		HideOutput hider = new HideOutput();
-		Train.main(this.outputDirectory, "-c", "1.0", "-t", "2");
-		hider.restoreOutput();
-		
-		AnalysisEngineDescription classifierDescription = AnalysisEngineFactory.createPrimitiveDescription(
-				ClassifierAnnotator.class, null, null,
-				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME,
-				TestMultiClassLIBSVM2HandlerB.class.getName(),
-				ClassifierAnnotator.PARAM_CLASSIFIER_JAR_PATH, outputDirectory +"/model.jar");
-		AnalysisEngine classifier = AnalysisEngineFactory.createPrimitive(classifierDescription);
-		
-		jCas.reset();
-		
-		classifier.process(jCas);
-		
-	}
-
-public static class TestMultiClassLIBSVM2Handler implements AnnotationHandler<String> {
-		public void initialize(UimaContext context) throws ResourceInitializationException {
-		}
-
-		public void process(JCas cas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException, CleartkException {
-			for (Instance<String> instance: generateStringInstances2(1000)) {
-				consumer.consume(instance);
-			}
-
-		}
-	}
-
-	/**
-	 * A simple do-nothing AnnotationHandler that expects String outcomes.
-	 * Useful primarily for testing DataWriter objects which require some
-	 * annotation handler to be specified.
-	 */
-	public static class TestMultiClassLIBSVM2HandlerB implements AnnotationHandler<String> {
-		public void initialize(UimaContext context) throws ResourceInitializationException {
-		}
-
-		public void process(JCas cas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException, CleartkException {
-			for (Instance<String> instance: generateStringInstances2(1000)) {
-				String outcome = instance.getOutcome();
-				Assert.assertEquals(outcome, consumer.consume(instance));
-			}
-		}
-	}
-
-	
 	private static List<Instance<Boolean>> generateBooleanInstances(int n) {
 		Random random = new Random(42);
 		List<Instance<Boolean>> instances = new ArrayList<Instance<Boolean>>();
@@ -326,32 +228,58 @@ public static class TestMultiClassLIBSVM2Handler implements AnnotationHandler<St
 		return instances;
 	}
 	
-	private static List<Instance<String>> generateStringInstances2(int n) {
-		Random random = new Random(42);
-		List<Instance<String>> instances = new ArrayList<Instance<String>>();
-		for (int i = 0; i < n; i++) {
-			Instance<String> instance = new Instance<String>();
-			int c = random.nextInt(3);
-			if ( c == 0 ) {
-				instance.setOutcome("A");
-				instance.add(new Feature("aardvark", 1));
-				instance.add(new Feature("apple", 1));
-				instance.add(new Feature("algorithm", 1));
+//	private static List<Instance<String>> generateStringInstances2(int n) {
+//		Random random = new Random(42);
+//		List<Instance<String>> instances = new ArrayList<Instance<String>>();
+//		for (int i = 0; i < n; i++) {
+//			Instance<String> instance = new Instance<String>();
+//			int c = random.nextInt(3);
+//			if ( c == 0 ) {
+//				instance.setOutcome("A");
+//				instance.add(new Feature("aardvark", 1));
+//				instance.add(new Feature("apple", 1));
+//				instance.add(new Feature("algorithm", 1));
+//			}
+//			else if( c == 1 ) {
+//				instance.setOutcome("B");
+//				instance.add(new Feature("bat", 1));
+//				instance.add(new Feature("banana", 1));
+//				instance.add(new Feature("bayes", 1));
+//			} else {
+//				instance.setOutcome("C");
+//				instance.add(new Feature("cat", 1));
+//				instance.add(new Feature("coconut", 1));
+//				instance.add(new Feature("calculus", 1));
+//			}
+//			instances.add(instance);
+//		}
+//		return instances;
+//	}
+	
+	private static class BinaryAnnotator extends CleartkAnnotator<Boolean> {
+		@Override
+		public void process(JCas aJCas) throws AnalysisEngineProcessException {			
+			for( Instance<Boolean> instance : generateBooleanInstances(1000) ) {
+				try {
+					this.dataWriter.write(instance);
+				} catch (CleartkException e) {
+					throw new AnalysisEngineProcessException(e);
+				}
 			}
-			else if( c == 1 ) {
-				instance.setOutcome("B");
-				instance.add(new Feature("bat", 1));
-				instance.add(new Feature("banana", 1));
-				instance.add(new Feature("bayes", 1));
-			} else {
-				instance.setOutcome("C");
-				instance.add(new Feature("cat", 1));
-				instance.add(new Feature("coconut", 1));
-				instance.add(new Feature("calculus", 1));
-			}
-			instances.add(instance);
 		}
-		return instances;
+	}
+
+	private static class StringAnnotator extends CleartkAnnotator<String> {
+		@Override
+		public void process(JCas aJCas) throws AnalysisEngineProcessException {			
+			for( Instance<String> instance : generateStringInstances(1000) ) {
+				try {
+					this.dataWriter.write(instance);
+				} catch (CleartkException e) {
+					throw new AnalysisEngineProcessException(e);
+				}
+			}
+		}
 	}
 
 }

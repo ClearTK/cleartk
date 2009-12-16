@@ -41,14 +41,17 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
+import org.cleartk.ViewNames;
 import org.cleartk.ne.type.NamedEntity;
 import org.cleartk.ne.type.NamedEntityMention;
+import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.type.Chunk;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.UIMAUtil;
 import org.cleartk.util.ViewURIUtil;
 import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.descriptor.SofaCapability;
 import org.uutuc.util.InitializeUtil;
 
 
@@ -64,18 +67,17 @@ import org.uutuc.util.InitializeUtil;
  * data can be retrieved from http://www.cnts.ua.ac.be/conll2003/ner/
  * 
  */
+@SofaCapability(outputSofas=ViewNames.URI)
 public class Conll2003GoldReader extends CollectionReader_ImplBase
 {
-	public static final String PARAM_DATA_FILE_NAME = "org.cleartk.corpus.conll2003.Conll2003GoldReader.dataFileName";
+	public static final String PARAM_DATA_FILE_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(Conll2003GoldReader.class, "dataFileName");
 	@ConfigurationParameter(
-			name = PARAM_DATA_FILE_NAME,
 			mandatory = true,
 			description = "Points to CoNLL data (e.g. ner/eng.train).")
 	private String dataFileName;
 	
-	public static final String PARAM_LOAD_NAMED_ENTITIES = "org.cleartk.corpus.conll2003.Conll2003GoldReader.loadNamedEntities";
+	public static final String PARAM_LOAD_NAMED_ENTITIES = ConfigurationParameterNameFactory.createConfigurationParameterName(Conll2003GoldReader.class, "loadNamedEntities");
 	@ConfigurationParameter(
-			name = PARAM_LOAD_NAMED_ENTITIES,
 			mandatory = true,
 			description = "determines if the named entities are loaded (i.e. named entity mention annotations are created) or if just plain text from the files is loaded.",
 			defaultValue = "true")

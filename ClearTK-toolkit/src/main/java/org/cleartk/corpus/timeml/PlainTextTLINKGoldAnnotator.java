@@ -35,16 +35,20 @@ import java.util.Map;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.CleartkComponents;
 import org.cleartk.corpus.timeml.type.Anchor;
 import org.cleartk.corpus.timeml.type.Event;
 import org.cleartk.corpus.timeml.type.TemporalLink;
 import org.cleartk.corpus.timeml.type.Time;
+import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.ViewURIUtil;
 import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.util.InitializeUtil;
 
 
@@ -58,10 +62,8 @@ import org.uutuc.util.InitializeUtil;
  */
 public class PlainTextTLINKGoldAnnotator extends JCasAnnotator_ImplBase {
 	
-	public static final String PARAM_TLINK_FILE_URL = "org.cleartk.corpus.timeml.PlainTextTLINKGoldAnnotator.tlinkFileUrl";
-	
+	public static final String PARAM_TLINK_FILE_URL = ConfigurationParameterNameFactory.createConfigurationParameterName(PlainTextTLINKGoldAnnotator.class, "tlinkFileUrl");
 	@ConfigurationParameter(
-			name = PARAM_TLINK_FILE_URL,
 			mandatory = true,
 			description = "the URL to a plain-text TLINK file, e.g." +
 			"http://www.stanford.edu/~bethard/data/timebank-verb-clause.txt")
@@ -70,6 +72,14 @@ public class PlainTextTLINKGoldAnnotator extends JCasAnnotator_ImplBase {
 		this.tlinkFileUrl = tlinkFileUrl;
 	}
 	
+	public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
+		return AnalysisEngineFactory.createPrimitiveDescription(PlainTextTLINKGoldAnnotator.class,
+				CleartkComponents.TYPE_SYSTEM_DESCRIPTION,
+				CleartkComponents.TYPE_PRIORITIES,
+				PARAM_TLINK_FILE_URL, CleartkComponents.getParameterValue(PARAM_TLINK_FILE_URL,
+						"http://www.stanford.edu/~bethard/data/timebank-verb-clause.txt"));
+	}
+
 	private Map<String, List<TLINK>> fileTLINKs;
 	
 	@Override

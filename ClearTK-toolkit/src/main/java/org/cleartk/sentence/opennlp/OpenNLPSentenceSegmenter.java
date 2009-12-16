@@ -38,9 +38,12 @@ import opennlp.tools.sentdetect.SentenceDetectorME;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.CleartkComponents;
+import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.type.Sentence;
 import org.uutuc.descriptor.ConfigurationParameter;
 import org.uutuc.util.InitializeUtil;
@@ -61,11 +64,14 @@ import org.uutuc.util.InitializeUtil;
  * @see SentenceDetector
  */
 
-public class OpenNLPSentenceSegmenter extends JCasAnnotator_ImplBase
-{ 
-	public static final String PARAM_SENTENCE_MODEL_FILE_NAME = "org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter.sentenceModelFileName";
+public class OpenNLPSentenceSegmenter extends JCasAnnotator_ImplBase {
+	
+	public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
+		return CleartkComponents.createPrimitiveDescription(OpenNLPSentenceSegmenter.class);
+	}
+	
+	public static final String PARAM_SENTENCE_MODEL_FILE_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(OpenNLPSentenceSegmenter.class, "sentenceModelFileName");
 	@ConfigurationParameter(
-			name = PARAM_SENTENCE_MODEL_FILE_NAME,
 			mandatory = true,
 			defaultValue = "resources/models/OpenNLP.Sentence.English.bin.gz",
 			description = "provides the path of the OpenNLP sentence segmenter model file")

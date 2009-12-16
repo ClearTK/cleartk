@@ -34,10 +34,8 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkComponents;
 import org.cleartk.CleartkException;
-import org.cleartk.Initializable;
+import org.cleartk.classifier.CleartkSequentialAnnotator;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.SequentialAnnotationHandler;
-import org.cleartk.classifier.SequentialInstanceConsumer;
 import org.cleartk.classifier.feature.WindowFeature;
 import org.cleartk.classifier.feature.extractor.WindowExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
@@ -60,7 +58,7 @@ import org.cleartk.util.AnnotationRetrieval;
  * 
  * @author Steven Bethard
  */
-public class ExamplePOSAnnotationHandler implements SequentialAnnotationHandler<String>, Initializable {
+public class ExamplePOSAnnotator extends CleartkSequentialAnnotator<String> {
 
 	public static final String DEFAULT_OUTPUT_DIRECTORY = "example/pos/model";
 	public static final String DEFAULT_MODEL = "example/pos/model/model.jar";
@@ -69,6 +67,7 @@ public class ExamplePOSAnnotationHandler implements SequentialAnnotationHandler<
 	private List<WindowExtractor> tokenSentenceFeatureExtractors;
 	
 	public void initialize(UimaContext context) throws ResourceInitializationException{
+		super.initialize(context);
 		// a list of feature extractors that require only the token
 		this.tokenFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
 		
@@ -104,8 +103,15 @@ public class ExamplePOSAnnotationHandler implements SequentialAnnotationHandler<
 		
 	}
 	
-	public void process(JCas jCas, SequentialInstanceConsumer<String> consumer) throws AnalysisEngineProcessException, CleartkException {
-		
+	public void process(JCas jCas) throws AnalysisEngineProcessException {
+		try {
+			this.processSimple(jCas);
+		} catch (CleartkException e) {
+			throw new AnalysisEngineProcessException(e);
+		}
+	}
+	
+	public void processSimple(JCas jCas) throws AnalysisEngineProcessException, CleartkException {
 		// generate a list of training instances for each sentence in the document
 		for (Sentence sentence: AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
 			List<Instance<String>> instances = new ArrayList<Instance<String>>();
@@ -132,13 +138,15 @@ public class ExamplePOSAnnotationHandler implements SequentialAnnotationHandler<
 				instances.add(instance);
 			}
 			
-			// pass the instance list to the consumer and get back the list of labels
-			List<String> labels = consumer.consumeSequence(instances);
-			if (labels != null) {
-				
-				// if the consumer returned labels, set each token's POS label
+			// for training, write instances to the data write
+			if (this.isTraining()) {
+				this.dataWriter.writeSequence(instances);
+			}
+			
+			// for classification, set the labels as the token POS labels
+			else {
 				Iterator<Token> tokensIter = tokens.iterator();
-				for (String label: labels) {
+				for (String label: this.classifySequence(instances)) {
 					tokensIter.next().setPos(label.toString());
 				}
 			}
@@ -146,13 +154,13 @@ public class ExamplePOSAnnotationHandler implements SequentialAnnotationHandler<
 	}
 	
 	public static AnalysisEngineDescription getClassifierDescription(String modelFileName) throws ResourceInitializationException {
-		return CleartkComponents.createSequentialClassifierAnnotator(
-				ExamplePOSAnnotationHandler.class, modelFileName, null);
+		return CleartkComponents.createCleartkSequentialAnnotator(
+				ExamplePOSAnnotator.class, modelFileName);
 	}
 	
 	public static AnalysisEngineDescription getWriterDescription(String outputDirectory) throws ResourceInitializationException {
-		return CleartkComponents.createViterbiDataWriterAnnotator(
-				ExamplePOSAnnotationHandler.class,
+		return CleartkComponents.createViterbiAnnotator(
+				ExamplePOSAnnotator.class,
 				DefaultMaxentDataWriterFactory.class,
 				outputDirectory,
 				DefaultMaxentDataWriterFactory.PARAM_COMPRESS, true);

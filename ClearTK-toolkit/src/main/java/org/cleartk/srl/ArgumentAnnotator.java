@@ -23,18 +23,21 @@
 */
 package org.cleartk.srl;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkComponents;
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.AnnotationHandler;
+import org.cleartk.classifier.CleartkAnnotator;
+import org.cleartk.classifier.DataWriterFactory;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.InstanceConsumer;
 import org.cleartk.classifier.feature.WindowFeature;
 import org.cleartk.classifier.feature.extractor.WindowExtractor;
 import org.cleartk.classifier.feature.extractor.annotationpair.DistanceExtractor;
@@ -43,7 +46,6 @@ import org.cleartk.classifier.feature.extractor.simple.CombinedExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
-import org.cleartk.classifier.svmlight.DefaultOVASVMlightDataWriterFactory;
 import org.cleartk.srl.type.Argument;
 import org.cleartk.srl.type.Predicate;
 import org.cleartk.srl.type.SemanticArgument;
@@ -66,22 +68,28 @@ import org.cleartk.util.UIMAUtil;
  * @author Philipp Wetzler
  */
 
-public class ArgumentAnnotationHandler implements AnnotationHandler<String> {
+public class ArgumentAnnotator extends CleartkAnnotator<String> {
 	
-	public static AnalysisEngineDescription createArgumentDataWriter(String outputDirectory)
+	public static AnalysisEngineDescription getWriterDescription(
+			Class<? extends DataWriterFactory<String>> dataWriterFactoryClass, File outputDirectory)
 	throws ResourceInitializationException {
-		return CleartkComponents.createDataWriterAnnotator(
-				ArgumentAnnotationHandler.class,
-				DefaultOVASVMlightDataWriterFactory.class, outputDirectory, null);
+		return CleartkComponents.createPrimitiveDescription(
+				ArgumentAnnotator.class,
+				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, dataWriterFactoryClass.getName(),
+				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory.toString());
 	}
 
-	public static AnalysisEngineDescription createArgumentAnnotator(String classifierJar)
+	public static AnalysisEngineDescription getClassifierDescription(File classifierJar)
 	throws ResourceInitializationException {
-		return CleartkComponents.createClassifierAnnotator(
-				ArgumentAnnotationHandler.class, classifierJar);
+		return CleartkComponents.createPrimitiveDescription(
+				ArgumentAnnotator.class,
+				CleartkAnnotator.PARAM_CLASSIFIER_JAR_PATH, classifierJar.toString());
 	}
 
-	public ArgumentAnnotationHandler() {
+	@Override
+	public void initialize(UimaContext context) throws ResourceInitializationException {
+		super.initialize(context);
+		
 		SimpleFeatureExtractor[] tokenExtractors = {
 				new SpannedTextExtractor(),
 				new TypePathExtractor(Token.class, "stem"),
@@ -116,15 +124,20 @@ public class ArgumentAnnotationHandler implements AnnotationHandler<String> {
 				WindowFeature.ORIENTATION_MIDDLE_REVERSE, 0, 1);
 	}
 
-	public void process(JCas jCas, InstanceConsumer<String> consumer) throws CleartkException{
+	@Override
+	public void process(JCas jCas) throws AnalysisEngineProcessException {
 		List<Sentence> sentences = AnnotationRetrieval.getAnnotations(jCas, Sentence.class);
 	
-		for( Sentence sentence : sentences ) {
-			processSentence(jCas, sentence, consumer);
+		try {
+			for( Sentence sentence : sentences ) {
+				processSentence(jCas, sentence);
+			}
+		} catch (CleartkException e) {
+			throw new AnalysisEngineProcessException(e);
 		}		
 	}
 
-	public void processSentence(JCas jCas, Sentence sentence, InstanceConsumer<String> consumer) throws CleartkException{
+	private void processSentence(JCas jCas, Sentence sentence) throws CleartkException{
 
 		List<TreebankNode> sentenceConstituents = new ArrayList<TreebankNode>(
 				80);
@@ -141,14 +154,14 @@ public class ArgumentAnnotationHandler implements AnnotationHandler<String> {
 				sentence, Predicate.class);
 		for (Predicate predicate : predicates) {
 			processPredicate(jCas, sentence, predicate, sentenceConstituents,
-					sentenceConstituentFeatures, consumer);
+					sentenceConstituentFeatures);
 		}
 
 	}
 
-	void processPredicate(JCas jCas, Sentence sentence, Predicate predicate,
+	private void processPredicate(JCas jCas, Sentence sentence, Predicate predicate,
 			List<TreebankNode> constituents,
-			List<List<Feature>> constituentFeatures, InstanceConsumer<String> consumer) throws CleartkException{
+			List<List<Feature>> constituentFeatures) throws CleartkException{
 		TreebankNode predicateNode = AnnotationRetrieval.getMatchingAnnotation(
 				jCas, predicate.getAnnotation(), TreebankNode.class);
 		Token predicateToken = AnnotationRetrieval.getMatchingAnnotation(jCas,
@@ -195,10 +208,10 @@ public class ArgumentAnnotationHandler implements AnnotationHandler<String> {
 				}
 			}
 
-			String outcome = consumer.consume(instance);
-			
-
-			if( outcome != null ) {
+			if (this.isTraining()) {
+				this.dataWriter.write(instance);
+			} else {
+				String outcome = this.classifier.classify(instance.getFeatures());
 				if (!outcome.equals("NULL")) {
 					SemanticArgument arg = new SemanticArgument(jCas);
 					arg.setAnnotation(constituent);
@@ -226,7 +239,7 @@ public class ArgumentAnnotationHandler implements AnnotationHandler<String> {
 
 	}
 
-	List<Feature> extractConstituentFeatures(JCas jCas,
+	private List<Feature> extractConstituentFeatures(JCas jCas,
 			TreebankNode constituent, Sentence sentence) throws CleartkException {
 		List<Feature> features = new ArrayList<Feature>(20);
 		features.addAll(constituentExtractor.extract(jCas, constituent));
@@ -254,7 +267,7 @@ public class ArgumentAnnotationHandler implements AnnotationHandler<String> {
 		return features;
 	}
 
-	void collectConstituents(TreebankNode top, List<TreebankNode> constituents) {
+	private void collectConstituents(TreebankNode top, List<TreebankNode> constituents) {
 		if (top == null)
 			throw new IllegalArgumentException();
 

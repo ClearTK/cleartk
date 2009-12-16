@@ -34,10 +34,9 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
-import org.cleartk.Initializable;
+import org.cleartk.classifier.CleartkSequentialAnnotator;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.SequentialAnnotationHandler;
-import org.cleartk.classifier.SequentialInstanceConsumer;
+import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.util.UIMAUtil;
 import org.uutuc.descriptor.ConfigurationParameter;
 import org.uutuc.util.InitializeUtil;
@@ -49,32 +48,33 @@ import org.uutuc.util.InitializeUtil;
 
 */
 
-public class ChunkerHandler implements SequentialAnnotationHandler<String>, Initializable {
+public class ChunkerAnnotator extends CleartkSequentialAnnotator<String> {
 
-	public static final String PARAM_LABELED_ANNOTATION_CLASS_NAME = "org.cleartk.chunk.ChunkerHandler.labeledAnnotationClassName";
+	//The name is hard coded here as a string because it needs to be referenced as a constant in ChunkLabeler_ImplBase
+	public static final String PARAM_LABELED_ANNOTATION_CLASS_NAME = "org.cleartk.chunk.ChunkerAnnotator.labeledAnnotationClassName";
+
 	@ConfigurationParameter(
-			name = PARAM_LABELED_ANNOTATION_CLASS_NAME,
 			mandatory = true,
 			description = "names the class of the type system type used to associate B, I, and O (for example) labels with.  An example value might be 'org.cleartk.type.Token'")
 	 protected String labeledAnnotationClassName;
 
-	public static final String PARAM_SEQUENCE_CLASS_NAME = "org.cleartk.chunk.ChunkerHandler.sequenceClassName";
+	public static final String PARAM_SEQUENCE_CLASS_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(
+			ChunkerAnnotator.class, "sequenceClassName");
 	@ConfigurationParameter(
-			name = PARAM_SEQUENCE_CLASS_NAME,
 			mandatory = true,
 			description = "names the class of the type system type that specifies a 'sequence' of labels.  An example might be something like 'org.cleartk.type.Sentence'")
 	private String sequenceClassName;
 	
-	public static final String PARAM_CHUNK_LABELER_CLASS_NAME = "org.cleartk.chunk.ChunkerHandler.chunkLabelerClassName";
+	public static final String PARAM_CHUNK_LABELER_CLASS_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(
+			ChunkerAnnotator.class, "chunkLabelerClassName");
 	@ConfigurationParameter(
-			name = PARAM_CHUNK_LABELER_CLASS_NAME,
 			mandatory = true,
 			description = "provides the class name of a class that extends org.cleartk.chunk.ChunkLabeler.")
 	private String chunkLabelerClassName;
 	
-	public static final String PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME = "org.cleartk.chunk.ChunkerHandler.chunkerFeatureExtractorClassName";
+	public static final String PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(
+			ChunkerAnnotator.class, "chunkerFeatureExtractorClassName");
 	@ConfigurationParameter(
-			name = PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME,
 			mandatory = true,
 			description = "provides the class name of a class that extends org.cleartk.chunk.ChunkFeatureExtractor.")
 	private String chunkerFeatureExtractorClassName;
@@ -93,7 +93,9 @@ public class ChunkerHandler implements SequentialAnnotationHandler<String>, Init
 
 	protected boolean typesInitialized = false;
 
+	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
+		super.initialize(context);
 		InitializeUtil.initialize(this, context);
 		labeledAnnotationClass = UIMAUtil.getClass(labeledAnnotationClassName, Annotation.class);
 		sequenceClass = UIMAUtil.getClass(sequenceClassName, Annotation.class);
@@ -120,7 +122,17 @@ public class ChunkerHandler implements SequentialAnnotationHandler<String>, Init
 		return jCas.getAnnotationIndex(labeledAnnotationType).subiterator(sequence);
 	}
 	
-	public void process(JCas jCas, SequentialInstanceConsumer<String> consumer) throws AnalysisEngineProcessException, CleartkException {
+	
+	@Override
+	public void process(JCas jCas) throws AnalysisEngineProcessException {
+		try {
+			this.processSimple(jCas);
+		} catch (CleartkException e) {
+			throw new AnalysisEngineProcessException(e);
+		}
+	}
+	
+	public void processSimple(JCas jCas) throws AnalysisEngineProcessException, CleartkException {
 		if (!typesInitialized) initializeTypes(jCas);
 
 
@@ -131,12 +143,11 @@ public class ChunkerHandler implements SequentialAnnotationHandler<String>, Init
 
 		FSIterator sequences = sequences(jCas);
 
-		boolean consumerReturnsValues = false;
 		while (sequences.hasNext()) {
 			Annotation sequence = (Annotation) sequences.next();
-			if(consumer.expectsOutcomes())
+			if(this.isTraining()) {
 				chunkLabeler.chunks2Labels(jCas, sequence);
-
+			}
 			instances.clear();
 			labeledAnnotationList.clear();
 
@@ -151,21 +162,22 @@ public class ChunkerHandler implements SequentialAnnotationHandler<String>, Init
 				instance.setOutcome(label);
 				instances.add(instance);
 			}
-
-			List<String> results = consumer.consumeSequence(instances);
-
-			if (results != null) {
-				consumerReturnsValues = true;
+			
+			// write data while training
+			if (this.isTraining()) {
+				this.dataWriter.writeSequence(instances);
+			}
+			
+			// set labels during classification
+			else {
+				List<String> results = this.classifySequence(instances);
 				for (int i = 0; i < results.size(); i++) {
 					Annotation labeledAnnotation = labeledAnnotationList.get(i);
 					String label = results.get(i);
 					chunkLabeler.setLabel(labeledAnnotation, label);
 				}
-				
-			}
-			if(consumerReturnsValues)
 				chunkLabeler.labels2Chunks(jCas, sequence);
-
+			}
 		}
 		
 

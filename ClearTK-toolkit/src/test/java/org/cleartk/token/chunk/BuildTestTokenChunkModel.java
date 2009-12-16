@@ -26,9 +26,8 @@ package org.cleartk.token.chunk;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;
-import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
-import org.cleartk.classifier.SequentialDataWriterAnnotator;
+import org.cleartk.classifier.CleartkSequentialAnnotator;
 import org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory;
 import org.cleartk.corpus.genia.GeniaPosGoldReader;
 import org.cleartk.token.TokenAnnotator;
@@ -37,7 +36,7 @@ import org.cleartk.token.util.Subtokenizer;
 import org.cleartk.util.ReusableUIMAObjects;
 import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.CollectionReaderFactory;
-import org.uutuc.util.JCasIterable;
+import org.uutuc.util.SimplePipeline;
 
 /**
  * <br>
@@ -53,7 +52,7 @@ public class BuildTestTokenChunkModel {
 		
 		TypeSystemDescription typeSystemDescription = ReusableUIMAObjects.getTypeSystemDescription();
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(GeniaPosGoldReader.class, typeSystemDescription, 
-				GeniaPosGoldReader.PARAM_GENIA_CORPUS, "test/data/corpus/genia/GENIAcorpus3.02.articleA.pos.xml",
+				GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE, "test/data/corpus/genia/GENIAcorpus3.02.articleA.pos.xml",
 				GeniaPosGoldReader.PARAM_LOAD_SENTENCES, true);
 		
 		AnalysisEngine subtokenizer = AnalysisEngineFactory.createPrimitive(TokenAnnotator.class, typeSystemDescription, 
@@ -62,16 +61,11 @@ public class BuildTestTokenChunkModel {
 		 
 		AnalysisEngine chunkTokenizerDataWriter = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.token.chunk.ChunkTokenizerDataWriter",
-				SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, "test/data/token/chunk",
-				SequentialDataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletCRFDataWriterFactory.class.getName());
+				CleartkSequentialAnnotator.PARAM_OUTPUT_DIRECTORY, "test/data/token/chunk",
+				CleartkSequentialAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletCRFDataWriterFactory.class.getName());
 
-		JCasIterable jCases = new JCasIterable(reader, subtokenizer, chunkTokenizerDataWriter);
+		SimplePipeline.runPipeline(reader, subtokenizer, chunkTokenizerDataWriter);
 		
-		for(JCas jCas : jCases) {
-			assert jCas != null;
-		}
-		
-		chunkTokenizerDataWriter.collectionProcessComplete();
 		org.cleartk.classifier.Train.main("test/data/token/chunk");
 
 	}

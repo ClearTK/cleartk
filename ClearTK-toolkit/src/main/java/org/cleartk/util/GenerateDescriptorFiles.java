@@ -35,10 +35,13 @@ import org.apache.uima.collection.CollectionReaderDescription;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.ResourceMetaData;
 import org.cleartk.CleartkComponents;
+import org.cleartk.classifier.svmlight.DefaultOVASVMlightDataWriterFactory;
+import org.cleartk.classifier.svmlight.DefaultSVMlightDataWriterFactory;
 import org.cleartk.corpus.ace2005.Ace2005GoldAnnotator;
 import org.cleartk.corpus.ace2005.Ace2005GoldReader;
 import org.cleartk.corpus.ace2005.Ace2005Writer;
 import org.cleartk.corpus.conll2003.Conll2003GoldReader;
+import org.cleartk.corpus.genia.GeniaPosGoldReader;
 import org.cleartk.corpus.penntreebank.PennTreebankReader;
 import org.cleartk.corpus.timeml.PlainTextTLINKGoldAnnotator;
 import org.cleartk.corpus.timeml.TimeMLGoldAnnotator;
@@ -46,12 +49,12 @@ import org.cleartk.corpus.timeml.TimeMLWriter;
 import org.cleartk.corpus.timeml.TreebankAligningAnnotator;
 import org.cleartk.example.documentclassification.Evaluator;
 import org.cleartk.example.documentclassification.GoldAnnotator;
-import org.cleartk.example.pos.ExamplePOSAnnotationHandler;
+import org.cleartk.example.pos.ExamplePOSAnnotator;
 import org.cleartk.example.pos.ExamplePOSPlainTextWriter;
 import org.cleartk.ne.term.TermFinderAnnotator;
 import org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter;
-import org.cleartk.srl.ArgumentAnnotationHandler;
-import org.cleartk.srl.PredicateAnnotationHandler;
+import org.cleartk.srl.ArgumentAnnotator;
+import org.cleartk.srl.PredicateAnnotator;
 import org.cleartk.srl.SRLWriter;
 import org.cleartk.srl.conll2005.Conll2005GoldAnnotator;
 import org.cleartk.srl.conll2005.Conll2005GoldReader;
@@ -60,14 +63,16 @@ import org.cleartk.srl.propbank.PropbankGoldAnnotator;
 import org.cleartk.srl.propbank.PropbankGoldReader;
 import org.cleartk.syntax.opennlp.OpenNLPTreebankParser;
 import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
-import org.cleartk.temporal.VerbClauseTemporalHandler;
+import org.cleartk.temporal.VerbClauseTemporalAnnotator;
 import org.cleartk.token.TokenAnnotator;
 import org.cleartk.token.chunk.ChunkTokenizerFactory;
 import org.cleartk.token.opennlp.OpenNLPPOSTagger;
-import org.cleartk.token.pos.impl.DefaultPOSHandler;
+import org.cleartk.token.pos.impl.DefaultPOSAnnotator;
 import org.cleartk.token.snowball.DefaultSnowballStemmer;
 import org.cleartk.util.linereader.LineReader;
+import org.cleartk.util.linereader.SimpleLineHandler;
 import org.cleartk.util.linewriter.LineWriter;
+import org.uutuc.factory.ConfigurationParameterFactory;
 import org.uutuc.util.JCasAnnotatorAdapter;
 import org.xml.sax.SAXException;
 
@@ -94,29 +99,29 @@ public class GenerateDescriptorFiles {
 
 		File descDirectory = new File(outputDirectory, "org/cleartk/example/pos");
 		if (!descDirectory.exists()) descDirectory.mkdirs();
-		aed = ExamplePOSAnnotationHandler.getClassifierDescription(ExamplePOSAnnotationHandler.DEFAULT_MODEL);
+		aed = ExamplePOSAnnotator.getClassifierDescription(ExamplePOSAnnotator.DEFAULT_MODEL);
 		updateDescription(aed.getMetaData());
 		aed.toXML(new FileWriter(new File(descDirectory, "ExamplePOSAnnotator.xml")));
 
-		aed = ExamplePOSAnnotationHandler.getWriterDescription(ExamplePOSAnnotationHandler.DEFAULT_OUTPUT_DIRECTORY);
+		aed = ExamplePOSAnnotator.getWriterDescription(ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY);
 		updateDescription(aed.getMetaData());
 		aed.toXML(new FileWriter(new File(descDirectory, "ExamplePOSDataWriter.xml")));
 
 		descDirectory = new File(outputDirectory, "org/cleartk/token/pos/impl");
 		if (!descDirectory.exists()) descDirectory.mkdirs();
-		aed = DefaultPOSHandler.getWriterDescription();
+		aed = DefaultPOSAnnotator.getWriterDescription();
 		updateDescription(aed.getMetaData());
 		aed.toXML(new FileWriter(new File(descDirectory, "DefaultPOSDataWriter.xml")));
-		aed = DefaultPOSHandler.getAnnotatorDescription();
+		aed = DefaultPOSAnnotator.getAnnotatorDescription();
 		updateDescription(aed.getMetaData());
 		aed.toXML(new FileWriter(new File(descDirectory, "DefaultPOSAnnotator.xml")));
 
 		descDirectory = new File(outputDirectory, "org/cleartk/temporal");
 		if (!descDirectory.exists()) descDirectory.mkdirs();
-		aed = VerbClauseTemporalHandler.getWriterDescription("test/data/temporal");
+		aed = VerbClauseTemporalAnnotator.getWriterDescription("test/data/temporal");
 		updateDescription(aed.getMetaData());
 		aed.toXML(new FileWriter(new File(descDirectory, "VerbClauseTemporalDataWriter.xml")));
-		aed = VerbClauseTemporalHandler.getAnnotatorDescription();
+		aed = VerbClauseTemporalAnnotator.getAnnotatorDescription();
 		updateDescription(aed.getMetaData());
 		aed.toXML(new FileWriter(new File(descDirectory, "VerbClauseTemporalAnnotator.xml")));
 
@@ -140,6 +145,16 @@ public class GenerateDescriptorFiles {
 		writePrimitiveDescription(OpenNLPSentenceSegmenter.class, outputDirectory);
 		writeCollectionReader(Conll2003GoldReader.class, outputDirectory);
 		writeCollectionReader(LineReader.class, outputDirectory);
+		CollectionReaderDescription crd = CleartkComponents.createCollectionReaderDescription(LineReader.class, LineReader.PARAM_LINE_HANDLER_CLASS_NAME,
+				SimpleLineHandler.class.getName());
+		ConfigurationParameterFactory.addConfigurationParameters(crd, SimpleLineHandler.class);
+		updateDescription(crd.getMetaData());
+		descDirectory = new File(outputDirectory, "org/cleartk/util/linereader");
+		if (!descDirectory.exists()) descDirectory.mkdirs();
+		crd.toXML(new FileWriter(new File(descDirectory, "SimpleLineReader.xml")));
+
+		writeCollectionReader(GeniaPosGoldReader.class, outputDirectory);
+		
 		writePrimitiveDescription(PlainTextWriter.class, outputDirectory);
 		writePrimitiveDescription(XWriter.class, outputDirectory);
 		writePrimitiveDescription(TermFinderAnnotator.class, outputDirectory);
@@ -169,25 +184,27 @@ public class GenerateDescriptorFiles {
 		
 		writePrimitiveDescription(SRLWriter.class, outputDirectory);
 		writePrimitiveDescription(
-				ArgumentAnnotationHandler.class,
-				ArgumentAnnotationHandler.createArgumentDataWriter(""),
+				ArgumentAnnotator.class,
+				ArgumentAnnotator.getWriterDescription(DefaultOVASVMlightDataWriterFactory.class, new File("")),
 				"ArgumentDataWriter.xml", outputDirectory);
 		writePrimitiveDescription(
-				ArgumentAnnotationHandler.class,
-				ArgumentAnnotationHandler.createArgumentAnnotator(""),
+				ArgumentAnnotator.class,
+				ArgumentAnnotator.getClassifierDescription(new File("")),
 				"ArgumentAnnotator.xml", outputDirectory);
 		writePrimitiveDescription(
-				PredicateAnnotationHandler.class,
-				PredicateAnnotationHandler.createPredicateDataWriter(""),
+				PredicateAnnotator.class,
+				PredicateAnnotator.getWriterDescription(DefaultSVMlightDataWriterFactory.class, new File("")),
 				"PredicateDataWriter.xml", outputDirectory);
 		writePrimitiveDescription(
-				PredicateAnnotationHandler.class,
-				PredicateAnnotationHandler.createPredicateAnnotator(""),
+				PredicateAnnotator.class,
+				PredicateAnnotator.getClassifierDescription(new File("")),
 				"PredicateAnnotator.xml", outputDirectory);
 		
 		descDirectory = new File(outputDirectory, "org/cleartk/example/documentclassification");
 		if (!descDirectory.exists()) descDirectory.mkdirs();
-		aed = org.cleartk.example.documentclassification.AnnotationHandler.getWriterDescription("example/documentclassification/");
+		aed = org.cleartk.example.documentclassification.Annotator.getWriterDescription(
+				DefaultOVASVMlightDataWriterFactory.class, 
+				new File("example/documentclassification/"));
 		updateDescription(aed.getMetaData());
 		aed.toXML(new FileWriter(new File(descDirectory, "DataWriter.xml")));
 

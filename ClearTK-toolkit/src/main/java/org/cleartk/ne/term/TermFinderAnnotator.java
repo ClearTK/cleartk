@@ -42,6 +42,7 @@ import org.cleartk.ne.term.util.SimpleTermFinder;
 import org.cleartk.ne.term.util.TermFinder;
 import org.cleartk.ne.term.util.TermList;
 import org.cleartk.ne.term.util.TermMatch;
+import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.token.util.PennTreebankTokenizer;
 import org.cleartk.token.util.Token;
 import org.cleartk.util.UIMAUtil;
@@ -62,48 +63,42 @@ import org.uutuc.util.InitializeUtil;
 
 public class TermFinderAnnotator extends JCasAnnotator_ImplBase {
 
-	public static final String PARAM_TERM_LIST_FILE_NAMES_FILE_NAME = "org.cleartk.ne.term.TermFinderAnnotator.termListFileNamesFileName";
+	public static final String PARAM_TERM_LIST_FILE_NAMES_FILE_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(TermFinderAnnotator.class, "termListFileNamesFileName");
 	public static final String TERM_LIST_FILE_NAMES_FILE_NAME_DESCRIPTION = "Provides the name of a file that contains file names of term lists that are to be loaded. " +
 			"Each line of the file should contain the name of a term list followed by the name of the file that contains the terms, a boolean ('true' or 'false')  " +
 			"that indicates whether the file should be treated as case sensitive followed optionally by separator string to be used to separate  " +
 			"an id from a term if the file contains ids. The values on each line should be tab delimited. ";
 	@ConfigurationParameter(
-			name = PARAM_TERM_LIST_FILE_NAMES_FILE_NAME,
 			mandatory = true,
 			description = TERM_LIST_FILE_NAMES_FILE_NAME_DESCRIPTION)
 	public String termListFileNamesFileName;
 	
-	public static final String PARAM_WINDOW_CLASS_NAME = "org.cleartk.ne.term.TermFinderAnnotator.windowClassName";
+	public static final String PARAM_WINDOW_CLASS_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(TermFinderAnnotator.class, "windowClassName");
 	@ConfigurationParameter(
-			name = PARAM_WINDOW_CLASS_NAME,
 			description = "names the class of the type system type from which to extract tokens. " +
 					"Any annotation that contains tokens can be used (e.g. sentence, paragraph, document).  " +
 					"If no value is given for this parameter, then all tokens will be searched. An example value might be 'org.cleartk.type.Sentence'")
 	private String windowClassName;
 	
-	public static final String PARAM_TOKEN_CLASS_NAME = "org.cleartk.ne.term.TermFinderAnnotator.tokenClassName";
+	public static final String PARAM_TOKEN_CLASS_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(TermFinderAnnotator.class, "tokenClassName");
 	@ConfigurationParameter(
-			name = PARAM_TOKEN_CLASS_NAME,
 			mandatory = true,
 			defaultValue = "org.cleartk.type.Token",
 			description = "names the class of the type system type corresponding to tokens. ")
 	private String tokenClassName;
 	
-	public static final String PARAM_TERM_MATCH_ANNOTATION_CLASS_NAME = "org.cleartk.ne.term.TermFinderAnnotator.termMatchAnnotationClassName";
-	public static final String PARAM_TERM_MATCH_ANNOTATION_CREATOR_CLASS_NAME = "org.cleartk.ne.term.TermFinderAnnotator.termMatchAnnotationCreatorClassName";
+	public static final String PARAM_TERM_MATCH_ANNOTATION_CREATOR_CLASS_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(TermFinderAnnotator.class, "termMatchAnnotationCreatorClassName");
 	@ConfigurationParameter(
-			name = PARAM_TERM_MATCH_ANNOTATION_CREATOR_CLASS_NAME,
 			description = "provides the class name of a class that extends org.cleartk.ne.term.TermMatchAnnotationCreator. If this parameter is " +
-					"not given a value, then the parameter '"+ PARAM_TERM_MATCH_ANNOTATION_CLASS_NAME+"'  must be given a value.")
+					"not given a value, then the parameter 'termMatchAnnotationClassName'  must be given a value.")
 	private String termMatchAnnotationCreatorClassName;
 	
+	public static final String PARAM_TERM_MATCH_ANNOTATION_CLASS_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(TermFinderAnnotator.class, "termMatchAnnotationClassName");
 	@ConfigurationParameter(
-			name = PARAM_TERM_MATCH_ANNOTATION_CLASS_NAME,
 			defaultValue = "org.cleartk.ne.type.NamedEntityMention",
 			description = "names the class of the type system type that specifies the annotations " +
 					"created of found term matches. One annotation is created for each term " +
-					"match found of the given type specified by this parameter. This parameter is ignored if '" +
-					PARAM_TERM_MATCH_ANNOTATION_CREATOR_CLASS_NAME+"' is given a value.")
+					"match found of the given type specified by this parameter. This parameter is ignored if 'termMatchAnnotationCreatorClassName' is given a value.")
 	private String termMatchAnnotationClassName;
 	
 	TermFinder caseSensitiveTermFinder;

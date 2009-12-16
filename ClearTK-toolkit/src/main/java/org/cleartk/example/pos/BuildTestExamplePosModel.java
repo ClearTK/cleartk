@@ -24,14 +24,10 @@
 
 package org.cleartk.example.pos;
 
-import org.apache.uima.resource.metadata.TypeSystemDescription;
-import org.cleartk.CleartkComponents;
 import org.cleartk.ViewNames;
 import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
 import org.cleartk.token.snowball.DefaultSnowballStemmer;
-import org.cleartk.token.snowball.SnowballStemmer;
 import org.cleartk.util.FilesCollectionReader;
-import org.uutuc.factory.CollectionReaderFactory;
 import org.uutuc.util.SimplePipeline;
 
 /**
@@ -51,17 +47,11 @@ public class BuildTestExamplePosModel {
 	
 	public static void main(String[] args) throws Exception {
 		
-		TypeSystemDescription typeSystemDescription = CleartkComponents.TYPE_SYSTEM_DESCRIPTION;
-		
 		SimplePipeline.runPipeline(
-				CollectionReaderFactory.createCollectionReader(
-						FilesCollectionReader.class, typeSystemDescription,
-						FilesCollectionReader.PARAM_ROOT_FILE, "test/data/docs/treebank",
-						FilesCollectionReader.PARAM_SUFFIXES,  new String[] { ".tree" },
-						FilesCollectionReader.PARAM_VIEW_NAME, ViewNames.TREEBANK),
-				CleartkComponents.createPrimitiveDescription(TreebankGoldAnnotator.class, TreebankGoldAnnotator.PARAM_POST_TREES, false),
-				CleartkComponents.createPrimitiveDescription(DefaultSnowballStemmer.class, SnowballStemmer.PARAM_STEMMER_NAME, "English"),
-				ExamplePOSAnnotationHandler.getWriterDescription(ExamplePOSAnnotationHandler.DEFAULT_OUTPUT_DIRECTORY));
+				FilesCollectionReader.getCollectionReaderWithSuffixes("test/data/docs/treebank", ViewNames.TREEBANK, ".tree"),
+				TreebankGoldAnnotator.getDescriptionPOSTagsOnly(),
+				DefaultSnowballStemmer.getDescription("English"),
+				ExamplePOSAnnotator.getWriterDescription(ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY));
 				
 		org.cleartk.classifier.Train.main("example/pos/model");
 

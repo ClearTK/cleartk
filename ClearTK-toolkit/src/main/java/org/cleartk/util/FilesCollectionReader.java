@@ -33,6 +33,7 @@ import java.util.Set;
 
 import org.apache.uima.cas.CAS;
 import org.apache.uima.collection.CollectionException;
+import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.collection.CollectionReader_ImplBase;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.pear.util.FileUtil;
@@ -40,8 +41,12 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
+import org.cleartk.CleartkComponents;
+import org.cleartk.ViewNames;
 import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.descriptor.SofaCapability;
+import org.uutuc.factory.CollectionReaderFactory;
 import org.uutuc.util.InitializeUtil;
 import org.uutuc.util.io.Files;
 
@@ -60,7 +65,35 @@ import org.uutuc.util.io.Files;
  * @author Steven Bethard
  * @author Philip Ogren
  */
+@SofaCapability(outputSofas=ViewNames.URI)
 public class FilesCollectionReader extends CollectionReader_ImplBase {
+
+	public static CollectionReader getCollectionReader(String fileOrDir)
+	throws ResourceInitializationException {
+		return CollectionReaderFactory.createCollectionReader(FilesCollectionReader.class,
+				CleartkComponents.TYPE_SYSTEM_DESCRIPTION, PARAM_ROOT_FILE, fileOrDir);
+	}
+
+	public static CollectionReader getCollectionReaderWithView(
+			String dir, String viewName) throws ResourceInitializationException {
+		return CollectionReaderFactory.createCollectionReader(FilesCollectionReader.class,
+				CleartkComponents.TYPE_SYSTEM_DESCRIPTION,
+				PARAM_ROOT_FILE, dir, PARAM_VIEW_NAME, viewName);
+	}
+
+	public static CollectionReader getCollectionReaderWithPatterns(
+			String dir, String viewName, String... patterns) throws ResourceInitializationException {
+		return CollectionReaderFactory.createCollectionReader(FilesCollectionReader.class,
+				CleartkComponents.TYPE_SYSTEM_DESCRIPTION,
+				PARAM_ROOT_FILE, dir, PARAM_VIEW_NAME, viewName, PARAM_PATTERNS, patterns);
+	}
+
+	public static CollectionReader getCollectionReaderWithSuffixes(
+			String dir, String viewName, String... suffixes) throws ResourceInitializationException {
+		return CollectionReaderFactory.createCollectionReader(FilesCollectionReader.class,
+				CleartkComponents.TYPE_SYSTEM_DESCRIPTION,
+				PARAM_ROOT_FILE, dir, PARAM_VIEW_NAME, viewName, PARAM_SUFFIXES, suffixes);
+	}
 
 	public static final String PARAM_ROOT_FILE = ConfigurationParameterNameFactory.createConfigurationParameterName(
 			FilesCollectionReader.class, "rootFile");

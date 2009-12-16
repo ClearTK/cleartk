@@ -58,7 +58,7 @@ public class GeniaPosGoldReaderTest {
 
 	@Test
 	public void testReader() throws CASException, UIMAException, IOException {
-		CollectionReader reader = CollectionReaderFactory.createCollectionReader(GeniaPosGoldReader.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"), GeniaPosGoldReader.PARAM_GENIA_CORPUS,
+		CollectionReader reader = CollectionReaderFactory.createCollectionReader(GeniaPosGoldReader.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"), GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
 				"test/data/corpus/genia/GENIAcorpus3.02.articleA.pos.xml", GeniaPosGoldReader.PARAM_LOAD_TOKENS, true,
 				GeniaPosGoldReader.PARAM_LOAD_SENTENCES, true, GeniaPosGoldReader.PARAM_LOAD_POS_TAGS, true);
 
@@ -74,7 +74,7 @@ public class GeniaPosGoldReaderTest {
 		assertEquals("requires", token.getCoveredText());
 		assertEquals("VBZ", token.getPos());
 
-		reader = CollectionReaderFactory.createCollectionReader(GeniaPosGoldReader.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"), GeniaPosGoldReader.PARAM_GENIA_CORPUS,
+		reader = CollectionReaderFactory.createCollectionReader(GeniaPosGoldReader.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"), GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
 				"test/data/corpus/genia/GENIAcorpus3.02.articleA.pos.xml", GeniaPosGoldReader.PARAM_LOAD_TOKENS, false,
 				GeniaPosGoldReader.PARAM_LOAD_SENTENCES, false, GeniaPosGoldReader.PARAM_LOAD_POS_TAGS, false);
 
@@ -91,10 +91,10 @@ public class GeniaPosGoldReaderTest {
 
 		IOException ioe = null;
 		try {
-			reader = CollectionReaderFactory.createCollectionReader(GeniaPosGoldReader.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"), GeniaPosGoldReader.PARAM_GENIA_CORPUS,
+			reader = CollectionReaderFactory.createCollectionReader(GeniaPosGoldReader.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"), GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
 				"test/data/corpus/genia/GENIAcorpus3.02.articleA.pos.xml", GeniaPosGoldReader.PARAM_LOAD_TOKENS, false,
 				GeniaPosGoldReader.PARAM_LOAD_SENTENCES, false, GeniaPosGoldReader.PARAM_LOAD_POS_TAGS, false,
-				GeniaPosGoldReader.PARAM_ARTICLE_IDS_LIST, "asdf");
+				GeniaPosGoldReader.PARAM_ARTICLE_IDS_LIST_FILE, "asdf");
 		}catch (ResourceInitializationException rie) {
 			ioe = (IOException) rie.getCause();
 		}
@@ -102,17 +102,17 @@ public class GeniaPosGoldReaderTest {
 
 		JDOMException jde = null;
 		try {
-			reader = CollectionReaderFactory.createCollectionReader(GeniaPosGoldReader.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"), GeniaPosGoldReader.PARAM_GENIA_CORPUS,
+			reader = CollectionReaderFactory.createCollectionReader(GeniaPosGoldReader.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"), GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
 				"test/data/corpus/genia/article_ids.txt");
 		}catch (ResourceInitializationException rie) {
 			jde = (JDOMException) rie.getCause();
 		}
 		assertNotNull(jde);
 
-		reader = CollectionReaderFactory.createCollectionReader(GeniaPosGoldReader.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"), GeniaPosGoldReader.PARAM_GENIA_CORPUS,
+		reader = CollectionReaderFactory.createCollectionReader(GeniaPosGoldReader.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"), GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
 				"test/data/corpus/genia/GENIAcorpus3.02.articleA.pos.xml", GeniaPosGoldReader.PARAM_LOAD_TOKENS, false,
 				GeniaPosGoldReader.PARAM_LOAD_SENTENCES, false, GeniaPosGoldReader.PARAM_LOAD_POS_TAGS, false,
-				GeniaPosGoldReader.PARAM_ARTICLE_IDS_LIST, "test/data/corpus/genia/article_ids.txt");
+				GeniaPosGoldReader.PARAM_ARTICLE_IDS_LIST_FILE, "test/data/corpus/genia/article_ids.txt");
 		jCas = new JCasIterable(reader).next();
 		assertEquals(1, reader.getProgress()[0].getCompleted());
 		assertFalse(reader.hasNext());

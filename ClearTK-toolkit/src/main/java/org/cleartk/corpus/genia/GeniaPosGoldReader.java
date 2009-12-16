@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.corpus.genia;
 
 import java.io.File;
@@ -46,109 +46,90 @@ import org.cleartk.corpus.genia.util.GeniaParse;
 import org.cleartk.corpus.genia.util.GeniaSentence;
 import org.cleartk.corpus.genia.util.GeniaTag;
 import org.cleartk.corpus.genia.util.Span;
+import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
-import org.cleartk.util.UIMAUtil;
 import org.cleartk.util.ViewURIUtil;
 import org.jdom.JDOMException;
+import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.descriptor.SofaCapability;
 import org.uutuc.factory.CollectionReaderFactory;
-
+import org.uutuc.util.InitializeUtil;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * <p>
  * 
  * @author Philip V. Ogren
  * @see GeniaPOSParser
  */
+@SofaCapability(outputSofas = ViewNames.URI)
 public class GeniaPosGoldReader extends CollectionReader_ImplBase {
 
-	/**
-	 * "org.cleartk.corpus.genia.GeniaPosGoldReader.PARAM_ARTICLE_IDS_LIST"
-	 * is a single, optional, string parameter that names the file used to specify
-	 * the article ids that should be read in.
-	 */
-	public static final String PARAM_ARTICLE_IDS_LIST = "org.cleartk.corpus.genia.GeniaPosGoldReader.PARAM_ARTICLE_IDS_LIST";
+	public static final String PARAM_GENIA_CORPUS_FILE = ConfigurationParameterNameFactory
+			.createConfigurationParameterName(GeniaPosGoldReader.class, "geniaCorpusFile");
 
-	/**
-	 * "org.cleartk.corpus.genia.GeniaPosGoldReader.PARAM_GENIA_CORPUS"
-	 * is a single, required, string parameter that names the file
-	 * that is the Genia corpus to be loaded. A good value is probably
-	 * "data/genia/GENIAcorpus3.02.pos.xml".  Please see README in this directory for edits that you may need to make to this file manually.  
-	 */
-	public static final String PARAM_GENIA_CORPUS = "org.cleartk.corpus.genia.GeniaPosGoldReader.PARAM_GENIA_CORPUS";
+	@ConfigurationParameter(description = "names the file that is the Genia corpus to be loaded. A good value is probably '.../GENIAcorpus3.02.pos.xml'.  Please see README in this directory for edits that you may need to make to this file manually.", mandatory = true)
+	private File geniaCorpusFile;
 
-	/**
-	 * "org.cleartk.corpus.genia.GeniaPosGoldReader.PARAM_LOAD_SENTENCES"
-	 * is a single, optional, boolean parameter that determines
-	 * whether sentence annotations will be added from the Genia corpus. The
-	 * default value of "true" is used if this parameter is unspecified.
-	 */
-	public static final String PARAM_LOAD_SENTENCES = "org.cleartk.corpus.genia.GeniaPosGoldReader.PARAM_LOAD_SENTENCES";
+	public static final String PARAM_LOAD_SENTENCES = ConfigurationParameterNameFactory
+			.createConfigurationParameterName(GeniaPosGoldReader.class, "loadSentences");
 
-	/**
-	 * "org.cleartk.corpus.genia.GeniaPosGoldReader.PARAM_LOAD_TOKENS"
-	 * is a single, optional, boolean parameter that determines
-	 * whether tokens annotations will be added from the Genia corpus. The
-	 * default value of "true" is used if this parameter is unspecified.
-	 */
-	public static final String PARAM_LOAD_TOKENS = "org.cleartk.corpus.genia.GeniaPosGoldReader.PARAM_LOAD_TOKENS";
+	@ConfigurationParameter(description = "determines whether sentence annotations will be added from the Genia corpus.", defaultValue = "true")
+	private boolean loadSentences = true;
 
-	/**
-	 * "org.cleartk.corpus.genia.GeniaPosGoldReader.PARAM_LOAD_POS_TAGS"
-	 * is a single, optional, boolean parameter that determines
-	 * whether the part of speech tags assigned to each token in the genia
-	 * corpus will be loaded. The default value of "true" is used if this
-	 * parameter is unspecified. If "LoadTokens" is 'false', then "LoadPOSTags"
-	 * will also be 'false' regardless of what is given in the descriptor file.
-	 */
-	public static final String PARAM_LOAD_POS_TAGS = "org.cleartk.corpus.genia.GeniaPosGoldReader.PARAM_LOAD_POS_TAGS";
+	public static final String PARAM_LOAD_TOKENS = ConfigurationParameterNameFactory.createConfigurationParameterName(
+			GeniaPosGoldReader.class, "loadTokens");
 
-	boolean filterArticles;
+	@ConfigurationParameter(description = "determines whether tokens annotations will be added from the Genia corpus. ", defaultValue = "true")
+	private boolean loadTokens = true;
 
-	Set<String> articleIds;
+	public static final String PARAM_LOAD_POS_TAGS = ConfigurationParameterNameFactory.createConfigurationParameterName(
+			GeniaPosGoldReader.class, "loadPosTags");
 
-	GeniaPOSParser parser;
+	@ConfigurationParameter(description = "determines whether the part of speech tags assigned to each token in the genia corpus will be loaded. The default value of 'true' is used if this "
+			+ "parameter is unspecified. If 'loadTokens' is 'false', then 'loadPOSTags' will be treated as 'false' regardless of what is given in the descriptor file.", defaultValue = "true")
+	private boolean loadPosTags = true;
 
-	GeniaParse parse;
+	public static final String PARAM_ARTICLE_IDS_LIST_FILE = ConfigurationParameterNameFactory
+			.createConfigurationParameterName(GeniaPosGoldReader.class, "articleIdsListFile");
 
-	int progress = 0;
+	@ConfigurationParameter(description = "names the file used to specify the article ids that should be read in")
+	File articleIdsListFile;
 
-	int tokenIndex = 0;
+	private boolean filterArticles;
 
-	boolean loadSentences = true;
+	private Set<String> articleIds;
 
-	boolean loadTokens = true;
+	private GeniaPOSParser parser;
 
-	boolean loadPOSTags = true;
+	private GeniaParse parse;
+
+	private int progress = 0;
 
 	@Override
 	public void initialize() throws ResourceInitializationException {
+		InitializeUtil.initialize(this, getUimaContext());
+
 		articleIds = new HashSet<String>();
 
 		try {
-			String articleIdsList = (String) getConfigParameterValue(PARAM_ARTICLE_IDS_LIST);
-			if (articleIdsList == null) {
+			if (articleIdsListFile == null) {
 				filterArticles = false;
 			}
 			else {
 				filterArticles = true;
-				String[] ids = FileUtil.loadListOfStrings(new File(articleIdsList));
+				String[] ids = FileUtil.loadListOfStrings(articleIdsListFile);
 				for (String id : ids) {
 					articleIds.add(id);
 				}
 			}
 
-			String geniaCorpus = (String) getConfigParameterValue(PARAM_GENIA_CORPUS);
-			parser = new GeniaPOSParser(new File(geniaCorpus));
-
-			loadSentences = (Boolean) UIMAUtil.getDefaultingConfigParameterValue(getUimaContext(), PARAM_LOAD_SENTENCES, true);
-			loadTokens = (Boolean) UIMAUtil.getDefaultingConfigParameterValue(getUimaContext(), PARAM_LOAD_TOKENS, true);
-			loadPOSTags = (Boolean) UIMAUtil.getDefaultingConfigParameterValue(getUimaContext(), PARAM_LOAD_POS_TAGS, true);
-			loadPOSTags = loadTokens & loadPOSTags;
-
+			parser = new GeniaPOSParser(geniaCorpusFile);
+			loadPosTags = loadTokens & loadPosTags;
 		}
 		catch (IOException ioe) {
 			throw new ResourceInitializationException(ioe);
@@ -159,8 +140,8 @@ public class GeniaPosGoldReader extends CollectionReader_ImplBase {
 	}
 
 	public void getNext(CAS cas) throws IOException, CollectionException {
-		if(!hasNext()) 
-			throw new CollectionException("Should not be calling getNext() because hasNext returns false", null);
+		if (!hasNext()) throw new CollectionException("Should not be calling getNext() because hasNext returns false",
+				null);
 		try {
 			JCas annotationsView = cas.getJCas().getView(ViewNames.DEFAULT);
 			String text = parse.getText();
@@ -174,13 +155,13 @@ public class GeniaPosGoldReader extends CollectionReader_ImplBase {
 					for (GeniaTag posTag : posTags) {
 						Span tokenSpan = posTag.getSpans().get(0);
 						Token token = new Token(annotationsView, tokenSpan.getBegin(), tokenSpan.getEnd());
-						if (loadPOSTags) token.setPos(posTag.getLabel());
+						if (loadPosTags) token.setPos(posTag.getLabel());
 						token.addToIndexes();
 					}
 				}
 				if (loadSentences) {
-					Sentence sentence = new Sentence(annotationsView, geniaSentence.getSpan().getBegin(), geniaSentence.getSpan()
-							.getEnd());
+					Sentence sentence = new Sentence(annotationsView, geniaSentence.getSpan().getBegin(), geniaSentence
+							.getSpan().getEnd());
 					sentence.addToIndexes();
 				}
 			}
@@ -225,41 +206,24 @@ public class GeniaPosGoldReader extends CollectionReader_ImplBase {
 		}
 		return false;
 	}
-	
-	public static CollectionReader getDescription(String geniaCorpusFile)
-	throws ResourceInitializationException {
-		return CollectionReaderFactory.createCollectionReader(
-				GeniaPosGoldReader.class, CleartkComponents.TYPE_SYSTEM_DESCRIPTION,
-				GeniaPosGoldReader.PARAM_GENIA_CORPUS,geniaCorpusFile);
+
+	public static CollectionReader getDescription(String geniaCorpusFile) throws ResourceInitializationException {
+		return CollectionReaderFactory.createCollectionReader(GeniaPosGoldReader.class,
+				CleartkComponents.TYPE_SYSTEM_DESCRIPTION, GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE, geniaCorpusFile);
 	}
 
-	public static String[] TEST_FOLDS = new String[] {
-		"resources/genia/article_ids/fold-1-test.txt",
-		"resources/genia/article_ids/fold-2-test.txt",
-		"resources/genia/article_ids/fold-3-test.txt",
-		"resources/genia/article_ids/fold-4-test.txt",
-		"resources/genia/article_ids/fold-5-test.txt",
-		"resources/genia/article_ids/fold-6-test.txt",
-		"resources/genia/article_ids/fold-7-test.txt",
-		"resources/genia/article_ids/fold-8-test.txt",
-		"resources/genia/article_ids/fold-9-test.txt",
-		"resources/genia/article_ids/fold-10-test.txt",
-};
+	public static String[] TEST_FOLDS = new String[] { "resources/genia/article_ids/fold-1-test.txt",
+			"resources/genia/article_ids/fold-2-test.txt", "resources/genia/article_ids/fold-3-test.txt",
+			"resources/genia/article_ids/fold-4-test.txt", "resources/genia/article_ids/fold-5-test.txt",
+			"resources/genia/article_ids/fold-6-test.txt", "resources/genia/article_ids/fold-7-test.txt",
+			"resources/genia/article_ids/fold-8-test.txt", "resources/genia/article_ids/fold-9-test.txt",
+			"resources/genia/article_ids/fold-10-test.txt", };
 
-	public static String[] TRAIN_FOLDS = new String[] {
-		"resources/genia/article_ids/fold-1-train.txt",
-		"resources/genia/article_ids/fold-2-train.txt",
-		"resources/genia/article_ids/fold-3-train.txt",
-		"resources/genia/article_ids/fold-4-train.txt",
-		"resources/genia/article_ids/fold-5-train.txt",
-		"resources/genia/article_ids/fold-6-train.txt",
-		"resources/genia/article_ids/fold-7-train.txt",
-		"resources/genia/article_ids/fold-8-train.txt",
-		"resources/genia/article_ids/fold-9-train.txt",
-		"resources/genia/article_ids/fold-10-train.txt",
-};
+	public static String[] TRAIN_FOLDS = new String[] { "resources/genia/article_ids/fold-1-train.txt",
+			"resources/genia/article_ids/fold-2-train.txt", "resources/genia/article_ids/fold-3-train.txt",
+			"resources/genia/article_ids/fold-4-train.txt", "resources/genia/article_ids/fold-5-train.txt",
+			"resources/genia/article_ids/fold-6-train.txt", "resources/genia/article_ids/fold-7-train.txt",
+			"resources/genia/article_ids/fold-8-train.txt", "resources/genia/article_ids/fold-9-train.txt",
+			"resources/genia/article_ids/fold-10-train.txt", };
 
-//	public static CollectionReader getTrainingDescription(String geniaCorpusFile, int fold) {
-//		
-//	}
 }

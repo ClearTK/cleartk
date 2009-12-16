@@ -25,17 +25,19 @@ package org.cleartk.classifier.util.tfidf;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import org.apache.uima.UimaContext;
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
-import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.CleartkException;
+import org.cleartk.classifier.ClassifierBuilder;
+import org.cleartk.classifier.DataWriter;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.InstanceConsumer_ImplBase;
 import org.cleartk.classifier.feature.Counts;
 import org.cleartk.classifier.feature.FeatureCollection;
-import org.cleartk.util.UIMAUtil;
 
 
 /**
@@ -45,7 +47,7 @@ import org.cleartk.util.UIMAUtil;
  * @author Philipp G. Wetzler
  *
  */
-public class IDFMapWriter<OUTCOME_TYPE> extends InstanceConsumer_ImplBase<OUTCOME_TYPE> {
+public class IDFMapWriter<OUTCOME_TYPE> implements DataWriter<OUTCOME_TYPE> {
 
 	/**
 	 * "org.cleartk.tfidf.IDFMapWriter.PARAM_IDFMAP_FILE"
@@ -62,43 +64,66 @@ public class IDFMapWriter<OUTCOME_TYPE> extends InstanceConsumer_ImplBase<OUTCOM
 	 */
 	public static final String PARAM_IDFMAP_IDENTIFIER = "org.cleartk.tfidf.IDFMapWriter.PARAM_IDFMAP_IDENTIFIER";
 
-	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		try {
-			super.initialize(context);
+	public IDFMapWriter(File outputDirectory) throws IOException {
+		this.outputDirectory = outputDirectory;		
+	}
+	
+	private File getIDFMapFile(String identifier) {
+		if( identifier == null )
+			identifier = "default";
+		
+		if( identifier.equals("default") ) {
+			return new File(outputDirectory, "idfmap");
+		} else {
+			return new File(outputDirectory, "idfmap_" + identifier);
+		}
+	}
+	
+	private IDFMap getIDFMap(String identifier) throws IOException {
+		if( identifier == null )
+			identifier = "default";
 
-			idfMapFile = new File((String)UIMAUtil.getRequiredConfigParameterValue(context, PARAM_IDFMAP_FILE)).getAbsoluteFile();
+		if( idfMaps.containsKey(identifier) ) {
+			return idfMaps.get(identifier);
+		} else {
+			File idfMapFile = getIDFMapFile(identifier);
 
-			
+			IDFMap idfMap;
 			if( idfMapFile.exists() ) {
 				idfMap = IDFMap.read(idfMapFile);
 			} else {
-				if( ! idfMapFile.getParentFile().exists() )
-					throw new ResourceInitializationException();
-				
 				idfMap = new IDFMap();
 			}
 			
-			identifier = (String) UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_IDFMAP_IDENTIFIER, null);
-		}
-		catch (IOException e) {
-			throw new ResourceInitializationException(e);
+			idfMaps.put(identifier, idfMap);
+			return idfMap;
 		}
 	}
 
-	public OUTCOME_TYPE consume(Instance<OUTCOME_TYPE> instance) {
-		consumeFeatures(instance.getFeatures());
+	public boolean isTraining() {
+		return false;
+	}
 
+	public Class<? extends ClassifierBuilder<OUTCOME_TYPE>> getDefaultClassifierBuilderClass() {
 		return null;
 	}
-	
-	public void consumeFeatures(Collection<Feature> features) {
+
+	public void write(Instance<OUTCOME_TYPE> instance) throws CleartkException {
+		consumeFeatures(instance.getFeatures());
+	}
+		
+	private void consumeFeatures(Collection<Feature> features) throws CleartkException {
 		for( Feature feature : features ) {
 			if( feature.getValue() instanceof Counts ) {
 				Counts counts = (Counts) feature.getValue();
 				
-				if( identifier == null || identifier.equals(counts.getIdentifier()) )
-					idfMap.consume(counts);
+				IDFMap idfMap;
+				try {
+					idfMap = getIDFMap(counts.getIdentifier());
+				} catch (IOException e) {
+					throw new CleartkException(e);
+				}
+				idfMap.consume(counts);
 			} else if( feature.getValue() instanceof FeatureCollection ) {
 				FeatureCollection fc = (FeatureCollection) feature.getValue();
 				consumeFeatures(fc.getFeatures());
@@ -106,23 +131,30 @@ public class IDFMapWriter<OUTCOME_TYPE> extends InstanceConsumer_ImplBase<OUTCOM
 		}
 	}
 
-	@Override
-	public void collectionProcessComplete() throws AnalysisEngineProcessException {
-		super.collectionProcessComplete();
-
-		try {
-			idfMap.write(idfMapFile);
-		} catch (IOException e) {
-			throw new AnalysisEngineProcessException(e);
+	public void finish() throws CleartkException {
+		List<Exception> exceptions = new ArrayList<Exception>();
+		
+		for( String identifier : idfMaps.keySet() ) {
+			IDFMap idfMap = idfMaps.get(identifier);
+			File idfMapFile = getIDFMapFile(identifier);
+			try {
+				idfMap.write(idfMapFile);
+			} catch( IOException e1 ) {
+				exceptions.add(e1);
+				continue;
+			}
+		}
+		
+		if( exceptions.size() > 0 ) {
+			if( exceptions.size() == 1 ) {
+				throw new CleartkException(exceptions.get(0));
+			} else {
+				throw new CleartkException(String.format("%s and %d others", exceptions.get(0).toString(), exceptions.size()-1));
+			}
 		}
 	}
-	
-	public boolean expectsOutcomes() {
-		return false;
-	}
 
-	private IDFMap idfMap;
-	private File idfMapFile;
-	private String identifier;
+	private Map<String,IDFMap> idfMaps = new HashMap<String,IDFMap>();
+	private File outputDirectory;
 
 }

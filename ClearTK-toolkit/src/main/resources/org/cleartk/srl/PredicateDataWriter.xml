@@ -2,9 +2,9 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
     <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
     <primitive>true</primitive>
-    <annotatorImplementationName>org.cleartk.classifier.DataWriterAnnotator</annotatorImplementationName>
+    <annotatorImplementationName>org.cleartk.srl.ArgumentIdentifier</annotatorImplementationName>
     <analysisEngineMetaData>
-        <name/>
+        <name>ArgumentIdentifier</name>
         <description>This descriptor file was generated automatically by org.cleartk.util.GenerateDescriptorFiles. 
 
 Copyright (c) 2009, Regents of the University of Colorado 
@@ -21,42 +21,36 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 </description>
         <configurationParameters>
             <configurationParameter>
-                <name>org.cleartk.classifier.DataWriterAnnotator.outputDirectory</name>
+                <name>org.cleartk.classifier.CleartkAnnotator.outputDirectory</name>
                 <description>provides the name of the directory where the training data will be written.</description>
                 <type>String</type>
                 <multiValued>false</multiValued>
-                <mandatory>true</mandatory>
+                <mandatory>false</mandatory>
             </configurationParameter>
             <configurationParameter>
-                <name>org.cleartk.classifier.DataWriterAnnotator.dataWriterFactoryClassName</name>
+                <name>org.cleartk.classifier.CleartkAnnotator.dataWriterFactoryClassName</name>
                 <description>provides the full name of the DataWriterFactory class to be used.</description>
                 <type>String</type>
                 <multiValued>false</multiValued>
-                <mandatory>true</mandatory>
+                <mandatory>false</mandatory>
             </configurationParameter>
             <configurationParameter>
-                <name>org.cleartk.classifier.InstanceConsumer_ImplBase.annotationHandlerName</name>
-                <description>provides the full name of the AnnotationHandler class that will be used with this InstanceConsumer</description>
+                <name>org.cleartk.classifier.CleartkAnnotator.classifierJarPath</name>
+                <description>provides the path to the jar file that should be used to instantiate the classifier.</description>
                 <type>String</type>
                 <multiValued>false</multiValued>
-                <mandatory>true</mandatory>
+                <mandatory>false</mandatory>
             </configurationParameter>
         </configurationParameters>
         <configurationParameterSettings>
             <nameValuePair>
-                <name>org.cleartk.classifier.InstanceConsumer_ImplBase.annotationHandlerName</name>
-                <value>
-                    <string>org.cleartk.srl.PredicateAnnotationHandler</string>
-                </value>
-            </nameValuePair>
-            <nameValuePair>
-                <name>org.cleartk.classifier.DataWriterAnnotator.dataWriterFactoryClassName</name>
+                <name>org.cleartk.classifier.CleartkAnnotator.dataWriterFactoryClassName</name>
                 <value>
                     <string>org.cleartk.classifier.svmlight.DefaultSVMlightDataWriterFactory</string>
                 </value>
             </nameValuePair>
             <nameValuePair>
-                <name>org.cleartk.classifier.DataWriterAnnotator.outputDirectory</name>
+                <name>org.cleartk.classifier.CleartkAnnotator.outputDirectory</name>
                 <value>
                     <string/>
                 </value>

@@ -23,17 +23,12 @@
  */
 package org.cleartk.syntax.feature;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.simple.MatchingAnnotationExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.syntax.TreebankTestsUtil;
@@ -63,7 +58,7 @@ public class HeadWordExtractorTest {
 		Token token = new Token(jCas, 0, 3);
 		token.addToIndexes();
 
-		this.checkFeatures(extractor.extract(jCas, token), null);
+		this.checkFeatures(extractor.extract(jCas, token), (String) null);
 	}
 
 	@Test
@@ -84,7 +79,7 @@ public class HeadWordExtractorTest {
 			jCas.setDocumentText("foo");
 			TreebankNode parent = TreebankTestsUtil.newNode(jCas, null, TreebankTestsUtil.newNode(jCas, 0, 3, null));
 
-			this.checkFeatures(extractor.extract(jCas, parent), null);
+			this.checkFeatures(extractor.extract(jCas, parent));
 		} catch( NullPointerException e ) {
 			// that's what we should expect when passing in a null extractor!
 			return;
@@ -106,8 +101,7 @@ public class HeadWordExtractorTest {
 		TreebankNode vpNode = TreebankTestsUtil.newNode(jCas, "VP", ranNode, homeNode);
 
 		SpannedTextExtractor textExtractor = new SpannedTextExtractor();
-		MatchingAnnotationExtractor posExtractor = new MatchingAnnotationExtractor(
-				Token.class, new TypePathExtractor(Token.class, "pos"));
+		TypePathExtractor posExtractor = new TypePathExtractor(TreebankNode.class, "nodeType");
 		HeadWordExtractor extractor = new HeadWordExtractor(textExtractor);
 
 		this.checkFeatures(
@@ -124,7 +118,7 @@ public class HeadWordExtractorTest {
 
 		this.checkFeatures(
 				new HeadWordExtractor(posExtractor).extract(jCas, vpNode),
-				"HeadWord_TypePath(Pos)", "VBD");
+				"HeadWord_TypePath(NodeType)", "VBD");
 	}
 
 	@Test
@@ -148,42 +142,48 @@ public class HeadWordExtractorTest {
 		TreebankNode tree = TreebankTestsUtil.newNode(jCas, "NP", catstoyNode, undertheboxNode);
 
 		SpannedTextExtractor textExtractor = new SpannedTextExtractor();
-		MatchingAnnotationExtractor posExtractor = new MatchingAnnotationExtractor(
-				Token.class, new TypePathExtractor(Token.class, "pos"));
+		TypePathExtractor posExtractor = new TypePathExtractor(TreebankNode.class, "nodeType");
 		HeadWordExtractor extractor;
 
 		extractor = new HeadWordExtractor(posExtractor, true);
 		this.checkFeatures(
 				extractor.extract(jCas, tree),
-				"HeadWord_TypePath(Pos)", "NN");
-		Set<Feature> expectedFeatures = new HashSet<Feature>();
-		expectedFeatures.add(new Feature("HeadWord_TypePath(Pos)", "IN"));
-		expectedFeatures.add(new Feature("PPHeadWord_TypePath(Pos)", "NN"));
-		List<Feature> features = extractor.extract(jCas, undertheboxNode);
-		Assert.assertEquals(expectedFeatures, new HashSet<Feature>(features));
+				"HeadWord_TypePath(NodeType)", "NN");
+		this.checkFeatures(
+				extractor.extract(jCas, undertheboxNode),
+				"HeadWord_TypePath(NodeType)", "IN",
+				"PPHeadWord_TypePath(NodeType)", "NP");
 
 		extractor = new HeadWordExtractor(textExtractor, true);
 		this.checkFeatures(
 				extractor.extract(jCas, tree),
 				"HeadWord", "toy");
 
-		features = extractor.extract(jCas, undertheboxNode);
+		List<Feature> features = extractor.extract(jCas, undertheboxNode);
 		Assert.assertEquals(2, features.size());
 		Assert.assertEquals("HeadWord", features.get(0).getName());
 		Assert.assertEquals("under", features.get(0).getValue());
 		Assert.assertEquals("PPHeadWord", features.get(1).getName());
-		Assert.assertEquals("box", features.get(1).getValue());
+		Assert.assertEquals("the box", features.get(1).getValue());
 
 	}
 
-	private void checkFeatures(List<Feature> features, String expectedName, Object ... expectedValues) {
-		List<Object> actualValues = new ArrayList<Object>();
-		for (Feature feature: features) {
-			Assert.assertEquals(expectedName, feature.getName());
-			actualValues.add(feature.getValue());
-		}
-		Assert.assertEquals(Arrays.asList(expectedValues), actualValues);
+//	private void checkFeatures(List<Feature> features, String expectedName, Object ... expectedValues) {
+//		List<Object> actualValues = new ArrayList<Object>();
+//		for (Feature feature: features) {
+//			Assert.assertEquals(expectedName, feature.getName());
+//			actualValues.add(feature.getValue());
+//		}
+//		Assert.assertEquals(Arrays.asList(expectedValues), actualValues);
+//
+//	}
 
+	private void checkFeatures(List<Feature> features, Object ... expected) {
+		Assert.assertEquals(expected.length/2, features.size());
+		for(int i=0; i<expected.length / 2; i++) {
+			Assert.assertEquals(expected[i*2], features.get(i).getName());
+			Assert.assertEquals(expected[i*2+1], features.get(i).getValue());
+		}
 	}
 
 }

@@ -140,8 +140,8 @@ public class LinWengPlatt {
 			}
 			
 			if (stepsize < minimumStepsize) {
-				Logger logger = Logger.getLogger("org.cleartk.classifier.util.LinWengPlatt");
-				logger.info("line search failure");
+				Logger logger = Logger.getLogger(LinWengPlatt.class.getName());
+				logger.fine("line search failure");
 				break;
 			}
 		}

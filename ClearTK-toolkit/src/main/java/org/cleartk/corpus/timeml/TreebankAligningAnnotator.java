@@ -26,23 +26,28 @@ package org.cleartk.corpus.timeml;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.Level;
+import org.cleartk.CleartkComponents;
 import org.cleartk.corpus.timeml.type.Text;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
 import org.cleartk.syntax.treebank.type.TreebankNode;
 import org.cleartk.syntax.treebank.util.TreebankFormatParser;
 import org.cleartk.syntax.treebank.util.TreebankNodeUtility;
+import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.ViewURIUtil;
 import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.util.InitializeUtil;
 
 
@@ -56,14 +61,21 @@ import org.uutuc.util.InitializeUtil;
  */
 public class TreebankAligningAnnotator extends JCasAnnotator_ImplBase {
 	
-	public static final String PARAM_TREEBANK_DIRECTORY_NAME = "org.cleartk.corpus.timeml.TreebankAligningAnnotator.treebankDirectoryName";
+	public static final String PARAM_TREEBANK_DIRECTORY_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(TreebankAligningAnnotator.class, "treebankDirectoryName");
 	@ConfigurationParameter(
-			name = PARAM_TREEBANK_DIRECTORY_NAME,
 			mandatory = true,
 			description = "the path to the treebank directory containing the XX/wsj_XXXX.mrg files.")
 	private String treebankDirectoryName;
 	public void setTreebankDirectoryName(String treebankDirectoryName) {
 		this.treebankDirectoryName = treebankDirectoryName;
+	}
+
+	public static AnalysisEngineDescription getDescription(String treeBankDir)
+			throws ResourceInitializationException {
+		return AnalysisEngineFactory.createPrimitiveDescription(TreebankAligningAnnotator.class,
+				CleartkComponents.TYPE_SYSTEM_DESCRIPTION, CleartkComponents.TYPE_PRIORITIES, PARAM_TREEBANK_DIRECTORY_NAME,
+				treeBankDir);
+	
 	}
 
 	private File treebankDirectory;

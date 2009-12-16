@@ -54,6 +54,7 @@ AFP_ENG_20030305.0918
                 <outputs/>
                 <outputSofas>
                     <sofaName>ApfUriView</sofaName>
+                    <sofaName>UriView</sofaName>
                 </outputSofas>
                 <languagesSupported/>
             </capability>

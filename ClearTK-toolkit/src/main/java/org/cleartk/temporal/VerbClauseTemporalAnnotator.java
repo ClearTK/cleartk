@@ -37,9 +37,8 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkComponents;
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.AnnotationHandler;
+import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.InstanceConsumer;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
@@ -64,7 +63,7 @@ import org.cleartk.util.ViewURIUtil;
  *
  * @author Steven Bethard
  */
-public class VerbClauseTemporalHandler implements AnnotationHandler<String> {
+public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
 	
 	private static final Map<String, String[]> headMap = new HashMap<String, String[]>();
 	static {
@@ -87,20 +86,20 @@ public class VerbClauseTemporalHandler implements AnnotationHandler<String> {
 	
 	public static AnalysisEngineDescription getWriterDescription(String outputDir)
 	throws ResourceInitializationException {
-		return CleartkComponents.createDataWriterAnnotator(
-				VerbClauseTemporalHandler.class,
+		return CleartkComponents.createCleartkAnnotator(
+				VerbClauseTemporalAnnotator.class,
 				DefaultOVASVMlightDataWriterFactory.class,
-				outputDir, null);
+				outputDir);
 	}
 
 	public static AnalysisEngineDescription getAnnotatorDescription()
 	throws ResourceInitializationException {
-		return CleartkComponents.createClassifierAnnotator(
-				VerbClauseTemporalHandler.class,
+		return CleartkComponents.createCleartkAnnotator(
+				VerbClauseTemporalAnnotator.class,
 				"resources/models/verb-clause-temporal-model.jar");
 	}
 
-	public VerbClauseTemporalHandler() {
+	public VerbClauseTemporalAnnotator() {
 		this.eventID = 1;
 		this.tokenFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
 		this.tokenFeatureExtractors.add(new SpannedTextExtractor());
@@ -110,19 +109,26 @@ public class VerbClauseTemporalHandler implements AnnotationHandler<String> {
 				new TypePathExtractor(TreebankNode.class, "nodeType"));
 	}
 
-	public void process(JCas jCas, InstanceConsumer<String> consumer)
-			throws AnalysisEngineProcessException, CleartkException {
+	public void process(JCas jCas) throws AnalysisEngineProcessException {
+		try {
+			this.processSimple(jCas);
+		} catch (CleartkException e) {
+			throw new AnalysisEngineProcessException(e);
+		}
+	}
+	
+	public void processSimple(JCas jCas) throws AnalysisEngineProcessException, CleartkException {
 		int docEnd = jCas.getDocumentText().length();
 
 		// collect TLINKs if necessary
 		Map<String, TemporalLink> tlinks = null;
-		if (consumer.expectsOutcomes()) {
+		if (this.isTraining()) {
 			tlinks = this.getTemporalLinks(jCas);
 		}
 
 		// look for verb-clause pairs in each sentence in the document
 		for (Sentence sentence: AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
-			TopTreebankNode tree = AnnotationRetrieval.getContainingAnnotation(jCas, sentence, TopTreebankNode.class, false);
+			TopTreebankNode tree = AnnotationRetrieval.getContainingAnnotation(jCas, sentence, TopTreebankNode.class);
 			if (tree == null) {
 				throw new AnalysisEngineProcessException(new Exception(String.format(
 						"%s: missing syntactic parses", ViewURIUtil.getURI(jCas))));
@@ -153,23 +159,21 @@ public class VerbClauseTemporalHandler implements AnnotationHandler<String> {
 				Anchor target = AnnotationRetrieval.getContainingAnnotation(
 						jCas, link.target, Anchor.class);
 
-				// if the consumer expects outcomes, get the relation
-				// type from a TLINK annotation
-				if (consumer.expectsOutcomes()) {
+				// if we're building training data, get the relation type from a TLINK
+				if (this.isTraining()) {
 					if (source != null && target != null) {
 						String key = String.format("%s:%s", source.getId(), target.getId());
 						TemporalLink tlink = tlinks.remove(key);
 						if (tlink != null) {
 							instance.setOutcome(tlink.getRelationType());
-							consumer.consume(instance);
+							this.dataWriter.write(instance);
 						}
 					}
 				}
 				
-				// if the consumer doesn't expect outcomes, send all instances
-				// to the consumer, and create a new TLINK with the result
+				// if we're classifying create new TLINKs from the classification outcomes
 				else {
-					String relationType = consumer.consume(instance);
+					String relationType = this.classifier.classify(instance.getFeatures());
 					source = this.getOrCreateEvent(jCas, source, link.source);
 					target = this.getOrCreateEvent(jCas, target, link.target);
 					TemporalLink tlink = new TemporalLink(jCas, docEnd, docEnd);
@@ -182,25 +186,6 @@ public class VerbClauseTemporalHandler implements AnnotationHandler<String> {
 				}
 			}			
 		}
-//		if (!tlinks.isEmpty()) {
-//			System.err.println();
-//			System.err.println(DocumentUtil.getIdentifier(jCas));
-//			System.err.println();
-//			System.err.println("TLINKs not used:");
-//			System.err.println(tlinks.keySet());
-//			for (String key: tlinks.keySet()) {
-//				TemporalLink tlink = tlinks.get(key); 
-//				Event source = (Event)tlink.getSource();
-//				Event target = (Event)tlink.getTarget();
-//				System.err.format("%s  %s (%s) -> %s (%s) \n", key,
-//						source.getCoveredText(), source.getEventInstanceID(),
-//						target.getCoveredText(), target.getEventInstanceID());
-//				Sentence sentence = AnnotationRetrieval.getContainingAnnotation(jCas, source, Sentence.class);
-//				System.err.println(sentence.getCoveredText());
-//				System.err.println(sentence.getConstituentParse().getTreebankParse());
-//			}
-//			throw new AnalysisEngineProcessException();
-//		}
 	}
 	
 	private Event getOrCreateEvent(JCas jCas, Anchor anchor, TreebankNode node) {
@@ -262,7 +247,7 @@ public class VerbClauseTemporalHandler implements AnnotationHandler<String> {
 		if (node.getLeaf()) {
 			heads.add(node);
 		}
-		String[] headTypes = VerbClauseTemporalHandler.headMap.get(node.getNodeType());
+		String[] headTypes = VerbClauseTemporalAnnotator.headMap.get(node.getNodeType());
 		if (headTypes != null) {
 			for (String headType: headTypes) {
 				boolean foundChildWithHeadType = false;
@@ -270,7 +255,7 @@ public class VerbClauseTemporalHandler implements AnnotationHandler<String> {
 					TreebankNode child = node.getChildren(i);
 					if (child.getNodeType().equals(headType)) {
 						String text = child.getCoveredText();
-						if (!VerbClauseTemporalHandler.stopWords.contains(text)) {
+						if (!VerbClauseTemporalAnnotator.stopWords.contains(text)) {
 							this.collectHeads(child, heads);
 							foundChildWithHeadType = true;
 						}

@@ -39,12 +39,14 @@ import opennlp.tools.util.Span;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.CleartkComponents;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
 import org.cleartk.syntax.treebank.type.TreebankNode;
 import org.cleartk.test.util.ConfigurationParameterNameFactory;
@@ -52,6 +54,7 @@ import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.util.InitializeUtil;
 
 /**
@@ -64,6 +67,19 @@ import org.uutuc.util.InitializeUtil;
  */
 
 public class OpenNLPTreebankParser extends JCasAnnotator_ImplBase {
+
+	public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
+		return AnalysisEngineFactory.createPrimitiveDescription(OpenNLPTreebankParser.class,
+				CleartkComponents.TYPE_SYSTEM_DESCRIPTION, CleartkComponents.TYPE_PRIORITIES,
+				PARAM_BUILD_MODEL_FILE, CleartkComponents.getParameterValue(PARAM_BUILD_MODEL_FILE,
+						"resources/models/OpenNLP.Parser.English.Build.bin.gz"),
+				PARAM_CHECK_MODEL_FILE, CleartkComponents.getParameterValue(PARAM_CHECK_MODEL_FILE,
+						"resources/models/OpenNLP.Parser.English.Check.bin.gz"),
+				PARAM_CHUNK_MODEL_FILE, CleartkComponents.getParameterValue(PARAM_CHUNK_MODEL_FILE,
+						"resources/models/OpenNLP.Chunker.English.bin.gz"),
+				PARAM_HEAD_RULES_FILE, CleartkComponents.getParameterValue(PARAM_HEAD_RULES_FILE,
+						"resources/models/OpenNLP.HeadRules.txt"));
+	}
 
 	public static final String PARAM_BUILD_MODEL_FILE = ConfigurationParameterNameFactory.createConfigurationParameterName(
 			OpenNLPTreebankParser.class, "buildModelFile");
@@ -108,7 +124,7 @@ public class OpenNLPTreebankParser extends JCasAnnotator_ImplBase {
 			defaultValue = ""+Parser.defaultAdvancePercentage,
 			description = "indicates \"the amount of probability mass required of advanced outcomes\".  See javadoc for opennlp.tools.parser.chunking.Parser.")
 	private float advancePercentage;
-	
+
 	protected Parser parser;
 
 	protected OpenNLPDummyParserTagger tagger;
@@ -234,5 +250,4 @@ public class OpenNLPTreebankParser extends JCasAnnotator_ImplBase {
 			throw new ResourceInitializationException(e);
 		}
 	}
-
 }

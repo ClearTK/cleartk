@@ -43,14 +43,14 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             </configurationParameter>
             <configurationParameter>
                 <name>org.cleartk.ne.term.TermFinderAnnotator.termMatchAnnotationCreatorClassName</name>
-                <description>provides the class name of a class that extends org.cleartk.ne.term.TermMatchAnnotationCreator. If this parameter is not given a value, then the parameter 'org.cleartk.ne.term.TermFinderAnnotator.termMatchAnnotationClassName'  must be given a value.</description>
+                <description>provides the class name of a class that extends org.cleartk.ne.term.TermMatchAnnotationCreator. If this parameter is not given a value, then the parameter 'termMatchAnnotationClassName'  must be given a value.</description>
                 <type>String</type>
                 <multiValued>false</multiValued>
                 <mandatory>false</mandatory>
             </configurationParameter>
             <configurationParameter>
                 <name>org.cleartk.ne.term.TermFinderAnnotator.termMatchAnnotationClassName</name>
-                <description>names the class of the type system type that specifies the annotations created of found term matches. One annotation is created for each term match found of the given type specified by this parameter. This parameter is ignored if 'org.cleartk.ne.term.TermFinderAnnotator.termMatchAnnotationCreatorClassName' is given a value.</description>
+                <description>names the class of the type system type that specifies the annotations created of found term matches. One annotation is created for each term match found of the given type specified by this parameter. This parameter is ignored if 'termMatchAnnotationCreatorClassName' is given a value.</description>
                 <type>String</type>
                 <multiValued>false</multiValued>
                 <mandatory>false</mandatory>

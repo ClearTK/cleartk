@@ -32,6 +32,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.ViewNames;
+import org.uutuc.descriptor.SofaCapability;
 
 /**
  * <br>Copyright (c) 2009, Regents of the University of Colorado 
@@ -40,6 +41,7 @@ import org.cleartk.ViewNames;
  * @author Philipp G. Wetzler
  *
  */
+@SofaCapability(inputSofas= {ViewNames.URI, GoldAnnotator.GOLD_VIEW_NAME})
 public class GoldAnnotator extends JCasAnnotator_ImplBase {
 
 	public static final String GOLD_VIEW_NAME = "ExampleDocumentClassificationGoldView";

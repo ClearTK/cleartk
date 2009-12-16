@@ -26,6 +26,7 @@
 
 package org.cleartk.srl;
 
+import java.io.File;
 import java.util.Arrays;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
@@ -34,8 +35,6 @@ import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.metadata.TypePriorities;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
-import org.cleartk.classifier.DataWriterAnnotator;
-import org.cleartk.classifier.InstanceConsumer_ImplBase;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.classifier.svmlight.DefaultSVMlightDataWriterFactory;
 import org.cleartk.srl.propbank.PropbankGoldAnnotator;
@@ -76,18 +75,14 @@ public class BuildTestSRLModel {
 				PropbankGoldAnnotator.class, typeSystemDescription, (TypePriorities) null);
 		
 		
-		AnalysisEngineDescription predicateDWA = AnalysisEngineFactory.createPrimitiveDescription(
-				DataWriterAnnotator.class, typeSystemDescription, null, 
-				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, "test/data/srl/predicate",
-				DataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultSVMlightDataWriterFactory.class.getName(),
-				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, PredicateAnnotationHandler.class.getName());
+		AnalysisEngineDescription predicateDWA = PredicateAnnotator.getWriterDescription(
+				DefaultSVMlightDataWriterFactory.class,
+				new File("test/data/srl/predicate"));
 		
-		AnalysisEngineDescription argumentDWA = AnalysisEngineFactory.createPrimitiveDescription(
-				DataWriterAnnotator.class, typeSystemDescription, null,
-				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, "test/data/srl/argument",
-				DataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMaxentDataWriterFactory.class.getName(),
-				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, ArgumentAnnotationHandler.class.getName());
-		
+		AnalysisEngineDescription argumentDWA = ArgumentAnnotator.getWriterDescription(
+				DefaultMaxentDataWriterFactory.class, 
+				new File("test/data/srl/argument")); 
+			
 		AnalysisEngine aggregateAE = AnalysisEngineFactory.createAggregate(
 				Arrays.asList(tbAnnotator, pbAnnotator, predicateDWA, argumentDWA), 
 				Arrays.asList("tbAnnotator", "pbAnnotator", "predicateDWA", "argumentDWA"),

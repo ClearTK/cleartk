@@ -111,7 +111,7 @@
 		<dependency>
 			<groupId>org.uutuc</groupId>
 			<artifactId>uutuc</artifactId>
-			<version>0.9.8</version>
+			<version>0.9.9</version>
 			<optional>false</optional>
 		</dependency>
 		<dependency>

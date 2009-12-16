@@ -78,7 +78,7 @@ public class SyntacticPathExtractorTest {
 		extractor = new SyntacticPathExtractor(tagExtractor);
 		features = extractor.extract(jCas, topNode, homenpNode);
 		Assert.assertEquals(2, features.size());
-		Assert.assertEquals("SyntacticPath_TypePath_NodeType", features.get(0).getName());
+		Assert.assertEquals("SyntacticPath(TypePath(NodeType))", features.get(0).getName());
 		Assert.assertEquals("S;;VP;;NP", features.get(0).getValue());
 		Assert.assertEquals("SyntacticPath_Length", features.get(1).getName());
 		Assert.assertEquals(3, ((Long)features.get(1).getValue()).intValue());
@@ -86,7 +86,7 @@ public class SyntacticPathExtractorTest {
 		extractor = new SyntacticPathExtractor(textExtractor, true);
 		features = extractor.extract(jCas, homeNode, ranNode);
 		Assert.assertEquals(2, features.size());
-		Assert.assertEquals("PartialSyntacticPath_SpannedText", features.get(0).getName());
+		Assert.assertEquals("PartialSyntacticPath(null)", features.get(0).getName());
 		Assert.assertEquals("home::home::ran home", features.get(0).getValue());
 		Assert.assertEquals("PartialSyntacticPath_Length", features.get(1).getName());
 		Assert.assertEquals(3, ((Long)features.get(1).getValue()).intValue());

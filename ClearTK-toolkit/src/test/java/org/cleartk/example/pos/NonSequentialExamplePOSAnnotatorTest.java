@@ -32,7 +32,6 @@ import java.io.File;
 
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.pear.util.FileUtil;
-import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.cleartk.CleartkComponents;
 import org.cleartk.ViewNames;
 import org.cleartk.classifier.libsvm.DefaultMultiClassLIBSVMDataWriterFactory;
@@ -42,11 +41,9 @@ import org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter;
 import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
 import org.cleartk.token.TokenAnnotator;
 import org.cleartk.token.snowball.DefaultSnowballStemmer;
-import org.cleartk.token.snowball.SnowballStemmer;
 import org.cleartk.util.FilesCollectionReader;
 import org.junit.After;
 import org.junit.Test;
-import org.uutuc.factory.CollectionReaderFactory;
 import org.uutuc.util.HideOutput;
 import org.uutuc.util.SimplePipeline;
 import org.uutuc.util.TearDownUtil;
@@ -59,7 +56,7 @@ import org.uutuc.util.TearDownUtil;
  * @author Philip Ogren
  */
 
-public class NonSequentialExamplePOSAnnotationHandlerTest {
+public class NonSequentialExamplePOSAnnotatorTest {
 
 	private String baseDirectory = "test/data/example/pos/nonsequential";
 	
@@ -70,11 +67,9 @@ public class NonSequentialExamplePOSAnnotationHandlerTest {
 	
 	@Test
 	public void testLibsvm() throws Exception {
-		System.out.println(" running test org.cleartk.example.pos.NonSequentialExamplePOSAnnotationHandlerTest.testLibsvm()");
-
 		String outputDirectory = baseDirectory+"/libsvm";
-		AnalysisEngineDescription dataWriter = 	CleartkComponents.createDataWriterAnnotator(NonSequentialExamplePOSAnnotationHandler.class,
-				DefaultMultiClassLIBSVMDataWriterFactory.class, outputDirectory, null);
+		AnalysisEngineDescription dataWriter = 	CleartkComponents.createCleartkAnnotator(NonSequentialExamplePOSAnnotator.class,
+				DefaultMultiClassLIBSVMDataWriterFactory.class, outputDirectory);
 		testClassifier(dataWriter, outputDirectory, "-t", "0");
 
 		String firstLine = FileUtil.loadListOfStrings(new File(outputDirectory + "/2008_Sichuan_earthquake.txt.pos"))[0].trim();
@@ -85,11 +80,9 @@ public class NonSequentialExamplePOSAnnotationHandlerTest {
 
 	@Test
 	public void testMaxent() throws Exception {
-		System.out.println(" running test org.cleartk.example.pos.NonSequentialExamplePOSAnnotationHandlerTest.testMaxent()");
-
 		String outputDirectory = baseDirectory+"/maxent";
-		AnalysisEngineDescription dataWriter = 	CleartkComponents.createDataWriterAnnotator(NonSequentialExamplePOSAnnotationHandler.class,
-				DefaultMaxentDataWriterFactory.class, outputDirectory, null);
+		AnalysisEngineDescription dataWriter = 	CleartkComponents.createCleartkAnnotator(NonSequentialExamplePOSAnnotator.class,
+				DefaultMaxentDataWriterFactory.class, outputDirectory);
 		testClassifier(dataWriter, outputDirectory);
 
 		String firstLine = FileUtil.loadListOfStrings(new File(outputDirectory + "/2008_Sichuan_earthquake.txt.pos"))[0].trim();
@@ -102,11 +95,9 @@ public class NonSequentialExamplePOSAnnotationHandlerTest {
 	
 	@Test
 	public void testSVMLIGHT() throws Exception {
-		System.out.println(" running test org.cleartk.example.pos.NonSequentialExamplePOSAnnotationHandlerTest.testSVMLIGHT()");
-
 		String outputDirectory = baseDirectory+"/svmlight";
-		AnalysisEngineDescription dataWriter = 	CleartkComponents.createDataWriterAnnotator(NonSequentialExamplePOSAnnotationHandler.class,
-				DefaultOVASVMlightDataWriterFactory.class, outputDirectory, null);
+		AnalysisEngineDescription dataWriter = 	CleartkComponents.createCleartkAnnotator(NonSequentialExamplePOSAnnotator.class,
+				DefaultOVASVMlightDataWriterFactory.class, outputDirectory);
 		testClassifier(dataWriter, outputDirectory);
 
 		String firstLine = FileUtil.loadListOfStrings(new File(outputDirectory + "/2008_Sichuan_earthquake.txt.pos"))[0].trim();
@@ -121,18 +112,11 @@ public class NonSequentialExamplePOSAnnotationHandlerTest {
 
 
 	private void testClassifier(AnalysisEngineDescription dataWriter, String outputDirectory, String... trainingArgs) throws Exception {
-		TypeSystemDescription typeSystemDescription = CleartkComponents.TYPE_SYSTEM_DESCRIPTION;
-		
-		System.out.print("creating training data...");
 		SimplePipeline.runPipeline(
-				CollectionReaderFactory.createCollectionReader(
-						FilesCollectionReader.class, typeSystemDescription,
-						FilesCollectionReader.PARAM_ROOT_FILE, "test/data/docs/treebank/11597317.tree",
-						FilesCollectionReader.PARAM_VIEW_NAME, ViewNames.TREEBANK),
-				CleartkComponents.createPrimitiveDescription(TreebankGoldAnnotator.class, TreebankGoldAnnotator.PARAM_POST_TREES, false),
-				CleartkComponents.createPrimitiveDescription(DefaultSnowballStemmer.class, SnowballStemmer.PARAM_STEMMER_NAME, "English"),
+				FilesCollectionReader.getCollectionReaderWithView("test/data/docs/treebank/11597317.tree", ViewNames.TREEBANK),
+				TreebankGoldAnnotator.getDescriptionPOSTagsOnly(),
+				DefaultSnowballStemmer.getDescription("English"),
 				dataWriter);
-		System.out.println("done");
 				
 		String[] args;
 		if(trainingArgs != null && trainingArgs.length > 0) {
@@ -143,24 +127,19 @@ public class NonSequentialExamplePOSAnnotationHandlerTest {
 			args = new String[] { outputDirectory };
 		}
 
-		System.out.print("training model...");		
 		HideOutput hider = new HideOutput();
 		org.cleartk.classifier.Train.main(args);
 		hider.restoreOutput();
-		System.out.println("done");
 
-		AnalysisEngineDescription taggerDescription = CleartkComponents.createClassifierAnnotator(NonSequentialExamplePOSAnnotationHandler.class, outputDirectory + "/model.jar");
+		AnalysisEngineDescription taggerDescription = CleartkComponents.createCleartkAnnotator(NonSequentialExamplePOSAnnotator.class, outputDirectory + "/model.jar");
 
-		System.out.print("tagging data...");
 		SimplePipeline.runPipeline(
-				CleartkComponents.createFilesCollectionReader("example/data/2008_Sichuan_earthquake.txt"),
-				CleartkComponents.createPrimitiveDescription(OpenNLPSentenceSegmenter.class),
-				CleartkComponents.createPrimitiveDescription(TokenAnnotator.class), 
-				CleartkComponents.createPrimitiveDescription(DefaultSnowballStemmer.class, SnowballStemmer.PARAM_STEMMER_NAME, "English"),
+				FilesCollectionReader.getCollectionReader("example/data/2008_Sichuan_earthquake.txt"),
+				OpenNLPSentenceSegmenter.getDescription(),
+				TokenAnnotator.getDescription(),
+				DefaultSnowballStemmer.getDescription("English"),
 				taggerDescription,
 				CleartkComponents.createPrimitiveDescription(ExamplePOSPlainTextWriter.class, ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME, outputDirectory));
-		
-		System.out.println("done");
 
 	}
 }

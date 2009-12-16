@@ -105,8 +105,10 @@ public class ClassifierManifest extends Manifest {
 			exception = e;
 		}
 		if (exception != null) {
-			throw new IOException(String.format("Invalid %s attribute in manifest %s",
+			IOException ioe = new IOException(String.format("Invalid %s attribute in manifest %s",
 					CLASSIFIER_BUILDER_ATTRIBUTE, path));
+			ioe.initCause(exception);
+			throw ioe;
 		}
 	}
 	

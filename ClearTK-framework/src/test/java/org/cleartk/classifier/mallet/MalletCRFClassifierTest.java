@@ -39,12 +39,8 @@ import org.apache.uima.jcas.JCas;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.SequentialAnnotationHandler;
 import org.cleartk.classifier.SequentialClassifier;
-import org.cleartk.classifier.SequentialClassifierAnnotator;
-import org.cleartk.classifier.SequentialDataWriterAnnotator;
-import org.cleartk.classifier.SequentialInstanceConsumer;
-import org.cleartk.classifier.SequentialInstanceConsumer_ImplBase;
+import org.cleartk.classifier.CleartkSequentialAnnotator;
 import org.cleartk.classifier.Train;
 import org.cleartk.util.JCasUtil;
 import org.junit.After;
@@ -71,22 +67,27 @@ import org.uutuc.util.TearDownUtil;
 
 public class MalletCRFClassifierTest {
 
-	public class TestHandler implements SequentialAnnotationHandler<String>{
-		public void process(JCas cas, SequentialInstanceConsumer<String> consumer) throws AnalysisEngineProcessException, CleartkException {
-			List<Instance<String>> instances =  createInstances();
-			//consume 100 identical sequences
-			for(int i=0; i<100; i++) {
-				consumer.consumeSequence(instances);
+	public static class TestAnnotator extends CleartkSequentialAnnotator<String> {
+		public void process(JCas cas) throws AnalysisEngineProcessException {
+			try {
+				this.processSimple(cas);
+			} catch (CleartkException e) {
+				throw new AnalysisEngineProcessException(e);
 			}
 		}
-	}
-	
-	public class TestHandler1 implements SequentialAnnotationHandler<String>{
-		public void process(JCas cas, SequentialInstanceConsumer<String> consumer) throws AnalysisEngineProcessException, CleartkException {
-			List<Instance<String>> instances =  createInstances();
-			List<String> outcomes =	consumer.consumeSequence(instances);
-			assertEquals(instances.size(), outcomes.size());
-			testLabels(outcomes, "O O O O O O O O O O O O O O O B-GENE I-GENE I-GENE O B-GENE I-GENE O O O O O O O O O O O O O O O O O O O O O");
+		public void processSimple(JCas cas) throws AnalysisEngineProcessException, CleartkException {
+			if (this.isTraining()) {
+				List<Instance<String>> instances =  createInstances();
+				//consume 100 identical sequences
+				for(int i=0; i<100; i++) {
+					this.dataWriter.writeSequence(instances);
+				}
+			} else {
+				List<Instance<String>> instances =  createInstances();
+				List<String> outcomes =	this.classifySequence(instances);
+				assertEquals(instances.size(), outcomes.size());
+				testLabels(outcomes, "O O O O O O O O O O O O O O O B-GENE I-GENE I-GENE O B-GENE I-GENE O O O O O O O O O O O O O O O O O O O O O");
+			}
 		}
 	}
 
@@ -105,11 +106,10 @@ public class MalletCRFClassifierTest {
 	@Test
 	public void runTest1() throws Exception {
 
-		AnalysisEngine sequentialDataWriterAnnotator = AnalysisEngineFactory.createPrimitive(SequentialDataWriterAnnotator.class,
-				JCasUtil.getTypeSystemDescription(), 
-				SequentialInstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, TestHandler.class.getName(), 
-				SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
-				SequentialDataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletCRFDataWriterFactory.class.getName());
+		AnalysisEngine sequentialDataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
+				TestAnnotator.class, JCasUtil.getTypeSystemDescription(), 
+				CleartkSequentialAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				CleartkSequentialAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletCRFDataWriterFactory.class.getName());
 
 		JCas jCas = JCasUtil.getJCas();
 		sequentialDataWriterAnnotator.process(jCas);
@@ -138,16 +138,16 @@ public class MalletCRFClassifierTest {
 		assertEquals(sequenceFeatures.size(), outcomes.size());
 		testLabels(outcomes, "O O O O O O O O O O O O O O O B-GENE I-GENE I-GENE O B-GENE I-GENE O O O O O O O O O O O O O O O O O O O O O");
 		
-		AnalysisEngine sequentialClassifierAnnotator = AnalysisEngineFactory.createPrimitive(SequentialClassifierAnnotator.class, JCasUtil.getTypeSystemDescription(),
-				SequentialInstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, TestHandler1.class.getName(),
-				SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR_PATH, outputDirectory+"/model.jar");
+		AnalysisEngine sequentialClassifierAnnotator = AnalysisEngineFactory.createPrimitive(
+				TestAnnotator.class, JCasUtil.getTypeSystemDescription(),
+				CleartkSequentialAnnotator.PARAM_CLASSIFIER_JAR_PATH, outputDirectory+"/model.jar");
 		jCas.reset();
 		sequentialClassifierAnnotator.process(jCas);
 		sequentialClassifierAnnotator.collectionProcessComplete();
 
 	}
 
-	private void testLabels(List<String> outcomes, String expectedData) {
+	private static void testLabels(List<String> outcomes, String expectedData) {
 		String[] expectedValues = expectedData.split(" ");
 		assertEquals(expectedValues.length, outcomes.size());
 		for(int i=0; i<expectedValues.length; i++) {

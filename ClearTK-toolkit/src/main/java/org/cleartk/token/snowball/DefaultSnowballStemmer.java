@@ -25,7 +25,9 @@
 package org.cleartk.token.snowball;
 
 import org.apache.uima.UimaContext;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.CleartkComponents;
 import org.cleartk.type.Token;
 
 /**
@@ -43,6 +45,12 @@ import org.cleartk.type.Token;
  */
 
 public class DefaultSnowballStemmer extends SnowballStemmer<Token> {
+	
+	public static AnalysisEngineDescription getDescription(String language)
+	throws ResourceInitializationException {
+		return CleartkComponents.createPrimitiveDescription(
+				DefaultSnowballStemmer.class, SnowballStemmer.PARAM_STEMMER_NAME, language);
+	}
 
 	
 	@Override

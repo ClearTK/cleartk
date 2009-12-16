@@ -37,6 +37,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.ne.type.NamedEntity;
 import org.cleartk.ne.type.NamedEntityMention;
+import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.ViewURIUtil;
 import org.jdom.Document;
@@ -58,10 +59,9 @@ import org.uutuc.util.InitializeUtil;
 
 public class Ace2005Writer extends JCasAnnotator_ImplBase {
 
-	public static final String PARAM_OUTPUT_DIRECTORY_NAME = "org.cleartk.corpus.ace2005.Ace2005Writer.outputDirectoryName";
+	public static final String PARAM_OUTPUT_DIRECTORY_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(Ace2005Writer.class, "outputDirectoryName");
 
 	@ConfigurationParameter(
-			name = PARAM_OUTPUT_DIRECTORY_NAME, 
 			mandatory = true, 
 			description = "provides the path of the directory where the XML files should be written.")
 	private String outputDirectoryName;

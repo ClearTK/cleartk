@@ -30,8 +30,10 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.collection.CollectionException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.util.UIMAUtil;
 import org.cleartk.util.ViewURIUtil;
+import org.uutuc.descriptor.ConfigurationParameter;
 import org.uutuc.util.io.Files;
 
 
@@ -42,13 +44,14 @@ import org.uutuc.util.io.Files;
 */
 public class SimpleLineHandler implements LineHandler {
 
-	/**
-	 * "org.cleartk.util.linereader.SimpleLineHandler.PARAM_DELIMITER" is a single, optional, string parameter that specifies a
-	 * string that delimits the id from the text. If no value is given, then a
-	 * vertical bar '|' is expected.
-	 */
-	public static final String PARAM_DELIMITER = "org.cleartk.util.linereader.SimpleLineHandler.PARAM_DELIMITER";
+	public static final String PARAM_DELIMITER = ConfigurationParameterNameFactory.createConfigurationParameterName(
+			SimpleLineHandler.class, "delimiter");
 
+	@ConfigurationParameter(
+			mandatory = true,
+			defaultValue = "|",
+			description = "specifies a string that delimits the id from the text. "
+	)
 	private String delimiter;
 
 	public void initialize(UimaContext context) throws ResourceInitializationException {

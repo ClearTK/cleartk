@@ -56,7 +56,6 @@ public class ParseProbankTest {
 				total++;
 			}
 		} catch (PropbankFormatException e) {
-			System.out.println(line);
 			fail("Parser unable to parser line="+total+": "+line);
 		}
 	}

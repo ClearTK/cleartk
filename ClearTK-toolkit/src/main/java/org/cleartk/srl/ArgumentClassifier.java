@@ -23,20 +23,24 @@
  */
 package org.cleartk.srl;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.apache.uima.UimaContext;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.CleartkComponents;
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.AnnotationHandler;
+import org.cleartk.classifier.CleartkAnnotator;
+import org.cleartk.classifier.DataWriterFactory;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.InstanceConsumer;
 import org.cleartk.classifier.feature.extractor.annotationpair.AnnotationPairFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.annotationpair.MatchingAnnotationPairExtractor;
 import org.cleartk.classifier.feature.extractor.annotationpair.NamingAnnotationPairFeatureExtractor;
@@ -75,9 +79,28 @@ import org.uutuc.util.InitializeUtil;
  * @author Philipp Wetzler
  */
 
-public class ArgumentClassificationHandler implements AnnotationHandler<String> {
+public class ArgumentClassifier extends CleartkAnnotator<String> {
 
-	public ArgumentClassificationHandler() {
+	public static AnalysisEngineDescription getWriterDescription(
+			Class<? extends DataWriterFactory<String>> dataWriterFactoryClass, File outputDirectory)
+	throws ResourceInitializationException {
+		return CleartkComponents.createPrimitiveDescription(
+				ArgumentClassifier.class,
+				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, dataWriterFactoryClass.getName(),
+				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory.toString());
+	}
+
+	public static AnalysisEngineDescription getClassifierDescription(File classifierJar)
+	throws ResourceInitializationException {
+		return CleartkComponents.createPrimitiveDescription(
+				ArgumentClassifier.class,
+				CleartkAnnotator.PARAM_CLASSIFIER_JAR_PATH, classifierJar.toString());
+	}
+
+	@Override
+	public void initialize(UimaContext context) throws ResourceInitializationException {
+		super.initialize(context);
+		InitializeUtil.initialize(this, context);
 
 		SimpleFeatureExtractor defaultTokenExtractorSet = new MatchingAnnotationExtractor(Token.class,
 				new SpannedTextExtractor(),
@@ -126,27 +149,28 @@ public class ArgumentClassificationHandler implements AnnotationHandler<String> 
 
 	}
 
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		InitializeUtil.initialize(this, context);
-	}
-
-	public void process(JCas jCas, InstanceConsumer<String> consumer) throws CleartkException{
+	@Override
+	public void process(JCas jCas) throws AnalysisEngineProcessException {
 		/*
 		 * Iterate over sentences in document
 		 */
 		List<Sentence> sentences = AnnotationRetrieval.getAnnotations(jCas, Sentence.class);
 
-		for( Sentence sentence : sentences ) {
-			processSentence(jCas, sentence, consumer);
+		try {
+			for( Sentence sentence : sentences ) {
+				processSentence(jCas, sentence);
+			}
+		} catch (CleartkException e) {
+			throw new AnalysisEngineProcessException(e);
 		}
 	}
 
-	void processSentence(JCas jCas, Sentence sentence, InstanceConsumer<String> consumer) throws CleartkException{
+	void processSentence(JCas jCas, Sentence sentence) throws CleartkException{
 
 		if( sentence.getCoveredText().length() > 40 )
-			logger.info(String.format("process sentence \"%s ...\"", sentence.getCoveredText().substring(0, 39)));
+			logger.fine(String.format("process sentence \"%s ...\"", sentence.getCoveredText().substring(0, 39)));
 		else
-			logger.info(String.format("process sentence \"%s\"", sentence.getCoveredText()));
+			logger.fine(String.format("process sentence \"%s\"", sentence.getCoveredText()));
 
 		/*
 		 * Pre-compute sentence level data: sentenceConstituents: list of all
@@ -173,13 +197,12 @@ public class ArgumentClassificationHandler implements AnnotationHandler<String> 
 				sentence, Predicate.class);
 		for (Predicate predicate : predicates) {
 			processPredicate(jCas, predicate,
-					constituentFeatures, consumer);
+					constituentFeatures);
 		}
 	}
 
 	public void processPredicate(JCas jCas, Predicate predicate,
-			Map<TreebankNode,List<Feature>> sentenceConstituentFeatures,
-			InstanceConsumer<String> consumer) throws CleartkException{
+			Map<TreebankNode,List<Feature>> sentenceConstituentFeatures) throws CleartkException{
 
 		logger.info(String.format("process predicate \"%s\"", predicate.getCoveredText()));
 
@@ -196,7 +219,7 @@ public class ArgumentClassificationHandler implements AnnotationHandler<String> 
 		 */
 		for( SemanticArgument arg : arguments ) {
 			if( ! (arg.getAnnotation() instanceof TreebankNode) ) {
-				logger.warn(String.format("skipping argument of \"%s\", because it doesn't align with the parse tree", predicate.getCoveredText()));
+				logger.warning(String.format("skipping argument of \"%s\", because it doesn't align with the parse tree", predicate.getCoveredText()));
 				continue;
 			}
 
@@ -219,14 +242,11 @@ public class ArgumentClassificationHandler implements AnnotationHandler<String> 
 			 */
 			instance.addAll(predicateFeatures);
 
-			if( consumer.expectsOutcomes() ) {
+			if( isTraining() ) {
 				instance.setOutcome(arg.getLabel());
-			}
-
-
-			String outcome = consumer.consume(instance);
-			if( outcome != null ) {
-				arg.setLabel(outcome);
+				this.dataWriter.write(instance);
+			} else {
+				arg.setLabel(this.classifier.classify(instance.getFeatures()));
 			}
 
 		}
@@ -265,7 +285,7 @@ public class ArgumentClassificationHandler implements AnnotationHandler<String> 
 	//
 	//		for( Sentence sentence : sentences ) {
 	//			
-	//			logger.info(String.format("process sentence \"%s\"", sentence.getCoveredText()));
+	//			logger.fine(String.format("process sentence \"%s\"", sentence.getCoveredText()));
 	//			
 	//			List<TreebankNode> sentenceConstituents = new ArrayList<TreebankNode>(80);
 	//			Iterator<?> constituentIterator = jCas.getJFSIndexRepository().getAnnotationIndex(TreebankNode.type).subiterator(sentence);

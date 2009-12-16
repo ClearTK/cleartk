@@ -27,8 +27,10 @@ package org.cleartk.classifier;
 import java.io.File;
 import java.io.IOException;
 
+import org.cleartk.CleartkException;
+
 public interface DataWriterFactory<OUTCOME_TYPE> {
 	
-	public DataWriter<OUTCOME_TYPE> createDataWriter(File outputDirectory) throws IOException;
+	public DataWriter<OUTCOME_TYPE> createDataWriter(File outputDirectory) throws IOException, CleartkException;
 
 }

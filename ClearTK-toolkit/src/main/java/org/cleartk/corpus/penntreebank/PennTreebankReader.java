@@ -41,6 +41,7 @@ import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 import org.cleartk.ViewNames;
 import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
+import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.util.ListSpecification;
 import org.cleartk.util.ViewURIUtil;
 import org.uutuc.descriptor.ConfigurationParameter;
@@ -81,25 +82,23 @@ import org.uutuc.util.InitializeUtil;
  * @author Philip Ogren, Philipp Wetzler
  */
 
-@SofaCapability(outputSofas=ViewNames.TREEBANK)
+@SofaCapability(outputSofas= {ViewNames.TREEBANK, ViewNames.URI})
 public class PennTreebankReader extends CollectionReader_ImplBase {
-	public static final String PARAM_CORPUS_DIRECTORY_NAME = "org.cleartk.corpus.penntreebank.PennTreebankReader.corpusDirectoryName";
+	public static final String PARAM_CORPUS_DIRECTORY_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(PennTreebankReader.class, "corpusDirectoryName");
 	private static final String CORPUS_DIRECTORY_DESCRIPTION = "Specifies the location of WSJ/PennTreebank treebank files.  " +
 			"The directory should contain subdirectories corresponding to the sections (e.g. '00', '01', etc.) " +
 			"That is, if a local copy of PennTreebank sits at C:/Data/PTB/wsj/mrg, then the the subdirectory C:/Data/PTB/wsj/mrg/00 should exist. " +
 			"There are 24 sections in PTB corresponding to the directories 00, 01, 02, ... 24. ";
 	@ConfigurationParameter(
-			name = PARAM_CORPUS_DIRECTORY_NAME,
 			mandatory = true,
 			description = CORPUS_DIRECTORY_DESCRIPTION)
 	private String corpusDirectoryName;
 
-	public static final String PARAM_SECTIONS_SPECIFIER = "org.cleartk.corpus.penntreebank.PennTreebankReader.sectionsSpecifier";
+	public static final String PARAM_SECTIONS_SPECIFIER = ConfigurationParameterNameFactory.createConfigurationParameterName(PennTreebankReader.class, "sectionsSpecifier");
 	private static final String SECTIONS_DESCRIPTION = "specifies which sections of PTB to read in.  " +
 			"The required format for values of this parameter allows for comma-separated section numbers and section ranges, " +
 			"for example '02,07-12,16'.";
 	@ConfigurationParameter(
-			name = PARAM_SECTIONS_SPECIFIER,
 			defaultValue = "00-24",
 			description = SECTIONS_DESCRIPTION)
 	private String sectionsSpecifier;

@@ -36,6 +36,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.Initializable;
+import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.UIMAUtil;
 import org.uutuc.descriptor.ConfigurationParameter;
@@ -51,16 +52,16 @@ import org.uutuc.util.InitializeUtil;
 
 public abstract class ChunkLabeler_ImplBase implements ChunkLabeler, Initializable  {
 
-	public static final String PARAM_CHUNK_ANNOTATION_CLASS_NAME = "org.cleartk.chunk.ChunkLabeler_ImplBase.chunkAnnotationClassName";
+	public static final String PARAM_CHUNK_ANNOTATION_CLASS_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(
+			ChunkLabeler_ImplBase.class, "chunkAnnotationClassName");
 
 	@ConfigurationParameter(
-			name = PARAM_CHUNK_ANNOTATION_CLASS_NAME,
 			mandatory = true,
 			description = "names the class of the type system chunk annotation type. An example value might be something like: 'org.cleartk.type.ne.NamedEntityMention'")
 	private String chunkAnnotationClassName;
 
 	@ConfigurationParameter(
-			name = ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS_NAME,
+			name = ChunkerAnnotator.PARAM_LABELED_ANNOTATION_CLASS_NAME, 
 			mandatory = true,
 			description = "names the class of the type system type used to associate B, I, and O (for example) labels with.  An example value might be 'org.cleartk.type.Token'")
 	 private String labeledAnnotationClassName;

@@ -31,7 +31,7 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.chunk.ChunkLabeler_ImplBase;
-import org.cleartk.chunk.ChunkerHandler;
+import org.cleartk.chunk.ChunkerAnnotator;
 import org.cleartk.chunk.DefaultChunkLabeler;
 import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.token.chunk.type.Subtoken;
@@ -64,7 +64,7 @@ public class ChunkTokenizerLabelerTest {
 				  JCasAnnotatorAdapter.class,
 				    TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				    ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token",
-				    ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS_NAME, "org.cleartk.token.chunk.type.Subtoken"
+				    ChunkerAnnotator.PARAM_LABELED_ANNOTATION_CLASS_NAME, "org.cleartk.token.chunk.type.Subtoken"
 		  			);
 		  
 		  DefaultChunkLabeler defaultChunkLabeler = new DefaultChunkLabeler();
@@ -146,7 +146,7 @@ public class ChunkTokenizerLabelerTest {
 				  JCasAnnotatorAdapter.class,
 				    TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				    ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token",
-				    ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS_NAME, "org.cleartk.token.chunk.type.Subtoken"
+				    ChunkerAnnotator.PARAM_LABELED_ANNOTATION_CLASS_NAME, "org.cleartk.token.chunk.type.Subtoken"
 		  			);
 		  
 		  DefaultChunkLabeler defaultChunkLabeler = new DefaultChunkLabeler();
@@ -210,7 +210,7 @@ public class ChunkTokenizerLabelerTest {
 				    TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				    ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME, "org.cleartk.ne.type.NamedEntityMention",
 				    DefaultChunkLabeler.PARAM_CHUNK_LABEL_FEATURE_NAME, "mentionType",
-		  			 ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token"
+		  			 ChunkerAnnotator.PARAM_LABELED_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token"
 		  			);
 		  
 		  DefaultChunkLabeler defaultChunkLabeler = new DefaultChunkLabeler();

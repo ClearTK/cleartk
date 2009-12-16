@@ -34,16 +34,16 @@ import java.util.List;
 import java.util.Random;
 import java.util.jar.JarFile;
 
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.jcas.JCas;
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.DataWriterAnnotator;
+import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.InstanceConsumer_ImplBase;
 import org.cleartk.classifier.Train;
 import org.cleartk.classifier.svmlight.model.SVMlightModel;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 import org.cleartk.classifier.util.featurevector.SparseFeatureVector;
-import org.cleartk.util.EmptyHandlerUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -201,25 +201,32 @@ public class RunSVMlightTest {
 			count = input.read(buffer);
 		}
 	}
+	
+	private static class EmptyAnnotator<T> extends CleartkAnnotator<T> {
+		@Override
+		public void process(JCas aJCas) throws AnalysisEngineProcessException {
+		}
+		public void write(Instance<T> instance) throws CleartkException {
+			this.dataWriter.write(instance);
+		}
+	}
 
 	@Test
 	public void testSVMlight() throws Exception {
 		
 		// create the data writer
-		DataWriterAnnotator<Boolean> dataWriter = new DataWriterAnnotator<Boolean>();
-		dataWriter.initialize(UimaContextFactory.createUimaContext(
-				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME,
-				EmptyHandlerUtil.EmptyBooleanHandler.class.getName(),
-				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY,
+		EmptyAnnotator<Boolean> annotator = new EmptyAnnotator<Boolean>();
+		annotator.initialize(UimaContextFactory.createUimaContext(
+				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY,
 				this.outputDirectory,
-				DataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
 				DefaultSVMlightDataWriterFactory.class.getName()));
 		
 		// add a bunch of instances
 		for (Instance<Boolean> instance: generateBooleanInstances(1000)) {
-			dataWriter.consume(instance);
+			annotator.write(instance);
 		}
-		dataWriter.collectionProcessComplete();
+		annotator.collectionProcessComplete();
 		
 		// check that the output file was written and is not empty
 		BufferedReader reader = new BufferedReader(new FileReader(new File(
@@ -247,20 +254,18 @@ public class RunSVMlightTest {
 	public void testOVASVMlight() throws Exception {
 		
 		// create the data writer
-		DataWriterAnnotator<String> dataWriter = new DataWriterAnnotator<String>();
-		dataWriter.initialize(UimaContextFactory.createUimaContext(
-				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME,
-				EmptyHandlerUtil.EmptyStringHandler.class.getName(),
-				DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY,
+		EmptyAnnotator<String> annotator = new EmptyAnnotator<String>();
+		annotator.initialize(UimaContextFactory.createUimaContext(
+				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY,
 				this.outputDirectory,
-				DataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
 				DefaultOVASVMlightDataWriterFactory.class.getName()));
 		
 		// add a bunch of instances
 		for (Instance<String> instance: generateStringInstances(1000)) {
-			dataWriter.consume(instance);
+			annotator.write(instance);
 		}
-		dataWriter.collectionProcessComplete();
+		annotator.collectionProcessComplete();
 		
 		// check that the output files were written for each class
 		for (String fileName: new String[]{

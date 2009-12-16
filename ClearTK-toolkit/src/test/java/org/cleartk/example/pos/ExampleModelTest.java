@@ -50,7 +50,7 @@ public class ExampleModelTest {
 
 	@Test
 	public void testModel() throws Exception {
-		AnalysisEngineDescription posTaggerDescription = ExamplePOSAnnotationHandler.getClassifierDescription(ExamplePOSAnnotationHandler.DEFAULT_MODEL);
+		AnalysisEngineDescription posTaggerDescription = ExamplePOSAnnotator.getClassifierDescription(ExamplePOSAnnotator.DEFAULT_MODEL);
 		AnalysisEngine posTagger = AnalysisEngineFactory.createPrimitive(posTaggerDescription);
 		
 		JCas jCas = ReusableUIMAObjects.getJCas();

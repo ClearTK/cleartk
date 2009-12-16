@@ -32,10 +32,13 @@ import java.util.List;
 import java.util.Stack;
 
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.CleartkComponents;
 import org.cleartk.ViewNames;
 import org.cleartk.srl.type.Predicate;
 import org.cleartk.srl.type.SemanticArgument;
@@ -48,6 +51,7 @@ import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.AnnotationUtil;
 import org.cleartk.util.UIMAUtil;
 import org.uutuc.descriptor.SofaCapability;
+import org.uutuc.factory.AnalysisEngineFactory;
 
 /**
  * <br>
@@ -56,6 +60,12 @@ import org.uutuc.descriptor.SofaCapability;
  */
 @SofaCapability(inputSofas = { ViewNames.CONLL_2005, ViewNames.DEFAULT }, outputSofas = {})
 public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
+
+	public static AnalysisEngineDescription getDescription()
+	throws ResourceInitializationException {
+		return AnalysisEngineFactory.createPrimitiveDescription(Conll2005GoldAnnotator.class,
+				CleartkComponents.TYPE_SYSTEM_DESCRIPTION, CleartkComponents.TYPE_PRIORITIES);
+	}
 
 	@Override
 	public void process(JCas jCas) throws AnalysisEngineProcessException {

@@ -26,18 +26,13 @@ package org.cleartk.classifier.util.tfidf;
 import java.io.File;
 
 import org.apache.uima.UimaContext;
-import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.cleartk.CleartkException;
-import org.cleartk.Initializable;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.InstanceConsumer;
-import org.cleartk.classifier.InstanceConsumer_ImplBase;
 import org.cleartk.classifier.feature.extractor.simple.CountsExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
@@ -46,8 +41,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.uutuc.factory.AnalysisEngineFactory;
-import org.uutuc.factory.TypeSystemDescriptionFactory;
 import org.uutuc.util.TearDownUtil;
 /**
  * <br>Copyright (c) 2009, Regents of the University of Colorado 
@@ -74,28 +67,12 @@ public class IDFMapWriterTest {
 		Assert.assertFalse(outputDirectory.exists());
 	}
 
-	
 	@Test
-	public void testDescriptor() throws Exception {
-		TypeSystemDescription typeSystemDescription = 
-			TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TestTypeSystem");
-		try {
-			AnalysisEngineFactory.createPrimitive(
-					IDFMapWriter.class, 
-					typeSystemDescription);
-			Assert.fail("Expected exception with no value for "+IDFMapWriter.PARAM_IDFMAP_FILE+" specified");
-		} catch (ResourceInitializationException e) {}
+	public void test() {
 		
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				IDFMapWriter.class, typeSystemDescription,
-				IDFMapWriter.PARAM_IDFMAP_FILE, new File(outputDirectory, "idfmap").getPath(),
-				InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, AnnotationHandler.class.getName());
-		String fileName = (String)engine.getConfigParameterValue(
-				IDFMapWriter.PARAM_IDFMAP_FILE);
-		Assert.assertEquals(new File(outputDirectory, "idfmap").getPath(), fileName);
 	}
-	
-	public static class AnnotationHandler implements org.cleartk.classifier.AnnotationHandler<String> , Initializable{
+
+	public static class Annotator extends org.cleartk.classifier.CleartkAnnotator<String> {
 
 		public static final String PREDICTION_VIEW_NAME = "ExampleDocumentClassificationPredictionView";
 
@@ -104,20 +81,21 @@ public class IDFMapWriterTest {
 			extractor = new CountsExtractor(Token.class, subExtractor);
 		}
 
-		public void process(JCas jCas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException, CleartkException {
+		@Override
+		public void process(JCas jCas) throws AnalysisEngineProcessException {
 			try {
 				DocumentAnnotation doc = (DocumentAnnotation) jCas.getDocumentAnnotationFs();
 
 				Instance<String> instance = new Instance<String>();
 				instance.addAll(extractor.extract(jCas, doc));
 
-				String result = consumer.consume(instance);
+				String result = this.classifier.classify(instance.getFeatures());
 				
-				if( result != null ) {
-					JCas predictionView = jCas.createView(PREDICTION_VIEW_NAME);
-					predictionView.setSofaDataString(result, "text/plain");
-				}
+				JCas predictionView = jCas.createView(PREDICTION_VIEW_NAME);
+				predictionView.setSofaDataString(result, "text/plain");
 			} catch (CASException e) {
+				throw new AnalysisEngineProcessException(e);
+			} catch (CleartkException e) {
 				throw new AnalysisEngineProcessException(e);
 			}
 		}

@@ -27,25 +27,37 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.uima.UIMAException;
+import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.CleartkComponents;
 import org.cleartk.CleartkException;
 import org.cleartk.chunk.ChunkLabeler;
 import org.cleartk.chunk.ChunkLabeler_ImplBase;
-import org.cleartk.chunk.ChunkerHandler;
+import org.cleartk.chunk.ChunkerAnnotator;
+import org.cleartk.chunk.ChunkerFeatureExtractor;
 import org.cleartk.chunk.DefaultChunkLabeler;
-import org.cleartk.classifier.SequentialClassifierAnnotator;
-import org.cleartk.classifier.SequentialDataWriterAnnotator;
-import org.cleartk.classifier.SequentialInstanceConsumer_ImplBase;
-import org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory;
+import org.cleartk.classifier.CleartkSequentialAnnotator;
+import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.feature.WindowFeature;
+import org.cleartk.classifier.feature.extractor.WindowExtractor;
+import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
+import org.cleartk.classifier.feature.proliferate.CharacterNGramProliferator;
+import org.cleartk.classifier.feature.proliferate.LowerCaseProliferator;
+import org.cleartk.classifier.feature.proliferate.ProliferatingExtractor;
 import org.cleartk.type.Chunk;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
+import org.cleartk.util.InstanceCollector;
 import org.cleartk.util.ReusableUIMAObjects;
 import org.cleartk.util.UIMAUtil;
 import org.junit.After;
@@ -53,8 +65,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.TokenFactory;
-import org.uutuc.factory.TypeSystemDescriptionFactory;
-import org.uutuc.util.JCasAnnotatorAdapter;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -76,30 +86,78 @@ public class ChunkTokenizerTest {
 		}
 	}
 	
-	public static class TestChunkerHandler extends ChunkerHandler {
+	public class TestFeatureExtractor implements ChunkerFeatureExtractor {
+
+		private List<SimpleFeatureExtractor> simpleFeatureExtractors;
+		private List<WindowExtractor> windowExtractors;
+
+		public Instance<String> extractFeatures(JCas jCas, Annotation labeledAnnotation, Annotation sequence) throws CleartkException {
+			Instance<String> instance = new Instance<String>();
+			
+			// extract all features that require only the token annotation
+			for (SimpleFeatureExtractor extractor: this.simpleFeatureExtractors) {
+				instance.addAll(extractor.extract(jCas, labeledAnnotation));
+			}
+			
+			// extract all features that require the token and sentence annotations
+			for (WindowExtractor extractor: this.windowExtractors) {
+				instance.addAll(extractor.extract(jCas, labeledAnnotation, sequence));
+			}
+
+			return instance;
+		}
+
+		public void initialize(UimaContext context) throws ResourceInitializationException {
+					this.simpleFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
+			this.windowExtractors = new ArrayList<WindowExtractor>();
+			
+			SimpleFeatureExtractor wordExtractor = new SpannedTextExtractor();
+			
+			int fromLeft = CharacterNGramProliferator.LEFT_TO_RIGHT;
+			this.simpleFeatureExtractors.add(new ProliferatingExtractor(
+					wordExtractor,
+					new LowerCaseProliferator(),
+					new CharacterNGramProliferator(fromLeft, 0, 3, 3, true)));
+			
+			this.windowExtractors.add(new WindowExtractor(
+					Token.class, wordExtractor, WindowFeature.ORIENTATION_LEFT, 0, 2));
+			
+		}
+
+	}
+
+	public static class TestChunkerAnnotator extends ChunkerAnnotator {
 		public ChunkLabeler getChunkLabeler() {
 			return chunkLabeler;
 		}
 		
 	}
 	
+	public static class TestChunkerAnnotator2 extends ChunkerAnnotator {
+		public ChunkLabeler getChunkLabeler() {
+			return chunkLabeler;
+		}
+		@Override
+		public List<String> classifySequence(List<Instance<String>> instances) {
+			return Arrays.asList(new String[] {"B-1", "I-1", "I-1","O","O","B-nice","I-nice","B-nice", "B-twice", "O", "I-twice", "B-2", "I-2", "O", "O", "O", "O", "O", "O", "O"});
+		}
+	}
 	@Test
 	public void testChunkHandler() throws UIMAException, CleartkException {
-		  AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				    JCasAnnotatorAdapter.class,
-				    TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-		  			ChunkerHandler.PARAM_LABELED_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token",
-		  			ChunkerHandler.PARAM_SEQUENCE_CLASS_NAME, "org.cleartk.type.Sentence",
-		  			ChunkerHandler.PARAM_CHUNK_LABELER_CLASS_NAME, "org.cleartk.chunk.DefaultChunkLabeler",
-		  			ChunkerHandler.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME, ExampleChunkFeatureExtractor.class.getName(),
-		  			ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME, "org.cleartk.type.Chunk",
-		  			DefaultChunkLabeler.PARAM_CHUNK_LABEL_FEATURE_NAME, "chunkType"
+		  AnalysisEngine engine = CleartkComponents.createPrimitive(
+				  TestChunkerAnnotator.class,
+				  ChunkerAnnotator.PARAM_LABELED_ANNOTATION_CLASS_NAME, Token.class.getName(),
+				  ChunkerAnnotator.PARAM_SEQUENCE_CLASS_NAME, Sentence.class.getName(),
+				  ChunkerAnnotator.PARAM_CHUNK_LABELER_CLASS_NAME, DefaultChunkLabeler.class.getName(),
+				  ChunkerAnnotator.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME, TestFeatureExtractor.class.getName(),
+				  ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME, Chunk.class.getName(),
+				  DefaultChunkLabeler.PARAM_CHUNK_LABEL_FEATURE_NAME, "chunkType",
+				  CleartkSequentialAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, InstanceCollector.StringFactory.class.getName(),
+				  CleartkSequentialAnnotator.PARAM_OUTPUT_DIRECTORY, "test/data/scratch"
 		  );
-
-		  TestChunkerHandler chunkerHandler = new TestChunkerHandler();
-		  chunkerHandler.initialize(engine.getUimaContext());
-		  
-		  ChunkLabeler chunkLabeler = chunkerHandler.getChunkLabeler();
+		  TestChunkerAnnotator copy = new TestChunkerAnnotator();
+		  copy.initialize(engine.getUimaContext());
+		  ChunkLabeler chunkLabeler = copy.getChunkLabeler();
 
 		  
 		  JCas jCas = ReusableUIMAObjects.getJCas();
@@ -118,7 +176,7 @@ public class ChunkTokenizerTest {
 			chunk.addToIndexes();
 		  }
 		  
-		chunkerHandler.process(jCas, new ExampleChunkHandlerInstanceConsumer(true));
+		  copy.process(jCas);
 		
 		Token token = tokens.get(0);
 		assertEquals("B-chunk1", chunkLabeler.getLabel(token));
@@ -141,8 +199,18 @@ public class ChunkTokenizerTest {
 		 chunks = AnnotationRetrieval.getAnnotations(jCas, Chunk.class);
 		 assertEquals(0, chunks.size());
 		 
+		 engine = CleartkComponents.createPrimitive(
+				 TestChunkerAnnotator2.class,
+				  ChunkerAnnotator.PARAM_LABELED_ANNOTATION_CLASS_NAME, Token.class.getName(),
+				  ChunkerAnnotator.PARAM_SEQUENCE_CLASS_NAME, Sentence.class.getName(),
+				  ChunkerAnnotator.PARAM_CHUNK_LABELER_CLASS_NAME, DefaultChunkLabeler.class.getName(),
+				  ChunkerAnnotator.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME, TestFeatureExtractor.class.getName(),
+				  ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME, Chunk.class.getName(),
+				  DefaultChunkLabeler.PARAM_CHUNK_LABEL_FEATURE_NAME, "chunkType",
+				  CleartkSequentialAnnotator.PARAM_CLASSIFIER_JAR_PATH, "example/pos/model/model.jar"
+		  );
 		 UIMAUtil.initialize(chunkLabeler, engine.getUimaContext());
-		chunkerHandler.process(jCas, new ExampleChunkHandlerInstanceConsumer(false));
+		engine.process(jCas);
 		
 		chunks = AnnotationRetrieval.getAnnotations(jCas, Chunk.class);
 		assertEquals(6, chunks.size());
@@ -179,53 +247,7 @@ public class ChunkTokenizerTest {
 			AnalysisEngineFactory.createAnalysisEngine("org.cleartk.token.chunk.ChunkTokenizer");
 			Assert.fail("expected exception with missing classifier jar");
 		} catch (ResourceInitializationException e) {}
-			
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-				"org.cleartk.token.chunk.ChunkTokenizer",
-				SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR_PATH, "test/data/token/chunk/model.jar");
-		Object handler = engine.getConfigParameterValue(
-				SequentialInstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME);
-		Assert.assertEquals(ChunkerHandler.class.getName(), handler);
-		
-		engine.collectionProcessComplete();
 	}
 
 
-	@Test
-	public void testChunkTokenizerDataWriterDescriptor() throws UIMAException, IOException {
-		String outputPath = this.outputDir.getPath();
-
-		try {
-			AnalysisEngineFactory.createAnalysisEngine(
-					"org.cleartk.token.chunk.ChunkTokenizerDataWriter",
-					SequentialDataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletCRFDataWriterFactory.class.getName());
-			Assert.fail("expected exception with missing output directory");
-		} catch (ResourceInitializationException e) {}
-			
-		try {
-			AnalysisEngineFactory.createAnalysisEngine(
-					"org.cleartk.token.chunk.ChunkTokenizerDataWriter",
-					SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputPath);
-			Assert.fail("expected exception with missing data writer");
-		} catch (ResourceInitializationException e) {}
-			
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-				"org.cleartk.token.chunk.ChunkTokenizerDataWriter",
-				SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputPath,
-				SequentialDataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletCRFDataWriterFactory.class.getName());
-		
-		Object handler = engine.getConfigParameterValue(
-				SequentialInstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME);
-		Assert.assertEquals(ChunkerHandler.class.getName(), handler);
-		
-		Object dataWriter = engine.getConfigParameterValue(
-				SequentialDataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME);
-		Assert.assertEquals(DefaultMalletCRFDataWriterFactory.class.getName(), dataWriter);
-		
-		Object outputDir = engine.getConfigParameterValue(
-				SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY);
-		Assert.assertEquals(outputPath, outputDir);
-		
-		engine.collectionProcessComplete();
-	}
 }

@@ -39,6 +39,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 <outputs/>
                 <outputSofas>
                     <sofaName>CoNLL2005View</sofaName>
+                    <sofaName>UriView</sofaName>
                 </outputSofas>
                 <languagesSupported/>
             </capability>

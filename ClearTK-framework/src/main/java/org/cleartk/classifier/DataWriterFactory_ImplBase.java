@@ -53,7 +53,7 @@ public abstract class DataWriterFactory_ImplBase<FEATURES_OUT_TYPE, OUTCOME_IN_T
 		if (loadEncodersFromFileSystem) {
 			try {
 				String outputDirectory = (String)UIMAUtil.getRequiredConfigParameterValue(
-						context, DataWriterAnnotator.PARAM_OUTPUT_DIRECTORY);
+						context, CleartkAnnotator.PARAM_OUTPUT_DIRECTORY);
 				File encoderFile = new File(
 						outputDirectory, FeaturesEncoder_ImplBase.ENCODERS_FILE_NAME);
 				

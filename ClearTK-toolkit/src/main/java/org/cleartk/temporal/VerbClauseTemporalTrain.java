@@ -29,12 +29,13 @@ import java.io.IOException;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.Level;
 import org.apache.uima.util.Logger;
-import org.cleartk.CleartkComponents;
 import org.cleartk.ViewNames;
 import org.cleartk.classifier.Train;
-import org.cleartk.classifier.svmlight.DefaultOVASVMlightDataWriterFactory;
+import org.cleartk.corpus.timeml.PlainTextTLINKGoldAnnotator;
+import org.cleartk.corpus.timeml.TimeMLGoldAnnotator;
+import org.cleartk.corpus.timeml.TreebankAligningAnnotator;
 import org.cleartk.token.snowball.DefaultSnowballStemmer;
-import org.cleartk.token.snowball.SnowballStemmer;
+import org.cleartk.util.FilesCollectionReader;
 import org.uutuc.factory.UimaContextFactory;
 import org.uutuc.util.SimplePipeline;
 
@@ -74,17 +75,13 @@ public class VerbClauseTemporalTrain {
 		
 		// run the components that write out the training data
 		SimplePipeline.runPipeline(
-				CleartkComponents.createFilesCollectionReaderWithPatterns(
+				FilesCollectionReader.getCollectionReaderWithPatterns(
 						timeBankDir, ViewNames.TIMEML, "wsj"),
-				CleartkComponents.createTimeMLGoldAnnotator(false),
-				CleartkComponents.createPlainTextTLINKGoldAnnotator(),
-				CleartkComponents.createTreebankAligningAnnotator(treeBankDir),
-				CleartkComponents.createPrimitiveDescription(
-						DefaultSnowballStemmer.class,
-						SnowballStemmer.PARAM_STEMMER_NAME, "English"),
-				CleartkComponents.createDataWriterAnnotator(
-						VerbClauseTemporalHandler.class,
-						DefaultOVASVMlightDataWriterFactory.class, outputDir, null));
+				TimeMLGoldAnnotator.getDescriptionNoTLINKs(),
+				PlainTextTLINKGoldAnnotator.getDescription(),
+				TreebankAligningAnnotator.getDescription(treeBankDir),
+				DefaultSnowballStemmer.getDescription("English"),
+				VerbClauseTemporalAnnotator.getWriterDescription(outputDir));
 		
 		// remove the temporary directory containing the cleaned up TimeBank
 		FileUtils.deleteRecursive(cleanedTimeBankDir);

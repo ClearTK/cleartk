@@ -26,6 +26,7 @@ package org.cleartk.util;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -35,9 +36,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.classifier.AnnotationHandler;
-import org.cleartk.classifier.InstanceConsumer;
-import org.cleartk.classifier.InstanceConsumer_ImplBase;
+import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.type.Token;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
@@ -97,18 +96,24 @@ public class UIMAUtilTest {
 	}
 
 
-	public class TestHandler implements AnnotationHandler<String>{
-
-		public void process(JCas cas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException {
+	public class TestAnnotator extends CleartkAnnotator<String> {
+		public boolean initialized = false;
+		@Override
+		public void initialize(UimaContext context) throws ResourceInitializationException {
+			this.initialized = true;
 		}
-		
+		@Override
+		public void process(JCas aJCas) throws AnalysisEngineProcessException {}
 	}
 
-	public static class TestHandler2 implements AnnotationHandler<String>{
-
-		public void process(JCas cas, InstanceConsumer<String> consumer) throws AnalysisEngineProcessException {
+	public static class TestAnnotator2 extends CleartkAnnotator<String>{
+		public boolean initialized = false;
+		@Override
+		public void initialize(UimaContext context) throws ResourceInitializationException {
+			this.initialized = true;
 		}
-		
+		@Override
+		public void process(JCas aJCas) throws AnalysisEngineProcessException {}
 	}
 
 	@Test
@@ -117,17 +122,23 @@ public class UIMAUtilTest {
 		String createdString = UIMAUtil.create(context, "StringParam", String.class);
 		assertNotNull(createdString);
 		
-		context = UimaContextFactory.createUimaContext(InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, TestHandler.class.getName());
-		AnnotationHandler<?> annotationHandler = UIMAUtil.create(context, InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, AnnotationHandler.class);
-		assertNotNull(annotationHandler);
+		String paramName = "AnnotatorParam";
+		context = UimaContextFactory.createUimaContext(paramName, TestAnnotator.class.getName());
+		CleartkAnnotator<?> annotator = UIMAUtil.create(context, paramName, CleartkAnnotator.class);
+		assertNotNull(annotator);
+		assertTrue(annotator instanceof TestAnnotator);
+		assertTrue(((TestAnnotator)annotator).initialized);
 
-		context = UimaContextFactory.createUimaContext(InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, TestHandler2.class.getName());
-		annotationHandler = UIMAUtil.create(context, InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, AnnotationHandler.class);
-		assertNotNull(annotationHandler);
+		context = UimaContextFactory.createUimaContext(paramName, TestAnnotator2.class.getName());
+		annotator = UIMAUtil.create(context, paramName, CleartkAnnotator.class);
+		assertNotNull(annotator);
+		assertTrue(annotator instanceof TestAnnotator2);
+		assertTrue(((TestAnnotator2)annotator).initialized);
 
-		context = UimaContextFactory.createUimaContext(InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, TestHandler2.class.getName());
-		annotationHandler = UIMAUtil.create(context, InstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, AnnotationHandler.class);
-		assertNotNull(annotationHandler);
-
+		context = UimaContextFactory.createUimaContext(paramName, TestAnnotator2.class.getName());
+		annotator = UIMAUtil.create(context, paramName, CleartkAnnotator.class);
+		assertNotNull(annotator);
+		assertTrue(annotator instanceof TestAnnotator2);
+		assertTrue(((TestAnnotator2)annotator).initialized);
 	}
 }

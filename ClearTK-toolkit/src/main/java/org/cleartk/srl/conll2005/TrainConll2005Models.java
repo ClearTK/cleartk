@@ -25,11 +25,12 @@ package org.cleartk.srl.conll2005;
 
 import java.io.File;
 
-import org.cleartk.CleartkComponents;
+import org.cleartk.classifier.Train;
+import org.cleartk.classifier.libsvm.DefaultMultiClassLIBSVMDataWriterFactory;
 import org.cleartk.classifier.svmlight.DefaultSVMlightDataWriterFactory;
-import org.cleartk.srl.ArgumentIdentificationHandler;
+import org.cleartk.srl.ArgumentClassifier;
+import org.cleartk.srl.ArgumentIdentifier;
 import org.cleartk.token.snowball.DefaultSnowballStemmer;
-import org.cleartk.token.snowball.SnowballStemmer;
 import org.uutuc.util.SimplePipeline;
 
 /**
@@ -47,22 +48,20 @@ public class TrainConll2005Models {
 	public static void main(String[] args) throws Exception {
 		// run the components to write the training data
 		SimplePipeline.runPipeline(
-				CleartkComponents.createConll2005GoldReader(conll2005File.toString()),
-				CleartkComponents.createConll2005GoldAnnotator(),
-				CleartkComponents.createPrimitiveDescription(DefaultSnowballStemmer.class, SnowballStemmer.PARAM_STEMMER_NAME, "English"),
-				CleartkComponents.createDataWriterAnnotator(
-						ArgumentIdentificationHandler.class,
-						DefaultSVMlightDataWriterFactory.class,
-						argumentIdentificationOutputDirectory.toString(),
-						null)//,
-//				CleartkComponents.createDataWriterAnnotator(
-//						ArgumentClassificationHandler.class,
-//						DefaultMultiClassLIBSVMDataWriterFactory.class,
-//						argumentClassificationOutputDirectory.toString())
+				Conll2005GoldReader.getCollectionReader(conll2005File.toString()),
+				Conll2005GoldAnnotator.getDescription(),
+				DefaultSnowballStemmer.getDescription("English"),
+				ArgumentIdentifier.getWriterDescription(
+						DefaultSVMlightDataWriterFactory.class, 
+						argumentIdentificationOutputDirectory),
+				ArgumentClassifier.getWriterDescription(
+						DefaultMultiClassLIBSVMDataWriterFactory.class, 
+						argumentClassificationOutputDirectory)
 		);
 		
 		// train the model on the training data
-//		Train.main(outputDirectory.toString());
+		Train.main(argumentIdentificationOutputDirectory.toString());
+		Train.main(argumentClassificationOutputDirectory.toString());
 	}
 
 }

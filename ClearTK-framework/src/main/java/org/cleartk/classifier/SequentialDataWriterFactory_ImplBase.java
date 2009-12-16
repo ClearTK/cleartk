@@ -52,7 +52,7 @@ public abstract class SequentialDataWriterFactory_ImplBase<FEATURES_OUT_TYPE, OU
 		if (loadEncodersFromFileSystem) {
 			try {
 				String outputDirectory = (String) UIMAUtil.getRequiredConfigParameterValue(context,
-						SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY);
+						CleartkSequentialAnnotator.PARAM_OUTPUT_DIRECTORY);
 				File encoderFile = new File(outputDirectory, FeaturesEncoder_ImplBase.ENCODERS_FILE_NAME);
 
 				if (!encoderFile.exists()) {

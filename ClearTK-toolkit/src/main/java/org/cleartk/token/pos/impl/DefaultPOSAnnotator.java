@@ -28,7 +28,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkComponents;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
-import org.cleartk.token.pos.POSHandler;
+import org.cleartk.token.pos.POSAnnotator;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 
@@ -40,7 +40,7 @@ import org.cleartk.type.Token;
  *
  */
 
-public class DefaultPOSHandler extends POSHandler<Token, Sentence> {
+public class DefaultPOSAnnotator extends POSAnnotator<Token, Sentence> {
 	public void setTag(JCas cas, Token token, String tag) {
 		token.setPos(tag);
 	}
@@ -50,11 +50,11 @@ public class DefaultPOSHandler extends POSHandler<Token, Sentence> {
 	}
 	
 	public static AnalysisEngineDescription getWriterDescription() throws ResourceInitializationException {
-		return CleartkComponents.createViterbiDataWriterAnnotator(DefaultPOSHandler.class, DefaultMaxentDataWriterFactory.class, "", POSHandler.PARAM_FEATURE_EXTRACTOR_CLASS_NAME, DefaultFeatureExtractor.class.getName());
+		return CleartkComponents.createViterbiAnnotator(DefaultPOSAnnotator.class, DefaultMaxentDataWriterFactory.class, "", POSAnnotator.PARAM_FEATURE_EXTRACTOR_CLASS_NAME, DefaultFeatureExtractor.class.getName());
 	}
 	
 	public static AnalysisEngineDescription getAnnotatorDescription() throws ResourceInitializationException {
-		return CleartkComponents.createSequentialClassifierAnnotator(DefaultPOSHandler.class, "", null, POSHandler.PARAM_FEATURE_EXTRACTOR_CLASS_NAME, DefaultFeatureExtractor.class.getName());
+		return CleartkComponents.createCleartkSequentialAnnotator(DefaultPOSAnnotator.class, "", null, POSAnnotator.PARAM_FEATURE_EXTRACTOR_CLASS_NAME, DefaultFeatureExtractor.class.getName());
 	}
 
 	

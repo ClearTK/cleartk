@@ -62,12 +62,19 @@ import org.uutuc.util.TearDownUtil;
 
 public class SequentialDataWriterAnnotatorTest {
 	
-	public static class TestAnnotationHandler implements SequentialAnnotationHandler<String> {
+	public static class TestAnnotator extends CleartkSequentialAnnotator<String> {
 		
 		private SimpleFeatureExtractor extractor = new SpannedTextExtractor();
 
-		public void process(JCas jCas, SequentialInstanceConsumer<String> consumer)
-		throws AnalysisEngineProcessException, CleartkException {
+		public void process(JCas jCas) throws AnalysisEngineProcessException {
+			try {
+				this.processSimple(jCas);
+			} catch (CleartkException e) {
+				throw new AnalysisEngineProcessException(e);
+			}
+		}
+		
+		public void processSimple(JCas jCas) throws AnalysisEngineProcessException, CleartkException {
 			for (Sentence sentence: AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
 				List<Instance<String>> instances = new ArrayList<Instance<String>>();
 				List<Token> tokens = AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class);
@@ -77,7 +84,7 @@ public class SequentialDataWriterAnnotatorTest {
 					instance.setOutcome(token.getPos());
 					instances.add(instance);
 				}
-				consumer.consumeSequence(instances);
+				this.dataWriter.writeSequence(instances);
 			}
 		}
 		
@@ -87,10 +94,9 @@ public class SequentialDataWriterAnnotatorTest {
 	@Test
 	public void testSequentialDataWriterAnnotator() throws IOException, UIMAException {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				SequentialDataWriterAnnotator.class, JCasUtil.getTypeSystemDescription(),
-				SequentialInstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, TestAnnotationHandler.class.getName(),
-				SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
-				SequentialDataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletCRFDataWriterFactory.class.getName());
+				TestAnnotator.class, JCasUtil.getTypeSystemDescription(),
+				CleartkSequentialAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				CleartkSequentialAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletCRFDataWriterFactory.class.getName());
 		
 		//create some tokens and sentences
 		//add part-of-speech and stems to tokens

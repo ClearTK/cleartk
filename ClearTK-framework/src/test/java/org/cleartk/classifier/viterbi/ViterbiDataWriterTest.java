@@ -40,11 +40,7 @@ import org.apache.uima.pear.util.FileUtil;
 import org.apache.uima.util.FileUtils;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.SequentialAnnotationHandler;
-import org.cleartk.classifier.SequentialClassifierAnnotator;
-import org.cleartk.classifier.SequentialDataWriterAnnotator;
-import org.cleartk.classifier.SequentialInstanceConsumer;
-import org.cleartk.classifier.SequentialInstanceConsumer_ImplBase;
+import org.cleartk.classifier.CleartkSequentialAnnotator;
 import org.cleartk.classifier.Train;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
@@ -71,12 +67,20 @@ import org.uutuc.util.TearDownUtil;
 
 public class ViterbiDataWriterTest {
 	
-	public static class TestAnnotationHandler implements SequentialAnnotationHandler<String> {
+	public static class TestAnnotator extends CleartkSequentialAnnotator<String> {
 		
 		private SimpleFeatureExtractor extractor = new SpannedTextExtractor();
+		
+		@Override
+		public void process(JCas jCas) throws AnalysisEngineProcessException {
+			try {
+				this.processSimple(jCas);
+			} catch (CleartkException e) {
+				throw new AnalysisEngineProcessException(e);
+			}
+		}
 
-		public void process(JCas jCas, SequentialInstanceConsumer<String> consumer)
-		throws AnalysisEngineProcessException, CleartkException {
+		public void processSimple(JCas jCas) throws AnalysisEngineProcessException, CleartkException {
 			for (Sentence sentence: AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
 				List<Instance<String>> instances = new ArrayList<Instance<String>>();
 				List<Token> tokens = AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class);
@@ -86,10 +90,13 @@ public class ViterbiDataWriterTest {
 					instance.setOutcome(token.getPos());
 					instances.add(instance);
 				}
-				consumer.consumeSequence(instances);
+				if (this.isTraining()) {
+					this.dataWriter.writeSequence(instances);
+				} else {
+					this.classifySequence(instances);
+				}
 			}
 		}
-		
 	}
 
 	private String outputDirectory = "test/data/viterbi";
@@ -107,11 +114,10 @@ public class ViterbiDataWriterTest {
 	@Test
 	public void testConsumeAll() throws Exception {
 
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(SequentialDataWriterAnnotator.class,
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TestAnnotator.class,
 				JCasUtil.getTypeSystemDescription(),
-				SequentialInstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, TestAnnotationHandler.class.getName(),
-				SequentialDataWriterAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
-				SequentialDataWriterAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, ViterbiDataWriterFactory.class.getName(),
+				CleartkSequentialAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				CleartkSequentialAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, ViterbiDataWriterFactory.class.getName(),
 				ViterbiDataWriter.PARAM_DELEGATED_DATAWRITER_FACTORY_CLASS, DefaultMaxentDataWriterFactory.class.getName(),
 				ViterbiDataWriter.PARAM_OUTCOME_FEATURE_EXTRACTORS, new String[] {"org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor"});
 
@@ -144,10 +150,9 @@ public class ViterbiDataWriterTest {
 		Train.main(outputDirectory+"/", "10", "1");
 		hider.restoreOutput();
 		
-		engine = AnalysisEngineFactory.createPrimitive(SequentialClassifierAnnotator.class, 
+		engine = AnalysisEngineFactory.createPrimitive(TestAnnotator.class, 
 				JCasUtil.getTypeSystemDescription(),
-				SequentialInstanceConsumer_ImplBase.PARAM_ANNOTATION_HANDLER_NAME, TestAnnotationHandler.class.getName(),
-				SequentialClassifierAnnotator.PARAM_CLASSIFIER_JAR_PATH, new File(outputDirectory, "model.jar").getPath());
+				CleartkSequentialAnnotator.PARAM_CLASSIFIER_JAR_PATH, new File(outputDirectory, "model.jar").getPath());
 		
 		engine.process(jCas);
 		engine.collectionProcessComplete();

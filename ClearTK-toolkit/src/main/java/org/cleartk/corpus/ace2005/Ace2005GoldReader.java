@@ -42,6 +42,7 @@ import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 import org.cleartk.ViewNames;
+import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.util.ViewURIUtil;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -61,13 +62,12 @@ import org.uutuc.util.InitializeUtil;
  *
  */
 
-@SofaCapability(outputSofas= ViewNames.ACE_APF_URI)
+@SofaCapability(outputSofas= {ViewNames.ACE_APF_URI, ViewNames.URI})
 public class Ace2005GoldReader extends CollectionReader_ImplBase
 {
-	public static final String PARAM_ACE_DIRECTORY_NAME = "org.cleartk.corpus.ace2005.Ace2005GoldReader.aceDirectoryName";
+	public static final String PARAM_ACE_DIRECTORY_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(Ace2005GoldReader.class, "aceDirectoryName");
 
 	@ConfigurationParameter(
-			name = PARAM_ACE_DIRECTORY_NAME,
 			mandatory = true,
 			description = "Takes the name of directory that contains ACE data.  Typically, a folder such as \".../ACE_2005/optimization/English/all\".  The folder should contain files that come in pairs - i.e. for each .sgm file there should be a corresponding .apf.xml file.")
 	private String aceDirectoryName;
@@ -80,10 +80,9 @@ public class Ace2005GoldReader extends CollectionReader_ImplBase
 			"AFP_ENG_20030305.0918\n" +
 			"...\n";
 
-	public static final String PARAM_ACE_FILE_NAMES_FILE = "org.cleartk.corpus.ace2005.Ace2005GoldReader.aceFileNamesFile";
+	public static final String PARAM_ACE_FILE_NAMES_FILE = ConfigurationParameterNameFactory.createConfigurationParameterName(Ace2005GoldReader.class, "aceFileNamesFile");
 	
 	@ConfigurationParameter(
-			name = PARAM_ACE_FILE_NAMES_FILE,
 			description = PARAM_ACE_FILE_NAMES_DESCRIPTION) 
 	private String aceFileNamesFile;
 	
