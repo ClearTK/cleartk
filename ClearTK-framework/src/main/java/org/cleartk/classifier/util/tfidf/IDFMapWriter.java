@@ -30,6 +30,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.ClassifierBuilder;
@@ -49,21 +50,6 @@ import org.cleartk.classifier.feature.FeatureCollection;
  */
 public class IDFMapWriter<OUTCOME_TYPE> implements DataWriter<OUTCOME_TYPE> {
 
-	/**
-	 * "org.cleartk.tfidf.IDFMapWriter.PARAM_IDFMAP_FILE"
-	 * is a single, required, string parameter that provides the path where the
-	 * Map<String, Double> of inverse document frequencies should be written.
-	 */
-	public static final String PARAM_IDFMAP_FILE = "org.cleartk.tfidf.IDFMapWriter.PARAM_IDFMAP_FILE";
-	
-	/**
-	 * "org.cleartk.tfidf.IDFMapWriter.PARAM_IDFMAP_IDENTIFIER"
-	 * is a single, optional string parameter. If it is given, it restricts the
-	 * Counts features used for populating the IDF map to only those that have
-	 * that specific identifier.
-	 */
-	public static final String PARAM_IDFMAP_IDENTIFIER = "org.cleartk.tfidf.IDFMapWriter.PARAM_IDFMAP_IDENTIFIER";
-
 	public IDFMapWriter(File outputDirectory) throws IOException {
 		this.outputDirectory = outputDirectory;		
 	}
@@ -71,6 +57,8 @@ public class IDFMapWriter<OUTCOME_TYPE> implements DataWriter<OUTCOME_TYPE> {
 	private File getIDFMapFile(String identifier) {
 		if( identifier == null )
 			identifier = "default";
+		else
+			identifier = identifier.toLowerCase();
 		
 		if( identifier.equals("default") ) {
 			return new File(outputDirectory, "idfmap");
@@ -82,6 +70,8 @@ public class IDFMapWriter<OUTCOME_TYPE> implements DataWriter<OUTCOME_TYPE> {
 	private IDFMap getIDFMap(String identifier) throws IOException {
 		if( identifier == null )
 			identifier = "default";
+		else
+			identifier = identifier.toLowerCase();
 
 		if( idfMaps.containsKey(identifier) ) {
 			return idfMaps.get(identifier);
@@ -90,8 +80,10 @@ public class IDFMapWriter<OUTCOME_TYPE> implements DataWriter<OUTCOME_TYPE> {
 
 			IDFMap idfMap;
 			if( idfMapFile.exists() ) {
+				logger.info(String.format("load existing idf map \"%s\" from %s", identifier, idfMapFile.toString()));
 				idfMap = IDFMap.read(idfMapFile);
 			} else {
+				logger.info(String.format("initialize new idf map \"%s\"", identifier));
 				idfMap = new IDFMap();
 			}
 			
@@ -138,6 +130,7 @@ public class IDFMapWriter<OUTCOME_TYPE> implements DataWriter<OUTCOME_TYPE> {
 			IDFMap idfMap = idfMaps.get(identifier);
 			File idfMapFile = getIDFMapFile(identifier);
 			try {
+				logger.info(String.format("write idf map \"%s\" to %s", identifier, idfMapFile.toString()));
 				idfMap.write(idfMapFile);
 			} catch( IOException e1 ) {
 				exceptions.add(e1);
@@ -156,5 +149,6 @@ public class IDFMapWriter<OUTCOME_TYPE> implements DataWriter<OUTCOME_TYPE> {
 
 	private Map<String,IDFMap> idfMaps = new HashMap<String,IDFMap>();
 	private File outputDirectory;
+	private Logger logger = Logger.getLogger(this.getClass().getName());
 
 }
