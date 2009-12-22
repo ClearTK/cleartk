@@ -110,9 +110,20 @@ public class CleartkComponents {
 			Class<? extends CleartkAnnotator<OUTCOME_TYPE>> cleartkAnnotatorClass, String classifierJar,
 			List<Class<?>> dynamicallyLoadedClasses, Object... configurationData)
 			throws ResourceInitializationException {
+		return createCleartkAnnotator(cleartkAnnotatorClass, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES, classifierJar, null, configurationData);
+
+	}
+	
+	public static <OUTCOME_TYPE> AnalysisEngineDescription createCleartkAnnotator(
+			Class<? extends CleartkAnnotator<OUTCOME_TYPE>> cleartkAnnotatorClass, 
+			TypeSystemDescription typeSystemDescription,
+			TypePriorities typePriorities,
+			String classifierJar,
+			List<Class<?>> dynamicallyLoadedClasses, Object... configurationData)
+			throws ResourceInitializationException {
 
 		AnalysisEngineDescription aed = AnalysisEngineFactory.createPrimitiveDescription(
-				cleartkAnnotatorClass, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES);
+				cleartkAnnotatorClass, typeSystemDescription, typePriorities);
 
 		if (dynamicallyLoadedClasses != null) {
 			ConfigurationParameterFactory.addConfigurationParameters(aed, dynamicallyLoadedClasses);
@@ -140,8 +151,18 @@ public class CleartkComponents {
 			Class<? extends DataWriterFactory<OUTCOME_TYPE>> dataWriterFactoryClass, String outputDir,
 			List<Class<?>> dynamicallyLoadedClasses, Object... configurationData)
 			throws ResourceInitializationException {
+		return createCleartkAnnotator(cleartkAnnotatorClass, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES, dataWriterFactoryClass, outputDir, null, configurationData);
+	}
+	
+	public static <OUTCOME_TYPE> AnalysisEngineDescription createCleartkAnnotator(
+			Class<? extends CleartkAnnotator<OUTCOME_TYPE>> cleartkAnnotatorClass,
+			TypeSystemDescription typeSystemDescription,
+			TypePriorities typePriorities,
+			Class<? extends DataWriterFactory<OUTCOME_TYPE>> dataWriterFactoryClass, String outputDir,
+			List<Class<?>> dynamicallyLoadedClasses, Object... configurationData)
+			throws ResourceInitializationException {
 		AnalysisEngineDescription aed = AnalysisEngineFactory.createPrimitiveDescription(cleartkAnnotatorClass,
-				TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES);
+				typeSystemDescription, typePriorities);
 
 		if (dynamicallyLoadedClasses != null) {
 			ConfigurationParameterFactory.addConfigurationParameters(aed, dynamicallyLoadedClasses);
@@ -170,9 +191,19 @@ public class CleartkComponents {
 			Class<? extends CleartkSequentialAnnotator<OUTCOME_TYPE>> sequentialClassifierAnnotatorClass,
 			String classifierJar, List<Class<?>> dynamicallyLoadedClasses, Object... configurationData)
 			throws ResourceInitializationException {
+		return createCleartkSequentialAnnotator(sequentialClassifierAnnotatorClass, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES, classifierJar, null,
+				configurationData);
+	}
+	
+	public static <OUTCOME_TYPE> AnalysisEngineDescription createCleartkSequentialAnnotator(
+			Class<? extends CleartkSequentialAnnotator<OUTCOME_TYPE>> sequentialClassifierAnnotatorClass,
+			TypeSystemDescription typeSystemDescription,
+			TypePriorities typePriorities,
+			String classifierJar, List<Class<?>> dynamicallyLoadedClasses, Object... configurationData)
+			throws ResourceInitializationException {
 
 		AnalysisEngineDescription aed = AnalysisEngineFactory.createPrimitiveDescription(
-				sequentialClassifierAnnotatorClass, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES);
+				sequentialClassifierAnnotatorClass, typeSystemDescription, typePriorities);
 
 		if (dynamicallyLoadedClasses != null) {
 			ConfigurationParameterFactory.addConfigurationParameters(aed, dynamicallyLoadedClasses);
@@ -200,9 +231,21 @@ public class CleartkComponents {
 			Class<? extends SequentialDataWriterFactory<OUTCOME_TYPE>> dataWriterFactoryClass, String outputDir,
 			List<Class<?>> dynamicallyLoadedClasses, Object... configurationData)
 			throws ResourceInitializationException {
+		return createCleartkSequentialAnnotator(sequentialClassifierAnnotatorClass, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES, dataWriterFactoryClass, outputDir,
+				null, configurationData);
+
+	}
+	
+	public static <OUTCOME_TYPE> AnalysisEngineDescription createCleartkSequentialAnnotator(
+			Class<? extends CleartkSequentialAnnotator<OUTCOME_TYPE>> sequentialClassifierAnnotatorClass,
+			TypeSystemDescription typeSystemDescription,
+			TypePriorities typePriorities,
+			Class<? extends SequentialDataWriterFactory<OUTCOME_TYPE>> dataWriterFactoryClass, String outputDir,
+			List<Class<?>> dynamicallyLoadedClasses, Object... configurationData)
+			throws ResourceInitializationException {
 
 		AnalysisEngineDescription aed = AnalysisEngineFactory.createPrimitiveDescription(
-				sequentialClassifierAnnotatorClass, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES);
+				sequentialClassifierAnnotatorClass, typeSystemDescription, typePriorities);
 
 		if (dynamicallyLoadedClasses != null) {
 			ConfigurationParameterFactory.addConfigurationParameters(aed, dynamicallyLoadedClasses);
