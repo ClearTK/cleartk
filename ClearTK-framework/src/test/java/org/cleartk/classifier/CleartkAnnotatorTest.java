@@ -31,7 +31,6 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.jar.JarFile;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
@@ -93,74 +92,48 @@ public class CleartkAnnotatorTest {
 
 	@Test
 	public void testStringClassifierStringAnnotator() throws Exception {
-		ClassifierManifest manifest = new ClassifierManifest();
-		manifest.setClassifierBuilder(new StringTestBuilder());
-		manifest.write(new File(outputDirectory));
-		BuildJar.main(outputDirectory);
-
 		CleartkAnnotator<String> classifierAnnotator = new StringTestAnnotator();
 		classifierAnnotator.initialize(UimaContextFactory.createUimaContext(
-				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
-				new File(outputDirectory, "model.jar").getPath()));
+				CleartkAnnotator.PARAM_CLASSIFIER_FACTORY_CLASS_NAME,
+				StringTestClassifierFactory.class.getName()));
 		classifierAnnotator.classifier.classify(
 				InstanceFactory.createInstance("hello", 1, 1).getFeatures());
 	}
 
 	@Test
 	public void testIntegerClassifierStringAnnotator() throws Exception {
-		ClassifierManifest manifest = new ClassifierManifest();
-		manifest.setClassifierBuilder(new IntegerTestBuilder());
-		manifest.write(new File(outputDirectory));
-		BuildJar.main(new String[] { outputDirectory });
-
 		try {
 			new StringTestAnnotator().initialize(UimaContextFactory.createUimaContext(
-					JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
-					new File(outputDirectory, "model.jar").getPath()));
+					CleartkAnnotator.PARAM_CLASSIFIER_FACTORY_CLASS_NAME,
+					IntegerTestClassifierFactory.class.getName()));
 			fail("expected exception for Integer classifier and String annotator");
 		} catch (ResourceInitializationException e) {}
 	}
 
-
 	@Test
 	public void testChildClassifierParentAnnotator() throws Exception {
-		ClassifierManifest manifest = new ClassifierManifest();
-		manifest.setClassifierBuilder(new ChildTestBuilder());
-		manifest.write(new File(outputDirectory));
-		BuildJar.main(new String[] { outputDirectory });
-
 		CleartkAnnotator<Parent> classifierAnnotator = new ParentTestAnnotator();
 		classifierAnnotator.initialize(UimaContextFactory.createUimaContext(
-				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
-				new File(outputDirectory, "model.jar").getPath()));
+				CleartkAnnotator.PARAM_CLASSIFIER_FACTORY_CLASS_NAME,
+				ChildClassifierFactory.class.getName()));
 	}
 
 	@Test
 	public void testParentClassifierChildAnnotator() throws Exception {
-		ClassifierManifest manifest = new ClassifierManifest();
-		manifest.setClassifierBuilder(new ParentTestBuilder());
-		manifest.write(new File(outputDirectory));
-		BuildJar.main(new String[] { outputDirectory });
-
 		try {
 			new ChildTestAnnotator().initialize(UimaContextFactory.createUimaContext(
-					JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
-					new File(outputDirectory, "model.jar").getPath()));
+					CleartkAnnotator.PARAM_CLASSIFIER_FACTORY_CLASS_NAME,
+					ParentClassifierFactory.class.getName()));
 			fail("expected exception for Parent classifier and Child annotator");
 		} catch (ResourceInitializationException e) {}
 	}
 
 	@Test
 	public void testGenericClassifierGenericAnnotator() throws Exception {
-		ClassifierManifest manifest = new ClassifierManifest();
-		manifest.setClassifierBuilder(new TestBuilder<Object>());
-		manifest.write(new File(outputDirectory));
-		BuildJar.main(new String[] { outputDirectory });
-
 		CleartkAnnotator<Object> classifierAnnotator = new TestAnnotator<Object>();
 		classifierAnnotator.initialize(UimaContextFactory.createUimaContext(
-				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
-				new File(outputDirectory, "model.jar").getPath()));
+				CleartkAnnotator.PARAM_CLASSIFIER_FACTORY_CLASS_NAME,
+				TestClassifierFactory.class.getName()));
 	}
 
 	@Test
@@ -204,18 +177,8 @@ public class CleartkAnnotatorTest {
 		public void process(JCas aJCas) throws AnalysisEngineProcessException {}
 	}
 	
-	public static class TestBuilder<T> implements ClassifierBuilder<T>, Classifier<T> {
-		public TestBuilder() {}
-		public TestBuilder(JarFile modelFile) {}
-		@SuppressWarnings("unchecked")
-		public Class<? extends Classifier<T>> getClassifierClass() {
-			return (Class<? extends Classifier<T>>) this.getClass();
-		}
-		public void train(File dir, String[] args) throws Exception {}
-		public void buildJar(File dir, String[] args) throws Exception {
-			BuildJar.OutputStream stream = new BuildJar.OutputStream(dir);
-			stream.close();
-		}
+	public static class TestClassifier<T> implements Classifier<T> {
+
 		public T classify(List<Feature> features) throws CleartkException {
 			assertEquals(1, features.size());
 			return null;
@@ -223,6 +186,14 @@ public class CleartkAnnotatorTest {
 		public List<ScoredOutcome<T>> score(List<Feature> features, int maxResults) throws CleartkException {
 			return null;
 		}
+	}
+	public static class TestClassifierFactory<T> implements ClassifierFactory<T>{
+
+		@SuppressWarnings("unchecked")
+		public Classifier<T> createClassifier() throws IOException, CleartkException {
+			return new TestClassifier();
+		}
+		
 	}
 	
 	public class Parent {}
@@ -233,59 +204,33 @@ public class CleartkAnnotatorTest {
 	public static class ParentTestAnnotator extends TestAnnotator<Parent> {}
 	public static class ChildTestAnnotator extends TestAnnotator<Child> {}
 
-	public static class StringTestBuilder extends TestBuilder<String> {
-		public StringTestBuilder() {}
-		public StringTestBuilder(JarFile modelFile) {}
+	public static class StringTestClassifier extends TestClassifier<String> { }
+	public static class StringTestClassifierFactory implements ClassifierFactory<String>{
+		public Classifier<String> createClassifier() throws IOException, CleartkException {
+			return new StringTestClassifier();
+		}
 	}
-	public static class IntegerTestBuilder extends TestBuilder<Integer> {
-		public IntegerTestBuilder() {}
-		public IntegerTestBuilder(JarFile modelFile) {}
+
+	public static class IntegerTestClassifier extends TestClassifier<Integer> {  }
+	public static class IntegerTestClassifierFactory implements ClassifierFactory<Integer>{
+		public Classifier<Integer> createClassifier() throws IOException, CleartkException {
+			return new IntegerTestClassifier();
+		}
 	}
-	public static class ParentTestBuilder extends TestBuilder<Parent> {
-		public ParentTestBuilder() {}
-		public ParentTestBuilder(JarFile modelFile) {}
+
+	public static class ParentClassifier extends TestClassifier<Parent> {}
+	public static class ParentClassifierFactory implements ClassifierFactory<Parent>{
+		public Classifier<Parent> createClassifier() throws IOException, CleartkException {
+			return new ParentClassifier();
+		}
 	}
-	public static class ChildTestBuilder extends TestBuilder<Child> {
-		public ChildTestBuilder() {}
-		public ChildTestBuilder(JarFile modelFile) {}
+
+	public static class ChildClassifier extends TestClassifier<Child> {	}
+	public static class ChildClassifierFactory implements ClassifierFactory<Child>{
+		public Classifier<Child> createClassifier() throws IOException, CleartkException {
+			return new ChildClassifier();
+		}
 	}
 	
-	public static class StringTestDataWriterFactory implements DataWriterFactory<String> {
-		public static StringTestDataWriter WRITER = new StringTestDataWriter();
-		public DataWriter<String> createDataWriter() throws IOException {
-			return WRITER;
-		}
-	}
-	public static class StringTestDataWriter implements DataWriter<String> {
-		public static boolean isFinished = false;
-		public static int instanceCount = 0;
-		public void write(Instance<String> instance) throws CleartkException {
-			++instanceCount;
-		}
-		public void finish() throws CleartkException {
-			isFinished = true;
-		}
-		public Class<? extends ClassifierBuilder<String>> getDefaultClassifierBuilderClass() {
-			return null;
-		}
-	}
-	public static class StringTestClassifier implements Classifier<String> {
-		public static int classifications = 0;
-		public static int scores = 0;
-		public String classify(List<Feature> features) throws CleartkException {
-			++classifications;
-			return null;
-		}
-		public List<ScoredOutcome<String>> score(List<Feature> features, int maxResults) throws CleartkException {
-			++scores;
-			return null;
-		}
-		
-	}
-	public static class StaticClassifierStringTestBuilder extends TestBuilder<String> {
-		@Override
-		public Class<? extends Classifier<String>> getClassifierClass() {
-			return StringTestClassifier.class;
-		}
-	}
+	
 }
