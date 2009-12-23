@@ -209,7 +209,7 @@ public class CleartkSequentialAnnotatorTest {
 	
 	public static class StringTestDataWriterFactory implements DataWriterFactory<String> {
 		public static StringTestDataWriter WRITER = new StringTestDataWriter();
-		public DataWriter<String> createDataWriter(File outputDirectory) throws IOException {
+		public DataWriter<String> createDataWriter() throws IOException {
 			return WRITER;
 		}
 	}

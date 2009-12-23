@@ -24,7 +24,6 @@
 
 package org.cleartk.classifier.libsvm;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.cleartk.classifier.DataWriter;
@@ -48,7 +47,7 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
 
 public class DefaultMultiClassLIBSVMDataWriterFactory extends DataWriterFactory_ImplBase<FeatureVector, String, Integer> {
 
-	public DataWriter<String> createDataWriter(File outputDirectory) throws IOException {
+	public DataWriter<String> createDataWriter() throws IOException {
 		MultiClassLIBSVMDataWriter dataWriter = new MultiClassLIBSVMDataWriter(outputDirectory);
 
 		if(!this.setEncodersFromFileSystem(dataWriter)) {

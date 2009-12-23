@@ -152,7 +152,7 @@ public class HeadWordExtractorTest {
 		this.checkFeatures(
 				extractor.extract(jCas, undertheboxNode),
 				"HeadWord_TypePath(NodeType)", "IN",
-				"PPHeadWord_TypePath(NodeType)", "NP");
+				"PPHeadWord_TypePath(NodeType)", "NN");
 
 		extractor = new HeadWordExtractor(textExtractor, true);
 		this.checkFeatures(
@@ -164,7 +164,7 @@ public class HeadWordExtractorTest {
 		Assert.assertEquals("HeadWord", features.get(0).getName());
 		Assert.assertEquals("under", features.get(0).getValue());
 		Assert.assertEquals("PPHeadWord", features.get(1).getName());
-		Assert.assertEquals("the box", features.get(1).getValue());
+		Assert.assertEquals("box", features.get(1).getValue());
 
 	}
 

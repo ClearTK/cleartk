@@ -39,8 +39,8 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.pear.util.FileUtil;
 import org.apache.uima.util.FileUtils;
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.CleartkSequentialAnnotator;
+import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.Train;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
@@ -116,7 +116,7 @@ public class ViterbiDataWriterTest {
 
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TestAnnotator.class,
 				JCasUtil.getTypeSystemDescription(),
-				CleartkSequentialAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				ViterbiDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				CleartkSequentialAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, ViterbiDataWriterFactory.class.getName(),
 				ViterbiDataWriter.PARAM_DELEGATED_DATAWRITER_FACTORY_CLASS, DefaultMaxentDataWriterFactory.class.getName(),
 				ViterbiDataWriter.PARAM_OUTCOME_FEATURE_EXTRACTORS, new String[] {"org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor"});

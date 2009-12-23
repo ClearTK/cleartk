@@ -46,6 +46,7 @@ import org.cleartk.chunk.ChunkerFeatureExtractor;
 import org.cleartk.chunk.DefaultChunkLabeler;
 import org.cleartk.classifier.CleartkSequentialAnnotator;
 import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.SequentialDataWriterFactory_ImplBase;
 import org.cleartk.classifier.feature.WindowFeature;
 import org.cleartk.classifier.feature.extractor.WindowExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
@@ -153,7 +154,7 @@ public class ChunkTokenizerTest {
 				  ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME, Chunk.class.getName(),
 				  DefaultChunkLabeler.PARAM_CHUNK_LABEL_FEATURE_NAME, "chunkType",
 				  CleartkSequentialAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, InstanceCollector.StringFactory.class.getName(),
-				  CleartkSequentialAnnotator.PARAM_OUTPUT_DIRECTORY, "test/data/scratch"
+				  SequentialDataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY, "test/data/scratch"
 		  );
 		  TestChunkerAnnotator copy = new TestChunkerAnnotator();
 		  copy.initialize(engine.getUimaContext());

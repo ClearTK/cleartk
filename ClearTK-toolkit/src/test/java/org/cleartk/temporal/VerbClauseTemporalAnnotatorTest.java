@@ -43,6 +43,7 @@ import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.ClassifierBuilder;
 import org.cleartk.classifier.ClassifierManifest;
 import org.cleartk.classifier.CleartkAnnotator;
+import org.cleartk.classifier.DataWriterFactory_ImplBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.ScoredOutcome;
@@ -233,7 +234,7 @@ public class VerbClauseTemporalAnnotatorTest {
 		Assert.assertEquals(DefaultOVASVMlightDataWriterFactory.class.getName(), dataWriter);
 		
 		Object outputDir = engine.getConfigParameterValue(
-				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY);
+				DataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY);
 		Assert.assertEquals("test/data/temporal", outputDir);
 		
 		engine.collectionProcessComplete();

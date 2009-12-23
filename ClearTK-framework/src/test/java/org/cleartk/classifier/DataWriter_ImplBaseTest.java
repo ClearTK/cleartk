@@ -97,10 +97,10 @@ public class DataWriter_ImplBaseTest {
 	@Test
 	public void testFinish() throws UIMAException, IOException, CleartkException {
 
-		UimaContext uimaContext = UimaContextFactory.createUimaContext();
+		UimaContext uimaContext = UimaContextFactory.createUimaContext(DataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDirectoryName);
 		DefaultMalletDataWriterFactory factory = new DefaultMalletDataWriterFactory();
 		factory.initialize(uimaContext);
-		DataWriter<String> dataWriter = factory.createDataWriter(outputDirectory);
+		DataWriter<String> dataWriter = factory.createDataWriter();
 		dataWriter.finish();
 		assertTrue(new File(outputDirectory, FeaturesEncoder_ImplBase.ENCODERS_FILE_NAME).exists());
 		

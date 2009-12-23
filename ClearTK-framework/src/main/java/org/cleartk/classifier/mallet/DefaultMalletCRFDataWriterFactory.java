@@ -24,7 +24,6 @@
 
 package org.cleartk.classifier.mallet;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -39,6 +38,7 @@ import org.cleartk.classifier.encoder.features.NumberEncoder;
 import org.cleartk.classifier.encoder.features.StringEncoder;
 import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
 import org.cleartk.util.UIMAUtil;
+import org.uutuc.util.InitializeUtil;
 
 /**
  * <br>
@@ -69,11 +69,12 @@ public class DefaultMalletCRFDataWriterFactory extends SequentialDataWriterFacto
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
+		InitializeUtil.initialize(this, context);
 		compress = (Boolean)UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_COMPRESS, false);
 		sort = (Boolean)UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_SORT_NAME_LOOKUP, false);
 	}
 	
-	public SequentialDataWriter<String> createSequentialDataWriter(File outputDirectory) throws IOException {
+	public SequentialDataWriter<String> createSequentialDataWriter() throws IOException {
 		MalletCRFDataWriter mdw = new MalletCRFDataWriter(outputDirectory);
 		
 		if(!this.setEncodersFromFileSystem(mdw)) {

@@ -33,14 +33,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.jar.JarFile;
 
+import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
+import org.cleartk.classifier.CleartkSequentialAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.SequentialClassifier;
-import org.cleartk.classifier.CleartkSequentialAnnotator;
+import org.cleartk.classifier.SequentialDataWriterFactory_ImplBase;
 import org.cleartk.classifier.Train;
 import org.cleartk.util.JCasUtil;
 import org.junit.After;
@@ -68,7 +71,13 @@ import org.uutuc.util.TearDownUtil;
 public class MalletCRFClassifierTest {
 
 	public static class TestAnnotator extends CleartkSequentialAnnotator<String> {
-		public void process(JCas cas) throws AnalysisEngineProcessException {
+		
+		@Override
+		public void initialize(UimaContext context) throws ResourceInitializationException {
+			super.initialize(context);
+		}
+			
+			public void process(JCas cas) throws AnalysisEngineProcessException {
 			try {
 				this.processSimple(cas);
 			} catch (CleartkException e) {
@@ -108,7 +117,7 @@ public class MalletCRFClassifierTest {
 
 		AnalysisEngine sequentialDataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
 				TestAnnotator.class, JCasUtil.getTypeSystemDescription(), 
-				CleartkSequentialAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				SequentialDataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				CleartkSequentialAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletCRFDataWriterFactory.class.getName());
 
 		JCas jCas = JCasUtil.getJCas();

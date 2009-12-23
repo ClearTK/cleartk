@@ -101,7 +101,7 @@ public class DefaultPOSAnnotatorTest {
 				TreebankGoldAnnotator.PARAM_POST_TREES, false,
 				CleartkSequentialAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, ViterbiDataWriterFactory.class.getName(),
 				ViterbiDataWriter.PARAM_DELEGATED_DATAWRITER_FACTORY_CLASS, DefaultMaxentDataWriterFactory.class.getName(),
-				CleartkSequentialAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory.getPath(),
+				ViterbiDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory.getPath(),
 				POSAnnotator.PARAM_FEATURE_EXTRACTOR_CLASS_NAME, DefaultFeatureExtractor.class.getName());
 		
 		for(JCas jCas : new JCasIterable(reader, aggregateEngine)) {

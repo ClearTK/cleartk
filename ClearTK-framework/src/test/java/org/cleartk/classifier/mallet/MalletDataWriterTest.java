@@ -40,6 +40,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.pear.util.FileUtil;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkAnnotator;
+import org.cleartk.classifier.DataWriterFactory_ImplBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.InstanceFactory;
@@ -104,7 +105,7 @@ public class MalletDataWriterTest {
 	public void test1() throws Exception {
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
 				Test1Annotator.class, JCasUtil.getTypeSystemDescription(),
-				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				DataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletDataWriterFactory.class.getName());
 
 		JCas jCas = JCasUtil.getJCas();
@@ -143,7 +144,7 @@ public class MalletDataWriterTest {
 	public void test2() throws Exception {
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
 				Test1Annotator.class, JCasUtil.getTypeSystemDescription(),
-				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				DataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletDataWriterFactory.class.getName(),
 				DefaultMalletDataWriterFactory.PARAM_COMPRESS, true);
 
@@ -188,7 +189,7 @@ public class MalletDataWriterTest {
 	public void test3() throws Exception {
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
 				Test1Annotator.class, JCasUtil.getTypeSystemDescription(),
-				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				DataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletDataWriterFactory.class.getName(),
 				DefaultMalletDataWriterFactory.PARAM_COMPRESS, true,
 				DefaultMalletDataWriterFactory.PARAM_SORT_NAME_LOOKUP, true);
@@ -248,7 +249,7 @@ public class MalletDataWriterTest {
 
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
 				Test4Annotator.class, JCasUtil.getTypeSystemDescription(),
-				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				DataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletDataWriterFactory.class.getName(),
 				DefaultMalletDataWriterFactory.PARAM_COMPRESS, true,
 				DefaultMalletDataWriterFactory.PARAM_SORT_NAME_LOOKUP, true);
@@ -287,7 +288,7 @@ public class MalletDataWriterTest {
 	public void test5() throws Exception {
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
 				Test5Annotator.class, JCasUtil.getTypeSystemDescription(),
-				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				DataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletDataWriterFactory.class.getName(),
 				DefaultMalletDataWriterFactory.PARAM_COMPRESS, true);
 

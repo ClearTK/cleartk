@@ -40,6 +40,7 @@ import org.cleartk.classifier.ClassifierBuilder;
 import org.cleartk.classifier.ClassifierManifest;
 import org.cleartk.classifier.DataWriter;
 import org.cleartk.classifier.DataWriterFactory;
+import org.cleartk.classifier.DataWriterFactory_ImplBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.SequentialDataWriter;
@@ -89,9 +90,13 @@ public class ViterbiDataWriter<OUTCOME_TYPE> implements
 
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		try {
+			
 			DataWriterFactory<?> dataWriterFactory = UIMAUtil.create(context, PARAM_DELEGATED_DATAWRITER_FACTORY_CLASS,
 					DataWriterFactory.class);
-			this.delegatedDataWriter = ReflectionUtil.uncheckedCast(dataWriterFactory.createDataWriter(delegatedOutputDirectory));
+			if(dataWriterFactory instanceof DataWriterFactory_ImplBase<?,?,?>) {
+				((DataWriterFactory_ImplBase<?,?,?>) dataWriterFactory).setOutputDirectory(delegatedOutputDirectory);
+			}
+			this.delegatedDataWriter = ReflectionUtil.uncheckedCast(dataWriterFactory.createDataWriter());
 			UIMAUtil.initialize(this.delegatedDataWriter, context);
 	
 			String[] outcomeFeatureExtractorNames = (String[]) UIMAUtil.getDefaultingConfigParameterValue(context,

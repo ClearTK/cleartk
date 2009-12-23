@@ -23,7 +23,6 @@
  */
 package org.cleartk.classifier;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.apache.uima.UimaContext;
@@ -39,12 +38,6 @@ import org.uutuc.descriptor.ConfigurationParameter;
 import org.uutuc.util.InitializeUtil;
 
 public abstract class CleartkAnnotator<OUTCOME_TYPE> extends JCasAnnotator_ImplBase implements Initializable{
-
-	public static final String PARAM_OUTPUT_DIRECTORY = ConfigurationParameterNameFactory
-			.createConfigurationParameterName(CleartkAnnotator.class, "outputDirectory");
-
-	@ConfigurationParameter(mandatory = false, description = "provides the name of the directory where the training data will be written.")
-	private File outputDirectory;
 
 	public static final String PARAM_DATA_WRITER_FACTORY_CLASS_NAME = ConfigurationParameterNameFactory
 			.createConfigurationParameterName(CleartkAnnotator.class, "dataWriterFactoryClassName");
@@ -69,15 +62,12 @@ public abstract class CleartkAnnotator<OUTCOME_TYPE> extends JCasAnnotator_ImplB
 		InitializeUtil.initialize(this, context);
 
 		if (dataWriterFactoryClassName != null) {
-			if(outputDirectory == null) {
-				throw new ResourceInitializationException(ResourceInitializationException.CONFIG_SETTING_ABSENT, new Object[] {PARAM_OUTPUT_DIRECTORY});
-			}
 			// create the factory and instantiate the data writer
 			DataWriterFactory<?> factory = UIMAUtil
 					.create(dataWriterFactoryClassName, DataWriterFactory.class, context);
 			DataWriter<?> untypedDataWriter;
 			try {
-				untypedDataWriter = factory.createDataWriter(outputDirectory);
+				untypedDataWriter = factory.createDataWriter();
 			}
 			catch (IOException e) {
 				throw new ResourceInitializationException(e);

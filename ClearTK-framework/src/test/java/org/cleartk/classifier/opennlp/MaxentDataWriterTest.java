@@ -40,6 +40,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.pear.util.FileUtil;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkAnnotator;
+import org.cleartk.classifier.DataWriterFactory_ImplBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.InstanceFactory;
@@ -106,7 +107,7 @@ public class MaxentDataWriterTest {
 	public void test1() throws Exception {
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
 				Test1Annotator.class, JCasUtil.getTypeSystemDescription(),
-				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				DataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMaxentDataWriterFactory.class.getName());
 
 		JCas jCas = JCasUtil.getJCas();
@@ -134,7 +135,7 @@ public class MaxentDataWriterTest {
 	public void test2() throws Exception {
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
 				Test1Annotator.class, JCasUtil.getTypeSystemDescription(),
-				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				DataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMaxentDataWriterFactory.class.getName(),
 				DefaultMaxentDataWriterFactory.PARAM_COMPRESS, true);
 
@@ -176,7 +177,7 @@ public class MaxentDataWriterTest {
 	public void test3() throws Exception {
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
 				Test1Annotator.class, JCasUtil.getTypeSystemDescription(),
-				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				DataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMaxentDataWriterFactory.class.getName(),
 				DefaultMaxentDataWriterFactory.PARAM_COMPRESS, true,
 				DefaultMaxentDataWriterFactory.PARAM_SORT_NAME_LOOKUP, true);
@@ -238,7 +239,7 @@ public class MaxentDataWriterTest {
 
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
 				Test4Annotator.class, JCasUtil.getTypeSystemDescription(),
-				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				DataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMaxentDataWriterFactory.class.getName(),
 				DefaultMaxentDataWriterFactory.PARAM_COMPRESS, true,
 				DefaultMaxentDataWriterFactory.PARAM_SORT_NAME_LOOKUP, true);
@@ -281,7 +282,7 @@ public class MaxentDataWriterTest {
 	public void test5() throws Exception {
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
 				Test5Annotator.class, JCasUtil.getTypeSystemDescription(),
-				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				DataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMaxentDataWriterFactory.class.getName(),
 				DefaultMaxentDataWriterFactory.PARAM_COMPRESS, true);
 

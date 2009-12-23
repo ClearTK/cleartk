@@ -26,9 +26,15 @@ package org.cleartk.example.documentclassification;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.uima.UimaContext;
+import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.Initializable;
 import org.cleartk.classifier.DataWriter;
 import org.cleartk.classifier.DataWriterFactory;
 import org.cleartk.classifier.util.tfidf.IDFMapWriter;
+import org.cleartk.test.util.ConfigurationParameterNameFactory;
+import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.util.InitializeUtil;
 
 /**
  * <br>
@@ -38,11 +44,23 @@ import org.cleartk.classifier.util.tfidf.IDFMapWriter;
  * @author Philipp Wetzler
  */
 
-public class IDFMapWriterFactory implements DataWriterFactory<String> {
+public class IDFMapWriterFactory implements DataWriterFactory<String>, Initializable {
 
-	public DataWriter<String> createDataWriter(File outputDirectory)
+	public static final String PARAM_OUTPUT_DIRECTORY = ConfigurationParameterNameFactory
+	.createConfigurationParameterName(IDFMapWriterFactory.class, "outputDirectory");
+
+	@ConfigurationParameter(mandatory = true, description = "provides the name of the directory where the training data will be written.")
+	protected File outputDirectory;
+
+	
+	public DataWriter<String> createDataWriter()
 			throws IOException {
 		return new IDFMapWriter<String>(outputDirectory);
+	}
+
+
+	public void initialize(UimaContext context) throws ResourceInitializationException {
+		InitializeUtil.initialize(this, context);
 	}
 
 }

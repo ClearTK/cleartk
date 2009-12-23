@@ -36,6 +36,7 @@ import org.cleartk.CleartkComponents;
 import org.cleartk.classifier.CleartkSequentialAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.SequentialDataWriterFactory_ImplBase;
 import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
@@ -186,7 +187,7 @@ public class ExamplePOSAnnotatorTest {
 				ExamplePOSAnnotator.getWriterDescription(ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY));
 		
 		Object outputDir = engine.getConfigParameterValue(
-				CleartkSequentialAnnotator.PARAM_OUTPUT_DIRECTORY);
+				SequentialDataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY);
 		Assert.assertEquals(ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY, outputDir);
 		
 		String expectedDataWriterFactory = (

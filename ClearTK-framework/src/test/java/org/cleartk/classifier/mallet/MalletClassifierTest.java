@@ -37,6 +37,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkAnnotator;
+import org.cleartk.classifier.DataWriterFactory_ImplBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.Train;
@@ -123,7 +124,7 @@ public class MalletClassifierTest {
 	public void runTest1() throws Exception {
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
 				TestAnnotator.class, JCasUtil.getTypeSystemDescription(),
-				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				DataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletDataWriterFactory.class.getName());
 
 		JCas jCas = JCasUtil.getJCas();

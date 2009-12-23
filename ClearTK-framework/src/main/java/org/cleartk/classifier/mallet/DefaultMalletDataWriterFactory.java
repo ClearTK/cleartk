@@ -23,7 +23,6 @@
  */
 package org.cleartk.classifier.mallet;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -72,7 +71,7 @@ public class DefaultMalletDataWriterFactory extends DataWriterFactory_ImplBase<L
 		sort = (Boolean)UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_SORT_NAME_LOOKUP, false);
 	}
 	
-	public DataWriter<String> createDataWriter(File outputDirectory) throws IOException {
+	public DataWriter<String> createDataWriter() throws IOException {
 		MalletDataWriter mdw = new MalletDataWriter(outputDirectory);
 		
 		if(!this.setEncodersFromFileSystem(mdw)) {

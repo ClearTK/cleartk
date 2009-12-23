@@ -37,7 +37,9 @@ import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.CleartkSequentialAnnotator;
 import org.cleartk.classifier.DataWriterFactory;
+import org.cleartk.classifier.DataWriterFactory_ImplBase;
 import org.cleartk.classifier.SequentialDataWriterFactory;
+import org.cleartk.classifier.SequentialDataWriterFactory_ImplBase;
 import org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor;
 import org.cleartk.classifier.viterbi.ViterbiDataWriter;
 import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
@@ -94,7 +96,7 @@ public class CleartkComponents {
 		return AnalysisEngineFactory.createPrimitiveDescription(annotatorClass, TYPE_SYSTEM_DESCRIPTION,
 				TYPE_PRIORITIES, combineParams(configurationParameters,
 						CleartkSequentialAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, ViterbiDataWriterFactory.class
-								.getName(), CleartkSequentialAnnotator.PARAM_OUTPUT_DIRECTORY, outputDir,
+								.getName(), ViterbiDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDir,
 						ViterbiDataWriter.PARAM_DELEGATED_DATAWRITER_FACTORY_CLASS, delegatedDataWriterFactoryClass
 								.getName(), ViterbiDataWriter.PARAM_OUTCOME_FEATURE_EXTRACTORS,
 						new String[] { DefaultOutcomeFeatureExtractor.class.getName() }));
@@ -172,7 +174,7 @@ public class CleartkComponents {
 					dataWriterFactoryClass.getName());
 		}
 		if (outputDir != null) {
-			ConfigurationParameterFactory.addConfigurationParameter(aed, CleartkAnnotator.PARAM_OUTPUT_DIRECTORY, outputDir);
+			ConfigurationParameterFactory.addConfigurationParameter(aed, DataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDir);
 		}
 		if (configurationData != null) {
 			ConfigurationParameterFactory.addConfigurationParameters(aed, configurationData);
@@ -256,7 +258,7 @@ public class CleartkComponents {
 					dataWriterFactoryClass.getName());
 		}
 		if (outputDir != null) {
-			ConfigurationParameterFactory.addConfigurationParameter(aed, CleartkSequentialAnnotator.PARAM_OUTPUT_DIRECTORY, outputDir);
+			ConfigurationParameterFactory.addConfigurationParameter(aed, SequentialDataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDir);
 		}
 		if (configurationData != null) {
 			ConfigurationParameterFactory.addConfigurationParameters(aed, configurationData);

@@ -24,7 +24,6 @@
 
 package org.cleartk.classifier.svmlight;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.cleartk.classifier.DataWriter;
@@ -48,7 +47,7 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
 
 public class DefaultSVMlightDataWriterFactory extends DataWriterFactory_ImplBase<FeatureVector, Boolean, Boolean> {
 
-	public DataWriter<Boolean> createDataWriter(File outputDirectory) throws IOException {
+	public DataWriter<Boolean> createDataWriter() throws IOException {
 		SVMlightDataWriter dataWriter = new SVMlightDataWriter(outputDirectory);
 
 		if(!this.setEncodersFromFileSystem(dataWriter)) {

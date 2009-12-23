@@ -24,7 +24,6 @@
 
 package org.cleartk.classifier.libsvm;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.cleartk.classifier.DataWriter;
@@ -48,7 +47,7 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
 
 public class DefaultBinaryLIBSVMDataWriterFactory extends DataWriterFactory_ImplBase<FeatureVector, Boolean, Boolean> {
 
-	public DataWriter<Boolean> createDataWriter(File outputDirectory) throws IOException {
+	public DataWriter<Boolean> createDataWriter() throws IOException {
 		BinaryLIBSVMDataWriter dataWriter = new BinaryLIBSVMDataWriter(outputDirectory);
 
 		if(!this.setEncodersFromFileSystem(dataWriter)) {

@@ -23,7 +23,6 @@
  */
 package org.cleartk.classifier;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,12 +40,6 @@ import org.uutuc.descriptor.ConfigurationParameter;
 import org.uutuc.util.InitializeUtil;
 
 public abstract class CleartkSequentialAnnotator<OUTCOME_TYPE> extends JCasAnnotator_ImplBase implements Initializable{
-
-	public static final String PARAM_OUTPUT_DIRECTORY = ConfigurationParameterNameFactory
-			.createConfigurationParameterName(CleartkSequentialAnnotator.class, "outputDirectory");
-
-	@ConfigurationParameter(mandatory = false, description = "provides the name of the directory where the training data will be written.")
-	private File outputDirectory;
 
 	public static final String PARAM_DATA_WRITER_FACTORY_CLASS_NAME = ConfigurationParameterNameFactory
 			.createConfigurationParameterName(CleartkSequentialAnnotator.class, "dataWriterFactoryClassName");
@@ -71,17 +64,12 @@ public abstract class CleartkSequentialAnnotator<OUTCOME_TYPE> extends JCasAnnot
 
 		if (dataWriterFactoryClassName != null) {
 
-			if (outputDirectory == null) {
-				throw new ResourceInitializationException(ResourceInitializationException.CONFIG_SETTING_ABSENT,
-						new Object[] { PARAM_OUTPUT_DIRECTORY });
-			}
-
 			// create the factory and instantiate the data writer
 			SequentialDataWriterFactory<?> factory = UIMAUtil.create(dataWriterFactoryClassName,
 					SequentialDataWriterFactory.class, context);
 			SequentialDataWriter<?> untypedDataWriter;
 			try {
-				untypedDataWriter = factory.createSequentialDataWriter(outputDirectory);
+				untypedDataWriter = factory.createSequentialDataWriter();
 			}
 			catch (IOException e) {
 				throw new ResourceInitializationException(e);

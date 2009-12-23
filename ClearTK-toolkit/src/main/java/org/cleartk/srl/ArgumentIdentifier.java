@@ -37,6 +37,7 @@ import org.cleartk.CleartkComponents;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.DataWriterFactory;
+import org.cleartk.classifier.DataWriterFactory_ImplBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.annotationpair.AnnotationPairFeatureExtractor;
@@ -95,7 +96,7 @@ public class ArgumentIdentifier extends CleartkAnnotator<Boolean> {
 		return CleartkComponents.createPrimitiveDescription(
 				ArgumentIdentifier.class,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, dataWriterFactoryClass.getName(),
-				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory.toString());
+				DataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDirectory.toString());
 	}
 
 	public static AnalysisEngineDescription getClassifierDescription(File classifierJar)

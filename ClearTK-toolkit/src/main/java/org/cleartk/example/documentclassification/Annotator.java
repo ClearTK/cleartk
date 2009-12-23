@@ -35,6 +35,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkComponents;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkAnnotator;
+import org.cleartk.classifier.DataWriterFactory_ImplBase;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.simple.CountsExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
@@ -58,7 +59,7 @@ public class Annotator extends CleartkAnnotator<String> {
 		return CleartkComponents.createPrimitiveDescription(
 				Annotator.class,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, dataWriterFactoryClass.getName(),
-				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory.toString());
+				DataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDirectory.toString());
 	}
 
 	public static AnalysisEngineDescription getClassifierDescription(

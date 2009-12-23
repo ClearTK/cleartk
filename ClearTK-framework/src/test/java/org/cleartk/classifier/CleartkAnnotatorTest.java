@@ -177,14 +177,14 @@ public class CleartkAnnotatorTest {
 			AnalysisEngineFactory.createPrimitive(
 					StringTestAnnotator.class,
 					JCasUtil.getTypeSystemDescription(),
-					CleartkAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory);
+					DataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDirectory);
 			Assert.fail("expected exception with missing classifier jar");
 		} catch (ResourceInitializationException e) {}
 			
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				StringTestAnnotator.class,
 				JCasUtil.getTypeSystemDescription(),
-				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				DataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMaxentDataWriterFactory.class.getName());
 		
 		Object dataWriter = engine.getConfigParameterValue(
@@ -192,7 +192,7 @@ public class CleartkAnnotatorTest {
 		Assert.assertEquals(DefaultMaxentDataWriterFactory.class.getName(), dataWriter);
 		
 		Object outputDir = engine.getConfigParameterValue(
-				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY);
+				DataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY);
 		Assert.assertEquals(outputDirectory, outputDir);
 		
 		engine.collectionProcessComplete();
@@ -252,7 +252,7 @@ public class CleartkAnnotatorTest {
 	
 	public static class StringTestDataWriterFactory implements DataWriterFactory<String> {
 		public static StringTestDataWriter WRITER = new StringTestDataWriter();
-		public DataWriter<String> createDataWriter(File outputDirectory) throws IOException {
+		public DataWriter<String> createDataWriter() throws IOException {
 			return WRITER;
 		}
 	}
