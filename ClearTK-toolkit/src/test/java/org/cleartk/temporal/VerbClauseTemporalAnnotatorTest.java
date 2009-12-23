@@ -28,7 +28,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.jar.JarFile;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
@@ -38,10 +37,8 @@ import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.CleartkComponents;
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.BuildJar;
 import org.cleartk.classifier.Classifier;
-import org.cleartk.classifier.ClassifierBuilder;
-import org.cleartk.classifier.ClassifierManifest;
+import org.cleartk.classifier.ClassifierFactory;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.DataWriterFactory_ImplBase;
 import org.cleartk.classifier.Feature;
@@ -81,8 +78,8 @@ public class VerbClauseTemporalAnnotatorTest {
 	
 	private final File outputDirectory = new File("test/data/temporal");
 	
-	public static class AfterNewClassifier implements Classifier<String> {
-		public AfterNewClassifier(JarFile modelFile) {}
+	public static class AfterNewClassifier implements Classifier<String>, ClassifierFactory<String> {
+		public AfterNewClassifier() {}
 		public String classify(List<Feature> features) throws CleartkException {
 			return "AFTER-NEW";
 		}
@@ -90,26 +87,15 @@ public class VerbClauseTemporalAnnotatorTest {
 		throws CleartkException {
 			return null;
 		}
-	}
-	public static class AfterNewClassifierBuilder implements ClassifierBuilder<String> {
-		public Class<? extends Classifier<String>> getClassifierClass() {
-			return AfterNewClassifier.class;
-		}
-		public void train(File dir, String[] args) throws Exception {}
-		public void buildJar(File dir, String[] args) throws Exception {
-			new BuildJar.OutputStream(dir).close();
+		public Classifier<String> createClassifier() throws IOException, CleartkException {
+			return new AfterNewClassifier();
 		}
 	}
-	
 	@Before
 	public void setUp() throws Exception {
 		if (!this.outputDirectory.exists()) {
 			this.outputDirectory.mkdirs();
 		}
-		ClassifierManifest manifest = new ClassifierManifest();
-		manifest.setClassifierBuilder(new AfterNewClassifierBuilder());
-		manifest.write(this.outputDirectory);
-		BuildJar.main(this.outputDirectory.getPath());
 	}
 	
 	@After
@@ -202,9 +188,10 @@ public class VerbClauseTemporalAnnotatorTest {
 		Assert.assertEquals(0, tlinks.size());
 		
 		// and run the annotator again, asking it to annotate this time
-		desc = CleartkComponents.createCleartkAnnotator(
+		desc = CleartkComponents.createPrimitiveDescription(
 				VerbClauseTemporalAnnotator.class,
-				new File(this.outputDirectory, "model.jar").getPath());
+				CleartkAnnotator.PARAM_CLASSIFIER_FACTORY_CLASS_NAME,
+				AfterNewClassifier.class.getName());
 		engine = AnalysisEngineFactory.createPrimitive(desc);
 		engine.process(jCas);
 		engine.collectionProcessComplete();
