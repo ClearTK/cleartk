@@ -39,6 +39,7 @@ import org.cleartk.classifier.DataWriterFactory;
 import org.cleartk.classifier.DataWriterFactory_ImplBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.JarClassifierFactory;
 import org.cleartk.classifier.feature.WindowFeature;
 import org.cleartk.classifier.feature.extractor.WindowExtractor;
 import org.cleartk.classifier.feature.extractor.annotationpair.DistanceExtractor;
@@ -84,7 +85,7 @@ public class ArgumentAnnotator extends CleartkAnnotator<String> {
 	throws ResourceInitializationException {
 		return CleartkComponents.createPrimitiveDescription(
 				ArgumentAnnotator.class,
-				CleartkAnnotator.PARAM_CLASSIFIER_JAR_PATH, classifierJar.toString());
+				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, classifierJar.toString());
 	}
 
 	@Override

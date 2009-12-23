@@ -63,7 +63,7 @@ public class BuildTestTokenChunkModel {
 		AnalysisEngine chunkTokenizerDataWriter = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.token.chunk.ChunkTokenizerDataWriter",
 				SequentialDataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY, "test/data/token/chunk",
-				CleartkSequentialAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletCRFDataWriterFactory.class.getName());
+				CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletCRFDataWriterFactory.class.getName());
 
 		SimplePipeline.runPipeline(reader, subtokenizer, chunkTokenizerDataWriter);
 		

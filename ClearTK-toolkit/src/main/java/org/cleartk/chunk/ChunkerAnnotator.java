@@ -165,7 +165,7 @@ public class ChunkerAnnotator extends CleartkSequentialAnnotator<String> {
 			
 			// write data while training
 			if (this.isTraining()) {
-				this.dataWriter.writeSequence(instances);
+				this.sequentialDataWriter.writeSequence(instances);
 			}
 			
 			// set labels during classification

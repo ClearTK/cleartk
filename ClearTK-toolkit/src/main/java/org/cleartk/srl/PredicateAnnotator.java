@@ -40,6 +40,7 @@ import org.cleartk.classifier.DataWriterFactory;
 import org.cleartk.classifier.DataWriterFactory_ImplBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.JarClassifierFactory;
 import org.cleartk.classifier.feature.WindowFeature;
 import org.cleartk.classifier.feature.extractor.WindowExtractor;
 import org.cleartk.classifier.feature.extractor.simple.CombinedExtractor;
@@ -75,7 +76,7 @@ public class PredicateAnnotator extends CleartkAnnotator<Boolean> {
 	throws ResourceInitializationException {
 		return CleartkComponents.createPrimitiveDescription(
 				PredicateAnnotator.class,
-				CleartkAnnotator.PARAM_CLASSIFIER_JAR_PATH, classifierJar.toString());
+				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, classifierJar.toString());
 	}
 
 	@Override

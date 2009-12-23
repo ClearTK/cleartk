@@ -62,7 +62,7 @@ public class CleartkSequentialAnnotatorTest {
 		new File(outputDirectory).mkdirs();
 	}
 
-	@After
+//	@After
 	public void tearDown() {
 		TearDownUtil.removeDirectory(new File(outputDirectory));
 	}
@@ -77,7 +77,7 @@ public class CleartkSequentialAnnotatorTest {
 		try {
 			CleartkSequentialAnnotator<String> classifierAnnotator = new StringTestAnnotator();
 			classifierAnnotator.initialize(UimaContextFactory.createUimaContext(
-					CleartkSequentialAnnotator.PARAM_CLASSIFIER_JAR_PATH, 
+					JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, 
 					new File(outputDirectory, "asdf.jar").getPath()));
 			classifierAnnotator.classifySequence(Collections.singletonList(InstanceFactory.createInstance("hello", 1, 1)));
 			fail("expected exception for invalid classifier name");
@@ -93,7 +93,7 @@ public class CleartkSequentialAnnotatorTest {
 
 		CleartkSequentialAnnotator<String> classifierAnnotator = new StringTestAnnotator();
 		classifierAnnotator.initialize(UimaContextFactory.createUimaContext(
-				CleartkSequentialAnnotator.PARAM_CLASSIFIER_JAR_PATH,
+				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
 				new File(outputDirectory, "model.jar").getPath()));
 		classifierAnnotator.classifySequence(Collections.singletonList(InstanceFactory.createInstance("hello", 1, 1)));
 	}
@@ -107,7 +107,7 @@ public class CleartkSequentialAnnotatorTest {
 
 		try {
 			new StringTestAnnotator().initialize(UimaContextFactory.createUimaContext(
-					CleartkSequentialAnnotator.PARAM_CLASSIFIER_JAR_PATH,
+					JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
 					new File(outputDirectory, "model.jar").getPath()));
 			fail("expected exception for Integer classifier and String annotator");
 		} catch (ResourceInitializationException e) {}
@@ -123,7 +123,7 @@ public class CleartkSequentialAnnotatorTest {
 
 		CleartkSequentialAnnotator<Parent> classifierAnnotator = new ParentTestAnnotator();
 		classifierAnnotator.initialize(UimaContextFactory.createUimaContext(
-				CleartkSequentialAnnotator.PARAM_CLASSIFIER_JAR_PATH,
+				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
 				new File(outputDirectory, "model.jar").getPath()));
 	}
 
@@ -136,7 +136,7 @@ public class CleartkSequentialAnnotatorTest {
 
 		try {
 			new ChildTestAnnotator().initialize(UimaContextFactory.createUimaContext(
-					CleartkSequentialAnnotator.PARAM_CLASSIFIER_JAR_PATH,
+					JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
 					new File(outputDirectory, "model.jar").getPath()));
 			fail("expected exception for Parent classifier and Child annotator");
 		} catch (ResourceInitializationException e) {}
@@ -151,7 +151,7 @@ public class CleartkSequentialAnnotatorTest {
 
 		CleartkSequentialAnnotator<Object> classifierAnnotator = new TestAnnotator<Object>();
 		classifierAnnotator.initialize(UimaContextFactory.createUimaContext(
-				CleartkSequentialAnnotator.PARAM_CLASSIFIER_JAR_PATH,
+				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
 				new File(outputDirectory, "model.jar").getPath()));
 	}
 

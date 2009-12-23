@@ -37,6 +37,7 @@ import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.DataWriterFactory_ImplBase;
 import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.JarClassifierFactory;
 import org.cleartk.classifier.feature.extractor.simple.CountsExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
@@ -66,7 +67,7 @@ public class Annotator extends CleartkAnnotator<String> {
 			File classifierJarFile) throws ResourceInitializationException {
 		return CleartkComponents.createPrimitiveDescription(
 				Annotator.class,
-				CleartkAnnotator.PARAM_CLASSIFIER_JAR_PATH, classifierJarFile.toString());
+				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, classifierJarFile.toString());
 	}
 
 	public void initialize(UimaContext context) throws ResourceInitializationException {

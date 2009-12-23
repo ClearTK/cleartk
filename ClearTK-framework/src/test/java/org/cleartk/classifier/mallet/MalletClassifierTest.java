@@ -40,6 +40,7 @@ import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.DataWriterFactory_ImplBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.JarClassifierFactory;
 import org.cleartk.classifier.Train;
 import org.cleartk.util.JCasUtil;
 import org.junit.After;
@@ -175,7 +176,7 @@ public class MalletClassifierTest {
 		
 		AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createPrimitive(
 				TestAnnotator.class, JCasUtil.getTypeSystemDescription(),
-				CleartkAnnotator.PARAM_CLASSIFIER_JAR_PATH, outputDirectory+"/model.jar");
+				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, outputDirectory+"/model.jar");
 		jCas.reset();
 		classifierAnnotator.process(jCas);
 		classifierAnnotator.collectionProcessComplete();

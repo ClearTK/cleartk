@@ -83,7 +83,7 @@ public class CleartkAnnotatorTest {
 		try {
 			CleartkAnnotator<String> classifierAnnotator = new StringTestAnnotator();
 			classifierAnnotator.initialize(UimaContextFactory.createUimaContext(
-					CleartkAnnotator.PARAM_CLASSIFIER_JAR_PATH, 
+					JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, 
 					new File(outputDirectory, "asdf.jar").getPath()));
 			classifierAnnotator.classifier.classify(
 					InstanceFactory.createInstance("hello", 1, 1).getFeatures());
@@ -100,7 +100,7 @@ public class CleartkAnnotatorTest {
 
 		CleartkAnnotator<String> classifierAnnotator = new StringTestAnnotator();
 		classifierAnnotator.initialize(UimaContextFactory.createUimaContext(
-				CleartkAnnotator.PARAM_CLASSIFIER_JAR_PATH,
+				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
 				new File(outputDirectory, "model.jar").getPath()));
 		classifierAnnotator.classifier.classify(
 				InstanceFactory.createInstance("hello", 1, 1).getFeatures());
@@ -115,7 +115,7 @@ public class CleartkAnnotatorTest {
 
 		try {
 			new StringTestAnnotator().initialize(UimaContextFactory.createUimaContext(
-					CleartkAnnotator.PARAM_CLASSIFIER_JAR_PATH,
+					JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
 					new File(outputDirectory, "model.jar").getPath()));
 			fail("expected exception for Integer classifier and String annotator");
 		} catch (ResourceInitializationException e) {}
@@ -131,7 +131,7 @@ public class CleartkAnnotatorTest {
 
 		CleartkAnnotator<Parent> classifierAnnotator = new ParentTestAnnotator();
 		classifierAnnotator.initialize(UimaContextFactory.createUimaContext(
-				CleartkAnnotator.PARAM_CLASSIFIER_JAR_PATH,
+				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
 				new File(outputDirectory, "model.jar").getPath()));
 	}
 
@@ -144,7 +144,7 @@ public class CleartkAnnotatorTest {
 
 		try {
 			new ChildTestAnnotator().initialize(UimaContextFactory.createUimaContext(
-					CleartkAnnotator.PARAM_CLASSIFIER_JAR_PATH,
+					JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
 					new File(outputDirectory, "model.jar").getPath()));
 			fail("expected exception for Parent classifier and Child annotator");
 		} catch (ResourceInitializationException e) {}
@@ -159,7 +159,7 @@ public class CleartkAnnotatorTest {
 
 		CleartkAnnotator<Object> classifierAnnotator = new TestAnnotator<Object>();
 		classifierAnnotator.initialize(UimaContextFactory.createUimaContext(
-				CleartkAnnotator.PARAM_CLASSIFIER_JAR_PATH,
+				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
 				new File(outputDirectory, "model.jar").getPath()));
 	}
 

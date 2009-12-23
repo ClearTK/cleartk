@@ -41,8 +41,8 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
 import org.cleartk.Initializable;
 import org.cleartk.classifier.Classifier;
-import org.cleartk.classifier.ClassifierFactory;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.JarClassifierFactory;
 import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.SequentialClassifier;
 import org.cleartk.classifier.feature.extractor.outcome.OutcomeFeatureExtractor;
@@ -97,7 +97,7 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
 		FileUtil.extractFilesWithExtFromJar(modelFile, ".jar", modelFileDirectory);
 		
 		File delegatedModelFile = new File(modelFileDirectory, ViterbiClassifierBuilder.DELEGATED_MODEL_FILE_NAME);
-		delegatedClassifier = ReflectionUtil.uncheckedCast(ClassifierFactory.createClassifierFromJar(delegatedModelFile.getPath()));
+		delegatedClassifier = ReflectionUtil.uncheckedCast(JarClassifierFactory.createClassifierFromJar(delegatedModelFile.getPath()));
 
 		ZipEntry zipEntry = modelFile.getEntry(ViterbiDataWriter.OUTCOME_FEATURE_EXTRACTOR_FILE_NAME);
 		if (zipEntry == null) {

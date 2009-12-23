@@ -33,8 +33,8 @@ import org.cleartk.CleartkException;
  * All rights reserved.
  */
 
-public interface ClassifierFactory<OUTCOME_TYPE> {
+public interface SequentialClassifierFactory<OUTCOME_TYPE> {
 
-	public Classifier<OUTCOME_TYPE> createClassifier() throws IOException, CleartkException;
+	public SequentialClassifier<OUTCOME_TYPE> createSequentialClassifier() throws IOException, CleartkException;
 
 }

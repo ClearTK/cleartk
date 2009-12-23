@@ -38,6 +38,7 @@ import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.CleartkSequentialAnnotator;
 import org.cleartk.classifier.DataWriterFactory;
 import org.cleartk.classifier.DataWriterFactory_ImplBase;
+import org.cleartk.classifier.JarClassifierFactory;
 import org.cleartk.classifier.SequentialDataWriterFactory;
 import org.cleartk.classifier.SequentialDataWriterFactory_ImplBase;
 import org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor;
@@ -95,7 +96,7 @@ public class CleartkComponents {
 
 		return AnalysisEngineFactory.createPrimitiveDescription(annotatorClass, TYPE_SYSTEM_DESCRIPTION,
 				TYPE_PRIORITIES, combineParams(configurationParameters,
-						CleartkSequentialAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, ViterbiDataWriterFactory.class
+						CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME, ViterbiDataWriterFactory.class
 								.getName(), ViterbiDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDir,
 						ViterbiDataWriter.PARAM_DELEGATED_DATAWRITER_FACTORY_CLASS, delegatedDataWriterFactoryClass
 								.getName(), ViterbiDataWriter.PARAM_OUTCOME_FEATURE_EXTRACTORS,
@@ -112,7 +113,7 @@ public class CleartkComponents {
 			Class<? extends CleartkAnnotator<OUTCOME_TYPE>> cleartkAnnotatorClass, String classifierJar,
 			List<Class<?>> dynamicallyLoadedClasses, Object... configurationData)
 			throws ResourceInitializationException {
-		return createCleartkAnnotator(cleartkAnnotatorClass, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES, classifierJar, null, configurationData);
+		return createCleartkAnnotator(cleartkAnnotatorClass, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES, classifierJar, dynamicallyLoadedClasses, configurationData);
 
 	}
 	
@@ -132,7 +133,7 @@ public class CleartkComponents {
 		}
 
 		if (classifierJar != null) {
-			ConfigurationParameterFactory.addConfigurationParameter(aed, CleartkAnnotator.PARAM_CLASSIFIER_JAR_PATH, classifierJar);
+			ConfigurationParameterFactory.addConfigurationParameter(aed, JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, classifierJar);
 		}
 		if (configurationData != null) {
 			ConfigurationParameterFactory.addConfigurationParameters(aed, configurationData);
@@ -153,7 +154,7 @@ public class CleartkComponents {
 			Class<? extends DataWriterFactory<OUTCOME_TYPE>> dataWriterFactoryClass, String outputDir,
 			List<Class<?>> dynamicallyLoadedClasses, Object... configurationData)
 			throws ResourceInitializationException {
-		return createCleartkAnnotator(cleartkAnnotatorClass, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES, dataWriterFactoryClass, outputDir, null, configurationData);
+		return createCleartkAnnotator(cleartkAnnotatorClass, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES, dataWriterFactoryClass, outputDir, dynamicallyLoadedClasses, configurationData);
 	}
 	
 	public static <OUTCOME_TYPE> AnalysisEngineDescription createCleartkAnnotator(
@@ -193,7 +194,7 @@ public class CleartkComponents {
 			Class<? extends CleartkSequentialAnnotator<OUTCOME_TYPE>> sequentialClassifierAnnotatorClass,
 			String classifierJar, List<Class<?>> dynamicallyLoadedClasses, Object... configurationData)
 			throws ResourceInitializationException {
-		return createCleartkSequentialAnnotator(sequentialClassifierAnnotatorClass, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES, classifierJar, null,
+		return createCleartkSequentialAnnotator(sequentialClassifierAnnotatorClass, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES, classifierJar, dynamicallyLoadedClasses,
 				configurationData);
 	}
 	
@@ -212,7 +213,7 @@ public class CleartkComponents {
 		}
 
 		if (classifierJar != null) {
-			ConfigurationParameterFactory.addConfigurationParameter(aed, CleartkSequentialAnnotator.PARAM_CLASSIFIER_JAR_PATH, classifierJar);
+			ConfigurationParameterFactory.addConfigurationParameter(aed, JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, classifierJar);
 		}
 		if (configurationData != null) {
 			ConfigurationParameterFactory.addConfigurationParameters(aed, configurationData);
@@ -234,7 +235,7 @@ public class CleartkComponents {
 			List<Class<?>> dynamicallyLoadedClasses, Object... configurationData)
 			throws ResourceInitializationException {
 		return createCleartkSequentialAnnotator(sequentialClassifierAnnotatorClass, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES, dataWriterFactoryClass, outputDir,
-				null, configurationData);
+				dynamicallyLoadedClasses, configurationData);
 
 	}
 	
@@ -254,7 +255,7 @@ public class CleartkComponents {
 		}
 
 		if (dataWriterFactoryClass != null) {
-			ConfigurationParameterFactory.addConfigurationParameter(aed, CleartkSequentialAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+			ConfigurationParameterFactory.addConfigurationParameter(aed, CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME,
 					dataWriterFactoryClass.getName());
 		}
 		if (outputDir != null) {

@@ -41,6 +41,7 @@ import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.DataWriterFactory_ImplBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.JarClassifierFactory;
 import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.Train;
 import org.cleartk.util.JCasUtil;
@@ -164,7 +165,7 @@ public class MaxentClassifierTest {
 
 		AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createPrimitive(
 				Test1Annotator.class, JCasUtil.getTypeSystemDescription(),
-				CleartkAnnotator.PARAM_CLASSIFIER_JAR_PATH, outputDirectory+"/model.jar");
+				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, outputDirectory+"/model.jar");
 		jCas.reset();
 		classifierAnnotator.process(jCas);
 		classifierAnnotator.collectionProcessComplete();
@@ -302,7 +303,7 @@ public class MaxentClassifierTest {
 
 		AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createPrimitive(
 				Test2Annotator.class, JCasUtil.getTypeSystemDescription(),
-				CleartkAnnotator.PARAM_CLASSIFIER_JAR_PATH, outputDirectory+"/model.jar");
+				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, outputDirectory+"/model.jar");
 		jCas.reset();
 		classifierAnnotator.process(jCas);
 		classifierAnnotator.collectionProcessComplete();

@@ -282,7 +282,7 @@ public class UIMAUtil {
 			return cls;
 		}
 		catch (Exception e) {
-			throw new ResourceInitializationException(e);
+			throw new ResourceInitializationException(new Throwable("classname = "+className+" superClass = "+superClass.getName(), e));
 		}
 	
 	}

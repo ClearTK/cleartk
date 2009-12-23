@@ -142,7 +142,7 @@ extends CleartkSequentialAnnotator<String> {
 			}
 			
 			if (this.isTraining()) {
-				this.dataWriter.writeSequence(instances);
+				this.sequentialDataWriter.writeSequence(instances);
 			} else {
 				List<String> tags = this.classifySequence(instances);
 				tokens.moveToFirst();

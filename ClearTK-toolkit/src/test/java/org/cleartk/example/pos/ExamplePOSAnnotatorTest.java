@@ -36,7 +36,7 @@ import org.cleartk.CleartkComponents;
 import org.cleartk.classifier.CleartkSequentialAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.SequentialDataWriterFactory_ImplBase;
+import org.cleartk.classifier.JarClassifierFactory;
 import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
@@ -175,7 +175,7 @@ public class ExamplePOSAnnotatorTest {
 		
 
 		Object classifierJar = engine.getConfigParameterValue(
-				CleartkSequentialAnnotator.PARAM_CLASSIFIER_JAR_PATH);
+				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH);
 		Assert.assertEquals(ExamplePOSAnnotator.DEFAULT_MODEL, classifierJar);
 		
 		engine.collectionProcessComplete();
@@ -187,13 +187,13 @@ public class ExamplePOSAnnotatorTest {
 				ExamplePOSAnnotator.getWriterDescription(ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY));
 		
 		Object outputDir = engine.getConfigParameterValue(
-				SequentialDataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY);
+				ViterbiDataWriterFactory.PARAM_OUTPUT_DIRECTORY);
 		Assert.assertEquals(ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY, outputDir);
 		
 		String expectedDataWriterFactory = (
 				ViterbiDataWriterFactory.class.getName());
 		Object dataWriter = engine.getConfigParameterValue(
-				CleartkSequentialAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME);
+				CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME);
 		Assert.assertEquals(expectedDataWriterFactory, dataWriter);
 		engine.collectionProcessComplete();
 	}

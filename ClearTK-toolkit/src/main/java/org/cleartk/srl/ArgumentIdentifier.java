@@ -40,6 +40,7 @@ import org.cleartk.classifier.DataWriterFactory;
 import org.cleartk.classifier.DataWriterFactory_ImplBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.JarClassifierFactory;
 import org.cleartk.classifier.feature.extractor.annotationpair.AnnotationPairFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.annotationpair.MatchingAnnotationPairExtractor;
 import org.cleartk.classifier.feature.extractor.annotationpair.NamingAnnotationPairFeatureExtractor;
@@ -103,7 +104,7 @@ public class ArgumentIdentifier extends CleartkAnnotator<Boolean> {
 	throws ResourceInitializationException {
 		return CleartkComponents.createPrimitiveDescription(
 				ArgumentIdentifier.class,
-				CleartkAnnotator.PARAM_CLASSIFIER_JAR_PATH, classifierJar.toString());
+				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, classifierJar.toString());
 	}
 
 	@Override

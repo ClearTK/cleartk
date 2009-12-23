@@ -37,19 +37,19 @@ import org.cleartk.util.UIMAUtil;
 import org.uutuc.descriptor.ConfigurationParameter;
 import org.uutuc.util.InitializeUtil;
 
-public abstract class CleartkAnnotator<OUTCOME_TYPE> extends JCasAnnotator_ImplBase implements Initializable{
+public abstract class CleartkAnnotator<OUTCOME_TYPE> extends JCasAnnotator_ImplBase implements Initializable {
+
+	public static final String PARAM_CLASSIFIER_FACTORY_CLASS_NAME = ConfigurationParameterNameFactory
+			.createConfigurationParameterName(CleartkAnnotator.class, "classifierFactoryClassName");
+
+	@ConfigurationParameter(mandatory = false, description = "provides the full name of the ClassifierFactory class to be used.", defaultValue = "org.cleartk.classifier.JarClassifierFactory")
+	private String classifierFactoryClassName;
 
 	public static final String PARAM_DATA_WRITER_FACTORY_CLASS_NAME = ConfigurationParameterNameFactory
 			.createConfigurationParameterName(CleartkAnnotator.class, "dataWriterFactoryClassName");
 
 	@ConfigurationParameter(mandatory = false, description = "provides the full name of the DataWriterFactory class to be used.")
 	private String dataWriterFactoryClassName;
-
-	public static final String PARAM_CLASSIFIER_JAR_PATH = ConfigurationParameterNameFactory
-			.createConfigurationParameterName(CleartkAnnotator.class, "classifierJarPath");
-
-	@ConfigurationParameter(mandatory = false, description = "provides the path to the jar file that should be used to instantiate the classifier.")
-	private String classifierJarPath;
 
 	protected Classifier<OUTCOME_TYPE> classifier;
 
@@ -75,29 +75,31 @@ public abstract class CleartkAnnotator<OUTCOME_TYPE> extends JCasAnnotator_ImplB
 			catch (CleartkException e) {
 				throw new ResourceInitializationException(e);
 			}
-			
+
 			UIMAUtil.initialize(untypedDataWriter, context);
 			this.dataWriter = ReflectionUtil.uncheckedCast(untypedDataWriter);
 		}
 		else {
-
-			if(classifierJarPath == null) {
-				throw new ResourceInitializationException(ResourceInitializationException.CONFIG_SETTING_ABSENT, new Object[] {PARAM_CLASSIFIER_JAR_PATH});
-			}
+			// create the factory and instantiate the classifier
+			ClassifierFactory<?> factory = UIMAUtil
+					.create(classifierFactoryClassName, ClassifierFactory.class, context);
 			Classifier<?> untypedClassifier;
 			try {
-				untypedClassifier = ClassifierFactory.createClassifierFromJar(classifierJarPath);
+				untypedClassifier = factory.createClassifier();
 			}
 			catch (IOException e) {
 				throw new ResourceInitializationException(e);
 			}
+			catch (CleartkException e) {
+				throw new ResourceInitializationException(e);
+			}
 
-			// check that the Classifier matches the Annotator type
 			this.classifier = ReflectionUtil.uncheckedCast(untypedClassifier);
 			UIMAUtil.checkTypeParameterIsAssignable(
 					CleartkAnnotator.class, "OUTCOME_TYPE", this,
 					Classifier.class, "OUTCOME_TYPE", this.classifier);
-			UIMAUtil.initialize(this.classifier, context);
+			UIMAUtil.initialize(untypedClassifier, context);
+
 		}
 	}
 
