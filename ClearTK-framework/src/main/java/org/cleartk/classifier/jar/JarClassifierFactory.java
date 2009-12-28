@@ -35,6 +35,7 @@ import org.cleartk.classifier.ClassifierFactory;
 import org.cleartk.classifier.SequentialClassifier;
 import org.cleartk.classifier.SequentialClassifierFactory;
 import org.cleartk.test.util.ConfigurationParameterNameFactory;
+import org.cleartk.util.ReflectionUtil;
 import org.uutuc.descriptor.ConfigurationParameter;
 import org.uutuc.util.InitializeUtil;
 
@@ -44,7 +45,7 @@ import org.uutuc.util.InitializeUtil;
  * All rights reserved.
  */
 
-public class JarClassifierFactory implements ClassifierFactory, SequentialClassifierFactory, Initializable {
+public class JarClassifierFactory<OUTCOME_TYPE> implements ClassifierFactory<OUTCOME_TYPE>, SequentialClassifierFactory<OUTCOME_TYPE>, Initializable {
 
 	public static final String PARAM_CLASSIFIER_JAR_PATH = ConfigurationParameterNameFactory
 			.createConfigurationParameterName(JarClassifierFactory.class, "classifierJarPath");
@@ -56,11 +57,11 @@ public class JarClassifierFactory implements ClassifierFactory, SequentialClassi
 		InitializeUtil.initialize(this, context);
 	}
 
-	public Classifier createClassifier() throws IOException, CleartkException {
+	public Classifier<OUTCOME_TYPE> createClassifier() throws IOException, CleartkException {
 		return createClassifierFromJar(classifierJarPath);
 	}
 
-	public SequentialClassifier createSequentialClassifier() throws IOException, CleartkException {
+	public SequentialClassifier<OUTCOME_TYPE> createSequentialClassifier() throws IOException, CleartkException {
 		return createSequentialClassifierFromJar(classifierJarPath);
 	}
 
@@ -81,22 +82,22 @@ public class JarClassifierFactory implements ClassifierFactory, SequentialClassi
 	 * @return a classifier defined by the contents of the jar file.
 	 * @throws IOException
 	 */
-	public static Classifier<?> createClassifierFromJar(String jarFileName) throws IOException {
-		return createClassifierFromJar(jarFileName, Classifier.class);
+	public Classifier<OUTCOME_TYPE> createClassifierFromJar(String jarFileName) throws IOException {
+		return ReflectionUtil.uncheckedCast(createClassifierFromJar(jarFileName, Classifier.class));
 	}
 
-	public static SequentialClassifier<?> createSequentialClassifierFromJar(String jarFileName) throws IOException {
-		return createClassifierFromJar(jarFileName, SequentialClassifier.class);
+	public SequentialClassifier<OUTCOME_TYPE> createSequentialClassifierFromJar(String jarFileName) throws IOException {
+		return ReflectionUtil.uncheckedCast(createClassifierFromJar(jarFileName, SequentialClassifier.class));
 	}
 
-	private static <T> T createClassifierFromJar(String jarFileName, Class<T> cls) throws IOException {
+	public static <CLASSIFIER_TYPE> Object createClassifierFromJar(String jarFileName, Class<CLASSIFIER_TYPE> cls) throws IOException {
 		// get the jar file manifest
 		JarFile modelFile = new JarFile(jarFileName);
 		ClassifierManifest manifest = new ClassifierManifest(modelFile);
 
 		// get the classifier class
 		ClassifierBuilder<?> builder = manifest.getClassifierBuilder();
-		Class<? extends T> classifierClass = builder.getClassifierClass().asSubclass(cls);
+		Class<? extends CLASSIFIER_TYPE> classifierClass = builder.getClassifierClass().asSubclass(cls);
 
 		// create the classifier, passing in the jar file
 		try {

@@ -97,7 +97,7 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
 		FileUtil.extractFilesWithExtFromJar(modelFile, ".jar", modelFileDirectory);
 		
 		File delegatedModelFile = new File(modelFileDirectory, ViterbiClassifierBuilder.DELEGATED_MODEL_FILE_NAME);
-		delegatedClassifier = ReflectionUtil.uncheckedCast(JarClassifierFactory.createClassifierFromJar(delegatedModelFile.getPath()));
+		delegatedClassifier = ReflectionUtil.uncheckedCast(JarClassifierFactory.createClassifierFromJar(delegatedModelFile.getPath(), Classifier.class));
 
 		ZipEntry zipEntry = modelFile.getEntry(ViterbiDataWriter.OUTCOME_FEATURE_EXTRACTOR_FILE_NAME);
 		if (zipEntry == null) {
