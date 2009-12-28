@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.classifier;
+package org.cleartk.classifier.jar;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -31,6 +31,9 @@ import java.util.Map;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
+import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.ScoredOutcome;
+import org.cleartk.classifier.SequentialClassifier;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
@@ -43,12 +46,12 @@ import org.cleartk.util.ReflectionUtil;
 
 */
 
-public abstract class SequentialClassifier_ImplBase<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE,FEATURES_TYPE> implements SequentialClassifier<INPUTOUTCOME_TYPE> {
+public abstract class JarSequentialClassifier<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE,FEATURES_TYPE> implements SequentialClassifier<INPUTOUTCOME_TYPE> {
 	
 	protected FeaturesEncoder<FEATURES_TYPE> featuresEncoder;
 	protected OutcomeEncoder<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE> outcomeEncoder;
 	
-	public SequentialClassifier_ImplBase(JarFile modelFile) throws IOException {
+	public JarSequentialClassifier(JarFile modelFile) throws IOException {
 		
 		// de-serialize the encoders
 		ZipEntry zipEntry = modelFile.getEntry(FeaturesEncoder_ImplBase.ENCODERS_FILE_NAME);
@@ -69,7 +72,7 @@ public abstract class SequentialClassifier_ImplBase<INPUTOUTCOME_TYPE,OUTPUTOUTC
 	}
 
 	protected Class<?> getMyTypeArgument(String parameterName) {
-		return getTypeArgument(SequentialClassifier_ImplBase.class, parameterName, this);
+		return getTypeArgument(JarSequentialClassifier.class, parameterName, this);
 	}
 	
 	protected  Class<?> getTypeArgument(Class<?> cls, String parameterName, Object instance) {
