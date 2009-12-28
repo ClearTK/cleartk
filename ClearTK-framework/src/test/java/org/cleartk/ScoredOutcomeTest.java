@@ -1,5 +1,5 @@
- /** 
- * Copyright (c) 2009, Regents of the University of Colorado 
+/** 
+ * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -20,53 +20,28 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
-
-package org.cleartk.classifier;
+ */
+package org.cleartk;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
+import org.cleartk.classifier.ScoredOutcome;
 import org.junit.Test;
-
 
 /**
  * <br>
- * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
  * All rights reserved.
- * <br>
- * @author Philip Ogren
  */
 
-
-public class FeatureTest {
+public class ScoredOutcomeTest {
 
 	@Test
-	public void testFactoryMethod() {
-		Feature feature1 = new Feature("asdf", 1);
-		Feature feature2 = Feature.createFeature("qwerty", feature1);
-		assertEquals("qwerty_asdf", feature2.getName());
-		assertEquals(1, feature2.getValue());
+	public void testScoredOutcome() {
+		ScoredOutcome<Integer> so = new ScoredOutcome<Integer>(5, 0.01d);
+		assertEquals("5|0.01", so.toString());
+		ScoredOutcome<String>  sso = new ScoredOutcome<String>("outcome", 3.1415d);
+		assertEquals("outcome|3.1415", sso.toString());
 		
-		Instance<String> instance = InstanceFactory.createInstance("A", "feature1", 1, "feature1", 1, "feature1", 2);
-		Feature feature = instance.getFeatures().get(0);
-		assertEquals("Feature(<feature1>, <1>)", feature.toString());
-		assertEquals(-420503769, feature.hashCode());
-		assertTrue(feature.equals(instance.getFeatures().get(1)));
-		assertFalse(feature.equals(instance.getFeatures().get(2)));
-		assertFalse(feature.equals("feature1"));
-
-		instance = InstanceFactory.createInstance("A", "feature1 feature1");
-		feature = instance.getFeatures().get(0);
-		assertEquals("Feature(<feature1>, <null>)", feature.toString());
-		assertEquals(-420503770, feature.hashCode());
-		assertTrue(feature.equals(instance.getFeatures().get(1)));
-
-		feature = new Feature(5);
-		assertFalse(feature.equals(instance.getFeatures().get(0)));
-		assertEquals(966, feature.hashCode());
-		feature.setValue(6);
-		assertEquals(6, feature.getValue());
 	}
 }

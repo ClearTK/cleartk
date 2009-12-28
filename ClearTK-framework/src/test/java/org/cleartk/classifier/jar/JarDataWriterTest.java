@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.classifier;
+package org.cleartk.classifier.jar;
 
 import static org.junit.Assert.assertTrue;
 
@@ -34,6 +34,7 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.UimaContext;
 import org.apache.uima.util.FileUtils;
 import org.cleartk.CleartkException;
+import org.cleartk.classifier.DataWriter;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
 import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
@@ -56,7 +57,7 @@ import org.uutuc.util.TearDownUtil;
  * 
  * @author Steven Bethard
  */
-public class DataWriter_ImplBaseTest {
+public class JarDataWriterTest {
 
 	@After
 	public void tearDown() throws Exception {
