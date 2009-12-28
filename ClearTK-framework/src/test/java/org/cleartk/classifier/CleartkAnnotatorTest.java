@@ -38,6 +38,8 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
+import org.cleartk.classifier.jar.JarDataWriterFactory;
+import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.util.JCasUtil;
@@ -150,14 +152,14 @@ public class CleartkAnnotatorTest {
 			AnalysisEngineFactory.createPrimitive(
 					StringTestAnnotator.class,
 					JCasUtil.getTypeSystemDescription(),
-					DataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDirectory);
+					JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory);
 			Assert.fail("expected exception with missing classifier jar");
 		} catch (ResourceInitializationException e) {}
 			
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				StringTestAnnotator.class,
 				JCasUtil.getTypeSystemDescription(),
-				DataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMaxentDataWriterFactory.class.getName());
 		
 		Object dataWriter = engine.getConfigParameterValue(
@@ -165,7 +167,7 @@ public class CleartkAnnotatorTest {
 		Assert.assertEquals(DefaultMaxentDataWriterFactory.class.getName(), dataWriter);
 		
 		Object outputDir = engine.getConfigParameterValue(
-				DataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY);
+				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY);
 		Assert.assertEquals(outputDirectory, outputDir);
 		
 		engine.collectionProcessComplete();

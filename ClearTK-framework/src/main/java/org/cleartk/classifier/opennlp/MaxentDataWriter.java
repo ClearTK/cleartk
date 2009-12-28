@@ -31,9 +31,9 @@ import java.util.List;
 import opennlp.maxent.RealValueFileEventStream;
 
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.ClassifierBuilder;
-import org.cleartk.classifier.DataWriter_ImplBase;
 import org.cleartk.classifier.encoder.features.NameNumber;
+import org.cleartk.classifier.jar.ClassifierBuilder;
+import org.cleartk.classifier.jar.JarDataWriter;
 
 
 /**
@@ -58,7 +58,7 @@ import org.cleartk.classifier.encoder.features.NameNumber;
  * @author Steven Bethard
  * @see RealValueFileEventStream
  */
-public class MaxentDataWriter extends DataWriter_ImplBase<String, String, List<NameNumber>> {
+public class MaxentDataWriter extends JarDataWriter<String, String, List<NameNumber>> {
 
 	public static final String TRAINING_DATA_FILE_NAME ="training-data.maxent"; 
 

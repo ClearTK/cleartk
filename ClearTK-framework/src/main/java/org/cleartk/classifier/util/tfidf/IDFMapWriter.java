@@ -33,12 +33,12 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.ClassifierBuilder;
 import org.cleartk.classifier.DataWriter;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.Counts;
 import org.cleartk.classifier.feature.FeatureCollection;
+import org.cleartk.classifier.jar.ClassifierBuilder;
 
 
 /**

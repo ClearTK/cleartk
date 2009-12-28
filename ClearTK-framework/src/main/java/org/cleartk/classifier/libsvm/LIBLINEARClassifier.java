@@ -29,8 +29,8 @@ import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.Classifier_ImplBase;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.jar.JarClassifier;
 import org.cleartk.classifier.libsvm.model.LIBLINEARModel;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
@@ -44,7 +44,7 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
  *
  */
 
-public class LIBLINEARClassifier extends Classifier_ImplBase<Boolean,Boolean,FeatureVector> {
+public class LIBLINEARClassifier extends JarClassifier<Boolean,Boolean,FeatureVector> {
 	
 	public static final String MODEL_NAME = "model.liblinear";
 	LIBLINEARModel model;

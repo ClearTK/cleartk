@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.classifier;
+package org.cleartk.classifier.jar;
 
 import java.io.IOException;
 import java.util.jar.JarFile;
@@ -30,6 +30,10 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
 import org.cleartk.Initializable;
+import org.cleartk.classifier.Classifier;
+import org.cleartk.classifier.ClassifierFactory;
+import org.cleartk.classifier.SequentialClassifier;
+import org.cleartk.classifier.SequentialClassifierFactory;
 import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.uutuc.descriptor.ConfigurationParameter;
 import org.uutuc.util.InitializeUtil;

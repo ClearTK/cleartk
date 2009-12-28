@@ -29,11 +29,11 @@ import java.io.PrintWriter;
 import java.util.Locale;
 
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.ClassifierBuilder;
-import org.cleartk.classifier.DataWriter_ImplBase;
+import org.cleartk.classifier.jar.ClassifierBuilder;
+import org.cleartk.classifier.jar.JarDataWriter;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
-public class SVMlightDataWriter extends DataWriter_ImplBase<Boolean,Boolean,FeatureVector> {
+public class SVMlightDataWriter extends JarDataWriter<Boolean,Boolean,FeatureVector> {
 
 	public SVMlightDataWriter(File outputDirectory) throws IOException {
 		super(outputDirectory);

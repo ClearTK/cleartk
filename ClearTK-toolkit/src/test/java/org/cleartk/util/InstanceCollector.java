@@ -31,12 +31,12 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.ClassifierBuilder;
 import org.cleartk.classifier.DataWriter;
 import org.cleartk.classifier.DataWriterFactory;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.SequentialDataWriter;
 import org.cleartk.classifier.SequentialDataWriterFactory;
+import org.cleartk.classifier.jar.ClassifierBuilder;
 
 /**
  * <br>

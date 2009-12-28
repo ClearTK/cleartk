@@ -43,6 +43,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
+import org.cleartk.classifier.jar.JarSequentialDataWriterFactory;
 import org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory;
 import org.cleartk.classifier.mallet.MalletCRFDataWriter;
 import org.cleartk.type.test.Sentence;
@@ -101,7 +102,7 @@ public class SequentialDataWriterAnnotatorTest {
 	public void testSequentialDataWriterAnnotator() throws IOException, UIMAException {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				TestAnnotator.class, JCasUtil.getTypeSystemDescription(),
-				SequentialDataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				JarSequentialDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletCRFDataWriterFactory.class.getName());
 		
 		//create some tokens and sentences

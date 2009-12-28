@@ -36,11 +36,11 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.ClassifierBuilder;
-import org.cleartk.classifier.DataWriter_ImplBase;
+import org.cleartk.classifier.jar.ClassifierBuilder;
+import org.cleartk.classifier.jar.JarDataWriter;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
-public class OVASVMlightDataWriter extends DataWriter_ImplBase<String,Integer,FeatureVector> {
+public class OVASVMlightDataWriter extends JarDataWriter<String,Integer,FeatureVector> {
 
 	public OVASVMlightDataWriter(File outputDirectory) throws IOException {
 		super(outputDirectory);

@@ -27,7 +27,6 @@ package org.cleartk.classifier.svmlight;
 import java.io.IOException;
 
 import org.cleartk.classifier.DataWriter;
-import org.cleartk.classifier.DataWriterFactory_ImplBase;
 import org.cleartk.classifier.encoder.features.BooleanEncoder;
 import org.cleartk.classifier.encoder.features.FeatureVectorFeaturesEncoder;
 import org.cleartk.classifier.encoder.features.NumberEncoder;
@@ -35,6 +34,7 @@ import org.cleartk.classifier.encoder.features.StringEncoder;
 import org.cleartk.classifier.encoder.features.normalizer.EuclidianNormalizer;
 import org.cleartk.classifier.encoder.features.normalizer.NameNumberNormalizer;
 import org.cleartk.classifier.encoder.outcome.StringToIntegerOutcomeEncoder;
+import org.cleartk.classifier.jar.JarDataWriterFactory;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
 /**
@@ -45,7 +45,7 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
  * 
  */
 
-public class DefaultOVASVMlightDataWriterFactory extends DataWriterFactory_ImplBase<FeatureVector, String, Integer> {
+public class DefaultOVASVMlightDataWriterFactory extends JarDataWriterFactory<FeatureVector, String, Integer> {
 
 	public DataWriter<String> createDataWriter() throws IOException {
 		OVASVMlightDataWriter dataWriter = new OVASVMlightDataWriter(outputDirectory);

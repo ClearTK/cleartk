@@ -36,7 +36,7 @@ import org.cleartk.CleartkComponents;
 import org.cleartk.classifier.CleartkSequentialAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.JarClassifierFactory;
+import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;

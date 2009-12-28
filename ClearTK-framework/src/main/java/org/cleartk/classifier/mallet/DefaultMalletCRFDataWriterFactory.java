@@ -30,13 +30,13 @@ import java.util.List;
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.SequentialDataWriter;
-import org.cleartk.classifier.SequentialDataWriterFactory_ImplBase;
 import org.cleartk.classifier.encoder.features.BooleanEncoder;
 import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 import org.cleartk.classifier.encoder.features.NumberEncoder;
 import org.cleartk.classifier.encoder.features.StringEncoder;
 import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
+import org.cleartk.classifier.jar.JarSequentialDataWriterFactory;
 import org.cleartk.util.UIMAUtil;
 import org.uutuc.util.InitializeUtil;
 
@@ -48,7 +48,7 @@ import org.uutuc.util.InitializeUtil;
  * 
  */
 
-public class DefaultMalletCRFDataWriterFactory extends SequentialDataWriterFactory_ImplBase<List<NameNumber>, String, String> {
+public class DefaultMalletCRFDataWriterFactory extends JarSequentialDataWriterFactory<List<NameNumber>, String, String> {
 
 	/**
 	 * "org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory.PARAM_COMPRESS"

@@ -38,10 +38,10 @@ import opennlp.maxent.io.BinaryGISModelReader;
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.Classifier_ImplBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.encoder.features.NameNumber;
+import org.cleartk.classifier.jar.JarClassifier;
 
 /**
  * <br>
@@ -52,7 +52,7 @@ import org.cleartk.classifier.encoder.features.NameNumber;
  * @author Philip Ogren
  * 
  */
-public class MaxentClassifier extends Classifier_ImplBase<String, String, List<NameNumber>>{
+public class MaxentClassifier extends JarClassifier<String, String, List<NameNumber>>{
 
 	protected MaxentModel model;
 	

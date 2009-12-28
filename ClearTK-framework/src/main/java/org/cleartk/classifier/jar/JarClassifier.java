@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.classifier;
+package org.cleartk.classifier.jar;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -32,6 +32,9 @@ import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
 import org.cleartk.CleartkException;
+import org.cleartk.classifier.Classifier;
+import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
@@ -44,12 +47,12 @@ import org.cleartk.util.ReflectionUtil;
 
 */
 
-public abstract class Classifier_ImplBase<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE,FEATURES_TYPE> implements Classifier<INPUTOUTCOME_TYPE> {
+public abstract class JarClassifier<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE,FEATURES_TYPE> implements Classifier<INPUTOUTCOME_TYPE> {
 	
 	protected FeaturesEncoder<FEATURES_TYPE> featuresEncoder;
 	protected OutcomeEncoder<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE> outcomeEncoder;
 	
-	public Classifier_ImplBase(JarFile modelFile) throws IOException {
+	public JarClassifier(JarFile modelFile) throws IOException {
 			// de-serialize the encoders
 			ZipEntry zipEntry = modelFile.getEntry(FeaturesEncoder_ImplBase.ENCODERS_FILE_NAME);
 			ObjectInputStream is = new ObjectInputStream(modelFile.getInputStream(zipEntry));
@@ -73,7 +76,7 @@ public abstract class Classifier_ImplBase<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE,F
 
 
 	protected Class<?> getMyTypeArgument(String parameterName) {
-		return getTypeArgument(Classifier_ImplBase.class, parameterName, this);
+		return getTypeArgument(JarClassifier.class, parameterName, this);
 	}
 	
 	protected  Class<?> getTypeArgument(Class<?> cls, String parameterName, Object instance) {

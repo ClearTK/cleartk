@@ -28,7 +28,7 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.cleartk.classifier.CleartkSequentialAnnotator;
-import org.cleartk.classifier.SequentialDataWriterFactory_ImplBase;
+import org.cleartk.classifier.jar.JarSequentialDataWriterFactory;
 import org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory;
 import org.cleartk.corpus.genia.GeniaPosGoldReader;
 import org.cleartk.token.TokenAnnotator;
@@ -62,12 +62,12 @@ public class BuildTestTokenChunkModel {
 		 
 		AnalysisEngine chunkTokenizerDataWriter = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.token.chunk.ChunkTokenizerDataWriter",
-				SequentialDataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY, "test/data/token/chunk",
+				JarSequentialDataWriterFactory.PARAM_OUTPUT_DIRECTORY, "test/data/token/chunk",
 				CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletCRFDataWriterFactory.class.getName());
 
 		SimplePipeline.runPipeline(reader, subtokenizer, chunkTokenizerDataWriter);
 		
-		org.cleartk.classifier.Train.main("test/data/token/chunk");
+		org.cleartk.classifier.jar.Train.main("test/data/token/chunk");
 
 	}
 }

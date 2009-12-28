@@ -36,15 +36,15 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
 import org.cleartk.Initializable;
-import org.cleartk.classifier.ClassifierBuilder;
-import org.cleartk.classifier.ClassifierManifest;
 import org.cleartk.classifier.DataWriter;
 import org.cleartk.classifier.DataWriterFactory;
-import org.cleartk.classifier.DataWriterFactory_ImplBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.SequentialDataWriter;
 import org.cleartk.classifier.feature.extractor.outcome.OutcomeFeatureExtractor;
+import org.cleartk.classifier.jar.ClassifierBuilder;
+import org.cleartk.classifier.jar.ClassifierManifest;
+import org.cleartk.classifier.jar.JarDataWriterFactory;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
 import org.cleartk.util.ReflectionUtil.TypeArgumentDelegator;
@@ -93,8 +93,8 @@ public class ViterbiDataWriter<OUTCOME_TYPE> implements
 			
 			DataWriterFactory<?> dataWriterFactory = UIMAUtil.create(context, PARAM_DELEGATED_DATAWRITER_FACTORY_CLASS,
 					DataWriterFactory.class);
-			if(dataWriterFactory instanceof DataWriterFactory_ImplBase<?,?,?>) {
-				((DataWriterFactory_ImplBase<?,?,?>) dataWriterFactory).setOutputDirectory(delegatedOutputDirectory);
+			if(dataWriterFactory instanceof JarDataWriterFactory<?,?,?>) {
+				((JarDataWriterFactory<?,?,?>) dataWriterFactory).setOutputDirectory(delegatedOutputDirectory);
 			}
 			this.delegatedDataWriter = ReflectionUtil.uncheckedCast(dataWriterFactory.createDataWriter());
 			UIMAUtil.initialize(this.delegatedDataWriter, context);

@@ -35,7 +35,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 <mandatory>false</mandatory>
             </configurationParameter>
             <configurationParameter>
-                <name>org.cleartk.classifier.DataWriterFactory_ImplBase.outputDirectory</name>
+                <name>org.cleartk.classifier.jar.JarDataWriterFactory.outputDirectory</name>
                 <type>String</type>
                 <multiValued>false</multiValued>
                 <mandatory>false</mandatory>
@@ -45,7 +45,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             <nameValuePair>
                 <name>org.cleartk.classifier.CleartkAnnotator.classifierFactoryClassName</name>
                 <value>
-                    <string>org.cleartk.classifier.JarClassifierFactory</string>
+                    <string>org.cleartk.classifier.jar.JarClassifierFactory</string>
                 </value>
             </nameValuePair>
             <nameValuePair>
@@ -55,7 +55,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 </value>
             </nameValuePair>
             <nameValuePair>
-                <name>org.cleartk.classifier.DataWriterFactory_ImplBase.outputDirectory</name>
+                <name>org.cleartk.classifier.jar.JarDataWriterFactory.outputDirectory</name>
                 <value>
                     <string>example\documentclassification</string>
                 </value>

@@ -28,9 +28,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 
-import org.cleartk.classifier.BuildJar;
 import org.cleartk.classifier.Classifier;
-import org.cleartk.classifier.ClassifierBuilder;
+import org.cleartk.classifier.jar.BuildJar;
+import org.cleartk.classifier.jar.ClassifierBuilder;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 

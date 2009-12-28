@@ -40,12 +40,12 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.pear.util.FileUtil;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkAnnotator;
-import org.cleartk.classifier.DataWriterFactory_ImplBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.InstanceFactory;
-import org.cleartk.classifier.Train;
 import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
+import org.cleartk.classifier.jar.JarDataWriterFactory;
+import org.cleartk.classifier.jar.Train;
 import org.cleartk.classifier.mallet.factory.ClassifierTrainerFactory;
 import org.cleartk.util.JCasUtil;
 import org.junit.After;
@@ -105,7 +105,7 @@ public class MalletDataWriterTest {
 	public void test1() throws Exception {
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
 				Test1Annotator.class, JCasUtil.getTypeSystemDescription(),
-				DataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletDataWriterFactory.class.getName());
 
 		JCas jCas = JCasUtil.getJCas();
@@ -144,7 +144,7 @@ public class MalletDataWriterTest {
 	public void test2() throws Exception {
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
 				Test1Annotator.class, JCasUtil.getTypeSystemDescription(),
-				DataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletDataWriterFactory.class.getName(),
 				DefaultMalletDataWriterFactory.PARAM_COMPRESS, true);
 
@@ -189,7 +189,7 @@ public class MalletDataWriterTest {
 	public void test3() throws Exception {
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
 				Test1Annotator.class, JCasUtil.getTypeSystemDescription(),
-				DataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletDataWriterFactory.class.getName(),
 				DefaultMalletDataWriterFactory.PARAM_COMPRESS, true,
 				DefaultMalletDataWriterFactory.PARAM_SORT_NAME_LOOKUP, true);
@@ -249,7 +249,7 @@ public class MalletDataWriterTest {
 
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
 				Test4Annotator.class, JCasUtil.getTypeSystemDescription(),
-				DataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletDataWriterFactory.class.getName(),
 				DefaultMalletDataWriterFactory.PARAM_COMPRESS, true,
 				DefaultMalletDataWriterFactory.PARAM_SORT_NAME_LOOKUP, true);
@@ -288,7 +288,7 @@ public class MalletDataWriterTest {
 	public void test5() throws Exception {
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
 				Test5Annotator.class, JCasUtil.getTypeSystemDescription(),
-				DataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletDataWriterFactory.class.getName(),
 				DefaultMalletDataWriterFactory.PARAM_COMPRESS, true);
 

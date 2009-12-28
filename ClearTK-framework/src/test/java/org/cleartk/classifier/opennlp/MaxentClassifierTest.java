@@ -38,14 +38,13 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkAnnotator;
-import org.cleartk.classifier.DataWriterFactory_ImplBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.JarClassifierFactory;
 import org.cleartk.classifier.ScoredOutcome;
-import org.cleartk.classifier.Train;
+import org.cleartk.classifier.jar.JarClassifierFactory;
+import org.cleartk.classifier.jar.JarDataWriterFactory;
+import org.cleartk.classifier.jar.Train;
 import org.cleartk.util.JCasUtil;
-import org.junit.After;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.util.HideOutput;
@@ -61,7 +60,7 @@ public class MaxentClassifierTest {
 	
 	String outputDirectory = "test/data/opennlp/maxent-classifier"; 
 	
-	@After
+//	@After
 	public void tearDown() throws Exception {
 		File outputDirectory = new File(this.outputDirectory);
 		TearDownUtil.removeDirectory(outputDirectory);
@@ -136,7 +135,7 @@ public class MaxentClassifierTest {
 	public void test1() throws Exception {
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
 				Test1Annotator.class, JCasUtil.getTypeSystemDescription(), 
-				DataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMaxentDataWriterFactory.class.getName());
 
 		JCas jCas = JCasUtil.getJCas();
@@ -241,7 +240,7 @@ public class MaxentClassifierTest {
 	public void test2() throws Exception {
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
 				Test2Annotator.class, JCasUtil.getTypeSystemDescription(), 
-				DataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMaxentDataWriterFactory.class.getName(),
 				DefaultMaxentDataWriterFactory.PARAM_COMPRESS, false);
 		

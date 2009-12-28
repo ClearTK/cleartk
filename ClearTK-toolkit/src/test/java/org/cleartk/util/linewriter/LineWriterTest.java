@@ -37,7 +37,7 @@ import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
 import org.cleartk.CleartkComponents;
-import org.cleartk.classifier.JarClassifierFactory;
+import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;

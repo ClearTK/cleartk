@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.classifier;
+package org.cleartk.classifier.jar;
 
 import java.io.File;
 
@@ -31,30 +31,11 @@ import java.io.File;
 
 */
 
-public class Train {
-	public static void main(String ... args) throws Exception {
-		String programName = Train.class.getName();
-		String usage = String.format(
-				"usage: java %s DIR\n\n" + 
-				"The directory DIR should contain the training-data.xxx file as\n" + 
-				"created by a classifier DataWriter\n", programName);
-		
-		// usage message for wrong number of arguments
-		if (args.length < 1) {
-			System.err.format("error: wrong number of arguments\n%s", usage);
-			System.exit(1);
-		}
-		File dir = new File(args[0]);
+public interface ClassifierBuilder<OUTCOME_TYPE> {
 
-		// get the classifier class from the manifest
-		ClassifierManifest manifest = new ClassifierManifest(dir);
-		ClassifierBuilder<?> classifierBuilder = manifest.getClassifierBuilder();
-		
-		// clip the first item off the command line arguments, and call train
-		String[] remainingArgs = new String[args.length - 1];
-		System.arraycopy(args, 1, remainingArgs, 0, remainingArgs.length);
-		classifierBuilder.train(dir, remainingArgs);
-		classifierBuilder.buildJar(dir, remainingArgs);
-	}
+	public void train(File dir, String[] args) throws Exception;
 	
+	public void buildJar(File dir, String[] args) throws Exception;
+
+	public Class<?> getClassifierClass();
 }

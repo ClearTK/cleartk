@@ -33,8 +33,8 @@ import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.Classifier_ImplBase;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.jar.JarClassifier;
 import org.cleartk.classifier.svmlight.model.SVMlightModel;
 import org.cleartk.classifier.util.LinWengPlatt.Sigmoid;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
@@ -44,7 +44,7 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
  * <br>All rights reserved.
 
  */
-public class OVASVMlightClassifier extends Classifier_ImplBase<String,Integer,FeatureVector> {
+public class OVASVMlightClassifier extends JarClassifier<String,Integer,FeatureVector> {
 	
 	Map<Integer, SVMlightModel> models;
 	Map<Integer, Sigmoid> sigmoids;

@@ -38,6 +38,8 @@ import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
 import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
+import org.cleartk.classifier.jar.JarDataWriterFactory;
+import org.cleartk.classifier.jar.JarDataWriter;
 import org.cleartk.classifier.mallet.DefaultMalletDataWriterFactory;
 import org.cleartk.classifier.opennlp.MaxentDataWriter;
 import org.junit.After;
@@ -66,7 +68,7 @@ public class DataWriter_ImplBaseTest {
 		String expectedManifest = ("Manifest-Version: 1.0\n"
 				+ "classifierBuilderClass: org.cleartk.classifier.opennlp.MaxentClassifie\n" + " rBuilder");
 
-		DataWriter_ImplBase<String, String, List<NameNumber>> dataWriter = new MaxentDataWriter(outputDirectory);
+		JarDataWriter<String, String, List<NameNumber>> dataWriter = new MaxentDataWriter(outputDirectory);
 		dataWriter.setFeaturesEncoder(new NameNumberFeaturesEncoder(false, false));
 		dataWriter.setOutcomeEncoder(new StringToStringOutcomeEncoder());
 		dataWriter.finish();
@@ -78,7 +80,7 @@ public class DataWriter_ImplBaseTest {
 	@Test
 	public void testPrintWriter() throws UIMAException, IOException, CleartkException {
 
-		DataWriter_ImplBase<String, String, List<NameNumber>> dataWriter = new MaxentDataWriter(outputDirectory);
+		JarDataWriter<String, String, List<NameNumber>> dataWriter = new MaxentDataWriter(outputDirectory);
 		dataWriter.setFeaturesEncoder(new NameNumberFeaturesEncoder(false, false));
 		dataWriter.setOutcomeEncoder(new StringToStringOutcomeEncoder());
 		PrintWriter printWriter = dataWriter.getPrintWriter("foo.txt");
@@ -97,7 +99,7 @@ public class DataWriter_ImplBaseTest {
 	@Test
 	public void testFinish() throws UIMAException, IOException, CleartkException {
 
-		UimaContext uimaContext = UimaContextFactory.createUimaContext(DataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDirectoryName);
+		UimaContext uimaContext = UimaContextFactory.createUimaContext(JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName);
 		DefaultMalletDataWriterFactory factory = new DefaultMalletDataWriterFactory();
 		factory.initialize(uimaContext);
 		DataWriter<String> dataWriter = factory.createDataWriter();

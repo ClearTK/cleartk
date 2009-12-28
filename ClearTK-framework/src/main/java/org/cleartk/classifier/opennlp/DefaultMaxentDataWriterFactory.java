@@ -29,13 +29,13 @@ import java.util.List;
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.DataWriter;
-import org.cleartk.classifier.DataWriterFactory_ImplBase;
 import org.cleartk.classifier.encoder.features.BooleanEncoder;
 import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 import org.cleartk.classifier.encoder.features.NumberEncoder;
 import org.cleartk.classifier.encoder.features.StringEncoder;
 import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
+import org.cleartk.classifier.jar.JarDataWriterFactory;
 import org.cleartk.util.UIMAUtil;
 
 /**
@@ -46,7 +46,7 @@ import org.cleartk.util.UIMAUtil;
  * 
  */
 
-public class DefaultMaxentDataWriterFactory extends DataWriterFactory_ImplBase<List<NameNumber>, String, String> {
+public class DefaultMaxentDataWriterFactory extends JarDataWriterFactory<List<NameNumber>, String, String> {
 
 	/**
 	 * "org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory.PARAM_COMPRESS"

@@ -42,7 +42,7 @@ public abstract class CleartkAnnotator<OUTCOME_TYPE> extends JCasAnnotator_ImplB
 	public static final String PARAM_CLASSIFIER_FACTORY_CLASS_NAME = ConfigurationParameterNameFactory
 			.createConfigurationParameterName(CleartkAnnotator.class, "classifierFactoryClassName");
 
-	@ConfigurationParameter(mandatory = false, description = "provides the full name of the ClassifierFactory class to be used.", defaultValue = "org.cleartk.classifier.JarClassifierFactory")
+	@ConfigurationParameter(mandatory = false, description = "provides the full name of the ClassifierFactory class to be used.", defaultValue = "org.cleartk.classifier.jar.JarClassifierFactory")
 	private String classifierFactoryClassName;
 
 	public static final String PARAM_DATA_WRITER_FACTORY_CLASS_NAME = ConfigurationParameterNameFactory

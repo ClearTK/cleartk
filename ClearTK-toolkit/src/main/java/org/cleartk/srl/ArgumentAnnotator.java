@@ -36,10 +36,8 @@ import org.cleartk.CleartkComponents;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.DataWriterFactory;
-import org.cleartk.classifier.DataWriterFactory_ImplBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.JarClassifierFactory;
 import org.cleartk.classifier.feature.WindowFeature;
 import org.cleartk.classifier.feature.extractor.WindowExtractor;
 import org.cleartk.classifier.feature.extractor.annotationpair.DistanceExtractor;
@@ -48,6 +46,8 @@ import org.cleartk.classifier.feature.extractor.simple.CombinedExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
+import org.cleartk.classifier.jar.JarDataWriterFactory;
+import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.srl.type.Argument;
 import org.cleartk.srl.type.Predicate;
 import org.cleartk.srl.type.SemanticArgument;
@@ -78,7 +78,7 @@ public class ArgumentAnnotator extends CleartkAnnotator<String> {
 		return CleartkComponents.createPrimitiveDescription(
 				ArgumentAnnotator.class,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, dataWriterFactoryClass.getName(),
-				DataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDirectory.toString());
+				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory.toString());
 	}
 
 	public static AnalysisEngineDescription getClassifierDescription(File classifierJar)

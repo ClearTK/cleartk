@@ -44,7 +44,7 @@ public abstract class CleartkSequentialAnnotator<OUTCOME_TYPE> extends JCasAnnot
 	public static final String PARAM_SEQUENTIAL_CLASSIFIER_FACTORY_CLASS_NAME = ConfigurationParameterNameFactory
 			.createConfigurationParameterName(CleartkSequentialAnnotator.class, "sequentialClassifierFactoryClassName");
 
-	@ConfigurationParameter(mandatory = false, description = "provides the full name of the SequentialClassifierFactory class to be used.", defaultValue = "org.cleartk.classifier.JarClassifierFactory")
+	@ConfigurationParameter(mandatory = false, description = "provides the full name of the SequentialClassifierFactory class to be used.", defaultValue = "org.cleartk.classifier.jar.JarClassifierFactory")
 	private String sequentialClassifierFactoryClassName;
 
 	public static final String PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME = ConfigurationParameterNameFactory

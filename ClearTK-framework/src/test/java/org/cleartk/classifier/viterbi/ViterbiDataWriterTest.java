@@ -41,16 +41,15 @@ import org.apache.uima.util.FileUtils;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkSequentialAnnotator;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.JarClassifierFactory;
-import org.cleartk.classifier.Train;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
+import org.cleartk.classifier.jar.JarClassifierFactory;
+import org.cleartk.classifier.jar.Train;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.JCasUtil;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
@@ -102,7 +101,7 @@ public class ViterbiDataWriterTest {
 
 	private String outputDirectory = "test/data/viterbi";
 	
-	@After
+//	@After
 	public void tearDown() throws Exception {
 		File outputDirectory = new File(this.outputDirectory);
 		TearDownUtil.removeDirectory(outputDirectory);

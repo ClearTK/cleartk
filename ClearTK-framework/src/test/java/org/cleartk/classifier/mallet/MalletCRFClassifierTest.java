@@ -42,10 +42,10 @@ import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkSequentialAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.JarClassifierFactory;
 import org.cleartk.classifier.SequentialClassifier;
-import org.cleartk.classifier.SequentialDataWriterFactory_ImplBase;
-import org.cleartk.classifier.Train;
+import org.cleartk.classifier.jar.JarClassifierFactory;
+import org.cleartk.classifier.jar.JarSequentialDataWriterFactory;
+import org.cleartk.classifier.jar.Train;
 import org.cleartk.util.JCasUtil;
 import org.junit.After;
 import org.junit.Test;
@@ -118,7 +118,7 @@ public class MalletCRFClassifierTest {
 
 		AnalysisEngine sequentialDataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
 				TestAnnotator.class, JCasUtil.getTypeSystemDescription(), 
-				SequentialDataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				JarSequentialDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletCRFDataWriterFactory.class.getName());
 
 		JCas jCas = JCasUtil.getJCas();

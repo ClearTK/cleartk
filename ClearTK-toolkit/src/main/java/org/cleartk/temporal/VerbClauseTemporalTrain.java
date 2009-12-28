@@ -30,7 +30,7 @@ import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.Level;
 import org.apache.uima.util.Logger;
 import org.cleartk.ViewNames;
-import org.cleartk.classifier.Train;
+import org.cleartk.classifier.jar.Train;
 import org.cleartk.corpus.timeml.PlainTextTLINKGoldAnnotator;
 import org.cleartk.corpus.timeml.TimeMLGoldAnnotator;
 import org.cleartk.corpus.timeml.TreebankAligningAnnotator;

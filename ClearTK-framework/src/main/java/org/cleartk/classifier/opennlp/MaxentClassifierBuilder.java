@@ -25,10 +25,10 @@ package org.cleartk.classifier.opennlp;
 
 import java.io.File;
 
-import org.cleartk.classifier.BuildJar;
 import org.cleartk.classifier.Classifier;
-import org.cleartk.classifier.ClassifierBuilder;
 import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
+import org.cleartk.classifier.jar.BuildJar;
+import org.cleartk.classifier.jar.ClassifierBuilder;
 
 import opennlp.maxent.RealValueFileEventStream;
 /**

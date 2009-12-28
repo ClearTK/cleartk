@@ -29,9 +29,9 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.ClassifierBuilder;
-import org.cleartk.classifier.DataWriter_ImplBase;
 import org.cleartk.classifier.encoder.features.NameNumber;
+import org.cleartk.classifier.jar.ClassifierBuilder;
+import org.cleartk.classifier.jar.JarDataWriter;
 
 /**
  * <br>
@@ -48,7 +48,7 @@ import org.cleartk.classifier.encoder.features.NameNumber;
  * 
  * @author Philip Ogren
  */
-public class MalletDataWriter extends DataWriter_ImplBase<String, String, List<NameNumber>> {
+public class MalletDataWriter extends JarDataWriter<String, String, List<NameNumber>> {
 
 	public static final String TRAINING_DATA_FILE_NAME ="training-data.mallet"; 
 	public MalletDataWriter(File outputDirectory) throws IOException {

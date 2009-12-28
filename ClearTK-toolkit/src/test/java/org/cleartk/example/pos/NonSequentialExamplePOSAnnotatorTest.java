@@ -128,7 +128,7 @@ public class NonSequentialExamplePOSAnnotatorTest {
 		}
 
 		HideOutput hider = new HideOutput();
-		org.cleartk.classifier.Train.main(args);
+		org.cleartk.classifier.jar.Train.main(args);
 		hider.restoreOutput();
 
 		AnalysisEngineDescription taggerDescription = CleartkComponents.createCleartkAnnotator(NonSequentialExamplePOSAnnotator.class, outputDirectory + "/model.jar");

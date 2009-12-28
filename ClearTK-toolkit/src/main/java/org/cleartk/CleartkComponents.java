@@ -37,11 +37,11 @@ import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.CleartkSequentialAnnotator;
 import org.cleartk.classifier.DataWriterFactory;
-import org.cleartk.classifier.DataWriterFactory_ImplBase;
-import org.cleartk.classifier.JarClassifierFactory;
 import org.cleartk.classifier.SequentialDataWriterFactory;
-import org.cleartk.classifier.SequentialDataWriterFactory_ImplBase;
 import org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor;
+import org.cleartk.classifier.jar.JarDataWriterFactory;
+import org.cleartk.classifier.jar.JarClassifierFactory;
+import org.cleartk.classifier.jar.JarSequentialDataWriterFactory;
 import org.cleartk.classifier.viterbi.ViterbiDataWriter;
 import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
 import org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter;
@@ -175,7 +175,7 @@ public class CleartkComponents {
 					dataWriterFactoryClass.getName());
 		}
 		if (outputDir != null) {
-			ConfigurationParameterFactory.addConfigurationParameter(aed, DataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDir);
+			ConfigurationParameterFactory.addConfigurationParameter(aed, JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDir);
 		}
 		if (configurationData != null) {
 			ConfigurationParameterFactory.addConfigurationParameters(aed, configurationData);
@@ -259,7 +259,7 @@ public class CleartkComponents {
 					dataWriterFactoryClass.getName());
 		}
 		if (outputDir != null) {
-			ConfigurationParameterFactory.addConfigurationParameter(aed, SequentialDataWriterFactory_ImplBase.PARAM_OUTPUT_DIRECTORY, outputDir);
+			ConfigurationParameterFactory.addConfigurationParameter(aed, JarSequentialDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDir);
 		}
 		if (configurationData != null) {
 			ConfigurationParameterFactory.addConfigurationParameters(aed, configurationData);

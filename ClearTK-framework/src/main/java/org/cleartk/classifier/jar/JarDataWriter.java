@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.classifier;
+package org.cleartk.classifier.jar;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -34,6 +34,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.cleartk.CleartkException;
+import org.cleartk.classifier.DataWriter;
+import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
@@ -42,9 +44,9 @@ import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
  * <br>All rights reserved.
  */
-public abstract class DataWriter_ImplBase<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE, FEATURES_TYPE> implements DataWriter<INPUTOUTCOME_TYPE> {
+public abstract class JarDataWriter<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE, FEATURES_TYPE> implements DataWriter<INPUTOUTCOME_TYPE> {
 
-	public DataWriter_ImplBase(File outputDirectory) {
+	public JarDataWriter(File outputDirectory) {
 		// Initialize the output directory and list of output writers
 		this.outputDirectory = outputDirectory;
 		this.writers = new ArrayList<PrintWriter>();
@@ -52,6 +54,8 @@ public abstract class DataWriter_ImplBase<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE,
 		// Initialize the Manifest
 		this.classifierManifest = new ClassifierManifest();
 	}
+
+	public abstract Class<? extends ClassifierBuilder<INPUTOUTCOME_TYPE>> getDefaultClassifierBuilderClass();
 
 	public void write(Instance<INPUTOUTCOME_TYPE> instance) throws CleartkException {
 		FEATURES_TYPE features = featuresEncoder.encodeAll(instance.getFeatures());
@@ -116,7 +120,7 @@ public abstract class DataWriter_ImplBase<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE,
 		return new File(this.outputDirectory, fileName);
 	}
 
-	protected PrintWriter getPrintWriter(String fileName) throws IOException {
+	public PrintWriter getPrintWriter(String fileName) throws IOException {
 		File file = this.getFile(fileName);
 		if (!file.getParentFile().exists()) {
 			file.getParentFile().mkdirs();

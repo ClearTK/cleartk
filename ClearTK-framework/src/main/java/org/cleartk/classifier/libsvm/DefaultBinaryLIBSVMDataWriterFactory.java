@@ -27,7 +27,6 @@ package org.cleartk.classifier.libsvm;
 import java.io.IOException;
 
 import org.cleartk.classifier.DataWriter;
-import org.cleartk.classifier.DataWriterFactory_ImplBase;
 import org.cleartk.classifier.encoder.features.BooleanEncoder;
 import org.cleartk.classifier.encoder.features.FeatureVectorFeaturesEncoder;
 import org.cleartk.classifier.encoder.features.NumberEncoder;
@@ -35,6 +34,7 @@ import org.cleartk.classifier.encoder.features.StringEncoder;
 import org.cleartk.classifier.encoder.features.normalizer.EuclidianNormalizer;
 import org.cleartk.classifier.encoder.features.normalizer.NameNumberNormalizer;
 import org.cleartk.classifier.encoder.outcome.BooleanToBooleanOutcomeEncoder;
+import org.cleartk.classifier.jar.JarDataWriterFactory;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
 /**
@@ -45,7 +45,7 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
  * 
  */
 
-public class DefaultBinaryLIBSVMDataWriterFactory extends DataWriterFactory_ImplBase<FeatureVector, Boolean, Boolean> {
+public class DefaultBinaryLIBSVMDataWriterFactory extends JarDataWriterFactory<FeatureVector, Boolean, Boolean> {
 
 	public DataWriter<Boolean> createDataWriter() throws IOException {
 		BinaryLIBSVMDataWriter dataWriter = new BinaryLIBSVMDataWriter(outputDirectory);

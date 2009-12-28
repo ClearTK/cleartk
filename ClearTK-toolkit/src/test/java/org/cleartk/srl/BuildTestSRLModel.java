@@ -105,13 +105,13 @@ public class BuildTestSRLModel {
 		System.out.println("Train Predicate Model");
 		System.out.println("---------------------");
 
-		org.cleartk.classifier.Train.main("test/data/srl/predicate");
+		org.cleartk.classifier.jar.Train.main("test/data/srl/predicate");
 
 		System.out.println("--------------------");
 		System.out.println("Train Argument Model");
 		System.out.println("--------------------");
 
-		org.cleartk.classifier.Train.main("test/data/srl/argument");
+		org.cleartk.classifier.jar.Train.main("test/data/srl/argument");
 	}
 
 }
