@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.token.opennlp;
 
 import java.io.File;
@@ -51,83 +51,76 @@ import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.util.InitializeUtil;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * 
  * @author Philip Ogren
- *
+ * 
  */
 public class OpenNLPPOSTagger extends JCasAnnotator_ImplBase {
 
 	public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
 		return AnalysisEngineFactory.createPrimitiveDescription(OpenNLPPOSTagger.class,
 				CleartkComponents.TYPE_SYSTEM_DESCRIPTION, CleartkComponents.TYPE_PRIORITIES,
-				PARAM_POSTAG_DICTIONARY_FILE, CleartkComponents.getParameterValue(
-						PARAM_POSTAG_DICTIONARY_FILE, "resources/models/OpenNLP.TagDict.txt"),
-				PARAM_POSTAG_MODEL_FILE, CleartkComponents.getParameterValue(PARAM_POSTAG_MODEL_FILE,
-						"resources/models/OpenNLP.POSTags.English.bin.gz"));
+				PARAM_POSTAG_DICTIONARY_FILE, CleartkComponents.getParameterValue(PARAM_POSTAG_DICTIONARY_FILE,
+						"resources/models/OpenNLP.TagDict.txt"), PARAM_POSTAG_MODEL_FILE, CleartkComponents
+						.getParameterValue(PARAM_POSTAG_MODEL_FILE, "resources/models/OpenNLP.POSTags.English.bin.gz"));
 	}
 
-	public static final String PARAM_POSTAG_MODEL_FILE = ConfigurationParameterNameFactory.createConfigurationParameterName(
-			OpenNLPPOSTagger.class, "postagModelFile");
-	@ConfigurationParameter(
-			mandatory = true,
-			description = "provides the path of the OpenNLP part-of-speech tagger model file, e.g.  resources/models/OpenNLP.POSTags.English.bin.gz.  See javadoc for opennlp.maxent.io.SuffixSensitiveGISModelReader.")
+	public static final String PARAM_POSTAG_MODEL_FILE = ConfigurationParameterNameFactory
+			.createConfigurationParameterName(OpenNLPPOSTagger.class, "postagModelFile");
+
+	@ConfigurationParameter(mandatory = true, description = "provides the path of the OpenNLP part-of-speech tagger model file, e.g.  resources/models/OpenNLP.POSTags.English.bin.gz.  See javadoc for opennlp.maxent.io.SuffixSensitiveGISModelReader.")
 	private String postagModelFile;
 
-	public static final String PARAM_POSTAG_DICTIONARY_FILE = ConfigurationParameterNameFactory.createConfigurationParameterName(
-			OpenNLPPOSTagger.class, "postagDictionaryFile");
-	@ConfigurationParameter(
-			mandatory = true,
-			description = "provides the path of the OpenNLP part-of-speech tagger dictionary file, e.g. resources/models/OpenNLP.TagDict.txt.  See javadoc for opennlp.tools.postag.POSDictionary.")
+	public static final String PARAM_POSTAG_DICTIONARY_FILE = ConfigurationParameterNameFactory
+			.createConfigurationParameterName(OpenNLPPOSTagger.class, "postagDictionaryFile");
+
+	@ConfigurationParameter(mandatory = true, description = "provides the path of the OpenNLP part-of-speech tagger dictionary file, e.g. resources/models/OpenNLP.TagDict.txt.  See javadoc for opennlp.tools.postag.POSDictionary.")
 	private String postagDictionaryFile;
 
-	public static final String PARAM_CASE_SENSITIVE = ConfigurationParameterNameFactory.createConfigurationParameterName(
-			OpenNLPPOSTagger.class, "caseSensitive");
-	@ConfigurationParameter(
-			defaultValue = "true",
-			description = "when false indicates that the POSDictionary should ignore case.  See javadoc for opennlp.tools.postag.POSDictionary.")
+	public static final String PARAM_CASE_SENSITIVE = ConfigurationParameterNameFactory
+			.createConfigurationParameterName(OpenNLPPOSTagger.class, "caseSensitive");
+
+	@ConfigurationParameter(defaultValue = "true", description = "when false indicates that the POSDictionary should ignore case.  See javadoc for opennlp.tools.postag.POSDictionary.")
 	private boolean caseSensitive;
 
 	protected POSTagger posTagger;
+
 	protected long processTime = 0;
+
 	protected long tagTime = 0;
-	
-	public void initialize(UimaContext uimaContext) throws ResourceInitializationException
-	{
+
+	public void initialize(UimaContext uimaContext) throws ResourceInitializationException {
 		super.initialize(uimaContext);
 		InitializeUtil.initialize(this, uimaContext);
-		try
-		{
+		try {
 			MaxentModel model = new SuffixSensitiveGISModelReader(new File(postagModelFile)).getModel();
 			POSDictionary posDictionary = new POSDictionary(postagDictionaryFile, caseSensitive);
 			posTagger = new POSTaggerME(model, new DefaultPOSContextGenerator(null), posDictionary);
 		}
-		catch(IOException ioe)
-		{
+		catch (IOException ioe) {
 			throw new ResourceInitializationException(ioe);
 		}
 	}
-	
-	public void process(JCas jCas) throws AnalysisEngineProcessException 
-	{
+
+	public void process(JCas jCas) throws AnalysisEngineProcessException {
 		FSIterator sentenceIterator = jCas.getAnnotationIndex(Sentence.type).iterator();
-		while(sentenceIterator.hasNext())
-		{
+		while (sentenceIterator.hasNext()) {
 			Sentence sentence = (Sentence) sentenceIterator.next();
 			FSIterator tokenIterator = jCas.getAnnotationIndex(Token.type).subiterator(sentence);
 			List<String> tokens = new ArrayList<String>();
-			while(tokenIterator.hasNext())
-				tokens.add(((Token)tokenIterator.next()).getCoveredText());
+			while (tokenIterator.hasNext())
+				tokens.add(((Token) tokenIterator.next()).getCoveredText());
 			long startT = System.nanoTime();
 			List<?> tags = posTagger.tag(tokens);
 			long stopT = System.nanoTime();
 			tagTime += (stopT - startT);
 			tokenIterator.moveToFirst();
-			for(int i=0; tokenIterator.hasNext() && i<tags.size(); i++)
-			{
-				((Token)tokenIterator.next()).setPos((String)tags.get(i));
+			for (int i = 0; tokenIterator.hasNext() && i < tags.size(); i++) {
+				((Token) tokenIterator.next()).setPos((String) tags.get(i));
 			}
 		}
 	}
