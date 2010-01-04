@@ -90,7 +90,7 @@ public class JarClassifierFactory<OUTCOME_TYPE> implements ClassifierFactory<OUT
 		return ReflectionUtil.uncheckedCast(createClassifierFromJar(jarFileName, SequentialClassifier.class));
 	}
 
-	public static <CLASSIFIER_TYPE> Object createClassifierFromJar(String jarFileName, Class<CLASSIFIER_TYPE> cls) throws IOException {
+	public static <CLASSIFIER_TYPE> CLASSIFIER_TYPE createClassifierFromJar(String jarFileName, Class<CLASSIFIER_TYPE> cls) throws IOException {
 		// get the jar file manifest
 		JarFile modelFile = new JarFile(jarFileName);
 		ClassifierManifest manifest = new ClassifierManifest(modelFile);
