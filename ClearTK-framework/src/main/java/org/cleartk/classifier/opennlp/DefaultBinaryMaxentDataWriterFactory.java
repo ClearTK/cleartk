@@ -32,7 +32,7 @@ import org.cleartk.classifier.encoder.features.BooleanEncoder;
 import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 import org.cleartk.classifier.encoder.features.NumberEncoder;
 import org.cleartk.classifier.encoder.features.StringEncoder;
-import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
+import org.cleartk.classifier.encoder.outcome.BooleanToStringOutcomeEncoder;
 
 /**
  * <br>
@@ -42,28 +42,26 @@ import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
  * 
  */
 
-public class DefaultMaxentDataWriterFactory extends MaxentDataWriterFactory_ImplBase<String> {
-
+public class DefaultBinaryMaxentDataWriterFactory extends MaxentDataWriterFactory_ImplBase<Boolean> {
 
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
 	}
 	
-	public DataWriter<String> createDataWriter() throws IOException {
-		MaxentDataWriter mdw = new MaxentDataWriter(outputDirectory);
+	public DataWriter<Boolean> createDataWriter() throws IOException {
+		BinaryMaxentDataWriter binaryMaxentDataWriter = new BinaryMaxentDataWriter(outputDirectory);
 		
-		if(!this.setEncodersFromFileSystem(mdw)) {
+		if(!this.setEncodersFromFileSystem(binaryMaxentDataWriter)) {
 			NameNumberFeaturesEncoder ftrsNcdr = new NameNumberFeaturesEncoder(compress, sort);
 			ftrsNcdr.addEncoder(new NumberEncoder());
 			ftrsNcdr.addEncoder(new BooleanEncoder());
 			ftrsNcdr.addEncoder(new StringEncoder());
-			mdw.setFeaturesEncoder(ftrsNcdr);
-			
-			mdw.setOutcomeEncoder(new StringToStringOutcomeEncoder());
+			binaryMaxentDataWriter.setFeaturesEncoder(ftrsNcdr);
+			binaryMaxentDataWriter.setOutcomeEncoder(new BooleanToStringOutcomeEncoder());
 		}
 		
-		return mdw;
+		return binaryMaxentDataWriter;
 	}
 
 }

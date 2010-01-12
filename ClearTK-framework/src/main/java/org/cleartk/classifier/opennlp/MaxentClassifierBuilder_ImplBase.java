@@ -23,7 +23,13 @@
 */
 package org.cleartk.classifier.opennlp;
 
-import org.cleartk.classifier.Classifier;
+import java.io.File;
+
+import opennlp.maxent.RealValueFileEventStream;
+
+import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
+import org.cleartk.classifier.jar.BuildJar;
+import org.cleartk.classifier.jar.ClassifierBuilder;
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
  * <br>All rights reserved.
@@ -31,9 +37,23 @@ import org.cleartk.classifier.Classifier;
  * @author Philip Ogren
  *
  */
-public class MaxentClassifierBuilder  extends MaxentClassifierBuilder_ImplBase<String> {
+public abstract class MaxentClassifierBuilder_ImplBase<OUTCOME_TYPE> implements ClassifierBuilder<OUTCOME_TYPE> {
 
-	public Class<? extends Classifier<String>> getClassifierClass() {
-		return MaxentClassifier.class;
+	public void train(File dir, String[] args) throws Exception {
+		String[] maxentArgs = new String[args.length + 1];
+		maxentArgs[0] = new File(dir, "training-data.maxent").getPath();
+		System.arraycopy(args, 0, maxentArgs, 1, args.length);
+		RealValueFileEventStream.main(maxentArgs);
 	}
+
+	public void buildJar(File dir, String[] args) throws Exception {
+		BuildJar.OutputStream stream = new BuildJar.OutputStream(dir);
+		stream.write("model.maxent", new File(dir, "training-data.maxent.bin.gz"));
+		File featureLookup = new File(dir, NameNumberFeaturesEncoder.LOOKUP_FILE_NAME);
+		if (featureLookup.exists()) {
+			stream.write("name-lookup.txt", featureLookup);
+		}
+		stream.close();
+	}
+
 }

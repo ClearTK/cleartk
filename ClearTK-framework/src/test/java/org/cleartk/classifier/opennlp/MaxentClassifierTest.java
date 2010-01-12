@@ -45,6 +45,7 @@ import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.classifier.jar.JarDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.util.JCasUtil;
+import org.junit.After;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.util.HideOutput;
@@ -60,18 +61,19 @@ public class MaxentClassifierTest {
 	
 	String outputDirectory = "test/data/opennlp/maxent-classifier"; 
 	
-//	@After
+	@After
 	public void tearDown() throws Exception {
-		File outputDirectory = new File(this.outputDirectory);
-		TearDownUtil.removeDirectory(outputDirectory);
+		File output = new File(this.outputDirectory);
+		TearDownUtil.removeDirectory(output);
 		// Some files will get left around because maxent doesn't close its
 		// handle on the training-data.maxent file. If this ever gets fixed,
 		// we should uncomment the following line:
-		// Assert.assertFalse(outputDirectory.exists());
+		// Assert.assertFalse(output.exists());
 	}
 	
 	public static class Test1Annotator extends CleartkAnnotator<String>{
 
+		@Override
 		public void process(JCas cas) throws AnalysisEngineProcessException {
 			try {
 				this.processSimple(cas);
@@ -79,7 +81,7 @@ public class MaxentClassifierTest {
 				throw new AnalysisEngineProcessException(e);
 			}
 		}
-		public void processSimple(JCas cas) throws AnalysisEngineProcessException, CleartkException {
+		public void processSimple(JCas cas) throws  CleartkException {
 			if (this.isTraining()) {
 				this.dataWriter.write(createInstance("A", "hello", 1234));
 				this.dataWriter.write(createInstance("A", "hello", 1000));
@@ -173,6 +175,7 @@ public class MaxentClassifierTest {
 	
 	public static class Test2Annotator extends CleartkAnnotator<String> {
 
+		@Override
 		public void process(JCas cas) throws AnalysisEngineProcessException {
 			try {
 				this.processSimple(cas);
@@ -180,7 +183,7 @@ public class MaxentClassifierTest {
 				throw new AnalysisEngineProcessException(e);
 			}
 		}
-		public void processSimple(JCas cas) throws AnalysisEngineProcessException, CleartkException {
+		public void processSimple(JCas cas) throws CleartkException {
 			if (this.isTraining()) {
 				this.dataWriter.write(createInstance("O", "Word_Three LCWord_three CapitalType_INITIAL_UPPERCASE L0OOB1 L1OOB2 R0_sequence R0_TypePath_Pos_NN R0_TypePath_Stem_sequenc R1_elements R1_TypePath_Pos_NNS R1_TypePath_Stem_element TypePath_Pos_CD TypePath_Stem_Three PrevNEMTokenLabel_L0OOB1 PrevNEMTokenLabel_L1OOB2"));
 				this.dataWriter.write(createInstance("O", "Word_sequence LCWord_sequence CapitalType_ALL_LOWERCASE Prefix3_seq Suffix3_nce Suffix4_ence Suffix5_uence L0_Three L0_TypePath_Pos_CD L0_TypePath_Stem_Three L1OOB1 R0_elements R0_TypePath_Pos_NNS R0_TypePath_Stem_element R1_are R1_TypePath_Pos_VBP R1_TypePath_Stem_are TypePath_Pos_NN TypePath_Stem_sequenc PrevNEMTokenLabel_L0_O PrevNEMTokenLabel_L1OOB1"));

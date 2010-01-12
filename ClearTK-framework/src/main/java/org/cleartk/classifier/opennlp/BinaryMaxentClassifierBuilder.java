@@ -31,9 +31,9 @@ import org.cleartk.classifier.Classifier;
  * @author Philip Ogren
  *
  */
-public class MaxentClassifierBuilder  extends MaxentClassifierBuilder_ImplBase<String> {
+public class BinaryMaxentClassifierBuilder extends MaxentClassifierBuilder_ImplBase<Boolean> {
 
-	public Class<? extends Classifier<String>> getClassifierClass() {
-		return MaxentClassifier.class;
+	public Class<? extends Classifier<Boolean>> getClassifierClass() {
+		return BinaryMaxentClassifier.class;
 	}
 }

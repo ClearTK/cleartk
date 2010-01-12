@@ -23,47 +23,52 @@
  */
 package org.cleartk.classifier.opennlp;
 
-import java.io.IOException;
+import java.util.List;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.classifier.DataWriter;
-import org.cleartk.classifier.encoder.features.BooleanEncoder;
+import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
-import org.cleartk.classifier.encoder.features.NumberEncoder;
-import org.cleartk.classifier.encoder.features.StringEncoder;
-import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
+import org.cleartk.classifier.jar.JarDataWriterFactory;
+import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.factory.ConfigurationParameterFactory;
+import org.uutuc.util.InitializeUtil;
 
 /**
  * <br>
  * Copyright (c) 2009, Regents of the University of Colorado <br>
  * All rights reserved.
- * @author Philip Ogren, Philipp Wetzler
+ * @author Philip Ogren
  * 
  */
 
-public class DefaultMaxentDataWriterFactory extends MaxentDataWriterFactory_ImplBase<String> {
+public abstract class MaxentDataWriterFactory_ImplBase<OUTCOME_TYPE> extends JarDataWriterFactory<List<NameNumber>, OUTCOME_TYPE, String> {
 
+	public static final String PARAM_COMPRESS = ConfigurationParameterFactory.createConfigurationParameterName(MaxentDataWriterFactory_ImplBase.class, "compress");
+	@ConfigurationParameter(
+			defaultValue = "false",
+			description = "when true indicates that the FeaturesEncoder should compress the feature names.  See org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder")
+	protected boolean compress = false;
+	
+	/**
+	 * "org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory.PARAM_SORT_NAME_LOOKUP"
+	 * is a single, optional, boolean parameter, defaulting to false, that when true
+	 * indicates that the FeaturesEncoder should write the feature names in sorted order.
+	 * @see NameNumberFeaturesEncoder
+	 */
+	public static final String PARAM_SORT = ConfigurationParameterFactory.createConfigurationParameterName(MaxentDataWriterFactory_ImplBase.class, "sort");
 
+	@ConfigurationParameter(
+			defaultValue = "false",
+			description = "when true indicates that the FeaturesEncoder should write the feature names in sorted order.")
+	protected boolean sort = false;
+	
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
+		InitializeUtil.initialize(this, context);
 	}
 	
-	public DataWriter<String> createDataWriter() throws IOException {
-		MaxentDataWriter mdw = new MaxentDataWriter(outputDirectory);
-		
-		if(!this.setEncodersFromFileSystem(mdw)) {
-			NameNumberFeaturesEncoder ftrsNcdr = new NameNumberFeaturesEncoder(compress, sort);
-			ftrsNcdr.addEncoder(new NumberEncoder());
-			ftrsNcdr.addEncoder(new BooleanEncoder());
-			ftrsNcdr.addEncoder(new StringEncoder());
-			mdw.setFeaturesEncoder(ftrsNcdr);
-			
-			mdw.setOutcomeEncoder(new StringToStringOutcomeEncoder());
-		}
-		
-		return mdw;
-	}
+	
 
 }
