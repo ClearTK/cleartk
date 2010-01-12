@@ -101,25 +101,23 @@ public abstract class JarDataWriterFactory<FEATURES_OUT_TYPE, OUTCOME_IN_TYPE, O
 			dataWriter.setOutcomeEncoder(this.outcomeEncoder);
 			return true;
 		}
-		else {
-			return false;
-		}
+		return false;
 	}
 
 	protected FeaturesEncoder<FEATURES_OUT_TYPE> featuresEncoder = null;
 
 	protected OutcomeEncoder<OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE> outcomeEncoder = null;
-	
+
 	public File getOutputDirectory() {
 		return outputDirectory;
 	}
 
 	/*
-	 * Please check references to this method if you are considering removing this method.
+	 * Please check references to this method if you are considering removing
+	 * this method.
 	 */
 	public void setOutputDirectory(File outputDirectory) {
 		this.outputDirectory = outputDirectory;
 	}
-
 
 }
