@@ -52,6 +52,7 @@ public class ScoredOutcome<OUTCOME_TYPE> implements Comparable<ScoredOutcome<OUT
 	}
 
 
+	@Override
 	public String toString() {
 		return value.toString()+"|"+score;
 	}
