@@ -30,11 +30,11 @@ import java.util.List;
 
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.Classifier;
-import org.cleartk.classifier.ClassifierBuilder;
 import org.cleartk.classifier.CleartkSequentialAnnotator;
-import org.cleartk.classifier.DataWriter_ImplBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.ScoredOutcome;
+import org.cleartk.classifier.jar.ClassifierBuilder;
+import org.cleartk.classifier.jar.JarDataWriter;
 import org.cleartk.example.pos.ExamplePOSAnnotator;
 import org.junit.Assert;
 import org.junit.Test;
@@ -58,7 +58,7 @@ public class ReflectionUtilTest {
 		public String classify(List<Feature> features) throws CleartkException {return null;}
 		public List<ScoredOutcome<String>> score(List<Feature> features,int maxResults) throws CleartkException {return null;}
 	}
-	public static class TestDataWriterOutcomeType extends DataWriter_ImplBase<String, Double, Boolean> {
+	public static class TestDataWriterOutcomeType extends JarDataWriter<String, Double, Boolean> {
 		public TestDataWriterOutcomeType(File outputDirectory) {
 			super(outputDirectory);
 		}
@@ -88,10 +88,10 @@ public class ReflectionUtilTest {
 		type = ReflectionUtil.getTypeArgument(Classifier.class, "OUTCOME_TYPE", new TestClassifierOutcomeType());
 		Assert.assertEquals(String.class, type);
 		
-		type = ReflectionUtil.getTypeArgument(DataWriter_ImplBase.class, "INPUTOUTCOME_TYPE", new TestDataWriterOutcomeType(null));
+		type = ReflectionUtil.getTypeArgument(JarDataWriter.class, "INPUTOUTCOME_TYPE", new TestDataWriterOutcomeType(null));
 		Assert.assertEquals(String.class, type);
 
-		type = ReflectionUtil.getTypeArgument(DataWriter_ImplBase.class, "OUTPUTOUTCOME_TYPE", new TestDataWriterOutcomeType(null));
+		type = ReflectionUtil.getTypeArgument(JarDataWriter.class, "OUTPUTOUTCOME_TYPE", new TestDataWriterOutcomeType(null));
 		Assert.assertEquals(Double.class, type);
 	}
 }

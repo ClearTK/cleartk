@@ -34,8 +34,8 @@ import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.Classifier_ImplBase;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.jar.JarClassifier;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
 
@@ -47,7 +47,7 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
  * @author Philipp Wetzler
  *
  */
-public abstract class LIBSVMClassifier<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE> extends Classifier_ImplBase<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE,FeatureVector> {
+public abstract class LIBSVMClassifier<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE> extends JarClassifier<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE,FeatureVector> {
 	
 	public static final String MODEL_NAME = "model.libsvm";
 	public static final String ATTRIBUTES_NAME = "LIBSVM";

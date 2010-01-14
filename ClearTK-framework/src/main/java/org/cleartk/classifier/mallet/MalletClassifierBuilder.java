@@ -27,9 +27,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 
-import org.cleartk.classifier.BuildJar;
 import org.cleartk.classifier.Classifier;
-import org.cleartk.classifier.ClassifierBuilder;
+import org.cleartk.classifier.jar.BuildJar;
+import org.cleartk.classifier.jar.ClassifierBuilder;
 import org.cleartk.classifier.mallet.factory.ClassifierTrainerFactory;
 import org.cleartk.util.ReflectionUtil;
 

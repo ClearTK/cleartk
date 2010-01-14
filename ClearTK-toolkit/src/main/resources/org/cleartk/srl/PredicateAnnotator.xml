@@ -21,8 +21,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 </description>
         <configurationParameters>
             <configurationParameter>
-                <name>org.cleartk.classifier.CleartkAnnotator.outputDirectory</name>
-                <description>provides the name of the directory where the training data will be written.</description>
+                <name>org.cleartk.classifier.CleartkAnnotator.classifierFactoryClassName</name>
+                <description>provides the full name of the ClassifierFactory class to be used.</description>
                 <type>String</type>
                 <multiValued>false</multiValued>
                 <mandatory>false</mandatory>
@@ -35,8 +35,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 <mandatory>false</mandatory>
             </configurationParameter>
             <configurationParameter>
-                <name>org.cleartk.classifier.CleartkAnnotator.classifierJarPath</name>
-                <description>provides the path to the jar file that should be used to instantiate the classifier.</description>
+                <name>org.cleartk.classifier.jar.JarClassifierFactory.classifierJarPath</name>
                 <type>String</type>
                 <multiValued>false</multiValued>
                 <mandatory>false</mandatory>
@@ -44,7 +43,13 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         </configurationParameters>
         <configurationParameterSettings>
             <nameValuePair>
-                <name>org.cleartk.classifier.CleartkAnnotator.classifierJarPath</name>
+                <name>org.cleartk.classifier.CleartkAnnotator.classifierFactoryClassName</name>
+                <value>
+                    <string>org.cleartk.classifier.jar.JarClassifierFactory</string>
+                </value>
+            </nameValuePair>
+            <nameValuePair>
+                <name>org.cleartk.classifier.jar.JarClassifierFactory.classifierJarPath</name>
                 <value>
                     <string/>
                 </value>

@@ -30,9 +30,9 @@ import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.Classifier_ImplBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.ScoredOutcome;
+import org.cleartk.classifier.jar.JarClassifier;
 import org.cleartk.classifier.svmlight.model.SVMlightModel;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
@@ -41,7 +41,7 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
  * <br>All rights reserved.
 
  */
-public class SVMlightClassifier extends Classifier_ImplBase<Boolean,Boolean,FeatureVector> {
+public class SVMlightClassifier extends JarClassifier<Boolean,Boolean,FeatureVector> {
 
 	public static final String ATTRIBUTES_NAME = "SVMlight";
 	public static final String SCALE_FEATURES_KEY = "scaleFeatures";

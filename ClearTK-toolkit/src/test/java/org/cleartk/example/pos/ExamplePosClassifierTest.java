@@ -34,7 +34,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.pear.util.FileUtil;
 import org.cleartk.CleartkComponents;
 import org.cleartk.ViewNames;
-import org.cleartk.classifier.DataWriterFactory_ImplBase;
+import org.cleartk.classifier.jar.JarDataWriterFactory;
 import org.cleartk.classifier.libsvm.DefaultMultiClassLIBSVMDataWriterFactory;
 import org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory;
 import org.cleartk.classifier.mallet.DefaultMalletDataWriterFactory;
@@ -85,7 +85,7 @@ public class ExamplePosClassifierTest {
 		AnalysisEngineDescription dataWriter = CleartkComponents.createViterbiAnnotator(
 				ExamplePOSAnnotator.class, DefaultMultiClassLIBSVMDataWriterFactory.class,
 				outputDirectory,
-				DataWriterFactory_ImplBase.PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM, false);
+				JarDataWriterFactory.PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM, false);
 
 		testClassifier(dataWriter, outputDirectory, 1, "-t", "0"); //MultiClassLIBSVMClassifier.score is not implemented so we cannot have a stack size greater than 1.
 		String firstLine = FileUtil.loadListOfStrings(new File(outputDirectory + "/2008_Sichuan_earthquake.txt.pos"))[0].trim();
@@ -254,7 +254,7 @@ public class ExamplePosClassifierTest {
 		
 		HideOutput hider = new HideOutput();
 		try {
-			org.cleartk.classifier.Train.main(args);
+			org.cleartk.classifier.jar.Train.main(args);
 		} finally {
 			hider.restoreOutput();
 		}

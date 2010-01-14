@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.classifier;
+package org.cleartk.classifier.jar;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -34,6 +34,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.cleartk.CleartkException;
+import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.SequentialDataWriter;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
@@ -42,9 +44,9 @@ import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
  * <br>All rights reserved.
  */
-public abstract class SequentialDataWriter_ImplBase<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE, FEATURES_TYPE> implements SequentialDataWriter<INPUTOUTCOME_TYPE> {
+public abstract class JarSequentialDataWriter<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE, FEATURES_TYPE> implements SequentialDataWriter<INPUTOUTCOME_TYPE> {
 
-	public SequentialDataWriter_ImplBase(File outputDirectory) {
+	public JarSequentialDataWriter(File outputDirectory) {
 		// Initialize the output directory and list of output writers
 		this.outputDirectory = outputDirectory;
 		this.writers = new ArrayList<PrintWriter>();
@@ -53,7 +55,8 @@ public abstract class SequentialDataWriter_ImplBase<INPUTOUTCOME_TYPE, OUTPUTOUT
 		this.classifierManifest = new ClassifierManifest();
 	}
 
-	
+	public abstract Class<? extends ClassifierBuilder<INPUTOUTCOME_TYPE>> getDefaultClassifierBuilderClass();
+
 	public void writeSequence(List<Instance<INPUTOUTCOME_TYPE>> instances) throws CleartkException{
 		for (Instance<INPUTOUTCOME_TYPE> instance : instances) {
 			FEATURES_TYPE features = featuresEncoder.encodeAll(instance.getFeatures());

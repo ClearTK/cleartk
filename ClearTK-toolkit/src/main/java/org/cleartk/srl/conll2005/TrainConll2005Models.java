@@ -25,7 +25,7 @@ package org.cleartk.srl.conll2005;
 
 import java.io.File;
 
-import org.cleartk.classifier.Train;
+import org.cleartk.classifier.jar.Train;
 import org.cleartk.classifier.libsvm.DefaultMultiClassLIBSVMDataWriterFactory;
 import org.cleartk.classifier.svmlight.DefaultSVMlightDataWriterFactory;
 import org.cleartk.srl.ArgumentClassifier;

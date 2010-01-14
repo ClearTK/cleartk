@@ -35,12 +35,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.UIMAException;
+import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
+import org.cleartk.classifier.jar.JarSequentialDataWriterFactory;
 import org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory;
 import org.cleartk.classifier.mallet.MalletCRFDataWriter;
 import org.cleartk.type.test.Sentence;
@@ -66,6 +69,10 @@ public class SequentialDataWriterAnnotatorTest {
 		
 		private SimpleFeatureExtractor extractor = new SpannedTextExtractor();
 
+		public void initialize(UimaContext context) throws ResourceInitializationException {
+			super.initialize(context);
+		}
+		
 		public void process(JCas jCas) throws AnalysisEngineProcessException {
 			try {
 				this.processSimple(jCas);
@@ -84,7 +91,7 @@ public class SequentialDataWriterAnnotatorTest {
 					instance.setOutcome(token.getPos());
 					instances.add(instance);
 				}
-				this.dataWriter.writeSequence(instances);
+				this.sequentialDataWriter.writeSequence(instances);
 			}
 		}
 		
@@ -95,8 +102,8 @@ public class SequentialDataWriterAnnotatorTest {
 	public void testSequentialDataWriterAnnotator() throws IOException, UIMAException {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				TestAnnotator.class, JCasUtil.getTypeSystemDescription(),
-				CleartkSequentialAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
-				CleartkSequentialAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletCRFDataWriterFactory.class.getName());
+				JarSequentialDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletCRFDataWriterFactory.class.getName());
 		
 		//create some tokens and sentences
 		//add part-of-speech and stems to tokens

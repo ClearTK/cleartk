@@ -33,6 +33,4 @@ public interface SequentialDataWriter<OUTCOME_TYPE> {
 	
 	public void finish() throws CleartkException;
 	
-	public Class<? extends ClassifierBuilder<OUTCOME_TYPE>> getDefaultClassifierBuilderClass();
-	
 }

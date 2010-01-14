@@ -32,10 +32,10 @@ import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.Classifier_ImplBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.encoder.features.NameNumber;
+import org.cleartk.classifier.jar.JarClassifier;
 
 import cc.mallet.classify.Classification;
 import cc.mallet.classify.Classifier;
@@ -53,7 +53,7 @@ import cc.mallet.types.Labeling;
  *
  * 
  */
-public class MalletClassifier extends Classifier_ImplBase<String,String,List<NameNumber>>
+public class MalletClassifier extends JarClassifier<String,String,List<NameNumber>>
 {
 	protected Classifier classifier;
 	Alphabet alphabet;

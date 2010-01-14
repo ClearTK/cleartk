@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.classifier;
+package org.cleartk.classifier.jar;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,6 +29,8 @@ import java.io.ObjectInputStream;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.Initializable;
+import org.cleartk.classifier.SequentialDataWriterFactory;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
@@ -38,11 +40,18 @@ import org.cleartk.util.UIMAUtil;
 import org.uutuc.descriptor.ConfigurationParameter;
 import org.uutuc.util.InitializeUtil;
 
-public abstract class SequentialDataWriterFactory_ImplBase<FEATURES_OUT_TYPE, OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE>
-		implements SequentialDataWriterFactory<OUTCOME_IN_TYPE> {
+public abstract class JarSequentialDataWriterFactory<FEATURES_OUT_TYPE, OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE>
+		implements SequentialDataWriterFactory<OUTCOME_IN_TYPE>, Initializable {
+
+			public static final String PARAM_OUTPUT_DIRECTORY = ConfigurationParameterNameFactory
+			.createConfigurationParameterName(JarSequentialDataWriterFactory.class, "outputDirectory");
+
+	@ConfigurationParameter(mandatory = true, description = "provides the name of the directory where the training data will be written.")
+	protected File outputDirectory;
+
 
 	public static final String PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM = ConfigurationParameterNameFactory
-			.createConfigurationParameterName(SequentialDataWriterFactory_ImplBase.class, "loadEncodersFromFileSystem");
+			.createConfigurationParameterName(JarSequentialDataWriterFactory.class, "loadEncodersFromFileSystem");
 
 	@ConfigurationParameter(description = "when true indicates that the FeaturesEncoder and OutcomeEncoder should be loaded from the file system instead of being created by the DataWriterFactory", defaultValue = "false")
 	private boolean loadEncodersFromFileSystem = false;
@@ -51,8 +60,6 @@ public abstract class SequentialDataWriterFactory_ImplBase<FEATURES_OUT_TYPE, OU
 		InitializeUtil.initialize(this, context);
 		if (loadEncodersFromFileSystem) {
 			try {
-				String outputDirectory = (String) UIMAUtil.getRequiredConfigParameterValue(context,
-						CleartkSequentialAnnotator.PARAM_OUTPUT_DIRECTORY);
 				File encoderFile = new File(outputDirectory, FeaturesEncoder_ImplBase.ENCODERS_FILE_NAME);
 
 				if (!encoderFile.exists()) {
@@ -64,14 +71,14 @@ public abstract class SequentialDataWriterFactory_ImplBase<FEATURES_OUT_TYPE, OU
 				// read the FeaturesEncoder and check the types
 				FeaturesEncoder<?> untypedFeaturesEncoder = FeaturesEncoder.class.cast(is.readObject());
 				UIMAUtil.checkTypeParameterIsAssignable(FeaturesEncoder.class, "FEATURES_OUT_TYPE",
-						untypedFeaturesEncoder, SequentialDataWriterFactory_ImplBase.class, "FEATURES_OUT_TYPE", this);
+						untypedFeaturesEncoder, JarSequentialDataWriterFactory.class, "FEATURES_OUT_TYPE", this);
 
 				// read the OutcomeEncoder and check the types
 				OutcomeEncoder<?, ?> untypedOutcomeEncoder = OutcomeEncoder.class.cast(is.readObject());
 				UIMAUtil.checkTypeParameterIsAssignable(OutcomeEncoder.class, "OUTCOME_IN_TYPE", untypedOutcomeEncoder,
-						SequentialDataWriterFactory_ImplBase.class, "OUTCOME_IN_TYPE", this);
+						JarSequentialDataWriterFactory.class, "OUTCOME_IN_TYPE", this);
 				UIMAUtil.checkTypeParameterIsAssignable(OutcomeEncoder.class, "OUTCOME_OUT_TYPE",
-						untypedOutcomeEncoder, SequentialDataWriterFactory_ImplBase.class, "OUTCOME_OUT_TYPE", this);
+						untypedOutcomeEncoder, JarSequentialDataWriterFactory.class, "OUTCOME_OUT_TYPE", this);
 
 				// assign the encoders to the instance variables
 				this.featuresEncoder = ReflectionUtil.uncheckedCast(untypedFeaturesEncoder);
@@ -90,7 +97,7 @@ public abstract class SequentialDataWriterFactory_ImplBase<FEATURES_OUT_TYPE, OU
 	}
 
 	protected boolean setEncodersFromFileSystem(
-			SequentialDataWriter_ImplBase<OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE, FEATURES_OUT_TYPE> dataWriter) {
+			JarSequentialDataWriter<OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE, FEATURES_OUT_TYPE> dataWriter) {
 		if (this.featuresEncoder != null && this.outcomeEncoder != null) {
 			dataWriter.setFeaturesEncoder(this.featuresEncoder);
 			dataWriter.setOutcomeEncoder(this.outcomeEncoder);

@@ -25,8 +25,8 @@ package org.cleartk.classifier.mallet;
 
 import java.io.File;
 
-import org.cleartk.classifier.BuildJar;
-import org.cleartk.classifier.ClassifierBuilder;
+import org.cleartk.classifier.jar.BuildJar;
+import org.cleartk.classifier.jar.ClassifierBuilder;
 
 import cc.mallet.fst.SimpleTagger;
 

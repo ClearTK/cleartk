@@ -38,9 +38,10 @@ import org.apache.uima.resource.metadata.TypePriorities;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.cleartk.CleartkComponents;
 import org.cleartk.ViewNames;
-import org.cleartk.classifier.BuildJar;
 import org.cleartk.classifier.CleartkSequentialAnnotator;
-import org.cleartk.classifier.Train;
+import org.cleartk.classifier.jar.BuildJar;
+import org.cleartk.classifier.jar.JarClassifierFactory;
+import org.cleartk.classifier.jar.Train;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.classifier.viterbi.ViterbiDataWriter;
 import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
@@ -99,9 +100,9 @@ public class DefaultPOSAnnotatorTest {
 		AnalysisEngine aggregateEngine = AnalysisEngineFactory.createAggregate(aggregatedClasses, 
 				defaultTypeSystemDescription, (TypePriorities)null, null,
 				TreebankGoldAnnotator.PARAM_POST_TREES, false,
-				CleartkSequentialAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, ViterbiDataWriterFactory.class.getName(),
+				CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME, ViterbiDataWriterFactory.class.getName(),
 				ViterbiDataWriter.PARAM_DELEGATED_DATAWRITER_FACTORY_CLASS, DefaultMaxentDataWriterFactory.class.getName(),
-				CleartkSequentialAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory.getPath(),
+				ViterbiDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory.getPath(),
 				POSAnnotator.PARAM_FEATURE_EXTRACTOR_CLASS_NAME, DefaultFeatureExtractor.class.getName());
 		
 		for(JCas jCas : new JCasIterable(reader, aggregateEngine)) {
@@ -116,7 +117,7 @@ public class DefaultPOSAnnotatorTest {
 		hider.restoreOutput();
 		
 		AnalysisEngine tagger = CleartkComponents.createPrimitive(DefaultPOSAnnotator.class, 
-				CleartkSequentialAnnotator.PARAM_CLASSIFIER_JAR_PATH, new File(outputDirectory, BuildJar.MODEL_FILE_NAME).getPath());
+				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, new File(outputDirectory, BuildJar.MODEL_FILE_NAME).getPath());
 
 		JCas jCas = ReusableUIMAObjects.getJCas();
 		TokenFactory.createTokens(jCas, "What kitchen utensil is like a vampire ? Spatula", Token.class, Sentence.class );

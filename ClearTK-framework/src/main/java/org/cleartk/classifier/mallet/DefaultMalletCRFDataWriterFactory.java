@@ -24,21 +24,21 @@
 
 package org.cleartk.classifier.mallet;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.SequentialDataWriter;
-import org.cleartk.classifier.SequentialDataWriterFactory_ImplBase;
 import org.cleartk.classifier.encoder.features.BooleanEncoder;
 import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 import org.cleartk.classifier.encoder.features.NumberEncoder;
 import org.cleartk.classifier.encoder.features.StringEncoder;
 import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
+import org.cleartk.classifier.jar.JarSequentialDataWriterFactory;
 import org.cleartk.util.UIMAUtil;
+import org.uutuc.util.InitializeUtil;
 
 /**
  * <br>
@@ -48,7 +48,7 @@ import org.cleartk.util.UIMAUtil;
  * 
  */
 
-public class DefaultMalletCRFDataWriterFactory extends SequentialDataWriterFactory_ImplBase<List<NameNumber>, String, String> {
+public class DefaultMalletCRFDataWriterFactory extends JarSequentialDataWriterFactory<List<NameNumber>, String, String> {
 
 	/**
 	 * "org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory.PARAM_COMPRESS"
@@ -69,11 +69,12 @@ public class DefaultMalletCRFDataWriterFactory extends SequentialDataWriterFacto
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
+		InitializeUtil.initialize(this, context);
 		compress = (Boolean)UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_COMPRESS, false);
 		sort = (Boolean)UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_SORT_NAME_LOOKUP, false);
 	}
 	
-	public SequentialDataWriter<String> createSequentialDataWriter(File outputDirectory) throws IOException {
+	public SequentialDataWriter<String> createSequentialDataWriter() throws IOException {
 		MalletCRFDataWriter mdw = new MalletCRFDataWriter(outputDirectory);
 		
 		if(!this.setEncodersFromFileSystem(mdw)) {

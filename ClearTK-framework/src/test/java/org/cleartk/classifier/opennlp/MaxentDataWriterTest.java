@@ -43,8 +43,9 @@ import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.InstanceFactory;
-import org.cleartk.classifier.Train;
 import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
+import org.cleartk.classifier.jar.JarDataWriterFactory;
+import org.cleartk.classifier.jar.Train;
 import org.cleartk.util.JCasUtil;
 import org.junit.After;
 import org.junit.Test;
@@ -66,16 +67,17 @@ public class MaxentDataWriterTest {
 
 	@After
 	public void tearDown() throws Exception {
-		File outputDirectory = new File(this.outputDirectory);
-		TearDownUtil.removeDirectory(outputDirectory);
+		File outputDirectoryFile = new File(this.outputDirectory);
+		TearDownUtil.removeDirectory(outputDirectoryFile);
 		// Some files will get left around because maxent doesn't close its
 		// handle on the training-data.maxent file. If this ever gets fixed,
 		// we should uncomment the following line:
-		// Assert.assertFalse(outputDirectory.exists());
+		// Assert.assertFalse(outputDirectoryFile.exists());
 	}
 
 	public static class Test1Annotator extends CleartkAnnotator<String> {
 
+		@Override
 		public void process(JCas cas) throws AnalysisEngineProcessException {
 			try {
 				this.processSimple(cas);
@@ -83,7 +85,7 @@ public class MaxentDataWriterTest {
 				throw new AnalysisEngineProcessException(e);
 			}
 		}
-		public void processSimple(JCas cas) throws AnalysisEngineProcessException, CleartkException {
+		public void processSimple(JCas cas) throws CleartkException {
 			List<Feature> features = Arrays.asList(new Feature("pos", "NN"), new Feature("distance", 3.0), new Feature(
 					"precision", 1.234));
 			Instance<String> instance = new Instance<String>("A", features);
@@ -106,7 +108,7 @@ public class MaxentDataWriterTest {
 	public void test1() throws Exception {
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
 				Test1Annotator.class, JCasUtil.getTypeSystemDescription(),
-				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMaxentDataWriterFactory.class.getName());
 
 		JCas jCas = JCasUtil.getJCas();
@@ -134,7 +136,7 @@ public class MaxentDataWriterTest {
 	public void test2() throws Exception {
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
 				Test1Annotator.class, JCasUtil.getTypeSystemDescription(),
-				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMaxentDataWriterFactory.class.getName(),
 				DefaultMaxentDataWriterFactory.PARAM_COMPRESS, true);
 
@@ -176,10 +178,10 @@ public class MaxentDataWriterTest {
 	public void test3() throws Exception {
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
 				Test1Annotator.class, JCasUtil.getTypeSystemDescription(),
-				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMaxentDataWriterFactory.class.getName(),
-				DefaultMaxentDataWriterFactory.PARAM_COMPRESS, true,
-				DefaultMaxentDataWriterFactory.PARAM_SORT_NAME_LOOKUP, true);
+				MaxentDataWriterFactory_ImplBase.PARAM_COMPRESS, true,
+				MaxentDataWriterFactory_ImplBase.PARAM_SORT, true);
 
 		JCas jCas = JCasUtil.getJCas();
 		dataWriterAnnotator.process(jCas);
@@ -209,20 +211,18 @@ public class MaxentDataWriterTest {
 
 	public static class Test4Annotator extends CleartkAnnotator<String> {
 
+		@Override
 		public void process(JCas cas) throws AnalysisEngineProcessException {
 			try {
-				this.processSimple(cas);
+				List<Feature> features = Arrays.asList(
+						new Feature("pos", "NN"),
+						new Feature("distance", 3.0),
+						new Feature("precision", 1.234));
+				Instance<String> instance = new Instance<String>(features);
+				this.dataWriter.write(instance);
 			} catch (CleartkException e) {
 				throw new AnalysisEngineProcessException(e);
 			}
-		}
-		public void processSimple(JCas cas) throws AnalysisEngineProcessException, CleartkException {
-			List<Feature> features = Arrays.asList(
-					new Feature("pos", "NN"),
-					new Feature("distance", 3.0),
-					new Feature("precision", 1.234));
-			Instance<String> instance = new Instance<String>(features);
-			this.dataWriter.write(instance);
 		}
 
 	}
@@ -238,10 +238,10 @@ public class MaxentDataWriterTest {
 
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
 				Test4Annotator.class, JCasUtil.getTypeSystemDescription(),
-				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMaxentDataWriterFactory.class.getName(),
 				DefaultMaxentDataWriterFactory.PARAM_COMPRESS, true,
-				DefaultMaxentDataWriterFactory.PARAM_SORT_NAME_LOOKUP, true);
+				DefaultMaxentDataWriterFactory.PARAM_SORT, true);
 
 		JCas jCas = JCasUtil.getJCas();
 		AnalysisEngineProcessException aepe = null;
@@ -260,16 +260,14 @@ public class MaxentDataWriterTest {
 
 	public static class Test5Annotator extends CleartkAnnotator<String> {
 
+		@Override
 		public void process(JCas cas) throws AnalysisEngineProcessException {
 			try {
-				this.processSimple(cas);
+				Instance<String> instance = InstanceFactory.createInstance("a", "b c d");
+				this.dataWriter.write(instance);
 			} catch (CleartkException e) {
 				throw new AnalysisEngineProcessException(e);
 			}
-		}
-		public void processSimple(JCas cas) throws AnalysisEngineProcessException, CleartkException {
-			Instance<String> instance = InstanceFactory.createInstance("a", "b c d");
-			this.dataWriter.write(instance);
 		}
 	}
 
@@ -281,7 +279,7 @@ public class MaxentDataWriterTest {
 	public void test5() throws Exception {
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
 				Test5Annotator.class, JCasUtil.getTypeSystemDescription(),
-				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMaxentDataWriterFactory.class.getName(),
 				DefaultMaxentDataWriterFactory.PARAM_COMPRESS, true);
 

@@ -21,17 +21,9 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.classifier;
+package org.cleartk.classifier.jar;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.jar.JarEntry;
-import java.util.jar.JarOutputStream;
-
-import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
-
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -39,56 +31,30 @@ import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
 
 */
 
-public class BuildJar {
-	
-	public static final String MODEL_FILE_NAME = "model.jar";
-	
+public class Train {
 	public static void main(String ... args) throws Exception {
-		String programName = BuildJar.class.getName();
+		String programName = Train.class.getName();
 		String usage = String.format(
 				"usage: java %s DIR\n\n" + 
-				"The directory DIR should contain the MANIFEST.MF file as created by\n" + 
-				"a classifier DataWriter, and all files created by training a model\n" +
-				"from the corresponding training-data.xxx file\n", programName);
+				"The directory DIR should contain the training-data.xxx file as\n" + 
+				"created by a classifier DataWriter\n", programName);
 		
 		// usage message for wrong number of arguments
-		if (args.length != 1) {
+		if (args.length < 1) {
 			System.err.format("error: wrong number of arguments\n%s", usage);
 			System.exit(1);
 		}
 		File dir = new File(args[0]);
-		
+
 		// get the classifier class from the manifest
 		ClassifierManifest manifest = new ClassifierManifest(dir);
 		ClassifierBuilder<?> classifierBuilder = manifest.getClassifierBuilder();
 		
-		// clip the first item off the command line arguments, and call buildJar
+		// clip the first item off the command line arguments, and call train
 		String[] remainingArgs = new String[args.length - 1];
 		System.arraycopy(args, 1, remainingArgs, 0, remainingArgs.length);
+		classifierBuilder.train(dir, remainingArgs);
 		classifierBuilder.buildJar(dir, remainingArgs);
 	}
 	
-	public static class OutputStream extends JarOutputStream {
-		public OutputStream(File dir) throws IOException {
-			super(getOutputStream(dir), new ClassifierManifest(dir));
-			String encodersFileName = FeaturesEncoder_ImplBase.ENCODERS_FILE_NAME;
-			File encodersFile = new File(dir, encodersFileName);
-			if(encodersFile.exists())
-				this.write(encodersFileName, encodersFile);
-		}
-		
-		public void write(String entryName, File file) throws IOException {
-			this.putNextEntry(new JarEntry(entryName));
-			FileInputStream stream = new FileInputStream(file);
-			byte[] byteArray = new byte[stream.available()];
-			stream.read(byteArray);
-			stream.close();
-			this.write(byteArray);
-		}
-		
-		private static FileOutputStream getOutputStream(File dir) throws IOException {
-			return new FileOutputStream(new File(dir, MODEL_FILE_NAME));
-		}
-	}
-
 }

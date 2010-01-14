@@ -24,7 +24,8 @@
 package org.cleartk.classifier;
 
 import java.io.IOException;
-import java.util.jar.JarFile;
+
+import org.cleartk.CleartkException;
 
 /**
  * <br>
@@ -32,50 +33,8 @@ import java.util.jar.JarFile;
  * All rights reserved.
  */
 
-public class ClassifierFactory {
+public interface ClassifierFactory<OUTCOME_TYPE> {
 
-	/**
-	 * Every classifier should be able to instantiated from a jar file. This
-	 * factory method reads the class of the classifier from manifest of the jar
-	 * file from the attribute "classifier". e.g.:
-	 * <p>
-	 * <code>classifier: org.cleartk.classifier.OpenNLPMaxentClassifier</code>
-	 * </p>
-	 * The value of the classifier attribute of the manifest is used to
-	 * instantiate a classifier using reflection and the constructor that takes
-	 * a jar file.
-	 * 
-	 * @param jarFileName
-	 *            the name of a jar file
-	 * @return a classifier defined by the contents of the jar file.
-	 * @throws IOException
-	 */
-	public static Classifier<?> createClassifierFromJar(String jarFileName) throws IOException {
-		return createClassifierFromJar(jarFileName, Classifier.class);
-	}
+	public Classifier<OUTCOME_TYPE> createClassifier() throws IOException, CleartkException;
 
-	public static SequentialClassifier<?> createSequentialClassifierFromJar(String jarFileName) throws IOException {
-		return createClassifierFromJar(jarFileName, SequentialClassifier.class);
-	}
-
-	private static <T> T createClassifierFromJar(String jarFileName, Class<T> cls) throws IOException {
-		// get the jar file manifest
-		JarFile modelFile = new JarFile(jarFileName);
-		ClassifierManifest manifest = new ClassifierManifest(modelFile);
-
-		// get the classifier class
-		ClassifierBuilder<?> builder = manifest.getClassifierBuilder();
-		Class<? extends T> classifierClass = builder.getClassifierClass().asSubclass(cls);
-
-		// create the classifier, passing in the jar file
-		try {
-			return classifierClass.getConstructor(JarFile.class).newInstance(modelFile);
-		} catch (Exception e) {
-			IOException exception = new IOException();
-			exception.initCause(e);
-			throw exception;
-		} finally {
-			modelFile.close();
-		}
-	}
 }

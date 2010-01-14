@@ -40,7 +40,8 @@ import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.Train;
+import org.cleartk.classifier.jar.JarDataWriterFactory;
+import org.cleartk.classifier.jar.Train;
 import org.cleartk.classifier.svmlight.model.SVMlightModel;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 import org.cleartk.classifier.util.featurevector.SparseFeatureVector;
@@ -217,7 +218,7 @@ public class RunSVMlightTest {
 		// create the data writer
 		EmptyAnnotator<Boolean> annotator = new EmptyAnnotator<Boolean>();
 		annotator.initialize(UimaContextFactory.createUimaContext(
-				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY,
+				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
 				this.outputDirectory,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
 				DefaultSVMlightDataWriterFactory.class.getName()));
@@ -256,7 +257,7 @@ public class RunSVMlightTest {
 		// create the data writer
 		EmptyAnnotator<String> annotator = new EmptyAnnotator<String>();
 		annotator.initialize(UimaContextFactory.createUimaContext(
-				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY,
+				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
 				this.outputDirectory,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
 				DefaultOVASVMlightDataWriterFactory.class.getName()));

@@ -37,7 +37,8 @@ import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.Train;
+import org.cleartk.classifier.jar.JarDataWriterFactory;
+import org.cleartk.classifier.jar.Train;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -76,7 +77,7 @@ public class RunLIBSVMTest {
 		// create the data writer
 		BinaryAnnotator annotator = new BinaryAnnotator();		
 		annotator.initialize(UimaContextFactory.createUimaContext(
-				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY, this.outputDirectory,
+				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, this.outputDirectory,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultBinaryLIBSVMDataWriterFactory.class.getName()));
 		
 		// run process to produce a bunch of instances
@@ -112,7 +113,7 @@ public class RunLIBSVMTest {
 		// create the data writer
 		BinaryAnnotator annotator = new BinaryAnnotator();		
 		annotator.initialize(UimaContextFactory.createUimaContext(
-				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY, this.outputDirectory,
+				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, this.outputDirectory,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultLIBLINEARDataWriterFactory.class.getName()));
 		
 		// run process to produce a bunch of instances
@@ -148,7 +149,7 @@ public class RunLIBSVMTest {
 		// create the data writer
 		StringAnnotator annotator = new StringAnnotator();		
 		annotator.initialize(UimaContextFactory.createUimaContext(
-				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY, this.outputDirectory,
+				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, this.outputDirectory,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMultiClassLIBSVMDataWriterFactory.class.getName()));
 		
 		// run process to produce a bunch of instances

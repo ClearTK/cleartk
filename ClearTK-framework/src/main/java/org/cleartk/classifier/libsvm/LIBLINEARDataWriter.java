@@ -26,7 +26,7 @@ package org.cleartk.classifier.libsvm;
 import java.io.File;
 import java.io.IOException;
 
-import org.cleartk.classifier.ClassifierBuilder;
+import org.cleartk.classifier.jar.ClassifierBuilder;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado

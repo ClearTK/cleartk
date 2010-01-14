@@ -28,25 +28,36 @@ import java.io.IOException;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.Initializable;
 import org.cleartk.classifier.SequentialDataWriter;
 import org.cleartk.classifier.SequentialDataWriterFactory;
+import org.cleartk.test.util.ConfigurationParameterNameFactory;
+import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.util.InitializeUtil;
 
 /**
  * <br>
  * Copyright (c) 2009, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
  * @author Philip Ogren
  * 
  */
 
-public class ViterbiDataWriterFactory<OUTCOME_TYPE> implements SequentialDataWriterFactory<OUTCOME_TYPE>{
+public class ViterbiDataWriterFactory<OUTCOME_TYPE> implements SequentialDataWriterFactory<OUTCOME_TYPE>, Initializable {
 
-	
-	public SequentialDataWriter<OUTCOME_TYPE> createSequentialDataWriter(File outputDirectory) throws IOException {
+	public static final String PARAM_OUTPUT_DIRECTORY = ConfigurationParameterNameFactory
+			.createConfigurationParameterName(ViterbiDataWriterFactory.class, "outputDirectory");
+
+	@ConfigurationParameter(mandatory = true, description = "provides the name of the directory where the training data will be written.")
+	protected File outputDirectory;
+
+	public SequentialDataWriter<OUTCOME_TYPE> createSequentialDataWriter() throws IOException {
 		return new ViterbiDataWriter<OUTCOME_TYPE>(outputDirectory);
 	}
 
 	public void initialize(UimaContext context) throws ResourceInitializationException {
+		InitializeUtil.initialize(this, context);
 	}
 
 }

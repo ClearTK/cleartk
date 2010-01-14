@@ -39,6 +39,9 @@ import org.cleartk.classifier.CleartkSequentialAnnotator;
 import org.cleartk.classifier.DataWriterFactory;
 import org.cleartk.classifier.SequentialDataWriterFactory;
 import org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor;
+import org.cleartk.classifier.jar.JarDataWriterFactory;
+import org.cleartk.classifier.jar.JarClassifierFactory;
+import org.cleartk.classifier.jar.JarSequentialDataWriterFactory;
 import org.cleartk.classifier.viterbi.ViterbiDataWriter;
 import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
 import org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter;
@@ -93,8 +96,8 @@ public class CleartkComponents {
 
 		return AnalysisEngineFactory.createPrimitiveDescription(annotatorClass, TYPE_SYSTEM_DESCRIPTION,
 				TYPE_PRIORITIES, combineParams(configurationParameters,
-						CleartkSequentialAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, ViterbiDataWriterFactory.class
-								.getName(), CleartkSequentialAnnotator.PARAM_OUTPUT_DIRECTORY, outputDir,
+						CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME, ViterbiDataWriterFactory.class
+								.getName(), ViterbiDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDir,
 						ViterbiDataWriter.PARAM_DELEGATED_DATAWRITER_FACTORY_CLASS, delegatedDataWriterFactoryClass
 								.getName(), ViterbiDataWriter.PARAM_OUTCOME_FEATURE_EXTRACTORS,
 						new String[] { DefaultOutcomeFeatureExtractor.class.getName() }));
@@ -110,7 +113,7 @@ public class CleartkComponents {
 			Class<? extends CleartkAnnotator<OUTCOME_TYPE>> cleartkAnnotatorClass, String classifierJar,
 			List<Class<?>> dynamicallyLoadedClasses, Object... configurationData)
 			throws ResourceInitializationException {
-		return createCleartkAnnotator(cleartkAnnotatorClass, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES, classifierJar, null, configurationData);
+		return createCleartkAnnotator(cleartkAnnotatorClass, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES, classifierJar, dynamicallyLoadedClasses, configurationData);
 
 	}
 	
@@ -130,7 +133,7 @@ public class CleartkComponents {
 		}
 
 		if (classifierJar != null) {
-			ConfigurationParameterFactory.addConfigurationParameter(aed, CleartkAnnotator.PARAM_CLASSIFIER_JAR_PATH, classifierJar);
+			ConfigurationParameterFactory.addConfigurationParameter(aed, JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, classifierJar);
 		}
 		if (configurationData != null) {
 			ConfigurationParameterFactory.addConfigurationParameters(aed, configurationData);
@@ -151,7 +154,7 @@ public class CleartkComponents {
 			Class<? extends DataWriterFactory<OUTCOME_TYPE>> dataWriterFactoryClass, String outputDir,
 			List<Class<?>> dynamicallyLoadedClasses, Object... configurationData)
 			throws ResourceInitializationException {
-		return createCleartkAnnotator(cleartkAnnotatorClass, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES, dataWriterFactoryClass, outputDir, null, configurationData);
+		return createCleartkAnnotator(cleartkAnnotatorClass, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES, dataWriterFactoryClass, outputDir, dynamicallyLoadedClasses, configurationData);
 	}
 	
 	public static <OUTCOME_TYPE> AnalysisEngineDescription createCleartkAnnotator(
@@ -172,7 +175,7 @@ public class CleartkComponents {
 					dataWriterFactoryClass.getName());
 		}
 		if (outputDir != null) {
-			ConfigurationParameterFactory.addConfigurationParameter(aed, CleartkAnnotator.PARAM_OUTPUT_DIRECTORY, outputDir);
+			ConfigurationParameterFactory.addConfigurationParameter(aed, JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDir);
 		}
 		if (configurationData != null) {
 			ConfigurationParameterFactory.addConfigurationParameters(aed, configurationData);
@@ -191,7 +194,7 @@ public class CleartkComponents {
 			Class<? extends CleartkSequentialAnnotator<OUTCOME_TYPE>> sequentialClassifierAnnotatorClass,
 			String classifierJar, List<Class<?>> dynamicallyLoadedClasses, Object... configurationData)
 			throws ResourceInitializationException {
-		return createCleartkSequentialAnnotator(sequentialClassifierAnnotatorClass, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES, classifierJar, null,
+		return createCleartkSequentialAnnotator(sequentialClassifierAnnotatorClass, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES, classifierJar, dynamicallyLoadedClasses,
 				configurationData);
 	}
 	
@@ -210,7 +213,7 @@ public class CleartkComponents {
 		}
 
 		if (classifierJar != null) {
-			ConfigurationParameterFactory.addConfigurationParameter(aed, CleartkSequentialAnnotator.PARAM_CLASSIFIER_JAR_PATH, classifierJar);
+			ConfigurationParameterFactory.addConfigurationParameter(aed, JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, classifierJar);
 		}
 		if (configurationData != null) {
 			ConfigurationParameterFactory.addConfigurationParameters(aed, configurationData);
@@ -232,7 +235,7 @@ public class CleartkComponents {
 			List<Class<?>> dynamicallyLoadedClasses, Object... configurationData)
 			throws ResourceInitializationException {
 		return createCleartkSequentialAnnotator(sequentialClassifierAnnotatorClass, TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES, dataWriterFactoryClass, outputDir,
-				null, configurationData);
+				dynamicallyLoadedClasses, configurationData);
 
 	}
 	
@@ -252,11 +255,11 @@ public class CleartkComponents {
 		}
 
 		if (dataWriterFactoryClass != null) {
-			ConfigurationParameterFactory.addConfigurationParameter(aed, CleartkSequentialAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+			ConfigurationParameterFactory.addConfigurationParameter(aed, CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME,
 					dataWriterFactoryClass.getName());
 		}
 		if (outputDir != null) {
-			ConfigurationParameterFactory.addConfigurationParameter(aed, CleartkSequentialAnnotator.PARAM_OUTPUT_DIRECTORY, outputDir);
+			ConfigurationParameterFactory.addConfigurationParameter(aed, JarSequentialDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDir);
 		}
 		if (configurationData != null) {
 			ConfigurationParameterFactory.addConfigurationParameters(aed, configurationData);

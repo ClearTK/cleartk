@@ -140,7 +140,7 @@ public class ExamplePOSAnnotator extends CleartkSequentialAnnotator<String> {
 			
 			// for training, write instances to the data write
 			if (this.isTraining()) {
-				this.dataWriter.writeSequence(instances);
+				this.sequentialDataWriter.writeSequence(instances);
 			}
 			
 			// for classification, set the labels as the token POS labels

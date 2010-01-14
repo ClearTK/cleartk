@@ -26,6 +26,8 @@ package org.cleartk.example.documentclassification;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.uima.UimaContext;
+import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.DataWriter;
 import org.cleartk.classifier.encoder.features.BooleanEncoder;
 import org.cleartk.classifier.encoder.features.FeatureVectorFeaturesEncoder;
@@ -36,6 +38,9 @@ import org.cleartk.classifier.encoder.features.normalizer.EuclidianNormalizer;
 import org.cleartk.classifier.encoder.features.normalizer.NameNumberNormalizer;
 import org.cleartk.classifier.encoder.outcome.StringToIntegerOutcomeEncoder;
 import org.cleartk.classifier.svmlight.OVASVMlightDataWriter;
+import org.cleartk.test.util.ConfigurationParameterNameFactory;
+import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.util.InitializeUtil;
 
 /**
  * <br>Copyright (c) 2009, Regents of the University of Colorado 
@@ -46,8 +51,20 @@ import org.cleartk.classifier.svmlight.OVASVMlightDataWriter;
  */
 
 public class DataWriterFactory implements org.cleartk.classifier.DataWriterFactory<String> {
-public static final String IDFMAP = "example/documentclassification/idfmap";
-	public DataWriter<String> createDataWriter(File outputDirectory) throws IOException {
+
+	public static final String PARAM_OUTPUT_DIRECTORY = ConfigurationParameterNameFactory
+	.createConfigurationParameterName(DataWriterFactory.class, "outputDirectory");
+
+	@ConfigurationParameter(mandatory = true, description = "provides the name of the directory where the training data will be written.")
+	protected File outputDirectory;
+
+	public void initialize(UimaContext context) throws ResourceInitializationException {
+		InitializeUtil.initialize(this, context);
+	}
+
+	
+	public static final String IDFMAP = "example/documentclassification/idfmap";
+	public DataWriter<String> createDataWriter() throws IOException {
 		OVASVMlightDataWriter dataWriter = new OVASVMlightDataWriter(outputDirectory);
 
 			NameNumberNormalizer normalizer = new EuclidianNormalizer();

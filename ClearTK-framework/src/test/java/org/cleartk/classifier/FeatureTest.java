@@ -25,6 +25,8 @@
 package org.cleartk.classifier;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -47,5 +49,24 @@ public class FeatureTest {
 		assertEquals("qwerty_asdf", feature2.getName());
 		assertEquals(1, feature2.getValue());
 		
+		Instance<String> instance = InstanceFactory.createInstance("A", "feature1", 1, "feature1", 1, "feature1", 2);
+		Feature feature = instance.getFeatures().get(0);
+		assertEquals("Feature(<feature1>, <1>)", feature.toString());
+		assertEquals(-420503769, feature.hashCode());
+		assertTrue(feature.equals(instance.getFeatures().get(1)));
+		assertFalse(feature.equals(instance.getFeatures().get(2)));
+		assertFalse(feature.equals("feature1"));
+
+		instance = InstanceFactory.createInstance("A", "feature1 feature1");
+		feature = instance.getFeatures().get(0);
+		assertEquals("Feature(<feature1>, <null>)", feature.toString());
+		assertEquals(-420503770, feature.hashCode());
+		assertTrue(feature.equals(instance.getFeatures().get(1)));
+
+		feature = new Feature(5);
+		assertFalse(feature.equals(instance.getFeatures().get(0)));
+		assertEquals(966, feature.hashCode());
+		feature.setValue(6);
+		assertEquals(6, feature.getValue());
 	}
 }

@@ -21,21 +21,35 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.classifier;
+package org.cleartk.classifier.opennlp;
 
 import java.io.File;
+import java.io.IOException;
+
+import opennlp.maxent.RealValueFileEventStream;
+
+import org.cleartk.classifier.jar.ClassifierBuilder;
+
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
  * <br>All rights reserved.
 
-*/
+ * <p>
+ * 
+ * @author Philip Ogren
+ * @author Steven Bethard
+ * @see RealValueFileEventStream
+ */
+public class BinaryMaxentDataWriter extends MaxentDataWriter_ImplBase<Boolean> {
 
-public interface ClassifierBuilder<OUTCOME_TYPE> {
+	public BinaryMaxentDataWriter(File outputDirectory) throws IOException {
+		super(outputDirectory);
+	}
 
-	public void train(File dir, String[] args) throws Exception;
-	
-	public void buildJar(File dir, String[] args) throws Exception;
+	@Override
+	public Class<? extends ClassifierBuilder<Boolean>> getDefaultClassifierBuilderClass() {
+		return BinaryMaxentClassifierBuilder.class;
+	}
 
-	public Class<?> getClassifierClass();
 }

@@ -31,11 +31,11 @@ import java.util.Map;
 import java.util.jar.Attributes;
 
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.ClassifierBuilder;
-import org.cleartk.classifier.DataWriter_ImplBase;
+import org.cleartk.classifier.jar.ClassifierBuilder;
+import org.cleartk.classifier.jar.JarDataWriter;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
-public abstract class LIBSVMDataWriter<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE> extends DataWriter_ImplBase<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE,FeatureVector> {
+public abstract class LIBSVMDataWriter<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE> extends JarDataWriter<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE,FeatureVector> {
 
 	public static final String TRAINING_DATA_FILE_NAME ="training-data.libsvm"; 
 

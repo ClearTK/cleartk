@@ -63,7 +63,7 @@ public class CoNLL2005WriterTest {
 	@Test
 	public void testCoNLL2005WriterDescriptor() throws UIMAException, IOException {
 		try {
-			AnalysisEngineFactory.createAnalysisEngine("org.cleartk.srl.conll2005.CoNLL2005Writer");
+			AnalysisEngineFactory.createAnalysisEngine("org.cleartk.srl.conll2005.Conll2005Writer");
 			Assert.fail("expected exception without output file parameter");
 		} catch (ResourceInitializationException e) {}
 

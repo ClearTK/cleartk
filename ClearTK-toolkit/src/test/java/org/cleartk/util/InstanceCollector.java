@@ -23,7 +23,6 @@
  */
 package org.cleartk.util;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,12 +31,12 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.ClassifierBuilder;
 import org.cleartk.classifier.DataWriter;
 import org.cleartk.classifier.DataWriterFactory;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.SequentialDataWriter;
 import org.cleartk.classifier.SequentialDataWriterFactory;
+import org.cleartk.classifier.jar.ClassifierBuilder;
 
 /**
  * <br>
@@ -80,10 +79,10 @@ public class InstanceCollector<T> implements DataWriter<T>, SequentialDataWriter
 	 */
 	public static class StringFactory implements DataWriterFactory<String>, SequentialDataWriterFactory<String>{
 		private static InstanceCollector<String> collector = new InstanceCollector<String>();
-		public DataWriter<String> createDataWriter(File outputDirectory) throws IOException {
+		public DataWriter<String> createDataWriter() throws IOException {
 			return collector;
 		}
-		public SequentialDataWriter<String> createSequentialDataWriter(File outputDirectory) throws IOException {
+		public SequentialDataWriter<String> createSequentialDataWriter() throws IOException {
 			return collector;
 		}
 		public static List<Instance<String>> collectInstances(AnalysisEngine engine, JCas jCas)
@@ -98,7 +97,7 @@ public class InstanceCollector<T> implements DataWriter<T>, SequentialDataWriter
 	 */
 	public static class BooleanFactory implements DataWriterFactory<Boolean> {
 		private static InstanceCollector<Boolean> collector = new InstanceCollector<Boolean>();
-		public DataWriter<Boolean> createDataWriter(File outputDirectory) throws IOException {
+		public DataWriter<Boolean> createDataWriter() throws IOException {
 			return collector;
 		}
 		public static List<Instance<Boolean>> collectInstances(AnalysisEngine engine, JCas jCas)

@@ -23,21 +23,16 @@
  */
 package org.cleartk.classifier.opennlp;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.DataWriter;
-import org.cleartk.classifier.DataWriterFactory_ImplBase;
 import org.cleartk.classifier.encoder.features.BooleanEncoder;
-import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 import org.cleartk.classifier.encoder.features.NumberEncoder;
 import org.cleartk.classifier.encoder.features.StringEncoder;
 import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
-import org.cleartk.util.UIMAUtil;
 
 /**
  * <br>
@@ -47,40 +42,23 @@ import org.cleartk.util.UIMAUtil;
  * 
  */
 
-public class DefaultMaxentDataWriterFactory extends DataWriterFactory_ImplBase<List<NameNumber>, String, String> {
+public class DefaultMaxentDataWriterFactory extends MaxentDataWriterFactory_ImplBase<String> {
 
-	/**
-	 * "org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory.PARAM_COMPRESS"
-	 * is a single, optional, boolean parameter, defaulting to false, that when true
-	 * indicates that the FeaturesEncoder should compress the feature names.
-	 * @see NameNumberFeaturesEncoder
-	 */
-	public static final String PARAM_COMPRESS = "org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory.PARAM_COMPRESS";
-
-	/**
-	 * "org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory.PARAM_SORT_NAME_LOOKUP"
-	 * is a single, optional, boolean parameter, defaulting to false, that when true
-	 * indicates that the FeaturesEncoder should write the feature names in sorted order.
-	 * @see NameNumberFeaturesEncoder
-	 */
-	public static final String PARAM_SORT_NAME_LOOKUP = "org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory.PARAM_SORT_NAME_LOOKUP";
 
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
-		compress = (Boolean)UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_COMPRESS, false);		
-		sort = (Boolean)UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_SORT_NAME_LOOKUP, false);
 	}
 	
-	public DataWriter<String> createDataWriter(File outputDirectory) throws IOException {
+	public DataWriter<String> createDataWriter() throws IOException {
 		MaxentDataWriter mdw = new MaxentDataWriter(outputDirectory);
 		
 		if(!this.setEncodersFromFileSystem(mdw)) {
-			NameNumberFeaturesEncoder featuresEncoder = new NameNumberFeaturesEncoder(compress, sort);
-			featuresEncoder.addEncoder(new NumberEncoder());
-			featuresEncoder.addEncoder(new BooleanEncoder());
-			featuresEncoder.addEncoder(new StringEncoder());
-			mdw.setFeaturesEncoder(featuresEncoder);
+			NameNumberFeaturesEncoder ftrsNcdr = new NameNumberFeaturesEncoder(compress, sort);
+			ftrsNcdr.addEncoder(new NumberEncoder());
+			ftrsNcdr.addEncoder(new BooleanEncoder());
+			ftrsNcdr.addEncoder(new StringEncoder());
+			mdw.setFeaturesEncoder(ftrsNcdr);
 			
 			mdw.setOutcomeEncoder(new StringToStringOutcomeEncoder());
 		}
@@ -88,6 +66,4 @@ public class DefaultMaxentDataWriterFactory extends DataWriterFactory_ImplBase<L
 		return mdw;
 	}
 
-	private boolean compress;
-	private boolean sort;
 }

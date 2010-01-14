@@ -53,7 +53,7 @@ public class BuildTestExamplePosModel {
 				DefaultSnowballStemmer.getDescription("English"),
 				ExamplePOSAnnotator.getWriterDescription(ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY));
 				
-		org.cleartk.classifier.Train.main("example/pos/model");
+		org.cleartk.classifier.jar.Train.main("example/pos/model");
 
 	}
 }

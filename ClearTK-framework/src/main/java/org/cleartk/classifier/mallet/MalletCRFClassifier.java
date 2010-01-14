@@ -31,8 +31,8 @@ import java.util.zip.ZipEntry;
 
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.SequentialClassifier_ImplBase;
 import org.cleartk.classifier.encoder.features.NameNumber;
+import org.cleartk.classifier.jar.JarSequentialClassifier;
 import org.cleartk.util.ReflectionUtil;
 
 import cc.mallet.fst.Transducer;
@@ -53,7 +53,7 @@ import cc.mallet.types.Sequence;
  * Annotators that use a sequential learner such as this one will need to 
  * support classification of a sequence of instances.  
  */
-public class MalletCRFClassifier extends SequentialClassifier_ImplBase<String,String,List<NameNumber>>
+public class MalletCRFClassifier extends JarSequentialClassifier<String,String,List<NameNumber>>
 {
 	protected Transducer transducer;
 	

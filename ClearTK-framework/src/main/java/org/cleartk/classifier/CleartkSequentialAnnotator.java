@@ -23,7 +23,6 @@
  */
 package org.cleartk.classifier;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,76 +39,65 @@ import org.cleartk.util.UIMAUtil;
 import org.uutuc.descriptor.ConfigurationParameter;
 import org.uutuc.util.InitializeUtil;
 
-public abstract class CleartkSequentialAnnotator<OUTCOME_TYPE> extends JCasAnnotator_ImplBase implements Initializable{
+public abstract class CleartkSequentialAnnotator<OUTCOME_TYPE> extends JCasAnnotator_ImplBase implements Initializable {
 
-	public static final String PARAM_OUTPUT_DIRECTORY = ConfigurationParameterNameFactory
-			.createConfigurationParameterName(CleartkSequentialAnnotator.class, "outputDirectory");
+	public static final String PARAM_SEQUENTIAL_CLASSIFIER_FACTORY_CLASS_NAME = ConfigurationParameterNameFactory
+			.createConfigurationParameterName(CleartkSequentialAnnotator.class, "sequentialClassifierFactoryClassName");
 
-	@ConfigurationParameter(mandatory = false, description = "provides the name of the directory where the training data will be written.")
-	private File outputDirectory;
+	@ConfigurationParameter(mandatory = false, description = "provides the full name of the SequentialClassifierFactory class to be used.", defaultValue = "org.cleartk.classifier.jar.JarClassifierFactory")
+	private String sequentialClassifierFactoryClassName;
 
-	public static final String PARAM_DATA_WRITER_FACTORY_CLASS_NAME = ConfigurationParameterNameFactory
-			.createConfigurationParameterName(CleartkSequentialAnnotator.class, "dataWriterFactoryClassName");
+	public static final String PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME = ConfigurationParameterNameFactory
+			.createConfigurationParameterName(CleartkSequentialAnnotator.class, "sequentialDataWriterFactoryClassName");
 
 	@ConfigurationParameter(mandatory = false, description = "provides the full name of the SequentialDataWriterFactory class to be used.")
-	private String dataWriterFactoryClassName;
+	private String sequentialDataWriterFactoryClassName;
 
-	public static final String PARAM_CLASSIFIER_JAR_PATH = ConfigurationParameterNameFactory
-			.createConfigurationParameterName(CleartkSequentialAnnotator.class, "classifierJarPath");
+	protected SequentialDataWriter<OUTCOME_TYPE> sequentialDataWriter;
 
-	@ConfigurationParameter(mandatory = false, description = "provides the path to the jar file that should be used to instantiate the classifier.")
-	private String classifierJarPath;
-
-	protected SequentialDataWriter<OUTCOME_TYPE> dataWriter;
-
-	protected SequentialClassifier<OUTCOME_TYPE> classifier;
+	protected SequentialClassifier<OUTCOME_TYPE> sequentialClassifier;
 
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
 		InitializeUtil.initialize(this, context);
 
-		if (dataWriterFactoryClassName != null) {
-
-			if (outputDirectory == null) {
-				throw new ResourceInitializationException(ResourceInitializationException.CONFIG_SETTING_ABSENT,
-						new Object[] { PARAM_OUTPUT_DIRECTORY });
-			}
-
+		if (sequentialDataWriterFactoryClassName != null) {
 			// create the factory and instantiate the data writer
-			SequentialDataWriterFactory<?> factory = UIMAUtil.create(dataWriterFactoryClassName,
+			SequentialDataWriterFactory<?> factory = UIMAUtil.create(sequentialDataWriterFactoryClassName,
 					SequentialDataWriterFactory.class, context);
 			SequentialDataWriter<?> untypedDataWriter;
 			try {
-				untypedDataWriter = factory.createSequentialDataWriter(outputDirectory);
+				untypedDataWriter = factory.createSequentialDataWriter();
 			}
 			catch (IOException e) {
 				throw new ResourceInitializationException(e);
 			}
 			UIMAUtil.initialize(untypedDataWriter, context);
-			this.dataWriter = ReflectionUtil.uncheckedCast(untypedDataWriter);
+			this.sequentialDataWriter = ReflectionUtil.uncheckedCast(untypedDataWriter);
 		}
 		else {
-			if (classifierJarPath == null) {
-				throw new ResourceInitializationException(ResourceInitializationException.CONFIG_SETTING_ABSENT,
-						new Object[] { PARAM_CLASSIFIER_JAR_PATH });
-			}
-
+			// create the factory and instantiate the classifier
+			SequentialClassifierFactory<?> factory = UIMAUtil
+					.create(sequentialClassifierFactoryClassName, SequentialClassifierFactory.class, context);
 			SequentialClassifier<?> untypedClassifier;
 			try {
-				untypedClassifier = ClassifierFactory.createSequentialClassifierFromJar(classifierJarPath);
+				untypedClassifier = factory.createSequentialClassifier();
 			}
 			catch (IOException e) {
 				throw new ResourceInitializationException(e);
 			}
+			catch (CleartkException e) {
+				throw new ResourceInitializationException(e);
+			}
 
-			// check that the SequentialClassifier matches the Annotator type
-			this.classifier = ReflectionUtil.uncheckedCast(untypedClassifier);
+			this.sequentialClassifier = ReflectionUtil.uncheckedCast(untypedClassifier);
+			
 			UIMAUtil.checkTypeParameterIsAssignable(
 					CleartkSequentialAnnotator.class, "OUTCOME_TYPE", this,
-					SequentialClassifier.class, "OUTCOME_TYPE", this.classifier);
-			UIMAUtil.initialize(this.classifier, context);
+					SequentialClassifier.class, "OUTCOME_TYPE", this.sequentialClassifier);
 
+			UIMAUtil.initialize(untypedClassifier, context);
 		}
 	}
 
@@ -119,7 +107,7 @@ public abstract class CleartkSequentialAnnotator<OUTCOME_TYPE> extends JCasAnnot
 
 		if (isTraining()) {
 			try {
-				dataWriter.finish();
+				sequentialDataWriter.finish();
 			}
 			catch (CleartkException ctke) {
 				throw new AnalysisEngineProcessException(ctke);
@@ -128,7 +116,7 @@ public abstract class CleartkSequentialAnnotator<OUTCOME_TYPE> extends JCasAnnot
 	}
 
 	protected boolean isTraining() {
-		return dataWriter != null ? true : false;
+		return sequentialDataWriter != null ? true : false;
 
 	}
 
@@ -137,7 +125,7 @@ public abstract class CleartkSequentialAnnotator<OUTCOME_TYPE> extends JCasAnnot
 		for (Instance<OUTCOME_TYPE> instance : instances) {
 			instanceFeatures.add(instance.getFeatures());
 		}
-		return this.classifier.classifySequence(instanceFeatures);
+		return this.sequentialClassifier.classifySequence(instanceFeatures);
 	}
 
 }

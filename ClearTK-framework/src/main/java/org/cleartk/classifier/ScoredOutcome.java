@@ -33,8 +33,8 @@ package org.cleartk.classifier;
  */
 public class ScoredOutcome<OUTCOME_TYPE> implements Comparable<ScoredOutcome<OUTCOME_TYPE>>{
 
-	OUTCOME_TYPE value;
-	double score;
+	private OUTCOME_TYPE value;
+	private double score;
 	
 	public ScoredOutcome(OUTCOME_TYPE value, double score) {
 		super();
@@ -52,6 +52,7 @@ public class ScoredOutcome<OUTCOME_TYPE> implements Comparable<ScoredOutcome<OUT
 	}
 
 
+	@Override
 	public String toString() {
 		return value.toString()+"|"+score;
 	}

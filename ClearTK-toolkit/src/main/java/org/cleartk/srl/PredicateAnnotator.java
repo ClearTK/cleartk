@@ -45,6 +45,8 @@ import org.cleartk.classifier.feature.extractor.simple.CombinedExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
+import org.cleartk.classifier.jar.JarDataWriterFactory;
+import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.srl.type.Predicate;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
@@ -67,14 +69,14 @@ public class PredicateAnnotator extends CleartkAnnotator<Boolean> {
 		return CleartkComponents.createPrimitiveDescription(
 				ArgumentIdentifier.class,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, dataWriterFactoryClass.getName(),
-				CleartkAnnotator.PARAM_OUTPUT_DIRECTORY, outputDirectory.toString());
+				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory.toString());
 	}
 
 	public static AnalysisEngineDescription getClassifierDescription(File classifierJar)
 	throws ResourceInitializationException {
 		return CleartkComponents.createPrimitiveDescription(
 				PredicateAnnotator.class,
-				CleartkAnnotator.PARAM_CLASSIFIER_JAR_PATH, classifierJar.toString());
+				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, classifierJar.toString());
 	}
 
 	@Override

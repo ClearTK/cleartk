@@ -23,25 +23,8 @@
  */
 package org.cleartk.classifier.opennlp;
 
-import java.io.DataInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.jar.JarFile;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.ZipEntry;
-
-import opennlp.maxent.MaxentModel;
-import opennlp.maxent.io.BinaryGISModelReader;
-
-import org.apache.uima.UimaContext;
-import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.CleartkException;
-import org.cleartk.classifier.Classifier_ImplBase;
-import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.ScoredOutcome;
-import org.cleartk.classifier.encoder.features.NameNumber;
 
 /**
  * <br>
@@ -52,92 +35,10 @@ import org.cleartk.classifier.encoder.features.NameNumber;
  * @author Philip Ogren
  * 
  */
-public class MaxentClassifier extends Classifier_ImplBase<String, String, List<NameNumber>>{
+public class MaxentClassifier extends MaxentClassifier_ImplBase<String> {
 
-	protected MaxentModel model;
-	
 	public MaxentClassifier(JarFile modelFile) throws IOException {
 		super(modelFile);
-		ZipEntry modelEntry = modelFile.getEntry("model.maxent");
-		this.model = new BinaryGISModelReader(new DataInputStream(new GZIPInputStream(modelFile
-				.getInputStream(modelEntry)))).getModel();
-	}
-
-	public String classify(List<Feature> features) throws CleartkException {
-		EvalParams evalParams = convertToEvalParams(features);
-		String encodedOutcome = this.model.getBestOutcome(this.model.eval(evalParams.getContext(), evalParams.getValues()));
-		return outcomeEncoder.decode(encodedOutcome);
-	}
-
-	@Override
-	public List<ScoredOutcome<String>> score(List<Feature> features, int maxResults) throws CleartkException {
-		EvalParams evalParams = convertToEvalParams(features);
-		double[] evalResults = this.model.eval(evalParams.getContext(), evalParams.getValues());
-		String[] encodedOutcomes = (String[]) this.model.getDataStructures()[2];
-
-		List<ScoredOutcome<String>> returnValues = new ArrayList<ScoredOutcome<String>>();
-
-		if (maxResults == 1) {
-			String encodedBestOutcome = outcomeEncoder.decode(this.model.getBestOutcome(evalResults));
-			double bestResult = evalResults[this.model.getIndex(encodedBestOutcome)];
-			returnValues.add(new ScoredOutcome<String>(encodedBestOutcome, bestResult));
-			return returnValues;
-		}
-		else {
-				
-			for (int i = 0; i < evalResults.length; i++) {
-				returnValues.add(new ScoredOutcome<String>(outcomeEncoder.decode(encodedOutcomes[i]), evalResults[i]));
-			}
-
-			Collections.sort(returnValues);
-			if (returnValues.size() > maxResults) {
-				return returnValues.subList(0, maxResults);
-			}
-			else {
-				return returnValues;
-			}
-		}
-	}
-
-	private EvalParams convertToEvalParams(List<Feature> features) throws CleartkException {
-		String[] context = new String[features.size()];
-		float[] values = new float[features.size()];
-
-		List<NameNumber> contexts = featuresEncoder.encodeAll(features);
-
-		for (int i = 0; i < contexts.size(); i++) {
-			NameNumber contextValue = contexts.get(i);
-			context[i] = contextValue.name;
-			values[i] = contextValue.number.floatValue();
-		}
-
-		return new EvalParams(context, values);
-	}
-
-	public class EvalParams {
-		private String[] context;
-
-		private float[] values;
-
-		public String[] getContext() {
-			return context;
-		}
-
-		public float[] getValues() {
-			return values;
-		}
-
-		public EvalParams(String[] context, float[] values) {
-			this.context = context;
-			this.values = values;
-		}
-
-	}
-
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		// TODO Auto-generated method stub
-		
 	}
 
 }
-

@@ -26,9 +26,9 @@ package org.cleartk.classifier.viterbi;
 import java.io.File;
 
 import org.apache.uima.pear.util.FileUtil;
-import org.cleartk.classifier.BuildJar;
-import org.cleartk.classifier.ClassifierBuilder;
-import org.cleartk.classifier.Train;
+import org.cleartk.classifier.jar.BuildJar;
+import org.cleartk.classifier.jar.ClassifierBuilder;
+import org.cleartk.classifier.jar.Train;
 
 /**
  * <br>

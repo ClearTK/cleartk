@@ -23,20 +23,19 @@
  */
 package org.cleartk.classifier.mallet;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.DataWriter;
-import org.cleartk.classifier.DataWriterFactory_ImplBase;
 import org.cleartk.classifier.encoder.features.BooleanEncoder;
 import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 import org.cleartk.classifier.encoder.features.NumberEncoder;
 import org.cleartk.classifier.encoder.features.StringEncoder;
 import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
+import org.cleartk.classifier.jar.JarDataWriterFactory;
 import org.cleartk.util.UIMAUtil;
 
 /**
@@ -47,7 +46,7 @@ import org.cleartk.util.UIMAUtil;
  * 
  */
 
-public class DefaultMalletDataWriterFactory extends DataWriterFactory_ImplBase<List<NameNumber>, String, String> {
+public class DefaultMalletDataWriterFactory extends JarDataWriterFactory<List<NameNumber>, String, String> {
 
 	/**
 	 * "org.cleartk.classifier.mallet.DefaultMalletDataWriterFactory.PARAM_COMPRESS"
@@ -72,7 +71,7 @@ public class DefaultMalletDataWriterFactory extends DataWriterFactory_ImplBase<L
 		sort = (Boolean)UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_SORT_NAME_LOOKUP, false);
 	}
 	
-	public DataWriter<String> createDataWriter(File outputDirectory) throws IOException {
+	public DataWriter<String> createDataWriter() throws IOException {
 		MalletDataWriter mdw = new MalletDataWriter(outputDirectory);
 		
 		if(!this.setEncodersFromFileSystem(mdw)) {
