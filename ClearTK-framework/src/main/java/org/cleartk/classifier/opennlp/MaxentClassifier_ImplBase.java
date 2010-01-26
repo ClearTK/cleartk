@@ -99,10 +99,11 @@ public abstract class MaxentClassifier_ImplBase<OUTCOME_TYPE> extends JarClassif
 
 	
 	protected EvalParams convertToEvalParams(List<Feature> features) throws CleartkException {
-		String[] context = new String[features.size()];
-		float[] values = new float[features.size()];
 
 		List<NameNumber> contexts = featuresEncoder.encodeAll(features);
+
+		String[] context = new String[contexts.size()];
+		float[] values = new float[contexts.size()];
 
 		for (int i = 0; i < contexts.size(); i++) {
 			NameNumber contextValue = contexts.get(i);
