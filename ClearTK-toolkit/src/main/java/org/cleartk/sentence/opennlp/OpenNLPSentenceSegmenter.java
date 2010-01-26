@@ -24,7 +24,7 @@
 package org.cleartk.sentence.opennlp;
 
 import java.io.File;
-import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -41,10 +41,11 @@ import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkComponents;
 import org.cleartk.test.util.ConfigurationParameterNameFactory;
-import org.cleartk.type.Sentence;
+import org.cleartk.util.UIMAUtil;
 import org.uutuc.descriptor.ConfigurationParameter;
 import org.uutuc.util.InitializeUtil;
 
@@ -77,6 +78,16 @@ public class OpenNLPSentenceSegmenter extends JCasAnnotator_ImplBase {
 			description = "provides the path of the OpenNLP sentence segmenter model file")
 	private String sentenceModelFileName;
 	
+	public static final String PARAM_SENTENCE_TYPE_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(OpenNLPSentenceSegmenter.class, "sentenceTypeName");
+
+	@ConfigurationParameter (
+			description = "class type of the sentences that are created by this annotator. If this parameter is not filled, then sentencesof type org.cleartk.type.Sentence will be created.",
+			defaultValue = "org.cleartk.type.Sentence")
+	private String sentenceTypeName;
+
+	Class<? extends Annotation> sentenceClass;
+
+	Constructor<? extends Annotation> sentenceConstructor;
 
 	public static final String multipleNewlinesRegex = "\\s*\\n\\s*\\n\\s*";
 
@@ -91,13 +102,16 @@ public class OpenNLPSentenceSegmenter extends JCasAnnotator_ImplBase {
 		InitializeUtil.initialize(this, uimaContext);
 		
 		try {
+			sentenceClass = UIMAUtil.getClass(sentenceTypeName, Annotation.class);
+			sentenceConstructor = sentenceClass.getConstructor(new Class[] { JCas.class, Integer.TYPE, Integer.TYPE });
+
 			MaxentModel model = new SuffixSensitiveGISModelReader(new File(sentenceModelFileName)).getModel();
 			sentenceDetector = new SentenceDetectorME(model);
 			multipleNewlinesPattern = Pattern.compile(multipleNewlinesRegex, Pattern.MULTILINE | Pattern.DOTALL);
 			leadingWhitespacePattern = Pattern.compile("^\\s+");
 			trailingWhitespacePattern = Pattern.compile("\\s+$");
-		} catch(IOException ioe) {
-			throw new ResourceInitializationException(ioe);
+		} catch(Exception e) {
+			throw new ResourceInitializationException(e);
 		}
 	}
 	
@@ -116,7 +130,7 @@ public class OpenNLPSentenceSegmenter extends JCasAnnotator_ImplBase {
 		if(matcher.find()) {
 			begin+= matcher.group().length();
 		}
-
+		try {
 		for(Integer offset : sentenceOffsets) {
 			end = offset;  //offset is really the beginning of the next sentence so we may adjust this below.
 			String sentenceText = text.substring(begin, end);
@@ -126,8 +140,7 @@ public class OpenNLPSentenceSegmenter extends JCasAnnotator_ImplBase {
 				if(matcher.find()) {
 					end -= matcher.group().length();
 				}
-				Sentence sentence = new Sentence(jCas, begin,end);
-				sentence.addToIndexes();
+				sentenceConstructor.newInstance(jCas, begin, end).addToIndexes();
 			}
 			begin = offset; //we need to advance begin regardless of whether a sentence was created.
 		}
@@ -143,9 +156,11 @@ public class OpenNLPSentenceSegmenter extends JCasAnnotator_ImplBase {
 				if(matcher.find()) {
 					end -= matcher.group().length();
 				}
-				Sentence sentence = new Sentence(jCas, begin, end);
-				sentence.addToIndexes();
+				sentenceConstructor.newInstance(jCas, begin, end).addToIndexes();
 			}
+		}
+		}catch(Exception e) {
+			throw new AnalysisEngineProcessException(e);
 		}
 	}
 
