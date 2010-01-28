@@ -50,25 +50,10 @@
 			<optional>false</optional>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.uima</groupId>
-			<artifactId>uimaj-document-annotation</artifactId>
-			<version>2.2.2-incubating</version>
-			<type>jar</type>
-			<optional>false</optional>
-		</dependency>
-		<dependency>
 			<groupId>org.uutuc</groupId>
 			<artifactId>uutuc</artifactId>
 			<version>0.9.10</version>
 			<type>jar</type>
-			<optional>false</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.uima</groupId>
-			<artifactId>uimaj-tools</artifactId>
-			<version>2.2.2-incubating</version>
-			<type>jar</type>
-			<scope>test</scope>
 			<optional>false</optional>
 		</dependency>
 		<dependency>
@@ -78,13 +63,7 @@
 			<type>jar</type>
 			<optional>false</optional>
 		</dependency>
-		<dependency>
-			<groupId>jdom</groupId>
-			<artifactId>jdom</artifactId>
-			<version>1.1</version>
-			<type>jar</type>
-			<optional>false</optional>
-		</dependency>
+		
 	</dependencies>
 	<build>
 		<plugins>
@@ -94,6 +73,18 @@
 				<configuration>
 					<source>1.5</source>
 					<target>1.5</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<linksource>true</linksource>
+					<links>
+						<link>http://incubator.apache.org/uima/apidocs/</link>
+						<link>http://java.sun.com/j2se/1.5.0/docs/api/</link>
+						<link>http://junit.sourceforge.net/javadoc/</link>
+					</links>
 				</configuration>
 			</plugin>
 		</plugins>
