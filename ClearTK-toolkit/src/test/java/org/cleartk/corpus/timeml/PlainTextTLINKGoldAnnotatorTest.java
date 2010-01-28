@@ -39,6 +39,7 @@ import org.cleartk.corpus.timeml.type.TemporalLink;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.FilesCollectionReader;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.CollectionReaderFactory;
@@ -63,6 +64,7 @@ public class PlainTextTLINKGoldAnnotatorTest {
 			
 
 	@Test
+	@Ignore
 	public void test_wsj_0106() throws UIMAException, IOException {
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				FilesCollectionReader.class, 
@@ -171,6 +173,7 @@ public class PlainTextTLINKGoldAnnotatorTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testAnnotatorDescriptor() throws UIMAException, IOException {
 		try {
 			AnalysisEngineFactory.createAnalysisEngine(
