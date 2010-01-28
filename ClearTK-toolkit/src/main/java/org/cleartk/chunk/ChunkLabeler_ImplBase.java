@@ -36,10 +36,10 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.Initializable;
-import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.UIMAUtil;
 import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.factory.ConfigurationParameterFactory;
 import org.uutuc.util.InitializeUtil;
 
 
@@ -52,7 +52,7 @@ import org.uutuc.util.InitializeUtil;
 
 public abstract class ChunkLabeler_ImplBase implements ChunkLabeler, Initializable  {
 
-	public static final String PARAM_CHUNK_ANNOTATION_CLASS_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(
+	public static final String PARAM_CHUNK_ANNOTATION_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
 			ChunkLabeler_ImplBase.class, "chunkAnnotationClassName");
 
 	@ConfigurationParameter(

@@ -49,8 +49,8 @@ import org.cleartk.classifier.feature.extractor.simple.MatchingAnnotationExtract
 import org.cleartk.classifier.feature.extractor.simple.NamingExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
-import org.cleartk.classifier.jar.JarDataWriterFactory;
 import org.cleartk.classifier.jar.JarClassifierFactory;
+import org.cleartk.classifier.jar.JarDataWriterFactory;
 import org.cleartk.srl.feature.NodeTypeExtractor;
 import org.cleartk.srl.feature.POSExtractor;
 import org.cleartk.srl.feature.StemExtractor;

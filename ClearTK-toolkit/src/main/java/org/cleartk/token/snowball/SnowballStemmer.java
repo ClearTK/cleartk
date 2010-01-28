@@ -33,10 +33,10 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
 import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.factory.ConfigurationParameterFactory;
 import org.uutuc.util.InitializeUtil;
 
 /**
@@ -54,7 +54,7 @@ import org.uutuc.util.InitializeUtil;
  */
 public abstract class SnowballStemmer<TOKEN_TYPE extends Annotation> extends JCasAnnotator_ImplBase {
 
-	public static final String PARAM_STEMMER_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(SnowballStemmer.class, "stemmerName");
+	public static final String PARAM_STEMMER_NAME = ConfigurationParameterFactory.createConfigurationParameterName(SnowballStemmer.class, "stemmerName");
 
 	private static final String STEMMER_NAME_DESCRIPTION = "specifies which snowball stemmer to use. Possible values are: " +
 			"Danish, Dutch, English, Finnish, French, German2, German, Italian, Kp, Lovins, Norwegian, Porter, Portuguese, Russian, Spanish, Swedish"; 

@@ -42,7 +42,6 @@ import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 import org.cleartk.ViewNames;
-import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.util.ViewURIUtil;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -50,6 +49,7 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.uutuc.descriptor.ConfigurationParameter;
 import org.uutuc.descriptor.SofaCapability;
+import org.uutuc.factory.ConfigurationParameterFactory;
 import org.uutuc.util.InitializeUtil;
 
 
@@ -65,7 +65,7 @@ import org.uutuc.util.InitializeUtil;
 @SofaCapability(outputSofas= {ViewNames.ACE_APF_URI, ViewNames.URI})
 public class Ace2005GoldReader extends CollectionReader_ImplBase
 {
-	public static final String PARAM_ACE_DIRECTORY_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(Ace2005GoldReader.class, "aceDirectoryName");
+	public static final String PARAM_ACE_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(Ace2005GoldReader.class, "aceDirectoryName");
 
 	@ConfigurationParameter(
 			mandatory = true,
@@ -80,7 +80,7 @@ public class Ace2005GoldReader extends CollectionReader_ImplBase
 			"AFP_ENG_20030305.0918\n" +
 			"...\n";
 
-	public static final String PARAM_ACE_FILE_NAMES_FILE = ConfigurationParameterNameFactory.createConfigurationParameterName(Ace2005GoldReader.class, "aceFileNamesFile");
+	public static final String PARAM_ACE_FILE_NAMES_FILE = ConfigurationParameterFactory.createConfigurationParameterName(Ace2005GoldReader.class, "aceFileNamesFile");
 	
 	@ConfigurationParameter(
 			description = PARAM_ACE_FILE_NAMES_DESCRIPTION) 

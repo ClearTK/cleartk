@@ -59,8 +59,8 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
 import org.cleartk.CleartkComponents;
-import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.factory.ConfigurationParameterFactory;
 import org.uutuc.util.InitializeUtil;
 
 /**
@@ -84,7 +84,7 @@ public class PlainTextWriter extends JCasAnnotator_ImplBase {
 				PlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME, outputDir);
 	}
 	
-	public static final String PARAM_OUTPUT_DIRECTORY_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(PlainTextWriter.class, "outputDirectoryName");
+	public static final String PARAM_OUTPUT_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(PlainTextWriter.class, "outputDirectoryName");
 
 	@ConfigurationParameter(mandatory = true, description = "takes a path to directory into which output files will be written.")
 	private String outputDirectoryName;

@@ -44,11 +44,11 @@ import org.cleartk.corpus.timeml.type.Anchor;
 import org.cleartk.corpus.timeml.type.Event;
 import org.cleartk.corpus.timeml.type.TemporalLink;
 import org.cleartk.corpus.timeml.type.Time;
-import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.ViewURIUtil;
 import org.uutuc.descriptor.ConfigurationParameter;
 import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.ConfigurationParameterFactory;
 import org.uutuc.util.InitializeUtil;
 
 
@@ -62,7 +62,7 @@ import org.uutuc.util.InitializeUtil;
  */
 public class PlainTextTLINKGoldAnnotator extends JCasAnnotator_ImplBase {
 	
-	public static final String PARAM_TLINK_FILE_URL = ConfigurationParameterNameFactory.createConfigurationParameterName(PlainTextTLINKGoldAnnotator.class, "tlinkFileUrl");
+	public static final String PARAM_TLINK_FILE_URL = ConfigurationParameterFactory.createConfigurationParameterName(PlainTextTLINKGoldAnnotator.class, "tlinkFileUrl");
 	@ConfigurationParameter(
 			mandatory = true,
 			description = "the URL to a plain-text TLINK file, e.g." +

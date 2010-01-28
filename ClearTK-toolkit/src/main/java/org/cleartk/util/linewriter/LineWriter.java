@@ -36,11 +36,11 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
 import org.cleartk.util.ViewURIUtil;
 import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.factory.ConfigurationParameterFactory;
 import org.uutuc.util.InitializeUtil;
 
 /**
@@ -78,7 +78,7 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 			"that could be provided might look like: \n\n" + 
 			"\t/mydata/uima-output/\n" +
 			"\tC:/Documents and Settings/User/My Documents/workspace/My Project/data/experiment/output\n";
-	public static final String PARAM_OUTPUT_DIRECTORY_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(LineWriter.class, "outputDirectoryName");
+	public static final String PARAM_OUTPUT_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(LineWriter.class, "outputDirectoryName");
 	@ConfigurationParameter(
 			description = OUTPUT_DIRECTORY_NAME_DESCRIPTION)
 	private String outputDirectoryName;
@@ -93,7 +93,7 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 			".txt\n" +
 			".tokens\n" +
 			".annotations.txt";
-	public static final String PARAM_FILE_SUFFIX = ConfigurationParameterNameFactory.createConfigurationParameterName(LineWriter.class, "fileSuffix");
+	public static final String PARAM_FILE_SUFFIX = ConfigurationParameterFactory.createConfigurationParameterName(LineWriter.class, "fileSuffix");
 @ConfigurationParameter(
 			description = FILE_SUFFIX_DESCRIPTION) 
 	private String fileSuffix;
@@ -107,7 +107,7 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 			"Example values that could be provided might look like: \n\n" +
 			"/mydata/uima-output/annotations.txt\n" +
 			"C:\\Documents and Settings\\User\\My Documents\\workspace\\My Project\\data\\experiment\\output\\output.annotations\n";
-	public static final String PARAM_OUTPUT_FILE_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(LineWriter.class, "outputFileName");
+	public static final String PARAM_OUTPUT_FILE_NAME = ConfigurationParameterFactory.createConfigurationParameterName(LineWriter.class, "outputFileName");
 	@ConfigurationParameter(
 			description = OUTPUT_FILE_NAME_DESCRIPTION) 
 	private String outputFileName;
@@ -125,7 +125,7 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 		"com.yourcompany.yourpackage.YourType";
 
 
-	public static final String PARAM_OUTPUT_ANNOTATION_CLASS_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(LineWriter.class, "outputAnnotationClassName");
+	public static final String PARAM_OUTPUT_ANNOTATION_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(LineWriter.class, "outputAnnotationClassName");
 	@ConfigurationParameter(
 			mandatory = true,
 			description = OUTPUT_ANNOTATION_CLASS_NAME_DESCRIPTION,
@@ -139,7 +139,7 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 		"Example values that could be provided might include:\n\n" +
 		"org.cleartk.util.linewriter.annotation.CoveredTextAnnotationWriter (default)\n" +
 		"org.cleartk.util.linewriter.annotation.TokenPOSWriter\n";
-	public static final String PARAM_ANNOTATION_WRITER_CLASS_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(LineWriter.class, "annotationWriterClassName");
+	public static final String PARAM_ANNOTATION_WRITER_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(LineWriter.class, "annotationWriterClassName");
 
 	@ConfigurationParameter(
 			mandatory = true,
@@ -167,7 +167,7 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 		"org.apache.uima.jcas.tcas.DocumentAnnotation\n" +
 		"com.yourcompany.yourpackage.YourType\n";
 	
-	public static final String PARAM_BLOCK_ANNOTATION_CLASS_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(LineWriter.class, "blockAnnotationClassName");
+	public static final String PARAM_BLOCK_ANNOTATION_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(LineWriter.class, "blockAnnotationClassName");
 	@ConfigurationParameter(
 			description = BLOCK_ANNOTATION_CLASS_NAME_DESCRIPTION)
 	private String blockAnnotationClassName;
@@ -180,7 +180,7 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 		"block of annotations.  Example values that could be provided might include: \n\n" +
 		"org.cleartk.util.linewriter.block.BlankLineBlockWriter\n" +
 		"org.cleartk.util.linewriter.block.DocumentIdBlockWriter\n";
-	public static final String PARAM_BLOCK_WRITER_CLASS_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(LineWriter.class, "blockWriterClassName");
+	public static final String PARAM_BLOCK_WRITER_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(LineWriter.class, "blockWriterClassName");
 	@ConfigurationParameter(
 			description =BLOCK_WRITER_CLASS_NAME_DESCRIPTION,
 			defaultValue = "org.cleartk.util.linewriter.block.BlankLineBlockWriter"

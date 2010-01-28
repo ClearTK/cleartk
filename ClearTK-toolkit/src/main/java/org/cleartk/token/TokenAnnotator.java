@@ -37,11 +37,11 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkComponents;
-import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.token.util.Token;
 import org.cleartk.token.util.Tokenizer;
 import org.cleartk.util.UIMAUtil;
 import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.factory.ConfigurationParameterFactory;
 import org.uutuc.util.InitializeUtil;
 
 /**
@@ -60,7 +60,7 @@ public class TokenAnnotator extends JCasAnnotator_ImplBase {
 		return CleartkComponents.createPrimitiveDescription(TokenAnnotator.class);
 	}
 	
-	public static final String PARAM_TOKENIZER_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(TokenAnnotator.class, "tokenizerName");
+	public static final String PARAM_TOKENIZER_NAME = ConfigurationParameterFactory.createConfigurationParameterName(TokenAnnotator.class, "tokenizerName");
 
 	private static final String TOKENIZER_DESCRIPTION = "specifies the class type of the tokenizer that will be used by this annotator. " +
 			"If this parameter is not filled, then the default tokenenizer (org.cleartk.token.util.PennTreebankTokenizer) is used. " +
@@ -70,14 +70,14 @@ public class TokenAnnotator extends JCasAnnotator_ImplBase {
 			defaultValue = "org.cleartk.token.util.PennTreebankTokenizer")
 	private String tokenizerName;
 	
-	public static final String PARAM_TOKEN_TYPE_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(TokenAnnotator.class, "tokenTypeName");
+	public static final String PARAM_TOKEN_TYPE_NAME = ConfigurationParameterFactory.createConfigurationParameterName(TokenAnnotator.class, "tokenTypeName");
 
 	@ConfigurationParameter (
 			description = "class type of the tokens that are created by this annotator. If this parameter is not filled, then tokens of type org.cleartk.type.Token will be created.",
 			defaultValue = "org.cleartk.type.Token")
 	private String tokenTypeName;
 	
-	public static final String PARAM_WINDOW_TYPE_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(TokenAnnotator.class, "windowTypeName");
+	public static final String PARAM_WINDOW_TYPE_NAME = ConfigurationParameterFactory.createConfigurationParameterName(TokenAnnotator.class, "windowTypeName");
 	private static final String WINDOW_TYPE_DESCRIPTION = "specifies the class type of annotations that will be tokenized. " +
 			"If no value is given, then the entire document will be tokenized at once. " +
 			"A good value for this parameter would be 'org.cleartk.type.Sentence' " +

@@ -30,10 +30,10 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.collection.CollectionException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.util.UIMAUtil;
 import org.cleartk.util.ViewURIUtil;
 import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.factory.ConfigurationParameterFactory;
 import org.uutuc.util.io.Files;
 
 
@@ -44,7 +44,7 @@ import org.uutuc.util.io.Files;
 */
 public class SimpleLineHandler implements LineHandler {
 
-	public static final String PARAM_DELIMITER = ConfigurationParameterNameFactory.createConfigurationParameterName(
+	public static final String PARAM_DELIMITER = ConfigurationParameterFactory.createConfigurationParameterName(
 			SimpleLineHandler.class, "delimiter");
 
 	@ConfigurationParameter(

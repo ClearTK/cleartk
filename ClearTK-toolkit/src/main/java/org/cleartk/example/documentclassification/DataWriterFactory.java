@@ -38,8 +38,8 @@ import org.cleartk.classifier.encoder.features.normalizer.EuclidianNormalizer;
 import org.cleartk.classifier.encoder.features.normalizer.NameNumberNormalizer;
 import org.cleartk.classifier.encoder.outcome.StringToIntegerOutcomeEncoder;
 import org.cleartk.classifier.svmlight.OVASVMlightDataWriter;
-import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.factory.ConfigurationParameterFactory;
 import org.uutuc.util.InitializeUtil;
 
 /**
@@ -52,7 +52,7 @@ import org.uutuc.util.InitializeUtil;
 
 public class DataWriterFactory implements org.cleartk.classifier.DataWriterFactory<String> {
 
-	public static final String PARAM_OUTPUT_DIRECTORY = ConfigurationParameterNameFactory
+	public static final String PARAM_OUTPUT_DIRECTORY = ConfigurationParameterFactory
 	.createConfigurationParameterName(DataWriterFactory.class, "outputDirectory");
 
 	@ConfigurationParameter(mandatory = true, description = "provides the name of the directory where the training data will be written.")

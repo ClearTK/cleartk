@@ -26,6 +26,7 @@ package org.cleartk.srl.propbank.util;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import org.apache.uima.jcas.JCas;
 import org.cleartk.srl.type.Argument;
 import org.cleartk.srl.type.Predicate;

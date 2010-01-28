@@ -38,10 +38,10 @@ import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkSequentialAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
 import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.factory.ConfigurationParameterFactory;
 import org.uutuc.util.InitializeUtil;
 
 /**
@@ -55,7 +55,7 @@ import org.uutuc.util.InitializeUtil;
 public abstract class POSAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation>
 extends CleartkSequentialAnnotator<String> {
 
-	public static final String PARAM_FEATURE_EXTRACTOR_CLASS_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(
+	public static final String PARAM_FEATURE_EXTRACTOR_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
 			POSAnnotator.class, "featureExtractorClassName"); 
 	
 	@ConfigurationParameter(

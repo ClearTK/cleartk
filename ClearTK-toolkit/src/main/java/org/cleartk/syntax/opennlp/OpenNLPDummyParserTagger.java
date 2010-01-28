@@ -25,11 +25,10 @@ package org.cleartk.syntax.opennlp;
 
 import java.util.List;
 
-import org.cleartk.type.Token;
-
-
 import opennlp.tools.parser.ParserTagger;
 import opennlp.tools.util.Sequence;
+
+import org.cleartk.type.Token;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 

@@ -32,12 +32,12 @@ import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.ViewURIUtil;
 import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.factory.ConfigurationParameterFactory;
 import org.uutuc.util.InitializeUtil;
 
 /**
@@ -51,7 +51,7 @@ public class ExamplePOSPlainTextWriter extends JCasAnnotator_ImplBase {
 
 	public static final String DEFAULT_OUTPUT_DIRECTORY = "example/data";
 
-	public static final String PARAM_OUTPUT_DIRECTORY_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(ExamplePOSPlainTextWriter.class, "outputDirectoryName");
+	public static final String PARAM_OUTPUT_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(ExamplePOSPlainTextWriter.class, "outputDirectoryName");
 	
 	@ConfigurationParameter(
 			mandatory = true,

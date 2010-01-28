@@ -37,12 +37,12 @@ import org.cleartk.ViewNames;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
 import org.cleartk.syntax.treebank.type.TreebankNode;
 import org.cleartk.syntax.treebank.util.TreebankFormatParser;
-import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.UIMAUtil;
 import org.uutuc.descriptor.ConfigurationParameter;
 import org.uutuc.descriptor.SofaCapability;
+import org.uutuc.factory.ConfigurationParameterFactory;
 import org.uutuc.util.InitializeUtil;
 
 /**
@@ -73,7 +73,7 @@ public class TreebankGoldAnnotator extends JCasAnnotator_ImplBase {
 				TreebankGoldAnnotator.PARAM_POST_TREES, false);
 	}
 
-	public static final String PARAM_POST_TREES = ConfigurationParameterNameFactory.createConfigurationParameterName(TreebankGoldAnnotator.class, "postTrees");
+	public static final String PARAM_POST_TREES = ConfigurationParameterFactory.createConfigurationParameterName(TreebankGoldAnnotator.class, "postTrees");
 
 	private static final String POST_TREES_DESCRIPTION = "specifies whether or not to post trees (i.e. annotations of type TreebankNode) to the CAS.  " +
 			"Sometimes treebank data is used only for the part-of-speech data that it contains.  " +

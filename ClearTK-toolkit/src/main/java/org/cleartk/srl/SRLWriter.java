@@ -40,14 +40,14 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.srl.type.Argument;
 import org.cleartk.srl.type.Predicate;
 import org.cleartk.srl.type.SemanticArgument;
-import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.ViewURIUtil;
 import org.cleartk.util.ListSpecification;
 import org.cleartk.util.UIMAUtil;
+import org.cleartk.util.ViewURIUtil;
 import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.factory.ConfigurationParameterFactory;
 import org.uutuc.util.InitializeUtil;
 
 
@@ -78,7 +78,7 @@ public class SRLWriter extends JCasAnnotator_ImplBase {
 			mandatory = true,
 			description = "path where the PropBank-style file should be written")
 	private File outputFile;
-	public static final String PARAM_OUTPUT_FILE = ConfigurationParameterNameFactory
+	public static final String PARAM_OUTPUT_FILE = ConfigurationParameterFactory
 			.createConfigurationParameterName(SRLWriter.class, "outputFile");
 
 	private PrintWriter output;

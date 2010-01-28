@@ -37,7 +37,6 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.ne.type.NamedEntity;
 import org.cleartk.ne.type.NamedEntityMention;
-import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.ViewURIUtil;
 import org.jdom.Document;
@@ -45,6 +44,7 @@ import org.jdom.Element;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.factory.ConfigurationParameterFactory;
 import org.uutuc.util.InitializeUtil;
 
 /**
@@ -59,7 +59,7 @@ import org.uutuc.util.InitializeUtil;
 
 public class Ace2005Writer extends JCasAnnotator_ImplBase {
 
-	public static final String PARAM_OUTPUT_DIRECTORY_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(Ace2005Writer.class, "outputDirectoryName");
+	public static final String PARAM_OUTPUT_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(Ace2005Writer.class, "outputDirectoryName");
 
 	@ConfigurationParameter(
 			mandatory = true, 

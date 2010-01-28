@@ -37,12 +37,12 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.srl.type.Argument;
 import org.cleartk.srl.type.Predicate;
 import org.cleartk.srl.type.SemanticArgument;
-import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.UIMAUtil;
 import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.factory.ConfigurationParameterFactory;
 import org.uutuc.util.InitializeUtil;
 
 /**
@@ -54,7 +54,7 @@ public class Conll2005Writer extends JCasAnnotator_ImplBase {
 
 	@ConfigurationParameter(mandatory = true, description = "the path where the CoNLL-2005-formatted text should be written")
 	private File outputFile;
-	public static final String PARAM_OUTPUT_FILE = ConfigurationParameterNameFactory
+	public static final String PARAM_OUTPUT_FILE = ConfigurationParameterFactory
 			.createConfigurationParameterName(Conll2005Writer.class, "outputFile");
 
 	private PrintWriter output;

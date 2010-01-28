@@ -43,11 +43,11 @@ import org.apache.uima.util.ProgressImpl;
 import org.cleartk.ViewNames;
 import org.cleartk.corpus.penntreebank.PennTreebankReader;
 import org.cleartk.srl.propbank.util.Propbank;
-import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.util.ListSpecification;
 import org.cleartk.util.ViewURIUtil;
 import org.uutuc.descriptor.ConfigurationParameter;
 import org.uutuc.descriptor.SofaCapability;
+import org.uutuc.factory.ConfigurationParameterFactory;
 import org.uutuc.util.InitializeUtil;
 
 
@@ -68,14 +68,14 @@ import org.uutuc.util.InitializeUtil;
 @SofaCapability(outputSofas= {ViewNames.PROPBANK, ViewNames.TREEBANK, ViewNames.URI})
 public class PropbankGoldReader extends CollectionReader_ImplBase {
 	
-	public static final String PARAM_PROPBANK_FILE_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(PropbankGoldReader.class, "propbankFileName");
+	public static final String PARAM_PROPBANK_FILE_NAME = ConfigurationParameterFactory.createConfigurationParameterName(PropbankGoldReader.class, "propbankFileName");
 
 	@ConfigurationParameter(
 			description = "points to propbank data file",
 			mandatory = true)
 	private String propbankFileName;
 	
-	public static final String PARAM_PENNTREEBANK_DIRECTORY_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(PropbankGoldReader.class, "penntreebankDirectoryName");
+	public static final String PARAM_PENNTREEBANK_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(PropbankGoldReader.class, "penntreebankDirectoryName");
 
 	private static final String PENN_TREEBANK_DIRECTORY_DESCRIPTION = "points to the PennTreebank corpus. " +
 			"The directory should contain subdirectories corresponding to the sections (e.g. \"00\", \"01\", etc.)  " +
@@ -87,7 +87,7 @@ public class PropbankGoldReader extends CollectionReader_ImplBase {
 			mandatory = true)
 	private String penntreebankDirectoryName;
 	
-	public static final String PARAM_WSJ_SECTIONS = ConfigurationParameterNameFactory.createConfigurationParameterName(PropbankGoldReader.class, "wsjSections");
+	public static final String PARAM_WSJ_SECTIONS = ConfigurationParameterFactory.createConfigurationParameterName(PropbankGoldReader.class, "wsjSections");
 
 	@ConfigurationParameter(
 			description = "Determines which sections of WSJ will be used.  The format allows for comma-separated section numbers and section ranges, for example \"02,07-12,16\".",

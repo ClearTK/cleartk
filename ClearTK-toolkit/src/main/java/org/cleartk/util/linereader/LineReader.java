@@ -40,10 +40,10 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 import org.cleartk.ViewNames;
-import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.util.UIMAUtil;
 import org.uutuc.descriptor.ConfigurationParameter;
 import org.uutuc.descriptor.SofaCapability;
+import org.uutuc.factory.ConfigurationParameterFactory;
 import org.uutuc.util.InitializeUtil;
 import org.uutuc.util.io.Files;
 
@@ -82,45 +82,45 @@ import org.uutuc.util.io.Files;
 @SofaCapability(outputSofas=ViewNames.URI)
 public class LineReader extends CollectionReader_ImplBase {
 
-	public static final String PARAM_FILE_OR_DIRECTORY_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(
+	public static final String PARAM_FILE_OR_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
 			LineReader.class, "fileOrDirectoryName");
 	@ConfigurationParameter(
 			mandatory = true,
 			description = "Takes either the name of a single file or the root directory containing all the files to be processed.")
 	private String fileOrDirectoryName; 
 
-	public static final String PARAM_VIEW_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(LineReader.class, "viewName");
+	public static final String PARAM_VIEW_NAME = ConfigurationParameterFactory.createConfigurationParameterName(LineReader.class, "viewName");
 	@ConfigurationParameter(
 			description = "takes the the name that should be given to the JCas view associated with the document texts.")
 	private String viewName;
 	
-	public static final String PARAM_LANGUAGE = ConfigurationParameterNameFactory.createConfigurationParameterName(LineReader.class, "language");
+	public static final String PARAM_LANGUAGE = ConfigurationParameterFactory.createConfigurationParameterName(LineReader.class, "language");
 	@ConfigurationParameter(
 			description = "takes the language code corresponding to the language of the documents being examined. The value of this parameter is simply passed on to JCas.setDocumentLanguage(String)")
 	private String language;
 	
-	public static final String PARAM_ENCODING = ConfigurationParameterNameFactory.createConfigurationParameterName(LineReader.class, "encoding");
+	public static final String PARAM_ENCODING = ConfigurationParameterFactory.createConfigurationParameterName(LineReader.class, "encoding");
 	@ConfigurationParameter(
 			description = "takes the encoding of the text files (e.g. 'UTF-8').  See apidocs for java.nio.charset.Charset for a list of encoding names.")
 	private String encoding;
 	
-	public static final String PARAM_SUFFIXES = ConfigurationParameterNameFactory.createConfigurationParameterName(LineReader.class, "suffixes");
+	public static final String PARAM_SUFFIXES = ConfigurationParameterFactory.createConfigurationParameterName(LineReader.class, "suffixes");
 	@ConfigurationParameter(
 			description = "Takes suffixes (e.g. .txt) of the files that should be read in.")
 	private String[] suffixes;
 	
-	public static final String PARAM_LINE_HANDLER_CLASS_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(LineReader.class, "lineHandlerClassName");
+	public static final String PARAM_LINE_HANDLER_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(LineReader.class, "lineHandlerClassName");
 	@ConfigurationParameter(
 			description = "specifies the class name of the LineHandler. If one is not specified, then the SimpleLineHandler will be used.",
 			defaultValue = "org.cleartk.util.linereader.DefaultLineHandler")
 	private String lineHandlerClassName;
 	
-	public static final String PARAM_COMMENT_SPECIFIERS = ConfigurationParameterNameFactory.createConfigurationParameterName(LineReader.class, "commentSpecifiers");
+	public static final String PARAM_COMMENT_SPECIFIERS = ConfigurationParameterFactory.createConfigurationParameterName(LineReader.class, "commentSpecifiers");
 	@ConfigurationParameter(
 			description = "Specifies lines that should be considered 'comments' - i.e. lines that should be skipped. Commented lines are those the start with one of the values of this parameter.")
 	private String[] commentSpecifiers;
 	
-	public static final String PARAM_SKIP_BLANK_LINES = ConfigurationParameterNameFactory.createConfigurationParameterName(LineReader.class, "skipBlankLines");
+	public static final String PARAM_SKIP_BLANK_LINES = ConfigurationParameterFactory.createConfigurationParameterName(LineReader.class, "skipBlankLines");
 	@ConfigurationParameter(
 			description = "Specifies whether blank lines should be skipped or not. The default value is true if no value is given. If this parameter is set to false, then blank lines that appear in the text files will be read in and given their own JCas.  Blank lines are those that consist of only whitespace.",
 			defaultValue = "true")

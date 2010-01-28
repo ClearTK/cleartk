@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.uima.util.FileUtils;
-import org.cleartk.test.util.DescriptorCoverageTestUtil;
+import org.cleartk.test.util.DescriptorTestUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uutuc.util.io.Files;
@@ -47,7 +47,7 @@ public class DescriptorCoverageTest {
 	
 	@Test
 	public void testNoDescriptorsInSrcMain() {
-		DescriptorCoverageTestUtil.testNoDescriptorsInSrc("src/main/java");
+		DescriptorTestUtil.testNoDescriptorsInSrc("src/main/java");
 	}
 	
 	@Test

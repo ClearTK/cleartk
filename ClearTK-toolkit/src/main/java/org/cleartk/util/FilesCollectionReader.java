@@ -43,10 +43,10 @@ import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 import org.cleartk.CleartkComponents;
 import org.cleartk.ViewNames;
-import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.uutuc.descriptor.ConfigurationParameter;
 import org.uutuc.descriptor.SofaCapability;
 import org.uutuc.factory.CollectionReaderFactory;
+import org.uutuc.factory.ConfigurationParameterFactory;
 import org.uutuc.util.InitializeUtil;
 import org.uutuc.util.io.Files;
 
@@ -95,41 +95,41 @@ public class FilesCollectionReader extends CollectionReader_ImplBase {
 				PARAM_ROOT_FILE, dir, PARAM_VIEW_NAME, viewName, PARAM_SUFFIXES, suffixes);
 	}
 
-	public static final String PARAM_ROOT_FILE = ConfigurationParameterNameFactory.createConfigurationParameterName(
+	public static final String PARAM_ROOT_FILE = ConfigurationParameterFactory.createConfigurationParameterName(
 			FilesCollectionReader.class, "rootFile");
 	@ConfigurationParameter(mandatory = true, description = "takes either the name of a single file or the root directory containing all the files to be processed.")
 	protected File rootFile;
 
-	public static final String PARAM_VIEW_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(
+	public static final String PARAM_VIEW_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
 			FilesCollectionReader.class, "viewName");
 	@ConfigurationParameter(description = "takes the the name that should be given to the JCas view that the document texts should be set to.")
 	private String viewName;
 
-	public static final String PARAM_LANGUAGE = ConfigurationParameterNameFactory.createConfigurationParameterName(
+	public static final String PARAM_LANGUAGE = ConfigurationParameterFactory.createConfigurationParameterName(
 			FilesCollectionReader.class, "language");
 	@ConfigurationParameter(description = "takes the language code corresponding to the language of the documents being examined.  The value of this parameter "
 			+ "is simply passed on to JCas.setDocumentLanguage(String).")
 	private String language;
 
-	public static final String PARAM_ENCODING = ConfigurationParameterNameFactory.createConfigurationParameterName(
+	public static final String PARAM_ENCODING = ConfigurationParameterFactory.createConfigurationParameterName(
 			FilesCollectionReader.class, "encoding");
 	@ConfigurationParameter(description = "takes the encoding of the text files (e.g. \"UTF-8\").  See javadoc for java.nio.charset.Charset for a list of encoding names.")
 	private String encoding;
 
-	public static final String PARAM_SUFFIXES = ConfigurationParameterNameFactory.createConfigurationParameterName(
+	public static final String PARAM_SUFFIXES = ConfigurationParameterFactory.createConfigurationParameterName(
 			FilesCollectionReader.class, "suffixes");
 	@ConfigurationParameter(description = "takes suffixes (e.g. .txt) of the files that should be read in.  This parameter can only be set if there"
 			+ " is no value for 'nameFilesFileNames', 'fileNames', or 'patterns'.")
 	private String[] suffixes;
 
-	public static final String PARAM_PATTERNS = ConfigurationParameterNameFactory.createConfigurationParameterName(
+	public static final String PARAM_PATTERNS = ConfigurationParameterFactory.createConfigurationParameterName(
 			FilesCollectionReader.class, "patterns");
 	@ConfigurationParameter(description = "	takes regular expressions for matching the files that should be read in. Note that these will be searched for"
 			+ " using java.util. regex.Matcher.find, so if you want to make sure the entire file name matches a pattern, you should start the string with ^ and end the"
 			+ " string with $. This parameter can only be set if there is no value for 'nameFilesFileNames', 'fileNames', or 'suffixes'.")
 	private String[] patterns;
 
-	public static final String PARAM_NAME_FILES_FILE_NAMES = ConfigurationParameterNameFactory
+	public static final String PARAM_NAME_FILES_FILE_NAMES = ConfigurationParameterFactory
 			.createConfigurationParameterName(FilesCollectionReader.class, "nameFilesFileNames");
 	@ConfigurationParameter(description = "names files which contain lists of file names. For example, if the value 'mydata/mylist.txt' is provided, "
 			+ "then the file 'mylist.txt' should contain a line delimited list of file names.  The file names in the list should not have directory information "
@@ -138,7 +138,7 @@ public class FilesCollectionReader extends CollectionReader_ImplBase {
 			+ "thrown if a file name in the list does not actually correspond to a file.  This parameter can only be set if there is no value for 'suffixes', 'patterns', or 'fileNames'.")
 	private String[] nameFilesFileNames;
 
-	public static final String PARAM_FILE_NAMES = ConfigurationParameterNameFactory.createConfigurationParameterName(
+	public static final String PARAM_FILE_NAMES = ConfigurationParameterFactory.createConfigurationParameterName(
 			FilesCollectionReader.class, "fileNames");
 	@ConfigurationParameter(description = "provides a list of file names that should be read in. The directory of the file names is determined by "
 			+ "'rootFile' and the files that are processed result from traversing the directory structure provided and looking for files with a name found in the list of file names. "

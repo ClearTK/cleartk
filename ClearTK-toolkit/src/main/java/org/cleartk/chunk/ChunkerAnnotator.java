@@ -36,9 +36,9 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkSequentialAnnotator;
 import org.cleartk.classifier.Instance;
-import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.util.UIMAUtil;
 import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.factory.ConfigurationParameterFactory;
 import org.uutuc.util.InitializeUtil;
 
 
@@ -58,21 +58,21 @@ public class ChunkerAnnotator extends CleartkSequentialAnnotator<String> {
 			description = "names the class of the type system type used to associate B, I, and O (for example) labels with.  An example value might be 'org.cleartk.type.Token'")
 	 protected String labeledAnnotationClassName;
 
-	public static final String PARAM_SEQUENCE_CLASS_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(
+	public static final String PARAM_SEQUENCE_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
 			ChunkerAnnotator.class, "sequenceClassName");
 	@ConfigurationParameter(
 			mandatory = true,
 			description = "names the class of the type system type that specifies a 'sequence' of labels.  An example might be something like 'org.cleartk.type.Sentence'")
 	private String sequenceClassName;
 	
-	public static final String PARAM_CHUNK_LABELER_CLASS_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(
+	public static final String PARAM_CHUNK_LABELER_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
 			ChunkerAnnotator.class, "chunkLabelerClassName");
 	@ConfigurationParameter(
 			mandatory = true,
 			description = "provides the class name of a class that extends org.cleartk.chunk.ChunkLabeler.")
 	private String chunkLabelerClassName;
 	
-	public static final String PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(
+	public static final String PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
 			ChunkerAnnotator.class, "chunkerFeatureExtractorClassName");
 	@ConfigurationParameter(
 			mandatory = true,

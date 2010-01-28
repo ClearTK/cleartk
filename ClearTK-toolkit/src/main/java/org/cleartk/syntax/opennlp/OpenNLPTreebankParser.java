@@ -49,12 +49,12 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkComponents;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
 import org.cleartk.syntax.treebank.type.TreebankNode;
-import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.uutuc.descriptor.ConfigurationParameter;
 import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.ConfigurationParameterFactory;
 import org.uutuc.util.InitializeUtil;
 
 /**
@@ -81,35 +81,35 @@ public class OpenNLPTreebankParser extends JCasAnnotator_ImplBase {
 						"resources/models/OpenNLP.HeadRules.txt"));
 	}
 
-	public static final String PARAM_BUILD_MODEL_FILE = ConfigurationParameterNameFactory.createConfigurationParameterName(
+	public static final String PARAM_BUILD_MODEL_FILE = ConfigurationParameterFactory.createConfigurationParameterName(
 			OpenNLPTreebankParser.class, "buildModelFile");
 	@ConfigurationParameter(
 			mandatory = true,
 			description = "provides the path of the OpenNLP parser model build file, e.g. resources/models/OpenNLP.Parser.English.Build.bin.gz.  See javadoc for opennlp.tools.parser.chunking.Parser.")
 	private String buildModelFile;
 
-	public static final String PARAM_CHECK_MODEL_FILE = ConfigurationParameterNameFactory.createConfigurationParameterName(
+	public static final String PARAM_CHECK_MODEL_FILE = ConfigurationParameterFactory.createConfigurationParameterName(
 			OpenNLPTreebankParser.class, "checkModelFile");
 	@ConfigurationParameter(
 			mandatory = true,
 			description = "provides the path of the OpenNLP parser model check file, e.g. resources/models/OpenNLP.Parser.English.Check.bin.gz. See javadoc for opennlp.tools.parser.chunking.Parser.")
 	private String checkModelFile;
 
-	public static final String PARAM_CHUNK_MODEL_FILE = ConfigurationParameterNameFactory.createConfigurationParameterName(
+	public static final String PARAM_CHUNK_MODEL_FILE = ConfigurationParameterFactory.createConfigurationParameterName(
 			OpenNLPTreebankParser.class, "chunkModelFile");
 	@ConfigurationParameter(
 			mandatory = true,
 			description = "provides the path of the OpenNLP chunker model file, e.g. resources/models/OpenNLP.Chunker.English.bin.gz. See javadoc for opennlp.tools.lang.english.ParserChunker.")
 	private String chunkModelFile;
 
-	public static final String PARAM_HEAD_RULES_FILE = ConfigurationParameterNameFactory.createConfigurationParameterName(
+	public static final String PARAM_HEAD_RULES_FILE = ConfigurationParameterFactory.createConfigurationParameterName(
 			OpenNLPTreebankParser.class, "headRulesFile");
 	@ConfigurationParameter(
 			mandatory = true,
 			description = "provides the path of the OpenNLP head rules file, e.g. resources/models/OpenNLP.HeadRules.txt. See javadoc for opennlp.tools.lang.english.HeadRules.")
 	private String headRulesFile;
 
-	public static final String PARAM_BEAM_SIZE = ConfigurationParameterNameFactory.createConfigurationParameterName(
+	public static final String PARAM_BEAM_SIZE = ConfigurationParameterFactory.createConfigurationParameterName(
 			OpenNLPTreebankParser.class, "beamSize");
 	@ConfigurationParameter(
 			mandatory = true,
@@ -117,7 +117,7 @@ public class OpenNLPTreebankParser extends JCasAnnotator_ImplBase {
 			description = "indicates the beam size that should be used in the parser's search.  See javadoc for opennlp.tools.parser.chunking.Parser.")
 	private int beamSize;
 
-	public static final String PARAM_ADVANCE_PERCENTAGE = ConfigurationParameterNameFactory.createConfigurationParameterName(
+	public static final String PARAM_ADVANCE_PERCENTAGE = ConfigurationParameterFactory.createConfigurationParameterName(
 			OpenNLPTreebankParser.class, "advancePercentage");
 	@ConfigurationParameter(
 			mandatory = true,

@@ -41,11 +41,11 @@ import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 import org.cleartk.ViewNames;
 import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
-import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.util.ListSpecification;
 import org.cleartk.util.ViewURIUtil;
 import org.uutuc.descriptor.ConfigurationParameter;
 import org.uutuc.descriptor.SofaCapability;
+import org.uutuc.factory.ConfigurationParameterFactory;
 import org.uutuc.util.InitializeUtil;
 
 
@@ -84,7 +84,7 @@ import org.uutuc.util.InitializeUtil;
 
 @SofaCapability(outputSofas= {ViewNames.TREEBANK, ViewNames.URI})
 public class PennTreebankReader extends CollectionReader_ImplBase {
-	public static final String PARAM_CORPUS_DIRECTORY_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(PennTreebankReader.class, "corpusDirectoryName");
+	public static final String PARAM_CORPUS_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(PennTreebankReader.class, "corpusDirectoryName");
 	private static final String CORPUS_DIRECTORY_DESCRIPTION = "Specifies the location of WSJ/PennTreebank treebank files.  " +
 			"The directory should contain subdirectories corresponding to the sections (e.g. '00', '01', etc.) " +
 			"That is, if a local copy of PennTreebank sits at C:/Data/PTB/wsj/mrg, then the the subdirectory C:/Data/PTB/wsj/mrg/00 should exist. " +
@@ -94,7 +94,7 @@ public class PennTreebankReader extends CollectionReader_ImplBase {
 			description = CORPUS_DIRECTORY_DESCRIPTION)
 	private String corpusDirectoryName;
 
-	public static final String PARAM_SECTIONS_SPECIFIER = ConfigurationParameterNameFactory.createConfigurationParameterName(PennTreebankReader.class, "sectionsSpecifier");
+	public static final String PARAM_SECTIONS_SPECIFIER = ConfigurationParameterFactory.createConfigurationParameterName(PennTreebankReader.class, "sectionsSpecifier");
 	private static final String SECTIONS_DESCRIPTION = "specifies which sections of PTB to read in.  " +
 			"The required format for values of this parameter allows for comma-separated section numbers and section ranges, " +
 			"for example '02,07-12,16'.";

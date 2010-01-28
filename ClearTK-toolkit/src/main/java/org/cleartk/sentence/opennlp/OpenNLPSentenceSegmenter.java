@@ -44,9 +44,9 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkComponents;
-import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.util.UIMAUtil;
 import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.factory.ConfigurationParameterFactory;
 import org.uutuc.util.InitializeUtil;
 
 
@@ -71,14 +71,14 @@ public class OpenNLPSentenceSegmenter extends JCasAnnotator_ImplBase {
 		return CleartkComponents.createPrimitiveDescription(OpenNLPSentenceSegmenter.class);
 	}
 	
-	public static final String PARAM_SENTENCE_MODEL_FILE_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(OpenNLPSentenceSegmenter.class, "sentenceModelFileName");
+	public static final String PARAM_SENTENCE_MODEL_FILE_NAME = ConfigurationParameterFactory.createConfigurationParameterName(OpenNLPSentenceSegmenter.class, "sentenceModelFileName");
 	@ConfigurationParameter(
 			mandatory = true,
 			defaultValue = "resources/models/OpenNLP.Sentence.English.bin.gz",
 			description = "provides the path of the OpenNLP sentence segmenter model file")
 	private String sentenceModelFileName;
 	
-	public static final String PARAM_SENTENCE_TYPE_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(OpenNLPSentenceSegmenter.class, "sentenceTypeName");
+	public static final String PARAM_SENTENCE_TYPE_NAME = ConfigurationParameterFactory.createConfigurationParameterName(OpenNLPSentenceSegmenter.class, "sentenceTypeName");
 
 	@ConfigurationParameter (
 			description = "class type of the sentences that are created by this annotator. If this parameter is not filled, then sentencesof type org.cleartk.type.Sentence will be created.",

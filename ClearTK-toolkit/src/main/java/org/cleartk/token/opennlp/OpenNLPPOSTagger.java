@@ -43,11 +43,11 @@ import org.apache.uima.cas.FSIterator;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkComponents;
-import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.uutuc.descriptor.ConfigurationParameter;
 import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.ConfigurationParameterFactory;
 import org.uutuc.util.InitializeUtil;
 
 /**
@@ -69,19 +69,19 @@ public class OpenNLPPOSTagger extends JCasAnnotator_ImplBase {
 						.getParameterValue(PARAM_POSTAG_MODEL_FILE, "resources/models/OpenNLP.POSTags.English.bin.gz"));
 	}
 
-	public static final String PARAM_POSTAG_MODEL_FILE = ConfigurationParameterNameFactory
+	public static final String PARAM_POSTAG_MODEL_FILE = ConfigurationParameterFactory
 			.createConfigurationParameterName(OpenNLPPOSTagger.class, "postagModelFile");
 
 	@ConfigurationParameter(mandatory = true, description = "provides the path of the OpenNLP part-of-speech tagger model file, e.g.  resources/models/OpenNLP.POSTags.English.bin.gz.  See javadoc for opennlp.maxent.io.SuffixSensitiveGISModelReader.")
 	private String postagModelFile;
 
-	public static final String PARAM_POSTAG_DICTIONARY_FILE = ConfigurationParameterNameFactory
+	public static final String PARAM_POSTAG_DICTIONARY_FILE = ConfigurationParameterFactory
 			.createConfigurationParameterName(OpenNLPPOSTagger.class, "postagDictionaryFile");
 
 	@ConfigurationParameter(mandatory = true, description = "provides the path of the OpenNLP part-of-speech tagger dictionary file, e.g. resources/models/OpenNLP.TagDict.txt.  See javadoc for opennlp.tools.postag.POSDictionary.")
 	private String postagDictionaryFile;
 
-	public static final String PARAM_CASE_SENSITIVE = ConfigurationParameterNameFactory
+	public static final String PARAM_CASE_SENSITIVE = ConfigurationParameterFactory
 			.createConfigurationParameterName(OpenNLPPOSTagger.class, "caseSensitive");
 
 	@ConfigurationParameter(defaultValue = "true", description = "when false indicates that the POSDictionary should ignore case.  See javadoc for opennlp.tools.postag.POSDictionary.")

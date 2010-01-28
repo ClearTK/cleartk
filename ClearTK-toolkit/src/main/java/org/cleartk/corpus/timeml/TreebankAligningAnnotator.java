@@ -41,13 +41,13 @@ import org.cleartk.syntax.treebank.type.TopTreebankNode;
 import org.cleartk.syntax.treebank.type.TreebankNode;
 import org.cleartk.syntax.treebank.util.TreebankFormatParser;
 import org.cleartk.syntax.treebank.util.TreebankNodeUtility;
-import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.ViewURIUtil;
 import org.uutuc.descriptor.ConfigurationParameter;
 import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.ConfigurationParameterFactory;
 import org.uutuc.util.InitializeUtil;
 
 
@@ -61,7 +61,7 @@ import org.uutuc.util.InitializeUtil;
  */
 public class TreebankAligningAnnotator extends JCasAnnotator_ImplBase {
 	
-	public static final String PARAM_TREEBANK_DIRECTORY_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(TreebankAligningAnnotator.class, "treebankDirectoryName");
+	public static final String PARAM_TREEBANK_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(TreebankAligningAnnotator.class, "treebankDirectoryName");
 	@ConfigurationParameter(
 			mandatory = true,
 			description = "the path to the treebank directory containing the XX/wsj_XXXX.mrg files.")

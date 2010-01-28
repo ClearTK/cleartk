@@ -42,11 +42,11 @@ import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 import org.cleartk.CleartkComponents;
 import org.cleartk.ViewNames;
-import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.util.ViewURIUtil;
 import org.uutuc.descriptor.ConfigurationParameter;
 import org.uutuc.descriptor.SofaCapability;
 import org.uutuc.factory.CollectionReaderFactory;
+import org.uutuc.factory.ConfigurationParameterFactory;
 import org.uutuc.util.InitializeUtil;
 
 /**
@@ -66,7 +66,7 @@ public class Conll2005GoldReader extends CollectionReader_ImplBase {
 
 	@ConfigurationParameter(mandatory = true, description = "the path of the CoNLL 2005 data file")
 	private File conll2005DataFile;
-	public static final String PARAM_CONLL2005_DATA_FILE = ConfigurationParameterNameFactory
+	public static final String PARAM_CONLL2005_DATA_FILE = ConfigurationParameterFactory
 			.createConfigurationParameterName(Conll2005GoldReader.class, "conll2005DataFile");
 
 	private BufferedReader reader;

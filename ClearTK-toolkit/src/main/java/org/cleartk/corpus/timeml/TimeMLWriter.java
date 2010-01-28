@@ -46,7 +46,6 @@ import org.cleartk.corpus.timeml.type.Event;
 import org.cleartk.corpus.timeml.type.TemporalLink;
 import org.cleartk.corpus.timeml.type.Time;
 import org.cleartk.corpus.timeml.util.TimeMLUtil;
-import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.util.ViewURIUtil;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -55,6 +54,7 @@ import org.jdom.input.SAXBuilder;
 import org.jdom.output.XMLOutputter;
 import org.uutuc.descriptor.ConfigurationParameter;
 import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.ConfigurationParameterFactory;
 import org.uutuc.util.InitializeUtil;
 
 
@@ -68,7 +68,7 @@ import org.uutuc.util.InitializeUtil;
  */
 public class TimeMLWriter extends JCasAnnotator_ImplBase {
 	
-	public static final String PARAM_OUTPUT_DIRECTORY_NAME = ConfigurationParameterNameFactory.createConfigurationParameterName(TimeMLWriter.class, "outputDirectoryName");
+	public static final String PARAM_OUTPUT_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(TimeMLWriter.class, "outputDirectoryName");
 	
 	@ConfigurationParameter(
 			description = "Provides the path where the TimeML documents should be written.",

@@ -34,8 +34,8 @@ import org.apache.uima.cas.impl.XmiCasDeserializer;
 import org.apache.uima.cas.impl.XmiCasSerializer;
 import org.apache.uima.collection.CollectionException;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.factory.ConfigurationParameterFactory;
 import org.uutuc.util.InitializeUtil;
 import org.xml.sax.SAXException;
 
@@ -52,7 +52,7 @@ public class XReader extends FilesCollectionReader {
 
 	public static final String XCAS = "XCAS";
 
-	public static final String PARAM_XML_SCHEME = ConfigurationParameterNameFactory.createConfigurationParameterName(XReader.class, "xmlScheme");
+	public static final String PARAM_XML_SCHEME = ConfigurationParameterFactory.createConfigurationParameterName(XReader.class, "xmlScheme");
 	
 	@ConfigurationParameter(
 			defaultValue = "XMI",
