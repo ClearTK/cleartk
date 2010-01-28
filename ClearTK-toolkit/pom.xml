@@ -111,7 +111,7 @@
 		<dependency>
 			<groupId>org.uutuc</groupId>
 			<artifactId>uutuc</artifactId>
-			<version>0.9.10</version>
+			<version>0.9.11</version>
 			<optional>false</optional>
 		</dependency>
 		<dependency>
@@ -151,6 +151,25 @@
 						<argument>${basedir}/src/main/java</argument>
 					</arguments>
 				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.2-beta-5</version>
+				<configuration>
+				<descriptors>
+					<descriptor>src/main/assembly/bin-packed.xml</descriptor>
+					<descriptor>src/main/assembly/resources.xml</descriptor>
+				</descriptors>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id> <!-- this is used for inheritance merges -->
+						<phase>package</phase> <!-- append to the packaging phase. -->
+						<goals>
+							<goal>single</goal> <!-- goals == mojos -->
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 		<extensions>

@@ -20,7 +20,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   </formats>
   <includeBaseDirectory>true</includeBaseDirectory>
   <baseDirectory>${project.build.finalName}/lib</baseDirectory>
-
   <dependencySets>
     <dependencySet>
       <unpack>false</unpack>
