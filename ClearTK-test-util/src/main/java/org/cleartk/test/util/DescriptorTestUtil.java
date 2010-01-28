@@ -1,5 +1,5 @@
 /** 
-  * Copyright (c) 2007-2008, Regents of the University of Colorado 
+ * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -23,11 +23,15 @@
  */
 package org.cleartk.test.util;
 
-import java.io.IOException;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-import org.apache.uima.UIMAException;
-import org.apache.uima.resource.ResourceInitializationException;
-import org.uutuc.factory.AnalysisEngineFactory;
+import org.junit.Assert;
+import org.uutuc.util.io.Files;
 
 /**
  * <br>
@@ -35,19 +39,26 @@ import org.uutuc.factory.AnalysisEngineFactory;
  * All rights reserved.
  */
 
-public abstract class CleartkTest {
+public class DescriptorTestUtil {
 
-	public ResourceInitializationException getResourceInitializationException(String descriptorName, Object... params) throws UIMAException, IOException {
-		ResourceInitializationException rie = null;
-		try {
-			AnalysisEngineFactory.createAnalysisEngine(descriptorName, params);
+	public static void testNoDescriptorsInSrc(String srcDirectoryName) {
+		// collect the names of all .xml descriptors in the src directory
+		Set<String> descNames = new HashSet<String>();
+		for (File file: Files.getFiles(new File(srcDirectoryName), new String[] {".xml"})) {
+			descNames.add(file.getPath());
 		}
-		catch (ResourceInitializationException e) {
-			rie = e;
+		
+		if(descNames.size() > 0) {
+			String message = String.format("%d descriptors in src/main/java", descNames.size());
+			System.err.println(message);
+			List<String> sortedFileNames = new ArrayList<String>(descNames);
+			Collections.sort(sortedFileNames);
+			for (String name: sortedFileNames) {
+				System.err.println(name);
+			}
+			Assert.fail(message);
 		}
-		return rie;
-
+		
 	}
 
-	
 }
