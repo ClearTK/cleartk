@@ -23,7 +23,7 @@
 */
 package org.cleartk;
 
-import org.cleartk.test.util.DescriptorCoverageTestUtil;
+import org.cleartk.test.util.DescriptorTestUtil;
 import org.junit.Test;
 
 /**
@@ -36,7 +36,7 @@ public class DescriptorCoverageTest {
 	
 	@Test
 	public void testNoDescriptorsInSrcMain() {
-		DescriptorCoverageTestUtil.testNoDescriptorsInSrc("src/main/java");
+		DescriptorTestUtil.testNoDescriptorsInSrc("src/main/java");
 	}
 	
 	

@@ -31,21 +31,21 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
 import org.cleartk.Initializable;
-import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
 import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.factory.ConfigurationParameterFactory;
 import org.uutuc.util.InitializeUtil;
 
 public abstract class CleartkAnnotator<OUTCOME_TYPE> extends JCasAnnotator_ImplBase implements Initializable {
 
-	public static final String PARAM_CLASSIFIER_FACTORY_CLASS_NAME = ConfigurationParameterNameFactory
+	public static final String PARAM_CLASSIFIER_FACTORY_CLASS_NAME = ConfigurationParameterFactory
 			.createConfigurationParameterName(CleartkAnnotator.class, "classifierFactoryClassName");
 
 	@ConfigurationParameter(mandatory = false, description = "provides the full name of the ClassifierFactory class to be used.", defaultValue = "org.cleartk.classifier.jar.JarClassifierFactory")
 	private String classifierFactoryClassName;
 
-	public static final String PARAM_DATA_WRITER_FACTORY_CLASS_NAME = ConfigurationParameterNameFactory
+	public static final String PARAM_DATA_WRITER_FACTORY_CLASS_NAME = ConfigurationParameterFactory
 			.createConfigurationParameterName(CleartkAnnotator.class, "dataWriterFactoryClassName");
 
 	@ConfigurationParameter(mandatory = false, description = "provides the full name of the DataWriterFactory class to be used.")

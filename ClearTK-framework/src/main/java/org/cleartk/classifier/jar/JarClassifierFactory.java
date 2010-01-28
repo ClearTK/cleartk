@@ -34,9 +34,9 @@ import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.ClassifierFactory;
 import org.cleartk.classifier.SequentialClassifier;
 import org.cleartk.classifier.SequentialClassifierFactory;
-import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.util.ReflectionUtil;
 import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.factory.ConfigurationParameterFactory;
 import org.uutuc.util.InitializeUtil;
 
 /**
@@ -47,7 +47,7 @@ import org.uutuc.util.InitializeUtil;
 
 public class JarClassifierFactory<OUTCOME_TYPE> implements ClassifierFactory<OUTCOME_TYPE>, SequentialClassifierFactory<OUTCOME_TYPE>, Initializable {
 
-	public static final String PARAM_CLASSIFIER_JAR_PATH = ConfigurationParameterNameFactory
+	public static final String PARAM_CLASSIFIER_JAR_PATH = ConfigurationParameterFactory
 			.createConfigurationParameterName(JarClassifierFactory.class, "classifierJarPath");
 
 	@ConfigurationParameter(mandatory = true, description = "provides the path to the jar file that should be used to instantiate the classifier.")

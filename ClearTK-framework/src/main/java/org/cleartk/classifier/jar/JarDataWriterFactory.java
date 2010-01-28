@@ -34,22 +34,22 @@ import org.cleartk.classifier.DataWriterFactory;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
-import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
 import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.factory.ConfigurationParameterFactory;
 import org.uutuc.util.InitializeUtil;
 
 public abstract class JarDataWriterFactory<FEATURES_OUT_TYPE, OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE> implements
 		DataWriterFactory<OUTCOME_IN_TYPE>, Initializable {
 
-	public static final String PARAM_OUTPUT_DIRECTORY = ConfigurationParameterNameFactory
+	public static final String PARAM_OUTPUT_DIRECTORY = ConfigurationParameterFactory
 			.createConfigurationParameterName(JarDataWriterFactory.class, "outputDirectory");
 
 	@ConfigurationParameter(mandatory = false, description = "provides the name of the directory where the training data will be written.  if you do not set this parameter, then you must call setOutputDirectory directly.")
 	protected File outputDirectory;
 
-	public static final String PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM = ConfigurationParameterNameFactory
+	public static final String PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM = ConfigurationParameterFactory
 			.createConfigurationParameterName(JarDataWriterFactory.class, "loadEncodersFromFileSystem");
 
 	@ConfigurationParameter(description = "when true indicates that the FeaturesEncoder and OutcomeEncoder should be loaded from the file system instead of being created by the DataWriterFactory", defaultValue = "false")

@@ -31,8 +31,8 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.Initializable;
 import org.cleartk.classifier.SequentialDataWriter;
 import org.cleartk.classifier.SequentialDataWriterFactory;
-import org.cleartk.test.util.ConfigurationParameterNameFactory;
 import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.factory.ConfigurationParameterFactory;
 import org.uutuc.util.InitializeUtil;
 
 /**
@@ -46,7 +46,7 @@ import org.uutuc.util.InitializeUtil;
 
 public class ViterbiDataWriterFactory<OUTCOME_TYPE> implements SequentialDataWriterFactory<OUTCOME_TYPE>, Initializable {
 
-	public static final String PARAM_OUTPUT_DIRECTORY = ConfigurationParameterNameFactory
+	public static final String PARAM_OUTPUT_DIRECTORY = ConfigurationParameterFactory
 			.createConfigurationParameterName(ViterbiDataWriterFactory.class, "outputDirectory");
 
 	@ConfigurationParameter(mandatory = true, description = "provides the name of the directory where the training data will be written.")
