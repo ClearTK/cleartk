@@ -28,7 +28,6 @@ import java.util.List;
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.encoder.features.NameNumber;
-import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 import org.cleartk.classifier.jar.JarDataWriterFactory;
 import org.uutuc.descriptor.ConfigurationParameter;
 import org.uutuc.factory.ConfigurationParameterFactory;
@@ -50,14 +49,7 @@ public abstract class MaxentDataWriterFactory_ImplBase<OUTCOME_TYPE> extends Jar
 			description = "when true indicates that the FeaturesEncoder should compress the feature names.  See org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder")
 	protected boolean compress = false;
 	
-	/**
-	 * "org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory.PARAM_SORT_NAME_LOOKUP"
-	 * is a single, optional, boolean parameter, defaulting to false, that when true
-	 * indicates that the FeaturesEncoder should write the feature names in sorted order.
-	 * @see NameNumberFeaturesEncoder
-	 */
 	public static final String PARAM_SORT = ConfigurationParameterFactory.createConfigurationParameterName(MaxentDataWriterFactory_ImplBase.class, "sort");
-
 	@ConfigurationParameter(
 			defaultValue = "false",
 			description = "when true indicates that the FeaturesEncoder should write the feature names in sorted order.")
