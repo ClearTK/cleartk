@@ -23,14 +23,15 @@
  */
 package org.cleartk.classifier.mallet;
 
-import java.io.IOException;
+import java.util.List;
 
-import org.cleartk.classifier.DataWriter;
-import org.cleartk.classifier.encoder.features.BooleanEncoder;
-import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
-import org.cleartk.classifier.encoder.features.NumberEncoder;
-import org.cleartk.classifier.encoder.features.StringEncoder;
-import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
+import org.apache.uima.UimaContext;
+import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.classifier.encoder.features.NameNumber;
+import org.cleartk.classifier.jar.JarDataWriterFactory;
+import org.cleartk.util.UIMAUtil;
+import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.factory.ConfigurationParameterFactory;
 
 /**
  * <br>
@@ -39,23 +40,27 @@ import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
  * @author Philip Ogren, Philipp Wetzler
  * 
  */
+public abstract class MalletDataWriterFactory_ImplBase<OUTCOME_TYPE> extends JarDataWriterFactory<List<NameNumber>, OUTCOME_TYPE, String> {
 
-public class DefaultMalletDataWriterFactory extends MalletDataWriterFactory_ImplBase<String> {
+	public static final String PARAM_COMPRESS = ConfigurationParameterFactory.createConfigurationParameterName(MalletDataWriterFactory_ImplBase.class, "compress");
+	@ConfigurationParameter(
+			defaultValue = "false",
+			description = "when true indicates that the FeaturesEncoder should compress the feature names.  See org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder")
+	protected boolean compress;
+	
+	public static final String PARAM_SORT = ConfigurationParameterFactory.createConfigurationParameterName(MalletDataWriterFactory_ImplBase.class, "sort");
+	@ConfigurationParameter(
+			defaultValue = "false",
+			description = "when true indicates that the FeaturesEncoder should write the feature names in sorted order.")
+	protected boolean sort;
 
-	public DataWriter<String> createDataWriter() throws IOException {
-		MalletDataWriter mdw = new MalletDataWriter(outputDirectory);
-		
-		if(!this.setEncodersFromFileSystem(mdw)) {
-			NameNumberFeaturesEncoder featuresEncoder = new NameNumberFeaturesEncoder(compress, sort);
-			featuresEncoder.addEncoder(new NumberEncoder());
-			featuresEncoder.addEncoder(new BooleanEncoder());
-			featuresEncoder.addEncoder(new StringEncoder());
-			mdw.setFeaturesEncoder(featuresEncoder);
-			
-			mdw.setOutcomeEncoder(new StringToStringOutcomeEncoder());
-		}
-		
-		return mdw;
+	@Override
+	public void initialize(UimaContext context) throws ResourceInitializationException {
+		super.initialize(context);
+		compress = (Boolean)UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_COMPRESS, false);
+		sort = (Boolean)UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_SORT, false);
 	}
+	
+	
 	
 }

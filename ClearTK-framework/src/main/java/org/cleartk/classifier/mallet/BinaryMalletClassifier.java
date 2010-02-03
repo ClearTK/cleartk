@@ -34,9 +34,9 @@ import java.util.jar.JarFile;
  *
  * 
  */
-public class MalletClassifier extends MalletClassifier_ImplBase<String>
+public class BinaryMalletClassifier extends MalletClassifier_ImplBase<Boolean>
 {
-	public MalletClassifier(JarFile modelFile) throws Exception {
+	public BinaryMalletClassifier(JarFile modelFile) throws Exception {
 		super(modelFile);
      }
 }

@@ -23,20 +23,21 @@
 */
 package org.cleartk.classifier.mallet;
 
-import java.util.jar.JarFile;
+import org.cleartk.classifier.Classifier;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
  * <br>All rights reserved.
 
- *
- * @author Philip Ogren
- *
+ * <p>
  * 
+ * @author Philip Ogren
  */
-public class MalletClassifier extends MalletClassifier_ImplBase<String>
-{
-	public MalletClassifier(JarFile modelFile) throws Exception {
-		super(modelFile);
-     }
+
+public class BinaryMalletClassifierBuilder extends MalletClassifierBuilder_ImplBase<Boolean> {
+
+	public Class<? extends Classifier<Boolean>> getClassifierClass() {
+		return BinaryMalletClassifier.class;
+	}
+
 }

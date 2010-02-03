@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,23 +20,37 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.mallet;
 
-import java.util.jar.JarFile;
+import java.io.File;
+import java.io.IOException;
+
+import org.cleartk.classifier.jar.ClassifierBuilder;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
- * @author Philip Ogren
- *
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
  * 
+ * 
+ * This training data consumer produces training data suitable for <a
+ * href="http://mallet.cs.umass.edu/index.php/SimpleTagger_example"> Mallet
+ * Conditional Random Field (CRF) tagger</a>.
+ * 
+ * Each line of the training data contains a string representation of each
+ * feature followed by the label/result for that instance.
+ * 
+ * @author Philip Ogren
  */
-public class MalletClassifier extends MalletClassifier_ImplBase<String>
-{
-	public MalletClassifier(JarFile modelFile) throws Exception {
-		super(modelFile);
-     }
+public class BinaryMalletDataWriter extends MalletDataWriter_ImplBase<Boolean> {
+
+	public BinaryMalletDataWriter(File outputDirectory) throws IOException {
+		super(outputDirectory);
+	}
+
+	public Class<? extends ClassifierBuilder<Boolean>> getDefaultClassifierBuilderClass() {
+		return BinaryMalletClassifierBuilder.class;
+	}
+
 }

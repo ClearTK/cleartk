@@ -1,5 +1,5 @@
- /** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+/** 
+ * Copyright (c) 2009, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -20,23 +20,43 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.mallet;
 
-import java.util.jar.JarFile;
+import java.io.IOException;
+
+import org.cleartk.classifier.DataWriter;
+import org.cleartk.classifier.encoder.features.BooleanEncoder;
+import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
+import org.cleartk.classifier.encoder.features.NumberEncoder;
+import org.cleartk.classifier.encoder.features.StringEncoder;
+import org.cleartk.classifier.encoder.outcome.BooleanToStringOutcomeEncoder;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
- * @author Philip Ogren
- *
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * @author Philip Ogren, Philipp Wetzler
  * 
  */
-public class MalletClassifier extends MalletClassifier_ImplBase<String>
-{
-	public MalletClassifier(JarFile modelFile) throws Exception {
-		super(modelFile);
-     }
+
+public class DefaultBinaryMalletDataWriterFactory extends MalletDataWriterFactory_ImplBase<Boolean> {
+	
+	public DataWriter<Boolean> createDataWriter() throws IOException {
+		
+		BinaryMalletDataWriter mdw = new BinaryMalletDataWriter(outputDirectory);
+		
+		if(!this.setEncodersFromFileSystem(mdw)) {
+			NameNumberFeaturesEncoder featuresEncoder = new NameNumberFeaturesEncoder(compress, sort);
+			featuresEncoder.addEncoder(new NumberEncoder());
+			featuresEncoder.addEncoder(new BooleanEncoder());
+			featuresEncoder.addEncoder(new StringEncoder());
+			mdw.setFeaturesEncoder(featuresEncoder);
+			
+			mdw.setOutcomeEncoder(new BooleanToStringOutcomeEncoder());
+		}
+		
+		return mdw;
+	}
+	
 }

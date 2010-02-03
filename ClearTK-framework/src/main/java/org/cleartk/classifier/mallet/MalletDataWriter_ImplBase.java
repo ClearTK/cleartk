@@ -25,8 +25,12 @@ package org.cleartk.classifier.mallet;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
 
-import org.cleartk.classifier.jar.ClassifierBuilder;
+import org.cleartk.CleartkException;
+import org.cleartk.classifier.encoder.features.NameNumber;
+import org.cleartk.classifier.jar.JarDataWriter;
 
 /**
  * <br>
@@ -43,14 +47,35 @@ import org.cleartk.classifier.jar.ClassifierBuilder;
  * 
  * @author Philip Ogren
  */
-public class MalletDataWriter extends MalletDataWriter_ImplBase<String> {
+public abstract class MalletDataWriter_ImplBase<OUTCOME_TYPE> extends JarDataWriter<OUTCOME_TYPE, String, List<NameNumber>> {
 
-	public MalletDataWriter(File outputDirectory) throws IOException {
+	public static final String TRAINING_DATA_FILE_NAME ="training-data.mallet"; 
+	public MalletDataWriter_ImplBase(File outputDirectory) throws IOException {
 		super(outputDirectory);
+
+		// initialize output writer and Classifier class
+		this.trainingDataWriter = this.getPrintWriter(TRAINING_DATA_FILE_NAME);
+
 	}
 
-	public Class<? extends ClassifierBuilder<String>> getDefaultClassifierBuilderClass() {
-		return MalletClassifierBuilder.class;
+	@Override
+	public void writeEncoded(List<NameNumber> features, String outcome)  throws CleartkException{
+		if(outcome == null) {
+			throw new CleartkException("all consumed instances must have an outcome.  outcome="+outcome);
+		}
+		if (features.size() == 0) {
+			trainingDataWriter.print("null:0 ");
+		}
+		else {
+			for (NameNumber nameNumber : features) {
+				trainingDataWriter.print(nameNumber.name + ":" + nameNumber.number + " ");
+			}
+		}
+		this.trainingDataWriter.print(outcome);
+		this.trainingDataWriter.println();
 	}
+
+
+	protected PrintWriter trainingDataWriter;
 
 }
