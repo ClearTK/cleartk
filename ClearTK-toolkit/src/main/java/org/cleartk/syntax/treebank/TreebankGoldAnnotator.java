@@ -34,8 +34,8 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkComponents;
 import org.cleartk.ViewNames;
+import org.cleartk.syntax.treebank.type.TerminalTreebankNode;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
-import org.cleartk.syntax.treebank.type.TreebankNode;
 import org.cleartk.syntax.treebank.util.TreebankFormatParser;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
@@ -118,11 +118,15 @@ public class TreebankGoldAnnotator extends JCasAnnotator_ImplBase {
 			Sentence uimaSentence = new Sentence(docView, uimaNode.getBegin(), uimaNode.getEnd());
 			uimaSentence.addToIndexes();
 
-			for (TreebankNode terminal : UIMAUtil.toList(uimaNode.getTerminals(), TreebankNode.class)) {
+			int tokenIndex = 0;
+			for (TerminalTreebankNode terminal : UIMAUtil.toList(uimaNode.getTerminals(), TerminalTreebankNode.class)) {
 				if (terminal.getBegin() != terminal.getEnd()) {
+					terminal.setTokenIndex(tokenIndex++);
 					Token uimaToken = new Token(docView, terminal.getBegin(), terminal.getEnd());
 					uimaToken.setPos(terminal.getNodeType());
 					uimaToken.addToIndexes();
+				} else {
+					terminal.setTokenIndex(-1);
 				}
 			}
 		}

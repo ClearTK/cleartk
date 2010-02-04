@@ -30,6 +30,7 @@ POSSIBILITY OF SUCH DAMAGE.</description>
     <import name="org.cleartk.type.Token"/>
     <import name="org.cleartk.syntax.treebank.type.TopTreebankNode"/>
     <import name="org.cleartk.syntax.treebank.type.TreebankNode"/>
+    <import name="org.cleartk.syntax.treebank.type.TerminalTreebankNode"/>
     <import name="org.cleartk.ne.type.GazetteerNamedEntityMention"/>
     <import name="org.cleartk.ne.type.NamedEntityMention"/>
     <import name="org.cleartk.ne.type.NamedEntity"/>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
-  <name>TopTreebankNode</name>
-  <description>Copyright (c) 2007, Regents of the University of Colorado 
+  <name>TerminalTreebankNode</name>
+  <description>Copyright (c) 2010, Regents of the University of Colorado 
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -23,27 +23,25 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.</description>
   <version>1.0</version>
-  <vendor>Copyright 2007 Regents of the University of Colorado.   All Rights Reserved.</vendor>
+  <vendor/>
   <imports>
     <import name="org.cleartk.syntax.treebank.type.TreebankNode"/>
-    <import name="org.cleartk.syntax.treebank.type.TerminalTreebankNode"/>
   </imports>
   <types>
     <typeDescription>
-      <name>org.cleartk.syntax.treebank.type.TopTreebankNode</name>
+      <name>org.cleartk.syntax.treebank.type.TerminalTreebankNode</name>
       <description/>
       <supertypeName>org.cleartk.syntax.treebank.type.TreebankNode</supertypeName>
       <features>
         <featureDescription>
-          <name>treebankParse</name>
-          <description/>
-          <rangeTypeName>uima.cas.String</rangeTypeName>
+          <name>index</name>
+          <description>This value is the same as the index of this node in the top nodes list of terminals.</description>
+          <rangeTypeName>uima.cas.Integer</rangeTypeName>
         </featureDescription>
         <featureDescription>
-          <name>terminals</name>
-          <description/>
-          <rangeTypeName>uima.cas.FSArray</rangeTypeName>
-          <elementType>org.cleartk.syntax.treebank.type.TerminalTreebankNode</elementType>
+          <name>tokenIndex</name>
+          <description>The value of this corresponds to the nth token in the sentence that this terminal corresponds to.  The value -1 means that this terminal does not correspond to a token (because it is a trace.)  We assume that each token corresponds to a terminal.</description>
+          <rangeTypeName>uima.cas.Integer</rangeTypeName>
         </featureDescription>
       </features>
     </typeDescription>

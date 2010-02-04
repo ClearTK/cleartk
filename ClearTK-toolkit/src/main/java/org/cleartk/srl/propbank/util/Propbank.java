@@ -62,7 +62,7 @@ public class Propbank {
 		String[] columns = propTxt.split(" ");
 		Propbank propbank = new Propbank();
 		try{
-
+			propbank.setPropTxt(propTxt);
 			// set filename, sentence number and predicate leaf number
 			propbank.setFilename(columns[0]);
 			propbank.setSentenceNumber(Integer.parseInt(columns[1]));
@@ -127,6 +127,16 @@ public class Propbank {
 	protected String inflectionValue;
 
 	protected List<Proplabel> proplabels;
+	
+	protected String propTxt;
+
+	public String getPropTxt() {
+		return propTxt;
+	}
+
+	public void setPropTxt(String propTxt) {
+		this.propTxt = propTxt;
+	}
 
 	protected Propbank() {
 		proplabels = new ArrayList<Proplabel>();
@@ -217,10 +227,13 @@ public class Propbank {
 	public Predicate convert(JCas view, TopTreebankNode topNode,
 			Sentence sentence) {
 		Predicate p = new Predicate(view);
+		p.setPropTxt(this.propTxt);
 		p.setAnnotation(this.terminal.convert(view, topNode));
 		p.setBegin(p.getAnnotation().getBegin());
 		p.setEnd(p.getAnnotation().getEnd());
 		p.setSentence(sentence);
+		p.setFrameSet(this.frameSet);
+		p.setBaseForm(this.baseForm);
 
 		List<Argument> aList = new ArrayList<Argument>();
 		for (Proplabel proplabel : this.proplabels) {

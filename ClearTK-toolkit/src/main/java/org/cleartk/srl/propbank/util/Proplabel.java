@@ -73,6 +73,7 @@ public class Proplabel {
 	
 		// set the relation and label
 		Proplabel proplabel = new Proplabel();
+		proplabel.setPropTxt(lblTxt);
 		proplabel.setRelation(PropbankRelation.fromString(columns[0]));
 		proplabel.setLabel(columns[1]);
 		
@@ -122,6 +123,8 @@ public class Proplabel {
 	protected String preposition;
 	
 	protected String hyphenTag;
+	
+	protected String propTxt;
 
 	protected Proplabel() {
 		relation = null;
@@ -170,6 +173,15 @@ public class Proplabel {
 		this.relation = relation;
 	}
 
+	
+	public String getPropTxt() {
+		return propTxt;
+	}
+
+	public void setPropTxt(String propTxt) {
+		this.propTxt = propTxt;
+	}
+
 	/**
 	 * Convert to ClearTK <em>SemanticArgument</em> annotation and add it to
 	 * <b>view</b>.
@@ -181,6 +193,7 @@ public class Proplabel {
 	 */
 	public SemanticArgument convert(JCas view, TopTreebankNode topNode) {
 		SemanticArgument argument = new SemanticArgument(view);
+		argument.setPropTxt(this.propTxt);
 		argument.setLabel(this.label);
 		argument.setFeature(this.feature);
 		argument.setPreposition(this.preposition);

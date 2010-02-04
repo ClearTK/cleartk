@@ -29,6 +29,7 @@ import java.util.List;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
+import org.cleartk.syntax.treebank.type.TerminalTreebankNode;
 import org.cleartk.util.UIMAUtil;
 
 /**
@@ -53,9 +54,14 @@ public class TreebankNodeUtility {
 	}
 
 	public static void initTerminalNodes(org.cleartk.syntax.treebank.type.TopTreebankNode uimaNode, JCas jCas) {
-		List<org.cleartk.syntax.treebank.type.TreebankNode> terminals = new ArrayList<org.cleartk.syntax.treebank.type.TreebankNode>();
+		List<TerminalTreebankNode> terminals = new ArrayList<org.cleartk.syntax.treebank.type.TerminalTreebankNode>();
 		_initTerminalNodes(uimaNode, terminals);
-
+		
+		for(int i=0; i< terminals.size(); i++) {
+			TerminalTreebankNode terminal = terminals.get(i);
+			terminal.setIndex(i);
+		}
+		
 		FSArray terminalsFSArray = new FSArray(jCas, terminals.size());
 		terminalsFSArray.copyFromArray(terminals.toArray(new FeatureStructure[terminals.size()]), 0, 0, terminals
 				.size());
@@ -63,12 +69,14 @@ public class TreebankNodeUtility {
 	}
 
 	private static void _initTerminalNodes(org.cleartk.syntax.treebank.type.TreebankNode node,
-			List<org.cleartk.syntax.treebank.type.TreebankNode> terminals) {
+			List<TerminalTreebankNode> terminals) {
 		FSArray children = node.getChildren();
 		for (int i = 0; i < children.size(); i++) {
 			org.cleartk.syntax.treebank.type.TreebankNode child = (org.cleartk.syntax.treebank.type.TreebankNode) children
 					.get(i);
-			if (child.getLeaf()) terminals.add(child);
+			if (child instanceof TerminalTreebankNode) {
+				terminals.add((TerminalTreebankNode)child);
+			}
 			else _initTerminalNodes(child, terminals);
 		}
 	}
@@ -85,8 +93,13 @@ public class TreebankNodeUtility {
 
 		List<org.cleartk.syntax.treebank.type.TreebankNode> uimaChildren = new ArrayList<org.cleartk.syntax.treebank.type.TreebankNode>();
 		for (TreebankNode child : pojoNode.getChildren()) {
-			org.cleartk.syntax.treebank.type.TreebankNode childNode = new org.cleartk.syntax.treebank.type.TreebankNode(
+			org.cleartk.syntax.treebank.type.TreebankNode childNode;
+			if(child.isLeaf()) {
+				childNode = new TerminalTreebankNode(jCas, child.getTextBegin(), child.getTextEnd());
+			} else { 
+				childNode = new org.cleartk.syntax.treebank.type.TreebankNode(
 					jCas, child.getTextBegin(), child.getTextEnd());
+			}
 			uimaChildren.add(convert(child, jCas, childNode, uimaNode, addToIndexes));
 			if(addToIndexes)
 				childNode.addToIndexes();
