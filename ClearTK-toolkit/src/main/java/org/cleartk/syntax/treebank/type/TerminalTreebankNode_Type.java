@@ -1,5 +1,5 @@
 
-/* First created by JCasGen Wed Feb 03 22:08:12 MST 2010 */
+/* First created by JCasGen Wed Feb 03 22:15:48 MST 2010 */
 package org.cleartk.syntax.treebank.type;
 
 import org.apache.uima.jcas.JCas;
@@ -13,7 +13,7 @@ import org.apache.uima.cas.impl.FeatureImpl;
 import org.apache.uima.cas.Feature;
 
 /** 
- * Updated by JCasGen Wed Feb 03 22:08:12 MST 2010
+ * Updated by JCasGen Wed Feb 03 22:15:48 MST 2010
  * @generated */
 public class TerminalTreebankNode_Type extends TreebankNode_Type {
   /** @generated */
