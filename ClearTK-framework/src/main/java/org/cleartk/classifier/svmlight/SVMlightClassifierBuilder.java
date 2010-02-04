@@ -28,6 +28,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 
+import org.apache.uima.UIMAFramework;
+import org.apache.uima.util.Level;
+import org.apache.uima.util.Logger;
 import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.jar.BuildJar;
 import org.cleartk.classifier.jar.ClassifierBuilder;
@@ -40,18 +43,41 @@ import org.cleartk.classifier.jar.ClassifierBuilder;
 
 public class SVMlightClassifierBuilder implements ClassifierBuilder<Boolean> {
 
+	static Logger logger = UIMAFramework.getLogger(SVMlightClassifierBuilder.class); 
+		
+	public static String COMMAND_ARGUMENT = "--executable";
+	
 	public static void train(String filePath, String[] args) throws Exception {
+		String executable = "svm_learn";
+		if(args.length > 0 && args[0].equals(COMMAND_ARGUMENT)) {
+			executable = args[1]; 
+			String[] tempArgs = new String[args.length - 2];
+			System.arraycopy(args, 2, tempArgs, 0, tempArgs.length);
+			args = tempArgs;
+		}
+		
 		String[] command = new String[args.length + 3];
-		command[0] = "svm_learn";
+		command[0] = executable;
 		System.arraycopy(args, 0, command, 1, args.length);
 		command[command.length - 2] = new File(filePath).getPath();
 		command[command.length - 1] = new File(filePath + ".model").getPath();
+		
+		logger.log(Level.INFO, "training with svmlight using the following command: "+toString(command));
+		logger.log(Level.INFO, "if the svmlight learner does not seem to be working correctly, then try running the above command directly to see if e.g. svm_learn or svm_perf_learn gives a useful error message.");
 		Process process = Runtime.getRuntime().exec(command);
 		output(process.getInputStream(), System.out);
 		output(process.getErrorStream(), System.err);
 		process.waitFor();
 	}
 
+	private static String toString(String[] command) {
+		StringBuilder sb = new StringBuilder();
+		for(String cmmnd : command) {
+			sb.append(cmmnd+" ");
+		}
+		return sb.toString();
+	}
+	
 	public void train(File dir, String[] args) throws Exception {
 		train(new File(dir, "training-data.svmlight").getPath(), args);
 	}
