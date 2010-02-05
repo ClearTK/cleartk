@@ -56,6 +56,7 @@ public class LicenseTestUtil {
 				fileText.indexOf("Copyright (c) 2007, Regents of the University of Colorado") == -1 &&	
 				fileText.indexOf("Copyright (c) 2008, Regents of the University of Colorado") == -1 &&	
 				fileText.indexOf("Copyright (c) 2009, Regents of the University of Colorado") == -1 &&	
+				fileText.indexOf("Copyright (c) 2010, Regents of the University of Colorado") == -1 &&	
 				fileText.indexOf("Copyright (c) 2007-2009, Regents of the University of Colorado") == -1)	
 					|| fileText.indexOf("THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"") == -1) {
 				
@@ -100,6 +101,7 @@ public class LicenseTestUtil {
 					fileText.indexOf("Copyright (c) 2007, Regents of the University of Colorado") == -1 &&	
 					fileText.indexOf("Copyright (c) 2008, Regents of the University of Colorado") == -1 &&	
 					fileText.indexOf("Copyright (c) 2009, Regents of the University of Colorado") == -1 &&	
+					fileText.indexOf("Copyright (c) 2010, Regents of the University of Colorado") == -1 &&	
 					fileText.indexOf("Copyright (c) 2007-2009, Regents of the University of Colorado") == -1)	
 					|| fileText.indexOf("THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"") == -1) {
 				filesMissingLicense.add(file.getPath());
@@ -110,6 +112,7 @@ public class LicenseTestUtil {
 						fileText.indexOf("Copyright (c) 2007, Regents of the University of Colorado") == -1 &&	
 						fileText.indexOf("Copyright (c) 2008, Regents of the University of Colorado") == -1 &&	
 						fileText.indexOf("Copyright (c) 2009, Regents of the University of Colorado") == -1 &&	
+						fileText.indexOf("Copyright (c) 2010, Regents of the University of Colorado") == -1 &&	
 						fileText.indexOf("Copyright (c) 2007-2009, Regents of the University of Colorado", index) == -1))	
 					filesMissingLicense.add(file.getPath());
 			}
