@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2007-2008, Regen ts of the University of Colorado 
+ * Copyright (c) 2010, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
