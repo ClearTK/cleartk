@@ -29,17 +29,18 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Stack;
 
+import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
-import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.CleartkComponents;
 import org.cleartk.ViewNames;
+import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.srl.type.Predicate;
 import org.cleartk.srl.type.SemanticArgument;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
@@ -50,8 +51,10 @@ import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.AnnotationUtil;
 import org.cleartk.util.UIMAUtil;
+import org.uutuc.descriptor.ConfigurationParameter;
 import org.uutuc.descriptor.SofaCapability;
-import org.uutuc.factory.AnalysisEngineFactory;
+import org.uutuc.factory.ConfigurationParameterFactory;
+import org.uutuc.util.InitializeUtil;
 
 /**
  * <br>
@@ -61,10 +64,15 @@ import org.uutuc.factory.AnalysisEngineFactory;
 @SofaCapability(inputSofas = { ViewNames.CONLL_2005, ViewNames.DEFAULT }, outputSofas = {})
 public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
 
-	public static AnalysisEngineDescription getDescription()
-	throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveDescription(Conll2005GoldAnnotator.class,
-				CleartkComponents.TYPE_SYSTEM_DESCRIPTION, CleartkComponents.TYPE_PRIORITIES);
+	@ConfigurationParameter(mandatory = true, description = "does the data file contain verb sense tags")
+	private Boolean hasVerbSenses;
+	public static final String PARAM_HAS_VERB_SENSES = ConfigurationParameterFactory
+	.createConfigurationParameterName(Conll2005GoldAnnotator.class, "hasVerbSenses");
+
+	@Override
+	public void initialize(UimaContext context) throws ResourceInitializationException {
+		super.initialize(context);
+		InitializeUtil.initialize(this, context);
 	}
 
 	@Override
@@ -77,8 +85,10 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
 
 			List<CoNLL2005Line> conll2005Lines = new ArrayList<CoNLL2005Line>();
 			for (String line : conllText.split("\n")) {
-				conll2005Lines.add(new CoNLL2005Line(line));
+				conll2005Lines.add(new CoNLL2005Line(line, hasVerbSenses));
+				//				System.err.println(line);
 			}
+			//			System.err.println();
 
 			StringBuffer docText = new StringBuffer();
 
@@ -86,17 +96,24 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
 					conll2005Lines.size());
 			CharniakParseParser parser = new CharniakParseParser(initView);
 
-			int numberOfPredicates = conll2005Lines.get(0).argumentSegments.length;
+			int numberOfPredicates = 0;
+			for( CoNLL2005Line line : conll2005Lines )
+				if( ! line.targetVerb.equals("-") )
+					numberOfPredicates += 1;
+
 			int currentPredicate = 0;
 			PredicateParser predicateParsers[] = new PredicateParser[numberOfPredicates];
 			for (int i = 0; i < numberOfPredicates; i++)
 				predicateParsers[i] = new PredicateParser(initView);
+			
+			NamedEntityParser namedEntityParser = new NamedEntityParser(initView);
 
 			for (CoNLL2005Line line : conll2005Lines
 					.toArray(new CoNLL2005Line[0])) {
-				if (line.argumentSegments.length != numberOfPredicates) {
+				if( 	line.argumentSegments.length != 0 &&
+						line.argumentSegments.length != numberOfPredicates ) {
 					throw new RuntimeException(String.format(
-							"expected %d segments, found %d",
+							"expected 0 or %d segments, found %d",
 							numberOfPredicates, line.argumentSegments.length));
 				}
 
@@ -122,14 +139,18 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
 				terminals.add(terminal);
 
 				parser.feed(line.charniakParseSegment, terminal);
+				
+				namedEntityParser.feed(line.neSegment, token);
 
-				for (int i = 0; i < numberOfPredicates; i++) {
-					predicateParsers[i].feed(line.argumentSegments[i], token);
+				if( line.argumentSegments.length > 0 ) {
+					for( int i = 0; i < numberOfPredicates; i++ ) {
+						predicateParsers[i].feed(line.argumentSegments[i], token);
+					}
 				}
 
-				if (!line.verbBaseForm.equals("-")) {
+				if( !line.targetVerb.equals("-") ) {
 					predicateParsers[currentPredicate].feedInfo(line.word,
-							line.verbBaseForm, line.verbSenseTag, token);
+							line.targetVerb, line.verbSenseTag, token);
 					currentPredicate += 1;
 				}
 			}
@@ -154,22 +175,31 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
 		String word;
 		String pos;
 		String charniakParseSegment;
-		// String neSegment;
+		String neSegment;
 		String verbSenseTag;
-		String verbBaseForm;
+		String targetVerb;
 		String argumentSegments[];
 
-		CoNLL2005Line(String line) {
+		CoNLL2005Line(String line, boolean hasSenseTag) {
 			String fields[] = line.split("\\s+");
-			this.word = fields[0].trim();
-			this.pos = fields[1].trim();
-			this.charniakParseSegment = fields[2].trim();
-			// this.neSegment = fields[3].trim();
-			this.verbSenseTag = fields[4].trim();
-			this.verbBaseForm = fields[5].trim();
-			this.argumentSegments = new String[fields.length - 6];
-			for (int i = 6; i < fields.length; i++)
-				this.argumentSegments[i - 6] = fields[i].trim();
+			int i = 0;
+			this.word = fields[i++].trim();
+			this.pos = fields[i++].trim();
+			this.charniakParseSegment = fields[i++].trim();
+			this.neSegment = fields[i++].trim();
+
+			if( hasSenseTag ) {
+				this.verbSenseTag = fields[i++].trim();
+			} else {
+				this.verbSenseTag = null;
+			}
+
+			this.targetVerb = fields[i++].trim();
+
+			this.argumentSegments = new String[fields.length - i];
+			for( int j = 0; j < argumentSegments.length; j++) {
+				this.argumentSegments[j] = fields[i++].trim();
+			}
 		}
 	}
 
@@ -361,7 +391,7 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
 		}
 
 		private static String readArgumentType(BufferedReader r)
-				throws IOException {
+		throws IOException {
 			StringBuffer b = new StringBuffer();
 
 			while (true) {
@@ -380,6 +410,79 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
 			}
 
 			return b.toString();
+		}
+	}
+
+	private static class NamedEntityParser {
+		
+		public NamedEntityParser(JCas view) {
+			this.view = view;
+		}
+		
+		void feed(String segment, Token token) throws IOException {
+			BufferedReader r = new BufferedReader(new StringReader(segment));
+
+			for (int i = r.read(); i != -1; i = r.read()) {
+				char c = (char) i;
+
+				switch (c) {
+				case '(':
+					this.currentAnnotation = new NamedEntityAnnotation();
+					this.currentAnnotation.begin = token.getBegin();
+					this.currentAnnotation.name = readName(r);
+					break;
+				case ')':
+					this.currentAnnotation.end = token.getEnd();
+					
+					NamedEntityMention nem = new NamedEntityMention(view, this.currentAnnotation.begin, this.currentAnnotation.end);
+					Annotation relation = null;
+					try {
+						relation = AnnotationRetrieval.getMatchingAnnotation(view, nem, TreebankNode.class);
+					} catch( NoSuchElementException e ) {}
+					nem.setAnnotation(relation);
+					nem.setMentionType(this.currentAnnotation.name);
+					nem.addToIndexes();
+
+					this.currentAnnotation = null;
+					break;
+				case '*':
+					break;
+				default:
+					throw new IOException("unexpected character in string: "
+							+ String.valueOf(c) + " ("
+							+ String.valueOf((int) c) + ")");
+				}
+			}
+		}
+
+		private static String readName(BufferedReader r) throws IOException {
+			StringBuffer b = new StringBuffer();
+
+			while( true ) {
+				r.mark(1);
+				int i = r.read();
+				if (i == -1)
+					break;
+
+				char c = (char) i;
+				if( c == '*' ) {
+					r.reset();
+					break;
+				}
+
+				b.append(c);
+			}
+
+			return b.toString();
+		}
+
+		JCas view;
+		NamedEntityAnnotation currentAnnotation = null;
+
+		private static class NamedEntityAnnotation {
+			int begin;
+			int end;
+			String name;
 		}
 	}
 }

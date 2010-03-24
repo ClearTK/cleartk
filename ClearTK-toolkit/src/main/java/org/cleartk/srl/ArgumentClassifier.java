@@ -54,6 +54,7 @@ import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.classifier.jar.JarDataWriterFactory;
+import org.cleartk.srl.feature.NamedEntityExtractor;
 import org.cleartk.srl.feature.NodeTypeExtractor;
 import org.cleartk.srl.feature.POSExtractor;
 import org.cleartk.srl.feature.StemExtractor;
@@ -136,7 +137,8 @@ public class ArgumentClassifier extends CleartkAnnotator<String> {
 						defaultConstituentExtractorSet,
 						new ParentExtractor(defaultConstituentExtractorSet),
 						new SiblingExtractor(-1, defaultConstituentExtractorSet),
-						new SiblingExtractor(1, defaultConstituentExtractorSet)
+						new SiblingExtractor(1, defaultConstituentExtractorSet),
+						new NamedEntityExtractor()
 				)
 		);
 
@@ -159,16 +161,23 @@ public class ArgumentClassifier extends CleartkAnnotator<String> {
 		List<Sentence> sentences = AnnotationRetrieval.getAnnotations(jCas, Sentence.class);
 
 		try {
+			nSentences = 0;
+			nPredicates = 0;
+			nArguments = 0;
+			
 			for( Sentence sentence : sentences ) {
 				processSentence(jCas, sentence);
 			}
+
+			logger.info(String.format("processed %d sentences, %d predicates, ~%d arguments per predicate", nSentences, nPredicates, nPredicates == 0 ? 0 : nArguments / nPredicates));
 		} catch (CleartkException e) {
 			throw new AnalysisEngineProcessException(e);
 		}
 	}
 
 	void processSentence(JCas jCas, Sentence sentence) throws CleartkException{
-
+		nSentences += 1;
+		
 		if( sentence.getCoveredText().length() > 40 )
 			logger.fine(String.format("process sentence \"%s ...\"", sentence.getCoveredText().substring(0, 39)));
 		else
@@ -205,8 +214,7 @@ public class ArgumentClassifier extends CleartkAnnotator<String> {
 
 	public void processPredicate(JCas jCas, Predicate predicate,
 			Map<TreebankNode,List<Feature>> sentenceConstituentFeatures) throws CleartkException{
-
-		logger.info(String.format("process predicate \"%s\"", predicate.getCoveredText()));
+		nPredicates += 1;
 
 		/*
 		 * Compute predicate features
@@ -224,6 +232,8 @@ public class ArgumentClassifier extends CleartkAnnotator<String> {
 				logger.warning(String.format("skipping argument of \"%s\", because it doesn't align with the parse tree", predicate.getCoveredText()));
 				continue;
 			}
+			
+			nArguments += 1;
 
 			TreebankNode constituent = (TreebankNode) arg.getAnnotation();
 
@@ -394,6 +404,10 @@ public class ArgumentClassifier extends CleartkAnnotator<String> {
 	private SimpleFeatureExtractor predicateExtractor;
 	private SimpleFeatureExtractor constituentExtractor;
 	private AnnotationPairFeatureExtractor predicateAndConstituentExtractor;
+
+	private int nSentences;
+	private int nPredicates;
+	private int nArguments;
 
 	private Logger logger = Logger.getLogger(this.getClass().getName());
 

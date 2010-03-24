@@ -51,6 +51,7 @@ import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.classifier.jar.JarDataWriterFactory;
+import org.cleartk.srl.feature.NamedEntityExtractor;
 import org.cleartk.srl.feature.NodeTypeExtractor;
 import org.cleartk.srl.feature.POSExtractor;
 import org.cleartk.srl.feature.StemExtractor;
@@ -138,7 +139,8 @@ public class ArgumentIdentifier extends CleartkAnnotator<Boolean> {
 				),
 				new LastInstanceExtractor(Token.class,
 						defaultTokenExtractorSet
-				)
+				),
+				new NamedEntityExtractor()
 		);
 
 		this.perPredicatAndConstituentExtractor = new NamingAnnotationPairFeatureExtractor("PredicateAndConstituent",
@@ -159,16 +161,23 @@ public class ArgumentIdentifier extends CleartkAnnotator<Boolean> {
 		List<Sentence> sentences = AnnotationRetrieval.getAnnotations(jCas, Sentence.class);
 
 		try {
+			nSentences = 0;
+			nPredicates = 0;
+			nConstituents = 0;
+			
 			for( Sentence sentence : sentences ) {
 				processSentence(jCas, sentence);
 			}
+
+			logger.info(String.format("processed %d sentences, %d predicates, ~%d constituents per predicate", nSentences, nPredicates, nPredicates == 0 ? 0 : nConstituents / nPredicates));
 		} catch (CleartkException e) {
 			throw new AnalysisEngineProcessException(e);
 		}
 	}
 
 	void processSentence(JCas jCas, Sentence sentence) throws CleartkException{
-
+		nSentences += 1;
+		
 		if( sentence.getCoveredText().length() > 40 )
 			logger.fine(String.format("process sentence \"%s ...\"", sentence.getCoveredText().substring(0, 39)));
 		else
@@ -206,8 +215,7 @@ public class ArgumentIdentifier extends CleartkAnnotator<Boolean> {
 	public void processPredicate(JCas jCas, Predicate predicate,
 			List<TreebankNode> sentenceConstituents,
 			List<List<Feature>> sentenceConstituentFeatures) throws CleartkException{
-
-		logger.info(String.format("process predicate \"%s\"", predicate.getCoveredText()));
+		nPredicates += 1;
 
 
 		/*
@@ -221,6 +229,7 @@ public class ArgumentIdentifier extends CleartkAnnotator<Boolean> {
 		 * Iterate over constituents in sentence
 		 */
 		for (int i = 0; i < sentenceConstituents.size(); i++) {
+			nConstituents += 1;
 			TreebankNode constituent = sentenceConstituents.get(i);
 
 			Instance<Boolean> instance = new Instance<Boolean>();
@@ -305,6 +314,10 @@ public class ArgumentIdentifier extends CleartkAnnotator<Boolean> {
 	private SimpleFeatureExtractor perPredicateExtractor;
 	private SimpleFeatureExtractor perConstituentExtractor;
 	private AnnotationPairFeatureExtractor perPredicatAndConstituentExtractor;
+	
+	private int nSentences;
+	private int nPredicates;
+	private int nConstituents;
 
 	private Logger logger = Logger.getLogger(this.getClass().getName());
 

@@ -36,8 +36,9 @@ import org.cleartk.classifier.encoder.features.normalizer.NOPNormalizer;
 import org.cleartk.classifier.encoder.features.normalizer.NameNumberNormalizer;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 import org.cleartk.classifier.util.featurevector.SparseFeatureVector;
-import org.cleartk.util.collection.GenKeyBidiMap;
-import org.cleartk.util.collection.IntStringBidiMap;
+import org.cleartk.util.collection.StringMapper;
+import org.cleartk.util.collection.TroveStringMapper;
+import org.cleartk.util.collection.UnknownKeyException;
 import org.cleartk.util.collection.Writable;
 
 
@@ -79,13 +80,15 @@ public class FeatureVectorFeaturesEncoder extends FeaturesEncoder_ImplBase<Featu
 				continue;
 
 			if( expandIndex ) {
-				int i = stringMap.getOrGenerateKey(name);
+				int i = stringMapper.getOrGenerateInteger(name);
 				double v = fv.get(i) + value.doubleValue();
 				fv.set(i, v);
-			} else if( stringMap.containsValue(name) ) {
-				int i = stringMap.getKey(name);
-				double v = fv.get(i) + value.doubleValue();
-				fv.set(i, v);
+			} else {
+				try {
+					int i = stringMapper.getInteger(name);
+					double v = fv.get(i) + value.doubleValue();
+					fv.set(i, v);
+				} catch (UnknownKeyException e) {}
 			}
 		}
 
@@ -96,9 +99,10 @@ public class FeatureVectorFeaturesEncoder extends FeaturesEncoder_ImplBase<Featu
 	public void finalizeFeatureSet(File outputDirectory) throws CleartkException {
 		try {
 			expandIndex = false;
+			stringMapper.finalizeMap();
 			
-			if( stringMap instanceof Writable ) {
-				Writable writableMap = (Writable) stringMap;
+			if( stringMapper instanceof Writable ) {
+				Writable writableMap = (Writable) stringMapper;
 				File outputFile = new File(outputDirectory, LOOKUP_FILE_NAME);
 				writableMap.write(outputFile);
 			}
@@ -114,7 +118,7 @@ public class FeatureVectorFeaturesEncoder extends FeaturesEncoder_ImplBase<Featu
 	}
 
 	private boolean expandIndex = true;
-	private GenKeyBidiMap<Integer,String> stringMap = new IntStringBidiMap(1);
+	private StringMapper stringMapper = new TroveStringMapper(5);
 	private NameNumberNormalizer normalizer;
 
 }

@@ -1,5 +1,5 @@
 /** 
- * Copyright (c) 2009, Regents of the University of Colorado 
+ * Copyright (c) 2010, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -26,9 +26,6 @@ package org.cleartk.srl.conll2005;
 import java.io.File;
 
 import org.cleartk.CleartkComponents;
-import org.cleartk.classifier.jar.Train;
-import org.cleartk.classifier.svmlight.DefaultOVASVMlightDataWriterFactory;
-import org.cleartk.classifier.svmlight.DefaultSVMlightDataWriterFactory;
 import org.cleartk.srl.ArgumentClassifier;
 import org.cleartk.srl.ArgumentIdentifier;
 import org.cleartk.token.snowball.DefaultSnowballStemmer;
@@ -37,47 +34,42 @@ import org.uutuc.util.SimplePipeline;
 
 /**
  * <br>
- * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * Copyright (c) 2010, Regents of the University of Colorado <br>
  * All rights reserved.
- * @author Steven Bethard, Philipp Wetzler
+ * @author Philipp Wetzler
  */
-public class TrainConll2005Models {
-	
-	private static final File conll2005File = new File("../../ClearTK-data/data/conll2005/trainset-15-18");
-//	private static final File predicateIdentificationOutputDirectory = new File("scratch/CoNLL2005/predicateIdentification");
-	private static final File argumentIdentificationOutputDirectory = new File("scratch/CoNLL2005/argumentIdentification");
-	private static final File argumentClassificationOutputDirectory = new File("scratch/CoNLL2005/argumentClassification");
+public class TestConll2005Models {
 
+	private static final File conll2005File = new File("../../ClearTK-data/data/conll2005/devset");
+//	private static final File predicateIdentificationModel = new File("scratch/CoNLL2005/predicateIdentification/model.jar");
+	private static final File argumentIdentificationModel = new File("scratch/CoNLL2005/argumentIdentification/model.jar");
+	private static final File argumentClassificationModel = new File("scratch/CoNLL2005/argumentClassification/model.jar");
+	private static final File outputFile = new File("scratch/CoNLL2005/results/props-devset");
+	
 	public static void main(String[] args) throws Exception {
-		argumentIdentificationOutputDirectory.getParentFile().mkdirs();
-		argumentClassificationOutputDirectory.getParentFile().mkdirs();
+		outputFile.getParentFile().mkdirs();		
 		
-		// run the components to write the training data
 		SimplePipeline.runPipeline(
 				Conll2005GoldReader.getCollectionReader(conll2005File.toString()),
 				AnalysisEngineFactory.createPrimitiveDescription(
 						Conll2005GoldAnnotator.class, 
 						CleartkComponents.TYPE_SYSTEM_DESCRIPTION, 
-						Conll2005GoldAnnotator.PARAM_HAS_VERB_SENSES, true),
+						Conll2005GoldAnnotator.PARAM_HAS_VERB_SENSES, false),
 				DefaultSnowballStemmer.getDescription("English"),
 //				CleartkComponents.createCleartkAnnotator(
 //						PredicateAnnotator.class, 
-//						DefaultSVMlightDataWriterFactory.class, 
-//						predicateIdentificationOutputDirectory.toString()),
+//						predicateIdentificationModel.toString()),
 				CleartkComponents.createCleartkAnnotator(
-						ArgumentIdentifier.class, 
-						DefaultSVMlightDataWriterFactory.class, 
-						argumentIdentificationOutputDirectory.toString()),
+						ArgumentIdentifier.class,
+						argumentIdentificationModel.toString()),
 				CleartkComponents.createCleartkAnnotator(
-						ArgumentClassifier.class, 
-						DefaultOVASVMlightDataWriterFactory.class, 
-						argumentClassificationOutputDirectory.toString())
+						ArgumentClassifier.class,
+						argumentClassificationModel.toString()),
+				AnalysisEngineFactory.createPrimitiveDescription(
+						Conll2005Writer.class, 
+						CleartkComponents.TYPE_SYSTEM_DESCRIPTION, 
+						Conll2005Writer.PARAM_OUTPUT_FILE, outputFile.toString())
 		);
-		
-		// train the model on the training data
-//		Train.main(predicateIdentificationOutputDirectory.toString(), "--executable", "svm_perf_learn", "-c", "1", "-l", "1");
-		Train.main(argumentIdentificationOutputDirectory.toString(), "--executable", "svm_perf_learn", "-c", "10000");
-		Train.main(argumentClassificationOutputDirectory.toString(), "--executable", "svm_perf_learn", "-c", "1");
 	}
 
 }

@@ -1,6 +1,6 @@
 
 
-/* First created by JCasGen Wed Feb 03 22:15:48 MST 2010 */
+/* First created by JCasGen Tue Mar 23 17:46:25 MDT 2010 */
 package org.cleartk.syntax.treebank.type;
 
 import org.apache.uima.jcas.JCas; 
@@ -10,8 +10,8 @@ import org.apache.uima.jcas.cas.TOP_Type;
 
 
 /** 
- * Updated by JCasGen Wed Feb 03 22:15:48 MST 2010
- * XML source: C:/Documents and Settings/Philip/My Documents/Academic/workspace/ClearTK-toolkit/src/main/resources/org/cleartk/TypeSystem.xml
+ * Updated by JCasGen Tue Mar 23 17:46:25 MDT 2010
+ * XML source: /Users/phwetzler/workspace/ClearTK/ClearTK/ClearTK-toolkit/src/main/resources/org/cleartk/TypeSystem.xml
  * @generated */
 public class TerminalTreebankNode extends TreebankNode {
   /** @generated

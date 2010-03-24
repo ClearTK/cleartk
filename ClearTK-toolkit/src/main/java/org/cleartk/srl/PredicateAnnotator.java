@@ -25,6 +25,7 @@ package org.cleartk.srl;
 
 import java.io.File;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
@@ -103,9 +104,12 @@ public class PredicateAnnotator extends CleartkAnnotator<Boolean> {
 	@Override
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
 		try {
+			nPredicates = 0;
+			nSentences = 0;
 			List<Sentence> sentences = AnnotationRetrieval.getAnnotations(jCas, Sentence.class);
 
 			for( Sentence sentence : sentences ) {
+				nSentences += 1;
 				List<Token> tokenList = AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class); 
 				Token[] tokens = tokenList.toArray(new Token[tokenList.size()]);
 				for( Token token : tokens ) {
@@ -134,6 +138,7 @@ public class PredicateAnnotator extends CleartkAnnotator<Boolean> {
 					} else {
 						Boolean outcome = this.classifier.classify(instance.getFeatures());
 						if (outcome) {
+							nPredicates += 1;
 							Predicate predicate = new Predicate(jCas);
 							predicate.setAnnotation(token);
 							predicate.setBegin(token.getBegin());
@@ -144,12 +149,17 @@ public class PredicateAnnotator extends CleartkAnnotator<Boolean> {
 					}
 				}
 			}
+			
+			Logger.getLogger("org.cleartk.srl.PredicateAnnotator").info(String.format("processed %d sentences, found %d predicates", nSentences, nPredicates));
 		} catch (CASRuntimeException e) {
 			throw new AnalysisEngineProcessException(e);
 		} catch (CleartkException e) {
 			throw new AnalysisEngineProcessException(e);
 		} 
 	}
+	
+	private int nSentences;
+	private int nPredicates;
 
 	private CombinedExtractor tokenExtractor;
 	private WindowExtractor leftWindowExtractor;

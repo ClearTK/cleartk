@@ -1,5 +1,5 @@
-/** 
- * Copyright (c) 2007-2009, Regents of the University of Colorado 
+ /** 
+ * Copyright (c) 2010, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -20,60 +20,25 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
- */
+*/
 package org.cleartk.util.collection;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import org.apache.commons.collections15.bidimap.DualHashBidiMap;
+import java.io.Serializable;
 
 /**
- * <br>Copyright (c) 2007-2009, Regents of the University of Colorado 
+ * <br>Copyright (c) 2010, Regents of the University of Colorado 
  * <br>All rights reserved.
+
+ * <p>
  */
-public class IntStringBidiMap extends DualHashBidiMap<Integer, String> implements GenKeyBidiMap<Integer, String>, Writable {
+public interface StringMapper extends Serializable {
 
-	private static final long serialVersionUID = 3934773868021265596L;
-
-	public IntStringBidiMap(int firstIndex) {
-		this.nextIndex = firstIndex;
-	}
+	public int getOrGenerateInteger(String s);
 	
-	public IntStringBidiMap() {
-		this(1);
-	}
+	public int getInteger(String s) throws UnknownKeyException;
 	
-	public Integer getOrGenerateKey(String value) {
-		if( this.containsValue(value) ) {
-			return this.getKey(value);
-		} else {
-			this.put(nextIndex, value);
-			return nextIndex++;
-		}
-	}
+	public void finalizeMap();
 	
-	public void write(File file) throws IOException {
-		Writer writer = new FileWriter(file);
-		write(writer);
-		writer.close();
-	}
-
-	public void write(Writer writer) throws IOException {
-		List<Integer> keys = new ArrayList<Integer>(this.keySet());
-		Collections.sort(keys);
-		for( int key : keys ) {
-			writer.append(String.format("%d %s\n", key, this.get(key)));
-		}
-		
-		writer.flush();
-	}
-
-	private int nextIndex;
-
 }
+	
+	
