@@ -24,6 +24,7 @@
 package org.cleartk.util;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -373,4 +374,18 @@ public class FilesCollectionReaderTest {
 		assertFalse(false ^ false ^ false);
 	}
 	
+	@Test
+	public void testConflictingParameters() {
+		ResourceInitializationException rie = null;
+		try {
+			CollectionReaderFactory.createCollectionReader(
+				FilesCollectionReader.class, null,
+				FilesCollectionReader.PARAM_ROOT_FILE, "test/data/html/1.html",
+				FilesCollectionReader.PARAM_FILE_NAMES, new String[] {"some value"},
+				FilesCollectionReader.PARAM_SUFFIXES, new String[] {"some other value"});
+		} catch(ResourceInitializationException e) {
+			rie = e;
+		}
+		assertNotNull(rie);
+	}
 }
