@@ -57,6 +57,7 @@ import org.cleartk.type.Chunk;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.uutuc.factory.AnalysisEngineFactory;
 import org.uutuc.factory.JCasFactory;
@@ -645,7 +646,8 @@ public class AnnotationRetrievalTest {
 		assertEquals("motorcycles", token.getCoveredText());
 	}
 	
-//	@Test
+	@Test
+	@Ignore
 	public void testIssue98() throws UIMAException {
 		JCas jCas =  ReusableUIMAObjects.getJCas();
 		testIssue98(jCas);
