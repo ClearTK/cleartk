@@ -107,6 +107,7 @@ public class VerbClauseTemporalTrain {
 			// all ampersands are messed up in TimeBank
 			text = text.replaceAll("\\bamp\\b", "&amp;");
 			text = text.replaceAll("SampP", "S&amp;P");
+			text = text.replaceAll("&&amp;;", "&amp;");
 			
 			// all "---" missing in TreeBank
 			text = text.replaceAll("---", "");
