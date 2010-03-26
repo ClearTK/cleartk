@@ -36,6 +36,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.apache.uima.util.Level;
 import org.cleartk.CleartkComponents;
 import org.cleartk.ViewNames;
 import org.cleartk.corpus.timeml.type.Anchor;
@@ -116,8 +117,7 @@ return AnalysisEngineFactory.createPrimitiveDescription(
 			Document doc = builder.build(new StringReader(timeML));
 			root = doc.getRootElement();
 		} catch (JDOMException e) {
-			System.err.println("problem parsing document: "+ViewURIUtil.getURI(jCas));
-			System.err.println(timeML);
+			getContext().getLogger().log(Level.SEVERE, "problem parsing document: "+ViewURIUtil.getURI(jCas));
 			throw new AnalysisEngineProcessException(e);
 		} catch (IOException e) {
 			throw new AnalysisEngineProcessException(e);
