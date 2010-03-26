@@ -104,7 +104,7 @@ public class NonSequentialExamplePOSAnnotatorTest {
 		boolean badTags = firstLine.equals("2008/NN Sichuan/NN earthquake/NN From/NN Wikipedia/NN ,/NN the/NN free/NN encyclopedia/NN");
 		assertFalse(badTags);
 		
-		assertTrue(firstLine.startsWith("2008/CD Sichuan/NNP "));
+		assertTrue(firstLine.startsWith("2008/NN Sichuan/NNP "));
 
 		
 		
