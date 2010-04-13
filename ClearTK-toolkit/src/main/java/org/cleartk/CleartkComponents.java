@@ -260,6 +260,7 @@ public class CleartkComponents {
 		}
 		if (outputDir != null) {
 			ConfigurationParameterFactory.addConfigurationParameter(aed, JarSequentialDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDir);
+			ConfigurationParameterFactory.addConfigurationParameter(aed, ViterbiDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDir);
 		}
 		if (configurationData != null) {
 			ConfigurationParameterFactory.addConfigurationParameters(aed, configurationData);
