@@ -110,13 +110,18 @@
 		<dependency>
 			<groupId>org.uutuc</groupId>
 			<artifactId>uutuc</artifactId>
-			<version>0.9.11</version>
+			<version>0.9.12-SNAPSHOT</version>
 			<optional>false</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.xerial</groupId>
 			<artifactId>sqlite-jdbc</artifactId>
 			<version>3.6.16</version>
+		</dependency>
+		<dependency>
+			<groupId>args4j</groupId>
+			<artifactId>args4j</artifactId>
+			<version>2.0.12</version>
 		</dependency>
 	</dependencies>
 	<build>
