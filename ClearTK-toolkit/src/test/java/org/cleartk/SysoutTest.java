@@ -56,7 +56,13 @@ public class SysoutTest {
 					file.getName().equals("SVMlightClassifierBuilder.java") ||
 					file.getName().equals("Evaluator.java") ||
 					file.getName().equals("GeniaPOSParser.java") ||
-					file.getName().equals("RunExamplePOSAnnotator.java") ) {
+					file.getName().equals("RunExamplePOSAnnotator.java") ||
+					file.getName().equals("DocumentClassificationAnnotator.java") ||
+					file.getName().equals("EvaluationAnnotator") ||
+					file.getName().equals("Step1BuildIDFMap") ||
+					file.getName().equals("Step2WriteTrainingData") ||
+					file.getName().equals("Step3TrainModel") ||
+					file.getName().equals("Step4RunClassifier")) {
 				continue;
 			}
 			String[] lines = FileUtil.loadListOfStrings(file);

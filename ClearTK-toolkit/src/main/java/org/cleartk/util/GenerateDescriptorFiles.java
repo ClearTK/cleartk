@@ -47,8 +47,6 @@ import org.cleartk.corpus.timeml.PlainTextTLINKGoldAnnotator;
 import org.cleartk.corpus.timeml.TimeMLGoldAnnotator;
 import org.cleartk.corpus.timeml.TimeMLWriter;
 import org.cleartk.corpus.timeml.TreebankAligningAnnotator;
-import org.cleartk.example.documentclassification.Evaluator;
-import org.cleartk.example.documentclassification.GoldAnnotator;
 import org.cleartk.example.pos.ExamplePOSAnnotator;
 import org.cleartk.example.pos.ExamplePOSPlainTextWriter;
 import org.cleartk.ne.term.TermFinderAnnotator;
@@ -200,17 +198,6 @@ public class GenerateDescriptorFiles {
 				PredicateAnnotator.getClassifierDescription(new File("")),
 				"PredicateAnnotator.xml", outputDirectory);
 		
-		descDirectory = new File(outputDirectory, "org/cleartk/example/documentclassification");
-		if (!descDirectory.exists()) descDirectory.mkdirs();
-		aed = org.cleartk.example.documentclassification.Annotator.getWriterDescription(
-				DefaultOVASVMlightDataWriterFactory.class, 
-				new File("example/documentclassification/"));
-		updateDescription(aed.getMetaData());
-		aed.toXML(new FileWriter(new File(descDirectory, "DataWriter.xml")));
-
-		writePrimitiveDescription(Evaluator.class, outputDirectory);
-		writePrimitiveDescription(GoldAnnotator.class, outputDirectory);
-
 	}
 
 	private static File updateOutputDirectory(Class<?> cls, File outputDirectory) {

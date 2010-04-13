@@ -40,8 +40,8 @@ import org.cleartk.classifier.feature.extractor.simple.CountsExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.jar.JarClassifierFactory;
-import org.cleartk.classifier.jar.JarDataWriterFactory;
 import org.cleartk.type.Token;
+import org.cleartk.util.ViewURIUtil;
 
 /**
  * <br>Copyright (c) 2009, Regents of the University of Colorado 
@@ -50,28 +50,12 @@ import org.cleartk.type.Token;
  * @author Philipp G. Wetzler
  *
  */
-public class Annotator extends CleartkAnnotator<String> {
+public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
 
 	public static final String PREDICTION_VIEW_NAME = "ExampleDocumentClassificationPredictionView";
 
-	public static AnalysisEngineDescription getWriterDescription(
-			Class<? extends org.cleartk.classifier.DataWriterFactory<String>> dataWriterFactoryClass,
-			File outputDirectory) throws ResourceInitializationException {
-		return CleartkComponents.createPrimitiveDescription(
-				Annotator.class,
-				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, dataWriterFactoryClass.getName(),
-				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory.toString(),
-				IDFMapWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory.toString());
-	}
-
-	public static AnalysisEngineDescription getClassifierDescription(
-			File classifierJarFile) throws ResourceInitializationException {
-		return CleartkComponents.createPrimitiveDescription(
-				Annotator.class,
-				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, classifierJarFile.toString());
-	}
-
 	public void initialize(UimaContext context) throws ResourceInitializationException {
+		super.initialize(context);
 		SimpleFeatureExtractor subExtractor = new TypePathExtractor(Token.class, "stem", false, false, true);
 		extractor = new CountsExtractor(Token.class, subExtractor);
 	}
@@ -91,6 +75,7 @@ public class Annotator extends CleartkAnnotator<String> {
 				String result = this.classifier.classify(instance.getFeatures());
 				JCas predictionView = jCas.createView(PREDICTION_VIEW_NAME);
 				predictionView.setSofaDataString(result, "text/plain");
+				System.out.println("classified "+ViewURIUtil.getURI(jCas)+" as "+result+".");
 			}
 		} catch (CASException e) {
 			throw new AnalysisEngineProcessException(e);
@@ -100,5 +85,12 @@ public class Annotator extends CleartkAnnotator<String> {
 	}
 
 	private CountsExtractor extractor;
+
+	public static AnalysisEngineDescription getClassifierDescription(
+			File classifierJarFile) throws ResourceInitializationException {
+		return CleartkComponents.createPrimitiveDescription(
+				DocumentClassificationAnnotator.class,
+				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, classifierJarFile.toString());
+	}
 
 }

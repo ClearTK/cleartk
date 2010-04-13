@@ -51,7 +51,6 @@ public class GoldAnnotator extends JCasAnnotator_ImplBase {
 		try {
 			JCas uriView = jCas.getView(ViewNames.URI);
 			JCas goldView = jCas.createView(GOLD_VIEW_NAME);
-			
 			URI uri = new URI(uriView.getSofaDataURI());
 			File file = new File(uri.getPath());
 			

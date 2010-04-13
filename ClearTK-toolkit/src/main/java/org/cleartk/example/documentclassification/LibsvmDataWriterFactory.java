@@ -28,6 +28,7 @@ import java.io.IOException;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.Initializable;
 import org.cleartk.classifier.DataWriter;
 import org.cleartk.classifier.encoder.features.BooleanEncoder;
 import org.cleartk.classifier.encoder.features.FeatureVectorFeaturesEncoder;
@@ -37,7 +38,7 @@ import org.cleartk.classifier.encoder.features.TFIDFEncoder;
 import org.cleartk.classifier.encoder.features.normalizer.EuclidianNormalizer;
 import org.cleartk.classifier.encoder.features.normalizer.NameNumberNormalizer;
 import org.cleartk.classifier.encoder.outcome.StringToIntegerOutcomeEncoder;
-import org.cleartk.classifier.svmlight.OVASVMlightDataWriter;
+import org.cleartk.classifier.libsvm.MultiClassLIBSVMDataWriter;
 import org.uutuc.descriptor.ConfigurationParameter;
 import org.uutuc.factory.ConfigurationParameterFactory;
 import org.uutuc.util.InitializeUtil;
@@ -50,26 +51,30 @@ import org.uutuc.util.InitializeUtil;
  *
  */
 
-public class DataWriterFactory implements org.cleartk.classifier.DataWriterFactory<String> {
+public class LibsvmDataWriterFactory implements org.cleartk.classifier.DataWriterFactory<String>, Initializable {
 
 	public static final String PARAM_OUTPUT_DIRECTORY = ConfigurationParameterFactory
-	.createConfigurationParameterName(DataWriterFactory.class, "outputDirectory");
+	.createConfigurationParameterName(LibsvmDataWriterFactory.class, "outputDirectory");
 
 	@ConfigurationParameter(mandatory = true, description = "provides the name of the directory where the training data will be written.")
 	protected File outputDirectory;
 
+	public static final String PARAM_IDFMAP_FILE_NAME = ConfigurationParameterFactory
+	.createConfigurationParameterName(LibsvmDataWriterFactory.class, "idfmapFileName");
+	@ConfigurationParameter(mandatory = true, description = "provides the file name of the IDF Map")
+	public String idfmapFileName;
+	
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		InitializeUtil.initialize(this, context);
 	}
 
 	
-	public static final String IDFMAP = "example/documentclassification/idfmap";
 	public DataWriter<String> createDataWriter() throws IOException {
-		OVASVMlightDataWriter dataWriter = new OVASVMlightDataWriter(outputDirectory);
+		MultiClassLIBSVMDataWriter dataWriter = new MultiClassLIBSVMDataWriter(outputDirectory);
 
 			NameNumberNormalizer normalizer = new EuclidianNormalizer();
 			FeatureVectorFeaturesEncoder featuresEncoder = new FeatureVectorFeaturesEncoder(normalizer);
-			featuresEncoder.addEncoder(new TFIDFEncoder(new File(IDFMAP)));
+			featuresEncoder.addEncoder(new TFIDFEncoder(new File(idfmapFileName)));
 			featuresEncoder.addEncoder(new NumberEncoder());
 			featuresEncoder.addEncoder(new BooleanEncoder());
 			featuresEncoder.addEncoder(new StringEncoder());

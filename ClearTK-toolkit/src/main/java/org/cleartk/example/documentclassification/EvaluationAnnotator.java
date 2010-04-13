@@ -40,13 +40,15 @@ import org.apache.uima.jcas.JCas;
  * @author Philipp G. Wetzler
  *
  */
-public class Evaluator extends JCasAnnotator_ImplBase {
+public class EvaluationAnnotator extends JCasAnnotator_ImplBase {
 
+	int totalClassifications = 0;
+	int totalCorrect = 0;
 	@Override
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
 		try {
 			JCas goldView = jCas.getView(GoldAnnotator.GOLD_VIEW_NAME);
-			JCas predictionView = jCas.getView(Annotator.PREDICTION_VIEW_NAME);
+			JCas predictionView = jCas.getView(DocumentClassificationAnnotator.PREDICTION_VIEW_NAME);
 
 			String gold = goldView.getSofaDataString();
 			String prediction = predictionView.getSofaDataString();
@@ -56,6 +58,11 @@ public class Evaluator extends JCasAnnotator_ImplBase {
 
 			int value = get(gold, prediction);
 			set(gold, prediction, value+1);
+			
+			totalClassifications++;
+			if(gold.equals(prediction)) {
+				totalCorrect++;
+			}
 		}
 		catch (CASException e) {
 			throw new AnalysisEngineProcessException();
@@ -64,19 +71,21 @@ public class Evaluator extends JCasAnnotator_ImplBase {
 
 	@Override
 	public void collectionProcessComplete() throws AnalysisEngineProcessException {
+		float accuracy = (float) totalCorrect / totalClassifications;
+		System.out.println("overall accuracy: "+totalCorrect+"/"+totalClassifications+" = "+accuracy);
 		try {
 			super.collectionProcessComplete();
 
 			System.out.print("        ");
 			for( String cp : classes ) {
-				System.out.format("%7.7s ", cp);
+				System.out.format("%7.7s\t", cp);
 			}
 			System.out.println();
 
 			for( String cg : classes ) {
-				System.out.format("%7.7s ", cg);
+				System.out.format("%7.7s\t", cg);
 				for( String cp : classes ) {
-					System.out.format("%7d ", get(cg, cp));
+					System.out.format("%7d\t", get(cg, cp));
 				}
 				System.out.println();
 			}
