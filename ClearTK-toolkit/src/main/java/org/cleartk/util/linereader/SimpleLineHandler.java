@@ -34,7 +34,6 @@ import org.cleartk.util.UIMAUtil;
 import org.cleartk.util.ViewURIUtil;
 import org.uutuc.descriptor.ConfigurationParameter;
 import org.uutuc.factory.ConfigurationParameterFactory;
-import org.uutuc.util.io.Files;
 
 
 /**
@@ -63,14 +62,8 @@ public class SimpleLineHandler implements LineHandler {
 		String text = line.substring(line.indexOf(delimiter) + 1);
 		jCas.setSofaDataString(text, "text/plain");
 
-		String path;
-		if (rootFile.isDirectory()) {
-			path = Files.stripRootDir(rootFile, file);
-		} else {
-			path = file.getPath();
-		}
-		String identifier = String.format("%s#%s", path, id);
-		ViewURIUtil.setURI(jCas, identifier);
+		String uri = String.format("%s#%s", file.toURI().toString(), id);
+		ViewURIUtil.setURI(jCas, uri);
 	}
 
 }

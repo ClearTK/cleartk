@@ -47,45 +47,49 @@ import org.uutuc.util.JCasIterable;
  */
 public class LineReaderTest {
 
+	private String inputDir = "test/data/docs/linereader";
+	
+	private String toURI(String relativePath) {
+		return new File(inputDir, relativePath).toURI().toString();
+	}
+
 	@Test
 	public void test1() throws Exception {
 		String languageCode = "en-us";
-		CollectionReader reader = CollectionReaderFactory.createCollectionReader(LineReader.class, null, LineReader.PARAM_FILE_OR_DIRECTORY_NAME, "test/data/docs/linereader",
+		CollectionReader reader = CollectionReaderFactory.createCollectionReader(LineReader.class, null, LineReader.PARAM_FILE_OR_DIRECTORY_NAME, inputDir,
 				LineReader.PARAM_LANGUAGE, languageCode, LineReader.PARAM_SUFFIXES, new String[] {".txt"});
 
 		Assert.assertEquals(0, reader.getProgress()[0].getCompleted());
 
 		JCasIterable jCasIterable = new JCasIterable(reader);
 
-		test(jCasIterable, "# this file was created by Philip Ogren on Monday 10/27/2008", "1", File.separator
-				+ "a-test1.txt");
-		test(jCasIterable, "# for more files like this please make your own", "2", File.separator + "a-test1.txt");
-		test(jCasIterable, "A|This is the first sentence.", "3", File.separator + "a-test1.txt");
-		test(jCasIterable, "B|This is the second sentence.  ", "4", File.separator + "a-test1.txt");
-		test(jCasIterable, "C|You are likely completely absorbed by the narrative at this point.", "5", File.separator
-				+ "a-test1.txt");
-		test(jCasIterable, "D|... but too bad!        	", "6", File.separator + "a-test1.txt");
-		test(jCasIterable, "EEEK|will it ever end?  yes - very soon...", "7", File.separator + "a-test1.txt");
-		test(jCasIterable, "Z|Fin", "8", File.separator + "a-test1.txt");
+		test(jCasIterable, "# this file was created by Philip Ogren on Monday 10/27/2008", toURI("a-test1.txt")+"#1");
+		test(jCasIterable, "# for more files like this please make your own", toURI("a-test1.txt")+"#2");
+		test(jCasIterable, "A|This is the first sentence.", toURI("a-test1.txt")+"#3");
+		test(jCasIterable, "B|This is the second sentence.  ", toURI("a-test1.txt")+"#4");
+		test(jCasIterable, "C|You are likely completely absorbed by the narrative at this point.", toURI("a-test1.txt")+"#5");
+		test(jCasIterable, "D|... but too bad!        	", toURI("a-test1.txt")+"#6");
+		test(jCasIterable, "EEEK|will it ever end?  yes - very soon...", toURI("a-test1.txt")+"#7");
+		test(jCasIterable, "Z|Fin", toURI("a-test1.txt")+"#8");
 
-		reader = CollectionReaderFactory.createCollectionReader(LineReader.class, null, LineReader.PARAM_FILE_OR_DIRECTORY_NAME, "test/data/docs/linereader",
+		reader = CollectionReaderFactory.createCollectionReader(LineReader.class, null, LineReader.PARAM_FILE_OR_DIRECTORY_NAME, inputDir,
 				LineReader.PARAM_LANGUAGE, languageCode, LineReader.PARAM_SUFFIXES, new String[] {".dat"});
 
 		Assert.assertEquals(0, reader.getProgress()[0].getCompleted());
 
 		jCasIterable = new JCasIterable(reader);
 
-		test(jCasIterable, "//this file was also created on Monday 10/27/2008", "1", File.separator + "b-test2.dat");
-		test(jCasIterable, "//please see a-test1.txt for an introduction to the material contained in this file.", "2",
-				File.separator + "b-test2.dat");
-		test(jCasIterable, "// another comment", "3", File.separator + "b-test2.dat");
-		test(jCasIterable, "1234|a bc def ghij klmno pqrstu vwxyz", "4", File.separator + "b-test2.dat");
+		test(jCasIterable, "//this file was also created on Monday 10/27/2008", toURI("b-test2.dat")+"#1");
+		test(jCasIterable, "//please see a-test1.txt for an introduction to the material contained in this file.", 
+				toURI("b-test2.dat")+"#2");
+		test(jCasIterable, "// another comment", toURI("b-test2.dat")+"#3");
+		test(jCasIterable, "1234|a bc def ghij klmno pqrstu vwxyz", toURI("b-test2.dat")+"#4");
 		assertFalse(jCasIterable.hasNext());
 	}
 
 	@Test
 	public void test2() throws Exception {
-		CollectionReader reader = CollectionReaderFactory.createCollectionReader(LineReader.class, null, LineReader.PARAM_FILE_OR_DIRECTORY_NAME, "test/data/docs/linereader",
+		CollectionReader reader = CollectionReaderFactory.createCollectionReader(LineReader.class, null, LineReader.PARAM_FILE_OR_DIRECTORY_NAME, inputDir,
 				LineReader.PARAM_LINE_HANDLER_CLASS_NAME, SimpleLineHandler.class.getName(),
 				SimpleLineHandler.PARAM_DELIMITER, "|", LineReader.PARAM_SUFFIXES, new String[] { ".txt"},
 				LineReader.PARAM_COMMENT_SPECIFIERS, new String[] { "#", "//" });
@@ -94,27 +98,26 @@ public class LineReaderTest {
 
 		JCasIterable jCasIterable = new JCasIterable(reader);
 
-		test(jCasIterable, "This is the first sentence.", "A", File.separator + "a-test1.txt");
-		test(jCasIterable, "This is the second sentence.  ", "B", File.separator + "a-test1.txt");
-		test(jCasIterable, "You are likely completely absorbed by the narrative at this point.", "C", File.separator
-				+ "a-test1.txt");
-		test(jCasIterable, "... but too bad!        	", "D", File.separator + "a-test1.txt");
-		test(jCasIterable, "will it ever end?  yes - very soon...", "EEEK", File.separator + "a-test1.txt");
-		test(jCasIterable, "Fin", "Z", File.separator + "a-test1.txt");
+		test(jCasIterable, "This is the first sentence.", toURI("a-test1.txt")+"#A");
+		test(jCasIterable, "This is the second sentence.  ", toURI("a-test1.txt")+"#B");
+		test(jCasIterable, "You are likely completely absorbed by the narrative at this point.", toURI("a-test1.txt")+"#C");
+		test(jCasIterable, "... but too bad!        	", toURI("a-test1.txt")+"#D");
+		test(jCasIterable, "will it ever end?  yes - very soon...", toURI("a-test1.txt")+"#EEEK");
+		test(jCasIterable, "Fin", toURI("a-test1.txt")+"#Z");
 		
 		
-		reader = CollectionReaderFactory.createCollectionReader(LineReader.class, null, LineReader.PARAM_FILE_OR_DIRECTORY_NAME, "test/data/docs/linereader",
+		reader = CollectionReaderFactory.createCollectionReader(LineReader.class, null, LineReader.PARAM_FILE_OR_DIRECTORY_NAME, inputDir,
 				LineReader.PARAM_LINE_HANDLER_CLASS_NAME, SimpleLineHandler.class.getName(),
 				SimpleLineHandler.PARAM_DELIMITER, "|", LineReader.PARAM_SUFFIXES, new String[] { ".dat"},
 				LineReader.PARAM_COMMENT_SPECIFIERS, new String[] { "#", "//" });
 		jCasIterable = new JCasIterable(reader);
-		test(jCasIterable, "a bc def ghij klmno pqrstu vwxyz", "1234", File.separator + "b-test2.dat");
+		test(jCasIterable, "a bc def ghij klmno pqrstu vwxyz", toURI("b-test2.dat")+"#1234");
 		assertFalse(jCasIterable.hasNext());
 	}
 
 	@Test
 	public void test3() throws Exception {
-		File file = new File("test/data/docs/linereader/b-test2.dat");
+		File file = new File(inputDir, "b-test2.dat");
 
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(LineReader.class, null, LineReader.PARAM_FILE_OR_DIRECTORY_NAME,
 				file.getPath(), LineReader.PARAM_COMMENT_SPECIFIERS, new String[] { "//" },
@@ -125,19 +128,19 @@ public class LineReaderTest {
 		
 		JCasIterable jCasIterable = new JCasIterable(reader);
 
-		test(jCasIterable, "", "1", file.getPath());
-		test(jCasIterable, "", "2", file.getPath());
-		test(jCasIterable, "", "3", file.getPath());
-		test(jCasIterable, "1234|a bc def ghij klmno pqrstu vwxyz", "4", file.getPath());
-		test(jCasIterable, "", "5", file.getPath());
-		test(jCasIterable, "    	", "6", file.getPath());
+		test(jCasIterable, "", file.toURI()+"#1");
+		test(jCasIterable, "", file.toURI()+"#2");
+		test(jCasIterable, "", file.toURI()+"#3");
+		test(jCasIterable, "1234|a bc def ghij klmno pqrstu vwxyz", file.toURI()+"#4");
+		test(jCasIterable, "", file.toURI()+"#5");
+		test(jCasIterable, "    	", file.toURI()+"#6");
 		assertFalse(jCasIterable.hasNext());
 	}
 
-	private void test(JCasIterable jCasIterable, String text, String id, String path) throws Exception {
+	private void test(JCasIterable jCasIterable, String text, String uri) throws Exception {
 		JCas jCas = jCasIterable.next();
 		assertEquals(text, jCas.getDocumentText());
-		assertEquals(String.format("%s#%s", path, id), ViewURIUtil.getURI(jCas));
+		assertEquals(uri, ViewURIUtil.getURI(jCas));
 	}
 	
 }

@@ -29,6 +29,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -60,29 +61,32 @@ public class FilesCollectionReaderTest {
 	 * The directory containing all the files to be loaded.
 	 */
 	private final String inputDir = "test/data/html";
-	
+
+	private String toURI(String relativePath) {
+		return new File(inputDir, relativePath).toURI().toString();
+	}
 	/**
 	 * The paths for the files in the input directory.
 	 */
 	private final String[] paths = new String[]{
-			"/1.html",
-			"/2/2.1.html",
-			"/2/2.2.html",
-			"/3.html",
-			"/4/1/4.1.1.html",
+			toURI("1.html"),
+			toURI("/2/2.1.html"),
+			toURI("2/2.2.html"),
+			toURI("3.html"),
+			toURI("4/1/4.1.1.html"),
 	};
 
 	private final String[] pathsSuffix1 = new String[]{
-			"/1.html",
-			"/2/2.1.html",
-			"/4/1/4.1.1.html",
+			toURI("1.html"),
+			toURI("2/2.1.html"),
+			toURI("4/1/4.1.1.html"),
 	};
 
 	private final String[] pathsSuffix2 = new String[]{
-			"/1.html",
-			"/2/2.1.html",
-			"/2/2.2.html",
-			"/4/1/4.1.1.html",
+			toURI("1.html"),
+			toURI("2/2.1.html"),
+			toURI("2/2.2.html"),
+			toURI("4/1/4.1.1.html"),
 	};
 
 	/**
@@ -164,7 +168,7 @@ public class FilesCollectionReaderTest {
 		Set<String> pathsSet = new HashSet<String>();
 		pathsSet.addAll(Arrays.asList(this.paths));
 		for (JCas jCas: new JCasIterable(reader)) {
-			String docPath = ViewURIUtil.getURI(jCas).replace('\\', '/');
+			String docPath = ViewURIUtil.getURI(jCas);
 			Assert.assertTrue(pathsSet.contains(docPath));
 			pathsSet.remove(docPath);
 		}
@@ -175,6 +179,7 @@ public class FilesCollectionReaderTest {
 		Assert.assertTrue(pathsSet.isEmpty());
 	}
 
+	
 	@Test
 	public void testSuffixes() throws IOException, UIMAException {
 		
@@ -188,7 +193,7 @@ public class FilesCollectionReaderTest {
 		Set<String> pathsSet = new HashSet<String>();
 		pathsSet.addAll(Arrays.asList(this.pathsSuffix1));
 		for (JCas jCas: new JCasIterable(reader)) {
-			String docPath = ViewURIUtil.getURI(jCas).replace('\\', '/');
+			String docPath = ViewURIUtil.getURI(jCas);
 			Assert.assertTrue(pathsSet.contains(docPath));
 			pathsSet.remove(docPath);
 		}
@@ -211,7 +216,7 @@ public class FilesCollectionReaderTest {
 		Set<String> pathsSet = new HashSet<String>();
 		pathsSet.addAll(Arrays.asList(this.pathsSuffix2));
 		for (JCas jCas: new JCasIterable(reader)) {
-			String docPath = ViewURIUtil.getURI(jCas).replace('\\', '/');
+			String docPath = ViewURIUtil.getURI(jCas);
 			Assert.assertTrue(pathsSet.contains(docPath));
 			pathsSet.remove(docPath);
 		}
@@ -232,9 +237,9 @@ public class FilesCollectionReaderTest {
 		
 		// the expected files
 		Set<String> expected = new HashSet<String>();
-		expected.add("/2/2.1.html");
-		expected.add("/3.html");
-		expected.add("/4/1/4.1.1.html");
+		expected.add(toURI("2/2.1.html"));
+		expected.add(toURI("3.html"));
+		expected.add(toURI("4/1/4.1.1.html"));
 
 		// collect paths from the CAS
 		Set<String> actual = new HashSet<String>();
@@ -305,7 +310,7 @@ public class FilesCollectionReaderTest {
 		reader.close();
 		
 		Assert.assertEquals(1, paths.size());
-		Assert.assertEquals(path, paths.get(0));
+		Assert.assertTrue(paths.get(0).endsWith(path));
 	}
 	
 	/**
@@ -333,7 +338,7 @@ public class FilesCollectionReaderTest {
 	 * @throws IOException
 	 */
 	private String getFileText(JCas jCas) throws Exception {
-		File docFile = new File(this.inputDir, ViewURIUtil.getURI(jCas));
+		File docFile = new File(new URI(ViewURIUtil.getURI(jCas)));
 		return FileUtils.file2String(docFile);
 	}
 	

@@ -31,7 +31,6 @@ import org.apache.uima.collection.CollectionException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.util.ViewURIUtil;
-import org.uutuc.util.io.Files;
 
 
 /**
@@ -49,14 +48,8 @@ public class DefaultLineHandler implements LineHandler {
 	public void handleLine(JCas jCas, File rootFile, File file, String line)  throws IOException, CollectionException{
 		jCas.setSofaDataString(line, "text/plain");
 		
-		String path;
-		if (rootFile.isDirectory()) {
-			path = Files.stripRootDir(rootFile, file);
-		} else {
-			path = file.getPath();
-		}
-		String identifier = String.format("%s#%d", path, this.count);
-		ViewURIUtil.setURI(jCas, identifier);
+		String uri = String.format("%s#%d", file.toURI().toString(), this.count);
+		ViewURIUtil.setURI(jCas, uri);
 		++count;
 	}
 

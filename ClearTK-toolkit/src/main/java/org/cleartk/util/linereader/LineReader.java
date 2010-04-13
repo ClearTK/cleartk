@@ -111,7 +111,7 @@ public class LineReader extends CollectionReader_ImplBase {
 	
 	public static final String PARAM_LINE_HANDLER_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(LineReader.class, "lineHandlerClassName");
 	@ConfigurationParameter(
-			description = "specifies the class name of the LineHandler. If one is not specified, then the SimpleLineHandler will be used.",
+			description = "specifies the class name of the LineHandler. If one is not specified, then the DefaultLineHandler will be used.",
 			defaultValue = "org.cleartk.util.linereader.DefaultLineHandler")
 	private String lineHandlerClassName;
 	

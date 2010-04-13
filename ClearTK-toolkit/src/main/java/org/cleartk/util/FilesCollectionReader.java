@@ -214,16 +214,8 @@ public class FilesCollectionReader extends CollectionReader_ImplBase {
 			view.setDocumentLanguage(this.language);
 		}
 
-		String path;
-		if (this.rootFile.isDirectory()) {
-			path = Files.stripRootDir(rootFile, file);
-		}
-		else {
-			path = file.getPath();
-		}
-
 		// set the document URI
-		ViewURIUtil.setURI(cas, path);
+		ViewURIUtil.setURI(cas, file.toURI().toString());
 
 		completed++;
 	}
