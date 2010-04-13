@@ -115,7 +115,7 @@ public class IDFMap implements Serializable {
 		Double documentCount = documentCounts.containsKey(keyString) ?
 				documentCounts.get(keyString) : 0.0;
 				
-		return Math.log(totalDocumentCount / documentCount);
+		return Math.log((totalDocumentCount + 1)/ (documentCount + 1));
 	}
 	
 	public void write(File file) throws IOException {
