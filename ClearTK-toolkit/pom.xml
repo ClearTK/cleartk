@@ -110,7 +110,7 @@
 		<dependency>
 			<groupId>org.uutuc</groupId>
 			<artifactId>uutuc</artifactId>
-			<version>0.9.12-SNAPSHOT</version>
+			<version>0.9.12</version>
 			<optional>false</optional>
 		</dependency>
 		<dependency>
