@@ -58,11 +58,11 @@ public class SysoutTest {
 					file.getName().equals("GeniaPOSParser.java") ||
 					file.getName().equals("RunExamplePOSAnnotator.java") ||
 					file.getName().equals("DocumentClassificationAnnotator.java") ||
-					file.getName().equals("EvaluationAnnotator") ||
-					file.getName().equals("Step1BuildIDFMap") ||
-					file.getName().equals("Step2WriteTrainingData") ||
-					file.getName().equals("Step3TrainModel") ||
-					file.getName().equals("Step4RunClassifier")) {
+					file.getName().equals("EvaluationAnnotator.java") ||
+					file.getName().equals("Step1BuildIDFMap.java") ||
+					file.getName().equals("Step2WriteTrainingData.java") ||
+					file.getName().equals("Step3TrainModel.java") ||
+					file.getName().equals("Step4RunClassifier.java")) {
 				continue;
 			}
 			String[] lines = FileUtil.loadListOfStrings(file);
