@@ -36,6 +36,8 @@ import org.cleartk.classifier.encoder.features.normalizer.NameNumberNormalizer;
 import org.cleartk.classifier.encoder.outcome.BooleanToBooleanOutcomeEncoder;
 import org.cleartk.classifier.jar.JarDataWriterFactory;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
+import org.uutuc.descriptor.ConfigurationParameter;
+import org.uutuc.factory.ConfigurationParameterFactory;
 
 /**
  * <br>
@@ -47,12 +49,18 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
 
 public class DefaultBinaryLIBSVMDataWriterFactory extends JarDataWriterFactory<FeatureVector, Boolean, Boolean> {
 
+	public static final String PARAM_CUTOFF = ConfigurationParameterFactory.createConfigurationParameterName(DefaultBinaryLIBSVMDataWriterFactory.class, "cutoff");
+	@ConfigurationParameter(
+			defaultValue = "5",
+			description = "features that occur less than this number of times over the whole training set will not be encoded during testing")
+	protected int cutoff = 5;
+
 	public DataWriter<Boolean> createDataWriter() throws IOException {
 		BinaryLIBSVMDataWriter dataWriter = new BinaryLIBSVMDataWriter(outputDirectory);
 
 		if(!this.setEncodersFromFileSystem(dataWriter)) {
 			NameNumberNormalizer normalizer = new EuclidianNormalizer();
-			FeatureVectorFeaturesEncoder featuresEncoder = new FeatureVectorFeaturesEncoder(normalizer);
+			FeatureVectorFeaturesEncoder featuresEncoder = new FeatureVectorFeaturesEncoder(cutoff, normalizer);
 			featuresEncoder.addEncoder(new NumberEncoder());
 			featuresEncoder.addEncoder(new BooleanEncoder());
 			featuresEncoder.addEncoder(new StringEncoder());

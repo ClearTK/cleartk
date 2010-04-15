@@ -54,12 +54,13 @@ public class FeatureVectorFeaturesEncoder extends FeaturesEncoder_ImplBase<Featu
 	
 	public static final String LOOKUP_FILE_NAME = "features-lookup.txt";
 	
-	public FeatureVectorFeaturesEncoder(NameNumberNormalizer normalizer) {
+	public FeatureVectorFeaturesEncoder(int cutoff, NameNumberNormalizer normalizer) {
 		this.normalizer = normalizer;
+		this.stringMapper = new TroveStringMapper(cutoff);
 	}
 	
-	public FeatureVectorFeaturesEncoder() {
-		this(new NOPNormalizer());
+	public FeatureVectorFeaturesEncoder(int cutoff) {
+		this(cutoff, new NOPNormalizer());
 	}
 
 	@Override
@@ -118,7 +119,7 @@ public class FeatureVectorFeaturesEncoder extends FeaturesEncoder_ImplBase<Featu
 	}
 
 	private boolean expandIndex = true;
-	private StringMapper stringMapper = new TroveStringMapper(5);
+	private StringMapper stringMapper;
 	private NameNumberNormalizer normalizer;
 
 }
