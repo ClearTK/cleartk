@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
 
 import org.apache.uima.util.FileUtils;
 import org.junit.Assert;
-import org.uutuc.util.io.Files;
+import org.uimafit.util.io.Files;
 
 
 /**

@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.junit.Assert;
-import org.uutuc.util.io.Files;
+import org.uimafit.util.io.Files;
 
 /**
  * <br>

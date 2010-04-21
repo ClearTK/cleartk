@@ -41,7 +41,7 @@ import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.outcome.OutcomeFeatureExtractor;
 import org.junit.Test;
-import org.uutuc.factory.UimaContextFactory;
+import org.uimafit.factory.UimaContextFactory;
 
 /**
  * <br>

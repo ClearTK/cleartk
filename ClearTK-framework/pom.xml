@@ -35,9 +35,9 @@
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
-			<id>uutuc-googlecode</id>
-			<name>uutuc Google Code repository</name>
-			<url>http://uutuc.googlecode.com/svn/repo</url>
+			<id>uimafit-googlecode</id>
+			<name>uimafit Google Code repository</name>
+			<url>http://uimafit.googlecode.com/svn/repo</url>
 		</repository>
 		<repository>
 			<snapshots>
@@ -85,9 +85,9 @@
 			<optional>false</optional>
 		</dependency>
 		<dependency>
-			<groupId>org.uutuc</groupId>
-			<artifactId>uutuc</artifactId>
-			<version>0.9.12</version>
+			<groupId>org.uimafit</groupId>
+			<artifactId>uimafit</artifactId>
+			<version>0.9.13</version>
 			<type>jar</type>
 			<optional>false</optional>
 		</dependency>

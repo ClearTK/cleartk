@@ -38,7 +38,7 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.Feature;
 import org.junit.Test;
-import org.uutuc.factory.UimaContextFactory;
+import org.uimafit.factory.UimaContextFactory;
 
 /**
  * <br>Copyright (c) 2009, Regents of the University of Colorado 

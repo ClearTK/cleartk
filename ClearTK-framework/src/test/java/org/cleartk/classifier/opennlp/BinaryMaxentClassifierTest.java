@@ -48,9 +48,9 @@ import org.cleartk.classifier.jar.Train;
 import org.cleartk.util.JCasUtil;
 import org.junit.After;
 import org.junit.Test;
-import org.uutuc.factory.AnalysisEngineFactory;
-import org.uutuc.util.HideOutput;
-import org.uutuc.util.TearDownUtil;
+import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.util.HideOutput;
+import org.uimafit.util.TearDownUtil;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 

@@ -46,8 +46,8 @@ import org.cleartk.classifier.opennlp.MaxentDataWriter;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uutuc.factory.UimaContextFactory;
-import org.uutuc.util.TearDownUtil;
+import org.uimafit.factory.UimaContextFactory;
+import org.uimafit.util.TearDownUtil;
 
 /**
  * <br>

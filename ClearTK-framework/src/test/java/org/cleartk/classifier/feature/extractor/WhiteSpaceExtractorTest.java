@@ -36,8 +36,8 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.simple.WhiteSpaceExtractor;
 import org.cleartk.type.test.Token;
 import org.junit.Test;
-import org.uutuc.factory.AnalysisEngineFactory;
-import org.uutuc.factory.TypeSystemDescriptionFactory;
+import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.factory.TypeSystemDescriptionFactory;
 
 
 /**

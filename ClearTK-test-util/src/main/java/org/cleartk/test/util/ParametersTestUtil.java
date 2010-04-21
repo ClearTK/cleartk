@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Assert;
-import org.uutuc.factory.ConfigurationParameterFactory;
+import org.uimafit.factory.ConfigurationParameterFactory;
 
 /**
  * <br>
@@ -54,11 +54,11 @@ public class ParametersTestUtil {
 			Field[] fields = cls.getDeclaredFields();
 			for (Field field : fields) {
 				if(ConfigurationParameterFactory.isConfigurationParameterField(field)) {
-					org.uutuc.descriptor.ConfigurationParameter annotation = field.getAnnotation(org.uutuc.descriptor.ConfigurationParameter.class);
+					org.uimafit.descriptor.ConfigurationParameter annotation = field.getAnnotation(org.uimafit.descriptor.ConfigurationParameter.class);
 					String parameterName = annotation.name();
 					String expectedName = className + "." + field.getName();
-					if(parameterName.equals(org.uutuc.descriptor.ConfigurationParameter.USE_FIELD_NAME))
-						expectedName = org.uutuc.descriptor.ConfigurationParameter.USE_FIELD_NAME;
+					if(parameterName.equals(org.uimafit.descriptor.ConfigurationParameter.USE_FIELD_NAME))
+						expectedName = org.uimafit.descriptor.ConfigurationParameter.USE_FIELD_NAME;
 					if (!expectedName.equals(parameterName)) {
 						badParameters.add("'" + parameterName + "' should be '" + expectedName+ "'");
 					}

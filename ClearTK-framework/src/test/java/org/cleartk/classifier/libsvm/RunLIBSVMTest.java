@@ -43,9 +43,9 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.uutuc.factory.UimaContextFactory;
-import org.uutuc.util.HideOutput;
-import org.uutuc.util.TearDownUtil;
+import org.uimafit.factory.UimaContextFactory;
+import org.uimafit.util.HideOutput;
+import org.uimafit.util.TearDownUtil;
 
 
 /**

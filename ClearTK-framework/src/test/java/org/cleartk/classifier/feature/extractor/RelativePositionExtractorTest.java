@@ -32,7 +32,7 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.annotationpair.RelativePositionExtractor;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uutuc.factory.JCasFactory;
+import org.uimafit.factory.JCasFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
