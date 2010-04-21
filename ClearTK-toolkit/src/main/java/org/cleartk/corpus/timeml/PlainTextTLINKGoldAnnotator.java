@@ -46,10 +46,10 @@ import org.cleartk.corpus.timeml.type.TemporalLink;
 import org.cleartk.corpus.timeml.type.Time;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.ViewURIUtil;
-import org.uutuc.descriptor.ConfigurationParameter;
-import org.uutuc.factory.AnalysisEngineFactory;
-import org.uutuc.factory.ConfigurationParameterFactory;
-import org.uutuc.util.InitializeUtil;
+import org.uimafit.descriptor.ConfigurationParameter;
+import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.factory.ConfigurationParameterFactory;
+import org.uimafit.util.InitializeUtil;
 
 
 /**

@@ -37,8 +37,8 @@ import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uutuc.factory.JCasFactory;
-import org.uutuc.factory.TokenFactory;
+import org.uimafit.factory.JCasFactory;
+import org.uimafit.factory.TokenFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 

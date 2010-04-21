@@ -46,11 +46,11 @@ import org.jdom.input.SAXBuilder;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uutuc.factory.AnalysisEngineFactory;
-import org.uutuc.factory.CollectionReaderFactory;
-import org.uutuc.factory.TypeSystemDescriptionFactory;
-import org.uutuc.util.JCasIterable;
-import org.uutuc.util.TearDownUtil;
+import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.factory.CollectionReaderFactory;
+import org.uimafit.factory.TypeSystemDescriptionFactory;
+import org.uimafit.util.JCasIterable;
+import org.uimafit.util.TearDownUtil;
 
 
 

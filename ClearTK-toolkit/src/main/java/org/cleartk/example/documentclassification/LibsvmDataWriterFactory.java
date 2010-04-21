@@ -39,9 +39,9 @@ import org.cleartk.classifier.encoder.features.normalizer.EuclidianNormalizer;
 import org.cleartk.classifier.encoder.features.normalizer.NameNumberNormalizer;
 import org.cleartk.classifier.encoder.outcome.StringToIntegerOutcomeEncoder;
 import org.cleartk.classifier.libsvm.MultiClassLIBSVMDataWriter;
-import org.uutuc.descriptor.ConfigurationParameter;
-import org.uutuc.factory.ConfigurationParameterFactory;
-import org.uutuc.util.InitializeUtil;
+import org.uimafit.descriptor.ConfigurationParameter;
+import org.uimafit.factory.ConfigurationParameterFactory;
+import org.uimafit.util.InitializeUtil;
 
 /**
  * <br>Copyright (c) 2009, Regents of the University of Colorado 

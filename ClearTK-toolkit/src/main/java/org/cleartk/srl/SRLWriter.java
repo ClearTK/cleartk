@@ -46,9 +46,9 @@ import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.ListSpecification;
 import org.cleartk.util.UIMAUtil;
 import org.cleartk.util.ViewURIUtil;
-import org.uutuc.descriptor.ConfigurationParameter;
-import org.uutuc.factory.ConfigurationParameterFactory;
-import org.uutuc.util.InitializeUtil;
+import org.uimafit.descriptor.ConfigurationParameter;
+import org.uimafit.factory.ConfigurationParameterFactory;
+import org.uimafit.util.InitializeUtil;
 
 
 /**

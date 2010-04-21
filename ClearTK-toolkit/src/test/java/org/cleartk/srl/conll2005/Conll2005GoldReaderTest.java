@@ -30,7 +30,7 @@ import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uutuc.factory.CollectionReaderFactory;
+import org.uimafit.factory.CollectionReaderFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 

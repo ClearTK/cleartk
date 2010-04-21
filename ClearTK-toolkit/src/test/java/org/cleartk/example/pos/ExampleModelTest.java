@@ -35,9 +35,9 @@ import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.ReusableUIMAObjects;
 import org.junit.Test;
-import org.uutuc.factory.AnalysisEngineFactory;
-import org.uutuc.factory.TokenFactory;
-import org.uutuc.util.AnnotationRetrieval;
+import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.factory.TokenFactory;
+import org.uimafit.util.AnnotationRetrieval;
 
 /**
  * <br>

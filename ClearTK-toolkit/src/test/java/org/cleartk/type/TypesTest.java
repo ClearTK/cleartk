@@ -28,7 +28,7 @@ import org.cleartk.syntax.treebank.type.TreebankNode;
 import org.cleartk.token.chunk.type.Subtoken;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uutuc.factory.JCasFactory;
+import org.uimafit.factory.JCasFactory;
 
 
 /**

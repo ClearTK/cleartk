@@ -44,9 +44,9 @@ import org.cleartk.token.snowball.DefaultSnowballStemmer;
 import org.cleartk.util.FilesCollectionReader;
 import org.junit.After;
 import org.junit.Test;
-import org.uutuc.util.HideOutput;
-import org.uutuc.util.SimplePipeline;
-import org.uutuc.util.TearDownUtil;
+import org.uimafit.util.HideOutput;
+import org.uimafit.util.SimplePipeline;
+import org.uimafit.util.TearDownUtil;
 
 /**
  * <br>

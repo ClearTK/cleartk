@@ -67,7 +67,7 @@ import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.UIMAUtil;
-import org.uutuc.util.InitializeUtil;
+import org.uimafit.util.InitializeUtil;
 
 
 /**

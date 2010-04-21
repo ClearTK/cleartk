@@ -43,8 +43,8 @@ import org.cleartk.type.Token;
 import org.cleartk.util.InstanceCollector;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uutuc.factory.AnalysisEngineFactory;
-import org.uutuc.factory.TokenFactory;
+import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.factory.TokenFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 

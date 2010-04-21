@@ -81,6 +81,10 @@ public class ViewNames {
 	 */
 	public static final String GENIA_POS = "GeniaPOSView";
 
+	public static final String GOLD_VIEW = "GoldView";
+
+	public static final String SYSTEM_VIEW = "SystemView";
+
 	/**
 	 * Private constructor to enforce un-instantiability.
 	 */

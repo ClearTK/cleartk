@@ -38,9 +38,9 @@ import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uutuc.factory.CollectionReaderFactory;
-import org.uutuc.factory.TypeSystemDescriptionFactory;
-import org.uutuc.util.JCasIterable;
+import org.uimafit.factory.CollectionReaderFactory;
+import org.uimafit.factory.TypeSystemDescriptionFactory;
+import org.uimafit.util.JCasIterable;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 

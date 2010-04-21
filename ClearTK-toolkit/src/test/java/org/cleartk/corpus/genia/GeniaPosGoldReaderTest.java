@@ -42,9 +42,9 @@ import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.jdom.JDOMException;
 import org.junit.Test;
-import org.uutuc.factory.CollectionReaderFactory;
-import org.uutuc.factory.TypeSystemDescriptionFactory;
-import org.uutuc.util.JCasIterable;
+import org.uimafit.factory.CollectionReaderFactory;
+import org.uimafit.factory.TypeSystemDescriptionFactory;
+import org.uimafit.util.JCasIterable;
 
 
 /**

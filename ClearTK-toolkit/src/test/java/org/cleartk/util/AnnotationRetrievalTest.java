@@ -59,11 +59,11 @@ import org.cleartk.type.Token;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.uutuc.factory.AnalysisEngineFactory;
-import org.uutuc.factory.JCasFactory;
-import org.uutuc.factory.TokenFactory;
-import org.uutuc.factory.TypeSystemDescriptionFactory;
-import org.uutuc.util.JCasAnnotatorAdapter;
+import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.factory.JCasFactory;
+import org.uimafit.factory.TokenFactory;
+import org.uimafit.factory.TypeSystemDescriptionFactory;
+import org.uimafit.util.JCasAnnotatorAdapter;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 

@@ -55,12 +55,12 @@ import org.cleartk.util.ReusableUIMAObjects;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.uutuc.factory.AnalysisEngineFactory;
-import org.uutuc.factory.CollectionReaderFactory;
-import org.uutuc.factory.TokenFactory;
-import org.uutuc.util.HideOutput;
-import org.uutuc.util.JCasIterable;
-import org.uutuc.util.TearDownUtil;
+import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.factory.CollectionReaderFactory;
+import org.uimafit.factory.TokenFactory;
+import org.uimafit.util.HideOutput;
+import org.uimafit.util.JCasIterable;
+import org.uimafit.util.TearDownUtil;
 
 /**
  * <br>Copyright (c) 2009, Regents of the University of Colorado 

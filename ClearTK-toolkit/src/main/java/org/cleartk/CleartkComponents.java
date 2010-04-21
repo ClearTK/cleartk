@@ -46,10 +46,10 @@ import org.cleartk.classifier.viterbi.ViterbiDataWriter;
 import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
 import org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter;
 import org.cleartk.token.TokenAnnotator;
-import org.uutuc.factory.AnalysisEngineFactory;
-import org.uutuc.factory.CollectionReaderFactory;
-import org.uutuc.factory.ConfigurationParameterFactory;
-import org.uutuc.factory.TypeSystemDescriptionFactory;
+import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.factory.CollectionReaderFactory;
+import org.uimafit.factory.ConfigurationParameterFactory;
+import org.uimafit.factory.TypeSystemDescriptionFactory;
 
 /**
  * <br>

@@ -39,10 +39,10 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.type.Token;
 import org.junit.Test;
-import org.uutuc.factory.AnalysisEngineFactory;
-import org.uutuc.factory.TypeSystemDescriptionFactory;
-import org.uutuc.factory.UimaContextFactory;
-import org.uutuc.util.JCasAnnotatorAdapter;
+import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.factory.TypeSystemDescriptionFactory;
+import org.uimafit.factory.UimaContextFactory;
+import org.uimafit.util.JCasAnnotatorAdapter;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 

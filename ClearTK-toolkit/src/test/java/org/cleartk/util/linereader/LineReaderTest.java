@@ -33,8 +33,8 @@ import org.apache.uima.jcas.JCas;
 import org.cleartk.util.ViewURIUtil;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uutuc.factory.CollectionReaderFactory;
-import org.uutuc.util.JCasIterable;
+import org.uimafit.factory.CollectionReaderFactory;
+import org.uimafit.util.JCasIterable;
 
 
 /**

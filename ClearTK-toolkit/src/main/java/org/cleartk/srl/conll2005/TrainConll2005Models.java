@@ -32,8 +32,8 @@ import org.cleartk.classifier.svmlight.DefaultSVMlightDataWriterFactory;
 import org.cleartk.srl.ArgumentClassifier;
 import org.cleartk.srl.ArgumentIdentifier;
 import org.cleartk.token.snowball.DefaultSnowballStemmer;
-import org.uutuc.factory.AnalysisEngineFactory;
-import org.uutuc.util.SimplePipeline;
+import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.util.SimplePipeline;
 
 /**
  * <br>

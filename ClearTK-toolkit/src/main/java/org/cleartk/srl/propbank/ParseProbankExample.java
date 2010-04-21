@@ -31,9 +31,9 @@ import org.apache.uima.collection.CollectionReader;
 import org.cleartk.CleartkComponents;
 import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
 import org.cleartk.util.XWriter;
-import org.uutuc.factory.CollectionReaderFactory;
-import org.uutuc.factory.TypeSystemDescriptionFactory;
-import org.uutuc.util.SimplePipeline;
+import org.uimafit.factory.CollectionReaderFactory;
+import org.uimafit.factory.TypeSystemDescriptionFactory;
+import org.uimafit.util.SimplePipeline;
 
 /**
  * <br>Copyright (c) 2009, Regents of the University of Colorado 

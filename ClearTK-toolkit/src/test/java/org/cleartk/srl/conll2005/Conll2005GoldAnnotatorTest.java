@@ -28,7 +28,7 @@ import java.io.IOException;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.junit.Test;
-import org.uutuc.factory.AnalysisEngineFactory;
+import org.uimafit.factory.AnalysisEngineFactory;
 
 
 /**

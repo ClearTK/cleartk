@@ -33,7 +33,7 @@ import org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter;
 import org.cleartk.type.Sentence;
 import org.cleartk.util.FilesCollectionReader;
 import org.cleartk.util.linewriter.LineWriter;
-import org.uutuc.util.SimplePipeline;
+import org.uimafit.util.SimplePipeline;
 
 /**
  * <br>

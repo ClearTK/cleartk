@@ -47,7 +47,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
-import org.uutuc.descriptor.SofaCapability;
+import org.uimafit.descriptor.SofaCapability;
 
 
 /**

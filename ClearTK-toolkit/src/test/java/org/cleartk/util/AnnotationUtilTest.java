@@ -43,11 +43,11 @@ import org.cleartk.type.Chunk;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.junit.Test;
-import org.uutuc.factory.AnalysisEngineFactory;
-import org.uutuc.factory.AnnotationFactory;
-import org.uutuc.factory.JCasFactory;
-import org.uutuc.factory.TokenFactory;
-import org.uutuc.factory.TypeSystemDescriptionFactory;
+import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.factory.AnnotationFactory;
+import org.uimafit.factory.JCasFactory;
+import org.uimafit.factory.TokenFactory;
+import org.uimafit.factory.TypeSystemDescriptionFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 

@@ -50,11 +50,11 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
-import org.uutuc.descriptor.ConfigurationParameter;
-import org.uutuc.descriptor.SofaCapability;
-import org.uutuc.factory.AnalysisEngineFactory;
-import org.uutuc.factory.ConfigurationParameterFactory;
-import org.uutuc.util.InitializeUtil;
+import org.uimafit.descriptor.ConfigurationParameter;
+import org.uimafit.descriptor.SofaCapability;
+import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.factory.ConfigurationParameterFactory;
+import org.uimafit.util.InitializeUtil;
 
 
 /**

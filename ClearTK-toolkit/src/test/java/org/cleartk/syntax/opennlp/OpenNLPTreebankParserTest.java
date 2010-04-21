@@ -38,10 +38,10 @@ import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uutuc.factory.AnalysisEngineFactory;
-import org.uutuc.factory.TokenFactory;
-import org.uutuc.factory.TypeSystemDescriptionFactory;
-import org.uutuc.util.DisableLogging;
+import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.factory.TokenFactory;
+import org.uimafit.factory.TypeSystemDescriptionFactory;
+import org.uimafit.util.DisableLogging;
 
 
 /**

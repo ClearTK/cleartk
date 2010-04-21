@@ -28,7 +28,7 @@ import org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter;
 import org.cleartk.token.TokenAnnotator;
 import org.cleartk.token.snowball.DefaultSnowballStemmer;
 import org.cleartk.util.FilesCollectionReader;
-import org.uutuc.util.SimplePipeline;
+import org.uimafit.util.SimplePipeline;
 
 /**
  * <br>

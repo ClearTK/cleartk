@@ -32,7 +32,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.ViewNames;
-import org.uutuc.descriptor.SofaCapability;
+import org.uimafit.descriptor.SofaCapability;
 
 /**
  * <br>Copyright (c) 2009, Regents of the University of Colorado 

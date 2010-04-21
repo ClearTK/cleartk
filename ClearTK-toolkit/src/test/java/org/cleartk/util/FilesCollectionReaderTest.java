@@ -43,8 +43,8 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uutuc.factory.CollectionReaderFactory;
-import org.uutuc.util.JCasIterable;
+import org.uimafit.factory.CollectionReaderFactory;
+import org.uimafit.util.JCasIterable;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 

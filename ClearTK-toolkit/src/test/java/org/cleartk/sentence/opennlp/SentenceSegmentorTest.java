@@ -33,8 +33,8 @@ import org.apache.uima.jcas.JCas;
 import org.cleartk.type.Sentence;
 import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Test;
-import org.uutuc.factory.AnalysisEngineFactory;
-import org.uutuc.factory.TypeSystemDescriptionFactory;
+import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.factory.TypeSystemDescriptionFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 

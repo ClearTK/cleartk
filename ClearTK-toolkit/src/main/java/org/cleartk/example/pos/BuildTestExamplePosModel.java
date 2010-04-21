@@ -28,7 +28,7 @@ import org.cleartk.ViewNames;
 import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
 import org.cleartk.token.snowball.DefaultSnowballStemmer;
 import org.cleartk.util.FilesCollectionReader;
-import org.uutuc.util.SimplePipeline;
+import org.uimafit.util.SimplePipeline;
 
 /**
  * <br>

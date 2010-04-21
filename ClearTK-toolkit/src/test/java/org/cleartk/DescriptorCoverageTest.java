@@ -35,7 +35,7 @@ import org.apache.uima.util.FileUtils;
 import org.cleartk.test.util.DescriptorTestUtil;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uutuc.util.io.Files;
+import org.uimafit.util.io.Files;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 

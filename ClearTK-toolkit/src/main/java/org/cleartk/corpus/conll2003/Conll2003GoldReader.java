@@ -49,10 +49,10 @@ import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.UIMAUtil;
 import org.cleartk.util.ViewURIUtil;
-import org.uutuc.descriptor.ConfigurationParameter;
-import org.uutuc.descriptor.SofaCapability;
-import org.uutuc.factory.ConfigurationParameterFactory;
-import org.uutuc.util.InitializeUtil;
+import org.uimafit.descriptor.ConfigurationParameter;
+import org.uimafit.descriptor.SofaCapability;
+import org.uimafit.factory.ConfigurationParameterFactory;
+import org.uimafit.util.InitializeUtil;
 
 
 /**

@@ -31,7 +31,7 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.junit.Test;
-import org.uutuc.factory.JCasFactory;
+import org.uimafit.factory.JCasFactory;
 
 
 /**

@@ -30,7 +30,7 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.collection.CollectionReader;
 import org.cleartk.util.PlainTextWriter;
-import org.uutuc.util.SimplePipeline;
+import org.uimafit.util.SimplePipeline;
 
 /**
  * <br>Copyright (c) 2009, Regents of the University of Colorado 

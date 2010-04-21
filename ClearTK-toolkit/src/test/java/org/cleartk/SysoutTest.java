@@ -31,7 +31,7 @@ import java.util.List;
 import org.apache.uima.pear.util.FileUtil;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uutuc.util.io.Files;
+import org.uimafit.util.io.Files;
 
 /**
  * <br>Copyright (c) 2007-2009, Regents of the University of Colorado 

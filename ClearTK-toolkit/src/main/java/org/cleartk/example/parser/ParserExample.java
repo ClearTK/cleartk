@@ -31,7 +31,7 @@ import org.cleartk.syntax.opennlp.OpenNLPTreebankParser;
 import org.cleartk.token.opennlp.OpenNLPPOSTagger;
 import org.cleartk.util.FilesCollectionReader;
 import org.cleartk.util.XWriter;
-import org.uutuc.util.SimplePipeline;
+import org.uimafit.util.SimplePipeline;
 
 /**
  * <br>

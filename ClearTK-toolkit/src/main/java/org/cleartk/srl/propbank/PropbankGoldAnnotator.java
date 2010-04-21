@@ -36,7 +36,7 @@ import org.cleartk.syntax.treebank.type.TopTreebankNode;
 import org.cleartk.type.Sentence;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.UIMAUtil;
-import org.uutuc.descriptor.SofaCapability;
+import org.uimafit.descriptor.SofaCapability;
 
 
 /**

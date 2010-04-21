@@ -43,12 +43,12 @@ import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 import org.cleartk.CleartkComponents;
 import org.cleartk.ViewNames;
-import org.uutuc.descriptor.ConfigurationParameter;
-import org.uutuc.descriptor.SofaCapability;
-import org.uutuc.factory.CollectionReaderFactory;
-import org.uutuc.factory.ConfigurationParameterFactory;
-import org.uutuc.util.InitializeUtil;
-import org.uutuc.util.io.Files;
+import org.uimafit.descriptor.ConfigurationParameter;
+import org.uimafit.descriptor.SofaCapability;
+import org.uimafit.factory.CollectionReaderFactory;
+import org.uimafit.factory.ConfigurationParameterFactory;
+import org.uimafit.util.InitializeUtil;
+import org.uimafit.util.io.Files;
 
 /**
  * <br>

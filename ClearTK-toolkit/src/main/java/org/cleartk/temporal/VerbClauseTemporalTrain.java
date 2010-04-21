@@ -36,8 +36,8 @@ import org.cleartk.corpus.timeml.TimeMLGoldAnnotator;
 import org.cleartk.corpus.timeml.TreebankAligningAnnotator;
 import org.cleartk.token.snowball.DefaultSnowballStemmer;
 import org.cleartk.util.FilesCollectionReader;
-import org.uutuc.factory.UimaContextFactory;
-import org.uutuc.util.SimplePipeline;
+import org.uimafit.factory.UimaContextFactory;
+import org.uimafit.util.SimplePipeline;
 
 /**
  * <br>
