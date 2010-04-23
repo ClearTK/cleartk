@@ -29,9 +29,9 @@ import org.cleartk.syntax.treebank.type.TreebankNode;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.uutuc.descriptor.ConfigurationParameter;
-import org.uutuc.factory.ConfigurationParameterFactory;
-import org.uutuc.util.InitializeUtil;
+import org.uimafit.descriptor.ConfigurationParameter;
+import org.uimafit.factory.ConfigurationParameterFactory;
+import org.uimafit.util.InitializeUtil;
 
 public class OpenNLPTaggerParser extends JCasAnnotator_ImplBase {
 
