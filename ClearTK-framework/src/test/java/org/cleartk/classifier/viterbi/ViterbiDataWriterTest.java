@@ -118,8 +118,8 @@ public class ViterbiDataWriterTest {
 				JCasUtil.getTypeSystemDescription(),
 				ViterbiDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME, ViterbiDataWriterFactory.class.getName(),
-				ViterbiDataWriter.PARAM_DELEGATED_DATAWRITER_FACTORY_CLASS, DefaultMaxentDataWriterFactory.class.getName(),
-				ViterbiDataWriter.PARAM_OUTCOME_FEATURE_EXTRACTORS, new String[] {"org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor"});
+				ViterbiDataWriterFactory.PARAM_DELEGATED_DATA_WRITER_FACTORY_CLASS, DefaultMaxentDataWriterFactory.class.getName(),
+				ViterbiDataWriterFactory.PARAM_OUTCOME_FEATURE_EXTRACTOR_NAMES, new String[] {"org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor"});
 
 		JCas jCas = engine.newJCas();
 		String text = "Do I really have to come up with some creative text, or can I just write anything?";

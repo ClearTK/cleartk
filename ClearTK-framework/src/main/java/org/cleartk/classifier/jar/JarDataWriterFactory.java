@@ -43,18 +43,31 @@ import org.uimafit.util.InitializeUtil;
 public abstract class JarDataWriterFactory<FEATURES_OUT_TYPE, OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE> implements
 		DataWriterFactory<OUTCOME_IN_TYPE>, Initializable {
 
-	public static final String PARAM_OUTPUT_DIRECTORY = ConfigurationParameterFactory
-			.createConfigurationParameterName(JarDataWriterFactory.class, "outputDirectory");
-
-	@ConfigurationParameter(mandatory = false, description = "provides the name of the directory where the training data will be written.  if you do not set this parameter, then you must call setOutputDirectory directly.")
+	public static final String PARAM_OUTPUT_DIRECTORY = 
+			ConfigurationParameterFactory.createConfigurationParameterName(
+					JarDataWriterFactory.class, 
+					"outputDirectory");
+	@ConfigurationParameter(
+			mandatory = false, 
+			description = "provides the name of the directory where the " +
+					"training data will be written.  if you do not set this " +
+					"parameter, then you must call setOutputDirectory directly.")
 	protected File outputDirectory;
+	
 
-	public static final String PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM = ConfigurationParameterFactory
-			.createConfigurationParameterName(JarDataWriterFactory.class, "loadEncodersFromFileSystem");
-
-	@ConfigurationParameter(description = "when true indicates that the FeaturesEncoder and OutcomeEncoder should be loaded from the file system instead of being created by the DataWriterFactory", defaultValue = "false")
+	public static final String PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM = 
+			ConfigurationParameterFactory.createConfigurationParameterName(
+					JarDataWriterFactory.class, 
+					"loadEncodersFromFileSystem");
+	@ConfigurationParameter(
+			mandatory = false,
+			description = "when true indicates that the FeaturesEncoder and " +
+					"OutcomeEncoder should be loaded from the file system " +
+					"instead of being created by the DataWriterFactory", 
+			defaultValue = "false")
 	private boolean loadEncodersFromFileSystem = false;
 
+	
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		InitializeUtil.initialize(this, context);
 		if (loadEncodersFromFileSystem) {
@@ -88,10 +101,6 @@ public abstract class JarDataWriterFactory<FEATURES_OUT_TYPE, OUTCOME_IN_TYPE, O
 				throw new ResourceInitializationException(e);
 			}
 		}
-		else {
-			this.featuresEncoder = null;
-			this.outcomeEncoder = null;
-		}
 	}
 
 	protected boolean setEncodersFromFileSystem(
@@ -104,20 +113,11 @@ public abstract class JarDataWriterFactory<FEATURES_OUT_TYPE, OUTCOME_IN_TYPE, O
 		return false;
 	}
 
-	protected FeaturesEncoder<FEATURES_OUT_TYPE> featuresEncoder = null;
-
-	protected OutcomeEncoder<OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE> outcomeEncoder = null;
-
 	public File getOutputDirectory() {
 		return outputDirectory;
 	}
 
-	/*
-	 * Please check references to this method if you are considering removing
-	 * this method.
-	 */
-	public void setOutputDirectory(File outputDirectory) {
-		this.outputDirectory = outputDirectory;
-	}
+	protected FeaturesEncoder<FEATURES_OUT_TYPE> featuresEncoder = null;
+	protected OutcomeEncoder<OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE> outcomeEncoder = null;
 
 }

@@ -43,7 +43,6 @@ import org.cleartk.classifier.jar.BuildJar;
 import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
-import org.cleartk.classifier.viterbi.ViterbiDataWriter;
 import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
 import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
 import org.cleartk.token.pos.POSAnnotator;
@@ -101,7 +100,7 @@ public class DefaultPOSAnnotatorTest {
 				defaultTypeSystemDescription, (TypePriorities)null, null,
 				TreebankGoldAnnotator.PARAM_POST_TREES, false,
 				CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME, ViterbiDataWriterFactory.class.getName(),
-				ViterbiDataWriter.PARAM_DELEGATED_DATAWRITER_FACTORY_CLASS, DefaultMaxentDataWriterFactory.class.getName(),
+				ViterbiDataWriterFactory.PARAM_DELEGATED_DATA_WRITER_FACTORY_CLASS, DefaultMaxentDataWriterFactory.class.getName(),
 				ViterbiDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory.getPath(),
 				POSAnnotator.PARAM_FEATURE_EXTRACTOR_CLASS_NAME, DefaultFeatureExtractor.class.getName());
 		

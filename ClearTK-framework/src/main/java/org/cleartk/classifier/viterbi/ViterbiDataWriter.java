@@ -30,93 +30,46 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.jar.Attributes;
 
-import org.apache.uima.UimaContext;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
-import org.cleartk.Initializable;
+import org.cleartk.CleartkRuntimeException;
 import org.cleartk.classifier.DataWriter;
-import org.cleartk.classifier.DataWriterFactory;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.SequentialDataWriter;
 import org.cleartk.classifier.feature.extractor.outcome.OutcomeFeatureExtractor;
 import org.cleartk.classifier.jar.ClassifierBuilder;
 import org.cleartk.classifier.jar.ClassifierManifest;
-import org.cleartk.classifier.jar.JarDataWriterFactory;
 import org.cleartk.util.ReflectionUtil;
-import org.cleartk.util.UIMAUtil;
 import org.cleartk.util.ReflectionUtil.TypeArgumentDelegator;
 
 public class ViterbiDataWriter<OUTCOME_TYPE> implements
-		SequentialDataWriter<OUTCOME_TYPE>, Initializable, TypeArgumentDelegator {
+		SequentialDataWriter<OUTCOME_TYPE>, TypeArgumentDelegator {
 
 	public static final String OUTCOME_FEATURE_EXTRACTOR_FILE_NAME = "outcome-features-extractors.ser";
 
 	public static final String DELEGATED_MODEL_DIRECTORY_NAME = "delegated-model";
 
-	/**
-	 * "org.cleartk.classifier.viterbi.ViterbiDataWriter.PARAM_OUTCOME_FEATURE_EXTRACTORS"
-	 * is an optional, multi-valued, string parameter that specifies which
-	 * OutcomeFeatureExtractors should be used. Each value of this parameter
-	 * should be the name of a class that implements
-	 * {@link OutcomeFeatureExtractor}. One valid value that you might use is"org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor"
-	 * .
-	 */
-	public static final String PARAM_OUTCOME_FEATURE_EXTRACTORS = "org.cleartk.classifier.viterbi.ViterbiDataWriter.PARAM_OUTCOME_FEATURE_EXTRACTORS";
 
-	/**
-	 * "org.cleartk.classifier.viterbi.ViterbiDataWriter.PARAM_DELEGATED_DATAWRITER_FACTORY_CLASS"
-	 * is a single, required, string parameter that provides the full name of
-	 * the DataWriterFactory class that will be wrapped.
-	 */
-	public static final String PARAM_DELEGATED_DATAWRITER_FACTORY_CLASS = "org.cleartk.classifier.viterbi.ViterbiDataWriter.PARAM_DELEGATED_DATAWRITER_FACTORY_CLASS";
-
-	public static final Attributes.Name DELEGATED_CLASSIFIER_BUILDER_ATTRIBUTE = new Attributes.Name(
-			"delegatedClassifierBuilderClass");
-
-	protected DataWriter<OUTCOME_TYPE> delegatedDataWriter;
-
-	private File outputDirectory;
-	private File delegatedOutputDirectory;
-
-	private OutcomeFeatureExtractor[] outcomeFeatureExtractors;
-
-	public ViterbiDataWriter(File outputDirectory) {
+	public ViterbiDataWriter(
+			File outputDirectory, 
+			OutcomeFeatureExtractor outcomeFeatureExtractors[]) {
 		this.outputDirectory = outputDirectory;
-		this.delegatedOutputDirectory = new File(this.outputDirectory, DELEGATED_MODEL_DIRECTORY_NAME);
+		this.outcomeFeatureExtractors = outcomeFeatureExtractors;
 	}
-
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		try {
-			
-			DataWriterFactory<?> dataWriterFactory = UIMAUtil.create(context, PARAM_DELEGATED_DATAWRITER_FACTORY_CLASS,
-					DataWriterFactory.class);
-			if(dataWriterFactory instanceof JarDataWriterFactory<?,?,?>) {
-				((JarDataWriterFactory<?,?,?>) dataWriterFactory).setOutputDirectory(delegatedOutputDirectory);
-			}
-			this.delegatedDataWriter = ReflectionUtil.uncheckedCast(dataWriterFactory.createDataWriter());
-			UIMAUtil.initialize(this.delegatedDataWriter, context);
 	
-			String[] outcomeFeatureExtractorNames = (String[]) UIMAUtil.getDefaultingConfigParameterValue(context,
-					PARAM_OUTCOME_FEATURE_EXTRACTORS, null);
-			if (outcomeFeatureExtractorNames == null) {
-				outcomeFeatureExtractors = new OutcomeFeatureExtractor[0];
-			}
-			else {
-				outcomeFeatureExtractors = new OutcomeFeatureExtractor[outcomeFeatureExtractorNames.length];
-				for (int i = 0; i < outcomeFeatureExtractorNames.length; i++) {
-					outcomeFeatureExtractors[i] = UIMAUtil.create(outcomeFeatureExtractorNames[i], OutcomeFeatureExtractor.class, context);
-				}
-			}
-		}
-		catch(Exception e){
-			throw new ResourceInitializationException(e);
-		}
+	public void setDelegatedDataWriter(DataWriter<OUTCOME_TYPE> delegatedDataWriter) {
+		this.delegatedDataWriter = delegatedDataWriter;
+	}
+	
+	public File getDelegatedModelDirectory() {
+		return new File(outputDirectory, DELEGATED_MODEL_DIRECTORY_NAME);
 	}
 
 	public void writeSequence(List<Instance<OUTCOME_TYPE>> instances) throws CleartkException {
+		if( this.delegatedDataWriter == null )
+			throw new CleartkException("delegatedDataWriter must be set before calling writeSequence");
+		
 		List<Object> outcomes = new ArrayList<Object>();
 		for (Instance<OUTCOME_TYPE> instance : instances) {
 			List<Feature> instanceFeatures = instance.getFeatures();
@@ -131,6 +84,9 @@ public class ViterbiDataWriter<OUTCOME_TYPE> implements
 
 	
 	public void finish() throws CleartkException {
+		if( this.delegatedDataWriter == null )
+			throw new CleartkException("delegatedDataWriter must be set before calling finish");
+
 		try {
 			this.delegatedDataWriter.finish();
 
@@ -154,9 +110,16 @@ public class ViterbiDataWriter<OUTCOME_TYPE> implements
 	}
 
 	public Map<String, Type> getTypeArguments(Class<?> genericType) {
+		if( this.delegatedDataWriter == null )
+			throw new CleartkRuntimeException("delegatedDataWriter must be set before calling getTypeArguments");
+
 		if (genericType.equals(SequentialDataWriter.class)) {
 			genericType = DataWriter.class;
 		}
 		return ReflectionUtil.getTypeArguments(genericType, this.delegatedDataWriter);
 	}
+	
+	protected File outputDirectory;
+	protected OutcomeFeatureExtractor outcomeFeatureExtractors[];
+	protected DataWriter<OUTCOME_TYPE> delegatedDataWriter = null;
 }

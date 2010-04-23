@@ -42,7 +42,6 @@ import org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExt
 import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.classifier.jar.JarDataWriterFactory;
 import org.cleartk.classifier.jar.JarSequentialDataWriterFactory;
-import org.cleartk.classifier.viterbi.ViterbiDataWriter;
 import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
 import org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter;
 import org.cleartk.token.TokenAnnotator;
@@ -98,8 +97,8 @@ public class CleartkComponents {
 				TYPE_PRIORITIES, combineParams(configurationParameters,
 						CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME, ViterbiDataWriterFactory.class
 								.getName(), ViterbiDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDir,
-						ViterbiDataWriter.PARAM_DELEGATED_DATAWRITER_FACTORY_CLASS, delegatedDataWriterFactoryClass
-								.getName(), ViterbiDataWriter.PARAM_OUTCOME_FEATURE_EXTRACTORS,
+						ViterbiDataWriterFactory.PARAM_DELEGATED_DATA_WRITER_FACTORY_CLASS, delegatedDataWriterFactoryClass
+								.getName(), ViterbiDataWriterFactory.PARAM_OUTCOME_FEATURE_EXTRACTOR_NAMES,
 						new String[] { DefaultOutcomeFeatureExtractor.class.getName() }));
 	}
 

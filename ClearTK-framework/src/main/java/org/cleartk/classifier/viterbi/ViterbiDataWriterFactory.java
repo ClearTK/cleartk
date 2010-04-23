@@ -1,5 +1,5 @@
 /** 
- * Copyright (c) 2009, Regents of the University of Colorado 
+ * Copyright (c) 2009-2010, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -27,37 +27,119 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.uima.UimaContext;
+import org.apache.uima.impl.UimaContext_ImplBase;
+import org.apache.uima.resource.ConfigurationManager;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.CleartkException;
 import org.cleartk.Initializable;
+import org.cleartk.classifier.DataWriter;
 import org.cleartk.classifier.SequentialDataWriter;
 import org.cleartk.classifier.SequentialDataWriterFactory;
+import org.cleartk.classifier.feature.extractor.outcome.OutcomeFeatureExtractor;
+import org.cleartk.classifier.jar.JarDataWriterFactory;
+import org.cleartk.util.UIMAUtil;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.InitializeUtil;
 
 /**
  * <br>
- * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * Copyright (c) 2009-2010, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
- * @author Philip Ogren
+ * @author Philip Ogren, Philipp Wetzler
  * 
  */
 
 public class ViterbiDataWriterFactory<OUTCOME_TYPE> implements SequentialDataWriterFactory<OUTCOME_TYPE>, Initializable {
 
-	public static final String PARAM_OUTPUT_DIRECTORY = ConfigurationParameterFactory
-			.createConfigurationParameterName(ViterbiDataWriterFactory.class, "outputDirectory");
+	public static final String PARAM_OUTCOME_FEATURE_EXTRACTOR_NAMES = 
+		ConfigurationParameterFactory.createConfigurationParameterName(
+				ViterbiDataWriterFactory.class, 
+				"outcomeFeatureExtractorNames");
+	@ConfigurationParameter(
+			mandatory = false, 
+			description = "An optional, multi-valued, string parameter that " +
+			"specifies which OutcomeFeatureExtractors should be used. " +
+			"Each value of this parameter should be the name of a " +
+			"class that implements OutcomeFeatureExtractor. One valid " +
+			"value that you might use is " +
+	"org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor")
+	protected String outcomeFeatureExtractorNames[];
 
-	@ConfigurationParameter(mandatory = true, description = "provides the name of the directory where the training data will be written.")
+
+	public static final String PARAM_DELEGATED_DATA_WRITER_FACTORY_CLASS = 
+		ConfigurationParameterFactory.createConfigurationParameterName(
+				ViterbiDataWriterFactory.class, 
+				"delegatedDataWriterFactoryClass");
+	@ConfigurationParameter(
+			mandatory = true,
+			description = "A single, required, string parameter that provides " +
+			"the full name of the DataWriterFactory class that will be " +
+	"wrapped.")
+	protected String delegatedDataWriterFactoryClass;
+
+
+	public static final String PARAM_OUTPUT_DIRECTORY = 
+		ConfigurationParameterFactory.createConfigurationParameterName(
+				ViterbiDataWriterFactory.class, 
+				"outputDirectory");
+	@ConfigurationParameter(
+			mandatory = true, 
+			description = "provides the name of the directory where the " +
+	"training data will be written.")
 	protected File outputDirectory;
 
-	public SequentialDataWriter<OUTCOME_TYPE> createSequentialDataWriter() throws IOException {
-		return new ViterbiDataWriter<OUTCOME_TYPE>(outputDirectory);
-	}
 
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		InitializeUtil.initialize(this, context);
+
+		try {
+			OutcomeFeatureExtractor outcomeFeatureExtractors[];
+			if (outcomeFeatureExtractorNames == null) {
+				outcomeFeatureExtractors = new OutcomeFeatureExtractor[0];
+			} else {
+				outcomeFeatureExtractors = new OutcomeFeatureExtractor[outcomeFeatureExtractorNames.length];
+				for (int i = 0; i < outcomeFeatureExtractorNames.length; i++) {
+					outcomeFeatureExtractors[i] = UIMAUtil.create(outcomeFeatureExtractorNames[i], OutcomeFeatureExtractor.class, context);
+				}
+			}
+
+			dataWriter = 
+				new ViterbiDataWriter<OUTCOME_TYPE>(
+						outputDirectory,
+						outcomeFeatureExtractors);
+
+			UimaContext_ImplBase contextImpl = (UimaContext_ImplBase) context;
+			ConfigurationManager c = contextImpl.getConfigurationManager();
+			c.setConfigParameterValue(contextImpl.getQualifiedContextName() + JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, dataWriter.getDelegatedModelDirectory().toString());
+			
+			JarDataWriterFactory<?, OUTCOME_TYPE, ?> delegatedDataWriterFactory = 
+				createDelegatedDataWriterFactory(delegatedDataWriterFactoryClass, context);
+			
+			DataWriter<OUTCOME_TYPE> delegatedDataWriter = 
+				delegatedDataWriterFactory.createDataWriter();
+			dataWriter.setDelegatedDataWriter(delegatedDataWriter);
+		} catch (IOException e) {
+			throw new ResourceInitializationException(e);
+		} catch (CleartkException e) {
+			throw new ResourceInitializationException(e);
+		}
 	}
 
+	public SequentialDataWriter<OUTCOME_TYPE> createSequentialDataWriter() throws IOException {
+		return dataWriter;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private JarDataWriterFactory<?, OUTCOME_TYPE, ?> createDelegatedDataWriterFactory(
+			String delegatedDataWriterFactoryClass,
+			UimaContext context) throws ResourceInitializationException {
+		return UIMAUtil.create(
+				delegatedDataWriterFactoryClass, 
+				JarDataWriterFactory.class,
+				context);
+	}
+
+	private ViterbiDataWriter<OUTCOME_TYPE> dataWriter;
 }
