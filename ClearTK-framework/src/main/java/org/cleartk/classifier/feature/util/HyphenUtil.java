@@ -1,5 +1,5 @@
- /** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+/** 
+  * Copyright (c) 2010, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -21,51 +21,21 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.classifier.feature.proliferate;
 
-import java.util.Collections;
-import java.util.List;
-
-import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.util.HyphenUtil;
-
+package org.cleartk.classifier.feature.util;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
+ * <br>Copyright (c) 2010, Regents of the University of Colorado 
  * <br>All rights reserved.
-
  *
  * @author Philip Ogren
  *
  */
 
-public class ContainsHyphenProliferator extends FeatureProliferator{
+public class HyphenUtil {
 
-	public static final String DEFAULT_NAME = "ContainsHyphen";
-
-	/**
-	 * string value contains a hyphen
-	 */
-	public static final String CONTAINS_HYPHEN = "CONTAINS_HYPHEN";
-	
-	public ContainsHyphenProliferator() {
-		super(ContainsHyphenProliferator.DEFAULT_NAME);
-	}
-	public ContainsHyphenProliferator(String featureName) {
-		super(featureName);
+	public static boolean containsHyphen(String word) {
+		return word.indexOf("-") != -1;
 	}
 
-	@Override
-	public List<Feature> proliferate(Feature feature) {
-		String featureName = Feature.createName(this.getFeatureName(), feature.getName());
-		Object featureValue = feature.getValue();
-		if(featureValue == null) return Collections.emptyList();
-		else if(featureValue instanceof String) {
-			String value = featureValue.toString();
-			if(value == null || value.length() == 0) return Collections.emptyList();
-			if(HyphenUtil.containsHyphen(value))
-				return Collections.singletonList(new Feature(featureName, CONTAINS_HYPHEN)); 
-		}
-		return Collections.emptyList();
-	}
 }

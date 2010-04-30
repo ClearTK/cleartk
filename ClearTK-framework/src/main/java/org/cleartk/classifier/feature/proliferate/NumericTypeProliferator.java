@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.feature.util.NumericTypeUtil;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -64,11 +65,9 @@ public class NumericTypeProliferator extends FeatureProliferator{
 	 */
 	public static final String ROMAN_NUMERAL = "ROMAN_NUMERAL";
 	
-	static Pattern digitsPattern = Pattern.compile("[0-9]+");
 	static Pattern yearDigitsPattern = Pattern.compile("(?:1[0-9]{3,3})|(?:2[0|1][0-9]{2,2})");
 	static Pattern alphanumericPattern = Pattern.compile("[a-zA-Z0-9-]+");
 	static Pattern someLetters = Pattern.compile("[a-zA-Z]");
-	static Pattern someDigits = Pattern.compile("[0-9]");
 	static Pattern romanNumeralPattern = Pattern.compile("^M?M?M?(CM|CD|D?C?C?C?)(XC|XL|L?X?X?X?)(IX|IV|V?I?I?I?)$");
 	
 	public NumericTypeProliferator() {
@@ -105,13 +104,13 @@ public class NumericTypeProliferator extends FeatureProliferator{
 			String value = featureValue.toString();
 			if(value == null || value.length() == 0) return Collections.emptyList();
 
-			if(digitsPattern.matcher(value).matches()) {
+			if(NumericTypeUtil.isDigits(value)) {
 				if(yearDigitsPattern.matcher(value).matches()) {
 					return Collections.singletonList(new Feature(featureName, YEAR_DIGITS));
 				}
 				else return Collections.singletonList(new Feature(featureName, DIGITS));
 			}
-			else if(someDigits.matcher(value).find()) {
+			else if(NumericTypeUtil.containsDigits(value)) {
 				if(alphanumericPattern.matcher(value).matches() && someLetters.matcher(value).find()) {
 					return Collections.singletonList(new Feature(featureName, ALPHANUMERIC)); 
 				}

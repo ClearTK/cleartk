@@ -1,5 +1,5 @@
- /** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+/** 
+  * Copyright (c) 2010, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -21,51 +21,31 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.classifier.feature.proliferate;
 
-import java.util.Collections;
-import java.util.List;
+package org.cleartk.classifier.feature.util;
 
-import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.util.HyphenUtil;
+import java.util.regex.Pattern;
 
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
+ * <br>Copyright (c) 2010, Regents of the University of Colorado 
  * <br>All rights reserved.
-
  *
  * @author Philip Ogren
  *
  */
 
-public class ContainsHyphenProliferator extends FeatureProliferator{
+public class NumericTypeUtil {
 
-	public static final String DEFAULT_NAME = "ContainsHyphen";
+	public static final Pattern digitsPattern = Pattern.compile("[0-9]+");
+	public static final Pattern someDigitsPattern = Pattern.compile("[0-9]");
 
-	/**
-	 * string value contains a hyphen
-	 */
-	public static final String CONTAINS_HYPHEN = "CONTAINS_HYPHEN";
+	public static boolean isDigits(String word) {
+		return digitsPattern.matcher(word).matches();
+	}
+
+	public static boolean containsDigits(String word) {
+		return someDigitsPattern.matcher(word).find();
+	}
 	
-	public ContainsHyphenProliferator() {
-		super(ContainsHyphenProliferator.DEFAULT_NAME);
-	}
-	public ContainsHyphenProliferator(String featureName) {
-		super(featureName);
-	}
-
-	@Override
-	public List<Feature> proliferate(Feature feature) {
-		String featureName = Feature.createName(this.getFeatureName(), feature.getName());
-		Object featureValue = feature.getValue();
-		if(featureValue == null) return Collections.emptyList();
-		else if(featureValue instanceof String) {
-			String value = featureValue.toString();
-			if(value == null || value.length() == 0) return Collections.emptyList();
-			if(HyphenUtil.containsHyphen(value))
-				return Collections.singletonList(new Feature(featureName, CONTAINS_HYPHEN)); 
-		}
-		return Collections.emptyList();
-	}
 }

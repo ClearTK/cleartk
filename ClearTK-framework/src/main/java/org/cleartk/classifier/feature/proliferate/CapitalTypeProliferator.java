@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.feature.util.CaseUtil;
 
 
 
@@ -87,12 +88,10 @@ public class CapitalTypeProliferator extends FeatureProliferator {
 				return Collections.singletonList(new Feature(featureName, ALL_UPPERCASE));
 			}
 		
-			String firstLetter = value.substring(0,1);
-			String cdr = value.substring(1);
-			if(firstLetter.equals(firstLetter.toUpperCase()) &&
-					cdr.equals(cdr.toLowerCase())) {
+			if(CaseUtil.isInitialUppercase(value)) {
 				return Collections.singletonList(new Feature(featureName, INITIAL_UPPERCASE));
 			}
+			
 			return Collections.singletonList(new Feature(featureName, MIXED_CASE));
 		}
 		else return Collections.emptyList();
