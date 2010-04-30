@@ -117,6 +117,10 @@ public abstract class JarDataWriterFactory<FEATURES_OUT_TYPE, OUTCOME_IN_TYPE, O
 		return outputDirectory;
 	}
 
+	public void setOutputDirectory(File outputDirectory) {
+		this.outputDirectory = outputDirectory;
+	}
+	
 	protected FeaturesEncoder<FEATURES_OUT_TYPE> featuresEncoder = null;
 	protected OutcomeEncoder<OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE> outcomeEncoder = null;
 
