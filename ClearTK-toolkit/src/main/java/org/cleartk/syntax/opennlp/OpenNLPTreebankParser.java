@@ -41,7 +41,6 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
-import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
@@ -51,7 +50,7 @@ import org.cleartk.syntax.treebank.type.TopTreebankNode;
 import org.cleartk.syntax.treebank.type.TreebankNode;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
-import org.cleartk.util.AnnotationRetrieval;
+import org.cleartk.util.UIMAUtil;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
@@ -61,6 +60,13 @@ import org.uimafit.util.InitializeUtil;
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
+ * The SentenceRetriever and TokenRetriever were introduced despite its poor design/implementation to support
+ * local code.  One justification for adding this code in is because we ultimately want to do away with this class
+ * in favor of the OpenNLP UIMA wrappers.  
+ * 
+ *  see http://opennlp.cvs.sourceforge.net/viewvc/opennlp/opennlp.uima/
+ * 
  * 
  * 
  * @author Philipp Wetzler
@@ -125,23 +131,40 @@ public class OpenNLPTreebankParser extends JCasAnnotator_ImplBase {
 			description = "indicates \"the amount of probability mass required of advanced outcomes\".  See javadoc for opennlp.tools.parser.chunking.Parser.")
 	private float advancePercentage;
 
+	public static final String PARAM_SENTENCE_RETRIEVER_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
+			OpenNLPTreebankParser.class, "sentenceRetrieverClassName");
+	@ConfigurationParameter(
+			mandatory = false,
+			defaultValue = "org.cleartk.syntax.opennlp.ClearTKSentenceRetriever",
+			description = "provides the class name of the class used to read sentences from the document")
+	private String sentenceRetrieverClassName;
+	protected SentenceRetriever sentenceRetriever;
+	
+	public static final String PARAM_TOKEN_RETRIEVER_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
+			OpenNLPTreebankParser.class, "tokenRetrieverClassName");
+	@ConfigurationParameter(
+			mandatory = false,
+			defaultValue = "org.cleartk.syntax.opennlp.ClearTKTokenRetriever",			
+			description = "provides the class name of the class used to read sentences from the document")
+	private String tokenRetrieverClassName;
+	protected TokenRetriever tokenRetriever;
+		
 	protected Parser parser;
-
+	
 	protected OpenNLPDummyParserTagger tagger;
 
 	@Override
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
 		String text = jCas.getDocumentText();
 
-		FSIterator sentences = jCas.getJFSIndexRepository().getAnnotationIndex(Sentence.type).iterator();
-		while (sentences.hasNext()) {
-			Sentence sentence = (Sentence) sentences.next();
+		List<Sentence> sentenceList = sentenceRetriever.getSentences(jCas);
+		for (Sentence sentence : sentenceList) {
 
 			Parse parse = new Parse(text, new Span(sentence.getBegin(), sentence.getEnd()), "INC", 1, null);
 
-			List<Token> tokenList = AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class);
+			List<Token> tokenList = tokenRetriever.getTokens(jCas, sentence);
 			Token[] tokens = tokenList.toArray(new Token[tokenList.size()]);
-			for (Token token : tokens) {
+			for (Token token : tokenList) {
 				// TODO i'm not sure what the value of p should be - so I just
 				// put in 1.0f as an initial guess.
 				parse.insert(new Parse(text, new Span(token.getBegin(), token.getEnd()), Parser.TOK_NODE, 1.0f, 0));
@@ -245,6 +268,9 @@ public class OpenNLPTreebankParser extends JCasAnnotator_ImplBase {
 			HeadRules hrules = new HeadRules(headRulesFile);
 
 			this.parser = new Parser(buildModel, checkModel, tagger, chunker, hrules, beamSize, advancePercentage);
+			
+			sentenceRetriever = UIMAUtil.create(sentenceRetrieverClassName, SentenceRetriever.class, ctx);
+			tokenRetriever = UIMAUtil.create(tokenRetrieverClassName, TokenRetriever.class, ctx);
 		}
 		catch (IOException e) {
 			throw new ResourceInitializationException(e);
