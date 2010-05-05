@@ -56,7 +56,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             </configurationParameter>
             <configurationParameter>
                 <name>org.cleartk.util.linereader.LineReader.lineHandlerClassName</name>
-                <description>specifies the class name of the LineHandler. If one is not specified, then the SimpleLineHandler will be used.</description>
+                <description>specifies the class name of the LineHandler. If one is not specified, then the DefaultLineHandler will be used.</description>
                 <type>String</type>
                 <multiValued>false</multiValued>
                 <mandatory>false</mandatory>
