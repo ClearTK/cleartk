@@ -62,7 +62,8 @@ public class SysoutTest {
 					file.getName().equals("Step1BuildIDFMap.java") ||
 					file.getName().equals("Step2WriteTrainingData.java") ||
 					file.getName().equals("Step3TrainModel.java") ||
-					file.getName().equals("Step4RunClassifier.java")) {
+					file.getName().equals("Step4RunClassifier.java") ||
+					file.getName().equals("AbstractOptions.java")) {
 				continue;
 			}
 			String[] lines = FileUtil.loadListOfStrings(file);
