@@ -26,9 +26,7 @@ package org.cleartk.classifier.libsvm;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.jar.JarFile;
 
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -37,11 +35,10 @@ import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.TestInstanceFactory;
 import org.cleartk.classifier.jar.JarDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.uimafit.factory.UimaContextFactory;
 import org.uimafit.util.HideOutput;
@@ -54,17 +51,11 @@ import org.uimafit.util.TearDownUtil;
  * 
  * @author Steven Bethard
 */
-public class RunLIBSVMTest {
+public class LIBSVMTest {
 
-	protected Random random;
 	protected String outputDirectory = "test/data/libsvm";
 	
-	@Before
-	public void setUp() {
-		random = new Random(System.currentTimeMillis());
-	}
-	
-	@After
+//	@After
 	public void tearDown() throws Exception {
 		File outputDirectory = new File(this.outputDirectory);
 		TearDownUtil.removeDirectory(outputDirectory);
@@ -100,48 +91,13 @@ public class RunLIBSVMTest {
 		JarFile modelFile = new JarFile(new File(this.outputDirectory, "model.jar")); 
 		BinaryLIBSVMClassifier classifier = new BinaryLIBSVMClassifier(modelFile);
 		modelFile.close();
-		for (Instance<Boolean> instance: generateBooleanInstances(1000)) {
+		for (Instance<Boolean> instance: TestInstanceFactory.generateBooleanInstances(1000)) {
 			List<Feature> features = instance.getFeatures();
 			Boolean outcome = instance.getOutcome();
 			Assert.assertEquals(outcome, classifier.classify(features));
 		}
 	}
 
-	@Test
-	public void testLIBLINEAR() throws Exception {
-		
-		// create the data writer
-		BinaryAnnotator annotator = new BinaryAnnotator();		
-		annotator.initialize(UimaContextFactory.createUimaContext(
-				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, this.outputDirectory,
-				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultLIBLINEARDataWriterFactory.class.getName()));
-		
-		// run process to produce a bunch of instances
-		annotator.process(null);
-		
-		annotator.collectionProcessComplete();
-		
-		// check that the output file was written and is not empty
-		BufferedReader reader = new BufferedReader(new FileReader(new File(
-				this.outputDirectory, "training-data.libsvm")));
-		Assert.assertTrue(reader.readLine().length() > 0);
-		reader.close();
-		
-		// run the training command
-		HideOutput hider = new HideOutput();
-		Train.main(this.outputDirectory, "-c", "1.0", "-s", "1");
-		hider.restoreOutput();
-		
-		// read in the classifier and test it on new instances
-		JarFile modelFile = new JarFile(new File(this.outputDirectory, "model.jar")); 
-		LIBLINEARClassifier classifier = new LIBLINEARClassifier(modelFile);
-		modelFile.close();
-		for (Instance<Boolean> instance: generateBooleanInstances(1000)) {
-			List<Feature> features = instance.getFeatures();
-			Boolean outcome = instance.getOutcome();
-			Assert.assertEquals(outcome, classifier.classify(features));
-		}
-	}
 
 	@Test
 	public void testMultiClassLIBSVM() throws Exception {
@@ -173,7 +129,7 @@ public class RunLIBSVMTest {
 		MultiClassLIBSVMClassifier classifier = new MultiClassLIBSVMClassifier(modelFile);
 		modelFile.close();
 
-		for (Instance<String> instance: generateStringInstances(1000)) {
+		for (Instance<String> instance: TestInstanceFactory.generateStringInstances(1000)) {
 			List<Feature> features = instance.getFeatures();
 			String outcome = instance.getOutcome();
 			Assert.assertEquals(outcome, classifier.classify(features));
@@ -181,53 +137,7 @@ public class RunLIBSVMTest {
 	}
 	
 
-	private static List<Instance<Boolean>> generateBooleanInstances(int n) {
-		Random random = new Random(42);
-		List<Instance<Boolean>> instances = new ArrayList<Instance<Boolean>>();
-		for (int i = 0; i < n; i++) {
-			Instance<Boolean> instance = new Instance<Boolean>();
-			if (random.nextInt(2) == 0) {
-				instance.setOutcome(true);
-				instance.add(new Feature("hello", random.nextInt(100) + 1000));
-				instance.add(new Feature("goodbye", 500));
-			}
-			else {
-				instance.setOutcome(false);
-				instance.add(new Feature("hello", random.nextInt(100)));
-				instance.add(new Feature("goodbye", 500));
-			}
-			instances.add(instance);
-		}
-		return instances;
-	}
 	
-	private static List<Instance<String>> generateStringInstances(int n) {
-		Random random = new Random(42);
-		List<Instance<String>> instances = new ArrayList<Instance<String>>();
-		for (int i = 0; i < n; i++) {
-			Instance<String> instance = new Instance<String>();
-			int c = random.nextInt(3);
-			if ( c == 0 ) {
-				instance.setOutcome("A");
-				instance.add(new Feature("hello", random.nextInt(100) + 950));
-				instance.add(new Feature("goodbye", random.nextInt(100)));
-				instance.add(new Feature("farewell", random.nextInt(100)));
-			}
-			else if( c == 1 ) {
-				instance.setOutcome("B");
-				instance.add(new Feature("hello", random.nextInt(100)));
-				instance.add(new Feature("goodbye", random.nextInt(100) + 950));
-				instance.add(new Feature("farewell", random.nextInt(100)));
-			} else {
-				instance.setOutcome("C");
-				instance.add(new Feature("hello", random.nextInt(100)));
-				instance.add(new Feature("goodbye", random.nextInt(100)));
-				instance.add(new Feature("farewell", random.nextInt(100) + 950));
-			}
-			instances.add(instance);
-		}
-		return instances;
-	}
 	
 //	private static List<Instance<String>> generateStringInstances2(int n) {
 //		Random random = new Random(42);
@@ -260,7 +170,7 @@ public class RunLIBSVMTest {
 	private static class BinaryAnnotator extends CleartkAnnotator<Boolean> {
 		@Override
 		public void process(JCas aJCas) throws AnalysisEngineProcessException {			
-			for( Instance<Boolean> instance : generateBooleanInstances(1000) ) {
+			for( Instance<Boolean> instance : TestInstanceFactory.generateBooleanInstances(1000) ) {
 				try {
 					this.dataWriter.write(instance);
 				} catch (CleartkException e) {
@@ -273,7 +183,7 @@ public class RunLIBSVMTest {
 	private static class StringAnnotator extends CleartkAnnotator<String> {
 		@Override
 		public void process(JCas aJCas) throws AnalysisEngineProcessException {			
-			for( Instance<String> instance : generateStringInstances(1000) ) {
+			for( Instance<String> instance : TestInstanceFactory.generateStringInstances(1000) ) {
 				try {
 					this.dataWriter.write(instance);
 				} catch (CleartkException e) {

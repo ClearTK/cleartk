@@ -21,46 +21,31 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.classifier.libsvm;
+package org.cleartk.classifier.liblinear;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.jar.JarFile;
-import java.util.zip.ZipEntry;
-
-import org.cleartk.CleartkException;
-import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.jar.JarClassifier;
-import org.cleartk.classifier.libsvm.model.LIBLINEARModel;
-import org.cleartk.classifier.util.featurevector.FeatureVector;
-
+import org.cleartk.classifier.Classifier;
+import org.cleartk.classifier.libsvm.BinaryLIBSVMClassifierBuilder;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
  * <br>All rights reserved.
 
- *
- * @author Philipp Wetzler
- *
- */
+*/
 
-public class LIBLINEARClassifier extends JarClassifier<Boolean,Boolean,FeatureVector> {
-	
-	public static final String MODEL_NAME = "model.liblinear";
-	LIBLINEARModel model;
+public class BinaryLIBLINEARClassifierBuilder extends BinaryLIBSVMClassifierBuilder {
 
-	public LIBLINEARClassifier(JarFile modelFile) throws IOException, CleartkException {
-		super(modelFile);
-		
-		ZipEntry modelEntry = modelFile.getEntry(LIBLINEARClassifier.MODEL_NAME);
-		this.model = LIBLINEARModel.fromInputStream(modelFile.getInputStream(modelEntry));
+	@Override
+	public String getCommand() {
+		return "train";
 	}
 
-	public Boolean classify(List<Feature> features) throws CleartkException {
-		FeatureVector featureVector = this.featuresEncoder.encodeAll(features);
-
-		boolean encodedOutcome = (model.predict(featureVector) > 0);
-		return outcomeEncoder.decode(encodedOutcome);
+	@Override
+	public String getModelName() {
+		return BinaryLIBLINEARClassifier.MODEL_NAME;
 	}
 
+	@Override
+	public Class<? extends Classifier<Boolean>> getClassifierClass() {
+		return BinaryLIBLINEARClassifier.class;
+	}
 }

@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.classifier.libsvm.model;
+package org.cleartk.classifier.liblinear.model;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -29,6 +29,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.util.featurevector.ArrayFeatureVector;
@@ -41,6 +45,7 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
 
  *
  * @author Philipp Wetzler
+ * @author Philip Ogren
  *
  */
 
@@ -144,6 +149,50 @@ public class LIBLINEARModel {
 		}
 		
 	}
+	
+	public class ScoredPrediction implements Comparable<ScoredPrediction> {
+		int prediction;
+		double score;
+		public ScoredPrediction(int prediction, double score) {
+			super();
+			this.prediction = prediction;
+			this.score = score;
+		}
+		public int compareTo(ScoredPrediction arg0) {
+				return Double.compare(arg0.score,this.score);
+		}
+		public int getPrediction() {
+			return prediction;
+		}
+		public double getScore() {
+			return score;
+		}
+		
+	}
+	
+	public List<ScoredPrediction> score(FeatureVector featureVector) {
+		double[] values = new double[numberOfClassifiers];
+		
+		for( int i=0; i<numberOfClassifiers; i++ )
+			values[i] = classifiers[i].evaluate(featureVector);
+		
+		if( numberOfClasses == 2 ) {
+			if( values[0] > 0 ) {
+				return Arrays.asList(new ScoredPrediction(classifiers[0].label, values[0]), new ScoredPrediction(fallbackLabel, -values[0]));
+			} else {
+				return Arrays.asList(new ScoredPrediction(fallbackLabel, -values[0]), new ScoredPrediction(classifiers[0].label, values[0]));
+			}
+		} else {
+			List<ScoredPrediction> returnValues = new ArrayList<ScoredPrediction>();
+			for( int i=1; i<numberOfClassifiers; i++ ) {
+				returnValues.add(new ScoredPrediction(classifiers[i].label, values[i]));
+			}
+			Collections.sort(returnValues);
+			return returnValues;
+		}
+		
+	}
+
 	
 	static class Classifier {
 		FeatureVector weightVector;

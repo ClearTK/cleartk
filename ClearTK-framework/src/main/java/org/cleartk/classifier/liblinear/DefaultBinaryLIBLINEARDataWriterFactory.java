@@ -22,7 +22,7 @@
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
-package org.cleartk.classifier.libsvm;
+package org.cleartk.classifier.liblinear;
 
 import java.io.IOException;
 
@@ -47,16 +47,16 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * 
  */
 
-public class DefaultLIBLINEARDataWriterFactory extends JarDataWriterFactory<FeatureVector, Boolean, Boolean> {
+public class DefaultBinaryLIBLINEARDataWriterFactory extends JarDataWriterFactory<FeatureVector, Boolean, Boolean> {
 
-	public static final String PARAM_CUTOFF = ConfigurationParameterFactory.createConfigurationParameterName(DefaultLIBLINEARDataWriterFactory.class, "cutoff");
+	public static final String PARAM_CUTOFF = ConfigurationParameterFactory.createConfigurationParameterName(DefaultBinaryLIBLINEARDataWriterFactory.class, "cutoff");
 	@ConfigurationParameter(
 			defaultValue = "5",
 			description = "features that occur less than this number of times over the whole training set will not be encoded during testing")
 	protected int cutoff = 5;
 
 	public DataWriter<Boolean> createDataWriter() throws IOException {
-		LIBLINEARDataWriter dataWriter = new LIBLINEARDataWriter(outputDirectory);
+		BinaryLIBLINEARDataWriter dataWriter = new BinaryLIBLINEARDataWriter(outputDirectory);
 
 		if(!this.setEncodersFromFileSystem(dataWriter)) {
 			NameNumberNormalizer normalizer = new EuclidianNormalizer();
