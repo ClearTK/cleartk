@@ -38,6 +38,7 @@ import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.TestInstanceFactory;
 import org.cleartk.classifier.jar.JarDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.UimaContextFactory;
@@ -55,7 +56,7 @@ public class LIBSVMTest {
 
 	protected String outputDirectory = "test/data/libsvm";
 	
-//	@After
+	@After
 	public void tearDown() throws Exception {
 		File outputDirectory = new File(this.outputDirectory);
 		TearDownUtil.removeDirectory(outputDirectory);
