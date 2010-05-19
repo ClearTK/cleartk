@@ -38,7 +38,6 @@ import org.cleartk.classifier.feature.extractor.WindowExtractor;
 import org.cleartk.classifier.feature.extractor.WindowNGramExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
-import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.feature.proliferate.CapitalTypeProliferator;
 import org.cleartk.classifier.feature.proliferate.CharacterNGramProliferator;
 import org.cleartk.classifier.feature.proliferate.LowerCaseProliferator;
@@ -66,7 +65,6 @@ public class DefaultFeatureExtractor implements POSFeatureExtractor<Token, Sente
 		simpleExtractors = new ArrayList<SimpleFeatureExtractor>();
 
 		SimpleFeatureExtractor wordExtractor = new SpannedTextExtractor();
-		SimpleFeatureExtractor stemExtractor = new TypePathExtractor(Token.class, "stem");
 
 		int fromLeft = CharacterNGramProliferator.LEFT_TO_RIGHT;
 		int fromRight = CharacterNGramProliferator.RIGHT_TO_LEFT;
@@ -75,31 +73,28 @@ public class DefaultFeatureExtractor implements POSFeatureExtractor<Token, Sente
 				new LowerCaseProliferator(),
 				new CapitalTypeProliferator(),
 				new NumericTypeProliferator(),
+				new CharacterNGramProliferator(fromLeft, 0, 1),
 				new CharacterNGramProliferator(fromLeft, 0, 2),
 				new CharacterNGramProliferator(fromLeft, 0, 3),
+				new CharacterNGramProliferator(fromRight, 0, 1),
 				new CharacterNGramProliferator(fromRight, 0, 2),
-				new CharacterNGramProliferator(fromRight, 0, 3)));
-		simpleExtractors.add(stemExtractor);
+				new CharacterNGramProliferator(fromRight, 0, 3),
+				new CharacterNGramProliferator(fromRight, 0, 4),
+				new CharacterNGramProliferator(fromRight, 0, 5),
+				new CharacterNGramProliferator(fromRight, 0, 6)));
 
-		
 		windowExtractors = new ArrayList<WindowExtractor>();
 		
 		windowExtractors.add(new WindowExtractor(
-				Token.class, stemExtractor, WindowFeature.ORIENTATION_LEFT, 0, 3));
+				Token.class, wordExtractor, WindowFeature.ORIENTATION_LEFT, 0, 2));
 		windowExtractors.add(new WindowExtractor(
-				Token.class, stemExtractor, WindowFeature.ORIENTATION_RIGHT, 0, 3));
+				Token.class, wordExtractor, WindowFeature.ORIENTATION_RIGHT, 0, 2));
 		
 		windowNGramExtractors = new ArrayList<WindowNGramExtractor>();
 		windowNGramExtractors.add(new WindowNGramExtractor(
-				Token.class, stemExtractor, WindowNGramFeature.ORIENTATION_LEFT,WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT,"_", 0, 2));
+				Token.class, wordExtractor, WindowNGramFeature.ORIENTATION_LEFT,WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT,"_", 0, 2));
 		windowNGramExtractors.add(new WindowNGramExtractor(
-				Token.class, stemExtractor, WindowNGramFeature.ORIENTATION_LEFT,WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT,"_", 1, 3));
-		windowNGramExtractors.add(new WindowNGramExtractor(
-				Token.class, stemExtractor, WindowNGramFeature.ORIENTATION_RIGHT,WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT,"_", 0, 2));
-		windowNGramExtractors.add(new WindowNGramExtractor(
-				Token.class, stemExtractor, WindowNGramFeature.ORIENTATION_RIGHT,WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT,"_", 1, 3));
-
-		
+				Token.class, wordExtractor, WindowNGramFeature.ORIENTATION_RIGHT,WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT,"_", 0, 2));
 	}
 
 	public List<Feature> extractFeatures(JCas jCas, Token token, Sentence sentence) throws CleartkException {
