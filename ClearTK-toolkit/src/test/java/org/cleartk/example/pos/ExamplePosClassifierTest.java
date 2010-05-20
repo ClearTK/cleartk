@@ -221,7 +221,8 @@ public class ExamplePosClassifierTest {
 		String outputDirectory = baseDirectory+"/svmlight";
 		AnalysisEngineDescription dataWriter = CleartkComponents.createViterbiAnnotator(
 				ExamplePOSAnnotator.class, DefaultOVASVMlightDataWriterFactory.class,
-				outputDirectory);
+				outputDirectory,
+				DefaultOVASVMlightDataWriterFactory.PARAM_CUTOFF, 1);
 
 		testClassifier(dataWriter, outputDirectory, 1);
 
@@ -229,7 +230,7 @@ public class ExamplePosClassifierTest {
 		boolean badTags = firstLine.equals("2008/NN Sichuan/NN earthquake/NN From/NN Wikipedia/NN ,/NN the/NN free/NN encyclopedia/NN");
 		assertFalse(badTags);
 		
-		assertEquals("2008/JJ Sichuan/NN earthquake/NN From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/IN", firstLine);
+		assertEquals("2008/CD Sichuan/JJ earthquake/NNS From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/IN", firstLine);
 	}
 
 	
