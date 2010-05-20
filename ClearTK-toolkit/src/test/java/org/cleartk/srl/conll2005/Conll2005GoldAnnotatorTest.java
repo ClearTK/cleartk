@@ -45,7 +45,9 @@ public class Conll2005GoldAnnotatorTest {
 	@Test
 	public void testDescriptor() throws UIMAException, IOException {
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-				"org.cleartk.srl.conll2005.Conll2005GoldAnnotator");
+				"org.cleartk.srl.conll2005.Conll2005GoldAnnotator",
+				Conll2005GoldAnnotator.PARAM_HAS_VERB_SENSES, false
+				);
 		engine.collectionProcessComplete();
 	}
 }
