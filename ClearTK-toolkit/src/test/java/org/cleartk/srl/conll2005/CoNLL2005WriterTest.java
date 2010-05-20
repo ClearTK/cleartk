@@ -70,7 +70,7 @@ public class CoNLL2005WriterTest {
 		File outputFile = new File(outputDir, "dev-set-result.txt"); 
 
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-				"org.cleartk.srl.conll2005.CoNLL2005Writer",
+				"org.cleartk.srl.conll2005.Conll2005Writer",
 				Conll2005Writer.PARAM_OUTPUT_FILE, outputFile.getPath());
 
 		engine.collectionProcessComplete();
