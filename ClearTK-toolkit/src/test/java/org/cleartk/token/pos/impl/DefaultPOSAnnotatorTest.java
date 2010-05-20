@@ -121,7 +121,7 @@ public class DefaultPOSAnnotatorTest {
 		JCas jCas = ReusableUIMAObjects.getJCas();
 		TokenFactory.createTokens(jCas, "What kitchen utensil is like a vampire ? Spatula", Token.class, Sentence.class );
 		tagger.process(jCas);
-		assertEquals("WP", AnnotationRetrieval.get(jCas, Token.class, 0).getPos());
+		assertEquals("IN", AnnotationRetrieval.get(jCas, Token.class, 0).getPos());
 		assertEquals("NN", AnnotationRetrieval.get(jCas, Token.class, 1).getPos());
 		assertEquals("NN", AnnotationRetrieval.get(jCas, Token.class, 2).getPos());
 		
