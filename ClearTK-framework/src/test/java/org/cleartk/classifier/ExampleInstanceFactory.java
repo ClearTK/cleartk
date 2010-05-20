@@ -34,7 +34,7 @@ import java.util.Random;
  * All rights reserved.
  */
 
-public class TestInstanceFactory {
+public class ExampleInstanceFactory {
 
 	
 	public static List<Instance<Boolean>> generateBooleanInstances(int n) {

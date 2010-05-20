@@ -35,7 +35,7 @@ import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.TestInstanceFactory;
+import org.cleartk.classifier.ExampleInstanceFactory;
 import org.cleartk.classifier.jar.JarDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
 import org.junit.After;
@@ -95,7 +95,7 @@ public class LIBLINEARTest {
 		JarFile modelFile = new JarFile(new File(this.outputDirectory, "model.jar")); 
 		BinaryLIBLINEARClassifier classifier = new BinaryLIBLINEARClassifier(modelFile);
 		modelFile.close();
-		for (Instance<Boolean> instance: TestInstanceFactory.generateBooleanInstances(1000)) {
+		for (Instance<Boolean> instance: ExampleInstanceFactory.generateBooleanInstances(1000)) {
 			List<Feature> features = instance.getFeatures();
 			Boolean outcome = instance.getOutcome();
 			Assert.assertEquals(outcome, classifier.classify(features));
@@ -106,7 +106,7 @@ public class LIBLINEARTest {
 	private static class BinaryAnnotator extends CleartkAnnotator<Boolean> {
 		@Override
 		public void process(JCas aJCas) throws AnalysisEngineProcessException {			
-			for( Instance<Boolean> instance : TestInstanceFactory.generateBooleanInstances(1000) ) {
+			for( Instance<Boolean> instance : ExampleInstanceFactory.generateBooleanInstances(1000) ) {
 				try {
 					this.dataWriter.write(instance);
 				} catch (CleartkException e) {
