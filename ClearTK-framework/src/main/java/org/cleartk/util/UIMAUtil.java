@@ -68,6 +68,15 @@ public class UIMAUtil {
 		uimaSArray.copyFromArray(sArray, 0, 0, sArray.length);
 		return uimaSArray;
 	}
+	
+	public static List<String> toList(StringArray sArray) {
+		List<String> result = new ArrayList<String>(sArray.size());
+		for( int i=0; i<sArray.size(); i++ ) {
+			result.add(sArray.get(i));
+		}
+		
+		return result;
+	}
 
 	public static <T extends FeatureStructure> List<T> toList(FSArray fsArray, Class<T> cls) {
 		List<T> list = new ArrayList<T>();

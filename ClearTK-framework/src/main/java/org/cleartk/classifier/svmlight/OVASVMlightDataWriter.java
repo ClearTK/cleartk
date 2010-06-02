@@ -57,7 +57,7 @@ public class OVASVMlightDataWriter extends JarDataWriter<String,Integer,FeatureV
 
 	@Override
 	public void writeEncoded(FeatureVector features, Integer outcome) {
-		if( ! trainingDataWriters.containsKey(outcome) ) {
+		if( outcome != null && ! trainingDataWriters.containsKey(outcome) ) {
 			addClass(outcome);
 		}
 		
@@ -67,13 +67,18 @@ public class OVASVMlightDataWriter extends JarDataWriter<String,Integer,FeatureV
 		}
 		
 		StringBuffer output = new StringBuffer();
-		output.append("-1");
+		if( outcome == null )
+			output.append("0");
+		else
+			output.append("-1");
 		output.append(featureString);
 		allFalseWriter.println(output);
 		
 		for( int i : trainingDataWriters.keySet()) {
 			output = new StringBuffer();
-			if( outcome == i )
+			if( outcome == null )
+				output.append("0");
+			else if( outcome == i )
 				output.append("+1");
 			else
 				output.append("-1");

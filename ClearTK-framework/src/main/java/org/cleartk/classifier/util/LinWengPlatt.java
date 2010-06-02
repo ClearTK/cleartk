@@ -23,8 +23,17 @@
 */
 package org.cleartk.classifier.util;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.logging.Logger;
+
+import org.cleartk.CleartkException;
+import org.cleartk.classifier.svmlight.model.SVMlightModel;
+import org.cleartk.classifier.util.featurevector.FeatureVector;
+import org.cleartk.classifier.util.featurevector.SparseFeatureVector;
 
 /**
  * <br>Copyright (c) 2009, Regents of the University of Colorado 
@@ -42,6 +51,33 @@ import java.util.logging.Logger;
  * @author Philipp G. Wetzler
  */
 public class LinWengPlatt {
+	
+	public static Sigmoid fit(File svmlightModelFile, File trainingDataFile) throws ConvergenceFailure, IOException, CleartkException {
+		SVMlightModel model = SVMlightModel.fromFile(svmlightModelFile);
+		
+		BufferedReader r = new BufferedReader(new FileReader(trainingDataFile));
+		int lines = 0;
+		while( r.readLine() != null )
+			lines += 1;
+		r.close();
+		
+		boolean[] labels = new boolean[lines];
+		double[] decisionValues = new double[lines];
+		int i=0;
+		r = new BufferedReader(new FileReader(trainingDataFile));
+		String line = r.readLine();
+		while( line != null ) {
+			TrainingInstance ti = parseTI(line.trim());
+			labels[i] = ti.getLabel();
+			decisionValues[i] = model.evaluate(ti.getFeatureVector());
+			i += 1;
+			line = r.readLine();
+		}
+		r.close();
+		
+		return fit(decisionValues, labels);
+
+	}
 
 	public static Sigmoid fit(double[] decisionValues, boolean[] labels) throws ConvergenceFailure {
 		
@@ -174,6 +210,14 @@ public class LinWengPlatt {
 			return B;
 		}
 		
+		@Override
+		public String toString() {
+			if( B < 0 ) 
+				return String.format("1 / (1 + exp(%.3f*x - %.3f))", A, -B);
+			else
+				return String.format("1 / (1 + exp(%.3f*x + %.3f))", A, B);
+		}
+		
 		private double A;
 		private double B;
 	}
@@ -188,4 +232,39 @@ public class LinWengPlatt {
 		
 	}
 
+	private static TrainingInstance parseTI(String line) throws IOException, CleartkException {
+		String[] fields = line.split(" ");
+		
+		boolean label = fields[0].trim().equals("+1");
+		
+		FeatureVector fv = new SparseFeatureVector();
+		
+		for( int i=1; i<fields.length; i++ ) {
+			String[] parts = fields[i].split(":");
+			int featureIndex = Integer.valueOf(parts[0]);
+			double featureValue = Double.valueOf(parts[1]);
+			fv.set(featureIndex, featureValue);
+		}
+		
+		return new TrainingInstance(label, fv);
+	}
+	
+	private static class TrainingInstance {
+		
+		public TrainingInstance(boolean label, FeatureVector featureVector) {
+			this.label = label;
+			this.featureVector = featureVector;
+		}
+		
+		public boolean getLabel() {
+			return label;
+		}
+		
+		public FeatureVector getFeatureVector() {
+			return featureVector;
+		}
+		
+		private boolean label;
+		private FeatureVector featureVector;
+	}
 }

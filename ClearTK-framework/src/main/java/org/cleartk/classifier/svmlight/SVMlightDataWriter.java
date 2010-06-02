@@ -44,10 +44,9 @@ public class SVMlightDataWriter extends JarDataWriter<Boolean,Boolean,FeatureVec
 	public void writeEncoded(FeatureVector features, Boolean outcome) throws CleartkException {
 		StringBuffer output = new StringBuffer();
 		
-		if( outcome == null )
-			return;
-			
-		if( outcome.booleanValue() ) {
+		if( outcome == null ) {
+			output.append("0");
+		} else if( outcome.booleanValue() ) {
 			output.append("+1");
 		} else {
 			output.append("-1");

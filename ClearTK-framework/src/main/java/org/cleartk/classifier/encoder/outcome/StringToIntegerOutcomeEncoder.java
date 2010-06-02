@@ -54,6 +54,9 @@ public class StringToIntegerOutcomeEncoder implements OutcomeEncoder<String,Inte
 	}
 
 	public Integer encode(String input) {
+		if( input == null )
+			return null;
+		
 		if( ! map.containsKey(input) ) {
 			map.put(input, nextIndex);
 			reverseMap.put(nextIndex, input);
@@ -64,6 +67,9 @@ public class StringToIntegerOutcomeEncoder implements OutcomeEncoder<String,Inte
 	}
 
 	public String decode(Integer outcome) {
+		if( outcome == null )
+			return null;
+		
 		return reverseMap.get(outcome);
 	}
 	

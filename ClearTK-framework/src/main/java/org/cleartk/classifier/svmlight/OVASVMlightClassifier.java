@@ -26,6 +26,8 @@ package org.cleartk.classifier.svmlight;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -34,6 +36,7 @@ import java.util.zip.ZipEntry;
 
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.jar.JarClassifier;
 import org.cleartk.classifier.svmlight.model.SVMlightModel;
 import org.cleartk.classifier.util.LinWengPlatt.Sigmoid;
@@ -85,7 +88,7 @@ public class OVASVMlightClassifier extends JarClassifier<String,Integer,FeatureV
 		double maxScore = 0;
 		boolean first = true;
 		for( int i : models.keySet() ) {
-			double score = this.sigmoids.get(i).evaluate(models.get(i).evaluate(featureVector));
+			double score = score(featureVector, i);
 			if( first || score > maxScore ) {
 				first = false;
 				maxScore = score;
@@ -94,5 +97,25 @@ public class OVASVMlightClassifier extends JarClassifier<String,Integer,FeatureV
 		}
 		
 		return outcomeEncoder.decode(maxScoredIndex);
+	}
+	
+	@Override
+	public List<ScoredOutcome<String>> score(List<Feature> features, int maxResults) throws CleartkException {
+		FeatureVector featureVector = this.featuresEncoder.encodeAll(features);
+		
+		List<ScoredOutcome<String>> results = new ArrayList<ScoredOutcome<String>>();
+		for( int i : models.keySet() ) {
+			double score = score(featureVector, i);
+			String name = outcomeEncoder.decode(i);
+			
+			results.add(new ScoredOutcome<String>(name, score));
+		}
+		Collections.sort(results);
+		
+		return results.subList(0, Math.min(maxResults, results.size()));
+	}
+
+	private double score(FeatureVector fv, int i) {
+		return sigmoids.get(i).evaluate(models.get(i).evaluate(fv));
 	}
 }

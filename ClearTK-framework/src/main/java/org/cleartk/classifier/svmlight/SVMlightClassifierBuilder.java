@@ -24,8 +24,11 @@
 package org.cleartk.classifier.svmlight;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.io.PrintStream;
 
 import org.apache.uima.UIMAFramework;
@@ -34,6 +37,8 @@ import org.apache.uima.util.Logger;
 import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.jar.BuildJar;
 import org.cleartk.classifier.jar.ClassifierBuilder;
+import org.cleartk.classifier.util.LinWengPlatt;
+import org.cleartk.classifier.util.LinWengPlatt.Sigmoid;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -79,12 +84,21 @@ public class SVMlightClassifierBuilder implements ClassifierBuilder<Boolean> {
 	}
 	
 	public void train(File dir, String[] args) throws Exception {
-		train(new File(dir, "training-data.svmlight").getPath(), args);
+		File trainingDataFile = new File(dir, "training-data.svmlight");
+		train(trainingDataFile.getPath(), args);
+		
+		Sigmoid s = LinWengPlatt.fit(new File(trainingDataFile.toString() + ".model"), trainingDataFile);
+		System.out.println("Computed output mapping function: " + s.toString());
+		
+		ObjectOutput o = new ObjectOutputStream(new FileOutputStream(new File(trainingDataFile.toString() + ".sigmoid")));
+		o.writeObject(s);
+		o.close();
 	}
 	
 	public void buildJar(File dir, String[] args) throws Exception {
 		BuildJar.OutputStream stream = new BuildJar.OutputStream(dir);
 		stream.write("model.svmlight", new File(dir, "training-data.svmlight.model"));
+		stream.write("model.sigmoid", new File(dir, "training-data.svmlight.sigmoid"));
 		stream.close();
 	}
 
