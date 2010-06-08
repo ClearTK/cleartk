@@ -3,13 +3,13 @@
 	<groupId>org.cleartk</groupId>
 	<artifactId>cleartk-framework</artifactId>
 	<packaging>jar</packaging>
-	<version>0.9.7-SNAPSHOT</version>
+	<version>0.9.7</version>
 	<name>ClearTK-framework</name>
 	<url>http://cleartk.googlecode.com/</url>
 	<scm>
-		<connection>scm:svn:http://cleartk.googlecode.com/svn/trunk/ClearTK-framework/</connection>
-		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/trunk/ClearTK-framework/</developerConnection>
-		<url>http://cleartk.googlecode.com/svn/</url>
+		<connection>scm:svn:http://cleartk.googlecode.com/svn/tags/cleartk-framework-0.9.7</connection>
+		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/tags/cleartk-framework-0.9.7</developerConnection>
+		<url>http://cleartk.googlecode.com/svn/tags/cleartk-framework-0.9.7</url>
 	</scm>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -94,7 +94,7 @@
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-test-util</artifactId>
-			<version>0.4-SNAPSHOT</version>
+			<version>0.4</version>
 			<type>jar</type>
 			<optional>false</optional>
 		</dependency>
