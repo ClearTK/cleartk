@@ -37,6 +37,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.uimafit.component.xwriter.XWriter;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.CollectionReaderFactory;
 import org.uimafit.factory.TokenFactory;
@@ -75,7 +76,8 @@ public class XReaderTest {
 
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				XWriter.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-				XWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.inputDir.getPath());
+				XWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.inputDir.getPath(),
+				XWriter.PARAM_FILE_NAMER_CLASS_NAME, ViewURIFileNamer.class.getName());
 		JCas jCas = engine.newJCas();
 		TokenFactory.createTokens(jCas,
 				"I like\nspam!",
@@ -111,7 +113,8 @@ public class XReaderTest {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				XWriter.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
 				XWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.inputDir.getPath(),
-				XWriter.PARAM_XML_SCHEME_NAME, XWriter.XCAS);
+				XWriter.PARAM_XML_SCHEME_NAME, XWriter.XCAS,
+				XWriter.PARAM_FILE_NAMER_CLASS_NAME, ViewURIFileNamer.class.getName());
 		JCas jCas = engine.newJCas();
 		TokenFactory.createTokens(jCas,
 				"I like\nspam!",

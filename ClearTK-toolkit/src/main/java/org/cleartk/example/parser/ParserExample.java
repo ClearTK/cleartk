@@ -30,7 +30,8 @@ import org.cleartk.CleartkComponents;
 import org.cleartk.syntax.opennlp.OpenNLPTreebankParser;
 import org.cleartk.token.opennlp.OpenNLPPOSTagger;
 import org.cleartk.util.FilesCollectionReader;
-import org.cleartk.util.XWriter;
+import org.cleartk.util.ViewURIFileNamer;
+import org.uimafit.component.xwriter.XWriter;
 import org.uimafit.util.SimplePipeline;
 
 /**
@@ -55,7 +56,8 @@ public class ParserExample {
 		AnalysisEngineDescription posTaggerDescription = OpenNLPPOSTagger.getDescription();
 		AnalysisEngineDescription parserDescription = OpenNLPTreebankParser.getDescription();
 		AnalysisEngineDescription xWriterDescription = CleartkComponents.createPrimitiveDescription(XWriter.class,
-				XWriter.PARAM_OUTPUT_DIRECTORY_NAME, outputDirectory);
+				XWriter.PARAM_OUTPUT_DIRECTORY_NAME, outputDirectory,
+				XWriter.PARAM_FILE_NAMER_CLASS_NAME, ViewURIFileNamer.class.getName());
 
 		SimplePipeline.runPipeline(reader, sentenceAndTokensDescription, posTaggerDescription, parserDescription, xWriterDescription);
 	}

@@ -154,7 +154,6 @@ public class GenerateDescriptorFiles {
 		writeCollectionReader(GeniaPosGoldReader.class, outputDirectory);
 		
 		writePrimitiveDescription(PlainTextWriter.class, outputDirectory);
-		writePrimitiveDescription(XWriter.class, outputDirectory);
 		writePrimitiveDescription(TermFinderAnnotator.class, outputDirectory);
 		writePrimitiveDescription(JCasAnnotatorAdapter.class, outputDirectory);
 		writeCollectionReader(XReader.class, outputDirectory);

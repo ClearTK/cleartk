@@ -37,9 +37,10 @@ import org.cleartk.ViewNames;
 import org.cleartk.example.AbstractOptions;
 import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
 import org.cleartk.util.FilesCollectionReader;
-import org.cleartk.util.XWriter;
+import org.cleartk.util.ViewURIFileNamer;
 import org.kohsuke.args4j.Option;
 import org.uimafit.component.ViewCreatorAnnotator;
+import org.uimafit.component.xwriter.XWriter;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.CollectionReaderFactory;
 import org.uimafit.util.SimplePipeline;
@@ -92,7 +93,8 @@ public class TreebankParsingExample {
 		AnalysisEngine treebankParser = AnalysisEngineFactory.createAnalysisEngine(treebankParserDescription, ViewNames.GOLD_VIEW);
 
 		AnalysisEngine xWriter = AnalysisEngineFactory.createPrimitive(XWriter.class, CleartkComponents.TYPE_SYSTEM_DESCRIPTION,
-				XWriter.PARAM_OUTPUT_DIRECTORY_NAME, options.outputDirectory);
+				XWriter.PARAM_OUTPUT_DIRECTORY_NAME, options.outputDirectory,
+				XWriter.PARAM_FILE_NAMER_CLASS_NAME, ViewURIFileNamer.class.getName());
 
 		SimplePipeline.runPipeline(reader, viewCreator, treebankParser, xWriter);
 

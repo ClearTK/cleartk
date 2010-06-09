@@ -274,7 +274,7 @@ public class CleartkComponents {
 		AnalysisEngineDescription tokenizer = CleartkComponents.createPrimitiveDescription(TokenAnnotator.class,
 				TokenAnnotator.PARAM_WINDOW_TYPE_NAME, org.cleartk.type.Sentence.class.getName());
 		return AnalysisEngineFactory.createAggregateDescription(Arrays.asList(sentences, tokenizer), Arrays.asList(
-				"SentenceSegmenter", "TokenAnnotator"), TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES, null);
+				"SentenceSegmenter", "TokenAnnotator"), TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES, null, null);
 	}
 
 	public static String getParameterValue(String paramName, String defaultValue) {

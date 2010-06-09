@@ -30,7 +30,8 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;
 import org.cleartk.CleartkComponents;
 import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
-import org.cleartk.util.XWriter;
+import org.cleartk.util.ViewURIFileNamer;
+import org.uimafit.component.xwriter.XWriter;
 import org.uimafit.factory.CollectionReaderFactory;
 import org.uimafit.factory.TypeSystemDescriptionFactory;
 import org.uimafit.util.SimplePipeline;
@@ -56,7 +57,7 @@ public class ParseProbankExample {
 				PropbankGoldReader.PARAM_WSJ_SECTIONS, wsjSections);
 		AnalysisEngine treebankEngine = CleartkComponents.createPrimitive(TreebankGoldAnnotator.class);
 		AnalysisEngine propbankEngine = CleartkComponents.createPrimitive(PropbankGoldAnnotator.class);
-		AnalysisEngine xWriter = CleartkComponents.createPrimitive(XWriter.class, XWriter.PARAM_OUTPUT_DIRECTORY_NAME, outputDirectory);
+		AnalysisEngine xWriter = CleartkComponents.createPrimitive(XWriter.class, XWriter.PARAM_OUTPUT_DIRECTORY_NAME, outputDirectory, XWriter.PARAM_FILE_NAMER_CLASS_NAME, ViewURIFileNamer.class.getName());
 	
 		SimplePipeline.runPipeline(reader, treebankEngine, propbankEngine, xWriter);
 	}
