@@ -37,7 +37,8 @@ import org.cleartk.classifier.encoder.features.NumberEncoder;
 import org.cleartk.classifier.encoder.features.StringEncoder;
 import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
 import org.cleartk.classifier.jar.JarSequentialDataWriterFactory;
-import org.cleartk.util.UIMAUtil;
+import org.uimafit.descriptor.ConfigurationParameter;
+import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.InitializeUtil;
 
 /**
@@ -50,30 +51,14 @@ import org.uimafit.util.InitializeUtil;
 
 public class DefaultMalletCRFDataWriterFactory extends JarSequentialDataWriterFactory<List<NameNumber>, String, String> {
 
-	/**
-	 * "org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory.PARAM_COMPRESS"
-	 * is a single, optional, boolean parameter, defaulting to false, that when true
-	 * indicates that the FeaturesEncoder should compress the feature names.
-	 * @see NameNumberFeaturesEncoder
-	 */
-	public static final String PARAM_COMPRESS = "org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory.PARAM_COMPRESS";
-
-	/**
-	 * "org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory.PARAM_SORT_NAME_LOOKUP"
-	 * is a single, optional, boolean parameter, defaulting to false, that when true
-	 * indicates that the FeaturesEncoder should write the feature names in sorted order.
-	 * @see NameNumberFeaturesEncoder
-	 */
-	public static final String PARAM_SORT_NAME_LOOKUP = "org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory.PARAM_SORT_NAME_LOOKUP";
-
-	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		super.initialize(context);
-		InitializeUtil.initialize(this, context);
-		compress = (Boolean)UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_COMPRESS, false);
-		sort = (Boolean)UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_SORT_NAME_LOOKUP, false);
-	}
+	public static final String PARAM_COMPRESS = ConfigurationParameterFactory.createConfigurationParameterName(DefaultMalletCRFDataWriterFactory.class, "compress");
+	@ConfigurationParameter(description="indicates whether the FeaturesEncoder should compress the feature names", defaultValue="false")
+	private boolean compress;
 	
+	public static final String PARAM_SORT = ConfigurationParameterFactory.createConfigurationParameterName(DefaultMalletCRFDataWriterFactory.class, "sort");
+	@ConfigurationParameter(description="indicates that the FeaturesEncoder should write the feature names in sorted order", defaultValue="false")
+	private boolean sort;
+
 	public SequentialDataWriter<String> createSequentialDataWriter() throws IOException {
 		MalletCRFDataWriter mdw = new MalletCRFDataWriter(outputDirectory);
 		
@@ -90,7 +75,5 @@ public class DefaultMalletCRFDataWriterFactory extends JarSequentialDataWriterFa
 		return mdw;
 	}
 
-	private boolean compress;
-	private boolean sort;
 
 }

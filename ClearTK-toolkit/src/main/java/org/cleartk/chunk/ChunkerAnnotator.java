@@ -40,6 +40,7 @@ import org.cleartk.util.UIMAUtil;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.InitializeUtil;
+import org.uimafit.util.initialize.InitializableFactory;
 
 
 /**
@@ -97,10 +98,10 @@ public class ChunkerAnnotator extends CleartkSequentialAnnotator<String> {
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
 		InitializeUtil.initialize(this, context);
-		labeledAnnotationClass = UIMAUtil.getClass(labeledAnnotationClassName, Annotation.class);
-		sequenceClass = UIMAUtil.getClass(sequenceClassName, Annotation.class);
-		chunkLabeler = UIMAUtil.create(chunkLabelerClassName, ChunkLabeler.class, context);
-		featureExtractor = UIMAUtil.create(chunkerFeatureExtractorClassName, ChunkerFeatureExtractor.class, context);
+		labeledAnnotationClass = InitializableFactory.getClass(labeledAnnotationClassName, Annotation.class);
+		sequenceClass = InitializableFactory.getClass(sequenceClassName, Annotation.class);
+		chunkLabeler = InitializableFactory.create(context, chunkLabelerClassName, ChunkLabeler.class);
+		featureExtractor = InitializableFactory.create(context, chunkerFeatureExtractorClassName, ChunkerFeatureExtractor.class);
 	}
 
 	protected void initializeTypes(JCas jCas) throws AnalysisEngineProcessException {

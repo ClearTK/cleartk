@@ -42,6 +42,7 @@ import org.cleartk.util.ViewURIUtil;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.InitializeUtil;
+import org.uimafit.util.initialize.InitializableFactory;
 
 /**
  * <br>
@@ -237,11 +238,11 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 				out = new PrintStream(outputFile);
 			}
 
-			outputAnnotationClass = UIMAUtil.getClass(outputAnnotationClassName, Annotation.class);
+			outputAnnotationClass = InitializableFactory.getClass(outputAnnotationClassName, Annotation.class);
 
 			Class<? extends AnnotationWriter<ANNOTATION_TYPE>> annotationWriterClass = ReflectionUtil
 					.uncheckedCast(Class.forName(annotationWriterClassName).asSubclass(AnnotationWriter.class));
-			annotationWriter = UIMAUtil.create(annotationWriterClassName, annotationWriterClass, context);
+			annotationWriter = InitializableFactory.create(context, annotationWriterClassName, annotationWriterClass);
 			
 			java.lang.reflect.Type annotationType = ReflectionUtil.getTypeArgument(AnnotationWriter.class,
 					"ANNOTATION_TYPE", this.annotationWriter);
@@ -255,7 +256,7 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 				
 				Class<? extends BlockWriter<BLOCK_TYPE>> blockWriterClass = ReflectionUtil.uncheckedCast(Class.forName(
 						blockWriterClassName).asSubclass(BlockWriter.class));
-				this.blockWriter = UIMAUtil.create(blockWriterClassName, blockWriterClass, context);
+				this.blockWriter = InitializableFactory.create(context, blockWriterClassName, blockWriterClass);
 
 				if (blockAnnotationClassName.equals("org.apache.uima.jcas.tcas.DocumentAnnotation")) {
 					blockOnDocument = true;

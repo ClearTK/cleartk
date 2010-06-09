@@ -43,6 +43,7 @@ import org.cleartk.util.UIMAUtil;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.InitializeUtil;
+import org.uimafit.util.initialize.InitializableFactory;
 
 /**
  * <br>
@@ -106,11 +107,11 @@ public class TokenAnnotator extends JCasAnnotator_ImplBase {
 		try {
 			super.initialize(uimaContext);
 			InitializeUtil.initialize(this, uimaContext);
-			tokenizer = 	UIMAUtil.create(tokenizerName, Tokenizer.class, uimaContext);
-			tokenClass = UIMAUtil.getClass(tokenTypeName, Annotation.class);
+			tokenizer = 	InitializableFactory.create(uimaContext, tokenizerName, Tokenizer.class);
+			tokenClass = InitializableFactory.getClass(tokenTypeName, Annotation.class);
 			tokenConstructor = tokenClass.getConstructor(new Class[] { JCas.class, Integer.TYPE, Integer.TYPE });
 			if(windowTypeName != null)
-				windowClass = UIMAUtil.getClass(windowTypeName, Annotation.class);
+				windowClass = InitializableFactory.getClass(windowTypeName, Annotation.class);
 		}
 		catch (Exception e) {
 			throw new ResourceInitializationException(e);

@@ -344,10 +344,10 @@ public class ViterbiTest {
 			outcomeFeatureExtractors = ofes;
 		}
 		public void setStackSize(int stackSize) {
-			viterbiStackSize = stackSize;
+			this.stackSize = stackSize;
 		}
 		public void setAddScores(boolean addScores) {
-			viterbiAddScores = addScores;
+			this.addScores = addScores;
 		}
 		public void setDelegatedClassifier(Classifier<String> classifier) {
 			delegatedClassifier = classifier;

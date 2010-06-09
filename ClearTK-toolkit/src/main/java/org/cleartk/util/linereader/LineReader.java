@@ -32,7 +32,9 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
 
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
+import org.apache.uima.cas.CASException;
 import org.apache.uima.collection.CollectionException;
 import org.apache.uima.collection.CollectionReader_ImplBase;
 import org.apache.uima.jcas.JCas;
@@ -40,11 +42,12 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 import org.cleartk.ViewNames;
-import org.cleartk.util.UIMAUtil;
+import org.uimafit.component.ViewCreatorAnnotator;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.SofaCapability;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.InitializeUtil;
+import org.uimafit.util.initialize.InitializableFactory;
 import org.uimafit.util.io.Files;
 
 
@@ -91,7 +94,8 @@ public class LineReader extends CollectionReader_ImplBase {
 
 	public static final String PARAM_VIEW_NAME = ConfigurationParameterFactory.createConfigurationParameterName(LineReader.class, "viewName");
 	@ConfigurationParameter(
-			description = "takes the the name that should be given to the JCas view associated with the document texts.")
+			description = "takes the the name that should be given to the JCas view associated with the document texts.",
+			defaultValue = CAS.NAME_DEFAULT_SOFA)
 	private String viewName;
 	
 	public static final String PARAM_LANGUAGE = ConfigurationParameterFactory.createConfigurationParameterName(LineReader.class, "language");
@@ -161,7 +165,7 @@ public class LineReader extends CollectionReader_ImplBase {
 				commentSpecifiers = new String[0];
 			}
 
-			lineHandler = UIMAUtil.create(lineHandlerClassName, LineHandler.class, getUimaContext());
+			lineHandler = InitializableFactory.create(getUimaContext(), lineHandlerClassName, LineHandler.class);
 			moveToNextFile();
 		}
 		catch (Exception fnfe) {
@@ -172,7 +176,16 @@ public class LineReader extends CollectionReader_ImplBase {
 	public void getNext(CAS cas) throws IOException, CollectionException {
 		hasNext();
 
-		JCas view = UIMAUtil.createJCasView(cas, this.viewName);
+		JCas view;
+		try {
+			view = ViewCreatorAnnotator.createViewSafely(cas.getJCas(), this.viewName);
+		}
+		catch (AnalysisEngineProcessException e) {
+			throw new CollectionException(e);
+		}
+		catch (CASException e) {
+			throw new CollectionException(e);
+		} 
 
 		lineHandler.handleLine(view, rootFile, file, line);
 

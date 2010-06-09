@@ -28,6 +28,8 @@ import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.util.Map;
 import java.util.TreeMap;
+
+import org.apache.uima.resource.ResourceInitializationException;
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
  * <br>All rights reserved.
@@ -137,6 +139,55 @@ public class ReflectionUtil {
 	
 	private static String typevarString(TypeVariable<?> tv) {
 		return tv.getGenericDeclaration().toString() + " " + tv.getName();
+	}
+
+	/**
+	 * Checks that the given type parameters of the given objects are
+	 * compatible.
+	 * 
+	 * Type parameters are identified by providing the class in which the type
+	 * parameter is defined, and the declared name of the type parameter.
+	 * 
+	 * Throws a ResourceInitializationException if the type parameters are not
+	 * compatible.
+	 * 
+	 * @param <T>
+	 *            Type of the class declaring the first type parameter
+	 * @param <U>
+	 *            Type of the class declaring the second type parameter
+	 * @param paramDefiningClass1
+	 *            The class declaring the first type parameter
+	 * @param paramName1
+	 *            The declared name of the first type parameter
+	 * @param object1
+	 *            The target object
+	 * @param paramDefiningClass2
+	 *            The class declaring the second type parameter
+	 * @param paramName2
+	 *            The declared name of the second type parameter
+	 * @param object2
+	 *            The source object
+	 * @throws ResourceInitializationException
+	 */
+	public static <T, U> void checkTypeParameterIsAssignable(Class<T> paramDefiningClass1, String paramName1,
+			T object1, Class<U> paramDefiningClass2, String paramName2, U object2)
+			throws ResourceInitializationException {
+
+		// get the type arguments from the objects
+		java.lang.reflect.Type type1 = ReflectionUtil.getTypeArgument(paramDefiningClass1, paramName1, object1);
+		java.lang.reflect.Type type2 = ReflectionUtil.getTypeArgument(paramDefiningClass2, paramName2, object2);
+		
+		// both arguments missing is compatible
+		if (type1 == null && type2 == null) {
+			return;
+		}
+		
+		// if the second type is not assignable to the first, raise an exception
+		if (type1 == null || type2 == null || !ReflectionUtil.isAssignableFrom(type1, type2)) {
+			throw new ResourceInitializationException(new RuntimeException(String.format(
+					"%s with %s %s is incompatible with %s with %s %s", object1.getClass().getSimpleName(), paramName1,
+					type1, object2.getClass().getSimpleName(), paramName2, type2)));
+		}
 	}
 
 }

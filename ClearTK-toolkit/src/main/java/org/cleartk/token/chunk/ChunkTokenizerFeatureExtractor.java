@@ -47,7 +47,7 @@ import org.cleartk.classifier.feature.proliferate.ContainsHyphenProliferator;
 import org.cleartk.classifier.feature.proliferate.LowerCaseProliferator;
 import org.cleartk.classifier.feature.proliferate.NumericTypeProliferator;
 import org.cleartk.classifier.feature.proliferate.ProliferatingExtractor;
-import org.cleartk.util.UIMAUtil;
+import org.uimafit.util.initialize.InitializableFactory;
 
 
 /**
@@ -71,7 +71,8 @@ public class ChunkTokenizerFeatureExtractor implements ChunkerFeatureExtractor {
 
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 
-		labeledAnnotationClass = UIMAUtil.getClass(context, ChunkerAnnotator.PARAM_LABELED_ANNOTATION_CLASS_NAME, Annotation.class);
+		String labeledAnnotationClassName = (String) context.getConfigParameterValue(ChunkerAnnotator.PARAM_LABELED_ANNOTATION_CLASS_NAME);
+		labeledAnnotationClass = InitializableFactory.getClass(labeledAnnotationClassName, Annotation.class);
 		
 		this.simpleFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
 		this.windowExtractors = new ArrayList<WindowExtractor>();

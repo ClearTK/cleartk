@@ -25,7 +25,6 @@ package org.cleartk.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
@@ -43,6 +42,7 @@ import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.TypeSystemDescriptionFactory;
 import org.uimafit.factory.UimaContextFactory;
 import org.uimafit.util.JCasAnnotatorAdapter;
+import org.uimafit.util.initialize.InitializableFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -73,30 +73,7 @@ public class UIMAUtilTest {
 		
 	}
 	
-	@Test
-	public void testGetDefaultingConfigParamValue() throws Exception{
-		UimaContext context = UimaContextFactory.createUimaContext(FilesCollectionReader.PARAM_NAME_FILES_FILE_NAMES, new String[] {""});
-		
-		String[] stringArray = (String[]) UIMAUtil.getDefaultingConfigParameterValue(context, FilesCollectionReader.PARAM_NAME_FILES_FILE_NAMES, null);
-		assertNull(stringArray);
-
-		context = UimaContextFactory.createUimaContext(FilesCollectionReader.PARAM_NAME_FILES_FILE_NAMES, new String[0]);
-		stringArray = (String[]) UIMAUtil.getDefaultingConfigParameterValue(context, FilesCollectionReader.PARAM_NAME_FILES_FILE_NAMES, null);
-		assertNull(stringArray);
-
-		context = UimaContextFactory.createUimaContext(FilesCollectionReader.PARAM_NAME_FILES_FILE_NAMES, new String[] {"asdf"});
-		stringArray = (String[]) UIMAUtil.getDefaultingConfigParameterValue(context, FilesCollectionReader.PARAM_NAME_FILES_FILE_NAMES, null);
-		assertEquals(1, stringArray.length);
-		assertEquals("asdf", stringArray[0]);
-
-		context = UimaContextFactory.createUimaContext();
-		stringArray = (String[]) UIMAUtil.getDefaultingConfigParameterValue(context, FilesCollectionReader.PARAM_NAME_FILES_FILE_NAMES, null);
-		assertNull(stringArray);
-
-	}
-
-
-	public class TestAnnotator extends CleartkAnnotator<String> {
+	public static class TestAnnotator extends CleartkAnnotator<String> {
 		public boolean initialized = false;
 		@Override
 		public void initialize(UimaContext context) throws ResourceInitializationException {
@@ -119,24 +96,28 @@ public class UIMAUtilTest {
 	@Test
 	public void testCreate() throws ResourceInitializationException {
 		UimaContext context = UimaContextFactory.createUimaContext("StringParam", "java.lang.String");
-		String createdString = UIMAUtil.create(context, "StringParam", String.class);
+		String className = (String) context.getConfigParameterValue("StringParam");
+		String createdString = InitializableFactory.create(context, className, String.class);
 		assertNotNull(createdString);
 		
 		String paramName = "AnnotatorParam";
 		context = UimaContextFactory.createUimaContext(paramName, TestAnnotator.class.getName());
-		CleartkAnnotator<?> annotator = UIMAUtil.create(context, paramName, CleartkAnnotator.class);
+		className = (String) context.getConfigParameterValue(paramName);
+		CleartkAnnotator<?> annotator = InitializableFactory.create(context, TestAnnotator.class.getName(), CleartkAnnotator.class);
 		assertNotNull(annotator);
 		assertTrue(annotator instanceof TestAnnotator);
 		assertTrue(((TestAnnotator)annotator).initialized);
 
 		context = UimaContextFactory.createUimaContext(paramName, TestAnnotator2.class.getName());
-		annotator = UIMAUtil.create(context, paramName, CleartkAnnotator.class);
+		className = (String) context.getConfigParameterValue(paramName);
+		annotator = InitializableFactory.create(context, className, CleartkAnnotator.class);
 		assertNotNull(annotator);
 		assertTrue(annotator instanceof TestAnnotator2);
 		assertTrue(((TestAnnotator2)annotator).initialized);
 
 		context = UimaContextFactory.createUimaContext(paramName, TestAnnotator2.class.getName());
-		annotator = UIMAUtil.create(context, paramName, CleartkAnnotator.class);
+		className = (String) context.getConfigParameterValue(paramName);
+		annotator = InitializableFactory.create(context, className, CleartkAnnotator.class);
 		assertNotNull(annotator);
 		assertTrue(annotator instanceof TestAnnotator2);
 		assertTrue(((TestAnnotator2)annotator).initialized);

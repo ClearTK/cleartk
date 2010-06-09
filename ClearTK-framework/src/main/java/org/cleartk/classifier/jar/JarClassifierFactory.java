@@ -29,7 +29,6 @@ import java.util.jar.JarFile;
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
-import org.cleartk.Initializable;
 import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.ClassifierFactory;
 import org.cleartk.classifier.SequentialClassifier;
@@ -38,6 +37,7 @@ import org.cleartk.util.ReflectionUtil;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.InitializeUtil;
+import org.uimafit.util.initialize.Initializable;
 
 /**
  * <br>

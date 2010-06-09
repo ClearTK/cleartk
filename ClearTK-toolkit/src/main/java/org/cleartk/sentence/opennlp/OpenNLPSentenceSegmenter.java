@@ -44,10 +44,10 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkComponents;
-import org.cleartk.util.UIMAUtil;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.InitializeUtil;
+import org.uimafit.util.initialize.InitializableFactory;
 
 
 /**
@@ -102,7 +102,7 @@ public class OpenNLPSentenceSegmenter extends JCasAnnotator_ImplBase {
 		InitializeUtil.initialize(this, uimaContext);
 		
 		try {
-			sentenceClass = UIMAUtil.getClass(sentenceTypeName, Annotation.class);
+			sentenceClass = InitializableFactory.getClass(sentenceTypeName, Annotation.class);
 			sentenceConstructor = sentenceClass.getConstructor(new Class[] { JCas.class, Integer.TYPE, Integer.TYPE });
 
 			MaxentModel model = new SuffixSensitiveGISModelReader(new File(sentenceModelFileName)).getModel();

@@ -30,10 +30,10 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.collection.CollectionException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.util.UIMAUtil;
 import org.cleartk.util.ViewURIUtil;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
+import org.uimafit.util.InitializeUtil;
 
 
 /**
@@ -54,7 +54,7 @@ public class SimpleLineHandler implements LineHandler {
 	private String delimiter;
 
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-		delimiter = (String) UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_DELIMITER, "|");
+		InitializeUtil.initialize(this, context);
 	}
 
 	public void handleLine(JCas jCas, File rootFile, File file, String line)  throws IOException, CollectionException{

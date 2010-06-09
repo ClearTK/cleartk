@@ -29,16 +29,15 @@ import java.io.ObjectInputStream;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.Initializable;
 import org.cleartk.classifier.DataWriterFactory;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 import org.cleartk.util.ReflectionUtil;
-import org.cleartk.util.UIMAUtil;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.InitializeUtil;
+import org.uimafit.util.initialize.Initializable;
 
 public abstract class JarDataWriterFactory<FEATURES_OUT_TYPE, OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE> implements
 		DataWriterFactory<OUTCOME_IN_TYPE>, Initializable {
@@ -82,14 +81,14 @@ public abstract class JarDataWriterFactory<FEATURES_OUT_TYPE, OUTCOME_IN_TYPE, O
 
 				// read the FeaturesEncoder and check the types
 				FeaturesEncoder<?> untypedFeaturesEncoder = FeaturesEncoder.class.cast(is.readObject());
-				UIMAUtil.checkTypeParameterIsAssignable(FeaturesEncoder.class, "FEATURES_OUT_TYPE",
+				ReflectionUtil.checkTypeParameterIsAssignable(FeaturesEncoder.class, "FEATURES_OUT_TYPE",
 						untypedFeaturesEncoder, JarDataWriterFactory.class, "FEATURES_OUT_TYPE", this);
 
 				// read the OutcomeEncoder and check the types
 				OutcomeEncoder<?, ?> untypedOutcomeEncoder = OutcomeEncoder.class.cast(is.readObject());
-				UIMAUtil.checkTypeParameterIsAssignable(OutcomeEncoder.class, "OUTCOME_IN_TYPE", untypedOutcomeEncoder,
+				ReflectionUtil.checkTypeParameterIsAssignable(OutcomeEncoder.class, "OUTCOME_IN_TYPE", untypedOutcomeEncoder,
 						JarDataWriterFactory.class, "OUTCOME_IN_TYPE", this);
-				UIMAUtil.checkTypeParameterIsAssignable(OutcomeEncoder.class, "OUTCOME_OUT_TYPE",
+				ReflectionUtil.checkTypeParameterIsAssignable(OutcomeEncoder.class, "OUTCOME_OUT_TYPE",
 						untypedOutcomeEncoder, JarDataWriterFactory.class, "OUTCOME_OUT_TYPE", this);
 
 				// assign the encoders to the instance variables

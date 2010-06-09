@@ -30,7 +30,6 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
-import org.cleartk.Initializable;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.WindowFeature;
 import org.cleartk.classifier.feature.WindowNGramFeature;
@@ -46,6 +45,7 @@ import org.cleartk.classifier.feature.proliferate.ProliferatingExtractor;
 import org.cleartk.token.pos.POSFeatureExtractor;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
+import org.uimafit.util.initialize.Initializable;
 
 /**
  * <br>Copyright (c) 2009, Regents of the University of Colorado 

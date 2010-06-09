@@ -29,7 +29,6 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.jar.JarDataWriterFactory;
-import org.cleartk.util.UIMAUtil;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 
@@ -54,13 +53,4 @@ public abstract class MalletDataWriterFactory_ImplBase<OUTCOME_TYPE> extends Jar
 			description = "when true indicates that the FeaturesEncoder should write the feature names in sorted order.")
 	protected boolean sort;
 
-	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		super.initialize(context);
-		compress = (Boolean)UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_COMPRESS, false);
-		sort = (Boolean)UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_SORT, false);
-	}
-	
-	
-	
 }

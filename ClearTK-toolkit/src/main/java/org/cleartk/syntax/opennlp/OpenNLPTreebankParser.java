@@ -50,11 +50,11 @@ import org.cleartk.syntax.treebank.type.TopTreebankNode;
 import org.cleartk.syntax.treebank.type.TreebankNode;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
-import org.cleartk.util.UIMAUtil;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.InitializeUtil;
+import org.uimafit.util.initialize.InitializableFactory;
 
 /**
  * <br>
@@ -269,8 +269,8 @@ public class OpenNLPTreebankParser extends JCasAnnotator_ImplBase {
 
 			this.parser = new Parser(buildModel, checkModel, tagger, chunker, hrules, beamSize, advancePercentage);
 			
-			sentenceRetriever = UIMAUtil.create(sentenceRetrieverClassName, SentenceRetriever.class, ctx);
-			tokenRetriever = UIMAUtil.create(tokenRetrieverClassName, TokenRetriever.class, ctx);
+			sentenceRetriever = InitializableFactory.create(ctx, sentenceRetrieverClassName, SentenceRetriever.class);
+			tokenRetriever = InitializableFactory.create(ctx, tokenRetrieverClassName, TokenRetriever.class);
 		}
 		catch (IOException e) {
 			throw new ResourceInitializationException(e);

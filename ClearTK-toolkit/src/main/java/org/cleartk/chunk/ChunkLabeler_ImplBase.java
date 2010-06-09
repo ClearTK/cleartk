@@ -35,12 +35,13 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.Initializable;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.UIMAUtil;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.InitializeUtil;
+import org.uimafit.util.initialize.Initializable;
+import org.uimafit.util.initialize.InitializableFactory;
 
 
 
@@ -88,8 +89,8 @@ public abstract class ChunkLabeler_ImplBase implements ChunkLabeler, Initializab
 
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		InitializeUtil.initialize(this, context);
-		labeledAnnotationClass = UIMAUtil.getClass(labeledAnnotationClassName, Annotation.class);
-		chunkAnnotationClass = UIMAUtil.getClass(chunkAnnotationClassName, Annotation.class);
+		labeledAnnotationClass = InitializableFactory.getClass(labeledAnnotationClassName, Annotation.class);
+		chunkAnnotationClass = InitializableFactory.getClass(chunkAnnotationClassName, Annotation.class);
 		annotationLabels = new HashMap<Annotation, String>();
 	}
 

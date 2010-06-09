@@ -39,7 +39,6 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.pear.util.FileUtil;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
-import org.cleartk.Initializable;
 import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.ScoredOutcome;
@@ -47,8 +46,11 @@ import org.cleartk.classifier.SequentialClassifier;
 import org.cleartk.classifier.feature.extractor.outcome.OutcomeFeatureExtractor;
 import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.util.ReflectionUtil;
-import org.cleartk.util.UIMAUtil;
 import org.cleartk.util.ReflectionUtil.TypeArgumentDelegator;
+import org.uimafit.descriptor.ConfigurationParameter;
+import org.uimafit.factory.ConfigurationParameterFactory;
+import org.uimafit.util.InitializeUtil;
+import org.uimafit.util.initialize.Initializable;
 
 /**
  * <br>
@@ -59,37 +61,26 @@ import org.cleartk.util.ReflectionUtil.TypeArgumentDelegator;
 public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUTCOME_TYPE>,
 		Initializable, TypeArgumentDelegator {
 
-	/**
-	 * "org.cleartk.classifier.viterbi.ViterbiClassifier.PARAM_STACK_SIZE" is an optional, single,
-	 * integer parameter that specifies the maximum number of candidate paths to
-	 * keep track of. In general, this number should be higher than the number
-	 * of possible classifications at any given point in the sequence. This
-	 * guarantees that highest-possible scoring sequence will be returned. If,
-	 * however, the number of possible classifications is quite high and/or you
-	 * are concerned about throughput performance, then you may want to reduce the number
-	 * of candidate paths to maintain.  If Classifier.score is not implemented for the given delegated classifier, then
-	 * the value of this parameter must be 1.  
-	 */
-	public static String PARAM_STACK_SIZE = "org.cleartk.classifier.viterbi.ViterbiClassifier.PARAM_STACK_SIZE";
-
-	/**
-	 * "org.cleartk.classifier.viterbi.ViterbiClassifier.PARAM_ADD_SCORES" is an optional, single,
-	 * boolean parameter that specifies whether the scores of candidate sequence
-	 * classifications should be calculated by summing classfication scores for
-	 * each member of the sequence or by multiplying them. A value of true means
-	 * that the scores will be summed. A value of false means that the scores
-	 * will be multiplied. 
-	 */
-	public static String PARAM_ADD_SCORES = "org.cleartk.classifier.viterbi.ViterbiClassifier.PARAM_ADD_SCORES";
-
-	
 	protected Classifier<OUTCOME_TYPE> delegatedClassifier;
 
 	protected OutcomeFeatureExtractor[] outcomeFeatureExtractors;
 
-	protected int viterbiStackSize = 1;
+	public static final String PARAM_STACK_SIZE = ConfigurationParameterFactory.createConfigurationParameterName(ViterbiClassifier.class, "stackSize");
+	@ConfigurationParameter(description = "specifies the maximum number of candidate paths to "+
+			"keep track of. In general, this number should be higher than the number " +
+			"of possible classifications at any given point in the sequence. This " +
+			"guarantees that highest-possible scoring sequence will be returned. If, " +
+			"however, the number of possible classifications is quite high and/or you " +
+			"are concerned about throughput performance, then you may want to reduce the number " +
+			"of candidate paths to maintain.  If Classifier.score is not implemented for the given delegated classifier, then " +
+			"the value of this parameter must be 1. ", defaultValue="1")
+	protected int stackSize;
 
-	protected boolean viterbiAddScores = false;
+	public static final String PARAM_ADD_SCORES = ConfigurationParameterFactory.createConfigurationParameterName(ViterbiClassifier.class, "addScores");
+	@ConfigurationParameter(description = "specifies whether the scores of candidate sequence classifications should be " +
+			"calculated by summing classfication scores for each member of the sequence or by multiplying them. A value of " +
+			"true means that the scores will be summed. A value of false means that the scores will be multiplied. ", defaultValue="false")
+	protected boolean addScores = false;
 
 	public ViterbiClassifier(JarFile modelFile) throws IOException {
 		File modelFileDirectory = new File(modelFile.getName()).getParentFile();
@@ -120,17 +111,15 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
 	}
 	
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-		viterbiStackSize = (Integer) UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_STACK_SIZE, 1);
-		if (viterbiStackSize < 1) {
+		InitializeUtil.initialize(this, context);
+		if (stackSize < 1) {
 			throw new ResourceInitializationException(new IllegalArgumentException(String.format(
 					"the parameter '%1$s' must be greater than 0.", PARAM_STACK_SIZE)));
 		}
-		viterbiAddScores = (Boolean) UIMAUtil.getDefaultingConfigParameterValue(context, PARAM_ADD_SCORES,
-				false);
 	}
 
 	public List<OUTCOME_TYPE> classifySequence(List<List<Feature>> features) throws CleartkException {
-		if (viterbiStackSize == 1) {
+		if (stackSize == 1) {
 			List<Object> outcomes = new ArrayList<Object>();
 			List<OUTCOME_TYPE> returnValues = new ArrayList<OUTCOME_TYPE>();
 			for (List<Feature> instanceFeatures : features) {
@@ -175,7 +164,7 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
 			return Collections.emptyList();
 		}
 
-		List<ScoredOutcome<OUTCOME_TYPE>> scoredOutcomes = delegatedClassifier.score(features.get(0), viterbiStackSize);
+		List<ScoredOutcome<OUTCOME_TYPE>> scoredOutcomes = delegatedClassifier.score(features.get(0), stackSize);
 		for (ScoredOutcome<OUTCOME_TYPE> scoredOutcome : scoredOutcomes) {
 			double score = scoredOutcome.getScore();
 			List<OUTCOME_TYPE> sequence = new ArrayList<OUTCOME_TYPE>();
@@ -203,7 +192,7 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
 				}
 				// score the instance features using the features added by the
 				// outcomeFeatureExtractors
-				scoredOutcomes = delegatedClassifier.score(instanceFeatures, viterbiStackSize);
+				scoredOutcomes = delegatedClassifier.score(instanceFeatures, stackSize);
 				// remove the added features from previous outcomes for this
 				// scoredSequence
 				instanceFeatures = instanceFeatures.subList(0, instanceFeatures.size() - outcomeFeaturesCount);
@@ -212,7 +201,7 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
 
 					if (!l.containsKey(scoredOutcome.getValue())) {
 						double score = scoredSequence.getScore();
-						if (viterbiAddScores) {
+						if (addScores) {
 							score = score + scoredOutcome.getScore();
 						}
 						else {
@@ -223,7 +212,7 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
 					}
 					else {
 						double newScore = scoredSequence.getScore();
-						if (viterbiAddScores) {
+						if (addScores) {
 							newScore = newScore + scoredOutcome.getScore();
 						}
 						else {

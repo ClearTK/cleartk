@@ -61,12 +61,12 @@ import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.InstanceCollector;
 import org.cleartk.util.ReusableUIMAObjects;
-import org.cleartk.util.UIMAUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.TokenFactory;
+import org.uimafit.util.initialize.InitializableFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -88,7 +88,7 @@ public class ChunkTokenizerTest {
 		}
 	}
 	
-	public class TestFeatureExtractor implements ChunkerFeatureExtractor {
+	public static class TestFeatureExtractor implements ChunkerFeatureExtractor {
 
 		private List<SimpleFeatureExtractor> simpleFeatureExtractors;
 		private List<WindowExtractor> windowExtractors;
@@ -211,7 +211,7 @@ public class ChunkTokenizerTest {
 				  DefaultChunkLabeler.PARAM_CHUNK_LABEL_FEATURE_NAME, "chunkType",
 				  JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, "example/pos/model/model.jar"
 		  );
-		 UIMAUtil.initialize(chunkLabeler, engine.getUimaContext());
+		 InitializableFactory.initialize(chunkLabeler, engine.getUimaContext());
 		engine.process(jCas);
 		
 		chunks = AnnotationRetrieval.getAnnotations(jCas, Chunk.class);

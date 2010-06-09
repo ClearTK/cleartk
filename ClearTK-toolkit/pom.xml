@@ -82,7 +82,7 @@
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-framework</artifactId>
-			<version>0.9.7</version>
+			<version>0.9.8-SNAPSHOT</version>
 			<optional>false</optional>
 		</dependency>
 		<dependency>

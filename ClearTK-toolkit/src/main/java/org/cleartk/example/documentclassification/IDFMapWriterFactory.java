@@ -28,13 +28,13 @@ import java.io.IOException;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.Initializable;
 import org.cleartk.classifier.DataWriter;
 import org.cleartk.classifier.DataWriterFactory;
 import org.cleartk.classifier.util.tfidf.IDFMapWriter;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.InitializeUtil;
+import org.uimafit.util.initialize.Initializable;
 
 /**
  * <br>

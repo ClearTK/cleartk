@@ -31,16 +31,16 @@ import org.apache.uima.impl.UimaContext_ImplBase;
 import org.apache.uima.resource.ConfigurationManager;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
-import org.cleartk.Initializable;
 import org.cleartk.classifier.DataWriter;
 import org.cleartk.classifier.SequentialDataWriter;
 import org.cleartk.classifier.SequentialDataWriterFactory;
 import org.cleartk.classifier.feature.extractor.outcome.OutcomeFeatureExtractor;
 import org.cleartk.classifier.jar.JarDataWriterFactory;
-import org.cleartk.util.UIMAUtil;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.InitializeUtil;
+import org.uimafit.util.initialize.Initializable;
+import org.uimafit.util.initialize.InitializableFactory;
 
 /**
  * <br>
@@ -101,7 +101,7 @@ public class ViterbiDataWriterFactory<OUTCOME_TYPE> implements SequentialDataWri
 			} else {
 				outcomeFeatureExtractors = new OutcomeFeatureExtractor[outcomeFeatureExtractorNames.length];
 				for (int i = 0; i < outcomeFeatureExtractorNames.length; i++) {
-					outcomeFeatureExtractors[i] = UIMAUtil.create(outcomeFeatureExtractorNames[i], OutcomeFeatureExtractor.class, context);
+					outcomeFeatureExtractors[i] = InitializableFactory.create(context, outcomeFeatureExtractorNames[i], OutcomeFeatureExtractor.class);
 				}
 			}
 
@@ -135,10 +135,9 @@ public class ViterbiDataWriterFactory<OUTCOME_TYPE> implements SequentialDataWri
 	private JarDataWriterFactory<?, OUTCOME_TYPE, ?> createDelegatedDataWriterFactory(
 			String delegatedDataWriterFactoryClass,
 			UimaContext context) throws ResourceInitializationException {
-		return UIMAUtil.create(
+		return InitializableFactory.create(context,
 				delegatedDataWriterFactoryClass, 
-				JarDataWriterFactory.class,
-				context);
+				JarDataWriterFactory.class);
 	}
 
 	private ViterbiDataWriter<OUTCOME_TYPE> dataWriter;

@@ -43,6 +43,7 @@ import org.cleartk.util.UIMAUtil;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.InitializeUtil;
+import org.uimafit.util.initialize.InitializableFactory;
 
 /**
  * <br>Copyright (c) 2009, Regents of the University of Colorado 
@@ -87,13 +88,13 @@ extends CleartkSequentialAnnotator<String> {
 				ReflectionUtil.getTypeArgument(POSAnnotator.class, "SENTENCE_TYPE", this));
 
 		// create the feature extractor and tagger
-		POSFeatureExtractor<?, ?> untypedExtractor = UIMAUtil.create(featureExtractorClassName, POSFeatureExtractor.class, context);
+		POSFeatureExtractor<?, ?> untypedExtractor = InitializableFactory.create(context, featureExtractorClassName, POSFeatureExtractor.class);
 
 		// check that the type parameters are compatible 
-		UIMAUtil.checkTypeParameterIsAssignable(
+		ReflectionUtil.checkTypeParameterIsAssignable(
 				POSFeatureExtractor.class, "TOKEN_TYPE", untypedExtractor, 
 				POSAnnotator.class, "TOKEN_TYPE", this);
-		UIMAUtil.checkTypeParameterIsAssignable(
+		ReflectionUtil.checkTypeParameterIsAssignable(
 				POSFeatureExtractor.class, "SENTENCE_TYPE", untypedExtractor, 
 				POSAnnotator.class, "SENTENCE_TYPE", this);
 		

@@ -38,6 +38,7 @@ import org.cleartk.util.UIMAUtil;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.InitializeUtil;
+import org.uimafit.util.initialize.InitializableFactory;
 
 /**
  * <br>
@@ -74,7 +75,7 @@ public abstract class SnowballStemmer<TOKEN_TYPE extends Annotation> extends JCa
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		InitializeUtil.initialize(this, context);
 		String className = String.format("net.sf.snowball.ext.%sStemmer", stemmerName);
-		this.stemmer = UIMAUtil.create(className, SnowballProgram.class, null);
+		this.stemmer = InitializableFactory.create(null, className, SnowballProgram.class);
 		
 		this.tokenClass = ReflectionUtil.<Class<? extends Annotation>>uncheckedCast(
 				ReflectionUtil.getTypeArgument(SnowballStemmer.class, "TOKEN_TYPE", this));

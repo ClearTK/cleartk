@@ -32,12 +32,12 @@ import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
-import org.cleartk.Initializable;
 import org.cleartk.util.ReflectionUtil;
-import org.cleartk.util.UIMAUtil;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.InitializeUtil;
+import org.uimafit.util.initialize.Initializable;
+import org.uimafit.util.initialize.InitializableFactory;
 
 public abstract class CleartkSequentialAnnotator<OUTCOME_TYPE> extends JCasAnnotator_ImplBase implements Initializable {
 
@@ -64,8 +64,8 @@ public abstract class CleartkSequentialAnnotator<OUTCOME_TYPE> extends JCasAnnot
 
 		if (sequentialDataWriterFactoryClassName != null) {
 			// create the factory and instantiate the data writer
-			SequentialDataWriterFactory<?> factory = UIMAUtil.create(sequentialDataWriterFactoryClassName,
-					SequentialDataWriterFactory.class, context);
+			SequentialDataWriterFactory<?> factory = InitializableFactory.create(context, sequentialDataWriterFactoryClassName,
+					SequentialDataWriterFactory.class);
 			SequentialDataWriter<?> untypedDataWriter;
 			try {
 				untypedDataWriter = factory.createSequentialDataWriter();
@@ -73,13 +73,13 @@ public abstract class CleartkSequentialAnnotator<OUTCOME_TYPE> extends JCasAnnot
 			catch (IOException e) {
 				throw new ResourceInitializationException(e);
 			}
-			UIMAUtil.initialize(untypedDataWriter, context);
+			InitializableFactory.initialize(untypedDataWriter, context);
 			this.sequentialDataWriter = ReflectionUtil.uncheckedCast(untypedDataWriter);
 		}
 		else {
 			// create the factory and instantiate the classifier
-			SequentialClassifierFactory<?> factory = UIMAUtil
-					.create(sequentialClassifierFactoryClassName, SequentialClassifierFactory.class, context);
+			SequentialClassifierFactory<?> factory = InitializableFactory
+					.create(context, sequentialClassifierFactoryClassName, SequentialClassifierFactory.class);
 			SequentialClassifier<?> untypedClassifier;
 			try {
 				untypedClassifier = factory.createSequentialClassifier();
@@ -93,11 +93,11 @@ public abstract class CleartkSequentialAnnotator<OUTCOME_TYPE> extends JCasAnnot
 
 			this.sequentialClassifier = ReflectionUtil.uncheckedCast(untypedClassifier);
 			
-			UIMAUtil.checkTypeParameterIsAssignable(
+			ReflectionUtil.checkTypeParameterIsAssignable(
 					CleartkSequentialAnnotator.class, "OUTCOME_TYPE", this,
 					SequentialClassifier.class, "OUTCOME_TYPE", this.sequentialClassifier);
 
-			UIMAUtil.initialize(untypedClassifier, context);
+			InitializableFactory.initialize(untypedClassifier, context);
 		}
 	}
 

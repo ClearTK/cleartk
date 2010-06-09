@@ -48,6 +48,7 @@ import org.cleartk.util.UIMAUtil;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.InitializeUtil;
+import org.uimafit.util.initialize.InitializableFactory;
 
 
 /**
@@ -149,16 +150,16 @@ public class TermFinderAnnotator extends JCasAnnotator_ImplBase {
 
 			if (windowClassName != null) {
 				allTokens = false;
-				sentenceClass = UIMAUtil.getClass(windowClassName,  Annotation.class);
+				sentenceClass = InitializableFactory.getClass(windowClassName,  Annotation.class);
 			}
 
-			tokenClass = UIMAUtil.getClass(tokenClassName, Annotation.class);
+			tokenClass = InitializableFactory.getClass(tokenClassName, Annotation.class);
 
 			if (termMatchAnnotationCreatorClassName != null && !termMatchAnnotationCreatorClassName.equals("")) {
-				annotationCreator = UIMAUtil.create(termMatchAnnotationCreatorClassName, TermMatchAnnotationCreator.class, context);
+				annotationCreator = InitializableFactory.create(context, termMatchAnnotationCreatorClassName, TermMatchAnnotationCreator.class);
 			}
 			else {
-				Class<? extends Annotation> annotationClass = UIMAUtil.getClass(termMatchAnnotationClassName, Annotation.class);
+				Class<? extends Annotation> annotationClass = InitializableFactory.getClass(termMatchAnnotationClassName, Annotation.class);
 				annotationConstructor = annotationClass.getConstructor(new Class[] { JCas.class, java.lang.Integer.TYPE, java.lang.Integer.TYPE });
 			}
 		}

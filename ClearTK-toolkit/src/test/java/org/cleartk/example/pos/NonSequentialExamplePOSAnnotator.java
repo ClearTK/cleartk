@@ -31,7 +31,6 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
-import org.cleartk.Initializable;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.WindowFeature;
@@ -47,6 +46,7 @@ import org.cleartk.classifier.feature.proliferate.ProliferatingExtractor;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
+import org.uimafit.util.initialize.Initializable;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 

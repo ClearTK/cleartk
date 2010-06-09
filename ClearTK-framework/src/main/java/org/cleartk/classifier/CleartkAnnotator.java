@@ -30,12 +30,12 @@ import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
-import org.cleartk.Initializable;
 import org.cleartk.util.ReflectionUtil;
-import org.cleartk.util.UIMAUtil;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.InitializeUtil;
+import org.uimafit.util.initialize.Initializable;
+import org.uimafit.util.initialize.InitializableFactory;
 
 public abstract class CleartkAnnotator<OUTCOME_TYPE> extends JCasAnnotator_ImplBase implements Initializable {
 
@@ -63,8 +63,7 @@ public abstract class CleartkAnnotator<OUTCOME_TYPE> extends JCasAnnotator_ImplB
 
 		if (dataWriterFactoryClassName != null) {
 			// create the factory and instantiate the data writer
-			DataWriterFactory<?> factory = UIMAUtil
-					.create(dataWriterFactoryClassName, DataWriterFactory.class, context);
+			DataWriterFactory<?> factory = InitializableFactory.create(context, dataWriterFactoryClassName, DataWriterFactory.class);
 			DataWriter<?> untypedDataWriter;
 			try {
 				untypedDataWriter = factory.createDataWriter();
@@ -76,13 +75,12 @@ public abstract class CleartkAnnotator<OUTCOME_TYPE> extends JCasAnnotator_ImplB
 				throw new ResourceInitializationException(e);
 			}
 
-			UIMAUtil.initialize(untypedDataWriter, context);
+			InitializableFactory.initialize(untypedDataWriter, context);
 			this.dataWriter = ReflectionUtil.uncheckedCast(untypedDataWriter);
 		}
 		else {
 			// create the factory and instantiate the classifier
-			ClassifierFactory<?> factory = UIMAUtil
-					.create(classifierFactoryClassName, ClassifierFactory.class, context);
+			ClassifierFactory<?> factory = InitializableFactory.create(context, classifierFactoryClassName, ClassifierFactory.class);
 			Classifier<?> untypedClassifier;
 			try {
 				untypedClassifier = factory.createClassifier();
@@ -95,10 +93,10 @@ public abstract class CleartkAnnotator<OUTCOME_TYPE> extends JCasAnnotator_ImplB
 			}
 
 			this.classifier = ReflectionUtil.uncheckedCast(untypedClassifier);
-			UIMAUtil.checkTypeParameterIsAssignable(
+			ReflectionUtil.checkTypeParameterIsAssignable(
 					CleartkAnnotator.class, "OUTCOME_TYPE", this,
 					Classifier.class, "OUTCOME_TYPE", this.classifier);
-			UIMAUtil.initialize(untypedClassifier, context);
+			InitializableFactory.initialize(untypedClassifier, context);
 
 		}
 	}
