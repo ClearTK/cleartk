@@ -271,26 +271,26 @@ public class MaxentClassifierTest {
 		assertEquals("O", classification);
 		
 		ScoredOutcome<String> scoredValue = classifier.score(features1,1).get(0);
-		assertEquals("B-GENE", scoredValue.getValue());
+		assertEquals("B-GENE", scoredValue.getOutcome());
 		assertTrue(scoredValue.getScore() <= 1.0f);
 		assertTrue(scoredValue.getScore() >= 0.0f);
 		scoredValue = classifier.score(features2, 1).get(0);
-		assertEquals("O", scoredValue.getValue());
+		assertEquals("O", scoredValue.getOutcome());
 		assertTrue(scoredValue.getScore() <= 1.0f);
 		assertTrue(scoredValue.getScore() >= 0.0f);
 
 		List<ScoredOutcome<String>> scoredValues = classifier.score(features1, 4);
 		assertEquals(3, scoredValues.size());
 		scoredValue = scoredValues.get(0);
-		assertEquals("B-GENE", scoredValue.getValue());
+		assertEquals("B-GENE", scoredValue.getOutcome());
 		assertTrue(scoredValue.getScore() <= 1.0f);
 		assertTrue(scoredValue.getScore() >= 0.0f);
 		scoredValue = scoredValues.get(1);
-		assertEquals("O", scoredValue.getValue());
+		assertEquals("O", scoredValue.getOutcome());
 		assertTrue(scoredValue.getScore() <= 1.0f);
 		assertTrue(scoredValue.getScore() >= 0.0f);
 		scoredValue = scoredValues.get(2);
-		assertEquals("I-GENE", scoredValue.getValue());
+		assertEquals("I-GENE", scoredValue.getOutcome());
 		assertTrue(scoredValue.getScore() <= 1.0f);
 		assertTrue(scoredValue.getScore() >= 0.0f);
 

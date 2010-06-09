@@ -168,7 +168,7 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
 		for (ScoredOutcome<OUTCOME_TYPE> scoredOutcome : scoredOutcomes) {
 			double score = scoredOutcome.getScore();
 			List<OUTCOME_TYPE> sequence = new ArrayList<OUTCOME_TYPE>();
-			sequence.add(scoredOutcome.getValue());
+			sequence.add(scoredOutcome.getOutcome());
 			nbestSequences.add(new ScoredOutcome<List<OUTCOME_TYPE>>(sequence, score));
 		}
 
@@ -184,7 +184,7 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
 				// add features from previous outcomes from each scoredSequence
 				// in returnValues
 				int outcomeFeaturesCount = 0;
-				List<Object> previousOutcomes = new ArrayList<Object>(scoredSequence.getValue());
+				List<Object> previousOutcomes = new ArrayList<Object>(scoredSequence.getOutcome());
 				for (OutcomeFeatureExtractor outcomeFeatureExtractor : outcomeFeatureExtractors) {
 					List<Feature> outcomeFeatures = outcomeFeatureExtractor.extractFeatures(previousOutcomes);
 					instanceFeatures.addAll(outcomeFeatures);
@@ -199,7 +199,7 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
 
 				for (ScoredOutcome<OUTCOME_TYPE> scoredOutcome : scoredOutcomes) {
 
-					if (!l.containsKey(scoredOutcome.getValue())) {
+					if (!l.containsKey(scoredOutcome.getOutcome())) {
 						double score = scoredSequence.getScore();
 						if (addScores) {
 							score = score + scoredOutcome.getScore();
@@ -207,8 +207,8 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
 						else {
 							score = score * scoredOutcome.getScore();
 						}
-						l.put(scoredOutcome.getValue(), score);
-						m.put(scoredOutcome.getValue(), new ArrayList<OUTCOME_TYPE>(scoredSequence.getValue()));
+						l.put(scoredOutcome.getOutcome(), score);
+						m.put(scoredOutcome.getOutcome(), new ArrayList<OUTCOME_TYPE>(scoredSequence.getOutcome()));
 					}
 					else {
 						double newScore = scoredSequence.getScore();
@@ -218,11 +218,11 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
 						else {
 							newScore = newScore * scoredOutcome.getScore();
 						}
-						double bestScore = l.get(scoredOutcome.getValue());
+						double bestScore = l.get(scoredOutcome.getOutcome());
 
 						if (newScore > bestScore) {
-							l.put(scoredOutcome.getValue(), newScore);
-							m.put(scoredOutcome.getValue(), new ArrayList<OUTCOME_TYPE>(scoredSequence.getValue()));
+							l.put(scoredOutcome.getOutcome(), newScore);
+							m.put(scoredOutcome.getOutcome(), new ArrayList<OUTCOME_TYPE>(scoredSequence.getOutcome()));
 						}
 					}
 				}
@@ -243,7 +243,7 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
 
 		Collections.sort(nbestSequences);
 		if (nbestSequences.size() > 0) {
-			return nbestSequences.get(0).getValue();
+			return nbestSequences.get(0).getOutcome();
 		}
 
 		return null;

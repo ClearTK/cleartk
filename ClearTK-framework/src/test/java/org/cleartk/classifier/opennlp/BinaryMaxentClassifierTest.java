@@ -272,22 +272,22 @@ public class BinaryMaxentClassifierTest {
 		assertEquals(Boolean.FALSE, classification);
 		
 		ScoredOutcome<Boolean> scoredValue = classifier.score(features1,1).get(0);
-		assertTrue(scoredValue.getValue());
+		assertTrue(scoredValue.getOutcome());
 		assertTrue(scoredValue.getScore() <= 1.0f);
 		assertTrue(scoredValue.getScore() >= 0.0f);
 		scoredValue = classifier.score(features2, 1).get(0);
-		assertEquals(Boolean.FALSE, scoredValue.getValue());
+		assertEquals(Boolean.FALSE, scoredValue.getOutcome());
 		assertTrue(scoredValue.getScore() <= 1.0f);
 		assertTrue(scoredValue.getScore() >= 0.0f);
 
 		List<ScoredOutcome<Boolean>> scoredValues = classifier.score(features1, 4);
 		assertEquals(2, scoredValues.size());
 		scoredValue = scoredValues.get(0);
-		assertTrue(scoredValue.getValue());
+		assertTrue(scoredValue.getOutcome());
 		assertTrue(scoredValue.getScore() <= 1.0f);
 		assertTrue(scoredValue.getScore() >= 0.0f);
 		scoredValue = scoredValues.get(1);
-		assertEquals(Boolean.FALSE, scoredValue.getValue());
+		assertEquals(Boolean.FALSE, scoredValue.getOutcome());
 		assertTrue(scoredValue.getScore() <= 1.0f);
 		assertTrue(scoredValue.getScore() >= 0.0f);
 

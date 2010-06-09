@@ -50,9 +50,9 @@ public class ScoredValueTest {
 		scoredValues.add(new ScoredOutcome<String>("C", 0.0001));
 		scoredValues.add(new ScoredOutcome<String>("D", 20.0001));
 		Collections.sort(scoredValues);
-		assertEquals("D", scoredValues.get(0).getValue());
-		assertEquals("B", scoredValues.get(1).getValue());
-		assertEquals("A", scoredValues.get(2).getValue());
-		assertEquals("C", scoredValues.get(3).getValue());
+		assertEquals("D", scoredValues.get(0).getOutcome());
+		assertEquals("B", scoredValues.get(1).getOutcome());
+		assertEquals("A", scoredValues.get(2).getOutcome());
+		assertEquals("C", scoredValues.get(3).getOutcome());
 	}
 }

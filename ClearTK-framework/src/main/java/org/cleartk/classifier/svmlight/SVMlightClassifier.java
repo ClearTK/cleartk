@@ -87,7 +87,7 @@ public class SVMlightClassifier extends JarClassifier<Boolean,Boolean,FeatureVec
 			resultList.add(this.score(features));
 		if( maxResults > 1 ) {
 			ScoredOutcome<Boolean> v1 = resultList.get(0);
-			ScoredOutcome<Boolean> v2 = new ScoredOutcome<Boolean>(!v1.getValue(), 1-v1.getScore());
+			ScoredOutcome<Boolean> v2 = new ScoredOutcome<Boolean>(!v1.getOutcome(), 1-v1.getScore());
 			resultList.add(v2);
 		}
 		return resultList;
