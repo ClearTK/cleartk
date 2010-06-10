@@ -39,10 +39,10 @@ import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Test;
+import org.uimafit.component.JCasAnnotatorAdapter;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.AnnotationFactory;
 import org.uimafit.factory.TypeSystemDescriptionFactory;
-import org.uimafit.util.JCasAnnotatorAdapter;
 
 
 /**

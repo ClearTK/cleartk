@@ -43,7 +43,7 @@ import org.uimafit.component.ViewCreatorAnnotator;
 import org.uimafit.component.xwriter.XWriter;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.CollectionReaderFactory;
-import org.uimafit.util.SimplePipeline;
+import org.uimafit.pipeline.SimplePipeline;
 
 /**
  * <br>

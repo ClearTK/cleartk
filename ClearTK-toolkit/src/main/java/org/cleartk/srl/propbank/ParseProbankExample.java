@@ -34,7 +34,7 @@ import org.cleartk.util.ViewURIFileNamer;
 import org.uimafit.component.xwriter.XWriter;
 import org.uimafit.factory.CollectionReaderFactory;
 import org.uimafit.factory.TypeSystemDescriptionFactory;
-import org.uimafit.util.SimplePipeline;
+import org.uimafit.pipeline.SimplePipeline;
 
 /**
  * <br>Copyright (c) 2009, Regents of the University of Colorado 

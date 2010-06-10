@@ -32,7 +32,7 @@ import org.cleartk.token.opennlp.OpenNLPPOSTagger;
 import org.cleartk.util.FilesCollectionReader;
 import org.cleartk.util.ViewURIFileNamer;
 import org.uimafit.component.xwriter.XWriter;
-import org.uimafit.util.SimplePipeline;
+import org.uimafit.pipeline.SimplePipeline;
 
 /**
  * <br>

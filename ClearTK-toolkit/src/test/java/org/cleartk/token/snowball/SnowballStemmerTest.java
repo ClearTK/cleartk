@@ -42,8 +42,8 @@ import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.TokenFactory;
 import org.uimafit.factory.TypeSystemDescriptionFactory;
+import org.uimafit.testing.factory.TokenFactory;
 
 
 /**

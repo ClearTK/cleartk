@@ -37,7 +37,7 @@ import org.cleartk.token.util.Subtokenizer;
 import org.cleartk.util.ReusableUIMAObjects;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.CollectionReaderFactory;
-import org.uimafit.util.SimplePipeline;
+import org.uimafit.pipeline.SimplePipeline;
 
 /**
  * <br>

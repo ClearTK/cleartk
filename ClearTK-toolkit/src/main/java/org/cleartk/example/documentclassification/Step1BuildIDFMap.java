@@ -38,7 +38,7 @@ import org.cleartk.util.FilesCollectionReader;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
-import org.uimafit.util.SimplePipeline;
+import org.uimafit.pipeline.SimplePipeline;
 
 
 /**

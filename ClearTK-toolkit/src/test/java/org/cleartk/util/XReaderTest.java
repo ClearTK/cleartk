@@ -40,10 +40,10 @@ import org.junit.Test;
 import org.uimafit.component.xwriter.XWriter;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.CollectionReaderFactory;
-import org.uimafit.factory.TokenFactory;
 import org.uimafit.factory.TypeSystemDescriptionFactory;
-import org.uimafit.util.JCasIterable;
-import org.uimafit.util.TearDownUtil;
+import org.uimafit.pipeline.JCasIterable;
+import org.uimafit.testing.factory.TokenFactory;
+import org.uimafit.testing.util.TearDownUtil;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 

@@ -30,7 +30,7 @@ import org.cleartk.srl.ArgumentClassifier;
 import org.cleartk.srl.ArgumentIdentifier;
 import org.cleartk.token.snowball.DefaultSnowballStemmer;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.util.SimplePipeline;
+import org.uimafit.pipeline.SimplePipeline;
 
 /**
  * <br>

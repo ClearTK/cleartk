@@ -49,9 +49,9 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.JCasFactory;
-import org.uimafit.factory.TokenFactory;
 import org.uimafit.factory.TypeSystemDescriptionFactory;
-import org.uimafit.util.TearDownUtil;
+import org.uimafit.testing.factory.TokenFactory;
+import org.uimafit.testing.util.TearDownUtil;
 
 
 /**

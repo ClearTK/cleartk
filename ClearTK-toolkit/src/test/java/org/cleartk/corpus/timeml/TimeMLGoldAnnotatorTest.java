@@ -41,7 +41,7 @@ import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.CollectionReaderFactory;
 import org.uimafit.factory.TypeSystemDescriptionFactory;
-import org.uimafit.util.JCasIterable;
+import org.uimafit.pipeline.JCasIterable;
 
 
 

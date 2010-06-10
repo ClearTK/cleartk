@@ -43,7 +43,7 @@ import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
 import org.cleartk.util.ReusableUIMAObjects;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.CollectionReaderFactory;
-import org.uimafit.util.JCasIterable;
+import org.uimafit.pipeline.JCasIterable;
 
 
 /**

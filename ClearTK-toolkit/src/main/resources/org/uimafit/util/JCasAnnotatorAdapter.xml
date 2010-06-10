@@ -2,7 +2,7 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
     <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
     <primitive>true</primitive>
-    <annotatorImplementationName>org.uimafit.util.JCasAnnotatorAdapter</annotatorImplementationName>
+    <annotatorImplementationName>org.uimafit.component.JCasAnnotatorAdapter</annotatorImplementationName>
     <analysisEngineMetaData>
         <name>JCasAnnotatorAdapter</name>
         <description>This descriptor file was generated automatically by org.cleartk.util.GenerateDescriptorFiles. 

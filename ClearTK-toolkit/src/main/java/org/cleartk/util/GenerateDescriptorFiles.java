@@ -70,8 +70,8 @@ import org.cleartk.token.snowball.DefaultSnowballStemmer;
 import org.cleartk.util.linereader.LineReader;
 import org.cleartk.util.linereader.SimpleLineHandler;
 import org.cleartk.util.linewriter.LineWriter;
+import org.uimafit.component.JCasAnnotatorAdapter;
 import org.uimafit.factory.ConfigurationParameterFactory;
-import org.uimafit.util.JCasAnnotatorAdapter;
 import org.xml.sax.SAXException;
 
 public class GenerateDescriptorFiles {

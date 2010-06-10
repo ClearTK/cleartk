@@ -39,9 +39,9 @@ import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.TokenFactory;
 import org.uimafit.factory.TypeSystemDescriptionFactory;
-import org.uimafit.util.DisableLogging;
+import org.uimafit.testing.factory.TokenFactory;
+import org.uimafit.testing.util.DisableLogging;
 
 
 /**
