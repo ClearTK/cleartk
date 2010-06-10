@@ -46,8 +46,8 @@ import org.uimafit.component.ViewCreatorAnnotator;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.SofaCapability;
 import org.uimafit.factory.ConfigurationParameterFactory;
+import org.uimafit.factory.initializable.InitializableFactory;
 import org.uimafit.util.InitializeUtil;
-import org.uimafit.util.initialize.InitializableFactory;
 import org.uimafit.util.io.Files;
 
 

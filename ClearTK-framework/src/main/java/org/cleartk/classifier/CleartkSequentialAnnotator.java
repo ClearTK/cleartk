@@ -35,9 +35,9 @@ import org.cleartk.CleartkException;
 import org.cleartk.util.ReflectionUtil;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
+import org.uimafit.factory.initializable.Initializable;
+import org.uimafit.factory.initializable.InitializableFactory;
 import org.uimafit.util.InitializeUtil;
-import org.uimafit.util.initialize.Initializable;
-import org.uimafit.util.initialize.InitializableFactory;
 
 public abstract class CleartkSequentialAnnotator<OUTCOME_TYPE> extends JCasAnnotator_ImplBase implements Initializable {
 

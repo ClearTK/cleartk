@@ -47,7 +47,7 @@ import org.cleartk.classifier.feature.proliferate.ContainsHyphenProliferator;
 import org.cleartk.classifier.feature.proliferate.LowerCaseProliferator;
 import org.cleartk.classifier.feature.proliferate.NumericTypeProliferator;
 import org.cleartk.classifier.feature.proliferate.ProliferatingExtractor;
-import org.uimafit.util.initialize.InitializableFactory;
+import org.uimafit.factory.initializable.InitializableFactory;
 
 
 /**

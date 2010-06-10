@@ -53,8 +53,8 @@ import org.cleartk.type.Token;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
+import org.uimafit.factory.initializable.InitializableFactory;
 import org.uimafit.util.InitializeUtil;
-import org.uimafit.util.initialize.InitializableFactory;
 
 /**
  * <br>

@@ -30,7 +30,7 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.collection.CollectionException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.uimafit.util.initialize.Initializable;
+import org.uimafit.factory.initializable.Initializable;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 

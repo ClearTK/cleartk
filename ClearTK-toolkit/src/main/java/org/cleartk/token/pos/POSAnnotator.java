@@ -42,8 +42,8 @@ import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
+import org.uimafit.factory.initializable.InitializableFactory;
 import org.uimafit.util.InitializeUtil;
-import org.uimafit.util.initialize.InitializableFactory;
 
 /**
  * <br>Copyright (c) 2009, Regents of the University of Colorado 

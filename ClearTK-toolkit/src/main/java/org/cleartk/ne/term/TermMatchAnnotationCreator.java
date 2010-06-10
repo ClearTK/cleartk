@@ -28,7 +28,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.ne.term.util.TermMatch;
-import org.uimafit.util.initialize.Initializable;
+import org.uimafit.factory.initializable.Initializable;
 
 
 /**

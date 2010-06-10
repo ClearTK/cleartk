@@ -46,7 +46,7 @@ import org.cleartk.classifier.feature.proliferate.ProliferatingExtractor;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.uimafit.util.initialize.Initializable;
+import org.uimafit.factory.initializable.Initializable;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 

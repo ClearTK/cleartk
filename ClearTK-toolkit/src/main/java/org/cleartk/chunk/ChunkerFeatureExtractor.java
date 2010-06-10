@@ -27,7 +27,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.Instance;
-import org.uimafit.util.initialize.Initializable;
+import org.uimafit.factory.initializable.Initializable;
 
 
 /**

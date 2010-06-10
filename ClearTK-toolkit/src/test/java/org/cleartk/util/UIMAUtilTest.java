@@ -41,8 +41,8 @@ import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.TypeSystemDescriptionFactory;
 import org.uimafit.factory.UimaContextFactory;
+import org.uimafit.factory.initializable.InitializableFactory;
 import org.uimafit.util.JCasAnnotatorAdapter;
-import org.uimafit.util.initialize.InitializableFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 

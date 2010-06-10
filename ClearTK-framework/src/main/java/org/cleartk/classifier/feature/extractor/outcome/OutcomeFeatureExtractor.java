@@ -29,7 +29,7 @@ import java.util.List;
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.Feature;
-import org.uimafit.util.initialize.Initializable;
+import org.uimafit.factory.initializable.Initializable;
 
 /**
  * <br>Copyright (c) 2009, Regents of the University of Colorado 

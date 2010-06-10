@@ -40,8 +40,8 @@ import org.cleartk.classifier.encoder.outcome.StringToIntegerOutcomeEncoder;
 import org.cleartk.classifier.libsvm.MultiClassLIBSVMDataWriter;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
+import org.uimafit.factory.initializable.Initializable;
 import org.uimafit.util.InitializeUtil;
-import org.uimafit.util.initialize.Initializable;
 
 /**
  * <br>Copyright (c) 2009, Regents of the University of Colorado 

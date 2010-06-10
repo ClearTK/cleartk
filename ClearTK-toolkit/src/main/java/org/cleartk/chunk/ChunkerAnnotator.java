@@ -39,8 +39,8 @@ import org.cleartk.classifier.Instance;
 import org.cleartk.util.UIMAUtil;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
+import org.uimafit.factory.initializable.InitializableFactory;
 import org.uimafit.util.InitializeUtil;
-import org.uimafit.util.initialize.InitializableFactory;
 
 
 /**

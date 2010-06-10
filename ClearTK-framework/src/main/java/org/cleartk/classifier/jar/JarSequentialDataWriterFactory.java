@@ -36,8 +36,8 @@ import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 import org.cleartk.util.ReflectionUtil;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
+import org.uimafit.factory.initializable.Initializable;
 import org.uimafit.util.InitializeUtil;
-import org.uimafit.util.initialize.Initializable;
 
 public abstract class JarSequentialDataWriterFactory<FEATURES_OUT_TYPE, OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE>
 		implements SequentialDataWriterFactory<OUTCOME_IN_TYPE>, Initializable {

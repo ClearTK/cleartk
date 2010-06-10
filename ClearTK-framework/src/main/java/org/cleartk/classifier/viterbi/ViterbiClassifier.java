@@ -49,8 +49,8 @@ import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.ReflectionUtil.TypeArgumentDelegator;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
+import org.uimafit.factory.initializable.Initializable;
 import org.uimafit.util.InitializeUtil;
-import org.uimafit.util.initialize.Initializable;
 
 /**
  * <br>
