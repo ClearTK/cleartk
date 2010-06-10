@@ -52,8 +52,8 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.util.HideOutput;
-import org.uimafit.util.TearDownUtil;
+import org.uimafit.testing.util.HideOutput;
+import org.uimafit.testing.util.TearDownUtil;
 /**
  * <br>
  * Copyright (c) 2009, Regents of the University of Colorado <br>

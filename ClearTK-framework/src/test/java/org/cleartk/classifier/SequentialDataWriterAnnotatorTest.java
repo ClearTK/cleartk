@@ -53,8 +53,8 @@ import org.cleartk.util.JCasUtil;
 import org.junit.After;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.TokenFactory;
-import org.uimafit.util.TearDownUtil;
+import org.uimafit.testing.factory.TokenFactory;
+import org.uimafit.testing.util.TearDownUtil;
 
 
 /**

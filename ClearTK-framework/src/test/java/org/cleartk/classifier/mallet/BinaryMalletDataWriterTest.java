@@ -53,8 +53,8 @@ import org.cleartk.util.JCasUtil;
 import org.junit.After;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.util.HideOutput;
-import org.uimafit.util.TearDownUtil;
+import org.uimafit.testing.util.HideOutput;
+import org.uimafit.testing.util.TearDownUtil;
 
 /**
  * <br>

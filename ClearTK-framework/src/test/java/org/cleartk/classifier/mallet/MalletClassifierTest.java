@@ -48,8 +48,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.util.HideOutput;
-import org.uimafit.util.TearDownUtil;
+import org.uimafit.testing.util.HideOutput;
+import org.uimafit.testing.util.TearDownUtil;
 
 import cc.mallet.types.FeatureVector;
 /**

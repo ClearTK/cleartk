@@ -42,7 +42,7 @@ import org.cleartk.type.test.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.JCasUtil;
 import org.junit.Test;
-import org.uimafit.factory.TokenFactory;
+import org.uimafit.testing.factory.TokenFactory;
 
 
 /**

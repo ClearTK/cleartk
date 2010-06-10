@@ -53,8 +53,8 @@ import org.cleartk.util.JCasUtil;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.JCasFactory;
-import org.uimafit.factory.TokenFactory;
 import org.uimafit.factory.TypeSystemDescriptionFactory;
+import org.uimafit.testing.factory.TokenFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 

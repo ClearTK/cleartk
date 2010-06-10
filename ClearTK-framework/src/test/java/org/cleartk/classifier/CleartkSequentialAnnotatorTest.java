@@ -42,7 +42,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.uimafit.factory.UimaContextFactory;
-import org.uimafit.util.TearDownUtil;
+import org.uimafit.testing.util.TearDownUtil;
 
 /**
  * <br>
