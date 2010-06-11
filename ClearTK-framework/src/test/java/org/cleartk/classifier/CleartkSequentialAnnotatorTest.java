@@ -38,11 +38,11 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.jar.JarClassifierFactory;
+import org.cleartk.test.util.TearDownUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.uimafit.factory.UimaContextFactory;
-import org.uimafit.testing.util.TearDownUtil;
 
 /**
  * <br>

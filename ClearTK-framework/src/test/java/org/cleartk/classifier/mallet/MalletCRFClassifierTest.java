@@ -46,12 +46,12 @@ import org.cleartk.classifier.SequentialClassifier;
 import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.classifier.jar.JarSequentialDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
+import org.cleartk.test.util.TearDownUtil;
 import org.cleartk.util.JCasUtil;
 import org.junit.After;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.testing.util.HideOutput;
-import org.uimafit.testing.util.TearDownUtil;
 
 /**
  * <br>

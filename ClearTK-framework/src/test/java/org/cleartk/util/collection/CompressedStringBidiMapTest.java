@@ -33,11 +33,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 
+import org.cleartk.test.util.TearDownUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.uimafit.testing.util.TearDownUtil;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 

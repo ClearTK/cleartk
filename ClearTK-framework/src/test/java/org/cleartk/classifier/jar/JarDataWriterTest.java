@@ -39,15 +39,13 @@ import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
 import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
-import org.cleartk.classifier.jar.JarDataWriterFactory;
-import org.cleartk.classifier.jar.JarDataWriter;
 import org.cleartk.classifier.mallet.DefaultMalletDataWriterFactory;
 import org.cleartk.classifier.opennlp.MaxentDataWriter;
+import org.cleartk.test.util.TearDownUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.UimaContextFactory;
-import org.uimafit.testing.util.TearDownUtil;
 
 /**
  * <br>

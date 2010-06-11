@@ -38,10 +38,11 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.jar.JarDataWriterFactory;
 import org.cleartk.classifier.jar.JarClassifierFactory;
+import org.cleartk.classifier.jar.JarDataWriterFactory;
 import org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
+import org.cleartk.test.util.TearDownUtil;
 import org.cleartk.util.JCasUtil;
 import org.junit.After;
 import org.junit.Assert;
@@ -49,7 +50,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.UimaContextFactory;
-import org.uimafit.testing.util.TearDownUtil;
 
 /**
  * <br>
