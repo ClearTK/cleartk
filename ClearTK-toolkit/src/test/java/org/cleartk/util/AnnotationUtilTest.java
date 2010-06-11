@@ -38,6 +38,7 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.cleartk.ToolkitTestBase;
 import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.type.Chunk;
 import org.cleartk.type.Sentence;
@@ -47,7 +48,6 @@ import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.AnnotationFactory;
 import org.uimafit.factory.JCasFactory;
 import org.uimafit.factory.TypeSystemDescriptionFactory;
-import org.uimafit.testing.factory.TokenFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -56,7 +56,7 @@ import org.uimafit.testing.factory.TokenFactory;
  * 
  * @author Philip Ogren
  */
-public class AnnotationUtilTest {
+public class AnnotationUtilTest extends ToolkitTestBase{
 	
 	public static class Annotator extends JCasAnnotator_ImplBase
 	{
@@ -204,7 +204,7 @@ public class AnnotationUtilTest {
 	@Test
 	public void testGetSurroundingTexts() throws UIMAException {
 		JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
-		TokenFactory.createTokens(jCas, "AAA BBB CCC DDDD EEEE FFFF", Token.class, Sentence.class);
+		tokenBuilder.buildTokens(jCas, "AAA BBB CCC DDDD EEEE FFFF");
 		
 		Annotation sa = new Annotation(jCas, 8, 11);
 		sa.addToIndexes();

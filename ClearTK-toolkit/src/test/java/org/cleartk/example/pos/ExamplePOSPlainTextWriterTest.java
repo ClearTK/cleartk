@@ -32,15 +32,13 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.util.FileUtils;
 import org.cleartk.CleartkComponents;
-import org.cleartk.type.Sentence;
-import org.cleartk.type.Token;
+import org.cleartk.ToolkitTestBase;
 import org.cleartk.util.ViewURIUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.testing.factory.TokenFactory;
 
 
 /**
@@ -49,12 +47,13 @@ import org.uimafit.testing.factory.TokenFactory;
 
 */
 
-public class ExamplePOSPlainTextWriterTest {
+public class ExamplePOSPlainTextWriterTest extends ToolkitTestBase {
 
 	private final File outputDirectory = new File("test/data/example");
 	
 	@Before
 	public void setUp() throws Exception {
+		super.setUp();
 		this.outputDirectory.mkdirs();
 	}
 
@@ -72,10 +71,10 @@ public class ExamplePOSPlainTextWriterTest {
 		AnalysisEngine engine = CleartkComponents.createPrimitive(ExamplePOSPlainTextWriter.class, ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDirectory.getPath());
 
 		JCas jCas = engine.newJCas();
-		TokenFactory.createTokens(jCas,
-				"I walked home. It was a nice day!", Token.class, Sentence.class, 
+		tokenBuilder.buildTokens(jCas,
+				"I walked home. It was a nice day!", 
 				"I walked home .\nIt was a nice day !",
-				"PRP VBD NN . PRP VBD DT JJ NN .", null, "org.cleartk.type.Token:pos", null);
+				"PRP VBD NN . PRP VBD DT JJ NN .");
 		ViewURIUtil.setURI(jCas, "xxx");
 		engine.process(jCas);
 		engine.collectionProcessComplete();

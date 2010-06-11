@@ -37,6 +37,7 @@ import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.CleartkComponents;
 import org.cleartk.CleartkException;
+import org.cleartk.ToolkitTestBase;
 import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.ClassifierFactory;
 import org.cleartk.classifier.CleartkAnnotator;
@@ -61,7 +62,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.testing.factory.TokenFactory;
 import org.uimafit.testing.util.TearDownUtil;
 
 
@@ -74,7 +74,7 @@ import org.uimafit.testing.util.TearDownUtil;
  *
  * @author Steven Bethard
  */
-public class VerbClauseTemporalAnnotatorTest {
+public class VerbClauseTemporalAnnotatorTest extends ToolkitTestBase{
 	
 	private final File outputDirectory = new File("test/data/temporal");
 	
@@ -93,6 +93,7 @@ public class VerbClauseTemporalAnnotatorTest {
 	}
 	@Before
 	public void setUp() throws Exception {
+		super.setUp();
 		if (!this.outputDirectory.exists()) {
 			this.outputDirectory.mkdirs();
 		}
@@ -113,12 +114,11 @@ public class VerbClauseTemporalAnnotatorTest {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(desc);
 		
 		JCas jCas = engine.newJCas();
-		TokenFactory.createTokens(jCas,
+		tokenBuilder.buildTokens(jCas,
 				"He said she bought milk.",
-				Token.class, Sentence.class, 
 				"He said she bought milk .", 
 				"PRP VBD PRP VBD NN .",
-				"he say she buy milk .", "org.cleartk.type.Token:pos", "org.cleartk.type.Token:stem");
+				"he say she buy milk .");
 		List<Token> tokens = AnnotationRetrieval.getAnnotations(jCas, Token.class);
 		
 		// create the Event and TemporalLink annotations
@@ -245,13 +245,11 @@ public class VerbClauseTemporalAnnotatorTest {
 		JCas jCas = ReusableUIMAObjects.getJCas();
 		
 		// fill in text and tokens
-		TokenFactory.createTokens(jCas,
+		tokenBuilder.buildTokens(jCas,
 				"He said he sold the stocks yesterday.",
-				Token.class, Sentence.class, 
 				"He said he sold the stocks yesterday .", 
 				"PRP VBD PRP VBD DT NNS RB .",
-				"he say he sell the stock yesterday .",
-				"org.cleartk.type.Token:pos", "org.cleartk.type.Token:stem");
+				"he say he sell the stock yesterday .");
 		List<Token> tokens = AnnotationRetrieval.getAnnotations(jCas, Token.class);
 
 		// fill in tree

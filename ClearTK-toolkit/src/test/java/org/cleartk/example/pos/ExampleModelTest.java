@@ -31,12 +31,11 @@ import static org.junit.Assert.assertNull;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.jcas.JCas;
-import org.cleartk.type.Sentence;
+import org.cleartk.ToolkitTestBase;
 import org.cleartk.type.Token;
 import org.cleartk.util.ReusableUIMAObjects;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.testing.factory.TokenFactory;
 import org.uimafit.util.AnnotationRetrieval;
 
 /**
@@ -46,7 +45,7 @@ import org.uimafit.util.AnnotationRetrieval;
  * @author Philip Ogren
  * 
  */
-public class ExampleModelTest {
+public class ExampleModelTest extends ToolkitTestBase {
 
 	@Test
 	public void testModel() throws Exception {
@@ -55,8 +54,8 @@ public class ExampleModelTest {
 		
 		JCas jCas = ReusableUIMAObjects.getJCas();
 		
-		TokenFactory.createTokens(jCas,
-				"What would you do if I sang in tune?  Would you listen then?", Token.class, Sentence.class, 
+		tokenBuilder.buildTokens(jCas,
+				"What would you do if I sang in tune?  Would you listen then?", 
 				"What would you do if I sang in tune ?\n  Would you listen then ?");
 		
 		Token token = AnnotationRetrieval.get(jCas, Token.class, 0);

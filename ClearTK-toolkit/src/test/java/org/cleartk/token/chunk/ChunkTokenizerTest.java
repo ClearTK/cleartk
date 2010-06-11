@@ -39,6 +39,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkComponents;
 import org.cleartk.CleartkException;
+import org.cleartk.ToolkitTestBase;
 import org.cleartk.chunk.ChunkLabeler;
 import org.cleartk.chunk.ChunkLabeler_ImplBase;
 import org.cleartk.chunk.ChunkerAnnotator;
@@ -66,7 +67,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.initializable.InitializableFactory;
-import org.uimafit.testing.factory.TokenFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -74,7 +74,7 @@ import org.uimafit.testing.factory.TokenFactory;
 
 */
 
-public class ChunkTokenizerTest {
+public class ChunkTokenizerTest extends ToolkitTestBase{
 	
 	private final File outputDir = new File("test/data/token/chunk");
 
@@ -166,9 +166,9 @@ public class ChunkTokenizerTest {
 
 		  String text = "What if we built a rocket ship made of cheese?" +
 			  "We could fly it to the moon for repairs";
-		  TokenFactory.createTokens(jCas, text, Token.class, Sentence.class,
+		  tokenBuilder.buildTokens(jCas, text,
 					"What if we built a rocket ship made of cheese ? We could fly it to the moon for repairs",
-					"A B C D E F G H I J K L M N O P Q R S T U", null, "org.cleartk.type.Token:pos", null);
+					"A B C D E F G H I J K L M N O P Q R S T U");
 		  List<Token> tokens = AnnotationRetrieval.getAnnotations(jCas, Token.class);
 		  for (int i = 0; i < tokens.size(); i++) {
 			Token token1 = tokens.get(i);

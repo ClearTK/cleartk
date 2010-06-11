@@ -28,17 +28,16 @@ import java.util.List;
 import org.apache.uima.UIMAException;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.CleartkException;
+import org.cleartk.ToolkitTestBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.syntax.TreebankTestsUtil;
 import org.cleartk.syntax.treebank.type.TreebankNode;
-import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.JCasFactory;
-import org.uimafit.testing.factory.TokenFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -48,7 +47,7 @@ import org.uimafit.testing.factory.TokenFactory;
  * @author Steven Bethard
  */
 
-public class HeadWordExtractorTest {
+public class HeadWordExtractorTest extends ToolkitTestBase{
 
 	@Test
 	public void testNoTreebankNode() throws UIMAException, CleartkException {
@@ -94,7 +93,7 @@ public class HeadWordExtractorTest {
 	@Test
 	public void testSimpleSentence() throws UIMAException, CleartkException {
 		JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
-		TokenFactory.createTokens(jCas, "I ran home", Token.class, Sentence.class, null, "PRP VBD NN", null, "org.cleartk.type.Token:pos", null);
+		tokenBuilder.buildTokens(jCas, "I ran home", "I ran home", "PRP VBD NN");
 		TreebankNode iNode = TreebankTestsUtil.newNode(jCas, 0, 1, "PRP");
 		TreebankNode ranNode = TreebankTestsUtil.newNode(jCas, 2, 5, "VBD");
 		TreebankNode homeNode = TreebankTestsUtil.newNode(jCas, 6, 10, "NN");
@@ -124,11 +123,10 @@ public class HeadWordExtractorTest {
 	@Test
 	public void testNPandPP() throws UIMAException, CleartkException {
 		JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
-		TokenFactory.createTokens(jCas,
-				"cat's toy under the box", Token.class, Sentence.class, 
+		tokenBuilder.buildTokens(jCas,
+				"cat's toy under the box", 
 				"cat 's toy under the box",
-				"NN POS NN IN DT NN",
-				null, "org.cleartk.type.Token:pos", null);
+				"NN POS NN IN DT NN");
 		TreebankNode catNode = TreebankTestsUtil.newNode(jCas, 0, 3, "NN");
 		TreebankNode sNode = TreebankTestsUtil.newNode(jCas, 3, 5, "POS");
 		TreebankNode catsNode = TreebankTestsUtil.newNode(jCas, "NP", catNode, sNode);

@@ -36,6 +36,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.cleartk.CleartkComponents;
+import org.cleartk.ToolkitTestBase;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
@@ -43,7 +44,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.TypeSystemDescriptionFactory;
-import org.uimafit.testing.factory.TokenFactory;
 
 
 /**
@@ -51,7 +51,7 @@ import org.uimafit.testing.factory.TokenFactory;
  * <br>All rights reserved.
 
  */
-public class SnowballStemmerTest {
+public class SnowballStemmerTest extends ToolkitTestBase{
 
 	@Test
 	public void testBadStemmerName() throws UIMAException {
@@ -74,7 +74,7 @@ public class SnowballStemmerTest {
 		JCas jCas = engine.newJCas();
 		String text = "The brown foxes jumped quickly over the lazy dog.";
 		String tokens = "The brown foxes jumped quickly over the lazy dog .";
-		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class, tokens);
+		tokenBuilder.buildTokens(jCas, text, tokens);
 		engine.process(jCas);
 		List<String> actual = new ArrayList<String>();
 		for (Token token: AnnotationRetrieval.getAnnotations(jCas, Token.class)) {
@@ -91,9 +91,8 @@ public class SnowballStemmerTest {
 				TypeSystemDescriptionFactory.createTypeSystemDescription(Token.class, Sentence.class),
 				SnowballStemmer.PARAM_STEMMER_NAME, "English");
 		JCas jCas = engine.newJCas();
-		TokenFactory.createTokens(jCas,
-				"The brown foxes JumPEd QUICKLy over the lazY dog.",
-				Token.class, Sentence.class, 
+		tokenBuilder.buildTokens(jCas,
+				"The brown foxes JumPEd QUICKLy over the lazY dog.", 
 				"The brown foxes JumPEd QUICKLy over the lazY dog .");
 		engine.process(jCas);
 		

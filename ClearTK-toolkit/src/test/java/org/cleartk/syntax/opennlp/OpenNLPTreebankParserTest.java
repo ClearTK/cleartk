@@ -31,16 +31,15 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.ToolkitTestBase;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
 import org.cleartk.syntax.treebank.type.TreebankNode;
 import org.cleartk.type.Sentence;
-import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.TypeSystemDescriptionFactory;
-import org.uimafit.testing.factory.TokenFactory;
 import org.uimafit.testing.util.DisableLogging;
 
 
@@ -49,7 +48,7 @@ import org.uimafit.testing.util.DisableLogging;
  * <br>All rights reserved.
 
  */
-public class OpenNLPTreebankParserTest {
+public class OpenNLPTreebankParserTest extends ToolkitTestBase {
 
 	@Test
 	public void testMissingParameters() throws UIMAException {
@@ -98,11 +97,11 @@ public class OpenNLPTreebankParserTest {
 				OpenNLPTreebankParser.PARAM_CHUNK_MODEL_FILE, "test/models/fox_dog_parser/chunk.bin.gz",
 				OpenNLPTreebankParser.PARAM_HEAD_RULES_FILE, "test/models/fox_dog_parser/head_rules");
 		JCas jCas = engine.newJCas();
-		TokenFactory.createTokens(jCas,
-				"The brown fox jumped quickly over the lazy dog.", Token.class, Sentence.class, 
+		tokenBuilder.buildTokens(jCas,
+				"The brown fox jumped quickly over the lazy dog.",  
 				"The brown fox jumped quickly over the lazy dog .",
-				"DT JJ NN VBZ RB IN DT JJ NN .",
-				null, "org.cleartk.type.Token:pos", null);
+				"DT JJ NN VBZ RB IN DT JJ NN ."
+				);
 		
 		engine.process(jCas);
 		engine.collectionProcessComplete();
@@ -166,9 +165,8 @@ public class OpenNLPTreebankParserTest {
 				OpenNLPTreebankParser.PARAM_CHUNK_MODEL_FILE, "test/models/fox_dog_parser/chunk.bin.gz",
 				OpenNLPTreebankParser.PARAM_HEAD_RULES_FILE, "test/models/fox_dog_parser/head_rules");
 		JCas jCas = engine.newJCas();
-		TokenFactory.createTokens(jCas,
+		tokenBuilder.buildTokens(jCas,
 				"The brown fox jumped quickly over the lazy dog.",
-				Token.class, Sentence.class, 
 				"The brown fox jumped quickly over the lazy dog .");
 		Level level = DisableLogging.disableLogging();
 		try {
@@ -193,13 +191,12 @@ public class OpenNLPTreebankParserTest {
 				OpenNLPTreebankParser.PARAM_CHUNK_MODEL_FILE, "test/models/fox_dog_parser/chunk.bin.gz",
 				OpenNLPTreebankParser.PARAM_HEAD_RULES_FILE, "test/models/fox_dog_parser/head_rules");
 		JCas jCas = engine.newJCas();
-		TokenFactory.createTokens(jCas,
+		tokenBuilder.buildTokens(jCas,
 				"The brown fox jumped quickly over the lazy dog " +
 				"who jumped quickly over the brown fox " +
 				"who jumped quickly over the lazy dog " +
 				"who jumped quickly over the brown fox " +
 				"who jumped quickly over the lazy dog.",
-				Token.class, Sentence.class, 
 				"The brown fox jumped quickly over the lazy dog " +
 				"who jumped quickly over the brown fox " +
 				"who jumped quickly over the lazy dog " +
@@ -209,8 +206,7 @@ public class OpenNLPTreebankParserTest {
 				"WDT VBZ RB IN DT JJ NN " +
 				"WDT VBZ RB IN DT JJ NN " +
 				"WDT VBZ RB IN DT JJ NN " +
-				"WDT VBZ RB IN DT JJ NN .",
-				null, "org.cleartk.type.Token:pos", null);
+				"WDT VBZ RB IN DT JJ NN .");
 		engine.process(jCas);
 		engine.collectionProcessComplete();
 		Sentence sentence = AnnotationRetrieval.getAnnotations(jCas, Sentence.class).get(0);

@@ -38,6 +38,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.cleartk.CleartkComponents;
 import org.cleartk.CleartkException;
+import org.cleartk.ToolkitTestBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.srl.type.Predicate;
@@ -45,7 +46,6 @@ import org.cleartk.srl.type.SemanticArgument;
 import org.cleartk.syntax.TreebankTestsUtil;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
 import org.cleartk.syntax.treebank.type.TreebankNode;
-import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.InstanceCollector;
@@ -54,7 +54,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.testing.factory.TokenFactory;
 import org.uimafit.testing.util.TearDownUtil;
 
 
@@ -63,7 +62,7 @@ import org.uimafit.testing.util.TearDownUtil;
  * <br>All rights reserved.
 
  */
-public class PredicateArgumentHandlerTest {
+public class PredicateArgumentHandlerTest extends ToolkitTestBase {
 	
 	private final File predicateOutputDir = new File("test/data/srl/predicate-output");
 	private final File argumentOutputDir = new File("test/data/srl/argument-output");
@@ -234,11 +233,11 @@ public class PredicateArgumentHandlerTest {
 	 */	
 
 	private void setTokens(JCas jCas) throws UIMAException {
-		TokenFactory.createTokens(jCas,  
-				"John broke the lamp.",Token.class, Sentence.class,
+		tokenBuilder.buildTokens(jCas,  
+				"John broke the lamp.",
 				"John broke the lamp .",
 				"NNP VBD DT NN .",
-				"John break the lamp .", "org.cleartk.type.Token:pos", "org.cleartk.type.Token:stem");
+				"John break the lamp .");
 	}
 	
 	private void setTrees(JCas jCas) {

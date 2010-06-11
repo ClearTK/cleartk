@@ -33,18 +33,16 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.CleartkComponents;
+import org.cleartk.ToolkitTestBase;
 import org.cleartk.classifier.CleartkSequentialAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
-import org.cleartk.type.Sentence;
-import org.cleartk.type.Token;
 import org.cleartk.util.InstanceCollector;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.testing.factory.TokenFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -53,7 +51,7 @@ import org.uimafit.testing.factory.TokenFactory;
  * 
  * @author Steven Bethard
  */
-public class ExamplePOSAnnotatorTest {
+public class ExamplePOSAnnotatorTest extends ToolkitTestBase {
 	
 	@Test
 	public void testSimpleSentence() throws Exception {
@@ -67,11 +65,11 @@ public class ExamplePOSAnnotatorTest {
 		JCas jCas = engine.newJCas();
 		
 		// create some tokens, stems and part of speech tags
-		TokenFactory.createTokens(jCas,
-				"The Absurdis retreated in 2003.", Token.class, Sentence.class, 
+		tokenBuilder.buildTokens(jCas,
+				"The Absurdis retreated in 2003.", 
 				"The Absurdis retreated in 2003 .",
 				"DT NNP VBD IN CD .",
-				"The Absurdi retreat in 2003 .", "org.cleartk.type.Token:pos", "org.cleartk.type.Token:stem");
+				"The Absurdi retreat in 2003 .");
 
 		List<Instance<String>> 	instances = InstanceCollector.StringFactory.collectInstances(engine, jCas);
 

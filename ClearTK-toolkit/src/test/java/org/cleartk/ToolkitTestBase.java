@@ -1,5 +1,5 @@
 /** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+  * Copyright (c) 2010, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -21,54 +21,62 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.ne.term;
 
-import java.io.IOException;
-import java.util.List;
+package org.cleartk;
 
-import org.apache.uima.UIMAException;
-import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
-import org.cleartk.ToolkitTestBase;
-import org.cleartk.ne.type.NamedEntityMention;
+import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
-import org.cleartk.util.AnnotationRetrieval;
-import org.junit.Assert;
-import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
+import org.junit.Before;
+import org.uimafit.factory.JCasFactory;
 import org.uimafit.factory.TypeSystemDescriptionFactory;
+import org.uimafit.testing.factory.TokenBuilder;
 
 /**
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
- * 
- * @author Steven Bethard
+ * @author Philip Ogren
  */
-public class TermFinderAnnotatorTest extends ToolkitTestBase{
+public class ToolkitTestBase {
 
-	@Test
-	public void test() throws UIMAException, IOException {
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				TermFinderAnnotator.class, TypeSystemDescriptionFactory.createTypeSystemDescription(
-						Sentence.class, Token.class, NamedEntityMention.class),
-				TermFinderAnnotator.PARAM_TERM_LIST_FILE_NAMES_FILE_NAME,
-				"test/data/termlist/termlist.txt",
-				TermFinderAnnotator.PARAM_TOKEN_CLASS_NAME, Token.class.getName(),
-				TermFinderAnnotator.PARAM_TERM_MATCH_ANNOTATION_CLASS_NAME,
-				NamedEntityMention.class.getName());
-		JCas jCas = engine.newJCas();
-		tokenBuilder.buildTokens(jCas, "I would like to visit Alaska.", 
-				"I would like to visit Alaska .");
-		engine.process(jCas);
-		engine.collectionProcessComplete();
-		List<NamedEntityMention> mentions = AnnotationRetrieval.getAnnotations(
-				jCas, NamedEntityMention.class);
-		Assert.assertEquals(mentions.size(), 1);
-		NamedEntityMention mention = mentions.get(0);
-		Assert.assertEquals("Alaska", mention.getCoveredText());
+	private static ThreadLocal<JCas> JCAS = new ThreadLocal<JCas>();
+	private static ThreadLocal<TypeSystemDescription> TYPE_SYSTEM_DESCRIPTION = new ThreadLocal<TypeSystemDescription>();
+	private static ThreadLocal<TokenBuilder<Token, Sentence>> TOKEN_BUILDER = new ThreadLocal<TokenBuilder<Token, Sentence>>();
+
+	static {
+		try {
+			TypeSystemDescription tsd = TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem");
+			TYPE_SYSTEM_DESCRIPTION.set(tsd);
+
+			JCas jCas = JCasFactory.createJCas(tsd);
+			JCAS.set(jCas);
+			
+			TokenBuilder<Token, Sentence> tb = new TokenBuilder<Token, Sentence>(Token.class, Sentence.class, "pos", "stem");
+			TOKEN_BUILDER.set(tb);
+		}
+	 catch(Exception e) {
+		e.printStackTrace();
+		System.exit(1);
+	}
+	}
+	
+	protected JCas jCas;
+	protected TypeSystemDescription typeSystemDescription;
+	protected TokenBuilder<Token, Sentence> tokenBuilder;
+
+	/**
+	 *  we do not want to create a new JCas object every time we run a test because it is expensive (~100ms on my laptop).  Instead,
+	 *  we will have one JCas per thread sitting around that we will reset everytime a new test is called.  
+	 */
+	@Before
+	public void setUp() throws Exception {
+		jCas = JCAS.get(); 
+		jCas.reset();
+		typeSystemDescription = TYPE_SYSTEM_DESCRIPTION.get();
+		tokenBuilder = TOKEN_BUILDER.get();
 	}
 
 }

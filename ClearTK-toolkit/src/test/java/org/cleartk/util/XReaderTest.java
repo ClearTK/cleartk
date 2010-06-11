@@ -31,7 +31,7 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.type.Sentence;
+import org.cleartk.ToolkitTestBase;
 import org.cleartk.type.Token;
 import org.junit.After;
 import org.junit.Assert;
@@ -42,7 +42,6 @@ import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.CollectionReaderFactory;
 import org.uimafit.factory.TypeSystemDescriptionFactory;
 import org.uimafit.pipeline.JCasIterable;
-import org.uimafit.testing.factory.TokenFactory;
 import org.uimafit.testing.util.TearDownUtil;
 
 /**
@@ -54,10 +53,11 @@ import org.uimafit.testing.util.TearDownUtil;
  * 
  * @author Philip Ogren
  */
-public class XReaderTest {
+public class XReaderTest extends ToolkitTestBase{
 	
 	@Before
 	public void setUp() throws Exception {
+		super.setUp();
 		this.inputDir.mkdirs();
 	}
 
@@ -79,11 +79,10 @@ public class XReaderTest {
 				XWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.inputDir.getPath(),
 				XWriter.PARAM_FILE_NAMER_CLASS_NAME, ViewURIFileNamer.class.getName());
 		JCas jCas = engine.newJCas();
-		TokenFactory.createTokens(jCas,
+		tokenBuilder.buildTokens(jCas,
 				"I like\nspam!",
-				Token.class, Sentence.class, 
 				"I like spam !",
-				"PRP VB NN .", null, "org.cleartk.type.Token:pos", null);
+				"PRP VB NN .");
 		ViewURIUtil.setURI(jCas, "test");
 		engine.process(jCas);
 		engine.collectionProcessComplete();
@@ -116,11 +115,10 @@ public class XReaderTest {
 				XWriter.PARAM_XML_SCHEME_NAME, XWriter.XCAS,
 				XWriter.PARAM_FILE_NAMER_CLASS_NAME, ViewURIFileNamer.class.getName());
 		JCas jCas = engine.newJCas();
-		TokenFactory.createTokens(jCas,
+		tokenBuilder.buildTokens(jCas,
 				"I like\nspam!",
-				Token.class, Sentence.class, 
 				"I like spam !",
-				"PRP VB NN .", null, "org.cleartk.type.Token:pos", null);
+				"PRP VB NN .");
 		ViewURIUtil.setURI(jCas, "test");
 		engine.process(jCas);
 		engine.collectionProcessComplete();

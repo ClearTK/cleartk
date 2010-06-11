@@ -30,15 +30,12 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
-import org.cleartk.type.Sentence;
-import org.cleartk.type.Token;
+import org.cleartk.ToolkitTestBase;
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.TypeSystemDescriptionFactory;
-import org.uimafit.testing.factory.TokenFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -46,13 +43,9 @@ import org.uimafit.testing.factory.TokenFactory;
 
 */
 
-public class PlainTextWriterTest {
+public class PlainTextWriterTest extends ToolkitTestBase{
 	
 	private final File outputDir = new File("test/data/plaintext");
-
-	@Before
-	public void setUp() throws Exception {
-	}
 
 	@After
 	public void tearDown() throws Exception {
@@ -76,9 +69,9 @@ public class PlainTextWriterTest {
 				PlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDir.getPath());
 		JCas jCas = engine.newJCas();
 		String text = "What if we built a large\r\n, wooden badger?";
-		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class, 
+		tokenBuilder.buildTokens(jCas, text, 
 				"What if we built a large \n, wooden badger ?",
-				"WDT TO PRP VBN DT JJ , JJ NN .", null, "org.cleartk.type.Token:pos", null);
+				"WDT TO PRP VBN DT JJ , JJ NN .");
 		ViewURIUtil.setURI(jCas, "identifier");
 		engine.process(jCas);
 		engine.collectionProcessComplete();
@@ -89,9 +82,9 @@ public class PlainTextWriterTest {
 
 		jCas = engine.newJCas();
 		text = "What if we built a large\n, wooden badger?";
-		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class,
+		tokenBuilder.buildTokens(jCas, text,
 				"What if we built a large \n, wooden badger ?",
-				"WDT TO PRP VBN DT JJ , JJ NN .", null, "org.cleartk.type.Token:pos", null);
+				"WDT TO PRP VBN DT JJ , JJ NN .");
 		ViewURIUtil.setURI(jCas, "1234");
 		engine.process(jCas);
 		engine.collectionProcessComplete();

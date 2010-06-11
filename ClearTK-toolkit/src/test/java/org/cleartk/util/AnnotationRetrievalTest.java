@@ -39,6 +39,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkComponents;
+import org.cleartk.ToolkitTestBase;
 import org.cleartk.corpus.ace2005.type.Document;
 import org.cleartk.corpus.timeml.type.Event;
 import org.cleartk.corpus.timeml.type.TemporalLink;
@@ -63,7 +64,6 @@ import org.uimafit.component.JCasAnnotatorAdapter;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.JCasFactory;
 import org.uimafit.factory.TypeSystemDescriptionFactory;
-import org.uimafit.testing.factory.TokenFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -73,7 +73,7 @@ import org.uimafit.testing.factory.TokenFactory;
  * 
  * @author Philip Ogren
  */
-public class AnnotationRetrievalTest {
+public class AnnotationRetrievalTest extends ToolkitTestBase{
 
 	
 		private static AnalysisEngine sentencesAndTokens; 
@@ -108,7 +108,7 @@ public class AnnotationRetrievalTest {
 	@Test
 	public void testTypedGet() throws UIMAException {
 		JCas jCas = ReusableUIMAObjects.getJCas();
-		TokenFactory.createTokens(jCas, "A B C D E F G H I J", Token.class, Sentence.class);
+		tokenBuilder.buildTokens(jCas, "A B C D E F G H I J");
 		
 		Annotation ca = new Annotation(jCas, 10, 13);
 		Assert.assertEquals("F G", ca.getCoveredText());
@@ -136,7 +136,7 @@ public class AnnotationRetrievalTest {
 		Assert.assertNull(token);
 
 		jCas.reset();
-		TokenFactory.createTokens(jCas, "AAA BBB CCC DDDD EEEE FFFF", Token.class, Sentence.class);
+		tokenBuilder.buildTokens(jCas, "AAA BBB CCC DDDD EEEE FFFF");
 		ca = new Annotation(jCas, 6, 9);
 		Assert.assertEquals("B C", ca.getCoveredText());
 		token = AnnotationRetrieval.get(jCas, ca, Token.class, 0);
@@ -155,7 +155,7 @@ public class AnnotationRetrievalTest {
 		Assert.assertNull(token);
 				
 		jCas.reset();
-		TokenFactory.createTokens(jCas, "AAA BBB CCC DDDD EEEE FFFF", Token.class, Sentence.class);
+		tokenBuilder.buildTokens(jCas, "AAA BBB CCC DDDD EEEE FFFF");
 		
 		Annotation sa = new Annotation(jCas, 8, 11);
 		sa.addToIndexes();
@@ -250,7 +250,7 @@ public class AnnotationRetrievalTest {
 				JCasAnnotatorAdapter.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
 		jCas = engine.newJCas();
 		String text = "word";
-		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class);
+		tokenBuilder.buildTokens(jCas, text);
 		token1 = AnnotationRetrieval.get(jCas, Token.class, 0);
 		Assert.assertEquals("word",token1.getCoveredText());
 		sentence = AnnotationRetrieval.get(jCas, Sentence.class, 0);
@@ -260,7 +260,7 @@ public class AnnotationRetrievalTest {
 		
 		jCas = engine.newJCas();
 		text = "Materials and Methods ";
-		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class);
+		tokenBuilder.buildTokens(jCas, text);
 		nem = new NamedEntityMention(jCas, 14, 21);
 		nem.addToIndexes();
 		token1 = AnnotationRetrieval.get(jCas, Token.class, 2);
@@ -291,7 +291,7 @@ public class AnnotationRetrievalTest {
 		JCas jCas = ReusableUIMAObjects.getJCas();
 		String text = "What if we built a rocket ship made of cheese?\n"+
 					  "We could fly it to the moon for repairs.";
-		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class);
+		tokenBuilder.buildTokens(jCas, text);
 		Token containingToken = new Token(jCas, 0, 10);
 		containingToken.addToIndexes();
 		
@@ -409,7 +409,7 @@ public class AnnotationRetrievalTest {
 		Assert.assertEquals("thick", adjacentToken.getCoveredText());
 
 		jCas.reset();
-		TokenFactory.createTokens(jCas, "AAA BBB CCC DDDD EEEE FFFF", Token.class, Sentence.class);
+		tokenBuilder.buildTokens(jCas, "AAA BBB CCC DDDD EEEE FFFF");
 		
 		Annotation sa = new Annotation(jCas, 8, 11);
 		sa.addToIndexes();
@@ -553,7 +553,7 @@ public class AnnotationRetrievalTest {
 		//original joke by Philip Ogren
 		String text = "Police Officer: Put down that gun!\n"+
 					  "Hooligan (turning toward his gun): Stupid gun!";
-		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class);
+		tokenBuilder.buildTokens(jCas, text);
 
 		AnnotationIndex tokenIndex = AnnotationRetrieval.getAnnotationIndex(jCas, Token.class);
 		Assert.assertEquals(13, tokenIndex.size());
@@ -635,7 +635,7 @@ public class AnnotationRetrievalTest {
 	public void testGetAnnotationsExact2() throws Exception {
 		JCas jCas = JCasFactory.createJCas(Token.class, Sentence.class);
 		JCas myView = jCas.createView("MyView");
-		TokenFactory.createTokens(myView, "red and blue cars and tipsy motorcycles", Token.class, Sentence.class);
+		tokenBuilder.buildTokens(myView, "red and blue cars and tipsy motorcycles");
 		Token token = AnnotationRetrieval.get(myView, Token.class, 6);
 		assertEquals("motorcycles", token.getCoveredText());
 		assertEquals(28, token.getBegin());

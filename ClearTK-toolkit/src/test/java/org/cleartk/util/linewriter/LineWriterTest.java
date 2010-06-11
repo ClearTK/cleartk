@@ -37,6 +37,7 @@ import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
 import org.cleartk.CleartkComponents;
+import org.cleartk.ToolkitTestBase;
 import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
@@ -50,7 +51,6 @@ import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.JCasFactory;
 import org.uimafit.factory.TypeSystemDescriptionFactory;
-import org.uimafit.testing.factory.TokenFactory;
 import org.uimafit.testing.util.TearDownUtil;
 
 
@@ -60,7 +60,7 @@ import org.uimafit.testing.util.TearDownUtil;
 
 */
 
-public class LineWriterTest {
+public class LineWriterTest extends ToolkitTestBase{
 
 	private final File outputDir = new File("test/data/linewriter");
 
@@ -86,9 +86,9 @@ public class LineWriterTest {
 		JCas jCas = engine.newJCas();
 		String text = "What if we built a rocket ship made of cheese?"+newline +
 					  "We could fly it to the moon for repairs.";
-		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class,
+		tokenBuilder.buildTokens(jCas, text,
 				"What if we built a rocket ship made of cheese ?\nWe could fly it to the moon for repairs .",
-				"A B C D E F G H I J K L M N O P Q R S T U", null, "org.cleartk.type.Token:pos", null);
+				"A B C D E F G H I J K L M N O P Q R S T U");
 		ViewURIUtil.setURI(jCas, "1234");
 		engine.process(jCas);
 		engine.collectionProcessComplete();
@@ -122,9 +122,9 @@ public class LineWriterTest {
 		Assert.assertEquals(expectedText, actualText);
 		
 		jCas = engine.newJCas();
-		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class,
+		tokenBuilder.buildTokens(jCas, text,
 				"What if we \n built a rocket \n ship made of cheese ?\nWe could fly it \nto the moon for repairs .",
-				"A B C D E F G H I J K L M N O P Q R S T U", null, "org.cleartk.type.Token:pos", null);
+				"A B C D E F G H I J K L M N O P Q R S T U");
 		ViewURIUtil.setURI(jCas, "1234");
 		engine.process(jCas);
 		engine.collectionProcessComplete();
@@ -173,9 +173,9 @@ public class LineWriterTest {
 		
 		JCas jCas = engine.newJCas();
 		String text = "Me and all my friends are non-conformists.  I will subjugate my freedom oppressor.";
-		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class,
+		tokenBuilder.buildTokens(jCas, text,
 				"Me and all my friends are non-conformists . \n I will subjugate my freedom oppressor . ",
-				"1 2 3 4 5 6 7 8 9 10 11 12 13 14 15", null, "org.cleartk.type.Token:pos", null);
+				"1 2 3 4 5 6 7 8 9 10 11 12 13 14 15");
 		engine.process(jCas);
 		engine.collectionProcessComplete();
 		
@@ -216,14 +216,14 @@ public class LineWriterTest {
 		
 		JCas jCas = engine.newJCas();
 		String text = "If you like line writer, then you should really check out line rider.";
-		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class);
+		tokenBuilder.buildTokens(jCas, text);
 		engine.process(jCas);
 		Token token = AnnotationRetrieval.get(jCas, Token.class, 0);
 		Assert.assertEquals("If", token.getCoveredText());
 
 		jCas = engine.newJCas();
 		text = "I highly recommend reading 'Three Cups of Tea' by Greg Mortenson.\n Swashbuckling action and inspirational story.";
-		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class);
+		tokenBuilder.buildTokens(jCas, text);
 		engine.process(jCas);
 
 		DocumentAnnotation da = AnnotationRetrieval.get(jCas, DocumentAnnotation.class, 0);
@@ -372,9 +372,9 @@ public class LineWriterTest {
 		
 		JCas jCas = engine.newJCas();
 		String text = "Me and all my friends are non-conformists.  I will subjugate my freedom oppressor.";
-		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class,
+		tokenBuilder.buildTokens(jCas, text,
 				"Me and all my friends are non-conformists . \n I will subjugate my freedom oppressor . ",
-				"1 2 3 4 5 6 7 8 9 10 11 12 13 14 15", null, "org.cleartk.type.Token:pos", null);
+				"1 2 3 4 5 6 7 8 9 10 11 12 13 14 15");
 		engine.process(jCas);
 		engine.collectionProcessComplete();
 		
@@ -417,9 +417,9 @@ public class LineWriterTest {
 		
 		JCas jCas = engine.newJCas();
 		String text = "Me and all my friends are non-conformists.  I will subjugate my freedom oppressor.";
-		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class,
+		tokenBuilder.buildTokens(jCas, text,
 				"Me and all my friends are non-conformists . \n I will subjugate my freedom oppressor . ",
-				"1 2 3 4 5 6 7 8 9 10 11 12 13 14 15", null, "org.cleartk.type.Token:pos", null);
+				"1 2 3 4 5 6 7 8 9 10 11 12 13 14 15");
 		ViewURIUtil.setURI(jCas, "1234");
 		engine.process(jCas);
 		engine.collectionProcessComplete();
@@ -493,9 +493,8 @@ public class LineWriterTest {
 		
 		JCas jCas = engine.newJCas();
 		String spacedTokens = "What if we built a large , wooden badger ?\nHmm? ";
-		TokenFactory.createTokens(jCas,
+		tokenBuilder.buildTokens(jCas,
 				"What if we built\na large, wooden badger? Hmm?",
-				Token.class, Sentence.class, 
 				spacedTokens);
 		ViewURIUtil.setURI(jCas, "identifier");
 		engine.process(jCas);

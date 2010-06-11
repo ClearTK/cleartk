@@ -37,6 +37,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.metadata.TypePriorities;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.cleartk.CleartkComponents;
+import org.cleartk.ToolkitTestBase;
 import org.cleartk.ViewNames;
 import org.cleartk.classifier.CleartkSequentialAnnotator;
 import org.cleartk.classifier.jar.BuildJar;
@@ -46,7 +47,6 @@ import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
 import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
 import org.cleartk.token.pos.POSAnnotator;
-import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.FilesCollectionReader;
@@ -57,7 +57,6 @@ import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.CollectionReaderFactory;
 import org.uimafit.pipeline.JCasIterable;
-import org.uimafit.testing.factory.TokenFactory;
 import org.uimafit.testing.util.HideOutput;
 import org.uimafit.testing.util.TearDownUtil;
 
@@ -69,12 +68,13 @@ import org.uimafit.testing.util.TearDownUtil;
  * @author Philip Ogren
  *
  */
-public class DefaultPOSAnnotatorTest {
+public class DefaultPOSAnnotatorTest extends ToolkitTestBase{
 
 	private File outputDirectory = new File("test/data/token/poshandler");
 	
 	@Before
-	public void setUp() {
+	public void setUp() throws Exception {
+		super.setUp();
 		outputDirectory.mkdirs();
 	}
 	
@@ -119,7 +119,7 @@ public class DefaultPOSAnnotatorTest {
 				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, new File(outputDirectory, BuildJar.MODEL_FILE_NAME).getPath());
 
 		JCas jCas = ReusableUIMAObjects.getJCas();
-		TokenFactory.createTokens(jCas, "What kitchen utensil is like a vampire ? Spatula", Token.class, Sentence.class );
+		tokenBuilder.buildTokens(jCas, "What kitchen utensil is like a vampire ? Spatula" );
 		tagger.process(jCas);
 		assertEquals("IN", AnnotationRetrieval.get(jCas, Token.class, 0).getPos());
 		assertEquals("NN", AnnotationRetrieval.get(jCas, Token.class, 1).getPos());
