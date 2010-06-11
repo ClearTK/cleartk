@@ -43,10 +43,10 @@ import org.cleartk.ViewNames;
 import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
 import org.cleartk.util.ListSpecification;
 import org.cleartk.util.ViewURIUtil;
+import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.SofaCapability;
 import org.uimafit.factory.ConfigurationParameterFactory;
-import org.uimafit.util.InitializeUtil;
 
 
 /**
@@ -113,7 +113,7 @@ public class PennTreebankReader extends CollectionReader_ImplBase {
 
 	@Override
 	public void initialize() throws ResourceInitializationException {
-		InitializeUtil.initialize(this, getUimaContext());
+		ConfigurationParameterInitializer.initializeConfigurationParameters(this, getUimaContext());
 		this.sections = new ListSpecification(sectionsSpecifier);
 
 		this.directory = new File(corpusDirectoryName);

@@ -37,9 +37,9 @@ import org.cleartk.classifier.encoder.features.NumberEncoder;
 import org.cleartk.classifier.encoder.features.StringEncoder;
 import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
 import org.cleartk.classifier.jar.JarSequentialDataWriterFactory;
+import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
-import org.uimafit.util.InitializeUtil;
 
 /**
  * <br>

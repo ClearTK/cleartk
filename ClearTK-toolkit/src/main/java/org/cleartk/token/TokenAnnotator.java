@@ -40,10 +40,10 @@ import org.cleartk.CleartkComponents;
 import org.cleartk.token.util.Token;
 import org.cleartk.token.util.Tokenizer;
 import org.cleartk.util.UIMAUtil;
+import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.InitializableFactory;
-import org.uimafit.util.InitializeUtil;
 
 /**
  * <br>
@@ -106,7 +106,7 @@ public class TokenAnnotator extends JCasAnnotator_ImplBase {
 	public void initialize(UimaContext uimaContext) throws ResourceInitializationException {
 		try {
 			super.initialize(uimaContext);
-			InitializeUtil.initialize(this, uimaContext);
+			ConfigurationParameterInitializer.initializeConfigurationParameters(this, uimaContext);
 			tokenizer = 	InitializableFactory.create(uimaContext, tokenizerName, Tokenizer.class);
 			tokenClass = InitializableFactory.getClass(tokenTypeName, Annotation.class);
 			tokenConstructor = tokenClass.getConstructor(new Class[] { JCas.class, Integer.TYPE, Integer.TYPE });

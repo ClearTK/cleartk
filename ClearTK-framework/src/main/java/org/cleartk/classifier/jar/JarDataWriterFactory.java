@@ -34,10 +34,10 @@ import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 import org.cleartk.util.ReflectionUtil;
+import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.Initializable;
-import org.uimafit.util.InitializeUtil;
 
 public abstract class JarDataWriterFactory<FEATURES_OUT_TYPE, OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE> implements
 		DataWriterFactory<OUTCOME_IN_TYPE>, Initializable {
@@ -68,7 +68,7 @@ public abstract class JarDataWriterFactory<FEATURES_OUT_TYPE, OUTCOME_IN_TYPE, O
 
 	
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-		InitializeUtil.initialize(this, context);
+		ConfigurationParameterInitializer.initializeConfigurationParameters(this, context);
 		if (loadEncodersFromFileSystem) {
 			try {
 				File encoderFile = new File(outputDirectory, FeaturesEncoder_ImplBase.ENCODERS_FILE_NAME);

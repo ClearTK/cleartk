@@ -31,11 +31,11 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
 import org.cleartk.util.ReflectionUtil;
+import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.Initializable;
 import org.uimafit.factory.initializable.InitializableFactory;
-import org.uimafit.util.InitializeUtil;
 
 public abstract class CleartkAnnotator<OUTCOME_TYPE> extends JCasAnnotator_ImplBase implements Initializable {
 
@@ -59,7 +59,7 @@ public abstract class CleartkAnnotator<OUTCOME_TYPE> extends JCasAnnotator_ImplB
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
 
-		InitializeUtil.initialize(this, context);
+		ConfigurationParameterInitializer.initializeConfigurationParameters(this, context);
 
 		if (dataWriterFactoryClassName != null) {
 			// create the factory and instantiate the data writer

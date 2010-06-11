@@ -34,10 +34,10 @@ import org.cleartk.classifier.ClassifierFactory;
 import org.cleartk.classifier.SequentialClassifier;
 import org.cleartk.classifier.SequentialClassifierFactory;
 import org.cleartk.util.ReflectionUtil;
+import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.Initializable;
-import org.uimafit.util.InitializeUtil;
 
 /**
  * <br>
@@ -54,7 +54,7 @@ public class JarClassifierFactory<OUTCOME_TYPE> implements ClassifierFactory<OUT
 	private String classifierJarPath;
 
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-		InitializeUtil.initialize(this, context);
+		ConfigurationParameterInitializer.initializeConfigurationParameters(this, context);
 	}
 
 	public Classifier<OUTCOME_TYPE> createClassifier() throws IOException, CleartkException {

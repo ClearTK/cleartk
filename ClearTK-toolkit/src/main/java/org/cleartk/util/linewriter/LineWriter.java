@@ -39,10 +39,10 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
 import org.cleartk.util.ViewURIUtil;
+import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.InitializableFactory;
-import org.uimafit.util.InitializeUtil;
 
 /**
  * <br>
@@ -215,7 +215,7 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 		try {
 			super.initialize(context);
 
-			InitializeUtil.initialize(this, context);
+			ConfigurationParameterInitializer.initializeConfigurationParameters(this, context);
 			
 			if ((outputDirectoryName == null && outputFileName == null) ||
 				(outputDirectoryName != null && outputFileName != null)) {

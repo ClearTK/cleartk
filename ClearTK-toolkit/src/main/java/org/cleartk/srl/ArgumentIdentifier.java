@@ -67,7 +67,7 @@ import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.UIMAUtil;
-import org.uimafit.util.InitializeUtil;
+import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 
 
 /**
@@ -111,7 +111,7 @@ public class ArgumentIdentifier extends CleartkAnnotator<Boolean> {
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
-		InitializeUtil.initialize(this, context);
+		ConfigurationParameterInitializer.initializeConfigurationParameters(this, context);
 
 		SimpleFeatureExtractor defaultTokenExtractorSet = new MatchingAnnotationExtractor(Token.class,
 				new SpannedTextExtractor(),

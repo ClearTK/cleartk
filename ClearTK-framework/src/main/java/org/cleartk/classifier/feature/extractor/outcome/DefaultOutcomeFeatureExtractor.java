@@ -33,9 +33,9 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.WindowFeature;
 import org.cleartk.classifier.feature.WindowNGramFeature;
+import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
-import org.uimafit.util.InitializeUtil;
 
 /**
  * <br>
@@ -81,7 +81,7 @@ public class DefaultOutcomeFeatureExtractor implements OutcomeFeatureExtractor {
 	private boolean use4gram = false;
 
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-		InitializeUtil.initialize(this, context);
+		ConfigurationParameterInitializer.initializeConfigurationParameters(this, context);
 
 		if (mostRecentOutcome < 1) {
 			throw new ResourceInitializationException(new IllegalArgumentException(String.format(

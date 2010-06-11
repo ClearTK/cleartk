@@ -50,11 +50,11 @@ import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.ViewURIUtil;
 import org.jdom.JDOMException;
+import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.SofaCapability;
 import org.uimafit.factory.CollectionReaderFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
-import org.uimafit.util.InitializeUtil;
 
 /**
  * <br>
@@ -112,7 +112,7 @@ public class GeniaPosGoldReader extends CollectionReader_ImplBase {
 
 	@Override
 	public void initialize() throws ResourceInitializationException {
-		InitializeUtil.initialize(this, getUimaContext());
+		ConfigurationParameterInitializer.initializeConfigurationParameters(this, getUimaContext());
 
 		articleIds = new HashSet<String>();
 

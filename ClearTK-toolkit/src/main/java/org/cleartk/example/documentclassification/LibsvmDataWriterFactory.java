@@ -38,10 +38,10 @@ import org.cleartk.classifier.encoder.features.normalizer.EuclidianNormalizer;
 import org.cleartk.classifier.encoder.features.normalizer.NameNumberNormalizer;
 import org.cleartk.classifier.encoder.outcome.StringToIntegerOutcomeEncoder;
 import org.cleartk.classifier.libsvm.MultiClassLIBSVMDataWriter;
+import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.Initializable;
-import org.uimafit.util.InitializeUtil;
 
 /**
  * <br>Copyright (c) 2009, Regents of the University of Colorado 
@@ -71,7 +71,7 @@ public class LibsvmDataWriterFactory implements org.cleartk.classifier.DataWrite
 	protected int cutoff = 5;
 
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-		InitializeUtil.initialize(this, context);
+		ConfigurationParameterInitializer.initializeConfigurationParameters(this, context);
 	}
 
 	

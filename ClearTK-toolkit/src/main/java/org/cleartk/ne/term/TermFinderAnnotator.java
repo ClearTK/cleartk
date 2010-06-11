@@ -45,10 +45,10 @@ import org.cleartk.ne.term.util.TermMatch;
 import org.cleartk.token.util.PennTreebankTokenizer;
 import org.cleartk.token.util.Token;
 import org.cleartk.util.UIMAUtil;
+import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.InitializableFactory;
-import org.uimafit.util.InitializeUtil;
 
 
 /**
@@ -125,7 +125,7 @@ public class TermFinderAnnotator extends JCasAnnotator_ImplBase {
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		try {
-			InitializeUtil.initialize(this, context);
+			ConfigurationParameterInitializer.initializeConfigurationParameters(this, context);
 			
 			// load the term lists
 			BufferedReader input = new BufferedReader(new FileReader(termListFileNamesFileName));

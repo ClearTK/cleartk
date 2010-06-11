@@ -31,10 +31,10 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.DataWriter;
 import org.cleartk.classifier.DataWriterFactory;
 import org.cleartk.classifier.util.tfidf.IDFMapWriter;
+import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.Initializable;
-import org.uimafit.util.InitializeUtil;
 
 /**
  * <br>
@@ -60,7 +60,7 @@ public class IDFMapWriterFactory implements DataWriterFactory<String>, Initializ
 
 
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-		InitializeUtil.initialize(this, context);
+		ConfigurationParameterInitializer.initializeConfigurationParameters(this, context);
 	}
 
 }

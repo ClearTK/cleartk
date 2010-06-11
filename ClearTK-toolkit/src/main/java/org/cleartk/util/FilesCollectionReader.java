@@ -47,11 +47,11 @@ import org.cleartk.CleartkComponents;
 import org.cleartk.ViewNames;
 import org.cleartk.test.util.Files;
 import org.uimafit.component.ViewCreatorAnnotator;
+import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.SofaCapability;
 import org.uimafit.factory.CollectionReaderFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
-import org.uimafit.util.InitializeUtil;
 
 /**
  * <br>
@@ -152,7 +152,7 @@ public class FilesCollectionReader extends CollectionReader_ImplBase {
 	@Override
 	public void initialize() throws ResourceInitializationException {
 		super.initialize();
-		InitializeUtil.initialize(this, getUimaContext());
+		ConfigurationParameterInitializer.initializeConfigurationParameters(this, getUimaContext());
 
 		// raise an exception if the root file does not exist
 		if (!this.rootFile.exists()) {

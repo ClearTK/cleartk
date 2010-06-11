@@ -35,10 +35,10 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
+import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.InitializableFactory;
-import org.uimafit.util.InitializeUtil;
 
 /**
  * <br>
@@ -73,7 +73,7 @@ public abstract class SnowballStemmer<TOKEN_TYPE extends Annotation> extends JCa
 
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-		InitializeUtil.initialize(this, context);
+		ConfigurationParameterInitializer.initializeConfigurationParameters(this, context);
 		String className = String.format("net.sf.snowball.ext.%sStemmer", stemmerName);
 		this.stemmer = InitializableFactory.create(null, className, SnowballProgram.class);
 		

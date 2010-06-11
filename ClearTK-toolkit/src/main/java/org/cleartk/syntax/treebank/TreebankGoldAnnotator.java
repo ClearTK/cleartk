@@ -40,10 +40,10 @@ import org.cleartk.syntax.treebank.util.TreebankFormatParser;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.UIMAUtil;
+import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.SofaCapability;
 import org.uimafit.factory.ConfigurationParameterFactory;
-import org.uimafit.util.InitializeUtil;
 
 /**
  * <br>
@@ -88,7 +88,7 @@ public class TreebankGoldAnnotator extends JCasAnnotator_ImplBase {
 
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-		InitializeUtil.initialize(this, context);
+		ConfigurationParameterInitializer.initializeConfigurationParameters(this, context);
 		super.initialize(context);
 	}
 

@@ -47,10 +47,10 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
+import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.SofaCapability;
 import org.uimafit.factory.ConfigurationParameterFactory;
-import org.uimafit.util.InitializeUtil;
 
 
 /**
@@ -95,7 +95,7 @@ public class Ace2005GoldReader extends CollectionReader_ImplBase
 	Pattern tagPattern;
 	
 	public void initialize() throws ResourceInitializationException	{
-		InitializeUtil.initialize(this, getUimaContext());
+		ConfigurationParameterInitializer.initializeConfigurationParameters(this, getUimaContext());
 		
 		if (!new File(aceDirectoryName).exists()) {
 			throw new ResourceInitializationException(new IOException(String.format(

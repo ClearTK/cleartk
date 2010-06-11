@@ -45,10 +45,10 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkComponents;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
+import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
-import org.uimafit.util.InitializeUtil;
 
 /**
  * <br>
@@ -95,7 +95,7 @@ public class OpenNLPPOSTagger extends JCasAnnotator_ImplBase {
 
 	public void initialize(UimaContext uimaContext) throws ResourceInitializationException {
 		super.initialize(uimaContext);
-		InitializeUtil.initialize(this, uimaContext);
+		ConfigurationParameterInitializer.initializeConfigurationParameters(this, uimaContext);
 		try {
 			MaxentModel model = new SuffixSensitiveGISModelReader(new File(postagModelFile)).getModel();
 			POSDictionary posDictionary = new POSDictionary(postagDictionaryFile, caseSensitive);

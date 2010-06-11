@@ -36,11 +36,11 @@ import org.cleartk.classifier.SequentialDataWriter;
 import org.cleartk.classifier.SequentialDataWriterFactory;
 import org.cleartk.classifier.feature.extractor.outcome.OutcomeFeatureExtractor;
 import org.cleartk.classifier.jar.JarDataWriterFactory;
+import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.Initializable;
 import org.uimafit.factory.initializable.InitializableFactory;
-import org.uimafit.util.InitializeUtil;
 
 /**
  * <br>
@@ -92,7 +92,7 @@ public class ViterbiDataWriterFactory<OUTCOME_TYPE> implements SequentialDataWri
 
 
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-		InitializeUtil.initialize(this, context);
+		ConfigurationParameterInitializer.initializeConfigurationParameters(this, context);
 
 		try {
 			OutcomeFeatureExtractor outcomeFeatureExtractors[];

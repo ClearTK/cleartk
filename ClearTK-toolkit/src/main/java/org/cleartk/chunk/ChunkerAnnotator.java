@@ -37,10 +37,10 @@ import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkSequentialAnnotator;
 import org.cleartk.classifier.Instance;
 import org.cleartk.util.UIMAUtil;
+import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.InitializableFactory;
-import org.uimafit.util.InitializeUtil;
 
 
 /**
@@ -97,7 +97,7 @@ public class ChunkerAnnotator extends CleartkSequentialAnnotator<String> {
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
-		InitializeUtil.initialize(this, context);
+		ConfigurationParameterInitializer.initializeConfigurationParameters(this, context);
 		labeledAnnotationClass = InitializableFactory.getClass(labeledAnnotationClassName, Annotation.class);
 		sequenceClass = InitializableFactory.getClass(sequenceClassName, Annotation.class);
 		chunkLabeler = InitializableFactory.create(context, chunkLabelerClassName, ChunkLabeler.class);

@@ -34,9 +34,9 @@ import org.apache.uima.cas.impl.XmiCasDeserializer;
 import org.apache.uima.cas.impl.XmiCasSerializer;
 import org.apache.uima.collection.CollectionException;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
-import org.uimafit.util.InitializeUtil;
 import org.xml.sax.SAXException;
 
 /**
@@ -62,7 +62,7 @@ public class XReader extends FilesCollectionReader {
 	@Override
 	public void initialize() throws ResourceInitializationException {
 		super.initialize();
-		InitializeUtil.initialize(this, getUimaContext());
+		ConfigurationParameterInitializer.initializeConfigurationParameters(this, getUimaContext());
 
 		if (!xmlScheme.equals(XMI) && !xmlScheme.equals(XCAS)) 
 			throw new ResourceInitializationException(new IllegalArgumentException(String.format(

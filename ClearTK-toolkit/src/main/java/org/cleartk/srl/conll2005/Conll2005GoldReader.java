@@ -43,11 +43,11 @@ import org.apache.uima.util.ProgressImpl;
 import org.cleartk.CleartkComponents;
 import org.cleartk.ViewNames;
 import org.cleartk.util.ViewURIUtil;
+import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.SofaCapability;
 import org.uimafit.factory.CollectionReaderFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
-import org.uimafit.util.InitializeUtil;
 
 /**
  * <br>
@@ -76,7 +76,7 @@ public class Conll2005GoldReader extends CollectionReader_ImplBase {
 
 	@Override
 	public void initialize() throws ResourceInitializationException {
-		InitializeUtil.initialize(this, this.getUimaContext());
+		ConfigurationParameterInitializer.initializeConfigurationParameters(this, this.getUimaContext());
 		try {
 			this.reader = this.getBufferedReader();
 			String line;

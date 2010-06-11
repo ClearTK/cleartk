@@ -29,9 +29,9 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.jar.JarDataWriterFactory;
+import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
-import org.uimafit.util.InitializeUtil;
 
 /**
  * <br>
@@ -58,7 +58,7 @@ public abstract class MaxentDataWriterFactory_ImplBase<OUTCOME_TYPE> extends Jar
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
-		InitializeUtil.initialize(this, context);
+		ConfigurationParameterInitializer.initializeConfigurationParameters(this, context);
 	}
 	
 	

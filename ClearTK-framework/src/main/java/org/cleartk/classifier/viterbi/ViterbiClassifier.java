@@ -47,10 +47,10 @@ import org.cleartk.classifier.feature.extractor.outcome.OutcomeFeatureExtractor;
 import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.ReflectionUtil.TypeArgumentDelegator;
+import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.Initializable;
-import org.uimafit.util.InitializeUtil;
 
 /**
  * <br>
@@ -111,7 +111,7 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
 	}
 	
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-		InitializeUtil.initialize(this, context);
+		ConfigurationParameterInitializer.initializeConfigurationParameters(this, context);
 		if (stackSize < 1) {
 			throw new ResourceInitializationException(new IllegalArgumentException(String.format(
 					"the parameter '%1$s' must be greater than 0.", PARAM_STACK_SIZE)));

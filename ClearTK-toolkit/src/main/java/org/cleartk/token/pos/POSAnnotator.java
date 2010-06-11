@@ -40,10 +40,10 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
+import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.InitializableFactory;
-import org.uimafit.util.InitializeUtil;
 
 /**
  * <br>Copyright (c) 2009, Regents of the University of Colorado 
@@ -79,7 +79,7 @@ extends CleartkSequentialAnnotator<String> {
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
 		
-		InitializeUtil.initialize(this, context);
+		ConfigurationParameterInitializer.initializeConfigurationParameters(this, context);
 		
 		// extract the token and sentence classes from the type parameters 
 		this.tokenClass = ReflectionUtil.<Class<? extends TOP>>uncheckedCast(

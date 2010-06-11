@@ -52,9 +52,9 @@ import org.cleartk.syntax.treebank.type.TreebankNode;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
+import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
-import org.uimafit.util.InitializeUtil;
 
 /**
  * <br>
@@ -246,7 +246,7 @@ public class OpenNLPTaggerParser extends JCasAnnotator_ImplBase {
 	public void initialize(UimaContext ctx) throws ResourceInitializationException {
 		super.initialize(ctx);
 
-		InitializeUtil.initialize(this, ctx);
+		ConfigurationParameterInitializer.initializeConfigurationParameters(this, ctx);
 		
 		try {
 			MaxentModel buildModel = new SuffixSensitiveGISModelReader(new File(buildModelFile)).getModel();

@@ -44,11 +44,11 @@ import org.apache.uima.util.ProgressImpl;
 import org.cleartk.ViewNames;
 import org.cleartk.test.util.Files;
 import org.uimafit.component.ViewCreatorAnnotator;
+import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.SofaCapability;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.InitializableFactory;
-import org.uimafit.util.InitializeUtil;
 
 
 /**
@@ -142,7 +142,7 @@ public class LineReader extends CollectionReader_ImplBase {
 
 	@Override
 	public void initialize() throws ResourceInitializationException {
-		InitializeUtil.initialize(this, getUimaContext());
+		ConfigurationParameterInitializer.initializeConfigurationParameters(this, getUimaContext());
 		try {
 		
 			this.rootFile = new File(fileOrDirectoryName);
