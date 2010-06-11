@@ -23,9 +23,9 @@
  */
 package org.cleartk;
 
+import org.cleartk.test.util.Files;
 import org.cleartk.test.util.ParametersTestUtil;
 import org.junit.Test;
-import org.uimafit.util.io.Files;
 
 /**
  * <br>

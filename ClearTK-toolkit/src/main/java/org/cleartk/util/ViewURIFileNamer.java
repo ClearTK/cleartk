@@ -26,7 +26,7 @@ package org.cleartk.util;
 
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
-import org.uimafit.component.xwriter.FileNamer;
+import org.uimafit.component.xwriter.XWriterFileNamer;
 
 /**
  * <br>Copyright (c) 2010, Regents of the University of Colorado 
@@ -36,7 +36,7 @@ import org.uimafit.component.xwriter.FileNamer;
  *
  */
 
-public class ViewURIFileNamer implements FileNamer {
+public class ViewURIFileNamer implements XWriterFileNamer {
 
 	public String nameFile(JCas jCas) {
 		try {

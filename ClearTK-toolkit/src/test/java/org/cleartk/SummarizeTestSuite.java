@@ -29,7 +29,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.uima.util.FileUtils;
-import org.uimafit.util.io.Files;
+import org.cleartk.test.util.Files;
 
 
 /**
