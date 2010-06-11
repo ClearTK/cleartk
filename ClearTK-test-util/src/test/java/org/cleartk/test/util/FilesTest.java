@@ -22,7 +22,7 @@
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
-package org.cleartk;
+package org.cleartk.test.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -34,11 +34,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.cleartk.test.util.Files;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.uimafit.testing.util.TearDownUtil;
 
 /**
  * <br>
