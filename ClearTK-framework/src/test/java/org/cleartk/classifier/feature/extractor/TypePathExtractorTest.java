@@ -39,6 +39,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.cas.StringArray;
 import org.cleartk.CleartkException;
+import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.TypePathFeature;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
@@ -46,7 +47,6 @@ import org.cleartk.type.test.DependencyRelation;
 import org.cleartk.type.test.Header;
 import org.cleartk.type.test.Lemma;
 import org.cleartk.type.test.POSTag;
-import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.JCasUtil;
@@ -54,7 +54,6 @@ import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.JCasFactory;
 import org.uimafit.factory.TypeSystemDescriptionFactory;
-import org.uimafit.testing.factory.TokenFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -63,7 +62,7 @@ import org.uimafit.testing.factory.TokenFactory;
  * 
  * @author Philip Ogren
  */
-public class TypePathExtractorTest {
+public class TypePathExtractorTest extends FrameworkTestBase {
 
 	public static class Annotator extends JCasAnnotator_ImplBase {
 		public void process(JCas jCas) throws AnalysisEngineProcessException {
@@ -303,9 +302,7 @@ public class TypePathExtractorTest {
 	public void testTicket23() throws IOException, UIMAException, CleartkException {
 
 		// token "place" in "wide. This place was a tolerable long,");
-		JCas jCas = JCasUtil.getJCas();
-		TokenFactory.createTokens(jCas, "wide .\nThis place was a tolerable long ,",
-				Token.class, Sentence.class);
+		tokenBuilder.buildTokens(jCas, "wide .\nThis place was a tolerable long ,");
 		Token token = AnnotationRetrieval.get(jCas, Token.class, 3);
 
 		assertEquals("place", token.getCoveredText());

@@ -33,11 +33,11 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.cleartk.CleartkException;
+import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.simple.BagExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
-import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Assert;
@@ -46,7 +46,6 @@ import org.junit.Test;
 import org.uimafit.component.JCasAnnotatorAdapter;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.TypeSystemDescriptionFactory;
-import org.uimafit.testing.factory.TokenFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -56,10 +55,10 @@ import org.uimafit.testing.factory.TokenFactory;
  * 
  * @author Steven Bethard
  */
-public class BagExtractorTest {
+public class BagExtractorTest extends FrameworkTestBase {
 
 	@Before
-	public void setUp() throws Exception {
+	public void localSetUp() throws Exception {
 		this.engine = AnalysisEngineFactory.createPrimitive(
 				JCasAnnotatorAdapter.class,
 				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TestTypeSystem"));;
@@ -74,10 +73,10 @@ public class BagExtractorTest {
 				"The man walked to the store .",
 				"DT NN VBD IN .");
 
-		this.add(
-				"The big black bug bit the big black bear\n" +
-				"and the big black bear bled blood",
-				null,
+		String text2 = "The big black bug bit the big black bear\n" +
+		"and the big black bear bled blood";
+		 
+		this.add(text2, text2,
 				"DT JJ JJ NN VBD DT JJ JJ NN CC DT JJ JJ NN VBD NN",
 				"The big black bug bit the bear and bled blood",
 				"DT JJ NN VBD CC");
@@ -152,8 +151,7 @@ public class BagExtractorTest {
 		this.expectedPOSLists.add(Arrays.asList(expectedPOSString.split(" ")));
 
 		// set the document text and add Token annotations as indicated
-		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class, tokensString, posTagsString, null,
-				"org.cleartk.type.test.Token:pos", null);
+		tokenBuilder.buildTokens(jCas, text, tokensString, posTagsString);
 	}
 
 	private void testOne (

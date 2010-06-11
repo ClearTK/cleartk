@@ -41,6 +41,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
+import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.jar.JarSequentialDataWriterFactory;
@@ -53,7 +54,6 @@ import org.cleartk.util.JCasUtil;
 import org.junit.After;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.testing.factory.TokenFactory;
 import org.uimafit.testing.util.TearDownUtil;
 
 
@@ -63,7 +63,7 @@ import org.uimafit.testing.util.TearDownUtil;
 
 */
 
-public class SequentialDataWriterAnnotatorTest {
+public class SequentialDataWriterAnnotatorTest extends FrameworkTestBase {
 	
 	public static class TestAnnotator extends CleartkSequentialAnnotator<String> {
 		
@@ -110,9 +110,9 @@ public class SequentialDataWriterAnnotatorTest {
 		
 		JCas jCas = JCasUtil.getJCas();
 		String text = "What if we built a large\r\n, wooden badger?";
-		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class,
+		tokenBuilder.buildTokens(jCas, text, 
 				"What if we built a large \n, wooden badger ?",
-				"WDT TO PRP VBN DT JJ , JJ NN .", null, "org.cleartk.type.test.Token:pos", null);
+				"WDT TO PRP VBN DT JJ , JJ NN .");
 		engine.process(jCas);
 		engine.collectionProcessComplete();
 

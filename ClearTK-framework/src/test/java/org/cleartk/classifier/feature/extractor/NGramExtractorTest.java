@@ -28,20 +28,17 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.uima.UIMAException;
-import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.cleartk.CleartkException;
+import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.simple.NGramExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
-import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uimafit.factory.JCasFactory;
-import org.uimafit.testing.factory.TokenFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -51,16 +48,15 @@ import org.uimafit.testing.factory.TokenFactory;
  * @author Steven Bethard
  */
 
-public class NGramExtractorTest {
+public class NGramExtractorTest extends FrameworkTestBase {
 
 	@Test
 	public void test() throws UIMAException, CleartkException {
-		JCas jCas = JCasFactory.createJCas("org.cleartk.TestTypeSystem");
-		TokenFactory.createTokens(jCas,
-				"She sells seashells by the sea shore", Token.class, Sentence.class, 
-				null, 
-				"PRP VBZ NNS IN DT NN NN",
-				null, "org.cleartk.type.test.Token:pos", null);
+		String text = "She sells seashells by the sea shore"; 
+ 
+		tokenBuilder.buildTokens(jCas,
+				text, text, 
+				"PRP VBZ NNS IN DT NN NN");
 		DocumentAnnotation document = AnnotationRetrieval.getDocument(jCas);
 		
 		SpannedTextExtractor textExtractor = new SpannedTextExtractor();

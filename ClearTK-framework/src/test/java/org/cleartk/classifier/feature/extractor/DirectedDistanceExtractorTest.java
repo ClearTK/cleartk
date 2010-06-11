@@ -25,19 +25,13 @@ package org.cleartk.classifier.feature.extractor;
 
 import static org.junit.Assert.assertEquals;
 
-import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.annotationpair.DirectedDistanceExtractor;
-import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Test;
-import org.uimafit.component.JCasAnnotatorAdapter;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.TypeSystemDescriptionFactory;
-import org.uimafit.testing.factory.TokenFactory;
 
 
 /**
@@ -48,17 +42,12 @@ import org.uimafit.testing.factory.TokenFactory;
  * @author Philip Ogren
  */
 
-public class DirectedDistanceExtractorTest {
+public class DirectedDistanceExtractorTest extends FrameworkTestBase {
 
 	@Test
 	public void test1() throws Exception {
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(JCasAnnotatorAdapter.class,
-				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TestTypeSystem"));
-		JCas jCas = engine.newJCas();
+		tokenBuilder.buildTokens(jCas, "A simple sentence to test the distance of tokens from each other.", "A simple sentence to test the distance of tokens from each other .");
 		
-		TokenFactory.createTokens(jCas, "A simple sentence to test the distance of tokens from each other.", Token.class, Sentence.class, "A simple sentence to test the distance of tokens from each other .");
-		
-				
 		DirectedDistanceExtractor extractor = new DirectedDistanceExtractor(null, Token.class);
 		
 		Token token1 = AnnotationRetrieval.get(jCas, Token.class, 0);

@@ -30,6 +30,7 @@ import java.io.IOException;
 import org.apache.uima.UIMAException;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.CleartkException;
+import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.WindowNGramFeature;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
@@ -38,7 +39,6 @@ import org.cleartk.type.test.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.JCasUtil;
 import org.junit.Test;
-import org.uimafit.testing.factory.TokenFactory;
 
 /**
  * <br>
@@ -46,7 +46,7 @@ import org.uimafit.testing.factory.TokenFactory;
  * All rights reserved.
  */
 
-public class WindowNGramExtractorTest {
+public class WindowNGramExtractorTest extends FrameworkTestBase {
 
 	@Test
 	public void testLeftGrams() throws IOException, UIMAException, CleartkException {
@@ -57,11 +57,11 @@ public class WindowNGramExtractorTest {
 
 		// feature extraction on "island" in "...middle of the island..."
 		JCas jCas = JCasUtil.getJCas();
-		TokenFactory.createTokens(jCas,
+		tokenBuilder.buildTokens(jCas,
 				"text obtained from gutenberg\n" +
 				"I WANTED to go and look at a place right about the middle of " +
 				"the island that I ' d found when I was exploring ;\n" +
-				"so we started and soon got to it", Token.class, Sentence.class);
+				"so we started and soon got to it");
 		Token token = AnnotationRetrieval.get(jCas, Token.class, 19);
 		assertEquals("island", token.getCoveredText());
 		Feature feature = extractor.extract(jCas, token, Sentence.class);
@@ -107,11 +107,11 @@ public class WindowNGramExtractorTest {
 				WindowNGramFeature.DIRECTION_RIGHT_TO_LEFT, " ", 0, 3);
 
 		jCas.reset();
-		TokenFactory.createTokens(jCas,
+		tokenBuilder.buildTokens(jCas,
 				"text obtained from gutenberg\n" +
 				"I WANTED to go and look at a place right about the middle of " +
 				"the island that I ' d found when I was exploring ;\n" +
-				"so we started and soon got to it", Token.class, Sentence.class);
+				"so we started and soon got to it");
 		token = AnnotationRetrieval.get(jCas, Token.class, 19);
 		assertEquals("island", token.getCoveredText());
 		feature = extractor.extract(jCas, token, Sentence.class);
@@ -148,11 +148,11 @@ public class WindowNGramExtractorTest {
 				WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT, " ", 2, 4);
 
 		jCas.reset();
-		TokenFactory.createTokens(jCas,
+		tokenBuilder.buildTokens(jCas,
 				"text obtained from gutenberg\n" +
 				"I WANTED to go and look at a place right about the middle of " +
 				"the island that I ' d found when I was exploring ;\n" +
-				"so we started and soon got to it", Token.class, Sentence.class);
+				"so we started and soon got to it");
 		token = AnnotationRetrieval.get(jCas, Token.class, 19);
 		assertEquals("island", token.getCoveredText());
 		feature = extractor.extract(jCas, token, Sentence.class);
@@ -198,11 +198,11 @@ public class WindowNGramExtractorTest {
 
 		// feature extraction on "island" in "...because the island was only..."
 		JCas jCas = JCasUtil.getJCas();
-		TokenFactory.createTokens(jCas,
+		tokenBuilder.buildTokens(jCas,
 				"text obtained from gutenberg\n" +
 				"I WANTED to go and look at a place right about the middle of " +
 				"the island that I ' d found when I was exploring ;\n" +
-				"so we started and soon got to it", Token.class, Sentence.class);
+				"so we started and soon got to it");
 		Token token = AnnotationRetrieval.get(jCas, Token.class, 19);
 		assertEquals("island", token.getCoveredText());
 		Feature feature = extractor.extract(jCas, token, Sentence.class);
@@ -249,11 +249,11 @@ public class WindowNGramExtractorTest {
 
 		// feature extraction on "island" in "...because the island was only..."
 		jCas.reset();
-		TokenFactory.createTokens(jCas,
+		tokenBuilder.buildTokens(jCas,
 				"text obtained from gutenberg\n" +
 				"I WANTED to go and look at a place right about the middle of " +
 				"the island that I ' d found when I was exploring ;\n" +
-				"so we started and soon got to it", Token.class, Sentence.class);
+				"so we started and soon got to it");
 		token = AnnotationRetrieval.get(jCas, Token.class, 19);
 		assertEquals("island", token.getCoveredText());
 		feature = extractor.extract(jCas, token, Sentence.class);

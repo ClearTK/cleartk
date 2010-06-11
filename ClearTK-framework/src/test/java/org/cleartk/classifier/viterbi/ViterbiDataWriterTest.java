@@ -39,6 +39,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.pear.util.FileUtil;
 import org.apache.uima.util.FileUtils;
 import org.cleartk.CleartkException;
+import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.CleartkSequentialAnnotator;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
@@ -53,7 +54,6 @@ import org.cleartk.util.JCasUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.testing.factory.TokenFactory;
 import org.uimafit.testing.util.HideOutput;
 import org.uimafit.testing.util.TearDownUtil;
 
@@ -65,7 +65,7 @@ import org.uimafit.testing.util.TearDownUtil;
  * @author Philip Ogren
  */
 
-public class ViterbiDataWriterTest {
+public class ViterbiDataWriterTest extends FrameworkTestBase {
 	
 	public static class TestAnnotator extends CleartkSequentialAnnotator<String> {
 		
@@ -123,9 +123,9 @@ public class ViterbiDataWriterTest {
 
 		JCas jCas = engine.newJCas();
 		String text = "Do I really have to come up with some creative text, or can I just write anything?";
-		TokenFactory.createTokens(jCas, text, Token.class, Sentence.class,
+		tokenBuilder.buildTokens(jCas, text,
 				"Do I really have to come up with some creative text , or can I just write anything ?",
-				"D I R H T C U W S C T , O C I J W A ?", null, "org.cleartk.type.test.Token:pos", null);
+				"D I R H T C U W S C T , O C I J W A ?");
 
 		engine.process(jCas);
 		engine.collectionProcessComplete();
