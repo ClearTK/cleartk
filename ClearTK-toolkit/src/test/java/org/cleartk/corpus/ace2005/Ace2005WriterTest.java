@@ -37,6 +37,7 @@ import org.apache.uima.util.FileUtils;
 import org.cleartk.corpus.ace2005.type.Document;
 import org.cleartk.ne.type.NamedEntity;
 import org.cleartk.ne.type.NamedEntityMention;
+import org.cleartk.test.util.TearDownUtil;
 import org.cleartk.type.Chunk;
 import org.cleartk.util.ViewURIUtil;
 import org.junit.After;
@@ -44,7 +45,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.TypeSystemDescriptionFactory;
-import org.uimafit.testing.util.TearDownUtil;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 

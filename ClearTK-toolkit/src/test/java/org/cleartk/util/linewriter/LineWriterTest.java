@@ -39,6 +39,7 @@ import org.apache.uima.util.FileUtils;
 import org.cleartk.CleartkComponents;
 import org.cleartk.ToolkitTestBase;
 import org.cleartk.classifier.jar.JarClassifierFactory;
+import org.cleartk.test.util.TearDownUtil;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
@@ -51,7 +52,6 @@ import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.JCasFactory;
 import org.uimafit.factory.TypeSystemDescriptionFactory;
-import org.uimafit.testing.util.TearDownUtil;
 
 
 /**

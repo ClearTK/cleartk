@@ -46,6 +46,7 @@ import org.cleartk.srl.type.SemanticArgument;
 import org.cleartk.syntax.TreebankTestsUtil;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
 import org.cleartk.syntax.treebank.type.TreebankNode;
+import org.cleartk.test.util.TearDownUtil;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.InstanceCollector;
@@ -54,7 +55,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.testing.util.TearDownUtil;
 
 
 /**

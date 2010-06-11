@@ -38,6 +38,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
 import org.cleartk.CleartkComponents;
 import org.cleartk.ViewNames;
+import org.cleartk.test.util.TearDownUtil;
 import org.cleartk.util.FilesCollectionReader;
 import org.jdom.Attribute;
 import org.jdom.Element;
@@ -50,7 +51,6 @@ import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.CollectionReaderFactory;
 import org.uimafit.factory.TypeSystemDescriptionFactory;
 import org.uimafit.pipeline.JCasIterable;
-import org.uimafit.testing.util.TearDownUtil;
 
 
 

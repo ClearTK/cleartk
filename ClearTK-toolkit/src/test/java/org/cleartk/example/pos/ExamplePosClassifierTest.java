@@ -43,6 +43,7 @@ import org.cleartk.classifier.svmlight.DefaultOVASVMlightDataWriterFactory;
 import org.cleartk.classifier.viterbi.ViterbiClassifier;
 import org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter;
 import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
+import org.cleartk.test.util.TearDownUtil;
 import org.cleartk.token.TokenAnnotator;
 import org.cleartk.token.snowball.DefaultSnowballStemmer;
 import org.cleartk.util.FilesCollectionReader;
@@ -51,7 +52,6 @@ import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.pipeline.SimplePipeline;
 import org.uimafit.testing.util.HideOutput;
-import org.uimafit.testing.util.TearDownUtil;
 
 /**
  * <br>

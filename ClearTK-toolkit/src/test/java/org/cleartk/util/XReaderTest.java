@@ -32,6 +32,7 @@ import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.ToolkitTestBase;
+import org.cleartk.test.util.TearDownUtil;
 import org.cleartk.type.Token;
 import org.junit.After;
 import org.junit.Assert;
@@ -42,7 +43,6 @@ import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.CollectionReaderFactory;
 import org.uimafit.factory.TypeSystemDescriptionFactory;
 import org.uimafit.pipeline.JCasIterable;
-import org.uimafit.testing.util.TearDownUtil;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 

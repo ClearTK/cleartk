@@ -46,6 +46,7 @@ import org.cleartk.classifier.jar.Train;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
 import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
+import org.cleartk.test.util.TearDownUtil;
 import org.cleartk.token.pos.POSAnnotator;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
@@ -58,7 +59,6 @@ import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.CollectionReaderFactory;
 import org.uimafit.pipeline.JCasIterable;
 import org.uimafit.testing.util.HideOutput;
-import org.uimafit.testing.util.TearDownUtil;
 
 /**
  * <br>Copyright (c) 2009, Regents of the University of Colorado 

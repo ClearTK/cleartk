@@ -27,13 +27,13 @@ package org.cleartk.corpus.ace2005;
 import java.io.File;
 
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.test.util.TearDownUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.uimafit.factory.CollectionReaderFactory;
 import org.uimafit.factory.TypeSystemDescriptionFactory;
-import org.uimafit.testing.util.TearDownUtil;
 
 /**
  * <br>Copyright (c) 2009, Regents of the University of Colorado 

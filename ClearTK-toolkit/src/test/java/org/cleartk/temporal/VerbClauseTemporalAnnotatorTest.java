@@ -52,6 +52,7 @@ import org.cleartk.corpus.timeml.type.TemporalLink;
 import org.cleartk.syntax.TreebankTestsUtil;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
 import org.cleartk.syntax.treebank.type.TreebankNode;
+import org.cleartk.test.util.TearDownUtil;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
@@ -62,7 +63,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.testing.util.TearDownUtil;
 
 
 
