@@ -46,7 +46,6 @@ import org.cleartk.type.Token;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.AnnotationFactory;
-import org.uimafit.factory.JCasFactory;
 import org.uimafit.factory.TypeSystemDescriptionFactory;
 
 /**
@@ -136,8 +135,6 @@ public class AnnotationUtilTest extends ToolkitTestBase{
 
 	@Test
 	public void testOverlaps() throws UIMAException, IOException {
-		JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
-		
 		Token token1 = new Token(jCas, 0,0);
 		Token token2 = new Token(jCas, 0,0);
 		assertTrue(AnnotationUtil.overlaps(token1, token2));
@@ -172,8 +169,6 @@ public class AnnotationUtilTest extends ToolkitTestBase{
 
 	@Test
 	public void testSort() throws UIMAException {
-		JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
-		
 		List<Annotation> annotations = new ArrayList<Annotation>();
 		annotations.add(new Token(jCas, 19, 21));
 		annotations.add(new Token(jCas, 0, 15));
@@ -203,7 +198,6 @@ public class AnnotationUtilTest extends ToolkitTestBase{
 	
 	@Test
 	public void testGetSurroundingTexts() throws UIMAException {
-		JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
 		tokenBuilder.buildTokens(jCas, "AAA BBB CCC DDDD EEEE FFFF");
 		
 		Annotation sa = new Annotation(jCas, 8, 11);

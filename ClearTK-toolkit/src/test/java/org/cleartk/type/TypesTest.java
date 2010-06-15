@@ -13,6 +13,7 @@ import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.cas.StringArray;
 import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.cleartk.ToolkitTestBase;
 import org.cleartk.corpus.timeml.type.Anchor;
 import org.cleartk.corpus.timeml.type.Event;
 import org.cleartk.corpus.timeml.type.TemporalLink;
@@ -28,7 +29,6 @@ import org.cleartk.syntax.treebank.type.TreebankNode;
 import org.cleartk.token.chunk.type.Subtoken;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uimafit.factory.JCasFactory;
 
 
 /**
@@ -37,11 +37,10 @@ import org.uimafit.factory.JCasFactory;
  * <a href="https://www.cusys.edu/techtransfer/downloads/Bulletin-ResearchLicenses.pdf">
  * CU Research License Agreement</a><p>
  */
-public class TypesTest {
+public class TypesTest  extends ToolkitTestBase{
 	
 	@Test
 	public void testTypes() throws Exception {
-		JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
 		this.testType(jCas, new Chunk(jCas));
 		this.testType(jCas, new Sentence(jCas));
 		this.testType(jCas, new Token(jCas));

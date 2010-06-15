@@ -26,7 +26,6 @@ package org.cleartk.syntax.feature;
 import java.util.List;
 
 import org.apache.uima.UIMAException;
-import org.apache.uima.jcas.JCas;
 import org.cleartk.CleartkException;
 import org.cleartk.ToolkitTestBase;
 import org.cleartk.classifier.Feature;
@@ -37,7 +36,6 @@ import org.cleartk.syntax.treebank.type.TreebankNode;
 import org.cleartk.type.Token;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uimafit.factory.JCasFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -52,7 +50,6 @@ public class HeadWordExtractorTest extends ToolkitTestBase{
 	@Test
 	public void testNoTreebankNode() throws UIMAException, CleartkException {
 		HeadWordExtractor extractor = new HeadWordExtractor(null);
-		JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
 		jCas.setDocumentText("foo");
 		Token token = new Token(jCas, 0, 3);
 		token.addToIndexes();
@@ -63,7 +60,6 @@ public class HeadWordExtractorTest extends ToolkitTestBase{
 	@Test
 	public void testNoTokens() throws UIMAException, CleartkException {
 		HeadWordExtractor extractor = new HeadWordExtractor(new SpannedTextExtractor(), true);
-		JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
 		jCas.setDocumentText("foo");
 		TreebankNode node = TreebankTestsUtil.newNode(jCas, 0, 3, "NN");
 
@@ -74,7 +70,6 @@ public class HeadWordExtractorTest extends ToolkitTestBase{
 	public void testNoNodeTypes() throws UIMAException, CleartkException {
 		try {
 			HeadWordExtractor extractor = new HeadWordExtractor(null);
-			JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
 			jCas.setDocumentText("foo");
 			TreebankNode parent = TreebankTestsUtil.newNode(jCas, null, TreebankTestsUtil.newNode(jCas, 0, 3, null));
 
@@ -92,7 +87,6 @@ public class HeadWordExtractorTest extends ToolkitTestBase{
 
 	@Test
 	public void testSimpleSentence() throws UIMAException, CleartkException {
-		JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
 		tokenBuilder.buildTokens(jCas, "I ran home", "I ran home", "PRP VBD NN");
 		TreebankNode iNode = TreebankTestsUtil.newNode(jCas, 0, 1, "PRP");
 		TreebankNode ranNode = TreebankTestsUtil.newNode(jCas, 2, 5, "VBD");
@@ -122,7 +116,6 @@ public class HeadWordExtractorTest extends ToolkitTestBase{
 
 	@Test
 	public void testNPandPP() throws UIMAException, CleartkException {
-		JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
 		tokenBuilder.buildTokens(jCas,
 				"cat's toy under the box", 
 				"cat 's toy under the box",

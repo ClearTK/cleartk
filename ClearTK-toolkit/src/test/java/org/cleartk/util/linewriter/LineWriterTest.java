@@ -50,7 +50,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.JCasFactory;
 import org.uimafit.factory.TypeSystemDescriptionFactory;
 
 
@@ -459,7 +458,6 @@ public class LineWriterTest extends ToolkitTestBase{
 				AnalysisEngineFactory.createAnalysisEngine("org.cleartk.util.linewriter.LineWriter",
 						LineWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDir.getPath(), 
 						LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token")};
-		JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
 		jCas.setDocumentText(
 				"Philip Ogren didn't write this sentence.\n" +
 				"ROIs are required for CD28-mediated activation of the NF-kappa B/CD28-responsive complex.");

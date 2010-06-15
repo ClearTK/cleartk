@@ -30,8 +30,8 @@ import static org.junit.Assert.assertNotNull;
 import org.apache.uima.UIMAException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.DocumentAnnotation;
+import org.cleartk.ToolkitTestBase;
 import org.junit.Test;
-import org.uimafit.factory.JCasFactory;
 
 
 /**
@@ -41,11 +41,10 @@ import org.uimafit.factory.JCasFactory;
  * @author Philip Ogren
 */
 
-public class DocumentAnnotationTest {
+public class DocumentAnnotationTest extends ToolkitTestBase {
 
 	@Test
 	public void testExtents() throws UIMAException {
-		JCas jCas = JCasFactory.createJCas("org.cleartk.TypeSystem");
 		DocumentAnnotation documentAnnotation = (DocumentAnnotation) jCas.getDocumentAnnotationFs();
 		assertNotNull(documentAnnotation);
 		assertEquals(0, documentAnnotation.getBegin());
