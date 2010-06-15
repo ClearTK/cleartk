@@ -43,10 +43,7 @@ import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.classifier.jar.JarDataWriterFactory;
 import org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
-import org.cleartk.test.util.TearDownUtil;
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.UimaContextFactory;
@@ -62,18 +59,6 @@ import org.uimafit.factory.UimaContextFactory;
 
 public class CleartkAnnotatorTest extends FrameworkTestBase {
 
-	private static String outputDirectory = "test/data/classifierannotator";
-	
-	@Before
-	public void setUp() {
-		new File(outputDirectory).mkdirs();
-	}
-
-	@After
-	public void tearDown() {
-		TearDownUtil.removeDirectory(new File(outputDirectory));
-	}
-
 	@Test
 	public void testIsTraining() {
 		assertFalse(new StringTestAnnotator().isTraining());
@@ -85,7 +70,7 @@ public class CleartkAnnotatorTest extends FrameworkTestBase {
 			CleartkAnnotator<String> classifierAnnotator = new StringTestAnnotator();
 			classifierAnnotator.initialize(UimaContextFactory.createUimaContext(
 					JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, 
-					new File(outputDirectory, "asdf.jar").getPath()));
+					new File(outputDirectoryName, "asdf.jar").getPath()));
 			classifierAnnotator.classifier.classify(
 					InstanceFactory.createInstance("hello", 1, 1).getFeatures());
 			fail("expected exception for invalid classifier name");
@@ -152,14 +137,14 @@ public class CleartkAnnotatorTest extends FrameworkTestBase {
 			AnalysisEngineFactory.createPrimitive(
 					StringTestAnnotator.class,
 					typeSystemDescription,
-					JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory);
+					JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName);
 			Assert.fail("expected exception with missing classifier jar");
 		} catch (ResourceInitializationException e) {}
 			
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				StringTestAnnotator.class,
 				typeSystemDescription,
-				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMaxentDataWriterFactory.class.getName());
 		
 		Object dataWriter = engine.getConfigParameterValue(
@@ -168,7 +153,7 @@ public class CleartkAnnotatorTest extends FrameworkTestBase {
 		
 		Object outputDir = engine.getConfigParameterValue(
 				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY);
-		Assert.assertEquals(outputDirectory, outputDir);
+		Assert.assertEquals(outputDirectoryName, outputDir);
 		
 		engine.collectionProcessComplete();
 	}

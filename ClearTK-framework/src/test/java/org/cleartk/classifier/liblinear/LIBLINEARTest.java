@@ -32,14 +32,13 @@ import java.util.jar.JarFile;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.CleartkException;
+import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.ExampleInstanceFactory;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.jar.JarDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
-import org.cleartk.test.util.TearDownUtil;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.UimaContextFactory;
@@ -55,16 +54,7 @@ import org.uimafit.testing.util.HideOutput;
  */
 
 
-public class LIBLINEARTest {
-
-	protected String outputDirectory = "test/data/liblinear";
-	
-	@After
-	public void tearDown() throws Exception {
-		File outputDirectory = new File(this.outputDirectory);
-		TearDownUtil.removeDirectory(outputDirectory);
-		Assert.assertFalse(outputDirectory.exists());
-	}
+public class LIBLINEARTest extends FrameworkTestBase {
 
 	@Test
 	public void testLIBLINEAR() throws Exception {
@@ -72,7 +62,7 @@ public class LIBLINEARTest {
 		// create the data writer
 		BinaryAnnotator annotator = new BinaryAnnotator();		
 		annotator.initialize(UimaContextFactory.createUimaContext(
-				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, this.outputDirectory,
+				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, this.outputDirectoryName,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultBinaryLIBLINEARDataWriterFactory.class.getName()));
 		
 		// run process to produce a bunch of instances
@@ -82,17 +72,17 @@ public class LIBLINEARTest {
 		
 		// check that the output file was written and is not empty
 		BufferedReader reader = new BufferedReader(new FileReader(new File(
-				this.outputDirectory, "training-data.libsvm")));
+				this.outputDirectoryName, "training-data.libsvm")));
 		Assert.assertTrue(reader.readLine().length() > 0);
 		reader.close();
 		
 		// run the training command
 		HideOutput hider = new HideOutput();
-		Train.main(this.outputDirectory, "-c", "1.0", "-s", "1");
+		Train.main(this.outputDirectoryName, "-c", "1.0", "-s", "1");
 		hider.restoreOutput();
 		
 		// read in the classifier and test it on new instances
-		JarFile modelFile = new JarFile(new File(this.outputDirectory, "model.jar")); 
+		JarFile modelFile = new JarFile(new File(this.outputDirectoryName, "model.jar")); 
 		BinaryLIBLINEARClassifier classifier = new BinaryLIBLINEARClassifier(modelFile);
 		modelFile.close();
 		for (Instance<Boolean> instance: ExampleInstanceFactory.generateBooleanInstances(1000)) {

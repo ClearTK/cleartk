@@ -47,7 +47,6 @@ import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
-import org.cleartk.test.util.TearDownUtil;
 import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
 import org.cleartk.util.AnnotationRetrieval;
@@ -98,24 +97,12 @@ public class ViterbiDataWriterTest extends FrameworkTestBase {
 		}
 	}
 
-	private String outputDirectory = "test/data/viterbi";
-	
-//	@After
-	public void tearDown() throws Exception {
-		File outputDirectory = new File(this.outputDirectory);
-		TearDownUtil.removeDirectory(outputDirectory);
-		// Some files will get left around because maxent doesn't close its
-		// handle on the training-data.maxent file. If this ever gets fixed,
-		// we should uncomment the following line:
-		// Assert.assertFalse(outputDirectory.exists());
-	}
-	
 	@Test
 	public void testConsumeAll() throws Exception {
 
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TestAnnotator.class,
 				typeSystemDescription,
-				ViterbiDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				ViterbiDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
 				CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME, ViterbiDataWriterFactory.class.getName(),
 				ViterbiDataWriterFactory.PARAM_DELEGATED_DATA_WRITER_FACTORY_CLASS, DefaultMaxentDataWriterFactory.class.getName(),
 				ViterbiDataWriterFactory.PARAM_OUTCOME_FEATURE_EXTRACTOR_NAMES, new String[] {"org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor"});
@@ -133,11 +120,11 @@ public class ViterbiDataWriterTest extends FrameworkTestBase {
 				+ "classifierBuilderClass: org.cleartk.classifier.viterbi.ViterbiClassifi\n"  
 				+" erBuilder";
 				
-		File manifestFile = new File(outputDirectory, "MANIFEST.MF");
+		File manifestFile = new File(outputDirectoryName, "MANIFEST.MF");
 		String actualManifest = FileUtils.file2String(manifestFile);
 		Assert.assertEquals(expectedManifest, actualManifest.replaceAll("\r", "").trim());
 
-		File delegatedOutputDirectory = new File(outputDirectory, ViterbiDataWriter.DELEGATED_MODEL_DIRECTORY_NAME);
+		File delegatedOutputDirectory = new File(outputDirectoryName, ViterbiDataWriter.DELEGATED_MODEL_DIRECTORY_NAME);
 		String[] trainingData = FileUtil.loadListOfStrings(new File(delegatedOutputDirectory, "training-data.maxent"));
 		testFeatures(trainingData[1], "PreviousOutcome_L1_D");
 		testFeatures(trainingData[2], "PreviousOutcome_L1_I", "PreviousOutcome_L2_D", "PreviousOutcomes_L1_2gram_L2R_I_D");
@@ -145,12 +132,12 @@ public class ViterbiDataWriterTest extends FrameworkTestBase {
 		testFeatures(trainingData[4], "PreviousOutcome_L1_H", "PreviousOutcome_L2_R", "PreviousOutcome_L3_I", "PreviousOutcomes_L1_2gram_L2R_H_R", "PreviousOutcomes_L1_3gram_L2R_H_R_I");
 		
 		HideOutput hider = new HideOutput();
-		Train.main(outputDirectory+"/", "10", "1");
+		Train.main(outputDirectoryName+"/", "10", "1");
 		hider.restoreOutput();
 		
 		engine = AnalysisEngineFactory.createPrimitive(TestAnnotator.class, 
 				typeSystemDescription,
-				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, new File(outputDirectory, "model.jar").getPath());
+				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, new File(outputDirectoryName, "model.jar").getPath());
 		
 		engine.process(jCas);
 		engine.collectionProcessComplete();

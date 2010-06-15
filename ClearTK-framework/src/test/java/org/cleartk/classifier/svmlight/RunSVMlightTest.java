@@ -37,6 +37,7 @@ import java.util.jar.JarFile;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.CleartkException;
+import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
@@ -45,10 +46,7 @@ import org.cleartk.classifier.jar.Train;
 import org.cleartk.classifier.svmlight.model.SVMlightModel;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 import org.cleartk.classifier.util.featurevector.SparseFeatureVector;
-import org.cleartk.test.util.TearDownUtil;
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.uimafit.factory.UimaContextFactory;
 import org.uimafit.testing.util.HideOutput;
@@ -61,29 +59,9 @@ import org.uimafit.testing.util.HideOutput;
  * 
  * @author Steven Bethard, Philipp Wetzler
 */
-public class RunSVMlightTest {
+public class RunSVMlightTest extends FrameworkTestBase {
 
-	protected String outputDirectory = "test/data/svmlight/output";
 	protected String dataDirectory = "test/data/svmlight";
-	
-	@Before
-	public void setUpt() {
-		File outputDirectory = new File(this.outputDirectory);
-		if (!outputDirectory.exists()) {
-			outputDirectory.mkdirs();
-		}
-	}
-	
-	
-	@After
-	public void tearDown() throws Exception {
-		File outputDirectory = new File(this.outputDirectory);
-		TearDownUtil.removeDirectory(outputDirectory);
-		if (outputDirectory.exists()) {
-			System.in.read();
-		}
-		Assert.assertFalse(outputDirectory.exists());
-	}
 	
 	@Test
 	public void testPath() throws Exception {
@@ -142,7 +120,7 @@ public class RunSVMlightTest {
 	}
 
 	private void trainAndTest(File trainingFile, File testFile, String[] args, String name) throws IOException, InterruptedException, CleartkException {
-		File modelFile = new File(this.outputDirectory, "model.svmlight");
+		File modelFile = new File(this.outputDirectoryName, "model.svmlight");
 		
 		String[] command = new String[3 + args.length];
 		command[0] = "svm_learn";
@@ -219,7 +197,7 @@ public class RunSVMlightTest {
 		EmptyAnnotator<Boolean> annotator = new EmptyAnnotator<Boolean>();
 		annotator.initialize(UimaContextFactory.createUimaContext(
 				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
-				this.outputDirectory,
+				this.outputDirectoryName,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
 				DefaultSVMlightDataWriterFactory.class.getName()));
 		
@@ -231,17 +209,17 @@ public class RunSVMlightTest {
 		
 		// check that the output file was written and is not empty
 		BufferedReader reader = new BufferedReader(new FileReader(new File(
-				this.outputDirectory, "training-data.svmlight")));
+				this.outputDirectoryName, "training-data.svmlight")));
 		Assert.assertTrue(reader.readLine().length() > 0);
 		reader.close();
 		
 		// run the training command
 		HideOutput hider = new HideOutput();
-		Train.main(this.outputDirectory, "-c", "1.0");
+		Train.main(this.outputDirectoryName, "-c", "1.0");
 		hider.restoreOutput();
 		
 		// read in the classifier and test it on new instances
-		JarFile modelFile = new JarFile(new File(this.outputDirectory, "model.jar"));
+		JarFile modelFile = new JarFile(new File(this.outputDirectoryName, "model.jar"));
 		SVMlightClassifier classifier = new SVMlightClassifier(modelFile);
 		modelFile.close();
 		for (Instance<Boolean> instance: generateBooleanInstances(1000)) {
@@ -258,7 +236,7 @@ public class RunSVMlightTest {
 		EmptyAnnotator<String> annotator = new EmptyAnnotator<String>();
 		annotator.initialize(UimaContextFactory.createUimaContext(
 				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
-				this.outputDirectory,
+				this.outputDirectoryName,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
 				DefaultOVASVMlightDataWriterFactory.class.getName()));
 		
@@ -274,19 +252,19 @@ public class RunSVMlightTest {
 				"training-data-2.svmlight",
 				"training-data-3.svmlight"}) {
 			BufferedReader reader = new BufferedReader(new FileReader(new File(
-					this.outputDirectory, fileName)));
+					this.outputDirectoryName, fileName)));
 			Assert.assertTrue(reader.readLine().length() > 0);
 			reader.close();
 		}
 		
 		// run the training command
 		HideOutput hider = new HideOutput();
-		Train.main(this.outputDirectory, "-c", "0.01", "-t", "1", "-d", "2");
+		Train.main(this.outputDirectoryName, "-c", "0.01", "-t", "1", "-d", "2");
 		hider.restoreOutput();
 		
 		
 		// read in the classifier and test it on new instances
-		JarFile modelFile = new JarFile(new File(this.outputDirectory, "model.jar"));
+		JarFile modelFile = new JarFile(new File(this.outputDirectoryName, "model.jar"));
 		OVASVMlightClassifier classifier = new OVASVMlightClassifier(modelFile);
 		modelFile.close();
 		for (Instance<String> instance: generateStringInstances(1000)) {

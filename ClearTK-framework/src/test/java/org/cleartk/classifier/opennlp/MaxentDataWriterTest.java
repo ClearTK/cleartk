@@ -47,8 +47,6 @@ import org.cleartk.classifier.InstanceFactory;
 import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 import org.cleartk.classifier.jar.JarDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
-import org.cleartk.test.util.TearDownUtil;
-import org.junit.After;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.testing.util.HideOutput;
@@ -62,18 +60,6 @@ import org.uimafit.testing.util.HideOutput;
  */
 
 public class MaxentDataWriterTest extends FrameworkTestBase{
-
-	String outputDirectory = "test/data/opennlp/maxent-data-writer"; 
-
-	@After
-	public void tearDown() throws Exception {
-		File outputDirectoryFile = new File(this.outputDirectory);
-		TearDownUtil.removeDirectory(outputDirectoryFile);
-		// Some files will get left around because maxent doesn't close its
-		// handle on the training-data.maxent file. If this ever gets fixed,
-		// we should uncomment the following line:
-		// Assert.assertFalse(outputDirectoryFile.exists());
-	}
 
 	public static class Test1Annotator extends CleartkAnnotator<String> {
 
@@ -108,13 +94,13 @@ public class MaxentDataWriterTest extends FrameworkTestBase{
 	public void test1() throws Exception {
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
 				Test1Annotator.class, typeSystemDescription,
-				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMaxentDataWriterFactory.class.getName());
 
 		dataWriterAnnotator.process(jCas);
 		dataWriterAnnotator.collectionProcessComplete();
 
-		String[] lines = FileUtil.loadListOfStrings(new File(outputDirectory, MaxentDataWriter.TRAINING_DATA_FILE_NAME));
+		String[] lines = FileUtil.loadListOfStrings(new File(outputDirectoryName, MaxentDataWriter.TRAINING_DATA_FILE_NAME));
 		assertEquals("A pos_NN distance=3.0 precision=1.234", lines[0]);
 		assertEquals("B name_2PO p's=2", lines[1]);
 		assertEquals("Z null=0", lines[2]);
@@ -122,7 +108,7 @@ public class MaxentDataWriterTest extends FrameworkTestBase{
 
 		//simply train four different models where each one writes over the previous
 		HideOutput hider = new HideOutput();
-		Train.main(outputDirectory, "10", "1");
+		Train.main(outputDirectoryName, "10", "1");
 		hider.restoreOutput();
 		
 	}
@@ -135,20 +121,20 @@ public class MaxentDataWriterTest extends FrameworkTestBase{
 	public void test2() throws Exception {
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
 				Test1Annotator.class, typeSystemDescription,
-				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMaxentDataWriterFactory.class.getName(),
 				DefaultMaxentDataWriterFactory.PARAM_COMPRESS, true);
 
 		dataWriterAnnotator.process(jCas);
 		dataWriterAnnotator.collectionProcessComplete();
 
-		String[] lines = FileUtil.loadListOfStrings(new File(outputDirectory, MaxentDataWriter.TRAINING_DATA_FILE_NAME));
+		String[] lines = FileUtil.loadListOfStrings(new File(outputDirectoryName, MaxentDataWriter.TRAINING_DATA_FILE_NAME));
 		assertEquals("A 0 1=3.0 2=1.234", lines[0]);
 		assertEquals("B 3 4=2", lines[1]);
 		assertEquals("Z null=0", lines[2]);
 		assertEquals("A 5", lines[3]);
 
-		lines = FileUtil.loadListOfStrings(new File(outputDirectory, NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
+		lines = FileUtil.loadListOfStrings(new File(outputDirectoryName, NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
 		Set<String> lineSet = new HashSet<String>();
 		for( int i=0; i<lines.length; i++)
 			lineSet.add(lines[i]);
@@ -163,7 +149,7 @@ public class MaxentDataWriterTest extends FrameworkTestBase{
 		assertEquals(7, lineSet.size());
 
 		HideOutput hider = new HideOutput();
-		Train.main(outputDirectory, "10", "1");
+		Train.main(outputDirectoryName, "10", "1");
 		hider.restoreOutput();
 	}
 
@@ -176,7 +162,7 @@ public class MaxentDataWriterTest extends FrameworkTestBase{
 	public void test3() throws Exception {
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
 				Test1Annotator.class, typeSystemDescription,
-				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMaxentDataWriterFactory.class.getName(),
 				MaxentDataWriterFactory_ImplBase.PARAM_COMPRESS, true,
 				MaxentDataWriterFactory_ImplBase.PARAM_SORT, true);
@@ -185,13 +171,13 @@ public class MaxentDataWriterTest extends FrameworkTestBase{
 		dataWriterAnnotator.collectionProcessComplete();
 
 		String[] lines = FileUtil
-				.loadListOfStrings(new File(outputDirectory, MaxentDataWriter.TRAINING_DATA_FILE_NAME));
+				.loadListOfStrings(new File(outputDirectoryName, MaxentDataWriter.TRAINING_DATA_FILE_NAME));
 		assertEquals("A 0 1=3.0 2=1.234", lines[0]);
 		assertEquals("B 3 4=2", lines[1]);
 		assertEquals("Z null=0", lines[2]);
 		assertEquals("A 5", lines[3]);
 
-		lines = FileUtil.loadListOfStrings(new File(outputDirectory, NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
+		lines = FileUtil.loadListOfStrings(new File(outputDirectoryName, NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
 		int i = 0;
 		assertEquals("6", lines[i++]);
 		assertEquals("A_B_AB	5", lines[i++]);
@@ -202,7 +188,7 @@ public class MaxentDataWriterTest extends FrameworkTestBase{
 		assertEquals("precision	2", lines[i++]);
 
 		HideOutput hider = new HideOutput();
-		Train.main(outputDirectory, "10", "1");
+		Train.main(outputDirectoryName, "10", "1");
 		hider.restoreOutput();
 	}
 
@@ -235,7 +221,7 @@ public class MaxentDataWriterTest extends FrameworkTestBase{
 
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
 				Test4Annotator.class, typeSystemDescription,
-				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMaxentDataWriterFactory.class.getName(),
 				DefaultMaxentDataWriterFactory.PARAM_COMPRESS, true,
 				DefaultMaxentDataWriterFactory.PARAM_SORT, true);
@@ -275,14 +261,14 @@ public class MaxentDataWriterTest extends FrameworkTestBase{
 	public void test5() throws Exception {
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
 				Test5Annotator.class, typeSystemDescription,
-				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMaxentDataWriterFactory.class.getName(),
 				DefaultMaxentDataWriterFactory.PARAM_COMPRESS, true);
 
 		dataWriterAnnotator.process(jCas);
 		dataWriterAnnotator.collectionProcessComplete();
 
-		String[] lines = FileUtil.loadListOfStrings(new File(outputDirectory, MaxentDataWriter.TRAINING_DATA_FILE_NAME));
+		String[] lines = FileUtil.loadListOfStrings(new File(outputDirectoryName, MaxentDataWriter.TRAINING_DATA_FILE_NAME));
 		assertEquals("a 0 1 2", lines[0]);
 	}
 

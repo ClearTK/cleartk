@@ -24,11 +24,15 @@
 
 package org.cleartk;
 
+import java.io.File;
+
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
 import org.junit.Before;
+import org.junit.Rule;
+import org.junit.rules.TemporaryFolder;
 import org.uimafit.factory.JCasFactory;
 import org.uimafit.factory.TypeSystemDescriptionFactory;
 import org.uimafit.testing.factory.TokenBuilder;
@@ -67,6 +71,12 @@ public class FrameworkTestBase {
 	protected TypeSystemDescription typeSystemDescription;
 	protected TokenBuilder<Token, Sentence> tokenBuilder;
 
+	@Rule
+	public TemporaryFolder folder = new TemporaryFolder();
+
+	protected File outputDirectory;
+	protected String outputDirectoryName;
+	
 	/**
 	 *  we do not want to create a new JCas object every time we run a test because it is expensive (~100ms on my laptop).  Instead,
 	 *  we will have one JCas per thread sitting around that we will reset everytime a new test is called.  
@@ -77,6 +87,9 @@ public class FrameworkTestBase {
 		jCas.reset();
 		typeSystemDescription = TYPE_SYSTEM_DESCRIPTION.get();
 		tokenBuilder = TOKEN_BUILDER.get();
+		
+		outputDirectory = folder.newFolder("output");
+		outputDirectoryName = outputDirectory.getPath();
 	}
 
 }

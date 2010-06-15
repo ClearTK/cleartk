@@ -48,9 +48,6 @@ import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 import org.cleartk.classifier.jar.JarDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.classifier.mallet.factory.ClassifierTrainerFactory;
-import org.cleartk.test.util.TearDownUtil;
-import org.junit.After;
-import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.testing.util.HideOutput;
@@ -63,15 +60,6 @@ import org.uimafit.testing.util.HideOutput;
  */
 
 public class MalletDataWriterTest extends FrameworkTestBase {
-
-	private String outputDirectory = "test/data/mallet/mallet-data-writer";
-
-	@After
-	public void tearDown() throws Exception {
-		File outputDirectory = new File(this.outputDirectory);
-		TearDownUtil.removeDirectory(outputDirectory);
-		Assert.assertFalse(outputDirectory.exists());
-	}
 
 	public static class Test1Annotator extends CleartkAnnotator<String> {
 
@@ -105,14 +93,14 @@ public class MalletDataWriterTest extends FrameworkTestBase {
 	public void test1() throws Exception {
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
 				Test1Annotator.class, typeSystemDescription,
-				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletDataWriterFactory.class.getName());
 
 		dataWriterAnnotator.process(jCas);
 		dataWriterAnnotator.collectionProcessComplete();
 
 		String[] lines = FileUtil
-				.loadListOfStrings(new File(outputDirectory, MalletDataWriter.TRAINING_DATA_FILE_NAME));
+				.loadListOfStrings(new File(outputDirectoryName, MalletDataWriter.TRAINING_DATA_FILE_NAME));
 		assertEquals("pos_NN:1.0 distance:3.0 precision:1.234 A", lines[0]);
 		assertEquals("name_2PO:1.0 p's:2 B", lines[1]);
 		assertEquals("null:0 Z", lines[2]);
@@ -121,13 +109,13 @@ public class MalletDataWriterTest extends FrameworkTestBase {
 		//simply train four different models where each one writes over the previous
 		HideOutput hider = new HideOutput();
 		for(String classifierName : ClassifierTrainerFactory.NAMES) {
-			Train.main(outputDirectory, classifierName);
+			Train.main(outputDirectoryName, classifierName);
 		}
 		hider.restoreOutput();
 		
 		IllegalArgumentException iae = null;
 		try {
-			Train.main(outputDirectory, "AutoTrophic");
+			Train.main(outputDirectoryName, "AutoTrophic");
 		} catch(IllegalArgumentException e) {
 			iae = e;
 		}
@@ -143,7 +131,7 @@ public class MalletDataWriterTest extends FrameworkTestBase {
 	public void test2() throws Exception {
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
 				Test1Annotator.class, typeSystemDescription,
-				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletDataWriterFactory.class.getName(),
 				DefaultMalletDataWriterFactory.PARAM_COMPRESS, true);
 
@@ -151,13 +139,13 @@ public class MalletDataWriterTest extends FrameworkTestBase {
 		dataWriterAnnotator.collectionProcessComplete();
 
 		String[] lines = FileUtil
-				.loadListOfStrings(new File(outputDirectory, MalletDataWriter.TRAINING_DATA_FILE_NAME));
+				.loadListOfStrings(new File(outputDirectoryName, MalletDataWriter.TRAINING_DATA_FILE_NAME));
 		assertEquals("0:1.0 1:3.0 2:1.234 A", lines[0]);
 		assertEquals("3:1.0 4:2 B", lines[1]);
 		assertEquals("null:0 Z", lines[2]);
 		assertEquals("5:1.0 A", lines[3]);
 
-		lines = FileUtil.loadListOfStrings(new File(outputDirectory, NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
+		lines = FileUtil.loadListOfStrings(new File(outputDirectoryName, NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
 		Set<String> lineSet = new HashSet<String>();
 		for( int i=0; i<lines.length; i++)
 			lineSet.add(lines[i]);
@@ -173,7 +161,7 @@ public class MalletDataWriterTest extends FrameworkTestBase {
 
 		HideOutput hider = new HideOutput();
 		for(String classifierName : ClassifierTrainerFactory.NAMES) {
-			Train.main(outputDirectory, classifierName);
+			Train.main(outputDirectoryName, classifierName);
 		}
 		hider.restoreOutput();
 	}
@@ -187,7 +175,7 @@ public class MalletDataWriterTest extends FrameworkTestBase {
 	public void test3() throws Exception {
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
 				Test1Annotator.class, typeSystemDescription,
-				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletDataWriterFactory.class.getName(),
 				DefaultMalletDataWriterFactory.PARAM_COMPRESS, true,
 				DefaultMalletDataWriterFactory.PARAM_SORT, true);
@@ -196,13 +184,13 @@ public class MalletDataWriterTest extends FrameworkTestBase {
 		dataWriterAnnotator.collectionProcessComplete();
 
 		String[] lines = FileUtil
-				.loadListOfStrings(new File(outputDirectory, MalletDataWriter.TRAINING_DATA_FILE_NAME));
+				.loadListOfStrings(new File(outputDirectoryName, MalletDataWriter.TRAINING_DATA_FILE_NAME));
 		assertEquals("0:1.0 1:3.0 2:1.234 A", lines[0]);
 		assertEquals("3:1.0 4:2 B", lines[1]);
 		assertEquals("null:0 Z", lines[2]);
 		assertEquals("5:1.0 A", lines[3]);
 
-		lines = FileUtil.loadListOfStrings(new File(outputDirectory, NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
+		lines = FileUtil.loadListOfStrings(new File(outputDirectoryName, NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
 		int i = 0;
 		assertEquals("6", lines[i++]);
 		assertEquals("A_B_AB	5", lines[i++]);
@@ -214,7 +202,7 @@ public class MalletDataWriterTest extends FrameworkTestBase {
 
 		HideOutput hider = new HideOutput();
 		for(String classifierName : ClassifierTrainerFactory.NAMES) {
-			Train.main(outputDirectory, classifierName);
+			Train.main(outputDirectoryName, classifierName);
 		}
 		hider.restoreOutput();
 	}
@@ -284,14 +272,14 @@ public class MalletDataWriterTest extends FrameworkTestBase {
 	public void test5() throws Exception {
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
 				Test5Annotator.class, typeSystemDescription,
-				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletDataWriterFactory.class.getName(),
 				DefaultMalletDataWriterFactory.PARAM_COMPRESS, true);
 
 		dataWriterAnnotator.process(jCas);
 		dataWriterAnnotator.collectionProcessComplete();
 
-		String[] lines = FileUtil.loadListOfStrings(new File(outputDirectory, MalletDataWriter.TRAINING_DATA_FILE_NAME));
+		String[] lines = FileUtil.loadListOfStrings(new File(outputDirectoryName, MalletDataWriter.TRAINING_DATA_FILE_NAME));
 		assertEquals("0:1.0 1:1.0 2:1.0 a", lines[0]);
 	}
 

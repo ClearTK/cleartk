@@ -43,9 +43,6 @@ import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.classifier.jar.JarDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
-import org.cleartk.test.util.TearDownUtil;
-import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -62,19 +59,11 @@ import cc.mallet.types.FeatureVector;
 
 public class MalletClassifierTest extends FrameworkTestBase{
 	private Random random;
-	private String outputDirectory = "test/data/mallet/mallet-classifier";
 	
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
 		random = new Random(System.currentTimeMillis());
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		File outputDirectory = new File(this.outputDirectory);
-		TearDownUtil.removeDirectory(outputDirectory);
-		Assert.assertFalse(outputDirectory.exists());
 	}
 
 	private static Instance<String> generateInstance(Random random){
@@ -126,19 +115,19 @@ public class MalletClassifierTest extends FrameworkTestBase{
 	public void runTest1() throws Exception {
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
 				TestAnnotator.class, typeSystemDescription,
-				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletDataWriterFactory.class.getName());
 
 		dataWriterAnnotator.process(jCas);
 		dataWriterAnnotator.collectionProcessComplete();
 
-		BufferedReader reader = new BufferedReader(new FileReader(new File(outputDirectory, MalletDataWriter.TRAINING_DATA_FILE_NAME)));
+		BufferedReader reader = new BufferedReader(new FileReader(new File(outputDirectoryName, MalletDataWriter.TRAINING_DATA_FILE_NAME)));
 		reader.readLine();
 		reader.close();
 
 		IllegalArgumentException exception = null;
 		try {
-			Train.main(outputDirectory, "asdf");
+			Train.main(outputDirectoryName, "asdf");
 		} catch(IllegalArgumentException iae) {
 			exception = iae;
 		}
@@ -146,17 +135,17 @@ public class MalletClassifierTest extends FrameworkTestBase{
 		
 		exception = null;
 		try {
-			Train.main(outputDirectory, "MaxEnt", "10", "asdf");
+			Train.main(outputDirectoryName, "MaxEnt", "10", "asdf");
 		} catch(IllegalArgumentException iae) {
 			exception = iae;
 		}
 		assertNotNull(exception);
 		
 		HideOutput hider = new HideOutput();
-		Train.main(new String[] {outputDirectory, "C45"});
+		Train.main(new String[] {outputDirectoryName, "C45"});
 		hider.restoreOutput();
 
-		JarFile modelFile = new JarFile(new File(outputDirectory, "model.jar"));
+		JarFile modelFile = new JarFile(new File(outputDirectoryName, "model.jar"));
 		MalletClassifier classifier = new MalletClassifier(modelFile);
 		modelFile.close();
 		
@@ -176,7 +165,7 @@ public class MalletClassifierTest extends FrameworkTestBase{
 		
 		AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createPrimitive(
 				TestAnnotator.class, typeSystemDescription,
-				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, outputDirectory+"/model.jar");
+				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, outputDirectoryName+"/model.jar");
 		jCas.reset();
 		classifierAnnotator.process(jCas);
 		classifierAnnotator.collectionProcessComplete();

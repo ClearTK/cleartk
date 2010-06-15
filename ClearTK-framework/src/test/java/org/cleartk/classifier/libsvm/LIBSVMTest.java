@@ -32,14 +32,13 @@ import java.util.jar.JarFile;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.CleartkException;
+import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.ExampleInstanceFactory;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.jar.JarDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
-import org.cleartk.test.util.TearDownUtil;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.UimaContextFactory;
@@ -52,24 +51,15 @@ import org.uimafit.testing.util.HideOutput;
  * 
  * @author Steven Bethard
 */
-public class LIBSVMTest {
+public class LIBSVMTest extends FrameworkTestBase {
 
-	protected String outputDirectory = "test/data/libsvm";
-	
-	@After
-	public void tearDown() throws Exception {
-		File outputDirectory = new File(this.outputDirectory);
-		TearDownUtil.removeDirectory(outputDirectory);
-		Assert.assertFalse(outputDirectory.exists());
-	}
-	
 	@Test
 	public void testBinaryLIBSVM() throws Exception {
 		
 		// create the data writer
 		BinaryAnnotator annotator = new BinaryAnnotator();		
 		annotator.initialize(UimaContextFactory.createUimaContext(
-				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, this.outputDirectory,
+				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, this.outputDirectoryName,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultBinaryLIBSVMDataWriterFactory.class.getName()));
 		
 		// run process to produce a bunch of instances
@@ -79,17 +69,17 @@ public class LIBSVMTest {
 		
 		// check that the output file was written and is not empty
 		BufferedReader reader = new BufferedReader(new FileReader(new File(
-				this.outputDirectory, "training-data.libsvm")));
+				this.outputDirectoryName, "training-data.libsvm")));
 		Assert.assertTrue(reader.readLine().length() > 0);
 		reader.close();
 		
 		// run the training command
 		HideOutput hider = new HideOutput();
-		Train.main(this.outputDirectory, "-c", "1.0", "-s", "0", "-t", "0");
+		Train.main(this.outputDirectoryName, "-c", "1.0", "-s", "0", "-t", "0");
 		hider.restoreOutput();
 		
 		// read in the classifier and test it on new instances
-		JarFile modelFile = new JarFile(new File(this.outputDirectory, "model.jar")); 
+		JarFile modelFile = new JarFile(new File(this.outputDirectoryName, "model.jar")); 
 		BinaryLIBSVMClassifier classifier = new BinaryLIBSVMClassifier(modelFile);
 		modelFile.close();
 		for (Instance<Boolean> instance: ExampleInstanceFactory.generateBooleanInstances(1000)) {
@@ -106,7 +96,7 @@ public class LIBSVMTest {
 		// create the data writer
 		StringAnnotator annotator = new StringAnnotator();		
 		annotator.initialize(UimaContextFactory.createUimaContext(
-				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, this.outputDirectory,
+				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, this.outputDirectoryName,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMultiClassLIBSVMDataWriterFactory.class.getName()));
 		
 		// run process to produce a bunch of instances
@@ -116,17 +106,17 @@ public class LIBSVMTest {
 
 		// check that the output files were written for each class
 		BufferedReader reader = new BufferedReader(new FileReader(new File(
-				this.outputDirectory, "training-data.libsvm")));
+				this.outputDirectoryName, "training-data.libsvm")));
 		Assert.assertTrue(reader.readLine().length() > 0);
 		reader.close();
 		
 		// run the training command
 		HideOutput hider = new HideOutput();
-		Train.main(this.outputDirectory, "-c", "1.0", "-t", "2");
+		Train.main(this.outputDirectoryName, "-c", "1.0", "-t", "2");
 		hider.restoreOutput();
 		
 		// read in the classifier and test it on new instances
-		JarFile modelFile = new JarFile(new File(this.outputDirectory, "model.jar")); 
+		JarFile modelFile = new JarFile(new File(this.outputDirectoryName, "model.jar")); 
 		MultiClassLIBSVMClassifier classifier = new MultiClassLIBSVMClassifier(modelFile);
 		modelFile.close();
 

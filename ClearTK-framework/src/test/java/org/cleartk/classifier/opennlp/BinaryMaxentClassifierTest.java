@@ -46,8 +46,6 @@ import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.classifier.jar.JarDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
-import org.cleartk.test.util.TearDownUtil;
-import org.junit.After;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.testing.util.HideOutput;
@@ -59,18 +57,6 @@ import org.uimafit.testing.util.HideOutput;
 */
 
 public class BinaryMaxentClassifierTest extends FrameworkTestBase{
-	
-	String outputDirectory = "test/data/opennlp/maxent-classifier"; 
-	
-	@After
-	public void tearDown() throws Exception {
-		File output = new File(this.outputDirectory);
-		TearDownUtil.removeDirectory(output);
-		// Some files will get left around because maxent doesn't close its
-		// handle on the training-data.maxent file. If this ever gets fixed,
-		// we should uncomment the following line:
-		// Assert.assertFalse(output.exists());
-	}
 	
 	public static class Test1Annotator extends CleartkAnnotator<Boolean>{
 
@@ -138,23 +124,23 @@ public class BinaryMaxentClassifierTest extends FrameworkTestBase{
 	public void test1() throws Exception {
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
 				Test1Annotator.class, typeSystemDescription, 
-				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultBinaryMaxentDataWriterFactory.class.getName());
 
 		dataWriterAnnotator.process(jCas);
 		dataWriterAnnotator.collectionProcessComplete();
 
-		BufferedReader reader = new BufferedReader(new FileReader(new File(outputDirectory, MaxentDataWriter.TRAINING_DATA_FILE_NAME)));
+		BufferedReader reader = new BufferedReader(new FileReader(new File(outputDirectoryName, MaxentDataWriter.TRAINING_DATA_FILE_NAME)));
 		String line = reader.readLine();
 		assertEquals("true hello=1234", line);
 		reader.close();
 		
 		HideOutput hider = new HideOutput();
-		Train.main(outputDirectory);
+		Train.main(outputDirectoryName);
 		hider.restoreOutput();
 		
 		
-		JarFile modelFile = new JarFile(new File(outputDirectory, "model.jar"));
+		JarFile modelFile = new JarFile(new File(outputDirectoryName, "model.jar"));
 		BinaryMaxentClassifier classifier = new BinaryMaxentClassifier(modelFile);
 		modelFile.close();
 		Boolean classification = classifier.classify(createInstance(null, "hello", 1000).getFeatures());
@@ -166,7 +152,7 @@ public class BinaryMaxentClassifierTest extends FrameworkTestBase{
 
 		AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createPrimitive(
 				Test1Annotator.class, typeSystemDescription,
-				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, outputDirectory+"/model.jar");
+				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, outputDirectoryName+"/model.jar");
 		jCas.reset();
 		classifierAnnotator.process(jCas);
 		classifierAnnotator.collectionProcessComplete();
@@ -243,22 +229,22 @@ public class BinaryMaxentClassifierTest extends FrameworkTestBase{
 	public void test2() throws Exception {
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
 				Test2Annotator.class, typeSystemDescription, 
-				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultBinaryMaxentDataWriterFactory.class.getName(),
 				MaxentDataWriterFactory_ImplBase.PARAM_COMPRESS, false);
 		
 		dataWriterAnnotator.process(jCas);
 		dataWriterAnnotator.collectionProcessComplete();
 
-		BufferedReader reader = new BufferedReader(new FileReader(new File(outputDirectory, MaxentDataWriter.TRAINING_DATA_FILE_NAME)));
+		BufferedReader reader = new BufferedReader(new FileReader(new File(outputDirectoryName, MaxentDataWriter.TRAINING_DATA_FILE_NAME)));
 		reader.readLine();
 		reader.close();
 		
 		HideOutput hider = new HideOutput();
-		Train.main(outputDirectory+"/", "10", "1");
+		Train.main(outputDirectoryName+"/", "10", "1");
 		hider.restoreOutput();
 		
-		JarFile modelFile = new JarFile(new File(outputDirectory, "model.jar"));
+		JarFile modelFile = new JarFile(new File(outputDirectoryName, "model.jar"));
 		BinaryMaxentClassifier classifier = new BinaryMaxentClassifier(modelFile);
 		modelFile.close();
 		List<Feature> features1 = createInstance(Boolean.TRUE, "Word_pol LCWord_pol CapitalType_ALL_LOWERCASE L0_( L0_TypePath_Pos_-LRB- L0_TypePath_Stem_( L1_I L1_TypePath_Pos_PRP L1_TypePath_Stem_I R0_I R0_TypePath_Pos_PRP R0_TypePath_Stem_I R1_) R1_TypePath_Pos_-RRB- R1_TypePath_Stem_) TypePath_Pos_NN TypePath_Stem_pol PrevNEMTokenLabel_L0_O PrevNEMTokenLabel_L1_I-GENE Gazetteer_entrez_genes.txt").getFeatures();
@@ -294,12 +280,12 @@ public class BinaryMaxentClassifierTest extends FrameworkTestBase{
 
 		
 		hider = new HideOutput();
-		MaxentEval.main(new String[] {outputDirectory+"/training-data.maxent.bin.gz", outputDirectory+"/training-data.maxent"});
+		MaxentEval.main(new String[] {outputDirectoryName+"/training-data.maxent.bin.gz", outputDirectoryName+"/training-data.maxent"});
 		hider.restoreOutput();
 		
 		AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createPrimitive(
 				Test2Annotator.class, typeSystemDescription,
-				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, outputDirectory+"/model.jar");
+				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, outputDirectoryName+"/model.jar");
 		jCas.reset();
 		classifierAnnotator.process(jCas);
 		classifierAnnotator.collectionProcessComplete();

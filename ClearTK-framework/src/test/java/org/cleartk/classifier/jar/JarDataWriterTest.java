@@ -34,6 +34,7 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.UimaContext;
 import org.apache.uima.util.FileUtils;
 import org.cleartk.CleartkException;
+import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.DataWriter;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
 import org.cleartk.classifier.encoder.features.NameNumber;
@@ -41,8 +42,6 @@ import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
 import org.cleartk.classifier.mallet.DefaultMalletDataWriterFactory;
 import org.cleartk.classifier.opennlp.MaxentDataWriter;
-import org.cleartk.test.util.TearDownUtil;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.UimaContextFactory;
@@ -55,12 +54,7 @@ import org.uimafit.factory.UimaContextFactory;
  * 
  * @author Steven Bethard
  */
-public class JarDataWriterTest {
-
-	@After
-	public void tearDown() throws Exception {
-		TearDownUtil.removeDirectory(outputDirectory);
-	}
+public class JarDataWriterTest extends FrameworkTestBase {
 
 	@Test
 	public void testManifest() throws UIMAException, IOException, CleartkException {
@@ -106,11 +100,6 @@ public class JarDataWriterTest {
 		assertTrue(new File(outputDirectory, FeaturesEncoder_ImplBase.ENCODERS_FILE_NAME).exists());
 		
 	}
-
-
-	private final String outputDirectoryName = "test/data/classifiers"; 
-	private final File outputDirectory = new File(outputDirectoryName);
-
 
 
 }

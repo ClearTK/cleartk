@@ -47,8 +47,6 @@ import org.cleartk.classifier.SequentialClassifier;
 import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.classifier.jar.JarSequentialDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
-import org.cleartk.test.util.TearDownUtil;
-import org.junit.After;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.testing.util.HideOutput;
@@ -101,38 +99,26 @@ public class MalletCRFClassifierTest extends FrameworkTestBase{
 		}
 	}
 
-	private String outputDirectory = "test/data/mallet/mallet-crf-classifier";
-
-	@After
-	public void tearDown() throws Exception {
-		File outputDirectory = new File(this.outputDirectory);
-		TearDownUtil.removeDirectory(outputDirectory);
-		// Some files will get left around because mallet CRF doesn't close its
-		// handle on the training-data.maxent file. If this ever gets fixed,
-		// we should uncomment the following line:
-		// Assert.assertFalse(outputDirectory.exists());
-	}
-	
 	@Test
 	public void runTest1() throws Exception {
 
 		AnalysisEngine sequentialDataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
 				TestAnnotator.class, typeSystemDescription, 
-				JarSequentialDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				JarSequentialDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
 				CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletCRFDataWriterFactory.class.getName());
 
 		sequentialDataWriterAnnotator.process(jCas);
 		sequentialDataWriterAnnotator.collectionProcessComplete();
 
-		BufferedReader reader = new BufferedReader(new FileReader(new File(outputDirectory, MalletCRFDataWriter.TRAINING_DATA_FILE_NAME)));
+		BufferedReader reader = new BufferedReader(new FileReader(new File(outputDirectoryName, MalletCRFDataWriter.TRAINING_DATA_FILE_NAME)));
 		reader.readLine();
 		reader.close();
 		HideOutput hider = new HideOutput();
-		Train.main(outputDirectory);
+		Train.main(outputDirectoryName);
 		hider.restoreOutput();
 		
 		
-		JarFile modelFile = new JarFile(new File(outputDirectory, "model.jar"));
+		JarFile modelFile = new JarFile(new File(outputDirectoryName, "model.jar"));
 		MalletCRFClassifier classifier = new MalletCRFClassifier(modelFile);
 		modelFile.close();
 		assertTrue(classifier instanceof SequentialClassifier<?>);
@@ -149,7 +135,7 @@ public class MalletCRFClassifierTest extends FrameworkTestBase{
 		
 		AnalysisEngine sequentialClassifierAnnotator = AnalysisEngineFactory.createPrimitive(
 				TestAnnotator.class, typeSystemDescription,
-				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, outputDirectory+"/model.jar");
+				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, outputDirectoryName+"/model.jar");
 		jCas.reset();
 		sequentialClassifierAnnotator.process(jCas);
 		sequentialClassifierAnnotator.collectionProcessComplete();

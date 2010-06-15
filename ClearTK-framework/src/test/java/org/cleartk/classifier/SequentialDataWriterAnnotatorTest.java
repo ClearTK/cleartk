@@ -47,11 +47,9 @@ import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.jar.JarSequentialDataWriterFactory;
 import org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory;
 import org.cleartk.classifier.mallet.MalletCRFDataWriter;
-import org.cleartk.test.util.TearDownUtil;
 import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.junit.After;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 
@@ -96,12 +94,11 @@ public class SequentialDataWriterAnnotatorTest extends FrameworkTestBase {
 		
 	}
 
-	private String outputDirectory = "test/data/sequentialDataWriterAnnotator";
 	@Test
 	public void testSequentialDataWriterAnnotator() throws IOException, UIMAException {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				TestAnnotator.class, typeSystemDescription,
-				JarSequentialDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				JarSequentialDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
 				CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletCRFDataWriterFactory.class.getName());
 		
 		//create some tokens and sentences
@@ -114,7 +111,7 @@ public class SequentialDataWriterAnnotatorTest extends FrameworkTestBase {
 		engine.process(jCas);
 		engine.collectionProcessComplete();
 
-		BufferedReader input = new BufferedReader(new FileReader(new File(outputDirectory, MalletCRFDataWriter.TRAINING_DATA_FILE_NAME)));
+		BufferedReader input = new BufferedReader(new FileReader(new File(outputDirectoryName, MalletCRFDataWriter.TRAINING_DATA_FILE_NAME)));
 		String line = input.readLine();
 		assertNotNull(line);
 		assertTrue(line.endsWith(" WDT"));
@@ -149,8 +146,4 @@ public class SequentialDataWriterAnnotatorTest extends FrameworkTestBase {
 		input.close();
 	}
 	
-	@After
-	public void tearDown() {
-		TearDownUtil.removeDirectory(new File(outputDirectory));
-	}
 }

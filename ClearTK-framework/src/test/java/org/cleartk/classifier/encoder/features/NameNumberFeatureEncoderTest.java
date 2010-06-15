@@ -35,13 +35,10 @@ import java.util.List;
 import org.apache.uima.UIMAException;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
+import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.TypePathFeature;
 import org.cleartk.classifier.feature.WindowFeature;
-import org.cleartk.test.util.TearDownUtil;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 
@@ -51,23 +48,7 @@ import org.junit.Test;
 
 */
 
-public class NameNumberFeatureEncoderTest {
-	
-	private final File outputDir = new File("test/data/NameNumberFeatureEncoderTest");
-	
-	@Before
-	public void setUp() {
-		if (!this.outputDir.exists()) {
-			this.outputDir.mkdirs();
-		}
-	}
-	
-	@After
-	public void tearDown() {
-		TearDownUtil.removeDirectory(this.outputDir);
-		Assert.assertFalse(this.outputDir.exists());
-	}
-
+public class NameNumberFeatureEncoderTest extends FrameworkTestBase {
 	
 	@Test
 	public void testEncodeCompress() throws CleartkException, ResourceInitializationException, IOException {
@@ -88,8 +69,8 @@ public class NameNumberFeatureEncoderTest {
 
 		testNN("5", 15.0f, new Feature("!", 15), nnfe);
 
-		nnfe.finalizeFeatureSet(this.outputDir);
-		File featureMapFile = new File(this.outputDir, NameNumberFeaturesEncoder.LOOKUP_FILE_NAME);
+		nnfe.finalizeFeatureSet(outputDirectory);
+		File featureMapFile = new File(outputDirectory, NameNumberFeaturesEncoder.LOOKUP_FILE_NAME);
 		
 		BufferedReader reader = new BufferedReader(new FileReader(featureMapFile));
 		assertEquals("6", reader.readLine());

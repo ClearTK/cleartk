@@ -37,10 +37,8 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
+import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.jar.JarClassifierFactory;
-import org.cleartk.test.util.TearDownUtil;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.uimafit.factory.UimaContextFactory;
 
@@ -53,19 +51,7 @@ import org.uimafit.factory.UimaContextFactory;
  * 
  */
 
-public class CleartkSequentialAnnotatorTest {
-
-	private static String outputDirectory = "test/data/classifierannotator";
-	
-	@Before
-	public void setUp() {
-		new File(outputDirectory).mkdirs();
-	}
-
-	@After
-	public void tearDown() {
-		TearDownUtil.removeDirectory(new File(outputDirectory));
-	}
+public class CleartkSequentialAnnotatorTest  extends FrameworkTestBase{
 
 	@Test
 	public void testIsTraining() {
@@ -78,7 +64,7 @@ public class CleartkSequentialAnnotatorTest {
 			CleartkSequentialAnnotator<String> classifierAnnotator = new StringTestAnnotator();
 			classifierAnnotator.initialize(UimaContextFactory.createUimaContext(
 					JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, 
-					new File(outputDirectory, "asdf.jar").getPath()));
+					new File(outputDirectoryName, "asdf.jar").getPath()));
 			classifierAnnotator.classifySequence(Collections.singletonList(InstanceFactory.createInstance("hello", 1, 1)));
 			fail("expected exception for invalid classifier name");
 		} catch (ResourceInitializationException e) {}
