@@ -51,7 +51,6 @@ import org.cleartk.type.test.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.JCasFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -254,8 +253,6 @@ public class TypePathExtractorTest extends FrameworkTestBase {
 
 	@Test
 	public void testIsValidatePath() throws IOException, UIMAException {
-		JCas jCas = JCasFactory.createJCas("org.cleartk.TestTypeSystem"); 
-		
 		assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(POSTag.type), "value",
 				jCas));
 		assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(Header.type),
@@ -279,8 +276,6 @@ public class TypePathExtractorTest extends FrameworkTestBase {
 
 	@Test
 	public void testIsValidType() throws IOException, UIMAException {
-		JCas jCas = JCasFactory.createJCas("org.cleartk.TestTypeSystem"); 
-
 		assertTrue(TypePathExtractor.isValidType(jCas.getCasType(POSTag.type), jCas
 				.getTypeSystem()));
 		assertTrue(TypePathExtractor.isValidType(jCas.getCasType(Token.type), jCas
