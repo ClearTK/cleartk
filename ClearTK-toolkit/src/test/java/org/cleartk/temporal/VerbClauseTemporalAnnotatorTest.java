@@ -44,8 +44,6 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.jar.JarClassifierFactory;
-import org.cleartk.classifier.jar.JarDataWriterFactory;
-import org.cleartk.classifier.svmlight.DefaultOVASVMlightDataWriterFactory;
 import org.cleartk.corpus.timeml.type.Event;
 import org.cleartk.corpus.timeml.type.TemporalLink;
 import org.cleartk.syntax.TreebankTestsUtil;
@@ -56,7 +54,6 @@ import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.InstanceCollector;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 
@@ -83,13 +80,6 @@ public class VerbClauseTemporalAnnotatorTest extends ToolkitTestBase{
 		}
 		public Classifier<String> createClassifier() throws IOException, CleartkException {
 			return new AfterNewClassifier();
-		}
-	}
-	@Before
-	public void setUp() throws Exception {
-		super.setUp();
-		if (!this.outputDirectory.exists()) {
-			this.outputDirectory.mkdirs();
 		}
 	}
 	
@@ -199,22 +189,6 @@ public class VerbClauseTemporalAnnotatorTest extends ToolkitTestBase{
 		return TreebankTestsUtil.newNode(jCas, token.getBegin(), token.getEnd(), token.getPos());
 	}
 	
-	@Test
-	public void testDataWriterDescriptor() throws UIMAException, IOException {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-				"org.cleartk.temporal.VerbClauseTemporalDataWriter");
-		
-		Object dataWriter = engine.getConfigParameterValue(
-				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME);
-		Assert.assertEquals(DefaultOVASVMlightDataWriterFactory.class.getName(), dataWriter);
-		
-		Object outputDir = engine.getConfigParameterValue(
-				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY);
-		Assert.assertEquals("test/data/temporal", outputDir);
-		
-		engine.collectionProcessComplete();
-	}
-
 	@Test
 	public void testAnnotationDescriptor() throws UIMAException, IOException {
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
