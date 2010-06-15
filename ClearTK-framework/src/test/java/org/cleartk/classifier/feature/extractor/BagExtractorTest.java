@@ -45,7 +45,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.uimafit.component.JCasAnnotatorAdapter;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.TypeSystemDescriptionFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -61,7 +60,7 @@ public class BagExtractorTest extends FrameworkTestBase {
 	public void localSetUp() throws Exception {
 		this.engine = AnalysisEngineFactory.createPrimitive(
 				JCasAnnotatorAdapter.class,
-				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TestTypeSystem"));;
+				typeSystemDescription);
 		this.jCasObjects = new ArrayList<JCas>();
 		this.expectedTokenLists = new ArrayList<List<String>>();
 		this.expectedPOSLists = new ArrayList<List<String>>();

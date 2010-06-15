@@ -120,7 +120,6 @@ public class ViterbiDataWriterTest extends FrameworkTestBase {
 				ViterbiDataWriterFactory.PARAM_DELEGATED_DATA_WRITER_FACTORY_CLASS, DefaultMaxentDataWriterFactory.class.getName(),
 				ViterbiDataWriterFactory.PARAM_OUTCOME_FEATURE_EXTRACTOR_NAMES, new String[] {"org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor"});
 
-		JCas jCas = engine.newJCas();
 		String text = "Do I really have to come up with some creative text, or can I just write anything?";
 		tokenBuilder.buildTokens(jCas, text,
 				"Do I really have to come up with some creative text , or can I just write anything ?",

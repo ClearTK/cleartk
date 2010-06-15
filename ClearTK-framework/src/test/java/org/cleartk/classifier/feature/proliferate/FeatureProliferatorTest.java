@@ -28,8 +28,8 @@ import java.util.List;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.apache.uima.jcas.JCas;
 import org.cleartk.CleartkException;
+import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
@@ -38,7 +38,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.component.JCasAnnotatorAdapter;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.TypeSystemDescriptionFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -48,7 +47,7 @@ import org.uimafit.factory.TypeSystemDescriptionFactory;
  * @author Steven Bethard
  * @author Philip Ogren
  */
-public class FeatureProliferatorTest {
+public class FeatureProliferatorTest extends FrameworkTestBase {
 
 	private void testOne(FeatureProliferator proliferator, String origName, String origValue, String newName,
 			String newValue) {
@@ -143,8 +142,7 @@ public class FeatureProliferatorTest {
 	public void testProliferatingExtractor() throws UIMAException, IOException, CleartkException {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				JCasAnnotatorAdapter.class,
-				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TestTypeSystem"));
-		JCas jCas = engine.newJCas();
+				typeSystemDescription);
 
 		jCas.setDocumentText("Hello World 2008!");
 		Token hello = new Token(jCas, 0, 5);
