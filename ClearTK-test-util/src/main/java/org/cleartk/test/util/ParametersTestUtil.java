@@ -27,6 +27,7 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Assert;
@@ -41,11 +42,12 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  */
 public class ParametersTestUtil {
 
-	public static void testParameterDefinitions(Iterable<File> files) throws ClassNotFoundException {
+	public static void testParameterDefinitions(Iterator<File> files) throws ClassNotFoundException {
 		List<String> badParameters = new ArrayList<String>();
 		List<String> missingParameterNameFields = new ArrayList<String>();
 		
-		for (File file : files) {
+		while (files.hasNext()) {
+			File file = files.next();
 			String className = file.getPath();
 			className = className.substring(14);
 			className = className.substring(0, className.length() - 5);
