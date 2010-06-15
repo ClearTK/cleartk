@@ -29,7 +29,6 @@ import java.io.IOException;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;
-import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.ToolkitTestBase;
 import org.cleartk.test.util.TearDownUtil;
@@ -41,7 +40,6 @@ import org.junit.Test;
 import org.uimafit.component.xwriter.XWriter;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.CollectionReaderFactory;
-import org.uimafit.factory.TypeSystemDescriptionFactory;
 import org.uimafit.pipeline.JCasIterable;
 
 /**
@@ -75,10 +73,9 @@ public class XReaderTest extends ToolkitTestBase{
 	public void testReaderXmi() throws IOException, UIMAException {
 
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				XWriter.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
+				XWriter.class, typeSystemDescription,
 				XWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.inputDir.getPath(),
 				XWriter.PARAM_FILE_NAMER_CLASS_NAME, ViewURIFileNamer.class.getName());
-		JCas jCas = engine.newJCas();
 		tokenBuilder.buildTokens(jCas,
 				"I like\nspam!",
 				"I like spam !",
@@ -89,7 +86,7 @@ public class XReaderTest extends ToolkitTestBase{
 
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				XReader.class,
-				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
+				typeSystemDescription,
 				FilesCollectionReader.PARAM_ROOT_FILE, new File(inputDir, "test.xmi").getPath());
 		
 		Assert.assertEquals(0, reader.getProgress()[0].getCompleted());
@@ -110,11 +107,10 @@ public class XReaderTest extends ToolkitTestBase{
 	public void testReaderXcas() throws IOException, UIMAException {
 
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				XWriter.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
+				XWriter.class, typeSystemDescription,
 				XWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.inputDir.getPath(),
 				XWriter.PARAM_XML_SCHEME_NAME, XWriter.XCAS,
 				XWriter.PARAM_FILE_NAMER_CLASS_NAME, ViewURIFileNamer.class.getName());
-		JCas jCas = engine.newJCas();
 		tokenBuilder.buildTokens(jCas,
 				"I like\nspam!",
 				"I like spam !",
@@ -125,7 +121,7 @@ public class XReaderTest extends ToolkitTestBase{
 
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				XReader.class,
-				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
+				typeSystemDescription,
 				FilesCollectionReader.PARAM_ROOT_FILE, "test/data/xmi/test.xcas",
 				XReader.PARAM_XML_SCHEME, XReader.XCAS);
 		

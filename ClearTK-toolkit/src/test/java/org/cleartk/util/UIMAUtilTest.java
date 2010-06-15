@@ -30,17 +30,14 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import org.apache.uima.UimaContext;
-import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.ToolkitTestBase;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.type.Token;
 import org.junit.Test;
-import org.uimafit.component.JCasAnnotatorAdapter;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.TypeSystemDescriptionFactory;
 import org.uimafit.factory.UimaContextFactory;
 import org.uimafit.factory.initializable.InitializableFactory;
 
@@ -51,7 +48,7 @@ import org.uimafit.factory.initializable.InitializableFactory;
  *
  * @author Philip Ogren
  */
-public class UIMAUtilTest {
+public class UIMAUtilTest extends ToolkitTestBase {
 
 	@Test
 	public void testToList() {
@@ -63,11 +60,6 @@ public class UIMAUtilTest {
 	
 	@Test
 	public void testToFSArray() throws ResourceInitializationException {
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				JCasAnnotatorAdapter.class,
-				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
-		JCas jCas = engine.newJCas();
-
 		FSArray tokens = UIMAUtil.toFSArray(jCas, null); 
 		assertEquals(0, tokens.size());
 		

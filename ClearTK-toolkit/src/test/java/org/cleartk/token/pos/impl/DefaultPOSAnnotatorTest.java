@@ -51,7 +51,6 @@ import org.cleartk.token.pos.POSAnnotator;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.FilesCollectionReader;
-import org.cleartk.util.ReusableUIMAObjects;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -86,7 +85,7 @@ public class DefaultPOSAnnotatorTest extends ToolkitTestBase{
 	@Test
 	public void testCraft() throws Exception {
 		
-		TypeSystemDescription defaultTypeSystemDescription = ReusableUIMAObjects.getTypeSystemDescription();
+		TypeSystemDescription defaultTypeSystemDescription = CleartkComponents.TYPE_SYSTEM_DESCRIPTION;
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(FilesCollectionReader.class, defaultTypeSystemDescription, 
 				FilesCollectionReader.PARAM_ROOT_FILE, "test/data/docs/treebank",
 				FilesCollectionReader.PARAM_SUFFIXES, new String[] {".tree"},
@@ -118,7 +117,6 @@ public class DefaultPOSAnnotatorTest extends ToolkitTestBase{
 		AnalysisEngine tagger = CleartkComponents.createPrimitive(DefaultPOSAnnotator.class, 
 				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, new File(outputDirectory, BuildJar.MODEL_FILE_NAME).getPath());
 
-		JCas jCas = ReusableUIMAObjects.getJCas();
 		tokenBuilder.buildTokens(jCas, "What kitchen utensil is like a vampire ? Spatula" );
 		tagger.process(jCas);
 		assertEquals("IN", AnnotationRetrieval.get(jCas, Token.class, 0).getPos());

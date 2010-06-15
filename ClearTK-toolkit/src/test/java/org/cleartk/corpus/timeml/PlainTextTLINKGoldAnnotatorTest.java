@@ -34,6 +34,7 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.ToolkitTestBase;
 import org.cleartk.ViewNames;
 import org.cleartk.corpus.timeml.type.TemporalLink;
 import org.cleartk.util.AnnotationRetrieval;
@@ -43,7 +44,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.CollectionReaderFactory;
-import org.uimafit.factory.TypeSystemDescriptionFactory;
 import org.uimafit.pipeline.JCasIterable;
 
 
@@ -56,7 +56,7 @@ import org.uimafit.pipeline.JCasIterable;
  * @author Steven Bethard
  *
  */
-public class PlainTextTLINKGoldAnnotatorTest {
+public class PlainTextTLINKGoldAnnotatorTest extends ToolkitTestBase{
 	
 	private final String webUrl = "http://verbs.colorado.edu/~bethard/data/timebank-verb-clause.txt";
 	private final String fileUrl = String.format("file:///%s",
@@ -68,18 +68,18 @@ public class PlainTextTLINKGoldAnnotatorTest {
 	public void test_wsj_0106() throws UIMAException, IOException {
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				FilesCollectionReader.class, 
-				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
+				typeSystemDescription,
 				FilesCollectionReader.PARAM_VIEW_NAME,
 				ViewNames.TIMEML,
 				FilesCollectionReader.PARAM_ROOT_FILE,
 				"test/data/corpus/timeml/wsj_0106.tml");
 		AnalysisEngine timemlEngine = AnalysisEngineFactory.createPrimitive(
 				TimeMLGoldAnnotator.class,
-				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
+				typeSystemDescription,
 				TimeMLGoldAnnotator.PARAM_LOAD_TLINKS, false);
 		AnalysisEngine plainTextEngine = AnalysisEngineFactory.createPrimitive(
 				PlainTextTLINKGoldAnnotator.class,
-				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
+				typeSystemDescription,
 				PlainTextTLINKGoldAnnotator.PARAM_TLINK_FILE_URL,
 				this.webUrl);
 		JCas jCas = new JCasIterable(reader, timemlEngine, plainTextEngine).next();
@@ -122,18 +122,18 @@ public class PlainTextTLINKGoldAnnotatorTest {
 	public void test_wsj_0106_alternate() throws UIMAException, IOException {
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				FilesCollectionReader.class, 
-				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
+				typeSystemDescription,
 				FilesCollectionReader.PARAM_VIEW_NAME,
 				ViewNames.TIMEML,
 				FilesCollectionReader.PARAM_ROOT_FILE,
 				"test/data/corpus/timeml/wsj_0106.tml");
 		AnalysisEngine timemlEngine = AnalysisEngineFactory.createPrimitive(
 				TimeMLGoldAnnotator.class,
-				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
+				typeSystemDescription,
 				TimeMLGoldAnnotator.PARAM_LOAD_TLINKS, false);
 		AnalysisEngine plainTextEngine = AnalysisEngineFactory.createPrimitive(
 				PlainTextTLINKGoldAnnotator.class,
-				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
+				typeSystemDescription,
 				PlainTextTLINKGoldAnnotator.PARAM_TLINK_FILE_URL,
 				this.fileUrl);
 		JCas jCas = new JCasIterable(reader, timemlEngine, plainTextEngine).next();

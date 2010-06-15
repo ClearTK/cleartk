@@ -29,11 +29,11 @@ import java.io.IOException;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
+import org.cleartk.ToolkitTestBase;
 import org.cleartk.corpus.ace2005.type.Document;
 import org.cleartk.ne.type.NamedEntity;
 import org.cleartk.ne.type.NamedEntityMention;
@@ -44,7 +44,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.TypeSystemDescriptionFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -52,7 +51,7 @@ import org.uimafit.factory.TypeSystemDescriptionFactory;
 
 */
 
-public class Ace2005WriterTest {
+public class Ace2005WriterTest extends ToolkitTestBase{
 	
 	private final File outputDir = new File("test/data/ace2005");
 
@@ -66,7 +65,7 @@ public class Ace2005WriterTest {
 		try {
 			AnalysisEngineFactory.createPrimitive(
 					Ace2005Writer.class,
-					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
+					typeSystemDescription);
 			Assert.fail("expected exception with output directory not specified");
 		} catch (ResourceInitializationException e) {}		
 	}
@@ -74,10 +73,9 @@ public class Ace2005WriterTest {
 	@Test
 	public void testOutputFile() throws Exception {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				Ace2005Writer.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
+				Ace2005Writer.class, typeSystemDescription,
 				Ace2005Writer.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDir.getPath());
 		
-		JCas jCas = engine.newJCas();
 		Document document = new Document(jCas);
 		document.setAceSource("=source=");
 		document.setAceType("=type=");

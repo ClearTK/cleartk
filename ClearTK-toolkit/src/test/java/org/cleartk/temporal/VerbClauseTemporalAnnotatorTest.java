@@ -57,7 +57,6 @@ import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.InstanceCollector;
-import org.cleartk.util.ReusableUIMAObjects;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -113,7 +112,6 @@ public class VerbClauseTemporalAnnotatorTest extends ToolkitTestBase{
 				".");
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(desc);
 		
-		JCas jCas = engine.newJCas();
 		tokenBuilder.buildTokens(jCas,
 				"He said she bought milk.",
 				"He said she bought milk .", 
@@ -242,8 +240,6 @@ public class VerbClauseTemporalAnnotatorTest extends ToolkitTestBase{
 	
 	@Test
 	public void testModel() throws Exception {
-		JCas jCas = ReusableUIMAObjects.getJCas();
-		
 		// fill in text and tokens
 		tokenBuilder.buildTokens(jCas,
 				"He said he sold the stocks yesterday.",

@@ -34,12 +34,12 @@ import org.apache.uima.cas.FSIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkComponents;
+import org.cleartk.ToolkitTestBase;
 import org.cleartk.token.chunk.type.Subtoken;
 import org.cleartk.token.util.PennTreebankTokenizer;
 import org.cleartk.token.util.Subtokenizer;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.ReusableUIMAObjects;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 
@@ -58,7 +58,7 @@ import org.uimafit.factory.AnalysisEngineFactory;
  *         script that Steven Bethard gave me called test_tokenizer.py.
  */
 
-public class TokenizerAndTokenAnnotatorTest {
+public class TokenizerAndTokenAnnotatorTest extends ToolkitTestBase {
 
 	private static AnalysisEngine sentencesAndTokens; 
 	
@@ -242,9 +242,8 @@ public class TokenizerAndTokenAnnotatorTest {
 	@Test
 	public void ticket176() throws ResourceInitializationException, AnalysisEngineProcessException {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TokenAnnotator.class,
-				CleartkComponents.TYPE_SYSTEM_DESCRIPTION, TokenAnnotator.PARAM_TOKEN_TYPE_NAME, Subtoken.class.getName(),
+				typeSystemDescription, TokenAnnotator.PARAM_TOKEN_TYPE_NAME, Subtoken.class.getName(),
 				TokenAnnotator.PARAM_TOKENIZER_NAME, Subtokenizer.class.getName());
-		JCas jCas = ReusableUIMAObjects.getJCas();
 		jCas.setDocumentText("AA;BB-CC   DD!@#$EE(FF)GGG \tH,.");
 		engine.process(jCas);
 

@@ -63,7 +63,6 @@ import org.junit.Test;
 import org.uimafit.component.JCasAnnotatorAdapter;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.JCasFactory;
-import org.uimafit.factory.TypeSystemDescriptionFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -107,7 +106,6 @@ public class AnnotationRetrievalTest extends ToolkitTestBase{
 	
 	@Test
 	public void testTypedGet() throws UIMAException {
-		JCas jCas = ReusableUIMAObjects.getJCas();
 		tokenBuilder.buildTokens(jCas, "A B C D E F G H I J");
 		
 		Annotation ca = new Annotation(jCas, 10, 13);
@@ -167,14 +165,15 @@ public class AnnotationRetrievalTest extends ToolkitTestBase{
 
 	@Test
 	public void testGetContainingAnnotation() throws UIMAException, IOException {
-		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokens,
+		AnalysisEngineFactory.process(jCas, sentencesAndTokens,
 				"Were your just trippin', just ego tripping.");
 		Token token = AnnotationRetrieval.get(jCas, Token.class, 3);
 		Assert.assertEquals("trippin", token.getCoveredText());
 		Sentence sentence = AnnotationRetrieval.getContainingAnnotation(jCas, token, Sentence.class);
 		Assert.assertEquals("Were your just trippin', just ego tripping.", sentence.getCoveredText());
 
-		jCas = AnalysisEngineFactory.process(sentencesAndTokens,
+		jCas.reset();
+		AnalysisEngineFactory.process(jCas, sentencesAndTokens,
 				"Ffff's a pppppppp ttttt, bbbb ii ccc tttt yyyy hhhhh bbbbb yyy ccc ttttt. "
 						+ "It'll tttt yyyy ggg ffffff ssss aaa ffff tt wwww ddddls nnd ddst.");
 		token = AnnotationRetrieval.get(jCas, Token.class, 28);
@@ -217,7 +216,8 @@ public class AnnotationRetrievalTest extends ToolkitTestBase{
 		token = AnnotationRetrieval.getContainingAnnotation(jCas, token, Token.class);
 		Assert.assertEquals(".", token.getCoveredText());
 
-		jCas = AnnotationUtilTest.Annotator.getProcessedJCas();
+		jCas.reset();
+		AnnotationUtilTest.Annotator.getProcessedJCas(jCas, typeSystemDescription);
 
 		Token token1 = AnnotationRetrieval.get(jCas, Token.class, 1);
 		Token token2 = AnnotationRetrieval.get(jCas, Token.class, 2);
@@ -247,9 +247,9 @@ public class AnnotationRetrievalTest extends ToolkitTestBase{
 		Assert.assertEquals(nem, nem3);
 		
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				JCasAnnotatorAdapter.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
-		jCas = engine.newJCas();
+				JCasAnnotatorAdapter.class, typeSystemDescription);
 		String text = "word";
+		jCas.reset();
 		tokenBuilder.buildTokens(jCas, text);
 		token1 = AnnotationRetrieval.get(jCas, Token.class, 0);
 		Assert.assertEquals("word",token1.getCoveredText());
@@ -258,7 +258,7 @@ public class AnnotationRetrievalTest extends ToolkitTestBase{
 		sentence = AnnotationRetrieval.getContainingAnnotation(jCas, token1, Sentence.class);
 		Assert.assertEquals("word",sentence.getCoveredText());
 		
-		jCas = engine.newJCas();
+		jCas.reset();
 		text = "Materials and Methods ";
 		tokenBuilder.buildTokens(jCas, text);
 		nem = new NamedEntityMention(jCas, 14, 21);
@@ -269,7 +269,7 @@ public class AnnotationRetrievalTest extends ToolkitTestBase{
 		Assert.assertEquals("Methods",nem.getCoveredText());
 		
 
-		jCas = engine.newJCas();
+		jCas.reset();
 		text = "Materials and Methods ";
 		jCas.setDocumentText(text);
 		token1 = new Token(jCas, 14, 21);
@@ -288,7 +288,6 @@ public class AnnotationRetrievalTest extends ToolkitTestBase{
 
 	@Test
 	public void testGetContainingAnnotationExclusive() throws UIMAException {
-		JCas jCas = ReusableUIMAObjects.getJCas();
 		String text = "What if we built a rocket ship made of cheese?\n"+
 					  "We could fly it to the moon for repairs.";
 		tokenBuilder.buildTokens(jCas, text);
@@ -432,7 +431,7 @@ public class AnnotationRetrievalTest extends ToolkitTestBase{
 	@Test
 	public void testGetAnnotationsWithWindow() throws UIMAException, IOException {
 
-		JCas jCas = AnnotationUtilTest.Annotator.getProcessedJCas();
+		AnnotationUtilTest.Annotator.getProcessedJCas(jCas, typeSystemDescription);
 
 		Token token0 = AnnotationRetrieval.get(jCas, Token.class, 0);
 		NamedEntityMention nem0 = AnnotationRetrieval.get(jCas, NamedEntityMention.class, 0);
@@ -517,7 +516,7 @@ public class AnnotationRetrievalTest extends ToolkitTestBase{
 	@Test
 	public void testGetAnnotations() throws UIMAException, IOException {
 
-		JCas jCas = AnnotationUtilTest.Annotator.getProcessedJCas();
+		AnnotationUtilTest.Annotator.getProcessedJCas(jCas, typeSystemDescription);
 
 		int[][] tokenOffsets = { { 0, 4 }, { 20, 25 }, { 21, 25 }, { 24, 25 }, { 25, 28 }, { 26, 30 }, { 100, 104 },
 				{ 105, 109 }, { 110, 114 }, { 115, 119 }, { 120, 124 }, };
@@ -548,7 +547,6 @@ public class AnnotationRetrievalTest extends ToolkitTestBase{
 	
 	@Test 
 	public void testGetAnnotationIndex() throws UIMAException, IOException {
-		JCas jCas = ReusableUIMAObjects.getJCas();
 		//original joke by Philip Ogren
 		String text = "Police Officer: Put down that gun!\n"+
 					  "Hooligan (turning toward his gun): Stupid gun!";
@@ -569,7 +567,6 @@ public class AnnotationRetrievalTest extends ToolkitTestBase{
 	
 	@Test
 	public void testGetAtIndex() throws ResourceInitializationException {
-		JCas jCas = ReusableUIMAObjects.getJCas();
 		//original joke by Philip Ogren
 		String text = "Police Officer: Put down that gun!\n"+
 					  "Hooligan (turning toward his gun): Stupid gun!";
@@ -588,7 +585,6 @@ public class AnnotationRetrievalTest extends ToolkitTestBase{
 	
 	@Test
 	public void testGetAnnotationsExact() throws Exception {
-		JCas jCas = ReusableUIMAObjects.getJCas();
 		//from http://www.gutenberg.org/files/17192/17192-h/17192-h.htm
 		jCas.setDocumentText("Quoth the Raven, \"Nevermore.\"");
 		Token token = new Token(jCas, 10, 15);

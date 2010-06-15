@@ -34,11 +34,11 @@ import org.apache.uima.cas.FSIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkComponents;
+import org.cleartk.ToolkitTestBase;
 import org.cleartk.ViewNames;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
 import org.cleartk.type.Sentence;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.ReusableUIMAObjects;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -52,19 +52,17 @@ import org.uimafit.factory.AnalysisEngineFactory;
  * @author Philip Ogren
  * 
  */
-public class TreebankGoldReaderAndAnnotatorTest {
+public class TreebankGoldReaderAndAnnotatorTest extends ToolkitTestBase {
 
 	@Test
 	public void craftTest1() throws Exception {
 		String treebankParse = "( (X (NP (NP (NML (NN Complex ) (NN trait )) (NN analysis )) (PP (IN of ) (NP (DT the ) (NN mouse ) (NN striatum )))) (: : ) (S (NP-SBJ (JJ independent ) (NNS QTLs )) (VP (VBP modulate ) (NP (NP (NN volume )) (CC and ) (NP (NN neuron ) (NN number)))))) )";
 		String expectedText = "Complex trait analysis of the mouse striatum: independent QTLs modulate volume and neuron number";
 
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TreebankGoldAnnotator.class, ReusableUIMAObjects
-				.getTypeSystemDescription());
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TreebankGoldAnnotator.class, typeSystemDescription);
 		TreebankGoldAnnotator treebankGoldAnnotator = new TreebankGoldAnnotator();
 		treebankGoldAnnotator.initialize(engine.getUimaContext());
 
-		JCas jCas = ReusableUIMAObjects.getJCas();
 		JCas tbView = jCas.createView(ViewNames.TREEBANK);
 		tbView.setDocumentText(treebankParse);
 

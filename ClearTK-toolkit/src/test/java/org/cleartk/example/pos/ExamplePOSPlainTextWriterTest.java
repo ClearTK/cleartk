@@ -29,7 +29,6 @@ import java.io.IOException;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.apache.uima.jcas.JCas;
 import org.apache.uima.util.FileUtils;
 import org.cleartk.CleartkComponents;
 import org.cleartk.ToolkitTestBase;
@@ -70,7 +69,6 @@ public class ExamplePOSPlainTextWriterTest extends ToolkitTestBase {
 		
 		AnalysisEngine engine = CleartkComponents.createPrimitive(ExamplePOSPlainTextWriter.class, ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDirectory.getPath());
 
-		JCas jCas = engine.newJCas();
 		tokenBuilder.buildTokens(jCas,
 				"I walked home. It was a nice day!", 
 				"I walked home .\nIt was a nice day !",

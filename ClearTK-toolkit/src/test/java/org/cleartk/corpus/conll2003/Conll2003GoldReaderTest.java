@@ -30,6 +30,7 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.cas.FSIndex;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
+import org.cleartk.ToolkitTestBase;
 import org.cleartk.ne.type.NamedEntity;
 import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.type.Chunk;
@@ -39,7 +40,6 @@ import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.CollectionReaderFactory;
-import org.uimafit.factory.TypeSystemDescriptionFactory;
 import org.uimafit.pipeline.JCasIterable;
 
 /**
@@ -50,13 +50,13 @@ import org.uimafit.pipeline.JCasIterable;
  * @author Philip Ogren
  *
  */
-public class Conll2003GoldReaderTest {
+public class Conll2003GoldReaderTest extends ToolkitTestBase{
 	
 	@Test
 	public void testFakeTrainDocs() throws UIMAException, IOException 
 	{
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-				Conll2003GoldReader.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
+				Conll2003GoldReader.class, typeSystemDescription,
 				Conll2003GoldReader.PARAM_DATA_FILE_NAME, "test/data/corpus/conll2003/eng.train",
 				Conll2003GoldReader.PARAM_LOAD_NAMED_ENTITIES, true);
 		

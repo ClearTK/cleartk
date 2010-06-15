@@ -35,12 +35,12 @@ import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.metadata.TypePriorities;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
+import org.cleartk.CleartkComponents;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.classifier.svmlight.DefaultSVMlightDataWriterFactory;
 import org.cleartk.srl.propbank.PropbankGoldAnnotator;
 import org.cleartk.srl.propbank.PropbankGoldReader;
 import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
-import org.cleartk.util.ReusableUIMAObjects;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.CollectionReaderFactory;
 import org.uimafit.pipeline.JCasIterable;
@@ -62,7 +62,7 @@ public class BuildTestSRLModel {
 		System.out.println("Create Training Data");
 		System.out.println("--------------------");
 		
-		TypeSystemDescription typeSystemDescription = ReusableUIMAObjects.getTypeSystemDescription();
+		TypeSystemDescription typeSystemDescription = CleartkComponents.TYPE_SYSTEM_DESCRIPTION;
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(PropbankGoldReader.class, typeSystemDescription,
 				PropbankGoldReader.PARAM_PROPBANK_FILE_NAME, "../ClearTK Data/data/propbank-1.0/prop.txt",
 				PropbankGoldReader.PARAM_PENNTREEBANK_DIRECTORY_NAME, "../ClearTK Data/data/treebank",

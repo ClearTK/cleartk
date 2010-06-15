@@ -31,7 +31,6 @@ import java.io.File;
 import java.util.regex.Pattern;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -50,7 +49,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.TypeSystemDescriptionFactory;
 
 
 /**
@@ -75,14 +73,13 @@ public class LineWriterTest extends ToolkitTestBase{
 	public void test1() throws Exception {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 					LineWriter.class,
-					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
+					typeSystemDescription,
 					LineWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDir.getPath(), 
 					LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token",
 					LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME, "org.cleartk.type.Sentence",
 					LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME, "org.cleartk.util.linewriter.annotation.CoveredTextAnnotationWriter",
 					LineWriter.PARAM_FILE_SUFFIX, ".txt");
 		
-		JCas jCas = engine.newJCas();
 		String text = "What if we built a rocket ship made of cheese?"+newline +
 					  "We could fly it to the moon for repairs.";
 		tokenBuilder.buildTokens(jCas, text,
@@ -120,7 +117,7 @@ public class LineWriterTest extends ToolkitTestBase{
 		String actualText = FileUtils.file2String(outputFile);
 		Assert.assertEquals(expectedText, actualText);
 		
-		jCas = engine.newJCas();
+		jCas.reset();
 		tokenBuilder.buildTokens(jCas, text,
 				"What if we \n built a rocket \n ship made of cheese ?\nWe could fly it \nto the moon for repairs .",
 				"A B C D E F G H I J K L M N O P Q R S T U");
@@ -165,12 +162,11 @@ public class LineWriterTest extends ToolkitTestBase{
 	public void test2() throws Exception {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 					LineWriter.class,
-					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
+					typeSystemDescription,
 					LineWriter.PARAM_OUTPUT_FILE_NAME, new File(outputDir, "output.txt").getPath(), 
 					LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token",
 					LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME, ExampleTokenWriter.class.getName());
 		
-		JCas jCas = engine.newJCas();
 		String text = "Me and all my friends are non-conformists.  I will subjugate my freedom oppressor.";
 		tokenBuilder.buildTokens(jCas, text,
 				"Me and all my friends are non-conformists . \n I will subjugate my freedom oppressor . ",
@@ -205,7 +201,7 @@ public class LineWriterTest extends ToolkitTestBase{
 	public void test3() throws Exception {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 					LineWriter.class,
-					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
+					typeSystemDescription,
 					LineWriter.PARAM_OUTPUT_FILE_NAME, new File(outputDir, "output.txt").getPath(), 
 					LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, "org.cleartk.type.Sentence",
 					LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME, "org.apache.uima.jcas.tcas.DocumentAnnotation",
@@ -213,14 +209,13 @@ public class LineWriterTest extends ToolkitTestBase{
 					LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME, "org.cleartk.util.linewriter.annotation.CoveredTextAnnotationWriter");
 
 		
-		JCas jCas = engine.newJCas();
 		String text = "If you like line writer, then you should really check out line rider.";
 		tokenBuilder.buildTokens(jCas, text);
 		engine.process(jCas);
 		Token token = AnnotationRetrieval.get(jCas, Token.class, 0);
 		Assert.assertEquals("If", token.getCoveredText());
 
-		jCas = engine.newJCas();
+		jCas.reset();
 		text = "I highly recommend reading 'Three Cups of Tea' by Greg Mortenson.\n Swashbuckling action and inspirational story.";
 		tokenBuilder.buildTokens(jCas, text);
 		engine.process(jCas);
@@ -362,14 +357,13 @@ public class LineWriterTest extends ToolkitTestBase{
 	public void test4() throws Exception {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 					LineWriter.class,
-					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
+					typeSystemDescription,
 					LineWriter.PARAM_OUTPUT_FILE_NAME, new File(outputDir, "output.txt").getPath(), 
 					LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token",
 					LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME, "org.cleartk.util.linewriter.annotation.TokenPOSWriter",
 					LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME, "org.cleartk.type.Sentence",
 					LineWriter.PARAM_BLOCK_WRITER_CLASS_NAME, "org.cleartk.util.linewriter.block.BlankLineBlockWriter");
 		
-		JCas jCas = engine.newJCas();
 		String text = "Me and all my friends are non-conformists.  I will subjugate my freedom oppressor.";
 		tokenBuilder.buildTokens(jCas, text,
 				"Me and all my friends are non-conformists . \n I will subjugate my freedom oppressor . ",
@@ -406,7 +400,7 @@ public class LineWriterTest extends ToolkitTestBase{
 	public void test5() throws Exception {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 					LineWriter.class,
-					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
+					typeSystemDescription,
 					LineWriter.PARAM_OUTPUT_DIRECTORY_NAME, outputDir.getPath(), 
 					LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token",
 					LineWriter.PARAM_FILE_SUFFIX, "txt",
@@ -414,7 +408,6 @@ public class LineWriterTest extends ToolkitTestBase{
 					LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME, "org.apache.uima.jcas.tcas.DocumentAnnotation",
 					LineWriter.PARAM_BLOCK_WRITER_CLASS_NAME, "org.cleartk.util.linewriter.block.DocumentIdBlockWriter");
 		
-		JCas jCas = engine.newJCas();
 		String text = "Me and all my friends are non-conformists.  I will subjugate my freedom oppressor.";
 		tokenBuilder.buildTokens(jCas, text,
 				"Me and all my friends are non-conformists . \n I will subjugate my freedom oppressor . ",
@@ -489,7 +482,6 @@ public class LineWriterTest extends ToolkitTestBase{
 				LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME, CoveredTextAnnotationWriter.class.getName(),
 				LineWriter.PARAM_BLOCK_WRITER_CLASS_NAME, BlankLineBlockWriter.class.getName());
 		
-		JCas jCas = engine.newJCas();
 		String spacedTokens = "What if we built a large , wooden badger ?\nHmm? ";
 		tokenBuilder.buildTokens(jCas,
 				"What if we built\na large, wooden badger? Hmm?",

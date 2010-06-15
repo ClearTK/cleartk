@@ -28,16 +28,13 @@ import java.util.List;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.apache.uima.jcas.JCas;
 import org.cleartk.ToolkitTestBase;
 import org.cleartk.ne.type.NamedEntityMention;
-import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.TypeSystemDescriptionFactory;
 
 /**
  * <br>
@@ -52,14 +49,12 @@ public class TermFinderAnnotatorTest extends ToolkitTestBase{
 	@Test
 	public void test() throws UIMAException, IOException {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				TermFinderAnnotator.class, TypeSystemDescriptionFactory.createTypeSystemDescription(
-						Sentence.class, Token.class, NamedEntityMention.class),
+				TermFinderAnnotator.class, typeSystemDescription,
 				TermFinderAnnotator.PARAM_TERM_LIST_FILE_NAMES_FILE_NAME,
 				"test/data/termlist/termlist.txt",
 				TermFinderAnnotator.PARAM_TOKEN_CLASS_NAME, Token.class.getName(),
 				TermFinderAnnotator.PARAM_TERM_MATCH_ANNOTATION_CLASS_NAME,
 				NamedEntityMention.class.getName());
-		JCas jCas = engine.newJCas();
 		tokenBuilder.buildTokens(jCas, "I would like to visit Alaska.", 
 				"I would like to visit Alaska .");
 		engine.process(jCas);

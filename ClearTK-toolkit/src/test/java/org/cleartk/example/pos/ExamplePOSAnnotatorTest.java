@@ -31,7 +31,6 @@ import java.util.List;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-import org.apache.uima.jcas.JCas;
 import org.cleartk.CleartkComponents;
 import org.cleartk.ToolkitTestBase;
 import org.cleartk.classifier.CleartkSequentialAnnotator;
@@ -62,8 +61,6 @@ public class ExamplePOSAnnotatorTest extends ToolkitTestBase {
 				".");
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(desc);
 
-		JCas jCas = engine.newJCas();
-		
 		// create some tokens, stems and part of speech tags
 		tokenBuilder.buildTokens(jCas,
 				"The Absurdis retreated in 2003.", 

@@ -37,6 +37,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
 import org.cleartk.CleartkComponents;
+import org.cleartk.ToolkitTestBase;
 import org.cleartk.ViewNames;
 import org.cleartk.test.util.TearDownUtil;
 import org.cleartk.util.FilesCollectionReader;
@@ -49,7 +50,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.CollectionReaderFactory;
-import org.uimafit.factory.TypeSystemDescriptionFactory;
 import org.uimafit.pipeline.JCasIterable;
 
 
@@ -62,7 +62,7 @@ import org.uimafit.pipeline.JCasIterable;
  * @author Steven Bethard
  *
  */
-public class TimeMLWriterTest {
+public class TimeMLWriterTest extends ToolkitTestBase {
 	
 	private final File inputFile = new File("test/data/corpus/timeml/test.foo");
 	private final File outputDir = new File("test/data/corpus/timeml/output");
@@ -77,17 +77,17 @@ public class TimeMLWriterTest {
 	public void test() throws UIMAException, IOException, JDOMException {
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				FilesCollectionReader.class, 
-				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
+				typeSystemDescription,
 				FilesCollectionReader.PARAM_VIEW_NAME,
 				ViewNames.TIMEML,
 				FilesCollectionReader.PARAM_ROOT_FILE,
 				this.inputFile.getPath());
 		AnalysisEngine annotator = AnalysisEngineFactory.createPrimitive(
 				TimeMLGoldAnnotator.class,
-				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
+				typeSystemDescription);
 		AnalysisEngine writer = AnalysisEngineFactory.createPrimitive(
 				TimeMLWriter.class,
-				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
+				typeSystemDescription,
 				TimeMLWriter.PARAM_OUTPUT_DIRECTORY_NAME,
 				this.outputDir.getPath());
 		

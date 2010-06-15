@@ -32,18 +32,14 @@ import java.util.List;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.cleartk.CleartkComponents;
 import org.cleartk.ToolkitTestBase;
-import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.TypeSystemDescriptionFactory;
 
 
 /**
@@ -58,7 +54,7 @@ public class SnowballStemmerTest extends ToolkitTestBase{
 		try {
 			AnalysisEngineFactory.createPrimitive(
 					SnowballStemmer.class,
-					TypeSystemDescriptionFactory.createTypeSystemDescription(Token.class, Sentence.class),
+					typeSystemDescription,
 					SnowballStemmer.PARAM_STEMMER_NAME, "FooBar");
 			Assert.fail("Expected exception for bad stemmer name");
 		} catch (ResourceInitializationException e) {}
@@ -66,12 +62,9 @@ public class SnowballStemmerTest extends ToolkitTestBase{
 	
 	@Test
 	public void testSimple() throws UIMAException {
-		TypeSystemDescription typeSystemDescription = TypeSystemDescriptionFactory
-				.createTypeSystemDescription(Token.class, Sentence.class);
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				DefaultSnowballStemmer.class, typeSystemDescription,
 				DefaultSnowballStemmer.PARAM_STEMMER_NAME, "English");
-		JCas jCas = engine.newJCas();
 		String text = "The brown foxes jumped quickly over the lazy dog.";
 		String tokens = "The brown foxes jumped quickly over the lazy dog .";
 		tokenBuilder.buildTokens(jCas, text, tokens);
@@ -88,9 +81,8 @@ public class SnowballStemmerTest extends ToolkitTestBase{
 	public void testUppercase() throws UIMAException {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				DefaultSnowballStemmer.class,
-				TypeSystemDescriptionFactory.createTypeSystemDescription(Token.class, Sentence.class),
+				typeSystemDescription,
 				SnowballStemmer.PARAM_STEMMER_NAME, "English");
-		JCas jCas = engine.newJCas();
 		tokenBuilder.buildTokens(jCas,
 				"The brown foxes JumPEd QUICKLy over the lazY dog.", 
 				"The brown foxes JumPEd QUICKLy over the lazY dog .");

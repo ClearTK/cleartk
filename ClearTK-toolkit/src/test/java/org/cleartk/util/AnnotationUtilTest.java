@@ -38,6 +38,7 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.cleartk.ToolkitTestBase;
 import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.type.Chunk;
@@ -46,7 +47,6 @@ import org.cleartk.type.Token;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.AnnotationFactory;
-import org.uimafit.factory.TypeSystemDescriptionFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -59,10 +59,10 @@ public class AnnotationUtilTest extends ToolkitTestBase{
 	
 	public static class Annotator extends JCasAnnotator_ImplBase
 	{
-		public static JCas getProcessedJCas() throws UIMAException, IOException {
+		public static void getProcessedJCas(JCas jCas, TypeSystemDescription typeSystemDescription) throws UIMAException, IOException {
 			AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-					Annotator.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
-			return AnalysisEngineFactory.process(engine, "test/data/docs/huckfinn.txt");
+					Annotator.class, typeSystemDescription);
+			 AnalysisEngineFactory.process(jCas, engine, "test/data/docs/huckfinn.txt");
 		}
 	
 		@Override
@@ -112,7 +112,7 @@ public class AnnotationUtilTest extends ToolkitTestBase{
 
 	@Test
 	public void testContains() throws UIMAException, IOException {
-		JCas jCas = AnnotationUtilTest.Annotator.getProcessedJCas();
+		AnnotationUtilTest.Annotator.getProcessedJCas(jCas, typeSystemDescription);
 		
 		Token token6 = AnnotationRetrieval.get(jCas, Token.class, 6);
 		Token token7 = AnnotationRetrieval.get(jCas, Token.class, 7);

@@ -27,7 +27,6 @@ package org.cleartk.util;
 import java.io.File;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
 import org.cleartk.ToolkitTestBase;
@@ -35,7 +34,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.TypeSystemDescriptionFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -60,14 +58,13 @@ public class PlainTextWriterTest extends ToolkitTestBase{
 		try {
 			AnalysisEngineFactory.createPrimitive(
 					PlainTextWriter.class,
-					TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
+					typeSystemDescription);
 			Assert.fail("expected exception with output directory not specified");
 		} catch (ResourceInitializationException e) {}
 		
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				PlainTextWriter.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
+				PlainTextWriter.class, typeSystemDescription,
 				PlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDir.getPath());
-		JCas jCas = engine.newJCas();
 		String text = "What if we built a large\r\n, wooden badger?";
 		tokenBuilder.buildTokens(jCas, text, 
 				"What if we built a large \n, wooden badger ?",
@@ -80,7 +77,7 @@ public class PlainTextWriterTest extends ToolkitTestBase{
 		String actualText = FileUtils.file2String(outputFile);
 		Assert.assertEquals(text, actualText);
 
-		jCas = engine.newJCas();
+		jCas.reset();
 		text = "What if we built a large\n, wooden badger?";
 		tokenBuilder.buildTokens(jCas, text,
 				"What if we built a large \n, wooden badger ?",

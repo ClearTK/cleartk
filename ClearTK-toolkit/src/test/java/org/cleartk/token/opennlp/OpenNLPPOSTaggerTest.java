@@ -30,15 +30,12 @@ import java.util.List;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.apache.uima.jcas.JCas;
 import org.cleartk.ToolkitTestBase;
-import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.TypeSystemDescriptionFactory;
 
 
 /**
@@ -52,13 +49,12 @@ public class OpenNLPPOSTaggerTest extends ToolkitTestBase{
 	public void testSimple() throws UIMAException {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				OpenNLPPOSTagger.class,
-				TypeSystemDescriptionFactory.createTypeSystemDescription(Token.class, Sentence.class),
+				typeSystemDescription,
 				OpenNLPPOSTagger.PARAM_CASE_SENSITIVE, true,
 				OpenNLPPOSTagger.PARAM_POSTAG_MODEL_FILE,
 				"resources/models/OpenNLP.POSTags.English.bin.gz",
 				OpenNLPPOSTagger.PARAM_POSTAG_DICTIONARY_FILE,
 				"resources/models/OpenNLP.TagDict.txt");
-		JCas jCas = engine.newJCas();
 		tokenBuilder.buildTokens(jCas,
 				"The brown fox jumped quickly over the lazy dog.",
 				"The brown fox jumped quickly over the lazy dog .");

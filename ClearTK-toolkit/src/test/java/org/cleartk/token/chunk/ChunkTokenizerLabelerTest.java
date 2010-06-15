@@ -29,7 +29,7 @@ import java.util.Arrays;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.apache.uima.jcas.JCas;
+import org.cleartk.ToolkitTestBase;
 import org.cleartk.chunk.ChunkLabeler_ImplBase;
 import org.cleartk.chunk.ChunkerAnnotator;
 import org.cleartk.chunk.DefaultChunkLabeler;
@@ -42,7 +42,6 @@ import org.junit.Test;
 import org.uimafit.component.JCasAnnotatorAdapter;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.AnnotationFactory;
-import org.uimafit.factory.TypeSystemDescriptionFactory;
 
 
 /**
@@ -51,7 +50,7 @@ import org.uimafit.factory.TypeSystemDescriptionFactory;
 
 */
 
-public class ChunkTokenizerLabelerTest {
+public class ChunkTokenizerLabelerTest extends ToolkitTestBase{
 
 
 	/**
@@ -62,7 +61,7 @@ public class ChunkTokenizerLabelerTest {
 	public void testClassifierAnnotator() throws UIMAException {
 		  AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				  JCasAnnotatorAdapter.class,
-				    TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
+				    typeSystemDescription,
 				    ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token",
 				    ChunkerAnnotator.PARAM_LABELED_ANNOTATION_CLASS_NAME, "org.cleartk.token.chunk.type.Subtoken"
 		  			);
@@ -70,10 +69,9 @@ public class ChunkTokenizerLabelerTest {
 		  DefaultChunkLabeler defaultChunkLabeler = new DefaultChunkLabeler();
 		  defaultChunkLabeler.initialize(engine.getUimaContext());
 		  
-		  JCas jCas = engine.newJCas();
 		  
 		  
-		  jCas = engine.newJCas();
+		  jCas.reset();
 		  jCas.setDocumentText("Technological progress is like an axe in the hands of a pathological criminal."); //Albert Einstein
 		  Sentence sentence = new Sentence(jCas, 0, 78);
 		  sentence.addToIndexes();
@@ -144,7 +142,7 @@ public class ChunkTokenizerLabelerTest {
 	public void testDataWriter() throws UIMAException {
 		  AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				  JCasAnnotatorAdapter.class,
-				    TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
+				    typeSystemDescription,
 				    ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token",
 				    ChunkerAnnotator.PARAM_LABELED_ANNOTATION_CLASS_NAME, "org.cleartk.token.chunk.type.Subtoken"
 		  			);
@@ -152,10 +150,9 @@ public class ChunkTokenizerLabelerTest {
 		  DefaultChunkLabeler defaultChunkLabeler = new DefaultChunkLabeler();
 		  defaultChunkLabeler.initialize(engine.getUimaContext());
 		  
-		  JCas jCas = engine.newJCas();
 		  
 		  
-		  jCas = engine.newJCas();
+		  jCas.reset();
 		  jCas.setDocumentText("Technological progress is like an axe in the hands of a pathological criminal."); //Albert Einstein
 		  Sentence sentence = new Sentence(jCas, 0, 78);
 		  sentence.addToIndexes();
@@ -207,7 +204,7 @@ public class ChunkTokenizerLabelerTest {
 	public void testGetChunkLabel() throws UIMAException {
 		  AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				  JCasAnnotatorAdapter.class,
-				    TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
+				    typeSystemDescription,
 				    ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME, "org.cleartk.ne.type.NamedEntityMention",
 				    DefaultChunkLabeler.PARAM_CHUNK_LABEL_FEATURE_NAME, "mentionType",
 		  			 ChunkerAnnotator.PARAM_LABELED_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token"
@@ -216,10 +213,6 @@ public class ChunkTokenizerLabelerTest {
 		  DefaultChunkLabeler defaultChunkLabeler = new DefaultChunkLabeler();
 		  defaultChunkLabeler.initialize(engine.getUimaContext());
 		  
-		  JCas jCas = engine.newJCas();
-		  
-		  
-		  jCas = engine.newJCas();
 		  jCas.setDocumentText("Technological progress is like an axe in the hands of a pathological criminal."); //Albert Einstein
 
 		  NamedEntityMention nem = AnnotationFactory.createAnnotation(jCas, 0, 22, NamedEntityMention.class);

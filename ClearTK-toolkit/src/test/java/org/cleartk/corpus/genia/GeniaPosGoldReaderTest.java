@@ -37,6 +37,7 @@ import org.apache.uima.collection.CollectionException;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.ToolkitTestBase;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
@@ -54,11 +55,11 @@ import org.uimafit.pipeline.JCasIterable;
  * <p>
  */
 
-public class GeniaPosGoldReaderTest {
+public class GeniaPosGoldReaderTest extends ToolkitTestBase{
 
 	@Test
 	public void testReader() throws CASException, UIMAException, IOException {
-		CollectionReader reader = CollectionReaderFactory.createCollectionReader(GeniaPosGoldReader.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"), GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
+		CollectionReader reader = CollectionReaderFactory.createCollectionReader(GeniaPosGoldReader.class, typeSystemDescription, GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
 				"test/data/corpus/genia/GENIAcorpus3.02.articleA.pos.xml", GeniaPosGoldReader.PARAM_LOAD_TOKENS, true,
 				GeniaPosGoldReader.PARAM_LOAD_SENTENCES, true, GeniaPosGoldReader.PARAM_LOAD_POS_TAGS, true);
 
@@ -74,7 +75,7 @@ public class GeniaPosGoldReaderTest {
 		assertEquals("requires", token.getCoveredText());
 		assertEquals("VBZ", token.getPos());
 
-		reader = CollectionReaderFactory.createCollectionReader(GeniaPosGoldReader.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"), GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
+		reader = CollectionReaderFactory.createCollectionReader(GeniaPosGoldReader.class, typeSystemDescription, GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
 				"test/data/corpus/genia/GENIAcorpus3.02.articleA.pos.xml", GeniaPosGoldReader.PARAM_LOAD_TOKENS, false,
 				GeniaPosGoldReader.PARAM_LOAD_SENTENCES, false, GeniaPosGoldReader.PARAM_LOAD_POS_TAGS, false);
 

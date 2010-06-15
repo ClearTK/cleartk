@@ -27,6 +27,7 @@ package org.cleartk.token.chunk;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
+import org.cleartk.CleartkComponents;
 import org.cleartk.classifier.CleartkSequentialAnnotator;
 import org.cleartk.classifier.jar.JarSequentialDataWriterFactory;
 import org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory;
@@ -34,7 +35,6 @@ import org.cleartk.corpus.genia.GeniaPosGoldReader;
 import org.cleartk.token.TokenAnnotator;
 import org.cleartk.token.chunk.type.Subtoken;
 import org.cleartk.token.util.Subtokenizer;
-import org.cleartk.util.ReusableUIMAObjects;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.CollectionReaderFactory;
 import org.uimafit.pipeline.SimplePipeline;
@@ -51,7 +51,7 @@ public class BuildTestTokenChunkModel {
 
 	public static void main(String[] args) throws Exception {
 		
-		TypeSystemDescription typeSystemDescription = ReusableUIMAObjects.getTypeSystemDescription();
+		TypeSystemDescription typeSystemDescription = CleartkComponents.TYPE_SYSTEM_DESCRIPTION;
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(GeniaPosGoldReader.class, typeSystemDescription, 
 				GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE, "test/data/corpus/genia/GENIAcorpus3.02.articleA.pos.xml",
 				GeniaPosGoldReader.PARAM_LOAD_SENTENCES, true);

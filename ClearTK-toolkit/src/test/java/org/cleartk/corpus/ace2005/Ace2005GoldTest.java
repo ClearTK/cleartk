@@ -27,13 +27,13 @@ package org.cleartk.corpus.ace2005;
 import java.io.File;
 
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.ToolkitTestBase;
 import org.cleartk.test.util.TearDownUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.uimafit.factory.CollectionReaderFactory;
-import org.uimafit.factory.TypeSystemDescriptionFactory;
 
 /**
  * <br>Copyright (c) 2009, Regents of the University of Colorado 
@@ -43,8 +43,8 @@ import org.uimafit.factory.TypeSystemDescriptionFactory;
  *
  */
 
-public class Ace2005GoldTest{
-
+public class Ace2005GoldTest extends ToolkitTestBase {
+ 
 	private final File rootDir = new File("test/data/corpus/ace2005");
 
 	@Before
@@ -63,7 +63,7 @@ public class Ace2005GoldTest{
 	public void testReaderInvalidParameters() throws Exception {
 		try {
 			CollectionReaderFactory.createCollectionReader(
-					Ace2005GoldReader.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"));
+					Ace2005GoldReader.class, typeSystemDescription);
 			Assert.fail("expected error for invalid corpus directory");
 		}
 		catch (ResourceInitializationException e) {
@@ -71,7 +71,7 @@ public class Ace2005GoldTest{
 
 		try {
 			CollectionReaderFactory.createCollectionReader(
-					Ace2005GoldReader.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
+					Ace2005GoldReader.class, typeSystemDescription,
 					Ace2005GoldReader.PARAM_ACE_DIRECTORY_NAME, "foo/bar");
 			Assert.fail("expected error for invalid corpus directory");
 		}

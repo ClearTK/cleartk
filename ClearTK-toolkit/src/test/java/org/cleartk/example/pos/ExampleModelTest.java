@@ -30,10 +30,8 @@ import static org.junit.Assert.assertNull;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-import org.apache.uima.jcas.JCas;
 import org.cleartk.ToolkitTestBase;
 import org.cleartk.type.Token;
-import org.cleartk.util.ReusableUIMAObjects;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.util.AnnotationRetrieval;
@@ -51,8 +49,6 @@ public class ExampleModelTest extends ToolkitTestBase {
 	public void testModel() throws Exception {
 		AnalysisEngineDescription posTaggerDescription = ExamplePOSAnnotator.getClassifierDescription(ExamplePOSAnnotator.DEFAULT_MODEL);
 		AnalysisEngine posTagger = AnalysisEngineFactory.createPrimitive(posTaggerDescription);
-		
-		JCas jCas = ReusableUIMAObjects.getJCas();
 		
 		tokenBuilder.buildTokens(jCas,
 				"What would you do if I sang in tune?  Would you listen then?", 

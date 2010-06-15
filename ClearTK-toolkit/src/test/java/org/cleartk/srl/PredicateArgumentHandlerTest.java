@@ -81,7 +81,6 @@ public class PredicateArgumentHandlerTest extends ToolkitTestBase {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				CleartkComponents.createCleartkAnnotator(
 						ArgumentAnnotator.class, InstanceCollector.StringFactory.class, "."));
-		JCas jCas = engine.newJCas();
 		this.setTokens(jCas);
 		this.setTrees(jCas);
 		
@@ -96,7 +95,6 @@ public class PredicateArgumentHandlerTest extends ToolkitTestBase {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				CleartkComponents.createCleartkAnnotator(
 						ArgumentIdentifier.class, InstanceCollector.BooleanFactory.class, "."));
-		JCas jCas = engine.newJCas();
 		this.setTokens(jCas);
 		this.setTrees(jCas);
 		
@@ -111,7 +109,6 @@ public class PredicateArgumentHandlerTest extends ToolkitTestBase {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				CleartkComponents.createCleartkAnnotator(
 						ArgumentClassifier.class, InstanceCollector.StringFactory.class, "."));
-		JCas jCas = engine.newJCas();
 		this.setTokens(jCas);
 		this.setTrees(jCas);
 		
@@ -126,7 +123,6 @@ public class PredicateArgumentHandlerTest extends ToolkitTestBase {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				CleartkComponents.createCleartkAnnotator(
 						ArgumentAnnotator.class, InstanceCollector.StringFactory.class, "."));
-		JCas jCas = engine.newJCas();
 		this.setTokens(jCas);
 		this.setPredicates(jCas);
 		
@@ -147,7 +143,6 @@ public class PredicateArgumentHandlerTest extends ToolkitTestBase {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				CleartkComponents.createCleartkAnnotator(
 						ArgumentIdentifier.class, InstanceCollector.BooleanFactory.class, "."));
-		JCas jCas = engine.newJCas();
 		this.setTokens(jCas);
 		this.setPredicates(jCas);
 		
@@ -168,7 +163,6 @@ public class PredicateArgumentHandlerTest extends ToolkitTestBase {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				CleartkComponents.createCleartkAnnotator(
 						ArgumentClassifier.class, InstanceCollector.StringFactory.class, "."));
-		JCas jCas = engine.newJCas();
 		this.setTokens(jCas);
 		this.setPredicates(jCas);
 		
@@ -189,7 +183,6 @@ public class PredicateArgumentHandlerTest extends ToolkitTestBase {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				CleartkComponents.createCleartkAnnotator(
 						PredicateAnnotator.class, InstanceCollector.BooleanFactory.class, "."));
-		JCas jCas = engine.newJCas();
 		this.setTokens(jCas);
 		this.setTrees(jCas);
 		this.setPredicates(jCas);
