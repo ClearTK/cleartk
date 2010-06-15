@@ -49,11 +49,9 @@ import org.cleartk.type.test.Lemma;
 import org.cleartk.type.test.POSTag;
 import org.cleartk.type.test.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.JCasUtil;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.JCasFactory;
-import org.uimafit.factory.TypeSystemDescriptionFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -128,9 +126,8 @@ public class TypePathExtractorTest extends FrameworkTestBase {
 	public void testExtract() throws IOException, UIMAException, CleartkException {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				TypePathExtractorTest.Annotator.class,
-				TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TestTypeSystem"));
+				typeSystemDescription);
 		
-		JCas jCas = JCasUtil.getJCas();
 		engine.process(jCas);
 		engine.collectionProcessComplete();
 		FSIndex fsIndex = jCas.getAnnotationIndex(Token.type);

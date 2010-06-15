@@ -36,6 +36,7 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.CleartkException;
+import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
@@ -43,7 +44,6 @@ import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.classifier.jar.JarDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.test.util.TearDownUtil;
-import org.cleartk.util.JCasUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -60,12 +60,13 @@ import cc.mallet.types.FeatureVector;
 * @author Philip Ogren
 */
 
-public class MalletClassifierTest {
+public class MalletClassifierTest extends FrameworkTestBase{
 	private Random random;
 	private String outputDirectory = "test/data/mallet/mallet-classifier";
 	
 	@Before
-	public void setUp() {
+	public void setUp() throws Exception {
+		super.setUp();
 		random = new Random(System.currentTimeMillis());
 	}
 
@@ -124,11 +125,10 @@ public class MalletClassifierTest {
 	@Test
 	public void runTest1() throws Exception {
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
-				TestAnnotator.class, JCasUtil.getTypeSystemDescription(),
+				TestAnnotator.class, typeSystemDescription,
 				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletDataWriterFactory.class.getName());
 
-		JCas jCas = JCasUtil.getJCas();
 		dataWriterAnnotator.process(jCas);
 		dataWriterAnnotator.collectionProcessComplete();
 
@@ -175,7 +175,7 @@ public class MalletClassifierTest {
 		assertEquals(95.0, fv.value("hello"), 0.001);
 		
 		AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createPrimitive(
-				TestAnnotator.class, JCasUtil.getTypeSystemDescription(),
+				TestAnnotator.class, typeSystemDescription,
 				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, outputDirectory+"/model.jar");
 		jCas.reset();
 		classifierAnnotator.process(jCas);

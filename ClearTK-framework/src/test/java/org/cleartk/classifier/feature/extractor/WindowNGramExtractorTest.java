@@ -28,7 +28,6 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 
 import org.apache.uima.UIMAException;
-import org.apache.uima.jcas.JCas;
 import org.cleartk.CleartkException;
 import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.Feature;
@@ -37,7 +36,6 @@ import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.JCasUtil;
 import org.junit.Test;
 
 /**
@@ -56,7 +54,6 @@ public class WindowNGramExtractorTest extends FrameworkTestBase {
 				WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT, " ", 0, 3);
 
 		// feature extraction on "island" in "...middle of the island..."
-		JCas jCas = JCasUtil.getJCas();
 		tokenBuilder.buildTokens(jCas,
 				"text obtained from gutenberg\n" +
 				"I WANTED to go and look at a place right about the middle of " +
@@ -197,7 +194,6 @@ public class WindowNGramExtractorTest extends FrameworkTestBase {
 				WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT, " ", 0, 3);
 
 		// feature extraction on "island" in "...because the island was only..."
-		JCas jCas = JCasUtil.getJCas();
 		tokenBuilder.buildTokens(jCas,
 				"text obtained from gutenberg\n" +
 				"I WANTED to go and look at a place right about the middle of " +

@@ -38,6 +38,7 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.CleartkException;
+import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
@@ -46,7 +47,6 @@ import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.classifier.jar.JarDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.test.util.TearDownUtil;
-import org.cleartk.util.JCasUtil;
 import org.junit.After;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -58,7 +58,7 @@ import org.uimafit.testing.util.HideOutput;
 
 */
 
-public class BinaryMaxentClassifierTest {
+public class BinaryMaxentClassifierTest extends FrameworkTestBase{
 	
 	String outputDirectory = "test/data/opennlp/maxent-classifier"; 
 	
@@ -137,11 +137,10 @@ public class BinaryMaxentClassifierTest {
 	@Test
 	public void test1() throws Exception {
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
-				Test1Annotator.class, JCasUtil.getTypeSystemDescription(), 
+				Test1Annotator.class, typeSystemDescription, 
 				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultBinaryMaxentDataWriterFactory.class.getName());
 
-		JCas jCas = JCasUtil.getJCas();
 		dataWriterAnnotator.process(jCas);
 		dataWriterAnnotator.collectionProcessComplete();
 
@@ -166,7 +165,7 @@ public class BinaryMaxentClassifierTest {
 		assertFalse(classification);
 
 		AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createPrimitive(
-				Test1Annotator.class, JCasUtil.getTypeSystemDescription(),
+				Test1Annotator.class, typeSystemDescription,
 				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, outputDirectory+"/model.jar");
 		jCas.reset();
 		classifierAnnotator.process(jCas);
@@ -243,12 +242,11 @@ public class BinaryMaxentClassifierTest {
 	@Test
 	public void test2() throws Exception {
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
-				Test2Annotator.class, JCasUtil.getTypeSystemDescription(), 
+				Test2Annotator.class, typeSystemDescription, 
 				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultBinaryMaxentDataWriterFactory.class.getName(),
 				MaxentDataWriterFactory_ImplBase.PARAM_COMPRESS, false);
 		
-		JCas jCas = JCasUtil.getJCas();
 		dataWriterAnnotator.process(jCas);
 		dataWriterAnnotator.collectionProcessComplete();
 
@@ -300,7 +298,7 @@ public class BinaryMaxentClassifierTest {
 		hider.restoreOutput();
 		
 		AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createPrimitive(
-				Test2Annotator.class, JCasUtil.getTypeSystemDescription(),
+				Test2Annotator.class, typeSystemDescription,
 				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, outputDirectory+"/model.jar");
 		jCas.reset();
 		classifierAnnotator.process(jCas);

@@ -51,7 +51,6 @@ import org.cleartk.test.util.TearDownUtil;
 import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.JCasUtil;
 import org.junit.After;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -101,14 +100,13 @@ public class SequentialDataWriterAnnotatorTest extends FrameworkTestBase {
 	@Test
 	public void testSequentialDataWriterAnnotator() throws IOException, UIMAException {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				TestAnnotator.class, JCasUtil.getTypeSystemDescription(),
+				TestAnnotator.class, typeSystemDescription,
 				JarSequentialDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletCRFDataWriterFactory.class.getName());
 		
 		//create some tokens and sentences
 		//add part-of-speech and stems to tokens
 		
-		JCas jCas = JCasUtil.getJCas();
 		String text = "What if we built a large\r\n, wooden badger?";
 		tokenBuilder.buildTokens(jCas, text, 
 				"What if we built a large \n, wooden badger ?",

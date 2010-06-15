@@ -51,7 +51,6 @@ import org.cleartk.test.util.TearDownUtil;
 import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.JCasUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -115,7 +114,7 @@ public class ViterbiDataWriterTest extends FrameworkTestBase {
 	public void testConsumeAll() throws Exception {
 
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TestAnnotator.class,
-				JCasUtil.getTypeSystemDescription(),
+				typeSystemDescription,
 				ViterbiDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME, ViterbiDataWriterFactory.class.getName(),
 				ViterbiDataWriterFactory.PARAM_DELEGATED_DATA_WRITER_FACTORY_CLASS, DefaultMaxentDataWriterFactory.class.getName(),
@@ -151,7 +150,7 @@ public class ViterbiDataWriterTest extends FrameworkTestBase {
 		hider.restoreOutput();
 		
 		engine = AnalysisEngineFactory.createPrimitive(TestAnnotator.class, 
-				JCasUtil.getTypeSystemDescription(),
+				typeSystemDescription,
 				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, new File(outputDirectory, "model.jar").getPath());
 		
 		engine.process(jCas);

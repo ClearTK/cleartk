@@ -30,7 +30,6 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.uima.UIMAException;
-import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.CleartkException;
 import org.cleartk.FrameworkTestBase;
@@ -41,7 +40,6 @@ import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.JCasUtil;
 import org.junit.Test;
 
 
@@ -70,7 +68,6 @@ public class WindowExtractorTest extends FrameworkTestBase {
 		WindowExtractor middleRevEx = new WindowExtractor(Token.class, new SpannedTextExtractor(),
 				WindowFeature.ORIENTATION_MIDDLE_REVERSE, 0, 3);
 
-		JCas jCas = JCasUtil.getJCas();
 		tokenBuilder.buildTokens(jCas, "because the island was only");
 		Annotation focusAnnotation = AnnotationRetrieval.get(jCas, Token.class, 2);
 		assertEquals("island", focusAnnotation.getCoveredText());
@@ -151,7 +148,6 @@ public class WindowExtractorTest extends FrameworkTestBase {
 				WindowFeature.ORIENTATION_LEFT, 2, 4);
 
 		// feature extraction on "island" in "...because the island was only..."
-		JCas jCas = JCasUtil.getJCas();
 		tokenBuilder.buildTokens(jCas, "it , because the island was only");
 		Token token = AnnotationRetrieval.get(jCas, Token.class, 4);
 		assertEquals("island", token.getCoveredText());
@@ -257,7 +253,6 @@ public class WindowExtractorTest extends FrameworkTestBase {
 				WindowFeature.ORIENTATION_RIGHT, 10, 30);
 
 		// feature extraction on "island" in "...because the island was only..."
-		JCas jCas = JCasUtil.getJCas();
 		tokenBuilder.buildTokens(jCas,
 				"because the island was only three miles long and a quarter of a mile wide .\n" +
 				"This place was a tolerable long, steep hill or ridge about forty foot high ."	);
@@ -353,7 +348,6 @@ public class WindowExtractorTest extends FrameworkTestBase {
 
 	@Test
 	public void testExtractMiddle() throws IOException, UIMAException, CleartkException {
-		JCas jCas = JCasUtil.getJCas();
 		tokenBuilder.buildTokens(jCas, "because the island was only");
 		Annotation spanningToken = new Annotation(jCas);
 		spanningToken.setBegin(AnnotationRetrieval.get(jCas, Token.class, 1).getBegin());
@@ -381,7 +375,6 @@ public class WindowExtractorTest extends FrameworkTestBase {
 	@Test
 	public void testTicket23() throws IOException, UIMAException, CleartkException {
 		// token "place" in "wide. This place was a tolerable long,"
-		JCas jCas = JCasUtil.getJCas();
 		tokenBuilder.buildTokens(jCas, "a mile wide .\nThis place was a tolerable long ,");
 		Token token = AnnotationRetrieval.get(jCas, Token.class, 5);
 		assertEquals("place", token.getCoveredText());

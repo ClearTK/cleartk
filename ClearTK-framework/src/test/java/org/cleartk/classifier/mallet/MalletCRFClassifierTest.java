@@ -39,6 +39,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
+import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.CleartkSequentialAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
@@ -47,7 +48,6 @@ import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.classifier.jar.JarSequentialDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.test.util.TearDownUtil;
-import org.cleartk.util.JCasUtil;
 import org.junit.After;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -69,7 +69,7 @@ import org.uimafit.testing.util.HideOutput;
  * @author Philip Ogren
  */
 
-public class MalletCRFClassifierTest {
+public class MalletCRFClassifierTest extends FrameworkTestBase{
 
 	public static class TestAnnotator extends CleartkSequentialAnnotator<String> {
 		
@@ -117,11 +117,10 @@ public class MalletCRFClassifierTest {
 	public void runTest1() throws Exception {
 
 		AnalysisEngine sequentialDataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
-				TestAnnotator.class, JCasUtil.getTypeSystemDescription(), 
+				TestAnnotator.class, typeSystemDescription, 
 				JarSequentialDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory,
 				CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletCRFDataWriterFactory.class.getName());
 
-		JCas jCas = JCasUtil.getJCas();
 		sequentialDataWriterAnnotator.process(jCas);
 		sequentialDataWriterAnnotator.collectionProcessComplete();
 
@@ -149,7 +148,7 @@ public class MalletCRFClassifierTest {
 		testLabels(outcomes, "O O O O O O O O O O O O O O O B-GENE I-GENE I-GENE O B-GENE I-GENE O O O O O O O O O O O O O O O O O O O O O");
 		
 		AnalysisEngine sequentialClassifierAnnotator = AnalysisEngineFactory.createPrimitive(
-				TestAnnotator.class, JCasUtil.getTypeSystemDescription(),
+				TestAnnotator.class, typeSystemDescription,
 				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, outputDirectory+"/model.jar");
 		jCas.reset();
 		sequentialClassifierAnnotator.process(jCas);
