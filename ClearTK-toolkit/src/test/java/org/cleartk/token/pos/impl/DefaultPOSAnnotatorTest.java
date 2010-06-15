@@ -46,13 +46,10 @@ import org.cleartk.classifier.jar.Train;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
 import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
-import org.cleartk.test.util.TearDownUtil;
 import org.cleartk.token.pos.POSAnnotator;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.FilesCollectionReader;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.CollectionReaderFactory;
@@ -69,18 +66,6 @@ import org.uimafit.testing.util.HideOutput;
  */
 public class DefaultPOSAnnotatorTest extends ToolkitTestBase{
 
-	private File outputDirectory = new File("test/data/token/poshandler");
-	
-	@Before
-	public void setUp() throws Exception {
-		super.setUp();
-		outputDirectory.mkdirs();
-	}
-	
-	@After
-	public void tearDown() {
-		TearDownUtil.removeDirectory(outputDirectory);
-	}
 	
 	@Test
 	public void testCraft() throws Exception {

@@ -24,14 +24,9 @@
 
 package org.cleartk.corpus.ace2005;
 
-import java.io.File;
-
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.ToolkitTestBase;
-import org.cleartk.test.util.TearDownUtil;
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.uimafit.factory.CollectionReaderFactory;
 
@@ -45,20 +40,6 @@ import org.uimafit.factory.CollectionReaderFactory;
 
 public class Ace2005GoldTest extends ToolkitTestBase {
  
-	private final File rootDir = new File("test/data/corpus/ace2005");
-
-	@Before
-	public void setUp() {
-		if(!rootDir.exists())
-			rootDir.mkdirs();
-	}
-	
-	@After
-	public void tearDown() {
-		TearDownUtil.removeDirectory(rootDir);
-		Assert.assertFalse(rootDir.exists());
-	}
-	
 	@Test
 	public void testReaderInvalidParameters() throws Exception {
 		try {

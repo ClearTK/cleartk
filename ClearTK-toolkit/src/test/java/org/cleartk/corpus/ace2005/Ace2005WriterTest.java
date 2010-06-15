@@ -37,10 +37,8 @@ import org.cleartk.ToolkitTestBase;
 import org.cleartk.corpus.ace2005.type.Document;
 import org.cleartk.ne.type.NamedEntity;
 import org.cleartk.ne.type.NamedEntityMention;
-import org.cleartk.test.util.TearDownUtil;
 import org.cleartk.type.Chunk;
 import org.cleartk.util.ViewURIUtil;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -53,13 +51,6 @@ import org.uimafit.factory.AnalysisEngineFactory;
 
 public class Ace2005WriterTest extends ToolkitTestBase{
 	
-	private final File outputDir = new File("test/data/ace2005");
-
-	@After
-	public void tearDown() throws Exception {
-		TearDownUtil.removeDirectory(this.outputDir);
-	}
-
 	@Test
 	public void testMissingParameters() throws Exception {
 		try {
@@ -74,7 +65,7 @@ public class Ace2005WriterTest extends ToolkitTestBase{
 	public void testOutputFile() throws Exception {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				Ace2005Writer.class, typeSystemDescription,
-				Ace2005Writer.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDir.getPath());
+				Ace2005Writer.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDirectory.getPath());
 		
 		Document document = new Document(jCas);
 		document.setAceSource("=source=");
@@ -152,7 +143,7 @@ public class Ace2005WriterTest extends ToolkitTestBase{
 				"  </document>\n" +
 				"</source_file>\n" +
 				"\n");
-		File outputFile = new File(this.outputDir, "uri.cleartk.xml");
+		File outputFile = new File(this.outputDirectory, "uri.cleartk.xml");
 		String actualText = FileUtils.file2String(outputFile).replace("\r", "");
 		Assert.assertEquals(expectedText, actualText);
 	}
@@ -166,10 +157,10 @@ public class Ace2005WriterTest extends ToolkitTestBase{
 		
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.corpus.ace2005.Ace2005Writer",
-				Ace2005Writer.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDir.getPath());
+				Ace2005Writer.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDirectory.getPath());
 		Object outputDirectory = engine.getConfigParameterValue(
 				Ace2005Writer.PARAM_OUTPUT_DIRECTORY_NAME);
-		Assert.assertEquals(this.outputDir.getPath(), outputDirectory);
+		Assert.assertEquals(this.outputDirectory.getPath(), outputDirectory);
 		
 		engine.collectionProcessComplete();
 	}

@@ -38,14 +38,12 @@ import org.apache.uima.util.FileUtils;
 import org.cleartk.CleartkComponents;
 import org.cleartk.ToolkitTestBase;
 import org.cleartk.classifier.jar.JarClassifierFactory;
-import org.cleartk.test.util.TearDownUtil;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.ViewURIUtil;
 import org.cleartk.util.linewriter.annotation.CoveredTextAnnotationWriter;
 import org.cleartk.util.linewriter.block.BlankLineBlockWriter;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -59,22 +57,15 @@ import org.uimafit.factory.AnalysisEngineFactory;
 
 public class LineWriterTest extends ToolkitTestBase{
 
-	private final File outputDir = new File("test/data/linewriter");
-
 	static String newline = System.getProperty("line.separator");
 	
-	@After
-	public void tearDown() throws Exception {
-		TearDownUtil.removeDirectory(outputDir);
-	}
-
 	
 	@Test
 	public void test1() throws Exception {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 					LineWriter.class,
 					typeSystemDescription,
-					LineWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDir.getPath(), 
+					LineWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDirectory.getPath(), 
 					LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token",
 					LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME, "org.cleartk.type.Sentence",
 					LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME, "org.cleartk.util.linewriter.annotation.CoveredTextAnnotationWriter",
@@ -112,7 +103,7 @@ public class LineWriterTest extends ToolkitTestBase{
 		"repairs"+newline+
 		"."+newline;
 		
-		File outputFile = new File(this.outputDir, "1234.txt");
+		File outputFile = new File(this.outputDirectory, "1234.txt");
 		assertTrue(outputFile.exists());
 		String actualText = FileUtils.file2String(outputFile);
 		Assert.assertEquals(expectedText, actualText);
@@ -151,7 +142,7 @@ public class LineWriterTest extends ToolkitTestBase{
 		"repairs"+newline+
 		"."+newline;
 		
-		outputFile = new File(this.outputDir, "1234.txt");
+		outputFile = new File(this.outputDirectory, "1234.txt");
 		assertTrue(outputFile.exists());
 		actualText = FileUtils.file2String(outputFile);
 		Assert.assertEquals(expectedText, actualText);
@@ -163,7 +154,7 @@ public class LineWriterTest extends ToolkitTestBase{
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 					LineWriter.class,
 					typeSystemDescription,
-					LineWriter.PARAM_OUTPUT_FILE_NAME, new File(outputDir, "output.txt").getPath(), 
+					LineWriter.PARAM_OUTPUT_FILE_NAME, new File(outputDirectory, "output.txt").getPath(), 
 					LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token",
 					LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME, ExampleTokenWriter.class.getName());
 		
@@ -191,7 +182,7 @@ public class LineWriterTest extends ToolkitTestBase{
 			"oppressor\t14"+newline +
 			".\t15"+newline;
 		
-		File outputFile = new File(this.outputDir, "output.txt");
+		File outputFile = new File(this.outputDirectory, "output.txt");
 		assertTrue(outputFile.exists());
 		String actualText = FileUtils.file2String(outputFile);
 		Assert.assertEquals(expectedText, actualText);
@@ -202,7 +193,7 @@ public class LineWriterTest extends ToolkitTestBase{
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 					LineWriter.class,
 					typeSystemDescription,
-					LineWriter.PARAM_OUTPUT_FILE_NAME, new File(outputDir, "output.txt").getPath(), 
+					LineWriter.PARAM_OUTPUT_FILE_NAME, new File(outputDirectory, "output.txt").getPath(), 
 					LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, "org.cleartk.type.Sentence",
 					LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME, "org.apache.uima.jcas.tcas.DocumentAnnotation",
 					LineWriter.PARAM_BLOCK_WRITER_CLASS_NAME, "org.cleartk.util.linewriter.block.DoNothingBlockWriter",
@@ -231,7 +222,7 @@ public class LineWriterTest extends ToolkitTestBase{
 			"I highly recommend reading 'Three Cups of Tea' by Greg Mortenson."+newline+
 			"Swashbuckling action and inspirational story."+newline;
 		
-		File outputFile = new File(this.outputDir, "output.txt");
+		File outputFile = new File(this.outputDirectory, "output.txt");
 		assertTrue(outputFile.exists());
 		String actualText = FileUtils.file2String(outputFile); 
 		Assert.assertEquals(expectedText, actualText);
@@ -358,7 +349,7 @@ public class LineWriterTest extends ToolkitTestBase{
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 					LineWriter.class,
 					typeSystemDescription,
-					LineWriter.PARAM_OUTPUT_FILE_NAME, new File(outputDir, "output.txt").getPath(), 
+					LineWriter.PARAM_OUTPUT_FILE_NAME, new File(outputDirectory, "output.txt").getPath(), 
 					LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token",
 					LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME, "org.cleartk.util.linewriter.annotation.TokenPOSWriter",
 					LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME, "org.cleartk.type.Sentence",
@@ -390,7 +381,7 @@ public class LineWriterTest extends ToolkitTestBase{
 			".\t15"+newline;
 			
 		
-		File outputFile = new File(this.outputDir, "output.txt");
+		File outputFile = new File(this.outputDirectory, "output.txt");
 		assertTrue(outputFile.exists());
 		String actualText = FileUtils.file2String(outputFile);
 		Assert.assertEquals(expectedText, actualText);
@@ -401,7 +392,7 @@ public class LineWriterTest extends ToolkitTestBase{
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 					LineWriter.class,
 					typeSystemDescription,
-					LineWriter.PARAM_OUTPUT_DIRECTORY_NAME, outputDir.getPath(), 
+					LineWriter.PARAM_OUTPUT_DIRECTORY_NAME, outputDirectory.getPath(), 
 					LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token",
 					LineWriter.PARAM_FILE_SUFFIX, "txt",
 					LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME, "org.cleartk.util.linewriter.annotation.TokenPOSWriter",
@@ -435,7 +426,7 @@ public class LineWriterTest extends ToolkitTestBase{
 			".\t15"+newline;
 			
 		
-		File outputFile = new File(this.outputDir, "1234.txt");
+		File outputFile = new File(this.outputDirectory, "1234.txt");
 		assertTrue(outputFile.exists());
 		String actualText = FileUtils.file2String(outputFile);
 		Assert.assertEquals(expectedText, actualText);
@@ -449,7 +440,7 @@ public class LineWriterTest extends ToolkitTestBase{
 				AnalysisEngineFactory.createAnalysisEngine("org.cleartk.token.chunk.ChunkTokenizer",
 						JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, "test/data/token/chunk/model.jar"),
 				AnalysisEngineFactory.createAnalysisEngine("org.cleartk.util.linewriter.LineWriter",
-						LineWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDir.getPath(), 
+						LineWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDirectory.getPath(), 
 						LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token")};
 		jCas.setDocumentText(
 				"Philip Ogren didn't write this sentence.\n" +
@@ -467,7 +458,7 @@ public class LineWriterTest extends ToolkitTestBase{
 		Assert.assertEquals(2, sentCount);
 		
 		// make sure there no extra blank lines
-		String text = FileUtils.file2String(new File(this.outputDir, "id"));
+		String text = FileUtils.file2String(new File(this.outputDirectory, "id"));
 		boolean hasDoubleNewlines = Pattern.compile("\n\\s*\n").matcher(text).find();
 		Assert.assertFalse(hasDoubleNewlines);
 	}
@@ -475,7 +466,7 @@ public class LineWriterTest extends ToolkitTestBase{
 	@Test
 	public void testTokenWriter() throws Exception {
 		AnalysisEngine engine = CleartkComponents.createPrimitive(LineWriter.class, 
-				LineWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDir.getPath(),
+				LineWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDirectory.getPath(),
 				LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME, Sentence.class.getName(),
 				LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, Token.class.getName(),
 				LineWriter.PARAM_FILE_SUFFIX, "txt",
@@ -491,7 +482,7 @@ public class LineWriterTest extends ToolkitTestBase{
 		engine.collectionProcessComplete();
 		
 		String expected = "\n"+spacedTokens.replace("\n", "\n\n").replace(' ', '\n');
-		File outputFile = new File(this.outputDir, "identifier.txt");
+		File outputFile = new File(this.outputDirectory, "identifier.txt");
 		String actual = FileUtils.file2String(outputFile).replace("\r", "");
 		Assert.assertEquals(expected, actual);
 	}

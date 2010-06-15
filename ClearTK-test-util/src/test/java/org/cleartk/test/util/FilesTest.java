@@ -29,12 +29,11 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.junit.After;
+import org.cleartk.test.CleartkTestBase;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -47,7 +46,7 @@ import org.junit.Test;
  */
 
 
-public class FilesTest {
+public class FilesTest extends CleartkTestBase{
 
 	@Test
 	public void testSingleFile() {
@@ -88,28 +87,20 @@ public class FilesTest {
 		
 		FileFilter filter = Files.createPatternFilter(patterns);
 		Set<String> actual = new HashSet<String>();
-		for (File file: Files.getFiles(OUTPUT_DIR, filter)) {
+		for (File file: Files.getFiles(outputDirectory, filter)) {
 			actual.add(file.getName());
 		}
 		assertEquals(expected, actual);
 	}
 	
 	@Before
-	public void setUp() throws IOException {
-		if (!OUTPUT_DIR.exists()) {
-			OUTPUT_DIR.mkdirs();
-		}
-		new File(OUTPUT_DIR, "txt").createNewFile();
-		new File(OUTPUT_DIR, "abc.def").createNewFile();
-		new File(OUTPUT_DIR, "abc.txt").createNewFile();
-		new File(OUTPUT_DIR, "abc.def.ghi").createNewFile();
-		new File(OUTPUT_DIR, "abc.txt.def").createNewFile();
+	public void setUp() throws Exception {
+		super.setUp();
+		new File(outputDirectory, "txt").createNewFile();
+		new File(outputDirectory, "abc.def").createNewFile();
+		new File(outputDirectory, "abc.txt").createNewFile();
+		new File(outputDirectory, "abc.def.ghi").createNewFile();
+		new File(outputDirectory, "abc.txt.def").createNewFile();
 	}
 	
-	@After
-	public void tearDown() {
-		TearDownUtil.removeDirectory(OUTPUT_DIR);
-	}
-	
-	protected static final File OUTPUT_DIR = new File("src/test/resources/data/html/files");
 }

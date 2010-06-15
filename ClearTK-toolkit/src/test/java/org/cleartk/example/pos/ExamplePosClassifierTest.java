@@ -33,6 +33,7 @@ import java.util.logging.Logger;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.pear.util.FileUtil;
 import org.cleartk.CleartkComponents;
+import org.cleartk.ToolkitTestBase;
 import org.cleartk.ViewNames;
 import org.cleartk.classifier.jar.JarDataWriterFactory;
 import org.cleartk.classifier.libsvm.DefaultMultiClassLIBSVMDataWriterFactory;
@@ -43,11 +44,9 @@ import org.cleartk.classifier.svmlight.DefaultOVASVMlightDataWriterFactory;
 import org.cleartk.classifier.viterbi.ViterbiClassifier;
 import org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter;
 import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
-import org.cleartk.test.util.TearDownUtil;
 import org.cleartk.token.TokenAnnotator;
 import org.cleartk.token.snowball.DefaultSnowballStemmer;
 import org.cleartk.util.FilesCollectionReader;
-import org.junit.After;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.pipeline.SimplePipeline;
@@ -61,10 +60,8 @@ import org.uimafit.testing.util.HideOutput;
  * @author Philip Ogren
  */
 
-public class ExamplePosClassifierTest {
+public class ExamplePosClassifierTest extends ToolkitTestBase{
 
-	private String baseDirectory = "test/data/example/pos";
-	
 	private static final String RUN_LONG_TESTS_PROP = "cleartk.longtests";
 	private static final boolean RUN_LONG_TESTS = System.getProperty(RUN_LONG_TESTS_PROP) != null;
 	private static final String LONG_TEST_FORMAT = String.format(
@@ -73,14 +70,9 @@ public class ExamplePosClassifierTest {
 	private static final Logger LOGGER = Logger.getLogger(ExamplePosClassifierTest.class.getName());
 	
 	
-	@After
-	public void tearDown() {
-		TearDownUtil.removeDirectory(new File(baseDirectory).getParentFile());
-	}
-
 	@Test
 	public void testLibsvm() throws Exception {
-		String outputDirectory = baseDirectory+"/libsvm";
+		String outputDirectory = outputDirectoryName+"/libsvm";
 		
 		AnalysisEngineDescription dataWriter = CleartkComponents.createViterbiAnnotator(
 				ExamplePOSAnnotator.class, DefaultMultiClassLIBSVMDataWriterFactory.class,
@@ -103,7 +95,7 @@ public class ExamplePosClassifierTest {
 		}
 
 		
-		String outputDirectory = baseDirectory+"/malletcrf"; 
+		String outputDirectory = outputDirectoryName+"/malletcrf"; 
 		AnalysisEngineDescription dataWriter = CleartkComponents.createCleartkSequentialAnnotator(
 				ExamplePOSAnnotator.class, DefaultMalletCRFDataWriterFactory.class,
 				outputDirectory);
@@ -121,7 +113,7 @@ public class ExamplePosClassifierTest {
 			return;
 		}
 
-		String outputDirectory = baseDirectory+"/malletcrf-compressed"; 
+		String outputDirectory = outputDirectoryName+"/malletcrf-compressed"; 
 		AnalysisEngineDescription dataWriter = CleartkComponents.createCleartkSequentialAnnotator(
 					ExamplePOSAnnotator.class, DefaultMalletCRFDataWriterFactory.class, outputDirectory);
 		AnalysisEngineFactory.setConfigurationParameters(dataWriter, DefaultMalletCRFDataWriterFactory.PARAM_COMPRESS, true);
@@ -133,7 +125,7 @@ public class ExamplePosClassifierTest {
 
 	@Test
 	public void testMaxent() throws Exception {
-		String outputDirectory = baseDirectory+"/maxent"; 
+		String outputDirectory = outputDirectoryName+"/maxent"; 
 		
 		AnalysisEngineDescription dataWriter = CleartkComponents.createViterbiAnnotator(
 				ExamplePOSAnnotator.class, DefaultMaxentDataWriterFactory.class,
@@ -146,7 +138,7 @@ public class ExamplePosClassifierTest {
 
 	@Test
 	public void testMaxent2() throws Exception {
-		String outputDirectory = baseDirectory+"/maxent2"; 
+		String outputDirectory = outputDirectoryName+"/maxent2"; 
 		
 		AnalysisEngineDescription dataWriter = CleartkComponents.createViterbiAnnotator(
 				ExamplePOSAnnotator.class, DefaultMaxentDataWriterFactory.class,
@@ -160,7 +152,7 @@ public class ExamplePosClassifierTest {
 
 	@Test
 	public void testMalletMaxent() throws Exception {
-		String outputDirectory = baseDirectory+"/mallet-maxent"; 
+		String outputDirectory = outputDirectoryName+"/mallet-maxent"; 
 		
 		AnalysisEngineDescription dataWriter = CleartkComponents.createViterbiAnnotator(
 				ExamplePOSAnnotator.class, DefaultMalletDataWriterFactory.class,
@@ -173,7 +165,7 @@ public class ExamplePosClassifierTest {
 
 	@Test
 	public void testMalletNaiveBayes() throws Exception {
-		String outputDirectory = baseDirectory+"/mallet-naive-bayes"; 
+		String outputDirectory = outputDirectoryName+"/mallet-naive-bayes"; 
 		
 		AnalysisEngineDescription dataWriter = CleartkComponents.createViterbiAnnotator(
 				ExamplePOSAnnotator.class, DefaultMalletDataWriterFactory.class,
@@ -186,7 +178,7 @@ public class ExamplePosClassifierTest {
 
 	@Test
 	public void testMalletNaiveBayes2() throws Exception {
-		String outputDirectory = baseDirectory+"/mallet-naive-bayes"; 
+		String outputDirectory = outputDirectoryName+"/mallet-naive-bayes"; 
 		
 		AnalysisEngineDescription dataWriter = CleartkComponents.createViterbiAnnotator(
 				ExamplePOSAnnotator.class, DefaultMalletDataWriterFactory.class,
@@ -205,7 +197,7 @@ public class ExamplePosClassifierTest {
 			LOGGER.info(String.format(LONG_TEST_FORMAT, "20 minutes"));
 			return;
 		}
-		String outputDirectory = baseDirectory+"/mallet-c45"; 
+		String outputDirectory = outputDirectoryName+"/mallet-c45"; 
 		
 		AnalysisEngineDescription dataWriter = CleartkComponents.createViterbiAnnotator(
 				ExamplePOSAnnotator.class, DefaultMalletDataWriterFactory.class,
@@ -218,7 +210,7 @@ public class ExamplePosClassifierTest {
 
 	@Test
 	public void testSVMLIGHT() throws Exception {
-		String outputDirectory = baseDirectory+"/svmlight";
+		String outputDirectory = outputDirectoryName+"/svmlight";
 		AnalysisEngineDescription dataWriter = CleartkComponents.createViterbiAnnotator(
 				ExamplePOSAnnotator.class, DefaultOVASVMlightDataWriterFactory.class,
 				outputDirectory,

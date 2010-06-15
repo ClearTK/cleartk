@@ -40,7 +40,7 @@ import org.uimafit.factory.CollectionReaderFactory;
  * <p>
  * These tests are intended to verify that your local copy of the PTB will work correctly with ClearTK.  
  * Several of the tests that are provided will not run by default because we cannot assume any particular location of your PTB data.
- * To run the tests below please set the member variable "inputDir" to a value appropriate for your environment.  Then,
+ * To run the tests below please set the member variable "outputDirectory" to a value appropriate for your environment.  Then,
  * uncomment the test annotations (appearing as "@Test").  Now, you can invoke the unit tests.
  *    
  * @author Philip

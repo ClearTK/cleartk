@@ -33,10 +33,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 
-import org.cleartk.test.util.TearDownUtil;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
+import org.cleartk.FrameworkTestBase;
 import org.junit.Test;
 
 /**
@@ -45,22 +42,8 @@ import org.junit.Test;
 
 */
 
-public class CompressedStringBidiMapTest {
+public class CompressedStringBidiMapTest extends FrameworkTestBase {
 
-	private final File outputDirectory = new File("test/data/collection");
-	
-	@Before
-	public void setUp() {
-		if(!outputDirectory.exists())
-			outputDirectory.mkdirs();
-	}
-	
-	@After
-	public void tearDown() {
-		TearDownUtil.removeDirectory(outputDirectory);
-		Assert.assertFalse(outputDirectory.exists());
-	}
-	
 	@Test
 	public void testSerialization() throws FileNotFoundException, IOException {
 		CompressedStringBidiMap map = new CompressedStringBidiMap();
@@ -72,11 +55,11 @@ public class CompressedStringBidiMapTest {
 		map.getOrGenerateKey("six");
 		
 		
-        Writer writer = new FileWriter("test/data/collection/csbm-test.txt");
+        Writer writer = new FileWriter(new File(outputDirectory, "csbm-test.txt"));
 		map.write(writer, true);
 
 		map = new CompressedStringBidiMap();
-		map.read(new FileReader("test/data/collection/csbm-test.txt"));
+		map.read(new FileReader(new File(outputDirectory, "csbm-test.txt")));
 		
 		assertEquals("0", map.getKey("one"));
 		assertEquals("1", map.getKey("two"));
@@ -92,10 +75,10 @@ public class CompressedStringBidiMapTest {
 		assertNull(map.getKey("one"));
 		assertEquals("7", map.getOrGenerateKey("one"));
 		
-		writer = new FileWriter("test/data/collection/csbm-test.txt");
+		writer = new FileWriter(new File(outputDirectory, "csbm-test.txt"));
 		map.write(writer);
 		map = new CompressedStringBidiMap();
-		map.read(new FileReader("test/data/collection/csbm-test.txt"));
+		map.read(new FileReader(new File(outputDirectory, "csbm-test.txt")));
 		assertEquals("7", map.getOrGenerateKey("one"));
 		assertEquals("8", map.getOrGenerateKey("eight"));
 		

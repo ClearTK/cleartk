@@ -23,7 +23,6 @@
 */
 package org.cleartk.srl;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -46,12 +45,10 @@ import org.cleartk.srl.type.SemanticArgument;
 import org.cleartk.syntax.TreebankTestsUtil;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
 import org.cleartk.syntax.treebank.type.TreebankNode;
-import org.cleartk.test.util.TearDownUtil;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.InstanceCollector;
 import org.cleartk.util.UIMAUtil;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -64,17 +61,7 @@ import org.uimafit.factory.AnalysisEngineFactory;
  */
 public class PredicateArgumentHandlerTest extends ToolkitTestBase {
 	
-	private final File predicateOutputDir = new File("test/data/srl/predicate-output");
-	private final File argumentOutputDir = new File("test/data/srl/argument-output");
 	
-	@After
-	public void tearDown() throws Exception {
-		TearDownUtil.removeDirectory(predicateOutputDir);
-		Assert.assertFalse(predicateOutputDir.exists());
-		TearDownUtil.removeDirectory(argumentOutputDir);
-		Assert.assertFalse(argumentOutputDir.exists());
-	}
-
 	@Test
 	public void testArgumentAnnotationNoPredicate() throws UIMAException, CleartkException {
 		// create the document

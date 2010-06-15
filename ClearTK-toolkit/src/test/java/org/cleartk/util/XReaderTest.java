@@ -31,11 +31,8 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.ToolkitTestBase;
-import org.cleartk.test.util.TearDownUtil;
 import org.cleartk.type.Token;
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.uimafit.component.xwriter.XWriter;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -53,28 +50,13 @@ import org.uimafit.pipeline.JCasIterable;
  */
 public class XReaderTest extends ToolkitTestBase{
 	
-	@Before
-	public void setUp() throws Exception {
-		super.setUp();
-		this.inputDir.mkdirs();
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		TearDownUtil.removeDirectory(inputDir);
-	}
-
-	/**
-	 * The directory containing all the files to be loaded.
-	 */
-	public final File inputDir = new File("test/data/xmi");
 
 	@Test
 	public void testReaderXmi() throws IOException, UIMAException {
 
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				XWriter.class, typeSystemDescription,
-				XWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.inputDir.getPath(),
+				XWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDirectory.getPath(),
 				XWriter.PARAM_FILE_NAMER_CLASS_NAME, ViewURIFileNamer.class.getName());
 		tokenBuilder.buildTokens(jCas,
 				"I like\nspam!",
@@ -87,7 +69,7 @@ public class XReaderTest extends ToolkitTestBase{
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				XReader.class,
 				typeSystemDescription,
-				FilesCollectionReader.PARAM_ROOT_FILE, new File(inputDir, "test.xmi").getPath());
+				FilesCollectionReader.PARAM_ROOT_FILE, new File(outputDirectory, "test.xmi").getPath());
 		
 		Assert.assertEquals(0, reader.getProgress()[0].getCompleted());
 
@@ -108,7 +90,7 @@ public class XReaderTest extends ToolkitTestBase{
 
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				XWriter.class, typeSystemDescription,
-				XWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.inputDir.getPath(),
+				XWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDirectory.getPath(),
 				XWriter.PARAM_XML_SCHEME_NAME, XWriter.XCAS,
 				XWriter.PARAM_FILE_NAMER_CLASS_NAME, ViewURIFileNamer.class.getName());
 		tokenBuilder.buildTokens(jCas,
@@ -122,7 +104,7 @@ public class XReaderTest extends ToolkitTestBase{
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				XReader.class,
 				typeSystemDescription,
-				FilesCollectionReader.PARAM_ROOT_FILE, "test/data/xmi/test.xcas",
+				FilesCollectionReader.PARAM_ROOT_FILE, new File(outputDirectory,"test.xcas").getPath(),
 				XReader.PARAM_XML_SCHEME, XReader.XCAS);
 		
 		Assert.assertEquals(0, reader.getProgress()[0].getCompleted());
@@ -149,11 +131,11 @@ public class XReaderTest extends ToolkitTestBase{
 		
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				"org.cleartk.util.XReader",
-				FilesCollectionReader.PARAM_ROOT_FILE, inputDir.getPath());
+				FilesCollectionReader.PARAM_ROOT_FILE, outputDirectory.getPath());
 		
 		Object fileOrDirectory = reader.getConfigParameterValue(
 				FilesCollectionReader.PARAM_ROOT_FILE);
-		Assert.assertEquals(inputDir.getPath(), fileOrDirectory);
+		Assert.assertEquals(outputDirectory.getPath(), fileOrDirectory);
 		
 	}
 	

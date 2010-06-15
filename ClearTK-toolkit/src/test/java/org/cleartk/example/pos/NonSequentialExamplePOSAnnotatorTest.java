@@ -33,17 +33,16 @@ import java.io.File;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.pear.util.FileUtil;
 import org.cleartk.CleartkComponents;
+import org.cleartk.ToolkitTestBase;
 import org.cleartk.ViewNames;
 import org.cleartk.classifier.libsvm.DefaultMultiClassLIBSVMDataWriterFactory;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.classifier.svmlight.DefaultOVASVMlightDataWriterFactory;
 import org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter;
 import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
-import org.cleartk.test.util.TearDownUtil;
 import org.cleartk.token.TokenAnnotator;
 import org.cleartk.token.snowball.DefaultSnowballStemmer;
 import org.cleartk.util.FilesCollectionReader;
-import org.junit.After;
 import org.junit.Test;
 import org.uimafit.pipeline.SimplePipeline;
 import org.uimafit.testing.util.HideOutput;
@@ -56,18 +55,11 @@ import org.uimafit.testing.util.HideOutput;
  * @author Philip Ogren
  */
 
-public class NonSequentialExamplePOSAnnotatorTest {
+public class NonSequentialExamplePOSAnnotatorTest extends ToolkitTestBase{
 
-	private String baseDirectory = "test/data/example/pos/nonsequential";
-	
-	@After
-	public void tearDown() {
-		TearDownUtil.removeDirectory(new File("test/data/example"));
-	}
-	
 	@Test
 	public void testLibsvm() throws Exception {
-		String outputDirectory = baseDirectory+"/libsvm";
+		String outputDirectory = outputDirectoryName+"/libsvm";
 		AnalysisEngineDescription dataWriter = 	CleartkComponents.createCleartkAnnotator(NonSequentialExamplePOSAnnotator.class,
 				DefaultMultiClassLIBSVMDataWriterFactory.class, outputDirectory);
 		testClassifier(dataWriter, outputDirectory, "-t", "0");
@@ -80,7 +72,7 @@ public class NonSequentialExamplePOSAnnotatorTest {
 
 	@Test
 	public void testMaxent() throws Exception {
-		String outputDirectory = baseDirectory+"/maxent";
+		String outputDirectory = outputDirectoryName+"/maxent";
 		AnalysisEngineDescription dataWriter = 	CleartkComponents.createCleartkAnnotator(NonSequentialExamplePOSAnnotator.class,
 				DefaultMaxentDataWriterFactory.class, outputDirectory);
 		testClassifier(dataWriter, outputDirectory);
@@ -95,7 +87,7 @@ public class NonSequentialExamplePOSAnnotatorTest {
 	
 	@Test
 	public void testSVMLIGHT() throws Exception {
-		String outputDirectory = baseDirectory+"/svmlight";
+		String outputDirectory = outputDirectoryName+"/svmlight";
 		AnalysisEngineDescription dataWriter = 	CleartkComponents.createCleartkAnnotator(NonSequentialExamplePOSAnnotator.class,
 				DefaultOVASVMlightDataWriterFactory.class, outputDirectory);
 		testClassifier(dataWriter, outputDirectory);

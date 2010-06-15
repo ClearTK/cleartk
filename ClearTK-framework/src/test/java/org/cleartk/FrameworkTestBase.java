@@ -1,5 +1,5 @@
 /** 
-  * Copyright (c) 2010, Regents of the University of Colorado 
+ * Copyright (c) 2010, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -24,30 +24,23 @@
 
 package org.cleartk;
 
-import java.io.File;
-
-import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
+import org.cleartk.test.CleartkTestBase;
 import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
 import org.junit.Before;
-import org.junit.Rule;
-import org.junit.rules.TemporaryFolder;
-import org.uimafit.factory.JCasFactory;
 import org.uimafit.factory.TypeSystemDescriptionFactory;
 import org.uimafit.testing.factory.TokenBuilder;
 
 /**
  * <br>
- * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * Copyright (c) 2010, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
  * @author Philip Ogren
  */
-public class FrameworkTestBase {
+public class FrameworkTestBase extends CleartkTestBase {
 
-	private static ThreadLocal<JCas> JCAS = new ThreadLocal<JCas>();
-	private static ThreadLocal<TypeSystemDescription> TYPE_SYSTEM_DESCRIPTION = new ThreadLocal<TypeSystemDescription>();
 	private static ThreadLocal<TokenBuilder<Token, Sentence>> TOKEN_BUILDER = new ThreadLocal<TokenBuilder<Token, Sentence>>();
 
 	static {
@@ -55,41 +48,21 @@ public class FrameworkTestBase {
 			TypeSystemDescription tsd = TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TestTypeSystem");
 			TYPE_SYSTEM_DESCRIPTION.set(tsd);
 
-			JCas jCas = JCasFactory.createJCas(tsd);
-			JCAS.set(jCas);
-			
 			TokenBuilder<Token, Sentence> tb = new TokenBuilder<Token, Sentence>(Token.class, Sentence.class, "pos", null);
 			TOKEN_BUILDER.set(tb);
 		}
-	 catch(Exception e) {
-		e.printStackTrace();
-		System.exit(1);
+		catch (Exception e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
 	}
-	}
-	
-	protected JCas jCas;
-	protected TypeSystemDescription typeSystemDescription;
+
 	protected TokenBuilder<Token, Sentence> tokenBuilder;
 
-	@Rule
-	public TemporaryFolder folder = new TemporaryFolder();
-
-	protected File outputDirectory;
-	protected String outputDirectoryName;
-	
-	/**
-	 *  we do not want to create a new JCas object every time we run a test because it is expensive (~100ms on my laptop).  Instead,
-	 *  we will have one JCas per thread sitting around that we will reset everytime a new test is called.  
-	 */
 	@Before
 	public void setUp() throws Exception {
-		jCas = JCAS.get(); 
-		jCas.reset();
-		typeSystemDescription = TYPE_SYSTEM_DESCRIPTION.get();
+		super.setUp();
 		tokenBuilder = TOKEN_BUILDER.get();
-		
-		outputDirectory = folder.newFolder("output");
-		outputDirectoryName = outputDirectory.getPath();
 	}
 
 }

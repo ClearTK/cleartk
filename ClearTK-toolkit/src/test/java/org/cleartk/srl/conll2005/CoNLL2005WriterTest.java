@@ -29,10 +29,8 @@ import java.io.IOException;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.test.util.TearDownUtil;
-import org.junit.After;
+import org.cleartk.ToolkitTestBase;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 
@@ -42,24 +40,8 @@ import org.uimafit.factory.AnalysisEngineFactory;
  * <br>All rights reserved.
 
  */
-public class CoNLL2005WriterTest {
+public class CoNLL2005WriterTest extends ToolkitTestBase {
 
-	private final File outputDir = new File("test/data/srl/conll2005");
-
-	@Before
-	public void setUp() {
-		if (!this.outputDir.exists()) {
-			this.outputDir.mkdirs();
-		}
-	}
-	
-	@After
-	public void tearDown() {
-		TearDownUtil.removeDirectory(this.outputDir);
-		Assert.assertFalse(this.outputDir.exists());
-	}
-
-	
 	@Test
 	public void testCoNLL2005WriterDescriptor() throws UIMAException, IOException {
 		try {
@@ -67,7 +49,7 @@ public class CoNLL2005WriterTest {
 			Assert.fail("expected exception without output file parameter");
 		} catch (ResourceInitializationException e) {}
 
-		File outputFile = new File(outputDir, "dev-set-result.txt"); 
+		File outputFile = new File(outputDirectory, "dev-set-result.txt"); 
 
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.srl.conll2005.Conll2005Writer",

@@ -23,7 +23,6 @@
 */
 package org.cleartk.temporal;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,12 +51,10 @@ import org.cleartk.corpus.timeml.type.TemporalLink;
 import org.cleartk.syntax.TreebankTestsUtil;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
 import org.cleartk.syntax.treebank.type.TreebankNode;
-import org.cleartk.test.util.TearDownUtil;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.InstanceCollector;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -74,8 +71,6 @@ import org.uimafit.factory.AnalysisEngineFactory;
  * @author Steven Bethard
  */
 public class VerbClauseTemporalAnnotatorTest extends ToolkitTestBase{
-	
-	private final File outputDirectory = new File("test/data/temporal");
 	
 	public static class AfterNewClassifier implements Classifier<String>, ClassifierFactory<String> {
 		public AfterNewClassifier() {}
@@ -96,12 +91,6 @@ public class VerbClauseTemporalAnnotatorTest extends ToolkitTestBase{
 		if (!this.outputDirectory.exists()) {
 			this.outputDirectory.mkdirs();
 		}
-	}
-	
-	@After
-	public void tearDown() {
-		TearDownUtil.removeDirectory(this.outputDirectory);
-		Assert.assertFalse(this.outputDirectory.exists());
 	}
 	
 	@Test

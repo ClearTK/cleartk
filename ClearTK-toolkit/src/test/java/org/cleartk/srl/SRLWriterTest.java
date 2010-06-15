@@ -29,9 +29,9 @@ import java.io.IOException;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.test.util.TearDownUtil;
-import org.junit.After;
+import org.cleartk.ToolkitTestBase;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 
@@ -41,14 +41,14 @@ import org.uimafit.factory.AnalysisEngineFactory;
  * <br>All rights reserved.
 
  */
-public class SRLWriterTest {
+public class SRLWriterTest extends ToolkitTestBase {
 	
-	private final File outputFile = new File("test/data/srl-writer-test/srl-output.txt");
+	private File outputFile;
 	
-	@After
-	public void tearDown() {
-		TearDownUtil.removeDirectory(outputFile.getParentFile());
-		Assert.assertFalse(outputFile.getParentFile().exists());
+	@Before
+	public void setUp() throws Exception {
+		super.setUp();
+		outputFile  = new File(outputDirectory, "srl-output.txt");
 	}
 	
 	@Test
