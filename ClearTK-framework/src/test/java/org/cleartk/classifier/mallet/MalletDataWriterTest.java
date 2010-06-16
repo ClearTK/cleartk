@@ -230,11 +230,10 @@ public class MalletDataWriterTest extends FrameworkTestBase {
 	 */
 	@Test
 	public void test4() throws Exception {
-		String outputDirectory = "test/data/mallet/mallet-data-writer";
 
 		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
 				Test4Annotator.class, typeSystemDescription,
-				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory,
+				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletDataWriterFactory.class.getName(),
 				DefaultMalletDataWriterFactory.PARAM_COMPRESS, true,
 				DefaultMalletDataWriterFactory.PARAM_SORT, true);
