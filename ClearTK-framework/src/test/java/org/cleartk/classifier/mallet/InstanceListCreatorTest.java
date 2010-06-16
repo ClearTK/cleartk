@@ -51,7 +51,7 @@ public class InstanceListCreatorTest {
 	@Test
 	public void testMain() throws IOException {
 		InstanceListCreator instanceListCreator = new InstanceListCreator();
-		InstanceList instanceList = instanceListCreator.createInstanceList(new File("test/data/mallet/instance-list-creator.txt"));
+		InstanceList instanceList = instanceListCreator.createInstanceList(new File("src/test/resources/data/mallet/instance-list-creator.txt"));
 
 		assertEquals(100, instanceList.size());
 

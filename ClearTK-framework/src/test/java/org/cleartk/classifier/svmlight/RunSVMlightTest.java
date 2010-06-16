@@ -61,7 +61,7 @@ import org.uimafit.testing.util.HideOutput;
 */
 public class RunSVMlightTest extends FrameworkTestBase {
 
-	protected String dataDirectory = "test/data/svmlight";
+	protected String dataDirectory = "src/test/resources/data/svmlight";
 	
 	@Test
 	public void testPath() throws Exception {
