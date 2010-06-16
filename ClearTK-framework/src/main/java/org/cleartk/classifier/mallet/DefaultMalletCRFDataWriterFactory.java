@@ -27,8 +27,6 @@ package org.cleartk.classifier.mallet;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.uima.UimaContext;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.SequentialDataWriter;
 import org.cleartk.classifier.encoder.features.BooleanEncoder;
 import org.cleartk.classifier.encoder.features.NameNumber;
@@ -37,7 +35,6 @@ import org.cleartk.classifier.encoder.features.NumberEncoder;
 import org.cleartk.classifier.encoder.features.StringEncoder;
 import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
 import org.cleartk.classifier.jar.JarSequentialDataWriterFactory;
-import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 

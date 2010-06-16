@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.uima.UIMAException;
-import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.cleartk.CleartkException;
 import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.Feature;
@@ -36,8 +35,6 @@ import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.type.test.Token;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uimafit.component.JCasAnnotatorAdapter;
-import org.uimafit.factory.AnalysisEngineFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -140,10 +137,6 @@ public class FeatureProliferatorTest extends FrameworkTestBase {
 
 	@Test
 	public void testProliferatingExtractor() throws UIMAException, IOException, CleartkException {
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				JCasAnnotatorAdapter.class,
-				typeSystemDescription);
-
 		jCas.setDocumentText("Hello World 2008!");
 		Token hello = new Token(jCas, 0, 5);
 		Token year = new Token(jCas, 12, 16);

@@ -25,8 +25,6 @@ package org.cleartk.classifier.mallet;
 
 import java.util.List;
 
-import org.apache.uima.UimaContext;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.jar.JarDataWriterFactory;
 import org.uimafit.descriptor.ConfigurationParameter;
