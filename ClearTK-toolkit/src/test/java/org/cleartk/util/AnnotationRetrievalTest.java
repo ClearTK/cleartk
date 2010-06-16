@@ -60,7 +60,6 @@ import org.cleartk.type.Token;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.uimafit.component.JCasAnnotatorAdapter;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.JCasFactory;
 
@@ -246,8 +245,6 @@ public class AnnotationRetrievalTest extends ToolkitTestBase{
 		nem = AnnotationRetrieval.getContainingAnnotation(jCas, token5, NamedEntityMention.class);
 		Assert.assertEquals(nem, nem3);
 		
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				JCasAnnotatorAdapter.class, typeSystemDescription);
 		String text = "word";
 		jCas.reset();
 		tokenBuilder.buildTokens(jCas, text);
