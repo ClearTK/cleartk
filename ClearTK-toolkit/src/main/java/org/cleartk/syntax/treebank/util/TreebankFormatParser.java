@@ -222,7 +222,7 @@ public class TreebankFormatParser {
 				}
 			}
 			int lastIndex = sb.length() - 1;
-			if (sb.charAt(lastIndex) == ' ') {
+			if (lastIndex >= 0 && sb.charAt(lastIndex) == ' ') {
 				sb.deleteCharAt(lastIndex);
 			}
 			sb.append('\n');
