@@ -1,5 +1,5 @@
- /** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+/** 
+ * Copyright (c) 2007-2010, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -20,13 +20,16 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.feature.extractor;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
@@ -35,6 +38,7 @@ import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.cleartk.CleartkException;
 import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.feature.FeatureCollection;
 import org.cleartk.classifier.feature.extractor.simple.BagExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
@@ -47,12 +51,12 @@ import org.uimafit.component.JCasAnnotatorAdapter;
 import org.uimafit.factory.AnalysisEngineFactory;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
+ * <br>Copyright (c) 2007-2010, Regents of the University of Colorado 
  * <br>All rights reserved.
 
  * <p>
  * 
- * @author Steven Bethard
+ * @author Steven Bethard, Philipp Wetzler
  */
 public class BagExtractorTest extends FrameworkTestBase {
 
@@ -70,15 +74,15 @@ public class BagExtractorTest extends FrameworkTestBase {
 				"The man walked to the store .",
 				"DT NN VBD IN DT NN .",
 				"The man walked to the store .",
-				"DT NN VBD IN .");
+		"DT NN VBD IN .");
 
 		String text2 = "The big black bug bit the big black bear\n" +
 		"and the big black bear bled blood";
-		 
+
 		this.add(text2, text2,
 				"DT JJ JJ NN VBD DT JJ JJ NN CC DT JJ JJ NN VBD NN",
 				"The big black bug bit the bear and bled blood",
-				"DT JJ NN VBD CC");
+		"DT JJ NN VBD CC");
 	}
 
 	/**
@@ -91,7 +95,7 @@ public class BagExtractorTest extends FrameworkTestBase {
 	public void testSpannedText() throws UIMAException, IOException, CleartkException {
 		SpannedTextExtractor textExtractor = new SpannedTextExtractor();
 		BagExtractor bagExtractor = new BagExtractor(Token.class, textExtractor);
-		this.testOne(bagExtractor, "Bag(Token)", this.expectedTokenLists);
+		this.testOne(bagExtractor, "Bag(Token)", null, this.expectedTokenLists);
 	}
 
 	/**
@@ -105,7 +109,7 @@ public class BagExtractorTest extends FrameworkTestBase {
 	public void testNamedSpannedText() throws UIMAException, IOException, CleartkException {
 		SpannedTextExtractor textExtractor = new SpannedTextExtractor();
 		BagExtractor bagExtractor = new BagExtractor(Token.class, textExtractor);
-		this.testOne(bagExtractor, "Bag(Token)", this.expectedTokenLists);
+		this.testOne(bagExtractor, "Bag(Token)", null, this.expectedTokenLists);
 	}
 
 	/**
@@ -119,7 +123,7 @@ public class BagExtractorTest extends FrameworkTestBase {
 	public void testPartOfSpeech() throws UIMAException, IOException, CleartkException {
 		TypePathExtractor posExtractor = new TypePathExtractor(Token.class, "pos");
 		BagExtractor bagExtractor = new BagExtractor(Token.class, posExtractor);
-		this.testOne(bagExtractor, "Bag(Token)_TypePath(Pos)", this.expectedPOSLists);
+		this.testOne(bagExtractor, "Bag(Token)", "TypePath(Pos)", this.expectedPOSLists);
 	}
 
 	/**
@@ -133,7 +137,7 @@ public class BagExtractorTest extends FrameworkTestBase {
 	public void testNamedPartOfSpeech() throws UIMAException, IOException, CleartkException {
 		TypePathExtractor posExtractor = new TypePathExtractor(Token.class, "pos");
 		BagExtractor bagExtractor = new BagExtractor(Token.class, posExtractor);
-		this.testOne(bagExtractor, "Bag(Token)_TypePath(Pos)", this.expectedPOSLists);
+		this.testOne(bagExtractor, "Bag(Token)", "TypePath(Pos)", this.expectedPOSLists);
 	}
 
 	private void add(
@@ -142,7 +146,7 @@ public class BagExtractorTest extends FrameworkTestBase {
 			String posTagsString,
 			String expectedTokensString,
 			String expectedPOSString) throws UIMAException {
-		
+
 		// create the JCas and add the expected tokens and POS tags to the lists
 		JCas jCas = this.engine.newJCas();
 		this.jCasObjects.add(jCas);
@@ -155,27 +159,50 @@ public class BagExtractorTest extends FrameworkTestBase {
 
 	private void testOne (
 			BagExtractor bagExtractor,
-			String nameString,
+			String bagNameString,
+			String featuresNameString,
 			List<List<String>> expectedValuesLists)
-			throws UIMAException, IOException, CleartkException {
+	throws UIMAException, IOException, CleartkException {
 
 		// run a BagExtractor on each document
 		for (int i = 0; i < this.jCasObjects.size(); i++) {
 			JCas jCas = this.jCasObjects.get(i);
 			DocumentAnnotation document = AnnotationRetrieval.getDocument(jCas);
-			
-			// collect all feature values, and check all feature names
-			List<String> actualValues = new ArrayList<String>();
-			for (Feature feature: bagExtractor.extract(jCas, document)) {
-				actualValues.add(feature.getValue().toString());
-				Assert.assertEquals(nameString, feature.getName());
-			}
 
-			// make sure the actual values match the expected ones
-			Assert.assertEquals(expectedValuesLists.get(i), actualValues);
+			List<Feature> features = bagExtractor.extract(jCas, document);
+			if( expectedValuesLists.get(i).size() == 0 ) {
+				Assert.assertEquals(0, features.size());
+			} else {
+				Assert.assertEquals(1, features.size());
+
+				Assert.assertEquals(bagNameString, features.get(0).getName());
+
+				try {
+					FeatureCollection fc = (FeatureCollection) features.get(0).getValue();
+					features = new ArrayList<Feature>(fc.getFeatures());
+
+					// collect all feature values, and check all feature names
+					List<String> actualValues = new ArrayList<String>();
+					for (Feature feature: features) {
+						actualValues.add(feature.getValue().toString());
+						Assert.assertEquals(featuresNameString, feature.getName());
+					}
+
+					// make sure the actual values match the expected ones
+					assertSetsEqual(actualValues, expectedValuesLists.get(i));
+				} catch( ClassCastException e ) {
+					Assert.fail("returned feature type must be feature collection");
+				}
+			}
 		}
 	}
 	
+	private <T> void assertSetsEqual(Collection<T> c1, Collection<T> c2) {
+		Set<T> s1 = new HashSet<T>(c1);
+		Set<T> s2 = new HashSet<T>(c2);
+		Assert.assertEquals(s1, s2);
+	}
+
 	private AnalysisEngine engine;
 	private List<JCas> jCasObjects;
 	private List<List<String>> expectedTokenLists;

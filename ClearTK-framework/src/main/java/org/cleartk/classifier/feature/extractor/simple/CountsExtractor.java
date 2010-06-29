@@ -1,5 +1,5 @@
 /** 
- * Copyright (c) 2009, Regents of the University of Colorado 
+ * Copyright (c) 2009-2010, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -23,6 +23,7 @@
  */
 package org.cleartk.classifier.feature.extractor.simple;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -31,13 +32,14 @@ import java.util.Map;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.CleartkException;
+import org.cleartk.CleartkRuntimeException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.Counts;
-import org.cleartk.util.AnnotationRetrieval;
+import org.cleartk.classifier.feature.FeatureCollection;
 
 
 /**
- * <br>Copyright (c) 2009, Regents of the University of Colorado 
+ * <br>Copyright (c) 2009-2010, Regents of the University of Colorado 
  * <br>All rights reserved.
  *
  * @author Philip Wetzler
@@ -46,48 +48,76 @@ public class CountsExtractor implements SimpleFeatureExtractor {
 
 	public CountsExtractor(
 			String identifier,
-			Class<? extends Annotation> annotationClass,
 			SimpleFeatureExtractor subExtractor) {
-		this.annotationClass = annotationClass;
 		this.subExtractor = subExtractor;
-		String simpleAnnotationName = annotationClass.getSimpleName();
-		this.extractorName = String.format("Count(%s)", simpleAnnotationName);
 		this.identifier = identifier;
 	}
 
-	public CountsExtractor(
-			Class<? extends Annotation> annotationClass,
-			SimpleFeatureExtractor subExtractor) {
-		this(null, annotationClass, subExtractor);
+	public CountsExtractor(SimpleFeatureExtractor subExtractor) {
+		this((String) null, subExtractor);
+	}
+	
+	public CountsExtractor(String identifier, Class<? extends Annotation> annotationType, SimpleFeatureExtractor subExtractor) {
+		this(identifier, new BagExtractor(annotationType, subExtractor));
+	}
+	
+	public CountsExtractor(Class<? extends Annotation> annotationType, SimpleFeatureExtractor subExtractor) {
+		this(null, annotationType, subExtractor);
 	}
 
-	public List<Feature> extract(JCas view, Annotation windowAnnotation) throws CleartkException {
+	public List<Feature> extract(JCas view, Annotation annotation) throws CleartkException {
 		Map<Object, Integer> countsMap = new HashMap<Object, Integer>();
-		String featureName = null;
+		FeatureName featureName = new FeatureName();
 
-		for( Annotation annotation : AnnotationRetrieval.getAnnotations(view, windowAnnotation, annotationClass) ) {
-			for( Feature feature : subExtractor.extract(view, annotation) ) {
-				if( featureName == null )
-					featureName = feature.getName();
-				else if( ! featureName.equals(feature.getName()) )
-					throw new UnsupportedOperationException("sub-extractor of FrequenciesExtractor must only extract features of one name");
+		count(subExtractor.extract(view, annotation), countsMap, featureName);
 
-				Object o = feature.getValue();
-				if( countsMap.containsKey(o) )
-					countsMap.put(o, countsMap.get(o) + 1);
-				else
-					countsMap.put(o, 1);
-			}
-		}
-		Counts frequencies = new Counts(featureName, identifier, countsMap);
-		Feature feature = new Feature(extractorName, frequencies);
+		Counts frequencies = new Counts(featureName.getFeatureName(), identifier, countsMap);
+		Feature feature = new Feature(String.format("Count(%s)", featureName), frequencies);
 
 		return Collections.singletonList(feature);
 	}
+	
+	private void count(Collection<Feature> features, Map<Object, Integer> countsMap, FeatureName featureName) {
+		for( Feature feature : features ) {
+			if( feature.getValue() instanceof FeatureCollection ) {
+				FeatureCollection fc = (FeatureCollection) feature.getValue();
+				
+				Collection<Feature> subFeatures = fc.getFeatures();
+				for( Feature subFeature : subFeatures ) {
+					subFeature.setName(Feature.createName(feature.getName(), subFeature.getName()));
+				}
+				
+				count(subFeatures, countsMap, featureName);
+				
+				continue;
+			}
 
-	private Class<? extends Annotation> annotationClass;
+			featureName.setFeatureName(feature.getName());
+
+			Object o = feature.getValue();
+			if( countsMap.containsKey(o) )
+				countsMap.put(o, countsMap.get(o) + 1);
+			else
+				countsMap.put(o, 1);
+		}
+	}
+	
+	private static class FeatureName {
+		public void setFeatureName(String f) {
+			if( featureName != null && ! featureName.equals(f) )
+				throw new CleartkRuntimeException("sub-extractor of CountsExtractor must only extract features of one name");
+			
+			featureName = f;
+		}
+		
+		public String getFeatureName() {
+			return featureName;
+		}
+		
+		private String featureName = null;
+	}
+
 	private SimpleFeatureExtractor subExtractor;
-	private String extractorName;
 	private String identifier;
 
 }

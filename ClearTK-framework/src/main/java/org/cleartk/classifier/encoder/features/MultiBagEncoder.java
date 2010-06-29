@@ -25,12 +25,8 @@ package org.cleartk.classifier.encoder.features;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.encoder.features.FeatureEncoder;
-import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.encoder.features.normalizer.NOPNormalizer;
 import org.cleartk.classifier.encoder.features.normalizer.NameNumberNormalizer;
 import org.cleartk.classifier.feature.Counts;
@@ -74,16 +70,7 @@ public class MultiBagEncoder implements FeatureEncoder<NameNumber> {
 		List<NameNumber> fves = new ArrayList<NameNumber>();
 		Counts frequencies = (Counts) feature.getValue();
 
-		String prefix;
-		Matcher m = countPattern.matcher(feature.getName());
-		if( m.find() ) {
-			String replacement = "MultiBag($1,id=" + Matcher.quoteReplacement(frequencies.getIdentifier()) + ")";
-			prefix = Feature.createName(m.replaceAll(replacement), frequencies.getFeatureName());
-		} else {
-			prefix = Feature.createName(feature.getName(), "Bag", frequencies.getFeatureName()); 
-		}
-
-
+		String prefix = frequencies.getFeatureName();
 		for( Object key : frequencies.getValues() ) {
 			String name = Feature.createName(prefix, key.toString());
 			NameNumber fve = new NameNumber(name, frequencies.getCount(key));
@@ -109,8 +96,6 @@ public class MultiBagEncoder implements FeatureEncoder<NameNumber> {
 
 		return false;
 	}
-
-	private static Pattern countPattern = Pattern.compile("Count\\(([^)]*)\\)$");
 
 	private String identifier;
 	private NameNumberNormalizer normalizer;

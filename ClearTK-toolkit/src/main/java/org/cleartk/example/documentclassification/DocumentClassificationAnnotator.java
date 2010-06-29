@@ -36,6 +36,7 @@ import org.cleartk.CleartkComponents;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.feature.extractor.simple.BagExtractor;
 import org.cleartk.classifier.feature.extractor.simple.CountsExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
@@ -57,7 +58,12 @@ public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
 		SimpleFeatureExtractor subExtractor = new TypePathExtractor(Token.class, "stem", false, false, true);
-		extractor = new CountsExtractor(Token.class, subExtractor);
+		extractor = new CountsExtractor(
+				new BagExtractor(
+						Token.class,
+						subExtractor
+						)
+				);
 	}
 
 	public void process(JCas jCas) throws AnalysisEngineProcessException {

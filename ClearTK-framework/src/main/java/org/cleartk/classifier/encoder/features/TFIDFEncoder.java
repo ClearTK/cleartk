@@ -76,7 +76,7 @@ public class TFIDFEncoder implements FeatureEncoder<NameNumber> {
 	public List<NameNumber> encode(Feature feature) {
 		List<NameNumber> fves = new ArrayList<NameNumber>();
 		Counts counts = (Counts) feature.getValue();
-		String prefix = Feature.createName(feature.getName(), "TFIDF", counts.getFeatureName());
+		String prefix = counts.getFeatureName();
 
 		for( Object key : counts.getValues() ) {
 			double tf = getTF(counts, key);
