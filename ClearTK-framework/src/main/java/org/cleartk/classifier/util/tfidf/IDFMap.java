@@ -32,6 +32,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.cleartk.classifier.feature.Counts;
@@ -117,6 +118,21 @@ public class IDFMap implements Serializable {
 				
 		return Math.log((totalDocumentCount + 1)/ (documentCount + 1));
 	}
+	
+	public int getTotalDocumentCount() {
+		return totalDocumentCount;
+	}
+	
+	public int getDocumentCount(Object key) {
+		String keyString = key.toString();
+		return documentCounts.containsKey(keyString) ?
+				documentCounts.get(keyString) : 0;
+	}
+
+	public Iterator<?> getValues() {
+		return documentCounts.keySet().iterator();
+	}
+
 	
 	public void write(File file) throws IOException {
 		try {

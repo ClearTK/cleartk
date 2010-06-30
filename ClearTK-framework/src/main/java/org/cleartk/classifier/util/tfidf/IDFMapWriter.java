@@ -130,7 +130,7 @@ public class IDFMapWriter<OUTCOME_TYPE> implements DataWriter<OUTCOME_TYPE> {
 			IDFMap idfMap = idfMaps.get(identifier);
 			File idfMapFile = getIDFMapFile(identifier);
 			try {
-				logger.info(String.format("write idf map \"%s\" to %s", identifier, idfMapFile.toString()));
+				logger.info(String.format("write idf map \"%s\" to %s.  size="+idfMap.getTotalDocumentCount(), identifier, idfMapFile.toString()));
 				idfMap.write(idfMapFile);
 			} catch( IOException e1 ) {
 				exceptions.add(e1);
