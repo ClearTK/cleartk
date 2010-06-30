@@ -52,14 +52,14 @@
 		<dependency>
 			<groupId>org.apache.uima</groupId>
 			<artifactId>uimaj-core</artifactId>
-			<version>2.2.2-incubating</version>
+			<version>2.3.0-incubating</version>
 			<type>jar</type>
 			<optional>false</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.uima</groupId>
 			<artifactId>uimaj-document-annotation</artifactId>
-			<version>2.2.2-incubating</version>
+			<version>2.3.0-incubating</version>
 			<type>jar</type>
 			<optional>false</optional>
 		</dependency>
@@ -116,7 +116,7 @@
 		<dependency>
 			<groupId>org.apache.uima</groupId>
 			<artifactId>uimaj-tools</artifactId>
-			<version>2.2.2-incubating</version>
+			<version>2.3.0-incubating</version>
 			<type>jar</type>
 			<scope>test</scope>
 			<optional>false</optional>
@@ -151,7 +151,7 @@
 				</executions>
 				<configuration>
 					<classpathScope>test</classpathScope>
-					<mainClass>org.apache.uima.tools.jcasgen.Jg</mainClass>
+					<mainClass>org.uimafit.util.JCasGenPomFriendly</mainClass>
 					<arguments>
 						<argument>-jcasgeninput</argument>
 						<argument>${basedir}/src/test/resources/org/cleartk/TestTypeSystem.xml</argument>
