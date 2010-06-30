@@ -115,11 +115,11 @@ public class ChunkerAnnotator extends CleartkSequentialAnnotator<String> {
 		typesInitialized = true;
 	}
 
-	protected FSIterator sequences(JCas jCas) {
+	protected FSIterator<Annotation> sequences(JCas jCas) {
 		return jCas.getAnnotationIndex(sequenceType).iterator();
 	}
 	
-	protected FSIterator labeledAnnotations(JCas jCas, Annotation sequence) {
+	protected FSIterator<Annotation> labeledAnnotations(JCas jCas, Annotation sequence) {
 		return jCas.getAnnotationIndex(labeledAnnotationType).subiterator(sequence);
 	}
 	
@@ -142,7 +142,7 @@ public class ChunkerAnnotator extends CleartkSequentialAnnotator<String> {
 
 		List<Annotation> labeledAnnotationList = new ArrayList<Annotation>();
 
-		FSIterator sequences = sequences(jCas);
+		FSIterator<Annotation> sequences = sequences(jCas);
 
 		while (sequences.hasNext()) {
 			Annotation sequence = (Annotation) sequences.next();
@@ -152,7 +152,7 @@ public class ChunkerAnnotator extends CleartkSequentialAnnotator<String> {
 			instances.clear();
 			labeledAnnotationList.clear();
 
-			FSIterator labeledAnnotations = labeledAnnotations(jCas, sequence);
+			FSIterator<Annotation> labeledAnnotations = labeledAnnotations(jCas, sequence);
 			while (labeledAnnotations.hasNext()) {
 				Annotation labeledAnnotation = (Annotation) labeledAnnotations.next();
 				labeledAnnotationList.add(labeledAnnotation);

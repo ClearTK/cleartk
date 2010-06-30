@@ -32,6 +32,7 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.cas.FSIndex;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkComponents;
 import org.cleartk.ToolkitTestBase;
@@ -70,13 +71,13 @@ public class TreebankGoldReaderAndAnnotatorTest extends ToolkitTestBase {
 
 		JCas goldView = jCas.getView(ViewNames.DEFAULT);
 
-		FSIndex sentenceIndex = goldView.getAnnotationIndex(Sentence.type);
+		FSIndex<Annotation> sentenceIndex = goldView.getAnnotationIndex(Sentence.type);
 		assertEquals(1, sentenceIndex.size());
 
 		Sentence firstSentence = AnnotationRetrieval.get(goldView, Sentence.class, 0);
 		assertEquals(expectedText, firstSentence.getCoveredText());
 
-		FSIndex topNodeIndex = goldView.getAnnotationIndex(TopTreebankNode.type);
+		FSIndex<Annotation> topNodeIndex = goldView.getAnnotationIndex(TopTreebankNode.type);
 		TopTreebankNode topNode = (TopTreebankNode) topNodeIndex.iterator().next();
 
 		int i = 0;

@@ -28,13 +28,14 @@ import java.util.List;
 
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.type.Sentence;
 
 public class ClearTKSentenceRetriever implements SentenceRetriever {
 
 	public List<Sentence> getSentences(JCas jCas) {
 		ArrayList<Sentence> result = new ArrayList<Sentence>();
-		FSIterator sentences = 
+		FSIterator<Annotation> sentences = 
 			jCas.getJFSIndexRepository().getAnnotationIndex(Sentence.type).iterator();
 		
 		while (sentences.hasNext()) {

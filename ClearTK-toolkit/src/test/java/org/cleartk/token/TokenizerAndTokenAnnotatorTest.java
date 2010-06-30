@@ -32,6 +32,7 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.FSIndex;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkComponents;
 import org.cleartk.ToolkitTestBase;
@@ -72,7 +73,7 @@ public class TokenizerAndTokenAnnotatorTest extends ToolkitTestBase {
 	@Test
 	public void testMarysDog() throws UIMAException, IOException {
 		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokens, "test/data/docs/tokens/marysdog.txt");
-		FSIndex tokenIndex = jCas.getAnnotationIndex(Token.type);
+		FSIndex<Annotation> tokenIndex = jCas.getAnnotationIndex(Token.type);
 		assertEquals(37, tokenIndex.size());
 
 		int index = 0;
@@ -118,7 +119,7 @@ public class TokenizerAndTokenAnnotatorTest extends ToolkitTestBase {
 	@Test
 	public void testWatcha() throws UIMAException, IOException {
 		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokens, "test/data/docs/tokens/watcha.txt");
-		FSIndex tokenIndex = jCas.getAnnotationIndex(Token.type);
+		FSIndex<Annotation> tokenIndex = jCas.getAnnotationIndex(Token.type);
 		assertEquals(31, tokenIndex.size());
 
 		int index = 0;
@@ -158,7 +159,7 @@ public class TokenizerAndTokenAnnotatorTest extends ToolkitTestBase {
 	@Test
 	public void testTimes() throws UIMAException, IOException {
 		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokens, "test/data/docs/tokens/times.txt");
-		FSIndex tokenIndex = jCas.getAnnotationIndex(Token.type);
+		FSIndex<Annotation> tokenIndex = jCas.getAnnotationIndex(Token.type);
 		assertEquals(16, tokenIndex.size());
 
 		int index = 0;
@@ -183,7 +184,7 @@ public class TokenizerAndTokenAnnotatorTest extends ToolkitTestBase {
 	@Test
 	public void testDollars() throws UIMAException, IOException {
 		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokens, "test/data/docs/tokens/dollars.txt");
-		FSIndex tokenIndex = jCas.getAnnotationIndex(Token.type);
+		FSIndex<Annotation> tokenIndex = jCas.getAnnotationIndex(Token.type);
 		assertEquals(16, tokenIndex.size());
 
 		int index = 0;
@@ -209,7 +210,7 @@ public class TokenizerAndTokenAnnotatorTest extends ToolkitTestBase {
 	public void testPercents() throws UIMAException, IOException {
 		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokens,
 				" 1. Buy a new Chevrolet (37%-owned in the U.S..) . 15%");
-		FSIndex tokenIndex = jCas.getAnnotationIndex(Token.type);
+		FSIndex<Annotation> tokenIndex = jCas.getAnnotationIndex(Token.type);
 		assertEquals(16, tokenIndex.size());
 
 		int index = 0;

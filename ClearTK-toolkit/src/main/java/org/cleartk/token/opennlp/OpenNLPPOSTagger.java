@@ -41,6 +41,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkComponents;
 import org.cleartk.type.Sentence;
@@ -107,10 +108,10 @@ public class OpenNLPPOSTagger extends JCasAnnotator_ImplBase {
 	}
 
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
-		FSIterator sentenceIterator = jCas.getAnnotationIndex(Sentence.type).iterator();
+		FSIterator<Annotation> sentenceIterator = jCas.getAnnotationIndex(Sentence.type).iterator();
 		while (sentenceIterator.hasNext()) {
 			Sentence sentence = (Sentence) sentenceIterator.next();
-			FSIterator tokenIterator = jCas.getAnnotationIndex(Token.type).subiterator(sentence);
+			FSIterator<Annotation> tokenIterator = jCas.getAnnotationIndex(Token.type).subiterator(sentence);
 			List<String> tokens = new ArrayList<String>();
 			while (tokenIterator.hasNext())
 				tokens.add(((Token) tokenIterator.next()).getCoveredText());

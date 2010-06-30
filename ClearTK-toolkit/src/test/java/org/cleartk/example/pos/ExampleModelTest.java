@@ -34,7 +34,7 @@ import org.cleartk.ToolkitTestBase;
 import org.cleartk.type.Token;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.util.AnnotationRetrieval;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -54,16 +54,16 @@ public class ExampleModelTest extends ToolkitTestBase {
 				"What would you do if I sang in tune?  Would you listen then?", 
 				"What would you do if I sang in tune ?\n  Would you listen then ?");
 		
-		Token token = AnnotationRetrieval.get(jCas, Token.class, 0);
+		Token token = JCasUtil.get(jCas, Token.class, 0);
 		assertNull(token.getPos());
-		token = AnnotationRetrieval.get(jCas, Token.class, 5);
+		token = JCasUtil.get(jCas, Token.class, 5);
 		assertNull(token.getPos());
 
 		posTagger.process(jCas);
-		token = AnnotationRetrieval.get(jCas, Token.class, 0);
+		token = JCasUtil.get(jCas, Token.class, 0);
 		assertNotNull(token.getPos());
 		assertEquals("IN", token.getPos());
-		token = AnnotationRetrieval.get(jCas, Token.class, 5);
+		token = JCasUtil.get(jCas, Token.class, 5);
 		assertNotNull(token.getPos());
 		assertEquals("NN", token.getPos());
 	}

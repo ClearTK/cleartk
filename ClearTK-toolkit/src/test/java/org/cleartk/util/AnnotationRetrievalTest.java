@@ -549,15 +549,15 @@ public class AnnotationRetrievalTest extends ToolkitTestBase{
 					  "Hooligan (turning toward his gun): Stupid gun!";
 		tokenBuilder.buildTokens(jCas, text);
 
-		AnnotationIndex tokenIndex = AnnotationRetrieval.getAnnotationIndex(jCas, Token.class);
+		AnnotationIndex<Annotation> tokenIndex = AnnotationRetrieval.getAnnotationIndex(jCas, Token.class);
 		Assert.assertEquals(13, tokenIndex.size());
-		FSIterator iterator = tokenIndex.iterator();
+		FSIterator<Annotation> iterator = tokenIndex.iterator();
 		while(iterator.hasNext()) {
 			Token token = (Token) iterator.next();
 			Assert.assertTrue(token instanceof Token);
 		}
 		
-		AnnotationIndex sentenceIndex = AnnotationRetrieval.getAnnotationIndex(jCas, Sentence.class);
+		AnnotationIndex<Annotation> sentenceIndex = AnnotationRetrieval.getAnnotationIndex(jCas, Sentence.class);
 		Assert.assertEquals(2, sentenceIndex.size());
 		
 	}

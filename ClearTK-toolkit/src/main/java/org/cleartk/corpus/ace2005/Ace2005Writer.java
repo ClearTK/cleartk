@@ -31,6 +31,7 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.FSIterator;
+import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
@@ -111,7 +112,7 @@ public class Ace2005Writer extends JCasAnnotator_ImplBase {
 		documentElement.setAttribute("DOCID", docId);
 		sourceFileElement.addContent(documentElement);
 
-		FSIterator namedEntities = jCas.getFSIndexRepository().getAllIndexedFS(jCas.getCasType(NamedEntity.type));
+		FSIterator<FeatureStructure> namedEntities = jCas.getFSIndexRepository().getAllIndexedFS(jCas.getCasType(NamedEntity.type));
 		while (namedEntities.hasNext()) {
 			NamedEntity namedEntity = (NamedEntity) namedEntities.next();
 			Element namedEntityElement = new Element("entity");

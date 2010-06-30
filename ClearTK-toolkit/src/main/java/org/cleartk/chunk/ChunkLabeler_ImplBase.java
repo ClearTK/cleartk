@@ -115,7 +115,7 @@ public abstract class ChunkLabeler_ImplBase implements ChunkLabeler, Initializab
 
 		annotationLabels.clear();
 
-		FSIterator chunkAnnotations = jCas.getAnnotationIndex(chunkAnnotationType).subiterator(sequence);
+		FSIterator<Annotation> chunkAnnotations = jCas.getAnnotationIndex(chunkAnnotationType).subiterator(sequence);
 		while (chunkAnnotations.hasNext()) {
 			Annotation chunkAnnotation = (Annotation) chunkAnnotations.next();
 			String labelBase = getChunkLabel(jCas, chunkAnnotation);
@@ -138,7 +138,7 @@ public abstract class ChunkLabeler_ImplBase implements ChunkLabeler, Initializab
 		if (!typesInitialized) initializeTypes(jCas);
 
 		List<Annotation> returnValues = new ArrayList<Annotation>();
-		FSIterator labeledAnnotations = jCas.getAnnotationIndex(labeledAnnotationType).subiterator(sequence);
+		FSIterator<Annotation> labeledAnnotations = jCas.getAnnotationIndex(labeledAnnotationType).subiterator(sequence);
 
 		String currentLabelValue = null;
 		List<Annotation> currentLabeledAnnotations = new ArrayList<Annotation>();

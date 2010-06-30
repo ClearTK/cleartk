@@ -30,6 +30,7 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.cas.FSIndex;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.ToolkitTestBase;
 import org.cleartk.ne.type.NamedEntity;
 import org.cleartk.ne.type.NamedEntityMention;
@@ -64,7 +65,7 @@ public class Conll2003GoldReaderTest extends ToolkitTestBase{
 		
 		JCas jCas = iterator.next(); 			
 		
-		FSIndex sentenceIndex = jCas.getAnnotationIndex(Sentence.type);
+		FSIndex<Annotation> sentenceIndex = jCas.getAnnotationIndex(Sentence.type);
 		
 		Assert.assertEquals(1, sentenceIndex.size());
 		Sentence firstSentence = AnnotationRetrieval.get(jCas, Sentence.class, 0);

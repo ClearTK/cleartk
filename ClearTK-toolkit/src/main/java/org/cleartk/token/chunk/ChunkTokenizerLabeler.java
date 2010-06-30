@@ -57,7 +57,7 @@ public class ChunkTokenizerLabeler extends DefaultChunkLabeler {
 	public void chunks2Labels(JCas jCas) throws AnalysisEngineProcessException {
 		if (!typesInitialized) initializeTypes(jCas);
 
-		FSIterator chunkAnnotations = jCas.getAnnotationIndex(chunkAnnotationType).iterator();
+		FSIterator<Annotation> chunkAnnotations = jCas.getAnnotationIndex(chunkAnnotationType).iterator();
 		while (chunkAnnotations.hasNext()) {
 			Annotation chunkAnnotation = (Annotation) chunkAnnotations.next();
 			String label = getChunkLabel(jCas, chunkAnnotation);

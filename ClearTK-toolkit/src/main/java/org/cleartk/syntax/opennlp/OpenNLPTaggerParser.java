@@ -46,6 +46,7 @@ import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
 import org.cleartk.syntax.treebank.type.TreebankNode;
@@ -137,7 +138,7 @@ public class OpenNLPTaggerParser extends JCasAnnotator_ImplBase {
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
 		String text = jCas.getDocumentText();
 
-		FSIterator sentences = jCas.getJFSIndexRepository().getAnnotationIndex(Sentence.type).iterator();
+		FSIterator<Annotation> sentences = jCas.getJFSIndexRepository().getAnnotationIndex(Sentence.type).iterator();
 		while (sentences.hasNext()) {
 			Sentence sentence = (Sentence) sentences.next();
 

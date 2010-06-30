@@ -33,6 +33,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CASRuntimeException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkComponents;
 import org.cleartk.CleartkException;
@@ -123,7 +124,7 @@ public class PredicateAnnotator extends CleartkAnnotator<Boolean> {
 					instance.addAll(rightWindowFeatures);
 
 					instance.setOutcome(false);
-					FSIterator predicates = jCas.getAnnotationIndex(Predicate.type).subiterator(sentence);
+					FSIterator<Annotation> predicates = jCas.getAnnotationIndex(Predicate.type).subiterator(sentence);
 					while( predicates.hasNext() ) {
 						Predicate predicate = (Predicate) predicates.next();
 						List<Token> predicateTokens = AnnotationRetrieval.getAnnotations(jCas, predicate.getAnnotation(), Token.class);

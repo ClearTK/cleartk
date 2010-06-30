@@ -129,7 +129,7 @@ public class TokenAnnotator extends JCasAnnotator_ImplBase {
 		try {
 			if (!typesInitialized) initializeTypes(jCas);
 			if (windowType != null) {
-				FSIterator windows = jCas.getAnnotationIndex(windowType).iterator();
+				FSIterator<Annotation> windows = jCas.getAnnotationIndex(windowType).iterator();
 				while (windows.hasNext()) {
 					Annotation window = (Annotation) windows.next();
 					List<Token> pojoTokens = tokenizer.getTokens(window.getCoveredText());

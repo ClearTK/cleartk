@@ -184,7 +184,7 @@ public class TermFinderAnnotator extends JCasAnnotator_ImplBase {
 
 		List<Token> tokens = new ArrayList<Token>();
 		if (allTokens) {
-			FSIterator tokenAnnotations = jCas.getAnnotationIndex(tokenType).iterator();
+			FSIterator<Annotation> tokenAnnotations = jCas.getAnnotationIndex(tokenType).iterator();
 			while (tokenAnnotations.hasNext()) {
 				Annotation tokenAnnotation = (Annotation) tokenAnnotations.next();
 				tokens.add(createToken(tokenAnnotation));
@@ -192,11 +192,11 @@ public class TermFinderAnnotator extends JCasAnnotator_ImplBase {
 			findTerms(jCas, tokens);
 		}
 		else {
-			FSIterator sentenceAnnotations = jCas.getAnnotationIndex(sentenceType).iterator();
+			FSIterator<Annotation> sentenceAnnotations = jCas.getAnnotationIndex(sentenceType).iterator();
 			while (sentenceAnnotations.hasNext()) {
 				tokens.clear();
 				Annotation sentenceAnnotation = (Annotation) sentenceAnnotations.next();
-				FSIterator tokenAnnotations = jCas.getAnnotationIndex(tokenType).subiterator(sentenceAnnotation);
+				FSIterator<Annotation> tokenAnnotations = jCas.getAnnotationIndex(tokenType).subiterator(sentenceAnnotation);
 				while (tokenAnnotations.hasNext()) {
 					Annotation tokenAnnotation = (Annotation) tokenAnnotations.next();
 					tokens.add(createToken(tokenAnnotation));
