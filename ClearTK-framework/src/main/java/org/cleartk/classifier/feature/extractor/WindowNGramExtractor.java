@@ -146,7 +146,7 @@ public class WindowNGramExtractor {
 
 		Annotation startAnnotation = getStartAnnotation(jCas, focusAnnotation);
 
-		FSIterator featureAnnotationIterator = jCas.getAnnotationIndex(featureType).iterator();
+		FSIterator<Annotation> featureAnnotationIterator = jCas.getAnnotationIndex(featureType).iterator();
 
 		if (startAnnotation != null) {
 			featureAnnotationIterator.moveTo(startAnnotation);
@@ -216,7 +216,7 @@ public class WindowNGramExtractor {
 				&& AnnotationUtil.contains(focusAnnotation, featureAnnotation);
 	}
 
-	private void moveIterator(FSIterator ngramIterator) {
+	private void moveIterator(FSIterator<Annotation> ngramIterator) {
 		if (orientation.equals(WindowNGramFeature.ORIENTATION_LEFT)
 				|| orientation.equals(WindowNGramFeature.ORIENTATION_MIDDLE_REVERSE)) ngramIterator.moveToPrevious();
 		else if (orientation.equals(WindowNGramFeature.ORIENTATION_RIGHT)

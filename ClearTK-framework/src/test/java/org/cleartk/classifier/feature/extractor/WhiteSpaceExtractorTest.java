@@ -32,6 +32,7 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.FSIndex;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.simple.WhiteSpaceExtractor;
@@ -92,7 +93,7 @@ public class WhiteSpaceExtractorTest extends FrameworkTestBase{
 					WhiteSpaceExtractorTest.Annotator.class,
 					typeSystemDescription);
 			JCas jCas = AnalysisEngineFactory.process(engine,"This is some test text.");
-			FSIndex fsIndex = jCas.getAnnotationIndex(Token.type);
+			FSIndex<Annotation> fsIndex = jCas.getAnnotationIndex(Token.type);
 
 			Token targetToken = new Token(jCas, 0, 4);
 			Token t1 = (Token) fsIndex.find(targetToken);

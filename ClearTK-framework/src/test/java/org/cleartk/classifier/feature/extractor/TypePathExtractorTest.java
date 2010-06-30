@@ -38,6 +38,7 @@ import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.cas.StringArray;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.CleartkException;
 import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.Feature;
@@ -129,7 +130,7 @@ public class TypePathExtractorTest extends FrameworkTestBase {
 		
 		engine.process(jCas);
 		engine.collectionProcessComplete();
-		FSIndex fsIndex = jCas.getAnnotationIndex(Token.type);
+		FSIndex<Annotation> fsIndex = jCas.getAnnotationIndex(Token.type);
 
 		assertTrue(jCas.getTypeSystem().subsumes(jCas.getTypeSystem().getType("uima.tcas.Annotation"),
 				jCas.getCasType(POSTag.type)));

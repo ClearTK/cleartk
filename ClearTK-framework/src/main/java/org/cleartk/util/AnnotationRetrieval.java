@@ -72,11 +72,11 @@ public class AnnotationRetrieval {
 
 		// TODO we should probably iterate from the end rather than
 		// iterating forward from the begining.
-		FSIndex fsIndex = jCas.getAnnotationIndex(type);
+		FSIndex<Annotation> fsIndex = jCas.getAnnotationIndex(type);
 		if (index < 0) index = fsIndex.size() + index;
 
 		if (index < 0 || index >= fsIndex.size()) return null;
-		FSIterator iterator = fsIndex.iterator();
+		FSIterator<Annotation> iterator = fsIndex.iterator();
 		Object returnValue = iterator.next();
 		for (int i = 0; i < index; i++) {
 			returnValue = iterator.next();
@@ -90,7 +90,7 @@ public class AnnotationRetrieval {
 
 	public static <T extends Annotation> T get(JCas jCas, T annotation, int relativePosition,
 			Annotation windowAnnotation) {
-		FSIterator cursor = jCas.getAnnotationIndex(annotation.getType()).iterator();
+		FSIterator<Annotation> cursor = jCas.getAnnotationIndex(annotation.getType()).iterator();
 		cursor.moveTo(annotation);
 
 		if (relativePosition > 0) {
@@ -148,9 +148,9 @@ public class AnnotationRetrieval {
 	 * @param windowAnnotation
 	 * @return an FSIterator that is at the correct position
 	 */
-	private static FSIterator initializeWindowCursor(JCas jCas, Annotation windowAnnotation) {
+	private static FSIterator<Annotation> initializeWindowCursor(JCas jCas, Annotation windowAnnotation) {
 
-		FSIterator cursor = jCas.getAnnotationIndex().iterator();
+		FSIterator<Annotation> cursor = jCas.getAnnotationIndex().iterator();
 		
 		cursor.moveTo(windowAnnotation);
 		
@@ -189,7 +189,7 @@ public class AnnotationRetrieval {
 	 * @see #getAnnotations(JCas, Annotation, Class)
 	 */
 	public static <T extends Annotation> T getLastAnnotation(JCas jCas, Annotation windowAnnotation, Class<T> cls) {
-		FSIterator cursor = initializeWindowCursor(jCas, windowAnnotation);
+		FSIterator<Annotation> cursor = initializeWindowCursor(jCas, windowAnnotation);
 
 		T currentBestGuess = null;
 		while (cursor.isValid() && ((Annotation) cursor.get()).getBegin() <= windowAnnotation.getEnd()) {
@@ -215,7 +215,7 @@ public class AnnotationRetrieval {
 	 * @see #getAnnotations(JCas, Annotation, Class)
 	 */
 	public static <T extends Annotation> T getFirstAnnotation(JCas jCas, Annotation windowAnnotation, Class<T> cls) {
-		FSIterator cursor = initializeWindowCursor(jCas, windowAnnotation);
+		FSIterator<Annotation> cursor = initializeWindowCursor(jCas, windowAnnotation);
 
 		// I left in the while loop because the first annotation we see might
 		// not be the right class
@@ -238,7 +238,7 @@ public class AnnotationRetrieval {
 	 * @return the first annotation of type cls in this view
 	 */
 	public static <T extends Annotation> T getFirstAnnotation(JCas view, Class<T> cls) {
-		FSIterator cursor = view.getAnnotationIndex().iterator();
+		FSIterator<Annotation> cursor = view.getAnnotationIndex().iterator();
 		cursor.moveToFirst();
 
 		while( cursor.isValid() ) {
@@ -260,7 +260,7 @@ public class AnnotationRetrieval {
 	public static <T extends Annotation> T getMatchingAnnotation(JCas jCas, Annotation windowAnnotation, Class<T> cls) {
 		if (cls.isInstance(windowAnnotation)) return cls.cast(windowAnnotation);
 
-		FSIterator cursor = jCas.getAnnotationIndex().iterator();
+		FSIterator<Annotation> cursor = jCas.getAnnotationIndex().iterator();
 
 		cursor.moveTo(windowAnnotation);
 		Annotation cursorAnnotation = (Annotation) cursor.get();
@@ -327,9 +327,9 @@ public class AnnotationRetrieval {
 		}
 
 		// collect all annotations of the given type into a list
-		AnnotationIndex index = jCas.getAnnotationIndex(type);
+		AnnotationIndex<Annotation> index = jCas.getAnnotationIndex(type);
 		List<T> annotations = new ArrayList<T>();
-		for (FSIterator iter = index.iterator(); iter.hasNext();) {
+		for (FSIterator<Annotation> iter = index.iterator(); iter.hasNext();) {
 			Object next = iter.next();
 			annotations.add(annotationClass.cast(next));
 		}
@@ -357,7 +357,7 @@ public class AnnotationRetrieval {
 	 * @see AnnotationIndex#subiterator(org.apache.uima.cas.text.AnnotationFS)
 	 */
 	public static <T extends Annotation> List<T> getAnnotations(JCas jCas, Annotation windowAnnotation, Class<T> cls) {
-		FSIterator cursor = initializeWindowCursor(jCas, windowAnnotation);
+		FSIterator<Annotation> cursor = initializeWindowCursor(jCas, windowAnnotation);
 
 		List<T> annotations = new ArrayList<T>();
 		while (cursor.isValid() && ((Annotation) cursor.get()).getBegin() <= windowAnnotation.getEnd()) {
@@ -375,7 +375,7 @@ public class AnnotationRetrieval {
 			boolean exactSpan) {
 		if (!exactSpan) return getAnnotations(jCas, windowAnnotation, cls);
 		else {
-			FSIterator cursor = initializeWindowCursor(jCas, windowAnnotation);
+			FSIterator<Annotation> cursor = initializeWindowCursor(jCas, windowAnnotation);
 			List<T> annotations = new ArrayList<T>();
 			while (cursor.isValid() && ((Annotation) cursor.get()).getBegin() <= windowAnnotation.getEnd()) {
 				Annotation annotation = (Annotation) cursor.get();
@@ -467,7 +467,7 @@ public class AnnotationRetrieval {
 			throw new IllegalArgumentException("focus annotation may not be null");
 
 
-		FSIterator cursor = jCas.getAnnotationIndex().iterator();
+		FSIterator<Annotation> cursor = jCas.getAnnotationIndex().iterator();
 
 		//the goal is to move the cursor to the last annotation that begins at the same index as the focus annotation 
 		cursor.moveTo(focusAnnotation);
@@ -527,7 +527,7 @@ public class AnnotationRetrieval {
 		else
 			overlapConstraint = getOverlapAfterConstraint(jCas, focusAnnotation, constraintFactory);
 
-		FSIterator iterator = jCas.createFilteredIterator(jCas.getAnnotationIndex(type).iterator(), overlapConstraint);
+		FSIterator<Annotation> iterator = jCas.createFilteredIterator(jCas.getAnnotationIndex(type).iterator(), overlapConstraint);
 		while(iterator.hasNext()) {
 			T annotation = cls.cast(iterator.next()); 
 			annotations.add(annotation);
@@ -609,14 +609,14 @@ public class AnnotationRetrieval {
 		try {
 			Type adjacentType = UIMAUtil.getCasType(jCas, adjacentClass);
 			if (focusAnnotation.getType().equals(adjacentType)) {
-				FSIterator iterator = jCas.getAnnotationIndex(adjacentType).iterator();
+				FSIterator<Annotation> iterator = jCas.getAnnotationIndex(adjacentType).iterator();
 				iterator.moveTo(focusAnnotation);
 				if (adjacentBefore) iterator.moveToPrevious();
 				else iterator.moveToNext();
 				return adjacentClass.cast(iterator.get());
 			}
 			else {
-				FSIterator cursor = jCas.getAnnotationIndex().iterator();
+				FSIterator<Annotation> cursor = jCas.getAnnotationIndex().iterator();
 				cursor.moveTo(focusAnnotation);
 				if (adjacentBefore) {
 					while (cursor.isValid()) {
@@ -642,7 +642,7 @@ public class AnnotationRetrieval {
 		return null;
 	}
 
-	public static <T extends Annotation> AnnotationIndex getAnnotationIndex(JCas jCas, Class<T> cls) {
+	public static <T extends Annotation> AnnotationIndex<Annotation> getAnnotationIndex(JCas jCas, Class<T> cls) {
 		return jCas.getAnnotationIndex(UIMAUtil.getCasType(jCas, cls));
 	}
 

@@ -125,7 +125,7 @@ public class WindowExtractor {
 
 		Annotation startAnnotation = getStartAnnotation(jCas, focusAnnotation);
 
-		FSIterator featureAnnotationIterator = jCas.getAnnotationIndex(featureType).iterator();
+		FSIterator<Annotation> featureAnnotationIterator = jCas.getAnnotationIndex(featureType).iterator();
 
 		if (startAnnotation != null) {
 			featureAnnotationIterator.moveTo(startAnnotation);
@@ -168,7 +168,7 @@ public class WindowExtractor {
 				&& AnnotationUtil.contains(focusAnnotation, featureAnnotation);
 	}
 
-	private void moveIterator(FSIterator windowIterator) {
+	private void moveIterator(FSIterator<Annotation> windowIterator) {
 		if (windowOrientation.equals(WindowFeature.ORIENTATION_LEFT)
 				|| windowOrientation.equals(WindowFeature.ORIENTATION_MIDDLE_REVERSE)) windowIterator.moveToPrevious();
 		else if (windowOrientation.equals(WindowFeature.ORIENTATION_RIGHT)
