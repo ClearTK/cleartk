@@ -54,16 +54,16 @@ public class ExampleModelTest extends ToolkitTestBase {
 				"What would you do if I sang in tune?  Would you listen then?", 
 				"What would you do if I sang in tune ?\n  Would you listen then ?");
 		
-		Token token = JCasUtil.get(jCas, Token.class, 0);
+		Token token = JCasUtil.selectByIndex(jCas, Token.class, 0);
 		assertNull(token.getPos());
-		token = JCasUtil.get(jCas, Token.class, 5);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 5);
 		assertNull(token.getPos());
 
 		posTagger.process(jCas);
-		token = JCasUtil.get(jCas, Token.class, 0);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 0);
 		assertNotNull(token.getPos());
 		assertEquals("IN", token.getPos());
-		token = JCasUtil.get(jCas, Token.class, 5);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 5);
 		assertNotNull(token.getPos());
 		assertEquals("NN", token.getPos());
 	}
