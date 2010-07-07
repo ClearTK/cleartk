@@ -31,13 +31,13 @@
 			<name>Apache m2-incubating-repository</name>
 			<url>http://people.apache.org/repo/m2-incubating-repository/</url>
 		</repository>
-		<repository>
+				<repository>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
-			<id>uimafit-googlecode</id>
-			<name>uimafit Google Code repository</name>
-			<url>http://uimafit.googlecode.com/svn/repo/</url>
+			<id>sonatype-staging</id>
+			<name>sonatype stagine repository</name>
+			<url>https://oss.sonatype.org/content/groups/staging/</url>
 		</repository>
 		<repository>
 			<snapshots>
@@ -110,7 +110,7 @@
 		<dependency>
 			<groupId>org.uimafit</groupId>
 			<artifactId>uimafit</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
+			<version>0.9.14</version>
 			<optional>false</optional>
 		</dependency>
 		<dependency>

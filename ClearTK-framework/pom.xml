@@ -35,9 +35,9 @@
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
-			<id>uimafit-googlecode</id>
-			<name>uimafit Google Code repository</name>
-			<url>http://uimafit.googlecode.com/svn/repo</url>
+			<id>sonatype-staging</id>
+			<name>sonatype stagine repository</name>
+			<url>https://oss.sonatype.org/content/groups/staging/</url>
 		</repository>
 		<repository>
 			<snapshots>
@@ -87,7 +87,7 @@
 		<dependency>
 			<groupId>org.uimafit</groupId>
 			<artifactId>uimafit</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
+			<version>0.9.14</version>
 			<type>jar</type>
 			<optional>false</optional>
 		</dependency>
