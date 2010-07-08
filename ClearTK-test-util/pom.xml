@@ -31,16 +31,7 @@
 			<name>Apache m2-incubating-repository</name>
 			<url>http://people.apache.org/repo/m2-incubating-repository/</url>
 		</repository>
-		<repository>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<id>sonatype-staging</id>
-			<name>sonatype stagine repository</name>
-			<url>https://oss.sonatype.org/content/groups/staging/</url>
-		</repository>
 	</repositories>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.uima</groupId>

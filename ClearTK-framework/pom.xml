@@ -35,14 +35,6 @@
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
-			<id>sonatype-staging</id>
-			<name>sonatype stagine repository</name>
-			<url>https://oss.sonatype.org/content/groups/staging/</url>
-		</repository>
-		<repository>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
 			<id>cleartk-googlecode</id>
 			<name>ClearTK Google Code repository</name>
 			<url>http://cleartk.googlecode.com/svn/repo</url>
