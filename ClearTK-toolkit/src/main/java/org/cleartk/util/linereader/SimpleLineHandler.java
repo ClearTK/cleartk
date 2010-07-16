@@ -54,7 +54,7 @@ public class SimpleLineHandler implements LineHandler {
 	private String delimiter;
 
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-		ConfigurationParameterInitializer.initializeConfigurationParameters(this, context);
+		ConfigurationParameterInitializer.initialize(this, context);
 	}
 
 	public void handleLine(JCas jCas, File rootFile, File file, String line)  throws IOException, CollectionException{

@@ -63,7 +63,7 @@ public class Conll2005Writer extends JCasAnnotator_ImplBase {
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
-		ConfigurationParameterInitializer.initializeConfigurationParameters(this, context);
+		ConfigurationParameterInitializer.initialize(this, context);
 		try {
 			this.output = new PrintWriter(outputFile);
 			this.first = true;

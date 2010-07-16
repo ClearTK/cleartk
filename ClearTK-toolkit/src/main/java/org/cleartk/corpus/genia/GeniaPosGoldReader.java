@@ -112,7 +112,7 @@ public class GeniaPosGoldReader extends CollectionReader_ImplBase {
 
 	@Override
 	public void initialize() throws ResourceInitializationException {
-		ConfigurationParameterInitializer.initializeConfigurationParameters(this, getUimaContext());
+		ConfigurationParameterInitializer.initialize(this, getUimaContext());
 
 		articleIds = new HashSet<String>();
 

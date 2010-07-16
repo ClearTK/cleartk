@@ -152,7 +152,7 @@ public class FilesCollectionReader extends CollectionReader_ImplBase {
 	@Override
 	public void initialize() throws ResourceInitializationException {
 		super.initialize();
-		ConfigurationParameterInitializer.initializeConfigurationParameters(this, getUimaContext());
+		ConfigurationParameterInitializer.initialize(this, getUimaContext());
 
 		// raise an exception if the root file does not exist
 		if (!this.rootFile.exists()) {

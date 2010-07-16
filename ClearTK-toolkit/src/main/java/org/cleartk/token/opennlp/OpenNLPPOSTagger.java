@@ -96,7 +96,7 @@ public class OpenNLPPOSTagger extends JCasAnnotator_ImplBase {
 
 	public void initialize(UimaContext uimaContext) throws ResourceInitializationException {
 		super.initialize(uimaContext);
-		ConfigurationParameterInitializer.initializeConfigurationParameters(this, uimaContext);
+		ConfigurationParameterInitializer.initialize(this, uimaContext);
 		try {
 			MaxentModel model = new SuffixSensitiveGISModelReader(new File(postagModelFile)).getModel();
 			POSDictionary posDictionary = new POSDictionary(postagDictionaryFile, caseSensitive);

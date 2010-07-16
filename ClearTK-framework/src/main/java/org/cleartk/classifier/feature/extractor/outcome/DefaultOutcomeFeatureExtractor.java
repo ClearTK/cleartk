@@ -81,7 +81,7 @@ public class DefaultOutcomeFeatureExtractor implements OutcomeFeatureExtractor {
 	private boolean use4gram = false;
 
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-		ConfigurationParameterInitializer.initializeConfigurationParameters(this, context);
+		ConfigurationParameterInitializer.initialize(this, context);
 
 		if (mostRecentOutcome < 1) {
 			throw new ResourceInitializationException(new IllegalArgumentException(String.format(

@@ -92,7 +92,7 @@ public class ViterbiDataWriterFactory<OUTCOME_TYPE> implements SequentialDataWri
 
 
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-		ConfigurationParameterInitializer.initializeConfigurationParameters(this, context);
+		ConfigurationParameterInitializer.initialize(this, context);
 
 		try {
 			OutcomeFeatureExtractor outcomeFeatureExtractors[];

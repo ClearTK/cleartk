@@ -74,7 +74,7 @@ public class Ace2005Writer extends JCasAnnotator_ImplBase {
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
-		ConfigurationParameterInitializer.initializeConfigurationParameters(this, context);
+		ConfigurationParameterInitializer.initialize(this, context);
 		
 		outputDirectory = new File(outputDirectoryName);
 		if (!outputDirectory.exists()) {

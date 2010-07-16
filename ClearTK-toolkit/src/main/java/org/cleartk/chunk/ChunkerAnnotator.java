@@ -97,7 +97,7 @@ public class ChunkerAnnotator extends CleartkSequentialAnnotator<String> {
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
-		ConfigurationParameterInitializer.initializeConfigurationParameters(this, context);
+		ConfigurationParameterInitializer.initialize(this, context);
 		labeledAnnotationClass = InitializableFactory.getClass(labeledAnnotationClassName, Annotation.class);
 		sequenceClass = InitializableFactory.getClass(sequenceClassName, Annotation.class);
 		chunkLabeler = InitializableFactory.create(context, chunkLabelerClassName, ChunkLabeler.class);

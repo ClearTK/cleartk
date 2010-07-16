@@ -58,7 +58,7 @@ public abstract class MaxentDataWriterFactory_ImplBase<OUTCOME_TYPE> extends Jar
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
-		ConfigurationParameterInitializer.initializeConfigurationParameters(this, context);
+		ConfigurationParameterInitializer.initialize(this, context);
 	}
 	
 	

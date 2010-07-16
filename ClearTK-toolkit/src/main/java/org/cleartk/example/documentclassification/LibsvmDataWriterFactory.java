@@ -71,7 +71,7 @@ public class LibsvmDataWriterFactory implements org.cleartk.classifier.DataWrite
 	protected int cutoff = 5;
 
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-		ConfigurationParameterInitializer.initializeConfigurationParameters(this, context);
+		ConfigurationParameterInitializer.initialize(this, context);
 	}
 
 	

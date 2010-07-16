@@ -88,7 +88,7 @@ public class TreebankGoldAnnotator extends JCasAnnotator_ImplBase {
 
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-		ConfigurationParameterInitializer.initializeConfigurationParameters(this, context);
+		ConfigurationParameterInitializer.initialize(this, context);
 		super.initialize(context);
 	}
 

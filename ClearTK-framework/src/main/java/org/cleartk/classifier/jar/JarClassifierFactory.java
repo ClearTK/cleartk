@@ -54,7 +54,7 @@ public class JarClassifierFactory<OUTCOME_TYPE> implements ClassifierFactory<OUT
 	private String classifierJarPath;
 
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-		ConfigurationParameterInitializer.initializeConfigurationParameters(this, context);
+		ConfigurationParameterInitializer.initialize(this, context);
 	}
 
 	public Classifier<OUTCOME_TYPE> createClassifier() throws IOException, CleartkException {

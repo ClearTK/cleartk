@@ -88,7 +88,7 @@ public abstract class ChunkLabeler_ImplBase implements ChunkLabeler, Initializab
 	protected Map<Annotation, String> annotationLabels;
 
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-		ConfigurationParameterInitializer.initializeConfigurationParameters(this, context);
+		ConfigurationParameterInitializer.initialize(this, context);
 		labeledAnnotationClass = InitializableFactory.getClass(labeledAnnotationClassName, Annotation.class);
 		chunkAnnotationClass = InitializableFactory.getClass(chunkAnnotationClassName, Annotation.class);
 		annotationLabels = new HashMap<Annotation, String>();

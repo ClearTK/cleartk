@@ -111,7 +111,7 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
 	}
 	
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-		ConfigurationParameterInitializer.initializeConfigurationParameters(this, context);
+		ConfigurationParameterInitializer.initialize(this, context);
 		if (stackSize < 1) {
 			throw new ResourceInitializationException(new IllegalArgumentException(String.format(
 					"the parameter '%1$s' must be greater than 0.", PARAM_STACK_SIZE)));

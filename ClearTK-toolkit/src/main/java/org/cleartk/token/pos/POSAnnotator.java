@@ -79,7 +79,7 @@ extends CleartkSequentialAnnotator<String> {
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
 		
-		ConfigurationParameterInitializer.initializeConfigurationParameters(this, context);
+		ConfigurationParameterInitializer.initialize(this, context);
 		
 		// extract the token and sentence classes from the type parameters 
 		this.tokenClass = ReflectionUtil.<Class<? extends TOP>>uncheckedCast(

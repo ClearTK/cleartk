@@ -113,7 +113,7 @@ public class PennTreebankReader extends CollectionReader_ImplBase {
 
 	@Override
 	public void initialize() throws ResourceInitializationException {
-		ConfigurationParameterInitializer.initializeConfigurationParameters(this, getUimaContext());
+		ConfigurationParameterInitializer.initialize(this, getUimaContext());
 		this.sections = new ListSpecification(sectionsSpecifier);
 
 		this.directory = new File(corpusDirectoryName);

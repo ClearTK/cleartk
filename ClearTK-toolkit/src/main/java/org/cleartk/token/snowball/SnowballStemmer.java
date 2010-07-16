@@ -73,7 +73,7 @@ public abstract class SnowballStemmer<TOKEN_TYPE extends Annotation> extends JCa
 
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-		ConfigurationParameterInitializer.initializeConfigurationParameters(this, context);
+		ConfigurationParameterInitializer.initialize(this, context);
 		String className = String.format("net.sf.snowball.ext.%sStemmer", stemmerName);
 		this.stemmer = InitializableFactory.create(null, className, SnowballProgram.class);
 		

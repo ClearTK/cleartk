@@ -95,7 +95,7 @@ return AnalysisEngineFactory.createPrimitiveDescription(
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
-		ConfigurationParameterInitializer.initializeConfigurationParameters(this, context);
+		ConfigurationParameterInitializer.initialize(this, context);
 	}
 
 	@Override

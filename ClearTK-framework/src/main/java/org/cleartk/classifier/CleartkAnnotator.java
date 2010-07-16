@@ -59,7 +59,7 @@ public abstract class CleartkAnnotator<OUTCOME_TYPE> extends JCasAnnotator_ImplB
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
 
-		ConfigurationParameterInitializer.initializeConfigurationParameters(this, context);
+		ConfigurationParameterInitializer.initialize(this, context);
 
 		if (dataWriterFactoryClassName != null) {
 			// create the factory and instantiate the data writer

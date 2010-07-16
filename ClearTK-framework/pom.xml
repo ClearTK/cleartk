@@ -79,7 +79,7 @@
 		<dependency>
 			<groupId>org.uimafit</groupId>
 			<artifactId>uimafit</artifactId>
-			<version>0.9.14</version>
+			<version>1.0.0</version>
 			<type>jar</type>
 			<optional>false</optional>
 		</dependency>
@@ -145,9 +145,7 @@
 					<classpathScope>test</classpathScope>
 					<mainClass>org.uimafit.util.JCasGenPomFriendly</mainClass>
 					<arguments>
-						<argument>-jcasgeninput</argument>
-						<argument>${basedir}/src/test/resources/org/cleartk/TestTypeSystem.xml</argument>
-						<argument>-jcasgenoutput</argument>
+						<argument>file:${basedir}/src/test/resources/org/cleartk/TestTypeSystem.xml</argument>
 						<argument>${basedir}/src/test/java</argument>
 					</arguments>
 				</configuration>

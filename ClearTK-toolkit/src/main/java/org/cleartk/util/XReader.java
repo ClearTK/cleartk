@@ -62,7 +62,7 @@ public class XReader extends FilesCollectionReader {
 	@Override
 	public void initialize() throws ResourceInitializationException {
 		super.initialize();
-		ConfigurationParameterInitializer.initializeConfigurationParameters(this, getUimaContext());
+		ConfigurationParameterInitializer.initialize(this, getUimaContext());
 
 		if (!xmlScheme.equals(XMI) && !xmlScheme.equals(XCAS)) 
 			throw new ResourceInitializationException(new IllegalArgumentException(String.format(

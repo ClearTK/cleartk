@@ -255,7 +255,7 @@ public class OpenNLPTreebankParser extends JCasAnnotator_ImplBase {
 	public void initialize(UimaContext ctx) throws ResourceInitializationException {
 		super.initialize(ctx);
 
-		ConfigurationParameterInitializer.initializeConfigurationParameters(this, ctx);
+		ConfigurationParameterInitializer.initialize(this, ctx);
 		
 		try {
 			MaxentModel buildModel = new SuffixSensitiveGISModelReader(new File(buildModelFile)).getModel();

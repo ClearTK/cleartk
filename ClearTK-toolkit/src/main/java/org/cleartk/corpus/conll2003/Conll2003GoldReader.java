@@ -95,7 +95,7 @@ public class Conll2003GoldReader extends CollectionReader_ImplBase
 	
 	public void initialize() throws ResourceInitializationException
 	{
-		ConfigurationParameterInitializer.initializeConfigurationParameters(this, getUimaContext());
+		ConfigurationParameterInitializer.initialize(this, getUimaContext());
 		
 		try
 		{

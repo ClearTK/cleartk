@@ -83,7 +83,7 @@ public class TreebankAligningAnnotator extends JCasAnnotator_ImplBase {
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
-		ConfigurationParameterInitializer.initializeConfigurationParameters(this, context);
+		ConfigurationParameterInitializer.initialize(this, context);
 		this.treebankDirectory = new File(this.treebankDirectoryName);
 	}
 

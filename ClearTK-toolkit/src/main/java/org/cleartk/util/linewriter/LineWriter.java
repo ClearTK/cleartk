@@ -215,7 +215,7 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 		try {
 			super.initialize(context);
 
-			ConfigurationParameterInitializer.initializeConfigurationParameters(this, context);
+			ConfigurationParameterInitializer.initialize(this, context);
 			
 			if ((outputDirectoryName == null && outputFileName == null) ||
 				(outputDirectoryName != null && outputFileName != null)) {

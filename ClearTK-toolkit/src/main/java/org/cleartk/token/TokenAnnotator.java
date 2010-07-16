@@ -106,7 +106,7 @@ public class TokenAnnotator extends JCasAnnotator_ImplBase {
 	public void initialize(UimaContext uimaContext) throws ResourceInitializationException {
 		try {
 			super.initialize(uimaContext);
-			ConfigurationParameterInitializer.initializeConfigurationParameters(this, uimaContext);
+			ConfigurationParameterInitializer.initialize(this, uimaContext);
 			tokenizer = 	InitializableFactory.create(uimaContext, tokenizerName, Tokenizer.class);
 			tokenClass = InitializableFactory.getClass(tokenTypeName, Annotation.class);
 			tokenConstructor = tokenClass.getConstructor(new Class[] { JCas.class, Integer.TYPE, Integer.TYPE });

@@ -95,7 +95,7 @@ public class Ace2005GoldReader extends CollectionReader_ImplBase
 	Pattern tagPattern;
 	
 	public void initialize() throws ResourceInitializationException	{
-		ConfigurationParameterInitializer.initializeConfigurationParameters(this, getUimaContext());
+		ConfigurationParameterInitializer.initialize(this, getUimaContext());
 		
 		if (!new File(aceDirectoryName).exists()) {
 			throw new ResourceInitializationException(new IOException(String.format(

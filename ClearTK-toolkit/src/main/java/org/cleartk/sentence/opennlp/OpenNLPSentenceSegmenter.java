@@ -99,7 +99,7 @@ public class OpenNLPSentenceSegmenter extends JCasAnnotator_ImplBase {
 	public void initialize(UimaContext uimaContext) throws ResourceInitializationException
 	{
 		super.initialize(uimaContext);
-		ConfigurationParameterInitializer.initializeConfigurationParameters(this, uimaContext);
+		ConfigurationParameterInitializer.initialize(this, uimaContext);
 		
 		try {
 			sentenceClass = InitializableFactory.getClass(sentenceTypeName, Annotation.class);

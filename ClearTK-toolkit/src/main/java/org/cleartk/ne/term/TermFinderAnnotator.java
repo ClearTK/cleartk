@@ -125,7 +125,7 @@ public class TermFinderAnnotator extends JCasAnnotator_ImplBase {
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		try {
-			ConfigurationParameterInitializer.initializeConfigurationParameters(this, context);
+			ConfigurationParameterInitializer.initialize(this, context);
 			
 			// load the term lists
 			BufferedReader input = new BufferedReader(new FileReader(termListFileNamesFileName));

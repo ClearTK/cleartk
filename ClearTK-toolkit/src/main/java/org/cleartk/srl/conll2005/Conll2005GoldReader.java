@@ -76,7 +76,7 @@ public class Conll2005GoldReader extends CollectionReader_ImplBase {
 
 	@Override
 	public void initialize() throws ResourceInitializationException {
-		ConfigurationParameterInitializer.initializeConfigurationParameters(this, this.getUimaContext());
+		ConfigurationParameterInitializer.initialize(this, this.getUimaContext());
 		try {
 			this.reader = this.getBufferedReader();
 			String line;

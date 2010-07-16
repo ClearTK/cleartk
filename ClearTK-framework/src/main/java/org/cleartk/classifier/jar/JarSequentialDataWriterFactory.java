@@ -56,7 +56,7 @@ public abstract class JarSequentialDataWriterFactory<FEATURES_OUT_TYPE, OUTCOME_
 	private boolean loadEncodersFromFileSystem = false;
 
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-		ConfigurationParameterInitializer.initializeConfigurationParameters(this, context);
+		ConfigurationParameterInitializer.initialize(this, context);
 		if (loadEncodersFromFileSystem) {
 			try {
 				File encoderFile = new File(outputDirectory, FeaturesEncoder_ImplBase.ENCODERS_FILE_NAME);
