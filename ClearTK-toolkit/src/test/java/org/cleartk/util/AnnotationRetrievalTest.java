@@ -642,6 +642,7 @@ public class AnnotationRetrievalTest extends ToolkitTestBase{
 	public void testIssue98() throws UIMAException {
 		testIssue98(jCas);
 		
+		jCas.reset();
 		testIssue98(jCas);
 		
 		jCas = JCasFactory.createJCas(Chunk.class, Sentence.class, Token.class, TopTreebankNode.class,
@@ -662,7 +663,7 @@ public class AnnotationRetrievalTest extends ToolkitTestBase{
 		assertNotNull(type);
 		testIssue98(jCas);
 		
-		//doesn't work 
+		//works now 
 		jCas = JCasFactory.createJCas(Token.class);
 		testIssue98(jCas);
 		
