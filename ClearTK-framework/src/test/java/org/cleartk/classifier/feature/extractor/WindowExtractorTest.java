@@ -37,10 +37,12 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.WindowFeature;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
+import org.cleartk.type.test.Header;
 import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Test;
+import org.uimafit.util.JCasUtil;
 
 
 /**
@@ -401,6 +403,59 @@ public class WindowExtractorTest extends FrameworkTestBase {
 		assertEquals("Window_L1OOB1", features.get(1).getName());
 		assertEquals(2, ((WindowFeature) features.get(2)).getOutOfBoundsDistance());
 		assertEquals("Window_L2OOB2", ((WindowFeature) features.get(2)).getName());
+	}
+
+	/**
+	 * The assertions in this test demonstrate that WindowExtractor works consistently. They are provided to contrast with what's in WindowNGramExtractorTest
+	 * which demonstrates that the WindowNGramExtractor does not work consistently.
+	 * @throws UIMAException
+	 * @throws CleartkException
+	 */
+	@Test
+	public void testIssue158() throws UIMAException, CleartkException {
+		tokenBuilder.buildTokens(jCas, "1 2 3 4 5 6 7 8 9 10");
+		
+		Token token5 = JCasUtil.selectByIndex(jCas, Token.class, 4);
+		assertEquals("5", token5.getCoveredText());
+		Token token6 = JCasUtil.selectByIndex(jCas, Token.class, 5);
+		assertEquals("6", token6.getCoveredText());
+		
+		Header header = new Header(jCas, 8, 11);
+		header.addToIndexes();
+		assertEquals("5 6", header.getCoveredText());
+		
+		SpannedTextExtractor wordExtractor = new SpannedTextExtractor();
+		
+		WindowExtractor windowExtractor = new WindowExtractor(Token.class, wordExtractor, WindowFeature.ORIENTATION_RIGHT, 0, 2);
+		List<Feature> features = windowExtractor.extract(jCas, header, Sentence.class);
+		assertEquals(2, features.size());
+		assertEquals("Window_R0", features.get(0).getName());
+		assertEquals("7", features.get(0).getValue().toString());
+		assertEquals("Window_R1", features.get(1).getName());
+		assertEquals("8", features.get(1).getValue().toString());
+		
+		features = windowExtractor.extract(jCas, token6, Sentence.class);
+		assertEquals(2, features.size());
+		assertEquals("Window_R0", features.get(0).getName());
+		assertEquals("7", features.get(0).getValue().toString());
+		assertEquals("Window_R1", features.get(1).getName());
+		assertEquals("8", features.get(1).getValue().toString());
+		
+		windowExtractor = new WindowExtractor(Token.class, wordExtractor, WindowFeature.ORIENTATION_LEFT, 0, 2);
+		features = windowExtractor.extract(jCas, header, Sentence.class);
+		
+		assertEquals("Window_L0", features.get(0).getName());
+		assertEquals("4", features.get(0).getValue().toString());
+		assertEquals("Window_L1", features.get(1).getName());
+		assertEquals("3", features.get(1).getValue().toString());
+
+		features = windowExtractor.extract(jCas, token5, Sentence.class);
+
+		assertEquals("Window_L0", features.get(0).getName());
+		assertEquals("4", features.get(0).getValue().toString());
+		assertEquals("Window_L1", features.get(1).getName());
+		assertEquals("3", features.get(1).getValue().toString());
+		
 	}
 
 }

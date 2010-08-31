@@ -33,10 +33,12 @@ import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.WindowNGramFeature;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
+import org.cleartk.type.test.Header;
 import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Test;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -293,6 +295,42 @@ public class WindowNGramExtractorTest extends FrameworkTestBase {
 		feature = extractor.extract(jCas, token, Sentence.class);
 		assertEquals(feature.getValue().toString(),
 				"OOB8 OOB7 OOB6 OOB5 OOB4 OOB3");
+
+	}
+	
+	@Test
+	public void testIssue158() throws UIMAException, CleartkException {
+		tokenBuilder.buildTokens(jCas, "1 2 3 4 5 6 7 8 9 10");
+		
+		Token token5 = JCasUtil.selectByIndex(jCas, Token.class, 4);
+		assertEquals("5", token5.getCoveredText());
+		Token token6 = JCasUtil.selectByIndex(jCas, Token.class, 5);
+		assertEquals("6", token6.getCoveredText());
+
+		
+		Header header = new Header(jCas, 8, 11);
+		header.addToIndexes();
+		assertEquals("5 6", header.getCoveredText());
+		
+		SpannedTextExtractor wordExtractor = new SpannedTextExtractor();
+		
+		WindowNGramExtractor ngramExtractor = new WindowNGramExtractor(Token.class, wordExtractor,
+				WindowNGramFeature.ORIENTATION_LEFT, WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT, "_", 0, 2);
+
+		//issue 158 comes down to this - the next two assertions should have the same expected value.  
+		Feature feature = ngramExtractor.extract(jCas, header, Sentence.class);
+		assertEquals("3_4", feature.getValue().toString());
+		feature = ngramExtractor.extract(jCas, token5, Sentence.class);
+		assertEquals("4_5", feature.getValue().toString());
+
+		ngramExtractor = new WindowNGramExtractor(Token.class, wordExtractor,
+				WindowNGramFeature.ORIENTATION_RIGHT, WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT, "_", 0, 2);
+		
+		//again the next two assertions should have the same expected value.
+		feature = ngramExtractor.extract(jCas, header, Sentence.class);
+		assertEquals("7_8", feature.getValue().toString());
+		feature = ngramExtractor.extract(jCas, token6, Sentence.class);
+		assertEquals("6_7", feature.getValue().toString());
 
 	}
 }
