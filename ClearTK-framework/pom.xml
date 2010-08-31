@@ -86,7 +86,7 @@
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-test-util</artifactId>
-			<version>0.5-SNAPSHOT</version>
+			<version>0.5</version>
 			<type>jar</type>
 			<optional>false</optional>
 		</dependency>
