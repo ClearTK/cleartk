@@ -28,8 +28,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.encoder.features.FeatureEncoder;
-import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.encoder.features.normalizer.NOPNormalizer;
 import org.cleartk.classifier.encoder.features.normalizer.NameNumberNormalizer;
 import org.cleartk.classifier.feature.FeatureCollection;
@@ -70,8 +68,8 @@ public class FeatureCollectionEncoder implements FeatureEncoder<NameNumber> {
 			return Collections.emptyList();
 		
 		for( Feature f : fc.getFeatures() ) {
-			f.setName(Feature.createName(feature.getName(), f.getName()));
-			fves.addAll(subEncoder.encode(f));
+			Feature f1 = new Feature(Feature.createName(feature.getName(), f.getName()), f.getValue());
+			fves.addAll(subEncoder.encode(f1));
 		}
 		
 		normalizer.normalize(fves);
