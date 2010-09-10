@@ -29,9 +29,9 @@ import static org.junit.Assert.assertEquals;
 import java.util.List;
 
 import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.annotationpair.DistanceExtractor;
+import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Test;
@@ -47,7 +47,7 @@ import org.junit.Test;
  * @author Philip Ogren
  */
 
-public class DistanceExtractorTest extends FrameworkTestBase {
+public class DistanceExtractorTest extends DefaultTestBase {
 
 	@Test
 	public void test1() throws Exception {

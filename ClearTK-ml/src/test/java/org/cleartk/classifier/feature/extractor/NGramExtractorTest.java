@@ -30,11 +30,11 @@ import java.util.List;
 import org.apache.uima.UIMAException;
 import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.cleartk.CleartkException;
-import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.simple.NGramExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
+import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Assert;
@@ -48,7 +48,7 @@ import org.junit.Test;
  * @author Steven Bethard
  */
 
-public class NGramExtractorTest extends FrameworkTestBase {
+public class NGramExtractorTest extends DefaultTestBase {
 
 	@Test
 	public void test() throws UIMAException, CleartkException {

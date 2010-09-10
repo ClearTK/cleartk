@@ -36,12 +36,12 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.cleartk.CleartkException;
-import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.FeatureCollection;
 import org.cleartk.classifier.feature.extractor.simple.BagExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
+import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Assert;
@@ -58,7 +58,7 @@ import org.uimafit.factory.AnalysisEngineFactory;
  * 
  * @author Steven Bethard, Philipp Wetzler
  */
-public class BagExtractorTest extends FrameworkTestBase {
+public class BagExtractorTest extends DefaultTestBase {
 
 	@Before
 	public void localSetUp() throws Exception {

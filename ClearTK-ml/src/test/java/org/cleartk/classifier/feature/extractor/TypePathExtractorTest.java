@@ -40,10 +40,10 @@ import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.cas.StringArray;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.CleartkException;
-import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.TypePathFeature;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
+import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.DependencyRelation;
 import org.cleartk.type.test.Header;
 import org.cleartk.type.test.Lemma;
@@ -60,7 +60,7 @@ import org.uimafit.factory.AnalysisEngineFactory;
  * 
  * @author Philip Ogren
  */
-public class TypePathExtractorTest extends FrameworkTestBase {
+public class TypePathExtractorTest extends DefaultTestBase {
 
 	public static class Annotator extends JCasAnnotator_ImplBase {
 		public void process(JCas jCas) throws AnalysisEngineProcessException {

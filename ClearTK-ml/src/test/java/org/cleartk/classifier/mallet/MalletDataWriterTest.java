@@ -39,7 +39,6 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.pear.util.FileUtil;
 import org.cleartk.CleartkException;
-import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
@@ -48,6 +47,7 @@ import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 import org.cleartk.classifier.jar.JarDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.classifier.mallet.factory.ClassifierTrainerFactory;
+import org.cleartk.test.DefaultTestBase;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.testing.util.HideOutput;
@@ -59,7 +59,7 @@ import org.uimafit.testing.util.HideOutput;
  * 
  */
 
-public class MalletDataWriterTest extends FrameworkTestBase {
+public class MalletDataWriterTest extends DefaultTestBase {
 
 	public static class Test1Annotator extends CleartkAnnotator<String> {
 

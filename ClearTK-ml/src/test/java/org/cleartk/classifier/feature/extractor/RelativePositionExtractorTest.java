@@ -27,9 +27,9 @@ import java.util.List;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.annotationpair.RelativePositionExtractor;
+import org.cleartk.test.DefaultTestBase;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -41,7 +41,7 @@ import org.junit.Test;
  * @author Steven Bethard
  */
 
-public class RelativePositionExtractorTest extends FrameworkTestBase{
+public class RelativePositionExtractorTest extends DefaultTestBase{
 	
 	@Test
 	public void testEquals() throws UIMAException {

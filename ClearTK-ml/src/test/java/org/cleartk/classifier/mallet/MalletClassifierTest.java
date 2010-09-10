@@ -36,13 +36,13 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.CleartkException;
-import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.classifier.jar.JarDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
+import org.cleartk.test.DefaultTestBase;
 import org.junit.Before;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -57,7 +57,7 @@ import cc.mallet.types.FeatureVector;
 * @author Philip Ogren
 */
 
-public class MalletClassifierTest extends FrameworkTestBase{
+public class MalletClassifierTest extends DefaultTestBase{
 	private Random random;
 	
 	@Before

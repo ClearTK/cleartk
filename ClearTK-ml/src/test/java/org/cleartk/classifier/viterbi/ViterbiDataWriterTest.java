@@ -39,7 +39,6 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.pear.util.FileUtil;
 import org.apache.uima.util.FileUtils;
 import org.cleartk.CleartkException;
-import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.CleartkSequentialAnnotator;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
@@ -47,6 +46,7 @@ import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.classifier.test.DefaultStringTestDataWriterFactory;
+import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
 import org.cleartk.util.AnnotationRetrieval;
@@ -63,7 +63,7 @@ import org.uimafit.testing.util.HideOutput;
  * @author Philip Ogren
  */
 
-public class ViterbiDataWriterTest extends FrameworkTestBase {
+public class ViterbiDataWriterTest extends DefaultTestBase {
 	
 	public static class TestAnnotator extends CleartkSequentialAnnotator<String> {
 		

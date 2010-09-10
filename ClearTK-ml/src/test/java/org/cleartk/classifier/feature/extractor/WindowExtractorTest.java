@@ -32,11 +32,11 @@ import java.util.List;
 import org.apache.uima.UIMAException;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.CleartkException;
-import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.WindowFeature;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
+import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Header;
 import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
@@ -54,7 +54,7 @@ import org.uimafit.util.JCasUtil;
  * @author Philip Ogren
  * 
  */
-public class WindowExtractorTest extends FrameworkTestBase {
+public class WindowExtractorTest extends DefaultTestBase {
 
 	@Test
 	public void testGetStartAnnotation() throws IOException, UIMAException {

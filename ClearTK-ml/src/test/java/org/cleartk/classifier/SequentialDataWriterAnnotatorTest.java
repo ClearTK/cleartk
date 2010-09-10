@@ -41,12 +41,12 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
-import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.jar.JarSequentialDataWriterFactory;
 import org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory;
 import org.cleartk.classifier.mallet.MalletCRFDataWriter;
+import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
 import org.cleartk.util.AnnotationRetrieval;
@@ -60,7 +60,7 @@ import org.uimafit.factory.AnalysisEngineFactory;
 
 */
 
-public class SequentialDataWriterAnnotatorTest extends FrameworkTestBase {
+public class SequentialDataWriterAnnotatorTest extends DefaultTestBase {
 	
 	public static class TestAnnotator extends CleartkSequentialAnnotator<String> {
 		

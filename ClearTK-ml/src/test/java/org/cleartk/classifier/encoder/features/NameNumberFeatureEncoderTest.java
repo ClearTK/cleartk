@@ -35,10 +35,10 @@ import java.util.List;
 import org.apache.uima.UIMAException;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
-import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.TypePathFeature;
 import org.cleartk.classifier.feature.WindowFeature;
+import org.cleartk.test.DefaultTestBase;
 import org.junit.Test;
 
 
@@ -48,7 +48,7 @@ import org.junit.Test;
 
 */
 
-public class NameNumberFeatureEncoderTest extends FrameworkTestBase {
+public class NameNumberFeatureEncoderTest extends DefaultTestBase {
 	
 	@Test
 	public void testEncodeCompress() throws CleartkException, ResourceInitializationException, IOException {

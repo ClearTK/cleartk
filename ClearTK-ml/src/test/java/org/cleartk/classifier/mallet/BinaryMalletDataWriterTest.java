@@ -39,7 +39,6 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.pear.util.FileUtil;
 import org.cleartk.CleartkException;
-import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
@@ -50,6 +49,7 @@ import org.cleartk.classifier.jar.Train;
 import org.cleartk.classifier.mallet.factory.MCMaxEntTrainerFactory;
 import org.cleartk.classifier.mallet.factory.MaxEntTrainerFactory;
 import org.cleartk.classifier.mallet.factory.NaiveBayesTrainerFactory;
+import org.cleartk.test.DefaultTestBase;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.testing.util.HideOutput;
@@ -62,7 +62,7 @@ import org.uimafit.testing.util.HideOutput;
  * 
  */
 
-public class BinaryMalletDataWriterTest extends FrameworkTestBase {
+public class BinaryMalletDataWriterTest extends DefaultTestBase {
 
 	public static class Test1Annotator extends CleartkAnnotator<Boolean> {
 

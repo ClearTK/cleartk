@@ -34,7 +34,6 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.UimaContext;
 import org.apache.uima.util.FileUtils;
 import org.cleartk.CleartkException;
-import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.DataWriter;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
 import org.cleartk.classifier.encoder.features.NameNumber;
@@ -42,6 +41,7 @@ import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
 import org.cleartk.classifier.mallet.DefaultMalletDataWriterFactory;
 import org.cleartk.classifier.test.StringTestDataWriter;
+import org.cleartk.test.DefaultTestBase;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.UimaContextFactory;
@@ -54,7 +54,7 @@ import org.uimafit.factory.UimaContextFactory;
  * 
  * @author Steven Bethard
  */
-public class JarDataWriterTest extends FrameworkTestBase {
+public class JarDataWriterTest extends DefaultTestBase {
 
 	@Test
 	public void testManifest() throws UIMAException, IOException, CleartkException {

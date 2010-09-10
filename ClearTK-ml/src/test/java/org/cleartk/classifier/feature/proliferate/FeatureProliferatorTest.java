@@ -28,10 +28,10 @@ import java.util.List;
 
 import org.apache.uima.UIMAException;
 import org.cleartk.CleartkException;
-import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
+import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Token;
 import org.junit.Assert;
 import org.junit.Test;
@@ -44,7 +44,7 @@ import org.junit.Test;
  * @author Steven Bethard
  * @author Philip Ogren
  */
-public class FeatureProliferatorTest extends FrameworkTestBase {
+public class FeatureProliferatorTest extends DefaultTestBase {
 
 	private void testOne(FeatureProliferator proliferator, String origName, String origValue, String newName,
 			String newValue) {

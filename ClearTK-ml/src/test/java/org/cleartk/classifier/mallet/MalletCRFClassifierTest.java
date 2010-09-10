@@ -39,7 +39,6 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
-import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.CleartkSequentialAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
@@ -47,6 +46,7 @@ import org.cleartk.classifier.SequentialClassifier;
 import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.classifier.jar.JarSequentialDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
+import org.cleartk.test.DefaultTestBase;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.testing.util.HideOutput;
@@ -67,7 +67,7 @@ import org.uimafit.testing.util.HideOutput;
  * @author Philip Ogren
  */
 
-public class MalletCRFClassifierTest extends FrameworkTestBase{
+public class MalletCRFClassifierTest extends DefaultTestBase{
 
 	public static class TestAnnotator extends CleartkSequentialAnnotator<String> {
 		

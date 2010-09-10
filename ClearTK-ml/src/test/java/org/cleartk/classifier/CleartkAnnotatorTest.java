@@ -38,11 +38,11 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
-import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.classifier.jar.JarDataWriterFactory;
 import org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory;
 import org.cleartk.classifier.test.DefaultStringTestDataWriterFactory;
+import org.cleartk.test.DefaultTestBase;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -57,7 +57,7 @@ import org.uimafit.factory.UimaContextFactory;
  * 
  */
 
-public class CleartkAnnotatorTest extends FrameworkTestBase {
+public class CleartkAnnotatorTest extends DefaultTestBase {
 
 	@Test
 	public void testIsTraining() {

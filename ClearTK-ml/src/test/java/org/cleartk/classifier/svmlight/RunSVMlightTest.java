@@ -37,7 +37,6 @@ import java.util.jar.JarFile;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.CleartkException;
-import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
@@ -46,6 +45,7 @@ import org.cleartk.classifier.jar.Train;
 import org.cleartk.classifier.svmlight.model.SVMlightModel;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 import org.cleartk.classifier.util.featurevector.SparseFeatureVector;
+import org.cleartk.test.DefaultTestBase;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.UimaContextFactory;
@@ -59,7 +59,7 @@ import org.uimafit.testing.util.HideOutput;
  * 
  * @author Steven Bethard, Philipp Wetzler
 */
-public class RunSVMlightTest extends FrameworkTestBase {
+public class RunSVMlightTest extends DefaultTestBase {
 
 	protected String dataDirectory = "src/test/resources/data/svmlight";
 	

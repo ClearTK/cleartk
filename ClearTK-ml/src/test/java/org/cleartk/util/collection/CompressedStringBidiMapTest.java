@@ -33,7 +33,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 
-import org.cleartk.FrameworkTestBase;
+import org.cleartk.test.DefaultTestBase;
 import org.junit.Test;
 
 /**
@@ -42,7 +42,7 @@ import org.junit.Test;
 
 */
 
-public class CompressedStringBidiMapTest extends FrameworkTestBase {
+public class CompressedStringBidiMapTest extends DefaultTestBase {
 
 	@Test
 	public void testSerialization() throws FileNotFoundException, IOException {

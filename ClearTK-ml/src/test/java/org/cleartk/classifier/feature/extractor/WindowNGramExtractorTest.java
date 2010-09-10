@@ -29,10 +29,10 @@ import java.io.IOException;
 
 import org.apache.uima.UIMAException;
 import org.cleartk.CleartkException;
-import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.WindowNGramFeature;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
+import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Header;
 import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
@@ -46,7 +46,7 @@ import org.uimafit.util.JCasUtil;
  * All rights reserved.
  */
 
-public class WindowNGramExtractorTest extends FrameworkTestBase {
+public class WindowNGramExtractorTest extends DefaultTestBase {
 
 	@Test
 	public void testLeftGrams() throws IOException, UIMAException, CleartkException {

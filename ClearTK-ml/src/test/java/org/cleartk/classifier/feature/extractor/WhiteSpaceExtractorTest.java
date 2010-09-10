@@ -33,9 +33,9 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.FSIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.simple.WhiteSpaceExtractor;
+import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Token;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -47,7 +47,7 @@ import org.uimafit.factory.AnalysisEngineFactory;
 
 */
 
-public class WhiteSpaceExtractorTest extends FrameworkTestBase{
+public class WhiteSpaceExtractorTest extends DefaultTestBase{
 
 	public static class Annotator extends JCasAnnotator_ImplBase {
 

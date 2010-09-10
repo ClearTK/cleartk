@@ -37,8 +37,8 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
-import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.jar.JarClassifierFactory;
+import org.cleartk.test.DefaultTestBase;
 import org.junit.Test;
 import org.uimafit.factory.UimaContextFactory;
 
@@ -51,7 +51,7 @@ import org.uimafit.factory.UimaContextFactory;
  * 
  */
 
-public class CleartkSequentialAnnotatorTest  extends FrameworkTestBase{
+public class CleartkSequentialAnnotatorTest  extends DefaultTestBase{
 
 	@Test
 	public void testIsTraining() {

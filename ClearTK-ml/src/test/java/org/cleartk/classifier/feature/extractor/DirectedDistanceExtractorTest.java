@@ -26,9 +26,9 @@ package org.cleartk.classifier.feature.extractor;
 import static org.junit.Assert.assertEquals;
 
 import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.annotationpair.DirectedDistanceExtractor;
+import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Test;
@@ -42,7 +42,7 @@ import org.junit.Test;
  * @author Philip Ogren
  */
 
-public class DirectedDistanceExtractorTest extends FrameworkTestBase {
+public class DirectedDistanceExtractorTest extends DefaultTestBase {
 
 	@Test
 	public void test1() throws Exception {
