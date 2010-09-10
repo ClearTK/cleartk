@@ -42,7 +42,7 @@ import org.cleartk.FrameworkTestBase;
 import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.classifier.jar.JarDataWriterFactory;
 import org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory;
-import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
+import org.cleartk.classifier.test.DefaultStringTestDataWriterFactory;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -145,11 +145,11 @@ public class CleartkAnnotatorTest extends FrameworkTestBase {
 				StringTestAnnotator.class,
 				typeSystemDescription,
 				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
-				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMaxentDataWriterFactory.class.getName());
+				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultStringTestDataWriterFactory.class.getName());
 		
 		Object dataWriter = engine.getConfigParameterValue(
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME);
-		Assert.assertEquals(DefaultMaxentDataWriterFactory.class.getName(), dataWriter);
+		Assert.assertEquals(DefaultStringTestDataWriterFactory.class.getName(), dataWriter);
 		
 		Object outputDir = engine.getConfigParameterValue(
 				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY);

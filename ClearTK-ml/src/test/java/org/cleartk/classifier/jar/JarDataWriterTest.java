@@ -41,7 +41,7 @@ import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
 import org.cleartk.classifier.mallet.DefaultMalletDataWriterFactory;
-import org.cleartk.classifier.opennlp.MaxentDataWriter;
+import org.cleartk.classifier.test.StringTestDataWriter;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.UimaContextFactory;
@@ -59,9 +59,9 @@ public class JarDataWriterTest extends FrameworkTestBase {
 	@Test
 	public void testManifest() throws UIMAException, IOException, CleartkException {
 		String expectedManifest = ("Manifest-Version: 1.0\n"
-				+ "classifierBuilderClass: org.cleartk.classifier.opennlp.MaxentClassifie\n" + " rBuilder");
+				+ "classifierBuilderClass: org.cleartk.classifier.test.StringTestClassifi\n" + " erBuilder");
 
-		JarDataWriter<String, String, List<NameNumber>> dataWriter = new MaxentDataWriter(outputDirectory);
+		JarDataWriter<String, String, List<NameNumber>> dataWriter = new StringTestDataWriter(outputDirectory);
 		dataWriter.setFeaturesEncoder(new NameNumberFeaturesEncoder(false, false));
 		dataWriter.setOutcomeEncoder(new StringToStringOutcomeEncoder());
 		dataWriter.finish();
@@ -73,7 +73,7 @@ public class JarDataWriterTest extends FrameworkTestBase {
 	@Test
 	public void testPrintWriter() throws UIMAException, IOException, CleartkException {
 
-		JarDataWriter<String, String, List<NameNumber>> dataWriter = new MaxentDataWriter(outputDirectory);
+		JarDataWriter<String, String, List<NameNumber>> dataWriter = new StringTestDataWriter(outputDirectory);
 		dataWriter.setFeaturesEncoder(new NameNumberFeaturesEncoder(false, false));
 		dataWriter.setOutcomeEncoder(new StringToStringOutcomeEncoder());
 		PrintWriter printWriter = dataWriter.getPrintWriter("foo.txt");

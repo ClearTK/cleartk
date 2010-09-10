@@ -46,7 +46,7 @@ import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.classifier.jar.Train;
-import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
+import org.cleartk.classifier.test.DefaultStringTestDataWriterFactory;
 import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
 import org.cleartk.util.AnnotationRetrieval;
@@ -104,7 +104,7 @@ public class ViterbiDataWriterTest extends FrameworkTestBase {
 				typeSystemDescription,
 				ViterbiDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
 				CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME, ViterbiDataWriterFactory.class.getName(),
-				ViterbiDataWriterFactory.PARAM_DELEGATED_DATA_WRITER_FACTORY_CLASS, DefaultMaxentDataWriterFactory.class.getName(),
+				ViterbiDataWriterFactory.PARAM_DELEGATED_DATA_WRITER_FACTORY_CLASS, DefaultStringTestDataWriterFactory.class.getName(),
 				ViterbiDataWriterFactory.PARAM_OUTCOME_FEATURE_EXTRACTOR_NAMES, new String[] {"org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor"});
 
 		String text = "Do I really have to come up with some creative text, or can I just write anything?";
@@ -125,7 +125,7 @@ public class ViterbiDataWriterTest extends FrameworkTestBase {
 		Assert.assertEquals(expectedManifest, actualManifest.replaceAll("\r", "").trim());
 
 		File delegatedOutputDirectory = new File(outputDirectoryName, ViterbiDataWriter.DELEGATED_MODEL_DIRECTORY_NAME);
-		String[] trainingData = FileUtil.loadListOfStrings(new File(delegatedOutputDirectory, "training-data.maxent"));
+		String[] trainingData = FileUtil.loadListOfStrings(new File(delegatedOutputDirectory, "training-data.test"));
 		testFeatures(trainingData[1], "PreviousOutcome_L1_D");
 		testFeatures(trainingData[2], "PreviousOutcome_L1_I", "PreviousOutcome_L2_D", "PreviousOutcomes_L1_2gram_L2R_I_D");
 		testFeatures(trainingData[3], "PreviousOutcome_L1_R", "PreviousOutcome_L2_I", "PreviousOutcome_L3_D", "PreviousOutcomes_L1_2gram_L2R_R_I", "PreviousOutcomes_L1_3gram_L2R_R_I_D");
