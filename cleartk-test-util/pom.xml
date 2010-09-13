@@ -4,7 +4,7 @@
 	<artifactId>cleartk-test-util</artifactId>
 	<packaging>jar</packaging>
 	<version>0.6-SNAPSHOT</version>
-	<name>ClearTK-test-util</name>
+	<name>cleartk-test-util</name>
 	<url>http://cleartk.googlecode.com/</url>
 	<scm>
 		<connection>scm:svn:http://cleartk.googlecode.com/svn/trunk/ClearTK-test-util/</connection>
