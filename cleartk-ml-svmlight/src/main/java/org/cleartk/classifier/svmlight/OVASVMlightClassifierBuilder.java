@@ -33,7 +33,8 @@ import java.util.regex.Pattern;
 import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.jar.BuildJar;
 import org.cleartk.classifier.jar.ClassifierBuilder;
-import org.cleartk.classifier.svmlight.LinWengPlatt.Sigmoid;
+import org.cleartk.classifier.util.LinWengPlatt;
+import org.cleartk.classifier.util.LinWengPlatt.Sigmoid;
 
 
 /**

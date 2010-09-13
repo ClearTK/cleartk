@@ -37,7 +37,8 @@ import org.apache.uima.util.Logger;
 import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.jar.BuildJar;
 import org.cleartk.classifier.jar.ClassifierBuilder;
-import org.cleartk.classifier.svmlight.LinWengPlatt.Sigmoid;
+import org.cleartk.classifier.util.LinWengPlatt;
+import org.cleartk.classifier.util.LinWengPlatt.Sigmoid;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
