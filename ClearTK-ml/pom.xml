@@ -63,13 +63,6 @@
 			<optional>false</optional>
 		</dependency>
 		<dependency>
-			<groupId>libsvm</groupId>
-			<artifactId>libsvm</artifactId>
-			<version>2.89</version>
-			<type>jar</type>
-			<optional>false</optional>
-		</dependency>
-		<dependency>
 			<groupId>org.uimafit</groupId>
 			<artifactId>uimafit</artifactId>
 			<version>1.0.0</version>

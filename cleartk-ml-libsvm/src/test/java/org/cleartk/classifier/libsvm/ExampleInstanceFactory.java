@@ -22,11 +22,14 @@
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
-package org.cleartk.classifier;
+package org.cleartk.classifier.libsvm;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.Instance;
 
 /**
  * <br>
