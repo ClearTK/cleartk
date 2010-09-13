@@ -4,7 +4,7 @@
 	<artifactId>cleartk-ml</artifactId>
 	<packaging>jar</packaging>
 	<version>0.9.9-SNAPSHOT</version>
-	<name>ClearTK-ml</name>
+	<name>cleartk-ml</name>
 	<url>http://cleartk.googlecode.com/</url>
 	<scm>
 		<connection>scm:svn:http://cleartk.googlecode.com/svn/trunk/ClearTK-framework/</connection>
