@@ -33,8 +33,9 @@ import java.util.regex.Pattern;
  * @author Philip Ogren
  *
  * This code was derived directly (i.e. translated) from a python script 
- * that Steven Bethard gave me called tokenizer.py.  That script was derived 
- * directly from a sed script available here:
+ * that Steven Bethard gave me called tokenizer.py.  This copyright of this script is owned by 
+ * the Regents of the University of Colorado and therefore there is no restriction on our use and distribution of 
+ * this derivitive work here.  The python script was derived from a sed script available here:
  * 
  * http://www.cis.upenn.edu/~treebank/tokenization.html
  * 
