@@ -4,7 +4,7 @@
 	<artifactId>cleartk-toolkit</artifactId>
 	<packaging>jar</packaging>
 	<version>0.9.9-SNAPSHOT</version>
-	<name>ClearTK-toolkit</name>
+	<name>cleartk-toolkit</name>
 	<url>http://cleartk.googlecode.com/</url>
 	<scm>
 		<connection>scm:svn:http://cleartk.googlecode.com/svn/trunk/ClearTK-toolkit/</connection>
@@ -73,8 +73,32 @@
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
-			<artifactId>cleartk-framework</artifactId>
-			<version>0.9.8</version>
+			<artifactId>cleartk-ml</artifactId>
+			<version>0.9.9-SNAPSHOT</version>
+			<optional>false</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.cleartk</groupId>
+			<artifactId>cleartk-ml-libsvm</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<optional>false</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.cleartk</groupId>
+			<artifactId>cleartk-ml-mallet</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<optional>false</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.cleartk</groupId>
+			<artifactId>cleartk-ml-opennlp-maxent</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<optional>false</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.cleartk</groupId>
+			<artifactId>cleartk-ml-svmlight</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 			<optional>false</optional>
 		</dependency>
 		<dependency>
