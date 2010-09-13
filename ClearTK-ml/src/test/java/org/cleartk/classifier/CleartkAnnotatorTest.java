@@ -40,7 +40,6 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.classifier.jar.JarDataWriterFactory;
-import org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory;
 import org.cleartk.classifier.test.DefaultStringTestDataWriterFactory;
 import org.cleartk.test.DefaultTestBase;
 import org.junit.Assert;
@@ -129,7 +128,7 @@ public class CleartkAnnotatorTest extends DefaultTestBase {
 			AnalysisEngineFactory.createPrimitive(
 					StringTestAnnotator.class,
 					typeSystemDescription,
-					CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletCRFDataWriterFactory.class.getName());
+					CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultStringTestDataWriterFactory.class.getName());
 			Assert.fail("expected exception with missing output directory");
 		} catch (ResourceInitializationException e) {}
 			

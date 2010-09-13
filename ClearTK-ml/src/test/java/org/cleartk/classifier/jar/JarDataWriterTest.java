@@ -39,7 +39,7 @@ import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
 import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
-import org.cleartk.classifier.mallet.DefaultMalletDataWriterFactory;
+import org.cleartk.classifier.test.DefaultStringTestDataWriterFactory;
 import org.cleartk.classifier.test.StringTestDataWriter;
 import org.cleartk.test.DefaultTestBase;
 import org.junit.Assert;
@@ -93,7 +93,7 @@ public class JarDataWriterTest extends DefaultTestBase {
 	public void testFinish() throws UIMAException, IOException, CleartkException {
 
 		UimaContext uimaContext = UimaContextFactory.createUimaContext(JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName);
-		DefaultMalletDataWriterFactory factory = new DefaultMalletDataWriterFactory();
+		DefaultStringTestDataWriterFactory factory = new DefaultStringTestDataWriterFactory();
 		factory.initialize(uimaContext);
 		DataWriter<String> dataWriter = factory.createDataWriter();
 		dataWriter.finish();
