@@ -24,14 +24,12 @@
 package org.cleartk.classifier.feature.extractor.simple;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.FeatureCollection;
 import org.cleartk.classifier.feature.extractor.filter.AlwaysIncludeAnnotationFilter;
 import org.cleartk.classifier.feature.extractor.filter.AnnotationFilter;
 import org.cleartk.util.AnnotationRetrieval;
@@ -76,16 +74,13 @@ public class BagExtractor implements SimpleFeatureExtractor {
 				continue;
 
 			List<Feature> subFeatures = subExtractor.extract(jCas, ann);
+			for( Feature f : subFeatures ) {
+				f.setName(Feature.createName(this.featureName, f.getName()));
+			}
 			features.addAll(subFeatures);
 		}
 		
-		if( features.size() == 0 ) {
-			return Collections.emptyList();
-		} else {
-			return Collections.singletonList(
-					new Feature(this.featureName, new FeatureCollection(features))
-			);
-		}
+		return features;
 	}
 
 	private Class<? extends Annotation> annotationClass;

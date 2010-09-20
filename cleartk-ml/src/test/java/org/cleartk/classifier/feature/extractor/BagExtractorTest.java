@@ -37,7 +37,6 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.FeatureCollection;
 import org.cleartk.classifier.feature.extractor.simple.BagExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
@@ -163,37 +162,23 @@ public class BagExtractorTest extends DefaultTestBase {
 			String featuresNameString,
 			List<List<String>> expectedValuesLists)
 	throws UIMAException, IOException, CleartkException {
+		String nameString = Feature.createName(bagNameString, featuresNameString);
 
 		// run a BagExtractor on each document
 		for (int i = 0; i < this.jCasObjects.size(); i++) {
 			JCas jCas = this.jCasObjects.get(i);
 			DocumentAnnotation document = AnnotationRetrieval.getDocument(jCas);
-
 			List<Feature> features = bagExtractor.extract(jCas, document);
-			if( expectedValuesLists.get(i).size() == 0 ) {
-				Assert.assertEquals(0, features.size());
-			} else {
-				Assert.assertEquals(1, features.size());
 
-				Assert.assertEquals(bagNameString, features.get(0).getName());
-
-				try {
-					FeatureCollection fc = (FeatureCollection) features.get(0).getValue();
-					features = new ArrayList<Feature>(fc.getFeatures());
-
-					// collect all feature values, and check all feature names
-					List<String> actualValues = new ArrayList<String>();
-					for (Feature feature: features) {
-						actualValues.add(feature.getValue().toString());
-						Assert.assertEquals(featuresNameString, feature.getName());
-					}
-
-					// make sure the actual values match the expected ones
-					assertSetsEqual(actualValues, expectedValuesLists.get(i));
-				} catch( ClassCastException e ) {
-					Assert.fail("returned feature type must be feature collection");
-				}
+			// collect all feature values, and check all feature names
+			List<String> actualValues = new ArrayList<String>();
+			for (Feature feature: features) {
+				actualValues.add(feature.getValue().toString());
+				Assert.assertEquals(nameString, feature.getName());
 			}
+
+			// make sure the actual values match the expected ones
+			assertSetsEqual(actualValues, expectedValuesLists.get(i));
 		}
 	}
 	
