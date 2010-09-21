@@ -175,7 +175,7 @@ public class CleartkAnnotatorTest extends DefaultTestBase {
 	}
 	public static class TestClassifierFactory<T> implements ClassifierFactory<T>{
 
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings({"unchecked", "rawtypes"})
 		public Classifier<T> createClassifier() throws IOException, CleartkException {
 			return new TestClassifier();
 		}

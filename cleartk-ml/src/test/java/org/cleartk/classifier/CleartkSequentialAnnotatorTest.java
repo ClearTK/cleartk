@@ -133,7 +133,7 @@ public class CleartkSequentialAnnotatorTest  extends DefaultTestBase{
 	}
 
 	public static class TestClassifierFactory<T> implements SequentialClassifierFactory<T>{
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings({"unchecked", "rawtypes"})
 		public SequentialClassifier<T> createSequentialClassifier() throws IOException, CleartkException {
 			return new TestClassifier();
 		}

@@ -125,13 +125,13 @@ extends CleartkSequentialAnnotator<String> {
 	public void processSimple(JCas jCas) throws AnalysisEngineProcessException, CleartkException {
 		if (!typesInitialized) initializeTypes(jCas);
 		
-		FSIterator sentences = jCas.getAnnotationIndex(sentenceType).iterator();
+		FSIterator<Annotation> sentences = jCas.getAnnotationIndex(sentenceType).iterator();
 		while (sentences.hasNext()) {
 			SENTENCE_TYPE sentence = (SENTENCE_TYPE) sentences.next();
 
 			List<Instance<String>> instances = new ArrayList<Instance<String>>();
 			
-			FSIterator tokens = jCas.getAnnotationIndex(tokenType).subiterator(sentence);
+			FSIterator<Annotation> tokens = jCas.getAnnotationIndex(tokenType).subiterator(sentence);
 
 			while (tokens.hasNext()) {
 				TOKEN_TYPE token = (TOKEN_TYPE) tokens.next();

@@ -94,7 +94,7 @@ public abstract class SnowballStemmer<TOKEN_TYPE extends Annotation> extends JCa
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
 		if (!typesInitialized) initializeTypes(jCas);
 
-		FSIterator tokens = jCas.getAnnotationIndex(tokenType).iterator();
+		FSIterator<Annotation> tokens = jCas.getAnnotationIndex(tokenType).iterator();
 		while (tokens.hasNext()) {
 			TOKEN_TYPE token = (TOKEN_TYPE) tokens.next();
 			stemmer.setCurrent(token.getCoveredText().toLowerCase());

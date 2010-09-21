@@ -50,7 +50,7 @@ public class OpenNLPDummyParserTagger implements ParserTagger {
 		this.tokens = tokens;
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	public Sequence[] topKSequences(List sentence) {
 		// TODO Auto-generated method stub
 		return null;
@@ -72,7 +72,7 @@ public class OpenNLPDummyParserTagger implements ParserTagger {
 		return s;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	public List<?> tag(List sentence) {
 		// TODO Auto-generated method stub
 		return null;
