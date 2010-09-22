@@ -60,11 +60,11 @@ public class DefaultOVASVMlightDataWriterFactory extends JarDataWriterFactory<Fe
 
 		if(!this.setEncodersFromFileSystem(dataWriter)) {
 			NameNumberNormalizer normalizer = new EuclidianNormalizer();
-			FeatureVectorFeaturesEncoder featuresEncoder = new FeatureVectorFeaturesEncoder(cutoff, normalizer);
-			featuresEncoder.addEncoder(new NumberEncoder());
-			featuresEncoder.addEncoder(new BooleanEncoder());
-			featuresEncoder.addEncoder(new StringEncoder());
-			dataWriter.setFeaturesEncoder(featuresEncoder);
+			FeatureVectorFeaturesEncoder myFeaturesEncoder = new FeatureVectorFeaturesEncoder(cutoff, normalizer);
+			myFeaturesEncoder.addEncoder(new NumberEncoder());
+			myFeaturesEncoder.addEncoder(new BooleanEncoder());
+			myFeaturesEncoder.addEncoder(new StringEncoder());
+			dataWriter.setFeaturesEncoder(myFeaturesEncoder);
 
 			dataWriter.setOutcomeEncoder(new StringToIntegerOutcomeEncoder());
 		}

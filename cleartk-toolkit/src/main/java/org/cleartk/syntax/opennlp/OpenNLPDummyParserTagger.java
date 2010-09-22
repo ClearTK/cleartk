@@ -50,10 +50,9 @@ public class OpenNLPDummyParserTagger implements ParserTagger {
 		this.tokens = tokens;
 	}
 	
-	@SuppressWarnings({"unchecked", "rawtypes"})
+	@SuppressWarnings("rawtypes")
 	public Sequence[] topKSequences(List sentence) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	public Sequence[] topKSequences(String[] sentence) {
@@ -68,24 +67,21 @@ public class OpenNLPDummyParserTagger implements ParserTagger {
 			}
 			s[0].add(token.getPos(), 1.0);
 		}
-//		System.out.println(s[0].toString());
+
 		return s;
 	}
 
-	@SuppressWarnings({"unchecked", "rawtypes"})
+	@SuppressWarnings({"rawtypes"})
 	public List<?> tag(List sentence) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	public String[] tag(String[] sentence) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	public String tag(String sentence) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 }

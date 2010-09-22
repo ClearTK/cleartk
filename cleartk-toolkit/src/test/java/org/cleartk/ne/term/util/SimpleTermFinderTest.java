@@ -196,6 +196,7 @@ public class SimpleTermFinderTest {
 			
 	}
 	
+	@SuppressWarnings("unused")
 	@Test
 	public void testTime() throws IOException {
 		long startLoad = System.nanoTime();
