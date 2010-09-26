@@ -35,6 +35,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.apache.uima.util.Level;
 import org.cleartk.CleartkComponents;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkAnnotator;
@@ -52,7 +53,6 @@ import org.cleartk.syntax.treebank.type.TreebankNode;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.ViewURIUtil;
 
 
 /**
@@ -130,8 +130,9 @@ public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
 		for (Sentence sentence: AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
 			TopTreebankNode tree = AnnotationRetrieval.getContainingAnnotation(jCas, sentence, TopTreebankNode.class);
 			if (tree == null) {
-				throw new AnalysisEngineProcessException(new Exception(String.format(
-						"%s: missing syntactic parses", ViewURIUtil.getURI(jCas))));
+			  this.getContext().getLogger().log(Level.WARNING, String.format(
+						"missing syntactic parse for sentence: %s", sentence.getCoveredText()));
+			  continue;
 			}
 
 			// iterate over all verb-clause pairs
