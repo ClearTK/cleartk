@@ -36,8 +36,8 @@ import org.cleartk.classifier.encoder.features.normalizer.NOPNormalizer;
 import org.cleartk.classifier.encoder.features.normalizer.NameNumberNormalizer;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 import org.cleartk.classifier.util.featurevector.SparseFeatureVector;
+import org.cleartk.util.collection.GenericStringMapper;
 import org.cleartk.util.collection.StringMapper;
-import org.cleartk.util.collection.TroveStringMapper;
 import org.cleartk.util.collection.UnknownKeyException;
 import org.cleartk.util.collection.Writable;
 
@@ -56,7 +56,7 @@ public class FeatureVectorFeaturesEncoder extends FeaturesEncoder_ImplBase<Featu
 	
 	public FeatureVectorFeaturesEncoder(int cutoff, NameNumberNormalizer normalizer) {
 		this.normalizer = normalizer;
-		this.stringMapper = new TroveStringMapper(cutoff);
+		this.stringMapper = new GenericStringMapper(cutoff);
 	}
 	
 	public FeatureVectorFeaturesEncoder(int cutoff) {

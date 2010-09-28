@@ -39,6 +39,14 @@
 			<name>ClearTK Google Code repository</name>
 			<url>http://cleartk.googlecode.com/svn/repo</url>
 		</repository>
+		<repository>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>carrotsearch</id>
+			<name>Carrot Search software releases repository</name>
+			<url>http://repository.carrotsearch.com/labs/releases/</url>
+		</repository>
 	</repositories>
 	<dependencies>
 		<dependency>
@@ -98,10 +106,10 @@
 			<version>1.4</version>
 			<type>jar</type>
 		</dependency>
-				<dependency>
-			<groupId>trove</groupId>
-			<artifactId>trove</artifactId>
-			<version>2.0.4</version>
+		<dependency>
+			<groupId>com.carrotsearch</groupId>
+			<artifactId>hppc</artifactId>
+			<version>[0.3,)</version>
 			<optional>false</optional>
 		</dependency>
 	</dependencies>
@@ -156,7 +164,6 @@
 						<link>http://java.sun.com/j2se/1.5.0/docs/api/</link>
 						<link>http://maxent.sourceforge.net/api/"</link>
 						<link>http://opennlp.sourceforge.net/api/"</link>
-						<link>http://trove4j.sourceforge.net/javadocs/"</link>
 						<link>http://www.jdom.org/docs/apidocs/"</link>
 						<link>http://incubator.apache.org/uima/apidocs/"</link>
 						<link>http://mallet.cs.umass.edu/api/"</link>
