@@ -40,6 +40,13 @@ import org.cleartk.classifier.jar.ClassifierBuilder;
 import org.cleartk.classifier.jar.JarDataWriter;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
+/**
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * <p>
+ */
+
 public class OVASVMlightDataWriter extends JarDataWriter<String,Integer,FeatureVector> {
 
 	public OVASVMlightDataWriter(File outputDirectory) throws IOException {
