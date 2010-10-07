@@ -39,6 +39,13 @@ import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.Initializable;
 import org.uimafit.factory.initializable.InitializableFactory;
 
+/**
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * <p>
+ */
+
 public abstract class CleartkSequentialAnnotator<OUTCOME_TYPE> extends JCasAnnotator_ImplBase implements Initializable {
 
 	public static final String PARAM_SEQUENTIAL_CLASSIFIER_FACTORY_CLASS_NAME = ConfigurationParameterFactory

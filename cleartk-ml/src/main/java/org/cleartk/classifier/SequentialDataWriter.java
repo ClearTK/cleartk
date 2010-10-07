@@ -27,6 +27,13 @@ import java.util.List;
 
 import org.cleartk.CleartkException;
 
+/**
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * <p>
+ */
+
 public interface SequentialDataWriter<OUTCOME_TYPE> {
 	
 	public void writeSequence(List<Instance<OUTCOME_TYPE>> instances) throws CleartkException;

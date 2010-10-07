@@ -43,6 +43,13 @@ import org.cleartk.classifier.jar.ClassifierManifest;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.ReflectionUtil.TypeArgumentDelegator;
 
+/**
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * <p>
+ */
+
 public class ViterbiDataWriter<OUTCOME_TYPE> implements
 		SequentialDataWriter<OUTCOME_TYPE>, TypeArgumentDelegator {
 

@@ -26,6 +26,13 @@ package org.cleartk.classifier;
 
 import java.io.IOException;
 
+/**
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * <p>
+ */
+
 public interface SequentialDataWriterFactory<OUTCOME_TYPE> {
 	
 	public SequentialDataWriter<OUTCOME_TYPE> createSequentialDataWriter() throws IOException;

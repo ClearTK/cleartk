@@ -25,6 +25,13 @@ package org.cleartk.classifier;
 
 import org.cleartk.CleartkException;
 
+/**
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * <p>
+ */
+
 public interface DataWriter<OUTCOME_TYPE> {
 	public void write(Instance<OUTCOME_TYPE> instance) throws CleartkException;
 	
