@@ -60,11 +60,11 @@ public class DefaultBinaryLIBLINEARDataWriterFactory extends JarDataWriterFactor
 
 		if(!this.setEncodersFromFileSystem(dataWriter)) {
 			NameNumberNormalizer normalizer = new EuclidianNormalizer();
-			FeatureVectorFeaturesEncoder featuresEncoder = new FeatureVectorFeaturesEncoder(cutoff, normalizer);
-			featuresEncoder.addEncoder(new NumberEncoder());
-			featuresEncoder.addEncoder(new BooleanEncoder());
-			featuresEncoder.addEncoder(new StringEncoder());
-			dataWriter.setFeaturesEncoder(featuresEncoder);
+			FeatureVectorFeaturesEncoder fe = new FeatureVectorFeaturesEncoder(cutoff, normalizer);
+			fe.addEncoder(new NumberEncoder());
+			fe.addEncoder(new BooleanEncoder());
+			fe.addEncoder(new StringEncoder());
+			dataWriter.setFeaturesEncoder(fe);
 
 			dataWriter.setOutcomeEncoder(new BooleanToBooleanOutcomeEncoder());
 		}
