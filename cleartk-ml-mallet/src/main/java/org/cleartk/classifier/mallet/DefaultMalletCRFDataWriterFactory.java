@@ -60,11 +60,11 @@ public class DefaultMalletCRFDataWriterFactory extends JarSequentialDataWriterFa
 		MalletCRFDataWriter mdw = new MalletCRFDataWriter(outputDirectory);
 		
 		if(!this.setEncodersFromFileSystem(mdw)) {
-			NameNumberFeaturesEncoder featuresEncoder = new NameNumberFeaturesEncoder(compress, sort);
-			featuresEncoder.addEncoder(new NumberEncoder());
-			featuresEncoder.addEncoder(new BooleanEncoder());
-			featuresEncoder.addEncoder(new StringEncoder());
-			mdw.setFeaturesEncoder(featuresEncoder);
+			NameNumberFeaturesEncoder fe = new NameNumberFeaturesEncoder(compress, sort);
+			fe.addEncoder(new NumberEncoder());
+			fe.addEncoder(new BooleanEncoder());
+			fe.addEncoder(new StringEncoder());
+			mdw.setFeaturesEncoder(fe);
 			
 			mdw.setOutcomeEncoder(new StringToStringOutcomeEncoder());
 		}
