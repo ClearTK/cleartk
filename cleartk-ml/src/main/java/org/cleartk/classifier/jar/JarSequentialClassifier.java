@@ -25,6 +25,7 @@ package org.cleartk.classifier.jar;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
@@ -80,8 +81,13 @@ public abstract class JarSequentialClassifier<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TY
 		Type t = typeArguments.get(parameterName);
 		if( t instanceof Class<?> )
 			return (Class<?>)t;
-		else
-			return null;
+		// support Arrays:
+		else if (t instanceof GenericArrayType) {
+			GenericArrayType ty = ((GenericArrayType) t);
+			Type genericComponentType = ty.getGenericComponentType();
+			return genericComponentType.getClass();
+		}
+		return null;
 	}
 	
 	protected FeaturesEncoder<FEATURES_TYPE> featuresEncoderCast(FeaturesEncoder<?> encoder) {
