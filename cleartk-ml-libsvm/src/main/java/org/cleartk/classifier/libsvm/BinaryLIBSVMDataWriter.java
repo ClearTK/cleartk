@@ -28,6 +28,13 @@ import java.io.IOException;
 
 import org.cleartk.classifier.jar.ClassifierBuilder;
 
+/**
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * <p>
+ */
+
 public class BinaryLIBSVMDataWriter extends LIBSVMDataWriter<Boolean,Boolean> {
 
 	public BinaryLIBSVMDataWriter(File outputDirectory) throws IOException {

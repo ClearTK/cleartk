@@ -35,6 +35,13 @@ import org.cleartk.classifier.jar.ClassifierBuilder;
 import org.cleartk.classifier.jar.JarDataWriter;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
+/**
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * <p>
+ */
+
 public abstract class LIBSVMDataWriter<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE> extends JarDataWriter<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE,FeatureVector> {
 
 	public static final String TRAINING_DATA_FILE_NAME ="training-data.libsvm"; 
