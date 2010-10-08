@@ -29,8 +29,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.uima.util.FileUtils;
 import org.junit.Assert;
@@ -51,12 +49,7 @@ public class LicenseTestUtil {
 		for (File file : files) {
 			String fileText = FileUtils.file2String(file);
 
-			if ((fileText.indexOf("Copyright (c) 2007-2008, Regents of the University of Colorado") == -1 &&
-				fileText.indexOf("Copyright (c) 2007, Regents of the University of Colorado") == -1 &&	
-				fileText.indexOf("Copyright (c) 2008, Regents of the University of Colorado") == -1 &&	
-				fileText.indexOf("Copyright (c) 2009, Regents of the University of Colorado") == -1 &&	
-				fileText.indexOf("Copyright (c) 2010, Regents of the University of Colorado") == -1 &&	
-				fileText.indexOf("Copyright (c) 2007-2009, Regents of the University of Colorado") == -1)	
+			if (fileText.indexOf("Copyright (c) ") == -1	
 					|| fileText.indexOf("THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"") == -1) {
 				
 				if(file.getName().equals("GENIAcorpus3.02.articleA.pos.xml"))
@@ -119,76 +112,5 @@ public class LicenseTestUtil {
 
 	}
 
-	public static void main(String[] args) throws IOException {
-
-		for (File directory : new File[] { new File("src"), new File("test/src") }) {
-			Iterable<File> files = Files.getFiles(directory, new String[] { ".java" });
-			;
-
-			String oldLicenseRegex = " ?\\* [C]opyright 2007-2008 Regents of the University of Colorado.*CU Research License Agreement</a>(<p>)?";
-			Pattern oldLicensePattern = Pattern.compile(oldLicenseRegex, Pattern.DOTALL | Pattern.MULTILINE);
-
-			String newline = System.getProperty("line.separator");
-
-			String textLicense = " /** "
-					+ newline
-					+ " * Copyright (c) 2007-2008, Regents of the University of Colorado "
-					+ newline
-					+ " * All rights reserved."
-					+ newline
-					+ " * "
-					+ newline
-					+ " * Redistribution and use in source and binary forms, with or without"
-					+ newline
-					+ " * modification, are permitted provided that the following conditions are met:"
-					+ newline
-					+ " * "
-					+ newline
-					+ " * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. "
-					+ newline
-					+ " * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. "
-					+ newline
-					+ " * Neither the name of the University of Colorado at Boulder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. "
-					+ newline + " * " + newline
-					+ " * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"" + newline
-					+ " * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE" + newline
-					+ " * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE" + newline
-					+ " * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE" + newline
-					+ " * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR" + newline
-					+ " * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF" + newline
-					+ " * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS" + newline
-					+ " * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN" + newline
-					+ " * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)" + newline
-					+ " * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE" + newline
-					+ " * POSSIBILITY OF SUCH DAMAGE. " + newline + "*/" + newline;
-
-			String copyright = " * <br>Copyright (c) 2007-2008, Regents of the University of Colorado " + newline
-					+ " * <br>All rights reserved." + newline;
-
-			Matcher matcher;
-			for (File file : files) {
-				String fileText = FileUtils.file2String(file);
-
-				if (file.getParentFile().getName().equals("type") || file.getName().equals("Files.java")
-						|| file.getParentFile().getName().equals("types") || file.getName().equals("LicenseTests.java")
-						|| file.getParentFile().getName().equals("pubmed")) {
-					continue;
-				}
-
-				matcher = oldLicensePattern.matcher(fileText);
-				if (matcher.find()) {
-					fileText = textLicense + matcher.replaceFirst(copyright);
-					System.out.println(file.getName());
-				}
-				else {
-					System.out.println(file.getName());
-				}
-
-				FileUtils.saveString2File(fileText, file);
-
-			}
-		}
-
-	}
 }
 
