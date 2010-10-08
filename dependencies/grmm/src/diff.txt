@@ -1,0 +1,26 @@
+10,11c10
+<  * Created: Aug  23, 2005
+<  * Edited:  Sept 24, 2010 by M. Toepfer
+---
+>  * Created: Aug 23, 2005
+37,44c36,38
+< 	
+<   // new option
+<   private static CommandOption.String outputFile = new CommandOption.String
+< 	(GenericAcrfTui.class, "output-file", "STRING", true, "acrf.ser.gz", "Path for the generated output (model) file.", null);
+< 
+<   // renamed modelFile to templateFile
+<   private static CommandOption.File templateFile = new CommandOption.File
+<           (GenericAcrfTui.class, "template-file", "FILENAME", true, null, "Text file describing model structure.", null);
+---
+> 
+>   private static CommandOption.File modelFile = new CommandOption.File
+>           (GenericAcrfTui.class, "model-file", "FILENAME", true, null, "Text file describing model structure.", null);
+118c112
+<     ACRF.Template[] tmpls = parseModelFile (templateFile.value);
+---
+>     ACRF.Template[] tmpls = parseModelFile (modelFile.value);
+132c126
+<     FileUtils.writeGzippedObject (new File (outputFile.value), acrf); // modified
+---
+>     FileUtils.writeGzippedObject (new File ("acrf.ser.gz"), acrf);
