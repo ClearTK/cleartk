@@ -48,13 +48,13 @@ import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
 import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
 import org.cleartk.token.pos.POSAnnotator;
 import org.cleartk.type.Token;
-import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.FilesCollectionReader;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.CollectionReaderFactory;
 import org.uimafit.pipeline.JCasIterable;
 import org.uimafit.testing.util.HideOutput;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>Copyright (c) 2009, Regents of the University of Colorado 
@@ -104,9 +104,9 @@ public class DefaultPOSAnnotatorTest extends ToolkitTestBase{
 
 		tokenBuilder.buildTokens(jCas, "What kitchen utensil is like a vampire ? Spatula" );
 		tagger.process(jCas);
-		assertEquals("IN", AnnotationRetrieval.get(jCas, Token.class, 0).getPos());
-		assertEquals("NN", AnnotationRetrieval.get(jCas, Token.class, 1).getPos());
-		assertEquals("NN", AnnotationRetrieval.get(jCas, Token.class, 2).getPos());
+		assertEquals("IN", JCasUtil.selectByIndex(jCas, Token.class, 0).getPos());
+		assertEquals("NN", JCasUtil.selectByIndex(jCas, Token.class, 1).getPos());
+		assertEquals("NN", JCasUtil.selectByIndex(jCas, Token.class, 2).getPos());
 		
 	
 	}

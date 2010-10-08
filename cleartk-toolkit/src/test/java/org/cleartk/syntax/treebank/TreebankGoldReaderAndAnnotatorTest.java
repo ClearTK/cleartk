@@ -39,10 +39,10 @@ import org.cleartk.ToolkitTestBase;
 import org.cleartk.ViewNames;
 import org.cleartk.syntax.treebank.type.TopTreebankNode;
 import org.cleartk.type.Sentence;
-import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -74,7 +74,7 @@ public class TreebankGoldReaderAndAnnotatorTest extends ToolkitTestBase {
 		FSIndex<Annotation> sentenceIndex = goldView.getAnnotationIndex(Sentence.type);
 		assertEquals(1, sentenceIndex.size());
 
-		Sentence firstSentence = AnnotationRetrieval.get(goldView, Sentence.class, 0);
+		Sentence firstSentence = JCasUtil.selectByIndex(goldView, Sentence.class, 0);
 		assertEquals(expectedText, firstSentence.getCoveredText());
 
 		FSIndex<Annotation> topNodeIndex = goldView.getAnnotationIndex(TopTreebankNode.type);

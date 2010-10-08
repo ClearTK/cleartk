@@ -49,9 +49,9 @@ import org.cleartk.type.test.Header;
 import org.cleartk.type.test.Lemma;
 import org.cleartk.type.test.POSTag;
 import org.cleartk.type.test.Token;
-import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -296,11 +296,11 @@ public class TypePathExtractorTest extends DefaultTestBase {
 
 		// token "place" in "wide. This place was a tolerable long,");
 		tokenBuilder.buildTokens(jCas, "wide .\nThis place was a tolerable long ,");
-		Token token = AnnotationRetrieval.get(jCas, Token.class, 3);
+		Token token = JCasUtil.selectByIndex(jCas, Token.class, 3);
 
 		assertEquals("place", token.getCoveredText());
 		token.setPos("A");
-		Token tokenL0 = AnnotationRetrieval.get(jCas, Token.class, 2);
+		Token tokenL0 = JCasUtil.selectByIndex(jCas, Token.class, 2);
 		tokenL0.setPos("B");
 
 		TypePathExtractor posExtractor = new TypePathExtractor(Token.class, "pos");

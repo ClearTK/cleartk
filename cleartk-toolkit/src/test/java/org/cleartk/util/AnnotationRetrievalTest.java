@@ -65,6 +65,7 @@ import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.JCasFactory;
 import org.uimafit.pipeline.SimplePipeline;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -93,19 +94,19 @@ public class AnnotationRetrievalTest extends ToolkitTestBase{
 		jCas.setDocumentText(text);
 		SimplePipeline.runPipeline(jCas, sentencesAndTokens);
 
-		Token token = AnnotationRetrieval.get(jCas, Token.class, 23);
+		Token token = JCasUtil.selectByIndex(jCas, Token.class, 23);
 		Assert.assertEquals("genius", token.getCoveredText());
 		Assert.assertEquals("a", AnnotationRetrieval.get(jCas, token, -1).getCoveredText());
 		Assert.assertEquals(",", AnnotationRetrieval.get(jCas, token, 1).getCoveredText());
 		Assert.assertEquals(null, AnnotationRetrieval.get(jCas, token, -40));
 		Assert.assertEquals("genius", AnnotationRetrieval.get(jCas, token, 0).getCoveredText());
 
-		Assert.assertEquals("The", AnnotationRetrieval.get(jCas, Token.class, 0).getCoveredText());
-		Assert.assertEquals("precocity", AnnotationRetrieval.get(jCas, Token.class, 1).getCoveredText());
+		Assert.assertEquals("The", JCasUtil.selectByIndex(jCas, Token.class, 0).getCoveredText());
+		Assert.assertEquals("precocity", JCasUtil.selectByIndex(jCas, Token.class, 1).getCoveredText());
 
-		Assert.assertEquals("The_Project_Gutenberg_License", AnnotationRetrieval.get(jCas, Token.class, -1).getCoveredText());
-		Assert.assertEquals("http", AnnotationRetrieval.get(jCas, Token.class, -5).getCoveredText());
-		Assert.assertEquals(null, AnnotationRetrieval.get(jCas, Token.class, -500));
+		Assert.assertEquals("The_Project_Gutenberg_License", JCasUtil.selectByIndex(jCas, Token.class, -1).getCoveredText());
+		Assert.assertEquals("http", JCasUtil.selectByIndex(jCas, Token.class, -5).getCoveredText());
+		Assert.assertEquals(null, JCasUtil.selectByIndex(jCas, Token.class, -500));
 		
 	}
 	
@@ -172,7 +173,7 @@ public class AnnotationRetrievalTest extends ToolkitTestBase{
 	public void testGetContainingAnnotation() throws UIMAException, IOException {
 		AnalysisEngineFactory.process(jCas, sentencesAndTokens,
 				"Were your just trippin', just ego tripping.");
-		Token token = AnnotationRetrieval.get(jCas, Token.class, 3);
+		Token token = JCasUtil.selectByIndex(jCas, Token.class, 3);
 		Assert.assertEquals("trippin", token.getCoveredText());
 		Sentence sentence = AnnotationRetrieval.getContainingAnnotation(jCas, token, Sentence.class);
 		Assert.assertEquals("Were your just trippin', just ego tripping.", sentence.getCoveredText());
@@ -181,42 +182,42 @@ public class AnnotationRetrievalTest extends ToolkitTestBase{
 		AnalysisEngineFactory.process(jCas, sentencesAndTokens,
 				"Ffff's a pppppppp ttttt, bbbb ii ccc tttt yyyy hhhhh bbbbb yyy ccc ttttt. "
 						+ "It'll tttt yyyy ggg ffffff ssss aaa ffff tt wwww ddddls nnd ddst.");
-		token = AnnotationRetrieval.get(jCas, Token.class, 28);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 28);
 		Assert.assertEquals("ddddls", token.getCoveredText());
 		sentence = AnnotationRetrieval.getContainingAnnotation(jCas, token, Sentence.class);
 		Assert.assertTrue(sentence.getCoveredText().startsWith("It'll"));
 
-		token = AnnotationRetrieval.get(jCas, Token.class, 0);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 0);
 		Assert.assertEquals("Ffff", token.getCoveredText());
 		sentence = AnnotationRetrieval.getContainingAnnotation(jCas, token, Sentence.class);
 		Assert.assertTrue(sentence.getCoveredText().startsWith("Ffff's a pppppppp ttttt"));
 
-		token = AnnotationRetrieval.get(jCas, Token.class, -1);
+		token = JCasUtil.selectByIndex(jCas, Token.class, -1);
 		Assert.assertEquals(".", token.getCoveredText());
 		sentence = AnnotationRetrieval.getContainingAnnotation(jCas, token, Sentence.class);
 		Assert.assertTrue(sentence.getCoveredText().startsWith("It'll tttt yyyy"));
 
-		token = AnnotationRetrieval.get(jCas, Token.class, 28);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 28);
 		Assert.assertEquals("ddddls", token.getCoveredText());
 		token = AnnotationRetrieval.getContainingAnnotation(jCas, token, Token.class);
 		Assert.assertEquals("ddddls", token.getCoveredText());
 
-		token = AnnotationRetrieval.get(jCas, Token.class, 28);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 28);
 		Assert.assertEquals("ddddls", token.getCoveredText());
 		token = AnnotationRetrieval.getContainingAnnotation(jCas, token, Token.class, true);
 		Assert.assertNull(token);
 
-		token = AnnotationRetrieval.get(jCas, Token.class, 0);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 0);
 		Assert.assertEquals("Ffff", token.getCoveredText());
 		token = AnnotationRetrieval.getContainingAnnotation(jCas, token, Token.class);
 		Assert.assertEquals("Ffff", token.getCoveredText());
 
-		token = AnnotationRetrieval.get(jCas, Token.class, 0);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 0);
 		Assert.assertEquals("Ffff", token.getCoveredText());
 		token = AnnotationRetrieval.getContainingAnnotation(jCas, token, Token.class, true);
 		Assert.assertNull(token);
 
-		token = AnnotationRetrieval.get(jCas, Token.class, -1);
+		token = JCasUtil.selectByIndex(jCas, Token.class, -1);
 		Assert.assertEquals(".", token.getCoveredText());
 		token = AnnotationRetrieval.getContainingAnnotation(jCas, token, Token.class);
 		Assert.assertEquals(".", token.getCoveredText());
@@ -224,17 +225,17 @@ public class AnnotationRetrievalTest extends ToolkitTestBase{
 		jCas.reset();
 		AnnotationUtilTest.Annotator.getProcessedJCas(jCas, typeSystemDescription);
 
-		Token token1 = AnnotationRetrieval.get(jCas, Token.class, 1);
-		Token token2 = AnnotationRetrieval.get(jCas, Token.class, 2);
-		Token token3 = AnnotationRetrieval.get(jCas, Token.class, 3);
-		Token token4 = AnnotationRetrieval.get(jCas, Token.class, 4);
-		Token token5 = AnnotationRetrieval.get(jCas, Token.class, 5);
-		AnnotationRetrieval.get(jCas, NamedEntityMention.class, 2);
-		NamedEntityMention nem3 = AnnotationRetrieval.get(jCas, NamedEntityMention.class, 3);
-		NamedEntityMention nem4 = AnnotationRetrieval.get(jCas, NamedEntityMention.class, 4);
-		AnnotationRetrieval.get(jCas, NamedEntityMention.class, 5);
-		NamedEntityMention nem6 = AnnotationRetrieval.get(jCas, NamedEntityMention.class, 6);
-		NamedEntityMention nem7 = AnnotationRetrieval.get(jCas, NamedEntityMention.class, 7);
+		Token token1 = JCasUtil.selectByIndex(jCas, Token.class, 1);
+		Token token2 = JCasUtil.selectByIndex(jCas, Token.class, 2);
+		Token token3 = JCasUtil.selectByIndex(jCas, Token.class, 3);
+		Token token4 = JCasUtil.selectByIndex(jCas, Token.class, 4);
+		Token token5 = JCasUtil.selectByIndex(jCas, Token.class, 5);
+		JCasUtil.selectByIndex(jCas, NamedEntityMention.class, 2);
+		NamedEntityMention nem3 = JCasUtil.selectByIndex(jCas, NamedEntityMention.class, 3);
+		NamedEntityMention nem4 = JCasUtil.selectByIndex(jCas, NamedEntityMention.class, 4);
+		JCasUtil.selectByIndex(jCas, NamedEntityMention.class, 5);
+		NamedEntityMention nem6 = JCasUtil.selectByIndex(jCas, NamedEntityMention.class, 6);
+		NamedEntityMention nem7 = JCasUtil.selectByIndex(jCas, NamedEntityMention.class, 7);
 
 		NamedEntityMention nem = AnnotationRetrieval.getContainingAnnotation(jCas, token1, NamedEntityMention.class);
 		Assert.assertEquals(nem, nem3);
@@ -254,9 +255,9 @@ public class AnnotationRetrievalTest extends ToolkitTestBase{
 		String text = "word";
 		jCas.reset();
 		tokenBuilder.buildTokens(jCas, text);
-		token1 = AnnotationRetrieval.get(jCas, Token.class, 0);
+		token1 = JCasUtil.selectByIndex(jCas, Token.class, 0);
 		Assert.assertEquals("word",token1.getCoveredText());
-		sentence = AnnotationRetrieval.get(jCas, Sentence.class, 0);
+		sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 0);
 		Assert.assertEquals("word",sentence.getCoveredText());
 		sentence = AnnotationRetrieval.getContainingAnnotation(jCas, token1, Sentence.class);
 		Assert.assertEquals("word",sentence.getCoveredText());
@@ -266,7 +267,7 @@ public class AnnotationRetrievalTest extends ToolkitTestBase{
 		tokenBuilder.buildTokens(jCas, text);
 		nem = new NamedEntityMention(jCas, 14, 21);
 		nem.addToIndexes();
-		token1 = AnnotationRetrieval.get(jCas, Token.class, 2);
+		token1 = JCasUtil.selectByIndex(jCas, Token.class, 2);
 		Assert.assertEquals("Methods",token1.getCoveredText());
 		nem = AnnotationRetrieval.getContainingAnnotation(jCas, token1, NamedEntityMention.class);
 		Assert.assertEquals("Methods",nem.getCoveredText());
@@ -297,7 +298,7 @@ public class AnnotationRetrievalTest extends ToolkitTestBase{
 		Token containingToken = new Token(jCas, 0, 10);
 		containingToken.addToIndexes();
 		
-		Token token1 = AnnotationRetrieval.get(jCas, Token.class, 1);
+		Token token1 = JCasUtil.selectByIndex(jCas, Token.class, 1);
 		Token token = AnnotationRetrieval.getContainingAnnotation(jCas, token1, Token.class);
 		Assert.assertEquals("What", token.getCoveredText());
 		token = AnnotationRetrieval.getContainingAnnotation(jCas, token1, Token.class, true);
@@ -346,7 +347,7 @@ public class AnnotationRetrievalTest extends ToolkitTestBase{
 				+ "Thhh I fllllll ouu of heee.  Siiiiii " + "Ah la la la de daa " + "Ah la la la de daa. ");
 		SimplePipeline.runPipeline(jCas, sentencesAndTokens);
 
-		Token token = AnnotationRetrieval.get(jCas, Token.class, 27);
+		Token token = JCasUtil.selectByIndex(jCas, Token.class, 27);
 		Assert.assertEquals("wiiiiii", token.getCoveredText());
 		Token adjacentToken = AnnotationRetrieval.getAdjacentAnnotation(jCas, token, Token.class, true);
 		Assert.assertEquals("crr", adjacentToken.getCoveredText());
@@ -357,7 +358,7 @@ public class AnnotationRetrievalTest extends ToolkitTestBase{
 		adjacentSentence = AnnotationRetrieval.getAdjacentAnnotation(jCas, token, Sentence.class, false);
 		Assert.assertTrue(adjacentSentence.getCoveredText().startsWith("Yoo knnn"));
 
-		Sentence sentence = AnnotationRetrieval.get(jCas, Sentence.class, 3);
+		Sentence sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 3);
 		Assert.assertEquals("Yoo knnn I tooo thh pooooo, frrr thh pooooo sttttt Thhh I fllllll ouu of heee.", sentence
 				.getCoveredText());
 		adjacentToken = AnnotationRetrieval.getAdjacentAnnotation(jCas, sentence, Token.class, true);
@@ -369,7 +370,7 @@ public class AnnotationRetrievalTest extends ToolkitTestBase{
 		adjacentSentence = AnnotationRetrieval.getAdjacentAnnotation(jCas, sentence, Sentence.class, false);
 		Assert.assertTrue(adjacentSentence.getCoveredText().startsWith("Siiiiii"));
 
-		token = AnnotationRetrieval.get(jCas, Token.class, 0);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 0);
 		Assert.assertEquals("Swwww", token.getCoveredText());
 		adjacentToken = AnnotationRetrieval.getAdjacentAnnotation(jCas, token, Token.class, true);
 		Assert.assertEquals(null, adjacentToken);
@@ -380,7 +381,7 @@ public class AnnotationRetrievalTest extends ToolkitTestBase{
 		adjacentSentence = AnnotationRetrieval.getAdjacentAnnotation(jCas, token, Sentence.class, false);
 		Assert.assertTrue(adjacentSentence.getCoveredText().startsWith("I see"));
 
-		token = AnnotationRetrieval.get(jCas, Token.class, -1);
+		token = JCasUtil.selectByIndex(jCas, Token.class, -1);
 		Assert.assertEquals(".", token.getCoveredText());
 		adjacentToken = AnnotationRetrieval.getAdjacentAnnotation(jCas, token, Token.class, true);
 		Assert.assertEquals("daa", adjacentToken.getCoveredText());
@@ -392,7 +393,7 @@ public class AnnotationRetrievalTest extends ToolkitTestBase{
 		adjacentSentence = AnnotationRetrieval.getAdjacentAnnotation(jCas, token, Sentence.class, false);
 		Assert.assertEquals(null, adjacentSentence);
 
-		sentence = AnnotationRetrieval.get(jCas, Sentence.class, 0);
+		sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 0);
 		Assert.assertEquals("Swwww thh sii, biiiii thh taaaa in my moooo.", sentence.getCoveredText());
 		adjacentToken = AnnotationRetrieval.getAdjacentAnnotation(jCas, sentence, Token.class, true);
 		Assert.assertEquals(null, adjacentToken);
@@ -438,9 +439,9 @@ public class AnnotationRetrievalTest extends ToolkitTestBase{
 
 		AnnotationUtilTest.Annotator.getProcessedJCas(jCas, typeSystemDescription);
 
-		Token token0 = AnnotationRetrieval.get(jCas, Token.class, 0);
-		NamedEntityMention nem0 = AnnotationRetrieval.get(jCas, NamedEntityMention.class, 0);
-		NamedEntityMention nem1 = AnnotationRetrieval.get(jCas, NamedEntityMention.class, 1);
+		Token token0 = JCasUtil.selectByIndex(jCas, Token.class, 0);
+		NamedEntityMention nem0 = JCasUtil.selectByIndex(jCas, NamedEntityMention.class, 0);
+		NamedEntityMention nem1 = JCasUtil.selectByIndex(jCas, NamedEntityMention.class, 1);
 
 		List<Token> annotations = AnnotationRetrieval.getAnnotations(jCas, nem0, Token.class);
 		Assert.assertEquals(1, annotations.size());
@@ -459,17 +460,17 @@ public class AnnotationRetrievalTest extends ToolkitTestBase{
 		Assert.assertEquals(1, annotations.size());
 		Assert.assertEquals("text", annotations.get(0).getCoveredText());
 
-		AnnotationRetrieval.get(jCas, Token.class, 1);
-		AnnotationRetrieval.get(jCas, Token.class, 2);
-		AnnotationRetrieval.get(jCas, Token.class, 3);
-		AnnotationRetrieval.get(jCas, Token.class, 4);
-		AnnotationRetrieval.get(jCas, Token.class, 5);
-		NamedEntityMention nem2 = AnnotationRetrieval.get(jCas, NamedEntityMention.class, 2);
-		NamedEntityMention nem3 = AnnotationRetrieval.get(jCas, NamedEntityMention.class, 3);
-		NamedEntityMention nem4 = AnnotationRetrieval.get(jCas, NamedEntityMention.class, 4);
-		NamedEntityMention nem5 = AnnotationRetrieval.get(jCas, NamedEntityMention.class, 5);
-		NamedEntityMention nem6 = AnnotationRetrieval.get(jCas, NamedEntityMention.class, 6);
-		NamedEntityMention nem7 = AnnotationRetrieval.get(jCas, NamedEntityMention.class, 7);
+		JCasUtil.selectByIndex(jCas, Token.class, 1);
+		JCasUtil.selectByIndex(jCas, Token.class, 2);
+		JCasUtil.selectByIndex(jCas, Token.class, 3);
+		JCasUtil.selectByIndex(jCas, Token.class, 4);
+		JCasUtil.selectByIndex(jCas, Token.class, 5);
+		NamedEntityMention nem2 = JCasUtil.selectByIndex(jCas, NamedEntityMention.class, 2);
+		NamedEntityMention nem3 = JCasUtil.selectByIndex(jCas, NamedEntityMention.class, 3);
+		NamedEntityMention nem4 = JCasUtil.selectByIndex(jCas, NamedEntityMention.class, 4);
+		NamedEntityMention nem5 = JCasUtil.selectByIndex(jCas, NamedEntityMention.class, 5);
+		NamedEntityMention nem6 = JCasUtil.selectByIndex(jCas, NamedEntityMention.class, 6);
+		NamedEntityMention nem7 = JCasUtil.selectByIndex(jCas, NamedEntityMention.class, 7);
 
 		annotations = AnnotationRetrieval.getAnnotations(jCas, nem2, Token.class);
 		Assert.assertEquals(5, annotations.size());
@@ -498,10 +499,10 @@ public class AnnotationRetrievalTest extends ToolkitTestBase{
 		Assert.assertEquals(1, annotations.size());
 		Assert.assertEquals(25, annotations.get(0).getBegin());
 
-		NamedEntityMention nem8 = AnnotationRetrieval.get(jCas, NamedEntityMention.class, 8);
-		NamedEntityMention nem9 = AnnotationRetrieval.get(jCas, NamedEntityMention.class, 9);
-		NamedEntityMention nem10 = AnnotationRetrieval.get(jCas, NamedEntityMention.class, 10);
-		AnnotationRetrieval.get(jCas, NamedEntityMention.class, 11);
+		NamedEntityMention nem8 = JCasUtil.selectByIndex(jCas, NamedEntityMention.class, 8);
+		NamedEntityMention nem9 = JCasUtil.selectByIndex(jCas, NamedEntityMention.class, 9);
+		NamedEntityMention nem10 = JCasUtil.selectByIndex(jCas, NamedEntityMention.class, 10);
+		JCasUtil.selectByIndex(jCas, NamedEntityMention.class, 11);
 
 		neAnnotations = AnnotationRetrieval.getAnnotations(jCas, nem8, NamedEntityMention.class);
 		Assert.assertEquals(4, neAnnotations.size());
@@ -582,9 +583,9 @@ public class AnnotationRetrievalTest extends ToolkitTestBase{
 		token = new Token(jCas, 0, 6);
 		token.addToIndexes();
 		
-		token = AnnotationRetrieval.get(jCas, Token.class, 0);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 0);
 		Assert.assertEquals("Police", token.getCoveredText());
-		token = AnnotationRetrieval.get(jCas, Token.class, 1);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 1);
 		Assert.assertEquals("Officer", token.getCoveredText());
 	}
 	
@@ -635,7 +636,7 @@ public class AnnotationRetrievalTest extends ToolkitTestBase{
 	public void testGetAnnotationsExact2() throws Exception {
 		JCas myView = jCas.createView("MyView");
 		tokenBuilder.buildTokens(myView, "red and blue cars and tipsy motorcycles");
-		Token token = AnnotationRetrieval.get(myView, Token.class, 6);
+		Token token = JCasUtil.selectByIndex(myView, Token.class, 6);
 		assertEquals("motorcycles", token.getCoveredText());
 		assertEquals(28, token.getBegin());
 		assertEquals(39, token.getEnd());

@@ -36,7 +36,6 @@ import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Header;
 import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
-import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Test;
 import org.uimafit.util.JCasUtil;
 
@@ -61,34 +60,34 @@ public class WindowNGramExtractorTest extends DefaultTestBase {
 				"I WANTED to go and look at a place right about the middle of " +
 				"the island that I ' d found when I was exploring ;\n" +
 				"so we started and soon got to it");
-		Token token = AnnotationRetrieval.get(jCas, Token.class, 19);
+		Token token = JCasUtil.selectByIndex(jCas, Token.class, 19);
 		assertEquals("island", token.getCoveredText());
 		Feature feature = extractor.extract(jCas, token, Sentence.class);
 		assertEquals("WindowNGram_L0_3gram_L2R", feature.getName());
 		assertEquals("of the island", feature.getValue().toString());
 
 		// "I" - the first word of the sentence
-		token = AnnotationRetrieval.get(jCas, Token.class, 4);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 4);
 		feature = extractor.extract(jCas, token, Sentence.class);
 		assertEquals("OOB2 OOB1 I", feature.getValue().toString());
 		// "WANTED"
-		token = AnnotationRetrieval.get(jCas, Token.class, 5);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 5);
 		feature = extractor.extract(jCas, token, Sentence.class);
 		assertEquals("OOB1 I WANTED", feature.getValue().toString());
 		// "to"
-		token = AnnotationRetrieval.get(jCas, Token.class, 6);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 6);
 		feature = extractor.extract(jCas, token, Sentence.class);
 		assertEquals("I WANTED to", feature.getValue().toString());
 		// "go"
-		token = AnnotationRetrieval.get(jCas, Token.class, 7);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 7);
 		feature = extractor.extract(jCas, token, Sentence.class);
 		assertEquals("WANTED to go", feature.getValue().toString());
 		// "exploring"
-		token = AnnotationRetrieval.get(jCas, Token.class, 28);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 28);
 		feature = extractor.extract(jCas, token, Sentence.class);
 		assertEquals("I was exploring", feature.getValue().toString());
 		// ";"
-		token = AnnotationRetrieval.get(jCas, Token.class, 29);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 29);
 		feature = extractor.extract(jCas, token, Sentence.class);
 		assertEquals("was exploring ;", feature.getValue().toString());
 
@@ -111,25 +110,25 @@ public class WindowNGramExtractorTest extends DefaultTestBase {
 				"I WANTED to go and look at a place right about the middle of " +
 				"the island that I ' d found when I was exploring ;\n" +
 				"so we started and soon got to it");
-		token = AnnotationRetrieval.get(jCas, Token.class, 19);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 19);
 		assertEquals("island", token.getCoveredText());
 		feature = extractor.extract(jCas, token, Sentence.class);
 		assertEquals("WindowNGram_L0_3gram_R2L", feature.getName());
 		assertEquals("island the of", feature.getValue().toString());
 
-		token = AnnotationRetrieval.get(jCas, Token.class, 4);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 4);
 		feature = extractor.extract(jCas, token, Sentence.class);
 		assertEquals("I OOB1 OOB2", feature.getValue().toString());
 
-		token = AnnotationRetrieval.get(jCas, Token.class, 5);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 5);
 		feature = extractor.extract(jCas, token, Sentence.class);
 		assertEquals("WANTED I OOB1", feature.getValue().toString());
 
-		token = AnnotationRetrieval.get(jCas, Token.class, 6);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 6);
 		feature = extractor.extract(jCas, token, Sentence.class);
 		assertEquals("to WANTED I", feature.getValue().toString());
 
-		token = AnnotationRetrieval.get(jCas, Token.class, 7);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 7);
 		feature = extractor.extract(jCas, token, Sentence.class);
 		assertEquals("go to WANTED", feature.getValue().toString());
 
@@ -152,30 +151,30 @@ public class WindowNGramExtractorTest extends DefaultTestBase {
 				"I WANTED to go and look at a place right about the middle of " +
 				"the island that I ' d found when I was exploring ;\n" +
 				"so we started and soon got to it");
-		token = AnnotationRetrieval.get(jCas, Token.class, 19);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 19);
 		assertEquals("island", token.getCoveredText());
 		feature = extractor.extract(jCas, token, Sentence.class);
 		assertEquals("WindowNGram_L2_2gram_L2R", feature.getName());
 		assertEquals("middle of", feature.getValue().toString());
 
-		token = AnnotationRetrieval.get(jCas, Token.class, 4);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 4);
 		assertEquals("I", token.getCoveredText());
 		feature = extractor.extract(jCas, token, Sentence.class);
 		assertEquals("OOB3 OOB2", feature.getValue().toString());
 
-		token = AnnotationRetrieval.get(jCas, Token.class, 5);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 5);
 		feature = extractor.extract(jCas, token, Sentence.class);
 		assertEquals("OOB2 OOB1", feature.getValue().toString());
 
-		token = AnnotationRetrieval.get(jCas, Token.class, 6);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 6);
 		feature = extractor.extract(jCas, token, Sentence.class);
 		assertEquals("OOB1 I", feature.getValue().toString());
 
-		token = AnnotationRetrieval.get(jCas, Token.class, 7);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 7);
 		feature = extractor.extract(jCas, token, Sentence.class);
 		assertEquals("I WANTED", feature.getValue().toString());
 
-		token = AnnotationRetrieval.get(jCas, Token.class, 8);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 8);
 		feature = extractor.extract(jCas, token, Sentence.class);
 		assertEquals("WANTED to", feature.getValue().toString());
 
@@ -201,34 +200,34 @@ public class WindowNGramExtractorTest extends DefaultTestBase {
 				"I WANTED to go and look at a place right about the middle of " +
 				"the island that I ' d found when I was exploring ;\n" +
 				"so we started and soon got to it");
-		Token token = AnnotationRetrieval.get(jCas, Token.class, 19);
+		Token token = JCasUtil.selectByIndex(jCas, Token.class, 19);
 		assertEquals("island", token.getCoveredText());
 		Feature feature = extractor.extract(jCas, token, Sentence.class);
 		assertEquals("WindowNGram_R0_3gram_L2R", feature.getName());
 		assertEquals("island that I", feature.getValue().toString());
 
 		// "I" - the first word of the sentence
-		token = AnnotationRetrieval.get(jCas, Token.class, 4);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 4);
 		feature = extractor.extract(jCas, token, Sentence.class);
 		assertEquals("I WANTED to", feature.getValue().toString());
 		// "WANTED"
-		token = AnnotationRetrieval.get(jCas, Token.class, 5);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 5);
 		feature = extractor.extract(jCas, token, Sentence.class);
 		assertEquals("WANTED to go", feature.getValue().toString());
 
-		token = AnnotationRetrieval.get(jCas, Token.class, 29);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 29);
 		feature = extractor.extract(jCas, token, Sentence.class);
 		assertEquals("; OOB1 OOB2", feature.getValue().toString());
 
-		token = AnnotationRetrieval.get(jCas, Token.class, 28);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 28);
 		feature = extractor.extract(jCas, token, Sentence.class);
 		assertEquals("exploring ; OOB1", feature.getValue().toString());
 
-		token = AnnotationRetrieval.get(jCas, Token.class, 27);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 27);
 		feature = extractor.extract(jCas, token, Sentence.class);
 		assertEquals("was exploring ;", feature.getValue().toString());
 
-		token = AnnotationRetrieval.get(jCas, Token.class, 26);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 26);
 		feature = extractor.extract(jCas, token, Sentence.class);
 		assertEquals("I was exploring", feature.getValue().toString());
 
@@ -252,37 +251,37 @@ public class WindowNGramExtractorTest extends DefaultTestBase {
 				"I WANTED to go and look at a place right about the middle of " +
 				"the island that I ' d found when I was exploring ;\n" +
 				"so we started and soon got to it");
-		token = AnnotationRetrieval.get(jCas, Token.class, 19);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 19);
 		assertEquals("island", token.getCoveredText());
 		feature = extractor.extract(jCas, token, Sentence.class);
 		assertEquals("WindowNGram_R2_6gram_R2L", feature.getName());
 		assertEquals("I when found d ' I", feature.getValue().toString());
 
 		// "I" - the first word of the sentence
-		token = AnnotationRetrieval.get(jCas, Token.class, 4);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 4);
 		feature = extractor.extract(jCas, token, Sentence.class);
 		assertEquals("a at look and go to", feature.getValue().toString());
 		// "WANTED"
-		token = AnnotationRetrieval.get(jCas, Token.class, 5);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 5);
 		feature = extractor.extract(jCas, token, Sentence.class);
 		assertEquals("place a at look and go", feature.getValue().toString());
 
-		token = AnnotationRetrieval.get(jCas, Token.class, 29);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 29);
 		feature = extractor.extract(jCas, token, Sentence.class);
 		assertEquals("OOB7 OOB6 OOB5 OOB4 OOB3 OOB2", feature.getValue()
 				.toString());
 
-		token = AnnotationRetrieval.get(jCas, Token.class, 28);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 28);
 		feature = extractor.extract(jCas, token, Sentence.class);
 		assertEquals("OOB6 OOB5 OOB4 OOB3 OOB2 OOB1", feature.getValue()
 				.toString());
 
-		token = AnnotationRetrieval.get(jCas, Token.class, 27);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 27);
 		feature = extractor.extract(jCas, token, Sentence.class);
 		assertEquals("OOB5 OOB4 OOB3 OOB2 OOB1 ;", feature.getValue()
 				.toString());
 
-		token = AnnotationRetrieval.get(jCas, Token.class, 26);
+		token = JCasUtil.selectByIndex(jCas, Token.class, 26);
 		feature = extractor.extract(jCas, token, Sentence.class);
 		assertEquals("OOB4 OOB3 OOB2 OOB1 ; exploring", feature.getValue()
 				.toString());

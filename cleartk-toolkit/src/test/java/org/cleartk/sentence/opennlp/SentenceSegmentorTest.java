@@ -31,10 +31,10 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.cleartk.ToolkitTestBase;
 import org.cleartk.type.Sentence;
-import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Before;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -80,27 +80,27 @@ public class SentenceSegmentorTest extends ToolkitTestBase {
 
 		AnalysisEngineFactory.process(jCas, sentenceSegmenter, "test/data/docs/youthful-precocity.txt");
 
-		Sentence sentence = AnnotationRetrieval.get(jCas, Sentence.class, 0);
+		Sentence sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 0);
 		String sentenceText = "The precocity of some youths is surprising.";
 		assertEquals(sentenceText, sentence.getCoveredText());
 		
-		sentence = AnnotationRetrieval.get(jCas, Sentence.class, 1);
+		sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 1);
 		sentenceText = "One is disposed to say on occasion, \"That boy of yours is a genius, and he is certain to do great things when he grows up;\" but past experience has taught us that he invariably becomes quite an ordinary citizen.";
 		assertEquals(sentenceText, sentence.getCoveredText());
 		
-		sentence = AnnotationRetrieval.get(jCas, Sentence.class, 2);
+		sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 2);
 		sentenceText = "It is so often the case, on the contrary, that the dull boy becomes a great man.";
 		assertEquals(sentenceText, sentence.getCoveredText());
 
-		sentence = AnnotationRetrieval.get(jCas, Sentence.class, 3);
+		sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 3);
 		sentenceText = "You never can tell.";
 		assertEquals(sentenceText, sentence.getCoveredText());
 
-		sentence = AnnotationRetrieval.get(jCas, Sentence.class, 4);
+		sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 4);
 		sentenceText = "Nature loves to present to us these queer paradoxes.";
 		assertEquals(sentenceText, sentence.getCoveredText());
 
-		sentence = AnnotationRetrieval.get(jCas, Sentence.class, 5);
+		sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 5);
 		sentenceText = "It is well known that those wonderful \"lightning calculators,\" who now and again surprise the world by their feats, lose all their mysterious powers directly they are taught the elementary rules of arithmetic.";
 		assertEquals(sentenceText, sentence.getCoveredText());
 		
@@ -113,16 +113,16 @@ public class SentenceSegmentorTest extends ToolkitTestBase {
 				sentenceSegmenter,
 				"test/data/docs/sentences/test1.txt"); 
 		
-		Sentence sentence = AnnotationRetrieval.get(jCas, Sentence.class, 0);
+		Sentence sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 0);
 		assertEquals("aaaa aaaa aaaa aaaa", sentence.getCoveredText());
 		
-		sentence = AnnotationRetrieval.get(jCas, Sentence.class, 1);
+		sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 1);
 		assertEquals("bbbb", sentence.getCoveredText());
 		
-		sentence = AnnotationRetrieval.get(jCas, Sentence.class, 2);
+		sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 2);
 		assertEquals("ccc cccc ccc cccc", sentence.getCoveredText());
 
-		sentence = AnnotationRetrieval.get(jCas, Sentence.class, 3);
+		sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 3);
 		assertEquals("dddddd ddd.", sentence.getCoveredText());
 	}
 	
@@ -132,7 +132,7 @@ public class SentenceSegmentorTest extends ToolkitTestBase {
 		AnalysisEngineFactory.process(jCas,
 				sentenceSegmenter,
 				"test/data/docs/sentences/test2.txt");
-		Sentence sentence = AnnotationRetrieval.get(jCas, Sentence.class, 0);
+		Sentence sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 0);
 		assertEquals( "I don't understand this.", sentence.getCoveredText());
     }
 
@@ -142,7 +142,7 @@ public class SentenceSegmentorTest extends ToolkitTestBase {
 		AnalysisEngineFactory.process(jCas,
 				sentenceSegmenter,
 				"test/data/docs/sentences/test3.txt");
-		Sentence sentence = AnnotationRetrieval.get(jCas, Sentence.class, 0);
+		Sentence sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 0);
 		assertEquals( "test", sentence.getCoveredText());
     }
 
@@ -151,13 +151,13 @@ public class SentenceSegmentorTest extends ToolkitTestBase {
 		AnalysisEngineFactory.process(jCas,
 				sentenceSegmenter,
 				"test/data/docs/sentences/test5.txt");
-		Sentence sentence = AnnotationRetrieval.get(jCas, Sentence.class, 0);
+		Sentence sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 0);
 		assertEquals( "a", sentence.getCoveredText());
-		sentence = AnnotationRetrieval.get(jCas, Sentence.class, 1);
+		sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 1);
 		assertEquals( "b", sentence.getCoveredText());
-		sentence = AnnotationRetrieval.get(jCas, Sentence.class, 2);
+		sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 2);
 		assertEquals( "c", sentence.getCoveredText());
-		sentence = AnnotationRetrieval.get(jCas, Sentence.class, 3);
+		sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 3);
 		assertEquals( "d", sentence.getCoveredText());
 		
 	}
@@ -167,13 +167,13 @@ public class SentenceSegmentorTest extends ToolkitTestBase {
 		AnalysisEngineFactory.process(jCas,
 				sentenceSegmenter,
 				"test/data/docs/sentences/test6.txt");
-		Sentence sentence = AnnotationRetrieval.get(jCas, Sentence.class, 0);
+		Sentence sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 0);
 		assertEquals( "a", sentence.getCoveredText());
-		sentence = AnnotationRetrieval.get(jCas, Sentence.class, 1);
+		sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 1);
 		assertEquals( "b", sentence.getCoveredText());
-		sentence = AnnotationRetrieval.get(jCas, Sentence.class, 2);
+		sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 2);
 		assertEquals( "c", sentence.getCoveredText());
-		sentence = AnnotationRetrieval.get(jCas, Sentence.class, 3);
+		sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 3);
 		assertEquals( "d", sentence.getCoveredText());
 		
 	}
@@ -183,7 +183,7 @@ public class SentenceSegmentorTest extends ToolkitTestBase {
 		AnalysisEngineFactory.process(jCas,
 				sentenceSegmenter,
 				"test/data/docs/sentences/test7.txt");
-		Sentence sentence = AnnotationRetrieval.get(jCas, Sentence.class, 0);
+		Sentence sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 0);
 		assertEquals( "It was a Wednesday morning.", sentence.getCoveredText());
 		
 	}

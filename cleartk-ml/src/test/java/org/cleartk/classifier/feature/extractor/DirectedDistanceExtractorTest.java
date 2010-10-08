@@ -30,8 +30,8 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.annotationpair.DirectedDistanceExtractor;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Token;
-import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Test;
+import org.uimafit.util.JCasUtil;
 
 
 /**
@@ -50,11 +50,11 @@ public class DirectedDistanceExtractorTest extends DefaultTestBase {
 		
 		DirectedDistanceExtractor extractor = new DirectedDistanceExtractor(null, Token.class);
 		
-		Token token1 = AnnotationRetrieval.get(jCas, Token.class, 0);
-		Token token2 = AnnotationRetrieval.get(jCas, Token.class, 1);
-		Token token3 = AnnotationRetrieval.get(jCas, Token.class, 2);
-		Token token4 = AnnotationRetrieval.get(jCas, Token.class, 3);
-		Token token5 = AnnotationRetrieval.get(jCas, Token.class, 4);
+		Token token1 = JCasUtil.selectByIndex(jCas, Token.class, 0);
+		Token token2 = JCasUtil.selectByIndex(jCas, Token.class, 1);
+		Token token3 = JCasUtil.selectByIndex(jCas, Token.class, 2);
+		Token token4 = JCasUtil.selectByIndex(jCas, Token.class, 3);
+		Token token5 = JCasUtil.selectByIndex(jCas, Token.class, 4);
 		
 		Feature feature = extractor.extract(jCas, token1, token2).get(0);
 		assertEquals(1, feature.getValue());

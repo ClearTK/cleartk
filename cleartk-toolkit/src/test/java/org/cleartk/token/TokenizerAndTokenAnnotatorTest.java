@@ -41,10 +41,10 @@ import org.cleartk.token.chunk.type.Subtoken;
 import org.cleartk.token.util.PennTreebankTokenizer;
 import org.cleartk.token.util.Subtokenizer;
 import org.cleartk.type.Token;
-import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.pipeline.SimplePipeline;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -81,43 +81,43 @@ public class TokenizerAndTokenAnnotatorTest extends ToolkitTestBase {
 		assertEquals(37, tokenIndex.size());
 
 		int index = 0;
-		assertEquals("\"", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("John", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("&", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("Mary", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("'s", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("'", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("dog", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("'", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("...", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("\"", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals(",", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("Jane", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("thought", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("(", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("to", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("herself", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals(")", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals(".", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("\"", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("What", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("a", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("@", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("#", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("$", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("%", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("*", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("!", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("a", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("-", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("``", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("I", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("like", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("'", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("AT&T", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("'", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("''", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals(".", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
+		assertEquals("\"", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("John", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("&", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("Mary", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("'s", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("'", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("dog", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("'", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("...", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("\"", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals(",", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("Jane", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("thought", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("(", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("to", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("herself", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals(")", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals(".", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("\"", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("What", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("a", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("@", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("#", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("$", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("%", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("*", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("!", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("a", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("-", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("``", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("I", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("like", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("'", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("AT&T", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("'", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("''", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals(".", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
 	}
 
 	@Test
@@ -129,37 +129,37 @@ public class TokenizerAndTokenAnnotatorTest extends ToolkitTestBase {
 		assertEquals(31, tokenIndex.size());
 
 		int index = 0;
-		assertEquals("I", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("ca", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("n't", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("believe", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("they", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("wan", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("na", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("keep", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("40", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("%", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("of", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("that", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals(".", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("\"", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("``", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("Wha", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("t", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("cha", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("think", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("?", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("''", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("\"", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("I", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("do", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("n't", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("---", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("think", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("so", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("...", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals(",", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("\"", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
+		assertEquals("I", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("ca", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("n't", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("believe", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("they", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("wan", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("na", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("keep", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("40", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("%", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("of", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("that", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals(".", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("\"", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("``", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("Wha", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("t", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("cha", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("think", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("?", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("''", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("\"", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("I", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("do", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("n't", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("---", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("think", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("so", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("...", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals(",", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("\"", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
 	}
 
 	@Test
@@ -172,22 +172,22 @@ public class TokenizerAndTokenAnnotatorTest extends ToolkitTestBase {
 		assertEquals(16, tokenIndex.size());
 
 		int index = 0;
-		assertEquals("I", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("said", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("at", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("4:45", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("pm", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals(".", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("I", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("was", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("born", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("in", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("'80", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals(",", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("not", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("the", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("'70s", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals(".", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
+		assertEquals("I", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("said", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("at", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("4:45", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("pm", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals(".", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("I", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("was", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("born", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("in", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("'80", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals(",", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("not", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("the", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("'70s", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals(".", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
 	}
 
 	@Test
@@ -199,22 +199,22 @@ public class TokenizerAndTokenAnnotatorTest extends ToolkitTestBase {
 		assertEquals(16, tokenIndex.size());
 
 		int index = 0;
-		assertEquals("You", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("`", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("paid", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("'", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("US$", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("170,000", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("?", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("!", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("You", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("should", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("'ve", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("paid", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("only", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("$", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("16.75", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals(".", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
+		assertEquals("You", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("`", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("paid", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("'", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("US$", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("170,000", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("?", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("!", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("You", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("should", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("'ve", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("paid", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("only", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("$", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("16.75", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals(".", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
 	}
 
 	@Test
@@ -226,22 +226,22 @@ public class TokenizerAndTokenAnnotatorTest extends ToolkitTestBase {
 		assertEquals(16, tokenIndex.size());
 
 		int index = 0;
-		assertEquals("1", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals(".", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("Buy", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("a", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("new", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("Chevrolet", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("(", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("37%-owned", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("in", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("the", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("U.S.", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals(".", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals(")", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals(".", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("15", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
-		assertEquals("%", AnnotationRetrieval.get(jCas, Token.class, index++).getCoveredText());
+		assertEquals("1", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals(".", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("Buy", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("a", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("new", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("Chevrolet", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("(", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("37%-owned", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("in", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("the", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("U.S.", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals(".", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals(")", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals(".", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("15", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("%", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
 	}
 
 	@Test
@@ -261,24 +261,24 @@ public class TokenizerAndTokenAnnotatorTest extends ToolkitTestBase {
 		engine.process(jCas);
 
 		int index = 0;
-		assertEquals("AA", AnnotationRetrieval.get(jCas, Subtoken.class, index++).getCoveredText());
-		assertEquals(";", AnnotationRetrieval.get(jCas, Subtoken.class, index++).getCoveredText());
-		assertEquals("BB", AnnotationRetrieval.get(jCas, Subtoken.class, index++).getCoveredText());
-		assertEquals("-", AnnotationRetrieval.get(jCas, Subtoken.class, index++).getCoveredText());
-		assertEquals("CC", AnnotationRetrieval.get(jCas, Subtoken.class, index++).getCoveredText());
-		assertEquals("DD", AnnotationRetrieval.get(jCas, Subtoken.class, index++).getCoveredText());
-		assertEquals("!", AnnotationRetrieval.get(jCas, Subtoken.class, index++).getCoveredText());
-		assertEquals("@", AnnotationRetrieval.get(jCas, Subtoken.class, index++).getCoveredText());
-		assertEquals("#", AnnotationRetrieval.get(jCas, Subtoken.class, index++).getCoveredText());
-		assertEquals("$", AnnotationRetrieval.get(jCas, Subtoken.class, index++).getCoveredText());
-		assertEquals("EE", AnnotationRetrieval.get(jCas, Subtoken.class, index++).getCoveredText());
-		assertEquals("(", AnnotationRetrieval.get(jCas, Subtoken.class, index++).getCoveredText());
-		assertEquals("FF", AnnotationRetrieval.get(jCas, Subtoken.class, index++).getCoveredText());
-		assertEquals(")", AnnotationRetrieval.get(jCas, Subtoken.class, index++).getCoveredText());
-		assertEquals("GGG", AnnotationRetrieval.get(jCas, Subtoken.class, index++).getCoveredText());
-		assertEquals("H", AnnotationRetrieval.get(jCas, Subtoken.class, index++).getCoveredText());
-		assertEquals(",", AnnotationRetrieval.get(jCas, Subtoken.class, index++).getCoveredText());
-		assertEquals(".", AnnotationRetrieval.get(jCas, Subtoken.class, index++).getCoveredText());
+		assertEquals("AA", JCasUtil.selectByIndex(jCas, Subtoken.class, index++).getCoveredText());
+		assertEquals(";", JCasUtil.selectByIndex(jCas, Subtoken.class, index++).getCoveredText());
+		assertEquals("BB", JCasUtil.selectByIndex(jCas, Subtoken.class, index++).getCoveredText());
+		assertEquals("-", JCasUtil.selectByIndex(jCas, Subtoken.class, index++).getCoveredText());
+		assertEquals("CC", JCasUtil.selectByIndex(jCas, Subtoken.class, index++).getCoveredText());
+		assertEquals("DD", JCasUtil.selectByIndex(jCas, Subtoken.class, index++).getCoveredText());
+		assertEquals("!", JCasUtil.selectByIndex(jCas, Subtoken.class, index++).getCoveredText());
+		assertEquals("@", JCasUtil.selectByIndex(jCas, Subtoken.class, index++).getCoveredText());
+		assertEquals("#", JCasUtil.selectByIndex(jCas, Subtoken.class, index++).getCoveredText());
+		assertEquals("$", JCasUtil.selectByIndex(jCas, Subtoken.class, index++).getCoveredText());
+		assertEquals("EE", JCasUtil.selectByIndex(jCas, Subtoken.class, index++).getCoveredText());
+		assertEquals("(", JCasUtil.selectByIndex(jCas, Subtoken.class, index++).getCoveredText());
+		assertEquals("FF", JCasUtil.selectByIndex(jCas, Subtoken.class, index++).getCoveredText());
+		assertEquals(")", JCasUtil.selectByIndex(jCas, Subtoken.class, index++).getCoveredText());
+		assertEquals("GGG", JCasUtil.selectByIndex(jCas, Subtoken.class, index++).getCoveredText());
+		assertEquals("H", JCasUtil.selectByIndex(jCas, Subtoken.class, index++).getCoveredText());
+		assertEquals(",", JCasUtil.selectByIndex(jCas, Subtoken.class, index++).getCoveredText());
+		assertEquals(".", JCasUtil.selectByIndex(jCas, Subtoken.class, index++).getCoveredText());
 
 	}
 
@@ -320,7 +320,7 @@ public class TokenizerAndTokenAnnotatorTest extends ToolkitTestBase {
 	}
 
 	private Token getToken(int i) {
-		return AnnotationRetrieval.get(jCas, Token.class, i);
+		return JCasUtil.selectByIndex(jCas, Token.class, i);
 	}
 
 }

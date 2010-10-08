@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.apache.uima.cas.ConstraintFactory;
-import org.apache.uima.cas.FSIndex;
 import org.apache.uima.cas.FSIntConstraint;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.FSMatchConstraint;
@@ -53,37 +52,6 @@ import org.apache.uima.jcas.tcas.DocumentAnnotation;
  * @author Steven Bethard
  */
 public class AnnotationRetrieval {
-	/**
-	 * This method exists simply as a convenience method for unit testing. It is
-	 * not very efficient and should not, in general be used outside the context
-	 * of unit testing.
-	 */
-	public static <T extends Annotation> T get(JCas jCas, Class<T> cls, int index) {
-		int type;
-		try {
-			type = (Integer) cls.getField("type").get(null);
-		}
-		catch (IllegalAccessException e) {
-			throw new RuntimeException();
-		}
-		catch (NoSuchFieldException e) {
-			throw new RuntimeException();
-		}
-
-		// TODO we should probably iterate from the end rather than
-		// iterating forward from the begining.
-		FSIndex<Annotation> fsIndex = jCas.getAnnotationIndex(type);
-		if (index < 0) index = fsIndex.size() + index;
-
-		if (index < 0 || index >= fsIndex.size()) return null;
-		FSIterator<Annotation> iterator = fsIndex.iterator();
-		Object returnValue = iterator.next();
-		for (int i = 0; i < index; i++) {
-			returnValue = iterator.next();
-		}
-		return cls.cast(returnValue);
-	}
-
 	public static <T extends Annotation> T get(JCas jCas, T annotation, int relativePosition) {
 		return get(jCas, annotation, relativePosition, null);
 	}

@@ -40,12 +40,12 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.ToolkitTestBase;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
-import org.cleartk.util.AnnotationRetrieval;
 import org.jdom.JDOMException;
 import org.junit.Test;
 import org.uimafit.factory.CollectionReaderFactory;
 import org.uimafit.factory.TypeSystemDescriptionFactory;
 import org.uimafit.pipeline.JCasIterable;
+import org.uimafit.util.JCasUtil;
 
 
 /**
@@ -64,14 +64,14 @@ public class GeniaPosGoldReaderTest extends ToolkitTestBase{
 				GeniaPosGoldReader.PARAM_LOAD_SENTENCES, true, GeniaPosGoldReader.PARAM_LOAD_POS_TAGS, true);
 
 		JCas jcas = new JCasIterable(reader).next();
-		Token token = AnnotationRetrieval.get(jcas, Token.class, 0);
+		Token token = JCasUtil.selectByIndex(jcas, Token.class, 0);
 		assertEquals("IL-2", token.getCoveredText());
 		assertEquals("NN", token.getPos());
 
-		Sentence sentence = AnnotationRetrieval.get(jcas, Sentence.class, 0);
+		Sentence sentence = JCasUtil.selectByIndex(jcas, Sentence.class, 0);
 		assertEquals("IL-2 gene expression and NF-kappa B activation through CD28 requires reactive oxygen production by 5-lipoxygenase.", sentence.getCoveredText());
 
-		token = AnnotationRetrieval.get(jcas, Token.class, 9);
+		token = JCasUtil.selectByIndex(jcas, Token.class, 9);
 		assertEquals("requires", token.getCoveredText());
 		assertEquals("VBZ", token.getPos());
 
@@ -82,10 +82,10 @@ public class GeniaPosGoldReaderTest extends ToolkitTestBase{
 		jcas = new JCasIterable(reader).next();
 		assertEquals(1, reader.getProgress()[0].getCompleted());
 		
-		token = AnnotationRetrieval.get(jcas, Token.class, 0);
+		token = JCasUtil.selectByIndex(jcas, Token.class, 0);
 		assertNull(token);
 
-		sentence = AnnotationRetrieval.get(jcas, Sentence.class, 0);
+		sentence = JCasUtil.selectByIndex(jcas, Sentence.class, 0);
 		assertNull(null);
 		
 		assertTrue(jcas.getDocumentText().startsWith("IL-2 gene expression and NF-kappa B activation through CD28 requires reactive oxygen production by 5-lipoxygenase."));

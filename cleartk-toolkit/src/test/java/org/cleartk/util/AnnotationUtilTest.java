@@ -47,6 +47,7 @@ import org.cleartk.type.Token;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.AnnotationFactory;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -114,13 +115,13 @@ public class AnnotationUtilTest extends ToolkitTestBase{
 	public void testContains() throws UIMAException, IOException {
 		AnnotationUtilTest.Annotator.getProcessedJCas(jCas, typeSystemDescription);
 		
-		Token token6 = AnnotationRetrieval.get(jCas, Token.class, 6);
-		Token token7 = AnnotationRetrieval.get(jCas, Token.class, 7);
-		Token token8 = AnnotationRetrieval.get(jCas, Token.class, 8);
-		Token token9 = AnnotationRetrieval.get(jCas, Token.class, 9);
-		Token token10 = AnnotationRetrieval.get(jCas, Token.class, 10);
-		Chunk chunk0 = AnnotationRetrieval.get(jCas, Chunk.class, 0);
-		Chunk chunk1 = AnnotationRetrieval.get(jCas, Chunk.class, 1);
+		Token token6 = JCasUtil.selectByIndex(jCas, Token.class, 6);
+		Token token7 = JCasUtil.selectByIndex(jCas, Token.class, 7);
+		Token token8 = JCasUtil.selectByIndex(jCas, Token.class, 8);
+		Token token9 = JCasUtil.selectByIndex(jCas, Token.class, 9);
+		Token token10 = JCasUtil.selectByIndex(jCas, Token.class, 10);
+		Chunk chunk0 = JCasUtil.selectByIndex(jCas, Chunk.class, 0);
+		Chunk chunk1 = JCasUtil.selectByIndex(jCas, Chunk.class, 1);
 
 		assertTrue(AnnotationUtil.contains(token6, token6));
 		assertTrue(AnnotationUtil.contains(chunk0, token6));

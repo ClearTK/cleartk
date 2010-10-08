@@ -33,8 +33,8 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.annotationpair.DistanceExtractor;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Token;
-import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Test;
+import org.uimafit.util.JCasUtil;
 
 
 /**
@@ -56,11 +56,11 @@ public class DistanceExtractorTest extends DefaultTestBase {
 		
 		DistanceExtractor extractor = new DistanceExtractor(null, Token.class);
 		
-		Token token1 = AnnotationRetrieval.get(jCas, Token.class, 0);
-		Token token2 = AnnotationRetrieval.get(jCas, Token.class, 1);
-		Token token3 = AnnotationRetrieval.get(jCas, Token.class, 2);
-		Token token4 = AnnotationRetrieval.get(jCas, Token.class, 3);
-		Token token5 = AnnotationRetrieval.get(jCas, Token.class, 4);
+		Token token1 = JCasUtil.selectByIndex(jCas, Token.class, 0);
+		Token token2 = JCasUtil.selectByIndex(jCas, Token.class, 1);
+		Token token3 = JCasUtil.selectByIndex(jCas, Token.class, 2);
+		Token token4 = JCasUtil.selectByIndex(jCas, Token.class, 3);
+		Token token5 = JCasUtil.selectByIndex(jCas, Token.class, 4);
 		
 		List<Feature> features = extractor.extract(jCas, token1, token2);
 		assertEquals(0, features.get(0).getValue());

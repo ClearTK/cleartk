@@ -48,6 +48,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.util.JCasUtil;
 
 
 /**
@@ -211,7 +212,7 @@ public class LineWriterTest extends ToolkitTestBase{
 		String text = "If you like line writer, then you should really check out line rider.";
 		tokenBuilder.buildTokens(jCas, text);
 		engine.process(jCas);
-		Token token = AnnotationRetrieval.get(jCas, Token.class, 0);
+		Token token = JCasUtil.selectByIndex(jCas, Token.class, 0);
 		Assert.assertEquals("If", token.getCoveredText());
 
 		jCas.reset();
@@ -219,7 +220,7 @@ public class LineWriterTest extends ToolkitTestBase{
 		tokenBuilder.buildTokens(jCas, text);
 		engine.process(jCas);
 
-		DocumentAnnotation da = AnnotationRetrieval.get(jCas, DocumentAnnotation.class, 0);
+		DocumentAnnotation da = JCasUtil.selectByIndex(jCas, DocumentAnnotation.class, 0);
 		assertNotNull(da);
 		
 

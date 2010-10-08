@@ -38,6 +38,7 @@ import org.uimafit.component.xwriter.XWriter;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.CollectionReaderFactory;
 import org.uimafit.pipeline.JCasIterable;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -79,7 +80,7 @@ public class XReaderTest extends ToolkitTestBase{
 		String docText = "I like\nspam!";
 		Assert.assertEquals(jCasText, docText);
 			
-		Token token = AnnotationRetrieval.get(jCas, Token.class, 0);
+		Token token = JCasUtil.selectByIndex(jCas, Token.class, 0);
 		Assert.assertEquals("I", token.getCoveredText());
 		reader.close();
 		
@@ -115,7 +116,7 @@ public class XReaderTest extends ToolkitTestBase{
 		String docText = "I like\nspam!";
 		Assert.assertEquals(jCasText, docText);
 			
-		Token token = AnnotationRetrieval.get(jCas, Token.class, 0);
+		Token token = JCasUtil.selectByIndex(jCas, Token.class, 0);
 		Assert.assertEquals("I", token.getCoveredText());
 		reader.close();
 		

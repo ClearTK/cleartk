@@ -37,11 +37,11 @@ import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.token.chunk.type.Subtoken;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
-import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Test;
 import org.uimafit.component.JCasAnnotatorAdapter;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.AnnotationFactory;
+import org.uimafit.util.JCasUtil;
 
 
 /**
@@ -113,21 +113,21 @@ public class ChunkTokenizerLabelerTest extends ToolkitTestBase{
 		  defaultChunkLabeler.setLabel(subtoken13, ChunkLabeler_ImplBase.OUTSIDE_LABEL);
 		  defaultChunkLabeler.setLabel(subtoken14, "I-Token");
 		  defaultChunkLabeler.labels2Chunks(jCas, sentence);
-		  Token token = AnnotationRetrieval.get(jCas, Token.class, 0);
+		  Token token = JCasUtil.selectByIndex(jCas, Token.class, 0);
 		  assertEquals("Technological", token.getCoveredText());
-		  token = AnnotationRetrieval.get(jCas, Token.class, 1);
+		  token = JCasUtil.selectByIndex(jCas, Token.class, 1);
 		  assertEquals("is", token.getCoveredText());
-		  token = AnnotationRetrieval.get(jCas, Token.class, 2);
+		  token = JCasUtil.selectByIndex(jCas, Token.class, 2);
 		  assertEquals("like", token.getCoveredText());
-		  token = AnnotationRetrieval.get(jCas, Token.class, 3);
+		  token = JCasUtil.selectByIndex(jCas, Token.class, 3);
 		  assertEquals("an axe in", token.getCoveredText());
-		  token = AnnotationRetrieval.get(jCas, Token.class, 4);
+		  token = JCasUtil.selectByIndex(jCas, Token.class, 4);
 		  assertEquals("hands of", token.getCoveredText());
-		  token = AnnotationRetrieval.get(jCas, Token.class, 5);
+		  token = JCasUtil.selectByIndex(jCas, Token.class, 5);
 		  assertEquals("a", token.getCoveredText());
-		  token = AnnotationRetrieval.get(jCas, Token.class, 6);
+		  token = JCasUtil.selectByIndex(jCas, Token.class, 6);
 		  assertEquals("pathological", token.getCoveredText());
-		  token = AnnotationRetrieval.get(jCas, Token.class, 7);
+		  token = JCasUtil.selectByIndex(jCas, Token.class, 7);
 		  assertEquals(".", token.getCoveredText());
 		  
 		  
@@ -228,7 +228,7 @@ public class ChunkTokenizerLabelerTest extends ToolkitTestBase{
 		  
 		  defaultChunkLabeler.createChunk(jCas, Arrays.asList(token1, token2), "blue");
 		  
-		  nem = AnnotationRetrieval.get(jCas, NamedEntityMention.class, 1);
+		  nem = JCasUtil.selectByIndex(jCas, NamedEntityMention.class, 1);
 		  assertEquals("pathological criminal", nem.getCoveredText());
 		  assertEquals("blue", nem.getMentionType());
 
