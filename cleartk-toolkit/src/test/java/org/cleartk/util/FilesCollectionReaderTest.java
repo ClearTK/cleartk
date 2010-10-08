@@ -303,14 +303,14 @@ public class FilesCollectionReaderTest {
 				FilesCollectionReader.class, null,
 				FilesCollectionReader.PARAM_ROOT_FILE, path);
 		
-		List<String> paths = new ArrayList<String>();
+		List<String> pathsList = new ArrayList<String>();
 		for (JCas jCas: new JCasIterable(reader)) {
-			paths.add(ViewURIUtil.getURI(jCas).replace('\\', '/'));
+			pathsList.add(ViewURIUtil.getURI(jCas).replace('\\', '/'));
 		}
 		reader.close();
 		
-		Assert.assertEquals(1, paths.size());
-		Assert.assertTrue(paths.get(0).endsWith(path));
+		Assert.assertEquals(1, pathsList.size());
+		Assert.assertTrue(pathsList.get(0).endsWith(path));
 	}
 	
 	/**

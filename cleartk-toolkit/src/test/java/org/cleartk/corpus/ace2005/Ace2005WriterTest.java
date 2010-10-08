@@ -158,9 +158,9 @@ public class Ace2005WriterTest extends ToolkitTestBase{
 		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
 				"org.cleartk.corpus.ace2005.Ace2005Writer",
 				Ace2005Writer.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDirectory.getPath());
-		Object outputDirectory = engine.getConfigParameterValue(
+		Object outDirectory = engine.getConfigParameterValue(
 				Ace2005Writer.PARAM_OUTPUT_DIRECTORY_NAME);
-		Assert.assertEquals(this.outputDirectory.getPath(), outputDirectory);
+		Assert.assertEquals(this.outputDirectory.getPath(), outDirectory);
 		
 		engine.collectionProcessComplete();
 	}

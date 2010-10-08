@@ -63,15 +63,15 @@ public class GeniaPosGoldReaderTest extends ToolkitTestBase{
 				"test/data/corpus/genia/GENIAcorpus3.02.articleA.pos.xml", GeniaPosGoldReader.PARAM_LOAD_TOKENS, true,
 				GeniaPosGoldReader.PARAM_LOAD_SENTENCES, true, GeniaPosGoldReader.PARAM_LOAD_POS_TAGS, true);
 
-		JCas jCas = new JCasIterable(reader).next();
-		Token token = AnnotationRetrieval.get(jCas, Token.class, 0);
+		JCas jcas = new JCasIterable(reader).next();
+		Token token = AnnotationRetrieval.get(jcas, Token.class, 0);
 		assertEquals("IL-2", token.getCoveredText());
 		assertEquals("NN", token.getPos());
 
-		Sentence sentence = AnnotationRetrieval.get(jCas, Sentence.class, 0);
+		Sentence sentence = AnnotationRetrieval.get(jcas, Sentence.class, 0);
 		assertEquals("IL-2 gene expression and NF-kappa B activation through CD28 requires reactive oxygen production by 5-lipoxygenase.", sentence.getCoveredText());
 
-		token = AnnotationRetrieval.get(jCas, Token.class, 9);
+		token = AnnotationRetrieval.get(jcas, Token.class, 9);
 		assertEquals("requires", token.getCoveredText());
 		assertEquals("VBZ", token.getPos());
 
@@ -79,16 +79,16 @@ public class GeniaPosGoldReaderTest extends ToolkitTestBase{
 				"test/data/corpus/genia/GENIAcorpus3.02.articleA.pos.xml", GeniaPosGoldReader.PARAM_LOAD_TOKENS, false,
 				GeniaPosGoldReader.PARAM_LOAD_SENTENCES, false, GeniaPosGoldReader.PARAM_LOAD_POS_TAGS, false);
 
-		jCas = new JCasIterable(reader).next();
+		jcas = new JCasIterable(reader).next();
 		assertEquals(1, reader.getProgress()[0].getCompleted());
 		
-		token = AnnotationRetrieval.get(jCas, Token.class, 0);
+		token = AnnotationRetrieval.get(jcas, Token.class, 0);
 		assertNull(token);
 
-		sentence = AnnotationRetrieval.get(jCas, Sentence.class, 0);
+		sentence = AnnotationRetrieval.get(jcas, Sentence.class, 0);
 		assertNull(null);
 		
-		assertTrue(jCas.getDocumentText().startsWith("IL-2 gene expression and NF-kappa B activation through CD28 requires reactive oxygen production by 5-lipoxygenase."));
+		assertTrue(jcas.getDocumentText().startsWith("IL-2 gene expression and NF-kappa B activation through CD28 requires reactive oxygen production by 5-lipoxygenase."));
 
 		IOException ioe = null;
 		try {
@@ -114,13 +114,13 @@ public class GeniaPosGoldReaderTest extends ToolkitTestBase{
 				"test/data/corpus/genia/GENIAcorpus3.02.articleA.pos.xml", GeniaPosGoldReader.PARAM_LOAD_TOKENS, false,
 				GeniaPosGoldReader.PARAM_LOAD_SENTENCES, false, GeniaPosGoldReader.PARAM_LOAD_POS_TAGS, false,
 				GeniaPosGoldReader.PARAM_ARTICLE_IDS_LIST_FILE, "test/data/corpus/genia/article_ids.txt");
-		jCas = new JCasIterable(reader).next();
+		jcas = new JCasIterable(reader).next();
 		assertEquals(1, reader.getProgress()[0].getCompleted());
 		assertFalse(reader.hasNext());
 		
 		CollectionException ce = null;
 		try {
-			reader.getNext(jCas.getCas());
+			reader.getNext(jcas.getCas());
 			
 		}catch (CollectionException collectionException) {
 			ce = collectionException;

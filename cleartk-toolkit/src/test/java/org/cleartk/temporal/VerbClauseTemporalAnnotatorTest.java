@@ -185,8 +185,8 @@ public class VerbClauseTemporalAnnotatorTest extends ToolkitTestBase{
 		Assert.assertEquals("AFTER-NEW", tlinks.get(0).getRelationType());
 	}
 	
-	private TreebankNode newNode(JCas jCas, Token token) {
-		return TreebankTestsUtil.newNode(jCas, token.getBegin(), token.getEnd(), token.getPos());
+	private TreebankNode newNode(JCas jcas, Token token) {
+		return TreebankTestsUtil.newNode(jcas, token.getBegin(), token.getEnd(), token.getPos());
 	}
 	
 	@Test

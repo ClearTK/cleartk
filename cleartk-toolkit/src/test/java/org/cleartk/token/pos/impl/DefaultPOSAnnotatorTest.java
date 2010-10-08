@@ -88,8 +88,8 @@ public class DefaultPOSAnnotatorTest extends ToolkitTestBase{
 				ViterbiDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory.getPath(),
 				POSAnnotator.PARAM_FEATURE_EXTRACTOR_CLASS_NAME, DefaultFeatureExtractor.class.getName());
 		
-		for(JCas jCas : new JCasIterable(reader, aggregateEngine)) {
-			assert jCas != null;
+		for(JCas jcas : new JCasIterable(reader, aggregateEngine)) {
+			assert jcas != null;
 		}
 		
 		aggregateEngine.collectionProcessComplete();

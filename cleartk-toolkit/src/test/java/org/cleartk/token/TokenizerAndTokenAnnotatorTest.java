@@ -25,14 +25,15 @@ package org.cleartk.token;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.FSIndex;
-import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.apache.uima.pear.util.FileUtil;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkComponents;
 import org.cleartk.ToolkitTestBase;
@@ -43,6 +44,7 @@ import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.pipeline.SimplePipeline;
 
 /**
  * <br>
@@ -72,7 +74,9 @@ public class TokenizerAndTokenAnnotatorTest extends ToolkitTestBase {
 	}
 	@Test
 	public void testMarysDog() throws UIMAException, IOException {
-		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokens, "test/data/docs/tokens/marysdog.txt");
+		String text = FileUtil.loadTextFile(new File("test/data/docs/tokens/marysdog.txt"));
+		jCas.setDocumentText(text);
+		SimplePipeline.runPipeline(jCas, sentencesAndTokens);
 		FSIndex<Annotation> tokenIndex = jCas.getAnnotationIndex(Token.type);
 		assertEquals(37, tokenIndex.size());
 
@@ -118,7 +122,9 @@ public class TokenizerAndTokenAnnotatorTest extends ToolkitTestBase {
 
 	@Test
 	public void testWatcha() throws UIMAException, IOException {
-		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokens, "test/data/docs/tokens/watcha.txt");
+		String text = FileUtil.loadTextFile(new File("test/data/docs/tokens/watcha.txt"));
+		jCas.setDocumentText(text);
+		SimplePipeline.runPipeline(jCas, sentencesAndTokens);
 		FSIndex<Annotation> tokenIndex = jCas.getAnnotationIndex(Token.type);
 		assertEquals(31, tokenIndex.size());
 
@@ -158,7 +164,10 @@ public class TokenizerAndTokenAnnotatorTest extends ToolkitTestBase {
 
 	@Test
 	public void testTimes() throws UIMAException, IOException {
-		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokens, "test/data/docs/tokens/times.txt");
+		String text = FileUtil.loadTextFile(new File("test/data/docs/tokens/times.txt"));
+		jCas.setDocumentText(text);
+		SimplePipeline.runPipeline(jCas, sentencesAndTokens);
+
 		FSIndex<Annotation> tokenIndex = jCas.getAnnotationIndex(Token.type);
 		assertEquals(16, tokenIndex.size());
 
@@ -183,7 +192,9 @@ public class TokenizerAndTokenAnnotatorTest extends ToolkitTestBase {
 
 	@Test
 	public void testDollars() throws UIMAException, IOException {
-		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokens, "test/data/docs/tokens/dollars.txt");
+		String text = FileUtil.loadTextFile(new File("test/data/docs/tokens/dollars.txt"));
+		jCas.setDocumentText(text);
+		SimplePipeline.runPipeline(jCas, sentencesAndTokens);
 		FSIndex<Annotation> tokenIndex = jCas.getAnnotationIndex(Token.type);
 		assertEquals(16, tokenIndex.size());
 
@@ -208,8 +219,9 @@ public class TokenizerAndTokenAnnotatorTest extends ToolkitTestBase {
 
 	@Test
 	public void testPercents() throws UIMAException, IOException {
-		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokens,
-				" 1. Buy a new Chevrolet (37%-owned in the U.S..) . 15%");
+		
+		jCas.setDocumentText(" 1. Buy a new Chevrolet (37%-owned in the U.S..) . 15%");
+		SimplePipeline.runPipeline(jCas, sentencesAndTokens);
 		FSIndex<Annotation> tokenIndex = jCas.getAnnotationIndex(Token.type);
 		assertEquals(16, tokenIndex.size());
 
@@ -285,29 +297,29 @@ public class TokenizerAndTokenAnnotatorTest extends ToolkitTestBase {
 	public void testPeriod() throws UIMAException, IOException {
 		
 		AnalysisEngine tokenAnnotator = AnalysisEngineFactory.createAggregate(CleartkComponents.createSentencesAndTokens());
-		JCas jCas = AnalysisEngineFactory.process(tokenAnnotator,
-				"The sides was so steep and the bushes so thick. We tramped and clumb. ");
+		jCas.setDocumentText("The sides was so steep and the bushes so thick. We tramped and clumb. ");
+		SimplePipeline.runPipeline(jCas, tokenAnnotator);
 		int i = 0;
-		assertEquals("The", getToken(jCas, i++).getCoveredText());
-		assertEquals("sides", getToken(jCas, i++).getCoveredText());
-		assertEquals("was", getToken(jCas, i++).getCoveredText());
-		assertEquals("so", getToken(jCas, i++).getCoveredText());
-		assertEquals("steep", getToken(jCas, i++).getCoveredText());
-		assertEquals("and", getToken(jCas, i++).getCoveredText());
-		assertEquals("the", getToken(jCas, i++).getCoveredText());
-		assertEquals("bushes", getToken(jCas, i++).getCoveredText());
-		assertEquals("so", getToken(jCas, i++).getCoveredText());
-		assertEquals("thick", getToken(jCas, i++).getCoveredText());
-		assertEquals(".", getToken(jCas, i++).getCoveredText());
-		assertEquals("We", getToken(jCas, i++).getCoveredText());
-		assertEquals("tramped", getToken(jCas, i++).getCoveredText());
-		assertEquals("and", getToken(jCas, i++).getCoveredText());
-		assertEquals("clumb", getToken(jCas, i++).getCoveredText());
-		assertEquals(".", getToken(jCas, i++).getCoveredText());
+		assertEquals("The", getToken(i++).getCoveredText());
+		assertEquals("sides", getToken(i++).getCoveredText());
+		assertEquals("was", getToken(i++).getCoveredText());
+		assertEquals("so", getToken(i++).getCoveredText());
+		assertEquals("steep", getToken(i++).getCoveredText());
+		assertEquals("and", getToken(i++).getCoveredText());
+		assertEquals("the", getToken(i++).getCoveredText());
+		assertEquals("bushes", getToken(i++).getCoveredText());
+		assertEquals("so", getToken(i++).getCoveredText());
+		assertEquals("thick", getToken(i++).getCoveredText());
+		assertEquals(".", getToken(i++).getCoveredText());
+		assertEquals("We", getToken(i++).getCoveredText());
+		assertEquals("tramped", getToken(i++).getCoveredText());
+		assertEquals("and", getToken(i++).getCoveredText());
+		assertEquals("clumb", getToken(i++).getCoveredText());
+		assertEquals(".", getToken(i++).getCoveredText());
 
 	}
 
-	private Token getToken(JCas jCas, int i) {
+	private Token getToken(int i) {
 		return AnnotationRetrieval.get(jCas, Token.class, i);
 	}
 

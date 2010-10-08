@@ -90,8 +90,8 @@ public class TimeMLWriterTest extends ToolkitTestBase {
 				TimeMLWriter.PARAM_OUTPUT_DIRECTORY_NAME,
 				this.outputDirectory.getPath());
 		
-		for (JCas jCas: new JCasIterable(reader, annotator, writer)) {
-			Assert.assertNotNull(jCas);
+		for (JCas jcas: new JCasIterable(reader, annotator, writer)) {
+			Assert.assertNotNull(jcas);
 		}
 		reader.close();
 		annotator.collectionProcessComplete();

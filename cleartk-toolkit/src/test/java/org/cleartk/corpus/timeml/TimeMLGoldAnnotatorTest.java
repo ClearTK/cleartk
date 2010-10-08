@@ -67,11 +67,11 @@ public class TimeMLGoldAnnotatorTest extends ToolkitTestBase{
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				TimeMLGoldAnnotator.class,
 				typeSystemDescription);
-		JCas jCas = new JCasIterable(reader, engine).next();
+		JCas jcas = new JCasIterable(reader, engine).next();
 
 		// <EVENT eid="e1" class="REPORTING">said</EVENT>
 		// <MAKEINSTANCE eventID="e1" eiid="ei128" tense="PAST" aspect="NONE" polarity="POS" pos="VERB"/>
-		List<Event> events = AnnotationRetrieval.getAnnotations(jCas, Event.class);
+		List<Event> events = AnnotationRetrieval.getAnnotations(jcas, Event.class);
 		Assert.assertEquals("said", events.get(0).getCoveredText());
 		Assert.assertEquals("e1", events.get(0).getId());
 		Assert.assertEquals("ei128", events.get(0).getEventInstanceID());
@@ -85,7 +85,7 @@ public class TimeMLGoldAnnotatorTest extends ToolkitTestBase{
 		Assert.assertEquals(null, events.get(0).getCardinality());
 
 		// <TIMEX3 tid="t26" type="DATE" value="1989-11-02" temporalFunction="false" functionInDocument="CREATION_TIME">11/02/89</TIMEX3>
-		List<Time> times = AnnotationRetrieval.getAnnotations(jCas, Time.class);
+		List<Time> times = AnnotationRetrieval.getAnnotations(jcas, Time.class);
 		Time docTime = times.get(0);
 		Assert.assertEquals("11/02/89", docTime.getCoveredText());
 		Assert.assertEquals("t26", docTime.getId());
@@ -95,7 +95,7 @@ public class TimeMLGoldAnnotatorTest extends ToolkitTestBase{
 		Assert.assertEquals("CREATION_TIME", docTime.getFunctionInDocument());
 		
 		// <TLINK lid="l1" relType="BEFORE" eventInstanceID="ei128" relatedToTime="t26"/>
-		List<TemporalLink> tlinks = AnnotationRetrieval.getAnnotations(jCas, TemporalLink.class);
+		List<TemporalLink> tlinks = AnnotationRetrieval.getAnnotations(jcas, TemporalLink.class);
 		Assert.assertEquals("l1", tlinks.get(0).getId());
 		Assert.assertEquals("BEFORE", tlinks.get(0).getRelationType());
 		Assert.assertEquals("ei128", tlinks.get(0).getEventInstanceID());
@@ -133,10 +133,10 @@ public class TimeMLGoldAnnotatorTest extends ToolkitTestBase{
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				TimeMLGoldAnnotator.class,
 				typeSystemDescription);
-		JCas jCas = new JCasIterable(reader, engine).next();
+		JCas jcas = new JCasIterable(reader, engine).next();
 
 		// <EVENT eid="e5" class="STATE" stem="face" aspect="NONE" tense="PRESPART" polarity="POS" pos="VERB">facing</EVENT>
-		List<Event> events = AnnotationRetrieval.getAnnotations(jCas, Event.class);
+		List<Event> events = AnnotationRetrieval.getAnnotations(jcas, Event.class);
 		Assert.assertEquals("facing", events.get(0).getCoveredText());
 		Assert.assertEquals("e5", events.get(0).getId());
 		Assert.assertEquals(null, events.get(0).getEventInstanceID());
@@ -150,7 +150,7 @@ public class TimeMLGoldAnnotatorTest extends ToolkitTestBase{
 		Assert.assertEquals(null, events.get(0).getCardinality());
 
 		// <TIMEX3 tid="t3" type="TIME" value="1990-08-15T13:37" temporalFunction="false" functionInDocument="CREATION_TIME">08-15-90 1337EDT</TIMEX3>
-		List<Time> times = AnnotationRetrieval.getAnnotations(jCas, Time.class);
+		List<Time> times = AnnotationRetrieval.getAnnotations(jcas, Time.class);
 		Time docTime = times.get(0);
 		Assert.assertEquals("08-15-90 1337EDT", docTime.getCoveredText());
 		Assert.assertEquals("t3", docTime.getId());
@@ -160,7 +160,7 @@ public class TimeMLGoldAnnotatorTest extends ToolkitTestBase{
 		Assert.assertEquals("CREATION_TIME", docTime.getFunctionInDocument());
 		
 		// <TLINK lid="l6" relType="OVERLAP" eventID="e54" relatedToTime="t56" task="A"/>
-		List<TemporalLink> tlinks = AnnotationRetrieval.getAnnotations(jCas, TemporalLink.class);
+		List<TemporalLink> tlinks = AnnotationRetrieval.getAnnotations(jcas, TemporalLink.class);
 		Assert.assertEquals("l6", tlinks.get(5).getId());
 		Assert.assertEquals("OVERLAP", tlinks.get(5).getRelationType());
 		Assert.assertEquals(null, tlinks.get(5).getEventInstanceID());
@@ -188,12 +188,12 @@ public class TimeMLGoldAnnotatorTest extends ToolkitTestBase{
 				TimeMLGoldAnnotator.class,
 				typeSystemDescription,
 				TimeMLGoldAnnotator.PARAM_LOAD_TLINKS, false);
-		for (JCas jCas: new JCasIterable(reader, engine)) {
-			List<Event> events = AnnotationRetrieval.getAnnotations(jCas, Event.class); 
+		for (JCas jcas: new JCasIterable(reader, engine)) {
+			List<Event> events = AnnotationRetrieval.getAnnotations(jcas, Event.class); 
 			Assert.assertTrue(events.size() > 0);
-			List<Time> times = AnnotationRetrieval.getAnnotations(jCas, Time.class); 
+			List<Time> times = AnnotationRetrieval.getAnnotations(jcas, Time.class); 
 			Assert.assertTrue(times.size() > 0);
-			List<TemporalLink> tlinks = AnnotationRetrieval.getAnnotations(jCas, TemporalLink.class); 
+			List<TemporalLink> tlinks = AnnotationRetrieval.getAnnotations(jcas, TemporalLink.class); 
 			Assert.assertEquals(0, tlinks.size());
 		}
 	}

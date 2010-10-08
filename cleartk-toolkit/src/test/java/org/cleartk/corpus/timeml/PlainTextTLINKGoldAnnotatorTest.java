@@ -82,9 +82,9 @@ public class PlainTextTLINKGoldAnnotatorTest extends ToolkitTestBase{
 				typeSystemDescription,
 				PlainTextTLINKGoldAnnotator.PARAM_TLINK_FILE_URL,
 				this.webUrl);
-		JCas jCas = new JCasIterable(reader, timemlEngine, plainTextEngine).next();
+		JCas jcas = new JCasIterable(reader, timemlEngine, plainTextEngine).next();
 
-		List<TemporalLink> tlinks = AnnotationRetrieval.getAnnotations(jCas, TemporalLink.class);
+		List<TemporalLink> tlinks = AnnotationRetrieval.getAnnotations(jcas, TemporalLink.class);
 		Assert.assertEquals(6, tlinks.size());
 		Map<String, TemporalLink> tlinkMap = new HashMap<String, TemporalLink>();
 		for (TemporalLink tlink: tlinks) {
@@ -136,9 +136,9 @@ public class PlainTextTLINKGoldAnnotatorTest extends ToolkitTestBase{
 				typeSystemDescription,
 				PlainTextTLINKGoldAnnotator.PARAM_TLINK_FILE_URL,
 				this.fileUrl);
-		JCas jCas = new JCasIterable(reader, timemlEngine, plainTextEngine).next();
+		JCas jcas = new JCasIterable(reader, timemlEngine, plainTextEngine).next();
 
-		List<TemporalLink> tlinks = AnnotationRetrieval.getAnnotations(jCas, TemporalLink.class);
+		List<TemporalLink> tlinks = AnnotationRetrieval.getAnnotations(jcas, TemporalLink.class);
 		Assert.assertEquals(2, tlinks.size());
 		Map<String, TemporalLink> tlinkMap = new HashMap<String, TemporalLink>();
 		for (TemporalLink tlink: tlinks) {

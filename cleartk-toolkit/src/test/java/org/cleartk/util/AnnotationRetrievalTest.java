@@ -26,6 +26,7 @@ package org.cleartk.util;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
@@ -37,6 +38,7 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.apache.uima.pear.util.FileUtil;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkComponents;
 import org.cleartk.ToolkitTestBase;
@@ -62,6 +64,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.JCasFactory;
+import org.uimafit.pipeline.SimplePipeline;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -86,7 +89,10 @@ public class AnnotationRetrievalTest extends ToolkitTestBase{
 		
 	@Test
 	public void testGet() throws UIMAException, IOException {
-		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokens, "test/data/docs/youthful-precocity.txt");
+		String text = FileUtil.loadTextFile(new File("test/data/docs/youthful-precocity.txt"));
+		jCas.setDocumentText(text);
+		SimplePipeline.runPipeline(jCas, sentencesAndTokens);
+
 		Token token = AnnotationRetrieval.get(jCas, Token.class, 23);
 		Assert.assertEquals("genius", token.getCoveredText());
 		Assert.assertEquals("a", AnnotationRetrieval.get(jCas, token, -1).getCoveredText());
@@ -334,12 +340,12 @@ public class AnnotationRetrievalTest extends ToolkitTestBase{
 
 	@Test
 	public void testGetAdjacentAnnotation() throws UIMAException, IOException {
-		
-		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokens,
-				"Swwww thh sii, biiiii thh taaaa in my moooo. " + "I see seeee tooooo, buu I onnn see onn waa ouu. "
-						+ "Yoo goooo crr wiiiiii weeeeee, taaa wiiiiii sppppppp "
-						+ "Sccccc wiiiiii raaaaaa yooo voooo. " + "Yoo knnn I tooo thh pooooo, frrr thh pooooo sttttt "
-						+ "Thhh I fllllll ouu of heee.  Siiiiii " + "Ah la la la de daa " + "Ah la la la de daa. ");
+		jCas.setDocumentText("Swwww thh sii, biiiii thh taaaa in my moooo. " + "I see seeee tooooo, buu I onnn see onn waa ouu. "
+				+ "Yoo goooo crr wiiiiii weeeeee, taaa wiiiiii sppppppp "
+				+ "Sccccc wiiiiii raaaaaa yooo voooo. " + "Yoo knnn I tooo thh pooooo, frrr thh pooooo sttttt "
+				+ "Thhh I fllllll ouu of heee.  Siiiiii " + "Ah la la la de daa " + "Ah la la la de daa. ");
+		SimplePipeline.runPipeline(jCas, sentencesAndTokens);
+
 		Token token = AnnotationRetrieval.get(jCas, Token.class, 27);
 		Assert.assertEquals("wiiiiii", token.getCoveredText());
 		Token adjacentToken = AnnotationRetrieval.getAdjacentAnnotation(jCas, token, Token.class, true);
@@ -416,7 +422,9 @@ public class AnnotationRetrievalTest extends ToolkitTestBase{
 	
 	@Test
 	public void testGetAnnotationsWithBeginEnd() throws UIMAException, IOException {
-		JCas jCas = AnalysisEngineFactory.process(sentencesAndTokens, "test/data/docs/huckfinn.txt");
+		String text = FileUtil.loadTextFile(new File("test/data/docs/huckfinn.txt"));
+		jCas.setDocumentText(text);
+		SimplePipeline.runPipeline(jCas, sentencesAndTokens);
 
 		List<Token> tokens = AnnotationRetrieval.getAnnotations(jCas, 1200, 1500, Token.class);
 		Assert.assertEquals(tokens.size(), 67);
@@ -668,13 +676,13 @@ public class AnnotationRetrievalTest extends ToolkitTestBase{
 		testIssue98(jCas);
 		
 	}
-	public void testIssue98(JCas jCas) {
+	public void testIssue98(JCas jcas) {
 		//from http://www.gutenberg.org/files/17192/17192-h/17192-h.htm
-		jCas.setDocumentText("Quoth the Raven, \"Nevermore.\"");
-		Token token = new Token(jCas, 10, 15);
+		jcas.setDocumentText("Quoth the Raven, \"Nevermore.\"");
+		Token token = new Token(jcas, 10, 15);
 		token.addToIndexes();
 		Assert.assertEquals("Raven", token.getCoveredText());
-		List<Token> exactTokens = AnnotationRetrieval.getAnnotations(jCas, 10, 15, Token.class, true);
+		List<Token> exactTokens = AnnotationRetrieval.getAnnotations(jcas, 10, 15, Token.class, true);
 		Assert.assertEquals(1, exactTokens.size());
 		Assert.assertEquals("Raven", exactTokens.get(0).getCoveredText());
 	}

@@ -72,15 +72,15 @@ public class ExamplePosClassifierTest extends ToolkitTestBase{
 	
 	@Test
 	public void testLibsvm() throws Exception {
-		String outputDirectory = outputDirectoryName+"/libsvm";
+		String outDirectoryName = outputDirectoryName+"/libsvm";
 		
 		AnalysisEngineDescription dataWriter = CleartkComponents.createViterbiAnnotator(
 				ExamplePOSAnnotator.class, DefaultMultiClassLIBSVMDataWriterFactory.class,
-				outputDirectory,
+				outDirectoryName,
 				JarDataWriterFactory.PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM, false);
 
-		testClassifier(dataWriter, outputDirectory, 1, "-t", "0"); //MultiClassLIBSVMClassifier.score is not implemented so we cannot have a stack size greater than 1.
-		String firstLine = FileUtil.loadListOfStrings(new File(outputDirectory + "/2008_Sichuan_earthquake.txt.pos"))[0].trim();
+		testClassifier(dataWriter, outDirectoryName, 1, "-t", "0"); //MultiClassLIBSVMClassifier.score is not implemented so we cannot have a stack size greater than 1.
+		String firstLine = FileUtil.loadListOfStrings(new File(outDirectoryName + "/2008_Sichuan_earthquake.txt.pos"))[0].trim();
 		boolean badTags = firstLine.equals("2008/NN Sichuan/NN earthquake/NN From/NN Wikipedia/NN ,/NN the/NN free/NN encyclopedia/NN");
 		assertFalse(badTags);
 		assertEquals("2008/NN Sichuan/NN earthquake/NN From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/NN", firstLine);
@@ -95,13 +95,13 @@ public class ExamplePosClassifierTest extends ToolkitTestBase{
 		}
 
 		
-		String outputDirectory = outputDirectoryName+"/malletcrf"; 
+		String outDirectoryName = outputDirectoryName+"/malletcrf"; 
 		AnalysisEngineDescription dataWriter = CleartkComponents.createCleartkSequentialAnnotator(
 				ExamplePOSAnnotator.class, DefaultMalletCRFDataWriterFactory.class,
-				outputDirectory);
-		testClassifier(dataWriter, outputDirectory, -1); //viterbi stack size is meaningless here so pass in an invalid value to make sure it is ignored.
+				outDirectoryName);
+		testClassifier(dataWriter, outDirectoryName, -1); //viterbi stack size is meaningless here so pass in an invalid value to make sure it is ignored.
 
-		String firstLine = FileUtil.loadListOfStrings(new File(outputDirectory + "/2008_Sichuan_earthquake.txt.pos"))[0].trim();
+		String firstLine = FileUtil.loadListOfStrings(new File(outDirectoryName + "/2008_Sichuan_earthquake.txt.pos"))[0].trim();
 		assertEquals("2008/NN Sichuan/JJ earthquake/NNS From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/IN", firstLine);
 		
 	}
@@ -113,81 +113,81 @@ public class ExamplePosClassifierTest extends ToolkitTestBase{
 			return;
 		}
 
-		String outputDirectory = outputDirectoryName+"/malletcrf-compressed"; 
+		String outDirectoryName = outputDirectoryName+"/malletcrf-compressed"; 
 		AnalysisEngineDescription dataWriter = CleartkComponents.createCleartkSequentialAnnotator(
-					ExamplePOSAnnotator.class, DefaultMalletCRFDataWriterFactory.class, outputDirectory);
+					ExamplePOSAnnotator.class, DefaultMalletCRFDataWriterFactory.class, outDirectoryName);
 		AnalysisEngineFactory.setConfigurationParameters(dataWriter, DefaultMalletCRFDataWriterFactory.PARAM_COMPRESS, true);
-		testClassifier(dataWriter, outputDirectory, -1); //viterbi stack size is meaningless here so pass in an invalid value to make sure it is ignored.
+		testClassifier(dataWriter, outDirectoryName, -1); //viterbi stack size is meaningless here so pass in an invalid value to make sure it is ignored.
 		
-		String firstLine = FileUtil.loadListOfStrings(new File(outputDirectory + "/2008_Sichuan_earthquake.txt.pos"))[0].trim();
+		String firstLine = FileUtil.loadListOfStrings(new File(outDirectoryName + "/2008_Sichuan_earthquake.txt.pos"))[0].trim();
 		assertEquals("2008/IN Sichuan/JJ earthquake/NNS From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/IN", firstLine);
 	}
 
 	@Test
 	public void testMaxent() throws Exception {
-		String outputDirectory = outputDirectoryName+"/maxent"; 
+		String outDirectoryName = outputDirectoryName+"/maxent"; 
 		
 		AnalysisEngineDescription dataWriter = CleartkComponents.createViterbiAnnotator(
 				ExamplePOSAnnotator.class, DefaultMaxentDataWriterFactory.class,
-				outputDirectory);
-		testClassifier(dataWriter, outputDirectory, 10);
+				outDirectoryName);
+		testClassifier(dataWriter, outDirectoryName, 10);
 
-		String firstLine = FileUtil.loadListOfStrings(new File(outputDirectory + "/2008_Sichuan_earthquake.txt.pos"))[0];
+		String firstLine = FileUtil.loadListOfStrings(new File(outDirectoryName + "/2008_Sichuan_earthquake.txt.pos"))[0];
 		assertEquals("2008/CD Sichuan/JJ earthquake/NNS From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/NN", firstLine);
 	}
 
 	@Test
 	public void testMaxent2() throws Exception {
-		String outputDirectory = outputDirectoryName+"/maxent2"; 
+		String outDirectoryName = outputDirectoryName+"/maxent2"; 
 		
 		AnalysisEngineDescription dataWriter = CleartkComponents.createViterbiAnnotator(
 				ExamplePOSAnnotator.class, DefaultMaxentDataWriterFactory.class,
-				outputDirectory,
+				outDirectoryName,
 				DefaultMaxentDataWriterFactory.PARAM_COMPRESS, true);
-		testClassifier(dataWriter, outputDirectory, 10);
+		testClassifier(dataWriter, outDirectoryName, 10);
 
-		String firstLine = FileUtil.loadListOfStrings(new File(outputDirectory + "/2008_Sichuan_earthquake.txt.pos"))[0];
+		String firstLine = FileUtil.loadListOfStrings(new File(outDirectoryName + "/2008_Sichuan_earthquake.txt.pos"))[0];
 		assertEquals("2008/CD Sichuan/JJ earthquake/NNS From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/NN", firstLine);
 	}
 
 	@Test
 	public void testMalletMaxent() throws Exception {
-		String outputDirectory = outputDirectoryName+"/mallet-maxent"; 
+		String outDirectoryName = outputDirectoryName+"/mallet-maxent"; 
 		
 		AnalysisEngineDescription dataWriter = CleartkComponents.createViterbiAnnotator(
 				ExamplePOSAnnotator.class, DefaultMalletDataWriterFactory.class,
-				outputDirectory);
-		testClassifier(dataWriter, outputDirectory, 10, "MaxEnt");
+				outDirectoryName);
+		testClassifier(dataWriter, outDirectoryName, 10, "MaxEnt");
 
-		String firstLine = FileUtil.loadListOfStrings(new File(outputDirectory + "/2008_Sichuan_earthquake.txt.pos"))[0];
+		String firstLine = FileUtil.loadListOfStrings(new File(outDirectoryName + "/2008_Sichuan_earthquake.txt.pos"))[0];
 		assertEquals("2008/DT Sichuan/JJ earthquake/NN From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/NN", firstLine);
 	}
 
 	@Test
 	public void testMalletNaiveBayes() throws Exception {
-		String outputDirectory = outputDirectoryName+"/mallet-naive-bayes"; 
+		String outDirectoryName = outputDirectoryName+"/mallet-naive-bayes"; 
 		
 		AnalysisEngineDescription dataWriter = CleartkComponents.createViterbiAnnotator(
 				ExamplePOSAnnotator.class, DefaultMalletDataWriterFactory.class,
-				outputDirectory);
-		testClassifier(dataWriter, outputDirectory, 10, "NaiveBayes");
+				outDirectoryName);
+		testClassifier(dataWriter, outDirectoryName, 10, "NaiveBayes");
 
-		String firstLine = FileUtil.loadListOfStrings(new File(outputDirectory + "/2008_Sichuan_earthquake.txt.pos"))[0];
+		String firstLine = FileUtil.loadListOfStrings(new File(outDirectoryName + "/2008_Sichuan_earthquake.txt.pos"))[0];
 		assertEquals("2008/DT Sichuan/JJ earthquake/NN From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/IN", firstLine);
 	}
 
 	@Test
 	public void testMalletNaiveBayes2() throws Exception {
-		String outputDirectory = outputDirectoryName+"/mallet-naive-bayes"; 
+		String outDirectoryName = outputDirectoryName+"/mallet-naive-bayes"; 
 		
 		AnalysisEngineDescription dataWriter = CleartkComponents.createViterbiAnnotator(
 				ExamplePOSAnnotator.class, DefaultMalletDataWriterFactory.class,
-				outputDirectory, 
+				outDirectoryName, 
 				DefaultMalletDataWriterFactory.PARAM_COMPRESS, true
 				);
-		testClassifier(dataWriter, outputDirectory, 10, "NaiveBayes");
+		testClassifier(dataWriter, outDirectoryName, 10, "NaiveBayes");
 
-		String firstLine = FileUtil.loadListOfStrings(new File(outputDirectory + "/2008_Sichuan_earthquake.txt.pos"))[0];
+		String firstLine = FileUtil.loadListOfStrings(new File(outDirectoryName + "/2008_Sichuan_earthquake.txt.pos"))[0];
 		assertEquals("2008/DT Sichuan/JJ earthquake/NN From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/IN", firstLine);
 	}
 
@@ -197,28 +197,28 @@ public class ExamplePosClassifierTest extends ToolkitTestBase{
 			LOGGER.info(String.format(LONG_TEST_FORMAT, "20 minutes"));
 			return;
 		}
-		String outputDirectory = outputDirectoryName+"/mallet-c45"; 
+		String outDirectoryName = outputDirectoryName+"/mallet-c45"; 
 		
 		AnalysisEngineDescription dataWriter = CleartkComponents.createViterbiAnnotator(
 				ExamplePOSAnnotator.class, DefaultMalletDataWriterFactory.class,
-				outputDirectory);
-		testClassifier(dataWriter, outputDirectory, 10, "C45");
+				outDirectoryName);
+		testClassifier(dataWriter, outDirectoryName, 10, "C45");
 
-		String firstLine = FileUtil.loadListOfStrings(new File(outputDirectory + "/2008_Sichuan_earthquake.txt.pos"))[0];
+		String firstLine = FileUtil.loadListOfStrings(new File(outDirectoryName + "/2008_Sichuan_earthquake.txt.pos"))[0];
 		assertEquals("2008/CD Sichuan/JJ earthquake/NN From/NN Wikipedia/NN ,/, the/DT free/NN encyclopedia/NN", firstLine);
 	}
 
 	@Test
 	public void testSVMLIGHT() throws Exception {
-		String outputDirectory = outputDirectoryName+"/svmlight";
+		String outDirectoryName = outputDirectoryName+"/svmlight";
 		AnalysisEngineDescription dataWriter = CleartkComponents.createViterbiAnnotator(
 				ExamplePOSAnnotator.class, DefaultOVASVMlightDataWriterFactory.class,
-				outputDirectory,
+				outDirectoryName,
 				DefaultOVASVMlightDataWriterFactory.PARAM_CUTOFF, 1);
 
-		testClassifier(dataWriter, outputDirectory, 1);
+		testClassifier(dataWriter, outDirectoryName, 1);
 
-		String firstLine = FileUtil.loadListOfStrings(new File(outputDirectory + "/2008_Sichuan_earthquake.txt.pos"))[0].trim();
+		String firstLine = FileUtil.loadListOfStrings(new File(outDirectoryName + "/2008_Sichuan_earthquake.txt.pos"))[0].trim();
 		boolean badTags = firstLine.equals("2008/NN Sichuan/NN earthquake/NN From/NN Wikipedia/NN ,/NN the/NN free/NN encyclopedia/NN");
 		assertFalse(badTags);
 		
@@ -228,7 +228,7 @@ public class ExamplePosClassifierTest extends ToolkitTestBase{
 	
 	
 	
-	private void testClassifier(AnalysisEngineDescription dataWriter, String outputDirectory, int stackSize, String... trainingArgs) throws Exception {
+	private void testClassifier(AnalysisEngineDescription dataWriter, String outDirectoryName, int stackSize, String... trainingArgs) throws Exception {
 
 		SimplePipeline.runPipeline(
 				FilesCollectionReader.getCollectionReaderWithView("test/data/docs/treebank/11597317.tree", ViewNames.TREEBANK),
@@ -239,10 +239,10 @@ public class ExamplePosClassifierTest extends ToolkitTestBase{
 		String[] args;
 		if(trainingArgs != null && trainingArgs.length > 0) {
 			args = new String[trainingArgs.length + 1];
-			args[0] = outputDirectory;
+			args[0] = outDirectoryName;
 			System.arraycopy(trainingArgs, 0, args, 1, trainingArgs.length);
 		} else {
-			args = new String[] { outputDirectory };
+			args = new String[] { outDirectoryName };
 		}
 		
 		HideOutput hider = new HideOutput();
@@ -253,7 +253,7 @@ public class ExamplePosClassifierTest extends ToolkitTestBase{
 		}
 
 		
-		AnalysisEngineDescription taggerDescription = ExamplePOSAnnotator.getClassifierDescription(outputDirectory + "/model.jar");
+		AnalysisEngineDescription taggerDescription = ExamplePOSAnnotator.getClassifierDescription(outDirectoryName + "/model.jar");
 		AnalysisEngineFactory.setConfigurationParameters(taggerDescription, ViterbiClassifier.PARAM_STACK_SIZE, stackSize);
 		
 		SimplePipeline.runPipeline(
@@ -262,7 +262,7 @@ public class ExamplePosClassifierTest extends ToolkitTestBase{
 				TokenAnnotator.getDescription(),
 				DefaultSnowballStemmer.getDescription("English"),
 				taggerDescription, 
-				CleartkComponents.createPrimitiveDescription(ExamplePOSPlainTextWriter.class, ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME, outputDirectory));
+				CleartkComponents.createPrimitiveDescription(ExamplePOSPlainTextWriter.class, ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME, outDirectoryName));
 	}
 
 }

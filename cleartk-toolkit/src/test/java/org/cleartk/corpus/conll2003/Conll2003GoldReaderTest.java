@@ -63,101 +63,101 @@ public class Conll2003GoldReaderTest extends ToolkitTestBase{
 		
 		Iterator<JCas> iterator = new JCasIterable(reader).iterator();
 		
-		JCas jCas = iterator.next(); 			
+		JCas jcas = iterator.next(); 			
 		
-		FSIndex<Annotation> sentenceIndex = jCas.getAnnotationIndex(Sentence.type);
+		FSIndex<Annotation> sentenceIndex = jcas.getAnnotationIndex(Sentence.type);
 		
 		Assert.assertEquals(1, sentenceIndex.size());
-		Sentence firstSentence = AnnotationRetrieval.get(jCas, Sentence.class, 0);
+		Sentence firstSentence = AnnotationRetrieval.get(jcas, Sentence.class, 0);
 		Assert.assertEquals("ee rrrr ggg ccc tt bbbb BBBBBBB llll . ", firstSentence.getCoveredText());
 		
-		Assert.assertEquals(9, AnnotationRetrieval.getAnnotations(jCas, firstSentence, Token.class).size());
+		Assert.assertEquals(9, AnnotationRetrieval.getAnnotations(jcas, firstSentence, Token.class).size());
 
-		Token token = AnnotationRetrieval.get(jCas, Token.class, 0);
+		Token token = AnnotationRetrieval.get(jcas, Token.class, 0);
 		Assert.assertEquals("A", token.getPos());
 		
-		Chunk chunk = AnnotationRetrieval.get(jCas, Chunk.class, 0);
+		Chunk chunk = AnnotationRetrieval.get(jcas, Chunk.class, 0);
 		Assert.assertEquals("ee", chunk.getCoveredText());
 		Assert.assertEquals("A", chunk.getChunkType());
 		
-		chunk = AnnotationRetrieval.get(jCas, Chunk.class, 1);
+		chunk = AnnotationRetrieval.get(jcas, Chunk.class, 1);
 		Assert.assertEquals("rrrr", chunk.getCoveredText());
 		Assert.assertEquals("B", chunk.getChunkType());
 			
-		chunk = AnnotationRetrieval.get(jCas, Chunk.class, 2);
+		chunk = AnnotationRetrieval.get(jcas, Chunk.class, 2);
 		Assert.assertEquals("ggg ccc", chunk.getCoveredText());
 		Assert.assertEquals("N", chunk.getChunkType());
 		
-		chunk = AnnotationRetrieval.get(jCas, Chunk.class, 3);
+		chunk = AnnotationRetrieval.get(jcas, Chunk.class, 3);
 		Assert.assertEquals("tt bbbb", chunk.getCoveredText());
 		Assert.assertEquals("T", chunk.getChunkType());
 		
-		chunk = AnnotationRetrieval.get(jCas, Chunk.class, 4);
+		chunk = AnnotationRetrieval.get(jcas, Chunk.class, 4);
 		Assert.assertEquals("BBBBBBB llll", chunk.getCoveredText());
 		Assert.assertEquals("BB", chunk.getChunkType());
 			
-		NamedEntityMention nem = AnnotationRetrieval.get(jCas, NamedEntityMention.class, 0);
+		NamedEntityMention nem = AnnotationRetrieval.get(jcas, NamedEntityMention.class, 0);
 		NamedEntity ne = nem.getMentionedEntity();
 		Assert.assertEquals("ee", nem.getCoveredText());
 		Assert.assertEquals("NAM", nem.getMentionType());
 		Assert.assertEquals("OOO", ne.getEntityType());
 		
-		nem = AnnotationRetrieval.get(jCas, NamedEntityMention.class, 1);
+		nem = AnnotationRetrieval.get(jcas, NamedEntityMention.class, 1);
 		ne = nem.getMentionedEntity();
 		Assert.assertEquals("ggg", nem.getCoveredText());
 		Assert.assertEquals("MM", ne.getEntityType());
 
-		nem = AnnotationRetrieval.get(jCas, NamedEntityMention.class, 2);
+		nem = AnnotationRetrieval.get(jcas, NamedEntityMention.class, 2);
 		ne = nem.getMentionedEntity();
 		Assert.assertEquals("BBBBBBB", nem.getCoveredText());
 		Assert.assertEquals("MM", ne.getEntityType());
 
 		
-		jCas = iterator.next(); 			
+		jcas = iterator.next(); 			
 		
-		sentenceIndex = jCas.getAnnotationIndex(Sentence.type);
+		sentenceIndex = jcas.getAnnotationIndex(Sentence.type);
 		
 
 		Assert.assertEquals(1, sentenceIndex.size());
-		firstSentence = AnnotationRetrieval.get(jCas, Sentence.class, 0);
+		firstSentence = AnnotationRetrieval.get(jcas, Sentence.class, 0);
 		Assert.assertEquals("CCCCC ssss tttt rrrrr fff TTTTTT ttttt . ", firstSentence.getCoveredText());
 		
-		Assert.assertEquals(8, AnnotationRetrieval.getAnnotations(jCas, firstSentence, Token.class).size());
+		Assert.assertEquals(8, AnnotationRetrieval.getAnnotations(jcas, firstSentence, Token.class).size());
 
-		token = AnnotationRetrieval.get(jCas, Token.class, 0);
+		token = AnnotationRetrieval.get(jcas, Token.class, 0);
 		Assert.assertEquals("PPP", token.getPos());
 		
-		chunk = AnnotationRetrieval.get(jCas, Chunk.class, 0);
+		chunk = AnnotationRetrieval.get(jcas, Chunk.class, 0);
 		Assert.assertEquals("CCCCC", chunk.getCoveredText());
 		Assert.assertEquals("PP", chunk.getChunkType());
 		
-		chunk = AnnotationRetrieval.get(jCas, Chunk.class, 1);
+		chunk = AnnotationRetrieval.get(jcas, Chunk.class, 1);
 		Assert.assertEquals("ssss", chunk.getCoveredText());
 		Assert.assertEquals("VV", chunk.getChunkType());
 			
-		chunk = AnnotationRetrieval.get(jCas, Chunk.class, 2);
+		chunk = AnnotationRetrieval.get(jcas, Chunk.class, 2);
 		Assert.assertEquals("tttt", chunk.getCoveredText());
 		Assert.assertEquals("NN", chunk.getChunkType());
 		
-		chunk = AnnotationRetrieval.get(jCas, Chunk.class, 3);
+		chunk = AnnotationRetrieval.get(jcas, Chunk.class, 3);
 		Assert.assertEquals("rrrrr", chunk.getCoveredText());
 		Assert.assertEquals("AAAA", chunk.getChunkType());
 		
-		chunk = AnnotationRetrieval.get(jCas, Chunk.class, 4);
+		chunk = AnnotationRetrieval.get(jcas, Chunk.class, 4);
 		Assert.assertEquals("fff", chunk.getCoveredText());
 		Assert.assertEquals("PP", chunk.getChunkType());
 
-		chunk = AnnotationRetrieval.get(jCas, Chunk.class, 5);
+		chunk = AnnotationRetrieval.get(jcas, Chunk.class, 5);
 		Assert.assertEquals("TTTTTT ttttt", chunk.getCoveredText());
 		Assert.assertEquals("NN", chunk.getChunkType());
 
-		nem = AnnotationRetrieval.get(jCas, NamedEntityMention.class, 0);
+		nem = AnnotationRetrieval.get(jcas, NamedEntityMention.class, 0);
 		ne = nem.getMentionedEntity();
 		Assert.assertEquals("CCCCC", nem.getCoveredText());
 		Assert.assertEquals("NAM", nem.getMentionType());
 		Assert.assertEquals("LL", ne.getEntityType());
 		
-		nem = AnnotationRetrieval.get(jCas, NamedEntityMention.class, 1);
+		nem = AnnotationRetrieval.get(jcas, NamedEntityMention.class, 1);
 		ne = nem.getMentionedEntity();
 		Assert.assertEquals("TTTTTT", nem.getCoveredText());
 		Assert.assertEquals("LL", ne.getEntityType());

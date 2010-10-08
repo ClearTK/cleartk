@@ -66,25 +66,25 @@ public class TypesTest  extends ToolkitTestBase{
 		this.testType(jCas, new TreebankNode(jCas));
 	}
 	
-	private void testType(JCas jCas, TOP top) throws Exception {
+	private void testType(JCas jcas, TOP top) throws Exception {
 		Class<?> cls = top.getClass();
 		if (top instanceof Annotation) {
-			this.testAnnotationType(jCas, (Annotation)top);
+			this.testAnnotationType(jcas, (Annotation)top);
 		}
-		Type type = jCas.getTypeSystem().getType(cls.getName());
+		Type type = jcas.getTypeSystem().getType(cls.getName());
 		for (Object obj: type.getFeatures()) {
 			Feature feature = (Feature)obj;
 			if (feature.getDomain().equals(type)) {
-				this.invokeMethods(cls, type, top, jCas, feature.getShortName());
+				this.invokeMethods(cls, type, top, jcas, feature.getShortName());
 			}
 		}
 	}
 
-	private void testAnnotationType(JCas jCas, Annotation annotation) throws Exception {
+	private void testAnnotationType(JCas jcas, Annotation annotation) throws Exception {
 		Class<?> annotationClass = annotation.getClass();
 		
 		Constructor<?> constructor = annotationClass.getConstructor(JCas.class);
-		annotation = (Annotation)constructor.newInstance(jCas);
+		annotation = (Annotation)constructor.newInstance(jcas);
 		Assert.assertEquals(0, annotation.getBegin());
 		Assert.assertEquals(0, annotation.getEnd());
 		
@@ -95,7 +95,7 @@ public class TypesTest  extends ToolkitTestBase{
 		Assert.assertEquals(12, annotation.getEnd());
 		
 		constructor = annotationClass.getConstructor(JCas.class, int.class, int.class);
-		annotation = (Annotation)constructor.newInstance(jCas, 4, 6);
+		annotation = (Annotation)constructor.newInstance(jcas, 4, 6);
 		Assert.assertEquals(4, annotation.getBegin());
 		Assert.assertEquals(6, annotation.getEnd());
 	}
@@ -112,12 +112,12 @@ public class TypesTest  extends ToolkitTestBase{
 		throw new RuntimeException("could not find FS type for setter:" + setterName);
 	}
 	
-	private void invokeMethods(Class<?> cls, Type type, TOP top, JCas jCas, String featureName) throws Exception {
+	private void invokeMethods(Class<?> cls, Type type, TOP top, JCas jcas, String featureName) throws Exception {
 		Map<Class<?>, Object> defaultValues = new HashMap<Class<?>, Object>();
 		defaultValues.put(int.class, 0);
 		defaultValues.put(boolean.class, false);
 		defaultValues.put(double.class, 0.0);
-		defaultValues.put(JCas.class, jCas);
+		defaultValues.put(JCas.class, jcas);
 
 		String suffix = featureName.substring(0, 1).toUpperCase() + featureName.substring(1);
 		for (Method method: cls.getMethods()) {
@@ -125,16 +125,16 @@ public class TypesTest  extends ToolkitTestBase{
 			Class<?>[] types = method.getParameterTypes();
 			if (name.endsWith(suffix) && types.length == 1) {
 				if (types[0].equals(FSArray.class)) {
-					FSArray value = new FSArray(jCas, 1);
+					FSArray value = new FSArray(jcas, 1);
 					Class<?> fsType = this.findFSType(cls, name);
-					Object fs = fsType.getConstructor(JCas.class).newInstance(jCas);
+					Object fs = fsType.getConstructor(JCas.class).newInstance(jcas);
 					value.set(0, (FeatureStructure)fs);
 					method.invoke(top, new Object[]{value});
 					method = top.jcasType.getClass().getMethod("set" + suffix, int.class, int.class);
 					method.invoke(top.jcasType, new Object[]{top.getAddress(), value.getAddress()});
 				}
 				if (types[0].equals(StringArray.class)) {
-					StringArray value = new StringArray(jCas, 1);
+					StringArray value = new StringArray(jcas, 1);
 					value.set(0, "foo");
 					method.invoke(top, new Object[]{value});
 					method = top.jcasType.getClass().getMethod(name, int.class, int.class);
