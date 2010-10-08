@@ -51,17 +51,17 @@ public class GeniaSentence {
 		return Collections.unmodifiableList(posTags);
 	}
 
-	public void addPosTags(List<GeniaTag> posTags) {
+	public void addPosTags(List<GeniaTag> pTags) {
 		
-		this.posTags.addAll(posTags);
+		this.posTags.addAll(pTags);
 	}
 
 	public List<GeniaTag> getSemTags() {
 		return semTags;
 	}
 
-	public void addSemTags(List<GeniaTag> semTags) {
-		this.semTags.addAll(semTags);
+	public void addSemTags(List<GeniaTag> sTags) {
+		this.semTags.addAll(sTags);
 	}
 
 	public Span getSpan() {
