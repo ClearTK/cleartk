@@ -28,8 +28,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.io.filefilter.SuffixFileFilter;
+import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.uima.util.FileUtils;
 import org.junit.Assert;
 
@@ -42,11 +45,14 @@ import org.junit.Assert;
 
 public class LicenseTestUtil {
 
-	public static void testDescriptorFiles(String directory) throws IOException {
+	public static void testDescriptorFiles(String directoryName) throws IOException {
 		List<String> filesMissingLicense = new ArrayList<String>();
-		Iterable<File> files = Files.getFiles(directory, new String[] { ".xml" });
+
+		File directory = new File(directoryName);
+		Iterator<?> files = org.apache.commons.io.FileUtils.iterateFiles(directory, new SuffixFileFilter(".xml"), TrueFileFilter.INSTANCE);
 		
-		for (File file : files) {
+		while(files.hasNext()) {
+			File file = (File) files.next();
 			String fileText = FileUtils.file2String(file);
 
 			if (fileText.indexOf("Copyright (c) ") == -1	
@@ -73,11 +79,13 @@ public class LicenseTestUtil {
 	
 
 
-	public static void testJavaFiles(String directory) throws IOException {
+	public static void testJavaFiles(String directoryName) throws IOException {
 		List<String> filesMissingLicense = new ArrayList<String>();
-		Iterable<File> files = Files.getFiles(directory, new String[] { ".java" });
+		File directory = new File(directoryName);
+		Iterator<?> files = org.apache.commons.io.FileUtils.iterateFiles(directory, new SuffixFileFilter(".java"), TrueFileFilter.INSTANCE);
 		
-		for (File file : files) {
+		while(files.hasNext()) {
+			File file = (File) files.next();
 			String fileText = FileUtils.file2String(file);
 
 			if (file.getParentFile().getName().equals("type") || file.getName().equals("Files.java")
