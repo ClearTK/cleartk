@@ -216,26 +216,26 @@ public class Conll2005Writer extends JCasAnnotator_ImplBase {
 			}
 		}
 
-		void write(Token token, CoNLL05Line line) {
-			if (this.token.equals(token)) {
+		void write(Token tok, CoNLL05Line line) {
+			if (this.token.equals(tok)) {
 				line.setPredicateBaseform(this.baseform);
 				line.setPredicateFrameset(this.frameset);
 			}
 
-			line.addArgumentRole(getArgumentsString(token));
+			line.addArgumentRole(getArgumentsString(tok));
 		}
 
-		String getArgumentsString(Token token) {
+		String getArgumentsString(Token tok) {
 			StringBuffer buffer = new StringBuffer();
 
 			for (ArgumentWriter argumentWriter : this.argumentWriters) {
-				buffer.append(argumentWriter.getStartString(token));
+				buffer.append(argumentWriter.getStartString(tok));
 			}
 
 			buffer.append("*");
 
 			for (ArgumentWriter argumentWriter : this.argumentWriters) {
-				buffer.append(argumentWriter.getEndString(token));
+				buffer.append(argumentWriter.getEndString(tok));
 			}
 
 			return buffer.toString();

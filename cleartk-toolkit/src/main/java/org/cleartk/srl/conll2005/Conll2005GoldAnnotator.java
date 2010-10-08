@@ -324,14 +324,14 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
 			this.arguments = new ArrayList<SemanticArgument>();
 		}
 
-		void feedInfo(String tokenText, String baseForm, String sense,
+		void feedInfo(String tokenText, String bForm, String sense,
 				Token token) {
 			if (token == null) {
 				throw new RuntimeException(String.format(
 						"token for \"%s\" is null", tokenText));
 			}
 			// this.token = tokenText;
-			this.baseForm = baseForm;
+			this.baseForm = bForm;
 			// this.sense = sense;
 			this.predicateToken = token;
 		}
