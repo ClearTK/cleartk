@@ -37,11 +37,6 @@ import org.junit.Test;
 public class LicenseTest {
 
 	@Test
-	public void testLicenseStatedInDescriptors() throws Exception {
-		LicenseTestUtil.testDescriptorFiles("src");
-	}
-
-	@Test
 	public void testLicenseStatedInSource() throws Exception {
 		LicenseTestUtil.testJavaFiles("src/main/java");
 	}
