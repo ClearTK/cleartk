@@ -37,8 +37,7 @@ import org.apache.uima.util.Logger;
 import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.jar.BuildJar;
 import org.cleartk.classifier.jar.ClassifierBuilder;
-import org.cleartk.classifier.util.LinWengPlatt;
-import org.cleartk.classifier.util.LinWengPlatt.Sigmoid;
+import org.cleartk.classifier.sigmoid.Sigmoid;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -87,7 +86,7 @@ public class SVMlightClassifierBuilder implements ClassifierBuilder<Boolean> {
 		File trainingDataFile = new File(dir, "training-data.svmlight");
 		train(trainingDataFile.getPath(), args);
 		
-		Sigmoid s = LinWengPlatt.fit(new File(trainingDataFile.toString() + ".model"), trainingDataFile);
+		Sigmoid s = FitSigmoid.fit(new File(trainingDataFile.toString() + ".model"), trainingDataFile);
 		System.out.println("Computed output mapping function: " + s.toString());
 		
 		ObjectOutput o = new ObjectOutputStream(new FileOutputStream(new File(trainingDataFile.toString() + ".sigmoid")));

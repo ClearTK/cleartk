@@ -33,8 +33,7 @@ import java.util.regex.Pattern;
 import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.jar.BuildJar;
 import org.cleartk.classifier.jar.ClassifierBuilder;
-import org.cleartk.classifier.util.LinWengPlatt;
-import org.cleartk.classifier.util.LinWengPlatt.Sigmoid;
+import org.cleartk.classifier.sigmoid.Sigmoid;
 
 
 /**
@@ -50,7 +49,7 @@ public class OVASVMlightClassifierBuilder implements ClassifierBuilder<String> {
 			if (file.getName().matches("training-data-\\d+.svmlight")) {
 				SVMlightClassifierBuilder.train(file.getPath(), args);
 				
-				Sigmoid s = LinWengPlatt.fit(new File(file.toString() + ".model"), file);
+				Sigmoid s = FitSigmoid.fit(new File(file.toString() + ".model"), file);
 				
 				ObjectOutput o = new ObjectOutputStream(new FileOutputStream(new File(file.toString() + ".sigmoid")));
 				o.writeObject(s);

@@ -21,16 +21,17 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.classifier.util;
+package org.cleartk.classifier.svmlight;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.Serializable;
-import java.util.logging.Logger;
 
 import org.cleartk.CleartkException;
+import org.cleartk.classifier.sigmoid.LinWengPlatt;
+import org.cleartk.classifier.sigmoid.LinWengPlatt.ConvergenceFailure;
+import org.cleartk.classifier.sigmoid.Sigmoid;
 import org.cleartk.classifier.svmlight.model.SVMlightModel;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 import org.cleartk.classifier.util.featurevector.SparseFeatureVector;
@@ -50,7 +51,7 @@ import org.cleartk.classifier.util.featurevector.SparseFeatureVector;
  * 
  * @author Philipp G. Wetzler
  */
-public class LinWengPlatt {
+public class FitSigmoid {
 	
 	public static Sigmoid fit(File svmlightModelFile, File trainingDataFile) throws ConvergenceFailure, IOException, CleartkException {
 		SVMlightModel model = SVMlightModel.fromFile(svmlightModelFile);
@@ -75,161 +76,8 @@ public class LinWengPlatt {
 		}
 		r.close();
 		
-		return fit(decisionValues, labels);
+		return LinWengPlatt.fit(decisionValues, labels);
 
-	}
-
-	public static Sigmoid fit(double[] decisionValues, boolean[] labels) throws ConvergenceFailure {
-		
-		assert(decisionValues.length == labels.length);
-		
-		int nPlus = 0;
-		for( boolean l : labels )
-			if( l ) nPlus += 1;
-		int nMinus = labels.length - nPlus;
-		
-		int maxIterations = 100;
-		double minimumStepsize = 1e-10;
-		double sigma = 1e-12;
-		
-		double hiTarget = (nPlus+1.0)/(nPlus+2.0);
-		double loTarget = 1/(nMinus+2.0);
-		int n=nMinus+nPlus;
-		
-		double t[] = new double[n];
-		for( int i=0; i<n; i++ ) {
-			if( labels[i] )
-				t[i] = hiTarget;
-			else
-				t[i] = loTarget;
-		}
-		
-		double a = 0.0;
-		double b = Math.log((nMinus+1.0)/(nPlus+1.0));
-		double f = 0.0;
-		
-		for( int i=0; i<n; i++ ) {
-			double fApB = decisionValues[i]*a+b;
-			if( fApB >= 0 )
-				f += t[i]*fApB+Math.log(1+Math.exp(-fApB));
-			else
-				f += (t[i]-1)*fApB+Math.log(1+Math.exp(fApB));
-		}
-		
-		int iterations;
-		for( iterations=0; iterations<maxIterations; iterations++ ) {
-			double h11 = sigma;
-			double h22 = sigma;
-			double h21 = 0.0;
-			double g1 = 0.0;
-			double g2 = 0.0;
-			
-			for( int i=0; i<n; i++ ) {
-				double fApB=decisionValues[i]*a+b;
-				double p, q;
-				if (fApB >= 0) {
-					p=Math.exp(-fApB)/(1.0+Math.exp(-fApB));
-					q=1.0/(1.0+Math.exp(-fApB));
-				} else {
-					p=1.0/(1.0+Math.exp(fApB));
-					q=Math.exp(fApB)/(1.0+Math.exp(fApB));
-				}
-				double d2=p*q;
-				h11 += decisionValues[i]*decisionValues[i]*d2;
-				h22 += d2;
-				h21 += decisionValues[i]*d2;
-				double d1=t[i]-p;
-				g1 += decisionValues[i]*d1;
-				g2 += d1;
-			}
-			
-			if( Math.abs(g1)<1e-5 && Math.abs(g2)<1e-5 )
-				break;
-			
-			double det=h11*h22-h21*h21;
-			double dA=-(h22*g1-h21*g2)/det;
-			double dB=-(-h21*g1+h11*g2)/det;
-			double gd=g1*dA+g2*dB;
-			double stepsize=1;
-			
-			while( stepsize >= minimumStepsize ) {
-				double newA = a+stepsize*dA;
-				double newB = b+stepsize*dB;
-				double newf=0.0;
-				
-				for( int i=1; i<n; i++ ) {
-					double fApB=decisionValues[i]*newA+newB;
-					if( fApB >= 0 )
-						newf += t[i]*fApB+Math.log(1+Math.exp(-fApB));
-					else
-						newf += (t[i]-1)*fApB+Math.log(1+Math.exp(fApB));
-				}
-				
-				if( newf<f+0.0001*stepsize*gd ) {
-					a = newA;
-					b = newB;
-					f = newf;
-					break;
-				} else {
-					stepsize /= 2.0;
-				}
-			}
-			
-			if (stepsize < minimumStepsize) {
-				Logger logger = Logger.getLogger(LinWengPlatt.class.getName());
-				logger.fine("line search failure");
-				break;
-			}
-		}
-		
-		if( iterations >= maxIterations )
-			throw new ConvergenceFailure("Reaching maximum iterations");
-		
-		return new Sigmoid(a,b);
-	}
-
-	
-	public static class Sigmoid implements Serializable {
-
-		private static final long serialVersionUID = 3780856549630884460L;
-
-		public Sigmoid(double A, double B) {
-			this.A = A;
-			this.B = B;
-		}
-		
-		public double evaluate(double v) {
-			return 1 / (1 + Math.exp(A*v + B));
-		}
-		
-		public double getA() {
-			return A;
-		}
-		
-		public double getB() {
-			return B;
-		}
-		
-		@Override
-		public String toString() {
-			if( B < 0 ) 
-				return String.format("1 / (1 + exp(%.3f*x - %.3f))", A, -B);
-			else
-				return String.format("1 / (1 + exp(%.3f*x + %.3f))", A, B);
-		}
-		
-		private double A;
-		private double B;
-	}
-	
-	public static class ConvergenceFailure extends Exception {
-
-		private static final long serialVersionUID = -7570320408478887106L;
-
-		public ConvergenceFailure(String message) {
-			super(message);
-		}
-		
 	}
 
 	private static TrainingInstance parseTI(String line) throws IOException, CleartkException {
