@@ -31,12 +31,11 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.CASException;
 import org.apache.uima.collection.CollectionException;
 import org.apache.uima.collection.CollectionReader;
-import org.apache.uima.collection.CollectionReader_ImplBase;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.pear.util.FileUtil;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -46,8 +45,8 @@ import org.apache.uima.util.ProgressImpl;
 import org.cleartk.CleartkComponents;
 import org.cleartk.ViewNames;
 import org.cleartk.test.util.Files;
+import org.uimafit.component.JCasCollectionReader_ImplBase;
 import org.uimafit.component.ViewCreatorAnnotator;
-import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.SofaCapability;
 import org.uimafit.factory.CollectionReaderFactory;
@@ -69,7 +68,7 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * @author Philip Ogren
  */
 @SofaCapability(outputSofas=ViewNames.URI)
-public class FilesCollectionReader extends CollectionReader_ImplBase {
+public class FilesCollectionReader extends JCasCollectionReader_ImplBase {
 
 	public static CollectionReader getCollectionReader(String fileOrDir)
 	throws ResourceInitializationException {
@@ -150,10 +149,7 @@ public class FilesCollectionReader extends CollectionReader_ImplBase {
 	private String[] fileNames;
 
 	@Override
-	public void initialize() throws ResourceInitializationException {
-		super.initialize();
-		ConfigurationParameterInitializer.initialize(this, getUimaContext());
-
+	public void initialize(UimaContext context) throws ResourceInitializationException {
 		// raise an exception if the root file does not exist
 		if (!this.rootFile.exists()) {
 			String format = "file or directory %s does not exist";
@@ -201,18 +197,15 @@ public class FilesCollectionReader extends CollectionReader_ImplBase {
 
 	}
 
-	public void getNext(CAS cas) throws IOException, CollectionException {
+	public void getNext(JCas jCas) throws IOException, CollectionException {
 		// get a JCas object
 		JCas view;
 		try {
-			view = ViewCreatorAnnotator.createViewSafely(cas.getJCas(), this.viewName);
+			view = ViewCreatorAnnotator.createViewSafely(jCas, this.viewName);
 		}
 		catch (AnalysisEngineProcessException e) {
 			throw new CollectionException(e);
 		}
-		catch (CASException e) {
-			throw new CollectionException(e);
-		} 
 
 		// get the next file in the iterator
 		File file = this.files.next();
@@ -227,7 +220,7 @@ public class FilesCollectionReader extends CollectionReader_ImplBase {
 		}
 
 		// set the document URI
-		ViewURIUtil.setURI(cas, file.toURI().toString());
+		ViewURIUtil.setURI(jCas, file.toURI().toString());
 
 		completed++;
 	}

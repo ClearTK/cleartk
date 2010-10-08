@@ -31,7 +31,6 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
 
 /**
@@ -67,7 +66,6 @@ public class DefaultChunkLabeler extends ChunkLabeler_ImplBase {
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
-		ConfigurationParameterInitializer.initialize(this, context);
 		
 		if(chunkLabelFeatureName != null) {
 			chunkLabelFeatureName = chunkAnnotationClass.getCanonicalName() + ":" + chunkLabelFeatureName;

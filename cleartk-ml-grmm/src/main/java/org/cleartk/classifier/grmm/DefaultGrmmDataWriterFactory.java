@@ -37,7 +37,6 @@ import org.cleartk.classifier.encoder.features.NumberEncoder;
 import org.cleartk.classifier.encoder.features.StringEncoder;
 import org.cleartk.classifier.encoder.outcome.StringArrayToStringArrayEncoder;
 import org.cleartk.classifier.jar.JarSequentialDataWriterFactory;
-import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 
@@ -67,7 +66,6 @@ public class DefaultGrmmDataWriterFactory extends
 	public void initialize(UimaContext uimaContext)
 			throws ResourceInitializationException {
 		super.initialize(uimaContext);
-		ConfigurationParameterInitializer.initialize(this, uimaContext);
 	}
 
 	public SequentialDataWriter<String[]> createSequentialDataWriter()

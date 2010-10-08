@@ -28,7 +28,6 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
 import org.apache.uima.UimaContext;
-import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -36,7 +35,7 @@ import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.ViewURIUtil;
-import org.uimafit.component.initialize.ConfigurationParameterInitializer;
+import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 
@@ -64,7 +63,6 @@ public class ExamplePOSPlainTextWriter extends JCasAnnotator_ImplBase {
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
-		ConfigurationParameterInitializer.initialize(this, context);
 		this.outputDir = new File(outputDirectoryName);
 		if (!this.outputDir.exists()) {
 			this.outputDir.mkdirs();

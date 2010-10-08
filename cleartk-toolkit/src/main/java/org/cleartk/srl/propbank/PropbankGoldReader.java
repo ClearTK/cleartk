@@ -31,10 +31,9 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.LinkedList;
 
-import org.apache.uima.cas.CAS;
+import org.apache.uima.UimaContext;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.collection.CollectionException;
-import org.apache.uima.collection.CollectionReader_ImplBase;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
@@ -45,7 +44,7 @@ import org.cleartk.corpus.penntreebank.PennTreebankReader;
 import org.cleartk.srl.propbank.util.Propbank;
 import org.cleartk.util.ListSpecification;
 import org.cleartk.util.ViewURIUtil;
-import org.uimafit.component.initialize.ConfigurationParameterInitializer;
+import org.uimafit.component.JCasCollectionReader_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.SofaCapability;
 import org.uimafit.factory.ConfigurationParameterFactory;
@@ -66,7 +65,7 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  */
 
 @SofaCapability(outputSofas= {ViewNames.PROPBANK, ViewNames.TREEBANK, ViewNames.URI})
-public class PropbankGoldReader extends CollectionReader_ImplBase {
+public class PropbankGoldReader extends JCasCollectionReader_ImplBase {
 	
 	public static final String PARAM_PROPBANK_FILE_NAME = ConfigurationParameterFactory.createConfigurationParameterName(PropbankGoldReader.class, "propbankFileName");
 
@@ -109,9 +108,7 @@ public class PropbankGoldReader extends CollectionReader_ImplBase {
 	protected ListSpecification wsjSpecification;
 
 	@Override
-	public void initialize() throws ResourceInitializationException {
-		ConfigurationParameterInitializer.initialize(this, getUimaContext());
-		
+	public void initialize(UimaContext context) throws ResourceInitializationException {
 		try {
 			this.wsjSpecification = new ListSpecification(wsjSections);
 
@@ -138,7 +135,6 @@ public class PropbankGoldReader extends CollectionReader_ImplBase {
 			Collections.sort(treebankFiles);
 			this.totalTreebankFiles = treebankFiles.size();
 			
-			super.initialize();
 		} catch (FileNotFoundException fnfe) {
 			throw new ResourceInitializationException(fnfe);
 		} catch (IOException ioe) {
@@ -156,17 +152,17 @@ public class PropbankGoldReader extends CollectionReader_ImplBase {
 	 * @throws IOException
 	 * @throws CollectionException
 	 */
-	public void getNext(CAS cas) throws IOException, CollectionException {
+	public void getNext(JCas jCas) throws IOException, CollectionException {
 		JCas tbView, pbView;
 		try {
-			tbView = cas.createView(ViewNames.TREEBANK).getJCas();
-			pbView = cas.createView(ViewNames.PROPBANK).getJCas();
+			tbView = jCas.createView(ViewNames.TREEBANK);
+			pbView = jCas.createView(ViewNames.PROPBANK);
 		} catch (CASException ce) {
 			throw new CollectionException(ce);
 		}
 
 		File treebankFile = treebankFiles.removeFirst();
-		ViewURIUtil.setURI(cas, treebankFile.getPath());
+		ViewURIUtil.setURI(jCas, treebankFile.getPath());
 
 		StringBuffer propbankText = new StringBuffer();
 

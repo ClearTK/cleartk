@@ -28,10 +28,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
+import org.uimafit.component.JCasAnnotator_ImplBase;
 
 /**
  * <br>Copyright (c) 2009, Regents of the University of Colorado 

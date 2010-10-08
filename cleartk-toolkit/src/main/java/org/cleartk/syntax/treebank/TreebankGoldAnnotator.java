@@ -26,7 +26,6 @@ package org.cleartk.syntax.treebank;
 import java.util.List;
 
 import org.apache.uima.UimaContext;
-import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CASException;
@@ -40,7 +39,7 @@ import org.cleartk.syntax.treebank.util.TreebankFormatParser;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.UIMAUtil;
-import org.uimafit.component.initialize.ConfigurationParameterInitializer;
+import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.SofaCapability;
 import org.uimafit.factory.ConfigurationParameterFactory;
@@ -88,7 +87,6 @@ public class TreebankGoldAnnotator extends JCasAnnotator_ImplBase {
 
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-		ConfigurationParameterInitializer.initialize(this, context);
 		super.initialize(context);
 	}
 

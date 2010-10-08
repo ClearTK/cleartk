@@ -29,11 +29,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.uima.cas.CAS;
+import org.apache.uima.UimaContext;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.collection.CollectionException;
 import org.apache.uima.collection.CollectionReader;
-import org.apache.uima.collection.CollectionReader_ImplBase;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.pear.util.FileUtil;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -50,7 +49,7 @@ import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.ViewURIUtil;
 import org.jdom.JDOMException;
-import org.uimafit.component.initialize.ConfigurationParameterInitializer;
+import org.uimafit.component.JCasCollectionReader_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.SofaCapability;
 import org.uimafit.factory.CollectionReaderFactory;
@@ -67,7 +66,7 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * @see GeniaPOSParser
  */
 @SofaCapability(outputSofas = ViewNames.URI)
-public class GeniaPosGoldReader extends CollectionReader_ImplBase {
+public class GeniaPosGoldReader extends JCasCollectionReader_ImplBase {
 
 	public static final String PARAM_GENIA_CORPUS_FILE = ConfigurationParameterFactory
 			.createConfigurationParameterName(GeniaPosGoldReader.class, "geniaCorpusFile");
@@ -111,9 +110,8 @@ public class GeniaPosGoldReader extends CollectionReader_ImplBase {
 	private int progress = 0;
 
 	@Override
-	public void initialize() throws ResourceInitializationException {
-		ConfigurationParameterInitializer.initialize(this, getUimaContext());
-
+	public void initialize(UimaContext context) throws ResourceInitializationException {
+		
 		articleIds = new HashSet<String>();
 
 		try {
@@ -139,11 +137,11 @@ public class GeniaPosGoldReader extends CollectionReader_ImplBase {
 		}
 	}
 
-	public void getNext(CAS cas) throws IOException, CollectionException {
+	public void getNext(JCas jCas) throws IOException, CollectionException {
 		if (!hasNext()) throw new CollectionException("Should not be calling getNext() because hasNext returns false",
 				null);
 		try {
-			JCas annotationsView = cas.getJCas().getView(ViewNames.DEFAULT);
+			JCas annotationsView = jCas.getView(ViewNames.DEFAULT);
 			String text = parse.getText();
 			annotationsView.setDocumentText(text);
 
@@ -166,9 +164,9 @@ public class GeniaPosGoldReader extends CollectionReader_ImplBase {
 				}
 			}
 
-			ViewURIUtil.setURI(cas, parse.getMedline());
+			ViewURIUtil.setURI(jCas, parse.getMedline());
 
-			JCas geniaView = cas.getJCas().createView(ViewNames.GENIA_POS);
+			JCas geniaView = jCas.createView(ViewNames.GENIA_POS);
 			geniaView.setDocumentText(parse.getXml());
 
 			parse = null;

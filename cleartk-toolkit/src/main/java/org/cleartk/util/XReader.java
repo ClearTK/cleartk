@@ -27,14 +27,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-import org.apache.uima.cas.CAS;
+import org.apache.uima.UimaContext;
 import org.apache.uima.cas.impl.XCASDeserializer;
 import org.apache.uima.cas.impl.XCASSerializer;
 import org.apache.uima.cas.impl.XmiCasDeserializer;
 import org.apache.uima.cas.impl.XmiCasSerializer;
 import org.apache.uima.collection.CollectionException;
+import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.xml.sax.SAXException;
@@ -60,24 +60,23 @@ public class XReader extends FilesCollectionReader {
 	private String xmlScheme;
 
 	@Override
-	public void initialize() throws ResourceInitializationException {
-		super.initialize();
-		ConfigurationParameterInitializer.initialize(this, getUimaContext());
+	public void initialize(UimaContext context) throws ResourceInitializationException {
+		super.initialize(context);
 
 		if (!xmlScheme.equals(XMI) && !xmlScheme.equals(XCAS)) 
 			throw new ResourceInitializationException(new IllegalArgumentException(String.format(
 				"parameter '%1$s' must be either '%2$s' or '%3$s' or left empty.", PARAM_XML_SCHEME, XMI, XCAS)));
 	}
 
-	public void getNext(CAS cas) throws IOException, CollectionException {
+	public void getNext(JCas jCas) throws IOException, CollectionException {
 		File currentFile = this.files.next();
 		FileInputStream inputStream = new FileInputStream(currentFile);
 		
 		try {
 			if(xmlScheme.equals(XMI))
-				XmiCasDeserializer.deserialize(inputStream, cas);
+				XmiCasDeserializer.deserialize(inputStream, jCas.getCas());
 			else
-				XCASDeserializer.deserialize(inputStream, cas);
+				XCASDeserializer.deserialize(inputStream, jCas.getCas());
 		}
 		catch (SAXException e) {
 			throw new CollectionException(e);

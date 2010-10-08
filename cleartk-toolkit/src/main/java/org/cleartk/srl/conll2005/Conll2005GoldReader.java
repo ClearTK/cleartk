@@ -31,11 +31,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.zip.GZIPInputStream;
 
-import org.apache.uima.cas.CAS;
+import org.apache.uima.UimaContext;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.collection.CollectionException;
 import org.apache.uima.collection.CollectionReader;
-import org.apache.uima.collection.CollectionReader_ImplBase;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Progress;
@@ -43,7 +42,7 @@ import org.apache.uima.util.ProgressImpl;
 import org.cleartk.CleartkComponents;
 import org.cleartk.ViewNames;
 import org.cleartk.util.ViewURIUtil;
-import org.uimafit.component.initialize.ConfigurationParameterInitializer;
+import org.uimafit.component.JCasCollectionReader_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.SofaCapability;
 import org.uimafit.factory.CollectionReaderFactory;
@@ -55,7 +54,7 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * All rights reserved.
  */
 @SofaCapability(outputSofas = { ViewNames.CONLL_2005, ViewNames.URI})
-public class Conll2005GoldReader extends CollectionReader_ImplBase {
+public class Conll2005GoldReader extends JCasCollectionReader_ImplBase {
 
 	public static CollectionReader getCollectionReader(String conll2005DataFile)
 			throws ResourceInitializationException {
@@ -75,8 +74,7 @@ public class Conll2005GoldReader extends CollectionReader_ImplBase {
 	private int totalDocuments;
 
 	@Override
-	public void initialize() throws ResourceInitializationException {
-		ConfigurationParameterInitializer.initialize(this, this.getUimaContext());
+	public void initialize(UimaContext context) throws ResourceInitializationException {
 		try {
 			this.reader = this.getBufferedReader();
 			String line;
@@ -99,7 +97,6 @@ public class Conll2005GoldReader extends CollectionReader_ImplBase {
 			this.reader = this.getBufferedReader();
 			documentNumber = 0;
 
-			super.initialize();
 		} catch (IOException e) {
 			throw new ResourceInitializationException(e);
 		}
@@ -116,9 +113,9 @@ public class Conll2005GoldReader extends CollectionReader_ImplBase {
 		return new BufferedReader(new InputStreamReader(in));
 	}
 
-	public void getNext(CAS cas) throws IOException, CollectionException {
+	public void getNext(JCas jCas) throws IOException, CollectionException {
 		try {
-			JCas conllView = cas.createView(ViewNames.CONLL_2005).getJCas();
+			JCas conllView = jCas.createView(ViewNames.CONLL_2005);
 
 			String lineBuffer;
 			StringBuffer docBuffer = new StringBuffer();
@@ -145,7 +142,7 @@ public class Conll2005GoldReader extends CollectionReader_ImplBase {
 			}
 
 			conllView.setSofaDataString(docBuffer.toString(), "text/plain");
-			ViewURIUtil.setURI(cas, String.valueOf(documentNumber));
+			ViewURIUtil.setURI(jCas, String.valueOf(documentNumber));
 		} catch (CASException e) {
 			throw new CollectionException(e);
 		}

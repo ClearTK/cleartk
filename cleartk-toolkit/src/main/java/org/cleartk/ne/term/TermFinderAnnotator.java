@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.UimaContext;
-import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
@@ -45,7 +44,7 @@ import org.cleartk.ne.term.util.TermMatch;
 import org.cleartk.token.util.PennTreebankTokenizer;
 import org.cleartk.token.util.Token;
 import org.cleartk.util.UIMAUtil;
-import org.uimafit.component.initialize.ConfigurationParameterInitializer;
+import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.InitializableFactory;
@@ -125,7 +124,7 @@ public class TermFinderAnnotator extends JCasAnnotator_ImplBase {
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		try {
-			ConfigurationParameterInitializer.initialize(this, context);
+			super.initialize(context);
 			
 			// load the term lists
 			BufferedReader input = new BufferedReader(new FileReader(termListFileNamesFileName));

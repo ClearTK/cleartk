@@ -37,14 +37,13 @@ import opennlp.tools.sentdetect.SentenceDetector;
 import opennlp.tools.sentdetect.SentenceDetectorME;
 
 import org.apache.uima.UimaContext;
-import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkComponents;
-import org.uimafit.component.initialize.ConfigurationParameterInitializer;
+import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.InitializableFactory;
@@ -99,7 +98,6 @@ public class OpenNLPSentenceSegmenter extends JCasAnnotator_ImplBase {
 	public void initialize(UimaContext uimaContext) throws ResourceInitializationException
 	{
 		super.initialize(uimaContext);
-		ConfigurationParameterInitializer.initialize(this, uimaContext);
 		
 		try {
 			sentenceClass = InitializableFactory.getClass(sentenceTypeName, Annotation.class);

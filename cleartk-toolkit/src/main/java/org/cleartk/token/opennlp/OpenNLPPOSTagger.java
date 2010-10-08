@@ -36,7 +36,6 @@ import opennlp.tools.postag.POSTagger;
 import opennlp.tools.postag.POSTaggerME;
 
 import org.apache.uima.UimaContext;
-import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.FSIterator;
@@ -46,7 +45,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkComponents;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
-import org.uimafit.component.initialize.ConfigurationParameterInitializer;
+import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
@@ -96,7 +95,6 @@ public class OpenNLPPOSTagger extends JCasAnnotator_ImplBase {
 
 	public void initialize(UimaContext uimaContext) throws ResourceInitializationException {
 		super.initialize(uimaContext);
-		ConfigurationParameterInitializer.initialize(this, uimaContext);
 		try {
 			MaxentModel model = new SuffixSensitiveGISModelReader(new File(postagModelFile)).getModel();
 			POSDictionary posDictionary = new POSDictionary(postagDictionaryFile, caseSensitive);

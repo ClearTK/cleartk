@@ -32,19 +32,18 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
 
+import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.CASException;
 import org.apache.uima.collection.CollectionException;
-import org.apache.uima.collection.CollectionReader_ImplBase;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 import org.cleartk.ViewNames;
 import org.cleartk.test.util.Files;
+import org.uimafit.component.JCasCollectionReader_ImplBase;
 import org.uimafit.component.ViewCreatorAnnotator;
-import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.SofaCapability;
 import org.uimafit.factory.ConfigurationParameterFactory;
@@ -83,7 +82,7 @@ import org.uimafit.factory.initializable.InitializableFactory;
  * @author Philip Ogren
  */
 @SofaCapability(outputSofas=ViewNames.URI)
-public class LineReader extends CollectionReader_ImplBase {
+public class LineReader extends JCasCollectionReader_ImplBase {
 
 	public static final String PARAM_FILE_OR_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
 			LineReader.class, "fileOrDirectoryName");
@@ -141,10 +140,8 @@ public class LineReader extends CollectionReader_ImplBase {
 	LineHandler lineHandler;
 
 	@Override
-	public void initialize() throws ResourceInitializationException {
-		ConfigurationParameterInitializer.initialize(this, getUimaContext());
+	public void initialize(UimaContext context) throws ResourceInitializationException {
 		try {
-		
 			this.rootFile = new File(fileOrDirectoryName);
 
 			// raise an exception if the root file does not exist
@@ -173,19 +170,16 @@ public class LineReader extends CollectionReader_ImplBase {
 		}
 	}
 
-	public void getNext(CAS cas) throws IOException, CollectionException {
+	public void getNext(JCas jCas) throws IOException, CollectionException {
 		hasNext();
 
 		JCas view;
 		try {
-			view = ViewCreatorAnnotator.createViewSafely(cas.getJCas(), this.viewName);
+			view = ViewCreatorAnnotator.createViewSafely(jCas, this.viewName);
 		}
 		catch (AnalysisEngineProcessException e) {
 			throw new CollectionException(e);
 		}
-		catch (CASException e) {
-			throw new CollectionException(e);
-		} 
 
 		lineHandler.handleLine(view, rootFile, file, line);
 

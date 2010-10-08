@@ -28,12 +28,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.UimaContext;
-import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
 import org.cleartk.util.ReflectionUtil;
-import org.uimafit.component.initialize.ConfigurationParameterInitializer;
+import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.Initializable;
@@ -67,7 +66,6 @@ public abstract class CleartkSequentialAnnotator<OUTCOME_TYPE> extends JCasAnnot
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
-		ConfigurationParameterInitializer.initialize(this, context);
 
 		if (sequentialDataWriterFactoryClassName != null) {
 			// create the factory and instantiate the data writer

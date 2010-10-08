@@ -28,7 +28,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import org.apache.uima.UimaContext;
-import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.FSIterator;
@@ -40,7 +39,7 @@ import org.cleartk.CleartkComponents;
 import org.cleartk.token.util.Token;
 import org.cleartk.token.util.Tokenizer;
 import org.cleartk.util.UIMAUtil;
-import org.uimafit.component.initialize.ConfigurationParameterInitializer;
+import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.InitializableFactory;
@@ -106,7 +105,6 @@ public class TokenAnnotator extends JCasAnnotator_ImplBase {
 	public void initialize(UimaContext uimaContext) throws ResourceInitializationException {
 		try {
 			super.initialize(uimaContext);
-			ConfigurationParameterInitializer.initialize(this, uimaContext);
 			tokenizer = 	InitializableFactory.create(uimaContext, tokenizerName, Tokenizer.class);
 			tokenClass = InitializableFactory.getClass(tokenTypeName, Annotation.class);
 			tokenConstructor = tokenClass.getConstructor(new Class[] { JCas.class, Integer.TYPE, Integer.TYPE });

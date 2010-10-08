@@ -26,7 +26,6 @@ package org.cleartk.token.snowball;
 import net.sf.snowball.SnowballProgram;
 
 import org.apache.uima.UimaContext;
-import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
@@ -35,7 +34,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
-import org.uimafit.component.initialize.ConfigurationParameterInitializer;
+import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.InitializableFactory;
@@ -73,7 +72,7 @@ public abstract class SnowballStemmer<TOKEN_TYPE extends Annotation> extends JCa
 
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
-		ConfigurationParameterInitializer.initialize(this, context);
+		super.initialize(context);
 		String className = String.format("net.sf.snowball.ext.%sStemmer", stemmerName);
 		this.stemmer = InitializableFactory.create(null, className, SnowballProgram.class);
 		

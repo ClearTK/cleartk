@@ -32,10 +32,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.CASException;
+import org.apache.uima.UimaContext;
 import org.apache.uima.collection.CollectionException;
-import org.apache.uima.collection.CollectionReader_ImplBase;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -49,7 +47,7 @@ import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.UIMAUtil;
 import org.cleartk.util.ViewURIUtil;
-import org.uimafit.component.initialize.ConfigurationParameterInitializer;
+import org.uimafit.component.JCasCollectionReader_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.SofaCapability;
 import org.uimafit.factory.ConfigurationParameterFactory;
@@ -68,7 +66,7 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * 
  */
 @SofaCapability(outputSofas=ViewNames.URI)
-public class Conll2003GoldReader extends CollectionReader_ImplBase
+public class Conll2003GoldReader extends JCasCollectionReader_ImplBase
 {
 	public static final String PARAM_DATA_FILE_NAME = ConfigurationParameterFactory.createConfigurationParameterName(Conll2003GoldReader.class, "dataFileName");
 	@ConfigurationParameter(
@@ -93,9 +91,8 @@ public class Conll2003GoldReader extends CollectionReader_ImplBase
 	
 	int entityIdIndex = 0;
 	
-	public void initialize() throws ResourceInitializationException
+	public void initialize(UimaContext context) throws ResourceInitializationException
 	{
-		ConfigurationParameterInitializer.initialize(this, getUimaContext());
 		
 		try
 		{
@@ -117,8 +114,6 @@ public class Conll2003GoldReader extends CollectionReader_ImplBase
 			sentenceChunks = new ArrayList<Chunk>();
 			chunkTokens = new ArrayList<Token>();
 			namedEntityTokens = new ArrayList<Token>();
-			
-			super.initialize();
 		}
 		catch(FileNotFoundException fnfe)
 		{
@@ -146,12 +141,8 @@ public class Conll2003GoldReader extends CollectionReader_ImplBase
 	String currentNamedEntityType; //the type of the current named entity (including the I- or B- prefix)
 	List<Token> namedEntityTokens; //the tokens for the current named entity
 	
-	public void getNext(CAS cas) throws IOException, CollectionException
+	public void getNext(JCas jCas) throws IOException, CollectionException
 	{
-		try
-		{
-			JCas jCas = cas.getJCas();
-			
 			//read in the data for the next document from the reader
 			documentData = new ArrayList<String>();
 			String line;
@@ -232,14 +223,8 @@ public class Conll2003GoldReader extends CollectionReader_ImplBase
 			jCas.setDocumentText(documentText.toString());
 			
 			String identifier = String.format("%s#%s", dataFileName, documentIndex);
-			ViewURIUtil.setURI(cas, identifier);
+			ViewURIUtil.setURI(jCas, identifier);
 			++documentIndex;
-
-		}
-		catch(CASException ce)
-		{
-			throw new CollectionException(ce);
-		}
 
 	}
 

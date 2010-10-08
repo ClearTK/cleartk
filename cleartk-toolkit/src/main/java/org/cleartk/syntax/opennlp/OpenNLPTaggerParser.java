@@ -40,7 +40,6 @@ import opennlp.tools.parser.chunking.Parser;
 import opennlp.tools.util.Span;
 
 import org.apache.uima.UimaContext;
-import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.FeatureStructure;
@@ -53,7 +52,7 @@ import org.cleartk.syntax.treebank.type.TreebankNode;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.uimafit.component.initialize.ConfigurationParameterInitializer;
+import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 
@@ -247,8 +246,6 @@ public class OpenNLPTaggerParser extends JCasAnnotator_ImplBase {
 	public void initialize(UimaContext ctx) throws ResourceInitializationException {
 		super.initialize(ctx);
 
-		ConfigurationParameterInitializer.initialize(this, ctx);
-		
 		try {
 			MaxentModel buildModel = new SuffixSensitiveGISModelReader(new File(buildModelFile)).getModel();
 			MaxentModel checkModel = new SuffixSensitiveGISModelReader(new File(checkModelFile)).getModel();

@@ -31,7 +31,6 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.apache.uima.UimaContext;
-import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
@@ -46,7 +45,7 @@ import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.ListSpecification;
 import org.cleartk.util.UIMAUtil;
 import org.cleartk.util.ViewURIUtil;
-import org.uimafit.component.initialize.ConfigurationParameterInitializer;
+import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 
@@ -86,7 +85,6 @@ public class SRLWriter extends JCasAnnotator_ImplBase {
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
-		ConfigurationParameterInitializer.initialize(this, context);
 		if (!this.outputFile.getParentFile().exists()) {
 			this.outputFile.getParentFile().mkdirs();
 		}

@@ -29,7 +29,6 @@ import java.io.FileNotFoundException;
 import java.io.PrintStream;
 
 import org.apache.uima.UimaContext;
-import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
@@ -39,7 +38,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
 import org.cleartk.util.ViewURIUtil;
-import org.uimafit.component.initialize.ConfigurationParameterInitializer;
+import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.InitializableFactory;
@@ -214,8 +213,6 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		try {
 			super.initialize(context);
-
-			ConfigurationParameterInitializer.initialize(this, context);
 			
 			if ((outputDirectoryName == null && outputFileName == null) ||
 				(outputDirectoryName != null && outputFileName != null)) {
