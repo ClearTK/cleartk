@@ -59,16 +59,16 @@ public class GeniaParse {
 		return Collections.unmodifiableList(posTags);
 	}
 	
-	public void addPosTags(List<GeniaTag> posTags) {
-		this.posTags.addAll(posTags);
+	public void addPosTags(List<GeniaTag> pTags) {
+		this.posTags.addAll(pTags);
 	}
 	
 	public List<GeniaTag> getSemTags() {
 		return Collections.unmodifiableList(semTags);
 	}
 	
-	public void addSemTags(List<GeniaTag> semTags) {
-		this.semTags.addAll(semTags);
+	public void addSemTags(List<GeniaTag> sTags) {
+		this.semTags.addAll(sTags);
 	}
 	
 	public String getText() {
