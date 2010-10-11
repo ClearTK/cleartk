@@ -51,7 +51,7 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
 public class BinaryLIBLINEARClassifier extends JarClassifier<Boolean,Boolean,FeatureVector> {
 	
 	public static final String MODEL_NAME = "model.liblinear";
-	LIBLINEARModel model;
+	protected LIBLINEARModel model;
 
 	public BinaryLIBLINEARClassifier(JarFile modelFile) throws IOException, CleartkException {
 		super(modelFile);
