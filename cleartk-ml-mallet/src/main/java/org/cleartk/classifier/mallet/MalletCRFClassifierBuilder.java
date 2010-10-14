@@ -42,12 +42,10 @@ import cc.mallet.fst.SimpleTagger;
 public class MalletCRFClassifierBuilder implements ClassifierBuilder<String> {
 
 	public void train(File dir, String[] args) throws Exception {
-		String[] malletArgs = new String[args.length + 7];
+		String[] malletArgs = new String[args.length + 5];
 		System.arraycopy(args, 0, malletArgs, 0, args.length);
-		malletArgs[malletArgs.length - 7] = "--train";
-		malletArgs[malletArgs.length - 6] = "true";
-		malletArgs[malletArgs.length - 5] = "--test";
-		malletArgs[malletArgs.length - 4] = "lab";
+		malletArgs[malletArgs.length - 5] = "--train";
+		malletArgs[malletArgs.length - 4] = "true";
 		malletArgs[malletArgs.length - 3] = "--model-file";
 		malletArgs[malletArgs.length - 2] = new File(dir, "model.malletcrf").getPath();
 		malletArgs[malletArgs.length - 1] = new File(dir, "training-data.malletcrf").getPath();
