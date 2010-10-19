@@ -27,11 +27,11 @@ POSSIBILITY OF SUCH DAMAGE.
   <version>1.0</version>
   <vendor/>
   <imports>
-    <import name="org.cleartk.corpus.timeml.type.Anchor"/>
+    <import name="org.cleartk.temporal.timeml.type.Anchor"/>
   </imports>
   <types>
     <typeDescription>
-      <name>org.cleartk.corpus.timeml.type.TemporalLink</name>
+      <name>org.cleartk.temporal.timeml.type.TemporalLink</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
@@ -43,12 +43,12 @@ POSSIBILITY OF SUCH DAMAGE.
         <featureDescription>
           <name>source</name>
           <description/>
-          <rangeTypeName>org.cleartk.corpus.timeml.type.Anchor</rangeTypeName>
+          <rangeTypeName>org.cleartk.temporal.timeml.type.Anchor</rangeTypeName>
         </featureDescription>
         <featureDescription>
           <name>target</name>
           <description/>
-          <rangeTypeName>org.cleartk.corpus.timeml.type.Anchor</rangeTypeName>
+          <rangeTypeName>org.cleartk.temporal.timeml.type.Anchor</rangeTypeName>
         </featureDescription>
         <featureDescription>
           <name>id</name>

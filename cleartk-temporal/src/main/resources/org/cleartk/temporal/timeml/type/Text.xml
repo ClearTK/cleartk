@@ -28,7 +28,7 @@ POSSIBILITY OF SUCH DAMAGE.
   <vendor/>
   <types>
     <typeDescription>
-      <name>org.cleartk.corpus.timeml.type.Text</name>
+      <name>org.cleartk.temporal.timeml.type.Text</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
     </typeDescription>

@@ -29,11 +29,13 @@ import java.io.IOException;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.Level;
 import org.apache.uima.util.Logger;
+import org.cleartk.ViewNames;
 import org.cleartk.classifier.jar.Train;
-import org.cleartk.temporal.timeml.PlainTextTLINKGoldAnnotator;
-import org.cleartk.temporal.timeml.TimeMLGoldAnnotator;
-import org.cleartk.temporal.timeml.TreebankAligningAnnotator;
-import org.cleartk.util.ViewNames;
+import org.cleartk.corpus.timeml.PlainTextTLINKGoldAnnotator;
+import org.cleartk.corpus.timeml.TimeMLGoldAnnotator;
+import org.cleartk.corpus.timeml.TreebankAligningAnnotator;
+import org.cleartk.token.snowball.DefaultSnowballStemmer;
+import org.cleartk.util.FilesCollectionReader;
 import org.uimafit.factory.UimaContextFactory;
 import org.uimafit.pipeline.SimplePipeline;
 

@@ -1,5 +1,5 @@
 /** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+ * Copyright (c) 2010, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -20,8 +20,8 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
- */
-package org.cleartk.temporal;
+*/
+package org.cleartk.temporal.timeml;
 
 import java.io.File;
 
@@ -29,7 +29,6 @@ import org.apache.uima.util.Level;
 import org.apache.uima.util.Logger;
 import org.cleartk.corpus.timeml.TimeMLWriter;
 import org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter;
-import org.cleartk.syntax.opennlp.OpenNLPTreebankParser;
 import org.cleartk.token.TokenAnnotator;
 import org.cleartk.token.opennlp.OpenNLPPOSTagger;
 import org.cleartk.token.snowball.DefaultSnowballStemmer;
@@ -38,50 +37,48 @@ import org.uimafit.factory.UimaContextFactory;
 import org.uimafit.pipeline.SimplePipeline;
 
 /**
- * <br>
- * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
- * All rights reserved.
+ * Annotate a file or set of files with TimeML events.
  * 
  * @author Steven Bethard
  */
-public class VerbClauseTemporalAnnotate {
+public class EventAnnotate {
 
-	private static void error(String message) throws Exception {
-		Logger logger = UimaContextFactory.createUimaContext().getLogger();
-		logger.log(Level.SEVERE, String.format("%s\nusage: " +
-				"VerbClauseTemporalAnnotate input-file-or-dir [output-dir]", message));
-		System.exit(1);
-	}
+  private static void error(String message) throws Exception {
+    Logger logger = UimaContextFactory.createUimaContext().getLogger();
+    logger.log(Level.SEVERE, String.format("%s\nusage: " +
+        "EventAnnotate input-file-or-dir [output-dir]", message));
+    System.exit(1);
+  }
 
-	public static void main(String[] args) throws Exception {
-		// check arguments
-		if (args.length != 1 && args.length != 2) {
-			error("wrong number of arguments");
-		} else if (!new File(args[0]).exists()) {
-			error("file or directory not found: " + args[0]);
-		}
-		
-		// parse arguments
-		String inputFileOrDir = args[0];
-		File outputDir;
-		if (args.length == 2) {
-			outputDir = new File(args[1]);
-		} else {
-			outputDir = new File(".");
-		}
-		if (!outputDir.exists()) {
-			outputDir.mkdirs();
-		}
-		
-		// run the components on the selected documents
-		SimplePipeline.runPipeline(
-				FilesCollectionReader.getCollectionReader(inputFileOrDir),
-				OpenNLPSentenceSegmenter.getDescription(),
-				TokenAnnotator.getDescription(), 
-				OpenNLPPOSTagger.getDescription(),
-				DefaultSnowballStemmer.getDescription("English"),
-				OpenNLPTreebankParser.getDescription(),
-				VerbClauseTemporalAnnotator.getAnnotatorDescription(),
-				TimeMLWriter.getDescription(outputDir.getPath()));
-	}
+  public static void main(String ... args) throws Exception {
+    // check arguments
+    if (args.length != 1 && args.length != 2) {
+      error("wrong number of arguments");
+    } else if (!new File(args[0]).exists()) {
+      error("file or directory not found: " + args[0]);
+    }
+    
+    // parse arguments
+    String inputFileOrDir = args[0];
+    File outputDir = new File(args.length == 2 ? args[1] : ".");
+    if (!outputDir.exists()) {
+      outputDir.mkdirs();
+    }
+
+    // run the components on the selected documents
+    SimplePipeline.runPipeline(
+        FilesCollectionReader.getCollectionReader(inputFileOrDir),
+        OpenNLPSentenceSegmenter.getDescription(),
+        TokenAnnotator.getDescription(), 
+        OpenNLPPOSTagger.getDescription(),
+        DefaultSnowballStemmer.getDescription("English"),
+        EventAnnotator.getAnnotatorDescription(),
+        EventTenseAnnotator.getAnnotatorDescription(),
+        EventAspectAnnotator.getAnnotatorDescription(),
+        EventClassAnnotator.getAnnotatorDescription(),
+        EventPolarityAnnotator.getAnnotatorDescription(),
+        EventModalityAnnotator.getAnnotatorDescription(),
+        TimeMLWriter.getDescription(outputDir.getPath()));
+  }
+
 }

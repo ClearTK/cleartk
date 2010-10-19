@@ -27,13 +27,13 @@ POSSIBILITY OF SUCH DAMAGE.
   <version>1.0</version>
   <vendor/>
   <imports>
-    <import name="org.cleartk.corpus.timeml.type.Anchor"/>
+    <import name="org.cleartk.temporal.timeml.type.Anchor"/>
   </imports>
   <types>
     <typeDescription>
-      <name>org.cleartk.corpus.timeml.type.Time</name>
+      <name>org.cleartk.temporal.timeml.type.Time</name>
       <description/>
-      <supertypeName>org.cleartk.corpus.timeml.type.Anchor</supertypeName>
+      <supertypeName>org.cleartk.temporal.timeml.type.Anchor</supertypeName>
       <features>
         <featureDescription>
           <name>timeType</name>
