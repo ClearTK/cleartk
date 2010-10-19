@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TimeML>
+President Bush had
+<EVENT eid="e1" class="OCCURRENCE" stem="sign" aspect="PERFECTIVE" tense="PAST" polarity="POS" pos="VERB">signed</EVENT>
+the bill into law within hours of its
+<EVENT eid="e2" class="OCCURRENCE" stem="enact" polarity="POS" pos="NOUN">enactment</EVENT> on
+<TIMEX3 tid="t1" type="DATE" value="2008-10-03" temporalFunction="false" functionInDocument="NONE">October 3</TIMEX3>,
+<EVENT eid="e3" class="OCCURRENCE" stem="create" aspect="PROGRESSIVE" polarity="POS" pos="VERB">creating</EVENT>
+a $700 billion Troubled Assets Relief Program to
+<EVENT eid="e4" class="OCCURRENCE" stem="purchase" tense="INFINITIVE" polarity="POS" pos="VERB">purchase</EVENT>
+<EVENT eid="e5" class="OCCURRENCE" stem="fail" aspect="PROGRESSIVE" polarity="POS" pos="VERB">failing</EVENT>
+bank assets.
+
+<TLINK lid="l1" relType="AFTER" eventID="e1" relatedToEvent="e2"/>
+<TLINK lid="l2" relType="IS_INCLUDED" eventID="e2" relatedToTime="t1"/>
+<TLINK lid="l3" relType="OVERLAP" eventID="e1" relatedToEvent="e3"/>
+<TLINK lid="l4" relType="BEFORE" eventID="e3" relatedToEvent="e4"/>
+<TLINK lid="l5" relType="OVERLAP" eventID="e3" relatedToEvent="e5"/>
+<TLINK lid="l5" relType="OVERLAP" timeID="t1" relatedToEvent="e5"/>
+</TimeML>
