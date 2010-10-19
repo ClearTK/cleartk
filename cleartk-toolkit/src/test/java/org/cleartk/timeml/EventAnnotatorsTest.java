@@ -36,7 +36,14 @@ import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.cleartk.ToolkitTestBase;
-import org.cleartk.corpus.timeml.type.Event;
+import org.cleartk.temporal.timeml.EventAnnotate;
+import org.cleartk.temporal.timeml.EventAnnotator;
+import org.cleartk.temporal.timeml.EventAspectAnnotator;
+import org.cleartk.temporal.timeml.EventClassAnnotator;
+import org.cleartk.temporal.timeml.EventModalityAnnotator;
+import org.cleartk.temporal.timeml.EventPolarityAnnotator;
+import org.cleartk.temporal.timeml.EventTenseAnnotator;
+import org.cleartk.temporal.timeml.type.Event;
 import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Test;
 

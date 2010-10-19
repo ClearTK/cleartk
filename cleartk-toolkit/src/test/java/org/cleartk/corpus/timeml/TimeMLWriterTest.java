@@ -39,6 +39,8 @@ import org.apache.uima.util.FileUtils;
 import org.cleartk.CleartkComponents;
 import org.cleartk.ToolkitTestBase;
 import org.cleartk.ViewNames;
+import org.cleartk.temporal.timeml.corpus.TimeMLGoldAnnotator;
+import org.cleartk.temporal.timeml.corpus.TimeMLWriter;
 import org.cleartk.util.FilesCollectionReader;
 import org.jdom.Attribute;
 import org.jdom.Element;
