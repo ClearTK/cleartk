@@ -23,8 +23,8 @@
  */
 package org.cleartk;
 
-import org.cleartk.test.util.Files;
 import org.cleartk.test.util.ParametersTestUtil;
+import org.cleartk.util.io.Files;
 import org.junit.Test;
 
 /**

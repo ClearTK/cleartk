@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.pear.util.FileUtil;
-import org.cleartk.test.util.Files;
+import org.cleartk.util.io.Files;
 import org.junit.Assert;
 import org.junit.Test;
 
