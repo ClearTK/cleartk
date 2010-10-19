@@ -40,7 +40,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
-import org.cleartk.ViewNames;
+import org.cleartk.util.ViewNames;
 import org.cleartk.util.ViewURIUtil;
 import org.jdom.Document;
 import org.jdom.Element;

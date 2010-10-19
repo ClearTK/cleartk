@@ -24,10 +24,10 @@
 
 package org.cleartk.example.pos;
 
-import org.cleartk.ViewNames;
 import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
 import org.cleartk.token.snowball.DefaultSnowballStemmer;
 import org.cleartk.util.FilesCollectionReader;
+import org.cleartk.util.ViewNames;
 import org.uimafit.pipeline.SimplePipeline;
 
 /**

@@ -43,7 +43,6 @@ import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 import org.cleartk.CleartkComponents;
-import org.cleartk.ViewNames;
 import org.cleartk.test.util.Files;
 import org.uimafit.component.JCasCollectionReader_ImplBase;
 import org.uimafit.component.ViewCreatorAnnotator;

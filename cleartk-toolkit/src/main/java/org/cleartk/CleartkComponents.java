@@ -277,13 +277,7 @@ public class CleartkComponents {
 				"SentenceSegmenter", "TokenAnnotator"), TYPE_SYSTEM_DESCRIPTION, TYPE_PRIORITIES, null, null);
 	}
 
-	public static String getParameterValue(String paramName, String defaultValue) {
-		String value = System.getProperty(paramName);
-		if (value == null) {
-			value = defaultValue;
-		}
-		return value;
-	}
+	
 
 	private static Object[] combineParams(Object[] oldParams, Object... newParams) {
 		Object[] combined = new Object[oldParams.length + newParams.length];
