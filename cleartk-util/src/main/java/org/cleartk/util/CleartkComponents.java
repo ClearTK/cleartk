@@ -65,7 +65,7 @@ public class CleartkComponents {
 						new String[] { DefaultOutcomeFeatureExtractor.class.getName() }));
 	}
 
-	public static <OUTCOME_TYPE> AnalysisEngineDescription createCleartkAnnotator(
+	public static <OUTCOME_TYPE> AnalysisEngineDescription createCleartkAnnotator (
 			Class<? extends CleartkAnnotator<OUTCOME_TYPE>> cleartkAnnotatorClass, 
 					TypeSystemDescription typeSystemDescription, String classifierJar, Object... configurationData)
 			throws ResourceInitializationException {
@@ -94,13 +94,6 @@ public class CleartkComponents {
 		}
 		return aed;
 
-	}
-
-	public static <OUTCOME_TYPE> AnalysisEngineDescription createCleartkAnnotator(
-			Class<? extends CleartkAnnotator<OUTCOME_TYPE>> cleartkAnnotatorClass,
-			Class<? extends DataWriterFactory<OUTCOME_TYPE>> dataWriterFactoryClass, String outputDir,
-			Object... configurationData) throws ResourceInitializationException {
-		return createCleartkAnnotator(cleartkAnnotatorClass, dataWriterFactoryClass, outputDir, null, configurationData);
 	}
 
 	public static <OUTCOME_TYPE> AnalysisEngineDescription createCleartkAnnotator(
