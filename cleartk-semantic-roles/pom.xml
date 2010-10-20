@@ -84,6 +84,12 @@
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
+			<artifactId>cleartk-syntax</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<optional>false</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-ml</artifactId>
 			<version>0.9.9-SNAPSHOT</version>
 			<optional>false</optional>
@@ -119,7 +125,7 @@
 				<configuration>
 					<mainClass>org.uimafit.util.JCasGenPomFriendly</mainClass>
 					<arguments>
-						<argument>file:${basedir}/src/main/resources/org/cleartk/syntax/TypeSystem.xml
+						<argument>file:${basedir}/src/main/resources/org/cleartk/srl/TypeSystem.xml
 						</argument>
 						<argument>${basedir}/src/main/java</argument>
 					</arguments>
