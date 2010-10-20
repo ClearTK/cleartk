@@ -1,5 +1,5 @@
  /** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+  * Copyright (c) 2010, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -21,56 +21,39 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
+
 package org.cleartk.util;
 
-import java.util.Iterator;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.jcas.JCas;
+import org.uimafit.component.xwriter.XWriterFileNamer;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
+ * <br>Copyright (c) 2010, Regents of the University of Colorado 
  * <br>All rights reserved.
-
  *
- * @author Philipp Wetzler
+ * @author Philip Ogren
  *
  */
 
-public class RangeSpecification implements Iterable<Integer> {
+public class ViewURIFileNamer implements XWriterFileNamer {
 
-	private int start;
-	private int end;
-	private SortedSet<Integer> numbers = new TreeSet<Integer>();
-	
-	public RangeSpecification(String spec) {
-		String[] parts = spec.trim().split("-");
-		
-		if( parts.length == 2 ) {
-			this.start = Integer.valueOf(parts[0]);
-			this.end = Integer.valueOf(parts[1]);
-		} else if( parts.length == 1 ) {
-			this.start = this.end = Integer.valueOf(parts[0]);
-		} else {
-			throw new IllegalArgumentException();
+	public String nameFile(JCas jCas) {
+		try {
+			String uri = ViewURIUtil.getURI(jCas);
+			File file = new File(new URI(uri));
+			return file.getName();
 		}
-		
-		for( int i=start; i<=end; i++ )
-			numbers.add(i);
-	}
-	
-	public boolean contains(int i) {
-		return numbers.contains(i);
-	}
-	
-	@Override
-	public String toString() {
-		if( this.start == this.end ) 
-			return String.valueOf(this.start);
-		else
-			return String.valueOf(this.start) + "-" + String.valueOf(this.end);
+		catch (AnalysisEngineProcessException e) {
+			throw new RuntimeException("attempting to name a file using ViewURIUtil", e);
+		}
+		catch (URISyntaxException e) {
+			throw new RuntimeException("attempting to name a file using ViewURIUtil", e);
+		}
 	}
 
-	public Iterator<Integer> iterator() {
-		return numbers.iterator();
-	}
 }
