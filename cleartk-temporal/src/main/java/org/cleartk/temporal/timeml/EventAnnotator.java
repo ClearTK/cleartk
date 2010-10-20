@@ -23,6 +23,9 @@
 */
 package org.cleartk.temporal.timeml;
 
+import static org.cleartk.classifier.feature.WindowFeature.ORIENTATION_LEFT;
+import static org.cleartk.classifier.feature.WindowFeature.ORIENTATION_RIGHT;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,23 +34,22 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.CleartkComponents;
 import org.cleartk.CleartkException;
-import org.cleartk.chunk.ChunkLabeler_ImplBase;
-import org.cleartk.chunk.ChunkerAnnotator;
-import org.cleartk.chunk.ChunkerFeatureExtractor;
-import org.cleartk.chunk.DefaultChunkLabeler;
+import org.cleartk.chunker.ChunkLabeler_ImplBase;
+import org.cleartk.chunker.Chunker;
+import org.cleartk.chunker.ChunkerFeatureExtractor;
+import org.cleartk.chunker.DefaultChunkLabeler;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.WindowExtractor;
-import static org.cleartk.classifier.feature.WindowFeature.ORIENTATION_LEFT;
-import static org.cleartk.classifier.feature.WindowFeature.ORIENTATION_RIGHT;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory;
-import org.cleartk.corpus.timeml.type.Event;
-import org.cleartk.type.Sentence;
-import org.cleartk.type.Token;
+import org.cleartk.temporal.TemporalComponents;
+import org.cleartk.temporal.timeml.type.Event;
+import org.cleartk.token.type.Sentence;
+import org.cleartk.token.type.Token;
+import org.cleartk.util.CleartkComponents;
 import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.initializable.InitializableFactory;
@@ -64,13 +66,15 @@ public class EventAnnotator {
   public static AnalysisEngineDescription getWriterDescription(String modelDir)
   throws ResourceInitializationException {
     return CleartkComponents.createCleartkSequentialAnnotator(
-      ChunkerAnnotator.class,
+      Chunker.class,
+      TemporalComponents.TYPE_SYSTEM_DESCRIPTION,
       DefaultMalletCRFDataWriterFactory.class, 
       modelDir,
-      ChunkerAnnotator.PARAM_LABELED_ANNOTATION_CLASS_NAME, Token.class.getName(),
-      ChunkerAnnotator.PARAM_SEQUENCE_CLASS_NAME, Sentence.class.getName(),
-      ChunkerAnnotator.PARAM_CHUNK_LABELER_CLASS_NAME, DefaultChunkLabeler.class.getName(),
-      ChunkerAnnotator.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME, FeatureExtractor.class.getName(),
+      (List<Class<?>>) null,
+      Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME, Token.class.getName(),
+      Chunker.PARAM_SEQUENCE_CLASS_NAME, Sentence.class.getName(),
+      Chunker.PARAM_CHUNK_LABELER_CLASS_NAME, DefaultChunkLabeler.class.getName(),
+      Chunker.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME, FeatureExtractor.class.getName(),
       ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME, Event.class.getName());
   }
   
@@ -82,12 +86,14 @@ public class EventAnnotator {
   public static AnalysisEngineDescription getAnnotatorDescription(String modelDir)
   throws ResourceInitializationException {
     return CleartkComponents.createCleartkSequentialAnnotator(
-        ChunkerAnnotator.class,
+        Chunker.class,
+        TemporalComponents.TYPE_SYSTEM_DESCRIPTION,
         modelDir,
-        ChunkerAnnotator.PARAM_LABELED_ANNOTATION_CLASS_NAME, Token.class.getName(),
-        ChunkerAnnotator.PARAM_SEQUENCE_CLASS_NAME, Sentence.class.getName(),
-        ChunkerAnnotator.PARAM_CHUNK_LABELER_CLASS_NAME, DefaultChunkLabeler.class.getName(),
-        ChunkerAnnotator.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME, FeatureExtractor.class.getName(),
+        null,
+        Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME, Token.class.getName(),
+        Chunker.PARAM_SEQUENCE_CLASS_NAME, Sentence.class.getName(),
+        Chunker.PARAM_CHUNK_LABELER_CLASS_NAME, DefaultChunkLabeler.class.getName(),
+        Chunker.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME, FeatureExtractor.class.getName(),
         ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME, Event.class.getName());
   }
   
@@ -97,7 +103,7 @@ public class EventAnnotator {
   }
 
   public static class FeatureExtractor implements ChunkerFeatureExtractor {
-    @ConfigurationParameter(name = ChunkerAnnotator.PARAM_LABELED_ANNOTATION_CLASS_NAME)
+    @ConfigurationParameter(name = Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME)
     private String labeledAnnotationClassName;
 
     private List<SimpleFeatureExtractor> tokenFeatureExtractors;

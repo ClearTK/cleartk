@@ -30,10 +30,10 @@ import org.apache.uima.util.Logger;
 import org.cleartk.corpus.timeml.TimeMLWriter;
 import org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter;
 import org.cleartk.syntax.opennlp.OpenNLPTreebankParser;
-import org.cleartk.token.TokenAnnotator;
 import org.cleartk.token.opennlp.OpenNLPPOSTagger;
 import org.cleartk.token.snowball.DefaultSnowballStemmer;
-import org.cleartk.util.FilesCollectionReader;
+import org.cleartk.token.tokenizer.TokenAnnotator;
+import org.cleartk.util.cr.FilesCollectionReader;
 import org.uimafit.factory.UimaContextFactory;
 import org.uimafit.pipeline.SimplePipeline;
 
