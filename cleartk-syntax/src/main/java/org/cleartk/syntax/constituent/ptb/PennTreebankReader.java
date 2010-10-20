@@ -38,7 +38,6 @@ import org.apache.uima.util.Level;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 import org.cleartk.syntax.constituent.TreebankGoldAnnotator;
-import org.cleartk.util.ListSpecification;
 import org.cleartk.util.ViewNames;
 import org.cleartk.util.ViewURIUtil;
 import org.uimafit.component.JCasCollectionReader_ImplBase;
