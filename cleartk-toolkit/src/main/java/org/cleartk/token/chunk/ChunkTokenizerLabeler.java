@@ -30,7 +30,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.chunk.DefaultChunkLabeler;
+import org.cleartk.chunker.DefaultChunkLabeler;
 import org.cleartk.util.AnnotationRetrieval;
 
 

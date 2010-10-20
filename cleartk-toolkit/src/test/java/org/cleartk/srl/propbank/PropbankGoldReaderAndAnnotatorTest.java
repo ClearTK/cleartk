@@ -32,7 +32,7 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.CleartkComponents;
+import org.cleartk.util.CleartkComponents;
 import org.junit.Assert;
 import org.junit.Test;
 /**

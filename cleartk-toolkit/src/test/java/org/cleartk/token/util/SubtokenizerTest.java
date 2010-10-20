@@ -27,6 +27,9 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
+import org.cleartk.token.tokenizer.Subtokenizer;
+import org.cleartk.token.tokenizer.Token;
+import org.cleartk.token.tokenizer.Tokenizer;
 import org.junit.Test;
 
 /**

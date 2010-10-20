@@ -32,7 +32,6 @@ import java.io.File;
 
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.pear.util.FileUtil;
-import org.cleartk.CleartkComponents;
 import org.cleartk.ToolkitTestBase;
 import org.cleartk.ViewNames;
 import org.cleartk.classifier.libsvm.DefaultMultiClassLIBSVMDataWriterFactory;
@@ -41,7 +40,8 @@ import org.cleartk.classifier.svmlight.DefaultOVASVMlightDataWriterFactory;
 import org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter;
 import org.cleartk.syntax.treebank.TreebankGoldAnnotator;
 import org.cleartk.token.TokenAnnotator;
-import org.cleartk.token.snowball.DefaultSnowballStemmer;
+import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
+import org.cleartk.util.CleartkComponents;
 import org.cleartk.util.FilesCollectionReader;
 import org.junit.Test;
 import org.uimafit.pipeline.SimplePipeline;

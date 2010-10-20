@@ -26,9 +26,9 @@ package org.cleartk.example.parser;
 
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.collection.CollectionReader;
-import org.cleartk.CleartkComponents;
 import org.cleartk.syntax.opennlp.OpenNLPTreebankParser;
 import org.cleartk.token.opennlp.OpenNLPPOSTagger;
+import org.cleartk.util.CleartkComponents;
 import org.cleartk.util.FilesCollectionReader;
 import org.cleartk.util.ViewURIFileNamer;
 import org.uimafit.component.xwriter.XWriter;

@@ -34,9 +34,9 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.uima.UIMAException;
-import org.cleartk.token.util.PennTreebankTokenizer;
-import org.cleartk.token.util.Token;
-import org.cleartk.token.util.Tokenizer;
+import org.cleartk.token.tokenizer.PennTreebankTokenizer;
+import org.cleartk.token.tokenizer.Token;
+import org.cleartk.token.tokenizer.Tokenizer;
 import org.cleartk.util.TimeFormat;
 import org.junit.Test;
 

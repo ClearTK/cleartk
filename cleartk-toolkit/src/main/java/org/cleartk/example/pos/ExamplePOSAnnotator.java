@@ -32,7 +32,6 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.CleartkComponents;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkSequentialAnnotator;
 import org.cleartk.classifier.Instance;
@@ -50,6 +49,7 @@ import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
+import org.cleartk.util.CleartkComponents;
 
 /**
  * <br>

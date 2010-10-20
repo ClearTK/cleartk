@@ -29,11 +29,11 @@ import java.io.IOException;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-import org.cleartk.CleartkComponents;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter;
 import org.cleartk.token.TokenAnnotator;
-import org.cleartk.token.snowball.DefaultSnowballStemmer;
+import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
+import org.cleartk.util.CleartkComponents;
 import org.cleartk.util.FilesCollectionReader;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;

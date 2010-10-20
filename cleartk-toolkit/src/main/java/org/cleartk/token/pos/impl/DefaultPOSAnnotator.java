@@ -26,11 +26,11 @@ package org.cleartk.token.pos.impl;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.CleartkComponents;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.token.pos.POSAnnotator;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
+import org.cleartk.util.CleartkComponents;
 
 /**
  * <br>Copyright (c) 2009, Regents of the University of Colorado 

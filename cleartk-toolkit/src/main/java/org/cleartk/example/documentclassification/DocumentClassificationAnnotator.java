@@ -32,7 +32,6 @@ import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.CleartkComponents;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Instance;
@@ -42,6 +41,7 @@ import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.type.Token;
+import org.cleartk.util.CleartkComponents;
 import org.cleartk.util.ViewURIUtil;
 
 /**

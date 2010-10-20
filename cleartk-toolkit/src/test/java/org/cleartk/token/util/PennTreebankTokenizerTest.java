@@ -27,6 +27,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
+import org.cleartk.token.tokenizer.PennTreebankTokenizer;
 import org.junit.Test;
 
 /**
@@ -39,7 +40,7 @@ public class PennTreebankTokenizerTest {
 	@Test
 	public void testHyphens() {
 		PennTreebankTokenizer tokenizer = new PennTreebankTokenizer();
-		List<org.cleartk.token.util.Token> tokens = tokenizer.getTokens("10-1234");
+		List<org.cleartk.token.tokenizer.Token> tokens = tokenizer.getTokens("10-1234");
 		assertEquals(1, tokens.size());
 		assertEquals("10-1234", tokens.get(0).getTokenText());
 
@@ -51,7 +52,7 @@ public class PennTreebankTokenizerTest {
 	@Test
 	public void testBar() {
 		PennTreebankTokenizer tokenizer = new PennTreebankTokenizer();
-		List<org.cleartk.token.util.Token> tokens = tokenizer.getTokens("10|1234");
+		List<org.cleartk.token.tokenizer.Token> tokens = tokenizer.getTokens("10|1234");
 		assertEquals(3, tokens.size());
 		assertEquals("10", tokens.get(0).getTokenText());
 		assertEquals("|", tokens.get(1).getTokenText());
@@ -61,7 +62,7 @@ public class PennTreebankTokenizerTest {
 	@Test
 	public void testSingleToken() {
 		PennTreebankTokenizer tokenizer = new PennTreebankTokenizer();
-		List<org.cleartk.token.util.Token> tokens = tokenizer.getTokens("asdf");
+		List<org.cleartk.token.tokenizer.Token> tokens = tokenizer.getTokens("asdf");
 		assertEquals(1, tokens.size());
 		assertEquals("asdf", tokens.get(0).getTokenText());
 

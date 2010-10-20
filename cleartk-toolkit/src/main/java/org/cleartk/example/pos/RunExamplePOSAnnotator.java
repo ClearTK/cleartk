@@ -23,10 +23,10 @@
  */
 package org.cleartk.example.pos;
 
-import org.cleartk.CleartkComponents;
 import org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter;
 import org.cleartk.token.TokenAnnotator;
-import org.cleartk.token.snowball.DefaultSnowballStemmer;
+import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
+import org.cleartk.util.CleartkComponents;
 import org.cleartk.util.FilesCollectionReader;
 import org.uimafit.pipeline.SimplePipeline;
 

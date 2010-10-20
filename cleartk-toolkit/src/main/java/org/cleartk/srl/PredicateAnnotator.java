@@ -35,7 +35,6 @@ import org.apache.uima.cas.FSIterator;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.CleartkComponents;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.DataWriterFactory;
@@ -53,6 +52,7 @@ import org.cleartk.srl.type.Predicate;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
+import org.cleartk.util.CleartkComponents;
 
 
 /**

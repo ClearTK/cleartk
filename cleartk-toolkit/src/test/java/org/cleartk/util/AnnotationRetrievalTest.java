@@ -40,7 +40,6 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.pear.util.FileUtil;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.CleartkComponents;
 import org.cleartk.ToolkitTestBase;
 import org.cleartk.corpus.ace2005.type.Document;
 import org.cleartk.ne.type.GazetteerNamedEntityMention;

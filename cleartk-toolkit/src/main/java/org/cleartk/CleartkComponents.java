@@ -1,3 +1,4 @@
+package org.cleartk;
 /** 
  * Copyright (c) 2009, Regents of the University of Colorado 
  * All rights reserved.
@@ -21,7 +22,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk;
+
 
 import java.util.Arrays;
 import java.util.List;

@@ -25,7 +25,7 @@ package org.cleartk.ne.term.util;
 
 import java.util.List;
 
-import org.cleartk.token.util.Token;
+import org.cleartk.token.tokenizer.Token;
 
 
 /**

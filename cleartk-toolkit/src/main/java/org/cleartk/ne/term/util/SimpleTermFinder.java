@@ -30,9 +30,9 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
-import org.cleartk.token.util.PennTreebankTokenizer;
-import org.cleartk.token.util.Token;
-import org.cleartk.token.util.Tokenizer;
+import org.cleartk.token.tokenizer.PennTreebankTokenizer;
+import org.cleartk.token.tokenizer.Token;
+import org.cleartk.token.tokenizer.Tokenizer;
 
 
 /**
