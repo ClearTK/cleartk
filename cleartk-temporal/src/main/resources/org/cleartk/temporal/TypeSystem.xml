@@ -5,6 +5,7 @@
   <version>1.0</version>
   <vendor/>
   <imports>
+    <import name="org.cleartk.token.TypeSystem"/>
     <import name="org.cleartk.temporal.timeml.type.Anchor"/>
     <import name="org.cleartk.temporal.timeml.type.Event"/>
     <import name="org.cleartk.temporal.timeml.type.TemporalLink"/>
