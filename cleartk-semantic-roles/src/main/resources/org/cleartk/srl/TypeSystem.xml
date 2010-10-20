@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <name>TypeSystem</name>
+  <description/>
+  <version>1.0</version>
+  <vendor/>
+  <imports>
+    <import name="org.cleartk.token.TypeSystem"/>
+    <import name="org.cleartk.srl.type.Chunk"/>
+    <import name="org.cleartk.srl.type.Argument"/>
+    <import name="org.cleartk.srl.type.SemanticArgument"/>
+    <import name="org.cleartk.srl.type.Predicate"/>
+  </imports>
+</typeSystemDescription>
