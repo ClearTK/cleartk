@@ -34,8 +34,8 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.WindowExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
-import org.cleartk.corpus.timeml.type.Event;
-import org.cleartk.type.Sentence;
+import org.cleartk.temporal.timeml.type.Event;
+import org.cleartk.token.type.Sentence;
 import org.cleartk.util.AnnotationRetrieval;
 
 /**

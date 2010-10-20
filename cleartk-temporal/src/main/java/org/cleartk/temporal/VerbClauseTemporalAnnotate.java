@@ -27,11 +27,11 @@ import java.io.File;
 
 import org.apache.uima.util.Level;
 import org.apache.uima.util.Logger;
-import org.cleartk.corpus.timeml.TimeMLWriter;
-import org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter;
+import org.cleartk.syntax.opennlp.OpenNLPPOSTagger;
+import org.cleartk.syntax.opennlp.OpenNLPSentenceSegmenter;
 import org.cleartk.syntax.opennlp.OpenNLPTreebankParser;
-import org.cleartk.token.opennlp.OpenNLPPOSTagger;
-import org.cleartk.token.snowball.DefaultSnowballStemmer;
+import org.cleartk.temporal.timeml.corpus.TimeMLWriter;
+import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.tokenizer.TokenAnnotator;
 import org.cleartk.util.cr.FilesCollectionReader;
 import org.uimafit.factory.UimaContextFactory;
@@ -75,7 +75,7 @@ public class VerbClauseTemporalAnnotate {
 		
 		// run the components on the selected documents
 		SimplePipeline.runPipeline(
-				FilesCollectionReader.getCollectionReader(inputFileOrDir),
+				FilesCollectionReader.getCollectionReader(TemporalComponents.TYPE_SYSTEM_DESCRIPTION, inputFileOrDir),
 				OpenNLPSentenceSegmenter.getDescription(),
 				TokenAnnotator.getDescription(), 
 				OpenNLPPOSTagger.getDescription(),

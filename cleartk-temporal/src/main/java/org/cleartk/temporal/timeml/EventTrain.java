@@ -29,13 +29,14 @@ import java.util.List;
 
 import org.apache.uima.util.Level;
 import org.apache.uima.util.Logger;
-import org.cleartk.ViewNames;
 import org.cleartk.classifier.jar.Train;
-import org.cleartk.corpus.timeml.TimeMLGoldAnnotator;
-import org.cleartk.sentence.opennlp.OpenNLPSentenceSegmenter;
-import org.cleartk.token.opennlp.OpenNLPPOSTagger;
-import org.cleartk.token.snowball.DefaultSnowballStemmer;
+import org.cleartk.syntax.opennlp.OpenNLPPOSTagger;
+import org.cleartk.syntax.opennlp.OpenNLPSentenceSegmenter;
+import org.cleartk.temporal.TemporalComponents;
+import org.cleartk.temporal.timeml.corpus.TimeMLGoldAnnotator;
+import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.tokenizer.TokenAnnotator;
+import org.cleartk.util.ViewNames;
 import org.cleartk.util.cr.FilesCollectionReader;
 import org.uimafit.factory.UimaContextFactory;
 import org.uimafit.pipeline.SimplePipeline;
@@ -65,7 +66,7 @@ public class EventTrain {
 
     // run pipeline to extract features and write training data
     SimplePipeline.runPipeline(
-        FilesCollectionReader.getCollectionReaderWithView(timebankDirectory, ViewNames.TIMEML),
+        FilesCollectionReader.getCollectionReaderWithView(TemporalComponents.TYPE_SYSTEM_DESCRIPTION,  timebankDirectory, ViewNames.TIMEML),
         TimeMLGoldAnnotator.getDescriptionNoTLINKs(),
         OpenNLPSentenceSegmenter.getDescription(),
         TokenAnnotator.getDescription(), 

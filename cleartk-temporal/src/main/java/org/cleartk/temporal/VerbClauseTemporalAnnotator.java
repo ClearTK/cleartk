@@ -36,7 +36,6 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Level;
-import org.cleartk.CleartkComponents;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Instance;
@@ -44,15 +43,16 @@ import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.svmlight.DefaultOVASVMlightDataWriterFactory;
-import org.cleartk.corpus.timeml.type.Anchor;
-import org.cleartk.corpus.timeml.type.Event;
-import org.cleartk.corpus.timeml.type.TemporalLink;
+import org.cleartk.syntax.constituent.type.TopTreebankNode;
+import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.syntax.feature.SyntacticPathExtractor;
-import org.cleartk.syntax.treebank.type.TopTreebankNode;
-import org.cleartk.syntax.treebank.type.TreebankNode;
-import org.cleartk.type.Sentence;
-import org.cleartk.type.Token;
+import org.cleartk.temporal.timeml.type.Anchor;
+import org.cleartk.temporal.timeml.type.Event;
+import org.cleartk.temporal.timeml.type.TemporalLink;
+import org.cleartk.token.type.Sentence;
+import org.cleartk.token.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
+import org.cleartk.util.CleartkComponents;
 
 
 /**
@@ -87,16 +87,16 @@ public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
 	public static AnalysisEngineDescription getWriterDescription(String outputDir)
 	throws ResourceInitializationException {
 		return CleartkComponents.createCleartkAnnotator(
-				VerbClauseTemporalAnnotator.class,
-				DefaultOVASVMlightDataWriterFactory.class,
-				outputDir);
+				VerbClauseTemporalAnnotator.class, TemporalComponents.TYPE_SYSTEM_DESCRIPTION,
+				DefaultOVASVMlightDataWriterFactory.class, 
+				outputDir, (List<Class<?>>)null);
 	}
 
 	public static AnalysisEngineDescription getAnnotatorDescription()
 	throws ResourceInitializationException {
 		return CleartkComponents.createCleartkAnnotator(
-				VerbClauseTemporalAnnotator.class,
-				"resources/models/verb-clause-temporal-model.jar");
+				VerbClauseTemporalAnnotator.class, TemporalComponents.TYPE_SYSTEM_DESCRIPTION,
+				"resources/models/verb-clause-temporal-model.jar", (List<Class<?>>)null);
 	}
 
 	public VerbClauseTemporalAnnotator() {

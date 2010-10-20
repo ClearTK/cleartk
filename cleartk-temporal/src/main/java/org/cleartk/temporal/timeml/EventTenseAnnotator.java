@@ -24,17 +24,20 @@
 package org.cleartk.temporal.timeml;
 
 
+import java.util.List;
+
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.CleartkComponents;
 import org.cleartk.classifier.feature.extractor.simple.BagExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
-import org.cleartk.corpus.timeml.type.Event;
-import org.cleartk.timeml.extractor.PrecedingTokenTextExtractor;
-import org.cleartk.timeml.extractor.TextSliceExtractor;
-import org.cleartk.type.Token;
+import org.cleartk.temporal.TemporalComponents;
+import org.cleartk.temporal.timeml.extractor.PrecedingTokenTextExtractor;
+import org.cleartk.temporal.timeml.extractor.TextSliceExtractor;
+import org.cleartk.temporal.timeml.type.Event;
+import org.cleartk.token.type.Token;
+import org.cleartk.util.CleartkComponents;
 
 /**
  * Annotator for the "tense" attribute of TimeML EVENTs.
@@ -48,9 +51,9 @@ public class EventTenseAnnotator extends EventAttributeAnnotator<String> {
   public static AnalysisEngineDescription getWriterDescription(String modelDir)
   throws ResourceInitializationException {
     return CleartkComponents.createCleartkAnnotator(
-        EventTenseAnnotator.class,
+        EventTenseAnnotator.class, TemporalComponents.TYPE_SYSTEM_DESCRIPTION,
         DefaultMaxentDataWriterFactory.class, 
-        modelDir);
+        modelDir, (List<Class<?>>)null);
   }
   
   public static AnalysisEngineDescription getWriterDescription()
@@ -61,8 +64,8 @@ public class EventTenseAnnotator extends EventAttributeAnnotator<String> {
   public static AnalysisEngineDescription getAnnotatorDescription(String classifierJar)
   throws ResourceInitializationException {
     return CleartkComponents.createCleartkAnnotator(
-        EventTenseAnnotator.class,
-        classifierJar);
+        EventTenseAnnotator.class, TemporalComponents.TYPE_SYSTEM_DESCRIPTION,
+        classifierJar, (List<Class<?>>)null);
   }
   
   public static AnalysisEngineDescription getAnnotatorDescription()
