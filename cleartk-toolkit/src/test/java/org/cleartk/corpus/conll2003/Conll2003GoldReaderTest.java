@@ -32,6 +32,7 @@ import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.ToolkitTestBase;
+import org.cleartk.ne.conll2003.Conll2003GoldReader;
 import org.cleartk.ne.type.NamedEntity;
 import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.type.Chunk;

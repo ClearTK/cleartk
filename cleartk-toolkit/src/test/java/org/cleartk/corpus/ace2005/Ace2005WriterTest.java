@@ -35,6 +35,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
 import org.cleartk.ToolkitTestBase;
 import org.cleartk.corpus.ace2005.type.Document;
+import org.cleartk.ne.ace2005.Ace2005Writer;
 import org.cleartk.ne.type.NamedEntity;
 import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.type.Chunk;

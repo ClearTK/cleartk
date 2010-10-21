@@ -26,6 +26,7 @@ package org.cleartk.corpus.ace2005;
 
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.ToolkitTestBase;
+import org.cleartk.ne.ace2005.Ace2005GoldReader;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.CollectionReaderFactory;
