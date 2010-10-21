@@ -141,9 +141,10 @@
 					<target>1.5</target>
 				</configuration>
 			</plugin>
-			<plugin>
+			<plugin><!-- This plugin generates java files with JCasGen-->
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.2</version>
 				<executions>
 					<execution>
 						<phase>process-resources</phase>
@@ -155,11 +156,31 @@
 				<configuration>
 					<mainClass>org.uimafit.util.JCasGenPomFriendly</mainClass>
 					<arguments>
-						<argument>file:${basedir}/src/main/resources/org/cleartk/temporal/TypeSystem.xml
+						<argument>file:${project.basedir}/src/main/resources/org/cleartk/temporal/TypeSystem.xml
 						</argument>
-						<argument>${basedir}/src/main/java</argument>
+						<argument>${project.build.directory}/generated-sources/jcasgen</argument>
 					</arguments>
 				</configuration>
+			</plugin>
+			<plugin><!-- This plugin adds the jcasgen generated source code folder 
+					as a project source folder -->
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>1.5</version>
+				<executions>
+					<execution>
+						<id>add-source</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>${project.build.directory}/generated-sources/jcasgen</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 		<extensions>
