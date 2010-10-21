@@ -8,6 +8,6 @@
     <import name="org.cleartk.syntax.constituent.type.TreebankNode"/>
     <import name="org.cleartk.syntax.constituent.type.TopTreebankNode"/>
     <import name="org.cleartk.syntax.constituent.type.TerminalTreebankNode"/>
-    <import name="org.cleartk.token.type.TypeSystem"/>
+    <import name="org.cleartk.token.TypeSystem"/>
   </imports>
 </typeSystemDescription>
