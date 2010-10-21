@@ -6,6 +6,7 @@
   <vendor/>
   <imports>
     <import name="org.cleartk.token.TypeSystem"/>
+    <import name="org.cleartk.syntax.TypeSystem"/>
     <import name="org.cleartk.srl.type.Chunk"/>
     <import name="org.cleartk.srl.type.Argument"/>
     <import name="org.cleartk.srl.type.SemanticArgument"/>
