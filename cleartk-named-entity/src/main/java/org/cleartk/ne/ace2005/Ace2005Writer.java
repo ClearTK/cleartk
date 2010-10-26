@@ -35,6 +35,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.ne.type.Ace2005Document;
 import org.cleartk.ne.type.NamedEntity;
 import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.util.AnnotationRetrieval;
@@ -94,8 +95,8 @@ public class Ace2005Writer extends JCasAnnotator_ImplBase {
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
 		String uri = ViewURIUtil.getURI(jCas);
 		String docId = uri.substring(0, uri.indexOf(".sgm"));
-		org.cleartk.corpus.ace2005.type.Document document;
-		document = AnnotationRetrieval.getAnnotations(jCas, org.cleartk.corpus.ace2005.type.Document.class).iterator()
+		Ace2005Document document;
+		document = AnnotationRetrieval.getAnnotations(jCas, Ace2005Document.class).iterator()
 				.next();
 
 		Document xml = new Document();

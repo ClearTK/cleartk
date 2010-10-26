@@ -40,7 +40,8 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
-import org.cleartk.ViewNames;
+import org.cleartk.ne.type.Ace2005Document;
+import org.cleartk.util.ViewNames;
 import org.cleartk.util.ViewURIUtil;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -206,7 +207,7 @@ public class Ace2005GoldReader extends JCasCollectionReader_ImplBase
 			String type = apfSource.getAttributeValue("TYPE");
 			
 			ViewURIUtil.setURI(jCas, sgmFile.getName());
-			org.cleartk.corpus.ace2005.type.Document document = new org.cleartk.corpus.ace2005.type.Document(initialView);
+			Ace2005Document document = new Ace2005Document(initialView);
 			document.setAceUri(uri);
 			document.setAceSource(source);
 			document.setAceType(type);
