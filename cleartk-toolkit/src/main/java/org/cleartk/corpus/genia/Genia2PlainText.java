@@ -29,7 +29,7 @@ import java.io.IOException;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.collection.CollectionReader;
-import org.cleartk.util.PlainTextWriter;
+import org.cleartk.util.ae.PlainTextWriter;
 import org.uimafit.pipeline.SimplePipeline;
 
 /**
