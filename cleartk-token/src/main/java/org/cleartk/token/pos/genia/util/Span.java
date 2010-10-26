@@ -1,4 +1,4 @@
-/** 
+ /** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -21,26 +21,34 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.token.pos;
-
-import org.apache.uima.UimaContext;
-import org.apache.uima.jcas.JCas;
-import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.token.type.Token;
-import org.cleartk.util.ae.linewriter.AnnotationWriter;
+package org.cleartk.token.pos.genia.util;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
  * <br>All rights reserved.
- *
- * @author Philip Ogren
- */
 
-public class TokenPOSWriter implements AnnotationWriter<Token> {
+*/
 
-	public void initialize(UimaContext context) throws ResourceInitializationException {}
+public class Span {
 
-	public String writeAnnotation(JCas cas, Token token) {
-		return token.getCoveredText()+"\t"+token.getPos();
+	int begin;
+
+	int end;
+
+	public Span(int begin, int end) {
+		this.begin = begin;
+		this.end = end;
+	}
+
+	public int getBegin() {
+		return begin;
+	}
+
+	public int getEnd() {
+		return end;
+	}
+
+	public String toString() {
+		return "" + begin + "|" + end;
 	}
 }

@@ -1,5 +1,5 @@
-/** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+ /** 
+ * Copyright (c) 2009, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -21,26 +21,35 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.token.pos;
 
-import org.apache.uima.UimaContext;
-import org.apache.uima.jcas.JCas;
-import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.token.type.Token;
-import org.cleartk.util.ae.linewriter.AnnotationWriter;
+package org.cleartk.token.pos.genia;
+
+import java.io.IOException;
+
+import org.apache.uima.UIMAException;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
+import org.apache.uima.collection.CollectionReader;
+import org.cleartk.token.TokenComponents;
+import org.cleartk.util.ae.PlainTextWriter;
+import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.pipeline.SimplePipeline;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
+ * <br>Copyright (c) 2009, Regents of the University of Colorado 
  * <br>All rights reserved.
- *
+ * <p>
+ * 
  * @author Philip Ogren
+ *
+ * This class provides a way to recover the original text of the GENIA corpus "GENIAcorpus3.02.pos.xml".  
+ * 
  */
+public class Genia2PlainText {
 
-public class TokenPOSWriter implements AnnotationWriter<Token> {
-
-	public void initialize(UimaContext context) throws ResourceInitializationException {}
-
-	public String writeAnnotation(JCas cas, Token token) {
-		return token.getCoveredText()+"\t"+token.getPos();
+	public static void main(String[] args) throws UIMAException, IOException {
+		CollectionReader geniaReader = GeniaPosGoldReader.getDescription(args[0]);
+		AnalysisEngineDescription plainTextWriter = AnalysisEngineFactory.createPrimitiveDescription(PlainTextWriter.class, TokenComponents.TYPE_SYSTEM_DESCRIPTION, PlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME, args[1]); 
+		SimplePipeline.runPipeline(geniaReader, plainTextWriter);
+		
 	}
 }
