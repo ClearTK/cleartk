@@ -31,7 +31,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
-import org.cleartk.syntax.treebank.type.TreebankNode;
+import org.cleartk.syntax.constituent.type.TreebankNode;
 
 /**
  * <br>Copyright (c) 2007-2009, Regents of the University of Colorado 

@@ -24,12 +24,14 @@
 package org.cleartk.srl.conll2005;
 
 import java.io.File;
+import java.util.List;
 
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.classifier.svmlight.DefaultOVASVMlightDataWriterFactory;
 import org.cleartk.classifier.svmlight.DefaultSVMlightDataWriterFactory;
 import org.cleartk.srl.ArgumentClassifier;
 import org.cleartk.srl.ArgumentIdentifier;
+import org.cleartk.srl.SrlComponents;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 import org.cleartk.util.CleartkComponents;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -57,7 +59,7 @@ public class TrainConll2005Models {
 				Conll2005GoldReader.getCollectionReader(conll2005File.toString()),
 				AnalysisEngineFactory.createPrimitiveDescription(
 						Conll2005GoldAnnotator.class, 
-						CleartkComponents.TYPE_SYSTEM_DESCRIPTION, 
+						SrlComponents.TYPE_SYSTEM_DESCRIPTION,
 						Conll2005GoldAnnotator.PARAM_HAS_VERB_SENSES, true),
 				DefaultSnowballStemmer.getDescription("English"),
 //				CleartkComponents.createCleartkAnnotator(
@@ -65,13 +67,16 @@ public class TrainConll2005Models {
 //						DefaultSVMlightDataWriterFactory.class, 
 //						predicateIdentificationOutputDirectory.toString()),
 				CleartkComponents.createCleartkAnnotator(
-						ArgumentIdentifier.class, 
+						ArgumentIdentifier.class, SrlComponents.TYPE_SYSTEM_DESCRIPTION,
 						DefaultSVMlightDataWriterFactory.class, 
-						argumentIdentificationOutputDirectory.toString()),
+						argumentIdentificationOutputDirectory.toString(), 
+						(List<Class<?>>)null
+				),
 				CleartkComponents.createCleartkAnnotator(
-						ArgumentClassifier.class, 
+						ArgumentClassifier.class, SrlComponents.TYPE_SYSTEM_DESCRIPTION,
 						DefaultOVASVMlightDataWriterFactory.class, 
-						argumentClassificationOutputDirectory.toString())
+						argumentClassificationOutputDirectory.toString(),
+						(List<Class<?>>)null)
 		);
 		
 		// train the model on the training data

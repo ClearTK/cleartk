@@ -24,8 +24,8 @@
 package org.cleartk.srl.propbank.util;
 
 import org.apache.uima.jcas.JCas;
-import org.cleartk.syntax.treebank.type.TopTreebankNode;
-import org.cleartk.syntax.treebank.type.TreebankNode;
+import org.cleartk.syntax.constituent.type.TopTreebankNode;
+import org.cleartk.syntax.constituent.type.TreebankNode;
 
 
 /**

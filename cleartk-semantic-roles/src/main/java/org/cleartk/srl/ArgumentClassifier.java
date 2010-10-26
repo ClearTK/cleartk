@@ -59,18 +59,18 @@ import org.cleartk.srl.feature.POSExtractor;
 import org.cleartk.srl.feature.StemExtractor;
 import org.cleartk.srl.type.Predicate;
 import org.cleartk.srl.type.SemanticArgument;
+import org.cleartk.syntax.constituent.type.TopTreebankNode;
+import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.syntax.feature.HeadWordExtractor;
 import org.cleartk.syntax.feature.ParentExtractor;
 import org.cleartk.syntax.feature.SiblingExtractor;
 import org.cleartk.syntax.feature.SubCategorizationExtractor;
 import org.cleartk.syntax.feature.SyntacticPathExtractor;
-import org.cleartk.syntax.treebank.type.TopTreebankNode;
-import org.cleartk.syntax.treebank.type.TreebankNode;
-import org.cleartk.type.Sentence;
-import org.cleartk.type.Token;
+import org.cleartk.token.type.Sentence;
+import org.cleartk.token.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.CleartkComponents;
 import org.cleartk.util.UIMAUtil;
+import org.uimafit.factory.AnalysisEngineFactory;
 
 
 /**
@@ -86,16 +86,18 @@ public class ArgumentClassifier extends CleartkAnnotator<String> {
 	public static AnalysisEngineDescription getWriterDescription(
 			Class<? extends DataWriterFactory<String>> dataWriterFactoryClass, File outputDirectory)
 	throws ResourceInitializationException {
-		return CleartkComponents.createPrimitiveDescription(
+		return AnalysisEngineFactory.createPrimitiveDescription(
 				ArgumentClassifier.class,
+				SrlComponents.TYPE_SYSTEM_DESCRIPTION,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, dataWriterFactoryClass.getName(),
 				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory.toString());
 	}
 
 	public static AnalysisEngineDescription getClassifierDescription(File classifierJar)
 	throws ResourceInitializationException {
-		return CleartkComponents.createPrimitiveDescription(
+		return AnalysisEngineFactory.createPrimitiveDescription(
 				ArgumentClassifier.class,
+				SrlComponents.TYPE_SYSTEM_DESCRIPTION,
 				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, classifierJar.toString());
 	}
 

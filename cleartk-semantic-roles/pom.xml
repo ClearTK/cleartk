@@ -90,8 +90,20 @@
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
+			<artifactId>cleartk-named-entity</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<optional>false</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-ml</artifactId>
 			<version>0.9.9-SNAPSHOT</version>
+			<optional>false</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.cleartk</groupId>
+			<artifactId>cleartk-ml-svmlight</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 			<optional>false</optional>
 		</dependency>
 		<dependency>

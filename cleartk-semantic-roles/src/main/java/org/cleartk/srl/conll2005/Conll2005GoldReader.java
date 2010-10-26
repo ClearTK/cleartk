@@ -39,8 +39,9 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
-import org.cleartk.ViewNames;
+import org.cleartk.srl.SrlComponents;
 import org.cleartk.util.CleartkComponents;
+import org.cleartk.util.ViewNames;
 import org.cleartk.util.ViewURIUtil;
 import org.uimafit.component.JCasCollectionReader_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
@@ -59,7 +60,7 @@ public class Conll2005GoldReader extends JCasCollectionReader_ImplBase {
 	public static CollectionReader getCollectionReader(String conll2005DataFile)
 			throws ResourceInitializationException {
 		return CollectionReaderFactory.createCollectionReader(Conll2005GoldReader.class,
-				CleartkComponents.TYPE_SYSTEM_DESCRIPTION,
+				SrlComponents.TYPE_SYSTEM_DESCRIPTION,
 				PARAM_CONLL2005_DATA_FILE, conll2005DataFile);
 	}
 

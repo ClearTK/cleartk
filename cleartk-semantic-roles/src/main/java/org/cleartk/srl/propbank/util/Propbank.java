@@ -30,8 +30,8 @@ import java.util.List;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.srl.type.Argument;
 import org.cleartk.srl.type.Predicate;
-import org.cleartk.syntax.treebank.type.TopTreebankNode;
-import org.cleartk.type.Sentence;
+import org.cleartk.syntax.constituent.type.TopTreebankNode;
+import org.cleartk.token.type.Sentence;
 import org.cleartk.util.UIMAUtil;
 
 

@@ -30,7 +30,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
-import org.cleartk.type.Token;
+import org.cleartk.token.type.Token;
 
 /**
  * <br>Copyright (c) 2007-2009, Regents of the University of Colorado 

@@ -32,7 +32,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.srl.type.Argument;
 import org.cleartk.srl.type.Predicate;
 import org.cleartk.srl.type.SemanticArgument;
-import org.cleartk.type.Sentence;
+import org.cleartk.token.type.Sentence;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.UIMAUtil;
 import org.cleartk.util.ViewURIUtil;

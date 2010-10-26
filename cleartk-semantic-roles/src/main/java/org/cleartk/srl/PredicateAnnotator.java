@@ -49,10 +49,10 @@ import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.classifier.jar.JarDataWriterFactory;
 import org.cleartk.srl.type.Predicate;
-import org.cleartk.type.Sentence;
-import org.cleartk.type.Token;
+import org.cleartk.token.type.Sentence;
+import org.cleartk.token.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.CleartkComponents;
+import org.uimafit.factory.AnalysisEngineFactory;
 
 
 /**
@@ -68,16 +68,18 @@ public class PredicateAnnotator extends CleartkAnnotator<Boolean> {
 	public static AnalysisEngineDescription getWriterDescription(
 			Class<? extends DataWriterFactory<Boolean>> dataWriterFactoryClass, File outputDirectory)
 	throws ResourceInitializationException {
-		return CleartkComponents.createPrimitiveDescription(
+		return AnalysisEngineFactory.createPrimitiveDescription(
 				ArgumentIdentifier.class,
+				SrlComponents.TYPE_SYSTEM_DESCRIPTION,
 				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, dataWriterFactoryClass.getName(),
 				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory.toString());
 	}
 
 	public static AnalysisEngineDescription getClassifierDescription(File classifierJar)
 	throws ResourceInitializationException {
-		return CleartkComponents.createPrimitiveDescription(
+		return AnalysisEngineFactory.createPrimitiveDescription(
 				PredicateAnnotator.class,
+				SrlComponents.TYPE_SYSTEM_DESCRIPTION,
 				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, classifierJar.toString());
 	}
 

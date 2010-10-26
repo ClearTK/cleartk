@@ -32,7 +32,7 @@ import java.util.Set;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.srl.type.SemanticArgument;
-import org.cleartk.syntax.treebank.type.TopTreebankNode;
+import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.util.AnnotationUtil;
 import org.cleartk.util.UIMAUtil;
 

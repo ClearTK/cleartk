@@ -28,7 +28,7 @@ import java.util.List;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.syntax.treebank.type.TopTreebankNode;
+import org.cleartk.syntax.constituent.type.TopTreebankNode;
 
 
 /**
