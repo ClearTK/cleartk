@@ -20,28 +20,38 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
-package org.cleartk.util.linewriter.block;
+ */
+package org.cleartk.util.cr.linereader;
+
+import java.io.File;
+import java.io.IOException;
 
 import org.apache.uima.UimaContext;
+import org.apache.uima.collection.CollectionException;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.util.linewriter.BlockWriter;
+import org.cleartk.util.ViewURIUtil;
+
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
  * <br>All rights reserved.
- *
- * @author Philip Ogren
+ * <p>
  */
 
-public class DoNothingBlockWriter implements BlockWriter<Annotation> {
+public class DefaultLineHandler implements LineHandler {
 
-	public void initialize(UimaContext context) throws ResourceInitializationException {}
-
-	public String writeBlock(JCas cas, Annotation blockAnnotation) {
-		return "";
+	int count;
+	public void initialize(UimaContext context) throws ResourceInitializationException {
+		count = 1;
 	}
+	public void handleLine(JCas jCas, File rootFile, File file, String line)  throws IOException, CollectionException{
+		jCas.setSofaDataString(line, "text/plain");
+		
+		String uri = String.format("%s#%d", file.toURI().toString(), this.count);
+		ViewURIUtil.setURI(jCas, uri);
+		++count;
+	}
+
 
 }

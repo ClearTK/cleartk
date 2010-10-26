@@ -21,28 +21,28 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.util.linewriter.annotation;
+package org.cleartk.util.ae.linewriter;
 
 import org.apache.uima.UimaContext;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.util.linewriter.AnnotationWriter;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
  * <br>All rights reserved.
 
  * <p>
+ * 
+ * @author Philip
+ * 
+ * @param <ANNOTATION_TYPE>
  */
-public class CoveredTextAnnotationWriter implements AnnotationWriter<Annotation> {
+public interface AnnotationWriter<ANNOTATION_TYPE extends Annotation> {
 
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-	}
+	public void initialize(UimaContext context) throws ResourceInitializationException;
 
-	public String writeAnnotation(JCas jCas, Annotation annotation) {
-		return annotation.getCoveredText();
-	}
-
+	public String writeAnnotation(JCas jCas, ANNOTATION_TYPE annotation) throws AnalysisEngineProcessException;
 
 }

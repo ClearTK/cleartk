@@ -22,7 +22,7 @@
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
-package org.cleartk.util.linewriter;
+package org.cleartk.util.ae.linewriter;
 
 import java.io.File;
 import java.io.FileNotFoundException;

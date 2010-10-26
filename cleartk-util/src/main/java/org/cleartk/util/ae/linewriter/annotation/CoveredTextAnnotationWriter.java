@@ -1,4 +1,4 @@
-/** 
+ /** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -21,29 +21,28 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.util.linewriter.block;
+package org.cleartk.util.ae.linewriter.annotation;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.util.linewriter.BlockWriter;
+import org.cleartk.util.ae.linewriter.AnnotationWriter;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
  * <br>All rights reserved.
- *
- * @author Philip Ogren
+
+ * <p>
  */
+public class CoveredTextAnnotationWriter implements AnnotationWriter<Annotation> {
 
-public class BlankLineBlockWriter implements BlockWriter<Annotation> {
-
-	public void initialize(UimaContext context) throws ResourceInitializationException {}
-
-	private static String newline = System.getProperty("line.separator");
-
-	public String writeBlock(JCas cas, Annotation blockAnnotation) {
-		return newline;
+	public void initialize(UimaContext context) throws ResourceInitializationException {
 	}
+
+	public String writeAnnotation(JCas jCas, Annotation annotation) {
+		return annotation.getCoveredText();
+	}
+
 
 }

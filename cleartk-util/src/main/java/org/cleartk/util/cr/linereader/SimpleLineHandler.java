@@ -20,32 +20,50 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
-package org.cleartk.util.linewriter.block;
+ */
+package org.cleartk.util.cr.linereader;
+
+import java.io.File;
+import java.io.IOException;
 
 import org.apache.uima.UimaContext;
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.collection.CollectionException;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.util.ViewURIUtil;
-import org.cleartk.util.linewriter.BlockWriter;
+import org.uimafit.component.initialize.ConfigurationParameterInitializer;
+import org.uimafit.descriptor.ConfigurationParameter;
+import org.uimafit.factory.ConfigurationParameterFactory;
+
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
  * <br>All rights reserved.
- *
- * @author Philip Ogren
- */
+ * <p>
+*/
+public class SimpleLineHandler implements LineHandler {
 
-public class DocumentIdBlockWriter implements BlockWriter<Annotation> {
+	public static final String PARAM_DELIMITER = ConfigurationParameterFactory.createConfigurationParameterName(
+			SimpleLineHandler.class, "delimiter");
 
-	public void initialize(UimaContext context) throws ResourceInitializationException {}
+	@ConfigurationParameter(
+			mandatory = true,
+			defaultValue = "|",
+			description = "specifies a string that delimits the id from the text. "
+	)
+	private String delimiter;
 
-	private static String newline = System.getProperty("line.separator");
-	
-	public String writeBlock(JCas jCas, Annotation blockAnnotation) throws AnalysisEngineProcessException {
-		return ViewURIUtil.getURI(jCas) + newline;
+	public void initialize(UimaContext context) throws ResourceInitializationException {
+		ConfigurationParameterInitializer.initialize(this, context);
+	}
+
+	public void handleLine(JCas jCas, File rootFile, File file, String line)  throws IOException, CollectionException{
+		String id = line.substring(0, line.indexOf(delimiter));
+		String text = line.substring(line.indexOf(delimiter) + 1);
+		jCas.setSofaDataString(text, "text/plain");
+
+		String uri = String.format("%s#%s", file.toURI().toString(), id);
+		ViewURIUtil.setURI(jCas, uri);
 	}
 
 }
