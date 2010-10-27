@@ -36,7 +36,7 @@ import org.cleartk.token.type.Sentence;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.UIMAUtil;
 import org.cleartk.util.ViewURIUtil;
-import org.cleartk.util.linewriter.AnnotationWriter;
+import org.cleartk.util.ae.linewriter.AnnotationWriter;
 
 public class PropbankFormatWriter implements AnnotationWriter<Predicate>{
 
