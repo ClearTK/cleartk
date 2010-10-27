@@ -20,7 +20,7 @@ public class TokenPOSWriterTest extends TokenTestBase {
 	static String newline = System.getProperty("line.separator");
 
 	@Test
-	public void test4() throws Exception {
+	public void testTokenPosWriter() throws Exception {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 					LineWriter.class,
 					typeSystemDescription,
