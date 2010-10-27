@@ -47,7 +47,7 @@ import org.uimafit.pipeline.JCasIterable;
  */
 public class LineReaderTest {
 
-	private String inputDir = "test/data/docs/linereader";
+	private String inputDir = "src/test/resources/linereader";
 	
 	private String toURI(String relativePath) {
 		return new File(inputDir, relativePath).toURI().toString();

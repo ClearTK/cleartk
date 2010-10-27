@@ -115,7 +115,7 @@ public class LineReader extends JCasCollectionReader_ImplBase {
 	public static final String PARAM_LINE_HANDLER_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(LineReader.class, "lineHandlerClassName");
 	@ConfigurationParameter(
 			description = "specifies the class name of the LineHandler. If one is not specified, then the DefaultLineHandler will be used.",
-			defaultValue = "org.cleartk.util.linereader.DefaultLineHandler")
+			defaultValue = "org.cleartk.util.cr.linereader.DefaultLineHandler")
 	private String lineHandlerClassName;
 	
 	public static final String PARAM_COMMENT_SPECIFIERS = ConfigurationParameterFactory.createConfigurationParameterName(LineReader.class, "commentSpecifiers");
