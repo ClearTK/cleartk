@@ -144,7 +144,7 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 	@ConfigurationParameter(
 			mandatory = true,
 			description = ANNOTATION_WRITER_CLASS_NAME_DESCRIPTION,
-			defaultValue = "org.cleartk.util.linewriter.annotation.CoveredTextAnnotationWriter")
+			defaultValue = "org.cleartk.util.ae.linewriter.annotation.CoveredTextAnnotationWriter")
 	private String annotationWriterClassName;
 	
 
@@ -183,7 +183,7 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 	public static final String PARAM_BLOCK_WRITER_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(LineWriter.class, "blockWriterClassName");
 	@ConfigurationParameter(
 			description =BLOCK_WRITER_CLASS_NAME_DESCRIPTION,
-			defaultValue = "org.cleartk.util.linewriter.block.BlankLineBlockWriter"
+			defaultValue = "org.cleartk.util.ae.linewriter.block.BlankLineBlockWriter"
 			)
 	private String blockWriterClassName;
 	
