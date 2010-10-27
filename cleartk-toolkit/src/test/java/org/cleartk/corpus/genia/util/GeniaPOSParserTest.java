@@ -29,6 +29,9 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 
+import org.cleartk.token.pos.genia.util.GeniaPOSParser;
+import org.cleartk.token.pos.genia.util.GeniaParse;
+import org.cleartk.token.pos.genia.util.GeniaTag;
 import org.jdom.JDOMException;
 import org.junit.Test;
 

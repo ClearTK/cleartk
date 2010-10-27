@@ -38,6 +38,7 @@ import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.ToolkitTestBase;
+import org.cleartk.token.pos.genia.GeniaPosGoldReader;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.jdom.JDOMException;
