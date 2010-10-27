@@ -3,13 +3,17 @@ package org.cleartk.token.pos;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.util.regex.Pattern;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.apache.uima.util.FileUtils;
+import org.cleartk.token.TokenComponents;
 import org.cleartk.token.TokenTestBase;
+import org.cleartk.token.tokenizer.chunk.ChunkTokenizerFactory;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
+import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.ViewURIUtil;
 import org.cleartk.util.ae.linewriter.LineWriter;
 import org.cleartk.util.ae.linewriter.block.BlankLineBlockWriter;
@@ -108,6 +112,38 @@ public class TokenPOSWriterTest extends TokenTestBase {
 		assertTrue(outputFile.exists());
 		String actualText = FileUtils.file2String(outputFile);
 		Assert.assertEquals(expectedText, actualText);
+	}
+
+	@Test
+	public void testLineWriterAfterChunkTokenizer() throws Exception {
+		AnalysisEngine[] engines = new AnalysisEngine[]{
+				AnalysisEngineFactory.createPrimitive(TokenComponents.createSubtokenizer()),
+				AnalysisEngineFactory.createPrimitive(ChunkTokenizerFactory.createChunkTokenizer("src/test/resources/token/chunk/model.jar")),
+				AnalysisEngineFactory.createPrimitive(LineWriter.class, typeSystemDescription,
+						LineWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDirectory.getPath(), 
+						LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, Token.class.getName())};
+		String s1 = "Philip Ogren didn't write this sentence.";
+		String s2 = "ROIs are required for CD28-mediated activation of the NF-kappa B/CD28-responsive complex.";
+		String text = s1 +"\n"+s2;
+		jCas.setDocumentText(text);
+		new Sentence(jCas, 0, s1.length()).addToIndexes();
+		new Sentence(jCas, s1.length()+1, text.length()).addToIndexes(); 
+		ViewURIUtil.setURI(jCas, "id");
+		for (AnalysisEngine engine: engines) {
+			engine.process(jCas);
+		}
+		for (AnalysisEngine engine: engines) {
+			engine.collectionProcessComplete();
+		}
+		
+		// make sure there were two sentences
+		int sentCount = AnnotationRetrieval.getAnnotations(jCas, Sentence.class).size();
+		Assert.assertEquals(2, sentCount);
+		
+		// make sure there no extra blank lines
+		String text2 = FileUtils.file2String(new File(this.outputDirectory, "id"));
+		boolean hasDoubleNewlines = Pattern.compile("\n\\s*\n").matcher(text2).find();
+		Assert.assertFalse(hasDoubleNewlines);
 	}
 
 }

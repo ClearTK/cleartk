@@ -7,5 +7,6 @@
   <imports>
     <import name="org.cleartk.token.type.Token"/>
     <import name="org.cleartk.token.type.Sentence"/>
+    <import name="org.cleartk.token.type.Subtoken"/>
   </imports>
 </typeSystemDescription>
