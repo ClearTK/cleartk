@@ -67,18 +67,12 @@
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-test-util</artifactId>
-			<version>0.5</version>
+			<version>0.6-SNAPSHOT</version>
 			<optional>false</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-util</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-			<optional>false</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.cleartk</groupId>
-			<artifactId>cleartk-token</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<optional>false</optional>
 		</dependency>

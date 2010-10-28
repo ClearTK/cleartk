@@ -63,27 +63,27 @@ public class Chunker extends CleartkSequentialAnnotator<String> {
 	@ConfigurationParameter(
 			mandatory = true,
 			description = "names the class of the type system type that specifies a 'sequence' of labels.  An example might be something like 'org.cleartk.type.Sentence'")
-	private String sequenceClassName;
+	protected String sequenceClassName;
 	
 	public static final String PARAM_CHUNK_LABELER_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
 			Chunker.class, "chunkLabelerClassName");
 	@ConfigurationParameter(
 			mandatory = true,
 			description = "provides the class name of a class that extends org.cleartk.chunk.ChunkLabeler.")
-	private String chunkLabelerClassName;
+	protected String chunkLabelerClassName;
 	
 	public static final String PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
 			Chunker.class, "chunkerFeatureExtractorClassName");
 	@ConfigurationParameter(
 			mandatory = true,
 			description = "provides the class name of a class that extends org.cleartk.chunk.ChunkFeatureExtractor.")
-	private String chunkerFeatureExtractorClassName;
+	protected String chunkerFeatureExtractorClassName;
 	
 	protected Class<? extends Annotation> labeledAnnotationClass;
 
 	private Type labeledAnnotationType;
 
-	private Class<? extends Annotation> sequenceClass;
+	protected Class<? extends Annotation> sequenceClass;
 
 	private Type sequenceType;
 
