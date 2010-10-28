@@ -29,6 +29,7 @@ import org.cleartk.test.CleartkTestBase;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.junit.Before;
+import org.uimafit.factory.TypeSystemDescriptionFactory;
 import org.uimafit.testing.factory.TokenBuilder;
 
 /**
@@ -44,7 +45,7 @@ public class TokenTestBase extends CleartkTestBase {
 
 	static {
 		try {
-			TypeSystemDescription tsd = TokenComponents.TYPE_SYSTEM_DESCRIPTION;
+			TypeSystemDescription tsd = TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.token.TypeSystem", "org.cleartk.type.test.TestTypeSystem");
 			TYPE_SYSTEM_DESCRIPTION.set(tsd);
 
 			TokenBuilder<Token, Sentence> tb = new TokenBuilder<Token, Sentence>(Token.class, Sentence.class, "pos", null);
