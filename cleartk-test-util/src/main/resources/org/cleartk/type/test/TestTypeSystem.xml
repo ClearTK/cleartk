@@ -82,6 +82,18 @@ POSSIBILITY OF SUCH DAMAGE.</description>
       </features>
     </typeDescription>
     <typeDescription>
+      <name>org.cleartk.type.test.Chunk</name>
+      <description/>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>chunkType</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
       <name>org.cleartk.type.test.POSTag</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
