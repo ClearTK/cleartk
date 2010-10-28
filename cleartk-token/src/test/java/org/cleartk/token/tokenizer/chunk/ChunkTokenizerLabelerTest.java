@@ -28,18 +28,19 @@ import static org.junit.Assert.assertEquals;
 import java.util.Arrays;
 
 import org.apache.uima.UIMAException;
-import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.UimaContext;
 import org.cleartk.chunker.ChunkLabeler_ImplBase;
 import org.cleartk.chunker.Chunker;
 import org.cleartk.chunker.DefaultChunkLabeler;
-import org.cleartk.ne.type.NamedEntityMention;
-import org.cleartk.token.chunk.type.Subtoken;
-import org.cleartk.type.Sentence;
-import org.cleartk.type.Token;
+import org.cleartk.token.TokenTestBase;
+import org.cleartk.token.type.Sentence;
+import org.cleartk.token.type.Subtoken;
+import org.cleartk.token.type.Token;
+import org.cleartk.type.test.Lemma;
 import org.junit.Test;
-import org.uimafit.component.JCasAnnotatorAdapter;
-import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.AnnotationFactory;
+import org.uimafit.factory.UimaContextFactory;
+import org.uimafit.factory.initializable.InitializableFactory;
 import org.uimafit.util.JCasUtil;
 
 
@@ -49,7 +50,7 @@ import org.uimafit.util.JCasUtil;
 
 */
 
-public class ChunkTokenizerLabelerTest extends ToolkitTestBase{
+public class ChunkTokenizerLabelerTest extends TokenTestBase{
 
 
 	/**
@@ -58,19 +59,12 @@ public class ChunkTokenizerLabelerTest extends ToolkitTestBase{
 	 */
 	@Test
 	public void testClassifierAnnotator() throws UIMAException {
-		  AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				  JCasAnnotatorAdapter.class,
-				    typeSystemDescription,
-				    ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token",
-				    ChunkerAnnotator.PARAM_LABELED_ANNOTATION_CLASS_NAME, "org.cleartk.token.chunk.type.Subtoken"
-		  			);
+		UimaContext context = UimaContextFactory.createUimaContext(
+				ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME, Token.class.getName(),
+				Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME, Subtoken.class.getName());
 		  
-		  DefaultChunkLabeler defaultChunkLabeler = new DefaultChunkLabeler();
-		  defaultChunkLabeler.initialize(engine.getUimaContext());
+		DefaultChunkLabeler defaultChunkLabeler = InitializableFactory.create(context, DefaultChunkLabeler.class);
 		  
-		  
-		  
-		  jCas.reset();
 		  jCas.setDocumentText("Technological progress is like an axe in the hands of a pathological criminal."); //Albert Einstein
 		  Sentence sentence = new Sentence(jCas, 0, 78);
 		  sentence.addToIndexes();
@@ -129,7 +123,6 @@ public class ChunkTokenizerLabelerTest extends ToolkitTestBase{
 		  token = JCasUtil.selectByIndex(jCas, Token.class, 7);
 		  assertEquals(".", token.getCoveredText());
 		  
-		  
 	}
 
 	/**
@@ -139,19 +132,12 @@ public class ChunkTokenizerLabelerTest extends ToolkitTestBase{
 	
 	@Test
 	public void testDataWriter() throws UIMAException {
-		  AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				  JCasAnnotatorAdapter.class,
-				    typeSystemDescription,
-				    ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token",
-				    ChunkerAnnotator.PARAM_LABELED_ANNOTATION_CLASS_NAME, "org.cleartk.token.chunk.type.Subtoken"
-		  			);
+		UimaContext context = UimaContextFactory.createUimaContext(
+				ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME, Token.class.getName(),
+				Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME, Subtoken.class.getName());
 		  
-		  DefaultChunkLabeler defaultChunkLabeler = new DefaultChunkLabeler();
-		  defaultChunkLabeler.initialize(engine.getUimaContext());
+		DefaultChunkLabeler defaultChunkLabeler = InitializableFactory.create(context, DefaultChunkLabeler.class);
 		  
-		  
-		  
-		  jCas.reset();
 		  jCas.setDocumentText("Technological progress is like an axe in the hands of a pathological criminal."); //Albert Einstein
 		  Sentence sentence = new Sentence(jCas, 0, 78);
 		  sentence.addToIndexes();
@@ -201,23 +187,19 @@ public class ChunkTokenizerLabelerTest extends ToolkitTestBase{
 	
 	@Test
 	public void testGetChunkLabel() throws UIMAException {
-		  AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				  JCasAnnotatorAdapter.class,
-				    typeSystemDescription,
-				    ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME, "org.cleartk.ne.type.NamedEntityMention",
-				    DefaultChunkLabeler.PARAM_CHUNK_LABEL_FEATURE_NAME, "mentionType",
-		  			 ChunkerAnnotator.PARAM_LABELED_ANNOTATION_CLASS_NAME, "org.cleartk.type.Token"
-		  			);
+		UimaContext context = UimaContextFactory.createUimaContext(
+			    ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME, Lemma.class.getName(),
+			    DefaultChunkLabeler.PARAM_CHUNK_LABEL_FEATURE_NAME, "value",
+	  			 Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME, Token.class.getName());
 		  
-		  DefaultChunkLabeler defaultChunkLabeler = new DefaultChunkLabeler();
-		  defaultChunkLabeler.initialize(engine.getUimaContext());
-		  
+		DefaultChunkLabeler defaultChunkLabeler = InitializableFactory.create(context, DefaultChunkLabeler.class);
+
 		  jCas.setDocumentText("Technological progress is like an axe in the hands of a pathological criminal."); //Albert Einstein
 
-		  NamedEntityMention nem = AnnotationFactory.createAnnotation(jCas, 0, 22, NamedEntityMention.class);
-		  nem.setMentionType("THEME");
+		  Lemma lemma = AnnotationFactory.createAnnotation(jCas, 0, 22, Lemma.class);
+		  lemma.setValue("THEME");
 		  
-		  assertEquals("THEME", defaultChunkLabeler.getChunkLabel(jCas, nem));
+		  assertEquals("THEME", defaultChunkLabeler.getChunkLabel(jCas, lemma));
 		  
 		  AnnotationFactory.createAnnotation(jCas, 56, 13, Token.class); //Technological
 		  AnnotationFactory.createAnnotation(jCas, 23, 77, Token.class); //is
@@ -227,9 +209,9 @@ public class ChunkTokenizerLabelerTest extends ToolkitTestBase{
 		  
 		  defaultChunkLabeler.createChunk(jCas, Arrays.asList(token1, token2), "blue");
 		  
-		  nem = JCasUtil.selectByIndex(jCas, NamedEntityMention.class, 1);
-		  assertEquals("pathological criminal", nem.getCoveredText());
-		  assertEquals("blue", nem.getMentionType());
+		  lemma = JCasUtil.selectByIndex(jCas, Lemma.class, 1);
+		  assertEquals("pathological criminal", lemma.getCoveredText());
+		  assertEquals("blue", lemma.getValue());
 
 	}
 }
