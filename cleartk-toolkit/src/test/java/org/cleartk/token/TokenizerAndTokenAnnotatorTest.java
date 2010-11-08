@@ -27,12 +27,14 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.FSIndex;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.apache.uima.pear.util.FileUtil;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkComponents;
@@ -41,6 +43,8 @@ import org.cleartk.token.chunk.type.Subtoken;
 import org.cleartk.token.util.PennTreebankTokenizer;
 import org.cleartk.token.util.Subtokenizer;
 import org.cleartk.type.Token;
+import org.cleartk.type.Sentence;
+import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.pipeline.SimplePipeline;
@@ -252,11 +256,25 @@ public class TokenizerAndTokenAnnotatorTest extends ToolkitTestBase {
 		engine.collectionProcessComplete();
 	}
 
-	@Test
+  @Test
+  public void testSentenceDefault() throws ResourceInitializationException, AnalysisEngineProcessException {
+    this.jCas.setDocumentText("The dog chased the cat. The cat bit the dog.");
+    new Sentence(this.jCas, 0, 23).addToIndexes();
+    new Sentence(this.jCas, 24, 44).addToIndexes();
+    AnalysisEngine engine = CleartkComponents.createPrimitive(TokenAnnotator.class);
+    engine.process(this.jCas);
+    engine.collectionProcessComplete();
+    List<Token> tokens = AnnotationRetrieval.getAnnotations(this.jCas, Token.class);
+    assertEquals("cat", tokens.get(4).getCoveredText());
+    assertEquals(".", tokens.get(5).getCoveredText());
+  }
+
+  @Test
 	public void ticket176() throws ResourceInitializationException, AnalysisEngineProcessException {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TokenAnnotator.class,
 				typeSystemDescription, TokenAnnotator.PARAM_TOKEN_TYPE_NAME, Subtoken.class.getName(),
-				TokenAnnotator.PARAM_TOKENIZER_NAME, Subtokenizer.class.getName());
+				TokenAnnotator.PARAM_TOKENIZER_NAME, Subtokenizer.class.getName(),
+				TokenAnnotator.PARAM_WINDOW_TYPE_NAME, DocumentAnnotation.class.getName());
 		jCas.setDocumentText("AA;BB-CC   DD!@#$EE(FF)GGG \tH,.");
 		engine.process(jCas);
 
