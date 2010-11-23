@@ -24,13 +24,7 @@
 
 package org.cleartk.ne;
 
-import org.apache.uima.resource.metadata.TypeSystemDescription;
-import org.cleartk.test.CleartkTestBase;
-import org.cleartk.token.type.Sentence;
-import org.cleartk.token.type.Token;
-import org.junit.Before;
-import org.uimafit.factory.TypeSystemDescriptionFactory;
-import org.uimafit.testing.factory.TokenBuilder;
+import org.cleartk.token.TokenTestBase;
 
 /**
  * <br>
@@ -39,30 +33,11 @@ import org.uimafit.testing.factory.TokenBuilder;
  * 
  * @author Philip Ogren
  */
-public class NeTestBase extends CleartkTestBase {
+public class NeTestBase extends TokenTestBase {
 
-	private static ThreadLocal<TokenBuilder<Token, Sentence>> TOKEN_BUILDER = new ThreadLocal<TokenBuilder<Token, Sentence>>();
-
-	static {
-		try {
-			TypeSystemDescription tsd = TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.ne.TypeSystem");
-			TYPE_SYSTEM_DESCRIPTION.set(tsd);
-
-			TokenBuilder<Token, Sentence> tb = new TokenBuilder<Token, Sentence>(Token.class, Sentence.class, "pos", null);
-			TOKEN_BUILDER.set(tb);
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-	}
-
-	protected TokenBuilder<Token, Sentence> tokenBuilder;
-
-	@Before
-	public void setUp() throws Exception {
-		super.setUp();
-		tokenBuilder = TOKEN_BUILDER.get();
+	@Override
+	public String[] getTypeSystemDescriptorNames() {
+		return new String[] {"org.cleartk.ne.TypeSystem"};
 	}
 
 }
