@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.corpus.genia;
+package org.cleartk.token.pos.genia;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -37,14 +37,12 @@ import org.apache.uima.collection.CollectionException;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.ToolkitTestBase;
-import org.cleartk.token.pos.genia.GeniaPosGoldReader;
-import org.cleartk.type.Sentence;
-import org.cleartk.type.Token;
+import org.cleartk.token.TokenTestBase;
+import org.cleartk.token.type.Sentence;
+import org.cleartk.token.type.Token;
 import org.jdom.JDOMException;
 import org.junit.Test;
 import org.uimafit.factory.CollectionReaderFactory;
-import org.uimafit.factory.TypeSystemDescriptionFactory;
 import org.uimafit.pipeline.JCasIterable;
 import org.uimafit.util.JCasUtil;
 
@@ -56,12 +54,12 @@ import org.uimafit.util.JCasUtil;
  * <p>
  */
 
-public class GeniaPosGoldReaderTest extends ToolkitTestBase{
+public class GeniaPosGoldReaderTest extends TokenTestBase{
 
 	@Test
 	public void testReader() throws CASException, UIMAException, IOException {
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(GeniaPosGoldReader.class, typeSystemDescription, GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
-				"test/data/corpus/genia/GENIAcorpus3.02.articleA.pos.xml", GeniaPosGoldReader.PARAM_LOAD_TOKENS, true,
+				"src/test/resources/token/genia/GENIAcorpus3.02.articleA.pos.xml", GeniaPosGoldReader.PARAM_LOAD_TOKENS, true,
 				GeniaPosGoldReader.PARAM_LOAD_SENTENCES, true, GeniaPosGoldReader.PARAM_LOAD_POS_TAGS, true);
 
 		JCas jcas = new JCasIterable(reader).next();
@@ -77,7 +75,7 @@ public class GeniaPosGoldReaderTest extends ToolkitTestBase{
 		assertEquals("VBZ", token.getPos());
 
 		reader = CollectionReaderFactory.createCollectionReader(GeniaPosGoldReader.class, typeSystemDescription, GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
-				"test/data/corpus/genia/GENIAcorpus3.02.articleA.pos.xml", GeniaPosGoldReader.PARAM_LOAD_TOKENS, false,
+				"src/test/resources/token/genia/GENIAcorpus3.02.articleA.pos.xml", GeniaPosGoldReader.PARAM_LOAD_TOKENS, false,
 				GeniaPosGoldReader.PARAM_LOAD_SENTENCES, false, GeniaPosGoldReader.PARAM_LOAD_POS_TAGS, false);
 
 		jcas = new JCasIterable(reader).next();
@@ -93,8 +91,8 @@ public class GeniaPosGoldReaderTest extends ToolkitTestBase{
 
 		IOException ioe = null;
 		try {
-			reader = CollectionReaderFactory.createCollectionReader(GeniaPosGoldReader.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"), GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
-				"test/data/corpus/genia/GENIAcorpus3.02.articleA.pos.xml", GeniaPosGoldReader.PARAM_LOAD_TOKENS, false,
+			reader = CollectionReaderFactory.createCollectionReader(GeniaPosGoldReader.class, typeSystemDescription, GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
+				"src/test/resources/token/genia/GENIAcorpus3.02.articleA.pos.xml", GeniaPosGoldReader.PARAM_LOAD_TOKENS, false,
 				GeniaPosGoldReader.PARAM_LOAD_SENTENCES, false, GeniaPosGoldReader.PARAM_LOAD_POS_TAGS, false,
 				GeniaPosGoldReader.PARAM_ARTICLE_IDS_LIST_FILE, "asdf");
 		}catch (ResourceInitializationException rie) {
@@ -104,17 +102,17 @@ public class GeniaPosGoldReaderTest extends ToolkitTestBase{
 
 		JDOMException jde = null;
 		try {
-			reader = CollectionReaderFactory.createCollectionReader(GeniaPosGoldReader.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"), GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
-				"test/data/corpus/genia/article_ids.txt");
+			reader = CollectionReaderFactory.createCollectionReader(GeniaPosGoldReader.class, typeSystemDescription, GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
+				"src/test/resources/token/genia/article_ids.txt");
 		}catch (ResourceInitializationException rie) {
 			jde = (JDOMException) rie.getCause();
 		}
 		assertNotNull(jde);
 
-		reader = CollectionReaderFactory.createCollectionReader(GeniaPosGoldReader.class, TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"), GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
-				"test/data/corpus/genia/GENIAcorpus3.02.articleA.pos.xml", GeniaPosGoldReader.PARAM_LOAD_TOKENS, false,
+		reader = CollectionReaderFactory.createCollectionReader(GeniaPosGoldReader.class, typeSystemDescription, GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
+				"src/test/resources/token/genia/GENIAcorpus3.02.articleA.pos.xml", GeniaPosGoldReader.PARAM_LOAD_TOKENS, false,
 				GeniaPosGoldReader.PARAM_LOAD_SENTENCES, false, GeniaPosGoldReader.PARAM_LOAD_POS_TAGS, false,
-				GeniaPosGoldReader.PARAM_ARTICLE_IDS_LIST_FILE, "test/data/corpus/genia/article_ids.txt");
+				GeniaPosGoldReader.PARAM_ARTICLE_IDS_LIST_FILE, "src/test/resources/token/genia/article_ids.txt");
 		jcas = new JCasIterable(reader).next();
 		assertEquals(1, reader.getProgress()[0].getCompleted());
 		assertFalse(reader.hasNext());
