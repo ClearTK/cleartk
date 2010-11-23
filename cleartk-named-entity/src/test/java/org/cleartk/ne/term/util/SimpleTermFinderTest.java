@@ -51,7 +51,7 @@ public class SimpleTermFinderTest {
 	
 	@Test
 	public void testAddTermList() throws IOException {
-		TermList usStatesList = TermList.loadSimpleFile("US States", new File("test/data/termlist/US_States.txt"));
+		TermList usStatesList = TermList.loadSimpleFile("US States", new File("src/test/resources/data/term/termlist/US_States.txt"));
 		SimpleTermFinder termFinder = new SimpleTermFinder();
 		termFinder.addTermList(usStatesList);
 		
@@ -91,7 +91,7 @@ public class SimpleTermFinderTest {
 		assertEquals("US States", minnesotaTerm.getTermList().getName());
 
 		
-		TermList nstatesList = TermList.loadSimpleFile("N States", new File("test/data/termlist/N_States.txt"));
+		TermList nstatesList = TermList.loadSimpleFile("N States", new File("src/test/resources/data/term/termlist/N_States.txt"));
 		termFinder.addTermList(nstatesList);
 
 		assertEquals(54, termFinder.topNode.children.size());

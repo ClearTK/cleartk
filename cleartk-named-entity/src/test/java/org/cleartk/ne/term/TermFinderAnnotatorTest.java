@@ -28,9 +28,9 @@ import java.util.List;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.cleartk.ToolkitTestBase;
+import org.cleartk.ne.NeTestBase;
 import org.cleartk.ne.type.NamedEntityMention;
-import org.cleartk.type.Token;
+import org.cleartk.token.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Assert;
 import org.junit.Test;
@@ -44,14 +44,14 @@ import org.uimafit.factory.AnalysisEngineFactory;
  * 
  * @author Steven Bethard
  */
-public class TermFinderAnnotatorTest extends ToolkitTestBase{
+public class TermFinderAnnotatorTest extends NeTestBase{
 
 	@Test
 	public void test() throws UIMAException, IOException {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				TermFinderAnnotator.class, typeSystemDescription,
 				TermFinderAnnotator.PARAM_TERM_LIST_FILE_NAMES_FILE_NAME,
-				"test/data/termlist/termlist.txt",
+				"src/test/resources/data/term/termlist/termlist.txt",
 				TermFinderAnnotator.PARAM_TOKEN_CLASS_NAME, Token.class.getName(),
 				TermFinderAnnotator.PARAM_TERM_MATCH_ANNOTATION_CLASS_NAME,
 				NamedEntityMention.class.getName());
