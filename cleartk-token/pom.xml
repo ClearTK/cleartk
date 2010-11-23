@@ -117,7 +117,18 @@
 					<target>1.5</target>
 				</configuration>
 			</plugin>
-			<plugin><!-- This plugin generates java files with JCasGen-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>test-jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		<plugin><!-- This plugin generates java files with JCasGen -->
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
 				<version>1.2</version>
