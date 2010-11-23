@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.corpus.timeml;
+package org.cleartk.temporal.timeml;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,14 +33,13 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.ToolkitTestBase;
-import org.cleartk.ViewNames;
+import org.cleartk.temporal.TemporalTestBase;
 import org.cleartk.temporal.timeml.corpus.PlainTextTLINKGoldAnnotator;
 import org.cleartk.temporal.timeml.corpus.TimeMLGoldAnnotator;
 import org.cleartk.temporal.timeml.type.TemporalLink;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.FilesCollectionReader;
+import org.cleartk.util.ViewNames;
+import org.cleartk.util.cr.FilesCollectionReader;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -58,11 +57,11 @@ import org.uimafit.pipeline.JCasIterable;
  * @author Steven Bethard
  *
  */
-public class PlainTextTLINKGoldAnnotatorTest extends ToolkitTestBase{
+public class PlainTextTLINKGoldAnnotatorTest extends TemporalTestBase{
 	
 	private final String webUrl = "http://verbs.colorado.edu/~bethard/data/timebank-verb-clause.txt";
 	private final String fileUrl = String.format("file:///%s",
-			new File("test/data/corpus/timeml/wsj_0106.tlinks").getAbsolutePath());
+			new File("src/test/resources/data/timeml/wsj_0106.tlinks").getAbsolutePath());
 			
 
 	@Test
@@ -74,7 +73,7 @@ public class PlainTextTLINKGoldAnnotatorTest extends ToolkitTestBase{
 				FilesCollectionReader.PARAM_VIEW_NAME,
 				ViewNames.TIMEML,
 				FilesCollectionReader.PARAM_ROOT_FILE,
-				"test/data/corpus/timeml/wsj_0106.tml");
+				"src/test/resources/data/timeml/wsj_0106.tml");
 		AnalysisEngine timemlEngine = AnalysisEngineFactory.createPrimitive(
 				TimeMLGoldAnnotator.class,
 				typeSystemDescription,
@@ -128,7 +127,7 @@ public class PlainTextTLINKGoldAnnotatorTest extends ToolkitTestBase{
 				FilesCollectionReader.PARAM_VIEW_NAME,
 				ViewNames.TIMEML,
 				FilesCollectionReader.PARAM_ROOT_FILE,
-				"test/data/corpus/timeml/wsj_0106.tml");
+				"src/test/resources/data/timeml/wsj_0106.tml");
 		AnalysisEngine timemlEngine = AnalysisEngineFactory.createPrimitive(
 				TimeMLGoldAnnotator.class,
 				typeSystemDescription,
@@ -172,23 +171,5 @@ public class PlainTextTLINKGoldAnnotatorTest extends ToolkitTestBase{
 		Assert.assertEquals("ei132", tlink.getRelatedToEventInstance());
 		Assert.assertEquals("t26", tlink.getSource().getId());
 		Assert.assertEquals("e7", tlink.getTarget().getId());
-	}
-	
-	@Test
-	@Ignore
-	public void testAnnotatorDescriptor() throws UIMAException, IOException {
-		try {
-			AnalysisEngineFactory.createAnalysisEngine(
-					"org.cleartk.corpus.timeml.PlainTextTLINKGoldAnnotator");
-			Assert.fail("expected failure with no TlinkFileUrl specified");
-		} catch (ResourceInitializationException e) {}
-		
-		
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-				"org.cleartk.corpus.timeml.PlainTextTLINKGoldAnnotator",
-				PlainTextTLINKGoldAnnotator.PARAM_TLINK_FILE_URL, this.webUrl);
-		Assert.assertEquals(this.webUrl, engine.getConfigParameterValue(
-				PlainTextTLINKGoldAnnotator.PARAM_TLINK_FILE_URL));
-		engine.collectionProcessComplete();
 	}
 }

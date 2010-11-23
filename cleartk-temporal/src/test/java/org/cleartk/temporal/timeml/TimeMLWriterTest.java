@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.corpus.timeml;
+package org.cleartk.temporal.timeml;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,12 +36,11 @@ import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
-import org.cleartk.ToolkitTestBase;
-import org.cleartk.ViewNames;
+import org.cleartk.temporal.TemporalTestBase;
 import org.cleartk.temporal.timeml.corpus.TimeMLGoldAnnotator;
 import org.cleartk.temporal.timeml.corpus.TimeMLWriter;
-import org.cleartk.util.CleartkComponents;
-import org.cleartk.util.FilesCollectionReader;
+import org.cleartk.util.ViewNames;
+import org.cleartk.util.cr.FilesCollectionReader;
 import org.jdom.Attribute;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -63,7 +62,7 @@ import org.uimafit.pipeline.JCasIterable;
  * @author Steven Bethard
  *
  */
-public class TimeMLWriterTest extends ToolkitTestBase {
+public class TimeMLWriterTest extends TemporalTestBase {
 	
 	private File inputFile;
 	private File outputFile;
@@ -71,7 +70,7 @@ public class TimeMLWriterTest extends ToolkitTestBase {
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
-		inputFile = new File("test/data/corpus/timeml/test.foo");
+		inputFile = new File("src/test/resources/data/timeml/test.foo");
 		outputFile  = new File(outputDirectory, "test.foo.tml");
 	}
 	@Test
@@ -108,12 +107,12 @@ public class TimeMLWriterTest extends ToolkitTestBase {
 	@Test
 	public void testDescriptor() throws UIMAException, IOException {
 		try {
-			CleartkComponents.createPrimitive(TimeMLWriter.class);
+			AnalysisEngineFactory.createPrimitive(TimeMLWriter.class, typeSystemDescription);
 			Assert.fail("expected failure with no OutputDirectory specified");
 		} catch (ResourceInitializationException e) {}
 		
 		
-		AnalysisEngine engine = CleartkComponents.createPrimitive(TimeMLWriter.class, TimeMLWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDirectory.getPath());
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TimeMLWriter.class, typeSystemDescription, TimeMLWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDirectory.getPath());
 		Assert.assertEquals(this.outputDirectory.getPath(), engine.getConfigParameterValue(TimeMLWriter.PARAM_OUTPUT_DIRECTORY_NAME));
 		engine.collectionProcessComplete();
 	}

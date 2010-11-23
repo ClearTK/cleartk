@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.corpus.timeml;
+package org.cleartk.temporal.timeml;
 
 import java.io.IOException;
 import java.util.List;
@@ -30,14 +30,14 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
-import org.cleartk.ToolkitTestBase;
-import org.cleartk.ViewNames;
+import org.cleartk.temporal.TemporalTestBase;
 import org.cleartk.temporal.timeml.corpus.TimeMLGoldAnnotator;
 import org.cleartk.temporal.timeml.type.Event;
 import org.cleartk.temporal.timeml.type.TemporalLink;
 import org.cleartk.temporal.timeml.type.Time;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.FilesCollectionReader;
+import org.cleartk.util.ViewNames;
+import org.cleartk.util.cr.FilesCollectionReader;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -54,7 +54,7 @@ import org.uimafit.pipeline.JCasIterable;
  * @author Steven Bethard
  *
  */
-public class TimeMLGoldAnnotatorTest extends ToolkitTestBase{
+public class TimeMLGoldAnnotatorTest extends TemporalTestBase{
 	
 	@Test
 	public void testTimeBank() throws UIMAException, IOException {
@@ -64,7 +64,7 @@ public class TimeMLGoldAnnotatorTest extends ToolkitTestBase{
 				FilesCollectionReader.PARAM_VIEW_NAME,
 				ViewNames.TIMEML,
 				FilesCollectionReader.PARAM_ROOT_FILE,
-				"test/data/corpus/timeml/wsj_0106.tml");
+				"src/test/resources/data/timeml/wsj_0106.tml");
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				TimeMLGoldAnnotator.class,
 				typeSystemDescription);
@@ -130,7 +130,7 @@ public class TimeMLGoldAnnotatorTest extends ToolkitTestBase{
 				FilesCollectionReader.PARAM_VIEW_NAME,
 				ViewNames.TIMEML,
 				FilesCollectionReader.PARAM_ROOT_FILE,
-				"test/data/corpus/timeml/AP900815-0044.tml");
+				"src/test/resources/data/timeml/AP900815-0044.tml");
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				TimeMLGoldAnnotator.class,
 				typeSystemDescription);
@@ -182,7 +182,7 @@ public class TimeMLGoldAnnotatorTest extends ToolkitTestBase{
 				FilesCollectionReader.PARAM_VIEW_NAME,
 				ViewNames.TIMEML,
 				FilesCollectionReader.PARAM_ROOT_FILE,
-				"test/data/corpus/timeml",
+				"src/test/resources/data/timeml",
 				FilesCollectionReader.PARAM_SUFFIXES,
 				new String[]{".tml"});
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(

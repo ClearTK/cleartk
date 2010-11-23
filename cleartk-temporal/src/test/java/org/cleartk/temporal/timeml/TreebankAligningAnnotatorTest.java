@@ -21,13 +21,14 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.corpus.timeml;
+package org.cleartk.temporal.timeml;
 
 import java.io.IOException;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.temporal.TemporalTestBase;
 import org.cleartk.temporal.timeml.corpus.TreebankAligningAnnotator;
 import org.junit.Assert;
 import org.junit.Test;
@@ -43,20 +44,20 @@ import org.uimafit.factory.AnalysisEngineFactory;
  *
  * @author Steven Bethard
  */
-public class TreebankAligningAnnotatorTest {
+public class TreebankAligningAnnotatorTest extends TemporalTestBase{
 	
 	
 	@Test
 	public void testDescriptor() throws UIMAException, IOException {
 		try {
-			AnalysisEngineFactory.createAnalysisEngine(
-					"org.cleartk.corpus.timeml.TreebankAligningAnnotator");
+			AnalysisEngineFactory.createPrimitive(
+					TreebankAligningAnnotator.class, typeSystemDescription);
 			Assert.fail("expected exception with TreebankDirectory unspecified");
 		} catch (ResourceInitializationException e) {}
 		
 		String treebankPath = "data/treebank/wsj";
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-				"org.cleartk.corpus.timeml.TreebankAligningAnnotator",
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+				TreebankAligningAnnotator.class, typeSystemDescription,
 				TreebankAligningAnnotator.PARAM_TREEBANK_DIRECTORY_NAME,
 				treebankPath);
 		
