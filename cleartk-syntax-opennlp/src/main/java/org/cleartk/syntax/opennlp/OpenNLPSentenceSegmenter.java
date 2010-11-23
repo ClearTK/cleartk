@@ -82,7 +82,7 @@ public class OpenNLPSentenceSegmenter extends JCasAnnotator_ImplBase {
 
 	@ConfigurationParameter (
 			description = "class type of the sentences that are created by this annotator. If this parameter is not filled, then sentencesof type org.cleartk.type.Sentence will be created.",
-			defaultValue = "org.cleartk.type.Sentence")
+			defaultValue = "org.cleartk.token.type.Sentence")
 	private String sentenceTypeName;
 
 	Class<? extends Annotation> sentenceClass;

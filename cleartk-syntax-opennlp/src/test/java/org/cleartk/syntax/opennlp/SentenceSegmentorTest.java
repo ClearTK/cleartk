@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.sentence.opennlp;
+package org.cleartk.syntax.opennlp;
 
 import static org.junit.Assert.assertEquals;
 
@@ -29,8 +29,8 @@ import java.io.IOException;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.cleartk.ToolkitTestBase;
-import org.cleartk.type.Sentence;
+import org.cleartk.token.TokenTestBase;
+import org.cleartk.token.type.Sentence;
 import org.junit.Before;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -43,7 +43,7 @@ import org.uimafit.util.JCasUtil;
  * 
  * @author Philip Ogren, Steven Bethard
  */
-public class SentenceSegmentorTest extends ToolkitTestBase {
+public class SentenceSegmentorTest extends TokenTestBase {
 	
 		AnalysisEngine sentenceSegmenter;
 		
@@ -55,7 +55,7 @@ public class SentenceSegmentorTest extends ToolkitTestBase {
 				OpenNLPSentenceSegmenter.class,
 				typeSystemDescription,
 				OpenNLPSentenceSegmenter.PARAM_SENTENCE_MODEL_FILE_NAME,
-				"resources/models/OpenNLP.Sentence.English.bin.gz");
+				"src/main/resources/models/OpenNLP.Sentence.English.bin.gz");
 		}
 	}
 	
@@ -78,7 +78,7 @@ public class SentenceSegmentorTest extends ToolkitTestBase {
 	public void testSentenceSegmentor() throws UIMAException, IOException
     {
 
-		AnalysisEngineFactory.process(jCas, sentenceSegmenter, "test/data/docs/youthful-precocity.txt");
+		AnalysisEngineFactory.process(jCas, sentenceSegmenter, "src/test/resources/data/sentence/youthful-precocity.txt");
 
 		Sentence sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 0);
 		String sentenceText = "The precocity of some youths is surprising.";
@@ -111,7 +111,7 @@ public class SentenceSegmentorTest extends ToolkitTestBase {
     {
 		AnalysisEngineFactory.process(jCas,
 				sentenceSegmenter,
-				"test/data/docs/sentences/test1.txt"); 
+				"src/test/resources/data/sentence/test1.txt"); 
 		
 		Sentence sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 0);
 		assertEquals("aaaa aaaa aaaa aaaa", sentence.getCoveredText());
@@ -131,7 +131,7 @@ public class SentenceSegmentorTest extends ToolkitTestBase {
     {
 		AnalysisEngineFactory.process(jCas,
 				sentenceSegmenter,
-				"test/data/docs/sentences/test2.txt");
+				"src/test/resources/data/sentence/test2.txt");
 		Sentence sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 0);
 		assertEquals( "I don't understand this.", sentence.getCoveredText());
     }
@@ -141,7 +141,7 @@ public class SentenceSegmentorTest extends ToolkitTestBase {
     {
 		AnalysisEngineFactory.process(jCas,
 				sentenceSegmenter,
-				"test/data/docs/sentences/test3.txt");
+				"src/test/resources/data/sentence/test3.txt");
 		Sentence sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 0);
 		assertEquals( "test", sentence.getCoveredText());
     }
@@ -150,7 +150,7 @@ public class SentenceSegmentorTest extends ToolkitTestBase {
 	public void test5() throws UIMAException, IOException{
 		AnalysisEngineFactory.process(jCas,
 				sentenceSegmenter,
-				"test/data/docs/sentences/test5.txt");
+				"src/test/resources/data/sentence/test5.txt");
 		Sentence sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 0);
 		assertEquals( "a", sentence.getCoveredText());
 		sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 1);
@@ -166,7 +166,7 @@ public class SentenceSegmentorTest extends ToolkitTestBase {
 	public void test6() throws UIMAException, IOException{
 		AnalysisEngineFactory.process(jCas,
 				sentenceSegmenter,
-				"test/data/docs/sentences/test6.txt");
+				"src/test/resources/data/sentence/test6.txt");
 		Sentence sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 0);
 		assertEquals( "a", sentence.getCoveredText());
 		sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 1);
@@ -182,7 +182,7 @@ public class SentenceSegmentorTest extends ToolkitTestBase {
 	public void test7() throws UIMAException, IOException{
 		AnalysisEngineFactory.process(jCas,
 				sentenceSegmenter,
-				"test/data/docs/sentences/test7.txt");
+				"src/test/resources/data/sentence/test7.txt");
 		Sentence sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 0);
 		assertEquals( "It was a Wednesday morning.", sentence.getCoveredText());
 		
