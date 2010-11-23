@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.corpus.conll2003;
+package org.cleartk.ne.conll2003;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -31,13 +31,12 @@ import org.apache.uima.cas.FSIndex;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.ToolkitTestBase;
-import org.cleartk.ne.conll2003.Conll2003GoldReader;
+import org.cleartk.ne.NeTestBase;
+import org.cleartk.ne.type.Chunk;
 import org.cleartk.ne.type.NamedEntity;
 import org.cleartk.ne.type.NamedEntityMention;
-import org.cleartk.type.Chunk;
-import org.cleartk.type.Sentence;
-import org.cleartk.type.Token;
+import org.cleartk.token.type.Sentence;
+import org.cleartk.token.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Assert;
 import org.junit.Test;
@@ -53,14 +52,14 @@ import org.uimafit.util.JCasUtil;
  * @author Philip Ogren
  *
  */
-public class Conll2003GoldReaderTest extends ToolkitTestBase{
+public class Conll2003GoldReaderTest extends NeTestBase{
 	
 	@Test
 	public void testFakeTrainDocs() throws UIMAException, IOException 
 	{
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				Conll2003GoldReader.class, typeSystemDescription,
-				Conll2003GoldReader.PARAM_DATA_FILE_NAME, "test/data/corpus/conll2003/eng.train",
+				Conll2003GoldReader.PARAM_DATA_FILE_NAME, "src/test/resources/data/conll2003/eng.train",
 				Conll2003GoldReader.PARAM_LOAD_NAMED_ENTITIES, true);
 		
 		Iterator<JCas> iterator = new JCasIterable(reader).iterator();

@@ -11,5 +11,7 @@
     <import name="org.cleartk.ne.type.NamedEntity"/>
     <import name="org.cleartk.ne.type.NamedEntityClass"/>
     <import name="org.cleartk.ne.type.NamedEntityMention"/>
+    <import name="org.cleartk.token.type.Token"/>
+    <import name="org.cleartk.token.type.Sentence"/>
   </imports>
 </typeSystemDescription>
