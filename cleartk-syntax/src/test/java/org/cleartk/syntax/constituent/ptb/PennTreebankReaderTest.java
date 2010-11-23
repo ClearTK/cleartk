@@ -21,13 +21,14 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.corpus.penntreebank;
+package org.cleartk.syntax.constituent.ptb;
 
 import java.io.IOException;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.syntax.SyntaxTestBase;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.CollectionReaderFactory;
@@ -46,22 +47,20 @@ import org.uimafit.factory.CollectionReaderFactory;
  * @author Philip
  *
  */
-public class PennTreebankReaderTest {
+public class PennTreebankReaderTest extends SyntaxTestBase{
 
 	private final String inputDir = "data/treebank/wsj";
-
-	private final String descriptor = "org.cleartk.corpus.penntreebank.PennTreebankReader";
 
 	@Test
 	public void testReaderDescriptor() throws UIMAException, IOException {
 		try {
-			CollectionReaderFactory.createCollectionReader(descriptor);
+			CollectionReaderFactory.createCollectionReader(PennTreebankReader.class, typeSystemDescription);
 			Assert.fail("expected exception with no file or directory specified");
 		}
 		catch (ResourceInitializationException e) {
 		}
 
-		CollectionReader reader = CollectionReaderFactory.createCollectionReader(descriptor, PennTreebankReader.PARAM_CORPUS_DIRECTORY_NAME,
+		CollectionReader reader = CollectionReaderFactory.createCollectionReader(PennTreebankReader.class, typeSystemDescription, PennTreebankReader.PARAM_CORPUS_DIRECTORY_NAME,
 				this.inputDir, PennTreebankReader.PARAM_SECTIONS_SPECIFIER, "02-21");
 
 		Object directory = reader.getConfigParameterValue(PennTreebankReader.PARAM_CORPUS_DIRECTORY_NAME);
