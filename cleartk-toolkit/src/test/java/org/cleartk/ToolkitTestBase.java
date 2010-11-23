@@ -24,12 +24,10 @@
 
 package org.cleartk;
 
-import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.cleartk.test.CleartkTestBase;
 import org.cleartk.type.Sentence;
 import org.cleartk.type.Token;
 import org.junit.Before;
-import org.uimafit.factory.TypeSystemDescriptionFactory;
 import org.uimafit.testing.factory.TokenBuilder;
 
 /**
@@ -41,28 +39,17 @@ import org.uimafit.testing.factory.TokenBuilder;
  */
 public class ToolkitTestBase extends CleartkTestBase {
 
-	private static ThreadLocal<TokenBuilder<Token, Sentence>> TOKEN_BUILDER = new ThreadLocal<TokenBuilder<Token, Sentence>>();
-
-	static {
-		try {
-			TypeSystemDescription tsd = TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem");
-			TYPE_SYSTEM_DESCRIPTION.set(tsd);
-
-			TokenBuilder<Token, Sentence> tb = new TokenBuilder<Token, Sentence>(Token.class, Sentence.class, "pos", "stem");
-			TOKEN_BUILDER.set(tb);
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-	}
-
 	protected TokenBuilder<Token, Sentence> tokenBuilder;
 
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
-		tokenBuilder = TOKEN_BUILDER.get();
+		tokenBuilder = new TokenBuilder<Token, Sentence>(Token.class, Sentence.class, "pos", "stem");
+	}
+
+	@Override
+	public String[] getTypeSystemDescriptorNames() {
+		return new String[] {"org.cleartk.TypeSystem"};
 	}
 
 }
