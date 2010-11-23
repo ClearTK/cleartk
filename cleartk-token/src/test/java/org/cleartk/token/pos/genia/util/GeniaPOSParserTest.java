@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.corpus.genia.util;
+package org.cleartk.token.pos.genia.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -29,9 +29,6 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 
-import org.cleartk.token.pos.genia.util.GeniaPOSParser;
-import org.cleartk.token.pos.genia.util.GeniaParse;
-import org.cleartk.token.pos.genia.util.GeniaTag;
 import org.jdom.JDOMException;
 import org.junit.Test;
 
@@ -46,7 +43,7 @@ public class GeniaPOSParserTest {
 
 	@Test
 	public void testArticleA() throws JDOMException, IOException {
-		File xmlFile = new File("test/data/corpus/genia/GENIAcorpus3.02.articleA.pos.xml"); 
+		File xmlFile = new File("src/test/resources/token/genia/GENIAcorpus3.02.articleA.pos.xml"); 
 		GeniaPOSParser gp = new GeniaPOSParser(xmlFile);
 		GeniaParse parse = gp.next();
 		
