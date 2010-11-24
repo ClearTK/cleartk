@@ -11,5 +11,6 @@
     <import name="org.cleartk.temporal.timeml.type.TemporalLink"/>
     <import name="org.cleartk.temporal.timeml.type.Text"/>
     <import name="org.cleartk.temporal.timeml.type.Time"/>
+    <import name="org.cleartk.syntax.TypeSystem"/>
   </imports>
 </typeSystemDescription>

@@ -104,6 +104,13 @@
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
+			<artifactId>cleartk-syntax</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+					<classifier>tests</classifier>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-syntax-opennlp</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<optional>false</optional>

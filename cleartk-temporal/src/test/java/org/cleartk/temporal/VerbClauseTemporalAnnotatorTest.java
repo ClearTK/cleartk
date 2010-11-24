@@ -35,24 +35,23 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.CleartkException;
-import org.cleartk.ToolkitTestBase;
 import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.ClassifierFactory;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.InstanceCollector;
 import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.syntax.TreebankTestsUtil;
-import org.cleartk.syntax.treebank.type.TopTreebankNode;
-import org.cleartk.syntax.treebank.type.TreebankNode;
+import org.cleartk.syntax.constituent.type.TopTreebankNode;
+import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.temporal.timeml.type.Event;
 import org.cleartk.temporal.timeml.type.TemporalLink;
-import org.cleartk.type.Sentence;
-import org.cleartk.type.Token;
+import org.cleartk.token.type.Sentence;
+import org.cleartk.token.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.CleartkComponents;
-import org.cleartk.util.InstanceCollector;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -67,7 +66,7 @@ import org.uimafit.factory.AnalysisEngineFactory;
  *
  * @author Steven Bethard
  */
-public class VerbClauseTemporalAnnotatorTest extends ToolkitTestBase{
+public class VerbClauseTemporalAnnotatorTest extends TemporalTestBase{
 	
 	public static class AfterNewClassifier implements Classifier<String>, ClassifierFactory<String> {
 		public AfterNewClassifier() {}
@@ -86,9 +85,9 @@ public class VerbClauseTemporalAnnotatorTest extends ToolkitTestBase{
 	@Test
 	public void test() throws UIMAException, CleartkException {
 		AnalysisEngineDescription desc = CleartkComponents.createCleartkAnnotator(
-				VerbClauseTemporalAnnotator.class,
+				VerbClauseTemporalAnnotator.class, typeSystemDescription,
 				InstanceCollector.StringFactory.class,
-				".");
+				".", (List<Class<?>>)null);
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(desc);
 		
 		tokenBuilder.buildTokens(jCas,
@@ -165,8 +164,8 @@ public class VerbClauseTemporalAnnotatorTest extends ToolkitTestBase{
 		Assert.assertEquals(0, tlinks.size());
 		
 		// and run the annotator again, asking it to annotate this time
-		desc = CleartkComponents.createPrimitiveDescription(
-				VerbClauseTemporalAnnotator.class,
+		desc = AnalysisEngineFactory.createPrimitiveDescription(
+				VerbClauseTemporalAnnotator.class, typeSystemDescription,
 				CleartkAnnotator.PARAM_CLASSIFIER_FACTORY_CLASS_NAME,
 				AfterNewClassifier.class.getName());
 		engine = AnalysisEngineFactory.createPrimitive(desc);
@@ -191,12 +190,13 @@ public class VerbClauseTemporalAnnotatorTest extends ToolkitTestBase{
 	
 	@Test
 	public void testAnnotationDescriptor() throws UIMAException, IOException {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-				"org.cleartk.temporal.VerbClauseTemporalAnnotator");
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+				VerbClauseTemporalAnnotator.class, typeSystemDescription,
+				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, "src/main/resources/models/verb-clause-temporal-model.jar");
 		
 		Object modelJar = engine.getConfigParameterValue(
 				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH);
-		Assert.assertEquals("resources/models/verb-clause-temporal-model.jar", modelJar);
+		Assert.assertEquals("src/main/resources/models/verb-clause-temporal-model.jar", modelJar);
 		
 		engine.collectionProcessComplete();
 	}
@@ -231,8 +231,9 @@ public class VerbClauseTemporalAnnotatorTest extends ToolkitTestBase{
 		tree.addToIndexes();
 		
 		// run annotator
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-				"org.cleartk.temporal.VerbClauseTemporalAnnotator");
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+				VerbClauseTemporalAnnotator.class, typeSystemDescription,
+				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, "src/main/resources/models/verb-clause-temporal-model.jar");
 		engine.process(jCas);
 		
 		// check output
