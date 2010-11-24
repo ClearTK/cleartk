@@ -21,43 +21,41 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.srl;
+package org.cleartk.srl.conll2005;
 
-import static org.junit.Assert.fail;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.File;
 import java.io.IOException;
 
-import org.cleartk.srl.propbank.util.Propbank;
-import org.cleartk.srl.propbank.util.PropbankFormatException;
+import org.apache.uima.UIMAException;
+import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.srl.SrlTestBase;
+import org.junit.Assert;
 import org.junit.Test;
+import org.uimafit.factory.AnalysisEngineFactory;
+
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
  * <br>All rights reserved.
 
- *
- * @author Philip Ogren
- *
- * To run this test copy prop.txt to data/propbank-1.0 and read the file data/propbank-1.0/README.cleartk
  */
-public class ParseProbankTest {
+public class CoNLL2005WriterTest extends SrlTestBase {
 
 	@Test
-	public void testCorpusParse() throws IOException{
-		int total = 0;
-		BufferedReader input = new BufferedReader(new FileReader("test/data/corpus/propbank-1.0/prop.txt"));
-		String line = null;
+	public void testCoNLL2005WriterDescriptor() throws UIMAException, IOException {
 		try {
-			
-			while((line = input.readLine()) != null) {
-				Propbank.fromString(line);
-				total++;
-			}
-		} catch (PropbankFormatException e) {
-			fail("Parser unable to parser line="+total+": "+line);
-		}
+			AnalysisEngineFactory.createPrimitive(Conll2005Writer.class, typeSystemDescription);
+			Assert.fail("expected exception without output file parameter");
+		} catch (ResourceInitializationException e) {}
+
+		File outputFile = new File(outputDirectory, "dev-set-result.txt"); 
+
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+				Conll2005Writer.class, typeSystemDescription,
+				Conll2005Writer.PARAM_OUTPUT_FILE, outputFile.getPath());
+
+		engine.collectionProcessComplete();
 	}
 	
 }

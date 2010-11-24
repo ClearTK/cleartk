@@ -32,15 +32,17 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.util.CleartkComponents;
+import org.cleartk.srl.SrlTestBase;
 import org.junit.Assert;
 import org.junit.Test;
+import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.factory.CollectionReaderFactory;
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
  * <br>All rights reserved.
 
  */
-public class PropbankGoldReaderAndAnnotatorTest {
+public class PropbankGoldReaderAndAnnotatorTest extends SrlTestBase {
 	
 	
 	
@@ -50,7 +52,7 @@ public class PropbankGoldReaderAndAnnotatorTest {
 		
 		ResourceInitializationException rie = null;
 		try {
-			reader = CleartkComponents.createCollectionReader(PropbankGoldReader.class);
+			reader = CollectionReaderFactory.createCollectionReader(PropbankGoldReader.class, typeSystemDescription);
 		} catch (ResourceInitializationException e) {
 			rie = e;
 		}
@@ -58,7 +60,7 @@ public class PropbankGoldReaderAndAnnotatorTest {
 
 		rie = null;
 		try {
-			reader = CleartkComponents.createCollectionReader(PropbankGoldReader.class,
+			reader = CollectionReaderFactory.createCollectionReader(PropbankGoldReader.class, typeSystemDescription,
 				PropbankGoldReader.PARAM_WSJ_SECTIONS, "02-21");
 		} catch (ResourceInitializationException e) {
 			rie = e;
@@ -66,26 +68,26 @@ public class PropbankGoldReaderAndAnnotatorTest {
 		assertNotNull(rie);
 
 		try {
-			reader = CleartkComponents.createCollectionReader(PropbankGoldReader.class,
+			reader = CollectionReaderFactory.createCollectionReader(PropbankGoldReader.class, typeSystemDescription,
 				PropbankGoldReader.PARAM_WSJ_SECTIONS, "02-21",
-			PropbankGoldReader.PARAM_PROPBANK_FILE_NAME, "data/propbank-1.0/prop.txt");
+			PropbankGoldReader.PARAM_PROPBANK_FILE_NAME, "src/test/resources/data/propbank-1.0/prop.txt");
 		} catch (ResourceInitializationException e) {
 			rie = e;
 		}
 		assertNotNull(rie);
 
-		reader = CleartkComponents.createCollectionReader(PropbankGoldReader.class,
+		reader = CollectionReaderFactory.createCollectionReader(PropbankGoldReader.class, typeSystemDescription, 
 				PropbankGoldReader.PARAM_WSJ_SECTIONS, "02-21",
-				PropbankGoldReader.PARAM_PROPBANK_FILE_NAME, "test/data/corpus/propbank-1.0/prop.txt",
-				PropbankGoldReader.PARAM_PENNTREEBANK_DIRECTORY_NAME, "test/data/corpus/propbank-1.0/treebank");
+				PropbankGoldReader.PARAM_PROPBANK_FILE_NAME, "src/test/resources/data/propbank-1.0/prop.txt",
+				PropbankGoldReader.PARAM_PENNTREEBANK_DIRECTORY_NAME, "src/test/resources/data/propbank-1.0/treebank");
 		
 		Object propbankCorpusFile = reader.getConfigParameterValue(
 				PropbankGoldReader.PARAM_PROPBANK_FILE_NAME);
-		Assert.assertEquals("test/data/corpus/propbank-1.0/prop.txt", propbankCorpusFile);
+		Assert.assertEquals("src/test/resources/data/propbank-1.0/prop.txt", propbankCorpusFile);
 		
 		Object treebankCorpusDirectory = reader.getConfigParameterValue(
 				PropbankGoldReader.PARAM_PENNTREEBANK_DIRECTORY_NAME);
-		Assert.assertEquals("test/data/corpus/propbank-1.0/treebank", treebankCorpusDirectory);
+		Assert.assertEquals("src/test/resources/data/propbank-1.0/treebank", treebankCorpusDirectory);
 		
 		Object wsjSections = reader.getConfigParameterValue(
 				PropbankGoldReader.PARAM_WSJ_SECTIONS);
@@ -95,7 +97,7 @@ public class PropbankGoldReaderAndAnnotatorTest {
 	
 	@Test
 	public void testAnnotatorDescriptor() throws UIMAException, IOException {
-		AnalysisEngine engine = CleartkComponents.createPrimitive(PropbankGoldAnnotator.class);
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(PropbankGoldAnnotator.class, typeSystemDescription);
 		engine.collectionProcessComplete();
 	}
 	

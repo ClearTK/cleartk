@@ -27,8 +27,8 @@ import java.io.File;
 import java.util.List;
 
 import org.cleartk.classifier.jar.Train;
-import org.cleartk.classifier.svmlight.DefaultOVASVMlightDataWriterFactory;
-import org.cleartk.classifier.svmlight.DefaultSVMlightDataWriterFactory;
+import org.cleartk.classifier.libsvm.DefaultBinaryLIBSVMDataWriterFactory;
+import org.cleartk.classifier.libsvm.DefaultMultiClassLIBSVMDataWriterFactory;
 import org.cleartk.srl.ArgumentClassifier;
 import org.cleartk.srl.ArgumentIdentifier;
 import org.cleartk.srl.SrlComponents;
@@ -68,13 +68,13 @@ public class TrainConll2005Models {
 //						predicateIdentificationOutputDirectory.toString()),
 				CleartkComponents.createCleartkAnnotator(
 						ArgumentIdentifier.class, SrlComponents.TYPE_SYSTEM_DESCRIPTION,
-						DefaultSVMlightDataWriterFactory.class, 
+						DefaultBinaryLIBSVMDataWriterFactory.class, 
 						argumentIdentificationOutputDirectory.toString(), 
 						(List<Class<?>>)null
 				),
 				CleartkComponents.createCleartkAnnotator(
 						ArgumentClassifier.class, SrlComponents.TYPE_SYSTEM_DESCRIPTION,
-						DefaultOVASVMlightDataWriterFactory.class, 
+						DefaultMultiClassLIBSVMDataWriterFactory.class, 
 						argumentClassificationOutputDirectory.toString(),
 						(List<Class<?>>)null)
 		);

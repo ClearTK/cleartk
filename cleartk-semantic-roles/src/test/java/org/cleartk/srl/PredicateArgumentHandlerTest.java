@@ -36,18 +36,17 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.cleartk.CleartkException;
-import org.cleartk.ToolkitTestBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.InstanceCollector;
 import org.cleartk.srl.type.Predicate;
 import org.cleartk.srl.type.SemanticArgument;
 import org.cleartk.syntax.TreebankTestsUtil;
-import org.cleartk.syntax.treebank.type.TopTreebankNode;
-import org.cleartk.syntax.treebank.type.TreebankNode;
-import org.cleartk.type.Token;
+import org.cleartk.syntax.constituent.type.TopTreebankNode;
+import org.cleartk.syntax.constituent.type.TreebankNode;
+import org.cleartk.token.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.CleartkComponents;
-import org.cleartk.util.InstanceCollector;
 import org.cleartk.util.UIMAUtil;
 import org.junit.Assert;
 import org.junit.Test;
@@ -59,15 +58,16 @@ import org.uimafit.factory.AnalysisEngineFactory;
  * <br>All rights reserved.
 
  */
-public class PredicateArgumentHandlerTest extends ToolkitTestBase {
+public class PredicateArgumentHandlerTest extends SrlTestBase {
 	
 	
 	@Test
 	public void testArgumentAnnotationNoPredicate() throws UIMAException, CleartkException {
 		// create the document
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				CleartkComponents.createCleartkAnnotator(
-						ArgumentAnnotator.class, InstanceCollector.StringFactory.class, "."));
+		AnalysisEngine engine = 
+			AnalysisEngineFactory.createPrimitive(
+					CleartkComponents.createCleartkAnnotator(
+							ArgumentAnnotator.class, typeSystemDescription, InstanceCollector.StringFactory.class, ".", (List<Class<?>>) null));
 		this.setTokens(jCas);
 		this.setTrees(jCas);
 		
@@ -81,7 +81,7 @@ public class PredicateArgumentHandlerTest extends ToolkitTestBase {
 		// create the document
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				CleartkComponents.createCleartkAnnotator(
-						ArgumentIdentifier.class, InstanceCollector.BooleanFactory.class, "."));
+						ArgumentIdentifier.class, typeSystemDescription, InstanceCollector.BooleanFactory.class, ".", (List<Class<?>>) null));
 		this.setTokens(jCas);
 		this.setTrees(jCas);
 		
@@ -95,7 +95,7 @@ public class PredicateArgumentHandlerTest extends ToolkitTestBase {
 		// create the document
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				CleartkComponents.createCleartkAnnotator(
-						ArgumentClassifier.class, InstanceCollector.StringFactory.class, "."));
+						ArgumentClassifier.class, typeSystemDescription, InstanceCollector.StringFactory.class, ".",  (List<Class<?>>) null));
 		this.setTokens(jCas);
 		this.setTrees(jCas);
 		
@@ -109,7 +109,7 @@ public class PredicateArgumentHandlerTest extends ToolkitTestBase {
 		// create the document
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				CleartkComponents.createCleartkAnnotator(
-						ArgumentAnnotator.class, InstanceCollector.StringFactory.class, "."));
+						ArgumentAnnotator.class, typeSystemDescription, InstanceCollector.StringFactory.class, ".", (List<Class<?>>) null));
 		this.setTokens(jCas);
 		this.setPredicates(jCas);
 		
@@ -129,7 +129,7 @@ public class PredicateArgumentHandlerTest extends ToolkitTestBase {
 		// create the document
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				CleartkComponents.createCleartkAnnotator(
-						ArgumentIdentifier.class, InstanceCollector.BooleanFactory.class, "."));
+						ArgumentIdentifier.class, typeSystemDescription, InstanceCollector.BooleanFactory.class, ".", (List<Class<?>>) null));
 		this.setTokens(jCas);
 		this.setPredicates(jCas);
 		
@@ -149,7 +149,7 @@ public class PredicateArgumentHandlerTest extends ToolkitTestBase {
 		// create the document
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				CleartkComponents.createCleartkAnnotator(
-						ArgumentClassifier.class, InstanceCollector.StringFactory.class, "."));
+						ArgumentClassifier.class, typeSystemDescription, InstanceCollector.StringFactory.class, ".", (List<Class<?>>) null));
 		this.setTokens(jCas);
 		this.setPredicates(jCas);
 		
@@ -169,7 +169,7 @@ public class PredicateArgumentHandlerTest extends ToolkitTestBase {
 		// create the document
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				CleartkComponents.createCleartkAnnotator(
-						PredicateAnnotator.class, InstanceCollector.BooleanFactory.class, "."));
+						PredicateAnnotator.class, typeSystemDescription, InstanceCollector.BooleanFactory.class, ".", (List<Class<?>>) null));
 		this.setTokens(jCas);
 		this.setTrees(jCas);
 		this.setPredicates(jCas);

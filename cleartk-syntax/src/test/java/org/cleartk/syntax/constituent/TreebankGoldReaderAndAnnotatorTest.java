@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.syntax.treebank;
+package org.cleartk.syntax.constituent;
 
 import static org.junit.Assert.assertEquals;
 
@@ -34,11 +34,11 @@ import org.apache.uima.cas.FSIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.ToolkitTestBase;
-import org.cleartk.ViewNames;
-import org.cleartk.syntax.treebank.type.TopTreebankNode;
-import org.cleartk.type.Sentence;
-import org.cleartk.util.CleartkComponents;
+import org.cleartk.syntax.SyntaxTestBase;
+import org.cleartk.syntax.constituent.TreebankGoldAnnotator;
+import org.cleartk.syntax.constituent.type.TopTreebankNode;
+import org.cleartk.token.type.Sentence;
+import org.cleartk.util.ViewNames;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -53,7 +53,7 @@ import org.uimafit.util.JCasUtil;
  * @author Philip Ogren
  * 
  */
-public class TreebankGoldReaderAndAnnotatorTest extends ToolkitTestBase {
+public class TreebankGoldReaderAndAnnotatorTest extends SyntaxTestBase {
 
 	@Test
 	public void craftTest1() throws Exception {
@@ -100,7 +100,7 @@ public class TreebankGoldReaderAndAnnotatorTest extends ToolkitTestBase {
 
 	@Test
 	public void testAED() throws UIMAException, IOException {
-		AnalysisEngineDescription description = CleartkComponents.createPrimitiveDescription(TreebankGoldAnnotator.class);
+		AnalysisEngineDescription description = AnalysisEngineFactory.createPrimitiveDescription(TreebankGoldAnnotator.class, typeSystemDescription);
 		Boolean postTrees = (Boolean) description.getAnalysisEngineMetaData().getConfigurationParameterSettings().getParameterValue(TreebankGoldAnnotator.PARAM_POST_TREES);
 		Assert.assertTrue(postTrees.booleanValue());
 		String[] inputSofas = description.getAnalysisEngineMetaData().getCapabilities()[0].getInputSofas();
@@ -110,7 +110,6 @@ public class TreebankGoldReaderAndAnnotatorTest extends ToolkitTestBase {
 
 	@Test
 	public void testInitialize() throws ResourceInitializationException {
-		AnalysisEngineFactory.createPrimitive(CleartkComponents.createPrimitiveDescription(TreebankGoldAnnotator.class, TreebankGoldAnnotator.PARAM_POST_TREES, true));
-
+		AnalysisEngineFactory.createPrimitive(TreebankGoldAnnotator.class, typeSystemDescription, TreebankGoldAnnotator.PARAM_POST_TREES, true);
 	}
 }

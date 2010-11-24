@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.syntax.treebank.util;
+package org.cleartk.syntax.constituent.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -216,11 +216,11 @@ public class TreebankParserTest {
 
 	@Test
 	public void testCraftDocs() throws Exception {
-		testPairedFiles("test/data/docs/treebank/11319941.txt", "test/data/docs/treebank/11319941.tree");
-		testPairedFiles("test/data/docs/treebank/11597317.txt", "test/data/docs/treebank/11597317.tree");
-		testPairedFiles("test/data/docs/treebank/12079497.txt", "test/data/docs/treebank/12079497.tree");
-		testPairedFiles("test/data/docs/treebank/12546709.txt", "test/data/docs/treebank/12546709.tree");
-		testPairedFiles("test/data/docs/treebank/12585968.txt", "test/data/docs/treebank/12585968.tree");
+		testPairedFiles("src/test/resources/data/treebank/11319941.txt", "src/test/resources/data/treebank/11319941.tree");
+		testPairedFiles("src/test/resources/data/treebank/11597317.txt", "src/test/resources/data/treebank/11597317.tree");
+		testPairedFiles("src/test/resources/data/treebank/12079497.txt", "src/test/resources/data/treebank/12079497.tree");
+		testPairedFiles("src/test/resources/data/treebank/12546709.txt", "src/test/resources/data/treebank/12546709.tree");
+		testPairedFiles("src/test/resources/data/treebank/12585968.txt", "src/test/resources/data/treebank/12585968.tree");
 	}
 
 	private void testPairedFiles(String plainTextFile, String treebankFile) throws Exception {
@@ -243,30 +243,30 @@ public class TreebankParserTest {
 
 	@Test
 	public void testCraftDocs2() throws Exception {
-		List<TopTreebankNode> nodes = parseFile("test/data/docs/treebank/11319941.tree");
+		List<TopTreebankNode> nodes = parseFile("src/test/resources/data/treebank/11319941.tree");
 		assertEquals(
 				"Complex trait analysis of the mouse striatum: independent QTLs modulate volume and neuron number",
 				nodes.get(0).getText());
 		assertEquals("We thank Richelle Strom for generating the F2 intercross mice.", nodes.get(nodes.size() - 1)
 				.getText());
-		nodes = parseFile("test/data/docs/treebank/11597317.tree");
+		nodes = parseFile("src/test/resources/data/treebank/11597317.tree");
 		assertEquals("BRCA2 and homologous recombination", nodes.get(0).getText());
 		assertEquals(
 				"In BRCA - defective cells, Rad51 fails to associate with sites of damage due to lack of an assembly factor.",
 				nodes.get(nodes.size() - 1).getText());
-		nodes = parseFile("test/data/docs/treebank/12079497.tree");
+		nodes = parseFile("src/test/resources/data/treebank/12079497.tree");
 		assertEquals(
 				"Embryonic stem cells and mice expressing different GFP variants for multiple non - invasive reporter usage within a single animal",
 				nodes.get(0).getText());
 		assertEquals("This work was supported by grants from the National Cancer Institute of Canada.", nodes.get(
 				nodes.size() - 1).getText());
-		nodes = parseFile("test/data/docs/treebank/12546709.tree");
+		nodes = parseFile("src/test/resources/data/treebank/12546709.tree");
 		assertEquals(
 				"Morphological characterization of the AlphaA - and AlphaB - crystallin double knockout mouse lens",
 				nodes.get(0).getText());
 		assertEquals("This research was supported in part by a NIH Grant for Vision Research EY02932 awarded to LT.",
 				nodes.get(nodes.size() - 1).getText());
-		nodes = parseFile("test/data/docs/treebank/12585968.tree");
+		nodes = parseFile("src/test/resources/data/treebank/12585968.tree");
 		assertEquals(
 				"Brn3c null mutant mice show long - term, incomplete retention of some afferent inner ear innervation",
 				nodes.get(0).getText());
@@ -325,19 +325,19 @@ public class TreebankParserTest {
 	@Test
 	public void testSplitSentences() throws IOException {
 		String[] sentences = TreebankFormatParser.splitSentences(FileUtils.file2String(new File(
-				"test/data/docs/treebank/11319941.tree")));
+				"src/test/resources/data/treebank/11319941.tree")));
 		assertEquals(290, sentences.length);
 		sentences = TreebankFormatParser.splitSentences(FileUtils.file2String(new File(
-				"test/data/docs/treebank/11597317.tree")));
+				"src/test/resources/data/treebank/11597317.tree")));
 		assertEquals(99, sentences.length);
 		sentences = TreebankFormatParser.splitSentences(FileUtils.file2String(new File(
-				"test/data/docs/treebank/12079497.tree")));
+				"src/test/resources/data/treebank/12079497.tree")));
 		assertEquals(149, sentences.length);
 		sentences = TreebankFormatParser.splitSentences(FileUtils.file2String(new File(
-				"test/data/docs/treebank/12546709.tree")));
+				"src/test/resources/data/treebank/12546709.tree")));
 		assertEquals(243, sentences.length);
 		sentences = TreebankFormatParser.splitSentences(FileUtils.file2String(new File(
-				"test/data/docs/treebank/12585968.tree")));
+				"src/test/resources/data/treebank/12585968.tree")));
 		assertEquals(283, sentences.length);
 
 		sentences = TreebankFormatParser.splitSentences("()\n()");

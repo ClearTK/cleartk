@@ -21,39 +21,46 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.srl.conll2005;
+package org.cleartk.srl;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.apache.uima.UIMAException;
-import org.apache.uima.collection.CollectionReader;
+import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
-import org.uimafit.factory.CollectionReaderFactory;
+import org.uimafit.factory.AnalysisEngineFactory;
+
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
  * <br>All rights reserved.
 
  */
-public class Conll2005GoldReaderTest {
+public class SRLWriterTest extends SrlTestBase {
 	
-	//pointer to random data file.  not an actual conll2005 file.
-	private final String oneSentencePath = "test/data/corpus/conll2003/eng.train";
+	private File outputFile;
+	
+	@Before
+	public void setUp() throws Exception {
+		super.setUp();
+		outputFile  = new File(outputDirectory, "srl-output.txt");
+	}
 	
 	@Test
-	public void testDescriptor() throws UIMAException, IOException {
+	public void testSRLWriterDescriptor() throws UIMAException, IOException {
 		try {
-			CollectionReaderFactory.createCollectionReader("org.cleartk.srl.conll2005.Conll2005GoldReader");
-			Assert.fail("expected error for missing CoNLL 2005 data file");
+			AnalysisEngineFactory.createPrimitive(SRLWriter.class, typeSystemDescription);
+			Assert.fail("expected exception without output file parameter");
 		} catch (ResourceInitializationException e) {}
-		
-		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-				"org.cleartk.srl.conll2005.Conll2005GoldReader",
-				Conll2005GoldReader.PARAM_CONLL2005_DATA_FILE, this.oneSentencePath);
-		Object dataFileName = reader.getConfigParameterValue(
-				Conll2005GoldReader.PARAM_CONLL2005_DATA_FILE);
-		Assert.assertEquals(this.oneSentencePath, dataFileName);
+
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+				SRLWriter.class, typeSystemDescription,
+				SRLWriter.PARAM_OUTPUT_FILE, outputFile.getPath());
+
+		engine.collectionProcessComplete();
 	}
 }

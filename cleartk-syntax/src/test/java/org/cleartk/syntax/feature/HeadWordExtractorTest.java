@@ -27,13 +27,13 @@ import java.util.List;
 
 import org.apache.uima.UIMAException;
 import org.cleartk.CleartkException;
-import org.cleartk.ToolkitTestBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
+import org.cleartk.syntax.SyntaxTestBase;
 import org.cleartk.syntax.TreebankTestsUtil;
-import org.cleartk.syntax.treebank.type.TreebankNode;
-import org.cleartk.type.Token;
+import org.cleartk.syntax.constituent.type.TreebankNode;
+import org.cleartk.token.type.Token;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -45,7 +45,7 @@ import org.junit.Test;
  * @author Steven Bethard
  */
 
-public class HeadWordExtractorTest extends ToolkitTestBase{
+public class HeadWordExtractorTest extends SyntaxTestBase{
 
 	@Test
 	public void testNoTreebankNode() throws UIMAException, CleartkException {

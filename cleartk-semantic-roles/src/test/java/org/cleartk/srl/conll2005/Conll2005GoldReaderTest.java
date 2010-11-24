@@ -26,28 +26,35 @@ package org.cleartk.srl.conll2005;
 import java.io.IOException;
 
 import org.apache.uima.UIMAException;
-import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.collection.CollectionReader;
+import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.srl.SrlTestBase;
+import org.junit.Assert;
 import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
-
+import org.uimafit.factory.CollectionReaderFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
  * <br>All rights reserved.
 
  */
-public class Conll2005GoldAnnotatorTest {
-
+public class Conll2005GoldReaderTest extends SrlTestBase {
 	
-	
-
+	//pointer to random data file.  not an actual conll2005 file.
+	private final String oneSentencePath = "src/test/resources/data/propbank-1.0/README";
 	
 	@Test
 	public void testDescriptor() throws UIMAException, IOException {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-				"org.cleartk.srl.conll2005.Conll2005GoldAnnotator",
-				Conll2005GoldAnnotator.PARAM_HAS_VERB_SENSES, false
-				);
-		engine.collectionProcessComplete();
+		try {
+			CollectionReaderFactory.createCollectionReader(Conll2005GoldReader.class, typeSystemDescription);
+			Assert.fail("expected error for missing CoNLL 2005 data file");
+		} catch (ResourceInitializationException e) {}
+		
+		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
+				Conll2005GoldReader.class, typeSystemDescription,
+				Conll2005GoldReader.PARAM_CONLL2005_DATA_FILE, this.oneSentencePath);
+		Object dataFileName = reader.getConfigParameterValue(
+				Conll2005GoldReader.PARAM_CONLL2005_DATA_FILE);
+		Assert.assertEquals(this.oneSentencePath, dataFileName);
 	}
 }

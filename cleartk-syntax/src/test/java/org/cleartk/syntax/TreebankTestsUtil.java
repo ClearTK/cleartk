@@ -25,7 +25,7 @@ package org.cleartk.syntax;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
-import org.cleartk.syntax.treebank.type.TreebankNode;
+import org.cleartk.syntax.constituent.type.TreebankNode;
 
 /**
  * <br>

@@ -23,14 +23,11 @@
 */
 package org.cleartk.srl.conll2005;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.ToolkitTestBase;
-import org.junit.Assert;
+import org.cleartk.srl.SrlTestBase;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 
@@ -40,22 +37,14 @@ import org.uimafit.factory.AnalysisEngineFactory;
  * <br>All rights reserved.
 
  */
-public class CoNLL2005WriterTest extends ToolkitTestBase {
+public class Conll2005GoldAnnotatorTest extends SrlTestBase{
 
 	@Test
-	public void testCoNLL2005WriterDescriptor() throws UIMAException, IOException {
-		try {
-			AnalysisEngineFactory.createAnalysisEngine("org.cleartk.srl.conll2005.Conll2005Writer");
-			Assert.fail("expected exception without output file parameter");
-		} catch (ResourceInitializationException e) {}
-
-		File outputFile = new File(outputDirectory, "dev-set-result.txt"); 
-
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-				"org.cleartk.srl.conll2005.Conll2005Writer",
-				Conll2005Writer.PARAM_OUTPUT_FILE, outputFile.getPath());
-
+	public void testDescriptor() throws UIMAException, IOException {
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+				Conll2005GoldAnnotator.class, typeSystemDescription,
+				Conll2005GoldAnnotator.PARAM_HAS_VERB_SENSES, false
+				);
 		engine.collectionProcessComplete();
 	}
-	
 }

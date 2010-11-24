@@ -30,10 +30,10 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.ToolkitTestBase;
-import org.cleartk.syntax.treebank.type.TopTreebankNode;
-import org.cleartk.syntax.treebank.type.TreebankNode;
-import org.cleartk.type.Sentence;
+import org.cleartk.syntax.SyntaxTestBase;
+import org.cleartk.syntax.constituent.type.TopTreebankNode;
+import org.cleartk.syntax.constituent.type.TreebankNode;
+import org.cleartk.token.type.Sentence;
 import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Assert;
 import org.junit.Test;
@@ -46,7 +46,7 @@ import org.uimafit.testing.util.DisableLogging;
  * <br>All rights reserved.
 
  */
-public class OpenNLPTreebankParserTest extends ToolkitTestBase {
+public class OpenNLPTreebankParserTest extends SyntaxTestBase {
 
 	@Test
 	public void testMissingParameters() throws UIMAException {
@@ -60,8 +60,8 @@ public class OpenNLPTreebankParserTest extends ToolkitTestBase {
 		try {
 			AnalysisEngineFactory.createPrimitive(
 					OpenNLPTreebankParser.class,
-					typeSystemDescription,
-					"buildModelFile", "resources/test/models/fox_dog_parser/build.bin.gz");
+					typeSystemDescription, 
+					"buildModelFile", "src/test/resources/data/parser/fox_dog_parser/build.bin.gz");
 			Assert.fail("expected error for missing parser parameters");
 		} catch (ResourceInitializationException e) {}
 
@@ -69,8 +69,8 @@ public class OpenNLPTreebankParserTest extends ToolkitTestBase {
 			AnalysisEngineFactory.createPrimitive(
 					OpenNLPTreebankParser.class,
 					typeSystemDescription,
-					"buildModelFile", "resources/test/models/fox_dog_parser/build.bin.gz",
-					"checkModelFile", "resources/test/models/fox_dog_parser/check.bin.gz");
+					"buildModelFile", "src/test/resources/data/parser/fox_dog_parser/build.bin.gz",
+					"checkModelFile", "src/test/resources/data/parser/fox_dog_parser/check.bin.gz");
 			Assert.fail("expected error for missing parser parameters");
 		} catch (ResourceInitializationException e) {}
 
@@ -78,9 +78,9 @@ public class OpenNLPTreebankParserTest extends ToolkitTestBase {
 			AnalysisEngineFactory.createPrimitive(
 					OpenNLPTreebankParser.class,
 					typeSystemDescription,
-					"buildModelFile", "resources/test/models/fox_dog_parser/build.bin.gz",
-					"checkModelFile", "resources/test/models/fox_dog_parser/check.bin.gz",
-					"chunkModelFile", "resources/test/models/fox_dog_parser/chunk.bin.gz");
+					"buildModelFile", "src/test/resources/data/parser/fox_dog_parser/build.bin.gz",
+					"checkModelFile", "src/test/resources/data/parser/fox_dog_parser/check.bin.gz",
+					"chunkModelFile", "src/test/resources/data/parser/fox_dog_parser/chunk.bin.gz");
 			Assert.fail("expected error for missing parser parameters");
 		} catch (ResourceInitializationException e) {}
 	}
@@ -90,10 +90,10 @@ public class OpenNLPTreebankParserTest extends ToolkitTestBase {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				OpenNLPTreebankParser.class,
 				typeSystemDescription,
-				OpenNLPTreebankParser.PARAM_BUILD_MODEL_FILE, "test/models/fox_dog_parser/build.bin.gz",
-				OpenNLPTreebankParser.PARAM_CHECK_MODEL_FILE, "test/models/fox_dog_parser/check.bin.gz",
-				OpenNLPTreebankParser.PARAM_CHUNK_MODEL_FILE, "test/models/fox_dog_parser/chunk.bin.gz",
-				OpenNLPTreebankParser.PARAM_HEAD_RULES_FILE, "test/models/fox_dog_parser/head_rules");
+				OpenNLPTreebankParser.PARAM_BUILD_MODEL_FILE, "src/test/resources/data/parser/fox_dog_parser/build.bin.gz",
+				OpenNLPTreebankParser.PARAM_CHECK_MODEL_FILE, "src/test/resources/data/parser/fox_dog_parser/check.bin.gz",
+				OpenNLPTreebankParser.PARAM_CHUNK_MODEL_FILE, "src/test/resources/data/parser/fox_dog_parser/chunk.bin.gz",
+				OpenNLPTreebankParser.PARAM_HEAD_RULES_FILE, "src/test/resources/data/parser/fox_dog_parser/head_rules");
 		tokenBuilder.buildTokens(jCas,
 				"The brown fox jumped quickly over the lazy dog.",  
 				"The brown fox jumped quickly over the lazy dog .",
@@ -157,10 +157,10 @@ public class OpenNLPTreebankParserTest extends ToolkitTestBase {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				OpenNLPTreebankParser.class,
 				typeSystemDescription,
-				OpenNLPTreebankParser.PARAM_BUILD_MODEL_FILE, "test/models/fox_dog_parser/build.bin.gz",
-				OpenNLPTreebankParser.PARAM_CHECK_MODEL_FILE, "test/models/fox_dog_parser/check.bin.gz",
-				OpenNLPTreebankParser.PARAM_CHUNK_MODEL_FILE, "test/models/fox_dog_parser/chunk.bin.gz",
-				OpenNLPTreebankParser.PARAM_HEAD_RULES_FILE, "test/models/fox_dog_parser/head_rules");
+				OpenNLPTreebankParser.PARAM_BUILD_MODEL_FILE, "src/test/resources/data/parser/fox_dog_parser/build.bin.gz",
+				OpenNLPTreebankParser.PARAM_CHECK_MODEL_FILE, "src/test/resources/data/parser/fox_dog_parser/check.bin.gz",
+				OpenNLPTreebankParser.PARAM_CHUNK_MODEL_FILE, "src/test/resources/data/parser/fox_dog_parser/chunk.bin.gz",
+				OpenNLPTreebankParser.PARAM_HEAD_RULES_FILE, "src/test/resources/data/parser/fox_dog_parser/head_rules");
 		tokenBuilder.buildTokens(jCas,
 				"The brown fox jumped quickly over the lazy dog.",
 				"The brown fox jumped quickly over the lazy dog .");
@@ -182,10 +182,10 @@ public class OpenNLPTreebankParserTest extends ToolkitTestBase {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				OpenNLPTreebankParser.class,
 				typeSystemDescription,
-				OpenNLPTreebankParser.PARAM_BUILD_MODEL_FILE, "test/models/fox_dog_parser/build.bin.gz",
-				OpenNLPTreebankParser.PARAM_CHECK_MODEL_FILE, "test/models/fox_dog_parser/check.bin.gz",
-				OpenNLPTreebankParser.PARAM_CHUNK_MODEL_FILE, "test/models/fox_dog_parser/chunk.bin.gz",
-				OpenNLPTreebankParser.PARAM_HEAD_RULES_FILE, "test/models/fox_dog_parser/head_rules");
+				OpenNLPTreebankParser.PARAM_BUILD_MODEL_FILE, "src/test/resources/data/parser/fox_dog_parser/build.bin.gz",
+				OpenNLPTreebankParser.PARAM_CHECK_MODEL_FILE, "src/test/resources/data/parser/fox_dog_parser/check.bin.gz",
+				OpenNLPTreebankParser.PARAM_CHUNK_MODEL_FILE, "src/test/resources/data/parser/fox_dog_parser/chunk.bin.gz",
+				OpenNLPTreebankParser.PARAM_HEAD_RULES_FILE, "src/test/resources/data/parser/fox_dog_parser/head_rules");
 		tokenBuilder.buildTokens(jCas,
 				"The brown fox jumped quickly over the lazy dog " +
 				"who jumped quickly over the brown fox " +
@@ -210,12 +210,12 @@ public class OpenNLPTreebankParserTest extends ToolkitTestBase {
 	
 	@Test
 	public void testDescriptor() throws UIMAException, IOException {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-				"org.cleartk.syntax.opennlp.OpenNLPTreebankParser",
-				OpenNLPTreebankParser.PARAM_BUILD_MODEL_FILE, "test/models/fox_dog_parser/build.bin.gz",
-				OpenNLPTreebankParser.PARAM_CHECK_MODEL_FILE, "test/models/fox_dog_parser/check.bin.gz",
-				OpenNLPTreebankParser.PARAM_CHUNK_MODEL_FILE, "test/models/fox_dog_parser/chunk.bin.gz",
-				OpenNLPTreebankParser.PARAM_HEAD_RULES_FILE, "test/models/fox_dog_parser/head_rules");
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+				OpenNLPTreebankParser.class, typeSystemDescription,
+				OpenNLPTreebankParser.PARAM_BUILD_MODEL_FILE, "src/test/resources/data/parser/fox_dog_parser/build.bin.gz",
+				OpenNLPTreebankParser.PARAM_CHECK_MODEL_FILE, "src/test/resources/data/parser/fox_dog_parser/check.bin.gz",
+				OpenNLPTreebankParser.PARAM_CHUNK_MODEL_FILE, "src/test/resources/data/parser/fox_dog_parser/chunk.bin.gz",
+				OpenNLPTreebankParser.PARAM_HEAD_RULES_FILE, "src/test/resources/data/parser/fox_dog_parser/head_rules");
 		engine.collectionProcessComplete();
 	}
 }

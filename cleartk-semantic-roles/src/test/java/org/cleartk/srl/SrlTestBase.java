@@ -1,5 +1,5 @@
- /** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+/** 
+ * Copyright (c) 2010, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -20,48 +20,24 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
+
 package org.cleartk.srl;
 
-import java.io.File;
-import java.io.IOException;
-
-import org.apache.uima.UIMAException;
-import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.ToolkitTestBase;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
-
+import org.cleartk.token.TokenTestBase;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2010, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * @author Philip Ogren
  */
-public class SRLWriterTest extends ToolkitTestBase {
-	
-	private File outputFile;
-	
-	@Before
-	public void setUp() throws Exception {
-		super.setUp();
-		outputFile  = new File(outputDirectory, "srl-output.txt");
-	}
-	
-	@Test
-	public void testSRLWriterDescriptor() throws UIMAException, IOException {
-		try {
-			AnalysisEngineFactory.createAnalysisEngine("org.cleartk.srl.SRLWriter");
-			Assert.fail("expected exception without output file parameter");
-		} catch (ResourceInitializationException e) {}
+public class SrlTestBase extends TokenTestBase {
 
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-				"org.cleartk.srl.SRLWriter",
-				SRLWriter.PARAM_OUTPUT_FILE, outputFile.getPath());
-
-		engine.collectionProcessComplete();
+	@Override
+	public String[] getTypeSystemDescriptorNames() {
+		return new String[] {"org.cleartk.srl.TypeSystem"};
 	}
+
 }
