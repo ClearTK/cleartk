@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.token.opennlp;
+package org.cleartk.syntax.opennlp;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,8 +30,8 @@ import java.util.List;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.cleartk.ToolkitTestBase;
-import org.cleartk.type.Token;
+import org.cleartk.syntax.SyntaxTestBase;
+import org.cleartk.token.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Assert;
 import org.junit.Test;
@@ -43,7 +43,7 @@ import org.uimafit.factory.AnalysisEngineFactory;
  * <br>All rights reserved.
 
  */
-public class OpenNLPPOSTaggerTest extends ToolkitTestBase{
+public class OpenNLPPOSTaggerTest extends SyntaxTestBase{
 	
 	@Test
 	public void testSimple() throws UIMAException {
@@ -52,9 +52,9 @@ public class OpenNLPPOSTaggerTest extends ToolkitTestBase{
 				typeSystemDescription,
 				OpenNLPPOSTagger.PARAM_CASE_SENSITIVE, true,
 				OpenNLPPOSTagger.PARAM_POSTAG_MODEL_FILE,
-				"resources/models/OpenNLP.POSTags.English.bin.gz",
+				"src/main/resources/models/OpenNLP.POSTags.English.bin.gz",
 				OpenNLPPOSTagger.PARAM_POSTAG_DICTIONARY_FILE,
-				"resources/models/OpenNLP.TagDict.txt");
+				"src/main/resources/models/OpenNLP.TagDict.txt");
 		tokenBuilder.buildTokens(jCas,
 				"The brown fox jumped quickly over the lazy dog.",
 				"The brown fox jumped quickly over the lazy dog .");
@@ -72,21 +72,21 @@ public class OpenNLPPOSTaggerTest extends ToolkitTestBase{
 
 	@Test
 	public void testDescriptor() throws UIMAException, IOException {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine(
-				"org.cleartk.token.opennlp.OpenNLPPOSTagger",
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+				OpenNLPPOSTagger.class, typeSystemDescription,
 				OpenNLPPOSTagger.PARAM_CASE_SENSITIVE, true,
 				OpenNLPPOSTagger.PARAM_POSTAG_MODEL_FILE,
-				"resources/models/OpenNLP.POSTags.English.bin.gz",
+				"src/main/resources/models/OpenNLP.POSTags.English.bin.gz",
 				OpenNLPPOSTagger.PARAM_POSTAG_DICTIONARY_FILE,
-				"resources/models/OpenNLP.TagDict.txt");
+				"src/main/resources/models/OpenNLP.TagDict.txt");
 		
 		Object modelFile = engine.getConfigParameterValue(
 				OpenNLPPOSTagger.PARAM_POSTAG_MODEL_FILE);
-		Assert.assertEquals("resources/models/OpenNLP.POSTags.English.bin.gz", modelFile);
+		Assert.assertEquals("src/main/resources/models/OpenNLP.POSTags.English.bin.gz", modelFile);
 		
 		Object dictionaryFile = engine.getConfigParameterValue(
 				OpenNLPPOSTagger.PARAM_POSTAG_DICTIONARY_FILE);
-		Assert.assertEquals("resources/models/OpenNLP.TagDict.txt", dictionaryFile);
+		Assert.assertEquals("src/main/resources/models/OpenNLP.TagDict.txt", dictionaryFile);
 		
 		Object caseSensitive = engine.getConfigParameterValue(
 				OpenNLPPOSTagger.PARAM_CASE_SENSITIVE);
