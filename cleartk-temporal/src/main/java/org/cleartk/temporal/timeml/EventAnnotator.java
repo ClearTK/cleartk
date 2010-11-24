@@ -61,7 +61,7 @@ import org.uimafit.factory.initializable.InitializableFactory;
  */
 public class EventAnnotator {
   
-  public static final String MODEL_DIR = "resources/models/timeml/event";
+  public static final String MODEL_DIR = "src/main/resources/models/timeml/event";
 
   public static AnalysisEngineDescription getWriterDescription(String modelDir)
   throws ResourceInitializationException {

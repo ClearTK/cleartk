@@ -42,7 +42,7 @@ import org.cleartk.util.CleartkComponents;
  */
 public class EventPolarityAnnotator extends EventAttributeAnnotator<String> {
 
-  public static final String MODEL_DIR = "resources/models/timeml/event/polarity";
+  public static final String MODEL_DIR = "src/main/resources/models/timeml/event/polarity";
 
   public static AnalysisEngineDescription getWriterDescription(String modelDir)
   throws ResourceInitializationException {

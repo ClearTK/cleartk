@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.timeml;
+package org.cleartk.temporal.timeml;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,14 +35,7 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-import org.cleartk.ToolkitTestBase;
-import org.cleartk.temporal.timeml.EventAnnotate;
-import org.cleartk.temporal.timeml.EventAnnotator;
-import org.cleartk.temporal.timeml.EventAspectAnnotator;
-import org.cleartk.temporal.timeml.EventClassAnnotator;
-import org.cleartk.temporal.timeml.EventModalityAnnotator;
-import org.cleartk.temporal.timeml.EventPolarityAnnotator;
-import org.cleartk.temporal.timeml.EventTenseAnnotator;
+import org.cleartk.temporal.TemporalTestBase;
 import org.cleartk.temporal.timeml.type.Event;
 import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Test;
@@ -53,7 +46,7 @@ import org.junit.Test;
  * 
  * @author Steven Bethard
  */
-public class EventAnnotatorsTest extends ToolkitTestBase {
+public class EventAnnotatorsTest extends TemporalTestBase {
   
   
   

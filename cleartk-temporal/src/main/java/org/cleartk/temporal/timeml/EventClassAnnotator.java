@@ -44,7 +44,7 @@ import org.cleartk.util.CleartkComponents;
  */
 public class EventClassAnnotator extends EventAttributeAnnotator<String> {
   
-  public static final String MODEL_DIR = "resources/models/timeml/event/class";
+  public static final String MODEL_DIR = "src/main/resources/models/timeml/event/class";
 
   public static AnalysisEngineDescription getWriterDescription(String modelDir)
   throws ResourceInitializationException {

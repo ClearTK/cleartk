@@ -42,7 +42,7 @@ import org.cleartk.util.CleartkComponents;
  */
 public class EventModalityAnnotator extends EventAttributeAnnotator<String> {
 
-  public static final String MODEL_DIR = "resources/models/timeml/event/modality";
+  public static final String MODEL_DIR = "src/main/resources/models/timeml/event/modality";
 
   public static AnalysisEngineDescription getWriterDescription(String modelDir)
   throws ResourceInitializationException {

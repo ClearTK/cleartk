@@ -46,7 +46,7 @@ import org.cleartk.util.CleartkComponents;
  */
 public class EventTenseAnnotator extends EventAttributeAnnotator<String> {
 
-  public static final String MODEL_DIR = "resources/models/timeml/event/tense";
+  public static final String MODEL_DIR = "src/main/resources/models/timeml/event/tense";
 
   public static AnalysisEngineDescription getWriterDescription(String modelDir)
   throws ResourceInitializationException {
