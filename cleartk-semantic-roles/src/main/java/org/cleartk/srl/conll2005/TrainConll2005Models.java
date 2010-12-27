@@ -26,6 +26,7 @@ package org.cleartk.srl.conll2005;
 import java.io.File;
 import java.util.List;
 
+import org.cleartk.classifier.CleartkComponents;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.classifier.libsvm.DefaultBinaryLIBSVMDataWriterFactory;
 import org.cleartk.classifier.libsvm.DefaultMultiClassLIBSVMDataWriterFactory;
@@ -33,7 +34,6 @@ import org.cleartk.srl.ArgumentClassifier;
 import org.cleartk.srl.ArgumentIdentifier;
 import org.cleartk.srl.SrlComponents;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
-import org.cleartk.util.CleartkComponents;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.pipeline.SimplePipeline;
 
