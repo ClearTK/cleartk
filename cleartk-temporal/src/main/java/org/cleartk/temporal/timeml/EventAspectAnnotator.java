@@ -29,6 +29,7 @@ import java.util.List;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.classifier.CleartkComponents;
 import org.cleartk.classifier.feature.extractor.simple.BagExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
@@ -37,7 +38,6 @@ import org.cleartk.temporal.timeml.extractor.PrecedingTokenTextExtractor;
 import org.cleartk.temporal.timeml.extractor.TextSliceExtractor;
 import org.cleartk.temporal.timeml.type.Event;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.CleartkComponents;
 
 /**
  * Annotator for the "aspect" attribute of TimeML EVENTs.

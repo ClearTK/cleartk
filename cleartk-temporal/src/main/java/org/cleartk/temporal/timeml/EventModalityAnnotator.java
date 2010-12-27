@@ -29,11 +29,11 @@ import java.util.List;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.classifier.CleartkComponents;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.temporal.TemporalComponents;
 import org.cleartk.temporal.timeml.extractor.PrecedingTokenTextBagExtractor;
 import org.cleartk.temporal.timeml.type.Event;
-import org.cleartk.util.CleartkComponents;
 
 /**
  * Annotator for the "modality" attribute of TimeML EVENTs.
