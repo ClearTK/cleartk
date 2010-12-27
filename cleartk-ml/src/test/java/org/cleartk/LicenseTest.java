@@ -23,6 +23,10 @@
  */
 package org.cleartk;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import org.cleartk.test.util.LicenseTestUtil;
 import org.junit.Test;
 
@@ -38,13 +42,14 @@ public class LicenseTest {
 
 	@Test
 	public void testLicenseStatedInSource() throws Exception {
-		LicenseTestUtil.testJavaFiles("src/main/java");
+		List<String> excludeJavaFiles = Collections.emptyList();
+		LicenseTestUtil.testJavaFiles("src/main/java", Arrays.asList("evaluation"), excludeJavaFiles);
 	}
 
 	@Test
 	public void testLicenseStatedInTestSource() throws Exception {
-		LicenseTestUtil.testJavaFiles("src/test/java");
-
+		List<String> excludeJavaFiles = Collections.emptyList();
+		LicenseTestUtil.testJavaFiles("src/test/java", Arrays.asList("type"), excludeJavaFiles);
 	}
 
 }

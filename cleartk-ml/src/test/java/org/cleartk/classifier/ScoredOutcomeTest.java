@@ -1,5 +1,5 @@
 /** 
- * Copyright (c) 2009, Regents of the University of Colorado 
+ * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -21,35 +21,27 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk;
+package org.cleartk.classifier;
 
+import static org.junit.Assert.assertEquals;
+
+import org.cleartk.classifier.ScoredOutcome;
+import org.junit.Test;
 
 /**
  * <br>
  * Copyright (c) 2009, Regents of the University of Colorado <br>
  * All rights reserved.
- * @author Philip Ogren
- * 
  */
 
-public class CleartkException extends Exception{
+public class ScoredOutcomeTest {
 
-	private static final long serialVersionUID = -6504625185622947813L;
-
-	public CleartkException() {
-		super();
+	@Test
+	public void testScoredOutcome() {
+		ScoredOutcome<Integer> so = new ScoredOutcome<Integer>(5, 0.01d);
+		assertEquals("5|0.01", so.toString());
+		ScoredOutcome<String>  sso = new ScoredOutcome<String>("outcome", 3.1415d);
+		assertEquals("outcome|3.1415", sso.toString());
+		
 	}
-
-	public CleartkException(String message, Throwable cause) {
-		super(message, cause);
-	}
-
-	public CleartkException(String message) {
-		super(message);
-	}
-
-	public CleartkException(Throwable cause) {
-		super(cause);
-	}
-
 }

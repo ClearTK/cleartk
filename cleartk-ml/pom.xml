@@ -39,14 +39,6 @@
 			<name>ClearTK Google Code repository</name>
 			<url>http://cleartk.googlecode.com/svn/repo</url>
 		</repository>
-		<repository>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<id>carrotsearch</id>
-			<name>Carrot Search software releases repository</name>
-			<url>http://repository.carrotsearch.com/labs/releases/</url>
-		</repository>
 	</repositories>
 	<dependencies>
 		<dependency>
@@ -78,9 +70,9 @@
 			<optional>false</optional>
 		</dependency>
 		<dependency>
-			<groupId>net.sourceforge.collections</groupId>
-			<artifactId>collections-generic</artifactId>
-			<version>4.01</version>
+			<groupId>org.cleartk</groupId>
+			<artifactId>cleartk-util</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 			<type>jar</type>
 			<optional>false</optional>
 		</dependency>
@@ -105,12 +97,6 @@
 			<artifactId>commons-io</artifactId>
 			<version>1.4</version>
 			<type>jar</type>
-		</dependency>
-		<dependency>
-			<groupId>com.carrotsearch</groupId>
-			<artifactId>hppc</artifactId>
-			<version>[0.3,)</version>
-			<optional>false</optional>
 		</dependency>
 	</dependencies>
 	<build>
