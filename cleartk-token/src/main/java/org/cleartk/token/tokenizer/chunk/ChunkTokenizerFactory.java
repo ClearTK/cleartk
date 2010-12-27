@@ -30,6 +30,7 @@ import java.util.List;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.chunker.Chunker;
+import org.cleartk.classifier.CleartkComponents;
 import org.cleartk.classifier.CleartkSequentialAnnotator;
 import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.classifier.jar.JarSequentialDataWriterFactory;
@@ -38,7 +39,6 @@ import org.cleartk.token.TokenComponents;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Subtoken;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.CleartkComponents;
 
 /**
  * <br>Copyright (c) 2009, Regents of the University of Colorado 
