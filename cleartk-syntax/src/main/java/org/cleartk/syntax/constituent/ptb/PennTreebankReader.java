@@ -30,6 +30,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.uima.UimaContext;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.collection.CollectionException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -41,6 +42,7 @@ import org.cleartk.syntax.constituent.TreebankGoldAnnotator;
 import org.cleartk.util.ViewNames;
 import org.cleartk.util.ViewURIUtil;
 import org.uimafit.component.JCasCollectionReader_ImplBase;
+import org.uimafit.component.ViewCreatorAnnotator;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.SofaCapability;
 import org.uimafit.factory.ConfigurationParameterFactory;
@@ -173,8 +175,13 @@ public class PennTreebankReader extends JCasCollectionReader_ImplBase {
 	public void getNext(JCas jCas) throws IOException, CollectionException {
 		File treebankFile = files.removeFirst();
 		getUimaContext().getLogger().log(Level.FINEST, "reading treebank file: " + treebankFile.getPath());
-		ViewURIUtil.setURI(jCas, treebankFile.getPath());
-		jCas.setSofaDataString(FileUtils.file2String(treebankFile), "text/plain");
+		ViewURIUtil.setURI(jCas, treebankFile.toURI().toString());
+		try {
+			JCas treebankView = ViewCreatorAnnotator.createViewSafely(jCas, ViewNames.TREEBANK);
+			treebankView.setSofaDataString(FileUtils.file2String(treebankFile), "text/plain");
+		} catch(AnalysisEngineProcessException aepe) {
+			throw new CollectionException(aepe);
+		}
 	}
 
 	public void close() throws IOException {
