@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.util;
+package org.cleartk.util.ae;
 
 
 import java.io.File;
@@ -29,8 +29,8 @@ import java.io.File;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
-import org.cleartk.ToolkitTestBase;
-import org.junit.After;
+import org.cleartk.test.DefaultTestBase;
+import org.cleartk.util.ViewURIUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -41,17 +41,7 @@ import org.uimafit.factory.AnalysisEngineFactory;
 
 */
 
-public class PlainTextWriterTest extends ToolkitTestBase{
-	
-	private final File outputDir = new File("test/data/plaintext");
-
-	@After
-	public void tearDown() throws Exception {
-		for (File file: this.outputDir.listFiles()) {
-			file.delete();
-		}
-		this.outputDir.delete();
-	}
+public class PlainTextWriterTest extends DefaultTestBase{
 	
 	@Test
 	public void test() throws Exception {
@@ -64,7 +54,7 @@ public class PlainTextWriterTest extends ToolkitTestBase{
 		
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
 				PlainTextWriter.class, typeSystemDescription,
-				PlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDir.getPath());
+				PlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDirectory.getPath());
 		String text = "What if we built a large\r\n, wooden badger?";
 		tokenBuilder.buildTokens(jCas, text, 
 				"What if we built a large \n, wooden badger ?",
@@ -73,7 +63,7 @@ public class PlainTextWriterTest extends ToolkitTestBase{
 		engine.process(jCas);
 		engine.collectionProcessComplete();
 		
-		File outputFile = new File(this.outputDir, "identifier.txt");
+		File outputFile = new File(this.outputDirectory, "identifier.txt");
 		String actualText = FileUtils.file2String(outputFile);
 		Assert.assertEquals(text, actualText);
 
@@ -86,7 +76,7 @@ public class PlainTextWriterTest extends ToolkitTestBase{
 		engine.process(jCas);
 		engine.collectionProcessComplete();
 		
-		outputFile = new File(this.outputDir, "1234.txt");
+		outputFile = new File(this.outputDirectory, "1234.txt");
 		actualText = FileUtils.file2String(outputFile);
 		Assert.assertEquals(text, actualText);
 		

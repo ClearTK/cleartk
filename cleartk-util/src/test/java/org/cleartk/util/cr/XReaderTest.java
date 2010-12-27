@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.util;
+package org.cleartk.util.cr;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,8 +30,10 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.ToolkitTestBase;
-import org.cleartk.type.Token;
+import org.cleartk.test.DefaultTestBase;
+import org.cleartk.type.test.Token;
+import org.cleartk.util.ViewURIFileNamer;
+import org.cleartk.util.ViewURIUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.component.xwriter.XWriter;
@@ -49,7 +51,7 @@ import org.uimafit.util.JCasUtil;
  * 
  * @author Philip Ogren
  */
-public class XReaderTest extends ToolkitTestBase{
+public class XReaderTest extends DefaultTestBase{
 	
 
 	@Test
@@ -63,7 +65,8 @@ public class XReaderTest extends ToolkitTestBase{
 				"I like\nspam!",
 				"I like spam !",
 				"PRP VB NN .");
-		ViewURIUtil.setURI(jCas, "test");
+		String uri = new File(outputDirectory, "test").toURI().toString();
+		ViewURIUtil.setURI(jCas, uri);
 		engine.process(jCas);
 		engine.collectionProcessComplete();
 
@@ -98,7 +101,9 @@ public class XReaderTest extends ToolkitTestBase{
 				"I like\nspam!",
 				"I like spam !",
 				"PRP VB NN .");
-		ViewURIUtil.setURI(jCas, "test");
+		
+		String uri = new File(outputDirectory, "test").toURI().toString();
+		ViewURIUtil.setURI(jCas, uri);
 		engine.process(jCas);
 		engine.collectionProcessComplete();
 
@@ -126,12 +131,12 @@ public class XReaderTest extends ToolkitTestBase{
 		@Test
 	public void testDescriptor() throws UIMAException, IOException {
 		try {
-			CollectionReaderFactory.createCollectionReader("org.cleartk.util.XReader");
+			CollectionReaderFactory.createCollectionReader(XReader.class, typeSystemDescription);
 			Assert.fail("expected exception with no file or directory specified");
 		} catch (ResourceInitializationException e) {}
 		
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-				"org.cleartk.util.XReader",
+				XReader.class, typeSystemDescription,
 				FilesCollectionReader.PARAM_ROOT_FILE, outputDirectory.getPath());
 		
 		Object fileOrDirectory = reader.getConfigParameterValue(

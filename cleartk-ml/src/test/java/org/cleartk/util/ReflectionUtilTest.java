@@ -30,12 +30,9 @@ import java.util.List;
 
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.Classifier;
-import org.cleartk.classifier.CleartkSequentialAnnotator;
-import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.jar.ClassifierBuilder;
 import org.cleartk.classifier.jar.JarDataWriter;
-import org.cleartk.example.pos.ExamplePOSAnnotator;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -55,9 +52,10 @@ public class ReflectionUtilTest {
 	public static class TestArraySubClass extends TestSuperClass<double[]> {
 	}
 	public static class TestClassifierOutcomeType implements Classifier<String> {
-		public String classify(List<Feature> features) throws CleartkException {return null;}
-		public List<ScoredOutcome<String>> score(List<Feature> features,int maxResults) throws CleartkException {return null;}
+		public String classify(List<org.cleartk.classifier.Feature> features) throws CleartkException { return null; }
+		public List<ScoredOutcome<String>> score(List<org.cleartk.classifier.Feature> features, int maxResults) throws CleartkException {return null;}
 	}
+	
 	public static class TestDataWriterOutcomeType extends JarDataWriter<String, Double, Boolean> {
 		public TestDataWriterOutcomeType(File outputDirectory) {
 			super(outputDirectory);
@@ -81,9 +79,6 @@ public class ReflectionUtilTest {
 		type = ReflectionUtil.getTypeArgument(TestSuperClass.class, "T", new TestArraySubClass());
 		Assert.assertTrue(type instanceof GenericArrayType);
 		Assert.assertEquals(double.class, ((GenericArrayType)type).getGenericComponentType());
-
-		type = ReflectionUtil.getTypeArgument(CleartkSequentialAnnotator.class, "OUTCOME_TYPE", new ExamplePOSAnnotator());
-		Assert.assertEquals(String.class, type);
 
 		type = ReflectionUtil.getTypeArgument(Classifier.class, "OUTCOME_TYPE", new TestClassifierOutcomeType());
 		Assert.assertEquals(String.class, type);
