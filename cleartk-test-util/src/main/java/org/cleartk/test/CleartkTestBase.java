@@ -31,6 +31,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.TemporaryFolder;
 import org.uimafit.factory.JCasFactory;
+import org.uimafit.factory.TypeSystemDescriptionFactory;
 
 /**
  * <br>
@@ -40,12 +41,8 @@ import org.uimafit.factory.JCasFactory;
  * @author Philip Ogren
  */
 
-public class CleartkTestBase {
+public abstract class CleartkTestBase {
 
-		protected static ThreadLocal<JCas> JCAS = new ThreadLocal<JCas>();
-		protected static ThreadLocal<TypeSystemDescription> TYPE_SYSTEM_DESCRIPTION = new ThreadLocal<TypeSystemDescription>();
-
-		
 		protected JCas jCas;
 		protected TypeSystemDescription typeSystemDescription;
 
@@ -55,23 +52,14 @@ public class CleartkTestBase {
 		protected File outputDirectory;
 		protected String outputDirectoryName;
 		
-		/**
-		 *  we do not want to create a new JCas object every time we run a test because it is expensive (~100ms on my laptop).  Instead,
-		 *  we will have one JCas per thread sitting around that we will reset everytime a new test is called.  
-		 */
 		@Before
 		public void setUp() throws Exception {
-			typeSystemDescription = TYPE_SYSTEM_DESCRIPTION.get();
-
-			jCas = JCAS.get();
-			if(jCas == null) {
-				jCas = JCasFactory.createJCas(typeSystemDescription);
-				JCAS.set(jCas);
-			}
-			jCas.reset();
-			
+			typeSystemDescription = TypeSystemDescriptionFactory.createTypeSystemDescription(getTypeSystemDescriptorNames());
+			jCas = JCasFactory.createJCas(typeSystemDescription);
 			outputDirectory = folder.newFolder("output");
 			outputDirectoryName = outputDirectory.getPath();
 		}
+
+		public abstract String[] getTypeSystemDescriptorNames();
 
 	}
