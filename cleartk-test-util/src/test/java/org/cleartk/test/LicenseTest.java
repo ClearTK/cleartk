@@ -22,7 +22,7 @@
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
-package org.cleartk;
+package org.cleartk.test;
 
 import org.cleartk.test.util.LicenseTestUtil;
 import org.junit.Test;
