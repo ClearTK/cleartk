@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
 */
-package org.cleartk.util;
+package org.cleartk.util.cr;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -37,10 +37,13 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.uima.UIMAException;
+import org.apache.uima.cas.CAS;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
+import org.cleartk.test.DefaultTestBase;
+import org.cleartk.util.ViewURIUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.CollectionReaderFactory;
@@ -55,12 +58,12 @@ import org.uimafit.pipeline.JCasIterable;
  * 
  * @author Steven Bethard
  */
-public class FilesCollectionReaderTest {
+public class FilesCollectionReaderTest extends DefaultTestBase {
 	
 	/**
 	 * The directory containing all the files to be loaded.
 	 */
-	private final String inputDir = "test/data/html";
+	private final String inputDir = "src/test/resources/html";
 
 	private String toURI(String relativePath) {
 		return new File(inputDir, relativePath).toURI().toString();
@@ -108,11 +111,11 @@ public class FilesCollectionReaderTest {
 		Assert.assertEquals(0, reader.getProgress()[0].getCompleted());
 
 		// check that each document in the CAS matches the document on disk
-		for (JCas jCas: new JCasIterable(reader)) {
-			Assert.assertEquals(languageCode, jCas.getDocumentLanguage());
+		for (JCas jc: new JCasIterable(reader)) {
+			Assert.assertEquals(languageCode, jc.getDocumentLanguage());
 			
-			String jCasText = jCas.getDocumentText();
-			String docText = this.getFileText(jCas);
+			String jCasText = jc.getDocumentText();
+			String docText = this.getFileText(jc);
 			Assert.assertEquals(jCasText, docText);
 		}
 		reader.close();
@@ -139,8 +142,8 @@ public class FilesCollectionReaderTest {
 					FilesCollectionReader.PARAM_VIEW_NAME, viewName);
 			
 			// check that each document in the JCas views matches the document on disk
-			for (JCas jCas: new JCasIterable(reader)) {
-				JCas view = jCas.getView(viewName);
+			for (JCas jc: new JCasIterable(reader)) {
+				JCas view = jc.getView(viewName);
 				String jCasText = view.getDocumentText();
 				String docText = this.getFileText(view);
 				Assert.assertEquals(jCasText, docText);
@@ -167,8 +170,8 @@ public class FilesCollectionReaderTest {
 		// check that each path in the CAS matches a path on disk
 		Set<String> pathsSet = new HashSet<String>();
 		pathsSet.addAll(Arrays.asList(this.paths));
-		for (JCas jCas: new JCasIterable(reader)) {
-			String docPath = ViewURIUtil.getURI(jCas);
+		for (JCas jc: new JCasIterable(reader)) {
+			String docPath = ViewURIUtil.getURI(jc);
 			Assert.assertTrue(pathsSet.contains(docPath));
 			pathsSet.remove(docPath);
 		}
@@ -192,8 +195,8 @@ public class FilesCollectionReaderTest {
 		// check that each path in the CAS matches a path on disk
 		Set<String> pathsSet = new HashSet<String>();
 		pathsSet.addAll(Arrays.asList(this.pathsSuffix1));
-		for (JCas jCas: new JCasIterable(reader)) {
-			String docPath = ViewURIUtil.getURI(jCas);
+		for (JCas jc: new JCasIterable(reader)) {
+			String docPath = ViewURIUtil.getURI(jc);
 			Assert.assertTrue(pathsSet.contains(docPath));
 			pathsSet.remove(docPath);
 		}
@@ -215,8 +218,8 @@ public class FilesCollectionReaderTest {
 		// check that each path in the CAS matches a path on disk
 		Set<String> pathsSet = new HashSet<String>();
 		pathsSet.addAll(Arrays.asList(this.pathsSuffix2));
-		for (JCas jCas: new JCasIterable(reader)) {
-			String docPath = ViewURIUtil.getURI(jCas);
+		for (JCas jc: new JCasIterable(reader)) {
+			String docPath = ViewURIUtil.getURI(jc);
 			Assert.assertTrue(pathsSet.contains(docPath));
 			pathsSet.remove(docPath);
 		}
@@ -243,8 +246,8 @@ public class FilesCollectionReaderTest {
 
 		// collect paths from the CAS
 		Set<String> actual = new HashSet<String>();
-		for (JCas jCas: new JCasIterable(reader)) {
-			actual.add(ViewURIUtil.getURI(jCas).replace('\\', '/'));
+		for (JCas jc: new JCasIterable(reader)) {
+			actual.add(ViewURIUtil.getURI(jc).replace('\\', '/'));
 		}
 		reader.close();
 		
@@ -253,26 +256,27 @@ public class FilesCollectionReaderTest {
 	}
 
 	private final String[] fileNames = new String[]{
-			"11319941.tree",
-			"11597317.txt",
-			"watcha.txt",
-			"huckfinn.txt"};
-
+			"huckfinn.txt",
+			"1.html",
+			"a-test1.txt",
+			"PlainTextFileNames.txt"
+			};
+	
 	@Test
 	public void testFileNames() throws IOException, UIMAException {
 		
 		// create the PlainTextCollectionReader with the HTML input directory  
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				FilesCollectionReader.class, null,
-				FilesCollectionReader.PARAM_ROOT_FILE, "test/data/docs",
-				FilesCollectionReader.PARAM_NAME_FILES_FILE_NAMES, new String[] {"test/data/util/PlainTextFileNames.txt"});
+				FilesCollectionReader.PARAM_ROOT_FILE, "src/test/resources",
+				FilesCollectionReader.PARAM_NAME_FILES_FILE_NAMES, new String[] {"src/test/resources/docs/PlainTextFileNames.txt"});
 
 		// check that each path in the CAS matches a path on disk
 		Set<String> fileNamesSet = new HashSet<String>();
 		fileNamesSet.addAll(Arrays.asList(this.fileNames));
 		int i=0;
-		for (JCas jCas: new JCasIterable(reader)) {
-			String fileName = ViewURIUtil.getURI(jCas).replace('\\', '/');
+		for (JCas jc: new JCasIterable(reader)) {
+			String fileName = ViewURIUtil.getURI(jc).replace('\\', '/');
 			fileName = fileName.substring(fileName.lastIndexOf("/")+1);
 			Assert.assertTrue(fileNamesSet.contains(fileName));
 			fileNamesSet.remove(fileName);
@@ -298,14 +302,14 @@ public class FilesCollectionReaderTest {
 	 */
 	@Test
 	public void testSingleFile()  throws IOException, UIMAException {
-		String path = "test/data/html/1.html";
+		String path = "src/test/resources/html/1.html";
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				FilesCollectionReader.class, null,
 				FilesCollectionReader.PARAM_ROOT_FILE, path);
 		
 		List<String> pathsList = new ArrayList<String>();
-		for (JCas jCas: new JCasIterable(reader)) {
-			pathsList.add(ViewURIUtil.getURI(jCas).replace('\\', '/'));
+		for (JCas jc : new JCasIterable(reader)) {
+			pathsList.add(ViewURIUtil.getURI(jc).replace('\\', '/'));
 		}
 		reader.close();
 		
@@ -337,20 +341,20 @@ public class FilesCollectionReaderTest {
 	 * @return     The text of the file.
 	 * @throws IOException
 	 */
-	private String getFileText(JCas jCas) throws Exception {
-		File docFile = new File(new URI(ViewURIUtil.getURI(jCas)));
+	private String getFileText(JCas jc) throws Exception {
+		File docFile = new File(new URI(ViewURIUtil.getURI(jc)));
 		return FileUtils.file2String(docFile);
 	}
 	
 	@Test
 	public void testDescriptor() throws UIMAException, IOException {
 		try {
-			CollectionReaderFactory.createCollectionReader("org.cleartk.util.FilesCollectionReader");
+			CollectionReaderFactory.createCollectionReader(FilesCollectionReader.class, typeSystemDescription);
 			Assert.fail("expected exception with no file or directory specified");
 		} catch (ResourceInitializationException e) {}
 		
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-				"org.cleartk.util.FilesCollectionReader",
+				FilesCollectionReader.class, typeSystemDescription,
 				FilesCollectionReader.PARAM_ROOT_FILE, this.inputDir);
 		
 		Object fileOrDirectory = reader.getConfigParameterValue(
@@ -359,7 +363,7 @@ public class FilesCollectionReaderTest {
 		
 		Object viewName = reader.getConfigParameterValue(
 				FilesCollectionReader.PARAM_VIEW_NAME);
-		Assert.assertEquals(null, viewName);
+		Assert.assertEquals(CAS.NAME_DEFAULT_SOFA, viewName);
 		
 		Object encoding = reader.getConfigParameterValue(
 				FilesCollectionReader.PARAM_ENCODING);
