@@ -26,6 +26,7 @@ package org.cleartk.test.util;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.uima.cas.Feature;
@@ -154,12 +155,20 @@ public class TypeTestUtil  {
 		}
 	}
 
-//	public static void testTypeSystem(JCas jCas) throws Exception {
-//		Iterator<Type> types = jCas.getTypeSystem().getTypeIterator();
-//		while(types.hasNext()) {
-//			Annotation ann = AnnotationFactory.createAnnotation(jCas, 0, 0, types.next());
-//			testType(jCas, ann);
-//		}
-//		
-//	}
+	public static void testTypeSystem(JCas jCas) throws Exception {
+		Iterator<Type> types = jCas.getTypeSystem().getTypeIterator();
+		
+		while(types.hasNext()) {
+			try {
+				Type type = types.next();
+				@SuppressWarnings("unchecked")
+				Class<? extends TOP> cls = (Class<? extends TOP>) Class.forName(type.getName());
+				TOP top = cls.getConstructor(JCas.class).newInstance(jCas);
+				testType(jCas, top);
+			} catch(Exception e) {
+				continue;
+			}
+		}
+		
+	}
 }
