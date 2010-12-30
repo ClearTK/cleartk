@@ -43,7 +43,6 @@ import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
-import org.cleartk.util.ViewNames;
 import org.cleartk.util.ViewURIUtil;
 import org.cleartk.util.io.Files;
 import org.uimafit.component.JCasCollectionReader_ImplBase;
@@ -68,7 +67,7 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * @author Steven Bethard
  * @author Philip Ogren
  */
-@SofaCapability(outputSofas=ViewNames.URI)
+@SofaCapability(outputSofas=ViewURIUtil.URI)
 public class FilesCollectionReader extends JCasCollectionReader_ImplBase {
 
 	public static CollectionReader getCollectionReader(TypeSystemDescription typeSystemDescription, String fileOrDir)

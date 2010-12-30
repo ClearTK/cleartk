@@ -36,7 +36,6 @@ import org.cleartk.temporal.timeml.type.Event;
 import org.cleartk.temporal.timeml.type.TemporalLink;
 import org.cleartk.temporal.timeml.type.Time;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.ViewNames;
 import org.cleartk.util.cr.FilesCollectionReader;
 import org.junit.Assert;
 import org.junit.Test;
@@ -62,7 +61,7 @@ public class TimeMLGoldAnnotatorTest extends TemporalTestBase{
 				FilesCollectionReader.class, 
 				typeSystemDescription,
 				FilesCollectionReader.PARAM_VIEW_NAME,
-				ViewNames.TIMEML,
+				TimeMLViewName.TIMEML,
 				FilesCollectionReader.PARAM_ROOT_FILE,
 				"src/test/resources/data/timeml/wsj_0106.tml");
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
@@ -128,7 +127,7 @@ public class TimeMLGoldAnnotatorTest extends TemporalTestBase{
 				FilesCollectionReader.class, 
 				typeSystemDescription,
 				FilesCollectionReader.PARAM_VIEW_NAME,
-				ViewNames.TIMEML,
+				TimeMLViewName.TIMEML,
 				FilesCollectionReader.PARAM_ROOT_FILE,
 				"src/test/resources/data/timeml/AP900815-0044.tml");
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
@@ -180,7 +179,7 @@ public class TimeMLGoldAnnotatorTest extends TemporalTestBase{
 				FilesCollectionReader.class, 
 				typeSystemDescription,
 				FilesCollectionReader.PARAM_VIEW_NAME,
-				ViewNames.TIMEML,
+				TimeMLViewName.TIMEML,
 				FilesCollectionReader.PARAM_ROOT_FILE,
 				"src/test/resources/data/timeml",
 				FilesCollectionReader.PARAM_SUFFIXES,

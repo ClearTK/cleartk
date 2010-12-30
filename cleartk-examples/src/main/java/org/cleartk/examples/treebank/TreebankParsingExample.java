@@ -32,10 +32,11 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.collection.CollectionReader;
+import org.cleartk.evaluation.EvaluationViewNames;
 import org.cleartk.examples.ExampleComponents;
 import org.cleartk.syntax.constituent.TreebankGoldAnnotator;
+import org.cleartk.syntax.constituent.TreebankViewName;
 import org.cleartk.util.Options_ImplBase;
-import org.cleartk.util.ViewNames;
 import org.cleartk.util.ViewURIFileNamer;
 import org.cleartk.util.cr.FilesCollectionReader;
 import org.kohsuke.args4j.Option;
@@ -82,15 +83,15 @@ public class TreebankParsingExample {
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(FilesCollectionReader.class,
 				ExampleComponents.TYPE_SYSTEM_DESCRIPTION, 
 				FilesCollectionReader.PARAM_ROOT_FILE, options.treebankDirectory,
-				FilesCollectionReader.PARAM_VIEW_NAME, ViewNames.TREEBANK, 
+				FilesCollectionReader.PARAM_VIEW_NAME, TreebankViewName.TREEBANK, 
 				FilesCollectionReader.PARAM_SUFFIXES, suffixes);
 
 		AnalysisEngine viewCreator = AnalysisEngineFactory.createPrimitive(ViewCreatorAnnotator.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-				ViewCreatorAnnotator.PARAM_VIEW_NAME, ViewNames.GOLD_VIEW);
+				ViewCreatorAnnotator.PARAM_VIEW_NAME, EvaluationViewNames.GOLD_VIEW);
 
 		AnalysisEngineDescription treebankParserDescription = AnalysisEngineFactory.createPrimitiveDescription(TreebankGoldAnnotator.class,
 				ExampleComponents.TYPE_SYSTEM_DESCRIPTION);
-		AnalysisEngine treebankParser = AnalysisEngineFactory.createAnalysisEngine(treebankParserDescription, ViewNames.GOLD_VIEW);
+		AnalysisEngine treebankParser = AnalysisEngineFactory.createAnalysisEngine(treebankParserDescription, EvaluationViewNames.GOLD_VIEW);
 
 		AnalysisEngine xWriter = AnalysisEngineFactory.createPrimitive(XWriter.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
 				XWriter.PARAM_OUTPUT_DIRECTORY_NAME, options.outputDirectory,

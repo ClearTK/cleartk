@@ -38,7 +38,6 @@ import org.cleartk.temporal.timeml.corpus.PlainTextTLINKGoldAnnotator;
 import org.cleartk.temporal.timeml.corpus.TimeMLGoldAnnotator;
 import org.cleartk.temporal.timeml.type.TemporalLink;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.ViewNames;
 import org.cleartk.util.cr.FilesCollectionReader;
 import org.junit.Assert;
 import org.junit.Ignore;
@@ -71,7 +70,7 @@ public class PlainTextTLINKGoldAnnotatorTest extends TemporalTestBase{
 				FilesCollectionReader.class, 
 				typeSystemDescription,
 				FilesCollectionReader.PARAM_VIEW_NAME,
-				ViewNames.TIMEML,
+				TimeMLViewName.TIMEML,
 				FilesCollectionReader.PARAM_ROOT_FILE,
 				"src/test/resources/data/timeml/wsj_0106.tml");
 		AnalysisEngine timemlEngine = AnalysisEngineFactory.createPrimitive(
@@ -125,7 +124,7 @@ public class PlainTextTLINKGoldAnnotatorTest extends TemporalTestBase{
 				FilesCollectionReader.class, 
 				typeSystemDescription,
 				FilesCollectionReader.PARAM_VIEW_NAME,
-				ViewNames.TIMEML,
+				TimeMLViewName.TIMEML,
 				FilesCollectionReader.PARAM_ROOT_FILE,
 				"src/test/resources/data/timeml/wsj_0106.tml");
 		AnalysisEngine timemlEngine = AnalysisEngineFactory.createPrimitive(

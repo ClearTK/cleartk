@@ -39,9 +39,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
-import org.cleartk.classifier.CleartkComponents;
 import org.cleartk.srl.SrlComponents;
-import org.cleartk.util.ViewNames;
 import org.cleartk.util.ViewURIUtil;
 import org.uimafit.component.JCasCollectionReader_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
@@ -54,7 +52,7 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
  */
-@SofaCapability(outputSofas = { ViewNames.CONLL_2005, ViewNames.URI})
+@SofaCapability(outputSofas = { Conll2005ViewName.CONLL_2005, ViewURIUtil.URI})
 public class Conll2005GoldReader extends JCasCollectionReader_ImplBase {
 
 	public static CollectionReader getCollectionReader(String conll2005DataFile)
@@ -116,7 +114,7 @@ public class Conll2005GoldReader extends JCasCollectionReader_ImplBase {
 
 	public void getNext(JCas jCas) throws IOException, CollectionException {
 		try {
-			JCas conllView = jCas.createView(ViewNames.CONLL_2005);
+			JCas conllView = jCas.createView(Conll2005ViewName.CONLL_2005);
 
 			String lineBuffer;
 			StringBuffer docBuffer = new StringBuffer();

@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.srl.propbank.util.Propbank;
@@ -34,7 +35,6 @@ import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.UIMAUtil;
-import org.cleartk.util.ViewNames;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.SofaCapability;
 
@@ -54,14 +54,14 @@ import org.uimafit.descriptor.SofaCapability;
  * @author Philipp Wetzler, Philip Ogren
  */
 
-@SofaCapability(inputSofas= {ViewNames.PROPBANK, ViewNames.DEFAULT})
+@SofaCapability(inputSofas= {PropbankViewName.PROPBANK, CAS.NAME_DEFAULT_SOFA})
 public class PropbankGoldAnnotator extends JCasAnnotator_ImplBase {
 
 	@Override
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
 		try {
-			JCas pbView = jCas.getView(ViewNames.PROPBANK);
-			JCas docView = jCas.getView(ViewNames.DEFAULT);
+			JCas pbView = jCas.getView(PropbankViewName.PROPBANK);
+			JCas docView = jCas.getView(CAS.NAME_DEFAULT_SOFA);
 			List<Sentence> sentenceList = AnnotationRetrieval.getAnnotations(docView, Sentence.class); 
 
 			for (String propbankDatum : UIMAUtil.readSofa(pbView).trim().split(

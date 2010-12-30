@@ -40,7 +40,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
-import org.cleartk.util.ViewNames;
+import org.cleartk.util.ViewURIUtil;
 import org.cleartk.util.io.Files;
 import org.uimafit.component.JCasCollectionReader_ImplBase;
 import org.uimafit.component.ViewCreatorAnnotator;
@@ -81,7 +81,7 @@ import org.uimafit.factory.initializable.InitializableFactory;
  * @author Steven Bethard
  * @author Philip Ogren
  */
-@SofaCapability(outputSofas=ViewNames.URI)
+@SofaCapability(outputSofas=ViewURIUtil.URI)
 public class LineReader extends JCasCollectionReader_ImplBase {
 
 	public static final String PARAM_FILE_OR_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(

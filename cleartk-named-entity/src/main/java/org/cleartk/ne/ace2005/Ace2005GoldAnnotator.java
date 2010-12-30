@@ -34,6 +34,7 @@ import java.util.regex.Pattern;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -41,7 +42,6 @@ import org.cleartk.ne.type.Chunk;
 import org.cleartk.ne.type.NamedEntity;
 import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.util.UIMAUtil;
-import org.cleartk.util.ViewNames;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -63,7 +63,7 @@ import org.uimafit.descriptor.SofaCapability;
  * @author Philip Ogren
  *
  */
-@SofaCapability(inputSofas = {ViewNames.ACE_APF_URI, ViewNames.DEFAULT}, outputSofas = {})
+@SofaCapability(inputSofas = {AceViewName.ACE_APF_URI, CAS.NAME_DEFAULT_SOFA}, outputSofas = {})
 public class Ace2005GoldAnnotator extends JCasAnnotator_ImplBase
 {
 
@@ -81,8 +81,8 @@ public class Ace2005GoldAnnotator extends JCasAnnotator_ImplBase
 	{
 		try
 		{
-			String apfUri = jCas.getView(ViewNames.ACE_APF_URI).getSofaDataURI();
-			JCas initialView = jCas.getView(ViewNames.DEFAULT);
+			String apfUri = jCas.getView(AceViewName.ACE_APF_URI).getSofaDataURI();
+			JCas initialView = jCas.getView(CAS.NAME_DEFAULT_SOFA);
 			String documentText = initialView.getDocumentText();
 			SAXBuilder builder = new SAXBuilder();
 			builder.setDTDHandler(null);

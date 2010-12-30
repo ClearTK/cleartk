@@ -39,7 +39,6 @@ import org.apache.uima.util.FileUtils;
 import org.cleartk.temporal.TemporalTestBase;
 import org.cleartk.temporal.timeml.corpus.TimeMLGoldAnnotator;
 import org.cleartk.temporal.timeml.corpus.TimeMLWriter;
-import org.cleartk.util.ViewNames;
 import org.cleartk.util.cr.FilesCollectionReader;
 import org.jdom.Attribute;
 import org.jdom.Element;
@@ -79,7 +78,7 @@ public class TimeMLWriterTest extends TemporalTestBase {
 				FilesCollectionReader.class, 
 				typeSystemDescription,
 				FilesCollectionReader.PARAM_VIEW_NAME,
-				ViewNames.TIMEML,
+				TimeMLViewName.TIMEML,
 				FilesCollectionReader.PARAM_ROOT_FILE,
 				this.inputFile.getPath());
 		AnalysisEngine annotator = AnalysisEngineFactory.createPrimitive(

@@ -28,6 +28,7 @@ import java.util.List;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -38,7 +39,6 @@ import org.cleartk.syntax.constituent.util.TreebankFormatParser;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.cleartk.util.UIMAUtil;
-import org.cleartk.util.ViewNames;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.SofaCapability;
@@ -60,7 +60,7 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * @author Philipp Wetzler
  */
 
-@SofaCapability(inputSofas = {ViewNames.TREEBANK, ViewNames.DEFAULT}, outputSofas = {})
+@SofaCapability(inputSofas = {TreebankViewName.TREEBANK, CAS.NAME_DEFAULT_SOFA}, outputSofas = {})
 public class TreebankGoldAnnotator extends JCasAnnotator_ImplBase {
 	
 	public static AnalysisEngineDescription getDescription()
@@ -96,8 +96,8 @@ public class TreebankGoldAnnotator extends JCasAnnotator_ImplBase {
 		JCas docView;
 		String tbText;
 		try {
-			docView = jCas.getView(ViewNames.DEFAULT);
-			tbText = jCas.getView(ViewNames.TREEBANK).getDocumentText();
+			docView = jCas.getView(CAS.NAME_DEFAULT_SOFA);
+			tbText = jCas.getView(TreebankViewName.TREEBANK).getDocumentText();
 		}
 		catch (CASException e) {
 			throw new AnalysisEngineProcessException(e);

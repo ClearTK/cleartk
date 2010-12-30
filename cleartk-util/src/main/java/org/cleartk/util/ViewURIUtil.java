@@ -40,6 +40,11 @@ import org.apache.uima.jcas.JCas;
 public class ViewURIUtil {
 	
 	/**
+	 * The view where the document Uniform Resource Identifier is placed.
+	 */
+	public static final String URI = "UriView";
+
+	/**
 	 * Set the primary Uniform Resource Identifier for this CAS and all its views.
 	 * This creates the view {@link ViewNames#URI} and assigns the URI there. 
 	 * 
@@ -47,7 +52,7 @@ public class ViewURIUtil {
 	 * @param uri  The primary URI for the CAS and all its views.
 	 */
 	public static void setURI(CAS cas, String uri) {
-		CAS view = cas.createView(ViewNames.URI);
+		CAS view = cas.createView(URI);
 		view.setSofaDataURI(uri, null);
 	}
 	
@@ -72,7 +77,7 @@ public class ViewURIUtil {
 	 */
 	public static String getURI(JCas jCas) throws AnalysisEngineProcessException {
 		try {
-			return jCas.getView(ViewNames.URI).getSofaDataURI();
+			return jCas.getView(URI).getSofaDataURI();
 		} catch (CASException e) {
 			throw new AnalysisEngineProcessException(e);
 		}

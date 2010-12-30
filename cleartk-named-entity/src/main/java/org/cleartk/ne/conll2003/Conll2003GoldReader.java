@@ -45,7 +45,6 @@ import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.cleartk.util.UIMAUtil;
-import org.cleartk.util.ViewNames;
 import org.cleartk.util.ViewURIUtil;
 import org.uimafit.component.JCasCollectionReader_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
@@ -65,7 +64,7 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * data can be retrieved from http://www.cnts.ua.ac.be/conll2003/ner/
  * 
  */
-@SofaCapability(outputSofas=ViewNames.URI)
+@SofaCapability(outputSofas=ViewURIUtil.URI)
 public class Conll2003GoldReader extends JCasCollectionReader_ImplBase
 {
 	public static final String PARAM_DATA_FILE_NAME = ConfigurationParameterFactory.createConfigurationParameterName(Conll2003GoldReader.class, "dataFileName");

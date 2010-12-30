@@ -32,18 +32,19 @@ import java.util.Map;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Level;
 import org.cleartk.temporal.TemporalComponents;
+import org.cleartk.temporal.timeml.TimeMLViewName;
 import org.cleartk.temporal.timeml.type.Anchor;
 import org.cleartk.temporal.timeml.type.Event;
 import org.cleartk.temporal.timeml.type.TemporalLink;
 import org.cleartk.temporal.timeml.type.Text;
 import org.cleartk.temporal.timeml.type.Time;
 import org.cleartk.temporal.timeml.util.TimeMLUtil;
-import org.cleartk.util.ViewNames;
 import org.cleartk.util.ViewURIUtil;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -64,7 +65,7 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * @author Steven Bethard
  *
  */
-@SofaCapability(inputSofas= {ViewNames.TIMEML, ViewNames.DEFAULT})
+@SofaCapability(inputSofas= {TimeMLViewName.TIMEML, CAS.NAME_DEFAULT_SOFA})
 public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
 	
 	public static final String PARAM_LOAD_TLINKS = ConfigurationParameterFactory.createConfigurationParameterName(TimeMLGoldAnnotator.class, "loadTlinks");
@@ -99,8 +100,8 @@ return AnalysisEngineFactory.createPrimitiveDescription(
 		JCas timemlView;
 		JCas initialView;
 		try {
-			timemlView = jCas.getView(ViewNames.TIMEML);
-			initialView = jCas.getView(ViewNames.DEFAULT);
+			timemlView = jCas.getView(TimeMLViewName.TIMEML);
+			initialView = jCas.getView(CAS.NAME_DEFAULT_SOFA);
 		} catch (CASException e) {
 			throw new AnalysisEngineProcessException(e);
 		}

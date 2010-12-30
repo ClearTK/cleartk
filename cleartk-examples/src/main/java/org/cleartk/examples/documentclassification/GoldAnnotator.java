@@ -30,7 +30,7 @@ import java.net.URISyntaxException;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
-import org.cleartk.util.ViewNames;
+import org.cleartk.util.ViewURIUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.SofaCapability;
 
@@ -41,7 +41,7 @@ import org.uimafit.descriptor.SofaCapability;
  * @author Philipp G. Wetzler
  *
  */
-@SofaCapability(inputSofas= {ViewNames.URI, GoldAnnotator.GOLD_VIEW_NAME})
+@SofaCapability(inputSofas= {ViewURIUtil.URI, GoldAnnotator.GOLD_VIEW_NAME})
 public class GoldAnnotator extends JCasAnnotator_ImplBase {
 
 	public static final String GOLD_VIEW_NAME = "ExampleDocumentClassificationGoldView";
@@ -49,7 +49,7 @@ public class GoldAnnotator extends JCasAnnotator_ImplBase {
 	@Override
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
 		try {
-			JCas uriView = jCas.getView(ViewNames.URI);
+			JCas uriView = jCas.getView(ViewURIUtil.URI);
 			JCas goldView = jCas.createView(GOLD_VIEW_NAME);
 			URI uri = new URI(uriView.getSofaDataURI());
 			File file = new File(uri.getPath());

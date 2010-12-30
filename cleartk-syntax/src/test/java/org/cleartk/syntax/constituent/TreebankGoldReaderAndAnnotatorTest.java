@@ -30,15 +30,14 @@ import java.io.IOException;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
+import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FSIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.syntax.SyntaxTestBase;
-import org.cleartk.syntax.constituent.TreebankGoldAnnotator;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.token.type.Sentence;
-import org.cleartk.util.ViewNames;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -64,12 +63,12 @@ public class TreebankGoldReaderAndAnnotatorTest extends SyntaxTestBase {
 		TreebankGoldAnnotator treebankGoldAnnotator = new TreebankGoldAnnotator();
 		treebankGoldAnnotator.initialize(engine.getUimaContext());
 
-		JCas tbView = jCas.createView(ViewNames.TREEBANK);
+		JCas tbView = jCas.createView(TreebankViewName.TREEBANK);
 		tbView.setDocumentText(treebankParse);
 
 		treebankGoldAnnotator.process(jCas);
 
-		JCas goldView = jCas.getView(ViewNames.DEFAULT);
+		JCas goldView = jCas.getView(CAS.NAME_DEFAULT_SOFA);
 
 		FSIndex<Annotation> sentenceIndex = goldView.getAnnotationIndex(Sentence.type);
 		assertEquals(1, sentenceIndex.size());
@@ -104,8 +103,8 @@ public class TreebankGoldReaderAndAnnotatorTest extends SyntaxTestBase {
 		Boolean postTrees = (Boolean) description.getAnalysisEngineMetaData().getConfigurationParameterSettings().getParameterValue(TreebankGoldAnnotator.PARAM_POST_TREES);
 		Assert.assertTrue(postTrees.booleanValue());
 		String[] inputSofas = description.getAnalysisEngineMetaData().getCapabilities()[0].getInputSofas();
-		assertEquals(ViewNames.TREEBANK, inputSofas[0]);
-		assertEquals(ViewNames.DEFAULT, inputSofas[1]);
+		assertEquals(TreebankViewName.TREEBANK, inputSofas[0]);
+		assertEquals(CAS.NAME_DEFAULT_SOFA, inputSofas[1]);
 	}
 
 	@Test

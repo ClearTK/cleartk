@@ -41,10 +41,10 @@ import org.cleartk.example.ExamplesTestBase;
 import org.cleartk.examples.ExampleComponents;
 import org.cleartk.examples.pos.ExamplePOSPlainTextWriter;
 import org.cleartk.syntax.constituent.TreebankGoldAnnotator;
+import org.cleartk.syntax.constituent.TreebankViewName;
 import org.cleartk.token.breakit.BreakIteratorAnnotatorFactory;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.tokenizer.TokenAnnotator;
-import org.cleartk.util.ViewNames;
 import org.cleartk.util.cr.FilesCollectionReader;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -101,7 +101,7 @@ public class NonSequentialExamplePOSAnnotatorTest extends ExamplesTestBase{
 
 	private void testClassifier(AnalysisEngineDescription dataWriter, String outDirectoryName, String... trainingArgs) throws Exception {
 		SimplePipeline.runPipeline(
-				FilesCollectionReader.getCollectionReaderWithView(ExampleComponents.TYPE_SYSTEM_DESCRIPTION, "src/test/resources/data/treebank/11597317.tree", ViewNames.TREEBANK),
+				FilesCollectionReader.getCollectionReaderWithView(ExampleComponents.TYPE_SYSTEM_DESCRIPTION, "src/test/resources/data/treebank/11597317.tree", TreebankViewName.TREEBANK),
 				TreebankGoldAnnotator.getDescriptionPOSTagsOnly(),
 				DefaultSnowballStemmer.getDescription("English"),
 				dataWriter);

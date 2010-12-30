@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.uima.UimaContext;
+import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.collection.CollectionException;
 import org.apache.uima.collection.CollectionReader;
@@ -46,7 +47,6 @@ import org.cleartk.token.pos.genia.util.GeniaTag;
 import org.cleartk.token.pos.genia.util.Span;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.ViewNames;
 import org.cleartk.util.ViewURIUtil;
 import org.jdom.JDOMException;
 import org.uimafit.component.JCasCollectionReader_ImplBase;
@@ -65,7 +65,7 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * @author Philip V. Ogren
  * @see GeniaPOSParser
  */
-@SofaCapability(outputSofas = ViewNames.URI)
+@SofaCapability(outputSofas = {ViewURIUtil.URI, GeniaPosViewName.GENIA_POS})
 public class GeniaPosGoldReader extends JCasCollectionReader_ImplBase {
 
 	public static final String PARAM_GENIA_CORPUS_FILE = ConfigurationParameterFactory
@@ -141,7 +141,7 @@ public class GeniaPosGoldReader extends JCasCollectionReader_ImplBase {
 		if (!hasNext()) throw new CollectionException("Should not be calling getNext() because hasNext returns false",
 				null);
 		try {
-			JCas annotationsView = jCas.getView(ViewNames.DEFAULT);
+			JCas annotationsView = jCas.getView(CAS.NAME_DEFAULT_SOFA);
 			String text = parse.getText();
 			annotationsView.setDocumentText(text);
 
@@ -166,7 +166,7 @@ public class GeniaPosGoldReader extends JCasCollectionReader_ImplBase {
 
 			ViewURIUtil.setURI(jCas, parse.getMedline());
 
-			JCas geniaView = jCas.createView(ViewNames.GENIA_POS);
+			JCas geniaView = jCas.createView(GeniaPosViewName.GENIA_POS);
 			geniaView.setDocumentText(parse.getXml());
 
 			parse = null;

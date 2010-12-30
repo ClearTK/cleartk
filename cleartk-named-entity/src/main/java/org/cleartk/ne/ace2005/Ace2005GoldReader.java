@@ -33,6 +33,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.uima.UimaContext;
+import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.collection.CollectionException;
 import org.apache.uima.jcas.JCas;
@@ -41,7 +42,6 @@ import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 import org.cleartk.ne.type.Ace2005Document;
-import org.cleartk.util.ViewNames;
 import org.cleartk.util.ViewURIUtil;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -62,7 +62,7 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  *
  */
 
-@SofaCapability(outputSofas= {ViewNames.ACE_APF_URI, ViewNames.URI})
+@SofaCapability(outputSofas= {AceViewName.ACE_APF_URI, ViewURIUtil.URI})
 public class Ace2005GoldReader extends JCasCollectionReader_ImplBase
 {
 	public static final String PARAM_ACE_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(Ace2005GoldReader.class, "aceDirectoryName");
@@ -187,7 +187,7 @@ public class Ace2005GoldReader extends JCasCollectionReader_ImplBase
 			
 			String sgmText = FileUtils.file2String(sgmFile);
 			
-			JCas initialView = jCas.getView(ViewNames.DEFAULT);
+			JCas initialView = jCas.getView(CAS.NAME_DEFAULT_SOFA);
 			initialView.setDocumentText(getDocumentText(sgmText));
 
 //			org.cleartk.type.Document sgmDocument = new org.cleartk.type.Document(initialView);
@@ -213,7 +213,7 @@ public class Ace2005GoldReader extends JCasCollectionReader_ImplBase
 			document.setAceType(type);
 			document.addToIndexes();
 		    
-			JCas apfUriView = jCas.createView(ViewNames.ACE_APF_URI);
+			JCas apfUriView = jCas.createView(AceViewName.ACE_APF_URI);
 			apfUriView.setSofaDataURI(apfFile.toURI().toString(), null);
 
 		}

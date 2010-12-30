@@ -40,9 +40,9 @@ import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 import org.cleartk.srl.propbank.util.Propbank;
+import org.cleartk.syntax.constituent.TreebankViewName;
 import org.cleartk.syntax.constituent.ptb.ListSpecification;
 import org.cleartk.syntax.constituent.ptb.PennTreebankReader;
-import org.cleartk.util.ViewNames;
 import org.cleartk.util.ViewURIUtil;
 import org.uimafit.component.JCasCollectionReader_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
@@ -64,7 +64,7 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * @author Philip Ogren, Philipp Wetzler
  */
 
-@SofaCapability(outputSofas= {ViewNames.PROPBANK, ViewNames.TREEBANK, ViewNames.URI})
+@SofaCapability(outputSofas= {PropbankViewName.PROPBANK, TreebankViewName.TREEBANK, ViewURIUtil.URI})
 public class PropbankGoldReader extends JCasCollectionReader_ImplBase {
 	
 	public static final String PARAM_PROPBANK_FILE_NAME = ConfigurationParameterFactory.createConfigurationParameterName(PropbankGoldReader.class, "propbankFileName");
@@ -155,8 +155,8 @@ public class PropbankGoldReader extends JCasCollectionReader_ImplBase {
 	public void getNext(JCas jCas) throws IOException, CollectionException {
 		JCas tbView, pbView;
 		try {
-			tbView = jCas.createView(ViewNames.TREEBANK);
-			pbView = jCas.createView(ViewNames.PROPBANK);
+			tbView = jCas.createView(TreebankViewName.TREEBANK);
+			pbView = jCas.createView(PropbankViewName.PROPBANK);
 		} catch (CASException ce) {
 			throw new CollectionException(ce);
 		}
