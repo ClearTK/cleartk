@@ -62,9 +62,9 @@ import org.cleartk.util.AnnotationRetrieval;
  */
 public class ExamplePOSAnnotator extends CleartkSequentialAnnotator<String> {
 
-	public static final String DEFAULT_OUTPUT_DIRECTORY = "example/pos/model";
+	public static final String DEFAULT_OUTPUT_DIRECTORY = "src/main/resources/model/pos";
 
-	public static final String DEFAULT_MODEL = "example/pos/model/model.jar";
+	public static final String DEFAULT_MODEL = "src/main/resources/model/pos/model.jar";
 
 	private List<SimpleFeatureExtractor> tokenFeatureExtractors;
 

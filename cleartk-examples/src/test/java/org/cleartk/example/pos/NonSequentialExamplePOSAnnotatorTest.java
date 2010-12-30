@@ -25,11 +25,11 @@
 package org.cleartk.example.pos;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.pear.util.FileUtil;
@@ -41,7 +41,7 @@ import org.cleartk.example.ExamplesTestBase;
 import org.cleartk.examples.ExampleComponents;
 import org.cleartk.examples.pos.ExamplePOSPlainTextWriter;
 import org.cleartk.syntax.constituent.TreebankGoldAnnotator;
-import org.cleartk.syntax.opennlp.OpenNLPSentenceSegmenter;
+import org.cleartk.token.breakit.BreakIteratorAnnotatorFactory;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.tokenizer.TokenAnnotator;
 import org.cleartk.util.ViewNames;
@@ -63,16 +63,14 @@ public class NonSequentialExamplePOSAnnotatorTest extends ExamplesTestBase{
 
 	@Test
 	public void testLibsvm() throws Exception {
-		String libsvmDirectoryName = outputDirectoryName+"/libsvm";
+		String libsvmDirectoryName = outputDirectory+"/libsvm";
 		AnalysisEngineDescription dataWriter = 	CleartkComponents.createCleartkAnnotator(NonSequentialExamplePOSAnnotator.class,
 				ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
 				DefaultMultiClassLIBSVMDataWriterFactory.class, libsvmDirectoryName, (List<Class<?>>) null);
 		testClassifier(dataWriter, libsvmDirectoryName, "-t", "0");
 
 		String firstLine = FileUtil.loadListOfStrings(new File(libsvmDirectoryName + "/2008_Sichuan_earthquake.txt.pos"))[0].trim();
-		boolean badTags = firstLine.equals("2008/NN Sichuan/NN earthquake/NN From/NN Wikipedia/NN ,/NN the/NN free/NN encyclopedia/NN");
-		assertFalse(badTags);
-		assertEquals("2008/NN Sichuan/NN earthquake/NN From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/NN", firstLine);
+		assertTrue(firstLine.startsWith("2008/NN Sichuan/NN earthquake/NN From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/IN The/DT 2008/NN Sichuan/NN earthquake/NN occurred/VBN at/IN 14:28/NN :/NN 01.42/NN CST/NN "));
 	}
 
 	@Test
@@ -84,10 +82,7 @@ public class NonSequentialExamplePOSAnnotatorTest extends ExamplesTestBase{
 		testClassifier(dataWriter, maxentDirectoryName);
 
 		String firstLine = FileUtil.loadListOfStrings(new File(maxentDirectoryName + "/2008_Sichuan_earthquake.txt.pos"))[0].trim();
-		boolean badTags = firstLine.equals("2008/NN Sichuan/NN earthquake/NN From/NN Wikipedia/NN ,/NN the/NN free/NN encyclopedia/NN");
-		assertFalse(badTags);
-		
-		assertEquals("2008/PRP Sichuan/MD earthquake/NNS From/IN Wikipedia/NNS ,/, the/DT free/NN encyclopedia/NN", firstLine);
+		assertEquals("2008/PRP Sichuan/MD earthquake/NNS From/IN Wikipedia/NNS ,/, the/DT free/NN encyclopedia/IN The/DT 2008/NN_SPLIT Sichuan/IN earthquake/CC occurred/VBN at/IN 14:28/JJ :/RB 01.42/JJ CST/NN (/-LRB- 06:28/NN :/NNP 01.42/JJ UTC/NN )/-RRB- on/IN 12/CD May/NN 2008/RB ,/, with/IN its/PRP$ epicenter/VBZ in/IN Wenchuan/JJ County/NN (/-LRB- Chinese/NN :/NNP ?/NN ?/NN ?/.", firstLine);
 
 	}
 	
@@ -100,19 +95,13 @@ public class NonSequentialExamplePOSAnnotatorTest extends ExamplesTestBase{
 		testClassifier(dataWriter, svmlightDirectoryName);
 
 		String firstLine = FileUtil.loadListOfStrings(new File(svmlightDirectoryName + "/2008_Sichuan_earthquake.txt.pos"))[0].trim();
-		boolean badTags = firstLine.equals("2008/NN Sichuan/NN earthquake/NN From/NN Wikipedia/NN ,/NN the/NN free/NN encyclopedia/NN");
-		assertFalse(badTags);
-		
-		assertTrue(firstLine.startsWith("2008/NN Sichuan/NNP "));
-
-		
-		
+		assertTrue(firstLine.startsWith("2008/NN Sichuan/NNP earthquake/NN From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/IN The/DT 2008/NN Sichuan/NN earthquake/NN occurred/VBN at/IN 14:28/JJ :/NN 01.42/NN CST/NN (/-LRB- 06:28/NN :/NN 01.42/NN UTC/NN )/-RRB- on/IN 12/CD May/MD 2008/NN ,/, with/IN its/NNS epicenter/NN in/IN Wenchuan/JJ County/NN"));
 	}
 
 
 	private void testClassifier(AnalysisEngineDescription dataWriter, String outDirectoryName, String... trainingArgs) throws Exception {
 		SimplePipeline.runPipeline(
-				FilesCollectionReader.getCollectionReaderWithView(ExampleComponents.TYPE_SYSTEM_DESCRIPTION, "test/data/docs/treebank/11597317.tree", ViewNames.TREEBANK),
+				FilesCollectionReader.getCollectionReaderWithView(ExampleComponents.TYPE_SYSTEM_DESCRIPTION, "src/test/resources/data/treebank/11597317.tree", ViewNames.TREEBANK),
 				TreebankGoldAnnotator.getDescriptionPOSTagsOnly(),
 				DefaultSnowballStemmer.getDescription("English"),
 				dataWriter);
@@ -135,8 +124,8 @@ public class NonSequentialExamplePOSAnnotatorTest extends ExamplesTestBase{
 				outDirectoryName + "/model.jar");
 
 		SimplePipeline.runPipeline(
-				FilesCollectionReader.getCollectionReader(ExampleComponents.TYPE_SYSTEM_DESCRIPTION, "example/data/2008_Sichuan_earthquake.txt"),
-				OpenNLPSentenceSegmenter.getDescription(),
+				FilesCollectionReader.getCollectionReader(ExampleComponents.TYPE_SYSTEM_DESCRIPTION, "src/test/resources/data/2008_Sichuan_earthquake.txt"),
+				BreakIteratorAnnotatorFactory.createSentenceAnnotator(Locale.US),
 				TokenAnnotator.getDescription(),
 				DefaultSnowballStemmer.getDescription("English"),
 				taggerDescription,

@@ -46,7 +46,6 @@ import org.cleartk.examples.ExampleComponents;
 import org.cleartk.examples.pos.ExamplePOSAnnotator;
 import org.cleartk.examples.pos.ExamplePOSPlainTextWriter;
 import org.cleartk.syntax.constituent.TreebankGoldAnnotator;
-import org.cleartk.syntax.opennlp.OpenNLPSentenceSegmenter;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.tokenizer.TokenAnnotator;
 import org.cleartk.util.ViewNames;
@@ -205,7 +204,6 @@ public class ExamplePosClassifierTest extends ExamplesTestBase{
 				ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
 				DefaultMalletDataWriterFactory.class,
 				outDirectoryName, 
-				(List<Class<?>>)null,
 				DefaultMalletDataWriterFactory.PARAM_COMPRESS, true
 				);
 		testClassifier(dataWriter, outDirectoryName, 10, "NaiveBayes");
@@ -224,7 +222,7 @@ public class ExamplePosClassifierTest extends ExamplesTestBase{
 		
 		AnalysisEngineDescription dataWriter = CleartkComponents.createViterbiAnnotator(
 				ExamplePOSAnnotator.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION,  DefaultMalletDataWriterFactory.class,
-				outDirectoryName, (List<Class<?>>) null );
+				outDirectoryName);
 		testClassifier(dataWriter, outDirectoryName, 10, "C45");
 
 		String firstLine = FileUtil.loadListOfStrings(new File(outDirectoryName + "/2008_Sichuan_earthquake.txt.pos"))[0];
@@ -239,7 +237,6 @@ public class ExamplePosClassifierTest extends ExamplesTestBase{
 				ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
 				DefaultOVASVMlightDataWriterFactory.class,
 				outDirectoryName,
-				(List<Class<?>>)null, 
 				DefaultOVASVMlightDataWriterFactory.PARAM_CUTOFF, 1);
 
 		testClassifier(dataWriter, outDirectoryName, 1);
@@ -257,7 +254,7 @@ public class ExamplePosClassifierTest extends ExamplesTestBase{
 	private void testClassifier(AnalysisEngineDescription dataWriter, String outDirectoryName, int stackSize, String... trainingArgs) throws Exception {
 
 		SimplePipeline.runPipeline(
-				FilesCollectionReader.getCollectionReaderWithView(ExampleComponents.TYPE_SYSTEM_DESCRIPTION, "test/data/docs/treebank/11597317.tree", ViewNames.TREEBANK),
+				FilesCollectionReader.getCollectionReaderWithView(ExampleComponents.TYPE_SYSTEM_DESCRIPTION, "src/test/resources/data/treebank/11597317.tree", ViewNames.TREEBANK),
 				TreebankGoldAnnotator.getDescriptionPOSTagsOnly(),
 				DefaultSnowballStemmer.getDescription("English"), 
 				dataWriter);
@@ -283,8 +280,8 @@ public class ExamplePosClassifierTest extends ExamplesTestBase{
 		AnalysisEngineFactory.setConfigurationParameters(taggerDescription, ViterbiClassifier.PARAM_STACK_SIZE, stackSize);
 		
 		SimplePipeline.runPipeline(
-				FilesCollectionReader.getCollectionReader(ExampleComponents.TYPE_SYSTEM_DESCRIPTION, "example/data/2008_Sichuan_earthquake.txt"),
-				OpenNLPSentenceSegmenter.getDescription(),
+				FilesCollectionReader.getCollectionReader(ExampleComponents.TYPE_SYSTEM_DESCRIPTION, "src/test/resources/data/2008_Sichuan_earthquake.txt"),
+				ExampleComponents.getSentenceSegmenter(),
 				TokenAnnotator.getDescription(),
 				DefaultSnowballStemmer.getDescription("English"),
 				taggerDescription, 

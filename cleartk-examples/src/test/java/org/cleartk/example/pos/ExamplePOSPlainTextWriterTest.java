@@ -87,7 +87,7 @@ public class ExamplePOSPlainTextWriterTest extends ExamplesTestBase {
 
 	@Test
 	public void testDescriptor() throws UIMAException, IOException {
-		AnalysisEngine engine = AnalysisEngineFactory.createAnalysisEngine("org.cleartk.example.pos.ExamplePOSPlainTextWriter");
+		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(ExamplePOSPlainTextWriter.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION);
 		Object outDirectory = engine.getConfigParameterValue(
 				ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME);
 		Assert.assertEquals(ExamplePOSPlainTextWriter.DEFAULT_OUTPUT_DIRECTORY, outDirectory);
