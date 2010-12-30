@@ -39,7 +39,7 @@ import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkComponents;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.InstanceCollector;
+import org.cleartk.classifier.util.InstanceCollector;
 import org.cleartk.srl.type.Predicate;
 import org.cleartk.srl.type.SemanticArgument;
 import org.cleartk.syntax.TreebankTestsUtil;
