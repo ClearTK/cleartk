@@ -37,7 +37,6 @@ import org.apache.uima.UIMAException;
 import org.cleartk.token.tokenizer.PennTreebankTokenizer;
 import org.cleartk.token.tokenizer.Token;
 import org.cleartk.token.tokenizer.Tokenizer;
-import org.cleartk.util.TimeFormat;
 import org.junit.Test;
 
 /**
@@ -210,7 +209,8 @@ public class SimpleTermFinderTest {
 			return;
 		TermList termList = TermList.loadSimpleFile("names", new File(termListFileName));
 		long stopLoad = System.nanoTime();
-		System.out.println(String.format("loaded %1$d terms in "+TimeFormat.formatTime(stopLoad-startLoad)+" seconds.", termList.size()));
+		float timeElapsed = (float) (stopLoad - startLoad) / 1000000000;
+		System.out.println(String.format("loaded %1$d terms in %2$.3f seconds.", termList.size(), timeElapsed));
 		
 		Tokenizer tokenizer = new PennTreebankTokenizer();
 		
@@ -218,7 +218,8 @@ public class SimpleTermFinderTest {
 		TermFinder termFinder = new SimpleTermFinder(caseSensitive, tokenizer );
 		termFinder.addTermList(termList);
 		long stopInitialize = System.nanoTime();
-		System.out.println("initialized simple term finder in "+TimeFormat.formatTime(stopInitialize-startInitialize)+" seconds.");
+		timeElapsed = (float) (stopInitialize - startInitialize) / 1000000000;
+		System.out.println(String.format("initialized simple term finder in %2$.3f seconds.", timeElapsed));
 		
 		
 		long start;
@@ -244,10 +245,21 @@ public class SimpleTermFinderTest {
 			matchesCount += matches.size();
 		}
 		long stopFinder = System.nanoTime();
-		
-		System.out.println(String.format("found %1$s term matches in %2$s tokens in "+TimeFormat.formatTime(stopFinder - startFinder)+" seconds.", matchesCount, tokensCount));
-		System.out.println("Time spent tokenizing was "+TimeFormat.formatTime(tokenizerTime));
-		System.out.println("Time spent finding was "+TimeFormat.formatTime(finderTime));
+		float time = (float)(stopFinder - startFinder) / 1000000000;
+		System.out.println(String.format("found %1$s term matches in %2$s tokens in %3$.3f seconds.", matchesCount, tokensCount, time));
+		time = (float) tokenizerTime / 1000000000;
+		System.out.println(String.format("Time spent tokenizing was %3$.3f seconds.", time));
+		time = (float) finderTime / 1000000000;
+		System.out.println(String.format("Time spent finding was %3$.3f seconds.", time));
 		
 	}
+	
+	@Test
+	public void testname() throws Exception {
+		float time = (float) 112300000000l / 1000000000;
+		System.out.println(String.format("%.3f", time));
+		System.out.println(String.format("loaded %1$d terms in %2$.3f seconds.", 1234, time));
+		
+	}
+
 }
