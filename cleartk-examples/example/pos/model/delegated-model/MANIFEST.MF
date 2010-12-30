@@ -1,4 +1,0 @@
-Manifest-Version: 1.0
-classifierBuilderClass: org.cleartk.classifier.opennlp.MaxentClassifie
- rBuilder
-
