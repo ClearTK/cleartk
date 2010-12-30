@@ -1,5 +1,5 @@
-/* 
- * Copyright (c) 2010, Regents of the University of Colorado 
+/** 
+ * Copyright (c) 2009, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -21,21 +21,29 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
+package org.cleartk.token;
 
-package org.cleartk.token.pos.genia;
+import java.io.File;
+import java.util.Iterator;
+
+import org.apache.commons.io.filefilter.SuffixFileFilter;
+import org.apache.commons.io.filefilter.TrueFileFilter;
+import org.cleartk.test.util.ParametersTestUtil;
+import org.junit.Test;
 
 /**
  * <br>
- * Copyright (c) 2010, Regents of the University of Colorado <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
  * All rights reserved.
- * <p>
+ * 
  * @author Philip Ogren
  */
+public class ParametersTest {
 
-public interface GeniaPosViewName {
-	/**
-	 * The view containing Genia part of speech formatted text.
-	 */
-	public static final String GENIA_POS = "GeniaPOSView";
-
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testParameterNames() throws ClassNotFoundException {
+		Iterator<File> files = org.apache.commons.io.FileUtils.iterateFiles(new File("src/main/java"), new SuffixFileFilter(".java"), TrueFileFilter.INSTANCE);
+		ParametersTestUtil.testParameterDefinitions(files);
+	}
 }
