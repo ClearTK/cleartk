@@ -103,7 +103,7 @@
 		<dependency>
 			<groupId>org.uimafit</groupId>
 			<artifactId>uimafit</artifactId>
-			<version>1.0.0</version>
+			<version>1.0.1-SNAPSHOT</version>
 			<optional>false</optional>
 		</dependency>
 	</dependencies>
