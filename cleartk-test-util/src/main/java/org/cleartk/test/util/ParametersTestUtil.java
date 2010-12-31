@@ -47,12 +47,15 @@ import org.uimafit.factory.ConfigurationParameterFactory;
 public class ParametersTestUtil {
 
 	public static void testParameterDefinitions(String outputDirectory, String... excludeFiles) throws ClassNotFoundException {
-		IOFileFilter excludeFilter = FileFilterUtils.notFileFilter(new SuffixFileFilter(excludeFiles));
 		IOFileFilter includeFilter = new SuffixFileFilter(".java");
-		IOFileFilter andFilter = FileFilterUtils.andFileFilter(excludeFilter, includeFilter);
+		
+		if(excludeFiles != null) {
+			IOFileFilter excludeFilter = FileFilterUtils.notFileFilter(new SuffixFileFilter(excludeFiles));
+			includeFilter = FileFilterUtils.andFileFilter(excludeFilter, includeFilter);
+		}
 		
 		@SuppressWarnings("unchecked")
-		Iterator<File> files = org.apache.commons.io.FileUtils.iterateFiles(new File(outputDirectory), andFilter, TrueFileFilter.INSTANCE);
+		Iterator<File> files = org.apache.commons.io.FileUtils.iterateFiles(new File(outputDirectory), includeFilter, TrueFileFilter.INSTANCE);
 		testParameterDefinitions(files);
 	}
 	
