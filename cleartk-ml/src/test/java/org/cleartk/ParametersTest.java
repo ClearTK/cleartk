@@ -23,11 +23,6 @@
  */
 package org.cleartk;
 
-import java.io.File;
-import java.util.Iterator;
-
-import org.apache.commons.io.filefilter.SuffixFileFilter;
-import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.cleartk.test.util.ParametersTestUtil;
 import org.junit.Test;
 
@@ -40,10 +35,8 @@ import org.junit.Test;
  */
 public class ParametersTest {
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testParameterNames() throws ClassNotFoundException {
-		Iterator<File> files = org.apache.commons.io.FileUtils.iterateFiles(new File("src/main/java"), new SuffixFileFilter(".java"), TrueFileFilter.INSTANCE);
-		ParametersTestUtil.testParameterDefinitions(files);
+		ParametersTestUtil.testParameterDefinitions("src/main/java");
 	}
 }
