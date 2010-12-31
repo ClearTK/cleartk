@@ -32,6 +32,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.uimafit.descriptor.ConfigurationParameter;
+import org.uimafit.factory.ConfigurationParameterFactory;
 
 /**
  * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
@@ -41,7 +42,7 @@ import org.uimafit.descriptor.ConfigurationParameter;
 
 public class DefaultChunkLabeler extends ChunkLabeler_ImplBase {
 
-	public static final String PARAM_CHUNK_LABEL_FEATURE_NAME = "org.cleartk.chunk.DefaultChunkLabeler.chunkLabelFeatureName";
+	public static final String PARAM_CHUNK_LABEL_FEATURE_NAME = ConfigurationParameterFactory.createConfigurationParameterName(DefaultChunkLabeler.class, "chunkLabelFeatureName");
 
 	private static final String CHUNK_LABEL_FEATURE_DESCRIPTION = "names  the feature of the type system chunk type that provides a label for each " +
 			"chunk. The feature is queried and the value of the feature is used as the label for the chunk.  If this parameter has no value, then the name of the " +
@@ -51,7 +52,6 @@ public class DefaultChunkLabeler extends ChunkLabeler_ImplBase {
 			"this parameter, then the label will always be 'Chunk'";
 	
 	@ConfigurationParameter(
-			name = PARAM_CHUNK_LABEL_FEATURE_NAME,
 			description = CHUNK_LABEL_FEATURE_DESCRIPTION)
 	private String chunkLabelFeatureName;
 
