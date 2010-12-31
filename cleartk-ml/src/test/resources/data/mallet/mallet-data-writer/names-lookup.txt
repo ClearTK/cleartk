@@ -1,4 +1,0 @@
-3
-distance	1
-pos_NN	0
-precision	2
