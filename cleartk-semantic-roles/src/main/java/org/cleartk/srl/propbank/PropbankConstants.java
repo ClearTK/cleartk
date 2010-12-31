@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright (c) 2010, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -21,11 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-
-package org.cleartk.srl;
-
-import org.apache.uima.resource.metadata.TypeSystemDescription;
-import org.uimafit.factory.TypeSystemDescriptionFactory;
+package org.cleartk.srl.propbank;
 
 /**
  * <br>
@@ -34,8 +30,11 @@ import org.uimafit.factory.TypeSystemDescriptionFactory;
  * <p>
  */
 
-public class SrlComponents {
+public interface PropbankConstants {
 
-	public static TypeSystemDescription TYPE_SYSTEM_DESCRIPTION = TypeSystemDescriptionFactory
-	.createTypeSystemDescription("org.cleartk.srl.TypeSystem");
+	/**
+	 * The view containing the text of a PropBank "prop.txt" file.
+	 */
+	public static final String PROPBANK_VIEW = "PROPBANK_VIEW";
+
 }

@@ -29,6 +29,13 @@ import org.apache.uima.jcas.JCas;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 
+/**
+ * <br>
+ * Copyright (c) 2010, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * <p>
+ */
+
 public interface TokenRetriever {
 	public List<Token> getTokens(JCas jCas, Sentence sentence);
 }

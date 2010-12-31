@@ -28,6 +28,13 @@ import java.util.List;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.token.type.Sentence;
 
+/**
+ * <br>
+ * Copyright (c) 2010, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * <p>
+ */
+
 public interface SentenceRetriever {
 	public List<Sentence> getSentences(JCas jCas);
 }

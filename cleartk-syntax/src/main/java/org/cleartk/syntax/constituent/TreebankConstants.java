@@ -21,11 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-
-package org.cleartk.srl;
-
-import org.apache.uima.resource.metadata.TypeSystemDescription;
-import org.uimafit.factory.TypeSystemDescriptionFactory;
+package org.cleartk.syntax.constituent;
 
 /**
  * <br>
@@ -34,8 +30,11 @@ import org.uimafit.factory.TypeSystemDescriptionFactory;
  * <p>
  */
 
-public class SrlComponents {
+public interface TreebankConstants {
 
-	public static TypeSystemDescription TYPE_SYSTEM_DESCRIPTION = TypeSystemDescriptionFactory
-	.createTypeSystemDescription("org.cleartk.srl.TypeSystem");
+	/**
+	 * The view containing the parenthesized text of a TreeBank .mrg file.
+	 */
+	public static final String TREEBANK_VIEW = "TREEBANK_VIEW";
+
 }

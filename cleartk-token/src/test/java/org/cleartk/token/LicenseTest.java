@@ -1,5 +1,5 @@
-/** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+/*
+ * Copyright (c) 2010, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -23,16 +23,13 @@
  */
 package org.cleartk.token;
 
-import java.util.Collections;
-import java.util.List;
-
 import org.cleartk.test.util.LicenseTestUtil;
 import org.junit.Test;
 
 
 /**
  * <br>
- * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * Copyright (c) 2010, Regents of the University of Colorado <br>
  * All rights reserved.
  * <p>
  */
@@ -41,14 +38,13 @@ public class LicenseTest {
 
 	@Test
 	public void testLicenseStatedInSource() throws Exception {
-		List<String> excludeJavaFiles = Collections.emptyList();
-		LicenseTestUtil.testJavaFiles("src/main/java", excludeJavaFiles, excludeJavaFiles);
+		LicenseTestUtil.testJavaFiles("src/main/java");
 	}
 
 	@Test
 	public void testLicenseStatedInTestSource() throws Exception {
-		List<String> excludeJavaFiles = Collections.emptyList();
-		LicenseTestUtil.testJavaFiles("src/test/java", excludeJavaFiles, excludeJavaFiles);
+		LicenseTestUtil.testJavaFiles("src/test/java");
+
 	}
 
 }

@@ -38,6 +38,13 @@ import org.cleartk.util.UIMAUtil;
 import org.cleartk.util.ViewURIUtil;
 import org.cleartk.util.ae.linewriter.AnnotationWriter;
 
+/**
+ * <br>
+ * Copyright (c) 2010, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * <p>
+ */
+
 public class PropbankFormatWriter implements AnnotationWriter<Predicate>{
 
 	public void initialize(UimaContext context) throws ResourceInitializationException {}

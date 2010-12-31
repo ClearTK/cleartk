@@ -1,5 +1,5 @@
-/** 
- * Copyright (c) 2009, Regents of the University of Colorado 
+/*
+ * Copyright (c) 2010, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -23,27 +23,20 @@
  */
 package org.cleartk.token;
 
-import java.io.File;
-import java.util.Iterator;
-
-import org.apache.commons.io.filefilter.SuffixFileFilter;
-import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.cleartk.test.util.ParametersTestUtil;
 import org.junit.Test;
 
 /**
  * <br>
- * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * Copyright (c) 2010, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
  * @author Philip Ogren
  */
 public class ParametersTest {
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testParameterNames() throws ClassNotFoundException {
-		Iterator<File> files = org.apache.commons.io.FileUtils.iterateFiles(new File("src/main/java"), new SuffixFileFilter(".java"), TrueFileFilter.INSTANCE);
-		ParametersTestUtil.testParameterDefinitions(files);
+		ParametersTestUtil.testParameterDefinitions("src/main/java");
 	}
 }

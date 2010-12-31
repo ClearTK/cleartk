@@ -60,7 +60,7 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * @author Philipp Wetzler
  */
 
-@SofaCapability(inputSofas = {TreebankViewName.TREEBANK, CAS.NAME_DEFAULT_SOFA}, outputSofas = {})
+@SofaCapability(inputSofas = {TreebankConstants.TREEBANK_VIEW, CAS.NAME_DEFAULT_SOFA}, outputSofas = {})
 public class TreebankGoldAnnotator extends JCasAnnotator_ImplBase {
 	
 	public static AnalysisEngineDescription getDescription()
@@ -97,7 +97,7 @@ public class TreebankGoldAnnotator extends JCasAnnotator_ImplBase {
 		String tbText;
 		try {
 			docView = jCas.getView(CAS.NAME_DEFAULT_SOFA);
-			tbText = jCas.getView(TreebankViewName.TREEBANK).getDocumentText();
+			tbText = jCas.getView(TreebankConstants.TREEBANK_VIEW).getDocumentText();
 		}
 		catch (CASException e) {
 			throw new AnalysisEngineProcessException(e);

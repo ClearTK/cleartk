@@ -39,7 +39,7 @@ import org.apache.uima.util.Level;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 import org.cleartk.syntax.constituent.TreebankGoldAnnotator;
-import org.cleartk.syntax.constituent.TreebankViewName;
+import org.cleartk.syntax.constituent.TreebankConstants;
 import org.cleartk.util.ViewURIUtil;
 import org.uimafit.component.JCasCollectionReader_ImplBase;
 import org.uimafit.component.ViewCreatorAnnotator;
@@ -81,7 +81,7 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * @author Philip Ogren, Philipp Wetzler
  */
 
-@SofaCapability(outputSofas= {TreebankViewName.TREEBANK, ViewURIUtil.URI})
+@SofaCapability(outputSofas= {TreebankConstants.TREEBANK_VIEW, ViewURIUtil.URI})
 public class PennTreebankReader extends JCasCollectionReader_ImplBase {
 	public static final String PARAM_CORPUS_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(PennTreebankReader.class, "corpusDirectoryName");
 	private static final String CORPUS_DIRECTORY_DESCRIPTION = "Specifies the location of WSJ/PennTreebank treebank files.  " +
@@ -177,7 +177,7 @@ public class PennTreebankReader extends JCasCollectionReader_ImplBase {
 		getUimaContext().getLogger().log(Level.FINEST, "reading treebank file: " + treebankFile.getPath());
 		ViewURIUtil.setURI(jCas, treebankFile.toURI().toString());
 		try {
-			JCas treebankView = ViewCreatorAnnotator.createViewSafely(jCas, TreebankViewName.TREEBANK);
+			JCas treebankView = ViewCreatorAnnotator.createViewSafely(jCas, TreebankConstants.TREEBANK_VIEW);
 			treebankView.setSofaDataString(FileUtils.file2String(treebankFile), "text/plain");
 		} catch(AnalysisEngineProcessException aepe) {
 			throw new CollectionException(aepe);

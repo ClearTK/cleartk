@@ -52,7 +52,7 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
  */
-@SofaCapability(outputSofas = { Conll2005ViewName.CONLL_2005, ViewURIUtil.URI})
+@SofaCapability(outputSofas = { Conll2005Constants.CONLL_2005_VIEW, ViewURIUtil.URI})
 public class Conll2005GoldReader extends JCasCollectionReader_ImplBase {
 
 	public static CollectionReader getCollectionReader(String conll2005DataFile)
@@ -114,7 +114,7 @@ public class Conll2005GoldReader extends JCasCollectionReader_ImplBase {
 
 	public void getNext(JCas jCas) throws IOException, CollectionException {
 		try {
-			JCas conllView = jCas.createView(Conll2005ViewName.CONLL_2005);
+			JCas conllView = jCas.createView(Conll2005Constants.CONLL_2005_VIEW);
 
 			String lineBuffer;
 			StringBuffer docBuffer = new StringBuffer();

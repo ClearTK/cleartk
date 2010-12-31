@@ -22,10 +22,8 @@
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
-package org.cleartk.srl;
 
-import org.apache.uima.resource.metadata.TypeSystemDescription;
-import org.uimafit.factory.TypeSystemDescriptionFactory;
+package org.cleartk.srl.conll2005;
 
 /**
  * <br>
@@ -34,8 +32,12 @@ import org.uimafit.factory.TypeSystemDescriptionFactory;
  * <p>
  */
 
-public class SrlComponents {
+public interface Conll2005Constants {
 
-	public static TypeSystemDescription TYPE_SYSTEM_DESCRIPTION = TypeSystemDescriptionFactory
-	.createTypeSystemDescription("org.cleartk.srl.TypeSystem");
+	/**
+	 * The view containing CoNLL 2005 formatted text.
+	 */
+	public static final String CONLL_2005_VIEW = "CONLL_2005_VIEW";
+
+
 }

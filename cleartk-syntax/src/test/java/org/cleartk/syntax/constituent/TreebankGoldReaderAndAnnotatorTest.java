@@ -63,7 +63,7 @@ public class TreebankGoldReaderAndAnnotatorTest extends SyntaxTestBase {
 		TreebankGoldAnnotator treebankGoldAnnotator = new TreebankGoldAnnotator();
 		treebankGoldAnnotator.initialize(engine.getUimaContext());
 
-		JCas tbView = jCas.createView(TreebankViewName.TREEBANK);
+		JCas tbView = jCas.createView(TreebankConstants.TREEBANK_VIEW);
 		tbView.setDocumentText(treebankParse);
 
 		treebankGoldAnnotator.process(jCas);
@@ -103,7 +103,7 @@ public class TreebankGoldReaderAndAnnotatorTest extends SyntaxTestBase {
 		Boolean postTrees = (Boolean) description.getAnalysisEngineMetaData().getConfigurationParameterSettings().getParameterValue(TreebankGoldAnnotator.PARAM_POST_TREES);
 		Assert.assertTrue(postTrees.booleanValue());
 		String[] inputSofas = description.getAnalysisEngineMetaData().getCapabilities()[0].getInputSofas();
-		assertEquals(TreebankViewName.TREEBANK, inputSofas[0]);
+		assertEquals(TreebankConstants.TREEBANK_VIEW, inputSofas[0]);
 		assertEquals(CAS.NAME_DEFAULT_SOFA, inputSofas[1]);
 	}
 

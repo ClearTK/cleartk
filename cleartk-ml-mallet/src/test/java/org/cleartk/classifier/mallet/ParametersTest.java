@@ -1,5 +1,5 @@
-/** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+/*
+ * Copyright (c) 2010, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -21,33 +21,22 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk;
+package org.cleartk.classifier.mallet;
 
-import org.cleartk.test.util.LicenseTestUtil;
+import org.cleartk.test.util.ParametersTestUtil;
 import org.junit.Test;
-
 
 /**
  * <br>
- * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * Copyright (c) 2010, Regents of the University of Colorado <br>
  * All rights reserved.
- * <p>
+ * 
+ * @author Philip Ogren
  */
-
-public class LicenseTest {
-
-	
+public class ParametersTest {
 
 	@Test
-	public void testLicenseStatedInSource() throws Exception {
-		LicenseTestUtil.testJavaFiles("src/main/java");
+	public void testParameterNames() throws ClassNotFoundException {
+		ParametersTestUtil.testParameterDefinitions("src/main/java");
 	}
-
-	@Test
-	public void testLicenseStatedInTestSource() throws Exception {
-		LicenseTestUtil.testJavaFiles("src/test/java");
-
-	}
-
 }
-

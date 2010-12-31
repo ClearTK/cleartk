@@ -21,11 +21,11 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
+package org.cleartk.syntax;
 
-package org.cleartk.srl;
+import org.cleartk.test.util.LicenseTestUtil;
+import org.junit.Test;
 
-import org.apache.uima.resource.metadata.TypeSystemDescription;
-import org.uimafit.factory.TypeSystemDescriptionFactory;
 
 /**
  * <br>
@@ -34,8 +34,18 @@ import org.uimafit.factory.TypeSystemDescriptionFactory;
  * <p>
  */
 
-public class SrlComponents {
+public class LicenseTest {
 
-	public static TypeSystemDescription TYPE_SYSTEM_DESCRIPTION = TypeSystemDescriptionFactory
-	.createTypeSystemDescription("org.cleartk.srl.TypeSystem");
+	@Test
+	public void testLicenseStatedInSource() throws Exception {
+		LicenseTestUtil.testJavaFiles("src/main/java");
+	}
+
+	@Test
+	public void testLicenseStatedInTestSource() throws Exception {
+		LicenseTestUtil.testJavaFiles("src/test/java");
+
+	}
+
 }
+

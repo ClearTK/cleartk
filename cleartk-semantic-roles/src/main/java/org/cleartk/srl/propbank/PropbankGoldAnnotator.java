@@ -54,13 +54,13 @@ import org.uimafit.descriptor.SofaCapability;
  * @author Philipp Wetzler, Philip Ogren
  */
 
-@SofaCapability(inputSofas= {PropbankViewName.PROPBANK, CAS.NAME_DEFAULT_SOFA})
+@SofaCapability(inputSofas= {PropbankConstants.PROPBANK_VIEW, CAS.NAME_DEFAULT_SOFA})
 public class PropbankGoldAnnotator extends JCasAnnotator_ImplBase {
 
 	@Override
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
 		try {
-			JCas pbView = jCas.getView(PropbankViewName.PROPBANK);
+			JCas pbView = jCas.getView(PropbankConstants.PROPBANK_VIEW);
 			JCas docView = jCas.getView(CAS.NAME_DEFAULT_SOFA);
 			List<Sentence> sentenceList = AnnotationRetrieval.getAnnotations(docView, Sentence.class); 
 

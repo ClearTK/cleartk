@@ -21,21 +21,22 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
+package org.cleartk.temporal;
 
-package org.cleartk.srl;
-
-import org.apache.uima.resource.metadata.TypeSystemDescription;
-import org.uimafit.factory.TypeSystemDescriptionFactory;
+import org.cleartk.test.util.ParametersTestUtil;
+import org.junit.Test;
 
 /**
  * <br>
  * Copyright (c) 2010, Regents of the University of Colorado <br>
  * All rights reserved.
- * <p>
+ * 
+ * @author Philip Ogren
  */
+public class ParametersTest {
 
-public class SrlComponents {
-
-	public static TypeSystemDescription TYPE_SYSTEM_DESCRIPTION = TypeSystemDescriptionFactory
-	.createTypeSystemDescription("org.cleartk.srl.TypeSystem");
+	@Test
+	public void testParameterNames() throws ClassNotFoundException {
+		ParametersTestUtil.testParameterDefinitions("src/main/java");
+	}
 }

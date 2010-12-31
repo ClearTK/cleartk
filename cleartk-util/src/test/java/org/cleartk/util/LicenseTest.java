@@ -21,11 +21,15 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
+package org.cleartk.util;
 
-package org.cleartk.srl;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
-import org.apache.uima.resource.metadata.TypeSystemDescription;
-import org.uimafit.factory.TypeSystemDescriptionFactory;
+import org.cleartk.test.util.LicenseTestUtil;
+import org.junit.Test;
+
 
 /**
  * <br>
@@ -34,8 +38,21 @@ import org.uimafit.factory.TypeSystemDescriptionFactory;
  * <p>
  */
 
-public class SrlComponents {
+public class LicenseTest {
 
-	public static TypeSystemDescription TYPE_SYSTEM_DESCRIPTION = TypeSystemDescriptionFactory
-	.createTypeSystemDescription("org.cleartk.srl.TypeSystem");
+	@Test
+	public void testLicenseStatedInSource() throws Exception {
+		List<String> excludePackageNames = Collections.emptyList();
+		List<String> excludeJavaFiles = Arrays.asList("Files.java");
+
+		LicenseTestUtil.testJavaFiles("src/main/java", excludePackageNames, excludeJavaFiles);
+	}
+
+	@Test
+	public void testLicenseStatedInTestSource() throws Exception {
+		LicenseTestUtil.testJavaFiles("src/test/java");
+
+	}
+
 }
+

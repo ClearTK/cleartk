@@ -62,7 +62,7 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  *
  */
 
-@SofaCapability(outputSofas= {AceViewName.ACE_APF_URI, ViewURIUtil.URI})
+@SofaCapability(outputSofas= {Ace2005Constants.ACE_2005_APF_URI_VIEW, ViewURIUtil.URI})
 public class Ace2005GoldReader extends JCasCollectionReader_ImplBase
 {
 	public static final String PARAM_ACE_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(Ace2005GoldReader.class, "aceDirectoryName");
@@ -213,7 +213,7 @@ public class Ace2005GoldReader extends JCasCollectionReader_ImplBase
 			document.setAceType(type);
 			document.addToIndexes();
 		    
-			JCas apfUriView = jCas.createView(AceViewName.ACE_APF_URI);
+			JCas apfUriView = jCas.createView(Ace2005Constants.ACE_2005_APF_URI_VIEW);
 			apfUriView.setSofaDataURI(apfFile.toURI().toString(), null);
 
 		}

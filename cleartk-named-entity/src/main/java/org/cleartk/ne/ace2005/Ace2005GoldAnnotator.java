@@ -63,7 +63,7 @@ import org.uimafit.descriptor.SofaCapability;
  * @author Philip Ogren
  *
  */
-@SofaCapability(inputSofas = {AceViewName.ACE_APF_URI, CAS.NAME_DEFAULT_SOFA}, outputSofas = {})
+@SofaCapability(inputSofas = {Ace2005Constants.ACE_2005_APF_URI_VIEW, CAS.NAME_DEFAULT_SOFA}, outputSofas = {})
 public class Ace2005GoldAnnotator extends JCasAnnotator_ImplBase
 {
 
@@ -81,7 +81,7 @@ public class Ace2005GoldAnnotator extends JCasAnnotator_ImplBase
 	{
 		try
 		{
-			String apfUri = jCas.getView(AceViewName.ACE_APF_URI).getSofaDataURI();
+			String apfUri = jCas.getView(Ace2005Constants.ACE_2005_APF_URI_VIEW).getSofaDataURI();
 			JCas initialView = jCas.getView(CAS.NAME_DEFAULT_SOFA);
 			String documentText = initialView.getDocumentText();
 			SAXBuilder builder = new SAXBuilder();
