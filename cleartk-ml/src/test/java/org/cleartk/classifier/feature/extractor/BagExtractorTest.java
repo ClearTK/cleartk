@@ -147,13 +147,13 @@ public class BagExtractorTest extends DefaultTestBase {
 			String expectedPOSString) throws UIMAException {
 
 		// create the JCas and add the expected tokens and POS tags to the lists
-		JCas jCas = this.engine.newJCas();
-		this.jCasObjects.add(jCas);
+		JCas jc = this.engine.newJCas();
+		this.jCasObjects.add(jc);
 		this.expectedTokenLists.add(Arrays.asList(expectedTokensString.split(" ")));
 		this.expectedPOSLists.add(Arrays.asList(expectedPOSString.split(" ")));
 
 		// set the document text and add Token annotations as indicated
-		tokenBuilder.buildTokens(jCas, text, tokensString, posTagsString);
+		tokenBuilder.buildTokens(jc, text, tokensString, posTagsString);
 	}
 
 	private void testOne (
@@ -166,9 +166,9 @@ public class BagExtractorTest extends DefaultTestBase {
 
 		// run a BagExtractor on each document
 		for (int i = 0; i < this.jCasObjects.size(); i++) {
-			JCas jCas = this.jCasObjects.get(i);
-			DocumentAnnotation document = AnnotationRetrieval.getDocument(jCas);
-			List<Feature> features = bagExtractor.extract(jCas, document);
+			JCas jc = this.jCasObjects.get(i);
+			DocumentAnnotation document = AnnotationRetrieval.getDocument(jc);
+			List<Feature> features = bagExtractor.extract(jc, document);
 
 			// collect all feature values, and check all feature names
 			List<String> actualValues = new ArrayList<String>();
