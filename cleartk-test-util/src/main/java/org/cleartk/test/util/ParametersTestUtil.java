@@ -30,6 +30,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.io.filefilter.FileFilterUtils;
+import org.apache.commons.io.filefilter.IOFileFilter;
+import org.apache.commons.io.filefilter.SuffixFileFilter;
+import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.junit.Assert;
 import org.uimafit.factory.ConfigurationParameterFactory;
 
@@ -42,6 +46,19 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  */
 public class ParametersTestUtil {
 
+	public static void testParameterDefinitions(String outputDirectory, String... excludeFiles) throws ClassNotFoundException {
+		IOFileFilter includeFilter = new SuffixFileFilter(".java");
+		
+		if(excludeFiles != null) {
+			IOFileFilter excludeFilter = FileFilterUtils.notFileFilter(new SuffixFileFilter(excludeFiles));
+			includeFilter = FileFilterUtils.andFileFilter(excludeFilter, includeFilter);
+		}
+		
+		@SuppressWarnings("unchecked")
+		Iterator<File> files = org.apache.commons.io.FileUtils.iterateFiles(new File(outputDirectory), includeFilter, TrueFileFilter.INSTANCE);
+		testParameterDefinitions(files);
+	}
+	
 	public static void testParameterDefinitions(Iterator<File> files) throws ClassNotFoundException {
 		List<String> badParameters = new ArrayList<String>();
 		List<String> missingParameterNameFields = new ArrayList<String>();

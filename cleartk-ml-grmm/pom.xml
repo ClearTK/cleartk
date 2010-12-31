@@ -9,6 +9,33 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
+	<repositories>
+		<repository>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>maven2-repository</id>
+			<name>Maven2 Repository</name>
+			<url>http://repo1.maven.org/maven2/</url>
+		</repository>
+		<repository>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>apache-m2-incubating-repository</id>
+			<name>Apache m2-incubating-repository</name>
+			<url>http://people.apache.org/repo/m2-incubating-repository</url>
+		</repository>
+		<repository>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>cleartk-googlecode</id>
+			<name>ClearTK Google Code repository</name>
+			<url>http://cleartk.googlecode.com/svn/repo</url>
+		</repository>
+	</repositories>
+
   <dependencies>
     <dependency>
       <groupId>org.uimafit</groupId>
@@ -67,26 +94,6 @@
         <configuration>
           <source>1.5</source>
           <target>1.5</target>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>process-test-resources</phase>
-            <goals>
-              <goal>java</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <classpathScope>test</classpathScope>
-          <mainClass>org.uimafit.util.JCasGenPomFriendly</mainClass>
-          <arguments>
-            <argument>file:${basedir}/src/test/resources/org/cleartk/TestTypeSystem.xml</argument>
-            <argument>${basedir}/src/test/java</argument>
-          </arguments>
         </configuration>
       </plugin>
     </plugins>

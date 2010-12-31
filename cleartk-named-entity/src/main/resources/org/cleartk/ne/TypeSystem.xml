@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <name>TypeSystem</name>
+  <description/>
+  <version>1.0</version>
+  <vendor/>
+  <imports>
+    <import name="org.cleartk.ne.type.Ace2005Document"/>
+    <import name="org.cleartk.ne.type.Chunk"/>
+    <import name="org.cleartk.ne.type.GazetteerNamedEntityMention"/>
+    <import name="org.cleartk.ne.type.NamedEntity"/>
+    <import name="org.cleartk.ne.type.NamedEntityClass"/>
+    <import name="org.cleartk.ne.type.NamedEntityMention"/>
+    <import name="org.cleartk.token.type.Token"/>
+    <import name="org.cleartk.token.type.Sentence"/>
+  </imports>
+</typeSystemDescription>

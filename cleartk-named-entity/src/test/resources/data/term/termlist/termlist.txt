@@ -1,0 +1,2 @@
+US States	src/test/resources/data/term/termlist/US_States.txt	true
+N States	src/test/resources/data/term/termlist/N_States.txt	true

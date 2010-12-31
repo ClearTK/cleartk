@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <name>TypeSystem</name>
+  <description/>
+  <version>1.0</version>
+  <vendor/>
+  <imports>
+    <import name="org.cleartk.syntax.constituent.type.TreebankNode"/>
+    <import name="org.cleartk.syntax.constituent.type.TopTreebankNode"/>
+    <import name="org.cleartk.syntax.constituent.type.TerminalTreebankNode"/>
+    <import name="org.cleartk.token.TypeSystem"/>
+  </imports>
+</typeSystemDescription>

@@ -167,5 +167,10 @@ POSSIBILITY OF SUCH DAMAGE.</description>
       <description/>
       <supertypeName>uima.cas.String</supertypeName>
     </typeDescription>
+    <typeDescription>
+      <name>org.cleartk.type.test.NamedEntityMention</name>
+      <description/>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
+    </typeDescription>
   </types>
 </typeSystemDescription>

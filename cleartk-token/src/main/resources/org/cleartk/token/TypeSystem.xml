@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <name>TypeSystem</name>
+  <description/>
+  <version>1.0</version>
+  <vendor/>
+  <imports>
+    <import name="org.cleartk.token.type.Token"/>
+    <import name="org.cleartk.token.type.Sentence"/>
+    <import name="org.cleartk.token.type.Subtoken"/>
+  </imports>
+</typeSystemDescription>

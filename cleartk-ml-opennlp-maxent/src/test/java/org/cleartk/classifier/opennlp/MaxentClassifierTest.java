@@ -23,7 +23,7 @@
 */
 package org.cleartk.classifier.opennlp;
 
-import static org.cleartk.classifier.InstanceFactory.createInstance;
+import static org.cleartk.classifier.util.InstanceFactory.createInstance;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 

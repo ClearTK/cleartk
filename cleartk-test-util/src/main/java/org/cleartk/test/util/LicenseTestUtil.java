@@ -80,6 +80,21 @@ public class LicenseTestUtil {
 
 
 	public static void testJavaFiles(String directoryName) throws IOException {
+		List<String> excludePackageNames = Collections.emptyList();
+		List<String> excludeJavaFiles = Collections.emptyList();
+		testJavaFiles(directoryName, excludePackageNames, excludeJavaFiles); 
+	}
+	
+//	if (file.getParentFile().getName().equals("type") || file.getName().equals("Files.java")
+//			|| file.getParentFile().getName().equals("types")
+//			|| file.getParentFile().getName().equals("pubmed")
+//			|| file.getParentFile().getPath().endsWith("type"+File.separator+"test")
+//			|| file.getName().equals("XWriter.java")) {
+//		continue;
+//	}
+
+	public static void testJavaFiles(String directoryName, List<String> excludePackageNames, List<String> excludeJavaFiles) throws IOException {
+
 		List<String> filesMissingLicense = new ArrayList<String>();
 		File directory = new File(directoryName);
 		Iterator<?> files = org.apache.commons.io.FileUtils.iterateFiles(directory, new SuffixFileFilter(".java"), TrueFileFilter.INSTANCE);
@@ -88,14 +103,12 @@ public class LicenseTestUtil {
 			File file = (File) files.next();
 			String fileText = FileUtils.file2String(file);
 
-			if (file.getParentFile().getName().equals("type") || file.getName().equals("Files.java")
-					|| file.getParentFile().getName().equals("types")
-					|| file.getParentFile().getName().equals("pubmed")
-					|| file.getParentFile().getPath().endsWith("type"+File.separator+"test")
-					|| file.getName().equals("XWriter.java")) {
+			if(excludePackage(file, excludePackageNames)) {
 				continue;
 			}
-
+			if(excludeJava(file, excludeJavaFiles)) {
+				continue;
+			}
 			
 			if (fileText.indexOf("Copyright (c) ") == -1	
 					|| fileText.indexOf("THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"") == -1) {
@@ -119,6 +132,28 @@ public class LicenseTestUtil {
 		}
 
 	}
+
+
+
+	private static boolean excludeJava(File file, List<String> excludeJavaFiles) {
+		String fileName = file.getName();
+		return excludeJavaFiles.contains(fileName);
+	}
+
+	private static boolean excludePackage(File file, List<String> excludePackageNames) {
+		File parent = file.getParentFile();
+		while(parent != null) {
+			String parentName = parent.getName();
+			if(excludePackageNames.contains(parentName)) {
+				return true;
+			}
+			parent = parent.getParentFile();
+		}
+		return false;
+	}
+
+
+
 
 }
 
