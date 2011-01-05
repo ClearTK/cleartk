@@ -1,4 +1,4 @@
-#Fri Dec 31 10:23:21 MST 2010
+#Wed Jan 05 13:12:55 MST 2011
 eclipse.preferences.version=1
 org.eclipse.jdt.core.compiler.codegen.inlineJsrBytecode=enabled
 org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.5
@@ -23,7 +23,7 @@ org.eclipse.jdt.core.compiler.problem.fatalOptionalError=enabled
 org.eclipse.jdt.core.compiler.problem.fieldHiding=warning
 org.eclipse.jdt.core.compiler.problem.finalParameterBound=warning
 org.eclipse.jdt.core.compiler.problem.finallyBlockNotCompletingNormally=warning
-org.eclipse.jdt.core.compiler.problem.forbiddenReference=error
+org.eclipse.jdt.core.compiler.problem.forbiddenReference=warning
 org.eclipse.jdt.core.compiler.problem.hiddenCatchBlock=warning
 org.eclipse.jdt.core.compiler.problem.incompatibleNonInheritedInterfaceMethod=warning
 org.eclipse.jdt.core.compiler.problem.incompleteEnumSwitch=ignore

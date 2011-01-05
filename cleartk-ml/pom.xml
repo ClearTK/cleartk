@@ -6,62 +6,13 @@
 	<version>0.9.9-SNAPSHOT</version>
 	<name>cleartk-ml</name>
 	<url>http://cleartk.googlecode.com/</url>
-	<scm>
-		<connection>scm:svn:http://cleartk.googlecode.com/svn/trunk/ClearTK-framework/</connection>
-		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/trunk/ClearTK-framework/</developerConnection>
-		<url>http://cleartk.googlecode.com/svn/</url>
-	</scm>
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
-	<repositories>
-		<repository>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<id>maven2-repository</id>
-			<name>Maven2 Repository</name>
-			<url>http://repo1.maven.org/maven2/</url>
-		</repository>
-		<repository>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<id>apache-m2-incubating-repository</id>
-			<name>Apache m2-incubating-repository</name>
-			<url>http://people.apache.org/repo/m2-incubating-repository</url>
-		</repository>
-		<repository>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<id>cleartk-googlecode</id>
-			<name>ClearTK Google Code repository</name>
-			<url>http://cleartk.googlecode.com/svn/repo</url>
-		</repository>
-	</repositories>
+	<parent>
+		<artifactId>cleartk</artifactId>
+		<groupId>org.cleartk</groupId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>..</relativePath>
+	</parent>
 	<dependencies>
-		<dependency>
-			<groupId>org.apache.uima</groupId>
-			<artifactId>uimaj-core</artifactId>
-			<version>2.3.0-incubating</version>
-			<type>jar</type>
-			<optional>false</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.uima</groupId>
-			<artifactId>uimaj-document-annotation</artifactId>
-			<version>2.3.0-incubating</version>
-			<type>jar</type>
-			<optional>false</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.uimafit</groupId>
-			<artifactId>uimafit</artifactId>
-			<version>1.0.0</version>
-			<type>jar</type>
-			<optional>false</optional>
-		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-test-util</artifactId>
@@ -77,73 +28,10 @@
 			<optional>false</optional>
 		</dependency>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.8.1</version>
-			<type>jar</type>
-			<scope>test</scope>
-			<optional>false</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.uima</groupId>
-			<artifactId>uimaj-tools</artifactId>
-			<version>2.3.0-incubating</version>
-			<type>jar</type>
-			<scope>test</scope>
-			<optional>false</optional>
-		</dependency>
-		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>1.4</version>
 			<type>jar</type>
 		</dependency>
 	</dependencies>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
-				</configuration>
-			</plugin>
-		</plugins>
-		<extensions>
-			<extension>
-				<groupId>org.jvnet.wagon-svn</groupId>
-				<artifactId>wagon-svn</artifactId>
-				<version>1.9</version>
-			</extension>
-		</extensions>
-	</build>
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<configuration>
-					<linksource>true</linksource>
-					<links>
-						<link>http://incubator.apache.org/uima/apidocs/</link>
-						<link>http://java.sun.com/j2se/1.5.0/docs/api/</link>
-						<link>http://maxent.sourceforge.net/api/"</link>
-						<link>http://opennlp.sourceforge.net/api/"</link>
-						<link>http://www.jdom.org/docs/apidocs/"</link>
-						<link>http://incubator.apache.org/uima/apidocs/"</link>
-						<link>http://mallet.cs.umass.edu/api/"</link>
-						<link>http://lucene.apache.org/java/2_2_0/api/"</link>
-					</links>
-				</configuration>
-			</plugin>
-		</plugins>
-	</reporting>
-	<distributionManagement>
-		<repository>
-			<uniqueVersion>false</uniqueVersion>
-			<id>googlecode</id>
-			<url>svn:https://cleartk.googlecode.com/svn/repo</url>
-		</repository>
-	</distributionManagement>
 </project>

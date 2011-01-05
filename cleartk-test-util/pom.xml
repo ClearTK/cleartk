@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.cleartk</groupId>
 	<artifactId>cleartk-test-util</artifactId>
@@ -6,54 +7,16 @@
 	<version>0.6-SNAPSHOT</version>
 	<name>cleartk-test-util</name>
 	<url>http://cleartk.googlecode.com/</url>
-	<scm>
-		<connection>scm:svn:http://cleartk.googlecode.com/svn/trunk/ClearTK-test-util/</connection>
-		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/trunk/ClearTK-test-util/</developerConnection>
-		<url>http://cleartk.googlecode.com/svn/</url>
-	</scm>
+	<parent>
+		<artifactId>cleartk-jcasgen</artifactId>
+		<groupId>org.cleartk</groupId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../cleartk-jcasgen</relativePath>
+	</parent>
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<jcasgen.typesystem>org/cleartk/type/test/TestTypeSystem.xml</jcasgen.typesystem>
 	</properties>
-	<repositories>
-		<repository>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<id>maven2-repository</id>
-			<name>Maven2 Repository</name>
-			<url>http://repo1.maven.org/maven2/</url>
-		</repository>
-		<repository>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<id>apache-m2-incubating-repository</id>
-			<name>Apache m2-incubating-repository</name>
-			<url>http://people.apache.org/repo/m2-incubating-repository/</url>
-		</repository>
-	</repositories>
 	<dependencies>
-		<dependency>
-			<groupId>org.apache.uima</groupId>
-			<artifactId>uimaj-core</artifactId>
-			<version>2.3.0-incubating</version>
-			<type>jar</type>
-			<optional>false</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.uimafit</groupId>
-			<artifactId>uimafit</artifactId>
-			<version>1.1.0</version>
-			<type>jar</type>
-			<optional>false</optional>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.8.1</version>
-			<type>jar</type>
-			<optional>false</optional>
-		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
@@ -61,82 +24,4 @@
 			<type>jar</type>
 		</dependency>
 	</dependencies>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>process-resources</phase>
-						<goals>
-							<goal>java</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<mainClass>org.uimafit.util.JCasGenPomFriendly</mainClass>
-					<arguments>
-						<argument>file:${project.basedir}/src/main/resources/org/cleartk/type/test/TestTypeSystem.xml</argument>
-						<argument>${project.build.directory}/generated-sources/jcasgen</argument>
-					</arguments>
-				</configuration>
-			</plugin>
-						<plugin><!-- This plugin adds the jcasgen generated source code folder 
-					as a project source folder -->
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>1.5</version>
-				<executions>
-					<execution>
-						<id>add-source</id>
-						<phase>process-resources</phase>
-						<goals>
-							<goal>add-source</goal>
-						</goals>
-						<configuration>
-							<sources>
-								<source>${project.build.directory}/generated-sources/jcasgen</source>
-							</sources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<configuration>
-					<linksource>true</linksource>
-					<links>
-						<link>http://incubator.apache.org/uima/apidocs/</link>
-						<link>http://java.sun.com/j2se/1.5.0/docs/api/</link>
-						<link>http://junit.sourceforge.net/javadoc/</link>
-					</links>
-				</configuration>
-			</plugin>
-		</plugins>
-		<extensions>
-			<extension>
-				<groupId>org.jvnet.wagon-svn</groupId>
-				<artifactId>wagon-svn</artifactId>
-				<version>1.9</version>
-			</extension>
-		</extensions>
-	</build>
-	<distributionManagement>
-		<repository>
-			<uniqueVersion>false</uniqueVersion>
-			<id>googlecode</id>
-			<url>svn:https://cleartk.googlecode.com/svn/repo</url>
-		</repository>
-	</distributionManagement>
 </project>
