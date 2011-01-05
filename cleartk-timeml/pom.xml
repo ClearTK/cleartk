@@ -171,7 +171,7 @@
 				<configuration>
 					<mainClass>org.uimafit.util.JCasGenPomFriendly</mainClass>
 					<arguments>
-						<argument>file:${project.basedir}/src/main/resources/org/cleartk/temporal/TypeSystem.xml
+						<argument>file:${project.basedir}/src/main/resources/org/cleartk/timeml/TypeSystem.xml
 						</argument>
 						<argument>${project.build.directory}/generated-sources/jcasgen</argument>
 					</arguments>
