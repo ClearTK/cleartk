@@ -52,13 +52,13 @@ public class VerbClauseTemporalTrain {
 	private static void error(String message) throws Exception {
 		Logger logger = UimaContextFactory.createUimaContext().getLogger();
 		logger.log(Level.SEVERE, String.format("%s\nusage: "
-				+ "VerbClauseTemporalMain timebank-dir treebank-dir output-dir", message));
+				+ "VerbClauseTemporalMain timebank-dir treebank-dir", message));
 		System.exit(1);
 	}
 
 	public static void main(String[] args) throws Exception {
 		// check arguments
-		if (args.length != 3) {
+		if (args.length != 2) {
 			error("wrong number of arguments");
 		} else if (!new File(args[0]).exists()) {
 			error("TimeBank directory not found: " + args[0]);
@@ -67,7 +67,6 @@ public class VerbClauseTemporalTrain {
 		}
 		String timeBankDir = args[0];
 		String treeBankDir = args[1];
-		String outputDir = args[2];
 
 		// clean up the mismatches between TimeBank and TreeBank
 		File cleanedTimeBankDir = getCleanedTimeBankDir(timeBankDir);
@@ -84,14 +83,20 @@ public class VerbClauseTemporalTrain {
 			PlainTextTLINKGoldAnnotator.getDescription(),
 			TreebankAligningAnnotator.getDescription(treeBankDir),
 			DefaultSnowballStemmer.getDescription("English"),
-			VerbClauseTemporalAnnotator.getWriterDescription(outputDir));
+			VerbClauseTemporalAnnotator.getWriterDescription());
 
 		// remove the temporary directory containing the cleaned up TimeBank
 		FileUtils.deleteRecursive(cleanedTimeBankDir);
 
 		// train the model
-		Train.main(outputDir);
+		Train.main(VerbClauseTemporalAnnotator.MODEL_DIR);
 
+		// delete the generated files
+		for (File file : new File(VerbClauseTemporalAnnotator.MODEL_DIR).listFiles()) {
+			if (!file.isDirectory() && !file.getName().equals("model.jar")) {
+				file.delete();
+			}
+		}
 	}
 
 	public static File getCleanedTimeBankDir(String timeBankDir) throws IOException {

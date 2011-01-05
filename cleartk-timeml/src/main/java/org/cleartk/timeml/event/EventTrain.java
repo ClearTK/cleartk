@@ -87,7 +87,7 @@ public class EventTrain {
 			EventModalityAnnotator.getWriterDescription());
 
 		// train models for each aspect of event identification
-		Train.main(EventAnnotator.MODEL_DIR, "--forbidden", "O,I-Event");
+		// Train.main(EventAnnotator.MODEL_DIR, "--forbidden", "O,I-Event");
 		Train.main(EventTenseAnnotator.MODEL_DIR);
 		Train.main(EventAspectAnnotator.MODEL_DIR);
 		Train.main(EventClassAnnotator.MODEL_DIR);

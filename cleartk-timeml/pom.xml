@@ -68,7 +68,6 @@
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-test-util</artifactId>
 			<version>0.6-SNAPSHOT</version>
-			<optional>false</optional>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -106,7 +105,7 @@
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-syntax</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-					<classifier>tests</classifier>
+			<classifier>tests</classifier>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -130,12 +129,6 @@
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-ml-opennlp-maxent</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-			<optional>false</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.cleartk</groupId>
-			<artifactId>cleartk-ml-svmlight</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<optional>false</optional>
 		</dependency>

@@ -88,11 +88,14 @@ public class PrecedingTokenTextBagExtractor implements SimpleFeatureExtractor {
 			for (int i = 0; i < this.nTokens && iterator.isValid(); ++i) {
 				Token token = (Token) iterator.get();
 				String pos = token.getPos();
-				if (pos.length() > 2) {
-					pos = pos.substring(0, 2);
-				}
-				if (this.acceptablePOSTags.contains(pos)) {
-					features.add(new Feature(this.getFeatureName(pos, i), token.getCoveredText()));
+				if (pos != null) {
+					if (pos.length() > 2) {
+						pos = pos.substring(0, 2);
+					}
+					if (this.acceptablePOSTags.contains(pos)) {
+						String name = this.getFeatureName(pos, i);
+						features.add(new Feature(name, token.getCoveredText()));
+					}
 				}
 				iterator.moveToPrevious();
 			}

@@ -34,23 +34,28 @@ import java.util.Set;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Level;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.CleartkComponents;
 import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.feature.extractor.simple.BagExtractor;
+import org.cleartk.classifier.feature.extractor.simple.NamingExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
-import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
-import org.cleartk.classifier.svmlight.DefaultOVASVMlightDataWriterFactory;
+import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
-import org.cleartk.syntax.feature.SyntacticPathExtractor;
 import org.cleartk.timeml.TimeMLComponents;
 import org.cleartk.timeml.type.Anchor;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.type.TemporalLink;
+import org.cleartk.timeml.util.PrecedingTokenTextBagExtractor;
+import org.cleartk.timeml.util.TargetPathExtractor;
+import org.cleartk.timeml.util.TokenPOSExtractor;
+import org.cleartk.timeml.util.TokenStemExtractor;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
@@ -66,6 +71,10 @@ import org.cleartk.util.AnnotationRetrieval;
  */
 public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
 
+	public static final String MODEL_BASE = "/models/timeml/tlink/verb-clause";
+	public static final String MODEL_DIR = "src/main/resources" + MODEL_BASE;
+	public static final String MODEL_RESOURCE = MODEL_BASE + "/model.jar";
+
 	private static final Map<String, String[]> headMap = new HashMap<String, String[]>();
 	static {
 		headMap.put("S", "VP S SBAR ADJP".split(" "));
@@ -80,17 +89,19 @@ public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
 	private static final Set<String> stopWords = new HashSet<String>(
 		Arrays.asList("be been is 's am are was were has had have".split(" ")));
 
-	private List<SimpleFeatureExtractor> tokenFeatureExtractors;
-	private SyntacticPathExtractor pathExtractor;
+	private List<SimpleFeatureExtractor> sourceFeatureExtractors;
+	private List<SimpleFeatureExtractor> targetFeatureExtractors;
+	private List<SimpleFeatureExtractor> betweenAnchorsFeatureExtractors;
+	private TargetPathExtractor pathExtractor;
 	private int eventID;
 
-	public static AnalysisEngineDescription getWriterDescription(String outputDir)
+	public static AnalysisEngineDescription getWriterDescription()
 			throws ResourceInitializationException {
 		return CleartkComponents.createCleartkAnnotator(
 			VerbClauseTemporalAnnotator.class,
 			TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
-			DefaultOVASVMlightDataWriterFactory.class,
-			outputDir,
+			DefaultMaxentDataWriterFactory.class,
+			VerbClauseTemporalAnnotator.MODEL_DIR,
 			(List<Class<?>>) null);
 	}
 
@@ -99,19 +110,34 @@ public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
 		return CleartkComponents.createCleartkAnnotator(
 			VerbClauseTemporalAnnotator.class,
 			TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
-			"resources/models/verb-clause-temporal-model.jar",
+			VerbClauseTemporalAnnotator.class.getResource(
+				VerbClauseTemporalAnnotator.MODEL_RESOURCE).getFile(),
 			(List<Class<?>>) null);
 	}
 
 	public VerbClauseTemporalAnnotator() {
 		this.eventID = 1;
-		this.tokenFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
-		this.tokenFeatureExtractors.add(new SpannedTextExtractor());
-		this.tokenFeatureExtractors.add(new TypePathExtractor(Token.class, "pos"));
-		this.tokenFeatureExtractors.add(new TypePathExtractor(Token.class, "stem"));
-		this.pathExtractor = new SyntacticPathExtractor(new TypePathExtractor(
-			TreebankNode.class,
-			"nodeType"));
+
+		PrecedingTokenTextBagExtractor precedingAuxiliaries;
+		precedingAuxiliaries = new PrecedingTokenTextBagExtractor(3, "MD", "TO", "IN", "VB", "RB");
+
+		this.sourceFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
+		this.sourceFeatureExtractors.add(new NamingExtractor("Source", new SpannedTextExtractor()));
+		this.sourceFeatureExtractors.add(new NamingExtractor("Source", new TokenPOSExtractor()));
+		this.sourceFeatureExtractors.add(new NamingExtractor("Source", new TokenStemExtractor()));
+		this.sourceFeatureExtractors.add(new NamingExtractor("Source", precedingAuxiliaries));
+
+		this.targetFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
+		this.targetFeatureExtractors.add(new NamingExtractor("Target", new SpannedTextExtractor()));
+		this.targetFeatureExtractors.add(new NamingExtractor("Target", new TokenPOSExtractor()));
+		this.targetFeatureExtractors.add(new NamingExtractor("Target", new TokenStemExtractor()));
+		this.targetFeatureExtractors.add(new NamingExtractor("Target", precedingAuxiliaries));
+
+		this.betweenAnchorsFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
+		this.betweenAnchorsFeatureExtractors.add(new NamingExtractor(
+			"WordsBetween",
+			new BagExtractor(Token.class, new SpannedTextExtractor())));
+		this.pathExtractor = new TargetPathExtractor();
 	}
 
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
@@ -138,11 +164,9 @@ public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
 				sentence,
 				TopTreebankNode.class);
 			if (tree == null) {
-				this.getContext().getLogger().log(
-					Level.WARNING,
-					String.format(
-						"missing syntactic parse for sentence: %s",
-						sentence.getCoveredText()));
+				String fmt = "missing syntactic parse for sentence: %s";
+				String msg = String.format(fmt, sentence.getCoveredText());
+				this.getContext().getLogger().log(Level.WARNING, msg);
 				continue;
 			}
 
@@ -159,12 +183,20 @@ public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
 					jCas,
 					link.target,
 					Token.class).get(0);
+				int firstEnd = Math.min(sourceToken.getEnd(), targetToken.getEnd());
+				int lastBegin = Math.max(sourceToken.getBegin(), targetToken.getBegin());
 
 				// create an instance and populate it with features
 				Instance<String> instance = new Instance<String>();
-				for (SimpleFeatureExtractor extractor : this.tokenFeatureExtractors) {
+				for (SimpleFeatureExtractor extractor : this.sourceFeatureExtractors) {
 					instance.addAll(extractor.extract(jCas, sourceToken));
+				}
+				for (SimpleFeatureExtractor extractor : this.targetFeatureExtractors) {
 					instance.addAll(extractor.extract(jCas, targetToken));
+				}
+				Annotation windowAnnotation = new Annotation(jCas, firstEnd, lastBegin);
+				for (SimpleFeatureExtractor extractor : this.betweenAnchorsFeatureExtractors) {
+					instance.addAll(extractor.extract(jCas, windowAnnotation));
 				}
 				instance.addAll(this.pathExtractor.extract(jCas, link.source, link.target));
 

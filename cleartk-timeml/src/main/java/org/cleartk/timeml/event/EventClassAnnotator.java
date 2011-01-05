@@ -29,13 +29,11 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.CleartkComponents;
-import org.cleartk.classifier.feature.extractor.simple.BagExtractor;
-import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
-import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.timeml.TimeMLComponents;
 import org.cleartk.timeml.type.Event;
-import org.cleartk.token.type.Token;
+import org.cleartk.timeml.util.TokenPOSBagExtractor;
+import org.cleartk.timeml.util.TokenStemBagExtractor;
 
 /**
  * <br>
@@ -82,10 +80,8 @@ public class EventClassAnnotator extends EventAttributeAnnotator<String> {
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
-		SimpleFeatureExtractor stemExtractor = new TypePathExtractor(Token.class, "stem");
-		SimpleFeatureExtractor posExtractor = new TypePathExtractor(Token.class, "pos");
-		this.eventFeatureExtractors.add(new BagExtractor(Token.class, stemExtractor));
-		this.eventFeatureExtractors.add(new BagExtractor(Token.class, posExtractor));
+		this.eventFeatureExtractors.add(new TokenStemBagExtractor());
+		this.eventFeatureExtractors.add(new TokenPOSBagExtractor());
 	}
 
 	@Override

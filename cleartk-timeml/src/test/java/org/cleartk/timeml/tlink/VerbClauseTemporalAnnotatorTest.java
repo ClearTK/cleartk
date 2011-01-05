@@ -24,8 +24,6 @@
 package org.cleartk.timeml.tlink;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.uima.UIMAException;
@@ -42,7 +40,6 @@ import org.cleartk.classifier.CleartkComponents;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.ScoredOutcome;
-import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.classifier.util.InstanceCollector;
 import org.cleartk.syntax.TreebankTestsUtil;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
@@ -147,23 +144,6 @@ public class VerbClauseTemporalAnnotatorTest extends TimeMLTestBase {
 		// check the outcome
 		Assert.assertEquals("AFTER", instances.get(0).getOutcome());
 
-		// check the feature values
-		List<Object> expectedFeatureValues = Arrays.<Object> asList(
-			"said", // source token
-			"bought", // target token
-			"VBD", // source pos
-			"VBD", // target pos
-			"say", // source stem
-			"buy", // target stem
-			"VBD::VP;;SBAR;;VP;;VBD", // path
-			5L // path length
-		);
-		List<Object> actualFeatureValues = new ArrayList<Object>();
-		for (Feature feature : instances.get(0).getFeatures()) {
-			actualFeatureValues.add(feature.getValue());
-		}
-		Assert.assertEquals(expectedFeatureValues, actualFeatureValues);
-
 		// now remove all TimeML annotations
 		List<Event> events;
 		List<TemporalLink> tlinks;
@@ -199,20 +179,6 @@ public class VerbClauseTemporalAnnotatorTest extends TimeMLTestBase {
 
 	private TreebankNode newNode(JCas jcas, Token token) {
 		return TreebankTestsUtil.newNode(jcas, token.getBegin(), token.getEnd(), token.getPos());
-	}
-
-	@Test
-	public void testAnnotationDescriptor() throws UIMAException, IOException {
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-			VerbClauseTemporalAnnotator.class,
-			typeSystemDescription,
-			JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
-			"src/main/resources/models/verb-clause-temporal-model.jar");
-
-		Object modelJar = engine.getConfigParameterValue(JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH);
-		Assert.assertEquals("src/main/resources/models/verb-clause-temporal-model.jar", modelJar);
-
-		engine.collectionProcessComplete();
 	}
 
 	@Test
@@ -252,10 +218,7 @@ public class VerbClauseTemporalAnnotatorTest extends TimeMLTestBase {
 
 		// run annotator
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-			VerbClauseTemporalAnnotator.class,
-			typeSystemDescription,
-			JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
-			"src/main/resources/models/verb-clause-temporal-model.jar");
+			VerbClauseTemporalAnnotator.getAnnotatorDescription());
 		engine.process(jCas);
 
 		// check output
