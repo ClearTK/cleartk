@@ -50,12 +50,9 @@ public class SentenceSegmentorTest extends TokenTestBase {
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
-		if(sentenceSegmenter == null) {
-		sentenceSegmenter = AnalysisEngineFactory.createPrimitive(
-				OpenNLPSentenceSegmenter.class,
-				typeSystemDescription,
-				OpenNLPSentenceSegmenter.PARAM_SENTENCE_MODEL_FILE_NAME,
-				"src/main/resources/models/OpenNLP.Sentence.English.bin.gz");
+		if (sentenceSegmenter == null) {
+			sentenceSegmenter = AnalysisEngineFactory.createPrimitive(
+					OpenNLPSentenceSegmenter.getDescription());
 		}
 	}
 	

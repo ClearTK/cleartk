@@ -63,29 +63,41 @@ import org.uimafit.factory.ConfigurationParameterFactory;
 public class OpenNLPPOSTagger extends JCasAnnotator_ImplBase {
 
 	public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveDescription(OpenNLPPOSTagger.class,
-				SyntaxComponents.TYPE_SYSTEM_DESCRIPTION, 
-				PARAM_POSTAG_DICTIONARY_FILE, ParamUtil.getParameterValue(PARAM_POSTAG_DICTIONARY_FILE,
-						"resources/models/OpenNLP.TagDict.txt"), PARAM_POSTAG_MODEL_FILE, ParamUtil
-						.getParameterValue(PARAM_POSTAG_MODEL_FILE, "resources/models/OpenNLP.POSTags.English.bin.gz"));
+		return AnalysisEngineFactory.createPrimitiveDescription(
+			OpenNLPPOSTagger.class,
+			SyntaxComponents.TYPE_SYSTEM_DESCRIPTION,
+			PARAM_POSTAG_DICTIONARY_FILE,
+			ParamUtil.getParameterValue(
+				PARAM_POSTAG_DICTIONARY_FILE,
+				OpenNLPPOSTagger.class.getResource("/models/OpenNLP.TagDict.txt").getFile()),
+			PARAM_POSTAG_MODEL_FILE,
+			ParamUtil.getParameterValue(
+				PARAM_POSTAG_MODEL_FILE,
+				OpenNLPPOSTagger.class.getResource("/models/OpenNLP.POSTags.English.bin.gz").getFile()));
 	}
 
 	public static final String PARAM_POSTAG_MODEL_FILE = ConfigurationParameterFactory
 			.createConfigurationParameterName(OpenNLPPOSTagger.class, "postagModelFile");
 
-	@ConfigurationParameter(mandatory = true, description = "provides the path of the OpenNLP part-of-speech tagger model file, e.g.  resources/models/OpenNLP.POSTags.English.bin.gz.  See javadoc for opennlp.maxent.io.SuffixSensitiveGISModelReader.")
+	@ConfigurationParameter(
+		mandatory = true,
+		description = "provides the path of the OpenNLP part-of-speech tagger model file, e.g.  resources/models/OpenNLP.POSTags.English.bin.gz.  See javadoc for opennlp.maxent.io.SuffixSensitiveGISModelReader.")
 	private String postagModelFile;
 
 	public static final String PARAM_POSTAG_DICTIONARY_FILE = ConfigurationParameterFactory
 			.createConfigurationParameterName(OpenNLPPOSTagger.class, "postagDictionaryFile");
 
-	@ConfigurationParameter(mandatory = true, description = "provides the path of the OpenNLP part-of-speech tagger dictionary file, e.g. resources/models/OpenNLP.TagDict.txt.  See javadoc for opennlp.tools.postag.POSDictionary.")
+	@ConfigurationParameter(
+		mandatory = true,
+		description = "provides the path of the OpenNLP part-of-speech tagger dictionary file, e.g. resources/models/OpenNLP.TagDict.txt.  See javadoc for opennlp.tools.postag.POSDictionary.")
 	private String postagDictionaryFile;
 
 	public static final String PARAM_CASE_SENSITIVE = ConfigurationParameterFactory
 			.createConfigurationParameterName(OpenNLPPOSTagger.class, "caseSensitive");
 
-	@ConfigurationParameter(defaultValue = "true", description = "when false indicates that the POSDictionary should ignore case.  See javadoc for opennlp.tools.postag.POSDictionary.")
+	@ConfigurationParameter(
+		defaultValue = "true",
+		description = "when false indicates that the POSDictionary should ignore case.  See javadoc for opennlp.tools.postag.POSDictionary.")
 	private boolean caseSensitive;
 
 	protected POSTagger posTagger;
@@ -94,6 +106,7 @@ public class OpenNLPPOSTagger extends JCasAnnotator_ImplBase {
 
 	protected long tagTime = 0;
 
+	@Override
 	public void initialize(UimaContext uimaContext) throws ResourceInitializationException {
 		super.initialize(uimaContext);
 		try {
@@ -106,6 +119,7 @@ public class OpenNLPPOSTagger extends JCasAnnotator_ImplBase {
 		}
 	}
 
+	@Override
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
 		FSIterator<Annotation> sentenceIterator = jCas.getAnnotationIndex(Sentence.type).iterator();
 		while (sentenceIterator.hasNext()) {

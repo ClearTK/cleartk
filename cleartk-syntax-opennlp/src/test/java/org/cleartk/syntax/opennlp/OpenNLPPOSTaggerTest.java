@@ -23,7 +23,6 @@
 */
 package org.cleartk.syntax.opennlp;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -48,13 +47,7 @@ public class OpenNLPPOSTaggerTest extends SyntaxTestBase{
 	@Test
 	public void testSimple() throws UIMAException {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				OpenNLPPOSTagger.class,
-				typeSystemDescription,
-				OpenNLPPOSTagger.PARAM_CASE_SENSITIVE, true,
-				OpenNLPPOSTagger.PARAM_POSTAG_MODEL_FILE,
-				"src/main/resources/models/OpenNLP.POSTags.English.bin.gz",
-				OpenNLPPOSTagger.PARAM_POSTAG_DICTIONARY_FILE,
-				"src/main/resources/models/OpenNLP.TagDict.txt");
+				OpenNLPPOSTagger.getDescription());
 		tokenBuilder.buildTokens(jCas,
 				"The brown fox jumped quickly over the lazy dog.",
 				"The brown fox jumped quickly over the lazy dog .");
@@ -68,30 +61,5 @@ public class OpenNLPPOSTaggerTest extends SyntaxTestBase{
 		}
 		Assert.assertEquals(expected, actual);
 		
-	}
-
-	@Test
-	public void testDescriptor() throws UIMAException, IOException {
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				OpenNLPPOSTagger.class, typeSystemDescription,
-				OpenNLPPOSTagger.PARAM_CASE_SENSITIVE, true,
-				OpenNLPPOSTagger.PARAM_POSTAG_MODEL_FILE,
-				"src/main/resources/models/OpenNLP.POSTags.English.bin.gz",
-				OpenNLPPOSTagger.PARAM_POSTAG_DICTIONARY_FILE,
-				"src/main/resources/models/OpenNLP.TagDict.txt");
-		
-		Object modelFile = engine.getConfigParameterValue(
-				OpenNLPPOSTagger.PARAM_POSTAG_MODEL_FILE);
-		Assert.assertEquals("src/main/resources/models/OpenNLP.POSTags.English.bin.gz", modelFile);
-		
-		Object dictionaryFile = engine.getConfigParameterValue(
-				OpenNLPPOSTagger.PARAM_POSTAG_DICTIONARY_FILE);
-		Assert.assertEquals("src/main/resources/models/OpenNLP.TagDict.txt", dictionaryFile);
-		
-		Object caseSensitive = engine.getConfigParameterValue(
-				OpenNLPPOSTagger.PARAM_CASE_SENSITIVE);
-		Assert.assertEquals(true, caseSensitive);
-		
-		engine.collectionProcessComplete();
 	}
 }

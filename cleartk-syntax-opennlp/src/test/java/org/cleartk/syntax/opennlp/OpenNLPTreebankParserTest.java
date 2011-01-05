@@ -211,11 +211,7 @@ public class OpenNLPTreebankParserTest extends SyntaxTestBase {
 	@Test
 	public void testDescriptor() throws UIMAException, IOException {
 		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				OpenNLPTreebankParser.class, typeSystemDescription,
-				OpenNLPTreebankParser.PARAM_BUILD_MODEL_FILE, "src/test/resources/data/parser/fox_dog_parser/build.bin.gz",
-				OpenNLPTreebankParser.PARAM_CHECK_MODEL_FILE, "src/test/resources/data/parser/fox_dog_parser/check.bin.gz",
-				OpenNLPTreebankParser.PARAM_CHUNK_MODEL_FILE, "src/test/resources/data/parser/fox_dog_parser/chunk.bin.gz",
-				OpenNLPTreebankParser.PARAM_HEAD_RULES_FILE, "src/test/resources/data/parser/fox_dog_parser/head_rules");
+				OpenNLPTreebankParser.getDescription());
 		engine.collectionProcessComplete();
 	}
 }

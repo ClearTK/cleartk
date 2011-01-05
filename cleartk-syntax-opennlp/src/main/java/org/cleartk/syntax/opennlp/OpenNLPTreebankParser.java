@@ -77,14 +77,26 @@ public class OpenNLPTreebankParser extends JCasAnnotator_ImplBase {
 	public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
 		return AnalysisEngineFactory.createPrimitiveDescription(OpenNLPTreebankParser.class,
 				SyntaxComponents.TYPE_SYSTEM_DESCRIPTION, 
-				PARAM_BUILD_MODEL_FILE, ParamUtil.getParameterValue(PARAM_BUILD_MODEL_FILE,
-						"resources/models/OpenNLP.Parser.English.Build.bin.gz"),
-				PARAM_CHECK_MODEL_FILE, ParamUtil.getParameterValue(PARAM_CHECK_MODEL_FILE,
-						"resources/models/OpenNLP.Parser.English.Check.bin.gz"),
-				PARAM_CHUNK_MODEL_FILE, ParamUtil.getParameterValue(PARAM_CHUNK_MODEL_FILE,
-						"resources/models/OpenNLP.Chunker.English.bin.gz"),
-				PARAM_HEAD_RULES_FILE, ParamUtil.getParameterValue(PARAM_HEAD_RULES_FILE,
-						"resources/models/OpenNLP.HeadRules.txt"));
+				PARAM_BUILD_MODEL_FILE,
+				ParamUtil.getParameterValue(
+					PARAM_BUILD_MODEL_FILE,
+					OpenNLPTreebankParser.class.getResource(
+						"/models/OpenNLP.Parser.English.Build.bin.gz").getFile()),
+				PARAM_CHECK_MODEL_FILE,
+				ParamUtil.getParameterValue(
+					PARAM_CHECK_MODEL_FILE,
+					OpenNLPTreebankParser.class.getResource(
+						"/models/OpenNLP.Parser.English.Check.bin.gz").getFile()),
+				PARAM_CHUNK_MODEL_FILE,
+				ParamUtil.getParameterValue(
+					PARAM_CHUNK_MODEL_FILE,
+					OpenNLPTreebankParser.class.getResource(
+						"/models/OpenNLP.Chunker.English.bin.gz").getFile()),
+				PARAM_HEAD_RULES_FILE,
+				ParamUtil.getParameterValue(
+					PARAM_HEAD_RULES_FILE,
+					OpenNLPTreebankParser.class.getResource(
+						"/models/OpenNLP.HeadRules.txt").getFile()));
 	}
 
 	public static final String PARAM_BUILD_MODEL_FILE = ConfigurationParameterFactory.createConfigurationParameterName(

@@ -43,6 +43,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.syntax.SyntaxComponents;
+import org.cleartk.util.ParamUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -68,13 +69,19 @@ import org.uimafit.factory.initializable.InitializableFactory;
 public class OpenNLPSentenceSegmenter extends JCasAnnotator_ImplBase {
 	
 	public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveDescription(OpenNLPSentenceSegmenter.class, SyntaxComponents.TYPE_SYSTEM_DESCRIPTION);
+		return AnalysisEngineFactory.createPrimitiveDescription(
+			OpenNLPSentenceSegmenter.class,
+			SyntaxComponents.TYPE_SYSTEM_DESCRIPTION,
+			PARAM_SENTENCE_MODEL_FILE_NAME,
+			ParamUtil.getParameterValue(
+				PARAM_SENTENCE_MODEL_FILE_NAME,
+				OpenNLPSentenceSegmenter.class.getResource(
+					"/models/OpenNLP.Sentence.English.bin.gz").getFile()));
 	}
 	
 	public static final String PARAM_SENTENCE_MODEL_FILE_NAME = ConfigurationParameterFactory.createConfigurationParameterName(OpenNLPSentenceSegmenter.class, "sentenceModelFileName");
 	@ConfigurationParameter(
 			mandatory = true,
-			defaultValue = "resources/models/OpenNLP.Sentence.English.bin.gz",
 			description = "provides the path of the OpenNLP sentence segmenter model file")
 	private String sentenceModelFileName;
 	
