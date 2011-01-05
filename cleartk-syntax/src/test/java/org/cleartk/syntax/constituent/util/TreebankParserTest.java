@@ -216,7 +216,6 @@ public class TreebankParserTest {
 
 	@Test
 	public void testCraftDocs() throws Exception {
-		testPairedFiles("src/test/resources/data/treebank/11319941.txt", "src/test/resources/data/treebank/11319941.tree");
 		testPairedFiles("src/test/resources/data/treebank/11597317.txt", "src/test/resources/data/treebank/11597317.tree");
 		testPairedFiles("src/test/resources/data/treebank/12079497.txt", "src/test/resources/data/treebank/12079497.tree");
 		testPairedFiles("src/test/resources/data/treebank/12546709.txt", "src/test/resources/data/treebank/12546709.tree");
@@ -243,13 +242,7 @@ public class TreebankParserTest {
 
 	@Test
 	public void testCraftDocs2() throws Exception {
-		List<TopTreebankNode> nodes = parseFile("src/test/resources/data/treebank/11319941.tree");
-		assertEquals(
-				"Complex trait analysis of the mouse striatum: independent QTLs modulate volume and neuron number",
-				nodes.get(0).getText());
-		assertEquals("We thank Richelle Strom for generating the F2 intercross mice.", nodes.get(nodes.size() - 1)
-				.getText());
-		nodes = parseFile("src/test/resources/data/treebank/11597317.tree");
+		List<TopTreebankNode> nodes = parseFile("src/test/resources/data/treebank/11597317.tree");
 		assertEquals("BRCA2 and homologous recombination", nodes.get(0).getText());
 		assertEquals(
 				"In BRCA - defective cells, Rad51 fails to associate with sites of damage due to lack of an assembly factor.",
@@ -325,9 +318,6 @@ public class TreebankParserTest {
 	@Test
 	public void testSplitSentences() throws IOException {
 		String[] sentences = TreebankFormatParser.splitSentences(FileUtils.file2String(new File(
-				"src/test/resources/data/treebank/11319941.tree")));
-		assertEquals(290, sentences.length);
-		sentences = TreebankFormatParser.splitSentences(FileUtils.file2String(new File(
 				"src/test/resources/data/treebank/11597317.tree")));
 		assertEquals(99, sentences.length);
 		sentences = TreebankFormatParser.splitSentences(FileUtils.file2String(new File(
