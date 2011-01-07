@@ -27,31 +27,12 @@
 			<plugin>
 				<artifactId>maven-deploy-plugin</artifactId>
 				<version>2.4</version>
-				<executions>
-					<execution>
-						<id>default-deploy</id>
-						<phase>deploy</phase>
-						<goals>
-							<goal>deploy</goal>
-						</goals>
-						<configuration>
-							<skip>true</skip>
-						</configuration>
-					</execution>
-					<execution>
-						<id>deploy-file</id>
-						<phase>deploy</phase>
-						<goals>
-							<goal>deploy-file</goal>
-						</goals>
-						<configuration>
-							<file>malt-1.4.1.jar</file>
-							<pomFile>pom.xml</pomFile>
-							<repositoryId>cleartk-googlecode</repositoryId>
-							<url>http://cleartk.googlecode.com/svn/repo/</url>
-						</configuration>
-					</execution>
-				</executions>
+				<configuration>
+					<file>${jarfile}</file>
+					<pomFile>pom.xml</pomFile>
+					<repositoryId>cleartk-googlecode</repositoryId>
+					<url>svn:https://cleartk.googlecode.com/svn/repo</url>
+				</configuration>
 			</plugin>
 		</plugins>
 		<extensions>
