@@ -30,8 +30,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 import java.util.Iterator;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.SuffixFileFilter;
+import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
@@ -41,7 +45,6 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 import org.cleartk.util.ViewURIUtil;
-import org.cleartk.util.io.Files;
 import org.uimafit.component.JCasCollectionReader_ImplBase;
 import org.uimafit.component.ViewCreatorAnnotator;
 import org.uimafit.descriptor.ConfigurationParameter;
@@ -151,13 +154,16 @@ public class LineReader extends JCasCollectionReader_ImplBase {
 				throw new ResourceInitializationException(new IOException(message));
 			}
 
-			if (suffixes != null && suffixes.length > 0) {
-				files = Files.getFiles(rootFile, suffixes).iterator();
+			if(rootFile.isDirectory()){
+				if (suffixes != null && suffixes.length > 0) {
+					files = FileUtils.iterateFiles(rootFile, new SuffixFileFilter(suffixes), TrueFileFilter.INSTANCE);
+				}
+				else {
+					files = FileUtils.iterateFiles(rootFile, TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
+				}
+			} else {
+				files = Arrays.asList(rootFile).iterator();
 			}
-			else {
-				files = Files.getFiles(rootFile).iterator();
-			}
-
 			if (commentSpecifiers == null) {
 				commentSpecifiers = new String[0];
 			}
@@ -194,7 +200,7 @@ public class LineReader extends JCasCollectionReader_ImplBase {
 
 	private boolean moveToNextFile() throws FileNotFoundException, UnsupportedEncodingException {
 		if (files.hasNext()) {
-			file = files.next();
+			file = (File) files.next();
 			if(encoding != null)
 				input = new BufferedReader(new InputStreamReader(new FileInputStream(file), encoding));
 			else
@@ -237,7 +243,7 @@ public class LineReader extends JCasCollectionReader_ImplBase {
 
 	private File rootFile;
 
-	private Iterator<File> files;
+	private Iterator<?> files;
 
 	private int completed = 0;
 
