@@ -85,10 +85,10 @@ public class NGramExtractor implements SimpleFeatureExtractor {
 			
 			// create name
 			StringBuffer nameBuffer = new StringBuffer();
-			for( String n : names ) {
+			for( String name : names ) {
 				if( nameBuffer.toString().length() > 0 )
 					nameBuffer.append(",");
-				nameBuffer.append(n);
+				nameBuffer.append(name);
 			}
 			
 			String name = String.format("Ngram(%s,%s)", this.annotationClass.getSimpleName(), nameBuffer.toString());

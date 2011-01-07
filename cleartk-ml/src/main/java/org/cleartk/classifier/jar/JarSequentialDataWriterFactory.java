@@ -62,8 +62,8 @@ public abstract class JarSequentialDataWriterFactory<FEATURES_OUT_TYPE, OUTCOME_
 	@ConfigurationParameter(description = "when true indicates that the FeaturesEncoder and OutcomeEncoder should be loaded from the file system instead of being created by the DataWriterFactory", defaultValue = "false")
 	private boolean loadEncodersFromFileSystem = false;
 
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		ConfigurationParameterInitializer.initialize(this, context);
+	public void initialize(UimaContext uimaContext) throws ResourceInitializationException {
+		ConfigurationParameterInitializer.initialize(this, uimaContext);
 		if (loadEncodersFromFileSystem) {
 			try {
 				File encoderFile = new File(outputDirectory, FeaturesEncoder_ImplBase.ENCODERS_FILE_NAME);
@@ -99,7 +99,7 @@ public abstract class JarSequentialDataWriterFactory<FEATURES_OUT_TYPE, OUTCOME_
 			this.featuresEncoder = null;
 			this.outcomeEncoder = null;
 		}
-		this.context = context;
+		this.context = uimaContext;
 	}
 
 	protected boolean setEncodersFromFileSystem(

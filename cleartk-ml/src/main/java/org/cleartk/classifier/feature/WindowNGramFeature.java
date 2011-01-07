@@ -80,8 +80,8 @@ public class WindowNGramFeature extends Feature {
 		return index;
 	}
 
-	private String createName(String name) {
-		if (name == null) name = "WindowNGram";
+	private String createName(String namePrefix) {
+		if (namePrefix == null) namePrefix = "WindowNGram";
 
 		StringBuffer returnValue = new StringBuffer();
 		returnValue.append(orientation + index + "_" + size + "gram_" + direction);
@@ -90,7 +90,7 @@ public class WindowNGramFeature extends Feature {
 		if (windowedFeatures != null && windowedFeatures.size() > 0) windowedFeatureName = windowedFeatures.get(0)
 				.getName();
 
-		return Feature.createName(name, returnValue.toString(), windowedFeatureName);
+		return Feature.createName(namePrefix, returnValue.toString(), windowedFeatureName);
 
 	}
 

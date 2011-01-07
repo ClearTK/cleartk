@@ -182,17 +182,17 @@ public class TypePathExtractor implements SimpleFeatureExtractor {
 			if (feature == null) {
 				return;
 			}
-			Type type = feature.getRange();
-			if (type.isPrimitive()) {
+			Type featureType = feature.getRange();
+			if (featureType.isPrimitive()) {
 				Object pathValue = getPrimitiveFeatureValue(view, featureStructure, feature);
 				if (pathValue != null) pathValues.add(pathValue);
 			}
-			else if (typeSystem.subsumes(typeSystem.getType("uima.tcas.Annotation"), type)) {
+			else if (typeSystem.subsumes(typeSystem.getType("uima.tcas.Annotation"), featureType)) {
 				String coveredText = ((Annotation) featureStructure.getFeatureValue(feature)).getCoveredText();
 				if (coveredText != null) pathValues.add(coveredText);
 			}
-			else if (type.isArray()) {
-				Type componentType = type.getComponentType();
+			else if (featureType.isArray()) {
+				Type componentType = featureType.getComponentType();
 				if (componentType.isPrimitive()) {
 					Object[] values = getPrimitiveArrayFeatureValue(view, featureStructure, feature);
 					if (allValues) pathValues.addAll(Arrays.asList(values));

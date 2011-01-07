@@ -77,10 +77,10 @@ public class Instance<OUTCOME_TYPE> {
 	
 	/**
 	 * Add a collection of features to the instance.
-	 * @param features The features to add.
+	 * @param feats The features to add.
 	 */
-	public void addAll(Collection<Feature> features) {
-		this.features.addAll(features);
+	public void addAll(Collection<Feature> feats) {
+		this.features.addAll(feats);
 	}
 	
 	/**

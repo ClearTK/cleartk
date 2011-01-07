@@ -54,8 +54,8 @@ public class TypePathFeature extends Feature {
 		return typePath;
 	}
 
-	private String createName(String name) {
-		if (name == null) name = "TypePath";
+	private String createName(String namePrefix) {
+		if (namePrefix == null) namePrefix = "TypePath";
 		String typePathString = typePath == null ? "" : typePath;
 
 		Matcher matcher = pattern.matcher(typePathString);
@@ -70,7 +70,7 @@ public class TypePathFeature extends Feature {
 		if (sb.length() > 0) sb.replace(0, 1, sb.substring(0, 1).toUpperCase());
 		
 		if (sb.length() > 0) {
-			return String.format("%s(%s)", name, sb.toString());
+			return String.format("%s(%s)", namePrefix, sb.toString());
 		}
 		else {
 			return null;

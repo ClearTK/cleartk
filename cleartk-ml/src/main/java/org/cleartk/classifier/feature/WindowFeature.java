@@ -70,8 +70,8 @@ public class WindowFeature extends Feature {
 		this(name, value, orientation, position, null, outOfBoundsDistance);
 	}
 
-	private String createName(String name) {
-		if (name == null) name = "Window";
+	private String createName(String namePrefix) {
+		if (namePrefix == null) namePrefix = "Window";
 
 		StringBuffer sb = new StringBuffer();
 		if (orientation != null) sb.append(orientation);
@@ -82,7 +82,7 @@ public class WindowFeature extends Feature {
 		String windowedFeatureName = null;
 		if (windowedFeature != null) windowedFeatureName = windowedFeature.getName();
 
-		return Feature.createName(name, sb.toString(), windowedFeatureName);
+		return Feature.createName(namePrefix, sb.toString(), windowedFeatureName);
 
 	}
 

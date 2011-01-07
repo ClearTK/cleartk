@@ -133,10 +133,10 @@ public class ViterbiDataWriterFactory<OUTCOME_TYPE> implements SequentialDataWri
 	
 	@SuppressWarnings("unchecked")
 	private JarDataWriterFactory<?, OUTCOME_TYPE, ?> createDelegatedDataWriterFactory(
-			String delegatedDataWriterFactoryClass,
+			String delegatedDataWriterFactoryClassName,
 			UimaContext context) throws ResourceInitializationException {
 		return InitializableFactory.create(context,
-				delegatedDataWriterFactoryClass, 
+				delegatedDataWriterFactoryClassName, 
 				JarDataWriterFactory.class);
 	}
 
