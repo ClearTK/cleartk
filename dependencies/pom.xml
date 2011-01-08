@@ -3,16 +3,16 @@
 	<groupId>org.cleartk</groupId>
 	<artifactId>cleartk-dependencies</artifactId>
 	<packaging>pom</packaging>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.2</version>
 	<name>cleartk-dependencies</name>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<!-- Maven will append the child artifactId to each of these URLs -->
 	<scm>
-		<connection>scm:svn:http://cleartk.googlecode.com/svn/trunk/dependencies/</connection>
-		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/trunk/dependencies/</developerConnection>
-		<url>http://cleartk.googlecode.com/svn/trunk/dependencies/</url>
+		<connection>scm:svn:http://cleartk.googlecode.com/svn/tags/cleartk-dependencies-0.0.1</connection>
+		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/tags/cleartk-dependencies-0.0.1</developerConnection>
+		<url>http://cleartk.googlecode.com/svn/tags/cleartk-dependencies-0.0.1</url>
 	</scm>
 	<build>
 		<plugins>
