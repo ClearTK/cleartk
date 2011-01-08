@@ -35,7 +35,7 @@
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-token</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-			<classifier>tests</classifier>
+			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -48,7 +48,7 @@
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-syntax</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-			<classifier>tests</classifier>
+			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
 

@@ -12,9 +12,6 @@
 		<version>0.0.1-SNAPSHOT</version>
 		<relativePath>../cleartk-jcasgen</relativePath>
 	</parent>
-	<properties>
-		<jcasgen.typesystem>org/cleartk/timeml/TypeSystem.xml</jcasgen.typesystem>
-	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.cleartk</groupId>
@@ -38,7 +35,7 @@
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-token</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-			<classifier>tests</classifier>
+			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -57,7 +54,7 @@
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-syntax</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-			<classifier>tests</classifier>
+			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -85,4 +82,20 @@
 			<optional>false</optional>
 		</dependency>
 	</dependencies>
+	<!-- Generate type system files using ${jcasgen.typesystem} -->
+	<properties>
+		<jcasgen.typesystem>org/cleartk/timeml/TypeSystem.xml</jcasgen.typesystem>
+	</properties>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
 </project>
