@@ -5,6 +5,7 @@
 	<artifactId>cleartk-syntax-berkeley</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<url>http://cleartk.googlecode.com/</url>
+	<name>cleartk-syntax-berkeley</name>
 	<parent>
 		<artifactId>cleartk</artifactId>
 		<groupId>org.cleartk</groupId>

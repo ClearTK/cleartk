@@ -5,6 +5,7 @@
 	<artifactId>cleartk-jcasgen</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
+	<name>cleartk-jcasgen</name>
 	<parent>
 		<artifactId>cleartk</artifactId>
 		<groupId>org.cleartk</groupId>

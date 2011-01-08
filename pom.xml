@@ -5,6 +5,7 @@
 	<artifactId>cleartk</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
+	<name>cleartk</name>
 	<!-- Maven will append the child artifactId to each of these URLs -->
 	<scm>
 		<connection>scm:svn:http://cleartk.googlecode.com/svn/trunk/</connection>
