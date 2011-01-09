@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>opennlp</groupId>
 	<artifactId>maxent</artifactId>
-	<packaging>jar</packaging>
+	<packaging>pom</packaging>
 	<version>2.5.1</version>
 	<name>OpenNLP Maxent</name>
 	<parent>
@@ -12,9 +12,6 @@
 		<version>0.0.1</version>
 		<relativePath>..</relativePath>
 	</parent>
-	<properties>
-		<jarfile>maxent-2.5.1.jar</jarfile>
-	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>trove</groupId>
@@ -23,4 +20,13 @@
 			<optional>false</optional>
 		</dependency>
 	</dependencies>
+	<!-- Attach the jar file to the artifact (that would just be a pom otherwise) -->
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
 </project>

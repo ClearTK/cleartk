@@ -4,30 +4,58 @@
 	<groupId>org.cleartk</groupId>
 	<artifactId>cleartk-dependencies</artifactId>
 	<packaging>pom</packaging>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>cleartk-dependencies</name>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
+	<modules>
+		<module>grmm</module>
+		<module>jgrapht</module>
+		<module>libsvm</module>
+		<module>mallet</module>
+		<module>malt</module>
+		<module>maxent</module>
+		<module>mtj</module>
+		<module>opennlp</module>
+		<module>snowball</module>
+		<module>trove</module>
+		<module>weka</module>
+	</modules>
 	<!-- Maven will append the child artifactId to each of these URLs -->
 	<scm>
-		<connection>scm:svn:http://cleartk.googlecode.com/svn/tags/cleartk-dependencies-0.0.1</connection>
-		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/tags/cleartk-dependencies-0.0.1</developerConnection>
-		<url>http://cleartk.googlecode.com/svn/tags/cleartk-dependencies-0.0.1</url>
+		<connection>scm:svn:http://cleartk.googlecode.com/svn/trunk/dependencies</connection>
+		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/trunk/dependencies</developerConnection>
+		<url>http://cleartk.googlecode.com/svn/trunk/dependencies</url>
 	</scm>
 	<build>
-		<plugins>
-			<plugin>
-				<artifactId>maven-deploy-plugin</artifactId>
-				<version>2.4</version>
-				<configuration>
-					<file>${jarfile}</file>
-					<pomFile>pom.xml</pomFile>
-					<repositoryId>cleartk-googlecode</repositoryId>
-					<url>svn:https://cleartk.googlecode.com/svn/repo</url>
-				</configuration>
-			</plugin>
-		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!-- Attach the jar file to the artifact -->
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>build-helper-maven-plugin</artifactId>
+					<version>1.5</version>
+					<executions>
+						<execution>
+							<id>attach-artifacts</id>
+							<phase>package</phase>
+							<goals>
+								<goal>attach-artifact</goal>
+							</goals>
+							<configuration>
+								<artifacts>
+									<artifact>
+										<file>${artifactId}-${version}.jar</file>
+										<type>jar</type>
+									</artifact>
+								</artifacts>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 		<extensions>
 			<extension>
 				<groupId>org.jvnet.wagon-svn</groupId>

@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>libsvm</groupId>
 	<artifactId>libsvm</artifactId>
-	<packaging>jar</packaging>
+	<packaging>pom</packaging>
 	<version>2.89</version>
 	<name>LIBSVM</name>
 	<parent>
@@ -12,7 +12,13 @@
 		<version>0.0.1</version>
 		<relativePath>..</relativePath>
 	</parent>
-	<properties>
-		<jarfile>libsvm-2.8.9.jar</jarfile>
-	</properties>
+	<!-- Attach the jar file to the artifact (that would just be a pom otherwise) -->
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
 </project>

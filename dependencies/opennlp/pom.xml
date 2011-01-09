@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>opennlp</groupId>
 	<artifactId>tools</artifactId>
-	<packaging>jar</packaging>
+	<packaging>pom</packaging>
 	<version>1.4.1</version>
 	<name>OpenNLP Tools</name>
 	<parent>
@@ -12,9 +12,6 @@
 		<version>0.0.1</version>
 		<relativePath>..</relativePath>
 	</parent>
-	<properties>
-		<jarfile>opennlp-tools-1.4.1.jar</jarfile>
-	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>opennlp</groupId>
@@ -29,4 +26,13 @@
 			<optional>false</optional>
 		</dependency>
 	</dependencies>
+	<!-- Attach the jar file to the artifact (that would just be a pom otherwise) -->
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
 </project>

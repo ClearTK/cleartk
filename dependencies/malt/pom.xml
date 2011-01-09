@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.maltparser</groupId>
 	<artifactId>malt</artifactId>
-	<packaging>jar</packaging>
+	<packaging>pom</packaging>
 	<version>1.4.1</version>
 	<name>MaltParser</name>
 	<parent>
@@ -12,7 +12,13 @@
 		<version>0.0.1</version>
 		<relativePath>..</relativePath>
 	</parent>
-	<properties>
-		<jarfile>malt-1.4.1.jar</jarfile>
-	</properties>
+	<!-- Attach the jar file to the artifact (that would just be a pom otherwise) -->
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
 </project>
