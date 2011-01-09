@@ -23,9 +23,10 @@
 */
 package org.cleartk.util.cr;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,7 +45,6 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.util.ViewURIUtil;
-import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.CollectionReaderFactory;
 import org.uimafit.pipeline.JCasIterable;
@@ -108,18 +108,18 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
 				FilesCollectionReader.class, null,
 				FilesCollectionReader.PARAM_ROOT_FILE, this.inputDir,
 				FilesCollectionReader.PARAM_LANGUAGE, languageCode);
-		Assert.assertEquals(0, reader.getProgress()[0].getCompleted());
+		assertEquals(0, reader.getProgress()[0].getCompleted());
 
 		// check that each document in the CAS matches the document on disk
 		for (JCas jc: new JCasIterable(reader)) {
-			Assert.assertEquals(languageCode, jc.getDocumentLanguage());
+			assertEquals(languageCode, jc.getDocumentLanguage());
 			
 			String jCasText = jc.getDocumentText();
 			String docText = this.getFileText(jc);
-			Assert.assertEquals(jCasText, docText);
+			assertEquals(jCasText, docText);
 		}
 		reader.close();
-		Assert.assertEquals(this.paths.length, reader.getProgress()[0].getCompleted());
+		assertEquals(this.paths.length, reader.getProgress()[0].getCompleted());
 	}
 	
 	/**
@@ -146,7 +146,7 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
 				JCas view = jc.getView(viewName);
 				String jCasText = view.getDocumentText();
 				String docText = this.getFileText(view);
-				Assert.assertEquals(jCasText, docText);
+				assertEquals(jCasText, docText);
 			}
 			reader.close();
 		}
@@ -172,14 +172,14 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
 		pathsSet.addAll(Arrays.asList(this.paths));
 		for (JCas jc: new JCasIterable(reader)) {
 			String docPath = ViewURIUtil.getURI(jc);
-			Assert.assertTrue(pathsSet.contains(docPath));
+			assertTrue(pathsSet.contains(docPath));
 			pathsSet.remove(docPath);
 		}
 		
 		reader.close();
 		
 		// check that all documents were seen
-		Assert.assertTrue(pathsSet.isEmpty());
+		assertTrue(pathsSet.isEmpty());
 	}
 
 	
@@ -197,13 +197,13 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
 		pathsSet.addAll(Arrays.asList(this.pathsSuffix1));
 		for (JCas jc: new JCasIterable(reader)) {
 			String docPath = ViewURIUtil.getURI(jc);
-			Assert.assertTrue(pathsSet.contains(docPath));
+			assertTrue(pathsSet.contains(docPath));
 			pathsSet.remove(docPath);
 		}
 		reader.close();
 		
 		// check that all documents were seen
-		Assert.assertTrue(pathsSet.isEmpty());
+		assertTrue(pathsSet.isEmpty());
 	}
 
 	@Test
@@ -220,13 +220,13 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
 		pathsSet.addAll(Arrays.asList(this.pathsSuffix2));
 		for (JCas jc: new JCasIterable(reader)) {
 			String docPath = ViewURIUtil.getURI(jc);
-			Assert.assertTrue(pathsSet.contains(docPath));
+			assertTrue(pathsSet.contains(docPath));
 			pathsSet.remove(docPath);
 		}
 		reader.close();
 		
 		// check that all documents were seen
-		Assert.assertTrue(pathsSet.isEmpty());
+		assertTrue(pathsSet.isEmpty());
 	}
 
 	@Test
@@ -252,7 +252,7 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
 		reader.close();
 		
 		// check that the expected paths were in the CAS
-		Assert.assertEquals(expected, actual);
+		assertEquals(expected, actual);
 
 		reader = CollectionReaderFactory.createCollectionReader(
 			FilesCollectionReader.class, null,
@@ -272,7 +272,7 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
 		reader.close();
 		
 		// check that the expected paths were in the CAS
-		Assert.assertEquals(expected, actual);
+		assertEquals(expected, actual);
 
 	}
 
@@ -299,18 +299,18 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
 		for (JCas jc: new JCasIterable(reader)) {
 			String fileName = ViewURIUtil.getURI(jc).replace('\\', '/');
 			fileName = fileName.substring(fileName.lastIndexOf("/")+1);
-			Assert.assertTrue(fileNamesSet.contains(fileName));
+			assertTrue(fileNamesSet.contains(fileName));
 			fileNamesSet.remove(fileName);
 			i++;
 		}
 		
-		Assert.assertEquals(4, reader.getProgress()[0].getTotal());
+		assertEquals(4, reader.getProgress()[0].getTotal());
 
 		reader.close();
 		
-		Assert.assertEquals(4, i);
+		assertEquals(4, i);
 		// check that all documents were seen
-		Assert.assertTrue(fileNamesSet.isEmpty());
+		assertTrue(fileNamesSet.isEmpty());
 
 	}
 
@@ -334,8 +334,8 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
 		}
 		reader.close();
 		
-		Assert.assertEquals(1, pathsList.size());
-		Assert.assertTrue(pathsList.get(0).endsWith(path));
+		assertEquals(1, pathsList.size());
+		assertTrue(pathsList.get(0).endsWith(path));
 	}
 	
 	/**
@@ -344,15 +344,11 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
 	 * @throws IOException
 	 * @throws UIMAException
 	 */
-	@Test
+	@Test(expected=UIMAException.class)
 	public void testBadFileException() throws IOException, UIMAException {
-		
-		try {
 			CollectionReaderFactory.createCollectionReader(
 					FilesCollectionReader.class, null,
 					FilesCollectionReader.PARAM_ROOT_FILE, "data/hmtl");
-			Assert.fail("expected error for invalid path");
-		} catch (ResourceInitializationException e){}
 	}
 	
 	/**
@@ -371,7 +367,7 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
 	public void testDescriptor() throws UIMAException, IOException {
 		try {
 			CollectionReaderFactory.createCollectionReader(FilesCollectionReader.class, typeSystemDescription);
-			Assert.fail("expected exception with no file or directory specified");
+			fail("expected exception with no file or directory specified");
 		} catch (ResourceInitializationException e) {}
 		
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
@@ -380,19 +376,19 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
 		
 		Object fileOrDirectory = reader.getConfigParameterValue(
 				FilesCollectionReader.PARAM_ROOT_FILE);
-		Assert.assertEquals(this.inputDir, fileOrDirectory);
+		assertEquals(this.inputDir, fileOrDirectory);
 		
 		Object viewName = reader.getConfigParameterValue(
 				FilesCollectionReader.PARAM_VIEW_NAME);
-		Assert.assertEquals(CAS.NAME_DEFAULT_SOFA, viewName);
+		assertEquals(CAS.NAME_DEFAULT_SOFA, viewName);
 		
 		Object encoding = reader.getConfigParameterValue(
 				FilesCollectionReader.PARAM_ENCODING);
-		Assert.assertEquals(null, encoding);
+		assertEquals(null, encoding);
 
 		Object language = reader.getConfigParameterValue(
 				FilesCollectionReader.PARAM_LANGUAGE);
-		Assert.assertEquals(null, language);
+		assertEquals(null, language);
 	}
 	
 	@Test
@@ -404,18 +400,5 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
 		assertFalse(false ^ false ^ false);
 	}
 	
-	@Test
-	public void testConflictingParameters() {
-		ResourceInitializationException rie = null;
-		try {
-			CollectionReaderFactory.createCollectionReader(
-				FilesCollectionReader.class, null,
-				FilesCollectionReader.PARAM_ROOT_FILE, "test/data/html/1.html",
-				FilesCollectionReader.PARAM_FILE_NAMES, new String[] {"some value"},
-				FilesCollectionReader.PARAM_SUFFIXES, new String[] {"some other value"});
-		} catch(ResourceInitializationException e) {
-			rie = e;
-		}
-		assertNotNull(rie);
-	}
+	
 }

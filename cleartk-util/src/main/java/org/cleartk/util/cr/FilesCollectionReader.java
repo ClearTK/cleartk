@@ -152,8 +152,23 @@ public class FilesCollectionReader extends JCasCollectionReader_ImplBase {
 			+ "That is, no exception will be thrown if a file name in the list does not actually correspond to a file.")
 	private String[] fileNames;
 	
+
+	public static final String PARAM_IGNORE_SYSTEM_FILES = ConfigurationParameterFactory.createConfigurationParameterName(
+			FilesCollectionReader.class, "ignoreSystemFiles");
+	@ConfigurationParameter(description = "This parameter provides a flag that determines whether file iteration will traverse into directories that begin with a period '.' - to loosely correspond to 'system' files.  Setting this parameter to true will not cause file names that begin with a period to be ignored - just directories. ")
 	private boolean ignoreSystemFiles = true;
 
+	
+	protected Iterator<File> files;
+	
+	protected File currentFile;
+
+	protected int completed = 0;
+
+	protected int filesCount = 0;
+
+
+	
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		// raise an exception if the root file does not exist
@@ -276,14 +291,6 @@ public class FilesCollectionReader extends JCasCollectionReader_ImplBase {
 		}
 		return false;
 	}
-
-	protected Iterator<File> files;
-	
-	protected File currentFile;
-
-	protected int completed = 0;
-
-	protected int filesCount = 0;
 
 	public void close() throws IOException {
 	}
