@@ -47,5 +47,11 @@
 			<version>[0.3,)</version>
 			<optional>false</optional>
 		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>1.4</version>
+			<type>jar</type>
+		</dependency>
 	</dependencies>
 </project>

@@ -236,7 +236,7 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
 		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
 				FilesCollectionReader.class, null,
 				FilesCollectionReader.PARAM_ROOT_FILE, this.inputDir,
-				FilesCollectionReader.PARAM_PATTERNS, new String[] {"[.]1[.]", "3"});
+				FilesCollectionReader.PARAM_PATTERNS, new String[] {"^.*[.]1[.].*$", "^.*3.*$"});
 		
 		// the expected files
 		Set<String> expected = new HashSet<String>();
@@ -253,6 +253,27 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
 		
 		// check that the expected paths were in the CAS
 		Assert.assertEquals(expected, actual);
+
+		reader = CollectionReaderFactory.createCollectionReader(
+			FilesCollectionReader.class, null,
+			FilesCollectionReader.PARAM_ROOT_FILE, this.inputDir,
+			FilesCollectionReader.PARAM_PATTERNS, new String[] {"^.*[.]1[.].*$"},
+			FilesCollectionReader.PARAM_SUFFIXES, new String[]{".1.1.html"});
+		
+		// the expected files
+		expected = new HashSet<String>();
+		expected.add(toURI("4/1/4.1.1.html"));
+
+		// collect paths from the CAS
+		actual = new HashSet<String>();
+		for (JCas jc: new JCasIterable(reader)) {
+			actual.add(ViewURIUtil.getURI(jc).replace('\\', '/'));
+		}
+		reader.close();
+		
+		// check that the expected paths were in the CAS
+		Assert.assertEquals(expected, actual);
+
 	}
 
 	private final String[] fileNames = new String[]{

@@ -69,8 +69,8 @@ public class XReader extends FilesCollectionReader {
 	}
 
 	public void getNext(JCas jCas) throws IOException, CollectionException {
-		File currentFile = this.files.next();
-		FileInputStream inputStream = new FileInputStream(currentFile);
+		File file = (File) this.files.next();
+		FileInputStream inputStream = new FileInputStream(file);
 		
 		try {
 			if(xmlScheme.equals(XMI))

@@ -24,13 +24,20 @@
 package org.cleartk.util.cr;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
+import java.util.List;
+import java.util.regex.Pattern;
 
+import org.apache.commons.io.filefilter.AndFileFilter;
+import org.apache.commons.io.filefilter.IOFileFilter;
+import org.apache.commons.io.filefilter.NameFileFilter;
+import org.apache.commons.io.filefilter.OrFileFilter;
+import org.apache.commons.io.filefilter.RegexFileFilter;
+import org.apache.commons.io.filefilter.SuffixFileFilter;
+import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
@@ -44,7 +51,6 @@ import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 import org.cleartk.util.ViewURIUtil;
-import org.cleartk.util.io.Files;
 import org.uimafit.component.JCasCollectionReader_ImplBase;
 import org.uimafit.component.ViewCreatorAnnotator;
 import org.uimafit.descriptor.ConfigurationParameter;
@@ -120,15 +126,14 @@ public class FilesCollectionReader extends JCasCollectionReader_ImplBase {
 
 	public static final String PARAM_SUFFIXES = ConfigurationParameterFactory.createConfigurationParameterName(
 			FilesCollectionReader.class, "suffixes");
-	@ConfigurationParameter(description = "takes suffixes (e.g. .txt) of the files that should be read in.  This parameter can only be set if there"
-			+ " is no value for 'nameFilesFileNames', 'fileNames', or 'patterns'.")
+	@ConfigurationParameter(description = "takes suffixes (e.g. .txt) of the files that should be read in.")
 	private String[] suffixes;
 
 	public static final String PARAM_PATTERNS = ConfigurationParameterFactory.createConfigurationParameterName(
 			FilesCollectionReader.class, "patterns");
 	@ConfigurationParameter(description = "	takes regular expressions for matching the files that should be read in. Note that these will be searched for"
 			+ " using java.util. regex.Matcher.find, so if you want to make sure the entire file name matches a pattern, you should start the string with ^ and end the"
-			+ " string with $. This parameter can only be set if there is no value for 'nameFilesFileNames', 'fileNames', or 'suffixes'.")
+			+ " string with $.")
 	private String[] patterns;
 
 	public static final String PARAM_NAME_FILES_FILE_NAMES = ConfigurationParameterFactory
@@ -137,16 +142,17 @@ public class FilesCollectionReader extends JCasCollectionReader_ImplBase {
 			+ "then the file 'mylist.txt' should contain a line delimited list of file names.  The file names in the list should not have directory information "
 			+ "but should just be the names of the files. The directory is determined by 'rootFile' and the files that are processed result from "
 			+ "traversing the directory structure provided and looking for files with a name found in the lists of file names. That is, no exception will be "
-			+ "thrown if a file name in the list does not actually correspond to a file.  This parameter can only be set if there is no value for 'suffixes', 'patterns', or 'fileNames'.")
+			+ "thrown if a file name in the list does not actually correspond to a file.")
 	private String[] nameFilesFileNames;
 
 	public static final String PARAM_FILE_NAMES = ConfigurationParameterFactory.createConfigurationParameterName(
 			FilesCollectionReader.class, "fileNames");
 	@ConfigurationParameter(description = "provides a list of file names that should be read in. The directory of the file names is determined by "
 			+ "'rootFile' and the files that are processed result from traversing the directory structure provided and looking for files with a name found in the list of file names. "
-			+ "That is, no exception will be thrown if a file name in the list does not actually correspond to a file.  This parameter can only be set if there is no value for 'suffixes', "
-			+ "'patterns', or 'nameFilesFileNames'.")
+			+ "That is, no exception will be thrown if a file name in the list does not actually correspond to a file.")
 	private String[] fileNames;
+	
+	private boolean ignoreSystemFiles = true;
 
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
@@ -157,47 +163,67 @@ public class FilesCollectionReader extends JCasCollectionReader_ImplBase {
 			throw new ResourceInitializationException(new IOException(message));
 		}
 
-		if (!(suffixes != null ^ patterns != null ^ nameFilesFileNames != null ^ fileNames != null)
-				&& (suffixes != null || patterns != null || nameFilesFileNames != null || fileNames != null)) {
-			String message = String.format(
-					"One of the parameters %1$s, %2$s, %3$s or %4$s may be set but not more than one of them.",
-					PARAM_SUFFIXES, PARAM_PATTERNS, PARAM_NAME_FILES_FILE_NAMES, PARAM_FILE_NAMES);
-			throw new ResourceInitializationException(new IllegalArgumentException(message));
+		if(rootFile.isFile()){
+			files = Arrays.asList(rootFile).iterator();
+			filesCount = 1;
+		} else {
+		
+			files = createFileIterator();
+			filesCount = countFiles(createFileIterator());
 		}
-
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected Iterator<File> createFileIterator() throws ResourceInitializationException{
+		IOFileFilter fileFilter = TrueFileFilter.INSTANCE;
+		
 		if (suffixes != null) {
-			files = Files.getFiles(rootFile, suffixes).iterator();
-			filesCount = countFiles(Files.getFiles(rootFile, suffixes).iterator());
+			fileFilter = new AndFileFilter(fileFilter, new SuffixFileFilter(suffixes));
 		}
-		else if (patterns != null) {
-			FileFilter patternFilter = Files.createPatternFilter(patterns);
-			files = Files.getFiles(rootFile, patternFilter).iterator();
-			filesCount = countFiles(Files.getFiles(rootFile, patternFilter).iterator());
+		
+		if (patterns != null && patterns.length > 0) {
+			IOFileFilter patternFilter = new RegexFileFilter(Pattern.compile(patterns[0]));
+			if(patterns.length > 1){
+				for(int i=1; i< patterns.length; i++){
+					patternFilter = new OrFileFilter(patternFilter, new RegexFileFilter(patterns[i])); 
+				}
+			} 
+			fileFilter = new AndFileFilter(fileFilter, patternFilter);
+
 		}
-		else if (nameFilesFileNames != null) {
-			Set<String> fileNamesFromLists = new HashSet<String>();
+		
+		if (nameFilesFileNames != null) {
+			List<String> fileNamesFromLists = new ArrayList<String>();
 			try {
 				for (String fileNamesList : nameFilesFileNames) {
 					fileNamesFromLists.addAll(Arrays.asList(FileUtil.loadListOfStrings(new File(fileNamesList))));
 				}
-				files = Files.getFiles(rootFile, fileNamesFromLists).iterator();
-				filesCount = countFiles(Files.getFiles(rootFile, fileNamesFromLists).iterator());
+				fileFilter = new AndFileFilter(fileFilter, new NameFileFilter(fileNamesFromLists));
 			}
 			catch (IOException ioe) {
 				throw new ResourceInitializationException(ioe);
 			}
 		}
-		else if (fileNames != null) {
-			files = Files.getFiles(rootFile, new HashSet<String>(Arrays.asList(fileNames))).iterator();
+		
+		if (fileNames != null) {
+			fileFilter = new AndFileFilter(fileFilter, new NameFileFilter(fileNames));
 		}
-		else {
-			files = Files.getFiles(rootFile).iterator();
-			filesCount = countFiles(Files.getFiles(rootFile).iterator());
+
+		IOFileFilter directoryFilter = TrueFileFilter.INSTANCE;
+
+		if(ignoreSystemFiles){
+			directoryFilter = new RegexFileFilter("^[^\\.]*$");
 		}
+		
+		return (Iterator<File>) org.apache.commons.io.FileUtils.iterateFiles(rootFile, fileFilter, directoryFilter);
 
 	}
+	
 
 	public void getNext(JCas jCas) throws IOException, CollectionException {
+		if(!hasNext()){
+			throw new RuntimeException("getNext(jCas) was called but hasNext() returns false");
+		}
 		// get a JCas object
 		JCas view;
 		try {
@@ -207,11 +233,8 @@ public class FilesCollectionReader extends JCasCollectionReader_ImplBase {
 			throw new CollectionException(e);
 		}
 
-		// get the next file in the iterator
-		File file = this.files.next();
-
 		// set the document's text
-		String text = FileUtils.file2String(file, this.encoding);
+		String text = FileUtils.file2String(currentFile, this.encoding);
 		view.setSofaDataString(text, "text/plain");
 
 		// set language if it was specified
@@ -220,16 +243,18 @@ public class FilesCollectionReader extends JCasCollectionReader_ImplBase {
 		}
 
 		// set the document URI
-		ViewURIUtil.setURI(jCas, file.toURI().toString());
+		ViewURIUtil.setURI(jCas, currentFile.toURI().toString());
 
 		completed++;
+		currentFile = null;
 	}
 
 	protected int countFiles(Iterator<File> tempFiles) {
 		int count = 0;
 		while (tempFiles.hasNext()) {
-			tempFiles.next();
-			count++;
+			File file = tempFiles.next();
+			if(file.isFile())
+				count++;
 		}
 		return count;
 	}
@@ -240,10 +265,21 @@ public class FilesCollectionReader extends JCasCollectionReader_ImplBase {
 	}
 
 	public boolean hasNext() throws IOException, CollectionException {
-		return this.files.hasNext();
+		if(currentFile != null){
+			return true;
+		}
+		while(this.files.hasNext()){
+			currentFile = files.next();
+			if(currentFile.isFile()){
+				return true;
+			}
+		}
+		return false;
 	}
 
 	protected Iterator<File> files;
+	
+	protected File currentFile;
 
 	protected int completed = 0;
 
