@@ -12,6 +12,40 @@
 		<version>0.0.1</version>
 		<relativePath>..</relativePath>
 	</parent>
+	<repositories>
+		<repository>
+			<id>umass-nexus-thirdparty</id>
+			<name>UMass Nexus third party jars</name>
+			<url>http://iesl.cs.umass.edu:8081/nexus/content/repositories/thirdparty</url>
+		</repository>
+	</repositories>
+	<dependencies>
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jsr173_api</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>libsvm</groupId>
+			<artifactId>libsvm</artifactId>
+			<version>2.89</version>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.16</version>
+		</dependency>
+		<dependency>
+			<groupId>stax</groupId>
+			<artifactId>stax</artifactId>
+			<version>1.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>liblinear</groupId>
+			<artifactId>liblinear</artifactId>
+			<version>1.51</version>
+		</dependency>
+	</dependencies>
 	<!-- Attach the jar file to the artifact (that would just be a pom otherwise) -->
 	<build>
 		<plugins>
