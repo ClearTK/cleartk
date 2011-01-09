@@ -1,0 +1,31 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.cleartk</groupId>
+	<artifactId>cleartk-syntax-dependency</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>cleartk-syntax-dependency</name>
+	<url>http://cleartk.googlecode.com/</url>
+	<parent>
+		<artifactId>cleartk-jcasgen</artifactId>
+		<groupId>org.cleartk</groupId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../cleartk-jcasgen</relativePath>
+	</parent>
+	<!-- Generate type system files using ${jcasgen.typesystem} -->
+	<properties>
+		<jcasgen.typesystem>org/cleartk/syntax/dependency/TypeSystem.xml</jcasgen.typesystem>
+	</properties>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+</project>

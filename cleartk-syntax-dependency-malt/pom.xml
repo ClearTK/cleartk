@@ -1,0 +1,34 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.cleartk</groupId>
+	<artifactId>cleartk-syntax-dependency-malt</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>cleartk-syntax-dependency-malt</name>
+	<url>http://cleartk.googlecode.com/</url>
+	<parent>
+		<artifactId>cleartk</artifactId>
+		<groupId>org.cleartk</groupId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>..</relativePath>
+	</parent>
+	<dependencies>
+		<dependency>
+			<groupId>org.maltparser</groupId>
+			<artifactId>malt</artifactId>
+			<version>1.4.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.cleartk</groupId>
+			<artifactId>cleartk-token</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<optional>false</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.cleartk</groupId>
+			<artifactId>cleartk-syntax-dependency</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<optional>false</optional>
+		</dependency>
+	</dependencies>
+</project>
