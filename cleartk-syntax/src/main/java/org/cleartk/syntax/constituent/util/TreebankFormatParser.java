@@ -461,10 +461,6 @@ public class TreebankFormatParser {
 
 		if (value.contains("\\/")) return value.replace("\\/", "/");
 
-		if (type.startsWith("Â")) {
-			value = value.substring(1);
-		}
-
 		return value;
 	}
 
