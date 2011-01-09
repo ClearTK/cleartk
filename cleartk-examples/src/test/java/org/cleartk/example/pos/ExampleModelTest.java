@@ -63,7 +63,7 @@ public class ExampleModelTest extends ExamplesTestBase {
 		posTagger.process(jCas);
 		token = JCasUtil.selectByIndex(jCas, Token.class, 0);
 		assertNotNull(token.getPos());
-		assertEquals("IN", token.getPos());
+		assertEquals("RB", token.getPos());
 		token = JCasUtil.selectByIndex(jCas, Token.class, 5);
 		assertNotNull(token.getPos());
 		assertEquals("NN", token.getPos());
