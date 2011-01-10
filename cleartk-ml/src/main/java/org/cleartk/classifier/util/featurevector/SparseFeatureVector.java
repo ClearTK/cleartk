@@ -1,13 +1,13 @@
- /** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+/**
+ * Copyright (c) 2007-2010, Regents of the University of Colorado
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  * 
- * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. 
- * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. 
- * Neither the name of the University of Colorado at Boulder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. 
+ * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+ * Neither the name of the University of Colorado at Boulder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
  * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -19,8 +19,8 @@
  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
 package org.cleartk.classifier.util.featurevector;
 
 import java.util.Map;
@@ -29,95 +29,101 @@ import java.util.TreeMap;
 
 import org.cleartk.CleartkException;
 
-
-
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- * 
+ * Implementation of {@link FeatureVector} that is efficient for sparse feature vectors. If
+ * modification after initialization is not required, {@link EfficientFeatureVector} has better
+ * performance and memory usage.
  *
  * @author Philipp Wetzler
- *
+ * @author Brian Cairns
  */
 public class SparseFeatureVector extends FeatureVector {
-	
-	SortedMap<Integer, Double> values;
-	
-	public SparseFeatureVector() {
-		values = new TreeMap<Integer, Double>();
-	}
-	
-	public SparseFeatureVector(FeatureVector fv) throws CleartkException {
-		this();
-		for( FeatureVector.Entry entry : fv ) {
-			this.set(entry.index, entry.value);
-		}
-	}
 
-	public double get(int index) {
-		Double returnValue = this.values.get(index);
-		
-		if( returnValue != null )
-			return returnValue;
-		else
-			return 0.0;
-	}
+    SortedMap<Integer, Double> values;
 
-	public java.util.Iterator<Entry> iterator() {
-		return new Iterator(this.values);
-	}
+    public SparseFeatureVector() {
+        values = new TreeMap<Integer, Double>();
+    }
 
-	public void set(int index, double value) throws CleartkException {
-		if( Double.isInfinite(value) || Double.isNaN(value) )
-			throw new CleartkException(String.format("trying to set illegal value in %d:%.7f", index, value));
+    public SparseFeatureVector(ImmutableFeatureVector fv) throws CleartkException {
+        this();
+        for (Entry entry : fv) {
+            this.set(entry.index, entry.value);
+        }
+    }
 
-		if( value != 0.0 )
-			this.values.put(index, value);
-		else {
-			if( this.values.containsKey(index) )
-				this.values.remove(index);
-		}
-	}
+    @Override
+    public double get(int index) {
+        Double returnValue = this.values.get(index);
 
-	
-	class Iterator implements java.util.Iterator<FeatureVector.Entry> {
-		
-		java.util.Iterator<Map.Entry<Integer,Double>> subIterator;
-		SortedMap<Integer, Double> itValues;
-		
-		private Iterator(SortedMap<Integer, Double> values) {
-			this.itValues = values;
-			this.subIterator = values.entrySet().iterator();
-		}
-		
-		public boolean hasNext() {
-			return this.subIterator.hasNext();
-		}
+        if (returnValue != null) {
+            return returnValue;
+        } else {
+            return 0.0;
+        }
+    }
 
-		public FeatureVector.Entry next() {
-			Map.Entry<Integer,Double> nextEntry = this.subIterator.next();
-			
-			int key = nextEntry.getKey();
-			double value = nextEntry.getValue();
-			
-			return new FeatureVector.Entry(key, value);
-		}
+    @Override
+    public java.util.Iterator<Entry> iterator() {
+        return new Iterator(this.values);
+    }
 
-		public void remove() {
-			throw new UnsupportedOperationException();
-		}
-		
-	}
+    @Override
+    public java.util.Iterator<Entry> orderedIterator() {
+        // The values are always stored in order so the normal iterator can be used.
+        return iterator();
+    }
 
-	public double innerProduct(FeatureVector other) {
-		double result = 0.0;
-		
-		for( FeatureVector.Entry entry : this ) {
-			result += entry.value * other.get(entry.index);
-		}
-		
-		return result;
-	}
+    @Override
+    public void set(int index, double value) throws CleartkException {
+        if( Double.isInfinite(value) || Double.isNaN(value) )
+            throw new CleartkException(String.format("trying to set illegal value in %d:%.7f", index, value));
+
+        if (value != 0.0) {
+            this.values.put(index, value);
+        } else {
+            if (this.values.containsKey(index)) {
+                this.values.remove(index);
+            }
+        }
+    }
+
+
+    class Iterator implements java.util.Iterator<FeatureVector.Entry> {
+        java.util.Iterator<Map.Entry<Integer,Double>> subIterator;
+        SortedMap<Integer, Double> values;
+
+        private Iterator(SortedMap<Integer, Double> values) {
+            this.values = values;
+            this.subIterator = values.entrySet().iterator();
+        }
+
+        public boolean hasNext() {
+            return this.subIterator.hasNext();
+        }
+
+        public FeatureVector.Entry next() {
+            Map.Entry<Integer,Double> nextEntry = this.subIterator.next();
+
+            int key = nextEntry.getKey();
+            double value = nextEntry.getValue();
+
+            return new FeatureVector.Entry(key, value);
+        }
+
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+
+    }
+
+    public double innerProduct(FeatureVector other) {
+        double result = 0.0;
+
+        for (FeatureVector.Entry entry : this) {
+            result += entry.value * other.get(entry.index);
+        }
+
+        return result;
+    }
 }
