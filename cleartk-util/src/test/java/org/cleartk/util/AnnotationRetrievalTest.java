@@ -30,12 +30,12 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.uima.UIMAException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.pear.util.FileUtil;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Chunk;
@@ -58,7 +58,8 @@ public class AnnotationRetrievalTest extends DefaultTestBase{
 
 	@Test
 	public void testGet() throws UIMAException, IOException {
-		String text = FileUtil.loadTextFile(new File("src/test/resources/docs/youthful-precocity.txt"));
+		String text = FileUtils.readFileToString(new File(
+			"src/test/resources/docs/youthful-precocity.txt"));
 		tokenBuilder.buildTokens(jCas, text);
 
 		Token token = JCasUtil.selectByIndex(jCas, Token.class, 20);
@@ -375,7 +376,7 @@ public class AnnotationRetrievalTest extends DefaultTestBase{
 
 		
 		jCas.reset();
-		String text = FileUtil.loadTextFile(new File("src/test/resources/docs/huckfinn.txt"));
+		String text = FileUtils.readFileToString(new File("src/test/resources/docs/huckfinn.txt"));
 		tokenBuilder.buildTokens(jCas, text);
 
 		Annotation annotation = new Annotation(jCas, 404, 449);
@@ -396,7 +397,7 @@ public class AnnotationRetrievalTest extends DefaultTestBase{
 	
 	@Test
 	public void testGetAnnotationsWithBeginEnd() throws UIMAException, IOException {
-		String text = FileUtil.loadTextFile(new File("src/test/resources/docs/huckfinn.txt"));
+		String text = FileUtils.readFileToString(new File("src/test/resources/docs/huckfinn.txt"));
 		tokenBuilder.buildTokens(jCas, text);
 
 		System.out.println(text.substring(1200, 1500));
