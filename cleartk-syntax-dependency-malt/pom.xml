@@ -31,4 +31,15 @@
 			<optional>false</optional>
 		</dependency>
 	</dependencies>
+	<build>
+		<plugins>
+			<!-- increase max memory for tests since model must be loaded -->
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<argLine>-Xmx2g</argLine>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
