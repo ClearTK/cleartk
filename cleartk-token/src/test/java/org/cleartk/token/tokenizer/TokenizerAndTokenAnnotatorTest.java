@@ -28,13 +28,13 @@ import static org.junit.Assert.assertEquals;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.FSIndex;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.pear.util.FileUtil;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.token.TokenComponents;
 import org.cleartk.token.TokenTestBase;
@@ -73,11 +73,11 @@ public class TokenizerAndTokenAnnotatorTest extends TokenTestBase {
 	}
 	@Test
 	public void testMarysDog() throws UIMAException, IOException {
-		String text = FileUtil.loadTextFile(new File("src/test/resources/token/marysdog.txt"));
+		String text = FileUtils.readFileToString(new File("src/test/resources/token/marysdog.txt"));
 		jCas.setDocumentText(text);
-		new Sentence(jCas, 0, 53).addToIndexes();
-		new Sentence(jCas, 54, 69).addToIndexes();
-		new Sentence(jCas, 70, 92).addToIndexes();
+		new Sentence(jCas, 0, 52).addToIndexes();
+		new Sentence(jCas, 54, 68).addToIndexes();
+		new Sentence(jCas, 70, 91).addToIndexes();
 		SimplePipeline.runPipeline(jCas, tokenizer);
 		FSIndex<Annotation> tokenIndex = jCas.getAnnotationIndex(Token.type);
 		assertEquals(37, tokenIndex.size());
@@ -124,11 +124,11 @@ public class TokenizerAndTokenAnnotatorTest extends TokenTestBase {
 
 	@Test
 	public void testWatcha() throws UIMAException, IOException {
-		String text = FileUtil.loadTextFile(new File("src/test/resources/token/watcha.txt"));
+		String text = FileUtils.readFileToString(new File("src/test/resources/token/watcha.txt"));
 		jCas.setDocumentText(text);
-		new Sentence(jCas, 0, 46).addToIndexes();
-		new Sentence(jCas, 47, 74).addToIndexes();
-		new Sentence(jCas, 75, 110).addToIndexes();
+		new Sentence(jCas, 0, 45).addToIndexes();
+		new Sentence(jCas, 47, 73).addToIndexes();
+		new Sentence(jCas, 75, 109).addToIndexes();
 		SimplePipeline.runPipeline(jCas, tokenizer);
 		FSIndex<Annotation> tokenIndex = jCas.getAnnotationIndex(Token.type);
 		assertEquals(31, tokenIndex.size());
@@ -169,10 +169,10 @@ public class TokenizerAndTokenAnnotatorTest extends TokenTestBase {
 
 	@Test
 	public void testTimes() throws UIMAException, IOException {
-		String text = FileUtil.loadTextFile(new File("src/test/resources/token/times.txt"));
+		String text = FileUtils.readFileToString(new File("src/test/resources/token/times.txt"));
 		jCas.setDocumentText(text);
-		new Sentence(jCas, 0, 18).addToIndexes();
-		new Sentence(jCas, 19, 60).addToIndexes();
+		new Sentence(jCas, 0, 17).addToIndexes();
+		new Sentence(jCas, 19, 59).addToIndexes();
 		SimplePipeline.runPipeline(jCas, tokenizer);
 
 		FSIndex<Annotation> tokenIndex = jCas.getAnnotationIndex(Token.type);
@@ -199,7 +199,7 @@ public class TokenizerAndTokenAnnotatorTest extends TokenTestBase {
 
 	@Test
 	public void testDollars() throws UIMAException, IOException {
-		String text = FileUtil.loadTextFile(new File("src/test/resources/token/dollars.txt"));
+		String text = FileUtils.readFileToString(new File("src/test/resources/token/dollars.txt"));
 		jCas.setDocumentText(text);
 		new Sentence(jCas, 9, 33).addToIndexes();
 		new Sentence(jCas, 34, 73).addToIndexes();
