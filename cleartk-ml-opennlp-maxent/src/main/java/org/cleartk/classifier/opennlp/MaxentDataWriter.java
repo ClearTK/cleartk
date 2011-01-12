@@ -26,7 +26,6 @@ package org.cleartk.classifier.opennlp;
 import java.io.File;
 import java.io.IOException;
 
-import opennlp.maxent.RealValueFileEventStream;
 
 import org.cleartk.classifier.jar.ClassifierBuilder;
 

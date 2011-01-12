@@ -26,9 +26,9 @@ package org.cleartk.classifier.opennlp;
 import java.io.File;
 import java.io.IOException;
 
-import opennlp.maxent.Event;
-import opennlp.maxent.MaxentModel;
-import opennlp.maxent.RealValueFileEventStream;
+import opennlp.model.Event;
+import opennlp.model.MaxentModel;
+import opennlp.model.RealValueFileEventStream;
 import opennlp.maxent.io.SuffixSensitiveGISModelReader;
 
 /**
@@ -60,7 +60,7 @@ public class MaxentEval {
 		int unknownEvents = 0;
 		
 		while( eventStream.hasNext() ) {
-			Event event = eventStream.nextEvent();
+			Event event = eventStream.next();
 			int realOutcome = model.getIndex(event.getOutcome());
 			int modelOutcome = model.getIndex(model.getBestOutcome(model.eval(event.getContext())));
 			if( realOutcome >= 0 ) {
