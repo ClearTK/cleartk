@@ -32,7 +32,7 @@ import java.util.jar.JarFile;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipEntry;
 
-import opennlp.model.MaxentModel;
+import opennlp.maxent.MaxentModel;
 import opennlp.maxent.io.BinaryGISModelReader;
 
 import org.cleartk.CleartkException;
