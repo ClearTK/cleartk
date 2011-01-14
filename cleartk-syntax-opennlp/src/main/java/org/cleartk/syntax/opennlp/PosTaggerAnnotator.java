@@ -61,6 +61,27 @@ import org.uimafit.util.JCasUtil;
 @TypeCapability(inputs={"org.cleartk.token.type.Sentence", "org.cleartk.token.type.Token"})
 public class PosTaggerAnnotator extends JCasAnnotator_ImplBase {
 
+
+//	public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
+//		AnalysisEngineDescription aed = AnalysisEngineFactory.createPrimitiveDescription(
+//				opennlp.uima.postag.POSTagger.class,
+//			SyntaxComponents.TYPE_SYSTEM_DESCRIPTION,
+//			UimaUtil.TOKEN_TYPE_PARAMETER, Token.class.getName(),
+//			UimaUtil.POS_FEATURE_PARAMETER, "pos",
+//			UimaUtil.SENTENCE_TYPE_PARAMETER, Sentence.class.getName());
+//		
+//this is wrong!  
+//		ExternalResourceDescription erd = ExternalResourceFactory.createExternalResourceDescription("opennlp.uima.ModelName", POSModel.class,"/models/en-pos-maxent.bin");
+//
+//		try {
+//			bindResource(aed, "opennlp.uima.ModelName", erd);
+//		} catch (InvalidXMLException e) {
+//			// TODO Auto-generated catch block
+//			throw new ResourceInitializationException(e);
+//		}
+//		return aed;
+//	}
+
 	public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
 		return AnalysisEngineFactory.createPrimitiveDescription(
 			PosTaggerAnnotator.class,
