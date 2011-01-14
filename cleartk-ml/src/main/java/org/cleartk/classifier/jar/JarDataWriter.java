@@ -55,6 +55,14 @@ public abstract class JarDataWriter<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE, FEATU
 		this.classifierManifest = new ClassifierManifest();
 	}
 
+	/**
+	 * Implementations of this method should return the class of the ClassifierBuilder that
+	 * should be written to the manifest file as the value of the 'classifierBuilderClass' attribute.  
+	 * The class listed in the manifest is in turn used by the Train utility to determine which classifier builder to use. 
+	 * By changing the manifest file, or by using a different tool to train the model, a different classifier builder could be used. 
+	 * Programmatically overriding the default classifier builder is not intended for this class.
+	 * @return
+	 */
 	public abstract Class<? extends ClassifierBuilder<INPUTOUTCOME_TYPE>> getDefaultClassifierBuilderClass();
 
 	public void write(Instance<INPUTOUTCOME_TYPE> instance) throws CleartkException {
