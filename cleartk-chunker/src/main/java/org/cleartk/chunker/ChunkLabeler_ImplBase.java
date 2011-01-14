@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.chunker;
 
 import java.util.ArrayList;
@@ -43,153 +43,156 @@ import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.Initializable;
 import org.uimafit.factory.initializable.InitializableFactory;
 
-
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ */
 
-*/
+public abstract class ChunkLabeler_ImplBase implements ChunkLabeler, Initializable {
 
-public abstract class ChunkLabeler_ImplBase implements ChunkLabeler, Initializable  {
+  public static final String PARAM_CHUNK_ANNOTATION_CLASS_NAME = ConfigurationParameterFactory
+          .createConfigurationParameterName(ChunkLabeler_ImplBase.class, "chunkAnnotationClassName");
 
-	public static final String PARAM_CHUNK_ANNOTATION_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
-			ChunkLabeler_ImplBase.class, "chunkAnnotationClassName");
+  @ConfigurationParameter(mandatory = true, description = "names the class of the type system chunk annotation type. An example value might be something like: 'org.cleartk.type.ne.NamedEntityMention'")
+  private String chunkAnnotationClassName;
 
-	@ConfigurationParameter(
-			mandatory = true,
-			description = "names the class of the type system chunk annotation type. An example value might be something like: 'org.cleartk.type.ne.NamedEntityMention'")
-	private String chunkAnnotationClassName;
+  @ConfigurationParameter(name = Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME, mandatory = true, description = "names the class of the type system type used to associate B, I, and O (for example) labels with.  An example value might be 'org.cleartk.type.Token'")
+  private String labeledAnnotationClassName;
 
-	@ConfigurationParameter(
-			name = Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME, 
-			mandatory = true,
-			description = "names the class of the type system type used to associate B, I, and O (for example) labels with.  An example value might be 'org.cleartk.type.Token'")
-	 private String labeledAnnotationClassName;
+  public static final String BEGIN_PREFIX = "B";
 
-	public static final String BEGIN_PREFIX = "B";
+  public static final String INSIDE_PREFIX = "I";
 
-	public static final String INSIDE_PREFIX = "I";
+  public static final String OUTSIDE_LABEL = "O";
 
-	public static final String OUTSIDE_LABEL = "O";
+  public static final String SEPARATOR = "-";
 
-	public static final String SEPARATOR = "-";
+  protected Class<? extends Annotation> chunkAnnotationClass;
 
-	protected Class<? extends Annotation> chunkAnnotationClass;
+  protected Type chunkAnnotationType;
 
-	protected Type chunkAnnotationType;
+  protected Class<? extends Annotation> labeledAnnotationClass;
 
-	protected Class<? extends Annotation> labeledAnnotationClass;
+  protected Type labeledAnnotationType;
 
-	protected Type labeledAnnotationType;
+  protected boolean typesInitialized = false;
 
-	protected boolean typesInitialized = false;
+  protected Map<Annotation, String> annotationLabels;
 
-	protected Map<Annotation, String> annotationLabels;
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    ConfigurationParameterInitializer.initialize(this, context);
+    labeledAnnotationClass = InitializableFactory.getClass(labeledAnnotationClassName,
+            Annotation.class);
+    chunkAnnotationClass = InitializableFactory
+            .getClass(chunkAnnotationClassName, Annotation.class);
+    annotationLabels = new HashMap<Annotation, String>();
+  }
 
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		ConfigurationParameterInitializer.initialize(this, context);
-		labeledAnnotationClass = InitializableFactory.getClass(labeledAnnotationClassName, Annotation.class);
-		chunkAnnotationClass = InitializableFactory.getClass(chunkAnnotationClassName, Annotation.class);
-		annotationLabels = new HashMap<Annotation, String>();
-	}
+  public abstract String getChunkLabel(JCas jCas, Annotation chunkAnnotation)
+          throws AnalysisEngineProcessException;
 
-	public abstract String getChunkLabel(JCas jCas, Annotation chunkAnnotation) throws AnalysisEngineProcessException;
-	
-	public abstract Annotation createChunk(JCas jCas, List<? extends Annotation> labeledAnnotations, String label) throws AnalysisEngineProcessException;
+  public abstract Annotation createChunk(JCas jCas, List<? extends Annotation> labeledAnnotations,
+          String label) throws AnalysisEngineProcessException;
 
+  protected void initializeTypes(JCas jCas) throws AnalysisEngineProcessException {
+    try {
+      chunkAnnotationType = UIMAUtil.getCasType(jCas, chunkAnnotationClass);
+      labeledAnnotationType = UIMAUtil.getCasType(jCas, labeledAnnotationClass);
+    } catch (Exception e) {
+      throw new AnalysisEngineProcessException(e);
+    }
+    typesInitialized = true;
+  }
 
-	protected void initializeTypes(JCas jCas) throws AnalysisEngineProcessException {
-		try {
-			chunkAnnotationType = UIMAUtil.getCasType(jCas, chunkAnnotationClass);
-			labeledAnnotationType = UIMAUtil.getCasType(jCas, labeledAnnotationClass);
-		}
-		catch (Exception e) {
-			throw new AnalysisEngineProcessException(e);
-		}
-		typesInitialized = true;
-	}
+  public void chunks2Labels(JCas jCas, Annotation sequence) throws AnalysisEngineProcessException {
+    if (!typesInitialized)
+      initializeTypes(jCas);
 
-	public void chunks2Labels(JCas jCas, Annotation sequence) throws AnalysisEngineProcessException {
-		if (!typesInitialized) initializeTypes(jCas);
+    annotationLabels.clear();
 
-		annotationLabels.clear();
+    FSIterator<Annotation> chunkAnnotations = jCas.getAnnotationIndex(chunkAnnotationType)
+            .subiterator(sequence);
+    while (chunkAnnotations.hasNext()) {
+      Annotation chunkAnnotation = (Annotation) chunkAnnotations.next();
+      String labelBase = getChunkLabel(jCas, chunkAnnotation);
+      String label = labelBase;
 
-		FSIterator<Annotation> chunkAnnotations = jCas.getAnnotationIndex(chunkAnnotationType).subiterator(sequence);
-		while (chunkAnnotations.hasNext()) {
-			Annotation chunkAnnotation = (Annotation) chunkAnnotations.next();
-			String labelBase = getChunkLabel(jCas, chunkAnnotation);
-			String label = labelBase;
-			
-			List<? extends Annotation> labeledAnnotations = AnnotationRetrieval.getAnnotations(jCas, chunkAnnotation,
-					labeledAnnotationClass);
+      List<? extends Annotation> labeledAnnotations = AnnotationRetrieval.getAnnotations(jCas,
+              chunkAnnotation, labeledAnnotationClass);
 
-			boolean begin = true;
-			for (Annotation labelAnnotation : labeledAnnotations) {
-				if (begin) label = BEGIN_PREFIX + SEPARATOR + labelBase;
-				else label = INSIDE_PREFIX + SEPARATOR + labelBase;
-				begin = false;
-				setLabel(labelAnnotation, label);
-			}
-		}
-	}
-	
-	public List<Annotation> labels2Chunks(JCas jCas, Annotation sequence) throws AnalysisEngineProcessException {
-		if (!typesInitialized) initializeTypes(jCas);
+      boolean begin = true;
+      for (Annotation labelAnnotation : labeledAnnotations) {
+        if (begin)
+          label = BEGIN_PREFIX + SEPARATOR + labelBase;
+        else
+          label = INSIDE_PREFIX + SEPARATOR + labelBase;
+        begin = false;
+        setLabel(labelAnnotation, label);
+      }
+    }
+  }
 
-		List<Annotation> returnValues = new ArrayList<Annotation>();
-		FSIterator<Annotation> labeledAnnotations = jCas.getAnnotationIndex(labeledAnnotationType).subiterator(sequence);
+  public List<Annotation> labels2Chunks(JCas jCas, Annotation sequence)
+          throws AnalysisEngineProcessException {
+    if (!typesInitialized)
+      initializeTypes(jCas);
 
-		String currentLabelValue = null;
-		List<Annotation> currentLabeledAnnotations = new ArrayList<Annotation>();
+    List<Annotation> returnValues = new ArrayList<Annotation>();
+    FSIterator<Annotation> labeledAnnotations = jCas.getAnnotationIndex(labeledAnnotationType)
+            .subiterator(sequence);
 
-		while (labeledAnnotations.hasNext()) {
-			Annotation labeledAnnotation = (Annotation) labeledAnnotations.next();
-			String label = getLabel(labeledAnnotation);
-			if(label == null)
-				label = OUTSIDE_LABEL;
+    String currentLabelValue = null;
+    List<Annotation> currentLabeledAnnotations = new ArrayList<Annotation>();
 
-			String labelPrefix = label.equals(OUTSIDE_LABEL) ? null : label.substring(0,1);
-			String labelValue = label.equals(OUTSIDE_LABEL) ? null : label.substring(2);
+    while (labeledAnnotations.hasNext()) {
+      Annotation labeledAnnotation = (Annotation) labeledAnnotations.next();
+      String label = getLabel(labeledAnnotation);
+      if (label == null)
+        label = OUTSIDE_LABEL;
 
-			if (labelPrefix == null || labelPrefix.equals(BEGIN_PREFIX) 
-					|| !labelValue.equals(currentLabelValue)) {
-				if (currentLabeledAnnotations.size() > 0) {
-					Annotation chunk = createChunk(jCas, currentLabeledAnnotations, currentLabelValue); 
-					if(chunk != null)
-						returnValues.add(chunk);
-				}
-				currentLabeledAnnotations.clear();
-				currentLabelValue = labelValue;
-			}
-			if (labelValue != null) currentLabeledAnnotations.add(labeledAnnotation);
-		}
+      String labelPrefix = label.equals(OUTSIDE_LABEL) ? null : label.substring(0, 1);
+      String labelValue = label.equals(OUTSIDE_LABEL) ? null : label.substring(2);
 
-		if (currentLabeledAnnotations.size() > 0) {
-			Annotation chunk = createChunk(jCas, currentLabeledAnnotations, currentLabelValue); 
-			if(chunk != null)
-				returnValues.add(chunk);
-		}
-		return returnValues;
-	}
+      if (labelPrefix == null || labelPrefix.equals(BEGIN_PREFIX)
+              || !labelValue.equals(currentLabelValue)) {
+        if (currentLabeledAnnotations.size() > 0) {
+          Annotation chunk = createChunk(jCas, currentLabeledAnnotations, currentLabelValue);
+          if (chunk != null)
+            returnValues.add(chunk);
+        }
+        currentLabeledAnnotations.clear();
+        currentLabelValue = labelValue;
+      }
+      if (labelValue != null)
+        currentLabeledAnnotations.add(labeledAnnotation);
+    }
 
-	
-	public String getLabel(Annotation labeledAnnotation) throws AnalysisEngineProcessException {
-		if (annotationLabels.containsKey(labeledAnnotation)) return annotationLabels.get(labeledAnnotation);
-		return OUTSIDE_LABEL;
-	}
+    if (currentLabeledAnnotations.size() > 0) {
+      Annotation chunk = createChunk(jCas, currentLabeledAnnotations, currentLabelValue);
+      if (chunk != null)
+        returnValues.add(chunk);
+    }
+    return returnValues;
+  }
 
-	public void setLabel(Annotation labeledAnnotation, String label) throws AnalysisEngineProcessException {
-		annotationLabels.put(labeledAnnotation, label);
-	}
+  public String getLabel(Annotation labeledAnnotation) throws AnalysisEngineProcessException {
+    if (annotationLabels.containsKey(labeledAnnotation))
+      return annotationLabels.get(labeledAnnotation);
+    return OUTSIDE_LABEL;
+  }
 
-	public void setChunkAnnotationClassName(String chunkAnnotationClassName) {
-		this.chunkAnnotationClassName = chunkAnnotationClassName;
-	}
+  public void setLabel(Annotation labeledAnnotation, String label)
+          throws AnalysisEngineProcessException {
+    annotationLabels.put(labeledAnnotation, label);
+  }
 
-	public void setLabeledAnnotationClassName(String labeledAnnotationClassName) {
-		this.labeledAnnotationClassName = labeledAnnotationClassName;
-	}
+  public void setChunkAnnotationClassName(String chunkAnnotationClassName) {
+    this.chunkAnnotationClassName = chunkAnnotationClassName;
+  }
 
+  public void setLabeledAnnotationClassName(String labeledAnnotationClassName) {
+    this.labeledAnnotationClassName = labeledAnnotationClassName;
+  }
 
 }

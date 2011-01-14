@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.chunker;
 
 import java.lang.reflect.Constructor;
@@ -35,86 +35,90 @@ import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
-*/
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ */
 
 public class DefaultChunkLabeler extends ChunkLabeler_ImplBase {
 
-	public static final String PARAM_CHUNK_LABEL_FEATURE_NAME = ConfigurationParameterFactory.createConfigurationParameterName(DefaultChunkLabeler.class, "chunkLabelFeatureName");
+  public static final String PARAM_CHUNK_LABEL_FEATURE_NAME = ConfigurationParameterFactory
+          .createConfigurationParameterName(DefaultChunkLabeler.class, "chunkLabelFeatureName");
 
-	private static final String CHUNK_LABEL_FEATURE_DESCRIPTION = "names  the feature of the type system chunk type that provides a label for each " +
-			"chunk. The feature is queried and the value of the feature is used as the label for the chunk.  If this parameter has no value, then the name of the " +
-			"chunk type will be used as a label. For example, if the value of the parameter 'org.cleartk.chunk.ChunkLabeler_ImplBase.chunkAnnotationClassName' is 'org.cleartk.type.Chunk', " +
-			"then a good value for this parameter would be 'chunkType'.  This would result in labels corresponding to the values found in the type system feature " +
-			"chunkType.  If the value of the parameter ''org.cleartk.chunk.ChunkLabeler_ImplBase.chunkAnnotationClassName'' is 'org.cleartk.type.Chunk' and no value is given for " +
-			"this parameter, then the label will always be 'Chunk'";
-	
-	@ConfigurationParameter(
-			description = CHUNK_LABEL_FEATURE_DESCRIPTION)
-	private String chunkLabelFeatureName;
+  private static final String CHUNK_LABEL_FEATURE_DESCRIPTION = "names  the feature of the type system chunk type that provides a label for each "
+          + "chunk. The feature is queried and the value of the feature is used as the label for the chunk.  If this parameter has no value, then the name of the "
+          + "chunk type will be used as a label. For example, if the value of the parameter 'org.cleartk.chunk.ChunkLabeler_ImplBase.chunkAnnotationClassName' is 'org.cleartk.type.Chunk', "
+          + "then a good value for this parameter would be 'chunkType'.  This would result in labels corresponding to the values found in the type system feature "
+          + "chunkType.  If the value of the parameter ''org.cleartk.chunk.ChunkLabeler_ImplBase.chunkAnnotationClassName'' is 'org.cleartk.type.Chunk' and no value is given for "
+          + "this parameter, then the label will always be 'Chunk'";
 
-	public void setChunkLabelFeatureName(String chunkLabelFeatureName) {
-		this.chunkLabelFeatureName = chunkLabelFeatureName;
-	}
+  @ConfigurationParameter(description = CHUNK_LABEL_FEATURE_DESCRIPTION)
+  private String chunkLabelFeatureName;
 
-	private org.apache.uima.cas.Feature chunkLabelFeature;
+  public void setChunkLabelFeatureName(String chunkLabelFeatureName) {
+    this.chunkLabelFeatureName = chunkLabelFeatureName;
+  }
 
-	Constructor<? extends Annotation> chunkAnnotationConstructor;
+  private org.apache.uima.cas.Feature chunkLabelFeature;
 
-	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		super.initialize(context);
-		
-		if(chunkLabelFeatureName != null) {
-			chunkLabelFeatureName = chunkAnnotationClass.getCanonicalName() + ":" + chunkLabelFeatureName;
-		}
-		
-		try {
-			chunkAnnotationConstructor = chunkAnnotationClass.getConstructor(new Class[] { JCas.class,
-					java.lang.Integer.TYPE, java.lang.Integer.TYPE });
-		}
-		catch (Exception e) {
-			throw new ResourceInitializationException(e);
-		}
-	}
+  Constructor<? extends Annotation> chunkAnnotationConstructor;
 
-	protected void initializeTypes(JCas jCas) throws AnalysisEngineProcessException {
-		super.initializeTypes(jCas);
-		try {
-			if (chunkLabelFeatureName != null) {
-				chunkLabelFeature = jCas.getTypeSystem().getFeatureByFullName(chunkLabelFeatureName);
-				if (chunkLabelFeature == null) throw new AnalysisEngineProcessException("type feature for name '"
-						+ chunkLabelFeatureName + "' not found.  ", null);
-			}
-		}
-		catch (Exception e) {
-			throw new AnalysisEngineProcessException(e);
-		}
-	}
+  @Override
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    super.initialize(context);
 
-	public Annotation createChunk(JCas jCas, List<? extends Annotation> labeledAnnotations, String label)
-			throws AnalysisEngineProcessException {
-		try {
-			int begin = labeledAnnotations.get(0).getBegin();
-			int end = labeledAnnotations.get(labeledAnnotations.size() - 1).getEnd();
-			Annotation annotation = chunkAnnotationConstructor.newInstance(new Object[] { jCas, begin, end });
+    if (chunkLabelFeatureName != null) {
+      chunkLabelFeatureName = chunkAnnotationClass.getCanonicalName() + ":" + chunkLabelFeatureName;
+    }
 
-			if (chunkLabelFeature != null) annotation.setFeatureValueFromString(chunkLabelFeature, label);
-			annotation.addToIndexes();
-			return annotation;
-		}
-		catch (Exception e) {
-			throw new AnalysisEngineProcessException(e);
-		}
-	}
+    try {
+      chunkAnnotationConstructor = chunkAnnotationClass.getConstructor(new Class[] { JCas.class,
+          java.lang.Integer.TYPE, java.lang.Integer.TYPE });
+    } catch (Exception e) {
+      throw new ResourceInitializationException(e);
+    }
+  }
 
-	@Override
-	public String getChunkLabel(JCas jCas, Annotation chunkAnnotation) throws AnalysisEngineProcessException {
-		if (!typesInitialized) initializeTypes(jCas);
+  protected void initializeTypes(JCas jCas) throws AnalysisEngineProcessException {
+    super.initializeTypes(jCas);
+    try {
+      if (chunkLabelFeatureName != null) {
+        chunkLabelFeature = jCas.getTypeSystem().getFeatureByFullName(chunkLabelFeatureName);
+        if (chunkLabelFeature == null)
+          throw new AnalysisEngineProcessException("type feature for name '"
+                  + chunkLabelFeatureName + "' not found.  ", null);
+      }
+    } catch (Exception e) {
+      throw new AnalysisEngineProcessException(e);
+    }
+  }
 
-		if (chunkLabelFeature != null) return chunkAnnotation.getFeatureValueAsString(chunkLabelFeature);
-		else return chunkAnnotationClass.getSimpleName();
-	}
+  public Annotation createChunk(JCas jCas, List<? extends Annotation> labeledAnnotations,
+          String label) throws AnalysisEngineProcessException {
+    try {
+      int begin = labeledAnnotations.get(0).getBegin();
+      int end = labeledAnnotations.get(labeledAnnotations.size() - 1).getEnd();
+      Annotation annotation = chunkAnnotationConstructor.newInstance(new Object[] { jCas, begin,
+          end });
+
+      if (chunkLabelFeature != null)
+        annotation.setFeatureValueFromString(chunkLabelFeature, label);
+      annotation.addToIndexes();
+      return annotation;
+    } catch (Exception e) {
+      throw new AnalysisEngineProcessException(e);
+    }
+  }
+
+  @Override
+  public String getChunkLabel(JCas jCas, Annotation chunkAnnotation)
+          throws AnalysisEngineProcessException {
+    if (!typesInitialized)
+      initializeTypes(jCas);
+
+    if (chunkLabelFeature != null)
+      return chunkAnnotation.getFeatureValueAsString(chunkLabelFeature);
+    else
+      return chunkAnnotationClass.getSimpleName();
+  }
 }

@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.chunker;
 
 import java.util.List;
@@ -30,19 +30,22 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
-*/
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ */
 
 public interface ChunkLabeler {
 
-	public void chunks2Labels(JCas jCas, Annotation sequenceAnnotation) throws AnalysisEngineProcessException;
+  public void chunks2Labels(JCas jCas, Annotation sequenceAnnotation)
+          throws AnalysisEngineProcessException;
 
-	public List<Annotation> labels2Chunks(JCas jCas, Annotation sequenceAnnotation) throws AnalysisEngineProcessException;
-	
-	public String getLabel(Annotation labeledAnnotation) throws AnalysisEngineProcessException;
+  public List<Annotation> labels2Chunks(JCas jCas, Annotation sequenceAnnotation)
+          throws AnalysisEngineProcessException;
 
-	public void setLabel(Annotation labeledAnnotation, String label) throws AnalysisEngineProcessException;
+  public String getLabel(Annotation labeledAnnotation) throws AnalysisEngineProcessException;
+
+  public void setLabel(Annotation labeledAnnotation, String label)
+          throws AnalysisEngineProcessException;
 
 }

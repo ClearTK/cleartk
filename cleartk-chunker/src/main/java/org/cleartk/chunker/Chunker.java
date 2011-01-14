@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.chunker;
 
 import java.util.ArrayList;
@@ -41,162 +41,155 @@ import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.InitializableFactory;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
-*/
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ */
 
 public class Chunker extends CleartkSequentialAnnotator<String> {
 
-	//The name is hard coded here as a string because it needs to be referenced as a constant in ChunkLabeler_ImplBase
-	public static final String PARAM_LABELED_ANNOTATION_CLASS_NAME = "org.cleartk.chunker.Chunker.labeledAnnotationClassName";
+  // The name is hard coded here as a string because it needs to be referenced as a constant in
+  // ChunkLabeler_ImplBase
+  public static final String PARAM_LABELED_ANNOTATION_CLASS_NAME = "org.cleartk.chunker.Chunker.labeledAnnotationClassName";
 
-	@ConfigurationParameter(
-			mandatory = true,
-			description = "names the class of the type system type used to associate B, I, and O (for example) labels with.  An example value might be 'org.cleartk.type.Token'")
-	 protected String labeledAnnotationClassName;
+  @ConfigurationParameter(mandatory = true, description = "names the class of the type system type used to associate B, I, and O (for example) labels with.  An example value might be 'org.cleartk.type.Token'")
+  protected String labeledAnnotationClassName;
 
-	public static final String PARAM_SEQUENCE_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
-			Chunker.class, "sequenceClassName");
-	@ConfigurationParameter(
-			mandatory = true,
-			description = "names the class of the type system type that specifies a 'sequence' of labels.  An example might be something like 'org.cleartk.type.Sentence'")
-	protected String sequenceClassName;
-	
-	public static final String PARAM_CHUNK_LABELER_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
-			Chunker.class, "chunkLabelerClassName");
-	@ConfigurationParameter(
-			mandatory = true,
-			description = "provides the class name of a class that extends org.cleartk.chunk.ChunkLabeler.")
-	protected String chunkLabelerClassName;
-	
-	public static final String PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
-			Chunker.class, "chunkerFeatureExtractorClassName");
-	@ConfigurationParameter(
-			mandatory = true,
-			description = "provides the class name of a class that extends org.cleartk.chunk.ChunkFeatureExtractor.")
-	protected String chunkerFeatureExtractorClassName;
-	
-	protected Class<? extends Annotation> labeledAnnotationClass;
+  public static final String PARAM_SEQUENCE_CLASS_NAME = ConfigurationParameterFactory
+          .createConfigurationParameterName(Chunker.class, "sequenceClassName");
 
-	private Type labeledAnnotationType;
+  @ConfigurationParameter(mandatory = true, description = "names the class of the type system type that specifies a 'sequence' of labels.  An example might be something like 'org.cleartk.type.Sentence'")
+  protected String sequenceClassName;
 
-	protected Class<? extends Annotation> sequenceClass;
+  public static final String PARAM_CHUNK_LABELER_CLASS_NAME = ConfigurationParameterFactory
+          .createConfigurationParameterName(Chunker.class, "chunkLabelerClassName");
 
-	private Type sequenceType;
+  @ConfigurationParameter(mandatory = true, description = "provides the class name of a class that extends org.cleartk.chunk.ChunkLabeler.")
+  protected String chunkLabelerClassName;
 
-	protected ChunkLabeler chunkLabeler;
+  public static final String PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME = ConfigurationParameterFactory
+          .createConfigurationParameterName(Chunker.class, "chunkerFeatureExtractorClassName");
 
-	protected ChunkerFeatureExtractor featureExtractor;
+  @ConfigurationParameter(mandatory = true, description = "provides the class name of a class that extends org.cleartk.chunk.ChunkFeatureExtractor.")
+  protected String chunkerFeatureExtractorClassName;
 
-	protected boolean typesInitialized = false;
+  protected Class<? extends Annotation> labeledAnnotationClass;
 
-	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		super.initialize(context);
-		labeledAnnotationClass = InitializableFactory.getClass(labeledAnnotationClassName, Annotation.class);
-		sequenceClass = InitializableFactory.getClass(sequenceClassName, Annotation.class);
-		chunkLabeler = InitializableFactory.create(context, chunkLabelerClassName, ChunkLabeler.class);
-		featureExtractor = InitializableFactory.create(context, chunkerFeatureExtractorClassName, ChunkerFeatureExtractor.class);
-	}
+  private Type labeledAnnotationType;
 
-	protected void initializeTypes(JCas jCas) throws AnalysisEngineProcessException {
-		try {
-			labeledAnnotationType = UIMAUtil.getCasType(jCas, labeledAnnotationClass);
-			sequenceType = UIMAUtil.getCasType(jCas, sequenceClass);
-		}
-		catch (Exception e) {
-			throw new AnalysisEngineProcessException(e);
-		}
-		typesInitialized = true;
-	}
+  protected Class<? extends Annotation> sequenceClass;
 
-	protected FSIterator<Annotation> sequences(JCas jCas) {
-		return jCas.getAnnotationIndex(sequenceType).iterator();
-	}
-	
-	protected FSIterator<Annotation> labeledAnnotations(JCas jCas, Annotation sequence) {
-		return jCas.getAnnotationIndex(labeledAnnotationType).subiterator(sequence);
-	}
-	
-	
-	@Override
-	public void process(JCas jCas) throws AnalysisEngineProcessException {
-		try {
-			this.processSimple(jCas);
-		} catch (CleartkException e) {
-			throw new AnalysisEngineProcessException(e);
-		}
-	}
-	
-	public void processSimple(JCas jCas) throws AnalysisEngineProcessException, CleartkException {
-		if (!typesInitialized) initializeTypes(jCas);
+  private Type sequenceType;
 
+  protected ChunkLabeler chunkLabeler;
 
-		List<Instance<String>> instances = new ArrayList<Instance<String>>();
-		Instance<String> instance;
+  protected ChunkerFeatureExtractor featureExtractor;
 
-		List<Annotation> labeledAnnotationList = new ArrayList<Annotation>();
+  protected boolean typesInitialized = false;
 
-		FSIterator<Annotation> sequences = sequences(jCas);
+  @Override
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    super.initialize(context);
+    labeledAnnotationClass = InitializableFactory.getClass(labeledAnnotationClassName,
+            Annotation.class);
+    sequenceClass = InitializableFactory.getClass(sequenceClassName, Annotation.class);
+    chunkLabeler = InitializableFactory.create(context, chunkLabelerClassName, ChunkLabeler.class);
+    featureExtractor = InitializableFactory.create(context, chunkerFeatureExtractorClassName,
+            ChunkerFeatureExtractor.class);
+  }
 
-		while (sequences.hasNext()) {
-			Annotation sequence = (Annotation) sequences.next();
-			if(this.isTraining()) {
-				chunkLabeler.chunks2Labels(jCas, sequence);
-			}
-			instances.clear();
-			labeledAnnotationList.clear();
+  protected void initializeTypes(JCas jCas) throws AnalysisEngineProcessException {
+    try {
+      labeledAnnotationType = UIMAUtil.getCasType(jCas, labeledAnnotationClass);
+      sequenceType = UIMAUtil.getCasType(jCas, sequenceClass);
+    } catch (Exception e) {
+      throw new AnalysisEngineProcessException(e);
+    }
+    typesInitialized = true;
+  }
 
-			FSIterator<Annotation> labeledAnnotations = labeledAnnotations(jCas, sequence);
-			while (labeledAnnotations.hasNext()) {
-				Annotation labeledAnnotation = (Annotation) labeledAnnotations.next();
-				labeledAnnotationList.add(labeledAnnotation);
+  protected FSIterator<Annotation> sequences(JCas jCas) {
+    return jCas.getAnnotationIndex(sequenceType).iterator();
+  }
 
-				instance = featureExtractor.extractFeatures(jCas, labeledAnnotation, sequence);
+  protected FSIterator<Annotation> labeledAnnotations(JCas jCas, Annotation sequence) {
+    return jCas.getAnnotationIndex(labeledAnnotationType).subiterator(sequence);
+  }
 
-				String label = chunkLabeler.getLabel(labeledAnnotation);
-				instance.setOutcome(label);
-				instances.add(instance);
-			}
-			
-			// write data while training
-			if (this.isTraining()) {
-				this.sequentialDataWriter.writeSequence(instances);
-			}
-			
-			// set labels during classification
-			else {
-				List<String> results = this.classifySequence(instances);
-				for (int i = 0; i < results.size(); i++) {
-					Annotation labeledAnnotation = labeledAnnotationList.get(i);
-					String label = results.get(i);
-					chunkLabeler.setLabel(labeledAnnotation, label);
-				}
-				chunkLabeler.labels2Chunks(jCas, sequence);
-			}
-		}
-		
+  @Override
+  public void process(JCas jCas) throws AnalysisEngineProcessException {
+    try {
+      this.processSimple(jCas);
+    } catch (CleartkException e) {
+      throw new AnalysisEngineProcessException(e);
+    }
+  }
 
-	}
-	
-	public void setLabeledAnnotationClassName(String labeledAnnotationClassName) {
-		this.labeledAnnotationClassName = labeledAnnotationClassName;
-	}
+  public void processSimple(JCas jCas) throws AnalysisEngineProcessException, CleartkException {
+    if (!typesInitialized)
+      initializeTypes(jCas);
 
-	public void setSequenceClassName(String sequenceClassName) {
-		this.sequenceClassName = sequenceClassName;
-	}
+    List<Instance<String>> instances = new ArrayList<Instance<String>>();
+    Instance<String> instance;
 
-	public void setChunkLabelerClassName(String chunkLabelerClassName) {
-		this.chunkLabelerClassName = chunkLabelerClassName;
-	}
+    List<Annotation> labeledAnnotationList = new ArrayList<Annotation>();
 
-	public void setChunkerFeatureExtractorClassName(String chunkerFeatureExtractorClassName) {
-		this.chunkerFeatureExtractorClassName = chunkerFeatureExtractorClassName;
-	}
+    FSIterator<Annotation> sequences = sequences(jCas);
+
+    while (sequences.hasNext()) {
+      Annotation sequence = (Annotation) sequences.next();
+      if (this.isTraining()) {
+        chunkLabeler.chunks2Labels(jCas, sequence);
+      }
+      instances.clear();
+      labeledAnnotationList.clear();
+
+      FSIterator<Annotation> labeledAnnotations = labeledAnnotations(jCas, sequence);
+      while (labeledAnnotations.hasNext()) {
+        Annotation labeledAnnotation = (Annotation) labeledAnnotations.next();
+        labeledAnnotationList.add(labeledAnnotation);
+
+        instance = featureExtractor.extractFeatures(jCas, labeledAnnotation, sequence);
+
+        String label = chunkLabeler.getLabel(labeledAnnotation);
+        instance.setOutcome(label);
+        instances.add(instance);
+      }
+
+      // write data while training
+      if (this.isTraining()) {
+        this.sequentialDataWriter.writeSequence(instances);
+      }
+
+      // set labels during classification
+      else {
+        List<String> results = this.classifySequence(instances);
+        for (int i = 0; i < results.size(); i++) {
+          Annotation labeledAnnotation = labeledAnnotationList.get(i);
+          String label = results.get(i);
+          chunkLabeler.setLabel(labeledAnnotation, label);
+        }
+        chunkLabeler.labels2Chunks(jCas, sequence);
+      }
+    }
+
+  }
+
+  public void setLabeledAnnotationClassName(String labeledAnnotationClassName) {
+    this.labeledAnnotationClassName = labeledAnnotationClassName;
+  }
+
+  public void setSequenceClassName(String sequenceClassName) {
+    this.sequenceClassName = sequenceClassName;
+  }
+
+  public void setChunkLabelerClassName(String chunkLabelerClassName) {
+    this.chunkLabelerClassName = chunkLabelerClassName;
+  }
+
+  public void setChunkerFeatureExtractorClassName(String chunkerFeatureExtractorClassName) {
+    this.chunkerFeatureExtractorClassName = chunkerFeatureExtractorClassName;
+  }
 
 }
-
