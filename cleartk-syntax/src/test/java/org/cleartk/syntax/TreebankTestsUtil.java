@@ -39,52 +39,52 @@ import org.cleartk.syntax.constituent.type.TreebankNode;
  */
 public class TreebankTestsUtil {
 
-	/**
-	 * Create a leaf TreebankNode in a JCas.
-	 * 
-	 * @param jCas
-	 *            The JCas which the annotation should be added to.
-	 * @param begin
-	 *            The begin offset of the node.
-	 * @param end
-	 *            The end offset of the node.
-	 * @param nodeType
-	 *            The part of speech tag of the node.
-	 * @return The TreebankNode which was added to the JCas.
-	 */
-	public static TreebankNode newNode(JCas jCas, int begin, int end, String nodeType) {
-		TreebankNode node = new TreebankNode(jCas, begin, end);
-		node.setNodeType(nodeType);
-		node.setChildren(new FSArray(jCas, 0));
-		node.setLeaf(true);
-		node.addToIndexes();
-		return node;
-	}
+  /**
+   * Create a leaf TreebankNode in a JCas.
+   * 
+   * @param jCas
+   *          The JCas which the annotation should be added to.
+   * @param begin
+   *          The begin offset of the node.
+   * @param end
+   *          The end offset of the node.
+   * @param nodeType
+   *          The part of speech tag of the node.
+   * @return The TreebankNode which was added to the JCas.
+   */
+  public static TreebankNode newNode(JCas jCas, int begin, int end, String nodeType) {
+    TreebankNode node = new TreebankNode(jCas, begin, end);
+    node.setNodeType(nodeType);
+    node.setChildren(new FSArray(jCas, 0));
+    node.setLeaf(true);
+    node.addToIndexes();
+    return node;
+  }
 
-	/**
-	 * Create a branch TreebankNode in a JCas. The offsets of this node will be
-	 * determined by its children.
-	 * 
-	 * @param jCas
-	 *            The JCas which the annotation should be added to.
-	 * @param nodeType
-	 *            The phrase type tag of the node.
-	 * @param children
-	 *            The TreebankNode children of the node.
-	 * @return The TreebankNode which was added to the JCas.
-	 */
-	public static TreebankNode newNode(JCas jCas, String nodeType, TreebankNode... children) {
-		int begin = children[0].getBegin();
-		int end = children[children.length - 1].getEnd();
-		TreebankNode node = new TreebankNode(jCas, begin, end);
-		node.setNodeType(nodeType);
-		node.addToIndexes();
-		FSArray fsArray = new FSArray(jCas, children.length);
-		fsArray.copyFromArray(children, 0, 0, children.length);
-		node.setChildren(fsArray);
-		for (TreebankNode child : children) {
-			child.setParent(node);
-		}
-		return node;
-	}
+  /**
+   * Create a branch TreebankNode in a JCas. The offsets of this node will be determined by its
+   * children.
+   * 
+   * @param jCas
+   *          The JCas which the annotation should be added to.
+   * @param nodeType
+   *          The phrase type tag of the node.
+   * @param children
+   *          The TreebankNode children of the node.
+   * @return The TreebankNode which was added to the JCas.
+   */
+  public static TreebankNode newNode(JCas jCas, String nodeType, TreebankNode... children) {
+    int begin = children[0].getBegin();
+    int end = children[children.length - 1].getEnd();
+    TreebankNode node = new TreebankNode(jCas, begin, end);
+    node.setNodeType(nodeType);
+    node.addToIndexes();
+    FSArray fsArray = new FSArray(jCas, children.length);
+    fsArray.copyFromArray(children, 0, 0, children.length);
+    node.setChildren(fsArray);
+    for (TreebankNode child : children) {
+      child.setParent(node);
+    }
+    return node;
+  }
 }

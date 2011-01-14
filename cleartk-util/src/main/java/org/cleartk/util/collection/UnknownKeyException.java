@@ -20,21 +20,22 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.util.collection;
 
 /**
- * <br>Copyright (c) 2010, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2010, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * <p>
  */
 public class UnknownKeyException extends Exception {
 
-	private static final long serialVersionUID = 5979637438926133608L;
+  private static final long serialVersionUID = 5979637438926133608L;
 
-	public UnknownKeyException(String s) {
-		super(s);
-	}
-	
+  public UnknownKeyException(String s) {
+    super(s);
+  }
+
 }

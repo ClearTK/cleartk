@@ -51,94 +51,82 @@ import org.uimafit.factory.initializable.InitializableFactory;
  * 
  */
 
-public class ViterbiDataWriterFactory<OUTCOME_TYPE> implements SequentialDataWriterFactory<OUTCOME_TYPE>, Initializable {
+public class ViterbiDataWriterFactory<OUTCOME_TYPE> implements
+        SequentialDataWriterFactory<OUTCOME_TYPE>, Initializable {
 
-	public static final String PARAM_OUTCOME_FEATURE_EXTRACTOR_NAMES = 
-		ConfigurationParameterFactory.createConfigurationParameterName(
-				ViterbiDataWriterFactory.class, 
-				"outcomeFeatureExtractorNames");
-	@ConfigurationParameter(
-			mandatory = false, 
-			description = "An optional, multi-valued, string parameter that " +
-			"specifies which OutcomeFeatureExtractors should be used. " +
-			"Each value of this parameter should be the name of a " +
-			"class that implements OutcomeFeatureExtractor. One valid " +
-			"value that you might use is " +
-	"org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor")
-	protected String outcomeFeatureExtractorNames[];
+  public static final String PARAM_OUTCOME_FEATURE_EXTRACTOR_NAMES = ConfigurationParameterFactory
+          .createConfigurationParameterName(ViterbiDataWriterFactory.class,
+                  "outcomeFeatureExtractorNames");
 
+  @ConfigurationParameter(mandatory = false, description = "An optional, multi-valued, string parameter that "
+          + "specifies which OutcomeFeatureExtractors should be used. "
+          + "Each value of this parameter should be the name of a "
+          + "class that implements OutcomeFeatureExtractor. One valid "
+          + "value that you might use is "
+          + "org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor")
+  protected String outcomeFeatureExtractorNames[];
 
-	public static final String PARAM_DELEGATED_DATA_WRITER_FACTORY_CLASS = 
-		ConfigurationParameterFactory.createConfigurationParameterName(
-				ViterbiDataWriterFactory.class, 
-				"delegatedDataWriterFactoryClass");
-	@ConfigurationParameter(
-			mandatory = true,
-			description = "A single, required, string parameter that provides " +
-			"the full name of the DataWriterFactory class that will be " +
-	"wrapped.")
-	protected String delegatedDataWriterFactoryClass;
+  public static final String PARAM_DELEGATED_DATA_WRITER_FACTORY_CLASS = ConfigurationParameterFactory
+          .createConfigurationParameterName(ViterbiDataWriterFactory.class,
+                  "delegatedDataWriterFactoryClass");
 
+  @ConfigurationParameter(mandatory = true, description = "A single, required, string parameter that provides "
+          + "the full name of the DataWriterFactory class that will be " + "wrapped.")
+  protected String delegatedDataWriterFactoryClass;
 
-	public static final String PARAM_OUTPUT_DIRECTORY = 
-		ConfigurationParameterFactory.createConfigurationParameterName(
-				ViterbiDataWriterFactory.class, 
-				"outputDirectory");
-	@ConfigurationParameter(
-			mandatory = true, 
-			description = "provides the name of the directory where the " +
-	"training data will be written.")
-	protected File outputDirectory;
+  public static final String PARAM_OUTPUT_DIRECTORY = ConfigurationParameterFactory
+          .createConfigurationParameterName(ViterbiDataWriterFactory.class, "outputDirectory");
 
+  @ConfigurationParameter(mandatory = true, description = "provides the name of the directory where the "
+          + "training data will be written.")
+  protected File outputDirectory;
 
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		ConfigurationParameterInitializer.initialize(this, context);
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    ConfigurationParameterInitializer.initialize(this, context);
 
-		try {
-			OutcomeFeatureExtractor outcomeFeatureExtractors[];
-			if (outcomeFeatureExtractorNames == null) {
-				outcomeFeatureExtractors = new OutcomeFeatureExtractor[0];
-			} else {
-				outcomeFeatureExtractors = new OutcomeFeatureExtractor[outcomeFeatureExtractorNames.length];
-				for (int i = 0; i < outcomeFeatureExtractorNames.length; i++) {
-					outcomeFeatureExtractors[i] = InitializableFactory.create(context, outcomeFeatureExtractorNames[i], OutcomeFeatureExtractor.class);
-				}
-			}
+    try {
+      OutcomeFeatureExtractor outcomeFeatureExtractors[];
+      if (outcomeFeatureExtractorNames == null) {
+        outcomeFeatureExtractors = new OutcomeFeatureExtractor[0];
+      } else {
+        outcomeFeatureExtractors = new OutcomeFeatureExtractor[outcomeFeatureExtractorNames.length];
+        for (int i = 0; i < outcomeFeatureExtractorNames.length; i++) {
+          outcomeFeatureExtractors[i] = InitializableFactory.create(context,
+                  outcomeFeatureExtractorNames[i], OutcomeFeatureExtractor.class);
+        }
+      }
 
-			dataWriter = 
-				new ViterbiDataWriter<OUTCOME_TYPE>(
-						outputDirectory,
-						outcomeFeatureExtractors);
+      dataWriter = new ViterbiDataWriter<OUTCOME_TYPE>(outputDirectory, outcomeFeatureExtractors);
 
-			UimaContext_ImplBase contextImpl = (UimaContext_ImplBase) context;
-			ConfigurationManager c = contextImpl.getConfigurationManager();
-			c.setConfigParameterValue(contextImpl.getQualifiedContextName() + JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, dataWriter.getDelegatedModelDirectory().toString());
-			
-			JarDataWriterFactory<?, OUTCOME_TYPE, ?> delegatedDataWriterFactory = 
-				createDelegatedDataWriterFactory(delegatedDataWriterFactoryClass, context);
-			
-			DataWriter<OUTCOME_TYPE> delegatedDataWriter = 
-				delegatedDataWriterFactory.createDataWriter();
-			dataWriter.setDelegatedDataWriter(delegatedDataWriter);
-		} catch (IOException e) {
-			throw new ResourceInitializationException(e);
-		} catch (CleartkException e) {
-			throw new ResourceInitializationException(e);
-		}
-	}
+      UimaContext_ImplBase contextImpl = (UimaContext_ImplBase) context;
+      ConfigurationManager c = contextImpl.getConfigurationManager();
+      c.setConfigParameterValue(contextImpl.getQualifiedContextName()
+              + JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, dataWriter
+              .getDelegatedModelDirectory().toString());
 
-	public SequentialDataWriter<OUTCOME_TYPE> createSequentialDataWriter() throws IOException {
-		return dataWriter;
-	}
-	
-	@SuppressWarnings("unchecked")
-	private JarDataWriterFactory<?, OUTCOME_TYPE, ?> createDelegatedDataWriterFactory(
-			String delegatedDataWriterFactoryClassName,
-			UimaContext context) throws ResourceInitializationException {
-		return InitializableFactory.create(context,
-				delegatedDataWriterFactoryClassName, 
-				JarDataWriterFactory.class);
-	}
+      JarDataWriterFactory<?, OUTCOME_TYPE, ?> delegatedDataWriterFactory = createDelegatedDataWriterFactory(
+              delegatedDataWriterFactoryClass, context);
 
-	private ViterbiDataWriter<OUTCOME_TYPE> dataWriter;
+      DataWriter<OUTCOME_TYPE> delegatedDataWriter = delegatedDataWriterFactory.createDataWriter();
+      dataWriter.setDelegatedDataWriter(delegatedDataWriter);
+    } catch (IOException e) {
+      throw new ResourceInitializationException(e);
+    } catch (CleartkException e) {
+      throw new ResourceInitializationException(e);
+    }
+  }
+
+  public SequentialDataWriter<OUTCOME_TYPE> createSequentialDataWriter() throws IOException {
+    return dataWriter;
+  }
+
+  @SuppressWarnings("unchecked")
+  private JarDataWriterFactory<?, OUTCOME_TYPE, ?> createDelegatedDataWriterFactory(
+          String delegatedDataWriterFactoryClassName, UimaContext context)
+          throws ResourceInitializationException {
+    return InitializableFactory.create(context, delegatedDataWriterFactoryClassName,
+            JarDataWriterFactory.class);
+  }
+
+  private ViterbiDataWriter<OUTCOME_TYPE> dataWriter;
 }

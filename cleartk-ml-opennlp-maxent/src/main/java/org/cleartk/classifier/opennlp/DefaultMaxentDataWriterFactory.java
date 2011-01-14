@@ -38,32 +38,32 @@ import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
  * <br>
  * Copyright (c) 2009, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
  * @author Philip Ogren, Philipp Wetzler
  * 
  */
 
 public class DefaultMaxentDataWriterFactory extends MaxentDataWriterFactory_ImplBase<String> {
 
+  @Override
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    super.initialize(context);
+  }
 
-	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		super.initialize(context);
-	}
-	
-	public DataWriter<String> createDataWriter() throws IOException {
-		MaxentDataWriter mdw = new MaxentDataWriter(outputDirectory);
-		
-		if(!this.setEncodersFromFileSystem(mdw)) {
-			NameNumberFeaturesEncoder ftrsNcdr = new NameNumberFeaturesEncoder(compress, sort);
-			ftrsNcdr.addEncoder(new NumberEncoder());
-			ftrsNcdr.addEncoder(new BooleanEncoder());
-			ftrsNcdr.addEncoder(new StringEncoder());
-			mdw.setFeaturesEncoder(ftrsNcdr);
-			
-			mdw.setOutcomeEncoder(new StringToStringOutcomeEncoder());
-		}
-		
-		return mdw;
-	}
+  public DataWriter<String> createDataWriter() throws IOException {
+    MaxentDataWriter mdw = new MaxentDataWriter(outputDirectory);
+
+    if (!this.setEncodersFromFileSystem(mdw)) {
+      NameNumberFeaturesEncoder ftrsNcdr = new NameNumberFeaturesEncoder(compress, sort);
+      ftrsNcdr.addEncoder(new NumberEncoder());
+      ftrsNcdr.addEncoder(new BooleanEncoder());
+      ftrsNcdr.addEncoder(new StringEncoder());
+      mdw.setFeaturesEncoder(ftrsNcdr);
+
+      mdw.setOutcomeEncoder(new StringToStringOutcomeEncoder());
+    }
+
+    return mdw;
+  }
 
 }

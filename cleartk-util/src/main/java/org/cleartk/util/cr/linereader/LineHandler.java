@@ -33,14 +33,16 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.uimafit.factory.initializable.Initializable;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
- 	* <p>
-*/
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * <p>
+ */
 
-public interface LineHandler extends Initializable{
+public interface LineHandler extends Initializable {
 
-	public void initialize(UimaContext context) throws ResourceInitializationException;
-	
-	public void handleLine(JCas jCas, File rootFile, File file, String line) throws IOException, CollectionException;
+  public void initialize(UimaContext context) throws ResourceInitializationException;
+
+  public void handleLine(JCas jCas, File rootFile, File file, String line) throws IOException,
+          CollectionException;
 }

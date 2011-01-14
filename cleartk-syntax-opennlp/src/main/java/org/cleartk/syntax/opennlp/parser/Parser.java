@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2011, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 
 package org.cleartk.syntax.opennlp.parser;
 
@@ -37,21 +37,22 @@ import opennlp.tools.postag.POSTagger;
  * 
  * @author Philip Ogren
  * 
- * This class provides a simple extension to {@link opennlp.tools.parser.chunking.Parser} which
- * has an additional constructor which takes a POSTagger which replaces the POSTagger that will 
- * be loaded from the {@link ParserModel}.  This is used by {@link ParserAnnotator} in conjunction
- * with the {@link CasPosTagger} so that the parser can make use of part-of-speech tags in the CAS.
- *
+ *         This class provides a simple extension to {@link opennlp.tools.parser.chunking.Parser}
+ *         which has an additional constructor which takes a POSTagger which replaces the POSTagger
+ *         that will be loaded from the {@link ParserModel}. This is used by {@link ParserAnnotator}
+ *         in conjunction with the {@link CasPosTagger} so that the parser can make use of
+ *         part-of-speech tags in the CAS.
+ * 
  */
 public class Parser extends opennlp.tools.parser.chunking.Parser {
 
-	public Parser(ParserModel model, int beamSize, double advancePercentage){
-		super(model, beamSize, advancePercentage);
-	}
+  public Parser(ParserModel model, int beamSize, double advancePercentage) {
+    super(model, beamSize, advancePercentage);
+  }
 
-	public Parser(ParserModel model, int beamSize, double advancePercentage, POSTagger tagger) {
-		super(model, beamSize, advancePercentage);
-		this.tagger = tagger;
-	}
-	
+  public Parser(ParserModel model, int beamSize, double advancePercentage, POSTagger tagger) {
+    super(model, beamSize, advancePercentage);
+    this.tagger = tagger;
+  }
+
 }

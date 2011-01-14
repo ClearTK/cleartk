@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.util;
 
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -28,58 +28,63 @@ import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
- *
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * @author Philip Ogren
  * @author Steven Bethard
- *
+ * 
  */
 public class ViewURIUtil {
-	
-	/**
-	 * The view where the document Uniform Resource Identifier is placed.
-	 */
-	public static final String URI = "UriView";
 
-	/**
-	 * Set the primary Uniform Resource Identifier for this CAS and all its views.
-	 * This creates the view {@link ViewNames#URI} and assigns the URI there. 
-	 * 
-	 * @param cas  The CAS object.
-	 * @param uri  The primary URI for the CAS and all its views.
-	 */
-	public static void setURI(CAS cas, String uri) {
-		CAS view = cas.createView(URI);
-		view.setSofaDataURI(uri, null);
-	}
-	
-	/**
-	 * Set the primary Uniform Resource Identifier for this JCas and all its views.
-	 * This creates the view {@link ViewNames#URI} and assigns the URI there. 
-	 * 
-	 * @param jCas  The CAS object.
-	 * @param uri   The primary URI for the CAS and all its views.
-	 */
-	public static void setURI(JCas jCas, String uri) {
-		ViewURIUtil.setURI(jCas.getCas(), uri);
-	}
-	
-	/**
-	 * Get the primary Uniform Resource Identifier for this JCas and all its views.
-	 * This is obtained from the {@link ViewNames#URI} view of the JCas.
-	 * 
-	 * @param jCas   The JCas object.
-	 * @return       The primary URI for the JCas and all its views.
-	 * @throws CASException 
-	 */
-	public static String getURI(JCas jCas) throws AnalysisEngineProcessException {
-		try {
-			return jCas.getView(URI).getSofaDataURI();
-		} catch (CASException e) {
-			throw new AnalysisEngineProcessException(e);
-		}
-	}
+  /**
+   * The view where the document Uniform Resource Identifier is placed.
+   */
+  public static final String URI = "UriView";
+
+  /**
+   * Set the primary Uniform Resource Identifier for this CAS and all its views. This creates the
+   * view {@link ViewNames#URI} and assigns the URI there.
+   * 
+   * @param cas
+   *          The CAS object.
+   * @param uri
+   *          The primary URI for the CAS and all its views.
+   */
+  public static void setURI(CAS cas, String uri) {
+    CAS view = cas.createView(URI);
+    view.setSofaDataURI(uri, null);
+  }
+
+  /**
+   * Set the primary Uniform Resource Identifier for this JCas and all its views. This creates the
+   * view {@link ViewNames#URI} and assigns the URI there.
+   * 
+   * @param jCas
+   *          The CAS object.
+   * @param uri
+   *          The primary URI for the CAS and all its views.
+   */
+  public static void setURI(JCas jCas, String uri) {
+    ViewURIUtil.setURI(jCas.getCas(), uri);
+  }
+
+  /**
+   * Get the primary Uniform Resource Identifier for this JCas and all its views. This is obtained
+   * from the {@link ViewNames#URI} view of the JCas.
+   * 
+   * @param jCas
+   *          The JCas object.
+   * @return The primary URI for the JCas and all its views.
+   * @throws CASException
+   */
+  public static String getURI(JCas jCas) throws AnalysisEngineProcessException {
+    try {
+      return jCas.getView(URI).getSofaDataURI();
+    } catch (CASException e) {
+      throw new AnalysisEngineProcessException(e);
+    }
+  }
 }

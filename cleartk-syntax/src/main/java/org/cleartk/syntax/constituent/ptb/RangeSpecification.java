@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.syntax.constituent.ptb;
 
 import java.util.Iterator;
@@ -28,49 +28,52 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * 
  * @author Philipp Wetzler
- *
+ * 
  */
 
 public class RangeSpecification implements Iterable<Integer> {
 
-	private int start;
-	private int end;
-	private SortedSet<Integer> numbers = new TreeSet<Integer>();
-	
-	public RangeSpecification(String spec) {
-		String[] parts = spec.trim().split("-");
-		
-		if( parts.length == 2 ) {
-			this.start = Integer.valueOf(parts[0]);
-			this.end = Integer.valueOf(parts[1]);
-		} else if( parts.length == 1 ) {
-			this.start = this.end = Integer.valueOf(parts[0]);
-		} else {
-			throw new IllegalArgumentException();
-		}
-		
-		for( int i=start; i<=end; i++ )
-			numbers.add(i);
-	}
-	
-	public boolean contains(int i) {
-		return numbers.contains(i);
-	}
-	
-	@Override
-	public String toString() {
-		if( this.start == this.end ) 
-			return String.valueOf(this.start);
-		else
-			return String.valueOf(this.start) + "-" + String.valueOf(this.end);
-	}
+  private int start;
 
-	public Iterator<Integer> iterator() {
-		return numbers.iterator();
-	}
+  private int end;
+
+  private SortedSet<Integer> numbers = new TreeSet<Integer>();
+
+  public RangeSpecification(String spec) {
+    String[] parts = spec.trim().split("-");
+
+    if (parts.length == 2) {
+      this.start = Integer.valueOf(parts[0]);
+      this.end = Integer.valueOf(parts[1]);
+    } else if (parts.length == 1) {
+      this.start = this.end = Integer.valueOf(parts[0]);
+    } else {
+      throw new IllegalArgumentException();
+    }
+
+    for (int i = start; i <= end; i++)
+      numbers.add(i);
+  }
+
+  public boolean contains(int i) {
+    return numbers.contains(i);
+  }
+
+  @Override
+  public String toString() {
+    if (this.start == this.end)
+      return String.valueOf(this.start);
+    else
+      return String.valueOf(this.start) + "-" + String.valueOf(this.end);
+  }
+
+  public Iterator<Integer> iterator() {
+    return numbers.iterator();
+  }
 }

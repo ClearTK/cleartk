@@ -35,8 +35,8 @@ import org.junit.Test;
  */
 public class ParametersTest {
 
-	@Test
-	public void testParameterNames() throws ClassNotFoundException {
-		ParametersTestUtil.testParameterDefinitions("src/main/java");
-	}
+  @Test
+  public void testParameterNames() throws ClassNotFoundException {
+    ParametersTestUtil.testParameterDefinitions("src/main/java");
+  }
 }

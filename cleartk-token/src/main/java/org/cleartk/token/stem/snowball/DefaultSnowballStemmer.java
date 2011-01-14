@@ -40,30 +40,26 @@ import org.uimafit.factory.AnalysisEngineFactory;
  * @author Philip Ogren
  * 
  * 
- *         This class borrows from
- *         org.apache.lucene.analysis.snowball.SnowballFilter
+ *         This class borrows from org.apache.lucene.analysis.snowball.SnowballFilter
  * @see org.apache.lucene.analysis.snowball.SnowballFilter
  */
 
 public class DefaultSnowballStemmer extends SnowballStemmer<Token> {
-	
-	public static AnalysisEngineDescription getDescription(String language)
-	throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveDescription(
-				DefaultSnowballStemmer.class, 
-				TokenComponents.TYPE_SYSTEM_DESCRIPTION,
-				SnowballStemmer.PARAM_STEMMER_NAME, language);
-	}
 
-	
-	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		super.initialize(context);
-	}
+  public static AnalysisEngineDescription getDescription(String language)
+          throws ResourceInitializationException {
+    return AnalysisEngineFactory.createPrimitiveDescription(DefaultSnowballStemmer.class,
+            TokenComponents.TYPE_SYSTEM_DESCRIPTION, SnowballStemmer.PARAM_STEMMER_NAME, language);
+  }
 
-	@Override
-	public void setStem(Token token, String stem) {
-		token.setStem(stem);
-	}
+  @Override
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    super.initialize(context);
+  }
+
+  @Override
+  public void setStem(Token token, String stem) {
+    token.setStem(stem);
+  }
 
 }

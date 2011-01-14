@@ -33,43 +33,44 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.CollectionReaderFactory;
 
-
 /**
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
  * <p>
- * These tests are intended to verify that your local copy of the PTB will work correctly with ClearTK.  
- * Several of the tests that are provided will not run by default because we cannot assume any particular location of your PTB data.
- * To run the tests below please set the member variable "outputDirectory" to a value appropriate for your environment.  Then,
- * uncomment the test annotations (appearing as "@Test").  Now, you can invoke the unit tests.
- *    
+ * These tests are intended to verify that your local copy of the PTB will work correctly with
+ * ClearTK. Several of the tests that are provided will not run by default because we cannot assume
+ * any particular location of your PTB data. To run the tests below please set the member variable
+ * "outputDirectory" to a value appropriate for your environment. Then, uncomment the test
+ * annotations (appearing as "@Test"). Now, you can invoke the unit tests.
+ * 
  * @author Philip
- *
+ * 
  */
-public class PennTreebankReaderTest extends SyntaxTestBase{
+public class PennTreebankReaderTest extends SyntaxTestBase {
 
-	private final String inputDir = "data/treebank/wsj";
+  private final String inputDir = "data/treebank/wsj";
 
-	@Test
-	public void testReaderDescriptor() throws UIMAException, IOException {
-		try {
-			CollectionReaderFactory.createCollectionReader(PennTreebankReader.class, typeSystemDescription);
-			Assert.fail("expected exception with no file or directory specified");
-		}
-		catch (ResourceInitializationException e) {
-		}
+  @Test
+  public void testReaderDescriptor() throws UIMAException, IOException {
+    try {
+      CollectionReaderFactory.createCollectionReader(PennTreebankReader.class,
+              typeSystemDescription);
+      Assert.fail("expected exception with no file or directory specified");
+    } catch (ResourceInitializationException e) {
+    }
 
-		CollectionReader reader = CollectionReaderFactory.createCollectionReader(PennTreebankReader.class, typeSystemDescription, PennTreebankReader.PARAM_CORPUS_DIRECTORY_NAME,
-				this.inputDir, PennTreebankReader.PARAM_SECTIONS_SPECIFIER, "02-21");
+    CollectionReader reader = CollectionReaderFactory.createCollectionReader(
+            PennTreebankReader.class, typeSystemDescription,
+            PennTreebankReader.PARAM_CORPUS_DIRECTORY_NAME, this.inputDir,
+            PennTreebankReader.PARAM_SECTIONS_SPECIFIER, "02-21");
 
-		Object directory = reader.getConfigParameterValue(PennTreebankReader.PARAM_CORPUS_DIRECTORY_NAME);
-		Assert.assertEquals(this.inputDir, directory);
+    Object directory = reader
+            .getConfigParameterValue(PennTreebankReader.PARAM_CORPUS_DIRECTORY_NAME);
+    Assert.assertEquals(this.inputDir, directory);
 
-		Object sections = reader.getConfigParameterValue(PennTreebankReader.PARAM_SECTIONS_SPECIFIER);
-		Assert.assertEquals("02-21", sections);
-	}
-
- 
+    Object sections = reader.getConfigParameterValue(PennTreebankReader.PARAM_SECTIONS_SPECIFIER);
+    Assert.assertEquals("02-21", sections);
+  }
 
 }

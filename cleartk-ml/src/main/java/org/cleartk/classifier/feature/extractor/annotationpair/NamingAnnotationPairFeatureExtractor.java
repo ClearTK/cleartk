@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.feature.extractor.annotationpair;
 
 import java.util.List;
@@ -31,35 +31,38 @@ import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 
 /**
- * <br>Copyright (c) 2007-2009, Regents of the University of Colorado 
- * <br>All rights reserved.
+ * <br>
+ * Copyright (c) 2007-2009, Regents of the University of Colorado <br>
+ * All rights reserved.
  * 
  * @author Philipp Wetzler
  */
 public class NamingAnnotationPairFeatureExtractor implements AnnotationPairFeatureExtractor {
 
-	public NamingAnnotationPairFeatureExtractor(String name, 
-			AnnotationPairFeatureExtractor subExtractor) {
-		this.name = name;
-		this.subExtractor = subExtractor;
-	}
-	
-	public NamingAnnotationPairFeatureExtractor(String name, 
-			AnnotationPairFeatureExtractor ... subExtractors) {
-		this(name, new CombinedAnnotationPairFeatureExtractor(subExtractors));
-	}
+  public NamingAnnotationPairFeatureExtractor(String name,
+          AnnotationPairFeatureExtractor subExtractor) {
+    this.name = name;
+    this.subExtractor = subExtractor;
+  }
 
-	public List<Feature> extract(JCas view, Annotation leftAnnotation, Annotation rightAnnotation) throws CleartkException {
-		List<Feature> features = subExtractor.extract(view, leftAnnotation, rightAnnotation);
-	
-		for( Feature feature : features ) {
-			feature.setName(Feature.createName(name, feature.getName()));
-		}
-		
-		return features;
-	}
-	
-	private String name;
-	private AnnotationPairFeatureExtractor subExtractor;
+  public NamingAnnotationPairFeatureExtractor(String name,
+          AnnotationPairFeatureExtractor... subExtractors) {
+    this(name, new CombinedAnnotationPairFeatureExtractor(subExtractors));
+  }
+
+  public List<Feature> extract(JCas view, Annotation leftAnnotation, Annotation rightAnnotation)
+          throws CleartkException {
+    List<Feature> features = subExtractor.extract(view, leftAnnotation, rightAnnotation);
+
+    for (Feature feature : features) {
+      feature.setName(Feature.createName(name, feature.getName()));
+    }
+
+    return features;
+  }
+
+  private String name;
+
+  private AnnotationPairFeatureExtractor subExtractor;
 
 }

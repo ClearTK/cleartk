@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,24 +20,27 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.mallet.factory;
 
 import cc.mallet.classify.Classifier;
 import cc.mallet.classify.ClassifierTrainer;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * 
  * @author Philip Ogren
  */
 
-public interface ClassifierTrainerFactory <C extends Classifier>{
+public interface ClassifierTrainerFactory<C extends Classifier> {
 
-	public static final String[] NAMES = new String[] { C45TrainerFactory.NAME, MaxEntTrainerFactory.NAME, MCMaxEntTrainerFactory.NAME, NaiveBayesTrainerFactory.NAME};
-	public ClassifierTrainer<C> createTrainer(String...args);
-	
-	public String getUsageMessage();
+  public static final String[] NAMES = new String[] { C45TrainerFactory.NAME,
+      MaxEntTrainerFactory.NAME, MCMaxEntTrainerFactory.NAME, NaiveBayesTrainerFactory.NAME };
+
+  public ClassifierTrainer<C> createTrainer(String... args);
+
+  public String getUsageMessage();
 }

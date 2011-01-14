@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.feature.extractor.simple;
 
 import java.util.List;
@@ -32,41 +32,41 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.util.AnnotationRetrieval;
 
 /**
- * <br>Copyright (c) 2007-2009, Regents of the University of Colorado 
- * <br>All rights reserved.
+ * <br>
+ * Copyright (c) 2007-2009, Regents of the University of Colorado <br>
+ * All rights reserved.
  * 
  * @author Philipp Wetzler
  */
 public class MatchingAnnotationExtractor implements SimpleFeatureExtractor {
 
-	public MatchingAnnotationExtractor(Class<? extends Annotation> annotationType,
-			SimpleFeatureExtractor subExtractor) {
-		this.annotationType = annotationType;
-		this.subExtractor = subExtractor;
-	}
-	
-	public MatchingAnnotationExtractor(Class<? extends Annotation> annotationType,
-			SimpleFeatureExtractor ... subExtractors) {
-		this(annotationType, new CombinedExtractor(subExtractors));
-	}
+  public MatchingAnnotationExtractor(Class<? extends Annotation> annotationType,
+          SimpleFeatureExtractor subExtractor) {
+    this.annotationType = annotationType;
+    this.subExtractor = subExtractor;
+  }
 
-	public List<Feature> extract(JCas view, Annotation focusAnnotation)
-			throws CleartkException {
-		
-		if( ! annotationType.isInstance(focusAnnotation) ) {
-			Annotation newFocusAnnotation = AnnotationRetrieval.getMatchingAnnotation(
-					view, focusAnnotation, annotationType);
-			if (newFocusAnnotation == null)
-				throw new IllegalArgumentException(String.format(
-						"no matching %s for annotation %s",
-						annotationType.getSimpleName(), focusAnnotation));
-			focusAnnotation = newFocusAnnotation;
-		}
+  public MatchingAnnotationExtractor(Class<? extends Annotation> annotationType,
+          SimpleFeatureExtractor... subExtractors) {
+    this(annotationType, new CombinedExtractor(subExtractors));
+  }
 
-		return subExtractor.extract(view, focusAnnotation);
-	}
-	
-	private Class<? extends Annotation> annotationType;
-	private SimpleFeatureExtractor subExtractor;
+  public List<Feature> extract(JCas view, Annotation focusAnnotation) throws CleartkException {
+
+    if (!annotationType.isInstance(focusAnnotation)) {
+      Annotation newFocusAnnotation = AnnotationRetrieval.getMatchingAnnotation(view,
+              focusAnnotation, annotationType);
+      if (newFocusAnnotation == null)
+        throw new IllegalArgumentException(String.format("no matching %s for annotation %s",
+                annotationType.getSimpleName(), focusAnnotation));
+      focusAnnotation = newFocusAnnotation;
+    }
+
+    return subExtractor.extract(view, focusAnnotation);
+  }
+
+  private Class<? extends Annotation> annotationType;
+
+  private SimpleFeatureExtractor subExtractor;
 
 }

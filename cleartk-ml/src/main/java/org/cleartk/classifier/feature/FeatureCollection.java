@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.feature;
 
 import java.util.Collection;
@@ -28,36 +28,39 @@ import java.util.Collection;
 import org.cleartk.classifier.Feature;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * @author Philipp Wetzler
-*/
+ */
 
 public class FeatureCollection {
-	
-	public FeatureCollection(String identifier, Collection<Feature> features) {
-		this.identifier = identifier;
-		this.features = features;
-	}
-	
-	public FeatureCollection(Collection<Feature> features) {
-		this(null, features);
-	}
-	
-	public Collection<Feature> getFeatures() {
-		return features;
-	}
-	
-	public String getIdentifier() {
-		return identifier;
-	}
-	
-	@Override
-	public String toString() {
-		throw new UnsupportedOperationException();
-	}
 
-	private Collection<Feature> features;
-	private String identifier;
+  public FeatureCollection(String identifier, Collection<Feature> features) {
+    this.identifier = identifier;
+    this.features = features;
+  }
+
+  public FeatureCollection(Collection<Feature> features) {
+    this(null, features);
+  }
+
+  public Collection<Feature> getFeatures() {
+    return features;
+  }
+
+  public String getIdentifier() {
+    return identifier;
+  }
+
+  @Override
+  public String toString() {
+    throw new UnsupportedOperationException();
+  }
+
+  private Collection<Feature> features;
+
+  private String identifier;
 
 }

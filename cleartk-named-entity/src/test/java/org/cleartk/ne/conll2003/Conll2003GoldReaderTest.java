@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.ne.conll2003;
 
 import java.io.IOException;
@@ -45,124 +45,125 @@ import org.uimafit.pipeline.JCasIterable;
 import org.uimafit.util.JCasUtil;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * 
  * @author Philip Ogren
- *
+ * 
  */
-public class Conll2003GoldReaderTest extends NeTestBase{
-	
-	@Test
-	public void testFakeTrainDocs() throws UIMAException, IOException 
-	{
-		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-				Conll2003GoldReader.class, typeSystemDescription,
-				Conll2003GoldReader.PARAM_DATA_FILE_NAME, "src/test/resources/data/conll2003/eng.train",
-				Conll2003GoldReader.PARAM_LOAD_NAMED_ENTITIES, true);
-		
-		Iterator<JCas> iterator = new JCasIterable(reader).iterator();
-		
-		JCas jcas = iterator.next(); 			
-		
-		FSIndex<Annotation> sentenceIndex = jcas.getAnnotationIndex(Sentence.type);
-		
-		Assert.assertEquals(1, sentenceIndex.size());
-		Sentence firstSentence = JCasUtil.selectByIndex(jcas, Sentence.class, 0);
-		Assert.assertEquals("ee rrrr ggg ccc tt bbbb BBBBBBB llll . ", firstSentence.getCoveredText());
-		
-		Assert.assertEquals(9, AnnotationRetrieval.getAnnotations(jcas, firstSentence, Token.class).size());
+public class Conll2003GoldReaderTest extends NeTestBase {
 
-		Token token = JCasUtil.selectByIndex(jcas, Token.class, 0);
-		Assert.assertEquals("A", token.getPos());
-		
-		Chunk chunk = JCasUtil.selectByIndex(jcas, Chunk.class, 0);
-		Assert.assertEquals("ee", chunk.getCoveredText());
-		Assert.assertEquals("A", chunk.getChunkType());
-		
-		chunk = JCasUtil.selectByIndex(jcas, Chunk.class, 1);
-		Assert.assertEquals("rrrr", chunk.getCoveredText());
-		Assert.assertEquals("B", chunk.getChunkType());
-			
-		chunk = JCasUtil.selectByIndex(jcas, Chunk.class, 2);
-		Assert.assertEquals("ggg ccc", chunk.getCoveredText());
-		Assert.assertEquals("N", chunk.getChunkType());
-		
-		chunk = JCasUtil.selectByIndex(jcas, Chunk.class, 3);
-		Assert.assertEquals("tt bbbb", chunk.getCoveredText());
-		Assert.assertEquals("T", chunk.getChunkType());
-		
-		chunk = JCasUtil.selectByIndex(jcas, Chunk.class, 4);
-		Assert.assertEquals("BBBBBBB llll", chunk.getCoveredText());
-		Assert.assertEquals("BB", chunk.getChunkType());
-			
-		NamedEntityMention nem = JCasUtil.selectByIndex(jcas, NamedEntityMention.class, 0);
-		NamedEntity ne = nem.getMentionedEntity();
-		Assert.assertEquals("ee", nem.getCoveredText());
-		Assert.assertEquals("NAM", nem.getMentionType());
-		Assert.assertEquals("OOO", ne.getEntityType());
-		
-		nem = JCasUtil.selectByIndex(jcas, NamedEntityMention.class, 1);
-		ne = nem.getMentionedEntity();
-		Assert.assertEquals("ggg", nem.getCoveredText());
-		Assert.assertEquals("MM", ne.getEntityType());
+  @Test
+  public void testFakeTrainDocs() throws UIMAException, IOException {
+    CollectionReader reader = CollectionReaderFactory.createCollectionReader(
+            Conll2003GoldReader.class, typeSystemDescription,
+            Conll2003GoldReader.PARAM_DATA_FILE_NAME,
+            "src/test/resources/data/conll2003/eng.train",
+            Conll2003GoldReader.PARAM_LOAD_NAMED_ENTITIES, true);
 
-		nem = JCasUtil.selectByIndex(jcas, NamedEntityMention.class, 2);
-		ne = nem.getMentionedEntity();
-		Assert.assertEquals("BBBBBBB", nem.getCoveredText());
-		Assert.assertEquals("MM", ne.getEntityType());
+    Iterator<JCas> iterator = new JCasIterable(reader).iterator();
 
-		
-		jcas = iterator.next(); 			
-		
-		sentenceIndex = jcas.getAnnotationIndex(Sentence.type);
-		
+    JCas jcas = iterator.next();
 
-		Assert.assertEquals(1, sentenceIndex.size());
-		firstSentence = JCasUtil.selectByIndex(jcas, Sentence.class, 0);
-		Assert.assertEquals("CCCCC ssss tttt rrrrr fff TTTTTT ttttt . ", firstSentence.getCoveredText());
-		
-		Assert.assertEquals(8, AnnotationRetrieval.getAnnotations(jcas, firstSentence, Token.class).size());
+    FSIndex<Annotation> sentenceIndex = jcas.getAnnotationIndex(Sentence.type);
 
-		token = JCasUtil.selectByIndex(jcas, Token.class, 0);
-		Assert.assertEquals("PPP", token.getPos());
-		
-		chunk = JCasUtil.selectByIndex(jcas, Chunk.class, 0);
-		Assert.assertEquals("CCCCC", chunk.getCoveredText());
-		Assert.assertEquals("PP", chunk.getChunkType());
-		
-		chunk = JCasUtil.selectByIndex(jcas, Chunk.class, 1);
-		Assert.assertEquals("ssss", chunk.getCoveredText());
-		Assert.assertEquals("VV", chunk.getChunkType());
-			
-		chunk = JCasUtil.selectByIndex(jcas, Chunk.class, 2);
-		Assert.assertEquals("tttt", chunk.getCoveredText());
-		Assert.assertEquals("NN", chunk.getChunkType());
-		
-		chunk = JCasUtil.selectByIndex(jcas, Chunk.class, 3);
-		Assert.assertEquals("rrrrr", chunk.getCoveredText());
-		Assert.assertEquals("AAAA", chunk.getChunkType());
-		
-		chunk = JCasUtil.selectByIndex(jcas, Chunk.class, 4);
-		Assert.assertEquals("fff", chunk.getCoveredText());
-		Assert.assertEquals("PP", chunk.getChunkType());
+    Assert.assertEquals(1, sentenceIndex.size());
+    Sentence firstSentence = JCasUtil.selectByIndex(jcas, Sentence.class, 0);
+    Assert.assertEquals("ee rrrr ggg ccc tt bbbb BBBBBBB llll . ", firstSentence.getCoveredText());
 
-		chunk = JCasUtil.selectByIndex(jcas, Chunk.class, 5);
-		Assert.assertEquals("TTTTTT ttttt", chunk.getCoveredText());
-		Assert.assertEquals("NN", chunk.getChunkType());
+    Assert.assertEquals(9, AnnotationRetrieval.getAnnotations(jcas, firstSentence, Token.class)
+            .size());
 
-		nem = JCasUtil.selectByIndex(jcas, NamedEntityMention.class, 0);
-		ne = nem.getMentionedEntity();
-		Assert.assertEquals("CCCCC", nem.getCoveredText());
-		Assert.assertEquals("NAM", nem.getMentionType());
-		Assert.assertEquals("LL", ne.getEntityType());
-		
-		nem = JCasUtil.selectByIndex(jcas, NamedEntityMention.class, 1);
-		ne = nem.getMentionedEntity();
-		Assert.assertEquals("TTTTTT", nem.getCoveredText());
-		Assert.assertEquals("LL", ne.getEntityType());
+    Token token = JCasUtil.selectByIndex(jcas, Token.class, 0);
+    Assert.assertEquals("A", token.getPos());
 
-	}
+    Chunk chunk = JCasUtil.selectByIndex(jcas, Chunk.class, 0);
+    Assert.assertEquals("ee", chunk.getCoveredText());
+    Assert.assertEquals("A", chunk.getChunkType());
+
+    chunk = JCasUtil.selectByIndex(jcas, Chunk.class, 1);
+    Assert.assertEquals("rrrr", chunk.getCoveredText());
+    Assert.assertEquals("B", chunk.getChunkType());
+
+    chunk = JCasUtil.selectByIndex(jcas, Chunk.class, 2);
+    Assert.assertEquals("ggg ccc", chunk.getCoveredText());
+    Assert.assertEquals("N", chunk.getChunkType());
+
+    chunk = JCasUtil.selectByIndex(jcas, Chunk.class, 3);
+    Assert.assertEquals("tt bbbb", chunk.getCoveredText());
+    Assert.assertEquals("T", chunk.getChunkType());
+
+    chunk = JCasUtil.selectByIndex(jcas, Chunk.class, 4);
+    Assert.assertEquals("BBBBBBB llll", chunk.getCoveredText());
+    Assert.assertEquals("BB", chunk.getChunkType());
+
+    NamedEntityMention nem = JCasUtil.selectByIndex(jcas, NamedEntityMention.class, 0);
+    NamedEntity ne = nem.getMentionedEntity();
+    Assert.assertEquals("ee", nem.getCoveredText());
+    Assert.assertEquals("NAM", nem.getMentionType());
+    Assert.assertEquals("OOO", ne.getEntityType());
+
+    nem = JCasUtil.selectByIndex(jcas, NamedEntityMention.class, 1);
+    ne = nem.getMentionedEntity();
+    Assert.assertEquals("ggg", nem.getCoveredText());
+    Assert.assertEquals("MM", ne.getEntityType());
+
+    nem = JCasUtil.selectByIndex(jcas, NamedEntityMention.class, 2);
+    ne = nem.getMentionedEntity();
+    Assert.assertEquals("BBBBBBB", nem.getCoveredText());
+    Assert.assertEquals("MM", ne.getEntityType());
+
+    jcas = iterator.next();
+
+    sentenceIndex = jcas.getAnnotationIndex(Sentence.type);
+
+    Assert.assertEquals(1, sentenceIndex.size());
+    firstSentence = JCasUtil.selectByIndex(jcas, Sentence.class, 0);
+    Assert.assertEquals("CCCCC ssss tttt rrrrr fff TTTTTT ttttt . ", firstSentence.getCoveredText());
+
+    Assert.assertEquals(8, AnnotationRetrieval.getAnnotations(jcas, firstSentence, Token.class)
+            .size());
+
+    token = JCasUtil.selectByIndex(jcas, Token.class, 0);
+    Assert.assertEquals("PPP", token.getPos());
+
+    chunk = JCasUtil.selectByIndex(jcas, Chunk.class, 0);
+    Assert.assertEquals("CCCCC", chunk.getCoveredText());
+    Assert.assertEquals("PP", chunk.getChunkType());
+
+    chunk = JCasUtil.selectByIndex(jcas, Chunk.class, 1);
+    Assert.assertEquals("ssss", chunk.getCoveredText());
+    Assert.assertEquals("VV", chunk.getChunkType());
+
+    chunk = JCasUtil.selectByIndex(jcas, Chunk.class, 2);
+    Assert.assertEquals("tttt", chunk.getCoveredText());
+    Assert.assertEquals("NN", chunk.getChunkType());
+
+    chunk = JCasUtil.selectByIndex(jcas, Chunk.class, 3);
+    Assert.assertEquals("rrrrr", chunk.getCoveredText());
+    Assert.assertEquals("AAAA", chunk.getChunkType());
+
+    chunk = JCasUtil.selectByIndex(jcas, Chunk.class, 4);
+    Assert.assertEquals("fff", chunk.getCoveredText());
+    Assert.assertEquals("PP", chunk.getChunkType());
+
+    chunk = JCasUtil.selectByIndex(jcas, Chunk.class, 5);
+    Assert.assertEquals("TTTTTT ttttt", chunk.getCoveredText());
+    Assert.assertEquals("NN", chunk.getChunkType());
+
+    nem = JCasUtil.selectByIndex(jcas, NamedEntityMention.class, 0);
+    ne = nem.getMentionedEntity();
+    Assert.assertEquals("CCCCC", nem.getCoveredText());
+    Assert.assertEquals("NAM", nem.getMentionType());
+    Assert.assertEquals("LL", ne.getEntityType());
+
+    nem = JCasUtil.selectByIndex(jcas, NamedEntityMention.class, 1);
+    ne = nem.getMentionedEntity();
+    Assert.assertEquals("TTTTTT", nem.getCoveredText());
+    Assert.assertEquals("LL", ne.getEntityType());
+
+  }
 
 }

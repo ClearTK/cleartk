@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.encoder.features;
 
 import java.util.Collections;
@@ -28,28 +28,25 @@ import java.util.List;
 
 import org.cleartk.classifier.Feature;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
-*/
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ */
 
 public class NumberEncoder implements FeatureEncoder<NameNumber> {
 
-	private static final long serialVersionUID = -2672054364576304344L;
+  private static final long serialVersionUID = -2672054364576304344L;
 
-	
-	public List<NameNumber> encode(Feature feature)
-			throws IllegalArgumentException {
-		String name = feature.getName();
-		Number number = (Number) feature.getValue();
-	
-		return Collections.singletonList(new NameNumber(name, number));
-	}
+  public List<NameNumber> encode(Feature feature) throws IllegalArgumentException {
+    String name = feature.getName();
+    Number number = (Number) feature.getValue();
 
-	public boolean encodes(Feature feature) {
-		return feature.getValue() instanceof Number;
-	}
+    return Collections.singletonList(new NameNumber(name, number));
+  }
+
+  public boolean encodes(Feature feature) {
+    return feature.getValue() instanceof Number;
+  }
 
 }

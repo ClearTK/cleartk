@@ -52,62 +52,51 @@ import org.uimafit.pipeline.SimplePipeline;
  */
 public class EventTrain {
 
-	private static void error(String message) throws Exception {
-		Logger logger = UimaContextFactory.createUimaContext().getLogger();
-		String format = "%s\nusage: EventTrain timebank-dir";
-		logger.log(Level.SEVERE, String.format(format, message));
-		System.exit(1);
-	}
+  private static void error(String message) throws Exception {
+    Logger logger = UimaContextFactory.createUimaContext().getLogger();
+    String format = "%s\nusage: EventTrain timebank-dir";
+    logger.log(Level.SEVERE, String.format(format, message));
+    System.exit(1);
+  }
 
-	public static void main(String[] args) throws Exception {
-		// check arguments
-		if (args.length != 1) {
-			error("wrong number of arguments");
-		} else if (!new File(args[0]).exists()) {
-			error("TimeBank directory not found: " + args[0]);
-		}
-		String timebankDirectory = args[0];
+  public static void main(String[] args) throws Exception {
+    // check arguments
+    if (args.length != 1) {
+      error("wrong number of arguments");
+    } else if (!new File(args[0]).exists()) {
+      error("TimeBank directory not found: " + args[0]);
+    }
+    String timebankDirectory = args[0];
 
-		// run pipeline to extract features and write training data
-		SimplePipeline.runPipeline(
-			FilesCollectionReader.getCollectionReaderWithView(
-				TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
-				timebankDirectory,
-				TimeMLViewName.TIMEML),
-			TimeMLGoldAnnotator.getDescriptionNoTLINKs(),
-			SentenceAnnotator.getDescription(),
-			TokenAnnotator.getDescription(),
-			PosTaggerAnnotator.getDescription(),
-			DefaultSnowballStemmer.getDescription("English"),
-			EventAnnotator.getWriterDescription(),
-			EventTenseAnnotator.getWriterDescription(),
-			EventAspectAnnotator.getWriterDescription(),
-			EventClassAnnotator.getWriterDescription(),
-			EventPolarityAnnotator.getWriterDescription(),
-			EventModalityAnnotator.getWriterDescription());
+    // run pipeline to extract features and write training data
+    SimplePipeline.runPipeline(FilesCollectionReader.getCollectionReaderWithView(
+            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION, timebankDirectory, TimeMLViewName.TIMEML),
+            TimeMLGoldAnnotator.getDescriptionNoTLINKs(), SentenceAnnotator.getDescription(),
+            TokenAnnotator.getDescription(), PosTaggerAnnotator.getDescription(),
+            DefaultSnowballStemmer.getDescription("English"),
+            EventAnnotator.getWriterDescription(), EventTenseAnnotator.getWriterDescription(),
+            EventAspectAnnotator.getWriterDescription(),
+            EventClassAnnotator.getWriterDescription(), EventPolarityAnnotator
+                    .getWriterDescription(), EventModalityAnnotator.getWriterDescription());
 
-		// train models for each aspect of event identification
-		// Train.main(EventAnnotator.MODEL_DIR, "--forbidden", "O,I-Event");
-		Train.main(EventTenseAnnotator.MODEL_DIR);
-		Train.main(EventAspectAnnotator.MODEL_DIR);
-		Train.main(EventClassAnnotator.MODEL_DIR);
-		Train.main(EventPolarityAnnotator.MODEL_DIR);
-		Train.main(EventModalityAnnotator.MODEL_DIR);
+    // train models for each aspect of event identification
+    // Train.main(EventAnnotator.MODEL_DIR, "--forbidden", "O,I-Event");
+    Train.main(EventTenseAnnotator.MODEL_DIR);
+    Train.main(EventAspectAnnotator.MODEL_DIR);
+    Train.main(EventClassAnnotator.MODEL_DIR);
+    Train.main(EventPolarityAnnotator.MODEL_DIR);
+    Train.main(EventModalityAnnotator.MODEL_DIR);
 
-		// clean up unnecessary files
-		List<String> modelDirs = Arrays.asList(
-			EventAnnotator.MODEL_DIR,
-			EventTenseAnnotator.MODEL_DIR,
-			EventAspectAnnotator.MODEL_DIR,
-			EventClassAnnotator.MODEL_DIR,
-			EventPolarityAnnotator.MODEL_DIR,
-			EventModalityAnnotator.MODEL_DIR);
-		for (String dir : modelDirs) {
-			for (File file : new File(dir).listFiles()) {
-				if (!file.isDirectory() && !file.getName().equals("model.jar")) {
-					file.delete();
-				}
-			}
-		}
-	}
+    // clean up unnecessary files
+    List<String> modelDirs = Arrays.asList(EventAnnotator.MODEL_DIR, EventTenseAnnotator.MODEL_DIR,
+            EventAspectAnnotator.MODEL_DIR, EventClassAnnotator.MODEL_DIR,
+            EventPolarityAnnotator.MODEL_DIR, EventModalityAnnotator.MODEL_DIR);
+    for (String dir : modelDirs) {
+      for (File file : new File(dir).listFiles()) {
+        if (!file.isDirectory() && !file.getName().equals("model.jar")) {
+          file.delete();
+        }
+      }
+    }
+  }
 }

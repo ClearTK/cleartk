@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.srl;
 
 import java.io.File;
@@ -49,170 +49,155 @@ import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 
-
 /**
-/**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
+ * /** <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * 
  * <p>
- * SRLWriter generates a file that is similar to Propbank's
- * <tt>prop.txt</tt>. But unlike <tt>prop.txt</tt> all relations are given
- * in token ranges instead of Treebank nodes, so the file can be interpreted
- * without knowing the Treebank parses.
+ * SRLWriter generates a file that is similar to Propbank's <tt>prop.txt</tt>. But unlike
+ * <tt>prop.txt</tt> all relations are given in token ranges instead of Treebank nodes, so the file
+ * can be interpreted without knowing the Treebank parses.
  * </p>
  * 
  * <p>
- * ClearTK includes a script which takes two files of this type, a gold standard
- * file and a test file, and prints a report on the performance.
+ * ClearTK includes a script which takes two files of this type, a gold standard file and a test
+ * file, and prints a report on the performance.
  * </p>
  * 
  * @author Philipp Wetzler, Philip Ogren
  */
 public class SRLWriter extends JCasAnnotator_ImplBase {
 
+  @ConfigurationParameter(mandatory = true, description = "path where the PropBank-style file should be written")
+  private File outputFile;
 
-	@ConfigurationParameter(
-			mandatory = true,
-			description = "path where the PropBank-style file should be written")
-	private File outputFile;
-	public static final String PARAM_OUTPUT_FILE = ConfigurationParameterFactory
-			.createConfigurationParameterName(SRLWriter.class, "outputFile");
+  public static final String PARAM_OUTPUT_FILE = ConfigurationParameterFactory
+          .createConfigurationParameterName(SRLWriter.class, "outputFile");
 
-	private PrintWriter output;
+  private PrintWriter output;
 
-	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		super.initialize(context);
-		if (!this.outputFile.getParentFile().exists()) {
-			this.outputFile.getParentFile().mkdirs();
-		}
-		try {
-			this.output = new PrintWriter(this.outputFile);
-		} catch (FileNotFoundException e) {
-			throw new ResourceInitializationException(e);
-		}
-	}
+  @Override
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    super.initialize(context);
+    if (!this.outputFile.getParentFile().exists()) {
+      this.outputFile.getParentFile().mkdirs();
+    }
+    try {
+      this.output = new PrintWriter(this.outputFile);
+    } catch (FileNotFoundException e) {
+      throw new ResourceInitializationException(e);
+    }
+  }
 
-	@Override
-	public void process(JCas jCas) throws AnalysisEngineProcessException {
-		DocumentAnnotation doc = AnnotationRetrieval.getDocument(jCas);
+  @Override
+  public void process(JCas jCas) throws AnalysisEngineProcessException {
+    DocumentAnnotation doc = AnnotationRetrieval.getDocument(jCas);
 
-		List<Sentence> sentences = AnnotationRetrieval.getAnnotations(jCas,
-				doc, Sentence.class);
-		int sentenceIndex = 0;
-		for (Sentence sentence : sentences) {
-			sentenceIndex += 1;
+    List<Sentence> sentences = AnnotationRetrieval.getAnnotations(jCas, doc, Sentence.class);
+    int sentenceIndex = 0;
+    for (Sentence sentence : sentences) {
+      sentenceIndex += 1;
 
-			List<Token> sentenceTokens = AnnotationRetrieval
-					.getAnnotations(jCas, sentence, Token.class);
+      List<Token> sentenceTokens = AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class);
 
-			List<Predicate> predicates = AnnotationRetrieval
-					.getAnnotations(jCas, sentence, Predicate.class);
-			for (Predicate predicate : predicates) {
-				ListSpecification predicateTokenList = tokenList(
-						AnnotationRetrieval.getAnnotations(jCas, predicate
-								.getAnnotation(), Token.class),
-						sentenceTokens);
+      List<Predicate> predicates = AnnotationRetrieval.getAnnotations(jCas, sentence,
+              Predicate.class);
+      for (Predicate predicate : predicates) {
+        ListSpecification predicateTokenList = tokenList(
+                AnnotationRetrieval.getAnnotations(jCas, predicate.getAnnotation(), Token.class),
+                sentenceTokens);
 
-				StringBuffer line = new StringBuffer();
-				line.append(ViewURIUtil.getURI(jCas));
-				line.append(" ");
-				line.append(sentenceIndex);
-				line.append(" ");
-				line.append(predicateTokenList);
+        StringBuffer line = new StringBuffer();
+        line.append(ViewURIUtil.getURI(jCas));
+        line.append(" ");
+        line.append(sentenceIndex);
+        line.append(" ");
+        line.append(predicateTokenList);
 
-				List<Argument> args = predicate.getArguments() == null ? new ArrayList<Argument>()
-						: UIMAUtil.toList(predicate.getArguments(),
-								Argument.class);
-				for (Argument arg : args) {
-					SemanticArgument sArg;
-					try {
-						sArg = (SemanticArgument) arg;
-					} catch (ClassCastException e) {
-						continue;
-					}
+        List<Argument> args = predicate.getArguments() == null ? new ArrayList<Argument>()
+                : UIMAUtil.toList(predicate.getArguments(), Argument.class);
+        for (Argument arg : args) {
+          SemanticArgument sArg;
+          try {
+            sArg = (SemanticArgument) arg;
+          } catch (ClassCastException e) {
+            continue;
+          }
 
-					if (sArg.getLabel().equals("rel"))
-						continue;
+          if (sArg.getLabel().equals("rel"))
+            continue;
 
-					line.append(" " + sArg.getLabel());
-					if (sArg.getFeature() != null)
-						line.append("-" + sArg.getFeature());
-					line.append(":");
-					if (sArg.getAnnotation() != null) {
-						List<Token> argTokens = AnnotationRetrieval
-								.getAnnotations(jCas, sArg.getAnnotation(),
-										Token.class);
-						if (argTokens.size() > 0)
-							line
-									.append(tokenList(argTokens,
-											sentenceTokens));
-					} else {
-						List<Annotation> corefAnnotations = UIMAUtil
-								.toList(sArg.getCoreferenceAnnotations(),
-										Annotation.class);
-						boolean first = true;
-						for (Annotation corefAnnotation : corefAnnotations) {
-							List<Token> argTokens = AnnotationRetrieval
-									.getAnnotations(jCas, corefAnnotation,
-											Token.class);
-							if (argTokens.size() > 0) {
-								if (!first)
-									line.append("*");
-								line.append(tokenList(argTokens,
-										sentenceTokens));
-								first = false;
-							}
-						}
-					}
-				}
+          line.append(" " + sArg.getLabel());
+          if (sArg.getFeature() != null)
+            line.append("-" + sArg.getFeature());
+          line.append(":");
+          if (sArg.getAnnotation() != null) {
+            List<Token> argTokens = AnnotationRetrieval.getAnnotations(jCas, sArg.getAnnotation(),
+                    Token.class);
+            if (argTokens.size() > 0)
+              line.append(tokenList(argTokens, sentenceTokens));
+          } else {
+            List<Annotation> corefAnnotations = UIMAUtil.toList(sArg.getCoreferenceAnnotations(),
+                    Annotation.class);
+            boolean first = true;
+            for (Annotation corefAnnotation : corefAnnotations) {
+              List<Token> argTokens = AnnotationRetrieval.getAnnotations(jCas, corefAnnotation,
+                      Token.class);
+              if (argTokens.size() > 0) {
+                if (!first)
+                  line.append("*");
+                line.append(tokenList(argTokens, sentenceTokens));
+                first = false;
+              }
+            }
+          }
+        }
 
-				output.println(line);
-			}
+        output.println(line);
+      }
 
-		}
-		output.flush();
-	}
+    }
+    output.flush();
+  }
 
-	@Override
-	public void collectionProcessComplete() throws AnalysisEngineProcessException {
-		super.collectionProcessComplete();
-		output.flush();
-		output.close();
-	}
+  @Override
+  public void collectionProcessComplete() throws AnalysisEngineProcessException {
+    super.collectionProcessComplete();
+    output.flush();
+    output.close();
+  }
 
-	private ListSpecification tokenList(List<Token> listTokens,
-			List<Token> allTokens) {
-		StringBuffer spec = new StringBuffer();
-		ListIterator<Token> it = listTokens.listIterator();
+  private ListSpecification tokenList(List<Token> listTokens, List<Token> allTokens) {
+    StringBuffer spec = new StringBuffer();
+    ListIterator<Token> it = listTokens.listIterator();
 
-		Token cursor = it.next();
-		int cursorIndex = allTokens.indexOf(cursor);
-		spec.append(cursorIndex);
-		int lastBegin = cursorIndex;
-		while (it.hasNext()) {
-			cursor = it.next();
-			int lastIndex = cursorIndex;
-			cursorIndex = allTokens.indexOf(cursor);
+    Token cursor = it.next();
+    int cursorIndex = allTokens.indexOf(cursor);
+    spec.append(cursorIndex);
+    int lastBegin = cursorIndex;
+    while (it.hasNext()) {
+      cursor = it.next();
+      int lastIndex = cursorIndex;
+      cursorIndex = allTokens.indexOf(cursor);
 
-			if (cursorIndex > lastIndex + 1) {
-				if (lastIndex > lastBegin) {
-					spec.append("-");
-					spec.append(lastIndex);
-				}
-				spec.append(",");
-				spec.append(cursorIndex);
-				lastBegin = cursorIndex;
-			}
-		}
-		if (cursorIndex > lastBegin) {
-			spec.append("-");
-			spec.append(cursorIndex);
-		}
+      if (cursorIndex > lastIndex + 1) {
+        if (lastIndex > lastBegin) {
+          spec.append("-");
+          spec.append(lastIndex);
+        }
+        spec.append(",");
+        spec.append(cursorIndex);
+        lastBegin = cursorIndex;
+      }
+    }
+    if (cursorIndex > lastBegin) {
+      spec.append("-");
+      spec.append(cursorIndex);
+    }
 
-		return new ListSpecification(spec.toString());
-	}
+    return new ListSpecification(spec.toString());
+  }
 
 }

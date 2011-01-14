@@ -35,8 +35,8 @@ import org.cleartk.token.TokenTestBase;
  */
 public class TimeMLTestBase extends TokenTestBase {
 
-	@Override
-	public String[] getTypeSystemDescriptorNames() {
-		return new String[] { "org.cleartk.timeml.TypeSystem" };
-	}
+  @Override
+  public String[] getTypeSystemDescriptorNames() {
+    return new String[] { "org.cleartk.timeml.TypeSystem" };
+  }
 }

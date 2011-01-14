@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.util;
 
 import static org.junit.Assert.assertEquals;
@@ -28,48 +28,48 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * 
  * @author Philip Ogren
  */
 public class BaseConversionTest {
 
-	@Test
-	public void testConvertBase() {
-		assertEquals("0", BaseConversion.convertBase(0, 1));
-		assertEquals("11111", BaseConversion.convertBase(5, 1));
-		assertEquals("101", BaseConversion.convertBase(5, 2));
-		assertEquals("12", BaseConversion.convertBase(5, 3));
-		assertEquals("11", BaseConversion.convertBase(5, 4));
-		assertEquals("10", BaseConversion.convertBase(5, 5));
-		assertEquals("5", BaseConversion.convertBase(5, 6));
+  @Test
+  public void testConvertBase() {
+    assertEquals("0", BaseConversion.convertBase(0, 1));
+    assertEquals("11111", BaseConversion.convertBase(5, 1));
+    assertEquals("101", BaseConversion.convertBase(5, 2));
+    assertEquals("12", BaseConversion.convertBase(5, 3));
+    assertEquals("11", BaseConversion.convertBase(5, 4));
+    assertEquals("10", BaseConversion.convertBase(5, 5));
+    assertEquals("5", BaseConversion.convertBase(5, 6));
 
-		assertEquals("1111111111111111", BaseConversion.convertBase(16, 1));
-		assertEquals("10000", BaseConversion.convertBase(16, 2));
-		assertEquals("121", BaseConversion.convertBase(16, 3));
-		assertEquals("100", BaseConversion.convertBase(16, 4));
-		assertEquals("31", BaseConversion.convertBase(16, 5));
-		assertEquals("24", BaseConversion.convertBase(16, 6));
-		assertEquals("22", BaseConversion.convertBase(16, 7));
-		assertEquals("20", BaseConversion.convertBase(16, 8));
-		assertEquals("17", BaseConversion.convertBase(16, 9));
-		assertEquals("16", BaseConversion.convertBase(16, 10));
-		assertEquals("15", BaseConversion.convertBase(16, 11));
-		assertEquals("14", BaseConversion.convertBase(16, 12));
-		assertEquals("13", BaseConversion.convertBase(16, 13));
-		assertEquals("12", BaseConversion.convertBase(16, 14));
-		assertEquals("11", BaseConversion.convertBase(16, 15));
-		assertEquals("10", BaseConversion.convertBase(16, 16));
-		assertEquals("G", BaseConversion.convertBase(16, 17));
+    assertEquals("1111111111111111", BaseConversion.convertBase(16, 1));
+    assertEquals("10000", BaseConversion.convertBase(16, 2));
+    assertEquals("121", BaseConversion.convertBase(16, 3));
+    assertEquals("100", BaseConversion.convertBase(16, 4));
+    assertEquals("31", BaseConversion.convertBase(16, 5));
+    assertEquals("24", BaseConversion.convertBase(16, 6));
+    assertEquals("22", BaseConversion.convertBase(16, 7));
+    assertEquals("20", BaseConversion.convertBase(16, 8));
+    assertEquals("17", BaseConversion.convertBase(16, 9));
+    assertEquals("16", BaseConversion.convertBase(16, 10));
+    assertEquals("15", BaseConversion.convertBase(16, 11));
+    assertEquals("14", BaseConversion.convertBase(16, 12));
+    assertEquals("13", BaseConversion.convertBase(16, 13));
+    assertEquals("12", BaseConversion.convertBase(16, 14));
+    assertEquals("11", BaseConversion.convertBase(16, 15));
+    assertEquals("10", BaseConversion.convertBase(16, 16));
+    assertEquals("G", BaseConversion.convertBase(16, 17));
 
-		
-		assertEquals("4000", BaseConversion.convertBase(953312, 62));
-		assertEquals("C00", BaseConversion.convertBase(46128, 62));
-		assertEquals("90", BaseConversion.convertBase(558, 62));
-		assertEquals("2", BaseConversion.convertBase(2, 62));
-		assertEquals("4C92", BaseConversion.convertBase(1000000, 62));
+    assertEquals("4000", BaseConversion.convertBase(953312, 62));
+    assertEquals("C00", BaseConversion.convertBase(46128, 62));
+    assertEquals("90", BaseConversion.convertBase(558, 62));
+    assertEquals("2", BaseConversion.convertBase(2, 62));
+    assertEquals("4C92", BaseConversion.convertBase(1000000, 62));
 
-	}
+  }
 }

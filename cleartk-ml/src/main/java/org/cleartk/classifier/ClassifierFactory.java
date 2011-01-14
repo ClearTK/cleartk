@@ -35,6 +35,6 @@ import org.cleartk.CleartkException;
 
 public interface ClassifierFactory<OUTCOME_TYPE> {
 
-	public Classifier<OUTCOME_TYPE> createClassifier() throws IOException, CleartkException;
+  public Classifier<OUTCOME_TYPE> createClassifier() throws IOException, CleartkException;
 
 }

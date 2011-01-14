@@ -32,93 +32,97 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * <br>Copyright (c) 2009, Regents of the University of Colorado 
- * <br>All rights reserved.
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
  * 
  * @author Philipp G. Wetzler
  */
 public class FeatureVectorTest {
-	
-	@Before
-	public void setUp() throws CleartkException {
-		fv1 = new SparseFeatureVector();
-		fv2 = new SparseFeatureVector();
-		fv2.set(1, 4.5);
-		fv2.set(5, 7.1);
-		fv2.set(7, 1.3);
-		fv2.set(10, 2.3);
-		fv2.set(7, 0);
-		fv2.set(6, 13);
-		fv2.set(3, 0);
-		fv3 = new ArrayFeatureVector();
-		fv3.set(1, 1);
-		fv3.set(3, 2.5);
-		fv3.set(6, 0.5);
-	}
-	
-	@Test
-	public void testAdd() throws CleartkException {
-		fv1.add(fv2);
-		assertTrue(fv1.equals(fv2));
-		
-		fv1.add(fv3);
-		assertEquals(fv1.get(0), 0.0, 0.0);
-		assertEquals(fv1.get(1), 5.5, delta);
-		assertEquals(fv1.get(2), 0.0, 0.0);
-		assertEquals(fv1.get(3), 2.5, delta);
-		assertEquals(fv1.get(4), 0.0, 0.0);
-		assertEquals(fv1.get(5), 7.1, delta);
-		assertEquals(fv1.get(6), 13.5, delta);
-		assertEquals(fv1.get(7), 0.0, 0.0);
-		assertEquals(fv1.get(8), 0.0, 0.0);
-		assertEquals(fv1.get(9), 0.0, 0.0);
-		assertEquals(fv1.get(10), 2.3, delta);
-		assertEquals(fv1.get(11), 0.0, 0.0);
-	}
-	
-	@Test
-	public void testMultiply() throws CleartkException {
-		fv1.multiply(3.3);
-		assertTrue(fv1.equals(new ArrayFeatureVector()));
-		
-		fv2.multiply(0.5);
-		assertEquals(0.0, fv2.get(0), 0.0);
-		assertEquals(2.25, fv2.get(1), delta);
-		assertEquals(0.0, fv2.get(2), 0.0);
-		assertEquals(0.0, fv2.get(3), 0.0);
-		assertEquals(0.0, fv2.get(4), 0.0);
-		assertEquals(3.55, fv2.get(5), delta);
-		assertEquals(6.5, fv2.get(6), delta);
-		assertEquals(0.0, fv2.get(7), 0.0);
-		assertEquals(0.0, fv2.get(8), 0.0);
-		assertEquals(0.0, fv2.get(9), 0.0);
-		assertEquals(1.15, fv2.get(10), delta);
-		assertEquals(0.0, fv2.get(11), 0.0);
-	}
-	
-	@Test
-	public void testl2Norm() {
-		assertEquals(0.0, fv1.l2Norm(), 0.0);
-		assertEquals(15.65087, fv2.l2Norm(), delta);
-	}
-	
-	@Test
-	public void testEntryEquals() {
-		FeatureVector.Entry e1 = new FeatureVector.Entry(1, 2.3);
-		FeatureVector.Entry e2 = new FeatureVector.Entry(1, 2.3);
-		FeatureVector.Entry e3 = new FeatureVector.Entry(3, 2.3);
-		FeatureVector.Entry e4 = new FeatureVector.Entry(1, 1.5);
 
-		assertTrue(e1.equals(e2));
-		assertEquals(e1.hashCode(), e2.hashCode());
-		assertFalse(e1.equals(e3));
-		assertFalse(e1.equals(e4));
-		assertFalse(e1.equals(new Integer(42)));
-	}
-		
-	static final double delta = 0.001;
-	FeatureVector fv1;
-	FeatureVector fv2;
-	FeatureVector fv3;
+  @Before
+  public void setUp() throws CleartkException {
+    fv1 = new SparseFeatureVector();
+    fv2 = new SparseFeatureVector();
+    fv2.set(1, 4.5);
+    fv2.set(5, 7.1);
+    fv2.set(7, 1.3);
+    fv2.set(10, 2.3);
+    fv2.set(7, 0);
+    fv2.set(6, 13);
+    fv2.set(3, 0);
+    fv3 = new ArrayFeatureVector();
+    fv3.set(1, 1);
+    fv3.set(3, 2.5);
+    fv3.set(6, 0.5);
+  }
+
+  @Test
+  public void testAdd() throws CleartkException {
+    fv1.add(fv2);
+    assertTrue(fv1.equals(fv2));
+
+    fv1.add(fv3);
+    assertEquals(fv1.get(0), 0.0, 0.0);
+    assertEquals(fv1.get(1), 5.5, delta);
+    assertEquals(fv1.get(2), 0.0, 0.0);
+    assertEquals(fv1.get(3), 2.5, delta);
+    assertEquals(fv1.get(4), 0.0, 0.0);
+    assertEquals(fv1.get(5), 7.1, delta);
+    assertEquals(fv1.get(6), 13.5, delta);
+    assertEquals(fv1.get(7), 0.0, 0.0);
+    assertEquals(fv1.get(8), 0.0, 0.0);
+    assertEquals(fv1.get(9), 0.0, 0.0);
+    assertEquals(fv1.get(10), 2.3, delta);
+    assertEquals(fv1.get(11), 0.0, 0.0);
+  }
+
+  @Test
+  public void testMultiply() throws CleartkException {
+    fv1.multiply(3.3);
+    assertTrue(fv1.equals(new ArrayFeatureVector()));
+
+    fv2.multiply(0.5);
+    assertEquals(0.0, fv2.get(0), 0.0);
+    assertEquals(2.25, fv2.get(1), delta);
+    assertEquals(0.0, fv2.get(2), 0.0);
+    assertEquals(0.0, fv2.get(3), 0.0);
+    assertEquals(0.0, fv2.get(4), 0.0);
+    assertEquals(3.55, fv2.get(5), delta);
+    assertEquals(6.5, fv2.get(6), delta);
+    assertEquals(0.0, fv2.get(7), 0.0);
+    assertEquals(0.0, fv2.get(8), 0.0);
+    assertEquals(0.0, fv2.get(9), 0.0);
+    assertEquals(1.15, fv2.get(10), delta);
+    assertEquals(0.0, fv2.get(11), 0.0);
+  }
+
+  @Test
+  public void testl2Norm() {
+    assertEquals(0.0, fv1.l2Norm(), 0.0);
+    assertEquals(15.65087, fv2.l2Norm(), delta);
+  }
+
+  @Test
+  public void testEntryEquals() {
+    FeatureVector.Entry e1 = new FeatureVector.Entry(1, 2.3);
+    FeatureVector.Entry e2 = new FeatureVector.Entry(1, 2.3);
+    FeatureVector.Entry e3 = new FeatureVector.Entry(3, 2.3);
+    FeatureVector.Entry e4 = new FeatureVector.Entry(1, 1.5);
+
+    assertTrue(e1.equals(e2));
+    assertEquals(e1.hashCode(), e2.hashCode());
+    assertFalse(e1.equals(e3));
+    assertFalse(e1.equals(e4));
+    assertFalse(e1.equals(new Integer(42)));
+  }
+
+  static final double delta = 0.001;
+
+  FeatureVector fv1;
+
+  FeatureVector fv2;
+
+  FeatureVector fv3;
 
 }

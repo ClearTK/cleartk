@@ -37,8 +37,8 @@ import java.util.jar.JarFile;
  */
 public class BinaryMaxentClassifier extends MaxentClassifier_ImplBase<Boolean> {
 
-	public BinaryMaxentClassifier(JarFile modelFile) throws IOException {
-		super(modelFile);
-	}
+  public BinaryMaxentClassifier(JarFile modelFile) throws IOException {
+    super(modelFile);
+  }
 
 }

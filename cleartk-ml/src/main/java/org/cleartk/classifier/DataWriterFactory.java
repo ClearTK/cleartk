@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 
 package org.cleartk.classifier;
 
@@ -36,7 +36,7 @@ import org.cleartk.CleartkException;
  */
 
 public interface DataWriterFactory<OUTCOME_TYPE> {
-	
-	public DataWriter<OUTCOME_TYPE> createDataWriter() throws IOException, CleartkException;
+
+  public DataWriter<OUTCOME_TYPE> createDataWriter() throws IOException, CleartkException;
 
 }

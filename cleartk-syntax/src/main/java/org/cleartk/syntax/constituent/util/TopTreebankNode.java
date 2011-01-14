@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,65 +20,61 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.syntax.constituent.util;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * 
  * @author Philip Ogren
- *
+ * 
  */
-public class TopTreebankNode extends TreebankNode
-{
-	List<TreebankNode> terminals;
-	String treebankParse;
-	
-	public String getTreebankParse()
-	{
-		return treebankParse;
-	}
-	public void setTreebankParse(String treebankParse)
-	{
-		this.treebankParse = treebankParse;
-	}
-	public TopTreebankNode()
-	{
-		super();
-		terminals = new ArrayList<TreebankNode>();
-	}
-	public int getTerminalCount()
-	{
-		return terminals.size();
-	}
-	
-	public TreebankNode getTerminal(int index)
-	{
-		if(0<=index && index<terminals.size())
-			return terminals.get(index);
-		return null;
-	}
-	
-	public void initTerminalNodes()
-	{
-		terminals.clear();
-		_initTerminalNodes(this);
-		
-	}
-	
-	private void _initTerminalNodes(TreebankNode node)
-	{
-		for(TreebankNode child : node.getChildren())
-		{
-			if(child.isLeaf())
-				terminals.add(child);
-			else
-				_initTerminalNodes(child);
-		}
-	}
+public class TopTreebankNode extends TreebankNode {
+  List<TreebankNode> terminals;
+
+  String treebankParse;
+
+  public String getTreebankParse() {
+    return treebankParse;
+  }
+
+  public void setTreebankParse(String treebankParse) {
+    this.treebankParse = treebankParse;
+  }
+
+  public TopTreebankNode() {
+    super();
+    terminals = new ArrayList<TreebankNode>();
+  }
+
+  public int getTerminalCount() {
+    return terminals.size();
+  }
+
+  public TreebankNode getTerminal(int index) {
+    if (0 <= index && index < terminals.size())
+      return terminals.get(index);
+    return null;
+  }
+
+  public void initTerminalNodes() {
+    terminals.clear();
+    _initTerminalNodes(this);
+
+  }
+
+  private void _initTerminalNodes(TreebankNode node) {
+    for (TreebankNode child : node.getChildren()) {
+      if (child.isLeaf())
+        terminals.add(child);
+      else
+        _initTerminalNodes(child);
+    }
+  }
 }

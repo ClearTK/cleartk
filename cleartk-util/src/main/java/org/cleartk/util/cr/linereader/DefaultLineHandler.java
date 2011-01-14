@@ -32,26 +32,28 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.util.ViewURIUtil;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
  * <p>
  */
 
 public class DefaultLineHandler implements LineHandler {
 
-	int count;
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		count = 1;
-	}
-	public void handleLine(JCas jCas, File rootFile, File file, String line)  throws IOException, CollectionException{
-		jCas.setSofaDataString(line, "text/plain");
-		
-		String uri = String.format("%s#%d", file.toURI().toString(), this.count);
-		ViewURIUtil.setURI(jCas, uri);
-		++count;
-	}
+  int count;
 
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    count = 1;
+  }
+
+  public void handleLine(JCas jCas, File rootFile, File file, String line) throws IOException,
+          CollectionException {
+    jCas.setSofaDataString(line, "text/plain");
+
+    String uri = String.format("%s#%d", file.toURI().toString(), this.count);
+    ViewURIUtil.setURI(jCas, uri);
+    ++count;
+  }
 
 }

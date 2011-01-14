@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2009, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.token.pos;
 
 import java.util.ArrayList;
@@ -45,120 +45,119 @@ import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.InitializableFactory;
 
 /**
- * <br>Copyright (c) 2009, Regents of the University of Colorado 
- * <br>All rights reserved.
- *
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * @author Philip Ogren
- *
+ * 
  */
 
 public abstract class POSAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation>
-extends CleartkSequentialAnnotator<String> {
+        extends CleartkSequentialAnnotator<String> {
 
-	public static final String PARAM_FEATURE_EXTRACTOR_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
-			POSAnnotator.class, "featureExtractorClassName"); 
-	
-	@ConfigurationParameter(
-			mandatory = true,
-			description = "provides the full name of the class that will be used to extract features",
-			defaultValue = "org.cleartk.token.pos.impl.DefaultFeatureExtractor")
-	private String featureExtractorClassName;
-	
-	protected POSFeatureExtractor<TOKEN_TYPE, SENTENCE_TYPE> featureExtractor;
+  public static final String PARAM_FEATURE_EXTRACTOR_CLASS_NAME = ConfigurationParameterFactory
+          .createConfigurationParameterName(POSAnnotator.class, "featureExtractorClassName");
 
-	private Class<? extends TOP> tokenClass; 
-	private Class<? extends TOP> sentenceClass;
+  @ConfigurationParameter(mandatory = true, description = "provides the full name of the class that will be used to extract features", defaultValue = "org.cleartk.token.pos.impl.DefaultFeatureExtractor")
+  private String featureExtractorClassName;
 
-	protected boolean typesInitialized = false;
-	protected Type tokenType;
-	protected Type sentenceType;
+  protected POSFeatureExtractor<TOKEN_TYPE, SENTENCE_TYPE> featureExtractor;
 
+  private Class<? extends TOP> tokenClass;
 
-	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		super.initialize(context);
-		
-		// extract the token and sentence classes from the type parameters 
-		this.tokenClass = ReflectionUtil.<Class<? extends TOP>>uncheckedCast(
-				ReflectionUtil.getTypeArgument(POSAnnotator.class, "TOKEN_TYPE", this));
-		this.sentenceClass = ReflectionUtil.<Class<? extends TOP>>uncheckedCast(
-				ReflectionUtil.getTypeArgument(POSAnnotator.class, "SENTENCE_TYPE", this));
+  private Class<? extends TOP> sentenceClass;
 
-		// create the feature extractor and tagger
-		POSFeatureExtractor<?, ?> untypedExtractor = InitializableFactory.create(context, featureExtractorClassName, POSFeatureExtractor.class);
+  protected boolean typesInitialized = false;
 
-		// check that the type parameters are compatible 
-		ReflectionUtil.checkTypeParameterIsAssignable(
-				POSFeatureExtractor.class, "TOKEN_TYPE", untypedExtractor, 
-				POSAnnotator.class, "TOKEN_TYPE", this);
-		ReflectionUtil.checkTypeParameterIsAssignable(
-				POSFeatureExtractor.class, "SENTENCE_TYPE", untypedExtractor, 
-				POSAnnotator.class, "SENTENCE_TYPE", this);
-		
-		// set the instance variables
-		this.featureExtractor = ReflectionUtil.uncheckedCast(untypedExtractor);
-	}
+  protected Type tokenType;
 
-	protected void initializeTypes(JCas jCas) throws AnalysisEngineProcessException {
-		try {
-			tokenType = UIMAUtil.getCasType(jCas, this.tokenClass);
-			sentenceType = UIMAUtil.getCasType(jCas, this.sentenceClass);
-		} catch (Exception e) {
-			throw new AnalysisEngineProcessException(e);
-		}
-		typesInitialized = true;
-	}
-	
-	@Override
-	public void process(JCas jCas) throws AnalysisEngineProcessException {
-		try {
-			this.processSimple(jCas);
-		} catch (CleartkException e) {
-			throw new AnalysisEngineProcessException(e);
-		}
-	}
+  protected Type sentenceType;
 
-	@SuppressWarnings("unchecked")
-	public void processSimple(JCas jCas) throws AnalysisEngineProcessException, CleartkException {
-		if (!typesInitialized) initializeTypes(jCas);
-		
-		FSIterator<Annotation> sentences = jCas.getAnnotationIndex(sentenceType).iterator();
-		while (sentences.hasNext()) {
-			SENTENCE_TYPE sentence = (SENTENCE_TYPE) sentences.next();
+  @Override
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    super.initialize(context);
 
-			List<Instance<String>> instances = new ArrayList<Instance<String>>();
-			
-			FSIterator<Annotation> tokens = jCas.getAnnotationIndex(tokenType).subiterator(sentence);
+    // extract the token and sentence classes from the type parameters
+    this.tokenClass = ReflectionUtil.<Class<? extends TOP>> uncheckedCast(ReflectionUtil
+            .getTypeArgument(POSAnnotator.class, "TOKEN_TYPE", this));
+    this.sentenceClass = ReflectionUtil.<Class<? extends TOP>> uncheckedCast(ReflectionUtil
+            .getTypeArgument(POSAnnotator.class, "SENTENCE_TYPE", this));
 
-			while (tokens.hasNext()) {
-				TOKEN_TYPE token = (TOKEN_TYPE) tokens.next();
-				List<Feature> features = featureExtractor.extractFeatures(jCas, token, sentence);
-				Instance<String> instance = new Instance<String>();
-				instance.addAll(features);
-				instance.setOutcome(getTag(jCas, token));
-				instances.add(instance);
-			}
-			
-			if (this.isTraining()) {
-				this.sequentialDataWriter.writeSequence(instances);
-			} else {
-				List<String> tags = this.classifySequence(instances);
-				tokens.moveToFirst();
-				for(int i=0; tokens.hasNext(); i++) {
-					TOKEN_TYPE token = (TOKEN_TYPE) tokens.next();
-					setTag(jCas, token, tags.get(i));
-				}
-			}
-		}
-	}
+    // create the feature extractor and tagger
+    POSFeatureExtractor<?, ?> untypedExtractor = InitializableFactory.create(context,
+            featureExtractorClassName, POSFeatureExtractor.class);
 
-	public abstract void setTag(JCas jCas, TOKEN_TYPE token, String tag);
+    // check that the type parameters are compatible
+    ReflectionUtil.checkTypeParameterIsAssignable(POSFeatureExtractor.class, "TOKEN_TYPE",
+            untypedExtractor, POSAnnotator.class, "TOKEN_TYPE", this);
+    ReflectionUtil.checkTypeParameterIsAssignable(POSFeatureExtractor.class, "SENTENCE_TYPE",
+            untypedExtractor, POSAnnotator.class, "SENTENCE_TYPE", this);
 
-	public abstract String getTag(JCas jCas, TOKEN_TYPE token);
-	
-	public void setFeatureExtractorClassName(String featureExtractorClassName) {
-		this.featureExtractorClassName = featureExtractorClassName;
-	}
+    // set the instance variables
+    this.featureExtractor = ReflectionUtil.uncheckedCast(untypedExtractor);
+  }
 
+  protected void initializeTypes(JCas jCas) throws AnalysisEngineProcessException {
+    try {
+      tokenType = UIMAUtil.getCasType(jCas, this.tokenClass);
+      sentenceType = UIMAUtil.getCasType(jCas, this.sentenceClass);
+    } catch (Exception e) {
+      throw new AnalysisEngineProcessException(e);
+    }
+    typesInitialized = true;
+  }
+
+  @Override
+  public void process(JCas jCas) throws AnalysisEngineProcessException {
+    try {
+      this.processSimple(jCas);
+    } catch (CleartkException e) {
+      throw new AnalysisEngineProcessException(e);
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  public void processSimple(JCas jCas) throws AnalysisEngineProcessException, CleartkException {
+    if (!typesInitialized)
+      initializeTypes(jCas);
+
+    FSIterator<Annotation> sentences = jCas.getAnnotationIndex(sentenceType).iterator();
+    while (sentences.hasNext()) {
+      SENTENCE_TYPE sentence = (SENTENCE_TYPE) sentences.next();
+
+      List<Instance<String>> instances = new ArrayList<Instance<String>>();
+
+      FSIterator<Annotation> tokens = jCas.getAnnotationIndex(tokenType).subiterator(sentence);
+
+      while (tokens.hasNext()) {
+        TOKEN_TYPE token = (TOKEN_TYPE) tokens.next();
+        List<Feature> features = featureExtractor.extractFeatures(jCas, token, sentence);
+        Instance<String> instance = new Instance<String>();
+        instance.addAll(features);
+        instance.setOutcome(getTag(jCas, token));
+        instances.add(instance);
+      }
+
+      if (this.isTraining()) {
+        this.sequentialDataWriter.writeSequence(instances);
+      } else {
+        List<String> tags = this.classifySequence(instances);
+        tokens.moveToFirst();
+        for (int i = 0; tokens.hasNext(); i++) {
+          TOKEN_TYPE token = (TOKEN_TYPE) tokens.next();
+          setTag(jCas, token, tags.get(i));
+        }
+      }
+    }
+  }
+
+  public abstract void setTag(JCas jCas, TOKEN_TYPE token, String tag);
+
+  public abstract String getTag(JCas jCas, TOKEN_TYPE token);
+
+  public void setFeatureExtractorClassName(String featureExtractorClassName) {
+    this.featureExtractorClassName = featureExtractorClassName;
+  }
 
 }

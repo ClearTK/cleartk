@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,9 +20,8 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.srl.propbank;
-
 
 import static org.junit.Assert.assertNotNull;
 
@@ -37,68 +36,71 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.CollectionReaderFactory;
-/**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
 
+/**
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
  */
 public class PropbankGoldReaderAndAnnotatorTest extends SrlTestBase {
-	
-	
-	
-	@Test
-	public void testReaderDescriptor() throws UIMAException, IOException {
-		CollectionReader reader;
-		
-		ResourceInitializationException rie = null;
-		try {
-			reader = CollectionReaderFactory.createCollectionReader(PropbankGoldReader.class, typeSystemDescription);
-		} catch (ResourceInitializationException e) {
-			rie = e;
-		}
-		assertNotNull(rie);
 
-		rie = null;
-		try {
-			reader = CollectionReaderFactory.createCollectionReader(PropbankGoldReader.class, typeSystemDescription,
-				PropbankGoldReader.PARAM_WSJ_SECTIONS, "02-21");
-		} catch (ResourceInitializationException e) {
-			rie = e;
-		}
-		assertNotNull(rie);
+  @Test
+  public void testReaderDescriptor() throws UIMAException, IOException {
+    CollectionReader reader;
 
-		try {
-			reader = CollectionReaderFactory.createCollectionReader(PropbankGoldReader.class, typeSystemDescription,
-				PropbankGoldReader.PARAM_WSJ_SECTIONS, "02-21",
-			PropbankGoldReader.PARAM_PROPBANK_FILE_NAME, "src/test/resources/data/propbank-1.0/prop.txt");
-		} catch (ResourceInitializationException e) {
-			rie = e;
-		}
-		assertNotNull(rie);
+    ResourceInitializationException rie = null;
+    try {
+      reader = CollectionReaderFactory.createCollectionReader(PropbankGoldReader.class,
+              typeSystemDescription);
+    } catch (ResourceInitializationException e) {
+      rie = e;
+    }
+    assertNotNull(rie);
 
-		reader = CollectionReaderFactory.createCollectionReader(PropbankGoldReader.class, typeSystemDescription, 
-				PropbankGoldReader.PARAM_WSJ_SECTIONS, "02-21",
-				PropbankGoldReader.PARAM_PROPBANK_FILE_NAME, "src/test/resources/data/propbank-1.0/prop.txt",
-				PropbankGoldReader.PARAM_PENNTREEBANK_DIRECTORY_NAME, "src/test/resources/data/propbank-1.0/treebank");
-		
-		Object propbankCorpusFile = reader.getConfigParameterValue(
-				PropbankGoldReader.PARAM_PROPBANK_FILE_NAME);
-		Assert.assertEquals("src/test/resources/data/propbank-1.0/prop.txt", propbankCorpusFile);
-		
-		Object treebankCorpusDirectory = reader.getConfigParameterValue(
-				PropbankGoldReader.PARAM_PENNTREEBANK_DIRECTORY_NAME);
-		Assert.assertEquals("src/test/resources/data/propbank-1.0/treebank", treebankCorpusDirectory);
-		
-		Object wsjSections = reader.getConfigParameterValue(
-				PropbankGoldReader.PARAM_WSJ_SECTIONS);
-		Assert.assertEquals("02-21", wsjSections);
-		
-	}
-	
-	@Test
-	public void testAnnotatorDescriptor() throws UIMAException, IOException {
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(PropbankGoldAnnotator.class, typeSystemDescription);
-		engine.collectionProcessComplete();
-	}
-	
+    rie = null;
+    try {
+      reader = CollectionReaderFactory.createCollectionReader(PropbankGoldReader.class,
+              typeSystemDescription, PropbankGoldReader.PARAM_WSJ_SECTIONS, "02-21");
+    } catch (ResourceInitializationException e) {
+      rie = e;
+    }
+    assertNotNull(rie);
+
+    try {
+      reader = CollectionReaderFactory.createCollectionReader(PropbankGoldReader.class,
+              typeSystemDescription, PropbankGoldReader.PARAM_WSJ_SECTIONS, "02-21",
+              PropbankGoldReader.PARAM_PROPBANK_FILE_NAME,
+              "src/test/resources/data/propbank-1.0/prop.txt");
+    } catch (ResourceInitializationException e) {
+      rie = e;
+    }
+    assertNotNull(rie);
+
+    reader = CollectionReaderFactory.createCollectionReader(PropbankGoldReader.class,
+            typeSystemDescription, PropbankGoldReader.PARAM_WSJ_SECTIONS, "02-21",
+            PropbankGoldReader.PARAM_PROPBANK_FILE_NAME,
+            "src/test/resources/data/propbank-1.0/prop.txt",
+            PropbankGoldReader.PARAM_PENNTREEBANK_DIRECTORY_NAME,
+            "src/test/resources/data/propbank-1.0/treebank");
+
+    Object propbankCorpusFile = reader
+            .getConfigParameterValue(PropbankGoldReader.PARAM_PROPBANK_FILE_NAME);
+    Assert.assertEquals("src/test/resources/data/propbank-1.0/prop.txt", propbankCorpusFile);
+
+    Object treebankCorpusDirectory = reader
+            .getConfigParameterValue(PropbankGoldReader.PARAM_PENNTREEBANK_DIRECTORY_NAME);
+    Assert.assertEquals("src/test/resources/data/propbank-1.0/treebank", treebankCorpusDirectory);
+
+    Object wsjSections = reader.getConfigParameterValue(PropbankGoldReader.PARAM_WSJ_SECTIONS);
+    Assert.assertEquals("02-21", wsjSections);
+
+  }
+
+  @Test
+  public void testAnnotatorDescriptor() throws UIMAException, IOException {
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(PropbankGoldAnnotator.class,
+            typeSystemDescription);
+    engine.collectionProcessComplete();
+  }
+
 }

@@ -56,118 +56,103 @@ import org.uimafit.pipeline.JCasIterable;
  */
 public class PlainTextTLINKGoldAnnotatorTest extends TimeMLTestBase {
 
-	private final String webUrl = "http://verbs.colorado.edu/~bethard/data/timebank-verb-clause.txt";
-	private final String fileUrl = String.format("file:///%s", new File(
-		"src/test/resources/data/timeml/wsj_0106.tlinks").getAbsolutePath());
+  private final String webUrl = "http://verbs.colorado.edu/~bethard/data/timebank-verb-clause.txt";
 
-	@Test
-	@Ignore
-	public void test_wsj_0106() throws UIMAException, IOException {
-		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-			FilesCollectionReader.class,
-			typeSystemDescription,
-			FilesCollectionReader.PARAM_VIEW_NAME,
-			TimeMLViewName.TIMEML,
-			FilesCollectionReader.PARAM_ROOT_FILE,
-			"src/test/resources/data/timeml/wsj_0106.tml");
-		AnalysisEngine timemlEngine = AnalysisEngineFactory.createPrimitive(
-			TimeMLGoldAnnotator.class,
-			typeSystemDescription,
-			TimeMLGoldAnnotator.PARAM_LOAD_TLINKS,
-			false);
-		AnalysisEngine plainTextEngine = AnalysisEngineFactory.createPrimitive(
-			PlainTextTLINKGoldAnnotator.class,
-			typeSystemDescription,
-			PlainTextTLINKGoldAnnotator.PARAM_TLINK_FILE_URL,
-			this.webUrl);
-		JCas jcas = new JCasIterable(reader, timemlEngine, plainTextEngine).next();
+  private final String fileUrl = String.format("file:///%s", new File(
+          "src/test/resources/data/timeml/wsj_0106.tlinks").getAbsolutePath());
 
-		List<TemporalLink> tlinks = AnnotationRetrieval.getAnnotations(jcas, TemporalLink.class);
-		Assert.assertEquals(6, tlinks.size());
-		Map<String, TemporalLink> tlinkMap = new HashMap<String, TemporalLink>();
-		for (TemporalLink tlink : tlinks) {
-			tlinkMap.put(tlink.getSource().getId(), tlink);
-		}
+  @Test
+  @Ignore
+  public void test_wsj_0106() throws UIMAException, IOException {
+    CollectionReader reader = CollectionReaderFactory.createCollectionReader(
+            FilesCollectionReader.class, typeSystemDescription,
+            FilesCollectionReader.PARAM_VIEW_NAME, TimeMLViewName.TIMEML,
+            FilesCollectionReader.PARAM_ROOT_FILE, "src/test/resources/data/timeml/wsj_0106.tml");
+    AnalysisEngine timemlEngine = AnalysisEngineFactory.createPrimitive(TimeMLGoldAnnotator.class,
+            typeSystemDescription, TimeMLGoldAnnotator.PARAM_LOAD_TLINKS, false);
+    AnalysisEngine plainTextEngine = AnalysisEngineFactory.createPrimitive(
+            PlainTextTLINKGoldAnnotator.class, typeSystemDescription,
+            PlainTextTLINKGoldAnnotator.PARAM_TLINK_FILE_URL, this.webUrl);
+    JCas jcas = new JCasIterable(reader, timemlEngine, plainTextEngine).next();
 
-		// wsj_0106 ei128 ei129 OVERLAP
-		TemporalLink tlink = tlinkMap.get("e1");
-		Assert.assertEquals(null, tlink.getId());
-		Assert.assertEquals("OVERLAP", tlink.getRelationType());
-		Assert.assertEquals("ei128", tlink.getEventInstanceID());
-		Assert.assertEquals("e1", tlink.getEventID());
-		Assert.assertEquals(null, tlink.getTimeID());
-		Assert.assertEquals(null, tlink.getRelatedToTime());
-		Assert.assertEquals("e2", tlink.getRelatedToEvent());
-		Assert.assertEquals("ei129", tlink.getRelatedToEventInstance());
-		Assert.assertEquals("e1", tlink.getSource().getId());
-		Assert.assertEquals("e2", tlink.getTarget().getId());
+    List<TemporalLink> tlinks = AnnotationRetrieval.getAnnotations(jcas, TemporalLink.class);
+    Assert.assertEquals(6, tlinks.size());
+    Map<String, TemporalLink> tlinkMap = new HashMap<String, TemporalLink>();
+    for (TemporalLink tlink : tlinks) {
+      tlinkMap.put(tlink.getSource().getId(), tlink);
+    }
 
-		// wsj_0106 ei129 ei130 BEFORE
-		tlink = tlinkMap.get("e2");
-		Assert.assertEquals(null, tlink.getId());
-		Assert.assertEquals("BEFORE", tlink.getRelationType());
-		Assert.assertEquals("ei129", tlink.getEventInstanceID());
-		Assert.assertEquals("e2", tlink.getEventID());
-		Assert.assertEquals(null, tlink.getTimeID());
-		Assert.assertEquals(null, tlink.getRelatedToTime());
-		Assert.assertEquals("e4", tlink.getRelatedToEvent());
-		Assert.assertEquals("ei130", tlink.getRelatedToEventInstance());
-		Assert.assertEquals("e2", tlink.getSource().getId());
-		Assert.assertEquals("e4", tlink.getTarget().getId());
-	}
+    // wsj_0106 ei128 ei129 OVERLAP
+    TemporalLink tlink = tlinkMap.get("e1");
+    Assert.assertEquals(null, tlink.getId());
+    Assert.assertEquals("OVERLAP", tlink.getRelationType());
+    Assert.assertEquals("ei128", tlink.getEventInstanceID());
+    Assert.assertEquals("e1", tlink.getEventID());
+    Assert.assertEquals(null, tlink.getTimeID());
+    Assert.assertEquals(null, tlink.getRelatedToTime());
+    Assert.assertEquals("e2", tlink.getRelatedToEvent());
+    Assert.assertEquals("ei129", tlink.getRelatedToEventInstance());
+    Assert.assertEquals("e1", tlink.getSource().getId());
+    Assert.assertEquals("e2", tlink.getTarget().getId());
 
-	@Test
-	public void test_wsj_0106_alternate() throws UIMAException, IOException {
-		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-			FilesCollectionReader.class,
-			typeSystemDescription,
-			FilesCollectionReader.PARAM_VIEW_NAME,
-			TimeMLViewName.TIMEML,
-			FilesCollectionReader.PARAM_ROOT_FILE,
-			"src/test/resources/data/timeml/wsj_0106.tml");
-		AnalysisEngine timemlEngine = AnalysisEngineFactory.createPrimitive(
-			TimeMLGoldAnnotator.class,
-			typeSystemDescription,
-			TimeMLGoldAnnotator.PARAM_LOAD_TLINKS,
-			false);
-		AnalysisEngine plainTextEngine = AnalysisEngineFactory.createPrimitive(
-			PlainTextTLINKGoldAnnotator.class,
-			typeSystemDescription,
-			PlainTextTLINKGoldAnnotator.PARAM_TLINK_FILE_URL,
-			this.fileUrl);
-		JCas jcas = new JCasIterable(reader, timemlEngine, plainTextEngine).next();
+    // wsj_0106 ei129 ei130 BEFORE
+    tlink = tlinkMap.get("e2");
+    Assert.assertEquals(null, tlink.getId());
+    Assert.assertEquals("BEFORE", tlink.getRelationType());
+    Assert.assertEquals("ei129", tlink.getEventInstanceID());
+    Assert.assertEquals("e2", tlink.getEventID());
+    Assert.assertEquals(null, tlink.getTimeID());
+    Assert.assertEquals(null, tlink.getRelatedToTime());
+    Assert.assertEquals("e4", tlink.getRelatedToEvent());
+    Assert.assertEquals("ei130", tlink.getRelatedToEventInstance());
+    Assert.assertEquals("e2", tlink.getSource().getId());
+    Assert.assertEquals("e4", tlink.getTarget().getId());
+  }
 
-		List<TemporalLink> tlinks = AnnotationRetrieval.getAnnotations(jcas, TemporalLink.class);
-		Assert.assertEquals(2, tlinks.size());
-		Map<String, TemporalLink> tlinkMap = new HashMap<String, TemporalLink>();
-		for (TemporalLink tlink : tlinks) {
-			tlinkMap.put(tlink.getSource().getId(), tlink);
-		}
+  @Test
+  public void test_wsj_0106_alternate() throws UIMAException, IOException {
+    CollectionReader reader = CollectionReaderFactory.createCollectionReader(
+            FilesCollectionReader.class, typeSystemDescription,
+            FilesCollectionReader.PARAM_VIEW_NAME, TimeMLViewName.TIMEML,
+            FilesCollectionReader.PARAM_ROOT_FILE, "src/test/resources/data/timeml/wsj_0106.tml");
+    AnalysisEngine timemlEngine = AnalysisEngineFactory.createPrimitive(TimeMLGoldAnnotator.class,
+            typeSystemDescription, TimeMLGoldAnnotator.PARAM_LOAD_TLINKS, false);
+    AnalysisEngine plainTextEngine = AnalysisEngineFactory.createPrimitive(
+            PlainTextTLINKGoldAnnotator.class, typeSystemDescription,
+            PlainTextTLINKGoldAnnotator.PARAM_TLINK_FILE_URL, this.fileUrl);
+    JCas jcas = new JCasIterable(reader, timemlEngine, plainTextEngine).next();
 
-		// wsj_0106 ei128 t26 BEFORE
-		TemporalLink tlink = tlinkMap.get("e1");
-		Assert.assertEquals(null, tlink.getId());
-		Assert.assertEquals("BEFORE", tlink.getRelationType());
-		Assert.assertEquals("ei128", tlink.getEventInstanceID());
-		Assert.assertEquals("e1", tlink.getEventID());
-		Assert.assertEquals(null, tlink.getTimeID());
-		Assert.assertEquals("t26", tlink.getRelatedToTime());
-		Assert.assertEquals(null, tlink.getRelatedToEvent());
-		Assert.assertEquals(null, tlink.getRelatedToEventInstance());
-		Assert.assertEquals("e1", tlink.getSource().getId());
-		Assert.assertEquals("t26", tlink.getTarget().getId());
+    List<TemporalLink> tlinks = AnnotationRetrieval.getAnnotations(jcas, TemporalLink.class);
+    Assert.assertEquals(2, tlinks.size());
+    Map<String, TemporalLink> tlinkMap = new HashMap<String, TemporalLink>();
+    for (TemporalLink tlink : tlinks) {
+      tlinkMap.put(tlink.getSource().getId(), tlink);
+    }
 
-		// wsj_0106 t26 ei132 AFTER
-		tlink = tlinkMap.get("t26");
-		Assert.assertEquals(null, tlink.getId());
-		Assert.assertEquals("AFTER", tlink.getRelationType());
-		Assert.assertEquals(null, tlink.getEventInstanceID());
-		Assert.assertEquals(null, tlink.getEventID());
-		Assert.assertEquals("t26", tlink.getTimeID());
-		Assert.assertEquals(null, tlink.getRelatedToTime());
-		Assert.assertEquals("e7", tlink.getRelatedToEvent());
-		Assert.assertEquals("ei132", tlink.getRelatedToEventInstance());
-		Assert.assertEquals("t26", tlink.getSource().getId());
-		Assert.assertEquals("e7", tlink.getTarget().getId());
-	}
+    // wsj_0106 ei128 t26 BEFORE
+    TemporalLink tlink = tlinkMap.get("e1");
+    Assert.assertEquals(null, tlink.getId());
+    Assert.assertEquals("BEFORE", tlink.getRelationType());
+    Assert.assertEquals("ei128", tlink.getEventInstanceID());
+    Assert.assertEquals("e1", tlink.getEventID());
+    Assert.assertEquals(null, tlink.getTimeID());
+    Assert.assertEquals("t26", tlink.getRelatedToTime());
+    Assert.assertEquals(null, tlink.getRelatedToEvent());
+    Assert.assertEquals(null, tlink.getRelatedToEventInstance());
+    Assert.assertEquals("e1", tlink.getSource().getId());
+    Assert.assertEquals("t26", tlink.getTarget().getId());
+
+    // wsj_0106 t26 ei132 AFTER
+    tlink = tlinkMap.get("t26");
+    Assert.assertEquals(null, tlink.getId());
+    Assert.assertEquals("AFTER", tlink.getRelationType());
+    Assert.assertEquals(null, tlink.getEventInstanceID());
+    Assert.assertEquals(null, tlink.getEventID());
+    Assert.assertEquals("t26", tlink.getTimeID());
+    Assert.assertEquals(null, tlink.getRelatedToTime());
+    Assert.assertEquals("e7", tlink.getRelatedToEvent());
+    Assert.assertEquals("ei132", tlink.getRelatedToEventInstance());
+    Assert.assertEquals("t26", tlink.getSource().getId());
+    Assert.assertEquals("e7", tlink.getTarget().getId());
+  }
 }

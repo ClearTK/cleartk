@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.feature.extractor.simple;
 
 import java.util.ArrayList;
@@ -35,57 +35,66 @@ import org.cleartk.classifier.feature.extractor.filter.AnnotationFilter;
 import org.cleartk.util.AnnotationRetrieval;
 
 /**
- * <br>Copyright (c) 2007-2010, Regents of the University of Colorado 
- * <br>All rights reserved.
- *
- * A class for extracting bag-of-words style features. It allows any type of
- * Annotation to serve as the "words", and allows any type of feature extractor
- * to be applied to each of these "words".
+ * <br>
+ * Copyright (c) 2007-2010, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * A class for extracting bag-of-words style features. It allows any type of Annotation to serve as
+ * the "words", and allows any type of feature extractor to be applied to each of these "words".
  * 
  * @author Steven Bethard, Philipp Wetzler
  */
 public class BagExtractor implements SimpleFeatureExtractor {
 
-	public BagExtractor(Class<? extends Annotation> annotationClass, AnnotationFilter filter, SimpleFeatureExtractor subExtractor) {
-		this.annotationClass = annotationClass;
-		this.subExtractor = subExtractor;
-		this.featureName = filter == null ? String.format("Bag(%s)", annotationClass.getSimpleName())
-				: String.format("Bag(%s,%s)", annotationClass.getSimpleName(), filter.filterName());
-		this.filter = filter == null ? new AlwaysIncludeAnnotationFilter() : filter;
-	}
+  public BagExtractor(Class<? extends Annotation> annotationClass, AnnotationFilter filter,
+          SimpleFeatureExtractor subExtractor) {
+    this.annotationClass = annotationClass;
+    this.subExtractor = subExtractor;
+    this.featureName = filter == null ? String.format("Bag(%s)", annotationClass.getSimpleName())
+            : String.format("Bag(%s,%s)", annotationClass.getSimpleName(), filter.filterName());
+    this.filter = filter == null ? new AlwaysIncludeAnnotationFilter() : filter;
+  }
 
-	public BagExtractor(Class<? extends Annotation> annotationClass, SimpleFeatureExtractor subExtractor) {
-		this(annotationClass, null, subExtractor);
-	}
+  public BagExtractor(Class<? extends Annotation> annotationClass,
+          SimpleFeatureExtractor subExtractor) {
+    this(annotationClass, null, subExtractor);
+  }
 
-	public BagExtractor(Class<? extends Annotation> annotationClass, AnnotationFilter filter, SimpleFeatureExtractor ... subExtractors) {
-		this(annotationClass, filter, new CombinedExtractor(subExtractors));
-	}
+  public BagExtractor(Class<? extends Annotation> annotationClass, AnnotationFilter filter,
+          SimpleFeatureExtractor... subExtractors) {
+    this(annotationClass, filter, new CombinedExtractor(subExtractors));
+  }
 
-	public BagExtractor(Class<? extends Annotation> annotationClass, SimpleFeatureExtractor ... subExtractors) {
-		this(annotationClass, null, new CombinedExtractor(subExtractors));
-	}
+  public BagExtractor(Class<? extends Annotation> annotationClass,
+          SimpleFeatureExtractor... subExtractors) {
+    this(annotationClass, null, new CombinedExtractor(subExtractors));
+  }
 
-	public List<Feature> extract(JCas jCas, Annotation focusAnnotation) throws UnsupportedOperationException, CleartkException {
-		List<Feature> features = new ArrayList<Feature>();
+  public List<Feature> extract(JCas jCas, Annotation focusAnnotation)
+          throws UnsupportedOperationException, CleartkException {
+    List<Feature> features = new ArrayList<Feature>();
 
-		for (Annotation ann: AnnotationRetrieval.getAnnotations(jCas, focusAnnotation, this.annotationClass)) {
-			if( ! filter.include(jCas, ann) )
-				continue;
+    for (Annotation ann : AnnotationRetrieval.getAnnotations(jCas, focusAnnotation,
+            this.annotationClass)) {
+      if (!filter.include(jCas, ann))
+        continue;
 
-			List<Feature> subFeatures = subExtractor.extract(jCas, ann);
-			for( Feature f : subFeatures ) {
-				f.setName(Feature.createName(this.featureName, f.getName()));
-			}
-			features.addAll(subFeatures);
-		}
-		
-		return features;
-	}
+      List<Feature> subFeatures = subExtractor.extract(jCas, ann);
+      for (Feature f : subFeatures) {
+        f.setName(Feature.createName(this.featureName, f.getName()));
+      }
+      features.addAll(subFeatures);
+    }
 
-	private Class<? extends Annotation> annotationClass;
-	private SimpleFeatureExtractor subExtractor;
-	private AnnotationFilter filter;
-	private String featureName;
+    return features;
+  }
+
+  private Class<? extends Annotation> annotationClass;
+
+  private SimpleFeatureExtractor subExtractor;
+
+  private AnnotationFilter filter;
+
+  private String featureName;
 
 }

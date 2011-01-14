@@ -45,41 +45,47 @@ import org.uimafit.pipeline.SimplePipeline;
  * Copyright (c) 2010, Regents of the University of Colorado <br>
  * All rights reserved.
  * <p>
+ * 
  * @author Philip Ogren
  */
 
 public class BreakIteratorAnnotatorTest extends TokenTestBase {
 
-	@Test
-	public void testTokenAnnotator() throws Exception {
-		AnalysisEngineDescription tokenAnnotator = BreakIteratorAnnotatorFactory.createTokenAnnotator(Locale.US);
-		String text = "  : ;) Hey there!  I am going to the store.  Would you like to come with me?";
-		String expectedText = ": ; ) Hey there ! I am going to the store . Would you like to come with me ?";
-		test(tokenAnnotator, Token.class, text, expectedText);
-	}
+  @Test
+  public void testTokenAnnotator() throws Exception {
+    AnalysisEngineDescription tokenAnnotator = BreakIteratorAnnotatorFactory
+            .createTokenAnnotator(Locale.US);
+    String text = "  : ;) Hey there!  I am going to the store.  Would you like to come with me?";
+    String expectedText = ": ; ) Hey there ! I am going to the store . Would you like to come with me ?";
+    test(tokenAnnotator, Token.class, text, expectedText);
+  }
 
-	@Test
-	public void testSentenceAnnotator() throws Exception {
-		AnalysisEngineDescription sentenceAnnotator = BreakIteratorAnnotatorFactory.createSentenceAnnotator(Locale.US);
-		String text = "  : ;) Hey there!  I am going to the store.  Would you like to come with me?";
-		String[] expectedAnnotations = new String[] {"  : ;) Hey there!  ", "I am going to the store.  ", "Would you like to come with me?"};
-		test(sentenceAnnotator, Sentence.class, text, expectedAnnotations);
-	}
+  @Test
+  public void testSentenceAnnotator() throws Exception {
+    AnalysisEngineDescription sentenceAnnotator = BreakIteratorAnnotatorFactory
+            .createSentenceAnnotator(Locale.US);
+    String text = "  : ;) Hey there!  I am going to the store.  Would you like to come with me?";
+    String[] expectedAnnotations = new String[] { "  : ;) Hey there!  ",
+        "I am going to the store.  ", "Would you like to come with me?" };
+    test(sentenceAnnotator, Sentence.class, text, expectedAnnotations);
+  }
 
-	private void test(AnalysisEngineDescription annotator, Class<? extends Annotation> annotationCls, String text, String[] expectedAnnotations) throws UIMAException, IOException {
-		jCas.setDocumentText(text);
-		SimplePipeline.runPipeline(jCas, annotator);
-		List<? extends Annotation> actualAnnotations = AnnotationRetrieval.getAnnotations(jCas, annotationCls);
-		assertEquals(expectedAnnotations.length, actualAnnotations.size());
-		for(int i=0; i<expectedAnnotations.length; i++) {
-			assertEquals(expectedAnnotations[i], actualAnnotations.get(i).getCoveredText());
-		}
-	}
+  private void test(AnalysisEngineDescription annotator, Class<? extends Annotation> annotationCls,
+          String text, String[] expectedAnnotations) throws UIMAException, IOException {
+    jCas.setDocumentText(text);
+    SimplePipeline.runPipeline(jCas, annotator);
+    List<? extends Annotation> actualAnnotations = AnnotationRetrieval.getAnnotations(jCas,
+            annotationCls);
+    assertEquals(expectedAnnotations.length, actualAnnotations.size());
+    for (int i = 0; i < expectedAnnotations.length; i++) {
+      assertEquals(expectedAnnotations[i], actualAnnotations.get(i).getCoveredText());
+    }
+  }
 
-	private void test(AnalysisEngineDescription annotator, Class<? extends Annotation> annotationCls, String text, String expectedText) throws UIMAException, IOException {
-		String[] expectedAnnotations = expectedText.split(" ");
-		test(annotator, annotationCls, text, expectedAnnotations);
-	}
-
+  private void test(AnalysisEngineDescription annotator, Class<? extends Annotation> annotationCls,
+          String text, String expectedText) throws UIMAException, IOException {
+    String[] expectedAnnotations = expectedText.split(" ");
+    test(annotator, annotationCls, text, expectedAnnotations);
+  }
 
 }

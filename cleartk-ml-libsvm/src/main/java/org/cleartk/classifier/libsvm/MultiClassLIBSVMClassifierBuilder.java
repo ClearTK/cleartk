@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.libsvm;
 
 import java.io.File;
@@ -32,44 +32,43 @@ import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.jar.BuildJar;
 import org.cleartk.classifier.jar.ClassifierBuilder;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
-*/
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ */
 
 public class MultiClassLIBSVMClassifierBuilder implements ClassifierBuilder<String> {
 
-	public void train(File dir, String[] args) throws Exception {
-		String[] command = new String[args.length + 3];
-		command[0] = "svm-train";
-		System.arraycopy(args, 0, command, 1, args.length);
-		command[command.length - 2] = new File(dir, "training-data.libsvm").getPath();
-		command[command.length - 1] = new File(dir, "model.libsvm").getPath();
-		Process process = Runtime.getRuntime().exec(command);
-		output(process.getInputStream(), System.out);
-		output(process.getErrorStream(), System.err);
-		process.waitFor();
-	}
+  public void train(File dir, String[] args) throws Exception {
+    String[] command = new String[args.length + 3];
+    command[0] = "svm-train";
+    System.arraycopy(args, 0, command, 1, args.length);
+    command[command.length - 2] = new File(dir, "training-data.libsvm").getPath();
+    command[command.length - 1] = new File(dir, "model.libsvm").getPath();
+    Process process = Runtime.getRuntime().exec(command);
+    output(process.getInputStream(), System.out);
+    output(process.getErrorStream(), System.err);
+    process.waitFor();
+  }
 
-	public void buildJar(File dir, String[] args) throws Exception {
-		BuildJar.OutputStream stream = new BuildJar.OutputStream(dir);
-		stream.write("model.libsvm", new File(dir, "model.libsvm"));
-		stream.close();
-	}
+  public void buildJar(File dir, String[] args) throws Exception {
+    BuildJar.OutputStream stream = new BuildJar.OutputStream(dir);
+    stream.write("model.libsvm", new File(dir, "model.libsvm"));
+    stream.close();
+  }
 
-	public Class<? extends Classifier<String>> getClassifierClass() {
-		return MultiClassLIBSVMClassifier.class;
-	}
+  public Class<? extends Classifier<String>> getClassifierClass() {
+    return MultiClassLIBSVMClassifier.class;
+  }
 
-	private static void output(InputStream input, PrintStream output) throws IOException {
-		byte[] buffer = new byte[128];
-		int count = input.read(buffer);
-		while (count != -1) {
-			output.write(buffer, 0, count);
-			count = input.read(buffer);
-		}
-	}
+  private static void output(InputStream input, PrintStream output) throws IOException {
+    byte[] buffer = new byte[128];
+    int count = input.read(buffer);
+    while (count != -1) {
+      output.write(buffer, 0, count);
+      count = input.read(buffer);
+    }
+  }
 
 }

@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.srl.propbank.util;
 
 import java.util.ArrayList;
@@ -30,69 +30,69 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * 
  * <p>
- * A <em>PropbankCorefRelation object</em> represents a reference to multiple
- * relations that are part of a coreferenced argument in Propbank.
+ * A <em>PropbankCorefRelation object</em> represents a reference to multiple relations that are
+ * part of a coreferenced argument in Propbank.
  * </p>
  * 
  * @author Philipp Wetzler
  */
 public class PropbankCorefRelation extends PropbankRelation {
 
-	public static PropbankCorefRelation fromString(String s) {
-		PropbankCorefRelation rel = new PropbankCorefRelation();
-		String[] fields = s.split("\\*");
-		for (String field : fields) {
-			rel.addCorefRelation(PropbankRelation.fromString(field));
-		}
-		return rel;
-	}
+  public static PropbankCorefRelation fromString(String s) {
+    PropbankCorefRelation rel = new PropbankCorefRelation();
+    String[] fields = s.split("\\*");
+    for (String field : fields) {
+      rel.addCorefRelation(PropbankRelation.fromString(field));
+    }
+    return rel;
+  }
 
-	protected List<PropbankRelation> corefRelations;
+  protected List<PropbankRelation> corefRelations;
 
-	public PropbankCorefRelation() {
-		this.corefRelations = new ArrayList<PropbankRelation>();
-	}
+  public PropbankCorefRelation() {
+    this.corefRelations = new ArrayList<PropbankRelation>();
+  }
 
-	public List<PropbankRelation> getCorefRelations() {
-		return this.corefRelations;
-	}
+  public List<PropbankRelation> getCorefRelations() {
+    return this.corefRelations;
+  }
 
-	public void addCorefRelation(PropbankRelation rel) {
-		this.corefRelations.add(rel);
-	}
+  public void addCorefRelation(PropbankRelation rel) {
+    this.corefRelations.add(rel);
+  }
 
-	/**
-	 * This is not implemented for PropbankCorefRelation and will always throw
-	 * <em>UnsupportedOperationException</em>. Instead, the conversion of a
-	 * PropbankCorefRelation happens during Predicate conversion.
-	 * 
-	 * @throws UnsupportedOperationException
-	 */
-	@Override
-	public Annotation convert(JCas jCas, TopTreebankNode topNode) {
-		throw new UnsupportedOperationException();
-	}
+  /**
+   * This is not implemented for PropbankCorefRelation and will always throw
+   * <em>UnsupportedOperationException</em>. Instead, the conversion of a PropbankCorefRelation
+   * happens during Predicate conversion.
+   * 
+   * @throws UnsupportedOperationException
+   */
+  @Override
+  public Annotation convert(JCas jCas, TopTreebankNode topNode) {
+    throw new UnsupportedOperationException();
+  }
 
-	@Override
-	public String toString() {
-		StringBuffer buffer = new StringBuffer();
+  @Override
+  public String toString() {
+    StringBuffer buffer = new StringBuffer();
 
-		boolean first = true;
-		for (PropbankRelation rel : getCorefRelations()) {
-			if (!first)
-				buffer.append("*");
-			buffer.append(rel.toString());
-			first = false;
-		}
+    boolean first = true;
+    for (PropbankRelation rel : getCorefRelations()) {
+      if (!first)
+        buffer.append("*");
+      buffer.append(rel.toString());
+      first = false;
+    }
 
-		return buffer.toString();
-	}
+    return buffer.toString();
+  }
 
 }

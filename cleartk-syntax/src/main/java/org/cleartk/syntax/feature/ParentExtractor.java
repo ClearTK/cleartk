@@ -34,33 +34,34 @@ import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 
 /**
- * <br>Copyright (c) 2007-2009, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * 
  * @author Philipp Wetzler
  */
 public class ParentExtractor implements SimpleFeatureExtractor {
 
-	public ParentExtractor(SimpleFeatureExtractor subExtractor) {
-		this.subExtractor = subExtractor;
-	}
-	
-	public List<Feature> extract(JCas jCas, Annotation focusAnnotation) throws CleartkException {
-		TreebankNode node = (TreebankNode) focusAnnotation;
-		TreebankNode parent = node.getParent();
-		
-		if( parent == null )
-			return Collections.emptyList();
-		
-		List<Feature> features = subExtractor.extract(jCas, parent);
-		for( Feature feature : features ) {
-			feature.setName(Feature.createName("Parent", feature.getName()));
-		}
-		
-		return features;
-	}
-	
-	private SimpleFeatureExtractor subExtractor;
+  public ParentExtractor(SimpleFeatureExtractor subExtractor) {
+    this.subExtractor = subExtractor;
+  }
+
+  public List<Feature> extract(JCas jCas, Annotation focusAnnotation) throws CleartkException {
+    TreebankNode node = (TreebankNode) focusAnnotation;
+    TreebankNode parent = node.getParent();
+
+    if (parent == null)
+      return Collections.emptyList();
+
+    List<Feature> features = subExtractor.extract(jCas, parent);
+    for (Feature feature : features) {
+      feature.setName(Feature.createName("Parent", feature.getName()));
+    }
+
+    return features;
+  }
+
+  private SimpleFeatureExtractor subExtractor;
 
 }

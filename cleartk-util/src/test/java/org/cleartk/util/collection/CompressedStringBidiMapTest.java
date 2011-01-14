@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.util.collection;
 
 import static org.junit.Assert.assertEquals;
@@ -37,52 +37,49 @@ import org.cleartk.test.DefaultTestBase;
 import org.junit.Test;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
-*/
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ */
 
 public class CompressedStringBidiMapTest extends DefaultTestBase {
 
-	@Test
-	public void testSerialization() throws FileNotFoundException, IOException {
-		CompressedStringBidiMap map = new CompressedStringBidiMap();
-		map.getOrGenerateKey("one");
-		map.getOrGenerateKey("two");
-		map.getOrGenerateKey("three");
-		map.getOrGenerateKey("four");
-		map.getOrGenerateKey("five");
-		map.getOrGenerateKey("six");
-		
-		
-        Writer writer = new FileWriter(new File(outputDirectory, "csbm-test.txt"));
-		map.write(writer, true);
+  @Test
+  public void testSerialization() throws FileNotFoundException, IOException {
+    CompressedStringBidiMap map = new CompressedStringBidiMap();
+    map.getOrGenerateKey("one");
+    map.getOrGenerateKey("two");
+    map.getOrGenerateKey("three");
+    map.getOrGenerateKey("four");
+    map.getOrGenerateKey("five");
+    map.getOrGenerateKey("six");
 
-		map = new CompressedStringBidiMap();
-		map.read(new FileReader(new File(outputDirectory, "csbm-test.txt")));
-		
-		assertEquals("0", map.getKey("one"));
-		assertEquals("1", map.getKey("two"));
-		assertEquals("2", map.getKey("three"));
-		assertEquals("3", map.getKey("four"));
-		assertEquals("4", map.getKey("five"));
-		assertEquals("5", map.getKey("six"));
-		
-		assertNull(map.getKey("seven"));
-		assertEquals("6", map.getOrGenerateKey("seven"));
-		
-		map.removeValue("one");
-		assertNull(map.getKey("one"));
-		assertEquals("7", map.getOrGenerateKey("one"));
-		
-		writer = new FileWriter(new File(outputDirectory, "csbm-test.txt"));
-		map.write(writer);
-		map = new CompressedStringBidiMap();
-		map.read(new FileReader(new File(outputDirectory, "csbm-test.txt")));
-		assertEquals("7", map.getOrGenerateKey("one"));
-		assertEquals("8", map.getOrGenerateKey("eight"));
-		
+    Writer writer = new FileWriter(new File(outputDirectory, "csbm-test.txt"));
+    map.write(writer, true);
 
+    map = new CompressedStringBidiMap();
+    map.read(new FileReader(new File(outputDirectory, "csbm-test.txt")));
 
-	}
+    assertEquals("0", map.getKey("one"));
+    assertEquals("1", map.getKey("two"));
+    assertEquals("2", map.getKey("three"));
+    assertEquals("3", map.getKey("four"));
+    assertEquals("4", map.getKey("five"));
+    assertEquals("5", map.getKey("six"));
+
+    assertNull(map.getKey("seven"));
+    assertEquals("6", map.getOrGenerateKey("seven"));
+
+    map.removeValue("one");
+    assertNull(map.getKey("one"));
+    assertEquals("7", map.getOrGenerateKey("one"));
+
+    writer = new FileWriter(new File(outputDirectory, "csbm-test.txt"));
+    map.write(writer);
+    map = new CompressedStringBidiMap();
+    map.read(new FileReader(new File(outputDirectory, "csbm-test.txt")));
+    assertEquals("7", map.getOrGenerateKey("one"));
+    assertEquals("8", map.getOrGenerateKey("eight"));
+
+  }
 }

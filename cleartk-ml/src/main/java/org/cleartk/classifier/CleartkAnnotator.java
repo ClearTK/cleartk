@@ -41,83 +41,79 @@ import org.uimafit.factory.initializable.InitializableFactory;
  * Copyright (c) 2009, Regents of the University of Colorado <br>
  * All rights reserved.
  */
-public abstract class CleartkAnnotator<OUTCOME_TYPE> extends JCasAnnotator_ImplBase implements Initializable {
+public abstract class CleartkAnnotator<OUTCOME_TYPE> extends JCasAnnotator_ImplBase implements
+        Initializable {
 
-	public static final String PARAM_CLASSIFIER_FACTORY_CLASS_NAME = ConfigurationParameterFactory
-			.createConfigurationParameterName(CleartkAnnotator.class, "classifierFactoryClassName");
+  public static final String PARAM_CLASSIFIER_FACTORY_CLASS_NAME = ConfigurationParameterFactory
+          .createConfigurationParameterName(CleartkAnnotator.class, "classifierFactoryClassName");
 
-	@ConfigurationParameter(mandatory = false, description = "provides the full name of the ClassifierFactory class to be used.", defaultValue = "org.cleartk.classifier.jar.JarClassifierFactory")
-	private String classifierFactoryClassName;
+  @ConfigurationParameter(mandatory = false, description = "provides the full name of the ClassifierFactory class to be used.", defaultValue = "org.cleartk.classifier.jar.JarClassifierFactory")
+  private String classifierFactoryClassName;
 
-	public static final String PARAM_DATA_WRITER_FACTORY_CLASS_NAME = ConfigurationParameterFactory
-			.createConfigurationParameterName(CleartkAnnotator.class, "dataWriterFactoryClassName");
+  public static final String PARAM_DATA_WRITER_FACTORY_CLASS_NAME = ConfigurationParameterFactory
+          .createConfigurationParameterName(CleartkAnnotator.class, "dataWriterFactoryClassName");
 
-	@ConfigurationParameter(mandatory = false, description = "provides the full name of the DataWriterFactory class to be used.")
-	private String dataWriterFactoryClassName;
+  @ConfigurationParameter(mandatory = false, description = "provides the full name of the DataWriterFactory class to be used.")
+  private String dataWriterFactoryClassName;
 
-	protected Classifier<OUTCOME_TYPE> classifier;
+  protected Classifier<OUTCOME_TYPE> classifier;
 
-	protected DataWriter<OUTCOME_TYPE> dataWriter;
+  protected DataWriter<OUTCOME_TYPE> dataWriter;
 
-	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		super.initialize(context);
+  @Override
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    super.initialize(context);
 
-		if (dataWriterFactoryClassName != null) {
-			// create the factory and instantiate the data writer
-			DataWriterFactory<?> factory = InitializableFactory.create(context, dataWriterFactoryClassName, DataWriterFactory.class);
-			DataWriter<?> untypedDataWriter;
-			try {
-				untypedDataWriter = factory.createDataWriter();
-			}
-			catch (IOException e) {
-				throw new ResourceInitializationException(e);
-			}
-			catch (CleartkException e) {
-				throw new ResourceInitializationException(e);
-			}
+    if (dataWriterFactoryClassName != null) {
+      // create the factory and instantiate the data writer
+      DataWriterFactory<?> factory = InitializableFactory.create(context,
+              dataWriterFactoryClassName, DataWriterFactory.class);
+      DataWriter<?> untypedDataWriter;
+      try {
+        untypedDataWriter = factory.createDataWriter();
+      } catch (IOException e) {
+        throw new ResourceInitializationException(e);
+      } catch (CleartkException e) {
+        throw new ResourceInitializationException(e);
+      }
 
-			InitializableFactory.initialize(untypedDataWriter, context);
-			this.dataWriter = ReflectionUtil.uncheckedCast(untypedDataWriter);
-		}
-		else {
-			// create the factory and instantiate the classifier
-			ClassifierFactory<?> factory = InitializableFactory.create(context, classifierFactoryClassName, ClassifierFactory.class);
-			Classifier<?> untypedClassifier;
-			try {
-				untypedClassifier = factory.createClassifier();
-			}
-			catch (IOException e) {
-				throw new ResourceInitializationException(e);
-			}
-			catch (CleartkException e) {
-				throw new ResourceInitializationException(e);
-			}
+      InitializableFactory.initialize(untypedDataWriter, context);
+      this.dataWriter = ReflectionUtil.uncheckedCast(untypedDataWriter);
+    } else {
+      // create the factory and instantiate the classifier
+      ClassifierFactory<?> factory = InitializableFactory.create(context,
+              classifierFactoryClassName, ClassifierFactory.class);
+      Classifier<?> untypedClassifier;
+      try {
+        untypedClassifier = factory.createClassifier();
+      } catch (IOException e) {
+        throw new ResourceInitializationException(e);
+      } catch (CleartkException e) {
+        throw new ResourceInitializationException(e);
+      }
 
-			this.classifier = ReflectionUtil.uncheckedCast(untypedClassifier);
-			ReflectionUtil.checkTypeParameterIsAssignable(
-					CleartkAnnotator.class, "OUTCOME_TYPE", this,
-					Classifier.class, "OUTCOME_TYPE", this.classifier);
-			InitializableFactory.initialize(untypedClassifier, context);
+      this.classifier = ReflectionUtil.uncheckedCast(untypedClassifier);
+      ReflectionUtil.checkTypeParameterIsAssignable(CleartkAnnotator.class, "OUTCOME_TYPE", this,
+              Classifier.class, "OUTCOME_TYPE", this.classifier);
+      InitializableFactory.initialize(untypedClassifier, context);
 
-		}
-	}
+    }
+  }
 
-	@Override
-	public void collectionProcessComplete() throws AnalysisEngineProcessException {
-		super.collectionProcessComplete();
-		if (isTraining()) {
-			try {
-				dataWriter.finish();
-			}
-			catch (CleartkException ctke) {
-				throw new AnalysisEngineProcessException(ctke);
-			}
-		}
-	}
+  @Override
+  public void collectionProcessComplete() throws AnalysisEngineProcessException {
+    super.collectionProcessComplete();
+    if (isTraining()) {
+      try {
+        dataWriter.finish();
+      } catch (CleartkException ctke) {
+        throw new AnalysisEngineProcessException(ctke);
+      }
+    }
+  }
 
-	protected boolean isTraining() {
-		return dataWriter != null;
-	}
+  protected boolean isTraining() {
+    return dataWriter != null;
+  }
 
 }

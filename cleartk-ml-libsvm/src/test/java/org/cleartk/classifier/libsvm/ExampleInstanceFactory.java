@@ -1,5 +1,5 @@
 /** 
-  * Copyright (c) 2010, Regents of the University of Colorado 
+ * Copyright (c) 2010, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -39,53 +39,50 @@ import org.cleartk.classifier.Instance;
 
 public class ExampleInstanceFactory {
 
-	
-	public static List<Instance<Boolean>> generateBooleanInstances(int n) {
-		Random random = new Random(42);
-		List<Instance<Boolean>> instances = new ArrayList<Instance<Boolean>>();
-		for (int i = 0; i < n; i++) {
-			Instance<Boolean> instance = new Instance<Boolean>();
-			if (random.nextInt(2) == 0) {
-				instance.setOutcome(true);
-				instance.add(new Feature("hello", random.nextInt(100) + 1000));
-				instance.add(new Feature("goodbye", 500));
-			}
-			else {
-				instance.setOutcome(false);
-				instance.add(new Feature("hello", random.nextInt(100)));
-				instance.add(new Feature("goodbye", 500));
-			}
-			instances.add(instance);
-		}
-		return instances;
-	}
+  public static List<Instance<Boolean>> generateBooleanInstances(int n) {
+    Random random = new Random(42);
+    List<Instance<Boolean>> instances = new ArrayList<Instance<Boolean>>();
+    for (int i = 0; i < n; i++) {
+      Instance<Boolean> instance = new Instance<Boolean>();
+      if (random.nextInt(2) == 0) {
+        instance.setOutcome(true);
+        instance.add(new Feature("hello", random.nextInt(100) + 1000));
+        instance.add(new Feature("goodbye", 500));
+      } else {
+        instance.setOutcome(false);
+        instance.add(new Feature("hello", random.nextInt(100)));
+        instance.add(new Feature("goodbye", 500));
+      }
+      instances.add(instance);
+    }
+    return instances;
+  }
 
-	public static List<Instance<String>> generateStringInstances(int n) {
-		Random random = new Random(42);
-		List<Instance<String>> instances = new ArrayList<Instance<String>>();
-		for (int i = 0; i < n; i++) {
-			Instance<String> instance = new Instance<String>();
-			int c = random.nextInt(3);
-			if ( c == 0 ) {
-				instance.setOutcome("A");
-				instance.add(new Feature("hello", random.nextInt(100) + 950));
-				instance.add(new Feature("goodbye", random.nextInt(100)));
-				instance.add(new Feature("farewell", random.nextInt(100)));
-			}
-			else if( c == 1 ) {
-				instance.setOutcome("B");
-				instance.add(new Feature("hello", random.nextInt(100)));
-				instance.add(new Feature("goodbye", random.nextInt(100) + 950));
-				instance.add(new Feature("farewell", random.nextInt(100)));
-			} else {
-				instance.setOutcome("C");
-				instance.add(new Feature("hello", random.nextInt(100)));
-				instance.add(new Feature("goodbye", random.nextInt(100)));
-				instance.add(new Feature("farewell", random.nextInt(100) + 950));
-			}
-			instances.add(instance);
-		}
-		return instances;
-	}
+  public static List<Instance<String>> generateStringInstances(int n) {
+    Random random = new Random(42);
+    List<Instance<String>> instances = new ArrayList<Instance<String>>();
+    for (int i = 0; i < n; i++) {
+      Instance<String> instance = new Instance<String>();
+      int c = random.nextInt(3);
+      if (c == 0) {
+        instance.setOutcome("A");
+        instance.add(new Feature("hello", random.nextInt(100) + 950));
+        instance.add(new Feature("goodbye", random.nextInt(100)));
+        instance.add(new Feature("farewell", random.nextInt(100)));
+      } else if (c == 1) {
+        instance.setOutcome("B");
+        instance.add(new Feature("hello", random.nextInt(100)));
+        instance.add(new Feature("goodbye", random.nextInt(100) + 950));
+        instance.add(new Feature("farewell", random.nextInt(100)));
+      } else {
+        instance.setOutcome("C");
+        instance.add(new Feature("hello", random.nextInt(100)));
+        instance.add(new Feature("goodbye", random.nextInt(100)));
+        instance.add(new Feature("farewell", random.nextInt(100) + 950));
+      }
+      instances.add(instance);
+    }
+    return instances;
+  }
 
 }

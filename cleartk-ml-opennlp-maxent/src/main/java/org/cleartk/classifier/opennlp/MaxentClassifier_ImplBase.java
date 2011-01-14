@@ -50,88 +50,89 @@ import org.cleartk.classifier.jar.JarClassifier;
  * @author Philip Ogren
  * 
  */
-public abstract class MaxentClassifier_ImplBase<OUTCOME_TYPE> extends JarClassifier<OUTCOME_TYPE, String, List<NameNumber>> {
+public abstract class MaxentClassifier_ImplBase<OUTCOME_TYPE> extends
+        JarClassifier<OUTCOME_TYPE, String, List<NameNumber>> {
 
-	protected MaxentModel model;
+  protected MaxentModel model;
 
-	public MaxentClassifier_ImplBase(JarFile modelFile) throws IOException {
-		super(modelFile);
-		ZipEntry modelEntry = modelFile.getEntry("model.maxent");
-		this.model = new BinaryGISModelReader(new DataInputStream(new GZIPInputStream(modelFile
-				.getInputStream(modelEntry)))).getModel();
-	}
+  public MaxentClassifier_ImplBase(JarFile modelFile) throws IOException {
+    super(modelFile);
+    ZipEntry modelEntry = modelFile.getEntry("model.maxent");
+    this.model = new BinaryGISModelReader(new DataInputStream(new GZIPInputStream(
+            modelFile.getInputStream(modelEntry)))).getModel();
+  }
 
-	public OUTCOME_TYPE classify(List<Feature> features) throws CleartkException {
-		EvalParams evalParams = convertToEvalParams(features);
-		String encodedOutcome = this.model.getBestOutcome(this.model.eval(evalParams.getContext(), evalParams
-				.getValues()));
-		return outcomeEncoder.decode(encodedOutcome);
-	}
+  public OUTCOME_TYPE classify(List<Feature> features) throws CleartkException {
+    EvalParams evalParams = convertToEvalParams(features);
+    String encodedOutcome = this.model.getBestOutcome(this.model.eval(evalParams.getContext(),
+            evalParams.getValues()));
+    return outcomeEncoder.decode(encodedOutcome);
+  }
 
+  @Override
+  public List<ScoredOutcome<OUTCOME_TYPE>> score(List<Feature> features, int maxResults)
+          throws CleartkException {
+    EvalParams evalParams = convertToEvalParams(features);
+    double[] evalResults = this.model.eval(evalParams.getContext(), evalParams.getValues());
+    String[] encodedOutcomes = (String[]) this.model.getDataStructures()[2];
 
-	@Override
-	public List<ScoredOutcome<OUTCOME_TYPE>> score(List<Feature> features, int maxResults) throws CleartkException {
-		EvalParams evalParams = convertToEvalParams(features);
-		double[] evalResults = this.model.eval(evalParams.getContext(), evalParams.getValues());
-		String[] encodedOutcomes = (String[]) this.model.getDataStructures()[2];
+    List<ScoredOutcome<OUTCOME_TYPE>> returnValues = new ArrayList<ScoredOutcome<OUTCOME_TYPE>>();
 
-		List<ScoredOutcome<OUTCOME_TYPE>> returnValues = new ArrayList<ScoredOutcome<OUTCOME_TYPE>>();
+    if (maxResults == 1) {
+      String bestOutcome = this.model.getBestOutcome(evalResults);
+      OUTCOME_TYPE encodedBestOutcome = outcomeEncoder.decode(bestOutcome);
+      double bestResult = evalResults[this.model.getIndex(bestOutcome)];
+      returnValues.add(new ScoredOutcome<OUTCOME_TYPE>(encodedBestOutcome, bestResult));
+      return returnValues;
+    }
 
-		if (maxResults == 1) {
-			String bestOutcome = this.model.getBestOutcome(evalResults);
-			OUTCOME_TYPE encodedBestOutcome = outcomeEncoder.decode(bestOutcome);
-			double bestResult = evalResults[this.model.getIndex(bestOutcome)];
-			returnValues.add(new ScoredOutcome<OUTCOME_TYPE>(encodedBestOutcome, bestResult));
-			return returnValues;
-		}
+    for (int i = 0; i < evalResults.length; i++) {
+      returnValues.add(new ScoredOutcome<OUTCOME_TYPE>(outcomeEncoder.decode(encodedOutcomes[i]),
+              evalResults[i]));
+    }
 
-		for (int i = 0; i < evalResults.length; i++) {
-			returnValues.add(new ScoredOutcome<OUTCOME_TYPE>(outcomeEncoder.decode(encodedOutcomes[i]), evalResults[i]));
-		}
+    Collections.sort(returnValues);
+    if (returnValues.size() > maxResults) {
+      return returnValues.subList(0, maxResults);
+    }
 
-		Collections.sort(returnValues);
-		if (returnValues.size() > maxResults) {
-			return returnValues.subList(0, maxResults);
-		}
+    return returnValues;
+  }
 
-		return returnValues;
-	}
+  protected EvalParams convertToEvalParams(List<Feature> features) throws CleartkException {
 
-	
-	protected EvalParams convertToEvalParams(List<Feature> features) throws CleartkException {
+    List<NameNumber> contexts = featuresEncoder.encodeAll(features);
 
-		List<NameNumber> contexts = featuresEncoder.encodeAll(features);
+    String[] context = new String[contexts.size()];
+    float[] values = new float[contexts.size()];
 
-		String[] context = new String[contexts.size()];
-		float[] values = new float[contexts.size()];
+    for (int i = 0; i < contexts.size(); i++) {
+      NameNumber contextValue = contexts.get(i);
+      context[i] = contextValue.name;
+      values[i] = contextValue.number.floatValue();
+    }
 
-		for (int i = 0; i < contexts.size(); i++) {
-			NameNumber contextValue = contexts.get(i);
-			context[i] = contextValue.name;
-			values[i] = contextValue.number.floatValue();
-		}
+    return new EvalParams(context, values);
+  }
 
-		return new EvalParams(context, values);
-	}
+  public class EvalParams {
+    private String[] context;
 
-	public class EvalParams {
-		private String[] context;
+    private float[] values;
 
-		private float[] values;
+    public String[] getContext() {
+      return context;
+    }
 
-		public String[] getContext() {
-			return context;
-		}
+    public float[] getValues() {
+      return values;
+    }
 
-		public float[] getValues() {
-			return values;
-		}
+    public EvalParams(String[] context, float[] values) {
+      this.context = context;
+      this.values = values;
+    }
 
-		public EvalParams(String[] context, float[] values) {
-			this.context = context;
-			this.values = values;
-		}
-
-	}
+  }
 
 }

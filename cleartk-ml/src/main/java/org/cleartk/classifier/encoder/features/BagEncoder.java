@@ -31,75 +31,75 @@ import org.cleartk.classifier.encoder.features.normalizer.NOPNormalizer;
 import org.cleartk.classifier.encoder.features.normalizer.NameNumberNormalizer;
 import org.cleartk.classifier.feature.Counts;
 
-
 /**
- * <br>Copyright (c) 2009, Regents of the University of Colorado 
- * <br>All rights reserved.
- *
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * Encodes a Counts feature into a bag-of-words type feature.
  * 
- * This works on arbitrary types of objects, not just words. If an object's
- * count is larger than zero, the corresponding value (named using the .toString
- * method of the object) is set to 1. If the count is zero, the value is not
- * included in the output. 
- *
+ * This works on arbitrary types of objects, not just words. If an object's count is larger than
+ * zero, the corresponding value (named using the .toString method of the object) is set to 1. If
+ * the count is zero, the value is not included in the output.
+ * 
  * @author Philipp Wetzler
  */
 public class BagEncoder implements FeatureEncoder<NameNumber> {
 
-	private static final long serialVersionUID = -5280514188425612793L;
+  private static final long serialVersionUID = -5280514188425612793L;
 
-	public BagEncoder(String identifier, NameNumberNormalizer normalizer) {
-		this.identifier = identifier;
-		this.normalizer = normalizer;
-	}
+  public BagEncoder(String identifier, NameNumberNormalizer normalizer) {
+    this.identifier = identifier;
+    this.normalizer = normalizer;
+  }
 
-	public BagEncoder(String identifier) {
-		this(identifier, new NOPNormalizer());
-	}
+  public BagEncoder(String identifier) {
+    this(identifier, new NOPNormalizer());
+  }
 
-	public BagEncoder(NameNumberNormalizer normalizer) {
-		this(null, normalizer);
-	}
+  public BagEncoder(NameNumberNormalizer normalizer) {
+    this(null, normalizer);
+  }
 
-	public BagEncoder() {
-		this(null, new NOPNormalizer());
-	}
-	
-	public List<NameNumber> encode(Feature feature) {
-		List<NameNumber> fves = new ArrayList<NameNumber>();
-		Counts frequencies = (Counts) feature.getValue();
-		
-		String prefix = frequencies.getFeatureName();
-		for( Object key : frequencies.getValues() ) {
-			if( frequencies.getCount(key) > 0 ) {
-				String name = Feature.createName(prefix, key.toString());
-				NameNumber fve = new NameNumber(name, 1);
-				fves.add(fve);
-			}
-		}
+  public BagEncoder() {
+    this(null, new NOPNormalizer());
+  }
 
-		normalizer.normalize(fves);
+  public List<NameNumber> encode(Feature feature) {
+    List<NameNumber> fves = new ArrayList<NameNumber>();
+    Counts frequencies = (Counts) feature.getValue();
 
-		return fves;
-	}
+    String prefix = frequencies.getFeatureName();
+    for (Object key : frequencies.getValues()) {
+      if (frequencies.getCount(key) > 0) {
+        String name = Feature.createName(prefix, key.toString());
+        NameNumber fve = new NameNumber(name, 1);
+        fves.add(fve);
+      }
+    }
 
-	public boolean encodes(Feature feature) {
-		if( ! (feature.getValue() instanceof Counts) )
-			return false;
+    normalizer.normalize(fves);
 
-		Counts counts = (Counts) feature.getValue();
+    return fves;
+  }
 
-		if( identifier == null )
-			return true;
+  public boolean encodes(Feature feature) {
+    if (!(feature.getValue() instanceof Counts))
+      return false;
 
-		if( identifier.equals(counts.getIdentifier()))
-			return true;
+    Counts counts = (Counts) feature.getValue();
 
-		return false;
-	}
-	
-	private String identifier;
-	private NameNumberNormalizer normalizer;
+    if (identifier == null)
+      return true;
+
+    if (identifier.equals(counts.getIdentifier()))
+      return true;
+
+    return false;
+  }
+
+  private String identifier;
+
+  private NameNumberNormalizer normalizer;
 
 }

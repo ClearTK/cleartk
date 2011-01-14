@@ -20,20 +20,21 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 
 package org.cleartk.ne.ace2005;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-*/
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ */
 
 public interface Ace2005Constants {
 
-   /**
-	 * The view containing the XML text of an ACE APF file.
-	*/
-	public static final String ACE_2005_APF_URI_VIEW = "ACE_2005_APF_URI_VIEW";
+  /**
+   * The view containing the XML text of an ACE APF file.
+   */
+  public static final String ACE_2005_APF_URI_VIEW = "ACE_2005_APF_URI_VIEW";
 
 }

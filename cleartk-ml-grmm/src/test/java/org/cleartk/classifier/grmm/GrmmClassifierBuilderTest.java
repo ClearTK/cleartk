@@ -45,82 +45,76 @@ import org.uimafit.testing.util.HideOutput;
  * Copyright (c) 2010, University of Würzburg <br>
  * All rights reserved.
  * <p>
+ * 
  * @author Martin Toepfer
  */
 public class GrmmClassifierBuilderTest extends DefaultTestBase {
 
-	public static class Test1Annotator extends
-			CleartkSequentialAnnotator<String[]> {
-		public void process(JCas cas) throws AnalysisEngineProcessException {
-			try {
-				this.processSimple(cas);
-			} catch (CleartkException e) {
-				throw new AnalysisEngineProcessException(e);
-			}
-		}
+  public static class Test1Annotator extends CleartkSequentialAnnotator<String[]> {
+    public void process(JCas cas) throws AnalysisEngineProcessException {
+      try {
+        this.processSimple(cas);
+      } catch (CleartkException e) {
+        throw new AnalysisEngineProcessException(e);
+      }
+    }
 
-		public void processSimple(JCas cas)
-				throws AnalysisEngineProcessException, CleartkException {
-			if (this.isTraining()) {
-				for (int i = 0; i < 5; i++) {
-					List<Instance<String[]>> instances = GrmmTestDataGenerator
-							.createInstances2();
-					this.sequentialDataWriter.writeSequence(instances);
-					instances = GrmmTestDataGenerator.createInstances1();
-					this.sequentialDataWriter.writeSequence(instances);
-					instances = GrmmTestDataGenerator.createInstances3();
-					this.sequentialDataWriter.writeSequence(instances);
-				}
-			}
-		}
+    public void processSimple(JCas cas) throws AnalysisEngineProcessException, CleartkException {
+      if (this.isTraining()) {
+        for (int i = 0; i < 5; i++) {
+          List<Instance<String[]>> instances = GrmmTestDataGenerator.createInstances2();
+          this.sequentialDataWriter.writeSequence(instances);
+          instances = GrmmTestDataGenerator.createInstances1();
+          this.sequentialDataWriter.writeSequence(instances);
+          instances = GrmmTestDataGenerator.createInstances3();
+          this.sequentialDataWriter.writeSequence(instances);
+        }
+      }
+    }
 
-	}
+  }
 
-	private AnalysisEngine dataWriterAnnotator;
+  private AnalysisEngine dataWriterAnnotator;
 
-	@Before
-	public void init() {
-		try {
-			dataWriterAnnotator = AnalysisEngineFactory
-					.createPrimitive(
-							Test1Annotator.class,
-							typeSystemDescription,
-							JarSequentialDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
-							outputDirectoryName,
-							CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME,
-							DefaultGrmmDataWriterFactory.class.getName());
-			dataWriterAnnotator.process(jCas);
-			dataWriterAnnotator.collectionProcessComplete();
-		} catch (ResourceInitializationException e) {
-			e.printStackTrace();
-		} catch (AnalysisEngineProcessException e) {
-			e.printStackTrace();
-		}
-	}
+  @Before
+  public void init() {
+    try {
+      dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(Test1Annotator.class,
+              typeSystemDescription, JarSequentialDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+              outputDirectoryName,
+              CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME,
+              DefaultGrmmDataWriterFactory.class.getName());
+      dataWriterAnnotator.process(jCas);
+      dataWriterAnnotator.collectionProcessComplete();
+    } catch (ResourceInitializationException e) {
+      e.printStackTrace();
+    } catch (AnalysisEngineProcessException e) {
+      e.printStackTrace();
+    }
+  }
 
-	@Test(expected = IllegalArgumentException.class)
-	public void trainTemplateNotExistsTest() throws Exception {
-		HideOutput hider = new HideOutput();
-		// file does not exist, expect exception
-		Train.main(outputDirectoryName, "template.txt");
-		hider.restoreOutput();
-	}
+  @Test(expected = IllegalArgumentException.class)
+  public void trainTemplateNotExistsTest() throws Exception {
+    HideOutput hider = new HideOutput();
+    // file does not exist, expect exception
+    Train.main(outputDirectoryName, "template.txt");
+    hider.restoreOutput();
+  }
 
-	@Test(expected = IllegalArgumentException.class)
-	public void trainTemplateNullTest() throws Exception {
-		HideOutput hider = new HideOutput();
-		// file does not exist, expect exception
-		Train.main(outputDirectoryName, null);
-		hider.restoreOutput();
-	}
+  @Test(expected = IllegalArgumentException.class)
+  public void trainTemplateNullTest() throws Exception {
+    HideOutput hider = new HideOutput();
+    // file does not exist, expect exception
+    Train.main(outputDirectoryName, null);
+    hider.restoreOutput();
+  }
 
-	@Test
-	public void trainTest() throws Exception {
-		String templateFilename = "template.txt";
-		GrmmTestDataGenerator.createBigramTemplate(outputDirectoryName,
-				templateFilename);
-		HideOutput hider = new HideOutput();
-		Train.main(this.outputDirectoryName, templateFilename);
-		hider.restoreOutput();
-	}
+  @Test
+  public void trainTest() throws Exception {
+    String templateFilename = "template.txt";
+    GrmmTestDataGenerator.createBigramTemplate(outputDirectoryName, templateFilename);
+    HideOutput hider = new HideOutput();
+    Train.main(this.outputDirectoryName, templateFilename);
+    hider.restoreOutput();
+  }
 }

@@ -35,8 +35,8 @@ import org.cleartk.CleartkException;
 
 public interface AnnotationFilter {
 
-	public boolean include(JCas jCas, Annotation annotation) throws CleartkException;
-	
-	public String filterName();
-	
+  public boolean include(JCas jCas, Annotation annotation) throws CleartkException;
+
+  public String filterName();
+
 }

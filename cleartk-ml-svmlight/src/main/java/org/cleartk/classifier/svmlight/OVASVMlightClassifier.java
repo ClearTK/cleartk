@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.svmlight;
 
 import java.io.IOException;
@@ -43,79 +43,80 @@ import org.cleartk.classifier.svmlight.model.SVMlightModel;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
  */
-public class OVASVMlightClassifier extends JarClassifier<String,Integer,FeatureVector> {
-	
-	Map<Integer, SVMlightModel> models;
-	Map<Integer, Sigmoid> sigmoids;
-	
+public class OVASVMlightClassifier extends JarClassifier<String, Integer, FeatureVector> {
 
-	public OVASVMlightClassifier(JarFile modelFile) throws IOException, CleartkException {
-		super(modelFile);
-		this.models = new TreeMap<Integer,SVMlightModel>();
-		this.sigmoids = new TreeMap<Integer,Sigmoid>();
-		
-		try {
-			int i = 1;
-			ZipEntry modelEntry = modelFile.getEntry(String.format("model-%d.svmlight", i));
-			while( modelEntry != null ) {
-				SVMlightModel m = SVMlightModel.fromInputStream(modelFile.getInputStream(modelEntry));
-				this.models.put(i, m);
-				modelEntry = modelFile.getEntry(String.format("model-%d.sigmoid", i));
-				ObjectInput in = new ObjectInputStream(modelFile.getInputStream(modelEntry));
-				this.sigmoids.put(i, (Sigmoid) in.readObject());
-				in.close();
-				
-				i += 1;
-				modelEntry = modelFile.getEntry(String.format("model-%d.svmlight", i));
-			}
-			
-			if (this.models.isEmpty()) {
-				throw new IOException(String.format("no models found in %s", modelFile.getName()));
-			}
-		} catch (ClassNotFoundException e) {
-			throw new CleartkException(e);
-		}
-	}
+  Map<Integer, SVMlightModel> models;
 
-	public String classify(List<Feature> features) throws CleartkException {
-		FeatureVector featureVector = this.featuresEncoder.encodeAll(features);
-		
-		int maxScoredIndex = 0;
-		double maxScore = 0;
-		boolean first = true;
-		for( int i : models.keySet() ) {
-			double score = score(featureVector, i);
-			if( first || score > maxScore ) {
-				first = false;
-				maxScore = score;
-				maxScoredIndex = i;
-			}
-		}
-		
-		return outcomeEncoder.decode(maxScoredIndex);
-	}
-	
-	@Override
-	public List<ScoredOutcome<String>> score(List<Feature> features, int maxResults) throws CleartkException {
-		FeatureVector featureVector = this.featuresEncoder.encodeAll(features);
-		
-		List<ScoredOutcome<String>> results = new ArrayList<ScoredOutcome<String>>();
-		for( int i : models.keySet() ) {
-			double score = score(featureVector, i);
-			String name = outcomeEncoder.decode(i);
-			
-			results.add(new ScoredOutcome<String>(name, score));
-		}
-		Collections.sort(results);
-		
-		return results.subList(0, Math.min(maxResults, results.size()));
-	}
+  Map<Integer, Sigmoid> sigmoids;
 
-	private double score(FeatureVector fv, int i) {
-		return sigmoids.get(i).evaluate(models.get(i).evaluate(fv));
-	}
+  public OVASVMlightClassifier(JarFile modelFile) throws IOException, CleartkException {
+    super(modelFile);
+    this.models = new TreeMap<Integer, SVMlightModel>();
+    this.sigmoids = new TreeMap<Integer, Sigmoid>();
+
+    try {
+      int i = 1;
+      ZipEntry modelEntry = modelFile.getEntry(String.format("model-%d.svmlight", i));
+      while (modelEntry != null) {
+        SVMlightModel m = SVMlightModel.fromInputStream(modelFile.getInputStream(modelEntry));
+        this.models.put(i, m);
+        modelEntry = modelFile.getEntry(String.format("model-%d.sigmoid", i));
+        ObjectInput in = new ObjectInputStream(modelFile.getInputStream(modelEntry));
+        this.sigmoids.put(i, (Sigmoid) in.readObject());
+        in.close();
+
+        i += 1;
+        modelEntry = modelFile.getEntry(String.format("model-%d.svmlight", i));
+      }
+
+      if (this.models.isEmpty()) {
+        throw new IOException(String.format("no models found in %s", modelFile.getName()));
+      }
+    } catch (ClassNotFoundException e) {
+      throw new CleartkException(e);
+    }
+  }
+
+  public String classify(List<Feature> features) throws CleartkException {
+    FeatureVector featureVector = this.featuresEncoder.encodeAll(features);
+
+    int maxScoredIndex = 0;
+    double maxScore = 0;
+    boolean first = true;
+    for (int i : models.keySet()) {
+      double score = score(featureVector, i);
+      if (first || score > maxScore) {
+        first = false;
+        maxScore = score;
+        maxScoredIndex = i;
+      }
+    }
+
+    return outcomeEncoder.decode(maxScoredIndex);
+  }
+
+  @Override
+  public List<ScoredOutcome<String>> score(List<Feature> features, int maxResults)
+          throws CleartkException {
+    FeatureVector featureVector = this.featuresEncoder.encodeAll(features);
+
+    List<ScoredOutcome<String>> results = new ArrayList<ScoredOutcome<String>>();
+    for (int i : models.keySet()) {
+      double score = score(featureVector, i);
+      String name = outcomeEncoder.decode(i);
+
+      results.add(new ScoredOutcome<String>(name, score));
+    }
+    Collections.sort(results);
+
+    return results.subList(0, Math.min(maxResults, results.size()));
+  }
+
+  private double score(FeatureVector fv, int i) {
+    return sigmoids.get(i).evaluate(models.get(i).evaluate(fv));
+  }
 }

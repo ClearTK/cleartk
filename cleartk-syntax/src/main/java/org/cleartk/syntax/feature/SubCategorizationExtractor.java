@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.syntax.feature;
 
 import java.util.ArrayList;
@@ -34,45 +34,46 @@ import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.util.UIMAUtil;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * 
  * @author Philipp Wetzler
  */
 
 public class SubCategorizationExtractor implements SimpleFeatureExtractor {
-	String name;
-	
-	public SubCategorizationExtractor(String name) {
-		this.name = name;
-	}
-	
-	public SubCategorizationExtractor() {
-		this.name = null;
-	}
-	
-	public List<Feature> extract(JCas jCas, Annotation focusAnnotation) throws UnsupportedOperationException {
-		if( !(focusAnnotation instanceof TreebankNode) )
-			return new ArrayList<Feature>();
-		
-		TreebankNode parent = ((TreebankNode) focusAnnotation).getParent();
-		if( parent == null )
-			return new ArrayList<Feature>();
-		
-		StringBuffer buffer = new StringBuffer();
-		buffer.append(parent.getNodeType() + "->");
-		boolean first = true;
-		for( TreebankNode child : UIMAUtil.toList(parent.getChildren(), TreebankNode.class) ) {
-			if( ! first )
-				buffer.append("-");
-			buffer.append(child.getNodeType());
-			first = false;
-		}
-		
-		String featureName = Feature.createName(name, "SubCategorization");
-		return Collections.singletonList(new Feature(featureName, buffer));
-	}
+  String name;
+
+  public SubCategorizationExtractor(String name) {
+    this.name = name;
+  }
+
+  public SubCategorizationExtractor() {
+    this.name = null;
+  }
+
+  public List<Feature> extract(JCas jCas, Annotation focusAnnotation)
+          throws UnsupportedOperationException {
+    if (!(focusAnnotation instanceof TreebankNode))
+      return new ArrayList<Feature>();
+
+    TreebankNode parent = ((TreebankNode) focusAnnotation).getParent();
+    if (parent == null)
+      return new ArrayList<Feature>();
+
+    StringBuffer buffer = new StringBuffer();
+    buffer.append(parent.getNodeType() + "->");
+    boolean first = true;
+    for (TreebankNode child : UIMAUtil.toList(parent.getChildren(), TreebankNode.class)) {
+      if (!first)
+        buffer.append("-");
+      buffer.append(child.getNodeType());
+      first = false;
+    }
+
+    String featureName = Feature.createName(name, "SubCategorization");
+    return Collections.singletonList(new Feature(featureName, buffer));
+  }
 }

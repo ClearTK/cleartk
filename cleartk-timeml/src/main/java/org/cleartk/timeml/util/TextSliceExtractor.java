@@ -37,70 +37,67 @@ import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
  * Copyright (c) 2010, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
- * Extract a slice of the text covered by the annotation. Handles negative slice
- * indices to make it easy to slice from the end of the string.
+ * Extract a slice of the text covered by the annotation. Handles negative slice indices to make it
+ * easy to slice from the end of the string.
  * 
  * @author Steven Bethard
  */
 public class TextSliceExtractor implements SimpleFeatureExtractor {
 
-	private int start;
-	private int stop;
+  private int start;
 
-	/**
-	 * Create an extractor for a given slice of the text. E.g.
-	 * <code>new TextSliceExtractor(1, -1)</code> would extract all of the text
-	 * but its first and last characters.
-	 * 
-	 * @param start
-	 *            The first character offset of the slice. If negative, it is
-	 *            assumed to count backwards from the end of the string. If the
-	 *            offset falls before the start of the string, the start of the
-	 *            string will be used instead.
-	 * @param stop
-	 *            The last character offset of the slice. If negative, it is
-	 *            assumed to count backwards from the end of the string. If the
-	 *            offset falls after the end of the string, the end of the
-	 *            string will be used instead.
-	 */
-	public TextSliceExtractor(int start, int stop) {
-		this.start = start;
-		this.stop = stop;
-	}
+  private int stop;
 
-	/**
-	 * Create an extractor for a slice of text from a single offset to the end
-	 * of the string. E.g.<code>new TextSliceExtractor(-2)</code> would extract
-	 * a suffix of length 2 from the text.
-	 * 
-	 * @param start
-	 *            The first character offset of the slice. If negative, it is
-	 *            assumed to count backwards from the end of the string. If the
-	 *            offset falls before the start of the string, the start of the
-	 *            string will be used instead.
-	 */
-	public TextSliceExtractor(int start) {
-		this(start, Integer.MAX_VALUE);
-	}
+  /**
+   * Create an extractor for a given slice of the text. E.g.
+   * <code>new TextSliceExtractor(1, -1)</code> would extract all of the text but its first and last
+   * characters.
+   * 
+   * @param start
+   *          The first character offset of the slice. If negative, it is assumed to count backwards
+   *          from the end of the string. If the offset falls before the start of the string, the
+   *          start of the string will be used instead.
+   * @param stop
+   *          The last character offset of the slice. If negative, it is assumed to count backwards
+   *          from the end of the string. If the offset falls after the end of the string, the end
+   *          of the string will be used instead.
+   */
+  public TextSliceExtractor(int start, int stop) {
+    this.start = start;
+    this.stop = stop;
+  }
 
-	public List<Feature> extract(JCas view, Annotation focusAnnotation) throws CleartkException {
-		String text = focusAnnotation.getCoveredText();
-		int startOffset = this.start;
-		if (startOffset < 0) {
-			startOffset += text.length();
-		}
-		if (startOffset < 0) {
-			startOffset = 0;
-		}
-		int stopOffset = this.stop;
-		if (stopOffset < 0) {
-			stopOffset += text.length();
-		}
-		if (stopOffset > text.length()) {
-			stopOffset = text.length();
-		}
-		text = text.substring(startOffset, stopOffset);
-		return Collections.singletonList(new Feature("Suffix", text));
-	}
+  /**
+   * Create an extractor for a slice of text from a single offset to the end of the string. E.g.
+   * <code>new TextSliceExtractor(-2)</code> would extract a suffix of length 2 from the text.
+   * 
+   * @param start
+   *          The first character offset of the slice. If negative, it is assumed to count backwards
+   *          from the end of the string. If the offset falls before the start of the string, the
+   *          start of the string will be used instead.
+   */
+  public TextSliceExtractor(int start) {
+    this(start, Integer.MAX_VALUE);
+  }
+
+  public List<Feature> extract(JCas view, Annotation focusAnnotation) throws CleartkException {
+    String text = focusAnnotation.getCoveredText();
+    int startOffset = this.start;
+    if (startOffset < 0) {
+      startOffset += text.length();
+    }
+    if (startOffset < 0) {
+      startOffset = 0;
+    }
+    int stopOffset = this.stop;
+    if (stopOffset < 0) {
+      stopOffset += text.length();
+    }
+    if (stopOffset > text.length()) {
+      stopOffset = text.length();
+    }
+    text = text.substring(startOffset, stopOffset);
+    return Collections.singletonList(new Feature("Suffix", text));
+  }
 
 }

@@ -23,7 +23,6 @@
  */
 package org.cleartk.classifier.encoder.features;
 
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -41,85 +40,89 @@ import org.cleartk.util.collection.StringMapper;
 import org.cleartk.util.collection.UnknownKeyException;
 import org.cleartk.util.collection.Writable;
 
-
 /**
- * <br>Copyright (c) 2009, Regents of the University of Colorado 
- * <br>All rights reserved.
- *
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * @author Philipp Wetzler
  */
-public class FeatureVectorFeaturesEncoder extends FeaturesEncoder_ImplBase<FeatureVector, NameNumber> {
+public class FeatureVectorFeaturesEncoder extends
+        FeaturesEncoder_ImplBase<FeatureVector, NameNumber> {
 
-	private static final long serialVersionUID = 6714456694285732480L;
-	
-	public static final String LOOKUP_FILE_NAME = "features-lookup.txt";
-	
-	public FeatureVectorFeaturesEncoder(int cutoff, NameNumberNormalizer normalizer) {
-		this.normalizer = normalizer;
-		this.stringMapper = new GenericStringMapper(cutoff);
-	}
-	
-	public FeatureVectorFeaturesEncoder(int cutoff) {
-		this(cutoff, new NOPNormalizer());
-	}
+  private static final long serialVersionUID = 6714456694285732480L;
 
-	@Override
-	public FeatureVector encodeAll(Iterable<Feature> features) throws CleartkException {
-		List<NameNumber> fves = new ArrayList<NameNumber>();		
-		for( Feature feature : features ) {
-			fves.addAll(this.encode(feature));
-		}
+  public static final String LOOKUP_FILE_NAME = "features-lookup.txt";
 
-		normalizer.normalize(fves);
+  public FeatureVectorFeaturesEncoder(int cutoff, NameNumberNormalizer normalizer) {
+    this.normalizer = normalizer;
+    this.stringMapper = new GenericStringMapper(cutoff);
+  }
 
-		SparseFeatureVector fv = new SparseFeatureVector();
-		for( NameNumber fve : fves ) {
-			String name = fve.name;
-			Number value = fve.number;
-			
-			if( value.doubleValue() == 0.0 )
-				continue;
+  public FeatureVectorFeaturesEncoder(int cutoff) {
+    this(cutoff, new NOPNormalizer());
+  }
 
-			if( expandIndex ) {
-				int i = stringMapper.getOrGenerateInteger(name);
-				double v = fv.get(i) + value.doubleValue();
-				fv.set(i, v);
-			} else {
-				try {
-					int i = stringMapper.getInteger(name);
-					double v = fv.get(i) + value.doubleValue();
-					fv.set(i, v);
-				} catch (UnknownKeyException e) {}
-			}
-		}
+  @Override
+  public FeatureVector encodeAll(Iterable<Feature> features) throws CleartkException {
+    List<NameNumber> fves = new ArrayList<NameNumber>();
+    for (Feature feature : features) {
+      fves.addAll(this.encode(feature));
+    }
 
-		return fv;
-	}
+    normalizer.normalize(fves);
 
-	@Override
-	public void finalizeFeatureSet(File outputDirectory) throws CleartkException {
-		try {
-			expandIndex = false;
-			stringMapper.finalizeMap();
-			
-			if( stringMapper instanceof Writable ) {
-				Writable writableMap = (Writable) stringMapper;
-				File outputFile = new File(outputDirectory, LOOKUP_FILE_NAME);
-				writableMap.write(outputFile);
-			}
-		} catch (FileNotFoundException e) {
-			throw new CleartkException(e);
-		} catch (IOException e) {
-			throw new CleartkException(e);
-		}
-	}
-	
-	public void setNormalizer(NameNumberNormalizer normalizer) {
-		this.normalizer = normalizer;
-	}
+    SparseFeatureVector fv = new SparseFeatureVector();
+    for (NameNumber fve : fves) {
+      String name = fve.name;
+      Number value = fve.number;
 
-	private boolean expandIndex = true;
-	private StringMapper stringMapper;
-	private NameNumberNormalizer normalizer;
+      if (value.doubleValue() == 0.0)
+        continue;
+
+      if (expandIndex) {
+        int i = stringMapper.getOrGenerateInteger(name);
+        double v = fv.get(i) + value.doubleValue();
+        fv.set(i, v);
+      } else {
+        try {
+          int i = stringMapper.getInteger(name);
+          double v = fv.get(i) + value.doubleValue();
+          fv.set(i, v);
+        } catch (UnknownKeyException e) {
+        }
+      }
+    }
+
+    return fv;
+  }
+
+  @Override
+  public void finalizeFeatureSet(File outputDirectory) throws CleartkException {
+    try {
+      expandIndex = false;
+      stringMapper.finalizeMap();
+
+      if (stringMapper instanceof Writable) {
+        Writable writableMap = (Writable) stringMapper;
+        File outputFile = new File(outputDirectory, LOOKUP_FILE_NAME);
+        writableMap.write(outputFile);
+      }
+    } catch (FileNotFoundException e) {
+      throw new CleartkException(e);
+    } catch (IOException e) {
+      throw new CleartkException(e);
+    }
+  }
+
+  public void setNormalizer(NameNumberNormalizer normalizer) {
+    this.normalizer = normalizer;
+  }
+
+  private boolean expandIndex = true;
+
+  private StringMapper stringMapper;
+
+  private NameNumberNormalizer normalizer;
 
 }

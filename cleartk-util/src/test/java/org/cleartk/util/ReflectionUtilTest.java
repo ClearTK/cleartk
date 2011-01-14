@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,24 +20,24 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.util;
 
 import org.junit.Test;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * 
  * @author Philip Ogren
  */
 public class ReflectionUtilTest {
-	//see org.cleartk.util.ReflectionUtilTest in cleartk-ml
-	
-	@Test
-	public void emptyTest() throws Exception {
-		//makes maven happy.
-	}
+  // see org.cleartk.util.ReflectionUtilTest in cleartk-ml
+
+  @Test
+  public void emptyTest() throws Exception {
+    // makes maven happy.
+  }
 }

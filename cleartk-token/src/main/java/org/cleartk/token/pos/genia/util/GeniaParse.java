@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.token.pos.genia.util;
 
 import java.util.ArrayList;
@@ -28,68 +28,76 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
-*/
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ */
 
 public class GeniaParse {
 
-	String medline;
-	String text;
-	String xml;
-	List<GeniaTag> posTags;
-	List<GeniaTag> semTags;
-	List<GeniaSentence> sentences;
+  String medline;
 
-	public GeniaParse() {
-		posTags = new ArrayList<GeniaTag>();
-		semTags = new ArrayList<GeniaTag>();
-		sentences = new ArrayList<GeniaSentence>();
-	}
-	public String getMedline() {
-		return medline;
-	}
-	
-	public void setMedline(String medline) {
-		this.medline = medline;
-	}
-	
-	public List<GeniaTag> getPosTags() {
-		return Collections.unmodifiableList(posTags);
-	}
-	
-	public void addPosTags(List<GeniaTag> pTags) {
-		this.posTags.addAll(pTags);
-	}
-	
-	public List<GeniaTag> getSemTags() {
-		return Collections.unmodifiableList(semTags);
-	}
-	
-	public void addSemTags(List<GeniaTag> sTags) {
-		this.semTags.addAll(sTags);
-	}
-	
-	public String getText() {
-		return text;
-	}
-	
-	public void setText(String text) {
-		this.text = text;
-	}
+  String text;
 
-	public void addSentence(GeniaSentence sentence) {
-		sentences.add(sentence);
-	}
-	
-	public List<GeniaSentence> getSentences(){
-		return Collections.unmodifiableList(sentences);
-	}
-	public String getXml() {
-		return xml;
-	}
-	public void setXml(String xml) {
-		this.xml = xml;
-	}
+  String xml;
+
+  List<GeniaTag> posTags;
+
+  List<GeniaTag> semTags;
+
+  List<GeniaSentence> sentences;
+
+  public GeniaParse() {
+    posTags = new ArrayList<GeniaTag>();
+    semTags = new ArrayList<GeniaTag>();
+    sentences = new ArrayList<GeniaSentence>();
+  }
+
+  public String getMedline() {
+    return medline;
+  }
+
+  public void setMedline(String medline) {
+    this.medline = medline;
+  }
+
+  public List<GeniaTag> getPosTags() {
+    return Collections.unmodifiableList(posTags);
+  }
+
+  public void addPosTags(List<GeniaTag> pTags) {
+    this.posTags.addAll(pTags);
+  }
+
+  public List<GeniaTag> getSemTags() {
+    return Collections.unmodifiableList(semTags);
+  }
+
+  public void addSemTags(List<GeniaTag> sTags) {
+    this.semTags.addAll(sTags);
+  }
+
+  public String getText() {
+    return text;
+  }
+
+  public void setText(String text) {
+    this.text = text;
+  }
+
+  public void addSentence(GeniaSentence sentence) {
+    sentences.add(sentence);
+  }
+
+  public List<GeniaSentence> getSentences() {
+    return Collections.unmodifiableList(sentences);
+  }
+
+  public String getXml() {
+    return xml;
+  }
+
+  public void setXml(String xml) {
+    this.xml = xml;
+  }
 }

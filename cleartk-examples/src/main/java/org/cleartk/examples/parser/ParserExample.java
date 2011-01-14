@@ -47,25 +47,28 @@ import org.uimafit.pipeline.SimplePipeline;
  */
 public class ParserExample {
 
-	public static void main(String[] args) throws Exception {
+  public static void main(String[] args) throws Exception {
 
-		String filesDirectory = args[0];
-		String outputDirectory = args[1];
+    String filesDirectory = args[0];
+    String outputDirectory = args[1];
 
-		CollectionReader reader = FilesCollectionReader.getCollectionReader(
-				ExampleComponents.TYPE_SYSTEM_DESCRIPTION, filesDirectory);
+    CollectionReader reader = FilesCollectionReader.getCollectionReader(
+            ExampleComponents.TYPE_SYSTEM_DESCRIPTION, filesDirectory);
 
-		AnalysisEngineDescription sentences = AnalysisEngineFactory.createPrimitiveDescription(SentenceAnnotator.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION);
-		AnalysisEngineDescription tokenizer = AnalysisEngineFactory.createPrimitiveDescription(TokenAnnotator.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-				TokenAnnotator.PARAM_WINDOW_TYPE_NAME, org.cleartk.token.type.Sentence.class.getName());
+    AnalysisEngineDescription sentences = AnalysisEngineFactory.createPrimitiveDescription(
+            SentenceAnnotator.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION);
+    AnalysisEngineDescription tokenizer = AnalysisEngineFactory.createPrimitiveDescription(
+            TokenAnnotator.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+            TokenAnnotator.PARAM_WINDOW_TYPE_NAME, org.cleartk.token.type.Sentence.class.getName());
 
-		AnalysisEngineDescription posTaggerDescription = PosTaggerAnnotator.getDescription();
-		AnalysisEngineDescription parserDescription = ParserAnnotator.getDescription();
-		AnalysisEngineDescription xWriterDescription = AnalysisEngineFactory.createPrimitiveDescription(XWriter.class,
-				ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-				XWriter.PARAM_OUTPUT_DIRECTORY_NAME, outputDirectory,
-				XWriter.PARAM_FILE_NAMER_CLASS_NAME, ViewURIFileNamer.class.getName());
+    AnalysisEngineDescription posTaggerDescription = PosTaggerAnnotator.getDescription();
+    AnalysisEngineDescription parserDescription = ParserAnnotator.getDescription();
+    AnalysisEngineDescription xWriterDescription = AnalysisEngineFactory
+            .createPrimitiveDescription(XWriter.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+                    XWriter.PARAM_OUTPUT_DIRECTORY_NAME, outputDirectory,
+                    XWriter.PARAM_FILE_NAMER_CLASS_NAME, ViewURIFileNamer.class.getName());
 
-		SimplePipeline.runPipeline(reader, sentences, tokenizer, posTaggerDescription, parserDescription, xWriterDescription);
-	}
+    SimplePipeline.runPipeline(reader, sentences, tokenizer, posTaggerDescription,
+            parserDescription, xWriterDescription);
+  }
 }

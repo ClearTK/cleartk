@@ -35,10 +35,9 @@ import org.cleartk.token.TokenTestBase;
  */
 public class SyntaxTestBase extends TokenTestBase {
 
-	@Override
-	public String[] getTypeSystemDescriptorNames() {
-		return new String[] {"org.cleartk.syntax.TypeSystem",
-				"org.cleartk.type.test.TestTypeSystem"};
-	}
-	
+  @Override
+  public String[] getTypeSystemDescriptorNames() {
+    return new String[] { "org.cleartk.syntax.TypeSystem", "org.cleartk.type.test.TestTypeSystem" };
+  }
+
 }

@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,15 +20,16 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.feature;
 
 import org.cleartk.classifier.Feature;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * <p>
  * 
  * @author Philip Ogren
@@ -36,70 +37,77 @@ import org.cleartk.classifier.Feature;
  */
 
 public class WindowFeature extends Feature {
-	public static final String ORIENTATION_LEFT = "L";
+  public static final String ORIENTATION_LEFT = "L";
 
-	public static final String ORIENTATION_RIGHT = "R";
+  public static final String ORIENTATION_RIGHT = "R";
 
-	public static final String ORIENTATION_MIDDLE = "M";
+  public static final String ORIENTATION_MIDDLE = "M";
 
-	public static final String ORIENTATION_MIDDLE_REVERSE = "MR";
+  public static final String ORIENTATION_MIDDLE_REVERSE = "MR";
 
-	private String orientation = null;
+  private String orientation = null;
 
-	private Integer position = null;
+  private Integer position = null;
 
-	private Feature windowedFeature = null;
+  private Feature windowedFeature = null;
 
-	private Integer outOfBoundsDistance = 0;
+  private Integer outOfBoundsDistance = 0;
 
-	public WindowFeature(String name, Object value, String orientation, Integer position, Feature windowedFeature,
-			Integer outOfBoundsDistance) {
-		super(value);
-		this.orientation = orientation;
-		this.position = position;
-		this.windowedFeature = windowedFeature;
-		this.outOfBoundsDistance = outOfBoundsDistance;
-		this.name = createName(name);
-	}
+  public WindowFeature(String name, Object value, String orientation, Integer position,
+          Feature windowedFeature, Integer outOfBoundsDistance) {
+    super(value);
+    this.orientation = orientation;
+    this.position = position;
+    this.windowedFeature = windowedFeature;
+    this.outOfBoundsDistance = outOfBoundsDistance;
+    this.name = createName(name);
+  }
 
-	public WindowFeature(String name, Object value, String orientation, Integer position, Feature windowedFeature) {
-		this(name, value, orientation, position, windowedFeature, null);
-	}
+  public WindowFeature(String name, Object value, String orientation, Integer position,
+          Feature windowedFeature) {
+    this(name, value, orientation, position, windowedFeature, null);
+  }
 
-	public WindowFeature(String name, Object value, String orientation, Integer position, Integer outOfBoundsDistance) {
-		this(name, value, orientation, position, null, outOfBoundsDistance);
-	}
+  public WindowFeature(String name, Object value, String orientation, Integer position,
+          Integer outOfBoundsDistance) {
+    this(name, value, orientation, position, null, outOfBoundsDistance);
+  }
 
-	private String createName(String namePrefix) {
-		if (namePrefix == null) namePrefix = "Window";
+  private String createName(String namePrefix) {
+    if (namePrefix == null)
+      namePrefix = "Window";
 
-		StringBuffer sb = new StringBuffer();
-		if (orientation != null) sb.append(orientation);
-		if (position != null) sb.append(position);
+    StringBuffer sb = new StringBuffer();
+    if (orientation != null)
+      sb.append(orientation);
+    if (position != null)
+      sb.append(position);
 
-		if (outOfBoundsDistance != null && outOfBoundsDistance > 0) sb.append("OOB" + outOfBoundsDistance);
+    if (outOfBoundsDistance != null && outOfBoundsDistance > 0)
+      sb.append("OOB" + outOfBoundsDistance);
 
-		String windowedFeatureName = null;
-		if (windowedFeature != null) windowedFeatureName = windowedFeature.getName();
+    String windowedFeatureName = null;
+    if (windowedFeature != null)
+      windowedFeatureName = windowedFeature.getName();
 
-		return Feature.createName(namePrefix, sb.toString(), windowedFeatureName);
+    return Feature.createName(namePrefix, sb.toString(), windowedFeatureName);
 
-	}
+  }
 
-	public String getOrientation() {
-		return orientation;
-	}
+  public String getOrientation() {
+    return orientation;
+  }
 
-	public int getOutOfBoundsDistance() {
-		return outOfBoundsDistance;
-	}
+  public int getOutOfBoundsDistance() {
+    return outOfBoundsDistance;
+  }
 
-	public int getPosition() {
-		return position;
-	}
+  public int getPosition() {
+    return position;
+  }
 
-	public Feature getWindowedFeature() {
-		return windowedFeature;
-	}
+  public Feature getWindowedFeature() {
+    return windowedFeature;
+  }
 
 }

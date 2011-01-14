@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.util.ae.linewriter.block;
 
 import org.apache.uima.UimaContext;
@@ -30,18 +30,20 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.util.ae.linewriter.BlockWriter;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
- *
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * @author Philip Ogren
  */
 
 public class DoNothingBlockWriter implements BlockWriter<Annotation> {
 
-	public void initialize(UimaContext context) throws ResourceInitializationException {}
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+  }
 
-	public String writeBlock(JCas cas, Annotation blockAnnotation) {
-		return "";
-	}
+  public String writeBlock(JCas cas, Annotation blockAnnotation) {
+    return "";
+  }
 
 }

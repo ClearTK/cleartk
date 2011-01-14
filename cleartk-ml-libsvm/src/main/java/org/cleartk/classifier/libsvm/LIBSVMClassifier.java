@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.libsvm;
 
 import java.io.File;
@@ -38,67 +38,71 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.jar.JarClassifier;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * 
  * @author Philipp Wetzler
- *
+ * 
  */
-public abstract class LIBSVMClassifier<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE> extends JarClassifier<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE,FeatureVector> {
-	
-	public static final String MODEL_NAME = "model.libsvm";
-	public static final String ATTRIBUTES_NAME = "LIBSVM";
-	public static final String SCALE_FEATURES_KEY = "scaleFeatures";
-	public static final String SCALE_FEATURES_VALUE_NORMALIZEL2 = "normalizeL2";
-	
-	public LIBSVMClassifier(JarFile modelFile) throws IOException {
-		super(modelFile);
-		
-		ZipEntry modelEntry = modelFile.getEntry(LIBSVMClassifier.MODEL_NAME);
-		File tmpFile = File.createTempFile("tmp", ".mdl");
-		try {
-			LIBSVMClassifier.copy(modelFile.getInputStream(modelEntry), new FileOutputStream(tmpFile));
-			this.model = libsvm.svm.svm_load_model(tmpFile.getPath());
-		} finally {
-			tmpFile.delete();
-		}
-	}
+public abstract class LIBSVMClassifier<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE> extends
+        JarClassifier<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE, FeatureVector> {
 
-	public INPUTOUTCOME_TYPE classify(List<Feature> features) throws CleartkException {
-		FeatureVector featureVector = this.featuresEncoder.encodeAll(features);
+  public static final String MODEL_NAME = "model.libsvm";
 
-		OUTPUTOUTCOME_TYPE encodedOutcome = decodePrediction(libsvm.svm.svm_predict(this.model, convertToLIBSVM(featureVector)));
-		
-		return outcomeEncoder.decode(encodedOutcome);
-	}
-	
-	
-	private static void copy(InputStream in, OutputStream out) throws IOException {
-		byte[] buffer = new byte[4096];
-		int len = 0;
-		
-		while( (len = in.read(buffer)) > 0 ) {
-			out.write(buffer, 0, len);
-		}
-	}
-	
-	protected static libsvm.svm_node[] convertToLIBSVM(FeatureVector featureVector) {
-		List<libsvm.svm_node> nodes = new ArrayList<libsvm.svm_node>();
-		
-		for( FeatureVector.Entry entry : featureVector ) {
-			libsvm.svm_node node = new libsvm.svm_node();
-			node.index = entry.index;
-			node.value = entry.value;
-			nodes.add(node);
-		}
-		
-		return nodes.toArray(new libsvm.svm_node[nodes.size()]);
-	}
-	
-	protected abstract OUTPUTOUTCOME_TYPE decodePrediction(double prediction);
+  public static final String ATTRIBUTES_NAME = "LIBSVM";
 
-	protected libsvm.svm_model model;
+  public static final String SCALE_FEATURES_KEY = "scaleFeatures";
+
+  public static final String SCALE_FEATURES_VALUE_NORMALIZEL2 = "normalizeL2";
+
+  public LIBSVMClassifier(JarFile modelFile) throws IOException {
+    super(modelFile);
+
+    ZipEntry modelEntry = modelFile.getEntry(LIBSVMClassifier.MODEL_NAME);
+    File tmpFile = File.createTempFile("tmp", ".mdl");
+    try {
+      LIBSVMClassifier.copy(modelFile.getInputStream(modelEntry), new FileOutputStream(tmpFile));
+      this.model = libsvm.svm.svm_load_model(tmpFile.getPath());
+    } finally {
+      tmpFile.delete();
+    }
+  }
+
+  public INPUTOUTCOME_TYPE classify(List<Feature> features) throws CleartkException {
+    FeatureVector featureVector = this.featuresEncoder.encodeAll(features);
+
+    OUTPUTOUTCOME_TYPE encodedOutcome = decodePrediction(libsvm.svm.svm_predict(this.model,
+            convertToLIBSVM(featureVector)));
+
+    return outcomeEncoder.decode(encodedOutcome);
+  }
+
+  private static void copy(InputStream in, OutputStream out) throws IOException {
+    byte[] buffer = new byte[4096];
+    int len = 0;
+
+    while ((len = in.read(buffer)) > 0) {
+      out.write(buffer, 0, len);
+    }
+  }
+
+  protected static libsvm.svm_node[] convertToLIBSVM(FeatureVector featureVector) {
+    List<libsvm.svm_node> nodes = new ArrayList<libsvm.svm_node>();
+
+    for (FeatureVector.Entry entry : featureVector) {
+      libsvm.svm_node node = new libsvm.svm_node();
+      node.index = entry.index;
+      node.value = entry.value;
+      nodes.add(node);
+    }
+
+    return nodes.toArray(new libsvm.svm_node[nodes.size()]);
+  }
+
+  protected abstract OUTPUTOUTCOME_TYPE decodePrediction(double prediction);
+
+  protected libsvm.svm_model model;
 }

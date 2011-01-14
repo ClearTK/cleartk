@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2009, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 
 package org.cleartk.classifier.feature.extractor.outcome;
 
@@ -41,118 +41,117 @@ import org.junit.Test;
 import org.uimafit.factory.UimaContextFactory;
 
 /**
- * <br>Copyright (c) 2009, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * 
  * @author Philip Ogren
  */
 
 public class DefaultOutcomeFeatureExtractorTest {
 
-	@Test
-	public void testInitialize() throws ResourceInitializationException {
-		OutcomeFeatureExtractor ofe;
+  @Test
+  public void testInitialize() throws ResourceInitializationException {
+    OutcomeFeatureExtractor ofe;
 
-		UimaContext context = UimaContextFactory.createUimaContext();
-		ResourceInitializationException rie = null;
-		try {
-			ofe = new DefaultOutcomeFeatureExtractor();
-			ofe.initialize(context);
-		}
-		catch (ResourceInitializationException e) {
-			rie = e;
-		}
-		assertNull(rie);
+    UimaContext context = UimaContextFactory.createUimaContext();
+    ResourceInitializationException rie = null;
+    try {
+      ofe = new DefaultOutcomeFeatureExtractor();
+      ofe.initialize(context);
+    } catch (ResourceInitializationException e) {
+      rie = e;
+    }
+    assertNull(rie);
 
-		context = UimaContextFactory.createUimaContext(DefaultOutcomeFeatureExtractor.PARAM_MOST_RECENT_OUTCOME,
-				new Integer(3), DefaultOutcomeFeatureExtractor.PARAM_LEAST_RECENT_OUTCOME, new Integer(1));
-		rie = null;
-		try {
-			ofe = new DefaultOutcomeFeatureExtractor();
-			ofe.initialize(context);
-		}
-		catch (ResourceInitializationException e) {
-			rie = e;
-		}
-		assertNotNull(rie);
+    context = UimaContextFactory.createUimaContext(
+            DefaultOutcomeFeatureExtractor.PARAM_MOST_RECENT_OUTCOME, new Integer(3),
+            DefaultOutcomeFeatureExtractor.PARAM_LEAST_RECENT_OUTCOME, new Integer(1));
+    rie = null;
+    try {
+      ofe = new DefaultOutcomeFeatureExtractor();
+      ofe.initialize(context);
+    } catch (ResourceInitializationException e) {
+      rie = e;
+    }
+    assertNotNull(rie);
 
-		context = UimaContextFactory.createUimaContext(DefaultOutcomeFeatureExtractor.PARAM_MOST_RECENT_OUTCOME,
-				new Integer(0));
-		rie = null;
-		try {
-			ofe = new DefaultOutcomeFeatureExtractor();
-			ofe.initialize(context);
-		}
-		catch (ResourceInitializationException e) {
-			rie = e;
-		}
-		assertNotNull(rie);
-	}
+    context = UimaContextFactory.createUimaContext(
+            DefaultOutcomeFeatureExtractor.PARAM_MOST_RECENT_OUTCOME, new Integer(0));
+    rie = null;
+    try {
+      ofe = new DefaultOutcomeFeatureExtractor();
+      ofe.initialize(context);
+    } catch (ResourceInitializationException e) {
+      rie = e;
+    }
+    assertNotNull(rie);
+  }
 
-	@Test
-	public void testExtractFeatures() throws ResourceInitializationException {
-		UimaContext context = UimaContextFactory.createUimaContext();
-		OutcomeFeatureExtractor ofe = new DefaultOutcomeFeatureExtractor();
-		ofe.initialize(context);
-		
-		List<Feature> features = ofe.extractFeatures(Arrays.asList(new Object[] {"A", "B", "C", "D"}));
-		assertEquals(5, features.size());
-		Set<String> featureNames = new HashSet<String>(); 
-		for(Feature feature : features) {
-			featureNames.add(feature.getName()+"_"+feature.getValue());
-		}
-		assertTrue(featureNames.contains("PreviousOutcome_L1_D"));
-		assertTrue(featureNames.contains("PreviousOutcome_L2_C"));
-		assertTrue(featureNames.contains("PreviousOutcome_L3_B"));
-		assertTrue(featureNames.contains("PreviousOutcomes_L1_2gram_L2R_D_C"));
-		assertTrue(featureNames.contains("PreviousOutcomes_L1_3gram_L2R_D_C_B"));
-		
-		features = ofe.extractFeatures(Arrays.asList(new Object[] {"A", "B"}));
-		assertEquals(3, features.size());
-		featureNames.clear(); 
-		for(Feature feature : features) {
-			featureNames.add(feature.getName()+"_"+feature.getValue());
-		}
-		assertTrue(featureNames.contains("PreviousOutcome_L1_B"));
-		assertTrue(featureNames.contains("PreviousOutcome_L2_A"));
-		assertTrue(featureNames.contains("PreviousOutcomes_L1_2gram_L2R_B_A"));
-		
-		features = ofe.extractFeatures(Arrays.asList(new Object[0] ));
-		assertEquals(0, features.size());
+  @Test
+  public void testExtractFeatures() throws ResourceInitializationException {
+    UimaContext context = UimaContextFactory.createUimaContext();
+    OutcomeFeatureExtractor ofe = new DefaultOutcomeFeatureExtractor();
+    ofe.initialize(context);
 
-		
-		context = UimaContextFactory.createUimaContext(DefaultOutcomeFeatureExtractor.PARAM_MOST_RECENT_OUTCOME, 2,
-				DefaultOutcomeFeatureExtractor.PARAM_LEAST_RECENT_OUTCOME, 3,
-				DefaultOutcomeFeatureExtractor.PARAM_USE4GRAM, true,
-				DefaultOutcomeFeatureExtractor.PARAM_USE_BIGRAM, false);
-		ofe = new DefaultOutcomeFeatureExtractor();
-		ofe.initialize(context);
-		
-		features = ofe.extractFeatures(Arrays.asList(new Object[] {"A", "B", "C", "D"}));
-		assertEquals(4, features.size());
-		featureNames.clear(); 
-		for(Feature feature : features) {
-			featureNames.add(feature.getName()+"_"+feature.getValue());
-		}
+    List<Feature> features = ofe
+            .extractFeatures(Arrays.asList(new Object[] { "A", "B", "C", "D" }));
+    assertEquals(5, features.size());
+    Set<String> featureNames = new HashSet<String>();
+    for (Feature feature : features) {
+      featureNames.add(feature.getName() + "_" + feature.getValue());
+    }
+    assertTrue(featureNames.contains("PreviousOutcome_L1_D"));
+    assertTrue(featureNames.contains("PreviousOutcome_L2_C"));
+    assertTrue(featureNames.contains("PreviousOutcome_L3_B"));
+    assertTrue(featureNames.contains("PreviousOutcomes_L1_2gram_L2R_D_C"));
+    assertTrue(featureNames.contains("PreviousOutcomes_L1_3gram_L2R_D_C_B"));
 
-		assertTrue(featureNames.contains("PreviousOutcome_L2_C"));
-		assertTrue(featureNames.contains("PreviousOutcome_L3_B"));
-		assertTrue(featureNames.contains("PreviousOutcomes_L1_3gram_L2R_D_C_B"));
-		assertTrue(featureNames.contains("PreviousOutcomes_L1_4gram_L2R_D_C_B_A"));
+    features = ofe.extractFeatures(Arrays.asList(new Object[] { "A", "B" }));
+    assertEquals(3, features.size());
+    featureNames.clear();
+    for (Feature feature : features) {
+      featureNames.add(feature.getName() + "_" + feature.getValue());
+    }
+    assertTrue(featureNames.contains("PreviousOutcome_L1_B"));
+    assertTrue(featureNames.contains("PreviousOutcome_L2_A"));
+    assertTrue(featureNames.contains("PreviousOutcomes_L1_2gram_L2R_B_A"));
 
-		
-		features = ofe.extractFeatures(Arrays.asList(new Object[] {1, 3, "CAT", 5.5f}));
-		assertEquals(4, features.size());
-		featureNames.clear(); 
-		for(Feature feature : features) {
-			featureNames.add(feature.getName()+"_"+feature.getValue());
-		}
+    features = ofe.extractFeatures(Arrays.asList(new Object[0]));
+    assertEquals(0, features.size());
 
-		assertTrue(featureNames.contains("PreviousOutcome_L2_CAT"));
-		assertTrue(featureNames.contains("PreviousOutcome_L3_3"));
-		assertTrue(featureNames.contains("PreviousOutcomes_L1_3gram_L2R_5.5_CAT_3"));
-		assertTrue(featureNames.contains("PreviousOutcomes_L1_4gram_L2R_5.5_CAT_3_1"));
-	}
-	
+    context = UimaContextFactory.createUimaContext(
+            DefaultOutcomeFeatureExtractor.PARAM_MOST_RECENT_OUTCOME, 2,
+            DefaultOutcomeFeatureExtractor.PARAM_LEAST_RECENT_OUTCOME, 3,
+            DefaultOutcomeFeatureExtractor.PARAM_USE4GRAM, true,
+            DefaultOutcomeFeatureExtractor.PARAM_USE_BIGRAM, false);
+    ofe = new DefaultOutcomeFeatureExtractor();
+    ofe.initialize(context);
+
+    features = ofe.extractFeatures(Arrays.asList(new Object[] { "A", "B", "C", "D" }));
+    assertEquals(4, features.size());
+    featureNames.clear();
+    for (Feature feature : features) {
+      featureNames.add(feature.getName() + "_" + feature.getValue());
+    }
+
+    assertTrue(featureNames.contains("PreviousOutcome_L2_C"));
+    assertTrue(featureNames.contains("PreviousOutcome_L3_B"));
+    assertTrue(featureNames.contains("PreviousOutcomes_L1_3gram_L2R_D_C_B"));
+    assertTrue(featureNames.contains("PreviousOutcomes_L1_4gram_L2R_D_C_B_A"));
+
+    features = ofe.extractFeatures(Arrays.asList(new Object[] { 1, 3, "CAT", 5.5f }));
+    assertEquals(4, features.size());
+    featureNames.clear();
+    for (Feature feature : features) {
+      featureNames.add(feature.getName() + "_" + feature.getValue());
+    }
+
+    assertTrue(featureNames.contains("PreviousOutcome_L2_CAT"));
+    assertTrue(featureNames.contains("PreviousOutcome_L3_3"));
+    assertTrue(featureNames.contains("PreviousOutcomes_L1_3gram_L2R_5.5_CAT_3"));
+    assertTrue(featureNames.contains("PreviousOutcomes_L1_4gram_L2R_5.5_CAT_3_1"));
+  }
+
 }

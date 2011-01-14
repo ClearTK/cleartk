@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.srl.propbank;
 
 import java.io.IOException;
@@ -38,47 +38,45 @@ import org.cleartk.util.UIMAUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.SofaCapability;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * 
  * 
  * 
  * <p>
- * The PropbankParser AnalysisEngine annotates the "_InitialView" SOFA from the
- * "PropbankView" SOFA. Treebank annotations must already exist.
+ * The PropbankParser AnalysisEngine annotates the "_InitialView" SOFA from the "PropbankView" SOFA.
+ * Treebank annotations must already exist.
  * </p>
  * 
  * @author Philipp Wetzler, Philip Ogren
  */
 
-@SofaCapability(inputSofas= {PropbankConstants.PROPBANK_VIEW, CAS.NAME_DEFAULT_SOFA})
+@SofaCapability(inputSofas = { PropbankConstants.PROPBANK_VIEW, CAS.NAME_DEFAULT_SOFA })
 public class PropbankGoldAnnotator extends JCasAnnotator_ImplBase {
 
-	@Override
-	public void process(JCas jCas) throws AnalysisEngineProcessException {
-		try {
-			JCas pbView = jCas.getView(PropbankConstants.PROPBANK_VIEW);
-			JCas docView = jCas.getView(CAS.NAME_DEFAULT_SOFA);
-			List<Sentence> sentenceList = AnnotationRetrieval.getAnnotations(docView, Sentence.class); 
+  @Override
+  public void process(JCas jCas) throws AnalysisEngineProcessException {
+    try {
+      JCas pbView = jCas.getView(PropbankConstants.PROPBANK_VIEW);
+      JCas docView = jCas.getView(CAS.NAME_DEFAULT_SOFA);
+      List<Sentence> sentenceList = AnnotationRetrieval.getAnnotations(docView, Sentence.class);
 
-			for (String propbankDatum : UIMAUtil.readSofa(pbView).trim().split(
-					"\n")) {
-				if (propbankDatum.length() == 0)
-					continue;
-				Propbank propbank = Propbank.fromString(propbankDatum);
-				Sentence sentence = sentenceList.get(propbank
-						.getSentenceNumber());
-				propbank.convert(docView, AnnotationRetrieval.getContainingAnnotation(docView, sentence, TopTreebankNode.class, false),
-						sentence);
-			}
-		} catch (CASException e) {
-			throw new AnalysisEngineProcessException(e);
-		} catch (IOException e) {
-			throw new AnalysisEngineProcessException(e);
-		}
-	}
+      for (String propbankDatum : UIMAUtil.readSofa(pbView).trim().split("\n")) {
+        if (propbankDatum.length() == 0)
+          continue;
+        Propbank propbank = Propbank.fromString(propbankDatum);
+        Sentence sentence = sentenceList.get(propbank.getSentenceNumber());
+        propbank.convert(docView, AnnotationRetrieval.getContainingAnnotation(docView, sentence,
+                TopTreebankNode.class, false), sentence);
+      }
+    } catch (CASException e) {
+      throw new AnalysisEngineProcessException(e);
+    } catch (IOException e) {
+      throw new AnalysisEngineProcessException(e);
+    }
+  }
 
 }

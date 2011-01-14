@@ -68,22 +68,21 @@ import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.UIMAUtil;
 import org.uimafit.factory.AnalysisEngineFactory;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * 
  * <p>
  * ArgumentIdentifier can work in 3 modes: <il>
- * <li> <b>training mode</b>: take in fully annotated Propbank style data and
- * generate training data for detection of arguments </li>
- * <li> <b>filter mode</b>: take in fully annotated Propbank style data and a
- * model, then add annotations for falsely detected arguments, and remove
- * annotations for missed arguments; this is to facilitate training of
- * AnnotationClassifier </li>
- * <li> <b>annotation mode</b>: take in unlabeled Treebank style data and
- * annotate all detected arguments (no labeling is done by this annotator) </li>
+ * <li><b>training mode</b>: take in fully annotated Propbank style data and generate training data
+ * for detection of arguments</li>
+ * <li><b>filter mode</b>: take in fully annotated Propbank style data and a model, then add
+ * annotations for falsely detected arguments, and remove annotations for missed arguments; this is
+ * to facilitate training of AnnotationClassifier</li>
+ * <li><b>annotation mode</b>: take in unlabeled Treebank style data and annotate all detected
+ * arguments (no labeling is done by this annotator)</li>
  * </il>
  * </p>
  * 
@@ -91,234 +90,212 @@ import org.uimafit.factory.AnalysisEngineFactory;
  */
 public class ArgumentIdentifier extends CleartkAnnotator<Boolean> {
 
-	public static AnalysisEngineDescription getWriterDescription(
-			Class<? extends DataWriterFactory<Boolean>> dataWriterFactoryClass, File outputDirectory)
-	throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveDescription(
-				ArgumentIdentifier.class,
-				SrlComponents.TYPE_SYSTEM_DESCRIPTION,
-				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, dataWriterFactoryClass.getName(),
-				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory.toString());
-	}
+  public static AnalysisEngineDescription getWriterDescription(
+          Class<? extends DataWriterFactory<Boolean>> dataWriterFactoryClass, File outputDirectory)
+          throws ResourceInitializationException {
+    return AnalysisEngineFactory.createPrimitiveDescription(ArgumentIdentifier.class,
+            SrlComponents.TYPE_SYSTEM_DESCRIPTION,
+            CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+            dataWriterFactoryClass.getName(), JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+            outputDirectory.toString());
+  }
 
-	public static AnalysisEngineDescription getClassifierDescription(File classifierJar)
-	throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveDescription(
-				ArgumentIdentifier.class,
-				SrlComponents.TYPE_SYSTEM_DESCRIPTION,
-				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, classifierJar.toString());
-	}
+  public static AnalysisEngineDescription getClassifierDescription(File classifierJar)
+          throws ResourceInitializationException {
+    return AnalysisEngineFactory.createPrimitiveDescription(ArgumentIdentifier.class,
+            SrlComponents.TYPE_SYSTEM_DESCRIPTION, JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
+            classifierJar.toString());
+  }
 
-	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		super.initialize(context);
+  @Override
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    super.initialize(context);
 
-		SimpleFeatureExtractor defaultTokenExtractorSet = new MatchingAnnotationExtractor(Token.class,
-				new SpannedTextExtractor(),
-				new StemExtractor(),
-				new POSExtractor()
-		);
+    SimpleFeatureExtractor defaultTokenExtractorSet = new MatchingAnnotationExtractor(Token.class,
+            new SpannedTextExtractor(), new StemExtractor(), new POSExtractor());
 
-		this.perPredicateExtractor = new NamingExtractor("Predicate",
-				new MatchingAnnotationExtractor(Token.class,
-						defaultTokenExtractorSet
-				),
-				new MatchingAnnotationExtractor(TreebankNode.class,
-						new SubCategorizationExtractor()
-				)
-		);
+    this.perPredicateExtractor = new NamingExtractor("Predicate", new MatchingAnnotationExtractor(
+            Token.class, defaultTokenExtractorSet), new MatchingAnnotationExtractor(
+            TreebankNode.class, new SubCategorizationExtractor()));
 
-		this.perConstituentExtractor = new NamingExtractor("Constituent",
-				new NodeTypeExtractor(),
-				// new TypePathExtractor(TreebankNode.class, "nodeTags"),
-				new HeadWordExtractor(
-						defaultTokenExtractorSet
-				),
-				new FirstInstanceExtractor(Token.class,
-						defaultTokenExtractorSet
-				),
-				new LastInstanceExtractor(Token.class,
-						defaultTokenExtractorSet
-				),
-				new NamedEntityExtractor()
-		);
+    this.perConstituentExtractor = new NamingExtractor("Constituent", new NodeTypeExtractor(),
+    // new TypePathExtractor(TreebankNode.class, "nodeTags"),
+            new HeadWordExtractor(defaultTokenExtractorSet), new FirstInstanceExtractor(
+                    Token.class, defaultTokenExtractorSet), new LastInstanceExtractor(Token.class,
+                    defaultTokenExtractorSet), new NamedEntityExtractor());
 
-		this.perPredicatAndConstituentExtractor = new NamingAnnotationPairFeatureExtractor("PredicateAndConstituent",
-				new MatchingAnnotationPairExtractor(TreebankNode.class, TreebankNode.class,
-						new SyntacticPathExtractor(
-								new NodeTypeExtractor()
-						),
-						new RelativePositionExtractor()
-				)
-		);
-	}
+    this.perPredicatAndConstituentExtractor = new NamingAnnotationPairFeatureExtractor(
+            "PredicateAndConstituent", new MatchingAnnotationPairExtractor(TreebankNode.class,
+                    TreebankNode.class, new SyntacticPathExtractor(new NodeTypeExtractor()),
+                    new RelativePositionExtractor()));
+  }
 
-	@Override
-	public void process(JCas jCas) throws AnalysisEngineProcessException {
-		/*
-		 * Iterate over sentences in document
-		 */
-		List<Sentence> sentences = AnnotationRetrieval.getAnnotations(jCas, Sentence.class);
+  @Override
+  public void process(JCas jCas) throws AnalysisEngineProcessException {
+    /*
+     * Iterate over sentences in document
+     */
+    List<Sentence> sentences = AnnotationRetrieval.getAnnotations(jCas, Sentence.class);
 
-		try {
-			nSentences = 0;
-			nPredicates = 0;
-			nConstituents = 0;
-			
-			for( Sentence sentence : sentences ) {
-				processSentence(jCas, sentence);
-			}
+    try {
+      nSentences = 0;
+      nPredicates = 0;
+      nConstituents = 0;
 
-			logger.info(String.format("processed %d sentences, %d predicates, ~%d constituents per predicate", nSentences, nPredicates, nPredicates == 0 ? 0 : nConstituents / nPredicates));
-		} catch (CleartkException e) {
-			throw new AnalysisEngineProcessException(e);
-		}
-	}
+      for (Sentence sentence : sentences) {
+        processSentence(jCas, sentence);
+      }
 
-	void processSentence(JCas jCas, Sentence sentence) throws CleartkException{
-		nSentences += 1;
-		
-		if( sentence.getCoveredText().length() > 40 )
-			logger.fine(String.format("process sentence \"%s ...\"", sentence.getCoveredText().substring(0, 39)));
-		else
-			logger.fine(String.format("process sentence \"%s\"", sentence.getCoveredText()));
-		
-		/*
-		 * Pre-compute sentence level data: sentenceConstituents: list of all
-		 * constituents in sentence
-		 */
-		List<TreebankNode> sentenceConstituents = new ArrayList<TreebankNode>(
-				200);
-		collectConstituents(AnnotationRetrieval.getContainingAnnotation(jCas, sentence, TopTreebankNode.class, false),
-				sentenceConstituents);
+      logger.info(String.format(
+              "processed %d sentences, %d predicates, ~%d constituents per predicate", nSentences,
+              nPredicates, nPredicates == 0 ? 0 : nConstituents / nPredicates));
+    } catch (CleartkException e) {
+      throw new AnalysisEngineProcessException(e);
+    }
+  }
 
-		/*
-		 * Compute constituent features for all constituents in sentence
-		 */
-		List<List<Feature>> sentenceConstituentFeatures = new ArrayList<List<Feature>>(
-				sentenceConstituents.size());
-		for (TreebankNode constituent : sentenceConstituents) {
-			sentenceConstituentFeatures.add(perConstituentExtractor.extract(jCas, constituent));
-		}
+  void processSentence(JCas jCas, Sentence sentence) throws CleartkException {
+    nSentences += 1;
 
-		/*
-		 * Iterate over predicates in sentence
-		 */
-		List<Predicate> predicates = AnnotationRetrieval.getAnnotations(jCas,
-				sentence, Predicate.class);
-		for (Predicate predicate : predicates) {
-			processPredicate(jCas, predicate, sentenceConstituents,
-					sentenceConstituentFeatures);
-		}
-	}
+    if (sentence.getCoveredText().length() > 40)
+      logger.fine(String.format("process sentence \"%s ...\"",
+              sentence.getCoveredText().substring(0, 39)));
+    else
+      logger.fine(String.format("process sentence \"%s\"", sentence.getCoveredText()));
 
-	public void processPredicate(JCas jCas, Predicate predicate,
-			List<TreebankNode> sentenceConstituents,
-			List<List<Feature>> sentenceConstituentFeatures) throws CleartkException{
-		nPredicates += 1;
+    /*
+     * Pre-compute sentence level data: sentenceConstituents: list of all constituents in sentence
+     */
+    List<TreebankNode> sentenceConstituents = new ArrayList<TreebankNode>(200);
+    collectConstituents(AnnotationRetrieval.getContainingAnnotation(jCas, sentence,
+            TopTreebankNode.class, false), sentenceConstituents);
 
+    /*
+     * Compute constituent features for all constituents in sentence
+     */
+    List<List<Feature>> sentenceConstituentFeatures = new ArrayList<List<Feature>>(
+            sentenceConstituents.size());
+    for (TreebankNode constituent : sentenceConstituents) {
+      sentenceConstituentFeatures.add(perConstituentExtractor.extract(jCas, constituent));
+    }
 
-		/*
-		 * Compute predicate features
-		 */
-		List<Feature> predicateFeatures = new ArrayList<Feature>(12);
-		predicateFeatures.addAll(perPredicateExtractor.extract(jCas, predicate.getAnnotation()));
+    /*
+     * Iterate over predicates in sentence
+     */
+    List<Predicate> predicates = AnnotationRetrieval
+            .getAnnotations(jCas, sentence, Predicate.class);
+    for (Predicate predicate : predicates) {
+      processPredicate(jCas, predicate, sentenceConstituents, sentenceConstituentFeatures);
+    }
+  }
 
+  public void processPredicate(JCas jCas, Predicate predicate,
+          List<TreebankNode> sentenceConstituents, List<List<Feature>> sentenceConstituentFeatures)
+          throws CleartkException {
+    nPredicates += 1;
 
-		/*
-		 * Iterate over constituents in sentence
-		 */
-		for (int i = 0; i < sentenceConstituents.size(); i++) {
-			nConstituents += 1;
-			TreebankNode constituent = sentenceConstituents.get(i);
+    /*
+     * Compute predicate features
+     */
+    List<Feature> predicateFeatures = new ArrayList<Feature>(12);
+    predicateFeatures.addAll(perPredicateExtractor.extract(jCas, predicate.getAnnotation()));
 
-			Instance<Boolean> instance = new Instance<Boolean>();
+    /*
+     * Iterate over constituents in sentence
+     */
+    for (int i = 0; i < sentenceConstituents.size(); i++) {
+      nConstituents += 1;
+      TreebankNode constituent = sentenceConstituents.get(i);
 
-			/*
-			 * Compute predicate-constituent features
-			 */
-			instance.addAll(perPredicatAndConstituentExtractor.extract(jCas, constituent, predicate.getAnnotation()));
+      Instance<Boolean> instance = new Instance<Boolean>();
 
-			/*
-			 * Add constituent features
-			 */
-			instance.addAll(sentenceConstituentFeatures.get(i));
+      /*
+       * Compute predicate-constituent features
+       */
+      instance.addAll(perPredicatAndConstituentExtractor.extract(jCas, constituent,
+              predicate.getAnnotation()));
 
-			/*
-			 * Add predicate features
-			 */
-			instance.addAll(predicateFeatures);
+      /*
+       * Add constituent features
+       */
+      instance.addAll(sentenceConstituentFeatures.get(i));
 
-			if( isTraining() ) {
-				instance.setOutcome(false);
+      /*
+       * Add predicate features
+       */
+      instance.addAll(predicateFeatures);
 
-				for( int j=0; j<predicate.getArguments().size(); j++ ) {
-					Argument arg = predicate.getArguments(j);
-					if( arg.getAnnotation().equals(constituent) ) {
-						instance.setOutcome(true);
-						break;
-					}
-				}
-			}
+      if (isTraining()) {
+        instance.setOutcome(false);
 
+        for (int j = 0; j < predicate.getArguments().size(); j++) {
+          Argument arg = predicate.getArguments(j);
+          if (arg.getAnnotation().equals(constituent)) {
+            instance.setOutcome(true);
+            break;
+          }
+        }
+      }
 
-			if (this.isTraining()) {
-				this.dataWriter.write(instance);
-			} else {
-				boolean isArgument = this.classifier.classify(instance.getFeatures());
+      if (this.isTraining()) {
+        this.dataWriter.write(instance);
+      } else {
+        boolean isArgument = this.classifier.classify(instance.getFeatures());
 
-				if (isArgument) {
-					SemanticArgument arg = new SemanticArgument(jCas);
-					arg.setAnnotation(constituent);
-					arg.setBegin(constituent.getBegin());
-					arg.setEnd(constituent.getEnd());
-					arg.setLabel("?");
-					arg.addToIndexes();
-					
-					List<Argument> args = UIMAUtil.toList(predicate.getArguments(), Argument.class);
-					args.add(arg);
-					predicate.setArguments(UIMAUtil.toFSArray(jCas, args));
-				}
-			}
+        if (isArgument) {
+          SemanticArgument arg = new SemanticArgument(jCas);
+          arg.setAnnotation(constituent);
+          arg.setBegin(constituent.getBegin());
+          arg.setEnd(constituent.getEnd());
+          arg.setLabel("?");
+          arg.addToIndexes();
 
-		}
-	}
+          List<Argument> args = UIMAUtil.toList(predicate.getArguments(), Argument.class);
+          args.add(arg);
+          predicate.setArguments(UIMAUtil.toFSArray(jCas, args));
+        }
+      }
 
-	/**
-	 * Recursively build a list of constituents under a TreebankNode.
-	 * 
-	 * @param top
-	 *            the root of the parse tree to operate on; <b>top</b> itself
-	 *            will also be added, unless it is of type TopTrebankNode
-	 * @param constituents
-	 *            list of nodes to add to
-	 */
-	protected void collectConstituents(TreebankNode top,
-			List<TreebankNode> constituents) {
-		if (top == null)
-			throw new IllegalArgumentException();
+    }
+  }
 
-		if (!(top instanceof TopTreebankNode))
-			constituents.add(top);
+  /**
+   * Recursively build a list of constituents under a TreebankNode.
+   * 
+   * @param top
+   *          the root of the parse tree to operate on; <b>top</b> itself will also be added, unless
+   *          it is of type TopTrebankNode
+   * @param constituents
+   *          list of nodes to add to
+   */
+  protected void collectConstituents(TreebankNode top, List<TreebankNode> constituents) {
+    if (top == null)
+      throw new IllegalArgumentException();
 
-		if (top.getChildren() == null)
-			return;
+    if (!(top instanceof TopTreebankNode))
+      constituents.add(top);
 
-		int numberOfChildren = top.getChildren().size();
-		for (int i = 0; i < numberOfChildren; i++) {
-			collectConstituents(top.getChildren(i), constituents);
-		}
-	}
+    if (top.getChildren() == null)
+      return;
 
+    int numberOfChildren = top.getChildren().size();
+    for (int i = 0; i < numberOfChildren; i++) {
+      collectConstituents(top.getChildren(i), constituents);
+    }
+  }
 
-	private SimpleFeatureExtractor perPredicateExtractor;
-	private SimpleFeatureExtractor perConstituentExtractor;
-	private AnnotationPairFeatureExtractor perPredicatAndConstituentExtractor;
-	
-	private int nSentences;
-	private int nPredicates;
-	private int nConstituents;
+  private SimpleFeatureExtractor perPredicateExtractor;
 
-	private Logger logger = Logger.getLogger(this.getClass().getName());
+  private SimpleFeatureExtractor perConstituentExtractor;
+
+  private AnnotationPairFeatureExtractor perPredicatAndConstituentExtractor;
+
+  private int nSentences;
+
+  private int nPredicates;
+
+  private int nConstituents;
+
+  private Logger logger = Logger.getLogger(this.getClass().getName());
 
 }

@@ -60,93 +60,89 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  */
 public class TreebankAligningAnnotator extends JCasAnnotator_ImplBase {
 
-	public static final String PARAM_TREEBANK_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
-		TreebankAligningAnnotator.class,
-		"treebankDirectoryName");
-	@ConfigurationParameter(
-		mandatory = true,
-		description = "the path to the treebank directory containing the XX/wsj_XXXX.mrg files.")
-	private String treebankDirectoryName;
+  public static final String PARAM_TREEBANK_DIRECTORY_NAME = ConfigurationParameterFactory
+          .createConfigurationParameterName(TreebankAligningAnnotator.class,
+                  "treebankDirectoryName");
 
-	public void setTreebankDirectoryName(String treebankDirectoryName) {
-		this.treebankDirectoryName = treebankDirectoryName;
-	}
+  @ConfigurationParameter(mandatory = true, description = "the path to the treebank directory containing the XX/wsj_XXXX.mrg files.")
+  private String treebankDirectoryName;
 
-	public static AnalysisEngineDescription getDescription(String treeBankDir)
-			throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveDescription(
-			TreebankAligningAnnotator.class,
-			TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
-			PARAM_TREEBANK_DIRECTORY_NAME,
-			treeBankDir);
+  public void setTreebankDirectoryName(String treebankDirectoryName) {
+    this.treebankDirectoryName = treebankDirectoryName;
+  }
 
-	}
+  public static AnalysisEngineDescription getDescription(String treeBankDir)
+          throws ResourceInitializationException {
+    return AnalysisEngineFactory.createPrimitiveDescription(TreebankAligningAnnotator.class,
+            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION, PARAM_TREEBANK_DIRECTORY_NAME, treeBankDir);
 
-	private File treebankDirectory;
+  }
 
-	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		super.initialize(context);
-		this.treebankDirectory = new File(this.treebankDirectoryName);
-	}
+  private File treebankDirectory;
 
-	@Override
-	public void process(JCas jCas) throws AnalysisEngineProcessException {
+  @Override
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    super.initialize(context);
+    this.treebankDirectory = new File(this.treebankDirectoryName);
+  }
 
-		// determine the appropriate .mrg file name
-		String wsjPath = ViewURIUtil.getURI(jCas);
-		String wsjName = new File(wsjPath).getName();
-		String subdir = wsjName.substring(4, 6);
-		String mrgName = wsjName.replaceAll("\\.tml", ".mrg");
-		File mrgFile = new File(new File(this.treebankDirectory, subdir), mrgName);
+  @Override
+  public void process(JCas jCas) throws AnalysisEngineProcessException {
 
-		// read the parse text
-		String mrgText;
-		try {
-			mrgText = FileUtils.file2String(mrgFile);
-		} catch (IOException e) {
-			throw new AnalysisEngineProcessException(e);
-		}
+    // determine the appropriate .mrg file name
+    String wsjPath = ViewURIUtil.getURI(jCas);
+    String wsjName = new File(wsjPath).getName();
+    String subdir = wsjName.substring(4, 6);
+    String mrgName = wsjName.replaceAll("\\.tml", ".mrg");
+    File mrgFile = new File(new File(this.treebankDirectory, subdir), mrgName);
 
-		// we need a TEXT element to know where to start
-		List<Text> texts = AnnotationRetrieval.getAnnotations(jCas, Text.class);
-		if (texts.size() != 1) {
-			throw new AnalysisEngineProcessException(new RuntimeException(
-				"expected 1 TEXT element, found " + texts.size()));
-		}
+    // read the parse text
+    String mrgText;
+    try {
+      mrgText = FileUtils.file2String(mrgFile);
+    } catch (IOException e) {
+      throw new AnalysisEngineProcessException(e);
+    }
 
-		// parse the trees, skipping the document if there are alignment
-		// problems
-		int offset = texts.get(0).getBegin();
-		String text = jCas.getDocumentText();
-		List<org.cleartk.syntax.constituent.util.TopTreebankNode> utilTrees;
-		try {
-			utilTrees = TreebankFormatParser.parseDocument(mrgText, offset, text);
-		} catch (Exception e) {
-			this.getContext().getLogger().log(
-				Level.WARNING,
-				String.format("Skipping %s due to alignment problems", wsjPath),
-				e);
-			return;
-		}
+    // we need a TEXT element to know where to start
+    List<Text> texts = AnnotationRetrieval.getAnnotations(jCas, Text.class);
+    if (texts.size() != 1) {
+      throw new AnalysisEngineProcessException(new RuntimeException(
+              "expected 1 TEXT element, found " + texts.size()));
+    }
 
-		// add Token, Sentence and TreebankNode annotations for the text
-		for (org.cleartk.syntax.constituent.util.TopTreebankNode utilTree : utilTrees) {
+    // parse the trees, skipping the document if there are alignment
+    // problems
+    int offset = texts.get(0).getBegin();
+    String text = jCas.getDocumentText();
+    List<org.cleartk.syntax.constituent.util.TopTreebankNode> utilTrees;
+    try {
+      utilTrees = TreebankFormatParser.parseDocument(mrgText, offset, text);
+    } catch (Exception e) {
+      this.getContext()
+              .getLogger()
+              .log(Level.WARNING, String.format("Skipping %s due to alignment problems", wsjPath),
+                      e);
+      return;
+    }
 
-			// create a Sentence and set its parse
-			TopTreebankNode tree = TreebankNodeUtility.convert(utilTree, jCas, true);
-			Sentence sentence = new Sentence(jCas, tree.getBegin(), tree.getEnd());
-			sentence.addToIndexes();
+    // add Token, Sentence and TreebankNode annotations for the text
+    for (org.cleartk.syntax.constituent.util.TopTreebankNode utilTree : utilTrees) {
 
-			// create the Tokens and add them to the Sentence
-			for (int i = 0; i < tree.getTerminals().size(); i++) {
-				TreebankNode leaf = tree.getTerminals(i);
-				if (leaf.getBegin() != leaf.getEnd()) {
-					Token token = new Token(jCas, leaf.getBegin(), leaf.getEnd());
-					token.setPos(leaf.getNodeType());
-					token.addToIndexes();
-				}
-			}
-		}
-	}
+      // create a Sentence and set its parse
+      TopTreebankNode tree = TreebankNodeUtility.convert(utilTree, jCas, true);
+      Sentence sentence = new Sentence(jCas, tree.getBegin(), tree.getEnd());
+      sentence.addToIndexes();
+
+      // create the Tokens and add them to the Sentence
+      for (int i = 0; i < tree.getTerminals().size(); i++) {
+        TreebankNode leaf = tree.getTerminals(i);
+        if (leaf.getBegin() != leaf.getEnd()) {
+          Token token = new Token(jCas, leaf.getBegin(), leaf.getEnd());
+          token.setPos(leaf.getNodeType());
+          token.addToIndexes();
+        }
+      }
+    }
+  }
 }

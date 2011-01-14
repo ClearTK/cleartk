@@ -48,65 +48,65 @@ import org.uimafit.factory.initializable.InitializableFactory;
  * @author Philip Ogren
  * 
  * 
- *         This class borrows from
- *         org.apache.lucene.analysis.snowball.SnowballFilter
+ *         This class borrows from org.apache.lucene.analysis.snowball.SnowballFilter
  * @see org.apache.lucene.analysis.snowball.SnowballFilter
  */
 public abstract class SnowballStemmer<TOKEN_TYPE extends Annotation> extends JCasAnnotator_ImplBase {
 
-	public static final String PARAM_STEMMER_NAME = ConfigurationParameterFactory.createConfigurationParameterName(SnowballStemmer.class, "stemmerName");
+  public static final String PARAM_STEMMER_NAME = ConfigurationParameterFactory
+          .createConfigurationParameterName(SnowballStemmer.class, "stemmerName");
 
-	private static final String STEMMER_NAME_DESCRIPTION = "specifies which snowball stemmer to use. Possible values are: " +
-			"Danish, Dutch, English, Finnish, French, German2, German, Italian, Kp, Lovins, Norwegian, Porter, Portuguese, Russian, Spanish, Swedish"; 
-	@ConfigurationParameter(
-			description = STEMMER_NAME_DESCRIPTION, 
-			mandatory = true)
-	public String stemmerName;
-	
-	private SnowballProgram stemmer;
+  private static final String STEMMER_NAME_DESCRIPTION = "specifies which snowball stemmer to use. Possible values are: "
+          + "Danish, Dutch, English, Finnish, French, German2, German, Italian, Kp, Lovins, Norwegian, Porter, Portuguese, Russian, Spanish, Swedish";
 
-	private Class<? extends Annotation> tokenClass;
-	private Type tokenType = null;
+  @ConfigurationParameter(description = STEMMER_NAME_DESCRIPTION, mandatory = true)
+  public String stemmerName;
 
-	private boolean typesInitialized = false;
+  private SnowballProgram stemmer;
 
-	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		super.initialize(context);
-		String className = String.format("net.sf.snowball.ext.%sStemmer", stemmerName);
-		this.stemmer = InitializableFactory.create(null, className, SnowballProgram.class);
-		
-		this.tokenClass = ReflectionUtil.<Class<? extends Annotation>>uncheckedCast(
-				ReflectionUtil.getTypeArgument(SnowballStemmer.class, "TOKEN_TYPE", this));
-	}
+  private Class<? extends Annotation> tokenClass;
 
-	private void initializeTypes(JCas jCas) throws AnalysisEngineProcessException {
-		if (tokenClass != null) {
-			tokenType = UIMAUtil.getCasType(jCas, tokenClass);
-		}
-		typesInitialized = true;
-	}
+  private Type tokenType = null;
 
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public void process(JCas jCas) throws AnalysisEngineProcessException {
-		if (!typesInitialized) initializeTypes(jCas);
+  private boolean typesInitialized = false;
 
-		FSIterator<Annotation> tokens = jCas.getAnnotationIndex(tokenType).iterator();
-		while (tokens.hasNext()) {
-			TOKEN_TYPE token = (TOKEN_TYPE) tokens.next();
-			stemmer.setCurrent(token.getCoveredText().toLowerCase());
-			stemmer.stem();
-			String stem = stemmer.getCurrent();
-			setStem(token, stem);
-		}
-	}
+  @Override
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    super.initialize(context);
+    String className = String.format("net.sf.snowball.ext.%sStemmer", stemmerName);
+    this.stemmer = InitializableFactory.create(null, className, SnowballProgram.class);
 
-	public abstract void setStem(TOKEN_TYPE token, String stem);
-	
-	public void setStemmerName(String stemmerName) {
-		this.stemmerName = stemmerName;
-	}
+    this.tokenClass = ReflectionUtil.<Class<? extends Annotation>> uncheckedCast(ReflectionUtil
+            .getTypeArgument(SnowballStemmer.class, "TOKEN_TYPE", this));
+  }
+
+  private void initializeTypes(JCas jCas) throws AnalysisEngineProcessException {
+    if (tokenClass != null) {
+      tokenType = UIMAUtil.getCasType(jCas, tokenClass);
+    }
+    typesInitialized = true;
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public void process(JCas jCas) throws AnalysisEngineProcessException {
+    if (!typesInitialized)
+      initializeTypes(jCas);
+
+    FSIterator<Annotation> tokens = jCas.getAnnotationIndex(tokenType).iterator();
+    while (tokens.hasNext()) {
+      TOKEN_TYPE token = (TOKEN_TYPE) tokens.next();
+      stemmer.setCurrent(token.getCoveredText().toLowerCase());
+      stemmer.stem();
+      String stem = stemmer.getCurrent();
+      setStem(token, stem);
+    }
+  }
+
+  public abstract void setStem(TOKEN_TYPE token, String stem);
+
+  public void setStemmerName(String stemmerName) {
+    this.stemmerName = stemmerName;
+  }
 
 }

@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.mallet;
 
 import java.io.File;
@@ -36,85 +36,88 @@ import cc.mallet.classify.ClassifierTrainer;
 import cc.mallet.types.InstanceList;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * <p>
  * 
  * @author Philip Ogren
  */
 
-public abstract class MalletClassifierBuilder_ImplBase<OUTCOME_TYPE> implements ClassifierBuilder<OUTCOME_TYPE> {
+public abstract class MalletClassifierBuilder_ImplBase<OUTCOME_TYPE> implements
+        ClassifierBuilder<OUTCOME_TYPE> {
 
-	public void train(File dir, String[] args) throws Exception {
+  public void train(File dir, String[] args) throws Exception {
 
-		InstanceListCreator instanceListCreator = new InstanceListCreator();
-		InstanceList instanceList = instanceListCreator.createInstanceList(new File(dir, "training-data.mallet"));
-		instanceList.save(new File(dir, "training-data.ser"));
-		
-		String factoryName = args[0];
-		Class<ClassifierTrainerFactory<?>> factoryClass = createTrainerFactory(factoryName);
-		if(factoryClass == null) {
-			String factoryName2 = "org.cleartk.classifier.mallet.factory."+factoryName+"TrainerFactory";
-			factoryClass = createTrainerFactory(factoryName2);
-		}
-		if(factoryClass == null) {
-			throw new IllegalArgumentException(String.format("name for classifier trainer factory is not valid: name given ='%s'.  Valid classifier names include: %s, %s, %s, and %s", factoryName, ClassifierTrainerFactory.NAMES[0], ClassifierTrainerFactory.NAMES[1], ClassifierTrainerFactory.NAMES[2], ClassifierTrainerFactory.NAMES[3]));
-		}
-		
-		String[] factoryArgs = new String[args.length - 1];
-		System.arraycopy(args, 1, factoryArgs, 0, factoryArgs.length);
+    InstanceListCreator instanceListCreator = new InstanceListCreator();
+    InstanceList instanceList = instanceListCreator.createInstanceList(new File(dir,
+            "training-data.mallet"));
+    instanceList.save(new File(dir, "training-data.ser"));
 
-		ClassifierTrainerFactory<?> factory = factoryClass.newInstance();
-		ClassifierTrainer<?> trainer = null;
-		try {
-			trainer = factory.createTrainer(factoryArgs);
-		} catch(Throwable t) {
-			throw new IllegalArgumentException("Unable to create trainer.  Usage for "+factoryClass.getCanonicalName()+": "+factory.getUsageMessage(),t);
-		}
-		
-		cc.mallet.classify.Classifier classifier = trainer.train(instanceList);
+    String factoryName = args[0];
+    Class<ClassifierTrainerFactory<?>> factoryClass = createTrainerFactory(factoryName);
+    if (factoryClass == null) {
+      String factoryName2 = "org.cleartk.classifier.mallet.factory." + factoryName
+              + "TrainerFactory";
+      factoryClass = createTrainerFactory(factoryName2);
+    }
+    if (factoryClass == null) {
+      throw new IllegalArgumentException(
+              String.format(
+                      "name for classifier trainer factory is not valid: name given ='%s'.  Valid classifier names include: %s, %s, %s, and %s",
+                      factoryName, ClassifierTrainerFactory.NAMES[0],
+                      ClassifierTrainerFactory.NAMES[1], ClassifierTrainerFactory.NAMES[2],
+                      ClassifierTrainerFactory.NAMES[3]));
+    }
 
-		ObjectOutputStream oos = new ObjectOutputStream (new FileOutputStream (new File(dir, "model.mallet")));
-		oos.writeObject (classifier);
-		oos.close();
+    String[] factoryArgs = new String[args.length - 1];
+    System.arraycopy(args, 1, factoryArgs, 0, factoryArgs.length);
 
-	}
+    ClassifierTrainerFactory<?> factory = factoryClass.newInstance();
+    ClassifierTrainer<?> trainer = null;
+    try {
+      trainer = factory.createTrainer(factoryArgs);
+    } catch (Throwable t) {
+      throw new IllegalArgumentException("Unable to create trainer.  Usage for "
+              + factoryClass.getCanonicalName() + ": " + factory.getUsageMessage(), t);
+    }
 
-	private Class<ClassifierTrainerFactory<?>> createTrainerFactory(String className){
-		try {
-			return ReflectionUtil.uncheckedCast(Class.forName(className));
-		} catch(ClassNotFoundException cnfe) {
-			return null;
-		}
-	}
-	
-	public void buildJar(File dir, String[] args) throws Exception {
-		BuildJar.OutputStream stream = new BuildJar.OutputStream(dir);
-		stream.write("model.mallet", new File(dir, "model.mallet"));
-		stream.close();
-	}
+    cc.mallet.classify.Classifier classifier = trainer.train(instanceList);
+
+    ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File(dir,
+            "model.mallet")));
+    oos.writeObject(classifier);
+    oos.close();
+
+  }
+
+  private Class<ClassifierTrainerFactory<?>> createTrainerFactory(String className) {
+    try {
+      return ReflectionUtil.uncheckedCast(Class.forName(className));
+    } catch (ClassNotFoundException cnfe) {
+      return null;
+    }
+  }
+
+  public void buildJar(File dir, String[] args) throws Exception {
+    BuildJar.OutputStream stream = new BuildJar.OutputStream(dir);
+    stream.write("model.mallet", new File(dir, "model.mallet"));
+    stream.close();
+  }
 
 }
 
-
-
-
-
-
-
-
-
 //
-//String[] malletArgs = new String[6];
-//malletArgs[0] = "--input";
-//malletArgs[1] = new File(dir, "training-data.ser").getPath();
-//malletArgs[2] = "--output-classifier";
-//malletArgs[3] = new File(dir, "model.mallet").getPath();
-//malletArgs[4] = "--trainer";
-//malletArgs[5] = args[0];
+// String[] malletArgs = new String[6];
+// malletArgs[0] = "--input";
+// malletArgs[1] = new File(dir, "training-data.ser").getPath();
+// malletArgs[2] = "--output-classifier";
+// malletArgs[3] = new File(dir, "model.mallet").getPath();
+// malletArgs[4] = "--trainer";
+// malletArgs[5] = args[0];
 //
-//for (String string : malletArgs) {
-//	System.out.println(string);
-//}
-//Vectors2Classify.main(malletArgs);
+// for (String string : malletArgs) {
+// System.out.println(string);
+// }
+// Vectors2Classify.main(malletArgs);

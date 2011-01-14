@@ -32,7 +32,6 @@ import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.jar.ClassifierBuilder;
 import org.cleartk.classifier.jar.JarSequentialDataWriter;
 
-
 /**
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
@@ -40,44 +39,43 @@ import org.cleartk.classifier.jar.JarSequentialDataWriter;
  * 
  * 
  * This training data consumer produces training data suitable for <a
- * href="http://mallet.cs.umass.edu/index.php/SimpleTagger_example"> Mallet
- * Conditional Random Field (CRF) tagger</a>.
+ * href="http://mallet.cs.umass.edu/index.php/SimpleTagger_example"> Mallet Conditional Random Field
+ * (CRF) tagger</a>.
  * 
- * Each line of the training data contains a string representation of each
- * feature followed by the label/result for that instance.
+ * Each line of the training data contains a string representation of each feature followed by the
+ * label/result for that instance.
  * 
  * @author Philip Ogren
  * @author Steven Bethard
  */
 public class MalletCRFDataWriter extends JarSequentialDataWriter<String, String, List<NameNumber>> {
 
-	public static final String TRAINING_DATA_FILE_NAME ="training-data.malletcrf"; 
+  public static final String TRAINING_DATA_FILE_NAME = "training-data.malletcrf";
 
-	protected PrintWriter trainingDataWriter;
+  protected PrintWriter trainingDataWriter;
 
-	public MalletCRFDataWriter(File outputDirectory) throws IOException {
-		super(outputDirectory);
-		this.trainingDataWriter = this.getPrintWriter(TRAINING_DATA_FILE_NAME);
-	}
-	
-	public Class<? extends ClassifierBuilder<String>> getDefaultClassifierBuilderClass() {
-		return MalletCRFClassifierBuilder.class;
-	}
+  public MalletCRFDataWriter(File outputDirectory) throws IOException {
+    super(outputDirectory);
+    this.trainingDataWriter = this.getPrintWriter(TRAINING_DATA_FILE_NAME);
+  }
 
+  public Class<? extends ClassifierBuilder<String>> getDefaultClassifierBuilderClass() {
+    return MalletCRFClassifierBuilder.class;
+  }
 
-	@Override
-	public void writeEncoded(List<NameNumber> features, String outcome) {
-		for (NameNumber nameNumber : features) {
-			this.trainingDataWriter.print(nameNumber.name);
-			this.trainingDataWriter.print(" ");
-		}
+  @Override
+  public void writeEncoded(List<NameNumber> features, String outcome) {
+    for (NameNumber nameNumber : features) {
+      this.trainingDataWriter.print(nameNumber.name);
+      this.trainingDataWriter.print(" ");
+    }
 
-		this.trainingDataWriter.print(outcome);
-		this.trainingDataWriter.println();
-	}
+    this.trainingDataWriter.print(outcome);
+    this.trainingDataWriter.println();
+  }
 
-	@Override
-	public void writeEndSequence() {
-		this.trainingDataWriter.println();
-	}
+  @Override
+  public void writeEndSequence() {
+    this.trainingDataWriter.println();
+  }
 }

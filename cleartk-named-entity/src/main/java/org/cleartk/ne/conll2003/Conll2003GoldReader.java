@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.ne.conll2003;
 
 import java.io.BufferedReader;
@@ -51,284 +51,265 @@ import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.SofaCapability;
 import org.uimafit.factory.ConfigurationParameterFactory;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * 
  * @author Philip Ogren
- *
- *
- * This collection reader reads in the CoNLL 2003 named entity data.  The 
- * data can be retrieved from http://www.cnts.ua.ac.be/conll2003/ner/
+ * 
+ * 
+ *         This collection reader reads in the CoNLL 2003 named entity data. The data can be
+ *         retrieved from http://www.cnts.ua.ac.be/conll2003/ner/
  * 
  */
-@SofaCapability(outputSofas=ViewURIUtil.URI)
-public class Conll2003GoldReader extends JCasCollectionReader_ImplBase
-{
-	public static final String PARAM_DATA_FILE_NAME = ConfigurationParameterFactory.createConfigurationParameterName(Conll2003GoldReader.class, "dataFileName");
-	@ConfigurationParameter(
-			mandatory = true,
-			description = "Points to CoNLL data (e.g. ner/eng.train).")
-	private String dataFileName;
-	
-	public static final String PARAM_LOAD_NAMED_ENTITIES = ConfigurationParameterFactory.createConfigurationParameterName(Conll2003GoldReader.class, "loadNamedEntities");
-	@ConfigurationParameter(
-			mandatory = true,
-			description = "determines if the named entities are loaded (i.e. named entity mention annotations are created) or if just plain text from the files is loaded.",
-			defaultValue = "true")
-	private boolean loadNamedEntities;
+@SofaCapability(outputSofas = ViewURIUtil.URI)
+public class Conll2003GoldReader extends JCasCollectionReader_ImplBase {
+  public static final String PARAM_DATA_FILE_NAME = ConfigurationParameterFactory
+          .createConfigurationParameterName(Conll2003GoldReader.class, "dataFileName");
 
-	public static final String DOCSTART = "-DOCSTART-";
-										  
-	BufferedReader reader;
-	
-	boolean hasNext = true;
-	
-	int documentIndex = 0;
-	
-	int entityIdIndex = 0;
-	
-	public void initialize(UimaContext context) throws ResourceInitializationException
-	{
-		
-		try
-		{
-			File conllFile = new File(dataFileName);
-		    reader = new BufferedReader(new FileReader(conllFile));
-			//advance the reader past the first occurrence of a document start and
-		    //blank line.
-		    String line;
-		    while((line = reader.readLine()) != null)
-			{
-				if(line.trim().startsWith(DOCSTART))
-				{
-					reader.readLine(); //read the blank line
-					break;
-				}
-			}
+  @ConfigurationParameter(mandatory = true, description = "Points to CoNLL data (e.g. ner/eng.train).")
+  private String dataFileName;
 
-		    sentenceTokens = new ArrayList<Token>();
-			sentenceChunks = new ArrayList<Chunk>();
-			chunkTokens = new ArrayList<Token>();
-			namedEntityTokens = new ArrayList<Token>();
-		}
-		catch(FileNotFoundException fnfe)
-		{
-			throw new ResourceInitializationException(fnfe);
-		}
-		catch(IOException ioe)
-		{
-			throw new ResourceInitializationException(ioe);
-		}
-	}
+  public static final String PARAM_LOAD_NAMED_ENTITIES = ConfigurationParameterFactory
+          .createConfigurationParameterName(Conll2003GoldReader.class, "loadNamedEntities");
 
-	List<String> documentData;  //contains every line from for the current document
- 	StringBuffer documentText;  //collects the text of the tokens and then we set the document text with contents
-	int sentenceStart;          //the start (character offset) of the current sentence
-	List<Token> sentenceTokens; //the tokens for the current sentence
-	List<Chunk> sentenceChunks; //the chunks for the current sentence
-	
-	int tokenPosition;             //the index of the current token
+  @ConfigurationParameter(mandatory = true, description = "determines if the named entities are loaded (i.e. named entity mention annotations are created) or if just plain text from the files is loaded.", defaultValue = "true")
+  private boolean loadNamedEntities;
 
-	int chunkStart;             //the start (char offset) of the current chunk
-	String currentChunkType;    //the type of the current chunk (including the I- or B- prefix)
-	List<Token> chunkTokens;    //the tokens for the current chunk
-	
-	int namedEntityStart;       //the start (char offset) of the current named entity
-	String currentNamedEntityType; //the type of the current named entity (including the I- or B- prefix)
-	List<Token> namedEntityTokens; //the tokens for the current named entity
-	
-	public void getNext(JCas jCas) throws IOException, CollectionException
-	{
-			//read in the data for the next document from the reader
-			documentData = new ArrayList<String>();
-			String line;
-			while((line = reader.readLine()) != null &&
-				   !line.startsWith(DOCSTART))
-			{
-				documentData.add(line.trim());
-			}
+  public static final String DOCSTART = "-DOCSTART-";
 
-			if(line == null)
-				hasNext = false;
-			else
-				line = reader.readLine().trim(); //advance past the blank line that follows "-DOCSTART- -X- O O" 
-												 //(we don't want an empty sentence on the front end!)
-			documentText = new StringBuffer();
-			
-			initSentence();
-			tokenPosition = 0;
-			chunkStart = 0;
-			currentChunkType = "";
-			chunkTokens.clear();
-			namedEntityStart = 0;
-			currentNamedEntityType = "";
-			namedEntityTokens.clear();
-			
-			for(String dataLine : documentData)
-			{
-				if(dataLine.trim().equals(""))
-				{
-					createChunk(jCas);
-					currentChunkType = "";
-					createNamedEntity(jCas);
-					currentNamedEntityType = "";
-					
-					Sentence sentence = new Sentence(jCas, sentenceStart, documentText.length());
-					sentence.addToIndexes();
-					
-					initSentence();
-				}
-				else
-				{
-					String[] dataPieces = dataLine.split(" ");
-					String tok = dataPieces[0];
-					String pos = dataPieces[1];
-					String chunkType = dataPieces[2];
-					if(currentChunkType.equals(""))
-						initChunk(chunkType);
-					String namedEntityType = dataPieces[3];
-					if(currentNamedEntityType.equals(""))
-						initNamedEntity(namedEntityType);
-					
-					
-					Token token = new Token(jCas, documentText.length(), documentText.length()+tok.length());
-					token.setPos(pos);
-					token.addToIndexes();
-					
-					boolean chunkStartsWithB = startsWithB(currentChunkType, chunkType);
-					if(!chunkType.equals(currentChunkType) && !chunkStartsWithB){ 
-						createChunk(jCas);
-						initChunk(chunkType);
-					}
-					
-					boolean namedEntityStartsWithB = startsWithB(currentNamedEntityType, namedEntityType);
-					
-					if(!namedEntityType.equals(currentNamedEntityType) && !namedEntityStartsWithB)
-					{
-						createNamedEntity(jCas);
-						initNamedEntity(namedEntityType);
-					}
+  BufferedReader reader;
 
-					sentenceTokens.add(token);
-					chunkTokens.add(token);
-					namedEntityTokens.add(token);
-					documentText.append(tok+" ");
-				}
-			}
-			
-			jCas.setDocumentText(documentText.toString());
-			
-			String identifier = String.format("%s#%s", dataFileName, documentIndex);
-			ViewURIUtil.setURI(jCas, identifier);
-			++documentIndex;
+  boolean hasNext = true;
 
-	}
+  int documentIndex = 0;
 
-	private void initSentence()
-	{
-		sentenceStart = documentText.length();
-		sentenceTokens.clear();
-		sentenceChunks.clear();
-	}
+  int entityIdIndex = 0;
 
-	private void createChunk(JCas jCas)
-	{
-		if(!currentChunkType.equals("O"))
-		{
-			Chunk chunk = new Chunk(jCas, chunkStart, documentText.length()-1);
-			chunk.setChunkType(currentChunkType.substring(2));
-			chunk.addToIndexes();
-			sentenceChunks.add(chunk);
-		}
-	}
-	
-	private void initChunk(String chunkType)
-	{
-		chunkStart = documentText.length();
-		chunkTokens.clear();
-		currentChunkType = chunkType;
-	}
-	
-	private void createNamedEntity(JCas jCas)
-	{
-		if(!currentNamedEntityType.equals("O") && loadNamedEntities)
-		{
-			NamedEntity ne = new NamedEntity(jCas);
-			ne.setEntityClass("SPC");
-			ne.setEntityId(""+entityIdIndex++);
-			ne.setEntityType(currentNamedEntityType.substring(2));
-			ne.setEntitySubtype(currentNamedEntityType.substring(2));
-			ne.addToIndexes();
-			
-			NamedEntityMention nem = new NamedEntityMention(jCas, namedEntityStart, documentText.length()-1);
-			nem.setMentionType("NAM");
-			Annotation annotation = new Annotation(jCas, namedEntityStart, documentText.length()-1);
-			annotation.addToIndexes();
-//			Chunk chunk = new Chunk(jCas, namedEntityStart, documentText.length()-1);
-//			chunk.setTokens(UIMAUtil.toFSArray(jCas, namedEntityTokens));
-//			chunk.setChunkType("CoNLL NEM annotation");
-//			chunk.addToIndexes();
-			nem.setAnnotation(annotation);
-			nem.setHead(annotation);
-			nem.setMentionedEntity(ne);
-			nem.addToIndexes();
-			
-			ne.setMentions(UIMAUtil.toFSArray(jCas, Collections.singletonList(nem)));
-		}
-	}
-	
-	private void initNamedEntity(String namedEntityType)
-	{
-		namedEntityStart = documentText.length();
-		namedEntityTokens.clear();
-		currentNamedEntityType = namedEntityType;
-	}
+  public void initialize(UimaContext context) throws ResourceInitializationException {
 
-	/**
-	 * Determines if the read type is the same as the current type with the only
-	 * difference being that the current type (bType) starts with "B-" and the
-	 * read type starts with "I-".  
-	 * @param bType - the current type for the chunk or named entity
-	 * @param iType - the read chunk or named entity type for the token being examined.
-	 * @return true if we should consder iType to be the same as bType so we know
-	 * not to make a new chunk or named entity.
-	 */
-	private boolean startsWithB(String bType, String iType)
-	{
-		if(bType.startsWith("B") && 
-		   iType.startsWith("I") &&
-		   iType.substring(1).equals(bType.substring(1)))
-		{
-			return true;
-		}
-		return false;
-	}
-	
-	public void close() throws IOException
-	{
-		reader.close();
-	}
+    try {
+      File conllFile = new File(dataFileName);
+      reader = new BufferedReader(new FileReader(conllFile));
+      // advance the reader past the first occurrence of a document start and
+      // blank line.
+      String line;
+      while ((line = reader.readLine()) != null) {
+        if (line.trim().startsWith(DOCSTART)) {
+          reader.readLine(); // read the blank line
+          break;
+        }
+      }
 
-	public Progress[] getProgress()
-	{
-	    return new Progress[] { new ProgressImpl(documentIndex, 5000, Progress.ENTITIES) };
-	}
+      sentenceTokens = new ArrayList<Token>();
+      sentenceChunks = new ArrayList<Chunk>();
+      chunkTokens = new ArrayList<Token>();
+      namedEntityTokens = new ArrayList<Token>();
+    } catch (FileNotFoundException fnfe) {
+      throw new ResourceInitializationException(fnfe);
+    } catch (IOException ioe) {
+      throw new ResourceInitializationException(ioe);
+    }
+  }
 
-	public boolean hasNext() throws IOException, CollectionException
-	{
-		return hasNext;
-	}
+  List<String> documentData; // contains every line from for the current document
 
-	public void setDataFileName(String dataFileName) {
-		this.dataFileName = dataFileName;
-	}
+  StringBuffer documentText; // collects the text of the tokens and then we set the document text
+                             // with contents
 
-	public void setLoadNamedEntities(boolean loadNamedEntities) {
-		this.loadNamedEntities = loadNamedEntities;
-	}
+  int sentenceStart; // the start (character offset) of the current sentence
 
+  List<Token> sentenceTokens; // the tokens for the current sentence
+
+  List<Chunk> sentenceChunks; // the chunks for the current sentence
+
+  int tokenPosition; // the index of the current token
+
+  int chunkStart; // the start (char offset) of the current chunk
+
+  String currentChunkType; // the type of the current chunk (including the I- or B- prefix)
+
+  List<Token> chunkTokens; // the tokens for the current chunk
+
+  int namedEntityStart; // the start (char offset) of the current named entity
+
+  String currentNamedEntityType; // the type of the current named entity (including the I- or B-
+                                 // prefix)
+
+  List<Token> namedEntityTokens; // the tokens for the current named entity
+
+  public void getNext(JCas jCas) throws IOException, CollectionException {
+    // read in the data for the next document from the reader
+    documentData = new ArrayList<String>();
+    String line;
+    while ((line = reader.readLine()) != null && !line.startsWith(DOCSTART)) {
+      documentData.add(line.trim());
+    }
+
+    if (line == null)
+      hasNext = false;
+    else
+      line = reader.readLine().trim(); // advance past the blank line that follows
+                                       // "-DOCSTART- -X- O O"
+    // (we don't want an empty sentence on the front end!)
+    documentText = new StringBuffer();
+
+    initSentence();
+    tokenPosition = 0;
+    chunkStart = 0;
+    currentChunkType = "";
+    chunkTokens.clear();
+    namedEntityStart = 0;
+    currentNamedEntityType = "";
+    namedEntityTokens.clear();
+
+    for (String dataLine : documentData) {
+      if (dataLine.trim().equals("")) {
+        createChunk(jCas);
+        currentChunkType = "";
+        createNamedEntity(jCas);
+        currentNamedEntityType = "";
+
+        Sentence sentence = new Sentence(jCas, sentenceStart, documentText.length());
+        sentence.addToIndexes();
+
+        initSentence();
+      } else {
+        String[] dataPieces = dataLine.split(" ");
+        String tok = dataPieces[0];
+        String pos = dataPieces[1];
+        String chunkType = dataPieces[2];
+        if (currentChunkType.equals(""))
+          initChunk(chunkType);
+        String namedEntityType = dataPieces[3];
+        if (currentNamedEntityType.equals(""))
+          initNamedEntity(namedEntityType);
+
+        Token token = new Token(jCas, documentText.length(), documentText.length() + tok.length());
+        token.setPos(pos);
+        token.addToIndexes();
+
+        boolean chunkStartsWithB = startsWithB(currentChunkType, chunkType);
+        if (!chunkType.equals(currentChunkType) && !chunkStartsWithB) {
+          createChunk(jCas);
+          initChunk(chunkType);
+        }
+
+        boolean namedEntityStartsWithB = startsWithB(currentNamedEntityType, namedEntityType);
+
+        if (!namedEntityType.equals(currentNamedEntityType) && !namedEntityStartsWithB) {
+          createNamedEntity(jCas);
+          initNamedEntity(namedEntityType);
+        }
+
+        sentenceTokens.add(token);
+        chunkTokens.add(token);
+        namedEntityTokens.add(token);
+        documentText.append(tok + " ");
+      }
+    }
+
+    jCas.setDocumentText(documentText.toString());
+
+    String identifier = String.format("%s#%s", dataFileName, documentIndex);
+    ViewURIUtil.setURI(jCas, identifier);
+    ++documentIndex;
+
+  }
+
+  private void initSentence() {
+    sentenceStart = documentText.length();
+    sentenceTokens.clear();
+    sentenceChunks.clear();
+  }
+
+  private void createChunk(JCas jCas) {
+    if (!currentChunkType.equals("O")) {
+      Chunk chunk = new Chunk(jCas, chunkStart, documentText.length() - 1);
+      chunk.setChunkType(currentChunkType.substring(2));
+      chunk.addToIndexes();
+      sentenceChunks.add(chunk);
+    }
+  }
+
+  private void initChunk(String chunkType) {
+    chunkStart = documentText.length();
+    chunkTokens.clear();
+    currentChunkType = chunkType;
+  }
+
+  private void createNamedEntity(JCas jCas) {
+    if (!currentNamedEntityType.equals("O") && loadNamedEntities) {
+      NamedEntity ne = new NamedEntity(jCas);
+      ne.setEntityClass("SPC");
+      ne.setEntityId("" + entityIdIndex++);
+      ne.setEntityType(currentNamedEntityType.substring(2));
+      ne.setEntitySubtype(currentNamedEntityType.substring(2));
+      ne.addToIndexes();
+
+      NamedEntityMention nem = new NamedEntityMention(jCas, namedEntityStart,
+              documentText.length() - 1);
+      nem.setMentionType("NAM");
+      Annotation annotation = new Annotation(jCas, namedEntityStart, documentText.length() - 1);
+      annotation.addToIndexes();
+      // Chunk chunk = new Chunk(jCas, namedEntityStart, documentText.length()-1);
+      // chunk.setTokens(UIMAUtil.toFSArray(jCas, namedEntityTokens));
+      // chunk.setChunkType("CoNLL NEM annotation");
+      // chunk.addToIndexes();
+      nem.setAnnotation(annotation);
+      nem.setHead(annotation);
+      nem.setMentionedEntity(ne);
+      nem.addToIndexes();
+
+      ne.setMentions(UIMAUtil.toFSArray(jCas, Collections.singletonList(nem)));
+    }
+  }
+
+  private void initNamedEntity(String namedEntityType) {
+    namedEntityStart = documentText.length();
+    namedEntityTokens.clear();
+    currentNamedEntityType = namedEntityType;
+  }
+
+  /**
+   * Determines if the read type is the same as the current type with the only difference being that
+   * the current type (bType) starts with "B-" and the read type starts with "I-".
+   * 
+   * @param bType
+   *          - the current type for the chunk or named entity
+   * @param iType
+   *          - the read chunk or named entity type for the token being examined.
+   * @return true if we should consder iType to be the same as bType so we know not to make a new
+   *         chunk or named entity.
+   */
+  private boolean startsWithB(String bType, String iType) {
+    if (bType.startsWith("B") && iType.startsWith("I")
+            && iType.substring(1).equals(bType.substring(1))) {
+      return true;
+    }
+    return false;
+  }
+
+  public void close() throws IOException {
+    reader.close();
+  }
+
+  public Progress[] getProgress() {
+    return new Progress[] { new ProgressImpl(documentIndex, 5000, Progress.ENTITIES) };
+  }
+
+  public boolean hasNext() throws IOException, CollectionException {
+    return hasNext;
+  }
+
+  public void setDataFileName(String dataFileName) {
+    this.dataFileName = dataFileName;
+  }
+
+  public void setLoadNamedEntities(boolean loadNamedEntities) {
+    this.loadNamedEntities = loadNamedEntities;
+  }
 
 }

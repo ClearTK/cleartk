@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.mallet.factory;
 
 import cc.mallet.classify.ClassifierTrainer;
@@ -28,47 +28,50 @@ import cc.mallet.classify.MaxEnt;
 import cc.mallet.classify.MaxEntTrainer;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * 
  * @author Philip Ogren
  */
 
-public class MaxEntTrainerFactory implements ClassifierTrainerFactory<MaxEnt>{
+public class MaxEntTrainerFactory implements ClassifierTrainerFactory<MaxEnt> {
 
-	public static final String NAME = "MaxEnt";
-	
-	public ClassifierTrainer<MaxEnt> createTrainer(String... args) {
-		MaxEntTrainer trainer = new MaxEntTrainer();
-		if(args != null) {
-			if(args.length % 2 != 0) {
-				throw new IllegalArgumentException("each argument must be supplied with a value:  "+getUsageMessage());
-			}
-			for(int i=0; i<args.length; i+=2) {
-				String optionName = args[i];
-				String optionValue = args[i+1];
-				if(optionName.equals("--numIterations")) {
-					int numIterations = Integer.parseInt(optionValue);
-					if(numIterations > 0)
-						trainer.setNumIterations(numIterations);
-					else
-						throw new IllegalArgumentException("numIterations must be positive.  "+getUsageMessage());
-				}
-					
-				else if(optionName.equals("--gaussianPriorVariance"))
-					trainer.setGaussianPriorVariance(Double.parseDouble(optionValue));
-				else
-					throw new IllegalArgumentException(String.format("the argument %1$s is invalid.  ", optionName)+getUsageMessage());
-			}
-		}
-		return trainer;
-	}
+  public static final String NAME = "MaxEnt";
 
-	public String getUsageMessage() {
-		return "The arguments for MaxEntTrainerFactory.createTrainer(String...args) should be either empty or include any of the following:" +
-				"\n--numIterations int" +
-				"\n --gaussianPriorVariance double";
-	}
+  public ClassifierTrainer<MaxEnt> createTrainer(String... args) {
+    MaxEntTrainer trainer = new MaxEntTrainer();
+    if (args != null) {
+      if (args.length % 2 != 0) {
+        throw new IllegalArgumentException("each argument must be supplied with a value:  "
+                + getUsageMessage());
+      }
+      for (int i = 0; i < args.length; i += 2) {
+        String optionName = args[i];
+        String optionValue = args[i + 1];
+        if (optionName.equals("--numIterations")) {
+          int numIterations = Integer.parseInt(optionValue);
+          if (numIterations > 0)
+            trainer.setNumIterations(numIterations);
+          else
+            throw new IllegalArgumentException("numIterations must be positive.  "
+                    + getUsageMessage());
+        }
+
+        else if (optionName.equals("--gaussianPriorVariance"))
+          trainer.setGaussianPriorVariance(Double.parseDouble(optionValue));
+        else
+          throw new IllegalArgumentException(String.format("the argument %1$s is invalid.  ",
+                  optionName) + getUsageMessage());
+      }
+    }
+    return trainer;
+  }
+
+  public String getUsageMessage() {
+    return "The arguments for MaxEntTrainerFactory.createTrainer(String...args) should be either empty or include any of the following:"
+            + "\n--numIterations int" + "\n --gaussianPriorVariance double";
+  }
 
 }

@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.feature.proliferate;
 
 import java.util.Collections;
@@ -31,95 +31,103 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.util.NumericTypeUtil;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * 
  * @author Philip Ogren
- *
+ * 
  */
 
-public class NumericTypeProliferator extends FeatureProliferator{
+public class NumericTypeProliferator extends FeatureProliferator {
 
-	public static final String DEFAULT_NAME = "NumericType";
+  public static final String DEFAULT_NAME = "NumericType";
 
-	/**
-	 * all characters are digits.
-	 */
-	public static final String DIGITS = "DIGITS";
-	/**
-	 * all characters are digits and it looks like a year - i.e. string is
-	 * 4 digits starting with 1 or 20 or 21.
-	 */
-	public static final String YEAR_DIGITS = "YEAR_DIGITS";
-	/**
-	 * All characters are either letters or digits
-	 */
-	public static final String ALPHANUMERIC = "ALPHANUMERIC";
-	/**
-	 * Contains some digits and some non-letters - but can still contain letters
-	 */
-	public static final String SOME_DIGITS = "SOME_DIGITS";
-	/**
-	 * matches a regular expression for Roman numerals.   
-	 */
-	public static final String ROMAN_NUMERAL = "ROMAN_NUMERAL";
-	
-	static Pattern yearDigitsPattern = Pattern.compile("(?:1[0-9]{3,3})|(?:2[0|1][0-9]{2,2})");
-	static Pattern alphanumericPattern = Pattern.compile("[a-zA-Z0-9-]+");
-	static Pattern someLetters = Pattern.compile("[a-zA-Z]");
-	static Pattern romanNumeralPattern = Pattern.compile("^M?M?M?(CM|CD|D?C?C?C?)(XC|XL|L?X?X?X?)(IX|IV|V?I?I?I?)$");
-	
-	public NumericTypeProliferator() {
-		super(NumericTypeProliferator.DEFAULT_NAME);
-	}
-	public NumericTypeProliferator(String featureName) {
-		super(featureName);
-	}
-	
-	/**
-	 * If the value of the feature is a StringValue and is determined to be one of 
-	 * DIGITS, YEAR_DIGITS, ALPHANUMERIC, SOME_DIGITS, or ROMAN_NUMERAL, then
-	 * a feature containing one of those five values is returned.  If
-	 * the value of the feature cannot be characterized by one of these
-	 * five values, then an empty list is returned (e.g. the value is an empty string, contains only
-	 * white space, or contains only letters, etc.)
-	 * 
-	 * <p>
-	 * This method draws heavily from NumericTypeTagger.py written by Steven Bethard.  That code credits
-	 * <a href="http://diveintopython.org/unit_testing/stage_5.html">Dive Into Python</a> for the regular
-	 * expression for matching roman numerals.
-	 * 
-	 * @return a feature that has a value that is
-	 * one of DIGITS, YEAR_DIGITS, ALPHANUMERIC, SOME_DIGITS, or ROMAN_NUMERAL.  Otherwise an empty list is 
-	 * returned.  
-	 */
-	
-	@Override
-	public List<Feature> proliferate(Feature feature) {
-		String featureName = Feature.createName(this.getFeatureName(), feature.getName());
-		Object featureValue = feature.getValue();
-		if(featureValue == null) return Collections.emptyList();
-		else if(featureValue instanceof String) {
-			String value = featureValue.toString();
-			if(value == null || value.length() == 0) return Collections.emptyList();
+  /**
+   * all characters are digits.
+   */
+  public static final String DIGITS = "DIGITS";
 
-			if(NumericTypeUtil.isDigits(value)) {
-				if(yearDigitsPattern.matcher(value).matches()) {
-					return Collections.singletonList(new Feature(featureName, YEAR_DIGITS));
-				}
-				else return Collections.singletonList(new Feature(featureName, DIGITS));
-			}
-			else if(NumericTypeUtil.containsDigits(value)) {
-				if(alphanumericPattern.matcher(value).matches() && someLetters.matcher(value).find()) {
-					return Collections.singletonList(new Feature(featureName, ALPHANUMERIC)); 
-				}
-				else return Collections.singletonList(new Feature(featureName, SOME_DIGITS));
-			}
-			else if(romanNumeralPattern.matcher(value).matches()) {
-				return Collections.singletonList(new Feature(featureName, ROMAN_NUMERAL));
-			}
-		}
-		return Collections.emptyList();
-	}
+  /**
+   * all characters are digits and it looks like a year - i.e. string is 4 digits starting with 1 or
+   * 20 or 21.
+   */
+  public static final String YEAR_DIGITS = "YEAR_DIGITS";
+
+  /**
+   * All characters are either letters or digits
+   */
+  public static final String ALPHANUMERIC = "ALPHANUMERIC";
+
+  /**
+   * Contains some digits and some non-letters - but can still contain letters
+   */
+  public static final String SOME_DIGITS = "SOME_DIGITS";
+
+  /**
+   * matches a regular expression for Roman numerals.
+   */
+  public static final String ROMAN_NUMERAL = "ROMAN_NUMERAL";
+
+  static Pattern yearDigitsPattern = Pattern.compile("(?:1[0-9]{3,3})|(?:2[0|1][0-9]{2,2})");
+
+  static Pattern alphanumericPattern = Pattern.compile("[a-zA-Z0-9-]+");
+
+  static Pattern someLetters = Pattern.compile("[a-zA-Z]");
+
+  static Pattern romanNumeralPattern = Pattern
+          .compile("^M?M?M?(CM|CD|D?C?C?C?)(XC|XL|L?X?X?X?)(IX|IV|V?I?I?I?)$");
+
+  public NumericTypeProliferator() {
+    super(NumericTypeProliferator.DEFAULT_NAME);
+  }
+
+  public NumericTypeProliferator(String featureName) {
+    super(featureName);
+  }
+
+  /**
+   * If the value of the feature is a StringValue and is determined to be one of DIGITS,
+   * YEAR_DIGITS, ALPHANUMERIC, SOME_DIGITS, or ROMAN_NUMERAL, then a feature containing one of
+   * those five values is returned. If the value of the feature cannot be characterized by one of
+   * these five values, then an empty list is returned (e.g. the value is an empty string, contains
+   * only white space, or contains only letters, etc.)
+   * 
+   * <p>
+   * This method draws heavily from NumericTypeTagger.py written by Steven Bethard. That code
+   * credits <a href="http://diveintopython.org/unit_testing/stage_5.html">Dive Into Python</a> for
+   * the regular expression for matching roman numerals.
+   * 
+   * @return a feature that has a value that is one of DIGITS, YEAR_DIGITS, ALPHANUMERIC,
+   *         SOME_DIGITS, or ROMAN_NUMERAL. Otherwise an empty list is returned.
+   */
+
+  @Override
+  public List<Feature> proliferate(Feature feature) {
+    String featureName = Feature.createName(this.getFeatureName(), feature.getName());
+    Object featureValue = feature.getValue();
+    if (featureValue == null)
+      return Collections.emptyList();
+    else if (featureValue instanceof String) {
+      String value = featureValue.toString();
+      if (value == null || value.length() == 0)
+        return Collections.emptyList();
+
+      if (NumericTypeUtil.isDigits(value)) {
+        if (yearDigitsPattern.matcher(value).matches()) {
+          return Collections.singletonList(new Feature(featureName, YEAR_DIGITS));
+        } else
+          return Collections.singletonList(new Feature(featureName, DIGITS));
+      } else if (NumericTypeUtil.containsDigits(value)) {
+        if (alphanumericPattern.matcher(value).matches() && someLetters.matcher(value).find()) {
+          return Collections.singletonList(new Feature(featureName, ALPHANUMERIC));
+        } else
+          return Collections.singletonList(new Feature(featureName, SOME_DIGITS));
+      } else if (romanNumeralPattern.matcher(value).matches()) {
+        return Collections.singletonList(new Feature(featureName, ROMAN_NUMERAL));
+      }
+    }
+    return Collections.emptyList();
+  }
 }

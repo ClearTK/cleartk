@@ -54,61 +54,67 @@ import org.uimafit.util.JCasUtil;
  */
 public class TreebankGoldReaderAndAnnotatorTest extends SyntaxTestBase {
 
-	@Test
-	public void craftTest1() throws Exception {
-		String treebankParse = "( (X (NP (NP (NML (NN Complex ) (NN trait )) (NN analysis )) (PP (IN of ) (NP (DT the ) (NN mouse ) (NN striatum )))) (: : ) (S (NP-SBJ (JJ independent ) (NNS QTLs )) (VP (VBP modulate ) (NP (NP (NN volume )) (CC and ) (NP (NN neuron ) (NN number)))))) )";
-		String expectedText = "Complex trait analysis of the mouse striatum: independent QTLs modulate volume and neuron number";
+  @Test
+  public void craftTest1() throws Exception {
+    String treebankParse = "( (X (NP (NP (NML (NN Complex ) (NN trait )) (NN analysis )) (PP (IN of ) (NP (DT the ) (NN mouse ) (NN striatum )))) (: : ) (S (NP-SBJ (JJ independent ) (NNS QTLs )) (VP (VBP modulate ) (NP (NP (NN volume )) (CC and ) (NP (NN neuron ) (NN number)))))) )";
+    String expectedText = "Complex trait analysis of the mouse striatum: independent QTLs modulate volume and neuron number";
 
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TreebankGoldAnnotator.class, typeSystemDescription);
-		TreebankGoldAnnotator treebankGoldAnnotator = new TreebankGoldAnnotator();
-		treebankGoldAnnotator.initialize(engine.getUimaContext());
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TreebankGoldAnnotator.class,
+            typeSystemDescription);
+    TreebankGoldAnnotator treebankGoldAnnotator = new TreebankGoldAnnotator();
+    treebankGoldAnnotator.initialize(engine.getUimaContext());
 
-		JCas tbView = jCas.createView(TreebankConstants.TREEBANK_VIEW);
-		tbView.setDocumentText(treebankParse);
+    JCas tbView = jCas.createView(TreebankConstants.TREEBANK_VIEW);
+    tbView.setDocumentText(treebankParse);
 
-		treebankGoldAnnotator.process(jCas);
+    treebankGoldAnnotator.process(jCas);
 
-		JCas goldView = jCas.getView(CAS.NAME_DEFAULT_SOFA);
+    JCas goldView = jCas.getView(CAS.NAME_DEFAULT_SOFA);
 
-		FSIndex<Annotation> sentenceIndex = goldView.getAnnotationIndex(Sentence.type);
-		assertEquals(1, sentenceIndex.size());
+    FSIndex<Annotation> sentenceIndex = goldView.getAnnotationIndex(Sentence.type);
+    assertEquals(1, sentenceIndex.size());
 
-		Sentence firstSentence = JCasUtil.selectByIndex(goldView, Sentence.class, 0);
-		assertEquals(expectedText, firstSentence.getCoveredText());
+    Sentence firstSentence = JCasUtil.selectByIndex(goldView, Sentence.class, 0);
+    assertEquals(expectedText, firstSentence.getCoveredText());
 
-		FSIndex<Annotation> topNodeIndex = goldView.getAnnotationIndex(TopTreebankNode.type);
-		TopTreebankNode topNode = (TopTreebankNode) topNodeIndex.iterator().next();
+    FSIndex<Annotation> topNodeIndex = goldView.getAnnotationIndex(TopTreebankNode.type);
+    TopTreebankNode topNode = (TopTreebankNode) topNodeIndex.iterator().next();
 
-		int i = 0;
-		assertEquals("Complex", topNode.getTerminals(i++).getCoveredText());
-		assertEquals("trait", topNode.getTerminals(i++).getCoveredText());
-		assertEquals("analysis", topNode.getTerminals(i++).getCoveredText());
-		assertEquals("of", topNode.getTerminals(i++).getCoveredText());
-		assertEquals("the", topNode.getTerminals(i++).getCoveredText());
-		assertEquals("mouse", topNode.getTerminals(i++).getCoveredText());
-		assertEquals("striatum", topNode.getTerminals(i++).getCoveredText());
-		assertEquals(":", topNode.getTerminals(i++).getCoveredText());
-		assertEquals("independent", topNode.getTerminals(i++).getCoveredText());
-		assertEquals("QTLs", topNode.getTerminals(i++).getCoveredText());
-		assertEquals("modulate", topNode.getTerminals(i++).getCoveredText());
-		assertEquals("volume", topNode.getTerminals(i++).getCoveredText());
-		assertEquals("and", topNode.getTerminals(i++).getCoveredText());
-		assertEquals("neuron", topNode.getTerminals(i++).getCoveredText());
-		assertEquals("number", topNode.getTerminals(i++).getCoveredText());
-	}
+    int i = 0;
+    assertEquals("Complex", topNode.getTerminals(i++).getCoveredText());
+    assertEquals("trait", topNode.getTerminals(i++).getCoveredText());
+    assertEquals("analysis", topNode.getTerminals(i++).getCoveredText());
+    assertEquals("of", topNode.getTerminals(i++).getCoveredText());
+    assertEquals("the", topNode.getTerminals(i++).getCoveredText());
+    assertEquals("mouse", topNode.getTerminals(i++).getCoveredText());
+    assertEquals("striatum", topNode.getTerminals(i++).getCoveredText());
+    assertEquals(":", topNode.getTerminals(i++).getCoveredText());
+    assertEquals("independent", topNode.getTerminals(i++).getCoveredText());
+    assertEquals("QTLs", topNode.getTerminals(i++).getCoveredText());
+    assertEquals("modulate", topNode.getTerminals(i++).getCoveredText());
+    assertEquals("volume", topNode.getTerminals(i++).getCoveredText());
+    assertEquals("and", topNode.getTerminals(i++).getCoveredText());
+    assertEquals("neuron", topNode.getTerminals(i++).getCoveredText());
+    assertEquals("number", topNode.getTerminals(i++).getCoveredText());
+  }
 
-	@Test
-	public void testAED() throws UIMAException, IOException {
-		AnalysisEngineDescription description = AnalysisEngineFactory.createPrimitiveDescription(TreebankGoldAnnotator.class, typeSystemDescription);
-		Boolean postTrees = (Boolean) description.getAnalysisEngineMetaData().getConfigurationParameterSettings().getParameterValue(TreebankGoldAnnotator.PARAM_POST_TREES);
-		Assert.assertTrue(postTrees.booleanValue());
-		String[] inputSofas = description.getAnalysisEngineMetaData().getCapabilities()[0].getInputSofas();
-		assertEquals(TreebankConstants.TREEBANK_VIEW, inputSofas[0]);
-		assertEquals(CAS.NAME_DEFAULT_SOFA, inputSofas[1]);
-	}
+  @Test
+  public void testAED() throws UIMAException, IOException {
+    AnalysisEngineDescription description = AnalysisEngineFactory.createPrimitiveDescription(
+            TreebankGoldAnnotator.class, typeSystemDescription);
+    Boolean postTrees = (Boolean) description.getAnalysisEngineMetaData()
+            .getConfigurationParameterSettings()
+            .getParameterValue(TreebankGoldAnnotator.PARAM_POST_TREES);
+    Assert.assertTrue(postTrees.booleanValue());
+    String[] inputSofas = description.getAnalysisEngineMetaData().getCapabilities()[0]
+            .getInputSofas();
+    assertEquals(TreebankConstants.TREEBANK_VIEW, inputSofas[0]);
+    assertEquals(CAS.NAME_DEFAULT_SOFA, inputSofas[1]);
+  }
 
-	@Test
-	public void testInitialize() throws ResourceInitializationException {
-		AnalysisEngineFactory.createPrimitive(TreebankGoldAnnotator.class, typeSystemDescription, TreebankGoldAnnotator.PARAM_POST_TREES, true);
-	}
+  @Test
+  public void testInitialize() throws ResourceInitializationException {
+    AnalysisEngineFactory.createPrimitive(TreebankGoldAnnotator.class, typeSystemDescription,
+            TreebankGoldAnnotator.PARAM_POST_TREES, true);
+  }
 }

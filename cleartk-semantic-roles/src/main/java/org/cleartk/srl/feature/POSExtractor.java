@@ -33,25 +33,27 @@ import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.token.type.Token;
 
 /**
- * <br>Copyright (c) 2007-2009, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * 
  * @author Philipp Wetzler
  */
 public class POSExtractor implements SimpleFeatureExtractor {
 
-	public List<Feature> extract(JCas jCas, Annotation focusAnnotation)	throws UnsupportedOperationException {
-		if( ! (focusAnnotation instanceof Token) )
-			throw new UnsupportedOperationException("annotation is not of type Token");
-		
-		Token token = (Token) focusAnnotation;
-		
-		if( token.getPos() == null )
-			throw new UnsupportedOperationException("pos attribute has not been set");
-		
-		Feature feature = new Feature("POS", token.getPos());
-		return Collections.singletonList(feature);
-	}
+  public List<Feature> extract(JCas jCas, Annotation focusAnnotation)
+          throws UnsupportedOperationException {
+    if (!(focusAnnotation instanceof Token))
+      throw new UnsupportedOperationException("annotation is not of type Token");
+
+    Token token = (Token) focusAnnotation;
+
+    if (token.getPos() == null)
+      throw new UnsupportedOperationException("pos attribute has not been set");
+
+    Feature feature = new Feature("POS", token.getPos());
+    return Collections.singletonList(feature);
+  }
 
 }

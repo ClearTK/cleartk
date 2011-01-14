@@ -1,5 +1,5 @@
 /** 
-  * Copyright (c) 2010, Regents of the University of Colorado 
+ * Copyright (c) 2010, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -53,57 +53,57 @@ import org.uimafit.testing.util.HideOutput;
  * 
  */
 
-
 public class LIBLINEARTest extends DefaultTestBase {
 
-	@Test
-	public void testLIBLINEAR() throws Exception {
-		
-		// create the data writer
-		BinaryAnnotator annotator = new BinaryAnnotator();		
-		annotator.initialize(UimaContextFactory.createUimaContext(
-				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, this.outputDirectoryName,
-				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultBinaryLIBLINEARDataWriterFactory.class.getName()));
-		
-		// run process to produce a bunch of instances
-		annotator.process(null);
-		
-		annotator.collectionProcessComplete();
-		
-		// check that the output file was written and is not empty
-		BufferedReader reader = new BufferedReader(new FileReader(new File(
-				this.outputDirectoryName, "training-data.libsvm")));
-		Assert.assertTrue(reader.readLine().length() > 0);
-		reader.close();
-		
-		// run the training command
-		HideOutput hider = new HideOutput();
-		Train.main(this.outputDirectoryName, "-c", "1.0", "-s", "1");
-		hider.restoreOutput();
-		
-		// read in the classifier and test it on new instances
-		JarFile modelFile = new JarFile(new File(this.outputDirectoryName, "model.jar")); 
-		BinaryLIBLINEARClassifier classifier = new BinaryLIBLINEARClassifier(modelFile);
-		modelFile.close();
-		for (Instance<Boolean> instance: ExampleInstanceFactory.generateBooleanInstances(1000)) {
-			List<Feature> features = instance.getFeatures();
-			Boolean outcome = instance.getOutcome();
-			Assert.assertEquals(outcome, classifier.classify(features));
-			Assert.assertTrue(classifier.score(features, 2).get(0).getScore() > 0.0d);
-		}
-	}
+  @Test
+  public void testLIBLINEAR() throws Exception {
 
-	private static class BinaryAnnotator extends CleartkAnnotator<Boolean> {
-		@Override
-		public void process(JCas aJCas) throws AnalysisEngineProcessException {			
-			for( Instance<Boolean> instance : ExampleInstanceFactory.generateBooleanInstances(1000) ) {
-				try {
-					this.dataWriter.write(instance);
-				} catch (CleartkException e) {
-					throw new AnalysisEngineProcessException(e);
-				}
-			}
-		}
-	}
+    // create the data writer
+    BinaryAnnotator annotator = new BinaryAnnotator();
+    annotator.initialize(UimaContextFactory.createUimaContext(
+            JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, this.outputDirectoryName,
+            CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+            DefaultBinaryLIBLINEARDataWriterFactory.class.getName()));
+
+    // run process to produce a bunch of instances
+    annotator.process(null);
+
+    annotator.collectionProcessComplete();
+
+    // check that the output file was written and is not empty
+    BufferedReader reader = new BufferedReader(new FileReader(new File(this.outputDirectoryName,
+            "training-data.libsvm")));
+    Assert.assertTrue(reader.readLine().length() > 0);
+    reader.close();
+
+    // run the training command
+    HideOutput hider = new HideOutput();
+    Train.main(this.outputDirectoryName, "-c", "1.0", "-s", "1");
+    hider.restoreOutput();
+
+    // read in the classifier and test it on new instances
+    JarFile modelFile = new JarFile(new File(this.outputDirectoryName, "model.jar"));
+    BinaryLIBLINEARClassifier classifier = new BinaryLIBLINEARClassifier(modelFile);
+    modelFile.close();
+    for (Instance<Boolean> instance : ExampleInstanceFactory.generateBooleanInstances(1000)) {
+      List<Feature> features = instance.getFeatures();
+      Boolean outcome = instance.getOutcome();
+      Assert.assertEquals(outcome, classifier.classify(features));
+      Assert.assertTrue(classifier.score(features, 2).get(0).getScore() > 0.0d);
+    }
+  }
+
+  private static class BinaryAnnotator extends CleartkAnnotator<Boolean> {
+    @Override
+    public void process(JCas aJCas) throws AnalysisEngineProcessException {
+      for (Instance<Boolean> instance : ExampleInstanceFactory.generateBooleanInstances(1000)) {
+        try {
+          this.dataWriter.write(instance);
+        } catch (CleartkException e) {
+          throw new AnalysisEngineProcessException(e);
+        }
+      }
+    }
+  }
 
 }

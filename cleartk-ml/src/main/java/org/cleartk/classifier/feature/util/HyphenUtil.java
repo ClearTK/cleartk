@@ -1,5 +1,5 @@
 /** 
-  * Copyright (c) 2010, Regents of the University of Colorado 
+ * Copyright (c) 2010, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -20,22 +20,23 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 
 package org.cleartk.classifier.feature.util;
 
 /**
- * <br>Copyright (c) 2010, Regents of the University of Colorado 
- * <br>All rights reserved.
- *
+ * <br>
+ * Copyright (c) 2010, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * @author Philip Ogren
- *
+ * 
  */
 
 public class HyphenUtil {
 
-	public static boolean containsHyphen(String word) {
-		return word.indexOf("-") != -1;
-	}
+  public static boolean containsHyphen(String word) {
+    return word.indexOf("-") != -1;
+  }
 
 }

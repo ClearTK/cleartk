@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,76 +20,73 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.srl.propbank.util;
 
 import org.apache.uima.jcas.JCas;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * 
  * @author Philip Ogren
- * <p>
- * A <em>PropbankNodeRelation object</em> represents a reference to one node
- * in Propbank.
- * </p>
+ *         <p>
+ *         A <em>PropbankNodeRelation object</em> represents a reference to one node in Propbank.
+ *         </p>
  * 
  * @author Philipp Wetzler
  */
 public class PropbankNodeRelation extends PropbankRelation {
 
-	public static PropbankNodeRelation fromString(String s) {
-		String[] fields = s.split(":");
+  public static PropbankNodeRelation fromString(String s) {
+    String[] fields = s.split(":");
 
-		if (fields.length != 2)
-			throw new IllegalArgumentException();
+    if (fields.length != 2)
+      throw new IllegalArgumentException();
 
-		return new PropbankNodeRelation(Integer.valueOf(fields[0]), Integer
-				.valueOf(fields[1]));
-	}
+    return new PropbankNodeRelation(Integer.valueOf(fields[0]), Integer.valueOf(fields[1]));
+  }
 
-	protected int terminalNumber;
+  protected int terminalNumber;
 
-	protected int height;
+  protected int height;
 
-	public PropbankNodeRelation(int terminalNumber, int height) {
-		this.terminalNumber = terminalNumber;
-		this.height = height;
-	}
+  public PropbankNodeRelation(int terminalNumber, int height) {
+    this.terminalNumber = terminalNumber;
+    this.height = height;
+  }
 
-	public int getHeight() {
-		return height;
-	}
+  public int getHeight() {
+    return height;
+  }
 
-	public void setHeight(int height) {
-		this.height = height;
-	}
+  public void setHeight(int height) {
+    this.height = height;
+  }
 
-	public int getTerminalNumber() {
-		return terminalNumber;
-	}
+  public int getTerminalNumber() {
+    return terminalNumber;
+  }
 
-	public void setTerminalNumber(int terminalNumber) {
-		this.terminalNumber = terminalNumber;
-	}
+  public void setTerminalNumber(int terminalNumber) {
+    this.terminalNumber = terminalNumber;
+  }
 
-	@Override
-	public TreebankNode convert(JCas jCas, TopTreebankNode topNode) {
-		TreebankNode node = topNode.getTerminals(this.terminalNumber);
-		for (int i = 0; i < this.height; i++)
-			node = node.getParent();
+  @Override
+  public TreebankNode convert(JCas jCas, TopTreebankNode topNode) {
+    TreebankNode node = topNode.getTerminals(this.terminalNumber);
+    for (int i = 0; i < this.height; i++)
+      node = node.getParent();
 
-		return node;
-	}
+    return node;
+  }
 
-	@Override
-	public String toString() {
-		return String.valueOf(getTerminalNumber()) + ":"
-				+ String.valueOf(getHeight());
-	}
+  @Override
+  public String toString() {
+    return String.valueOf(getTerminalNumber()) + ":" + String.valueOf(getHeight());
+  }
 }

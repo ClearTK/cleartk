@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.mallet;
 
 import java.io.ObjectInputStream;
@@ -45,104 +45,109 @@ import cc.mallet.types.Instance;
 import cc.mallet.types.Labeling;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * 
  * @author Philip Ogren
- *
+ * 
  * 
  */
-public abstract class MalletClassifier_ImplBase<OUTCOME_TYPE> extends JarClassifier<OUTCOME_TYPE, String, List<NameNumber>> {
+public abstract class MalletClassifier_ImplBase<OUTCOME_TYPE> extends
+        JarClassifier<OUTCOME_TYPE, String, List<NameNumber>> {
 
-	protected Classifier classifier;
-	Alphabet alphabet;
-	
-	public MalletClassifier_ImplBase(JarFile modelFile) throws Exception {
-		super(modelFile);
-		
-		ZipEntry modelEntry = modelFile.getEntry("model.mallet");
-		ObjectInputStream objectStream = new ObjectInputStream(modelFile.getInputStream(modelEntry));
-		this.classifier = (Classifier) objectStream.readObject();
-		this.alphabet = classifier.getAlphabet();
-		
-     }
-	
-	/**
-	 * This method simply throws an UnsupportedOperationException because
-	 * CRF is a sequential classifier.
-	 * @throws CleartkException 
-	 */
-	public OUTCOME_TYPE classify(List<Feature> features) throws UnsupportedOperationException, CleartkException
-	{
-		Classification classification = classifier.classify(toInstance(features));
-		String returnValue = classification.getLabeling().getBestLabel().toString();
-		return outcomeEncoder.decode(returnValue);
-	}
-	
-	@Override
-	public List<ScoredOutcome<OUTCOME_TYPE>> score(List<Feature> features, int maxResults) throws CleartkException {
-		Classification classification = classifier.classify(toInstance(features));
-		List<ScoredOutcome<OUTCOME_TYPE>> returnValues = new ArrayList<ScoredOutcome<OUTCOME_TYPE>>(maxResults);
-		Labeling labeling = classification.getLabeling();
-		
-		if (maxResults == 1) {
-			String bestOutcome = labeling.getBestLabel().toString();
-			OUTCOME_TYPE outcome = outcomeEncoder.decode(bestOutcome);
-			double score = labeling.getBestValue();
-			returnValues.add(new ScoredOutcome<OUTCOME_TYPE>(outcome, score));
-			return returnValues;
-		}
+  protected Classifier classifier;
 
-		for(int i=0; i<labeling.numLocations(); i++) {
-			String label = labeling.getLabelAtRank(i).toString();
-			OUTCOME_TYPE outcome = outcomeEncoder.decode(label);
-			double score = labeling.getValueAtRank(i);
-			returnValues.add(new ScoredOutcome<OUTCOME_TYPE>(outcome, score));
-		}
-		
-		Collections.sort(returnValues);
-		if (returnValues.size() > maxResults) {
-			return returnValues.subList(0, maxResults);
-		}
-		else {
-			return returnValues;
-		}
+  Alphabet alphabet;
 
-	}
+  public MalletClassifier_ImplBase(JarFile modelFile) throws Exception {
+    super(modelFile);
 
-	public Instance[] toInstances(List<List<Feature>> features) throws CleartkException {
-	
-		Instance[] instances = new Instance[features.size()];
-		for(int i=0; i<features.size(); i++) {
-			instances[i] = toInstance(features.get(i));
-		}
-		return instances;
-	}
+    ZipEntry modelEntry = modelFile.getEntry("model.mallet");
+    ObjectInputStream objectStream = new ObjectInputStream(modelFile.getInputStream(modelEntry));
+    this.classifier = (Classifier) objectStream.readObject();
+    this.alphabet = classifier.getAlphabet();
 
-	public Instance toInstance(List<Feature> features) throws CleartkException {
-		List<NameNumber> nameNumbers = featuresEncoder.encodeAll(features);
+  }
 
-		Iterator<NameNumber> nameNumberIterator = nameNumbers.iterator();
-		while(nameNumberIterator.hasNext()) {
-			NameNumber nameNumber = nameNumberIterator.next();
-			if(!alphabet.contains(nameNumber.name))
-				nameNumberIterator.remove();
-		}
+  /**
+   * This method simply throws an UnsupportedOperationException because CRF is a sequential
+   * classifier.
+   * 
+   * @throws CleartkException
+   */
+  public OUTCOME_TYPE classify(List<Feature> features) throws UnsupportedOperationException,
+          CleartkException {
+    Classification classification = classifier.classify(toInstance(features));
+    String returnValue = classification.getLabeling().getBestLabel().toString();
+    return outcomeEncoder.decode(returnValue);
+  }
 
-		String[] keys = new String[nameNumbers.size()];
-		double[] values = new double[nameNumbers.size()];
+  @Override
+  public List<ScoredOutcome<OUTCOME_TYPE>> score(List<Feature> features, int maxResults)
+          throws CleartkException {
+    Classification classification = classifier.classify(toInstance(features));
+    List<ScoredOutcome<OUTCOME_TYPE>> returnValues = new ArrayList<ScoredOutcome<OUTCOME_TYPE>>(
+            maxResults);
+    Labeling labeling = classification.getLabeling();
 
-		for(int i=0; i<nameNumbers.size(); i++) {
-			NameNumber nameNumber = nameNumbers.get(i);
-			keys[i] = nameNumber.name;
-			values[i] = nameNumber.number.doubleValue();
-		}
+    if (maxResults == 1) {
+      String bestOutcome = labeling.getBestLabel().toString();
+      OUTCOME_TYPE outcome = outcomeEncoder.decode(bestOutcome);
+      double score = labeling.getBestValue();
+      returnValues.add(new ScoredOutcome<OUTCOME_TYPE>(outcome, score));
+      return returnValues;
+    }
 
-		int[] keyIndices = FeatureVector.getObjectIndices(keys, alphabet, true);
-		FeatureVector fv = new FeatureVector(alphabet, keyIndices, values);
+    for (int i = 0; i < labeling.numLocations(); i++) {
+      String label = labeling.getLabelAtRank(i).toString();
+      OUTCOME_TYPE outcome = outcomeEncoder.decode(label);
+      double score = labeling.getValueAtRank(i);
+      returnValues.add(new ScoredOutcome<OUTCOME_TYPE>(outcome, score));
+    }
 
-		Instance instance = new Instance(fv, null, null, null);
-		return instance;
-	}
+    Collections.sort(returnValues);
+    if (returnValues.size() > maxResults) {
+      return returnValues.subList(0, maxResults);
+    } else {
+      return returnValues;
+    }
+
+  }
+
+  public Instance[] toInstances(List<List<Feature>> features) throws CleartkException {
+
+    Instance[] instances = new Instance[features.size()];
+    for (int i = 0; i < features.size(); i++) {
+      instances[i] = toInstance(features.get(i));
+    }
+    return instances;
+  }
+
+  public Instance toInstance(List<Feature> features) throws CleartkException {
+    List<NameNumber> nameNumbers = featuresEncoder.encodeAll(features);
+
+    Iterator<NameNumber> nameNumberIterator = nameNumbers.iterator();
+    while (nameNumberIterator.hasNext()) {
+      NameNumber nameNumber = nameNumberIterator.next();
+      if (!alphabet.contains(nameNumber.name))
+        nameNumberIterator.remove();
+    }
+
+    String[] keys = new String[nameNumbers.size()];
+    double[] values = new double[nameNumbers.size()];
+
+    for (int i = 0; i < nameNumbers.size(); i++) {
+      NameNumber nameNumber = nameNumbers.get(i);
+      keys[i] = nameNumber.name;
+      values[i] = nameNumber.number.doubleValue();
+    }
+
+    int[] keyIndices = FeatureVector.getObjectIndices(keys, alphabet, true);
+    FeatureVector fv = new FeatureVector(alphabet, keyIndices, values);
+
+    Instance instance = new Instance(fv, null, null, null);
+    return instance;
+  }
 }

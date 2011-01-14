@@ -64,170 +64,145 @@ import org.uimafit.factory.AnalysisEngineFactory;
  */
 public class VerbClauseTemporalAnnotatorTest extends TimeMLTestBase {
 
-	public static class AfterNewClassifier implements Classifier<String>, ClassifierFactory<String> {
-		public AfterNewClassifier() {
-		}
+  public static class AfterNewClassifier implements Classifier<String>, ClassifierFactory<String> {
+    public AfterNewClassifier() {
+    }
 
-		public String classify(List<Feature> features) throws CleartkException {
-			return "AFTER-NEW";
-		}
+    public String classify(List<Feature> features) throws CleartkException {
+      return "AFTER-NEW";
+    }
 
-		public List<ScoredOutcome<String>> score(List<Feature> features, int maxResults)
-				throws CleartkException {
-			return null;
-		}
+    public List<ScoredOutcome<String>> score(List<Feature> features, int maxResults)
+            throws CleartkException {
+      return null;
+    }
 
-		public Classifier<String> createClassifier() throws IOException, CleartkException {
-			return new AfterNewClassifier();
-		}
-	}
+    public Classifier<String> createClassifier() throws IOException, CleartkException {
+      return new AfterNewClassifier();
+    }
+  }
 
-	@Test
-	public void test() throws UIMAException, CleartkException {
-		AnalysisEngineDescription desc = CleartkComponents.createCleartkAnnotator(
-			VerbClauseTemporalAnnotator.class,
-			typeSystemDescription,
-			InstanceCollector.StringFactory.class,
-			".",
-			(List<Class<?>>) null);
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(desc);
+  @Test
+  public void test() throws UIMAException, CleartkException {
+    AnalysisEngineDescription desc = CleartkComponents.createCleartkAnnotator(
+            VerbClauseTemporalAnnotator.class, typeSystemDescription,
+            InstanceCollector.StringFactory.class, ".", (List<Class<?>>) null);
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(desc);
 
-		tokenBuilder.buildTokens(
-			jCas,
-			"He said she bought milk.",
-			"He said she bought milk .",
-			"PRP VBD PRP VBD NN .",
-			"he say she buy milk .");
-		List<Token> tokens = AnnotationRetrieval.getAnnotations(jCas, Token.class);
+    tokenBuilder.buildTokens(jCas, "He said she bought milk.", "He said she bought milk .",
+            "PRP VBD PRP VBD NN .", "he say she buy milk .");
+    List<Token> tokens = AnnotationRetrieval.getAnnotations(jCas, Token.class);
 
-		// create the Event and TemporalLink annotations
-		Event source = new Event(jCas, tokens.get(1).getBegin(), tokens.get(1).getEnd());
-		Event target = new Event(jCas, tokens.get(3).getBegin(), tokens.get(3).getEnd());
-		TemporalLink tlink = new TemporalLink(jCas);
-		tlink.setSource(source);
-		tlink.setTarget(target);
-		tlink.setRelationType("AFTER");
-		Annotation[] timemlAnnotations = new Annotation[] { source, target, tlink };
-		for (Annotation annotation : timemlAnnotations) {
-			annotation.addToIndexes();
-		}
+    // create the Event and TemporalLink annotations
+    Event source = new Event(jCas, tokens.get(1).getBegin(), tokens.get(1).getEnd());
+    Event target = new Event(jCas, tokens.get(3).getBegin(), tokens.get(3).getEnd());
+    TemporalLink tlink = new TemporalLink(jCas);
+    tlink.setSource(source);
+    tlink.setTarget(target);
+    tlink.setRelationType("AFTER");
+    Annotation[] timemlAnnotations = new Annotation[] { source, target, tlink };
+    for (Annotation annotation : timemlAnnotations) {
+      annotation.addToIndexes();
+    }
 
-		// create the TreebankNode annotations
-		TreebankNode root =
-				TreebankTestsUtil.newNode(jCas, "S",
-					TreebankTestsUtil.newNode(jCas, "NP",
-						this.newNode(jCas, tokens.get(0))),
-					TreebankTestsUtil.newNode(jCas, "VP",
-						this.newNode(jCas, tokens.get(1)),
-						TreebankTestsUtil.newNode(jCas, "SBAR",
-							TreebankTestsUtil.newNode(jCas, "NP",
-								this.newNode(jCas, tokens.get(2))),
-							TreebankTestsUtil.newNode(jCas, "VP",
-								this.newNode(jCas, tokens.get(3)),
-								TreebankTestsUtil.newNode(jCas, "NP",
-									this.newNode(jCas, tokens.get(4)))))));
+    // create the TreebankNode annotations
+    TreebankNode root = TreebankTestsUtil.newNode(jCas, "S", TreebankTestsUtil.newNode(jCas, "NP",
+            this.newNode(jCas, tokens.get(0))), TreebankTestsUtil.newNode(jCas, "VP", this.newNode(
+            jCas, tokens.get(1)), TreebankTestsUtil.newNode(jCas, "SBAR", TreebankTestsUtil
+            .newNode(jCas, "NP", this.newNode(jCas, tokens.get(2))), TreebankTestsUtil.newNode(
+            jCas, "VP", this.newNode(jCas, tokens.get(3)),
+            TreebankTestsUtil.newNode(jCas, "NP", this.newNode(jCas, tokens.get(4)))))));
 
-		Sentence sentence = AnnotationRetrieval.getAnnotations(jCas, Sentence.class).get(0);
+    Sentence sentence = AnnotationRetrieval.getAnnotations(jCas, Sentence.class).get(0);
 
-		// set the Sentence's constitutentParse feature
-		TopTreebankNode tree = new TopTreebankNode(jCas, sentence.getBegin(), sentence.getEnd());
-		tree.setNodeType("TOP");
-		tree.setChildren(new FSArray(jCas, 1));
-		tree.setChildren(0, root);
-		tree.addToIndexes();
+    // set the Sentence's constitutentParse feature
+    TopTreebankNode tree = new TopTreebankNode(jCas, sentence.getBegin(), sentence.getEnd());
+    tree.setNodeType("TOP");
+    tree.setChildren(new FSArray(jCas, 1));
+    tree.setChildren(0, root);
+    tree.addToIndexes();
 
-		// collect the single instance from the annotator
-		List<Instance<String>> instances;
-		instances = InstanceCollector.StringFactory.collectInstances(engine, jCas);
-		Assert.assertEquals(1, instances.size());
+    // collect the single instance from the annotator
+    List<Instance<String>> instances;
+    instances = InstanceCollector.StringFactory.collectInstances(engine, jCas);
+    Assert.assertEquals(1, instances.size());
 
-		// check the outcome
-		Assert.assertEquals("AFTER", instances.get(0).getOutcome());
+    // check the outcome
+    Assert.assertEquals("AFTER", instances.get(0).getOutcome());
 
-		// now remove all TimeML annotations
-		List<Event> events;
-		List<TemporalLink> tlinks;
-		for (Annotation annotation : timemlAnnotations) {
-			annotation.removeFromIndexes();
-		}
-		events = AnnotationRetrieval.getAnnotations(jCas, Event.class);
-		tlinks = AnnotationRetrieval.getAnnotations(jCas, TemporalLink.class);
-		Assert.assertEquals(0, events.size());
-		Assert.assertEquals(0, tlinks.size());
+    // now remove all TimeML annotations
+    List<Event> events;
+    List<TemporalLink> tlinks;
+    for (Annotation annotation : timemlAnnotations) {
+      annotation.removeFromIndexes();
+    }
+    events = AnnotationRetrieval.getAnnotations(jCas, Event.class);
+    tlinks = AnnotationRetrieval.getAnnotations(jCas, TemporalLink.class);
+    Assert.assertEquals(0, events.size());
+    Assert.assertEquals(0, tlinks.size());
 
-		// and run the annotator again, asking it to annotate this time
-		desc = AnalysisEngineFactory.createPrimitiveDescription(
-			VerbClauseTemporalAnnotator.class,
-			typeSystemDescription,
-			CleartkAnnotator.PARAM_CLASSIFIER_FACTORY_CLASS_NAME,
-			AfterNewClassifier.class.getName());
-		engine = AnalysisEngineFactory.createPrimitive(desc);
-		engine.process(jCas);
-		engine.collectionProcessComplete();
+    // and run the annotator again, asking it to annotate this time
+    desc = AnalysisEngineFactory.createPrimitiveDescription(VerbClauseTemporalAnnotator.class,
+            typeSystemDescription, CleartkAnnotator.PARAM_CLASSIFIER_FACTORY_CLASS_NAME,
+            AfterNewClassifier.class.getName());
+    engine = AnalysisEngineFactory.createPrimitive(desc);
+    engine.process(jCas);
+    engine.collectionProcessComplete();
 
-		// check the resulting TimeML annotations
-		events = AnnotationRetrieval.getAnnotations(jCas, Event.class);
-		tlinks = AnnotationRetrieval.getAnnotations(jCas, TemporalLink.class);
-		Assert.assertEquals(2, events.size());
-		Assert.assertEquals(1, tlinks.size());
-		Assert.assertEquals("said", events.get(0).getCoveredText());
-		Assert.assertEquals("bought", events.get(1).getCoveredText());
-		Assert.assertEquals(events.get(0), tlinks.get(0).getSource());
-		Assert.assertEquals(events.get(1), tlinks.get(0).getTarget());
-		Assert.assertEquals("AFTER-NEW", tlinks.get(0).getRelationType());
-	}
+    // check the resulting TimeML annotations
+    events = AnnotationRetrieval.getAnnotations(jCas, Event.class);
+    tlinks = AnnotationRetrieval.getAnnotations(jCas, TemporalLink.class);
+    Assert.assertEquals(2, events.size());
+    Assert.assertEquals(1, tlinks.size());
+    Assert.assertEquals("said", events.get(0).getCoveredText());
+    Assert.assertEquals("bought", events.get(1).getCoveredText());
+    Assert.assertEquals(events.get(0), tlinks.get(0).getSource());
+    Assert.assertEquals(events.get(1), tlinks.get(0).getTarget());
+    Assert.assertEquals("AFTER-NEW", tlinks.get(0).getRelationType());
+  }
 
-	private TreebankNode newNode(JCas jcas, Token token) {
-		return TreebankTestsUtil.newNode(jcas, token.getBegin(), token.getEnd(), token.getPos());
-	}
+  private TreebankNode newNode(JCas jcas, Token token) {
+    return TreebankTestsUtil.newNode(jcas, token.getBegin(), token.getEnd(), token.getPos());
+  }
 
-	@Test
-	public void testModel() throws Exception {
-		// fill in text and tokens
-		tokenBuilder.buildTokens(
-			jCas,
-			"He said he sold the stocks yesterday.",
-			"He said he sold the stocks yesterday .",
-			"PRP VBD PRP VBD DT NNS RB .",
-			"he say he sell the stock yesterday .");
-		List<Token> tokens = AnnotationRetrieval.getAnnotations(jCas, Token.class);
+  @Test
+  public void testModel() throws Exception {
+    // fill in text and tokens
+    tokenBuilder.buildTokens(jCas, "He said he sold the stocks yesterday.",
+            "He said he sold the stocks yesterday .", "PRP VBD PRP VBD DT NNS RB .",
+            "he say he sell the stock yesterday .");
+    List<Token> tokens = AnnotationRetrieval.getAnnotations(jCas, Token.class);
 
-		// fill in tree
-		TreebankNode root =
-				TreebankTestsUtil.newNode(jCas, "S",
-					TreebankTestsUtil.newNode(jCas, "NP",
-						this.newNode(jCas, tokens.get(0))),
-					TreebankTestsUtil.newNode(jCas, "VP",
-						this.newNode(jCas, tokens.get(1)),
-						TreebankTestsUtil.newNode(jCas, "SBAR",
-							TreebankTestsUtil.newNode(jCas, "NP",
-								this.newNode(jCas, tokens.get(2))),
-							TreebankTestsUtil.newNode(jCas, "VP",
-								this.newNode(jCas, tokens.get(3)),
-								TreebankTestsUtil.newNode(jCas, "NP",
-									this.newNode(jCas, tokens.get(4)),
-									this.newNode(jCas, tokens.get(5))),
-								this.newNode(jCas, tokens.get(6))))),
-					this.newNode(jCas, tokens.get(7)));
-		Sentence sentence = AnnotationRetrieval.getAnnotations(jCas, Sentence.class).get(0);
-		TopTreebankNode tree = new TopTreebankNode(jCas, sentence.getBegin(), sentence.getEnd());
-		tree.setNodeType("TOP");
-		tree.setChildren(new FSArray(jCas, 1));
-		tree.setChildren(0, root);
-		tree.addToIndexes();
+    // fill in tree
+    TreebankNode root = TreebankTestsUtil.newNode(jCas, "S", TreebankTestsUtil.newNode(jCas, "NP",
+            this.newNode(jCas, tokens.get(0))), TreebankTestsUtil.newNode(jCas, "VP", this.newNode(
+            jCas, tokens.get(1)), TreebankTestsUtil.newNode(jCas, "SBAR", TreebankTestsUtil
+            .newNode(jCas, "NP", this.newNode(jCas, tokens.get(2))), TreebankTestsUtil.newNode(
+            jCas,
+            "VP",
+            this.newNode(jCas, tokens.get(3)),
+            TreebankTestsUtil.newNode(jCas, "NP", this.newNode(jCas, tokens.get(4)),
+                    this.newNode(jCas, tokens.get(5))), this.newNode(jCas, tokens.get(6))))), this
+            .newNode(jCas, tokens.get(7)));
+    Sentence sentence = AnnotationRetrieval.getAnnotations(jCas, Sentence.class).get(0);
+    TopTreebankNode tree = new TopTreebankNode(jCas, sentence.getBegin(), sentence.getEnd());
+    tree.setNodeType("TOP");
+    tree.setChildren(new FSArray(jCas, 1));
+    tree.setChildren(0, root);
+    tree.addToIndexes();
 
-		// run annotator
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-			VerbClauseTemporalAnnotator.getAnnotatorDescription());
-		engine.process(jCas);
+    // run annotator
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(VerbClauseTemporalAnnotator
+            .getAnnotatorDescription());
+    engine.process(jCas);
 
-		// check output
-		List<TemporalLink> tlinks = AnnotationRetrieval.getAnnotations(jCas, TemporalLink.class);
-		Assert.assertEquals(1, tlinks.size());
-		Assert.assertEquals("said", tlinks.get(0).getSource().getCoveredText());
-		Assert.assertEquals("sold", tlinks.get(0).getTarget().getCoveredText());
-		Assert.assertEquals("AFTER", tlinks.get(0).getRelationType());
+    // check output
+    List<TemporalLink> tlinks = AnnotationRetrieval.getAnnotations(jCas, TemporalLink.class);
+    Assert.assertEquals(1, tlinks.size());
+    Assert.assertEquals("said", tlinks.get(0).getSource().getCoveredText());
+    Assert.assertEquals("sold", tlinks.get(0).getTarget().getCoveredText());
+    Assert.assertEquals("AFTER", tlinks.get(0).getRelationType());
 
-	}
+  }
 
 }

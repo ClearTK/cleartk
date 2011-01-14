@@ -34,99 +34,102 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * <br>Copyright (c) 2009, Regents of the University of Colorado 
- * <br>All rights reserved.
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
  * 
  * @author Philipp G. Wetzler
  */
 public class SparseFeatureVectorTest {
-	
-	@Before
-	public void setUp() throws CleartkException {
-		fv1 = new SparseFeatureVector();
-		fv2 = new SparseFeatureVector();
-		fv2.set(1, 4.5);
-		fv2.set(5, 7.1);
-		fv2.set(7, 1.3);
-		fv2.set(10, 2.3);
-		fv2.set(7, 0);
-		fv2.set(6, 13);
-		fv2.set(3, 0);
-	}
-	
-	@Test
-	public void testPlainConstructor() {
-		Iterator<FeatureVector.Entry> it = fv1.iterator();
-		assertFalse(it.hasNext());
-	}
-	
-	@Test
-	public void testCopyConstructor() throws CleartkException {
-		FeatureVector fv = new SparseFeatureVector(fv2);
-		
-		assertEquals(fv, fv2);
-	}
-	
-	@Test
-	public void testGet() {
-		assertEquals(fv2.get(0), 0, 0.0);
-		assertEquals(fv2.get(1), 4.5, delta);
-		assertEquals(fv2.get(2), 0, 0.0);
-		assertEquals(fv2.get(3), 0, 0.0);
-		assertEquals(fv2.get(4), 0, 0.0);
-		assertEquals(fv2.get(5), 7.1, delta);
-		assertEquals(fv2.get(6), 13, delta);
-		assertEquals(fv2.get(7), 0, 0.0);
-		assertEquals(fv2.get(8), 0, 0.0);
-		assertEquals(fv2.get(9), 0, 0.0);
-		assertEquals(fv2.get(10), 2.3, delta);
-		assertEquals(fv2.get(11), 0, 0.0);
-	}
-	
-	@Test
-	public void testEquals() throws CleartkException {
-		FeatureVector fv = new SparseFeatureVector();
-		fv.set(1, 4.5);
-		fv.set(5, 7.1);
-		fv.set(6, 13);
-		assertFalse(fv.equals(fv2));
-		fv.set(10, 2.3);
-		assertTrue(fv.equals(fv2));
-		assertEquals(fv.hashCode(), fv2.hashCode());
-		fv.set(11, 7);
-		assertFalse(fv.equals(fv2));
-		fv.set(5, 7.2);
-		assertFalse(fv.equals(fv2));
-		assertFalse(fv.equals(new Integer(5)));
-	}
-	
-	@Test
-	public void testRemove() {
-		boolean exceptionThrown = false;
-		try {
-			Iterator<FeatureVector.Entry> it = fv2.iterator();
-			it.remove();
-		} catch( UnsupportedOperationException e ) {
-			exceptionThrown = true;
-		}
-		
-		assertTrue(exceptionThrown);
-	}
-	
-	@Test
-	public void testInnerProduct() throws CleartkException {
-		FeatureVector fv = new SparseFeatureVector();
-		fv.set(1, 1);
-		fv.set(3, 2.5);
-		fv.set(6, 0.5);
-		
-		assertEquals(fv.innerProduct(fv2), 11, delta);
-		assertEquals(fv2.innerProduct(fv), 11, delta);
-	}
-	
-	
-	static final double delta = 0.0000001;
-	FeatureVector fv1;
-	FeatureVector fv2;
-	FeatureVector fv3;
+
+  @Before
+  public void setUp() throws CleartkException {
+    fv1 = new SparseFeatureVector();
+    fv2 = new SparseFeatureVector();
+    fv2.set(1, 4.5);
+    fv2.set(5, 7.1);
+    fv2.set(7, 1.3);
+    fv2.set(10, 2.3);
+    fv2.set(7, 0);
+    fv2.set(6, 13);
+    fv2.set(3, 0);
+  }
+
+  @Test
+  public void testPlainConstructor() {
+    Iterator<FeatureVector.Entry> it = fv1.iterator();
+    assertFalse(it.hasNext());
+  }
+
+  @Test
+  public void testCopyConstructor() throws CleartkException {
+    FeatureVector fv = new SparseFeatureVector(fv2);
+
+    assertEquals(fv, fv2);
+  }
+
+  @Test
+  public void testGet() {
+    assertEquals(fv2.get(0), 0, 0.0);
+    assertEquals(fv2.get(1), 4.5, delta);
+    assertEquals(fv2.get(2), 0, 0.0);
+    assertEquals(fv2.get(3), 0, 0.0);
+    assertEquals(fv2.get(4), 0, 0.0);
+    assertEquals(fv2.get(5), 7.1, delta);
+    assertEquals(fv2.get(6), 13, delta);
+    assertEquals(fv2.get(7), 0, 0.0);
+    assertEquals(fv2.get(8), 0, 0.0);
+    assertEquals(fv2.get(9), 0, 0.0);
+    assertEquals(fv2.get(10), 2.3, delta);
+    assertEquals(fv2.get(11), 0, 0.0);
+  }
+
+  @Test
+  public void testEquals() throws CleartkException {
+    FeatureVector fv = new SparseFeatureVector();
+    fv.set(1, 4.5);
+    fv.set(5, 7.1);
+    fv.set(6, 13);
+    assertFalse(fv.equals(fv2));
+    fv.set(10, 2.3);
+    assertTrue(fv.equals(fv2));
+    assertEquals(fv.hashCode(), fv2.hashCode());
+    fv.set(11, 7);
+    assertFalse(fv.equals(fv2));
+    fv.set(5, 7.2);
+    assertFalse(fv.equals(fv2));
+    assertFalse(fv.equals(new Integer(5)));
+  }
+
+  @Test
+  public void testRemove() {
+    boolean exceptionThrown = false;
+    try {
+      Iterator<FeatureVector.Entry> it = fv2.iterator();
+      it.remove();
+    } catch (UnsupportedOperationException e) {
+      exceptionThrown = true;
+    }
+
+    assertTrue(exceptionThrown);
+  }
+
+  @Test
+  public void testInnerProduct() throws CleartkException {
+    FeatureVector fv = new SparseFeatureVector();
+    fv.set(1, 1);
+    fv.set(3, 2.5);
+    fv.set(6, 0.5);
+
+    assertEquals(fv.innerProduct(fv2), 11, delta);
+    assertEquals(fv2.innerProduct(fv), 11, delta);
+  }
+
+  static final double delta = 0.0000001;
+
+  FeatureVector fv1;
+
+  FeatureVector fv2;
+
+  FeatureVector fv3;
 }

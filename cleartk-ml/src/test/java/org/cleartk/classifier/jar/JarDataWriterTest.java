@@ -56,50 +56,53 @@ import org.uimafit.factory.UimaContextFactory;
  */
 public class JarDataWriterTest extends DefaultTestBase {
 
-	@Test
-	public void testManifest() throws UIMAException, IOException, CleartkException {
-		String expectedManifest = ("Manifest-Version: 1.0\n"
-				+ "classifierBuilderClass: org.cleartk.classifier.test.StringTestClassifi\n" + " erBuilder");
+  @Test
+  public void testManifest() throws UIMAException, IOException, CleartkException {
+    String expectedManifest = ("Manifest-Version: 1.0\n"
+            + "classifierBuilderClass: org.cleartk.classifier.test.StringTestClassifi\n"
+            + " erBuilder");
 
-		JarDataWriter<String, String, List<NameNumber>> dataWriter = new StringTestDataWriter(outputDirectory);
-		dataWriter.setFeaturesEncoder(new NameNumberFeaturesEncoder(false, false));
-		dataWriter.setOutcomeEncoder(new StringToStringOutcomeEncoder());
-		dataWriter.finish();
-		File manifestFile = new File(outputDirectory, "MANIFEST.MF");
-		String actualManifest = FileUtils.file2String(manifestFile);
-		Assert.assertEquals(expectedManifest, actualManifest.replaceAll("\r", "").trim());
-	}
+    JarDataWriter<String, String, List<NameNumber>> dataWriter = new StringTestDataWriter(
+            outputDirectory);
+    dataWriter.setFeaturesEncoder(new NameNumberFeaturesEncoder(false, false));
+    dataWriter.setOutcomeEncoder(new StringToStringOutcomeEncoder());
+    dataWriter.finish();
+    File manifestFile = new File(outputDirectory, "MANIFEST.MF");
+    String actualManifest = FileUtils.file2String(manifestFile);
+    Assert.assertEquals(expectedManifest, actualManifest.replaceAll("\r", "").trim());
+  }
 
-	@Test
-	public void testPrintWriter() throws UIMAException, IOException, CleartkException {
+  @Test
+  public void testPrintWriter() throws UIMAException, IOException, CleartkException {
 
-		JarDataWriter<String, String, List<NameNumber>> dataWriter = new StringTestDataWriter(outputDirectory);
-		dataWriter.setFeaturesEncoder(new NameNumberFeaturesEncoder(false, false));
-		dataWriter.setOutcomeEncoder(new StringToStringOutcomeEncoder());
-		PrintWriter printWriter = dataWriter.getPrintWriter("foo.txt");
-		printWriter.println("foo");
-		dataWriter.finish();
-		String actualText = FileUtils.file2String(new File(outputDirectory, "foo.txt"));
-		Assert.assertEquals("foo\n", actualText.replaceAll("\r", ""));
+    JarDataWriter<String, String, List<NameNumber>> dataWriter = new StringTestDataWriter(
+            outputDirectory);
+    dataWriter.setFeaturesEncoder(new NameNumberFeaturesEncoder(false, false));
+    dataWriter.setOutcomeEncoder(new StringToStringOutcomeEncoder());
+    PrintWriter printWriter = dataWriter.getPrintWriter("foo.txt");
+    printWriter.println("foo");
+    dataWriter.finish();
+    String actualText = FileUtils.file2String(new File(outputDirectory, "foo.txt"));
+    Assert.assertEquals("foo\n", actualText.replaceAll("\r", ""));
 
-		try {
-			printWriter = dataWriter.getPrintWriter(".");
-			Assert.fail("expected exception on bad file name");
-		}
-		catch (IOException ioe) { }
-	}
+    try {
+      printWriter = dataWriter.getPrintWriter(".");
+      Assert.fail("expected exception on bad file name");
+    } catch (IOException ioe) {
+    }
+  }
 
-	@Test
-	public void testFinish() throws UIMAException, IOException, CleartkException {
+  @Test
+  public void testFinish() throws UIMAException, IOException, CleartkException {
 
-		UimaContext uimaContext = UimaContextFactory.createUimaContext(JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName);
-		DefaultStringTestDataWriterFactory factory = new DefaultStringTestDataWriterFactory();
-		factory.initialize(uimaContext);
-		DataWriter<String> dataWriter = factory.createDataWriter();
-		dataWriter.finish();
-		assertTrue(new File(outputDirectory, FeaturesEncoder_ImplBase.ENCODERS_FILE_NAME).exists());
-		
-	}
+    UimaContext uimaContext = UimaContextFactory.createUimaContext(
+            JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName);
+    DefaultStringTestDataWriterFactory factory = new DefaultStringTestDataWriterFactory();
+    factory.initialize(uimaContext);
+    DataWriter<String> dataWriter = factory.createDataWriter();
+    dataWriter.finish();
+    assertTrue(new File(outputDirectory, FeaturesEncoder_ImplBase.ENCODERS_FILE_NAME).exists());
 
+  }
 
 }

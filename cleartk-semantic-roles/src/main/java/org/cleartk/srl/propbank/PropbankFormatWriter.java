@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
- package org.cleartk.srl.propbank;
+package org.cleartk.srl.propbank;
 
 import java.util.List;
 
@@ -45,40 +45,45 @@ import org.cleartk.util.ae.linewriter.AnnotationWriter;
  * <p>
  */
 
-public class PropbankFormatWriter implements AnnotationWriter<Predicate>{
+public class PropbankFormatWriter implements AnnotationWriter<Predicate> {
 
-	public void initialize(UimaContext context) throws ResourceInitializationException {}
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+  }
 
-	public String writeAnnotation(JCas jCas, Predicate predicate) throws AnalysisEngineProcessException {
-		StringBuilder sb = new StringBuilder();
-		
-		String uri = ViewURIUtil.getURI(jCas);
-		sb.append(uri+"\t");
-		
-		List<Sentence> sentences = AnnotationRetrieval.getAnnotations(jCas, Sentence.class);
-		Sentence predicateSentence = AnnotationRetrieval.getContainingAnnotation(jCas, predicate, Sentence.class);
-		int sentenceId = -1;
-		for(int i=0; i<sentences.size(); i++) {
-			if(sentences.get(i).equals(predicateSentence)) {
-				sentenceId = i;
-			}
-		}
-		
-		String treeId = Integer.toString(sentenceId);
-		sb.append(treeId+"\t");
-		
-		String frameSetId = predicate.getBaseForm() +"."+predicate.getFrameSet();
-		sb.append(frameSetId + "\t");
-		
-		//this part seems like cheating.  what we should really do here is calculate the propTxt based on the other information
-		//in the cas and then compare it to the explicitly stored version and throw an exception if there is a difference.  That way,
-		//we know the data is consistent.  
-		List<Argument> arguments = UIMAUtil.toList(predicate.getArguments(), Argument.class);
-		for(Argument argument : arguments) {
-			if(argument instanceof SemanticArgument)
-				sb.append(((SemanticArgument) argument).getPropTxt()+"\t");
-		}
-		return sb.toString();
-	}
+  public String writeAnnotation(JCas jCas, Predicate predicate)
+          throws AnalysisEngineProcessException {
+    StringBuilder sb = new StringBuilder();
+
+    String uri = ViewURIUtil.getURI(jCas);
+    sb.append(uri + "\t");
+
+    List<Sentence> sentences = AnnotationRetrieval.getAnnotations(jCas, Sentence.class);
+    Sentence predicateSentence = AnnotationRetrieval.getContainingAnnotation(jCas, predicate,
+            Sentence.class);
+    int sentenceId = -1;
+    for (int i = 0; i < sentences.size(); i++) {
+      if (sentences.get(i).equals(predicateSentence)) {
+        sentenceId = i;
+      }
+    }
+
+    String treeId = Integer.toString(sentenceId);
+    sb.append(treeId + "\t");
+
+    String frameSetId = predicate.getBaseForm() + "." + predicate.getFrameSet();
+    sb.append(frameSetId + "\t");
+
+    // this part seems like cheating. what we should really do here is calculate the propTxt based
+    // on the other information
+    // in the cas and then compare it to the explicitly stored version and throw an exception if
+    // there is a difference. That way,
+    // we know the data is consistent.
+    List<Argument> arguments = UIMAUtil.toList(predicate.getArguments(), Argument.class);
+    for (Argument argument : arguments) {
+      if (argument instanceof SemanticArgument)
+        sb.append(((SemanticArgument) argument).getPropTxt() + "\t");
+    }
+    return sb.toString();
+  }
 
 }

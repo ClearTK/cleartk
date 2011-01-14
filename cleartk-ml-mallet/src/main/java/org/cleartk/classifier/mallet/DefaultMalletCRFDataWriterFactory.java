@@ -42,35 +42,40 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * <br>
  * Copyright (c) 2009, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
  * @author Philip Ogren, Philipp Wetzler
  * 
  */
 
-public class DefaultMalletCRFDataWriterFactory extends JarSequentialDataWriterFactory<List<NameNumber>, String, String> {
+public class DefaultMalletCRFDataWriterFactory extends
+        JarSequentialDataWriterFactory<List<NameNumber>, String, String> {
 
-	public static final String PARAM_COMPRESS = ConfigurationParameterFactory.createConfigurationParameterName(DefaultMalletCRFDataWriterFactory.class, "compress");
-	@ConfigurationParameter(description="indicates whether the FeaturesEncoder should compress the feature names", defaultValue="false")
-	private boolean compress;
-	
-	public static final String PARAM_SORT = ConfigurationParameterFactory.createConfigurationParameterName(DefaultMalletCRFDataWriterFactory.class, "sort");
-	@ConfigurationParameter(description="indicates that the FeaturesEncoder should write the feature names in sorted order", defaultValue="false")
-	private boolean sort;
+  public static final String PARAM_COMPRESS = ConfigurationParameterFactory
+          .createConfigurationParameterName(DefaultMalletCRFDataWriterFactory.class, "compress");
 
-	public SequentialDataWriter<String> createSequentialDataWriter() throws IOException {
-		MalletCRFDataWriter mdw = new MalletCRFDataWriter(outputDirectory);
-		
-		if(!this.setEncodersFromFileSystem(mdw)) {
-			NameNumberFeaturesEncoder fe = new NameNumberFeaturesEncoder(compress, sort);
-			fe.addEncoder(new NumberEncoder());
-			fe.addEncoder(new BooleanEncoder());
-			fe.addEncoder(new StringEncoder());
-			mdw.setFeaturesEncoder(fe);
-			
-			mdw.setOutcomeEncoder(new StringToStringOutcomeEncoder());
-		}
+  @ConfigurationParameter(description = "indicates whether the FeaturesEncoder should compress the feature names", defaultValue = "false")
+  private boolean compress;
 
-		return mdw;
-	}
+  public static final String PARAM_SORT = ConfigurationParameterFactory
+          .createConfigurationParameterName(DefaultMalletCRFDataWriterFactory.class, "sort");
 
+  @ConfigurationParameter(description = "indicates that the FeaturesEncoder should write the feature names in sorted order", defaultValue = "false")
+  private boolean sort;
+
+  public SequentialDataWriter<String> createSequentialDataWriter() throws IOException {
+    MalletCRFDataWriter mdw = new MalletCRFDataWriter(outputDirectory);
+
+    if (!this.setEncodersFromFileSystem(mdw)) {
+      NameNumberFeaturesEncoder fe = new NameNumberFeaturesEncoder(compress, sort);
+      fe.addEncoder(new NumberEncoder());
+      fe.addEncoder(new BooleanEncoder());
+      fe.addEncoder(new StringEncoder());
+      mdw.setFeaturesEncoder(fe);
+
+      mdw.setOutcomeEncoder(new StringToStringOutcomeEncoder());
+    }
+
+    return mdw;
+  }
 
 }

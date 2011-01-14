@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2010, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,25 +20,24 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.util.collection;
 
 import java.io.Serializable;
 
 /**
- * <br>Copyright (c) 2010, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2010, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * <p>
  */
 public interface StringMapper extends Serializable {
 
-	public int getOrGenerateInteger(String s);
-	
-	public int getInteger(String s) throws UnknownKeyException;
-	
-	public void finalizeMap();
-	
+  public int getOrGenerateInteger(String s);
+
+  public int getInteger(String s) throws UnknownKeyException;
+
+  public void finalizeMap();
+
 }
-	
-	

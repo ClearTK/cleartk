@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.token.tokenizer.chunk;
 
 import java.util.ArrayList;
@@ -33,53 +33,54 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.chunker.DefaultChunkLabeler;
 import org.cleartk.util.AnnotationRetrieval;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * <p>
  */
 public class ChunkTokenizerLabeler extends DefaultChunkLabeler {
 
-	/**
-	 * In general, the chunks will be annotations of type Token and the labeled
-	 * annotations will be annotations of type Subtoken creating labels such as
-	 * B-TOKEN or I-TOKEN. I had to override chunk2Labels for the chunker-style
-	 * tokenization because there are cases in the GENIA data where the "Token"
-	 * has no Subtokens within it because they split a word like "heterodimer"
-	 * into two tokens and the Subtokenizer only identifies one Subtoken from
-	 * that word. So, when the Token corresponds to "hetero" it will label the
-	 * Subtoken that contains it as "B-TOKEN". When the next Token corresponding
-	 * to "dimer" is visited the same Subtoken that contains it will be
-	 * relabeled as "B-TOKEN".
-	 */
-	public void chunks2Labels(JCas jCas) throws AnalysisEngineProcessException {
-		if (!typesInitialized) initializeTypes(jCas);
+  /**
+   * In general, the chunks will be annotations of type Token and the labeled annotations will be
+   * annotations of type Subtoken creating labels such as B-TOKEN or I-TOKEN. I had to override
+   * chunk2Labels for the chunker-style tokenization because there are cases in the GENIA data where
+   * the "Token" has no Subtokens within it because they split a word like "heterodimer" into two
+   * tokens and the Subtokenizer only identifies one Subtoken from that word. So, when the Token
+   * corresponds to "hetero" it will label the Subtoken that contains it as "B-TOKEN". When the next
+   * Token corresponding to "dimer" is visited the same Subtoken that contains it will be relabeled
+   * as "B-TOKEN".
+   */
+  public void chunks2Labels(JCas jCas) throws AnalysisEngineProcessException {
+    if (!typesInitialized)
+      initializeTypes(jCas);
 
-		FSIterator<Annotation> chunkAnnotations = jCas.getAnnotationIndex(chunkAnnotationType).iterator();
-		while (chunkAnnotations.hasNext()) {
-			Annotation chunkAnnotation = (Annotation) chunkAnnotations.next();
-			String label = getChunkLabel(jCas, chunkAnnotation);
+    FSIterator<Annotation> chunkAnnotations = jCas.getAnnotationIndex(chunkAnnotationType)
+            .iterator();
+    while (chunkAnnotations.hasNext()) {
+      Annotation chunkAnnotation = (Annotation) chunkAnnotations.next();
+      String label = getChunkLabel(jCas, chunkAnnotation);
 
-			List<? extends Annotation> labeledAnnotations = AnnotationRetrieval.getAnnotations(jCas, chunkAnnotation,
-					labeledAnnotationClass);
+      List<? extends Annotation> labeledAnnotations = AnnotationRetrieval.getAnnotations(jCas,
+              chunkAnnotation, labeledAnnotationClass);
 
-			if (labeledAnnotations.size() == 0) {
-				List<Annotation> anns = new ArrayList<Annotation>();
-				Annotation labeledAnnotation = AnnotationRetrieval.getContainingAnnotation(jCas, chunkAnnotation,
-						labeledAnnotationClass);
-				anns.add(labeledAnnotation);
-				labeledAnnotations = anns;
-			}
+      if (labeledAnnotations.size() == 0) {
+        List<Annotation> anns = new ArrayList<Annotation>();
+        Annotation labeledAnnotation = AnnotationRetrieval.getContainingAnnotation(jCas,
+                chunkAnnotation, labeledAnnotationClass);
+        anns.add(labeledAnnotation);
+        labeledAnnotations = anns;
+      }
 
-			boolean begin = true;
-			for (Annotation labelAnnotation : labeledAnnotations) {
-				String fullLabel = begin ? BEGIN_PREFIX + SEPARATOR + label : INSIDE_PREFIX + SEPARATOR + label;
-				begin = false;
-				annotationLabels.put(labelAnnotation, fullLabel);
-			}
-		}
-	}
+      boolean begin = true;
+      for (Annotation labelAnnotation : labeledAnnotations) {
+        String fullLabel = begin ? BEGIN_PREFIX + SEPARATOR + label : INSIDE_PREFIX + SEPARATOR
+                + label;
+        begin = false;
+        annotationLabels.put(labelAnnotation, fullLabel);
+      }
+    }
+  }
 
 }

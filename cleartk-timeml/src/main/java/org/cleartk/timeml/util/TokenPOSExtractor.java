@@ -34,7 +34,7 @@ import org.cleartk.token.type.Token;
  * @author Steven Bethard
  */
 public class TokenPOSExtractor extends TypePathExtractor {
-	public TokenPOSExtractor() {
-		super(Token.class, "pos");
-	}
+  public TokenPOSExtractor() {
+    super(Token.class, "pos");
+  }
 }

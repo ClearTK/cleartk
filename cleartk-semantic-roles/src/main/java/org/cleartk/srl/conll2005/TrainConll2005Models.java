@@ -41,48 +41,53 @@ import org.uimafit.pipeline.SimplePipeline;
  * <br>
  * Copyright (c) 2009, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
  * @author Steven Bethard, Philipp Wetzler
  */
 public class TrainConll2005Models {
-	
-	private static final File conll2005File = new File("../../ClearTK-data/data/conll2005/trainset-15-18");
-//	private static final File predicateIdentificationOutputDirectory = new File("scratch/CoNLL2005/predicateIdentification");
-	private static final File argumentIdentificationOutputDirectory = new File("scratch/CoNLL2005/argumentIdentification");
-	private static final File argumentClassificationOutputDirectory = new File("scratch/CoNLL2005/argumentClassification");
 
-	public static void main(String[] args) throws Exception {
-		argumentIdentificationOutputDirectory.getParentFile().mkdirs();
-		argumentClassificationOutputDirectory.getParentFile().mkdirs();
-		
-		// run the components to write the training data
-		SimplePipeline.runPipeline(
-				Conll2005GoldReader.getCollectionReader(conll2005File.toString()),
-				AnalysisEngineFactory.createPrimitiveDescription(
-						Conll2005GoldAnnotator.class, 
-						SrlComponents.TYPE_SYSTEM_DESCRIPTION,
-						Conll2005GoldAnnotator.PARAM_HAS_VERB_SENSES, true),
-				DefaultSnowballStemmer.getDescription("English"),
-//				CleartkComponents.createCleartkAnnotator(
-//						PredicateAnnotator.class, 
-//						DefaultSVMlightDataWriterFactory.class, 
-//						predicateIdentificationOutputDirectory.toString()),
-				CleartkComponents.createCleartkAnnotator(
-						ArgumentIdentifier.class, SrlComponents.TYPE_SYSTEM_DESCRIPTION,
-						DefaultBinaryLIBSVMDataWriterFactory.class, 
-						argumentIdentificationOutputDirectory.toString(), 
-						(List<Class<?>>)null
-				),
-				CleartkComponents.createCleartkAnnotator(
-						ArgumentClassifier.class, SrlComponents.TYPE_SYSTEM_DESCRIPTION,
-						DefaultMultiClassLIBSVMDataWriterFactory.class, 
-						argumentClassificationOutputDirectory.toString(),
-						(List<Class<?>>)null)
-		);
-		
-		// train the model on the training data
-//		Train.main(predicateIdentificationOutputDirectory.toString(), "--executable", "svm_perf_learn", "-c", "1", "-l", "1");
-		Train.main(argumentIdentificationOutputDirectory.toString(), "--executable", "svm_perf_learn", "-c", "10000");
-		Train.main(argumentClassificationOutputDirectory.toString(), "--executable", "svm_perf_learn", "-c", "1");
-	}
+  private static final File conll2005File = new File(
+          "../../ClearTK-data/data/conll2005/trainset-15-18");
+
+  // private static final File predicateIdentificationOutputDirectory = new
+  // File("scratch/CoNLL2005/predicateIdentification");
+  private static final File argumentIdentificationOutputDirectory = new File(
+          "scratch/CoNLL2005/argumentIdentification");
+
+  private static final File argumentClassificationOutputDirectory = new File(
+          "scratch/CoNLL2005/argumentClassification");
+
+  public static void main(String[] args) throws Exception {
+    argumentIdentificationOutputDirectory.getParentFile().mkdirs();
+    argumentClassificationOutputDirectory.getParentFile().mkdirs();
+
+    // run the components to write the training data
+    SimplePipeline.runPipeline(
+            Conll2005GoldReader.getCollectionReader(conll2005File.toString()),
+            AnalysisEngineFactory.createPrimitiveDescription(Conll2005GoldAnnotator.class,
+                    SrlComponents.TYPE_SYSTEM_DESCRIPTION,
+                    Conll2005GoldAnnotator.PARAM_HAS_VERB_SENSES, true),
+            DefaultSnowballStemmer.getDescription("English"),
+            // CleartkComponents.createCleartkAnnotator(
+            // PredicateAnnotator.class,
+            // DefaultSVMlightDataWriterFactory.class,
+            // predicateIdentificationOutputDirectory.toString()),
+            CleartkComponents.createCleartkAnnotator(ArgumentIdentifier.class,
+                    SrlComponents.TYPE_SYSTEM_DESCRIPTION,
+                    DefaultBinaryLIBSVMDataWriterFactory.class,
+                    argumentIdentificationOutputDirectory.toString(), (List<Class<?>>) null),
+            CleartkComponents.createCleartkAnnotator(ArgumentClassifier.class,
+                    SrlComponents.TYPE_SYSTEM_DESCRIPTION,
+                    DefaultMultiClassLIBSVMDataWriterFactory.class,
+                    argumentClassificationOutputDirectory.toString(), (List<Class<?>>) null));
+
+    // train the model on the training data
+    // Train.main(predicateIdentificationOutputDirectory.toString(), "--executable",
+    // "svm_perf_learn", "-c", "1", "-l", "1");
+    Train.main(argumentIdentificationOutputDirectory.toString(), "--executable", "svm_perf_learn",
+            "-c", "10000");
+    Train.main(argumentClassificationOutputDirectory.toString(), "--executable", "svm_perf_learn",
+            "-c", "1");
+  }
 
 }

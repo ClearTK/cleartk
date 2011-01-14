@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.encoder.features.featurevector;
 
 import static org.junit.Assert.assertEquals;
@@ -30,30 +30,29 @@ import org.cleartk.classifier.encoder.features.BooleanEncoder;
 import org.junit.Assert;
 import org.junit.Test;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
-*/
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ */
 
 public class DefaultBooleanEncoderTest {
 
-	@Test
-	public void testBooleanFeatureEncoder() {
-		this.testBoolean(1.0, new Feature("foo", true));
-		this.testBoolean(0.0, new Feature(false));
-		try {
-			new BooleanEncoder().encode(new Feature("bar"));
-		} catch (ClassCastException e) {
-			return;
-		}
-		Assert.fail("expected exception when feature value is not boolean");
-	}
+  @Test
+  public void testBooleanFeatureEncoder() {
+    this.testBoolean(1.0, new Feature("foo", true));
+    this.testBoolean(0.0, new Feature(false));
+    try {
+      new BooleanEncoder().encode(new Feature("bar"));
+    } catch (ClassCastException e) {
+      return;
+    }
+    Assert.fail("expected exception when feature value is not boolean");
+  }
 
-	private void testBoolean(Number expected, Feature feature) {
-		BooleanEncoder encoder = new BooleanEncoder();
-		assertEquals(expected, encoder.encode(feature).get(0).number);
-	}
+  private void testBoolean(Number expected, Feature feature) {
+    BooleanEncoder encoder = new BooleanEncoder();
+    assertEquals(expected, encoder.encode(feature).get(0).number);
+  }
 
 }

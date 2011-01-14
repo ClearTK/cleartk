@@ -1,5 +1,5 @@
 /** 
-  * Copyright (c) 2010, Regents of the University of Colorado 
+ * Copyright (c) 2010, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -31,22 +31,21 @@ import org.kohsuke.args4j.CmdLineParser;
  * <br>
  * Copyright (c) 2010, Regents of the University of Colorado <br>
  * All rights reserved.
- *
+ * 
  * @author Philip Ogren
  */
 
 public abstract class Options_ImplBase {
 
-	public void parseOptions(String[] args) {
-		CmdLineParser parser = new CmdLineParser(this);
-		try {
-			parser.parseArgument(args);
-		}
-		catch (CmdLineException e) {
-			e.printStackTrace();
-			parser.printUsage(System.err);
-			System.exit(1);
-		}
-	}
+  public void parseOptions(String[] args) {
+    CmdLineParser parser = new CmdLineParser(this);
+    try {
+      parser.parseArgument(args);
+    } catch (CmdLineException e) {
+      e.printStackTrace();
+      parser.printUsage(System.err);
+      System.exit(1);
+    }
+  }
 
 }

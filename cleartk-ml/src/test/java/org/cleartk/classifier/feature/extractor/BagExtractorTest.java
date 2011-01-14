@@ -50,146 +50,135 @@ import org.uimafit.component.JCasAnnotatorAdapter;
 import org.uimafit.factory.AnalysisEngineFactory;
 
 /**
- * <br>Copyright (c) 2007-2010, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2010, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * <p>
  * 
  * @author Steven Bethard, Philipp Wetzler
  */
 public class BagExtractorTest extends DefaultTestBase {
 
-	@Before
-	public void localSetUp() throws Exception {
-		this.engine = AnalysisEngineFactory.createPrimitive(
-				JCasAnnotatorAdapter.class,
-				typeSystemDescription);
-		this.jCasObjects = new ArrayList<JCas>();
-		this.expectedTokenLists = new ArrayList<List<String>>();
-		this.expectedPOSLists = new ArrayList<List<String>>();
+  @Before
+  public void localSetUp() throws Exception {
+    this.engine = AnalysisEngineFactory.createPrimitive(JCasAnnotatorAdapter.class,
+            typeSystemDescription);
+    this.jCasObjects = new ArrayList<JCas>();
+    this.expectedTokenLists = new ArrayList<List<String>>();
+    this.expectedPOSLists = new ArrayList<List<String>>();
 
-		this.add(
-				"The man walked to the store.",
-				"The man walked to the store .",
-				"DT NN VBD IN DT NN .",
-				"The man walked to the store .",
-		"DT NN VBD IN .");
+    this.add("The man walked to the store.", "The man walked to the store .",
+            "DT NN VBD IN DT NN .", "The man walked to the store .", "DT NN VBD IN .");
 
-		String text2 = "The big black bug bit the big black bear\n" +
-		"and the big black bear bled blood";
+    String text2 = "The big black bug bit the big black bear\n"
+            + "and the big black bear bled blood";
 
-		this.add(text2, text2,
-				"DT JJ JJ NN VBD DT JJ JJ NN CC DT JJ JJ NN VBD NN",
-				"The big black bug bit the bear and bled blood",
-		"DT JJ NN VBD CC");
-	}
+    this.add(text2, text2, "DT JJ JJ NN VBD DT JJ JJ NN CC DT JJ JJ NN VBD NN",
+            "The big black bug bit the bear and bled blood", "DT JJ NN VBD CC");
+  }
 
-	/**
-	 * Tests a bag of Tokens where texts are extracted from each token.
-	 * 
-	 * @throws UIMAException
-	 * @throws IOException
-	 */
-	@Test
-	public void testSpannedText() throws UIMAException, IOException, CleartkException {
-		SpannedTextExtractor textExtractor = new SpannedTextExtractor();
-		BagExtractor bagExtractor = new BagExtractor(Token.class, textExtractor);
-		this.testOne(bagExtractor, "Bag(Token)", null, this.expectedTokenLists);
-	}
+  /**
+   * Tests a bag of Tokens where texts are extracted from each token.
+   * 
+   * @throws UIMAException
+   * @throws IOException
+   */
+  @Test
+  public void testSpannedText() throws UIMAException, IOException, CleartkException {
+    SpannedTextExtractor textExtractor = new SpannedTextExtractor();
+    BagExtractor bagExtractor = new BagExtractor(Token.class, textExtractor);
+    this.testOne(bagExtractor, "Bag(Token)", null, this.expectedTokenLists);
+  }
 
-	/**
-	 * Tests a bag of Tokens where texts are extracted from each token, and the
-	 * extractor is given a name.
-	 * 
-	 * @throws UIMAException
-	 * @throws IOException
-	 */
-	@Test
-	public void testNamedSpannedText() throws UIMAException, IOException, CleartkException {
-		SpannedTextExtractor textExtractor = new SpannedTextExtractor();
-		BagExtractor bagExtractor = new BagExtractor(Token.class, textExtractor);
-		this.testOne(bagExtractor, "Bag(Token)", null, this.expectedTokenLists);
-	}
+  /**
+   * Tests a bag of Tokens where texts are extracted from each token, and the extractor is given a
+   * name.
+   * 
+   * @throws UIMAException
+   * @throws IOException
+   */
+  @Test
+  public void testNamedSpannedText() throws UIMAException, IOException, CleartkException {
+    SpannedTextExtractor textExtractor = new SpannedTextExtractor();
+    BagExtractor bagExtractor = new BagExtractor(Token.class, textExtractor);
+    this.testOne(bagExtractor, "Bag(Token)", null, this.expectedTokenLists);
+  }
 
-	/**
-	 * Tests a bag of Tokens where part of speech tags are extracted from each
-	 * token.
-	 * 
-	 * @throws UIMAException
-	 * @throws IOException
-	 */
-	@Test
-	public void testPartOfSpeech() throws UIMAException, IOException, CleartkException {
-		TypePathExtractor posExtractor = new TypePathExtractor(Token.class, "pos");
-		BagExtractor bagExtractor = new BagExtractor(Token.class, posExtractor);
-		this.testOne(bagExtractor, "Bag(Token)", "TypePath(Pos)", this.expectedPOSLists);
-	}
+  /**
+   * Tests a bag of Tokens where part of speech tags are extracted from each token.
+   * 
+   * @throws UIMAException
+   * @throws IOException
+   */
+  @Test
+  public void testPartOfSpeech() throws UIMAException, IOException, CleartkException {
+    TypePathExtractor posExtractor = new TypePathExtractor(Token.class, "pos");
+    BagExtractor bagExtractor = new BagExtractor(Token.class, posExtractor);
+    this.testOne(bagExtractor, "Bag(Token)", "TypePath(Pos)", this.expectedPOSLists);
+  }
 
-	/**
-	 * Tests a bag of Tokens where part of speech tags are extracted from each
-	 * token and the extractor is given a name.
-	 * 
-	 * @throws UIMAException
-	 * @throws IOException
-	 */
-	@Test
-	public void testNamedPartOfSpeech() throws UIMAException, IOException, CleartkException {
-		TypePathExtractor posExtractor = new TypePathExtractor(Token.class, "pos");
-		BagExtractor bagExtractor = new BagExtractor(Token.class, posExtractor);
-		this.testOne(bagExtractor, "Bag(Token)", "TypePath(Pos)", this.expectedPOSLists);
-	}
+  /**
+   * Tests a bag of Tokens where part of speech tags are extracted from each token and the extractor
+   * is given a name.
+   * 
+   * @throws UIMAException
+   * @throws IOException
+   */
+  @Test
+  public void testNamedPartOfSpeech() throws UIMAException, IOException, CleartkException {
+    TypePathExtractor posExtractor = new TypePathExtractor(Token.class, "pos");
+    BagExtractor bagExtractor = new BagExtractor(Token.class, posExtractor);
+    this.testOne(bagExtractor, "Bag(Token)", "TypePath(Pos)", this.expectedPOSLists);
+  }
 
-	private void add(
-			String text,
-			String tokensString,
-			String posTagsString,
-			String expectedTokensString,
-			String expectedPOSString) throws UIMAException {
+  private void add(String text, String tokensString, String posTagsString,
+          String expectedTokensString, String expectedPOSString) throws UIMAException {
 
-		// create the JCas and add the expected tokens and POS tags to the lists
-		JCas jc = this.engine.newJCas();
-		this.jCasObjects.add(jc);
-		this.expectedTokenLists.add(Arrays.asList(expectedTokensString.split(" ")));
-		this.expectedPOSLists.add(Arrays.asList(expectedPOSString.split(" ")));
+    // create the JCas and add the expected tokens and POS tags to the lists
+    JCas jc = this.engine.newJCas();
+    this.jCasObjects.add(jc);
+    this.expectedTokenLists.add(Arrays.asList(expectedTokensString.split(" ")));
+    this.expectedPOSLists.add(Arrays.asList(expectedPOSString.split(" ")));
 
-		// set the document text and add Token annotations as indicated
-		tokenBuilder.buildTokens(jc, text, tokensString, posTagsString);
-	}
+    // set the document text and add Token annotations as indicated
+    tokenBuilder.buildTokens(jc, text, tokensString, posTagsString);
+  }
 
-	private void testOne (
-			BagExtractor bagExtractor,
-			String bagNameString,
-			String featuresNameString,
-			List<List<String>> expectedValuesLists)
-	throws UIMAException, IOException, CleartkException {
-		String nameString = Feature.createName(bagNameString, featuresNameString);
+  private void testOne(BagExtractor bagExtractor, String bagNameString, String featuresNameString,
+          List<List<String>> expectedValuesLists) throws UIMAException, IOException,
+          CleartkException {
+    String nameString = Feature.createName(bagNameString, featuresNameString);
 
-		// run a BagExtractor on each document
-		for (int i = 0; i < this.jCasObjects.size(); i++) {
-			JCas jc = this.jCasObjects.get(i);
-			DocumentAnnotation document = AnnotationRetrieval.getDocument(jc);
-			List<Feature> features = bagExtractor.extract(jc, document);
+    // run a BagExtractor on each document
+    for (int i = 0; i < this.jCasObjects.size(); i++) {
+      JCas jc = this.jCasObjects.get(i);
+      DocumentAnnotation document = AnnotationRetrieval.getDocument(jc);
+      List<Feature> features = bagExtractor.extract(jc, document);
 
-			// collect all feature values, and check all feature names
-			List<String> actualValues = new ArrayList<String>();
-			for (Feature feature: features) {
-				actualValues.add(feature.getValue().toString());
-				Assert.assertEquals(nameString, feature.getName());
-			}
+      // collect all feature values, and check all feature names
+      List<String> actualValues = new ArrayList<String>();
+      for (Feature feature : features) {
+        actualValues.add(feature.getValue().toString());
+        Assert.assertEquals(nameString, feature.getName());
+      }
 
-			// make sure the actual values match the expected ones
-			assertSetsEqual(actualValues, expectedValuesLists.get(i));
-		}
-	}
-	
-	private <T> void assertSetsEqual(Collection<T> c1, Collection<T> c2) {
-		Set<T> s1 = new HashSet<T>(c1);
-		Set<T> s2 = new HashSet<T>(c2);
-		Assert.assertEquals(s1, s2);
-	}
+      // make sure the actual values match the expected ones
+      assertSetsEqual(actualValues, expectedValuesLists.get(i));
+    }
+  }
 
-	private AnalysisEngine engine;
-	private List<JCas> jCasObjects;
-	private List<List<String>> expectedTokenLists;
-	private List<List<String>> expectedPOSLists;
+  private <T> void assertSetsEqual(Collection<T> c1, Collection<T> c2) {
+    Set<T> s1 = new HashSet<T>(c1);
+    Set<T> s2 = new HashSet<T>(c2);
+    Assert.assertEquals(s1, s2);
+  }
+
+  private AnalysisEngine engine;
+
+  private List<JCas> jCasObjects;
+
+  private List<List<String>> expectedTokenLists;
+
+  private List<List<String>> expectedPOSLists;
 }

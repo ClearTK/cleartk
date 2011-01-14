@@ -59,84 +59,89 @@ import org.uimafit.util.JCasUtil;
 
 public class PrepareSentenceData {
 
-	public static class Options extends Options_ImplBase{
-		
-		@Option(name="-i", aliases="--inputDirectoryName", usage="specify the name of the input directory for the wsj data.")
-		public String inputDirectoryName = "../ClearTK Data/data/treebank/wsj";
+  public static class Options extends Options_ImplBase {
 
-		@Option(name="-o", aliases="--outputDirectoryName", usage="specify the name of the output directory for the sentence data.")
-		public String outputDirectoryName = "../cleartk-token/src/main/resources/org/cleartk/sentence/english/ptb";
+    @Option(name = "-i", aliases = "--inputDirectoryName", usage = "specify the name of the input directory for the wsj data.")
+    public String inputDirectoryName = "../ClearTK Data/data/treebank/wsj";
 
-		@Option(name="-s", aliases="--sectionsSpecifier", usage="specify the sections that will be used.")
-		public String sectionsSpecifier = "00-24";
+    @Option(name = "-o", aliases = "--outputDirectoryName", usage = "specify the name of the output directory for the sentence data.")
+    public String outputDirectoryName = "../cleartk-token/src/main/resources/org/cleartk/sentence/english/ptb";
 
-	}
-	
-	public static void main(String[] args) throws Exception {
-		Options options = new Options();
-		options.parseOptions(args);
-		
-		String inputDirectoryName = options.inputDirectoryName;
-		String outputDirectoryName = options.outputDirectoryName;
-		String sectionsSpecifier = options.sectionsSpecifier;
-		
-		TypeSystemDescription typeSystemDescription = SyntaxComponents.TYPE_SYSTEM_DESCRIPTION;
-		CollectionReader reader = CollectionReaderFactory.createCollectionReader(PennTreebankReader.class, typeSystemDescription,
-				PennTreebankReader.PARAM_CORPUS_DIRECTORY_NAME, inputDirectoryName, PennTreebankReader.PARAM_SECTIONS_SPECIFIER, sectionsSpecifier);
-		AnalysisEngine treebankFormatter = AnalysisEngineFactory.createPrimitive(TreebankGoldAnnotator.class, typeSystemDescription,
-				TreebankGoldAnnotator.PARAM_POST_TREES, false);
-		AnalysisEngine xWriter = AnalysisEngineFactory.createPrimitive(XWriter.class, typeSystemDescription, 
-				XWriter.PARAM_OUTPUT_DIRECTORY_NAME, outputDirectoryName,
-				XWriter.PARAM_FILE_NAMER_CLASS_NAME, ViewURIFileNamer.class.getName());
-		AnalysisEngine sentencePrinter = AnalysisEngineFactory.createPrimitive(SentencePrinter.class, typeSystemDescription);
-		
-		SimplePipeline.runPipeline(reader, treebankFormatter, sentencePrinter, xWriter);
-	}
-	
-	public static class SentencePrinter extends JCasAnnotator_ImplBase {
+    @Option(name = "-s", aliases = "--sectionsSpecifier", usage = "specify the sections that will be used.")
+    public String sectionsSpecifier = "00-24";
 
-		Map<Character, Integer> charCounts = new HashMap<Character, Integer>();
-		int sentenceCount = 0;
-		
-		@Override
-		public void process(JCas jCas) throws AnalysisEngineProcessException {
-			for(Sentence sentence : JCasUtil.iterate(jCas, Sentence.class)) {
-				String sentenceText = sentence.getCoveredText();
-				char lastChar = sentenceText.charAt(sentenceText.length()-1);
-				int count = 0;
-				if(charCounts.containsKey(lastChar)) {
-					count = charCounts.get(lastChar);
-				}
-				count++;
-				charCounts.put(lastChar, count);
-				sentenceCount++;
-				if(lastChar != '.' && lastChar != '\"' &&  lastChar != '?') {
-					System.out.println(sentenceText);
-				}
-			}
-		}
+  }
 
-		@Override
-		public void collectionProcessComplete() throws AnalysisEngineProcessException {
-			List<Entry<Character, Integer>> entries = new ArrayList<Entry<Character, Integer>>(charCounts.entrySet());
-			Collections.sort(entries, new Comparator<Entry<Character, Integer>>() {
-			public int compare(Entry<Character, Integer> o1,Entry<Character, Integer> o2) {
-			  int comparison = o1.getValue().compareTo(o2.getValue());
-			  if(comparison == 0) {
-			    return o1.getKey().compareTo(o2.getKey());
-			  } else {
-			    return -comparison;
-			  }
-			}
-			});
+  public static void main(String[] args) throws Exception {
+    Options options = new Options();
+    options.parseOptions(args);
 
-			for(Entry<Character, Integer> entry : entries) {
-				System.out.println(entry.getKey()+"\t"+entry.getValue());
-			}
-			System.out.println("total number of sentences: "+sentenceCount);
-			super.collectionProcessComplete();
-		}
-		
-		
-	}
+    String inputDirectoryName = options.inputDirectoryName;
+    String outputDirectoryName = options.outputDirectoryName;
+    String sectionsSpecifier = options.sectionsSpecifier;
+
+    TypeSystemDescription typeSystemDescription = SyntaxComponents.TYPE_SYSTEM_DESCRIPTION;
+    CollectionReader reader = CollectionReaderFactory.createCollectionReader(
+            PennTreebankReader.class, typeSystemDescription,
+            PennTreebankReader.PARAM_CORPUS_DIRECTORY_NAME, inputDirectoryName,
+            PennTreebankReader.PARAM_SECTIONS_SPECIFIER, sectionsSpecifier);
+    AnalysisEngine treebankFormatter = AnalysisEngineFactory.createPrimitive(
+            TreebankGoldAnnotator.class, typeSystemDescription,
+            TreebankGoldAnnotator.PARAM_POST_TREES, false);
+    AnalysisEngine xWriter = AnalysisEngineFactory.createPrimitive(XWriter.class,
+            typeSystemDescription, XWriter.PARAM_OUTPUT_DIRECTORY_NAME, outputDirectoryName,
+            XWriter.PARAM_FILE_NAMER_CLASS_NAME, ViewURIFileNamer.class.getName());
+    AnalysisEngine sentencePrinter = AnalysisEngineFactory.createPrimitive(SentencePrinter.class,
+            typeSystemDescription);
+
+    SimplePipeline.runPipeline(reader, treebankFormatter, sentencePrinter, xWriter);
+  }
+
+  public static class SentencePrinter extends JCasAnnotator_ImplBase {
+
+    Map<Character, Integer> charCounts = new HashMap<Character, Integer>();
+
+    int sentenceCount = 0;
+
+    @Override
+    public void process(JCas jCas) throws AnalysisEngineProcessException {
+      for (Sentence sentence : JCasUtil.iterate(jCas, Sentence.class)) {
+        String sentenceText = sentence.getCoveredText();
+        char lastChar = sentenceText.charAt(sentenceText.length() - 1);
+        int count = 0;
+        if (charCounts.containsKey(lastChar)) {
+          count = charCounts.get(lastChar);
+        }
+        count++;
+        charCounts.put(lastChar, count);
+        sentenceCount++;
+        if (lastChar != '.' && lastChar != '\"' && lastChar != '?') {
+          System.out.println(sentenceText);
+        }
+      }
+    }
+
+    @Override
+    public void collectionProcessComplete() throws AnalysisEngineProcessException {
+      List<Entry<Character, Integer>> entries = new ArrayList<Entry<Character, Integer>>(
+              charCounts.entrySet());
+      Collections.sort(entries, new Comparator<Entry<Character, Integer>>() {
+        public int compare(Entry<Character, Integer> o1, Entry<Character, Integer> o2) {
+          int comparison = o1.getValue().compareTo(o2.getValue());
+          if (comparison == 0) {
+            return o1.getKey().compareTo(o2.getKey());
+          } else {
+            return -comparison;
+          }
+        }
+      });
+
+      for (Entry<Character, Integer> entry : entries) {
+        System.out.println(entry.getKey() + "\t" + entry.getValue());
+      }
+      System.out.println("total number of sentences: " + sentenceCount);
+      super.collectionProcessComplete();
+    }
+
+  }
 }

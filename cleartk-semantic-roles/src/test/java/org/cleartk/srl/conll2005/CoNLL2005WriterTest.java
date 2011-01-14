@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.srl.conll2005;
 
 import java.io.File;
@@ -34,28 +34,27 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
  */
 public class CoNLL2005WriterTest extends SrlTestBase {
 
-	@Test
-	public void testCoNLL2005WriterDescriptor() throws UIMAException, IOException {
-		try {
-			AnalysisEngineFactory.createPrimitive(Conll2005Writer.class, typeSystemDescription);
-			Assert.fail("expected exception without output file parameter");
-		} catch (ResourceInitializationException e) {}
+  @Test
+  public void testCoNLL2005WriterDescriptor() throws UIMAException, IOException {
+    try {
+      AnalysisEngineFactory.createPrimitive(Conll2005Writer.class, typeSystemDescription);
+      Assert.fail("expected exception without output file parameter");
+    } catch (ResourceInitializationException e) {
+    }
 
-		File outputFile = new File(outputDirectory, "dev-set-result.txt"); 
+    File outputFile = new File(outputDirectory, "dev-set-result.txt");
 
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				Conll2005Writer.class, typeSystemDescription,
-				Conll2005Writer.PARAM_OUTPUT_FILE, outputFile.getPath());
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(Conll2005Writer.class,
+            typeSystemDescription, Conll2005Writer.PARAM_OUTPUT_FILE, outputFile.getPath());
 
-		engine.collectionProcessComplete();
-	}
-	
+    engine.collectionProcessComplete();
+  }
+
 }

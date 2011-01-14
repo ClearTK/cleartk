@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.svmlight;
 
 import java.io.File;
@@ -35,53 +35,53 @@ import org.cleartk.classifier.jar.BuildJar;
 import org.cleartk.classifier.jar.ClassifierBuilder;
 import org.cleartk.classifier.sigmoid.Sigmoid;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
-*/
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ */
 
 public class OVASVMlightClassifierBuilder implements ClassifierBuilder<String> {
 
-	public void train(File dir, String[] args) throws Exception {
-		for (File file: dir.listFiles()) {
-			if (file.getName().matches("training-data-\\d+.svmlight")) {
-				SVMlightClassifierBuilder.train(file.getPath(), args);
-				
-				Sigmoid s = FitSigmoid.fit(new File(file.toString() + ".model"), file);
-				
-				ObjectOutput o = new ObjectOutputStream(new FileOutputStream(new File(file.toString() + ".sigmoid")));
-				o.writeObject(s);
-				o.close();
-			}
-		}
-	}
+  public void train(File dir, String[] args) throws Exception {
+    for (File file : dir.listFiles()) {
+      if (file.getName().matches("training-data-\\d+.svmlight")) {
+        SVMlightClassifierBuilder.train(file.getPath(), args);
 
-	public void buildJar(File dir, String[] args) throws Exception {
-		BuildJar.OutputStream stream = new BuildJar.OutputStream(dir);
-		
-		Pattern modelPattern = Pattern.compile("training-data-(\\d+)\\.svmlight\\.model");
-		Matcher modelMatcher;
-		Pattern sigmoidPattern = Pattern.compile("training-data-(\\d+)\\.svmlight\\.sigmoid");
-		Matcher sigmoidMatcher;
-		
-		for (File file: dir.listFiles()) {
-			modelMatcher = modelPattern.matcher(file.getName());
-			sigmoidMatcher = sigmoidPattern.matcher(file.getName());
-			if( modelMatcher.matches() ) {
-				String name = String.format("model-%d.svmlight", new Integer(modelMatcher.group(1)));
-				stream.write(name, file);
-			} else if( sigmoidMatcher.matches() ) {
-				String name = String.format("model-%d.sigmoid", new Integer(sigmoidMatcher.group(1)));
-				stream.write(name, file);
-			}
-		}
-		stream.close();
-	}
+        Sigmoid s = FitSigmoid.fit(new File(file.toString() + ".model"), file);
 
-	public Class<? extends Classifier<String>> getClassifierClass() {
-		return OVASVMlightClassifier.class;
-	}
-	
+        ObjectOutput o = new ObjectOutputStream(new FileOutputStream(new File(file.toString()
+                + ".sigmoid")));
+        o.writeObject(s);
+        o.close();
+      }
+    }
+  }
+
+  public void buildJar(File dir, String[] args) throws Exception {
+    BuildJar.OutputStream stream = new BuildJar.OutputStream(dir);
+
+    Pattern modelPattern = Pattern.compile("training-data-(\\d+)\\.svmlight\\.model");
+    Matcher modelMatcher;
+    Pattern sigmoidPattern = Pattern.compile("training-data-(\\d+)\\.svmlight\\.sigmoid");
+    Matcher sigmoidMatcher;
+
+    for (File file : dir.listFiles()) {
+      modelMatcher = modelPattern.matcher(file.getName());
+      sigmoidMatcher = sigmoidPattern.matcher(file.getName());
+      if (modelMatcher.matches()) {
+        String name = String.format("model-%d.svmlight", new Integer(modelMatcher.group(1)));
+        stream.write(name, file);
+      } else if (sigmoidMatcher.matches()) {
+        String name = String.format("model-%d.sigmoid", new Integer(sigmoidMatcher.group(1)));
+        stream.write(name, file);
+      }
+    }
+    stream.close();
+  }
+
+  public Class<? extends Classifier<String>> getClassifierClass() {
+    return OVASVMlightClassifier.class;
+  }
+
 }

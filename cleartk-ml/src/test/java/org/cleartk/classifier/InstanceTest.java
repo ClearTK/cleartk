@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier;
 
 import java.util.ArrayList;
@@ -30,51 +30,52 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * 
  * @author Steven Bethard
  */
 public class InstanceTest {
-	
-	@Test
-	public void testFeatures() {
-		Instance<String> instance = new Instance<String>();
-	
-		// test an instance with no features
-		Assert.assertEquals(0, instance.getFeatures().size());
-		
-		// test the .add() method
-		Feature f1 = new Feature("foo", "bar");
-		instance.add(f1);
-		Assert.assertEquals(1, instance.getFeatures().size());
-		Assert.assertEquals(f1, instance.getFeatures().get(0));
-		
-		// test the .addAll() method
-		Feature f2 = new Feature(true);
-		Feature f3 = new Feature("baz", 42.0);
-		List<Feature> newFeatures = new ArrayList<Feature>();
-		newFeatures.add(f2);
-		newFeatures.add(f3);
-		instance.addAll(newFeatures);
-		Assert.assertEquals(3, instance.getFeatures().size());
-		Assert.assertEquals(f1, instance.getFeatures().get(0));
-		Assert.assertEquals(f2, instance.getFeatures().get(1));
-		Assert.assertEquals(f3, instance.getFeatures().get(2));
-	}
-	
-	@Test
-	public void testLabel() {
-		Instance<Double> instance = new Instance<Double>();
-		
-		// test an instance with no label
-		Assert.assertEquals(null, instance.getOutcome());
-		
-		// test setting and retrieving the label
-		instance.setOutcome(3.14);
-		Assert.assertEquals(3.14d, instance.getOutcome().doubleValue(), 0.01d);
-		
-	}
+
+  @Test
+  public void testFeatures() {
+    Instance<String> instance = new Instance<String>();
+
+    // test an instance with no features
+    Assert.assertEquals(0, instance.getFeatures().size());
+
+    // test the .add() method
+    Feature f1 = new Feature("foo", "bar");
+    instance.add(f1);
+    Assert.assertEquals(1, instance.getFeatures().size());
+    Assert.assertEquals(f1, instance.getFeatures().get(0));
+
+    // test the .addAll() method
+    Feature f2 = new Feature(true);
+    Feature f3 = new Feature("baz", 42.0);
+    List<Feature> newFeatures = new ArrayList<Feature>();
+    newFeatures.add(f2);
+    newFeatures.add(f3);
+    instance.addAll(newFeatures);
+    Assert.assertEquals(3, instance.getFeatures().size());
+    Assert.assertEquals(f1, instance.getFeatures().get(0));
+    Assert.assertEquals(f2, instance.getFeatures().get(1));
+    Assert.assertEquals(f3, instance.getFeatures().get(2));
+  }
+
+  @Test
+  public void testLabel() {
+    Instance<Double> instance = new Instance<Double>();
+
+    // test an instance with no label
+    Assert.assertEquals(null, instance.getOutcome());
+
+    // test setting and retrieving the label
+    instance.setOutcome(3.14);
+    Assert.assertEquals(3.14d, instance.getOutcome().doubleValue(), 0.01d);
+
+  }
 
 }

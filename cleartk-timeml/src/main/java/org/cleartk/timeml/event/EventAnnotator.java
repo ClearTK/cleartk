@@ -65,107 +65,82 @@ import org.uimafit.factory.initializable.InitializableFactory;
  */
 public class EventAnnotator {
 
-	public static final String MODEL_DIR = "src/main/resources/models/timeml/event";
+  public static final String MODEL_DIR = "src/main/resources/models/timeml/event";
 
-	public static AnalysisEngineDescription getWriterDescription(String modelDir)
-			throws ResourceInitializationException {
-		return CleartkComponents.createCleartkSequentialAnnotator(
-			Chunker.class,
-			TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
-			DefaultMalletCRFDataWriterFactory.class,
-			modelDir,
-			(List<Class<?>>) null,
-			Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME,
-			Token.class.getName(),
-			Chunker.PARAM_SEQUENCE_CLASS_NAME,
-			Sentence.class.getName(),
-			Chunker.PARAM_CHUNK_LABELER_CLASS_NAME,
-			DefaultChunkLabeler.class.getName(),
-			Chunker.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME,
-			FeatureExtractor.class.getName(),
-			ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME,
-			Event.class.getName());
-	}
+  public static AnalysisEngineDescription getWriterDescription(String modelDir)
+          throws ResourceInitializationException {
+    return CleartkComponents.createCleartkSequentialAnnotator(Chunker.class,
+            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION, DefaultMalletCRFDataWriterFactory.class,
+            modelDir, (List<Class<?>>) null, Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME,
+            Token.class.getName(), Chunker.PARAM_SEQUENCE_CLASS_NAME, Sentence.class.getName(),
+            Chunker.PARAM_CHUNK_LABELER_CLASS_NAME, DefaultChunkLabeler.class.getName(),
+            Chunker.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME, FeatureExtractor.class.getName(),
+            ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME, Event.class.getName());
+  }
 
-	public static AnalysisEngineDescription getWriterDescription()
-			throws ResourceInitializationException {
-		return getWriterDescription(MODEL_DIR);
-	}
+  public static AnalysisEngineDescription getWriterDescription()
+          throws ResourceInitializationException {
+    return getWriterDescription(MODEL_DIR);
+  }
 
-	public static AnalysisEngineDescription getAnnotatorDescription(String modelDir)
-			throws ResourceInitializationException {
-		return CleartkComponents.createCleartkSequentialAnnotator(
-			Chunker.class,
-			TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
-			modelDir,
-			null,
-			Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME,
-			Token.class.getName(),
-			Chunker.PARAM_SEQUENCE_CLASS_NAME,
-			Sentence.class.getName(),
-			Chunker.PARAM_CHUNK_LABELER_CLASS_NAME,
-			DefaultChunkLabeler.class.getName(),
-			Chunker.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME,
-			FeatureExtractor.class.getName(),
-			ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME,
-			Event.class.getName());
-	}
+  public static AnalysisEngineDescription getAnnotatorDescription(String modelDir)
+          throws ResourceInitializationException {
+    return CleartkComponents.createCleartkSequentialAnnotator(Chunker.class,
+            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION, modelDir, null,
+            Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME, Token.class.getName(),
+            Chunker.PARAM_SEQUENCE_CLASS_NAME, Sentence.class.getName(),
+            Chunker.PARAM_CHUNK_LABELER_CLASS_NAME, DefaultChunkLabeler.class.getName(),
+            Chunker.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME, FeatureExtractor.class.getName(),
+            ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME, Event.class.getName());
+  }
 
-	public static AnalysisEngineDescription getAnnotatorDescription()
-			throws ResourceInitializationException {
-		return getAnnotatorDescription(MODEL_DIR + "/model.jar");
-	}
+  public static AnalysisEngineDescription getAnnotatorDescription()
+          throws ResourceInitializationException {
+    return getAnnotatorDescription(MODEL_DIR + "/model.jar");
+  }
 
-	public static class FeatureExtractor implements ChunkerFeatureExtractor {
-		@ConfigurationParameter(name = Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME)
-		private String labeledAnnotationClassName;
+  public static class FeatureExtractor implements ChunkerFeatureExtractor {
+    @ConfigurationParameter(name = Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME)
+    private String labeledAnnotationClassName;
 
-		private List<SimpleFeatureExtractor> tokenFeatureExtractors;
-		private List<WindowExtractor> windowFeatureExtractors;
+    private List<SimpleFeatureExtractor> tokenFeatureExtractors;
 
-		public void initialize(UimaContext context) throws ResourceInitializationException {
-			// get configured annotation
-			ConfigurationParameterInitializer.initialize(this, context);
-			Class<? extends Annotation> tokenClass = InitializableFactory.getClass(
-				this.labeledAnnotationClassName,
-				Annotation.class);
+    private List<WindowExtractor> windowFeatureExtractors;
 
-			// initialize feature lists
-			this.tokenFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
-			this.windowFeatureExtractors = new ArrayList<WindowExtractor>();
+    public void initialize(UimaContext context) throws ResourceInitializationException {
+      // get configured annotation
+      ConfigurationParameterInitializer.initialize(this, context);
+      Class<? extends Annotation> tokenClass = InitializableFactory.getClass(
+              this.labeledAnnotationClassName, Annotation.class);
 
-			// add features: word, stem, pos
-			this.tokenFeatureExtractors.add(new SpannedTextExtractor());
-			this.tokenFeatureExtractors.add(new TypePathExtractor(tokenClass, "stem"));
-			this.tokenFeatureExtractors.add(new TypePathExtractor(tokenClass, "pos"));
+      // initialize feature lists
+      this.tokenFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
+      this.windowFeatureExtractors = new ArrayList<WindowExtractor>();
 
-			// add window of features 2 before and 2 after
-			for (SimpleFeatureExtractor extractor : this.tokenFeatureExtractors) {
-				this.windowFeatureExtractors.add(new WindowExtractor(
-					tokenClass,
-					extractor,
-					ORIENTATION_RIGHT,
-					0,
-					3));
-				this.windowFeatureExtractors.add(new WindowExtractor(
-					tokenClass,
-					extractor,
-					ORIENTATION_LEFT,
-					0,
-					3));
-			}
-		}
+      // add features: word, stem, pos
+      this.tokenFeatureExtractors.add(new SpannedTextExtractor());
+      this.tokenFeatureExtractors.add(new TypePathExtractor(tokenClass, "stem"));
+      this.tokenFeatureExtractors.add(new TypePathExtractor(tokenClass, "pos"));
 
-		public Instance<String> extractFeatures(JCas jCas, Annotation labeledAnnotation,
-				Annotation sequence) throws CleartkException {
-			Instance<String> instance = new Instance<String>();
-			for (SimpleFeatureExtractor extractor : this.tokenFeatureExtractors) {
-				instance.addAll(extractor.extract(jCas, labeledAnnotation));
-			}
-			for (WindowExtractor extractor : this.windowFeatureExtractors) {
-				instance.addAll(extractor.extract(jCas, labeledAnnotation, sequence));
-			}
-			return instance;
-		}
-	}
+      // add window of features 2 before and 2 after
+      for (SimpleFeatureExtractor extractor : this.tokenFeatureExtractors) {
+        this.windowFeatureExtractors.add(new WindowExtractor(tokenClass, extractor,
+                ORIENTATION_RIGHT, 0, 3));
+        this.windowFeatureExtractors.add(new WindowExtractor(tokenClass, extractor,
+                ORIENTATION_LEFT, 0, 3));
+      }
+    }
+
+    public Instance<String> extractFeatures(JCas jCas, Annotation labeledAnnotation,
+            Annotation sequence) throws CleartkException {
+      Instance<String> instance = new Instance<String>();
+      for (SimpleFeatureExtractor extractor : this.tokenFeatureExtractors) {
+        instance.addAll(extractor.extract(jCas, labeledAnnotation));
+      }
+      for (WindowExtractor extractor : this.windowFeatureExtractors) {
+        instance.addAll(extractor.extract(jCas, labeledAnnotation, sequence));
+      }
+      return instance;
+    }
+  }
 }

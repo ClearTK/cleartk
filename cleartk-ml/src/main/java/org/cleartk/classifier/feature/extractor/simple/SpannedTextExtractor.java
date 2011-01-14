@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.feature.extractor.simple;
 
 import java.util.Collections;
@@ -30,11 +30,11 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * <p>
  * 
  * @author Philip Ogren
@@ -43,10 +43,10 @@ import org.cleartk.classifier.Feature;
 
 public class SpannedTextExtractor implements SimpleFeatureExtractor {
 
-	public List<Feature> extract(JCas jCas, Annotation focusAnnotation) {
-		String spannedText = focusAnnotation.getCoveredText();
+  public List<Feature> extract(JCas jCas, Annotation focusAnnotation) {
+    String spannedText = focusAnnotation.getCoveredText();
 
-		Feature feature = new Feature(spannedText);
-		return Collections.singletonList(feature);
-	}
+    Feature feature = new Feature(spannedText);
+    return Collections.singletonList(feature);
+  }
 }

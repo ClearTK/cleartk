@@ -40,57 +40,57 @@ import org.kohsuke.args4j.Option;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.pipeline.SimplePipeline;
 
-
 /**
- * <br>Copyright (c) 2009, Regents of the University of Colorado 
- * <br>All rights reserved.
- *
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * @author Philip Ogren
- *
+ * 
  */
 
 public class Step4RunClassifier {
 
-	public static class Args {
-		@Option(name = "-d", aliases = "--documentDirectory", usage = "specify the directory containing the test documents")
-		public String documentDirectory = "../ClearTK Data/data/20newsgroups/20news-bydate-test/";
-		@Option(name = "-m", aliases = "--modelFileName", usage = "specify the file name of the model file")
-		public String modelFileName = "example/documentclassification/libsvm/model.jar";
+  public static class Args {
+    @Option(name = "-d", aliases = "--documentDirectory", usage = "specify the directory containing the test documents")
+    public String documentDirectory = "../ClearTK Data/data/20newsgroups/20news-bydate-test/";
 
-		public static Args parseArguments(String[] stringArgs) {
-			Args args = new Args();
-			CmdLineParser parser = new CmdLineParser(args);
-			try {
-				parser.parseArgument(stringArgs);
-			} catch (CmdLineException e) {
-				e.printStackTrace();
-				parser.printUsage(System.err);
-				System.exit(1);
-			}
-			return args;
-		}
-	}
+    @Option(name = "-m", aliases = "--modelFileName", usage = "specify the file name of the model file")
+    public String modelFileName = "example/documentclassification/libsvm/model.jar";
 
-	public static void main(String[] stringArgs) throws UIMAException, IOException {
-		
-		Args args = Args.parseArguments(stringArgs);
-		String documentDirectory = args.documentDirectory;
-		String modelFileName = args.modelFileName;
-		
-		AnalysisEngineDescription documentClassificationAnnotatorDescription = 
-			AnalysisEngineFactory.createPrimitiveDescription(
-					DocumentClassificationAnnotator.class,
-					ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-					JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,  modelFileName);
+    public static Args parseArguments(String[] stringArgs) {
+      Args args = new Args();
+      CmdLineParser parser = new CmdLineParser(args);
+      try {
+        parser.parseArgument(stringArgs);
+      } catch (CmdLineException e) {
+        e.printStackTrace();
+        parser.printUsage(System.err);
+        System.exit(1);
+      }
+      return args;
+    }
+  }
 
-		System.out.println("classifying documents located in '"+documentDirectory+"'");
-		SimplePipeline.runPipeline(
-				FilesCollectionReader.getCollectionReader(ExampleComponents.TYPE_SYSTEM_DESCRIPTION, documentDirectory),
-				SentenceAnnotator.getDescription(),
-				TokenAnnotator.getDescription(), 
-				DefaultSnowballStemmer.getDescription("English"),
-				AnalysisEngineFactory.createPrimitiveDescription(GoldAnnotator.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION),
-				documentClassificationAnnotatorDescription,
-				AnalysisEngineFactory.createPrimitiveDescription(EvaluationAnnotator.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION));
-	}
+  public static void main(String[] stringArgs) throws UIMAException, IOException {
+
+    Args args = Args.parseArguments(stringArgs);
+    String documentDirectory = args.documentDirectory;
+    String modelFileName = args.modelFileName;
+
+    AnalysisEngineDescription documentClassificationAnnotatorDescription = AnalysisEngineFactory
+            .createPrimitiveDescription(DocumentClassificationAnnotator.class,
+                    ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+                    JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, modelFileName);
+
+    System.out.println("classifying documents located in '" + documentDirectory + "'");
+    SimplePipeline.runPipeline(FilesCollectionReader.getCollectionReader(
+            ExampleComponents.TYPE_SYSTEM_DESCRIPTION, documentDirectory), SentenceAnnotator
+            .getDescription(), TokenAnnotator.getDescription(), DefaultSnowballStemmer
+            .getDescription("English"), AnalysisEngineFactory.createPrimitiveDescription(
+            GoldAnnotator.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION),
+            documentClassificationAnnotatorDescription, AnalysisEngineFactory
+                    .createPrimitiveDescription(EvaluationAnnotator.class,
+                            ExampleComponents.TYPE_SYSTEM_DESCRIPTION));
+  }
 }

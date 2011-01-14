@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2009, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.feature.extractor.outcome;
 
 import java.io.Serializable;
@@ -32,20 +32,20 @@ import org.cleartk.classifier.Feature;
 import org.uimafit.factory.initializable.Initializable;
 
 /**
- * <br>Copyright (c) 2009, Regents of the University of Colorado 
- * <br>All rights reserved.
  * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved. <br>
  * 
- * For a detailed explanation of OutcomeFeatureExtractors please see 
+ * For a detailed explanation of OutcomeFeatureExtractors please see
  * http://code.google.com/p/cleartk/wiki/OutcomeFeatureExtractors
  * 
  * @author Philip Ogren
  * 
  */
-public interface OutcomeFeatureExtractor extends Serializable, Initializable{
+public interface OutcomeFeatureExtractor extends Serializable, Initializable {
 
-	public void initialize(UimaContext context) throws ResourceInitializationException;
+  public void initialize(UimaContext context) throws ResourceInitializationException;
 
-	public List<Feature> extractFeatures(List<Object> previousOutcomes);
+  public List<Feature> extractFeatures(List<Object> previousOutcomes);
 
 }

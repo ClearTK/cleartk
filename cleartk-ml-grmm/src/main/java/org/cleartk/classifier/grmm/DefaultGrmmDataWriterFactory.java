@@ -45,43 +45,41 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * Copyright (c) 2010, University of Würzburg <br>
  * All rights reserved.
  * <p>
+ * 
  * @author Martin Toepfer
  */
 public class DefaultGrmmDataWriterFactory extends
-		JarSequentialDataWriterFactory<List<NameNumber>, String[], String[]> {
+        JarSequentialDataWriterFactory<List<NameNumber>, String[], String[]> {
 
-	public static final String PARAM_COMPRESS = ConfigurationParameterFactory
-			.createConfigurationParameterName(
-					DefaultGrmmDataWriterFactory.class, "compress");
-	@ConfigurationParameter(description = "indicates whether the FeaturesEncoder should compress the feature names", defaultValue = "false")
-	private boolean compress;
+  public static final String PARAM_COMPRESS = ConfigurationParameterFactory
+          .createConfigurationParameterName(DefaultGrmmDataWriterFactory.class, "compress");
 
-	public static final String PARAM_SORT = ConfigurationParameterFactory
-			.createConfigurationParameterName(
-					DefaultGrmmDataWriterFactory.class, "sort");
-	@ConfigurationParameter(description = "indicates that the FeaturesEncoder should write the feature names in sorted order", defaultValue = "false")
-	private boolean sort;
+  @ConfigurationParameter(description = "indicates whether the FeaturesEncoder should compress the feature names", defaultValue = "false")
+  private boolean compress;
 
-	@Override
-	public void initialize(UimaContext uimaContext)
-			throws ResourceInitializationException {
-		super.initialize(uimaContext);
-	}
+  public static final String PARAM_SORT = ConfigurationParameterFactory
+          .createConfigurationParameterName(DefaultGrmmDataWriterFactory.class, "sort");
 
-	public SequentialDataWriter<String[]> createSequentialDataWriter()
-			throws IOException {
-		GrmmDataWriter dataWriter = new GrmmDataWriter(outputDirectory);
+  @ConfigurationParameter(description = "indicates that the FeaturesEncoder should write the feature names in sorted order", defaultValue = "false")
+  private boolean sort;
 
-		if (!this.setEncodersFromFileSystem(dataWriter)) {
-			NameNumberFeaturesEncoder fe = new NameNumberFeaturesEncoder(
-					compress, sort);
-			fe.addEncoder(new NumberEncoder());
-			fe.addEncoder(new BooleanEncoder());
-			fe.addEncoder(new StringEncoder());
-			dataWriter.setFeaturesEncoder(fe);
-			dataWriter.setOutcomeEncoder(new StringArrayToStringArrayEncoder());
-		}
+  @Override
+  public void initialize(UimaContext uimaContext) throws ResourceInitializationException {
+    super.initialize(uimaContext);
+  }
 
-		return dataWriter;
-	}
+  public SequentialDataWriter<String[]> createSequentialDataWriter() throws IOException {
+    GrmmDataWriter dataWriter = new GrmmDataWriter(outputDirectory);
+
+    if (!this.setEncodersFromFileSystem(dataWriter)) {
+      NameNumberFeaturesEncoder fe = new NameNumberFeaturesEncoder(compress, sort);
+      fe.addEncoder(new NumberEncoder());
+      fe.addEncoder(new BooleanEncoder());
+      fe.addEncoder(new StringEncoder());
+      dataWriter.setFeaturesEncoder(fe);
+      dataWriter.setOutcomeEncoder(new StringArrayToStringArrayEncoder());
+    }
+
+    return dataWriter;
+  }
 }

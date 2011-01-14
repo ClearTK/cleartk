@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.util.cr;
 
 import java.io.File;
@@ -43,106 +43,95 @@ import org.uimafit.pipeline.JCasIterable;
 import org.uimafit.util.JCasUtil;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * 
  * Unit tests for org.cleartk.readers.DirectoryCollectionReader.
  * 
  * @author Philip Ogren
  */
-public class XReaderTest extends DefaultTestBase{
-	
+public class XReaderTest extends DefaultTestBase {
 
-	@Test
-	public void testReaderXmi() throws IOException, UIMAException {
+  @Test
+  public void testReaderXmi() throws IOException, UIMAException {
 
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				XWriter.class, typeSystemDescription,
-				XWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDirectory.getPath(),
-				XWriter.PARAM_FILE_NAMER_CLASS_NAME, ViewURIFileNamer.class.getName());
-		tokenBuilder.buildTokens(jCas,
-				"I like\nspam!",
-				"I like spam !",
-				"PRP VB NN .");
-		String uri = new File(outputDirectory, "test").toURI().toString();
-		ViewURIUtil.setURI(jCas, uri);
-		engine.process(jCas);
-		engine.collectionProcessComplete();
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(XWriter.class,
+            typeSystemDescription, XWriter.PARAM_OUTPUT_DIRECTORY_NAME,
+            this.outputDirectory.getPath(), XWriter.PARAM_FILE_NAMER_CLASS_NAME,
+            ViewURIFileNamer.class.getName());
+    tokenBuilder.buildTokens(jCas, "I like\nspam!", "I like spam !", "PRP VB NN .");
+    String uri = new File(outputDirectory, "test").toURI().toString();
+    ViewURIUtil.setURI(jCas, uri);
+    engine.process(jCas);
+    engine.collectionProcessComplete();
 
-		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-				XReader.class,
-				typeSystemDescription,
-				FilesCollectionReader.PARAM_ROOT_FILE, new File(outputDirectory, "test.xmi").getPath());
-		
-		Assert.assertEquals(0, reader.getProgress()[0].getCompleted());
+    CollectionReader reader = CollectionReaderFactory.createCollectionReader(XReader.class,
+            typeSystemDescription, FilesCollectionReader.PARAM_ROOT_FILE, new File(outputDirectory,
+                    "test.xmi").getPath());
 
-		jCas = new JCasIterable(reader).next();
-		
-		String jCasText = jCas.getDocumentText();
-		String docText = "I like\nspam!";
-		Assert.assertEquals(jCasText, docText);
-			
-		Token token = JCasUtil.selectByIndex(jCas, Token.class, 0);
-		Assert.assertEquals("I", token.getCoveredText());
-		reader.close();
-		
-	}
+    Assert.assertEquals(0, reader.getProgress()[0].getCompleted());
 
-	@Test
-	public void testReaderXcas() throws IOException, UIMAException {
+    jCas = new JCasIterable(reader).next();
 
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				XWriter.class, typeSystemDescription,
-				XWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDirectory.getPath(),
-				XWriter.PARAM_XML_SCHEME_NAME, XWriter.XCAS,
-				XWriter.PARAM_FILE_NAMER_CLASS_NAME, ViewURIFileNamer.class.getName());
-		tokenBuilder.buildTokens(jCas,
-				"I like\nspam!",
-				"I like spam !",
-				"PRP VB NN .");
-		
-		String uri = new File(outputDirectory, "test").toURI().toString();
-		ViewURIUtil.setURI(jCas, uri);
-		engine.process(jCas);
-		engine.collectionProcessComplete();
+    String jCasText = jCas.getDocumentText();
+    String docText = "I like\nspam!";
+    Assert.assertEquals(jCasText, docText);
 
-		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-				XReader.class,
-				typeSystemDescription,
-				FilesCollectionReader.PARAM_ROOT_FILE, new File(outputDirectory,"test.xcas").getPath(),
-				XReader.PARAM_XML_SCHEME, XReader.XCAS);
-		
-		Assert.assertEquals(0, reader.getProgress()[0].getCompleted());
+    Token token = JCasUtil.selectByIndex(jCas, Token.class, 0);
+    Assert.assertEquals("I", token.getCoveredText());
+    reader.close();
 
-		jCas = new JCasIterable(reader).next();
-		
-		String jCasText = jCas.getDocumentText();
-		String docText = "I like\nspam!";
-		Assert.assertEquals(jCasText, docText);
-			
-		Token token = JCasUtil.selectByIndex(jCas, Token.class, 0);
-		Assert.assertEquals("I", token.getCoveredText());
-		reader.close();
-		
-	}
+  }
 
-	
-		@Test
-	public void testDescriptor() throws UIMAException, IOException {
-		try {
-			CollectionReaderFactory.createCollectionReader(XReader.class, typeSystemDescription);
-			Assert.fail("expected exception with no file or directory specified");
-		} catch (ResourceInitializationException e) {}
-		
-		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-				XReader.class, typeSystemDescription,
-				FilesCollectionReader.PARAM_ROOT_FILE, outputDirectory.getPath());
-		
-		Object fileOrDirectory = reader.getConfigParameterValue(
-				FilesCollectionReader.PARAM_ROOT_FILE);
-		Assert.assertEquals(outputDirectory.getPath(), fileOrDirectory);
-		
-	}
-	
+  @Test
+  public void testReaderXcas() throws IOException, UIMAException {
+
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(XWriter.class,
+            typeSystemDescription, XWriter.PARAM_OUTPUT_DIRECTORY_NAME,
+            this.outputDirectory.getPath(), XWriter.PARAM_XML_SCHEME_NAME, XWriter.XCAS,
+            XWriter.PARAM_FILE_NAMER_CLASS_NAME, ViewURIFileNamer.class.getName());
+    tokenBuilder.buildTokens(jCas, "I like\nspam!", "I like spam !", "PRP VB NN .");
+
+    String uri = new File(outputDirectory, "test").toURI().toString();
+    ViewURIUtil.setURI(jCas, uri);
+    engine.process(jCas);
+    engine.collectionProcessComplete();
+
+    CollectionReader reader = CollectionReaderFactory.createCollectionReader(XReader.class,
+            typeSystemDescription, FilesCollectionReader.PARAM_ROOT_FILE, new File(outputDirectory,
+                    "test.xcas").getPath(), XReader.PARAM_XML_SCHEME, XReader.XCAS);
+
+    Assert.assertEquals(0, reader.getProgress()[0].getCompleted());
+
+    jCas = new JCasIterable(reader).next();
+
+    String jCasText = jCas.getDocumentText();
+    String docText = "I like\nspam!";
+    Assert.assertEquals(jCasText, docText);
+
+    Token token = JCasUtil.selectByIndex(jCas, Token.class, 0);
+    Assert.assertEquals("I", token.getCoveredText());
+    reader.close();
+
+  }
+
+  @Test
+  public void testDescriptor() throws UIMAException, IOException {
+    try {
+      CollectionReaderFactory.createCollectionReader(XReader.class, typeSystemDescription);
+      Assert.fail("expected exception with no file or directory specified");
+    } catch (ResourceInitializationException e) {
+    }
+
+    CollectionReader reader = CollectionReaderFactory
+            .createCollectionReader(XReader.class, typeSystemDescription,
+                    FilesCollectionReader.PARAM_ROOT_FILE, outputDirectory.getPath());
+
+    Object fileOrDirectory = reader.getConfigParameterValue(FilesCollectionReader.PARAM_ROOT_FILE);
+    Assert.assertEquals(outputDirectory.getPath(), fileOrDirectory);
+
+  }
+
 }

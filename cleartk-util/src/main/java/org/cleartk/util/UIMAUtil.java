@@ -47,68 +47,62 @@ import org.apache.uima.jcas.cas.TOP;
  * 
  */
 public class UIMAUtil {
-	public static FSArray toFSArray(JCas jCas, List<? extends FeatureStructure> fsList) {
-		if (fsList == null) {
-			return new FSArray(jCas, 0);
-		}
-		FSArray fsArray = new FSArray(jCas, fsList.size());
-		fsArray.copyFromArray(fsList.toArray(new FeatureStructure[fsList.size()]), 0, 0, fsList.size());
-		return fsArray;
-	}
+  public static FSArray toFSArray(JCas jCas, List<? extends FeatureStructure> fsList) {
+    if (fsList == null) {
+      return new FSArray(jCas, 0);
+    }
+    FSArray fsArray = new FSArray(jCas, fsList.size());
+    fsArray.copyFromArray(fsList.toArray(new FeatureStructure[fsList.size()]), 0, 0, fsList.size());
+    return fsArray;
+  }
 
-	public static StringArray toStringArray(JCas jCas, String[] sArray) {
-		StringArray uimaSArray = new StringArray(jCas, sArray.length);
-		uimaSArray.copyFromArray(sArray, 0, 0, sArray.length);
-		return uimaSArray;
-	}
-	
-	public static List<String> toList(StringArray sArray) {
-		List<String> result = new ArrayList<String>(sArray.size());
-		for( int i=0; i<sArray.size(); i++ ) {
-			result.add(sArray.get(i));
-		}
-		
-		return result;
-	}
+  public static StringArray toStringArray(JCas jCas, String[] sArray) {
+    StringArray uimaSArray = new StringArray(jCas, sArray.length);
+    uimaSArray.copyFromArray(sArray, 0, 0, sArray.length);
+    return uimaSArray;
+  }
 
-	public static <T extends FeatureStructure> List<T> toList(FSArray fsArray, Class<T> cls) {
-		List<T> list = new ArrayList<T>();
+  public static List<String> toList(StringArray sArray) {
+    List<String> result = new ArrayList<String>(sArray.size());
+    for (int i = 0; i < sArray.size(); i++) {
+      result.add(sArray.get(i));
+    }
 
-		if (fsArray == null) {
-			return list;
-		}
+    return result;
+  }
 
-		for (FeatureStructure fs : fsArray.toArray()) {
-			list.add(cls.cast(fs));
-		}
-		return list;
+  public static <T extends FeatureStructure> List<T> toList(FSArray fsArray, Class<T> cls) {
+    List<T> list = new ArrayList<T>();
 
-	}
+    if (fsArray == null) {
+      return list;
+    }
 
-	public static Type getCasType(JCas jCas, Class<? extends TOP> cls) {
-		try {
-			return jCas.getCasType(cls.getField("type").getInt(null));
-		}
-		catch (IllegalAccessException e) {
-			throw new IllegalArgumentException(e);
-		}
-		catch (NoSuchFieldException e) {
-			throw new IllegalArgumentException(e);
-		}
-	}
+    for (FeatureStructure fs : fsArray.toArray()) {
+      list.add(cls.cast(fs));
+    }
+    return list;
 
-	public static String readSofa(JCas view) throws IOException {
-		InputStream in = view.getSofaDataStream();
-		StringBuffer tmp = new StringBuffer();
-		byte[] b = new byte[4096];
-		for (int n; (n = in.read(b)) != -1;) {
-			tmp.append(new String(b, 0, n));
-		}
-		return tmp.toString();
-	}
+  }
 
+  public static Type getCasType(JCas jCas, Class<? extends TOP> cls) {
+    try {
+      return jCas.getCasType(cls.getField("type").getInt(null));
+    } catch (IllegalAccessException e) {
+      throw new IllegalArgumentException(e);
+    } catch (NoSuchFieldException e) {
+      throw new IllegalArgumentException(e);
+    }
+  }
 
-	
-
+  public static String readSofa(JCas view) throws IOException {
+    InputStream in = view.getSofaDataStream();
+    StringBuffer tmp = new StringBuffer();
+    byte[] b = new byte[4096];
+    for (int n; (n = in.read(b)) != -1;) {
+      tmp.append(new String(b, 0, n));
+    }
+    return tmp.toString();
+  }
 
 }

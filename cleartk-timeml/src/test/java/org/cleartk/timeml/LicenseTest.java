@@ -35,15 +35,15 @@ import org.junit.Test;
 
 public class LicenseTest {
 
-	@Test
-	public void testLicenseStatedInSource() throws Exception {
-		LicenseTestUtil.testJavaFiles("src/main/java");
-	}
+  @Test
+  public void testLicenseStatedInSource() throws Exception {
+    LicenseTestUtil.testJavaFiles("src/main/java");
+  }
 
-	@Test
-	public void testLicenseStatedInTestSource() throws Exception {
-		LicenseTestUtil.testJavaFiles("src/test/java");
+  @Test
+  public void testLicenseStatedInTestSource() throws Exception {
+    LicenseTestUtil.testJavaFiles("src/test/java");
 
-	}
+  }
 
 }

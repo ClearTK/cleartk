@@ -32,9 +32,9 @@ package org.cleartk.srl.propbank;
 
 public interface PropbankConstants {
 
-	/**
-	 * The view containing the text of a PropBank "prop.txt" file.
-	 */
-	public static final String PROPBANK_VIEW = "PROPBANK_VIEW";
+  /**
+   * The view containing the text of a PropBank "prop.txt" file.
+   */
+  public static final String PROPBANK_VIEW = "PROPBANK_VIEW";
 
 }

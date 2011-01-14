@@ -1,5 +1,5 @@
- /** 
-  * Copyright (c) 2010, Regents of the University of Colorado 
+/** 
+ * Copyright (c) 2010, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 
 package org.cleartk.util;
 
@@ -33,27 +33,26 @@ import org.apache.uima.jcas.JCas;
 import org.uimafit.component.xwriter.XWriterFileNamer;
 
 /**
- * <br>Copyright (c) 2010, Regents of the University of Colorado 
- * <br>All rights reserved.
- *
+ * <br>
+ * Copyright (c) 2010, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * @author Philip Ogren
- *
+ * 
  */
 
 public class ViewURIFileNamer implements XWriterFileNamer {
 
-	public String nameFile(JCas jCas) {
-		try {
-			String uri = ViewURIUtil.getURI(jCas);
-			File file = new File(new URI(uri));
-			return file.getName();
-		}
-		catch (AnalysisEngineProcessException e) {
-			throw new RuntimeException("attempting to name a file using ViewURIUtil", e);
-		}
-		catch (URISyntaxException e) {
-			throw new RuntimeException("attempting to name a file using ViewURIUtil", e);
-		}
-	}
+  public String nameFile(JCas jCas) {
+    try {
+      String uri = ViewURIUtil.getURI(jCas);
+      File file = new File(new URI(uri));
+      return file.getName();
+    } catch (AnalysisEngineProcessException e) {
+      throw new RuntimeException("attempting to name a file using ViewURIUtil", e);
+    } catch (URISyntaxException e) {
+      throw new RuntimeException("attempting to name a file using ViewURIUtil", e);
+    }
+  }
 
 }

@@ -68,151 +68,139 @@ import org.uimafit.factory.ConfigurationParameterFactory;
 @SofaCapability(inputSofas = { TimeMLViewName.TIMEML, CAS.NAME_DEFAULT_SOFA })
 public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
 
-	public static final String PARAM_LOAD_TLINKS = ConfigurationParameterFactory.createConfigurationParameterName(
-		TimeMLGoldAnnotator.class,
-		"loadTlinks");
+  public static final String PARAM_LOAD_TLINKS = ConfigurationParameterFactory
+          .createConfigurationParameterName(TimeMLGoldAnnotator.class, "loadTlinks");
 
-	@ConfigurationParameter(
-		description = "when false indicates that annotation should not be created for TLINKs (though annotations will still be created for TIMEX3s, EVENTs, etc.).",
-		defaultValue = "true")
-	private boolean loadTlinks;
+  @ConfigurationParameter(description = "when false indicates that annotation should not be created for TLINKs (though annotations will still be created for TIMEX3s, EVENTs, etc.).", defaultValue = "true")
+  private boolean loadTlinks;
 
-	public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveDescription(
-			TimeMLGoldAnnotator.class,
-			TimeMLComponents.TYPE_SYSTEM_DESCRIPTION);
-	}
+  public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
+    return AnalysisEngineFactory.createPrimitiveDescription(TimeMLGoldAnnotator.class,
+            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION);
+  }
 
-	public static AnalysisEngineDescription getDescriptionNoTLINKs()
-			throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveDescription(
-			TimeMLGoldAnnotator.class,
-			TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
-			PARAM_LOAD_TLINKS,
-			false);
-	}
+  public static AnalysisEngineDescription getDescriptionNoTLINKs()
+          throws ResourceInitializationException {
+    return AnalysisEngineFactory.createPrimitiveDescription(TimeMLGoldAnnotator.class,
+            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION, PARAM_LOAD_TLINKS, false);
+  }
 
-	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		super.initialize(context);
-	}
+  @Override
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    super.initialize(context);
+  }
 
-	@Override
-	public void process(JCas jCas) throws AnalysisEngineProcessException {
-		JCas timemlView;
-		JCas initialView;
-		try {
-			timemlView = jCas.getView(TimeMLViewName.TIMEML);
-			initialView = jCas.getView(CAS.NAME_DEFAULT_SOFA);
-		} catch (CASException e) {
-			throw new AnalysisEngineProcessException(e);
-		}
+  @Override
+  public void process(JCas jCas) throws AnalysisEngineProcessException {
+    JCas timemlView;
+    JCas initialView;
+    try {
+      timemlView = jCas.getView(TimeMLViewName.TIMEML);
+      initialView = jCas.getView(CAS.NAME_DEFAULT_SOFA);
+    } catch (CASException e) {
+      throw new AnalysisEngineProcessException(e);
+    }
 
-		String timeML = timemlView.getDocumentText();
-		SAXBuilder builder = new SAXBuilder();
-		builder.setDTDHandler(null);
-		Element root;
-		try {
-			Document doc = builder.build(new StringReader(timeML));
-			root = doc.getRootElement();
-		} catch (JDOMException e) {
-			getContext().getLogger().log(
-				Level.SEVERE,
-				"problem parsing document: " + ViewURIUtil.getURI(jCas));
-			throw new AnalysisEngineProcessException(e);
-		} catch (IOException e) {
-			throw new AnalysisEngineProcessException(e);
-		}
+    String timeML = timemlView.getDocumentText();
+    SAXBuilder builder = new SAXBuilder();
+    builder.setDTDHandler(null);
+    Element root;
+    try {
+      Document doc = builder.build(new StringReader(timeML));
+      root = doc.getRootElement();
+    } catch (JDOMException e) {
+      getContext().getLogger().log(Level.SEVERE,
+              "problem parsing document: " + ViewURIUtil.getURI(jCas));
+      throw new AnalysisEngineProcessException(e);
+    } catch (IOException e) {
+      throw new AnalysisEngineProcessException(e);
+    }
 
-		StringBuffer textBuffer = new StringBuffer();
-		Map<String, Anchor> anchors = new HashMap<String, Anchor>();
-		this.addAnnotations(initialView, root, textBuffer, anchors);
-		initialView.setDocumentText(textBuffer.toString());
-	}
+    StringBuffer textBuffer = new StringBuffer();
+    Map<String, Anchor> anchors = new HashMap<String, Anchor>();
+    this.addAnnotations(initialView, root, textBuffer, anchors);
+    initialView.setDocumentText(textBuffer.toString());
+  }
 
-	private void addAnnotations(JCas jCas, Element element, StringBuffer textBuffer,
-			Map<String, Anchor> anchors) {
-		int startOffset = textBuffer.length();
-		for (Object content : element.getContent()) {
-			if (content instanceof org.jdom.Text) {
-				textBuffer.append(((org.jdom.Text) content).getText());
-			} else if (content instanceof Element) {
-				this.addAnnotations(jCas, (Element) content, textBuffer, anchors);
-			}
-		}
-		int endOffset = textBuffer.length();
+  private void addAnnotations(JCas jCas, Element element, StringBuffer textBuffer,
+          Map<String, Anchor> anchors) {
+    int startOffset = textBuffer.length();
+    for (Object content : element.getContent()) {
+      if (content instanceof org.jdom.Text) {
+        textBuffer.append(((org.jdom.Text) content).getText());
+      } else if (content instanceof Element) {
+        this.addAnnotations(jCas, (Element) content, textBuffer, anchors);
+      }
+    }
+    int endOffset = textBuffer.length();
 
-		if (element.getName().equals("TIMEX3")) {
-			Time time = new Time(jCas, startOffset, endOffset);
-			TimeMLUtil.copyAttributes(element, time, jCas);
-			anchors.put(time.getId(), time);
-			time.addToIndexes();
-		} else if (element.getName().equals("EVENT")) {
-			Event event = new Event(jCas, startOffset, endOffset);
-			TimeMLUtil.copyAttributes(element, event, jCas);
-			anchors.put(event.getId(), event);
-			event.addToIndexes();
-		} else if (element.getName().equals("MAKEINSTANCE")) {
-			String eventID = element.getAttributeValue("eventID");
-			String eventInstanceID = element.getAttributeValue("eiid");
-			Event event = (Event) anchors.get(eventID);
-			anchors.put(eventInstanceID, event);
-			eventInstanceID = event.getEventInstanceID();
-			if (eventInstanceID == null) {
-				TimeMLUtil.copyAttributes(element, event, jCas);
-			} else {
-				TimeMLUtil.removeInconsistentAttributes(element, event, jCas);
-				event.setId(eventID);
-				event.setEventInstanceID(eventInstanceID);
-			}
-		} else if (element.getName().equals("TLINK") && this.loadTlinks) {
-			TemporalLink temporalLink = new TemporalLink(jCas, startOffset, endOffset);
-			TimeMLUtil.copyAttributes(element, temporalLink, jCas);
-			String sourceID = this.getOneOf(element, "eventInstanceID", "eventID", "timeID");
-			String targetID = this.getOneOf(
-				element,
-				"relatedToEventInstance",
-				"relatedToEvent",
-				"relatedToTime");
-			Anchor source = this.getAnchor(anchors, sourceID);
-			Anchor target = this.getAnchor(anchors, targetID);
-			if (source instanceof Event) {
-				temporalLink.setEventID(source.getId());
-			}
-			if (target instanceof Event) {
-				temporalLink.setRelatedToEvent(target.getId());
-			}
-			temporalLink.setSource(source);
-			temporalLink.setTarget(target);
-			temporalLink.addToIndexes();
-		} else if (element.getName().equals("TEXT")) {
-			Text text = new Text(jCas, startOffset, endOffset);
-			text.addToIndexes();
-		}
-	}
+    if (element.getName().equals("TIMEX3")) {
+      Time time = new Time(jCas, startOffset, endOffset);
+      TimeMLUtil.copyAttributes(element, time, jCas);
+      anchors.put(time.getId(), time);
+      time.addToIndexes();
+    } else if (element.getName().equals("EVENT")) {
+      Event event = new Event(jCas, startOffset, endOffset);
+      TimeMLUtil.copyAttributes(element, event, jCas);
+      anchors.put(event.getId(), event);
+      event.addToIndexes();
+    } else if (element.getName().equals("MAKEINSTANCE")) {
+      String eventID = element.getAttributeValue("eventID");
+      String eventInstanceID = element.getAttributeValue("eiid");
+      Event event = (Event) anchors.get(eventID);
+      anchors.put(eventInstanceID, event);
+      eventInstanceID = event.getEventInstanceID();
+      if (eventInstanceID == null) {
+        TimeMLUtil.copyAttributes(element, event, jCas);
+      } else {
+        TimeMLUtil.removeInconsistentAttributes(element, event, jCas);
+        event.setId(eventID);
+        event.setEventInstanceID(eventInstanceID);
+      }
+    } else if (element.getName().equals("TLINK") && this.loadTlinks) {
+      TemporalLink temporalLink = new TemporalLink(jCas, startOffset, endOffset);
+      TimeMLUtil.copyAttributes(element, temporalLink, jCas);
+      String sourceID = this.getOneOf(element, "eventInstanceID", "eventID", "timeID");
+      String targetID = this.getOneOf(element, "relatedToEventInstance", "relatedToEvent",
+              "relatedToTime");
+      Anchor source = this.getAnchor(anchors, sourceID);
+      Anchor target = this.getAnchor(anchors, targetID);
+      if (source instanceof Event) {
+        temporalLink.setEventID(source.getId());
+      }
+      if (target instanceof Event) {
+        temporalLink.setRelatedToEvent(target.getId());
+      }
+      temporalLink.setSource(source);
+      temporalLink.setTarget(target);
+      temporalLink.addToIndexes();
+    } else if (element.getName().equals("TEXT")) {
+      Text text = new Text(jCas, startOffset, endOffset);
+      text.addToIndexes();
+    }
+  }
 
-	private String getOneOf(Element element, String... attributeNames) {
-		for (String name : attributeNames) {
-			String result = element.getAttributeValue(name);
-			if (result != null) {
-				return result;
-			}
-		}
-		throw new RuntimeException(String.format(
-			"unable to find in %s any of the following attributes: %s",
-			element,
-			Arrays.asList(attributeNames)));
-	}
+  private String getOneOf(Element element, String... attributeNames) {
+    for (String name : attributeNames) {
+      String result = element.getAttributeValue(name);
+      if (result != null) {
+        return result;
+      }
+    }
+    throw new RuntimeException(String.format(
+            "unable to find in %s any of the following attributes: %s", element,
+            Arrays.asList(attributeNames)));
+  }
 
-	private Anchor getAnchor(Map<String, Anchor> anchors, String id) {
-		Anchor anchor = anchors.get(id);
-		if (anchor == null) {
-			throw new RuntimeException(String.format("no anchor for id %s", id));
-		}
-		return anchor;
-	}
+  private Anchor getAnchor(Map<String, Anchor> anchors, String id) {
+    Anchor anchor = anchors.get(id);
+    if (anchor == null) {
+      throw new RuntimeException(String.format("no anchor for id %s", id));
+    }
+    return anchor;
+  }
 
-	public void setLoadTlinks(boolean loadTLINKs) {
-		this.loadTlinks = loadTLINKs;
-	}
+  public void setLoadTlinks(boolean loadTLINKs) {
+    this.loadTlinks = loadTLINKs;
+  }
 }

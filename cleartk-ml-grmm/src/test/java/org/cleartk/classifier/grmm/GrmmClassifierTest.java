@@ -51,114 +51,104 @@ import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.testing.util.HideOutput;
 
 /**
-  * <br>
+ * <br>
  * Copyright (c) 2010, University of Würzburg <br>
  * All rights reserved.
  * <p>
+ * 
  * @author Martin Toepfer
  */
 public class GrmmClassifierTest extends DefaultTestBase {
 
-	public static class Test1Annotator extends
-			CleartkSequentialAnnotator<String[]> {
+  public static class Test1Annotator extends CleartkSequentialAnnotator<String[]> {
 
-		@Override
-		public void initialize(UimaContext context)
-				throws ResourceInitializationException {
-			super.initialize(context);
-		}
+    @Override
+    public void initialize(UimaContext context) throws ResourceInitializationException {
+      super.initialize(context);
+    }
 
-		public void process(JCas cas) throws AnalysisEngineProcessException {
-			try {
-				this.processSimple(cas);
-			} catch (CleartkException e) {
-				throw new AnalysisEngineProcessException(e);
-			}
-		}
+    public void process(JCas cas) throws AnalysisEngineProcessException {
+      try {
+        this.processSimple(cas);
+      } catch (CleartkException e) {
+        throw new AnalysisEngineProcessException(e);
+      }
+    }
 
-		public void processSimple(JCas cas)
-				throws AnalysisEngineProcessException, CleartkException {
-			if (this.isTraining()) {
-				for (int i = 0; i < 5; i++) {
-					List<Instance<String[]>> instances = GrmmTestDataGenerator
-							.createInstances2();
-					this.sequentialDataWriter.writeSequence(instances);
-					instances = GrmmTestDataGenerator.createInstances1();
-					this.sequentialDataWriter.writeSequence(instances);
-					instances = GrmmTestDataGenerator.createInstances3();
-					this.sequentialDataWriter.writeSequence(instances);
-				}
-			} else {
-				// simple test
-				List<Instance<String[]>> instances = GrmmTestDataGenerator
-						.createInstances1test();
-				List<String[]> outcomes = this.classifySequence(instances);
-				assertEquals(instances.size(), outcomes.size());
+    public void processSimple(JCas cas) throws AnalysisEngineProcessException, CleartkException {
+      if (this.isTraining()) {
+        for (int i = 0; i < 5; i++) {
+          List<Instance<String[]>> instances = GrmmTestDataGenerator.createInstances2();
+          this.sequentialDataWriter.writeSequence(instances);
+          instances = GrmmTestDataGenerator.createInstances1();
+          this.sequentialDataWriter.writeSequence(instances);
+          instances = GrmmTestDataGenerator.createInstances3();
+          this.sequentialDataWriter.writeSequence(instances);
+        }
+      } else {
+        // simple test
+        List<Instance<String[]>> instances = GrmmTestDataGenerator.createInstances1test();
+        List<String[]> outcomes = this.classifySequence(instances);
+        assertEquals(instances.size(), outcomes.size());
 
-				// test classification with outcomes
-				instances = GrmmTestDataGenerator.createInstances2test();
-				outcomes = this.classifySequence(instances);
-				assertEquals(instances.size(), outcomes.size());
-				List<Instance<String[]>> gold = GrmmTestDataGenerator
-						.createInstances2();
-				for (int i = 0; i < gold.size(); i++) {
-					String[] goldOut = gold.get(i).getOutcome();
-					String[] testOut = outcomes.get(i);
-					for (int j = 0; j < testOut.length; j++) {
-						assertEquals(goldOut[j], testOut[j]);
-					}
-				}
-			}
-		}
-	}
+        // test classification with outcomes
+        instances = GrmmTestDataGenerator.createInstances2test();
+        outcomes = this.classifySequence(instances);
+        assertEquals(instances.size(), outcomes.size());
+        List<Instance<String[]>> gold = GrmmTestDataGenerator.createInstances2();
+        for (int i = 0; i < gold.size(); i++) {
+          String[] goldOut = gold.get(i).getOutcome();
+          String[] testOut = outcomes.get(i);
+          for (int j = 0; j < testOut.length; j++) {
+            assertEquals(goldOut[j], testOut[j]);
+          }
+        }
+      }
+    }
+  }
 
-	@Test
-	public void runTest1() throws Exception {
+  @Test
+  public void runTest1() throws Exception {
 
-		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory
-				.createPrimitive(
-						Test1Annotator.class,
-						typeSystemDescription,
-						JarSequentialDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
-						outputDirectoryName,
-						CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME,
-						DefaultGrmmDataWriterFactory.class.getName());
+    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
+            Test1Annotator.class, typeSystemDescription,
+            JarSequentialDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
+            CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME,
+            DefaultGrmmDataWriterFactory.class.getName());
 
-		dataWriterAnnotator.process(jCas);
-		dataWriterAnnotator.collectionProcessComplete();
+    dataWriterAnnotator.process(jCas);
+    dataWriterAnnotator.collectionProcessComplete();
 
-		BufferedReader reader = new BufferedReader(new FileReader(new File(
-				outputDirectoryName, GrmmDataWriter.TRAINING_DATA_FILE_NAME)));
-		reader.readLine();
-		reader.close();
+    BufferedReader reader = new BufferedReader(new FileReader(new File(outputDirectoryName,
+            GrmmDataWriter.TRAINING_DATA_FILE_NAME)));
+    reader.readLine();
+    reader.close();
 
-		// hide output during training:
-		HideOutput hider = new HideOutput();
-		// create a template:
-		String templateFilename = "template.txt";
-		GrmmTestDataGenerator.createBigramTemplate(outputDirectoryName,
-				templateFilename);
-		// train and create a model with this template:
-		Train.main(outputDirectoryName, templateFilename);
-		hider.restoreOutput();
+    // hide output during training:
+    HideOutput hider = new HideOutput();
+    // create a template:
+    String templateFilename = "template.txt";
+    GrmmTestDataGenerator.createBigramTemplate(outputDirectoryName, templateFilename);
+    // train and create a model with this template:
+    Train.main(outputDirectoryName, templateFilename);
+    hider.restoreOutput();
 
-		// try to use model for classification:
-		File mFile = new File(outputDirectoryName, "model.jar");
-		assertTrue(mFile.exists());
-		JarFile modelFile = new JarFile(mFile);
-		assertNotNull(modelFile);
-		GrmmClassifier classifier = new GrmmClassifier(modelFile);
-		modelFile.close();
-		assertTrue(classifier instanceof SequentialClassifier<?>);
+    // try to use model for classification:
+    File mFile = new File(outputDirectoryName, "model.jar");
+    assertTrue(mFile.exists());
+    JarFile modelFile = new JarFile(mFile);
+    assertNotNull(modelFile);
+    GrmmClassifier classifier = new GrmmClassifier(modelFile);
+    modelFile.close();
+    assertTrue(classifier instanceof SequentialClassifier<?>);
 
-		String modelJar = outputDirectoryName + "/model.jar";
-		AnalysisEngine sequentialClassifierAnnotator = AnalysisEngineFactory
-				.createPrimitive(Test1Annotator.class, typeSystemDescription,
-						JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
-						modelJar);
-		jCas.reset();
-		sequentialClassifierAnnotator.process(jCas);
-		sequentialClassifierAnnotator.collectionProcessComplete();
-	}
+    String modelJar = outputDirectoryName + "/model.jar";
+    AnalysisEngine sequentialClassifierAnnotator = AnalysisEngineFactory.createPrimitive(
+            Test1Annotator.class, typeSystemDescription,
+            JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, modelJar);
+    jCas.reset();
+    sequentialClassifierAnnotator.process(jCas);
+    sequentialClassifierAnnotator.collectionProcessComplete();
+  }
 
 }

@@ -1,5 +1,5 @@
 /** 
-  * Copyright (c) 2010, Regents of the University of Colorado 
+ * Copyright (c) 2010, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -20,32 +20,33 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 
 package org.cleartk.classifier.feature.util;
 
 import java.util.regex.Pattern;
 
-
 /**
- * <br>Copyright (c) 2010, Regents of the University of Colorado 
- * <br>All rights reserved.
- *
+ * <br>
+ * Copyright (c) 2010, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * @author Philip Ogren
- *
+ * 
  */
 
 public class NumericTypeUtil {
 
-	public static final Pattern digitsPattern = Pattern.compile("[0-9]+");
-	public static final Pattern someDigitsPattern = Pattern.compile("[0-9]");
+  public static final Pattern digitsPattern = Pattern.compile("[0-9]+");
 
-	public static boolean isDigits(String word) {
-		return digitsPattern.matcher(word).matches();
-	}
+  public static final Pattern someDigitsPattern = Pattern.compile("[0-9]");
 
-	public static boolean containsDigits(String word) {
-		return someDigitsPattern.matcher(word).find();
-	}
-	
+  public static boolean isDigits(String word) {
+    return digitsPattern.matcher(word).matches();
+  }
+
+  public static boolean containsDigits(String word) {
+    return someDigitsPattern.matcher(word).find();
+  }
+
 }

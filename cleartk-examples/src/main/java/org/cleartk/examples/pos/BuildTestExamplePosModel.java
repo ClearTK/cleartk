@@ -38,23 +38,21 @@ import org.uimafit.pipeline.SimplePipeline;
  * 
  * @author Philip Ogren
  * 
- *         For examples of using the ExamplePOSAnnotationHandler using different
- *         classifiers, please see
- *         org.cleartk.example.pos.ExamplePosClassifierTest
+ *         For examples of using the ExamplePOSAnnotationHandler using different classifiers, please
+ *         see org.cleartk.example.pos.ExamplePosClassifierTest
  */
 
 public class BuildTestExamplePosModel {
 
-	
-	public static void main(String[] args) throws Exception {
-		
-		SimplePipeline.runPipeline(
-				FilesCollectionReader.getCollectionReaderWithSuffixes(ExampleComponents.TYPE_SYSTEM_DESCRIPTION, "src/main/resources/data/pos/treebank", TreebankConstants.TREEBANK_VIEW, ".tree"),
-				TreebankGoldAnnotator.getDescriptionPOSTagsOnly(),
-				DefaultSnowballStemmer.getDescription("English"),
-				ExamplePOSAnnotator.getWriterDescription(ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY));
-				
-		org.cleartk.classifier.jar.Train.main("src/main/resources/model/pos");
+  public static void main(String[] args) throws Exception {
 
-	}
+    SimplePipeline.runPipeline(FilesCollectionReader.getCollectionReaderWithSuffixes(
+            ExampleComponents.TYPE_SYSTEM_DESCRIPTION, "src/main/resources/data/pos/treebank",
+            TreebankConstants.TREEBANK_VIEW, ".tree"), TreebankGoldAnnotator
+            .getDescriptionPOSTagsOnly(), DefaultSnowballStemmer.getDescription("English"),
+            ExamplePOSAnnotator.getWriterDescription(ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY));
+
+    org.cleartk.classifier.jar.Train.main("src/main/resources/model/pos");
+
+  }
 }

@@ -58,229 +58,244 @@ import org.uimafit.testing.util.HideOutput;
  * <br>
  * Copyright (c) 2009, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
  * @author Philip Ogren
  * 
  */
 
 public class BinaryMalletDataWriterTest extends DefaultTestBase {
 
-	public static class Test1Annotator extends CleartkAnnotator<Boolean> {
+  public static class Test1Annotator extends CleartkAnnotator<Boolean> {
 
-		@Override
-		public void process(JCas cas) throws AnalysisEngineProcessException {
-			try {
-				List<Feature> features = Arrays.asList(new Feature("pos", "NN"), new Feature("distance", 3.0), new Feature(
-						"precision", 1.234));
-				Instance<Boolean> instance = new Instance<Boolean>(Boolean.TRUE, features);
-				this.dataWriter.write(instance);
+    @Override
+    public void process(JCas cas) throws AnalysisEngineProcessException {
+      try {
+        List<Feature> features = Arrays.asList(new Feature("pos", "NN"), new Feature("distance",
+                3.0), new Feature("precision", 1.234));
+        Instance<Boolean> instance = new Instance<Boolean>(Boolean.TRUE, features);
+        this.dataWriter.write(instance);
 
-				features = Arrays.asList(new Feature("name", "2PO"), new Feature("p's", 2));
-				instance = new Instance<Boolean>(Boolean.FALSE, features);
-				this.dataWriter.write(instance);
+        features = Arrays.asList(new Feature("name", "2PO"), new Feature("p's", 2));
+        instance = new Instance<Boolean>(Boolean.FALSE, features);
+        this.dataWriter.write(instance);
 
-				instance = new Instance<Boolean>(Boolean.TRUE);
-				this.dataWriter.write(instance);
+        instance = new Instance<Boolean>(Boolean.TRUE);
+        this.dataWriter.write(instance);
 
-				features = Arrays.asList(new Feature("A_B", "AB"));
-				instance = new Instance<Boolean>(Boolean.FALSE, features);
-				this.dataWriter.write(instance);
-			} catch (CleartkException e) {
-				throw new AnalysisEngineProcessException(e);
-			}
-		}
-	}
+        features = Arrays.asList(new Feature("A_B", "AB"));
+        instance = new Instance<Boolean>(Boolean.FALSE, features);
+        this.dataWriter.write(instance);
+      } catch (CleartkException e) {
+        throw new AnalysisEngineProcessException(e);
+      }
+    }
+  }
 
-	@Test
-	public void test1() throws Exception {
-		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
-				Test1Annotator.class, typeSystemDescription,
-				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
-				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultBinaryMalletDataWriterFactory.class.getName());
+  @Test
+  public void test1() throws Exception {
+    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
+            Test1Annotator.class, typeSystemDescription,
+            JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
+            CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+            DefaultBinaryMalletDataWriterFactory.class.getName());
 
-		dataWriterAnnotator.process(jCas);
-		dataWriterAnnotator.collectionProcessComplete();
+    dataWriterAnnotator.process(jCas);
+    dataWriterAnnotator.collectionProcessComplete();
 
-		String[] lines = FileUtil.loadListOfStrings(new File(outputDirectoryName, BinaryMalletDataWriter.TRAINING_DATA_FILE_NAME));
-		
-		assertEquals("pos_NN:1.0 distance:3.0 precision:1.234 true", lines[0]);
-		assertEquals("name_2PO:1.0 p's:2 false", lines[1]);
-		assertEquals("null:0 true", lines[2]);
-		assertEquals("A_B_AB:1.0 false", lines[3]);
+    String[] lines = FileUtil.loadListOfStrings(new File(outputDirectoryName,
+            BinaryMalletDataWriter.TRAINING_DATA_FILE_NAME));
 
-		//simply train four different models where each one writes over the previous
-		HideOutput hider = new HideOutput();
-		Train.main(outputDirectoryName, NaiveBayesTrainerFactory.class.getName());
-		hider.restoreOutput();
-		
-	}
+    assertEquals("pos_NN:1.0 distance:3.0 precision:1.234 true", lines[0]);
+    assertEquals("name_2PO:1.0 p's:2 false", lines[1]);
+    assertEquals("null:0 true", lines[2]);
+    assertEquals("A_B_AB:1.0 false", lines[3]);
 
-	/**
-	 * This test is identical to test1 except that the features are compressed by NameNumberFeaturesEncoder.
-	 * @throws Exception
-	 */
-	@Test
-	public void test2() throws Exception {
-		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
-				Test1Annotator.class, typeSystemDescription,
-				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
-				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultBinaryMalletDataWriterFactory.class.getName(),
-				MalletDataWriterFactory_ImplBase.PARAM_COMPRESS, true);
+    // simply train four different models where each one writes over the previous
+    HideOutput hider = new HideOutput();
+    Train.main(outputDirectoryName, NaiveBayesTrainerFactory.class.getName());
+    hider.restoreOutput();
 
-		dataWriterAnnotator.process(jCas);
-		dataWriterAnnotator.collectionProcessComplete();
+  }
 
-		String[] lines = FileUtil.loadListOfStrings(new File(outputDirectoryName, MalletDataWriter.TRAINING_DATA_FILE_NAME));
-		
-		assertEquals("0:1.0 1:3.0 2:1.234 true", lines[0]);
-		assertEquals("3:1.0 4:2 false", lines[1]);
-		assertEquals("null:0 true", lines[2]);
-		assertEquals("5:1.0 false", lines[3]);
+  /**
+   * This test is identical to test1 except that the features are compressed by
+   * NameNumberFeaturesEncoder.
+   * 
+   * @throws Exception
+   */
+  @Test
+  public void test2() throws Exception {
+    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
+            Test1Annotator.class, typeSystemDescription,
+            JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
+            CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+            DefaultBinaryMalletDataWriterFactory.class.getName(),
+            MalletDataWriterFactory_ImplBase.PARAM_COMPRESS, true);
 
-		lines = FileUtil.loadListOfStrings(new File(outputDirectoryName, NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
-		Set<String> lineSet = new HashSet<String>();
-		for( int i=0; i<lines.length; i++)
-			lineSet.add(lines[i]);
-		
-		assertEquals("6", lines[0]);
-		assertTrue(lineSet.contains("6"));
-		assertTrue(lineSet.contains("name_2PO\t3"));
-		assertTrue(lineSet.contains("precision\t2"));
-		assertTrue(lineSet.contains("distance\t1"));
-		assertTrue(lineSet.contains("pos_NN\t0"));
-		assertTrue(lineSet.contains("A_B_AB\t5"));
-		assertTrue(lineSet.contains("p's\t4"));
-		assertEquals(7, lineSet.size());
+    dataWriterAnnotator.process(jCas);
+    dataWriterAnnotator.collectionProcessComplete();
 
-		HideOutput hider = new HideOutput();
-		Train.main(outputDirectoryName, MaxEntTrainerFactory.class.getName());
-		hider.restoreOutput();
-	}
+    String[] lines = FileUtil.loadListOfStrings(new File(outputDirectoryName,
+            MalletDataWriter.TRAINING_DATA_FILE_NAME));
 
-	/**
-	 * This test is identical to test2 except that the feature lookup file is sorted by NameNumberFeaturesEncoder.
-	 * @throws Exception
-	 */
+    assertEquals("0:1.0 1:3.0 2:1.234 true", lines[0]);
+    assertEquals("3:1.0 4:2 false", lines[1]);
+    assertEquals("null:0 true", lines[2]);
+    assertEquals("5:1.0 false", lines[3]);
 
-	@Test
-	public void test3() throws Exception {
-		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
-				Test1Annotator.class, typeSystemDescription,
-				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
-				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultBinaryMalletDataWriterFactory.class.getName(),
-				MalletDataWriterFactory_ImplBase.PARAM_COMPRESS, true,
-				MalletDataWriterFactory_ImplBase.PARAM_SORT, true);
+    lines = FileUtil.loadListOfStrings(new File(outputDirectoryName,
+            NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
+    Set<String> lineSet = new HashSet<String>();
+    for (int i = 0; i < lines.length; i++)
+      lineSet.add(lines[i]);
 
-		dataWriterAnnotator.process(jCas);
-		dataWriterAnnotator.collectionProcessComplete();
+    assertEquals("6", lines[0]);
+    assertTrue(lineSet.contains("6"));
+    assertTrue(lineSet.contains("name_2PO\t3"));
+    assertTrue(lineSet.contains("precision\t2"));
+    assertTrue(lineSet.contains("distance\t1"));
+    assertTrue(lineSet.contains("pos_NN\t0"));
+    assertTrue(lineSet.contains("A_B_AB\t5"));
+    assertTrue(lineSet.contains("p's\t4"));
+    assertEquals(7, lineSet.size());
 
-		String[] lines = FileUtil
-				.loadListOfStrings(new File(outputDirectoryName, MalletDataWriter.TRAINING_DATA_FILE_NAME));
-		
-		assertEquals("0:1.0 1:3.0 2:1.234 true", lines[0]);
-		assertEquals("3:1.0 4:2 false", lines[1]);
-		assertEquals("null:0 true", lines[2]);
-		assertEquals("5:1.0 false", lines[3]);
+    HideOutput hider = new HideOutput();
+    Train.main(outputDirectoryName, MaxEntTrainerFactory.class.getName());
+    hider.restoreOutput();
+  }
 
-		
-		lines = FileUtil.loadListOfStrings(new File(outputDirectoryName, NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
-		int i = 0;
-		assertEquals("6", lines[i++]);
-		assertEquals("A_B_AB	5", lines[i++]);
-		assertEquals("distance	1", lines[i++]);
-		assertEquals("name_2PO	3", lines[i++]);
-		assertEquals("p's	4", lines[i++]);
-		assertEquals("pos_NN	0", lines[i++]);
-		assertEquals("precision	2", lines[i++]);
+  /**
+   * This test is identical to test2 except that the feature lookup file is sorted by
+   * NameNumberFeaturesEncoder.
+   * 
+   * @throws Exception
+   */
 
-		HideOutput hider = new HideOutput();
-		Train.main(outputDirectoryName, MCMaxEntTrainerFactory.class.getName());
-		hider.restoreOutput();
-	}
+  @Test
+  public void test3() throws Exception {
+    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
+            Test1Annotator.class, typeSystemDescription,
+            JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
+            CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+            DefaultBinaryMalletDataWriterFactory.class.getName(),
+            MalletDataWriterFactory_ImplBase.PARAM_COMPRESS, true,
+            MalletDataWriterFactory_ImplBase.PARAM_SORT, true);
 
-	public static class Test4Annotator extends CleartkAnnotator<Boolean> {
+    dataWriterAnnotator.process(jCas);
+    dataWriterAnnotator.collectionProcessComplete();
 
-		@Override
-		public void process(JCas cas) throws AnalysisEngineProcessException {
-			try {
-				this.processSimple(cas);
-			} catch (CleartkException e) {
-				throw new AnalysisEngineProcessException(e);
-			}
-		}
-		public void processSimple(JCas cas) throws CleartkException {
-			List<Feature> features = Arrays.asList(
-					new Feature("pos", "NN"),
-					new Feature("distance", 3.0),
-					new Feature("precision", 1.234));
-			Instance<Boolean> instance = new Instance<Boolean>(features);
-			this.dataWriter.write(instance);
-		}
+    String[] lines = FileUtil.loadListOfStrings(new File(outputDirectoryName,
+            MalletDataWriter.TRAINING_DATA_FILE_NAME));
 
-	}
+    assertEquals("0:1.0 1:3.0 2:1.234 true", lines[0]);
+    assertEquals("3:1.0 4:2 false", lines[1]);
+    assertEquals("null:0 true", lines[2]);
+    assertEquals("5:1.0 false", lines[3]);
 
-	/**
-	 * Here we test that an exception is thrown if an instance with no outcome
-	 * @throws Exception
-	 */
-	@Test
-	public void test4() throws Exception {
+    lines = FileUtil.loadListOfStrings(new File(outputDirectoryName,
+            NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
+    int i = 0;
+    assertEquals("6", lines[i++]);
+    assertEquals("A_B_AB	5", lines[i++]);
+    assertEquals("distance	1", lines[i++]);
+    assertEquals("name_2PO	3", lines[i++]);
+    assertEquals("p's	4", lines[i++]);
+    assertEquals("pos_NN	0", lines[i++]);
+    assertEquals("precision	2", lines[i++]);
 
-		HideOutput hider = new HideOutput();
+    HideOutput hider = new HideOutput();
+    Train.main(outputDirectoryName, MCMaxEntTrainerFactory.class.getName());
+    hider.restoreOutput();
+  }
 
-		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
-				Test4Annotator.class, typeSystemDescription,
-				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
-				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultBinaryMalletDataWriterFactory.class.getName(),
-				MalletDataWriterFactory_ImplBase.PARAM_COMPRESS, true,
-				MalletDataWriterFactory_ImplBase.PARAM_SORT, true);
+  public static class Test4Annotator extends CleartkAnnotator<Boolean> {
 
-		AnalysisEngineProcessException aepe = null;
-		try {
-			dataWriterAnnotator.process(jCas);
-		}
-		catch (AnalysisEngineProcessException e) {
-			aepe = e;
-		}
-		dataWriterAnnotator.collectionProcessComplete();
-		assertNotNull(aepe);
-		hider.restoreOutput();
-		
-	}
+    @Override
+    public void process(JCas cas) throws AnalysisEngineProcessException {
+      try {
+        this.processSimple(cas);
+      } catch (CleartkException e) {
+        throw new AnalysisEngineProcessException(e);
+      }
+    }
 
+    public void processSimple(JCas cas) throws CleartkException {
+      List<Feature> features = Arrays.asList(new Feature("pos", "NN"),
+              new Feature("distance", 3.0), new Feature("precision", 1.234));
+      Instance<Boolean> instance = new Instance<Boolean>(features);
+      this.dataWriter.write(instance);
+    }
 
-	public static class Test5Annotator extends CleartkAnnotator<Boolean> {
+  }
 
-		@Override
-		public void process(JCas cas) throws AnalysisEngineProcessException {
-			try {
-				this.processSimple(cas);
-			} catch (CleartkException e) {
-				throw new AnalysisEngineProcessException(e);
-			}
-		}
-		public void processSimple(JCas cas) throws CleartkException {
-			Instance<Boolean> instance = InstanceFactory.createInstance(Boolean.TRUE, "b c d");
-			this.dataWriter.write(instance);
-		}
-	}
+  /**
+   * Here we test that an exception is thrown if an instance with no outcome
+   * 
+   * @throws Exception
+   */
+  @Test
+  public void test4() throws Exception {
 
-	/**
-	 * This test is identical to test1 except that the features are compressed by NameNumberFeaturesEncoder.
-	 * @throws Exception
-	 */
-	@Test
-	public void test5() throws Exception {
-		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
-				Test5Annotator.class, typeSystemDescription,
-				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
-				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultBinaryMalletDataWriterFactory.class.getName(),
-				MalletDataWriterFactory_ImplBase.PARAM_COMPRESS, true);
+    HideOutput hider = new HideOutput();
 
-		dataWriterAnnotator.process(jCas);
-		dataWriterAnnotator.collectionProcessComplete();
+    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
+            Test4Annotator.class, typeSystemDescription,
+            JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
+            CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+            DefaultBinaryMalletDataWriterFactory.class.getName(),
+            MalletDataWriterFactory_ImplBase.PARAM_COMPRESS, true,
+            MalletDataWriterFactory_ImplBase.PARAM_SORT, true);
 
-		String[] lines = FileUtil.loadListOfStrings(new File(outputDirectoryName, MalletDataWriter.TRAINING_DATA_FILE_NAME));
-		assertEquals("0:1.0 1:1.0 2:1.0 true", lines[0]);
-	}
+    AnalysisEngineProcessException aepe = null;
+    try {
+      dataWriterAnnotator.process(jCas);
+    } catch (AnalysisEngineProcessException e) {
+      aepe = e;
+    }
+    dataWriterAnnotator.collectionProcessComplete();
+    assertNotNull(aepe);
+    hider.restoreOutput();
+
+  }
+
+  public static class Test5Annotator extends CleartkAnnotator<Boolean> {
+
+    @Override
+    public void process(JCas cas) throws AnalysisEngineProcessException {
+      try {
+        this.processSimple(cas);
+      } catch (CleartkException e) {
+        throw new AnalysisEngineProcessException(e);
+      }
+    }
+
+    public void processSimple(JCas cas) throws CleartkException {
+      Instance<Boolean> instance = InstanceFactory.createInstance(Boolean.TRUE, "b c d");
+      this.dataWriter.write(instance);
+    }
+  }
+
+  /**
+   * This test is identical to test1 except that the features are compressed by
+   * NameNumberFeaturesEncoder.
+   * 
+   * @throws Exception
+   */
+  @Test
+  public void test5() throws Exception {
+    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
+            Test5Annotator.class, typeSystemDescription,
+            JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
+            CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+            DefaultBinaryMalletDataWriterFactory.class.getName(),
+            MalletDataWriterFactory_ImplBase.PARAM_COMPRESS, true);
+
+    dataWriterAnnotator.process(jCas);
+    dataWriterAnnotator.collectionProcessComplete();
+
+    String[] lines = FileUtil.loadListOfStrings(new File(outputDirectoryName,
+            MalletDataWriter.TRAINING_DATA_FILE_NAME));
+    assertEquals("0:1.0 1:1.0 2:1.0 true", lines[0]);
+  }
 
 }

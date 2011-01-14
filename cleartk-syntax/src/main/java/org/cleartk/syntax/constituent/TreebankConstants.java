@@ -32,9 +32,9 @@ package org.cleartk.syntax.constituent;
 
 public interface TreebankConstants {
 
-	/**
-	 * The view containing the parenthesized text of a TreeBank .mrg file.
-	 */
-	public static final String TREEBANK_VIEW = "TREEBANK_VIEW";
+  /**
+   * The view containing the parenthesized text of a TreeBank .mrg file.
+   */
+  public static final String TREEBANK_VIEW = "TREEBANK_VIEW";
 
 }

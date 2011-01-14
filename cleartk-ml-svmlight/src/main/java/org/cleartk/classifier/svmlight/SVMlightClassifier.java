@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.svmlight;
 
 import java.io.IOException;
@@ -40,69 +40,72 @@ import org.cleartk.classifier.svmlight.model.SVMlightModel;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
  */
-public class SVMlightClassifier extends JarClassifier<Boolean,Boolean,FeatureVector> {
+public class SVMlightClassifier extends JarClassifier<Boolean, Boolean, FeatureVector> {
 
-	public static final String ATTRIBUTES_NAME = "SVMlight";
-	public static final String SCALE_FEATURES_KEY = "scaleFeatures";
-	public static final String SCALE_FEATURES_VALUE_NORMALIZEL2 = "normalizeL2";
-	
-	SVMlightModel model;
-	Sigmoid sigmoid;
-	
-	public SVMlightClassifier(JarFile modelFile) throws IOException, CleartkException {
-		super(modelFile);
-		
-		try {
-			ZipEntry modelEntry = modelFile.getEntry("model.svmlight");
-			this.model = SVMlightModel.fromInputStream(modelFile.getInputStream(modelEntry));
-			
-			modelEntry = modelFile.getEntry("model.sigmoid");
-			ObjectInput in = new ObjectInputStream(modelFile.getInputStream(modelEntry));
-			this.sigmoid = (Sigmoid) in.readObject();
-			in.close();
-		} catch( ClassNotFoundException e ) {
-			throw new CleartkException(e);
-		}
-	}
+  public static final String ATTRIBUTES_NAME = "SVMlight";
 
-	public Boolean classify(List<Feature> features) throws CleartkException {
-		FeatureVector featureVector = featuresEncoder.encodeAll(features);
-		
-		double prediction = sigmoid.evaluate(model.evaluate(featureVector));
-		boolean encodedResult = (prediction > 0.5);
+  public static final String SCALE_FEATURES_KEY = "scaleFeatures";
 
-		return outcomeEncoder.decode(encodedResult);
-	}
-	
-	@Override
-	public List<ScoredOutcome<Boolean>> score(List<Feature> features,
-			int maxResults) throws CleartkException {
-		
-		List<ScoredOutcome<Boolean>> resultList = new ArrayList<ScoredOutcome<Boolean>>();
-		if( maxResults > 0 )
-			resultList.add(this.score(features));
-		if( maxResults > 1 ) {
-			ScoredOutcome<Boolean> v1 = resultList.get(0);
-			ScoredOutcome<Boolean> v2 = new ScoredOutcome<Boolean>(!v1.getOutcome(), 1-v1.getScore());
-			resultList.add(v2);
-		}
-		return resultList;
-	}
+  public static final String SCALE_FEATURES_VALUE_NORMALIZEL2 = "normalizeL2";
 
-	private ScoredOutcome<Boolean> score(List<Feature> features) throws CleartkException {
-		FeatureVector featureVector = featuresEncoder.encodeAll(features);
-		
-		double prediction = sigmoid.evaluate(model.evaluate(featureVector));
-		boolean encodedResult = (prediction > 0.5);
+  SVMlightModel model;
 
-		if( encodedResult ) {
-			return new ScoredOutcome<Boolean>(true, prediction);
-		} else {
-			return new ScoredOutcome<Boolean>(false, 1-prediction);
-		}
-	}
+  Sigmoid sigmoid;
+
+  public SVMlightClassifier(JarFile modelFile) throws IOException, CleartkException {
+    super(modelFile);
+
+    try {
+      ZipEntry modelEntry = modelFile.getEntry("model.svmlight");
+      this.model = SVMlightModel.fromInputStream(modelFile.getInputStream(modelEntry));
+
+      modelEntry = modelFile.getEntry("model.sigmoid");
+      ObjectInput in = new ObjectInputStream(modelFile.getInputStream(modelEntry));
+      this.sigmoid = (Sigmoid) in.readObject();
+      in.close();
+    } catch (ClassNotFoundException e) {
+      throw new CleartkException(e);
+    }
+  }
+
+  public Boolean classify(List<Feature> features) throws CleartkException {
+    FeatureVector featureVector = featuresEncoder.encodeAll(features);
+
+    double prediction = sigmoid.evaluate(model.evaluate(featureVector));
+    boolean encodedResult = (prediction > 0.5);
+
+    return outcomeEncoder.decode(encodedResult);
+  }
+
+  @Override
+  public List<ScoredOutcome<Boolean>> score(List<Feature> features, int maxResults)
+          throws CleartkException {
+
+    List<ScoredOutcome<Boolean>> resultList = new ArrayList<ScoredOutcome<Boolean>>();
+    if (maxResults > 0)
+      resultList.add(this.score(features));
+    if (maxResults > 1) {
+      ScoredOutcome<Boolean> v1 = resultList.get(0);
+      ScoredOutcome<Boolean> v2 = new ScoredOutcome<Boolean>(!v1.getOutcome(), 1 - v1.getScore());
+      resultList.add(v2);
+    }
+    return resultList;
+  }
+
+  private ScoredOutcome<Boolean> score(List<Feature> features) throws CleartkException {
+    FeatureVector featureVector = featuresEncoder.encodeAll(features);
+
+    double prediction = sigmoid.evaluate(model.evaluate(featureVector));
+    boolean encodedResult = (prediction > 0.5);
+
+    if (encodedResult) {
+      return new ScoredOutcome<Boolean>(true, prediction);
+    } else {
+      return new ScoredOutcome<Boolean>(false, 1 - prediction);
+    }
+  }
 }

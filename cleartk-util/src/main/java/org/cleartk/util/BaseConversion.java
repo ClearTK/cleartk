@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,38 +20,40 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.util;
-/**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
 
+/**
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
  */
 public class BaseConversion {
 
-	public static String convertBase(int number, int base) {
-		// special case
-		if (number == 0) return "0";
-		
-		if(base > 62)
-			throw new IllegalArgumentException("base must be 62 or less: base="+base);
-		if(base <= 0)
-			throw new IllegalArgumentException("base must be greater than zero: base="+base);
-		
-		StringBuffer conversion = new StringBuffer();
-		
-		if(base == 1) {
-			for(int i=0; i<number; i++)
-				conversion.append("1");
-			return conversion.toString();
-		}
-		
-		String digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-		while (number > 0) {
-			int digitIndex = number % base;
-			conversion.insert(0, digits.charAt(digitIndex));
-			number = number / base;
-		}
-		return conversion.toString();
-	}
+  public static String convertBase(int number, int base) {
+    // special case
+    if (number == 0)
+      return "0";
+
+    if (base > 62)
+      throw new IllegalArgumentException("base must be 62 or less: base=" + base);
+    if (base <= 0)
+      throw new IllegalArgumentException("base must be greater than zero: base=" + base);
+
+    StringBuffer conversion = new StringBuffer();
+
+    if (base == 1) {
+      for (int i = 0; i < number; i++)
+        conversion.append("1");
+      return conversion.toString();
+    }
+
+    String digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    while (number > 0) {
+      int digitIndex = number % base;
+      conversion.insert(0, digits.charAt(digitIndex));
+      number = number / base;
+    }
+    return conversion.toString();
+  }
 }

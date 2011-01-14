@@ -37,26 +37,32 @@ import org.uimafit.pipeline.SimplePipeline;
  * <br>
  * Copyright (c) 2009, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
  * @author Philip Ogren
  * 
  */
 
 public class BuildTestTokenChunkModel {
 
-	public static void main(String[] args) throws Exception {
-		
-		TypeSystemDescription typeSystemDescription = TokenComponents.TYPE_SYSTEM_DESCRIPTION;
-		CollectionReader reader = CollectionReaderFactory.createCollectionReader(GeniaPosGoldReader.class, typeSystemDescription, 
-				GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE, "src/test/resources/token/genia/GENIAcorpus3.02.articleA.pos.xml",
-				GeniaPosGoldReader.PARAM_LOAD_SENTENCES, true);
-		
-		AnalysisEngine subtokenizer = AnalysisEngineFactory.createPrimitive(TokenComponents.createSubtokenizer()); 
-		
-		AnalysisEngine chunkTokenizerDataWriter = AnalysisEngineFactory.createPrimitive(ChunkTokenizerFactory.createChunkTokenizerDataWriter("src/test/resources/token/chunk"));
+  public static void main(String[] args) throws Exception {
 
-		SimplePipeline.runPipeline(reader, subtokenizer, chunkTokenizerDataWriter);
-		
-		org.cleartk.classifier.jar.Train.main("src/test/resources/token/chunk");
+    TypeSystemDescription typeSystemDescription = TokenComponents.TYPE_SYSTEM_DESCRIPTION;
+    CollectionReader reader = CollectionReaderFactory.createCollectionReader(
+            GeniaPosGoldReader.class, typeSystemDescription,
+            GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
+            "src/test/resources/token/genia/GENIAcorpus3.02.articleA.pos.xml",
+            GeniaPosGoldReader.PARAM_LOAD_SENTENCES, true);
 
-	}
+    AnalysisEngine subtokenizer = AnalysisEngineFactory.createPrimitive(TokenComponents
+            .createSubtokenizer());
+
+    AnalysisEngine chunkTokenizerDataWriter = AnalysisEngineFactory
+            .createPrimitive(ChunkTokenizerFactory
+                    .createChunkTokenizerDataWriter("src/test/resources/token/chunk"));
+
+    SimplePipeline.runPipeline(reader, subtokenizer, chunkTokenizerDataWriter);
+
+    org.cleartk.classifier.jar.Train.main("src/test/resources/token/chunk");
+
+  }
 }

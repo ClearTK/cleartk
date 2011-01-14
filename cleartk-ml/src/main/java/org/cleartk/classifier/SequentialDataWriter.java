@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier;
 
 import java.util.List;
@@ -35,9 +35,9 @@ import org.cleartk.CleartkException;
  */
 
 public interface SequentialDataWriter<OUTCOME_TYPE> {
-	
-	public void writeSequence(List<Instance<OUTCOME_TYPE>> instances) throws CleartkException;
-	
-	public void finish() throws CleartkException;
-	
+
+  public void writeSequence(List<Instance<OUTCOME_TYPE>> instances) throws CleartkException;
+
+  public void finish() throws CleartkException;
+
 }

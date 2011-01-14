@@ -29,19 +29,19 @@ package org.cleartk.timeml.util;
  * All rights reserved.
  * 
  * Extract the text of Tokens preceding the focus annotation as in
- * {@link PrecedingTokenTextBagExtractor}, but include ordering information,
- * i.e. features will look like PrecedingToken_1, PrecedingToken_2, etc.
+ * {@link PrecedingTokenTextBagExtractor}, but include ordering information, i.e. features will look
+ * like PrecedingToken_1, PrecedingToken_2, etc.
  * 
  * @author Steven Bethard
  */
 public class PrecedingTokenTextExtractor extends PrecedingTokenTextBagExtractor {
 
-	public PrecedingTokenTextExtractor(int nTokens, String... acceptablePOSTags) {
-		super(nTokens, acceptablePOSTags);
-	}
+  public PrecedingTokenTextExtractor(int nTokens, String... acceptablePOSTags) {
+    super(nTokens, acceptablePOSTags);
+  }
 
-	@Override
-	public String getFeatureName(String pos, int index) {
-		return "PrecedingToken_" + index;
-	}
+  @Override
+  public String getFeatureName(String pos, int index) {
+    return "PrecedingToken_" + index;
+  }
 }

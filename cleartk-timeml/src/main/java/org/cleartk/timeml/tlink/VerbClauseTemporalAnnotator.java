@@ -71,286 +71,277 @@ import org.cleartk.util.AnnotationRetrieval;
  */
 public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
 
-	public static final String MODEL_BASE = "/models/timeml/tlink/verb-clause";
-	public static final String MODEL_DIR = "src/main/resources" + MODEL_BASE;
-	public static final String MODEL_RESOURCE = MODEL_BASE + "/model.jar";
+  public static final String MODEL_BASE = "/models/timeml/tlink/verb-clause";
 
-	private static final Map<String, String[]> headMap = new HashMap<String, String[]>();
-	static {
-		headMap.put("S", "VP S SBAR ADJP".split(" "));
-		headMap.put("SBAR", "VP S SBAR ADJP".split(" "));
-		headMap.put("VP", ("VP VB VBZ VBP VBG VBN VBD JJ JJR JJS "
-				+ "NNS NN PRP NNPS NNP ADJP NP S SBAR").split(" "));
-		headMap.put("ADJP", "ADJP VB VBZ VBP VBG VBN VBD JJ JJR JJS".split(" "));
-		headMap.put("NP", "NP NNS NN PRP NNPS NNP QP ADJP".split(" "));
-		headMap.put("QP", "NP NNS NN PRP NNPS NNP QP ADJP".split(" "));
-	}
+  public static final String MODEL_DIR = "src/main/resources" + MODEL_BASE;
 
-	private static final Set<String> stopWords = new HashSet<String>(
-		Arrays.asList("be been is 's am are was were has had have".split(" ")));
+  public static final String MODEL_RESOURCE = MODEL_BASE + "/model.jar";
 
-	private List<SimpleFeatureExtractor> sourceFeatureExtractors;
-	private List<SimpleFeatureExtractor> targetFeatureExtractors;
-	private List<SimpleFeatureExtractor> betweenAnchorsFeatureExtractors;
-	private TargetPathExtractor pathExtractor;
-	private int eventID;
+  private static final Map<String, String[]> headMap = new HashMap<String, String[]>();
+  static {
+    headMap.put("S", "VP S SBAR ADJP".split(" "));
+    headMap.put("SBAR", "VP S SBAR ADJP".split(" "));
+    headMap.put("VP", ("VP VB VBZ VBP VBG VBN VBD JJ JJR JJS "
+            + "NNS NN PRP NNPS NNP ADJP NP S SBAR").split(" "));
+    headMap.put("ADJP", "ADJP VB VBZ VBP VBG VBN VBD JJ JJR JJS".split(" "));
+    headMap.put("NP", "NP NNS NN PRP NNPS NNP QP ADJP".split(" "));
+    headMap.put("QP", "NP NNS NN PRP NNPS NNP QP ADJP".split(" "));
+  }
 
-	public static AnalysisEngineDescription getWriterDescription()
-			throws ResourceInitializationException {
-		return CleartkComponents.createCleartkAnnotator(
-			VerbClauseTemporalAnnotator.class,
-			TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
-			DefaultMaxentDataWriterFactory.class,
-			VerbClauseTemporalAnnotator.MODEL_DIR,
-			(List<Class<?>>) null);
-	}
+  private static final Set<String> stopWords = new HashSet<String>(
+          Arrays.asList("be been is 's am are was were has had have".split(" ")));
 
-	public static AnalysisEngineDescription getAnnotatorDescription()
-			throws ResourceInitializationException {
-		return CleartkComponents.createCleartkAnnotator(
-			VerbClauseTemporalAnnotator.class,
-			TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
-			VerbClauseTemporalAnnotator.class.getResource(
-				VerbClauseTemporalAnnotator.MODEL_RESOURCE).getFile(),
-			(List<Class<?>>) null);
-	}
+  private List<SimpleFeatureExtractor> sourceFeatureExtractors;
 
-	public VerbClauseTemporalAnnotator() {
-		this.eventID = 1;
+  private List<SimpleFeatureExtractor> targetFeatureExtractors;
 
-		PrecedingTokenTextBagExtractor precedingAuxiliaries;
-		precedingAuxiliaries = new PrecedingTokenTextBagExtractor(3, "MD", "TO", "IN", "VB", "RB");
+  private List<SimpleFeatureExtractor> betweenAnchorsFeatureExtractors;
 
-		this.sourceFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
-		this.sourceFeatureExtractors.add(new NamingExtractor("Source", new SpannedTextExtractor()));
-		this.sourceFeatureExtractors.add(new NamingExtractor("Source", new TokenPOSExtractor()));
-		this.sourceFeatureExtractors.add(new NamingExtractor("Source", new TokenStemExtractor()));
-		this.sourceFeatureExtractors.add(new NamingExtractor("Source", precedingAuxiliaries));
+  private TargetPathExtractor pathExtractor;
 
-		this.targetFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
-		this.targetFeatureExtractors.add(new NamingExtractor("Target", new SpannedTextExtractor()));
-		this.targetFeatureExtractors.add(new NamingExtractor("Target", new TokenPOSExtractor()));
-		this.targetFeatureExtractors.add(new NamingExtractor("Target", new TokenStemExtractor()));
-		this.targetFeatureExtractors.add(new NamingExtractor("Target", precedingAuxiliaries));
+  private int eventID;
 
-		this.betweenAnchorsFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
-		this.betweenAnchorsFeatureExtractors.add(new NamingExtractor(
-			"WordsBetween",
-			new BagExtractor(Token.class, new SpannedTextExtractor())));
-		this.pathExtractor = new TargetPathExtractor();
-	}
+  public static AnalysisEngineDescription getWriterDescription()
+          throws ResourceInitializationException {
+    return CleartkComponents.createCleartkAnnotator(VerbClauseTemporalAnnotator.class,
+            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION, DefaultMaxentDataWriterFactory.class,
+            VerbClauseTemporalAnnotator.MODEL_DIR, (List<Class<?>>) null);
+  }
 
-	public void process(JCas jCas) throws AnalysisEngineProcessException {
-		try {
-			this.processSimple(jCas);
-		} catch (CleartkException e) {
-			throw new AnalysisEngineProcessException(e);
-		}
-	}
+  public static AnalysisEngineDescription getAnnotatorDescription()
+          throws ResourceInitializationException {
+    return CleartkComponents.createCleartkAnnotator(VerbClauseTemporalAnnotator.class,
+            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION, VerbClauseTemporalAnnotator.class
+                    .getResource(VerbClauseTemporalAnnotator.MODEL_RESOURCE).getFile(),
+            (List<Class<?>>) null);
+  }
 
-	public void processSimple(JCas jCas) throws AnalysisEngineProcessException, CleartkException {
-		int docEnd = jCas.getDocumentText().length();
+  public VerbClauseTemporalAnnotator() {
+    this.eventID = 1;
 
-		// collect TLINKs if necessary
-		Map<String, TemporalLink> tlinks = null;
-		if (this.isTraining()) {
-			tlinks = this.getTemporalLinks(jCas);
-		}
+    PrecedingTokenTextBagExtractor precedingAuxiliaries;
+    precedingAuxiliaries = new PrecedingTokenTextBagExtractor(3, "MD", "TO", "IN", "VB", "RB");
 
-		// look for verb-clause pairs in each sentence in the document
-		for (Sentence sentence : AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
-			TopTreebankNode tree = AnnotationRetrieval.getContainingAnnotation(
-				jCas,
-				sentence,
-				TopTreebankNode.class);
-			if (tree == null) {
-				String fmt = "missing syntactic parse for sentence: %s";
-				String msg = String.format(fmt, sentence.getCoveredText());
-				this.getContext().getLogger().log(Level.WARNING, msg);
-				continue;
-			}
+    this.sourceFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
+    this.sourceFeatureExtractors.add(new NamingExtractor("Source", new SpannedTextExtractor()));
+    this.sourceFeatureExtractors.add(new NamingExtractor("Source", new TokenPOSExtractor()));
+    this.sourceFeatureExtractors.add(new NamingExtractor("Source", new TokenStemExtractor()));
+    this.sourceFeatureExtractors.add(new NamingExtractor("Source", precedingAuxiliaries));
 
-			// iterate over all verb-clause pairs
-			List<TreebankNodeLink> links = new ArrayList<TreebankNodeLink>();
-			this.collectVerbClausePairs(tree, links);
-			for (TreebankNodeLink link : links) {
+    this.targetFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
+    this.targetFeatureExtractors.add(new NamingExtractor("Target", new SpannedTextExtractor()));
+    this.targetFeatureExtractors.add(new NamingExtractor("Target", new TokenPOSExtractor()));
+    this.targetFeatureExtractors.add(new NamingExtractor("Target", new TokenStemExtractor()));
+    this.targetFeatureExtractors.add(new NamingExtractor("Target", precedingAuxiliaries));
 
-				Token sourceToken = AnnotationRetrieval.getAnnotations(
-					jCas,
-					link.source,
-					Token.class).get(0);
-				Token targetToken = AnnotationRetrieval.getAnnotations(
-					jCas,
-					link.target,
-					Token.class).get(0);
-				int firstEnd = Math.min(sourceToken.getEnd(), targetToken.getEnd());
-				int lastBegin = Math.max(sourceToken.getBegin(), targetToken.getBegin());
+    this.betweenAnchorsFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
+    this.betweenAnchorsFeatureExtractors.add(new NamingExtractor("WordsBetween", new BagExtractor(
+            Token.class, new SpannedTextExtractor())));
+    this.pathExtractor = new TargetPathExtractor();
+  }
 
-				// create an instance and populate it with features
-				Instance<String> instance = new Instance<String>();
-				for (SimpleFeatureExtractor extractor : this.sourceFeatureExtractors) {
-					instance.addAll(extractor.extract(jCas, sourceToken));
-				}
-				for (SimpleFeatureExtractor extractor : this.targetFeatureExtractors) {
-					instance.addAll(extractor.extract(jCas, targetToken));
-				}
-				Annotation windowAnnotation = new Annotation(jCas, firstEnd, lastBegin);
-				for (SimpleFeatureExtractor extractor : this.betweenAnchorsFeatureExtractors) {
-					instance.addAll(extractor.extract(jCas, windowAnnotation));
-				}
-				instance.addAll(this.pathExtractor.extract(jCas, link.source, link.target));
+  public void process(JCas jCas) throws AnalysisEngineProcessException {
+    try {
+      this.processSimple(jCas);
+    } catch (CleartkException e) {
+      throw new AnalysisEngineProcessException(e);
+    }
+  }
 
-				// find source and target anchors if they're available
-				Anchor source = AnnotationRetrieval.getContainingAnnotation(
-					jCas,
-					link.source,
-					Anchor.class);
-				Anchor target = AnnotationRetrieval.getContainingAnnotation(
-					jCas,
-					link.target,
-					Anchor.class);
+  public void processSimple(JCas jCas) throws AnalysisEngineProcessException, CleartkException {
+    int docEnd = jCas.getDocumentText().length();
 
-				// if we're building training data, get the relation type from a
-				// TLINK
-				if (this.isTraining()) {
-					if (source != null && target != null) {
-						String key = String.format("%s:%s", source.getId(), target.getId());
-						TemporalLink tlink = tlinks.remove(key);
-						if (tlink != null) {
-							instance.setOutcome(tlink.getRelationType());
-							this.dataWriter.write(instance);
-						}
-					}
-				}
+    // collect TLINKs if necessary
+    Map<String, TemporalLink> tlinks = null;
+    if (this.isTraining()) {
+      tlinks = this.getTemporalLinks(jCas);
+    }
 
-				// if we're classifying create new TLINKs from the
-				// classification outcomes
-				else {
-					String relationType = this.classifier.classify(instance.getFeatures());
-					source = this.getOrCreateEvent(jCas, source, link.source);
-					target = this.getOrCreateEvent(jCas, target, link.target);
-					TemporalLink tlink = new TemporalLink(jCas, docEnd, docEnd);
-					tlink.setSource(source);
-					tlink.setTarget(target);
-					tlink.setRelationType(relationType);
-					tlink.setEventID(source.getId());
-					tlink.setRelatedToEvent(target.getId());
-					tlink.addToIndexes();
-				}
-			}
-		}
-	}
+    // look for verb-clause pairs in each sentence in the document
+    for (Sentence sentence : AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
+      TopTreebankNode tree = AnnotationRetrieval.getContainingAnnotation(jCas, sentence,
+              TopTreebankNode.class);
+      if (tree == null) {
+        String fmt = "missing syntactic parse for sentence: %s";
+        String msg = String.format(fmt, sentence.getCoveredText());
+        this.getContext().getLogger().log(Level.WARNING, msg);
+        continue;
+      }
 
-	private Event getOrCreateEvent(JCas jCas, Anchor anchor, TreebankNode node) {
-		if (anchor != null && anchor instanceof Event) {
-			return (Event) anchor;
-		}
-		Event event = new Event(jCas, node.getBegin(), node.getEnd());
-		event.setId("e" + this.eventID);
-		this.eventID++;
-		event.addToIndexes();
-		return event;
-	}
+      // iterate over all verb-clause pairs
+      List<TreebankNodeLink> links = new ArrayList<TreebankNodeLink>();
+      this.collectVerbClausePairs(tree, links);
+      for (TreebankNodeLink link : links) {
 
-	private Map<String, TemporalLink> getTemporalLinks(JCas jCas) {
-		Map<String, TemporalLink> tlinks = new HashMap<String, TemporalLink>();
-		for (TemporalLink tlink : AnnotationRetrieval.getAnnotations(jCas, TemporalLink.class)) {
-			String sourceID = tlink.getSource().getId();
-			String targetID = tlink.getTarget().getId();
-			String key = String.format("%s:%s", sourceID, targetID);
-			tlinks.put(key, tlink);
-		}
-		return tlinks;
-	}
+        Token sourceToken = AnnotationRetrieval.getAnnotations(jCas, link.source, Token.class).get(
+                0);
+        Token targetToken = AnnotationRetrieval.getAnnotations(jCas, link.target, Token.class).get(
+                0);
+        int firstEnd = Math.min(sourceToken.getEnd(), targetToken.getEnd());
+        int lastBegin = Math.max(sourceToken.getBegin(), targetToken.getBegin());
 
-	private void collectVerbClausePairs(TreebankNode node, List<TreebankNodeLink> links) {
-		if (this.isVerbPhrase(node)) {
-			List<TreebankNode> sources = new ArrayList<TreebankNode>();
-			List<TreebankNode> targets = new ArrayList<TreebankNode>();
-			this.collectHeads(node, sources);
+        // create an instance and populate it with features
+        Instance<String> instance = new Instance<String>();
+        for (SimpleFeatureExtractor extractor : this.sourceFeatureExtractors) {
+          instance.addAll(extractor.extract(jCas, sourceToken));
+        }
+        for (SimpleFeatureExtractor extractor : this.targetFeatureExtractors) {
+          instance.addAll(extractor.extract(jCas, targetToken));
+        }
+        Annotation windowAnnotation = new Annotation(jCas, firstEnd, lastBegin);
+        for (SimpleFeatureExtractor extractor : this.betweenAnchorsFeatureExtractors) {
+          instance.addAll(extractor.extract(jCas, windowAnnotation));
+        }
+        instance.addAll(this.pathExtractor.extract(jCas, link.source, link.target));
 
-			// look for clauses in descendants
-			for (int i = 0; i < node.getChildren().size(); i++) {
-				TreebankNode child = node.getChildren(i);
-				if (this.isClause(child)) {
+        // find source and target anchors if they're available
+        Anchor source = AnnotationRetrieval
+                .getContainingAnnotation(jCas, link.source, Anchor.class);
+        Anchor target = AnnotationRetrieval
+                .getContainingAnnotation(jCas, link.target, Anchor.class);
 
-					// pair the verb phrase heads with the clause heads
-					targets.clear();
-					this.collectHeads(child, targets);
-					for (TreebankNode source : sources) {
-						for (TreebankNode target : targets) {
+        // if we're building training data, get the relation type from a
+        // TLINK
+        if (this.isTraining()) {
+          if (source != null && target != null) {
+            String key = String.format("%s:%s", source.getId(), target.getId());
+            TemporalLink tlink = tlinks.remove(key);
+            if (tlink != null) {
+              instance.setOutcome(tlink.getRelationType());
+              this.dataWriter.write(instance);
+            }
+          }
+        }
 
-							// skip pairs where the head of the VP is inside the
-							// clause
-							if (!this.contains(child, source)) {
-								links.add(new TreebankNodeLink(source, target));
-							}
-						}
-					}
-				}
-			}
-		}
-		// look for verb phrases in descendants
-		for (int i = 0; i < node.getChildren().size(); i++) {
-			TreebankNode child = node.getChildren(i);
-			this.collectVerbClausePairs(child, links);
-		}
-	}
+        // if we're classifying create new TLINKs from the
+        // classification outcomes
+        else {
+          String relationType = this.classifier.classify(instance.getFeatures());
+          source = this.getOrCreateEvent(jCas, source, link.source);
+          target = this.getOrCreateEvent(jCas, target, link.target);
+          TemporalLink tlink = new TemporalLink(jCas, docEnd, docEnd);
+          tlink.setSource(source);
+          tlink.setTarget(target);
+          tlink.setRelationType(relationType);
+          tlink.setEventID(source.getId());
+          tlink.setRelatedToEvent(target.getId());
+          tlink.addToIndexes();
+        }
+      }
+    }
+  }
 
-	private void collectHeads(TreebankNode node, List<TreebankNode> heads) {
-		if (node.getLeaf()) {
-			heads.add(node);
-		}
-		String[] headTypes = VerbClauseTemporalAnnotator.headMap.get(node.getNodeType());
-		if (headTypes != null) {
-			for (String headType : headTypes) {
-				boolean foundChildWithHeadType = false;
-				for (int i = 0; i < node.getChildren().size(); i++) {
-					TreebankNode child = node.getChildren(i);
-					if (child.getNodeType().equals(headType)) {
-						String text = child.getCoveredText();
-						if (!VerbClauseTemporalAnnotator.stopWords.contains(text)) {
-							this.collectHeads(child, heads);
-							foundChildWithHeadType = true;
-						}
-					}
-				}
-				if (foundChildWithHeadType) {
-					break;
-				}
-			}
-		}
-	}
+  private Event getOrCreateEvent(JCas jCas, Anchor anchor, TreebankNode node) {
+    if (anchor != null && anchor instanceof Event) {
+      return (Event) anchor;
+    }
+    Event event = new Event(jCas, node.getBegin(), node.getEnd());
+    event.setId("e" + this.eventID);
+    this.eventID++;
+    event.addToIndexes();
+    return event;
+  }
 
-	private boolean contains(TreebankNode node, TreebankNode descendant) {
-		if (node == descendant) {
-			return true;
-		}
-		for (int i = 0; i < node.getChildren().size(); i++) {
-			boolean result = this.contains(node.getChildren(i), descendant);
-			if (result) {
-				return true;
-			}
-		}
-		return false;
-	}
+  private Map<String, TemporalLink> getTemporalLinks(JCas jCas) {
+    Map<String, TemporalLink> tlinks = new HashMap<String, TemporalLink>();
+    for (TemporalLink tlink : AnnotationRetrieval.getAnnotations(jCas, TemporalLink.class)) {
+      String sourceID = tlink.getSource().getId();
+      String targetID = tlink.getTarget().getId();
+      String key = String.format("%s:%s", sourceID, targetID);
+      tlinks.put(key, tlink);
+    }
+    return tlinks;
+  }
 
-	private boolean isVerbPhrase(TreebankNode node) {
-		return node.getNodeType().startsWith("VP");
-	}
+  private void collectVerbClausePairs(TreebankNode node, List<TreebankNodeLink> links) {
+    if (this.isVerbPhrase(node)) {
+      List<TreebankNode> sources = new ArrayList<TreebankNode>();
+      List<TreebankNode> targets = new ArrayList<TreebankNode>();
+      this.collectHeads(node, sources);
 
-	private boolean isClause(TreebankNode node) {
-		return node.getNodeType().startsWith("S");
-	}
+      // look for clauses in descendants
+      for (int i = 0; i < node.getChildren().size(); i++) {
+        TreebankNode child = node.getChildren(i);
+        if (this.isClause(child)) {
 
-	private class TreebankNodeLink {
-		public TreebankNode source;
-		public TreebankNode target;
+          // pair the verb phrase heads with the clause heads
+          targets.clear();
+          this.collectHeads(child, targets);
+          for (TreebankNode source : sources) {
+            for (TreebankNode target : targets) {
 
-		public TreebankNodeLink(TreebankNode source, TreebankNode target) {
-			this.source = source;
-			this.target = target;
-		}
-	}
+              // skip pairs where the head of the VP is inside the
+              // clause
+              if (!this.contains(child, source)) {
+                links.add(new TreebankNodeLink(source, target));
+              }
+            }
+          }
+        }
+      }
+    }
+    // look for verb phrases in descendants
+    for (int i = 0; i < node.getChildren().size(); i++) {
+      TreebankNode child = node.getChildren(i);
+      this.collectVerbClausePairs(child, links);
+    }
+  }
+
+  private void collectHeads(TreebankNode node, List<TreebankNode> heads) {
+    if (node.getLeaf()) {
+      heads.add(node);
+    }
+    String[] headTypes = VerbClauseTemporalAnnotator.headMap.get(node.getNodeType());
+    if (headTypes != null) {
+      for (String headType : headTypes) {
+        boolean foundChildWithHeadType = false;
+        for (int i = 0; i < node.getChildren().size(); i++) {
+          TreebankNode child = node.getChildren(i);
+          if (child.getNodeType().equals(headType)) {
+            String text = child.getCoveredText();
+            if (!VerbClauseTemporalAnnotator.stopWords.contains(text)) {
+              this.collectHeads(child, heads);
+              foundChildWithHeadType = true;
+            }
+          }
+        }
+        if (foundChildWithHeadType) {
+          break;
+        }
+      }
+    }
+  }
+
+  private boolean contains(TreebankNode node, TreebankNode descendant) {
+    if (node == descendant) {
+      return true;
+    }
+    for (int i = 0; i < node.getChildren().size(); i++) {
+      boolean result = this.contains(node.getChildren(i), descendant);
+      if (result) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean isVerbPhrase(TreebankNode node) {
+    return node.getNodeType().startsWith("VP");
+  }
+
+  private boolean isClause(TreebankNode node) {
+    return node.getNodeType().startsWith("S");
+  }
+
+  private class TreebankNodeLink {
+    public TreebankNode source;
+
+    public TreebankNode target;
+
+    public TreebankNodeLink(TreebankNode source, TreebankNode target) {
+      this.source = source;
+      this.target = target;
+    }
+  }
 
 }

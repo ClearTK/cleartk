@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.srl;
 
 import java.io.File;
@@ -34,33 +34,32 @@ import org.junit.Before;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
  */
 public class SRLWriterTest extends SrlTestBase {
-	
-	private File outputFile;
-	
-	@Before
-	public void setUp() throws Exception {
-		super.setUp();
-		outputFile  = new File(outputDirectory, "srl-output.txt");
-	}
-	
-	@Test
-	public void testSRLWriterDescriptor() throws UIMAException, IOException {
-		try {
-			AnalysisEngineFactory.createPrimitive(SRLWriter.class, typeSystemDescription);
-			Assert.fail("expected exception without output file parameter");
-		} catch (ResourceInitializationException e) {}
 
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				SRLWriter.class, typeSystemDescription,
-				SRLWriter.PARAM_OUTPUT_FILE, outputFile.getPath());
+  private File outputFile;
 
-		engine.collectionProcessComplete();
-	}
+  @Before
+  public void setUp() throws Exception {
+    super.setUp();
+    outputFile = new File(outputDirectory, "srl-output.txt");
+  }
+
+  @Test
+  public void testSRLWriterDescriptor() throws UIMAException, IOException {
+    try {
+      AnalysisEngineFactory.createPrimitive(SRLWriter.class, typeSystemDescription);
+      Assert.fail("expected exception without output file parameter");
+    } catch (ResourceInitializationException e) {
+    }
+
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(SRLWriter.class,
+            typeSystemDescription, SRLWriter.PARAM_OUTPUT_FILE, outputFile.getPath());
+
+    engine.collectionProcessComplete();
+  }
 }

@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2009, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.svmlight;
 
 import java.io.BufferedReader;
@@ -37,82 +37,84 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
 import org.cleartk.classifier.util.featurevector.SparseFeatureVector;
 
 /**
- * <br>Copyright (c) 2009, Regents of the University of Colorado 
- * <br>All rights reserved.
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
  * 
- * This class implements an algorithm to fit a sigmoid function to the output
- * of an SVM classifier. The algorithm is the one introduced by Hsuan-Tien Lin,
- * Chih-Jen Lin, and Ruby C. Weng (who were in turn extending work by J. Platt),
- * and this implementation is a direct translation of their pseudo-code as 
- * presented in
+ * This class implements an algorithm to fit a sigmoid function to the output of an SVM classifier.
+ * The algorithm is the one introduced by Hsuan-Tien Lin, Chih-Jen Lin, and Ruby C. Weng (who were
+ * in turn extending work by J. Platt), and this implementation is a direct translation of their
+ * pseudo-code as presented in
  * 
- * Lin, Lin, Weng. A note on Platt's probabilistic outputs for support vector 
- * machines. In Machine Learning, vol. 68, pp. 267-276, 2007.
+ * Lin, Lin, Weng. A note on Platt's probabilistic outputs for support vector machines. In Machine
+ * Learning, vol. 68, pp. 267-276, 2007.
  * 
  * @author Philipp G. Wetzler
  */
 public class FitSigmoid {
-	
-	public static Sigmoid fit(File svmlightModelFile, File trainingDataFile) throws ConvergenceFailure, IOException, CleartkException {
-		SVMlightModel model = SVMlightModel.fromFile(svmlightModelFile);
-		
-		BufferedReader r = new BufferedReader(new FileReader(trainingDataFile));
-		int lines = 0;
-		while( r.readLine() != null )
-			lines += 1;
-		r.close();
-		
-		boolean[] labels = new boolean[lines];
-		double[] decisionValues = new double[lines];
-		int i=0;
-		r = new BufferedReader(new FileReader(trainingDataFile));
-		String line = r.readLine();
-		while( line != null ) {
-			TrainingInstance ti = parseTI(line.trim());
-			labels[i] = ti.getLabel();
-			decisionValues[i] = model.evaluate(ti.getFeatureVector());
-			i += 1;
-			line = r.readLine();
-		}
-		r.close();
-		
-		return LinWengPlatt.fit(decisionValues, labels);
 
-	}
+  public static Sigmoid fit(File svmlightModelFile, File trainingDataFile)
+          throws ConvergenceFailure, IOException, CleartkException {
+    SVMlightModel model = SVMlightModel.fromFile(svmlightModelFile);
 
-	private static TrainingInstance parseTI(String line) throws IOException, CleartkException {
-		String[] fields = line.split(" ");
-		
-		boolean label = fields[0].trim().equals("+1");
-		
-		FeatureVector fv = new SparseFeatureVector();
-		
-		for( int i=1; i<fields.length; i++ ) {
-			String[] parts = fields[i].split(":");
-			int featureIndex = Integer.valueOf(parts[0]);
-			double featureValue = Double.valueOf(parts[1]);
-			fv.set(featureIndex, featureValue);
-		}
-		
-		return new TrainingInstance(label, fv);
-	}
-	
-	private static class TrainingInstance {
-		
-		public TrainingInstance(boolean label, FeatureVector featureVector) {
-			this.label = label;
-			this.featureVector = featureVector;
-		}
-		
-		public boolean getLabel() {
-			return label;
-		}
-		
-		public FeatureVector getFeatureVector() {
-			return featureVector;
-		}
-		
-		private boolean label;
-		private FeatureVector featureVector;
-	}
+    BufferedReader r = new BufferedReader(new FileReader(trainingDataFile));
+    int lines = 0;
+    while (r.readLine() != null)
+      lines += 1;
+    r.close();
+
+    boolean[] labels = new boolean[lines];
+    double[] decisionValues = new double[lines];
+    int i = 0;
+    r = new BufferedReader(new FileReader(trainingDataFile));
+    String line = r.readLine();
+    while (line != null) {
+      TrainingInstance ti = parseTI(line.trim());
+      labels[i] = ti.getLabel();
+      decisionValues[i] = model.evaluate(ti.getFeatureVector());
+      i += 1;
+      line = r.readLine();
+    }
+    r.close();
+
+    return LinWengPlatt.fit(decisionValues, labels);
+
+  }
+
+  private static TrainingInstance parseTI(String line) throws IOException, CleartkException {
+    String[] fields = line.split(" ");
+
+    boolean label = fields[0].trim().equals("+1");
+
+    FeatureVector fv = new SparseFeatureVector();
+
+    for (int i = 1; i < fields.length; i++) {
+      String[] parts = fields[i].split(":");
+      int featureIndex = Integer.valueOf(parts[0]);
+      double featureValue = Double.valueOf(parts[1]);
+      fv.set(featureIndex, featureValue);
+    }
+
+    return new TrainingInstance(label, fv);
+  }
+
+  private static class TrainingInstance {
+
+    public TrainingInstance(boolean label, FeatureVector featureVector) {
+      this.label = label;
+      this.featureVector = featureVector;
+    }
+
+    public boolean getLabel() {
+      return label;
+    }
+
+    public FeatureVector getFeatureVector() {
+      return featureVector;
+    }
+
+    private boolean label;
+
+    private FeatureVector featureVector;
+  }
 }

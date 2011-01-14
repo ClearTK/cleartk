@@ -48,53 +48,50 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  */
 public class ExamplePOSPlainTextWriter extends JCasAnnotator_ImplBase {
 
-	public static final String DEFAULT_OUTPUT_DIRECTORY = "src/main/resources/data/pos";
+  public static final String DEFAULT_OUTPUT_DIRECTORY = "src/main/resources/data/pos";
 
-	public static final String PARAM_OUTPUT_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(ExamplePOSPlainTextWriter.class, "outputDirectoryName");
-	
-	@ConfigurationParameter(
-			mandatory = true,
-			defaultValue = DEFAULT_OUTPUT_DIRECTORY,
-			description = "provides the directory where the token/pos text files will be written")
-	private String outputDirectoryName;
-	
-	protected File outputDir;
+  public static final String PARAM_OUTPUT_DIRECTORY_NAME = ConfigurationParameterFactory
+          .createConfigurationParameterName(ExamplePOSPlainTextWriter.class, "outputDirectoryName");
 
-	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		super.initialize(context);
-		this.outputDir = new File(outputDirectoryName);
-		if (!this.outputDir.exists()) {
-			this.outputDir.mkdirs();
-		}
-	}
+  @ConfigurationParameter(mandatory = true, defaultValue = DEFAULT_OUTPUT_DIRECTORY, description = "provides the directory where the token/pos text files will be written")
+  private String outputDirectoryName;
 
-	@Override
-	public void process(JCas jCas) throws AnalysisEngineProcessException {
-		String id = ViewURIUtil.getURI(jCas);
-		int index = Math.max(id.lastIndexOf("/"), id.lastIndexOf("\\")) + 1;
-		id = id.substring(index);
-		PrintWriter outputWriter;
-		try {
-			outputWriter = new PrintWriter(new File(this.outputDir, id + ".pos"));
-		}
-		catch (FileNotFoundException e) {
-			throw new AnalysisEngineProcessException(e);
-		}
-		for (Sentence sentence : AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
-			for (Token token : AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class)) {
-				outputWriter.print(token.getCoveredText());
-				outputWriter.print('/');
-				outputWriter.print(token.getPos());
-				outputWriter.print(' ');
-			}
-			outputWriter.println();
-		}
-		outputWriter.close();
-	}
+  protected File outputDir;
 
-	public void setOutputDirectoryName(String outputDirectoryName) {
-		this.outputDirectoryName = outputDirectoryName;
-	}
+  @Override
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    super.initialize(context);
+    this.outputDir = new File(outputDirectoryName);
+    if (!this.outputDir.exists()) {
+      this.outputDir.mkdirs();
+    }
+  }
+
+  @Override
+  public void process(JCas jCas) throws AnalysisEngineProcessException {
+    String id = ViewURIUtil.getURI(jCas);
+    int index = Math.max(id.lastIndexOf("/"), id.lastIndexOf("\\")) + 1;
+    id = id.substring(index);
+    PrintWriter outputWriter;
+    try {
+      outputWriter = new PrintWriter(new File(this.outputDir, id + ".pos"));
+    } catch (FileNotFoundException e) {
+      throw new AnalysisEngineProcessException(e);
+    }
+    for (Sentence sentence : AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
+      for (Token token : AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class)) {
+        outputWriter.print(token.getCoveredText());
+        outputWriter.print('/');
+        outputWriter.print(token.getPos());
+        outputWriter.print(' ');
+      }
+      outputWriter.println();
+    }
+    outputWriter.close();
+  }
+
+  public void setOutputDirectoryName(String outputDirectoryName) {
+    this.outputDirectoryName = outputDirectoryName;
+  }
 
 }

@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,44 +20,42 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.ne.term.util;
 
 import java.util.List;
 
 import org.cleartk.token.tokenizer.Token;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * <p>
  * 
- * This interface defines a term finder - a class which finds terms provided in
- * one or more term lists in text.
+ * This interface defines a term finder - a class which finds terms provided in one or more term
+ * lists in text.
  * 
  * @author Philip
  * 
  */
 public interface TermFinder {
-	/**
-	 * 
-	 * @param tokens
-	 *            a list of tokens corresponding to the text to look for terms
-	 *            in.
-	 * 
-	 * @return all of the terms that were matched to spans of text
-	 */
-	public List<TermMatch> getMatches(List<Token> tokens);
+  /**
+   * 
+   * @param tokens
+   *          a list of tokens corresponding to the text to look for terms in.
+   * 
+   * @return all of the terms that were matched to spans of text
+   */
+  public List<TermMatch> getMatches(List<Token> tokens);
 
-	/**
-	 * A term finder should typically be able to handle more than one term list.
-	 * Furthermore, a term list makes no guarantees that the terms are unique
-	 * with respect to the term texts either within a term list or across
-	 * multiple term lists.
-	 * 
-	 * @param termList
-	 */
-	public void addTermList(TermList termList);
+  /**
+   * A term finder should typically be able to handle more than one term list. Furthermore, a term
+   * list makes no guarantees that the terms are unique with respect to the term texts either within
+   * a term list or across multiple term lists.
+   * 
+   * @param termList
+   */
+  public void addTermList(TermList termList);
 }

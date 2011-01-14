@@ -38,23 +38,27 @@ import org.uimafit.factory.AnalysisEngineFactory;
  * Copyright (c) 2010, Regents of the University of Colorado <br>
  * All rights reserved.
  * <p>
+ * 
  * @author Philip Ogren
  */
 
 public class BreakIteratorAnnotatorFactory {
 
-	public static AnalysisEngineDescription createSentenceAnnotator(Locale locale) throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveDescription(BreakIteratorAnnotator.class, TokenComponents.TYPE_SYSTEM_DESCRIPTION,
-				BreakIteratorAnnotator.PARAM_ANNOTATION_TYPE_NAME, Sentence.class.getName(),
-				BreakIteratorAnnotator.PARAM_LOCALE, locale.toString()
-				);
-	}
-	
-	public static AnalysisEngineDescription createTokenAnnotator(Locale locale) throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveDescription(BreakIteratorAnnotator.class, TokenComponents.TYPE_SYSTEM_DESCRIPTION,
-				BreakIteratorAnnotator.PARAM_BREAK_ITERATOR_TYPE, "WORD",
-				BreakIteratorAnnotator.PARAM_ANNOTATION_TYPE_NAME, Token.class.getName(),
-				BreakIteratorAnnotator.PARAM_LOCALE, locale.toString());
-	}
+  public static AnalysisEngineDescription createSentenceAnnotator(Locale locale)
+          throws ResourceInitializationException {
+    return AnalysisEngineFactory.createPrimitiveDescription(BreakIteratorAnnotator.class,
+            TokenComponents.TYPE_SYSTEM_DESCRIPTION,
+            BreakIteratorAnnotator.PARAM_ANNOTATION_TYPE_NAME, Sentence.class.getName(),
+            BreakIteratorAnnotator.PARAM_LOCALE, locale.toString());
+  }
+
+  public static AnalysisEngineDescription createTokenAnnotator(Locale locale)
+          throws ResourceInitializationException {
+    return AnalysisEngineFactory.createPrimitiveDescription(BreakIteratorAnnotator.class,
+            TokenComponents.TYPE_SYSTEM_DESCRIPTION,
+            BreakIteratorAnnotator.PARAM_BREAK_ITERATOR_TYPE, "WORD",
+            BreakIteratorAnnotator.PARAM_ANNOTATION_TYPE_NAME, Token.class.getName(),
+            BreakIteratorAnnotator.PARAM_LOCALE, locale.toString());
+  }
 
 }

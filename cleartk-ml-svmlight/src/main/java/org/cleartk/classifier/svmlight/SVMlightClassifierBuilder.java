@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.svmlight;
 
 import java.io.File;
@@ -40,78 +40,82 @@ import org.cleartk.classifier.jar.ClassifierBuilder;
 import org.cleartk.classifier.sigmoid.Sigmoid;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
-*/
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ */
 
 public class SVMlightClassifierBuilder implements ClassifierBuilder<Boolean> {
 
-	static Logger logger = UIMAFramework.getLogger(SVMlightClassifierBuilder.class); 
-		
-	public static String COMMAND_ARGUMENT = "--executable";
-	
-	public static void train(String filePath, String[] args) throws Exception {
-		String executable = "svm_learn";
-		if(args.length > 0 && args[0].equals(COMMAND_ARGUMENT)) {
-			executable = args[1]; 
-			String[] tempArgs = new String[args.length - 2];
-			System.arraycopy(args, 2, tempArgs, 0, tempArgs.length);
-			args = tempArgs;
-		}
-		
-		String[] command = new String[args.length + 3];
-		command[0] = executable;
-		System.arraycopy(args, 0, command, 1, args.length);
-		command[command.length - 2] = new File(filePath).getPath();
-		command[command.length - 1] = new File(filePath + ".model").getPath();
-		
-		logger.log(Level.INFO, "training with svmlight using the following command: "+toString(command));
-		logger.log(Level.INFO, "if the svmlight learner does not seem to be working correctly, then try running the above command directly to see if e.g. svm_learn or svm_perf_learn gives a useful error message.");
-		Process process = Runtime.getRuntime().exec(command);
-		output(process.getInputStream(), System.out);
-		output(process.getErrorStream(), System.err);
-		process.waitFor();
-	}
+  static Logger logger = UIMAFramework.getLogger(SVMlightClassifierBuilder.class);
 
-	private static String toString(String[] command) {
-		StringBuilder sb = new StringBuilder();
-		for(String cmmnd : command) {
-			sb.append(cmmnd+" ");
-		}
-		return sb.toString();
-	}
-	
-	public void train(File dir, String[] args) throws Exception {
-		File trainingDataFile = new File(dir, "training-data.svmlight");
-		train(trainingDataFile.getPath(), args);
-		
-		Sigmoid s = FitSigmoid.fit(new File(trainingDataFile.toString() + ".model"), trainingDataFile);
-		System.out.println("Computed output mapping function: " + s.toString());
-		
-		ObjectOutput o = new ObjectOutputStream(new FileOutputStream(new File(trainingDataFile.toString() + ".sigmoid")));
-		o.writeObject(s);
-		o.close();
-	}
-	
-	public void buildJar(File dir, String[] args) throws Exception {
-		BuildJar.OutputStream stream = new BuildJar.OutputStream(dir);
-		stream.write("model.svmlight", new File(dir, "training-data.svmlight.model"));
-		stream.write("model.sigmoid", new File(dir, "training-data.svmlight.sigmoid"));
-		stream.close();
-	}
+  public static String COMMAND_ARGUMENT = "--executable";
 
-	public Class<? extends Classifier<Boolean>> getClassifierClass() {
-		return SVMlightClassifier.class;
-	}
-	
-	private static void output(InputStream input, PrintStream output) throws IOException {
-		byte[] buffer = new byte[128];
-		int count = input.read(buffer);
-		while (count != -1) {
-			output.write(buffer, 0, count);
-			count = input.read(buffer);
-		}
-	}
+  public static void train(String filePath, String[] args) throws Exception {
+    String executable = "svm_learn";
+    if (args.length > 0 && args[0].equals(COMMAND_ARGUMENT)) {
+      executable = args[1];
+      String[] tempArgs = new String[args.length - 2];
+      System.arraycopy(args, 2, tempArgs, 0, tempArgs.length);
+      args = tempArgs;
+    }
+
+    String[] command = new String[args.length + 3];
+    command[0] = executable;
+    System.arraycopy(args, 0, command, 1, args.length);
+    command[command.length - 2] = new File(filePath).getPath();
+    command[command.length - 1] = new File(filePath + ".model").getPath();
+
+    logger.log(Level.INFO, "training with svmlight using the following command: "
+            + toString(command));
+    logger.log(
+            Level.INFO,
+            "if the svmlight learner does not seem to be working correctly, then try running the above command directly to see if e.g. svm_learn or svm_perf_learn gives a useful error message.");
+    Process process = Runtime.getRuntime().exec(command);
+    output(process.getInputStream(), System.out);
+    output(process.getErrorStream(), System.err);
+    process.waitFor();
+  }
+
+  private static String toString(String[] command) {
+    StringBuilder sb = new StringBuilder();
+    for (String cmmnd : command) {
+      sb.append(cmmnd + " ");
+    }
+    return sb.toString();
+  }
+
+  public void train(File dir, String[] args) throws Exception {
+    File trainingDataFile = new File(dir, "training-data.svmlight");
+    train(trainingDataFile.getPath(), args);
+
+    Sigmoid s = FitSigmoid.fit(new File(trainingDataFile.toString() + ".model"), trainingDataFile);
+    System.out.println("Computed output mapping function: " + s.toString());
+
+    ObjectOutput o = new ObjectOutputStream(new FileOutputStream(new File(
+            trainingDataFile.toString() + ".sigmoid")));
+    o.writeObject(s);
+    o.close();
+  }
+
+  public void buildJar(File dir, String[] args) throws Exception {
+    BuildJar.OutputStream stream = new BuildJar.OutputStream(dir);
+    stream.write("model.svmlight", new File(dir, "training-data.svmlight.model"));
+    stream.write("model.sigmoid", new File(dir, "training-data.svmlight.sigmoid"));
+    stream.close();
+  }
+
+  public Class<? extends Classifier<Boolean>> getClassifierClass() {
+    return SVMlightClassifier.class;
+  }
+
+  private static void output(InputStream input, PrintStream output) throws IOException {
+    byte[] buffer = new byte[128];
+    int count = input.read(buffer);
+    while (count != -1) {
+      output.write(buffer, 0, count);
+      count = input.read(buffer);
+    }
+  }
 
 }

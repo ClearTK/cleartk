@@ -44,51 +44,54 @@ import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.Initializable;
 
 /**
- * <br>Copyright (c) 2009, Regents of the University of Colorado 
- * <br>All rights reserved.
- *
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * @author Philip Ogren
- *
+ * 
  */
 
-public class LibsvmDataWriterFactory implements org.cleartk.classifier.DataWriterFactory<String>, Initializable {
+public class LibsvmDataWriterFactory implements org.cleartk.classifier.DataWriterFactory<String>,
+        Initializable {
 
-	public static final String PARAM_OUTPUT_DIRECTORY = 
-			ConfigurationParameterFactory.createConfigurationParameterName(LibsvmDataWriterFactory.class, "outputDirectory");
-	@ConfigurationParameter(mandatory = true, description = "provides the name of the directory where the training data will be written.")
-	protected File outputDirectory;
+  public static final String PARAM_OUTPUT_DIRECTORY = ConfigurationParameterFactory
+          .createConfigurationParameterName(LibsvmDataWriterFactory.class, "outputDirectory");
 
-	public static final String PARAM_IDFMAP_FILE_NAME = 
-			ConfigurationParameterFactory.createConfigurationParameterName(LibsvmDataWriterFactory.class, "idfmapFileName");
-	@ConfigurationParameter(mandatory = true, description = "provides the file name of the IDF Map")
-	public String idfmapFileName;
-	
-	public static final String PARAM_CUTOFF = 
-			ConfigurationParameterFactory.createConfigurationParameterName(LibsvmDataWriterFactory.class, "cutoff");
-	@ConfigurationParameter(
-			defaultValue = "5",
-			description = "features that occur less than this number of times over the whole training set will not be encoded during testing")
-	protected int cutoff = 5;
+  @ConfigurationParameter(mandatory = true, description = "provides the name of the directory where the training data will be written.")
+  protected File outputDirectory;
 
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		ConfigurationParameterInitializer.initialize(this, context);
-	}
+  public static final String PARAM_IDFMAP_FILE_NAME = ConfigurationParameterFactory
+          .createConfigurationParameterName(LibsvmDataWriterFactory.class, "idfmapFileName");
 
-	
-	public DataWriter<String> createDataWriter() throws IOException {
-		MultiClassLIBSVMDataWriter dataWriter = new MultiClassLIBSVMDataWriter(outputDirectory);
+  @ConfigurationParameter(mandatory = true, description = "provides the file name of the IDF Map")
+  public String idfmapFileName;
 
-			NameNumberNormalizer normalizer = new EuclidianNormalizer();
-			FeatureVectorFeaturesEncoder featuresEncoder = new FeatureVectorFeaturesEncoder(cutoff, normalizer);
-			featuresEncoder.addEncoder(new TFIDFEncoder(new File(idfmapFileName)));
-			featuresEncoder.addEncoder(new NumberEncoder());
-			featuresEncoder.addEncoder(new BooleanEncoder());
-			featuresEncoder.addEncoder(new StringEncoder());
-			dataWriter.setFeaturesEncoder(featuresEncoder);
+  public static final String PARAM_CUTOFF = ConfigurationParameterFactory
+          .createConfigurationParameterName(LibsvmDataWriterFactory.class, "cutoff");
 
-			dataWriter.setOutcomeEncoder(new StringToIntegerOutcomeEncoder());
+  @ConfigurationParameter(defaultValue = "5", description = "features that occur less than this number of times over the whole training set will not be encoded during testing")
+  protected int cutoff = 5;
 
-		return dataWriter;
-	}
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    ConfigurationParameterInitializer.initialize(this, context);
+  }
+
+  public DataWriter<String> createDataWriter() throws IOException {
+    MultiClassLIBSVMDataWriter dataWriter = new MultiClassLIBSVMDataWriter(outputDirectory);
+
+    NameNumberNormalizer normalizer = new EuclidianNormalizer();
+    FeatureVectorFeaturesEncoder featuresEncoder = new FeatureVectorFeaturesEncoder(cutoff,
+            normalizer);
+    featuresEncoder.addEncoder(new TFIDFEncoder(new File(idfmapFileName)));
+    featuresEncoder.addEncoder(new NumberEncoder());
+    featuresEncoder.addEncoder(new BooleanEncoder());
+    featuresEncoder.addEncoder(new StringEncoder());
+    dataWriter.setFeaturesEncoder(featuresEncoder);
+
+    dataWriter.setOutcomeEncoder(new StringToIntegerOutcomeEncoder());
+
+    return dataWriter;
+  }
 
 }

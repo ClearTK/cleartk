@@ -52,202 +52,203 @@ import org.uimafit.descriptor.SofaCapability;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.InitializableFactory;
 
-
 /**
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
  * <p>
  * 
- * LineReader is collection reader for cases when you want to read in files
- * line-by-line such that there is one JCas per line.
+ * LineReader is collection reader for cases when you want to read in files line-by-line such that
+ * there is one JCas per line.
  * 
  * <p>
  * This class has no relation to LineWriter - i.e. LineReader does not provide
  * "reverse functionality" of LineWriter.
  * 
  * <p>
- * This class is very similar to PlainTextCollectionReader in that it allows you
- * to specify a file or directory from which to read in plain text into a named
- * view with a specified language and encoding. However, instead of reading in
- * entire files as plain text, this collection reader reads in a file
- * line-by-line where each line gets its own JCas.
+ * This class is very similar to PlainTextCollectionReader in that it allows you to specify a file
+ * or directory from which to read in plain text into a named view with a specified language and
+ * encoding. However, instead of reading in entire files as plain text, this collection reader reads
+ * in a file line-by-line where each line gets its own JCas.
  * <p>
- * LineReader uses an interface LineHandler which determines how lines from a
- * file are used to initialize a JCas. The default implementation,
- * DefaultLineHandler, simply expects each line to be plain text and the id of
- * the document will be the number of lines read up to that point (across all
- * files that are being read in.) A second implementation, SimpleLineHandler,
- * assumes that an id for each line is provided in the text of the line and
- * parses it out.
+ * LineReader uses an interface LineHandler which determines how lines from a file are used to
+ * initialize a JCas. The default implementation, DefaultLineHandler, simply expects each line to be
+ * plain text and the id of the document will be the number of lines read up to that point (across
+ * all files that are being read in.) A second implementation, SimpleLineHandler, assumes that an id
+ * for each line is provided in the text of the line and parses it out.
  * 
  * @author Steven Bethard
  * @author Philip Ogren
  */
-@SofaCapability(outputSofas=ViewURIUtil.URI)
+@SofaCapability(outputSofas = ViewURIUtil.URI)
 public class LineReader extends JCasCollectionReader_ImplBase {
 
-	public static final String PARAM_FILE_OR_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
-			LineReader.class, "fileOrDirectoryName");
-	@ConfigurationParameter(
-			mandatory = true,
-			description = "Takes either the name of a single file or the root directory containing all the files to be processed.")
-	private String fileOrDirectoryName; 
+  public static final String PARAM_FILE_OR_DIRECTORY_NAME = ConfigurationParameterFactory
+          .createConfigurationParameterName(LineReader.class, "fileOrDirectoryName");
 
-	public static final String PARAM_VIEW_NAME = ConfigurationParameterFactory.createConfigurationParameterName(LineReader.class, "viewName");
-	@ConfigurationParameter(
-			description = "takes the the name that should be given to the JCas view associated with the document texts.",
-			defaultValue = CAS.NAME_DEFAULT_SOFA)
-	private String viewName;
-	
-	public static final String PARAM_LANGUAGE = ConfigurationParameterFactory.createConfigurationParameterName(LineReader.class, "language");
-	@ConfigurationParameter(
-			description = "takes the language code corresponding to the language of the documents being examined. The value of this parameter is simply passed on to JCas.setDocumentLanguage(String)")
-	private String language;
-	
-	public static final String PARAM_ENCODING = ConfigurationParameterFactory.createConfigurationParameterName(LineReader.class, "encoding");
-	@ConfigurationParameter(
-			description = "takes the encoding of the text files (e.g. 'UTF-8').  See apidocs for java.nio.charset.Charset for a list of encoding names.")
-	private String encoding;
-	
-	public static final String PARAM_SUFFIXES = ConfigurationParameterFactory.createConfigurationParameterName(LineReader.class, "suffixes");
-	@ConfigurationParameter(
-			description = "Takes suffixes (e.g. .txt) of the files that should be read in.")
-	private String[] suffixes;
-	
-	public static final String PARAM_LINE_HANDLER_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(LineReader.class, "lineHandlerClassName");
-	@ConfigurationParameter(
-			description = "specifies the class name of the LineHandler. If one is not specified, then the DefaultLineHandler will be used.",
-			defaultValue = "org.cleartk.util.cr.linereader.DefaultLineHandler")
-	private String lineHandlerClassName;
-	
-	public static final String PARAM_COMMENT_SPECIFIERS = ConfigurationParameterFactory.createConfigurationParameterName(LineReader.class, "commentSpecifiers");
-	@ConfigurationParameter(
-			description = "Specifies lines that should be considered 'comments' - i.e. lines that should be skipped. Commented lines are those the start with one of the values of this parameter.")
-	private String[] commentSpecifiers;
-	
-	public static final String PARAM_SKIP_BLANK_LINES = ConfigurationParameterFactory.createConfigurationParameterName(LineReader.class, "skipBlankLines");
-	@ConfigurationParameter(
-			description = "Specifies whether blank lines should be skipped or not. The default value is true if no value is given. If this parameter is set to false, then blank lines that appear in the text files will be read in and given their own JCas.  Blank lines are those that consist of only whitespace.",
-			defaultValue = "true")
-   private boolean skipBlankLines;
-	
-	File file;
+  @ConfigurationParameter(mandatory = true, description = "Takes either the name of a single file or the root directory containing all the files to be processed.")
+  private String fileOrDirectoryName;
 
-	int lineNumber;
+  public static final String PARAM_VIEW_NAME = ConfigurationParameterFactory
+          .createConfigurationParameterName(LineReader.class, "viewName");
 
-	String line;
+  @ConfigurationParameter(description = "takes the the name that should be given to the JCas view associated with the document texts.", defaultValue = CAS.NAME_DEFAULT_SOFA)
+  private String viewName;
 
-	BufferedReader input;
+  public static final String PARAM_LANGUAGE = ConfigurationParameterFactory
+          .createConfigurationParameterName(LineReader.class, "language");
 
-	LineHandler lineHandler;
+  @ConfigurationParameter(description = "takes the language code corresponding to the language of the documents being examined. The value of this parameter is simply passed on to JCas.setDocumentLanguage(String)")
+  private String language;
 
-	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		try {
-			this.rootFile = new File(fileOrDirectoryName);
+  public static final String PARAM_ENCODING = ConfigurationParameterFactory
+          .createConfigurationParameterName(LineReader.class, "encoding");
 
-			// raise an exception if the root file does not exist
-			if (!this.rootFile.exists()) {
-				String format = "file or directory %s does not exist";
-				String message = String.format(format, fileOrDirectoryName);
-				throw new ResourceInitializationException(new IOException(message));
-			}
+  @ConfigurationParameter(description = "takes the encoding of the text files (e.g. 'UTF-8').  See apidocs for java.nio.charset.Charset for a list of encoding names.")
+  private String encoding;
 
-			if(rootFile.isDirectory()){
-				if (suffixes != null && suffixes.length > 0) {
-					files = FileUtils.iterateFiles(rootFile, new SuffixFileFilter(suffixes), TrueFileFilter.INSTANCE);
-				}
-				else {
-					files = FileUtils.iterateFiles(rootFile, TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
-				}
-			} else {
-				files = Arrays.asList(rootFile).iterator();
-			}
-			if (commentSpecifiers == null) {
-				commentSpecifiers = new String[0];
-			}
+  public static final String PARAM_SUFFIXES = ConfigurationParameterFactory
+          .createConfigurationParameterName(LineReader.class, "suffixes");
 
-			lineHandler = InitializableFactory.create(getUimaContext(), lineHandlerClassName, LineHandler.class);
-			moveToNextFile();
-		}
-		catch (Exception fnfe) {
-			throw new ResourceInitializationException(fnfe);
-		}
-	}
+  @ConfigurationParameter(description = "Takes suffixes (e.g. .txt) of the files that should be read in.")
+  private String[] suffixes;
 
-	public void getNext(JCas jCas) throws IOException, CollectionException {
-		hasNext();
+  public static final String PARAM_LINE_HANDLER_CLASS_NAME = ConfigurationParameterFactory
+          .createConfigurationParameterName(LineReader.class, "lineHandlerClassName");
 
-		JCas view;
-		try {
-			view = ViewCreatorAnnotator.createViewSafely(jCas, this.viewName);
-		}
-		catch (AnalysisEngineProcessException e) {
-			throw new CollectionException(e);
-		}
+  @ConfigurationParameter(description = "specifies the class name of the LineHandler. If one is not specified, then the DefaultLineHandler will be used.", defaultValue = "org.cleartk.util.cr.linereader.DefaultLineHandler")
+  private String lineHandlerClassName;
 
-		lineHandler.handleLine(view, rootFile, file, line);
+  public static final String PARAM_COMMENT_SPECIFIERS = ConfigurationParameterFactory
+          .createConfigurationParameterName(LineReader.class, "commentSpecifiers");
 
-		// set language if it was specified
-		if (this.language != null) {
-			view.setDocumentLanguage(this.language);
-		}
+  @ConfigurationParameter(description = "Specifies lines that should be considered 'comments' - i.e. lines that should be skipped. Commented lines are those the start with one of the values of this parameter.")
+  private String[] commentSpecifiers;
 
-		completed++;
-		line = null;
-	}
+  public static final String PARAM_SKIP_BLANK_LINES = ConfigurationParameterFactory
+          .createConfigurationParameterName(LineReader.class, "skipBlankLines");
 
-	private boolean moveToNextFile() throws FileNotFoundException, UnsupportedEncodingException {
-		if (files.hasNext()) {
-			file = (File) files.next();
-			if(encoding != null)
-				input = new BufferedReader(new InputStreamReader(new FileInputStream(file), encoding));
-			else
-				input = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+  @ConfigurationParameter(description = "Specifies whether blank lines should be skipped or not. The default value is true if no value is given. If this parameter is set to false, then blank lines that appear in the text files will be read in and given their own JCas.  Blank lines are those that consist of only whitespace.", defaultValue = "true")
+  private boolean skipBlankLines;
 
-			lineNumber = 0;
-			return true;
-		}
-		return false;
-	}
+  File file;
 
-	public Progress[] getProgress() {
-		Progress progress = new ProgressImpl(completed, 1000000, Progress.ENTITIES);
-		return new Progress[] { progress };
-	}
+  int lineNumber;
 
-	public boolean hasNext() throws IOException, CollectionException {
-		if (line == null) {
-			line = input.readLine();
-			if(line != null) {
-				for (String commentSpecifier : commentSpecifiers) {
-					if (line.startsWith(commentSpecifier)) {
-						line = null;
-						return hasNext();
-					}
-				}
-				if(skipBlankLines && line.trim().equals("")) {
-					line = null;
-					return hasNext();
-				}
-			}
-		}
+  String line;
 
-		if (line == null) {
-			if (moveToNextFile()) return hasNext();
-			else return false;
-		}
-		return true;
-	}
+  BufferedReader input;
 
-	private File rootFile;
+  LineHandler lineHandler;
 
-	private Iterator<?> files;
+  @Override
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    try {
+      this.rootFile = new File(fileOrDirectoryName);
 
-	private int completed = 0;
+      // raise an exception if the root file does not exist
+      if (!this.rootFile.exists()) {
+        String format = "file or directory %s does not exist";
+        String message = String.format(format, fileOrDirectoryName);
+        throw new ResourceInitializationException(new IOException(message));
+      }
 
-	public void close() throws IOException {
-	}
-	
+      if (rootFile.isDirectory()) {
+        if (suffixes != null && suffixes.length > 0) {
+          files = FileUtils.iterateFiles(rootFile, new SuffixFileFilter(suffixes),
+                  TrueFileFilter.INSTANCE);
+        } else {
+          files = FileUtils
+                  .iterateFiles(rootFile, TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
+        }
+      } else {
+        files = Arrays.asList(rootFile).iterator();
+      }
+      if (commentSpecifiers == null) {
+        commentSpecifiers = new String[0];
+      }
+
+      lineHandler = InitializableFactory.create(getUimaContext(), lineHandlerClassName,
+              LineHandler.class);
+      moveToNextFile();
+    } catch (Exception fnfe) {
+      throw new ResourceInitializationException(fnfe);
+    }
+  }
+
+  public void getNext(JCas jCas) throws IOException, CollectionException {
+    hasNext();
+
+    JCas view;
+    try {
+      view = ViewCreatorAnnotator.createViewSafely(jCas, this.viewName);
+    } catch (AnalysisEngineProcessException e) {
+      throw new CollectionException(e);
+    }
+
+    lineHandler.handleLine(view, rootFile, file, line);
+
+    // set language if it was specified
+    if (this.language != null) {
+      view.setDocumentLanguage(this.language);
+    }
+
+    completed++;
+    line = null;
+  }
+
+  private boolean moveToNextFile() throws FileNotFoundException, UnsupportedEncodingException {
+    if (files.hasNext()) {
+      file = (File) files.next();
+      if (encoding != null)
+        input = new BufferedReader(new InputStreamReader(new FileInputStream(file), encoding));
+      else
+        input = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+
+      lineNumber = 0;
+      return true;
+    }
+    return false;
+  }
+
+  public Progress[] getProgress() {
+    Progress progress = new ProgressImpl(completed, 1000000, Progress.ENTITIES);
+    return new Progress[] { progress };
+  }
+
+  public boolean hasNext() throws IOException, CollectionException {
+    if (line == null) {
+      line = input.readLine();
+      if (line != null) {
+        for (String commentSpecifier : commentSpecifiers) {
+          if (line.startsWith(commentSpecifier)) {
+            line = null;
+            return hasNext();
+          }
+        }
+        if (skipBlankLines && line.trim().equals("")) {
+          line = null;
+          return hasNext();
+        }
+      }
+    }
+
+    if (line == null) {
+      if (moveToNextFile())
+        return hasNext();
+      else
+        return false;
+    }
+    return true;
+  }
+
+  private File rootFile;
+
+  private Iterator<?> files;
+
+  private int completed = 0;
+
+  public void close() throws IOException {
+  }
+
 }

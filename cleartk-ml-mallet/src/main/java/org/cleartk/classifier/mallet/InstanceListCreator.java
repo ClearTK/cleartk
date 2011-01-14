@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.mallet;
 
 import java.io.File;
@@ -36,82 +36,84 @@ import cc.mallet.pipe.SerialPipes;
 import cc.mallet.pipe.Target2Label;
 import cc.mallet.types.Instance;
 import cc.mallet.types.InstanceList;
-/**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
 
+/**
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * 
  * @author Philip Ogren
  */
 
 public class InstanceListCreator {
 
-	public static void main(String[] args) throws IOException {
-		String inputDataFileName = args[0];
-		String outputDataFileName = args[1];
-		
-		InstanceListCreator instanceListCreator = new InstanceListCreator();
-		InstanceList instanceList = instanceListCreator.createInstanceList(new File(inputDataFileName));
+  public static void main(String[] args) throws IOException {
+    String inputDataFileName = args[0];
+    String outputDataFileName = args[1];
 
-		instanceList.save(new File(outputDataFileName));
-	}
+    InstanceListCreator instanceListCreator = new InstanceListCreator();
+    InstanceList instanceList = instanceListCreator.createInstanceList(new File(inputDataFileName));
 
-	
-	public InstanceList createInstanceList(File dataFile) throws IOException {
+    instanceList.save(new File(outputDataFileName));
+  }
 
-		InstanceList instanceList = new InstanceList (new SerialPipes (new Pipe[] {
-				new Target2Label (), new Csv2FeatureVector()}));
+  public InstanceList createInstanceList(File dataFile) throws IOException {
 
-		Reader fileReader = new FileReader (dataFile);
-		instanceList.addThruPipe (new DataIterator (fileReader));
-		fileReader.close();
+    InstanceList instanceList = new InstanceList(new SerialPipes(new Pipe[] { new Target2Label(),
+        new Csv2FeatureVector() }));
 
-		return instanceList;
-		
-	}
-	/**
-	 * This DataIterator was cut-n-paste from cc.mallet.pipe.iterator.CsvIterator and modified
-	 */
-	public class DataIterator implements Iterator<Instance> {
+    Reader fileReader = new FileReader(dataFile);
+    instanceList.addThruPipe(new DataIterator(fileReader));
+    fileReader.close();
 
-		LineNumberReader reader;
-		String currentLine;
+    return instanceList;
 
-		public DataIterator (Reader input) 
-		{
-			this.reader = new LineNumberReader (input);
-			try {
-				this.currentLine = reader.readLine();
-			} catch (IOException e) {
-				throw new IllegalStateException ();
-			}
-		}
+  }
 
-		public Instance next ()
-		{
-			String data = null;
-			String target = null;
-			
-			int split = currentLine.lastIndexOf(" ");
-			data = currentLine.substring(0, split);
-			target = currentLine.substring(split+1);
-			Instance carrier = new Instance (data, target, null, null);
-			
-			try {
-				this.currentLine = reader.readLine();
-			} catch (IOException e) {
-				throw new IllegalStateException ();
-			}
-			return carrier;
-		}
+  /**
+   * This DataIterator was cut-n-paste from cc.mallet.pipe.iterator.CsvIterator and modified
+   */
+  public class DataIterator implements Iterator<Instance> {
 
-		public boolean hasNext ()	{	return currentLine != null;	}
-		
-		public void remove () {
-			throw new IllegalStateException ("This Iterator<Instance> does not support remove().");
-		}
+    LineNumberReader reader;
 
+    String currentLine;
 
-	}
+    public DataIterator(Reader input) {
+      this.reader = new LineNumberReader(input);
+      try {
+        this.currentLine = reader.readLine();
+      } catch (IOException e) {
+        throw new IllegalStateException();
+      }
+    }
+
+    public Instance next() {
+      String data = null;
+      String target = null;
+
+      int split = currentLine.lastIndexOf(" ");
+      data = currentLine.substring(0, split);
+      target = currentLine.substring(split + 1);
+      Instance carrier = new Instance(data, target, null, null);
+
+      try {
+        this.currentLine = reader.readLine();
+      } catch (IOException e) {
+        throw new IllegalStateException();
+      }
+      return carrier;
+    }
+
+    public boolean hasNext() {
+      return currentLine != null;
+    }
+
+    public void remove() {
+      throw new IllegalStateException("This Iterator<Instance> does not support remove().");
+    }
+
+  }
 
 }

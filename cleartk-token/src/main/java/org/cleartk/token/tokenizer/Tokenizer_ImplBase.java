@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,62 +20,61 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.token.tokenizer;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * <p>
  */
 public abstract class Tokenizer_ImplBase implements Tokenizer {
 
-	public abstract String[] getTokenTexts(String text);
+  public abstract String[] getTokenTexts(String text);
 
-	/**
-	 * performs tokenization on the input text and returns the character offsets
-	 * corresponding to the begining and end of each token w.r.t. the input
-	 * text.
-	 * 
-	 * @param text
-	 *            the text that you want tokenized.
-	 * @return offsets corresponding to the begining and end of each token. The
-	 *         dimensions of the returned array will be number of tokens
-	 *         returned by getTokens by 2 (one for token begin and one for token
-	 *         end).
-	 * 
-	 *         <pre>
-	 * 
-	 *         <code> int[][] offsets = getTokenOffsets("example text"); int
-	 *         beginFirstToken = offsets[0][0]; int endFirstToken =
-	 *         offsets[0][1]; int begin4thToken = offsets[3][0]; int end4thToken
-	 *         = offsets[3][1];
-	 * 
-	 *         </pre>
-	 * 
-	 *         </code>
-	 * 
-	 */
-	public List<Token> getTokens(String text) {
-		List<Token> returnValues = new ArrayList<Token>();
-		String[] tokenTexts = getTokenTexts(text);
-		if (text.length() > 0) {
-			int offset = 0;
-			for (String tokenText : tokenTexts) {
-				while (text.charAt(offset) != tokenText.charAt(0))
-					offset++;
+  /**
+   * performs tokenization on the input text and returns the character offsets corresponding to the
+   * begining and end of each token w.r.t. the input text.
+   * 
+   * @param text
+   *          the text that you want tokenized.
+   * @return offsets corresponding to the begining and end of each token. The dimensions of the
+   *         returned array will be number of tokens returned by getTokens by 2 (one for token begin
+   *         and one for token end).
+   * 
+   *         <pre>
+   * 
+   *         <code> int[][] offsets = getTokenOffsets("example text"); int
+   *         beginFirstToken = offsets[0][0]; int endFirstToken =
+   *         offsets[0][1]; int begin4thToken = offsets[3][0]; int end4thToken
+   *         = offsets[3][1];
+   * 
+   * </pre>
+   * 
+   *         </code>
+   * 
+   */
+  public List<Token> getTokens(String text) {
+    List<Token> returnValues = new ArrayList<Token>();
+    String[] tokenTexts = getTokenTexts(text);
+    if (text.length() > 0) {
+      int offset = 0;
+      for (String tokenText : tokenTexts) {
+        while (text.charAt(offset) != tokenText.charAt(0))
+          offset++;
 
-				Token token = new Token(offset, offset + tokenText.length(), tokenText);
-				returnValues.add(token);
-				offset += tokenText.length();
-			}
-		}
+        Token token = new Token(offset, offset + tokenText.length(), tokenText);
+        returnValues.add(token);
+        offset += tokenText.length();
+      }
+    }
 
-		return returnValues;
-	}
+    return returnValues;
+  }
 
 }

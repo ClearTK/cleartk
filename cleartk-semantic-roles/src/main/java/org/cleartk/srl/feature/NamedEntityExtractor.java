@@ -35,39 +35,42 @@ import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.util.AnnotationRetrieval;
 
 /**
- * <br>Copyright (c) 2010, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2010, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * 
  * @author Philipp Wetzler
  */
 public class NamedEntityExtractor implements SimpleFeatureExtractor {
 
-	public List<Feature> extract(JCas view, Annotation focusAnnotation) throws CleartkException {
-		NamedEntityMention nem = null;
+  public List<Feature> extract(JCas view, Annotation focusAnnotation) throws CleartkException {
+    NamedEntityMention nem = null;
 
-		nem = AnnotationRetrieval.getMatchingAnnotation(view, focusAnnotation, NamedEntityMention.class);
-		if( nem != null ) {
-			List<Feature> features = new ArrayList<Feature>();
-			features.add(new Feature("NamedEntityType", nem.getMentionType()));
-			features.add(new Feature("IsNamedEntity", true));
-			features.add(new Feature("IsContainedByNamedEntity", false));
-			return features;
-		}
-		
-		nem = AnnotationRetrieval.getContainingAnnotation(view, focusAnnotation, NamedEntityMention.class, true);
-		if( nem != null ) {
-			List<Feature> features = new ArrayList<Feature>();
-			features.add(new Feature("ContainingNamedEntityType", nem.getMentionType()));
-			features.add(new Feature("IsNamedEntity", false));
-			features.add(new Feature("IsContainedByNamedEntity", true));
-			return features;
-		}
-		
-		List<Feature> features = new ArrayList<Feature>();
-		features.add(new Feature("IsNamedEntity", false));
-		features.add(new Feature("IsContainedByNamedEntity", false));
-		return features;
-	}
+    nem = AnnotationRetrieval
+            .getMatchingAnnotation(view, focusAnnotation, NamedEntityMention.class);
+    if (nem != null) {
+      List<Feature> features = new ArrayList<Feature>();
+      features.add(new Feature("NamedEntityType", nem.getMentionType()));
+      features.add(new Feature("IsNamedEntity", true));
+      features.add(new Feature("IsContainedByNamedEntity", false));
+      return features;
+    }
+
+    nem = AnnotationRetrieval.getContainingAnnotation(view, focusAnnotation,
+            NamedEntityMention.class, true);
+    if (nem != null) {
+      List<Feature> features = new ArrayList<Feature>();
+      features.add(new Feature("ContainingNamedEntityType", nem.getMentionType()));
+      features.add(new Feature("IsNamedEntity", false));
+      features.add(new Feature("IsContainedByNamedEntity", true));
+      return features;
+    }
+
+    List<Feature> features = new ArrayList<Feature>();
+    features.add(new Feature("IsNamedEntity", false));
+    features.add(new Feature("IsContainedByNamedEntity", false));
+    return features;
+  }
 
 }

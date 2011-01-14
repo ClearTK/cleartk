@@ -61,94 +61,86 @@ import org.uimafit.pipeline.JCasIterable;
  */
 public class TimeMLWriterTest extends TimeMLTestBase {
 
-	private File inputFile;
-	private File outputFile;
+  private File inputFile;
 
-	@Before
-	public void setUp() throws Exception {
-		super.setUp();
-		inputFile = new File("src/test/resources/data/timeml/test.foo");
-		outputFile = new File(outputDirectory, "test.foo.tml");
-	}
+  private File outputFile;
 
-	@Test
-	public void test() throws UIMAException, IOException, JDOMException {
-		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-			FilesCollectionReader.class,
-			typeSystemDescription,
-			FilesCollectionReader.PARAM_VIEW_NAME,
-			TimeMLViewName.TIMEML,
-			FilesCollectionReader.PARAM_ROOT_FILE,
-			this.inputFile.getPath());
-		AnalysisEngine annotator = AnalysisEngineFactory.createPrimitive(
-			TimeMLGoldAnnotator.class,
-			typeSystemDescription);
-		AnalysisEngine writer = AnalysisEngineFactory.createPrimitive(
-			TimeMLWriter.class,
-			typeSystemDescription,
-			TimeMLWriter.PARAM_OUTPUT_DIRECTORY_NAME,
-			this.outputDirectory.getPath());
+  @Before
+  public void setUp() throws Exception {
+    super.setUp();
+    inputFile = new File("src/test/resources/data/timeml/test.foo");
+    outputFile = new File(outputDirectory, "test.foo.tml");
+  }
 
-		for (JCas jcas : new JCasIterable(reader, annotator, writer)) {
-			Assert.assertNotNull(jcas);
-		}
-		reader.close();
-		annotator.collectionProcessComplete();
-		writer.collectionProcessComplete();
+  @Test
+  public void test() throws UIMAException, IOException, JDOMException {
+    CollectionReader reader = CollectionReaderFactory.createCollectionReader(
+            FilesCollectionReader.class, typeSystemDescription,
+            FilesCollectionReader.PARAM_VIEW_NAME, TimeMLViewName.TIMEML,
+            FilesCollectionReader.PARAM_ROOT_FILE, this.inputFile.getPath());
+    AnalysisEngine annotator = AnalysisEngineFactory.createPrimitive(TimeMLGoldAnnotator.class,
+            typeSystemDescription);
+    AnalysisEngine writer = AnalysisEngineFactory.createPrimitive(TimeMLWriter.class,
+            typeSystemDescription, TimeMLWriter.PARAM_OUTPUT_DIRECTORY_NAME,
+            this.outputDirectory.getPath());
 
-		String expected = FileUtils.file2String(this.inputFile);
-		String actual = FileUtils.file2String(this.outputFile);
-		this.assertEquals(this.getRoot(expected), this.getRoot(actual));
-	}
+    for (JCas jcas : new JCasIterable(reader, annotator, writer)) {
+      Assert.assertNotNull(jcas);
+    }
+    reader.close();
+    annotator.collectionProcessComplete();
+    writer.collectionProcessComplete();
 
-	@Test
-	public void testDescriptor() throws UIMAException, IOException {
-		try {
-			AnalysisEngineFactory.createPrimitive(TimeMLWriter.class, typeSystemDescription);
-			Assert.fail("expected failure with no OutputDirectory specified");
-		} catch (ResourceInitializationException e) {
-		}
+    String expected = FileUtils.file2String(this.inputFile);
+    String actual = FileUtils.file2String(this.outputFile);
+    this.assertEquals(this.getRoot(expected), this.getRoot(actual));
+  }
 
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-			TimeMLWriter.class,
-			typeSystemDescription,
-			TimeMLWriter.PARAM_OUTPUT_DIRECTORY_NAME,
-			this.outputDirectory.getPath());
-		Assert.assertEquals(
-			this.outputDirectory.getPath(),
-			engine.getConfigParameterValue(TimeMLWriter.PARAM_OUTPUT_DIRECTORY_NAME));
-		engine.collectionProcessComplete();
-	}
+  @Test
+  public void testDescriptor() throws UIMAException, IOException {
+    try {
+      AnalysisEngineFactory.createPrimitive(TimeMLWriter.class, typeSystemDescription);
+      Assert.fail("expected failure with no OutputDirectory specified");
+    } catch (ResourceInitializationException e) {
+    }
 
-	private Element getRoot(String xml) throws JDOMException, IOException {
-		SAXBuilder builder = new SAXBuilder();
-		builder.setDTDHandler(null);
-		return builder.build(new StringReader(xml)).getRootElement();
-	}
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TimeMLWriter.class,
+            typeSystemDescription, TimeMLWriter.PARAM_OUTPUT_DIRECTORY_NAME,
+            this.outputDirectory.getPath());
+    Assert.assertEquals(this.outputDirectory.getPath(),
+            engine.getConfigParameterValue(TimeMLWriter.PARAM_OUTPUT_DIRECTORY_NAME));
+    engine.collectionProcessComplete();
+  }
 
-	private void assertEquals(Element element1, Element element2) {
-		Assert.assertEquals(element1.getName(), element2.getName());
-		Assert.assertEquals(this.getAttributes(element1), this.getAttributes(element2));
-		List<?> children1 = element1.getChildren();
-		List<?> children2 = element2.getChildren();
-		Assert.assertEquals(children1.size(), children2.size());
-		for (int i = 0; i < children1.size(); i++) {
-			Object child1 = children1.get(0);
-			Object child2 = children2.get(0);
-			if (child1 instanceof Element) {
-				this.assertEquals((Element) child1, (Element) child2);
-			} else {
-				Assert.assertEquals(child1, child2);
-			}
-		}
-	}
+  private Element getRoot(String xml) throws JDOMException, IOException {
+    SAXBuilder builder = new SAXBuilder();
+    builder.setDTDHandler(null);
+    return builder.build(new StringReader(xml)).getRootElement();
+  }
 
-	private Map<String, String> getAttributes(Element element) {
-		Map<String, String> attributes = new HashMap<String, String>();
-		for (Object attrObj : element.getAttributes()) {
-			Attribute attribute = (Attribute) attrObj;
-			attributes.put(attribute.getName(), attribute.getValue());
-		}
-		return attributes;
-	}
+  private void assertEquals(Element element1, Element element2) {
+    Assert.assertEquals(element1.getName(), element2.getName());
+    Assert.assertEquals(this.getAttributes(element1), this.getAttributes(element2));
+    List<?> children1 = element1.getChildren();
+    List<?> children2 = element2.getChildren();
+    Assert.assertEquals(children1.size(), children2.size());
+    for (int i = 0; i < children1.size(); i++) {
+      Object child1 = children1.get(0);
+      Object child2 = children2.get(0);
+      if (child1 instanceof Element) {
+        this.assertEquals((Element) child1, (Element) child2);
+      } else {
+        Assert.assertEquals(child1, child2);
+      }
+    }
+  }
+
+  private Map<String, String> getAttributes(Element element) {
+    Map<String, String> attributes = new HashMap<String, String>();
+    for (Object attrObj : element.getAttributes()) {
+      Attribute attribute = (Attribute) attrObj;
+      attributes.put(attribute.getName(), attribute.getValue());
+    }
+    return attributes;
+  }
 }

@@ -60,97 +60,99 @@ import org.uimafit.factory.ConfigurationParameterFactory;
 
 public class Ace2005Writer extends JCasAnnotator_ImplBase {
 
-	public static final String PARAM_OUTPUT_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(Ace2005Writer.class, "outputDirectoryName");
+  public static final String PARAM_OUTPUT_DIRECTORY_NAME = ConfigurationParameterFactory
+          .createConfigurationParameterName(Ace2005Writer.class, "outputDirectoryName");
 
-	@ConfigurationParameter(
-			mandatory = true, 
-			description = "provides the path of the directory where the XML files should be written.")
-	private String outputDirectoryName;
+  @ConfigurationParameter(mandatory = true, description = "provides the path of the directory where the XML files should be written.")
+  private String outputDirectoryName;
 
-	private File outputDirectory;
+  private File outputDirectory;
 
-	private int idIndex = 0;
+  private int idIndex = 0;
 
-	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		super.initialize(context);
-		
-		outputDirectory = new File(outputDirectoryName);
-		if (!outputDirectory.exists()) {
-			outputDirectory.mkdirs();
-		}
-	}
+  @Override
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    super.initialize(context);
 
-	private Element createExtentElement(String elementName, Annotation annotation) {
-		Element extent = new Element(elementName);
-		Element charseq = new Element("charseq");
-		charseq.setAttribute("START", "" + annotation.getBegin());
-		charseq.setAttribute("END", "" + (annotation.getEnd() - 1));
-		charseq.setText(annotation.getCoveredText());
-		extent.addContent(charseq);
-		return extent;
-	}
+    outputDirectory = new File(outputDirectoryName);
+    if (!outputDirectory.exists()) {
+      outputDirectory.mkdirs();
+    }
+  }
 
-	@Override
-	public void process(JCas jCas) throws AnalysisEngineProcessException {
-		String uri = ViewURIUtil.getURI(jCas);
-		String docId = uri.substring(0, uri.indexOf(".sgm"));
-		Ace2005Document document;
-		document = AnnotationRetrieval.getAnnotations(jCas, Ace2005Document.class).iterator()
-				.next();
+  private Element createExtentElement(String elementName, Annotation annotation) {
+    Element extent = new Element(elementName);
+    Element charseq = new Element("charseq");
+    charseq.setAttribute("START", "" + annotation.getBegin());
+    charseq.setAttribute("END", "" + (annotation.getEnd() - 1));
+    charseq.setText(annotation.getCoveredText());
+    extent.addContent(charseq);
+    return extent;
+  }
 
-		Document xml = new Document();
+  @Override
+  public void process(JCas jCas) throws AnalysisEngineProcessException {
+    String uri = ViewURIUtil.getURI(jCas);
+    String docId = uri.substring(0, uri.indexOf(".sgm"));
+    Ace2005Document document;
+    document = AnnotationRetrieval.getAnnotations(jCas, Ace2005Document.class).iterator().next();
 
-		Element sourceFileElement = new Element("source_file");
-		sourceFileElement.setAttribute("URI", uri);
-		sourceFileElement.setAttribute("SOURCE", document.getAceSource());
-		sourceFileElement.setAttribute("TYPE", document.getAceType());
-		xml.addContent(sourceFileElement);
+    Document xml = new Document();
 
-		Element documentElement = new Element("document");
-		documentElement.setAttribute("DOCID", docId);
-		sourceFileElement.addContent(documentElement);
+    Element sourceFileElement = new Element("source_file");
+    sourceFileElement.setAttribute("URI", uri);
+    sourceFileElement.setAttribute("SOURCE", document.getAceSource());
+    sourceFileElement.setAttribute("TYPE", document.getAceType());
+    xml.addContent(sourceFileElement);
 
-		FSIterator<FeatureStructure> namedEntities = jCas.getFSIndexRepository().getAllIndexedFS(jCas.getCasType(NamedEntity.type));
-		while (namedEntities.hasNext()) {
-			NamedEntity namedEntity = (NamedEntity) namedEntities.next();
-			Element namedEntityElement = new Element("entity");
-			namedEntityElement.setAttribute("ID", "" + idIndex++);
-			namedEntityElement.setAttribute("TYPE", namedEntity.getEntityType());
-			String entitySubtype = namedEntity.getEntitySubtype();
-			if (entitySubtype != null) namedEntityElement.setAttribute("SUBTYPE", entitySubtype);
-			String entityClass = namedEntity.getEntityClass();
-			if (entityClass != null) namedEntityElement.setAttribute("CLASS", entityClass);
+    Element documentElement = new Element("document");
+    documentElement.setAttribute("DOCID", docId);
+    sourceFileElement.addContent(documentElement);
 
-			FSArray namedEntityMentions = namedEntity.getMentions();
-			for (int i = 0; i < namedEntityMentions.size(); i++) {
-				NamedEntityMention namedEntityMention = (NamedEntityMention) namedEntityMentions.get(i);
-				Element namedEntityMentionElement = new Element("entity_mention");
-				namedEntityMentionElement.setAttribute("ID", "" + idIndex++);
-				namedEntityMentionElement.setAttribute("TYPE", namedEntityMention.getMentionType());
+    FSIterator<FeatureStructure> namedEntities = jCas.getFSIndexRepository().getAllIndexedFS(
+            jCas.getCasType(NamedEntity.type));
+    while (namedEntities.hasNext()) {
+      NamedEntity namedEntity = (NamedEntity) namedEntities.next();
+      Element namedEntityElement = new Element("entity");
+      namedEntityElement.setAttribute("ID", "" + idIndex++);
+      namedEntityElement.setAttribute("TYPE", namedEntity.getEntityType());
+      String entitySubtype = namedEntity.getEntitySubtype();
+      if (entitySubtype != null)
+        namedEntityElement.setAttribute("SUBTYPE", entitySubtype);
+      String entityClass = namedEntity.getEntityClass();
+      if (entityClass != null)
+        namedEntityElement.setAttribute("CLASS", entityClass);
 
-				namedEntityMentionElement.addContent(createExtentElement("extent", namedEntityMention.getAnnotation()));
-				namedEntityMentionElement.addContent(createExtentElement("head", namedEntityMention.getHead()));
-				namedEntityElement.addContent(namedEntityMentionElement);
-			}
-			documentElement.addContent(namedEntityElement);
-		}
+      FSArray namedEntityMentions = namedEntity.getMentions();
+      for (int i = 0; i < namedEntityMentions.size(); i++) {
+        NamedEntityMention namedEntityMention = (NamedEntityMention) namedEntityMentions.get(i);
+        Element namedEntityMentionElement = new Element("entity_mention");
+        namedEntityMentionElement.setAttribute("ID", "" + idIndex++);
+        namedEntityMentionElement.setAttribute("TYPE", namedEntityMention.getMentionType());
 
-		XMLOutputter xmlOut = new XMLOutputter(Format.getPrettyFormat());
-		try {
-			FileOutputStream stream = new FileOutputStream(new File(outputDirectory, docId + ".cleartk.xml"));
-			xmlOut.output(xml, stream);
-			stream.close();
-		}
-		catch (IOException e) {
-			throw new AnalysisEngineProcessException(e);
-		}
+        namedEntityMentionElement.addContent(createExtentElement("extent",
+                namedEntityMention.getAnnotation()));
+        namedEntityMentionElement.addContent(createExtentElement("head",
+                namedEntityMention.getHead()));
+        namedEntityElement.addContent(namedEntityMentionElement);
+      }
+      documentElement.addContent(namedEntityElement);
+    }
 
-	}
+    XMLOutputter xmlOut = new XMLOutputter(Format.getPrettyFormat());
+    try {
+      FileOutputStream stream = new FileOutputStream(new File(outputDirectory, docId
+              + ".cleartk.xml"));
+      xmlOut.output(xml, stream);
+      stream.close();
+    } catch (IOException e) {
+      throw new AnalysisEngineProcessException(e);
+    }
 
-	public void setOutputDirectoryName(String outputDirectoryName) {
-		this.outputDirectoryName = outputDirectoryName;
-	}
+  }
 
+  public void setOutputDirectoryName(String outputDirectoryName) {
+    this.outputDirectoryName = outputDirectoryName;
+  }
 
 }

@@ -50,83 +50,83 @@ import org.cleartk.util.ReflectionUtil.TypeArgumentDelegator;
  * <p>
  */
 
-public class ViterbiDataWriter<OUTCOME_TYPE> implements
-		SequentialDataWriter<OUTCOME_TYPE>, TypeArgumentDelegator {
+public class ViterbiDataWriter<OUTCOME_TYPE> implements SequentialDataWriter<OUTCOME_TYPE>,
+        TypeArgumentDelegator {
 
-	public static final String OUTCOME_FEATURE_EXTRACTOR_FILE_NAME = "outcome-features-extractors.ser";
+  public static final String OUTCOME_FEATURE_EXTRACTOR_FILE_NAME = "outcome-features-extractors.ser";
 
-	public static final String DELEGATED_MODEL_DIRECTORY_NAME = "delegated-model";
+  public static final String DELEGATED_MODEL_DIRECTORY_NAME = "delegated-model";
 
+  public ViterbiDataWriter(File outputDirectory, OutcomeFeatureExtractor outcomeFeatureExtractors[]) {
+    this.outputDirectory = outputDirectory;
+    this.outcomeFeatureExtractors = outcomeFeatureExtractors;
+  }
 
-	public ViterbiDataWriter(
-			File outputDirectory, 
-			OutcomeFeatureExtractor outcomeFeatureExtractors[]) {
-		this.outputDirectory = outputDirectory;
-		this.outcomeFeatureExtractors = outcomeFeatureExtractors;
-	}
-	
-	public void setDelegatedDataWriter(DataWriter<OUTCOME_TYPE> delegatedDataWriter) {
-		this.delegatedDataWriter = delegatedDataWriter;
-	}
-	
-	public File getDelegatedModelDirectory() {
-		return new File(outputDirectory, DELEGATED_MODEL_DIRECTORY_NAME);
-	}
+  public void setDelegatedDataWriter(DataWriter<OUTCOME_TYPE> delegatedDataWriter) {
+    this.delegatedDataWriter = delegatedDataWriter;
+  }
 
-	public void writeSequence(List<Instance<OUTCOME_TYPE>> instances) throws CleartkException {
-		if( this.delegatedDataWriter == null )
-			throw new CleartkException("delegatedDataWriter must be set before calling writeSequence");
-		
-		List<Object> outcomes = new ArrayList<Object>();
-		for (Instance<OUTCOME_TYPE> instance : instances) {
-			List<Feature> instanceFeatures = instance.getFeatures();
-			for (OutcomeFeatureExtractor outcomeFeatureExtractor : outcomeFeatureExtractors) {
-				instanceFeatures.addAll(outcomeFeatureExtractor.extractFeatures(outcomes));
-			}
-			outcomes.add(instance.getOutcome());
-			delegatedDataWriter.write(instance);
-		}
+  public File getDelegatedModelDirectory() {
+    return new File(outputDirectory, DELEGATED_MODEL_DIRECTORY_NAME);
+  }
 
-	}
+  public void writeSequence(List<Instance<OUTCOME_TYPE>> instances) throws CleartkException {
+    if (this.delegatedDataWriter == null)
+      throw new CleartkException("delegatedDataWriter must be set before calling writeSequence");
 
-	
-	public void finish() throws CleartkException {
-		if( this.delegatedDataWriter == null )
-			throw new CleartkException("delegatedDataWriter must be set before calling finish");
+    List<Object> outcomes = new ArrayList<Object>();
+    for (Instance<OUTCOME_TYPE> instance : instances) {
+      List<Feature> instanceFeatures = instance.getFeatures();
+      for (OutcomeFeatureExtractor outcomeFeatureExtractor : outcomeFeatureExtractors) {
+        instanceFeatures.addAll(outcomeFeatureExtractor.extractFeatures(outcomes));
+      }
+      outcomes.add(instance.getOutcome());
+      delegatedDataWriter.write(instance);
+    }
 
-		try {
-			this.delegatedDataWriter.finish();
+  }
 
-			ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(new File(outputDirectory, OUTCOME_FEATURE_EXTRACTOR_FILE_NAME)));
-			os.writeObject(this.outcomeFeatureExtractors);
-			os.close();
+  public void finish() throws CleartkException {
+    if (this.delegatedDataWriter == null)
+      throw new CleartkException("delegatedDataWriter must be set before calling finish");
 
-			ClassifierManifest classifierManifest = new ClassifierManifest();
-			Class<? extends ClassifierBuilder<? extends OUTCOME_TYPE>> classifierBuilderClass = this.getDefaultClassifierBuilderClass();
-			classifierManifest.setClassifierBuilder(classifierBuilderClass.newInstance());
-			classifierManifest.write(this.outputDirectory);
+    try {
+      this.delegatedDataWriter.finish();
 
-		}
-		catch (Exception e) {
-			throw new CleartkException(e);
-		}
-	}
+      ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(new File(outputDirectory,
+              OUTCOME_FEATURE_EXTRACTOR_FILE_NAME)));
+      os.writeObject(this.outcomeFeatureExtractors);
+      os.close();
 
-	public Class<? extends ClassifierBuilder<OUTCOME_TYPE>> getDefaultClassifierBuilderClass() {
-		return ReflectionUtil.uncheckedCast(ViterbiClassifierBuilder.class);
-	}
+      ClassifierManifest classifierManifest = new ClassifierManifest();
+      Class<? extends ClassifierBuilder<? extends OUTCOME_TYPE>> classifierBuilderClass = this
+              .getDefaultClassifierBuilderClass();
+      classifierManifest.setClassifierBuilder(classifierBuilderClass.newInstance());
+      classifierManifest.write(this.outputDirectory);
 
-	public Map<String, Type> getTypeArguments(Class<?> genericType) {
-		if( this.delegatedDataWriter == null )
-			throw new CleartkRuntimeException("delegatedDataWriter must be set before calling getTypeArguments");
+    } catch (Exception e) {
+      throw new CleartkException(e);
+    }
+  }
 
-		if (genericType.equals(SequentialDataWriter.class)) {
-			genericType = DataWriter.class;
-		}
-		return ReflectionUtil.getTypeArguments(genericType, this.delegatedDataWriter);
-	}
-	
-	protected File outputDirectory;
-	protected OutcomeFeatureExtractor outcomeFeatureExtractors[];
-	protected DataWriter<OUTCOME_TYPE> delegatedDataWriter = null;
+  public Class<? extends ClassifierBuilder<OUTCOME_TYPE>> getDefaultClassifierBuilderClass() {
+    return ReflectionUtil.uncheckedCast(ViterbiClassifierBuilder.class);
+  }
+
+  public Map<String, Type> getTypeArguments(Class<?> genericType) {
+    if (this.delegatedDataWriter == null)
+      throw new CleartkRuntimeException(
+              "delegatedDataWriter must be set before calling getTypeArguments");
+
+    if (genericType.equals(SequentialDataWriter.class)) {
+      genericType = DataWriter.class;
+    }
+    return ReflectionUtil.getTypeArguments(genericType, this.delegatedDataWriter);
+  }
+
+  protected File outputDirectory;
+
+  protected OutcomeFeatureExtractor outcomeFeatureExtractors[];
+
+  protected DataWriter<OUTCOME_TYPE> delegatedDataWriter = null;
 }

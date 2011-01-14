@@ -36,63 +36,66 @@ import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.util.UIMAUtil;
 
 /**
- * <br>Copyright (c) 2007-2009, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * 
  * @author Philipp Wetzler
  */
 public class SiblingExtractor implements SimpleFeatureExtractor {
 
-	public SiblingExtractor(int offset, SimpleFeatureExtractor subExtractor) {
-		this.offset = offset;
-		this.subExtractor = subExtractor;
-		
-		if( offset < 0 ) {
-			if( Math.abs(offset) > 1 )
-				this.name = String.format("%dLeftSibling");
-			else
-				this.name = "LeftSibling";
-		} else if( offset > 0 ) {
-			if( Math.abs(offset) > 1 )
-				this.name = String.format("%dRightSibling");
-			else
-				this.name = "RightSibling";
-		} else {
-			this.name = "";
-		}
-	}
-	
-	public SiblingExtractor(int offset, SimpleFeatureExtractor ... subExtractors) {
-		this(offset, new CombinedExtractor(subExtractors));
-	}
-	
-	public List<Feature> extract(JCas jCas, Annotation focusAnnotation) throws CleartkException {
-		TreebankNode node = (TreebankNode) focusAnnotation;
-		TreebankNode parent = node.getParent();
-		
-		if( parent == null )
-			return Collections.emptyList();
-		
-		List<TreebankNode> children = UIMAUtil.toList(parent.getChildren(), TreebankNode.class);
-		int index = children.indexOf(node);
-		int siblingIndex = index + offset;
-		
-		if( siblingIndex < 0 || siblingIndex >= children.size() )
-			return Collections.emptyList();
-		
-		TreebankNode sibling = children.get(siblingIndex);
-		
-		List<Feature> features = subExtractor.extract(jCas, sibling);
-		for( Feature feature : features ) {
-			feature.setName(Feature.createName(name, feature.getName()));
-		}
-		
-		return features;
-	}
-	
-	private int offset;
-	private String name;
-	private SimpleFeatureExtractor subExtractor;
+  public SiblingExtractor(int offset, SimpleFeatureExtractor subExtractor) {
+    this.offset = offset;
+    this.subExtractor = subExtractor;
+
+    if (offset < 0) {
+      if (Math.abs(offset) > 1)
+        this.name = String.format("%dLeftSibling");
+      else
+        this.name = "LeftSibling";
+    } else if (offset > 0) {
+      if (Math.abs(offset) > 1)
+        this.name = String.format("%dRightSibling");
+      else
+        this.name = "RightSibling";
+    } else {
+      this.name = "";
+    }
+  }
+
+  public SiblingExtractor(int offset, SimpleFeatureExtractor... subExtractors) {
+    this(offset, new CombinedExtractor(subExtractors));
+  }
+
+  public List<Feature> extract(JCas jCas, Annotation focusAnnotation) throws CleartkException {
+    TreebankNode node = (TreebankNode) focusAnnotation;
+    TreebankNode parent = node.getParent();
+
+    if (parent == null)
+      return Collections.emptyList();
+
+    List<TreebankNode> children = UIMAUtil.toList(parent.getChildren(), TreebankNode.class);
+    int index = children.indexOf(node);
+    int siblingIndex = index + offset;
+
+    if (siblingIndex < 0 || siblingIndex >= children.size())
+      return Collections.emptyList();
+
+    TreebankNode sibling = children.get(siblingIndex);
+
+    List<Feature> features = subExtractor.extract(jCas, sibling);
+    for (Feature feature : features) {
+      feature.setName(Feature.createName(name, feature.getName()));
+    }
+
+    return features;
+  }
+
+  private int offset;
+
+  private String name;
+
+  private SimpleFeatureExtractor subExtractor;
 
 }

@@ -43,25 +43,25 @@ import org.cleartk.classifier.jar.JarClassifier;
  * @author Philip Ogren
  * 
  */
-public abstract class TestClassifier_ImplBase<OUTCOME_TYPE> extends JarClassifier<OUTCOME_TYPE, String, List<NameNumber>> {
+public abstract class TestClassifier_ImplBase<OUTCOME_TYPE> extends
+        JarClassifier<OUTCOME_TYPE, String, List<NameNumber>> {
 
-	public TestClassifier_ImplBase(JarFile modelFile) throws IOException {
-		super(modelFile);
-	}
+  public TestClassifier_ImplBase(JarFile modelFile) throws IOException {
+    super(modelFile);
+  }
 
-	public OUTCOME_TYPE classify(List<Feature> features) throws CleartkException {
-		String encodedOutcome = ""+features.size();
-		return outcomeEncoder.decode(encodedOutcome);
-	}
+  public OUTCOME_TYPE classify(List<Feature> features) throws CleartkException {
+    String encodedOutcome = "" + features.size();
+    return outcomeEncoder.decode(encodedOutcome);
+  }
 
-	@Override
-	public List<ScoredOutcome<OUTCOME_TYPE>> score(List<Feature> features, int maxResults) throws CleartkException {
-		List<ScoredOutcome<OUTCOME_TYPE>> returnValues = new ArrayList<ScoredOutcome<OUTCOME_TYPE>>();
-		OUTCOME_TYPE outcome = outcomeEncoder.decode(""+features.size());
-		returnValues.add(new ScoredOutcome<OUTCOME_TYPE>(outcome, 1.0d));
-		return returnValues;
-	}
-
-	
+  @Override
+  public List<ScoredOutcome<OUTCOME_TYPE>> score(List<Feature> features, int maxResults)
+          throws CleartkException {
+    List<ScoredOutcome<OUTCOME_TYPE>> returnValues = new ArrayList<ScoredOutcome<OUTCOME_TYPE>>();
+    OUTCOME_TYPE outcome = outcomeEncoder.decode("" + features.size());
+    returnValues.add(new ScoredOutcome<OUTCOME_TYPE>(outcome, 1.0d));
+    return returnValues;
+  }
 
 }

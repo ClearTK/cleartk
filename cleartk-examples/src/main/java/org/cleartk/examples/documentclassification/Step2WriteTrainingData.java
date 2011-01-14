@@ -40,62 +40,63 @@ import org.kohsuke.args4j.Option;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.pipeline.SimplePipeline;
 
-
 /**
- * <br>Copyright (c) 2009, Regents of the University of Colorado 
- * <br>All rights reserved.
- *
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * @author Philip Ogren
- *
+ * 
  */
 
 public class Step2WriteTrainingData {
 
-	public static class Args {
-		@Option(name = "-d", aliases = "--documentDirectory", usage = "specify the directory containing the training documents.  When we run this example we point to a directory containing the 20 newsgroup corpus - i.e. a directory called '20news-bydate-train'")
-		public String documentDirectory = "../ClearTK Data/data/20newsgroups/20news-bydate-train";
-		@Option(name = "-map", aliases = "--idfmapFileName", usage = "specify the file name of the IDFMap")
-		public String idfmapFileName = "example/documentclassification/idfmap";
-		@Option(name = "-o", aliases = "--outputDirectoryName", usage = "specify the directory to write the training data to")
-		public String outputDirectoryName = "example/documentclassification/libsvm";
+  public static class Args {
+    @Option(name = "-d", aliases = "--documentDirectory", usage = "specify the directory containing the training documents.  When we run this example we point to a directory containing the 20 newsgroup corpus - i.e. a directory called '20news-bydate-train'")
+    public String documentDirectory = "../ClearTK Data/data/20newsgroups/20news-bydate-train";
 
-		public static Args parseArguments(String[] stringArgs) {
-			Args args = new Args();
-			CmdLineParser parser = new CmdLineParser(args);
-			try {
-				parser.parseArgument(stringArgs);
-			} catch (CmdLineException e) {
-				e.printStackTrace();
-				parser.printUsage(System.err);
-				System.exit(1);
-			}
-			return args;
-		}
-	}
+    @Option(name = "-map", aliases = "--idfmapFileName", usage = "specify the file name of the IDFMap")
+    public String idfmapFileName = "example/documentclassification/idfmap";
 
-	public static void main(String[] stringArgs) throws UIMAException, IOException {
-		
-		Args args = Args.parseArguments(stringArgs);
-		String documentDirectory = args.documentDirectory;
-		String idfmapFileName = args.idfmapFileName;
-		String outputDirectoryName = args.outputDirectoryName;
-		
-		System.out.println("writing training data to: "+outputDirectoryName);
-		
-		AnalysisEngineDescription documentClassificationAnnotatorDescription = 
-			AnalysisEngineFactory.createPrimitiveDescription(
-					DocumentClassificationAnnotator.class,
-					ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-					CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, LibsvmDataWriterFactory.class.getName(),
-					LibsvmDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
-					LibsvmDataWriterFactory.PARAM_IDFMAP_FILE_NAME, idfmapFileName);
+    @Option(name = "-o", aliases = "--outputDirectoryName", usage = "specify the directory to write the training data to")
+    public String outputDirectoryName = "example/documentclassification/libsvm";
 
-		SimplePipeline.runPipeline(
-				FilesCollectionReader.getCollectionReader(ExampleComponents.TYPE_SYSTEM_DESCRIPTION, documentDirectory),
-				SentenceAnnotator.getDescription(),
-				TokenAnnotator.getDescription(), 
-				DefaultSnowballStemmer.getDescription("English"),
-				AnalysisEngineFactory.createPrimitiveDescription(GoldAnnotator.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION),
-				documentClassificationAnnotatorDescription);
-	}
+    public static Args parseArguments(String[] stringArgs) {
+      Args args = new Args();
+      CmdLineParser parser = new CmdLineParser(args);
+      try {
+        parser.parseArgument(stringArgs);
+      } catch (CmdLineException e) {
+        e.printStackTrace();
+        parser.printUsage(System.err);
+        System.exit(1);
+      }
+      return args;
+    }
+  }
+
+  public static void main(String[] stringArgs) throws UIMAException, IOException {
+
+    Args args = Args.parseArguments(stringArgs);
+    String documentDirectory = args.documentDirectory;
+    String idfmapFileName = args.idfmapFileName;
+    String outputDirectoryName = args.outputDirectoryName;
+
+    System.out.println("writing training data to: " + outputDirectoryName);
+
+    AnalysisEngineDescription documentClassificationAnnotatorDescription = AnalysisEngineFactory
+            .createPrimitiveDescription(DocumentClassificationAnnotator.class,
+                    ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+                    CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+                    LibsvmDataWriterFactory.class.getName(),
+                    LibsvmDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
+                    LibsvmDataWriterFactory.PARAM_IDFMAP_FILE_NAME, idfmapFileName);
+
+    SimplePipeline.runPipeline(FilesCollectionReader.getCollectionReader(
+            ExampleComponents.TYPE_SYSTEM_DESCRIPTION, documentDirectory), SentenceAnnotator
+            .getDescription(), TokenAnnotator.getDescription(), DefaultSnowballStemmer
+            .getDescription("English"), AnalysisEngineFactory.createPrimitiveDescription(
+            GoldAnnotator.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION),
+            documentClassificationAnnotatorDescription);
+  }
 }

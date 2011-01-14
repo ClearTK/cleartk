@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.feature.extractor;
 
 import static org.junit.Assert.assertEquals;
@@ -54,265 +54,266 @@ import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.util.JCasUtil;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * 
  * @author Philip Ogren
  */
 public class TypePathExtractorTest extends DefaultTestBase {
 
-	public static class Annotator extends JCasAnnotator_ImplBase {
-		public void process(JCas jCas) throws AnalysisEngineProcessException {
-			//The text here was once upon a time some lyrics by a favorite singer which have since been obfuscated to avoid any copyright issues.
-			jCas.setDocumentText(
-					"Wwwwwwww ii ss yyy mmmmm ttttt yyy hhhh " + "Yyy hhhh nnnnnnn tt llll "
-					+ "Ttttttt eeeee dddd aaa llllll ttttt " + "Tttt rrrr llll a ffff.");
-			Token token1 = new Token(jCas, 0, 8);
-			token1.addToIndexes();
-			Lemma lemma = new Lemma(jCas);
-			lemma.setValue("wwwwwwww");
-			// covered text of lemma is "hat"
-			lemma.setBegin(1);
-			lemma.setEnd(4);
-			lemma.setTestFS(new StringArray(jCas, 3));
-			lemma.setTestFS(0, "A");
-			lemma.setTestFS(1, "B");
-			lemma.setTestFS(2, "A");
-			
-			lemma.addToIndexes();
-			token1.setLemma(lemma);
-			POSTag posTag1 = new POSTag(jCas,0,8);
-			posTag1.setValue("pos1");
-			posTag1.addToIndexes();
-			POSTag posTag2 = new POSTag(jCas,0,8);
-			posTag2.setValue("pos2");
-			posTag2.addToIndexes();
-			FSArray token1Poses = new FSArray(jCas, 2);
-			token1Poses.copyFromArray(new FeatureStructure[] { posTag1, posTag2 }, 0, 0, 2);
-			token1.setPosTag(token1Poses);
+  public static class Annotator extends JCasAnnotator_ImplBase {
+    public void process(JCas jCas) throws AnalysisEngineProcessException {
+      // The text here was once upon a time some lyrics by a favorite singer which have since been
+      // obfuscated to avoid any copyright issues.
+      jCas.setDocumentText("Wwwwwwww ii ss yyy mmmmm ttttt yyy hhhh " + "Yyy hhhh nnnnnnn tt llll "
+              + "Ttttttt eeeee dddd aaa llllll ttttt " + "Tttt rrrr llll a ffff.");
+      Token token1 = new Token(jCas, 0, 8);
+      token1.addToIndexes();
+      Lemma lemma = new Lemma(jCas);
+      lemma.setValue("wwwwwwww");
+      // covered text of lemma is "hat"
+      lemma.setBegin(1);
+      lemma.setEnd(4);
+      lemma.setTestFS(new StringArray(jCas, 3));
+      lemma.setTestFS(0, "A");
+      lemma.setTestFS(1, "B");
+      lemma.setTestFS(2, "A");
 
-			Token token2 = new Token(jCas, 9, 11);
-			token2.addToIndexes();
-			POSTag posTag3 = new POSTag(jCas);
-			posTag3.setValue("pos3");
-			posTag3.addToIndexes();
-			FSArray token2Poses = new FSArray(jCas, 1);
-			token2Poses.copyFromArray(new FeatureStructure[] { posTag3 }, 0, 0, 1);
-			token2.setPosTag(token2Poses);
+      lemma.addToIndexes();
+      token1.setLemma(lemma);
+      POSTag posTag1 = new POSTag(jCas, 0, 8);
+      posTag1.setValue("pos1");
+      posTag1.addToIndexes();
+      POSTag posTag2 = new POSTag(jCas, 0, 8);
+      posTag2.setValue("pos2");
+      posTag2.addToIndexes();
+      FSArray token1Poses = new FSArray(jCas, 2);
+      token1Poses.copyFromArray(new FeatureStructure[] { posTag1, posTag2 }, 0, 0, 2);
+      token1.setPosTag(token1Poses);
 
-			Token token3 = new Token(jCas, 12, 14);
-			token3.addToIndexes();
+      Token token2 = new Token(jCas, 9, 11);
+      token2.addToIndexes();
+      POSTag posTag3 = new POSTag(jCas);
+      posTag3.setValue("pos3");
+      posTag3.addToIndexes();
+      FSArray token2Poses = new FSArray(jCas, 1);
+      token2Poses.copyFromArray(new FeatureStructure[] { posTag3 }, 0, 0, 1);
+      token2.setPosTag(token2Poses);
 
-			DependencyRelation depRel1 = new DependencyRelation(jCas);
-			depRel1.setHead(token1);
-			depRel1.setProjective(true);
-			depRel1.setLabel("deprel token1");
-			depRel1.addToIndexes();
-			DependencyRelation depRel2 = new DependencyRelation(jCas);
-			depRel2.setHead(token2);
-			depRel2.setProjective(true);
-			depRel2.setLabel("deprel token2");
-			depRel2.addToIndexes();
-			FSArray depRels = new FSArray(jCas, 2);
-			depRels.copyFromArray(new FeatureStructure[] { depRel1, depRel2 }, 0, 0, 2);
-			token3.setDepRel(depRels);
+      Token token3 = new Token(jCas, 12, 14);
+      token3.addToIndexes();
 
-		}
+      DependencyRelation depRel1 = new DependencyRelation(jCas);
+      depRel1.setHead(token1);
+      depRel1.setProjective(true);
+      depRel1.setLabel("deprel token1");
+      depRel1.addToIndexes();
+      DependencyRelation depRel2 = new DependencyRelation(jCas);
+      depRel2.setHead(token2);
+      depRel2.setProjective(true);
+      depRel2.setLabel("deprel token2");
+      depRel2.addToIndexes();
+      FSArray depRels = new FSArray(jCas, 2);
+      depRels.copyFromArray(new FeatureStructure[] { depRel1, depRel2 }, 0, 0, 2);
+      token3.setDepRel(depRels);
 
-	}
+    }
 
-	@Test
-	public void testExtract() throws IOException, UIMAException, CleartkException {
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				TypePathExtractorTest.Annotator.class,
-				typeSystemDescription);
-		
-		engine.process(jCas);
-		engine.collectionProcessComplete();
-		FSIndex<Annotation> fsIndex = jCas.getAnnotationIndex(Token.type);
+  }
 
-		assertTrue(jCas.getTypeSystem().subsumes(jCas.getTypeSystem().getType("uima.tcas.Annotation"),
-				jCas.getCasType(POSTag.type)));
+  @Test
+  public void testExtract() throws IOException, UIMAException, CleartkException {
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+            TypePathExtractorTest.Annotator.class, typeSystemDescription);
 
-		Token targetToken = new Token(jCas);
-		targetToken.setBegin(0);
-		targetToken.setEnd(8);
-		Token token1 = (Token) fsIndex.find(targetToken);
+    engine.process(jCas);
+    engine.collectionProcessComplete();
+    FSIndex<Annotation> fsIndex = jCas.getAnnotationIndex(Token.type);
 
-		TypePathExtractor typePathExtractor = new TypePathExtractor(Token.class, "lemma/value");
-		List<Feature> features = typePathExtractor.extract(jCas, token1);
-		assertEquals(features.size(), 1);
-		TypePathFeature feature = (TypePathFeature) (TypePathFeature) features.get(0);
-		assertEquals(feature.getValue().toString(), "wwwwwwww");
-		assertEquals(feature.getTypePath(), "lemma/value");
+    assertTrue(jCas.getTypeSystem().subsumes(jCas.getTypeSystem().getType("uima.tcas.Annotation"),
+            jCas.getCasType(POSTag.type)));
 
-		// test the covered text of the last member of a path (lemma is not a
-		// primitive value);
-		typePathExtractor = new TypePathExtractor(Token.class, "lemma");
-		features = typePathExtractor.extract(jCas, token1);
-		assertEquals(features.size(), 1);
-		feature = (TypePathFeature) features.get(0);
-		assertEquals(feature.getValue().toString(), "www");
-		assertEquals(feature.getTypePath(), "lemma");
+    Token targetToken = new Token(jCas);
+    targetToken.setBegin(0);
+    targetToken.setEnd(8);
+    Token token1 = (Token) fsIndex.find(targetToken);
 
-		targetToken.setBegin(12);
-		targetToken.setEnd(14);
-		Token token3 = (Token) fsIndex.find(targetToken);
+    TypePathExtractor typePathExtractor = new TypePathExtractor(Token.class, "lemma/value");
+    List<Feature> features = typePathExtractor.extract(jCas, token1);
+    assertEquals(features.size(), 1);
+    TypePathFeature feature = (TypePathFeature) (TypePathFeature) features.get(0);
+    assertEquals(feature.getValue().toString(), "wwwwwwww");
+    assertEquals(feature.getTypePath(), "lemma/value");
 
-		typePathExtractor = new TypePathExtractor(Token.class, "lemma/begin");
-		features = typePathExtractor.extract(jCas, token1);
-		assertEquals(features.size(), 1);
-		feature = (TypePathFeature) features.get(0);
-		assertEquals(feature.getValue(), 1);
-		assertEquals(feature.getTypePath(), "lemma/begin");
-		
-		typePathExtractor = new TypePathExtractor(Token.class, "posTag", true, true, false);
-		features = typePathExtractor.extract(jCas, token1);
-		assertEquals(features.size(), 2);
-		assertEquals(features.get(0).getValue().toString(), "Wwwwwwww");
-		assertEquals(features.get(1).getValue().toString(), "Wwwwwwww");
+    // test the covered text of the last member of a path (lemma is not a
+    // primitive value);
+    typePathExtractor = new TypePathExtractor(Token.class, "lemma");
+    features = typePathExtractor.extract(jCas, token1);
+    assertEquals(features.size(), 1);
+    feature = (TypePathFeature) features.get(0);
+    assertEquals(feature.getValue().toString(), "www");
+    assertEquals(feature.getTypePath(), "lemma");
 
-		typePathExtractor = new TypePathExtractor(Token.class, "posTag", true, true, true);
-		features = typePathExtractor.extract(jCas, token1);
-		assertEquals(features.size(), 1);
-		assertEquals(features.get(0).getValue().toString(), "Wwwwwwww");
+    targetToken.setBegin(12);
+    targetToken.setEnd(14);
+    Token token3 = (Token) fsIndex.find(targetToken);
 
-		typePathExtractor = new TypePathExtractor(Token.class, "posTag", true, false, false);
-		features = typePathExtractor.extract(jCas, token1);
-		assertEquals(features.size(), 1);
-		assertEquals(features.get(0).getValue().toString(), "Wwwwwwww");
+    typePathExtractor = new TypePathExtractor(Token.class, "lemma/begin");
+    features = typePathExtractor.extract(jCas, token1);
+    assertEquals(features.size(), 1);
+    feature = (TypePathFeature) features.get(0);
+    assertEquals(feature.getValue(), 1);
+    assertEquals(feature.getTypePath(), "lemma/begin");
 
-		typePathExtractor = new TypePathExtractor(Token.class, "posTag", false, false, false);
-		features = typePathExtractor.extract(jCas, token1);
-		assertEquals(features.size(), 1);
-		assertEquals(features.get(0).getValue().toString(), "Wwwwwwww");
+    typePathExtractor = new TypePathExtractor(Token.class, "posTag", true, true, false);
+    features = typePathExtractor.extract(jCas, token1);
+    assertEquals(features.size(), 2);
+    assertEquals(features.get(0).getValue().toString(), "Wwwwwwww");
+    assertEquals(features.get(1).getValue().toString(), "Wwwwwwww");
 
-		typePathExtractor = new TypePathExtractor(Token.class, "lemma/testFS", false, false, false);
-		features = typePathExtractor.extract(jCas, token1);
-		assertEquals(features.size(), 1);
-		assertEquals(features.get(0).getValue().toString(), "A");
+    typePathExtractor = new TypePathExtractor(Token.class, "posTag", true, true, true);
+    features = typePathExtractor.extract(jCas, token1);
+    assertEquals(features.size(), 1);
+    assertEquals(features.get(0).getValue().toString(), "Wwwwwwww");
 
-		typePathExtractor = new TypePathExtractor(Token.class, "lemma/testFS", false, true, false);
-		features = typePathExtractor.extract(jCas, token1);
-		assertEquals(features.size(), 3);
-		assertEquals(features.get(0).getValue().toString(), "A");
-		assertEquals(features.get(1).getValue().toString(), "B");
-		assertEquals(features.get(2).getValue().toString(), "A");
+    typePathExtractor = new TypePathExtractor(Token.class, "posTag", true, false, false);
+    features = typePathExtractor.extract(jCas, token1);
+    assertEquals(features.size(), 1);
+    assertEquals(features.get(0).getValue().toString(), "Wwwwwwww");
 
-		typePathExtractor = new TypePathExtractor(Token.class, "lemma/testFS", false, true, true);
-		features = typePathExtractor.extract(jCas, token1);
-		assertEquals(features.size(), 2);
-		assertEquals(features.get(0).getValue().toString(), "A");
-		assertEquals(features.get(1).getValue().toString(), "B");
+    typePathExtractor = new TypePathExtractor(Token.class, "posTag", false, false, false);
+    features = typePathExtractor.extract(jCas, token1);
+    assertEquals(features.size(), 1);
+    assertEquals(features.get(0).getValue().toString(), "Wwwwwwww");
 
-		typePathExtractor = new TypePathExtractor(Token.class, "depRel/head");
-		features = typePathExtractor.extract(jCas, token3);
-		assertEquals(features.size(), 1);
-		feature = (TypePathFeature) features.get(0);
-		assertEquals(feature.getValue().toString(), "Wwwwwwww");
-		assertEquals(feature.getTypePath(), "depRel/head");
+    typePathExtractor = new TypePathExtractor(Token.class, "lemma/testFS", false, false, false);
+    features = typePathExtractor.extract(jCas, token1);
+    assertEquals(features.size(), 1);
+    assertEquals(features.get(0).getValue().toString(), "A");
 
-		typePathExtractor = new TypePathExtractor(Token.class, "depRel/head", true, true, true);
-		features = typePathExtractor.extract(jCas, token3);
-		assertEquals(features.size(), 2);
-		feature = (TypePathFeature) features.get(0);
-		assertEquals(feature.getValue().toString(), "Wwwwwwww");
-		assertEquals(feature.getTypePath(), "depRel/head");
-		feature = (TypePathFeature) features.get(1);
-		assertEquals(feature.getTypePath(), "depRel/head");
-		assertEquals(feature.getValue().toString(), "ii");
+    typePathExtractor = new TypePathExtractor(Token.class, "lemma/testFS", false, true, false);
+    features = typePathExtractor.extract(jCas, token1);
+    assertEquals(features.size(), 3);
+    assertEquals(features.get(0).getValue().toString(), "A");
+    assertEquals(features.get(1).getValue().toString(), "B");
+    assertEquals(features.get(2).getValue().toString(), "A");
 
-		typePathExtractor = new TypePathExtractor(Token.class, "depRel/head/posTag/value", true, true, true);
-		features = typePathExtractor.extract(jCas, token3);
-		assertEquals(features.size(), 3);
-		assertEquals(features.get(0).getValue().toString(), "pos1");
-		assertEquals(features.get(1).getValue().toString(), "pos2");
-		assertEquals(features.get(2).getValue().toString(), "pos3");
+    typePathExtractor = new TypePathExtractor(Token.class, "lemma/testFS", false, true, true);
+    features = typePathExtractor.extract(jCas, token1);
+    assertEquals(features.size(), 2);
+    assertEquals(features.get(0).getValue().toString(), "A");
+    assertEquals(features.get(1).getValue().toString(), "B");
 
-		// unfortunately, because the "value" of POSTag is a single value, this
-		// will return all values for every POSTag even though
-		// the posTag of Token is an FSArray. (I was hoping this extractor would
-		// return two values pos1 and pos3
-		typePathExtractor = new TypePathExtractor(Token.class, "depRel/head/posTag/value", true, false, true);
-		features = typePathExtractor.extract(jCas, token3);
-		assertEquals(features.size(), 3);
-		assertEquals(features.get(0).getValue().toString(), "pos1");
-		assertEquals(features.get(1).getValue().toString(), "pos2");
-		assertEquals(features.get(2).getValue().toString(), "pos3");
-		
-		typePathExtractor = new TypePathExtractor(Token.class, "depRel/head/posTag/value", false, true, true);
-		features = typePathExtractor.extract(jCas, token3);
-		assertEquals(features.size(), 1);
-		assertEquals(features.get(0).getValue().toString(), "pos1");
+    typePathExtractor = new TypePathExtractor(Token.class, "depRel/head");
+    features = typePathExtractor.extract(jCas, token3);
+    assertEquals(features.size(), 1);
+    feature = (TypePathFeature) features.get(0);
+    assertEquals(feature.getValue().toString(), "Wwwwwwww");
+    assertEquals(feature.getTypePath(), "depRel/head");
 
-		typePathExtractor = new TypePathExtractor(Token.class, "depRel/head/posTag/value", false, false, true);
-		features = typePathExtractor.extract(jCas, token3);
-		assertEquals(features.size(), 1);
-		assertEquals(features.get(0).getValue().toString(), "pos1");
-	}
+    typePathExtractor = new TypePathExtractor(Token.class, "depRel/head", true, true, true);
+    features = typePathExtractor.extract(jCas, token3);
+    assertEquals(features.size(), 2);
+    feature = (TypePathFeature) features.get(0);
+    assertEquals(feature.getValue().toString(), "Wwwwwwww");
+    assertEquals(feature.getTypePath(), "depRel/head");
+    feature = (TypePathFeature) features.get(1);
+    assertEquals(feature.getTypePath(), "depRel/head");
+    assertEquals(feature.getValue().toString(), "ii");
 
-	@Test
-	public void testIsValidatePath() throws IOException, UIMAException {
-		assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(POSTag.type), "value",
-				jCas));
-		assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(Header.type),
-				"authors/lastName", jCas));
-		assertTrue(!TypePathExtractor.isValidPath(jCas.getCasType(Header.type),
-				"authors/lastNames", jCas));
-		assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(Token.type),
-				"posTag/language", jCas));
-		assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(Token.type), "posTag", jCas));
-		assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(Token.type),
-				"depRel/head/depRel/projective", jCas));
-		assertTrue(!TypePathExtractor.isValidPath(jCas.getCasType(Token.type),
-				"depRel/head/projective", jCas));
-		assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(Token.type),
-				"depRel/head/orthogr", jCas));
-		assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(Token.type),
-				"depRel/projective", jCas));
-		assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(Token.type),
-				"depRel/head/depRel/projective", jCas));
-	}
+    typePathExtractor = new TypePathExtractor(Token.class, "depRel/head/posTag/value", true, true,
+            true);
+    features = typePathExtractor.extract(jCas, token3);
+    assertEquals(features.size(), 3);
+    assertEquals(features.get(0).getValue().toString(), "pos1");
+    assertEquals(features.get(1).getValue().toString(), "pos2");
+    assertEquals(features.get(2).getValue().toString(), "pos3");
 
-	@Test
-	public void testIsValidType() throws IOException, UIMAException {
-		assertTrue(TypePathExtractor.isValidType(jCas.getCasType(POSTag.type), jCas
-				.getTypeSystem()));
-		assertTrue(TypePathExtractor.isValidType(jCas.getCasType(Token.type), jCas
-				.getTypeSystem()));
+    // unfortunately, because the "value" of POSTag is a single value, this
+    // will return all values for every POSTag even though
+    // the posTag of Token is an FSArray. (I was hoping this extractor would
+    // return two values pos1 and pos3
+    typePathExtractor = new TypePathExtractor(Token.class, "depRel/head/posTag/value", true, false,
+            true);
+    features = typePathExtractor.extract(jCas, token3);
+    assertEquals(features.size(), 3);
+    assertEquals(features.get(0).getValue().toString(), "pos1");
+    assertEquals(features.get(1).getValue().toString(), "pos2");
+    assertEquals(features.get(2).getValue().toString(), "pos3");
 
-		// subtypes of uima.cas.String do not have JCas class generated for them
-		assertTrue(TypePathExtractor.isValidType(jCas.getTypeSystem().getType("org.cleartk.type.test.Language"), jCas
-				.getTypeSystem()));
+    typePathExtractor = new TypePathExtractor(Token.class, "depRel/head/posTag/value", false, true,
+            true);
+    features = typePathExtractor.extract(jCas, token3);
+    assertEquals(features.size(), 1);
+    assertEquals(features.get(0).getValue().toString(), "pos1");
 
-		assertTrue(TypePathExtractor.isValidType(jCas.getTypeSystem().getType("uima.cas.String"), jCas.getTypeSystem()));
-		assertTrue(TypePathExtractor
-				.isValidType(jCas.getTypeSystem().getType("uima.cas.Integer"), jCas.getTypeSystem()));
-	}
+    typePathExtractor = new TypePathExtractor(Token.class, "depRel/head/posTag/value", false,
+            false, true);
+    features = typePathExtractor.extract(jCas, token3);
+    assertEquals(features.size(), 1);
+    assertEquals(features.get(0).getValue().toString(), "pos1");
+  }
 
-	@Test
-	public void testTicket23() throws IOException, UIMAException, CleartkException {
+  @Test
+  public void testIsValidatePath() throws IOException, UIMAException {
+    assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(POSTag.type), "value", jCas));
+    assertTrue(TypePathExtractor
+            .isValidPath(jCas.getCasType(Header.type), "authors/lastName", jCas));
+    assertTrue(!TypePathExtractor.isValidPath(jCas.getCasType(Header.type), "authors/lastNames",
+            jCas));
+    assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(Token.type), "posTag/language", jCas));
+    assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(Token.type), "posTag", jCas));
+    assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(Token.type),
+            "depRel/head/depRel/projective", jCas));
+    assertTrue(!TypePathExtractor.isValidPath(jCas.getCasType(Token.type),
+            "depRel/head/projective", jCas));
+    assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(Token.type), "depRel/head/orthogr",
+            jCas));
+    assertTrue(TypePathExtractor
+            .isValidPath(jCas.getCasType(Token.type), "depRel/projective", jCas));
+    assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(Token.type),
+            "depRel/head/depRel/projective", jCas));
+  }
 
-		// token "place" in "wide. This place was a tolerable long,");
-		tokenBuilder.buildTokens(jCas, "wide .\nThis place was a tolerable long ,");
-		Token token = JCasUtil.selectByIndex(jCas, Token.class, 3);
+  @Test
+  public void testIsValidType() throws IOException, UIMAException {
+    assertTrue(TypePathExtractor.isValidType(jCas.getCasType(POSTag.type), jCas.getTypeSystem()));
+    assertTrue(TypePathExtractor.isValidType(jCas.getCasType(Token.type), jCas.getTypeSystem()));
 
-		assertEquals("place", token.getCoveredText());
-		token.setPos("A");
-		Token tokenL0 = JCasUtil.selectByIndex(jCas, Token.class, 2);
-		tokenL0.setPos("B");
+    // subtypes of uima.cas.String do not have JCas class generated for them
+    assertTrue(TypePathExtractor.isValidType(
+            jCas.getTypeSystem().getType("org.cleartk.type.test.Language"), jCas.getTypeSystem()));
 
-		TypePathExtractor posExtractor = new TypePathExtractor(Token.class, "pos");
+    assertTrue(TypePathExtractor.isValidType(jCas.getTypeSystem().getType("uima.cas.String"),
+            jCas.getTypeSystem()));
+    assertTrue(TypePathExtractor.isValidType(jCas.getTypeSystem().getType("uima.cas.Integer"),
+            jCas.getTypeSystem()));
+  }
 
-		Feature feature = posExtractor.extract(jCas, token).get(0);
-		assertEquals("A", feature.getValue().toString());
-		assertEquals("TypePath(Pos)", feature.getName());
-		
-		feature = posExtractor.extract(jCas, tokenL0).get(0);
-		assertEquals("B", feature.getValue().toString());
-		assertEquals("TypePath(Pos)", feature.getName());
-		
-	}
+  @Test
+  public void testTicket23() throws IOException, UIMAException, CleartkException {
+
+    // token "place" in "wide. This place was a tolerable long,");
+    tokenBuilder.buildTokens(jCas, "wide .\nThis place was a tolerable long ,");
+    Token token = JCasUtil.selectByIndex(jCas, Token.class, 3);
+
+    assertEquals("place", token.getCoveredText());
+    token.setPos("A");
+    Token tokenL0 = JCasUtil.selectByIndex(jCas, Token.class, 2);
+    tokenL0.setPos("B");
+
+    TypePathExtractor posExtractor = new TypePathExtractor(Token.class, "pos");
+
+    Feature feature = posExtractor.extract(jCas, token).get(0);
+    assertEquals("A", feature.getValue().toString());
+    assertEquals("TypePath(Pos)", feature.getName());
+
+    feature = posExtractor.extract(jCas, tokenL0).get(0);
+    assertEquals("B", feature.getValue().toString());
+    assertEquals("TypePath(Pos)", feature.getName());
+
+  }
 
 }

@@ -33,83 +33,84 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 
 /**
-  * <br>
+ * <br>
  * Copyright (c) 2010, University of Würzburg <br>
  * All rights reserved.
  * <p>
-* @author Martin Toepfer
+ * 
+ * @author Martin Toepfer
  */
 public class GrmmTestDataGenerator {
 
-	public static List<Instance<String[]>> createInstances1() {
-		List<Instance<String[]>> instances = new java.util.ArrayList<Instance<String[]>>();
-		instances.add(createInstance("A a fa"));
-		return instances;
-	}
+  public static List<Instance<String[]>> createInstances1() {
+    List<Instance<String[]>> instances = new java.util.ArrayList<Instance<String[]>>();
+    instances.add(createInstance("A a fa"));
+    return instances;
+  }
 
-	/**
-	 * 
-	 * @return list of instances with the same features as {@link
-	 *         GrmmClassifierTest.createInstances1()} but different outcomes
-	 */
-	public static List<Instance<String[]>> createInstances1test() {
-		List<Instance<String[]>> instances = new java.util.ArrayList<Instance<String[]>>();
-		instances.add(createInstance("B d fa"));
-		return instances;
-	}
+  /**
+   * 
+   * @return list of instances with the same features as {@link
+   *         GrmmClassifierTest.createInstances1()} but different outcomes
+   */
+  public static List<Instance<String[]>> createInstances1test() {
+    List<Instance<String[]>> instances = new java.util.ArrayList<Instance<String[]>>();
+    instances.add(createInstance("B d fa"));
+    return instances;
+  }
 
-	public static List<Instance<String[]>> createInstances2() {
-		List<Instance<String[]>> instances = new java.util.ArrayList<Instance<String[]>>();
-		instances.add(createInstance("A b f1 f2"));
-		instances.add(createInstance("C d f3 f4"));
-		instances.add(createInstance("A d f1 f4"));
-		instances.add(createInstance("B b f2 f5"));
-		instances.add(createInstance("B b f2 f5"));
-		return instances;
-	}
+  public static List<Instance<String[]>> createInstances2() {
+    List<Instance<String[]>> instances = new java.util.ArrayList<Instance<String[]>>();
+    instances.add(createInstance("A b f1 f2"));
+    instances.add(createInstance("C d f3 f4"));
+    instances.add(createInstance("A d f1 f4"));
+    instances.add(createInstance("B b f2 f5"));
+    instances.add(createInstance("B b f2 f5"));
+    return instances;
+  }
 
-	/**
-	 * 
-	 * @return list of instances with the same features as {@link
-	 *         GrmmClassifierTest.createInstances2()} but different outcomes
-	 */
-	public static List<Instance<String[]>> createInstances2test() {
-		List<Instance<String[]>> instances = new java.util.ArrayList<Instance<String[]>>();
-		instances.add(createInstance("C a f1 f2"));
-		instances.add(createInstance("C a f3 f4"));
-		instances.add(createInstance("C a f1 f4"));
-		instances.add(createInstance("C a f2 f5"));
-		instances.add(createInstance("C a f2 f5"));
-		return instances;
-	}
+  /**
+   * 
+   * @return list of instances with the same features as {@link
+   *         GrmmClassifierTest.createInstances2()} but different outcomes
+   */
+  public static List<Instance<String[]>> createInstances2test() {
+    List<Instance<String[]>> instances = new java.util.ArrayList<Instance<String[]>>();
+    instances.add(createInstance("C a f1 f2"));
+    instances.add(createInstance("C a f3 f4"));
+    instances.add(createInstance("C a f1 f4"));
+    instances.add(createInstance("C a f2 f5"));
+    instances.add(createInstance("C a f2 f5"));
+    return instances;
+  }
 
-	public static List<Instance<String[]>> createInstances3() {
-		List<Instance<String[]>> instances = new java.util.ArrayList<Instance<String[]>>();
-		instances.add(createInstance("A a faabb-a1"));
-		instances.add(createInstance("B b faabb-b2"));
-		return instances;
-	}
+  public static List<Instance<String[]>> createInstances3() {
+    List<Instance<String[]>> instances = new java.util.ArrayList<Instance<String[]>>();
+    instances.add(createInstance("A a faabb-a1"));
+    instances.add(createInstance("B b faabb-b2"));
+    return instances;
+  }
 
-	public static Instance<String[]> createInstance(String data) {
-		Instance<String[]> instance = new Instance<String[]>();
-		String[] columns = data.split(" ");
-		ArrayList<String> elements = new ArrayList<String>(2);
-		elements.add(columns[0]);
-		elements.add(columns[1]);
-		instance.setOutcome(elements.toArray(new String[2]));
-		for (int i = 2; i < columns.length; i++) {
-			instance.add(new Feature(columns[i]));
-		}
-		return instance;
-	}
+  public static Instance<String[]> createInstance(String data) {
+    Instance<String[]> instance = new Instance<String[]>();
+    String[] columns = data.split(" ");
+    ArrayList<String> elements = new ArrayList<String>(2);
+    elements.add(columns[0]);
+    elements.add(columns[1]);
+    instance.setOutcome(elements.toArray(new String[2]));
+    for (int i = 2; i < columns.length; i++) {
+      instance.add(new Feature(columns[i]));
+    }
+    return instance;
+  }
 
-	public static File createBigramTemplate(String outputDirectoryName,
-			String filename) throws IOException {
-		File f = new File(outputDirectoryName, filename);
-		FileWriter fileWriter = new FileWriter(f);
-		fileWriter
-				.write("new ACRF.BigramTemplate (0)\nnew ACRF.BigramTemplate (1)\nnew ACRF.PairwiseFactorTemplate (0,1)\n");
-		fileWriter.close();
-		return f;
-	}
+  public static File createBigramTemplate(String outputDirectoryName, String filename)
+          throws IOException {
+    File f = new File(outputDirectoryName, filename);
+    FileWriter fileWriter = new FileWriter(f);
+    fileWriter
+            .write("new ACRF.BigramTemplate (0)\nnew ACRF.BigramTemplate (1)\nnew ACRF.PairwiseFactorTemplate (0,1)\n");
+    fileWriter.close();
+    return f;
+  }
 }

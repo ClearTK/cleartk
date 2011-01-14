@@ -40,115 +40,121 @@ import org.cleartk.classifier.feature.Counts;
 import org.cleartk.classifier.feature.FeatureCollection;
 import org.cleartk.classifier.jar.ClassifierBuilder;
 
-
 /**
- * <br>Copyright (c) 2009, Regents of the University of Colorado 
- * <br>All rights reserved.
- *
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * @author Philipp G. Wetzler
- *
+ * 
  */
 public class IDFMapWriter<OUTCOME_TYPE> implements DataWriter<OUTCOME_TYPE> {
 
-	public IDFMapWriter(File outputDirectory) throws IOException {
-		this.outputDirectory = outputDirectory;		
-	}
-	
-	private File getIDFMapFile(String identifier) {
-		if( identifier == null )
-			identifier = "default";
-		else
-			identifier = identifier.toLowerCase();
-		
-		if( identifier.equals("default") ) {
-			return new File(outputDirectory, "idfmap");
-		} else {
-			return new File(outputDirectory, "idfmap_" + identifier);
-		}
-	}
-	
-	private IDFMap getIDFMap(String identifier) throws IOException {
-		if( identifier == null )
-			identifier = "default";
-		else
-			identifier = identifier.toLowerCase();
+  public IDFMapWriter(File outputDirectory) throws IOException {
+    this.outputDirectory = outputDirectory;
+  }
 
-		if( idfMaps.containsKey(identifier) ) {
-			return idfMaps.get(identifier);
-		} else {
-			File idfMapFile = getIDFMapFile(identifier);
+  private File getIDFMapFile(String identifier) {
+    if (identifier == null)
+      identifier = "default";
+    else
+      identifier = identifier.toLowerCase();
 
-			IDFMap idfMap;
-			if( idfMapFile.exists() ) {
-				logger.info(String.format("load existing idf map \"%s\" from %s", identifier, idfMapFile.toString()));
-				idfMap = IDFMap.read(idfMapFile);
-			} else {
-				logger.info(String.format("initialize new idf map \"%s\"", identifier));
-				idfMap = new IDFMap();
-			}
-			
-			idfMaps.put(identifier, idfMap);
-			return idfMap;
-		}
-	}
+    if (identifier.equals("default")) {
+      return new File(outputDirectory, "idfmap");
+    } else {
+      return new File(outputDirectory, "idfmap_" + identifier);
+    }
+  }
 
-	public boolean isTraining() {
-		return false;
-	}
+  private IDFMap getIDFMap(String identifier) throws IOException {
+    if (identifier == null)
+      identifier = "default";
+    else
+      identifier = identifier.toLowerCase();
 
-	public Class<? extends ClassifierBuilder<OUTCOME_TYPE>> getDefaultClassifierBuilderClass() {
-		return null;
-	}
+    if (idfMaps.containsKey(identifier)) {
+      return idfMaps.get(identifier);
+    } else {
+      File idfMapFile = getIDFMapFile(identifier);
 
-	public void write(Instance<OUTCOME_TYPE> instance) throws CleartkException {
-		consumeFeatures(instance.getFeatures());
-	}
-		
-	private void consumeFeatures(Collection<Feature> features) throws CleartkException {
-		for( Feature feature : features ) {
-			if( feature.getValue() instanceof Counts ) {
-				Counts counts = (Counts) feature.getValue();
-				
-				IDFMap idfMap;
-				try {
-					idfMap = getIDFMap(counts.getIdentifier());
-				} catch (IOException e) {
-					throw new CleartkException(e);
-				}
-				idfMap.consume(counts);
-			} else if( feature.getValue() instanceof FeatureCollection ) {
-				FeatureCollection fc = (FeatureCollection) feature.getValue();
-				consumeFeatures(fc.getFeatures());
-			}
-		}
-	}
+      IDFMap idfMap;
+      if (idfMapFile.exists()) {
+        logger.info(String.format("load existing idf map \"%s\" from %s", identifier,
+                idfMapFile.toString()));
+        idfMap = IDFMap.read(idfMapFile);
+      } else {
+        logger.info(String.format("initialize new idf map \"%s\"", identifier));
+        idfMap = new IDFMap();
+      }
 
-	public void finish() throws CleartkException {
-		List<Exception> exceptions = new ArrayList<Exception>();
-		
-		for( String identifier : idfMaps.keySet() ) {
-			IDFMap idfMap = idfMaps.get(identifier);
-			File idfMapFile = getIDFMapFile(identifier);
-			try {
-				logger.info(String.format("write idf map \"%s\" to %s.  size="+idfMap.getTotalDocumentCount(), identifier, idfMapFile.toString()));
-				idfMap.write(idfMapFile);
-			} catch( IOException e1 ) {
-				exceptions.add(e1);
-				continue;
-			}
-		}
-		
-		if( exceptions.size() > 0 ) {
-			if( exceptions.size() == 1 ) {
-				throw new CleartkException(exceptions.get(0));
-			} else {
-				throw new CleartkException(String.format("%s and %d others", exceptions.get(0).toString(), exceptions.size()-1));
-			}
-		}
-	}
+      idfMaps.put(identifier, idfMap);
+      return idfMap;
+    }
+  }
 
-	private Map<String,IDFMap> idfMaps = new HashMap<String,IDFMap>();
-	private File outputDirectory;
-	private Logger logger = Logger.getLogger(this.getClass().getName());
+  public boolean isTraining() {
+    return false;
+  }
+
+  public Class<? extends ClassifierBuilder<OUTCOME_TYPE>> getDefaultClassifierBuilderClass() {
+    return null;
+  }
+
+  public void write(Instance<OUTCOME_TYPE> instance) throws CleartkException {
+    consumeFeatures(instance.getFeatures());
+  }
+
+  private void consumeFeatures(Collection<Feature> features) throws CleartkException {
+    for (Feature feature : features) {
+      if (feature.getValue() instanceof Counts) {
+        Counts counts = (Counts) feature.getValue();
+
+        IDFMap idfMap;
+        try {
+          idfMap = getIDFMap(counts.getIdentifier());
+        } catch (IOException e) {
+          throw new CleartkException(e);
+        }
+        idfMap.consume(counts);
+      } else if (feature.getValue() instanceof FeatureCollection) {
+        FeatureCollection fc = (FeatureCollection) feature.getValue();
+        consumeFeatures(fc.getFeatures());
+      }
+    }
+  }
+
+  public void finish() throws CleartkException {
+    List<Exception> exceptions = new ArrayList<Exception>();
+
+    for (String identifier : idfMaps.keySet()) {
+      IDFMap idfMap = idfMaps.get(identifier);
+      File idfMapFile = getIDFMapFile(identifier);
+      try {
+        logger.info(String.format(
+                "write idf map \"%s\" to %s.  size=" + idfMap.getTotalDocumentCount(), identifier,
+                idfMapFile.toString()));
+        idfMap.write(idfMapFile);
+      } catch (IOException e1) {
+        exceptions.add(e1);
+        continue;
+      }
+    }
+
+    if (exceptions.size() > 0) {
+      if (exceptions.size() == 1) {
+        throw new CleartkException(exceptions.get(0));
+      } else {
+        throw new CleartkException(String.format("%s and %d others", exceptions.get(0).toString(),
+                exceptions.size() - 1));
+      }
+    }
+  }
+
+  private Map<String, IDFMap> idfMaps = new HashMap<String, IDFMap>();
+
+  private File outputDirectory;
+
+  private Logger logger = Logger.getLogger(this.getClass().getName());
 
 }

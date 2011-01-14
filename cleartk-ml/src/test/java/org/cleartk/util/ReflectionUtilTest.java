@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.util;
 
 import java.io.File;
@@ -37,56 +37,72 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * 
  * @author Philip Ogren
  */
 public class ReflectionUtilTest {
-	
-	public static class TestSuperClass<T> {
-	}
-	public static class TestSubClass extends TestSuperClass<String> {
-	}
-	public static class TestArraySubClass extends TestSuperClass<double[]> {
-	}
-	public static class TestClassifierOutcomeType implements Classifier<String> {
-		public String classify(List<org.cleartk.classifier.Feature> features) throws CleartkException { return null; }
-		public List<ScoredOutcome<String>> score(List<org.cleartk.classifier.Feature> features, int maxResults) throws CleartkException {return null;}
-	}
-	
-	public static class TestDataWriterOutcomeType extends JarDataWriter<String, Double, Boolean> {
-		public TestDataWriterOutcomeType(File outputDirectory) {
-			super(outputDirectory);
-		}
-		@Override
-		public void writeEncoded(Boolean features, Double outcome) {}
-		public Class<? extends ClassifierBuilder<String>> getDefaultClassifierBuilderClass() {
-			return null;
-		}
-	}
 
-	@Test
-	public void testGetTypeArgument() throws Exception {
+  public static class TestSuperClass<T> {
+  }
 
-		Type type = ReflectionUtil.getTypeArgument(TestSuperClass.class, "T", new TestSubClass());
-		Assert.assertEquals(String.class, type);
+  public static class TestSubClass extends TestSuperClass<String> {
+  }
 
-		type = ReflectionUtil.getTypeArgument(TestSuperClass.class, "T", new TestSuperClass<String>());
-		Assert.assertNull(type);
-		
-		type = ReflectionUtil.getTypeArgument(TestSuperClass.class, "T", new TestArraySubClass());
-		Assert.assertTrue(type instanceof GenericArrayType);
-		Assert.assertEquals(double.class, ((GenericArrayType)type).getGenericComponentType());
+  public static class TestArraySubClass extends TestSuperClass<double[]> {
+  }
 
-		type = ReflectionUtil.getTypeArgument(Classifier.class, "OUTCOME_TYPE", new TestClassifierOutcomeType());
-		Assert.assertEquals(String.class, type);
-		
-		type = ReflectionUtil.getTypeArgument(JarDataWriter.class, "INPUTOUTCOME_TYPE", new TestDataWriterOutcomeType(null));
-		Assert.assertEquals(String.class, type);
+  public static class TestClassifierOutcomeType implements Classifier<String> {
+    public String classify(List<org.cleartk.classifier.Feature> features) throws CleartkException {
+      return null;
+    }
 
-		type = ReflectionUtil.getTypeArgument(JarDataWriter.class, "OUTPUTOUTCOME_TYPE", new TestDataWriterOutcomeType(null));
-		Assert.assertEquals(Double.class, type);
-	}
+    public List<ScoredOutcome<String>> score(List<org.cleartk.classifier.Feature> features,
+            int maxResults) throws CleartkException {
+      return null;
+    }
+  }
+
+  public static class TestDataWriterOutcomeType extends JarDataWriter<String, Double, Boolean> {
+    public TestDataWriterOutcomeType(File outputDirectory) {
+      super(outputDirectory);
+    }
+
+    @Override
+    public void writeEncoded(Boolean features, Double outcome) {
+    }
+
+    public Class<? extends ClassifierBuilder<String>> getDefaultClassifierBuilderClass() {
+      return null;
+    }
+  }
+
+  @Test
+  public void testGetTypeArgument() throws Exception {
+
+    Type type = ReflectionUtil.getTypeArgument(TestSuperClass.class, "T", new TestSubClass());
+    Assert.assertEquals(String.class, type);
+
+    type = ReflectionUtil.getTypeArgument(TestSuperClass.class, "T", new TestSuperClass<String>());
+    Assert.assertNull(type);
+
+    type = ReflectionUtil.getTypeArgument(TestSuperClass.class, "T", new TestArraySubClass());
+    Assert.assertTrue(type instanceof GenericArrayType);
+    Assert.assertEquals(double.class, ((GenericArrayType) type).getGenericComponentType());
+
+    type = ReflectionUtil.getTypeArgument(Classifier.class, "OUTCOME_TYPE",
+            new TestClassifierOutcomeType());
+    Assert.assertEquals(String.class, type);
+
+    type = ReflectionUtil.getTypeArgument(JarDataWriter.class, "INPUTOUTCOME_TYPE",
+            new TestDataWriterOutcomeType(null));
+    Assert.assertEquals(String.class, type);
+
+    type = ReflectionUtil.getTypeArgument(JarDataWriter.class, "OUTPUTOUTCOME_TYPE",
+            new TestDataWriterOutcomeType(null));
+    Assert.assertEquals(Double.class, type);
+  }
 }

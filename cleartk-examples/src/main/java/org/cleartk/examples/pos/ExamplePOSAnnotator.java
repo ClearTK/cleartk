@@ -62,108 +62,107 @@ import org.cleartk.util.AnnotationRetrieval;
  */
 public class ExamplePOSAnnotator extends CleartkSequentialAnnotator<String> {
 
-	public static final String DEFAULT_OUTPUT_DIRECTORY = "src/main/resources/model/pos";
+  public static final String DEFAULT_OUTPUT_DIRECTORY = "src/main/resources/model/pos";
 
-	public static final String DEFAULT_MODEL = "src/main/resources/model/pos/model.jar";
+  public static final String DEFAULT_MODEL = "src/main/resources/model/pos/model.jar";
 
-	private List<SimpleFeatureExtractor> tokenFeatureExtractors;
+  private List<SimpleFeatureExtractor> tokenFeatureExtractors;
 
-	private List<WindowExtractor> tokenSentenceFeatureExtractors;
+  private List<WindowExtractor> tokenSentenceFeatureExtractors;
 
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		super.initialize(context);
-		// a list of feature extractors that require only the token
-		this.tokenFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    super.initialize(context);
+    // a list of feature extractors that require only the token
+    this.tokenFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
 
-		// a list of feature extractors that require the token and the sentence
-		this.tokenSentenceFeatureExtractors = new ArrayList<WindowExtractor>();
+    // a list of feature extractors that require the token and the sentence
+    this.tokenSentenceFeatureExtractors = new ArrayList<WindowExtractor>();
 
-		// basic feature extractors for word, stem and part-of-speech
-		SimpleFeatureExtractor wordExtractor, stemExtractor;
-		wordExtractor = new SpannedTextExtractor();
-		stemExtractor = new TypePathExtractor(Token.class, "stem");
+    // basic feature extractors for word, stem and part-of-speech
+    SimpleFeatureExtractor wordExtractor, stemExtractor;
+    wordExtractor = new SpannedTextExtractor();
+    stemExtractor = new TypePathExtractor(Token.class, "stem");
 
-		// aliases for NGram feature parameters
-		int fromRight = CharacterNGramProliferator.RIGHT_TO_LEFT;
+    // aliases for NGram feature parameters
+    int fromRight = CharacterNGramProliferator.RIGHT_TO_LEFT;
 
-		// add the feature extractor for the word itself
-		// also add proliferators which create new features from the word text
-		this.tokenFeatureExtractors.add(new ProliferatingExtractor(wordExtractor, new LowerCaseProliferator(),
-				new CapitalTypeProliferator(), new NumericTypeProliferator(), new CharacterNGramProliferator(fromRight,
-						0, 2), new CharacterNGramProliferator(fromRight, 0, 3)));
+    // add the feature extractor for the word itself
+    // also add proliferators which create new features from the word text
+    this.tokenFeatureExtractors.add(new ProliferatingExtractor(wordExtractor,
+            new LowerCaseProliferator(), new CapitalTypeProliferator(),
+            new NumericTypeProliferator(), new CharacterNGramProliferator(fromRight, 0, 2),
+            new CharacterNGramProliferator(fromRight, 0, 3)));
 
-		// add the feature extractors for the stem and part of speech
-		this.tokenFeatureExtractors.add(stemExtractor);
+    // add the feature extractors for the stem and part of speech
+    this.tokenFeatureExtractors.add(stemExtractor);
 
-		// add 2 stems to the left and right
-		this.tokenSentenceFeatureExtractors.add(new WindowExtractor(Token.class, stemExtractor,
-				WindowFeature.ORIENTATION_LEFT, 0, 2));
-		this.tokenSentenceFeatureExtractors.add(new WindowExtractor(Token.class, stemExtractor,
-				WindowFeature.ORIENTATION_RIGHT, 0, 2));
+    // add 2 stems to the left and right
+    this.tokenSentenceFeatureExtractors.add(new WindowExtractor(Token.class, stemExtractor,
+            WindowFeature.ORIENTATION_LEFT, 0, 2));
+    this.tokenSentenceFeatureExtractors.add(new WindowExtractor(Token.class, stemExtractor,
+            WindowFeature.ORIENTATION_RIGHT, 0, 2));
 
-	}
+  }
 
-	public void process(JCas jCas) throws AnalysisEngineProcessException {
-		try {
-			// generate a list of training instances for each sentence in the
-			// document
-			for (Sentence sentence : AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
-				List<Instance<String>> instances = new ArrayList<Instance<String>>();
-				List<Token> tokens = AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class);
+  public void process(JCas jCas) throws AnalysisEngineProcessException {
+    try {
+      // generate a list of training instances for each sentence in the
+      // document
+      for (Sentence sentence : AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
+        List<Instance<String>> instances = new ArrayList<Instance<String>>();
+        List<Token> tokens = AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class);
 
-				// for each token, extract all feature values and the label
-				for (Token token : tokens) {
-					Instance<String> instance = new Instance<String>();
+        // for each token, extract all feature values and the label
+        for (Token token : tokens) {
+          Instance<String> instance = new Instance<String>();
 
-					// extract all features that require only the token
-					// annotation
-					for (SimpleFeatureExtractor extractor : this.tokenFeatureExtractors) {
-						instance.addAll(extractor.extract(jCas, token));
-					}
+          // extract all features that require only the token
+          // annotation
+          for (SimpleFeatureExtractor extractor : this.tokenFeatureExtractors) {
+            instance.addAll(extractor.extract(jCas, token));
+          }
 
-					// extract all features that require the token and sentence
-					// annotations
-					for (WindowExtractor extractor : this.tokenSentenceFeatureExtractors) {
-						instance.addAll(extractor.extract(jCas, token, sentence));
-					}
+          // extract all features that require the token and sentence
+          // annotations
+          for (WindowExtractor extractor : this.tokenSentenceFeatureExtractors) {
+            instance.addAll(extractor.extract(jCas, token, sentence));
+          }
 
-					// set the instance label from the token's part of speech
-					instance.setOutcome(token.getPos());
+          // set the instance label from the token's part of speech
+          instance.setOutcome(token.getPos());
 
-					// add the instance to the list
-					instances.add(instance);
-				}
+          // add the instance to the list
+          instances.add(instance);
+        }
 
-				// for training, write instances to the data write
-				if (this.isTraining()) {
-					this.sequentialDataWriter.writeSequence(instances);
-				}
+        // for training, write instances to the data write
+        if (this.isTraining()) {
+          this.sequentialDataWriter.writeSequence(instances);
+        }
 
-				// for classification, set the labels as the token POS labels
-				else {
-					Iterator<Token> tokensIter = tokens.iterator();
-					for (String label : this.classifySequence(instances)) {
-						tokensIter.next().setPos(label.toString());
-					}
-				}
-			}
-		}
-		catch (CleartkException e) {
-			throw new AnalysisEngineProcessException(e);
-		}
-	}
+        // for classification, set the labels as the token POS labels
+        else {
+          Iterator<Token> tokensIter = tokens.iterator();
+          for (String label : this.classifySequence(instances)) {
+            tokensIter.next().setPos(label.toString());
+          }
+        }
+      }
+    } catch (CleartkException e) {
+      throw new AnalysisEngineProcessException(e);
+    }
+  }
 
-	public static AnalysisEngineDescription getClassifierDescription(String modelFileName)
-			throws ResourceInitializationException {
-		return CleartkComponents.createCleartkSequentialAnnotator(ExamplePOSAnnotator.class, 
-				ExampleComponents.TYPE_SYSTEM_DESCRIPTION, 
-				modelFileName, (List<Class<?>>) null);
-	}
+  public static AnalysisEngineDescription getClassifierDescription(String modelFileName)
+          throws ResourceInitializationException {
+    return CleartkComponents.createCleartkSequentialAnnotator(ExamplePOSAnnotator.class,
+            ExampleComponents.TYPE_SYSTEM_DESCRIPTION, modelFileName, (List<Class<?>>) null);
+  }
 
-	public static AnalysisEngineDescription getWriterDescription(String outputDirectory)
-			throws ResourceInitializationException {
-		return CleartkComponents.createViterbiAnnotator(ExamplePOSAnnotator.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-				DefaultMaxentDataWriterFactory.class, outputDirectory, DefaultMaxentDataWriterFactory.PARAM_COMPRESS,
-				true);
-	}
+  public static AnalysisEngineDescription getWriterDescription(String outputDirectory)
+          throws ResourceInitializationException {
+    return CleartkComponents.createViterbiAnnotator(ExamplePOSAnnotator.class,
+            ExampleComponents.TYPE_SYSTEM_DESCRIPTION, DefaultMaxentDataWriterFactory.class,
+            outputDirectory, DefaultMaxentDataWriterFactory.PARAM_COMPRESS, true);
+  }
 }

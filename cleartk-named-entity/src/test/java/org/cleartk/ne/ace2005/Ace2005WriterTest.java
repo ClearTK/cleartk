@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,9 +20,8 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.ne.ace2005;
-
 
 import java.io.File;
 import java.io.IOException;
@@ -44,124 +43,115 @@ import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ */
 
-*/
+public class Ace2005WriterTest extends NeTestBase {
 
-public class Ace2005WriterTest extends NeTestBase{
-	
-	@Test
-	public void testMissingParameters() throws Exception {
-		try {
-			AnalysisEngineFactory.createPrimitive(
-					Ace2005Writer.class,
-					typeSystemDescription);
-			Assert.fail("expected exception with output directory not specified");
-		} catch (ResourceInitializationException e) {}		
-	}
+  @Test
+  public void testMissingParameters() throws Exception {
+    try {
+      AnalysisEngineFactory.createPrimitive(Ace2005Writer.class, typeSystemDescription);
+      Assert.fail("expected exception with output directory not specified");
+    } catch (ResourceInitializationException e) {
+    }
+  }
 
-	@Test
-	public void testOutputFile() throws Exception {
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				Ace2005Writer.class, typeSystemDescription,
-				Ace2005Writer.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDirectory.getPath());
-		
-		Ace2005Document document = new Ace2005Document(jCas);
-		document.setAceSource("=source=");
-		document.setAceType("=type=");
-		document.setAceUri("uri.sgm");
-		document.addToIndexes();
-		
-		jCas.setDocumentText("UCAR in North Boulder");
-		
-		Chunk ucarChunk = new Chunk(jCas, 0, 4);
-		Chunk northBoulderChunk = new Chunk(jCas, 8, 21);
-		Chunk boulderChunk = new Chunk(jCas, 14, 21);
-		
-		NamedEntityMention ucarMention = new NamedEntityMention(jCas, 0, 4);
-		ucarMention.setAnnotation(ucarChunk);
-		ucarMention.setHead(ucarChunk);
-		ucarMention.setMentionType("=ORG=");
-		NamedEntity ucarEntity = new NamedEntity(jCas);
-		ucarEntity.setEntityClass("=ucar-class=");
-		ucarEntity.setEntityId("=ucar-id=");
-		ucarEntity.setEntitySubtype("=ucar-subtype=");
-		ucarEntity.setEntityType("=ucar-type");
-		ucarEntity.setMentions(new FSArray(jCas, 1));
-		ucarEntity.setMentions(0, ucarMention);
-		ucarMention.setMentionedEntity(ucarEntity);
-		
-		NamedEntityMention boulderMention = new NamedEntityMention(jCas, 14, 21);
-		boulderMention.setAnnotation(northBoulderChunk);
-		boulderMention.setHead(boulderChunk);
-		boulderMention.setMentionType("=LOC=");
-		NamedEntity boulderEntity = new NamedEntity(jCas);
-		boulderEntity.setEntityClass("=boulder-class=");
-		boulderEntity.setEntityId("=boulder-id=");
-		boulderEntity.setEntitySubtype("=boulder-subtype=");
-		boulderEntity.setEntityType("=boulder-type");
-		boulderEntity.setMentions(new FSArray(jCas, 1));
-		boulderEntity.setMentions(0, boulderMention);
-		boulderMention.setMentionedEntity(boulderEntity);
-		
-		TOP[] items = new TOP[] {
-				document, ucarChunk, northBoulderChunk, boulderChunk,
-				ucarMention, ucarEntity, boulderMention, boulderEntity};
-		for (TOP item: items) {
-			item.addToIndexes();
-		}
-		
-		ViewURIUtil.setURI(jCas, "uri.sgm");
-		engine.process(jCas);
-		engine.collectionProcessComplete();
-		
-		String expectedText = (
-				"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-				"<source_file URI=\"uri.sgm\" SOURCE=\"=source=\" TYPE=\"=type=\">\n" +
-				"  <document DOCID=\"uri\">\n" +
-				"    <entity ID=\"0\" TYPE=\"=ucar-type\" SUBTYPE=\"=ucar-subtype=\" CLASS=\"=ucar-class=\">\n" +
-				"      <entity_mention ID=\"1\" TYPE=\"=ORG=\">\n" +
-				"        <extent>\n" +
-				"          <charseq START=\"0\" END=\"3\">UCAR</charseq>\n" +
-				"        </extent>\n" +
-				"        <head>\n" +
-				"          <charseq START=\"0\" END=\"3\">UCAR</charseq>\n" +
-				"        </head>\n" +
-				"      </entity_mention>\n" +
-				"    </entity>\n" +
-				"    <entity ID=\"2\" TYPE=\"=boulder-type\" SUBTYPE=\"=boulder-subtype=\" CLASS=\"=boulder-class=\">\n" +
-				"      <entity_mention ID=\"3\" TYPE=\"=LOC=\">\n" +
-				"        <extent>\n" +
-				"          <charseq START=\"8\" END=\"20\">North Boulder</charseq>\n" +
-				"        </extent>\n" +
-				"        <head>\n" +
-				"          <charseq START=\"14\" END=\"20\">Boulder</charseq>\n" +
-				"        </head>\n" +
-				"      </entity_mention>\n" +
-				"    </entity>\n" +
-				"  </document>\n" +
-				"</source_file>\n" +
-				"\n");
-		File outputFile = new File(this.outputDirectory, "uri.cleartk.xml");
-		String actualText = FileUtils.file2String(outputFile).replace("\r", "");
-		Assert.assertEquals(expectedText, actualText);
-	}
-	
-	@Test
-	public void testDescriptor() throws UIMAException, IOException {
-		try {
-			AnalysisEngineFactory.createPrimitive(Ace2005Writer.class, typeSystemDescription);
-			Assert.fail("expected exception with output directory not specified");
-		} catch (ResourceInitializationException e) {}
-		
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				Ace2005Writer.class, typeSystemDescription,
-				Ace2005Writer.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDirectory.getPath());
-		Object outDirectory = engine.getConfigParameterValue(
-				Ace2005Writer.PARAM_OUTPUT_DIRECTORY_NAME);
-		Assert.assertEquals(this.outputDirectory.getPath(), outDirectory);
-		
-		engine.collectionProcessComplete();
-	}
+  @Test
+  public void testOutputFile() throws Exception {
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(Ace2005Writer.class,
+            typeSystemDescription, Ace2005Writer.PARAM_OUTPUT_DIRECTORY_NAME,
+            this.outputDirectory.getPath());
+
+    Ace2005Document document = new Ace2005Document(jCas);
+    document.setAceSource("=source=");
+    document.setAceType("=type=");
+    document.setAceUri("uri.sgm");
+    document.addToIndexes();
+
+    jCas.setDocumentText("UCAR in North Boulder");
+
+    Chunk ucarChunk = new Chunk(jCas, 0, 4);
+    Chunk northBoulderChunk = new Chunk(jCas, 8, 21);
+    Chunk boulderChunk = new Chunk(jCas, 14, 21);
+
+    NamedEntityMention ucarMention = new NamedEntityMention(jCas, 0, 4);
+    ucarMention.setAnnotation(ucarChunk);
+    ucarMention.setHead(ucarChunk);
+    ucarMention.setMentionType("=ORG=");
+    NamedEntity ucarEntity = new NamedEntity(jCas);
+    ucarEntity.setEntityClass("=ucar-class=");
+    ucarEntity.setEntityId("=ucar-id=");
+    ucarEntity.setEntitySubtype("=ucar-subtype=");
+    ucarEntity.setEntityType("=ucar-type");
+    ucarEntity.setMentions(new FSArray(jCas, 1));
+    ucarEntity.setMentions(0, ucarMention);
+    ucarMention.setMentionedEntity(ucarEntity);
+
+    NamedEntityMention boulderMention = new NamedEntityMention(jCas, 14, 21);
+    boulderMention.setAnnotation(northBoulderChunk);
+    boulderMention.setHead(boulderChunk);
+    boulderMention.setMentionType("=LOC=");
+    NamedEntity boulderEntity = new NamedEntity(jCas);
+    boulderEntity.setEntityClass("=boulder-class=");
+    boulderEntity.setEntityId("=boulder-id=");
+    boulderEntity.setEntitySubtype("=boulder-subtype=");
+    boulderEntity.setEntityType("=boulder-type");
+    boulderEntity.setMentions(new FSArray(jCas, 1));
+    boulderEntity.setMentions(0, boulderMention);
+    boulderMention.setMentionedEntity(boulderEntity);
+
+    TOP[] items = new TOP[] { document, ucarChunk, northBoulderChunk, boulderChunk, ucarMention,
+        ucarEntity, boulderMention, boulderEntity };
+    for (TOP item : items) {
+      item.addToIndexes();
+    }
+
+    ViewURIUtil.setURI(jCas, "uri.sgm");
+    engine.process(jCas);
+    engine.collectionProcessComplete();
+
+    String expectedText = ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+            + "<source_file URI=\"uri.sgm\" SOURCE=\"=source=\" TYPE=\"=type=\">\n"
+            + "  <document DOCID=\"uri\">\n"
+            + "    <entity ID=\"0\" TYPE=\"=ucar-type\" SUBTYPE=\"=ucar-subtype=\" CLASS=\"=ucar-class=\">\n"
+            + "      <entity_mention ID=\"1\" TYPE=\"=ORG=\">\n"
+            + "        <extent>\n"
+            + "          <charseq START=\"0\" END=\"3\">UCAR</charseq>\n"
+            + "        </extent>\n"
+            + "        <head>\n"
+            + "          <charseq START=\"0\" END=\"3\">UCAR</charseq>\n"
+            + "        </head>\n"
+            + "      </entity_mention>\n"
+            + "    </entity>\n"
+            + "    <entity ID=\"2\" TYPE=\"=boulder-type\" SUBTYPE=\"=boulder-subtype=\" CLASS=\"=boulder-class=\">\n"
+            + "      <entity_mention ID=\"3\" TYPE=\"=LOC=\">\n" + "        <extent>\n"
+            + "          <charseq START=\"8\" END=\"20\">North Boulder</charseq>\n"
+            + "        </extent>\n" + "        <head>\n"
+            + "          <charseq START=\"14\" END=\"20\">Boulder</charseq>\n"
+            + "        </head>\n" + "      </entity_mention>\n" + "    </entity>\n"
+            + "  </document>\n" + "</source_file>\n" + "\n");
+    File outputFile = new File(this.outputDirectory, "uri.cleartk.xml");
+    String actualText = FileUtils.file2String(outputFile).replace("\r", "");
+    Assert.assertEquals(expectedText, actualText);
+  }
+
+  @Test
+  public void testDescriptor() throws UIMAException, IOException {
+    try {
+      AnalysisEngineFactory.createPrimitive(Ace2005Writer.class, typeSystemDescription);
+      Assert.fail("expected exception with output directory not specified");
+    } catch (ResourceInitializationException e) {
+    }
+
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(Ace2005Writer.class,
+            typeSystemDescription, Ace2005Writer.PARAM_OUTPUT_DIRECTORY_NAME,
+            this.outputDirectory.getPath());
+    Object outDirectory = engine.getConfigParameterValue(Ace2005Writer.PARAM_OUTPUT_DIRECTORY_NAME);
+    Assert.assertEquals(this.outputDirectory.getPath(), outDirectory);
+
+    engine.collectionProcessComplete();
+  }
 }

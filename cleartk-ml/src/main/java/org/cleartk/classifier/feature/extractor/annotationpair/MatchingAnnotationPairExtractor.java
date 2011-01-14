@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.feature.extractor.annotationpair;
 
 import java.util.List;
@@ -32,56 +32,59 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.util.AnnotationRetrieval;
 
 /**
- * <br>Copyright (c) 2007-2009, Regents of the University of Colorado 
- * <br>All rights reserved.
+ * <br>
+ * Copyright (c) 2007-2009, Regents of the University of Colorado <br>
+ * All rights reserved.
  * 
  * @author Philipp Wetzler
  */
 public class MatchingAnnotationPairExtractor implements AnnotationPairFeatureExtractor {
-	
-	public MatchingAnnotationPairExtractor(
-			Class<? extends Annotation> leftType, 
-			Class<? extends Annotation> rightType,
-			AnnotationPairFeatureExtractor subExtractor) {
-		this.leftType = leftType;
-		this.rightType = rightType;
-		this.subExtractor = subExtractor;
-	}
 
-	public MatchingAnnotationPairExtractor(
-			Class<? extends Annotation> leftType, 
-			Class<? extends Annotation> rightType,
-			AnnotationPairFeatureExtractor ... subExtractors) {
-		this(leftType, rightType, new CombinedAnnotationPairFeatureExtractor(subExtractors));
-	}
+  public MatchingAnnotationPairExtractor(Class<? extends Annotation> leftType,
+          Class<? extends Annotation> rightType, AnnotationPairFeatureExtractor subExtractor) {
+    this.leftType = leftType;
+    this.rightType = rightType;
+    this.subExtractor = subExtractor;
+  }
 
-	public List<Feature> extract(JCas view, Annotation leftAnnotation,
-			Annotation rightAnnotation) throws CleartkException {
-		
-		Annotation leftMatchingAnnotation;
-		Annotation rightMatchingAnnotation;
-		
-		if( ! leftType.isInstance(leftAnnotation) ) {
-			leftMatchingAnnotation = AnnotationRetrieval.getMatchingAnnotation(view, leftAnnotation, leftType);
-			if( leftMatchingAnnotation == null )
-				throw new CleartkException(String.format("no matching %s annotation on the left", leftType.getSimpleName()));
-		} else {
-			leftMatchingAnnotation = leftType.cast(leftAnnotation);
-		}
-	
-		if( ! rightType.isInstance(rightAnnotation) ) {
-			rightMatchingAnnotation = AnnotationRetrieval.getMatchingAnnotation(view, rightAnnotation, rightType);
-			if( rightMatchingAnnotation == null )
-				throw new CleartkException(String.format("no matching %s annotation on the right", rightType.getSimpleName()));
-		} else {
-			rightMatchingAnnotation = rightType.cast(rightAnnotation);
-		}
-		
-		return subExtractor.extract(view, leftMatchingAnnotation, rightMatchingAnnotation);
-	}
-	
-	private Class<? extends Annotation> leftType;
-	private Class<? extends Annotation> rightType;
-	private AnnotationPairFeatureExtractor subExtractor;
+  public MatchingAnnotationPairExtractor(Class<? extends Annotation> leftType,
+          Class<? extends Annotation> rightType, AnnotationPairFeatureExtractor... subExtractors) {
+    this(leftType, rightType, new CombinedAnnotationPairFeatureExtractor(subExtractors));
+  }
+
+  public List<Feature> extract(JCas view, Annotation leftAnnotation, Annotation rightAnnotation)
+          throws CleartkException {
+
+    Annotation leftMatchingAnnotation;
+    Annotation rightMatchingAnnotation;
+
+    if (!leftType.isInstance(leftAnnotation)) {
+      leftMatchingAnnotation = AnnotationRetrieval.getMatchingAnnotation(view, leftAnnotation,
+              leftType);
+      if (leftMatchingAnnotation == null)
+        throw new CleartkException(String.format("no matching %s annotation on the left",
+                leftType.getSimpleName()));
+    } else {
+      leftMatchingAnnotation = leftType.cast(leftAnnotation);
+    }
+
+    if (!rightType.isInstance(rightAnnotation)) {
+      rightMatchingAnnotation = AnnotationRetrieval.getMatchingAnnotation(view, rightAnnotation,
+              rightType);
+      if (rightMatchingAnnotation == null)
+        throw new CleartkException(String.format("no matching %s annotation on the right",
+                rightType.getSimpleName()));
+    } else {
+      rightMatchingAnnotation = rightType.cast(rightAnnotation);
+    }
+
+    return subExtractor.extract(view, leftMatchingAnnotation, rightMatchingAnnotation);
+  }
+
+  private Class<? extends Annotation> leftType;
+
+  private Class<? extends Annotation> rightType;
+
+  private AnnotationPairFeatureExtractor subExtractor;
 
 }

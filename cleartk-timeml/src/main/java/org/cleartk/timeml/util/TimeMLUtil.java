@@ -50,121 +50,126 @@ import org.jdom.Element;
  */
 public class TimeMLUtil {
 
-	private static final Map<String, String> elementNames;
-	private static final List<NamePair> eventAttributes;
-	private static final List<NamePair> timeAttributes;
-	private static final List<NamePair> tlinkAttributes;
-	private static final Map<String, List<NamePair>> timemlAttributeLists;
-	private static final Map<Class<?>, List<NamePair>> uimaAttributeLists;
+  private static final Map<String, String> elementNames;
 
-	static {
-		elementNames = new HashMap<String, String>();
-		eventAttributes = new ArrayList<NamePair>();
-		timeAttributes = new ArrayList<NamePair>();
-		tlinkAttributes = new ArrayList<NamePair>();
-		timemlAttributeLists = new HashMap<String, List<NamePair>>();
-		uimaAttributeLists = new HashMap<Class<?>, List<NamePair>>();
+  private static final List<NamePair> eventAttributes;
 
-		elementNames.put("Document", "TimeML");
-		elementNames.put(Event.class.getName(), "EVENT");
-		elementNames.put(Time.class.getName(), "TIMEX3");
-		elementNames.put(TemporalLink.class.getName(), "TLINK");
+  private static final List<NamePair> timeAttributes;
 
-		eventAttributes.add(new NamePair("eid", "id"));
-		eventAttributes.add(new NamePair("eiid", "eventInstanceID"));
-		eventAttributes.add(new NamePair("class", "eventClass"));
-		for (String name : new String[] { "stem", "pos", "tense", "aspect", "cardinality",
-				"polarity", "modality", "signalID" }) {
-			eventAttributes.add(new NamePair(name, name));
-		}
+  private static final List<NamePair> tlinkAttributes;
 
-		timeAttributes.add(new NamePair("tid", "id"));
-		timeAttributes.add(new NamePair("type", "timeType"));
-		for (String name : new String[] { "beginPoint", "endPoint", "quant", "freq",
-				"functionInDocument", "temporalFunction", "value", "valueFromFunction", "mod",
-				"anchorTimeID" }) {
-			timeAttributes.add(new NamePair(name, name));
-		}
+  private static final Map<String, List<NamePair>> timemlAttributeLists;
 
-		tlinkAttributes.add(new NamePair("lid", "id"));
-		tlinkAttributes.add(new NamePair("relType", "relationType"));
-		for (String name : new String[] { "eventInstanceID", "eventID", "timeID",
-				"relatedToEventInstance", "relatedToEvent", "relatedToTime", "signalID" }) {
-			tlinkAttributes.add(new NamePair(name, name));
-		}
+  private static final Map<Class<?>, List<NamePair>> uimaAttributeLists;
 
-		timemlAttributeLists.put("EVENT", eventAttributes);
-		timemlAttributeLists.put("MAKEINSTANCE", eventAttributes);
-		timemlAttributeLists.put("TIMEX3", timeAttributes);
-		timemlAttributeLists.put("TLINK", tlinkAttributes);
+  static {
+    elementNames = new HashMap<String, String>();
+    eventAttributes = new ArrayList<NamePair>();
+    timeAttributes = new ArrayList<NamePair>();
+    tlinkAttributes = new ArrayList<NamePair>();
+    timemlAttributeLists = new HashMap<String, List<NamePair>>();
+    uimaAttributeLists = new HashMap<Class<?>, List<NamePair>>();
 
-		uimaAttributeLists.put(Event.class, eventAttributes);
-		uimaAttributeLists.put(Time.class, timeAttributes);
-		uimaAttributeLists.put(TemporalLink.class, tlinkAttributes);
-	}
+    elementNames.put("Document", "TimeML");
+    elementNames.put(Event.class.getName(), "EVENT");
+    elementNames.put(Time.class.getName(), "TIMEX3");
+    elementNames.put(TemporalLink.class.getName(), "TLINK");
 
-	public static void copyAttributes(Element element, Annotation annotation, JCas jCas) {
-		for (NamePair names : timemlAttributeLists.get(element.getName())) {
-			String featureValue = element.getAttributeValue(names.timemlName);
-			if (featureValue != null) {
-				String className = annotation.getClass().getName();
-				String uimaName = String.format("%s:%s", className, names.uimaName);
-				Feature feature = jCas.getTypeSystem().getFeatureByFullName(uimaName);
-				annotation.setFeatureValueFromString(feature, featureValue);
-			}
-		}
-	}
+    eventAttributes.add(new NamePair("eid", "id"));
+    eventAttributes.add(new NamePair("eiid", "eventInstanceID"));
+    eventAttributes.add(new NamePair("class", "eventClass"));
+    for (String name : new String[] { "stem", "pos", "tense", "aspect", "cardinality", "polarity",
+        "modality", "signalID" }) {
+      eventAttributes.add(new NamePair(name, name));
+    }
 
-	public static void removeInconsistentAttributes(Element element, Annotation annotation,
-			JCas jCas) {
-		for (NamePair names : timemlAttributeLists.get(element.getName())) {
-			String newValue = element.getAttributeValue(names.timemlName);
-			String className = annotation.getClass().getName();
-			String uimaName = String.format("%s:%s", className, names.uimaName);
-			Feature feature = jCas.getTypeSystem().getFeatureByFullName(uimaName);
-			String oldValue = annotation.getFeatureValueAsString(feature);
-			if (oldValue != null && !oldValue.equals(newValue)) {
-				annotation.setFeatureValueFromString(feature, null);
-			}
-		}
-	}
+    timeAttributes.add(new NamePair("tid", "id"));
+    timeAttributes.add(new NamePair("type", "timeType"));
+    for (String name : new String[] { "beginPoint", "endPoint", "quant", "freq",
+        "functionInDocument", "temporalFunction", "value", "valueFromFunction", "mod",
+        "anchorTimeID" }) {
+      timeAttributes.add(new NamePair(name, name));
+    }
 
-	public static void uimaToTimemlNames(Element element) {
-		String name = element.getName();
-		String replacementName = elementNames.get(name);
-		if (replacementName != null) {
-			element.setName(replacementName);
-		}
-		List<NamePair> namePairs = timemlAttributeLists.get(element.getName());
-		if (namePairs != null) {
-			Set<String> validNames = new HashSet<String>();
-			for (NamePair names : namePairs) {
-				validNames.add(names.timemlName);
-				Attribute attribute = element.getAttribute(names.uimaName);
-				if (attribute != null) {
-					if (attribute.getValue().equals("null")) {
-						element.removeAttribute(attribute);
-					} else {
-						attribute.setName(names.timemlName);
-					}
-				}
-			}
-			for (Object attrObj : element.getAttributes().toArray()) {
-				Attribute attribute = (Attribute) attrObj;
-				if (!validNames.contains(attribute.getName())) {
-					element.removeAttribute(attribute);
-				}
-			}
-		}
-	}
+    tlinkAttributes.add(new NamePair("lid", "id"));
+    tlinkAttributes.add(new NamePair("relType", "relationType"));
+    for (String name : new String[] { "eventInstanceID", "eventID", "timeID",
+        "relatedToEventInstance", "relatedToEvent", "relatedToTime", "signalID" }) {
+      tlinkAttributes.add(new NamePair(name, name));
+    }
 
-	private static class NamePair {
-		public String timemlName;
-		public String uimaName;
+    timemlAttributeLists.put("EVENT", eventAttributes);
+    timemlAttributeLists.put("MAKEINSTANCE", eventAttributes);
+    timemlAttributeLists.put("TIMEX3", timeAttributes);
+    timemlAttributeLists.put("TLINK", tlinkAttributes);
 
-		public NamePair(String timemlName, String uimaName) {
-			this.timemlName = timemlName;
-			this.uimaName = uimaName;
-		}
-	}
+    uimaAttributeLists.put(Event.class, eventAttributes);
+    uimaAttributeLists.put(Time.class, timeAttributes);
+    uimaAttributeLists.put(TemporalLink.class, tlinkAttributes);
+  }
+
+  public static void copyAttributes(Element element, Annotation annotation, JCas jCas) {
+    for (NamePair names : timemlAttributeLists.get(element.getName())) {
+      String featureValue = element.getAttributeValue(names.timemlName);
+      if (featureValue != null) {
+        String className = annotation.getClass().getName();
+        String uimaName = String.format("%s:%s", className, names.uimaName);
+        Feature feature = jCas.getTypeSystem().getFeatureByFullName(uimaName);
+        annotation.setFeatureValueFromString(feature, featureValue);
+      }
+    }
+  }
+
+  public static void removeInconsistentAttributes(Element element, Annotation annotation, JCas jCas) {
+    for (NamePair names : timemlAttributeLists.get(element.getName())) {
+      String newValue = element.getAttributeValue(names.timemlName);
+      String className = annotation.getClass().getName();
+      String uimaName = String.format("%s:%s", className, names.uimaName);
+      Feature feature = jCas.getTypeSystem().getFeatureByFullName(uimaName);
+      String oldValue = annotation.getFeatureValueAsString(feature);
+      if (oldValue != null && !oldValue.equals(newValue)) {
+        annotation.setFeatureValueFromString(feature, null);
+      }
+    }
+  }
+
+  public static void uimaToTimemlNames(Element element) {
+    String name = element.getName();
+    String replacementName = elementNames.get(name);
+    if (replacementName != null) {
+      element.setName(replacementName);
+    }
+    List<NamePair> namePairs = timemlAttributeLists.get(element.getName());
+    if (namePairs != null) {
+      Set<String> validNames = new HashSet<String>();
+      for (NamePair names : namePairs) {
+        validNames.add(names.timemlName);
+        Attribute attribute = element.getAttribute(names.uimaName);
+        if (attribute != null) {
+          if (attribute.getValue().equals("null")) {
+            element.removeAttribute(attribute);
+          } else {
+            attribute.setName(names.timemlName);
+          }
+        }
+      }
+      for (Object attrObj : element.getAttributes().toArray()) {
+        Attribute attribute = (Attribute) attrObj;
+        if (!validNames.contains(attribute.getName())) {
+          element.removeAttribute(attribute);
+        }
+      }
+    }
+  }
+
+  private static class NamePair {
+    public String timemlName;
+
+    public String uimaName;
+
+    public NamePair(String timemlName, String uimaName) {
+      this.timemlName = timemlName;
+      this.uimaName = uimaName;
+    }
+  }
 }

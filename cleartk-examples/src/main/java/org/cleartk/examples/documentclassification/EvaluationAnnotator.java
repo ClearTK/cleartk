@@ -34,90 +34,94 @@ import org.apache.uima.jcas.JCas;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 
 /**
- * <br>Copyright (c) 2009, Regents of the University of Colorado 
- * <br>All rights reserved.
- *
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * @author Philipp G. Wetzler
- *
+ * 
  */
 public class EvaluationAnnotator extends JCasAnnotator_ImplBase {
 
-	int totalClassifications = 0;
-	int totalCorrect = 0;
-	@Override
-	public void process(JCas jCas) throws AnalysisEngineProcessException {
-		try {
-			JCas goldView = jCas.getView(GoldAnnotator.GOLD_VIEW_NAME);
-			JCas predictionView = jCas.getView(DocumentClassificationAnnotator.PREDICTION_VIEW_NAME);
+  int totalClassifications = 0;
 
-			String gold = goldView.getSofaDataString();
-			String prediction = predictionView.getSofaDataString();
+  int totalCorrect = 0;
 
-			classes.add(gold);
-			classes.add(prediction);
+  @Override
+  public void process(JCas jCas) throws AnalysisEngineProcessException {
+    try {
+      JCas goldView = jCas.getView(GoldAnnotator.GOLD_VIEW_NAME);
+      JCas predictionView = jCas.getView(DocumentClassificationAnnotator.PREDICTION_VIEW_NAME);
 
-			int value = get(gold, prediction);
-			set(gold, prediction, value+1);
-			
-			totalClassifications++;
-			if(gold.equals(prediction)) {
-				totalCorrect++;
-			}
-		}
-		catch (CASException e) {
-			throw new AnalysisEngineProcessException();
-		}
-	}
+      String gold = goldView.getSofaDataString();
+      String prediction = predictionView.getSofaDataString();
 
-	@Override
-	public void collectionProcessComplete() throws AnalysisEngineProcessException {
-		float accuracy = (float) totalCorrect / totalClassifications;
-		System.out.println("overall accuracy: "+totalCorrect+"/"+totalClassifications+" = "+accuracy);
-		try {
-			super.collectionProcessComplete();
+      classes.add(gold);
+      classes.add(prediction);
 
-			System.out.print("        ");
-			for( String cp : classes ) {
-				System.out.format("%7.7s\t", cp);
-			}
-			System.out.println();
+      int value = get(gold, prediction);
+      set(gold, prediction, value + 1);
 
-			for( String cg : classes ) {
-				System.out.format("%7.7s\t", cg);
-				for( String cp : classes ) {
-					System.out.format("%7d\t", get(cg, cp));
-				}
-				System.out.println();
-			}
-		} catch (Throwable t) {
-			t.printStackTrace();
-		}
-	}
+      totalClassifications++;
+      if (gold.equals(prediction)) {
+        totalCorrect++;
+      }
+    } catch (CASException e) {
+      throw new AnalysisEngineProcessException();
+    }
+  }
 
-	private int get(String gold, String prediction) {
-		if( confusionMatrix.containsKey(gold) ) {
-			Map<String, Integer> m = confusionMatrix.get(gold);
-			if( m.containsKey(prediction) )
-				return m.get(prediction);
-			else
-				return 0;
-		} else {
-			return 0;
-		}
-	}
+  @Override
+  public void collectionProcessComplete() throws AnalysisEngineProcessException {
+    float accuracy = (float) totalCorrect / totalClassifications;
+    System.out.println("overall accuracy: " + totalCorrect + "/" + totalClassifications + " = "
+            + accuracy);
+    try {
+      super.collectionProcessComplete();
 
-	private void set(String gold, String prediction, int value) {
-		if( confusionMatrix.containsKey(gold) ) {
-			Map<String, Integer> m = confusionMatrix.get(gold);
-			m.put(prediction, value);
-		} else {
-			Map<String, Integer> m = new HashMap<String, Integer>();
-			m.put(prediction, value);
-			confusionMatrix.put(gold, m);
-		}
-	}
+      System.out.print("        ");
+      for (String cp : classes) {
+        System.out.format("%7.7s\t", cp);
+      }
+      System.out.println();
 
-	private Set<String> classes = new TreeSet<String>();
-	private Map<String, Map<String, Integer>> confusionMatrix = new HashMap<String, Map<String, Integer>>();
+      for (String cg : classes) {
+        System.out.format("%7.7s\t", cg);
+        for (String cp : classes) {
+          System.out.format("%7d\t", get(cg, cp));
+        }
+        System.out.println();
+      }
+    } catch (Throwable t) {
+      t.printStackTrace();
+    }
+  }
+
+  private int get(String gold, String prediction) {
+    if (confusionMatrix.containsKey(gold)) {
+      Map<String, Integer> m = confusionMatrix.get(gold);
+      if (m.containsKey(prediction))
+        return m.get(prediction);
+      else
+        return 0;
+    } else {
+      return 0;
+    }
+  }
+
+  private void set(String gold, String prediction, int value) {
+    if (confusionMatrix.containsKey(gold)) {
+      Map<String, Integer> m = confusionMatrix.get(gold);
+      m.put(prediction, value);
+    } else {
+      Map<String, Integer> m = new HashMap<String, Integer>();
+      m.put(prediction, value);
+      confusionMatrix.put(gold, m);
+    }
+  }
+
+  private Set<String> classes = new TreeSet<String>();
+
+  private Map<String, Map<String, Integer>> confusionMatrix = new HashMap<String, Map<String, Integer>>();
 
 }

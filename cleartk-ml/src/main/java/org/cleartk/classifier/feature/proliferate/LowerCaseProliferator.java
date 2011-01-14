@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.feature.proliferate;
 
 import java.util.Collections;
@@ -28,37 +28,38 @@ import java.util.List;
 
 import org.cleartk.classifier.Feature;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * 
  * @author Philip Ogren
- *
+ * 
  */
-public class LowerCaseProliferator extends FeatureProliferator{
-	
-	public LowerCaseProliferator() {
-		super("LowerCase");
-	}
-	public LowerCaseProliferator(String featureName) {
-		super(featureName);
-	}
-	
-	/**
-	 * @return if the value of the feature is a String, then the lower cased
-	 * version of that value is used for the returned feature.  Otherwise, an empty list
-	 * is returned.  
-	 */
-	@Override
-	public List<Feature> proliferate(Feature feature)	{
-		String featureName = Feature.createName(this.getFeatureName(), feature.getName()); 
-		Object featureValue = feature.getValue();
-		if(featureValue instanceof String) {
-			return Collections.singletonList(new Feature(featureName, featureValue.toString().toLowerCase()));
-		}
-		else return Collections.emptyList();
-	}
+public class LowerCaseProliferator extends FeatureProliferator {
+
+  public LowerCaseProliferator() {
+    super("LowerCase");
+  }
+
+  public LowerCaseProliferator(String featureName) {
+    super(featureName);
+  }
+
+  /**
+   * @return if the value of the feature is a String, then the lower cased version of that value is
+   *         used for the returned feature. Otherwise, an empty list is returned.
+   */
+  @Override
+  public List<Feature> proliferate(Feature feature) {
+    String featureName = Feature.createName(this.getFeatureName(), feature.getName());
+    Object featureValue = feature.getValue();
+    if (featureValue instanceof String) {
+      return Collections.singletonList(new Feature(featureName, featureValue.toString()
+              .toLowerCase()));
+    } else
+      return Collections.emptyList();
+  }
 
 }

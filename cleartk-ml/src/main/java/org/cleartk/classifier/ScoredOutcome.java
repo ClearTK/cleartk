@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,49 +20,48 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
-package org.cleartk.classifier;
-/**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- * Associates the outcome (classification) of a classifier with a score. 
- * This score conceptually could be almost anything but is often something
- * similar to a probability. The only expectation is that a higher score
- * should correspond to a better classification.
  */
-public class ScoredOutcome<OUTCOME_TYPE> implements Comparable<ScoredOutcome<OUTCOME_TYPE>>{
+package org.cleartk.classifier;
 
-	private OUTCOME_TYPE outcome;
-	private double score;
-	
-	public ScoredOutcome(OUTCOME_TYPE outcome, double score) {
-		super();
-		this.outcome = outcome;
-		this.score = score;
-	}
+/**
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * Associates the outcome (classification) of a classifier with a score. This score conceptually
+ * could be almost anything but is often something similar to a probability. The only expectation is
+ * that a higher score should correspond to a better classification.
+ */
+public class ScoredOutcome<OUTCOME_TYPE> implements Comparable<ScoredOutcome<OUTCOME_TYPE>> {
 
-	public double getScore() {
-		return score;
-	}
+  private OUTCOME_TYPE outcome;
 
+  private double score;
 
-	public OUTCOME_TYPE getOutcome() {
-		return outcome;
-	}
+  public ScoredOutcome(OUTCOME_TYPE outcome, double score) {
+    super();
+    this.outcome = outcome;
+    this.score = score;
+  }
 
+  public double getScore() {
+    return score;
+  }
 
-	@Override
-	public String toString() {
-		return outcome.toString()+"|"+score;
-	}
+  public OUTCOME_TYPE getOutcome() {
+    return outcome;
+  }
 
-	/**
-	 * We want to sort in descending order
-	 */
-	public int compareTo(ScoredOutcome<OUTCOME_TYPE> arg0) {
-		return Double.compare(arg0.getScore(),this.getScore());
-	}
+  @Override
+  public String toString() {
+    return outcome.toString() + "|" + score;
+  }
 
-	
+  /**
+   * We want to sort in descending order
+   */
+  public int compareTo(ScoredOutcome<OUTCOME_TYPE> arg0) {
+    return Double.compare(arg0.getScore(), this.getScore());
+  }
+
 }

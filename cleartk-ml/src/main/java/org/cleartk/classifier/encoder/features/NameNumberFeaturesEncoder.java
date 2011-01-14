@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2009, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.encoder.features;
 
 import java.io.File;
@@ -35,87 +35,87 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.encoder.FeatureEncoderUtil;
 import org.cleartk.util.collection.CompressedStringBidiMap;
 
-
 /**
- * <br>Copyright (c) 2009, Regents of the University of Colorado 
- * <br>All rights reserved.
- *
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * @author Philip Ogren
-*/
+ */
 
-public class NameNumberFeaturesEncoder extends FeaturesEncoder_ImplBase<List<NameNumber>, NameNumber> {
+public class NameNumberFeaturesEncoder extends
+        FeaturesEncoder_ImplBase<List<NameNumber>, NameNumber> {
 
-	private static final long serialVersionUID = 7508330794260661987L;
+  private static final long serialVersionUID = 7508330794260661987L;
 
-	public static final String LOOKUP_FILE_NAME = "names-lookup.txt";
+  public static final String LOOKUP_FILE_NAME = "names-lookup.txt";
 
-	private CompressedStringBidiMap csbm;
+  private CompressedStringBidiMap csbm;
 
-	private boolean compressFeatures;
+  private boolean compressFeatures;
 
-	public boolean isCompressFeatures() {
-		return compressFeatures;
-	}
+  public boolean isCompressFeatures() {
+    return compressFeatures;
+  }
 
-	private boolean allowNewFeatures = true;
+  private boolean allowNewFeatures = true;
 
-	private boolean sortNameLookup;
+  private boolean sortNameLookup;
 
-	public NameNumberFeaturesEncoder(boolean compressFeatures, boolean sortNameLookup) {
-		super();
-		this.compressFeatures = compressFeatures;
-		this.sortNameLookup = sortNameLookup;
-		if (compressFeatures) {
-			csbm = new CompressedStringBidiMap();
-		}
-	}
+  public NameNumberFeaturesEncoder(boolean compressFeatures, boolean sortNameLookup) {
+    super();
+    this.compressFeatures = compressFeatures;
+    this.sortNameLookup = sortNameLookup;
+    if (compressFeatures) {
+      csbm = new CompressedStringBidiMap();
+    }
+  }
 
-	@Override
-	public List<NameNumber> encodeAll(Iterable<Feature> features) {
-		List<NameNumber> returnValues = new ArrayList<NameNumber>();
+  @Override
+  public List<NameNumber> encodeAll(Iterable<Feature> features) {
+    List<NameNumber> returnValues = new ArrayList<NameNumber>();
 
-		for (Feature feature : features) {
-			for (NameNumber nameNumber : this.encode(feature)) {
-				nameNumber.name = compress(escape(nameNumber.name));
-				if (nameNumber.name != null) {
-					returnValues.add(nameNumber);
-				} 
-			}
-		}
-		return returnValues;
-	}
+    for (Feature feature : features) {
+      for (NameNumber nameNumber : this.encode(feature)) {
+        nameNumber.name = compress(escape(nameNumber.name));
+        if (nameNumber.name != null) {
+          returnValues.add(nameNumber);
+        }
+      }
+    }
+    return returnValues;
+  }
 
-	@Override
-	public void finalizeFeatureSet(File outputDirectory) throws CleartkException {
-		try {
-			this.allowNewFeatures = false;
-			
-			if (compressFeatures) {
-				File lookupFile = new File(outputDirectory, LOOKUP_FILE_NAME);
-				PrintWriter writer = new PrintWriter(lookupFile);
-				csbm.write(writer, sortNameLookup);
-				writer.close();
-			}
-		} catch (FileNotFoundException e) {
-			throw new CleartkException(e);
-		} catch (IOException e) {
-			throw new CleartkException(e);
-		}
-	}
+  @Override
+  public void finalizeFeatureSet(File outputDirectory) throws CleartkException {
+    try {
+      this.allowNewFeatures = false;
 
-	private String escape(String string) {
-		return FeatureEncoderUtil.escape(string, new char[] { '=' });
-	}
+      if (compressFeatures) {
+        File lookupFile = new File(outputDirectory, LOOKUP_FILE_NAME);
+        PrintWriter writer = new PrintWriter(lookupFile);
+        csbm.write(writer, sortNameLookup);
+        writer.close();
+      }
+    } catch (FileNotFoundException e) {
+      throw new CleartkException(e);
+    } catch (IOException e) {
+      throw new CleartkException(e);
+    }
+  }
 
-	private String compress(String featureString) {
-		if (compressFeatures) {
-			if (allowNewFeatures) {
-				return csbm.getOrGenerateKey(featureString);
-			}
-			else {
-				return csbm.getKey(featureString);
-			}
-		}
-		return featureString;
-	}
+  private String escape(String string) {
+    return FeatureEncoderUtil.escape(string, new char[] { '=' });
+  }
+
+  private String compress(String featureString) {
+    if (compressFeatures) {
+      if (allowNewFeatures) {
+        return csbm.getOrGenerateKey(featureString);
+      } else {
+        return csbm.getKey(featureString);
+      }
+    }
+    return featureString;
+  }
 }

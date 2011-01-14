@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.syntax.constituent.ptb;
 
 import java.util.ArrayList;
@@ -30,54 +30,56 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * 
  * @author Philipp Wetzler
- *
+ * 
  */
 
 public class ListSpecification implements Iterable<Integer> {
 
-		private List<RangeSpecification> ranges;
-		private SortedSet<Integer> numbers = new TreeSet<Integer>();
-		
-		public ListSpecification(String s) {
-			this.ranges = new ArrayList<RangeSpecification>();
+  private List<RangeSpecification> ranges;
 
-			for( String rangeSpec : s.trim().split(",") ) {
-				if( rangeSpec.length() > 0 )
-					this.ranges.add(new RangeSpecification(rangeSpec));
-			}
-			
-			for( RangeSpecification r : ranges )
-				for(Integer i : r )
-					numbers.add(i);
-			
-		}
-		
-		public boolean contains(int i) {
-			return numbers.contains(i);
-		}
+  private SortedSet<Integer> numbers = new TreeSet<Integer>();
 
-		@Override
-		public String toString() {
-			StringBuffer buffer = new StringBuffer();
-			boolean first = true;
-			
-			for( RangeSpecification range : this.ranges ) {
-				if( !first )
-					buffer.append(",");
-				
-				buffer.append(range);
-				first = false;
-			}
-			
-			return buffer.toString();
-		}
+  public ListSpecification(String s) {
+    this.ranges = new ArrayList<RangeSpecification>();
 
-		public Iterator<Integer> iterator() {
-			return numbers.iterator();
-		}
+    for (String rangeSpec : s.trim().split(",")) {
+      if (rangeSpec.length() > 0)
+        this.ranges.add(new RangeSpecification(rangeSpec));
+    }
+
+    for (RangeSpecification r : ranges)
+      for (Integer i : r)
+        numbers.add(i);
+
+  }
+
+  public boolean contains(int i) {
+    return numbers.contains(i);
+  }
+
+  @Override
+  public String toString() {
+    StringBuffer buffer = new StringBuffer();
+    boolean first = true;
+
+    for (RangeSpecification range : this.ranges) {
+      if (!first)
+        buffer.append(",");
+
+      buffer.append(range);
+      first = false;
+    }
+
+    return buffer.toString();
+  }
+
+  public Iterator<Integer> iterator() {
+    return numbers.iterator();
+  }
 }

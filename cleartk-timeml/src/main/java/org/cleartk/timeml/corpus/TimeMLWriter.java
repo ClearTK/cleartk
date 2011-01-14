@@ -67,98 +67,92 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  */
 public class TimeMLWriter extends JCasAnnotator_ImplBase {
 
-	public static final String PARAM_OUTPUT_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
-		TimeMLWriter.class,
-		"outputDirectoryName");
+  public static final String PARAM_OUTPUT_DIRECTORY_NAME = ConfigurationParameterFactory
+          .createConfigurationParameterName(TimeMLWriter.class, "outputDirectoryName");
 
-	@ConfigurationParameter(
-		description = "Provides the path where the TimeML documents should be written.",
-		mandatory = true)
-	private String outputDirectoryName;
+  @ConfigurationParameter(description = "Provides the path where the TimeML documents should be written.", mandatory = true)
+  private String outputDirectoryName;
 
-	public static AnalysisEngineDescription getDescription(String outputDir)
-			throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveDescription(
-			TimeMLWriter.class,
-			TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
-			PARAM_OUTPUT_DIRECTORY_NAME,
-			outputDir);
-	}
+  public static AnalysisEngineDescription getDescription(String outputDir)
+          throws ResourceInitializationException {
+    return AnalysisEngineFactory.createPrimitiveDescription(TimeMLWriter.class,
+            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION, PARAM_OUTPUT_DIRECTORY_NAME, outputDir);
+  }
 
-	private File outputDirectory;
+  private File outputDirectory;
 
-	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		super.initialize(context);
+  @Override
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    super.initialize(context);
 
-		this.outputDirectory = new File(outputDirectoryName);
-		if (!this.outputDirectory.exists()) {
-			this.outputDirectory.mkdirs();
-		}
-	}
+    this.outputDirectory = new File(outputDirectoryName);
+    if (!this.outputDirectory.exists()) {
+      this.outputDirectory.mkdirs();
+    }
+  }
 
-	@Override
-	public void process(JCas jCas) throws AnalysisEngineProcessException {
+  @Override
+  public void process(JCas jCas) throws AnalysisEngineProcessException {
 
-		// the set of types to be output as XML
-		final Set<String> includedTypes = new HashSet<String>();
-		includedTypes.add(Event.class.getName());
-		includedTypes.add(Time.class.getName());
-		includedTypes.add(TemporalLink.class.getName());
+    // the set of types to be output as XML
+    final Set<String> includedTypes = new HashSet<String>();
+    includedTypes.add(Event.class.getName());
+    includedTypes.add(Time.class.getName());
+    includedTypes.add(TemporalLink.class.getName());
 
-		// convert the CAS to inline XML - this will use UIMA style XML names,
-		// not TimeML names, so we'll have to fix this up afterwards
-		String xmlString;
-		try {
-			xmlString = new CasToInlineXml().generateXML(jCas.getCas(), new FSMatchConstraint() {
-				private static final long serialVersionUID = 1L;
+    // convert the CAS to inline XML - this will use UIMA style XML names,
+    // not TimeML names, so we'll have to fix this up afterwards
+    String xmlString;
+    try {
+      xmlString = new CasToInlineXml().generateXML(jCas.getCas(), new FSMatchConstraint() {
+        private static final long serialVersionUID = 1L;
 
-				public boolean match(FeatureStructure fs) {
-					return includedTypes.contains(fs.getType().getName());
-				}
-			});
-		} catch (CASException e) {
-			throw new AnalysisEngineProcessException(e);
-		}
+        public boolean match(FeatureStructure fs) {
+          return includedTypes.contains(fs.getType().getName());
+        }
+      });
+    } catch (CASException e) {
+      throw new AnalysisEngineProcessException(e);
+    }
 
-		// parse the inline XML into a jDom document
-		SAXBuilder builder = new SAXBuilder();
-		builder.setDTDHandler(null);
-		Document document;
-		try {
-			document = builder.build(new StringReader(xmlString));
-		} catch (JDOMException e) {
-			throw new AnalysisEngineProcessException(e);
-		} catch (IOException e) {
-			throw new AnalysisEngineProcessException(e);
-		}
+    // parse the inline XML into a jDom document
+    SAXBuilder builder = new SAXBuilder();
+    builder.setDTDHandler(null);
+    Document document;
+    try {
+      document = builder.build(new StringReader(xmlString));
+    } catch (JDOMException e) {
+      throw new AnalysisEngineProcessException(e);
+    } catch (IOException e) {
+      throw new AnalysisEngineProcessException(e);
+    }
 
-		// reformat each element, converting UIMA names to TimeML names
-		for (Iterator<?> iter = document.getDescendants(); iter.hasNext();) {
-			Object contentObj = iter.next();
-			if (contentObj instanceof Element) {
-				TimeMLUtil.uimaToTimemlNames((Element) contentObj);
-			}
-		}
-		xmlString = new XMLOutputter().outputString(document);
+    // reformat each element, converting UIMA names to TimeML names
+    for (Iterator<?> iter = document.getDescendants(); iter.hasNext();) {
+      Object contentObj = iter.next();
+      if (contentObj instanceof Element) {
+        TimeMLUtil.uimaToTimemlNames((Element) contentObj);
+      }
+    }
+    xmlString = new XMLOutputter().outputString(document);
 
-		// write the TimeML to the output file
-		String filePath = ViewURIUtil.getURI(jCas);
-		String fileName = new File(filePath).getName();
-		if (!fileName.endsWith(".tml")) {
-			fileName += ".tml";
-		}
-		File outputFile = new File(this.outputDirectory, fileName);
-		try {
-			FileWriter writer = new FileWriter(outputFile);
-			writer.write(xmlString);
-			writer.close();
-		} catch (IOException e) {
-			throw new AnalysisEngineProcessException(e);
-		}
-	}
+    // write the TimeML to the output file
+    String filePath = ViewURIUtil.getURI(jCas);
+    String fileName = new File(filePath).getName();
+    if (!fileName.endsWith(".tml")) {
+      fileName += ".tml";
+    }
+    File outputFile = new File(this.outputDirectory, fileName);
+    try {
+      FileWriter writer = new FileWriter(outputFile);
+      writer.write(xmlString);
+      writer.close();
+    } catch (IOException e) {
+      throw new AnalysisEngineProcessException(e);
+    }
+  }
 
-	public void setOutputDirectoryName(String outputDirectoryName) {
-		this.outputDirectoryName = outputDirectoryName;
-	}
+  public void setOutputDirectoryName(String outputDirectoryName) {
+    this.outputDirectoryName = outputDirectoryName;
+  }
 }

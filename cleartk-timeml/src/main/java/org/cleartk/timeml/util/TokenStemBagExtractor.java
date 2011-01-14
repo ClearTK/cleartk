@@ -35,7 +35,7 @@ import org.cleartk.token.type.Token;
  * @author Steven Bethard
  */
 public class TokenStemBagExtractor extends BagExtractor {
-	public TokenStemBagExtractor() {
-		super(Token.class, new TypePathExtractor(Token.class, "stem"));
-	}
+  public TokenStemBagExtractor() {
+    super(Token.class, new TypePathExtractor(Token.class, "stem"));
+  }
 }

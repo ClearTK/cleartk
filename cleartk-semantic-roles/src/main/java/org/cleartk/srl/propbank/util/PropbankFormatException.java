@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,33 +20,34 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.srl.propbank.util;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * <p>
  */
 public class PropbankFormatException extends IllegalArgumentException {
 
-	private static final long serialVersionUID = 3194744657398295811L;
+  private static final long serialVersionUID = 3194744657398295811L;
 
-	public PropbankFormatException() {
-		super();
-	}
+  public PropbankFormatException() {
+    super();
+  }
 
-	public PropbankFormatException(String arg0) {
-		super(arg0);
-	}
+  public PropbankFormatException(String arg0) {
+    super(arg0);
+  }
 
-	public PropbankFormatException(Throwable arg0) {
-		super(arg0);
-	}
+  public PropbankFormatException(Throwable arg0) {
+    super(arg0);
+  }
 
-	public PropbankFormatException(String arg0, Throwable arg1) {
-		super(arg0, arg1);
-	}
+  public PropbankFormatException(String arg0, Throwable arg1) {
+    super(arg0, arg1);
+  }
 
 }

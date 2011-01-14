@@ -35,36 +35,33 @@ import org.apache.uima.resource.ResourceInitializationException;
 
 public interface EvaluationFactory {
 
-	/**
-	 * This method creates an aggregate analysis engine that performs
-	 * task-specific evaluation using the gold-standard data which should be
-	 * found in the {@link ViewNames#GOLD_VIEW} view against the
-	 * system-generated data which should be found in the
-	 * {@link ViewNames#SYSTEM_VIEW}. All results should be written to the
-	 * evaluation directory provided. This directory will generally be specific
-	 * to either a fold or the holdout evaluation.
-	 * 
-	 * @param evaluationDirectory
-	 *            a directory where all evaluation results should be written to.
-	 * @return
-	 * @throws ResourceInitializationException
-	 */
-	public AnalysisEngineDescription createEvaluationAggregate(
-			File evaluationDirectory) throws ResourceInitializationException;
+  /**
+   * This method creates an aggregate analysis engine that performs task-specific evaluation using
+   * the gold-standard data which should be found in the {@link ViewNames#GOLD_VIEW} view against
+   * the system-generated data which should be found in the {@link ViewNames#SYSTEM_VIEW}. All
+   * results should be written to the evaluation directory provided. This directory will generally
+   * be specific to either a fold or the holdout evaluation.
+   * 
+   * @param evaluationDirectory
+   *          a directory where all evaluation results should be written to.
+   * @return
+   * @throws ResourceInitializationException
+   */
+  public AnalysisEngineDescription createEvaluationAggregate(File evaluationDirectory)
+          throws ResourceInitializationException;
 
-	/**
-	 * This method aggregates results from a number of directories and writes
-	 * the aggregated results to the output directory.
-	 * 
-	 * @param evaluationDirectories
-	 *            a list of evaluation directories that correspond directly to
-	 *            the evaluation directories passed into multiple calls to
-	 *            {@link #createEvaluationAggregate(File)}
-	 * @param outputDirectory
-	 *            a directory where aggregated results are written to.
-	 * @throws Exception
-	 */
-	public void aggregateEvaluationResults(List<File> evaluationDirectories,
-			File outputDirectory) throws Exception;
+  /**
+   * This method aggregates results from a number of directories and writes the aggregated results
+   * to the output directory.
+   * 
+   * @param evaluationDirectories
+   *          a list of evaluation directories that correspond directly to the evaluation
+   *          directories passed into multiple calls to {@link #createEvaluationAggregate(File)}
+   * @param outputDirectory
+   *          a directory where aggregated results are written to.
+   * @throws Exception
+   */
+  public void aggregateEvaluationResults(List<File> evaluationDirectories, File outputDirectory)
+          throws Exception;
 
 }

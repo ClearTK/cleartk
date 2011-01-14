@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.util.cr;
 
 import java.io.File;
@@ -40,52 +40,52 @@ import org.uimafit.factory.ConfigurationParameterFactory;
 import org.xml.sax.SAXException;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * @see XmiCasSerializer
  * @see XCASSerializer
-*/
+ */
 
 public class XReader extends FilesCollectionReader {
 
-	public static final String XMI = "XMI";
+  public static final String XMI = "XMI";
 
-	public static final String XCAS = "XCAS";
+  public static final String XCAS = "XCAS";
 
-	public static final String PARAM_XML_SCHEME = ConfigurationParameterFactory.createConfigurationParameterName(XReader.class, "xmlScheme");
-	
-	@ConfigurationParameter(
-			defaultValue = "XMI",
-			description = "specifies the UIMA XML serialization scheme that should be used. Valid values for this parameter are 'XMI' and 'XCAS'")	
-	private String xmlScheme;
+  public static final String PARAM_XML_SCHEME = ConfigurationParameterFactory
+          .createConfigurationParameterName(XReader.class, "xmlScheme");
 
-	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		super.initialize(context);
+  @ConfigurationParameter(defaultValue = "XMI", description = "specifies the UIMA XML serialization scheme that should be used. Valid values for this parameter are 'XMI' and 'XCAS'")
+  private String xmlScheme;
 
-		if (!xmlScheme.equals(XMI) && !xmlScheme.equals(XCAS)) 
-			throw new ResourceInitializationException(new IllegalArgumentException(String.format(
-				"parameter '%1$s' must be either '%2$s' or '%3$s' or left empty.", PARAM_XML_SCHEME, XMI, XCAS)));
-	}
+  @Override
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    super.initialize(context);
 
-	public void getNext(JCas jCas) throws IOException, CollectionException {
-		File file = (File) this.files.next();
-		FileInputStream inputStream = new FileInputStream(file);
-		
-		try {
-			if(xmlScheme.equals(XMI))
-				XmiCasDeserializer.deserialize(inputStream, jCas.getCas());
-			else
-				XCASDeserializer.deserialize(inputStream, jCas.getCas());
-		}
-		catch (SAXException e) {
-			throw new CollectionException(e);
-		}
-		finally {
-			inputStream.close();
-		}
+    if (!xmlScheme.equals(XMI) && !xmlScheme.equals(XCAS))
+      throw new ResourceInitializationException(new IllegalArgumentException(String.format(
+              "parameter '%1$s' must be either '%2$s' or '%3$s' or left empty.", PARAM_XML_SCHEME,
+              XMI, XCAS)));
+  }
 
-		completed++;
-	}
+  public void getNext(JCas jCas) throws IOException, CollectionException {
+    File file = (File) this.files.next();
+    FileInputStream inputStream = new FileInputStream(file);
+
+    try {
+      if (xmlScheme.equals(XMI))
+        XmiCasDeserializer.deserialize(inputStream, jCas.getCas());
+      else
+        XCASDeserializer.deserialize(inputStream, jCas.getCas());
+    } catch (SAXException e) {
+      throw new CollectionException(e);
+    } finally {
+      inputStream.close();
+    }
+
+    completed++;
+  }
 
 }

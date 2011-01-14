@@ -47,162 +47,164 @@ import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.SofaCapability;
 import org.uimafit.factory.ConfigurationParameterFactory;
 
-
 /**
-/**
- * <br>
+ * /** <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
  * 
  * 
  * <p>
- * PennTreebankReader reads in the PennTreebank (PTB) data distributed by the
- * LDC. It simply reads the raw treebank data into a view called "TreebankView".
- * To actually parse the treebank data and post it to the CAS, you will need to
- * use the TreebankGoldAnnotator which does the real work of parsing the
- * treebank format. In general, treebank data can be read in by a
- * PlainTextCollectionReader or some other simple collection reader. This class
- * exists because the PennTreebank has a specific directory structure that
- * corresponds to sections which are often used in specific ways to conduct
- * experiments - e.g. section 02-20 for training and sections 21-24 for testing.
- * This collection reader makes it easy to read in specific sections for later
- * processing.  Only files ending with ".mrg" will be read in.  
+ * PennTreebankReader reads in the PennTreebank (PTB) data distributed by the LDC. It simply reads
+ * the raw treebank data into a view called "TreebankView". To actually parse the treebank data and
+ * post it to the CAS, you will need to use the TreebankGoldAnnotator which does the real work of
+ * parsing the treebank format. In general, treebank data can be read in by a
+ * PlainTextCollectionReader or some other simple collection reader. This class exists because the
+ * PennTreebank has a specific directory structure that corresponds to sections which are often used
+ * in specific ways to conduct experiments - e.g. section 02-20 for training and sections 21-24 for
+ * testing. This collection reader makes it easy to read in specific sections for later processing.
+ * Only files ending with ".mrg" will be read in.
  * </p>
  * <p>
- * The acronym WSJ stands for Wall Street Journal which is the source of the
- * articles treebanked by PTB.
+ * The acronym WSJ stands for Wall Street Journal which is the source of the articles treebanked by
+ * PTB.
  * <p>
- * If you are concerned that your copy of PTB is not working correctly with this collection reader (or TreebankGoldAnnotator)
- * then please see the corresponding unit tests.
+ * If you are concerned that your copy of PTB is not working correctly with this collection reader
+ * (or TreebankGoldAnnotator) then please see the corresponding unit tests.
  * 
  * @see TreebankGoldAnnotator
  * 
  * @author Philip Ogren, Philipp Wetzler
  */
 
-@SofaCapability(outputSofas= {TreebankConstants.TREEBANK_VIEW, ViewURIUtil.URI})
+@SofaCapability(outputSofas = { TreebankConstants.TREEBANK_VIEW, ViewURIUtil.URI })
 public class PennTreebankReader extends JCasCollectionReader_ImplBase {
-	public static final String PARAM_CORPUS_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(PennTreebankReader.class, "corpusDirectoryName");
-	private static final String CORPUS_DIRECTORY_DESCRIPTION = "Specifies the location of WSJ/PennTreebank treebank files.  " +
-			"The directory should contain subdirectories corresponding to the sections (e.g. '00', '01', etc.) " +
-			"That is, if a local copy of PennTreebank sits at C:/Data/PTB/wsj/mrg, then the the subdirectory C:/Data/PTB/wsj/mrg/00 should exist. " +
-			"There are 24 sections in PTB corresponding to the directories 00, 01, 02, ... 24. ";
-	@ConfigurationParameter(
-			mandatory = true,
-			description = CORPUS_DIRECTORY_DESCRIPTION)
-	private String corpusDirectoryName;
+  public static final String PARAM_CORPUS_DIRECTORY_NAME = ConfigurationParameterFactory
+          .createConfigurationParameterName(PennTreebankReader.class, "corpusDirectoryName");
 
-	public static final String PARAM_SECTIONS_SPECIFIER = ConfigurationParameterFactory.createConfigurationParameterName(PennTreebankReader.class, "sectionsSpecifier");
-	private static final String SECTIONS_DESCRIPTION = "specifies which sections of PTB to read in.  " +
-			"The required format for values of this parameter allows for comma-separated section numbers and section ranges, " +
-			"for example '02,07-12,16'.";
-	@ConfigurationParameter(
-			defaultValue = "00-24",
-			description = SECTIONS_DESCRIPTION)
-	private String sectionsSpecifier;
-	
-	protected File directory;
+  private static final String CORPUS_DIRECTORY_DESCRIPTION = "Specifies the location of WSJ/PennTreebank treebank files.  "
+          + "The directory should contain subdirectories corresponding to the sections (e.g. '00', '01', etc.) "
+          + "That is, if a local copy of PennTreebank sits at C:/Data/PTB/wsj/mrg, then the the subdirectory C:/Data/PTB/wsj/mrg/00 should exist. "
+          + "There are 24 sections in PTB corresponding to the directories 00, 01, 02, ... 24. ";
 
-	protected LinkedList<File> files;
+  @ConfigurationParameter(mandatory = true, description = CORPUS_DIRECTORY_DESCRIPTION)
+  private String corpusDirectoryName;
 
-	protected int numberOfFiles;
+  public static final String PARAM_SECTIONS_SPECIFIER = ConfigurationParameterFactory
+          .createConfigurationParameterName(PennTreebankReader.class, "sectionsSpecifier");
 
-	protected ListSpecification sections;
+  private static final String SECTIONS_DESCRIPTION = "specifies which sections of PTB to read in.  "
+          + "The required format for values of this parameter allows for comma-separated section numbers and section ranges, "
+          + "for example '02,07-12,16'.";
 
-	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		this.sections = new ListSpecification(sectionsSpecifier);
+  @ConfigurationParameter(defaultValue = "00-24", description = SECTIONS_DESCRIPTION)
+  private String sectionsSpecifier;
 
-		this.directory = new File(corpusDirectoryName);
-		this.files = new LinkedList<File>();
-		collectSections(new File(directory.getPath()), this.files, this.sections);
-		Collections.sort(files);
-		this.numberOfFiles = files.size();
+  protected File directory;
 
-	}
+  protected LinkedList<File> files;
 
-	/**
-	 * This will add all the <tt>.mrg</tt> files in the given WSJ sections to
-	 * <em>treebankFiles</em>.
-	 * 
-	 * @param wsjDirectory
-	 *            is the top level of the WSJ part of Treebank. Underneath here
-	 *            are the section subdirectories.
-	 * @param treebankFiles
-	 * @param wsjSections
-	 *            is the set of sections to include.
-	 */
-	public static void collectSections(File wsjDirectory, List<File> treebankFiles, ListSpecification wsjSections) {
-		if (!wsjDirectory.isDirectory()) return;
+  protected int numberOfFiles;
 
-		for (File subFile : wsjDirectory.listFiles()) {
-			if (!subFile.isDirectory()) continue;
+  protected ListSpecification sections;
 
-			try {
-				int section = Integer.valueOf(subFile.getName());
+  @Override
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    this.sections = new ListSpecification(sectionsSpecifier);
 
-				if (!wsjSections.contains(section)) continue;
-			}
-			catch (NumberFormatException e) {
-				continue;
-			}
+    this.directory = new File(corpusDirectoryName);
+    this.files = new LinkedList<File>();
+    collectSections(new File(directory.getPath()), this.files, this.sections);
+    Collections.sort(files);
+    this.numberOfFiles = files.size();
 
-			collectFiles(subFile, treebankFiles);
-		}
-	}
+  }
 
-	static void collectFiles(File file, List<File> treebankFiles) {
-		if (file.isFile() && file.getName().endsWith(".mrg")) {
-			treebankFiles.add(file);
-		}
-		else if (file.isDirectory()) {
-			for (File subFile : file.listFiles()) {
-				collectFiles(subFile, treebankFiles);
-			}
-		}
-	}
+  /**
+   * This will add all the <tt>.mrg</tt> files in the given WSJ sections to <em>treebankFiles</em>.
+   * 
+   * @param wsjDirectory
+   *          is the top level of the WSJ part of Treebank. Underneath here are the section
+   *          subdirectories.
+   * @param treebankFiles
+   * @param wsjSections
+   *          is the set of sections to include.
+   */
+  public static void collectSections(File wsjDirectory, List<File> treebankFiles,
+          ListSpecification wsjSections) {
+    if (!wsjDirectory.isDirectory())
+      return;
 
-	/**
-	 * Reads the next file and stores its text in <b>cas</b> as the
-	 * "TreebankView" SOFA.
-	 * 
-	 * @param cas
-	 * 
-	 * @throws IOException
-	 * @throws CollectionException
-	 */
-	public void getNext(JCas jCas) throws IOException, CollectionException {
-		File treebankFile = files.removeFirst();
-		getUimaContext().getLogger().log(Level.FINEST, "reading treebank file: " + treebankFile.getPath());
-		ViewURIUtil.setURI(jCas, treebankFile.toURI().toString());
-		try {
-			JCas treebankView = ViewCreatorAnnotator.createViewSafely(jCas, TreebankConstants.TREEBANK_VIEW);
-			treebankView.setSofaDataString(FileUtils.file2String(treebankFile), "text/plain");
-		} catch(AnalysisEngineProcessException aepe) {
-			throw new CollectionException(aepe);
-		}
-	}
+    for (File subFile : wsjDirectory.listFiles()) {
+      if (!subFile.isDirectory())
+        continue;
 
-	public void close() throws IOException {
-	}
+      try {
+        int section = Integer.valueOf(subFile.getName());
 
-	public Progress[] getProgress() {
-		return new Progress[] { new ProgressImpl(numberOfFiles - files.size(), numberOfFiles, Progress.ENTITIES) };
-	}
+        if (!wsjSections.contains(section))
+          continue;
+      } catch (NumberFormatException e) {
+        continue;
+      }
 
-	public boolean hasNext() throws IOException, CollectionException {
-		if (files.size() > 0) return true;
-		else return false;
-	}
+      collectFiles(subFile, treebankFiles);
+    }
+  }
 
-	public void setCorpusDirectoryName(String corpusDirectoryName) {
-		this.corpusDirectoryName = corpusDirectoryName;
-	}
+  static void collectFiles(File file, List<File> treebankFiles) {
+    if (file.isFile() && file.getName().endsWith(".mrg")) {
+      treebankFiles.add(file);
+    } else if (file.isDirectory()) {
+      for (File subFile : file.listFiles()) {
+        collectFiles(subFile, treebankFiles);
+      }
+    }
+  }
 
-	public void setSectionsSpecifier(String sectionsString) {
-		this.sectionsSpecifier = sectionsString;
-	}
+  /**
+   * Reads the next file and stores its text in <b>cas</b> as the "TreebankView" SOFA.
+   * 
+   * @param cas
+   * 
+   * @throws IOException
+   * @throws CollectionException
+   */
+  public void getNext(JCas jCas) throws IOException, CollectionException {
+    File treebankFile = files.removeFirst();
+    getUimaContext().getLogger().log(Level.FINEST,
+            "reading treebank file: " + treebankFile.getPath());
+    ViewURIUtil.setURI(jCas, treebankFile.toURI().toString());
+    try {
+      JCas treebankView = ViewCreatorAnnotator.createViewSafely(jCas,
+              TreebankConstants.TREEBANK_VIEW);
+      treebankView.setSofaDataString(FileUtils.file2String(treebankFile), "text/plain");
+    } catch (AnalysisEngineProcessException aepe) {
+      throw new CollectionException(aepe);
+    }
+  }
 
+  public void close() throws IOException {
+  }
+
+  public Progress[] getProgress() {
+    return new Progress[] { new ProgressImpl(numberOfFiles - files.size(), numberOfFiles,
+            Progress.ENTITIES) };
+  }
+
+  public boolean hasNext() throws IOException, CollectionException {
+    if (files.size() > 0)
+      return true;
+    else
+      return false;
+  }
+
+  public void setCorpusDirectoryName(String corpusDirectoryName) {
+    this.corpusDirectoryName = corpusDirectoryName;
+  }
+
+  public void setSectionsSpecifier(String sectionsString) {
+    this.sectionsSpecifier = sectionsString;
+  }
 
 }

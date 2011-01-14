@@ -38,17 +38,17 @@ import org.uimafit.testing.factory.TokenBuilder;
  */
 public class DefaultTestBase extends CleartkTestBase {
 
-	protected TokenBuilder<Token, Sentence> tokenBuilder;
+  protected TokenBuilder<Token, Sentence> tokenBuilder;
 
-	@Before
-	public void setUp() throws Exception {
-		super.setUp();
-		tokenBuilder = new TokenBuilder<Token, Sentence>(Token.class, Sentence.class, "pos", null);
-	}
+  @Before
+  public void setUp() throws Exception {
+    super.setUp();
+    tokenBuilder = new TokenBuilder<Token, Sentence>(Token.class, Sentence.class, "pos", null);
+  }
 
-	@Override
-	public String[] getTypeSystemDescriptorNames() {
-		return new String[] {"org.cleartk.type.test.TestTypeSystem"};
-	}
+  @Override
+  public String[] getTypeSystemDescriptorNames() {
+    return new String[] { "org.cleartk.type.test.TestTypeSystem" };
+  }
 
 }

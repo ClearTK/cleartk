@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.mallet.factory;
 
 import cc.mallet.classify.C45;
@@ -28,47 +28,50 @@ import cc.mallet.classify.C45Trainer;
 import cc.mallet.classify.ClassifierTrainer;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * 
  * @author Philip Ogren
  */
 
 public class C45TrainerFactory implements ClassifierTrainerFactory<C45> {
 
-	public static final String NAME = "C45";
-	
-	public ClassifierTrainer<C45> createTrainer(String... args) {
-		C45Trainer trainer = new C45Trainer();
-		if(args != null) {
-			if(args.length % 2 != 0) {
-				throw new IllegalArgumentException("each argument must be supplied with a value:  "+getUsageMessage());
-			}
-			for(int i=0; i<args.length; i+=2) {
-				String optionName = args[i];
-				String optionValue = args[i+1];
-				if(optionName.equals("--depthLimited"))
-					trainer.setDepthLimited(Boolean.parseBoolean(optionValue));
-				else if(optionName.equals("--doPruning"))
-					trainer.setDoPruning(Boolean.parseBoolean(optionValue));
-				else if(optionName.equals("--maxDepth"))
-					trainer.setMaxDepth(Integer.parseInt(optionValue));
-				else if(optionName.equals("--minNumInsts"))
-					trainer.setMinNumInsts(Integer.parseInt(optionValue));
-				else
-					throw new IllegalArgumentException(String.format("the argument %1$s is invalid.  ", optionName) + getUsageMessage());
-			}
-		}
-		return trainer;
-	}
+  public static final String NAME = "C45";
 
-	public String getUsageMessage() {
-		return "The arguments for C45TrainerFactory.createTrainer(String...args) should be either empty or include any of the following:" +
-		"\n--depthLimited boolean" +
-		"\n--doPruning boolean" +
-		"\n--maxDepth integer" +
-		"\n--minNumInsts integer";
-	}
+  public ClassifierTrainer<C45> createTrainer(String... args) {
+    C45Trainer trainer = new C45Trainer();
+    if (args != null) {
+      if (args.length % 2 != 0) {
+        throw new IllegalArgumentException("each argument must be supplied with a value:  "
+                + getUsageMessage());
+      }
+      for (int i = 0; i < args.length; i += 2) {
+        String optionName = args[i];
+        String optionValue = args[i + 1];
+        if (optionName.equals("--depthLimited"))
+          trainer.setDepthLimited(Boolean.parseBoolean(optionValue));
+        else if (optionName.equals("--doPruning"))
+          trainer.setDoPruning(Boolean.parseBoolean(optionValue));
+        else if (optionName.equals("--maxDepth"))
+          trainer.setMaxDepth(Integer.parseInt(optionValue));
+        else if (optionName.equals("--minNumInsts"))
+          trainer.setMinNumInsts(Integer.parseInt(optionValue));
+        else
+          throw new IllegalArgumentException(String.format("the argument %1$s is invalid.  ",
+                  optionName) + getUsageMessage());
+      }
+    }
+    return trainer;
+  }
+
+  public String getUsageMessage() {
+    return "The arguments for C45TrainerFactory.createTrainer(String...args) should be either empty or include any of the following:"
+            + "\n--depthLimited boolean"
+            + "\n--doPruning boolean"
+            + "\n--maxDepth integer"
+            + "\n--minNumInsts integer";
+  }
 
 }

@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.libsvm;
 
 import java.io.File;
@@ -42,61 +42,63 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
  * <p>
  */
 
-public abstract class LIBSVMDataWriter<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE> extends JarDataWriter<INPUTOUTCOME_TYPE,OUTPUTOUTCOME_TYPE,FeatureVector> {
+public abstract class LIBSVMDataWriter<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE> extends
+        JarDataWriter<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE, FeatureVector> {
 
-	public static final String TRAINING_DATA_FILE_NAME ="training-data.libsvm"; 
+  public static final String TRAINING_DATA_FILE_NAME = "training-data.libsvm";
 
-	public LIBSVMDataWriter(File outputDirectory) throws IOException {
-		super(outputDirectory);
+  public LIBSVMDataWriter(File outputDirectory) throws IOException {
+    super(outputDirectory);
 
-		// set up files
-		File trainingDataFile = getFile(TRAINING_DATA_FILE_NAME);
-		trainingDataFile.delete();
+    // set up files
+    File trainingDataFile = getFile(TRAINING_DATA_FILE_NAME);
+    trainingDataFile.delete();
 
-		// set up writer
-		trainingDataWriter = this.getPrintWriter(TRAINING_DATA_FILE_NAME);
+    // set up writer
+    trainingDataWriter = this.getPrintWriter(TRAINING_DATA_FILE_NAME);
 
-		// set manifest attributes for classifier
-		Map<String, Attributes> entries = classifierManifest.getEntries();
-		if (!entries.containsKey(LIBSVMClassifier.ATTRIBUTES_NAME)) {
-			entries.put(LIBSVMClassifier.ATTRIBUTES_NAME, new Attributes());
-		}
-		Attributes attributes = entries.get(LIBSVMClassifier.ATTRIBUTES_NAME);
-		attributes.putValue(
-				LIBSVMClassifier.SCALE_FEATURES_KEY,
-				LIBSVMClassifier.SCALE_FEATURES_VALUE_NORMALIZEL2);
-	}
+    // set manifest attributes for classifier
+    Map<String, Attributes> entries = classifierManifest.getEntries();
+    if (!entries.containsKey(LIBSVMClassifier.ATTRIBUTES_NAME)) {
+      entries.put(LIBSVMClassifier.ATTRIBUTES_NAME, new Attributes());
+    }
+    Attributes attributes = entries.get(LIBSVMClassifier.ATTRIBUTES_NAME);
+    attributes.putValue(LIBSVMClassifier.SCALE_FEATURES_KEY,
+            LIBSVMClassifier.SCALE_FEATURES_VALUE_NORMALIZEL2);
+  }
 
-	@Override
-	public void writeEncoded(FeatureVector features, OUTPUTOUTCOME_TYPE outcome) throws CleartkException {
-		String classString = encode(outcome);
-				
-		StringBuffer output = new StringBuffer();
-		
-		output.append(classString);		
-		
-		for( FeatureVector.Entry entry : features ) {
-			if( Double.isInfinite(entry.value) || Double.isNaN(entry.value) )
-				throw new CleartkException(String.format("illegal value in entry %d:%.7f", entry.index, entry.value));
-			output.append(String.format(Locale.US, " %d:%.7f", entry.index, entry.value));
-		}
-		
-		trainingDataWriter.println(output);
-	}
+  @Override
+  public void writeEncoded(FeatureVector features, OUTPUTOUTCOME_TYPE outcome)
+          throws CleartkException {
+    String classString = encode(outcome);
 
-	@Override
-	public void finish() throws CleartkException {
-		super.finish();
+    StringBuffer output = new StringBuffer();
 
-		// flush and close writer
-		trainingDataWriter.flush();
-		trainingDataWriter.close();
-	}
+    output.append(classString);
 
-	public abstract Class<? extends ClassifierBuilder<INPUTOUTCOME_TYPE>> getDefaultClassifierBuilderClass();
+    for (FeatureVector.Entry entry : features) {
+      if (Double.isInfinite(entry.value) || Double.isNaN(entry.value))
+        throw new CleartkException(String.format("illegal value in entry %d:%.7f", entry.index,
+                entry.value));
+      output.append(String.format(Locale.US, " %d:%.7f", entry.index, entry.value));
+    }
 
-	protected abstract String encode(OUTPUTOUTCOME_TYPE outcome);
+    trainingDataWriter.println(output);
+  }
 
-	private PrintWriter trainingDataWriter;
-	
+  @Override
+  public void finish() throws CleartkException {
+    super.finish();
+
+    // flush and close writer
+    trainingDataWriter.flush();
+    trainingDataWriter.close();
+  }
+
+  public abstract Class<? extends ClassifierBuilder<INPUTOUTCOME_TYPE>> getDefaultClassifierBuilderClass();
+
+  protected abstract String encode(OUTPUTOUTCOME_TYPE outcome);
+
+  private PrintWriter trainingDataWriter;
+
 }

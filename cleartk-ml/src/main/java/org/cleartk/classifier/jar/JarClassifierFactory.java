@@ -45,74 +45,72 @@ import org.uimafit.factory.initializable.Initializable;
  * All rights reserved.
  */
 
-public class JarClassifierFactory<OUTCOME_TYPE> implements ClassifierFactory<OUTCOME_TYPE>, SequentialClassifierFactory<OUTCOME_TYPE>, Initializable {
+public class JarClassifierFactory<OUTCOME_TYPE> implements ClassifierFactory<OUTCOME_TYPE>,
+        SequentialClassifierFactory<OUTCOME_TYPE>, Initializable {
 
-	public static final String PARAM_CLASSIFIER_JAR_PATH = ConfigurationParameterFactory
-			.createConfigurationParameterName(JarClassifierFactory.class, "classifierJarPath");
+  public static final String PARAM_CLASSIFIER_JAR_PATH = ConfigurationParameterFactory
+          .createConfigurationParameterName(JarClassifierFactory.class, "classifierJarPath");
 
-	@ConfigurationParameter(mandatory = true, description = "provides the path to the jar file that should be used to instantiate the classifier.")
-	private String classifierJarPath;
+  @ConfigurationParameter(mandatory = true, description = "provides the path to the jar file that should be used to instantiate the classifier.")
+  private String classifierJarPath;
 
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		ConfigurationParameterInitializer.initialize(this, context);
-	}
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    ConfigurationParameterInitializer.initialize(this, context);
+  }
 
-	public Classifier<OUTCOME_TYPE> createClassifier() throws IOException, CleartkException {
-		return createClassifierFromJar(classifierJarPath);
-	}
+  public Classifier<OUTCOME_TYPE> createClassifier() throws IOException, CleartkException {
+    return createClassifierFromJar(classifierJarPath);
+  }
 
-	public SequentialClassifier<OUTCOME_TYPE> createSequentialClassifier() throws IOException, CleartkException {
-		return createSequentialClassifierFromJar(classifierJarPath);
-	}
+  public SequentialClassifier<OUTCOME_TYPE> createSequentialClassifier() throws IOException,
+          CleartkException {
+    return createSequentialClassifierFromJar(classifierJarPath);
+  }
 
-	
-	/**
-	 * Every classifier should be able to instantiated from a jar file. This
-	 * factory method reads the class of the classifier from manifest of the jar
-	 * file from the attribute "classifier". e.g.:
-	 * <p>
-	 * <code>classifier: org.cleartk.classifier.OpenNLPMaxentClassifier</code>
-	 * </p>
-	 * The value of the classifier attribute of the manifest is used to
-	 * instantiate a classifier using reflection and the constructor that takes
-	 * a jar file.
-	 * 
-	 * @param jarFileName
-	 *            the name of a jar file
-	 * @return a classifier defined by the contents of the jar file.
-	 * @throws IOException
-	 */
-	public Classifier<OUTCOME_TYPE> createClassifierFromJar(String jarFileName) throws IOException {
-		return ReflectionUtil.uncheckedCast(createClassifierFromJar(jarFileName, Classifier.class));
-	}
+  /**
+   * Every classifier should be able to instantiated from a jar file. This factory method reads the
+   * class of the classifier from manifest of the jar file from the attribute "classifier". e.g.:
+   * <p>
+   * <code>classifier: org.cleartk.classifier.OpenNLPMaxentClassifier</code>
+   * </p>
+   * The value of the classifier attribute of the manifest is used to instantiate a classifier using
+   * reflection and the constructor that takes a jar file.
+   * 
+   * @param jarFileName
+   *          the name of a jar file
+   * @return a classifier defined by the contents of the jar file.
+   * @throws IOException
+   */
+  public Classifier<OUTCOME_TYPE> createClassifierFromJar(String jarFileName) throws IOException {
+    return ReflectionUtil.uncheckedCast(createClassifierFromJar(jarFileName, Classifier.class));
+  }
 
-	public SequentialClassifier<OUTCOME_TYPE> createSequentialClassifierFromJar(String jarFileName) throws IOException {
-		return ReflectionUtil.uncheckedCast(createClassifierFromJar(jarFileName, SequentialClassifier.class));
-	}
+  public SequentialClassifier<OUTCOME_TYPE> createSequentialClassifierFromJar(String jarFileName)
+          throws IOException {
+    return ReflectionUtil.uncheckedCast(createClassifierFromJar(jarFileName,
+            SequentialClassifier.class));
+  }
 
-	public static <CLASSIFIER_TYPE> CLASSIFIER_TYPE createClassifierFromJar(String jarFileName, Class<CLASSIFIER_TYPE> cls) throws IOException {
-		// get the jar file manifest
-		JarFile modelFile = new JarFile(jarFileName);
-		ClassifierManifest manifest = new ClassifierManifest(modelFile);
+  public static <CLASSIFIER_TYPE> CLASSIFIER_TYPE createClassifierFromJar(String jarFileName,
+          Class<CLASSIFIER_TYPE> cls) throws IOException {
+    // get the jar file manifest
+    JarFile modelFile = new JarFile(jarFileName);
+    ClassifierManifest manifest = new ClassifierManifest(modelFile);
 
-		// get the classifier class
-		ClassifierBuilder<?> builder = manifest.getClassifierBuilder();
-		Class<? extends CLASSIFIER_TYPE> classifierClass = builder.getClassifierClass().asSubclass(cls);
+    // get the classifier class
+    ClassifierBuilder<?> builder = manifest.getClassifierBuilder();
+    Class<? extends CLASSIFIER_TYPE> classifierClass = builder.getClassifierClass().asSubclass(cls);
 
-		// create the classifier, passing in the jar file
-		try {
-			return classifierClass.getConstructor(JarFile.class).newInstance(modelFile);
-		}
-		catch (Exception e) {
-			IOException exception = new IOException();
-			exception.initCause(e);
-			throw exception;
-		}
-		finally {
-			modelFile.close();
-		}
-	}
-
-	
+    // create the classifier, passing in the jar file
+    try {
+      return classifierClass.getConstructor(JarFile.class).newInstance(modelFile);
+    } catch (Exception e) {
+      IOException exception = new IOException();
+      exception.initCause(e);
+      throw exception;
+    } finally {
+      modelFile.close();
+    }
+  }
 
 }

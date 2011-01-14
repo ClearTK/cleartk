@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.test;
 
 import java.io.File;
@@ -28,11 +28,11 @@ import java.io.IOException;
 
 import org.cleartk.classifier.jar.ClassifierBuilder;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * <p>
  * 
  * @author Philip Ogren
@@ -41,13 +41,13 @@ import org.cleartk.classifier.jar.ClassifierBuilder;
  */
 public class StringTestDataWriter extends TestDataWriter_ImplBase<String> {
 
-	public StringTestDataWriter(File outputDirectory) throws IOException {
-		super(outputDirectory);
-	}
+  public StringTestDataWriter(File outputDirectory) throws IOException {
+    super(outputDirectory);
+  }
 
-	@Override
-	public Class<? extends ClassifierBuilder<String>> getDefaultClassifierBuilderClass() {
-		return StringTestClassifierBuilder.class;
-	}
+  @Override
+  public Class<? extends ClassifierBuilder<String>> getDefaultClassifierBuilderClass() {
+    return StringTestClassifierBuilder.class;
+  }
 
 }

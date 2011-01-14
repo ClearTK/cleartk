@@ -34,35 +34,38 @@ import org.cleartk.classifier.jar.Train;
  * <br>
  * Copyright (c) 2009, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
  * @author Philip Ogren
  * 
  */
 
-public class  ViterbiClassifierBuilder<OUTCOME_TYPE> implements ClassifierBuilder<OUTCOME_TYPE>{
+public class ViterbiClassifierBuilder<OUTCOME_TYPE> implements ClassifierBuilder<OUTCOME_TYPE> {
 
-	public static final String DELEGATED_MODEL_FILE_NAME = "delegated-model.jar";
+  public static final String DELEGATED_MODEL_FILE_NAME = "delegated-model.jar";
 
-	public void buildJar(File dir, String[] args) throws Exception {
-		File delegatedOutputDirectory = new File(dir, ViterbiDataWriter.DELEGATED_MODEL_DIRECTORY_NAME);
-		FileUtil.copyFile(new File(delegatedOutputDirectory, BuildJar.MODEL_FILE_NAME), new File(dir, DELEGATED_MODEL_FILE_NAME));
-		
-		BuildJar.OutputStream stream = new BuildJar.OutputStream(dir);
-		stream.write(DELEGATED_MODEL_FILE_NAME, new File(dir, DELEGATED_MODEL_FILE_NAME));
-		stream.write(ViterbiDataWriter.OUTCOME_FEATURE_EXTRACTOR_FILE_NAME, new File(dir, ViterbiDataWriter.OUTCOME_FEATURE_EXTRACTOR_FILE_NAME));
-		stream.close();
+  public void buildJar(File dir, String[] args) throws Exception {
+    File delegatedOutputDirectory = new File(dir, ViterbiDataWriter.DELEGATED_MODEL_DIRECTORY_NAME);
+    FileUtil.copyFile(new File(delegatedOutputDirectory, BuildJar.MODEL_FILE_NAME), new File(dir,
+            DELEGATED_MODEL_FILE_NAME));
 
-	}
+    BuildJar.OutputStream stream = new BuildJar.OutputStream(dir);
+    stream.write(DELEGATED_MODEL_FILE_NAME, new File(dir, DELEGATED_MODEL_FILE_NAME));
+    stream.write(ViterbiDataWriter.OUTCOME_FEATURE_EXTRACTOR_FILE_NAME, new File(dir,
+            ViterbiDataWriter.OUTCOME_FEATURE_EXTRACTOR_FILE_NAME));
+    stream.close();
 
-	public Class<?> getClassifierClass() {
-		return ViterbiClassifier.class;
-	}
+  }
 
-	public void train(File dir, String[] args) throws Exception {
-		File delegatedOutputDirectory = new File(dir, ViterbiDataWriter.DELEGATED_MODEL_DIRECTORY_NAME);
-		String[] delegatedArgs = new String[args.length + 1];
-		System.arraycopy(args, 0, delegatedArgs, 1, args.length);
-		delegatedArgs[0] = delegatedOutputDirectory.getPath();
-		Train.main(delegatedArgs);
-	}
+  public Class<?> getClassifierClass() {
+    return ViterbiClassifier.class;
+  }
+
+  public void train(File dir, String[] args) throws Exception {
+    File delegatedOutputDirectory = new File(dir, ViterbiDataWriter.DELEGATED_MODEL_DIRECTORY_NAME);
+    String[] delegatedArgs = new String[args.length + 1];
+    System.arraycopy(args, 0, delegatedArgs, 1, args.length);
+    delegatedArgs[0] = delegatedOutputDirectory.getPath();
+    Train.main(delegatedArgs);
+  }
 
 }

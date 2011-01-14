@@ -39,39 +39,40 @@ import org.cleartk.syntax.constituent.type.TreebankNode;
  * @author Steven Bethard
  */
 public class TargetPathExtractor {
-	public List<Feature> extract(JCas jCas, TreebankNode source, TreebankNode target) {
-		List<TreebankNode> sourceToRoot = this.pathToRoot(source);
-		List<TreebankNode> targetToRoot = this.pathToRoot(target);
-		// TreebankNode commonParent = null;
-		while (!sourceToRoot.isEmpty()
-				&& !targetToRoot.isEmpty()
-				&& sourceToRoot.get(sourceToRoot.size() - 1) == targetToRoot.get(targetToRoot.size() - 1)) {
-			// commonParent = sourceToRoot.get(sourceToRoot.size() - 1);
-			sourceToRoot.remove(sourceToRoot.size() - 1);
-			targetToRoot.remove(targetToRoot.size() - 1);
-		}
-		String value = this.toTagString(targetToRoot, ">");
-		return Collections.singletonList(new Feature("TargetPath", value));
-	}
+  public List<Feature> extract(JCas jCas, TreebankNode source, TreebankNode target) {
+    List<TreebankNode> sourceToRoot = this.pathToRoot(source);
+    List<TreebankNode> targetToRoot = this.pathToRoot(target);
+    // TreebankNode commonParent = null;
+    while (!sourceToRoot.isEmpty()
+            && !targetToRoot.isEmpty()
+            && sourceToRoot.get(sourceToRoot.size() - 1) == targetToRoot
+                    .get(targetToRoot.size() - 1)) {
+      // commonParent = sourceToRoot.get(sourceToRoot.size() - 1);
+      sourceToRoot.remove(sourceToRoot.size() - 1);
+      targetToRoot.remove(targetToRoot.size() - 1);
+    }
+    String value = this.toTagString(targetToRoot, ">");
+    return Collections.singletonList(new Feature("TargetPath", value));
+  }
 
-	private List<TreebankNode> pathToRoot(TreebankNode leaf) {
-		List<TreebankNode> result = new ArrayList<TreebankNode>();
-		TreebankNode curr = leaf;
-		while (curr != null) {
-			result.add(curr);
-			curr = curr.getParent();
-		}
-		return result;
-	}
+  private List<TreebankNode> pathToRoot(TreebankNode leaf) {
+    List<TreebankNode> result = new ArrayList<TreebankNode>();
+    TreebankNode curr = leaf;
+    while (curr != null) {
+      result.add(curr);
+      curr = curr.getParent();
+    }
+    return result;
+  }
 
-	private String toTagString(List<TreebankNode> nodes, String join) {
-		StringBuilder builder = new StringBuilder();
-		for (TreebankNode node : nodes) {
-			if (builder.length() > 0) {
-				builder.append(join);
-			}
-			builder.append(node.getNodeType());
-		}
-		return builder.toString();
-	}
+  private String toTagString(List<TreebankNode> nodes, String join) {
+    StringBuilder builder = new StringBuilder();
+    for (TreebankNode node : nodes) {
+      if (builder.length() > 0) {
+        builder.append(join);
+      }
+      builder.append(node.getNodeType());
+    }
+    return builder.toString();
+  }
 }

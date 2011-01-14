@@ -43,33 +43,36 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * <br>
  * Copyright (c) 2009, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
  * @author Philipp Wetzler
  * 
  */
 
-public class DefaultOVASVMlightDataWriterFactory extends JarDataWriterFactory<FeatureVector, String, Integer> {
+public class DefaultOVASVMlightDataWriterFactory extends
+        JarDataWriterFactory<FeatureVector, String, Integer> {
 
-	public static final String PARAM_CUTOFF = ConfigurationParameterFactory.createConfigurationParameterName(DefaultOVASVMlightDataWriterFactory.class, "cutoff");
-	@ConfigurationParameter(
-			defaultValue = "5",
-			description = "features that occur less than this number of times over the whole training set will not be encoded during testing")
-	protected int cutoff = 5;
+  public static final String PARAM_CUTOFF = ConfigurationParameterFactory
+          .createConfigurationParameterName(DefaultOVASVMlightDataWriterFactory.class, "cutoff");
 
-	public DataWriter<String> createDataWriter() throws IOException {
-		OVASVMlightDataWriter dataWriter = new OVASVMlightDataWriter(outputDirectory);
+  @ConfigurationParameter(defaultValue = "5", description = "features that occur less than this number of times over the whole training set will not be encoded during testing")
+  protected int cutoff = 5;
 
-		if(!this.setEncodersFromFileSystem(dataWriter)) {
-			NameNumberNormalizer normalizer = new EuclidianNormalizer();
-			FeatureVectorFeaturesEncoder myFeaturesEncoder = new FeatureVectorFeaturesEncoder(cutoff, normalizer);
-			myFeaturesEncoder.addEncoder(new NumberEncoder());
-			myFeaturesEncoder.addEncoder(new BooleanEncoder());
-			myFeaturesEncoder.addEncoder(new StringEncoder());
-			dataWriter.setFeaturesEncoder(myFeaturesEncoder);
+  public DataWriter<String> createDataWriter() throws IOException {
+    OVASVMlightDataWriter dataWriter = new OVASVMlightDataWriter(outputDirectory);
 
-			dataWriter.setOutcomeEncoder(new StringToIntegerOutcomeEncoder());
-		}
+    if (!this.setEncodersFromFileSystem(dataWriter)) {
+      NameNumberNormalizer normalizer = new EuclidianNormalizer();
+      FeatureVectorFeaturesEncoder myFeaturesEncoder = new FeatureVectorFeaturesEncoder(cutoff,
+              normalizer);
+      myFeaturesEncoder.addEncoder(new NumberEncoder());
+      myFeaturesEncoder.addEncoder(new BooleanEncoder());
+      myFeaturesEncoder.addEncoder(new StringEncoder());
+      dataWriter.setFeaturesEncoder(myFeaturesEncoder);
 
-		return dataWriter;
-	}
+      dataWriter.setOutcomeEncoder(new StringToIntegerOutcomeEncoder());
+    }
+
+    return dataWriter;
+  }
 
 }

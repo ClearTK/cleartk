@@ -54,115 +54,115 @@ import org.uimafit.factory.initializable.InitializableFactory;
  * 
  */
 public class TokenAnnotator extends JCasAnnotator_ImplBase {
-	
-	public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveDescription(TokenAnnotator.class, TokenComponents.TYPE_SYSTEM_DESCRIPTION);
-	}
-	
-	public static final String PARAM_TOKENIZER_NAME = ConfigurationParameterFactory.createConfigurationParameterName(TokenAnnotator.class, "tokenizerName");
 
-	private static final String TOKENIZER_DESCRIPTION = "specifies the class type of the tokenizer that will be used by this annotator. " +
-			"If this parameter is not filled, then the default tokenenizer (org.cleartk.token.util.PennTreebankTokenizer) is used. " +
-			"A tokenenizer is defined as any implementation of the interface defined by org.cleartk.token.util.Tokenizer."; 
-	@ConfigurationParameter (
-			description = TOKENIZER_DESCRIPTION,
-			defaultValue = "org.cleartk.token.tokenizer.PennTreebankTokenizer")
-	private String tokenizerName;
-	
-	public static final String PARAM_TOKEN_TYPE_NAME = ConfigurationParameterFactory.createConfigurationParameterName(TokenAnnotator.class, "tokenTypeName");
+  public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
+    return AnalysisEngineFactory.createPrimitiveDescription(TokenAnnotator.class,
+            TokenComponents.TYPE_SYSTEM_DESCRIPTION);
+  }
 
-	@ConfigurationParameter (
-			description = "class type of the tokens that are created by this annotator. If this parameter is not filled, then tokens of type org.cleartk.token.type.Token will be created.",
-			defaultValue = "org.cleartk.token.type.Token")
-	private String tokenTypeName;
-	
-	public static final String PARAM_WINDOW_TYPE_NAME = ConfigurationParameterFactory.createConfigurationParameterName(TokenAnnotator.class, "windowTypeName");
-	private static final String WINDOW_TYPE_DESCRIPTION = "specifies the class type of annotations that will be tokenized. " +
-			"If no value is given, then the entire document will be tokenized at once. " +
-			"A good value for this parameter would be 'org.cleartk.token.type.Sentence' " +
-			" (especially when using the PennTreebankTokenizer).";
-	
-	//do not set the default value to 'org.cleartk.token.type.Sentence'.  If you do, then unit tests will break.  The symptom will be a tokenizer that doesn't generate any tokens (because there
-	//are no sentences to iterate over.
-	@ConfigurationParameter (
-			description = WINDOW_TYPE_DESCRIPTION
-			)
-	private String windowTypeName;
-	
-	Tokenizer tokenizer;
+  public static final String PARAM_TOKENIZER_NAME = ConfigurationParameterFactory
+          .createConfigurationParameterName(TokenAnnotator.class, "tokenizerName");
 
-	Class<? extends Annotation> tokenClass;
+  private static final String TOKENIZER_DESCRIPTION = "specifies the class type of the tokenizer that will be used by this annotator. "
+          + "If this parameter is not filled, then the default tokenenizer (org.cleartk.token.util.PennTreebankTokenizer) is used. "
+          + "A tokenenizer is defined as any implementation of the interface defined by org.cleartk.token.util.Tokenizer.";
 
-	Constructor<? extends Annotation> tokenConstructor;
+  @ConfigurationParameter(description = TOKENIZER_DESCRIPTION, defaultValue = "org.cleartk.token.tokenizer.PennTreebankTokenizer")
+  private String tokenizerName;
 
-	private Class<? extends Annotation> windowClass;
+  public static final String PARAM_TOKEN_TYPE_NAME = ConfigurationParameterFactory
+          .createConfigurationParameterName(TokenAnnotator.class, "tokenTypeName");
 
-	private Type windowType = null;
+  @ConfigurationParameter(description = "class type of the tokens that are created by this annotator. If this parameter is not filled, then tokens of type org.cleartk.token.type.Token will be created.", defaultValue = "org.cleartk.token.type.Token")
+  private String tokenTypeName;
 
-	private boolean typesInitialized = false;
+  public static final String PARAM_WINDOW_TYPE_NAME = ConfigurationParameterFactory
+          .createConfigurationParameterName(TokenAnnotator.class, "windowTypeName");
 
-	public void initialize(UimaContext uimaContext) throws ResourceInitializationException {
-		try {
-			super.initialize(uimaContext);
-			tokenizer = 	InitializableFactory.create(uimaContext, tokenizerName, Tokenizer.class);
-			tokenClass = InitializableFactory.getClass(tokenTypeName, Annotation.class);
-			tokenConstructor = tokenClass.getConstructor(new Class[] { JCas.class, Integer.TYPE, Integer.TYPE });
-			if(windowTypeName != null)
-				windowClass = InitializableFactory.getClass(windowTypeName, Annotation.class);
-		}
-		catch (Exception e) {
-			throw new ResourceInitializationException(e);
-		}
-	}
+  private static final String WINDOW_TYPE_DESCRIPTION = "specifies the class type of annotations that will be tokenized. "
+          + "If no value is given, then the entire document will be tokenized at once. "
+          + "A good value for this parameter would be 'org.cleartk.token.type.Sentence' "
+          + " (especially when using the PennTreebankTokenizer).";
 
-	private void initializeTypes(JCas jCas) throws AnalysisEngineProcessException {
-		if (windowClass != null) {
-			windowType = UIMAUtil.getCasType(jCas, windowClass);
-		}
-		typesInitialized = true;
-	}
+  // do not set the default value to 'org.cleartk.token.type.Sentence'. If you do, then unit tests
+  // will break. The symptom will be a tokenizer that doesn't generate any tokens (because there
+  // are no sentences to iterate over.
+  @ConfigurationParameter(description = WINDOW_TYPE_DESCRIPTION)
+  private String windowTypeName;
 
-	public void process(JCas jCas) throws AnalysisEngineProcessException {
-		try {
-			if (!typesInitialized) initializeTypes(jCas);
-			if (windowType != null) {
-				FSIterator<Annotation> windows = jCas.getAnnotationIndex(windowType).iterator();
-				while (windows.hasNext()) {
-					Annotation window = (Annotation) windows.next();
-					List<Token> pojoTokens = tokenizer.getTokens(window.getCoveredText());
-					createTokens(pojoTokens, window.getBegin(), jCas);
-				}
-			}
-			else {
-				String text = jCas.getDocumentText();
-				List<Token> pojoTokens = tokenizer.getTokens(text);
-				createTokens(pojoTokens, 0, jCas);
-			}
-		}
-		catch (Exception e) {
-			throw new AnalysisEngineProcessException(e);
-		}
-	}
+  Tokenizer tokenizer;
 
-	private void createTokens(List<Token> pojoTokens, int offset, JCas jCas) throws InstantiationException,
-			InvocationTargetException, IllegalAccessException {
-		for (Token pojoToken : pojoTokens) {
-			int tokenBegin = pojoToken.getBegin() + offset;
-			int tokenEnd = pojoToken.getEnd() + offset;
-			tokenConstructor.newInstance(jCas, tokenBegin, tokenEnd).addToIndexes();
-		}
-	}
+  Class<? extends Annotation> tokenClass;
 
-	public void setTokenizerName(String tokenizerName) {
-		this.tokenizerName = tokenizerName;
-	}
+  Constructor<? extends Annotation> tokenConstructor;
 
-	public void setTokenTypeName(String tokenTypeName) {
-		this.tokenTypeName = tokenTypeName;
-	}
+  private Class<? extends Annotation> windowClass;
 
-	public void setWindowTypeName(String windowTypeName) {
-		this.windowTypeName = windowTypeName;
-	}
+  private Type windowType = null;
+
+  private boolean typesInitialized = false;
+
+  public void initialize(UimaContext uimaContext) throws ResourceInitializationException {
+    try {
+      super.initialize(uimaContext);
+      tokenizer = InitializableFactory.create(uimaContext, tokenizerName, Tokenizer.class);
+      tokenClass = InitializableFactory.getClass(tokenTypeName, Annotation.class);
+      tokenConstructor = tokenClass.getConstructor(new Class[] { JCas.class, Integer.TYPE,
+          Integer.TYPE });
+      if (windowTypeName != null)
+        windowClass = InitializableFactory.getClass(windowTypeName, Annotation.class);
+    } catch (Exception e) {
+      throw new ResourceInitializationException(e);
+    }
+  }
+
+  private void initializeTypes(JCas jCas) throws AnalysisEngineProcessException {
+    if (windowClass != null) {
+      windowType = UIMAUtil.getCasType(jCas, windowClass);
+    }
+    typesInitialized = true;
+  }
+
+  public void process(JCas jCas) throws AnalysisEngineProcessException {
+    try {
+      if (!typesInitialized)
+        initializeTypes(jCas);
+      if (windowType != null) {
+        FSIterator<Annotation> windows = jCas.getAnnotationIndex(windowType).iterator();
+        while (windows.hasNext()) {
+          Annotation window = (Annotation) windows.next();
+          List<Token> pojoTokens = tokenizer.getTokens(window.getCoveredText());
+          createTokens(pojoTokens, window.getBegin(), jCas);
+        }
+      } else {
+        String text = jCas.getDocumentText();
+        List<Token> pojoTokens = tokenizer.getTokens(text);
+        createTokens(pojoTokens, 0, jCas);
+      }
+    } catch (Exception e) {
+      throw new AnalysisEngineProcessException(e);
+    }
+  }
+
+  private void createTokens(List<Token> pojoTokens, int offset, JCas jCas)
+          throws InstantiationException, InvocationTargetException, IllegalAccessException {
+    for (Token pojoToken : pojoTokens) {
+      int tokenBegin = pojoToken.getBegin() + offset;
+      int tokenEnd = pojoToken.getEnd() + offset;
+      tokenConstructor.newInstance(jCas, tokenBegin, tokenEnd).addToIndexes();
+    }
+  }
+
+  public void setTokenizerName(String tokenizerName) {
+    this.tokenizerName = tokenizerName;
+  }
+
+  public void setTokenTypeName(String tokenTypeName) {
+    this.tokenTypeName = tokenTypeName;
+  }
+
+  public void setWindowTypeName(String windowTypeName) {
+    this.windowTypeName = windowTypeName;
+  }
 
 }

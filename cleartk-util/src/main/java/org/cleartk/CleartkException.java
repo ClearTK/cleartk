@@ -23,33 +23,33 @@
  */
 package org.cleartk;
 
-
 /**
  * <br>
  * Copyright (c) 2009, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
  * @author Philip Ogren
  * 
  */
 
-public class CleartkException extends Exception{
+public class CleartkException extends Exception {
 
-	private static final long serialVersionUID = -6504625185622947813L;
+  private static final long serialVersionUID = -6504625185622947813L;
 
-	public CleartkException() {
-		super();
-	}
+  public CleartkException() {
+    super();
+  }
 
-	public CleartkException(String message, Throwable cause) {
-		super(message, cause);
-	}
+  public CleartkException(String message, Throwable cause) {
+    super(message, cause);
+  }
 
-	public CleartkException(String message) {
-		super(message);
-	}
+  public CleartkException(String message) {
+    super(message);
+  }
 
-	public CleartkException(Throwable cause) {
-		super(cause);
-	}
+  public CleartkException(Throwable cause) {
+    super(cause);
+  }
 
 }

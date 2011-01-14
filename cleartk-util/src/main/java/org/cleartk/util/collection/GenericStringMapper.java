@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2010, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -32,106 +32,111 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 /**
- * <br>Copyright (c) 2010, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2010, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * <p>
  */
 public class GenericStringMapper implements StringMapper, Writable {
 
-	private static final long serialVersionUID = -9129249759791539649L;
+  private static final long serialVersionUID = -9129249759791539649L;
 
+  public GenericStringMapper(int cutoff) {
+    this.cutoff = cutoff;
+  }
 
-	public GenericStringMapper(int cutoff) {
-		this.cutoff = cutoff;
-	}
+  public int getOrGenerateInteger(String s) {
+    if (expandMap) {
+      if (countingMap.containsKey(s)) {
+        Entry e = countingMap.get(s);
+        e.increment();
+        return e.i;
+      } else {
+        Entry e = new Entry(nextValue++);
+        countingMap.put(s, e);
+        return e.i;
+      }
+    } else {
+      throw new UnsupportedOperationException();
+    }
+  }
 
-	public int getOrGenerateInteger(String s) {
-		if( expandMap ) {
-			if( countingMap.containsKey(s) ) {
-				Entry e = countingMap.get(s);
-				e.increment();
-				return e.i;
-			} else {
-				Entry e = new Entry(nextValue++);
-				countingMap.put(s, e);
-				return e.i;
-			}
-		} else {
-			throw new UnsupportedOperationException();
-		}
-	}
+  public int getInteger(String s) throws UnknownKeyException {
+    if (expandMap) {
+      throw new UnsupportedOperationException();
+    } else {
+      if (stringIntMap.containsKey(s))
+        return stringIntMap.get(s);
+      else
+        throw new UnknownKeyException(s);
+    }
+  }
 
-	public int getInteger(String s) throws UnknownKeyException {
-		if( expandMap ) {
-			throw new UnsupportedOperationException();
-		} else {
-			if( stringIntMap.containsKey(s) )
-				return stringIntMap.get(s);
-			else
-				throw new UnknownKeyException(s);
-		}
-	}
+  public void finalizeMap() {
+    int total = 0;
+    int kept = 0;
 
-	public void finalizeMap() {
-		int total = 0;
-		int kept = 0;
-		
-		stringIntMap = new WrappedHPPCStringIntMap();
-		for( String s : countingMap.keySet() ) {
-			Entry e = countingMap.get(s);
-			total += 1;
-			
-			if( e.count >= cutoff ) {
-				stringIntMap.put(s, e.i);
-				kept += 1;
-			}
-		}
-		
-		Logger.getLogger(this.getClass().getName()).info(String.format("discarded %d features that occurred less than %d times; %d features remaining", total - kept, cutoff, kept));
-		
-		countingMap = null;
-		expandMap = false;		
-	}
+    stringIntMap = new WrappedHPPCStringIntMap();
+    for (String s : countingMap.keySet()) {
+      Entry e = countingMap.get(s);
+      total += 1;
 
-	public void write(File file) throws IOException {
-		Writer writer = new FileWriter(file);
-		write(writer);
-		writer.close();
-	}
+      if (e.count >= cutoff) {
+        stringIntMap.put(s, e.i);
+        kept += 1;
+      }
+    }
 
-	public void write(Writer writer) throws IOException {
-		if( expandMap )
-			throw new UnsupportedOperationException();
-		
-		for( String key : stringIntMap.keySet() ) {
-			writer.append(String.format("%d %s\n", stringIntMap.get(key), key));
-		}
+    Logger.getLogger(this.getClass().getName())
+            .info(String
+                    .format("discarded %d features that occurred less than %d times; %d features remaining",
+                            total - kept, cutoff, kept));
 
-		writer.flush();
-	}
+    countingMap = null;
+    expandMap = false;
+  }
 
+  public void write(File file) throws IOException {
+    Writer writer = new FileWriter(file);
+    write(writer);
+    writer.close();
+  }
 
-	boolean expandMap = true;
-	int nextValue = 1;
-	int cutoff;
-	Map<String,Entry> countingMap = new HashMap<String,Entry>();
+  public void write(Writer writer) throws IOException {
+    if (expandMap)
+      throw new UnsupportedOperationException();
 
-	Map<String,Integer> stringIntMap = null;
+    for (String key : stringIntMap.keySet()) {
+      writer.append(String.format("%d %s\n", stringIntMap.get(key), key));
+    }
 
+    writer.flush();
+  }
 
-	private static class Entry {
-		public Entry(int i) {
-			this.i = i;
-			this.count = 1;
-		}
+  boolean expandMap = true;
 
-		public void increment() {
-			count += 1;
-		}
+  int nextValue = 1;
 
-		public int i;
-		public int count;
-	}
-	
+  int cutoff;
+
+  Map<String, Entry> countingMap = new HashMap<String, Entry>();
+
+  Map<String, Integer> stringIntMap = null;
+
+  private static class Entry {
+    public Entry(int i) {
+      this.i = i;
+      this.count = 1;
+    }
+
+    public void increment() {
+      count += 1;
+    }
+
+    public int i;
+
+    public int count;
+  }
+
 }

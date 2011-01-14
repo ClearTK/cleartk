@@ -43,27 +43,28 @@ import org.junit.Assert;
 
 public class DescriptorTestUtil {
 
-	public static void testNoDescriptorsInSrc(String srcDirectoryName) {
-		// collect the names of all .xml descriptors in the src directory
-		File srcDirectory = new File(srcDirectoryName);
-		Set<String> descNames = new HashSet<String>();
-		Iterator<?> files = org.apache.commons.io.FileUtils.iterateFiles(srcDirectory, new SuffixFileFilter(".xml"), TrueFileFilter.INSTANCE);
-		while(files.hasNext()) {
-			File file = (File) files.next();
-			descNames.add(file.getPath());
-		}
-		
-		if(descNames.size() > 0) {
-			String message = String.format("%d descriptors in src/main/java", descNames.size());
-			System.err.println(message);
-			List<String> sortedFileNames = new ArrayList<String>(descNames);
-			Collections.sort(sortedFileNames);
-			for (String name: sortedFileNames) {
-				System.err.println(name);
-			}
-			Assert.fail(message);
-		}
-		
-	}
+  public static void testNoDescriptorsInSrc(String srcDirectoryName) {
+    // collect the names of all .xml descriptors in the src directory
+    File srcDirectory = new File(srcDirectoryName);
+    Set<String> descNames = new HashSet<String>();
+    Iterator<?> files = org.apache.commons.io.FileUtils.iterateFiles(srcDirectory,
+            new SuffixFileFilter(".xml"), TrueFileFilter.INSTANCE);
+    while (files.hasNext()) {
+      File file = (File) files.next();
+      descNames.add(file.getPath());
+    }
+
+    if (descNames.size() > 0) {
+      String message = String.format("%d descriptors in src/main/java", descNames.size());
+      System.err.println(message);
+      List<String> sortedFileNames = new ArrayList<String>(descNames);
+      Collections.sort(sortedFileNames);
+      for (String name : sortedFileNames) {
+        System.err.println(name);
+      }
+      Assert.fail(message);
+    }
+
+  }
 
 }

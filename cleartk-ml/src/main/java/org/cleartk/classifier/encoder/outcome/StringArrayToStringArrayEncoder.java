@@ -23,7 +23,6 @@
  */
 package org.cleartk.classifier.encoder.outcome;
 
-
 import java.io.File;
 
 import org.cleartk.CleartkException;
@@ -32,24 +31,23 @@ import org.cleartk.CleartkException;
  * <br>
  * Copyright (c) 2010, University of Würzburg<br>
  * All rights reserved.
-* <p>
+ * <p>
+ * 
  * @author Martin Toepfer
  */
-public class StringArrayToStringArrayEncoder implements
-		OutcomeEncoder<String[], String[]> {
+public class StringArrayToStringArrayEncoder implements OutcomeEncoder<String[], String[]> {
 
-	private static final long serialVersionUID = -6669182717100735414L;
+  private static final long serialVersionUID = -6669182717100735414L;
 
-	public void finalizeOutcomeSet(File outputDirectory)
-			throws CleartkException {
-	}
+  public void finalizeOutcomeSet(File outputDirectory) throws CleartkException {
+  }
 
-	public String[] encode(String[] outcome) {
-		return outcome;
-	}
+  public String[] encode(String[] outcome) {
+    return outcome;
+  }
 
-	public String[] decode(String[] outcome) {
-		return outcome;
-	}
+  public String[] decode(String[] outcome) {
+    return outcome;
+  }
 
 }

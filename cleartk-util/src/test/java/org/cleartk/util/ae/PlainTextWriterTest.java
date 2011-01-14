@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,9 +20,8 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.util.ae;
-
 
 import java.io.File;
 
@@ -36,52 +35,47 @@ import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ */
 
-*/
+public class PlainTextWriterTest extends DefaultTestBase {
 
-public class PlainTextWriterTest extends DefaultTestBase{
-	
-	@Test
-	public void test() throws Exception {
-		try {
-			AnalysisEngineFactory.createPrimitive(
-					PlainTextWriter.class,
-					typeSystemDescription);
-			Assert.fail("expected exception with output directory not specified");
-		} catch (ResourceInitializationException e) {}
-		
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				PlainTextWriter.class, typeSystemDescription,
-				PlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDirectory.getPath());
-		String text = "What if we built a large\r\n, wooden badger?";
-		tokenBuilder.buildTokens(jCas, text, 
-				"What if we built a large \n, wooden badger ?",
-				"WDT TO PRP VBN DT JJ , JJ NN .");
-		ViewURIUtil.setURI(jCas, "identifier");
-		engine.process(jCas);
-		engine.collectionProcessComplete();
-		
-		File outputFile = new File(this.outputDirectory, "identifier.txt");
-		String actualText = FileUtils.file2String(outputFile);
-		Assert.assertEquals(text, actualText);
+  @Test
+  public void test() throws Exception {
+    try {
+      AnalysisEngineFactory.createPrimitive(PlainTextWriter.class, typeSystemDescription);
+      Assert.fail("expected exception with output directory not specified");
+    } catch (ResourceInitializationException e) {
+    }
 
-		jCas.reset();
-		text = "What if we built a large\n, wooden badger?";
-		tokenBuilder.buildTokens(jCas, text,
-				"What if we built a large \n, wooden badger ?",
-				"WDT TO PRP VBN DT JJ , JJ NN .");
-		ViewURIUtil.setURI(jCas, "1234");
-		engine.process(jCas);
-		engine.collectionProcessComplete();
-		
-		outputFile = new File(this.outputDirectory, "1234.txt");
-		actualText = FileUtils.file2String(outputFile);
-		Assert.assertEquals(text, actualText);
-		
-	}
-	
-	
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(PlainTextWriter.class,
+            typeSystemDescription, PlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME,
+            this.outputDirectory.getPath());
+    String text = "What if we built a large\r\n, wooden badger?";
+    tokenBuilder.buildTokens(jCas, text, "What if we built a large \n, wooden badger ?",
+            "WDT TO PRP VBN DT JJ , JJ NN .");
+    ViewURIUtil.setURI(jCas, "identifier");
+    engine.process(jCas);
+    engine.collectionProcessComplete();
+
+    File outputFile = new File(this.outputDirectory, "identifier.txt");
+    String actualText = FileUtils.file2String(outputFile);
+    Assert.assertEquals(text, actualText);
+
+    jCas.reset();
+    text = "What if we built a large\n, wooden badger?";
+    tokenBuilder.buildTokens(jCas, text, "What if we built a large \n, wooden badger ?",
+            "WDT TO PRP VBN DT JJ , JJ NN .");
+    ViewURIUtil.setURI(jCas, "1234");
+    engine.process(jCas);
+    engine.collectionProcessComplete();
+
+    outputFile = new File(this.outputDirectory, "1234.txt");
+    actualText = FileUtils.file2String(outputFile);
+    Assert.assertEquals(text, actualText);
+
+  }
 
 }

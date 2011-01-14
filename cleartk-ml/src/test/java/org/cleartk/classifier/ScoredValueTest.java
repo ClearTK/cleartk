@@ -36,23 +36,24 @@ import org.junit.Test;
  * <br>
  * Copyright (c) 2009, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
  * @author Philip Ogren
  * 
  */
 
 public class ScoredValueTest {
 
-	@Test
-	public void testComparator() {
-		List<ScoredOutcome<String>> scoredValues = new ArrayList<ScoredOutcome<String>>();
-		scoredValues.add(new ScoredOutcome<String>("A", 1.0));
-		scoredValues.add(new ScoredOutcome<String>("B", 5.0));
-		scoredValues.add(new ScoredOutcome<String>("C", 0.0001));
-		scoredValues.add(new ScoredOutcome<String>("D", 20.0001));
-		Collections.sort(scoredValues);
-		assertEquals("D", scoredValues.get(0).getOutcome());
-		assertEquals("B", scoredValues.get(1).getOutcome());
-		assertEquals("A", scoredValues.get(2).getOutcome());
-		assertEquals("C", scoredValues.get(3).getOutcome());
-	}
+  @Test
+  public void testComparator() {
+    List<ScoredOutcome<String>> scoredValues = new ArrayList<ScoredOutcome<String>>();
+    scoredValues.add(new ScoredOutcome<String>("A", 1.0));
+    scoredValues.add(new ScoredOutcome<String>("B", 5.0));
+    scoredValues.add(new ScoredOutcome<String>("C", 0.0001));
+    scoredValues.add(new ScoredOutcome<String>("D", 20.0001));
+    Collections.sort(scoredValues);
+    assertEquals("D", scoredValues.get(0).getOutcome());
+    assertEquals("B", scoredValues.get(1).getOutcome());
+    assertEquals("A", scoredValues.get(2).getOutcome());
+    assertEquals("C", scoredValues.get(3).getOutcome());
+  }
 }

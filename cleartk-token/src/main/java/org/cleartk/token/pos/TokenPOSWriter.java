@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.token.pos;
 
 import org.apache.uima.UimaContext;
@@ -30,17 +30,19 @@ import org.cleartk.token.type.Token;
 import org.cleartk.util.ae.linewriter.AnnotationWriter;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
- *
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * @author Philip Ogren
  */
 
 public class TokenPOSWriter implements AnnotationWriter<Token> {
 
-	public void initialize(UimaContext context) throws ResourceInitializationException {}
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+  }
 
-	public String writeAnnotation(JCas cas, Token token) {
-		return token.getCoveredText()+"\t"+token.getPos();
-	}
+  public String writeAnnotation(JCas cas, Token token) {
+    return token.getCoveredText() + "\t" + token.getPos();
+  }
 }

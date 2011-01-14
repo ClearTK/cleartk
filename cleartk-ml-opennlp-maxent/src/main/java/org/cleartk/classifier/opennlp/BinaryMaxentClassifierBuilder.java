@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,20 +20,22 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.opennlp;
 
 import org.cleartk.classifier.Classifier;
-/**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
 
+/**
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * @author Philip Ogren
- *
+ * 
  */
 public class BinaryMaxentClassifierBuilder extends MaxentClassifierBuilder_ImplBase<Boolean> {
 
-	public Class<? extends Classifier<Boolean>> getClassifierClass() {
-		return BinaryMaxentClassifier.class;
-	}
+  public Class<? extends Classifier<Boolean>> getClassifierClass() {
+    return BinaryMaxentClassifier.class;
+  }
 }

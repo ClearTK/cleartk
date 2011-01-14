@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.token.tokenizer.util;
 
 import static org.junit.Assert.assertEquals;
@@ -31,50 +31,50 @@ import org.cleartk.token.tokenizer.PennTreebankTokenizer;
 import org.junit.Test;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
-*/
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ */
 
 public class PennTreebankTokenizerTest {
-	@Test
-	public void testHyphens() {
-		PennTreebankTokenizer tokenizer = new PennTreebankTokenizer();
-		List<org.cleartk.token.tokenizer.Token> tokens = tokenizer.getTokens("10-1234");
-		assertEquals(1, tokens.size());
-		assertEquals("10-1234", tokens.get(0).getTokenText());
+  @Test
+  public void testHyphens() {
+    PennTreebankTokenizer tokenizer = new PennTreebankTokenizer();
+    List<org.cleartk.token.tokenizer.Token> tokens = tokenizer.getTokens("10-1234");
+    assertEquals(1, tokens.size());
+    assertEquals("10-1234", tokens.get(0).getTokenText());
 
-		tokens = tokenizer.getTokens("ASDF-1234");
-		assertEquals(1, tokens.size());
-		assertEquals("ASDF-1234", tokens.get(0).getTokenText());
-	}
+    tokens = tokenizer.getTokens("ASDF-1234");
+    assertEquals(1, tokens.size());
+    assertEquals("ASDF-1234", tokens.get(0).getTokenText());
+  }
 
-	@Test
-	public void testBar() {
-		PennTreebankTokenizer tokenizer = new PennTreebankTokenizer();
-		List<org.cleartk.token.tokenizer.Token> tokens = tokenizer.getTokens("10|1234");
-		assertEquals(3, tokens.size());
-		assertEquals("10", tokens.get(0).getTokenText());
-		assertEquals("|", tokens.get(1).getTokenText());
-		assertEquals("1234", tokens.get(2).getTokenText());
-	}
-	
-	@Test
-	public void testSingleToken() {
-		PennTreebankTokenizer tokenizer = new PennTreebankTokenizer();
-		List<org.cleartk.token.tokenizer.Token> tokens = tokenizer.getTokens("asdf");
-		assertEquals(1, tokens.size());
-		assertEquals("asdf", tokens.get(0).getTokenText());
+  @Test
+  public void testBar() {
+    PennTreebankTokenizer tokenizer = new PennTreebankTokenizer();
+    List<org.cleartk.token.tokenizer.Token> tokens = tokenizer.getTokens("10|1234");
+    assertEquals(3, tokens.size());
+    assertEquals("10", tokens.get(0).getTokenText());
+    assertEquals("|", tokens.get(1).getTokenText());
+    assertEquals("1234", tokens.get(2).getTokenText());
+  }
 
-		tokens = tokenizer.getTokens(" ");
-		assertEquals(0, tokens.size());
+  @Test
+  public void testSingleToken() {
+    PennTreebankTokenizer tokenizer = new PennTreebankTokenizer();
+    List<org.cleartk.token.tokenizer.Token> tokens = tokenizer.getTokens("asdf");
+    assertEquals(1, tokens.size());
+    assertEquals("asdf", tokens.get(0).getTokenText());
 
-		tokens = tokenizer.getTokens("   asdf  ");
-		assertEquals(1, tokens.size());
-		assertEquals("asdf", tokens.get(0).getTokenText());
+    tokens = tokenizer.getTokens(" ");
+    assertEquals(0, tokens.size());
 
-		tokens = tokenizer.getTokens("     \t");
-		assertEquals(0, tokens.size());
+    tokens = tokenizer.getTokens("   asdf  ");
+    assertEquals(1, tokens.size());
+    assertEquals("asdf", tokens.get(0).getTokenText());
 
-	}
+    tokens = tokenizer.getTokens("     \t");
+    assertEquals(0, tokens.size());
+
+  }
 }

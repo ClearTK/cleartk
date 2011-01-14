@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.encoder.outcome;
 
 import java.io.File;
@@ -35,63 +35,65 @@ import java.util.TreeMap;
 import org.cleartk.CleartkException;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ */
+public class StringToIntegerOutcomeEncoder implements OutcomeEncoder<String, Integer> {
 
-*/
-public class StringToIntegerOutcomeEncoder implements OutcomeEncoder<String,Integer> {
-	
-	private static final long serialVersionUID = -4592095619017878663L;
-	
-	public static final String LOOKUP_FILE_NAME = "outcome-lookup.txt";
-	
-	public StringToIntegerOutcomeEncoder() {
-		nextIndex = 1;
-	}
+  private static final long serialVersionUID = -4592095619017878663L;
 
-	public StringToIntegerOutcomeEncoder(int firstIndex) {
-		nextIndex = firstIndex;
-	}
+  public static final String LOOKUP_FILE_NAME = "outcome-lookup.txt";
 
-	public Integer encode(String input) {
-		if( input == null )
-			return null;
-		
-		if( ! map.containsKey(input) ) {
-			map.put(input, nextIndex);
-			reverseMap.put(nextIndex, input);
-			nextIndex += 1;
-		}
-		
-		return map.get(input);
-	}
+  public StringToIntegerOutcomeEncoder() {
+    nextIndex = 1;
+  }
 
-	public String decode(Integer outcome) {
-		if( outcome == null )
-			return null;
-		
-		return reverseMap.get(outcome);
-	}
-	
-	public void finalizeOutcomeSet(File outputDirectory) throws CleartkException {
-		try {
-			File outputFile = new File(outputDirectory, LOOKUP_FILE_NAME);
-			PrintWriter writer = new PrintWriter(outputFile);
-			List<Integer> values = new ArrayList<Integer>(map.values());
-			Collections.sort(values);
-			
-			for( int value : values ) {
-				writer.format("%d %s\n", value, reverseMap.get(value));
-			}
-			
-			writer.close();
-		} catch (FileNotFoundException e) {
-			throw new CleartkException(e);
-		}
-	}
+  public StringToIntegerOutcomeEncoder(int firstIndex) {
+    nextIndex = firstIndex;
+  }
 
-	private Map<String,Integer> map = new TreeMap<String,Integer>();
-	private Map<Integer,String> reverseMap = new TreeMap<Integer,String>();
-	private int nextIndex;
+  public Integer encode(String input) {
+    if (input == null)
+      return null;
+
+    if (!map.containsKey(input)) {
+      map.put(input, nextIndex);
+      reverseMap.put(nextIndex, input);
+      nextIndex += 1;
+    }
+
+    return map.get(input);
+  }
+
+  public String decode(Integer outcome) {
+    if (outcome == null)
+      return null;
+
+    return reverseMap.get(outcome);
+  }
+
+  public void finalizeOutcomeSet(File outputDirectory) throws CleartkException {
+    try {
+      File outputFile = new File(outputDirectory, LOOKUP_FILE_NAME);
+      PrintWriter writer = new PrintWriter(outputFile);
+      List<Integer> values = new ArrayList<Integer>(map.values());
+      Collections.sort(values);
+
+      for (int value : values) {
+        writer.format("%d %s\n", value, reverseMap.get(value));
+      }
+
+      writer.close();
+    } catch (FileNotFoundException e) {
+      throw new CleartkException(e);
+    }
+  }
+
+  private Map<String, Integer> map = new TreeMap<String, Integer>();
+
+  private Map<Integer, String> reverseMap = new TreeMap<Integer, String>();
+
+  private int nextIndex;
 
 }

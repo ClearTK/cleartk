@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.svmlight;
 
 import java.io.BufferedWriter;
@@ -47,106 +47,106 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
  * <p>
  */
 
-public class OVASVMlightDataWriter extends JarDataWriter<String,Integer,FeatureVector> {
+public class OVASVMlightDataWriter extends JarDataWriter<String, Integer, FeatureVector> {
 
-	public OVASVMlightDataWriter(File outputDirectory) throws IOException {
-		super(outputDirectory);
+  public OVASVMlightDataWriter(File outputDirectory) throws IOException {
+    super(outputDirectory);
 
-		// prepare output files
-		String allFalseName = "training-data-allfalse.svmlight";
-		allFalseFile = getFile(allFalseName);
-		allFalseFile.delete();		
+    // prepare output files
+    String allFalseName = "training-data-allfalse.svmlight";
+    allFalseFile = getFile(allFalseName);
+    allFalseFile.delete();
 
-		// create the output writers
-		allFalseWriter = this.getPrintWriter(allFalseName);
-		trainingDataWriters = new TreeMap<Integer,PrintWriter>();
-	}
+    // create the output writers
+    allFalseWriter = this.getPrintWriter(allFalseName);
+    trainingDataWriters = new TreeMap<Integer, PrintWriter>();
+  }
 
-	@Override
-	public void writeEncoded(FeatureVector features, Integer outcome) {
-		if( outcome != null && ! trainingDataWriters.containsKey(outcome) ) {
-			addClass(outcome);
-		}
-		
-		StringBuffer featureString = new StringBuffer();
-		for( FeatureVector.Entry entry : features ) {
-			featureString.append(String.format(Locale.US, " %d:%.7f", entry.index, entry.value));
-		}
-		
-		StringBuffer output = new StringBuffer();
-		if( outcome == null )
-			output.append("0");
-		else
-			output.append("-1");
-		output.append(featureString);
-		allFalseWriter.println(output);
-		
-		for( int i : trainingDataWriters.keySet()) {
-			output = new StringBuffer();
-			if( outcome == null )
-				output.append("0");
-			else if( outcome == i )
-				output.append("+1");
-			else
-				output.append("-1");
+  @Override
+  public void writeEncoded(FeatureVector features, Integer outcome) {
+    if (outcome != null && !trainingDataWriters.containsKey(outcome)) {
+      addClass(outcome);
+    }
 
-			output.append(featureString);
-			
-			trainingDataWriters.get(i).println(output);
-		}
-	}
-	
+    StringBuffer featureString = new StringBuffer();
+    for (FeatureVector.Entry entry : features) {
+      featureString.append(String.format(Locale.US, " %d:%.7f", entry.index, entry.value));
+    }
 
-	@Override
-	public void finish() throws CleartkException{
-		super.finish();
+    StringBuffer output = new StringBuffer();
+    if (outcome == null)
+      output.append("0");
+    else
+      output.append("-1");
+    output.append(featureString);
+    allFalseWriter.println(output);
 
-		// close and remove all-false file
-		allFalseWriter.close();
-		allFalseFile.delete();
+    for (int i : trainingDataWriters.keySet()) {
+      output = new StringBuffer();
+      if (outcome == null)
+        output.append("0");
+      else if (outcome == i)
+        output.append("+1");
+      else
+        output.append("-1");
 
-		// flush and close all training data writers
-		for( PrintWriter pw : trainingDataWriters.values() ) {
-			pw.flush();
-			pw.close();
-		}
-	}
+      output.append(featureString);
 
-	public Class<? extends ClassifierBuilder<String>> getDefaultClassifierBuilderClass() {
-		return OVASVMlightClassifierBuilder.class;
-	}
-	
+      trainingDataWriters.get(i).println(output);
+    }
+  }
 
-	private void addClass(int label) {
-		File newTDFile = getFile(String.format("training-data-%d.svmlight", label));
-		newTDFile.delete();
+  @Override
+  public void finish() throws CleartkException {
+    super.finish();
 
-		allFalseWriter.flush();
-		try {
-			copyFile(allFalseFile, newTDFile);
-			trainingDataWriters.put(label, new PrintWriter(new BufferedWriter(new FileWriter(newTDFile, true))));
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
+    // close and remove all-false file
+    allFalseWriter.close();
+    allFalseFile.delete();
 
-	
-	private void copyFile(File source, File target) throws IOException {
-	     // Create channel on the source
-       FileChannel srcChannel = new FileInputStream(source).getChannel();
-   
-       // Create channel on the destination
-       FileChannel dstChannel = new FileOutputStream(target).getChannel();
-   
-       // Copy file contents from source to destination
-       dstChannel.transferFrom(srcChannel, 0, srcChannel.size());
-   
-       // Close the channels
-       srcChannel.close();
-       dstChannel.close();
-   }
+    // flush and close all training data writers
+    for (PrintWriter pw : trainingDataWriters.values()) {
+      pw.flush();
+      pw.close();
+    }
+  }
 
-	private File allFalseFile;
-	private PrintWriter allFalseWriter;
-	private Map<Integer, PrintWriter> trainingDataWriters;
+  public Class<? extends ClassifierBuilder<String>> getDefaultClassifierBuilderClass() {
+    return OVASVMlightClassifierBuilder.class;
+  }
+
+  private void addClass(int label) {
+    File newTDFile = getFile(String.format("training-data-%d.svmlight", label));
+    newTDFile.delete();
+
+    allFalseWriter.flush();
+    try {
+      copyFile(allFalseFile, newTDFile);
+      trainingDataWriters.put(label, new PrintWriter(new BufferedWriter(new FileWriter(newTDFile,
+              true))));
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  private void copyFile(File source, File target) throws IOException {
+    // Create channel on the source
+    FileChannel srcChannel = new FileInputStream(source).getChannel();
+
+    // Create channel on the destination
+    FileChannel dstChannel = new FileOutputStream(target).getChannel();
+
+    // Copy file contents from source to destination
+    dstChannel.transferFrom(srcChannel, 0, srcChannel.size());
+
+    // Close the channels
+    srcChannel.close();
+    dstChannel.close();
+  }
+
+  private File allFalseFile;
+
+  private PrintWriter allFalseWriter;
+
+  private Map<Integer, PrintWriter> trainingDataWriters;
 }

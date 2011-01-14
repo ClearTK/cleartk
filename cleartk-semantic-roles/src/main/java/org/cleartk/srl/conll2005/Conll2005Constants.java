@@ -22,7 +22,6 @@
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
-
 package org.cleartk.srl.conll2005;
 
 /**
@@ -34,10 +33,9 @@ package org.cleartk.srl.conll2005;
 
 public interface Conll2005Constants {
 
-	/**
-	 * The view containing CoNLL 2005 formatted text.
-	 */
-	public static final String CONLL_2005_VIEW = "CONLL_2005_VIEW";
-
+  /**
+   * The view containing CoNLL 2005 formatted text.
+   */
+  public static final String CONLL_2005_VIEW = "CONLL_2005_VIEW";
 
 }

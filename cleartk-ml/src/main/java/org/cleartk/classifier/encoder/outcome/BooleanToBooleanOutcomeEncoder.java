@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,28 +20,28 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.encoder.outcome;
 
 import java.io.File;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ */
+public class BooleanToBooleanOutcomeEncoder implements OutcomeEncoder<Boolean, Boolean> {
 
-*/
-public class BooleanToBooleanOutcomeEncoder implements OutcomeEncoder<Boolean,Boolean> {
+  private static final long serialVersionUID = -1845284146680551149L;
 
-	private static final long serialVersionUID = -1845284146680551149L;
+  public Boolean encode(Boolean input) {
+    return input;
+  }
 
-	public Boolean encode(Boolean input) {
-		return input;
-	}
+  public Boolean decode(Boolean outcome) {
+    return outcome;
+  }
 
-	public Boolean decode(Boolean outcome) {
-		return outcome;
-	}
-
-	public void finalizeOutcomeSet(File outputDirectory) {
-	}
+  public void finalizeOutcomeSet(File outputDirectory) {
+  }
 }

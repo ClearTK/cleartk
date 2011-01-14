@@ -65,163 +65,168 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * @author Philip V. Ogren
  * @see GeniaPOSParser
  */
-@SofaCapability(outputSofas = {ViewURIUtil.URI, GeniaPosViewName.GENIA_POS})
+@SofaCapability(outputSofas = { ViewURIUtil.URI, GeniaPosViewName.GENIA_POS })
 public class GeniaPosGoldReader extends JCasCollectionReader_ImplBase {
 
-	public static final String PARAM_GENIA_CORPUS_FILE = ConfigurationParameterFactory
-			.createConfigurationParameterName(GeniaPosGoldReader.class, "geniaCorpusFile");
+  public static final String PARAM_GENIA_CORPUS_FILE = ConfigurationParameterFactory
+          .createConfigurationParameterName(GeniaPosGoldReader.class, "geniaCorpusFile");
 
-	@ConfigurationParameter(description = "names the file that is the Genia corpus to be loaded. A good value is probably '.../GENIAcorpus3.02.pos.xml'.  Please see README in this directory for edits that you may need to make to this file manually.", mandatory = true)
-	private File geniaCorpusFile;
+  @ConfigurationParameter(description = "names the file that is the Genia corpus to be loaded. A good value is probably '.../GENIAcorpus3.02.pos.xml'.  Please see README in this directory for edits that you may need to make to this file manually.", mandatory = true)
+  private File geniaCorpusFile;
 
-	public static final String PARAM_LOAD_SENTENCES = ConfigurationParameterFactory
-			.createConfigurationParameterName(GeniaPosGoldReader.class, "loadSentences");
+  public static final String PARAM_LOAD_SENTENCES = ConfigurationParameterFactory
+          .createConfigurationParameterName(GeniaPosGoldReader.class, "loadSentences");
 
-	@ConfigurationParameter(description = "determines whether sentence annotations will be added from the Genia corpus.", defaultValue = "true")
-	private boolean loadSentences = true;
+  @ConfigurationParameter(description = "determines whether sentence annotations will be added from the Genia corpus.", defaultValue = "true")
+  private boolean loadSentences = true;
 
-	public static final String PARAM_LOAD_TOKENS = ConfigurationParameterFactory.createConfigurationParameterName(
-			GeniaPosGoldReader.class, "loadTokens");
+  public static final String PARAM_LOAD_TOKENS = ConfigurationParameterFactory
+          .createConfigurationParameterName(GeniaPosGoldReader.class, "loadTokens");
 
-	@ConfigurationParameter(description = "determines whether tokens annotations will be added from the Genia corpus. ", defaultValue = "true")
-	private boolean loadTokens = true;
+  @ConfigurationParameter(description = "determines whether tokens annotations will be added from the Genia corpus. ", defaultValue = "true")
+  private boolean loadTokens = true;
 
-	public static final String PARAM_LOAD_POS_TAGS = ConfigurationParameterFactory.createConfigurationParameterName(
-			GeniaPosGoldReader.class, "loadPosTags");
+  public static final String PARAM_LOAD_POS_TAGS = ConfigurationParameterFactory
+          .createConfigurationParameterName(GeniaPosGoldReader.class, "loadPosTags");
 
-	@ConfigurationParameter(description = "determines whether the part of speech tags assigned to each token in the genia corpus will be loaded. The default value of 'true' is used if this "
-			+ "parameter is unspecified. If 'loadTokens' is 'false', then 'loadPOSTags' will be treated as 'false' regardless of what is given in the descriptor file.", defaultValue = "true")
-	private boolean loadPosTags = true;
+  @ConfigurationParameter(description = "determines whether the part of speech tags assigned to each token in the genia corpus will be loaded. The default value of 'true' is used if this "
+          + "parameter is unspecified. If 'loadTokens' is 'false', then 'loadPOSTags' will be treated as 'false' regardless of what is given in the descriptor file.", defaultValue = "true")
+  private boolean loadPosTags = true;
 
-	public static final String PARAM_ARTICLE_IDS_LIST_FILE = ConfigurationParameterFactory
-			.createConfigurationParameterName(GeniaPosGoldReader.class, "articleIdsListFile");
+  public static final String PARAM_ARTICLE_IDS_LIST_FILE = ConfigurationParameterFactory
+          .createConfigurationParameterName(GeniaPosGoldReader.class, "articleIdsListFile");
 
-	@ConfigurationParameter(description = "names the file used to specify the article ids that should be read in")
-	File articleIdsListFile;
+  @ConfigurationParameter(description = "names the file used to specify the article ids that should be read in")
+  File articleIdsListFile;
 
-	private boolean filterArticles;
+  private boolean filterArticles;
 
-	private Set<String> articleIds;
+  private Set<String> articleIds;
 
-	private GeniaPOSParser parser;
+  private GeniaPOSParser parser;
 
-	private GeniaParse parse;
+  private GeniaParse parse;
 
-	private int progress = 0;
+  private int progress = 0;
 
-	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		
-		articleIds = new HashSet<String>();
+  @Override
+  public void initialize(UimaContext context) throws ResourceInitializationException {
 
-		try {
-			if (articleIdsListFile == null) {
-				filterArticles = false;
-			}
-			else {
-				filterArticles = true;
-				String[] ids = FileUtil.loadListOfStrings(articleIdsListFile);
-				for (String id : ids) {
-					articleIds.add(id);
-				}
-			}
+    articleIds = new HashSet<String>();
 
-			parser = new GeniaPOSParser(geniaCorpusFile);
-			loadPosTags = loadTokens & loadPosTags;
-		}
-		catch (IOException ioe) {
-			throw new ResourceInitializationException(ioe);
-		}
-		catch (JDOMException je) {
-			throw new ResourceInitializationException(je);
-		}
-	}
+    try {
+      if (articleIdsListFile == null) {
+        filterArticles = false;
+      } else {
+        filterArticles = true;
+        String[] ids = FileUtil.loadListOfStrings(articleIdsListFile);
+        for (String id : ids) {
+          articleIds.add(id);
+        }
+      }
 
-	public void getNext(JCas jCas) throws IOException, CollectionException {
-		if (!hasNext()) throw new CollectionException("Should not be calling getNext() because hasNext returns false",
-				null);
-		try {
-			JCas annotationsView = jCas.getView(CAS.NAME_DEFAULT_SOFA);
-			String text = parse.getText();
-			annotationsView.setDocumentText(text);
+      parser = new GeniaPOSParser(geniaCorpusFile);
+      loadPosTags = loadTokens & loadPosTags;
+    } catch (IOException ioe) {
+      throw new ResourceInitializationException(ioe);
+    } catch (JDOMException je) {
+      throw new ResourceInitializationException(je);
+    }
+  }
 
-			List<GeniaSentence> sentences = parse.getSentences();
+  public void getNext(JCas jCas) throws IOException, CollectionException {
+    if (!hasNext())
+      throw new CollectionException(
+              "Should not be calling getNext() because hasNext returns false", null);
+    try {
+      JCas annotationsView = jCas.getView(CAS.NAME_DEFAULT_SOFA);
+      String text = parse.getText();
+      annotationsView.setDocumentText(text);
 
-			for (GeniaSentence geniaSentence : sentences) {
-				if (loadTokens) {
-					List<GeniaTag> posTags = geniaSentence.getPosTags();
-					for (GeniaTag posTag : posTags) {
-						Span tokenSpan = posTag.getSpans().get(0);
-						Token token = new Token(annotationsView, tokenSpan.getBegin(), tokenSpan.getEnd());
-						if (loadPosTags) token.setPos(posTag.getLabel());
-						token.addToIndexes();
-					}
-				}
-				if (loadSentences) {
-					Sentence sentence = new Sentence(annotationsView, geniaSentence.getSpan().getBegin(), geniaSentence
-							.getSpan().getEnd());
-					sentence.addToIndexes();
-				}
-			}
+      List<GeniaSentence> sentences = parse.getSentences();
 
-			ViewURIUtil.setURI(jCas, parse.getMedline());
+      for (GeniaSentence geniaSentence : sentences) {
+        if (loadTokens) {
+          List<GeniaTag> posTags = geniaSentence.getPosTags();
+          for (GeniaTag posTag : posTags) {
+            Span tokenSpan = posTag.getSpans().get(0);
+            Token token = new Token(annotationsView, tokenSpan.getBegin(), tokenSpan.getEnd());
+            if (loadPosTags)
+              token.setPos(posTag.getLabel());
+            token.addToIndexes();
+          }
+        }
+        if (loadSentences) {
+          Sentence sentence = new Sentence(annotationsView, geniaSentence.getSpan().getBegin(),
+                  geniaSentence.getSpan().getEnd());
+          sentence.addToIndexes();
+        }
+      }
 
-			JCas geniaView = jCas.createView(GeniaPosViewName.GENIA_POS);
-			geniaView.setDocumentText(parse.getXml());
+      ViewURIUtil.setURI(jCas, parse.getMedline());
 
-			parse = null;
-		}
-		catch (CASException ce) {
-			throw new CollectionException(ce);
-		}
+      JCas geniaView = jCas.createView(GeniaPosViewName.GENIA_POS);
+      geniaView.setDocumentText(parse.getXml());
 
-	}
+      parse = null;
+    } catch (CASException ce) {
+      throw new CollectionException(ce);
+    }
 
-	public void close() throws IOException {
-	}
+  }
 
-	public Progress[] getProgress() {
-		if (filterArticles) {
-			return new Progress[] { new ProgressImpl(progress, articleIds.size(), Progress.ENTITIES) };
-		}
-		else {
-			return new Progress[] { new ProgressImpl(progress, 2000, Progress.ENTITIES) };
-		}
-	}
+  public void close() throws IOException {
+  }
 
-	public boolean hasNext() throws IOException, CollectionException {
-		if (parse != null) return true;
-		while (parser.hasNext()) {
-			parse = parser.next();
-			if (!filterArticles) {
-				progress++;
-				return true;
-			}
-			if (articleIds.contains(parse.getMedline())) {
-				progress++;
-				return true;
-			}
-		}
-		return false;
-	}
+  public Progress[] getProgress() {
+    if (filterArticles) {
+      return new Progress[] { new ProgressImpl(progress, articleIds.size(), Progress.ENTITIES) };
+    } else {
+      return new Progress[] { new ProgressImpl(progress, 2000, Progress.ENTITIES) };
+    }
+  }
 
-	public static CollectionReader getDescription(String geniaCorpusFile) throws ResourceInitializationException {
-		return CollectionReaderFactory.createCollectionReader(GeniaPosGoldReader.class,
-				TokenComponents.TYPE_SYSTEM_DESCRIPTION, GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE, geniaCorpusFile);
-	}
+  public boolean hasNext() throws IOException, CollectionException {
+    if (parse != null)
+      return true;
+    while (parser.hasNext()) {
+      parse = parser.next();
+      if (!filterArticles) {
+        progress++;
+        return true;
+      }
+      if (articleIds.contains(parse.getMedline())) {
+        progress++;
+        return true;
+      }
+    }
+    return false;
+  }
 
-	public static String[] TEST_FOLDS = new String[] { "resources/genia/article_ids/fold-1-test.txt",
-			"resources/genia/article_ids/fold-2-test.txt", "resources/genia/article_ids/fold-3-test.txt",
-			"resources/genia/article_ids/fold-4-test.txt", "resources/genia/article_ids/fold-5-test.txt",
-			"resources/genia/article_ids/fold-6-test.txt", "resources/genia/article_ids/fold-7-test.txt",
-			"resources/genia/article_ids/fold-8-test.txt", "resources/genia/article_ids/fold-9-test.txt",
-			"resources/genia/article_ids/fold-10-test.txt", };
+  public static CollectionReader getDescription(String geniaCorpusFile)
+          throws ResourceInitializationException {
+    return CollectionReaderFactory.createCollectionReader(GeniaPosGoldReader.class,
+            TokenComponents.TYPE_SYSTEM_DESCRIPTION, GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
+            geniaCorpusFile);
+  }
 
-	public static String[] TRAIN_FOLDS = new String[] { "resources/genia/article_ids/fold-1-train.txt",
-			"resources/genia/article_ids/fold-2-train.txt", "resources/genia/article_ids/fold-3-train.txt",
-			"resources/genia/article_ids/fold-4-train.txt", "resources/genia/article_ids/fold-5-train.txt",
-			"resources/genia/article_ids/fold-6-train.txt", "resources/genia/article_ids/fold-7-train.txt",
-			"resources/genia/article_ids/fold-8-train.txt", "resources/genia/article_ids/fold-9-train.txt",
-			"resources/genia/article_ids/fold-10-train.txt", };
+  public static String[] TEST_FOLDS = new String[] { "resources/genia/article_ids/fold-1-test.txt",
+      "resources/genia/article_ids/fold-2-test.txt", "resources/genia/article_ids/fold-3-test.txt",
+      "resources/genia/article_ids/fold-4-test.txt", "resources/genia/article_ids/fold-5-test.txt",
+      "resources/genia/article_ids/fold-6-test.txt", "resources/genia/article_ids/fold-7-test.txt",
+      "resources/genia/article_ids/fold-8-test.txt", "resources/genia/article_ids/fold-9-test.txt",
+      "resources/genia/article_ids/fold-10-test.txt", };
+
+  public static String[] TRAIN_FOLDS = new String[] {
+      "resources/genia/article_ids/fold-1-train.txt",
+      "resources/genia/article_ids/fold-2-train.txt",
+      "resources/genia/article_ids/fold-3-train.txt",
+      "resources/genia/article_ids/fold-4-train.txt",
+      "resources/genia/article_ids/fold-5-train.txt",
+      "resources/genia/article_ids/fold-6-train.txt",
+      "resources/genia/article_ids/fold-7-train.txt",
+      "resources/genia/article_ids/fold-8-train.txt",
+      "resources/genia/article_ids/fold-9-train.txt",
+      "resources/genia/article_ids/fold-10-train.txt", };
 
 }

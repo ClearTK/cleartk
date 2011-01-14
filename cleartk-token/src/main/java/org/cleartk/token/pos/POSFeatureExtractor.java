@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2009, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.token.pos;
 
 import java.util.List;
@@ -31,17 +31,19 @@ import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 
 /**
- * <br>Copyright (c) 2009, Regents of the University of Colorado 
- * <br>All rights reserved.
- *
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * Implementations of this interface may also want to implement Initializable
- *
+ * 
  * @author Philip Ogren
- *
+ * 
  */
 
 public interface POSFeatureExtractor<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation> {
-	
-	public List<Feature> extractFeatures(JCas jCas, TOKEN_TYPE token, SENTENCE_TYPE sentence) throws CleartkException;
+
+  public List<Feature> extractFeatures(JCas jCas, TOKEN_TYPE token, SENTENCE_TYPE sentence)
+          throws CleartkException;
 
 }

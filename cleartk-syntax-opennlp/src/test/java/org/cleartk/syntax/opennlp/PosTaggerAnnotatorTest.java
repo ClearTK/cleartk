@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.syntax.opennlp;
 
 import java.util.ArrayList;
@@ -36,30 +36,27 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
  */
-public class PosTaggerAnnotatorTest extends SyntaxTestBase{
-	
-	@Test
-	public void testSimple() throws UIMAException {
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				PosTaggerAnnotator.getDescription());
-		tokenBuilder.buildTokens(jCas,
-				"The brown fox jumped quickly over the lazy dog.",
-				"The brown fox jumped quickly over the lazy dog .");
-		engine.process(jCas);
-		
-		List<String> expected = Arrays.asList(
-				"DT JJ NN VBD RB IN DT JJ NN .".split(" "));
-		List<String> actual = new ArrayList<String>();
-		for (Token token: AnnotationRetrieval.getAnnotations(jCas, Token.class)) {
-			actual.add(token.getPos());
-		}
-		Assert.assertEquals(expected, actual);
-		
-	}
+public class PosTaggerAnnotatorTest extends SyntaxTestBase {
+
+  @Test
+  public void testSimple() throws UIMAException {
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(PosTaggerAnnotator
+            .getDescription());
+    tokenBuilder.buildTokens(jCas, "The brown fox jumped quickly over the lazy dog.",
+            "The brown fox jumped quickly over the lazy dog .");
+    engine.process(jCas);
+
+    List<String> expected = Arrays.asList("DT JJ NN VBD RB IN DT JJ NN .".split(" "));
+    List<String> actual = new ArrayList<String>();
+    for (Token token : AnnotationRetrieval.getAnnotations(jCas, Token.class)) {
+      actual.add(token.getPos());
+    }
+    Assert.assertEquals(expected, actual);
+
+  }
 }

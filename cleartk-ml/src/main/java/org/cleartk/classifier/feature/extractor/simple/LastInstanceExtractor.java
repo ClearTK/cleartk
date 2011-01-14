@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.feature.extractor.simple;
 
 import java.util.List;
@@ -32,50 +32,48 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.util.AnnotationRetrieval;
 
 /**
- * <br>Copyright (c) 2007-2009, Regents of the University of Colorado 
- * <br>All rights reserved.
+ * <br>
+ * Copyright (c) 2007-2009, Regents of the University of Colorado <br>
+ * All rights reserved.
  * 
  * @author Philipp Wetzler
  */
 public class LastInstanceExtractor implements SimpleFeatureExtractor {
 
-	public LastInstanceExtractor(
-			Class<? extends Annotation> targetAnnotationClass,
-			SimpleFeatureExtractor subExtractor) {
-		this.targetAnnotationClass = targetAnnotationClass;
-		this.subExtractor = subExtractor;
-	}
+  public LastInstanceExtractor(Class<? extends Annotation> targetAnnotationClass,
+          SimpleFeatureExtractor subExtractor) {
+    this.targetAnnotationClass = targetAnnotationClass;
+    this.subExtractor = subExtractor;
+  }
 
-	public LastInstanceExtractor(
-			Class<? extends Annotation> targetAnnotationClass,
-			SimpleFeatureExtractor ... subExtractors) {
-		this(targetAnnotationClass, new CombinedExtractor(subExtractors));
-	}
+  public LastInstanceExtractor(Class<? extends Annotation> targetAnnotationClass,
+          SimpleFeatureExtractor... subExtractors) {
+    this(targetAnnotationClass, new CombinedExtractor(subExtractors));
+  }
 
-	public List<Feature> extract(JCas view, Annotation windowAnnotation) throws CleartkException {
+  public List<Feature> extract(JCas view, Annotation windowAnnotation) throws CleartkException {
 
-		Annotation lastAnnotation;
-		lastAnnotation = AnnotationRetrieval.getLastAnnotation(view, windowAnnotation, targetAnnotationClass);
+    Annotation lastAnnotation;
+    lastAnnotation = AnnotationRetrieval.getLastAnnotation(view, windowAnnotation,
+            targetAnnotationClass);
 
-		if( lastAnnotation == null ) {
-			throw new CleartkException(
-					String.format("no %s annotation found within %s window", 
-							targetAnnotationClass.getSimpleName(), 
-							windowAnnotation.getClass().getSimpleName()
-					)
-			);
-		}
+    if (lastAnnotation == null) {
+      throw new CleartkException(String.format("no %s annotation found within %s window",
+              targetAnnotationClass.getSimpleName(), windowAnnotation.getClass().getSimpleName()));
+    }
 
-		List<Feature> features = subExtractor.extract(view, lastAnnotation);
-		for( Feature f : features ) {
-			String name = Feature.createName("First" + targetAnnotationClass.getSimpleName(), f.getName());
-			f.setName(name);
-		}
+    List<Feature> features = subExtractor.extract(view, lastAnnotation);
+    for (Feature f : features) {
+      String name = Feature
+              .createName("First" + targetAnnotationClass.getSimpleName(), f.getName());
+      f.setName(name);
+    }
 
-		return features;
-	}
+    return features;
+  }
 
-	Class<? extends Annotation> targetAnnotationClass;
-	SimpleFeatureExtractor subExtractor;
+  Class<? extends Annotation> targetAnnotationClass;
+
+  SimpleFeatureExtractor subExtractor;
 
 }

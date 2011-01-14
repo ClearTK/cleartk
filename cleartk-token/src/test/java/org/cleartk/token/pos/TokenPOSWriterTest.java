@@ -51,132 +51,110 @@ import org.uimafit.factory.AnalysisEngineFactory;
  * Copyright (c) 2010, Regents of the University of Colorado <br>
  * All rights reserved.
  * <p>
+ * 
  * @author Philip Ogren
  */
 
-
 public class TokenPOSWriterTest extends TokenTestBase {
 
-	static String newline = System.getProperty("line.separator");
+  static String newline = System.getProperty("line.separator");
 
-	@Test
-	public void testTokenPosWriter() throws Exception {
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-					LineWriter.class,
-					typeSystemDescription,
-					LineWriter.PARAM_OUTPUT_FILE_NAME, new File(outputDirectory, "output.txt").getPath(), 
-					LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, Token.class.getName(),
-					LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME, TokenPOSWriter.class.getName(),
-					LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME, Sentence.class.getName(),
-					LineWriter.PARAM_BLOCK_WRITER_CLASS_NAME, BlankLineBlockWriter.class.getName());
-		
-		String text = "Me and all my friends are non-conformists.  I will subjugate my freedom oppressor.";
-		tokenBuilder.buildTokens(jCas, text,
-				"Me and all my friends are non-conformists . \n I will subjugate my freedom oppressor . ",
-				"1 2 3 4 5 6 7 8 9 10 11 12 13 14 15");
-		engine.process(jCas);
-		engine.collectionProcessComplete();
-		
-		String expectedText = newline +  
-			"Me\t1"+newline +
-			"and\t2"+newline +
-			"all\t3"+newline +
-			"my\t4"+newline +
-			"friends\t5"+newline +
-			"are\t6"+newline +
-			"non-conformists\t7"+newline +
-			".\t8"+newline +
-			newline+
-			"I\t9"+newline +
-			"will\t10"+newline +
-			"subjugate\t11"+newline +
-			"my\t12"+newline +
-			"freedom\t13"+newline +
-			"oppressor\t14"+newline +
-			".\t15"+newline;
-			
-		
-		File outputFile = new File(this.outputDirectory, "output.txt");
-		assertTrue(outputFile.exists());
-		String actualText = FileUtils.file2String(outputFile);
-		Assert.assertEquals(expectedText, actualText);
-	}
+  @Test
+  public void testTokenPosWriter() throws Exception {
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(LineWriter.class,
+            typeSystemDescription, LineWriter.PARAM_OUTPUT_FILE_NAME, new File(outputDirectory,
+                    "output.txt").getPath(), LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
+            Token.class.getName(), LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME,
+            TokenPOSWriter.class.getName(), LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME,
+            Sentence.class.getName(), LineWriter.PARAM_BLOCK_WRITER_CLASS_NAME,
+            BlankLineBlockWriter.class.getName());
 
-	@Test
-	public void testTokenPosWriter2() throws Exception {
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-					LineWriter.class,
-					typeSystemDescription,
-					LineWriter.PARAM_OUTPUT_DIRECTORY_NAME, outputDirectory.getPath(), 
-					LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, Token.class.getName(),
-					LineWriter.PARAM_FILE_SUFFIX, "txt",
-					LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME, TokenPOSWriter.class.getName(),
-					LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME, DocumentAnnotation.class.getName(),
-					LineWriter.PARAM_BLOCK_WRITER_CLASS_NAME, DocumentIdBlockWriter.class.getName());
-		
-		String text = "Me and all my friends are non-conformists.  I will subjugate my freedom oppressor.";
-		tokenBuilder.buildTokens(jCas, text,
-				"Me and all my friends are non-conformists . \n I will subjugate my freedom oppressor . ",
-				"1 2 3 4 5 6 7 8 9 10 11 12 13 14 15");
-		ViewURIUtil.setURI(jCas, "1234");
-		engine.process(jCas);
-		engine.collectionProcessComplete();
-		
-		String expectedText =
-			"1234"+newline + 
-			"Me\t1"+newline +
-			"and\t2"+newline +
-			"all\t3"+newline +
-			"my\t4"+newline +
-			"friends\t5"+newline +
-			"are\t6"+newline +
-			"non-conformists\t7"+newline +
-			".\t8"+newline +
-			"I\t9"+newline +
-			"will\t10"+newline +
-			"subjugate\t11"+newline +
-			"my\t12"+newline +
-			"freedom\t13"+newline +
-			"oppressor\t14"+newline +
-			".\t15"+newline;
-			
-		
-		File outputFile = new File(this.outputDirectory, "1234.txt");
-		assertTrue(outputFile.exists());
-		String actualText = FileUtils.file2String(outputFile);
-		Assert.assertEquals(expectedText, actualText);
-	}
+    String text = "Me and all my friends are non-conformists.  I will subjugate my freedom oppressor.";
+    tokenBuilder
+            .buildTokens(
+                    jCas,
+                    text,
+                    "Me and all my friends are non-conformists . \n I will subjugate my freedom oppressor . ",
+                    "1 2 3 4 5 6 7 8 9 10 11 12 13 14 15");
+    engine.process(jCas);
+    engine.collectionProcessComplete();
 
-	@Test
-	public void testLineWriterAfterChunkTokenizer() throws Exception {
-		AnalysisEngine[] engines = new AnalysisEngine[]{
-				AnalysisEngineFactory.createPrimitive(TokenComponents.createSubtokenizer()),
-				AnalysisEngineFactory.createPrimitive(ChunkTokenizerFactory.createChunkTokenizer("src/test/resources/token/chunk/model.jar")),
-				AnalysisEngineFactory.createPrimitive(LineWriter.class, typeSystemDescription,
-						LineWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDirectory.getPath(), 
-						LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, Token.class.getName())};
-		String s1 = "Philip Ogren didn't write this sentence.";
-		String s2 = "ROIs are required for CD28-mediated activation of the NF-kappa B/CD28-responsive complex.";
-		String text = s1 +"\n"+s2;
-		jCas.setDocumentText(text);
-		new Sentence(jCas, 0, s1.length()).addToIndexes();
-		new Sentence(jCas, s1.length()+1, text.length()).addToIndexes(); 
-		ViewURIUtil.setURI(jCas, "id");
-		for (AnalysisEngine engine: engines) {
-			engine.process(jCas);
-		}
-		for (AnalysisEngine engine: engines) {
-			engine.collectionProcessComplete();
-		}
-		
-		// make sure there were two sentences
-		int sentCount = AnnotationRetrieval.getAnnotations(jCas, Sentence.class).size();
-		Assert.assertEquals(2, sentCount);
-		
-		// make sure there no extra blank lines
-		String text2 = FileUtils.file2String(new File(this.outputDirectory, "id"));
-		boolean hasDoubleNewlines = Pattern.compile("\n\\s*\n").matcher(text2).find();
-		Assert.assertFalse(hasDoubleNewlines);
-	}
+    String expectedText = newline + "Me\t1" + newline + "and\t2" + newline + "all\t3" + newline
+            + "my\t4" + newline + "friends\t5" + newline + "are\t6" + newline
+            + "non-conformists\t7" + newline + ".\t8" + newline + newline + "I\t9" + newline
+            + "will\t10" + newline + "subjugate\t11" + newline + "my\t12" + newline + "freedom\t13"
+            + newline + "oppressor\t14" + newline + ".\t15" + newline;
+
+    File outputFile = new File(this.outputDirectory, "output.txt");
+    assertTrue(outputFile.exists());
+    String actualText = FileUtils.file2String(outputFile);
+    Assert.assertEquals(expectedText, actualText);
+  }
+
+  @Test
+  public void testTokenPosWriter2() throws Exception {
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(LineWriter.class,
+            typeSystemDescription, LineWriter.PARAM_OUTPUT_DIRECTORY_NAME,
+            outputDirectory.getPath(), LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
+            Token.class.getName(), LineWriter.PARAM_FILE_SUFFIX, "txt",
+            LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME, TokenPOSWriter.class.getName(),
+            LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME, DocumentAnnotation.class.getName(),
+            LineWriter.PARAM_BLOCK_WRITER_CLASS_NAME, DocumentIdBlockWriter.class.getName());
+
+    String text = "Me and all my friends are non-conformists.  I will subjugate my freedom oppressor.";
+    tokenBuilder
+            .buildTokens(
+                    jCas,
+                    text,
+                    "Me and all my friends are non-conformists . \n I will subjugate my freedom oppressor . ",
+                    "1 2 3 4 5 6 7 8 9 10 11 12 13 14 15");
+    ViewURIUtil.setURI(jCas, "1234");
+    engine.process(jCas);
+    engine.collectionProcessComplete();
+
+    String expectedText = "1234" + newline + "Me\t1" + newline + "and\t2" + newline + "all\t3"
+            + newline + "my\t4" + newline + "friends\t5" + newline + "are\t6" + newline
+            + "non-conformists\t7" + newline + ".\t8" + newline + "I\t9" + newline + "will\t10"
+            + newline + "subjugate\t11" + newline + "my\t12" + newline + "freedom\t13" + newline
+            + "oppressor\t14" + newline + ".\t15" + newline;
+
+    File outputFile = new File(this.outputDirectory, "1234.txt");
+    assertTrue(outputFile.exists());
+    String actualText = FileUtils.file2String(outputFile);
+    Assert.assertEquals(expectedText, actualText);
+  }
+
+  @Test
+  public void testLineWriterAfterChunkTokenizer() throws Exception {
+    AnalysisEngine[] engines = new AnalysisEngine[] {
+        AnalysisEngineFactory.createPrimitive(TokenComponents.createSubtokenizer()),
+        AnalysisEngineFactory.createPrimitive(ChunkTokenizerFactory
+                .createChunkTokenizer("src/test/resources/token/chunk/model.jar")),
+        AnalysisEngineFactory.createPrimitive(LineWriter.class, typeSystemDescription,
+                LineWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDirectory.getPath(),
+                LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, Token.class.getName()) };
+    String s1 = "Philip Ogren didn't write this sentence.";
+    String s2 = "ROIs are required for CD28-mediated activation of the NF-kappa B/CD28-responsive complex.";
+    String text = s1 + "\n" + s2;
+    jCas.setDocumentText(text);
+    new Sentence(jCas, 0, s1.length()).addToIndexes();
+    new Sentence(jCas, s1.length() + 1, text.length()).addToIndexes();
+    ViewURIUtil.setURI(jCas, "id");
+    for (AnalysisEngine engine : engines) {
+      engine.process(jCas);
+    }
+    for (AnalysisEngine engine : engines) {
+      engine.collectionProcessComplete();
+    }
+
+    // make sure there were two sentences
+    int sentCount = AnnotationRetrieval.getAnnotations(jCas, Sentence.class).size();
+    Assert.assertEquals(2, sentCount);
+
+    // make sure there no extra blank lines
+    String text2 = FileUtils.file2String(new File(this.outputDirectory, "id"));
+    boolean hasDoubleNewlines = Pattern.compile("\n\\s*\n").matcher(text2).find();
+    Assert.assertFalse(hasDoubleNewlines);
+  }
 
 }

@@ -36,12 +36,12 @@ import org.junit.Test;
 
 public class ScoredOutcomeTest {
 
-	@Test
-	public void testScoredOutcome() {
-		ScoredOutcome<Integer> so = new ScoredOutcome<Integer>(5, 0.01d);
-		assertEquals("5|0.01", so.toString());
-		ScoredOutcome<String>  sso = new ScoredOutcome<String>("outcome", 3.1415d);
-		assertEquals("outcome|3.1415", sso.toString());
-		
-	}
+  @Test
+  public void testScoredOutcome() {
+    ScoredOutcome<Integer> so = new ScoredOutcome<Integer>(5, 0.01d);
+    assertEquals("5|0.01", so.toString());
+    ScoredOutcome<String> sso = new ScoredOutcome<String>("outcome", 3.1415d);
+    assertEquals("outcome|3.1415", sso.toString());
+
+  }
 }

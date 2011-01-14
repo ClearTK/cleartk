@@ -34,21 +34,23 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * <br>
  * Copyright (c) 2009, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
  * @author Philip Ogren, Philipp Wetzler
  * 
  */
-public abstract class MalletDataWriterFactory_ImplBase<OUTCOME_TYPE> extends JarDataWriterFactory<List<NameNumber>, OUTCOME_TYPE, String> {
+public abstract class MalletDataWriterFactory_ImplBase<OUTCOME_TYPE> extends
+        JarDataWriterFactory<List<NameNumber>, OUTCOME_TYPE, String> {
 
-	public static final String PARAM_COMPRESS = ConfigurationParameterFactory.createConfigurationParameterName(MalletDataWriterFactory_ImplBase.class, "compress");
-	@ConfigurationParameter(
-			defaultValue = "false",
-			description = "when true indicates that the FeaturesEncoder should compress the feature names.  See org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder")
-	protected boolean compress;
-	
-	public static final String PARAM_SORT = ConfigurationParameterFactory.createConfigurationParameterName(MalletDataWriterFactory_ImplBase.class, "sort");
-	@ConfigurationParameter(
-			defaultValue = "false",
-			description = "when true indicates that the FeaturesEncoder should write the feature names in sorted order.")
-	protected boolean sort;
+  public static final String PARAM_COMPRESS = ConfigurationParameterFactory
+          .createConfigurationParameterName(MalletDataWriterFactory_ImplBase.class, "compress");
+
+  @ConfigurationParameter(defaultValue = "false", description = "when true indicates that the FeaturesEncoder should compress the feature names.  See org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder")
+  protected boolean compress;
+
+  public static final String PARAM_SORT = ConfigurationParameterFactory
+          .createConfigurationParameterName(MalletDataWriterFactory_ImplBase.class, "sort");
+
+  @ConfigurationParameter(defaultValue = "false", description = "when true indicates that the FeaturesEncoder should write the feature names in sorted order.")
+  protected boolean sort;
 
 }

@@ -36,7 +36,6 @@ import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.uima.util.FileUtils;
 import org.junit.Assert;
 
-
 /**
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
@@ -45,115 +44,113 @@ import org.junit.Assert;
 
 public class LicenseTestUtil {
 
-	public static void testDescriptorFiles(String directoryName) throws IOException {
-		List<String> filesMissingLicense = new ArrayList<String>();
+  public static void testDescriptorFiles(String directoryName) throws IOException {
+    List<String> filesMissingLicense = new ArrayList<String>();
 
-		File directory = new File(directoryName);
-		Iterator<?> files = org.apache.commons.io.FileUtils.iterateFiles(directory, new SuffixFileFilter(".xml"), TrueFileFilter.INSTANCE);
-		
-		while(files.hasNext()) {
-			File file = (File) files.next();
-			String fileText = FileUtils.file2String(file);
+    File directory = new File(directoryName);
+    Iterator<?> files = org.apache.commons.io.FileUtils.iterateFiles(directory,
+            new SuffixFileFilter(".xml"), TrueFileFilter.INSTANCE);
 
-			if (fileText.indexOf("Copyright (c) ") == -1	
-					|| fileText.indexOf("THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"") == -1) {
-				
-				if(file.getName().equals("GENIAcorpus3.02.articleA.pos.xml"))
-					continue;
-				if(file.getParent().equals("src/org/cleartk/descriptor".replace('/', File.separatorChar)))
-					continue;
-				filesMissingLicense.add(file.getPath());
-			}
-		}
-		
-		if (filesMissingLicense.size() > 0) {
-			String message = String.format("%d descriptor files with no license. ", filesMissingLicense.size());
-			System.err.println(message);
-			Collections.sort(filesMissingLicense);
-			for (String path : filesMissingLicense) {
-				System.err.println(path);
-			}
-			Assert.fail(message);
-		}
-	}
-	
+    while (files.hasNext()) {
+      File file = (File) files.next();
+      String fileText = FileUtils.file2String(file);
 
+      if (fileText.indexOf("Copyright (c) ") == -1
+              || fileText
+                      .indexOf("THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"") == -1) {
 
-	public static void testJavaFiles(String directoryName) throws IOException {
-		List<String> excludePackageNames = Collections.emptyList();
-		List<String> excludeJavaFiles = Collections.emptyList();
-		testJavaFiles(directoryName, excludePackageNames, excludeJavaFiles); 
-	}
-	
-//	if (file.getParentFile().getName().equals("type") || file.getName().equals("Files.java")
-//			|| file.getParentFile().getName().equals("types")
-//			|| file.getParentFile().getName().equals("pubmed")
-//			|| file.getParentFile().getPath().endsWith("type"+File.separator+"test")
-//			|| file.getName().equals("XWriter.java")) {
-//		continue;
-//	}
+        if (file.getName().equals("GENIAcorpus3.02.articleA.pos.xml"))
+          continue;
+        if (file.getParent().equals("src/org/cleartk/descriptor".replace('/', File.separatorChar)))
+          continue;
+        filesMissingLicense.add(file.getPath());
+      }
+    }
 
-	public static void testJavaFiles(String directoryName, List<String> excludePackageNames, List<String> excludeJavaFiles) throws IOException {
+    if (filesMissingLicense.size() > 0) {
+      String message = String.format("%d descriptor files with no license. ",
+              filesMissingLicense.size());
+      System.err.println(message);
+      Collections.sort(filesMissingLicense);
+      for (String path : filesMissingLicense) {
+        System.err.println(path);
+      }
+      Assert.fail(message);
+    }
+  }
 
-		List<String> filesMissingLicense = new ArrayList<String>();
-		File directory = new File(directoryName);
-		Iterator<?> files = org.apache.commons.io.FileUtils.iterateFiles(directory, new SuffixFileFilter(".java"), TrueFileFilter.INSTANCE);
-		
-		while(files.hasNext()) {
-			File file = (File) files.next();
-			String fileText = FileUtils.file2String(file);
+  public static void testJavaFiles(String directoryName) throws IOException {
+    List<String> excludePackageNames = Collections.emptyList();
+    List<String> excludeJavaFiles = Collections.emptyList();
+    testJavaFiles(directoryName, excludePackageNames, excludeJavaFiles);
+  }
 
-			if(excludePackage(file, excludePackageNames)) {
-				continue;
-			}
-			if(excludeJava(file, excludeJavaFiles)) {
-				continue;
-			}
-			
-			if (fileText.indexOf("Copyright (c) ") == -1	
-					|| fileText.indexOf("THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"") == -1) {
-				filesMissingLicense.add(file.getPath());
-			}
-			else {
-				if (fileText.indexOf("Copyright (c) ", 300) == -1)	
-					filesMissingLicense.add(file.getPath());
-			}
+  // if (file.getParentFile().getName().equals("type") || file.getName().equals("Files.java")
+  // || file.getParentFile().getName().equals("types")
+  // || file.getParentFile().getName().equals("pubmed")
+  // || file.getParentFile().getPath().endsWith("type"+File.separator+"test")
+  // || file.getName().equals("XWriter.java")) {
+  // continue;
+  // }
 
-		}
+  public static void testJavaFiles(String directoryName, List<String> excludePackageNames,
+          List<String> excludeJavaFiles) throws IOException {
 
-		if (filesMissingLicense.size() > 0) {
-			String message = String.format("%d source files with no license. ", filesMissingLicense.size());
-			System.err.println(message);
-			Collections.sort(filesMissingLicense);
-			for (String path : filesMissingLicense) {
-				System.err.println(path);
-			}
-			Assert.fail(message);
-		}
+    List<String> filesMissingLicense = new ArrayList<String>();
+    File directory = new File(directoryName);
+    Iterator<?> files = org.apache.commons.io.FileUtils.iterateFiles(directory,
+            new SuffixFileFilter(".java"), TrueFileFilter.INSTANCE);
 
-	}
+    while (files.hasNext()) {
+      File file = (File) files.next();
+      String fileText = FileUtils.file2String(file);
 
+      if (excludePackage(file, excludePackageNames)) {
+        continue;
+      }
+      if (excludeJava(file, excludeJavaFiles)) {
+        continue;
+      }
 
+      if (fileText.indexOf("Copyright (c) ") == -1
+              || fileText
+                      .indexOf("THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"") == -1) {
+        filesMissingLicense.add(file.getPath());
+      } else {
+        if (fileText.indexOf("Copyright (c) ", 300) == -1)
+          filesMissingLicense.add(file.getPath());
+      }
 
-	private static boolean excludeJava(File file, List<String> excludeJavaFiles) {
-		String fileName = file.getName();
-		return excludeJavaFiles.contains(fileName);
-	}
+    }
 
-	private static boolean excludePackage(File file, List<String> excludePackageNames) {
-		File parent = file.getParentFile();
-		while(parent != null) {
-			String parentName = parent.getName();
-			if(excludePackageNames.contains(parentName)) {
-				return true;
-			}
-			parent = parent.getParentFile();
-		}
-		return false;
-	}
+    if (filesMissingLicense.size() > 0) {
+      String message = String.format("%d source files with no license. ",
+              filesMissingLicense.size());
+      System.err.println(message);
+      Collections.sort(filesMissingLicense);
+      for (String path : filesMissingLicense) {
+        System.err.println(path);
+      }
+      Assert.fail(message);
+    }
 
+  }
 
+  private static boolean excludeJava(File file, List<String> excludeJavaFiles) {
+    String fileName = file.getName();
+    return excludeJavaFiles.contains(fileName);
+  }
 
+  private static boolean excludePackage(File file, List<String> excludePackageNames) {
+    File parent = file.getParentFile();
+    while (parent != null) {
+      String parentName = parent.getName();
+      if (excludePackageNames.contains(parentName)) {
+        return true;
+      }
+      parent = parent.getParentFile();
+    }
+    return false;
+  }
 
 }
-

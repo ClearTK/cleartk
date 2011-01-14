@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.syntax.feature;
 
 import java.util.List;
@@ -37,54 +37,55 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * 
  * @author Steven Bethard
  */
 
-public class SyntacticPathExtractorTest extends SyntaxTestBase{
+public class SyntacticPathExtractorTest extends SyntaxTestBase {
 
-	@Test
-	public void test() throws UIMAException, CleartkException {
-		tokenBuilder.buildTokens(jCas, "I ran home", "I ran home", "PRP VBD NN");
-		TreebankNode iNode = TreebankTestsUtil.newNode(jCas, 0, 1, "PRP");
-		TreebankNode inpNode = TreebankTestsUtil.newNode(jCas, "NP", iNode);
-		TreebankNode ranNode = TreebankTestsUtil.newNode(jCas, 2, 5, "VBD");
-		TreebankNode homeNode = TreebankTestsUtil.newNode(jCas, 6, 10, "NN");
-		TreebankNode homenpNode = TreebankTestsUtil.newNode(jCas, "NP", homeNode);
-		TreebankNode ranvpNode = TreebankTestsUtil.newNode(jCas, "VP", ranNode, homenpNode);
-		TreebankNode topNode = TreebankTestsUtil.newNode(jCas, "S", inpNode, ranvpNode);
-		
-		SpannedTextExtractor textExtractor = new SpannedTextExtractor();
-		TypePathExtractor tagExtractor = new TypePathExtractor(TreebankNode.class, "nodeType");
-		SyntacticPathExtractor extractor;
-		List<Feature> features;
-		
-		extractor = new SyntacticPathExtractor(tagExtractor);
-		features = extractor.extract(jCas, iNode, ranNode);
-		Assert.assertEquals(2, features.size());
-		Assert.assertEquals("SyntacticPath(TypePath(NodeType))", features.get(0).getName());
-		Assert.assertEquals("PRP::NP::S;;VP;;VBD", features.get(0).getValue());
-		Assert.assertEquals("SyntacticPath_Length", features.get(1).getName());
-		Assert.assertEquals(5, ((Long)features.get(1).getValue()).intValue());
+  @Test
+  public void test() throws UIMAException, CleartkException {
+    tokenBuilder.buildTokens(jCas, "I ran home", "I ran home", "PRP VBD NN");
+    TreebankNode iNode = TreebankTestsUtil.newNode(jCas, 0, 1, "PRP");
+    TreebankNode inpNode = TreebankTestsUtil.newNode(jCas, "NP", iNode);
+    TreebankNode ranNode = TreebankTestsUtil.newNode(jCas, 2, 5, "VBD");
+    TreebankNode homeNode = TreebankTestsUtil.newNode(jCas, 6, 10, "NN");
+    TreebankNode homenpNode = TreebankTestsUtil.newNode(jCas, "NP", homeNode);
+    TreebankNode ranvpNode = TreebankTestsUtil.newNode(jCas, "VP", ranNode, homenpNode);
+    TreebankNode topNode = TreebankTestsUtil.newNode(jCas, "S", inpNode, ranvpNode);
 
-		extractor = new SyntacticPathExtractor(tagExtractor);
-		features = extractor.extract(jCas, topNode, homenpNode);
-		Assert.assertEquals(2, features.size());
-		Assert.assertEquals("SyntacticPath(TypePath(NodeType))", features.get(0).getName());
-		Assert.assertEquals("S;;VP;;NP", features.get(0).getValue());
-		Assert.assertEquals("SyntacticPath_Length", features.get(1).getName());
-		Assert.assertEquals(3, ((Long)features.get(1).getValue()).intValue());
+    SpannedTextExtractor textExtractor = new SpannedTextExtractor();
+    TypePathExtractor tagExtractor = new TypePathExtractor(TreebankNode.class, "nodeType");
+    SyntacticPathExtractor extractor;
+    List<Feature> features;
 
-		extractor = new SyntacticPathExtractor(textExtractor, true);
-		features = extractor.extract(jCas, homeNode, ranNode);
-		Assert.assertEquals(2, features.size());
-		Assert.assertEquals("PartialSyntacticPath(null)", features.get(0).getName());
-		Assert.assertEquals("home::home::ran home", features.get(0).getValue());
-		Assert.assertEquals("PartialSyntacticPath_Length", features.get(1).getName());
-		Assert.assertEquals(3, ((Long)features.get(1).getValue()).intValue());
-		
-	}
+    extractor = new SyntacticPathExtractor(tagExtractor);
+    features = extractor.extract(jCas, iNode, ranNode);
+    Assert.assertEquals(2, features.size());
+    Assert.assertEquals("SyntacticPath(TypePath(NodeType))", features.get(0).getName());
+    Assert.assertEquals("PRP::NP::S;;VP;;VBD", features.get(0).getValue());
+    Assert.assertEquals("SyntacticPath_Length", features.get(1).getName());
+    Assert.assertEquals(5, ((Long) features.get(1).getValue()).intValue());
+
+    extractor = new SyntacticPathExtractor(tagExtractor);
+    features = extractor.extract(jCas, topNode, homenpNode);
+    Assert.assertEquals(2, features.size());
+    Assert.assertEquals("SyntacticPath(TypePath(NodeType))", features.get(0).getName());
+    Assert.assertEquals("S;;VP;;NP", features.get(0).getValue());
+    Assert.assertEquals("SyntacticPath_Length", features.get(1).getName());
+    Assert.assertEquals(3, ((Long) features.get(1).getValue()).intValue());
+
+    extractor = new SyntacticPathExtractor(textExtractor, true);
+    features = extractor.extract(jCas, homeNode, ranNode);
+    Assert.assertEquals(2, features.size());
+    Assert.assertEquals("PartialSyntacticPath(null)", features.get(0).getName());
+    Assert.assertEquals("home::home::ran home", features.get(0).getValue());
+    Assert.assertEquals("PartialSyntacticPath_Length", features.get(1).getName());
+    Assert.assertEquals(3, ((Long) features.get(1).getValue()).intValue());
+
+  }
 }

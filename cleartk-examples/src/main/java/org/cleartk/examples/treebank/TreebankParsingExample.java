@@ -1,5 +1,5 @@
 /** 
-  * Copyright (c) 2010, Regents of the University of Colorado 
+ * Copyright (c) 2010, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -51,54 +51,56 @@ import org.uimafit.pipeline.SimplePipeline;
  * Copyright (c) 2010, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
- * This class takes in treebank files and parses the the PTB-style format and
- * populates a the CAS with constituent trees and then writes out XMI files. 
- * The CAS will contain the raw treebank data in a view 
- * You
- * may find it useful to view the generated XMI files in the CAS Visual
- * Debugger.
+ * This class takes in treebank files and parses the the PTB-style format and populates a the CAS
+ * with constituent trees and then writes out XMI files. The CAS will contain the raw treebank data
+ * in a view You may find it useful to view the generated XMI files in the CAS Visual Debugger.
  * 
  * @author Philip Ogren
  * 
  */
 public class TreebankParsingExample {
 
-	public static class Options extends Options_ImplBase {
-		@Option(name = "-td", aliases = "--treebankDirectory", usage = "specify the directory containing treebank files", required = true)
-		public String treebankDirectory;
+  public static class Options extends Options_ImplBase {
+    @Option(name = "-td", aliases = "--treebankDirectory", usage = "specify the directory containing treebank files", required = true)
+    public String treebankDirectory;
 
-		@Option(name = "-o", aliases = "--outputDirectory", usage = "specify the directory to write the XMI files to", required = true)
-		public String outputDirectory;
+    @Option(name = "-o", aliases = "--outputDirectory", usage = "specify the directory to write the XMI files to", required = true)
+    public String outputDirectory;
 
-		@Option(name = "-suf", aliases = "--treebankFileSuffixes", usage = "specify file suffixes of the treebank files in the treebank directory", multiValued = true)
-		public List<String> treebankFileSuffixes = new ArrayList<String>();
-	}
+    @Option(name = "-suf", aliases = "--treebankFileSuffixes", usage = "specify file suffixes of the treebank files in the treebank directory", multiValued = true)
+    public List<String> treebankFileSuffixes = new ArrayList<String>();
+  }
 
-	public static void main(String[] args) throws UIMAException, IOException {
-		Options options = new Options();
-		options.parseOptions(args);
+  public static void main(String[] args) throws UIMAException, IOException {
+    Options options = new Options();
+    options.parseOptions(args);
 
-		String[] suffixes = options.treebankFileSuffixes.toArray(new String[options.treebankFileSuffixes.size()]);
-		
-		CollectionReader reader = CollectionReaderFactory.createCollectionReader(FilesCollectionReader.class,
-				ExampleComponents.TYPE_SYSTEM_DESCRIPTION, 
-				FilesCollectionReader.PARAM_ROOT_FILE, options.treebankDirectory,
-				FilesCollectionReader.PARAM_VIEW_NAME, TreebankConstants.TREEBANK_VIEW, 
-				FilesCollectionReader.PARAM_SUFFIXES, suffixes);
+    String[] suffixes = options.treebankFileSuffixes
+            .toArray(new String[options.treebankFileSuffixes.size()]);
 
-		AnalysisEngine viewCreator = AnalysisEngineFactory.createPrimitive(ViewCreatorAnnotator.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-				ViewCreatorAnnotator.PARAM_VIEW_NAME, EvaluationConstants.GOLD_VIEW);
+    CollectionReader reader = CollectionReaderFactory.createCollectionReader(
+            FilesCollectionReader.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+            FilesCollectionReader.PARAM_ROOT_FILE, options.treebankDirectory,
+            FilesCollectionReader.PARAM_VIEW_NAME, TreebankConstants.TREEBANK_VIEW,
+            FilesCollectionReader.PARAM_SUFFIXES, suffixes);
 
-		AnalysisEngineDescription treebankParserDescription = AnalysisEngineFactory.createPrimitiveDescription(TreebankGoldAnnotator.class,
-				ExampleComponents.TYPE_SYSTEM_DESCRIPTION);
-		AnalysisEngine treebankParser = AnalysisEngineFactory.createAnalysisEngine(treebankParserDescription, EvaluationConstants.GOLD_VIEW);
+    AnalysisEngine viewCreator = AnalysisEngineFactory.createPrimitive(ViewCreatorAnnotator.class,
+            ExampleComponents.TYPE_SYSTEM_DESCRIPTION, ViewCreatorAnnotator.PARAM_VIEW_NAME,
+            EvaluationConstants.GOLD_VIEW);
 
-		AnalysisEngine xWriter = AnalysisEngineFactory.createPrimitive(XWriter.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-				XWriter.PARAM_OUTPUT_DIRECTORY_NAME, options.outputDirectory,
-				XWriter.PARAM_FILE_NAMER_CLASS_NAME, ViewURIFileNamer.class.getName());
+    AnalysisEngineDescription treebankParserDescription = AnalysisEngineFactory
+            .createPrimitiveDescription(TreebankGoldAnnotator.class,
+                    ExampleComponents.TYPE_SYSTEM_DESCRIPTION);
+    AnalysisEngine treebankParser = AnalysisEngineFactory.createAnalysisEngine(
+            treebankParserDescription, EvaluationConstants.GOLD_VIEW);
 
-		SimplePipeline.runPipeline(reader, viewCreator, treebankParser, xWriter);
+    AnalysisEngine xWriter = AnalysisEngineFactory.createPrimitive(XWriter.class,
+            ExampleComponents.TYPE_SYSTEM_DESCRIPTION, XWriter.PARAM_OUTPUT_DIRECTORY_NAME,
+            options.outputDirectory, XWriter.PARAM_FILE_NAMER_CLASS_NAME,
+            ViewURIFileNamer.class.getName());
 
-	}
+    SimplePipeline.runPipeline(reader, viewCreator, treebankParser, xWriter);
+
+  }
 
 }

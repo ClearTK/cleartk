@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,53 +20,52 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.srl.propbank.util;
 
 import org.apache.uima.jcas.JCas;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * 
  * <p>
- * A <em>PropbankTerminalRelation object</em> represents a reference to one
- * terminal in Propbank.
+ * A <em>PropbankTerminalRelation object</em> represents a reference to one terminal in Propbank.
  * </p>
  * 
  * @author Philipp Wetzler
  */
 public final class PropbankTerminalRelation extends PropbankRelation {
 
-	public static PropbankTerminalRelation fromString(String s) {
-		return new PropbankTerminalRelation(Integer.valueOf(s));
-	}
+  public static PropbankTerminalRelation fromString(String s) {
+    return new PropbankTerminalRelation(Integer.valueOf(s));
+  }
 
-	protected int terminalNumber;
+  protected int terminalNumber;
 
-	public PropbankTerminalRelation(int terminalNumber) {
-		this.terminalNumber = terminalNumber;
-	}
+  public PropbankTerminalRelation(int terminalNumber) {
+    this.terminalNumber = terminalNumber;
+  }
 
-	public int getTerminalNumber() {
-		return terminalNumber;
-	}
+  public int getTerminalNumber() {
+    return terminalNumber;
+  }
 
-	public void setTerminalNumber(int terminalNumber) {
-		this.terminalNumber = terminalNumber;
-	}
+  public void setTerminalNumber(int terminalNumber) {
+    this.terminalNumber = terminalNumber;
+  }
 
-	@Override
-	public TreebankNode convert(JCas jCas, TopTreebankNode topNode) {
-		return topNode.getTerminals(this.terminalNumber);
-	}
+  @Override
+  public TreebankNode convert(JCas jCas, TopTreebankNode topNode) {
+    return topNode.getTerminals(this.terminalNumber);
+  }
 
-	@Override
-	public String toString() {
-		return String.valueOf(getTerminalNumber());
-	}
+  @Override
+  public String toString() {
+    return String.valueOf(getTerminalNumber());
+  }
 }

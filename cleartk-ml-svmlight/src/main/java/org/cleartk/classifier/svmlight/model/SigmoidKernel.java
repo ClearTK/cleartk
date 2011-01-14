@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,30 +20,31 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.svmlight.model;
 
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
-*/
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ */
 
 public class SigmoidKernel extends Kernel {
-	
-	public SigmoidKernel(double s, double c) {
-		this.s = s;
-		this.c = c;
-	}
 
-	@Override
-	double evaluate(FeatureVector fv1, FeatureVector fv2) {
-		return Math.tanh(s * fv1.innerProduct(fv2) + c);
-	}
-	
-	private double s;
-	private double c;
+  public SigmoidKernel(double s, double c) {
+    this.s = s;
+    this.c = c;
+  }
+
+  @Override
+  double evaluate(FeatureVector fv1, FeatureVector fv2) {
+    return Math.tanh(s * fv1.innerProduct(fv2) + c);
+  }
+
+  private double s;
+
+  private double c;
 
 }

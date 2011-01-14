@@ -38,30 +38,31 @@ import org.cleartk.classifier.encoder.outcome.BooleanToStringOutcomeEncoder;
  * <br>
  * Copyright (c) 2009, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
  * @author Philip Ogren, Philipp Wetzler
  * 
  */
 
 public class DefaultBinaryMaxentDataWriterFactory extends MaxentDataWriterFactory_ImplBase<Boolean> {
 
-	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		super.initialize(context);
-	}
-	
-	public DataWriter<Boolean> createDataWriter() throws IOException {
-		BinaryMaxentDataWriter binaryMaxentDataWriter = new BinaryMaxentDataWriter(outputDirectory);
-		
-		if(!this.setEncodersFromFileSystem(binaryMaxentDataWriter)) {
-			NameNumberFeaturesEncoder ftrsNcdr = new NameNumberFeaturesEncoder(compress, sort);
-			ftrsNcdr.addEncoder(new NumberEncoder());
-			ftrsNcdr.addEncoder(new BooleanEncoder());
-			ftrsNcdr.addEncoder(new StringEncoder());
-			binaryMaxentDataWriter.setFeaturesEncoder(ftrsNcdr);
-			binaryMaxentDataWriter.setOutcomeEncoder(new BooleanToStringOutcomeEncoder());
-		}
-		
-		return binaryMaxentDataWriter;
-	}
+  @Override
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    super.initialize(context);
+  }
+
+  public DataWriter<Boolean> createDataWriter() throws IOException {
+    BinaryMaxentDataWriter binaryMaxentDataWriter = new BinaryMaxentDataWriter(outputDirectory);
+
+    if (!this.setEncodersFromFileSystem(binaryMaxentDataWriter)) {
+      NameNumberFeaturesEncoder ftrsNcdr = new NameNumberFeaturesEncoder(compress, sort);
+      ftrsNcdr.addEncoder(new NumberEncoder());
+      ftrsNcdr.addEncoder(new BooleanEncoder());
+      ftrsNcdr.addEncoder(new StringEncoder());
+      binaryMaxentDataWriter.setFeaturesEncoder(ftrsNcdr);
+      binaryMaxentDataWriter.setOutcomeEncoder(new BooleanToStringOutcomeEncoder());
+    }
+
+    return binaryMaxentDataWriter;
+  }
 
 }

@@ -36,27 +36,28 @@ import org.cleartk.classifier.encoder.outcome.BooleanToStringOutcomeEncoder;
  * <br>
  * Copyright (c) 2009, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
  * @author Philip Ogren, Philipp Wetzler
  * 
  */
 
 public class DefaultBinaryMalletDataWriterFactory extends MalletDataWriterFactory_ImplBase<Boolean> {
-	
-	public DataWriter<Boolean> createDataWriter() throws IOException {
-		
-		BinaryMalletDataWriter mdw = new BinaryMalletDataWriter(outputDirectory);
-		
-		if(!this.setEncodersFromFileSystem(mdw)) {
-			NameNumberFeaturesEncoder fe = new NameNumberFeaturesEncoder(compress, sort);
-			fe.addEncoder(new NumberEncoder());
-			fe.addEncoder(new BooleanEncoder());
-			fe.addEncoder(new StringEncoder());
-			mdw.setFeaturesEncoder(fe);
-			
-			mdw.setOutcomeEncoder(new BooleanToStringOutcomeEncoder());
-		}
-		
-		return mdw;
-	}
-	
+
+  public DataWriter<Boolean> createDataWriter() throws IOException {
+
+    BinaryMalletDataWriter mdw = new BinaryMalletDataWriter(outputDirectory);
+
+    if (!this.setEncodersFromFileSystem(mdw)) {
+      NameNumberFeaturesEncoder fe = new NameNumberFeaturesEncoder(compress, sort);
+      fe.addEncoder(new NumberEncoder());
+      fe.addEncoder(new BooleanEncoder());
+      fe.addEncoder(new StringEncoder());
+      mdw.setFeaturesEncoder(fe);
+
+      mdw.setOutcomeEncoder(new BooleanToStringOutcomeEncoder());
+    }
+
+    return mdw;
+  }
+
 }

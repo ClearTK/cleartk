@@ -37,40 +37,42 @@ import org.uimafit.pipeline.SimplePipeline;
  * <br>
  * Copyright (c) 2010, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
  * @author Philipp Wetzler
  */
 public class TestConll2005Models {
 
-	private static final File conll2005File = new File("../../ClearTK-data/data/conll2005/devset");
-//	private static final File predicateIdentificationModel = new File("scratch/CoNLL2005/predicateIdentification/model.jar");
-	private static final File argumentIdentificationModel = new File("scratch/CoNLL2005/argumentIdentification/model.jar");
-	private static final File argumentClassificationModel = new File("scratch/CoNLL2005/argumentClassification/model.jar");
-	private static final File outputFile = new File("scratch/CoNLL2005/results/props-devset");
-	
-	public static void main(String[] args) throws Exception {
-		outputFile.getParentFile().mkdirs();		
-		
-		SimplePipeline.runPipeline(
-				Conll2005GoldReader.getCollectionReader(conll2005File.toString()),
-				AnalysisEngineFactory.createPrimitiveDescription(
-						Conll2005GoldAnnotator.class, 
-						SrlComponents.TYPE_SYSTEM_DESCRIPTION, 
-						Conll2005GoldAnnotator.PARAM_HAS_VERB_SENSES, false),
-				DefaultSnowballStemmer.getDescription("English"),
-//				CleartkComponents.createCleartkAnnotator(
-//						PredicateAnnotator.class, 
-//						predicateIdentificationModel.toString()),
-				CleartkComponents.createCleartkAnnotator(
-						ArgumentIdentifier.class, SrlComponents.TYPE_SYSTEM_DESCRIPTION,
-						argumentIdentificationModel.toString()),
-				CleartkComponents.createCleartkAnnotator(
-						ArgumentClassifier.class, SrlComponents.TYPE_SYSTEM_DESCRIPTION,
-						argumentClassificationModel.toString()),
-				AnalysisEngineFactory.createPrimitiveDescription(
-						Conll2005Writer.class, 
-						SrlComponents.TYPE_SYSTEM_DESCRIPTION, 
-						Conll2005Writer.PARAM_OUTPUT_FILE, outputFile.toString())
-		);
-	}
+  private static final File conll2005File = new File("../../ClearTK-data/data/conll2005/devset");
+
+  // private static final File predicateIdentificationModel = new
+  // File("scratch/CoNLL2005/predicateIdentification/model.jar");
+  private static final File argumentIdentificationModel = new File(
+          "scratch/CoNLL2005/argumentIdentification/model.jar");
+
+  private static final File argumentClassificationModel = new File(
+          "scratch/CoNLL2005/argumentClassification/model.jar");
+
+  private static final File outputFile = new File("scratch/CoNLL2005/results/props-devset");
+
+  public static void main(String[] args) throws Exception {
+    outputFile.getParentFile().mkdirs();
+
+    SimplePipeline.runPipeline(
+            Conll2005GoldReader.getCollectionReader(conll2005File.toString()),
+            AnalysisEngineFactory.createPrimitiveDescription(Conll2005GoldAnnotator.class,
+                    SrlComponents.TYPE_SYSTEM_DESCRIPTION,
+                    Conll2005GoldAnnotator.PARAM_HAS_VERB_SENSES, false),
+            DefaultSnowballStemmer.getDescription("English"),
+            // CleartkComponents.createCleartkAnnotator(
+            // PredicateAnnotator.class,
+            // predicateIdentificationModel.toString()),
+            CleartkComponents.createCleartkAnnotator(ArgumentIdentifier.class,
+                    SrlComponents.TYPE_SYSTEM_DESCRIPTION, argumentIdentificationModel.toString()),
+            CleartkComponents.createCleartkAnnotator(ArgumentClassifier.class,
+                    SrlComponents.TYPE_SYSTEM_DESCRIPTION, argumentClassificationModel.toString()),
+            AnalysisEngineFactory.createPrimitiveDescription(Conll2005Writer.class,
+                    SrlComponents.TYPE_SYSTEM_DESCRIPTION, Conll2005Writer.PARAM_OUTPUT_FILE,
+                    outputFile.toString()));
+  }
 
 }

@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.opennlp;
 
 import java.io.File;
@@ -28,30 +28,33 @@ import java.io.File;
 import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 import org.cleartk.classifier.jar.BuildJar;
 import org.cleartk.classifier.jar.ClassifierBuilder;
+
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * @author Philip Ogren
- *
+ * 
  */
-public abstract class MaxentClassifierBuilder_ImplBase<OUTCOME_TYPE> implements ClassifierBuilder<OUTCOME_TYPE> {
+public abstract class MaxentClassifierBuilder_ImplBase<OUTCOME_TYPE> implements
+        ClassifierBuilder<OUTCOME_TYPE> {
 
-	public void train(File dir, String[] args) throws Exception {
-		String[] maxentArgs = new String[args.length + 1];
-		maxentArgs[0] = new File(dir, "training-data.maxent").getPath();
-		System.arraycopy(args, 0, maxentArgs, 1, args.length);
-		opennlp.model.RealValueFileEventStream.main(maxentArgs);
-	}
+  public void train(File dir, String[] args) throws Exception {
+    String[] maxentArgs = new String[args.length + 1];
+    maxentArgs[0] = new File(dir, "training-data.maxent").getPath();
+    System.arraycopy(args, 0, maxentArgs, 1, args.length);
+    opennlp.model.RealValueFileEventStream.main(maxentArgs);
+  }
 
-	public void buildJar(File dir, String[] args) throws Exception {
-		BuildJar.OutputStream stream = new BuildJar.OutputStream(dir);
-		stream.write("model.maxent", new File(dir, "training-data.maxent.bin.gz"));
-		File featureLookup = new File(dir, NameNumberFeaturesEncoder.LOOKUP_FILE_NAME);
-		if (featureLookup.exists()) {
-			stream.write("name-lookup.txt", featureLookup);
-		}
-		stream.close();
-	}
+  public void buildJar(File dir, String[] args) throws Exception {
+    BuildJar.OutputStream stream = new BuildJar.OutputStream(dir);
+    stream.write("model.maxent", new File(dir, "training-data.maxent.bin.gz"));
+    File featureLookup = new File(dir, NameNumberFeaturesEncoder.LOOKUP_FILE_NAME);
+    if (featureLookup.exists()) {
+      stream.write("name-lookup.txt", featureLookup);
+    }
+    stream.close();
+  }
 
 }

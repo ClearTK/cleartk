@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.feature;
 
 /**
@@ -37,54 +37,53 @@ import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
-
 public class TypePathFeatureTest {
 
-	@Test
-	public void testgetName() {
-		TypePathFeature typePathFeature = new TypePathFeature(null, null, "asdf/asdf");
+  @Test
+  public void testgetName() {
+    TypePathFeature typePathFeature = new TypePathFeature(null, null, "asdf/asdf");
 
-		assertEquals("TypePath(AsdfAsdf)", typePathFeature.getName());
+    assertEquals("TypePath(AsdfAsdf)", typePathFeature.getName());
 
-		typePathFeature = new TypePathFeature(null, null, "pos");
-		assertEquals("TypePath(Pos)", typePathFeature.getName());
+    typePathFeature = new TypePathFeature(null, null, "pos");
+    assertEquals("TypePath(Pos)", typePathFeature.getName());
 
-		typePathFeature = new TypePathFeature(null, null, "Asdf/1asdf");
-		assertEquals("TypePath(Asdf1asdf)", typePathFeature.getName());
+    typePathFeature = new TypePathFeature(null, null, "Asdf/1asdf");
+    assertEquals("TypePath(Asdf1asdf)", typePathFeature.getName());
 
-		typePathFeature = new TypePathFeature(null, null, "A/B/C/D");
-		assertEquals("TypePath(ABCD)", typePathFeature.getName());
+    typePathFeature = new TypePathFeature(null, null, "A/B/C/D");
+    assertEquals("TypePath(ABCD)", typePathFeature.getName());
 
-		typePathFeature = new TypePathFeature(null, null, "A/1");
-		assertEquals("TypePath(A1)", typePathFeature.getName());
+    typePathFeature = new TypePathFeature(null, null, "A/1");
+    assertEquals("TypePath(A1)", typePathFeature.getName());
 
-		typePathFeature = new TypePathFeature(null, null, "a/b/c/d/e");
-		assertEquals("TypePath(ABCDE)", typePathFeature.getName());
+    typePathFeature = new TypePathFeature(null, null, "a/b/c/d/e");
+    assertEquals("TypePath(ABCDE)", typePathFeature.getName());
 
-		typePathFeature = new TypePathFeature(null, null, "ab/cd/ef/gh");
-		assertEquals("TypePath(AbCdEfGh)", typePathFeature.getName());
+    typePathFeature = new TypePathFeature(null, null, "ab/cd/ef/gh");
+    assertEquals("TypePath(AbCdEfGh)", typePathFeature.getName());
 
-		typePathFeature = new TypePathFeature(null, null, "abcd/efgh");
-		assertEquals("TypePath(AbcdEfgh)", typePathFeature.getName());
+    typePathFeature = new TypePathFeature(null, null, "abcd/efgh");
+    assertEquals("TypePath(AbcdEfgh)", typePathFeature.getName());
 
-		typePathFeature = new TypePathFeature(null, null, "abcd/efgh");
-		assertEquals("TypePath(AbcdEfgh)", typePathFeature.getName());
+    typePathFeature = new TypePathFeature(null, null, "abcd/efgh");
+    assertEquals("TypePath(AbcdEfgh)", typePathFeature.getName());
 
-		typePathFeature = new TypePathFeature(null, null, "abcd/efgh/");
-		assertEquals("TypePath(AbcdEfgh)", typePathFeature.getName());
+    typePathFeature = new TypePathFeature(null, null, "abcd/efgh/");
+    assertEquals("TypePath(AbcdEfgh)", typePathFeature.getName());
 
-		typePathFeature = new TypePathFeature(null, null, "/abcd/efgh/");
-		assertEquals("TypePath(AbcdEfgh)", typePathFeature.getName());
+    typePathFeature = new TypePathFeature(null, null, "/abcd/efgh/");
+    assertEquals("TypePath(AbcdEfgh)", typePathFeature.getName());
 
-		typePathFeature = new TypePathFeature(null, null, "/");
-		assertNull(typePathFeature.getName());
+    typePathFeature = new TypePathFeature(null, null, "/");
+    assertNull(typePathFeature.getName());
 
-		typePathFeature = new TypePathFeature("PATH", null, "/abcd/efgh/");
-		assertEquals("PATH(AbcdEfgh)", typePathFeature.getName());
+    typePathFeature = new TypePathFeature("PATH", null, "/abcd/efgh/");
+    assertEquals("PATH(AbcdEfgh)", typePathFeature.getName());
 
-		typePathFeature = new TypePathFeature("PATH", null, "/");
-		assertNull(typePathFeature.getName());
+    typePathFeature = new TypePathFeature("PATH", null, "/");
+    assertNull(typePathFeature.getName());
 
-	}
+  }
 
 }

@@ -43,33 +43,35 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * <br>
  * Copyright (c) 2009, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
  * @author Philipp Wetzler
  * 
  */
 
-public class DefaultBinaryLIBSVMDataWriterFactory extends JarDataWriterFactory<FeatureVector, Boolean, Boolean> {
+public class DefaultBinaryLIBSVMDataWriterFactory extends
+        JarDataWriterFactory<FeatureVector, Boolean, Boolean> {
 
-	public static final String PARAM_CUTOFF = ConfigurationParameterFactory.createConfigurationParameterName(DefaultBinaryLIBSVMDataWriterFactory.class, "cutoff");
-	@ConfigurationParameter(
-			defaultValue = "5",
-			description = "features that occur less than this number of times over the whole training set will not be encoded during testing")
-	protected int cutoff = 5;
+  public static final String PARAM_CUTOFF = ConfigurationParameterFactory
+          .createConfigurationParameterName(DefaultBinaryLIBSVMDataWriterFactory.class, "cutoff");
 
-	public DataWriter<Boolean> createDataWriter() throws IOException {
-		BinaryLIBSVMDataWriter dataWriter = new BinaryLIBSVMDataWriter(outputDirectory);
+  @ConfigurationParameter(defaultValue = "5", description = "features that occur less than this number of times over the whole training set will not be encoded during testing")
+  protected int cutoff = 5;
 
-		if(!this.setEncodersFromFileSystem(dataWriter)) {
-			NameNumberNormalizer normalizer = new EuclidianNormalizer();
-			FeatureVectorFeaturesEncoder fe = new FeatureVectorFeaturesEncoder(cutoff, normalizer);
-			fe.addEncoder(new NumberEncoder());
-			fe.addEncoder(new BooleanEncoder());
-			fe.addEncoder(new StringEncoder());
-			dataWriter.setFeaturesEncoder(fe);
+  public DataWriter<Boolean> createDataWriter() throws IOException {
+    BinaryLIBSVMDataWriter dataWriter = new BinaryLIBSVMDataWriter(outputDirectory);
 
-			dataWriter.setOutcomeEncoder(new BooleanToBooleanOutcomeEncoder());
-		}
+    if (!this.setEncodersFromFileSystem(dataWriter)) {
+      NameNumberNormalizer normalizer = new EuclidianNormalizer();
+      FeatureVectorFeaturesEncoder fe = new FeatureVectorFeaturesEncoder(cutoff, normalizer);
+      fe.addEncoder(new NumberEncoder());
+      fe.addEncoder(new BooleanEncoder());
+      fe.addEncoder(new StringEncoder());
+      dataWriter.setFeaturesEncoder(fe);
 
-		return dataWriter;
-	}
+      dataWriter.setOutcomeEncoder(new BooleanToBooleanOutcomeEncoder());
+    }
+
+    return dataWriter;
+  }
 
 }

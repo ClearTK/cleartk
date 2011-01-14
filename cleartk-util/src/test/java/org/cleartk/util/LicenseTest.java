@@ -30,7 +30,6 @@ import java.util.List;
 import org.cleartk.test.util.LicenseTestUtil;
 import org.junit.Test;
 
-
 /**
  * <br>
  * Copyright (c) 2010, Regents of the University of Colorado <br>
@@ -40,19 +39,18 @@ import org.junit.Test;
 
 public class LicenseTest {
 
-	@Test
-	public void testLicenseStatedInSource() throws Exception {
-		List<String> excludePackageNames = Collections.emptyList();
-		List<String> excludeJavaFiles = Arrays.asList("Files.java");
+  @Test
+  public void testLicenseStatedInSource() throws Exception {
+    List<String> excludePackageNames = Collections.emptyList();
+    List<String> excludeJavaFiles = Arrays.asList("Files.java");
 
-		LicenseTestUtil.testJavaFiles("src/main/java", excludePackageNames, excludeJavaFiles);
-	}
+    LicenseTestUtil.testJavaFiles("src/main/java", excludePackageNames, excludeJavaFiles);
+  }
 
-	@Test
-	public void testLicenseStatedInTestSource() throws Exception {
-		LicenseTestUtil.testJavaFiles("src/test/java");
+  @Test
+  public void testLicenseStatedInTestSource() throws Exception {
+    LicenseTestUtil.testJavaFiles("src/test/java");
 
-	}
+  }
 
 }
-

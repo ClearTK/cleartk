@@ -27,27 +27,28 @@ package org.cleartk;
  * <br>
  * Copyright (c) 2010, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
  * @author Philipp Wetzler
  * 
  */
 public class CleartkRuntimeException extends RuntimeException {
 
-	private static final long serialVersionUID = -4550657626985537362L;
+  private static final long serialVersionUID = -4550657626985537362L;
 
-	public CleartkRuntimeException() {
-		super();
-	}
+  public CleartkRuntimeException() {
+    super();
+  }
 
-	public CleartkRuntimeException(String message, Throwable cause) {
-		super(message, cause);
-	}
+  public CleartkRuntimeException(String message, Throwable cause) {
+    super(message, cause);
+  }
 
-	public CleartkRuntimeException(String message) {
-		super(message);
-	}
+  public CleartkRuntimeException(String message) {
+    super(message);
+  }
 
-	public CleartkRuntimeException(Throwable cause) {
-		super(cause);
-	}
+  public CleartkRuntimeException(Throwable cause) {
+    super(cause);
+  }
 
 }

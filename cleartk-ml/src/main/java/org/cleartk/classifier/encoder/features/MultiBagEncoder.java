@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.encoder.features;
 
 import java.util.ArrayList;
@@ -31,73 +31,73 @@ import org.cleartk.classifier.encoder.features.normalizer.NOPNormalizer;
 import org.cleartk.classifier.encoder.features.normalizer.NameNumberNormalizer;
 import org.cleartk.classifier.feature.Counts;
 
-
 /**
- * <br>Copyright (c) 2009, Regents of the University of Colorado 
- * <br>All rights reserved.
- *
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * Encodes a Counts feature into a bag-of-words type feature.
  * 
- * This works on arbitrary types of objects, not just words. If an object's
- * count is larger than zero, the corresponding value (named using the .toString
- * method of the object) is set to the count. If the count is zero, the value is not
- * included in the output. 
+ * This works on arbitrary types of objects, not just words. If an object's count is larger than
+ * zero, the corresponding value (named using the .toString method of the object) is set to the
+ * count. If the count is zero, the value is not included in the output.
  * 
  * @author Philipp Wetzler
  */
 public class MultiBagEncoder implements FeatureEncoder<NameNumber> {
 
-	private static final long serialVersionUID = -5280514188425612793L;
-	
-	public MultiBagEncoder(String identifier, NameNumberNormalizer normalizer) {
-		this.identifier = identifier;
-		this.normalizer = normalizer;
-	}
+  private static final long serialVersionUID = -5280514188425612793L;
 
-	public MultiBagEncoder(String identifier) {
-		this(identifier, new NOPNormalizer());
-	}
+  public MultiBagEncoder(String identifier, NameNumberNormalizer normalizer) {
+    this.identifier = identifier;
+    this.normalizer = normalizer;
+  }
 
-	public MultiBagEncoder(NameNumberNormalizer normalizer) {
-		this(null, normalizer);
-	}
+  public MultiBagEncoder(String identifier) {
+    this(identifier, new NOPNormalizer());
+  }
 
-	public MultiBagEncoder() {
-		this(null, new NOPNormalizer());
-	}
+  public MultiBagEncoder(NameNumberNormalizer normalizer) {
+    this(null, normalizer);
+  }
 
-	public List<NameNumber> encode(Feature feature) {
-		List<NameNumber> fves = new ArrayList<NameNumber>();
-		Counts frequencies = (Counts) feature.getValue();
+  public MultiBagEncoder() {
+    this(null, new NOPNormalizer());
+  }
 
-		String prefix = frequencies.getFeatureName();
-		for( Object key : frequencies.getValues() ) {
-			String name = Feature.createName(prefix, key.toString());
-			NameNumber fve = new NameNumber(name, frequencies.getCount(key));
-			fves.add(fve);
-		}
+  public List<NameNumber> encode(Feature feature) {
+    List<NameNumber> fves = new ArrayList<NameNumber>();
+    Counts frequencies = (Counts) feature.getValue();
 
-		normalizer.normalize(fves);
+    String prefix = frequencies.getFeatureName();
+    for (Object key : frequencies.getValues()) {
+      String name = Feature.createName(prefix, key.toString());
+      NameNumber fve = new NameNumber(name, frequencies.getCount(key));
+      fves.add(fve);
+    }
 
-		return fves;
-	}
+    normalizer.normalize(fves);
 
-	public boolean encodes(Feature feature) {
-		if( ! (feature.getValue() instanceof Counts) )
-			return false;
+    return fves;
+  }
 
-		Counts counts = (Counts) feature.getValue();
+  public boolean encodes(Feature feature) {
+    if (!(feature.getValue() instanceof Counts))
+      return false;
 
-		if( identifier == null )
-			return true;
+    Counts counts = (Counts) feature.getValue();
 
-		if( identifier.equals(counts.getIdentifier()))
-			return true;
+    if (identifier == null)
+      return true;
 
-		return false;
-	}
+    if (identifier.equals(counts.getIdentifier()))
+      return true;
 
-	private String identifier;
-	private NameNumberNormalizer normalizer;
+    return false;
+  }
+
+  private String identifier;
+
+  private NameNumberNormalizer normalizer;
 
 }

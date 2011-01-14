@@ -37,8 +37,8 @@ import java.util.jar.JarFile;
  */
 public class MaxentClassifier extends MaxentClassifier_ImplBase<String> {
 
-	public MaxentClassifier(JarFile modelFile) throws IOException {
-		super(modelFile);
-	}
+  public MaxentClassifier(JarFile modelFile) throws IOException {
+    super(modelFile);
+  }
 
 }

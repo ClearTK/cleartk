@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.mallet;
 
 import java.io.File;
@@ -31,35 +31,36 @@ import org.cleartk.classifier.jar.ClassifierBuilder;
 import cc.mallet.fst.SimpleTagger;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
-* 
-* @author Philip Ogren
-* 
-*/
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * 
+ * @author Philip Ogren
+ * 
+ */
 
 public class MalletCRFClassifierBuilder implements ClassifierBuilder<String> {
 
-	public void train(File dir, String[] args) throws Exception {
-		String[] malletArgs = new String[args.length + 5];
-		System.arraycopy(args, 0, malletArgs, 0, args.length);
-		malletArgs[malletArgs.length - 5] = "--train";
-		malletArgs[malletArgs.length - 4] = "true";
-		malletArgs[malletArgs.length - 3] = "--model-file";
-		malletArgs[malletArgs.length - 2] = new File(dir, "model.malletcrf").getPath();
-		malletArgs[malletArgs.length - 1] = new File(dir, "training-data.malletcrf").getPath();
-		SimpleTagger.main(malletArgs);
-	}
+  public void train(File dir, String[] args) throws Exception {
+    String[] malletArgs = new String[args.length + 5];
+    System.arraycopy(args, 0, malletArgs, 0, args.length);
+    malletArgs[malletArgs.length - 5] = "--train";
+    malletArgs[malletArgs.length - 4] = "true";
+    malletArgs[malletArgs.length - 3] = "--model-file";
+    malletArgs[malletArgs.length - 2] = new File(dir, "model.malletcrf").getPath();
+    malletArgs[malletArgs.length - 1] = new File(dir, "training-data.malletcrf").getPath();
+    SimpleTagger.main(malletArgs);
+  }
 
-	public void buildJar(File dir, String[] args) throws Exception {
-		BuildJar.OutputStream stream = new BuildJar.OutputStream(dir);
-		stream.write("model.malletcrf", new File(dir, "model.malletcrf"));
-		stream.close();
-	}
+  public void buildJar(File dir, String[] args) throws Exception {
+    BuildJar.OutputStream stream = new BuildJar.OutputStream(dir);
+    stream.write("model.malletcrf", new File(dir, "model.malletcrf"));
+    stream.close();
+  }
 
-	public Class<?> getClassifierClass() {
-		return MalletCRFClassifier.class;
-	}
+  public Class<?> getClassifierClass() {
+    return MalletCRFClassifier.class;
+  }
 
 }

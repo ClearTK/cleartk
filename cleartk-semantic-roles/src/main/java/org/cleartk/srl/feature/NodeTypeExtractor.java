@@ -34,25 +34,26 @@ import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 
 /**
- * <br>Copyright (c) 2007-2009, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * 
  * @author Philipp Wetzler
  */
 public class NodeTypeExtractor implements SimpleFeatureExtractor {
 
-	public List<Feature> extract(JCas jCas, Annotation focusAnnotation)	throws CleartkException {
-		if( ! (focusAnnotation instanceof TreebankNode) )
-			throw new CleartkException("annotation is not of type TreebankNode");
-		
-		TreebankNode node = (TreebankNode) focusAnnotation;
-		
-		if( node.getNodeType() == null )
-			throw new UnsupportedOperationException("nodeType attribute has not been set");
-		
-		Feature feature = new Feature("NodeType", node.getNodeType());
-		return Collections.singletonList(feature);
-	}
+  public List<Feature> extract(JCas jCas, Annotation focusAnnotation) throws CleartkException {
+    if (!(focusAnnotation instanceof TreebankNode))
+      throw new CleartkException("annotation is not of type TreebankNode");
+
+    TreebankNode node = (TreebankNode) focusAnnotation;
+
+    if (node.getNodeType() == null)
+      throw new UnsupportedOperationException("nodeType attribute has not been set");
+
+    Feature feature = new Feature("NodeType", node.getNodeType());
+    return Collections.singletonList(feature);
+  }
 
 }

@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.feature.extractor;
 
 import java.util.ArrayList;
@@ -41,58 +41,51 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * 
  * @author Steven Bethard
  */
 
 public class NGramExtractorTest extends DefaultTestBase {
 
-	@Test
-	public void test() throws UIMAException, CleartkException {
-		String text = "She sells seashells by the sea shore"; 
- 
-		tokenBuilder.buildTokens(jCas,
-				text, text, 
-				"PRP VBZ NNS IN DT NN NN");
-		DocumentAnnotation document = AnnotationRetrieval.getDocument(jCas);
-		
-		SpannedTextExtractor textExtractor = new SpannedTextExtractor();
-		TypePathExtractor posExtractor = new TypePathExtractor(Token.class, "pos");
-		NGramExtractor extractor;
-		List<Feature> features;
-		
-		extractor = new NGramExtractor(2, Token.class, textExtractor);
-		Assert.assertEquals("|", extractor.getValueSeparator());
-		features = extractor.extract(jCas, document);
-		Assert.assertEquals(6, features.size());
-		this.checkFeatures(
-				features, "Ngram(Token,null,null)",
-				"She|sells", "sells|seashells", "seashells|by",
-				"by|the", "the|sea", "sea|shore");
-		
-		extractor = new NGramExtractor(3, Token.class, posExtractor);
-		extractor.setValueSeparator("@");
-		Assert.assertEquals("@", extractor.getValueSeparator());
-		features = extractor.extract(jCas, document);
-		Assert.assertEquals(5, features.size());
-		this.checkFeatures(
-				features, "Ngram(Token,TypePath(Pos),TypePath(Pos),TypePath(Pos))",
-				"PRP@VBZ@NNS", "VBZ@NNS@IN", "NNS@IN@DT", "IN@DT@NN", "DT@NN@NN");
-		
-	}
-	
-	private void checkFeatures(
-			List<Feature> features,
-			String expectedName,
-			Object ... expectedValues) {
-		List<Object> actualValues = new ArrayList<Object>();
-		for (Feature feature: features) {
-			Assert.assertEquals(expectedName, feature.getName());
-			actualValues.add(feature.getValue());
-		}
-		Assert.assertEquals(Arrays.asList(expectedValues), actualValues);
-	}
+  @Test
+  public void test() throws UIMAException, CleartkException {
+    String text = "She sells seashells by the sea shore";
+
+    tokenBuilder.buildTokens(jCas, text, text, "PRP VBZ NNS IN DT NN NN");
+    DocumentAnnotation document = AnnotationRetrieval.getDocument(jCas);
+
+    SpannedTextExtractor textExtractor = new SpannedTextExtractor();
+    TypePathExtractor posExtractor = new TypePathExtractor(Token.class, "pos");
+    NGramExtractor extractor;
+    List<Feature> features;
+
+    extractor = new NGramExtractor(2, Token.class, textExtractor);
+    Assert.assertEquals("|", extractor.getValueSeparator());
+    features = extractor.extract(jCas, document);
+    Assert.assertEquals(6, features.size());
+    this.checkFeatures(features, "Ngram(Token,null,null)", "She|sells", "sells|seashells",
+            "seashells|by", "by|the", "the|sea", "sea|shore");
+
+    extractor = new NGramExtractor(3, Token.class, posExtractor);
+    extractor.setValueSeparator("@");
+    Assert.assertEquals("@", extractor.getValueSeparator());
+    features = extractor.extract(jCas, document);
+    Assert.assertEquals(5, features.size());
+    this.checkFeatures(features, "Ngram(Token,TypePath(Pos),TypePath(Pos),TypePath(Pos))",
+            "PRP@VBZ@NNS", "VBZ@NNS@IN", "NNS@IN@DT", "IN@DT@NN", "DT@NN@NN");
+
+  }
+
+  private void checkFeatures(List<Feature> features, String expectedName, Object... expectedValues) {
+    List<Object> actualValues = new ArrayList<Object>();
+    for (Feature feature : features) {
+      Assert.assertEquals(expectedName, feature.getName());
+      actualValues.add(feature.getValue());
+    }
+    Assert.assertEquals(Arrays.asList(expectedValues), actualValues);
+  }
 }

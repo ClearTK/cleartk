@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2009, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.token.pos.impl;
 
 import java.util.ArrayList;
@@ -48,72 +48,71 @@ import org.cleartk.token.type.Token;
 import org.uimafit.factory.initializable.Initializable;
 
 /**
- * <br>Copyright (c) 2009, Regents of the University of Colorado 
- * <br>All rights reserved.
- *
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * @author Philip Ogren
- *
+ * 
  */
 
-public class DefaultFeatureExtractor implements POSFeatureExtractor<Token, Sentence>, Initializable{
+public class DefaultFeatureExtractor implements POSFeatureExtractor<Token, Sentence>, Initializable {
 
-	private List<SimpleFeatureExtractor> simpleExtractors;
-	private List<WindowExtractor> windowExtractors;
-	private List<WindowNGramExtractor> windowNGramExtractors;
-	
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		simpleExtractors = new ArrayList<SimpleFeatureExtractor>();
+  private List<SimpleFeatureExtractor> simpleExtractors;
 
-		SimpleFeatureExtractor wordExtractor = new SpannedTextExtractor();
+  private List<WindowExtractor> windowExtractors;
 
-		int fromLeft = CharacterNGramProliferator.LEFT_TO_RIGHT;
-		int fromRight = CharacterNGramProliferator.RIGHT_TO_LEFT;
-		simpleExtractors.add(new ProliferatingExtractor(
-				wordExtractor,
-				new LowerCaseProliferator(),
-				new CapitalTypeProliferator(),
-				new NumericTypeProliferator(),
-				new CharacterNGramProliferator(fromLeft, 0, 1),
-				new CharacterNGramProliferator(fromLeft, 0, 2),
-				new CharacterNGramProliferator(fromLeft, 0, 3),
-				new CharacterNGramProliferator(fromRight, 0, 1),
-				new CharacterNGramProliferator(fromRight, 0, 2),
-				new CharacterNGramProliferator(fromRight, 0, 3),
-				new CharacterNGramProliferator(fromRight, 0, 4),
-				new CharacterNGramProliferator(fromRight, 0, 5),
-				new CharacterNGramProliferator(fromRight, 0, 6)));
+  private List<WindowNGramExtractor> windowNGramExtractors;
 
-		windowExtractors = new ArrayList<WindowExtractor>();
-		
-		windowExtractors.add(new WindowExtractor(
-				Token.class, wordExtractor, WindowFeature.ORIENTATION_LEFT, 0, 2));
-		windowExtractors.add(new WindowExtractor(
-				Token.class, wordExtractor, WindowFeature.ORIENTATION_RIGHT, 0, 2));
-		
-		windowNGramExtractors = new ArrayList<WindowNGramExtractor>();
-		windowNGramExtractors.add(new WindowNGramExtractor(
-				Token.class, wordExtractor, WindowNGramFeature.ORIENTATION_LEFT,WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT,"_", 0, 2));
-		windowNGramExtractors.add(new WindowNGramExtractor(
-				Token.class, wordExtractor, WindowNGramFeature.ORIENTATION_RIGHT,WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT,"_", 0, 2));
-	}
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    simpleExtractors = new ArrayList<SimpleFeatureExtractor>();
 
-	public List<Feature> extractFeatures(JCas jCas, Token token, Sentence sentence) throws CleartkException {
-		List<Feature> features = new ArrayList<Feature>();
+    SimpleFeatureExtractor wordExtractor = new SpannedTextExtractor();
 
-		for (SimpleFeatureExtractor extractor: simpleExtractors) {
-			features.addAll(extractor.extract(jCas, token));
-		}
-		
-		for (WindowExtractor extractor: windowExtractors) {
-			features.addAll(extractor.extract(jCas, token, sentence));
-		}
+    int fromLeft = CharacterNGramProliferator.LEFT_TO_RIGHT;
+    int fromRight = CharacterNGramProliferator.RIGHT_TO_LEFT;
+    simpleExtractors.add(new ProliferatingExtractor(wordExtractor, new LowerCaseProliferator(),
+            new CapitalTypeProliferator(), new NumericTypeProliferator(),
+            new CharacterNGramProliferator(fromLeft, 0, 1), new CharacterNGramProliferator(
+                    fromLeft, 0, 2), new CharacterNGramProliferator(fromLeft, 0, 3),
+            new CharacterNGramProliferator(fromRight, 0, 1), new CharacterNGramProliferator(
+                    fromRight, 0, 2), new CharacterNGramProliferator(fromRight, 0, 3),
+            new CharacterNGramProliferator(fromRight, 0, 4), new CharacterNGramProliferator(
+                    fromRight, 0, 5), new CharacterNGramProliferator(fromRight, 0, 6)));
 
-		for (WindowNGramExtractor extractor: windowNGramExtractors) {
-			features.add(extractor.extract(jCas, token, sentence));
-		}
-		
-		return features;
-	}
+    windowExtractors = new ArrayList<WindowExtractor>();
 
+    windowExtractors.add(new WindowExtractor(Token.class, wordExtractor,
+            WindowFeature.ORIENTATION_LEFT, 0, 2));
+    windowExtractors.add(new WindowExtractor(Token.class, wordExtractor,
+            WindowFeature.ORIENTATION_RIGHT, 0, 2));
+
+    windowNGramExtractors = new ArrayList<WindowNGramExtractor>();
+    windowNGramExtractors.add(new WindowNGramExtractor(Token.class, wordExtractor,
+            WindowNGramFeature.ORIENTATION_LEFT, WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT, "_",
+            0, 2));
+    windowNGramExtractors.add(new WindowNGramExtractor(Token.class, wordExtractor,
+            WindowNGramFeature.ORIENTATION_RIGHT, WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT, "_",
+            0, 2));
+  }
+
+  public List<Feature> extractFeatures(JCas jCas, Token token, Sentence sentence)
+          throws CleartkException {
+    List<Feature> features = new ArrayList<Feature>();
+
+    for (SimpleFeatureExtractor extractor : simpleExtractors) {
+      features.addAll(extractor.extract(jCas, token));
+    }
+
+    for (WindowExtractor extractor : windowExtractors) {
+      features.addAll(extractor.extract(jCas, token, sentence));
+    }
+
+    for (WindowNGramExtractor extractor : windowNGramExtractors) {
+      features.add(extractor.extract(jCas, token, sentence));
+    }
+
+    return features;
+  }
 
 }

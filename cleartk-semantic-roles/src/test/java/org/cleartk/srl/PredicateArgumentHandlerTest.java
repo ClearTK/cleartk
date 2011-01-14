@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.srl;
 
 import java.util.ArrayList;
@@ -52,245 +52,228 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
  */
 public class PredicateArgumentHandlerTest extends SrlTestBase {
-	
-	
-	@Test
-	public void testArgumentAnnotationNoPredicate() throws UIMAException, CleartkException {
-		// create the document
-		AnalysisEngine engine = 
-			AnalysisEngineFactory.createPrimitive(
-					CleartkComponents.createCleartkAnnotator(
-							ArgumentAnnotator.class, typeSystemDescription, InstanceCollector.StringFactory.class, ".", (List<Class<?>>) null));
-		this.setTokens(jCas);
-		this.setTrees(jCas);
-		
-		// make sure the handler produces no instances
-		List<Instance<String>> instances = InstanceCollector.StringFactory.collectInstances(engine, jCas);
-		Assert.assertEquals(0, instances.size());
-	}
-		
-	@Test
-	public void testArgumentIdentificationNoPredicate() throws UIMAException, CleartkException {
-		// create the document
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				CleartkComponents.createCleartkAnnotator(
-						ArgumentIdentifier.class, typeSystemDescription, InstanceCollector.BooleanFactory.class, ".", (List<Class<?>>) null));
-		this.setTokens(jCas);
-		this.setTrees(jCas);
-		
-		// make sure the handler produces no instances
-		List<Instance<Boolean>> instances = InstanceCollector.BooleanFactory.collectInstances(engine, jCas);
-		Assert.assertEquals(0, instances.size());
-	}
-		
-	@Test
-	public void testArgumentClassificationNoPredicate() throws UIMAException, CleartkException {
-		// create the document
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				CleartkComponents.createCleartkAnnotator(
-						ArgumentClassifier.class, typeSystemDescription, InstanceCollector.StringFactory.class, ".",  (List<Class<?>>) null));
-		this.setTokens(jCas);
-		this.setTrees(jCas);
-		
-		// make sure the handler produces no instances
-		List<Instance<String>> instances = InstanceCollector.StringFactory.collectInstances(engine, jCas);
-		Assert.assertEquals(0, instances.size());
-	}
-		
-	@Test
-	public void testArgumentAnnotationNoTree() throws UIMAException, CleartkException {
-		// create the document
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				CleartkComponents.createCleartkAnnotator(
-						ArgumentAnnotator.class, typeSystemDescription, InstanceCollector.StringFactory.class, ".", (List<Class<?>>) null));
-		this.setTokens(jCas);
-		this.setPredicates(jCas);
-		
-		// make sure the handler produces an exception
-	    HideLogging hider = new HideLogging();
-		try {
-			InstanceCollector.StringFactory.collectInstances(engine, jCas);
-			Assert.fail("expected exception for missing TopTreebankNode");
-		} catch (AnalysisEngineProcessException e) {
-		} finally {
-			hider.restoreLogging();
-		}
-	}
-		
-	@Test
-	public void testArgumentIdentificationNoTree() throws UIMAException, CleartkException {
-		// create the document
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				CleartkComponents.createCleartkAnnotator(
-						ArgumentIdentifier.class, typeSystemDescription, InstanceCollector.BooleanFactory.class, ".", (List<Class<?>>) null));
-		this.setTokens(jCas);
-		this.setPredicates(jCas);
-		
-		// make sure the handler produces an exception
-	    HideLogging hider = new HideLogging();
-		try {
-			InstanceCollector.BooleanFactory.collectInstances(engine, jCas);
-			Assert.fail("expected exception for missing TopTreebankNode");
-		} catch (AnalysisEngineProcessException e) {
-		} finally {
-			hider.restoreLogging();
-		}
-	}
-		
-	@Test
-	public void testArgumentClassificationNoTree() throws UIMAException, CleartkException {
-		// create the document
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				CleartkComponents.createCleartkAnnotator(
-						ArgumentClassifier.class, typeSystemDescription, InstanceCollector.StringFactory.class, ".", (List<Class<?>>) null));
-		this.setTokens(jCas);
-		this.setPredicates(jCas);
-		
-		// make sure the handler produces an exception
-	    HideLogging hider = new HideLogging();
-		try {
-			InstanceCollector.StringFactory.collectInstances(engine, jCas);
-			Assert.fail("expected exception for missing TopTreebankNode");
-		} catch (AnalysisEngineProcessException e) {
-		} finally {
-			hider.restoreLogging();
-		}
-	}
-		
-	@Test
-	public void testPredicateAnnotation() throws UIMAException, CleartkException {
-		// create the document
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				CleartkComponents.createCleartkAnnotator(
-						PredicateAnnotator.class, typeSystemDescription, InstanceCollector.BooleanFactory.class, ".", (List<Class<?>>) null));
-		this.setTokens(jCas);
-		this.setTrees(jCas);
-		this.setPredicates(jCas);
-		
-		// get the instances produced by the handler
-		List<Instance<Boolean>> instances = InstanceCollector.BooleanFactory.collectInstances(engine, jCas);
-		Assert.assertEquals(5, instances.size());
-		Object[] featureValues;
-		
-		// check "broke"
-		Instance<Boolean> brokeInstance = instances.get(1);
-		featureValues = new Object[] {
-				"broke", "break", "VBD",
-				"John", "John", "NNP",
-				null,
-				"the", "the", "DT",
-				"lamp", "lamp", "NN"};
-		Assert.assertEquals(
-				Arrays.asList(featureValues),
-				this.getFeatureValues(brokeInstance));
-		Assert.assertEquals(true, brokeInstance.getOutcome());
 
-		// check "lamp"
-		Instance<Boolean> lampInstance = instances.get(3);
-		featureValues = new Object[] {
-				"lamp", "lamp", "NN",
-				"the", "the", "DT",
-				"broke", "break", "VBD",
-				".", ".", ".",
-				null};
-		Assert.assertEquals(
-				Arrays.asList(featureValues),
-				this.getFeatureValues(lampInstance));
-		Assert.assertEquals(false, lampInstance.getOutcome());
-	}
+  @Test
+  public void testArgumentAnnotationNoPredicate() throws UIMAException, CleartkException {
+    // create the document
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkComponents
+            .createCleartkAnnotator(ArgumentAnnotator.class, typeSystemDescription,
+                    InstanceCollector.StringFactory.class, ".", (List<Class<?>>) null));
+    this.setTokens(jCas);
+    this.setTrees(jCas);
 
-	/* 
-	 * removed a few tests:
-	 * makes no sense to test that produced features match an exact expectation --
-	 * that's not part of the specification
-	 */	
+    // make sure the handler produces no instances
+    List<Instance<String>> instances = InstanceCollector.StringFactory.collectInstances(engine,
+            jCas);
+    Assert.assertEquals(0, instances.size());
+  }
 
-	private void setTokens(JCas jCas) throws UIMAException {
-		tokenBuilder.buildTokens(jCas,  
-				"John broke the lamp.",
-				"John broke the lamp .",
-				"NNP VBD DT NN .",
-				"John break the lamp .");
-	}
-	
-	private void setTrees(JCas jCas) {
-		TreebankNode sNode = TreebankTestsUtil.newNode(jCas, "S",
-				TreebankTestsUtil.newNode(jCas, "NP",
-						TreebankTestsUtil.newNode(jCas, 0, 4, "NNP")),
-						TreebankTestsUtil.newNode(jCas, "VP",
-								TreebankTestsUtil.newNode(jCas, 5, 10, "VBD"),
-								TreebankTestsUtil.newNode(jCas, "NP",
-										TreebankTestsUtil.newNode(jCas, 11, 14, "DT"),
-										TreebankTestsUtil.newNode(jCas, 15, 19, "NN"))),
-										TreebankTestsUtil.newNode(jCas, 19, 20, "."));
+  @Test
+  public void testArgumentIdentificationNoPredicate() throws UIMAException, CleartkException {
+    // create the document
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkComponents
+            .createCleartkAnnotator(ArgumentIdentifier.class, typeSystemDescription,
+                    InstanceCollector.BooleanFactory.class, ".", (List<Class<?>>) null));
+    this.setTokens(jCas);
+    this.setTrees(jCas);
 
-		TopTreebankNode topNode = new TopTreebankNode(jCas, sNode.getBegin(), sNode.getEnd());
-		topNode.setNodeType("TOP");
-		topNode.setChildren(UIMAUtil.toFSArray(jCas, Collections.singletonList(sNode)));
-		topNode.addToIndexes();
-	}
-	
-	private void setPredicates(JCas jCas) {
-		List<Token> tokens = AnnotationRetrieval.getAnnotations(jCas, Token.class);
-		Token predToken = tokens.get(1);
-		Predicate predicate = new Predicate(jCas, predToken.getBegin(), predToken.getEnd());
-		predicate.setAnnotation(predToken);
-		predicate.addToIndexes();
-		
-		List<TreebankNode> nodes = AnnotationRetrieval.getAnnotations(jCas, TreebankNode.class);
-		SemanticArgument arg0 = new SemanticArgument(jCas, 0, 4);
-		arg0.setLabel("ARG0");
-		arg0.setFeature("XXX");
-		arg0.addToIndexes();
-		SemanticArgument arg1 = new SemanticArgument(jCas, 11, 19);
-		arg1.setLabel("ARG1");
-		arg1.addToIndexes();
-		for (TreebankNode node: nodes) {
-			if (node.getNodeType().equals("NP") && node.getCoveredText().equals("John")) {
-				arg0.setAnnotation(node);
-			}
-			if (node.getCoveredText().equals("the lamp")) {
-				arg1.setAnnotation(node);
-			}
-		}
-		predicate.setArguments(new FSArray(jCas, 2));
-		predicate.setArguments(0, arg0);
-		predicate.setArguments(1, arg1);
-	}
-	
-	private List<String> getFeatureValues(Instance<?> instance) {
-		List<String> values = new ArrayList<String>();
-		for (Feature feature: instance.getFeatures()) {
-			Object value = feature == null ? null : feature.getValue(); 
-			values.add(value == null ? null : value.toString());
-		}
-		return values;
-	}
-	
-	private static class HideLogging {
-		private Logger root;
-		private Handler[] handlers;
+    // make sure the handler produces no instances
+    List<Instance<Boolean>> instances = InstanceCollector.BooleanFactory.collectInstances(engine,
+            jCas);
+    Assert.assertEquals(0, instances.size());
+  }
 
-		public HideLogging() {
-			this.root = Logger.getLogger("");
-			this.handlers = root.getHandlers();
-			for (Handler handler : this.handlers) {
-				root.removeHandler(handler);
-			}
-		}
+  @Test
+  public void testArgumentClassificationNoPredicate() throws UIMAException, CleartkException {
+    // create the document
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkComponents
+            .createCleartkAnnotator(ArgumentClassifier.class, typeSystemDescription,
+                    InstanceCollector.StringFactory.class, ".", (List<Class<?>>) null));
+    this.setTokens(jCas);
+    this.setTrees(jCas);
 
-		public void restoreLogging() {
-			for (Handler handler : this.handlers) {
-				this.root.addHandler(handler);
-			}
-		}
-	}
+    // make sure the handler produces no instances
+    List<Instance<String>> instances = InstanceCollector.StringFactory.collectInstances(engine,
+            jCas);
+    Assert.assertEquals(0, instances.size());
+  }
+
+  @Test
+  public void testArgumentAnnotationNoTree() throws UIMAException, CleartkException {
+    // create the document
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkComponents
+            .createCleartkAnnotator(ArgumentAnnotator.class, typeSystemDescription,
+                    InstanceCollector.StringFactory.class, ".", (List<Class<?>>) null));
+    this.setTokens(jCas);
+    this.setPredicates(jCas);
+
+    // make sure the handler produces an exception
+    HideLogging hider = new HideLogging();
+    try {
+      InstanceCollector.StringFactory.collectInstances(engine, jCas);
+      Assert.fail("expected exception for missing TopTreebankNode");
+    } catch (AnalysisEngineProcessException e) {
+    } finally {
+      hider.restoreLogging();
+    }
+  }
+
+  @Test
+  public void testArgumentIdentificationNoTree() throws UIMAException, CleartkException {
+    // create the document
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkComponents
+            .createCleartkAnnotator(ArgumentIdentifier.class, typeSystemDescription,
+                    InstanceCollector.BooleanFactory.class, ".", (List<Class<?>>) null));
+    this.setTokens(jCas);
+    this.setPredicates(jCas);
+
+    // make sure the handler produces an exception
+    HideLogging hider = new HideLogging();
+    try {
+      InstanceCollector.BooleanFactory.collectInstances(engine, jCas);
+      Assert.fail("expected exception for missing TopTreebankNode");
+    } catch (AnalysisEngineProcessException e) {
+    } finally {
+      hider.restoreLogging();
+    }
+  }
+
+  @Test
+  public void testArgumentClassificationNoTree() throws UIMAException, CleartkException {
+    // create the document
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkComponents
+            .createCleartkAnnotator(ArgumentClassifier.class, typeSystemDescription,
+                    InstanceCollector.StringFactory.class, ".", (List<Class<?>>) null));
+    this.setTokens(jCas);
+    this.setPredicates(jCas);
+
+    // make sure the handler produces an exception
+    HideLogging hider = new HideLogging();
+    try {
+      InstanceCollector.StringFactory.collectInstances(engine, jCas);
+      Assert.fail("expected exception for missing TopTreebankNode");
+    } catch (AnalysisEngineProcessException e) {
+    } finally {
+      hider.restoreLogging();
+    }
+  }
+
+  @Test
+  public void testPredicateAnnotation() throws UIMAException, CleartkException {
+    // create the document
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkComponents
+            .createCleartkAnnotator(PredicateAnnotator.class, typeSystemDescription,
+                    InstanceCollector.BooleanFactory.class, ".", (List<Class<?>>) null));
+    this.setTokens(jCas);
+    this.setTrees(jCas);
+    this.setPredicates(jCas);
+
+    // get the instances produced by the handler
+    List<Instance<Boolean>> instances = InstanceCollector.BooleanFactory.collectInstances(engine,
+            jCas);
+    Assert.assertEquals(5, instances.size());
+    Object[] featureValues;
+
+    // check "broke"
+    Instance<Boolean> brokeInstance = instances.get(1);
+    featureValues = new Object[] { "broke", "break", "VBD", "John", "John", "NNP", null, "the",
+        "the", "DT", "lamp", "lamp", "NN" };
+    Assert.assertEquals(Arrays.asList(featureValues), this.getFeatureValues(brokeInstance));
+    Assert.assertEquals(true, brokeInstance.getOutcome());
+
+    // check "lamp"
+    Instance<Boolean> lampInstance = instances.get(3);
+    featureValues = new Object[] { "lamp", "lamp", "NN", "the", "the", "DT", "broke", "break",
+        "VBD", ".", ".", ".", null };
+    Assert.assertEquals(Arrays.asList(featureValues), this.getFeatureValues(lampInstance));
+    Assert.assertEquals(false, lampInstance.getOutcome());
+  }
+
+  /*
+   * removed a few tests: makes no sense to test that produced features match an exact expectation
+   * -- that's not part of the specification
+   */
+
+  private void setTokens(JCas jCas) throws UIMAException {
+    tokenBuilder.buildTokens(jCas, "John broke the lamp.", "John broke the lamp .",
+            "NNP VBD DT NN .", "John break the lamp .");
+  }
+
+  private void setTrees(JCas jCas) {
+    TreebankNode sNode = TreebankTestsUtil.newNode(jCas, "S", TreebankTestsUtil.newNode(jCas, "NP",
+            TreebankTestsUtil.newNode(jCas, 0, 4, "NNP")), TreebankTestsUtil.newNode(jCas, "VP",
+            TreebankTestsUtil.newNode(jCas, 5, 10, "VBD"), TreebankTestsUtil.newNode(jCas, "NP",
+                    TreebankTestsUtil.newNode(jCas, 11, 14, "DT"),
+                    TreebankTestsUtil.newNode(jCas, 15, 19, "NN"))), TreebankTestsUtil.newNode(
+            jCas, 19, 20, "."));
+
+    TopTreebankNode topNode = new TopTreebankNode(jCas, sNode.getBegin(), sNode.getEnd());
+    topNode.setNodeType("TOP");
+    topNode.setChildren(UIMAUtil.toFSArray(jCas, Collections.singletonList(sNode)));
+    topNode.addToIndexes();
+  }
+
+  private void setPredicates(JCas jCas) {
+    List<Token> tokens = AnnotationRetrieval.getAnnotations(jCas, Token.class);
+    Token predToken = tokens.get(1);
+    Predicate predicate = new Predicate(jCas, predToken.getBegin(), predToken.getEnd());
+    predicate.setAnnotation(predToken);
+    predicate.addToIndexes();
+
+    List<TreebankNode> nodes = AnnotationRetrieval.getAnnotations(jCas, TreebankNode.class);
+    SemanticArgument arg0 = new SemanticArgument(jCas, 0, 4);
+    arg0.setLabel("ARG0");
+    arg0.setFeature("XXX");
+    arg0.addToIndexes();
+    SemanticArgument arg1 = new SemanticArgument(jCas, 11, 19);
+    arg1.setLabel("ARG1");
+    arg1.addToIndexes();
+    for (TreebankNode node : nodes) {
+      if (node.getNodeType().equals("NP") && node.getCoveredText().equals("John")) {
+        arg0.setAnnotation(node);
+      }
+      if (node.getCoveredText().equals("the lamp")) {
+        arg1.setAnnotation(node);
+      }
+    }
+    predicate.setArguments(new FSArray(jCas, 2));
+    predicate.setArguments(0, arg0);
+    predicate.setArguments(1, arg1);
+  }
+
+  private List<String> getFeatureValues(Instance<?> instance) {
+    List<String> values = new ArrayList<String>();
+    for (Feature feature : instance.getFeatures()) {
+      Object value = feature == null ? null : feature.getValue();
+      values.add(value == null ? null : value.toString());
+    }
+    return values;
+  }
+
+  private static class HideLogging {
+    private Logger root;
+
+    private Handler[] handlers;
+
+    public HideLogging() {
+      this.root = Logger.getLogger("");
+      this.handlers = root.getHandlers();
+      for (Handler handler : this.handlers) {
+        root.removeHandler(handler);
+      }
+    }
+
+    public void restoreLogging() {
+      for (Handler handler : this.handlers) {
+        this.root.addHandler(handler);
+      }
+    }
+  }
 
 }

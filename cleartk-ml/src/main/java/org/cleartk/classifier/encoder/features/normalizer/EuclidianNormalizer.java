@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2009, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,39 +20,39 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.encoder.features.normalizer;
 
 import java.util.List;
 
 import org.cleartk.classifier.encoder.features.NameNumber;
 
-
 /**
- * <br>Copyright (c) 2009, Regents of the University of Colorado 
- * <br>All rights reserved.
- *
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * @author Philip Wetzler
  */
 public class EuclidianNormalizer implements NameNumberNormalizer {
 
-	private static final long serialVersionUID = -1472062182224823033L;
+  private static final long serialVersionUID = -1472062182224823033L;
 
-	public void normalize(List<NameNumber> fves) {
-		double d = 0.0;
-		
-		for( NameNumber fve : fves ) {
-			double v = fve.number.doubleValue();
-			d += v * v;
-		}
-		
-		d = Math.sqrt(d);
-		
-		if( d > 0 ) {
-			for( NameNumber fve : fves ) {
-				fve.number = fve.number.doubleValue() / d;
-			}
-		}
-	}
+  public void normalize(List<NameNumber> fves) {
+    double d = 0.0;
+
+    for (NameNumber fve : fves) {
+      double v = fve.number.doubleValue();
+      d += v * v;
+    }
+
+    d = Math.sqrt(d);
+
+    if (d > 0) {
+      for (NameNumber fve : fves) {
+        fve.number = fve.number.doubleValue() / d;
+      }
+    }
+  }
 
 }

@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.feature.proliferate;
 
 import java.util.ArrayList;
@@ -33,39 +33,42 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * 
  * @author Steven Bethard
  */
 public class ProliferatingExtractor implements SimpleFeatureExtractor {
-	
-	/**
-	 * A wrapper for feature extractors and their associated feature proliferators
-	 * which invokes the feature proliferators automatically at extraction time.
-	 *  
-	 * @param extractor     The feature extractor.
-	 * @param proliferators Feature proliferators that use the output of the feature
-	 *                      extractor to generate their features.
-	 */
-	public ProliferatingExtractor(
-			SimpleFeatureExtractor extractor,
-			FeatureProliferator ... proliferators) {
-		this.extractor = extractor;
-		this.proliferators = proliferators;
-	}
 
-	public List<Feature> extract(JCas jCas, Annotation focusAnnotation)	throws CleartkException {
-		List<Feature> features = new ArrayList<Feature>();
-		List<Feature> baseFeatures = this.extractor.extract(jCas, focusAnnotation);
-		features.addAll(baseFeatures);
-		for (FeatureProliferator proliferator: this.proliferators) {
-			features.addAll(proliferator.proliferate(baseFeatures));
-		}
-		return features;
-	}
+  /**
+   * A wrapper for feature extractors and their associated feature proliferators which invokes the
+   * feature proliferators automatically at extraction time.
+   * 
+   * @param extractor
+   *          The feature extractor.
+   * @param proliferators
+   *          Feature proliferators that use the output of the feature extractor to generate their
+   *          features.
+   */
+  public ProliferatingExtractor(SimpleFeatureExtractor extractor,
+          FeatureProliferator... proliferators) {
+    this.extractor = extractor;
+    this.proliferators = proliferators;
+  }
 
-	private SimpleFeatureExtractor extractor;
-	private FeatureProliferator[] proliferators;
+  public List<Feature> extract(JCas jCas, Annotation focusAnnotation) throws CleartkException {
+    List<Feature> features = new ArrayList<Feature>();
+    List<Feature> baseFeatures = this.extractor.extract(jCas, focusAnnotation);
+    features.addAll(baseFeatures);
+    for (FeatureProliferator proliferator : this.proliferators) {
+      features.addAll(proliferator.proliferate(baseFeatures));
+    }
+    return features;
+  }
+
+  private SimpleFeatureExtractor extractor;
+
+  private FeatureProliferator[] proliferators;
 }

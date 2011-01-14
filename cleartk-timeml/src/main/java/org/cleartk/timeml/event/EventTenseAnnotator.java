@@ -47,57 +47,51 @@ import org.cleartk.timeml.util.TokenPOSBagExtractor;
  */
 public class EventTenseAnnotator extends EventAttributeAnnotator<String> {
 
-	public static final String MODEL_DIR = "src/main/resources/models/timeml/event/tense";
+  public static final String MODEL_DIR = "src/main/resources/models/timeml/event/tense";
 
-	public static AnalysisEngineDescription getWriterDescription(String modelDir)
-			throws ResourceInitializationException {
-		return CleartkComponents.createCleartkAnnotator(
-			EventTenseAnnotator.class,
-			TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
-			DefaultMaxentDataWriterFactory.class,
-			modelDir,
-			(List<Class<?>>) null);
-	}
+  public static AnalysisEngineDescription getWriterDescription(String modelDir)
+          throws ResourceInitializationException {
+    return CleartkComponents.createCleartkAnnotator(EventTenseAnnotator.class,
+            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION, DefaultMaxentDataWriterFactory.class,
+            modelDir, (List<Class<?>>) null);
+  }
 
-	public static AnalysisEngineDescription getWriterDescription()
-			throws ResourceInitializationException {
-		return getWriterDescription(MODEL_DIR);
-	}
+  public static AnalysisEngineDescription getWriterDescription()
+          throws ResourceInitializationException {
+    return getWriterDescription(MODEL_DIR);
+  }
 
-	public static AnalysisEngineDescription getAnnotatorDescription(String classifierJar)
-			throws ResourceInitializationException {
-		return CleartkComponents.createCleartkAnnotator(
-			EventTenseAnnotator.class,
-			TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
-			classifierJar,
-			(List<Class<?>>) null);
-	}
+  public static AnalysisEngineDescription getAnnotatorDescription(String classifierJar)
+          throws ResourceInitializationException {
+    return CleartkComponents.createCleartkAnnotator(EventTenseAnnotator.class,
+            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION, classifierJar, (List<Class<?>>) null);
+  }
 
-	public static AnalysisEngineDescription getAnnotatorDescription()
-			throws ResourceInitializationException {
-		return getAnnotatorDescription(MODEL_DIR + "/model.jar");
-	}
+  public static AnalysisEngineDescription getAnnotatorDescription()
+          throws ResourceInitializationException {
+    return getAnnotatorDescription(MODEL_DIR + "/model.jar");
+  }
 
-	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		super.initialize(context);
-		this.eventFeatureExtractors.add(new TextSliceExtractor(-2));
-		this.eventFeatureExtractors.add(new TokenPOSBagExtractor());
-		this.eventFeatureExtractors.add(new PrecedingTokenTextExtractor(3, "MD", "TO", "IN", "VB"));
-	}
+  @Override
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    super.initialize(context);
+    this.eventFeatureExtractors.add(new TextSliceExtractor(-2));
+    this.eventFeatureExtractors.add(new TokenPOSBagExtractor());
+    this.eventFeatureExtractors.add(new PrecedingTokenTextExtractor(3, "MD", "TO", "IN", "VB"));
+  }
 
-	@Override
-	protected String getDefaultValue() {
-		return "NONE";
-	}
+  @Override
+  protected String getDefaultValue() {
+    return "NONE";
+  }
 
-	@Override
-	protected String getAttribute(Event event) {
-		return event.getTense();
-	}
+  @Override
+  protected String getAttribute(Event event) {
+    return event.getTense();
+  }
 
-	@Override
-	protected void setAttribute(Event event, String value) {
-		event.setTense(value);
-	}
+  @Override
+  protected void setAttribute(Event event, String value) {
+    event.setTense(value);
+  }
 }

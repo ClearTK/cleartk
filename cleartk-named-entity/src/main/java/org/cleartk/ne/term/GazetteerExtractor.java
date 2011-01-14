@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.ne.term;
 
 import java.util.ArrayList;
@@ -35,41 +35,40 @@ import org.cleartk.ne.type.GazetteerNamedEntityMention;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.AnnotationUtil;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * 
  * @author Philip Ogren
- *
+ * 
  */
 
-public class GazetteerExtractor
-{
-	private Set<String> gazetteerNames;
-	
-	public GazetteerExtractor(List<String> gazetteerNames) {
-		this.gazetteerNames = new HashSet<String>();
-		for(String gazetteerName : gazetteerNames) {
-			this.gazetteerNames.add(gazetteerName);
-		}
-	}
-	
-	public List<Feature> extract(JCas jCas, Annotation focusAnnotation, Annotation windowAnnotation) throws UnsupportedOperationException
-	{
-		List<Feature> returnValues = new ArrayList<Feature>();
-		List<GazetteerNamedEntityMention> gnems = AnnotationRetrieval.getAnnotations(jCas, windowAnnotation, GazetteerNamedEntityMention.class);
-		for(GazetteerNamedEntityMention gnem : gnems) {
-			if(gazetteerNames.contains(gnem.getMentionedEntity().getEntityType()) &&
-				AnnotationUtil.contains(gnem, focusAnnotation)) 
-			{
-				String entityType = gnem.getMentionedEntity().getEntityType();
-				Feature feature = new Feature("Gazetteer", entityType);
-				returnValues.add(feature);
-			}
-		}
-		return returnValues;
-	}
+public class GazetteerExtractor {
+  private Set<String> gazetteerNames;
+
+  public GazetteerExtractor(List<String> gazetteerNames) {
+    this.gazetteerNames = new HashSet<String>();
+    for (String gazetteerName : gazetteerNames) {
+      this.gazetteerNames.add(gazetteerName);
+    }
+  }
+
+  public List<Feature> extract(JCas jCas, Annotation focusAnnotation, Annotation windowAnnotation)
+          throws UnsupportedOperationException {
+    List<Feature> returnValues = new ArrayList<Feature>();
+    List<GazetteerNamedEntityMention> gnems = AnnotationRetrieval.getAnnotations(jCas,
+            windowAnnotation, GazetteerNamedEntityMention.class);
+    for (GazetteerNamedEntityMention gnem : gnems) {
+      if (gazetteerNames.contains(gnem.getMentionedEntity().getEntityType())
+              && AnnotationUtil.contains(gnem, focusAnnotation)) {
+        String entityType = gnem.getMentionedEntity().getEntityType();
+        Feature feature = new Feature("Gazetteer", entityType);
+        returnValues.add(feature);
+      }
+    }
+    return returnValues;
+  }
 
 }

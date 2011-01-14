@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.srl;
 
 import java.io.File;
@@ -61,255 +61,235 @@ import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.UIMAUtil;
 import org.uimafit.factory.AnalysisEngineFactory;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * 
  * @author Philipp Wetzler
  */
 
 public class ArgumentAnnotator extends CleartkAnnotator<String> {
-	
-	public static AnalysisEngineDescription getWriterDescription(
-			Class<? extends DataWriterFactory<String>> dataWriterFactoryClass, File outputDirectory)
-	throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveDescription(
-				ArgumentAnnotator.class,
-				SrlComponents.TYPE_SYSTEM_DESCRIPTION,
-				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, dataWriterFactoryClass.getName(),
-				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory.toString());
-	}
 
-	public static AnalysisEngineDescription getClassifierDescription(File classifierJar)
-	throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveDescription(
-				ArgumentAnnotator.class,
-				SrlComponents.TYPE_SYSTEM_DESCRIPTION,
-				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, classifierJar.toString());
-	}
+  public static AnalysisEngineDescription getWriterDescription(
+          Class<? extends DataWriterFactory<String>> dataWriterFactoryClass, File outputDirectory)
+          throws ResourceInitializationException {
+    return AnalysisEngineFactory.createPrimitiveDescription(ArgumentAnnotator.class,
+            SrlComponents.TYPE_SYSTEM_DESCRIPTION,
+            CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+            dataWriterFactoryClass.getName(), JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+            outputDirectory.toString());
+  }
 
-	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		super.initialize(context);
-		
-		SimpleFeatureExtractor[] tokenExtractors = {
-				new SpannedTextExtractor(),
-				new TypePathExtractor(Token.class, "stem"),
-				new TypePathExtractor(Token.class, "pos") };
+  public static AnalysisEngineDescription getClassifierDescription(File classifierJar)
+          throws ResourceInitializationException {
+    return AnalysisEngineFactory.createPrimitiveDescription(ArgumentAnnotator.class,
+            SrlComponents.TYPE_SYSTEM_DESCRIPTION, JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
+            classifierJar.toString());
+  }
 
-		SimpleFeatureExtractor[] constituentExtractors = {
-				new TypePathExtractor(TreebankNode.class, "nodeType"),
-				// new TypePathExtractor(TreebankNode.class, "nodeTags"),
-				new HeadWordExtractor(new CombinedExtractor(tokenExtractors), true) };
+  @Override
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    super.initialize(context);
 
-		predicateTokenExtractor = new CombinedExtractor(
-				tokenExtractors);
-		predicateNodeExtractor = new SubCategorizationExtractor("PredicateNode");
+    SimpleFeatureExtractor[] tokenExtractors = { new SpannedTextExtractor(),
+        new TypePathExtractor(Token.class, "stem"), new TypePathExtractor(Token.class, "pos") };
 
-		pathExtractor = new SyntacticPathExtractor(
-				new TypePathExtractor(TreebankNode.class, "nodeType"));
-		partialPathExtractor = new SyntacticPathExtractor(
-				new TypePathExtractor(TreebankNode.class, "nodeType"),
-				true);
-		relPosExtractor = new RelativePositionExtractor();
-		distanceExtractor = new DistanceExtractor("ConstituentPredicate", Token.class);
+    SimpleFeatureExtractor[] constituentExtractors = {
+        new TypePathExtractor(TreebankNode.class, "nodeType"),
+        // new TypePathExtractor(TreebankNode.class, "nodeTags"),
+        new HeadWordExtractor(new CombinedExtractor(tokenExtractors), true) };
 
-		constituentExtractor = new CombinedExtractor(constituentExtractors);
-		leftSiblingExtractor = new CombinedExtractor(constituentExtractors);
-		rightSiblingExtractor = new CombinedExtractor(constituentExtractors);
-		parentExtractor = new CombinedExtractor(constituentExtractors);
-		firstWordExtractor = new WindowExtractor("Constituent", Token.class,
-				new CombinedExtractor(tokenExtractors),
-				WindowFeature.ORIENTATION_MIDDLE, 0, 1);
-		lastWordExtractor = new WindowExtractor("Constituent", Token.class,
-				new CombinedExtractor(tokenExtractors),
-				WindowFeature.ORIENTATION_MIDDLE_REVERSE, 0, 1);
-	}
+    predicateTokenExtractor = new CombinedExtractor(tokenExtractors);
+    predicateNodeExtractor = new SubCategorizationExtractor("PredicateNode");
 
-	@Override
-	public void process(JCas jCas) throws AnalysisEngineProcessException {
-		List<Sentence> sentences = AnnotationRetrieval.getAnnotations(jCas, Sentence.class);
-	
-		try {
-			for( Sentence sentence : sentences ) {
-				processSentence(jCas, sentence);
-			}
-		} catch (CleartkException e) {
-			throw new AnalysisEngineProcessException(e);
-		}		
-	}
+    pathExtractor = new SyntacticPathExtractor(
+            new TypePathExtractor(TreebankNode.class, "nodeType"));
+    partialPathExtractor = new SyntacticPathExtractor(new TypePathExtractor(TreebankNode.class,
+            "nodeType"), true);
+    relPosExtractor = new RelativePositionExtractor();
+    distanceExtractor = new DistanceExtractor("ConstituentPredicate", Token.class);
 
-	private void processSentence(JCas jCas, Sentence sentence) throws CleartkException{
+    constituentExtractor = new CombinedExtractor(constituentExtractors);
+    leftSiblingExtractor = new CombinedExtractor(constituentExtractors);
+    rightSiblingExtractor = new CombinedExtractor(constituentExtractors);
+    parentExtractor = new CombinedExtractor(constituentExtractors);
+    firstWordExtractor = new WindowExtractor("Constituent", Token.class, new CombinedExtractor(
+            tokenExtractors), WindowFeature.ORIENTATION_MIDDLE, 0, 1);
+    lastWordExtractor = new WindowExtractor("Constituent", Token.class, new CombinedExtractor(
+            tokenExtractors), WindowFeature.ORIENTATION_MIDDLE_REVERSE, 0, 1);
+  }
 
-		List<TreebankNode> sentenceConstituents = new ArrayList<TreebankNode>(
-				80);
-		collectConstituents(AnnotationRetrieval.getContainingAnnotation(jCas, sentence, TopTreebankNode.class, false),
-				sentenceConstituents);
+  @Override
+  public void process(JCas jCas) throws AnalysisEngineProcessException {
+    List<Sentence> sentences = AnnotationRetrieval.getAnnotations(jCas, Sentence.class);
 
-		List<List<Feature>> sentenceConstituentFeatures = new ArrayList<List<Feature>>(
-				sentenceConstituents.size());
-		for (TreebankNode constituent : sentenceConstituents)
-			sentenceConstituentFeatures.add(extractConstituentFeatures(jCas,
-					constituent, sentence));
+    try {
+      for (Sentence sentence : sentences) {
+        processSentence(jCas, sentence);
+      }
+    } catch (CleartkException e) {
+      throw new AnalysisEngineProcessException(e);
+    }
+  }
 
-		List<Predicate> predicates = AnnotationRetrieval.getAnnotations(jCas,
-				sentence, Predicate.class);
-		for (Predicate predicate : predicates) {
-			processPredicate(jCas, sentence, predicate, sentenceConstituents,
-					sentenceConstituentFeatures);
-		}
+  private void processSentence(JCas jCas, Sentence sentence) throws CleartkException {
 
-	}
+    List<TreebankNode> sentenceConstituents = new ArrayList<TreebankNode>(80);
+    collectConstituents(AnnotationRetrieval.getContainingAnnotation(jCas, sentence,
+            TopTreebankNode.class, false), sentenceConstituents);
 
-	private void processPredicate(JCas jCas, Sentence sentence, Predicate predicate,
-			List<TreebankNode> constituents,
-			List<List<Feature>> constituentFeatures) throws CleartkException{
-		TreebankNode predicateNode = AnnotationRetrieval.getMatchingAnnotation(
-				jCas, predicate.getAnnotation(), TreebankNode.class);
-		Token predicateToken = AnnotationRetrieval.getMatchingAnnotation(jCas,
-				predicate.getAnnotation(), Token.class);
+    List<List<Feature>> sentenceConstituentFeatures = new ArrayList<List<Feature>>(
+            sentenceConstituents.size());
+    for (TreebankNode constituent : sentenceConstituents)
+      sentenceConstituentFeatures.add(extractConstituentFeatures(jCas, constituent, sentence));
 
-		List<Feature> predicateFeatures = new ArrayList<Feature>(20);
-		predicateFeatures.addAll(predicateTokenExtractor.extract(
-				jCas, predicateToken));
-		predicateFeatures.addAll(predicateNodeExtractor.extract(
-				jCas, predicateNode));
+    List<Predicate> predicates = AnnotationRetrieval
+            .getAnnotations(jCas, sentence, Predicate.class);
+    for (Predicate predicate : predicates) {
+      processPredicate(jCas, sentence, predicate, sentenceConstituents, sentenceConstituentFeatures);
+    }
 
-		for( int i=0; i<constituents.size(); i++ ) {
-			TreebankNode constituent = constituents.get(i);
-			
-			Instance<String> instance = new Instance<String>();
+  }
 
-			instance.addAll(predicateFeatures);
-			instance.addAll(constituentFeatures.get(i));
-			instance.addAll(relPosExtractor.extract(jCas,
-					constituent, predicate.getAnnotation()));
-			instance.addAll(pathExtractor.extract(jCas,
-					constituent, predicateNode));
-			instance.addAll(partialPathExtractor.extract(jCas, constituent, predicateNode));
-			instance.addAll(distanceExtractor.extract(jCas, constituent, predicateNode));
-			
+  private void processPredicate(JCas jCas, Sentence sentence, Predicate predicate,
+          List<TreebankNode> constituents, List<List<Feature>> constituentFeatures)
+          throws CleartkException {
+    TreebankNode predicateNode = AnnotationRetrieval.getMatchingAnnotation(jCas,
+            predicate.getAnnotation(), TreebankNode.class);
+    Token predicateToken = AnnotationRetrieval.getMatchingAnnotation(jCas,
+            predicate.getAnnotation(), Token.class);
 
-			instance.setOutcome("NULL");
-			
-			for (Argument arg : UIMAUtil.toList(predicate
-					.getArguments(), Argument.class)) {
-				if( !(arg instanceof SemanticArgument) )
-					continue;
-				
-				SemanticArgument sarg = (SemanticArgument) arg;
-				
-				if (sarg.getAnnotation() == constituent
-						&& !sarg.getLabel().equals("rel")) {
-					if (sarg.getFeature() != null) {
-						instance.setOutcome(sarg.getLabel() + "-" + sarg.getFeature());
-					} else {
-						instance.setOutcome(sarg.getLabel());
-					}
-					break;
-				}
-			}
+    List<Feature> predicateFeatures = new ArrayList<Feature>(20);
+    predicateFeatures.addAll(predicateTokenExtractor.extract(jCas, predicateToken));
+    predicateFeatures.addAll(predicateNodeExtractor.extract(jCas, predicateNode));
 
-			if (this.isTraining()) {
-				this.dataWriter.write(instance);
-			} else {
-				String outcome = this.classifier.classify(instance.getFeatures());
-				if (!outcome.equals("NULL")) {
-					SemanticArgument arg = new SemanticArgument(jCas);
-					arg.setAnnotation(constituent);
-					arg.setBegin(constituent.getBegin());
-					arg.setEnd(constituent.getEnd());
+    for (int i = 0; i < constituents.size(); i++) {
+      TreebankNode constituent = constituents.get(i);
 
-					String[] parts = outcome.split("-", 1);
-					arg.setLabel(parts[0]);
-					if (parts.length > 1)
-						arg.setFeature(parts[1]);
+      Instance<String> instance = new Instance<String>();
 
-					arg.addToIndexes();
+      instance.addAll(predicateFeatures);
+      instance.addAll(constituentFeatures.get(i));
+      instance.addAll(relPosExtractor.extract(jCas, constituent, predicate.getAnnotation()));
+      instance.addAll(pathExtractor.extract(jCas, constituent, predicateNode));
+      instance.addAll(partialPathExtractor.extract(jCas, constituent, predicateNode));
+      instance.addAll(distanceExtractor.extract(jCas, constituent, predicateNode));
 
-					List<Argument> args;
-					if (predicate.getArguments() != null)
-						args = UIMAUtil.toList(predicate.getArguments(),
-								Argument.class);
-					else
-						args = new ArrayList<Argument>(1);
-					args.add(arg);
-					predicate.setArguments(UIMAUtil.toFSArray(jCas, args));
-				}
-			}
-		}
+      instance.setOutcome("NULL");
 
-	}
+      for (Argument arg : UIMAUtil.toList(predicate.getArguments(), Argument.class)) {
+        if (!(arg instanceof SemanticArgument))
+          continue;
 
-	private List<Feature> extractConstituentFeatures(JCas jCas,
-			TreebankNode constituent, Sentence sentence) throws CleartkException {
-		List<Feature> features = new ArrayList<Feature>(20);
-		features.addAll(constituentExtractor.extract(jCas, constituent));
-		features
-				.addAll(firstWordExtractor.extract(jCas, constituent, sentence));
-		features.addAll(lastWordExtractor.extract(jCas, constituent, sentence));
+        SemanticArgument sarg = (SemanticArgument) arg;
 
-		TreebankNode parent = constituent.getParent();
-		if (parent != null) {
-			features.addAll(parentExtractor.extract(jCas, parent));
+        if (sarg.getAnnotation() == constituent && !sarg.getLabel().equals("rel")) {
+          if (sarg.getFeature() != null) {
+            instance.setOutcome(sarg.getLabel() + "-" + sarg.getFeature());
+          } else {
+            instance.setOutcome(sarg.getLabel());
+          }
+          break;
+        }
+      }
 
-			int constituentPosition = 0;
-			while (parent.getChildren(constituentPosition) != constituent)
-				constituentPosition += 1;
+      if (this.isTraining()) {
+        this.dataWriter.write(instance);
+      } else {
+        String outcome = this.classifier.classify(instance.getFeatures());
+        if (!outcome.equals("NULL")) {
+          SemanticArgument arg = new SemanticArgument(jCas);
+          arg.setAnnotation(constituent);
+          arg.setBegin(constituent.getBegin());
+          arg.setEnd(constituent.getEnd());
 
-			if (constituentPosition > 0)
-				features.addAll(leftSiblingExtractor.extract(jCas, parent
-						.getChildren(constituentPosition - 1)));
+          String[] parts = outcome.split("-", 1);
+          arg.setLabel(parts[0]);
+          if (parts.length > 1)
+            arg.setFeature(parts[1]);
 
-			if (constituentPosition < parent.getChildren().size() - 1)
-				features.addAll(rightSiblingExtractor.extract(jCas, parent
-						.getChildren(constituentPosition + 1)));
-		}
+          arg.addToIndexes();
 
-		return features;
-	}
+          List<Argument> args;
+          if (predicate.getArguments() != null)
+            args = UIMAUtil.toList(predicate.getArguments(), Argument.class);
+          else
+            args = new ArrayList<Argument>(1);
+          args.add(arg);
+          predicate.setArguments(UIMAUtil.toFSArray(jCas, args));
+        }
+      }
+    }
 
-	private void collectConstituents(TreebankNode top, List<TreebankNode> constituents) {
-		if (top == null)
-			throw new IllegalArgumentException();
+  }
 
-		if (!(top instanceof TopTreebankNode))
-			constituents.add(top);
+  private List<Feature> extractConstituentFeatures(JCas jCas, TreebankNode constituent,
+          Sentence sentence) throws CleartkException {
+    List<Feature> features = new ArrayList<Feature>(20);
+    features.addAll(constituentExtractor.extract(jCas, constituent));
+    features.addAll(firstWordExtractor.extract(jCas, constituent, sentence));
+    features.addAll(lastWordExtractor.extract(jCas, constituent, sentence));
 
-		if (top.getChildren() == null)
-			return;
+    TreebankNode parent = constituent.getParent();
+    if (parent != null) {
+      features.addAll(parentExtractor.extract(jCas, parent));
 
-		int numberOfChildren = top.getChildren().size();
-		for (int i = 0; i < numberOfChildren; i++) {
-			collectConstituents(top.getChildren(i), constituents);
-		}
-	}
+      int constituentPosition = 0;
+      while (parent.getChildren(constituentPosition) != constituent)
+        constituentPosition += 1;
 
+      if (constituentPosition > 0)
+        features.addAll(leftSiblingExtractor.extract(jCas,
+                parent.getChildren(constituentPosition - 1)));
 
-	private SimpleFeatureExtractor predicateTokenExtractor;
+      if (constituentPosition < parent.getChildren().size() - 1)
+        features.addAll(rightSiblingExtractor.extract(jCas,
+                parent.getChildren(constituentPosition + 1)));
+    }
 
-	private SimpleFeatureExtractor predicateNodeExtractor;
+    return features;
+  }
 
-	private SyntacticPathExtractor pathExtractor;
-	
-	private SyntacticPathExtractor partialPathExtractor;
+  private void collectConstituents(TreebankNode top, List<TreebankNode> constituents) {
+    if (top == null)
+      throw new IllegalArgumentException();
 
-	private RelativePositionExtractor relPosExtractor;
-	
-	private DistanceExtractor distanceExtractor;
+    if (!(top instanceof TopTreebankNode))
+      constituents.add(top);
 
-	private SimpleFeatureExtractor constituentExtractor;
+    if (top.getChildren() == null)
+      return;
 
-	private WindowExtractor firstWordExtractor;
+    int numberOfChildren = top.getChildren().size();
+    for (int i = 0; i < numberOfChildren; i++) {
+      collectConstituents(top.getChildren(i), constituents);
+    }
+  }
 
-	private WindowExtractor lastWordExtractor;
+  private SimpleFeatureExtractor predicateTokenExtractor;
 
-	private SimpleFeatureExtractor leftSiblingExtractor;
+  private SimpleFeatureExtractor predicateNodeExtractor;
 
-	private SimpleFeatureExtractor rightSiblingExtractor;
+  private SyntacticPathExtractor pathExtractor;
 
-	private SimpleFeatureExtractor parentExtractor;
+  private SyntacticPathExtractor partialPathExtractor;
+
+  private RelativePositionExtractor relPosExtractor;
+
+  private DistanceExtractor distanceExtractor;
+
+  private SimpleFeatureExtractor constituentExtractor;
+
+  private WindowExtractor firstWordExtractor;
+
+  private WindowExtractor lastWordExtractor;
+
+  private SimpleFeatureExtractor leftSiblingExtractor;
+
+  private SimpleFeatureExtractor rightSiblingExtractor;
+
+  private SimpleFeatureExtractor parentExtractor;
 
 }

@@ -1,5 +1,5 @@
 /** 
-  * Copyright (c) 2009, Regents of the University of Colorado 
+ * Copyright (c) 2009, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -46,21 +46,18 @@ import org.uimafit.factory.initializable.Initializable;
 
 public class IDFMapWriterFactory implements DataWriterFactory<String>, Initializable {
 
-	public static final String PARAM_OUTPUT_DIRECTORY = ConfigurationParameterFactory
-	.createConfigurationParameterName(IDFMapWriterFactory.class, "outputDirectory");
+  public static final String PARAM_OUTPUT_DIRECTORY = ConfigurationParameterFactory
+          .createConfigurationParameterName(IDFMapWriterFactory.class, "outputDirectory");
 
-	@ConfigurationParameter(mandatory = true, description = "provides the name of the directory where the training data will be written.")
-	protected File outputDirectory;
+  @ConfigurationParameter(mandatory = true, description = "provides the name of the directory where the training data will be written.")
+  protected File outputDirectory;
 
-	
-	public DataWriter<String> createDataWriter()
-			throws IOException {
-		return new IDFMapWriter<String>(outputDirectory);
-	}
+  public DataWriter<String> createDataWriter() throws IOException {
+    return new IDFMapWriter<String>(outputDirectory);
+  }
 
-
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		ConfigurationParameterInitializer.initialize(this, context);
-	}
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    ConfigurationParameterInitializer.initialize(this, context);
+  }
 
 }

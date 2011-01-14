@@ -68,45 +68,44 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * 
  * 
  * 
- * A simple CAS consumer that creates plain text files from the document text
- * given to each CAS
+ * A simple CAS consumer that creates plain text files from the document text given to each CAS
  * 
  * @author Philip Ogren
  */
 
 public class PlainTextWriter extends JCasAnnotator_ImplBase {
-	
-	public static final String PARAM_OUTPUT_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(PlainTextWriter.class, "outputDirectoryName");
 
-	@ConfigurationParameter(mandatory = true, description = "takes a path to directory into which output files will be written.")
-	private String outputDirectoryName;
+  public static final String PARAM_OUTPUT_DIRECTORY_NAME = ConfigurationParameterFactory
+          .createConfigurationParameterName(PlainTextWriter.class, "outputDirectoryName");
 
-	private File outputDirectory;
+  @ConfigurationParameter(mandatory = true, description = "takes a path to directory into which output files will be written.")
+  private String outputDirectoryName;
 
-	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		super.initialize(context);
+  private File outputDirectory;
 
-		this.outputDirectory = new File(outputDirectoryName);
-		if (!this.outputDirectory.exists()) {
-			this.outputDirectory.mkdirs();
-		}
-	}
+  @Override
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    super.initialize(context);
 
-	@Override
-	public void process(JCas jCas) throws AnalysisEngineProcessException {
-		String id = ViewURIUtil.getURI(jCas);
-		File outFile = new File(this.outputDirectory, id + ".txt");
-		try {
-			FileUtils.saveString2File(jCas.getDocumentText(), outFile);
-		}
-		catch (IOException e) {
-			throw new AnalysisEngineProcessException(e);
-		}
-	}
+    this.outputDirectory = new File(outputDirectoryName);
+    if (!this.outputDirectory.exists()) {
+      this.outputDirectory.mkdirs();
+    }
+  }
 
-	public void setOutputDirectoryName(String outputDirectoryName) {
-		this.outputDirectoryName = outputDirectoryName;
-	}
+  @Override
+  public void process(JCas jCas) throws AnalysisEngineProcessException {
+    String id = ViewURIUtil.getURI(jCas);
+    File outFile = new File(this.outputDirectory, id + ".txt");
+    try {
+      FileUtils.saveString2File(jCas.getDocumentText(), outFile);
+    } catch (IOException e) {
+      throw new AnalysisEngineProcessException(e);
+    }
+  }
+
+  public void setOutputDirectoryName(String outputDirectoryName) {
+    this.outputDirectoryName = outputDirectoryName;
+  }
 
 }

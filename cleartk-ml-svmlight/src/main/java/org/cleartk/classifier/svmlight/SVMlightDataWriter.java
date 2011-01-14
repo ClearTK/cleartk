@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.svmlight;
 
 import java.io.File;
@@ -40,38 +40,39 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
  * <p>
  */
 
-public class SVMlightDataWriter extends JarDataWriter<Boolean,Boolean,FeatureVector> {
+public class SVMlightDataWriter extends JarDataWriter<Boolean, Boolean, FeatureVector> {
 
-	public SVMlightDataWriter(File outputDirectory) throws IOException {
-		super(outputDirectory);
-		this.outputWriter = getPrintWriter("training-data.svmlight");
-	}
+  public SVMlightDataWriter(File outputDirectory) throws IOException {
+    super(outputDirectory);
+    this.outputWriter = getPrintWriter("training-data.svmlight");
+  }
 
-	@Override
-	public void writeEncoded(FeatureVector features, Boolean outcome) throws CleartkException {
-		StringBuffer output = new StringBuffer();
-		
-		if( outcome == null ) {
-			output.append("0");
-		} else if( outcome.booleanValue() ) {
-			output.append("+1");
-		} else {
-			output.append("-1");
-		}
+  @Override
+  public void writeEncoded(FeatureVector features, Boolean outcome) throws CleartkException {
+    StringBuffer output = new StringBuffer();
 
-		for( FeatureVector.Entry entry : features ) {
-			if( Double.isInfinite(entry.value) || Double.isNaN(entry.value) )
-				throw new CleartkException(String.format("illegal value in entry %d:%.7f", entry.index, entry.value));
-			output.append(String.format(Locale.US, " %d:%.7f", entry.index, entry.value));
-		}
+    if (outcome == null) {
+      output.append("0");
+    } else if (outcome.booleanValue()) {
+      output.append("+1");
+    } else {
+      output.append("-1");
+    }
 
-		outputWriter.println(output);
-	}
+    for (FeatureVector.Entry entry : features) {
+      if (Double.isInfinite(entry.value) || Double.isNaN(entry.value))
+        throw new CleartkException(String.format("illegal value in entry %d:%.7f", entry.index,
+                entry.value));
+      output.append(String.format(Locale.US, " %d:%.7f", entry.index, entry.value));
+    }
 
-	public Class<? extends ClassifierBuilder<Boolean>> getDefaultClassifierBuilderClass() {
-		return SVMlightClassifierBuilder.class;
-	}
+    outputWriter.println(output);
+  }
 
-	private PrintWriter outputWriter;
+  public Class<? extends ClassifierBuilder<Boolean>> getDefaultClassifierBuilderClass() {
+    return SVMlightClassifierBuilder.class;
+  }
+
+  private PrintWriter outputWriter;
 
 }

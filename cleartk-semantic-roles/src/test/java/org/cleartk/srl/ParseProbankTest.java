@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.srl;
 
 import static org.junit.Assert.fail;
@@ -34,30 +34,33 @@ import org.cleartk.srl.propbank.util.PropbankFormatException;
 import org.junit.Test;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * 
  * @author Philip Ogren
- *
- * To run this test copy prop.txt to data/propbank-1.0 and read the file data/propbank-1.0/README.cleartk
+ * 
+ *         To run this test copy prop.txt to data/propbank-1.0 and read the file
+ *         data/propbank-1.0/README.cleartk
  */
 public class ParseProbankTest {
 
-	@Test
-	public void testCorpusParse() throws IOException{
-		int total = 0;
-		BufferedReader input = new BufferedReader(new FileReader("src/test/resources/data/propbank-1.0/prop.txt"));
-		String line = null;
-		try {
-			
-			while((line = input.readLine()) != null) {
-				Propbank.fromString(line);
-				total++;
-			}
-		} catch (PropbankFormatException e) {
-			fail("Parser unable to parser line="+total+": "+line);
-		}
-	}
-	
+  @Test
+  public void testCorpusParse() throws IOException {
+    int total = 0;
+    BufferedReader input = new BufferedReader(new FileReader(
+            "src/test/resources/data/propbank-1.0/prop.txt"));
+    String line = null;
+    try {
+
+      while ((line = input.readLine()) != null) {
+        Propbank.fromString(line);
+        total++;
+      }
+    } catch (PropbankFormatException e) {
+      fail("Parser unable to parser line=" + total + ": " + line);
+    }
+  }
+
 }

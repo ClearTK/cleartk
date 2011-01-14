@@ -44,26 +44,25 @@ import org.uimafit.factory.AnalysisEngineFactory;
  * 
  * @author Steven Bethard
  */
-public class TermFinderAnnotatorTest extends NeTestBase{
+public class TermFinderAnnotatorTest extends NeTestBase {
 
-	@Test
-	public void test() throws UIMAException, IOException {
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-				TermFinderAnnotator.class, typeSystemDescription,
-				TermFinderAnnotator.PARAM_TERM_LIST_FILE_NAMES_FILE_NAME,
-				"src/test/resources/data/term/termlist/termlist.txt",
-				TermFinderAnnotator.PARAM_TOKEN_CLASS_NAME, Token.class.getName(),
-				TermFinderAnnotator.PARAM_TERM_MATCH_ANNOTATION_CLASS_NAME,
-				NamedEntityMention.class.getName());
-		tokenBuilder.buildTokens(jCas, "I would like to visit Alaska.", 
-				"I would like to visit Alaska .");
-		engine.process(jCas);
-		engine.collectionProcessComplete();
-		List<NamedEntityMention> mentions = AnnotationRetrieval.getAnnotations(
-				jCas, NamedEntityMention.class);
-		Assert.assertEquals(mentions.size(), 1);
-		NamedEntityMention mention = mentions.get(0);
-		Assert.assertEquals("Alaska", mention.getCoveredText());
-	}
+  @Test
+  public void test() throws UIMAException, IOException {
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TermFinderAnnotator.class,
+            typeSystemDescription, TermFinderAnnotator.PARAM_TERM_LIST_FILE_NAMES_FILE_NAME,
+            "src/test/resources/data/term/termlist/termlist.txt",
+            TermFinderAnnotator.PARAM_TOKEN_CLASS_NAME, Token.class.getName(),
+            TermFinderAnnotator.PARAM_TERM_MATCH_ANNOTATION_CLASS_NAME,
+            NamedEntityMention.class.getName());
+    tokenBuilder.buildTokens(jCas, "I would like to visit Alaska.",
+            "I would like to visit Alaska .");
+    engine.process(jCas);
+    engine.collectionProcessComplete();
+    List<NamedEntityMention> mentions = AnnotationRetrieval.getAnnotations(jCas,
+            NamedEntityMention.class);
+    Assert.assertEquals(mentions.size(), 1);
+    NamedEntityMention mention = mentions.get(0);
+    Assert.assertEquals("Alaska", mention.getCoveredText());
+  }
 
 }

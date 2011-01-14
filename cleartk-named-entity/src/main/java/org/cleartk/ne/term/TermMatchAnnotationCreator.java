@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.ne.term;
 
 import org.apache.uima.UimaContext;
@@ -30,16 +30,15 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.ne.term.util.TermMatch;
 import org.uimafit.factory.initializable.Initializable;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
-*/
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ */
 
 public interface TermMatchAnnotationCreator extends Initializable {
 
-	public Annotation createTermMatchAnnotation(JCas jCas, TermMatch termMatch);
+  public Annotation createTermMatchAnnotation(JCas jCas, TermMatch termMatch);
 
-	public void initialize(UimaContext context) throws ResourceInitializationException;
+  public void initialize(UimaContext context) throws ResourceInitializationException;
 }

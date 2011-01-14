@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.syntax.constituent.util;
 
 import java.util.ArrayList;
@@ -28,51 +28,44 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * 
  * @author Philip Ogren
- *
+ * 
  */
-public class TreebankSplitArgument implements TreebankObject
-{
-	List<TreebankNode> chainedNodes;
-	
-	public TreebankSplitArgument()
-	{
-		chainedNodes = new ArrayList<TreebankNode>();
-	}
+public class TreebankSplitArgument implements TreebankObject {
+  List<TreebankNode> chainedNodes;
 
-	public List<TreebankNode> getNodes()
-	{
-		return Collections.unmodifiableList(chainedNodes);
-	}
-	public void setNodes(List<TreebankNode> relatedNodes)
-	{
-		this.chainedNodes.clear();
-		if(relatedNodes != null)
-		{
-			this.chainedNodes.addAll(relatedNodes);
-		}
-	}
-	
-	public void addNode(TreebankNode relatedNode)
-	{
-		this.chainedNodes.add(relatedNode);
-	}
+  public TreebankSplitArgument() {
+    chainedNodes = new ArrayList<TreebankNode>();
+  }
 
-	public String getText()
-	{
-		StringBuffer text = new StringBuffer();
-		for(int i=0; i<chainedNodes.size(); i++)
-		{
-			text.append(chainedNodes.get(i).getText());
-			if(i<chainedNodes.size()-1)
-				text.append(" && ");
-		}
-		return text.toString();
-	}
+  public List<TreebankNode> getNodes() {
+    return Collections.unmodifiableList(chainedNodes);
+  }
 
-	
+  public void setNodes(List<TreebankNode> relatedNodes) {
+    this.chainedNodes.clear();
+    if (relatedNodes != null) {
+      this.chainedNodes.addAll(relatedNodes);
+    }
+  }
+
+  public void addNode(TreebankNode relatedNode) {
+    this.chainedNodes.add(relatedNode);
+  }
+
+  public String getText() {
+    StringBuffer text = new StringBuffer();
+    for (int i = 0; i < chainedNodes.size(); i++) {
+      text.append(chainedNodes.get(i).getText());
+      if (i < chainedNodes.size() - 1)
+        text.append(" && ");
+    }
+    return text.toString();
+  }
+
 }

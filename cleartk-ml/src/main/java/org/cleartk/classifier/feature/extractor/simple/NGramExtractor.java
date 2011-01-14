@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.feature.extractor.simple;
 
 import java.util.ArrayList;
@@ -34,94 +34,94 @@ import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.util.AnnotationRetrieval;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * 
  * @author Philip Ogren
  */
 public class NGramExtractor implements SimpleFeatureExtractor {
-	
-	public NGramExtractor(
-			int n,
-			Class<? extends Annotation> annotationClass, 
-			SimpleFeatureExtractor subExtractor) {
-		this.n = n;
-		this.subExtractor = subExtractor;
-		this.annotationClass = annotationClass;
-	}
 
-	public List<Feature> extract(JCas view, Annotation focusAnnotation)	throws CleartkException {
-		List<? extends Annotation> annotations;
-		
-		List<Feature> ngramFeatures = new ArrayList<Feature>();
+  public NGramExtractor(int n, Class<? extends Annotation> annotationClass,
+          SimpleFeatureExtractor subExtractor) {
+    this.n = n;
+    this.subExtractor = subExtractor;
+    this.annotationClass = annotationClass;
+  }
 
-		annotations = AnnotationRetrieval.getAnnotations(view, focusAnnotation, annotationClass);
+  public List<Feature> extract(JCas view, Annotation focusAnnotation) throws CleartkException {
+    List<? extends Annotation> annotations;
 
-		Map<Annotation, List<Feature>> annotationFeatures = new HashMap<Annotation, List<Feature>>();
-		for( Annotation annotation : annotations ) {
-			List<Feature> features = this.subExtractor.extract(view, annotation);
-			annotationFeatures.put(annotation, features);
-		}
-		
-		for( int i = 0; i < annotations.size() - n + 1; i++ ) {
-			List<Annotation> slice = new ArrayList<Annotation>(n);
-			for( int j = 0; j < n; j++ ) {
-				slice.add(annotations.get(i+j));
-			}
-			
-			
-			List<String> values = new ArrayList<String>(n);
-			List<String> names = new ArrayList<String>(n + 1);
+    List<Feature> ngramFeatures = new ArrayList<Feature>();
 
-			for( Annotation annotation : slice ) {
-				for( Feature feature : annotationFeatures.get(annotation) ) {
-					values.add(feature.getValue().toString());
-					names.add(feature.getName());
-				}
-			}
-			
-			// create name
-			StringBuffer nameBuffer = new StringBuffer();
-			for( String name : names ) {
-				if( nameBuffer.toString().length() > 0 )
-					nameBuffer.append(",");
-				nameBuffer.append(name);
-			}
-			
-			String name = String.format("Ngram(%s,%s)", this.annotationClass.getSimpleName(), nameBuffer.toString());
+    annotations = AnnotationRetrieval.getAnnotations(view, focusAnnotation, annotationClass);
 
-			// create value
-			StringBuffer valueBuffer = new StringBuffer();
-			for( String subValue : values ) {
-				valueBuffer.append(subValue);
-				valueBuffer.append(valueSeparator);
-			}
-			if( valueBuffer.length() > 0 )
-				valueBuffer.deleteCharAt(valueBuffer.length()-1);
-			String value = valueBuffer.toString();
-			
-			// add feature
-			ngramFeatures.add(new Feature(name, value));
-		}
-		
-		return ngramFeatures;
-	}
-	
-	private SimpleFeatureExtractor subExtractor;
-	private int n;
-	Class<? extends Annotation> annotationClass;
+    Map<Annotation, List<Feature>> annotationFeatures = new HashMap<Annotation, List<Feature>>();
+    for (Annotation annotation : annotations) {
+      List<Feature> features = this.subExtractor.extract(view, annotation);
+      annotationFeatures.put(annotation, features);
+    }
 
-	private String valueSeparator = "|";
+    for (int i = 0; i < annotations.size() - n + 1; i++) {
+      List<Annotation> slice = new ArrayList<Annotation>(n);
+      for (int j = 0; j < n; j++) {
+        slice.add(annotations.get(i + j));
+      }
 
-	public String getValueSeparator() {
-		return valueSeparator;
-	}
+      List<String> values = new ArrayList<String>(n);
+      List<String> names = new ArrayList<String>(n + 1);
 
-	public void setValueSeparator(String valueSeparator) {
-		this.valueSeparator = valueSeparator;
-	}
-	
+      for (Annotation annotation : slice) {
+        for (Feature feature : annotationFeatures.get(annotation)) {
+          values.add(feature.getValue().toString());
+          names.add(feature.getName());
+        }
+      }
+
+      // create name
+      StringBuffer nameBuffer = new StringBuffer();
+      for (String name : names) {
+        if (nameBuffer.toString().length() > 0)
+          nameBuffer.append(",");
+        nameBuffer.append(name);
+      }
+
+      String name = String.format("Ngram(%s,%s)", this.annotationClass.getSimpleName(),
+              nameBuffer.toString());
+
+      // create value
+      StringBuffer valueBuffer = new StringBuffer();
+      for (String subValue : values) {
+        valueBuffer.append(subValue);
+        valueBuffer.append(valueSeparator);
+      }
+      if (valueBuffer.length() > 0)
+        valueBuffer.deleteCharAt(valueBuffer.length() - 1);
+      String value = valueBuffer.toString();
+
+      // add feature
+      ngramFeatures.add(new Feature(name, value));
+    }
+
+    return ngramFeatures;
+  }
+
+  private SimpleFeatureExtractor subExtractor;
+
+  private int n;
+
+  Class<? extends Annotation> annotationClass;
+
+  private String valueSeparator = "|";
+
+  public String getValueSeparator() {
+    return valueSeparator;
+  }
+
+  public void setValueSeparator(String valueSeparator) {
+    this.valueSeparator = valueSeparator;
+  }
+
 }

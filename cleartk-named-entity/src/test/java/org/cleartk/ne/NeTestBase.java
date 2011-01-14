@@ -35,9 +35,9 @@ import org.cleartk.token.TokenTestBase;
  */
 public class NeTestBase extends TokenTestBase {
 
-	@Override
-	public String[] getTypeSystemDescriptorNames() {
-		return new String[] {"org.cleartk.ne.TypeSystem"};
-	}
+  @Override
+  public String[] getTypeSystemDescriptorNames() {
+    return new String[] { "org.cleartk.ne.TypeSystem" };
+  }
 
 }

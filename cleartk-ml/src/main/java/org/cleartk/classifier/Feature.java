@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,13 +20,14 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * <p>
  * 
  * @author Philip Ogren
@@ -36,81 +37,81 @@ package org.cleartk.classifier;
 
 public class Feature {
 
-	protected String name;
-	protected Object value;
+  protected String name;
 
-	public Feature() {
-	}
+  protected Object value;
 
-	public Feature(Object value) {
-		this.value = value;
-	}
+  public Feature() {
+  }
 
-	public Feature(String name, Object value) {
-		this.name = name;
-		this.value = value;
-	}
-	
-	public static Feature createFeature(String namePrefix, Feature feature) {
-		return new Feature(createName(namePrefix, feature.name), feature.value);
-	}
+  public Feature(Object value) {
+    this.value = value;
+  }
 
-	public Object getValue() {
-		return value;
-	}
+  public Feature(String name, Object value) {
+    this.name = name;
+    this.value = value;
+  }
 
-	public void setValue(Object value) {
-		this.value = value;
-	}
+  public static Feature createFeature(String namePrefix, Feature feature) {
+    return new Feature(createName(namePrefix, feature.name), feature.value);
+  }
 
-	public String getName() {
-		return name;
-	}
+  public Object getValue() {
+    return value;
+  }
 
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	public static String createName(String ... names) {
-		StringBuffer buffer = new StringBuffer();
-		for (String name: names) {
-			if (name != null) {
-				buffer.append(name);
-				buffer.append('_');
-			}
-		}
-		if (buffer.length() > 0) {
-			buffer.deleteCharAt(buffer.length() - 1);
-		}
-		return buffer.toString();
-	}
-	
-	public String toString() {
-		String className = Feature.class.getSimpleName();
-		return String.format("%s(<%s>, <%s>)", className, this.name, this.value);
-	}
+  public void setValue(Object value) {
+    this.value = value;
+  }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof Feature) {
-			Feature other = (Feature) obj;
-			boolean nameMatch = (this.name == null && other.name == null) ||
-			                    (this.name != null && this.name.equals(other.name));
-			boolean valueMatch = (this.value == null && other.value == null) ||
-			                     (this.value != null && this.value.equals(other.value));
-			return nameMatch && valueMatch; 
-		} else {
-			return false;
-		}
-	}
+  public String getName() {
+    return name;
+  }
 
-	@Override
-	public int hashCode() {
-		int hash = 1;
-		hash = hash * 31 + (this.name == null ? 0 : this.name.hashCode());
-		hash = hash * 31 + (this.value == null ? 0 : this.value.hashCode());
-		return hash;
-	}
-	
-	
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public static String createName(String... names) {
+    StringBuffer buffer = new StringBuffer();
+    for (String name : names) {
+      if (name != null) {
+        buffer.append(name);
+        buffer.append('_');
+      }
+    }
+    if (buffer.length() > 0) {
+      buffer.deleteCharAt(buffer.length() - 1);
+    }
+    return buffer.toString();
+  }
+
+  public String toString() {
+    String className = Feature.class.getSimpleName();
+    return String.format("%s(<%s>, <%s>)", className, this.name, this.value);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof Feature) {
+      Feature other = (Feature) obj;
+      boolean nameMatch = (this.name == null && other.name == null)
+              || (this.name != null && this.name.equals(other.name));
+      boolean valueMatch = (this.value == null && other.value == null)
+              || (this.value != null && this.value.equals(other.value));
+      return nameMatch && valueMatch;
+    } else {
+      return false;
+    }
+  }
+
+  @Override
+  public int hashCode() {
+    int hash = 1;
+    hash = hash * 31 + (this.name == null ? 0 : this.name.hashCode());
+    hash = hash * 31 + (this.value == null ? 0 : this.value.hashCode());
+    return hash;
+  }
+
 }

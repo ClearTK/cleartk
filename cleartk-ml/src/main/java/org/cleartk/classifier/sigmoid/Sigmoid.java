@@ -20,46 +20,48 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 
 package org.cleartk.classifier.sigmoid;
 
 import java.io.Serializable;
 
 /**
- * <br>Copyright (c) 2009, Regents of the University of Colorado 
- * <br>All rights reserved.
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
  * <p>
-*/
+ */
 public class Sigmoid implements Serializable {
 
-	private static final long serialVersionUID = 3780856549630884460L;
+  private static final long serialVersionUID = 3780856549630884460L;
 
-	public Sigmoid(double A, double B) {
-		this.A = A;
-		this.B = B;
-	}
-	
-	public double evaluate(double v) {
-		return 1 / (1 + Math.exp(A*v + B));
-	}
-	
-	public double getA() {
-		return A;
-	}
-	
-	public double getB() {
-		return B;
-	}
-	
-	@Override
-	public String toString() {
-		if( B < 0 ) 
-			return String.format("1 / (1 + exp(%.3f*x - %.3f))", A, -B);
-		else
-			return String.format("1 / (1 + exp(%.3f*x + %.3f))", A, B);
-	}
-	
-	private double A;
-	private double B;
+  public Sigmoid(double A, double B) {
+    this.A = A;
+    this.B = B;
+  }
+
+  public double evaluate(double v) {
+    return 1 / (1 + Math.exp(A * v + B));
+  }
+
+  public double getA() {
+    return A;
+  }
+
+  public double getB() {
+    return B;
+  }
+
+  @Override
+  public String toString() {
+    if (B < 0)
+      return String.format("1 / (1 + exp(%.3f*x - %.3f))", A, -B);
+    else
+      return String.format("1 / (1 + exp(%.3f*x + %.3f))", A, B);
+  }
+
+  private double A;
+
+  private double B;
 }

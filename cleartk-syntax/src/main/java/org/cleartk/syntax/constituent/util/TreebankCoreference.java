@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.syntax.constituent.util;
 
 import java.util.ArrayList;
@@ -28,57 +28,49 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * 
  * @author Philip Ogren
- *
+ * 
  */
-public class TreebankCoreference implements TreebankObject
-{
-	List<TreebankObject> chainedNodes;
-	
-	public TreebankCoreference()
-	{
-		chainedNodes = new ArrayList<TreebankObject>();
-	}
+public class TreebankCoreference implements TreebankObject {
+  List<TreebankObject> chainedNodes;
 
-	public List<TreebankObject> getNodes()
-	{
-		return Collections.unmodifiableList(chainedNodes);
-	}
-	public void setNodes(List<TreebankObject> relatedNodes)
-	{
-		this.chainedNodes.clear();
-		if(relatedNodes != null)
-		{
-			this.chainedNodes.addAll(relatedNodes);
-		}
-	}
-	
-	public void addNode(TreebankObject relatedNode)
-	{
-		this.chainedNodes.add(relatedNode);
-	}
+  public TreebankCoreference() {
+    chainedNodes = new ArrayList<TreebankObject>();
+  }
 
-	public String getText()
-	{
-		StringBuffer text = new StringBuffer("(");
-		for(int i=0; i<chainedNodes.size(); i++)
-		{
-			TreebankObject chainedNode = chainedNodes.get(i);
-			String txt = chainedNode.getText();
-			if(txt.equals("") && chainedNode instanceof TreebankNode)
-				txt = ((TreebankNode)chainedNode).getValue();
-			text.append(txt);
-			if(i<chainedNodes.size()-1)
-				text.append(" || ");
-		}
-		text.append(")");
-		return text.toString();
-	}
+  public List<TreebankObject> getNodes() {
+    return Collections.unmodifiableList(chainedNodes);
+  }
 
+  public void setNodes(List<TreebankObject> relatedNodes) {
+    this.chainedNodes.clear();
+    if (relatedNodes != null) {
+      this.chainedNodes.addAll(relatedNodes);
+    }
+  }
 
-	
+  public void addNode(TreebankObject relatedNode) {
+    this.chainedNodes.add(relatedNode);
+  }
+
+  public String getText() {
+    StringBuffer text = new StringBuffer("(");
+    for (int i = 0; i < chainedNodes.size(); i++) {
+      TreebankObject chainedNode = chainedNodes.get(i);
+      String txt = chainedNode.getText();
+      if (txt.equals("") && chainedNode instanceof TreebankNode)
+        txt = ((TreebankNode) chainedNode).getValue();
+      text.append(txt);
+      if (i < chainedNodes.size() - 1)
+        text.append(" || ");
+    }
+    text.append(")");
+    return text.toString();
+  }
+
 }

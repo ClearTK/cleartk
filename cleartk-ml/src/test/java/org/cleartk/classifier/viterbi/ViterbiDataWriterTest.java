@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2009, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 
 package org.cleartk.classifier.viterbi;
 
@@ -56,100 +56,113 @@ import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.testing.util.HideOutput;
 
 /**
- * <br>Copyright (c) 2009, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * 
  * @author Philip Ogren
  */
 
 public class ViterbiDataWriterTest extends DefaultTestBase {
-	
-	public static class TestAnnotator extends CleartkSequentialAnnotator<String> {
-		
-		private SimpleFeatureExtractor extractor = new SpannedTextExtractor();
-		
-		@Override
-		public void process(JCas jCas) throws AnalysisEngineProcessException {
-			try {
-				this.processSimple(jCas);
-			} catch (CleartkException e) {
-				throw new AnalysisEngineProcessException(e);
-			}
-		}
 
-		public void processSimple(JCas jCas) throws AnalysisEngineProcessException, CleartkException {
-			for (Sentence sentence: AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
-				List<Instance<String>> instances = new ArrayList<Instance<String>>();
-				List<Token> tokens = AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class);
-				for (Token token: tokens) {
-					Instance<String> instance = new Instance<String>();
-					instance.addAll(this.extractor.extract(jCas, token));
-					instance.setOutcome(token.getPos());
-					instances.add(instance);
-				}
-				if (this.isTraining()) {
-					this.sequentialDataWriter.writeSequence(instances);
-				} else {
-					this.classifySequence(instances);
-				}
-			}
-		}
-	}
+  public static class TestAnnotator extends CleartkSequentialAnnotator<String> {
 
-	@Test
-	public void testConsumeAll() throws Exception {
+    private SimpleFeatureExtractor extractor = new SpannedTextExtractor();
 
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TestAnnotator.class,
-				typeSystemDescription,
-				ViterbiDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
-				CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME, ViterbiDataWriterFactory.class.getName(),
-				ViterbiDataWriterFactory.PARAM_DELEGATED_DATA_WRITER_FACTORY_CLASS, DefaultStringTestDataWriterFactory.class.getName(),
-				ViterbiDataWriterFactory.PARAM_OUTCOME_FEATURE_EXTRACTOR_NAMES, new String[] {"org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor"});
+    @Override
+    public void process(JCas jCas) throws AnalysisEngineProcessException {
+      try {
+        this.processSimple(jCas);
+      } catch (CleartkException e) {
+        throw new AnalysisEngineProcessException(e);
+      }
+    }
 
-		String text = "Do I really have to come up with some creative text, or can I just write anything?";
-		tokenBuilder.buildTokens(jCas, text,
-				"Do I really have to come up with some creative text , or can I just write anything ?",
-				"D I R H T C U W S C T , O C I J W A ?");
+    public void processSimple(JCas jCas) throws AnalysisEngineProcessException, CleartkException {
+      for (Sentence sentence : AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
+        List<Instance<String>> instances = new ArrayList<Instance<String>>();
+        List<Token> tokens = AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class);
+        for (Token token : tokens) {
+          Instance<String> instance = new Instance<String>();
+          instance.addAll(this.extractor.extract(jCas, token));
+          instance.setOutcome(token.getPos());
+          instances.add(instance);
+        }
+        if (this.isTraining()) {
+          this.sequentialDataWriter.writeSequence(instances);
+        } else {
+          this.classifySequence(instances);
+        }
+      }
+    }
+  }
 
-		engine.process(jCas);
-		engine.collectionProcessComplete();
+  @Test
+  public void testConsumeAll() throws Exception {
 
-		String expectedManifest = 
-			       "Manifest-Version: 1.0\n"
-				+ "classifierBuilderClass: org.cleartk.classifier.viterbi.ViterbiClassifi\n"  
-				+" erBuilder";
-				
-		File manifestFile = new File(outputDirectoryName, "MANIFEST.MF");
-		String actualManifest = FileUtils.file2String(manifestFile);
-		Assert.assertEquals(expectedManifest, actualManifest.replaceAll("\r", "").trim());
+    AnalysisEngine engine = AnalysisEngineFactory
+            .createPrimitive(
+                    TestAnnotator.class,
+                    typeSystemDescription,
+                    ViterbiDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+                    outputDirectoryName,
+                    CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME,
+                    ViterbiDataWriterFactory.class.getName(),
+                    ViterbiDataWriterFactory.PARAM_DELEGATED_DATA_WRITER_FACTORY_CLASS,
+                    DefaultStringTestDataWriterFactory.class.getName(),
+                    ViterbiDataWriterFactory.PARAM_OUTCOME_FEATURE_EXTRACTOR_NAMES,
+                    new String[] { "org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor" });
 
-		File delegatedOutputDirectory = new File(outputDirectoryName, ViterbiDataWriter.DELEGATED_MODEL_DIRECTORY_NAME);
-		String[] trainingData = FileUtil.loadListOfStrings(new File(delegatedOutputDirectory, "training-data.test"));
-		testFeatures(trainingData[1], "PreviousOutcome_L1_D");
-		testFeatures(trainingData[2], "PreviousOutcome_L1_I", "PreviousOutcome_L2_D", "PreviousOutcomes_L1_2gram_L2R_I_D");
-		testFeatures(trainingData[3], "PreviousOutcome_L1_R", "PreviousOutcome_L2_I", "PreviousOutcome_L3_D", "PreviousOutcomes_L1_2gram_L2R_R_I", "PreviousOutcomes_L1_3gram_L2R_R_I_D");
-		testFeatures(trainingData[4], "PreviousOutcome_L1_H", "PreviousOutcome_L2_R", "PreviousOutcome_L3_I", "PreviousOutcomes_L1_2gram_L2R_H_R", "PreviousOutcomes_L1_3gram_L2R_H_R_I");
-		
-		HideOutput hider = new HideOutput();
-		Train.main(outputDirectoryName+"/", "10", "1");
-		hider.restoreOutput();
-		
-		engine = AnalysisEngineFactory.createPrimitive(TestAnnotator.class, 
-				typeSystemDescription,
-				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, new File(outputDirectoryName, "model.jar").getPath());
-		
-		engine.process(jCas);
-		engine.collectionProcessComplete();
-		
-	}
-	
-	private void testFeatures(String trainingDataLine, String...expectedFeatures) {
-		Set<String> features = new HashSet<String>();
-		features.addAll(Arrays.asList(trainingDataLine.split(" ")));
-		for(String expectedFeature : expectedFeatures) {
-			assertTrue(features.contains(expectedFeature));
-		}
-	}
-	
+    String text = "Do I really have to come up with some creative text, or can I just write anything?";
+    tokenBuilder.buildTokens(jCas, text,
+            "Do I really have to come up with some creative text , or can I just write anything ?",
+            "D I R H T C U W S C T , O C I J W A ?");
+
+    engine.process(jCas);
+    engine.collectionProcessComplete();
+
+    String expectedManifest = "Manifest-Version: 1.0\n"
+            + "classifierBuilderClass: org.cleartk.classifier.viterbi.ViterbiClassifi\n"
+            + " erBuilder";
+
+    File manifestFile = new File(outputDirectoryName, "MANIFEST.MF");
+    String actualManifest = FileUtils.file2String(manifestFile);
+    Assert.assertEquals(expectedManifest, actualManifest.replaceAll("\r", "").trim());
+
+    File delegatedOutputDirectory = new File(outputDirectoryName,
+            ViterbiDataWriter.DELEGATED_MODEL_DIRECTORY_NAME);
+    String[] trainingData = FileUtil.loadListOfStrings(new File(delegatedOutputDirectory,
+            "training-data.test"));
+    testFeatures(trainingData[1], "PreviousOutcome_L1_D");
+    testFeatures(trainingData[2], "PreviousOutcome_L1_I", "PreviousOutcome_L2_D",
+            "PreviousOutcomes_L1_2gram_L2R_I_D");
+    testFeatures(trainingData[3], "PreviousOutcome_L1_R", "PreviousOutcome_L2_I",
+            "PreviousOutcome_L3_D", "PreviousOutcomes_L1_2gram_L2R_R_I",
+            "PreviousOutcomes_L1_3gram_L2R_R_I_D");
+    testFeatures(trainingData[4], "PreviousOutcome_L1_H", "PreviousOutcome_L2_R",
+            "PreviousOutcome_L3_I", "PreviousOutcomes_L1_2gram_L2R_H_R",
+            "PreviousOutcomes_L1_3gram_L2R_H_R_I");
+
+    HideOutput hider = new HideOutput();
+    Train.main(outputDirectoryName + "/", "10", "1");
+    hider.restoreOutput();
+
+    engine = AnalysisEngineFactory.createPrimitive(TestAnnotator.class, typeSystemDescription,
+            JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, new File(outputDirectoryName,
+                    "model.jar").getPath());
+
+    engine.process(jCas);
+    engine.collectionProcessComplete();
+
+  }
+
+  private void testFeatures(String trainingDataLine, String... expectedFeatures) {
+    Set<String> features = new HashSet<String>();
+    features.addAll(Arrays.asList(trainingDataLine.split(" ")));
+    for (String expectedFeature : expectedFeatures) {
+      assertTrue(features.contains(expectedFeature));
+    }
+  }
+
 }

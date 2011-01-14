@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.opennlp;
 
 import java.io.File;
@@ -32,129 +32,129 @@ import opennlp.model.RealValueFileEventStream;
 import opennlp.maxent.io.SuffixSensitiveGISModelReader;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * 
  * @author Philipp Wetzler
- *
+ * 
  */
 public class MaxentEval {
 
-	/**
-	 * @param args
-	 * @throws IOException 
-	 */
-	public static void main(String[] args) throws IOException {
-		if( args.length != 2 ) {
-			usage();
-			System.exit(1);
-		}
+  /**
+   * @param args
+   * @throws IOException
+   */
+  public static void main(String[] args) throws IOException {
+    if (args.length != 2) {
+      usage();
+      System.exit(1);
+    }
 
-		MaxentModel model = (new SuffixSensitiveGISModelReader(new File(args[0]))).getModel();
-		RealValueFileEventStream eventStream = new RealValueFileEventStream(new File(args[1]));
+    MaxentModel model = (new SuffixSensitiveGISModelReader(new File(args[0]))).getModel();
+    RealValueFileEventStream eventStream = new RealValueFileEventStream(new File(args[1]));
 
-		int numberOfOutcomes = model.getNumOutcomes();
-		int[][] confusionMatrix = new int[numberOfOutcomes][numberOfOutcomes];
-		int totalEvents = 0;
-		int unknownEvents = 0;
-		
-		while( eventStream.hasNext() ) {
-			Event event = eventStream.next();
-			int realOutcome = model.getIndex(event.getOutcome());
-			int modelOutcome = model.getIndex(model.getBestOutcome(model.eval(event.getContext())));
-			if( realOutcome >= 0 ) {
-				confusionMatrix[realOutcome][modelOutcome] += 1;
-				totalEvents++;
-			} else {
-				unknownEvents += 1;
-			}
-			
-			if( (totalEvents % 50000) == 0 ) {
-				System.out.print(".");
-				System.out.flush();
-			}
-		}
-		System.out.println();
-		
-		System.out.println("Outcomes:");
-		for( int i=0; i<numberOfOutcomes; i++ ) {
-			System.out.format("%3d - %s\n", i+1, model.getOutcome(i));
-		}
-		System.out.println();
-		
-		System.out.println("Total Number of Events:");
-		System.out.println(totalEvents);
-		System.out.println();
-		
-		if( unknownEvents > 0 ) {
-			System.out.println("Events of an Unknown Class:");
-			System.out.println(unknownEvents);
-			System.out.println();			
-		}
-		
-		
-		if( (model.getOutcome(0).equals("true") || model.getOutcome(0).equals("false"))
-				&& (model.getOutcome(1).equals("true") || model.getOutcome(1).equals("false"))
-				&& (!model.getOutcome(0).equals(model.getOutcome(1))) ) {
-			int trueOutcome;
-			if( model.getOutcome(0) == "true" )
-				trueOutcome = 0;
-			else
-				trueOutcome = 1;
-			
-			int falseOutcome = 1 - trueOutcome;
-			
-			double tp = confusionMatrix[trueOutcome][trueOutcome];
-			double fp = confusionMatrix[falseOutcome][trueOutcome];
-//			double tn = confusionMatrix[falseOutcome][falseOutcome];
-			double fn = confusionMatrix[trueOutcome][falseOutcome];
-			
-			double precision = tp / (tp + fp);
-			double recall = tp / (tp + fn);
-			
-			System.out.format("Precision: %1.3f\n", precision);
-			System.out.format("Recall:    %1.3f\n", recall);
-			System.out.println();
-		}
-		
-		
-		System.out.println("Confusion Matrix:");
-		
-		printMatrix(confusionMatrix, numberOfOutcomes, 0);
-		
-		printMatrix(confusionMatrix, numberOfOutcomes, totalEvents);
+    int numberOfOutcomes = model.getNumOutcomes();
+    int[][] confusionMatrix = new int[numberOfOutcomes][numberOfOutcomes];
+    int totalEvents = 0;
+    int unknownEvents = 0;
 
-		System.out.println();
-	}
-	
-	private static void printMatrix(int matrix[][], int numberOfClasses, int totalEvents) {
-		System.out.format("     ");
-		for( int i=0; i<numberOfClasses; i++ ) {
-			System.out.format("%7d ", i+1);
-		}
-		System.out.println();
+    while (eventStream.hasNext()) {
+      Event event = eventStream.next();
+      int realOutcome = model.getIndex(event.getOutcome());
+      int modelOutcome = model.getIndex(model.getBestOutcome(model.eval(event.getContext())));
+      if (realOutcome >= 0) {
+        confusionMatrix[realOutcome][modelOutcome] += 1;
+        totalEvents++;
+      } else {
+        unknownEvents += 1;
+      }
 
-		for( int j=0; j<numberOfClasses; j++ ) {
-			System.out.format("%7d ", j+1);
-			for( int i=0; i<numberOfClasses; i++ ) {
-				if( totalEvents > 0 ) {
-					double val = ((double) matrix[j][i]) / ((double) totalEvents) * 100.0;
-					System.out.format("%6.2f%% ", val);
-				} else {
-					System.out.format("%7d ", matrix[j][i]);
-				}
-				}
-			System.out.println();
-		}
-		System.out.println();
-		
-	}
-	
-	private static void usage() {
-		System.err.println("Usage:");
-		System.err.println("java [...] org.cleartk.classifier.OpenNLPMaxentEval <model file> <data file>");
-		System.err.println();
-	}
+      if ((totalEvents % 50000) == 0) {
+        System.out.print(".");
+        System.out.flush();
+      }
+    }
+    System.out.println();
+
+    System.out.println("Outcomes:");
+    for (int i = 0; i < numberOfOutcomes; i++) {
+      System.out.format("%3d - %s\n", i + 1, model.getOutcome(i));
+    }
+    System.out.println();
+
+    System.out.println("Total Number of Events:");
+    System.out.println(totalEvents);
+    System.out.println();
+
+    if (unknownEvents > 0) {
+      System.out.println("Events of an Unknown Class:");
+      System.out.println(unknownEvents);
+      System.out.println();
+    }
+
+    if ((model.getOutcome(0).equals("true") || model.getOutcome(0).equals("false"))
+            && (model.getOutcome(1).equals("true") || model.getOutcome(1).equals("false"))
+            && (!model.getOutcome(0).equals(model.getOutcome(1)))) {
+      int trueOutcome;
+      if (model.getOutcome(0) == "true")
+        trueOutcome = 0;
+      else
+        trueOutcome = 1;
+
+      int falseOutcome = 1 - trueOutcome;
+
+      double tp = confusionMatrix[trueOutcome][trueOutcome];
+      double fp = confusionMatrix[falseOutcome][trueOutcome];
+      // double tn = confusionMatrix[falseOutcome][falseOutcome];
+      double fn = confusionMatrix[trueOutcome][falseOutcome];
+
+      double precision = tp / (tp + fp);
+      double recall = tp / (tp + fn);
+
+      System.out.format("Precision: %1.3f\n", precision);
+      System.out.format("Recall:    %1.3f\n", recall);
+      System.out.println();
+    }
+
+    System.out.println("Confusion Matrix:");
+
+    printMatrix(confusionMatrix, numberOfOutcomes, 0);
+
+    printMatrix(confusionMatrix, numberOfOutcomes, totalEvents);
+
+    System.out.println();
+  }
+
+  private static void printMatrix(int matrix[][], int numberOfClasses, int totalEvents) {
+    System.out.format("     ");
+    for (int i = 0; i < numberOfClasses; i++) {
+      System.out.format("%7d ", i + 1);
+    }
+    System.out.println();
+
+    for (int j = 0; j < numberOfClasses; j++) {
+      System.out.format("%7d ", j + 1);
+      for (int i = 0; i < numberOfClasses; i++) {
+        if (totalEvents > 0) {
+          double val = ((double) matrix[j][i]) / ((double) totalEvents) * 100.0;
+          System.out.format("%6.2f%% ", val);
+        } else {
+          System.out.format("%7d ", matrix[j][i]);
+        }
+      }
+      System.out.println();
+    }
+    System.out.println();
+
+  }
+
+  private static void usage() {
+    System.err.println("Usage:");
+    System.err
+            .println("java [...] org.cleartk.classifier.OpenNLPMaxentEval <model file> <data file>");
+    System.err.println();
+  }
 
 }

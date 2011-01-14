@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,27 +20,27 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.libsvm;
 
 import java.io.IOException;
 import java.util.jar.JarFile;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
  */
 
-public class BinaryLIBSVMClassifier extends LIBSVMClassifier<Boolean,Boolean> {
+public class BinaryLIBSVMClassifier extends LIBSVMClassifier<Boolean, Boolean> {
 
-	public BinaryLIBSVMClassifier(JarFile modelFile) throws IOException {
-		super(modelFile);
-	}
+  public BinaryLIBSVMClassifier(JarFile modelFile) throws IOException {
+    super(modelFile);
+  }
 
-	@Override
-	protected Boolean decodePrediction(double prediction) {
-		return prediction > 0;
-	}
+  @Override
+  protected Boolean decodePrediction(double prediction) {
+    return prediction > 0;
+  }
 
 }

@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.feature.extractor.annotationpair;
 
 import java.util.ArrayList;
@@ -32,29 +32,29 @@ import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 
 /**
- * <br>Copyright (c) 2007-2009, Regents of the University of Colorado 
- * <br>All rights reserved.
+ * <br>
+ * Copyright (c) 2007-2009, Regents of the University of Colorado <br>
+ * All rights reserved.
  * 
  * @author Philipp Wetzler
  */
 public class CombinedAnnotationPairFeatureExtractor implements AnnotationPairFeatureExtractor {
 
+  public CombinedAnnotationPairFeatureExtractor(AnnotationPairFeatureExtractor... subExtractors) {
+    this.subExtractors = subExtractors;
+  }
 
-	public CombinedAnnotationPairFeatureExtractor(
-			AnnotationPairFeatureExtractor ... subExtractors) {
-		this.subExtractors = subExtractors;
-	}
-	
-	public List<Feature> extract(JCas view, Annotation leftAnnotation, Annotation rightAnnotation) throws CleartkException {
-		List<Feature> features = new ArrayList<Feature>();
-		
-		for( AnnotationPairFeatureExtractor subExtractor : subExtractors ) {
-			features.addAll(subExtractor.extract(view, leftAnnotation, rightAnnotation));
-		}
-		
-		return features;
-	}
-	
-	private AnnotationPairFeatureExtractor subExtractors[];
+  public List<Feature> extract(JCas view, Annotation leftAnnotation, Annotation rightAnnotation)
+          throws CleartkException {
+    List<Feature> features = new ArrayList<Feature>();
+
+    for (AnnotationPairFeatureExtractor subExtractor : subExtractors) {
+      features.addAll(subExtractor.extract(view, leftAnnotation, rightAnnotation));
+    }
+
+    return features;
+  }
+
+  private AnnotationPairFeatureExtractor subExtractors[];
 
 }

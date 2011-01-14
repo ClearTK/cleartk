@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,67 +20,72 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.token.tokenizer;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * <p>
  */
 
 public class Token {
-	private int begin;
+  private int begin;
 
-	private int end;
+  private int end;
 
-	private String tokenText;
+  private String tokenText;
 
-	public Token(int begin, int end, String tokenText) {
-		super();
-		if (end < begin) throw new IllegalArgumentException(String.format(
-				"the end of a token must follow the beginning of a token: begin=%1$d, end=%2$d, token text='%3$s'",
-				begin, end, tokenText));
-		this.begin = begin;
-		this.end = end;
-		this.tokenText = tokenText == null ? "" : tokenText;
-		if (this.tokenText.length() != (end - begin)) throw new IllegalArgumentException(
-				String
-						.format(
-								"the length of the token text must equal the extent specified by begin and end: token text length=%1$d, (end - begin)=%2$d, token text='%3$s'",
-								this.tokenText.length(), (end - begin), tokenText));
-	}
+  public Token(int begin, int end, String tokenText) {
+    super();
+    if (end < begin)
+      throw new IllegalArgumentException(
+              String.format(
+                      "the end of a token must follow the beginning of a token: begin=%1$d, end=%2$d, token text='%3$s'",
+                      begin, end, tokenText));
+    this.begin = begin;
+    this.end = end;
+    this.tokenText = tokenText == null ? "" : tokenText;
+    if (this.tokenText.length() != (end - begin))
+      throw new IllegalArgumentException(
+              String.format(
+                      "the length of the token text must equal the extent specified by begin and end: token text length=%1$d, (end - begin)=%2$d, token text='%3$s'",
+                      this.tokenText.length(), (end - begin), tokenText));
+  }
 
-	public int getBegin() {
-		return begin;
-	}
+  public int getBegin() {
+    return begin;
+  }
 
-	public int getEnd() {
-		return end;
-	}
+  public int getEnd() {
+    return end;
+  }
 
-	public String getTokenText() {
-		return tokenText;
-	}
+  public String getTokenText() {
+    return tokenText;
+  }
 
-	@Override
-	public int hashCode() {
-		return tokenText.hashCode();
-	}
+  @Override
+  public int hashCode() {
+    return tokenText.hashCode();
+  }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof Token) {
-			Token token = (Token) obj;
-			if (tokenText.equals(token.getTokenText()) && begin == token.getBegin() && end == token.getEnd()) return true;
-		}
-		return false;
-	}
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof Token) {
+      Token token = (Token) obj;
+      if (tokenText.equals(token.getTokenText()) && begin == token.getBegin()
+              && end == token.getEnd())
+        return true;
+    }
+    return false;
+  }
 
-	@Override
-	public String toString() {
-		return tokenText + "[" + begin + "," + end + "]";
-	}
+  @Override
+  public String toString() {
+    return tokenText + "[" + begin + "," + end + "]";
+  }
 
 }

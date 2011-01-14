@@ -36,29 +36,29 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * <br>
  * Copyright (c) 2009, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
  * @author Philip Ogren
  * 
  */
 
-public abstract class TestDataWriterFactory_ImplBase<OUTCOME_TYPE> extends JarDataWriterFactory<List<NameNumber>, OUTCOME_TYPE, String> {
+public abstract class TestDataWriterFactory_ImplBase<OUTCOME_TYPE> extends
+        JarDataWriterFactory<List<NameNumber>, OUTCOME_TYPE, String> {
 
-	public static final String PARAM_COMPRESS = ConfigurationParameterFactory.createConfigurationParameterName(TestDataWriterFactory_ImplBase.class, "compress");
-	@ConfigurationParameter(
-			defaultValue = "false",
-			description = "when true indicates that the FeaturesEncoder should compress the feature names.  See org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder")
-	protected boolean compress = false;
-	
-	public static final String PARAM_SORT = ConfigurationParameterFactory.createConfigurationParameterName(TestDataWriterFactory_ImplBase.class, "sort");
-	@ConfigurationParameter(
-			defaultValue = "false",
-			description = "when true indicates that the FeaturesEncoder should write the feature names in sorted order.")
-	protected boolean sort = false;
-	
-	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		super.initialize(context);
-	}
-	
-	
+  public static final String PARAM_COMPRESS = ConfigurationParameterFactory
+          .createConfigurationParameterName(TestDataWriterFactory_ImplBase.class, "compress");
+
+  @ConfigurationParameter(defaultValue = "false", description = "when true indicates that the FeaturesEncoder should compress the feature names.  See org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder")
+  protected boolean compress = false;
+
+  public static final String PARAM_SORT = ConfigurationParameterFactory
+          .createConfigurationParameterName(TestDataWriterFactory_ImplBase.class, "sort");
+
+  @ConfigurationParameter(defaultValue = "false", description = "when true indicates that the FeaturesEncoder should write the feature names in sorted order.")
+  protected boolean sort = false;
+
+  @Override
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    super.initialize(context);
+  }
 
 }

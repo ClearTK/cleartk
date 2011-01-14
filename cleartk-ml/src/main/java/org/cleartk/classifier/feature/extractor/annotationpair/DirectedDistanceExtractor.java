@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.feature.extractor.annotationpair;
 
 import java.util.Collections;
@@ -32,56 +32,58 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.AnnotationUtil;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
- * @author Philip Ogren
- * This class was initially copied from DistanceExtractor and was modified in two ways:
- * <ul><li>the distance between annotations will be negative if the first annotation comes after the second</li>
- * 	   <li>zero will only be returned if the two annotations overlap.  Adjacent annotations will have a distance of |1|.</li>
- * </ul>
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * 
+ * @author Philip Ogren This class was initially copied from DistanceExtractor and was modified in
+ *         two ways:
+ *         <ul>
+ *         <li>the distance between annotations will be negative if the first annotation comes after
+ *         the second</li>
+ *         <li>zero will only be returned if the two annotations overlap. Adjacent annotations will
+ *         have a distance of |1|.</li>
+ *         </ul>
  */
 
 public class DirectedDistanceExtractor implements AnnotationPairFeatureExtractor {
-	String name;
-	Class<? extends Annotation> unitClass;
-	
-	
-	public DirectedDistanceExtractor(String name, Class<? extends Annotation>unitClass) {
-		this.name = name;
-		this.unitClass = unitClass;
-	}
-	
-	public List<Feature> extract(JCas jCas, Annotation annotation1, Annotation annotation2) {
-		String featureName = Feature.createName(
-				this.name, "DDistance", this.unitClass.getSimpleName());
+  String name;
 
-		Annotation firstAnnotation, secondAnnotation;
-		boolean negate = false;
-		if( annotation1.getBegin() <= annotation2.getBegin() ) {
-			firstAnnotation = annotation1;
-			secondAnnotation = annotation2;
-		} else {
-			firstAnnotation = annotation2;
-			secondAnnotation = annotation1;
-			negate = true;
-		}
-	
-		
-		int featureValue = 0;
-		
-		if(AnnotationUtil.overlaps(annotation1, annotation2)) {
-			featureValue = 0;
-		} else {
-			List<? extends Annotation> annotations = AnnotationRetrieval.getAnnotations(jCas, firstAnnotation.getEnd(), secondAnnotation.getBegin(), unitClass);
-			featureValue = annotations.size() + 1;
-		}
-		if(negate)
-			featureValue = -featureValue;
-		
-		return Collections.singletonList(new Feature(featureName, featureValue));
-	}
+  Class<? extends Annotation> unitClass;
+
+  public DirectedDistanceExtractor(String name, Class<? extends Annotation> unitClass) {
+    this.name = name;
+    this.unitClass = unitClass;
+  }
+
+  public List<Feature> extract(JCas jCas, Annotation annotation1, Annotation annotation2) {
+    String featureName = Feature.createName(this.name, "DDistance", this.unitClass.getSimpleName());
+
+    Annotation firstAnnotation, secondAnnotation;
+    boolean negate = false;
+    if (annotation1.getBegin() <= annotation2.getBegin()) {
+      firstAnnotation = annotation1;
+      secondAnnotation = annotation2;
+    } else {
+      firstAnnotation = annotation2;
+      secondAnnotation = annotation1;
+      negate = true;
+    }
+
+    int featureValue = 0;
+
+    if (AnnotationUtil.overlaps(annotation1, annotation2)) {
+      featureValue = 0;
+    } else {
+      List<? extends Annotation> annotations = AnnotationRetrieval.getAnnotations(jCas,
+              firstAnnotation.getEnd(), secondAnnotation.getBegin(), unitClass);
+      featureValue = annotations.size() + 1;
+    }
+    if (negate)
+      featureValue = -featureValue;
+
+    return Collections.singletonList(new Feature(featureName, featureValue));
+  }
 }

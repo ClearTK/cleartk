@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2010, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.syntax.opennlp.parser;
 
 import java.util.List;
@@ -35,37 +35,38 @@ import org.cleartk.syntax.opennlp.ParserAnnotator;
  * All rights reserved.
  * <p>
  * 
- * InputTypesHelper allows the {@link ParserAnnotator} to abstract away the input token and sentence types that it expects.  The default
- * implementation uses the ClearTK token and sentence types, but by extending this class you could specify your own input types from your 
- * type system.  
+ * InputTypesHelper allows the {@link ParserAnnotator} to abstract away the input token and sentence
+ * types that it expects. The default implementation uses the ClearTK token and sentence types, but
+ * by extending this class you could specify your own input types from your type system.
  * 
  * @author Philip Ogren
  */
 
 public abstract class InputTypesHelper<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation> {
-	public abstract List<TOKEN_TYPE> getTokens(JCas jCas, SENTENCE_TYPE sentence);
+  public abstract List<TOKEN_TYPE> getTokens(JCas jCas, SENTENCE_TYPE sentence);
 
-	public abstract List<SENTENCE_TYPE> getSentences(JCas jCas);
-	
-	public abstract String getPosTag(TOKEN_TYPE token);
+  public abstract List<SENTENCE_TYPE> getSentences(JCas jCas);
 
-	public abstract void setPosTag(TOKEN_TYPE token, String tag);
+  public abstract String getPosTag(TOKEN_TYPE token);
 
-	/**
-	 * There must be a better way to get around the runtime type erasure than to 
-	 * introduce an additional method like this.  If you know of something more elegant
-	 * than this, then please let us know! 
-	 * @param token
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	public String getTag(Annotation token) {
-		return getPosTag((TOKEN_TYPE) token);
-	}
+  public abstract void setPosTag(TOKEN_TYPE token, String tag);
 
-	@SuppressWarnings("unchecked")
-	public void setTag(Annotation token, String tag) {
-		setPosTag((TOKEN_TYPE) token, tag);
-	}
+  /**
+   * There must be a better way to get around the runtime type erasure than to introduce an
+   * additional method like this. If you know of something more elegant than this, then please let
+   * us know!
+   * 
+   * @param token
+   * @return
+   */
+  @SuppressWarnings("unchecked")
+  public String getTag(Annotation token) {
+    return getPosTag((TOKEN_TYPE) token);
+  }
+
+  @SuppressWarnings("unchecked")
+  public void setTag(Annotation token, String tag) {
+    setPosTag((TOKEN_TYPE) token, tag);
+  }
 
 }

@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,9 +20,8 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.example.pos;
-
 
 import java.io.File;
 import java.io.IOException;
@@ -40,56 +39,54 @@ import org.junit.Before;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
-*/
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ */
 
 public class ExamplePOSPlainTextWriterTest extends ExamplesTestBase {
 
-	private final File outputDirectory = new File("test/data/example");
-	
-	@Before
-	public void setUp() throws Exception {
-		super.setUp();
-		this.outputDirectory.mkdirs();
-	}
+  private final File outputDirectory = new File("test/data/example");
 
-	@After
-	public void tearDown() throws Exception {
-		for (File file: this.outputDirectory.listFiles()) {
-			file.delete();
-		}
-		this.outputDirectory.delete();
-	}
-	
-	@Test
-	public void test() throws Exception {
-		
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(ExamplePOSPlainTextWriter.class, 
-				ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-				ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDirectory.getPath());
+  @Before
+  public void setUp() throws Exception {
+    super.setUp();
+    this.outputDirectory.mkdirs();
+  }
 
-		tokenBuilder.buildTokens(jCas,
-				"I walked home. It was a nice day!", 
-				"I walked home .\nIt was a nice day !",
-				"PRP VBD NN . PRP VBD DT JJ NN .");
-		ViewURIUtil.setURI(jCas, "xxx");
-		engine.process(jCas);
-		engine.collectionProcessComplete();
-		
-		String text = "I/PRP walked/VBD home/NN ./. \nIt/PRP was/VBD a/DT nice/JJ day/NN !/. \n";
-		File outputFile = new File(this.outputDirectory, "xxx.pos");
-		Assert.assertEquals(text, FileUtils.file2String(outputFile).replace("\r", ""));
-	}
+  @After
+  public void tearDown() throws Exception {
+    for (File file : this.outputDirectory.listFiles()) {
+      file.delete();
+    }
+    this.outputDirectory.delete();
+  }
 
-	@Test
-	public void testDescriptor() throws UIMAException, IOException {
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(ExamplePOSPlainTextWriter.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION);
-		Object outDirectory = engine.getConfigParameterValue(
-				ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME);
-		Assert.assertEquals(ExamplePOSPlainTextWriter.DEFAULT_OUTPUT_DIRECTORY, outDirectory);
-	}
+  @Test
+  public void test() throws Exception {
+
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(ExamplePOSPlainTextWriter.class,
+            ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+            ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDirectory.getPath());
+
+    tokenBuilder.buildTokens(jCas, "I walked home. It was a nice day!",
+            "I walked home .\nIt was a nice day !", "PRP VBD NN . PRP VBD DT JJ NN .");
+    ViewURIUtil.setURI(jCas, "xxx");
+    engine.process(jCas);
+    engine.collectionProcessComplete();
+
+    String text = "I/PRP walked/VBD home/NN ./. \nIt/PRP was/VBD a/DT nice/JJ day/NN !/. \n";
+    File outputFile = new File(this.outputDirectory, "xxx.pos");
+    Assert.assertEquals(text, FileUtils.file2String(outputFile).replace("\r", ""));
+  }
+
+  @Test
+  public void testDescriptor() throws UIMAException, IOException {
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(ExamplePOSPlainTextWriter.class,
+            ExampleComponents.TYPE_SYSTEM_DESCRIPTION);
+    Object outDirectory = engine
+            .getConfigParameterValue(ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME);
+    Assert.assertEquals(ExamplePOSPlainTextWriter.DEFAULT_OUTPUT_DIRECTORY, outDirectory);
+  }
 }

@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.feature;
 
 import java.util.Collections;
@@ -28,11 +28,11 @@ import java.util.List;
 
 import org.cleartk.classifier.Feature;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * <p>
  * 
  * @author Philip Ogren
@@ -40,78 +40,79 @@ import org.cleartk.classifier.Feature;
  */
 
 public class WindowNGramFeature extends Feature {
-	public static final String ORIENTATION_LEFT = "L";
+  public static final String ORIENTATION_LEFT = "L";
 
-	public static final String ORIENTATION_RIGHT = "R";
+  public static final String ORIENTATION_RIGHT = "R";
 
-	public static final String ORIENTATION_MIDDLE = "M";
+  public static final String ORIENTATION_MIDDLE = "M";
 
-	public static final String ORIENTATION_MIDDLE_REVERSE = "MR";
+  public static final String ORIENTATION_MIDDLE_REVERSE = "MR";
 
-	public static final String DIRECTION_LEFT_TO_RIGHT = "L2R";
+  public static final String DIRECTION_LEFT_TO_RIGHT = "L2R";
 
-	public static final String DIRECTION_RIGHT_TO_LEFT = "R2L";
+  public static final String DIRECTION_RIGHT_TO_LEFT = "R2L";
 
-	private String orientation = null;
+  private String orientation = null;
 
-	private String direction = null;
+  private String direction = null;
 
-	private String separator;
+  private String separator;
 
-	private Integer size = null;
+  private Integer size = null;
 
-	private Integer index = null;
+  private Integer index = null;
 
-	private List<Feature> windowedFeatures = null;
+  private List<Feature> windowedFeatures = null;
 
-	public WindowNGramFeature(String name, Object value, String orientation, String direction, String separator,
-			Integer size, Integer index, List<Feature> windowedFeatures) {
-		super(value);
-		this.orientation = orientation;
-		this.direction = direction;
-		this.separator = separator;
-		this.size = size;
-		this.index = index;
-		this.windowedFeatures = windowedFeatures;
-		this.name = createName(name);
-	}
+  public WindowNGramFeature(String name, Object value, String orientation, String direction,
+          String separator, Integer size, Integer index, List<Feature> windowedFeatures) {
+    super(value);
+    this.orientation = orientation;
+    this.direction = direction;
+    this.separator = separator;
+    this.size = size;
+    this.index = index;
+    this.windowedFeatures = windowedFeatures;
+    this.name = createName(name);
+  }
 
-	public Integer getIndex() {
-		return index;
-	}
+  public Integer getIndex() {
+    return index;
+  }
 
-	private String createName(String namePrefix) {
-		if (namePrefix == null) namePrefix = "WindowNGram";
+  private String createName(String namePrefix) {
+    if (namePrefix == null)
+      namePrefix = "WindowNGram";
 
-		StringBuffer returnValue = new StringBuffer();
-		returnValue.append(orientation + index + "_" + size + "gram_" + direction);
+    StringBuffer returnValue = new StringBuffer();
+    returnValue.append(orientation + index + "_" + size + "gram_" + direction);
 
-		String windowedFeatureName = null;
-		if (windowedFeatures != null && windowedFeatures.size() > 0) windowedFeatureName = windowedFeatures.get(0)
-				.getName();
+    String windowedFeatureName = null;
+    if (windowedFeatures != null && windowedFeatures.size() > 0)
+      windowedFeatureName = windowedFeatures.get(0).getName();
 
-		return Feature.createName(namePrefix, returnValue.toString(), windowedFeatureName);
+    return Feature.createName(namePrefix, returnValue.toString(), windowedFeatureName);
 
-	}
+  }
 
-	public String getOrientation() {
-		return orientation;
-	}
+  public String getOrientation() {
+    return orientation;
+  }
 
-	public int getSize() {
-		return size;
-	}
+  public int getSize() {
+    return size;
+  }
 
-	public String getDirection() {
-		return direction;
-	}
+  public String getDirection() {
+    return direction;
+  }
 
-	public String getSeparator() {
-		return separator;
-	}
+  public String getSeparator() {
+    return separator;
+  }
 
-	public List<Feature> getWindowedFeatures() {
-		return Collections.unmodifiableList(windowedFeatures);
-	}
+  public List<Feature> getWindowedFeatures() {
+    return Collections.unmodifiableList(windowedFeatures);
+  }
 
 }

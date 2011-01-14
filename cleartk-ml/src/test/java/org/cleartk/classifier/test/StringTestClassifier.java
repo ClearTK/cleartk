@@ -37,8 +37,8 @@ import java.util.jar.JarFile;
  */
 public class StringTestClassifier extends TestClassifier_ImplBase<String> {
 
-	public StringTestClassifier(JarFile modelFile) throws IOException {
-		super(modelFile);
-	}
+  public StringTestClassifier(JarFile modelFile) throws IOException {
+    super(modelFile);
+  }
 
 }

@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.token.pos.genia.util;
 
 import java.util.ArrayList;
@@ -28,48 +28,47 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
-*/
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ */
 
 public class GeniaSentence {
 
-	Span span;
+  Span span;
 
-	List<GeniaTag> posTags;
+  List<GeniaTag> posTags;
 
-	List<GeniaTag> semTags;
+  List<GeniaTag> semTags;
 
-	
-	public GeniaSentence() {
-		posTags = new ArrayList<GeniaTag>();
-		semTags = new ArrayList<GeniaTag>();
-	}
+  public GeniaSentence() {
+    posTags = new ArrayList<GeniaTag>();
+    semTags = new ArrayList<GeniaTag>();
+  }
 
-	public List<GeniaTag> getPosTags() {
-		return Collections.unmodifiableList(posTags);
-	}
+  public List<GeniaTag> getPosTags() {
+    return Collections.unmodifiableList(posTags);
+  }
 
-	public void addPosTags(List<GeniaTag> pTags) {
-		
-		this.posTags.addAll(pTags);
-	}
+  public void addPosTags(List<GeniaTag> pTags) {
 
-	public List<GeniaTag> getSemTags() {
-		return semTags;
-	}
+    this.posTags.addAll(pTags);
+  }
 
-	public void addSemTags(List<GeniaTag> sTags) {
-		this.semTags.addAll(sTags);
-	}
+  public List<GeniaTag> getSemTags() {
+    return semTags;
+  }
 
-	public Span getSpan() {
-		return span;
-	}
+  public void addSemTags(List<GeniaTag> sTags) {
+    this.semTags.addAll(sTags);
+  }
 
-	public void setSpan(Span span) {
-		this.span = span;
-	}
+  public Span getSpan() {
+    return span;
+  }
+
+  public void setSpan(Span span) {
+    this.span = span;
+  }
 
 }

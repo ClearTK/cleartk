@@ -43,32 +43,35 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * <br>
  * Copyright (c) 2009, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
  * @author Philipp Wetzler
  * 
  */
 
-public class DefaultSVMlightDataWriterFactory extends JarDataWriterFactory<FeatureVector, Boolean, Boolean> {
+public class DefaultSVMlightDataWriterFactory extends
+        JarDataWriterFactory<FeatureVector, Boolean, Boolean> {
 
-	public static final String PARAM_CUTOFF = ConfigurationParameterFactory.createConfigurationParameterName(DefaultSVMlightDataWriterFactory.class, "cutoff");
-	@ConfigurationParameter(
-			defaultValue = "5",
-			description = "features that occur less than this number of times over the whole training set will not be encoded during testing")
-	protected int cutoff = 5;
+  public static final String PARAM_CUTOFF = ConfigurationParameterFactory
+          .createConfigurationParameterName(DefaultSVMlightDataWriterFactory.class, "cutoff");
 
-	public DataWriter<Boolean> createDataWriter() throws IOException {
-		SVMlightDataWriter dataWriter = new SVMlightDataWriter(outputDirectory);
+  @ConfigurationParameter(defaultValue = "5", description = "features that occur less than this number of times over the whole training set will not be encoded during testing")
+  protected int cutoff = 5;
 
-		if(!this.setEncodersFromFileSystem(dataWriter)) {
-			NameNumberNormalizer normalizer = new EuclidianNormalizer();
-			FeatureVectorFeaturesEncoder myFeaturesEncoder = new FeatureVectorFeaturesEncoder(cutoff, normalizer);
-			myFeaturesEncoder.addEncoder(new NumberEncoder());
-			myFeaturesEncoder.addEncoder(new BooleanEncoder());
-			myFeaturesEncoder.addEncoder(new StringEncoder());
-			dataWriter.setFeaturesEncoder(myFeaturesEncoder);
-			dataWriter.setOutcomeEncoder(new BooleanToBooleanOutcomeEncoder());
-		}
+  public DataWriter<Boolean> createDataWriter() throws IOException {
+    SVMlightDataWriter dataWriter = new SVMlightDataWriter(outputDirectory);
 
-		return dataWriter;
-	}
+    if (!this.setEncodersFromFileSystem(dataWriter)) {
+      NameNumberNormalizer normalizer = new EuclidianNormalizer();
+      FeatureVectorFeaturesEncoder myFeaturesEncoder = new FeatureVectorFeaturesEncoder(cutoff,
+              normalizer);
+      myFeaturesEncoder.addEncoder(new NumberEncoder());
+      myFeaturesEncoder.addEncoder(new BooleanEncoder());
+      myFeaturesEncoder.addEncoder(new StringEncoder());
+      dataWriter.setFeaturesEncoder(myFeaturesEncoder);
+      dataWriter.setOutcomeEncoder(new BooleanToBooleanOutcomeEncoder());
+    }
+
+    return dataWriter;
+  }
 
 }

@@ -47,289 +47,275 @@ import org.uimafit.util.JCasUtil;
 
 public class WindowNGramExtractorTest extends DefaultTestBase {
 
-	@Test
-	public void testLeftGrams() throws IOException, UIMAException, CleartkException {
-		WindowNGramExtractor extractor = new WindowNGramExtractor(
-				Token.class, new SpannedTextExtractor(),
-				WindowNGramFeature.ORIENTATION_LEFT,
-				WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT, " ", 0, 3);
+  @Test
+  public void testLeftGrams() throws IOException, UIMAException, CleartkException {
+    WindowNGramExtractor extractor = new WindowNGramExtractor(Token.class,
+            new SpannedTextExtractor(), WindowNGramFeature.ORIENTATION_LEFT,
+            WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT, " ", 0, 3);
 
-		// feature extraction on "island" in "...middle of the island..."
-		tokenBuilder.buildTokens(jCas,
-				"text obtained from gutenberg\n" +
-				"I WANTED to go and look at a place right about the middle of " +
-				"the island that I ' d found when I was exploring ;\n" +
-				"so we started and soon got to it");
-		Token token = JCasUtil.selectByIndex(jCas, Token.class, 19);
-		assertEquals("island", token.getCoveredText());
-		Feature feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals("WindowNGram_L0_3gram_L2R", feature.getName());
-		assertEquals("of the island", feature.getValue().toString());
+    // feature extraction on "island" in "...middle of the island..."
+    tokenBuilder.buildTokens(jCas, "text obtained from gutenberg\n"
+            + "I WANTED to go and look at a place right about the middle of "
+            + "the island that I ' d found when I was exploring ;\n"
+            + "so we started and soon got to it");
+    Token token = JCasUtil.selectByIndex(jCas, Token.class, 19);
+    assertEquals("island", token.getCoveredText());
+    Feature feature = extractor.extract(jCas, token, Sentence.class);
+    assertEquals("WindowNGram_L0_3gram_L2R", feature.getName());
+    assertEquals("of the island", feature.getValue().toString());
 
-		// "I" - the first word of the sentence
-		token = JCasUtil.selectByIndex(jCas, Token.class, 4);
-		feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals("OOB2 OOB1 I", feature.getValue().toString());
-		// "WANTED"
-		token = JCasUtil.selectByIndex(jCas, Token.class, 5);
-		feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals("OOB1 I WANTED", feature.getValue().toString());
-		// "to"
-		token = JCasUtil.selectByIndex(jCas, Token.class, 6);
-		feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals("I WANTED to", feature.getValue().toString());
-		// "go"
-		token = JCasUtil.selectByIndex(jCas, Token.class, 7);
-		feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals("WANTED to go", feature.getValue().toString());
-		// "exploring"
-		token = JCasUtil.selectByIndex(jCas, Token.class, 28);
-		feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals("I was exploring", feature.getValue().toString());
-		// ";"
-		token = JCasUtil.selectByIndex(jCas, Token.class, 29);
-		feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals("was exploring ;", feature.getValue().toString());
+    // "I" - the first word of the sentence
+    token = JCasUtil.selectByIndex(jCas, Token.class, 4);
+    feature = extractor.extract(jCas, token, Sentence.class);
+    assertEquals("OOB2 OOB1 I", feature.getValue().toString());
+    // "WANTED"
+    token = JCasUtil.selectByIndex(jCas, Token.class, 5);
+    feature = extractor.extract(jCas, token, Sentence.class);
+    assertEquals("OOB1 I WANTED", feature.getValue().toString());
+    // "to"
+    token = JCasUtil.selectByIndex(jCas, Token.class, 6);
+    feature = extractor.extract(jCas, token, Sentence.class);
+    assertEquals("I WANTED to", feature.getValue().toString());
+    // "go"
+    token = JCasUtil.selectByIndex(jCas, Token.class, 7);
+    feature = extractor.extract(jCas, token, Sentence.class);
+    assertEquals("WANTED to go", feature.getValue().toString());
+    // "exploring"
+    token = JCasUtil.selectByIndex(jCas, Token.class, 28);
+    feature = extractor.extract(jCas, token, Sentence.class);
+    assertEquals("I was exploring", feature.getValue().toString());
+    // ";"
+    token = JCasUtil.selectByIndex(jCas, Token.class, 29);
+    feature = extractor.extract(jCas, token, Sentence.class);
+    assertEquals("was exploring ;", feature.getValue().toString());
 
-		// behavior when there is no encapsulating sentence
-		jCas.reset();
-		jCas.setDocumentText("foo bar baz");
-		token = new Token(jCas, 4, 7);
-		token.addToIndexes();
-		feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals("OOB3 OOB2 OOB1", feature.getValue().toString());
+    // behavior when there is no encapsulating sentence
+    jCas.reset();
+    jCas.setDocumentText("foo bar baz");
+    token = new Token(jCas, 4, 7);
+    token.addToIndexes();
+    feature = extractor.extract(jCas, token, Sentence.class);
+    assertEquals("OOB3 OOB2 OOB1", feature.getValue().toString());
 
-		extractor = new WindowNGramExtractor(Token.class,
-				new SpannedTextExtractor(),
-				WindowNGramFeature.ORIENTATION_LEFT,
-				WindowNGramFeature.DIRECTION_RIGHT_TO_LEFT, " ", 0, 3);
+    extractor = new WindowNGramExtractor(Token.class, new SpannedTextExtractor(),
+            WindowNGramFeature.ORIENTATION_LEFT, WindowNGramFeature.DIRECTION_RIGHT_TO_LEFT, " ",
+            0, 3);
 
-		jCas.reset();
-		tokenBuilder.buildTokens(jCas,
-				"text obtained from gutenberg\n" +
-				"I WANTED to go and look at a place right about the middle of " +
-				"the island that I ' d found when I was exploring ;\n" +
-				"so we started and soon got to it");
-		token = JCasUtil.selectByIndex(jCas, Token.class, 19);
-		assertEquals("island", token.getCoveredText());
-		feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals("WindowNGram_L0_3gram_R2L", feature.getName());
-		assertEquals("island the of", feature.getValue().toString());
+    jCas.reset();
+    tokenBuilder.buildTokens(jCas, "text obtained from gutenberg\n"
+            + "I WANTED to go and look at a place right about the middle of "
+            + "the island that I ' d found when I was exploring ;\n"
+            + "so we started and soon got to it");
+    token = JCasUtil.selectByIndex(jCas, Token.class, 19);
+    assertEquals("island", token.getCoveredText());
+    feature = extractor.extract(jCas, token, Sentence.class);
+    assertEquals("WindowNGram_L0_3gram_R2L", feature.getName());
+    assertEquals("island the of", feature.getValue().toString());
 
-		token = JCasUtil.selectByIndex(jCas, Token.class, 4);
-		feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals("I OOB1 OOB2", feature.getValue().toString());
+    token = JCasUtil.selectByIndex(jCas, Token.class, 4);
+    feature = extractor.extract(jCas, token, Sentence.class);
+    assertEquals("I OOB1 OOB2", feature.getValue().toString());
 
-		token = JCasUtil.selectByIndex(jCas, Token.class, 5);
-		feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals("WANTED I OOB1", feature.getValue().toString());
+    token = JCasUtil.selectByIndex(jCas, Token.class, 5);
+    feature = extractor.extract(jCas, token, Sentence.class);
+    assertEquals("WANTED I OOB1", feature.getValue().toString());
 
-		token = JCasUtil.selectByIndex(jCas, Token.class, 6);
-		feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals("to WANTED I", feature.getValue().toString());
+    token = JCasUtil.selectByIndex(jCas, Token.class, 6);
+    feature = extractor.extract(jCas, token, Sentence.class);
+    assertEquals("to WANTED I", feature.getValue().toString());
 
-		token = JCasUtil.selectByIndex(jCas, Token.class, 7);
-		feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals("go to WANTED", feature.getValue().toString());
+    token = JCasUtil.selectByIndex(jCas, Token.class, 7);
+    feature = extractor.extract(jCas, token, Sentence.class);
+    assertEquals("go to WANTED", feature.getValue().toString());
 
-		// behavior when there is no encapsulating sentence
-		jCas.reset();
-		jCas.setDocumentText("foo bar baz");
-		token = new Token(jCas, 4, 7);
-		token.addToIndexes();
-		feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals(feature.getValue().toString(), "OOB1 OOB2 OOB3");
+    // behavior when there is no encapsulating sentence
+    jCas.reset();
+    jCas.setDocumentText("foo bar baz");
+    token = new Token(jCas, 4, 7);
+    token.addToIndexes();
+    feature = extractor.extract(jCas, token, Sentence.class);
+    assertEquals(feature.getValue().toString(), "OOB1 OOB2 OOB3");
 
-		extractor = new WindowNGramExtractor(Token.class,
-				new SpannedTextExtractor(),
-				WindowNGramFeature.ORIENTATION_LEFT,
-				WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT, " ", 2, 4);
+    extractor = new WindowNGramExtractor(Token.class, new SpannedTextExtractor(),
+            WindowNGramFeature.ORIENTATION_LEFT, WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT, " ",
+            2, 4);
 
-		jCas.reset();
-		tokenBuilder.buildTokens(jCas,
-				"text obtained from gutenberg\n" +
-				"I WANTED to go and look at a place right about the middle of " +
-				"the island that I ' d found when I was exploring ;\n" +
-				"so we started and soon got to it");
-		token = JCasUtil.selectByIndex(jCas, Token.class, 19);
-		assertEquals("island", token.getCoveredText());
-		feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals("WindowNGram_L2_2gram_L2R", feature.getName());
-		assertEquals("middle of", feature.getValue().toString());
+    jCas.reset();
+    tokenBuilder.buildTokens(jCas, "text obtained from gutenberg\n"
+            + "I WANTED to go and look at a place right about the middle of "
+            + "the island that I ' d found when I was exploring ;\n"
+            + "so we started and soon got to it");
+    token = JCasUtil.selectByIndex(jCas, Token.class, 19);
+    assertEquals("island", token.getCoveredText());
+    feature = extractor.extract(jCas, token, Sentence.class);
+    assertEquals("WindowNGram_L2_2gram_L2R", feature.getName());
+    assertEquals("middle of", feature.getValue().toString());
 
-		token = JCasUtil.selectByIndex(jCas, Token.class, 4);
-		assertEquals("I", token.getCoveredText());
-		feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals("OOB3 OOB2", feature.getValue().toString());
+    token = JCasUtil.selectByIndex(jCas, Token.class, 4);
+    assertEquals("I", token.getCoveredText());
+    feature = extractor.extract(jCas, token, Sentence.class);
+    assertEquals("OOB3 OOB2", feature.getValue().toString());
 
-		token = JCasUtil.selectByIndex(jCas, Token.class, 5);
-		feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals("OOB2 OOB1", feature.getValue().toString());
+    token = JCasUtil.selectByIndex(jCas, Token.class, 5);
+    feature = extractor.extract(jCas, token, Sentence.class);
+    assertEquals("OOB2 OOB1", feature.getValue().toString());
 
-		token = JCasUtil.selectByIndex(jCas, Token.class, 6);
-		feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals("OOB1 I", feature.getValue().toString());
+    token = JCasUtil.selectByIndex(jCas, Token.class, 6);
+    feature = extractor.extract(jCas, token, Sentence.class);
+    assertEquals("OOB1 I", feature.getValue().toString());
 
-		token = JCasUtil.selectByIndex(jCas, Token.class, 7);
-		feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals("I WANTED", feature.getValue().toString());
+    token = JCasUtil.selectByIndex(jCas, Token.class, 7);
+    feature = extractor.extract(jCas, token, Sentence.class);
+    assertEquals("I WANTED", feature.getValue().toString());
 
-		token = JCasUtil.selectByIndex(jCas, Token.class, 8);
-		feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals("WANTED to", feature.getValue().toString());
+    token = JCasUtil.selectByIndex(jCas, Token.class, 8);
+    feature = extractor.extract(jCas, token, Sentence.class);
+    assertEquals("WANTED to", feature.getValue().toString());
 
-		// behavior when there is no encapsulating sentence
-		jCas.reset();
-		jCas.setDocumentText("foo bar baz");
-		token = new Token(jCas, 4, 7);
-		token.addToIndexes();
-		feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals("OOB4 OOB3", feature.getValue().toString());
-	}
+    // behavior when there is no encapsulating sentence
+    jCas.reset();
+    jCas.setDocumentText("foo bar baz");
+    token = new Token(jCas, 4, 7);
+    token.addToIndexes();
+    feature = extractor.extract(jCas, token, Sentence.class);
+    assertEquals("OOB4 OOB3", feature.getValue().toString());
+  }
 
-	@Test
-	public void testRightGrams() throws IOException, UIMAException, CleartkException {
-		WindowNGramExtractor extractor = new WindowNGramExtractor(
-				Token.class, new SpannedTextExtractor(),
-				WindowNGramFeature.ORIENTATION_RIGHT,
-				WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT, " ", 0, 3);
+  @Test
+  public void testRightGrams() throws IOException, UIMAException, CleartkException {
+    WindowNGramExtractor extractor = new WindowNGramExtractor(Token.class,
+            new SpannedTextExtractor(), WindowNGramFeature.ORIENTATION_RIGHT,
+            WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT, " ", 0, 3);
 
-		// feature extraction on "island" in "...because the island was only..."
-		tokenBuilder.buildTokens(jCas,
-				"text obtained from gutenberg\n" +
-				"I WANTED to go and look at a place right about the middle of " +
-				"the island that I ' d found when I was exploring ;\n" +
-				"so we started and soon got to it");
-		Token token = JCasUtil.selectByIndex(jCas, Token.class, 19);
-		assertEquals("island", token.getCoveredText());
-		Feature feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals("WindowNGram_R0_3gram_L2R", feature.getName());
-		assertEquals("island that I", feature.getValue().toString());
+    // feature extraction on "island" in "...because the island was only..."
+    tokenBuilder.buildTokens(jCas, "text obtained from gutenberg\n"
+            + "I WANTED to go and look at a place right about the middle of "
+            + "the island that I ' d found when I was exploring ;\n"
+            + "so we started and soon got to it");
+    Token token = JCasUtil.selectByIndex(jCas, Token.class, 19);
+    assertEquals("island", token.getCoveredText());
+    Feature feature = extractor.extract(jCas, token, Sentence.class);
+    assertEquals("WindowNGram_R0_3gram_L2R", feature.getName());
+    assertEquals("island that I", feature.getValue().toString());
 
-		// "I" - the first word of the sentence
-		token = JCasUtil.selectByIndex(jCas, Token.class, 4);
-		feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals("I WANTED to", feature.getValue().toString());
-		// "WANTED"
-		token = JCasUtil.selectByIndex(jCas, Token.class, 5);
-		feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals("WANTED to go", feature.getValue().toString());
+    // "I" - the first word of the sentence
+    token = JCasUtil.selectByIndex(jCas, Token.class, 4);
+    feature = extractor.extract(jCas, token, Sentence.class);
+    assertEquals("I WANTED to", feature.getValue().toString());
+    // "WANTED"
+    token = JCasUtil.selectByIndex(jCas, Token.class, 5);
+    feature = extractor.extract(jCas, token, Sentence.class);
+    assertEquals("WANTED to go", feature.getValue().toString());
 
-		token = JCasUtil.selectByIndex(jCas, Token.class, 29);
-		feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals("; OOB1 OOB2", feature.getValue().toString());
+    token = JCasUtil.selectByIndex(jCas, Token.class, 29);
+    feature = extractor.extract(jCas, token, Sentence.class);
+    assertEquals("; OOB1 OOB2", feature.getValue().toString());
 
-		token = JCasUtil.selectByIndex(jCas, Token.class, 28);
-		feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals("exploring ; OOB1", feature.getValue().toString());
+    token = JCasUtil.selectByIndex(jCas, Token.class, 28);
+    feature = extractor.extract(jCas, token, Sentence.class);
+    assertEquals("exploring ; OOB1", feature.getValue().toString());
 
-		token = JCasUtil.selectByIndex(jCas, Token.class, 27);
-		feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals("was exploring ;", feature.getValue().toString());
+    token = JCasUtil.selectByIndex(jCas, Token.class, 27);
+    feature = extractor.extract(jCas, token, Sentence.class);
+    assertEquals("was exploring ;", feature.getValue().toString());
 
-		token = JCasUtil.selectByIndex(jCas, Token.class, 26);
-		feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals("I was exploring", feature.getValue().toString());
+    token = JCasUtil.selectByIndex(jCas, Token.class, 26);
+    feature = extractor.extract(jCas, token, Sentence.class);
+    assertEquals("I was exploring", feature.getValue().toString());
 
-		// behavior when there is no encapsulating sentence
-		jCas.reset();
-		jCas.setDocumentText("foo bar baz");
-		token = new Token(jCas, 4, 7);
-		token.addToIndexes();
-		feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals("OOB1 OOB2 OOB3", feature.getValue().toString());
+    // behavior when there is no encapsulating sentence
+    jCas.reset();
+    jCas.setDocumentText("foo bar baz");
+    token = new Token(jCas, 4, 7);
+    token.addToIndexes();
+    feature = extractor.extract(jCas, token, Sentence.class);
+    assertEquals("OOB1 OOB2 OOB3", feature.getValue().toString());
 
-		extractor = new WindowNGramExtractor(Token.class,
-				new SpannedTextExtractor(),
-				WindowNGramFeature.ORIENTATION_RIGHT,
-				WindowNGramFeature.DIRECTION_RIGHT_TO_LEFT, " ", 2, 8);
+    extractor = new WindowNGramExtractor(Token.class, new SpannedTextExtractor(),
+            WindowNGramFeature.ORIENTATION_RIGHT, WindowNGramFeature.DIRECTION_RIGHT_TO_LEFT, " ",
+            2, 8);
 
-		// feature extraction on "island" in "...because the island was only..."
-		jCas.reset();
-		tokenBuilder.buildTokens(jCas,
-				"text obtained from gutenberg\n" +
-				"I WANTED to go and look at a place right about the middle of " +
-				"the island that I ' d found when I was exploring ;\n" +
-				"so we started and soon got to it");
-		token = JCasUtil.selectByIndex(jCas, Token.class, 19);
-		assertEquals("island", token.getCoveredText());
-		feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals("WindowNGram_R2_6gram_R2L", feature.getName());
-		assertEquals("I when found d ' I", feature.getValue().toString());
+    // feature extraction on "island" in "...because the island was only..."
+    jCas.reset();
+    tokenBuilder.buildTokens(jCas, "text obtained from gutenberg\n"
+            + "I WANTED to go and look at a place right about the middle of "
+            + "the island that I ' d found when I was exploring ;\n"
+            + "so we started and soon got to it");
+    token = JCasUtil.selectByIndex(jCas, Token.class, 19);
+    assertEquals("island", token.getCoveredText());
+    feature = extractor.extract(jCas, token, Sentence.class);
+    assertEquals("WindowNGram_R2_6gram_R2L", feature.getName());
+    assertEquals("I when found d ' I", feature.getValue().toString());
 
-		// "I" - the first word of the sentence
-		token = JCasUtil.selectByIndex(jCas, Token.class, 4);
-		feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals("a at look and go to", feature.getValue().toString());
-		// "WANTED"
-		token = JCasUtil.selectByIndex(jCas, Token.class, 5);
-		feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals("place a at look and go", feature.getValue().toString());
+    // "I" - the first word of the sentence
+    token = JCasUtil.selectByIndex(jCas, Token.class, 4);
+    feature = extractor.extract(jCas, token, Sentence.class);
+    assertEquals("a at look and go to", feature.getValue().toString());
+    // "WANTED"
+    token = JCasUtil.selectByIndex(jCas, Token.class, 5);
+    feature = extractor.extract(jCas, token, Sentence.class);
+    assertEquals("place a at look and go", feature.getValue().toString());
 
-		token = JCasUtil.selectByIndex(jCas, Token.class, 29);
-		feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals("OOB7 OOB6 OOB5 OOB4 OOB3 OOB2", feature.getValue()
-				.toString());
+    token = JCasUtil.selectByIndex(jCas, Token.class, 29);
+    feature = extractor.extract(jCas, token, Sentence.class);
+    assertEquals("OOB7 OOB6 OOB5 OOB4 OOB3 OOB2", feature.getValue().toString());
 
-		token = JCasUtil.selectByIndex(jCas, Token.class, 28);
-		feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals("OOB6 OOB5 OOB4 OOB3 OOB2 OOB1", feature.getValue()
-				.toString());
+    token = JCasUtil.selectByIndex(jCas, Token.class, 28);
+    feature = extractor.extract(jCas, token, Sentence.class);
+    assertEquals("OOB6 OOB5 OOB4 OOB3 OOB2 OOB1", feature.getValue().toString());
 
-		token = JCasUtil.selectByIndex(jCas, Token.class, 27);
-		feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals("OOB5 OOB4 OOB3 OOB2 OOB1 ;", feature.getValue()
-				.toString());
+    token = JCasUtil.selectByIndex(jCas, Token.class, 27);
+    feature = extractor.extract(jCas, token, Sentence.class);
+    assertEquals("OOB5 OOB4 OOB3 OOB2 OOB1 ;", feature.getValue().toString());
 
-		token = JCasUtil.selectByIndex(jCas, Token.class, 26);
-		feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals("OOB4 OOB3 OOB2 OOB1 ; exploring", feature.getValue()
-				.toString());
+    token = JCasUtil.selectByIndex(jCas, Token.class, 26);
+    feature = extractor.extract(jCas, token, Sentence.class);
+    assertEquals("OOB4 OOB3 OOB2 OOB1 ; exploring", feature.getValue().toString());
 
-		// behavior when there is no encapsulating sentence
-		jCas.reset();
-		jCas.setDocumentText("foo bar baz");
-		token = new Token(jCas, 4, 7);
-		token.addToIndexes();
-		feature = extractor.extract(jCas, token, Sentence.class);
-		assertEquals(feature.getValue().toString(),
-				"OOB8 OOB7 OOB6 OOB5 OOB4 OOB3");
+    // behavior when there is no encapsulating sentence
+    jCas.reset();
+    jCas.setDocumentText("foo bar baz");
+    token = new Token(jCas, 4, 7);
+    token.addToIndexes();
+    feature = extractor.extract(jCas, token, Sentence.class);
+    assertEquals(feature.getValue().toString(), "OOB8 OOB7 OOB6 OOB5 OOB4 OOB3");
 
-	}
-	
-	@Test
-	public void testIssue158() throws UIMAException, CleartkException {
-		tokenBuilder.buildTokens(jCas, "1 2 3 4 5 6 7 8 9 10");
-		
-		Token token5 = JCasUtil.selectByIndex(jCas, Token.class, 4);
-		assertEquals("5", token5.getCoveredText());
-		Token token6 = JCasUtil.selectByIndex(jCas, Token.class, 5);
-		assertEquals("6", token6.getCoveredText());
+  }
 
-		
-		Header header = new Header(jCas, 8, 11);
-		header.addToIndexes();
-		assertEquals("5 6", header.getCoveredText());
-		
-		SpannedTextExtractor wordExtractor = new SpannedTextExtractor();
-		
-		WindowNGramExtractor ngramExtractor = new WindowNGramExtractor(Token.class, wordExtractor,
-				WindowNGramFeature.ORIENTATION_LEFT, WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT, "_", 0, 2);
+  @Test
+  public void testIssue158() throws UIMAException, CleartkException {
+    tokenBuilder.buildTokens(jCas, "1 2 3 4 5 6 7 8 9 10");
 
-		//issue 158 comes down to this - the next two assertions should have the same expected value.  
-		Feature feature = ngramExtractor.extract(jCas, header, Sentence.class);
-		assertEquals("3_4", feature.getValue().toString());
-		feature = ngramExtractor.extract(jCas, token5, Sentence.class);
-		assertEquals("4_5", feature.getValue().toString());
+    Token token5 = JCasUtil.selectByIndex(jCas, Token.class, 4);
+    assertEquals("5", token5.getCoveredText());
+    Token token6 = JCasUtil.selectByIndex(jCas, Token.class, 5);
+    assertEquals("6", token6.getCoveredText());
 
-		ngramExtractor = new WindowNGramExtractor(Token.class, wordExtractor,
-				WindowNGramFeature.ORIENTATION_RIGHT, WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT, "_", 0, 2);
-		
-		//again the next two assertions should have the same expected value.
-		feature = ngramExtractor.extract(jCas, header, Sentence.class);
-		assertEquals("7_8", feature.getValue().toString());
-		feature = ngramExtractor.extract(jCas, token6, Sentence.class);
-		assertEquals("6_7", feature.getValue().toString());
+    Header header = new Header(jCas, 8, 11);
+    header.addToIndexes();
+    assertEquals("5 6", header.getCoveredText());
 
-	}
+    SpannedTextExtractor wordExtractor = new SpannedTextExtractor();
+
+    WindowNGramExtractor ngramExtractor = new WindowNGramExtractor(Token.class, wordExtractor,
+            WindowNGramFeature.ORIENTATION_LEFT, WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT, "_",
+            0, 2);
+
+    // issue 158 comes down to this - the next two assertions should have the same expected value.
+    Feature feature = ngramExtractor.extract(jCas, header, Sentence.class);
+    assertEquals("3_4", feature.getValue().toString());
+    feature = ngramExtractor.extract(jCas, token5, Sentence.class);
+    assertEquals("4_5", feature.getValue().toString());
+
+    ngramExtractor = new WindowNGramExtractor(Token.class, wordExtractor,
+            WindowNGramFeature.ORIENTATION_RIGHT, WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT, "_",
+            0, 2);
+
+    // again the next two assertions should have the same expected value.
+    feature = ngramExtractor.extract(jCas, header, Sentence.class);
+    assertEquals("7_8", feature.getValue().toString());
+    feature = ngramExtractor.extract(jCas, token6, Sentence.class);
+    assertEquals("6_7", feature.getValue().toString());
+
+  }
 }

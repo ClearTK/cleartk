@@ -35,22 +35,22 @@ import org.cleartk.classifier.jar.ClassifierBuilder;
  * 
  * 
  * This training data consumer produces training data suitable for <a
- * href="http://mallet.cs.umass.edu/index.php/SimpleTagger_example"> Mallet
- * Conditional Random Field (CRF) tagger</a>.
+ * href="http://mallet.cs.umass.edu/index.php/SimpleTagger_example"> Mallet Conditional Random Field
+ * (CRF) tagger</a>.
  * 
- * Each line of the training data contains a string representation of each
- * feature followed by the label/result for that instance.
+ * Each line of the training data contains a string representation of each feature followed by the
+ * label/result for that instance.
  * 
  * @author Philip Ogren
  */
 public class MalletDataWriter extends MalletDataWriter_ImplBase<String> {
 
-	public MalletDataWriter(File outputDirectory) throws IOException {
-		super(outputDirectory);
-	}
+  public MalletDataWriter(File outputDirectory) throws IOException {
+    super(outputDirectory);
+  }
 
-	public Class<? extends ClassifierBuilder<String>> getDefaultClassifierBuilderClass() {
-		return MalletClassifierBuilder.class;
-	}
+  public Class<? extends ClassifierBuilder<String>> getDefaultClassifierBuilderClass() {
+    return MalletClassifierBuilder.class;
+  }
 
 }

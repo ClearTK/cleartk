@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2009, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,24 +20,25 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.encoder.features.normalizer;
 
 import java.util.List;
 
 import org.cleartk.classifier.encoder.features.NameNumber;
 
-
 /**
- * <br>Copyright (c) 2009, Regents of the University of Colorado 
- * <br>All rights reserved.
- *
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * @author Philip Wetzler
  */
 public class NOPNormalizer implements NameNumberNormalizer {
 
-	private static final long serialVersionUID = -6531870662406988919L;
+  private static final long serialVersionUID = -6531870662406988919L;
 
-	public void normalize(List<NameNumber> fves) {}
+  public void normalize(List<NameNumber> fves) {
+  }
 
 }

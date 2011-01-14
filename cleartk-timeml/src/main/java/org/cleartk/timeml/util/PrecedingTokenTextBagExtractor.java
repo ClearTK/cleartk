@@ -44,62 +44,59 @@ import org.cleartk.util.UIMAUtil;
  * Copyright (c) 2010, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
- * Extract the text of Tokens preceding the focus annotation, filtering Tokens
- * by part of speech tags.
+ * Extract the text of Tokens preceding the focus annotation, filtering Tokens by part of speech
+ * tags.
  * 
  * @author Steven Bethard
  */
 public class PrecedingTokenTextBagExtractor implements SimpleFeatureExtractor {
 
-	private int nTokens;
-	private Set<String> acceptablePOSTags;
+  private int nTokens;
 
-	/**
-	 * Create an extractor for preceding Token texts.
-	 * 
-	 * @param nTokens
-	 *            Number of Tokens before the focus annotation to consider.
-	 * @param acceptablePOSTags
-	 *            2-character part of speech tags (e.g. NN, VB) that are
-	 *            acceptable parts of speech for Tokens. Tokens with other parts
-	 *            of speech will be omitted from the output (though they still
-	 *            count against the nTokens limit).
-	 */
-	public PrecedingTokenTextBagExtractor(int nTokens, String... acceptablePOSTags) {
-		this.nTokens = nTokens;
-		this.acceptablePOSTags = new HashSet<String>(Arrays.asList(acceptablePOSTags));
-	}
+  private Set<String> acceptablePOSTags;
 
-	public String getFeatureName(String pos, int index) {
-		return "PrecedingToken";
-	}
+  /**
+   * Create an extractor for preceding Token texts.
+   * 
+   * @param nTokens
+   *          Number of Tokens before the focus annotation to consider.
+   * @param acceptablePOSTags
+   *          2-character part of speech tags (e.g. NN, VB) that are acceptable parts of speech for
+   *          Tokens. Tokens with other parts of speech will be omitted from the output (though they
+   *          still count against the nTokens limit).
+   */
+  public PrecedingTokenTextBagExtractor(int nTokens, String... acceptablePOSTags) {
+    this.nTokens = nTokens;
+    this.acceptablePOSTags = new HashSet<String>(Arrays.asList(acceptablePOSTags));
+  }
 
-	public List<Feature> extract(JCas jCas, Annotation focusAnnotation) throws CleartkException {
-		List<Feature> features = new ArrayList<Feature>();
-		Token firstTokenBefore = AnnotationRetrieval.getAdjacentAnnotation(
-			jCas,
-			focusAnnotation,
-			Token.class,
-			true);
-		if (firstTokenBefore != null) {
-			FSIterator<Annotation> iterator = jCas.getAnnotationIndex(
-				UIMAUtil.getCasType(jCas, Token.class)).iterator();
-			iterator.moveTo(firstTokenBefore);
-			for (int i = 0; i < this.nTokens && iterator.isValid(); ++i) {
-				Token token = (Token) iterator.get();
-				String pos = token.getPos();
-				if (pos != null) {
-					if (pos.length() > 2) {
-						pos = pos.substring(0, 2);
-					}
-					if (this.acceptablePOSTags.contains(pos)) {
-						String name = this.getFeatureName(pos, i);
-						features.add(new Feature(name, token.getCoveredText()));
-					}
-				}
-				iterator.moveToPrevious();
-			}
-		}
-		return features;
-	}
+  public String getFeatureName(String pos, int index) {
+    return "PrecedingToken";
+  }
+
+  public List<Feature> extract(JCas jCas, Annotation focusAnnotation) throws CleartkException {
+    List<Feature> features = new ArrayList<Feature>();
+    Token firstTokenBefore = AnnotationRetrieval.getAdjacentAnnotation(jCas, focusAnnotation,
+            Token.class, true);
+    if (firstTokenBefore != null) {
+      FSIterator<Annotation> iterator = jCas.getAnnotationIndex(
+              UIMAUtil.getCasType(jCas, Token.class)).iterator();
+      iterator.moveTo(firstTokenBefore);
+      for (int i = 0; i < this.nTokens && iterator.isValid(); ++i) {
+        Token token = (Token) iterator.get();
+        String pos = token.getPos();
+        if (pos != null) {
+          if (pos.length() > 2) {
+            pos = pos.substring(0, 2);
+          }
+          if (this.acceptablePOSTags.contains(pos)) {
+            String name = this.getFeatureName(pos, i);
+            features.add(new Feature(name, token.getCoveredText()));
+          }
+        }
+        iterator.moveToPrevious();
+      }
+    }
+    return features;
+  }
 }

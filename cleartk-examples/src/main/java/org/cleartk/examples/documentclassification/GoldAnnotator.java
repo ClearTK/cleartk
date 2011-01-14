@@ -35,32 +35,32 @@ import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.SofaCapability;
 
 /**
- * <br>Copyright (c) 2009, Regents of the University of Colorado 
- * <br>All rights reserved.
- *
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * @author Philipp G. Wetzler
- *
+ * 
  */
-@SofaCapability(inputSofas= {ViewURIUtil.URI, GoldAnnotator.GOLD_VIEW_NAME})
+@SofaCapability(inputSofas = { ViewURIUtil.URI, GoldAnnotator.GOLD_VIEW_NAME })
 public class GoldAnnotator extends JCasAnnotator_ImplBase {
 
-	public static final String GOLD_VIEW_NAME = "ExampleDocumentClassificationGoldView";
-	
-	@Override
-	public void process(JCas jCas) throws AnalysisEngineProcessException {
-		try {
-			JCas uriView = jCas.getView(ViewURIUtil.URI);
-			JCas goldView = jCas.createView(GOLD_VIEW_NAME);
-			URI uri = new URI(uriView.getSofaDataURI());
-			File file = new File(uri.getPath());
-			
-			goldView.setSofaDataString(file.getParentFile().getName(), "text/plain");
-		} catch (CASException e) {
-			throw new AnalysisEngineProcessException(e);
-		}
-		catch (URISyntaxException e) {
-			throw new AnalysisEngineProcessException(e);
-		}
-	}
+  public static final String GOLD_VIEW_NAME = "ExampleDocumentClassificationGoldView";
+
+  @Override
+  public void process(JCas jCas) throws AnalysisEngineProcessException {
+    try {
+      JCas uriView = jCas.getView(ViewURIUtil.URI);
+      JCas goldView = jCas.createView(GOLD_VIEW_NAME);
+      URI uri = new URI(uriView.getSofaDataURI());
+      File file = new File(uri.getPath());
+
+      goldView.setSofaDataString(file.getParentFile().getName(), "text/plain");
+    } catch (CASException e) {
+      throw new AnalysisEngineProcessException(e);
+    } catch (URISyntaxException e) {
+      throw new AnalysisEngineProcessException(e);
+    }
+  }
 
 }

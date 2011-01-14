@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,55 +20,51 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.encoder;
 
 import java.text.StringCharacterIterator;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
-*/
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ */
 
 public class FeatureEncoderUtil {
 
-	public static String escape(String source) {
-		return escape(source, new char[0]);
-	}
+  public static String escape(String source) {
+    return escape(source, new char[0]);
+  }
 
-	public static String escape(String source, char[] escapeCharacters) {
-			StringBuffer escapedBuffer = new StringBuffer();
-			StringCharacterIterator it = new StringCharacterIterator(source);
-			
-			for( char c = it.first(); c != StringCharacterIterator.DONE; c = it.next() ) {
-				/*
-				 * 92 is \
-				 * 37 is %
-				 * 33 is A
-				 * 126 is ~
-				 */
-				boolean escaped = false;
-				if( c < 33 || c > 126 || c == 92 || c == 37) {
-					escapedBuffer.append(String.format("%%U%04X", (int) c));
-					escaped = true;
-				}
-				if(!escaped) {
-					for(char esc : escapeCharacters) {
-						if(c == esc) {
-							escapedBuffer.append(String.format("%%U%04X", (int) c));
-							escaped = true;
-							break;
-						}
-					}
-				}
-				if(!escaped)
-					escapedBuffer.append(c);
-			}
+  public static String escape(String source, char[] escapeCharacters) {
+    StringBuffer escapedBuffer = new StringBuffer();
+    StringCharacterIterator it = new StringCharacterIterator(source);
 
-			return escapedBuffer.toString();
+    for (char c = it.first(); c != StringCharacterIterator.DONE; c = it.next()) {
+      /*
+       * 92 is \ 37 is % 33 is A 126 is ~
+       */
+      boolean escaped = false;
+      if (c < 33 || c > 126 || c == 92 || c == 37) {
+        escapedBuffer.append(String.format("%%U%04X", (int) c));
+        escaped = true;
+      }
+      if (!escaped) {
+        for (char esc : escapeCharacters) {
+          if (c == esc) {
+            escapedBuffer.append(String.format("%%U%04X", (int) c));
+            escaped = true;
+            break;
+          }
+        }
+      }
+      if (!escaped)
+        escapedBuffer.append(c);
+    }
 
-	}
-	
-	
+    return escapedBuffer.toString();
+
+  }
+
 }

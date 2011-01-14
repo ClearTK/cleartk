@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.srl.propbank.util;
 
 import java.util.ArrayList;
@@ -36,12 +36,12 @@ import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.util.AnnotationUtil;
 import org.cleartk.util.UIMAUtil;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * 
  * <p>
  * A <em>Proplabel object</em> represents one label of an entry in Propbank.
  * </p>
@@ -49,213 +49,208 @@ import org.cleartk.util.UIMAUtil;
  * @author Philipp Wetzler, Steven Bethard
  */
 public class Proplabel {
-	/**
-	 * Parses one label taken form a Propbank entry and returns its
-	 * representation as a <em>Proplabel</em> object.
-	 * 
-	 * @param lblTxt
-	 *            one label part of one line from <tt>prop.txt</tt>
-	 * 
-	 * @return a <em>Proplabel</em> object representing <b>lblTxt</b>
-	 */
-	static Proplabel fromString(String lblTxt) {
-		// split the string by hyphens and catch some simple errors
-		String[] columns = lblTxt.split("-");
-		if (columns.length < 1) {
-			throw new PropbankFormatException(String.format(
-					"Missing label: %s", lblTxt));
-		}
-		if (!Proplabel.labels.contains(columns[1])) {
-			throw new PropbankFormatException(String.format(
-					"Invalid label: %s", columns[1]));
-		}
-		
-	
-		// set the relation and label
-		Proplabel proplabel = new Proplabel();
-		proplabel.setPropTxt(lblTxt);
-		proplabel.setRelation(PropbankRelation.fromString(columns[0]));
-		proplabel.setLabel(columns[1]);
-		
-		// second column may be feature, hyphen tag or preposition
-		// third column may only be hyphen tag following feature
-		int expectedLength = 2;
-		if (columns.length > 2) {
-			if (Proplabel.features.contains(columns[2])) {
-				proplabel.setFeature(columns[2]);
-				if (columns.length > 3) {
-					if (Proplabel.hyphenTags.contains(columns[3])) {
-						proplabel.setHyphenTag(columns[3]);
-					}
-					expectedLength = 4;
-				} else {
-					expectedLength = 3;
-				}
-			} else if (Proplabel.hyphenTags.contains(columns[2])) {
-				proplabel.setHyphenTag(columns[2]);
-				expectedLength = 3;
-			} else {
-				proplabel.setPreposition(columns[2]);
-				expectedLength = 3;
-			}
-		}
-		
-		// throw some exceptions for bad input
-		if (columns.length != expectedLength) {
-			throw new PropbankFormatException(String.format(
-					"Expected %d items, found %d", expectedLength, columns.length));
-		}
-		if (Proplabel.labelsRequiringFeatures.contains(columns[1])) {
-			if (proplabel.getFeature() == null) {
-				throw new PropbankFormatException(String.format(
-						"Label %s requires a feature", proplabel.getLabel()));
-			}
-		}
-		return proplabel;
-	}
+  /**
+   * Parses one label taken form a Propbank entry and returns its representation as a
+   * <em>Proplabel</em> object.
+   * 
+   * @param lblTxt
+   *          one label part of one line from <tt>prop.txt</tt>
+   * 
+   * @return a <em>Proplabel</em> object representing <b>lblTxt</b>
+   */
+  static Proplabel fromString(String lblTxt) {
+    // split the string by hyphens and catch some simple errors
+    String[] columns = lblTxt.split("-");
+    if (columns.length < 1) {
+      throw new PropbankFormatException(String.format("Missing label: %s", lblTxt));
+    }
+    if (!Proplabel.labels.contains(columns[1])) {
+      throw new PropbankFormatException(String.format("Invalid label: %s", columns[1]));
+    }
 
-	protected PropbankRelation relation;
+    // set the relation and label
+    Proplabel proplabel = new Proplabel();
+    proplabel.setPropTxt(lblTxt);
+    proplabel.setRelation(PropbankRelation.fromString(columns[0]));
+    proplabel.setLabel(columns[1]);
 
-	protected String label;
+    // second column may be feature, hyphen tag or preposition
+    // third column may only be hyphen tag following feature
+    int expectedLength = 2;
+    if (columns.length > 2) {
+      if (Proplabel.features.contains(columns[2])) {
+        proplabel.setFeature(columns[2]);
+        if (columns.length > 3) {
+          if (Proplabel.hyphenTags.contains(columns[3])) {
+            proplabel.setHyphenTag(columns[3]);
+          }
+          expectedLength = 4;
+        } else {
+          expectedLength = 3;
+        }
+      } else if (Proplabel.hyphenTags.contains(columns[2])) {
+        proplabel.setHyphenTag(columns[2]);
+        expectedLength = 3;
+      } else {
+        proplabel.setPreposition(columns[2]);
+        expectedLength = 3;
+      }
+    }
 
-	protected String feature;
-	
-	protected String preposition;
-	
-	protected String hyphenTag;
-	
-	protected String propTxt;
+    // throw some exceptions for bad input
+    if (columns.length != expectedLength) {
+      throw new PropbankFormatException(String.format("Expected %d items, found %d",
+              expectedLength, columns.length));
+    }
+    if (Proplabel.labelsRequiringFeatures.contains(columns[1])) {
+      if (proplabel.getFeature() == null) {
+        throw new PropbankFormatException(String.format("Label %s requires a feature",
+                proplabel.getLabel()));
+      }
+    }
+    return proplabel;
+  }
 
-	protected Proplabel() {
-		relation = null;
-		label = null;
-		feature = null;
-		preposition = null;
-	}
+  protected PropbankRelation relation;
 
-	public String getFeature() {
-		return feature;
-	}
+  protected String label;
 
-	public void setFeature(String feature) {
-		this.feature = feature;
-	}
+  protected String feature;
 
-	public String getLabel() {
-		return label;
-	}
+  protected String preposition;
 
-	public void setLabel(String label) {
-		this.label = label;
-	}
-	
-	public String getPreposition() {
-		return preposition;
-	}
-	
-	public void setPreposition(String preposition) {
-		this.preposition = preposition;
-	}
+  protected String hyphenTag;
 
-	public String getHyphenTag() {
-		return hyphenTag;
-	}
+  protected String propTxt;
 
-	public void setHyphenTag(String hyphenTag) {
-		this.hyphenTag = hyphenTag;
-	}
+  protected Proplabel() {
+    relation = null;
+    label = null;
+    feature = null;
+    preposition = null;
+  }
 
-	public PropbankRelation getRelation() {
-		return relation;
-	}
+  public String getFeature() {
+    return feature;
+  }
 
-	public void setRelation(PropbankRelation relation) {
-		this.relation = relation;
-	}
+  public void setFeature(String feature) {
+    this.feature = feature;
+  }
 
-	
-	public String getPropTxt() {
-		return propTxt;
-	}
+  public String getLabel() {
+    return label;
+  }
 
-	public void setPropTxt(String propTxt) {
-		this.propTxt = propTxt;
-	}
+  public void setLabel(String label) {
+    this.label = label;
+  }
 
-	/**
-	 * Convert to ClearTK <em>SemanticArgument</em> annotation and add it to
-	 * <b>view</b>.
-	 * 
-	 * @param view
-	 * @param topNode
-	 *            the top node annotation of the corresponding Treebank parse
-	 * @return the generated <em>SemanticArgument</em> annotation
-	 */
-	public SemanticArgument convert(JCas view, TopTreebankNode topNode) {
-		SemanticArgument argument = new SemanticArgument(view);
-		argument.setPropTxt(this.propTxt);
-		argument.setLabel(this.label);
-		argument.setFeature(this.feature);
-		argument.setPreposition(this.preposition);
-		argument.setHyphenTag(this.hyphenTag);
-		if (this.relation instanceof PropbankCorefRelation) {
-			List<Annotation> annotations = new ArrayList<Annotation>();
-			List<Annotation> substantiveAnnotations = new ArrayList<Annotation>();
+  public String getPreposition() {
+    return preposition;
+  }
 
-			for (PropbankRelation rel : ((PropbankCorefRelation) this.relation)
-					.getCorefRelations()) {
-				Annotation a = rel.convert(view, topNode);
-				annotations.add(a);
-				if (a.getBegin() != a.getEnd())
-					substantiveAnnotations.add(a);
-			}
-			argument.setCoreferenceAnnotations(UIMAUtil.toFSArray(view,
-					annotations));
+  public void setPreposition(String preposition) {
+    this.preposition = preposition;
+  }
 
-			int[] extent = AnnotationUtil
-					.getAnnotationsExtent(substantiveAnnotations);
-			argument.setBegin(extent[0]);
-			argument.setEnd(extent[1]);
+  public String getHyphenTag() {
+    return hyphenTag;
+  }
 
-			if (substantiveAnnotations.size() == 1) {
-				argument.setAnnotation(substantiveAnnotations.get(0));
-			}
-		} else {
-			argument.setAnnotation(this.relation.convert(view, topNode));
-			argument.setBegin(argument.getAnnotation().getBegin());
-			argument.setEnd(argument.getAnnotation().getEnd());
-		}
-		argument.addToIndexes();
+  public void setHyphenTag(String hyphenTag) {
+    this.hyphenTag = hyphenTag;
+  }
 
-		return argument;
-	}
+  public PropbankRelation getRelation() {
+    return relation;
+  }
 
-	/**
-	 * Re-generate the Propbank text that this object was parsed from.
-	 */
-	@Override
-	public String toString() {
-		StringBuffer buffer = new StringBuffer();
+  public void setRelation(PropbankRelation relation) {
+    this.relation = relation;
+  }
 
-		buffer.append(getRelation().toString());
-		buffer.append("-" + getLabel());
-		if (getFeature() != null)
-			buffer.append("-" + getFeature());
-		if (getHyphenTag() != null)
-			buffer.append("-" + getHyphenTag());
-		if (getPreposition() != null)
-			buffer.append("-" + getPreposition());
+  public String getPropTxt() {
+    return propTxt;
+  }
 
-		return buffer.toString();
-	}
-	
-	private static final Set<String> labels = new HashSet<String>(Arrays.asList(
-			"rel|Support|ARG0|ARG1|ARG2|ARG3|ARG4|ARG5|ARGA|ARGM".split("\\|")));
-	private static final Set<String> labelsRequiringFeatures = new HashSet<String>(Arrays.asList(
-			new String[]{"ARGM"}));
-	private static final Set<String> features = new HashSet<String>(Arrays.asList(
-			"ADV|CAU|DIR|DIS|EXT|LOC|MNR|MOD|NEG|PNC|PRD|REC|TMP".split("\\|")));
-	private static final Set<String> hyphenTags = new HashSet<String>(Arrays.asList(
-			"H0|H1|H2|H3|H4|H5|H6|H7|H8|H9|XX".split("\\|")));
+  public void setPropTxt(String propTxt) {
+    this.propTxt = propTxt;
+  }
+
+  /**
+   * Convert to ClearTK <em>SemanticArgument</em> annotation and add it to <b>view</b>.
+   * 
+   * @param view
+   * @param topNode
+   *          the top node annotation of the corresponding Treebank parse
+   * @return the generated <em>SemanticArgument</em> annotation
+   */
+  public SemanticArgument convert(JCas view, TopTreebankNode topNode) {
+    SemanticArgument argument = new SemanticArgument(view);
+    argument.setPropTxt(this.propTxt);
+    argument.setLabel(this.label);
+    argument.setFeature(this.feature);
+    argument.setPreposition(this.preposition);
+    argument.setHyphenTag(this.hyphenTag);
+    if (this.relation instanceof PropbankCorefRelation) {
+      List<Annotation> annotations = new ArrayList<Annotation>();
+      List<Annotation> substantiveAnnotations = new ArrayList<Annotation>();
+
+      for (PropbankRelation rel : ((PropbankCorefRelation) this.relation).getCorefRelations()) {
+        Annotation a = rel.convert(view, topNode);
+        annotations.add(a);
+        if (a.getBegin() != a.getEnd())
+          substantiveAnnotations.add(a);
+      }
+      argument.setCoreferenceAnnotations(UIMAUtil.toFSArray(view, annotations));
+
+      int[] extent = AnnotationUtil.getAnnotationsExtent(substantiveAnnotations);
+      argument.setBegin(extent[0]);
+      argument.setEnd(extent[1]);
+
+      if (substantiveAnnotations.size() == 1) {
+        argument.setAnnotation(substantiveAnnotations.get(0));
+      }
+    } else {
+      argument.setAnnotation(this.relation.convert(view, topNode));
+      argument.setBegin(argument.getAnnotation().getBegin());
+      argument.setEnd(argument.getAnnotation().getEnd());
+    }
+    argument.addToIndexes();
+
+    return argument;
+  }
+
+  /**
+   * Re-generate the Propbank text that this object was parsed from.
+   */
+  @Override
+  public String toString() {
+    StringBuffer buffer = new StringBuffer();
+
+    buffer.append(getRelation().toString());
+    buffer.append("-" + getLabel());
+    if (getFeature() != null)
+      buffer.append("-" + getFeature());
+    if (getHyphenTag() != null)
+      buffer.append("-" + getHyphenTag());
+    if (getPreposition() != null)
+      buffer.append("-" + getPreposition());
+
+    return buffer.toString();
+  }
+
+  private static final Set<String> labels = new HashSet<String>(
+          Arrays.asList("rel|Support|ARG0|ARG1|ARG2|ARG3|ARG4|ARG5|ARGA|ARGM".split("\\|")));
+
+  private static final Set<String> labelsRequiringFeatures = new HashSet<String>(
+          Arrays.asList(new String[] { "ARGM" }));
+
+  private static final Set<String> features = new HashSet<String>(
+          Arrays.asList("ADV|CAU|DIR|DIS|EXT|LOC|MNR|MOD|NEG|PNC|PRD|REC|TMP".split("\\|")));
+
+  private static final Set<String> hyphenTags = new HashSet<String>(
+          Arrays.asList("H0|H1|H2|H3|H4|H5|H6|H7|H8|H9|XX".split("\\|")));
 
 }

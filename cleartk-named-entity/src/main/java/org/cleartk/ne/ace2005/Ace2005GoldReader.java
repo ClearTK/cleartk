@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.ne.ace2005;
 
 import java.io.BufferedReader;
@@ -52,216 +52,198 @@ import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.SofaCapability;
 import org.uimafit.factory.ConfigurationParameterFactory;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * 
  * @author Philip Ogren
- *
+ * 
  */
 
-@SofaCapability(outputSofas= {Ace2005Constants.ACE_2005_APF_URI_VIEW, ViewURIUtil.URI})
-public class Ace2005GoldReader extends JCasCollectionReader_ImplBase
-{
-	public static final String PARAM_ACE_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(Ace2005GoldReader.class, "aceDirectoryName");
+@SofaCapability(outputSofas = { Ace2005Constants.ACE_2005_APF_URI_VIEW, ViewURIUtil.URI })
+public class Ace2005GoldReader extends JCasCollectionReader_ImplBase {
+  public static final String PARAM_ACE_DIRECTORY_NAME = ConfigurationParameterFactory
+          .createConfigurationParameterName(Ace2005GoldReader.class, "aceDirectoryName");
 
-	@ConfigurationParameter(
-			mandatory = true,
-			description = "Takes the name of directory that contains ACE data.  Typically, a folder such as \".../ACE_2005/optimization/English/all\".  The folder should contain files that come in pairs - i.e. for each .sgm file there should be a corresponding .apf.xml file.")
-	private String aceDirectoryName;
+  @ConfigurationParameter(mandatory = true, description = "Takes the name of directory that contains ACE data.  Typically, a folder such as \".../ACE_2005/optimization/English/all\".  The folder should contain files that come in pairs - i.e. for each .sgm file there should be a corresponding .apf.xml file.")
+  private String aceDirectoryName;
 
-	private static final String PARAM_ACE_FILE_NAMES_DESCRIPTION = "takes a file that contains the names of the files to read.   \n" +
-			"The file should contain a list of the files in AceCorpusDir (one file name per line) \n" +
-			"that you want read in. File names should not include the last suffix(es) (e.g. \".sgm\" or \"apf.xml\") \n" +
-			"If parameter value is not given, then all files will be read in. An example file might look like this: \n\n" +
-			"AFP_ENG_20030304.0250\n" +
-			"AFP_ENG_20030305.0918\n" +
-			"...\n";
+  private static final String PARAM_ACE_FILE_NAMES_DESCRIPTION = "takes a file that contains the names of the files to read.   \n"
+          + "The file should contain a list of the files in AceCorpusDir (one file name per line) \n"
+          + "that you want read in. File names should not include the last suffix(es) (e.g. \".sgm\" or \"apf.xml\") \n"
+          + "If parameter value is not given, then all files will be read in. An example file might look like this: \n\n"
+          + "AFP_ENG_20030304.0250\n" + "AFP_ENG_20030305.0918\n" + "...\n";
 
-	public static final String PARAM_ACE_FILE_NAMES_FILE = ConfigurationParameterFactory.createConfigurationParameterName(Ace2005GoldReader.class, "aceFileNamesFile");
-	
-	@ConfigurationParameter(
-			description = PARAM_ACE_FILE_NAMES_DESCRIPTION) 
-	private String aceFileNamesFile;
-	
-	File[] aceFiles;
-	int aceFileIndex;
-	int aceFileCount;
-	File currentSGMFile = null;
-	
-	public static final String TAG_REGEX = "<.*?>";
-	Pattern tagPattern;
-	
-	public void initialize(UimaContext context) throws ResourceInitializationException	{
-		
-		if (!new File(aceDirectoryName).exists()) {
-			throw new ResourceInitializationException(new IOException(String.format(
-					"directory %s does not exist", aceDirectoryName)));
-		}
-		File aceDirectory = new File(aceDirectoryName);
+  public static final String PARAM_ACE_FILE_NAMES_FILE = ConfigurationParameterFactory
+          .createConfigurationParameterName(Ace2005GoldReader.class, "aceFileNamesFile");
 
-		if(aceFileNamesFile != null && !aceFileNamesFile.trim().equals("")) {
-			try {
-				List<File> files = new ArrayList<File>();
-				BufferedReader reader = new BufferedReader(new FileReader(aceFileNamesFile));
-				String line;
-				while((line = reader.readLine()) != null) {
-					line = line.trim();
-					if(line.endsWith(".sgm"))
-						files.add(new File(aceDirectory, line));
-					else
-						files.add(new File(aceDirectory, line+".sgm"));
-				}
-				aceFiles = files.toArray(new File[files.size()]);
-			}catch(IOException ioe) {
-				throw new ResourceInitializationException(ioe);
-			}
-			for(File file : aceFiles) {
-				if(!file.exists())
-					throw new ResourceInitializationException(ResourceInitializationException.COULD_NOT_ACCESS_DATA, new Object[] {file});
-			}
-		}
-		else {
-			aceFiles = aceDirectory.listFiles();
-		}
-		aceFileIndex = 0;
-		aceFileCount = 0;
-		
-		tagPattern = Pattern.compile(TAG_REGEX, Pattern.MULTILINE | Pattern.DOTALL);
-	}
-	
-	private File getNextSGMFile() {
-		if(currentSGMFile != null)
-			return currentSGMFile;
-		while(aceFileIndex < aceFiles.length) {
-			File sgmFile = aceFiles[aceFileIndex++];
-			if(sgmFile.getName().endsWith(".sgm")) {
-				currentSGMFile = sgmFile;
-				return sgmFile;
-			}
-		}
-		return null;
-	}
-	
-	private File getAPFFile(File sgmFile)
-	{
-		String apfFileName = sgmFile.getPath();
-		apfFileName = sgmFile.getPath().substring(0, apfFileName.length()-3)+"apf.xml";
-		if(new File(apfFileName).exists())
-			return new File(apfFileName);
-		
-		apfFileName = sgmFile.getPath();
-		apfFileName = sgmFile.getPath().substring(0, apfFileName.length()-3)+"entities.apf.xml";
-		if(new File(apfFileName).exists())
-			return new File(apfFileName);
-		
-		apfFileName = sgmFile.getPath();
-		apfFileName = sgmFile.getPath().substring(0, apfFileName.length()-3)+"mentions.apf.xml";
-		if(new File(apfFileName).exists())
-			return new File(apfFileName);
-		
-		return null;
-	}
-	
-	private String getDocumentText(String sgmText) throws IOException
-	{
-		StringBuffer rawDocumentText = new StringBuffer(sgmText);
-		Matcher tagMatcher = tagPattern.matcher(rawDocumentText);
-		String documentText = tagMatcher.replaceAll("");
-		return documentText;
-	}
-	
-	// make note about moving local dtd file into directory
-	public void getNext(JCas jCas) throws IOException, CollectionException
-	{
-		try
-		{
-			//we need the next sgm file which will typically be 'currentSGMFile' - but we
-			//will call getNextSGMFile() to be safe
-			File sgmFile = getNextSGMFile();
-			//setting currentSGMFile to null tells getNextSGMFile to get the next sgm file
-			//rather than simply returning the current value.
-			currentSGMFile = null;
-			
-			String sgmText = FileUtils.file2String(sgmFile);
-			
-			JCas initialView = jCas.getView(CAS.NAME_DEFAULT_SOFA);
-			initialView.setDocumentText(getDocumentText(sgmText));
+  @ConfigurationParameter(description = PARAM_ACE_FILE_NAMES_DESCRIPTION)
+  private String aceFileNamesFile;
 
-//			org.cleartk.type.Document sgmDocument = new org.cleartk.type.Document(initialView);
-//		    sgmDocument.setIdentifier(sgmFile.getName());
-//		    sgmDocument.setPath(sgmFile.getName());
-//		    sgmDocument.addToIndexes();
+  File[] aceFiles;
 
-			File apfFile = getAPFFile(sgmFile);
-			
-			SAXBuilder builder = new SAXBuilder();
-			builder.setDTDHandler(null);
-			Document doc = builder.build(apfFile);
-			
-			Element apfSource = doc.getRootElement();
-			String uri = apfSource.getAttributeValue("URI");
-			String source = apfSource.getAttributeValue("SOURCE");
-			String type = apfSource.getAttributeValue("TYPE");
-			
-			ViewURIUtil.setURI(jCas, sgmFile.getName());
-			Ace2005Document document = new Ace2005Document(initialView);
-			document.setAceUri(uri);
-			document.setAceSource(source);
-			document.setAceType(type);
-			document.addToIndexes();
-		    
-			JCas apfUriView = jCas.createView(Ace2005Constants.ACE_2005_APF_URI_VIEW);
-			apfUriView.setSofaDataURI(apfFile.toURI().toString(), null);
+  int aceFileIndex;
 
-		}
-		catch(CASException ce)
-		{
-			throw new CollectionException(ce);
-		}
-		catch(JDOMException je)
-		{
-			throw new CollectionException(je);
-		}
-	}
+  int aceFileCount;
 
-	public void close() throws IOException
-	{
-		// TODO Auto-generated method stub
+  File currentSGMFile = null;
 
-	}
+  public static final String TAG_REGEX = "<.*?>";
 
-	/**
-	 * Progress is measured by the number of files in the target directory - not by the number
-	 * of times getNext has been (and will be) called.  This means that the total number of 
-	 * entities to completion is typically going to be 2 or 4 times as many 'documents' that 
-	 * are found depending on what kinds of files exist in the target directory 
-	 * (e.g. *.ag.xml, *.apf.xml, *.sgm, *.tab)
-	 */
-	public Progress[] getProgress()
-	{
-	    return new Progress[] { new ProgressImpl(aceFileIndex, aceFiles.length, Progress.ENTITIES) };
-	}
+  Pattern tagPattern;
 
-	public boolean hasNext() throws IOException, CollectionException
-	{
-		return getNextSGMFile() != null;
-	}
+  public void initialize(UimaContext context) throws ResourceInitializationException {
 
-	public void setAceDirectoryName(String aceDirectoryName) {
-		this.aceDirectoryName = aceDirectoryName;
-	}
+    if (!new File(aceDirectoryName).exists()) {
+      throw new ResourceInitializationException(new IOException(String.format(
+              "directory %s does not exist", aceDirectoryName)));
+    }
+    File aceDirectory = new File(aceDirectoryName);
 
-	public void setAceFileNamesFile(String aceFileNamesFile) {
-		this.aceFileNamesFile = aceFileNamesFile;
-	}
+    if (aceFileNamesFile != null && !aceFileNamesFile.trim().equals("")) {
+      try {
+        List<File> files = new ArrayList<File>();
+        BufferedReader reader = new BufferedReader(new FileReader(aceFileNamesFile));
+        String line;
+        while ((line = reader.readLine()) != null) {
+          line = line.trim();
+          if (line.endsWith(".sgm"))
+            files.add(new File(aceDirectory, line));
+          else
+            files.add(new File(aceDirectory, line + ".sgm"));
+        }
+        aceFiles = files.toArray(new File[files.size()]);
+      } catch (IOException ioe) {
+        throw new ResourceInitializationException(ioe);
+      }
+      for (File file : aceFiles) {
+        if (!file.exists())
+          throw new ResourceInitializationException(
+                  ResourceInitializationException.COULD_NOT_ACCESS_DATA, new Object[] { file });
+      }
+    } else {
+      aceFiles = aceDirectory.listFiles();
+    }
+    aceFileIndex = 0;
+    aceFileCount = 0;
 
+    tagPattern = Pattern.compile(TAG_REGEX, Pattern.MULTILINE | Pattern.DOTALL);
+  }
+
+  private File getNextSGMFile() {
+    if (currentSGMFile != null)
+      return currentSGMFile;
+    while (aceFileIndex < aceFiles.length) {
+      File sgmFile = aceFiles[aceFileIndex++];
+      if (sgmFile.getName().endsWith(".sgm")) {
+        currentSGMFile = sgmFile;
+        return sgmFile;
+      }
+    }
+    return null;
+  }
+
+  private File getAPFFile(File sgmFile) {
+    String apfFileName = sgmFile.getPath();
+    apfFileName = sgmFile.getPath().substring(0, apfFileName.length() - 3) + "apf.xml";
+    if (new File(apfFileName).exists())
+      return new File(apfFileName);
+
+    apfFileName = sgmFile.getPath();
+    apfFileName = sgmFile.getPath().substring(0, apfFileName.length() - 3) + "entities.apf.xml";
+    if (new File(apfFileName).exists())
+      return new File(apfFileName);
+
+    apfFileName = sgmFile.getPath();
+    apfFileName = sgmFile.getPath().substring(0, apfFileName.length() - 3) + "mentions.apf.xml";
+    if (new File(apfFileName).exists())
+      return new File(apfFileName);
+
+    return null;
+  }
+
+  private String getDocumentText(String sgmText) throws IOException {
+    StringBuffer rawDocumentText = new StringBuffer(sgmText);
+    Matcher tagMatcher = tagPattern.matcher(rawDocumentText);
+    String documentText = tagMatcher.replaceAll("");
+    return documentText;
+  }
+
+  // make note about moving local dtd file into directory
+  public void getNext(JCas jCas) throws IOException, CollectionException {
+    try {
+      // we need the next sgm file which will typically be 'currentSGMFile' - but we
+      // will call getNextSGMFile() to be safe
+      File sgmFile = getNextSGMFile();
+      // setting currentSGMFile to null tells getNextSGMFile to get the next sgm file
+      // rather than simply returning the current value.
+      currentSGMFile = null;
+
+      String sgmText = FileUtils.file2String(sgmFile);
+
+      JCas initialView = jCas.getView(CAS.NAME_DEFAULT_SOFA);
+      initialView.setDocumentText(getDocumentText(sgmText));
+
+      // org.cleartk.type.Document sgmDocument = new org.cleartk.type.Document(initialView);
+      // sgmDocument.setIdentifier(sgmFile.getName());
+      // sgmDocument.setPath(sgmFile.getName());
+      // sgmDocument.addToIndexes();
+
+      File apfFile = getAPFFile(sgmFile);
+
+      SAXBuilder builder = new SAXBuilder();
+      builder.setDTDHandler(null);
+      Document doc = builder.build(apfFile);
+
+      Element apfSource = doc.getRootElement();
+      String uri = apfSource.getAttributeValue("URI");
+      String source = apfSource.getAttributeValue("SOURCE");
+      String type = apfSource.getAttributeValue("TYPE");
+
+      ViewURIUtil.setURI(jCas, sgmFile.getName());
+      Ace2005Document document = new Ace2005Document(initialView);
+      document.setAceUri(uri);
+      document.setAceSource(source);
+      document.setAceType(type);
+      document.addToIndexes();
+
+      JCas apfUriView = jCas.createView(Ace2005Constants.ACE_2005_APF_URI_VIEW);
+      apfUriView.setSofaDataURI(apfFile.toURI().toString(), null);
+
+    } catch (CASException ce) {
+      throw new CollectionException(ce);
+    } catch (JDOMException je) {
+      throw new CollectionException(je);
+    }
+  }
+
+  public void close() throws IOException {
+    // TODO Auto-generated method stub
+
+  }
+
+  /**
+   * Progress is measured by the number of files in the target directory - not by the number of
+   * times getNext has been (and will be) called. This means that the total number of entities to
+   * completion is typically going to be 2 or 4 times as many 'documents' that are found depending
+   * on what kinds of files exist in the target directory (e.g. *.ag.xml, *.apf.xml, *.sgm, *.tab)
+   */
+  public Progress[] getProgress() {
+    return new Progress[] { new ProgressImpl(aceFileIndex, aceFiles.length, Progress.ENTITIES) };
+  }
+
+  public boolean hasNext() throws IOException, CollectionException {
+    return getNextSGMFile() != null;
+  }
+
+  public void setAceDirectoryName(String aceDirectoryName) {
+    this.aceDirectoryName = aceDirectoryName;
+  }
+
+  public void setAceFileNamesFile(String aceFileNamesFile) {
+    this.aceFileNamesFile = aceFileNamesFile;
+  }
 
 }
-
-
-
-
-

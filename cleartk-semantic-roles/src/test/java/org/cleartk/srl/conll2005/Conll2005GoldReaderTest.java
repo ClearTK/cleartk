@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.srl.conll2005;
 
 import java.io.IOException;
@@ -34,27 +34,29 @@ import org.junit.Test;
 import org.uimafit.factory.CollectionReaderFactory;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
  */
 public class Conll2005GoldReaderTest extends SrlTestBase {
-	
-	//pointer to random data file.  not an actual conll2005 file.
-	private final String oneSentencePath = "src/test/resources/data/propbank-1.0/README";
-	
-	@Test
-	public void testDescriptor() throws UIMAException, IOException {
-		try {
-			CollectionReaderFactory.createCollectionReader(Conll2005GoldReader.class, typeSystemDescription);
-			Assert.fail("expected error for missing CoNLL 2005 data file");
-		} catch (ResourceInitializationException e) {}
-		
-		CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-				Conll2005GoldReader.class, typeSystemDescription,
-				Conll2005GoldReader.PARAM_CONLL2005_DATA_FILE, this.oneSentencePath);
-		Object dataFileName = reader.getConfigParameterValue(
-				Conll2005GoldReader.PARAM_CONLL2005_DATA_FILE);
-		Assert.assertEquals(this.oneSentencePath, dataFileName);
-	}
+
+  // pointer to random data file. not an actual conll2005 file.
+  private final String oneSentencePath = "src/test/resources/data/propbank-1.0/README";
+
+  @Test
+  public void testDescriptor() throws UIMAException, IOException {
+    try {
+      CollectionReaderFactory.createCollectionReader(Conll2005GoldReader.class,
+              typeSystemDescription);
+      Assert.fail("expected error for missing CoNLL 2005 data file");
+    } catch (ResourceInitializationException e) {
+    }
+
+    CollectionReader reader = CollectionReaderFactory.createCollectionReader(
+            Conll2005GoldReader.class, typeSystemDescription,
+            Conll2005GoldReader.PARAM_CONLL2005_DATA_FILE, this.oneSentencePath);
+    Object dataFileName = reader
+            .getConfigParameterValue(Conll2005GoldReader.PARAM_CONLL2005_DATA_FILE);
+    Assert.assertEquals(this.oneSentencePath, dataFileName);
+  }
 }

@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.libsvm;
 
 import java.io.File;
@@ -35,20 +35,20 @@ import org.cleartk.classifier.jar.ClassifierBuilder;
  * <p>
  */
 
-public class MultiClassLIBSVMDataWriter extends LIBSVMDataWriter<String,Integer> {
+public class MultiClassLIBSVMDataWriter extends LIBSVMDataWriter<String, Integer> {
 
-	public MultiClassLIBSVMDataWriter(File outputDirectory) throws IOException {
-		super(outputDirectory);
-	}
+  public MultiClassLIBSVMDataWriter(File outputDirectory) throws IOException {
+    super(outputDirectory);
+  }
 
-	@Override
-	public Class<? extends ClassifierBuilder<String>> getDefaultClassifierBuilderClass() {
-		return MultiClassLIBSVMClassifierBuilder.class;
-	}
+  @Override
+  public Class<? extends ClassifierBuilder<String>> getDefaultClassifierBuilderClass() {
+    return MultiClassLIBSVMClassifierBuilder.class;
+  }
 
-	@Override
-	protected String encode(Integer outcome) {
-		return outcome.toString();
-	}
+  @Override
+  protected String encode(Integer outcome) {
+    return outcome.toString();
+  }
 
 }

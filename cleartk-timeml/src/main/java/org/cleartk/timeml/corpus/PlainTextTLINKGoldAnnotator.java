@@ -62,120 +62,113 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  */
 public class PlainTextTLINKGoldAnnotator extends JCasAnnotator_ImplBase {
 
-	public static final String PARAM_TLINK_FILE_URL = ConfigurationParameterFactory.createConfigurationParameterName(
-		PlainTextTLINKGoldAnnotator.class,
-		"tlinkFileUrl");
-	@ConfigurationParameter(
-		mandatory = true,
-		description = "the URL to a plain-text TLINK file, e.g."
-				+ "http://people.cs.kuleuven.be/~steven.bethard/data/timebank-verb-clause.txt")
-	private String tlinkFileUrl;
+  public static final String PARAM_TLINK_FILE_URL = ConfigurationParameterFactory
+          .createConfigurationParameterName(PlainTextTLINKGoldAnnotator.class, "tlinkFileUrl");
 
-	public void setTlinkFileUrl(String tlinkFileUrl) {
-		this.tlinkFileUrl = tlinkFileUrl;
-	}
+  @ConfigurationParameter(mandatory = true, description = "the URL to a plain-text TLINK file, e.g."
+          + "http://people.cs.kuleuven.be/~steven.bethard/data/timebank-verb-clause.txt")
+  private String tlinkFileUrl;
 
-	public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveDescription(
-			PlainTextTLINKGoldAnnotator.class,
-			TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
-			PARAM_TLINK_FILE_URL,
-			ParamUtil.getParameterValue(
-				PARAM_TLINK_FILE_URL,
-				"http://people.cs.kuleuven.be/~steven.bethard/data/timebank-verb-clause.txt"));
-	}
+  public void setTlinkFileUrl(String tlinkFileUrl) {
+    this.tlinkFileUrl = tlinkFileUrl;
+  }
 
-	private Map<String, List<TLINK>> fileTLINKs;
+  public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
+    return AnalysisEngineFactory.createPrimitiveDescription(PlainTextTLINKGoldAnnotator.class,
+            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION, PARAM_TLINK_FILE_URL,
+            ParamUtil.getParameterValue(PARAM_TLINK_FILE_URL,
+                    "http://people.cs.kuleuven.be/~steven.bethard/data/timebank-verb-clause.txt"));
+  }
 
-	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		super.initialize(context);
+  private Map<String, List<TLINK>> fileTLINKs;
 
-		this.fileTLINKs = new HashMap<String, List<TLINK>>();
-		try {
-			BufferedReader tlinkFileReader = new BufferedReader(new InputStreamReader(new URL(
-				this.tlinkFileUrl).openStream()));
-			String line;
-			while ((line = tlinkFileReader.readLine()) != null)
-				if (!line.startsWith("#")) {
-					String[] columns = line.split("\\s+");
-					TLINK tlink = new TLINK(columns[1], columns[2], columns[3]);
-					if (!this.fileTLINKs.containsKey(columns[0])) {
-						this.fileTLINKs.put(columns[0], new ArrayList<TLINK>());
-					}
-					this.fileTLINKs.get(columns[0]).add(tlink);
-				}
-			tlinkFileReader.close();
-		} catch (IOException e) {
-			throw new ResourceInitializationException(e);
-		}
-	}
+  @Override
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    super.initialize(context);
 
-	@Override
-	public void process(JCas jCas) throws AnalysisEngineProcessException {
-		String filePath = ViewURIUtil.getURI(jCas);
-		String fileBase = new File(filePath).getName().replaceAll("\\..*", "");
-		if (this.fileTLINKs.containsKey(fileBase)) {
-			Map<String, Anchor> anchors = new HashMap<String, Anchor>();
-			for (Anchor anchor : AnnotationRetrieval.getAnnotations(jCas, Anchor.class)) {
-				anchors.put(anchor.getId(), anchor);
-				if (anchor instanceof Event) {
-					Event event = (Event) anchor;
-					anchors.put(event.getEventInstanceID(), event);
-				}
-			}
-			for (TLINK tlink : this.fileTLINKs.get(fileBase)) {
-				int offset = jCas.getDocumentText().length();
-				TemporalLink temporalLink = new TemporalLink(jCas, offset, offset);
-				Anchor source = this.getAnchor(anchors, tlink.sourceID);
-				Anchor target = this.getAnchor(anchors, tlink.targetID);
-				temporalLink.setSource(source);
-				temporalLink.setTarget(target);
-				if (source instanceof Event) {
-					temporalLink.setEventID(source.getId());
-					temporalLink.setEventInstanceID(((Event) source).getEventInstanceID());
-				} else if (source instanceof Time) {
-					temporalLink.setTimeID(source.getId());
-				}
-				if (target instanceof Event) {
-					temporalLink.setRelatedToEvent(target.getId());
-					temporalLink.setRelatedToEventInstance(((Event) target).getEventInstanceID());
-				} else if (target instanceof Time) {
-					temporalLink.setRelatedToTime(target.getId());
-				}
-				temporalLink.setRelationType(tlink.relationType);
-				temporalLink.addToIndexes();
-			}
-		}
-	}
+    this.fileTLINKs = new HashMap<String, List<TLINK>>();
+    try {
+      BufferedReader tlinkFileReader = new BufferedReader(new InputStreamReader(new URL(
+              this.tlinkFileUrl).openStream()));
+      String line;
+      while ((line = tlinkFileReader.readLine()) != null)
+        if (!line.startsWith("#")) {
+          String[] columns = line.split("\\s+");
+          TLINK tlink = new TLINK(columns[1], columns[2], columns[3]);
+          if (!this.fileTLINKs.containsKey(columns[0])) {
+            this.fileTLINKs.put(columns[0], new ArrayList<TLINK>());
+          }
+          this.fileTLINKs.get(columns[0]).add(tlink);
+        }
+      tlinkFileReader.close();
+    } catch (IOException e) {
+      throw new ResourceInitializationException(e);
+    }
+  }
 
-	private Anchor getAnchor(Map<String, Anchor> anchors, String id) {
-		Anchor anchor = anchors.get(id);
-		if (anchor == null) {
-			throw new RuntimeException(String.format("no anchor for id %s", id));
-		}
-		return anchor;
-	}
+  @Override
+  public void process(JCas jCas) throws AnalysisEngineProcessException {
+    String filePath = ViewURIUtil.getURI(jCas);
+    String fileBase = new File(filePath).getName().replaceAll("\\..*", "");
+    if (this.fileTLINKs.containsKey(fileBase)) {
+      Map<String, Anchor> anchors = new HashMap<String, Anchor>();
+      for (Anchor anchor : AnnotationRetrieval.getAnnotations(jCas, Anchor.class)) {
+        anchors.put(anchor.getId(), anchor);
+        if (anchor instanceof Event) {
+          Event event = (Event) anchor;
+          anchors.put(event.getEventInstanceID(), event);
+        }
+      }
+      for (TLINK tlink : this.fileTLINKs.get(fileBase)) {
+        int offset = jCas.getDocumentText().length();
+        TemporalLink temporalLink = new TemporalLink(jCas, offset, offset);
+        Anchor source = this.getAnchor(anchors, tlink.sourceID);
+        Anchor target = this.getAnchor(anchors, tlink.targetID);
+        temporalLink.setSource(source);
+        temporalLink.setTarget(target);
+        if (source instanceof Event) {
+          temporalLink.setEventID(source.getId());
+          temporalLink.setEventInstanceID(((Event) source).getEventInstanceID());
+        } else if (source instanceof Time) {
+          temporalLink.setTimeID(source.getId());
+        }
+        if (target instanceof Event) {
+          temporalLink.setRelatedToEvent(target.getId());
+          temporalLink.setRelatedToEventInstance(((Event) target).getEventInstanceID());
+        } else if (target instanceof Time) {
+          temporalLink.setRelatedToTime(target.getId());
+        }
+        temporalLink.setRelationType(tlink.relationType);
+        temporalLink.addToIndexes();
+      }
+    }
+  }
 
-	private static class TLINK {
-		public String sourceID;
-		public String targetID;
-		public String relationType;
+  private Anchor getAnchor(Map<String, Anchor> anchors, String id) {
+    Anchor anchor = anchors.get(id);
+    if (anchor == null) {
+      throw new RuntimeException(String.format("no anchor for id %s", id));
+    }
+    return anchor;
+  }
 
-		public TLINK(String sourceID, String targetID, String relationType) {
-			this.sourceID = sourceID;
-			this.targetID = targetID;
-			this.relationType = relationType;
-		}
+  private static class TLINK {
+    public String sourceID;
 
-		@Override
-		public String toString() {
-			return String.format(
-				"TLINK(%s, %s, %s)",
-				this.sourceID,
-				this.targetID,
-				this.relationType);
-		}
-	}
+    public String targetID;
+
+    public String relationType;
+
+    public TLINK(String sourceID, String targetID, String relationType) {
+      this.sourceID = sourceID;
+      this.targetID = targetID;
+      this.relationType = relationType;
+    }
+
+    @Override
+    public String toString() {
+      return String.format("TLINK(%s, %s, %s)", this.sourceID, this.targetID, this.relationType);
+    }
+  }
 
 }

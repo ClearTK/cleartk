@@ -46,59 +46,55 @@ import org.cleartk.util.ViewURIUtil;
 import org.uimafit.factory.AnalysisEngineFactory;
 
 /**
- * <br>Copyright (c) 2009, Regents of the University of Colorado 
- * <br>All rights reserved.
- *
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * @author Philipp G. Wetzler
- *
+ * 
  */
 public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
 
-	public static final String PREDICTION_VIEW_NAME = "ExampleDocumentClassificationPredictionView";
+  public static final String PREDICTION_VIEW_NAME = "ExampleDocumentClassificationPredictionView";
 
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		super.initialize(context);
-		SimpleFeatureExtractor subExtractor = new TypePathExtractor(Token.class, "stem", false, false, true);
-		extractor = new CountsExtractor(
-				new BagExtractor(
-						Token.class,
-						subExtractor
-						)
-				);
-	}
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    super.initialize(context);
+    SimpleFeatureExtractor subExtractor = new TypePathExtractor(Token.class, "stem", false, false,
+            true);
+    extractor = new CountsExtractor(new BagExtractor(Token.class, subExtractor));
+  }
 
-	public void process(JCas jCas) throws AnalysisEngineProcessException {
-		try {
-			DocumentAnnotation doc = (DocumentAnnotation) jCas.getDocumentAnnotationFs();
+  public void process(JCas jCas) throws AnalysisEngineProcessException {
+    try {
+      DocumentAnnotation doc = (DocumentAnnotation) jCas.getDocumentAnnotationFs();
 
-			Instance<String> instance = new Instance<String>();
-			instance.addAll(extractor.extract(jCas, doc));
+      Instance<String> instance = new Instance<String>();
+      instance.addAll(extractor.extract(jCas, doc));
 
-			if( isTraining() ) {
-				JCas goldView = jCas.getView(GoldAnnotator.GOLD_VIEW_NAME);
-				instance.setOutcome(goldView.getSofaDataString());
-				this.dataWriter.write(instance);
-			} else {
-				String result = this.classifier.classify(instance.getFeatures());
-				JCas predictionView = jCas.createView(PREDICTION_VIEW_NAME);
-				predictionView.setSofaDataString(result, "text/plain");
-				System.out.println("classified "+ViewURIUtil.getURI(jCas)+" as "+result+".");
-			}
-		} catch (CASException e) {
-			throw new AnalysisEngineProcessException(e);
-		} catch (CleartkException e) {
-			throw new AnalysisEngineProcessException(e);
-		}
-	}
+      if (isTraining()) {
+        JCas goldView = jCas.getView(GoldAnnotator.GOLD_VIEW_NAME);
+        instance.setOutcome(goldView.getSofaDataString());
+        this.dataWriter.write(instance);
+      } else {
+        String result = this.classifier.classify(instance.getFeatures());
+        JCas predictionView = jCas.createView(PREDICTION_VIEW_NAME);
+        predictionView.setSofaDataString(result, "text/plain");
+        System.out.println("classified " + ViewURIUtil.getURI(jCas) + " as " + result + ".");
+      }
+    } catch (CASException e) {
+      throw new AnalysisEngineProcessException(e);
+    } catch (CleartkException e) {
+      throw new AnalysisEngineProcessException(e);
+    }
+  }
 
-	private CountsExtractor extractor;
+  private CountsExtractor extractor;
 
-	public static AnalysisEngineDescription getClassifierDescription(
-			File classifierJarFile) throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveDescription(
-				DocumentClassificationAnnotator.class,
-				ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, classifierJarFile.toString());
-	}
+  public static AnalysisEngineDescription getClassifierDescription(File classifierJarFile)
+          throws ResourceInitializationException {
+    return AnalysisEngineFactory.createPrimitiveDescription(DocumentClassificationAnnotator.class,
+            ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+            JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, classifierJarFile.toString());
+  }
 
 }

@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,13 +20,14 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.ne.term.util;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * <p>
  * 
  * @author Philip Ogren
@@ -34,29 +35,29 @@ package org.cleartk.ne.term.util;
  */
 
 public class Term {
-	private String id;
+  private String id;
 
-	private String termText;
+  private String termText;
 
-	private TermList termList;
+  private TermList termList;
 
-	public Term(String id, String termText, TermList termList) {
-		super();
-		this.id = id;
-		this.termText = termText;
-		this.termList = termList;
-	}
+  public Term(String id, String termText, TermList termList) {
+    super();
+    this.id = id;
+    this.termText = termText;
+    this.termList = termList;
+  }
 
-	public String getId() {
-		return id;
-	}
+  public String getId() {
+    return id;
+  }
 
-	public String getTermText() {
-		return termText;
-	}
+  public String getTermText() {
+    return termText;
+  }
 
-	public TermList getTermList() {
-		return termList;
-	}
+  public TermList getTermList() {
+    return termList;
+  }
 
 }

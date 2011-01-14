@@ -38,32 +38,32 @@ import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
  * <br>
  * Copyright (c) 2009, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
  * @author Philip Ogren, Philipp Wetzler
  * 
  */
 
 public class DefaultStringTestDataWriterFactory extends TestDataWriterFactory_ImplBase<String> {
 
+  @Override
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    super.initialize(context);
+  }
 
-	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		super.initialize(context);
-	}
-	
-	public DataWriter<String> createDataWriter() throws IOException {
-		StringTestDataWriter stdw = new StringTestDataWriter(outputDirectory);
-		
-		if(!this.setEncodersFromFileSystem(stdw)) {
-			NameNumberFeaturesEncoder ftrsNcdr = new NameNumberFeaturesEncoder(compress, sort);
-			ftrsNcdr.addEncoder(new NumberEncoder());
-			ftrsNcdr.addEncoder(new BooleanEncoder());
-			ftrsNcdr.addEncoder(new StringEncoder());
-			stdw.setFeaturesEncoder(ftrsNcdr);
-			
-			stdw.setOutcomeEncoder(new StringToStringOutcomeEncoder());
-		}
-		
-		return stdw;
-	}
+  public DataWriter<String> createDataWriter() throws IOException {
+    StringTestDataWriter stdw = new StringTestDataWriter(outputDirectory);
+
+    if (!this.setEncodersFromFileSystem(stdw)) {
+      NameNumberFeaturesEncoder ftrsNcdr = new NameNumberFeaturesEncoder(compress, sort);
+      ftrsNcdr.addEncoder(new NumberEncoder());
+      ftrsNcdr.addEncoder(new BooleanEncoder());
+      ftrsNcdr.addEncoder(new StringEncoder());
+      stdw.setFeaturesEncoder(ftrsNcdr);
+
+      stdw.setOutcomeEncoder(new StringToStringOutcomeEncoder());
+    }
+
+    return stdw;
+  }
 
 }

@@ -29,13 +29,14 @@ package org.cleartk.token.pos.genia;
  * Copyright (c) 2010, Regents of the University of Colorado <br>
  * All rights reserved.
  * <p>
+ * 
  * @author Philip Ogren
  */
 
 public interface GeniaPosViewName {
-	/**
-	 * The view containing Genia part of speech formatted text.
-	 */
-	public static final String GENIA_POS = "GeniaPOSView";
+  /**
+   * The view containing Genia part of speech formatted text.
+   */
+  public static final String GENIA_POS = "GeniaPOSView";
 
 }

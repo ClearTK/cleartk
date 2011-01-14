@@ -33,62 +33,61 @@ import org.cleartk.classifier.jar.ClassifierBuilder;
 import org.cleartk.classifier.jar.JarSequentialDataWriter;
 
 /**
-  * <br>
+ * <br>
  * Copyright (c) 2010, University of Würzburg <br>
  * All rights reserved.
  * <p>
+ * 
  * @author Martin Toepfer
  */
-public class GrmmDataWriter extends
-		JarSequentialDataWriter<String[], String[], List<NameNumber>> {
+public class GrmmDataWriter extends JarSequentialDataWriter<String[], String[], List<NameNumber>> {
 
-	public static final String TRAINING_DATA_FILE_NAME = "training-data.grmm";
+  public static final String TRAINING_DATA_FILE_NAME = "training-data.grmm";
 
-	protected PrintWriter trainingDataWriter;
+  protected PrintWriter trainingDataWriter;
 
-	public GrmmDataWriter(File outputDirectory) throws IOException {
-		super(outputDirectory);
-		// initialize output writer and Classifier class:
-		this.trainingDataWriter = this.getPrintWriter(TRAINING_DATA_FILE_NAME);
-	}
+  public GrmmDataWriter(File outputDirectory) throws IOException {
+    super(outputDirectory);
+    // initialize output writer and Classifier class:
+    this.trainingDataWriter = this.getPrintWriter(TRAINING_DATA_FILE_NAME);
+  }
 
-	public GrmmDataWriter(PrintWriter writer) throws IOException {
-		super(null);
-		this.trainingDataWriter = writer;
-	}
+  public GrmmDataWriter(PrintWriter writer) throws IOException {
+    super(null);
+    this.trainingDataWriter = writer;
+  }
 
-	public Class<? extends ClassifierBuilder<String[]>> getDefaultClassifierBuilderClass() {
-		return GrmmClassifierBuilder.class;
-	}
+  public Class<? extends ClassifierBuilder<String[]>> getDefaultClassifierBuilderClass() {
+    return GrmmClassifierBuilder.class;
+  }
 
-	@Override
-	public void writeEncoded(List<NameNumber> features, String[] outcome) {
-		writeEncoded(features, outcome, this.trainingDataWriter);
-	}
+  @Override
+  public void writeEncoded(List<NameNumber> features, String[] outcome) {
+    writeEncoded(features, outcome, this.trainingDataWriter);
+  }
 
-	@Override
-	public void writeEndSequence() {
-		this.trainingDataWriter.println();
-	}
+  @Override
+  public void writeEndSequence() {
+    this.trainingDataWriter.println();
+  }
 
-	public static void writeEncoded(List<NameNumber> features,
-			String[] outcome, PrintWriter writer) {
-		for (int i = 0; i < outcome.length; i++) {
-			if (i > 0) {
-				writer.print(" ");
-			}
-			writer.print(outcome[i]);
-		}
-		writer.print(" ");
-		writer.print("---- ");
-		// (command line interface only supports binary features)
-		for (NameNumber nameNumber : features) {
-			writer.print(nameNumber.name);
-			writer.print(":");
-			writer.print(nameNumber.number);
-			writer.print(" ");
-		}
-		writer.println();
-	}
+  public static void writeEncoded(List<NameNumber> features, String[] outcome, PrintWriter writer) {
+    for (int i = 0; i < outcome.length; i++) {
+      if (i > 0) {
+        writer.print(" ");
+      }
+      writer.print(outcome[i]);
+    }
+    writer.print(" ");
+    writer.print("---- ");
+    // (command line interface only supports binary features)
+    for (NameNumber nameNumber : features) {
+      writer.print(nameNumber.name);
+      writer.print(":");
+      writer.print(nameNumber.number);
+      writer.print(" ");
+    }
+    writer.println();
+  }
 
 }

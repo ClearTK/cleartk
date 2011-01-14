@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.ne.ace2005;
 
 import java.io.File;
@@ -49,121 +49,110 @@ import org.jdom.input.SAXBuilder;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.SofaCapability;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
- * This parser works with the ACE2005CollectionReader to pre-populate the JCas with 
- * ACE named entities.  Currently, it only loads information from the entity and 
- * entity_mention tags and adds NamedEntity and NamedEntityMention objects to the 
- * JCas.  
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * 
+ * This parser works with the ACE2005CollectionReader to pre-populate the JCas with ACE named
+ * entities. Currently, it only loads information from the entity and entity_mention tags and adds
+ * NamedEntity and NamedEntityMention objects to the JCas.
  * 
  * @author Philip Ogren
- *
+ * 
  */
-@SofaCapability(inputSofas = {Ace2005Constants.ACE_2005_APF_URI_VIEW, CAS.NAME_DEFAULT_SOFA}, outputSofas = {})
-public class Ace2005GoldAnnotator extends JCasAnnotator_ImplBase
-{
+@SofaCapability(inputSofas = { Ace2005Constants.ACE_2005_APF_URI_VIEW, CAS.NAME_DEFAULT_SOFA }, outputSofas = {})
+public class Ace2005GoldAnnotator extends JCasAnnotator_ImplBase {
 
-	Pattern ampPattern;
-	
-	@Override
-	public void initialize(UimaContext aContext) throws ResourceInitializationException
-	{
-		super.initialize(aContext);
-		ampPattern = Pattern.compile(Pattern.quote("&amp;"));
-	}
+  Pattern ampPattern;
 
-	@Override
-	public void process(JCas jCas) throws AnalysisEngineProcessException
-	{
-		try
-		{
-			String apfUri = jCas.getView(Ace2005Constants.ACE_2005_APF_URI_VIEW).getSofaDataURI();
-			JCas initialView = jCas.getView(CAS.NAME_DEFAULT_SOFA);
-			String documentText = initialView.getDocumentText();
-			SAXBuilder builder = new SAXBuilder();
-			builder.setDTDHandler(null);
-			URI sofaDataURI = new URI(apfUri);
-			Document doc = builder.build(new File(sofaDataURI));
-			
-			Element apfSource = doc.getRootElement();
-			Element apfDocument = apfSource.getChild("document");
-			List<?> apfEntities = apfDocument.getChildren("entity");
-			for(int i=0; i<apfEntities.size(); i++)
-			{
-				Element apfEntity = (Element) apfEntities.get(i);
-				NamedEntity namedEntity = new NamedEntity(initialView);
-				namedEntity.setEntityType(apfEntity.getAttributeValue("TYPE"));
-				namedEntity.setEntitySubtype(apfEntity.getAttributeValue("SUBTYPE"));
-				namedEntity.setEntityClass(apfEntity.getAttributeValue("CLASS"));
-				namedEntity.setEntityId(apfEntity.getAttributeValue("ID"));
-				namedEntity.addToIndexes();
-				
-				List<NamedEntityMention> mentions = new ArrayList<NamedEntityMention>();
-				
-				List<?> entityMentions = apfEntity.getChildren("entity_mention");
-				for(int j=0; j<entityMentions.size(); j++)
-				{
-					Element entityMention = (Element) entityMentions.get(j);
-					int start = Integer.parseInt(entityMention.getChild("extent").getChild("charseq").getAttributeValue("START"));
-					int end = Integer.parseInt(entityMention.getChild("extent").getChild("charseq").getAttributeValue("END"));
-					String givenText = entityMention.getChild("extent").getChild("charseq").getText();
-					String parsedText = documentText.substring(start, end+1);
-					Matcher ampMatcher = ampPattern.matcher(parsedText);
-					parsedText = ampMatcher.replaceAll("&");
+  @Override
+  public void initialize(UimaContext aContext) throws ResourceInitializationException {
+    super.initialize(aContext);
+    ampPattern = Pattern.compile(Pattern.quote("&amp;"));
+  }
 
-					NamedEntityMention mention = new NamedEntityMention(initialView, start, end+1);
-					mention.setMentionType(entityMention.getAttributeValue("TYPE"));
-					mention.setMentionedEntity(namedEntity);
-					
-					Chunk chunk = new Chunk(initialView, start, end+1);
-					mention.setAnnotation(chunk);
-					
-					int headStart = Integer.parseInt(entityMention.getChild("head").getChild("charseq").getAttributeValue("START"));
-					int headEnd = Integer.parseInt(entityMention.getChild("head").getChild("charseq").getAttributeValue("END"));
-					Chunk head = new Chunk(initialView, headStart, headEnd+1);
-					mention.setHead(head);
-					
-					mention.addToIndexes();
-					mentions.add(mention);
+  @Override
+  public void process(JCas jCas) throws AnalysisEngineProcessException {
+    try {
+      String apfUri = jCas.getView(Ace2005Constants.ACE_2005_APF_URI_VIEW).getSofaDataURI();
+      JCas initialView = jCas.getView(CAS.NAME_DEFAULT_SOFA);
+      String documentText = initialView.getDocumentText();
+      SAXBuilder builder = new SAXBuilder();
+      builder.setDTDHandler(null);
+      URI sofaDataURI = new URI(apfUri);
+      Document doc = builder.build(new File(sofaDataURI));
 
-					givenText = givenText.replaceAll("\\s+", " ");
-					parsedText = givenText.replaceAll("\\s+", " ");
+      Element apfSource = doc.getRootElement();
+      Element apfDocument = apfSource.getChild("document");
+      List<?> apfEntities = apfDocument.getChildren("entity");
+      for (int i = 0; i < apfEntities.size(); i++) {
+        Element apfEntity = (Element) apfEntities.get(i);
+        NamedEntity namedEntity = new NamedEntity(initialView);
+        namedEntity.setEntityType(apfEntity.getAttributeValue("TYPE"));
+        namedEntity.setEntitySubtype(apfEntity.getAttributeValue("SUBTYPE"));
+        namedEntity.setEntityClass(apfEntity.getAttributeValue("CLASS"));
+        namedEntity.setEntityId(apfEntity.getAttributeValue("ID"));
+        namedEntity.addToIndexes();
 
-//					if(!givenText.equals(parsedText))
-//					{
-//						
-//						System.out.println("given text and parsed text differ.");
-//						System.out.println(givenText);
-//						System.out.println(parsedText);
-//						System.out.println(apfDocument.getAttributeValue("DOCID"));
-//						System.out.println(apfEntity.getAttributeValue("ID"));
-//						System.out.println(documentText);
-//					}
-				}
-				namedEntity.setMentions(UIMAUtil.toFSArray(jCas, mentions));
-			}
+        List<NamedEntityMention> mentions = new ArrayList<NamedEntityMention>();
 
-		}
-		catch(CASException ce)
-		{
-			throw new AnalysisEngineProcessException(ce);
-		}
-		catch(IOException ioe)
-		{
-			throw new AnalysisEngineProcessException(ioe);
-		}
-		catch(JDOMException je)
-		{
-			throw new AnalysisEngineProcessException(je);
-		}
-		catch(URISyntaxException use)
-		{
-			throw new AnalysisEngineProcessException(use);
-		}
-	}
+        List<?> entityMentions = apfEntity.getChildren("entity_mention");
+        for (int j = 0; j < entityMentions.size(); j++) {
+          Element entityMention = (Element) entityMentions.get(j);
+          int start = Integer.parseInt(entityMention.getChild("extent").getChild("charseq")
+                  .getAttributeValue("START"));
+          int end = Integer.parseInt(entityMention.getChild("extent").getChild("charseq")
+                  .getAttributeValue("END"));
+          String givenText = entityMention.getChild("extent").getChild("charseq").getText();
+          String parsedText = documentText.substring(start, end + 1);
+          Matcher ampMatcher = ampPattern.matcher(parsedText);
+          parsedText = ampMatcher.replaceAll("&");
+
+          NamedEntityMention mention = new NamedEntityMention(initialView, start, end + 1);
+          mention.setMentionType(entityMention.getAttributeValue("TYPE"));
+          mention.setMentionedEntity(namedEntity);
+
+          Chunk chunk = new Chunk(initialView, start, end + 1);
+          mention.setAnnotation(chunk);
+
+          int headStart = Integer.parseInt(entityMention.getChild("head").getChild("charseq")
+                  .getAttributeValue("START"));
+          int headEnd = Integer.parseInt(entityMention.getChild("head").getChild("charseq")
+                  .getAttributeValue("END"));
+          Chunk head = new Chunk(initialView, headStart, headEnd + 1);
+          mention.setHead(head);
+
+          mention.addToIndexes();
+          mentions.add(mention);
+
+          givenText = givenText.replaceAll("\\s+", " ");
+          parsedText = givenText.replaceAll("\\s+", " ");
+
+          // if(!givenText.equals(parsedText))
+          // {
+          //
+          // System.out.println("given text and parsed text differ.");
+          // System.out.println(givenText);
+          // System.out.println(parsedText);
+          // System.out.println(apfDocument.getAttributeValue("DOCID"));
+          // System.out.println(apfEntity.getAttributeValue("ID"));
+          // System.out.println(documentText);
+          // }
+        }
+        namedEntity.setMentions(UIMAUtil.toFSArray(jCas, mentions));
+      }
+
+    } catch (CASException ce) {
+      throw new AnalysisEngineProcessException(ce);
+    } catch (IOException ioe) {
+      throw new AnalysisEngineProcessException(ioe);
+    } catch (JDOMException je) {
+      throw new AnalysisEngineProcessException(je);
+    } catch (URISyntaxException use) {
+      throw new AnalysisEngineProcessException(use);
+    }
+  }
 
 }

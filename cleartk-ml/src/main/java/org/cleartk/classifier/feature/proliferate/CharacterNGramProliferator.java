@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.feature.proliferate;
 
 import java.util.Collections;
@@ -28,121 +28,132 @@ import java.util.List;
 
 import org.cleartk.classifier.Feature;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * 
  * @author Philip Ogren
- *
+ * 
  */
-public class CharacterNGramProliferator extends FeatureProliferator{
+public class CharacterNGramProliferator extends FeatureProliferator {
 
-	public static final int RIGHT_TO_LEFT = 0;
-	public static final int LEFT_TO_RIGHT = 1;
+  public static final int RIGHT_TO_LEFT = 0;
 
-	int orientation;
-	int start;
-	int end;
-	int minimumValueLength;
-	boolean lowerCase;
-	
-/**
- * This proliferator serves up character n-grams based on StringValued features. For example, if you wanted trigram 
- * suffixes (e.g. 'ion' of 'emotion') for words that are of length 7 or more you could call the constructor with the 
- * following: CharacterNGramProliferator(RIGHT_TO_LEFT, 0, 3, 7, false)
- * @param featureName a user-specified name for the proliferator, to be included in all feature names.
- * @param orientation must be one of LEFT_TO_RIGHT or RIGHT_TO_LEFT.  The orientation determines whether index 0 corresponds to 
- * the first character of the string value or the last.  The orientation does not affect the ordering of the characters in the
- * n-gram which are always returned in left-to-right order.  
- * @param start the start of the n-gram (typically 0 for both orientations)
- * @param end the end of the n-gram (typically n for both orientations)
- * @param minimumValueLength This parameter allows you to skip string values that are too short.  It must be greater than or equal to end.  
- * @param lowerCase if true than the n-gram used as the feature value will be lowercased.  
- */	
-	public CharacterNGramProliferator(String featureName, int orientation, int start, int end, int minimumValueLength, boolean lowerCase) {
-		super(Feature.createName(
-				"NGram",
-				orientation == RIGHT_TO_LEFT ? "Right" : "Left",
-				String.valueOf(start),
-				String.valueOf(end),
-				String.valueOf(minimumValueLength),
-				lowerCase ? "lower" : null,
-				featureName));
-		if (orientation != RIGHT_TO_LEFT && orientation != LEFT_TO_RIGHT) {
-			throw new IllegalArgumentException("orientation must be one of CharacterNGramProliferator.RIGHT_TO_LEFT or CharacterNGramProliferator.LEFT_TO_RIGHT ");
-		}
-		if (minimumValueLength < end) {
-			throw new IllegalArgumentException("minimumValueLength must be greater than or equal to the parameter end.");
-		}
-		this.orientation = orientation;
-		this.start = start;
-		this.end = end;
-		this.minimumValueLength = minimumValueLength;
-		this.lowerCase = lowerCase;
-	}
-	
-	public CharacterNGramProliferator(int orientation, int start, int end, int minimumValueLength, boolean lowerCase) {
-		this(null, orientation, start, end, minimumValueLength, lowerCase);
-	}
+  public static final int LEFT_TO_RIGHT = 1;
 
-	public CharacterNGramProliferator(String featureName, int orientation, int start, int end) {
-		this(featureName, orientation, start, end, end - start, false);
-	}
+  int orientation;
 
-	public CharacterNGramProliferator(int orientation, int start, int end) {
-		this(null, orientation, start, end);
-	}
+  int start;
 
-	/**
-	 * @return will return an empty list if the value of the feature is not a StringValue or is
-	 * not as long as the minimumValueLength.  
-	 * @see CharacterNGramProliferator#CharacterNGramProliferator(int, int, int, int, boolean) 
-	 */
-	@Override
-	public List<Feature> proliferate(Feature feature) {
-		String featureName = Feature.createName(this.getFeatureName(), feature.getName());
-		Object featureValue = feature.getValue();
-		if(featureValue == null || !(featureValue instanceof String)) return Collections.emptyList();
-		
-		String value = featureValue.toString();
-		if(value == null || value.length() < minimumValueLength) return Collections.emptyList();
+  int end;
 
-		String ngram;
-		if(orientation == LEFT_TO_RIGHT) {
-			 ngram = value.substring(start, end);
-		}else {
-			ngram = value.substring(value.length()-end, value.length()-start);
-		}
-		if(lowerCase)
-			ngram = ngram.toLowerCase();
-		
-		return Collections.singletonList(new Feature(featureName, ngram));
-	}
+  int minimumValueLength;
 
+  boolean lowerCase;
 
-	public int getEnd() {
-		return end;
-	}
+  /**
+   * This proliferator serves up character n-grams based on StringValued features. For example, if
+   * you wanted trigram suffixes (e.g. 'ion' of 'emotion') for words that are of length 7 or more
+   * you could call the constructor with the following: CharacterNGramProliferator(RIGHT_TO_LEFT, 0,
+   * 3, 7, false)
+   * 
+   * @param featureName
+   *          a user-specified name for the proliferator, to be included in all feature names.
+   * @param orientation
+   *          must be one of LEFT_TO_RIGHT or RIGHT_TO_LEFT. The orientation determines whether
+   *          index 0 corresponds to the first character of the string value or the last. The
+   *          orientation does not affect the ordering of the characters in the n-gram which are
+   *          always returned in left-to-right order.
+   * @param start
+   *          the start of the n-gram (typically 0 for both orientations)
+   * @param end
+   *          the end of the n-gram (typically n for both orientations)
+   * @param minimumValueLength
+   *          This parameter allows you to skip string values that are too short. It must be greater
+   *          than or equal to end.
+   * @param lowerCase
+   *          if true than the n-gram used as the feature value will be lowercased.
+   */
+  public CharacterNGramProliferator(String featureName, int orientation, int start, int end,
+          int minimumValueLength, boolean lowerCase) {
+    super(Feature.createName("NGram", orientation == RIGHT_TO_LEFT ? "Right" : "Left",
+            String.valueOf(start), String.valueOf(end), String.valueOf(minimumValueLength),
+            lowerCase ? "lower" : null, featureName));
+    if (orientation != RIGHT_TO_LEFT && orientation != LEFT_TO_RIGHT) {
+      throw new IllegalArgumentException(
+              "orientation must be one of CharacterNGramProliferator.RIGHT_TO_LEFT or CharacterNGramProliferator.LEFT_TO_RIGHT ");
+    }
+    if (minimumValueLength < end) {
+      throw new IllegalArgumentException(
+              "minimumValueLength must be greater than or equal to the parameter end.");
+    }
+    this.orientation = orientation;
+    this.start = start;
+    this.end = end;
+    this.minimumValueLength = minimumValueLength;
+    this.lowerCase = lowerCase;
+  }
 
+  public CharacterNGramProliferator(int orientation, int start, int end, int minimumValueLength,
+          boolean lowerCase) {
+    this(null, orientation, start, end, minimumValueLength, lowerCase);
+  }
 
-	public boolean isLowerCase() {
-		return lowerCase;
-	}
+  public CharacterNGramProliferator(String featureName, int orientation, int start, int end) {
+    this(featureName, orientation, start, end, end - start, false);
+  }
 
+  public CharacterNGramProliferator(int orientation, int start, int end) {
+    this(null, orientation, start, end);
+  }
 
-	public int getMinimumValueLength() {
-		return minimumValueLength;
-	}
+  /**
+   * @return will return an empty list if the value of the feature is not a StringValue or is not as
+   *         long as the minimumValueLength.
+   * @see CharacterNGramProliferator#CharacterNGramProliferator(int, int, int, int, boolean)
+   */
+  @Override
+  public List<Feature> proliferate(Feature feature) {
+    String featureName = Feature.createName(this.getFeatureName(), feature.getName());
+    Object featureValue = feature.getValue();
+    if (featureValue == null || !(featureValue instanceof String))
+      return Collections.emptyList();
 
+    String value = featureValue.toString();
+    if (value == null || value.length() < minimumValueLength)
+      return Collections.emptyList();
 
-	public int getOrientation() {
-		return orientation;
-	}
+    String ngram;
+    if (orientation == LEFT_TO_RIGHT) {
+      ngram = value.substring(start, end);
+    } else {
+      ngram = value.substring(value.length() - end, value.length() - start);
+    }
+    if (lowerCase)
+      ngram = ngram.toLowerCase();
 
+    return Collections.singletonList(new Feature(featureName, ngram));
+  }
 
-	public int getStart() {
-		return start;
-	}
+  public int getEnd() {
+    return end;
+  }
+
+  public boolean isLowerCase() {
+    return lowerCase;
+  }
+
+  public int getMinimumValueLength() {
+    return minimumValueLength;
+  }
+
+  public int getOrientation() {
+    return orientation;
+  }
+
+  public int getStart() {
+    return start;
+  }
 }

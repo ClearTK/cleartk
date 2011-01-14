@@ -52,111 +52,112 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
  */
-@SofaCapability(outputSofas = { Conll2005Constants.CONLL_2005_VIEW, ViewURIUtil.URI})
+@SofaCapability(outputSofas = { Conll2005Constants.CONLL_2005_VIEW, ViewURIUtil.URI })
 public class Conll2005GoldReader extends JCasCollectionReader_ImplBase {
 
-	public static CollectionReader getCollectionReader(String conll2005DataFile)
-			throws ResourceInitializationException {
-		return CollectionReaderFactory.createCollectionReader(Conll2005GoldReader.class,
-				SrlComponents.TYPE_SYSTEM_DESCRIPTION,
-				PARAM_CONLL2005_DATA_FILE, conll2005DataFile);
-	}
+  public static CollectionReader getCollectionReader(String conll2005DataFile)
+          throws ResourceInitializationException {
+    return CollectionReaderFactory.createCollectionReader(Conll2005GoldReader.class,
+            SrlComponents.TYPE_SYSTEM_DESCRIPTION, PARAM_CONLL2005_DATA_FILE, conll2005DataFile);
+  }
 
-	@ConfigurationParameter(mandatory = true, description = "the path of the CoNLL 2005 data file")
-	private File conll2005DataFile;
-	public static final String PARAM_CONLL2005_DATA_FILE = ConfigurationParameterFactory
-			.createConfigurationParameterName(Conll2005GoldReader.class, "conll2005DataFile");
+  @ConfigurationParameter(mandatory = true, description = "the path of the CoNLL 2005 data file")
+  private File conll2005DataFile;
 
-	private BufferedReader reader;
-	private boolean finished = false;
-	private int documentNumber;
-	private int totalDocuments;
+  public static final String PARAM_CONLL2005_DATA_FILE = ConfigurationParameterFactory
+          .createConfigurationParameterName(Conll2005GoldReader.class, "conll2005DataFile");
 
-	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		try {
-			this.reader = this.getBufferedReader();
-			String line;
-			this.totalDocuments = 0;
-			do {
-				line = this.reader.readLine();
-				while (line != null && line.trim().length() == 0) {
-					line = this.reader.readLine();
-				}
-				if (line == null) {
-					break;
-				}
-				this.totalDocuments += 1;
-				while (line != null && line.trim().length() > 0) {
-					line = this.reader.readLine();
-				}
-			} while (line != null);
-			this.reader.close();
+  private BufferedReader reader;
 
-			this.reader = this.getBufferedReader();
-			documentNumber = 0;
+  private boolean finished = false;
 
-		} catch (IOException e) {
-			throw new ResourceInitializationException(e);
-		}
-	}
+  private int documentNumber;
 
-	private BufferedReader getBufferedReader() throws IOException {
-		InputStream in;
-		if (this.conll2005DataFile.getName().endsWith(".gz")) {
-			in = new GZIPInputStream(
-					new FileInputStream(this.conll2005DataFile));
-		} else {
-			in = new FileInputStream(this.conll2005DataFile);
-		}
-		return new BufferedReader(new InputStreamReader(in));
-	}
+  private int totalDocuments;
 
-	public void getNext(JCas jCas) throws IOException, CollectionException {
-		try {
-			JCas conllView = jCas.createView(Conll2005Constants.CONLL_2005_VIEW);
+  @Override
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    try {
+      this.reader = this.getBufferedReader();
+      String line;
+      this.totalDocuments = 0;
+      do {
+        line = this.reader.readLine();
+        while (line != null && line.trim().length() == 0) {
+          line = this.reader.readLine();
+        }
+        if (line == null) {
+          break;
+        }
+        this.totalDocuments += 1;
+        while (line != null && line.trim().length() > 0) {
+          line = this.reader.readLine();
+        }
+      } while (line != null);
+      this.reader.close();
 
-			String lineBuffer;
-			StringBuffer docBuffer = new StringBuffer();
+      this.reader = this.getBufferedReader();
+      documentNumber = 0;
 
-			lineBuffer = reader.readLine();
-			while (lineBuffer != null && lineBuffer.trim().length() == 0) {
-				lineBuffer = reader.readLine();
-			}
+    } catch (IOException e) {
+      throw new ResourceInitializationException(e);
+    }
+  }
 
-			if (lineBuffer == null) {
-				throw new CollectionException("unexpected end of input", null);
-			}
+  private BufferedReader getBufferedReader() throws IOException {
+    InputStream in;
+    if (this.conll2005DataFile.getName().endsWith(".gz")) {
+      in = new GZIPInputStream(new FileInputStream(this.conll2005DataFile));
+    } else {
+      in = new FileInputStream(this.conll2005DataFile);
+    }
+    return new BufferedReader(new InputStreamReader(in));
+  }
 
-			while (lineBuffer != null && lineBuffer.trim().length() != 0) {
-				docBuffer.append(lineBuffer.trim());
-				docBuffer.append("\n");
-				lineBuffer = reader.readLine();
-			}
+  public void getNext(JCas jCas) throws IOException, CollectionException {
+    try {
+      JCas conllView = jCas.createView(Conll2005Constants.CONLL_2005_VIEW);
 
-			documentNumber += 1;
+      String lineBuffer;
+      StringBuffer docBuffer = new StringBuffer();
 
-			if (documentNumber == totalDocuments) {
-				finished = true;
-			}
+      lineBuffer = reader.readLine();
+      while (lineBuffer != null && lineBuffer.trim().length() == 0) {
+        lineBuffer = reader.readLine();
+      }
 
-			conllView.setSofaDataString(docBuffer.toString(), "text/plain");
-			ViewURIUtil.setURI(jCas, String.valueOf(documentNumber));
-		} catch (CASException e) {
-			throw new CollectionException(e);
-		}
-	}
+      if (lineBuffer == null) {
+        throw new CollectionException("unexpected end of input", null);
+      }
 
-	public void close() throws IOException {
-		reader.close();
-	}
+      while (lineBuffer != null && lineBuffer.trim().length() != 0) {
+        docBuffer.append(lineBuffer.trim());
+        docBuffer.append("\n");
+        lineBuffer = reader.readLine();
+      }
 
-	public Progress[] getProgress() {
-		return new Progress[] { new ProgressImpl(documentNumber,
-				totalDocuments, Progress.ENTITIES) };
-	}
+      documentNumber += 1;
 
-	public boolean hasNext() throws IOException, CollectionException {
-		return !finished;
-	}
+      if (documentNumber == totalDocuments) {
+        finished = true;
+      }
+
+      conllView.setSofaDataString(docBuffer.toString(), "text/plain");
+      ViewURIUtil.setURI(jCas, String.valueOf(documentNumber));
+    } catch (CASException e) {
+      throw new CollectionException(e);
+    }
+  }
+
+  public void close() throws IOException {
+    reader.close();
+  }
+
+  public Progress[] getProgress() {
+    return new Progress[] { new ProgressImpl(documentNumber, totalDocuments, Progress.ENTITIES) };
+  }
+
+  public boolean hasNext() throws IOException, CollectionException {
+    return !finished;
+  }
 }

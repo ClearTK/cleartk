@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.liblinear;
 
 import java.io.IOException;
@@ -37,52 +37,53 @@ import org.cleartk.classifier.liblinear.model.LIBLINEARModel;
 import org.cleartk.classifier.liblinear.model.LIBLINEARModel.ScoredPrediction;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * 
  * @author Philipp Wetzler
  * @author Philip Ogren
- *
+ * 
  */
 
-public class BinaryLIBLINEARClassifier extends JarClassifier<Boolean,Boolean,FeatureVector> {
-	
-	public static final String MODEL_NAME = "model.liblinear";
-	protected LIBLINEARModel model;
+public class BinaryLIBLINEARClassifier extends JarClassifier<Boolean, Boolean, FeatureVector> {
 
-	public BinaryLIBLINEARClassifier(JarFile modelFile) throws IOException, CleartkException {
-		super(modelFile);
-		
-		ZipEntry modelEntry = modelFile.getEntry(BinaryLIBLINEARClassifier.MODEL_NAME);
-		this.model = LIBLINEARModel.fromInputStream(modelFile.getInputStream(modelEntry));
-	}
+  public static final String MODEL_NAME = "model.liblinear";
 
-	public Boolean classify(List<Feature> features) throws CleartkException {
-		FeatureVector featureVector = this.featuresEncoder.encodeAll(features);
+  protected LIBLINEARModel model;
 
-		boolean encodedOutcome = (model.predict(featureVector) > 0);
-		return outcomeEncoder.decode(encodedOutcome);
-	}
+  public BinaryLIBLINEARClassifier(JarFile modelFile) throws IOException, CleartkException {
+    super(modelFile);
 
-	@Override
-	public List<ScoredOutcome<Boolean>> score(List<Feature> features, int maxResults) throws CleartkException {
-		List<ScoredOutcome<Boolean>> returnValues = new ArrayList<ScoredOutcome<Boolean>>();
+    ZipEntry modelEntry = modelFile.getEntry(BinaryLIBLINEARClassifier.MODEL_NAME);
+    this.model = LIBLINEARModel.fromInputStream(modelFile.getInputStream(modelEntry));
+  }
 
-		FeatureVector featureVector = this.featuresEncoder.encodeAll(features);
-		List<ScoredPrediction> encodedPredictions = model.score(featureVector);
-		for(ScoredPrediction prediction : encodedPredictions) {
-			boolean encodedOutcome = prediction.getPrediction() > 0; 
-			returnValues.add(new ScoredOutcome<Boolean>(outcomeEncoder.decode(encodedOutcome), prediction.getScore()));	
-			if(maxResults == 1)
-				return returnValues;
-		}
-		
+  public Boolean classify(List<Feature> features) throws CleartkException {
+    FeatureVector featureVector = this.featuresEncoder.encodeAll(features);
 
-		return returnValues;
-	}
+    boolean encodedOutcome = (model.predict(featureVector) > 0);
+    return outcomeEncoder.decode(encodedOutcome);
+  }
 
-	
+  @Override
+  public List<ScoredOutcome<Boolean>> score(List<Feature> features, int maxResults)
+          throws CleartkException {
+    List<ScoredOutcome<Boolean>> returnValues = new ArrayList<ScoredOutcome<Boolean>>();
+
+    FeatureVector featureVector = this.featuresEncoder.encodeAll(features);
+    List<ScoredPrediction> encodedPredictions = model.score(featureVector);
+    for (ScoredPrediction prediction : encodedPredictions) {
+      boolean encodedOutcome = prediction.getPrediction() > 0;
+      returnValues.add(new ScoredOutcome<Boolean>(outcomeEncoder.decode(encodedOutcome), prediction
+              .getScore()));
+      if (maxResults == 1)
+        return returnValues;
+    }
+
+    return returnValues;
+  }
+
 }

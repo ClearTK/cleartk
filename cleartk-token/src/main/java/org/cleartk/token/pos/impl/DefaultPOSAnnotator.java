@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2009, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.token.pos.impl;
 
 import org.apache.uima.jcas.JCas;
@@ -29,20 +29,21 @@ import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 
 /**
- * <br>Copyright (c) 2009, Regents of the University of Colorado 
- * <br>All rights reserved.
- *
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * @author Philip Ogren
- *
+ * 
  */
 
 public class DefaultPOSAnnotator extends POSAnnotator<Token, Sentence> {
-	public void setTag(JCas cas, Token token, String tag) {
-		token.setPos(tag);
-	}
+  public void setTag(JCas cas, Token token, String tag) {
+    token.setPos(tag);
+  }
 
-	public String getTag(JCas cas, Token token) {
-		return token.getPos();
-	}
-	
+  public String getTag(JCas cas, Token token) {
+    return token.getPos();
+  }
+
 }

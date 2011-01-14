@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.liblinear;
 
 import java.io.File;
@@ -30,18 +30,19 @@ import org.cleartk.classifier.jar.ClassifierBuilder;
 import org.cleartk.classifier.libsvm.BinaryLIBSVMDataWriter;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado
- * <br>All rights reserved.
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
  */
 public class BinaryLIBLINEARDataWriter extends BinaryLIBSVMDataWriter {
-	
-	public BinaryLIBLINEARDataWriter(File outputDirectory) throws IOException {
-		super(outputDirectory);
-	}
 
-	@Override
-	public Class<? extends ClassifierBuilder<Boolean>> getDefaultClassifierBuilderClass() {
-		return BinaryLIBLINEARClassifierBuilder.class;
-	}
+  public BinaryLIBLINEARDataWriter(File outputDirectory) throws IOException {
+    super(outputDirectory);
+  }
+
+  @Override
+  public Class<? extends ClassifierBuilder<Boolean>> getDefaultClassifierBuilderClass() {
+    return BinaryLIBLINEARClassifierBuilder.class;
+  }
 
 }

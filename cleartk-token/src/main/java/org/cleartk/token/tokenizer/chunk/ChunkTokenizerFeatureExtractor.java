@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.token.tokenizer.chunk;
 
 import java.util.ArrayList;
@@ -49,11 +49,11 @@ import org.cleartk.classifier.feature.proliferate.NumericTypeProliferator;
 import org.cleartk.classifier.feature.proliferate.ProliferatingExtractor;
 import org.uimafit.factory.initializable.InitializableFactory;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * <p>
  * 
  * @author Philip
@@ -61,69 +61,77 @@ import org.uimafit.factory.initializable.InitializableFactory;
  */
 public class ChunkTokenizerFeatureExtractor implements ChunkerFeatureExtractor {
 
-	private List<SimpleFeatureExtractor> simpleFeatureExtractors;
+  private List<SimpleFeatureExtractor> simpleFeatureExtractors;
 
-	private List<WindowExtractor> windowExtractors;
+  private List<WindowExtractor> windowExtractors;
 
-	private List<WindowNGramExtractor> windowNGramExtractors;
+  private List<WindowNGramExtractor> windowNGramExtractors;
 
-	protected Class<? extends Annotation> labeledAnnotationClass;
+  protected Class<? extends Annotation> labeledAnnotationClass;
 
-	public void initialize(UimaContext context) throws ResourceInitializationException {
+  public void initialize(UimaContext context) throws ResourceInitializationException {
 
-		String labeledAnnotationClassName = (String) context.getConfigParameterValue(Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME);
-		labeledAnnotationClass = InitializableFactory.getClass(labeledAnnotationClassName, Annotation.class);
-		
-		this.simpleFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
-		this.windowExtractors = new ArrayList<WindowExtractor>();
-		this.windowNGramExtractors = new ArrayList<WindowNGramExtractor>();
+    String labeledAnnotationClassName = (String) context
+            .getConfigParameterValue(Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME);
+    labeledAnnotationClass = InitializableFactory.getClass(labeledAnnotationClassName,
+            Annotation.class);
 
-		SimpleFeatureExtractor wordExtractor = new SpannedTextExtractor();
+    this.simpleFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
+    this.windowExtractors = new ArrayList<WindowExtractor>();
+    this.windowNGramExtractors = new ArrayList<WindowNGramExtractor>();
 
-		int fromLeft = CharacterNGramProliferator.LEFT_TO_RIGHT;
-		int fromRight = CharacterNGramProliferator.RIGHT_TO_LEFT;
+    SimpleFeatureExtractor wordExtractor = new SpannedTextExtractor();
 
-		this.simpleFeatureExtractors.add(new ProliferatingExtractor(wordExtractor, new CapitalTypeProliferator(),
-				new ContainsHyphenProliferator(), new LowerCaseProliferator(), new NumericTypeProliferator(),
-				new CharacterNGramProliferator(fromLeft, 0, 1, 1, true), new CharacterNGramProliferator(fromLeft, 0, 2,
-						2, true), new CharacterNGramProliferator(fromLeft, 0, 3, 3, true),
-				new CharacterNGramProliferator(fromRight, 0, 1, 1, true), new CharacterNGramProliferator(fromRight, 0,
-						2, 2, true), new CharacterNGramProliferator(fromRight, 0, 3, 3, true)));
+    int fromLeft = CharacterNGramProliferator.LEFT_TO_RIGHT;
+    int fromRight = CharacterNGramProliferator.RIGHT_TO_LEFT;
 
-		this.simpleFeatureExtractors.add(new WhiteSpaceExtractor());
+    this.simpleFeatureExtractors.add(new ProliferatingExtractor(wordExtractor,
+            new CapitalTypeProliferator(), new ContainsHyphenProliferator(),
+            new LowerCaseProliferator(), new NumericTypeProliferator(),
+            new CharacterNGramProliferator(fromLeft, 0, 1, 1, true),
+            new CharacterNGramProliferator(fromLeft, 0, 2, 2, true),
+            new CharacterNGramProliferator(fromLeft, 0, 3, 3, true),
+            new CharacterNGramProliferator(fromRight, 0, 1, 1, true),
+            new CharacterNGramProliferator(fromRight, 0, 2, 2, true),
+            new CharacterNGramProliferator(fromRight, 0, 3, 3, true)));
 
-		// add 2 stems to the left and right
-		this.windowExtractors.add(new WindowExtractor(labeledAnnotationClass, wordExtractor, WindowFeature.ORIENTATION_RIGHT,
-				0, 2));
-		this.windowExtractors.add(new WindowExtractor(labeledAnnotationClass, wordExtractor, WindowFeature.ORIENTATION_LEFT, 0,
-				2));
+    this.simpleFeatureExtractors.add(new WhiteSpaceExtractor());
 
-		this.windowNGramExtractors.add(new WindowNGramExtractor(labeledAnnotationClass, wordExtractor,
-				WindowNGramFeature.ORIENTATION_LEFT, WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT, "_", 0, 2));
+    // add 2 stems to the left and right
+    this.windowExtractors.add(new WindowExtractor(labeledAnnotationClass, wordExtractor,
+            WindowFeature.ORIENTATION_RIGHT, 0, 2));
+    this.windowExtractors.add(new WindowExtractor(labeledAnnotationClass, wordExtractor,
+            WindowFeature.ORIENTATION_LEFT, 0, 2));
 
-		this.windowNGramExtractors.add(new WindowNGramExtractor(labeledAnnotationClass, wordExtractor,
-				WindowNGramFeature.ORIENTATION_RIGHT, WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT, "_", 0, 2));
-	}
+    this.windowNGramExtractors.add(new WindowNGramExtractor(labeledAnnotationClass, wordExtractor,
+            WindowNGramFeature.ORIENTATION_LEFT, WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT, "_",
+            0, 2));
 
-	public Instance<String> extractFeatures(JCas jCas, Annotation labeledAnnotation, Annotation sequence) throws CleartkException {
+    this.windowNGramExtractors.add(new WindowNGramExtractor(labeledAnnotationClass, wordExtractor,
+            WindowNGramFeature.ORIENTATION_RIGHT, WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT, "_",
+            0, 2));
+  }
 
-		Instance<String> instance = new Instance<String>();
+  public Instance<String> extractFeatures(JCas jCas, Annotation labeledAnnotation,
+          Annotation sequence) throws CleartkException {
 
-		// extract all features that require only the token annotation
-		for (SimpleFeatureExtractor extractor : this.simpleFeatureExtractors) {
-			instance.addAll(extractor.extract(jCas, labeledAnnotation));
-		}
+    Instance<String> instance = new Instance<String>();
 
-		// extract all features that require the token and sentence annotations
-		for (WindowExtractor extractor : this.windowExtractors) {
-			instance.addAll(extractor.extract(jCas, labeledAnnotation, sequence));
-		}
+    // extract all features that require only the token annotation
+    for (SimpleFeatureExtractor extractor : this.simpleFeatureExtractors) {
+      instance.addAll(extractor.extract(jCas, labeledAnnotation));
+    }
 
-		for (WindowNGramExtractor extractor : this.windowNGramExtractors) {
-			instance.add(extractor.extract(jCas, labeledAnnotation, sequence));
-		}
+    // extract all features that require the token and sentence annotations
+    for (WindowExtractor extractor : this.windowExtractors) {
+      instance.addAll(extractor.extract(jCas, labeledAnnotation, sequence));
+    }
 
-		return instance;
-	}
+    for (WindowNGramExtractor extractor : this.windowNGramExtractors) {
+      instance.add(extractor.extract(jCas, labeledAnnotation, sequence));
+    }
+
+    return instance;
+  }
 
 }

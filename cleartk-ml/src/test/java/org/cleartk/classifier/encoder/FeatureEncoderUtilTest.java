@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.encoder;
 
 import static org.junit.Assert.assertEquals;
@@ -28,20 +28,20 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
-*/
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ */
 
 public class FeatureEncoderUtilTest {
 
-	@Test
-	public void testEscape() {
-		assertEquals("asdf=asdf", FeatureEncoderUtil.escape("asdf=asdf"));
-		assertEquals("asdf%U003Dasdf", FeatureEncoderUtil.escape("asdf=asdf", new char[] {'='}));
-		
-		assertEquals("%U0025hello%U0025", FeatureEncoderUtil.escape("%hello%"));
-		assertEquals("%U0025hello%U0025", FeatureEncoderUtil.escape("%hello%", new char[] {'5'}));
-		assertEquals("%U0025%U0025", FeatureEncoderUtil.escape("%%", new char[] {'%'}));
-	}
+  @Test
+  public void testEscape() {
+    assertEquals("asdf=asdf", FeatureEncoderUtil.escape("asdf=asdf"));
+    assertEquals("asdf%U003Dasdf", FeatureEncoderUtil.escape("asdf=asdf", new char[] { '=' }));
+
+    assertEquals("%U0025hello%U0025", FeatureEncoderUtil.escape("%hello%"));
+    assertEquals("%U0025hello%U0025", FeatureEncoderUtil.escape("%hello%", new char[] { '5' }));
+    assertEquals("%U0025%U0025", FeatureEncoderUtil.escape("%%", new char[] { '%' }));
+  }
 }

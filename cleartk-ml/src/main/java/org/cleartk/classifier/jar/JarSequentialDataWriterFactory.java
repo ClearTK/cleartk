@@ -47,76 +47,77 @@ import org.uimafit.factory.initializable.Initializable;
  */
 
 public abstract class JarSequentialDataWriterFactory<FEATURES_OUT_TYPE, OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE>
-		implements SequentialDataWriterFactory<OUTCOME_IN_TYPE>, Initializable {
+        implements SequentialDataWriterFactory<OUTCOME_IN_TYPE>, Initializable {
 
-			public static final String PARAM_OUTPUT_DIRECTORY = ConfigurationParameterFactory
-			.createConfigurationParameterName(JarSequentialDataWriterFactory.class, "outputDirectory");
+  public static final String PARAM_OUTPUT_DIRECTORY = ConfigurationParameterFactory
+          .createConfigurationParameterName(JarSequentialDataWriterFactory.class, "outputDirectory");
 
-	@ConfigurationParameter(mandatory = true, description = "provides the name of the directory where the training data will be written.")
-	protected File outputDirectory;
+  @ConfigurationParameter(mandatory = true, description = "provides the name of the directory where the training data will be written.")
+  protected File outputDirectory;
 
+  public static final String PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM = ConfigurationParameterFactory
+          .createConfigurationParameterName(JarSequentialDataWriterFactory.class,
+                  "loadEncodersFromFileSystem");
 
-	public static final String PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM = ConfigurationParameterFactory
-			.createConfigurationParameterName(JarSequentialDataWriterFactory.class, "loadEncodersFromFileSystem");
+  @ConfigurationParameter(description = "when true indicates that the FeaturesEncoder and OutcomeEncoder should be loaded from the file system instead of being created by the DataWriterFactory", defaultValue = "false")
+  private boolean loadEncodersFromFileSystem = false;
 
-	@ConfigurationParameter(description = "when true indicates that the FeaturesEncoder and OutcomeEncoder should be loaded from the file system instead of being created by the DataWriterFactory", defaultValue = "false")
-	private boolean loadEncodersFromFileSystem = false;
+  public void initialize(UimaContext uimaContext) throws ResourceInitializationException {
+    ConfigurationParameterInitializer.initialize(this, uimaContext);
+    if (loadEncodersFromFileSystem) {
+      try {
+        File encoderFile = new File(outputDirectory, FeaturesEncoder_ImplBase.ENCODERS_FILE_NAME);
 
-	public void initialize(UimaContext uimaContext) throws ResourceInitializationException {
-		ConfigurationParameterInitializer.initialize(this, uimaContext);
-		if (loadEncodersFromFileSystem) {
-			try {
-				File encoderFile = new File(outputDirectory, FeaturesEncoder_ImplBase.ENCODERS_FILE_NAME);
+        if (!encoderFile.exists()) {
+          throw new RuntimeException(String.format("No encoder found in directory %s",
+                  outputDirectory));
+        }
 
-				if (!encoderFile.exists()) {
-					throw new RuntimeException(String.format("No encoder found in directory %s", outputDirectory));
-				}
+        ObjectInputStream is = new ObjectInputStream(new FileInputStream(encoderFile));
 
-				ObjectInputStream is = new ObjectInputStream(new FileInputStream(encoderFile));
+        // read the FeaturesEncoder and check the types
+        FeaturesEncoder<?> untypedFeaturesEncoder = FeaturesEncoder.class.cast(is.readObject());
+        ReflectionUtil.checkTypeParameterIsAssignable(FeaturesEncoder.class, "FEATURES_OUT_TYPE",
+                untypedFeaturesEncoder, JarSequentialDataWriterFactory.class, "FEATURES_OUT_TYPE",
+                this);
 
-				// read the FeaturesEncoder and check the types
-				FeaturesEncoder<?> untypedFeaturesEncoder = FeaturesEncoder.class.cast(is.readObject());
-				ReflectionUtil.checkTypeParameterIsAssignable(FeaturesEncoder.class, "FEATURES_OUT_TYPE",
-						untypedFeaturesEncoder, JarSequentialDataWriterFactory.class, "FEATURES_OUT_TYPE", this);
+        // read the OutcomeEncoder and check the types
+        OutcomeEncoder<?, ?> untypedOutcomeEncoder = OutcomeEncoder.class.cast(is.readObject());
+        ReflectionUtil.checkTypeParameterIsAssignable(OutcomeEncoder.class, "OUTCOME_IN_TYPE",
+                untypedOutcomeEncoder, JarSequentialDataWriterFactory.class, "OUTCOME_IN_TYPE",
+                this);
+        ReflectionUtil.checkTypeParameterIsAssignable(OutcomeEncoder.class, "OUTCOME_OUT_TYPE",
+                untypedOutcomeEncoder, JarSequentialDataWriterFactory.class, "OUTCOME_OUT_TYPE",
+                this);
 
-				// read the OutcomeEncoder and check the types
-				OutcomeEncoder<?, ?> untypedOutcomeEncoder = OutcomeEncoder.class.cast(is.readObject());
-				ReflectionUtil.checkTypeParameterIsAssignable(OutcomeEncoder.class, "OUTCOME_IN_TYPE", untypedOutcomeEncoder,
-						JarSequentialDataWriterFactory.class, "OUTCOME_IN_TYPE", this);
-				ReflectionUtil.checkTypeParameterIsAssignable(OutcomeEncoder.class, "OUTCOME_OUT_TYPE",
-						untypedOutcomeEncoder, JarSequentialDataWriterFactory.class, "OUTCOME_OUT_TYPE", this);
+        // assign the encoders to the instance variables
+        this.featuresEncoder = ReflectionUtil.uncheckedCast(untypedFeaturesEncoder);
+        this.outcomeEncoder = ReflectionUtil.uncheckedCast(untypedOutcomeEncoder);
+        is.close();
+      } catch (Exception e) {
+        throw new ResourceInitializationException(e);
+      }
+    } else {
+      this.featuresEncoder = null;
+      this.outcomeEncoder = null;
+    }
+    this.context = uimaContext;
+  }
 
-				// assign the encoders to the instance variables
-				this.featuresEncoder = ReflectionUtil.uncheckedCast(untypedFeaturesEncoder);
-				this.outcomeEncoder = ReflectionUtil.uncheckedCast(untypedOutcomeEncoder);
-				is.close();
-			}
-			catch (Exception e) {
-				throw new ResourceInitializationException(e);
-			}
-		}
-		else {
-			this.featuresEncoder = null;
-			this.outcomeEncoder = null;
-		}
-		this.context = uimaContext;
-	}
+  protected boolean setEncodersFromFileSystem(
+          JarSequentialDataWriter<OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE, FEATURES_OUT_TYPE> dataWriter) {
+    if (this.featuresEncoder != null && this.outcomeEncoder != null) {
+      dataWriter.setFeaturesEncoder(this.featuresEncoder);
+      dataWriter.setOutcomeEncoder(this.outcomeEncoder);
+      return true;
+    } else {
+      return false;
+    }
+  }
 
-	protected boolean setEncodersFromFileSystem(
-			JarSequentialDataWriter<OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE, FEATURES_OUT_TYPE> dataWriter) {
-		if (this.featuresEncoder != null && this.outcomeEncoder != null) {
-			dataWriter.setFeaturesEncoder(this.featuresEncoder);
-			dataWriter.setOutcomeEncoder(this.outcomeEncoder);
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
+  protected UimaContext context = null;
 
-	protected UimaContext context = null;
+  protected FeaturesEncoder<FEATURES_OUT_TYPE> featuresEncoder = null;
 
-	protected FeaturesEncoder<FEATURES_OUT_TYPE> featuresEncoder = null;
-
-	protected OutcomeEncoder<OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE> outcomeEncoder = null;
+  protected OutcomeEncoder<OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE> outcomeEncoder = null;
 }

@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.feature;
 
 import java.util.regex.Matcher;
@@ -28,11 +28,11 @@ import java.util.regex.Pattern;
 
 import org.cleartk.classifier.Feature;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * <p>
  * 
  * @author Philip Ogren
@@ -40,41 +40,44 @@ import org.cleartk.classifier.Feature;
  */
 
 public class TypePathFeature extends Feature {
-	private String typePath;
+  private String typePath;
 
-	Pattern pattern = Pattern.compile("/([^/])?");
+  Pattern pattern = Pattern.compile("/([^/])?");
 
-	public TypePathFeature(String name, Object value, String typePath) {
-		super(value);
-		this.typePath = typePath;
-		this.name = createName(name);
-	}
+  public TypePathFeature(String name, Object value, String typePath) {
+    super(value);
+    this.typePath = typePath;
+    this.name = createName(name);
+  }
 
-	public String getTypePath() {
-		return typePath;
-	}
+  public String getTypePath() {
+    return typePath;
+  }
 
-	private String createName(String namePrefix) {
-		if (namePrefix == null) namePrefix = "TypePath";
-		String typePathString = typePath == null ? "" : typePath;
+  private String createName(String namePrefix) {
+    if (namePrefix == null)
+      namePrefix = "TypePath";
+    String typePathString = typePath == null ? "" : typePath;
 
-		Matcher matcher = pattern.matcher(typePathString);
-		StringBuffer sb = new StringBuffer();
-		while (matcher.find()) {
-			if (matcher.group(1) != null) matcher.appendReplacement(sb, matcher.group(1).toUpperCase());
-			else matcher.appendReplacement(sb, "");
-		}
-		matcher.appendTail(sb);
+    Matcher matcher = pattern.matcher(typePathString);
+    StringBuffer sb = new StringBuffer();
+    while (matcher.find()) {
+      if (matcher.group(1) != null)
+        matcher.appendReplacement(sb, matcher.group(1).toUpperCase());
+      else
+        matcher.appendReplacement(sb, "");
+    }
+    matcher.appendTail(sb);
 
-		// may not be > 0 if path is "" or "/"
-		if (sb.length() > 0) sb.replace(0, 1, sb.substring(0, 1).toUpperCase());
-		
-		if (sb.length() > 0) {
-			return String.format("%s(%s)", namePrefix, sb.toString());
-		}
-		else {
-			return null;
-		}
-	}
+    // may not be > 0 if path is "" or "/"
+    if (sb.length() > 0)
+      sb.replace(0, 1, sb.substring(0, 1).toUpperCase());
+
+    if (sb.length() > 0) {
+      return String.format("%s(%s)", namePrefix, sb.toString());
+    } else {
+      return null;
+    }
+  }
 
 }

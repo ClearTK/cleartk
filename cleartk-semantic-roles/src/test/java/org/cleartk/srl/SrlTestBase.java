@@ -35,9 +35,9 @@ import org.cleartk.token.TokenTestBase;
  */
 public class SrlTestBase extends TokenTestBase {
 
-	@Override
-	public String[] getTypeSystemDescriptorNames() {
-		return new String[] {"org.cleartk.srl.TypeSystem"};
-	}
+  @Override
+  public String[] getTypeSystemDescriptorNames() {
+    return new String[] { "org.cleartk.srl.TypeSystem" };
+  }
 
 }

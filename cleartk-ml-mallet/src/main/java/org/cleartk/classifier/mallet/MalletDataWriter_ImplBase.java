@@ -39,43 +39,43 @@ import org.cleartk.classifier.jar.JarDataWriter;
  * 
  * 
  * This training data consumer produces training data suitable for <a
- * href="http://mallet.cs.umass.edu/index.php/SimpleTagger_example"> Mallet
- * Conditional Random Field (CRF) tagger</a>.
+ * href="http://mallet.cs.umass.edu/index.php/SimpleTagger_example"> Mallet Conditional Random Field
+ * (CRF) tagger</a>.
  * 
- * Each line of the training data contains a string representation of each
- * feature followed by the label/result for that instance.
+ * Each line of the training data contains a string representation of each feature followed by the
+ * label/result for that instance.
  * 
  * @author Philip Ogren
  */
-public abstract class MalletDataWriter_ImplBase<OUTCOME_TYPE> extends JarDataWriter<OUTCOME_TYPE, String, List<NameNumber>> {
+public abstract class MalletDataWriter_ImplBase<OUTCOME_TYPE> extends
+        JarDataWriter<OUTCOME_TYPE, String, List<NameNumber>> {
 
-	public static final String TRAINING_DATA_FILE_NAME ="training-data.mallet"; 
-	public MalletDataWriter_ImplBase(File outputDirectory) throws IOException {
-		super(outputDirectory);
+  public static final String TRAINING_DATA_FILE_NAME = "training-data.mallet";
 
-		// initialize output writer and Classifier class
-		this.trainingDataWriter = this.getPrintWriter(TRAINING_DATA_FILE_NAME);
+  public MalletDataWriter_ImplBase(File outputDirectory) throws IOException {
+    super(outputDirectory);
 
-	}
+    // initialize output writer and Classifier class
+    this.trainingDataWriter = this.getPrintWriter(TRAINING_DATA_FILE_NAME);
 
-	@Override
-	public void writeEncoded(List<NameNumber> features, String outcome)  throws CleartkException{
-		if(outcome == null) {
-			throw new CleartkException("all consumed instances must have an outcome.  outcome="+outcome);
-		}
-		if (features.size() == 0) {
-			trainingDataWriter.print("null:0 ");
-		}
-		else {
-			for (NameNumber nameNumber : features) {
-				trainingDataWriter.print(nameNumber.name + ":" + nameNumber.number + " ");
-			}
-		}
-		this.trainingDataWriter.print(outcome);
-		this.trainingDataWriter.println();
-	}
+  }
 
+  @Override
+  public void writeEncoded(List<NameNumber> features, String outcome) throws CleartkException {
+    if (outcome == null) {
+      throw new CleartkException("all consumed instances must have an outcome.  outcome=" + outcome);
+    }
+    if (features.size() == 0) {
+      trainingDataWriter.print("null:0 ");
+    } else {
+      for (NameNumber nameNumber : features) {
+        trainingDataWriter.print(nameNumber.name + ":" + nameNumber.number + " ");
+      }
+    }
+    this.trainingDataWriter.print(outcome);
+    this.trainingDataWriter.println();
+  }
 
-	protected PrintWriter trainingDataWriter;
+  protected PrintWriter trainingDataWriter;
 
 }

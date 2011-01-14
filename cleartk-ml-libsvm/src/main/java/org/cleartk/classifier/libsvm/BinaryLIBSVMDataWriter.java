@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.libsvm;
 
 import java.io.File;
@@ -35,21 +35,21 @@ import org.cleartk.classifier.jar.ClassifierBuilder;
  * <p>
  */
 
-public class BinaryLIBSVMDataWriter extends LIBSVMDataWriter<Boolean,Boolean> {
+public class BinaryLIBSVMDataWriter extends LIBSVMDataWriter<Boolean, Boolean> {
 
-	public BinaryLIBSVMDataWriter(File outputDirectory) throws IOException {
-		super(outputDirectory);
-	}
+  public BinaryLIBSVMDataWriter(File outputDirectory) throws IOException {
+    super(outputDirectory);
+  }
 
-	@Override
-	public Class<? extends ClassifierBuilder<Boolean>> getDefaultClassifierBuilderClass() {
-		return BinaryLIBSVMClassifierBuilder.class;
-	}
+  @Override
+  public Class<? extends ClassifierBuilder<Boolean>> getDefaultClassifierBuilderClass() {
+    return BinaryLIBSVMClassifierBuilder.class;
+  }
 
-	@Override
-	protected String encode(Boolean outcome) {
-		Boolean encodedOutcome = this.outcomeEncoder.encode(outcome);
-		return encodedOutcome.booleanValue() ? "+1" : "-1";
-	}
+  @Override
+  protected String encode(Boolean outcome) {
+    Boolean encodedOutcome = this.outcomeEncoder.encode(outcome);
+    return encodedOutcome.booleanValue() ? "+1" : "-1";
+  }
 
 }

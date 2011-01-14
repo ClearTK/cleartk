@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.encoder.features;
 
 import java.io.File;
@@ -28,21 +28,24 @@ import java.io.File;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 
-
 /**
- * <br>Copyright (c) 2009, Regents of the University of Colorado 
- * <br>All rights reserved.
- *
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  */
 
-public abstract class FeaturesEncoder_ImplBase<ENCODED_FEATURES_TYPE, ENCODED_FEATURE_TYPE> extends FeatureEncoderChain<ENCODED_FEATURE_TYPE> implements FeaturesEncoder<ENCODED_FEATURES_TYPE> {
-	
-	private static final long serialVersionUID = 2233783545101319775L;
+public abstract class FeaturesEncoder_ImplBase<ENCODED_FEATURES_TYPE, ENCODED_FEATURE_TYPE> extends
+        FeatureEncoderChain<ENCODED_FEATURE_TYPE> implements FeaturesEncoder<ENCODED_FEATURES_TYPE> {
 
-	public static final String ENCODERS_FILE_NAME = "encoders.ser";
+  private static final long serialVersionUID = 2233783545101319775L;
 
-	public abstract ENCODED_FEATURES_TYPE encodeAll(Iterable<Feature> features) throws CleartkException;
-	
-	public void finalizeFeatureSet(File outputDirectory) throws CleartkException {}
+  public static final String ENCODERS_FILE_NAME = "encoders.ser";
+
+  public abstract ENCODED_FEATURES_TYPE encodeAll(Iterable<Feature> features)
+          throws CleartkException;
+
+  public void finalizeFeatureSet(File outputDirectory) throws CleartkException {
+  }
 
 }

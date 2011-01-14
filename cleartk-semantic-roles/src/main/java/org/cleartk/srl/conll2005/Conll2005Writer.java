@@ -51,235 +51,235 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  */
 public class Conll2005Writer extends JCasAnnotator_ImplBase {
 
-	@ConfigurationParameter(mandatory = true, description = "the path where the CoNLL-2005-formatted text should be written")
-	private File outputFile;
-	public static final String PARAM_OUTPUT_FILE = ConfigurationParameterFactory
-			.createConfigurationParameterName(Conll2005Writer.class, "outputFile");
+  @ConfigurationParameter(mandatory = true, description = "the path where the CoNLL-2005-formatted text should be written")
+  private File outputFile;
 
-	private PrintWriter output;
-	private boolean first;
+  public static final String PARAM_OUTPUT_FILE = ConfigurationParameterFactory
+          .createConfigurationParameterName(Conll2005Writer.class, "outputFile");
 
-	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		super.initialize(context);
-		try {
-			this.output = new PrintWriter(outputFile);
-			this.first = true;
-		} catch (FileNotFoundException e) {
-			throw new ResourceInitializationException(e);
-		}
-	}
+  private PrintWriter output;
 
-	@Override
-	public void process(JCas jCas) throws AnalysisEngineProcessException {
-		List<Sentence> sentences = AnnotationRetrieval.getAnnotations(jCas,
-				Sentence.class);
-		for (Sentence sentence : sentences) {
-			if (first)
-				first = false;
-			else
-				output.println();
+  private boolean first;
 
-			List<PredicateWriter> predicateWriters = new ArrayList<PredicateWriter>();
-			for (Predicate predicate : AnnotationRetrieval.getAnnotations(jCas,
-					sentence, Predicate.class)) {
-				predicateWriters.add(new PredicateWriter(jCas, predicate));
-			}
+  @Override
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    super.initialize(context);
+    try {
+      this.output = new PrintWriter(outputFile);
+      this.first = true;
+    } catch (FileNotFoundException e) {
+      throw new ResourceInitializationException(e);
+    }
+  }
 
-			for (Token token : AnnotationRetrieval.getAnnotations(jCas,
-					sentence, Token.class)) {
-				CoNLL05Line line = new CoNLL05Line();
+  @Override
+  public void process(JCas jCas) throws AnalysisEngineProcessException {
+    List<Sentence> sentences = AnnotationRetrieval.getAnnotations(jCas, Sentence.class);
+    for (Sentence sentence : sentences) {
+      if (first)
+        first = false;
+      else
+        output.println();
 
-				// line.setLexeme(token.getCoveredText());
-				// line.setPos(token.getPos());
+      List<PredicateWriter> predicateWriters = new ArrayList<PredicateWriter>();
+      for (Predicate predicate : AnnotationRetrieval
+              .getAnnotations(jCas, sentence, Predicate.class)) {
+        predicateWriters.add(new PredicateWriter(jCas, predicate));
+      }
 
-				for (PredicateWriter predicateWriter : predicateWriters) {
-					predicateWriter.write(token, line);
-				}
+      for (Token token : AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class)) {
+        CoNLL05Line line = new CoNLL05Line();
 
-				output.println(line.evalString());
-			}
+        // line.setLexeme(token.getCoveredText());
+        // line.setPos(token.getPos());
 
-		}
-		output.flush();
-	}
+        for (PredicateWriter predicateWriter : predicateWriters) {
+          predicateWriter.write(token, line);
+        }
 
-	@Override
-	public void collectionProcessComplete()
-			throws AnalysisEngineProcessException {
-		output.close();
-		super.collectionProcessComplete();
-	}
+        output.println(line.evalString());
+      }
 
-	private static class CoNLL05Line {
-		// String lexeme;
-		// String pos;
-		// String syntaxSegment;
-		// String neSegment;
-		// String predicateFrameset;
-		String predicateBaseform;
-		List<String> argumentRoles;
+    }
+    output.flush();
+  }
 
-		public CoNLL05Line() {
-			// lexeme = "<empty>";
-			// pos = "<empty>";
-			// syntaxSegment = "*";
-			// neSegment = "*";
-			// predicateFrameset = "-";
-			predicateBaseform = "-";
-			argumentRoles = new ArrayList<String>();
-		}
+  @Override
+  public void collectionProcessComplete() throws AnalysisEngineProcessException {
+    output.close();
+    super.collectionProcessComplete();
+  }
 
-		public String evalString() {
-			StringBuffer buffer = new StringBuffer();
-			// buffer.append(lexeme);
-			// buffer.append("\t");
-			// buffer.append(pos);
-			// buffer.append("\t");
-			// buffer.append(syntaxSegment);
-			// buffer.append("\t");
-			// buffer.append(neSegment);
-			// buffer.append("\t");
-			// buffer.append("predicateFrameset");
-			// buffer.append("\t");
-			buffer.append(predicateBaseform);
+  private static class CoNLL05Line {
+    // String lexeme;
+    // String pos;
+    // String syntaxSegment;
+    // String neSegment;
+    // String predicateFrameset;
+    String predicateBaseform;
 
-			for (String argumentRole : argumentRoles) {
-				buffer.append("\t");
-				buffer.append(argumentRole);
-			}
+    List<String> argumentRoles;
 
-			return buffer.toString();
-		}
+    public CoNLL05Line() {
+      // lexeme = "<empty>";
+      // pos = "<empty>";
+      // syntaxSegment = "*";
+      // neSegment = "*";
+      // predicateFrameset = "-";
+      predicateBaseform = "-";
+      argumentRoles = new ArrayList<String>();
+    }
 
-		// public void setLexeme(String lexeme) {
-		// this.lexeme = lexeme;
-		// }
-		//
-		// public void setPos(String pos) {
-		// this.pos = pos;
-		// }
+    public String evalString() {
+      StringBuffer buffer = new StringBuffer();
+      // buffer.append(lexeme);
+      // buffer.append("\t");
+      // buffer.append(pos);
+      // buffer.append("\t");
+      // buffer.append(syntaxSegment);
+      // buffer.append("\t");
+      // buffer.append(neSegment);
+      // buffer.append("\t");
+      // buffer.append("predicateFrameset");
+      // buffer.append("\t");
+      buffer.append(predicateBaseform);
 
-		// public void setSyntaxSegment(String syntaxSegment) {
-		// this.syntaxSegment = syntaxSegment;
-		// }
+      for (String argumentRole : argumentRoles) {
+        buffer.append("\t");
+        buffer.append(argumentRole);
+      }
 
-		// public void setNeSegment(String neSegment) {
-		// this.neSegment = neSegment;
-		// }
+      return buffer.toString();
+    }
 
-		public void setPredicateFrameset(Integer predicateFrameset) {
-			// if( predicateFrameset == null ) {
-			// this.predicateFrameset = "-";
-			// } else {
-			// this.predicateFrameset = String.format("%2d", predicateFrameset);
-			// }
-		}
+    // public void setLexeme(String lexeme) {
+    // this.lexeme = lexeme;
+    // }
+    //
+    // public void setPos(String pos) {
+    // this.pos = pos;
+    // }
 
-		public void setPredicateBaseform(String predicateBaseform) {
-			if (predicateBaseform == null) {
-				this.predicateBaseform = "-";
-			} else {
-				this.predicateBaseform = predicateBaseform;
-			}
-		}
+    // public void setSyntaxSegment(String syntaxSegment) {
+    // this.syntaxSegment = syntaxSegment;
+    // }
 
-		public void addArgumentRole(String argumentRole) {
-			this.argumentRoles.add(argumentRole);
-		}
-	}
+    // public void setNeSegment(String neSegment) {
+    // this.neSegment = neSegment;
+    // }
 
-	private static class PredicateWriter {
-		String baseform;
-		Integer frameset;
+    public void setPredicateFrameset(Integer predicateFrameset) {
+      // if( predicateFrameset == null ) {
+      // this.predicateFrameset = "-";
+      // } else {
+      // this.predicateFrameset = String.format("%2d", predicateFrameset);
+      // }
+    }
 
-		Token token;
+    public void setPredicateBaseform(String predicateBaseform) {
+      if (predicateBaseform == null) {
+        this.predicateBaseform = "-";
+      } else {
+        this.predicateBaseform = predicateBaseform;
+      }
+    }
 
-		List<ArgumentWriter> argumentWriters;
+    public void addArgumentRole(String argumentRole) {
+      this.argumentRoles.add(argumentRole);
+    }
+  }
 
-		PredicateWriter(JCas jCas, Predicate predicate) {
-			this.token = AnnotationRetrieval.getAnnotations(jCas,
-					predicate.getAnnotation(), Token.class).get(0);
-			this.baseform = predicate.getBaseForm();
-			this.frameset = 1;
+  private static class PredicateWriter {
+    String baseform;
 
-			List<Argument> allArgs = UIMAUtil.toList(predicate.getArguments(),
-					Argument.class);
-			this.argumentWriters = new ArrayList<ArgumentWriter>();
-			for (Argument arg : allArgs) {
-				if (arg instanceof SemanticArgument) {
-					this.argumentWriters.add(new ArgumentWriter(jCas,
-							(SemanticArgument) arg));
-				}
-			}
-		}
+    Integer frameset;
 
-		void write(Token tok, CoNLL05Line line) {
-			if (this.token.equals(tok)) {
-				line.setPredicateBaseform(this.baseform);
-				line.setPredicateFrameset(this.frameset);
-			}
+    Token token;
 
-			line.addArgumentRole(getArgumentsString(tok));
-		}
+    List<ArgumentWriter> argumentWriters;
 
-		String getArgumentsString(Token tok) {
-			StringBuffer buffer = new StringBuffer();
+    PredicateWriter(JCas jCas, Predicate predicate) {
+      this.token = AnnotationRetrieval.getAnnotations(jCas, predicate.getAnnotation(), Token.class)
+              .get(0);
+      this.baseform = predicate.getBaseForm();
+      this.frameset = 1;
 
-			for (ArgumentWriter argumentWriter : this.argumentWriters) {
-				buffer.append(argumentWriter.getStartString(tok));
-			}
+      List<Argument> allArgs = UIMAUtil.toList(predicate.getArguments(), Argument.class);
+      this.argumentWriters = new ArrayList<ArgumentWriter>();
+      for (Argument arg : allArgs) {
+        if (arg instanceof SemanticArgument) {
+          this.argumentWriters.add(new ArgumentWriter(jCas, (SemanticArgument) arg));
+        }
+      }
+    }
 
-			buffer.append("*");
+    void write(Token tok, CoNLL05Line line) {
+      if (this.token.equals(tok)) {
+        line.setPredicateBaseform(this.baseform);
+        line.setPredicateFrameset(this.frameset);
+      }
 
-			for (ArgumentWriter argumentWriter : this.argumentWriters) {
-				buffer.append(argumentWriter.getEndString(tok));
-			}
+      line.addArgumentRole(getArgumentsString(tok));
+    }
 
-			return buffer.toString();
-		}
-	}
+    String getArgumentsString(Token tok) {
+      StringBuffer buffer = new StringBuffer();
 
-	private static class ArgumentWriter {
-		String label;
-		String feature;
-		String preposition;
+      for (ArgumentWriter argumentWriter : this.argumentWriters) {
+        buffer.append(argumentWriter.getStartString(tok));
+      }
 
-		List<Token> tokens;
+      buffer.append("*");
 
-		ArgumentWriter(JCas jCas, SemanticArgument arg) {
-			this.label = arg.getLabel();
-			this.feature = arg.getFeature();
-			this.preposition = arg.getPreposition();
-			this.tokens = AnnotationRetrieval.getAnnotations(jCas, arg
-					.getAnnotation(), Token.class);
-		}
+      for (ArgumentWriter argumentWriter : this.argumentWriters) {
+        buffer.append(argumentWriter.getEndString(tok));
+      }
 
-		String getStartString(Token token) {
-			if (token == this.tokens.get(0))
-				return "(" + getFullLabel();
-			else
-				return "";
-		}
+      return buffer.toString();
+    }
+  }
 
-		String getEndString(Token token) {
-			if (token == this.tokens.get(this.tokens.size() - 1))
-				return ")";
-			else
-				return "";
-		}
+  private static class ArgumentWriter {
+    String label;
 
-		String getFullLabel() {
-			StringBuffer buffer = new StringBuffer();
+    String feature;
 
-			buffer.append(this.label);
-			if (this.feature != null)
-				buffer.append("-" + this.feature);
-			if (this.preposition != null)
-				buffer.append("-" + this.preposition);
+    String preposition;
 
-			return buffer.toString();
-		}
-	}
+    List<Token> tokens;
+
+    ArgumentWriter(JCas jCas, SemanticArgument arg) {
+      this.label = arg.getLabel();
+      this.feature = arg.getFeature();
+      this.preposition = arg.getPreposition();
+      this.tokens = AnnotationRetrieval.getAnnotations(jCas, arg.getAnnotation(), Token.class);
+    }
+
+    String getStartString(Token token) {
+      if (token == this.tokens.get(0))
+        return "(" + getFullLabel();
+      else
+        return "";
+    }
+
+    String getEndString(Token token) {
+      if (token == this.tokens.get(this.tokens.size() - 1))
+        return ")";
+      else
+        return "";
+    }
+
+    String getFullLabel() {
+      StringBuffer buffer = new StringBuffer();
+
+      buffer.append(this.label);
+      if (this.feature != null)
+        buffer.append("-" + this.feature);
+      if (this.preposition != null)
+        buffer.append("-" + this.preposition);
+
+      return buffer.toString();
+    }
+  }
 
 }

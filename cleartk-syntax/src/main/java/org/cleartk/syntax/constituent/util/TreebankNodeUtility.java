@@ -44,117 +44,122 @@ import org.cleartk.util.UIMAUtil;
  * 
  */
 public class TreebankNodeUtility {
-	public static org.cleartk.syntax.constituent.type.TopTreebankNode convert(TopTreebankNode pojoNode, JCas jCas, boolean addToIndexes) {
-		org.cleartk.syntax.constituent.type.TopTreebankNode uimaNode = new org.cleartk.syntax.constituent.type.TopTreebankNode(
-				jCas, pojoNode.getTextBegin(), pojoNode.getTextEnd());
-		convert(pojoNode, jCas, uimaNode, null, addToIndexes);
-		uimaNode.setTreebankParse(pojoNode.getTreebankParse());
-		initTerminalNodes(uimaNode, jCas);
-		if(addToIndexes)
-			uimaNode.addToIndexes();
-		return uimaNode;
-	}
+  public static org.cleartk.syntax.constituent.type.TopTreebankNode convert(
+          TopTreebankNode pojoNode, JCas jCas, boolean addToIndexes) {
+    org.cleartk.syntax.constituent.type.TopTreebankNode uimaNode = new org.cleartk.syntax.constituent.type.TopTreebankNode(
+            jCas, pojoNode.getTextBegin(), pojoNode.getTextEnd());
+    convert(pojoNode, jCas, uimaNode, null, addToIndexes);
+    uimaNode.setTreebankParse(pojoNode.getTreebankParse());
+    initTerminalNodes(uimaNode, jCas);
+    if (addToIndexes)
+      uimaNode.addToIndexes();
+    return uimaNode;
+  }
 
-	public static void initTerminalNodes(org.cleartk.syntax.constituent.type.TopTreebankNode uimaNode, JCas jCas) {
-		List<TerminalTreebankNode> terminals = new ArrayList<org.cleartk.syntax.constituent.type.TerminalTreebankNode>();
-		_initTerminalNodes(uimaNode, terminals);
-		
-		for(int i=0; i< terminals.size(); i++) {
-			TerminalTreebankNode terminal = terminals.get(i);
-			terminal.setIndex(i);
-		}
-		
-		FSArray terminalsFSArray = new FSArray(jCas, terminals.size());
-		terminalsFSArray.copyFromArray(terminals.toArray(new FeatureStructure[terminals.size()]), 0, 0, terminals
-				.size());
-		uimaNode.setTerminals(terminalsFSArray);
-	}
+  public static void initTerminalNodes(
+          org.cleartk.syntax.constituent.type.TopTreebankNode uimaNode, JCas jCas) {
+    List<TerminalTreebankNode> terminals = new ArrayList<org.cleartk.syntax.constituent.type.TerminalTreebankNode>();
+    _initTerminalNodes(uimaNode, terminals);
 
-	private static void _initTerminalNodes(org.cleartk.syntax.constituent.type.TreebankNode node,
-			List<TerminalTreebankNode> terminals) {
-		FSArray children = node.getChildren();
-		for (int i = 0; i < children.size(); i++) {
-			org.cleartk.syntax.constituent.type.TreebankNode child = (org.cleartk.syntax.constituent.type.TreebankNode) children
-					.get(i);
-			if (child instanceof TerminalTreebankNode) {
-				terminals.add((TerminalTreebankNode)child);
-			}
-			else _initTerminalNodes(child, terminals);
-		}
-	}
+    for (int i = 0; i < terminals.size(); i++) {
+      TerminalTreebankNode terminal = terminals.get(i);
+      terminal.setIndex(i);
+    }
 
-	public static org.cleartk.syntax.constituent.type.TreebankNode convert(TreebankNode pojoNode, JCas jCas,
-			org.cleartk.syntax.constituent.type.TreebankNode uimaNode,
-			org.cleartk.syntax.constituent.type.TreebankNode parentNode,
-			boolean addToIndexes) {
-		uimaNode.setNodeType(pojoNode.getType());
-		uimaNode.setNodeTags(UIMAUtil.toStringArray(jCas, pojoNode.getTags()));
-		uimaNode.setNodeValue(pojoNode.getValue());
-		uimaNode.setLeaf(pojoNode.isLeaf());
-		uimaNode.setParent(parentNode);
+    FSArray terminalsFSArray = new FSArray(jCas, terminals.size());
+    terminalsFSArray.copyFromArray(terminals.toArray(new FeatureStructure[terminals.size()]), 0, 0,
+            terminals.size());
+    uimaNode.setTerminals(terminalsFSArray);
+  }
 
-		List<org.cleartk.syntax.constituent.type.TreebankNode> uimaChildren = new ArrayList<org.cleartk.syntax.constituent.type.TreebankNode>();
-		for (TreebankNode child : pojoNode.getChildren()) {
-			org.cleartk.syntax.constituent.type.TreebankNode childNode;
-			if(child.isLeaf()) {
-				childNode = new TerminalTreebankNode(jCas, child.getTextBegin(), child.getTextEnd());
-			} else { 
-				childNode = new org.cleartk.syntax.constituent.type.TreebankNode(
-					jCas, child.getTextBegin(), child.getTextEnd());
-			}
-			uimaChildren.add(convert(child, jCas, childNode, uimaNode, addToIndexes));
-			if(addToIndexes)
-				childNode.addToIndexes();
-		}
-		FSArray uimaChildrenFSArray = new FSArray(jCas, uimaChildren.size());
-		uimaChildrenFSArray.copyFromArray(uimaChildren.toArray(new FeatureStructure[uimaChildren.size()]), 0, 0,
-				uimaChildren.size());
-		uimaNode.setChildren(uimaChildrenFSArray);
-		return uimaNode;
-	}
+  private static void _initTerminalNodes(org.cleartk.syntax.constituent.type.TreebankNode node,
+          List<TerminalTreebankNode> terminals) {
+    FSArray children = node.getChildren();
+    for (int i = 0; i < children.size(); i++) {
+      org.cleartk.syntax.constituent.type.TreebankNode child = (org.cleartk.syntax.constituent.type.TreebankNode) children
+              .get(i);
+      if (child instanceof TerminalTreebankNode) {
+        terminals.add((TerminalTreebankNode) child);
+      } else
+        _initTerminalNodes(child, terminals);
+    }
+  }
 
-	public static org.cleartk.syntax.constituent.type.TopTreebankNode getTopNode(org.cleartk.syntax.constituent.type.TreebankNode node){
-		if(node instanceof org.cleartk.syntax.constituent.type.TopTreebankNode)
-			return (org.cleartk.syntax.constituent.type.TopTreebankNode) node;
-		
-		org.cleartk.syntax.constituent.type.TreebankNode parent = node.getParent();
-		while(parent != null) {
-			if(parent instanceof org.cleartk.syntax.constituent.type.TopTreebankNode)
-				return (org.cleartk.syntax.constituent.type.TopTreebankNode) parent;
-			node = parent;
-			parent = node.getParent();
-		}
-		return null;
-	}
-	
-	/**
-	 * @return a "pretty print" of this node that may be useful for e.g. debugging.  
-	 */
-	public static void print(PrintStream out, org.cleartk.syntax.constituent.type.TreebankNode node) {
-		out.println(print(node, 0));
-	}
+  public static org.cleartk.syntax.constituent.type.TreebankNode convert(TreebankNode pojoNode,
+          JCas jCas, org.cleartk.syntax.constituent.type.TreebankNode uimaNode,
+          org.cleartk.syntax.constituent.type.TreebankNode parentNode, boolean addToIndexes) {
+    uimaNode.setNodeType(pojoNode.getType());
+    uimaNode.setNodeTags(UIMAUtil.toStringArray(jCas, pojoNode.getTags()));
+    uimaNode.setNodeValue(pojoNode.getValue());
+    uimaNode.setLeaf(pojoNode.isLeaf());
+    uimaNode.setParent(parentNode);
 
-	private static String print(org.cleartk.syntax.constituent.type.TreebankNode node, int tabs) {
-		StringBuffer returnValue = new StringBuffer();
-		String tabString = getTabs(tabs);
-		returnValue.append(tabString + node.getNodeType());
-		if (node.getNodeValue() != null) returnValue.append(":" + node.getNodeValue() + "\n");
-		else {
-			returnValue.append(":" + node.getCoveredText() + "\n");
-		}
-		if (node.getChildren().size() > 0) {
-			List<org.cleartk.syntax.constituent.type.TreebankNode> children = UIMAUtil.toList(node.getChildren(), org.cleartk.syntax.constituent.type.TreebankNode.class);
-			for (org.cleartk.syntax.constituent.type.TreebankNode child : children) {
-				returnValue.append(print(child, (tabs + 1)));
-			}
-		}
-		return returnValue.toString();
-	}
+    List<org.cleartk.syntax.constituent.type.TreebankNode> uimaChildren = new ArrayList<org.cleartk.syntax.constituent.type.TreebankNode>();
+    for (TreebankNode child : pojoNode.getChildren()) {
+      org.cleartk.syntax.constituent.type.TreebankNode childNode;
+      if (child.isLeaf()) {
+        childNode = new TerminalTreebankNode(jCas, child.getTextBegin(), child.getTextEnd());
+      } else {
+        childNode = new org.cleartk.syntax.constituent.type.TreebankNode(jCas,
+                child.getTextBegin(), child.getTextEnd());
+      }
+      uimaChildren.add(convert(child, jCas, childNode, uimaNode, addToIndexes));
+      if (addToIndexes)
+        childNode.addToIndexes();
+    }
+    FSArray uimaChildrenFSArray = new FSArray(jCas, uimaChildren.size());
+    uimaChildrenFSArray.copyFromArray(
+            uimaChildren.toArray(new FeatureStructure[uimaChildren.size()]), 0, 0,
+            uimaChildren.size());
+    uimaNode.setChildren(uimaChildrenFSArray);
+    return uimaNode;
+  }
 
-	private static String getTabs(int tabs) {
-		char[] chars = new char[tabs];
-        Arrays.fill(chars, ' ');
-        return new String(chars); 
-	}
+  public static org.cleartk.syntax.constituent.type.TopTreebankNode getTopNode(
+          org.cleartk.syntax.constituent.type.TreebankNode node) {
+    if (node instanceof org.cleartk.syntax.constituent.type.TopTreebankNode)
+      return (org.cleartk.syntax.constituent.type.TopTreebankNode) node;
+
+    org.cleartk.syntax.constituent.type.TreebankNode parent = node.getParent();
+    while (parent != null) {
+      if (parent instanceof org.cleartk.syntax.constituent.type.TopTreebankNode)
+        return (org.cleartk.syntax.constituent.type.TopTreebankNode) parent;
+      node = parent;
+      parent = node.getParent();
+    }
+    return null;
+  }
+
+  /**
+   * @return a "pretty print" of this node that may be useful for e.g. debugging.
+   */
+  public static void print(PrintStream out, org.cleartk.syntax.constituent.type.TreebankNode node) {
+    out.println(print(node, 0));
+  }
+
+  private static String print(org.cleartk.syntax.constituent.type.TreebankNode node, int tabs) {
+    StringBuffer returnValue = new StringBuffer();
+    String tabString = getTabs(tabs);
+    returnValue.append(tabString + node.getNodeType());
+    if (node.getNodeValue() != null)
+      returnValue.append(":" + node.getNodeValue() + "\n");
+    else {
+      returnValue.append(":" + node.getCoveredText() + "\n");
+    }
+    if (node.getChildren().size() > 0) {
+      List<org.cleartk.syntax.constituent.type.TreebankNode> children = UIMAUtil.toList(
+              node.getChildren(), org.cleartk.syntax.constituent.type.TreebankNode.class);
+      for (org.cleartk.syntax.constituent.type.TreebankNode child : children) {
+        returnValue.append(print(child, (tabs + 1)));
+      }
+    }
+    return returnValue.toString();
+  }
+
+  private static String getTabs(int tabs) {
+    char[] chars = new char[tabs];
+    Arrays.fill(chars, ' ');
+    return new String(chars);
+  }
 
 }

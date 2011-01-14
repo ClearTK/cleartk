@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2009, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 
 package org.cleartk.ne.ace2005;
 
@@ -31,32 +31,30 @@ import org.junit.Test;
 import org.uimafit.factory.CollectionReaderFactory;
 
 /**
- * <br>Copyright (c) 2009, Regents of the University of Colorado 
- * <br>All rights reserved.
- *
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * @author Philip Ogren
- *
+ * 
  */
 
 public class Ace2005GoldTest extends NeTestBase {
- 
-	@Test
-	public void testReaderInvalidParameters() throws Exception {
-		try {
-			CollectionReaderFactory.createCollectionReader(
-					Ace2005GoldReader.class, typeSystemDescription);
-			Assert.fail("expected error for invalid corpus directory");
-		}
-		catch (ResourceInitializationException e) {
-		}
 
-		try {
-			CollectionReaderFactory.createCollectionReader(
-					Ace2005GoldReader.class, typeSystemDescription,
-					Ace2005GoldReader.PARAM_ACE_DIRECTORY_NAME, "foo/bar");
-			Assert.fail("expected error for invalid corpus directory");
-		}
-		catch (ResourceInitializationException e) {
-		}
-	}
+  @Test
+  public void testReaderInvalidParameters() throws Exception {
+    try {
+      CollectionReaderFactory
+              .createCollectionReader(Ace2005GoldReader.class, typeSystemDescription);
+      Assert.fail("expected error for invalid corpus directory");
+    } catch (ResourceInitializationException e) {
+    }
+
+    try {
+      CollectionReaderFactory.createCollectionReader(Ace2005GoldReader.class,
+              typeSystemDescription, Ace2005GoldReader.PARAM_ACE_DIRECTORY_NAME, "foo/bar");
+      Assert.fail("expected error for invalid corpus directory");
+    } catch (ResourceInitializationException e) {
+    }
+  }
 }

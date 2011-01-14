@@ -34,15 +34,13 @@ import org.cleartk.CleartkException;
  * 
  * <p>
  * 
- * This class provides an abstraction for interfacing with various ML learning
- * libraries such as Mallet, Libsvm, OpenNLP Maxent, etc. Each subclass must
- * override the abstract methods (naturally!) each of which is documented below.
- * Each subclass must also be able to be instantiated from a single jar file
- * that contains all the necessary meta-data and data (e.g. the model). The
- * contents of the jar file will vary for each implementation. However, each jar
- * file should have a manifest file with two attributes, "returnType" and
- * "classifier". The jar command can be used to set the manifest of a jar file.
- * A manifest file should look something like this:
+ * This class provides an abstraction for interfacing with various ML learning libraries such as
+ * Mallet, Libsvm, OpenNLP Maxent, etc. Each subclass must override the abstract methods
+ * (naturally!) each of which is documented below. Each subclass must also be able to be
+ * instantiated from a single jar file that contains all the necessary meta-data and data (e.g. the
+ * model). The contents of the jar file will vary for each implementation. However, each jar file
+ * should have a manifest file with two attributes, "returnType" and "classifier". The jar command
+ * can be used to set the manifest of a jar file. A manifest file should look something like this:
  * 
  * <pre>
  *  Manifest-Version: 1.0
@@ -56,29 +54,25 @@ import org.cleartk.CleartkException;
  */
 
 public interface Classifier<OUTCOME_TYPE> {
-	/**
-	 * Classifies a list of features.
-	 * 
-	 * @param features  a list of features to be classified
-	 * @return          the classification made
-	 */
-	public OUTCOME_TYPE classify(List<Feature> features) throws CleartkException;
+  /**
+   * Classifies a list of features.
+   * 
+   * @param features
+   *          a list of features to be classified
+   * @return the classification made
+   */
+  public OUTCOME_TYPE classify(List<Feature> features) throws CleartkException;
 
-	/**
-	 * Get the N best classifications along with their scores.
-	 * 
-	 * @param features    a list of features to be classified
-	 * @param maxResults  the maximum number of classifications to return
-	 * @return            a sorted list of the best N classifications with
-	 *                    their scores
-	 */
-	public List<ScoredOutcome<OUTCOME_TYPE>> score(List<Feature> features, int maxResults) throws CleartkException;
+  /**
+   * Get the N best classifications along with their scores.
+   * 
+   * @param features
+   *          a list of features to be classified
+   * @param maxResults
+   *          the maximum number of classifications to return
+   * @return a sorted list of the best N classifications with their scores
+   */
+  public List<ScoredOutcome<OUTCOME_TYPE>> score(List<Feature> features, int maxResults)
+          throws CleartkException;
 
 }
-
-
-
-
-
-
-

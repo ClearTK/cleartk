@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.mallet;
 
 import java.io.ObjectInputStream;
@@ -41,87 +41,87 @@ import cc.mallet.types.Instance;
 import cc.mallet.types.Sequence;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * 
  * @author Philip Ogren
- *
- * This classifier provides an interface to the 
- * <a href="http://mallet.cs.umass.edu/index.php/SimpleTagger_example">
- * Mallet Conditional Random Field (CRF) tagger</a>.  
- * Annotators that use a sequential learner such as this one will need to 
- * support classification of a sequence of instances.  
+ * 
+ *         This classifier provides an interface to the <a
+ *         href="http://mallet.cs.umass.edu/index.php/SimpleTagger_example"> Mallet Conditional
+ *         Random Field (CRF) tagger</a>. Annotators that use a sequential learner such as this one
+ *         will need to support classification of a sequence of instances.
  */
-public class MalletCRFClassifier extends JarSequentialClassifier<String,String,List<NameNumber>>
-{
-	protected Transducer transducer;
-	
-	public MalletCRFClassifier(JarFile modelFile) throws Exception {
-		super(modelFile);
-		
-		ZipEntry modelEntry = modelFile.getEntry("model.malletcrf");
-		ObjectInputStream objectStream = new ObjectInputStream(modelFile.getInputStream(modelEntry));
-		this.transducer = (Transducer) objectStream.readObject();
-    }
-	
-	/**
-	 * This method classifies several instances at once
-	 * @param features a list of lists of features - each list 
-	 * in the list represents one instance to be classified.  The
-	 * list should correspond to some logical sequence of instances
-	 * to be classified (e.g. tokens in a sentence or lines in a document)
-	 * that corresponds to the model that has been built for this classifier.
-	 * @throws CleartkException 
-	 */
-	public List<String> classifySequence(List<List<Feature>> features) throws CleartkException
-	{
-		String[][] featureStringArray = toStrings(features);
-		Pipe pipe = transducer.getInputPipe();
-		
-		Instance instance = new Instance(featureStringArray, null, null, null); 
-		instance = pipe.instanceFrom(instance);
-		
-		Sequence<?> data = (Sequence<?>)instance.getData();
-		Sequence<?> untypedSequence = transducer.transduce(data);
-		Sequence<String> sequence = ReflectionUtil.uncheckedCast(untypedSequence);
-		
-		List<String> returnValues = new ArrayList<String>();
-		
-		for(int i=0; i<sequence.size(); i++) {
-			String encodedOutcome = sequence.get(i);
-			returnValues.add(outcomeEncoder.decode(encodedOutcome));
-		}
-		return returnValues;
-	}
+public class MalletCRFClassifier extends JarSequentialClassifier<String, String, List<NameNumber>> {
+  protected Transducer transducer;
 
-	/**
-	 * Converts the features into a 2D string array that Mallet can
-	 * use.  The only thing mildly tricky about this method is that
-	 * the length of each string array is one more than the size of each
-	 * feature list - i.e. <code>returnValues[0].length == features.get(0).size() + 1</code>
-	 * where the last element in each string array is an empty string.
-	 * @param features the features to be converted.  
-	 * @return a 2D string array that Mallet can use. 
-	 * @throws CleartkException 
-	 */
-	private String[][] toStrings(List<List<Feature>> features) throws CleartkException {
-		List<List<String>> encodedFeatures = new ArrayList<List<String>>(features.size());
-		for( List<Feature> features1 : features ) {
-			List<NameNumber> nameNumbers = this.featuresEncoder.encodeAll(features1);
-			List<String> encodedFeatures1 = new ArrayList<String>();
-			for(NameNumber nameNumber : nameNumbers) {
-				encodedFeatures1.add(nameNumber.name);
-			}
-			encodedFeatures.add(encodedFeatures1);
-		}
-		
-		String[][] encodedFeaturesArray = new String[encodedFeatures.size()][];
-		for( int i=0; i<encodedFeatures.size(); i++ ) {
-			String[] encodedFeaturesArray1 = encodedFeatures.get(i).toArray(new String[0]);
-			encodedFeaturesArray[i] = encodedFeaturesArray1;
-		}
-		
-		return encodedFeaturesArray;
-	}
+  public MalletCRFClassifier(JarFile modelFile) throws Exception {
+    super(modelFile);
+
+    ZipEntry modelEntry = modelFile.getEntry("model.malletcrf");
+    ObjectInputStream objectStream = new ObjectInputStream(modelFile.getInputStream(modelEntry));
+    this.transducer = (Transducer) objectStream.readObject();
+  }
+
+  /**
+   * This method classifies several instances at once
+   * 
+   * @param features
+   *          a list of lists of features - each list in the list represents one instance to be
+   *          classified. The list should correspond to some logical sequence of instances to be
+   *          classified (e.g. tokens in a sentence or lines in a document) that corresponds to the
+   *          model that has been built for this classifier.
+   * @throws CleartkException
+   */
+  public List<String> classifySequence(List<List<Feature>> features) throws CleartkException {
+    String[][] featureStringArray = toStrings(features);
+    Pipe pipe = transducer.getInputPipe();
+
+    Instance instance = new Instance(featureStringArray, null, null, null);
+    instance = pipe.instanceFrom(instance);
+
+    Sequence<?> data = (Sequence<?>) instance.getData();
+    Sequence<?> untypedSequence = transducer.transduce(data);
+    Sequence<String> sequence = ReflectionUtil.uncheckedCast(untypedSequence);
+
+    List<String> returnValues = new ArrayList<String>();
+
+    for (int i = 0; i < sequence.size(); i++) {
+      String encodedOutcome = sequence.get(i);
+      returnValues.add(outcomeEncoder.decode(encodedOutcome));
+    }
+    return returnValues;
+  }
+
+  /**
+   * Converts the features into a 2D string array that Mallet can use. The only thing mildly tricky
+   * about this method is that the length of each string array is one more than the size of each
+   * feature list - i.e. <code>returnValues[0].length == features.get(0).size() + 1</code> where the
+   * last element in each string array is an empty string.
+   * 
+   * @param features
+   *          the features to be converted.
+   * @return a 2D string array that Mallet can use.
+   * @throws CleartkException
+   */
+  private String[][] toStrings(List<List<Feature>> features) throws CleartkException {
+    List<List<String>> encodedFeatures = new ArrayList<List<String>>(features.size());
+    for (List<Feature> features1 : features) {
+      List<NameNumber> nameNumbers = this.featuresEncoder.encodeAll(features1);
+      List<String> encodedFeatures1 = new ArrayList<String>();
+      for (NameNumber nameNumber : nameNumbers) {
+        encodedFeatures1.add(nameNumber.name);
+      }
+      encodedFeatures.add(encodedFeatures1);
+    }
+
+    String[][] encodedFeaturesArray = new String[encodedFeatures.size()][];
+    for (int i = 0; i < encodedFeatures.size(); i++) {
+      String[] encodedFeaturesArray1 = encodedFeatures.get(i).toArray(new String[0]);
+      encodedFeaturesArray[i] = encodedFeaturesArray1;
+    }
+
+    return encodedFeaturesArray;
+  }
 }

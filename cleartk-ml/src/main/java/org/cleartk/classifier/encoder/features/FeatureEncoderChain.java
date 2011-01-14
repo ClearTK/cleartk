@@ -30,36 +30,37 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.encoder.features.FeatureEncoder;
 
 /**
- * <br>Copyright (c) 2009, Regents of the University of Colorado 
- * <br>All rights reserved.
- *
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * @author Philipp Wetzler
  */
 public class FeatureEncoderChain<ENCODED_TYPE> implements FeatureEncoder<ENCODED_TYPE> {
 
-	private static final long serialVersionUID = -3363875258541749972L;
+  private static final long serialVersionUID = -3363875258541749972L;
 
-	public void addEncoder(FeatureEncoder<ENCODED_TYPE> encoder) {
-		featureEncoders.add(encoder);
-	}
-	
-	public List<ENCODED_TYPE> encode(Feature feature) {
-		for( FeatureEncoder<ENCODED_TYPE> featureEncoder : featureEncoders ) {
-			if( featureEncoder.encodes(feature) )
-				return featureEncoder.encode(feature);
-		}
-		
-		throw new IllegalArgumentException();
-	}
-	
-	public boolean encodes(Feature feature) {
-		for( FeatureEncoder<ENCODED_TYPE> encoder : featureEncoders )
-			if( encoder.encodes(feature) )
-				return true;
-		
-		return false;
-	}
+  public void addEncoder(FeatureEncoder<ENCODED_TYPE> encoder) {
+    featureEncoders.add(encoder);
+  }
 
-	protected List<FeatureEncoder<ENCODED_TYPE>> featureEncoders = new ArrayList<FeatureEncoder<ENCODED_TYPE>>();
+  public List<ENCODED_TYPE> encode(Feature feature) {
+    for (FeatureEncoder<ENCODED_TYPE> featureEncoder : featureEncoders) {
+      if (featureEncoder.encodes(feature))
+        return featureEncoder.encode(feature);
+    }
+
+    throw new IllegalArgumentException();
+  }
+
+  public boolean encodes(Feature feature) {
+    for (FeatureEncoder<ENCODED_TYPE> encoder : featureEncoders)
+      if (encoder.encodes(feature))
+        return true;
+
+    return false;
+  }
+
+  protected List<FeatureEncoder<ENCODED_TYPE>> featureEncoders = new ArrayList<FeatureEncoder<ENCODED_TYPE>>();
 
 }

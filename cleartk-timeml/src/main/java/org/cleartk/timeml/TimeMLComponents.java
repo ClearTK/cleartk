@@ -33,5 +33,6 @@ import org.uimafit.factory.TypeSystemDescriptionFactory;
  */
 public class TimeMLComponents {
 
-	public static TypeSystemDescription TYPE_SYSTEM_DESCRIPTION = TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.timeml.TypeSystem");
+  public static TypeSystemDescription TYPE_SYSTEM_DESCRIPTION = TypeSystemDescriptionFactory
+          .createTypeSystemDescription("org.cleartk.timeml.TypeSystem");
 }

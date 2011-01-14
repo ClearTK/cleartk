@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2010, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.syntax.opennlp.parser;
 
 import java.util.ArrayList;
@@ -44,30 +44,30 @@ import org.cleartk.util.AnnotationRetrieval;
 
 public class DefaultInputTypesHelper extends InputTypesHelper<Token, Sentence> {
 
-	public List<Token> getTokens(JCas jCas, Sentence sentence) {
-		return AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class);
-	}
+  public List<Token> getTokens(JCas jCas, Sentence sentence) {
+    return AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class);
+  }
 
-	@Override
-	public String getPosTag(Token token) {
-		return token.getPos();
-	}
-	
-	@Override
-	public void setPosTag(Token token, String tag) {
-		token.setPos(tag);
-	}
-	
-	public List<Sentence> getSentences(JCas jCas) {
-		ArrayList<Sentence> result = new ArrayList<Sentence>();
-		FSIterator<Annotation> sentences = 
-			jCas.getJFSIndexRepository().getAnnotationIndex(Sentence.type).iterator();
-		
-		while (sentences.hasNext()) {
-			result.add((Sentence)sentences.next());
-		}
-	
-		return result;
-	}
+  @Override
+  public String getPosTag(Token token) {
+    return token.getPos();
+  }
+
+  @Override
+  public void setPosTag(Token token, String tag) {
+    token.setPos(tag);
+  }
+
+  public List<Sentence> getSentences(JCas jCas) {
+    ArrayList<Sentence> result = new ArrayList<Sentence>();
+    FSIterator<Annotation> sentences = jCas.getJFSIndexRepository()
+            .getAnnotationIndex(Sentence.type).iterator();
+
+    while (sentences.hasNext()) {
+      result.add((Sentence) sentences.next());
+    }
+
+    return result;
+  }
 
 }

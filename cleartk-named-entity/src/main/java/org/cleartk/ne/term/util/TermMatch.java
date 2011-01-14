@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,51 +20,56 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.ne.term.util;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
-*/
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ */
 public class TermMatch {
-	private int begin;
+  private int begin;
 
-	private int end;
+  private int end;
 
-	private Term term;
+  private Term term;
 
-	/**
-	 * 
-	 * @param begin
-	 * @param end
-	 * @param term
-	 * @throws IllegalArgumentException if end is less than begin, term is null, or the length of the term's text does not equal the difference of end and begin.  
-	 */
-	public TermMatch(int begin, int end, Term term) throws IllegalArgumentException {
-		super();
-		if (end < begin) throw new IllegalArgumentException(String.format(
-				"the end of a token must follow the beginning of a token: begin=%1$d, end=%2$d, term='%3$s'", begin,
-				end, term.getTermText()));
-		if (term == null) throw new IllegalArgumentException("term parameter may not be null");
+  /**
+   * 
+   * @param begin
+   * @param end
+   * @param term
+   * @throws IllegalArgumentException
+   *           if end is less than begin, term is null, or the length of the term's text does not
+   *           equal the difference of end and begin.
+   */
+  public TermMatch(int begin, int end, Term term) throws IllegalArgumentException {
+    super();
+    if (end < begin)
+      throw new IllegalArgumentException(
+              String.format(
+                      "the end of a token must follow the beginning of a token: begin=%1$d, end=%2$d, term='%3$s'",
+                      begin, end, term.getTermText()));
+    if (term == null)
+      throw new IllegalArgumentException("term parameter may not be null");
 
-		this.begin = begin;
-		this.end = end;
-		this.term = term;
+    this.begin = begin;
+    this.end = end;
+    this.term = term;
 
-	}
+  }
 
-	public int getBegin() {
-		return begin;
-	}
+  public int getBegin() {
+    return begin;
+  }
 
-	public int getEnd() {
-		return end;
-	}
+  public int getEnd() {
+    return end;
+  }
 
-	public Term getTerm() {
-		return term;
-	}
+  public Term getTerm() {
+    return term;
+  }
 
 }

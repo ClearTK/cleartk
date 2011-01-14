@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,41 +20,40 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.jar;
 
 import java.io.File;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
-*/
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ */
 
 public class Train {
-	public static void main(String ... args) throws Exception {
-		String programName = Train.class.getName();
-		String usage = String.format(
-				"usage: java %s DIR\n\n" + 
-				"The directory DIR should contain the training-data.xxx file as\n" + 
-				"created by a classifier DataWriter\n", programName);
-		
-		// usage message for wrong number of arguments
-		if (args.length < 1) {
-			System.err.format("error: wrong number of arguments\n%s", usage);
-			System.exit(1);
-		}
-		File dir = new File(args[0]);
+  public static void main(String... args) throws Exception {
+    String programName = Train.class.getName();
+    String usage = String.format("usage: java %s DIR\n\n"
+            + "The directory DIR should contain the training-data.xxx file as\n"
+            + "created by a classifier DataWriter\n", programName);
 
-		// get the classifier class from the manifest
-		ClassifierManifest manifest = new ClassifierManifest(dir);
-		ClassifierBuilder<?> classifierBuilder = manifest.getClassifierBuilder();
-		
-		// clip the first item off the command line arguments, and call train
-		String[] remainingArgs = new String[args.length - 1];
-		System.arraycopy(args, 1, remainingArgs, 0, remainingArgs.length);
-		classifierBuilder.train(dir, remainingArgs);
-		classifierBuilder.buildJar(dir, remainingArgs);
-	}
-	
+    // usage message for wrong number of arguments
+    if (args.length < 1) {
+      System.err.format("error: wrong number of arguments\n%s", usage);
+      System.exit(1);
+    }
+    File dir = new File(args[0]);
+
+    // get the classifier class from the manifest
+    ClassifierManifest manifest = new ClassifierManifest(dir);
+    ClassifierBuilder<?> classifierBuilder = manifest.getClassifierBuilder();
+
+    // clip the first item off the command line arguments, and call train
+    String[] remainingArgs = new String[args.length - 1];
+    System.arraycopy(args, 1, remainingArgs, 0, remainingArgs.length);
+    classifierBuilder.train(dir, remainingArgs);
+    classifierBuilder.buildJar(dir, remainingArgs);
+  }
+
 }

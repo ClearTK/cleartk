@@ -45,55 +45,49 @@ import org.cleartk.timeml.util.PrecedingTokenTextBagExtractor;
  */
 public class EventPolarityAnnotator extends EventAttributeAnnotator<String> {
 
-	public static final String MODEL_DIR = "src/main/resources/models/timeml/event/polarity";
+  public static final String MODEL_DIR = "src/main/resources/models/timeml/event/polarity";
 
-	public static AnalysisEngineDescription getWriterDescription(String modelDir)
-			throws ResourceInitializationException {
-		return CleartkComponents.createCleartkAnnotator(
-			EventPolarityAnnotator.class,
-			TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
-			DefaultMaxentDataWriterFactory.class,
-			modelDir,
-			(List<Class<?>>) null);
-	}
+  public static AnalysisEngineDescription getWriterDescription(String modelDir)
+          throws ResourceInitializationException {
+    return CleartkComponents.createCleartkAnnotator(EventPolarityAnnotator.class,
+            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION, DefaultMaxentDataWriterFactory.class,
+            modelDir, (List<Class<?>>) null);
+  }
 
-	public static AnalysisEngineDescription getWriterDescription()
-			throws ResourceInitializationException {
-		return getWriterDescription(MODEL_DIR);
-	}
+  public static AnalysisEngineDescription getWriterDescription()
+          throws ResourceInitializationException {
+    return getWriterDescription(MODEL_DIR);
+  }
 
-	public static AnalysisEngineDescription getAnnotatorDescription(String modelDir)
-			throws ResourceInitializationException {
-		return CleartkComponents.createCleartkAnnotator(
-			EventPolarityAnnotator.class,
-			TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
-			modelDir,
-			(List<Class<?>>) null);
-	}
+  public static AnalysisEngineDescription getAnnotatorDescription(String modelDir)
+          throws ResourceInitializationException {
+    return CleartkComponents.createCleartkAnnotator(EventPolarityAnnotator.class,
+            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION, modelDir, (List<Class<?>>) null);
+  }
 
-	public static AnalysisEngineDescription getAnnotatorDescription()
-			throws ResourceInitializationException {
-		return getAnnotatorDescription(MODEL_DIR + "/model.jar");
-	}
+  public static AnalysisEngineDescription getAnnotatorDescription()
+          throws ResourceInitializationException {
+    return getAnnotatorDescription(MODEL_DIR + "/model.jar");
+  }
 
-	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		super.initialize(context);
-		this.eventFeatureExtractors.add(new PrecedingTokenTextBagExtractor(3, "RB"));
-	}
+  @Override
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    super.initialize(context);
+    this.eventFeatureExtractors.add(new PrecedingTokenTextBagExtractor(3, "RB"));
+  }
 
-	@Override
-	protected String getDefaultValue() {
-		return "POS";
-	}
+  @Override
+  protected String getDefaultValue() {
+    return "POS";
+  }
 
-	@Override
-	protected String getAttribute(Event event) {
-		return event.getPolarity();
-	}
+  @Override
+  protected String getAttribute(Event event) {
+    return event.getPolarity();
+  }
 
-	@Override
-	protected void setAttribute(Event event, String value) {
-		event.setPolarity(value);
-	}
+  @Override
+  protected void setAttribute(Event event, String value) {
+    event.setPolarity(value);
+  }
 }

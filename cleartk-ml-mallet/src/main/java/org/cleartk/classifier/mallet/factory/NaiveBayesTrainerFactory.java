@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.mallet.factory;
 
 import cc.mallet.classify.ClassifierTrainer;
@@ -28,37 +28,40 @@ import cc.mallet.classify.NaiveBayes;
 import cc.mallet.classify.NaiveBayesTrainer;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * 
  * @author Philip Ogren
  */
 
 public class NaiveBayesTrainerFactory implements ClassifierTrainerFactory<NaiveBayes> {
 
-	public static final String NAME = "NaiveBayes";
+  public static final String NAME = "NaiveBayes";
 
-	public ClassifierTrainer<NaiveBayes> createTrainer(String... args) {
-		NaiveBayesTrainer trainer = new NaiveBayesTrainer();
-		if(args != null) {
-			if(args.length % 2 != 0) {
-				throw new IllegalArgumentException("each argument must be supplied with a value:  "+getUsageMessage());
-			}
-			for(int i=0; i<args.length; i+=2) {
-				String optionName = args[i];
-				String optionValue = args[i+1];
-				if(optionName.equals("--docLengthNormalization"))
-					trainer.setDocLengthNormalization(Double.parseDouble(optionValue));
-				else
-					throw new IllegalArgumentException(String.format("the argument %1$s is invalid.", optionName)+getUsageMessage());
-			}
-		}
-		return trainer;
-	}
+  public ClassifierTrainer<NaiveBayes> createTrainer(String... args) {
+    NaiveBayesTrainer trainer = new NaiveBayesTrainer();
+    if (args != null) {
+      if (args.length % 2 != 0) {
+        throw new IllegalArgumentException("each argument must be supplied with a value:  "
+                + getUsageMessage());
+      }
+      for (int i = 0; i < args.length; i += 2) {
+        String optionName = args[i];
+        String optionValue = args[i + 1];
+        if (optionName.equals("--docLengthNormalization"))
+          trainer.setDocLengthNormalization(Double.parseDouble(optionValue));
+        else
+          throw new IllegalArgumentException(String.format("the argument %1$s is invalid.",
+                  optionName) + getUsageMessage());
+      }
+    }
+    return trainer;
+  }
 
-	public String getUsageMessage() {
-		return "The arguments for NaiveBayesTrainerFactory.createTrainer(String...args) should be either empty or include any of the following:" +
-		"\n--docLengthNormalization double";
-	}
+  public String getUsageMessage() {
+    return "The arguments for NaiveBayesTrainerFactory.createTrainer(String...args) should be either empty or include any of the following:"
+            + "\n--docLengthNormalization double";
+  }
 }

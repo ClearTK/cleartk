@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.util.collection;
 
 import java.io.BufferedReader;
@@ -37,83 +37,86 @@ import java.util.Map;
 import org.apache.commons.collections15.bidimap.DualHashBidiMap;
 import org.cleartk.util.BaseConversion;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * <p>
  * 
  * @author Philip
  * 
  */
-public class CompressedStringBidiMap extends DualHashBidiMap<String, String> implements GenKeyBidiMap<String, String> {
+public class CompressedStringBidiMap extends DualHashBidiMap<String, String> implements
+        GenKeyBidiMap<String, String> {
 
-	private static final long serialVersionUID = 5362169827584657941L;
+  private static final long serialVersionUID = 5362169827584657941L;
 
-	private int count = 0;
+  private int count = 0;
 
-	public String getOrGenerateKey(String value) {
-		if (containsValue(value)) return getKey(value);
+  public String getOrGenerateKey(String value) {
+    if (containsValue(value))
+      return getKey(value);
 
-		synchronized (this) {
-			String key = BaseConversion.convertBase(count, 62);
-			put(key, value);
-			return key;
-		}
-	}
+    synchronized (this) {
+      String key = BaseConversion.convertBase(count, 62);
+      put(key, value);
+      return key;
+    }
+  }
 
-	public String put(String key, String value) {
-		count++;
-		return super.put(key, value);
-	}
+  public String put(String key, String value) {
+    count++;
+    return super.put(key, value);
+  }
 
-	public void read(Reader reader) throws IOException {
-		clear();
+  public void read(Reader reader) throws IOException {
+    clear();
 
-		BufferedReader input = new BufferedReader(reader);
+    BufferedReader input = new BufferedReader(reader);
 
-		String line = input.readLine();
+    String line = input.readLine();
 
-		if (line == null) return;
+    if (line == null)
+      return;
 
-		int tempcount = Integer.parseInt(line);
+    int tempcount = Integer.parseInt(line);
 
-		while ((line = input.readLine()) != null) {
-			int tabLocation = line.lastIndexOf('\t');
-			String value = line.substring(0, tabLocation);
-			String key = line.substring(tabLocation + 1);
-			put(key, value);
-		}
+    while ((line = input.readLine()) != null) {
+      int tabLocation = line.lastIndexOf('\t');
+      String value = line.substring(0, tabLocation);
+      String key = line.substring(tabLocation + 1);
+      put(key, value);
+    }
 
-		count = tempcount;
-		input.close();
+    count = tempcount;
+    input.close();
 
-	}
+  }
 
-	public void write(Writer writer) throws IOException {
-		write(writer, false);
-	}
-	public void write(Writer writer, boolean sortOutput) throws IOException {
-		PrintWriter out = new PrintWriter(new BufferedWriter(writer));
-		out.println(count);
-		if (sortOutput) {
-			List<String> lookupList = new ArrayList<String>();
-			for (Map.Entry<String, String> entry : entrySet()) {
-				lookupList.add(String.format("%s\t%s", entry.getValue(), entry.getKey()));
-			}
-			Collections.sort(lookupList);
+  public void write(Writer writer) throws IOException {
+    write(writer, false);
+  }
 
-			// write the sorted key value pairs
-			for (String lookupString : lookupList) {
-				out.println(lookupString);
-			}
-		}
-		else {
-			for (Map.Entry<String, String> entry : entrySet()) {
-				out.println(String.format("%s\t%s", entry.getValue(), entry.getKey()));
-			}
-		}
-		out.close();
-	}
+  public void write(Writer writer, boolean sortOutput) throws IOException {
+    PrintWriter out = new PrintWriter(new BufferedWriter(writer));
+    out.println(count);
+    if (sortOutput) {
+      List<String> lookupList = new ArrayList<String>();
+      for (Map.Entry<String, String> entry : entrySet()) {
+        lookupList.add(String.format("%s\t%s", entry.getValue(), entry.getKey()));
+      }
+      Collections.sort(lookupList);
+
+      // write the sorted key value pairs
+      for (String lookupString : lookupList) {
+        out.println(lookupString);
+      }
+    } else {
+      for (Map.Entry<String, String> entry : entrySet()) {
+        out.println(String.format("%s\t%s", entry.getValue(), entry.getKey()));
+      }
+    }
+    out.close();
+  }
 }

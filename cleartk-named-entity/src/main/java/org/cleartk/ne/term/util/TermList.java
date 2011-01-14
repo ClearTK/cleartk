@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.ne.term.util;
 
 import java.io.BufferedReader;
@@ -34,113 +34,111 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * <p>
  * 
  * @author Philip Ogren
  * 
- * This class provides a very simple data structure for a list of terms. There
- * is no real expectation that a TermFinder implementation will make any
- * meaningful use of this class other than to obtain the terms as a collection.
- * A term finder should determine how to optimally access the contents of a list
- * with its own data structures.
+ *         This class provides a very simple data structure for a list of terms. There is no real
+ *         expectation that a TermFinder implementation will make any meaningful use of this class
+ *         other than to obtain the terms as a collection. A term finder should determine how to
+ *         optimally access the contents of a list with its own data structures.
  */
 public class TermList {
-	private String name;
+  private String name;
 
-	private List<Term> terms;
+  private List<Term> terms;
 
-	public TermList(String name) {
-		super();
-		this.name = name;
-		this.terms = new ArrayList<Term>();
-	}
+  public TermList(String name) {
+    super();
+    this.name = name;
+    this.terms = new ArrayList<Term>();
+  }
 
-	public String getName() {
-		return name;
-	}
+  public String getName() {
+    return name;
+  }
 
-	/**
-	 * A term finder is not expected to automatically update its internal
-	 * representation of a term list when this method is called. This method
-	 * should be called when populating the term list before a term finder calls
-	 * getTerms().  
-	 * 
-	 * @param term
-	 */
-	public void add(Term term) {
-		this.terms.add(term);
-	}
+  /**
+   * A term finder is not expected to automatically update its internal representation of a term
+   * list when this method is called. This method should be called when populating the term list
+   * before a term finder calls getTerms().
+   * 
+   * @param term
+   */
+  public void add(Term term) {
+    this.terms.add(term);
+  }
 
-	public Collection<Term> getTerms() {
-		return Collections.unmodifiableCollection(terms);
-	}
+  public Collection<Term> getTerms() {
+    return Collections.unmodifiableCollection(terms);
+  }
 
-	public int size() {
-		return terms.size();
-	}
+  public int size() {
+    return terms.size();
+  }
 
-	/**
-	 * Calls loadSimpleFile(listName, file, null).
-	 * 
-	 * @see #loadSimpleFile(String, File, String)
-	 * @throws IOException
-	 */
-	public static TermList loadSimpleFile(String listName, File file) throws IOException {
-		return loadSimpleFile(listName, file, null);
-	}
+  /**
+   * Calls loadSimpleFile(listName, file, null).
+   * 
+   * @see #loadSimpleFile(String, File, String)
+   * @throws IOException
+   */
+  public static TermList loadSimpleFile(String listName, File file) throws IOException {
+    return loadSimpleFile(listName, file, null);
+  }
 
-	/**
-	 * This method expects a very simple format. Each line should contain an id
-	 * and a term delimited by some separator. e.g.:
-	 * <p>
-	 * 1|Aixas <br>
-	 * 2|Aixirivali <br>
-	 * ... <br>
-	 * 
-	 * Ids can be omitted in which case there should be no separator and the id
-	 * of each term in the list will correspond to the line number that the term
-	 * appears on.
-	 * 
-	 * @param listName
-	 *            the name of the list
-	 * @param file
-	 *            a file that contains one term per line as described above.
-	 * @param columnSeparator
-	 *            the string that separates the id from the term. If null is
-	 *            passed in then the id of each term will be the line number as
-	 *            it appears in the file.
-	 * @return a term list populated with the data in the provided file
-	 * @throws IOException
-	 */
-	public static TermList loadSimpleFile(String listName, File file, String columnSeparator) throws IOException {
+  /**
+   * This method expects a very simple format. Each line should contain an id and a term delimited
+   * by some separator. e.g.:
+   * <p>
+   * 1|Aixas <br>
+   * 2|Aixirivali <br>
+   * ... <br>
+   * 
+   * Ids can be omitted in which case there should be no separator and the id of each term in the
+   * list will correspond to the line number that the term appears on.
+   * 
+   * @param listName
+   *          the name of the list
+   * @param file
+   *          a file that contains one term per line as described above.
+   * @param columnSeparator
+   *          the string that separates the id from the term. If null is passed in then the id of
+   *          each term will be the line number as it appears in the file.
+   * @return a term list populated with the data in the provided file
+   * @throws IOException
+   */
+  public static TermList loadSimpleFile(String listName, File file, String columnSeparator)
+          throws IOException {
 
-		TermList termList = new TermList(listName);
+    TermList termList = new TermList(listName);
 
-		BufferedReader input = new BufferedReader(new FileReader(file));
-		String line;
-		int i = 1;
-		while ((line = input.readLine()) != null) {
-			line = line.trim();
-			String id;
-			String termText;
-			if (columnSeparator == null) {
-				id = "" + i++;
-				termText = line.trim();
-			}
-			else {
-				String[] columns = line.split(Pattern.quote(columnSeparator));
-				id = columns[0];
-				termText = columns[1].trim();
-			}
-			Term term = new Term(id, termText, termList);
-			termList.add(term);
-//			if (i % 100000 == 0) System.out.println("loaded " + i + " terms from term list: " + file.getName() + ".");
-		}
-//		System.out.println("loaded " + (i - 1) + " terms from term list: " + file.getName() + ".");
+    BufferedReader input = new BufferedReader(new FileReader(file));
+    String line;
+    int i = 1;
+    while ((line = input.readLine()) != null) {
+      line = line.trim();
+      String id;
+      String termText;
+      if (columnSeparator == null) {
+        id = "" + i++;
+        termText = line.trim();
+      } else {
+        String[] columns = line.split(Pattern.quote(columnSeparator));
+        id = columns[0];
+        termText = columns[1].trim();
+      }
+      Term term = new Term(id, termText, termList);
+      termList.add(term);
+      // if (i % 100000 == 0) System.out.println("loaded " + i + " terms from term list: " +
+      // file.getName() + ".");
+    }
+    // System.out.println("loaded " + (i - 1) + " terms from term list: " + file.getName() + ".");
 
-		return termList;
-	}
+    return termList;
+  }
 }

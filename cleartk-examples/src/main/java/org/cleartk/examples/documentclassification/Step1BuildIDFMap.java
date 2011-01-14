@@ -41,61 +41,61 @@ import org.kohsuke.args4j.Option;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.pipeline.SimplePipeline;
 
-
 /**
- * <br>Copyright (c) 2009, Regents of the University of Colorado 
- * <br>All rights reserved.
- *
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * @author Philip Ogren
- *
+ * 
  */
 
 public class Step1BuildIDFMap {
 
-	public static class Args {
-		@Option(name = "-d", aliases = "--documentDirectory", usage = "specify the directory containing the training documents")
-		public String documentDirectory = "../ClearTK Data/data/20newsgroups/20news-bydate-train/";
-		@Option(name = "-map", aliases = "--idfmapFileName", usage = "specify the directory name where the IDFMap file will be written")
-		public String idfmapDirectoryName = "example/documentclassification";
+  public static class Args {
+    @Option(name = "-d", aliases = "--documentDirectory", usage = "specify the directory containing the training documents")
+    public String documentDirectory = "../ClearTK Data/data/20newsgroups/20news-bydate-train/";
 
-		public static Args parseArguments(String[] stringArgs) {
-			Args args = new Args();
-			CmdLineParser parser = new CmdLineParser(args);
-			try {
-				parser.parseArgument(stringArgs);
-			} catch (CmdLineException e) {
-				e.printStackTrace();
-				parser.printUsage(System.err);
-				System.exit(1);
-			}
-			return args;
-		}
-	}
+    @Option(name = "-map", aliases = "--idfmapFileName", usage = "specify the directory name where the IDFMap file will be written")
+    public String idfmapDirectoryName = "example/documentclassification";
 
-	public static void main(String[] stringArgs) throws UIMAException, IOException {
-		
-		Args args = Args.parseArguments(stringArgs);
-		String documentDirectory = args.documentDirectory;
-		File idfmapDirectory = new File(args.idfmapDirectoryName);
-		if(!idfmapDirectory.exists()) {
-			idfmapDirectory.mkdirs();
-		}
-		
-		AnalysisEngineDescription documentClassificationAnnotatorDescription = 
-			AnalysisEngineFactory.createPrimitiveDescription(
-					DocumentClassificationAnnotator.class,
-					ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-					CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, IDFMapWriterFactory.class.getName(),
-					IDFMapWriterFactory.PARAM_OUTPUT_DIRECTORY, idfmapDirectory.getPath());
-		
-		SimplePipeline.runPipeline(
-				FilesCollectionReader.getCollectionReader(ExampleComponents.TYPE_SYSTEM_DESCRIPTION, documentDirectory),
-				SentenceAnnotator.getDescription(),
-				TokenAnnotator.getDescription(), 
-				DefaultSnowballStemmer.getDescription("English"),
-				AnalysisEngineFactory.createPrimitiveDescription(GoldAnnotator.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION),
-				documentClassificationAnnotatorDescription);
-		
-		System.out.println("IDF map file written to: "+idfmapDirectory.getPath());
-	}
+    public static Args parseArguments(String[] stringArgs) {
+      Args args = new Args();
+      CmdLineParser parser = new CmdLineParser(args);
+      try {
+        parser.parseArgument(stringArgs);
+      } catch (CmdLineException e) {
+        e.printStackTrace();
+        parser.printUsage(System.err);
+        System.exit(1);
+      }
+      return args;
+    }
+  }
+
+  public static void main(String[] stringArgs) throws UIMAException, IOException {
+
+    Args args = Args.parseArguments(stringArgs);
+    String documentDirectory = args.documentDirectory;
+    File idfmapDirectory = new File(args.idfmapDirectoryName);
+    if (!idfmapDirectory.exists()) {
+      idfmapDirectory.mkdirs();
+    }
+
+    AnalysisEngineDescription documentClassificationAnnotatorDescription = AnalysisEngineFactory
+            .createPrimitiveDescription(DocumentClassificationAnnotator.class,
+                    ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+                    CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+                    IDFMapWriterFactory.class.getName(),
+                    IDFMapWriterFactory.PARAM_OUTPUT_DIRECTORY, idfmapDirectory.getPath());
+
+    SimplePipeline.runPipeline(FilesCollectionReader.getCollectionReader(
+            ExampleComponents.TYPE_SYSTEM_DESCRIPTION, documentDirectory), SentenceAnnotator
+            .getDescription(), TokenAnnotator.getDescription(), DefaultSnowballStemmer
+            .getDescription("English"), AnalysisEngineFactory.createPrimitiveDescription(
+            GoldAnnotator.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION),
+            documentClassificationAnnotatorDescription);
+
+    System.out.println("IDF map file written to: " + idfmapDirectory.getPath());
+  }
 }

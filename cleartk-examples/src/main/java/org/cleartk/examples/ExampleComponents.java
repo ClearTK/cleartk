@@ -35,8 +35,7 @@ import org.uimafit.factory.TypeSystemDescriptionFactory;
 
 public class ExampleComponents {
 
-	public static TypeSystemDescription TYPE_SYSTEM_DESCRIPTION = TypeSystemDescriptionFactory
-	.createTypeSystemDescription("org.cleartk.examples.TypeSystem");
-	
+  public static TypeSystemDescription TYPE_SYSTEM_DESCRIPTION = TypeSystemDescriptionFactory
+          .createTypeSystemDescription("org.cleartk.examples.TypeSystem");
 
 }

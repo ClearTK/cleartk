@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.srl;
 
 import java.io.File;
@@ -54,117 +54,119 @@ import org.cleartk.token.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.uimafit.factory.AnalysisEngineFactory;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * 
  * @author Philipp Wetzler
- *
+ * 
  */
 public class PredicateAnnotator extends CleartkAnnotator<Boolean> {
 
-	public static AnalysisEngineDescription getWriterDescription(
-			Class<? extends DataWriterFactory<Boolean>> dataWriterFactoryClass, File outputDirectory)
-	throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveDescription(
-				ArgumentIdentifier.class,
-				SrlComponents.TYPE_SYSTEM_DESCRIPTION,
-				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, dataWriterFactoryClass.getName(),
-				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectory.toString());
-	}
+  public static AnalysisEngineDescription getWriterDescription(
+          Class<? extends DataWriterFactory<Boolean>> dataWriterFactoryClass, File outputDirectory)
+          throws ResourceInitializationException {
+    return AnalysisEngineFactory.createPrimitiveDescription(ArgumentIdentifier.class,
+            SrlComponents.TYPE_SYSTEM_DESCRIPTION,
+            CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+            dataWriterFactoryClass.getName(), JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+            outputDirectory.toString());
+  }
 
-	public static AnalysisEngineDescription getClassifierDescription(File classifierJar)
-	throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveDescription(
-				PredicateAnnotator.class,
-				SrlComponents.TYPE_SYSTEM_DESCRIPTION,
-				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, classifierJar.toString());
-	}
+  public static AnalysisEngineDescription getClassifierDescription(File classifierJar)
+          throws ResourceInitializationException {
+    return AnalysisEngineFactory.createPrimitiveDescription(PredicateAnnotator.class,
+            SrlComponents.TYPE_SYSTEM_DESCRIPTION, JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
+            classifierJar.toString());
+  }
 
-	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		super.initialize(context);
-		
-		SimpleFeatureExtractor[] tokenExtractors = {
-						new SpannedTextExtractor(), 
-						new TypePathExtractor(Token.class, "stem"),
-						new TypePathExtractor(Token.class, "pos") };
+  @Override
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    super.initialize(context);
 
-		tokenExtractor = new CombinedExtractor(tokenExtractors);
-		
-		leftWindowExtractor = new WindowExtractor("Token", Token.class,
-				new CombinedExtractor( tokenExtractors ),
-				WindowFeature.ORIENTATION_LEFT,
-				0, 2);
-		rightWindowExtractor = new WindowExtractor("Token", Token.class,
-				new CombinedExtractor( tokenExtractors ),
-				WindowFeature.ORIENTATION_RIGHT,
-				0, 2);
-	}
+    SimpleFeatureExtractor[] tokenExtractors = { new SpannedTextExtractor(),
+        new TypePathExtractor(Token.class, "stem"), new TypePathExtractor(Token.class, "pos") };
 
-	@Override
-	public void process(JCas jCas) throws AnalysisEngineProcessException {
-		try {
-			nPredicates = 0;
-			nSentences = 0;
-			List<Sentence> sentences = AnnotationRetrieval.getAnnotations(jCas, Sentence.class);
+    tokenExtractor = new CombinedExtractor(tokenExtractors);
 
-			for( Sentence sentence : sentences ) {
-				nSentences += 1;
-				List<Token> tokenList = AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class); 
-				Token[] tokens = tokenList.toArray(new Token[tokenList.size()]);
-				for( Token token : tokens ) {
-					Instance<Boolean> instance = new Instance<Boolean>();
-					List<Feature> tokenFeatures = this.tokenExtractor.extract(jCas, token);
-					List<Feature> leftWindowFeatures = this.leftWindowExtractor.extract(jCas, token, sentence);
-					List<Feature> rightWindowFeatures = this.rightWindowExtractor.extract(jCas, token, sentence);
+    leftWindowExtractor = new WindowExtractor("Token", Token.class, new CombinedExtractor(
+            tokenExtractors), WindowFeature.ORIENTATION_LEFT, 0, 2);
+    rightWindowExtractor = new WindowExtractor("Token", Token.class, new CombinedExtractor(
+            tokenExtractors), WindowFeature.ORIENTATION_RIGHT, 0, 2);
+  }
 
-					instance.addAll(tokenFeatures);
-					instance.addAll(leftWindowFeatures);
-					instance.addAll(rightWindowFeatures);
+  @Override
+  public void process(JCas jCas) throws AnalysisEngineProcessException {
+    try {
+      nPredicates = 0;
+      nSentences = 0;
+      List<Sentence> sentences = AnnotationRetrieval.getAnnotations(jCas, Sentence.class);
 
-					instance.setOutcome(false);
-					FSIterator<Annotation> predicates = jCas.getAnnotationIndex(Predicate.type).subiterator(sentence);
-					while( predicates.hasNext() ) {
-						Predicate predicate = (Predicate) predicates.next();
-						List<Token> predicateTokens = AnnotationRetrieval.getAnnotations(jCas, predicate.getAnnotation(), Token.class);
-						if( predicateTokens.contains(token) ) {
-							instance.setOutcome(true);
-							break;
-						}
-					}
-					
-					if (this.isTraining()) {
-						this.dataWriter.write(instance);
-					} else {
-						Boolean outcome = this.classifier.classify(instance.getFeatures());
-						if (outcome) {
-							nPredicates += 1;
-							Predicate predicate = new Predicate(jCas);
-							predicate.setAnnotation(token);
-							predicate.setBegin(token.getBegin());
-							predicate.setEnd(token.getEnd());
-							predicate.setSentence(sentence);
-							predicate.addToIndexes();
-						}
-					}
-				}
-			}
-			
-			Logger.getLogger("org.cleartk.srl.PredicateAnnotator").info(String.format("processed %d sentences, found %d predicates", nSentences, nPredicates));
-		} catch (CASRuntimeException e) {
-			throw new AnalysisEngineProcessException(e);
-		} catch (CleartkException e) {
-			throw new AnalysisEngineProcessException(e);
-		} 
-	}
-	
-	private int nSentences;
-	private int nPredicates;
+      for (Sentence sentence : sentences) {
+        nSentences += 1;
+        List<Token> tokenList = AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class);
+        Token[] tokens = tokenList.toArray(new Token[tokenList.size()]);
+        for (Token token : tokens) {
+          Instance<Boolean> instance = new Instance<Boolean>();
+          List<Feature> tokenFeatures = this.tokenExtractor.extract(jCas, token);
+          List<Feature> leftWindowFeatures = this.leftWindowExtractor
+                  .extract(jCas, token, sentence);
+          List<Feature> rightWindowFeatures = this.rightWindowExtractor.extract(jCas, token,
+                  sentence);
 
-	private CombinedExtractor tokenExtractor;
-	private WindowExtractor leftWindowExtractor;
-	private WindowExtractor rightWindowExtractor;
+          instance.addAll(tokenFeatures);
+          instance.addAll(leftWindowFeatures);
+          instance.addAll(rightWindowFeatures);
+
+          instance.setOutcome(false);
+          FSIterator<Annotation> predicates = jCas.getAnnotationIndex(Predicate.type).subiterator(
+                  sentence);
+          while (predicates.hasNext()) {
+            Predicate predicate = (Predicate) predicates.next();
+            List<Token> predicateTokens = AnnotationRetrieval.getAnnotations(jCas,
+                    predicate.getAnnotation(), Token.class);
+            if (predicateTokens.contains(token)) {
+              instance.setOutcome(true);
+              break;
+            }
+          }
+
+          if (this.isTraining()) {
+            this.dataWriter.write(instance);
+          } else {
+            Boolean outcome = this.classifier.classify(instance.getFeatures());
+            if (outcome) {
+              nPredicates += 1;
+              Predicate predicate = new Predicate(jCas);
+              predicate.setAnnotation(token);
+              predicate.setBegin(token.getBegin());
+              predicate.setEnd(token.getEnd());
+              predicate.setSentence(sentence);
+              predicate.addToIndexes();
+            }
+          }
+        }
+      }
+
+      Logger.getLogger("org.cleartk.srl.PredicateAnnotator")
+              .info(String.format("processed %d sentences, found %d predicates", nSentences,
+                      nPredicates));
+    } catch (CASRuntimeException e) {
+      throw new AnalysisEngineProcessException(e);
+    } catch (CleartkException e) {
+      throw new AnalysisEngineProcessException(e);
+    }
+  }
+
+  private int nSentences;
+
+  private int nPredicates;
+
+  private CombinedExtractor tokenExtractor;
+
+  private WindowExtractor leftWindowExtractor;
+
+  private WindowExtractor rightWindowExtractor;
 }

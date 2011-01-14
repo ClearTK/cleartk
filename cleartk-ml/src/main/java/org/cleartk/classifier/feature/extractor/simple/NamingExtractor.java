@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.feature.extractor.simple;
 
 import java.util.List;
@@ -31,33 +31,35 @@ import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 
 /**
- * <br>Copyright (c) 2007-2009, Regents of the University of Colorado 
- * <br>All rights reserved.
+ * <br>
+ * Copyright (c) 2007-2009, Regents of the University of Colorado <br>
+ * All rights reserved.
  * 
  * @author Philipp Wetzler
  */
 public class NamingExtractor implements SimpleFeatureExtractor {
 
-	public NamingExtractor(String name, SimpleFeatureExtractor subExtractor) {
-		this.name = name;
-		this.subExtractor = subExtractor;
-	}
-	
-	public NamingExtractor(String name, SimpleFeatureExtractor ... subExtractors) {
-		this(name, new CombinedExtractor(subExtractors));
-	}
-	
-	public List<Feature> extract(JCas view, Annotation focusAnnotation)	throws CleartkException {
-		List<Feature> features = subExtractor.extract(view, focusAnnotation);
+  public NamingExtractor(String name, SimpleFeatureExtractor subExtractor) {
+    this.name = name;
+    this.subExtractor = subExtractor;
+  }
 
-		for( Feature feature : features ) {
-			feature.setName(Feature.createName(name, feature.getName()));
-		}
-		
-		return features;
-	}
+  public NamingExtractor(String name, SimpleFeatureExtractor... subExtractors) {
+    this(name, new CombinedExtractor(subExtractors));
+  }
 
-	private String name;
-	private SimpleFeatureExtractor subExtractor;
-	
+  public List<Feature> extract(JCas view, Annotation focusAnnotation) throws CleartkException {
+    List<Feature> features = subExtractor.extract(view, focusAnnotation);
+
+    for (Feature feature : features) {
+      feature.setName(Feature.createName(name, feature.getName()));
+    }
+
+    return features;
+  }
+
+  private String name;
+
+  private SimpleFeatureExtractor subExtractor;
+
 }

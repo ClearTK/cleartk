@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.feature.extractor.simple;
 
 import java.util.ArrayList;
@@ -32,67 +32,63 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
-*/
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ */
 
 public class WhiteSpaceExtractor implements SimpleFeatureExtractor {
 
-	public static final String WhiteSpaceRegex = "\\s";
-	public static final Pattern WhiteSpacePattern = Pattern.compile(WhiteSpaceRegex);
-	
-	public static final String ORIENTATION_LEFT = "L";
-	public static final String ORIENTATION_RIGHT = "R";
+  public static final String WhiteSpaceRegex = "\\s";
 
-	public List<Feature> extract(JCas view, Annotation focusAnnotation) throws CleartkException {
-		List<Feature> features = new ArrayList<Feature>();
-		
-		String text = view.getDocumentText();
-		int begin = focusAnnotation.getBegin();
-		int end = focusAnnotation.getEnd();
-		
-		//white space to the left of the focusAnnotation
-		if(begin == 0) {
-			Feature feature = new Feature("whitespace", ORIENTATION_LEFT);
-			features.add(feature);
-		} else {
-			char leftChar = text.charAt(begin-1);
-			if(isWhiteSpace(leftChar)) {
-				Feature feature = new Feature("whitespace", ORIENTATION_LEFT);
-				features.add(feature);
-			}				
-		}
+  public static final Pattern WhiteSpacePattern = Pattern.compile(WhiteSpaceRegex);
 
-		//white space to the right of the focusAnnotation
-		if(end == text.length()) {
-			Feature feature = new Feature("whitespace", ORIENTATION_RIGHT);
-			features.add(feature);
-		} else {
-			char rightChar = text.charAt(end);
-			if(isWhiteSpace(rightChar)) {
-				Feature feature = new Feature("whitespace", ORIENTATION_RIGHT);
-				features.add(feature);
-			} 
-		}
-		return features;
-	}
+  public static final String ORIENTATION_LEFT = "L";
 
+  public static final String ORIENTATION_RIGHT = "R";
 
-	/**
-	 * List of whitespace characters comes from java.util.regex.Pattern
-	 * @param chr
-	 */
-	private boolean isWhiteSpace(char chr) {
-		if(chr == ' ' ||
-		   chr == '\t' || 
-		   chr == '\n' || 
-		   chr == '\f' ||
-		   chr == '\u000B' ||
-		   chr == '\r')
-			return true;
-		return false;
-	}
+  public List<Feature> extract(JCas view, Annotation focusAnnotation) throws CleartkException {
+    List<Feature> features = new ArrayList<Feature>();
+
+    String text = view.getDocumentText();
+    int begin = focusAnnotation.getBegin();
+    int end = focusAnnotation.getEnd();
+
+    // white space to the left of the focusAnnotation
+    if (begin == 0) {
+      Feature feature = new Feature("whitespace", ORIENTATION_LEFT);
+      features.add(feature);
+    } else {
+      char leftChar = text.charAt(begin - 1);
+      if (isWhiteSpace(leftChar)) {
+        Feature feature = new Feature("whitespace", ORIENTATION_LEFT);
+        features.add(feature);
+      }
+    }
+
+    // white space to the right of the focusAnnotation
+    if (end == text.length()) {
+      Feature feature = new Feature("whitespace", ORIENTATION_RIGHT);
+      features.add(feature);
+    } else {
+      char rightChar = text.charAt(end);
+      if (isWhiteSpace(rightChar)) {
+        Feature feature = new Feature("whitespace", ORIENTATION_RIGHT);
+        features.add(feature);
+      }
+    }
+    return features;
+  }
+
+  /**
+   * List of whitespace characters comes from java.util.regex.Pattern
+   * 
+   * @param chr
+   */
+  private boolean isWhiteSpace(char chr) {
+    if (chr == ' ' || chr == '\t' || chr == '\n' || chr == '\f' || chr == '\u000B' || chr == '\r')
+      return true;
+    return false;
+  }
 }

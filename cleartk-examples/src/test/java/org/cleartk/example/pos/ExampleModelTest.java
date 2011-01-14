@@ -41,31 +41,32 @@ import org.uimafit.util.JCasUtil;
  * <br>
  * Copyright (c) 2009, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
  * @author Philip Ogren
  * 
  */
 public class ExampleModelTest extends ExamplesTestBase {
 
-	@Test
-	public void testModel() throws Exception {
-		AnalysisEngineDescription posTaggerDescription = ExamplePOSAnnotator.getClassifierDescription(ExamplePOSAnnotator.DEFAULT_MODEL);
-		AnalysisEngine posTagger = AnalysisEngineFactory.createPrimitive(posTaggerDescription);
-		
-		tokenBuilder.buildTokens(jCas,
-				"What would you do if I sang in tune?  Would you listen then?", 
-				"What would you do if I sang in tune ?\n  Would you listen then ?");
-		
-		Token token = JCasUtil.selectByIndex(jCas, Token.class, 0);
-		assertNull(token.getPos());
-		token = JCasUtil.selectByIndex(jCas, Token.class, 5);
-		assertNull(token.getPos());
+  @Test
+  public void testModel() throws Exception {
+    AnalysisEngineDescription posTaggerDescription = ExamplePOSAnnotator
+            .getClassifierDescription(ExamplePOSAnnotator.DEFAULT_MODEL);
+    AnalysisEngine posTagger = AnalysisEngineFactory.createPrimitive(posTaggerDescription);
 
-		posTagger.process(jCas);
-		token = JCasUtil.selectByIndex(jCas, Token.class, 0);
-		assertNotNull(token.getPos());
-		assertEquals("RB", token.getPos());
-		token = JCasUtil.selectByIndex(jCas, Token.class, 5);
-		assertNotNull(token.getPos());
-		assertEquals("NN", token.getPos());
-	}
+    tokenBuilder.buildTokens(jCas, "What would you do if I sang in tune?  Would you listen then?",
+            "What would you do if I sang in tune ?\n  Would you listen then ?");
+
+    Token token = JCasUtil.selectByIndex(jCas, Token.class, 0);
+    assertNull(token.getPos());
+    token = JCasUtil.selectByIndex(jCas, Token.class, 5);
+    assertNull(token.getPos());
+
+    posTagger.process(jCas);
+    token = JCasUtil.selectByIndex(jCas, Token.class, 0);
+    assertNotNull(token.getPos());
+    assertEquals("RB", token.getPos());
+    token = JCasUtil.selectByIndex(jCas, Token.class, 5);
+    assertNotNull(token.getPos());
+    assertEquals("NN", token.getPos());
+  }
 }

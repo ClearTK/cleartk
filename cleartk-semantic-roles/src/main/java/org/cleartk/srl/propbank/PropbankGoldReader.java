@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.srl.propbank;
 
 import java.io.BufferedReader;
@@ -49,173 +49,172 @@ import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.SofaCapability;
 import org.uimafit.factory.ConfigurationParameterFactory;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * 
  * <p>
- * PropbankCollectionReader reads all <tt>.mrg</tt> files of the WSJ part of
- * Treebank in lexical order, then reads the corresponding Propbank entries, and
- * populates the "TreebankView" and "PropbankView" SOFAs.
+ * PropbankCollectionReader reads all <tt>.mrg</tt> files of the WSJ part of Treebank in lexical
+ * order, then reads the corresponding Propbank entries, and populates the "TreebankView" and
+ * "PropbankView" SOFAs.
  * </p>
  * 
  * @author Philip Ogren, Philipp Wetzler
  */
 
-@SofaCapability(outputSofas= {PropbankConstants.PROPBANK_VIEW, TreebankConstants.TREEBANK_VIEW, ViewURIUtil.URI})
+@SofaCapability(outputSofas = { PropbankConstants.PROPBANK_VIEW, TreebankConstants.TREEBANK_VIEW,
+    ViewURIUtil.URI })
 public class PropbankGoldReader extends JCasCollectionReader_ImplBase {
-	
-	public static final String PARAM_PROPBANK_FILE_NAME = ConfigurationParameterFactory.createConfigurationParameterName(PropbankGoldReader.class, "propbankFileName");
 
-	@ConfigurationParameter(
-			description = "points to propbank data file",
-			mandatory = true)
-	private String propbankFileName;
-	
-	public static final String PARAM_PENNTREEBANK_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(PropbankGoldReader.class, "penntreebankDirectoryName");
+  public static final String PARAM_PROPBANK_FILE_NAME = ConfigurationParameterFactory
+          .createConfigurationParameterName(PropbankGoldReader.class, "propbankFileName");
 
-	private static final String PENN_TREEBANK_DIRECTORY_DESCRIPTION = "points to the PennTreebank corpus. " +
-			"The directory should contain subdirectories corresponding to the sections (e.g. \"00\", \"01\", etc.)  " +
-			"That is, if a local copy of PennTreebank sits at C:/Data/PTB/wsj/mrg, then the subdirectory C:/Data/PTB/wsj/mrg/00 should exist. " +
-			"There are 24 sections in PTB corresponding to the directories 00, 01, 02, ... 24.";
-	
-	@ConfigurationParameter(
-			description = PENN_TREEBANK_DIRECTORY_DESCRIPTION,
-			mandatory = true)
-	private String penntreebankDirectoryName;
-	
-	public static final String PARAM_WSJ_SECTIONS = ConfigurationParameterFactory.createConfigurationParameterName(PropbankGoldReader.class, "wsjSections");
+  @ConfigurationParameter(description = "points to propbank data file", mandatory = true)
+  private String propbankFileName;
 
-	@ConfigurationParameter(
-			description = "Determines which sections of WSJ will be used.  The format allows for comma-separated section numbers and section ranges, for example \"02,07-12,16\".",
-			mandatory = true)
-	private String wsjSections;
+  public static final String PARAM_PENNTREEBANK_DIRECTORY_NAME = ConfigurationParameterFactory
+          .createConfigurationParameterName(PropbankGoldReader.class, "penntreebankDirectoryName");
 
-	/**
-	 * holds all of the propbank data from props.txt. One entry per line in the
-	 * file
-	 */
-	protected LinkedList<String> propbankData;
+  private static final String PENN_TREEBANK_DIRECTORY_DESCRIPTION = "points to the PennTreebank corpus. "
+          + "The directory should contain subdirectories corresponding to the sections (e.g. \"00\", \"01\", etc.)  "
+          + "That is, if a local copy of PennTreebank sits at C:/Data/PTB/wsj/mrg, then the subdirectory C:/Data/PTB/wsj/mrg/00 should exist. "
+          + "There are 24 sections in PTB corresponding to the directories 00, 01, 02, ... 24.";
 
-	protected File treebankDirectory;
+  @ConfigurationParameter(description = PENN_TREEBANK_DIRECTORY_DESCRIPTION, mandatory = true)
+  private String penntreebankDirectoryName;
 
-	protected LinkedList<File> treebankFiles;
+  public static final String PARAM_WSJ_SECTIONS = ConfigurationParameterFactory
+          .createConfigurationParameterName(PropbankGoldReader.class, "wsjSections");
 
-	protected int totalTreebankFiles = 0;
+  @ConfigurationParameter(description = "Determines which sections of WSJ will be used.  The format allows for comma-separated section numbers and section ranges, for example \"02,07-12,16\".", mandatory = true)
+  private String wsjSections;
 
-	protected ListSpecification wsjSpecification;
+  /**
+   * holds all of the propbank data from props.txt. One entry per line in the file
+   */
+  protected LinkedList<String> propbankData;
 
-	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		try {
-			this.wsjSpecification = new ListSpecification(wsjSections);
+  protected File treebankDirectory;
 
-			File propbankFile = new File(propbankFileName);
-			if(!propbankFile.exists()) {
-				throw new ResourceInitializationException(new IllegalArgumentException("could not find file: "+propbankFile.getPath()));
-			}
-			BufferedReader reader = new BufferedReader(new FileReader(propbankFile));
-			propbankData = new LinkedList<String>();
-			String line;
-			while ((line = reader.readLine()) != null) {
-				propbankData.add(line);
-			}
-			Collections.sort(propbankData);
+  protected LinkedList<File> treebankFiles;
 
-			this.treebankFiles = new LinkedList<File>();
-			treebankDirectory = new File(penntreebankDirectoryName);
-			//don't forget that the paths in props.txt have "wsj" in the name.
-			File wsjDirectory = new File(treebankDirectory, "wsj");
-			if(!wsjDirectory.exists()) {
-				throw new ResourceInitializationException(new IllegalArgumentException("could not find file: "+treebankDirectory.getPath()+" or this directory does not contain a sub-directory named 'wsj' as expected by propbank data."));
-			}
-			PennTreebankReader.collectSections(wsjDirectory, this.treebankFiles, this.wsjSpecification);
-			Collections.sort(treebankFiles);
-			this.totalTreebankFiles = treebankFiles.size();
-			
-		} catch (FileNotFoundException fnfe) {
-			throw new ResourceInitializationException(fnfe);
-		} catch (IOException ioe) {
-			throw new ResourceInitializationException(ioe);
-		}
-	}
+  protected int totalTreebankFiles = 0;
 
-	/**
-	 * Reads the next file and stores its text in <b>cas</b> as the
-	 * "TreebankView" SOFA. Then stores the corresponding Propbank entries in
-	 * the "PropbankView" SOFA.
-	 * 
-	 * @param cas
-	 * 
-	 * @throws IOException
-	 * @throws CollectionException
-	 */
-	public void getNext(JCas jCas) throws IOException, CollectionException {
-		JCas tbView, pbView;
-		try {
-			tbView = jCas.createView(TreebankConstants.TREEBANK_VIEW);
-			pbView = jCas.createView(PropbankConstants.PROPBANK_VIEW);
-		} catch (CASException ce) {
-			throw new CollectionException(ce);
-		}
+  protected ListSpecification wsjSpecification;
 
-		File treebankFile = treebankFiles.removeFirst();
-		ViewURIUtil.setURI(jCas, treebankFile.getPath());
+  @Override
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    try {
+      this.wsjSpecification = new ListSpecification(wsjSections);
 
-		StringBuffer propbankText = new StringBuffer();
+      File propbankFile = new File(propbankFileName);
+      if (!propbankFile.exists()) {
+        throw new ResourceInitializationException(new IllegalArgumentException(
+                "could not find file: " + propbankFile.getPath()));
+      }
+      BufferedReader reader = new BufferedReader(new FileReader(propbankFile));
+      propbankData = new LinkedList<String>();
+      String line;
+      while ((line = reader.readLine()) != null) {
+        propbankData.add(line);
+      }
+      Collections.sort(propbankData);
 
-		/*
-		 * The logic here is rather fragile and should be rewritten and/or unit tested.
-		 * I changed the code so that the comparison is between the canonical paths.  (PVO) 
-		 */
-		while (propbankData.size() > 0) {
-			File nextPbFile = new File(treebankDirectory.getPath()
-					+ File.separator
-					+ Propbank.filenameFromString(propbankData.getFirst()))
-					.getCanonicalFile();
+      this.treebankFiles = new LinkedList<File>();
+      treebankDirectory = new File(penntreebankDirectoryName);
+      // don't forget that the paths in props.txt have "wsj" in the name.
+      File wsjDirectory = new File(treebankDirectory, "wsj");
+      if (!wsjDirectory.exists()) {
+        throw new ResourceInitializationException(
+                new IllegalArgumentException(
+                        "could not find file: "
+                                + treebankDirectory.getPath()
+                                + " or this directory does not contain a sub-directory named 'wsj' as expected by propbank data."));
+      }
+      PennTreebankReader.collectSections(wsjDirectory, this.treebankFiles, this.wsjSpecification);
+      Collections.sort(treebankFiles);
+      this.totalTreebankFiles = treebankFiles.size();
 
-			int c = treebankFile.getCanonicalFile().compareTo(nextPbFile);
-			if (c < 0) {
-				break;
-			} else if (c > 0) {
-				propbankData.removeFirst();
-				continue;
-			}
+    } catch (FileNotFoundException fnfe) {
+      throw new ResourceInitializationException(fnfe);
+    } catch (IOException ioe) {
+      throw new ResourceInitializationException(ioe);
+    }
+  }
 
-			propbankText.append(propbankData.removeFirst() + "\n");
-		}
+  /**
+   * Reads the next file and stores its text in <b>cas</b> as the "TreebankView" SOFA. Then stores
+   * the corresponding Propbank entries in the "PropbankView" SOFA.
+   * 
+   * @param cas
+   * 
+   * @throws IOException
+   * @throws CollectionException
+   */
+  public void getNext(JCas jCas) throws IOException, CollectionException {
+    JCas tbView, pbView;
+    try {
+      tbView = jCas.createView(TreebankConstants.TREEBANK_VIEW);
+      pbView = jCas.createView(PropbankConstants.PROPBANK_VIEW);
+    } catch (CASException ce) {
+      throw new CollectionException(ce);
+    }
 
-		tbView.setSofaDataString(FileUtils.file2String(treebankFile), "text/plain");
-		pbView.setSofaDataString(propbankText.toString(), "text/plain");
-	}
+    File treebankFile = treebankFiles.removeFirst();
+    ViewURIUtil.setURI(jCas, treebankFile.getPath());
 
-	public void close() throws IOException {
-	}
+    StringBuffer propbankText = new StringBuffer();
 
-	public Progress[] getProgress() {
-		return new Progress[] { new ProgressImpl(totalTreebankFiles
-				- treebankFiles.size(), totalTreebankFiles, Progress.ENTITIES) };
-	}
+    /*
+     * The logic here is rather fragile and should be rewritten and/or unit tested. I changed the
+     * code so that the comparison is between the canonical paths. (PVO)
+     */
+    while (propbankData.size() > 0) {
+      File nextPbFile = new File(treebankDirectory.getPath() + File.separator
+              + Propbank.filenameFromString(propbankData.getFirst())).getCanonicalFile();
 
-	public boolean hasNext() throws IOException, CollectionException {
-		if (treebankFiles.size() > 0)
-			return true;
-		else
-			return false;
-	}
+      int c = treebankFile.getCanonicalFile().compareTo(nextPbFile);
+      if (c < 0) {
+        break;
+      } else if (c > 0) {
+        propbankData.removeFirst();
+        continue;
+      }
 
-	public void setPropbankFileName(String propbankFileName) {
-		this.propbankFileName = propbankFileName;
-	}
+      propbankText.append(propbankData.removeFirst() + "\n");
+    }
 
-	public void setPenntreebankDirectoryName(String treebankDirectoryName) {
-		this.penntreebankDirectoryName = treebankDirectoryName;
-	}
+    tbView.setSofaDataString(FileUtils.file2String(treebankFile), "text/plain");
+    pbView.setSofaDataString(propbankText.toString(), "text/plain");
+  }
 
-	public void setWsjSections(String wsjSections) {
-		this.wsjSections = wsjSections;
-	}
+  public void close() throws IOException {
+  }
+
+  public Progress[] getProgress() {
+    return new Progress[] { new ProgressImpl(totalTreebankFiles - treebankFiles.size(),
+            totalTreebankFiles, Progress.ENTITIES) };
+  }
+
+  public boolean hasNext() throws IOException, CollectionException {
+    if (treebankFiles.size() > 0)
+      return true;
+    else
+      return false;
+  }
+
+  public void setPropbankFileName(String propbankFileName) {
+    this.propbankFileName = propbankFileName;
+  }
+
+  public void setPenntreebankDirectoryName(String treebankDirectoryName) {
+    this.penntreebankDirectoryName = treebankDirectoryName;
+  }
+
+  public void setWsjSections(String wsjSections) {
+    this.wsjSections = wsjSections;
+  }
 
 }

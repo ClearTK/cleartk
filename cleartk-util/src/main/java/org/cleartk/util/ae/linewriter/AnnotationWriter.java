@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.util.ae.linewriter;
 
 import org.apache.uima.UimaContext;
@@ -30,9 +30,10 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * <p>
  * 
  * @author Philip
@@ -41,8 +42,9 @@ import org.apache.uima.resource.ResourceInitializationException;
  */
 public interface AnnotationWriter<ANNOTATION_TYPE extends Annotation> {
 
-	public void initialize(UimaContext context) throws ResourceInitializationException;
+  public void initialize(UimaContext context) throws ResourceInitializationException;
 
-	public String writeAnnotation(JCas jCas, ANNOTATION_TYPE annotation) throws AnalysisEngineProcessException;
+  public String writeAnnotation(JCas jCas, ANNOTATION_TYPE annotation)
+          throws AnalysisEngineProcessException;
 
 }

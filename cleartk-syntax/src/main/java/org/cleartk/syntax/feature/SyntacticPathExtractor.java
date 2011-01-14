@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.syntax.feature;
 
 import java.util.ArrayList;
@@ -35,155 +35,151 @@ import org.cleartk.classifier.feature.extractor.annotationpair.AnnotationPairFea
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
-
- *
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * 
  * @author Philipp Wetzler
- *
+ * 
  */
 public class SyntacticPathExtractor implements AnnotationPairFeatureExtractor {
-	protected final String UP_SEPARATOR = "::";
+  protected final String UP_SEPARATOR = "::";
 
-	protected final String DOWN_SEPARATOR = ";;";
+  protected final String DOWN_SEPARATOR = ";;";
 
-	protected SimpleFeatureExtractor pathMemberExtractor;
+  protected SimpleFeatureExtractor pathMemberExtractor;
 
-	protected String name;
+  protected String name;
 
-	protected boolean isPartial;
+  protected boolean isPartial;
 
-	/**
-	 * 
-	 * @param pathMemberExtractor
-	 *            this extractor will be used to get a feature for every node on
-	 *            the path, which will then be combined to form a single string.
-	 *            The extractor should preferably generate exactly one
-	 *            <tt>StringFeature</tt>, but must generate at least one
-	 *            <tt>StringFeature</tt>, <tt>LongFeature</tt>,
-	 *            <tt>DoubleFeature</tt>, or <tt>BooleanFeature</tt>. Only
-	 *            the first feature will then be used and naively converted to a
-	 *            string.
-	 * @param partial
-	 *            if true, generate a partial path only, i.e. from the first
-	 *            node up to the lowest common ancestor of the two
-	 */
-	public SyntacticPathExtractor(SimpleFeatureExtractor pathMemberExtractor, boolean partial) {
-		this.pathMemberExtractor = pathMemberExtractor;
-		this.isPartial = partial;
-	}
+  /**
+   * 
+   * @param pathMemberExtractor
+   *          this extractor will be used to get a feature for every node on the path, which will
+   *          then be combined to form a single string. The extractor should preferably generate
+   *          exactly one <tt>StringFeature</tt>, but must generate at least one
+   *          <tt>StringFeature</tt>, <tt>LongFeature</tt>, <tt>DoubleFeature</tt>, or
+   *          <tt>BooleanFeature</tt>. Only the first feature will then be used and naively
+   *          converted to a string.
+   * @param partial
+   *          if true, generate a partial path only, i.e. from the first node up to the lowest
+   *          common ancestor of the two
+   */
+  public SyntacticPathExtractor(SimpleFeatureExtractor pathMemberExtractor, boolean partial) {
+    this.pathMemberExtractor = pathMemberExtractor;
+    this.isPartial = partial;
+  }
 
-	/**
-	 * This constructor defaults to a full rather than a partial path.
-	 */
-	public SyntacticPathExtractor(SimpleFeatureExtractor pathMemberExtractor) {
-		this(pathMemberExtractor, false);
-	}
+  /**
+   * This constructor defaults to a full rather than a partial path.
+   */
+  public SyntacticPathExtractor(SimpleFeatureExtractor pathMemberExtractor) {
+    this(pathMemberExtractor, false);
+  }
 
-	/**
-	 * Extract a string representation of a path feature.
-	 * 
-	 * @param leftAnnotation
-	 *            the first node of the path
-	 * 
-	 * @param rightAnnotation
-	 *            the last node of the path
-	 * 
-	 * @return List of one <em>StringFeature</em>, which contains a string
-	 *         representation of the path between the two nodes.
-	 * 
-	 */
-	public List<Feature> extract(JCas view, Annotation leftAnnotation, Annotation rightAnnotation) throws CleartkException {
-		TreebankNode leftConstituent;
-		TreebankNode rightConstituent;
-		try {
-			leftConstituent = (TreebankNode) leftAnnotation;
-			rightConstituent = (TreebankNode) rightAnnotation;
-		} catch( ClassCastException e ) {
-			throw new CleartkException("annotation is not of type TreebankNode");
-		}
-		
-		List<TreebankNode> fromStart = getPathToRoot(leftConstituent);
-		List<TreebankNode> fromEnd = getPathToRoot(rightConstituent);
-		String pathFeatureName = null;
-		String lengthFeatureName = null;
+  /**
+   * Extract a string representation of a path feature.
+   * 
+   * @param leftAnnotation
+   *          the first node of the path
+   * 
+   * @param rightAnnotation
+   *          the last node of the path
+   * 
+   * @return List of one <em>StringFeature</em>, which contains a string representation of the path
+   *         between the two nodes.
+   * 
+   */
+  public List<Feature> extract(JCas view, Annotation leftAnnotation, Annotation rightAnnotation)
+          throws CleartkException {
+    TreebankNode leftConstituent;
+    TreebankNode rightConstituent;
+    try {
+      leftConstituent = (TreebankNode) leftAnnotation;
+      rightConstituent = (TreebankNode) rightAnnotation;
+    } catch (ClassCastException e) {
+      throw new CleartkException("annotation is not of type TreebankNode");
+    }
 
-		fromEnd.remove(fromEnd.size() - 1);
-		while (fromStart.size() > 1
-				&& fromEnd.size() > 0
-				&& fromStart.get(fromStart.size() - 2) == fromEnd.get(fromEnd
-						.size() - 1)) {
-			fromStart.remove(fromStart.size() - 1);
-			fromEnd.remove(fromEnd.size() - 1);
-		}
-		
-		int length = fromStart.size();
-		if( !isPartial )
-			length += fromEnd.size();
+    List<TreebankNode> fromStart = getPathToRoot(leftConstituent);
+    List<TreebankNode> fromEnd = getPathToRoot(rightConstituent);
+    String pathFeatureName = null;
+    String lengthFeatureName = null;
 
-		try {
-			ListIterator<TreebankNode> it = fromStart.listIterator();
-			StringBuffer pathBuffer = new StringBuffer();
-			boolean first = true;
-			while (it.hasNext()) {
-				Feature feature = this.pathMemberExtractor.extract(view, it.next()).get(0);
-				if (first) {
-					String s = feature.getName();
-					if( isPartial ) {
-						pathFeatureName = Feature.createName(name, "PartialSyntacticPath(" + s + ")");
-						lengthFeatureName = Feature.createName(name, "PartialSyntacticPath", "Length");
-					} else {
-						pathFeatureName = Feature.createName(name, "SyntacticPath(" + s + ")");
-						lengthFeatureName = Feature.createName(name, "SyntacticPath", "Length");
-					}
-					first = false;
-				} else {
-					pathBuffer.append(this.UP_SEPARATOR);
-				}
-				pathBuffer.append(feature.getValue().toString());
-			}
+    fromEnd.remove(fromEnd.size() - 1);
+    while (fromStart.size() > 1 && fromEnd.size() > 0
+            && fromStart.get(fromStart.size() - 2) == fromEnd.get(fromEnd.size() - 1)) {
+      fromStart.remove(fromStart.size() - 1);
+      fromEnd.remove(fromEnd.size() - 1);
+    }
 
-			if (!isPartial) {
-				it = fromEnd.listIterator(fromEnd.size());
-				while (it.hasPrevious()) {
-					Feature feature = this.pathMemberExtractor.extract(view,
-							it.previous()).get(0);
-					pathBuffer.append(this.DOWN_SEPARATOR);
-					pathBuffer.append(feature.getValue().toString());
-				}
-			}
-			
-			List<Feature> features = new ArrayList<Feature>(2);
-			features.add(new Feature(pathFeatureName, pathBuffer.toString()));
-			features.add(new Feature(lengthFeatureName,	(long) length));
-			
-			return features;
+    int length = fromStart.size();
+    if (!isPartial)
+      length += fromEnd.size();
 
-		} catch (IndexOutOfBoundsException e) {
-			return new ArrayList<Feature>(0);
-		}
-	}
+    try {
+      ListIterator<TreebankNode> it = fromStart.listIterator();
+      StringBuffer pathBuffer = new StringBuffer();
+      boolean first = true;
+      while (it.hasNext()) {
+        Feature feature = this.pathMemberExtractor.extract(view, it.next()).get(0);
+        if (first) {
+          String s = feature.getName();
+          if (isPartial) {
+            pathFeatureName = Feature.createName(name, "PartialSyntacticPath(" + s + ")");
+            lengthFeatureName = Feature.createName(name, "PartialSyntacticPath", "Length");
+          } else {
+            pathFeatureName = Feature.createName(name, "SyntacticPath(" + s + ")");
+            lengthFeatureName = Feature.createName(name, "SyntacticPath", "Length");
+          }
+          first = false;
+        } else {
+          pathBuffer.append(this.UP_SEPARATOR);
+        }
+        pathBuffer.append(feature.getValue().toString());
+      }
 
-	/**
-	 * Find the path from a TreebankNode to the root of the tree it belongs to.
-	 * 
-	 * @param startNode
-	 *            The start node of the path
-	 * 
-	 * @return A list of TreebankNodes that make up the path from <b>startNode</b>
-	 *         to the root of the tree
-	 */
-	protected static List<TreebankNode> getPathToRoot(TreebankNode startNode) {
-		List<TreebankNode> nlist = new ArrayList<TreebankNode>(20);
-		TreebankNode cursorNode = startNode;
+      if (!isPartial) {
+        it = fromEnd.listIterator(fromEnd.size());
+        while (it.hasPrevious()) {
+          Feature feature = this.pathMemberExtractor.extract(view, it.previous()).get(0);
+          pathBuffer.append(this.DOWN_SEPARATOR);
+          pathBuffer.append(feature.getValue().toString());
+        }
+      }
 
-		while (cursorNode != null) {
-			nlist.add(cursorNode);
-			cursorNode = cursorNode.getParent();
-		}
+      List<Feature> features = new ArrayList<Feature>(2);
+      features.add(new Feature(pathFeatureName, pathBuffer.toString()));
+      features.add(new Feature(lengthFeatureName, (long) length));
 
-		return nlist;
-	}
+      return features;
+
+    } catch (IndexOutOfBoundsException e) {
+      return new ArrayList<Feature>(0);
+    }
+  }
+
+  /**
+   * Find the path from a TreebankNode to the root of the tree it belongs to.
+   * 
+   * @param startNode
+   *          The start node of the path
+   * 
+   * @return A list of TreebankNodes that make up the path from <b>startNode</b> to the root of the
+   *         tree
+   */
+  protected static List<TreebankNode> getPathToRoot(TreebankNode startNode) {
+    List<TreebankNode> nlist = new ArrayList<TreebankNode>(20);
+    TreebankNode cursorNode = startNode;
+
+    while (cursorNode != null) {
+      nlist.add(cursorNode);
+      cursorNode = cursorNode.getParent();
+    }
+
+    return nlist;
+  }
 }

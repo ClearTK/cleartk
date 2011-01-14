@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.jar;
 
 import java.io.BufferedWriter;
@@ -41,101 +41,104 @@ import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
  */
-public abstract class JarSequentialDataWriter<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE, FEATURES_TYPE> implements SequentialDataWriter<INPUTOUTCOME_TYPE> {
+public abstract class JarSequentialDataWriter<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE, FEATURES_TYPE>
+        implements SequentialDataWriter<INPUTOUTCOME_TYPE> {
 
-	public JarSequentialDataWriter(File outputDirectory) {
-		// Initialize the output directory and list of output writers
-		this.outputDirectory = outputDirectory;
-		this.writers = new ArrayList<PrintWriter>();
+  public JarSequentialDataWriter(File outputDirectory) {
+    // Initialize the output directory and list of output writers
+    this.outputDirectory = outputDirectory;
+    this.writers = new ArrayList<PrintWriter>();
 
-		// Initialize the Manifest
-		this.classifierManifest = new ClassifierManifest();
-	}
+    // Initialize the Manifest
+    this.classifierManifest = new ClassifierManifest();
+  }
 
-	public abstract Class<? extends ClassifierBuilder<INPUTOUTCOME_TYPE>> getDefaultClassifierBuilderClass();
+  public abstract Class<? extends ClassifierBuilder<INPUTOUTCOME_TYPE>> getDefaultClassifierBuilderClass();
 
-	public void writeSequence(List<Instance<INPUTOUTCOME_TYPE>> instances) throws CleartkException{
-		for (Instance<INPUTOUTCOME_TYPE> instance : instances) {
-			FEATURES_TYPE features = featuresEncoder.encodeAll(instance.getFeatures());
-			OUTPUTOUTCOME_TYPE outcome = outcomeEncoder.encode(instance.getOutcome());
-			writeEncoded(features, outcome);
-		}
-		writeEndSequence();
-	}
+  public void writeSequence(List<Instance<INPUTOUTCOME_TYPE>> instances) throws CleartkException {
+    for (Instance<INPUTOUTCOME_TYPE> instance : instances) {
+      FEATURES_TYPE features = featuresEncoder.encodeAll(instance.getFeatures());
+      OUTPUTOUTCOME_TYPE outcome = outcomeEncoder.encode(instance.getOutcome());
+      writeEncoded(features, outcome);
+    }
+    writeEndSequence();
+  }
 
-	public abstract void writeEncoded(FEATURES_TYPE features, OUTPUTOUTCOME_TYPE outcome);
-	
-	public abstract void writeEndSequence();
+  public abstract void writeEncoded(FEATURES_TYPE features, OUTPUTOUTCOME_TYPE outcome);
 
-	public void finish() throws CleartkException {
-		try {
-			// close out the file writers
-			for (PrintWriter writer : this.writers) {
-				writer.flush();
-				writer.close();
-			}
-			
-			// finalize the feature set
-			featuresEncoder.finalizeFeatureSet(outputDirectory);
-			outcomeEncoder.finalizeOutcomeSet(outputDirectory);
+  public abstract void writeEndSequence();
 
-			// serialize the features encoder
-			ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(
-					getFile(FeaturesEncoder_ImplBase.ENCODERS_FILE_NAME)));
-			os.writeObject(this.featuresEncoder);
-			os.writeObject(this.outcomeEncoder);
-			os.close();
+  public void finish() throws CleartkException {
+    try {
+      // close out the file writers
+      for (PrintWriter writer : this.writers) {
+        writer.flush();
+        writer.close();
+      }
 
-			// set manifest values
-			try {
-				Class<? extends ClassifierBuilder<? extends INPUTOUTCOME_TYPE>> classifierBuilderClass = this
-						.getDefaultClassifierBuilderClass();
-				this.classifierManifest.setClassifierBuilder(classifierBuilderClass.newInstance());
-			}
-			catch (InstantiationException e) {
-				throw new RuntimeException(e);
-			}
-			catch (IllegalAccessException e) {
-				throw new RuntimeException(e);
-			}
+      // finalize the feature set
+      featuresEncoder.finalizeFeatureSet(outputDirectory);
+      outcomeEncoder.finalizeOutcomeSet(outputDirectory);
 
-			// write the manifest file
-			classifierManifest.write(this.outputDirectory);
-		}
-		catch (IOException ioe) {
-			throw new CleartkException(ioe);
-		}
-	}
+      // serialize the features encoder
+      ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(
+              getFile(FeaturesEncoder_ImplBase.ENCODERS_FILE_NAME)));
+      os.writeObject(this.featuresEncoder);
+      os.writeObject(this.outcomeEncoder);
+      os.close();
 
-	public void setFeaturesEncoder(FeaturesEncoder<FEATURES_TYPE> featuresEncoder) {
-		this.featuresEncoder = featuresEncoder;
-	}
+      // set manifest values
+      try {
+        Class<? extends ClassifierBuilder<? extends INPUTOUTCOME_TYPE>> classifierBuilderClass = this
+                .getDefaultClassifierBuilderClass();
+        this.classifierManifest.setClassifierBuilder(classifierBuilderClass.newInstance());
+      } catch (InstantiationException e) {
+        throw new RuntimeException(e);
+      } catch (IllegalAccessException e) {
+        throw new RuntimeException(e);
+      }
 
-	public void setOutcomeEncoder(OutcomeEncoder<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE> outcomeEncoder) {
-		this.outcomeEncoder = outcomeEncoder;
-	}
+      // write the manifest file
+      classifierManifest.write(this.outputDirectory);
+    } catch (IOException ioe) {
+      throw new CleartkException(ioe);
+    }
+  }
 
-	protected File getFile(String fileName) {
-		return new File(this.outputDirectory, fileName);
-	}
+  public void setFeaturesEncoder(FeaturesEncoder<FEATURES_TYPE> featuresEncoder) {
+    this.featuresEncoder = featuresEncoder;
+  }
 
-	protected PrintWriter getPrintWriter(String fileName) throws IOException {
-		File file = this.getFile(fileName);
-		if (!file.getParentFile().exists()) {
-			file.getParentFile().mkdirs();
-		}
+  public void setOutcomeEncoder(OutcomeEncoder<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE> outcomeEncoder) {
+    this.outcomeEncoder = outcomeEncoder;
+  }
 
-		PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(file)));
-		this.writers.add(writer);
-		return writer;
-	}
+  protected File getFile(String fileName) {
+    return new File(this.outputDirectory, fileName);
+  }
 
-	private File outputDirectory;
-	private List<PrintWriter> writers;
-	protected ClassifierManifest classifierManifest;
-	protected FeaturesEncoder<FEATURES_TYPE> featuresEncoder;
-	protected OutcomeEncoder<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE> outcomeEncoder;
+  protected PrintWriter getPrintWriter(String fileName) throws IOException {
+    File file = this.getFile(fileName);
+    if (!file.getParentFile().exists()) {
+      file.getParentFile().mkdirs();
+    }
+
+    PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(file)));
+    this.writers.add(writer);
+    return writer;
+  }
+
+  private File outputDirectory;
+
+  private List<PrintWriter> writers;
+
+  protected ClassifierManifest classifierManifest;
+
+  protected FeaturesEncoder<FEATURES_TYPE> featuresEncoder;
+
+  protected OutcomeEncoder<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE> outcomeEncoder;
 }

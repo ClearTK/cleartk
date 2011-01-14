@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.encoder.features;
 
 import java.io.File;
@@ -34,85 +34,86 @@ import org.cleartk.classifier.encoder.features.normalizer.NameNumberNormalizer;
 import org.cleartk.classifier.feature.Counts;
 import org.cleartk.classifier.util.tfidf.IDFMap;
 
-
 /**
- * <br>Copyright (c) 2009, Regents of the University of Colorado 
- * <br>All rights reserved.
- *
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
  * Encodes a Counts feature into TF-IDF values.
  * 
- * A normalizer can be given, which will be applied to the list of
- * encoded features. If no normalizer is given, it defaults to a
- * euclidian normalizer.
+ * A normalizer can be given, which will be applied to the list of encoded features. If no
+ * normalizer is given, it defaults to a euclidian normalizer.
  * 
- * If a name is supplied this encoder will only dispatch on features
- * of that name.
+ * If a name is supplied this encoder will only dispatch on features of that name.
  * 
  * @author Philipp Wetzler
  */
 public class TFIDFEncoder implements FeatureEncoder<NameNumber> {
 
-	private static final long serialVersionUID = -5280514188425612793L;
-	
-	public TFIDFEncoder(String identifier, File idfMapFile, NameNumberNormalizer normalizer) throws IOException {
-		this.identifier = identifier;
-		this.normalizer = normalizer;
-		
-		this.idfMap = IDFMap.read(idfMapFile);
-	}
+  private static final long serialVersionUID = -5280514188425612793L;
 
-	public TFIDFEncoder(String identifier, File idfFile) throws IOException {
-		this(identifier, idfFile, new EuclidianNormalizer());
-	}
+  public TFIDFEncoder(String identifier, File idfMapFile, NameNumberNormalizer normalizer)
+          throws IOException {
+    this.identifier = identifier;
+    this.normalizer = normalizer;
 
-	public TFIDFEncoder(File idfFile, NameNumberNormalizer normalizer) throws IOException {
-		this(null, idfFile, normalizer);
-	}
+    this.idfMap = IDFMap.read(idfMapFile);
+  }
 
-	public TFIDFEncoder(File idfFile) throws IOException {
-		this(null, idfFile, new EuclidianNormalizer());
-	}
-	
-	public List<NameNumber> encode(Feature feature) {
-		List<NameNumber> fves = new ArrayList<NameNumber>();
-		Counts counts = (Counts) feature.getValue();
-		String prefix = counts.getFeatureName();
+  public TFIDFEncoder(String identifier, File idfFile) throws IOException {
+    this(identifier, idfFile, new EuclidianNormalizer());
+  }
 
-		for( Object key : counts.getValues() ) {
-			double tf = getTF(counts, key);
-			double idf = idfMap.getIDF(key);
-			
-			String name = Feature.createName(prefix, key.toString());
-			NameNumber fve = new NameNumber(name, tf * idf);
-			fves.add(fve);
-		}
+  public TFIDFEncoder(File idfFile, NameNumberNormalizer normalizer) throws IOException {
+    this(null, idfFile, normalizer);
+  }
 
-		normalizer.normalize(fves);
+  public TFIDFEncoder(File idfFile) throws IOException {
+    this(null, idfFile, new EuclidianNormalizer());
+  }
 
-		return fves;
-	}
+  public List<NameNumber> encode(Feature feature) {
+    List<NameNumber> fves = new ArrayList<NameNumber>();
+    Counts counts = (Counts) feature.getValue();
+    String prefix = counts.getFeatureName();
 
-	public boolean encodes(Feature feature) {
-		if( ! (feature.getValue() instanceof Counts) )
-			return false;
-		
-		Counts counts = (Counts) feature.getValue();
-		
-		if( identifier == null )
-			return true;
-		
-		if( identifier.equals(counts.getIdentifier()))
-			return true;
-		
-		return false;
-	}
-	
-	private static double getTF(Counts counts, Object key) {
-		return (double) counts.getCount(key) / (double) counts.getTotalCount();
-	}
+    for (Object key : counts.getValues()) {
+      double tf = getTF(counts, key);
+      double idf = idfMap.getIDF(key);
 
-	private String identifier;
-	private NameNumberNormalizer normalizer;
-	private IDFMap idfMap;
+      String name = Feature.createName(prefix, key.toString());
+      NameNumber fve = new NameNumber(name, tf * idf);
+      fves.add(fve);
+    }
+
+    normalizer.normalize(fves);
+
+    return fves;
+  }
+
+  public boolean encodes(Feature feature) {
+    if (!(feature.getValue() instanceof Counts))
+      return false;
+
+    Counts counts = (Counts) feature.getValue();
+
+    if (identifier == null)
+      return true;
+
+    if (identifier.equals(counts.getIdentifier()))
+      return true;
+
+    return false;
+  }
+
+  private static double getTF(Counts counts, Object key) {
+    return (double) counts.getCount(key) / (double) counts.getTotalCount();
+  }
+
+  private String identifier;
+
+  private NameNumberNormalizer normalizer;
+
+  private IDFMap idfMap;
 
 }

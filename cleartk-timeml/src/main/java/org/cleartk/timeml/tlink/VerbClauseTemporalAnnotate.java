@@ -47,44 +47,40 @@ import org.uimafit.pipeline.SimplePipeline;
  */
 public class VerbClauseTemporalAnnotate {
 
-	private static void error(String message) throws Exception {
-		Logger logger = UimaContextFactory.createUimaContext().getLogger();
-		logger.log(Level.SEVERE, String.format("%s\nusage: "
-				+ "VerbClauseTemporalAnnotate input-file-or-dir [output-dir]", message));
-		System.exit(1);
-	}
+  private static void error(String message) throws Exception {
+    Logger logger = UimaContextFactory.createUimaContext().getLogger();
+    logger.log(Level.SEVERE, String.format("%s\nusage: "
+            + "VerbClauseTemporalAnnotate input-file-or-dir [output-dir]", message));
+    System.exit(1);
+  }
 
-	public static void main(String[] args) throws Exception {
-		// check arguments
-		if (args.length != 1 && args.length != 2) {
-			error("wrong number of arguments");
-		} else if (!new File(args[0]).exists()) {
-			error("file or directory not found: " + args[0]);
-		}
+  public static void main(String[] args) throws Exception {
+    // check arguments
+    if (args.length != 1 && args.length != 2) {
+      error("wrong number of arguments");
+    } else if (!new File(args[0]).exists()) {
+      error("file or directory not found: " + args[0]);
+    }
 
-		// parse arguments
-		String inputFileOrDir = args[0];
-		File outputDir;
-		if (args.length == 2) {
-			outputDir = new File(args[1]);
-		} else {
-			outputDir = new File(".");
-		}
-		if (!outputDir.exists()) {
-			outputDir.mkdirs();
-		}
+    // parse arguments
+    String inputFileOrDir = args[0];
+    File outputDir;
+    if (args.length == 2) {
+      outputDir = new File(args[1]);
+    } else {
+      outputDir = new File(".");
+    }
+    if (!outputDir.exists()) {
+      outputDir.mkdirs();
+    }
 
-		// run the components on the selected documents
-		SimplePipeline.runPipeline(
-			FilesCollectionReader.getCollectionReader(
-				TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
-				inputFileOrDir),
-			SentenceAnnotator.getDescription(),
-			TokenAnnotator.getDescription(),
-			PosTaggerAnnotator.getDescription(),
-			DefaultSnowballStemmer.getDescription("English"),
-			ParserAnnotator.getDescription(),
-			VerbClauseTemporalAnnotator.getAnnotatorDescription(),
-			TimeMLWriter.getDescription(outputDir.getPath()));
-	}
+    // run the components on the selected documents
+    SimplePipeline.runPipeline(FilesCollectionReader.getCollectionReader(
+            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION, inputFileOrDir), SentenceAnnotator
+            .getDescription(), TokenAnnotator.getDescription(),
+            PosTaggerAnnotator.getDescription(), DefaultSnowballStemmer.getDescription("English"),
+            ParserAnnotator.getDescription(),
+            VerbClauseTemporalAnnotator.getAnnotatorDescription(), TimeMLWriter
+                    .getDescription(outputDir.getPath()));
+  }
 }

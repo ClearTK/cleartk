@@ -35,35 +35,32 @@ import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 
-
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
  * <p>
-*/
+ */
 public class SimpleLineHandler implements LineHandler {
 
-	public static final String PARAM_DELIMITER = ConfigurationParameterFactory.createConfigurationParameterName(
-			SimpleLineHandler.class, "delimiter");
+  public static final String PARAM_DELIMITER = ConfigurationParameterFactory
+          .createConfigurationParameterName(SimpleLineHandler.class, "delimiter");
 
-	@ConfigurationParameter(
-			mandatory = true,
-			defaultValue = "|",
-			description = "specifies a string that delimits the id from the text. "
-	)
-	private String delimiter;
+  @ConfigurationParameter(mandatory = true, defaultValue = "|", description = "specifies a string that delimits the id from the text. ")
+  private String delimiter;
 
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		ConfigurationParameterInitializer.initialize(this, context);
-	}
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    ConfigurationParameterInitializer.initialize(this, context);
+  }
 
-	public void handleLine(JCas jCas, File rootFile, File file, String line)  throws IOException, CollectionException{
-		String id = line.substring(0, line.indexOf(delimiter));
-		String text = line.substring(line.indexOf(delimiter) + 1);
-		jCas.setSofaDataString(text, "text/plain");
+  public void handleLine(JCas jCas, File rootFile, File file, String line) throws IOException,
+          CollectionException {
+    String id = line.substring(0, line.indexOf(delimiter));
+    String text = line.substring(line.indexOf(delimiter) + 1);
+    jCas.setSofaDataString(text, "text/plain");
 
-		String uri = String.format("%s#%s", file.toURI().toString(), id);
-		ViewURIUtil.setURI(jCas, uri);
-	}
+    String uri = String.format("%s#%s", file.toURI().toString(), id);
+    ViewURIUtil.setURI(jCas, uri);
+  }
 
 }

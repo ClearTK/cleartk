@@ -1,4 +1,4 @@
- /** 
+/** 
  * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -20,7 +20,7 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
-*/
+ */
 package org.cleartk.classifier.mallet;
 
 import static org.junit.Assert.assertEquals;
@@ -49,127 +49,130 @@ import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.testing.util.HideOutput;
 
 import cc.mallet.types.FeatureVector;
+
 /**
- * <br>Copyright (c) 2007-2008, Regents of the University of Colorado 
- * <br>All rights reserved.
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * 
+ * @author Philip Ogren
+ */
 
-* 
-* @author Philip Ogren
-*/
+public class MalletClassifierTest extends DefaultTestBase {
+  private Random random;
 
-public class MalletClassifierTest extends DefaultTestBase{
-	private Random random;
-	
-	@Before
-	public void setUp() throws Exception {
-		super.setUp();
-		random = new Random(System.currentTimeMillis());
-	}
+  @Before
+  public void setUp() throws Exception {
+    super.setUp();
+    random = new Random(System.currentTimeMillis());
+  }
 
-	private static Instance<String> generateInstance(Random random){
-		Instance<String> instance = new Instance<String>();
-		
-		int outcome = random.nextInt(2);
-		if(outcome == 0) {
-			instance.setOutcome("A");
-			instance.add(new Feature("hello", random.nextInt(1000)+1000));
-		} else {
-			instance.setOutcome("B");
-			instance.add(new Feature("hello", random.nextInt(100)));
-		}
-		
-		return instance;
-	}
+  private static Instance<String> generateInstance(Random random) {
+    Instance<String> instance = new Instance<String>();
 
-	
-	public static class TestAnnotator extends CleartkAnnotator<String>{
-		Random random = new Random(System.currentTimeMillis());
+    int outcome = random.nextInt(2);
+    if (outcome == 0) {
+      instance.setOutcome("A");
+      instance.add(new Feature("hello", random.nextInt(1000) + 1000));
+    } else {
+      instance.setOutcome("B");
+      instance.add(new Feature("hello", random.nextInt(100)));
+    }
 
-		public void process(JCas cas) throws AnalysisEngineProcessException {
-			try {
-				this.processSimple(cas);
-			} catch (CleartkException e) {
-				throw new AnalysisEngineProcessException(e);
-			}
-		}
-		public void processSimple(JCas cas) throws AnalysisEngineProcessException, CleartkException {
-			if (this.isTraining()) {
-				for(int i=0; i<1000; i++) {
-					this.dataWriter.write(generateInstance(random));
-				}
-			} else {
-				Instance<String> testInstance = new Instance<String>();
-				testInstance.add(new Feature("hello", random.nextInt(1000)+1000));
-				String outcome = this.classifier.classify(testInstance.getFeatures());
-				assertEquals("A", outcome);
+    return instance;
+  }
 
-				testInstance = new Instance<String>();
-				testInstance.add(new Feature("hello", 95));
-				outcome = this.classifier.classify(testInstance.getFeatures());
-				assertEquals("B", outcome);
-			}
-		}
-	}
-	
-	@Test
-	public void runTest1() throws Exception {
-		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
-				TestAnnotator.class, typeSystemDescription,
-				JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
-				CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME, DefaultMalletDataWriterFactory.class.getName());
+  public static class TestAnnotator extends CleartkAnnotator<String> {
+    Random random = new Random(System.currentTimeMillis());
 
-		dataWriterAnnotator.process(jCas);
-		dataWriterAnnotator.collectionProcessComplete();
+    public void process(JCas cas) throws AnalysisEngineProcessException {
+      try {
+        this.processSimple(cas);
+      } catch (CleartkException e) {
+        throw new AnalysisEngineProcessException(e);
+      }
+    }
 
-		BufferedReader reader = new BufferedReader(new FileReader(new File(outputDirectoryName, MalletDataWriter.TRAINING_DATA_FILE_NAME)));
-		reader.readLine();
-		reader.close();
+    public void processSimple(JCas cas) throws AnalysisEngineProcessException, CleartkException {
+      if (this.isTraining()) {
+        for (int i = 0; i < 1000; i++) {
+          this.dataWriter.write(generateInstance(random));
+        }
+      } else {
+        Instance<String> testInstance = new Instance<String>();
+        testInstance.add(new Feature("hello", random.nextInt(1000) + 1000));
+        String outcome = this.classifier.classify(testInstance.getFeatures());
+        assertEquals("A", outcome);
 
-		IllegalArgumentException exception = null;
-		try {
-			Train.main(outputDirectoryName, "asdf");
-		} catch(IllegalArgumentException iae) {
-			exception = iae;
-		}
-		assertNotNull(exception);
-		
-		exception = null;
-		try {
-			Train.main(outputDirectoryName, "MaxEnt", "10", "asdf");
-		} catch(IllegalArgumentException iae) {
-			exception = iae;
-		}
-		assertNotNull(exception);
-		
-		HideOutput hider = new HideOutput();
-		Train.main(new String[] {outputDirectoryName, "C45"});
-		hider.restoreOutput();
+        testInstance = new Instance<String>();
+        testInstance.add(new Feature("hello", 95));
+        outcome = this.classifier.classify(testInstance.getFeatures());
+        assertEquals("B", outcome);
+      }
+    }
+  }
 
-		JarFile modelFile = new JarFile(new File(outputDirectoryName, "model.jar"));
-		MalletClassifier classifier = new MalletClassifier(modelFile);
-		modelFile.close();
-		
-		Instance<String> testInstance = new Instance<String>();
-		testInstance.add(new Feature("hello", random.nextInt(1000)+1000));
-		String outcome = classifier.classify(testInstance.getFeatures());
-		assertEquals("A", outcome);
+  @Test
+  public void runTest1() throws Exception {
+    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(TestAnnotator.class,
+            typeSystemDescription, JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+            outputDirectoryName, CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+            DefaultMalletDataWriterFactory.class.getName());
 
-		testInstance = new Instance<String>();
-		testInstance.add(new Feature("hello", 95));
-		outcome = classifier.classify(testInstance.getFeatures());
-		assertEquals("B", outcome);
-		
-		cc.mallet.types.Instance malletInstance = classifier.toInstance(testInstance.getFeatures());
-		FeatureVector fv = (FeatureVector) malletInstance.getData();
-		assertEquals(95.0, fv.value("hello"), 0.001);
-		
-		AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createPrimitive(
-				TestAnnotator.class, typeSystemDescription,
-				JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, outputDirectoryName+"/model.jar");
-		jCas.reset();
-		classifierAnnotator.process(jCas);
-		classifierAnnotator.collectionProcessComplete();
+    dataWriterAnnotator.process(jCas);
+    dataWriterAnnotator.collectionProcessComplete();
 
-	}
+    BufferedReader reader = new BufferedReader(new FileReader(new File(outputDirectoryName,
+            MalletDataWriter.TRAINING_DATA_FILE_NAME)));
+    reader.readLine();
+    reader.close();
+
+    IllegalArgumentException exception = null;
+    try {
+      Train.main(outputDirectoryName, "asdf");
+    } catch (IllegalArgumentException iae) {
+      exception = iae;
+    }
+    assertNotNull(exception);
+
+    exception = null;
+    try {
+      Train.main(outputDirectoryName, "MaxEnt", "10", "asdf");
+    } catch (IllegalArgumentException iae) {
+      exception = iae;
+    }
+    assertNotNull(exception);
+
+    HideOutput hider = new HideOutput();
+    Train.main(new String[] { outputDirectoryName, "C45" });
+    hider.restoreOutput();
+
+    JarFile modelFile = new JarFile(new File(outputDirectoryName, "model.jar"));
+    MalletClassifier classifier = new MalletClassifier(modelFile);
+    modelFile.close();
+
+    Instance<String> testInstance = new Instance<String>();
+    testInstance.add(new Feature("hello", random.nextInt(1000) + 1000));
+    String outcome = classifier.classify(testInstance.getFeatures());
+    assertEquals("A", outcome);
+
+    testInstance = new Instance<String>();
+    testInstance.add(new Feature("hello", 95));
+    outcome = classifier.classify(testInstance.getFeatures());
+    assertEquals("B", outcome);
+
+    cc.mallet.types.Instance malletInstance = classifier.toInstance(testInstance.getFeatures());
+    FeatureVector fv = (FeatureVector) malletInstance.getData();
+    assertEquals(95.0, fv.value("hello"), 0.001);
+
+    AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createPrimitive(TestAnnotator.class,
+            typeSystemDescription, JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
+            outputDirectoryName + "/model.jar");
+    jCas.reset();
+    classifierAnnotator.process(jCas);
+    classifierAnnotator.collectionProcessComplete();
+
+  }
 
 }

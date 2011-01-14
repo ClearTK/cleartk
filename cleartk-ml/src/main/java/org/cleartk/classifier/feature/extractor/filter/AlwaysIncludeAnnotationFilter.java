@@ -35,12 +35,12 @@ import org.cleartk.CleartkException;
 
 public class AlwaysIncludeAnnotationFilter implements AnnotationFilter {
 
-	public boolean include(JCas jCas, Annotation annotation) throws CleartkException {
-		return true;
-	}
+  public boolean include(JCas jCas, Annotation annotation) throws CleartkException {
+    return true;
+  }
 
-	public String filterName() {
-		return "";
-	}
+  public String filterName() {
+    return "";
+  }
 
 }
