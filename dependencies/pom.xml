@@ -15,9 +15,7 @@
 		<module>libsvm</module>
 		<module>mallet</module>
 		<module>malt</module>
-		<module>maxent</module>
 		<module>mtj</module>
-		<module>opennlp</module>
 		<module>snowball</module>
 		<module>trove</module>
 		<module>weka</module>
