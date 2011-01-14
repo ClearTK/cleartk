@@ -27,9 +27,9 @@ import java.io.File;
 
 import org.apache.uima.util.Level;
 import org.apache.uima.util.Logger;
-import org.cleartk.syntax.opennlp.OpenNLPPOSTagger;
-import org.cleartk.syntax.opennlp.OpenNLPSentenceSegmenter;
-import org.cleartk.syntax.opennlp.OpenNLPTreebankParser;
+import org.cleartk.syntax.opennlp.ParserAnnotator;
+import org.cleartk.syntax.opennlp.PosTaggerAnnotator;
+import org.cleartk.syntax.opennlp.SentenceAnnotator;
 import org.cleartk.timeml.TimeMLComponents;
 import org.cleartk.timeml.corpus.TimeMLWriter;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
@@ -79,11 +79,11 @@ public class VerbClauseTemporalAnnotate {
 			FilesCollectionReader.getCollectionReader(
 				TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
 				inputFileOrDir),
-			OpenNLPSentenceSegmenter.getDescription(),
+			SentenceAnnotator.getDescription(),
 			TokenAnnotator.getDescription(),
-			OpenNLPPOSTagger.getDescription(),
+			PosTaggerAnnotator.getDescription(),
 			DefaultSnowballStemmer.getDescription("English"),
-			OpenNLPTreebankParser.getDescription(),
+			ParserAnnotator.getDescription(),
 			VerbClauseTemporalAnnotator.getAnnotatorDescription(),
 			TimeMLWriter.getDescription(outputDir.getPath()));
 	}

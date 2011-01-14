@@ -25,8 +25,6 @@ package org.cleartk.classifier.opennlp;
 
 import java.io.File;
 
-import opennlp.maxent.RealValueFileEventStream;
-
 import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 import org.cleartk.classifier.jar.BuildJar;
 import org.cleartk.classifier.jar.ClassifierBuilder;
@@ -43,7 +41,7 @@ public abstract class MaxentClassifierBuilder_ImplBase<OUTCOME_TYPE> implements 
 		String[] maxentArgs = new String[args.length + 1];
 		maxentArgs[0] = new File(dir, "training-data.maxent").getPath();
 		System.arraycopy(args, 0, maxentArgs, 1, args.length);
-		RealValueFileEventStream.main(maxentArgs);
+		opennlp.model.RealValueFileEventStream.main(maxentArgs);
 	}
 
 	public void buildJar(File dir, String[] args) throws Exception {

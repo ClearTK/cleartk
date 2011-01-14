@@ -30,8 +30,8 @@ import java.util.List;
 import org.apache.uima.util.Level;
 import org.apache.uima.util.Logger;
 import org.cleartk.classifier.jar.Train;
-import org.cleartk.syntax.opennlp.OpenNLPPOSTagger;
-import org.cleartk.syntax.opennlp.OpenNLPSentenceSegmenter;
+import org.cleartk.syntax.opennlp.PosTaggerAnnotator;
+import org.cleartk.syntax.opennlp.SentenceAnnotator;
 import org.cleartk.timeml.TimeMLComponents;
 import org.cleartk.timeml.TimeMLViewName;
 import org.cleartk.timeml.corpus.TimeMLGoldAnnotator;
@@ -75,9 +75,9 @@ public class EventTrain {
 				timebankDirectory,
 				TimeMLViewName.TIMEML),
 			TimeMLGoldAnnotator.getDescriptionNoTLINKs(),
-			OpenNLPSentenceSegmenter.getDescription(),
+			SentenceAnnotator.getDescription(),
 			TokenAnnotator.getDescription(),
-			OpenNLPPOSTagger.getDescription(),
+			PosTaggerAnnotator.getDescription(),
 			DefaultSnowballStemmer.getDescription("English"),
 			EventAnnotator.getWriterDescription(),
 			EventTenseAnnotator.getWriterDescription(),

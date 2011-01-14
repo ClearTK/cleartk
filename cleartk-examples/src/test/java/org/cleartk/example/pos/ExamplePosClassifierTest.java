@@ -45,8 +45,9 @@ import org.cleartk.example.ExamplesTestBase;
 import org.cleartk.examples.ExampleComponents;
 import org.cleartk.examples.pos.ExamplePOSAnnotator;
 import org.cleartk.examples.pos.ExamplePOSPlainTextWriter;
-import org.cleartk.syntax.constituent.TreebankGoldAnnotator;
 import org.cleartk.syntax.constituent.TreebankConstants;
+import org.cleartk.syntax.constituent.TreebankGoldAnnotator;
+import org.cleartk.syntax.opennlp.SentenceAnnotator;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.tokenizer.TokenAnnotator;
 import org.cleartk.util.cr.FilesCollectionReader;
@@ -281,7 +282,7 @@ public class ExamplePosClassifierTest extends ExamplesTestBase{
 		
 		SimplePipeline.runPipeline(
 				FilesCollectionReader.getCollectionReader(ExampleComponents.TYPE_SYSTEM_DESCRIPTION, "src/test/resources/data/2008_Sichuan_earthquake.txt"),
-				ExampleComponents.getSentenceSegmenter(),
+				SentenceAnnotator.getDescription(),
 				TokenAnnotator.getDescription(),
 				DefaultSnowballStemmer.getDescription("English"),
 				taggerDescription, 

@@ -27,9 +27,9 @@ package org.cleartk.examples.parser;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.collection.CollectionReader;
 import org.cleartk.examples.ExampleComponents;
-import org.cleartk.syntax.opennlp.OpenNLPPOSTagger;
-import org.cleartk.syntax.opennlp.OpenNLPSentenceSegmenter;
-import org.cleartk.syntax.opennlp.OpenNLPTreebankParser;
+import org.cleartk.syntax.opennlp.ParserAnnotator;
+import org.cleartk.syntax.opennlp.PosTaggerAnnotator;
+import org.cleartk.syntax.opennlp.SentenceAnnotator;
 import org.cleartk.token.tokenizer.TokenAnnotator;
 import org.cleartk.util.ViewURIFileNamer;
 import org.cleartk.util.cr.FilesCollectionReader;
@@ -55,12 +55,12 @@ public class ParserExample {
 		CollectionReader reader = FilesCollectionReader.getCollectionReader(
 				ExampleComponents.TYPE_SYSTEM_DESCRIPTION, filesDirectory);
 
-		AnalysisEngineDescription sentences = AnalysisEngineFactory.createPrimitiveDescription(OpenNLPSentenceSegmenter.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION);
+		AnalysisEngineDescription sentences = AnalysisEngineFactory.createPrimitiveDescription(SentenceAnnotator.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION);
 		AnalysisEngineDescription tokenizer = AnalysisEngineFactory.createPrimitiveDescription(TokenAnnotator.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
 				TokenAnnotator.PARAM_WINDOW_TYPE_NAME, org.cleartk.token.type.Sentence.class.getName());
 
-		AnalysisEngineDescription posTaggerDescription = OpenNLPPOSTagger.getDescription();
-		AnalysisEngineDescription parserDescription = OpenNLPTreebankParser.getDescription();
+		AnalysisEngineDescription posTaggerDescription = PosTaggerAnnotator.getDescription();
+		AnalysisEngineDescription parserDescription = ParserAnnotator.getDescription();
 		AnalysisEngineDescription xWriterDescription = AnalysisEngineFactory.createPrimitiveDescription(XWriter.class,
 				ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
 				XWriter.PARAM_OUTPUT_DIRECTORY_NAME, outputDirectory,

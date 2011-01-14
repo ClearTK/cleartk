@@ -29,7 +29,7 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;
 import org.cleartk.examples.ExampleComponents;
-import org.cleartk.syntax.opennlp.OpenNLPSentenceSegmenter;
+import org.cleartk.syntax.opennlp.SentenceAnnotator;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.util.ae.linewriter.LineWriter;
 import org.cleartk.util.cr.FilesCollectionReader;
@@ -50,7 +50,7 @@ public class Docs2Sentences {
 		String outputFileName = args[1];
 		
 		CollectionReader filesReader = FilesCollectionReader.getCollectionReader(ExampleComponents.TYPE_SYSTEM_DESCRIPTION, inputDirectoryName);
-		AnalysisEngine sentences = AnalysisEngineFactory.createPrimitive(OpenNLPSentenceSegmenter.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION);
+		AnalysisEngine sentences = AnalysisEngineFactory.createPrimitive(SentenceAnnotator.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION);
 		AnalysisEngine lineWriter = AnalysisEngineFactory.createPrimitive(LineWriter.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION, LineWriter.PARAM_OUTPUT_FILE_NAME, outputFileName, LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, Sentence.class.getName());
 
 		SimplePipeline.runPipeline(filesReader, sentences, lineWriter);

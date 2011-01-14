@@ -28,8 +28,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-import opennlp.maxent.RealValueFileEventStream;
-
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.jar.JarDataWriter;

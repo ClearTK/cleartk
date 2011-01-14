@@ -30,7 +30,7 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.examples.ExampleComponents;
-import org.cleartk.syntax.opennlp.OpenNLPSentenceSegmenter;
+import org.cleartk.syntax.opennlp.SentenceAnnotator;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.tokenizer.TokenAnnotator;
 import org.cleartk.util.cr.FilesCollectionReader;
@@ -86,7 +86,7 @@ public class Step4RunClassifier {
 		System.out.println("classifying documents located in '"+documentDirectory+"'");
 		SimplePipeline.runPipeline(
 				FilesCollectionReader.getCollectionReader(ExampleComponents.TYPE_SYSTEM_DESCRIPTION, documentDirectory),
-				OpenNLPSentenceSegmenter.getDescription(),
+				SentenceAnnotator.getDescription(),
 				TokenAnnotator.getDescription(), 
 				DefaultSnowballStemmer.getDescription("English"),
 				AnalysisEngineFactory.createPrimitiveDescription(GoldAnnotator.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION),

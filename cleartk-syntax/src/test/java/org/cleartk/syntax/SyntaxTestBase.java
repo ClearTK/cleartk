@@ -37,7 +37,8 @@ public class SyntaxTestBase extends TokenTestBase {
 
 	@Override
 	public String[] getTypeSystemDescriptorNames() {
-		return new String[] {"org.cleartk.syntax.TypeSystem"};
+		return new String[] {"org.cleartk.syntax.TypeSystem",
+				"org.cleartk.type.test.TestTypeSystem"};
 	}
 	
 }

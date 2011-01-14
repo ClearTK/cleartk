@@ -23,7 +23,9 @@
  */
 package org.cleartk.syntax.constituent.util;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.uima.cas.FeatureStructure;
@@ -124,4 +126,35 @@ public class TreebankNodeUtility {
 		}
 		return null;
 	}
+	
+	/**
+	 * @return a "pretty print" of this node that may be useful for e.g. debugging.  
+	 */
+	public static void print(PrintStream out, org.cleartk.syntax.constituent.type.TreebankNode node) {
+		out.println(print(node, 0));
+	}
+
+	private static String print(org.cleartk.syntax.constituent.type.TreebankNode node, int tabs) {
+		StringBuffer returnValue = new StringBuffer();
+		String tabString = getTabs(tabs);
+		returnValue.append(tabString + node.getNodeType());
+		if (node.getNodeValue() != null) returnValue.append(":" + node.getNodeValue() + "\n");
+		else {
+			returnValue.append(":" + node.getCoveredText() + "\n");
+		}
+		if (node.getChildren().size() > 0) {
+			List<org.cleartk.syntax.constituent.type.TreebankNode> children = UIMAUtil.toList(node.getChildren(), org.cleartk.syntax.constituent.type.TreebankNode.class);
+			for (org.cleartk.syntax.constituent.type.TreebankNode child : children) {
+				returnValue.append(print(child, (tabs + 1)));
+			}
+		}
+		return returnValue.toString();
+	}
+
+	private static String getTabs(int tabs) {
+		char[] chars = new char[tabs];
+        Arrays.fill(chars, ' ');
+        return new String(chars); 
+	}
+
 }
