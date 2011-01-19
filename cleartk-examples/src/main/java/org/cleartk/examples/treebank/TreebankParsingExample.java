@@ -66,7 +66,9 @@ import org.uimafit.pipeline.SimplePipeline;
  * To view the resulting xmi file in the CAS Visual Debugger you can run the eclipse launch
  * configuration labeled "CVD (cleartk-examples)". When the CVD opens select Menu -> File -> Read
  * XMI CAS File. Now navigate to the single xmi file located in
- * src/main/resources/data/pos/treebank.
+ * src/main/resources/data/pos/treebank. Once the file is open in the CVD be sure to examine the
+ * different views by selecting different values from the drop down box labeled "Select View" near
+ * the top of the window.
  * 
  * @author Philip Ogren
  * 
