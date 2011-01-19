@@ -34,8 +34,8 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.collection.CollectionReader;
 import org.cleartk.evaluation.EvaluationConstants;
 import org.cleartk.examples.ExampleComponents;
-import org.cleartk.syntax.constituent.TreebankGoldAnnotator;
 import org.cleartk.syntax.constituent.TreebankConstants;
+import org.cleartk.syntax.constituent.TreebankGoldAnnotator;
 import org.cleartk.util.Options_ImplBase;
 import org.cleartk.util.ViewURIFileNamer;
 import org.cleartk.util.cr.FilesCollectionReader;
@@ -54,6 +54,19 @@ import org.uimafit.pipeline.SimplePipeline;
  * This class takes in treebank files and parses the the PTB-style format and populates a the CAS
  * with constituent trees and then writes out XMI files. The CAS will contain the raw treebank data
  * in a view You may find it useful to view the generated XMI files in the CAS Visual Debugger.
+ * 
+ * If you do not have access to PennTreebank data or any other treebank data, then you can run this
+ * script with the following arguments:
+ * <ul>
+ * <li>-td src/main/resources/data/pos/treebank</li>
+ * <li>-o src/main/resources/data/pos/treebank</li>
+ * <li>-suf .tree</li>
+ * </ul>
+ * 
+ * To view the resulting xmi file in the CAS Visual Debugger you can run the eclipse launch
+ * configuration labeled "CVD (cleartk-examples)". When the CVD opens select Menu -> File -> Read
+ * XMI CAS File. Now navigate to the single xmi file located in
+ * src/main/resources/data/pos/treebank.
  * 
  * @author Philip Ogren
  * 
