@@ -10,7 +10,7 @@
 		<artifactId>cleartk-jcasgen</artifactId>
 		<groupId>org.cleartk</groupId>
 		<version>0.5.0-SNAPSHOT</version>
-		<relativePath>..</relativePath>
+		<relativePath>../cleartk-jcasgen</relativePath>
 	</parent>
 	<properties>
 		<jcasgen.typesystem>org/cleartk/util/TypeSystem.xml</jcasgen.typesystem>
