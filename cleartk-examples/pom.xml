@@ -82,6 +82,12 @@
 			<version>0.9.9-SNAPSHOT</version>
 			<optional>false</optional>
 		</dependency>
+		<dependency>
+			<groupId>org.cleartk</groupId>
+			<artifactId>cleartk-ml-mallet</artifactId>
+			<version>0.9.9-SNAPSHOT</version>
+			<optional>false</optional>
+		</dependency>
 
 		<dependency>
 			<groupId>org.cleartk</groupId>
