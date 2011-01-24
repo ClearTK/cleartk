@@ -80,7 +80,7 @@ import org.uimafit.factory.initializable.InitializableFactory;
 @TypeCapability(outputs = { "org.cleartk.syntax.constituent.type.TreebankNode",
     "org.cleartk.syntax.constituent.type.TerminalTreebankNode",
     "org.cleartk.syntax.constituent.type.TopTreebankNode" })
-public class ParserAnnotator extends JCasAnnotator_ImplBase {
+public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation> extends JCasAnnotator_ImplBase {
 
   public static final String DEFAULT_PARSER_MODEL_PATH = "/models/en-parser-chunking.bin";
 
@@ -112,8 +112,7 @@ public class ParserAnnotator extends JCasAnnotator_ImplBase {
   @ConfigurationParameter(defaultValue = "org.cleartk.syntax.opennlp.parser.DefaultInputTypesHelper", description = "provides the class name of the class used to read sentences from the document")
   private String inputTypesHelperClassName;
 
-  @SuppressWarnings("rawtypes")
-  protected InputTypesHelper inputTypesHelper;
+  protected InputTypesHelper<TOKEN_TYPE, SENTENCE_TYPE> inputTypesHelper;
 
   public static final String PARAM_USE_TAGS_FROM_CAS = ConfigurationParameterFactory
           .createConfigurationParameterName(ParserAnnotator.class, "useTagsFromCas");
@@ -123,8 +122,9 @@ public class ParserAnnotator extends JCasAnnotator_ImplBase {
 
   protected Parser parser;
 
-  protected CasPosTagger casTagger;
+  protected CasPosTagger<TOKEN_TYPE, SENTENCE_TYPE> casTagger;
 
+  @SuppressWarnings("unchecked")
   @Override
   public void initialize(UimaContext ctx) throws ResourceInitializationException {
     super.initialize(ctx);
@@ -137,7 +137,7 @@ public class ParserAnnotator extends JCasAnnotator_ImplBase {
               .getInputStream(SentenceAnnotator.class, parserModelPath);
       ParserModel parserModel = new ParserModel(modelInputStream);
       if (useTagsFromCas) {
-        this.casTagger = new CasPosTagger(inputTypesHelper);
+        this.casTagger = new CasPosTagger<TOKEN_TYPE, SENTENCE_TYPE>(inputTypesHelper);
         this.parser = new Parser(parserModel, beamSize, advancePercentage, casTagger);
       } else {
         this.parser = new Parser(parserModel, beamSize, advancePercentage);
@@ -151,16 +151,14 @@ public class ParserAnnotator extends JCasAnnotator_ImplBase {
   public void process(JCas jCas) throws AnalysisEngineProcessException {
     String text = jCas.getDocumentText();
 
-    @SuppressWarnings("unchecked")
-    List<? extends Annotation> sentenceList = inputTypesHelper.getSentences(jCas);
+    List<SENTENCE_TYPE> sentenceList = inputTypesHelper.getSentences(jCas);
 
-    for (Annotation sentence : sentenceList) {
+    for (SENTENCE_TYPE sentence : sentenceList) {
 
       Parse parse = new Parse(text, new Span(sentence.getBegin(), sentence.getEnd()),
               Parser.INC_NODE, 1, null);
 
-      @SuppressWarnings("unchecked")
-      List<? extends Annotation> tokenList = inputTypesHelper.getTokens(jCas, sentence);
+      List<TOKEN_TYPE> tokenList = inputTypesHelper.getTokens(jCas, sentence);
 
       for (Annotation token : tokenList) {
         parse.insert(new Parse(text, new Span(token.getBegin(), token.getEnd()), Parser.TOK_NODE,
