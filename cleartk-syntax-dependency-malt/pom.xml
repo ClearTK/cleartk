@@ -15,32 +15,22 @@
 		<dependency>
 			<groupId>org.maltparser</groupId>
 			<artifactId>malt</artifactId>
-			<version>1.4.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-token</artifactId>
-			<version>0.7.0-SNAPSHOT</version>
-			<optional>false</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-syntax-dependency</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-			<optional>false</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-util</artifactId>
-			<version>0.7.0-SNAPSHOT</version>
-			<optional>false</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-test-util</artifactId>
-			<version>0.9.9-SNAPSHOT</version>
-			<scope>test</scope>
-			<optional>false</optional>
 		</dependency>
 	</dependencies>
 	<build>

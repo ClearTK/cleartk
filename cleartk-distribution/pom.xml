@@ -16,12 +16,10 @@
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-timeml</artifactId>
-			<version>0.7.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-examples</artifactId>
-			<version>0.5.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 

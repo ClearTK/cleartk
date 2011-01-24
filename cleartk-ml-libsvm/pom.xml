@@ -16,22 +16,14 @@
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-test-util</artifactId>
-			<version>0.9.9-SNAPSHOT</version>
-			<scope>test</scope>
-			<optional>false</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-ml</artifactId>
-			<version>0.9.9-SNAPSHOT</version>
-			<optional>false</optional>
 		</dependency>
 		<dependency>
 			<groupId>libsvm</groupId>
 			<artifactId>libsvm</artifactId>
-			<version>2.89</version>
-			<type>jar</type>
-			<optional>false</optional>
 		</dependency>
 	</dependencies>
 </project>
