@@ -236,10 +236,10 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
     return myNode;
   }
 
-  protected void setPOSTags(Parse p, Iterator<? extends Annotation> tokenIterator, JCas view) {
+  protected void setPOSTags(Parse p, Iterator<TOKEN_TYPE> tokenIterator, JCas view) {
     if (p.isPosTag()) {
-      Annotation t = tokenIterator.next();
-      inputTypesHelper.setTag(t, p.getType());
+      TOKEN_TYPE t = tokenIterator.next();
+      inputTypesHelper.setPosTag(t, p.getType());
     } else {
       for (Parse child : p.getChildren()) {
         setPOSTags(child, tokenIterator, view);

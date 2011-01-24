@@ -73,8 +73,8 @@ public class CasPosTagger<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends A
     Sequence[] s = new Sequence[1];
 
     s[0] = new Sequence();
-    for (Annotation token : this.tokens) {
-      String pos = inputTypesHelper.getTag(token);
+    for (TOKEN_TYPE token : this.tokens) {
+      String pos = inputTypesHelper.getPosTag(token);
       if (pos == null) {
         throw new RuntimeException("no part of speech for token: " + token.getCoveredText());
       }

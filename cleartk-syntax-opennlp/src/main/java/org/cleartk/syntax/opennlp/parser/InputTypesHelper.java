@@ -51,22 +51,6 @@ public abstract class InputTypesHelper<TOKEN_TYPE extends Annotation, SENTENCE_T
 
   public abstract void setPosTag(TOKEN_TYPE token, String tag);
 
-  /**
-   * There must be a better way to get around the runtime type erasure than to introduce an
-   * additional method like this. If you know of something more elegant than this, then please let
-   * us know!
-   * 
-   * @param token
-   * @return
-   */
-  @SuppressWarnings("unchecked")
-  public String getTag(Annotation token) {
-    return getPosTag((TOKEN_TYPE) token);
-  }
-
-  @SuppressWarnings("unchecked")
-  public void setTag(Annotation token, String tag) {
-    setPosTag((TOKEN_TYPE) token, tag);
-  }
+  
 
 }
