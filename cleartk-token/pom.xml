@@ -7,10 +7,9 @@
 	<name>cleartk-token</name>
 	<url>http://cleartk.googlecode.com/</url>
 	<parent>
-		<artifactId>cleartk-jcasgen</artifactId>
+		<artifactId>cleartk</artifactId>
 		<groupId>org.cleartk</groupId>
 		<version>0.5.0-SNAPSHOT</version>
-		<relativePath>../cleartk-jcasgen</relativePath>
 	</parent>
 	<properties>
 		<jcasgen.typesystem>org/cleartk/token/TypeSystem.xml</jcasgen.typesystem>

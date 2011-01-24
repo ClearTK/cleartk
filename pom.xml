@@ -18,7 +18,6 @@
 	<modules>
 		<module>cleartk-chunker</module>
 		<module>cleartk-examples</module>
-		<module>cleartk-jcasgen</module>
 		<module>cleartk-ml</module>
 		<module>cleartk-ml-grmm</module>
 		<module>cleartk-ml-libsvm</module>
@@ -126,6 +125,48 @@
 				<plugin>
 					<artifactId>maven-assembly-plugin</artifactId>
 					<version>2.2</version>
+				</plugin>
+				<plugin>
+					<!-- This plugin generates java files with JCasGen -->
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>exec-maven-plugin</artifactId>
+					<version>1.2</version>
+					<executions>
+						<execution>
+							<phase>process-resources</phase>
+							<goals>
+								<goal>java</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<mainClass>org.uimafit.util.JCasGenPomFriendly</mainClass>
+						<arguments>
+							<argument>file:${project.basedir}/src/main/resources/${jcasgen.typesystem}
+						</argument>
+							<argument>${project.build.directory}/generated-sources/jcasgen</argument>
+						</arguments>
+					</configuration>
+				</plugin>
+				<plugin><!-- This plugin adds the jcasgen generated source code folder 
+						as a project source folder -->
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>build-helper-maven-plugin</artifactId>
+					<version>1.5</version>
+					<executions>
+						<execution>
+							<id>add-source</id>
+							<phase>process-resources</phase>
+							<goals>
+								<goal>add-source</goal>
+							</goals>
+							<configuration>
+								<sources>
+									<source>${project.build.directory}/generated-sources/jcasgen</source>
+								</sources>
+							</configuration>
+						</execution>
+					</executions>
 				</plugin>
 			</plugins>
 		</pluginManagement>
