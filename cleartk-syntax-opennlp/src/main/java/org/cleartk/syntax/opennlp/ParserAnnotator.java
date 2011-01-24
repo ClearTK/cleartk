@@ -133,8 +133,7 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
             InputTypesHelper.class);
 
     try {
-      InputStream modelInputStream = IOUtil
-              .getInputStream(SentenceAnnotator.class, parserModelPath);
+      InputStream modelInputStream = IOUtil.getInputStream(ParserAnnotator.class, parserModelPath);
       ParserModel parserModel = new ParserModel(modelInputStream);
       if (useTagsFromCas) {
         this.casTagger = new CasPosTagger<TOKEN_TYPE, SENTENCE_TYPE>(inputTypesHelper);

@@ -25,8 +25,11 @@ package org.cleartk.util;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * <br>
@@ -39,12 +42,12 @@ import java.io.InputStream;
 public class IOUtil {
 
   /**
-   * This method attempts to create an input stream from the given path by treating it as a resource
-   * that is available on the classpath. If this does not produce a good input stream, then it will
-   * attempt to create an input stream from the path by treating it as a file name. If this does not
-   * work either, then an IOException is thrown that explains that an input stream could not be
-   * created from the given path. This method assumes that the caller has a path but does not know
-   * whether it is a resource on the classpath or a file name.
+   * This method attempts to create an input stream from the given path by:
+   * <ol>
+   * <li>Trying to parse it as a URL</li>
+   * <li>Trying to find it on the classpath, relative to the given class</li>
+   * <li>Trying to find it as a file on the file system</li>
+   * </ol>
    * 
    * @param cls
    *          this will generally be the class of the caller.
@@ -53,27 +56,23 @@ public class IOUtil {
    *          path of a file on the local file system (e.g. "src/main/resources/models/en-sent.bin")
    * @return
    * @throws IOException
+   *           if the path was not found as a URL, resource or file.
    */
   public static InputStream getInputStream(Class<?> cls, String path) throws IOException {
-    InputStream inputStream = cls.getResourceAsStream(path);
-    if (!isAvailable(inputStream)) {
-      inputStream = new FileInputStream(path);
-      if (!isAvailable(inputStream)) {
-        throw new IOException("unable to find " + path
-                + " as a resource on the classpath or as a file.");
+    InputStream inputStream;
+    try {
+      inputStream = new URL(path).openStream();
+    } catch (MalformedURLException e) {
+      inputStream = cls.getResourceAsStream(path);
+      if (inputStream == null) {
+        try {
+          inputStream = new FileInputStream(path);
+        } catch (FileNotFoundException e1) {
+          throw new IOException(String.format("unable to find %s "
+                  + "as a resource on the classpath, as a url or as a file.", path));
+        }
       }
     }
     return new BufferedInputStream(inputStream);
-  }
-
-  private static boolean isAvailable(InputStream modelInputStream) {
-    try {
-      if (modelInputStream.available() <= 0) {
-        return false;
-      }
-    } catch (Throwable t) {
-      return false;
-    }
-    return true;
   }
 }

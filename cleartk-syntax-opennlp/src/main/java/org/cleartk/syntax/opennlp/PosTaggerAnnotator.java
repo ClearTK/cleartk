@@ -102,8 +102,8 @@ public class PosTaggerAnnotator extends JCasAnnotator_ImplBase {
   public void initialize(UimaContext uimaContext) throws ResourceInitializationException {
     super.initialize(uimaContext);
     try {
-      InputStream modelInputStream = IOUtil
-              .getInputStream(SentenceAnnotator.class, postagModelFile);
+      InputStream modelInputStream = IOUtil.getInputStream(PosTaggerAnnotator.class,
+              postagModelFile);
       POSModel posModel = new POSModel(modelInputStream);
       posTagger = new POSTaggerME(posModel);
     } catch (IOException ioe) {
