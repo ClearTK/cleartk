@@ -52,7 +52,7 @@ import org.uimafit.factory.initializable.InitializableFactory;
 public abstract class ChunkLabeler_ImplBase implements ChunkLabeler, Initializable {
 
   public static final String PARAM_CHUNK_ANNOTATION_CLASS_NAME = ConfigurationParameterFactory
-          .createConfigurationParameterName(ChunkLabeler_ImplBase.class, "chunkAnnotationClassName");
+      .createConfigurationParameterName(ChunkLabeler_ImplBase.class, "chunkAnnotationClassName");
 
   @ConfigurationParameter(mandatory = true, description = "names the class of the type system chunk annotation type. An example value might be something like: 'org.cleartk.type.ne.NamedEntityMention'")
   private String chunkAnnotationClassName;
@@ -82,18 +82,21 @@ public abstract class ChunkLabeler_ImplBase implements ChunkLabeler, Initializab
 
   public void initialize(UimaContext context) throws ResourceInitializationException {
     ConfigurationParameterInitializer.initialize(this, context);
-    labeledAnnotationClass = InitializableFactory.getClass(labeledAnnotationClassName,
-            Annotation.class);
+    labeledAnnotationClass = InitializableFactory.getClass(
+        labeledAnnotationClassName,
+        Annotation.class);
     chunkAnnotationClass = InitializableFactory
-            .getClass(chunkAnnotationClassName, Annotation.class);
+        .getClass(chunkAnnotationClassName, Annotation.class);
     annotationLabels = new HashMap<Annotation, String>();
   }
 
   public abstract String getChunkLabel(JCas jCas, Annotation chunkAnnotation)
-          throws AnalysisEngineProcessException;
+      throws AnalysisEngineProcessException;
 
-  public abstract Annotation createChunk(JCas jCas, List<? extends Annotation> labeledAnnotations,
-          String label) throws AnalysisEngineProcessException;
+  public abstract Annotation createChunk(
+      JCas jCas,
+      List<? extends Annotation> labeledAnnotations,
+      String label) throws AnalysisEngineProcessException;
 
   protected void initializeTypes(JCas jCas) throws AnalysisEngineProcessException {
     try {
@@ -111,15 +114,18 @@ public abstract class ChunkLabeler_ImplBase implements ChunkLabeler, Initializab
 
     annotationLabels.clear();
 
-    FSIterator<Annotation> chunkAnnotations = jCas.getAnnotationIndex(chunkAnnotationType)
-            .subiterator(sequence);
+    FSIterator<Annotation> chunkAnnotations = jCas
+        .getAnnotationIndex(chunkAnnotationType)
+        .subiterator(sequence);
     while (chunkAnnotations.hasNext()) {
       Annotation chunkAnnotation = (Annotation) chunkAnnotations.next();
       String labelBase = getChunkLabel(jCas, chunkAnnotation);
       String label = labelBase;
 
-      List<? extends Annotation> labeledAnnotations = AnnotationRetrieval.getAnnotations(jCas,
-              chunkAnnotation, labeledAnnotationClass);
+      List<? extends Annotation> labeledAnnotations = AnnotationRetrieval.getAnnotations(
+          jCas,
+          chunkAnnotation,
+          labeledAnnotationClass);
 
       boolean begin = true;
       for (Annotation labelAnnotation : labeledAnnotations) {
@@ -134,13 +140,14 @@ public abstract class ChunkLabeler_ImplBase implements ChunkLabeler, Initializab
   }
 
   public List<Annotation> labels2Chunks(JCas jCas, Annotation sequence)
-          throws AnalysisEngineProcessException {
+      throws AnalysisEngineProcessException {
     if (!typesInitialized)
       initializeTypes(jCas);
 
     List<Annotation> returnValues = new ArrayList<Annotation>();
-    FSIterator<Annotation> labeledAnnotations = jCas.getAnnotationIndex(labeledAnnotationType)
-            .subiterator(sequence);
+    FSIterator<Annotation> labeledAnnotations = jCas
+        .getAnnotationIndex(labeledAnnotationType)
+        .subiterator(sequence);
 
     String currentLabelValue = null;
     List<Annotation> currentLabeledAnnotations = new ArrayList<Annotation>();
@@ -155,7 +162,7 @@ public abstract class ChunkLabeler_ImplBase implements ChunkLabeler, Initializab
       String labelValue = label.equals(OUTSIDE_LABEL) ? null : label.substring(2);
 
       if (labelPrefix == null || labelPrefix.equals(BEGIN_PREFIX)
-              || !labelValue.equals(currentLabelValue)) {
+          || !labelValue.equals(currentLabelValue)) {
         if (currentLabeledAnnotations.size() > 0) {
           Annotation chunk = createChunk(jCas, currentLabeledAnnotations, currentLabelValue);
           if (chunk != null)
@@ -183,7 +190,7 @@ public abstract class ChunkLabeler_ImplBase implements ChunkLabeler, Initializab
   }
 
   public void setLabel(Annotation labeledAnnotation, String label)
-          throws AnalysisEngineProcessException {
+      throws AnalysisEngineProcessException {
     annotationLabels.put(labeledAnnotation, label);
   }
 

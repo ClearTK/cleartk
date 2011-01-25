@@ -56,19 +56,24 @@ public class ChunkTokenizerLabeler extends DefaultChunkLabeler {
     if (!typesInitialized)
       initializeTypes(jCas);
 
-    FSIterator<Annotation> chunkAnnotations = jCas.getAnnotationIndex(chunkAnnotationType)
-            .iterator();
+    FSIterator<Annotation> chunkAnnotations = jCas
+        .getAnnotationIndex(chunkAnnotationType)
+        .iterator();
     while (chunkAnnotations.hasNext()) {
       Annotation chunkAnnotation = (Annotation) chunkAnnotations.next();
       String label = getChunkLabel(jCas, chunkAnnotation);
 
-      List<? extends Annotation> labeledAnnotations = AnnotationRetrieval.getAnnotations(jCas,
-              chunkAnnotation, labeledAnnotationClass);
+      List<? extends Annotation> labeledAnnotations = AnnotationRetrieval.getAnnotations(
+          jCas,
+          chunkAnnotation,
+          labeledAnnotationClass);
 
       if (labeledAnnotations.size() == 0) {
         List<Annotation> anns = new ArrayList<Annotation>();
-        Annotation labeledAnnotation = AnnotationRetrieval.getContainingAnnotation(jCas,
-                chunkAnnotation, labeledAnnotationClass);
+        Annotation labeledAnnotation = AnnotationRetrieval.getContainingAnnotation(
+            jCas,
+            chunkAnnotation,
+            labeledAnnotationClass);
         anns.add(labeledAnnotation);
         labeledAnnotations = anns;
       }
@@ -76,7 +81,7 @@ public class ChunkTokenizerLabeler extends DefaultChunkLabeler {
       boolean begin = true;
       for (Annotation labelAnnotation : labeledAnnotations) {
         String fullLabel = begin ? BEGIN_PREFIX + SEPARATOR + label : INSIDE_PREFIX + SEPARATOR
-                + label;
+            + label;
         begin = false;
         annotationLabels.put(labelAnnotation, fullLabel);
       }

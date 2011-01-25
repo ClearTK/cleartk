@@ -94,7 +94,7 @@ public class SyntacticPathExtractor implements AnnotationPairFeatureExtractor {
    * 
    */
   public List<Feature> extract(JCas view, Annotation leftAnnotation, Annotation rightAnnotation)
-          throws CleartkException {
+      throws CleartkException {
     TreebankNode leftConstituent;
     TreebankNode rightConstituent;
     try {
@@ -111,7 +111,7 @@ public class SyntacticPathExtractor implements AnnotationPairFeatureExtractor {
 
     fromEnd.remove(fromEnd.size() - 1);
     while (fromStart.size() > 1 && fromEnd.size() > 0
-            && fromStart.get(fromStart.size() - 2) == fromEnd.get(fromEnd.size() - 1)) {
+        && fromStart.get(fromStart.size() - 2) == fromEnd.get(fromEnd.size() - 1)) {
       fromStart.remove(fromStart.size() - 1);
       fromEnd.remove(fromEnd.size() - 1);
     }

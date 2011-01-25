@@ -59,11 +59,16 @@ public class GeniaPosGoldReaderTest extends TokenTestBase {
   @Test
   public void testReader() throws CASException, UIMAException, IOException {
     CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-            GeniaPosGoldReader.class, typeSystemDescription,
-            GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
-            "src/test/resources/token/genia/GENIAcorpus3.02.articleA.pos.xml",
-            GeniaPosGoldReader.PARAM_LOAD_TOKENS, true, GeniaPosGoldReader.PARAM_LOAD_SENTENCES,
-            true, GeniaPosGoldReader.PARAM_LOAD_POS_TAGS, true);
+        GeniaPosGoldReader.class,
+        typeSystemDescription,
+        GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
+        "src/test/resources/token/genia/GENIAcorpus3.02.articleA.pos.xml",
+        GeniaPosGoldReader.PARAM_LOAD_TOKENS,
+        true,
+        GeniaPosGoldReader.PARAM_LOAD_SENTENCES,
+        true,
+        GeniaPosGoldReader.PARAM_LOAD_POS_TAGS,
+        true);
 
     JCas jcas = new JCasIterable(reader).next();
     Token token = JCasUtil.selectByIndex(jcas, Token.class, 0);
@@ -72,18 +77,24 @@ public class GeniaPosGoldReaderTest extends TokenTestBase {
 
     Sentence sentence = JCasUtil.selectByIndex(jcas, Sentence.class, 0);
     assertEquals(
-            "IL-2 gene expression and NF-kappa B activation through CD28 requires reactive oxygen production by 5-lipoxygenase.",
-            sentence.getCoveredText());
+        "IL-2 gene expression and NF-kappa B activation through CD28 requires reactive oxygen production by 5-lipoxygenase.",
+        sentence.getCoveredText());
 
     token = JCasUtil.selectByIndex(jcas, Token.class, 9);
     assertEquals("requires", token.getCoveredText());
     assertEquals("VBZ", token.getPos());
 
-    reader = CollectionReaderFactory.createCollectionReader(GeniaPosGoldReader.class,
-            typeSystemDescription, GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
-            "src/test/resources/token/genia/GENIAcorpus3.02.articleA.pos.xml",
-            GeniaPosGoldReader.PARAM_LOAD_TOKENS, false, GeniaPosGoldReader.PARAM_LOAD_SENTENCES,
-            false, GeniaPosGoldReader.PARAM_LOAD_POS_TAGS, false);
+    reader = CollectionReaderFactory.createCollectionReader(
+        GeniaPosGoldReader.class,
+        typeSystemDescription,
+        GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
+        "src/test/resources/token/genia/GENIAcorpus3.02.articleA.pos.xml",
+        GeniaPosGoldReader.PARAM_LOAD_TOKENS,
+        false,
+        GeniaPosGoldReader.PARAM_LOAD_SENTENCES,
+        false,
+        GeniaPosGoldReader.PARAM_LOAD_POS_TAGS,
+        false);
 
     jcas = new JCasIterable(reader).next();
     assertEquals(1, reader.getProgress()[0].getCompleted());
@@ -95,18 +106,25 @@ public class GeniaPosGoldReaderTest extends TokenTestBase {
     assertNull(null);
 
     assertTrue(jcas
-            .getDocumentText()
-            .startsWith(
-                    "IL-2 gene expression and NF-kappa B activation through CD28 requires reactive oxygen production by 5-lipoxygenase."));
+        .getDocumentText()
+        .startsWith(
+            "IL-2 gene expression and NF-kappa B activation through CD28 requires reactive oxygen production by 5-lipoxygenase."));
 
     IOException ioe = null;
     try {
-      reader = CollectionReaderFactory.createCollectionReader(GeniaPosGoldReader.class,
-              typeSystemDescription, GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
-              "src/test/resources/token/genia/GENIAcorpus3.02.articleA.pos.xml",
-              GeniaPosGoldReader.PARAM_LOAD_TOKENS, false, GeniaPosGoldReader.PARAM_LOAD_SENTENCES,
-              false, GeniaPosGoldReader.PARAM_LOAD_POS_TAGS, false,
-              GeniaPosGoldReader.PARAM_ARTICLE_IDS_LIST_FILE, "asdf");
+      reader = CollectionReaderFactory.createCollectionReader(
+          GeniaPosGoldReader.class,
+          typeSystemDescription,
+          GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
+          "src/test/resources/token/genia/GENIAcorpus3.02.articleA.pos.xml",
+          GeniaPosGoldReader.PARAM_LOAD_TOKENS,
+          false,
+          GeniaPosGoldReader.PARAM_LOAD_SENTENCES,
+          false,
+          GeniaPosGoldReader.PARAM_LOAD_POS_TAGS,
+          false,
+          GeniaPosGoldReader.PARAM_ARTICLE_IDS_LIST_FILE,
+          "asdf");
     } catch (ResourceInitializationException rie) {
       ioe = (IOException) rie.getCause();
     }
@@ -114,21 +132,29 @@ public class GeniaPosGoldReaderTest extends TokenTestBase {
 
     JDOMException jde = null;
     try {
-      reader = CollectionReaderFactory.createCollectionReader(GeniaPosGoldReader.class,
-              typeSystemDescription, GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
-              "src/test/resources/token/genia/article_ids.txt");
+      reader = CollectionReaderFactory.createCollectionReader(
+          GeniaPosGoldReader.class,
+          typeSystemDescription,
+          GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
+          "src/test/resources/token/genia/article_ids.txt");
     } catch (ResourceInitializationException rie) {
       jde = (JDOMException) rie.getCause();
     }
     assertNotNull(jde);
 
-    reader = CollectionReaderFactory.createCollectionReader(GeniaPosGoldReader.class,
-            typeSystemDescription, GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
-            "src/test/resources/token/genia/GENIAcorpus3.02.articleA.pos.xml",
-            GeniaPosGoldReader.PARAM_LOAD_TOKENS, false, GeniaPosGoldReader.PARAM_LOAD_SENTENCES,
-            false, GeniaPosGoldReader.PARAM_LOAD_POS_TAGS, false,
-            GeniaPosGoldReader.PARAM_ARTICLE_IDS_LIST_FILE,
-            "src/test/resources/token/genia/article_ids.txt");
+    reader = CollectionReaderFactory.createCollectionReader(
+        GeniaPosGoldReader.class,
+        typeSystemDescription,
+        GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
+        "src/test/resources/token/genia/GENIAcorpus3.02.articleA.pos.xml",
+        GeniaPosGoldReader.PARAM_LOAD_TOKENS,
+        false,
+        GeniaPosGoldReader.PARAM_LOAD_SENTENCES,
+        false,
+        GeniaPosGoldReader.PARAM_LOAD_POS_TAGS,
+        false,
+        GeniaPosGoldReader.PARAM_ARTICLE_IDS_LIST_FILE,
+        "src/test/resources/token/genia/article_ids.txt");
     jcas = new JCasIterable(reader).next();
     assertEquals(1, reader.getProgress()[0].getCompleted());
     assertFalse(reader.hasNext());

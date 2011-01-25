@@ -50,13 +50,18 @@ public class Docs2Sentences {
     String outputFileName = args[1];
 
     CollectionReader filesReader = FilesCollectionReader.getCollectionReader(
-            ExampleComponents.TYPE_SYSTEM_DESCRIPTION, inputDirectoryName);
-    AnalysisEngine sentences = AnalysisEngineFactory.createPrimitive(SentenceAnnotator.class,
-            ExampleComponents.TYPE_SYSTEM_DESCRIPTION);
-    AnalysisEngine lineWriter = AnalysisEngineFactory
-            .createPrimitive(LineWriter.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-                    LineWriter.PARAM_OUTPUT_FILE_NAME, outputFileName,
-                    LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, Sentence.class.getName());
+        ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+        inputDirectoryName);
+    AnalysisEngine sentences = AnalysisEngineFactory.createPrimitive(
+        SentenceAnnotator.class,
+        ExampleComponents.TYPE_SYSTEM_DESCRIPTION);
+    AnalysisEngine lineWriter = AnalysisEngineFactory.createPrimitive(
+        LineWriter.class,
+        ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+        LineWriter.PARAM_OUTPUT_FILE_NAME,
+        outputFileName,
+        LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
+        Sentence.class.getName());
 
     SimplePipeline.runPipeline(filesReader, sentences, lineWriter);
   }

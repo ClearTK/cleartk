@@ -54,7 +54,7 @@ public class BreakIteratorAnnotatorTest extends TokenTestBase {
   @Test
   public void testTokenAnnotator() throws Exception {
     AnalysisEngineDescription tokenAnnotator = BreakIteratorAnnotatorFactory
-            .createTokenAnnotator(Locale.US);
+        .createTokenAnnotator(Locale.US);
     String text = "  : ;) Hey there!  I am going to the store.  Would you like to come with me?";
     String expectedText = ": ; ) Hey there ! I am going to the store . Would you like to come with me ?";
     test(tokenAnnotator, Token.class, text, expectedText);
@@ -63,27 +63,36 @@ public class BreakIteratorAnnotatorTest extends TokenTestBase {
   @Test
   public void testSentenceAnnotator() throws Exception {
     AnalysisEngineDescription sentenceAnnotator = BreakIteratorAnnotatorFactory
-            .createSentenceAnnotator(Locale.US);
+        .createSentenceAnnotator(Locale.US);
     String text = "  : ;) Hey there!  I am going to the store.  Would you like to come with me?";
-    String[] expectedAnnotations = new String[] { "  : ;) Hey there!  ",
-        "I am going to the store.  ", "Would you like to come with me?" };
+    String[] expectedAnnotations = new String[] {
+        "  : ;) Hey there!  ",
+        "I am going to the store.  ",
+        "Would you like to come with me?" };
     test(sentenceAnnotator, Sentence.class, text, expectedAnnotations);
   }
 
-  private void test(AnalysisEngineDescription annotator, Class<? extends Annotation> annotationCls,
-          String text, String[] expectedAnnotations) throws UIMAException, IOException {
+  private void test(
+      AnalysisEngineDescription annotator,
+      Class<? extends Annotation> annotationCls,
+      String text,
+      String[] expectedAnnotations) throws UIMAException, IOException {
     jCas.setDocumentText(text);
     SimplePipeline.runPipeline(jCas, annotator);
-    List<? extends Annotation> actualAnnotations = AnnotationRetrieval.getAnnotations(jCas,
-            annotationCls);
+    List<? extends Annotation> actualAnnotations = AnnotationRetrieval.getAnnotations(
+        jCas,
+        annotationCls);
     assertEquals(expectedAnnotations.length, actualAnnotations.size());
     for (int i = 0; i < expectedAnnotations.length; i++) {
       assertEquals(expectedAnnotations[i], actualAnnotations.get(i).getCoveredText());
     }
   }
 
-  private void test(AnalysisEngineDescription annotator, Class<? extends Annotation> annotationCls,
-          String text, String expectedText) throws UIMAException, IOException {
+  private void test(
+      AnalysisEngineDescription annotator,
+      Class<? extends Annotation> annotationCls,
+      String text,
+      String expectedText) throws UIMAException, IOException {
     String[] expectedAnnotations = expectedText.split(" ");
     test(annotator, annotationCls, text, expectedAnnotations);
   }

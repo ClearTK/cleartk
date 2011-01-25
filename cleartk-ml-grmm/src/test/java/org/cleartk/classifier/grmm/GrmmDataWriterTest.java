@@ -68,8 +68,10 @@ public class GrmmDataWriterTest extends DefaultTestBase {
 
     public void processSimple(JCas cas) throws AnalysisEngineProcessException, CleartkException {
       List<Instance<String[]>> instances = new ArrayList<Instance<String[]>>();
-      List<Feature> features = Arrays.asList(new Feature("pos", "NN"),
-              new Feature("distance", 3.0), new Feature("precision", 1.234));
+      List<Feature> features = Arrays.asList(
+          new Feature("pos", "NN"),
+          new Feature("distance", 3.0),
+          new Feature("precision", 1.234));
       List<String> el = new ArrayList<String>();
       el.add("A");
       el.add("X");
@@ -139,16 +141,19 @@ public class GrmmDataWriterTest extends DefaultTestBase {
   @Test
   public void test1DataWriter() throws Exception {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
-            Test1Annotator.class, typeSystemDescription,
-            JarSequentialDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
-            CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME,
-            DefaultGrmmDataWriterFactory.class.getName());
+        Test1Annotator.class,
+        typeSystemDescription,
+        JarSequentialDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        outputDirectoryName,
+        CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME,
+        DefaultGrmmDataWriterFactory.class.getName());
 
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
 
-    String[] lines = FileUtil.loadListOfStrings(new File(outputDirectoryName,
-            GrmmDataWriter.TRAINING_DATA_FILE_NAME));
+    String[] lines = FileUtil.loadListOfStrings(new File(
+        outputDirectoryName,
+        GrmmDataWriter.TRAINING_DATA_FILE_NAME));
     assertEquals("A X ---- pos_NN:1.0 distance:3.0 precision:1.234", lines[0]);
     assertEquals("B Y ---- name_2PO:1.0 ps:2", lines[1]);
     assertEquals("C Z ---- name_2PO:1.0 ps:2", lines[2]);
@@ -162,7 +167,7 @@ public class GrmmDataWriterTest extends DefaultTestBase {
     File template = new File(outputDirectoryName, "template.txt");
     FileWriter fileWriter = new FileWriter(template);
     fileWriter
-            .write("new ACRF.BigramTemplate (0)\nnew ACRF.BigramTemplate (1)\nnew ACRF.PairwiseFactorTemplate (0,1)\n");
+        .write("new ACRF.BigramTemplate (0)\nnew ACRF.BigramTemplate (1)\nnew ACRF.PairwiseFactorTemplate (0,1)\n");
     fileWriter.close();
 
     HideOutput hider = new HideOutput();

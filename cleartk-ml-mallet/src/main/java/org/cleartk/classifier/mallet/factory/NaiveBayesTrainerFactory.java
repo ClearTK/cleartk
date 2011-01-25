@@ -45,7 +45,7 @@ public class NaiveBayesTrainerFactory implements ClassifierTrainerFactory<NaiveB
     if (args != null) {
       if (args.length % 2 != 0) {
         throw new IllegalArgumentException("each argument must be supplied with a value:  "
-                + getUsageMessage());
+            + getUsageMessage());
       }
       for (int i = 0; i < args.length; i += 2) {
         String optionName = args[i];
@@ -53,8 +53,9 @@ public class NaiveBayesTrainerFactory implements ClassifierTrainerFactory<NaiveB
         if (optionName.equals("--docLengthNormalization"))
           trainer.setDocLengthNormalization(Double.parseDouble(optionValue));
         else
-          throw new IllegalArgumentException(String.format("the argument %1$s is invalid.",
-                  optionName) + getUsageMessage());
+          throw new IllegalArgumentException(String.format(
+              "the argument %1$s is invalid.",
+              optionName) + getUsageMessage());
       }
     }
     return trainer;
@@ -62,6 +63,6 @@ public class NaiveBayesTrainerFactory implements ClassifierTrainerFactory<NaiveB
 
   public String getUsageMessage() {
     return "The arguments for NaiveBayesTrainerFactory.createTrainer(String...args) should be either empty or include any of the following:"
-            + "\n--docLengthNormalization double";
+        + "\n--docLengthNormalization double";
   }
 }

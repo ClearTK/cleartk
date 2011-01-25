@@ -60,7 +60,7 @@ public class AnnotationRetrievalTest extends DefaultTestBase {
   @Test
   public void testGet() throws UIMAException, IOException {
     String text = FileUtils.readFileToString(new File(
-            "src/test/resources/docs/youthful-precocity.txt"));
+        "src/test/resources/docs/youthful-precocity.txt"));
     tokenBuilder.buildTokens(jCas, text);
 
     Token token = JCasUtil.selectByIndex(jCas, Token.class, 20);
@@ -73,8 +73,9 @@ public class AnnotationRetrievalTest extends DefaultTestBase {
     Assert.assertEquals("The", JCasUtil.selectByIndex(jCas, Token.class, 0).getCoveredText());
     Assert.assertEquals("precocity", JCasUtil.selectByIndex(jCas, Token.class, 1).getCoveredText());
 
-    Assert.assertEquals("http://www.gutenberg.org/wiki/Gutenberg:The_Project_Gutenberg_License",
-            JCasUtil.selectByIndex(jCas, Token.class, -1).getCoveredText());
+    Assert.assertEquals(
+        "http://www.gutenberg.org/wiki/Gutenberg:The_Project_Gutenberg_License",
+        JCasUtil.selectByIndex(jCas, Token.class, -1).getCoveredText());
     Assert.assertEquals("from", JCasUtil.selectByIndex(jCas, Token.class, -5).getCoveredText());
     Assert.assertEquals(null, JCasUtil.selectByIndex(jCas, Token.class, -500));
 
@@ -134,27 +135,31 @@ public class AnnotationRetrievalTest extends DefaultTestBase {
     Annotation sa = new Annotation(jCas, 8, 11);
     sa.addToIndexes();
     assertEquals("CCC", sa.getCoveredText());
-    assertEquals("DDDD", AnnotationRetrieval.getAdjacentAnnotation(jCas, sa, Token.class, false)
-            .getCoveredText());
+    assertEquals("DDDD", AnnotationRetrieval
+        .getAdjacentAnnotation(jCas, sa, Token.class, false)
+        .getCoveredText());
     assertEquals("DDDD", AnnotationRetrieval.get(jCas, sa, Token.class, 1).getCoveredText());
 
   }
 
   @Test
   public void testGetContainingAnnotation() throws UIMAException, IOException {
-    tokenBuilder.buildTokens(jCas, "Were your just trippin', just ego tripping.",
-            "Were your just trippin ' , just ego tripping .");
+    tokenBuilder.buildTokens(
+        jCas,
+        "Were your just trippin', just ego tripping.",
+        "Were your just trippin ' , just ego tripping .");
     Token token = JCasUtil.selectByIndex(jCas, Token.class, 3);
     Assert.assertEquals("trippin", token.getCoveredText());
     Sentence sentence = AnnotationRetrieval.getContainingAnnotation(jCas, token, Sentence.class);
     Assert.assertEquals("Were your just trippin', just ego tripping.", sentence.getCoveredText());
 
     jCas.reset();
-    tokenBuilder.buildTokens(jCas,
-            "Ffff's a pppppppp ttttt, bbbb ii ccc tttt yyyy hhhhh bbbbb yyy ccc ttttt. \n"
-                    + "It'll tttt yyyy ggg ffffff ssss aaa ffff tt wwww ddddls nnd ddst.",
-            "Ffff 's a pppppppp ttttt, bbbb ii ccc tttt yyyy hhhhh bbbbb yyy ccc ttttt . \n"
-                    + "It ' ll tttt yyyy ggg ffffff ssss aaa ffff tt wwww ddddls nnd ddst .");
+    tokenBuilder.buildTokens(
+        jCas,
+        "Ffff's a pppppppp ttttt, bbbb ii ccc tttt yyyy hhhhh bbbbb yyy ccc ttttt. \n"
+            + "It'll tttt yyyy ggg ffffff ssss aaa ffff tt wwww ddddls nnd ddst.",
+        "Ffff 's a pppppppp ttttt, bbbb ii ccc tttt yyyy hhhhh bbbbb yyy ccc ttttt . \n"
+            + "It ' ll tttt yyyy ggg ffffff ssss aaa ffff tt wwww ddddls nnd ddst .");
 
     token = JCasUtil.selectByIndex(jCas, Token.class, 28);
     Assert.assertEquals("ddddls", token.getCoveredText());
@@ -211,8 +216,10 @@ public class AnnotationRetrievalTest extends DefaultTestBase {
     NamedEntityMention nem6 = JCasUtil.selectByIndex(jCas, NamedEntityMention.class, 6);
     NamedEntityMention nem7 = JCasUtil.selectByIndex(jCas, NamedEntityMention.class, 7);
 
-    NamedEntityMention nem = AnnotationRetrieval.getContainingAnnotation(jCas, token1,
-            NamedEntityMention.class);
+    NamedEntityMention nem = AnnotationRetrieval.getContainingAnnotation(
+        jCas,
+        token1,
+        NamedEntityMention.class);
     Assert.assertEquals(nem, nem3);
 
     nem = AnnotationRetrieval.getContainingAnnotation(jCas, token2, NamedEntityMention.class);
@@ -266,7 +273,7 @@ public class AnnotationRetrievalTest extends DefaultTestBase {
   @Test
   public void testGetContainingAnnotationExclusive() throws UIMAException {
     String text = "What if we built a rocket ship made of cheese?\n"
-            + "We could fly it to the moon for repairs.";
+        + "We could fly it to the moon for repairs.";
     tokenBuilder.buildTokens(jCas, text);
     Token containingToken = new Token(jCas, 0, 10);
     containingToken.addToIndexes();
@@ -313,15 +320,12 @@ public class AnnotationRetrievalTest extends DefaultTestBase {
 
   @Test
   public void testGetAdjacentAnnotation() throws UIMAException, IOException {
-    tokenBuilder
-            .buildTokens(
-                    jCas,
-                    "Swwww thh sii , biiiii thh taaaa in my moooo . \n"
-                            + "I see seeee tooooo , buu I onnn see onn waa ouu . \n"
-                            + "Yoo goooo crr wiiiiii weeeeee , taaa wiiiiii sppppppp "
-                            + "Sccccc wiiiiii raaaaaa yooo voooo . \n"
-                            + "Yoo knnn I tooo thh pooooo , frrr thh pooooo sttttt Thhh I fllllll ouu of heee .  \n"
-                            + "Siiiiii Ah la la la de daa Ah la la la de daa . ");
+    tokenBuilder.buildTokens(jCas, "Swwww thh sii , biiiii thh taaaa in my moooo . \n"
+        + "I see seeee tooooo , buu I onnn see onn waa ouu . \n"
+        + "Yoo goooo crr wiiiiii weeeeee , taaa wiiiiii sppppppp "
+        + "Sccccc wiiiiii raaaaaa yooo voooo . \n"
+        + "Yoo knnn I tooo thh pooooo , frrr thh pooooo sttttt Thhh I fllllll ouu of heee .  \n"
+        + "Siiiiii Ah la la la de daa Ah la la la de daa . ");
 
     Token token = JCasUtil.selectByIndex(jCas, Token.class, 27);
     Assert.assertEquals("wiiiiii", token.getCoveredText());
@@ -329,26 +333,35 @@ public class AnnotationRetrievalTest extends DefaultTestBase {
     Assert.assertEquals("crr", adjacentToken.getCoveredText());
     adjacentToken = AnnotationRetrieval.getAdjacentAnnotation(jCas, token, Token.class, false);
     Assert.assertEquals("weeeeee", adjacentToken.getCoveredText());
-    Sentence adjacentSentence = AnnotationRetrieval.getAdjacentAnnotation(jCas, token,
-            Sentence.class, true);
+    Sentence adjacentSentence = AnnotationRetrieval.getAdjacentAnnotation(
+        jCas,
+        token,
+        Sentence.class,
+        true);
     Assert.assertTrue(adjacentSentence.getCoveredText().startsWith("I see"));
     adjacentSentence = AnnotationRetrieval
-            .getAdjacentAnnotation(jCas, token, Sentence.class, false);
+        .getAdjacentAnnotation(jCas, token, Sentence.class, false);
     Assert.assertTrue(adjacentSentence.getCoveredText().startsWith("Yoo knnn"));
 
     Sentence sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 3);
     Assert.assertEquals(
-            "Yoo knnn I tooo thh pooooo , frrr thh pooooo sttttt Thhh I fllllll ouu of heee .",
-            sentence.getCoveredText());
+        "Yoo knnn I tooo thh pooooo , frrr thh pooooo sttttt Thhh I fllllll ouu of heee .",
+        sentence.getCoveredText());
     adjacentToken = AnnotationRetrieval.getAdjacentAnnotation(jCas, sentence, Token.class, true);
     Assert.assertEquals(".", adjacentToken.getCoveredText());
     adjacentToken = AnnotationRetrieval.getAdjacentAnnotation(jCas, sentence, Token.class, false);
     Assert.assertEquals("Siiiiii", adjacentToken.getCoveredText());
-    adjacentSentence = AnnotationRetrieval.getAdjacentAnnotation(jCas, sentence, Sentence.class,
-            true);
+    adjacentSentence = AnnotationRetrieval.getAdjacentAnnotation(
+        jCas,
+        sentence,
+        Sentence.class,
+        true);
     Assert.assertTrue(adjacentSentence.getCoveredText().startsWith("Yoo goooo"));
-    adjacentSentence = AnnotationRetrieval.getAdjacentAnnotation(jCas, sentence, Sentence.class,
-            false);
+    adjacentSentence = AnnotationRetrieval.getAdjacentAnnotation(
+        jCas,
+        sentence,
+        Sentence.class,
+        false);
     Assert.assertTrue(adjacentSentence.getCoveredText().startsWith("Siiiiii"));
 
     token = JCasUtil.selectByIndex(jCas, Token.class, 0);
@@ -360,7 +373,7 @@ public class AnnotationRetrievalTest extends DefaultTestBase {
     adjacentSentence = AnnotationRetrieval.getAdjacentAnnotation(jCas, token, Sentence.class, true);
     Assert.assertEquals(null, adjacentSentence);
     adjacentSentence = AnnotationRetrieval
-            .getAdjacentAnnotation(jCas, token, Sentence.class, false);
+        .getAdjacentAnnotation(jCas, token, Sentence.class, false);
     Assert.assertTrue(adjacentSentence.getCoveredText().startsWith("I see"));
 
     token = JCasUtil.selectByIndex(jCas, Token.class, -1);
@@ -371,23 +384,30 @@ public class AnnotationRetrievalTest extends DefaultTestBase {
     Assert.assertEquals(null, adjacentToken);
     adjacentSentence = AnnotationRetrieval.getAdjacentAnnotation(jCas, token, Sentence.class, true);
     Assert.assertEquals(
-            "Yoo knnn I tooo thh pooooo , frrr thh pooooo sttttt Thhh I fllllll ouu of heee .",
-            adjacentSentence.getCoveredText());
+        "Yoo knnn I tooo thh pooooo , frrr thh pooooo sttttt Thhh I fllllll ouu of heee .",
+        adjacentSentence.getCoveredText());
     adjacentSentence = AnnotationRetrieval
-            .getAdjacentAnnotation(jCas, token, Sentence.class, false);
+        .getAdjacentAnnotation(jCas, token, Sentence.class, false);
     Assert.assertEquals(null, adjacentSentence);
 
     sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 0);
-    Assert.assertEquals("Swwww thh sii , biiiii thh taaaa in my moooo .", sentence.getCoveredText());
+    Assert
+        .assertEquals("Swwww thh sii , biiiii thh taaaa in my moooo .", sentence.getCoveredText());
     adjacentToken = AnnotationRetrieval.getAdjacentAnnotation(jCas, sentence, Token.class, true);
     Assert.assertEquals(null, adjacentToken);
     adjacentToken = AnnotationRetrieval.getAdjacentAnnotation(jCas, sentence, Token.class, false);
     Assert.assertEquals("I", adjacentToken.getCoveredText());
-    adjacentSentence = AnnotationRetrieval.getAdjacentAnnotation(jCas, sentence, Sentence.class,
-            true);
+    adjacentSentence = AnnotationRetrieval.getAdjacentAnnotation(
+        jCas,
+        sentence,
+        Sentence.class,
+        true);
     Assert.assertEquals(null, adjacentSentence);
-    adjacentSentence = AnnotationRetrieval.getAdjacentAnnotation(jCas, sentence, Sentence.class,
-            false);
+    adjacentSentence = AnnotationRetrieval.getAdjacentAnnotation(
+        jCas,
+        sentence,
+        Sentence.class,
+        false);
     Assert.assertTrue(adjacentSentence.getCoveredText().startsWith("I see"));
 
     jCas.reset();
@@ -395,8 +415,9 @@ public class AnnotationRetrievalTest extends DefaultTestBase {
     tokenBuilder.buildTokens(jCas, text);
 
     Annotation annotation = new Annotation(jCas, 404, 449);
-    Assert.assertEquals("top, the sides was so steep and the bushes so",
-            annotation.getCoveredText());
+    Assert.assertEquals(
+        "top, the sides was so steep and the bushes so",
+        annotation.getCoveredText());
     adjacentToken = AnnotationRetrieval.getAdjacentAnnotation(jCas, annotation, Token.class, false);
     Assert.assertEquals("thick.", adjacentToken.getCoveredText());
 
@@ -406,10 +427,12 @@ public class AnnotationRetrievalTest extends DefaultTestBase {
     Annotation sa = new Annotation(jCas, 8, 11);
     sa.addToIndexes();
     assertEquals("CCC", sa.getCoveredText());
-    assertEquals("BBB", AnnotationRetrieval.getAdjacentAnnotation(jCas, sa, Token.class, true)
-            .getCoveredText());
-    assertEquals("DDDD", AnnotationRetrieval.getAdjacentAnnotation(jCas, sa, Token.class, false)
-            .getCoveredText());
+    assertEquals("BBB", AnnotationRetrieval
+        .getAdjacentAnnotation(jCas, sa, Token.class, true)
+        .getCoveredText());
+    assertEquals("DDDD", AnnotationRetrieval
+        .getAdjacentAnnotation(jCas, sa, Token.class, false)
+        .getCoveredText());
 
   }
 
@@ -439,8 +462,10 @@ public class AnnotationRetrievalTest extends DefaultTestBase {
     Assert.assertEquals(1, annotations.size());
     Assert.assertEquals("text", annotations.get(0).getCoveredText());
 
-    List<NamedEntityMention> neAnnotations = AnnotationRetrieval.getAnnotations(jCas, token0,
-            NamedEntityMention.class);
+    List<NamedEntityMention> neAnnotations = AnnotationRetrieval.getAnnotations(
+        jCas,
+        token0,
+        NamedEntityMention.class);
     Assert.assertEquals(1, neAnnotations.size());
     Assert.assertEquals("text", neAnnotations.get(0).getCoveredText());
 
@@ -516,15 +541,37 @@ public class AnnotationRetrievalTest extends DefaultTestBase {
 
     AnnotationUtilTest.Annotator.getProcessedJCas(jCas, typeSystemDescription);
 
-    int[][] tokenOffsets = { { 0, 4 }, { 20, 25 }, { 21, 25 }, { 24, 25 }, { 25, 28 }, { 26, 30 },
-        { 100, 104 }, { 105, 109 }, { 110, 114 }, { 115, 119 }, { 120, 124 }, };
+    int[][] tokenOffsets = {
+        { 0, 4 },
+        { 20, 25 },
+        { 21, 25 },
+        { 24, 25 },
+        { 25, 28 },
+        { 26, 30 },
+        { 100, 104 },
+        { 105, 109 },
+        { 110, 114 },
+        { 115, 119 },
+        { 120, 124 }, };
     List<Token> tokenAnns = AnnotationRetrieval.getAnnotations(jCas, Token.class);
     this.testOneGetAnnotations(tokenOffsets, tokenAnns);
 
-    int[][] neOffsets = { { 0, 13 }, { 0, 4 }, { 19, 31 }, { 20, 30 }, { 21, 29 }, { 21, 24 },
-        { 24, 28 }, { 25, 28 }, { 49, 61 }, { 50, 60 }, { 50, 55 }, { 55, 60 }, };
-    List<NamedEntityMention> neAnns = AnnotationRetrieval.getAnnotations(jCas,
-            NamedEntityMention.class);
+    int[][] neOffsets = {
+        { 0, 13 },
+        { 0, 4 },
+        { 19, 31 },
+        { 20, 30 },
+        { 21, 29 },
+        { 21, 24 },
+        { 24, 28 },
+        { 25, 28 },
+        { 49, 61 },
+        { 50, 60 },
+        { 50, 55 },
+        { 55, 60 }, };
+    List<NamedEntityMention> neAnns = AnnotationRetrieval.getAnnotations(
+        jCas,
+        NamedEntityMention.class);
     this.testOneGetAnnotations(neOffsets, neAnns);
 
     int[][] chunkOffsets = { { 100, 109 }, { 115, 124 } };
@@ -533,8 +580,9 @@ public class AnnotationRetrievalTest extends DefaultTestBase {
 
   }
 
-  private <T extends Annotation> void testOneGetAnnotations(int[][] expectedOffsetPairs,
-          List<T> actualAnnotations) {
+  private <T extends Annotation> void testOneGetAnnotations(
+      int[][] expectedOffsetPairs,
+      List<T> actualAnnotations) {
 
     Assert.assertEquals(expectedOffsetPairs.length, actualAnnotations.size());
     Iterator<T> annotationsIter = actualAnnotations.iterator();
@@ -549,11 +597,12 @@ public class AnnotationRetrievalTest extends DefaultTestBase {
   public void testGetAnnotationIndex() throws UIMAException, IOException {
     // original joke by Philip Ogren
     String text = "Police Officer: Put down that gun!\n"
-            + "Hooligan (turning toward his gun): Stupid gun!";
+        + "Hooligan (turning toward his gun): Stupid gun!";
     tokenBuilder.buildTokens(jCas, text);
 
-    AnnotationIndex<Annotation> tokenIndex = AnnotationRetrieval.getAnnotationIndex(jCas,
-            Token.class);
+    AnnotationIndex<Annotation> tokenIndex = AnnotationRetrieval.getAnnotationIndex(
+        jCas,
+        Token.class);
     Assert.assertEquals(13, tokenIndex.size());
     FSIterator<Annotation> iterator = tokenIndex.iterator();
     while (iterator.hasNext()) {
@@ -561,8 +610,9 @@ public class AnnotationRetrievalTest extends DefaultTestBase {
       Assert.assertTrue(token instanceof Token);
     }
 
-    AnnotationIndex<Annotation> sentenceIndex = AnnotationRetrieval.getAnnotationIndex(jCas,
-            Sentence.class);
+    AnnotationIndex<Annotation> sentenceIndex = AnnotationRetrieval.getAnnotationIndex(
+        jCas,
+        Sentence.class);
     Assert.assertEquals(2, sentenceIndex.size());
 
   }
@@ -571,7 +621,7 @@ public class AnnotationRetrievalTest extends DefaultTestBase {
   public void testGetAtIndex() throws ResourceInitializationException {
     // original joke by Philip Ogren
     String text = "Police Officer: Put down that gun!\n"
-            + "Hooligan (turning toward his gun): Stupid gun!";
+        + "Hooligan (turning toward his gun): Stupid gun!";
     jCas.setDocumentText(text);
     Token token = new Token(jCas, 7, 14);
     token.addToIndexes();

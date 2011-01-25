@@ -63,10 +63,10 @@ import org.uimafit.factory.ConfigurationParameterFactory;
 public class PlainTextTLINKGoldAnnotator extends JCasAnnotator_ImplBase {
 
   public static final String PARAM_TLINK_FILE_URL = ConfigurationParameterFactory
-          .createConfigurationParameterName(PlainTextTLINKGoldAnnotator.class, "tlinkFileUrl");
+      .createConfigurationParameterName(PlainTextTLINKGoldAnnotator.class, "tlinkFileUrl");
 
   @ConfigurationParameter(mandatory = true, description = "the URL to a plain-text TLINK file, e.g."
-          + "http://people.cs.kuleuven.be/~steven.bethard/data/timebank-verb-clause.txt")
+      + "http://people.cs.kuleuven.be/~steven.bethard/data/timebank-verb-clause.txt")
   private String tlinkFileUrl;
 
   public void setTlinkFileUrl(String tlinkFileUrl) {
@@ -74,10 +74,13 @@ public class PlainTextTLINKGoldAnnotator extends JCasAnnotator_ImplBase {
   }
 
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(PlainTextTLINKGoldAnnotator.class,
-            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION, PARAM_TLINK_FILE_URL,
-            ParamUtil.getParameterValue(PARAM_TLINK_FILE_URL,
-                    "http://people.cs.kuleuven.be/~steven.bethard/data/timebank-verb-clause.txt"));
+    return AnalysisEngineFactory.createPrimitiveDescription(
+        PlainTextTLINKGoldAnnotator.class,
+        TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
+        PARAM_TLINK_FILE_URL,
+        ParamUtil.getParameterValue(
+            PARAM_TLINK_FILE_URL,
+            "http://people.cs.kuleuven.be/~steven.bethard/data/timebank-verb-clause.txt"));
   }
 
   private Map<String, List<TLINK>> fileTLINKs;
@@ -89,7 +92,7 @@ public class PlainTextTLINKGoldAnnotator extends JCasAnnotator_ImplBase {
     this.fileTLINKs = new HashMap<String, List<TLINK>>();
     try {
       BufferedReader tlinkFileReader = new BufferedReader(new InputStreamReader(new URL(
-              this.tlinkFileUrl).openStream()));
+          this.tlinkFileUrl).openStream()));
       String line;
       while ((line = tlinkFileReader.readLine()) != null)
         if (!line.startsWith("#")) {

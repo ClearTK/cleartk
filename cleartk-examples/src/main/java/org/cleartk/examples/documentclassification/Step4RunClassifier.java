@@ -79,18 +79,26 @@ public class Step4RunClassifier {
     String modelFileName = args.modelFileName;
 
     AnalysisEngineDescription documentClassificationAnnotatorDescription = AnalysisEngineFactory
-            .createPrimitiveDescription(DocumentClassificationAnnotator.class,
-                    ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-                    JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, modelFileName);
+        .createPrimitiveDescription(
+            DocumentClassificationAnnotator.class,
+            ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+            JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
+            modelFileName);
 
     System.out.println("classifying documents located in '" + documentDirectory + "'");
-    SimplePipeline.runPipeline(FilesCollectionReader.getCollectionReader(
-            ExampleComponents.TYPE_SYSTEM_DESCRIPTION, documentDirectory), SentenceAnnotator
-            .getDescription(), TokenAnnotator.getDescription(), DefaultSnowballStemmer
-            .getDescription("English"), AnalysisEngineFactory.createPrimitiveDescription(
-            GoldAnnotator.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION),
-            documentClassificationAnnotatorDescription, AnalysisEngineFactory
-                    .createPrimitiveDescription(EvaluationAnnotator.class,
-                            ExampleComponents.TYPE_SYSTEM_DESCRIPTION));
+    SimplePipeline.runPipeline(
+        FilesCollectionReader.getCollectionReader(
+            ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+            documentDirectory),
+        SentenceAnnotator.getDescription(),
+        TokenAnnotator.getDescription(),
+        DefaultSnowballStemmer.getDescription("English"),
+        AnalysisEngineFactory.createPrimitiveDescription(
+            GoldAnnotator.class,
+            ExampleComponents.TYPE_SYSTEM_DESCRIPTION),
+        documentClassificationAnnotatorDescription,
+        AnalysisEngineFactory.createPrimitiveDescription(
+            EvaluationAnnotator.class,
+            ExampleComponents.TYPE_SYSTEM_DESCRIPTION));
   }
 }

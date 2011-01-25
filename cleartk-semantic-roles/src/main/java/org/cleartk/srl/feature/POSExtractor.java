@@ -43,7 +43,7 @@ import org.cleartk.token.type.Token;
 public class POSExtractor implements SimpleFeatureExtractor {
 
   public List<Feature> extract(JCas jCas, Annotation focusAnnotation)
-          throws UnsupportedOperationException {
+      throws UnsupportedOperationException {
     if (!(focusAnnotation instanceof Token))
       throw new UnsupportedOperationException("annotation is not of type Token");
 

@@ -105,11 +105,11 @@ public class GrmmTestDataGenerator {
   }
 
   public static File createBigramTemplate(String outputDirectoryName, String filename)
-          throws IOException {
+      throws IOException {
     File f = new File(outputDirectoryName, filename);
     FileWriter fileWriter = new FileWriter(f);
     fileWriter
-            .write("new ACRF.BigramTemplate (0)\nnew ACRF.BigramTemplate (1)\nnew ACRF.PairwiseFactorTemplate (0,1)\n");
+        .write("new ACRF.BigramTemplate (0)\nnew ACRF.BigramTemplate (1)\nnew ACRF.PairwiseFactorTemplate (0,1)\n");
     fileWriter.close();
     return f;
   }

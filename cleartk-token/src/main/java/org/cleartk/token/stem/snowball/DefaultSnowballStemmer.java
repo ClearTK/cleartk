@@ -47,9 +47,12 @@ import org.uimafit.factory.AnalysisEngineFactory;
 public class DefaultSnowballStemmer extends SnowballStemmer<Token> {
 
   public static AnalysisEngineDescription getDescription(String language)
-          throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(DefaultSnowballStemmer.class,
-            TokenComponents.TYPE_SYSTEM_DESCRIPTION, SnowballStemmer.PARAM_STEMMER_NAME, language);
+      throws ResourceInitializationException {
+    return AnalysisEngineFactory.createPrimitiveDescription(
+        DefaultSnowballStemmer.class,
+        TokenComponents.TYPE_SYSTEM_DESCRIPTION,
+        SnowballStemmer.PARAM_STEMMER_NAME,
+        language);
   }
 
   @Override

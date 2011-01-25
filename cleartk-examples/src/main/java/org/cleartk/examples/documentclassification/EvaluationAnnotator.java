@@ -75,7 +75,7 @@ public class EvaluationAnnotator extends JCasAnnotator_ImplBase {
   public void collectionProcessComplete() throws AnalysisEngineProcessException {
     float accuracy = (float) totalCorrect / totalClassifications;
     System.out.println("overall accuracy: " + totalCorrect + "/" + totalClassifications + " = "
-            + accuracy);
+        + accuracy);
     try {
       super.collectionProcessComplete();
 

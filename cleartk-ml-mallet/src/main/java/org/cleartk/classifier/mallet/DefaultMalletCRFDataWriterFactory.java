@@ -48,16 +48,16 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  */
 
 public class DefaultMalletCRFDataWriterFactory extends
-        JarSequentialDataWriterFactory<List<NameNumber>, String, String> {
+    JarSequentialDataWriterFactory<List<NameNumber>, String, String> {
 
   public static final String PARAM_COMPRESS = ConfigurationParameterFactory
-          .createConfigurationParameterName(DefaultMalletCRFDataWriterFactory.class, "compress");
+      .createConfigurationParameterName(DefaultMalletCRFDataWriterFactory.class, "compress");
 
   @ConfigurationParameter(description = "indicates whether the FeaturesEncoder should compress the feature names", defaultValue = "false")
   private boolean compress;
 
   public static final String PARAM_SORT = ConfigurationParameterFactory
-          .createConfigurationParameterName(DefaultMalletCRFDataWriterFactory.class, "sort");
+      .createConfigurationParameterName(DefaultMalletCRFDataWriterFactory.class, "sort");
 
   @ConfigurationParameter(description = "indicates that the FeaturesEncoder should write the feature names in sorted order", defaultValue = "false")
   private boolean sort;

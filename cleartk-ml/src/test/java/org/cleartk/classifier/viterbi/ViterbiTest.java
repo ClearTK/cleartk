@@ -72,11 +72,16 @@ public class ViterbiTest {
     features.add(createFeatures("4"));
 
     UimaContext uimaContext = UimaContextFactory.createUimaContext(
-            DefaultOutcomeFeatureExtractor.PARAM_MOST_RECENT_OUTCOME, 1,
-            DefaultOutcomeFeatureExtractor.PARAM_LEAST_RECENT_OUTCOME, 1,
-            DefaultOutcomeFeatureExtractor.PARAM_USE_BIGRAM, false,
-            DefaultOutcomeFeatureExtractor.PARAM_USE_TRIGRAM, false,
-            DefaultOutcomeFeatureExtractor.PARAM_USE4GRAM, false);
+        DefaultOutcomeFeatureExtractor.PARAM_MOST_RECENT_OUTCOME,
+        1,
+        DefaultOutcomeFeatureExtractor.PARAM_LEAST_RECENT_OUTCOME,
+        1,
+        DefaultOutcomeFeatureExtractor.PARAM_USE_BIGRAM,
+        false,
+        DefaultOutcomeFeatureExtractor.PARAM_USE_TRIGRAM,
+        false,
+        DefaultOutcomeFeatureExtractor.PARAM_USE4GRAM,
+        false);
     DefaultOutcomeFeatureExtractor dofe = new DefaultOutcomeFeatureExtractor();
     dofe.initialize(uimaContext);
 
@@ -105,11 +110,16 @@ public class ViterbiTest {
     features.add(createFeatures("4"));
 
     UimaContext uimaContext = UimaContextFactory.createUimaContext(
-            DefaultOutcomeFeatureExtractor.PARAM_MOST_RECENT_OUTCOME, 1,
-            DefaultOutcomeFeatureExtractor.PARAM_LEAST_RECENT_OUTCOME, 1,
-            DefaultOutcomeFeatureExtractor.PARAM_USE_BIGRAM, false,
-            DefaultOutcomeFeatureExtractor.PARAM_USE_TRIGRAM, false,
-            DefaultOutcomeFeatureExtractor.PARAM_USE4GRAM, false);
+        DefaultOutcomeFeatureExtractor.PARAM_MOST_RECENT_OUTCOME,
+        1,
+        DefaultOutcomeFeatureExtractor.PARAM_LEAST_RECENT_OUTCOME,
+        1,
+        DefaultOutcomeFeatureExtractor.PARAM_USE_BIGRAM,
+        false,
+        DefaultOutcomeFeatureExtractor.PARAM_USE_TRIGRAM,
+        false,
+        DefaultOutcomeFeatureExtractor.PARAM_USE4GRAM,
+        false);
     DefaultOutcomeFeatureExtractor dofe = new DefaultOutcomeFeatureExtractor();
     dofe.initialize(uimaContext);
 
@@ -225,11 +235,16 @@ public class ViterbiTest {
     features.add(createFeatures("6"));
 
     UimaContext uimaContext = UimaContextFactory.createUimaContext(
-            DefaultOutcomeFeatureExtractor.PARAM_MOST_RECENT_OUTCOME, 1,
-            DefaultOutcomeFeatureExtractor.PARAM_LEAST_RECENT_OUTCOME, 1,
-            DefaultOutcomeFeatureExtractor.PARAM_USE_BIGRAM, false,
-            DefaultOutcomeFeatureExtractor.PARAM_USE_TRIGRAM, false,
-            DefaultOutcomeFeatureExtractor.PARAM_USE4GRAM, false);
+        DefaultOutcomeFeatureExtractor.PARAM_MOST_RECENT_OUTCOME,
+        1,
+        DefaultOutcomeFeatureExtractor.PARAM_LEAST_RECENT_OUTCOME,
+        1,
+        DefaultOutcomeFeatureExtractor.PARAM_USE_BIGRAM,
+        false,
+        DefaultOutcomeFeatureExtractor.PARAM_USE_TRIGRAM,
+        false,
+        DefaultOutcomeFeatureExtractor.PARAM_USE4GRAM,
+        false);
     DefaultOutcomeFeatureExtractor dofe = new DefaultOutcomeFeatureExtractor();
     dofe.initialize(uimaContext);
 

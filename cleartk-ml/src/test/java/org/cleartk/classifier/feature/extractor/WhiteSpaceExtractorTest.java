@@ -89,7 +89,8 @@ public class WhiteSpaceExtractorTest extends DefaultTestBase {
   @Test
   public void testExtract() throws Exception {
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-            WhiteSpaceExtractorTest.Annotator.class, typeSystemDescription);
+        WhiteSpaceExtractorTest.Annotator.class,
+        typeSystemDescription);
     JCas jc = AnalysisEngineFactory.process(engine, "This is some test text.");
     FSIndex<Annotation> fsIndex = jc.getAnnotationIndex(Token.type);
 

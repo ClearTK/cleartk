@@ -42,17 +42,23 @@ public class Token {
     super();
     if (end < begin)
       throw new IllegalArgumentException(
-              String.format(
-                      "the end of a token must follow the beginning of a token: begin=%1$d, end=%2$d, token text='%3$s'",
-                      begin, end, tokenText));
+          String
+              .format(
+                  "the end of a token must follow the beginning of a token: begin=%1$d, end=%2$d, token text='%3$s'",
+                  begin,
+                  end,
+                  tokenText));
     this.begin = begin;
     this.end = end;
     this.tokenText = tokenText == null ? "" : tokenText;
     if (this.tokenText.length() != (end - begin))
       throw new IllegalArgumentException(
-              String.format(
-                      "the length of the token text must equal the extent specified by begin and end: token text length=%1$d, (end - begin)=%2$d, token text='%3$s'",
-                      this.tokenText.length(), (end - begin), tokenText));
+          String
+              .format(
+                  "the length of the token text must equal the extent specified by begin and end: token text length=%1$d, (end - begin)=%2$d, token text='%3$s'",
+                  this.tokenText.length(),
+                  (end - begin),
+                  tokenText));
   }
 
   public int getBegin() {
@@ -77,7 +83,7 @@ public class Token {
     if (obj instanceof Token) {
       Token token = (Token) obj;
       if (tokenText.equals(token.getTokenText()) && begin == token.getBegin()
-              && end == token.getEnd())
+          && end == token.getEnd())
         return true;
     }
     return false;

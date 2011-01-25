@@ -45,6 +45,6 @@ public interface AnnotationWriter<ANNOTATION_TYPE extends Annotation> {
   public void initialize(UimaContext context) throws ResourceInitializationException;
 
   public String writeAnnotation(JCas jCas, ANNOTATION_TYPE annotation)
-          throws AnalysisEngineProcessException;
+      throws AnalysisEngineProcessException;
 
 }

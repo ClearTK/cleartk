@@ -61,7 +61,7 @@ import org.uimafit.factory.ConfigurationParameterFactory;
 public class Ace2005Writer extends JCasAnnotator_ImplBase {
 
   public static final String PARAM_OUTPUT_DIRECTORY_NAME = ConfigurationParameterFactory
-          .createConfigurationParameterName(Ace2005Writer.class, "outputDirectoryName");
+      .createConfigurationParameterName(Ace2005Writer.class, "outputDirectoryName");
 
   @ConfigurationParameter(mandatory = true, description = "provides the path of the directory where the XML files should be written.")
   private String outputDirectoryName;
@@ -110,7 +110,7 @@ public class Ace2005Writer extends JCasAnnotator_ImplBase {
     sourceFileElement.addContent(documentElement);
 
     FSIterator<FeatureStructure> namedEntities = jCas.getFSIndexRepository().getAllIndexedFS(
-            jCas.getCasType(NamedEntity.type));
+        jCas.getCasType(NamedEntity.type));
     while (namedEntities.hasNext()) {
       NamedEntity namedEntity = (NamedEntity) namedEntities.next();
       Element namedEntityElement = new Element("entity");
@@ -130,10 +130,12 @@ public class Ace2005Writer extends JCasAnnotator_ImplBase {
         namedEntityMentionElement.setAttribute("ID", "" + idIndex++);
         namedEntityMentionElement.setAttribute("TYPE", namedEntityMention.getMentionType());
 
-        namedEntityMentionElement.addContent(createExtentElement("extent",
-                namedEntityMention.getAnnotation()));
-        namedEntityMentionElement.addContent(createExtentElement("head",
-                namedEntityMention.getHead()));
+        namedEntityMentionElement.addContent(createExtentElement(
+            "extent",
+            namedEntityMention.getAnnotation()));
+        namedEntityMentionElement.addContent(createExtentElement(
+            "head",
+            namedEntityMention.getHead()));
         namedEntityElement.addContent(namedEntityMentionElement);
       }
       documentElement.addContent(namedEntityElement);
@@ -142,7 +144,7 @@ public class Ace2005Writer extends JCasAnnotator_ImplBase {
     XMLOutputter xmlOut = new XMLOutputter(Format.getPrettyFormat());
     try {
       FileOutputStream stream = new FileOutputStream(new File(outputDirectory, docId
-              + ".cleartk.xml"));
+          + ".cleartk.xml"));
       xmlOut.output(xml, stream);
       stream.close();
     } catch (IOException e) {

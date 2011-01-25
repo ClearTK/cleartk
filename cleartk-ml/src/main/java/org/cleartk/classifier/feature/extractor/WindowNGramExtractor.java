@@ -84,9 +84,14 @@ public class WindowNGramExtractor {
 
   protected String name;
 
-  public WindowNGramExtractor(Class<? extends Annotation> featureClass,
-          SimpleFeatureExtractor featureExtractor, String ngramOrientation, String ngramDirection,
-          String ngramSeparator, int ngramStart, int ngramEnd) {
+  public WindowNGramExtractor(
+      Class<? extends Annotation> featureClass,
+      SimpleFeatureExtractor featureExtractor,
+      String ngramOrientation,
+      String ngramDirection,
+      String ngramSeparator,
+      int ngramStart,
+      int ngramEnd) {
     this.featureClass = featureClass;
     this.featureExtractor = featureExtractor;
     this.orientation = ngramOrientation;
@@ -123,23 +128,37 @@ public class WindowNGramExtractor {
    * @see WindowNGramFeature
    * 
    */
-  public WindowNGramExtractor(String name, Class<? extends Annotation> featureClass,
-          SimpleFeatureExtractor featureExtractor, String ngramOrientation, String ngramDirection,
-          String ngramSeparator, int ngramStart, int ngramEnd) {
-    this(featureClass, featureExtractor, ngramOrientation, ngramDirection, ngramSeparator,
-            ngramStart, ngramEnd);
+  public WindowNGramExtractor(
+      String name,
+      Class<? extends Annotation> featureClass,
+      SimpleFeatureExtractor featureExtractor,
+      String ngramOrientation,
+      String ngramDirection,
+      String ngramSeparator,
+      int ngramStart,
+      int ngramEnd) {
+    this(
+        featureClass,
+        featureExtractor,
+        ngramOrientation,
+        ngramDirection,
+        ngramSeparator,
+        ngramStart,
+        ngramEnd);
     this.name = name;
   }
 
   public Feature extract(JCas jCas, Annotation focusAnnotation, Class<? extends Annotation> cls)
-          throws CleartkException {
-    Annotation ngramAnnotation = AnnotationRetrieval.getContainingAnnotation(jCas, focusAnnotation,
-            cls);
+      throws CleartkException {
+    Annotation ngramAnnotation = AnnotationRetrieval.getContainingAnnotation(
+        jCas,
+        focusAnnotation,
+        cls);
     return extract(jCas, focusAnnotation, ngramAnnotation);
   }
 
   public Feature extract(JCas jCas, Annotation focusAnnotation, Annotation ngramAnnotation)
-          throws CleartkException {
+      throws CleartkException {
     if (this.featureType == null)
       this.featureType = UIMAUtil.getCasType(jCas, this.featureClass);
 
@@ -147,8 +166,9 @@ public class WindowNGramExtractor {
 
     Annotation startAnnotation = getStartAnnotation(jCas, focusAnnotation);
 
-    FSIterator<Annotation> featureAnnotationIterator = jCas.getAnnotationIndex(featureType)
-            .iterator();
+    FSIterator<Annotation> featureAnnotationIterator = jCas
+        .getAnnotationIndex(featureType)
+        .iterator();
 
     if (startAnnotation != null) {
       featureAnnotationIterator.moveTo(startAnnotation);
@@ -163,7 +183,7 @@ public class WindowNGramExtractor {
       // annotation the iterator starts at. Therefore, we check for null
       // here.
       if (outOfBoundsDistance == 0 && startAnnotation != null
-              && featureAnnotationIterator.isValid()) {
+          && featureAnnotationIterator.isValid()) {
         Annotation featureAnnotation = (Annotation) featureAnnotationIterator.get();
         if (isWithinBoundaries(featureAnnotation, focusAnnotation, ngramAnnotation)) {
           if (i >= start) {
@@ -187,50 +207,59 @@ public class WindowNGramExtractor {
 
     StringBuffer featureValue = new StringBuffer();
     if ((direction.equals(WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT) && orientation
-            .equals(WindowNGramFeature.ORIENTATION_RIGHT))
-            || (direction.equals(WindowNGramFeature.DIRECTION_RIGHT_TO_LEFT) && orientation
-                    .equals(WindowNGramFeature.ORIENTATION_LEFT))) {
+        .equals(WindowNGramFeature.ORIENTATION_RIGHT))
+        || (direction.equals(WindowNGramFeature.DIRECTION_RIGHT_TO_LEFT) && orientation
+            .equals(WindowNGramFeature.ORIENTATION_LEFT))) {
       for (int i = 0; i < ngramValues.size(); i++) {
         featureValue.append(ngramValues.get(i));
         if (i < ngramValues.size() - 1)
           featureValue.append(separator);
       }
     } else if ((direction.equals(WindowNGramFeature.DIRECTION_RIGHT_TO_LEFT) && orientation
-            .equals(WindowNGramFeature.ORIENTATION_RIGHT))
-            || (direction.equals(WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT) && orientation
-                    .equals(WindowNGramFeature.ORIENTATION_LEFT))) {
+        .equals(WindowNGramFeature.ORIENTATION_RIGHT))
+        || (direction.equals(WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT) && orientation
+            .equals(WindowNGramFeature.ORIENTATION_LEFT))) {
       for (int i = ngramValues.size() - 1; i >= 0; i--) {
         featureValue.append(ngramValues.get(i));
         if (i > 0)
           featureValue.append(separator);
       }
     }
-    WindowNGramFeature windowNGramFeature = new WindowNGramFeature(null, featureValue.toString(),
-            orientation, direction, separator, end - start, start, windowedFeatures);
+    WindowNGramFeature windowNGramFeature = new WindowNGramFeature(
+        null,
+        featureValue.toString(),
+        orientation,
+        direction,
+        separator,
+        end - start,
+        start,
+        windowedFeatures);
     return windowNGramFeature;
   }
 
-  private boolean isWithinBoundaries(Annotation featureAnnotation, Annotation focusAnnotation,
-          Annotation ngramAnnotation) {
+  private boolean isWithinBoundaries(
+      Annotation featureAnnotation,
+      Annotation focusAnnotation,
+      Annotation ngramAnnotation) {
     if (orientation.equals(WindowNGramFeature.ORIENTATION_LEFT)
-            || orientation.equals(WindowNGramFeature.ORIENTATION_RIGHT)) {
+        || orientation.equals(WindowNGramFeature.ORIENTATION_RIGHT)) {
       return AnnotationUtil.contains(ngramAnnotation, featureAnnotation);
     } else
       return AnnotationUtil.contains(ngramAnnotation, featureAnnotation)
-              && AnnotationUtil.contains(focusAnnotation, featureAnnotation);
+          && AnnotationUtil.contains(focusAnnotation, featureAnnotation);
   }
 
   private void moveIterator(FSIterator<Annotation> ngramIterator) {
     if (orientation.equals(WindowNGramFeature.ORIENTATION_LEFT)
-            || orientation.equals(WindowNGramFeature.ORIENTATION_MIDDLE_REVERSE))
+        || orientation.equals(WindowNGramFeature.ORIENTATION_MIDDLE_REVERSE))
       ngramIterator.moveToPrevious();
     else if (orientation.equals(WindowNGramFeature.ORIENTATION_RIGHT)
-            || orientation.equals(WindowNGramFeature.ORIENTATION_MIDDLE))
+        || orientation.equals(WindowNGramFeature.ORIENTATION_MIDDLE))
       ngramIterator.moveToNext();
   }
 
   private Feature extactNGrammedFeature(JCas jCas, int i, Annotation annotation)
-          throws CleartkException {
+      throws CleartkException {
     List<Feature> ngramedFeatures = featureExtractor.extract(jCas, annotation);
 
     if (ngramedFeatures != null && ngramedFeatures.size() > 0) {

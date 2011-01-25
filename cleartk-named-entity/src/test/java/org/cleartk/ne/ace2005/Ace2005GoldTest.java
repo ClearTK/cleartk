@@ -45,14 +45,17 @@ public class Ace2005GoldTest extends NeTestBase {
   public void testReaderInvalidParameters() throws Exception {
     try {
       CollectionReaderFactory
-              .createCollectionReader(Ace2005GoldReader.class, typeSystemDescription);
+          .createCollectionReader(Ace2005GoldReader.class, typeSystemDescription);
       Assert.fail("expected error for invalid corpus directory");
     } catch (ResourceInitializationException e) {
     }
 
     try {
-      CollectionReaderFactory.createCollectionReader(Ace2005GoldReader.class,
-              typeSystemDescription, Ace2005GoldReader.PARAM_ACE_DIRECTORY_NAME, "foo/bar");
+      CollectionReaderFactory.createCollectionReader(
+          Ace2005GoldReader.class,
+          typeSystemDescription,
+          Ace2005GoldReader.PARAM_ACE_DIRECTORY_NAME,
+          "foo/bar");
       Assert.fail("expected error for invalid corpus directory");
     } catch (ResourceInitializationException e) {
     }

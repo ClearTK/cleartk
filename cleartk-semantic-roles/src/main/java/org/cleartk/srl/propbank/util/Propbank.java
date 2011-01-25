@@ -247,14 +247,22 @@ public class Propbank {
    * Generate an easily readable multi-line description of this Propbank entry.
    */
   public String displayText() {
-    StringBuffer text = new StringBuffer(String.format("filename = %s\n" + "sentence number = %s\n"
-            + "terminal = %s\n" + "base form = %s\n" + "frame set = %s\n" + "tagger = %s\n"
-            + "inflection value = %s\n", this.getFilename(), this.getSentenceNumber(),
-            this.getTerminal(), this.getBaseForm(), this.getFrameSet(), this.getTaggerName(),
-            this.getInflectionValue()));
+    StringBuffer text = new StringBuffer(String.format(
+        "filename = %s\n" + "sentence number = %s\n" + "terminal = %s\n" + "base form = %s\n"
+            + "frame set = %s\n" + "tagger = %s\n" + "inflection value = %s\n",
+        this.getFilename(),
+        this.getSentenceNumber(),
+        this.getTerminal(),
+        this.getBaseForm(),
+        this.getFrameSet(),
+        this.getTaggerName(),
+        this.getInflectionValue()));
     for (Proplabel label : getPropLabels()) {
-      text.append(String.format("proplabel = %s %s\n" + "text = %s\n", label.getLabel(),
-              label.getFeature(), label.getRelation()));
+      text.append(String.format(
+          "proplabel = %s %s\n" + "text = %s\n",
+          label.getLabel(),
+          label.getFeature(),
+          label.getRelation()));
     }
     return text.toString();
   }
@@ -266,16 +274,23 @@ public class Propbank {
   public String toString() {
     StringBuffer buffer = new StringBuffer();
 
-    buffer.append(String.format("%s %s %s", this.getFilename(), this.getSentenceNumber(),
-            this.getTerminal()));
+    buffer.append(String.format(
+        "%s %s %s",
+        this.getFilename(),
+        this.getSentenceNumber(),
+        this.getTerminal()));
     // NomBank
     if (this.getTaggerName() == null) {
       buffer.append(String.format(" %s %s", this.getBaseForm(), this.getFrameSet()));
     }
     // PropBank
     else {
-      buffer.append(String.format(" %s %s.%s %s", this.getTaggerName(), this.getBaseForm(),
-              this.getFrameSet(), this.getInflectionValue()));
+      buffer.append(String.format(
+          " %s %s.%s %s",
+          this.getTaggerName(),
+          this.getBaseForm(),
+          this.getFrameSet(),
+          this.getInflectionValue()));
     }
 
     for (Proplabel label : getPropLabels()) {

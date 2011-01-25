@@ -52,20 +52,24 @@ public class ParserAnnotatorTest extends SyntaxTestBase {
 
   @Test
   public void test() throws UIMAException {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(ParserAnnotator.class,
-            typeSystemDescription, ParserAnnotator.PARAM_PARSER_MODEL_PATH, MODEL_PATH,
-            ParserAnnotator.PARAM_USE_TAGS_FROM_CAS, true);
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+        ParserAnnotator.class,
+        typeSystemDescription,
+        ParserAnnotator.PARAM_PARSER_MODEL_PATH,
+        MODEL_PATH,
+        ParserAnnotator.PARAM_USE_TAGS_FROM_CAS,
+        true);
     tokenBuilder
-            .buildTokens(
-                    jCas,
-                    "Two recent papers provide new evidence relevant to the role of the breast cancer susceptibility gene BRCA2 in DNA repair.",
-                    "Two recent papers provide new evidence relevant to the role of the breast cancer susceptibility gene BRCA2 in DNA repair .",
-                    "DT JJ NN VBP JJ NN JJ IN DT NN IN DT NN NN NN NN NN IN NN NN ." // changed 1st
-                                                                                     // tag from CD
-                                                                                     // to DT and
-                                                                                     // 3rd tag from
-                                                                                     // NNS to NN
-            );
+        .buildTokens(
+            jCas,
+            "Two recent papers provide new evidence relevant to the role of the breast cancer susceptibility gene BRCA2 in DNA repair.",
+            "Two recent papers provide new evidence relevant to the role of the breast cancer susceptibility gene BRCA2 in DNA repair .",
+            "DT JJ NN VBP JJ NN JJ IN DT NN IN DT NN NN NN NN NN IN NN NN ." // changed 1st
+                                                                             // tag from CD
+                                                                             // to DT and
+                                                                             // 3rd tag from
+                                                                             // NNS to NN
+        );
 
     engine.process(jCas);
     engine.collectionProcessComplete();
@@ -77,8 +81,11 @@ public class ParserAnnotatorTest extends SyntaxTestBase {
      * (IN in) (NP (NN DNA) (NN repair))))))) (. .)) )
      */
     Sentence sentence = AnnotationRetrieval.getAnnotations(jCas, Sentence.class).get(0);
-    TopTreebankNode tree = AnnotationRetrieval.getContainingAnnotation(jCas, sentence,
-            TopTreebankNode.class, false);
+    TopTreebankNode tree = AnnotationRetrieval.getContainingAnnotation(
+        jCas,
+        sentence,
+        TopTreebankNode.class,
+        false);
 
     Assert.assertNotNull(tree);
     Assert.assertEquals("TOP", tree.getNodeType());
@@ -111,7 +118,8 @@ public class ParserAnnotatorTest extends SyntaxTestBase {
     Assert.assertEquals("VBP", provideNode.getNodeType());
     Assert.assertEquals("provide", provideNode.getNodeValue());
     Assert.assertEquals("NP", newEvidenceNode.getNodeType());
-    Assert.assertEquals(
+    Assert
+        .assertEquals(
             "new evidence relevant to the role of the breast cancer susceptibility gene BRCA2 in DNA repair",
             newEvidenceNode.getCoveredText());
 
@@ -119,26 +127,35 @@ public class ParserAnnotatorTest extends SyntaxTestBase {
 
   @Test
   public void test2() throws UIMAException {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(ParserAnnotator.class,
-            typeSystemDescription, ParserAnnotator.PARAM_PARSER_MODEL_PATH, MODEL_PATH,
-            ParserAnnotator.PARAM_USE_TAGS_FROM_CAS, false,
-            ParserAnnotator.PARAM_INPUT_TYPES_HELPER_CLASS_NAME,
-            TestInputTypesHelper.class.getName());
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+        ParserAnnotator.class,
+        typeSystemDescription,
+        ParserAnnotator.PARAM_PARSER_MODEL_PATH,
+        MODEL_PATH,
+        ParserAnnotator.PARAM_USE_TAGS_FROM_CAS,
+        false,
+        ParserAnnotator.PARAM_INPUT_TYPES_HELPER_CLASS_NAME,
+        TestInputTypesHelper.class.getName());
     TokenBuilder<org.cleartk.type.test.Token, org.cleartk.type.test.Sentence> tokBuilder = new TokenBuilder<org.cleartk.type.test.Token, org.cleartk.type.test.Sentence>(
-            org.cleartk.type.test.Token.class, org.cleartk.type.test.Sentence.class);
+        org.cleartk.type.test.Token.class,
+        org.cleartk.type.test.Sentence.class);
     tokBuilder
-            .buildTokens(
-                    jCas,
-                    "Two recent papers provide new evidence relevant to the role of the breast cancer susceptibility gene BRCA2 in DNA repair.",
-                    "Two recent papers provide new evidence relevant to the role of the breast cancer susceptibility gene BRCA2 in DNA repair .");
+        .buildTokens(
+            jCas,
+            "Two recent papers provide new evidence relevant to the role of the breast cancer susceptibility gene BRCA2 in DNA repair.",
+            "Two recent papers provide new evidence relevant to the role of the breast cancer susceptibility gene BRCA2 in DNA repair .");
 
     engine.process(jCas);
     engine.collectionProcessComplete();
 
-    org.cleartk.type.test.Sentence sentence = AnnotationRetrieval.getAnnotations(jCas,
-            org.cleartk.type.test.Sentence.class).get(0);
-    TopTreebankNode tree = AnnotationRetrieval.getContainingAnnotation(jCas, sentence,
-            TopTreebankNode.class, false);
+    org.cleartk.type.test.Sentence sentence = AnnotationRetrieval.getAnnotations(
+        jCas,
+        org.cleartk.type.test.Sentence.class).get(0);
+    TopTreebankNode tree = AnnotationRetrieval.getContainingAnnotation(
+        jCas,
+        sentence,
+        TopTreebankNode.class,
+        false);
     // TreebankNodeUtility.print(System.out, tree);
 
     Assert.assertNotNull(tree);
@@ -172,7 +189,8 @@ public class ParserAnnotatorTest extends SyntaxTestBase {
     Assert.assertEquals("VBP", provideNode.getNodeType());
     Assert.assertEquals("provide", provideNode.getNodeValue());
     Assert.assertEquals("NP", newEvidenceNode.getNodeType());
-    Assert.assertEquals(
+    Assert
+        .assertEquals(
             "new evidence relevant to the role of the breast cancer susceptibility gene BRCA2 in DNA repair",
             newEvidenceNode.getCoveredText());
 
@@ -180,11 +198,17 @@ public class ParserAnnotatorTest extends SyntaxTestBase {
 
   @Test
   public void testNoPos() throws UIMAException {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(ParserAnnotator.class,
-            typeSystemDescription, ParserAnnotator.PARAM_PARSER_MODEL_PATH, MODEL_PATH,
-            ParserAnnotator.PARAM_USE_TAGS_FROM_CAS, true);
-    tokenBuilder.buildTokens(jCas, "The brown fox jumped quickly over the lazy dog.",
-            "The brown fox jumped quickly over the lazy dog .");
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+        ParserAnnotator.class,
+        typeSystemDescription,
+        ParserAnnotator.PARAM_PARSER_MODEL_PATH,
+        MODEL_PATH,
+        ParserAnnotator.PARAM_USE_TAGS_FROM_CAS,
+        true);
+    tokenBuilder.buildTokens(
+        jCas,
+        "The brown fox jumped quickly over the lazy dog.",
+        "The brown fox jumped quickly over the lazy dog .");
     Level level = DisableLogging.disableLogging();
     try {
       engine.process(jCas);
@@ -199,9 +223,19 @@ public class ParserAnnotatorTest extends SyntaxTestBase {
   }
 
   public static void main(String[] args) {
-    CLI.main(new String[] { "ParserTrainer", "-lang", "en", "-encoding", "UTF-8", "-parserType",
-        "CHUNKING", "-head-rules", "src/test/resources/data/parser/fox_dog_parser/en_head_rules",
-        "-data", "src/test/resources/data/parser/fox_dog_parser/fox_dog.tree", "-model",
+    CLI.main(new String[] {
+        "ParserTrainer",
+        "-lang",
+        "en",
+        "-encoding",
+        "UTF-8",
+        "-parserType",
+        "CHUNKING",
+        "-head-rules",
+        "src/test/resources/data/parser/fox_dog_parser/en_head_rules",
+        "-data",
+        "src/test/resources/data/parser/fox_dog_parser/fox_dog.tree",
+        "-model",
         "src/test/resources/data/parser/fox_dog_parser/fox_dog.bin" });
 
   }

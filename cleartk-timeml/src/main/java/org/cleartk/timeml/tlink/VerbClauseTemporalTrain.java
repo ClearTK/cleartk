@@ -52,7 +52,7 @@ public class VerbClauseTemporalTrain {
   private static void error(String message) throws Exception {
     Logger logger = UimaContextFactory.createUimaContext().getLogger();
     logger.log(Level.SEVERE, String.format("%s\nusage: "
-            + "VerbClauseTemporalMain timebank-dir treebank-dir", message));
+        + "VerbClauseTemporalMain timebank-dir treebank-dir", message));
     System.exit(1);
   }
 
@@ -73,12 +73,17 @@ public class VerbClauseTemporalTrain {
     timeBankDir = cleanedTimeBankDir.getPath();
 
     // run the components that write out the training data
-    SimplePipeline.runPipeline(FilesCollectionReader.getCollectionReaderWithPatterns(
-            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION, timeBankDir, TimeMLViewName.TIMEML, "wsj"),
-            TimeMLGoldAnnotator.getDescriptionNoTLINKs(), PlainTextTLINKGoldAnnotator
-                    .getDescription(), TreebankAligningAnnotator.getDescription(treeBankDir),
-            DefaultSnowballStemmer.getDescription("English"), VerbClauseTemporalAnnotator
-                    .getWriterDescription());
+    SimplePipeline.runPipeline(
+        FilesCollectionReader.getCollectionReaderWithPatterns(
+            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
+            timeBankDir,
+            TimeMLViewName.TIMEML,
+            "wsj"),
+        TimeMLGoldAnnotator.getDescriptionNoTLINKs(),
+        PlainTextTLINKGoldAnnotator.getDescription(),
+        TreebankAligningAnnotator.getDescription(treeBankDir),
+        DefaultSnowballStemmer.getDescription("English"),
+        VerbClauseTemporalAnnotator.getWriterDescription());
 
     // remove the temporary directory containing the cleaned up TimeBank
     FileUtils.deleteRecursive(cleanedTimeBankDir);
@@ -133,8 +138,9 @@ public class VerbClauseTemporalTrain {
 
     // missing "DD"s in TimeBank
     else if (name.equals("wsj_0159.tml")) {
-      text = text.replace("Acquisition has <EVENT eid=\"e11\"",
-              "DD Acquisition has <EVENT eid=\"e11\"");
+      text = text.replace(
+          "Acquisition has <EVENT eid=\"e11\"",
+          "DD Acquisition has <EVENT eid=\"e11\"");
       text = text.replace("Acquisition <EVENT eid=\"e20\"", "DD Acquisition <EVENT eid=\"e20\"");
     }
 
@@ -160,10 +166,12 @@ public class VerbClauseTemporalTrain {
 
     // missing @CORPORATES and @EUROBONDS in TreeBank
     else if (name.equals("wsj_0612.tml")) {
-      text = text.replace("@ <ENAMEX TYPE=\"ORGANIZATION\">CORPORATES",
-              "<ENAMEX TYPE=\"ORGANIZATION\">");
-      text = text.replace("@ <ENAMEX TYPE=\"ORGANIZATION\">EUROBONDS",
-              "<ENAMEX TYPE=\"ORGANIZATION\">");
+      text = text.replace(
+          "@ <ENAMEX TYPE=\"ORGANIZATION\">CORPORATES",
+          "<ENAMEX TYPE=\"ORGANIZATION\">");
+      text = text.replace(
+          "@ <ENAMEX TYPE=\"ORGANIZATION\">EUROBONDS",
+          "<ENAMEX TYPE=\"ORGANIZATION\">");
     }
 
     // missing "1988." in TreeBank
@@ -185,9 +193,10 @@ public class VerbClauseTemporalTrain {
     // really messed up text in TimeBank
     else if (name.equals("wsj_1003.tml")) {
       text = text.replace("a shhha55 cents a share,   ents a share, but  ssa share", "a share");
-      text = text.replace("steel business, <EVENT eid=\"e109\"",
-              "Armco, hampered by lower volume in its specialty steel "
-                      + "business, <EVENT eid=\"e109\"");
+      text = text.replace(
+          "steel business, <EVENT eid=\"e109\"",
+          "Armco, hampered by lower volume in its specialty steel "
+              + "business, <EVENT eid=\"e109\"");
     }
 
     return text;

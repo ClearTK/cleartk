@@ -55,7 +55,7 @@ public class XReader extends FilesCollectionReader {
   public static final String XCAS = "XCAS";
 
   public static final String PARAM_XML_SCHEME = ConfigurationParameterFactory
-          .createConfigurationParameterName(XReader.class, "xmlScheme");
+      .createConfigurationParameterName(XReader.class, "xmlScheme");
 
   @ConfigurationParameter(defaultValue = "XMI", description = "specifies the UIMA XML serialization scheme that should be used. Valid values for this parameter are 'XMI' and 'XCAS'")
   private String xmlScheme;
@@ -66,8 +66,10 @@ public class XReader extends FilesCollectionReader {
 
     if (!xmlScheme.equals(XMI) && !xmlScheme.equals(XCAS))
       throw new ResourceInitializationException(new IllegalArgumentException(String.format(
-              "parameter '%1$s' must be either '%2$s' or '%3$s' or left empty.", PARAM_XML_SCHEME,
-              XMI, XCAS)));
+          "parameter '%1$s' must be either '%2$s' or '%3$s' or left empty.",
+          PARAM_XML_SCHEME,
+          XMI,
+          XCAS)));
   }
 
   public void getNext(JCas jCas) throws IOException, CollectionException {

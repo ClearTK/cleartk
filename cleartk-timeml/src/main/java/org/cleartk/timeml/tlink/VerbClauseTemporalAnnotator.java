@@ -72,9 +72,7 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * 
  * @author Steven Bethard
  */
-@TypeCapability(outputs = {
-        "org.cleartk.timeml.type.TemporalLink",
-        "org.cleartk.timeml.type.Event"})
+@TypeCapability(outputs = { "org.cleartk.timeml.type.TemporalLink", "org.cleartk.timeml.type.Event" })
 public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
 
   public static final String MODEL_BASE = "/models/timeml/tlink/verb-clause";
@@ -88,14 +86,14 @@ public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
     headMap.put("S", "VP S SBAR ADJP".split(" "));
     headMap.put("SBAR", "VP S SBAR ADJP".split(" "));
     headMap.put("VP", ("VP VB VBZ VBP VBG VBN VBD JJ JJR JJS "
-            + "NNS NN PRP NNPS NNP ADJP NP S SBAR").split(" "));
+        + "NNS NN PRP NNPS NNP ADJP NP S SBAR").split(" "));
     headMap.put("ADJP", "ADJP VB VBZ VBP VBG VBN VBD JJ JJR JJS".split(" "));
     headMap.put("NP", "NP NNS NN PRP NNPS NNP QP ADJP".split(" "));
     headMap.put("QP", "NP NNS NN PRP NNPS NNP QP ADJP".split(" "));
   }
 
   private static final Set<String> stopWords = new HashSet<String>(
-          Arrays.asList("be been is 's am are was were has had have".split(" ")));
+      Arrays.asList("be been is 's am are was were has had have".split(" ")));
 
   private List<SimpleFeatureExtractor> sourceFeatureExtractors;
 
@@ -106,38 +104,46 @@ public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
   private TargetPathExtractor pathExtractor;
 
   private int eventID;
-  
+
   @ConfigurationParameter(defaultValue = "false", description = "Create events for all verbs in "
-          + "verb-clause relations (using existing events if present, but adding new ones "
-          + "wherever they are not present).")
+      + "verb-clause relations (using existing events if present, but adding new ones "
+      + "wherever they are not present).")
   private boolean createEvents;
 
   public static final String PARAM_CREATE_EVENTS = ConfigurationParameterFactory
-          .createConfigurationParameterName(VerbClauseTemporalAnnotator.class, "createEvents");
+      .createConfigurationParameterName(VerbClauseTemporalAnnotator.class, "createEvents");
 
   public static AnalysisEngineDescription getWriterDescription()
-          throws ResourceInitializationException {
-    return CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(VerbClauseTemporalAnnotator.class,
-            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION, DefaultMaxentDataWriterFactory.class,
-            VerbClauseTemporalAnnotator.MODEL_DIR);
+      throws ResourceInitializationException {
+    return CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+        VerbClauseTemporalAnnotator.class,
+        TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
+        DefaultMaxentDataWriterFactory.class,
+        VerbClauseTemporalAnnotator.MODEL_DIR);
   }
 
   public static AnalysisEngineDescription getAnnotatorDescription()
-          throws ResourceInitializationException {
-    return CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(VerbClauseTemporalAnnotator.class,
-            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION, VerbClauseTemporalAnnotator.class
-                    .getResource(VerbClauseTemporalAnnotator.MODEL_RESOURCE).getFile());
+      throws ResourceInitializationException {
+    return CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+        VerbClauseTemporalAnnotator.class,
+        TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
+        VerbClauseTemporalAnnotator.class
+            .getResource(VerbClauseTemporalAnnotator.MODEL_RESOURCE)
+            .getFile());
   }
 
   public static AnalysisEngineDescription getEventCreatingAnnotatorDescription()
-          throws ResourceInitializationException {
+      throws ResourceInitializationException {
     AnalysisEngineDescription desc = CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
-            VerbClauseTemporalAnnotator.class,
-            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
-            VerbClauseTemporalAnnotator.class.getResource(
-                    VerbClauseTemporalAnnotator.MODEL_RESOURCE).getFile());
-    ConfigurationParameterFactory.addConfigurationParameters(desc,
-            VerbClauseTemporalAnnotator.PARAM_CREATE_EVENTS, true);
+        VerbClauseTemporalAnnotator.class,
+        TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
+        VerbClauseTemporalAnnotator.class
+            .getResource(VerbClauseTemporalAnnotator.MODEL_RESOURCE)
+            .getFile());
+    ConfigurationParameterFactory.addConfigurationParameters(
+        desc,
+        VerbClauseTemporalAnnotator.PARAM_CREATE_EVENTS,
+        true);
     return desc;
   }
 
@@ -161,7 +167,8 @@ public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
 
     this.betweenAnchorsFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
     this.betweenAnchorsFeatureExtractors.add(new NamingExtractor("WordsBetween", new BagExtractor(
-            Token.class, new SpannedTextExtractor())));
+        Token.class,
+        new SpannedTextExtractor())));
     this.pathExtractor = new TargetPathExtractor();
   }
 
@@ -184,8 +191,10 @@ public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
 
     // look for verb-clause pairs in each sentence in the document
     for (Sentence sentence : AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
-      TopTreebankNode tree = AnnotationRetrieval.getContainingAnnotation(jCas, sentence,
-              TopTreebankNode.class);
+      TopTreebankNode tree = AnnotationRetrieval.getContainingAnnotation(
+          jCas,
+          sentence,
+          TopTreebankNode.class);
       if (tree == null) {
         String fmt = "missing syntactic parse for sentence: %s";
         String msg = String.format(fmt, sentence.getCoveredText());
@@ -199,9 +208,9 @@ public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
       for (TreebankNodeLink link : links) {
 
         Token sourceToken = AnnotationRetrieval.getAnnotations(jCas, link.source, Token.class).get(
-                0);
+            0);
         Token targetToken = AnnotationRetrieval.getAnnotations(jCas, link.target, Token.class).get(
-                0);
+            0);
         int firstEnd = Math.min(sourceToken.getEnd(), targetToken.getEnd());
         int lastBegin = Math.max(sourceToken.getBegin(), targetToken.getBegin());
 
@@ -221,9 +230,9 @@ public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
 
         // find source and target anchors if they're available
         Anchor source = AnnotationRetrieval
-                .getContainingAnnotation(jCas, link.source, Anchor.class);
+            .getContainingAnnotation(jCas, link.source, Anchor.class);
         Anchor target = AnnotationRetrieval
-                .getContainingAnnotation(jCas, link.target, Anchor.class);
+            .getContainingAnnotation(jCas, link.target, Anchor.class);
 
         // if we're building training data, get the relation type from a
         // TLINK

@@ -48,25 +48,29 @@ public class EventTenseAnnotator extends EventAttributeAnnotator<String> {
   public static final String MODEL_DIR = "src/main/resources/models/timeml/event/tense";
 
   public static AnalysisEngineDescription getWriterDescription(String modelDir)
-          throws ResourceInitializationException {
-    return CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(EventTenseAnnotator.class,
-            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION, DefaultMaxentDataWriterFactory.class,
-            modelDir);
+      throws ResourceInitializationException {
+    return CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+        EventTenseAnnotator.class,
+        TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
+        DefaultMaxentDataWriterFactory.class,
+        modelDir);
   }
 
   public static AnalysisEngineDescription getWriterDescription()
-          throws ResourceInitializationException {
+      throws ResourceInitializationException {
     return getWriterDescription(MODEL_DIR);
   }
 
   public static AnalysisEngineDescription getAnnotatorDescription(String classifierJar)
-          throws ResourceInitializationException {
-    return CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(EventTenseAnnotator.class,
-            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION, classifierJar);
+      throws ResourceInitializationException {
+    return CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+        EventTenseAnnotator.class,
+        TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
+        classifierJar);
   }
 
   public static AnalysisEngineDescription getAnnotatorDescription()
-          throws ResourceInitializationException {
+      throws ResourceInitializationException {
     return getAnnotatorDescription(MODEL_DIR + "/model.jar");
   }
 

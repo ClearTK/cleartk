@@ -90,8 +90,9 @@ public class SimpleTermFinder implements TermFinder {
       if (!caseSensitive) {
         List<Token> lowerTokens = new ArrayList<Token>(tokens.size());
         for (Token token : tokens) {
-          lowerTokens.add(new Token(token.getBegin(), token.getEnd(), token.getTokenText()
-                  .toLowerCase()));
+          lowerTokens.add(new Token(token.getBegin(), token.getEnd(), token
+              .getTokenText()
+              .toLowerCase()));
         }
         tokens = lowerTokens;
       }

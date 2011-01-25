@@ -54,8 +54,9 @@ import org.uimafit.util.JCasUtil;
 public class EventIdAnnotator extends JCasAnnotator_ImplBase {
 
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(EventIdAnnotator.class,
-            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION);
+    return AnalysisEngineFactory.createPrimitiveDescription(
+        EventIdAnnotator.class,
+        TimeMLComponents.TYPE_SYSTEM_DESCRIPTION);
   }
 
   @Override

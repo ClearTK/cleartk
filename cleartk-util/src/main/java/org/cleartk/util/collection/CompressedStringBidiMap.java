@@ -48,7 +48,7 @@ import org.cleartk.util.BaseConversion;
  * 
  */
 public class CompressedStringBidiMap extends DualHashBidiMap<String, String> implements
-        GenKeyBidiMap<String, String> {
+    GenKeyBidiMap<String, String> {
 
   private static final long serialVersionUID = 5362169827584657941L;
 

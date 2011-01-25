@@ -51,15 +51,17 @@ public class PropbankFormatWriter implements AnnotationWriter<Predicate> {
   }
 
   public String writeAnnotation(JCas jCas, Predicate predicate)
-          throws AnalysisEngineProcessException {
+      throws AnalysisEngineProcessException {
     StringBuilder sb = new StringBuilder();
 
     String uri = ViewURIUtil.getURI(jCas);
     sb.append(uri + "\t");
 
     List<Sentence> sentences = AnnotationRetrieval.getAnnotations(jCas, Sentence.class);
-    Sentence predicateSentence = AnnotationRetrieval.getContainingAnnotation(jCas, predicate,
-            Sentence.class);
+    Sentence predicateSentence = AnnotationRetrieval.getContainingAnnotation(
+        jCas,
+        predicate,
+        Sentence.class);
     int sentenceId = -1;
     for (int i = 0; i < sentences.size(); i++) {
       if (sentences.get(i).equals(predicateSentence)) {

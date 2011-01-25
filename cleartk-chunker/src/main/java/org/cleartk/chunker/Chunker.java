@@ -57,19 +57,19 @@ public class Chunker extends CleartkSequentialAnnotator<String> {
   protected String labeledAnnotationClassName;
 
   public static final String PARAM_SEQUENCE_CLASS_NAME = ConfigurationParameterFactory
-          .createConfigurationParameterName(Chunker.class, "sequenceClassName");
+      .createConfigurationParameterName(Chunker.class, "sequenceClassName");
 
   @ConfigurationParameter(mandatory = true, description = "names the class of the type system type that specifies a 'sequence' of labels.  An example might be something like 'org.cleartk.type.Sentence'")
   protected String sequenceClassName;
 
   public static final String PARAM_CHUNK_LABELER_CLASS_NAME = ConfigurationParameterFactory
-          .createConfigurationParameterName(Chunker.class, "chunkLabelerClassName");
+      .createConfigurationParameterName(Chunker.class, "chunkLabelerClassName");
 
   @ConfigurationParameter(mandatory = true, description = "provides the class name of a class that extends org.cleartk.chunk.ChunkLabeler.")
   protected String chunkLabelerClassName;
 
   public static final String PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME = ConfigurationParameterFactory
-          .createConfigurationParameterName(Chunker.class, "chunkerFeatureExtractorClassName");
+      .createConfigurationParameterName(Chunker.class, "chunkerFeatureExtractorClassName");
 
   @ConfigurationParameter(mandatory = true, description = "provides the class name of a class that extends org.cleartk.chunk.ChunkFeatureExtractor.")
   protected String chunkerFeatureExtractorClassName;
@@ -91,12 +91,15 @@ public class Chunker extends CleartkSequentialAnnotator<String> {
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
-    labeledAnnotationClass = InitializableFactory.getClass(labeledAnnotationClassName,
-            Annotation.class);
+    labeledAnnotationClass = InitializableFactory.getClass(
+        labeledAnnotationClassName,
+        Annotation.class);
     sequenceClass = InitializableFactory.getClass(sequenceClassName, Annotation.class);
     chunkLabeler = InitializableFactory.create(context, chunkLabelerClassName, ChunkLabeler.class);
-    featureExtractor = InitializableFactory.create(context, chunkerFeatureExtractorClassName,
-            ChunkerFeatureExtractor.class);
+    featureExtractor = InitializableFactory.create(
+        context,
+        chunkerFeatureExtractorClassName,
+        ChunkerFeatureExtractor.class);
   }
 
   protected void initializeTypes(JCas jCas) throws AnalysisEngineProcessException {

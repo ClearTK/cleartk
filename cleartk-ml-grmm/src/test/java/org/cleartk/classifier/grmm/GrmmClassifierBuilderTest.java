@@ -79,11 +79,13 @@ public class GrmmClassifierBuilderTest extends DefaultTestBase {
   @Before
   public void init() {
     try {
-      dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(Test1Annotator.class,
-              typeSystemDescription, JarSequentialDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
-              outputDirectoryName,
-              CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME,
-              DefaultGrmmDataWriterFactory.class.getName());
+      dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
+          Test1Annotator.class,
+          typeSystemDescription,
+          JarSequentialDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+          outputDirectoryName,
+          CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME,
+          DefaultGrmmDataWriterFactory.class.getName());
       dataWriterAnnotator.process(jCas);
       dataWriterAnnotator.collectionProcessComplete();
     } catch (ResourceInitializationException e) {

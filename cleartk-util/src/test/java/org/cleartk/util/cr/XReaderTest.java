@@ -57,19 +57,24 @@ public class XReaderTest extends DefaultTestBase {
   @Test
   public void testReaderXmi() throws IOException, UIMAException {
 
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(XWriter.class,
-            typeSystemDescription, XWriter.PARAM_OUTPUT_DIRECTORY_NAME,
-            this.outputDirectory.getPath(), XWriter.PARAM_FILE_NAMER_CLASS_NAME,
-            ViewURIFileNamer.class.getName());
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+        XWriter.class,
+        typeSystemDescription,
+        XWriter.PARAM_OUTPUT_DIRECTORY_NAME,
+        this.outputDirectory.getPath(),
+        XWriter.PARAM_FILE_NAMER_CLASS_NAME,
+        ViewURIFileNamer.class.getName());
     tokenBuilder.buildTokens(jCas, "I like\nspam!", "I like spam !", "PRP VB NN .");
     String uri = new File(outputDirectory, "test").toURI().toString();
     ViewURIUtil.setURI(jCas, uri);
     engine.process(jCas);
     engine.collectionProcessComplete();
 
-    CollectionReader reader = CollectionReaderFactory.createCollectionReader(XReader.class,
-            typeSystemDescription, FilesCollectionReader.PARAM_ROOT_FILE, new File(outputDirectory,
-                    "test.xmi").getPath());
+    CollectionReader reader = CollectionReaderFactory.createCollectionReader(
+        XReader.class,
+        typeSystemDescription,
+        FilesCollectionReader.PARAM_ROOT_FILE,
+        new File(outputDirectory, "test.xmi").getPath());
 
     Assert.assertEquals(0, reader.getProgress()[0].getCompleted());
 
@@ -88,10 +93,15 @@ public class XReaderTest extends DefaultTestBase {
   @Test
   public void testReaderXcas() throws IOException, UIMAException {
 
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(XWriter.class,
-            typeSystemDescription, XWriter.PARAM_OUTPUT_DIRECTORY_NAME,
-            this.outputDirectory.getPath(), XWriter.PARAM_XML_SCHEME_NAME, XWriter.XCAS,
-            XWriter.PARAM_FILE_NAMER_CLASS_NAME, ViewURIFileNamer.class.getName());
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+        XWriter.class,
+        typeSystemDescription,
+        XWriter.PARAM_OUTPUT_DIRECTORY_NAME,
+        this.outputDirectory.getPath(),
+        XWriter.PARAM_XML_SCHEME_NAME,
+        XWriter.XCAS,
+        XWriter.PARAM_FILE_NAMER_CLASS_NAME,
+        ViewURIFileNamer.class.getName());
     tokenBuilder.buildTokens(jCas, "I like\nspam!", "I like spam !", "PRP VB NN .");
 
     String uri = new File(outputDirectory, "test").toURI().toString();
@@ -99,9 +109,13 @@ public class XReaderTest extends DefaultTestBase {
     engine.process(jCas);
     engine.collectionProcessComplete();
 
-    CollectionReader reader = CollectionReaderFactory.createCollectionReader(XReader.class,
-            typeSystemDescription, FilesCollectionReader.PARAM_ROOT_FILE, new File(outputDirectory,
-                    "test.xcas").getPath(), XReader.PARAM_XML_SCHEME, XReader.XCAS);
+    CollectionReader reader = CollectionReaderFactory.createCollectionReader(
+        XReader.class,
+        typeSystemDescription,
+        FilesCollectionReader.PARAM_ROOT_FILE,
+        new File(outputDirectory, "test.xcas").getPath(),
+        XReader.PARAM_XML_SCHEME,
+        XReader.XCAS);
 
     Assert.assertEquals(0, reader.getProgress()[0].getCompleted());
 
@@ -125,9 +139,11 @@ public class XReaderTest extends DefaultTestBase {
     } catch (ResourceInitializationException e) {
     }
 
-    CollectionReader reader = CollectionReaderFactory
-            .createCollectionReader(XReader.class, typeSystemDescription,
-                    FilesCollectionReader.PARAM_ROOT_FILE, outputDirectory.getPath());
+    CollectionReader reader = CollectionReaderFactory.createCollectionReader(
+        XReader.class,
+        typeSystemDescription,
+        FilesCollectionReader.PARAM_ROOT_FILE,
+        outputDirectory.getPath());
 
     Object fileOrDirectory = reader.getConfigParameterValue(FilesCollectionReader.PARAM_ROOT_FILE);
     Assert.assertEquals(outputDirectory.getPath(), fileOrDirectory);

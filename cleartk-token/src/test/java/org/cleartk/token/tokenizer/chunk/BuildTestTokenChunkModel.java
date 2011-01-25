@@ -48,17 +48,19 @@ public class BuildTestTokenChunkModel {
 
     TypeSystemDescription typeSystemDescription = TokenComponents.TYPE_SYSTEM_DESCRIPTION;
     CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-            GeniaPosGoldReader.class, typeSystemDescription,
-            GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
-            "src/test/resources/token/genia/GENIAcorpus3.02.articleA.pos.xml",
-            GeniaPosGoldReader.PARAM_LOAD_SENTENCES, true);
+        GeniaPosGoldReader.class,
+        typeSystemDescription,
+        GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
+        "src/test/resources/token/genia/GENIAcorpus3.02.articleA.pos.xml",
+        GeniaPosGoldReader.PARAM_LOAD_SENTENCES,
+        true);
 
     AnalysisEngine subtokenizer = AnalysisEngineFactory.createPrimitive(TokenComponents
-            .createSubtokenizer());
+        .createSubtokenizer());
 
     AnalysisEngine chunkTokenizerDataWriter = AnalysisEngineFactory
-            .createPrimitive(ChunkTokenizerFactory
-                    .createChunkTokenizerDataWriter("src/test/resources/token/chunk"));
+        .createPrimitive(ChunkTokenizerFactory
+            .createChunkTokenizerDataWriter("src/test/resources/token/chunk"));
 
     SimplePipeline.runPipeline(reader, subtokenizer, chunkTokenizerDataWriter);
 

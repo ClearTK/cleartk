@@ -55,7 +55,7 @@ public class SubCategorizationExtractor implements SimpleFeatureExtractor {
   }
 
   public List<Feature> extract(JCas jCas, Annotation focusAnnotation)
-          throws UnsupportedOperationException {
+      throws UnsupportedOperationException {
     if (!(focusAnnotation instanceof TreebankNode))
       return new ArrayList<Feature>();
 

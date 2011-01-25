@@ -67,8 +67,11 @@ public class DistanceExtractor implements AnnotationPairFeatureExtractor {
     if (secondAnnotation.getBegin() <= firstAnnotation.getEnd()) {
       featureValue = 0;
     } else {
-      List<? extends Annotation> annotations = AnnotationRetrieval.getAnnotations(jCas,
-              firstAnnotation.getEnd(), secondAnnotation.getBegin(), unitClass);
+      List<? extends Annotation> annotations = AnnotationRetrieval.getAnnotations(
+          jCas,
+          firstAnnotation.getEnd(),
+          secondAnnotation.getBegin(),
+          unitClass);
       featureValue = annotations.size();
     }
 

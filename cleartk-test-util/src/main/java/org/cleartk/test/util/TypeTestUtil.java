@@ -97,7 +97,7 @@ public class TypeTestUtil {
   }
 
   private static void invokeMethods(Class<?> cls, Type type, TOP top, JCas jcas, String featureName)
-          throws Exception {
+      throws Exception {
     Map<Class<?>, Object> defaultValues = new HashMap<Class<?>, Object>();
     defaultValues.put(int.class, 0);
     defaultValues.put(boolean.class, false);
@@ -132,7 +132,7 @@ public class TypeTestUtil {
       Class<?>[] types = method.getParameterTypes();
       if (name.equals("get" + suffix) || name.equals("set" + suffix)) {
         if (types.length != 1
-                || (!types[0].equals(FSArray.class) && !types[0].equals(StringArray.class))) {
+            || (!types[0].equals(FSArray.class) && !types[0].equals(StringArray.class))) {
           Class<?>[] jcasTypes = new Class<?>[types.length + 1];
           Object[] jcasTypeValues = new Object[types.length + 1];
           Object[] values = new Object[types.length];

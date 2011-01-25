@@ -45,8 +45,10 @@ import org.uimafit.factory.AnalysisEngineFactory;
 public class EventIdAnnotatorTest extends TimeMLTestBase {
   @Test
   public void test() throws UIMAException {
-    this.tokenBuilder.buildTokens(this.jCas, "John thought he would buy shoes for hiking.",
-            "John thought he would buy shoes for hiking .");
+    this.tokenBuilder.buildTokens(
+        this.jCas,
+        "John thought he would buy shoes for hiking.",
+        "John thought he would buy shoes for hiking .");
 
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(EventIdAnnotator.class);
     engine.process(this.jCas);

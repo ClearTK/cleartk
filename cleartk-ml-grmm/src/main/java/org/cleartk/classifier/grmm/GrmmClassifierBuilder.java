@@ -91,8 +91,9 @@ public class GrmmClassifierBuilder implements ClassifierBuilder<String[]> {
    */
   public void train(File dir, String[] args) throws Exception {
     if (dir == null || !dir.isDirectory()) {
-      throw new IllegalArgumentException("invalid directory \"" + dir == null ? "null"
-              : dir.getPath() + "\"passed.");
+      throw new IllegalArgumentException("invalid directory \"" + dir == null
+          ? "null"
+          : dir.getPath() + "\"passed.");
     }
     String template;
     if (args == null || args.length == 0) {
@@ -108,10 +109,19 @@ public class GrmmClassifierBuilder implements ClassifierBuilder<String[]> {
 
     // usage of GRMM:
     // (modified version with minor changes in the arguments)
-    List<String> argList = Arrays.asList("--output-file", outputFileName, "--training",
-            dir.getAbsolutePath() + "/training-data.grmm", "--testing", dir.getAbsolutePath()
-                    + "/training-data.grmm", "--template-file", template, "--inferencer",
-            inferencer, "--max-inferencer", maxInferencer);
+    List<String> argList = Arrays.asList(
+        "--output-file",
+        outputFileName,
+        "--training",
+        dir.getAbsolutePath() + "/training-data.grmm",
+        "--testing",
+        dir.getAbsolutePath() + "/training-data.grmm",
+        "--template-file",
+        template,
+        "--inferencer",
+        inferencer,
+        "--max-inferencer",
+        maxInferencer);
     String[] grmmArgs = new String[args.length + 11];
     argList.toArray(grmmArgs);
 
@@ -129,7 +139,7 @@ public class GrmmClassifierBuilder implements ClassifierBuilder<String[]> {
     }
     if (!trainingData.exists()) {
       throw new IllegalArgumentException("training data file \"" + trainingData.getName()
-              + "\" not found.");
+          + "\" not found.");
     }
     // handle an outcome example from the training data over to the
     // classifier

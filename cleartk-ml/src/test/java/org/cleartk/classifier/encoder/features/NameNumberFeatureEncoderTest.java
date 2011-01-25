@@ -51,7 +51,7 @@ public class NameNumberFeatureEncoderTest extends DefaultTestBase {
 
   @Test
   public void testEncodeCompress() throws CleartkException, ResourceInitializationException,
-          IOException {
+      IOException {
 
     NameNumberFeaturesEncoder nnfe = getDefaultEncoder(true, true);
 
@@ -97,8 +97,10 @@ public class NameNumberFeatureEncoderTest extends DefaultTestBase {
 
     // test nominal features
     testNN("hello_goodbye", 1.0f, new Feature("hello", "goodbye"), nnfe);
-    testNN("hello(PathToTypeFeature)_goodbye", 1.0f, new TypePathFeature("hello", "goodbye",
-            "path/to/type/feature"), nnfe);
+    testNN("hello(PathToTypeFeature)_goodbye", 1.0f, new TypePathFeature(
+        "hello",
+        "goodbye",
+        "path/to/type/feature"), nnfe);
 
     // test numeric features
     testNN("hello", 4.0f, new Feature("hello", 4), nnfe);
@@ -106,11 +108,18 @@ public class NameNumberFeatureEncoderTest extends DefaultTestBase {
     testNN("hello", 5.0f, new Feature("hello", 5f), nnfe);
     testNN("hello", 6.0f, new Feature("hello", 6d), nnfe);
     testNN("hello", 1.234567f, new Feature("hello", 1.234567d), nnfe);
-    testNN("hello(PathToTypeFeature)", 15.0f, new TypePathFeature("hello", 15.0d,
-            "path/to/type/feature"), nnfe);
+    testNN("hello(PathToTypeFeature)", 15.0f, new TypePathFeature(
+        "hello",
+        15.0d,
+        "path/to/type/feature"), nnfe);
 
-    testNN("hello_MR3OOB2", 0.0020f, new WindowFeature("hello", 0.002d,
-            WindowFeature.ORIENTATION_MIDDLE_REVERSE, 3, null, 2), nnfe);
+    testNN("hello_MR3OOB2", 0.0020f, new WindowFeature(
+        "hello",
+        0.002d,
+        WindowFeature.ORIENTATION_MIDDLE_REVERSE,
+        3,
+        null,
+        2), nnfe);
 
   }
 
@@ -128,26 +137,70 @@ public class NameNumberFeatureEncoderTest extends DefaultTestBase {
     pathFeature = new TypePathFeature(null, "aaaaaa", "black/belt/in/karate");
     testNN("TypePath(BlackBeltInKarate)_aaaaaa", 1.0f, pathFeature, nnfe);
 
-    testNN("Ccccccc_L0_TypePath(BlackBeltInKarate)_aaaaaa", 1.0f, new WindowFeature("Ccccccc",
-            "aaaaaa", WindowFeature.ORIENTATION_LEFT, 0, pathFeature, 0), nnfe);
-    testNN("Window_L0_TypePath(BlackBeltInKarate)_aaaaaa", 1.0f, new WindowFeature(null, "aaaaaa",
-            WindowFeature.ORIENTATION_LEFT, 0, pathFeature, 0), nnfe);
-    testNN("Ccccccc_L0_aaaaaa", 1.0f, new WindowFeature("Ccccccc", "aaaaaa",
-            WindowFeature.ORIENTATION_LEFT, 0, null, 0), nnfe);
-    testNN("Ccccccc_MR3OOB2_aaaaaa", 1.0f, new WindowFeature("Ccccccc", "aaaaaa",
-            WindowFeature.ORIENTATION_MIDDLE_REVERSE, 3, null, 2), nnfe);
-    testNN("Window_MR3OOB2", 1.0f, new WindowFeature(null, null,
-            WindowFeature.ORIENTATION_MIDDLE_REVERSE, 3, null, 2), nnfe);
-    testNN("Window_MR3OOB2", 123456.0f, new WindowFeature(null, Integer.valueOf(123456),
-            WindowFeature.ORIENTATION_MIDDLE_REVERSE, 3, null, 2), nnfe);
+    testNN("Ccccccc_L0_TypePath(BlackBeltInKarate)_aaaaaa", 1.0f, new WindowFeature(
+        "Ccccccc",
+        "aaaaaa",
+        WindowFeature.ORIENTATION_LEFT,
+        0,
+        pathFeature,
+        0), nnfe);
+    testNN("Window_L0_TypePath(BlackBeltInKarate)_aaaaaa", 1.0f, new WindowFeature(
+        null,
+        "aaaaaa",
+        WindowFeature.ORIENTATION_LEFT,
+        0,
+        pathFeature,
+        0), nnfe);
+    testNN("Ccccccc_L0_aaaaaa", 1.0f, new WindowFeature(
+        "Ccccccc",
+        "aaaaaa",
+        WindowFeature.ORIENTATION_LEFT,
+        0,
+        null,
+        0), nnfe);
+    testNN("Ccccccc_MR3OOB2_aaaaaa", 1.0f, new WindowFeature(
+        "Ccccccc",
+        "aaaaaa",
+        WindowFeature.ORIENTATION_MIDDLE_REVERSE,
+        3,
+        null,
+        2), nnfe);
+    testNN("Window_MR3OOB2", 1.0f, new WindowFeature(
+        null,
+        null,
+        WindowFeature.ORIENTATION_MIDDLE_REVERSE,
+        3,
+        null,
+        2), nnfe);
+    testNN("Window_MR3OOB2", 123456.0f, new WindowFeature(
+        null,
+        Integer.valueOf(123456),
+        WindowFeature.ORIENTATION_MIDDLE_REVERSE,
+        3,
+        null,
+        2), nnfe);
 
     Feature typePathFeature = new TypePathFeature(null, null, "pos");
-    testNN("Window_L2OOB2_TypePath(Pos)", 1.0f, new WindowFeature(null, null,
-            WindowFeature.ORIENTATION_LEFT, 2, typePathFeature, 2), nnfe);
-    testNN("Window_L2_TypePath(Pos)", 1.0f, new WindowFeature(null, null,
-            WindowFeature.ORIENTATION_LEFT, 2, typePathFeature), nnfe);
-    testNN("Window_L2", 1.0f, new WindowFeature(null, null, WindowFeature.ORIENTATION_LEFT, 2,
-            null, 0), nnfe);
+    testNN("Window_L2OOB2_TypePath(Pos)", 1.0f, new WindowFeature(
+        null,
+        null,
+        WindowFeature.ORIENTATION_LEFT,
+        2,
+        typePathFeature,
+        2), nnfe);
+    testNN("Window_L2_TypePath(Pos)", 1.0f, new WindowFeature(
+        null,
+        null,
+        WindowFeature.ORIENTATION_LEFT,
+        2,
+        typePathFeature), nnfe);
+    testNN("Window_L2", 1.0f, new WindowFeature(
+        null,
+        null,
+        WindowFeature.ORIENTATION_LEFT,
+        2,
+        null,
+        0), nnfe);
 
   }
 

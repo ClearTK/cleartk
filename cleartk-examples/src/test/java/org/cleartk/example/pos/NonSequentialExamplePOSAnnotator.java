@@ -57,7 +57,7 @@ import org.uimafit.factory.initializable.Initializable;
  * @author Steven Bethard
  */
 public class NonSequentialExamplePOSAnnotator extends CleartkAnnotator<String> implements
-        Initializable {
+    Initializable {
 
   public static final String DEFAULT_OUTPUT_DIRECTORY = "example/model";
 
@@ -86,19 +86,30 @@ public class NonSequentialExamplePOSAnnotator extends CleartkAnnotator<String> i
 
     // add the feature extractor for the word itself
     // also add proliferators which create new features from the word text
-    this.tokenFeatureExtractors.add(new ProliferatingExtractor(wordExtractor,
-            new LowerCaseProliferator(), new CapitalTypeProliferator(),
-            new NumericTypeProliferator(), new CharacterNGramProliferator(fromRight, 0, 2),
-            new CharacterNGramProliferator(fromRight, 0, 3)));
+    this.tokenFeatureExtractors.add(new ProliferatingExtractor(
+        wordExtractor,
+        new LowerCaseProliferator(),
+        new CapitalTypeProliferator(),
+        new NumericTypeProliferator(),
+        new CharacterNGramProliferator(fromRight, 0, 2),
+        new CharacterNGramProliferator(fromRight, 0, 3)));
 
     // add the feature extractors for the stem and part of speech
     this.tokenFeatureExtractors.add(stemExtractor);
 
     // add 2 stems to the left and right
-    this.tokenSentenceFeatureExtractors.add(new WindowExtractor(Token.class, stemExtractor,
-            WindowFeature.ORIENTATION_LEFT, 0, 2));
-    this.tokenSentenceFeatureExtractors.add(new WindowExtractor(Token.class, stemExtractor,
-            WindowFeature.ORIENTATION_RIGHT, 0, 2));
+    this.tokenSentenceFeatureExtractors.add(new WindowExtractor(
+        Token.class,
+        stemExtractor,
+        WindowFeature.ORIENTATION_LEFT,
+        0,
+        2));
+    this.tokenSentenceFeatureExtractors.add(new WindowExtractor(
+        Token.class,
+        stemExtractor,
+        WindowFeature.ORIENTATION_RIGHT,
+        0,
+        2));
 
   }
 

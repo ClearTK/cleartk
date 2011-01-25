@@ -47,6 +47,7 @@ import org.uimafit.pipeline.SimplePipeline;
 
 /**
  * Command line utility for annotating plain text files with TimeML annotations. Usage:
+ * 
  * <pre>
  * java org.cleartk.timeml.TimeMLAnnotate input-file-or-dir [output-dir]
  * </pre>
@@ -62,9 +63,11 @@ public class TimeMLAnnotate {
   private static void error(String message) throws Exception {
     Logger logger = UimaContextFactory.createUimaContext().getLogger();
     logger.log(
-            Level.SEVERE,
-            String.format("%s\nusage: java %s input-file-or-dir [output-dir]",
-                    TimeMLAnnotate.class.getName(), message));
+        Level.SEVERE,
+        String.format(
+            "%s\nusage: java %s input-file-or-dir [output-dir]",
+            TimeMLAnnotate.class.getName(),
+            message));
     System.exit(1);
   }
 
@@ -84,16 +87,23 @@ public class TimeMLAnnotate {
     }
 
     // run the components on the selected documents
-    SimplePipeline.runPipeline(FilesCollectionReader.getCollectionReader(
-            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION, inputFileOrDir), SentenceAnnotator
-            .getDescription(), TokenAnnotator.getDescription(),
-            PosTaggerAnnotator.getDescription(), DefaultSnowballStemmer.getDescription("English"),
-            EventAnnotator.getAnnotatorDescription(),
-            EventTenseAnnotator.getAnnotatorDescription(), EventAspectAnnotator
-                    .getAnnotatorDescription(), EventClassAnnotator.getAnnotatorDescription(),
-            EventPolarityAnnotator.getAnnotatorDescription(), EventModalityAnnotator
-                    .getAnnotatorDescription(), EventIdAnnotator.getDescription(), ParserAnnotator
-                    .getDescription(), VerbClauseTemporalAnnotator.getAnnotatorDescription(),
-            TimeMLWriter.getDescription(outputDir.getPath()));
+    SimplePipeline.runPipeline(
+        FilesCollectionReader.getCollectionReader(
+            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
+            inputFileOrDir),
+        SentenceAnnotator.getDescription(),
+        TokenAnnotator.getDescription(),
+        PosTaggerAnnotator.getDescription(),
+        DefaultSnowballStemmer.getDescription("English"),
+        EventAnnotator.getAnnotatorDescription(),
+        EventTenseAnnotator.getAnnotatorDescription(),
+        EventAspectAnnotator.getAnnotatorDescription(),
+        EventClassAnnotator.getAnnotatorDescription(),
+        EventPolarityAnnotator.getAnnotatorDescription(),
+        EventModalityAnnotator.getAnnotatorDescription(),
+        EventIdAnnotator.getDescription(),
+        ParserAnnotator.getDescription(),
+        VerbClauseTemporalAnnotator.getAnnotatorDescription(),
+        TimeMLWriter.getDescription(outputDir.getPath()));
   }
 }

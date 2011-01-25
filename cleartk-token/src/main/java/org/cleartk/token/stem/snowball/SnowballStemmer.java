@@ -54,10 +54,10 @@ import org.uimafit.factory.initializable.InitializableFactory;
 public abstract class SnowballStemmer<TOKEN_TYPE extends Annotation> extends JCasAnnotator_ImplBase {
 
   public static final String PARAM_STEMMER_NAME = ConfigurationParameterFactory
-          .createConfigurationParameterName(SnowballStemmer.class, "stemmerName");
+      .createConfigurationParameterName(SnowballStemmer.class, "stemmerName");
 
   private static final String STEMMER_NAME_DESCRIPTION = "specifies which snowball stemmer to use. Possible values are: "
-          + "Danish, Dutch, English, Finnish, French, German2, German, Italian, Kp, Lovins, Norwegian, Porter, Portuguese, Russian, Spanish, Swedish";
+      + "Danish, Dutch, English, Finnish, French, German2, German, Italian, Kp, Lovins, Norwegian, Porter, Portuguese, Russian, Spanish, Swedish";
 
   @ConfigurationParameter(description = STEMMER_NAME_DESCRIPTION, mandatory = true)
   public String stemmerName;
@@ -77,7 +77,7 @@ public abstract class SnowballStemmer<TOKEN_TYPE extends Annotation> extends JCa
     this.stemmer = InitializableFactory.create(null, className, SnowballProgram.class);
 
     this.tokenClass = ReflectionUtil.<Class<? extends Annotation>> uncheckedCast(ReflectionUtil
-            .getTypeArgument(SnowballStemmer.class, "TOKEN_TYPE", this));
+        .getTypeArgument(SnowballStemmer.class, "TOKEN_TYPE", this));
   }
 
   private void initializeTypes(JCas jCas) throws AnalysisEngineProcessException {

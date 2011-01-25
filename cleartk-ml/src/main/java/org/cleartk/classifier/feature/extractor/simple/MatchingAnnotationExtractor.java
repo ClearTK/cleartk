@@ -40,25 +40,31 @@ import org.cleartk.util.AnnotationRetrieval;
  */
 public class MatchingAnnotationExtractor implements SimpleFeatureExtractor {
 
-  public MatchingAnnotationExtractor(Class<? extends Annotation> annotationType,
-          SimpleFeatureExtractor subExtractor) {
+  public MatchingAnnotationExtractor(
+      Class<? extends Annotation> annotationType,
+      SimpleFeatureExtractor subExtractor) {
     this.annotationType = annotationType;
     this.subExtractor = subExtractor;
   }
 
-  public MatchingAnnotationExtractor(Class<? extends Annotation> annotationType,
-          SimpleFeatureExtractor... subExtractors) {
+  public MatchingAnnotationExtractor(
+      Class<? extends Annotation> annotationType,
+      SimpleFeatureExtractor... subExtractors) {
     this(annotationType, new CombinedExtractor(subExtractors));
   }
 
   public List<Feature> extract(JCas view, Annotation focusAnnotation) throws CleartkException {
 
     if (!annotationType.isInstance(focusAnnotation)) {
-      Annotation newFocusAnnotation = AnnotationRetrieval.getMatchingAnnotation(view,
-              focusAnnotation, annotationType);
+      Annotation newFocusAnnotation = AnnotationRetrieval.getMatchingAnnotation(
+          view,
+          focusAnnotation,
+          annotationType);
       if (newFocusAnnotation == null)
-        throw new IllegalArgumentException(String.format("no matching %s for annotation %s",
-                annotationType.getSimpleName(), focusAnnotation));
+        throw new IllegalArgumentException(String.format(
+            "no matching %s for annotation %s",
+            annotationType.getSimpleName(),
+            focusAnnotation));
       focusAnnotation = newFocusAnnotation;
     }
 

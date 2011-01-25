@@ -67,30 +67,37 @@ public class LineWriterTest extends DefaultTestBase {
 
   @Test
   public void test1() throws Exception {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(LineWriter.class,
-            typeSystemDescription, LineWriter.PARAM_OUTPUT_DIRECTORY_NAME,
-            this.outputDirectory.getPath(), LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
-            Token.class.getName(), LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME,
-            Sentence.class.getName(), LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME,
-            CoveredTextAnnotationWriter.class.getName(), LineWriter.PARAM_FILE_SUFFIX, ".txt");
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+        LineWriter.class,
+        typeSystemDescription,
+        LineWriter.PARAM_OUTPUT_DIRECTORY_NAME,
+        this.outputDirectory.getPath(),
+        LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
+        Token.class.getName(),
+        LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME,
+        Sentence.class.getName(),
+        LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME,
+        CoveredTextAnnotationWriter.class.getName(),
+        LineWriter.PARAM_FILE_SUFFIX,
+        ".txt");
 
     String text = "What if we built a rocket ship made of cheese?" + newline
-            + "We could fly it to the moon for repairs.";
+        + "We could fly it to the moon for repairs.";
     tokenBuilder
-            .buildTokens(
-                    jCas,
-                    text,
-                    "What if we built a rocket ship made of cheese ?\nWe could fly it to the moon for repairs .",
-                    "A B C D E F G H I J K L M N O P Q R S T U");
+        .buildTokens(
+            jCas,
+            text,
+            "What if we built a rocket ship made of cheese ?\nWe could fly it to the moon for repairs .",
+            "A B C D E F G H I J K L M N O P Q R S T U");
     ViewURIUtil.setURI(jCas, "1234");
     engine.process(jCas);
     engine.collectionProcessComplete();
 
     String expectedText = newline + "What" + newline + "if" + newline + "we" + newline + "built"
-            + newline + "a" + newline + "rocket" + newline + "ship" + newline + "made" + newline
-            + "of" + newline + "cheese" + newline + "?" + newline + "" + newline + "We" + newline
-            + "could" + newline + "fly" + newline + "it" + newline + "to" + newline + "the"
-            + newline + "moon" + newline + "for" + newline + "repairs" + newline + "." + newline;
+        + newline + "a" + newline + "rocket" + newline + "ship" + newline + "made" + newline + "of"
+        + newline + "cheese" + newline + "?" + newline + "" + newline + "We" + newline + "could"
+        + newline + "fly" + newline + "it" + newline + "to" + newline + "the" + newline + "moon"
+        + newline + "for" + newline + "repairs" + newline + "." + newline;
 
     File outputFile = new File(this.outputDirectory, "1234.txt");
     assertTrue(outputFile.exists());
@@ -99,21 +106,21 @@ public class LineWriterTest extends DefaultTestBase {
 
     jCas.reset();
     tokenBuilder
-            .buildTokens(
-                    jCas,
-                    text,
-                    "What if we \n built a rocket \n ship made of cheese ?\nWe could fly it \nto the moon for repairs .",
-                    "A B C D E F G H I J K L M N O P Q R S T U");
+        .buildTokens(
+            jCas,
+            text,
+            "What if we \n built a rocket \n ship made of cheese ?\nWe could fly it \nto the moon for repairs .",
+            "A B C D E F G H I J K L M N O P Q R S T U");
     ViewURIUtil.setURI(jCas, "1234");
     engine.process(jCas);
     engine.collectionProcessComplete();
 
     expectedText = newline + "What" + newline + "if" + newline + "we" + newline + "" + newline
-            + "built" + newline + "a" + newline + "rocket" + newline + "" + newline + "ship"
-            + newline + "made" + newline + "of" + newline + "cheese" + newline + "?" + newline + ""
-            + newline + "We" + newline + "could" + newline + "fly" + newline + "it" + newline + ""
-            + newline + "to" + newline + "the" + newline + "moon" + newline + "for" + newline
-            + "repairs" + newline + "." + newline;
+        + "built" + newline + "a" + newline + "rocket" + newline + "" + newline + "ship" + newline
+        + "made" + newline + "of" + newline + "cheese" + newline + "?" + newline + "" + newline
+        + "We" + newline + "could" + newline + "fly" + newline + "it" + newline + "" + newline
+        + "to" + newline + "the" + newline + "moon" + newline + "for" + newline + "repairs"
+        + newline + "." + newline;
 
     outputFile = new File(this.outputDirectory, "1234.txt");
     assertTrue(outputFile.exists());
@@ -123,27 +130,30 @@ public class LineWriterTest extends DefaultTestBase {
 
   @Test
   public void test2() throws Exception {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(LineWriter.class,
-            typeSystemDescription, LineWriter.PARAM_OUTPUT_FILE_NAME, new File(outputDirectory,
-                    "output.txt").getPath(), LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
-            Token.class.getName(), LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME,
-            ExampleTokenWriter.class.getName());
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+        LineWriter.class,
+        typeSystemDescription,
+        LineWriter.PARAM_OUTPUT_FILE_NAME,
+        new File(outputDirectory, "output.txt").getPath(),
+        LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
+        Token.class.getName(),
+        LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME,
+        ExampleTokenWriter.class.getName());
 
     String text = "Me and all my friends are non-conformists.  I will subjugate my freedom oppressor.";
-    tokenBuilder
-            .buildTokens(
-                    jCas,
-                    text,
-                    "Me and all my friends are non-conformists . \n I will subjugate my freedom oppressor . ",
-                    "1 2 3 4 5 6 7 8 9 10 11 12 13 14 15");
+    tokenBuilder.buildTokens(
+        jCas,
+        text,
+        "Me and all my friends are non-conformists . \n I will subjugate my freedom oppressor . ",
+        "1 2 3 4 5 6 7 8 9 10 11 12 13 14 15");
     engine.process(jCas);
     engine.collectionProcessComplete();
 
     String expectedText = "Me\t1" + newline + "and\t2" + newline + "all\t3" + newline + "my\t4"
-            + newline + "friends\t5" + newline + "are\t6" + newline + "non-conformists\t7"
-            + newline + ".\t8" + newline + "I\t9" + newline + "will\t10" + newline
-            + "subjugate\t11" + newline + "my\t12" + newline + "freedom\t13" + newline
-            + "oppressor\t14" + newline + ".\t15" + newline;
+        + newline + "friends\t5" + newline + "are\t6" + newline + "non-conformists\t7" + newline
+        + ".\t8" + newline + "I\t9" + newline + "will\t10" + newline + "subjugate\t11" + newline
+        + "my\t12" + newline + "freedom\t13" + newline + "oppressor\t14" + newline + ".\t15"
+        + newline;
 
     File outputFile = new File(this.outputDirectory, "output.txt");
     assertTrue(outputFile.exists());
@@ -153,14 +163,19 @@ public class LineWriterTest extends DefaultTestBase {
 
   @Test
   public void test3() throws Exception {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(LineWriter.class,
-            typeSystemDescription, LineWriter.PARAM_OUTPUT_FILE_NAME, new File(outputDirectory,
-                    "output.txt").getPath(), LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
-            Sentence.class.getName(), LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME,
-            "org.apache.uima.jcas.tcas.DocumentAnnotation",
-            LineWriter.PARAM_BLOCK_WRITER_CLASS_NAME, DoNothingBlockWriter.class.getName(),
-            LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME, CoveredTextAnnotationWriter.class
-                    .getName());
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+        LineWriter.class,
+        typeSystemDescription,
+        LineWriter.PARAM_OUTPUT_FILE_NAME,
+        new File(outputDirectory, "output.txt").getPath(),
+        LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
+        Sentence.class.getName(),
+        LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME,
+        "org.apache.uima.jcas.tcas.DocumentAnnotation",
+        LineWriter.PARAM_BLOCK_WRITER_CLASS_NAME,
+        DoNothingBlockWriter.class.getName(),
+        LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME,
+        CoveredTextAnnotationWriter.class.getName());
 
     String text = "If you like line writer, then you should really check out line rider.";
     tokenBuilder.buildTokens(jCas, text);
@@ -179,8 +194,8 @@ public class LineWriterTest extends DefaultTestBase {
     engine.collectionProcessComplete();
 
     String expectedText = "If you like line writer, then you should really check out line rider."
-            + newline + "I highly recommend reading 'Three Cups of Tea' by Greg Mortenson."
-            + newline + "Swashbuckling action and inspirational story." + newline;
+        + newline + "I highly recommend reading 'Three Cups of Tea' by Greg Mortenson." + newline
+        + "Swashbuckling action and inspirational story." + newline;
 
     File outputFile = new File(this.outputDirectory, "output.txt");
     assertTrue(outputFile.exists());
@@ -193,102 +208,170 @@ public class LineWriterTest extends DefaultTestBase {
     ResourceInitializationException rie = getResourceInitializationException();
     assertNotNull(rie);
 
-    rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
-            Token.class.getName(), LineWriter.PARAM_OUTPUT_DIRECTORY_NAME, outputDirectoryName,
-            LineWriter.PARAM_OUTPUT_FILE_NAME, outputFileName);
+    rie = getResourceInitializationException(
+        LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
+        Token.class.getName(),
+        LineWriter.PARAM_OUTPUT_DIRECTORY_NAME,
+        outputDirectoryName,
+        LineWriter.PARAM_OUTPUT_FILE_NAME,
+        outputFileName);
     assertNotNull(rie);
 
-    rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_DIRECTORY_NAME,
-            outputDirectoryName, LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, "edu.cleartk.");
+    rie = getResourceInitializationException(
+        LineWriter.PARAM_OUTPUT_DIRECTORY_NAME,
+        outputDirectoryName,
+        LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
+        "edu.cleartk.");
     assertNotNull(rie);
 
-    rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_DIRECTORY_NAME,
-            outputDirectoryName, LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
-            Token.class.getName());
+    rie = getResourceInitializationException(
+        LineWriter.PARAM_OUTPUT_DIRECTORY_NAME,
+        outputDirectoryName,
+        LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
+        Token.class.getName());
     assertNull(rie);
 
-    rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_DIRECTORY_NAME,
-            outputDirectoryName, LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
-            Token.class.getName(), LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME,
-            Token.class.getName());
+    rie = getResourceInitializationException(
+        LineWriter.PARAM_OUTPUT_DIRECTORY_NAME,
+        outputDirectoryName,
+        LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
+        Token.class.getName(),
+        LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME,
+        Token.class.getName());
     assertNotNull(rie);
 
-    rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_DIRECTORY_NAME,
-            outputDirectoryName, LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
-            Token.class.getName(), LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME,
-            CoveredTextAnnotationWriter.class.getName());
+    rie = getResourceInitializationException(
+        LineWriter.PARAM_OUTPUT_DIRECTORY_NAME,
+        outputDirectoryName,
+        LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
+        Token.class.getName(),
+        LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME,
+        CoveredTextAnnotationWriter.class.getName());
     assertNull(rie);
 
-    rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_FILE_NAME, outputFileName,
-            LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, Token.class.getName(),
-            LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME,
-            CoveredTextAnnotationWriter.class.getName());
+    rie = getResourceInitializationException(
+        LineWriter.PARAM_OUTPUT_FILE_NAME,
+        outputFileName,
+        LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
+        Token.class.getName(),
+        LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME,
+        CoveredTextAnnotationWriter.class.getName());
     assertNull(rie);
 
-    rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_FILE_NAME, outputFileName,
-            LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, Token.class.getName(),
-            LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME, Sentence.class.getName(),
-            LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME,
-            CoveredTextAnnotationWriter.class.getName(), LineWriter.PARAM_FILE_SUFFIX, ".txt");
+    rie = getResourceInitializationException(
+        LineWriter.PARAM_OUTPUT_FILE_NAME,
+        outputFileName,
+        LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
+        Token.class.getName(),
+        LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME,
+        Sentence.class.getName(),
+        LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME,
+        CoveredTextAnnotationWriter.class.getName(),
+        LineWriter.PARAM_FILE_SUFFIX,
+        ".txt");
     assertNull(rie);
 
-    rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_FILE_NAME, outputFileName,
-            LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, Token.class.getName(),
-            LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME, Sentence.class.getName(),
-            LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME,
-            CoveredTextAnnotationWriter.class.getName(), LineWriter.PARAM_FILE_SUFFIX, ".txt");
+    rie = getResourceInitializationException(
+        LineWriter.PARAM_OUTPUT_FILE_NAME,
+        outputFileName,
+        LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
+        Token.class.getName(),
+        LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME,
+        Sentence.class.getName(),
+        LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME,
+        CoveredTextAnnotationWriter.class.getName(),
+        LineWriter.PARAM_FILE_SUFFIX,
+        ".txt");
     assertNull(rie);
 
-    rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_DIRECTORY_NAME,
-            outputDirectoryName, LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
-            Token.class.getName(), LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME,
-            Sentence.class.getName(), LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME,
-            CoveredTextAnnotationWriter.class.getName(), LineWriter.PARAM_FILE_SUFFIX, ".txt");
+    rie = getResourceInitializationException(
+        LineWriter.PARAM_OUTPUT_DIRECTORY_NAME,
+        outputDirectoryName,
+        LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
+        Token.class.getName(),
+        LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME,
+        Sentence.class.getName(),
+        LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME,
+        CoveredTextAnnotationWriter.class.getName(),
+        LineWriter.PARAM_FILE_SUFFIX,
+        ".txt");
     assertNull(rie);
 
-    rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_DIRECTORY_NAME,
-            outputDirectoryName, LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
-            Annotation.class.getName(), LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME,
-            CoveredTextAnnotationWriter.class.getName(), LineWriter.PARAM_FILE_SUFFIX, ".txt");
+    rie = getResourceInitializationException(
+        LineWriter.PARAM_OUTPUT_DIRECTORY_NAME,
+        outputDirectoryName,
+        LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
+        Annotation.class.getName(),
+        LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME,
+        CoveredTextAnnotationWriter.class.getName(),
+        LineWriter.PARAM_FILE_SUFFIX,
+        ".txt");
     assertNull(rie);
 
-    rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_FILE_NAME, outputFileName,
-            LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME, Token.class.getName(),
-            LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME, String.class.getName(),
-            LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME,
-            CoveredTextAnnotationWriter.class.getName(), LineWriter.PARAM_FILE_SUFFIX, ".txt");
+    rie = getResourceInitializationException(
+        LineWriter.PARAM_OUTPUT_FILE_NAME,
+        outputFileName,
+        LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
+        Token.class.getName(),
+        LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME,
+        String.class.getName(),
+        LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME,
+        CoveredTextAnnotationWriter.class.getName(),
+        LineWriter.PARAM_FILE_SUFFIX,
+        ".txt");
     assertNotNull(rie);
 
-    rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_DIRECTORY_NAME,
-            outputDirectoryName, LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
-            Token.class.getName(), LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME,
-            Sentence.class.getName(), LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME,
-            DoNothingBlockWriter.class.getName(), LineWriter.PARAM_FILE_SUFFIX, ".txt");
+    rie = getResourceInitializationException(
+        LineWriter.PARAM_OUTPUT_DIRECTORY_NAME,
+        outputDirectoryName,
+        LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
+        Token.class.getName(),
+        LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME,
+        Sentence.class.getName(),
+        LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME,
+        DoNothingBlockWriter.class.getName(),
+        LineWriter.PARAM_FILE_SUFFIX,
+        ".txt");
     assertNotNull(rie);
 
-    rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_DIRECTORY_NAME,
-            outputDirectoryName, LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
-            Token.class.getName(), LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME,
-            Sentence.class.getName(), LineWriter.PARAM_BLOCK_WRITER_CLASS_NAME,
-            SillyBlockWriter.class.getName(), LineWriter.PARAM_FILE_SUFFIX, ".txt");
+    rie = getResourceInitializationException(
+        LineWriter.PARAM_OUTPUT_DIRECTORY_NAME,
+        outputDirectoryName,
+        LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
+        Token.class.getName(),
+        LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME,
+        Sentence.class.getName(),
+        LineWriter.PARAM_BLOCK_WRITER_CLASS_NAME,
+        SillyBlockWriter.class.getName(),
+        LineWriter.PARAM_FILE_SUFFIX,
+        ".txt");
     assertNotNull(rie);
 
-    rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_DIRECTORY_NAME,
-            outputDirectoryName, LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
-            Token.class.getName(), LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME,
-            Sentence.class.getName(), LineWriter.PARAM_BLOCK_WRITER_CLASS_NAME,
-            BlankLineBlockWriter.class.getName(), LineWriter.PARAM_FILE_SUFFIX, ".txt");
+    rie = getResourceInitializationException(
+        LineWriter.PARAM_OUTPUT_DIRECTORY_NAME,
+        outputDirectoryName,
+        LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
+        Token.class.getName(),
+        LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME,
+        Sentence.class.getName(),
+        LineWriter.PARAM_BLOCK_WRITER_CLASS_NAME,
+        BlankLineBlockWriter.class.getName(),
+        LineWriter.PARAM_FILE_SUFFIX,
+        ".txt");
     assertNull(rie);
 
-    rie = getResourceInitializationException(LineWriter.PARAM_OUTPUT_DIRECTORY_NAME,
-            outputDirectoryName, LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
-            Sentence.class.getName(), LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME,
-            ExampleTokenWriter.class.getName());
+    rie = getResourceInitializationException(
+        LineWriter.PARAM_OUTPUT_DIRECTORY_NAME,
+        outputDirectoryName,
+        LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
+        Sentence.class.getName(),
+        LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME,
+        ExampleTokenWriter.class.getName());
     assertNotNull(rie);
   }
 
   private ResourceInitializationException getResourceInitializationException(Object... params)
-          throws Exception {
+      throws Exception {
     ResourceInitializationException rie = null;
     try {
       AnalysisEngineFactory.createPrimitive(LineWriter.class, typeSystemDescription, params);
@@ -307,14 +390,21 @@ public class LineWriterTest extends DefaultTestBase {
 
   @Test
   public void testTokenWriter() throws Exception {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(LineWriter.class,
-            typeSystemDescription, LineWriter.PARAM_OUTPUT_DIRECTORY_NAME,
-            this.outputDirectory.getPath(), LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME,
-            Sentence.class.getName(), LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
-            Token.class.getName(), LineWriter.PARAM_FILE_SUFFIX, "txt",
-            LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME,
-            CoveredTextAnnotationWriter.class.getName(), LineWriter.PARAM_BLOCK_WRITER_CLASS_NAME,
-            BlankLineBlockWriter.class.getName());
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+        LineWriter.class,
+        typeSystemDescription,
+        LineWriter.PARAM_OUTPUT_DIRECTORY_NAME,
+        this.outputDirectory.getPath(),
+        LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME,
+        Sentence.class.getName(),
+        LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
+        Token.class.getName(),
+        LineWriter.PARAM_FILE_SUFFIX,
+        "txt",
+        LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME,
+        CoveredTextAnnotationWriter.class.getName(),
+        LineWriter.PARAM_BLOCK_WRITER_CLASS_NAME,
+        BlankLineBlockWriter.class.getName());
 
     String spacedTokens = "What if we built a large , wooden badger ?\nHmm? ";
     tokenBuilder.buildTokens(jCas, "What if we built\na large, wooden badger? Hmm?", spacedTokens);

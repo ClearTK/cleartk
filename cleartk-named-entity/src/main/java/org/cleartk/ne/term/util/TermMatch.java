@@ -48,9 +48,12 @@ public class TermMatch {
     super();
     if (end < begin)
       throw new IllegalArgumentException(
-              String.format(
-                      "the end of a token must follow the beginning of a token: begin=%1$d, end=%2$d, term='%3$s'",
-                      begin, end, term.getTermText()));
+          String
+              .format(
+                  "the end of a token must follow the beginning of a token: begin=%1$d, end=%2$d, term='%3$s'",
+                  begin,
+                  end,
+                  term.getTermText()));
     if (term == null)
       throw new IllegalArgumentException("term parameter may not be null");
 

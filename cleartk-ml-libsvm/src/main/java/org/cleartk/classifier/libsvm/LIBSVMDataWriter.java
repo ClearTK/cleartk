@@ -43,7 +43,7 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
  */
 
 public abstract class LIBSVMDataWriter<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE> extends
-        JarDataWriter<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE, FeatureVector> {
+    JarDataWriter<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE, FeatureVector> {
 
   public static final String TRAINING_DATA_FILE_NAME = "training-data.libsvm";
 
@@ -63,13 +63,14 @@ public abstract class LIBSVMDataWriter<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE> ex
       entries.put(LIBSVMClassifier.ATTRIBUTES_NAME, new Attributes());
     }
     Attributes attributes = entries.get(LIBSVMClassifier.ATTRIBUTES_NAME);
-    attributes.putValue(LIBSVMClassifier.SCALE_FEATURES_KEY,
-            LIBSVMClassifier.SCALE_FEATURES_VALUE_NORMALIZEL2);
+    attributes.putValue(
+        LIBSVMClassifier.SCALE_FEATURES_KEY,
+        LIBSVMClassifier.SCALE_FEATURES_VALUE_NORMALIZEL2);
   }
 
   @Override
   public void writeEncoded(FeatureVector features, OUTPUTOUTCOME_TYPE outcome)
-          throws CleartkException {
+      throws CleartkException {
     String classString = encode(outcome);
 
     StringBuffer output = new StringBuffer();
@@ -78,8 +79,10 @@ public abstract class LIBSVMDataWriter<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE> ex
 
     for (FeatureVector.Entry entry : features) {
       if (Double.isInfinite(entry.value) || Double.isNaN(entry.value))
-        throw new CleartkException(String.format("illegal value in entry %d:%.7f", entry.index,
-                entry.value));
+        throw new CleartkException(String.format(
+            "illegal value in entry %d:%.7f",
+            entry.index,
+            entry.value));
       output.append(String.format(Locale.US, " %d:%.7f", entry.index, entry.value));
     }
 

@@ -67,8 +67,9 @@ public class BinaryMaxentDataWriterTest extends DefaultTestBase {
     @Override
     public void process(JCas cas) throws AnalysisEngineProcessException {
       try {
-        List<Feature> features = Arrays.asList(new Feature("pos", "NN"), new Feature("distance",
-                3.0), new Feature("precision", 1.234));
+        List<Feature> features = Arrays.asList(new Feature("pos", "NN"), new Feature(
+            "distance",
+            3.0), new Feature("precision", 1.234));
         Instance<Boolean> instance = new Instance<Boolean>(Boolean.TRUE, features);
         this.dataWriter.write(instance);
 
@@ -91,16 +92,19 @@ public class BinaryMaxentDataWriterTest extends DefaultTestBase {
   @Test
   public void test1() throws Exception {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
-            Test1Annotator.class, typeSystemDescription,
-            JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
-            CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-            DefaultBinaryMaxentDataWriterFactory.class.getName());
+        Test1Annotator.class,
+        typeSystemDescription,
+        JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        outputDirectoryName,
+        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        DefaultBinaryMaxentDataWriterFactory.class.getName());
 
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
 
-    String[] lines = FileUtil.loadListOfStrings(new File(outputDirectoryName,
-            BinaryMaxentDataWriter.TRAINING_DATA_FILE_NAME));
+    String[] lines = FileUtil.loadListOfStrings(new File(
+        outputDirectoryName,
+        BinaryMaxentDataWriter.TRAINING_DATA_FILE_NAME));
     assertEquals("true pos_NN distance=3.0 precision=1.234", lines[0]);
     assertEquals("false name_2PO p's=2", lines[1]);
     assertEquals("true null=0", lines[2]);
@@ -122,24 +126,29 @@ public class BinaryMaxentDataWriterTest extends DefaultTestBase {
   @Test
   public void test2() throws Exception {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
-            Test1Annotator.class, typeSystemDescription,
-            JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
-            CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-            DefaultBinaryMaxentDataWriterFactory.class.getName(),
-            MaxentDataWriterFactory_ImplBase.PARAM_COMPRESS, true);
+        Test1Annotator.class,
+        typeSystemDescription,
+        JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        outputDirectoryName,
+        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        DefaultBinaryMaxentDataWriterFactory.class.getName(),
+        MaxentDataWriterFactory_ImplBase.PARAM_COMPRESS,
+        true);
 
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
 
-    String[] lines = FileUtil.loadListOfStrings(new File(outputDirectoryName,
-            MaxentDataWriter.TRAINING_DATA_FILE_NAME));
+    String[] lines = FileUtil.loadListOfStrings(new File(
+        outputDirectoryName,
+        MaxentDataWriter.TRAINING_DATA_FILE_NAME));
     assertEquals("true 0 1=3.0 2=1.234", lines[0]);
     assertEquals("false 3 4=2", lines[1]);
     assertEquals("true null=0", lines[2]);
     assertEquals("false 5", lines[3]);
 
-    lines = FileUtil.loadListOfStrings(new File(outputDirectoryName,
-            NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
+    lines = FileUtil.loadListOfStrings(new File(
+        outputDirectoryName,
+        NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
     Set<String> lineSet = new HashSet<String>();
     for (int i = 0; i < lines.length; i++)
       lineSet.add(lines[i]);
@@ -168,25 +177,31 @@ public class BinaryMaxentDataWriterTest extends DefaultTestBase {
   @Test
   public void test3() throws Exception {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
-            Test1Annotator.class, typeSystemDescription,
-            JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
-            CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-            DefaultBinaryMaxentDataWriterFactory.class.getName(),
-            MaxentDataWriterFactory_ImplBase.PARAM_COMPRESS, true,
-            MaxentDataWriterFactory_ImplBase.PARAM_SORT, true);
+        Test1Annotator.class,
+        typeSystemDescription,
+        JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        outputDirectoryName,
+        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        DefaultBinaryMaxentDataWriterFactory.class.getName(),
+        MaxentDataWriterFactory_ImplBase.PARAM_COMPRESS,
+        true,
+        MaxentDataWriterFactory_ImplBase.PARAM_SORT,
+        true);
 
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
 
-    String[] lines = FileUtil.loadListOfStrings(new File(outputDirectoryName,
-            MaxentDataWriter.TRAINING_DATA_FILE_NAME));
+    String[] lines = FileUtil.loadListOfStrings(new File(
+        outputDirectoryName,
+        MaxentDataWriter.TRAINING_DATA_FILE_NAME));
     assertEquals("true 0 1=3.0 2=1.234", lines[0]);
     assertEquals("false 3 4=2", lines[1]);
     assertEquals("true null=0", lines[2]);
     assertEquals("false 5", lines[3]);
 
-    lines = FileUtil.loadListOfStrings(new File(outputDirectoryName,
-            NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
+    lines = FileUtil.loadListOfStrings(new File(
+        outputDirectoryName,
+        NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
     int i = 0;
     assertEquals("6", lines[i++]);
     assertEquals("A_B_AB	5", lines[i++]);
@@ -213,8 +228,10 @@ public class BinaryMaxentDataWriterTest extends DefaultTestBase {
     }
 
     public void processSimple(JCas cas) throws CleartkException {
-      List<Feature> features = Arrays.asList(new Feature("pos", "NN"),
-              new Feature("distance", 3.0), new Feature("precision", 1.234));
+      List<Feature> features = Arrays.asList(
+          new Feature("pos", "NN"),
+          new Feature("distance", 3.0),
+          new Feature("precision", 1.234));
       Instance<Boolean> instance = new Instance<Boolean>(features);
       this.dataWriter.write(instance);
     }
@@ -232,12 +249,16 @@ public class BinaryMaxentDataWriterTest extends DefaultTestBase {
     HideOutput hider = new HideOutput();
 
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
-            Test4Annotator.class, typeSystemDescription,
-            JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
-            CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-            DefaultBinaryMaxentDataWriterFactory.class.getName(),
-            MaxentDataWriterFactory_ImplBase.PARAM_COMPRESS, true,
-            MaxentDataWriterFactory_ImplBase.PARAM_SORT, true);
+        Test4Annotator.class,
+        typeSystemDescription,
+        JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        outputDirectoryName,
+        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        DefaultBinaryMaxentDataWriterFactory.class.getName(),
+        MaxentDataWriterFactory_ImplBase.PARAM_COMPRESS,
+        true,
+        MaxentDataWriterFactory_ImplBase.PARAM_SORT,
+        true);
 
     AnalysisEngineProcessException aepe = null;
     try {
@@ -277,17 +298,21 @@ public class BinaryMaxentDataWriterTest extends DefaultTestBase {
   @Test
   public void test5() throws Exception {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
-            Test5Annotator.class, typeSystemDescription,
-            JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
-            CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-            DefaultBinaryMaxentDataWriterFactory.class.getName(),
-            MaxentDataWriterFactory_ImplBase.PARAM_COMPRESS, true);
+        Test5Annotator.class,
+        typeSystemDescription,
+        JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        outputDirectoryName,
+        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        DefaultBinaryMaxentDataWriterFactory.class.getName(),
+        MaxentDataWriterFactory_ImplBase.PARAM_COMPRESS,
+        true);
 
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
 
-    String[] lines = FileUtil.loadListOfStrings(new File(outputDirectoryName,
-            MaxentDataWriter.TRAINING_DATA_FILE_NAME));
+    String[] lines = FileUtil.loadListOfStrings(new File(
+        outputDirectoryName,
+        MaxentDataWriter.TRAINING_DATA_FILE_NAME));
     assertEquals("true 0 1 2", lines[0]);
   }
 

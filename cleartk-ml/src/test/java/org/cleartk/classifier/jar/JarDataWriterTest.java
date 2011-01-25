@@ -59,11 +59,10 @@ public class JarDataWriterTest extends DefaultTestBase {
   @Test
   public void testManifest() throws UIMAException, IOException, CleartkException {
     String expectedManifest = ("Manifest-Version: 1.0\n"
-            + "classifierBuilderClass: org.cleartk.classifier.test.StringTestClassifi\n"
-            + " erBuilder");
+        + "classifierBuilderClass: org.cleartk.classifier.test.StringTestClassifi\n" + " erBuilder");
 
     JarDataWriter<String, String, List<NameNumber>> dataWriter = new StringTestDataWriter(
-            outputDirectory);
+        outputDirectory);
     dataWriter.setFeaturesEncoder(new NameNumberFeaturesEncoder(false, false));
     dataWriter.setOutcomeEncoder(new StringToStringOutcomeEncoder());
     dataWriter.finish();
@@ -76,7 +75,7 @@ public class JarDataWriterTest extends DefaultTestBase {
   public void testPrintWriter() throws UIMAException, IOException, CleartkException {
 
     JarDataWriter<String, String, List<NameNumber>> dataWriter = new StringTestDataWriter(
-            outputDirectory);
+        outputDirectory);
     dataWriter.setFeaturesEncoder(new NameNumberFeaturesEncoder(false, false));
     dataWriter.setOutcomeEncoder(new StringToStringOutcomeEncoder());
     PrintWriter printWriter = dataWriter.getPrintWriter("foo.txt");
@@ -96,7 +95,8 @@ public class JarDataWriterTest extends DefaultTestBase {
   public void testFinish() throws UIMAException, IOException, CleartkException {
 
     UimaContext uimaContext = UimaContextFactory.createUimaContext(
-            JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName);
+        JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        outputDirectoryName);
     DefaultStringTestDataWriterFactory factory = new DefaultStringTestDataWriterFactory();
     factory.initialize(uimaContext);
     DataWriter<String> dataWriter = factory.createDataWriter();

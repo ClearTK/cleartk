@@ -85,18 +85,26 @@ public class Step2WriteTrainingData {
     System.out.println("writing training data to: " + outputDirectoryName);
 
     AnalysisEngineDescription documentClassificationAnnotatorDescription = AnalysisEngineFactory
-            .createPrimitiveDescription(DocumentClassificationAnnotator.class,
-                    ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-                    CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-                    LibsvmDataWriterFactory.class.getName(),
-                    LibsvmDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
-                    LibsvmDataWriterFactory.PARAM_IDFMAP_FILE_NAME, idfmapFileName);
+        .createPrimitiveDescription(
+            DocumentClassificationAnnotator.class,
+            ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+            CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+            LibsvmDataWriterFactory.class.getName(),
+            LibsvmDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+            outputDirectoryName,
+            LibsvmDataWriterFactory.PARAM_IDFMAP_FILE_NAME,
+            idfmapFileName);
 
-    SimplePipeline.runPipeline(FilesCollectionReader.getCollectionReader(
-            ExampleComponents.TYPE_SYSTEM_DESCRIPTION, documentDirectory), SentenceAnnotator
-            .getDescription(), TokenAnnotator.getDescription(), DefaultSnowballStemmer
-            .getDescription("English"), AnalysisEngineFactory.createPrimitiveDescription(
-            GoldAnnotator.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION),
-            documentClassificationAnnotatorDescription);
+    SimplePipeline.runPipeline(
+        FilesCollectionReader.getCollectionReader(
+            ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+            documentDirectory),
+        SentenceAnnotator.getDescription(),
+        TokenAnnotator.getDescription(),
+        DefaultSnowballStemmer.getDescription("English"),
+        AnalysisEngineFactory.createPrimitiveDescription(
+            GoldAnnotator.class,
+            ExampleComponents.TYPE_SYSTEM_DESCRIPTION),
+        documentClassificationAnnotatorDescription);
   }
 }

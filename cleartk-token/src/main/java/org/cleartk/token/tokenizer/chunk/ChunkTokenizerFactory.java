@@ -44,35 +44,55 @@ import org.uimafit.factory.ConfigurationParameterFactory;
 public class ChunkTokenizerFactory {
 
   public static AnalysisEngineDescription createChunkTokenizer(String modelFileName)
-          throws ResourceInitializationException {
-    AnalysisEngineDescription aed = CleartkAnnotatorDescriptionFactory.createCleartkSequentialAnnotator(
-            Chunker.class, TokenComponents.TYPE_SYSTEM_DESCRIPTION, modelFileName);
-    ConfigurationParameterFactory.addConfigurationParameters(aed, Chunker.class,
-            ChunkTokenizerLabeler.class);
-    ConfigurationParameterFactory.addConfigurationParameters(aed,
-            Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME, Subtoken.class.getName(),
-            Chunker.PARAM_SEQUENCE_CLASS_NAME, Sentence.class.getName(),
-            Chunker.PARAM_CHUNK_LABELER_CLASS_NAME, ChunkTokenizerLabeler.class.getName(),
-            Chunker.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME,
-            ChunkTokenizerFeatureExtractor.class.getName(),
-            ChunkTokenizerLabeler.PARAM_CHUNK_ANNOTATION_CLASS_NAME, Token.class.getName());
+      throws ResourceInitializationException {
+    AnalysisEngineDescription aed = CleartkAnnotatorDescriptionFactory
+        .createCleartkSequentialAnnotator(
+            Chunker.class,
+            TokenComponents.TYPE_SYSTEM_DESCRIPTION,
+            modelFileName);
+    ConfigurationParameterFactory.addConfigurationParameters(
+        aed,
+        Chunker.class,
+        ChunkTokenizerLabeler.class);
+    ConfigurationParameterFactory.addConfigurationParameters(
+        aed,
+        Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME,
+        Subtoken.class.getName(),
+        Chunker.PARAM_SEQUENCE_CLASS_NAME,
+        Sentence.class.getName(),
+        Chunker.PARAM_CHUNK_LABELER_CLASS_NAME,
+        ChunkTokenizerLabeler.class.getName(),
+        Chunker.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME,
+        ChunkTokenizerFeatureExtractor.class.getName(),
+        ChunkTokenizerLabeler.PARAM_CHUNK_ANNOTATION_CLASS_NAME,
+        Token.class.getName());
     return aed;
   }
 
   public static AnalysisEngineDescription createChunkTokenizerDataWriter(String outputDirectoryName)
-          throws ResourceInitializationException {
-    AnalysisEngineDescription aed = CleartkAnnotatorDescriptionFactory.createCleartkSequentialAnnotator(
-            Chunker.class, TokenComponents.TYPE_SYSTEM_DESCRIPTION,
-            DefaultMalletCRFDataWriterFactory.class, outputDirectoryName);
-    ConfigurationParameterFactory.addConfigurationParameters(aed, Chunker.class,
-            ChunkTokenizerLabeler.class);
-    ConfigurationParameterFactory.addConfigurationParameters(aed,
-            Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME, Subtoken.class.getName(),
-            Chunker.PARAM_SEQUENCE_CLASS_NAME, Sentence.class.getName(),
-            Chunker.PARAM_CHUNK_LABELER_CLASS_NAME, ChunkTokenizerLabeler.class.getName(),
-            Chunker.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME,
-            ChunkTokenizerFeatureExtractor.class.getName(),
-            ChunkTokenizerLabeler.PARAM_CHUNK_ANNOTATION_CLASS_NAME, Token.class.getName());
+      throws ResourceInitializationException {
+    AnalysisEngineDescription aed = CleartkAnnotatorDescriptionFactory
+        .createCleartkSequentialAnnotator(
+            Chunker.class,
+            TokenComponents.TYPE_SYSTEM_DESCRIPTION,
+            DefaultMalletCRFDataWriterFactory.class,
+            outputDirectoryName);
+    ConfigurationParameterFactory.addConfigurationParameters(
+        aed,
+        Chunker.class,
+        ChunkTokenizerLabeler.class);
+    ConfigurationParameterFactory.addConfigurationParameters(
+        aed,
+        Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME,
+        Subtoken.class.getName(),
+        Chunker.PARAM_SEQUENCE_CLASS_NAME,
+        Sentence.class.getName(),
+        Chunker.PARAM_CHUNK_LABELER_CLASS_NAME,
+        ChunkTokenizerLabeler.class.getName(),
+        Chunker.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME,
+        ChunkTokenizerFeatureExtractor.class.getName(),
+        ChunkTokenizerLabeler.PARAM_CHUNK_ANNOTATION_CLASS_NAME,
+        Token.class.getName());
     return aed;
   }
 

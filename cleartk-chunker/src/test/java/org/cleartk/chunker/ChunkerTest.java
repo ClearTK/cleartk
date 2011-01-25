@@ -70,8 +70,10 @@ public class ChunkerTest extends DefaultTestBase {
 
     private List<WindowExtractor> windowExtractors;
 
-    public Instance<String> extractFeatures(JCas jCas, Annotation labeledAnnotation,
-            Annotation sequence) throws CleartkException {
+    public Instance<String> extractFeatures(
+        JCas jCas,
+        Annotation labeledAnnotation,
+        Annotation sequence) throws CleartkException {
       Instance<String> instance = new Instance<String>();
 
       // extract all features that require only the token annotation
@@ -94,12 +96,17 @@ public class ChunkerTest extends DefaultTestBase {
       SimpleFeatureExtractor wordExtractor = new SpannedTextExtractor();
 
       int fromLeft = CharacterNGramProliferator.LEFT_TO_RIGHT;
-      this.simpleFeatureExtractors
-              .add(new ProliferatingExtractor(wordExtractor, new LowerCaseProliferator(),
-                      new CharacterNGramProliferator(fromLeft, 0, 3, 3, true)));
+      this.simpleFeatureExtractors.add(new ProliferatingExtractor(
+          wordExtractor,
+          new LowerCaseProliferator(),
+          new CharacterNGramProliferator(fromLeft, 0, 3, 3, true)));
 
-      this.windowExtractors.add(new WindowExtractor(Token.class, wordExtractor,
-              WindowFeature.ORIENTATION_LEFT, 0, 2));
+      this.windowExtractors.add(new WindowExtractor(
+          Token.class,
+          wordExtractor,
+          WindowFeature.ORIENTATION_LEFT,
+          0,
+          2));
 
     }
 
@@ -119,8 +126,27 @@ public class ChunkerTest extends DefaultTestBase {
 
     @Override
     public List<String> classifySequence(List<Instance<String>> instances) {
-      return Arrays.asList(new String[] { "B-1", "I-1", "I-1", "O", "O", "B-nice", "I-nice",
-          "B-nice", "B-twice", "O", "I-twice", "B-2", "I-2", "O", "O", "O", "O", "O", "O", "O" });
+      return Arrays.asList(new String[] {
+          "B-1",
+          "I-1",
+          "I-1",
+          "O",
+          "O",
+          "B-nice",
+          "I-nice",
+          "B-nice",
+          "B-twice",
+          "O",
+          "I-twice",
+          "B-2",
+          "I-2",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O" });
     }
 
     @Override
@@ -131,41 +157,50 @@ public class ChunkerTest extends DefaultTestBase {
       } catch (Exception e) {
       }
       // next we repeat what we missed in the super class initialize because of the exception
-      labeledAnnotationClass = InitializableFactory.getClass(labeledAnnotationClassName,
-              Annotation.class);
+      labeledAnnotationClass = InitializableFactory.getClass(
+          labeledAnnotationClassName,
+          Annotation.class);
       sequenceClass = InitializableFactory.getClass(sequenceClassName, Annotation.class);
       chunkLabeler = InitializableFactory
-              .create(context, chunkLabelerClassName, ChunkLabeler.class);
-      featureExtractor = InitializableFactory.create(context, chunkerFeatureExtractorClassName,
-              ChunkerFeatureExtractor.class);
+          .create(context, chunkLabelerClassName, ChunkLabeler.class);
+      featureExtractor = InitializableFactory.create(
+          context,
+          chunkerFeatureExtractorClassName,
+          ChunkerFeatureExtractor.class);
 
     }
   }
 
   @Test
   public void testChunkHandler() throws UIMAException, CleartkException {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TestChunkerAnnotator.class,
-            typeSystemDescription, Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME,
-            Token.class.getName(), Chunker.PARAM_SEQUENCE_CLASS_NAME, Sentence.class.getName(),
-            Chunker.PARAM_CHUNK_LABELER_CLASS_NAME, DefaultChunkLabeler.class.getName(),
-            Chunker.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME,
-            TestFeatureExtractor.class.getName(),
-            ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME, Chunk.class.getName(),
-            DefaultChunkLabeler.PARAM_CHUNK_LABEL_FEATURE_NAME, "chunkType",
-            CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME,
-            InstanceCollector.StringFactory.class.getName());
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+        TestChunkerAnnotator.class,
+        typeSystemDescription,
+        Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME,
+        Token.class.getName(),
+        Chunker.PARAM_SEQUENCE_CLASS_NAME,
+        Sentence.class.getName(),
+        Chunker.PARAM_CHUNK_LABELER_CLASS_NAME,
+        DefaultChunkLabeler.class.getName(),
+        Chunker.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME,
+        TestFeatureExtractor.class.getName(),
+        ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME,
+        Chunk.class.getName(),
+        DefaultChunkLabeler.PARAM_CHUNK_LABEL_FEATURE_NAME,
+        "chunkType",
+        CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME,
+        InstanceCollector.StringFactory.class.getName());
     TestChunkerAnnotator copy = new TestChunkerAnnotator();
     copy.initialize(engine.getUimaContext());
     ChunkLabeler chunkLabeler = copy.getChunkLabeler();
 
     String text = "What if we built a rocket ship made of cheese?"
-            + "We could fly it to the moon for repairs";
-    tokenBuilder
-            .buildTokens(
-                    jCas,
-                    text,
-                    "What if we built a rocket ship made of cheese ? We could fly it to the moon for repairs",
-                    "A B C D E F G H I J K L M N O P Q R S T U");
+        + "We could fly it to the moon for repairs";
+    tokenBuilder.buildTokens(
+        jCas,
+        text,
+        "What if we built a rocket ship made of cheese ? We could fly it to the moon for repairs",
+        "A B C D E F G H I J K L M N O P Q R S T U");
     List<Token> tokens = AnnotationRetrieval.getAnnotations(jCas, Token.class);
     for (int i = 0; i < tokens.size(); i++) {
       Token token1 = tokens.get(i);
@@ -198,15 +233,23 @@ public class ChunkerTest extends DefaultTestBase {
     chunks = AnnotationRetrieval.getAnnotations(jCas, Chunk.class);
     assertEquals(0, chunks.size());
 
-    engine = AnalysisEngineFactory.createPrimitive(TestChunkerAnnotator2.class,
-            typeSystemDescription, Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME,
-            Token.class.getName(), Chunker.PARAM_SEQUENCE_CLASS_NAME, Sentence.class.getName(),
-            Chunker.PARAM_CHUNK_LABELER_CLASS_NAME, DefaultChunkLabeler.class.getName(),
-            Chunker.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME,
-            TestFeatureExtractor.class.getName(),
-            ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME, Chunk.class.getName(),
-            DefaultChunkLabeler.PARAM_CHUNK_LABEL_FEATURE_NAME, "chunkType",
-            JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, "example/pos/model/model.jar");
+    engine = AnalysisEngineFactory.createPrimitive(
+        TestChunkerAnnotator2.class,
+        typeSystemDescription,
+        Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME,
+        Token.class.getName(),
+        Chunker.PARAM_SEQUENCE_CLASS_NAME,
+        Sentence.class.getName(),
+        Chunker.PARAM_CHUNK_LABELER_CLASS_NAME,
+        DefaultChunkLabeler.class.getName(),
+        Chunker.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME,
+        TestFeatureExtractor.class.getName(),
+        ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME,
+        Chunk.class.getName(),
+        DefaultChunkLabeler.PARAM_CHUNK_LABEL_FEATURE_NAME,
+        "chunkType",
+        JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
+        "example/pos/model/model.jar");
     InitializableFactory.initialize(chunkLabeler, engine.getUimaContext());
     engine.process(jCas);
 

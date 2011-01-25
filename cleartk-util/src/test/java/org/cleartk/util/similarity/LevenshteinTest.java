@@ -37,13 +37,19 @@ import org.junit.Test;
  */
 public class LevenshteinTest {
 
-  private void test(String string1, String string2, int expectedEditDistance,
-          float expectedSimilarity) {
+  private void test(
+      String string1,
+      String string2,
+      int expectedEditDistance,
+      float expectedSimilarity) {
     int actualEditDistance = Levenshtein.editDistance(string1, string2);
     assertEquals("levenshtein edit distance", expectedEditDistance, actualEditDistance);
     float actualSimilarity = Levenshtein.similarity(string1, string2);
-    assertEquals("levenshtein edit distance similarity", expectedSimilarity, actualSimilarity,
-            0.001f);
+    assertEquals(
+        "levenshtein edit distance similarity",
+        expectedSimilarity,
+        actualSimilarity,
+        0.001f);
   }
 
   @Test

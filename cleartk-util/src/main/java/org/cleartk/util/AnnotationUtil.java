@@ -45,7 +45,7 @@ public class AnnotationUtil {
     if (bigAnnotation == null || smallAnnotation == null)
       return false;
     if (bigAnnotation.getBegin() <= smallAnnotation.getBegin()
-            && bigAnnotation.getEnd() >= smallAnnotation.getEnd())
+        && bigAnnotation.getEnd() >= smallAnnotation.getEnd())
       return true;
     else
       return false;
@@ -101,12 +101,16 @@ public class AnnotationUtil {
    *         the annotation. If such a "token" does not exist then the other edge of the span will
    *         be either end of the document text.
    */
-  public static <TOKEN_TYPE extends Annotation> String getSurroundingText(JCas jCas,
-          Annotation annotation, Class<TOKEN_TYPE> tokenClass, int numberOfTokens, boolean before) {
+  public static <TOKEN_TYPE extends Annotation> String getSurroundingText(
+      JCas jCas,
+      Annotation annotation,
+      Class<TOKEN_TYPE> tokenClass,
+      int numberOfTokens,
+      boolean before) {
 
     if (numberOfTokens < 1)
       throw new IllegalArgumentException(
-              "numberOfTokens must be greater than zero.  Actual values is: " + numberOfTokens);
+          "numberOfTokens must be greater than zero.  Actual values is: " + numberOfTokens);
 
     String documentText = jCas.getDocumentText();
 
@@ -117,7 +121,7 @@ public class AnnotationUtil {
       start = 0;
       end = annotation.getBegin();
       Annotation startToken = AnnotationRetrieval
-              .get(jCas, annotation, tokenClass, -numberOfTokens);
+          .get(jCas, annotation, tokenClass, -numberOfTokens);
       if (startToken != null)
         start = startToken.getBegin();
     } else {

@@ -40,32 +40,38 @@ import org.cleartk.util.AnnotationRetrieval;
  */
 public class LastInstanceExtractor implements SimpleFeatureExtractor {
 
-  public LastInstanceExtractor(Class<? extends Annotation> targetAnnotationClass,
-          SimpleFeatureExtractor subExtractor) {
+  public LastInstanceExtractor(
+      Class<? extends Annotation> targetAnnotationClass,
+      SimpleFeatureExtractor subExtractor) {
     this.targetAnnotationClass = targetAnnotationClass;
     this.subExtractor = subExtractor;
   }
 
-  public LastInstanceExtractor(Class<? extends Annotation> targetAnnotationClass,
-          SimpleFeatureExtractor... subExtractors) {
+  public LastInstanceExtractor(
+      Class<? extends Annotation> targetAnnotationClass,
+      SimpleFeatureExtractor... subExtractors) {
     this(targetAnnotationClass, new CombinedExtractor(subExtractors));
   }
 
   public List<Feature> extract(JCas view, Annotation windowAnnotation) throws CleartkException {
 
     Annotation lastAnnotation;
-    lastAnnotation = AnnotationRetrieval.getLastAnnotation(view, windowAnnotation,
-            targetAnnotationClass);
+    lastAnnotation = AnnotationRetrieval.getLastAnnotation(
+        view,
+        windowAnnotation,
+        targetAnnotationClass);
 
     if (lastAnnotation == null) {
-      throw new CleartkException(String.format("no %s annotation found within %s window",
-              targetAnnotationClass.getSimpleName(), windowAnnotation.getClass().getSimpleName()));
+      throw new CleartkException(String.format(
+          "no %s annotation found within %s window",
+          targetAnnotationClass.getSimpleName(),
+          windowAnnotation.getClass().getSimpleName()));
     }
 
     List<Feature> features = subExtractor.extract(view, lastAnnotation);
     for (Feature f : features) {
       String name = Feature
-              .createName("First" + targetAnnotationClass.getSimpleName(), f.getName());
+          .createName("First" + targetAnnotationClass.getSimpleName(), f.getName());
       f.setName(name);
     }
 

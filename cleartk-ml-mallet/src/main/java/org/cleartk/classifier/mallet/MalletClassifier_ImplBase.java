@@ -55,7 +55,7 @@ import cc.mallet.types.Labeling;
  * 
  */
 public abstract class MalletClassifier_ImplBase<OUTCOME_TYPE> extends
-        JarClassifier<OUTCOME_TYPE, String, List<NameNumber>> {
+    JarClassifier<OUTCOME_TYPE, String, List<NameNumber>> {
 
   protected Classifier classifier;
 
@@ -78,7 +78,7 @@ public abstract class MalletClassifier_ImplBase<OUTCOME_TYPE> extends
    * @throws CleartkException
    */
   public OUTCOME_TYPE classify(List<Feature> features) throws UnsupportedOperationException,
-          CleartkException {
+      CleartkException {
     Classification classification = classifier.classify(toInstance(features));
     String returnValue = classification.getLabeling().getBestLabel().toString();
     return outcomeEncoder.decode(returnValue);
@@ -86,10 +86,10 @@ public abstract class MalletClassifier_ImplBase<OUTCOME_TYPE> extends
 
   @Override
   public List<ScoredOutcome<OUTCOME_TYPE>> score(List<Feature> features, int maxResults)
-          throws CleartkException {
+      throws CleartkException {
     Classification classification = classifier.classify(toInstance(features));
     List<ScoredOutcome<OUTCOME_TYPE>> returnValues = new ArrayList<ScoredOutcome<OUTCOME_TYPE>>(
-            maxResults);
+        maxResults);
     Labeling labeling = classification.getLabeling();
 
     if (maxResults == 1) {

@@ -77,8 +77,11 @@ public class DirectedDistanceExtractor implements AnnotationPairFeatureExtractor
     if (AnnotationUtil.overlaps(annotation1, annotation2)) {
       featureValue = 0;
     } else {
-      List<? extends Annotation> annotations = AnnotationRetrieval.getAnnotations(jCas,
-              firstAnnotation.getEnd(), secondAnnotation.getBegin(), unitClass);
+      List<? extends Annotation> annotations = AnnotationRetrieval.getAnnotations(
+          jCas,
+          firstAnnotation.getEnd(),
+          secondAnnotation.getBegin(),
+          unitClass);
       featureValue = annotations.size() + 1;
     }
     if (negate)

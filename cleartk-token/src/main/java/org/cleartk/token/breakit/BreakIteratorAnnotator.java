@@ -51,7 +51,7 @@ import org.uimafit.factory.initializable.InitializableFactory;
 public class BreakIteratorAnnotator extends JCasAnnotator_ImplBase {
 
   public static final String PARAM_LOCALE = ConfigurationParameterFactory
-          .createConfigurationParameterName(BreakIteratorAnnotator.class, "locale");
+      .createConfigurationParameterName(BreakIteratorAnnotator.class, "locale");
 
   @ConfigurationParameter(description = "provides the name of the locale to be used to instantiate the break iterator")
   private Locale locale;
@@ -61,13 +61,13 @@ public class BreakIteratorAnnotator extends JCasAnnotator_ImplBase {
   }
 
   public static final String PARAM_BREAK_ITERATOR_TYPE = ConfigurationParameterFactory
-          .createConfigurationParameterName(BreakIteratorAnnotator.class, "breakIteratorType");
+      .createConfigurationParameterName(BreakIteratorAnnotator.class, "breakIteratorType");
 
   @ConfigurationParameter(description = "provides the type of the locale to be used to instantiate the break iterator.  Should be one of  'WORD' or 'SENTENCE'", defaultValue = "SENTENCE")
   private BreakIteratorType breakIteratorType;
 
   public static final String PARAM_ANNOTATION_TYPE_NAME = ConfigurationParameterFactory
-          .createConfigurationParameterName(BreakIteratorAnnotator.class, "annotationTypeName");
+      .createConfigurationParameterName(BreakIteratorAnnotator.class, "annotationTypeName");
 
   @ConfigurationParameter(description = "class type of the annotations that are created by this annotator.")
   private String annotationTypeName;
@@ -84,8 +84,10 @@ public class BreakIteratorAnnotator extends JCasAnnotator_ImplBase {
 
     try {
       annotationClass = InitializableFactory.getClass(annotationTypeName, Annotation.class);
-      annotationConstructor = annotationClass.getConstructor(new Class[] { JCas.class,
-          Integer.TYPE, Integer.TYPE });
+      annotationConstructor = annotationClass.getConstructor(new Class[] {
+          JCas.class,
+          Integer.TYPE,
+          Integer.TYPE });
     } catch (Exception e) {
       throw new ResourceInitializationException(e);
     }
@@ -111,7 +113,7 @@ public class BreakIteratorAnnotator extends JCasAnnotator_ImplBase {
   }
 
   private void processAnnotations(JCas jCas) throws IllegalArgumentException,
-          InstantiationException, IllegalAccessException, InvocationTargetException {
+      InstantiationException, IllegalAccessException, InvocationTargetException {
     String text = jCas.getDocumentText();
     breakIterator.setText(text);
 

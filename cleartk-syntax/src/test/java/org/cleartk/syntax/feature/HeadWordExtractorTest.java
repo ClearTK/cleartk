@@ -72,8 +72,10 @@ public class HeadWordExtractorTest extends SyntaxTestBase {
     try {
       HeadWordExtractor extractor = new HeadWordExtractor(null);
       jCas.setDocumentText("foo");
-      TreebankNode parent = TreebankTestsUtil.newNode(jCas, null,
-              TreebankTestsUtil.newNode(jCas, 0, 3, null));
+      TreebankNode parent = TreebankTestsUtil.newNode(
+          jCas,
+          null,
+          TreebankTestsUtil.newNode(jCas, 0, 3, null));
 
       this.checkFeatures(extractor.extract(jCas, parent));
     } catch (NullPointerException e) {
@@ -103,17 +105,24 @@ public class HeadWordExtractorTest extends SyntaxTestBase {
 
     this.checkFeatures(extractor.extract(jCas, vpNode), "HeadWord", "ran");
 
-    this.checkFeatures(new HeadWordExtractor(textExtractor, false).extract(jCas, vpNode),
-            "HeadWord", "ran");
+    this.checkFeatures(
+        new HeadWordExtractor(textExtractor, false).extract(jCas, vpNode),
+        "HeadWord",
+        "ran");
 
-    this.checkFeatures(new HeadWordExtractor(posExtractor).extract(jCas, vpNode),
-            "HeadWord_TypePath(NodeType)", "VBD");
+    this.checkFeatures(
+        new HeadWordExtractor(posExtractor).extract(jCas, vpNode),
+        "HeadWord_TypePath(NodeType)",
+        "VBD");
   }
 
   @Test
   public void testNPandPP() throws UIMAException, CleartkException {
-    tokenBuilder.buildTokens(jCas, "cat's toy under the box", "cat 's toy under the box",
-            "NN POS NN IN DT NN");
+    tokenBuilder.buildTokens(
+        jCas,
+        "cat's toy under the box",
+        "cat 's toy under the box",
+        "NN POS NN IN DT NN");
     TreebankNode catNode = TreebankTestsUtil.newNode(jCas, 0, 3, "NN");
     TreebankNode sNode = TreebankTestsUtil.newNode(jCas, 3, 5, "POS");
     TreebankNode catsNode = TreebankTestsUtil.newNode(jCas, "NP", catNode, sNode);
@@ -132,8 +141,12 @@ public class HeadWordExtractorTest extends SyntaxTestBase {
 
     extractor = new HeadWordExtractor(posExtractor, true);
     this.checkFeatures(extractor.extract(jCas, tree), "HeadWord_TypePath(NodeType)", "NN");
-    this.checkFeatures(extractor.extract(jCas, undertheboxNode), "HeadWord_TypePath(NodeType)",
-            "IN", "PPHeadWord_TypePath(NodeType)", "NN");
+    this.checkFeatures(
+        extractor.extract(jCas, undertheboxNode),
+        "HeadWord_TypePath(NodeType)",
+        "IN",
+        "PPHeadWord_TypePath(NodeType)",
+        "NN");
 
     extractor = new HeadWordExtractor(textExtractor, true);
     this.checkFeatures(extractor.extract(jCas, tree), "HeadWord", "toy");

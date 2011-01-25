@@ -52,16 +52,29 @@ public class FactoryTest {
   @Test
   public void testC45TrainerFactory() {
     C45TrainerFactory factory = new C45TrainerFactory();
-    C45Trainer trainer = (C45Trainer) factory.createTrainer(new String[] { "--depthLimited",
-        "true", "--doPruning", "false", "--maxDepth", "6", "--minNumInsts", "3" });
+    C45Trainer trainer = (C45Trainer) factory.createTrainer(new String[] {
+        "--depthLimited",
+        "true",
+        "--doPruning",
+        "false",
+        "--maxDepth",
+        "6",
+        "--minNumInsts",
+        "3" });
 
     assertTrue(trainer.getDepthLimited());
     assertFalse(trainer.getDoPruning());
     assertEquals(6, trainer.getMaxDepth());
     assertEquals(3, trainer.getMinNumInsts());
 
-    testBadConfig(factory, new String[] { "--depthLimited", "--doPruning", "false", "--maxDepth",
-        "6", "--minNumInsts", "3" });
+    testBadConfig(factory, new String[] {
+        "--depthLimited",
+        "--doPruning",
+        "false",
+        "--maxDepth",
+        "6",
+        "--minNumInsts",
+        "3" });
 
     testBadConfig(factory, new String[] { "--depthimited", "true" });
     testBadConfig(factory, new String[] { "--numIterations" });
@@ -72,7 +85,10 @@ public class FactoryTest {
   @Test
   public void testMaxentTrainerFactory() {
     MaxEntTrainerFactory factory = new MaxEntTrainerFactory();
-    factory.createTrainer(new String[] { "--numIterations", "200", "--gaussianPriorVariance",
+    factory.createTrainer(new String[] {
+        "--numIterations",
+        "200",
+        "--gaussianPriorVariance",
         "0.552" });
 
     testBadConfig(factory, new String[] { "--depthimited", "true" });
@@ -86,9 +102,17 @@ public class FactoryTest {
   @Test
   public void testMCMaxentTrainerFactory() {
     MCMaxEntTrainerFactory factory = new MCMaxEntTrainerFactory();
-    factory.createTrainer(new String[] { "--useHyperbolicPrior", "true", "--gaussianPriorVariance",
-        "0.552", "--hyperbolicPriorSlope", "0.3", "--hyperbolicPriorSharpness", "15.0",
-        "--numIterations", "20" });
+    factory.createTrainer(new String[] {
+        "--useHyperbolicPrior",
+        "true",
+        "--gaussianPriorVariance",
+        "0.552",
+        "--hyperbolicPriorSlope",
+        "0.3",
+        "--hyperbolicPriorSharpness",
+        "15.0",
+        "--numIterations",
+        "20" });
 
     testBadConfig(factory, new String[] { "--hyperbolicPriorSlope", "false" });
     testBadConfig(factory, new String[] { "--numIterations" });
@@ -101,14 +125,18 @@ public class FactoryTest {
   public void testNaiveBayesTrainerFactory() {
     NaiveBayesTrainerFactory factory = new NaiveBayesTrainerFactory();
     NaiveBayesTrainer trainer = (NaiveBayesTrainer) factory.createTrainer(new String[] {
-        "--docLengthNormalization", "15.0" });
+        "--docLengthNormalization",
+        "15.0" });
 
     assertEquals(15.0, trainer.getDocLengthNormalization(), 0.001);
 
     testBadConfig(factory, new String[] { "--hyperbolicPriorSlope", "false" });
     testBadConfig(factory, new String[] { "--docLengthNormalization" });
-    testBadConfig(factory, new String[] { "--docLengthNormalization", "15.0",
-        "--useHyperbolicPrior", "true" });
+    testBadConfig(factory, new String[] {
+        "--docLengthNormalization",
+        "15.0",
+        "--useHyperbolicPrior",
+        "true" });
 
     assertTrue(factory.getClass().getName().endsWith("TrainerFactory"));
   }

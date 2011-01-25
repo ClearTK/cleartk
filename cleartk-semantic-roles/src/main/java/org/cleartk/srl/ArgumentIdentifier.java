@@ -91,43 +91,56 @@ import org.uimafit.factory.AnalysisEngineFactory;
 public class ArgumentIdentifier extends CleartkAnnotator<Boolean> {
 
   public static AnalysisEngineDescription getWriterDescription(
-          Class<? extends DataWriterFactory<Boolean>> dataWriterFactoryClass, File outputDirectory)
-          throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(ArgumentIdentifier.class,
-            SrlComponents.TYPE_SYSTEM_DESCRIPTION,
-            CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-            dataWriterFactoryClass.getName(), JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
-            outputDirectory.toString());
+      Class<? extends DataWriterFactory<Boolean>> dataWriterFactoryClass,
+      File outputDirectory) throws ResourceInitializationException {
+    return AnalysisEngineFactory.createPrimitiveDescription(
+        ArgumentIdentifier.class,
+        SrlComponents.TYPE_SYSTEM_DESCRIPTION,
+        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        dataWriterFactoryClass.getName(),
+        JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        outputDirectory.toString());
   }
 
   public static AnalysisEngineDescription getClassifierDescription(File classifierJar)
-          throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(ArgumentIdentifier.class,
-            SrlComponents.TYPE_SYSTEM_DESCRIPTION, JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
-            classifierJar.toString());
+      throws ResourceInitializationException {
+    return AnalysisEngineFactory.createPrimitiveDescription(
+        ArgumentIdentifier.class,
+        SrlComponents.TYPE_SYSTEM_DESCRIPTION,
+        JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
+        classifierJar.toString());
   }
 
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
 
-    SimpleFeatureExtractor defaultTokenExtractorSet = new MatchingAnnotationExtractor(Token.class,
-            new SpannedTextExtractor(), new StemExtractor(), new POSExtractor());
+    SimpleFeatureExtractor defaultTokenExtractorSet = new MatchingAnnotationExtractor(
+        Token.class,
+        new SpannedTextExtractor(),
+        new StemExtractor(),
+        new POSExtractor());
 
     this.perPredicateExtractor = new NamingExtractor("Predicate", new MatchingAnnotationExtractor(
-            Token.class, defaultTokenExtractorSet), new MatchingAnnotationExtractor(
-            TreebankNode.class, new SubCategorizationExtractor()));
+        Token.class,
+        defaultTokenExtractorSet), new MatchingAnnotationExtractor(
+        TreebankNode.class,
+        new SubCategorizationExtractor()));
 
     this.perConstituentExtractor = new NamingExtractor("Constituent", new NodeTypeExtractor(),
     // new TypePathExtractor(TreebankNode.class, "nodeTags"),
-            new HeadWordExtractor(defaultTokenExtractorSet), new FirstInstanceExtractor(
-                    Token.class, defaultTokenExtractorSet), new LastInstanceExtractor(Token.class,
-                    defaultTokenExtractorSet), new NamedEntityExtractor());
+        new HeadWordExtractor(defaultTokenExtractorSet),
+        new FirstInstanceExtractor(Token.class, defaultTokenExtractorSet),
+        new LastInstanceExtractor(Token.class, defaultTokenExtractorSet),
+        new NamedEntityExtractor());
 
     this.perPredicatAndConstituentExtractor = new NamingAnnotationPairFeatureExtractor(
-            "PredicateAndConstituent", new MatchingAnnotationPairExtractor(TreebankNode.class,
-                    TreebankNode.class, new SyntacticPathExtractor(new NodeTypeExtractor()),
-                    new RelativePositionExtractor()));
+        "PredicateAndConstituent",
+        new MatchingAnnotationPairExtractor(
+            TreebankNode.class,
+            TreebankNode.class,
+            new SyntacticPathExtractor(new NodeTypeExtractor()),
+            new RelativePositionExtractor()));
   }
 
   @Override
@@ -147,8 +160,10 @@ public class ArgumentIdentifier extends CleartkAnnotator<Boolean> {
       }
 
       logger.info(String.format(
-              "processed %d sentences, %d predicates, ~%d constituents per predicate", nSentences,
-              nPredicates, nPredicates == 0 ? 0 : nConstituents / nPredicates));
+          "processed %d sentences, %d predicates, ~%d constituents per predicate",
+          nSentences,
+          nPredicates,
+          nPredicates == 0 ? 0 : nConstituents / nPredicates));
     } catch (CleartkException e) {
       throw new AnalysisEngineProcessException(e);
     }
@@ -158,8 +173,9 @@ public class ArgumentIdentifier extends CleartkAnnotator<Boolean> {
     nSentences += 1;
 
     if (sentence.getCoveredText().length() > 40)
-      logger.fine(String.format("process sentence \"%s ...\"",
-              sentence.getCoveredText().substring(0, 39)));
+      logger.fine(String.format(
+          "process sentence \"%s ...\"",
+          sentence.getCoveredText().substring(0, 39)));
     else
       logger.fine(String.format("process sentence \"%s\"", sentence.getCoveredText()));
 
@@ -167,14 +183,15 @@ public class ArgumentIdentifier extends CleartkAnnotator<Boolean> {
      * Pre-compute sentence level data: sentenceConstituents: list of all constituents in sentence
      */
     List<TreebankNode> sentenceConstituents = new ArrayList<TreebankNode>(200);
-    collectConstituents(AnnotationRetrieval.getContainingAnnotation(jCas, sentence,
-            TopTreebankNode.class, false), sentenceConstituents);
+    collectConstituents(
+        AnnotationRetrieval.getContainingAnnotation(jCas, sentence, TopTreebankNode.class, false),
+        sentenceConstituents);
 
     /*
      * Compute constituent features for all constituents in sentence
      */
     List<List<Feature>> sentenceConstituentFeatures = new ArrayList<List<Feature>>(
-            sentenceConstituents.size());
+        sentenceConstituents.size());
     for (TreebankNode constituent : sentenceConstituents) {
       sentenceConstituentFeatures.add(perConstituentExtractor.extract(jCas, constituent));
     }
@@ -183,15 +200,17 @@ public class ArgumentIdentifier extends CleartkAnnotator<Boolean> {
      * Iterate over predicates in sentence
      */
     List<Predicate> predicates = AnnotationRetrieval
-            .getAnnotations(jCas, sentence, Predicate.class);
+        .getAnnotations(jCas, sentence, Predicate.class);
     for (Predicate predicate : predicates) {
       processPredicate(jCas, predicate, sentenceConstituents, sentenceConstituentFeatures);
     }
   }
 
-  public void processPredicate(JCas jCas, Predicate predicate,
-          List<TreebankNode> sentenceConstituents, List<List<Feature>> sentenceConstituentFeatures)
-          throws CleartkException {
+  public void processPredicate(
+      JCas jCas,
+      Predicate predicate,
+      List<TreebankNode> sentenceConstituents,
+      List<List<Feature>> sentenceConstituentFeatures) throws CleartkException {
     nPredicates += 1;
 
     /*
@@ -212,8 +231,10 @@ public class ArgumentIdentifier extends CleartkAnnotator<Boolean> {
       /*
        * Compute predicate-constituent features
        */
-      instance.addAll(perPredicatAndConstituentExtractor.extract(jCas, constituent,
-              predicate.getAnnotation()));
+      instance.addAll(perPredicatAndConstituentExtractor.extract(
+          jCas,
+          constituent,
+          predicate.getAnnotation()));
 
       /*
        * Add constituent features

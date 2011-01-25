@@ -122,8 +122,9 @@ public class OVASVMlightDataWriter extends JarDataWriter<String, Integer, Featur
     allFalseWriter.flush();
     try {
       copyFile(allFalseFile, newTDFile);
-      trainingDataWriters.put(label, new PrintWriter(new BufferedWriter(new FileWriter(newTDFile,
-              true))));
+      trainingDataWriters.put(label, new PrintWriter(new BufferedWriter(new FileWriter(
+          newTDFile,
+          true))));
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

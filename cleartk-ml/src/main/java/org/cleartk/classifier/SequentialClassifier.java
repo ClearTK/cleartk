@@ -54,7 +54,8 @@ public interface SequentialClassifier<OUTCOME_TYPE> {
    *          the maximum number of classifications to return.
    * @return a sorted list of the best N sequence classifications with their scores.
    */
-  public List<ScoredOutcome<List<OUTCOME_TYPE>>> scoreSequence(List<List<Feature>> features,
-          int maxResults) throws CleartkException;
+  public List<ScoredOutcome<List<OUTCOME_TYPE>>> scoreSequence(
+      List<List<Feature>> features,
+      int maxResults) throws CleartkException;
 
 }

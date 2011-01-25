@@ -83,18 +83,25 @@ public class Step1BuildIDFMap {
     }
 
     AnalysisEngineDescription documentClassificationAnnotatorDescription = AnalysisEngineFactory
-            .createPrimitiveDescription(DocumentClassificationAnnotator.class,
-                    ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-                    CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-                    IDFMapWriterFactory.class.getName(),
-                    IDFMapWriterFactory.PARAM_OUTPUT_DIRECTORY, idfmapDirectory.getPath());
+        .createPrimitiveDescription(
+            DocumentClassificationAnnotator.class,
+            ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+            CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+            IDFMapWriterFactory.class.getName(),
+            IDFMapWriterFactory.PARAM_OUTPUT_DIRECTORY,
+            idfmapDirectory.getPath());
 
-    SimplePipeline.runPipeline(FilesCollectionReader.getCollectionReader(
-            ExampleComponents.TYPE_SYSTEM_DESCRIPTION, documentDirectory), SentenceAnnotator
-            .getDescription(), TokenAnnotator.getDescription(), DefaultSnowballStemmer
-            .getDescription("English"), AnalysisEngineFactory.createPrimitiveDescription(
-            GoldAnnotator.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION),
-            documentClassificationAnnotatorDescription);
+    SimplePipeline.runPipeline(
+        FilesCollectionReader.getCollectionReader(
+            ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+            documentDirectory),
+        SentenceAnnotator.getDescription(),
+        TokenAnnotator.getDescription(),
+        DefaultSnowballStemmer.getDescription("English"),
+        AnalysisEngineFactory.createPrimitiveDescription(
+            GoldAnnotator.class,
+            ExampleComponents.TYPE_SYSTEM_DESCRIPTION),
+        documentClassificationAnnotatorDescription);
 
     System.out.println("IDF map file written to: " + idfmapDirectory.getPath());
   }

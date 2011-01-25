@@ -102,7 +102,7 @@ public class PennTreebankTokenizer extends Tokenizer_ImplBase {
   // any period not preceded by two other periods and followed only
   // by punctuation to the end of the line
   public static String periodRegex = "((?<=\\d)\\.(?=[^\\n\\S])|" + "(?<=[^.]\\.)\\.(?![.])|"
-          + "(?<!\\.\\.)\\.[" + closedBracesRegex + "\"'`/_#*\\s]*$)";
+      + "(?<!\\.\\.)\\.[" + closedBracesRegex + "\"'`/_#*\\s]*$)";
 
   public static Pattern periodPattern = Pattern.compile(periodRegex, Pattern.MULTILINE);
 
@@ -134,29 +134,39 @@ public class PennTreebankTokenizer extends Tokenizer_ImplBase {
   // abbreviation regexes
   public static String oneWordAbbreviationRegex = "('ll|'re|'ve|n't|'[smd])\\b";
 
-  public static Pattern oneWordAbbreviationPattern = Pattern.compile(oneWordAbbreviationRegex,
-          Pattern.CASE_INSENSITIVE);
+  public static Pattern oneWordAbbreviationPattern = Pattern.compile(
+      oneWordAbbreviationRegex,
+      Pattern.CASE_INSENSITIVE);
 
-  public static String[] twoWordAbbreviationRegexes = new String[] { "\\b(can)(not)\\b",
-      "\\b(d')(ye)\\b", "\\b(gim)(me)\\b", "\\b(gon)(na)\\b", "\\b(got)(ta)\\b", "\\b(lem)(me)\\b",
-      "\\b(more)('n)\\b", "\\b(wan)(na)\\b" };
+  public static String[] twoWordAbbreviationRegexes = new String[] {
+      "\\b(can)(not)\\b",
+      "\\b(d')(ye)\\b",
+      "\\b(gim)(me)\\b",
+      "\\b(gon)(na)\\b",
+      "\\b(got)(ta)\\b",
+      "\\b(lem)(me)\\b",
+      "\\b(more)('n)\\b",
+      "\\b(wan)(na)\\b" };
 
   public static Pattern[] twoWordAbbreviationPatterns = new Pattern[twoWordAbbreviationRegexes.length];
   static {
     for (int i = 0; i < twoWordAbbreviationRegexes.length; i++) {
-      twoWordAbbreviationPatterns[i] = Pattern.compile(twoWordAbbreviationRegexes[i],
-              Pattern.CASE_INSENSITIVE);
+      twoWordAbbreviationPatterns[i] = Pattern.compile(
+          twoWordAbbreviationRegexes[i],
+          Pattern.CASE_INSENSITIVE);
     }
   }
 
-  public static String[] threeWordAbbreviationRegexes = new String[] { "\\b(wha)(dd)(ya)\\b",
+  public static String[] threeWordAbbreviationRegexes = new String[] {
+      "\\b(wha)(dd)(ya)\\b",
       "\\b(wha)(t)(cha)\\b" };
 
   public static Pattern[] threeWordAbbreviationPatterns = new Pattern[threeWordAbbreviationRegexes.length];
   static {
     for (int i = 0; i < threeWordAbbreviationRegexes.length; i++) {
-      threeWordAbbreviationPatterns[i] = Pattern.compile(threeWordAbbreviationRegexes[i],
-              Pattern.CASE_INSENSITIVE);
+      threeWordAbbreviationPatterns[i] = Pattern.compile(
+          threeWordAbbreviationRegexes[i],
+          Pattern.CASE_INSENSITIVE);
     }
   }
 
@@ -175,14 +185,23 @@ public class PennTreebankTokenizer extends Tokenizer_ImplBase {
 
   public static String multipleWhitespaceRegex = "(\\s+)";
 
-  public static Pattern multipleWhitespacePattern = Pattern.compile(multipleWhitespaceRegex,
-          Pattern.MULTILINE);
+  public static Pattern multipleWhitespacePattern = Pattern.compile(
+      multipleWhitespaceRegex,
+      Pattern.MULTILINE);
 
   protected Pattern[] patterns;
 
   public PennTreebankTokenizer() {
-    patterns = new Pattern[] { ellipsisPattern, commaPattern, dollarSignPattern, ampersandPattern,
-        dashPattern, colonPattern, nonFinalPunctPattern, periodPattern, nonPeriodPunctPattern,
+    patterns = new Pattern[] {
+        ellipsisPattern,
+        commaPattern,
+        dollarSignPattern,
+        ampersandPattern,
+        dashPattern,
+        colonPattern,
+        nonFinalPunctPattern,
+        periodPattern,
+        nonPeriodPunctPattern,
         bracesPattern };
   }
 

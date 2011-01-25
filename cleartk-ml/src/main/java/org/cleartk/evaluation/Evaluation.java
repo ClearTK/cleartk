@@ -85,12 +85,20 @@ public class Evaluation {
    * @throws Exception
    */
 
-  public static void runCrossValidation(File outputDirectory, CorpusFactory corpusFactory,
-          EngineFactory engineFactory, EvaluationFactory evaluationFactory,
-          String... trainingArguments) throws Exception {
+  public static void runCrossValidation(
+      File outputDirectory,
+      CorpusFactory corpusFactory,
+      EngineFactory engineFactory,
+      EvaluationFactory evaluationFactory,
+      String... trainingArguments) throws Exception {
     PrintStream evaluationLog = new PrintStream(new File(outputDirectory, "evaluation.log"));
-    log1(evaluationLog, outputDirectory, corpusFactory, engineFactory, evaluationFactory,
-            trainingArguments);
+    log1(
+        evaluationLog,
+        outputDirectory,
+        corpusFactory,
+        engineFactory,
+        evaluationFactory,
+        trainingArguments);
     if (!outputDirectory.exists()) {
       outputDirectory.mkdirs();
     }
@@ -112,43 +120,55 @@ public class Evaluation {
       evaluationDirectories.add(evaluationDirectory);
 
       evaluationLog
-              .println(String.format("creating training data in %s.", modelDirectory.getPath()));
+          .println(String.format("creating training data in %s.", modelDirectory.getPath()));
       CollectionReader trainingReader = corpusFactory.createTrainReader(fold);
       AnalysisEngineDescription preprocessing = corpusFactory.createPreprocessor();
       AnalysisEngineDescription dataWritingAggregate = engineFactory
-              .createDataWritingAggregate(modelDirectory);
+          .createDataWritingAggregate(modelDirectory);
       SimplePipeline.runPipeline(trainingReader, preprocessing, dataWritingAggregate);
 
       evaluationLog.println(String.format("training model in %s.", modelDirectory.getPath()));
       engineFactory.train(modelDirectory, trainingArguments);
 
-      evaluationLog.println(String.format("testing model.  Writing evaluation results to %s.",
-              evaluationDirectory.getPath()));
+      evaluationLog.println(String.format(
+          "testing model.  Writing evaluation results to %s.",
+          evaluationDirectory.getPath()));
       CollectionReader testingReader = corpusFactory.createTestReader(fold);
       AnalysisEngineDescription classifierAggregate = engineFactory
-              .createClassifierAggregate(modelDirectory);
+          .createClassifierAggregate(modelDirectory);
       AnalysisEngineDescription evaluationAggregate = evaluationFactory
-              .createEvaluationAggregate(evaluationDirectory);
-      SimplePipeline.runPipeline(testingReader, preprocessing, classifierAggregate,
-              evaluationAggregate);
+          .createEvaluationAggregate(evaluationDirectory);
+      SimplePipeline.runPipeline(
+          testingReader,
+          preprocessing,
+          classifierAggregate,
+          evaluationAggregate);
     }
     File evaluationDirectory = new File(outputDirectory, "evaluation");
     evaluationDirectory.mkdirs();
-    evaluationLog.println(String.format("Aggregating evaluation results to %s.",
-            evaluationDirectory.getPath()));
+    evaluationLog.println(String.format(
+        "Aggregating evaluation results to %s.",
+        evaluationDirectory.getPath()));
     evaluationFactory.aggregateEvaluationResults(evaluationDirectories, evaluationDirectory);
     evaluationLog.println("Finished running cross-validation");
   }
 
-  private static void log1(PrintStream evaluationLog, File outputDirectory,
-          CorpusFactory corpusFactory, EngineFactory engineFactory,
-          EvaluationFactory evaluationFactory, String[] trainingArguments) {
+  private static void log1(
+      PrintStream evaluationLog,
+      File outputDirectory,
+      CorpusFactory corpusFactory,
+      EngineFactory engineFactory,
+      EvaluationFactory evaluationFactory,
+      String[] trainingArguments) {
     evaluationLog
-            .println(String
-                    .format("running cross-validation in directory %s.  corpus factory=%s, engine factory=%s, evaluation factory=%s, training arguments=%s",
-                            outputDirectory.getPath(), corpusFactory.getClass().getName(),
-                            engineFactory.getClass().getName(), evaluationFactory.getClass()
-                                    .getName(), Arrays.asList(trainingArguments)));
+        .println(String
+            .format(
+                "running cross-validation in directory %s.  corpus factory=%s, engine factory=%s, evaluation factory=%s, training arguments=%s",
+                outputDirectory.getPath(),
+                corpusFactory.getClass().getName(),
+                engineFactory.getClass().getName(),
+                evaluationFactory.getClass().getName(),
+                Arrays.asList(trainingArguments)));
   }
 
   /**
@@ -172,9 +192,12 @@ public class Evaluation {
    *          {@link #runCrossValidation(File, CorpusFactory, EngineFactory, EvaluationFactory, String...)}
    * @throws Exception
    */
-  public static void runHoldoutEvaluation(File outputDirectory, CorpusFactory corpusFactory,
-          EngineFactory engineFactory, EvaluationFactory evaluationFactory,
-          String... trainingArguments) throws Exception {
+  public static void runHoldoutEvaluation(
+      File outputDirectory,
+      CorpusFactory corpusFactory,
+      EngineFactory engineFactory,
+      EvaluationFactory evaluationFactory,
+      String... trainingArguments) throws Exception {
     if (!outputDirectory.exists()) {
       outputDirectory.mkdirs();
     }
@@ -188,19 +211,22 @@ public class Evaluation {
     CollectionReader trainingReader = corpusFactory.createTrainReader();
     AnalysisEngineDescription preprocessing = corpusFactory.createPreprocessor();
     AnalysisEngineDescription dataWritingAggregate = engineFactory
-            .createDataWritingAggregate(modelDirectory);
+        .createDataWritingAggregate(modelDirectory);
     SimplePipeline.runPipeline(trainingReader, preprocessing, dataWritingAggregate);
 
     engineFactory.train(modelDirectory, trainingArguments);
 
     CollectionReader testingReader = corpusFactory.createTestReader();
     AnalysisEngineDescription classifierAggregate = engineFactory
-            .createClassifierAggregate(modelDirectory);
+        .createClassifierAggregate(modelDirectory);
     AnalysisEngineDescription evaluationAggregate = evaluationFactory
-            .createEvaluationAggregate(evaluationDirectory);
+        .createEvaluationAggregate(evaluationDirectory);
 
-    SimplePipeline.runPipeline(testingReader, preprocessing, classifierAggregate,
-            evaluationAggregate);
+    SimplePipeline.runPipeline(
+        testingReader,
+        preprocessing,
+        classifierAggregate,
+        evaluationAggregate);
 
   }
 
@@ -223,8 +249,11 @@ public class Evaluation {
    *          {@link #runCrossValidation(File, CorpusFactory, EngineFactory, EvaluationFactory, String...)}
    * @throws Exception
    */
-  public static void buildCorpusModel(File outputDirectory, CorpusFactory corpusFactory,
-          EngineFactory engineFactory, String... trainingArguments) throws Exception {
+  public static void buildCorpusModel(
+      File outputDirectory,
+      CorpusFactory corpusFactory,
+      EngineFactory engineFactory,
+      String... trainingArguments) throws Exception {
     if (!outputDirectory.exists()) {
       outputDirectory.mkdirs();
     }
@@ -234,7 +263,7 @@ public class Evaluation {
     CollectionReader reader = corpusFactory.createReader();
     AnalysisEngineDescription preprocessing = corpusFactory.createPreprocessor();
     AnalysisEngineDescription dataWritingAggregate = engineFactory
-            .createDataWritingAggregate(modelDirectory);
+        .createDataWritingAggregate(modelDirectory);
     SimplePipeline.runPipeline(reader, preprocessing, dataWritingAggregate);
 
     engineFactory.train(modelDirectory, trainingArguments);

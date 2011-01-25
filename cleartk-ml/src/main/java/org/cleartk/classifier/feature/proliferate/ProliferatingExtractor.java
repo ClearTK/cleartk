@@ -52,8 +52,9 @@ public class ProliferatingExtractor implements SimpleFeatureExtractor {
    *          Feature proliferators that use the output of the feature extractor to generate their
    *          features.
    */
-  public ProliferatingExtractor(SimpleFeatureExtractor extractor,
-          FeatureProliferator... proliferators) {
+  public ProliferatingExtractor(
+      SimpleFeatureExtractor extractor,
+      FeatureProliferator... proliferators) {
     this.extractor = extractor;
     this.proliferators = proliferators;
   }

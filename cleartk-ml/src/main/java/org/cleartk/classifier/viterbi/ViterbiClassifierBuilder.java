@@ -45,13 +45,15 @@ public class ViterbiClassifierBuilder<OUTCOME_TYPE> implements ClassifierBuilder
 
   public void buildJar(File dir, String[] args) throws Exception {
     File delegatedOutputDirectory = new File(dir, ViterbiDataWriter.DELEGATED_MODEL_DIRECTORY_NAME);
-    FileUtil.copyFile(new File(delegatedOutputDirectory, BuildJar.MODEL_FILE_NAME), new File(dir,
-            DELEGATED_MODEL_FILE_NAME));
+    FileUtil.copyFile(new File(delegatedOutputDirectory, BuildJar.MODEL_FILE_NAME), new File(
+        dir,
+        DELEGATED_MODEL_FILE_NAME));
 
     BuildJar.OutputStream stream = new BuildJar.OutputStream(dir);
     stream.write(DELEGATED_MODEL_FILE_NAME, new File(dir, DELEGATED_MODEL_FILE_NAME));
-    stream.write(ViterbiDataWriter.OUTCOME_FEATURE_EXTRACTOR_FILE_NAME, new File(dir,
-            ViterbiDataWriter.OUTCOME_FEATURE_EXTRACTOR_FILE_NAME));
+    stream.write(ViterbiDataWriter.OUTCOME_FEATURE_EXTRACTOR_FILE_NAME, new File(
+        dir,
+        ViterbiDataWriter.OUTCOME_FEATURE_EXTRACTOR_FILE_NAME));
     stream.close();
 
   }

@@ -39,19 +39,21 @@ import org.cleartk.classifier.Feature;
  */
 public class NamingAnnotationPairFeatureExtractor implements AnnotationPairFeatureExtractor {
 
-  public NamingAnnotationPairFeatureExtractor(String name,
-          AnnotationPairFeatureExtractor subExtractor) {
+  public NamingAnnotationPairFeatureExtractor(
+      String name,
+      AnnotationPairFeatureExtractor subExtractor) {
     this.name = name;
     this.subExtractor = subExtractor;
   }
 
-  public NamingAnnotationPairFeatureExtractor(String name,
-          AnnotationPairFeatureExtractor... subExtractors) {
+  public NamingAnnotationPairFeatureExtractor(
+      String name,
+      AnnotationPairFeatureExtractor... subExtractors) {
     this(name, new CombinedAnnotationPairFeatureExtractor(subExtractors));
   }
 
   public List<Feature> extract(JCas view, Annotation leftAnnotation, Annotation rightAnnotation)
-          throws CleartkException {
+      throws CleartkException {
     List<Feature> features = subExtractor.extract(view, leftAnnotation, rightAnnotation);
 
     for (Feature feature : features) {

@@ -78,23 +78,44 @@ public class TimeMLUtil {
     eventAttributes.add(new NamePair("eid", "id"));
     eventAttributes.add(new NamePair("eiid", "eventInstanceID"));
     eventAttributes.add(new NamePair("class", "eventClass"));
-    for (String name : new String[] { "stem", "pos", "tense", "aspect", "cardinality", "polarity",
-        "modality", "signalID" }) {
+    for (String name : new String[] {
+        "stem",
+        "pos",
+        "tense",
+        "aspect",
+        "cardinality",
+        "polarity",
+        "modality",
+        "signalID" }) {
       eventAttributes.add(new NamePair(name, name));
     }
 
     timeAttributes.add(new NamePair("tid", "id"));
     timeAttributes.add(new NamePair("type", "timeType"));
-    for (String name : new String[] { "beginPoint", "endPoint", "quant", "freq",
-        "functionInDocument", "temporalFunction", "value", "valueFromFunction", "mod",
+    for (String name : new String[] {
+        "beginPoint",
+        "endPoint",
+        "quant",
+        "freq",
+        "functionInDocument",
+        "temporalFunction",
+        "value",
+        "valueFromFunction",
+        "mod",
         "anchorTimeID" }) {
       timeAttributes.add(new NamePair(name, name));
     }
 
     tlinkAttributes.add(new NamePair("lid", "id"));
     tlinkAttributes.add(new NamePair("relType", "relationType"));
-    for (String name : new String[] { "eventInstanceID", "eventID", "timeID",
-        "relatedToEventInstance", "relatedToEvent", "relatedToTime", "signalID" }) {
+    for (String name : new String[] {
+        "eventInstanceID",
+        "eventID",
+        "timeID",
+        "relatedToEventInstance",
+        "relatedToEvent",
+        "relatedToTime",
+        "signalID" }) {
       tlinkAttributes.add(new NamePair(name, name));
     }
 

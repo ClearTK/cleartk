@@ -54,7 +54,7 @@ import org.cleartk.classifier.util.featurevector.SparseFeatureVector;
 public class FitSigmoid {
 
   public static Sigmoid fit(File svmlightModelFile, File trainingDataFile)
-          throws ConvergenceFailure, IOException, CleartkException {
+      throws ConvergenceFailure, IOException, CleartkException {
     SVMlightModel model = SVMlightModel.fromFile(svmlightModelFile);
 
     BufferedReader r = new BufferedReader(new FileReader(trainingDataFile));

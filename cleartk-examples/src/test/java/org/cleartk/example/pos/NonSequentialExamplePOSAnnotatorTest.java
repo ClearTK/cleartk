@@ -63,54 +63,68 @@ public class NonSequentialExamplePOSAnnotatorTest extends ExamplesTestBase {
   @Test
   public void testLibsvm() throws Exception {
     String libsvmDirectoryName = outputDirectory + "/libsvm";
-    AnalysisEngineDescription dataWriter = CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
-            NonSequentialExamplePOSAnnotator.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-            DefaultMultiClassLIBSVMDataWriterFactory.class, libsvmDirectoryName);
+    AnalysisEngineDescription dataWriter = CleartkAnnotatorDescriptionFactory
+        .createCleartkAnnotator(
+            NonSequentialExamplePOSAnnotator.class,
+            ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+            DefaultMultiClassLIBSVMDataWriterFactory.class,
+            libsvmDirectoryName);
     testClassifier(dataWriter, libsvmDirectoryName, "-t", "0");
 
     String firstLine = FileUtil.loadListOfStrings(new File(libsvmDirectoryName
-            + "/2008_Sichuan_earthquake.txt.pos"))[0].trim();
+        + "/2008_Sichuan_earthquake.txt.pos"))[0].trim();
     assertTrue(firstLine
-            .startsWith("2008/NN Sichuan/NN earthquake/NN From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/IN The/DT 2008/NN Sichuan/NN earthquake/NN occurred/VBN at/IN 14:28/NN :/NN 01.42/NN CST/NN "));
+        .startsWith("2008/NN Sichuan/NN earthquake/NN From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/IN The/DT 2008/NN Sichuan/NN earthquake/NN occurred/VBN at/IN 14:28/NN :/NN 01.42/NN CST/NN "));
   }
 
   @Test
   public void testMaxent() throws Exception {
     String maxentDirectoryName = outputDirectoryName + "/maxent";
-    AnalysisEngineDescription dataWriter = CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
-            NonSequentialExamplePOSAnnotator.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-            DefaultMaxentDataWriterFactory.class, maxentDirectoryName);
+    AnalysisEngineDescription dataWriter = CleartkAnnotatorDescriptionFactory
+        .createCleartkAnnotator(
+            NonSequentialExamplePOSAnnotator.class,
+            ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+            DefaultMaxentDataWriterFactory.class,
+            maxentDirectoryName);
     testClassifier(dataWriter, maxentDirectoryName);
 
     String firstLine = FileUtil.loadListOfStrings(new File(maxentDirectoryName
-            + "/2008_Sichuan_earthquake.txt.pos"))[0].trim();
+        + "/2008_Sichuan_earthquake.txt.pos"))[0].trim();
     assertEquals(
-            "2008/PRP Sichuan/MD earthquake/NNS From/IN Wikipedia/NNS ,/, the/DT free/NN encyclopedia/IN The/DT 2008/NN_SPLIT Sichuan/IN earthquake/CC occurred/VBN at/IN 14:28/JJ :/RB 01.42/JJ CST/NN (/-LRB- 06:28/NN :/NNP 01.42/JJ UTC/NN )/-RRB- on/IN 12/CD May/NN 2008/RB ,/, with/IN its/PRP$ epicenter/VBZ in/IN Wenchuan/JJ County/NN (/-LRB- Chinese/NN :/NNP ?/NN ?/NN ?/.",
-            firstLine);
+        "2008/PRP Sichuan/MD earthquake/NNS From/IN Wikipedia/NNS ,/, the/DT free/NN encyclopedia/IN The/DT 2008/NN_SPLIT Sichuan/IN earthquake/CC occurred/VBN at/IN 14:28/JJ :/RB 01.42/JJ CST/NN (/-LRB- 06:28/NN :/NNP 01.42/JJ UTC/NN )/-RRB- on/IN 12/CD May/NN 2008/RB ,/, with/IN its/PRP$ epicenter/VBZ in/IN Wenchuan/JJ County/NN (/-LRB- Chinese/NN :/NNP ?/NN ?/NN ?/.",
+        firstLine);
 
   }
 
   @Test
   public void testSVMLIGHT() throws Exception {
     String svmlightDirectoryName = outputDirectoryName + "/svmlight";
-    AnalysisEngineDescription dataWriter = CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
-            NonSequentialExamplePOSAnnotator.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-            DefaultOVASVMlightDataWriterFactory.class, svmlightDirectoryName);
+    AnalysisEngineDescription dataWriter = CleartkAnnotatorDescriptionFactory
+        .createCleartkAnnotator(
+            NonSequentialExamplePOSAnnotator.class,
+            ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+            DefaultOVASVMlightDataWriterFactory.class,
+            svmlightDirectoryName);
     testClassifier(dataWriter, svmlightDirectoryName);
 
     String firstLine = FileUtil.loadListOfStrings(new File(svmlightDirectoryName
-            + "/2008_Sichuan_earthquake.txt.pos"))[0].trim();
+        + "/2008_Sichuan_earthquake.txt.pos"))[0].trim();
     assertTrue(firstLine
-            .startsWith("2008/NN Sichuan/NNP earthquake/NN From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/IN The/DT 2008/NN Sichuan/NN earthquake/NN occurred/VBN at/IN 14:28/JJ :/NN 01.42/NN CST/NN (/-LRB- 06:28/NN :/NN 01.42/NN UTC/NN )/-RRB- on/IN 12/CD May/MD 2008/NN ,/, with/IN its/NNS epicenter/NN in/IN Wenchuan/JJ County/NN"));
+        .startsWith("2008/NN Sichuan/NNP earthquake/NN From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/IN The/DT 2008/NN Sichuan/NN earthquake/NN occurred/VBN at/IN 14:28/JJ :/NN 01.42/NN CST/NN (/-LRB- 06:28/NN :/NN 01.42/NN UTC/NN )/-RRB- on/IN 12/CD May/MD 2008/NN ,/, with/IN its/NNS epicenter/NN in/IN Wenchuan/JJ County/NN"));
   }
 
-  private void testClassifier(AnalysisEngineDescription dataWriter, String outDirectoryName,
-          String... trainingArgs) throws Exception {
-    SimplePipeline.runPipeline(FilesCollectionReader.getCollectionReaderWithView(
+  private void testClassifier(
+      AnalysisEngineDescription dataWriter,
+      String outDirectoryName,
+      String... trainingArgs) throws Exception {
+    SimplePipeline.runPipeline(
+        FilesCollectionReader.getCollectionReaderWithView(
             ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-            "src/test/resources/data/treebank/11597317.tree", TreebankConstants.TREEBANK_VIEW),
-            TreebankGoldAnnotator.getDescriptionPOSTagsOnly(), DefaultSnowballStemmer
-                    .getDescription("English"), dataWriter);
+            "src/test/resources/data/treebank/11597317.tree",
+            TreebankConstants.TREEBANK_VIEW),
+        TreebankGoldAnnotator.getDescriptionPOSTagsOnly(),
+        DefaultSnowballStemmer.getDescription("English"),
+        dataWriter);
 
     String[] args;
     if (trainingArgs != null && trainingArgs.length > 0) {
@@ -125,18 +139,25 @@ public class NonSequentialExamplePOSAnnotatorTest extends ExamplesTestBase {
     org.cleartk.classifier.jar.Train.main(args);
     hider.restoreOutput();
 
-    AnalysisEngineDescription taggerDescription = CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
-            NonSequentialExamplePOSAnnotator.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+    AnalysisEngineDescription taggerDescription = CleartkAnnotatorDescriptionFactory
+        .createCleartkAnnotator(
+            NonSequentialExamplePOSAnnotator.class,
+            ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
             outDirectoryName + "/model.jar");
 
-    SimplePipeline.runPipeline(FilesCollectionReader.getCollectionReader(
+    SimplePipeline.runPipeline(
+        FilesCollectionReader.getCollectionReader(
             ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-            "src/test/resources/data/2008_Sichuan_earthquake.txt"), BreakIteratorAnnotatorFactory
-            .createSentenceAnnotator(Locale.US), TokenAnnotator.getDescription(),
-            DefaultSnowballStemmer.getDescription("English"), taggerDescription,
-            AnalysisEngineFactory.createPrimitiveDescription(ExamplePOSPlainTextWriter.class,
-                    ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-                    ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME, outDirectoryName));
+            "src/test/resources/data/2008_Sichuan_earthquake.txt"),
+        BreakIteratorAnnotatorFactory.createSentenceAnnotator(Locale.US),
+        TokenAnnotator.getDescription(),
+        DefaultSnowballStemmer.getDescription("English"),
+        taggerDescription,
+        AnalysisEngineFactory.createPrimitiveDescription(
+            ExamplePOSPlainTextWriter.class,
+            ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+            ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME,
+            outDirectoryName));
 
   }
 }

@@ -66,8 +66,10 @@ public class DefaultOutcomeFeatureExtractorTest {
     assertNull(rie);
 
     context = UimaContextFactory.createUimaContext(
-            DefaultOutcomeFeatureExtractor.PARAM_MOST_RECENT_OUTCOME, new Integer(3),
-            DefaultOutcomeFeatureExtractor.PARAM_LEAST_RECENT_OUTCOME, new Integer(1));
+        DefaultOutcomeFeatureExtractor.PARAM_MOST_RECENT_OUTCOME,
+        new Integer(3),
+        DefaultOutcomeFeatureExtractor.PARAM_LEAST_RECENT_OUTCOME,
+        new Integer(1));
     rie = null;
     try {
       ofe = new DefaultOutcomeFeatureExtractor();
@@ -78,7 +80,8 @@ public class DefaultOutcomeFeatureExtractorTest {
     assertNotNull(rie);
 
     context = UimaContextFactory.createUimaContext(
-            DefaultOutcomeFeatureExtractor.PARAM_MOST_RECENT_OUTCOME, new Integer(0));
+        DefaultOutcomeFeatureExtractor.PARAM_MOST_RECENT_OUTCOME,
+        new Integer(0));
     rie = null;
     try {
       ofe = new DefaultOutcomeFeatureExtractor();
@@ -96,7 +99,7 @@ public class DefaultOutcomeFeatureExtractorTest {
     ofe.initialize(context);
 
     List<Feature> features = ofe
-            .extractFeatures(Arrays.asList(new Object[] { "A", "B", "C", "D" }));
+        .extractFeatures(Arrays.asList(new Object[] { "A", "B", "C", "D" }));
     assertEquals(5, features.size());
     Set<String> featureNames = new HashSet<String>();
     for (Feature feature : features) {
@@ -122,10 +125,14 @@ public class DefaultOutcomeFeatureExtractorTest {
     assertEquals(0, features.size());
 
     context = UimaContextFactory.createUimaContext(
-            DefaultOutcomeFeatureExtractor.PARAM_MOST_RECENT_OUTCOME, 2,
-            DefaultOutcomeFeatureExtractor.PARAM_LEAST_RECENT_OUTCOME, 3,
-            DefaultOutcomeFeatureExtractor.PARAM_USE4GRAM, true,
-            DefaultOutcomeFeatureExtractor.PARAM_USE_BIGRAM, false);
+        DefaultOutcomeFeatureExtractor.PARAM_MOST_RECENT_OUTCOME,
+        2,
+        DefaultOutcomeFeatureExtractor.PARAM_LEAST_RECENT_OUTCOME,
+        3,
+        DefaultOutcomeFeatureExtractor.PARAM_USE4GRAM,
+        true,
+        DefaultOutcomeFeatureExtractor.PARAM_USE_BIGRAM,
+        false);
     ofe = new DefaultOutcomeFeatureExtractor();
     ofe.initialize(context);
 

@@ -258,20 +258,27 @@ public class TokenizerAndTokenAnnotatorTest extends TokenTestBase {
 
   @Test
   public void testDescriptor() throws UIMAException, IOException {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TokenAnnotator.class,
-            typeSystemDescription);
-    assertEquals(PennTreebankTokenizer.class.getName(),
-            engine.getConfigParameterValue(TokenAnnotator.PARAM_TOKENIZER_NAME));
-    assertEquals(Token.class.getName(),
-            engine.getConfigParameterValue(TokenAnnotator.PARAM_TOKEN_TYPE_NAME));
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+        TokenAnnotator.class,
+        typeSystemDescription);
+    assertEquals(
+        PennTreebankTokenizer.class.getName(),
+        engine.getConfigParameterValue(TokenAnnotator.PARAM_TOKENIZER_NAME));
+    assertEquals(
+        Token.class.getName(),
+        engine.getConfigParameterValue(TokenAnnotator.PARAM_TOKEN_TYPE_NAME));
     engine.collectionProcessComplete();
   }
 
   @Test
   public void ticket176() throws ResourceInitializationException, AnalysisEngineProcessException {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TokenAnnotator.class,
-            typeSystemDescription, TokenAnnotator.PARAM_TOKEN_TYPE_NAME, Subtoken.class.getName(),
-            TokenAnnotator.PARAM_TOKENIZER_NAME, Subtokenizer.class.getName());
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+        TokenAnnotator.class,
+        typeSystemDescription,
+        TokenAnnotator.PARAM_TOKEN_TYPE_NAME,
+        Subtoken.class.getName(),
+        TokenAnnotator.PARAM_TOKENIZER_NAME,
+        Subtokenizer.class.getName());
     jCas.setDocumentText("AA;BB-CC   DD!@#$EE(FF)GGG \tH,.");
     engine.process(jCas);
 

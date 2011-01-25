@@ -44,8 +44,10 @@ import org.cleartk.util.AnnotationRetrieval;
  */
 public class NGramExtractor implements SimpleFeatureExtractor {
 
-  public NGramExtractor(int n, Class<? extends Annotation> annotationClass,
-          SimpleFeatureExtractor subExtractor) {
+  public NGramExtractor(
+      int n,
+      Class<? extends Annotation> annotationClass,
+      SimpleFeatureExtractor subExtractor) {
     this.n = n;
     this.subExtractor = subExtractor;
     this.annotationClass = annotationClass;
@@ -88,8 +90,10 @@ public class NGramExtractor implements SimpleFeatureExtractor {
         nameBuffer.append(name);
       }
 
-      String name = String.format("Ngram(%s,%s)", this.annotationClass.getSimpleName(),
-              nameBuffer.toString());
+      String name = String.format(
+          "Ngram(%s,%s)",
+          this.annotationClass.getSimpleName(),
+          nameBuffer.toString());
 
       // create value
       StringBuffer valueBuffer = new StringBuffer();

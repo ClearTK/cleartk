@@ -48,8 +48,14 @@ public class FeatureTest {
     assertEquals("qwerty_asdf", feature2.getName());
     assertEquals(1, feature2.getValue());
 
-    Instance<String> instance = InstanceFactory.createInstance("A", "feature1", 1, "feature1", 1,
-            "feature1", 2);
+    Instance<String> instance = InstanceFactory.createInstance(
+        "A",
+        "feature1",
+        1,
+        "feature1",
+        1,
+        "feature1",
+        2);
     Feature feature = instance.getFeatures().get(0);
     assertEquals("Feature(<feature1>, <1>)", feature.toString());
     assertEquals(-420503769, feature.hashCode());

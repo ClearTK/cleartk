@@ -61,14 +61,30 @@ public class WindowExtractorTest extends DefaultTestBase {
     // TODO think about what the behavior should be if window annotation
     // boundary does not fall at boundary
     // of featureAnnotation
-    WindowExtractor leftEx = new WindowExtractor(Token.class, new SpannedTextExtractor(),
-            WindowFeature.ORIENTATION_LEFT, 0, 3);
-    WindowExtractor rightEx = new WindowExtractor(Token.class, new SpannedTextExtractor(),
-            WindowFeature.ORIENTATION_RIGHT, 0, 3);
-    WindowExtractor middleEx = new WindowExtractor(Token.class, new SpannedTextExtractor(),
-            WindowFeature.ORIENTATION_MIDDLE, 0, 3);
-    WindowExtractor middleRevEx = new WindowExtractor(Token.class, new SpannedTextExtractor(),
-            WindowFeature.ORIENTATION_MIDDLE_REVERSE, 0, 3);
+    WindowExtractor leftEx = new WindowExtractor(
+        Token.class,
+        new SpannedTextExtractor(),
+        WindowFeature.ORIENTATION_LEFT,
+        0,
+        3);
+    WindowExtractor rightEx = new WindowExtractor(
+        Token.class,
+        new SpannedTextExtractor(),
+        WindowFeature.ORIENTATION_RIGHT,
+        0,
+        3);
+    WindowExtractor middleEx = new WindowExtractor(
+        Token.class,
+        new SpannedTextExtractor(),
+        WindowFeature.ORIENTATION_MIDDLE,
+        0,
+        3);
+    WindowExtractor middleRevEx = new WindowExtractor(
+        Token.class,
+        new SpannedTextExtractor(),
+        WindowFeature.ORIENTATION_MIDDLE_REVERSE,
+        0,
+        3);
 
     tokenBuilder.buildTokens(jCas, "because the island was only");
     Annotation focusAnnotation = JCasUtil.selectByIndex(jCas, Token.class, 2);
@@ -97,15 +113,15 @@ public class WindowExtractorTest extends DefaultTestBase {
 
     jCas.reset();
     tokenBuilder
-            .buildTokens(
-                    jCas,
-                    "the side towards Illinois .\n"
-                            + "The cavern was as big as two or three rooms bunched together , and Jim could stand up straight in it .\n"
-                            + "It was cool in there .");
+        .buildTokens(
+            jCas,
+            "the side towards Illinois .\n"
+                + "The cavern was as big as two or three rooms bunched together , and Jim could stand up straight in it .\n"
+                + "It was cool in there .");
     focusAnnotation = JCasUtil.selectByIndex(jCas, Sentence.class, 1);
     assertEquals(
-            "The cavern was as big as two or three rooms bunched together , and Jim could stand up straight in it .",
-            focusAnnotation.getCoveredText());
+        "The cavern was as big as two or three rooms bunched together , and Jim could stand up straight in it .",
+        focusAnnotation.getCoveredText());
     startAnnotation = leftEx.getStartAnnotation(jCas, focusAnnotation);
     assertEquals(".", startAnnotation.getCoveredText());
     startAnnotation = rightEx.getStartAnnotation(jCas, focusAnnotation);
@@ -145,10 +161,18 @@ public class WindowExtractorTest extends DefaultTestBase {
 
   @Test
   public void testExtractLeft() throws IOException, UIMAException, CleartkException {
-    WindowExtractor leftEx03 = new WindowExtractor(Token.class, new SpannedTextExtractor(),
-            WindowFeature.ORIENTATION_LEFT, 0, 3);
-    WindowExtractor leftEx24 = new WindowExtractor(Token.class, new SpannedTextExtractor(),
-            WindowFeature.ORIENTATION_LEFT, 2, 4);
+    WindowExtractor leftEx03 = new WindowExtractor(
+        Token.class,
+        new SpannedTextExtractor(),
+        WindowFeature.ORIENTATION_LEFT,
+        0,
+        3);
+    WindowExtractor leftEx24 = new WindowExtractor(
+        Token.class,
+        new SpannedTextExtractor(),
+        WindowFeature.ORIENTATION_LEFT,
+        2,
+        4);
 
     // feature extraction on "island" in "...because the island was only..."
     tokenBuilder.buildTokens(jCas, "it , because the island was only");
@@ -250,17 +274,24 @@ public class WindowExtractorTest extends DefaultTestBase {
 
   @Test
   public void testExtractRight() throws IOException, UIMAException, CleartkException {
-    WindowExtractor rightEx03 = new WindowExtractor(Token.class, new SpannedTextExtractor(),
-            WindowFeature.ORIENTATION_RIGHT, 0, 3);
-    WindowExtractor rightEx1030 = new WindowExtractor(Token.class, new SpannedTextExtractor(),
-            WindowFeature.ORIENTATION_RIGHT, 10, 30);
+    WindowExtractor rightEx03 = new WindowExtractor(
+        Token.class,
+        new SpannedTextExtractor(),
+        WindowFeature.ORIENTATION_RIGHT,
+        0,
+        3);
+    WindowExtractor rightEx1030 = new WindowExtractor(
+        Token.class,
+        new SpannedTextExtractor(),
+        WindowFeature.ORIENTATION_RIGHT,
+        10,
+        30);
 
     // feature extraction on "island" in "...because the island was only..."
-    tokenBuilder
-            .buildTokens(
-                    jCas,
-                    "because the island was only three miles long and a quarter of a mile wide .\n"
-                            + "This place was a tolerable long, steep hill or ridge about forty foot high .");
+    tokenBuilder.buildTokens(
+        jCas,
+        "because the island was only three miles long and a quarter of a mile wide .\n"
+            + "This place was a tolerable long, steep hill or ridge about forty foot high .");
     Token token = JCasUtil.selectByIndex(jCas, Token.class, 2);
     assertEquals("island", token.getCoveredText());
     List<Feature> features = rightEx03.extract(jCas, token, Sentence.class);
@@ -356,14 +387,20 @@ public class WindowExtractorTest extends DefaultTestBase {
     spanningToken.setBegin(JCasUtil.selectByIndex(jCas, Token.class, 1).getBegin());
     spanningToken.setEnd(JCasUtil.selectByIndex(jCas, Token.class, 3).getEnd());
     assertEquals("the island was", spanningToken.getCoveredText());
-    WindowExtractor windowExtractor = new WindowExtractor(Token.class, new SpannedTextExtractor(),
-            WindowFeature.ORIENTATION_MIDDLE, 0, 2);
+    WindowExtractor windowExtractor = new WindowExtractor(
+        Token.class,
+        new SpannedTextExtractor(),
+        WindowFeature.ORIENTATION_MIDDLE,
+        0,
+        2);
 
     Annotation startAnnotation = windowExtractor.getStartAnnotation(jCas, spanningToken);
     assertEquals("the", startAnnotation.getCoveredText());
 
-    Sentence sentence = AnnotationRetrieval.getContainingAnnotation(jCas, spanningToken,
-            Sentence.class);
+    Sentence sentence = AnnotationRetrieval.getContainingAnnotation(
+        jCas,
+        spanningToken,
+        Sentence.class);
     List<Feature> features = windowExtractor.extract(jCas, spanningToken, sentence);
     assertEquals(2, features.size());
     WindowFeature feature = (WindowFeature) features.get(0);
@@ -395,7 +432,8 @@ public class WindowExtractorTest extends DefaultTestBase {
     tokenL4.setPos("F");
 
     WindowExtractor leftPosExtractor = new WindowExtractor(Token.class, new TypePathExtractor(
-            Token.class, "pos"), WindowFeature.ORIENTATION_LEFT, 0, 5);
+        Token.class,
+        "pos"), WindowFeature.ORIENTATION_LEFT, 0, 5);
 
     List<Feature> features = leftPosExtractor.extract(jCas, token, Sentence.class);
     assertEquals("B", features.get(0).getValue().toString());
@@ -430,8 +468,12 @@ public class WindowExtractorTest extends DefaultTestBase {
 
     SpannedTextExtractor wordExtractor = new SpannedTextExtractor();
 
-    WindowExtractor windowExtractor = new WindowExtractor(Token.class, wordExtractor,
-            WindowFeature.ORIENTATION_RIGHT, 0, 2);
+    WindowExtractor windowExtractor = new WindowExtractor(
+        Token.class,
+        wordExtractor,
+        WindowFeature.ORIENTATION_RIGHT,
+        0,
+        2);
     List<Feature> features = windowExtractor.extract(jCas, header, Sentence.class);
     assertEquals(2, features.size());
     assertEquals("Window_R0", features.get(0).getName());
@@ -446,8 +488,12 @@ public class WindowExtractorTest extends DefaultTestBase {
     assertEquals("Window_R1", features.get(1).getName());
     assertEquals("8", features.get(1).getValue().toString());
 
-    windowExtractor = new WindowExtractor(Token.class, wordExtractor,
-            WindowFeature.ORIENTATION_LEFT, 0, 2);
+    windowExtractor = new WindowExtractor(
+        Token.class,
+        wordExtractor,
+        WindowFeature.ORIENTATION_LEFT,
+        0,
+        2);
     features = windowExtractor.extract(jCas, header, Sentence.class);
 
     assertEquals("Window_L0", features.get(0).getName());

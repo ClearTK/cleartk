@@ -47,23 +47,22 @@ import org.uimafit.factory.initializable.Initializable;
  */
 
 public abstract class JarDataWriterFactory<FEATURES_OUT_TYPE, OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE>
-        implements DataWriterFactory<OUTCOME_IN_TYPE>, Initializable {
+    implements DataWriterFactory<OUTCOME_IN_TYPE>, Initializable {
 
   public static final String PARAM_OUTPUT_DIRECTORY = ConfigurationParameterFactory
-          .createConfigurationParameterName(JarDataWriterFactory.class, "outputDirectory");
+      .createConfigurationParameterName(JarDataWriterFactory.class, "outputDirectory");
 
   @ConfigurationParameter(mandatory = false, description = "provides the name of the directory where the "
-          + "training data will be written.  if you do not set this "
-          + "parameter, then you must call setOutputDirectory directly.")
+      + "training data will be written.  if you do not set this "
+      + "parameter, then you must call setOutputDirectory directly.")
   protected File outputDirectory;
 
   public static final String PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM = ConfigurationParameterFactory
-          .createConfigurationParameterName(JarDataWriterFactory.class,
-                  "loadEncodersFromFileSystem");
+      .createConfigurationParameterName(JarDataWriterFactory.class, "loadEncodersFromFileSystem");
 
   @ConfigurationParameter(mandatory = false, description = "when true indicates that the FeaturesEncoder and "
-          + "OutcomeEncoder should be loaded from the file system "
-          + "instead of being created by the DataWriterFactory", defaultValue = "false")
+      + "OutcomeEncoder should be loaded from the file system "
+      + "instead of being created by the DataWriterFactory", defaultValue = "false")
   private boolean loadEncodersFromFileSystem = false;
 
   public void initialize(UimaContext context) throws ResourceInitializationException {
@@ -73,23 +72,39 @@ public abstract class JarDataWriterFactory<FEATURES_OUT_TYPE, OUTCOME_IN_TYPE, O
         File encoderFile = new File(outputDirectory, FeaturesEncoder_ImplBase.ENCODERS_FILE_NAME);
 
         if (!encoderFile.exists()) {
-          throw new RuntimeException(String.format("No encoder found in directory %s",
-                  outputDirectory));
+          throw new RuntimeException(String.format(
+              "No encoder found in directory %s",
+              outputDirectory));
         }
 
         ObjectInputStream is = new ObjectInputStream(new FileInputStream(encoderFile));
 
         // read the FeaturesEncoder and check the types
         FeaturesEncoder<?> untypedFeaturesEncoder = FeaturesEncoder.class.cast(is.readObject());
-        ReflectionUtil.checkTypeParameterIsAssignable(FeaturesEncoder.class, "FEATURES_OUT_TYPE",
-                untypedFeaturesEncoder, JarDataWriterFactory.class, "FEATURES_OUT_TYPE", this);
+        ReflectionUtil.checkTypeParameterIsAssignable(
+            FeaturesEncoder.class,
+            "FEATURES_OUT_TYPE",
+            untypedFeaturesEncoder,
+            JarDataWriterFactory.class,
+            "FEATURES_OUT_TYPE",
+            this);
 
         // read the OutcomeEncoder and check the types
         OutcomeEncoder<?, ?> untypedOutcomeEncoder = OutcomeEncoder.class.cast(is.readObject());
-        ReflectionUtil.checkTypeParameterIsAssignable(OutcomeEncoder.class, "OUTCOME_IN_TYPE",
-                untypedOutcomeEncoder, JarDataWriterFactory.class, "OUTCOME_IN_TYPE", this);
-        ReflectionUtil.checkTypeParameterIsAssignable(OutcomeEncoder.class, "OUTCOME_OUT_TYPE",
-                untypedOutcomeEncoder, JarDataWriterFactory.class, "OUTCOME_OUT_TYPE", this);
+        ReflectionUtil.checkTypeParameterIsAssignable(
+            OutcomeEncoder.class,
+            "OUTCOME_IN_TYPE",
+            untypedOutcomeEncoder,
+            JarDataWriterFactory.class,
+            "OUTCOME_IN_TYPE",
+            this);
+        ReflectionUtil.checkTypeParameterIsAssignable(
+            OutcomeEncoder.class,
+            "OUTCOME_OUT_TYPE",
+            untypedOutcomeEncoder,
+            JarDataWriterFactory.class,
+            "OUTCOME_OUT_TYPE",
+            this);
 
         // assign the encoders to the instance variables
         this.featuresEncoder = ReflectionUtil.uncheckedCast(untypedFeaturesEncoder);
@@ -102,7 +117,7 @@ public abstract class JarDataWriterFactory<FEATURES_OUT_TYPE, OUTCOME_IN_TYPE, O
   }
 
   protected boolean setEncodersFromFileSystem(
-          JarDataWriter<OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE, FEATURES_OUT_TYPE> dataWriter) {
+      JarDataWriter<OUTCOME_IN_TYPE, OUTCOME_OUT_TYPE, FEATURES_OUT_TYPE> dataWriter) {
     if (this.featuresEncoder != null && this.outcomeEncoder != null) {
       dataWriter.setFeaturesEncoder(this.featuresEncoder);
       dataWriter.setOutcomeEncoder(this.outcomeEncoder);

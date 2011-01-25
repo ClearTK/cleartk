@@ -101,7 +101,7 @@ public class OVASVMlightClassifier extends JarClassifier<String, Integer, Featur
 
   @Override
   public List<ScoredOutcome<String>> score(List<Feature> features, int maxResults)
-          throws CleartkException {
+      throws CleartkException {
     FeatureVector featureVector = this.featuresEncoder.encodeAll(features);
 
     List<ScoredOutcome<String>> results = new ArrayList<ScoredOutcome<String>>();

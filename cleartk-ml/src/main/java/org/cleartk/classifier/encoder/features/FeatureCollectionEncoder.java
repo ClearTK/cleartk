@@ -44,15 +44,18 @@ public class FeatureCollectionEncoder implements FeatureEncoder<NameNumber> {
 
   private static final long serialVersionUID = -7840242678514710238L;
 
-  public FeatureCollectionEncoder(String identifier, FeatureEncoder<NameNumber> subEncoder,
-          NameNumberNormalizer normalizer) {
+  public FeatureCollectionEncoder(
+      String identifier,
+      FeatureEncoder<NameNumber> subEncoder,
+      NameNumberNormalizer normalizer) {
     this.identifier = identifier;
     this.normalizer = normalizer;
     this.subEncoder = subEncoder;
   }
 
-  public FeatureCollectionEncoder(FeatureEncoder<NameNumber> subEncoder,
-          NameNumberNormalizer normalizer) {
+  public FeatureCollectionEncoder(
+      FeatureEncoder<NameNumber> subEncoder,
+      NameNumberNormalizer normalizer) {
     this(null, subEncoder, normalizer);
   }
 

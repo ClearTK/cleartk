@@ -89,19 +89,30 @@ public class ExamplePOSAnnotator extends CleartkSequentialAnnotator<String> {
 
     // add the feature extractor for the word itself
     // also add proliferators which create new features from the word text
-    this.tokenFeatureExtractors.add(new ProliferatingExtractor(wordExtractor,
-            new LowerCaseProliferator(), new CapitalTypeProliferator(),
-            new NumericTypeProliferator(), new CharacterNGramProliferator(fromRight, 0, 2),
-            new CharacterNGramProliferator(fromRight, 0, 3)));
+    this.tokenFeatureExtractors.add(new ProliferatingExtractor(
+        wordExtractor,
+        new LowerCaseProliferator(),
+        new CapitalTypeProliferator(),
+        new NumericTypeProliferator(),
+        new CharacterNGramProliferator(fromRight, 0, 2),
+        new CharacterNGramProliferator(fromRight, 0, 3)));
 
     // add the feature extractors for the stem and part of speech
     this.tokenFeatureExtractors.add(stemExtractor);
 
     // add 2 stems to the left and right
-    this.tokenSentenceFeatureExtractors.add(new WindowExtractor(Token.class, stemExtractor,
-            WindowFeature.ORIENTATION_LEFT, 0, 2));
-    this.tokenSentenceFeatureExtractors.add(new WindowExtractor(Token.class, stemExtractor,
-            WindowFeature.ORIENTATION_RIGHT, 0, 2));
+    this.tokenSentenceFeatureExtractors.add(new WindowExtractor(
+        Token.class,
+        stemExtractor,
+        WindowFeature.ORIENTATION_LEFT,
+        0,
+        2));
+    this.tokenSentenceFeatureExtractors.add(new WindowExtractor(
+        Token.class,
+        stemExtractor,
+        WindowFeature.ORIENTATION_RIGHT,
+        0,
+        2));
 
   }
 
@@ -155,18 +166,24 @@ public class ExamplePOSAnnotator extends CleartkSequentialAnnotator<String> {
   }
 
   public static AnalysisEngineDescription getClassifierDescription(String modelFileName)
-          throws ResourceInitializationException {
-    return CleartkAnnotatorDescriptionFactory.createCleartkSequentialAnnotator(ExamplePOSAnnotator.class,
-            ExampleComponents.TYPE_SYSTEM_DESCRIPTION, modelFileName);
+      throws ResourceInitializationException {
+    return CleartkAnnotatorDescriptionFactory.createCleartkSequentialAnnotator(
+        ExamplePOSAnnotator.class,
+        ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+        modelFileName);
   }
 
   public static AnalysisEngineDescription getWriterDescription(String outputDirectory)
-          throws ResourceInitializationException {
+      throws ResourceInitializationException {
     AnalysisEngineDescription aed = CleartkAnnotatorDescriptionFactory.createViterbiAnnotator(
-            ExamplePOSAnnotator.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-            DefaultMaxentDataWriterFactory.class, outputDirectory);
-    ConfigurationParameterFactory.addConfigurationParameter(aed,
-            DefaultMaxentDataWriterFactory.PARAM_COMPRESS, true);
+        ExamplePOSAnnotator.class,
+        ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+        DefaultMaxentDataWriterFactory.class,
+        outputDirectory);
+    ConfigurationParameterFactory.addConfigurationParameter(
+        aed,
+        DefaultMaxentDataWriterFactory.PARAM_COMPRESS,
+        true);
     return aed;
   }
 }

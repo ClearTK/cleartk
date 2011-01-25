@@ -52,7 +52,7 @@ public class InstanceListCreatorTest {
   public void testMain() throws IOException {
     InstanceListCreator instanceListCreator = new InstanceListCreator();
     InstanceList instanceList = instanceListCreator.createInstanceList(new File(
-            "src/test/resources/data/mallet/instance-list-creator.txt"));
+        "src/test/resources/data/mallet/instance-list-creator.txt"));
 
     assertEquals(100, instanceList.size());
 
@@ -66,13 +66,17 @@ public class InstanceListCreatorTest {
     assertEquals(1.0, ((FeatureVector) instance.getData()).value("SpannedText_In"), 0.001);
     assertEquals(2.0, ((FeatureVector) instance.getData()).value("LowerCase_SpannedText_in"), 0.001);
     assertEquals(
-            0.12345,
-            ((FeatureVector) instance.getData()).value("CapitalType_SpannedText_INITIAL_UPPERCASE"),
-            0.001);
-    assertEquals(10000.0,
-            ((FeatureVector) instance.getData()).value("NGram_Left_0_2_2_SpannedText_In"), 0.001);
-    assertEquals(12345.6789,
-            ((FeatureVector) instance.getData()).value("NGram_Right_0_2_2_SpannedText_In"), 0.001);
+        0.12345,
+        ((FeatureVector) instance.getData()).value("CapitalType_SpannedText_INITIAL_UPPERCASE"),
+        0.001);
+    assertEquals(
+        10000.0,
+        ((FeatureVector) instance.getData()).value("NGram_Left_0_2_2_SpannedText_In"),
+        0.001);
+    assertEquals(
+        12345.6789,
+        ((FeatureVector) instance.getData()).value("NGram_Right_0_2_2_SpannedText_In"),
+        0.001);
     assertEquals(1.0, ((FeatureVector) instance.getData()).value("TypePath_Stem_in"), 0.001);
 
     instance = instanceList.get(1);
@@ -82,14 +86,18 @@ public class InstanceListCreatorTest {
     instance = instanceList.get(98);
     assertEquals("NN", instance.getTarget().toString());
     assertEquals(32.0, ((FeatureVector) instance.getData()).value("SpannedText_growth"), 0.001);
-    assertEquals(33.0, ((FeatureVector) instance.getData()).value("LowerCase_SpannedText_growth"),
-            0.001);
+    assertEquals(
+        33.0,
+        ((FeatureVector) instance.getData()).value("LowerCase_SpannedText_growth"),
+        0.001);
 
     instance = instanceList.get(99);
     assertEquals("IN", instance.getTarget().toString());
     assertEquals(42.0, ((FeatureVector) instance.getData()).value("SpannedText_for"), 0.001);
-    assertEquals(43.0, ((FeatureVector) instance.getData()).value("LowerCase_SpannedText_for"),
-            0.001);
+    assertEquals(
+        43.0,
+        ((FeatureVector) instance.getData()).value("LowerCase_SpannedText_for"),
+        0.001);
 
     Alphabet targetAlphabet = instanceList.getTargetAlphabet();
     index = targetAlphabet.lookupIndex("IN", false);

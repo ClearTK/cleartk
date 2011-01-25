@@ -53,7 +53,7 @@ public class TFIDFEncoder implements FeatureEncoder<NameNumber> {
   private static final long serialVersionUID = -5280514188425612793L;
 
   public TFIDFEncoder(String identifier, File idfMapFile, NameNumberNormalizer normalizer)
-          throws IOException {
+      throws IOException {
     this.identifier = identifier;
     this.normalizer = normalizer;
 

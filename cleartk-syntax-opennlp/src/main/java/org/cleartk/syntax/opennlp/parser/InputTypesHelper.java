@@ -51,6 +51,4 @@ public abstract class InputTypesHelper<TOKEN_TYPE extends Annotation, SENTENCE_T
 
   public abstract void setPosTag(TOKEN_TYPE token, String tag);
 
-  
-
 }

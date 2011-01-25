@@ -48,7 +48,7 @@ public class SVMlightModel {
   }
 
   public static SVMlightModel fromInputStream(InputStream modelStream) throws IOException,
-          CleartkException {
+      CleartkException {
     SVMlightModel model = new SVMlightModel();
 
     SVMlightReader in = new SVMlightReader(modelStream);

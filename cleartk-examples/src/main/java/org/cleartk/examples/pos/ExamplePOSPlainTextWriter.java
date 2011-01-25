@@ -51,7 +51,7 @@ public class ExamplePOSPlainTextWriter extends JCasAnnotator_ImplBase {
   public static final String DEFAULT_OUTPUT_DIRECTORY = "src/main/resources/data/pos";
 
   public static final String PARAM_OUTPUT_DIRECTORY_NAME = ConfigurationParameterFactory
-          .createConfigurationParameterName(ExamplePOSPlainTextWriter.class, "outputDirectoryName");
+      .createConfigurationParameterName(ExamplePOSPlainTextWriter.class, "outputDirectoryName");
 
   @ConfigurationParameter(mandatory = true, defaultValue = DEFAULT_OUTPUT_DIRECTORY, description = "provides the directory where the token/pos text files will be written")
   private String outputDirectoryName;

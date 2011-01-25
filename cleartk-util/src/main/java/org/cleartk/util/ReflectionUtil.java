@@ -88,8 +88,10 @@ public class ReflectionUtil {
     }
   }
 
-  private static Map<String, Type> getTypeArguments(Class<?> genericType, Type type,
-          Map<String, Type> typeMap) {
+  private static Map<String, Type> getTypeArguments(
+      Class<?> genericType,
+      Type type,
+      Map<String, Type> typeMap) {
     if (type instanceof ParameterizedType) {
       return getTypeArguments(genericType, (ParameterizedType) type, typeMap);
     } else if (type instanceof Class<?>) {
@@ -99,8 +101,10 @@ public class ReflectionUtil {
     }
   }
 
-  private static Map<String, Type> getTypeArguments(Class<?> genericType, Class<?> classType,
-          Map<String, Type> typeMap) {
+  private static Map<String, Type> getTypeArguments(
+      Class<?> genericType,
+      Class<?> classType,
+      Map<String, Type> typeMap) {
     if (genericType.isInterface()) {
       for (Type interfaceType : classType.getGenericInterfaces()) {
         Map<String, Type> result = getTypeArguments(genericType, interfaceType, typeMap);
@@ -117,8 +121,10 @@ public class ReflectionUtil {
     return null;
   }
 
-  private static Map<String, Type> getTypeArguments(Class<?> genericType,
-          ParameterizedType paramType, Map<String, Type> typeMap) {
+  private static Map<String, Type> getTypeArguments(
+      Class<?> genericType,
+      ParameterizedType paramType,
+      Map<String, Type> typeMap) {
     Class<?> rawType = (Class<?>) paramType.getRawType();
     if (rawType == genericType) {
       // found it!
@@ -175,15 +181,23 @@ public class ReflectionUtil {
    *          The source object
    * @throws ResourceInitializationException
    */
-  public static <T, U> void checkTypeParameterIsAssignable(Class<T> paramDefiningClass1,
-          String paramName1, T object1, Class<U> paramDefiningClass2, String paramName2, U object2)
-          throws ResourceInitializationException {
+  public static <T, U> void checkTypeParameterIsAssignable(
+      Class<T> paramDefiningClass1,
+      String paramName1,
+      T object1,
+      Class<U> paramDefiningClass2,
+      String paramName2,
+      U object2) throws ResourceInitializationException {
 
     // get the type arguments from the objects
-    java.lang.reflect.Type type1 = ReflectionUtil.getTypeArgument(paramDefiningClass1, paramName1,
-            object1);
-    java.lang.reflect.Type type2 = ReflectionUtil.getTypeArgument(paramDefiningClass2, paramName2,
-            object2);
+    java.lang.reflect.Type type1 = ReflectionUtil.getTypeArgument(
+        paramDefiningClass1,
+        paramName1,
+        object1);
+    java.lang.reflect.Type type2 = ReflectionUtil.getTypeArgument(
+        paramDefiningClass2,
+        paramName2,
+        object2);
 
     // both arguments missing is compatible
     if (type1 == null && type2 == null) {
@@ -193,9 +207,13 @@ public class ReflectionUtil {
     // if the second type is not assignable to the first, raise an exception
     if (type1 == null || type2 == null || !ReflectionUtil.isAssignableFrom(type1, type2)) {
       throw new ResourceInitializationException(new RuntimeException(String.format(
-              "%s with %s %s is incompatible with %s with %s %s", object1.getClass()
-                      .getSimpleName(), paramName1, type1, object2.getClass().getSimpleName(),
-              paramName2, type2)));
+          "%s with %s %s is incompatible with %s with %s %s",
+          object1.getClass().getSimpleName(),
+          paramName1,
+          type1,
+          object2.getClass().getSimpleName(),
+          paramName2,
+          type2)));
     }
   }
 

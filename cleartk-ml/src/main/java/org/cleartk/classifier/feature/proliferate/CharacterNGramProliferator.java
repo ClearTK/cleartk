@@ -76,18 +76,28 @@ public class CharacterNGramProliferator extends FeatureProliferator {
    * @param lowerCase
    *          if true than the n-gram used as the feature value will be lowercased.
    */
-  public CharacterNGramProliferator(String featureName, int orientation, int start, int end,
-          int minimumValueLength, boolean lowerCase) {
-    super(Feature.createName("NGram", orientation == RIGHT_TO_LEFT ? "Right" : "Left",
-            String.valueOf(start), String.valueOf(end), String.valueOf(minimumValueLength),
-            lowerCase ? "lower" : null, featureName));
+  public CharacterNGramProliferator(
+      String featureName,
+      int orientation,
+      int start,
+      int end,
+      int minimumValueLength,
+      boolean lowerCase) {
+    super(Feature.createName(
+        "NGram",
+        orientation == RIGHT_TO_LEFT ? "Right" : "Left",
+        String.valueOf(start),
+        String.valueOf(end),
+        String.valueOf(minimumValueLength),
+        lowerCase ? "lower" : null,
+        featureName));
     if (orientation != RIGHT_TO_LEFT && orientation != LEFT_TO_RIGHT) {
       throw new IllegalArgumentException(
-              "orientation must be one of CharacterNGramProliferator.RIGHT_TO_LEFT or CharacterNGramProliferator.LEFT_TO_RIGHT ");
+          "orientation must be one of CharacterNGramProliferator.RIGHT_TO_LEFT or CharacterNGramProliferator.LEFT_TO_RIGHT ");
     }
     if (minimumValueLength < end) {
       throw new IllegalArgumentException(
-              "minimumValueLength must be greater than or equal to the parameter end.");
+          "minimumValueLength must be greater than or equal to the parameter end.");
     }
     this.orientation = orientation;
     this.start = start;
@@ -96,8 +106,12 @@ public class CharacterNGramProliferator extends FeatureProliferator {
     this.lowerCase = lowerCase;
   }
 
-  public CharacterNGramProliferator(int orientation, int start, int end, int minimumValueLength,
-          boolean lowerCase) {
+  public CharacterNGramProliferator(
+      int orientation,
+      int start,
+      int end,
+      int minimumValueLength,
+      boolean lowerCase) {
     this(null, orientation, start, end, minimumValueLength, lowerCase);
   }
 

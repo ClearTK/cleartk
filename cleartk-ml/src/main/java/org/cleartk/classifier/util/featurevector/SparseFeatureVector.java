@@ -69,8 +69,10 @@ public class SparseFeatureVector extends FeatureVector {
 
   public void set(int index, double value) throws CleartkException {
     if (Double.isInfinite(value) || Double.isNaN(value))
-      throw new CleartkException(String.format("trying to set illegal value in %d:%.7f", index,
-              value));
+      throw new CleartkException(String.format(
+          "trying to set illegal value in %d:%.7f",
+          index,
+          value));
 
     if (value != 0.0)
       this.values.put(index, value);

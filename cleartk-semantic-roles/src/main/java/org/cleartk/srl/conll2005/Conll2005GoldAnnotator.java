@@ -67,7 +67,7 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
   private Boolean hasVerbSenses;
 
   public static final String PARAM_HAS_VERB_SENSES = ConfigurationParameterFactory
-          .createConfigurationParameterName(Conll2005GoldAnnotator.class, "hasVerbSenses");
+      .createConfigurationParameterName(Conll2005GoldAnnotator.class, "hasVerbSenses");
 
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
@@ -108,8 +108,10 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
 
       for (CoNLL2005Line line : conll2005Lines.toArray(new CoNLL2005Line[0])) {
         if (line.argumentSegments.length != 0 && line.argumentSegments.length != numberOfPredicates) {
-          throw new RuntimeException(String.format("expected 0 or %d segments, found %d",
-                  numberOfPredicates, line.argumentSegments.length));
+          throw new RuntimeException(String.format(
+              "expected 0 or %d segments, found %d",
+              numberOfPredicates,
+              line.argumentSegments.length));
         }
 
         if (docText.length() > 0 && line.word.length() > 0) {
@@ -142,8 +144,11 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
         }
 
         if (!line.targetVerb.equals("-")) {
-          predicateParsers[currentPredicate].feedInfo(line.word, line.targetVerb,
-                  line.verbSenseTag, token);
+          predicateParsers[currentPredicate].feedInfo(
+              line.word,
+              line.targetVerb,
+              line.verbSenseTag,
+              token);
           currentPredicate += 1;
         }
       }
@@ -270,7 +275,7 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
             break;
           default:
             throw new IOException("unexpected character in string: " + String.valueOf(c) + " ("
-                    + String.valueOf((int) c) + ")");
+                + String.valueOf((int) c) + ")");
         }
       }
     }
@@ -351,8 +356,10 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
             int[] span = AnnotationUtil.getAnnotationsExtent(this.argumentTokens);
             SemanticArgument arg = new SemanticArgument(jCas, span[0], span[1]);
             arg.addToIndexes();
-            Annotation relation = AnnotationRetrieval.getMatchingAnnotation(jCas, arg,
-                    TreebankNode.class);
+            Annotation relation = AnnotationRetrieval.getMatchingAnnotation(
+                jCas,
+                arg,
+                TreebankNode.class);
             if (relation == null) {
               Chunk chunk = new Chunk(jCas, span[0], span[1]);
               relation = chunk;
@@ -370,7 +377,7 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
             break;
           default:
             throw new IOException("unexpected character in string: " + String.valueOf(c) + " ("
-                    + String.valueOf((int) c) + ")");
+                + String.valueOf((int) c) + ")");
         }
       }
     }
@@ -379,8 +386,10 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
       if (this.predicateToken == null) {
         throw new RuntimeException("no predicateToken found yet");
       }
-      Predicate predicate = new Predicate(jCas, this.predicateToken.getBegin(),
-              this.predicateToken.getEnd());
+      Predicate predicate = new Predicate(
+          jCas,
+          this.predicateToken.getBegin(),
+          this.predicateToken.getEnd());
       predicate.setAnnotation(this.predicateToken);
       predicate.setArguments(UIMAUtil.toFSArray(jCas, this.arguments));
       predicate.setBaseForm(this.baseForm);
@@ -432,8 +441,10 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
           case ')':
             this.currentAnnotation.end = token.getEnd();
 
-            NamedEntityMention nem = new NamedEntityMention(view, this.currentAnnotation.begin,
-                    this.currentAnnotation.end);
+            NamedEntityMention nem = new NamedEntityMention(
+                view,
+                this.currentAnnotation.begin,
+                this.currentAnnotation.end);
             Annotation relation = null;
             try {
               relation = AnnotationRetrieval.getMatchingAnnotation(view, nem, TreebankNode.class);
@@ -449,7 +460,7 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
             break;
           default:
             throw new IOException("unexpected character in string: " + String.valueOf(c) + " ("
-                    + String.valueOf((int) c) + ")");
+                + String.valueOf((int) c) + ")");
         }
       }
     }

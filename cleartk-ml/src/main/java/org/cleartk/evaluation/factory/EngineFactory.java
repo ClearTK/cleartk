@@ -56,7 +56,7 @@ public interface EngineFactory {
    * @throws ResourceInitializationException
    */
   public AnalysisEngineDescription createDataWritingAggregate(File modelDirectory)
-          throws ResourceInitializationException;
+      throws ResourceInitializationException;
 
   /**
    * This method trains a model(s) using the contents of the model directory. If your task involves
@@ -89,6 +89,6 @@ public interface EngineFactory {
    */
 
   public AnalysisEngineDescription createClassifierAggregate(File modelDirectory)
-          throws ResourceInitializationException;
+      throws ResourceInitializationException;
 
 }

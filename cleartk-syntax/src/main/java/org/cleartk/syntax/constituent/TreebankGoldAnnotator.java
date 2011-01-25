@@ -63,25 +63,27 @@ import org.uimafit.factory.ConfigurationParameterFactory;
 public class TreebankGoldAnnotator extends JCasAnnotator_ImplBase {
 
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(TreebankGoldAnnotator.class,
-            SyntaxComponents.TYPE_SYSTEM_DESCRIPTION);
+    return AnalysisEngineFactory.createPrimitiveDescription(
+        TreebankGoldAnnotator.class,
+        SyntaxComponents.TYPE_SYSTEM_DESCRIPTION);
   }
 
   public static AnalysisEngineDescription getDescriptionPOSTagsOnly()
-          throws ResourceInitializationException {
-    return AnalysisEngineFactory
-            .createPrimitiveDescription(TreebankGoldAnnotator.class,
-                    SyntaxComponents.TYPE_SYSTEM_DESCRIPTION,
-                    TreebankGoldAnnotator.PARAM_POST_TREES, false);
+      throws ResourceInitializationException {
+    return AnalysisEngineFactory.createPrimitiveDescription(
+        TreebankGoldAnnotator.class,
+        SyntaxComponents.TYPE_SYSTEM_DESCRIPTION,
+        TreebankGoldAnnotator.PARAM_POST_TREES,
+        false);
   }
 
   public static final String PARAM_POST_TREES = ConfigurationParameterFactory
-          .createConfigurationParameterName(TreebankGoldAnnotator.class, "postTrees");
+      .createConfigurationParameterName(TreebankGoldAnnotator.class, "postTrees");
 
   private static final String POST_TREES_DESCRIPTION = "specifies whether or not to post trees (i.e. annotations of type TreebankNode) to the CAS.  "
-          + "Sometimes treebank data is used only for the part-of-speech data that it contains.  "
-          + "For such uses, it is not necessary to post the entire constituent parse to the CAS. "
-          + "Instead, this parameter can be set to false which results in  only the part-of-speech data being added.";
+      + "Sometimes treebank data is used only for the part-of-speech data that it contains.  "
+      + "For such uses, it is not necessary to post the entire constituent parse to the CAS. "
+      + "Instead, this parameter can be set to false which results in  only the part-of-speech data being added.";
 
   @ConfigurationParameter(description = POST_TREES_DESCRIPTION, mandatory = false, defaultValue = "true")
   private boolean postTrees;
@@ -112,13 +114,16 @@ public class TreebankGoldAnnotator extends JCasAnnotator_ImplBase {
 
     for (org.cleartk.syntax.constituent.util.TopTreebankNode topNode : topNodes) {
       TopTreebankNode uimaNode = org.cleartk.syntax.constituent.util.TreebankNodeUtility.convert(
-              topNode, docView, postTrees);
+          topNode,
+          docView,
+          postTrees);
       Sentence uimaSentence = new Sentence(docView, uimaNode.getBegin(), uimaNode.getEnd());
       uimaSentence.addToIndexes();
 
       int tokenIndex = 0;
-      for (TerminalTreebankNode terminal : UIMAUtil.toList(uimaNode.getTerminals(),
-              TerminalTreebankNode.class)) {
+      for (TerminalTreebankNode terminal : UIMAUtil.toList(
+          uimaNode.getTerminals(),
+          TerminalTreebankNode.class)) {
         if (terminal.getBegin() != terminal.getEnd()) {
           terminal.setTokenIndex(tokenIndex++);
           Token uimaToken = new Token(docView, terminal.getBegin(), terminal.getEnd());

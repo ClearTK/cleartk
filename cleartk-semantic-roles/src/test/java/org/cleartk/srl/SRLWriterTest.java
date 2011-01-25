@@ -57,8 +57,11 @@ public class SRLWriterTest extends SrlTestBase {
     } catch (ResourceInitializationException e) {
     }
 
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(SRLWriter.class,
-            typeSystemDescription, SRLWriter.PARAM_OUTPUT_FILE, outputFile.getPath());
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+        SRLWriter.class,
+        typeSystemDescription,
+        SRLWriter.PARAM_OUTPUT_FILE,
+        outputFile.getPath());
 
     engine.collectionProcessComplete();
   }

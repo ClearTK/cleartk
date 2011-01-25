@@ -46,7 +46,7 @@ import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
  * All rights reserved.
  */
 public abstract class JarSequentialDataWriter<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE, FEATURES_TYPE>
-        implements SequentialDataWriter<INPUTOUTCOME_TYPE> {
+    implements SequentialDataWriter<INPUTOUTCOME_TYPE> {
 
   public JarSequentialDataWriter(File outputDirectory) {
     // Initialize the output directory and list of output writers
@@ -86,7 +86,7 @@ public abstract class JarSequentialDataWriter<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_T
 
       // serialize the features encoder
       ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(
-              getFile(FeaturesEncoder_ImplBase.ENCODERS_FILE_NAME)));
+          getFile(FeaturesEncoder_ImplBase.ENCODERS_FILE_NAME)));
       os.writeObject(this.featuresEncoder);
       os.writeObject(this.outcomeEncoder);
       os.close();
@@ -94,7 +94,7 @@ public abstract class JarSequentialDataWriter<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_T
       // set manifest values
       try {
         Class<? extends ClassifierBuilder<? extends INPUTOUTCOME_TYPE>> classifierBuilderClass = this
-                .getDefaultClassifierBuilderClass();
+            .getDefaultClassifierBuilderClass();
         this.classifierManifest.setClassifierBuilder(classifierBuilderClass.newInstance());
       } catch (InstantiationException e) {
         throw new RuntimeException(e);

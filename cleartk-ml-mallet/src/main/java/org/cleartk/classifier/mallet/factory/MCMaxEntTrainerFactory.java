@@ -45,7 +45,7 @@ public class MCMaxEntTrainerFactory implements ClassifierTrainerFactory<MCMaxEnt
     if (args != null) {
       if (args.length % 2 != 0) {
         throw new IllegalArgumentException("each argument must be supplied with a value:  "
-                + getUsageMessage());
+            + getUsageMessage());
       }
       for (int i = 0; i < args.length; i += 2) {
         String optionName = args[i];
@@ -61,8 +61,9 @@ public class MCMaxEntTrainerFactory implements ClassifierTrainerFactory<MCMaxEnt
         else if (optionName.equals("--numIterations"))
           trainer.setNumIterations(Integer.parseInt(optionValue));
         else
-          throw new IllegalArgumentException(String.format("the argument %1$s is invalid.  ",
-                  optionName) + getUsageMessage());
+          throw new IllegalArgumentException(String.format(
+              "the argument %1$s is invalid.  ",
+              optionName) + getUsageMessage());
       }
     }
     return trainer;
@@ -70,11 +71,11 @@ public class MCMaxEntTrainerFactory implements ClassifierTrainerFactory<MCMaxEnt
 
   public String getUsageMessage() {
     return "The arguments for MCMaxEntTrainerFactory.createTrainer(String...args) should be either empty or include any of the following:"
-            + "\n--useHyperbolicPrior boolean"
-            + "\n--gaussianPriorVariance double"
-            + "\n--hyperbolicPriorSlope double"
-            + "\n--hyperbolicPriorSharpness double"
-            + "\n--numIterations int";
+        + "\n--useHyperbolicPrior boolean"
+        + "\n--gaussianPriorVariance double"
+        + "\n--hyperbolicPriorSlope double"
+        + "\n--hyperbolicPriorSharpness double"
+        + "\n--numIterations int";
   }
 
 }

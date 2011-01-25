@@ -115,16 +115,20 @@ public class MalletClassifierTest extends DefaultTestBase {
 
   @Test
   public void runTest1() throws Exception {
-    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(TestAnnotator.class,
-            typeSystemDescription, JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
-            outputDirectoryName, CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-            DefaultMalletDataWriterFactory.class.getName());
+    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
+        TestAnnotator.class,
+        typeSystemDescription,
+        JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        outputDirectoryName,
+        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        DefaultMalletDataWriterFactory.class.getName());
 
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
 
-    BufferedReader reader = new BufferedReader(new FileReader(new File(outputDirectoryName,
-            MalletDataWriter.TRAINING_DATA_FILE_NAME)));
+    BufferedReader reader = new BufferedReader(new FileReader(new File(
+        outputDirectoryName,
+        MalletDataWriter.TRAINING_DATA_FILE_NAME)));
     reader.readLine();
     reader.close();
 
@@ -166,9 +170,11 @@ public class MalletClassifierTest extends DefaultTestBase {
     FeatureVector fv = (FeatureVector) malletInstance.getData();
     assertEquals(95.0, fv.value("hello"), 0.001);
 
-    AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createPrimitive(TestAnnotator.class,
-            typeSystemDescription, JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
-            outputDirectoryName + "/model.jar");
+    AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createPrimitive(
+        TestAnnotator.class,
+        typeSystemDescription,
+        JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
+        outputDirectoryName + "/model.jar");
     jCas.reset();
     classifierAnnotator.process(jCas);
     classifierAnnotator.collectionProcessComplete();

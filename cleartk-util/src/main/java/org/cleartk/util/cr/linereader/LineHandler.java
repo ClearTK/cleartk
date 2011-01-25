@@ -44,5 +44,5 @@ public interface LineHandler extends Initializable {
   public void initialize(UimaContext context) throws ResourceInitializationException;
 
   public void handleLine(JCas jCas, File rootFile, File file, String line) throws IOException,
-          CollectionException;
+      CollectionException;
 }

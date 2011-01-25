@@ -59,7 +59,7 @@ public class LIBLINEARModel {
   }
 
   public static LIBLINEARModel fromInputStream(InputStream modelStream) throws IOException,
-          CleartkException {
+      CleartkException {
     LIBLINEARModel model = new LIBLINEARModel();
 
     BufferedReader in = new BufferedReader(new InputStreamReader(modelStream));
@@ -184,11 +184,13 @@ public class LIBLINEARModel {
 
     if (numberOfClasses == 2) {
       if (values[0] > 0) {
-        return Arrays.asList(new ScoredPrediction(classifiers[0].label, values[0]),
-                new ScoredPrediction(fallbackLabel, -values[0]));
+        return Arrays.asList(
+            new ScoredPrediction(classifiers[0].label, values[0]),
+            new ScoredPrediction(fallbackLabel, -values[0]));
       } else {
         return Arrays.asList(new ScoredPrediction(fallbackLabel, -values[0]), new ScoredPrediction(
-                classifiers[0].label, values[0]));
+            classifiers[0].label,
+            values[0]));
       }
     } else {
       List<ScoredPrediction> returnValues = new ArrayList<ScoredPrediction>();

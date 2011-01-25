@@ -42,6 +42,6 @@ public interface BlockWriter<BLOCK_TYPE extends Annotation> {
   public void initialize(UimaContext context) throws ResourceInitializationException;
 
   public String writeBlock(JCas jCas, BLOCK_TYPE blockAnnotation)
-          throws AnalysisEngineProcessException;
+      throws AnalysisEngineProcessException;
 
 }

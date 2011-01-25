@@ -46,10 +46,10 @@ import org.uimafit.factory.initializable.Initializable;
  */
 
 public class JarClassifierFactory<OUTCOME_TYPE> implements ClassifierFactory<OUTCOME_TYPE>,
-        SequentialClassifierFactory<OUTCOME_TYPE>, Initializable {
+    SequentialClassifierFactory<OUTCOME_TYPE>, Initializable {
 
   public static final String PARAM_CLASSIFIER_JAR_PATH = ConfigurationParameterFactory
-          .createConfigurationParameterName(JarClassifierFactory.class, "classifierJarPath");
+      .createConfigurationParameterName(JarClassifierFactory.class, "classifierJarPath");
 
   @ConfigurationParameter(mandatory = true, description = "provides the path to the jar file that should be used to instantiate the classifier.")
   private String classifierJarPath;
@@ -63,7 +63,7 @@ public class JarClassifierFactory<OUTCOME_TYPE> implements ClassifierFactory<OUT
   }
 
   public SequentialClassifier<OUTCOME_TYPE> createSequentialClassifier() throws IOException,
-          CleartkException {
+      CleartkException {
     return createSequentialClassifierFromJar(classifierJarPath);
   }
 
@@ -86,13 +86,15 @@ public class JarClassifierFactory<OUTCOME_TYPE> implements ClassifierFactory<OUT
   }
 
   public SequentialClassifier<OUTCOME_TYPE> createSequentialClassifierFromJar(String jarFileName)
-          throws IOException {
-    return ReflectionUtil.uncheckedCast(createClassifierFromJar(jarFileName,
-            SequentialClassifier.class));
+      throws IOException {
+    return ReflectionUtil.uncheckedCast(createClassifierFromJar(
+        jarFileName,
+        SequentialClassifier.class));
   }
 
-  public static <CLASSIFIER_TYPE> CLASSIFIER_TYPE createClassifierFromJar(String jarFileName,
-          Class<CLASSIFIER_TYPE> cls) throws IOException {
+  public static <CLASSIFIER_TYPE> CLASSIFIER_TYPE createClassifierFromJar(
+      String jarFileName,
+      Class<CLASSIFIER_TYPE> cls) throws IOException {
     // get the jar file manifest
     JarFile modelFile = new JarFile(jarFileName);
     ClassifierManifest manifest = new ClassifierManifest(modelFile);

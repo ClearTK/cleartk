@@ -59,8 +59,12 @@ public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
 
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
-    SimpleFeatureExtractor subExtractor = new TypePathExtractor(Token.class, "stem", false, false,
-            true);
+    SimpleFeatureExtractor subExtractor = new TypePathExtractor(
+        Token.class,
+        "stem",
+        false,
+        false,
+        true);
     extractor = new CountsExtractor(new BagExtractor(Token.class, subExtractor));
   }
 
@@ -91,10 +95,12 @@ public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
   private CountsExtractor extractor;
 
   public static AnalysisEngineDescription getClassifierDescription(File classifierJarFile)
-          throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(DocumentClassificationAnnotator.class,
-            ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-            JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, classifierJarFile.toString());
+      throws ResourceInitializationException {
+    return AnalysisEngineFactory.createPrimitiveDescription(
+        DocumentClassificationAnnotator.class,
+        ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+        JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
+        classifierJarFile.toString());
   }
 
 }

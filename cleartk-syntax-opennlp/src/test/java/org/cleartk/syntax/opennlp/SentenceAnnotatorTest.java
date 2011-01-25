@@ -76,8 +76,10 @@ public class SentenceAnnotatorTest extends TokenTestBase {
   @Test
   public void testSentenceSegmentor() throws UIMAException, IOException {
 
-    AnalysisEngineFactory.process(jCas, sentenceSegmenter,
-            "src/test/resources/data/sentence/youthful-precocity.txt");
+    AnalysisEngineFactory.process(
+        jCas,
+        sentenceSegmenter,
+        "src/test/resources/data/sentence/youthful-precocity.txt");
 
     Sentence sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 0);
     String sentenceText = "The precocity of some youths is surprising.";
@@ -107,8 +109,10 @@ public class SentenceAnnotatorTest extends TokenTestBase {
 
   @Test
   public void test1() throws UIMAException, IOException {
-    AnalysisEngineFactory.process(jCas, sentenceSegmenter,
-            "src/test/resources/data/sentence/test1.txt");
+    AnalysisEngineFactory.process(
+        jCas,
+        sentenceSegmenter,
+        "src/test/resources/data/sentence/test1.txt");
 
     Sentence sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 0);
     assertEquals("aaaa aaaa aaaa aaaa", sentence.getCoveredText());
@@ -125,24 +129,30 @@ public class SentenceAnnotatorTest extends TokenTestBase {
 
   @Test
   public void test2() throws UIMAException, IOException {
-    AnalysisEngineFactory.process(jCas, sentenceSegmenter,
-            "src/test/resources/data/sentence/test2.txt");
+    AnalysisEngineFactory.process(
+        jCas,
+        sentenceSegmenter,
+        "src/test/resources/data/sentence/test2.txt");
     Sentence sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 0);
     assertEquals("I don't understand this.", sentence.getCoveredText());
   }
 
   @Test
   public void test3() throws UIMAException, IOException {
-    AnalysisEngineFactory.process(jCas, sentenceSegmenter,
-            "src/test/resources/data/sentence/test3.txt");
+    AnalysisEngineFactory.process(
+        jCas,
+        sentenceSegmenter,
+        "src/test/resources/data/sentence/test3.txt");
     Sentence sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 0);
     assertEquals("test", sentence.getCoveredText());
   }
 
   @Test
   public void test5() throws UIMAException, IOException {
-    AnalysisEngineFactory.process(jCas, sentenceSegmenter,
-            "src/test/resources/data/sentence/test5.txt");
+    AnalysisEngineFactory.process(
+        jCas,
+        sentenceSegmenter,
+        "src/test/resources/data/sentence/test5.txt");
     Sentence sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 0);
     assertEquals("a", sentence.getCoveredText());
     sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 1);
@@ -156,8 +166,10 @@ public class SentenceAnnotatorTest extends TokenTestBase {
 
   @Test
   public void test6() throws UIMAException, IOException {
-    AnalysisEngineFactory.process(jCas, sentenceSegmenter,
-            "src/test/resources/data/sentence/test6.txt");
+    AnalysisEngineFactory.process(
+        jCas,
+        sentenceSegmenter,
+        "src/test/resources/data/sentence/test6.txt");
     Sentence sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 0);
     assertEquals("a", sentence.getCoveredText());
     sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 1);
@@ -171,18 +183,31 @@ public class SentenceAnnotatorTest extends TokenTestBase {
 
   @Test
   public void test7() throws UIMAException, IOException {
-    AnalysisEngineFactory.process(jCas, sentenceSegmenter,
-            "src/test/resources/data/sentence/test7.txt");
+    AnalysisEngineFactory.process(
+        jCas,
+        sentenceSegmenter,
+        "src/test/resources/data/sentence/test7.txt");
     Sentence sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 0);
     assertEquals("It was a Wednesday morning.", sentence.getCoveredText());
 
   }
 
   public static void main(String[] args) {
-    CLI.main(new String[] { "ParserTrainer", "-cutoff", "1", "-lang", "en", "-encoding", "UTF-8",
-        "-parserType", "CHUNKING", "-head-rules",
-        "src/test/resources/data/parser/craft_test/en_head_rules", "-data",
-        "src/test/resources/data/parser/craft_test/11597317.tree", "-model",
+    CLI.main(new String[] {
+        "ParserTrainer",
+        "-cutoff",
+        "1",
+        "-lang",
+        "en",
+        "-encoding",
+        "UTF-8",
+        "-parserType",
+        "CHUNKING",
+        "-head-rules",
+        "src/test/resources/data/parser/craft_test/en_head_rules",
+        "-data",
+        "src/test/resources/data/parser/craft_test/11597317.tree",
+        "-model",
         "src/test/resources/data/parser/craft_test/craft_test.bin" });
 
   }

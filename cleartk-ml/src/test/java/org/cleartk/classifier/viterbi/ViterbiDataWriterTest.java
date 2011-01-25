@@ -102,55 +102,71 @@ public class ViterbiDataWriterTest extends DefaultTestBase {
   public void testConsumeAll() throws Exception {
 
     AnalysisEngine engine = AnalysisEngineFactory
-            .createPrimitive(
-                    TestAnnotator.class,
-                    typeSystemDescription,
-                    ViterbiDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
-                    outputDirectoryName,
-                    CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME,
-                    ViterbiDataWriterFactory.class.getName(),
-                    ViterbiDataWriterFactory.PARAM_DELEGATED_DATA_WRITER_FACTORY_CLASS,
-                    DefaultStringTestDataWriterFactory.class.getName(),
-                    ViterbiDataWriterFactory.PARAM_OUTCOME_FEATURE_EXTRACTOR_NAMES,
-                    new String[] { "org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor" });
+        .createPrimitive(
+            TestAnnotator.class,
+            typeSystemDescription,
+            ViterbiDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+            outputDirectoryName,
+            CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME,
+            ViterbiDataWriterFactory.class.getName(),
+            ViterbiDataWriterFactory.PARAM_DELEGATED_DATA_WRITER_FACTORY_CLASS,
+            DefaultStringTestDataWriterFactory.class.getName(),
+            ViterbiDataWriterFactory.PARAM_OUTCOME_FEATURE_EXTRACTOR_NAMES,
+            new String[] { "org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor" });
 
     String text = "Do I really have to come up with some creative text, or can I just write anything?";
-    tokenBuilder.buildTokens(jCas, text,
-            "Do I really have to come up with some creative text , or can I just write anything ?",
-            "D I R H T C U W S C T , O C I J W A ?");
+    tokenBuilder.buildTokens(
+        jCas,
+        text,
+        "Do I really have to come up with some creative text , or can I just write anything ?",
+        "D I R H T C U W S C T , O C I J W A ?");
 
     engine.process(jCas);
     engine.collectionProcessComplete();
 
     String expectedManifest = "Manifest-Version: 1.0\n"
-            + "classifierBuilderClass: org.cleartk.classifier.viterbi.ViterbiClassifi\n"
-            + " erBuilder";
+        + "classifierBuilderClass: org.cleartk.classifier.viterbi.ViterbiClassifi\n" + " erBuilder";
 
     File manifestFile = new File(outputDirectoryName, "MANIFEST.MF");
     String actualManifest = FileUtils.file2String(manifestFile);
     Assert.assertEquals(expectedManifest, actualManifest.replaceAll("\r", "").trim());
 
-    File delegatedOutputDirectory = new File(outputDirectoryName,
-            ViterbiDataWriter.DELEGATED_MODEL_DIRECTORY_NAME);
-    String[] trainingData = FileUtil.loadListOfStrings(new File(delegatedOutputDirectory,
-            "training-data.test"));
+    File delegatedOutputDirectory = new File(
+        outputDirectoryName,
+        ViterbiDataWriter.DELEGATED_MODEL_DIRECTORY_NAME);
+    String[] trainingData = FileUtil.loadListOfStrings(new File(
+        delegatedOutputDirectory,
+        "training-data.test"));
     testFeatures(trainingData[1], "PreviousOutcome_L1_D");
-    testFeatures(trainingData[2], "PreviousOutcome_L1_I", "PreviousOutcome_L2_D",
-            "PreviousOutcomes_L1_2gram_L2R_I_D");
-    testFeatures(trainingData[3], "PreviousOutcome_L1_R", "PreviousOutcome_L2_I",
-            "PreviousOutcome_L3_D", "PreviousOutcomes_L1_2gram_L2R_R_I",
-            "PreviousOutcomes_L1_3gram_L2R_R_I_D");
-    testFeatures(trainingData[4], "PreviousOutcome_L1_H", "PreviousOutcome_L2_R",
-            "PreviousOutcome_L3_I", "PreviousOutcomes_L1_2gram_L2R_H_R",
-            "PreviousOutcomes_L1_3gram_L2R_H_R_I");
+    testFeatures(
+        trainingData[2],
+        "PreviousOutcome_L1_I",
+        "PreviousOutcome_L2_D",
+        "PreviousOutcomes_L1_2gram_L2R_I_D");
+    testFeatures(
+        trainingData[3],
+        "PreviousOutcome_L1_R",
+        "PreviousOutcome_L2_I",
+        "PreviousOutcome_L3_D",
+        "PreviousOutcomes_L1_2gram_L2R_R_I",
+        "PreviousOutcomes_L1_3gram_L2R_R_I_D");
+    testFeatures(
+        trainingData[4],
+        "PreviousOutcome_L1_H",
+        "PreviousOutcome_L2_R",
+        "PreviousOutcome_L3_I",
+        "PreviousOutcomes_L1_2gram_L2R_H_R",
+        "PreviousOutcomes_L1_3gram_L2R_H_R_I");
 
     HideOutput hider = new HideOutput();
     Train.main(outputDirectoryName + "/", "10", "1");
     hider.restoreOutput();
 
-    engine = AnalysisEngineFactory.createPrimitive(TestAnnotator.class, typeSystemDescription,
-            JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, new File(outputDirectoryName,
-                    "model.jar").getPath());
+    engine = AnalysisEngineFactory.createPrimitive(
+        TestAnnotator.class,
+        typeSystemDescription,
+        JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
+        new File(outputDirectoryName, "model.jar").getPath());
 
     engine.process(jCas);
     engine.collectionProcessComplete();

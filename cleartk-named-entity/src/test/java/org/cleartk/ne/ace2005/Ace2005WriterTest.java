@@ -61,9 +61,11 @@ public class Ace2005WriterTest extends NeTestBase {
 
   @Test
   public void testOutputFile() throws Exception {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(Ace2005Writer.class,
-            typeSystemDescription, Ace2005Writer.PARAM_OUTPUT_DIRECTORY_NAME,
-            this.outputDirectory.getPath());
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+        Ace2005Writer.class,
+        typeSystemDescription,
+        Ace2005Writer.PARAM_OUTPUT_DIRECTORY_NAME,
+        this.outputDirectory.getPath());
 
     Ace2005Document document = new Ace2005Document(jCas);
     document.setAceSource("=source=");
@@ -103,8 +105,15 @@ public class Ace2005WriterTest extends NeTestBase {
     boulderEntity.setMentions(0, boulderMention);
     boulderMention.setMentionedEntity(boulderEntity);
 
-    TOP[] items = new TOP[] { document, ucarChunk, northBoulderChunk, boulderChunk, ucarMention,
-        ucarEntity, boulderMention, boulderEntity };
+    TOP[] items = new TOP[] {
+        document,
+        ucarChunk,
+        northBoulderChunk,
+        boulderChunk,
+        ucarMention,
+        ucarEntity,
+        boulderMention,
+        boulderEntity };
     for (TOP item : items) {
       item.addToIndexes();
     }
@@ -114,25 +123,25 @@ public class Ace2005WriterTest extends NeTestBase {
     engine.collectionProcessComplete();
 
     String expectedText = ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-            + "<source_file URI=\"uri.sgm\" SOURCE=\"=source=\" TYPE=\"=type=\">\n"
-            + "  <document DOCID=\"uri\">\n"
-            + "    <entity ID=\"0\" TYPE=\"=ucar-type\" SUBTYPE=\"=ucar-subtype=\" CLASS=\"=ucar-class=\">\n"
-            + "      <entity_mention ID=\"1\" TYPE=\"=ORG=\">\n"
-            + "        <extent>\n"
-            + "          <charseq START=\"0\" END=\"3\">UCAR</charseq>\n"
-            + "        </extent>\n"
-            + "        <head>\n"
-            + "          <charseq START=\"0\" END=\"3\">UCAR</charseq>\n"
-            + "        </head>\n"
-            + "      </entity_mention>\n"
-            + "    </entity>\n"
-            + "    <entity ID=\"2\" TYPE=\"=boulder-type\" SUBTYPE=\"=boulder-subtype=\" CLASS=\"=boulder-class=\">\n"
-            + "      <entity_mention ID=\"3\" TYPE=\"=LOC=\">\n" + "        <extent>\n"
-            + "          <charseq START=\"8\" END=\"20\">North Boulder</charseq>\n"
-            + "        </extent>\n" + "        <head>\n"
-            + "          <charseq START=\"14\" END=\"20\">Boulder</charseq>\n"
-            + "        </head>\n" + "      </entity_mention>\n" + "    </entity>\n"
-            + "  </document>\n" + "</source_file>\n" + "\n");
+        + "<source_file URI=\"uri.sgm\" SOURCE=\"=source=\" TYPE=\"=type=\">\n"
+        + "  <document DOCID=\"uri\">\n"
+        + "    <entity ID=\"0\" TYPE=\"=ucar-type\" SUBTYPE=\"=ucar-subtype=\" CLASS=\"=ucar-class=\">\n"
+        + "      <entity_mention ID=\"1\" TYPE=\"=ORG=\">\n"
+        + "        <extent>\n"
+        + "          <charseq START=\"0\" END=\"3\">UCAR</charseq>\n"
+        + "        </extent>\n"
+        + "        <head>\n"
+        + "          <charseq START=\"0\" END=\"3\">UCAR</charseq>\n"
+        + "        </head>\n"
+        + "      </entity_mention>\n"
+        + "    </entity>\n"
+        + "    <entity ID=\"2\" TYPE=\"=boulder-type\" SUBTYPE=\"=boulder-subtype=\" CLASS=\"=boulder-class=\">\n"
+        + "      <entity_mention ID=\"3\" TYPE=\"=LOC=\">\n" + "        <extent>\n"
+        + "          <charseq START=\"8\" END=\"20\">North Boulder</charseq>\n"
+        + "        </extent>\n" + "        <head>\n"
+        + "          <charseq START=\"14\" END=\"20\">Boulder</charseq>\n" + "        </head>\n"
+        + "      </entity_mention>\n" + "    </entity>\n" + "  </document>\n" + "</source_file>\n"
+        + "\n");
     File outputFile = new File(this.outputDirectory, "uri.cleartk.xml");
     String actualText = FileUtils.file2String(outputFile).replace("\r", "");
     Assert.assertEquals(expectedText, actualText);
@@ -146,9 +155,11 @@ public class Ace2005WriterTest extends NeTestBase {
     } catch (ResourceInitializationException e) {
     }
 
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(Ace2005Writer.class,
-            typeSystemDescription, Ace2005Writer.PARAM_OUTPUT_DIRECTORY_NAME,
-            this.outputDirectory.getPath());
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+        Ace2005Writer.class,
+        typeSystemDescription,
+        Ace2005Writer.PARAM_OUTPUT_DIRECTORY_NAME,
+        this.outputDirectory.getPath());
     Object outDirectory = engine.getConfigParameterValue(Ace2005Writer.PARAM_OUTPUT_DIRECTORY_NAME);
     Assert.assertEquals(this.outputDirectory.getPath(), outDirectory);
 

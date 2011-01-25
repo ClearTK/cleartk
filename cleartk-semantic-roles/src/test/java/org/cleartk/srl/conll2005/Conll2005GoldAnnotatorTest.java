@@ -40,8 +40,11 @@ public class Conll2005GoldAnnotatorTest extends SrlTestBase {
 
   @Test
   public void testDescriptor() throws UIMAException, IOException {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(Conll2005GoldAnnotator.class,
-            typeSystemDescription, Conll2005GoldAnnotator.PARAM_HAS_VERB_SENSES, false);
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+        Conll2005GoldAnnotator.class,
+        typeSystemDescription,
+        Conll2005GoldAnnotator.PARAM_HAS_VERB_SENSES,
+        false);
     engine.collectionProcessComplete();
   }
 }

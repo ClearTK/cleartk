@@ -76,7 +76,7 @@ import org.uimafit.factory.ConfigurationParameterFactory;
 public class PlainTextWriter extends JCasAnnotator_ImplBase {
 
   public static final String PARAM_OUTPUT_DIRECTORY_NAME = ConfigurationParameterFactory
-          .createConfigurationParameterName(PlainTextWriter.class, "outputDirectoryName");
+      .createConfigurationParameterName(PlainTextWriter.class, "outputDirectoryName");
 
   @ConfigurationParameter(mandatory = true, description = "takes a path to directory into which output files will be written.")
   private String outputDirectoryName;

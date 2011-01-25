@@ -111,16 +111,19 @@ public class GrmmClassifierTest extends DefaultTestBase {
   public void runTest1() throws Exception {
 
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
-            Test1Annotator.class, typeSystemDescription,
-            JarSequentialDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
-            CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME,
-            DefaultGrmmDataWriterFactory.class.getName());
+        Test1Annotator.class,
+        typeSystemDescription,
+        JarSequentialDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        outputDirectoryName,
+        CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME,
+        DefaultGrmmDataWriterFactory.class.getName());
 
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
 
-    BufferedReader reader = new BufferedReader(new FileReader(new File(outputDirectoryName,
-            GrmmDataWriter.TRAINING_DATA_FILE_NAME)));
+    BufferedReader reader = new BufferedReader(new FileReader(new File(
+        outputDirectoryName,
+        GrmmDataWriter.TRAINING_DATA_FILE_NAME)));
     reader.readLine();
     reader.close();
 
@@ -144,8 +147,10 @@ public class GrmmClassifierTest extends DefaultTestBase {
 
     String modelJar = outputDirectoryName + "/model.jar";
     AnalysisEngine sequentialClassifierAnnotator = AnalysisEngineFactory.createPrimitive(
-            Test1Annotator.class, typeSystemDescription,
-            JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, modelJar);
+        Test1Annotator.class,
+        typeSystemDescription,
+        JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
+        modelJar);
     jCas.reset();
     sequentialClassifierAnnotator.process(jCas);
     sequentialClassifierAnnotator.collectionProcessComplete();

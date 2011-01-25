@@ -50,12 +50,17 @@ public class PlainTextWriterTest extends DefaultTestBase {
     } catch (ResourceInitializationException e) {
     }
 
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(PlainTextWriter.class,
-            typeSystemDescription, PlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME,
-            this.outputDirectory.getPath());
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+        PlainTextWriter.class,
+        typeSystemDescription,
+        PlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME,
+        this.outputDirectory.getPath());
     String text = "What if we built a large\r\n, wooden badger?";
-    tokenBuilder.buildTokens(jCas, text, "What if we built a large \n, wooden badger ?",
-            "WDT TO PRP VBN DT JJ , JJ NN .");
+    tokenBuilder.buildTokens(
+        jCas,
+        text,
+        "What if we built a large \n, wooden badger ?",
+        "WDT TO PRP VBN DT JJ , JJ NN .");
     ViewURIUtil.setURI(jCas, "identifier");
     engine.process(jCas);
     engine.collectionProcessComplete();
@@ -66,8 +71,11 @@ public class PlainTextWriterTest extends DefaultTestBase {
 
     jCas.reset();
     text = "What if we built a large\n, wooden badger?";
-    tokenBuilder.buildTokens(jCas, text, "What if we built a large \n, wooden badger ?",
-            "WDT TO PRP VBN DT JJ , JJ NN .");
+    tokenBuilder.buildTokens(
+        jCas,
+        text,
+        "What if we built a large \n, wooden badger ?",
+        "WDT TO PRP VBN DT JJ , JJ NN .");
     ViewURIUtil.setURI(jCas, "1234");
     engine.process(jCas);
     engine.collectionProcessComplete();

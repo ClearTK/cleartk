@@ -95,8 +95,8 @@ public class MaxentEval {
     }
 
     if ((model.getOutcome(0).equals("true") || model.getOutcome(0).equals("false"))
-            && (model.getOutcome(1).equals("true") || model.getOutcome(1).equals("false"))
-            && (!model.getOutcome(0).equals(model.getOutcome(1)))) {
+        && (model.getOutcome(1).equals("true") || model.getOutcome(1).equals("false"))
+        && (!model.getOutcome(0).equals(model.getOutcome(1)))) {
       int trueOutcome;
       if (model.getOutcome(0) == "true")
         trueOutcome = 0;
@@ -153,7 +153,7 @@ public class MaxentEval {
   private static void usage() {
     System.err.println("Usage:");
     System.err
-            .println("java [...] org.cleartk.classifier.OpenNLPMaxentEval <model file> <data file>");
+        .println("java [...] org.cleartk.classifier.OpenNLPMaxentEval <model file> <data file>");
     System.err.println();
   }
 

@@ -73,14 +73,23 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
   /**
    * The paths for the files in the input directory.
    */
-  private final String[] paths = new String[] { toURI("1.html"), toURI("/2/2.1.html"),
-      toURI("2/2.2.html"), toURI("3.html"), toURI("4/1/4.1.1.html"), };
-
-  private final String[] pathsSuffix1 = new String[] { toURI("1.html"), toURI("2/2.1.html"),
+  private final String[] paths = new String[] {
+      toURI("1.html"),
+      toURI("/2/2.1.html"),
+      toURI("2/2.2.html"),
+      toURI("3.html"),
       toURI("4/1/4.1.1.html"), };
 
-  private final String[] pathsSuffix2 = new String[] { toURI("1.html"), toURI("2/2.1.html"),
-      toURI("2/2.2.html"), toURI("4/1/4.1.1.html"), };
+  private final String[] pathsSuffix1 = new String[] {
+      toURI("1.html"),
+      toURI("2/2.1.html"),
+      toURI("4/1/4.1.1.html"), };
+
+  private final String[] pathsSuffix2 = new String[] {
+      toURI("1.html"),
+      toURI("2/2.1.html"),
+      toURI("2/2.2.html"),
+      toURI("4/1/4.1.1.html"), };
 
   /**
    * Test that the text loaded into the CAS by the CollectionReader matches the text in the files on
@@ -95,8 +104,12 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
     // create the PlainTextCollectionReader with the HTML input directory
     String languageCode = "en-us";
     CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-            FilesCollectionReader.class, null, FilesCollectionReader.PARAM_ROOT_FILE,
-            this.inputDir, FilesCollectionReader.PARAM_LANGUAGE, languageCode);
+        FilesCollectionReader.class,
+        null,
+        FilesCollectionReader.PARAM_ROOT_FILE,
+        this.inputDir,
+        FilesCollectionReader.PARAM_LANGUAGE,
+        languageCode);
     assertEquals(0, reader.getProgress()[0].getCompleted());
 
     // check that each document in the CAS matches the document on disk
@@ -125,8 +138,12 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
 
       // create the PlainTextCollectionReader with the current view name
       CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-              FilesCollectionReader.class, null, FilesCollectionReader.PARAM_ROOT_FILE,
-              this.inputDir, FilesCollectionReader.PARAM_VIEW_NAME, viewName);
+          FilesCollectionReader.class,
+          null,
+          FilesCollectionReader.PARAM_ROOT_FILE,
+          this.inputDir,
+          FilesCollectionReader.PARAM_VIEW_NAME,
+          viewName);
 
       // check that each document in the JCas views matches the document on disk
       for (JCas jc : new JCasIterable(reader)) {
@@ -149,9 +166,11 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
   public void testFilePaths() throws IOException, UIMAException {
 
     // create the PlainTextCollectionReader with the HTML input directory
-    CollectionReader reader = CollectionReaderFactory
-            .createCollectionReader(FilesCollectionReader.class, null,
-                    FilesCollectionReader.PARAM_ROOT_FILE, this.inputDir);
+    CollectionReader reader = CollectionReaderFactory.createCollectionReader(
+        FilesCollectionReader.class,
+        null,
+        FilesCollectionReader.PARAM_ROOT_FILE,
+        this.inputDir);
 
     // check that each path in the CAS matches a path on disk
     Set<String> pathsSet = new HashSet<String>();
@@ -173,8 +192,12 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
 
     // create the PlainTextCollectionReader with the HTML input directory
     CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-            FilesCollectionReader.class, null, FilesCollectionReader.PARAM_ROOT_FILE,
-            this.inputDir, FilesCollectionReader.PARAM_SUFFIXES, new String[] { "1.html" });
+        FilesCollectionReader.class,
+        null,
+        FilesCollectionReader.PARAM_ROOT_FILE,
+        this.inputDir,
+        FilesCollectionReader.PARAM_SUFFIXES,
+        new String[] { "1.html" });
 
     // check that each path in the CAS matches a path on disk
     Set<String> pathsSet = new HashSet<String>();
@@ -195,9 +218,12 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
 
     // create the PlainTextCollectionReader with the HTML input directory
     CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-            FilesCollectionReader.class, null, FilesCollectionReader.PARAM_ROOT_FILE,
-            this.inputDir, FilesCollectionReader.PARAM_SUFFIXES,
-            new String[] { "1.html", "2.html" });
+        FilesCollectionReader.class,
+        null,
+        FilesCollectionReader.PARAM_ROOT_FILE,
+        this.inputDir,
+        FilesCollectionReader.PARAM_SUFFIXES,
+        new String[] { "1.html", "2.html" });
 
     // check that each path in the CAS matches a path on disk
     Set<String> pathsSet = new HashSet<String>();
@@ -218,9 +244,12 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
 
     // create the PlainTextCollectionReader with the HTML input directory
     CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-            FilesCollectionReader.class, null, FilesCollectionReader.PARAM_ROOT_FILE,
-            this.inputDir, FilesCollectionReader.PARAM_PATTERNS, new String[] { "^.*[.]1[.].*$",
-                "^.*3.*$" });
+        FilesCollectionReader.class,
+        null,
+        FilesCollectionReader.PARAM_ROOT_FILE,
+        this.inputDir,
+        FilesCollectionReader.PARAM_PATTERNS,
+        new String[] { "^.*[.]1[.].*$", "^.*3.*$" });
 
     // the expected files
     Set<String> expected = new HashSet<String>();
@@ -238,10 +267,15 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
     // check that the expected paths were in the CAS
     assertEquals(expected, actual);
 
-    reader = CollectionReaderFactory.createCollectionReader(FilesCollectionReader.class, null,
-            FilesCollectionReader.PARAM_ROOT_FILE, this.inputDir,
-            FilesCollectionReader.PARAM_PATTERNS, new String[] { "^.*[.]1[.].*$" },
-            FilesCollectionReader.PARAM_SUFFIXES, new String[] { ".1.1.html" });
+    reader = CollectionReaderFactory.createCollectionReader(
+        FilesCollectionReader.class,
+        null,
+        FilesCollectionReader.PARAM_ROOT_FILE,
+        this.inputDir,
+        FilesCollectionReader.PARAM_PATTERNS,
+        new String[] { "^.*[.]1[.].*$" },
+        FilesCollectionReader.PARAM_SUFFIXES,
+        new String[] { ".1.1.html" });
 
     // the expected files
     expected = new HashSet<String>();
@@ -259,7 +293,10 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
 
   }
 
-  private final String[] fileNames = new String[] { "huckfinn.txt", "1.html", "a-test1.txt",
+  private final String[] fileNames = new String[] {
+      "huckfinn.txt",
+      "1.html",
+      "a-test1.txt",
       "PlainTextFileNames.txt" };
 
   @Test
@@ -267,9 +304,12 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
 
     // create the PlainTextCollectionReader with the HTML input directory
     CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-            FilesCollectionReader.class, null, FilesCollectionReader.PARAM_ROOT_FILE,
-            "src/test/resources", FilesCollectionReader.PARAM_NAME_FILES_FILE_NAMES,
-            new String[] { "src/test/resources/docs/PlainTextFileNames.txt" });
+        FilesCollectionReader.class,
+        null,
+        FilesCollectionReader.PARAM_ROOT_FILE,
+        "src/test/resources",
+        FilesCollectionReader.PARAM_NAME_FILES_FILE_NAMES,
+        new String[] { "src/test/resources/docs/PlainTextFileNames.txt" });
 
     // check that each path in the CAS matches a path on disk
     Set<String> fileNamesSet = new HashSet<String>();
@@ -303,7 +343,10 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
   public void testSingleFile() throws IOException, UIMAException {
     String path = "src/test/resources/html/1.html";
     CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-            FilesCollectionReader.class, null, FilesCollectionReader.PARAM_ROOT_FILE, path);
+        FilesCollectionReader.class,
+        null,
+        FilesCollectionReader.PARAM_ROOT_FILE,
+        path);
 
     List<String> pathsList = new ArrayList<String>();
     for (JCas jc : new JCasIterable(reader)) {
@@ -323,8 +366,11 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
    */
   @Test(expected = UIMAException.class)
   public void testBadFileException() throws IOException, UIMAException {
-    CollectionReaderFactory.createCollectionReader(FilesCollectionReader.class, null,
-            FilesCollectionReader.PARAM_ROOT_FILE, "data/hmtl");
+    CollectionReaderFactory.createCollectionReader(
+        FilesCollectionReader.class,
+        null,
+        FilesCollectionReader.PARAM_ROOT_FILE,
+        "data/hmtl");
   }
 
   /**
@@ -343,15 +389,18 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
   @Test
   public void testDescriptor() throws UIMAException, IOException {
     try {
-      CollectionReaderFactory.createCollectionReader(FilesCollectionReader.class,
-              typeSystemDescription);
+      CollectionReaderFactory.createCollectionReader(
+          FilesCollectionReader.class,
+          typeSystemDescription);
       fail("expected exception with no file or directory specified");
     } catch (ResourceInitializationException e) {
     }
 
     CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-            FilesCollectionReader.class, typeSystemDescription,
-            FilesCollectionReader.PARAM_ROOT_FILE, this.inputDir);
+        FilesCollectionReader.class,
+        typeSystemDescription,
+        FilesCollectionReader.PARAM_ROOT_FILE,
+        this.inputDir);
 
     Object fileOrDirectory = reader.getConfigParameterValue(FilesCollectionReader.PARAM_ROOT_FILE);
     assertEquals(this.inputDir, fileOrDirectory);

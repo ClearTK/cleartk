@@ -37,5 +37,5 @@ import org.uimafit.factory.TypeSystemDescriptionFactory;
 public class SrlComponents {
 
   public static TypeSystemDescription TYPE_SYSTEM_DESCRIPTION = TypeSystemDescriptionFactory
-          .createTypeSystemDescription("org.cleartk.srl.TypeSystem");
+      .createTypeSystemDescription("org.cleartk.srl.TypeSystem");
 }

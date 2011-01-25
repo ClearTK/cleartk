@@ -86,7 +86,7 @@ public class RelativePositionExtractorTest extends DefaultTestBase {
   }
 
   private void testOne(int begin1, int end1, int begin2, int end2, String expected)
-          throws UIMAException {
+      throws UIMAException {
     Annotation annotation1 = new Annotation(jCas, begin1, end1);
     Annotation annotation2 = new Annotation(jCas, begin2, end2);
     RelativePositionExtractor extractor;

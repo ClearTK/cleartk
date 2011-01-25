@@ -80,22 +80,22 @@ import org.uimafit.factory.ConfigurationParameterFactory;
 @SofaCapability(outputSofas = { TreebankConstants.TREEBANK_VIEW, ViewURIUtil.URI })
 public class PennTreebankReader extends JCasCollectionReader_ImplBase {
   public static final String PARAM_CORPUS_DIRECTORY_NAME = ConfigurationParameterFactory
-          .createConfigurationParameterName(PennTreebankReader.class, "corpusDirectoryName");
+      .createConfigurationParameterName(PennTreebankReader.class, "corpusDirectoryName");
 
   private static final String CORPUS_DIRECTORY_DESCRIPTION = "Specifies the location of WSJ/PennTreebank treebank files.  "
-          + "The directory should contain subdirectories corresponding to the sections (e.g. '00', '01', etc.) "
-          + "That is, if a local copy of PennTreebank sits at C:/Data/PTB/wsj/mrg, then the the subdirectory C:/Data/PTB/wsj/mrg/00 should exist. "
-          + "There are 24 sections in PTB corresponding to the directories 00, 01, 02, ... 24. ";
+      + "The directory should contain subdirectories corresponding to the sections (e.g. '00', '01', etc.) "
+      + "That is, if a local copy of PennTreebank sits at C:/Data/PTB/wsj/mrg, then the the subdirectory C:/Data/PTB/wsj/mrg/00 should exist. "
+      + "There are 24 sections in PTB corresponding to the directories 00, 01, 02, ... 24. ";
 
   @ConfigurationParameter(mandatory = true, description = CORPUS_DIRECTORY_DESCRIPTION)
   private String corpusDirectoryName;
 
   public static final String PARAM_SECTIONS_SPECIFIER = ConfigurationParameterFactory
-          .createConfigurationParameterName(PennTreebankReader.class, "sectionsSpecifier");
+      .createConfigurationParameterName(PennTreebankReader.class, "sectionsSpecifier");
 
   private static final String SECTIONS_DESCRIPTION = "specifies which sections of PTB to read in.  "
-          + "The required format for values of this parameter allows for comma-separated section numbers and section ranges, "
-          + "for example '02,07-12,16'.";
+      + "The required format for values of this parameter allows for comma-separated section numbers and section ranges, "
+      + "for example '02,07-12,16'.";
 
   @ConfigurationParameter(defaultValue = "00-24", description = SECTIONS_DESCRIPTION)
   private String sectionsSpecifier;
@@ -130,8 +130,10 @@ public class PennTreebankReader extends JCasCollectionReader_ImplBase {
    * @param wsjSections
    *          is the set of sections to include.
    */
-  public static void collectSections(File wsjDirectory, List<File> treebankFiles,
-          ListSpecification wsjSections) {
+  public static void collectSections(
+      File wsjDirectory,
+      List<File> treebankFiles,
+      ListSpecification wsjSections) {
     if (!wsjDirectory.isDirectory())
       return;
 
@@ -172,12 +174,14 @@ public class PennTreebankReader extends JCasCollectionReader_ImplBase {
    */
   public void getNext(JCas jCas) throws IOException, CollectionException {
     File treebankFile = files.removeFirst();
-    getUimaContext().getLogger().log(Level.FINEST,
-            "reading treebank file: " + treebankFile.getPath());
+    getUimaContext().getLogger().log(
+        Level.FINEST,
+        "reading treebank file: " + treebankFile.getPath());
     ViewURIUtil.setURI(jCas, treebankFile.toURI().toString());
     try {
-      JCas treebankView = ViewCreatorAnnotator.createViewSafely(jCas,
-              TreebankConstants.TREEBANK_VIEW);
+      JCas treebankView = ViewCreatorAnnotator.createViewSafely(
+          jCas,
+          TreebankConstants.TREEBANK_VIEW);
       treebankView.setSofaDataString(FileUtils.file2String(treebankFile), "text/plain");
     } catch (AnalysisEngineProcessException aepe) {
       throw new CollectionException(aepe);
@@ -188,8 +192,10 @@ public class PennTreebankReader extends JCasCollectionReader_ImplBase {
   }
 
   public Progress[] getProgress() {
-    return new Progress[] { new ProgressImpl(numberOfFiles - files.size(), numberOfFiles,
-            Progress.ENTITIES) };
+    return new Progress[] { new ProgressImpl(
+        numberOfFiles - files.size(),
+        numberOfFiles,
+        Progress.ENTITIES) };
   }
 
   public boolean hasNext() throws IOException, CollectionException {

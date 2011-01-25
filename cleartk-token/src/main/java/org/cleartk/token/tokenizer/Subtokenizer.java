@@ -52,8 +52,9 @@ public class Subtokenizer extends Tokenizer_ImplBase {
 
   public static String multipleWhitespaceRegex = "(\\s+)";
 
-  public static Pattern multipleWhitespacePattern = Pattern.compile(multipleWhitespaceRegex,
-          Pattern.MULTILINE);
+  public static Pattern multipleWhitespacePattern = Pattern.compile(
+      multipleWhitespaceRegex,
+      Pattern.MULTILINE);
 
   public String[] getTokenTexts(String text) {
     text = subtokensPattern.matcher(text).replaceAll(" $1 ");

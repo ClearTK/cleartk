@@ -56,16 +56,19 @@ import org.uimafit.factory.ConfigurationParameterFactory;
 public class Conll2005GoldReader extends JCasCollectionReader_ImplBase {
 
   public static CollectionReader getCollectionReader(String conll2005DataFile)
-          throws ResourceInitializationException {
-    return CollectionReaderFactory.createCollectionReader(Conll2005GoldReader.class,
-            SrlComponents.TYPE_SYSTEM_DESCRIPTION, PARAM_CONLL2005_DATA_FILE, conll2005DataFile);
+      throws ResourceInitializationException {
+    return CollectionReaderFactory.createCollectionReader(
+        Conll2005GoldReader.class,
+        SrlComponents.TYPE_SYSTEM_DESCRIPTION,
+        PARAM_CONLL2005_DATA_FILE,
+        conll2005DataFile);
   }
 
   @ConfigurationParameter(mandatory = true, description = "the path of the CoNLL 2005 data file")
   private File conll2005DataFile;
 
   public static final String PARAM_CONLL2005_DATA_FILE = ConfigurationParameterFactory
-          .createConfigurationParameterName(Conll2005GoldReader.class, "conll2005DataFile");
+      .createConfigurationParameterName(Conll2005GoldReader.class, "conll2005DataFile");
 
   private BufferedReader reader;
 

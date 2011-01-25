@@ -46,36 +46,45 @@ import org.cleartk.util.AnnotationRetrieval;
  */
 public class BagExtractor implements SimpleFeatureExtractor {
 
-  public BagExtractor(Class<? extends Annotation> annotationClass, AnnotationFilter filter,
-          SimpleFeatureExtractor subExtractor) {
+  public BagExtractor(
+      Class<? extends Annotation> annotationClass,
+      AnnotationFilter filter,
+      SimpleFeatureExtractor subExtractor) {
     this.annotationClass = annotationClass;
     this.subExtractor = subExtractor;
-    this.featureName = filter == null ? String.format("Bag(%s)", annotationClass.getSimpleName())
-            : String.format("Bag(%s,%s)", annotationClass.getSimpleName(), filter.filterName());
+    this.featureName = filter == null
+        ? String.format("Bag(%s)", annotationClass.getSimpleName())
+        : String.format("Bag(%s,%s)", annotationClass.getSimpleName(), filter.filterName());
     this.filter = filter == null ? new AlwaysIncludeAnnotationFilter() : filter;
   }
 
-  public BagExtractor(Class<? extends Annotation> annotationClass,
-          SimpleFeatureExtractor subExtractor) {
+  public BagExtractor(
+      Class<? extends Annotation> annotationClass,
+      SimpleFeatureExtractor subExtractor) {
     this(annotationClass, null, subExtractor);
   }
 
-  public BagExtractor(Class<? extends Annotation> annotationClass, AnnotationFilter filter,
-          SimpleFeatureExtractor... subExtractors) {
+  public BagExtractor(
+      Class<? extends Annotation> annotationClass,
+      AnnotationFilter filter,
+      SimpleFeatureExtractor... subExtractors) {
     this(annotationClass, filter, new CombinedExtractor(subExtractors));
   }
 
-  public BagExtractor(Class<? extends Annotation> annotationClass,
-          SimpleFeatureExtractor... subExtractors) {
+  public BagExtractor(
+      Class<? extends Annotation> annotationClass,
+      SimpleFeatureExtractor... subExtractors) {
     this(annotationClass, null, new CombinedExtractor(subExtractors));
   }
 
   public List<Feature> extract(JCas jCas, Annotation focusAnnotation)
-          throws UnsupportedOperationException, CleartkException {
+      throws UnsupportedOperationException, CleartkException {
     List<Feature> features = new ArrayList<Feature>();
 
-    for (Annotation ann : AnnotationRetrieval.getAnnotations(jCas, focusAnnotation,
-            this.annotationClass)) {
+    for (Annotation ann : AnnotationRetrieval.getAnnotations(
+        jCas,
+        focusAnnotation,
+        this.annotationClass)) {
       if (!filter.include(jCas, ann))
         continue;
 

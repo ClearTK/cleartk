@@ -53,17 +53,20 @@ public class EventAnnotatorsTest extends TimeMLTestBase {
 
   @Test
   public void testModel() throws UIMAException, IOException {
-    this.tokenBuilder.buildTokens(this.jCas, "He was thinking he would not have eaten yesterday.",
-            "He was thinking he would not have eaten yesterday .",
-            "PRP VBD VBG PRP MD RB VBD VBN RB .",
-            "he was think he would not have eaten yesterday .");
+    this.tokenBuilder.buildTokens(
+        this.jCas,
+        "He was thinking he would not have eaten yesterday.",
+        "He was thinking he would not have eaten yesterday .",
+        "PRP VBD VBG PRP MD RB VBD VBN RB .",
+        "he was think he would not have eaten yesterday .");
 
-    List<AnalysisEngineDescription> descs = Arrays.asList(EventAnnotator.getAnnotatorDescription(),
-            EventTenseAnnotator.getAnnotatorDescription(),
-            EventAspectAnnotator.getAnnotatorDescription(),
-            EventClassAnnotator.getAnnotatorDescription(),
-            EventPolarityAnnotator.getAnnotatorDescription(),
-            EventModalityAnnotator.getAnnotatorDescription());
+    List<AnalysisEngineDescription> descs = Arrays.asList(
+        EventAnnotator.getAnnotatorDescription(),
+        EventTenseAnnotator.getAnnotatorDescription(),
+        EventAspectAnnotator.getAnnotatorDescription(),
+        EventClassAnnotator.getAnnotatorDescription(),
+        EventPolarityAnnotator.getAnnotatorDescription(),
+        EventModalityAnnotator.getAnnotatorDescription());
 
     for (AnalysisEngineDescription desc : descs) {
       AnalysisEngine engine = UIMAFramework.produceAnalysisEngine(desc);
@@ -92,8 +95,12 @@ public class EventAnnotatorsTest extends TimeMLTestBase {
 
   @Test
   public void testDataWriters() throws Exception {
-    this.tokenBuilder.buildTokens(this.jCas, "She ate dinner.", "She ate dinner .", "PRP VBD NN .",
-            "she ate dinner .");
+    this.tokenBuilder.buildTokens(
+        this.jCas,
+        "She ate dinner.",
+        "She ate dinner .",
+        "PRP VBD NN .",
+        "she ate dinner .");
     Event ate = new Event(this.jCas, 4, 7);
     ate.setTense("PAST");
     ate.setEventClass("OCCURRENCE");
@@ -108,12 +115,12 @@ public class EventAnnotatorsTest extends TimeMLTestBase {
     String modalityDir = this.folder.newFolder("modality").getPath();
 
     List<AnalysisEngineDescription> descs = Arrays.asList(
-            EventAnnotator.getWriterDescription(eventDir),
-            EventTenseAnnotator.getWriterDescription(tenseDir),
-            EventAspectAnnotator.getWriterDescription(aspectDir),
-            EventClassAnnotator.getWriterDescription(classDir),
-            EventPolarityAnnotator.getWriterDescription(polarityDir),
-            EventModalityAnnotator.getWriterDescription(modalityDir));
+        EventAnnotator.getWriterDescription(eventDir),
+        EventTenseAnnotator.getWriterDescription(tenseDir),
+        EventAspectAnnotator.getWriterDescription(aspectDir),
+        EventClassAnnotator.getWriterDescription(classDir),
+        EventPolarityAnnotator.getWriterDescription(polarityDir),
+        EventModalityAnnotator.getWriterDescription(modalityDir));
 
     for (AnalysisEngineDescription desc : descs) {
       AnalysisEngine engine = UIMAFramework.produceAnalysisEngine(desc);
@@ -121,8 +128,13 @@ public class EventAnnotatorsTest extends TimeMLTestBase {
       engine.collectionProcessComplete();
     }
 
-    List<String> paths = Arrays.asList(eventDir, tenseDir, aspectDir, classDir, polarityDir,
-            modalityDir);
+    List<String> paths = Arrays.asList(
+        eventDir,
+        tenseDir,
+        aspectDir,
+        classDir,
+        polarityDir,
+        modalityDir);
     for (String path : paths) {
       boolean hasTrainingData = false;
       for (File file : new File(path).listFiles()) {

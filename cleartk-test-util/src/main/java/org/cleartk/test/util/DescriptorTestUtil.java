@@ -47,8 +47,10 @@ public class DescriptorTestUtil {
     // collect the names of all .xml descriptors in the src directory
     File srcDirectory = new File(srcDirectoryName);
     Set<String> descNames = new HashSet<String>();
-    Iterator<?> files = org.apache.commons.io.FileUtils.iterateFiles(srcDirectory,
-            new SuffixFileFilter(".xml"), TrueFileFilter.INSTANCE);
+    Iterator<?> files = org.apache.commons.io.FileUtils.iterateFiles(
+        srcDirectory,
+        new SuffixFileFilter(".xml"),
+        TrueFileFilter.INSTANCE);
     while (files.hasNext()) {
       File file = (File) files.next();
       descNames.add(file.getPath());

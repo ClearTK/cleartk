@@ -60,13 +60,17 @@ public class ChunkTokenizerLabelerTest extends TokenTestBase {
   @Test
   public void testClassifierAnnotator() throws UIMAException {
     UimaContext context = UimaContextFactory.createUimaContext(
-            ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME, Token.class.getName(),
-            Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME, Subtoken.class.getName());
+        ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME,
+        Token.class.getName(),
+        Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME,
+        Subtoken.class.getName());
 
-    DefaultChunkLabeler defaultChunkLabeler = InitializableFactory.create(context,
-            DefaultChunkLabeler.class);
+    DefaultChunkLabeler defaultChunkLabeler = InitializableFactory.create(
+        context,
+        DefaultChunkLabeler.class);
 
-    jCas.setDocumentText("Technological progress is like an axe in the hands of a pathological criminal."); // Albert
+    jCas
+        .setDocumentText("Technological progress is like an axe in the hands of a pathological criminal."); // Albert
                                                                                                             // Einstein
     Sentence sentence = new Sentence(jCas, 0, 78);
     sentence.addToIndexes();
@@ -136,13 +140,17 @@ public class ChunkTokenizerLabelerTest extends TokenTestBase {
   @Test
   public void testDataWriter() throws UIMAException {
     UimaContext context = UimaContextFactory.createUimaContext(
-            ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME, Token.class.getName(),
-            Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME, Subtoken.class.getName());
+        ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME,
+        Token.class.getName(),
+        Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME,
+        Subtoken.class.getName());
 
-    DefaultChunkLabeler defaultChunkLabeler = InitializableFactory.create(context,
-            DefaultChunkLabeler.class);
+    DefaultChunkLabeler defaultChunkLabeler = InitializableFactory.create(
+        context,
+        DefaultChunkLabeler.class);
 
-    jCas.setDocumentText("Technological progress is like an axe in the hands of a pathological criminal."); // Albert
+    jCas
+        .setDocumentText("Technological progress is like an axe in the hands of a pathological criminal."); // Albert
                                                                                                             // Einstein
     Sentence sentence = new Sentence(jCas, 0, 78);
     sentence.addToIndexes();
@@ -192,14 +200,19 @@ public class ChunkTokenizerLabelerTest extends TokenTestBase {
   @Test
   public void testGetChunkLabel() throws UIMAException {
     UimaContext context = UimaContextFactory.createUimaContext(
-            ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME, Lemma.class.getName(),
-            DefaultChunkLabeler.PARAM_CHUNK_LABEL_FEATURE_NAME, "value",
-            Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME, Token.class.getName());
+        ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME,
+        Lemma.class.getName(),
+        DefaultChunkLabeler.PARAM_CHUNK_LABEL_FEATURE_NAME,
+        "value",
+        Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME,
+        Token.class.getName());
 
-    DefaultChunkLabeler defaultChunkLabeler = InitializableFactory.create(context,
-            DefaultChunkLabeler.class);
+    DefaultChunkLabeler defaultChunkLabeler = InitializableFactory.create(
+        context,
+        DefaultChunkLabeler.class);
 
-    jCas.setDocumentText("Technological progress is like an axe in the hands of a pathological criminal."); // Albert
+    jCas
+        .setDocumentText("Technological progress is like an axe in the hands of a pathological criminal."); // Albert
                                                                                                             // Einstein
 
     Lemma lemma = AnnotationFactory.createAnnotation(jCas, 0, 22, Lemma.class);

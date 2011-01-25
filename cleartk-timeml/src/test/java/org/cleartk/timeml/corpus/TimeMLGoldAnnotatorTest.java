@@ -57,11 +57,15 @@ public class TimeMLGoldAnnotatorTest extends TimeMLTestBase {
   @Test
   public void testTimeBank() throws UIMAException, IOException {
     CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-            FilesCollectionReader.class, typeSystemDescription,
-            FilesCollectionReader.PARAM_VIEW_NAME, TimeMLViewName.TIMEML,
-            FilesCollectionReader.PARAM_ROOT_FILE, "src/test/resources/data/timeml/wsj_0106.tml");
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TimeMLGoldAnnotator.class,
-            typeSystemDescription);
+        FilesCollectionReader.class,
+        typeSystemDescription,
+        FilesCollectionReader.PARAM_VIEW_NAME,
+        TimeMLViewName.TIMEML,
+        FilesCollectionReader.PARAM_ROOT_FILE,
+        "src/test/resources/data/timeml/wsj_0106.tml");
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+        TimeMLGoldAnnotator.class,
+        typeSystemDescription);
     JCas jcas = new JCasIterable(reader, engine).next();
 
     // <EVENT eid="e1" class="REPORTING">said</EVENT>
@@ -124,12 +128,15 @@ public class TimeMLGoldAnnotatorTest extends TimeMLTestBase {
   @Test
   public void testTempEval() throws UIMAException, IOException {
     CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-            FilesCollectionReader.class, typeSystemDescription,
-            FilesCollectionReader.PARAM_VIEW_NAME, TimeMLViewName.TIMEML,
-            FilesCollectionReader.PARAM_ROOT_FILE,
-            "src/test/resources/data/timeml/AP900815-0044.tml");
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TimeMLGoldAnnotator.class,
-            typeSystemDescription);
+        FilesCollectionReader.class,
+        typeSystemDescription,
+        FilesCollectionReader.PARAM_VIEW_NAME,
+        TimeMLViewName.TIMEML,
+        FilesCollectionReader.PARAM_ROOT_FILE,
+        "src/test/resources/data/timeml/AP900815-0044.tml");
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+        TimeMLGoldAnnotator.class,
+        typeSystemDescription);
     JCas jcas = new JCasIterable(reader, engine).next();
 
     // <EVENT eid="e5" class="STATE" stem="face" aspect="NONE"
@@ -177,12 +184,19 @@ public class TimeMLGoldAnnotatorTest extends TimeMLTestBase {
   @Test
   public void testNoTLINKs() throws UIMAException, IOException {
     CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-            FilesCollectionReader.class, typeSystemDescription,
-            FilesCollectionReader.PARAM_VIEW_NAME, TimeMLViewName.TIMEML,
-            FilesCollectionReader.PARAM_ROOT_FILE, "src/test/resources/data/timeml",
-            FilesCollectionReader.PARAM_SUFFIXES, new String[] { ".tml" });
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TimeMLGoldAnnotator.class,
-            typeSystemDescription, TimeMLGoldAnnotator.PARAM_LOAD_TLINKS, false);
+        FilesCollectionReader.class,
+        typeSystemDescription,
+        FilesCollectionReader.PARAM_VIEW_NAME,
+        TimeMLViewName.TIMEML,
+        FilesCollectionReader.PARAM_ROOT_FILE,
+        "src/test/resources/data/timeml",
+        FilesCollectionReader.PARAM_SUFFIXES,
+        new String[] { ".tml" });
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+        TimeMLGoldAnnotator.class,
+        typeSystemDescription,
+        TimeMLGoldAnnotator.PARAM_LOAD_TLINKS,
+        false);
     for (JCas jcas : new JCasIterable(reader, engine)) {
       List<Event> events = AnnotationRetrieval.getAnnotations(jcas, Event.class);
       Assert.assertTrue(events.size() > 0);

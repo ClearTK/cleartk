@@ -120,8 +120,9 @@ public class IDFMap implements Serializable {
 
   public Double getIDF(Object key) {
     String keyString = key.toString();
-    Double documentCount = documentCounts.containsKey(keyString) ? documentCounts.get(keyString)
-            : 0.0;
+    Double documentCount = documentCounts.containsKey(keyString)
+        ? documentCounts.get(keyString)
+        : 0.0;
 
     return Math.log((totalDocumentCount + 1) / (documentCount + 1));
   }
@@ -148,7 +149,7 @@ public class IDFMap implements Serializable {
       Connection connection = createDB(tempFile);
 
       PreparedStatement stat = connection.prepareStatement("insert into globals "
-              + "(name, value) " + "values " + "(?, ?)");
+          + "(name, value) " + "values " + "(?, ?)");
       try {
         stat.setString(1, "totalDocumentCount");
         stat.setInt(2, totalDocumentCount);
@@ -159,7 +160,7 @@ public class IDFMap implements Serializable {
 
       for (String key : documentCounts.keySet()) {
         stat = connection.prepareStatement("insert into documentcounts " + "(key, count) "
-                + "values " + "(?, ?)");
+            + "values " + "(?, ?)");
         try {
           stat.setString(1, key);
           stat.setInt(2, documentCounts.get(key));
@@ -190,7 +191,7 @@ public class IDFMap implements Serializable {
       connection.setAutoCommit(false);
 
       stat = connection.prepareStatement("create table documentcounts " + "(key text, "
-              + "count integer)");
+          + "count integer)");
       try {
         stat.execute();
       } finally {

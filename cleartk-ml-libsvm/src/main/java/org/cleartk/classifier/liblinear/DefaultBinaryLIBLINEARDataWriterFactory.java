@@ -49,10 +49,10 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  */
 
 public class DefaultBinaryLIBLINEARDataWriterFactory extends
-        JarDataWriterFactory<FeatureVector, Boolean, Boolean> {
+    JarDataWriterFactory<FeatureVector, Boolean, Boolean> {
 
   public static final String PARAM_CUTOFF = ConfigurationParameterFactory
-          .createConfigurationParameterName(DefaultBinaryLIBLINEARDataWriterFactory.class, "cutoff");
+      .createConfigurationParameterName(DefaultBinaryLIBLINEARDataWriterFactory.class, "cutoff");
 
   @ConfigurationParameter(defaultValue = "5", description = "features that occur less than this number of times over the whole training set will not be encoded during testing")
   protected int cutoff = 5;

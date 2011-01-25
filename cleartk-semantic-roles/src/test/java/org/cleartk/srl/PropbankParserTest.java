@@ -225,8 +225,9 @@ public class PropbankParserTest {
     assertEquals(null, proplabel.getPreposition());
     assertEquals(PropbankCorefRelation.class, proplabel.getRelation().getClass());
     PropbankCorefRelation corefRelation = (PropbankCorefRelation) proplabel.getRelation();
-    PropbankNodeRelation nodeRelation = (PropbankNodeRelation) corefRelation.getCorefRelations()
-            .get(0);
+    PropbankNodeRelation nodeRelation = (PropbankNodeRelation) corefRelation
+        .getCorefRelations()
+        .get(0);
     assertEquals("1:1", nodeRelation.toString());
     assertEquals(1, nodeRelation.getTerminalNumber());
     assertEquals(1, nodeRelation.getHeight());
@@ -284,8 +285,9 @@ public class PropbankParserTest {
     assertEquals(null, proplabel.getPreposition());
     assertEquals(PropbankCorefRelation.class, proplabel.getRelation().getClass());
     PropbankCorefRelation corefRelation = (PropbankCorefRelation) proplabel.getRelation();
-    PropbankNodeRelation nodeRelation = (PropbankNodeRelation) corefRelation.getCorefRelations()
-            .get(0);
+    PropbankNodeRelation nodeRelation = (PropbankNodeRelation) corefRelation
+        .getCorefRelations()
+        .get(0);
     assertEquals("6:1", nodeRelation.toString());
     assertEquals(6, nodeRelation.getTerminalNumber());
     assertEquals(1, nodeRelation.getHeight());

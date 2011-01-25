@@ -40,6 +40,6 @@ import org.cleartk.classifier.Feature;
 public interface AnnotationPairFeatureExtractor {
 
   public List<Feature> extract(JCas view, Annotation leftAnnotation, Annotation rightAnnotation)
-          throws CleartkException;
+      throws CleartkException;
 
 }

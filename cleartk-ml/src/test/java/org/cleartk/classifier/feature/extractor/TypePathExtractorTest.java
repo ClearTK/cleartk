@@ -68,7 +68,7 @@ public class TypePathExtractorTest extends DefaultTestBase {
       // The text here was once upon a time some lyrics by a favorite singer which have since been
       // obfuscated to avoid any copyright issues.
       jCas.setDocumentText("Wwwwwwww ii ss yyy mmmmm ttttt yyy hhhh " + "Yyy hhhh nnnnnnn tt llll "
-              + "Ttttttt eeeee dddd aaa llllll ttttt " + "Tttt rrrr llll a ffff.");
+          + "Ttttttt eeeee dddd aaa llllll ttttt " + "Tttt rrrr llll a ffff.");
       Token token1 = new Token(jCas, 0, 8);
       token1.addToIndexes();
       Lemma lemma = new Lemma(jCas);
@@ -126,14 +126,16 @@ public class TypePathExtractorTest extends DefaultTestBase {
   @Test
   public void testExtract() throws IOException, UIMAException, CleartkException {
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-            TypePathExtractorTest.Annotator.class, typeSystemDescription);
+        TypePathExtractorTest.Annotator.class,
+        typeSystemDescription);
 
     engine.process(jCas);
     engine.collectionProcessComplete();
     FSIndex<Annotation> fsIndex = jCas.getAnnotationIndex(Token.type);
 
-    assertTrue(jCas.getTypeSystem().subsumes(jCas.getTypeSystem().getType("uima.tcas.Annotation"),
-            jCas.getCasType(POSTag.type)));
+    assertTrue(jCas.getTypeSystem().subsumes(
+        jCas.getTypeSystem().getType("uima.tcas.Annotation"),
+        jCas.getCasType(POSTag.type)));
 
     Token targetToken = new Token(jCas);
     targetToken.setBegin(0);
@@ -223,8 +225,12 @@ public class TypePathExtractorTest extends DefaultTestBase {
     assertEquals(feature.getTypePath(), "depRel/head");
     assertEquals(feature.getValue().toString(), "ii");
 
-    typePathExtractor = new TypePathExtractor(Token.class, "depRel/head/posTag/value", true, true,
-            true);
+    typePathExtractor = new TypePathExtractor(
+        Token.class,
+        "depRel/head/posTag/value",
+        true,
+        true,
+        true);
     features = typePathExtractor.extract(jCas, token3);
     assertEquals(features.size(), 3);
     assertEquals(features.get(0).getValue().toString(), "pos1");
@@ -235,22 +241,34 @@ public class TypePathExtractorTest extends DefaultTestBase {
     // will return all values for every POSTag even though
     // the posTag of Token is an FSArray. (I was hoping this extractor would
     // return two values pos1 and pos3
-    typePathExtractor = new TypePathExtractor(Token.class, "depRel/head/posTag/value", true, false,
-            true);
+    typePathExtractor = new TypePathExtractor(
+        Token.class,
+        "depRel/head/posTag/value",
+        true,
+        false,
+        true);
     features = typePathExtractor.extract(jCas, token3);
     assertEquals(features.size(), 3);
     assertEquals(features.get(0).getValue().toString(), "pos1");
     assertEquals(features.get(1).getValue().toString(), "pos2");
     assertEquals(features.get(2).getValue().toString(), "pos3");
 
-    typePathExtractor = new TypePathExtractor(Token.class, "depRel/head/posTag/value", false, true,
-            true);
+    typePathExtractor = new TypePathExtractor(
+        Token.class,
+        "depRel/head/posTag/value",
+        false,
+        true,
+        true);
     features = typePathExtractor.extract(jCas, token3);
     assertEquals(features.size(), 1);
     assertEquals(features.get(0).getValue().toString(), "pos1");
 
-    typePathExtractor = new TypePathExtractor(Token.class, "depRel/head/posTag/value", false,
-            false, true);
+    typePathExtractor = new TypePathExtractor(
+        Token.class,
+        "depRel/head/posTag/value",
+        false,
+        false,
+        true);
     features = typePathExtractor.extract(jCas, token3);
     assertEquals(features.size(), 1);
     assertEquals(features.get(0).getValue().toString(), "pos1");
@@ -260,21 +278,31 @@ public class TypePathExtractorTest extends DefaultTestBase {
   public void testIsValidatePath() throws IOException, UIMAException {
     assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(POSTag.type), "value", jCas));
     assertTrue(TypePathExtractor
-            .isValidPath(jCas.getCasType(Header.type), "authors/lastName", jCas));
-    assertTrue(!TypePathExtractor.isValidPath(jCas.getCasType(Header.type), "authors/lastNames",
-            jCas));
+        .isValidPath(jCas.getCasType(Header.type), "authors/lastName", jCas));
+    assertTrue(!TypePathExtractor.isValidPath(
+        jCas.getCasType(Header.type),
+        "authors/lastNames",
+        jCas));
     assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(Token.type), "posTag/language", jCas));
     assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(Token.type), "posTag", jCas));
-    assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(Token.type),
-            "depRel/head/depRel/projective", jCas));
-    assertTrue(!TypePathExtractor.isValidPath(jCas.getCasType(Token.type),
-            "depRel/head/projective", jCas));
-    assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(Token.type), "depRel/head/orthogr",
-            jCas));
+    assertTrue(TypePathExtractor.isValidPath(
+        jCas.getCasType(Token.type),
+        "depRel/head/depRel/projective",
+        jCas));
+    assertTrue(!TypePathExtractor.isValidPath(
+        jCas.getCasType(Token.type),
+        "depRel/head/projective",
+        jCas));
+    assertTrue(TypePathExtractor.isValidPath(
+        jCas.getCasType(Token.type),
+        "depRel/head/orthogr",
+        jCas));
     assertTrue(TypePathExtractor
-            .isValidPath(jCas.getCasType(Token.type), "depRel/projective", jCas));
-    assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(Token.type),
-            "depRel/head/depRel/projective", jCas));
+        .isValidPath(jCas.getCasType(Token.type), "depRel/projective", jCas));
+    assertTrue(TypePathExtractor.isValidPath(
+        jCas.getCasType(Token.type),
+        "depRel/head/depRel/projective",
+        jCas));
   }
 
   @Test
@@ -284,12 +312,15 @@ public class TypePathExtractorTest extends DefaultTestBase {
 
     // subtypes of uima.cas.String do not have JCas class generated for them
     assertTrue(TypePathExtractor.isValidType(
-            jCas.getTypeSystem().getType("org.cleartk.type.test.Language"), jCas.getTypeSystem()));
+        jCas.getTypeSystem().getType("org.cleartk.type.test.Language"),
+        jCas.getTypeSystem()));
 
-    assertTrue(TypePathExtractor.isValidType(jCas.getTypeSystem().getType("uima.cas.String"),
-            jCas.getTypeSystem()));
-    assertTrue(TypePathExtractor.isValidType(jCas.getTypeSystem().getType("uima.cas.Integer"),
-            jCas.getTypeSystem()));
+    assertTrue(TypePathExtractor.isValidType(
+        jCas.getTypeSystem().getType("uima.cas.String"),
+        jCas.getTypeSystem()));
+    assertTrue(TypePathExtractor.isValidType(
+        jCas.getTypeSystem().getType("uima.cas.Integer"),
+        jCas.getTypeSystem()));
   }
 
   @Test

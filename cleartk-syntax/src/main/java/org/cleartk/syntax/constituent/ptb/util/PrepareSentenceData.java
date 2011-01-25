@@ -82,17 +82,27 @@ public class PrepareSentenceData {
 
     TypeSystemDescription typeSystemDescription = SyntaxComponents.TYPE_SYSTEM_DESCRIPTION;
     CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-            PennTreebankReader.class, typeSystemDescription,
-            PennTreebankReader.PARAM_CORPUS_DIRECTORY_NAME, inputDirectoryName,
-            PennTreebankReader.PARAM_SECTIONS_SPECIFIER, sectionsSpecifier);
+        PennTreebankReader.class,
+        typeSystemDescription,
+        PennTreebankReader.PARAM_CORPUS_DIRECTORY_NAME,
+        inputDirectoryName,
+        PennTreebankReader.PARAM_SECTIONS_SPECIFIER,
+        sectionsSpecifier);
     AnalysisEngine treebankFormatter = AnalysisEngineFactory.createPrimitive(
-            TreebankGoldAnnotator.class, typeSystemDescription,
-            TreebankGoldAnnotator.PARAM_POST_TREES, false);
-    AnalysisEngine xWriter = AnalysisEngineFactory.createPrimitive(XWriter.class,
-            typeSystemDescription, XWriter.PARAM_OUTPUT_DIRECTORY_NAME, outputDirectoryName,
-            XWriter.PARAM_FILE_NAMER_CLASS_NAME, ViewURIFileNamer.class.getName());
-    AnalysisEngine sentencePrinter = AnalysisEngineFactory.createPrimitive(SentencePrinter.class,
-            typeSystemDescription);
+        TreebankGoldAnnotator.class,
+        typeSystemDescription,
+        TreebankGoldAnnotator.PARAM_POST_TREES,
+        false);
+    AnalysisEngine xWriter = AnalysisEngineFactory.createPrimitive(
+        XWriter.class,
+        typeSystemDescription,
+        XWriter.PARAM_OUTPUT_DIRECTORY_NAME,
+        outputDirectoryName,
+        XWriter.PARAM_FILE_NAMER_CLASS_NAME,
+        ViewURIFileNamer.class.getName());
+    AnalysisEngine sentencePrinter = AnalysisEngineFactory.createPrimitive(
+        SentencePrinter.class,
+        typeSystemDescription);
 
     SimplePipeline.runPipeline(reader, treebankFormatter, sentencePrinter, xWriter);
   }
@@ -124,7 +134,7 @@ public class PrepareSentenceData {
     @Override
     public void collectionProcessComplete() throws AnalysisEngineProcessException {
       List<Entry<Character, Integer>> entries = new ArrayList<Entry<Character, Integer>>(
-              charCounts.entrySet());
+          charCounts.entrySet());
       Collections.sort(entries, new Comparator<Entry<Character, Integer>>() {
         public int compare(Entry<Character, Integer> o1, Entry<Character, Integer> o2) {
           int comparison = o1.getValue().compareTo(o2.getValue());

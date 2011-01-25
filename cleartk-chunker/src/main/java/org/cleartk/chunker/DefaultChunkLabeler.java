@@ -43,14 +43,14 @@ import org.uimafit.factory.ConfigurationParameterFactory;
 public class DefaultChunkLabeler extends ChunkLabeler_ImplBase {
 
   public static final String PARAM_CHUNK_LABEL_FEATURE_NAME = ConfigurationParameterFactory
-          .createConfigurationParameterName(DefaultChunkLabeler.class, "chunkLabelFeatureName");
+      .createConfigurationParameterName(DefaultChunkLabeler.class, "chunkLabelFeatureName");
 
   private static final String CHUNK_LABEL_FEATURE_DESCRIPTION = "names  the feature of the type system chunk type that provides a label for each "
-          + "chunk. The feature is queried and the value of the feature is used as the label for the chunk.  If this parameter has no value, then the name of the "
-          + "chunk type will be used as a label. For example, if the value of the parameter 'org.cleartk.chunk.ChunkLabeler_ImplBase.chunkAnnotationClassName' is 'org.cleartk.type.Chunk', "
-          + "then a good value for this parameter would be 'chunkType'.  This would result in labels corresponding to the values found in the type system feature "
-          + "chunkType.  If the value of the parameter ''org.cleartk.chunk.ChunkLabeler_ImplBase.chunkAnnotationClassName'' is 'org.cleartk.type.Chunk' and no value is given for "
-          + "this parameter, then the label will always be 'Chunk'";
+      + "chunk. The feature is queried and the value of the feature is used as the label for the chunk.  If this parameter has no value, then the name of the "
+      + "chunk type will be used as a label. For example, if the value of the parameter 'org.cleartk.chunk.ChunkLabeler_ImplBase.chunkAnnotationClassName' is 'org.cleartk.type.Chunk', "
+      + "then a good value for this parameter would be 'chunkType'.  This would result in labels corresponding to the values found in the type system feature "
+      + "chunkType.  If the value of the parameter ''org.cleartk.chunk.ChunkLabeler_ImplBase.chunkAnnotationClassName'' is 'org.cleartk.type.Chunk' and no value is given for "
+      + "this parameter, then the label will always be 'Chunk'";
 
   @ConfigurationParameter(description = CHUNK_LABEL_FEATURE_DESCRIPTION)
   private String chunkLabelFeatureName;
@@ -72,8 +72,10 @@ public class DefaultChunkLabeler extends ChunkLabeler_ImplBase {
     }
 
     try {
-      chunkAnnotationConstructor = chunkAnnotationClass.getConstructor(new Class[] { JCas.class,
-          java.lang.Integer.TYPE, java.lang.Integer.TYPE });
+      chunkAnnotationConstructor = chunkAnnotationClass.getConstructor(new Class[] {
+          JCas.class,
+          java.lang.Integer.TYPE,
+          java.lang.Integer.TYPE });
     } catch (Exception e) {
       throw new ResourceInitializationException(e);
     }
@@ -86,19 +88,23 @@ public class DefaultChunkLabeler extends ChunkLabeler_ImplBase {
         chunkLabelFeature = jCas.getTypeSystem().getFeatureByFullName(chunkLabelFeatureName);
         if (chunkLabelFeature == null)
           throw new AnalysisEngineProcessException("type feature for name '"
-                  + chunkLabelFeatureName + "' not found.  ", null);
+              + chunkLabelFeatureName + "' not found.  ", null);
       }
     } catch (Exception e) {
       throw new AnalysisEngineProcessException(e);
     }
   }
 
-  public Annotation createChunk(JCas jCas, List<? extends Annotation> labeledAnnotations,
-          String label) throws AnalysisEngineProcessException {
+  public Annotation createChunk(
+      JCas jCas,
+      List<? extends Annotation> labeledAnnotations,
+      String label) throws AnalysisEngineProcessException {
     try {
       int begin = labeledAnnotations.get(0).getBegin();
       int end = labeledAnnotations.get(labeledAnnotations.size() - 1).getEnd();
-      Annotation annotation = chunkAnnotationConstructor.newInstance(new Object[] { jCas, begin,
+      Annotation annotation = chunkAnnotationConstructor.newInstance(new Object[] {
+          jCas,
+          begin,
           end });
 
       if (chunkLabelFeature != null)
@@ -112,7 +118,7 @@ public class DefaultChunkLabeler extends ChunkLabeler_ImplBase {
 
   @Override
   public String getChunkLabel(JCas jCas, Annotation chunkAnnotation)
-          throws AnalysisEngineProcessException {
+      throws AnalysisEngineProcessException {
     if (!typesInitialized)
       initializeTypes(jCas);
 

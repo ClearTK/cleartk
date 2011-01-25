@@ -69,7 +69,7 @@ public class IOUtil {
           inputStream = new FileInputStream(path);
         } catch (FileNotFoundException e1) {
           throw new IOException(String.format("unable to find %s "
-                  + "as a resource on the classpath, as a url or as a file.", path));
+              + "as a resource on the classpath, as a url or as a file.", path));
         }
       }
     }

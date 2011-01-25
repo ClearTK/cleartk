@@ -49,7 +49,7 @@ public class InstanceFactory {
   public static <T> Instance<T> createInstance(T outcome, Object... featureData) {
     if (featureData.length % 2 != 0) {
       throw new IllegalArgumentException(
-              "feature data must consist of an even number of elements corresponding to name/value pairs used to create features. ");
+          "feature data must consist of an even number of elements corresponding to name/value pairs used to create features. ");
     }
     Instance<T> instance = new Instance<T>(outcome);
     for (int i = 0; i < featureData.length;) {

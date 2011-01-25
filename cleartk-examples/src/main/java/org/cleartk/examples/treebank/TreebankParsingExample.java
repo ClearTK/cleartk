@@ -91,28 +91,39 @@ public class TreebankParsingExample {
     options.parseOptions(args);
 
     String[] suffixes = options.treebankFileSuffixes
-            .toArray(new String[options.treebankFileSuffixes.size()]);
+        .toArray(new String[options.treebankFileSuffixes.size()]);
 
     CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-            FilesCollectionReader.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-            FilesCollectionReader.PARAM_ROOT_FILE, options.treebankDirectory,
-            FilesCollectionReader.PARAM_VIEW_NAME, TreebankConstants.TREEBANK_VIEW,
-            FilesCollectionReader.PARAM_SUFFIXES, suffixes);
+        FilesCollectionReader.class,
+        ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+        FilesCollectionReader.PARAM_ROOT_FILE,
+        options.treebankDirectory,
+        FilesCollectionReader.PARAM_VIEW_NAME,
+        TreebankConstants.TREEBANK_VIEW,
+        FilesCollectionReader.PARAM_SUFFIXES,
+        suffixes);
 
-    AnalysisEngine viewCreator = AnalysisEngineFactory.createPrimitive(ViewCreatorAnnotator.class,
-            ExampleComponents.TYPE_SYSTEM_DESCRIPTION, ViewCreatorAnnotator.PARAM_VIEW_NAME,
-            EvaluationConstants.GOLD_VIEW);
+    AnalysisEngine viewCreator = AnalysisEngineFactory.createPrimitive(
+        ViewCreatorAnnotator.class,
+        ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+        ViewCreatorAnnotator.PARAM_VIEW_NAME,
+        EvaluationConstants.GOLD_VIEW);
 
     AnalysisEngineDescription treebankParserDescription = AnalysisEngineFactory
-            .createPrimitiveDescription(TreebankGoldAnnotator.class,
-                    ExampleComponents.TYPE_SYSTEM_DESCRIPTION);
+        .createPrimitiveDescription(
+            TreebankGoldAnnotator.class,
+            ExampleComponents.TYPE_SYSTEM_DESCRIPTION);
     AnalysisEngine treebankParser = AnalysisEngineFactory.createAnalysisEngine(
-            treebankParserDescription, EvaluationConstants.GOLD_VIEW);
+        treebankParserDescription,
+        EvaluationConstants.GOLD_VIEW);
 
-    AnalysisEngine xWriter = AnalysisEngineFactory.createPrimitive(XWriter.class,
-            ExampleComponents.TYPE_SYSTEM_DESCRIPTION, XWriter.PARAM_OUTPUT_DIRECTORY_NAME,
-            options.outputDirectory, XWriter.PARAM_FILE_NAMER_CLASS_NAME,
-            ViewURIFileNamer.class.getName());
+    AnalysisEngine xWriter = AnalysisEngineFactory.createPrimitive(
+        XWriter.class,
+        ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+        XWriter.PARAM_OUTPUT_DIRECTORY_NAME,
+        options.outputDirectory,
+        XWriter.PARAM_FILE_NAMER_CLASS_NAME,
+        ViewURIFileNamer.class.getName());
 
     SimplePipeline.runPipeline(reader, viewCreator, treebankParser, xWriter);
 

@@ -77,10 +77,12 @@ import org.uimafit.factory.initializable.InitializableFactory;
  * 
  * @author Philipp Wetzler, Philip Ogren.
  */
-@TypeCapability(outputs = { "org.cleartk.syntax.constituent.type.TreebankNode",
+@TypeCapability(outputs = {
+    "org.cleartk.syntax.constituent.type.TreebankNode",
     "org.cleartk.syntax.constituent.type.TerminalTreebankNode",
     "org.cleartk.syntax.constituent.type.TopTreebankNode" })
-public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation> extends JCasAnnotator_ImplBase {
+public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation>
+    extends JCasAnnotator_ImplBase {
 
   public static final String DEFAULT_PARSER_MODEL_PATH = "/models/en-parser-chunking.bin";
 
@@ -89,25 +91,25 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
   public static final float DEFAULT_ADVANCE_PERCENTAGE = (float) Parser.defaultAdvancePercentage;
 
   public static final String PARAM_PARSER_MODEL_PATH = ConfigurationParameterFactory
-          .createConfigurationParameterName(ParserAnnotator.class, "parserModelPath");
+      .createConfigurationParameterName(ParserAnnotator.class, "parserModelPath");
 
   @ConfigurationParameter(defaultValue = DEFAULT_PARSER_MODEL_PATH, description = "provides the path of the OpenNLP parser model build file, e.g. /models/en-parser-chunking.bin.  See javadoc for opennlp.tools.parser.chunking.Parser.")
   private String parserModelPath;
 
   public static final String PARAM_BEAM_SIZE = ConfigurationParameterFactory
-          .createConfigurationParameterName(ParserAnnotator.class, "beamSize");
+      .createConfigurationParameterName(ParserAnnotator.class, "beamSize");
 
   @ConfigurationParameter(defaultValue = "" + DEFAULT_BEAM_SIZE, description = "indicates the beam size that should be used in the parser's search.  See javadoc for opennlp.tools.parser.chunking.Parser.")
   private int beamSize;
 
   public static final String PARAM_ADVANCE_PERCENTAGE = ConfigurationParameterFactory
-          .createConfigurationParameterName(ParserAnnotator.class, "advancePercentage");
+      .createConfigurationParameterName(ParserAnnotator.class, "advancePercentage");
 
   @ConfigurationParameter(defaultValue = "" + Parser.defaultAdvancePercentage, description = "indicates \"the amount of probability mass required of advanced outcomes\".  See javadoc for opennlp.tools.parser.chunking.Parser.")
   private float advancePercentage;
 
   public static final String PARAM_INPUT_TYPES_HELPER_CLASS_NAME = ConfigurationParameterFactory
-          .createConfigurationParameterName(ParserAnnotator.class, "inputTypesHelperClassName");
+      .createConfigurationParameterName(ParserAnnotator.class, "inputTypesHelperClassName");
 
   @ConfigurationParameter(defaultValue = "org.cleartk.syntax.opennlp.parser.DefaultInputTypesHelper", description = "provides the class name of the class used to read sentences from the document")
   private String inputTypesHelperClassName;
@@ -115,7 +117,7 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
   protected InputTypesHelper<TOKEN_TYPE, SENTENCE_TYPE> inputTypesHelper;
 
   public static final String PARAM_USE_TAGS_FROM_CAS = ConfigurationParameterFactory
-          .createConfigurationParameterName(ParserAnnotator.class, "useTagsFromCas");
+      .createConfigurationParameterName(ParserAnnotator.class, "useTagsFromCas");
 
   @ConfigurationParameter(defaultValue = "false", description = "determines whether or not part-of-speech tags that are already in the CAS will be used or not.")
   private boolean useTagsFromCas;
@@ -129,8 +131,10 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
   public void initialize(UimaContext ctx) throws ResourceInitializationException {
     super.initialize(ctx);
 
-    inputTypesHelper = InitializableFactory.create(ctx, inputTypesHelperClassName,
-            InputTypesHelper.class);
+    inputTypesHelper = InitializableFactory.create(
+        ctx,
+        inputTypesHelperClassName,
+        InputTypesHelper.class);
 
     try {
       InputStream modelInputStream = IOUtil.getInputStream(ParserAnnotator.class, parserModelPath);
@@ -154,14 +158,22 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
 
     for (SENTENCE_TYPE sentence : sentenceList) {
 
-      Parse parse = new Parse(text, new Span(sentence.getBegin(), sentence.getEnd()),
-              Parser.INC_NODE, 1, null);
+      Parse parse = new Parse(
+          text,
+          new Span(sentence.getBegin(), sentence.getEnd()),
+          Parser.INC_NODE,
+          1,
+          null);
 
       List<TOKEN_TYPE> tokenList = inputTypesHelper.getTokens(jCas, sentence);
 
       for (Annotation token : tokenList) {
-        parse.insert(new Parse(text, new Span(token.getBegin(), token.getEnd()), Parser.TOK_NODE,
-                0, 0));
+        parse.insert(new Parse(
+            text,
+            new Span(token.getBegin(), token.getEnd()),
+            Parser.TOK_NODE,
+            0,
+            0));
       }
 
       if (useTagsFromCas) {
@@ -221,8 +233,11 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
       }
 
       FSArray cFSArray = new FSArray(jCas, cArray.size());
-      cFSArray.copyFromArray(cArray.toArray(new FeatureStructure[cArray.size()]), 0, 0,
-              cArray.size());
+      cFSArray.copyFromArray(
+          cArray.toArray(new FeatureStructure[cArray.size()]),
+          0,
+          0,
+          cArray.size());
       myNode.setChildren(cFSArray);
     }
 
@@ -255,7 +270,7 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
     }
 
     TreebankNode[] children = Arrays.asList(node.getChildren().toArray()).toArray(
-            new TreebankNode[node.getChildren().size()]);
+        new TreebankNode[node.getChildren().size()]);
 
     for (TreebankNode child : children) {
       tList.addAll(getTerminals(child));
@@ -264,8 +279,10 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
   }
 
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(ParserAnnotator.class,
-            SyntaxComponents.TYPE_SYSTEM_DESCRIPTION, PARAM_PARSER_MODEL_PATH,
-            ParamUtil.getParameterValue(PARAM_PARSER_MODEL_PATH, "/models/en-parser-chunking.bin"));
+    return AnalysisEngineFactory.createPrimitiveDescription(
+        ParserAnnotator.class,
+        SyntaxComponents.TYPE_SYSTEM_DESCRIPTION,
+        PARAM_PARSER_MODEL_PATH,
+        ParamUtil.getParameterValue(PARAM_PARSER_MODEL_PATH, "/models/en-parser-chunking.bin"));
   }
 }

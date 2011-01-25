@@ -46,29 +46,33 @@ import cc.mallet.types.InstanceList;
  */
 
 public abstract class MalletClassifierBuilder_ImplBase<OUTCOME_TYPE> implements
-        ClassifierBuilder<OUTCOME_TYPE> {
+    ClassifierBuilder<OUTCOME_TYPE> {
 
   public void train(File dir, String[] args) throws Exception {
 
     InstanceListCreator instanceListCreator = new InstanceListCreator();
-    InstanceList instanceList = instanceListCreator.createInstanceList(new File(dir,
-            "training-data.mallet"));
+    InstanceList instanceList = instanceListCreator.createInstanceList(new File(
+        dir,
+        "training-data.mallet"));
     instanceList.save(new File(dir, "training-data.ser"));
 
     String factoryName = args[0];
     Class<ClassifierTrainerFactory<?>> factoryClass = createTrainerFactory(factoryName);
     if (factoryClass == null) {
       String factoryName2 = "org.cleartk.classifier.mallet.factory." + factoryName
-              + "TrainerFactory";
+          + "TrainerFactory";
       factoryClass = createTrainerFactory(factoryName2);
     }
     if (factoryClass == null) {
       throw new IllegalArgumentException(
-              String.format(
-                      "name for classifier trainer factory is not valid: name given ='%s'.  Valid classifier names include: %s, %s, %s, and %s",
-                      factoryName, ClassifierTrainerFactory.NAMES[0],
-                      ClassifierTrainerFactory.NAMES[1], ClassifierTrainerFactory.NAMES[2],
-                      ClassifierTrainerFactory.NAMES[3]));
+          String
+              .format(
+                  "name for classifier trainer factory is not valid: name given ='%s'.  Valid classifier names include: %s, %s, %s, and %s",
+                  factoryName,
+                  ClassifierTrainerFactory.NAMES[0],
+                  ClassifierTrainerFactory.NAMES[1],
+                  ClassifierTrainerFactory.NAMES[2],
+                  ClassifierTrainerFactory.NAMES[3]));
     }
 
     String[] factoryArgs = new String[args.length - 1];
@@ -80,13 +84,14 @@ public abstract class MalletClassifierBuilder_ImplBase<OUTCOME_TYPE> implements
       trainer = factory.createTrainer(factoryArgs);
     } catch (Throwable t) {
       throw new IllegalArgumentException("Unable to create trainer.  Usage for "
-              + factoryClass.getCanonicalName() + ": " + factory.getUsageMessage(), t);
+          + factoryClass.getCanonicalName() + ": " + factory.getUsageMessage(), t);
     }
 
     cc.mallet.classify.Classifier classifier = trainer.train(instanceList);
 
-    ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File(dir,
-            "model.mallet")));
+    ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File(
+        dir,
+        "model.mallet")));
     oos.writeObject(classifier);
     oos.close();
 

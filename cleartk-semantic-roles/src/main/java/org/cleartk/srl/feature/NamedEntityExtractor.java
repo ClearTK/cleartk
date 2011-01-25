@@ -48,7 +48,7 @@ public class NamedEntityExtractor implements SimpleFeatureExtractor {
     NamedEntityMention nem = null;
 
     nem = AnnotationRetrieval
-            .getMatchingAnnotation(view, focusAnnotation, NamedEntityMention.class);
+        .getMatchingAnnotation(view, focusAnnotation, NamedEntityMention.class);
     if (nem != null) {
       List<Feature> features = new ArrayList<Feature>();
       features.add(new Feature("NamedEntityType", nem.getMentionType()));
@@ -57,8 +57,11 @@ public class NamedEntityExtractor implements SimpleFeatureExtractor {
       return features;
     }
 
-    nem = AnnotationRetrieval.getContainingAnnotation(view, focusAnnotation,
-            NamedEntityMention.class, true);
+    nem = AnnotationRetrieval.getContainingAnnotation(
+        view,
+        focusAnnotation,
+        NamedEntityMention.class,
+        true);
     if (nem != null) {
       List<Feature> features = new ArrayList<Feature>();
       features.add(new Feature("ContainingNamedEntityType", nem.getMentionType()));

@@ -75,14 +75,20 @@ public class TimeMLWriterTest extends TimeMLTestBase {
   @Test
   public void test() throws UIMAException, IOException, JDOMException {
     CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-            FilesCollectionReader.class, typeSystemDescription,
-            FilesCollectionReader.PARAM_VIEW_NAME, TimeMLViewName.TIMEML,
-            FilesCollectionReader.PARAM_ROOT_FILE, this.inputFile.getPath());
-    AnalysisEngine annotator = AnalysisEngineFactory.createPrimitive(TimeMLGoldAnnotator.class,
-            typeSystemDescription);
-    AnalysisEngine writer = AnalysisEngineFactory.createPrimitive(TimeMLWriter.class,
-            typeSystemDescription, TimeMLWriter.PARAM_OUTPUT_DIRECTORY_NAME,
-            this.outputDirectory.getPath());
+        FilesCollectionReader.class,
+        typeSystemDescription,
+        FilesCollectionReader.PARAM_VIEW_NAME,
+        TimeMLViewName.TIMEML,
+        FilesCollectionReader.PARAM_ROOT_FILE,
+        this.inputFile.getPath());
+    AnalysisEngine annotator = AnalysisEngineFactory.createPrimitive(
+        TimeMLGoldAnnotator.class,
+        typeSystemDescription);
+    AnalysisEngine writer = AnalysisEngineFactory.createPrimitive(
+        TimeMLWriter.class,
+        typeSystemDescription,
+        TimeMLWriter.PARAM_OUTPUT_DIRECTORY_NAME,
+        this.outputDirectory.getPath());
 
     for (JCas jcas : new JCasIterable(reader, annotator, writer)) {
       Assert.assertNotNull(jcas);
@@ -104,11 +110,14 @@ public class TimeMLWriterTest extends TimeMLTestBase {
     } catch (ResourceInitializationException e) {
     }
 
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TimeMLWriter.class,
-            typeSystemDescription, TimeMLWriter.PARAM_OUTPUT_DIRECTORY_NAME,
-            this.outputDirectory.getPath());
-    Assert.assertEquals(this.outputDirectory.getPath(),
-            engine.getConfigParameterValue(TimeMLWriter.PARAM_OUTPUT_DIRECTORY_NAME));
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+        TimeMLWriter.class,
+        typeSystemDescription,
+        TimeMLWriter.PARAM_OUTPUT_DIRECTORY_NAME,
+        this.outputDirectory.getPath());
+    Assert.assertEquals(
+        this.outputDirectory.getPath(),
+        engine.getConfigParameterValue(TimeMLWriter.PARAM_OUTPUT_DIRECTORY_NAME));
     engine.collectionProcessComplete();
   }
 

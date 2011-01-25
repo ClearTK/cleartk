@@ -37,7 +37,9 @@ import org.uimafit.factory.initializable.Initializable;
 
 public interface ChunkerFeatureExtractor extends Initializable {
 
-  public Instance<String> extractFeatures(JCas jCas, Annotation labeledAnnotation,
-          Annotation sequence) throws CleartkException;
+  public Instance<String> extractFeatures(
+      JCas jCas,
+      Annotation labeledAnnotation,
+      Annotation sequence) throws CleartkException;
 
 }

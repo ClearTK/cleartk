@@ -46,9 +46,11 @@ public class PosTaggerAnnotatorTest extends SyntaxTestBase {
   @Test
   public void testSimple() throws UIMAException {
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(PosTaggerAnnotator
-            .getDescription());
-    tokenBuilder.buildTokens(jCas, "The brown fox jumped quickly over the lazy dog.",
-            "The brown fox jumped quickly over the lazy dog .");
+        .getDescription());
+    tokenBuilder.buildTokens(
+        jCas,
+        "The brown fox jumped quickly over the lazy dog.",
+        "The brown fox jumped quickly over the lazy dog .");
     engine.process(jCas);
 
     List<String> expected = Arrays.asList("DT JJ NN VBD RB IN DT JJ NN .".split(" "));

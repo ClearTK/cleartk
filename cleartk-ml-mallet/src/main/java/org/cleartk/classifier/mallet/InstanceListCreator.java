@@ -60,7 +60,8 @@ public class InstanceListCreator {
 
   public InstanceList createInstanceList(File dataFile) throws IOException {
 
-    InstanceList instanceList = new InstanceList(new SerialPipes(new Pipe[] { new Target2Label(),
+    InstanceList instanceList = new InstanceList(new SerialPipes(new Pipe[] {
+        new Target2Label(),
         new Csv2FeatureVector() }));
 
     Reader fileReader = new FileReader(dataFile);

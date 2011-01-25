@@ -58,10 +58,12 @@ public class Conll2003GoldReaderTest extends NeTestBase {
   @Test
   public void testFakeTrainDocs() throws UIMAException, IOException {
     CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-            Conll2003GoldReader.class, typeSystemDescription,
-            Conll2003GoldReader.PARAM_DATA_FILE_NAME,
-            "src/test/resources/data/conll2003/eng.train",
-            Conll2003GoldReader.PARAM_LOAD_NAMED_ENTITIES, true);
+        Conll2003GoldReader.class,
+        typeSystemDescription,
+        Conll2003GoldReader.PARAM_DATA_FILE_NAME,
+        "src/test/resources/data/conll2003/eng.train",
+        Conll2003GoldReader.PARAM_LOAD_NAMED_ENTITIES,
+        true);
 
     Iterator<JCas> iterator = new JCasIterable(reader).iterator();
 
@@ -73,8 +75,9 @@ public class Conll2003GoldReaderTest extends NeTestBase {
     Sentence firstSentence = JCasUtil.selectByIndex(jcas, Sentence.class, 0);
     Assert.assertEquals("ee rrrr ggg ccc tt bbbb BBBBBBB llll . ", firstSentence.getCoveredText());
 
-    Assert.assertEquals(9, AnnotationRetrieval.getAnnotations(jcas, firstSentence, Token.class)
-            .size());
+    Assert.assertEquals(9, AnnotationRetrieval
+        .getAnnotations(jcas, firstSentence, Token.class)
+        .size());
 
     Token token = JCasUtil.selectByIndex(jcas, Token.class, 0);
     Assert.assertEquals("A", token.getPos());
@@ -121,10 +124,12 @@ public class Conll2003GoldReaderTest extends NeTestBase {
 
     Assert.assertEquals(1, sentenceIndex.size());
     firstSentence = JCasUtil.selectByIndex(jcas, Sentence.class, 0);
-    Assert.assertEquals("CCCCC ssss tttt rrrrr fff TTTTTT ttttt . ", firstSentence.getCoveredText());
+    Assert
+        .assertEquals("CCCCC ssss tttt rrrrr fff TTTTTT ttttt . ", firstSentence.getCoveredText());
 
-    Assert.assertEquals(8, AnnotationRetrieval.getAnnotations(jcas, firstSentence, Token.class)
-            .size());
+    Assert.assertEquals(8, AnnotationRetrieval
+        .getAnnotations(jcas, firstSentence, Token.class)
+        .size());
 
     token = JCasUtil.selectByIndex(jcas, Token.class, 0);
     Assert.assertEquals("PPP", token.getPos());

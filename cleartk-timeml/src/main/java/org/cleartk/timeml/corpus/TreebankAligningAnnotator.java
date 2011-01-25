@@ -61,8 +61,7 @@ import org.uimafit.factory.ConfigurationParameterFactory;
 public class TreebankAligningAnnotator extends JCasAnnotator_ImplBase {
 
   public static final String PARAM_TREEBANK_DIRECTORY_NAME = ConfigurationParameterFactory
-          .createConfigurationParameterName(TreebankAligningAnnotator.class,
-                  "treebankDirectoryName");
+      .createConfigurationParameterName(TreebankAligningAnnotator.class, "treebankDirectoryName");
 
   @ConfigurationParameter(mandatory = true, description = "the path to the treebank directory containing the XX/wsj_XXXX.mrg files.")
   private String treebankDirectoryName;
@@ -72,9 +71,12 @@ public class TreebankAligningAnnotator extends JCasAnnotator_ImplBase {
   }
 
   public static AnalysisEngineDescription getDescription(String treeBankDir)
-          throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(TreebankAligningAnnotator.class,
-            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION, PARAM_TREEBANK_DIRECTORY_NAME, treeBankDir);
+      throws ResourceInitializationException {
+    return AnalysisEngineFactory.createPrimitiveDescription(
+        TreebankAligningAnnotator.class,
+        TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
+        PARAM_TREEBANK_DIRECTORY_NAME,
+        treeBankDir);
 
   }
 
@@ -108,7 +110,7 @@ public class TreebankAligningAnnotator extends JCasAnnotator_ImplBase {
     List<Text> texts = AnnotationRetrieval.getAnnotations(jCas, Text.class);
     if (texts.size() != 1) {
       throw new AnalysisEngineProcessException(new RuntimeException(
-              "expected 1 TEXT element, found " + texts.size()));
+          "expected 1 TEXT element, found " + texts.size()));
     }
 
     // parse the trees, skipping the document if there are alignment
@@ -119,10 +121,10 @@ public class TreebankAligningAnnotator extends JCasAnnotator_ImplBase {
     try {
       utilTrees = TreebankFormatParser.parseDocument(mrgText, offset, text);
     } catch (Exception e) {
-      this.getContext()
-              .getLogger()
-              .log(Level.WARNING, String.format("Skipping %s due to alignment problems", wsjPath),
-                      e);
+      this
+          .getContext()
+          .getLogger()
+          .log(Level.WARNING, String.format("Skipping %s due to alignment problems", wsjPath), e);
       return;
     }
 

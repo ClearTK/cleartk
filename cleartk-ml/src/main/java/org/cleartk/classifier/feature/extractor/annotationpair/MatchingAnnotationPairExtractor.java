@@ -40,40 +40,50 @@ import org.cleartk.util.AnnotationRetrieval;
  */
 public class MatchingAnnotationPairExtractor implements AnnotationPairFeatureExtractor {
 
-  public MatchingAnnotationPairExtractor(Class<? extends Annotation> leftType,
-          Class<? extends Annotation> rightType, AnnotationPairFeatureExtractor subExtractor) {
+  public MatchingAnnotationPairExtractor(
+      Class<? extends Annotation> leftType,
+      Class<? extends Annotation> rightType,
+      AnnotationPairFeatureExtractor subExtractor) {
     this.leftType = leftType;
     this.rightType = rightType;
     this.subExtractor = subExtractor;
   }
 
-  public MatchingAnnotationPairExtractor(Class<? extends Annotation> leftType,
-          Class<? extends Annotation> rightType, AnnotationPairFeatureExtractor... subExtractors) {
+  public MatchingAnnotationPairExtractor(
+      Class<? extends Annotation> leftType,
+      Class<? extends Annotation> rightType,
+      AnnotationPairFeatureExtractor... subExtractors) {
     this(leftType, rightType, new CombinedAnnotationPairFeatureExtractor(subExtractors));
   }
 
   public List<Feature> extract(JCas view, Annotation leftAnnotation, Annotation rightAnnotation)
-          throws CleartkException {
+      throws CleartkException {
 
     Annotation leftMatchingAnnotation;
     Annotation rightMatchingAnnotation;
 
     if (!leftType.isInstance(leftAnnotation)) {
-      leftMatchingAnnotation = AnnotationRetrieval.getMatchingAnnotation(view, leftAnnotation,
-              leftType);
+      leftMatchingAnnotation = AnnotationRetrieval.getMatchingAnnotation(
+          view,
+          leftAnnotation,
+          leftType);
       if (leftMatchingAnnotation == null)
-        throw new CleartkException(String.format("no matching %s annotation on the left",
-                leftType.getSimpleName()));
+        throw new CleartkException(String.format(
+            "no matching %s annotation on the left",
+            leftType.getSimpleName()));
     } else {
       leftMatchingAnnotation = leftType.cast(leftAnnotation);
     }
 
     if (!rightType.isInstance(rightAnnotation)) {
-      rightMatchingAnnotation = AnnotationRetrieval.getMatchingAnnotation(view, rightAnnotation,
-              rightType);
+      rightMatchingAnnotation = AnnotationRetrieval.getMatchingAnnotation(
+          view,
+          rightAnnotation,
+          rightType);
       if (rightMatchingAnnotation == null)
-        throw new CleartkException(String.format("no matching %s annotation on the right",
-                rightType.getSimpleName()));
+        throw new CleartkException(String.format(
+            "no matching %s annotation on the right",
+            rightType.getSimpleName()));
     } else {
       rightMatchingAnnotation = rightType.cast(rightAnnotation);
     }

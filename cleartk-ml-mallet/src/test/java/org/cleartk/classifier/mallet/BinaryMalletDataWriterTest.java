@@ -70,8 +70,9 @@ public class BinaryMalletDataWriterTest extends DefaultTestBase {
     @Override
     public void process(JCas cas) throws AnalysisEngineProcessException {
       try {
-        List<Feature> features = Arrays.asList(new Feature("pos", "NN"), new Feature("distance",
-                3.0), new Feature("precision", 1.234));
+        List<Feature> features = Arrays.asList(new Feature("pos", "NN"), new Feature(
+            "distance",
+            3.0), new Feature("precision", 1.234));
         Instance<Boolean> instance = new Instance<Boolean>(Boolean.TRUE, features);
         this.dataWriter.write(instance);
 
@@ -94,16 +95,19 @@ public class BinaryMalletDataWriterTest extends DefaultTestBase {
   @Test
   public void test1() throws Exception {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
-            Test1Annotator.class, typeSystemDescription,
-            JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
-            CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-            DefaultBinaryMalletDataWriterFactory.class.getName());
+        Test1Annotator.class,
+        typeSystemDescription,
+        JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        outputDirectoryName,
+        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        DefaultBinaryMalletDataWriterFactory.class.getName());
 
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
 
-    String[] lines = FileUtil.loadListOfStrings(new File(outputDirectoryName,
-            BinaryMalletDataWriter.TRAINING_DATA_FILE_NAME));
+    String[] lines = FileUtil.loadListOfStrings(new File(
+        outputDirectoryName,
+        BinaryMalletDataWriter.TRAINING_DATA_FILE_NAME));
 
     assertEquals("pos_NN:1.0 distance:3.0 precision:1.234 true", lines[0]);
     assertEquals("name_2PO:1.0 p's:2 false", lines[1]);
@@ -126,25 +130,30 @@ public class BinaryMalletDataWriterTest extends DefaultTestBase {
   @Test
   public void test2() throws Exception {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
-            Test1Annotator.class, typeSystemDescription,
-            JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
-            CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-            DefaultBinaryMalletDataWriterFactory.class.getName(),
-            MalletDataWriterFactory_ImplBase.PARAM_COMPRESS, true);
+        Test1Annotator.class,
+        typeSystemDescription,
+        JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        outputDirectoryName,
+        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        DefaultBinaryMalletDataWriterFactory.class.getName(),
+        MalletDataWriterFactory_ImplBase.PARAM_COMPRESS,
+        true);
 
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
 
-    String[] lines = FileUtil.loadListOfStrings(new File(outputDirectoryName,
-            MalletDataWriter.TRAINING_DATA_FILE_NAME));
+    String[] lines = FileUtil.loadListOfStrings(new File(
+        outputDirectoryName,
+        MalletDataWriter.TRAINING_DATA_FILE_NAME));
 
     assertEquals("0:1.0 1:3.0 2:1.234 true", lines[0]);
     assertEquals("3:1.0 4:2 false", lines[1]);
     assertEquals("null:0 true", lines[2]);
     assertEquals("5:1.0 false", lines[3]);
 
-    lines = FileUtil.loadListOfStrings(new File(outputDirectoryName,
-            NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
+    lines = FileUtil.loadListOfStrings(new File(
+        outputDirectoryName,
+        NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
     Set<String> lineSet = new HashSet<String>();
     for (int i = 0; i < lines.length; i++)
       lineSet.add(lines[i]);
@@ -174,26 +183,32 @@ public class BinaryMalletDataWriterTest extends DefaultTestBase {
   @Test
   public void test3() throws Exception {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
-            Test1Annotator.class, typeSystemDescription,
-            JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
-            CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-            DefaultBinaryMalletDataWriterFactory.class.getName(),
-            MalletDataWriterFactory_ImplBase.PARAM_COMPRESS, true,
-            MalletDataWriterFactory_ImplBase.PARAM_SORT, true);
+        Test1Annotator.class,
+        typeSystemDescription,
+        JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        outputDirectoryName,
+        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        DefaultBinaryMalletDataWriterFactory.class.getName(),
+        MalletDataWriterFactory_ImplBase.PARAM_COMPRESS,
+        true,
+        MalletDataWriterFactory_ImplBase.PARAM_SORT,
+        true);
 
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
 
-    String[] lines = FileUtil.loadListOfStrings(new File(outputDirectoryName,
-            MalletDataWriter.TRAINING_DATA_FILE_NAME));
+    String[] lines = FileUtil.loadListOfStrings(new File(
+        outputDirectoryName,
+        MalletDataWriter.TRAINING_DATA_FILE_NAME));
 
     assertEquals("0:1.0 1:3.0 2:1.234 true", lines[0]);
     assertEquals("3:1.0 4:2 false", lines[1]);
     assertEquals("null:0 true", lines[2]);
     assertEquals("5:1.0 false", lines[3]);
 
-    lines = FileUtil.loadListOfStrings(new File(outputDirectoryName,
-            NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
+    lines = FileUtil.loadListOfStrings(new File(
+        outputDirectoryName,
+        NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
     int i = 0;
     assertEquals("6", lines[i++]);
     assertEquals("A_B_AB	5", lines[i++]);
@@ -220,8 +235,10 @@ public class BinaryMalletDataWriterTest extends DefaultTestBase {
     }
 
     public void processSimple(JCas cas) throws CleartkException {
-      List<Feature> features = Arrays.asList(new Feature("pos", "NN"),
-              new Feature("distance", 3.0), new Feature("precision", 1.234));
+      List<Feature> features = Arrays.asList(
+          new Feature("pos", "NN"),
+          new Feature("distance", 3.0),
+          new Feature("precision", 1.234));
       Instance<Boolean> instance = new Instance<Boolean>(features);
       this.dataWriter.write(instance);
     }
@@ -239,12 +256,16 @@ public class BinaryMalletDataWriterTest extends DefaultTestBase {
     HideOutput hider = new HideOutput();
 
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
-            Test4Annotator.class, typeSystemDescription,
-            JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
-            CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-            DefaultBinaryMalletDataWriterFactory.class.getName(),
-            MalletDataWriterFactory_ImplBase.PARAM_COMPRESS, true,
-            MalletDataWriterFactory_ImplBase.PARAM_SORT, true);
+        Test4Annotator.class,
+        typeSystemDescription,
+        JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        outputDirectoryName,
+        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        DefaultBinaryMalletDataWriterFactory.class.getName(),
+        MalletDataWriterFactory_ImplBase.PARAM_COMPRESS,
+        true,
+        MalletDataWriterFactory_ImplBase.PARAM_SORT,
+        true);
 
     AnalysisEngineProcessException aepe = null;
     try {
@@ -284,17 +305,21 @@ public class BinaryMalletDataWriterTest extends DefaultTestBase {
   @Test
   public void test5() throws Exception {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
-            Test5Annotator.class, typeSystemDescription,
-            JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName,
-            CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-            DefaultBinaryMalletDataWriterFactory.class.getName(),
-            MalletDataWriterFactory_ImplBase.PARAM_COMPRESS, true);
+        Test5Annotator.class,
+        typeSystemDescription,
+        JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        outputDirectoryName,
+        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        DefaultBinaryMalletDataWriterFactory.class.getName(),
+        MalletDataWriterFactory_ImplBase.PARAM_COMPRESS,
+        true);
 
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
 
-    String[] lines = FileUtil.loadListOfStrings(new File(outputDirectoryName,
-            MalletDataWriter.TRAINING_DATA_FILE_NAME));
+    String[] lines = FileUtil.loadListOfStrings(new File(
+        outputDirectoryName,
+        MalletDataWriter.TRAINING_DATA_FILE_NAME));
     assertEquals("0:1.0 1:1.0 2:1.0 true", lines[0]);
   }
 

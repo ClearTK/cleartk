@@ -226,7 +226,17 @@ public class TreebankFormatParser {
   }
 
   private static boolean needsSpaceBefore(String tokenText) {
-    String[] noSpaceTokens = new String[] { ".", ",", ":", ";", "?", "'s", "'t", "\"", "!", ")",
+    String[] noSpaceTokens = new String[] {
+        ".",
+        ",",
+        ":",
+        ";",
+        "?",
+        "'s",
+        "'t",
+        "\"",
+        "!",
+        ")",
         "]" };
     for (String noSpaceToken : noSpaceTokens) {
       if (tokenText.equals(noSpaceToken)) {
@@ -282,8 +292,8 @@ public class TreebankFormatParser {
         node.setTextEnd(node.getTextEnd() - 1);
       } else {
         throw new IllegalArgumentException(
-                "plain text does not align with tokens in treebank parse.  node text = '" + text1
-                        + "'  plain text = '" + text2 + "'");
+            "plain text does not align with tokens in treebank parse.  node text = '" + text1
+                + "'  plain text = '" + text2 + "'");
       }
     }
   }
@@ -388,7 +398,7 @@ public class TreebankFormatParser {
             // parent than the current node that will be completed
             // later.)
             while (parseStack.size() > 0
-                    && parseStack.peek().getParseBegin() > node.getParseBegin()) {
+                && parseStack.peek().getParseBegin() > node.getParseBegin()) {
               TreebankNode child = parseStack.pop();
               node.addChild(child);
               child.setParent(node);
@@ -492,7 +502,7 @@ public class TreebankFormatParser {
     for (String line : lines) {
       if (!parensMatch(line)) {
         throw new IllegalArgumentException(
-                "Parentheses counts do not match for treebank sentence: " + line);
+            "Parentheses counts do not match for treebank sentence: " + line);
       }
     }
     return lines;

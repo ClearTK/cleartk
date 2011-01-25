@@ -36,14 +36,14 @@ import org.cleartk.classifier.Feature;
  */
 
 public abstract class FeaturesEncoder_ImplBase<ENCODED_FEATURES_TYPE, ENCODED_FEATURE_TYPE> extends
-        FeatureEncoderChain<ENCODED_FEATURE_TYPE> implements FeaturesEncoder<ENCODED_FEATURES_TYPE> {
+    FeatureEncoderChain<ENCODED_FEATURE_TYPE> implements FeaturesEncoder<ENCODED_FEATURES_TYPE> {
 
   private static final long serialVersionUID = 2233783545101319775L;
 
   public static final String ENCODERS_FILE_NAME = "encoders.ser";
 
   public abstract ENCODED_FEATURES_TYPE encodeAll(Iterable<Feature> features)
-          throws CleartkException;
+      throws CleartkException;
 
   public void finalizeFeatureSet(File outputDirectory) throws CleartkException {
   }

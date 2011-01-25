@@ -51,33 +51,31 @@ public class DefaultOutcomeFeatureExtractor implements OutcomeFeatureExtractor {
   private static final long serialVersionUID = 7476684786572310025L;
 
   public static final String PARAM_MOST_RECENT_OUTCOME = ConfigurationParameterFactory
-          .createConfigurationParameterName(DefaultOutcomeFeatureExtractor.class,
-                  "mostRecentOutcome");
+      .createConfigurationParameterName(DefaultOutcomeFeatureExtractor.class, "mostRecentOutcome");
 
   @ConfigurationParameter(description = "indicates the position of the first (most recent) outcome to include. For example, the default value of 1 means that if the outcomes produced so far by the classifier were [A, B, C, D], then the first outcome to be used as a feature would be D since it is the most recent.", defaultValue = "1")
   private int mostRecentOutcome = 1;
 
   public static final String PARAM_LEAST_RECENT_OUTCOME = ConfigurationParameterFactory
-          .createConfigurationParameterName(DefaultOutcomeFeatureExtractor.class,
-                  "leastRecentOutcome");
+      .createConfigurationParameterName(DefaultOutcomeFeatureExtractor.class, "leastRecentOutcome");
 
   @ConfigurationParameter(description = "indicates the position of the last (least recent) outcome to include. For example, the default value of 3 means that if the outcomes produced so far by the classifier were [A, B, C, D], then the last outcome to be used as a feature would be B since and is considered the least recent.", defaultValue = "3")
   private int leastRecentOutcome = 3;
 
   public static final String PARAM_USE_BIGRAM = ConfigurationParameterFactory
-          .createConfigurationParameterName(DefaultOutcomeFeatureExtractor.class, "useBigram");
+      .createConfigurationParameterName(DefaultOutcomeFeatureExtractor.class, "useBigram");
 
   @ConfigurationParameter(description = "when true indicates that bigrams of outcomes should be included as features", defaultValue = "true")
   private boolean useBigram = true;
 
   public static final String PARAM_USE_TRIGRAM = ConfigurationParameterFactory
-          .createConfigurationParameterName(DefaultOutcomeFeatureExtractor.class, "useTrigram");
+      .createConfigurationParameterName(DefaultOutcomeFeatureExtractor.class, "useTrigram");
 
   @ConfigurationParameter(defaultValue = "true", description = "indicates that trigrams of outcomes should be included as features")
   private boolean useTrigram = true;
 
   public static final String PARAM_USE4GRAM = ConfigurationParameterFactory
-          .createConfigurationParameterName(DefaultOutcomeFeatureExtractor.class, "use4gram");
+      .createConfigurationParameterName(DefaultOutcomeFeatureExtractor.class, "use4gram");
 
   @ConfigurationParameter(defaultValue = "false", description = "indicates that 4-grams of outcomes should be included as features")
   private boolean use4gram = false;
@@ -87,13 +85,15 @@ public class DefaultOutcomeFeatureExtractor implements OutcomeFeatureExtractor {
 
     if (mostRecentOutcome < 1) {
       throw new ResourceInitializationException(new IllegalArgumentException(String.format(
-              "the parameter '%1$s' must be greater than 1.", PARAM_MOST_RECENT_OUTCOME)));
+          "the parameter '%1$s' must be greater than 1.",
+          PARAM_MOST_RECENT_OUTCOME)));
     }
 
     if (leastRecentOutcome < mostRecentOutcome) {
       throw new ResourceInitializationException(new IllegalArgumentException(String.format(
-              "the parameter '%1$s' must be greater than the value for parameter '%2$s'.",
-              PARAM_LEAST_RECENT_OUTCOME, PARAM_MOST_RECENT_OUTCOME)));
+          "the parameter '%1$s' must be greater than the value for parameter '%2$s'.",
+          PARAM_LEAST_RECENT_OUTCOME,
+          PARAM_MOST_RECENT_OUTCOME)));
     }
 
   }
@@ -108,8 +108,12 @@ public class DefaultOutcomeFeatureExtractor implements OutcomeFeatureExtractor {
     for (int i = mostRecentOutcome; i <= leastRecentOutcome; i++) {
       int index = previousOutcomes.size() - i;
       if (index >= 0) {
-        Feature feature = new WindowFeature("PreviousOutcome", previousOutcomes.get(index),
-                WindowFeature.ORIENTATION_LEFT, i, (Feature) null);
+        Feature feature = new WindowFeature(
+            "PreviousOutcome",
+            previousOutcomes.get(index),
+            WindowFeature.ORIENTATION_LEFT,
+            i,
+            (Feature) null);
         features.add(feature);
       }
     }
@@ -117,10 +121,16 @@ public class DefaultOutcomeFeatureExtractor implements OutcomeFeatureExtractor {
     if (useBigram && previousOutcomes.size() >= 2) {
       int size = previousOutcomes.size();
       String featureValue = previousOutcomes.get(size - 1).toString() + "_"
-              + previousOutcomes.get(size - 2);
-      Feature feature = new WindowNGramFeature("PreviousOutcomes", featureValue,
-              WindowNGramFeature.ORIENTATION_LEFT, WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT, "_",
-              2, 1, (List<Feature>) null);
+          + previousOutcomes.get(size - 2);
+      Feature feature = new WindowNGramFeature(
+          "PreviousOutcomes",
+          featureValue,
+          WindowNGramFeature.ORIENTATION_LEFT,
+          WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT,
+          "_",
+          2,
+          1,
+          (List<Feature>) null);
       features.add(feature);
 
     }
@@ -128,10 +138,16 @@ public class DefaultOutcomeFeatureExtractor implements OutcomeFeatureExtractor {
     if (useTrigram && previousOutcomes.size() >= 3) {
       int size = previousOutcomes.size();
       String featureValue = previousOutcomes.get(size - 1).toString() + "_"
-              + previousOutcomes.get(size - 2) + "_" + previousOutcomes.get(size - 3);
-      Feature feature = new WindowNGramFeature("PreviousOutcomes", featureValue,
-              WindowNGramFeature.ORIENTATION_LEFT, WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT, "_",
-              3, 1, (List<Feature>) null);
+          + previousOutcomes.get(size - 2) + "_" + previousOutcomes.get(size - 3);
+      Feature feature = new WindowNGramFeature(
+          "PreviousOutcomes",
+          featureValue,
+          WindowNGramFeature.ORIENTATION_LEFT,
+          WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT,
+          "_",
+          3,
+          1,
+          (List<Feature>) null);
       features.add(feature);
 
     }
@@ -139,11 +155,17 @@ public class DefaultOutcomeFeatureExtractor implements OutcomeFeatureExtractor {
     if (use4gram && previousOutcomes.size() >= 4) {
       int size = previousOutcomes.size();
       String featureValue = previousOutcomes.get(size - 1).toString() + "_"
-              + previousOutcomes.get(size - 2) + "_" + previousOutcomes.get(size - 3) + "_"
-              + previousOutcomes.get(size - 4);
-      Feature feature = new WindowNGramFeature("PreviousOutcomes", featureValue,
-              WindowNGramFeature.ORIENTATION_LEFT, WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT, "_",
-              4, 1, (List<Feature>) null);
+          + previousOutcomes.get(size - 2) + "_" + previousOutcomes.get(size - 3) + "_"
+          + previousOutcomes.get(size - 4);
+      Feature feature = new WindowNGramFeature(
+          "PreviousOutcomes",
+          featureValue,
+          WindowNGramFeature.ORIENTATION_LEFT,
+          WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT,
+          "_",
+          4,
+          1,
+          (List<Feature>) null);
       features.add(feature);
     }
 

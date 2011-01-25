@@ -51,7 +51,7 @@ public class OVASVMlightClassifierBuilder implements ClassifierBuilder<String> {
         Sigmoid s = FitSigmoid.fit(new File(file.toString() + ".model"), file);
 
         ObjectOutput o = new ObjectOutputStream(new FileOutputStream(new File(file.toString()
-                + ".sigmoid")));
+            + ".sigmoid")));
         o.writeObject(s);
         o.close();
       }

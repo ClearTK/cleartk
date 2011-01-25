@@ -50,8 +50,11 @@ public class SnowballStemmerTest extends TokenTestBase {
   @Test
   public void testBadStemmerName() throws UIMAException {
     try {
-      AnalysisEngineFactory.createPrimitive(SnowballStemmer.class, typeSystemDescription,
-              SnowballStemmer.PARAM_STEMMER_NAME, "FooBar");
+      AnalysisEngineFactory.createPrimitive(
+          SnowballStemmer.class,
+          typeSystemDescription,
+          SnowballStemmer.PARAM_STEMMER_NAME,
+          "FooBar");
       Assert.fail("Expected exception for bad stemmer name");
     } catch (ResourceInitializationException e) {
     }
@@ -59,8 +62,11 @@ public class SnowballStemmerTest extends TokenTestBase {
 
   @Test
   public void testSimple() throws UIMAException {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(DefaultSnowballStemmer.class,
-            typeSystemDescription, DefaultSnowballStemmer.PARAM_STEMMER_NAME, "English");
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+        DefaultSnowballStemmer.class,
+        typeSystemDescription,
+        DefaultSnowballStemmer.PARAM_STEMMER_NAME,
+        "English");
     String text = "The brown foxes jumped quickly over the lazy dog.";
     String tokens = "The brown foxes jumped quickly over the lazy dog .";
     tokenBuilder.buildTokens(jCas, text, tokens);
@@ -75,14 +81,19 @@ public class SnowballStemmerTest extends TokenTestBase {
 
   @Test
   public void testUppercase() throws UIMAException {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(DefaultSnowballStemmer.class,
-            typeSystemDescription, SnowballStemmer.PARAM_STEMMER_NAME, "English");
-    tokenBuilder.buildTokens(jCas, "The brown foxes JumPEd QUICKLy over the lazY dog.",
-            "The brown foxes JumPEd QUICKLy over the lazY dog .");
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+        DefaultSnowballStemmer.class,
+        typeSystemDescription,
+        SnowballStemmer.PARAM_STEMMER_NAME,
+        "English");
+    tokenBuilder.buildTokens(
+        jCas,
+        "The brown foxes JumPEd QUICKLy over the lazY dog.",
+        "The brown foxes JumPEd QUICKLy over the lazY dog .");
     engine.process(jCas);
 
     List<String> expected = Arrays
-            .asList("the brown fox jump quick over the lazi dog .".split(" "));
+        .asList("the brown fox jump quick over the lazi dog .".split(" "));
     List<String> actual = new ArrayList<String>();
     for (Token token : AnnotationRetrieval.getAnnotations(jCas, Token.class)) {
       actual.add(token.getStem());
@@ -102,8 +113,11 @@ public class SnowballStemmerTest extends TokenTestBase {
 
     assertNotNull(rie);
 
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(DefaultSnowballStemmer.class,
-            typeSystemDescription, SnowballStemmer.PARAM_STEMMER_NAME, "English");
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+        DefaultSnowballStemmer.class,
+        typeSystemDescription,
+        SnowballStemmer.PARAM_STEMMER_NAME,
+        "English");
 
     Object stemmerName = engine.getConfigParameterValue(SnowballStemmer.PARAM_STEMMER_NAME);
     Assert.assertEquals("English", stemmerName);

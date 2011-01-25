@@ -47,7 +47,7 @@ import org.cleartk.util.ReflectionUtil;
  */
 
 public abstract class JarSequentialClassifier<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE, FEATURES_TYPE>
-        implements SequentialClassifier<INPUTOUTCOME_TYPE> {
+    implements SequentialClassifier<INPUTOUTCOME_TYPE> {
 
   protected FeaturesEncoder<FEATURES_TYPE> featuresEncoder;
 
@@ -102,17 +102,21 @@ public abstract class JarSequentialClassifier<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_T
   }
 
   protected OutcomeEncoder<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE> outcomeEncoderCast(
-          OutcomeEncoder<?, ?> encoder) {
+      OutcomeEncoder<?, ?> encoder) {
     Class<?> myINPUTOUTCOME_TYPE = getMyTypeArgument("INPUTOUTCOME_TYPE");
-    Class<?> oeINPUTOUTCOME_TYPE = getTypeArgument(OutcomeEncoder.class, "INPUTOUTCOME_TYPE",
-            encoder);
+    Class<?> oeINPUTOUTCOME_TYPE = getTypeArgument(
+        OutcomeEncoder.class,
+        "INPUTOUTCOME_TYPE",
+        encoder);
 
     if (myINPUTOUTCOME_TYPE != oeINPUTOUTCOME_TYPE)
       throw new ClassCastException();
 
     Class<?> myOUTPUTOUTCOME_TYPE = getMyTypeArgument("OUTPUTOUTCOME_TYPE");
-    Class<?> oeOUTPUTOUTCOME_TYPE = getTypeArgument(OutcomeEncoder.class, "OUTPUTOUTCOME_TYPE",
-            encoder);
+    Class<?> oeOUTPUTOUTCOME_TYPE = getTypeArgument(
+        OutcomeEncoder.class,
+        "OUTPUTOUTCOME_TYPE",
+        encoder);
 
     if (myOUTPUTOUTCOME_TYPE != oeOUTPUTOUTCOME_TYPE)
       throw new ClassCastException();
@@ -120,9 +124,10 @@ public abstract class JarSequentialClassifier<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_T
     return ReflectionUtil.uncheckedCast(encoder);
   }
 
-  public List<ScoredOutcome<List<INPUTOUTCOME_TYPE>>> scoreSequence(List<List<Feature>> features,
-          int maxResults) {
+  public List<ScoredOutcome<List<INPUTOUTCOME_TYPE>>> scoreSequence(
+      List<List<Feature>> features,
+      int maxResults) {
     throw new UnsupportedOperationException(
-            "there is no default implementation of the score method.");
+        "there is no default implementation of the score method.");
   }
 }

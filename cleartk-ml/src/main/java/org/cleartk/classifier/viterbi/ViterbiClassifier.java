@@ -59,43 +59,44 @@ import org.uimafit.factory.initializable.Initializable;
  */
 
 public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUTCOME_TYPE>,
-        Initializable, TypeArgumentDelegator {
+    Initializable, TypeArgumentDelegator {
 
   protected Classifier<OUTCOME_TYPE> delegatedClassifier;
 
   protected OutcomeFeatureExtractor[] outcomeFeatureExtractors;
 
   public static final String PARAM_STACK_SIZE = ConfigurationParameterFactory
-          .createConfigurationParameterName(ViterbiClassifier.class, "stackSize");
+      .createConfigurationParameterName(ViterbiClassifier.class, "stackSize");
 
   @ConfigurationParameter(description = "specifies the maximum number of candidate paths to "
-          + "keep track of. In general, this number should be higher than the number "
-          + "of possible classifications at any given point in the sequence. This "
-          + "guarantees that highest-possible scoring sequence will be returned. If, "
-          + "however, the number of possible classifications is quite high and/or you "
-          + "are concerned about throughput performance, then you may want to reduce the number "
-          + "of candidate paths to maintain.  If Classifier.score is not implemented for the given delegated classifier, then "
-          + "the value of this parameter must be 1. ", defaultValue = "1")
+      + "keep track of. In general, this number should be higher than the number "
+      + "of possible classifications at any given point in the sequence. This "
+      + "guarantees that highest-possible scoring sequence will be returned. If, "
+      + "however, the number of possible classifications is quite high and/or you "
+      + "are concerned about throughput performance, then you may want to reduce the number "
+      + "of candidate paths to maintain.  If Classifier.score is not implemented for the given delegated classifier, then "
+      + "the value of this parameter must be 1. ", defaultValue = "1")
   protected int stackSize;
 
   public static final String PARAM_ADD_SCORES = ConfigurationParameterFactory
-          .createConfigurationParameterName(ViterbiClassifier.class, "addScores");
+      .createConfigurationParameterName(ViterbiClassifier.class, "addScores");
 
   @ConfigurationParameter(description = "specifies whether the scores of candidate sequence classifications should be "
-          + "calculated by summing classfication scores for each member of the sequence or by multiplying them. A value of "
-          + "true means that the scores will be summed. A value of false means that the scores will be multiplied. ", defaultValue = "false")
+      + "calculated by summing classfication scores for each member of the sequence or by multiplying them. A value of "
+      + "true means that the scores will be summed. A value of false means that the scores will be multiplied. ", defaultValue = "false")
   protected boolean addScores = false;
 
   public ViterbiClassifier(JarFile modelFile) throws IOException {
     File modelFileDirectory = new File(modelFile.getName()).getParentFile();
     modelFile
-            .getInputStream(modelFile.getEntry(ViterbiClassifierBuilder.DELEGATED_MODEL_FILE_NAME));
+        .getInputStream(modelFile.getEntry(ViterbiClassifierBuilder.DELEGATED_MODEL_FILE_NAME));
     FileUtil.extractFilesWithExtFromJar(modelFile, ".jar", modelFileDirectory);
 
-    File delegatedModelFile = new File(modelFileDirectory,
-            ViterbiClassifierBuilder.DELEGATED_MODEL_FILE_NAME);
+    File delegatedModelFile = new File(
+        modelFileDirectory,
+        ViterbiClassifierBuilder.DELEGATED_MODEL_FILE_NAME);
     delegatedClassifier = ReflectionUtil.uncheckedCast(JarClassifierFactory
-            .createClassifierFromJar(delegatedModelFile.getPath(), Classifier.class));
+        .createClassifierFromJar(delegatedModelFile.getPath(), Classifier.class));
 
     ZipEntry zipEntry = modelFile.getEntry(ViterbiDataWriter.OUTCOME_FEATURE_EXTRACTOR_FILE_NAME);
     if (zipEntry == null) {
@@ -119,7 +120,8 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
     ConfigurationParameterInitializer.initialize(this, context);
     if (stackSize < 1) {
       throw new ResourceInitializationException(new IllegalArgumentException(String.format(
-              "the parameter '%1$s' must be greater than 0.", PARAM_STACK_SIZE)));
+          "the parameter '%1$s' must be greater than 0.",
+          PARAM_STACK_SIZE)));
     }
   }
 
@@ -141,10 +143,10 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
         return viterbi(features);
       } catch (UnsupportedOperationException uoe) {
         throw new IllegalArgumentException(
-                "The configuration parameter "
-                        + PARAM_STACK_SIZE
-                        + " must be set to 1 if the delegated classifier does not implement the score method.  The classifier you are using is: "
-                        + delegatedClassifier.getClass().getName());
+            "The configuration parameter "
+                + PARAM_STACK_SIZE
+                + " must be set to 1 if the delegated classifier does not implement the score method.  The classifier you are using is: "
+                + delegatedClassifier.getClass().getName());
       }
     }
 
@@ -170,8 +172,9 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
       return Collections.emptyList();
     }
 
-    List<ScoredOutcome<OUTCOME_TYPE>> scoredOutcomes = delegatedClassifier.score(features.get(0),
-            stackSize);
+    List<ScoredOutcome<OUTCOME_TYPE>> scoredOutcomes = delegatedClassifier.score(
+        features.get(0),
+        stackSize);
     for (ScoredOutcome<OUTCOME_TYPE> scoredOutcome : scoredOutcomes) {
       double score = scoredOutcome.getScore();
       List<OUTCOME_TYPE> sequence = new ArrayList<OUTCOME_TYPE>();
@@ -203,7 +206,7 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
         // remove the added features from previous outcomes for this
         // scoredSequence
         instanceFeatures = instanceFeatures.subList(0, instanceFeatures.size()
-                - outcomeFeaturesCount);
+            - outcomeFeaturesCount);
 
         for (ScoredOutcome<OUTCOME_TYPE> scoredOutcome : scoredOutcomes) {
 
@@ -215,8 +218,9 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
               score = score * scoredOutcome.getScore();
             }
             l.put(scoredOutcome.getOutcome(), score);
-            m.put(scoredOutcome.getOutcome(),
-                    new ArrayList<OUTCOME_TYPE>(scoredSequence.getOutcome()));
+            m.put(
+                scoredOutcome.getOutcome(),
+                new ArrayList<OUTCOME_TYPE>(scoredSequence.getOutcome()));
           } else {
             double newScore = scoredSequence.getScore();
             if (addScores) {
@@ -228,8 +232,9 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
 
             if (newScore > bestScore) {
               l.put(scoredOutcome.getOutcome(), newScore);
-              m.put(scoredOutcome.getOutcome(),
-                      new ArrayList<OUTCOME_TYPE>(scoredSequence.getOutcome()));
+              m.put(
+                  scoredOutcome.getOutcome(),
+                  new ArrayList<OUTCOME_TYPE>(scoredSequence.getOutcome()));
             }
           }
         }
@@ -241,7 +246,8 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
         outcomeSequence.add(outcome);
         double score = l.get(outcome);
         ScoredOutcome<List<OUTCOME_TYPE>> returnValue = new ScoredOutcome<List<OUTCOME_TYPE>>(
-                outcomeSequence, score);
+            outcomeSequence,
+            score);
         nbestSequences.add(returnValue);
       }
 
@@ -256,8 +262,9 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
     return null;
   }
 
-  public List<ScoredOutcome<List<OUTCOME_TYPE>>> scoreSequence(List<List<Feature>> features,
-          int maxResults) throws CleartkException {
+  public List<ScoredOutcome<List<OUTCOME_TYPE>>> scoreSequence(
+      List<List<Feature>> features,
+      int maxResults) throws CleartkException {
     // TODO Auto-generated method stub
     return null;
   }

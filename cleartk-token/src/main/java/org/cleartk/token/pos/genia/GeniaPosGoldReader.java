@@ -69,32 +69,32 @@ import org.uimafit.factory.ConfigurationParameterFactory;
 public class GeniaPosGoldReader extends JCasCollectionReader_ImplBase {
 
   public static final String PARAM_GENIA_CORPUS_FILE = ConfigurationParameterFactory
-          .createConfigurationParameterName(GeniaPosGoldReader.class, "geniaCorpusFile");
+      .createConfigurationParameterName(GeniaPosGoldReader.class, "geniaCorpusFile");
 
   @ConfigurationParameter(description = "names the file that is the Genia corpus to be loaded. A good value is probably '.../GENIAcorpus3.02.pos.xml'.  Please see README in this directory for edits that you may need to make to this file manually.", mandatory = true)
   private File geniaCorpusFile;
 
   public static final String PARAM_LOAD_SENTENCES = ConfigurationParameterFactory
-          .createConfigurationParameterName(GeniaPosGoldReader.class, "loadSentences");
+      .createConfigurationParameterName(GeniaPosGoldReader.class, "loadSentences");
 
   @ConfigurationParameter(description = "determines whether sentence annotations will be added from the Genia corpus.", defaultValue = "true")
   private boolean loadSentences = true;
 
   public static final String PARAM_LOAD_TOKENS = ConfigurationParameterFactory
-          .createConfigurationParameterName(GeniaPosGoldReader.class, "loadTokens");
+      .createConfigurationParameterName(GeniaPosGoldReader.class, "loadTokens");
 
   @ConfigurationParameter(description = "determines whether tokens annotations will be added from the Genia corpus. ", defaultValue = "true")
   private boolean loadTokens = true;
 
   public static final String PARAM_LOAD_POS_TAGS = ConfigurationParameterFactory
-          .createConfigurationParameterName(GeniaPosGoldReader.class, "loadPosTags");
+      .createConfigurationParameterName(GeniaPosGoldReader.class, "loadPosTags");
 
   @ConfigurationParameter(description = "determines whether the part of speech tags assigned to each token in the genia corpus will be loaded. The default value of 'true' is used if this "
-          + "parameter is unspecified. If 'loadTokens' is 'false', then 'loadPOSTags' will be treated as 'false' regardless of what is given in the descriptor file.", defaultValue = "true")
+      + "parameter is unspecified. If 'loadTokens' is 'false', then 'loadPOSTags' will be treated as 'false' regardless of what is given in the descriptor file.", defaultValue = "true")
   private boolean loadPosTags = true;
 
   public static final String PARAM_ARTICLE_IDS_LIST_FILE = ConfigurationParameterFactory
-          .createConfigurationParameterName(GeniaPosGoldReader.class, "articleIdsListFile");
+      .createConfigurationParameterName(GeniaPosGoldReader.class, "articleIdsListFile");
 
   @ConfigurationParameter(description = "names the file used to specify the article ids that should be read in")
   File articleIdsListFile;
@@ -137,7 +137,8 @@ public class GeniaPosGoldReader extends JCasCollectionReader_ImplBase {
   public void getNext(JCas jCas) throws IOException, CollectionException {
     if (!hasNext())
       throw new CollectionException(
-              "Should not be calling getNext() because hasNext returns false", null);
+          "Should not be calling getNext() because hasNext returns false",
+          null);
     try {
       JCas annotationsView = jCas.getView(CAS.NAME_DEFAULT_SOFA);
       String text = parse.getText();
@@ -157,8 +158,10 @@ public class GeniaPosGoldReader extends JCasCollectionReader_ImplBase {
           }
         }
         if (loadSentences) {
-          Sentence sentence = new Sentence(annotationsView, geniaSentence.getSpan().getBegin(),
-                  geniaSentence.getSpan().getEnd());
+          Sentence sentence = new Sentence(
+              annotationsView,
+              geniaSentence.getSpan().getBegin(),
+              geniaSentence.getSpan().getEnd());
           sentence.addToIndexes();
         }
       }
@@ -204,17 +207,24 @@ public class GeniaPosGoldReader extends JCasCollectionReader_ImplBase {
   }
 
   public static CollectionReader getDescription(String geniaCorpusFile)
-          throws ResourceInitializationException {
-    return CollectionReaderFactory.createCollectionReader(GeniaPosGoldReader.class,
-            TokenComponents.TYPE_SYSTEM_DESCRIPTION, GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
-            geniaCorpusFile);
+      throws ResourceInitializationException {
+    return CollectionReaderFactory.createCollectionReader(
+        GeniaPosGoldReader.class,
+        TokenComponents.TYPE_SYSTEM_DESCRIPTION,
+        GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
+        geniaCorpusFile);
   }
 
-  public static String[] TEST_FOLDS = new String[] { "resources/genia/article_ids/fold-1-test.txt",
-      "resources/genia/article_ids/fold-2-test.txt", "resources/genia/article_ids/fold-3-test.txt",
-      "resources/genia/article_ids/fold-4-test.txt", "resources/genia/article_ids/fold-5-test.txt",
-      "resources/genia/article_ids/fold-6-test.txt", "resources/genia/article_ids/fold-7-test.txt",
-      "resources/genia/article_ids/fold-8-test.txt", "resources/genia/article_ids/fold-9-test.txt",
+  public static String[] TEST_FOLDS = new String[] {
+      "resources/genia/article_ids/fold-1-test.txt",
+      "resources/genia/article_ids/fold-2-test.txt",
+      "resources/genia/article_ids/fold-3-test.txt",
+      "resources/genia/article_ids/fold-4-test.txt",
+      "resources/genia/article_ids/fold-5-test.txt",
+      "resources/genia/article_ids/fold-6-test.txt",
+      "resources/genia/article_ids/fold-7-test.txt",
+      "resources/genia/article_ids/fold-8-test.txt",
+      "resources/genia/article_ids/fold-9-test.txt",
       "resources/genia/article_ids/fold-10-test.txt", };
 
   public static String[] TRAIN_FOLDS = new String[] {

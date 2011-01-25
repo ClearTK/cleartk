@@ -99,13 +99,16 @@ public class Proplabel {
 
     // throw some exceptions for bad input
     if (columns.length != expectedLength) {
-      throw new PropbankFormatException(String.format("Expected %d items, found %d",
-              expectedLength, columns.length));
+      throw new PropbankFormatException(String.format(
+          "Expected %d items, found %d",
+          expectedLength,
+          columns.length));
     }
     if (Proplabel.labelsRequiringFeatures.contains(columns[1])) {
       if (proplabel.getFeature() == null) {
-        throw new PropbankFormatException(String.format("Label %s requires a feature",
-                proplabel.getLabel()));
+        throw new PropbankFormatException(String.format(
+            "Label %s requires a feature",
+            proplabel.getLabel()));
       }
     }
     return proplabel;
@@ -242,15 +245,15 @@ public class Proplabel {
   }
 
   private static final Set<String> labels = new HashSet<String>(
-          Arrays.asList("rel|Support|ARG0|ARG1|ARG2|ARG3|ARG4|ARG5|ARGA|ARGM".split("\\|")));
+      Arrays.asList("rel|Support|ARG0|ARG1|ARG2|ARG3|ARG4|ARG5|ARGA|ARGM".split("\\|")));
 
   private static final Set<String> labelsRequiringFeatures = new HashSet<String>(
-          Arrays.asList(new String[] { "ARGM" }));
+      Arrays.asList(new String[] { "ARGM" }));
 
   private static final Set<String> features = new HashSet<String>(
-          Arrays.asList("ADV|CAU|DIR|DIS|EXT|LOC|MNR|MOD|NEG|PNC|PRD|REC|TMP".split("\\|")));
+      Arrays.asList("ADV|CAU|DIR|DIS|EXT|LOC|MNR|MOD|NEG|PNC|PRD|REC|TMP".split("\\|")));
 
   private static final Set<String> hyphenTags = new HashSet<String>(
-          Arrays.asList("H0|H1|H2|H3|H4|H5|H6|H7|H8|H9|XX".split("\\|")));
+      Arrays.asList("H0|H1|H2|H3|H4|H5|H6|H7|H8|H9|XX".split("\\|")));
 
 }

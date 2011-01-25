@@ -47,8 +47,12 @@ import org.junit.Test;
  */
 public class FeatureProliferatorTest extends DefaultTestBase {
 
-  private void testOne(FeatureProliferator proliferator, String origName, String origValue,
-          String newName, String newValue) {
+  private void testOne(
+      FeatureProliferator proliferator,
+      String origName,
+      String origValue,
+      String newName,
+      String newValue) {
     Feature origFeature = new Feature(origName, origValue);
     List<Feature> newFeatures = proliferator.proliferate(origFeature);
     String value = newFeatures.size() == 0 ? null : newFeatures.get(0).getValue().toString();
@@ -70,14 +74,22 @@ public class FeatureProliferatorTest extends DefaultTestBase {
     FeatureProliferator foo = new CapitalTypeProliferator("Foo");
 
     this.testOne(caps, null, "HI", "CapitalType", CapitalTypeProliferator.ALL_UPPERCASE);
-    this.testOne(caps, "OrigName", "hi", "CapitalType_OrigName",
-            CapitalTypeProliferator.ALL_LOWERCASE);
+    this.testOne(
+        caps,
+        "OrigName",
+        "hi",
+        "CapitalType_OrigName",
+        CapitalTypeProliferator.ALL_LOWERCASE);
     this.testOne(foo, null, "hi", "Foo", CapitalTypeProliferator.ALL_LOWERCASE);
     this.testOne(foo, "OrigName", "Hi", "Foo_OrigName", CapitalTypeProliferator.INITIAL_UPPERCASE);
     this.testOne(caps, null, "HigH", "CapitalType", CapitalTypeProliferator.MIXED_CASE);
     this.testOne(caps, "OrigName", "!234", null, null);
-    this.testOne(foo, "OrigName", "!@#a@#\\$", "Foo_OrigName",
-            CapitalTypeProliferator.ALL_LOWERCASE);
+    this.testOne(
+        foo,
+        "OrigName",
+        "!@#a@#\\$",
+        "Foo_OrigName",
+        CapitalTypeProliferator.ALL_LOWERCASE);
     this.testOne(foo, null, "\t\n", null, null);
 
   }
@@ -98,11 +110,19 @@ public class FeatureProliferatorTest extends DefaultTestBase {
     this.testOne(nums, null, "1022", "NumericType", NumericTypeProliferator.YEAR_DIGITS);
     this.testOne(nums, "OrigName", "0022", "NumericType_OrigName", NumericTypeProliferator.DIGITS);
     this.testOne(bar, null, "0", "BAR", NumericTypeProliferator.DIGITS);
-    this.testOne(bar, "OrigName", "asdfASDF1234", "BAR_OrigName",
-            NumericTypeProliferator.ALPHANUMERIC);
+    this.testOne(
+        bar,
+        "OrigName",
+        "asdfASDF1234",
+        "BAR_OrigName",
+        NumericTypeProliferator.ALPHANUMERIC);
     this.testOne(nums, null, "1F1234", "NumericType", NumericTypeProliferator.ALPHANUMERIC);
-    this.testOne(nums, "OrigName", "10-1234", "NumericType_OrigName",
-            NumericTypeProliferator.SOME_DIGITS);
+    this.testOne(
+        nums,
+        "OrigName",
+        "10-1234",
+        "NumericType_OrigName",
+        NumericTypeProliferator.SOME_DIGITS);
     this.testOne(bar, null, "1F1234!", "BAR", NumericTypeProliferator.SOME_DIGITS);
     this.testOne(bar, "OrigName", "!!12!", "BAR_OrigName", NumericTypeProliferator.SOME_DIGITS);
     this.testOne(nums, null, "10,000", "NumericType", NumericTypeProliferator.SOME_DIGITS);
@@ -111,31 +131,55 @@ public class FeatureProliferatorTest extends DefaultTestBase {
   @Test
   public void testCharacterNGramProliferator() throws UIMAException, IOException {
     FeatureProliferator triSuff = new CharacterNGramProliferator(
-            CharacterNGramProliferator.RIGHT_TO_LEFT, 0, 3, 7, false);
+        CharacterNGramProliferator.RIGHT_TO_LEFT,
+        0,
+        3,
+        7,
+        false);
     this.testOne(triSuff, "OrigName", "emotion", "NGram_Right_0_3_7_OrigName", "ion");
     this.testOne(triSuff, null, "motion", null, null);
     this.testOne(triSuff, "OrigName", "locomotive", "NGram_Right_0_3_7_OrigName", "ive");
 
-    FeatureProliferator triPre = new CharacterNGramProliferator("TriPre",
-            CharacterNGramProliferator.LEFT_TO_RIGHT, 0, 3, 3, false);
+    FeatureProliferator triPre = new CharacterNGramProliferator(
+        "TriPre",
+        CharacterNGramProliferator.LEFT_TO_RIGHT,
+        0,
+        3,
+        3,
+        false);
     this.testOne(triPre, "OrigName", "LOCOMOTIVE", "NGram_Left_0_3_3_TriPre_OrigName", "LOC");
     this.testOne(triPre, null, "LOC", "NGram_Left_0_3_3_TriPre", "LOC");
     this.testOne(triPre, "OrigName", "lo", null, null);
 
     FeatureProliferator left12 = new CharacterNGramProliferator(
-            CharacterNGramProliferator.LEFT_TO_RIGHT, 1, 3, 8, false);
+        CharacterNGramProliferator.LEFT_TO_RIGHT,
+        1,
+        3,
+        8,
+        false);
     this.testOne(left12, null, "locomotive", "NGram_Left_1_3_8", "oc");
 
-    FeatureProliferator left5 = new CharacterNGramProliferator("FooBar",
-            CharacterNGramProliferator.LEFT_TO_RIGHT, 5, 6, 8, false);
+    FeatureProliferator left5 = new CharacterNGramProliferator(
+        "FooBar",
+        CharacterNGramProliferator.LEFT_TO_RIGHT,
+        5,
+        6,
+        8,
+        false);
     this.testOne(left5, "OrigName", "abcdefghi", "NGram_Left_5_6_8_FooBar_OrigName", "f");
 
     FeatureProliferator right46lower = new CharacterNGramProliferator(
-            CharacterNGramProliferator.RIGHT_TO_LEFT, 2, 4, 6, true);
+        CharacterNGramProliferator.RIGHT_TO_LEFT,
+        2,
+        4,
+        6,
+        true);
     this.testOne(right46lower, null, "abcdefghi", "NGram_Right_2_4_6_lower", "fg");
 
     FeatureProliferator right3 = new CharacterNGramProliferator(
-            CharacterNGramProliferator.RIGHT_TO_LEFT, 0, 3);
+        CharacterNGramProliferator.RIGHT_TO_LEFT,
+        0,
+        3);
     this.testOne(right3, null, "Foo", "NGram_Right_0_3_3", "Foo");
     this.testOne(right3, null, "Fo", null, null);
     this.testOne(right3, "OrigName", "Food", "NGram_Right_0_3_3_OrigName", "ood");
@@ -147,8 +191,9 @@ public class FeatureProliferatorTest extends DefaultTestBase {
     Token hello = new Token(jCas, 0, 5);
     Token year = new Token(jCas, 12, 16);
 
-    SimpleFeatureExtractor textAndLower = new ProliferatingExtractor(new SpannedTextExtractor(),
-            new LowerCaseProliferator());
+    SimpleFeatureExtractor textAndLower = new ProliferatingExtractor(
+        new SpannedTextExtractor(),
+        new LowerCaseProliferator());
     List<Feature> features = textAndLower.extract(jCas, hello);
     Assert.assertEquals(2, features.size());
     Assert.assertEquals(null, features.get(0).getName());
@@ -158,8 +203,9 @@ public class FeatureProliferatorTest extends DefaultTestBase {
 
     String yearDigits = NumericTypeProliferator.YEAR_DIGITS;
     SimpleFeatureExtractor textAndCapsAndNums = new ProliferatingExtractor(
-            new SpannedTextExtractor(), new CapitalTypeProliferator(),
-            new NumericTypeProliferator());
+        new SpannedTextExtractor(),
+        new CapitalTypeProliferator(),
+        new NumericTypeProliferator());
     features = textAndCapsAndNums.extract(jCas, year);
     Assert.assertEquals(2, features.size());
     Assert.assertEquals(null, features.get(0).getName());
@@ -169,7 +215,9 @@ public class FeatureProliferatorTest extends DefaultTestBase {
 
     String initialUpper = CapitalTypeProliferator.INITIAL_UPPERCASE;
     SimpleFeatureExtractor textAndCapsAndLower = new ProliferatingExtractor(
-            new SpannedTextExtractor(), new CapitalTypeProliferator(), new LowerCaseProliferator());
+        new SpannedTextExtractor(),
+        new CapitalTypeProliferator(),
+        new LowerCaseProliferator());
     features = textAndCapsAndLower.extract(jCas, hello);
     Assert.assertEquals(3, features.size());
     Assert.assertEquals(null, features.get(0).getName());
@@ -214,8 +262,9 @@ public class FeatureProliferatorTest extends DefaultTestBase {
     feature.setValue("Hi");
     caseTypeFeatures = proliferator.proliferate(feature);
     Assert.assertEquals(1, caseTypeFeatures.size());
-    Assert.assertEquals(CapitalTypeProliferator.INITIAL_UPPERCASE, caseTypeFeatures.get(0)
-            .getValue());
+    Assert.assertEquals(CapitalTypeProliferator.INITIAL_UPPERCASE, caseTypeFeatures
+        .get(0)
+        .getValue());
 
     feature.setValue("HigH");
     caseTypeFeatures = proliferator.proliferate(feature);
@@ -256,7 +305,8 @@ public class FeatureProliferatorTest extends DefaultTestBase {
     feature.setValue("HI2");
     numericTypeFeatures = proliferator.proliferate(feature);
     Assert.assertEquals(1, numericTypeFeatures.size());
-    Assert.assertEquals(NumericTypeProliferator.ALPHANUMERIC, numericTypeFeatures.get(0).getValue());
+    Assert
+        .assertEquals(NumericTypeProliferator.ALPHANUMERIC, numericTypeFeatures.get(0).getValue());
     Assert.assertEquals("NumericName_OrigName", numericTypeFeatures.get(0).getName());
 
     feature.setValue("222");
@@ -289,11 +339,13 @@ public class FeatureProliferatorTest extends DefaultTestBase {
 
     feature.setValue("asdfASDF1234");
     numericTypeFeatures = proliferator.proliferate(feature);
-    Assert.assertEquals(NumericTypeProliferator.ALPHANUMERIC, numericTypeFeatures.get(0).getValue());
+    Assert
+        .assertEquals(NumericTypeProliferator.ALPHANUMERIC, numericTypeFeatures.get(0).getValue());
 
     feature.setValue("1F1234");
     numericTypeFeatures = proliferator.proliferate(feature);
-    Assert.assertEquals(NumericTypeProliferator.ALPHANUMERIC, numericTypeFeatures.get(0).getValue());
+    Assert
+        .assertEquals(NumericTypeProliferator.ALPHANUMERIC, numericTypeFeatures.get(0).getValue());
 
     feature.setValue("10-1234");
     numericTypeFeatures = proliferator.proliferate(feature);
@@ -314,8 +366,13 @@ public class FeatureProliferatorTest extends DefaultTestBase {
 
   @Test
   public void testDeprecatedCharacterNGramProliferator() throws UIMAException, IOException {
-    FeatureProliferator proliferator = new CharacterNGramProliferator("CharNGram",
-            CharacterNGramProliferator.RIGHT_TO_LEFT, 0, 3, 7, false);
+    FeatureProliferator proliferator = new CharacterNGramProliferator(
+        "CharNGram",
+        CharacterNGramProliferator.RIGHT_TO_LEFT,
+        0,
+        3,
+        7,
+        false);
 
     Feature feature = new Feature("OrigName", "emotion");
     List<Feature> ngramFeatures = proliferator.proliferate(feature);
@@ -330,8 +387,12 @@ public class FeatureProliferatorTest extends DefaultTestBase {
     ngramFeatures = proliferator.proliferate(feature);
     Assert.assertEquals("ive", ngramFeatures.get(0).getValue());
 
-    proliferator = new CharacterNGramProliferator(CharacterNGramProliferator.LEFT_TO_RIGHT, 0, 3,
-            3, false);
+    proliferator = new CharacterNGramProliferator(
+        CharacterNGramProliferator.LEFT_TO_RIGHT,
+        0,
+        3,
+        3,
+        false);
     feature = new Feature("OrigName", "locomotive");
     ngramFeatures = proliferator.proliferate(feature);
     Assert.assertEquals("loc", ngramFeatures.get(0).getValue());
@@ -344,14 +405,22 @@ public class FeatureProliferatorTest extends DefaultTestBase {
     ngramFeatures = proliferator.proliferate(feature);
     Assert.assertEquals(0, ngramFeatures.size());
 
-    proliferator = new CharacterNGramProliferator(CharacterNGramProliferator.LEFT_TO_RIGHT, 1, 3,
-            8, false);
+    proliferator = new CharacterNGramProliferator(
+        CharacterNGramProliferator.LEFT_TO_RIGHT,
+        1,
+        3,
+        8,
+        false);
     feature = new Feature("OrigName", "locomotive");
     ngramFeatures = proliferator.proliferate(feature);
     Assert.assertEquals("oc", ngramFeatures.get(0).getValue());
 
-    proliferator = new CharacterNGramProliferator(CharacterNGramProliferator.LEFT_TO_RIGHT, 5, 6,
-            8, false);
+    proliferator = new CharacterNGramProliferator(
+        CharacterNGramProliferator.LEFT_TO_RIGHT,
+        5,
+        6,
+        8,
+        false);
     feature = new Feature("OrigName", "abcdefghi");
     ngramFeatures = proliferator.proliferate(feature);
     Assert.assertEquals("f", ngramFeatures.get(0).getValue());

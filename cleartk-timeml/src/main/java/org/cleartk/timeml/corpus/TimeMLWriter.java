@@ -68,15 +68,18 @@ import org.uimafit.factory.ConfigurationParameterFactory;
 public class TimeMLWriter extends JCasAnnotator_ImplBase {
 
   public static final String PARAM_OUTPUT_DIRECTORY_NAME = ConfigurationParameterFactory
-          .createConfigurationParameterName(TimeMLWriter.class, "outputDirectoryName");
+      .createConfigurationParameterName(TimeMLWriter.class, "outputDirectoryName");
 
   @ConfigurationParameter(description = "Provides the path where the TimeML documents should be written.", mandatory = true)
   private String outputDirectoryName;
 
   public static AnalysisEngineDescription getDescription(String outputDir)
-          throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(TimeMLWriter.class,
-            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION, PARAM_OUTPUT_DIRECTORY_NAME, outputDir);
+      throws ResourceInitializationException {
+    return AnalysisEngineFactory.createPrimitiveDescription(
+        TimeMLWriter.class,
+        TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
+        PARAM_OUTPUT_DIRECTORY_NAME,
+        outputDir);
   }
 
   private File outputDirectory;

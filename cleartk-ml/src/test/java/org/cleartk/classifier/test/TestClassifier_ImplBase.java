@@ -44,7 +44,7 @@ import org.cleartk.classifier.jar.JarClassifier;
  * 
  */
 public abstract class TestClassifier_ImplBase<OUTCOME_TYPE> extends
-        JarClassifier<OUTCOME_TYPE, String, List<NameNumber>> {
+    JarClassifier<OUTCOME_TYPE, String, List<NameNumber>> {
 
   public TestClassifier_ImplBase(JarFile modelFile) throws IOException {
     super(modelFile);
@@ -57,7 +57,7 @@ public abstract class TestClassifier_ImplBase<OUTCOME_TYPE> extends
 
   @Override
   public List<ScoredOutcome<OUTCOME_TYPE>> score(List<Feature> features, int maxResults)
-          throws CleartkException {
+      throws CleartkException {
     List<ScoredOutcome<OUTCOME_TYPE>> returnValues = new ArrayList<ScoredOutcome<OUTCOME_TYPE>>();
     OUTCOME_TYPE outcome = outcomeEncoder.decode("" + features.size());
     returnValues.add(new ScoredOutcome<OUTCOME_TYPE>(outcome, 1.0d));

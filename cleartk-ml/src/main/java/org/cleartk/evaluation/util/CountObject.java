@@ -41,36 +41,34 @@ package org.cleartk.evaluation.util;
 
 import java.io.Serializable;
 
-public class CountObject<T> implements Serializable{
+public class CountObject<T> implements Serializable {
 
-	private static final long serialVersionUID = 2332993898844950325L;
+  private static final long serialVersionUID = 2332993898844950325L;
 
-	private T object;
+  private T object;
 
-	private int count = 0;
+  private int count = 0;
 
-	/** Creates a new instance of CountObject */
-	public CountObject(T object, int count) {
-		this.object = object;
-		this.count = count;
-	}
+  /** Creates a new instance of CountObject */
+  public CountObject(T object, int count) {
+    this.object = object;
+    this.count = count;
+  }
 
-	public T getObject() {
-		return object;
-	}
+  public T getObject() {
+    return object;
+  }
 
-	public int getCount() {
-		return count;
-	}
+  public int getCount() {
+    return count;
+  }
 
-	public void increment() {
-		count++;
-	}
+  public void increment() {
+    count++;
+  }
 
-	public void increment(int increment) {
-		count += increment;
-	}
-
-
+  public void increment(int increment) {
+    count += increment;
+  }
 
 }

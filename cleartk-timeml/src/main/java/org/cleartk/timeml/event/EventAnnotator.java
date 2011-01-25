@@ -69,39 +69,57 @@ public class EventAnnotator {
   public static final String MODEL_DIR = "src/main/resources/models/timeml/event";
 
   public static AnalysisEngineDescription getWriterDescription(String modelDir)
-          throws ResourceInitializationException {
-    AnalysisEngineDescription aed = CleartkAnnotatorDescriptionFactory.createCleartkSequentialAnnotator(
-            Chunker.class, TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
-            DefaultMalletCRFDataWriterFactory.class, modelDir);
-    ConfigurationParameterFactory.addConfigurationParameters(aed,
-            Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME, Token.class.getName(),
-            Chunker.PARAM_SEQUENCE_CLASS_NAME, Sentence.class.getName(),
-            Chunker.PARAM_CHUNK_LABELER_CLASS_NAME, DefaultChunkLabeler.class.getName(),
-            Chunker.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME, FeatureExtractor.class.getName(),
-            ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME, Event.class.getName());
+      throws ResourceInitializationException {
+    AnalysisEngineDescription aed = CleartkAnnotatorDescriptionFactory
+        .createCleartkSequentialAnnotator(
+            Chunker.class,
+            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
+            DefaultMalletCRFDataWriterFactory.class,
+            modelDir);
+    ConfigurationParameterFactory.addConfigurationParameters(
+        aed,
+        Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME,
+        Token.class.getName(),
+        Chunker.PARAM_SEQUENCE_CLASS_NAME,
+        Sentence.class.getName(),
+        Chunker.PARAM_CHUNK_LABELER_CLASS_NAME,
+        DefaultChunkLabeler.class.getName(),
+        Chunker.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME,
+        FeatureExtractor.class.getName(),
+        ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME,
+        Event.class.getName());
     return aed;
   }
 
   public static AnalysisEngineDescription getWriterDescription()
-          throws ResourceInitializationException {
+      throws ResourceInitializationException {
     return getWriterDescription(MODEL_DIR);
   }
 
   public static AnalysisEngineDescription getAnnotatorDescription(String modelDir)
-          throws ResourceInitializationException {
-    AnalysisEngineDescription aed = CleartkAnnotatorDescriptionFactory.createCleartkSequentialAnnotator(
-            Chunker.class, TimeMLComponents.TYPE_SYSTEM_DESCRIPTION, modelDir);
-    ConfigurationParameterFactory.addConfigurationParameters(aed,
-            Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME, Token.class.getName(),
-            Chunker.PARAM_SEQUENCE_CLASS_NAME, Sentence.class.getName(),
-            Chunker.PARAM_CHUNK_LABELER_CLASS_NAME, DefaultChunkLabeler.class.getName(),
-            Chunker.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME, FeatureExtractor.class.getName(),
-            ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME, Event.class.getName());
+      throws ResourceInitializationException {
+    AnalysisEngineDescription aed = CleartkAnnotatorDescriptionFactory
+        .createCleartkSequentialAnnotator(
+            Chunker.class,
+            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
+            modelDir);
+    ConfigurationParameterFactory.addConfigurationParameters(
+        aed,
+        Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME,
+        Token.class.getName(),
+        Chunker.PARAM_SEQUENCE_CLASS_NAME,
+        Sentence.class.getName(),
+        Chunker.PARAM_CHUNK_LABELER_CLASS_NAME,
+        DefaultChunkLabeler.class.getName(),
+        Chunker.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME,
+        FeatureExtractor.class.getName(),
+        ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME,
+        Event.class.getName());
     return aed;
   }
 
   public static AnalysisEngineDescription getAnnotatorDescription()
-          throws ResourceInitializationException {
+      throws ResourceInitializationException {
     return getAnnotatorDescription(MODEL_DIR + "/model.jar");
   }
 
@@ -117,7 +135,8 @@ public class EventAnnotator {
       // get configured annotation
       ConfigurationParameterInitializer.initialize(this, context);
       Class<? extends Annotation> tokenClass = InitializableFactory.getClass(
-              this.labeledAnnotationClassName, Annotation.class);
+          this.labeledAnnotationClassName,
+          Annotation.class);
 
       // initialize feature lists
       this.tokenFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
@@ -130,15 +149,25 @@ public class EventAnnotator {
 
       // add window of features 2 before and 2 after
       for (SimpleFeatureExtractor extractor : this.tokenFeatureExtractors) {
-        this.windowFeatureExtractors.add(new WindowExtractor(tokenClass, extractor,
-                ORIENTATION_RIGHT, 0, 3));
-        this.windowFeatureExtractors.add(new WindowExtractor(tokenClass, extractor,
-                ORIENTATION_LEFT, 0, 3));
+        this.windowFeatureExtractors.add(new WindowExtractor(
+            tokenClass,
+            extractor,
+            ORIENTATION_RIGHT,
+            0,
+            3));
+        this.windowFeatureExtractors.add(new WindowExtractor(
+            tokenClass,
+            extractor,
+            ORIENTATION_LEFT,
+            0,
+            3));
       }
     }
 
-    public Instance<String> extractFeatures(JCas jCas, Annotation labeledAnnotation,
-            Annotation sequence) throws CleartkException {
+    public Instance<String> extractFeatures(
+        JCas jCas,
+        Annotation labeledAnnotation,
+        Annotation sequence) throws CleartkException {
       Instance<String> instance = new Instance<String>();
       for (SimpleFeatureExtractor extractor : this.tokenFeatureExtractors) {
         instance.addAll(extractor.extract(jCas, labeledAnnotation));

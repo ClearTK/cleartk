@@ -97,9 +97,9 @@ public class Feature {
     if (obj instanceof Feature) {
       Feature other = (Feature) obj;
       boolean nameMatch = (this.name == null && other.name == null)
-              || (this.name != null && this.name.equals(other.name));
+          || (this.name != null && this.name.equals(other.name));
       boolean valueMatch = (this.value == null && other.value == null)
-              || (this.value != null && this.value.equals(other.value));
+          || (this.value != null && this.value.equals(other.value));
       return nameMatch && valueMatch;
     } else {
       return false;

@@ -49,15 +49,20 @@ public class WindowNGramExtractorTest extends DefaultTestBase {
 
   @Test
   public void testLeftGrams() throws IOException, UIMAException, CleartkException {
-    WindowNGramExtractor extractor = new WindowNGramExtractor(Token.class,
-            new SpannedTextExtractor(), WindowNGramFeature.ORIENTATION_LEFT,
-            WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT, " ", 0, 3);
+    WindowNGramExtractor extractor = new WindowNGramExtractor(
+        Token.class,
+        new SpannedTextExtractor(),
+        WindowNGramFeature.ORIENTATION_LEFT,
+        WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT,
+        " ",
+        0,
+        3);
 
     // feature extraction on "island" in "...middle of the island..."
     tokenBuilder.buildTokens(jCas, "text obtained from gutenberg\n"
-            + "I WANTED to go and look at a place right about the middle of "
-            + "the island that I ' d found when I was exploring ;\n"
-            + "so we started and soon got to it");
+        + "I WANTED to go and look at a place right about the middle of "
+        + "the island that I ' d found when I was exploring ;\n"
+        + "so we started and soon got to it");
     Token token = JCasUtil.selectByIndex(jCas, Token.class, 19);
     assertEquals("island", token.getCoveredText());
     Feature feature = extractor.extract(jCas, token, Sentence.class);
@@ -97,15 +102,20 @@ public class WindowNGramExtractorTest extends DefaultTestBase {
     feature = extractor.extract(jCas, token, Sentence.class);
     assertEquals("OOB3 OOB2 OOB1", feature.getValue().toString());
 
-    extractor = new WindowNGramExtractor(Token.class, new SpannedTextExtractor(),
-            WindowNGramFeature.ORIENTATION_LEFT, WindowNGramFeature.DIRECTION_RIGHT_TO_LEFT, " ",
-            0, 3);
+    extractor = new WindowNGramExtractor(
+        Token.class,
+        new SpannedTextExtractor(),
+        WindowNGramFeature.ORIENTATION_LEFT,
+        WindowNGramFeature.DIRECTION_RIGHT_TO_LEFT,
+        " ",
+        0,
+        3);
 
     jCas.reset();
     tokenBuilder.buildTokens(jCas, "text obtained from gutenberg\n"
-            + "I WANTED to go and look at a place right about the middle of "
-            + "the island that I ' d found when I was exploring ;\n"
-            + "so we started and soon got to it");
+        + "I WANTED to go and look at a place right about the middle of "
+        + "the island that I ' d found when I was exploring ;\n"
+        + "so we started and soon got to it");
     token = JCasUtil.selectByIndex(jCas, Token.class, 19);
     assertEquals("island", token.getCoveredText());
     feature = extractor.extract(jCas, token, Sentence.class);
@@ -136,15 +146,20 @@ public class WindowNGramExtractorTest extends DefaultTestBase {
     feature = extractor.extract(jCas, token, Sentence.class);
     assertEquals(feature.getValue().toString(), "OOB1 OOB2 OOB3");
 
-    extractor = new WindowNGramExtractor(Token.class, new SpannedTextExtractor(),
-            WindowNGramFeature.ORIENTATION_LEFT, WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT, " ",
-            2, 4);
+    extractor = new WindowNGramExtractor(
+        Token.class,
+        new SpannedTextExtractor(),
+        WindowNGramFeature.ORIENTATION_LEFT,
+        WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT,
+        " ",
+        2,
+        4);
 
     jCas.reset();
     tokenBuilder.buildTokens(jCas, "text obtained from gutenberg\n"
-            + "I WANTED to go and look at a place right about the middle of "
-            + "the island that I ' d found when I was exploring ;\n"
-            + "so we started and soon got to it");
+        + "I WANTED to go and look at a place right about the middle of "
+        + "the island that I ' d found when I was exploring ;\n"
+        + "so we started and soon got to it");
     token = JCasUtil.selectByIndex(jCas, Token.class, 19);
     assertEquals("island", token.getCoveredText());
     feature = extractor.extract(jCas, token, Sentence.class);
@@ -183,15 +198,20 @@ public class WindowNGramExtractorTest extends DefaultTestBase {
 
   @Test
   public void testRightGrams() throws IOException, UIMAException, CleartkException {
-    WindowNGramExtractor extractor = new WindowNGramExtractor(Token.class,
-            new SpannedTextExtractor(), WindowNGramFeature.ORIENTATION_RIGHT,
-            WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT, " ", 0, 3);
+    WindowNGramExtractor extractor = new WindowNGramExtractor(
+        Token.class,
+        new SpannedTextExtractor(),
+        WindowNGramFeature.ORIENTATION_RIGHT,
+        WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT,
+        " ",
+        0,
+        3);
 
     // feature extraction on "island" in "...because the island was only..."
     tokenBuilder.buildTokens(jCas, "text obtained from gutenberg\n"
-            + "I WANTED to go and look at a place right about the middle of "
-            + "the island that I ' d found when I was exploring ;\n"
-            + "so we started and soon got to it");
+        + "I WANTED to go and look at a place right about the middle of "
+        + "the island that I ' d found when I was exploring ;\n"
+        + "so we started and soon got to it");
     Token token = JCasUtil.selectByIndex(jCas, Token.class, 19);
     assertEquals("island", token.getCoveredText());
     Feature feature = extractor.extract(jCas, token, Sentence.class);
@@ -231,16 +251,21 @@ public class WindowNGramExtractorTest extends DefaultTestBase {
     feature = extractor.extract(jCas, token, Sentence.class);
     assertEquals("OOB1 OOB2 OOB3", feature.getValue().toString());
 
-    extractor = new WindowNGramExtractor(Token.class, new SpannedTextExtractor(),
-            WindowNGramFeature.ORIENTATION_RIGHT, WindowNGramFeature.DIRECTION_RIGHT_TO_LEFT, " ",
-            2, 8);
+    extractor = new WindowNGramExtractor(
+        Token.class,
+        new SpannedTextExtractor(),
+        WindowNGramFeature.ORIENTATION_RIGHT,
+        WindowNGramFeature.DIRECTION_RIGHT_TO_LEFT,
+        " ",
+        2,
+        8);
 
     // feature extraction on "island" in "...because the island was only..."
     jCas.reset();
     tokenBuilder.buildTokens(jCas, "text obtained from gutenberg\n"
-            + "I WANTED to go and look at a place right about the middle of "
-            + "the island that I ' d found when I was exploring ;\n"
-            + "so we started and soon got to it");
+        + "I WANTED to go and look at a place right about the middle of "
+        + "the island that I ' d found when I was exploring ;\n"
+        + "so we started and soon got to it");
     token = JCasUtil.selectByIndex(jCas, Token.class, 19);
     assertEquals("island", token.getCoveredText());
     feature = extractor.extract(jCas, token, Sentence.class);
@@ -297,9 +322,14 @@ public class WindowNGramExtractorTest extends DefaultTestBase {
 
     SpannedTextExtractor wordExtractor = new SpannedTextExtractor();
 
-    WindowNGramExtractor ngramExtractor = new WindowNGramExtractor(Token.class, wordExtractor,
-            WindowNGramFeature.ORIENTATION_LEFT, WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT, "_",
-            0, 2);
+    WindowNGramExtractor ngramExtractor = new WindowNGramExtractor(
+        Token.class,
+        wordExtractor,
+        WindowNGramFeature.ORIENTATION_LEFT,
+        WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT,
+        "_",
+        0,
+        2);
 
     // issue 158 comes down to this - the next two assertions should have the same expected value.
     Feature feature = ngramExtractor.extract(jCas, header, Sentence.class);
@@ -307,9 +337,14 @@ public class WindowNGramExtractorTest extends DefaultTestBase {
     feature = ngramExtractor.extract(jCas, token5, Sentence.class);
     assertEquals("4_5", feature.getValue().toString());
 
-    ngramExtractor = new WindowNGramExtractor(Token.class, wordExtractor,
-            WindowNGramFeature.ORIENTATION_RIGHT, WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT, "_",
-            0, 2);
+    ngramExtractor = new WindowNGramExtractor(
+        Token.class,
+        wordExtractor,
+        WindowNGramFeature.ORIENTATION_RIGHT,
+        WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT,
+        "_",
+        0,
+        2);
 
     // again the next two assertions should have the same expected value.
     feature = ngramExtractor.extract(jCas, header, Sentence.class);

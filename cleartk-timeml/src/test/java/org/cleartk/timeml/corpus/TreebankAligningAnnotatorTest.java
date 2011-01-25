@@ -52,12 +52,14 @@ public class TreebankAligningAnnotatorTest extends TimeMLTestBase {
     }
 
     String treebankPath = "data/treebank/wsj";
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TreebankAligningAnnotator.class,
-            typeSystemDescription, TreebankAligningAnnotator.PARAM_TREEBANK_DIRECTORY_NAME,
-            treebankPath);
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+        TreebankAligningAnnotator.class,
+        typeSystemDescription,
+        TreebankAligningAnnotator.PARAM_TREEBANK_DIRECTORY_NAME,
+        treebankPath);
 
     Object treebankDirectory = engine
-            .getConfigParameterValue(TreebankAligningAnnotator.PARAM_TREEBANK_DIRECTORY_NAME);
+        .getConfigParameterValue(TreebankAligningAnnotator.PARAM_TREEBANK_DIRECTORY_NAME);
     Assert.assertEquals(treebankPath, treebankDirectory);
 
     engine.collectionProcessComplete();

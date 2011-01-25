@@ -55,13 +55,16 @@ public class CountsExtractor implements SimpleFeatureExtractor {
     this((String) null, subExtractor);
   }
 
-  public CountsExtractor(String identifier, Class<? extends Annotation> annotationType,
-          SimpleFeatureExtractor subExtractor) {
+  public CountsExtractor(
+      String identifier,
+      Class<? extends Annotation> annotationType,
+      SimpleFeatureExtractor subExtractor) {
     this(identifier, new BagExtractor(annotationType, subExtractor));
   }
 
-  public CountsExtractor(Class<? extends Annotation> annotationType,
-          SimpleFeatureExtractor subExtractor) {
+  public CountsExtractor(
+      Class<? extends Annotation> annotationType,
+      SimpleFeatureExtractor subExtractor) {
     this(null, annotationType, subExtractor);
   }
 
@@ -77,8 +80,10 @@ public class CountsExtractor implements SimpleFeatureExtractor {
     return Collections.singletonList(feature);
   }
 
-  private void count(Collection<Feature> features, Map<Object, Integer> countsMap,
-          FeatureName featureName) {
+  private void count(
+      Collection<Feature> features,
+      Map<Object, Integer> countsMap,
+      FeatureName featureName) {
     for (Feature feature : features) {
       if (feature.getValue() instanceof FeatureCollection) {
         FeatureCollection fc = (FeatureCollection) feature.getValue();
@@ -107,7 +112,7 @@ public class CountsExtractor implements SimpleFeatureExtractor {
     public void setFeatureName(String f) {
       if (featureName != null && !featureName.equals(f))
         throw new CleartkRuntimeException(
-                "sub-extractor of CountsExtractor must only extract features of one name");
+            "sub-extractor of CountsExtractor must only extract features of one name");
 
       featureName = f;
     }

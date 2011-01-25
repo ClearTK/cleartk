@@ -38,7 +38,7 @@ import org.cleartk.classifier.jar.ClassifierBuilder;
  * 
  */
 public abstract class MaxentClassifierBuilder_ImplBase<OUTCOME_TYPE> implements
-        ClassifierBuilder<OUTCOME_TYPE> {
+    ClassifierBuilder<OUTCOME_TYPE> {
 
   public void train(File dir, String[] args) throws Exception {
     String[] maxentArgs = new String[args.length + 1];

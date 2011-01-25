@@ -51,7 +51,7 @@ import org.cleartk.util.ReflectionUtil.TypeArgumentDelegator;
  */
 
 public class ViterbiDataWriter<OUTCOME_TYPE> implements SequentialDataWriter<OUTCOME_TYPE>,
-        TypeArgumentDelegator {
+    TypeArgumentDelegator {
 
   public static final String OUTCOME_FEATURE_EXTRACTOR_FILE_NAME = "outcome-features-extractors.ser";
 
@@ -93,14 +93,15 @@ public class ViterbiDataWriter<OUTCOME_TYPE> implements SequentialDataWriter<OUT
     try {
       this.delegatedDataWriter.finish();
 
-      ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(new File(outputDirectory,
-              OUTCOME_FEATURE_EXTRACTOR_FILE_NAME)));
+      ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(new File(
+          outputDirectory,
+          OUTCOME_FEATURE_EXTRACTOR_FILE_NAME)));
       os.writeObject(this.outcomeFeatureExtractors);
       os.close();
 
       ClassifierManifest classifierManifest = new ClassifierManifest();
       Class<? extends ClassifierBuilder<? extends OUTCOME_TYPE>> classifierBuilderClass = this
-              .getDefaultClassifierBuilderClass();
+          .getDefaultClassifierBuilderClass();
       classifierManifest.setClassifierBuilder(classifierBuilderClass.newInstance());
       classifierManifest.write(this.outputDirectory);
 
@@ -116,7 +117,7 @@ public class ViterbiDataWriter<OUTCOME_TYPE> implements SequentialDataWriter<OUT
   public Map<String, Type> getTypeArguments(Class<?> genericType) {
     if (this.delegatedDataWriter == null)
       throw new CleartkRuntimeException(
-              "delegatedDataWriter must be set before calling getTypeArguments");
+          "delegatedDataWriter must be set before calling getTypeArguments");
 
     if (genericType.equals(SequentialDataWriter.class)) {
       genericType = DataWriter.class;

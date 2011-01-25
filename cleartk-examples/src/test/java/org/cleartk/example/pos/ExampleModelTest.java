@@ -50,11 +50,13 @@ public class ExampleModelTest extends ExamplesTestBase {
   @Test
   public void testModel() throws Exception {
     AnalysisEngineDescription posTaggerDescription = ExamplePOSAnnotator
-            .getClassifierDescription(ExamplePOSAnnotator.DEFAULT_MODEL);
+        .getClassifierDescription(ExamplePOSAnnotator.DEFAULT_MODEL);
     AnalysisEngine posTagger = AnalysisEngineFactory.createPrimitive(posTaggerDescription);
 
-    tokenBuilder.buildTokens(jCas, "What would you do if I sang in tune?  Would you listen then?",
-            "What would you do if I sang in tune ?\n  Would you listen then ?");
+    tokenBuilder.buildTokens(
+        jCas,
+        "What would you do if I sang in tune?  Would you listen then?",
+        "What would you do if I sang in tune ?\n  Would you listen then ?");
 
     Token token = JCasUtil.selectByIndex(jCas, Token.class, 0);
     assertNull(token.getPos());

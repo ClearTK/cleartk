@@ -49,16 +49,16 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * @author Martin Toepfer
  */
 public class DefaultGrmmDataWriterFactory extends
-        JarSequentialDataWriterFactory<List<NameNumber>, String[], String[]> {
+    JarSequentialDataWriterFactory<List<NameNumber>, String[], String[]> {
 
   public static final String PARAM_COMPRESS = ConfigurationParameterFactory
-          .createConfigurationParameterName(DefaultGrmmDataWriterFactory.class, "compress");
+      .createConfigurationParameterName(DefaultGrmmDataWriterFactory.class, "compress");
 
   @ConfigurationParameter(description = "indicates whether the FeaturesEncoder should compress the feature names", defaultValue = "false")
   private boolean compress;
 
   public static final String PARAM_SORT = ConfigurationParameterFactory
-          .createConfigurationParameterName(DefaultGrmmDataWriterFactory.class, "sort");
+      .createConfigurationParameterName(DefaultGrmmDataWriterFactory.class, "sort");
 
   @ConfigurationParameter(description = "indicates that the FeaturesEncoder should write the feature names in sorted order", defaultValue = "false")
   private boolean sort;

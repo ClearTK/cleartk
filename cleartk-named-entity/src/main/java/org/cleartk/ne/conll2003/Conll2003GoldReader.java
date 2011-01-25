@@ -67,13 +67,13 @@ import org.uimafit.factory.ConfigurationParameterFactory;
 @SofaCapability(outputSofas = ViewURIUtil.URI)
 public class Conll2003GoldReader extends JCasCollectionReader_ImplBase {
   public static final String PARAM_DATA_FILE_NAME = ConfigurationParameterFactory
-          .createConfigurationParameterName(Conll2003GoldReader.class, "dataFileName");
+      .createConfigurationParameterName(Conll2003GoldReader.class, "dataFileName");
 
   @ConfigurationParameter(mandatory = true, description = "Points to CoNLL data (e.g. ner/eng.train).")
   private String dataFileName;
 
   public static final String PARAM_LOAD_NAMED_ENTITIES = ConfigurationParameterFactory
-          .createConfigurationParameterName(Conll2003GoldReader.class, "loadNamedEntities");
+      .createConfigurationParameterName(Conll2003GoldReader.class, "loadNamedEntities");
 
   @ConfigurationParameter(mandatory = true, description = "determines if the named entities are loaded (i.e. named entity mention annotations are created) or if just plain text from the files is loaded.", defaultValue = "true")
   private boolean loadNamedEntities;
@@ -249,8 +249,10 @@ public class Conll2003GoldReader extends JCasCollectionReader_ImplBase {
       ne.setEntitySubtype(currentNamedEntityType.substring(2));
       ne.addToIndexes();
 
-      NamedEntityMention nem = new NamedEntityMention(jCas, namedEntityStart,
-              documentText.length() - 1);
+      NamedEntityMention nem = new NamedEntityMention(
+          jCas,
+          namedEntityStart,
+          documentText.length() - 1);
       nem.setMentionType("NAM");
       Annotation annotation = new Annotation(jCas, namedEntityStart, documentText.length() - 1);
       annotation.addToIndexes();
@@ -286,7 +288,7 @@ public class Conll2003GoldReader extends JCasCollectionReader_ImplBase {
    */
   private boolean startsWithB(String bType, String iType) {
     if (bType.startsWith("B") && iType.startsWith("I")
-            && iType.substring(1).equals(bType.substring(1))) {
+        && iType.substring(1).equals(bType.substring(1))) {
       return true;
     }
     return false;

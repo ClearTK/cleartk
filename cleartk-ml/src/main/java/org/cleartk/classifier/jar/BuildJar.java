@@ -45,9 +45,9 @@ public class BuildJar {
   public static void main(String... args) throws Exception {
     String programName = BuildJar.class.getName();
     String usage = String.format("usage: java %s DIR\n\n"
-            + "The directory DIR should contain the MANIFEST.MF file as created by\n"
-            + "a classifier DataWriter, and all files created by training a model\n"
-            + "from the corresponding training-data.xxx file\n", programName);
+        + "The directory DIR should contain the MANIFEST.MF file as created by\n"
+        + "a classifier DataWriter, and all files created by training a model\n"
+        + "from the corresponding training-data.xxx file\n", programName);
 
     // usage message for wrong number of arguments
     if (args.length != 1) {

@@ -56,33 +56,34 @@ import org.uimafit.factory.initializable.InitializableFactory;
 public class TokenAnnotator extends JCasAnnotator_ImplBase {
 
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(TokenAnnotator.class,
-            TokenComponents.TYPE_SYSTEM_DESCRIPTION);
+    return AnalysisEngineFactory.createPrimitiveDescription(
+        TokenAnnotator.class,
+        TokenComponents.TYPE_SYSTEM_DESCRIPTION);
   }
 
   public static final String PARAM_TOKENIZER_NAME = ConfigurationParameterFactory
-          .createConfigurationParameterName(TokenAnnotator.class, "tokenizerName");
+      .createConfigurationParameterName(TokenAnnotator.class, "tokenizerName");
 
   private static final String TOKENIZER_DESCRIPTION = "specifies the class type of the tokenizer that will be used by this annotator. "
-          + "If this parameter is not filled, then the default tokenenizer (org.cleartk.token.util.PennTreebankTokenizer) is used. "
-          + "A tokenenizer is defined as any implementation of the interface defined by org.cleartk.token.util.Tokenizer.";
+      + "If this parameter is not filled, then the default tokenenizer (org.cleartk.token.util.PennTreebankTokenizer) is used. "
+      + "A tokenenizer is defined as any implementation of the interface defined by org.cleartk.token.util.Tokenizer.";
 
   @ConfigurationParameter(description = TOKENIZER_DESCRIPTION, defaultValue = "org.cleartk.token.tokenizer.PennTreebankTokenizer")
   private String tokenizerName;
 
   public static final String PARAM_TOKEN_TYPE_NAME = ConfigurationParameterFactory
-          .createConfigurationParameterName(TokenAnnotator.class, "tokenTypeName");
+      .createConfigurationParameterName(TokenAnnotator.class, "tokenTypeName");
 
   @ConfigurationParameter(description = "class type of the tokens that are created by this annotator. If this parameter is not filled, then tokens of type org.cleartk.token.type.Token will be created.", defaultValue = "org.cleartk.token.type.Token")
   private String tokenTypeName;
 
   public static final String PARAM_WINDOW_TYPE_NAME = ConfigurationParameterFactory
-          .createConfigurationParameterName(TokenAnnotator.class, "windowTypeName");
+      .createConfigurationParameterName(TokenAnnotator.class, "windowTypeName");
 
   private static final String WINDOW_TYPE_DESCRIPTION = "specifies the class type of annotations that will be tokenized. "
-          + "If no value is given, then the entire document will be tokenized at once. "
-          + "A good value for this parameter would be 'org.cleartk.token.type.Sentence' "
-          + " (especially when using the PennTreebankTokenizer).";
+      + "If no value is given, then the entire document will be tokenized at once. "
+      + "A good value for this parameter would be 'org.cleartk.token.type.Sentence' "
+      + " (especially when using the PennTreebankTokenizer).";
 
   // do not set the default value to 'org.cleartk.token.type.Sentence'. If you do, then unit tests
   // will break. The symptom will be a tokenizer that doesn't generate any tokens (because there
@@ -107,7 +108,9 @@ public class TokenAnnotator extends JCasAnnotator_ImplBase {
       super.initialize(uimaContext);
       tokenizer = InitializableFactory.create(uimaContext, tokenizerName, Tokenizer.class);
       tokenClass = InitializableFactory.getClass(tokenTypeName, Annotation.class);
-      tokenConstructor = tokenClass.getConstructor(new Class[] { JCas.class, Integer.TYPE,
+      tokenConstructor = tokenClass.getConstructor(new Class[] {
+          JCas.class,
+          Integer.TYPE,
           Integer.TYPE });
       if (windowTypeName != null)
         windowClass = InitializableFactory.getClass(windowTypeName, Annotation.class);
@@ -145,7 +148,7 @@ public class TokenAnnotator extends JCasAnnotator_ImplBase {
   }
 
   private void createTokens(List<Token> pojoTokens, int offset, JCas jCas)
-          throws InstantiationException, InvocationTargetException, IllegalAccessException {
+      throws InstantiationException, InvocationTargetException, IllegalAccessException {
     for (Token pojoToken : pojoTokens) {
       int tokenBegin = pojoToken.getBegin() + offset;
       int tokenEnd = pojoToken.getEnd() + offset;

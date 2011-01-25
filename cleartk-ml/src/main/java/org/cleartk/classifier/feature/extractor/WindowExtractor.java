@@ -68,9 +68,12 @@ public class WindowExtractor {
 
   protected String name;
 
-  public WindowExtractor(Class<? extends Annotation> featureClass,
-          SimpleFeatureExtractor featureExtractor, String windowOrientation, int windowStart,
-          int windowEnd) {
+  public WindowExtractor(
+      Class<? extends Annotation> featureClass,
+      SimpleFeatureExtractor featureExtractor,
+      String windowOrientation,
+      int windowStart,
+      int windowEnd) {
     this.featureClass = featureClass;
     this.featureExtractor = featureExtractor;
     this.windowOrientation = windowOrientation;
@@ -107,22 +110,30 @@ public class WindowExtractor {
    * &#064;see WindowFeature
    * 
    */
-  public WindowExtractor(String name, Class<? extends Annotation> featureClass,
-          SimpleFeatureExtractor featureExtractor, String windowOrientation, int windowStart,
-          int windowEnd) {
+  public WindowExtractor(
+      String name,
+      Class<? extends Annotation> featureClass,
+      SimpleFeatureExtractor featureExtractor,
+      String windowOrientation,
+      int windowStart,
+      int windowEnd) {
     this(featureClass, featureExtractor, windowOrientation, windowStart, windowEnd);
     this.name = name;
   }
 
-  public List<Feature> extract(JCas jCas, Annotation focusAnnotation,
-          Class<? extends Annotation> cls) throws CleartkException {
-    Annotation windowAnnotation = AnnotationRetrieval.getContainingAnnotation(jCas,
-            focusAnnotation, cls);
+  public List<Feature> extract(
+      JCas jCas,
+      Annotation focusAnnotation,
+      Class<? extends Annotation> cls) throws CleartkException {
+    Annotation windowAnnotation = AnnotationRetrieval.getContainingAnnotation(
+        jCas,
+        focusAnnotation,
+        cls);
     return extract(jCas, focusAnnotation, windowAnnotation);
   }
 
   public List<Feature> extract(JCas jCas, Annotation focusAnnotation, Annotation windowAnnotation)
-          throws CleartkException {
+      throws CleartkException {
     if (this.featureType == null)
       this.featureType = UIMAUtil.getCasType(jCas, this.featureClass);
 
@@ -130,8 +141,9 @@ public class WindowExtractor {
 
     Annotation startAnnotation = getStartAnnotation(jCas, focusAnnotation);
 
-    FSIterator<Annotation> featureAnnotationIterator = jCas.getAnnotationIndex(featureType)
-            .iterator();
+    FSIterator<Annotation> featureAnnotationIterator = jCas
+        .getAnnotationIndex(featureType)
+        .iterator();
 
     if (startAnnotation != null) {
       featureAnnotationIterator.moveTo(startAnnotation);
@@ -145,7 +157,7 @@ public class WindowExtractor {
       // annotation the iterator starts at. Therefore, we check for null
       // here.
       if (outOfBoundsDistance == 0 && startAnnotation != null
-              && featureAnnotationIterator.isValid()) {
+          && featureAnnotationIterator.isValid()) {
         Annotation featureAnnotation = (Annotation) featureAnnotationIterator.get();
         if (isWithinBoundaries(featureAnnotation, focusAnnotation, windowAnnotation)) {
           if (i >= windowStart) {
@@ -157,8 +169,12 @@ public class WindowExtractor {
       }
       outOfBoundsDistance++;
       if (i >= windowStart) {
-        Feature feature = new WindowFeature(this.name, null, windowOrientation, i,
-                outOfBoundsDistance);
+        Feature feature = new WindowFeature(
+            this.name,
+            null,
+            windowOrientation,
+            i,
+            outOfBoundsDistance);
         returnValues.add(feature);
       }
 
@@ -166,33 +182,40 @@ public class WindowExtractor {
     return returnValues;
   }
 
-  private boolean isWithinBoundaries(Annotation featureAnnotation, Annotation focusAnnotation,
-          Annotation windowAnnotation) {
+  private boolean isWithinBoundaries(
+      Annotation featureAnnotation,
+      Annotation focusAnnotation,
+      Annotation windowAnnotation) {
     if (windowOrientation.equals(WindowFeature.ORIENTATION_LEFT)
-            || windowOrientation.equals(WindowFeature.ORIENTATION_RIGHT)) {
+        || windowOrientation.equals(WindowFeature.ORIENTATION_RIGHT)) {
       return AnnotationUtil.contains(windowAnnotation, featureAnnotation);
     } else
       return AnnotationUtil.contains(windowAnnotation, featureAnnotation)
-              && AnnotationUtil.contains(focusAnnotation, featureAnnotation);
+          && AnnotationUtil.contains(focusAnnotation, featureAnnotation);
   }
 
   private void moveIterator(FSIterator<Annotation> windowIterator) {
     if (windowOrientation.equals(WindowFeature.ORIENTATION_LEFT)
-            || windowOrientation.equals(WindowFeature.ORIENTATION_MIDDLE_REVERSE))
+        || windowOrientation.equals(WindowFeature.ORIENTATION_MIDDLE_REVERSE))
       windowIterator.moveToPrevious();
     else if (windowOrientation.equals(WindowFeature.ORIENTATION_RIGHT)
-            || windowOrientation.equals(WindowFeature.ORIENTATION_MIDDLE))
+        || windowOrientation.equals(WindowFeature.ORIENTATION_MIDDLE))
       windowIterator.moveToNext();
   }
 
   private List<Feature> extractWindowedFeatures(JCas jCas, int i, Annotation annotation)
-          throws CleartkException {
+      throws CleartkException {
     List<Feature> windowedFeatures = featureExtractor.extract(jCas, annotation);
     List<Feature> returnValues = new ArrayList<Feature>();
     if (windowedFeatures != null && windowedFeatures.size() > 0) {
       for (Feature windowedFeature : windowedFeatures) {
-        Feature feature = new WindowFeature(this.name, windowedFeature.getValue(),
-                windowOrientation, i, windowedFeature, 0);
+        Feature feature = new WindowFeature(
+            this.name,
+            windowedFeature.getValue(),
+            windowOrientation,
+            i,
+            windowedFeature,
+            0);
         returnValues.add(feature);
       }
       return returnValues;

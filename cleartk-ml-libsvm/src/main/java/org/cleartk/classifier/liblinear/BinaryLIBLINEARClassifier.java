@@ -70,7 +70,7 @@ public class BinaryLIBLINEARClassifier extends JarClassifier<Boolean, Boolean, F
 
   @Override
   public List<ScoredOutcome<Boolean>> score(List<Feature> features, int maxResults)
-          throws CleartkException {
+      throws CleartkException {
     List<ScoredOutcome<Boolean>> returnValues = new ArrayList<ScoredOutcome<Boolean>>();
 
     FeatureVector featureVector = this.featuresEncoder.encodeAll(features);
@@ -78,7 +78,7 @@ public class BinaryLIBLINEARClassifier extends JarClassifier<Boolean, Boolean, F
     for (ScoredPrediction prediction : encodedPredictions) {
       boolean encodedOutcome = prediction.getPrediction() > 0;
       returnValues.add(new ScoredOutcome<Boolean>(outcomeEncoder.decode(encodedOutcome), prediction
-              .getScore()));
+          .getScore()));
       if (maxResults == 1)
         return returnValues;
     }

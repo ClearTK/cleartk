@@ -52,7 +52,7 @@ public class SimpleTermFinderTest {
   @Test
   public void testAddTermList() throws IOException {
     TermList usStatesList = TermList.loadSimpleFile("US States", new File(
-            "src/test/resources/data/term/termlist/US_States.txt"));
+        "src/test/resources/data/term/termlist/US_States.txt"));
     SimpleTermFinder termFinder = new SimpleTermFinder();
     termFinder.addTermList(usStatesList);
 
@@ -92,7 +92,7 @@ public class SimpleTermFinderTest {
     assertEquals("US States", minnesotaTerm.getTermList().getName());
 
     TermList nstatesList = TermList.loadSimpleFile("N States", new File(
-            "src/test/resources/data/term/termlist/N_States.txt"));
+        "src/test/resources/data/term/termlist/N_States.txt"));
     termFinder.addTermList(nstatesList);
 
     assertEquals(54, termFinder.topNode.children.size());
@@ -169,7 +169,7 @@ public class SimpleTermFinderTest {
     assertEquals("New Mexico", termMatches.get(1).getTerm().getTermText());
 
     termMatches = termFinder.getMatches(tokenizer
-            .getTokens("She drove from New Jersey to New Mexico."));
+        .getTokens("She drove from New Jersey to New Mexico."));
 
     assertEquals(5, termMatches.size());
     assertEquals("New", termMatches.get(0).getTerm().getTermText());
@@ -181,7 +181,7 @@ public class SimpleTermFinderTest {
     assertEquals("New Mexico", termMatches.get(4).getTerm().getTermText());
 
     termMatches = termFinder.getMatches(tokenizer
-            .getTokens("New Jersey, New Mexico, New York, New Hampshire."));
+        .getTokens("New Jersey, New Mexico, New York, New Hampshire."));
     assertEquals(11, termMatches.size());
     assertEquals("New", termMatches.get(0).getTerm().getTermText());
     assertEquals("New Jersey", termMatches.get(1).getTerm().getTermText());
@@ -212,8 +212,10 @@ public class SimpleTermFinderTest {
     TermList termList = TermList.loadSimpleFile("names", new File(termListFileName));
     long stopLoad = System.nanoTime();
     float timeElapsed = (float) (stopLoad - startLoad) / 1000000000;
-    System.out.println(String.format("loaded %1$d terms in %2$.3f seconds.", termList.size(),
-            timeElapsed));
+    System.out.println(String.format(
+        "loaded %1$d terms in %2$.3f seconds.",
+        termList.size(),
+        timeElapsed));
 
     Tokenizer tokenizer = new PennTreebankTokenizer();
 
@@ -222,8 +224,9 @@ public class SimpleTermFinderTest {
     termFinder.addTermList(termList);
     long stopInitialize = System.nanoTime();
     timeElapsed = (float) (stopInitialize - startInitialize) / 1000000000;
-    System.out.println(String.format("initialized simple term finder in %2$.3f seconds.",
-            timeElapsed));
+    System.out.println(String.format(
+        "initialized simple term finder in %2$.3f seconds.",
+        timeElapsed));
 
     long start;
     long stop;
@@ -249,8 +252,11 @@ public class SimpleTermFinderTest {
     }
     long stopFinder = System.nanoTime();
     float time = (float) (stopFinder - startFinder) / 1000000000;
-    System.out.println(String.format("found %1$s term matches in %2$s tokens in %3$.3f seconds.",
-            matchesCount, tokensCount, time));
+    System.out.println(String.format(
+        "found %1$s term matches in %2$s tokens in %3$.3f seconds.",
+        matchesCount,
+        tokensCount,
+        time));
     time = (float) tokenizerTime / 1000000000;
     System.out.println(String.format("Time spent tokenizing was %3$.3f seconds.", time));
     time = (float) finderTime / 1000000000;

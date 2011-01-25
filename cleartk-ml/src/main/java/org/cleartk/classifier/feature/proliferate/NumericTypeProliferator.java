@@ -77,7 +77,7 @@ public class NumericTypeProliferator extends FeatureProliferator {
   static Pattern someLetters = Pattern.compile("[a-zA-Z]");
 
   static Pattern romanNumeralPattern = Pattern
-          .compile("^M?M?M?(CM|CD|D?C?C?C?)(XC|XL|L?X?X?X?)(IX|IV|V?I?I?I?)$");
+      .compile("^M?M?M?(CM|CD|D?C?C?C?)(XC|XL|L?X?X?X?)(IX|IV|V?I?I?I?)$");
 
   public NumericTypeProliferator() {
     super(NumericTypeProliferator.DEFAULT_NAME);

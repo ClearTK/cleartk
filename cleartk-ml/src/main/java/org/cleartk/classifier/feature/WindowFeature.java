@@ -53,8 +53,13 @@ public class WindowFeature extends Feature {
 
   private Integer outOfBoundsDistance = 0;
 
-  public WindowFeature(String name, Object value, String orientation, Integer position,
-          Feature windowedFeature, Integer outOfBoundsDistance) {
+  public WindowFeature(
+      String name,
+      Object value,
+      String orientation,
+      Integer position,
+      Feature windowedFeature,
+      Integer outOfBoundsDistance) {
     super(value);
     this.orientation = orientation;
     this.position = position;
@@ -63,13 +68,21 @@ public class WindowFeature extends Feature {
     this.name = createName(name);
   }
 
-  public WindowFeature(String name, Object value, String orientation, Integer position,
-          Feature windowedFeature) {
+  public WindowFeature(
+      String name,
+      Object value,
+      String orientation,
+      Integer position,
+      Feature windowedFeature) {
     this(name, value, orientation, position, windowedFeature, null);
   }
 
-  public WindowFeature(String name, Object value, String orientation, Integer position,
-          Integer outOfBoundsDistance) {
+  public WindowFeature(
+      String name,
+      Object value,
+      String orientation,
+      Integer position,
+      Integer outOfBoundsDistance) {
     this(name, value, orientation, position, null, outOfBoundsDistance);
   }
 

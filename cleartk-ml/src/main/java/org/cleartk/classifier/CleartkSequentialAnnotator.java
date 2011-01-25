@@ -46,18 +46,20 @@ import org.uimafit.factory.initializable.InitializableFactory;
  */
 
 public abstract class CleartkSequentialAnnotator<OUTCOME_TYPE> extends JCasAnnotator_ImplBase
-        implements Initializable {
+    implements Initializable {
 
   public static final String PARAM_SEQUENTIAL_CLASSIFIER_FACTORY_CLASS_NAME = ConfigurationParameterFactory
-          .createConfigurationParameterName(CleartkSequentialAnnotator.class,
-                  "sequentialClassifierFactoryClassName");
+      .createConfigurationParameterName(
+          CleartkSequentialAnnotator.class,
+          "sequentialClassifierFactoryClassName");
 
   @ConfigurationParameter(mandatory = false, description = "provides the full name of the SequentialClassifierFactory class to be used.", defaultValue = "org.cleartk.classifier.jar.JarClassifierFactory")
   private String sequentialClassifierFactoryClassName;
 
   public static final String PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME = ConfigurationParameterFactory
-          .createConfigurationParameterName(CleartkSequentialAnnotator.class,
-                  "sequentialDataWriterFactoryClassName");
+      .createConfigurationParameterName(
+          CleartkSequentialAnnotator.class,
+          "sequentialDataWriterFactoryClassName");
 
   @ConfigurationParameter(mandatory = false, description = "provides the full name of the SequentialDataWriterFactory class to be used.")
   private String sequentialDataWriterFactoryClassName;
@@ -72,8 +74,10 @@ public abstract class CleartkSequentialAnnotator<OUTCOME_TYPE> extends JCasAnnot
 
     if (sequentialDataWriterFactoryClassName != null) {
       // create the factory and instantiate the data writer
-      SequentialDataWriterFactory<?> factory = InitializableFactory.create(context,
-              sequentialDataWriterFactoryClassName, SequentialDataWriterFactory.class);
+      SequentialDataWriterFactory<?> factory = InitializableFactory.create(
+          context,
+          sequentialDataWriterFactoryClassName,
+          SequentialDataWriterFactory.class);
       SequentialDataWriter<?> untypedDataWriter;
       try {
         untypedDataWriter = factory.createSequentialDataWriter();
@@ -84,8 +88,10 @@ public abstract class CleartkSequentialAnnotator<OUTCOME_TYPE> extends JCasAnnot
       this.sequentialDataWriter = ReflectionUtil.uncheckedCast(untypedDataWriter);
     } else {
       // create the factory and instantiate the classifier
-      SequentialClassifierFactory<?> factory = InitializableFactory.create(context,
-              sequentialClassifierFactoryClassName, SequentialClassifierFactory.class);
+      SequentialClassifierFactory<?> factory = InitializableFactory.create(
+          context,
+          sequentialClassifierFactoryClassName,
+          SequentialClassifierFactory.class);
       SequentialClassifier<?> untypedClassifier;
       try {
         untypedClassifier = factory.createSequentialClassifier();
@@ -97,9 +103,13 @@ public abstract class CleartkSequentialAnnotator<OUTCOME_TYPE> extends JCasAnnot
 
       this.sequentialClassifier = ReflectionUtil.uncheckedCast(untypedClassifier);
 
-      ReflectionUtil.checkTypeParameterIsAssignable(CleartkSequentialAnnotator.class,
-              "OUTCOME_TYPE", this, SequentialClassifier.class, "OUTCOME_TYPE",
-              this.sequentialClassifier);
+      ReflectionUtil.checkTypeParameterIsAssignable(
+          CleartkSequentialAnnotator.class,
+          "OUTCOME_TYPE",
+          this,
+          SequentialClassifier.class,
+          "OUTCOME_TYPE",
+          this.sequentialClassifier);
 
       InitializableFactory.initialize(untypedClassifier, context);
     }
@@ -124,7 +134,7 @@ public abstract class CleartkSequentialAnnotator<OUTCOME_TYPE> extends JCasAnnot
   }
 
   protected List<OUTCOME_TYPE> classifySequence(List<Instance<OUTCOME_TYPE>> instances)
-          throws CleartkException {
+      throws CleartkException {
     List<List<Feature>> instanceFeatures = new ArrayList<List<Feature>>();
     for (Instance<OUTCOME_TYPE> instance : instances) {
       instanceFeatures.add(instance.getFeatures());

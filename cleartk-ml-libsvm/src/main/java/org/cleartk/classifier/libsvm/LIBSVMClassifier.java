@@ -48,7 +48,7 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
  * 
  */
 public abstract class LIBSVMClassifier<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE> extends
-        JarClassifier<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE, FeatureVector> {
+    JarClassifier<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE, FeatureVector> {
 
   public static final String MODEL_NAME = "model.libsvm";
 
@@ -74,8 +74,9 @@ public abstract class LIBSVMClassifier<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE> ex
   public INPUTOUTCOME_TYPE classify(List<Feature> features) throws CleartkException {
     FeatureVector featureVector = this.featuresEncoder.encodeAll(features);
 
-    OUTPUTOUTCOME_TYPE encodedOutcome = decodePrediction(libsvm.svm.svm_predict(this.model,
-            convertToLIBSVM(featureVector)));
+    OUTPUTOUTCOME_TYPE encodedOutcome = decodePrediction(libsvm.svm.svm_predict(
+        this.model,
+        convertToLIBSVM(featureVector)));
 
     return outcomeEncoder.decode(encodedOutcome);
   }

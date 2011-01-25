@@ -67,16 +67,29 @@ public class NGramExtractorTest extends DefaultTestBase {
     Assert.assertEquals("|", extractor.getValueSeparator());
     features = extractor.extract(jCas, document);
     Assert.assertEquals(6, features.size());
-    this.checkFeatures(features, "Ngram(Token,null,null)", "She|sells", "sells|seashells",
-            "seashells|by", "by|the", "the|sea", "sea|shore");
+    this.checkFeatures(
+        features,
+        "Ngram(Token,null,null)",
+        "She|sells",
+        "sells|seashells",
+        "seashells|by",
+        "by|the",
+        "the|sea",
+        "sea|shore");
 
     extractor = new NGramExtractor(3, Token.class, posExtractor);
     extractor.setValueSeparator("@");
     Assert.assertEquals("@", extractor.getValueSeparator());
     features = extractor.extract(jCas, document);
     Assert.assertEquals(5, features.size());
-    this.checkFeatures(features, "Ngram(Token,TypePath(Pos),TypePath(Pos),TypePath(Pos))",
-            "PRP@VBZ@NNS", "VBZ@NNS@IN", "NNS@IN@DT", "IN@DT@NN", "DT@NN@NN");
+    this.checkFeatures(
+        features,
+        "Ngram(Token,TypePath(Pos),TypePath(Pos),TypePath(Pos))",
+        "PRP@VBZ@NNS",
+        "VBZ@NNS@IN",
+        "NNS@IN@DT",
+        "IN@DT@NN",
+        "DT@NN@NN");
 
   }
 

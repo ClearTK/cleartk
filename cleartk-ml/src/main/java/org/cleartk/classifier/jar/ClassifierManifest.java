@@ -42,7 +42,7 @@ import java.util.jar.Manifest;
 public class ClassifierManifest extends Manifest {
 
   public static final Attributes.Name CLASSIFIER_BUILDER_ATTRIBUTE = new Attributes.Name(
-          "classifierBuilderClass");
+      "classifierBuilderClass");
 
   private ClassifierBuilder<?> classifierBuilder;
 
@@ -93,13 +93,17 @@ public class ClassifierManifest extends Manifest {
     Attributes attributes = this.getMainAttributes();
     String classifierBuilderClassName = attributes.getValue(CLASSIFIER_BUILDER_ATTRIBUTE);
     if (classifierBuilderClassName == null) {
-      throw new IOException(String.format("Missing %s attribute in manifest %s",
-              CLASSIFIER_BUILDER_ATTRIBUTE, path));
+      throw new IOException(String.format(
+          "Missing %s attribute in manifest %s",
+          CLASSIFIER_BUILDER_ATTRIBUTE,
+          path));
     }
     Exception exception = null;
     try {
-      this.classifierBuilder = Class.forName(classifierBuilderClassName)
-              .asSubclass(ClassifierBuilder.class).newInstance();
+      this.classifierBuilder = Class
+          .forName(classifierBuilderClassName)
+          .asSubclass(ClassifierBuilder.class)
+          .newInstance();
     } catch (ClassNotFoundException e) {
       exception = e;
     } catch (InstantiationException e) {
@@ -108,8 +112,10 @@ public class ClassifierManifest extends Manifest {
       exception = e;
     }
     if (exception != null) {
-      IOException ioe = new IOException(String.format("Invalid %s attribute in manifest %s",
-              CLASSIFIER_BUILDER_ATTRIBUTE, path));
+      IOException ioe = new IOException(String.format(
+          "Invalid %s attribute in manifest %s",
+          CLASSIFIER_BUILDER_ATTRIBUTE,
+          path));
       ioe.initCause(exception);
       throw ioe;
     }

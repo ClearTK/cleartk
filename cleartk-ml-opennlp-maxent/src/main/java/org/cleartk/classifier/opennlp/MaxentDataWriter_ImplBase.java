@@ -52,7 +52,7 @@ import org.cleartk.classifier.jar.JarDataWriter;
  * @see RealValueFileEventStream
  */
 public abstract class MaxentDataWriter_ImplBase<OUTCOME_TYPE> extends
-        JarDataWriter<OUTCOME_TYPE, String, List<NameNumber>> {
+    JarDataWriter<OUTCOME_TYPE, String, List<NameNumber>> {
 
   public static final String TRAINING_DATA_FILE_NAME = "training-data.maxent";
 

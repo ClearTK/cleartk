@@ -57,7 +57,7 @@ public abstract class CleartkTestBase {
   @Before
   public void setUp() throws Exception {
     typeSystemDescription = TypeSystemDescriptionFactory
-            .createTypeSystemDescription(getTypeSystemDescriptorNames());
+        .createTypeSystemDescription(getTypeSystemDescriptorNames());
     jCas = JCasFactory.createJCas(typeSystemDescription);
     outputDirectory = folder.newFolder("output");
     outputDirectoryName = outputDirectory.getPath();

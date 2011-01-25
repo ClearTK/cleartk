@@ -45,7 +45,7 @@ public class MaxEntTrainerFactory implements ClassifierTrainerFactory<MaxEnt> {
     if (args != null) {
       if (args.length % 2 != 0) {
         throw new IllegalArgumentException("each argument must be supplied with a value:  "
-                + getUsageMessage());
+            + getUsageMessage());
       }
       for (int i = 0; i < args.length; i += 2) {
         String optionName = args[i];
@@ -56,14 +56,15 @@ public class MaxEntTrainerFactory implements ClassifierTrainerFactory<MaxEnt> {
             trainer.setNumIterations(numIterations);
           else
             throw new IllegalArgumentException("numIterations must be positive.  "
-                    + getUsageMessage());
+                + getUsageMessage());
         }
 
         else if (optionName.equals("--gaussianPriorVariance"))
           trainer.setGaussianPriorVariance(Double.parseDouble(optionValue));
         else
-          throw new IllegalArgumentException(String.format("the argument %1$s is invalid.  ",
-                  optionName) + getUsageMessage());
+          throw new IllegalArgumentException(String.format(
+              "the argument %1$s is invalid.  ",
+              optionName) + getUsageMessage());
       }
     }
     return trainer;
@@ -71,7 +72,7 @@ public class MaxEntTrainerFactory implements ClassifierTrainerFactory<MaxEnt> {
 
   public String getUsageMessage() {
     return "The arguments for MaxEntTrainerFactory.createTrainer(String...args) should be either empty or include any of the following:"
-            + "\n--numIterations int" + "\n --gaussianPriorVariance double";
+        + "\n--numIterations int" + "\n --gaussianPriorVariance double";
   }
 
 }

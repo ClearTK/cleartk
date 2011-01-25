@@ -62,20 +62,29 @@ public class BagExtractorTest extends DefaultTestBase {
 
   @Before
   public void localSetUp() throws Exception {
-    this.engine = AnalysisEngineFactory.createPrimitive(JCasAnnotatorAdapter.class,
-            typeSystemDescription);
+    this.engine = AnalysisEngineFactory.createPrimitive(
+        JCasAnnotatorAdapter.class,
+        typeSystemDescription);
     this.jCasObjects = new ArrayList<JCas>();
     this.expectedTokenLists = new ArrayList<List<String>>();
     this.expectedPOSLists = new ArrayList<List<String>>();
 
-    this.add("The man walked to the store.", "The man walked to the store .",
-            "DT NN VBD IN DT NN .", "The man walked to the store .", "DT NN VBD IN .");
+    this.add(
+        "The man walked to the store.",
+        "The man walked to the store .",
+        "DT NN VBD IN DT NN .",
+        "The man walked to the store .",
+        "DT NN VBD IN .");
 
     String text2 = "The big black bug bit the big black bear\n"
-            + "and the big black bear bled blood";
+        + "and the big black bear bled blood";
 
-    this.add(text2, text2, "DT JJ JJ NN VBD DT JJ JJ NN CC DT JJ JJ NN VBD NN",
-            "The big black bug bit the bear and bled blood", "DT JJ NN VBD CC");
+    this.add(
+        text2,
+        text2,
+        "DT JJ JJ NN VBD DT JJ JJ NN CC DT JJ JJ NN VBD NN",
+        "The big black bug bit the bear and bled blood",
+        "DT JJ NN VBD CC");
   }
 
   /**
@@ -132,8 +141,12 @@ public class BagExtractorTest extends DefaultTestBase {
     this.testOne(bagExtractor, "Bag(Token)", "TypePath(Pos)", this.expectedPOSLists);
   }
 
-  private void add(String text, String tokensString, String posTagsString,
-          String expectedTokensString, String expectedPOSString) throws UIMAException {
+  private void add(
+      String text,
+      String tokensString,
+      String posTagsString,
+      String expectedTokensString,
+      String expectedPOSString) throws UIMAException {
 
     // create the JCas and add the expected tokens and POS tags to the lists
     JCas jc = this.engine.newJCas();
@@ -145,9 +158,11 @@ public class BagExtractorTest extends DefaultTestBase {
     tokenBuilder.buildTokens(jc, text, tokensString, posTagsString);
   }
 
-  private void testOne(BagExtractor bagExtractor, String bagNameString, String featuresNameString,
-          List<List<String>> expectedValuesLists) throws UIMAException, IOException,
-          CleartkException {
+  private void testOne(
+      BagExtractor bagExtractor,
+      String bagNameString,
+      String featuresNameString,
+      List<List<String>> expectedValuesLists) throws UIMAException, IOException, CleartkException {
     String nameString = Feature.createName(bagNameString, featuresNameString);
 
     // run a BagExtractor on each document

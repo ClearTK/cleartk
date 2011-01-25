@@ -73,6 +73,6 @@ public interface Classifier<OUTCOME_TYPE> {
    * @return a sorted list of the best N classifications with their scores
    */
   public List<ScoredOutcome<OUTCOME_TYPE>> score(List<Feature> features, int maxResults)
-          throws CleartkException;
+      throws CleartkException;
 
 }

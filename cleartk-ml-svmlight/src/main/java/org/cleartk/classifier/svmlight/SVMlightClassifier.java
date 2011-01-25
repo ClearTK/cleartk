@@ -83,7 +83,7 @@ public class SVMlightClassifier extends JarClassifier<Boolean, Boolean, FeatureV
 
   @Override
   public List<ScoredOutcome<Boolean>> score(List<Feature> features, int maxResults)
-          throws CleartkException {
+      throws CleartkException {
 
     List<ScoredOutcome<Boolean>> resultList = new ArrayList<ScoredOutcome<Boolean>>();
     if (maxResults > 0)

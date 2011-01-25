@@ -44,7 +44,7 @@ import org.uimafit.factory.ConfigurationParameterFactory;
 public class SimpleLineHandler implements LineHandler {
 
   public static final String PARAM_DELIMITER = ConfigurationParameterFactory
-          .createConfigurationParameterName(SimpleLineHandler.class, "delimiter");
+      .createConfigurationParameterName(SimpleLineHandler.class, "delimiter");
 
   @ConfigurationParameter(mandatory = true, defaultValue = "|", description = "specifies a string that delimits the id from the text. ")
   private String delimiter;
@@ -54,7 +54,7 @@ public class SimpleLineHandler implements LineHandler {
   }
 
   public void handleLine(JCas jCas, File rootFile, File file, String line) throws IOException,
-          CollectionException {
+      CollectionException {
     String id = line.substring(0, line.indexOf(delimiter));
     String text = line.substring(line.indexOf(delimiter) + 1);
     jCas.setSofaDataString(text, "text/plain");

@@ -47,25 +47,29 @@ public class EventClassAnnotator extends EventAttributeAnnotator<String> {
   public static final String MODEL_DIR = "src/main/resources/models/timeml/event/class";
 
   public static AnalysisEngineDescription getWriterDescription(String modelDir)
-          throws ResourceInitializationException {
-    return CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(EventClassAnnotator.class,
-            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION, DefaultMaxentDataWriterFactory.class,
-            modelDir);
+      throws ResourceInitializationException {
+    return CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+        EventClassAnnotator.class,
+        TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
+        DefaultMaxentDataWriterFactory.class,
+        modelDir);
   }
 
   public static AnalysisEngineDescription getWriterDescription()
-          throws ResourceInitializationException {
+      throws ResourceInitializationException {
     return getWriterDescription(MODEL_DIR);
   }
 
   public static AnalysisEngineDescription getAnnotatorDescription(String modelDir)
-          throws ResourceInitializationException {
-    return CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(EventClassAnnotator.class,
-            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION, modelDir);
+      throws ResourceInitializationException {
+    return CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+        EventClassAnnotator.class,
+        TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
+        modelDir);
   }
 
   public static AnalysisEngineDescription getAnnotatorDescription()
-          throws ResourceInitializationException {
+      throws ResourceInitializationException {
     return getAnnotatorDescription(MODEL_DIR + "/model.jar");
   }
 

@@ -66,12 +66,17 @@ public class ExamplePOSPlainTextWriterTest extends ExamplesTestBase {
   @Test
   public void test() throws Exception {
 
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(ExamplePOSPlainTextWriter.class,
-            ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-            ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME, this.outputDirectory.getPath());
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+        ExamplePOSPlainTextWriter.class,
+        ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+        ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME,
+        this.outputDirectory.getPath());
 
-    tokenBuilder.buildTokens(jCas, "I walked home. It was a nice day!",
-            "I walked home .\nIt was a nice day !", "PRP VBD NN . PRP VBD DT JJ NN .");
+    tokenBuilder.buildTokens(
+        jCas,
+        "I walked home. It was a nice day!",
+        "I walked home .\nIt was a nice day !",
+        "PRP VBD NN . PRP VBD DT JJ NN .");
     ViewURIUtil.setURI(jCas, "xxx");
     engine.process(jCas);
     engine.collectionProcessComplete();
@@ -83,10 +88,11 @@ public class ExamplePOSPlainTextWriterTest extends ExamplesTestBase {
 
   @Test
   public void testDescriptor() throws UIMAException, IOException {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(ExamplePOSPlainTextWriter.class,
-            ExampleComponents.TYPE_SYSTEM_DESCRIPTION);
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+        ExamplePOSPlainTextWriter.class,
+        ExampleComponents.TYPE_SYSTEM_DESCRIPTION);
     Object outDirectory = engine
-            .getConfigParameterValue(ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME);
+        .getConfigParameterValue(ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME);
     Assert.assertEquals(ExamplePOSPlainTextWriter.DEFAULT_OUTPUT_DIRECTORY, outDirectory);
   }
 }

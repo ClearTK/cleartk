@@ -61,8 +61,10 @@ public class SVMlightDataWriter extends JarDataWriter<Boolean, Boolean, FeatureV
 
     for (FeatureVector.Entry entry : features) {
       if (Double.isInfinite(entry.value) || Double.isNaN(entry.value))
-        throw new CleartkException(String.format("illegal value in entry %d:%.7f", entry.index,
-                entry.value));
+        throw new CleartkException(String.format(
+            "illegal value in entry %d:%.7f",
+            entry.index,
+            entry.value));
       output.append(String.format(Locale.US, " %d:%.7f", entry.index, entry.value));
     }
 

@@ -69,8 +69,11 @@ public class PropbankGoldAnnotator extends JCasAnnotator_ImplBase {
           continue;
         Propbank propbank = Propbank.fromString(propbankDatum);
         Sentence sentence = sentenceList.get(propbank.getSentenceNumber());
-        propbank.convert(docView, AnnotationRetrieval.getContainingAnnotation(docView, sentence,
-                TopTreebankNode.class, false), sentence);
+        propbank.convert(docView, AnnotationRetrieval.getContainingAnnotation(
+            docView,
+            sentence,
+            TopTreebankNode.class,
+            false), sentence);
       }
     } catch (CASException e) {
       throw new AnalysisEngineProcessException(e);

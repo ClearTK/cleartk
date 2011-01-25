@@ -64,45 +64,45 @@ import org.uimafit.factory.initializable.InitializableFactory;
 public class TermFinderAnnotator extends JCasAnnotator_ImplBase {
 
   public static final String PARAM_TERM_LIST_FILE_NAMES_FILE_NAME = ConfigurationParameterFactory
-          .createConfigurationParameterName(TermFinderAnnotator.class, "termListFileNamesFileName");
+      .createConfigurationParameterName(TermFinderAnnotator.class, "termListFileNamesFileName");
 
   public static final String TERM_LIST_FILE_NAMES_FILE_NAME_DESCRIPTION = "Provides the name of a file that contains file names of term lists that are to be loaded. "
-          + "Each line of the file should contain the name of a term list followed by the name of the file that contains the terms, a boolean ('true' or 'false')  "
-          + "that indicates whether the file should be treated as case sensitive followed optionally by separator string to be used to separate  "
-          + "an id from a term if the file contains ids. The values on each line should be tab delimited. ";
+      + "Each line of the file should contain the name of a term list followed by the name of the file that contains the terms, a boolean ('true' or 'false')  "
+      + "that indicates whether the file should be treated as case sensitive followed optionally by separator string to be used to separate  "
+      + "an id from a term if the file contains ids. The values on each line should be tab delimited. ";
 
   @ConfigurationParameter(mandatory = true, description = TERM_LIST_FILE_NAMES_FILE_NAME_DESCRIPTION)
   public String termListFileNamesFileName;
 
   public static final String PARAM_WINDOW_CLASS_NAME = ConfigurationParameterFactory
-          .createConfigurationParameterName(TermFinderAnnotator.class, "windowClassName");
+      .createConfigurationParameterName(TermFinderAnnotator.class, "windowClassName");
 
   @ConfigurationParameter(description = "names the class of the type system type from which to extract tokens. "
-          + "Any annotation that contains tokens can be used (e.g. sentence, paragraph, document).  "
-          + "If no value is given for this parameter, then all tokens will be searched. An example value might be 'org.cleartk.type.Sentence'")
+      + "Any annotation that contains tokens can be used (e.g. sentence, paragraph, document).  "
+      + "If no value is given for this parameter, then all tokens will be searched. An example value might be 'org.cleartk.type.Sentence'")
   private String windowClassName;
 
   public static final String PARAM_TOKEN_CLASS_NAME = ConfigurationParameterFactory
-          .createConfigurationParameterName(TermFinderAnnotator.class, "tokenClassName");
+      .createConfigurationParameterName(TermFinderAnnotator.class, "tokenClassName");
 
   @ConfigurationParameter(mandatory = true, defaultValue = "org.cleartk.type.Token", description = "names the class of the type system type corresponding to tokens. ")
   private String tokenClassName;
 
   public static final String PARAM_TERM_MATCH_ANNOTATION_CREATOR_CLASS_NAME = ConfigurationParameterFactory
-          .createConfigurationParameterName(TermFinderAnnotator.class,
-                  "termMatchAnnotationCreatorClassName");
+      .createConfigurationParameterName(
+          TermFinderAnnotator.class,
+          "termMatchAnnotationCreatorClassName");
 
   @ConfigurationParameter(description = "provides the class name of a class that extends org.cleartk.ne.term.TermMatchAnnotationCreator. If this parameter is "
-          + "not given a value, then the parameter 'termMatchAnnotationClassName'  must be given a value.")
+      + "not given a value, then the parameter 'termMatchAnnotationClassName'  must be given a value.")
   private String termMatchAnnotationCreatorClassName;
 
   public static final String PARAM_TERM_MATCH_ANNOTATION_CLASS_NAME = ConfigurationParameterFactory
-          .createConfigurationParameterName(TermFinderAnnotator.class,
-                  "termMatchAnnotationClassName");
+      .createConfigurationParameterName(TermFinderAnnotator.class, "termMatchAnnotationClassName");
 
   @ConfigurationParameter(defaultValue = "org.cleartk.ne.type.NamedEntityMention", description = "names the class of the type system type that specifies the annotations "
-          + "created of found term matches. One annotation is created for each term "
-          + "match found of the given type specified by this parameter. This parameter is ignored if 'termMatchAnnotationCreatorClassName' is given a value.")
+      + "created of found term matches. One annotation is created for each term "
+      + "match found of the given type specified by this parameter. This parameter is ignored if 'termMatchAnnotationCreatorClassName' is given a value.")
   private String termMatchAnnotationClassName;
 
   TermFinder caseSensitiveTermFinder;
@@ -161,14 +161,19 @@ public class TermFinderAnnotator extends JCasAnnotator_ImplBase {
       tokenClass = InitializableFactory.getClass(tokenClassName, Annotation.class);
 
       if (termMatchAnnotationCreatorClassName != null
-              && !termMatchAnnotationCreatorClassName.equals("")) {
-        annotationCreator = InitializableFactory.create(context,
-                termMatchAnnotationCreatorClassName, TermMatchAnnotationCreator.class);
+          && !termMatchAnnotationCreatorClassName.equals("")) {
+        annotationCreator = InitializableFactory.create(
+            context,
+            termMatchAnnotationCreatorClassName,
+            TermMatchAnnotationCreator.class);
       } else {
         Class<? extends Annotation> annotationClass = InitializableFactory.getClass(
-                termMatchAnnotationClassName, Annotation.class);
-        annotationConstructor = annotationClass.getConstructor(new Class[] { JCas.class,
-            java.lang.Integer.TYPE, java.lang.Integer.TYPE });
+            termMatchAnnotationClassName,
+            Annotation.class);
+        annotationConstructor = annotationClass.getConstructor(new Class[] {
+            JCas.class,
+            java.lang.Integer.TYPE,
+            java.lang.Integer.TYPE });
       }
     } catch (Exception e) {
       throw new ResourceInitializationException(e);
@@ -205,7 +210,7 @@ public class TermFinderAnnotator extends JCasAnnotator_ImplBase {
         tokens.clear();
         Annotation sentenceAnnotation = (Annotation) sentenceAnnotations.next();
         FSIterator<Annotation> tokenAnnotations = jCas.getAnnotationIndex(tokenType).subiterator(
-                sentenceAnnotation);
+            sentenceAnnotation);
         while (tokenAnnotations.hasNext()) {
           Annotation tokenAnnotation = (Annotation) tokenAnnotations.next();
           tokens.add(createToken(tokenAnnotation));
@@ -226,7 +231,7 @@ public class TermFinderAnnotator extends JCasAnnotator_ImplBase {
   }
 
   public void findTerms(JCas jCas, List<Token> tokens, TermFinder termFinder)
-          throws AnalysisEngineProcessException {
+      throws AnalysisEngineProcessException {
 
     List<TermMatch> termMatches = termFinder.getMatches(tokens);
     for (TermMatch termMatch : termMatches) {
@@ -237,7 +242,7 @@ public class TermFinderAnnotator extends JCasAnnotator_ImplBase {
           int begin = termMatch.getBegin();
           int end = termMatch.getEnd();
           Annotation annotation = annotationConstructor
-                  .newInstance(new Object[] { jCas, begin, end });
+              .newInstance(new Object[] { jCas, begin, end });
           annotation.addToIndexes();
         } catch (Exception e) {
           throw new AnalysisEngineProcessException(e);

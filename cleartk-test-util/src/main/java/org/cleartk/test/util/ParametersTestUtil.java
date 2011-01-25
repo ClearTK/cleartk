@@ -47,18 +47,20 @@ import org.uimafit.factory.ConfigurationParameterFactory;
 public class ParametersTestUtil {
 
   public static void testParameterDefinitions(String outputDirectory, String... excludeFiles)
-          throws ClassNotFoundException {
+      throws ClassNotFoundException {
     IOFileFilter includeFilter = new SuffixFileFilter(".java");
 
     if (excludeFiles != null) {
       IOFileFilter excludeFilter = FileFilterUtils
-              .notFileFilter(new SuffixFileFilter(excludeFiles));
+          .notFileFilter(new SuffixFileFilter(excludeFiles));
       includeFilter = FileFilterUtils.andFileFilter(excludeFilter, includeFilter);
     }
 
     @SuppressWarnings("unchecked")
-    Iterator<File> files = org.apache.commons.io.FileUtils.iterateFiles(new File(outputDirectory),
-            includeFilter, TrueFileFilter.INSTANCE);
+    Iterator<File> files = org.apache.commons.io.FileUtils.iterateFiles(
+        new File(outputDirectory),
+        includeFilter,
+        TrueFileFilter.INSTANCE);
     testParameterDefinitions(files);
   }
 
@@ -77,7 +79,7 @@ public class ParametersTestUtil {
       for (Field field : fields) {
         if (ConfigurationParameterFactory.isConfigurationParameterField(field)) {
           org.uimafit.descriptor.ConfigurationParameter annotation = field
-                  .getAnnotation(org.uimafit.descriptor.ConfigurationParameter.class);
+              .getAnnotation(org.uimafit.descriptor.ConfigurationParameter.class);
           String parameterName = annotation.name();
           String expectedName = className + "." + field.getName();
           if (parameterName.equals(org.uimafit.descriptor.ConfigurationParameter.USE_FIELD_NAME))
@@ -92,8 +94,8 @@ public class ParametersTestUtil {
           try {
             Field fld = cls.getDeclaredField(fieldName);
             if ((fld.getModifiers() & Modifier.PUBLIC) == 0
-                    || (fld.getModifiers() & Modifier.FINAL) == 0
-                    || (fld.getModifiers() & Modifier.PUBLIC) == 0) {
+                || (fld.getModifiers() & Modifier.FINAL) == 0
+                || (fld.getModifiers() & Modifier.PUBLIC) == 0) {
               missingParameterNameFields.add(expectedName);
             } else if (!fld.get(null).equals(expectedName)) {
               missingParameterNameFields.add(expectedName);
@@ -107,22 +109,21 @@ public class ParametersTestUtil {
 
     if (badParameters.size() > 0 || missingParameterNameFields.size() > 0) {
       String message = String
-              .format("%d descriptor parameters with bad names and %d descriptor parameters with no name field. ",
-                      badParameters.size(), missingParameterNameFields.size());
+          .format(
+              "%d descriptor parameters with bad names and %d descriptor parameters with no name field. ",
+              badParameters.size(),
+              missingParameterNameFields.size());
       System.err.println(message);
       System.err.println("descriptor parameters with bad names: ");
       for (String badParameter : badParameters) {
         System.err.println(badParameter);
       }
       System.err
-              .println("each configuration parameter should have a public static final String that specifies its name.  The missing fields are: ");
+          .println("each configuration parameter should have a public static final String that specifies its name.  The missing fields are: ");
       for (String missingParameterNameField : missingParameterNameFields) {
-        System.err
-                .println(missingParameterNameField
-                        + " should be named by "
-                        + missingParameterNameField.substring(0,
-                                missingParameterNameField.lastIndexOf('.')) + "."
-                        + getParameterNameField(missingParameterNameField));
+        System.err.println(missingParameterNameField + " should be named by "
+            + missingParameterNameField.substring(0, missingParameterNameField.lastIndexOf('.'))
+            + "." + getParameterNameField(missingParameterNameField));
       }
       Assert.fail(message);
     }

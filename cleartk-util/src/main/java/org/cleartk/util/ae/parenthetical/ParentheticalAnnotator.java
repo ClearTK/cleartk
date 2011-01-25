@@ -54,10 +54,10 @@ import org.uimafit.util.JCasUtil;
 public class ParentheticalAnnotator extends JCasAnnotator_ImplBase {
 
   public static final String PARAM_WINDOW_TYPE_NAME = ConfigurationParameterFactory
-          .createConfigurationParameterName(ParentheticalAnnotator.class, "windowTypeName");
+      .createConfigurationParameterName(ParentheticalAnnotator.class, "windowTypeName");
 
   private static final String WINDOW_TYPE_DESCRIPTION = "specifies the class type of annotations that will be tokenized. "
-          + "If no value is given, then the entire document will be tokenized at once. ";
+      + "If no value is given, then the entire document will be tokenized at once. ";
 
   // do not set the default value to 'org.cleartk.token.type.Sentence'. If you do, then unit tests
   // will break. The symptom will be a tokenizer that doesn't generate any tokens (because there
@@ -66,13 +66,13 @@ public class ParentheticalAnnotator extends JCasAnnotator_ImplBase {
   private String windowTypeName;
 
   public static final String PARAM_PARENTHETICAL_TYPE_NAME = ConfigurationParameterFactory
-          .createConfigurationParameterName(ParentheticalAnnotator.class, "parentheticalTypeName");
+      .createConfigurationParameterName(ParentheticalAnnotator.class, "parentheticalTypeName");
 
   @ConfigurationParameter(description = "class name of the annotations that are created by this annotator.", defaultValue = "org.cleartk.util.type.Parenthetical", mandatory = true)
   private String parentheticalTypeName;
 
   public static final String PARAM_LEFT_PARENTHESIS = ConfigurationParameterFactory
-          .createConfigurationParameterName(ParentheticalAnnotator.class, "leftParenthesis");
+      .createConfigurationParameterName(ParentheticalAnnotator.class, "leftParenthesis");
 
   @ConfigurationParameter(defaultValue = "(", mandatory = true)
   private String leftParenthesis;
@@ -80,7 +80,7 @@ public class ParentheticalAnnotator extends JCasAnnotator_ImplBase {
   private char leftParen;
 
   public static final String PARAM_RIGHT_PARENTHESIS = ConfigurationParameterFactory
-          .createConfigurationParameterName(ParentheticalAnnotator.class, "rightParenthesis");
+      .createConfigurationParameterName(ParentheticalAnnotator.class, "rightParenthesis");
 
   @ConfigurationParameter(defaultValue = ")", mandatory = true)
   private String rightParenthesis;
@@ -98,24 +98,27 @@ public class ParentheticalAnnotator extends JCasAnnotator_ImplBase {
 
     if (leftParenthesis.length() != 1) {
       throw new ResourceInitializationException(new IllegalArgumentException(
-              "the value for the configuration parameter " + PARAM_LEFT_PARENTHESIS
-                      + " must be a single character."));
+          "the value for the configuration parameter " + PARAM_LEFT_PARENTHESIS
+              + " must be a single character."));
     }
     leftParen = leftParenthesis.charAt(0);
 
     if (rightParenthesis.length() != 1) {
       throw new ResourceInitializationException(new IllegalArgumentException(
-              "the value for the configuration parameter " + PARAM_RIGHT_PARENTHESIS
-                      + " must be a single character."));
+          "the value for the configuration parameter " + PARAM_RIGHT_PARENTHESIS
+              + " must be a single character."));
     }
     rightParen = rightParenthesis.charAt(0);
 
     Class<? extends Annotation> parentheticalClass = InitializableFactory.getClass(
-            parentheticalTypeName, Annotation.class);
+        parentheticalTypeName,
+        Annotation.class);
 
     try {
-      parentheticalConstructor = parentheticalClass.getConstructor(new Class[] { JCas.class,
-          Integer.TYPE, Integer.TYPE });
+      parentheticalConstructor = parentheticalClass.getConstructor(new Class[] {
+          JCas.class,
+          Integer.TYPE,
+          Integer.TYPE });
     } catch (Exception e) {
       throw new ResourceInitializationException(e);
     }
@@ -139,8 +142,8 @@ public class ParentheticalAnnotator extends JCasAnnotator_ImplBase {
   }
 
   private void createParentheticals(JCas jCas, String text, int offset)
-          throws IllegalArgumentException, InstantiationException, IllegalAccessException,
-          InvocationTargetException {
+      throws IllegalArgumentException, InstantiationException, IllegalAccessException,
+      InvocationTargetException {
     Stack<Integer> leftRoundedParens = new Stack<Integer>();
     leftRoundedParens.clear();
     for (int ci = 0; ci < text.length(); ci++) {
@@ -151,8 +154,9 @@ public class ParentheticalAnnotator extends JCasAnnotator_ImplBase {
       if (c == rightParen) {
         try {
           int leftOffset = leftRoundedParens.pop();
-          parentheticalConstructor.newInstance(jCas, offset + leftOffset, offset + ci + 1)
-                  .addToIndexes();
+          parentheticalConstructor
+              .newInstance(jCas, offset + leftOffset, offset + ci + 1)
+              .addToIndexes();
         } catch (EmptyStackException ese) {
         }
       }
@@ -160,26 +164,34 @@ public class ParentheticalAnnotator extends JCasAnnotator_ImplBase {
   }
 
   public static AnalysisEngineDescription getDescription(TypeSystemDescription typeSystemDescription)
-          throws ResourceInitializationException {
+      throws ResourceInitializationException {
     return getDescription(typeSystemDescription, null);
   }
 
   public static AnalysisEngineDescription getDescription(
-          TypeSystemDescription typeSystemDescription, Class<? extends Annotation> windowClass)
-          throws ResourceInitializationException {
+      TypeSystemDescription typeSystemDescription,
+      Class<? extends Annotation> windowClass) throws ResourceInitializationException {
     return getDescription(typeSystemDescription, windowClass, '(', ')');
   }
 
   public static AnalysisEngineDescription getDescription(
-          TypeSystemDescription typeSystemDescription, Class<? extends Annotation> windowClass,
-          char leftParen, char rightParen) throws ResourceInitializationException {
+      TypeSystemDescription typeSystemDescription,
+      Class<? extends Annotation> windowClass,
+      char leftParen,
+      char rightParen) throws ResourceInitializationException {
     AnalysisEngineDescription aed = AnalysisEngineFactory.createPrimitiveDescription(
-            ParentheticalAnnotator.class, typeSystemDescription, PARAM_LEFT_PARENTHESIS, ""
-                    + leftParen, PARAM_RIGHT_PARENTHESIS, "" + rightParen);
+        ParentheticalAnnotator.class,
+        typeSystemDescription,
+        PARAM_LEFT_PARENTHESIS,
+        "" + leftParen,
+        PARAM_RIGHT_PARENTHESIS,
+        "" + rightParen);
 
     if (windowClass != null) {
-      ConfigurationParameterFactory.addConfigurationParameters(aed, PARAM_WINDOW_TYPE_NAME,
-              windowClass.getName());
+      ConfigurationParameterFactory.addConfigurationParameters(
+          aed,
+          PARAM_WINDOW_TYPE_NAME,
+          windowClass.getName());
     }
 
     return aed;

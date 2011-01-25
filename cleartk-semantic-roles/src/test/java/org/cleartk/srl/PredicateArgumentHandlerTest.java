@@ -62,54 +62,69 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
   @Test
   public void testArgumentAnnotationNoPredicate() throws UIMAException, CleartkException {
     // create the document
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkAnnotatorDescriptionFactory
-            .createCleartkAnnotator(ArgumentAnnotator.class, typeSystemDescription,
-                    InstanceCollector.StringFactory.class, "."));
+    AnalysisEngine engine = AnalysisEngineFactory
+        .createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+            ArgumentAnnotator.class,
+            typeSystemDescription,
+            InstanceCollector.StringFactory.class,
+            "."));
     this.setTokens(jCas);
     this.setTrees(jCas);
 
     // make sure the handler produces no instances
-    List<Instance<String>> instances = InstanceCollector.StringFactory.collectInstances(engine,
-            jCas);
+    List<Instance<String>> instances = InstanceCollector.StringFactory.collectInstances(
+        engine,
+        jCas);
     Assert.assertEquals(0, instances.size());
   }
 
   @Test
   public void testArgumentIdentificationNoPredicate() throws UIMAException, CleartkException {
     // create the document
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkAnnotatorDescriptionFactory
-            .createCleartkAnnotator(ArgumentIdentifier.class, typeSystemDescription,
-                    InstanceCollector.BooleanFactory.class, "."));
+    AnalysisEngine engine = AnalysisEngineFactory
+        .createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+            ArgumentIdentifier.class,
+            typeSystemDescription,
+            InstanceCollector.BooleanFactory.class,
+            "."));
     this.setTokens(jCas);
     this.setTrees(jCas);
 
     // make sure the handler produces no instances
-    List<Instance<Boolean>> instances = InstanceCollector.BooleanFactory.collectInstances(engine,
-            jCas);
+    List<Instance<Boolean>> instances = InstanceCollector.BooleanFactory.collectInstances(
+        engine,
+        jCas);
     Assert.assertEquals(0, instances.size());
   }
 
   @Test
   public void testArgumentClassificationNoPredicate() throws UIMAException, CleartkException {
     // create the document
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkAnnotatorDescriptionFactory
-            .createCleartkAnnotator(ArgumentClassifier.class, typeSystemDescription,
-                    InstanceCollector.StringFactory.class, "."));
+    AnalysisEngine engine = AnalysisEngineFactory
+        .createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+            ArgumentClassifier.class,
+            typeSystemDescription,
+            InstanceCollector.StringFactory.class,
+            "."));
     this.setTokens(jCas);
     this.setTrees(jCas);
 
     // make sure the handler produces no instances
-    List<Instance<String>> instances = InstanceCollector.StringFactory.collectInstances(engine,
-            jCas);
+    List<Instance<String>> instances = InstanceCollector.StringFactory.collectInstances(
+        engine,
+        jCas);
     Assert.assertEquals(0, instances.size());
   }
 
   @Test
   public void testArgumentAnnotationNoTree() throws UIMAException, CleartkException {
     // create the document
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkAnnotatorDescriptionFactory
-            .createCleartkAnnotator(ArgumentAnnotator.class, typeSystemDescription,
-                    InstanceCollector.StringFactory.class, "."));
+    AnalysisEngine engine = AnalysisEngineFactory
+        .createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+            ArgumentAnnotator.class,
+            typeSystemDescription,
+            InstanceCollector.StringFactory.class,
+            "."));
     this.setTokens(jCas);
     this.setPredicates(jCas);
 
@@ -127,9 +142,12 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
   @Test
   public void testArgumentIdentificationNoTree() throws UIMAException, CleartkException {
     // create the document
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkAnnotatorDescriptionFactory
-            .createCleartkAnnotator(ArgumentIdentifier.class, typeSystemDescription,
-                    InstanceCollector.BooleanFactory.class, "."));
+    AnalysisEngine engine = AnalysisEngineFactory
+        .createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+            ArgumentIdentifier.class,
+            typeSystemDescription,
+            InstanceCollector.BooleanFactory.class,
+            "."));
     this.setTokens(jCas);
     this.setPredicates(jCas);
 
@@ -147,9 +165,12 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
   @Test
   public void testArgumentClassificationNoTree() throws UIMAException, CleartkException {
     // create the document
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkAnnotatorDescriptionFactory
-            .createCleartkAnnotator(ArgumentClassifier.class, typeSystemDescription,
-                    InstanceCollector.StringFactory.class, "."));
+    AnalysisEngine engine = AnalysisEngineFactory
+        .createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+            ArgumentClassifier.class,
+            typeSystemDescription,
+            InstanceCollector.StringFactory.class,
+            "."));
     this.setTokens(jCas);
     this.setPredicates(jCas);
 
@@ -167,30 +188,58 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
   @Test
   public void testPredicateAnnotation() throws UIMAException, CleartkException {
     // create the document
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkAnnotatorDescriptionFactory
-            .createCleartkAnnotator(PredicateAnnotator.class, typeSystemDescription,
-                    InstanceCollector.BooleanFactory.class, "."));
+    AnalysisEngine engine = AnalysisEngineFactory
+        .createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+            PredicateAnnotator.class,
+            typeSystemDescription,
+            InstanceCollector.BooleanFactory.class,
+            "."));
     this.setTokens(jCas);
     this.setTrees(jCas);
     this.setPredicates(jCas);
 
     // get the instances produced by the handler
-    List<Instance<Boolean>> instances = InstanceCollector.BooleanFactory.collectInstances(engine,
-            jCas);
+    List<Instance<Boolean>> instances = InstanceCollector.BooleanFactory.collectInstances(
+        engine,
+        jCas);
     Assert.assertEquals(5, instances.size());
     Object[] featureValues;
 
     // check "broke"
     Instance<Boolean> brokeInstance = instances.get(1);
-    featureValues = new Object[] { "broke", "break", "VBD", "John", "John", "NNP", null, "the",
-        "the", "DT", "lamp", "lamp", "NN" };
+    featureValues = new Object[] {
+        "broke",
+        "break",
+        "VBD",
+        "John",
+        "John",
+        "NNP",
+        null,
+        "the",
+        "the",
+        "DT",
+        "lamp",
+        "lamp",
+        "NN" };
     Assert.assertEquals(Arrays.asList(featureValues), this.getFeatureValues(brokeInstance));
     Assert.assertEquals(true, brokeInstance.getOutcome());
 
     // check "lamp"
     Instance<Boolean> lampInstance = instances.get(3);
-    featureValues = new Object[] { "lamp", "lamp", "NN", "the", "the", "DT", "broke", "break",
-        "VBD", ".", ".", ".", null };
+    featureValues = new Object[] {
+        "lamp",
+        "lamp",
+        "NN",
+        "the",
+        "the",
+        "DT",
+        "broke",
+        "break",
+        "VBD",
+        ".",
+        ".",
+        ".",
+        null };
     Assert.assertEquals(Arrays.asList(featureValues), this.getFeatureValues(lampInstance));
     Assert.assertEquals(false, lampInstance.getOutcome());
   }
@@ -201,17 +250,31 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
    */
 
   private void setTokens(JCas jCas) throws UIMAException {
-    tokenBuilder.buildTokens(jCas, "John broke the lamp.", "John broke the lamp .",
-            "NNP VBD DT NN .", "John break the lamp .");
+    tokenBuilder.buildTokens(
+        jCas,
+        "John broke the lamp.",
+        "John broke the lamp .",
+        "NNP VBD DT NN .",
+        "John break the lamp .");
   }
 
   private void setTrees(JCas jCas) {
-    TreebankNode sNode = TreebankTestsUtil.newNode(jCas, "S", TreebankTestsUtil.newNode(jCas, "NP",
-            TreebankTestsUtil.newNode(jCas, 0, 4, "NNP")), TreebankTestsUtil.newNode(jCas, "VP",
-            TreebankTestsUtil.newNode(jCas, 5, 10, "VBD"), TreebankTestsUtil.newNode(jCas, "NP",
-                    TreebankTestsUtil.newNode(jCas, 11, 14, "DT"),
-                    TreebankTestsUtil.newNode(jCas, 15, 19, "NN"))), TreebankTestsUtil.newNode(
-            jCas, 19, 20, "."));
+    TreebankNode sNode = TreebankTestsUtil.newNode(jCas, "S", TreebankTestsUtil.newNode(
+        jCas,
+        "NP",
+        TreebankTestsUtil.newNode(jCas, 0, 4, "NNP")), TreebankTestsUtil.newNode(
+        jCas,
+        "VP",
+        TreebankTestsUtil.newNode(jCas, 5, 10, "VBD"),
+        TreebankTestsUtil.newNode(
+            jCas,
+            "NP",
+            TreebankTestsUtil.newNode(jCas, 11, 14, "DT"),
+            TreebankTestsUtil.newNode(jCas, 15, 19, "NN"))), TreebankTestsUtil.newNode(
+        jCas,
+        19,
+        20,
+        "."));
 
     TopTreebankNode topNode = new TopTreebankNode(jCas, sNode.getBegin(), sNode.getEnd());
     topNode.setNodeType("TOP");

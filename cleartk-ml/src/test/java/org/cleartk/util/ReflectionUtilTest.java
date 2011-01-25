@@ -60,8 +60,9 @@ public class ReflectionUtilTest {
       return null;
     }
 
-    public List<ScoredOutcome<String>> score(List<org.cleartk.classifier.Feature> features,
-            int maxResults) throws CleartkException {
+    public List<ScoredOutcome<String>> score(
+        List<org.cleartk.classifier.Feature> features,
+        int maxResults) throws CleartkException {
       return null;
     }
   }
@@ -93,16 +94,22 @@ public class ReflectionUtilTest {
     Assert.assertTrue(type instanceof GenericArrayType);
     Assert.assertEquals(double.class, ((GenericArrayType) type).getGenericComponentType());
 
-    type = ReflectionUtil.getTypeArgument(Classifier.class, "OUTCOME_TYPE",
-            new TestClassifierOutcomeType());
+    type = ReflectionUtil.getTypeArgument(
+        Classifier.class,
+        "OUTCOME_TYPE",
+        new TestClassifierOutcomeType());
     Assert.assertEquals(String.class, type);
 
-    type = ReflectionUtil.getTypeArgument(JarDataWriter.class, "INPUTOUTCOME_TYPE",
-            new TestDataWriterOutcomeType(null));
+    type = ReflectionUtil.getTypeArgument(
+        JarDataWriter.class,
+        "INPUTOUTCOME_TYPE",
+        new TestDataWriterOutcomeType(null));
     Assert.assertEquals(String.class, type);
 
-    type = ReflectionUtil.getTypeArgument(JarDataWriter.class, "OUTPUTOUTCOME_TYPE",
-            new TestDataWriterOutcomeType(null));
+    type = ReflectionUtil.getTypeArgument(
+        JarDataWriter.class,
+        "OUTPUTOUTCOME_TYPE",
+        new TestDataWriterOutcomeType(null));
     Assert.assertEquals(Double.class, type);
   }
 }

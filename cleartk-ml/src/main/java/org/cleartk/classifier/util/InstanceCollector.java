@@ -78,7 +78,7 @@ public class InstanceCollector<T> implements DataWriter<T>, SequentialDataWriter
    * Returns a single static instance of InstanceCollector<String>.
    */
   public static class StringFactory implements DataWriterFactory<String>,
-          SequentialDataWriterFactory<String> {
+      SequentialDataWriterFactory<String> {
     private static InstanceCollector<String> collector = new InstanceCollector<String>();
 
     public DataWriter<String> createDataWriter() throws IOException {
@@ -90,7 +90,7 @@ public class InstanceCollector<T> implements DataWriter<T>, SequentialDataWriter
     }
 
     public static List<Instance<String>> collectInstances(AnalysisEngine engine, JCas jCas)
-            throws AnalysisEngineProcessException {
+        throws AnalysisEngineProcessException {
       return InstanceCollector.collectInstances(engine, jCas, collector);
     }
   }
@@ -106,13 +106,15 @@ public class InstanceCollector<T> implements DataWriter<T>, SequentialDataWriter
     }
 
     public static List<Instance<Boolean>> collectInstances(AnalysisEngine engine, JCas jCas)
-            throws AnalysisEngineProcessException {
+        throws AnalysisEngineProcessException {
       return InstanceCollector.collectInstances(engine, jCas, collector);
     }
   }
 
-  private static <T> List<Instance<T>> collectInstances(AnalysisEngine engine, JCas jCas,
-          InstanceCollector<T> collector) throws AnalysisEngineProcessException {
+  private static <T> List<Instance<T>> collectInstances(
+      AnalysisEngine engine,
+      JCas jCas,
+      InstanceCollector<T> collector) throws AnalysisEngineProcessException {
     collector.instances.clear();
     engine.process(jCas);
     engine.collectionProcessComplete();

@@ -52,8 +52,8 @@ public class CaseUtil {
     // the third condition checks that capitalization matters at all to the rest of the word - e.g.
     // if the rest of the word is 1234 then the first condition will be true.
     return !firstLetter.equals(firstLetter.toLowerCase(locale))
-            && firstLetter.equals(firstLetter.toUpperCase(locale))
-            && !rest.equals(rest.toUpperCase(locale)) && rest.equals(rest.toLowerCase(locale));
+        && firstLetter.equals(firstLetter.toUpperCase(locale))
+        && !rest.equals(rest.toUpperCase(locale)) && rest.equals(rest.toLowerCase(locale));
   }
 
   public static boolean isAllUppercase(String word) {

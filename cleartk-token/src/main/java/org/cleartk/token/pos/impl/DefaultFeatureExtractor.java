@@ -71,33 +71,57 @@ public class DefaultFeatureExtractor implements POSFeatureExtractor<Token, Sente
 
     int fromLeft = CharacterNGramProliferator.LEFT_TO_RIGHT;
     int fromRight = CharacterNGramProliferator.RIGHT_TO_LEFT;
-    simpleExtractors.add(new ProliferatingExtractor(wordExtractor, new LowerCaseProliferator(),
-            new CapitalTypeProliferator(), new NumericTypeProliferator(),
-            new CharacterNGramProliferator(fromLeft, 0, 1), new CharacterNGramProliferator(
-                    fromLeft, 0, 2), new CharacterNGramProliferator(fromLeft, 0, 3),
-            new CharacterNGramProliferator(fromRight, 0, 1), new CharacterNGramProliferator(
-                    fromRight, 0, 2), new CharacterNGramProliferator(fromRight, 0, 3),
-            new CharacterNGramProliferator(fromRight, 0, 4), new CharacterNGramProliferator(
-                    fromRight, 0, 5), new CharacterNGramProliferator(fromRight, 0, 6)));
+    simpleExtractors.add(new ProliferatingExtractor(
+        wordExtractor,
+        new LowerCaseProliferator(),
+        new CapitalTypeProliferator(),
+        new NumericTypeProliferator(),
+        new CharacterNGramProliferator(fromLeft, 0, 1),
+        new CharacterNGramProliferator(fromLeft, 0, 2),
+        new CharacterNGramProliferator(fromLeft, 0, 3),
+        new CharacterNGramProliferator(fromRight, 0, 1),
+        new CharacterNGramProliferator(fromRight, 0, 2),
+        new CharacterNGramProliferator(fromRight, 0, 3),
+        new CharacterNGramProliferator(fromRight, 0, 4),
+        new CharacterNGramProliferator(fromRight, 0, 5),
+        new CharacterNGramProliferator(fromRight, 0, 6)));
 
     windowExtractors = new ArrayList<WindowExtractor>();
 
-    windowExtractors.add(new WindowExtractor(Token.class, wordExtractor,
-            WindowFeature.ORIENTATION_LEFT, 0, 2));
-    windowExtractors.add(new WindowExtractor(Token.class, wordExtractor,
-            WindowFeature.ORIENTATION_RIGHT, 0, 2));
+    windowExtractors.add(new WindowExtractor(
+        Token.class,
+        wordExtractor,
+        WindowFeature.ORIENTATION_LEFT,
+        0,
+        2));
+    windowExtractors.add(new WindowExtractor(
+        Token.class,
+        wordExtractor,
+        WindowFeature.ORIENTATION_RIGHT,
+        0,
+        2));
 
     windowNGramExtractors = new ArrayList<WindowNGramExtractor>();
-    windowNGramExtractors.add(new WindowNGramExtractor(Token.class, wordExtractor,
-            WindowNGramFeature.ORIENTATION_LEFT, WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT, "_",
-            0, 2));
-    windowNGramExtractors.add(new WindowNGramExtractor(Token.class, wordExtractor,
-            WindowNGramFeature.ORIENTATION_RIGHT, WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT, "_",
-            0, 2));
+    windowNGramExtractors.add(new WindowNGramExtractor(
+        Token.class,
+        wordExtractor,
+        WindowNGramFeature.ORIENTATION_LEFT,
+        WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT,
+        "_",
+        0,
+        2));
+    windowNGramExtractors.add(new WindowNGramExtractor(
+        Token.class,
+        wordExtractor,
+        WindowNGramFeature.ORIENTATION_RIGHT,
+        WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT,
+        "_",
+        0,
+        2));
   }
 
   public List<Feature> extractFeatures(JCas jCas, Token token, Sentence sentence)
-          throws CleartkException {
+      throws CleartkException {
     List<Feature> features = new ArrayList<Feature>();
 
     for (SimpleFeatureExtractor extractor : simpleExtractors) {

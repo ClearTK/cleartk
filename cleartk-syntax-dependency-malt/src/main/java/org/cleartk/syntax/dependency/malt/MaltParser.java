@@ -64,8 +64,9 @@ public class MaltParser extends JCasAnnotator_ImplBase {
   public static final String ENGMALT_RESOURCE_NAME = "/models/engmalt.linear.mco";
 
   private static TypeSystemDescription getTypeSystem() {
-    return TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.token.TypeSystem",
-            "org.cleartk.syntax.dependency.TypeSystem");
+    return TypeSystemDescriptionFactory.createTypeSystemDescription(
+        "org.cleartk.token.TypeSystem",
+        "org.cleartk.syntax.dependency.TypeSystem");
   }
 
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
@@ -76,16 +77,19 @@ public class MaltParser extends JCasAnnotator_ImplBase {
   }
 
   public static AnalysisEngineDescription getDescription(String modelFileName)
-          throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(MaltParser.class, getTypeSystem(),
-            PARAM_MODEL_FILE_NAME, modelFileName);
+      throws ResourceInitializationException {
+    return AnalysisEngineFactory.createPrimitiveDescription(
+        MaltParser.class,
+        getTypeSystem(),
+        PARAM_MODEL_FILE_NAME,
+        modelFileName);
   }
 
   @ConfigurationParameter(description = "The path to the model file, without the .mco suffix.", mandatory = true)
   private String modelFileName;
 
   public static final String PARAM_MODEL_FILE_NAME = ConfigurationParameterFactory
-          .createConfigurationParameterName(MaltParser.class, "modelFileName");
+      .createConfigurationParameterName(MaltParser.class, "modelFileName");
 
   private MaltParserService service;
 

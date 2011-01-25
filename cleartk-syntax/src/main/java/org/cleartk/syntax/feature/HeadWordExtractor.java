@@ -64,23 +64,140 @@ import org.cleartk.util.UIMAUtil;
 
 public class HeadWordExtractor implements SimpleFeatureExtractor {
 
-  static final String[] head1 = { "ADJP JJ", "ADJP JJR", "ADJP JJS", "ADVP RB", "ADVP RBB",
-      "LST LS", "NAC NNS", "NAC NN", "NAC PRP", "NAC NNPS", "NAC NNP", "NX NNS", "NX NN", "NX PRP",
-      "NX NNPS", "NX NNP", "NP NNS", "NP NN", "NP PRP", "NP NNPS", "NP NNP", "NP POS", "NP $",
-      "PP IN", "PP TO", "PP RP", "PRT RP", "S VP", "S1 S", "SBAR IN", "SBAR WHNP", "SBARQ SQ",
-      "SBARQ VP", "SINV VP", "SQ MD", "SQ AUX", "VP VB", "VP VBZ", "VP VBP", "VP VBG", "VP VBN",
-      "VP VBD", "VP AUX", "VP AUXG", "VP TO", "VP MD", "WHADJP WRB", "WHADVP WRB", "WHNP WP",
-      "WHNP WDT", "WHNP WP$", "WHPP IN", "WHPP TO" };
+  static final String[] head1 = {
+      "ADJP JJ",
+      "ADJP JJR",
+      "ADJP JJS",
+      "ADVP RB",
+      "ADVP RBB",
+      "LST LS",
+      "NAC NNS",
+      "NAC NN",
+      "NAC PRP",
+      "NAC NNPS",
+      "NAC NNP",
+      "NX NNS",
+      "NX NN",
+      "NX PRP",
+      "NX NNPS",
+      "NX NNP",
+      "NP NNS",
+      "NP NN",
+      "NP PRP",
+      "NP NNPS",
+      "NP NNP",
+      "NP POS",
+      "NP $",
+      "PP IN",
+      "PP TO",
+      "PP RP",
+      "PRT RP",
+      "S VP",
+      "S1 S",
+      "SBAR IN",
+      "SBAR WHNP",
+      "SBARQ SQ",
+      "SBARQ VP",
+      "SINV VP",
+      "SQ MD",
+      "SQ AUX",
+      "VP VB",
+      "VP VBZ",
+      "VP VBP",
+      "VP VBG",
+      "VP VBN",
+      "VP VBD",
+      "VP AUX",
+      "VP AUXG",
+      "VP TO",
+      "VP MD",
+      "WHADJP WRB",
+      "WHADVP WRB",
+      "WHNP WP",
+      "WHNP WDT",
+      "WHNP WP$",
+      "WHPP IN",
+      "WHPP TO" };
 
-  static final String[] head2 = { "ADJP VBN", "ADJP RB", "NAC NP", "NAC CD", "NAC FW", "NAC ADJP",
-      "NAC JJ", "NX NP", "NX CD", "NX FW", "NX ADJP", "NX JJ", "NP CD", "NP ADJP", "NP JJ",
-      "S SINV", "S SBARQ", "S X", "PRT RB", "PRT IN", "SBAR WHADJP", "SBAR WHADVP", "SBAR WHPP",
-      "SBARQ S", "SBARQ SINV", "SBARQ X", "SINV SBAR", "SQ VP" };
+  static final String[] head2 = {
+      "ADJP VBN",
+      "ADJP RB",
+      "NAC NP",
+      "NAC CD",
+      "NAC FW",
+      "NAC ADJP",
+      "NAC JJ",
+      "NX NP",
+      "NX CD",
+      "NX FW",
+      "NX ADJP",
+      "NX JJ",
+      "NP CD",
+      "NP ADJP",
+      "NP JJ",
+      "S SINV",
+      "S SBARQ",
+      "S X",
+      "PRT RB",
+      "PRT IN",
+      "SBAR WHADJP",
+      "SBAR WHADVP",
+      "SBAR WHPP",
+      "SBARQ S",
+      "SBARQ SINV",
+      "SBARQ X",
+      "SINV SBAR",
+      "SQ VP" };
 
-  static final String[] term = { "AUX", "AUXG", "CC", "CD", "DT", "EX", "FW", "IN", "JJ", "JJR",
-      "JJS", "LS", "MD", "NN", "NNS", "NNP", "NNPS", "PDT", "POS", "PRP", "PRP$", "RB", "RBR",
-      "RBS", "RP", "SYM", "TO", "UH", "VB", "VBD", "VBG", "VBN", "VBP", "VBZ", "WDT", "WP", "WP$",
-      "WRB", "#", "$", ".", ",", ":", "-RRB-", "-LRB-", "``", "''", "EOS" };
+  static final String[] term = {
+      "AUX",
+      "AUXG",
+      "CC",
+      "CD",
+      "DT",
+      "EX",
+      "FW",
+      "IN",
+      "JJ",
+      "JJR",
+      "JJS",
+      "LS",
+      "MD",
+      "NN",
+      "NNS",
+      "NNP",
+      "NNPS",
+      "PDT",
+      "POS",
+      "PRP",
+      "PRP$",
+      "RB",
+      "RBR",
+      "RBS",
+      "RP",
+      "SYM",
+      "TO",
+      "UH",
+      "VB",
+      "VBD",
+      "VBG",
+      "VBN",
+      "VBP",
+      "VBZ",
+      "WDT",
+      "WP",
+      "WP$",
+      "WRB",
+      "#",
+      "$",
+      ".",
+      ",",
+      ":",
+      "-RRB-",
+      "-LRB-",
+      "``",
+      "''",
+      "EOS" };
 
   static final String[] punc = { "#", "$", ".", ",", ":", "-RRB-", "-LRB-", "``", "''" };
 
@@ -148,7 +265,7 @@ public class HeadWordExtractor implements SimpleFeatureExtractor {
   }
 
   List<Feature> extractNode(JCas jCas, TreebankNode node, boolean specialCasePP)
-          throws CleartkException {
+      throws CleartkException {
     List<Feature> features = subExtractor.extract(jCas, node);
 
     for (Feature feature : features) {
@@ -210,7 +327,7 @@ public class HeadWordExtractor implements SimpleFeatureExtractor {
         currentBestGuess = current;
         currentGuessUncertainty = 3;
       } else if (currentGuessUncertainty >= 5 && !terminals.contains(rhs) && rhs != null
-              && !rhs.equals("PP")) {
+          && !rhs.equals("PP")) {
         currentBestGuess = current;
         currentGuessUncertainty = 5;
       } else if (currentGuessUncertainty >= 6 && !terminals.contains(rhs)) {

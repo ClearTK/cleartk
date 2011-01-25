@@ -72,19 +72,21 @@ import org.uimafit.factory.initializable.InitializableFactory;
 public class SentenceAnnotator extends JCasAnnotator_ImplBase {
 
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(SentenceAnnotator.class,
-            SyntaxComponents.TYPE_SYSTEM_DESCRIPTION, PARAM_SENTENCE_MODEL_PATH,
-            ParamUtil.getParameterValue(PARAM_SENTENCE_MODEL_PATH, "/models/en-sent.bin"));
+    return AnalysisEngineFactory.createPrimitiveDescription(
+        SentenceAnnotator.class,
+        SyntaxComponents.TYPE_SYSTEM_DESCRIPTION,
+        PARAM_SENTENCE_MODEL_PATH,
+        ParamUtil.getParameterValue(PARAM_SENTENCE_MODEL_PATH, "/models/en-sent.bin"));
   }
 
   public static final String PARAM_SENTENCE_MODEL_PATH = ConfigurationParameterFactory
-          .createConfigurationParameterName(SentenceAnnotator.class, "sentenceModelPath");
+      .createConfigurationParameterName(SentenceAnnotator.class, "sentenceModelPath");
 
   @ConfigurationParameter(mandatory = true, description = "provides the path of the OpenNLP sentence segmenter model file")
   private String sentenceModelPath;
 
   public static final String PARAM_SENTENCE_TYPE_NAME = ConfigurationParameterFactory
-          .createConfigurationParameterName(SentenceAnnotator.class, "sentenceTypeName");
+      .createConfigurationParameterName(SentenceAnnotator.class, "sentenceTypeName");
 
   @ConfigurationParameter(description = "class type of the sentences that are created by this annotator. If this parameter is not filled, then sentencesof type org.cleartk.type.Sentence will be created.", defaultValue = "org.cleartk.token.type.Sentence")
   private String sentenceTypeName;
@@ -109,15 +111,18 @@ public class SentenceAnnotator extends JCasAnnotator_ImplBase {
 
     try {
       sentenceClass = InitializableFactory.getClass(sentenceTypeName, Annotation.class);
-      sentenceConstructor = sentenceClass.getConstructor(new Class[] { JCas.class, Integer.TYPE,
+      sentenceConstructor = sentenceClass.getConstructor(new Class[] {
+          JCas.class,
+          Integer.TYPE,
           Integer.TYPE });
 
-      InputStream modelInputStream = IOUtil.getInputStream(SentenceAnnotator.class,
-              sentenceModelPath);
+      InputStream modelInputStream = IOUtil.getInputStream(
+          SentenceAnnotator.class,
+          sentenceModelPath);
       SentenceModel model = new SentenceModel(modelInputStream);
       sentenceDetector = new SentenceDetectorME(model);
       multipleNewlinesPattern = Pattern.compile(multipleNewlinesRegex, Pattern.MULTILINE
-              | Pattern.DOTALL);
+          | Pattern.DOTALL);
       leadingWhitespacePattern = Pattern.compile("^\\s+");
       trailingWhitespacePattern = Pattern.compile("\\s+$");
     } catch (Exception e) {

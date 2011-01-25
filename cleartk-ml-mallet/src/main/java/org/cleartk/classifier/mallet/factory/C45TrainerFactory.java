@@ -45,7 +45,7 @@ public class C45TrainerFactory implements ClassifierTrainerFactory<C45> {
     if (args != null) {
       if (args.length % 2 != 0) {
         throw new IllegalArgumentException("each argument must be supplied with a value:  "
-                + getUsageMessage());
+            + getUsageMessage());
       }
       for (int i = 0; i < args.length; i += 2) {
         String optionName = args[i];
@@ -59,8 +59,9 @@ public class C45TrainerFactory implements ClassifierTrainerFactory<C45> {
         else if (optionName.equals("--minNumInsts"))
           trainer.setMinNumInsts(Integer.parseInt(optionValue));
         else
-          throw new IllegalArgumentException(String.format("the argument %1$s is invalid.  ",
-                  optionName) + getUsageMessage());
+          throw new IllegalArgumentException(String.format(
+              "the argument %1$s is invalid.  ",
+              optionName) + getUsageMessage());
       }
     }
     return trainer;
@@ -68,10 +69,10 @@ public class C45TrainerFactory implements ClassifierTrainerFactory<C45> {
 
   public String getUsageMessage() {
     return "The arguments for C45TrainerFactory.createTrainer(String...args) should be either empty or include any of the following:"
-            + "\n--depthLimited boolean"
-            + "\n--doPruning boolean"
-            + "\n--maxDepth integer"
-            + "\n--minNumInsts integer";
+        + "\n--depthLimited boolean"
+        + "\n--doPruning boolean"
+        + "\n--maxDepth integer"
+        + "\n--minNumInsts integer";
   }
 
 }

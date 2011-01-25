@@ -58,9 +58,10 @@ public class LIBSVMTest extends DefaultTestBase {
     // create the data writer
     BinaryAnnotator annotator = new BinaryAnnotator();
     annotator.initialize(UimaContextFactory.createUimaContext(
-            JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, this.outputDirectoryName,
-            CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-            DefaultBinaryLIBSVMDataWriterFactory.class.getName()));
+        JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        this.outputDirectoryName,
+        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        DefaultBinaryLIBSVMDataWriterFactory.class.getName()));
 
     // run process to produce a bunch of instances
     annotator.process(null);
@@ -68,8 +69,9 @@ public class LIBSVMTest extends DefaultTestBase {
     annotator.collectionProcessComplete();
 
     // check that the output file was written and is not empty
-    BufferedReader reader = new BufferedReader(new FileReader(new File(this.outputDirectoryName,
-            "training-data.libsvm")));
+    BufferedReader reader = new BufferedReader(new FileReader(new File(
+        this.outputDirectoryName,
+        "training-data.libsvm")));
     Assert.assertTrue(reader.readLine().length() > 0);
     reader.close();
 
@@ -95,9 +97,10 @@ public class LIBSVMTest extends DefaultTestBase {
     // create the data writer
     StringAnnotator annotator = new StringAnnotator();
     annotator.initialize(UimaContextFactory.createUimaContext(
-            JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, this.outputDirectoryName,
-            CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-            DefaultMultiClassLIBSVMDataWriterFactory.class.getName()));
+        JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        this.outputDirectoryName,
+        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        DefaultMultiClassLIBSVMDataWriterFactory.class.getName()));
 
     // run process to produce a bunch of instances
     annotator.process(null);
@@ -105,8 +108,9 @@ public class LIBSVMTest extends DefaultTestBase {
     annotator.collectionProcessComplete();
 
     // check that the output files were written for each class
-    BufferedReader reader = new BufferedReader(new FileReader(new File(this.outputDirectoryName,
-            "training-data.libsvm")));
+    BufferedReader reader = new BufferedReader(new FileReader(new File(
+        this.outputDirectoryName,
+        "training-data.libsvm")));
     Assert.assertTrue(reader.readLine().length() > 0);
     reader.close();
 

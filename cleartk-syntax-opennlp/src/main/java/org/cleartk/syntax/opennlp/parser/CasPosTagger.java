@@ -46,7 +46,8 @@ import org.cleartk.syntax.opennlp.ParserAnnotator;
  *         {@link ParserAnnotator}.
  */
 
-public class CasPosTagger<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation> implements POSTagger {
+public class CasPosTagger<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation>
+    implements POSTagger {
 
   private List<TOKEN_TYPE> tokens;
 

@@ -49,10 +49,10 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  */
 
 public class DefaultSVMlightDataWriterFactory extends
-        JarDataWriterFactory<FeatureVector, Boolean, Boolean> {
+    JarDataWriterFactory<FeatureVector, Boolean, Boolean> {
 
   public static final String PARAM_CUTOFF = ConfigurationParameterFactory
-          .createConfigurationParameterName(DefaultSVMlightDataWriterFactory.class, "cutoff");
+      .createConfigurationParameterName(DefaultSVMlightDataWriterFactory.class, "cutoff");
 
   @ConfigurationParameter(defaultValue = "5", description = "features that occur less than this number of times over the whole training set will not be encoded during testing")
   protected int cutoff = 5;
@@ -62,8 +62,9 @@ public class DefaultSVMlightDataWriterFactory extends
 
     if (!this.setEncodersFromFileSystem(dataWriter)) {
       NameNumberNormalizer normalizer = new EuclidianNormalizer();
-      FeatureVectorFeaturesEncoder myFeaturesEncoder = new FeatureVectorFeaturesEncoder(cutoff,
-              normalizer);
+      FeatureVectorFeaturesEncoder myFeaturesEncoder = new FeatureVectorFeaturesEncoder(
+          cutoff,
+          normalizer);
       myFeaturesEncoder.addEncoder(new NumberEncoder());
       myFeaturesEncoder.addEncoder(new BooleanEncoder());
       myFeaturesEncoder.addEncoder(new StringEncoder());

@@ -39,16 +39,16 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * 
  */
 public abstract class MalletDataWriterFactory_ImplBase<OUTCOME_TYPE> extends
-        JarDataWriterFactory<List<NameNumber>, OUTCOME_TYPE, String> {
+    JarDataWriterFactory<List<NameNumber>, OUTCOME_TYPE, String> {
 
   public static final String PARAM_COMPRESS = ConfigurationParameterFactory
-          .createConfigurationParameterName(MalletDataWriterFactory_ImplBase.class, "compress");
+      .createConfigurationParameterName(MalletDataWriterFactory_ImplBase.class, "compress");
 
   @ConfigurationParameter(defaultValue = "false", description = "when true indicates that the FeaturesEncoder should compress the feature names.  See org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder")
   protected boolean compress;
 
   public static final String PARAM_SORT = ConfigurationParameterFactory
-          .createConfigurationParameterName(MalletDataWriterFactory_ImplBase.class, "sort");
+      .createConfigurationParameterName(MalletDataWriterFactory_ImplBase.class, "sort");
 
   @ConfigurationParameter(defaultValue = "false", description = "when true indicates that the FeaturesEncoder should write the feature names in sorted order.")
   protected boolean sort;

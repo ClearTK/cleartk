@@ -48,7 +48,7 @@ public class DefaultLineHandler implements LineHandler {
   }
 
   public void handleLine(JCas jCas, File rootFile, File file, String line) throws IOException,
-          CollectionException {
+      CollectionException {
     jCas.setSofaDataString(line, "text/plain");
 
     String uri = String.format("%s#%d", file.toURI().toString(), this.count);

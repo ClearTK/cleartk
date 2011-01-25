@@ -47,7 +47,7 @@ import org.cleartk.util.ReflectionUtil;
  */
 
 public abstract class JarClassifier<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE, FEATURES_TYPE>
-        implements Classifier<INPUTOUTCOME_TYPE> {
+    implements Classifier<INPUTOUTCOME_TYPE> {
 
   protected FeaturesEncoder<FEATURES_TYPE> featuresEncoder;
 
@@ -72,9 +72,9 @@ public abstract class JarClassifier<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE, FEATU
   }
 
   public List<ScoredOutcome<INPUTOUTCOME_TYPE>> score(List<Feature> features, int maxResults)
-          throws CleartkException {
+      throws CleartkException {
     throw new UnsupportedOperationException(
-            "there is no default implementation of the score method.");
+        "there is no default implementation of the score method.");
   }
 
   protected Class<?> getMyTypeArgument(String parameterName) {
@@ -101,17 +101,21 @@ public abstract class JarClassifier<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE, FEATU
   }
 
   protected OutcomeEncoder<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE> outcomeEncoderCast(
-          OutcomeEncoder<?, ?> encoder) {
+      OutcomeEncoder<?, ?> encoder) {
     Class<?> myINPUTOUTCOME_TYPE = getMyTypeArgument("INPUTOUTCOME_TYPE");
-    Class<?> oeINPUTOUTCOME_TYPE = getTypeArgument(OutcomeEncoder.class, "INPUTOUTCOME_TYPE",
-            encoder);
+    Class<?> oeINPUTOUTCOME_TYPE = getTypeArgument(
+        OutcomeEncoder.class,
+        "INPUTOUTCOME_TYPE",
+        encoder);
 
     if (myINPUTOUTCOME_TYPE != oeINPUTOUTCOME_TYPE)
       throw new ClassCastException();
 
     Class<?> myOUTPUTOUTCOME_TYPE = getMyTypeArgument("OUTPUTOUTCOME_TYPE");
-    Class<?> oeOUTPUTOUTCOME_TYPE = getTypeArgument(OutcomeEncoder.class, "OUTPUTOUTCOME_TYPE",
-            encoder);
+    Class<?> oeOUTPUTOUTCOME_TYPE = getTypeArgument(
+        OutcomeEncoder.class,
+        "OUTPUTOUTCOME_TYPE",
+        encoder);
 
     if (myOUTPUTOUTCOME_TYPE != oeOUTPUTOUTCOME_TYPE)
       throw new ClassCastException();

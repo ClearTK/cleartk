@@ -54,10 +54,10 @@ import org.uimafit.factory.initializable.InitializableFactory;
  */
 
 public abstract class POSAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation>
-        extends CleartkSequentialAnnotator<String> {
+    extends CleartkSequentialAnnotator<String> {
 
   public static final String PARAM_FEATURE_EXTRACTOR_CLASS_NAME = ConfigurationParameterFactory
-          .createConfigurationParameterName(POSAnnotator.class, "featureExtractorClassName");
+      .createConfigurationParameterName(POSAnnotator.class, "featureExtractorClassName");
 
   @ConfigurationParameter(mandatory = true, description = "provides the full name of the class that will be used to extract features", defaultValue = "org.cleartk.token.pos.impl.DefaultFeatureExtractor")
   private String featureExtractorClassName;
@@ -80,19 +80,31 @@ public abstract class POSAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE 
 
     // extract the token and sentence classes from the type parameters
     this.tokenClass = ReflectionUtil.<Class<? extends TOP>> uncheckedCast(ReflectionUtil
-            .getTypeArgument(POSAnnotator.class, "TOKEN_TYPE", this));
+        .getTypeArgument(POSAnnotator.class, "TOKEN_TYPE", this));
     this.sentenceClass = ReflectionUtil.<Class<? extends TOP>> uncheckedCast(ReflectionUtil
-            .getTypeArgument(POSAnnotator.class, "SENTENCE_TYPE", this));
+        .getTypeArgument(POSAnnotator.class, "SENTENCE_TYPE", this));
 
     // create the feature extractor and tagger
-    POSFeatureExtractor<?, ?> untypedExtractor = InitializableFactory.create(context,
-            featureExtractorClassName, POSFeatureExtractor.class);
+    POSFeatureExtractor<?, ?> untypedExtractor = InitializableFactory.create(
+        context,
+        featureExtractorClassName,
+        POSFeatureExtractor.class);
 
     // check that the type parameters are compatible
-    ReflectionUtil.checkTypeParameterIsAssignable(POSFeatureExtractor.class, "TOKEN_TYPE",
-            untypedExtractor, POSAnnotator.class, "TOKEN_TYPE", this);
-    ReflectionUtil.checkTypeParameterIsAssignable(POSFeatureExtractor.class, "SENTENCE_TYPE",
-            untypedExtractor, POSAnnotator.class, "SENTENCE_TYPE", this);
+    ReflectionUtil.checkTypeParameterIsAssignable(
+        POSFeatureExtractor.class,
+        "TOKEN_TYPE",
+        untypedExtractor,
+        POSAnnotator.class,
+        "TOKEN_TYPE",
+        this);
+    ReflectionUtil.checkTypeParameterIsAssignable(
+        POSFeatureExtractor.class,
+        "SENTENCE_TYPE",
+        untypedExtractor,
+        POSAnnotator.class,
+        "SENTENCE_TYPE",
+        this);
 
     // set the instance variables
     this.featureExtractor = ReflectionUtil.uncheckedCast(untypedExtractor);

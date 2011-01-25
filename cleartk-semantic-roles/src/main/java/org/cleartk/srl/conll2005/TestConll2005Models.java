@@ -47,10 +47,10 @@ public class TestConll2005Models {
   // private static final File predicateIdentificationModel = new
   // File("scratch/CoNLL2005/predicateIdentification/model.jar");
   private static final File argumentIdentificationModel = new File(
-          "scratch/CoNLL2005/argumentIdentification/model.jar");
+      "scratch/CoNLL2005/argumentIdentification/model.jar");
 
   private static final File argumentClassificationModel = new File(
-          "scratch/CoNLL2005/argumentClassification/model.jar");
+      "scratch/CoNLL2005/argumentClassification/model.jar");
 
   private static final File outputFile = new File("scratch/CoNLL2005/results/props-devset");
 
@@ -58,21 +58,29 @@ public class TestConll2005Models {
     outputFile.getParentFile().mkdirs();
 
     SimplePipeline.runPipeline(
-            Conll2005GoldReader.getCollectionReader(conll2005File.toString()),
-            AnalysisEngineFactory.createPrimitiveDescription(Conll2005GoldAnnotator.class,
-                    SrlComponents.TYPE_SYSTEM_DESCRIPTION,
-                    Conll2005GoldAnnotator.PARAM_HAS_VERB_SENSES, false),
-            DefaultSnowballStemmer.getDescription("English"),
-            // CleartkComponents.createCleartkAnnotator(
-            // PredicateAnnotator.class,
-            // predicateIdentificationModel.toString()),
-            CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(ArgumentIdentifier.class,
-                    SrlComponents.TYPE_SYSTEM_DESCRIPTION, argumentIdentificationModel.toString()),
-            CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(ArgumentClassifier.class,
-                    SrlComponents.TYPE_SYSTEM_DESCRIPTION, argumentClassificationModel.toString()),
-            AnalysisEngineFactory.createPrimitiveDescription(Conll2005Writer.class,
-                    SrlComponents.TYPE_SYSTEM_DESCRIPTION, Conll2005Writer.PARAM_OUTPUT_FILE,
-                    outputFile.toString()));
+        Conll2005GoldReader.getCollectionReader(conll2005File.toString()),
+        AnalysisEngineFactory.createPrimitiveDescription(
+            Conll2005GoldAnnotator.class,
+            SrlComponents.TYPE_SYSTEM_DESCRIPTION,
+            Conll2005GoldAnnotator.PARAM_HAS_VERB_SENSES,
+            false),
+        DefaultSnowballStemmer.getDescription("English"),
+        // CleartkComponents.createCleartkAnnotator(
+        // PredicateAnnotator.class,
+        // predicateIdentificationModel.toString()),
+        CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+            ArgumentIdentifier.class,
+            SrlComponents.TYPE_SYSTEM_DESCRIPTION,
+            argumentIdentificationModel.toString()),
+        CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+            ArgumentClassifier.class,
+            SrlComponents.TYPE_SYSTEM_DESCRIPTION,
+            argumentClassificationModel.toString()),
+        AnalysisEngineFactory.createPrimitiveDescription(
+            Conll2005Writer.class,
+            SrlComponents.TYPE_SYSTEM_DESCRIPTION,
+            Conll2005Writer.PARAM_OUTPUT_FILE,
+            outputFile.toString()));
   }
 
 }

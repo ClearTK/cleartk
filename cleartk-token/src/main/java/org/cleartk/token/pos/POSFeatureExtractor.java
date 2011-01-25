@@ -44,6 +44,6 @@ import org.cleartk.classifier.Feature;
 public interface POSFeatureExtractor<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation> {
 
   public List<Feature> extractFeatures(JCas jCas, TOKEN_TYPE token, SENTENCE_TYPE sentence)
-          throws CleartkException;
+      throws CleartkException;
 
 }

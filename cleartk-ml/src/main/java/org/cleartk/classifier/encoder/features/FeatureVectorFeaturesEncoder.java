@@ -48,7 +48,7 @@ import org.cleartk.util.collection.Writable;
  * @author Philipp Wetzler
  */
 public class FeatureVectorFeaturesEncoder extends
-        FeaturesEncoder_ImplBase<FeatureVector, NameNumber> {
+    FeaturesEncoder_ImplBase<FeatureVector, NameNumber> {
 
   private static final long serialVersionUID = 6714456694285732480L;
 

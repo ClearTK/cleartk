@@ -101,10 +101,14 @@ public class Ace2005GoldAnnotator extends JCasAnnotator_ImplBase {
         List<?> entityMentions = apfEntity.getChildren("entity_mention");
         for (int j = 0; j < entityMentions.size(); j++) {
           Element entityMention = (Element) entityMentions.get(j);
-          int start = Integer.parseInt(entityMention.getChild("extent").getChild("charseq")
-                  .getAttributeValue("START"));
-          int end = Integer.parseInt(entityMention.getChild("extent").getChild("charseq")
-                  .getAttributeValue("END"));
+          int start = Integer.parseInt(entityMention
+              .getChild("extent")
+              .getChild("charseq")
+              .getAttributeValue("START"));
+          int end = Integer.parseInt(entityMention
+              .getChild("extent")
+              .getChild("charseq")
+              .getAttributeValue("END"));
           String givenText = entityMention.getChild("extent").getChild("charseq").getText();
           String parsedText = documentText.substring(start, end + 1);
           Matcher ampMatcher = ampPattern.matcher(parsedText);
@@ -117,10 +121,14 @@ public class Ace2005GoldAnnotator extends JCasAnnotator_ImplBase {
           Chunk chunk = new Chunk(initialView, start, end + 1);
           mention.setAnnotation(chunk);
 
-          int headStart = Integer.parseInt(entityMention.getChild("head").getChild("charseq")
-                  .getAttributeValue("START"));
-          int headEnd = Integer.parseInt(entityMention.getChild("head").getChild("charseq")
-                  .getAttributeValue("END"));
+          int headStart = Integer.parseInt(entityMention
+              .getChild("head")
+              .getChild("charseq")
+              .getAttributeValue("START"));
+          int headEnd = Integer.parseInt(entityMention
+              .getChild("head")
+              .getChild("charseq")
+              .getAttributeValue("END"));
           Chunk head = new Chunk(initialView, headStart, headEnd + 1);
           mention.setHead(head);
 

@@ -38,14 +38,14 @@ import org.apache.uima.jcas.tcas.Annotation;
 public interface ChunkLabeler {
 
   public void chunks2Labels(JCas jCas, Annotation sequenceAnnotation)
-          throws AnalysisEngineProcessException;
+      throws AnalysisEngineProcessException;
 
   public List<Annotation> labels2Chunks(JCas jCas, Annotation sequenceAnnotation)
-          throws AnalysisEngineProcessException;
+      throws AnalysisEngineProcessException;
 
   public String getLabel(Annotation labeledAnnotation) throws AnalysisEngineProcessException;
 
   public void setLabel(Annotation labeledAnnotation, String label)
-          throws AnalysisEngineProcessException;
+      throws AnalysisEngineProcessException;
 
 }

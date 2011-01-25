@@ -67,8 +67,9 @@ public class SVMlightClassifierBuilder implements ClassifierBuilder<Boolean> {
     command[command.length - 1] = new File(filePath + ".model").getPath();
 
     logger.log(Level.INFO, "training with svmlight using the following command: "
-            + toString(command));
-    logger.log(
+        + toString(command));
+    logger
+        .log(
             Level.INFO,
             "if the svmlight learner does not seem to be working correctly, then try running the above command directly to see if e.g. svm_learn or svm_perf_learn gives a useful error message.");
     Process process = Runtime.getRuntime().exec(command);
@@ -93,7 +94,7 @@ public class SVMlightClassifierBuilder implements ClassifierBuilder<Boolean> {
     System.out.println("Computed output mapping function: " + s.toString());
 
     ObjectOutput o = new ObjectOutputStream(new FileOutputStream(new File(
-            trainingDataFile.toString() + ".sigmoid")));
+        trainingDataFile.toString() + ".sigmoid")));
     o.writeObject(s);
     o.close();
   }

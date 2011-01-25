@@ -61,9 +61,10 @@ public class AnnotationUtilTest extends DefaultTestBase {
 
   public static class Annotator extends JCasAnnotator_ImplBase {
     public static void getProcessedJCas(JCas jCas, TypeSystemDescription typeSystemDescription)
-            throws UIMAException, IOException {
-      AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(Annotator.class,
-              typeSystemDescription);
+        throws UIMAException, IOException {
+      AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+          Annotator.class,
+          typeSystemDescription);
       AnalysisEngineFactory.process(jCas, engine, "src/test/resources/docs/huckfinn.txt");
     }
 
@@ -209,10 +210,12 @@ public class AnnotationUtilTest extends DefaultTestBase {
     assertEquals("AAA BBB ", AnnotationUtil.getSurroundingText(jCas, sa, Token.class, 4, true));
     assertEquals(" DDDD", AnnotationUtil.getSurroundingText(jCas, sa, Token.class, 1, false));
     assertEquals(" DDDD EEEE", AnnotationUtil.getSurroundingText(jCas, sa, Token.class, 2, false));
-    assertEquals(" DDDD EEEE FFFF",
-            AnnotationUtil.getSurroundingText(jCas, sa, Token.class, 3, false));
-    assertEquals(" DDDD EEEE FFFF",
-            AnnotationUtil.getSurroundingText(jCas, sa, Token.class, 4, false));
+    assertEquals(
+        " DDDD EEEE FFFF",
+        AnnotationUtil.getSurroundingText(jCas, sa, Token.class, 3, false));
+    assertEquals(
+        " DDDD EEEE FFFF",
+        AnnotationUtil.getSurroundingText(jCas, sa, Token.class, 4, false));
 
     IllegalArgumentException iae = null;
     try {

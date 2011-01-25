@@ -56,13 +56,15 @@ public class GazetteerExtractor {
   }
 
   public List<Feature> extract(JCas jCas, Annotation focusAnnotation, Annotation windowAnnotation)
-          throws UnsupportedOperationException {
+      throws UnsupportedOperationException {
     List<Feature> returnValues = new ArrayList<Feature>();
-    List<GazetteerNamedEntityMention> gnems = AnnotationRetrieval.getAnnotations(jCas,
-            windowAnnotation, GazetteerNamedEntityMention.class);
+    List<GazetteerNamedEntityMention> gnems = AnnotationRetrieval.getAnnotations(
+        jCas,
+        windowAnnotation,
+        GazetteerNamedEntityMention.class);
     for (GazetteerNamedEntityMention gnem : gnems) {
       if (gazetteerNames.contains(gnem.getMentionedEntity().getEntityType())
-              && AnnotationUtil.contains(gnem, focusAnnotation)) {
+          && AnnotationUtil.contains(gnem, focusAnnotation)) {
         String entityType = gnem.getMentionedEntity().getEntityType();
         Feature feature = new Feature("Gazetteer", entityType);
         returnValues.add(feature);

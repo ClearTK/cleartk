@@ -36,6 +36,6 @@ import org.cleartk.CleartkException;
 public interface SequentialClassifierFactory<OUTCOME_TYPE> {
 
   public SequentialClassifier<OUTCOME_TYPE> createSequentialClassifier() throws IOException,
-          CleartkException;
+      CleartkException;
 
 }

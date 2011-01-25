@@ -51,8 +51,11 @@ public class CoNLL2005WriterTest extends SrlTestBase {
 
     File outputFile = new File(outputDirectory, "dev-set-result.txt");
 
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(Conll2005Writer.class,
-            typeSystemDescription, Conll2005Writer.PARAM_OUTPUT_FILE, outputFile.getPath());
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+        Conll2005Writer.class,
+        typeSystemDescription,
+        Conll2005Writer.PARAM_OUTPUT_FILE,
+        outputFile.getPath());
 
     engine.collectionProcessComplete();
   }

@@ -56,8 +56,9 @@ public class LowerCaseProliferator extends FeatureProliferator {
     String featureName = Feature.createName(this.getFeatureName(), feature.getName());
     Object featureValue = feature.getValue();
     if (featureValue instanceof String) {
-      return Collections.singletonList(new Feature(featureName, featureValue.toString()
-              .toLowerCase()));
+      return Collections.singletonList(new Feature(featureName, featureValue
+          .toString()
+          .toLowerCase()));
     } else
       return Collections.emptyList();
   }

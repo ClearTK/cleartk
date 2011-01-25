@@ -48,7 +48,7 @@ public interface EvaluationFactory {
    * @throws ResourceInitializationException
    */
   public AnalysisEngineDescription createEvaluationAggregate(File evaluationDirectory)
-          throws ResourceInitializationException;
+      throws ResourceInitializationException;
 
   /**
    * This method aggregates results from a number of directories and writes the aggregated results
@@ -62,6 +62,6 @@ public interface EvaluationFactory {
    * @throws Exception
    */
   public void aggregateEvaluationResults(List<File> evaluationDirectories, File outputDirectory)
-          throws Exception;
+      throws Exception;
 
 }

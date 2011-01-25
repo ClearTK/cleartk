@@ -69,10 +69,11 @@ public class CleartkAnnotatorTest extends DefaultTestBase {
     try {
       CleartkAnnotator<String> classifierAnnotator = new StringTestAnnotator();
       classifierAnnotator.initialize(UimaContextFactory.createUimaContext(
-              JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, new File(outputDirectoryName,
-                      "asdf.jar").getPath()));
-      classifierAnnotator.classifier.classify(InstanceFactory.createInstance("hello", 1, 1)
-              .getFeatures());
+          JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
+          new File(outputDirectoryName, "asdf.jar").getPath()));
+      classifierAnnotator.classifier.classify(InstanceFactory
+          .createInstance("hello", 1, 1)
+          .getFeatures());
       fail("expected exception for invalid classifier name");
     } catch (ResourceInitializationException e) {
     }
@@ -82,18 +83,19 @@ public class CleartkAnnotatorTest extends DefaultTestBase {
   public void testStringClassifierStringAnnotator() throws Exception {
     CleartkAnnotator<String> classifierAnnotator = new StringTestAnnotator();
     classifierAnnotator.initialize(UimaContextFactory.createUimaContext(
-            CleartkAnnotator.PARAM_CLASSIFIER_FACTORY_CLASS_NAME,
-            StringTestClassifierFactory.class.getName()));
-    classifierAnnotator.classifier.classify(InstanceFactory.createInstance("hello", 1, 1)
-            .getFeatures());
+        CleartkAnnotator.PARAM_CLASSIFIER_FACTORY_CLASS_NAME,
+        StringTestClassifierFactory.class.getName()));
+    classifierAnnotator.classifier.classify(InstanceFactory
+        .createInstance("hello", 1, 1)
+        .getFeatures());
   }
 
   @Test
   public void testIntegerClassifierStringAnnotator() throws Exception {
     try {
       new StringTestAnnotator().initialize(UimaContextFactory.createUimaContext(
-              CleartkAnnotator.PARAM_CLASSIFIER_FACTORY_CLASS_NAME,
-              IntegerTestClassifierFactory.class.getName()));
+          CleartkAnnotator.PARAM_CLASSIFIER_FACTORY_CLASS_NAME,
+          IntegerTestClassifierFactory.class.getName()));
       fail("expected exception for Integer classifier and String annotator");
     } catch (ResourceInitializationException e) {
     }
@@ -103,16 +105,16 @@ public class CleartkAnnotatorTest extends DefaultTestBase {
   public void testChildClassifierParentAnnotator() throws Exception {
     CleartkAnnotator<Parent> classifierAnnotator = new ParentTestAnnotator();
     classifierAnnotator.initialize(UimaContextFactory.createUimaContext(
-            CleartkAnnotator.PARAM_CLASSIFIER_FACTORY_CLASS_NAME,
-            ChildClassifierFactory.class.getName()));
+        CleartkAnnotator.PARAM_CLASSIFIER_FACTORY_CLASS_NAME,
+        ChildClassifierFactory.class.getName()));
   }
 
   @Test
   public void testParentClassifierChildAnnotator() throws Exception {
     try {
       new ChildTestAnnotator().initialize(UimaContextFactory.createUimaContext(
-              CleartkAnnotator.PARAM_CLASSIFIER_FACTORY_CLASS_NAME,
-              ParentClassifierFactory.class.getName()));
+          CleartkAnnotator.PARAM_CLASSIFIER_FACTORY_CLASS_NAME,
+          ParentClassifierFactory.class.getName()));
       fail("expected exception for Parent classifier and Child annotator");
     } catch (ResourceInitializationException e) {
     }
@@ -122,34 +124,42 @@ public class CleartkAnnotatorTest extends DefaultTestBase {
   public void testGenericClassifierGenericAnnotator() throws Exception {
     CleartkAnnotator<Object> classifierAnnotator = new TestAnnotator<Object>();
     classifierAnnotator.initialize(UimaContextFactory.createUimaContext(
-            CleartkAnnotator.PARAM_CLASSIFIER_FACTORY_CLASS_NAME,
-            TestClassifierFactory.class.getName()));
+        CleartkAnnotator.PARAM_CLASSIFIER_FACTORY_CLASS_NAME,
+        TestClassifierFactory.class.getName()));
   }
 
   @Test
   public void testDescriptor() throws UIMAException, IOException {
     try {
-      AnalysisEngineFactory.createPrimitive(StringTestAnnotator.class, typeSystemDescription,
-              CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-              DefaultStringTestDataWriterFactory.class.getName());
+      AnalysisEngineFactory.createPrimitive(
+          StringTestAnnotator.class,
+          typeSystemDescription,
+          CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+          DefaultStringTestDataWriterFactory.class.getName());
       Assert.fail("expected exception with missing output directory");
     } catch (ResourceInitializationException e) {
     }
 
     try {
-      AnalysisEngineFactory.createPrimitive(StringTestAnnotator.class, typeSystemDescription,
-              JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDirectoryName);
+      AnalysisEngineFactory.createPrimitive(
+          StringTestAnnotator.class,
+          typeSystemDescription,
+          JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+          outputDirectoryName);
       Assert.fail("expected exception with missing classifier jar");
     } catch (ResourceInitializationException e) {
     }
 
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(StringTestAnnotator.class,
-            typeSystemDescription, JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
-            outputDirectoryName, CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-            DefaultStringTestDataWriterFactory.class.getName());
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+        StringTestAnnotator.class,
+        typeSystemDescription,
+        JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        outputDirectoryName,
+        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        DefaultStringTestDataWriterFactory.class.getName());
 
     Object dataWriter = engine
-            .getConfigParameterValue(CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME);
+        .getConfigParameterValue(CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME);
     Assert.assertEquals(DefaultStringTestDataWriterFactory.class.getName(), dataWriter);
 
     Object outputDir = engine.getConfigParameterValue(JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY);
@@ -172,7 +182,7 @@ public class CleartkAnnotatorTest extends DefaultTestBase {
     }
 
     public List<ScoredOutcome<T>> score(List<Feature> features, int maxResults)
-            throws CleartkException {
+        throws CleartkException {
       return null;
     }
   }

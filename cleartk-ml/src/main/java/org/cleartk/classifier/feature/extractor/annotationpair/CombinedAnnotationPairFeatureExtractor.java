@@ -45,7 +45,7 @@ public class CombinedAnnotationPairFeatureExtractor implements AnnotationPairFea
   }
 
   public List<Feature> extract(JCas view, Annotation leftAnnotation, Annotation rightAnnotation)
-          throws CleartkException {
+      throws CleartkException {
     List<Feature> features = new ArrayList<Feature>();
 
     for (AnnotationPairFeatureExtractor subExtractor : subExtractors) {

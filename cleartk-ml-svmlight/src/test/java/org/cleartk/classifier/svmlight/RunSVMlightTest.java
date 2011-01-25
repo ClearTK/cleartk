@@ -117,7 +117,7 @@ public class RunSVMlightTest extends DefaultTestBase {
   }
 
   private void trainAndTest(File trainingFile, File testFile, String[] args, String name)
-          throws IOException, InterruptedException, CleartkException {
+      throws IOException, InterruptedException, CleartkException {
     File modelFile = new File(this.outputDirectoryName, "model.svmlight");
 
     String[] command = new String[3 + args.length];
@@ -195,9 +195,10 @@ public class RunSVMlightTest extends DefaultTestBase {
     // create the data writer
     EmptyAnnotator<Boolean> annotator = new EmptyAnnotator<Boolean>();
     annotator.initialize(UimaContextFactory.createUimaContext(
-            JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, this.outputDirectoryName,
-            CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-            DefaultSVMlightDataWriterFactory.class.getName()));
+        JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        this.outputDirectoryName,
+        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        DefaultSVMlightDataWriterFactory.class.getName()));
 
     // add a bunch of instances
     for (Instance<Boolean> instance : generateBooleanInstances(1000)) {
@@ -206,8 +207,9 @@ public class RunSVMlightTest extends DefaultTestBase {
     annotator.collectionProcessComplete();
 
     // check that the output file was written and is not empty
-    BufferedReader reader = new BufferedReader(new FileReader(new File(this.outputDirectoryName,
-            "training-data.svmlight")));
+    BufferedReader reader = new BufferedReader(new FileReader(new File(
+        this.outputDirectoryName,
+        "training-data.svmlight")));
     Assert.assertTrue(reader.readLine().length() > 0);
     reader.close();
 
@@ -233,9 +235,10 @@ public class RunSVMlightTest extends DefaultTestBase {
     // create the data writer
     EmptyAnnotator<String> annotator = new EmptyAnnotator<String>();
     annotator.initialize(UimaContextFactory.createUimaContext(
-            JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, this.outputDirectoryName,
-            CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-            DefaultOVASVMlightDataWriterFactory.class.getName()));
+        JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        this.outputDirectoryName,
+        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        DefaultOVASVMlightDataWriterFactory.class.getName()));
 
     // add a bunch of instances
     for (Instance<String> instance : generateStringInstances(1000)) {
@@ -244,10 +247,13 @@ public class RunSVMlightTest extends DefaultTestBase {
     annotator.collectionProcessComplete();
 
     // check that the output files were written for each class
-    for (String fileName : new String[] { "training-data-1.svmlight", "training-data-2.svmlight",
+    for (String fileName : new String[] {
+        "training-data-1.svmlight",
+        "training-data-2.svmlight",
         "training-data-3.svmlight" }) {
-      BufferedReader reader = new BufferedReader(new FileReader(new File(this.outputDirectoryName,
-              fileName)));
+      BufferedReader reader = new BufferedReader(new FileReader(new File(
+          this.outputDirectoryName,
+          fileName)));
       Assert.assertTrue(reader.readLine().length() > 0);
       reader.close();
     }

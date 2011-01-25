@@ -72,19 +72,22 @@ public class CleartkAnnotatorDescriptionFactory {
    * @return An AnalysisEngineDescription for the CleartkSequentialAnnotator.
    */
   public static <OUTCOME_TYPE> AnalysisEngineDescription createViterbiAnnotator(
-          Class<? extends CleartkSequentialAnnotator<OUTCOME_TYPE>> annotatorClass,
-          TypeSystemDescription typeSystemDescription,
-          Class<? extends DataWriterFactory<OUTCOME_TYPE>> delegatedDataWriterFactoryClass,
-          String outputDir) throws ResourceInitializationException {
+      Class<? extends CleartkSequentialAnnotator<OUTCOME_TYPE>> annotatorClass,
+      TypeSystemDescription typeSystemDescription,
+      Class<? extends DataWriterFactory<OUTCOME_TYPE>> delegatedDataWriterFactoryClass,
+      String outputDir) throws ResourceInitializationException {
 
-    return AnalysisEngineFactory.createPrimitiveDescription(annotatorClass, typeSystemDescription,
-            CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME,
-            ViterbiDataWriterFactory.class.getName(),
-            ViterbiDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDir,
-            ViterbiDataWriterFactory.PARAM_DELEGATED_DATA_WRITER_FACTORY_CLASS,
-            delegatedDataWriterFactoryClass.getName(),
-            ViterbiDataWriterFactory.PARAM_OUTCOME_FEATURE_EXTRACTOR_NAMES,
-            new String[] { DefaultOutcomeFeatureExtractor.class.getName() });
+    return AnalysisEngineFactory.createPrimitiveDescription(
+        annotatorClass,
+        typeSystemDescription,
+        CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME,
+        ViterbiDataWriterFactory.class.getName(),
+        ViterbiDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        outputDir,
+        ViterbiDataWriterFactory.PARAM_DELEGATED_DATA_WRITER_FACTORY_CLASS,
+        delegatedDataWriterFactoryClass.getName(),
+        ViterbiDataWriterFactory.PARAM_OUTCOME_FEATURE_EXTRACTOR_NAMES,
+        new String[] { DefaultOutcomeFeatureExtractor.class.getName() });
   }
 
   /**
@@ -100,14 +103,17 @@ public class CleartkAnnotatorDescriptionFactory {
    * @return An AnalysisEngineDescription for the CleartkAnnotator.
    */
   public static AnalysisEngineDescription createCleartkAnnotator(
-          Class<? extends CleartkAnnotator<?>> cleartkAnnotatorClass,
-          TypeSystemDescription typeSystemDescription, String classifierJar)
-          throws ResourceInitializationException {
+      Class<? extends CleartkAnnotator<?>> cleartkAnnotatorClass,
+      TypeSystemDescription typeSystemDescription,
+      String classifierJar) throws ResourceInitializationException {
 
     AnalysisEngineDescription aed = AnalysisEngineFactory.createPrimitiveDescription(
-            cleartkAnnotatorClass, typeSystemDescription);
-    ConfigurationParameterFactory.addConfigurationParameter(aed,
-            JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, classifierJar);
+        cleartkAnnotatorClass,
+        typeSystemDescription);
+    ConfigurationParameterFactory.addConfigurationParameter(
+        aed,
+        JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
+        classifierJar);
     return aed;
   }
 
@@ -130,18 +136,22 @@ public class CleartkAnnotatorDescriptionFactory {
    * @return An AnalysisEngineDescription for the CleartkAnnotator.
    */
   public static <OUTCOME_TYPE> AnalysisEngineDescription createCleartkAnnotator(
-          Class<? extends CleartkAnnotator<OUTCOME_TYPE>> cleartkAnnotatorClass,
-          TypeSystemDescription typeSystemDescription,
-          Class<? extends DataWriterFactory<OUTCOME_TYPE>> dataWriterFactoryClass, String outputDir)
-          throws ResourceInitializationException {
+      Class<? extends CleartkAnnotator<OUTCOME_TYPE>> cleartkAnnotatorClass,
+      TypeSystemDescription typeSystemDescription,
+      Class<? extends DataWriterFactory<OUTCOME_TYPE>> dataWriterFactoryClass,
+      String outputDir) throws ResourceInitializationException {
     AnalysisEngineDescription aed = AnalysisEngineFactory.createPrimitiveDescription(
-            cleartkAnnotatorClass, typeSystemDescription);
+        cleartkAnnotatorClass,
+        typeSystemDescription);
 
-    ConfigurationParameterFactory
-            .addConfigurationParameter(aed, CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-                    dataWriterFactoryClass.getName());
-    ConfigurationParameterFactory.addConfigurationParameter(aed,
-            JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDir);
+    ConfigurationParameterFactory.addConfigurationParameter(
+        aed,
+        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        dataWriterFactoryClass.getName());
+    ConfigurationParameterFactory.addConfigurationParameter(
+        aed,
+        JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        outputDir);
     return aed;
   }
 
@@ -158,14 +168,17 @@ public class CleartkAnnotatorDescriptionFactory {
    * @return An AnalysisEngineDescription for the CleartkSequentialAnnotator.
    */
   public static AnalysisEngineDescription createCleartkSequentialAnnotator(
-          Class<? extends CleartkSequentialAnnotator<?>> sequentialClassifierAnnotatorClass,
-          TypeSystemDescription typeSystemDescription, String classifierJar)
-          throws ResourceInitializationException {
+      Class<? extends CleartkSequentialAnnotator<?>> sequentialClassifierAnnotatorClass,
+      TypeSystemDescription typeSystemDescription,
+      String classifierJar) throws ResourceInitializationException {
 
     AnalysisEngineDescription aed = AnalysisEngineFactory.createPrimitiveDescription(
-            sequentialClassifierAnnotatorClass, typeSystemDescription);
-    ConfigurationParameterFactory.addConfigurationParameter(aed,
-            JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, classifierJar);
+        sequentialClassifierAnnotatorClass,
+        typeSystemDescription);
+    ConfigurationParameterFactory.addConfigurationParameter(
+        aed,
+        JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
+        classifierJar);
     return aed;
   }
 
@@ -188,20 +201,26 @@ public class CleartkAnnotatorDescriptionFactory {
    * @return An AnalysisEngineDescription for the CleartkSequentialAnnotator.
    */
   public static <OUTCOME_TYPE> AnalysisEngineDescription createCleartkSequentialAnnotator(
-          Class<? extends CleartkSequentialAnnotator<OUTCOME_TYPE>> sequentialClassifierAnnotatorClass,
-          TypeSystemDescription typeSystemDescription,
-          Class<? extends SequentialDataWriterFactory<OUTCOME_TYPE>> dataWriterFactoryClass,
-          String outputDir) throws ResourceInitializationException {
+      Class<? extends CleartkSequentialAnnotator<OUTCOME_TYPE>> sequentialClassifierAnnotatorClass,
+      TypeSystemDescription typeSystemDescription,
+      Class<? extends SequentialDataWriterFactory<OUTCOME_TYPE>> dataWriterFactoryClass,
+      String outputDir) throws ResourceInitializationException {
 
     AnalysisEngineDescription aed = AnalysisEngineFactory.createPrimitiveDescription(
-            sequentialClassifierAnnotatorClass, typeSystemDescription);
-    ConfigurationParameterFactory.addConfigurationParameter(aed,
-            CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME,
-            dataWriterFactoryClass.getName());
-    ConfigurationParameterFactory.addConfigurationParameter(aed,
-            JarSequentialDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDir);
-    ConfigurationParameterFactory.addConfigurationParameter(aed,
-            ViterbiDataWriterFactory.PARAM_OUTPUT_DIRECTORY, outputDir);
+        sequentialClassifierAnnotatorClass,
+        typeSystemDescription);
+    ConfigurationParameterFactory.addConfigurationParameter(
+        aed,
+        CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME,
+        dataWriterFactoryClass.getName());
+    ConfigurationParameterFactory.addConfigurationParameter(
+        aed,
+        JarSequentialDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        outputDir);
+    ConfigurationParameterFactory.addConfigurationParameter(
+        aed,
+        ViterbiDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        outputDir);
     return aed;
   }
 }

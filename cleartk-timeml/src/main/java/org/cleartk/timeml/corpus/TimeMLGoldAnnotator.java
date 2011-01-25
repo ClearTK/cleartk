@@ -69,20 +69,24 @@ import org.uimafit.factory.ConfigurationParameterFactory;
 public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
 
   public static final String PARAM_LOAD_TLINKS = ConfigurationParameterFactory
-          .createConfigurationParameterName(TimeMLGoldAnnotator.class, "loadTlinks");
+      .createConfigurationParameterName(TimeMLGoldAnnotator.class, "loadTlinks");
 
   @ConfigurationParameter(description = "when false indicates that annotation should not be created for TLINKs (though annotations will still be created for TIMEX3s, EVENTs, etc.).", defaultValue = "true")
   private boolean loadTlinks;
 
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(TimeMLGoldAnnotator.class,
-            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION);
+    return AnalysisEngineFactory.createPrimitiveDescription(
+        TimeMLGoldAnnotator.class,
+        TimeMLComponents.TYPE_SYSTEM_DESCRIPTION);
   }
 
   public static AnalysisEngineDescription getDescriptionNoTLINKs()
-          throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(TimeMLGoldAnnotator.class,
-            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION, PARAM_LOAD_TLINKS, false);
+      throws ResourceInitializationException {
+    return AnalysisEngineFactory.createPrimitiveDescription(
+        TimeMLGoldAnnotator.class,
+        TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
+        PARAM_LOAD_TLINKS,
+        false);
   }
 
   @Override
@@ -109,8 +113,9 @@ public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
       Document doc = builder.build(new StringReader(timeML));
       root = doc.getRootElement();
     } catch (JDOMException e) {
-      getContext().getLogger().log(Level.SEVERE,
-              "problem parsing document: " + ViewURIUtil.getURI(jCas));
+      getContext().getLogger().log(
+          Level.SEVERE,
+          "problem parsing document: " + ViewURIUtil.getURI(jCas));
       throw new AnalysisEngineProcessException(e);
     } catch (IOException e) {
       throw new AnalysisEngineProcessException(e);
@@ -122,8 +127,11 @@ public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
     initialView.setDocumentText(textBuffer.toString());
   }
 
-  private void addAnnotations(JCas jCas, Element element, StringBuffer textBuffer,
-          Map<String, Anchor> anchors) {
+  private void addAnnotations(
+      JCas jCas,
+      Element element,
+      StringBuffer textBuffer,
+      Map<String, Anchor> anchors) {
     int startOffset = textBuffer.length();
     for (Object content : element.getContent()) {
       if (content instanceof org.jdom.Text) {
@@ -161,8 +169,11 @@ public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
       TemporalLink temporalLink = new TemporalLink(jCas, startOffset, endOffset);
       TimeMLUtil.copyAttributes(element, temporalLink, jCas);
       String sourceID = this.getOneOf(element, "eventInstanceID", "eventID", "timeID");
-      String targetID = this.getOneOf(element, "relatedToEventInstance", "relatedToEvent",
-              "relatedToTime");
+      String targetID = this.getOneOf(
+          element,
+          "relatedToEventInstance",
+          "relatedToEvent",
+          "relatedToTime");
       Anchor source = this.getAnchor(anchors, sourceID);
       Anchor target = this.getAnchor(anchors, targetID);
       if (source instanceof Event) {
@@ -188,8 +199,9 @@ public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
       }
     }
     throw new RuntimeException(String.format(
-            "unable to find in %s any of the following attributes: %s", element,
-            Arrays.asList(attributeNames)));
+        "unable to find in %s any of the following attributes: %s",
+        element,
+        Arrays.asList(attributeNames)));
   }
 
   private Anchor getAnchor(Map<String, Anchor> anchors, String id) {

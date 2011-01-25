@@ -59,8 +59,9 @@ public class TreebankGoldReaderAndAnnotatorTest extends SyntaxTestBase {
     String treebankParse = "( (X (NP (NP (NML (NN Complex ) (NN trait )) (NN analysis )) (PP (IN of ) (NP (DT the ) (NN mouse ) (NN striatum )))) (: : ) (S (NP-SBJ (JJ independent ) (NNS QTLs )) (VP (VBP modulate ) (NP (NP (NN volume )) (CC and ) (NP (NN neuron ) (NN number)))))) )";
     String expectedText = "Complex trait analysis of the mouse striatum: independent QTLs modulate volume and neuron number";
 
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TreebankGoldAnnotator.class,
-            typeSystemDescription);
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+        TreebankGoldAnnotator.class,
+        typeSystemDescription);
     TreebankGoldAnnotator treebankGoldAnnotator = new TreebankGoldAnnotator();
     treebankGoldAnnotator.initialize(engine.getUimaContext());
 
@@ -101,20 +102,25 @@ public class TreebankGoldReaderAndAnnotatorTest extends SyntaxTestBase {
   @Test
   public void testAED() throws UIMAException, IOException {
     AnalysisEngineDescription description = AnalysisEngineFactory.createPrimitiveDescription(
-            TreebankGoldAnnotator.class, typeSystemDescription);
-    Boolean postTrees = (Boolean) description.getAnalysisEngineMetaData()
-            .getConfigurationParameterSettings()
-            .getParameterValue(TreebankGoldAnnotator.PARAM_POST_TREES);
+        TreebankGoldAnnotator.class,
+        typeSystemDescription);
+    Boolean postTrees = (Boolean) description
+        .getAnalysisEngineMetaData()
+        .getConfigurationParameterSettings()
+        .getParameterValue(TreebankGoldAnnotator.PARAM_POST_TREES);
     Assert.assertTrue(postTrees.booleanValue());
     String[] inputSofas = description.getAnalysisEngineMetaData().getCapabilities()[0]
-            .getInputSofas();
+        .getInputSofas();
     assertEquals(TreebankConstants.TREEBANK_VIEW, inputSofas[0]);
     assertEquals(CAS.NAME_DEFAULT_SOFA, inputSofas[1]);
   }
 
   @Test
   public void testInitialize() throws ResourceInitializationException {
-    AnalysisEngineFactory.createPrimitive(TreebankGoldAnnotator.class, typeSystemDescription,
-            TreebankGoldAnnotator.PARAM_POST_TREES, true);
+    AnalysisEngineFactory.createPrimitive(
+        TreebankGoldAnnotator.class,
+        typeSystemDescription,
+        TreebankGoldAnnotator.PARAM_POST_TREES,
+        true);
   }
 }

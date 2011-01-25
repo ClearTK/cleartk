@@ -113,7 +113,7 @@ public class TermList {
    * @throws IOException
    */
   public static TermList loadSimpleFile(String listName, File file, String columnSeparator)
-          throws IOException {
+      throws IOException {
 
     TermList termList = new TermList(listName);
 

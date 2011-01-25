@@ -42,16 +42,16 @@ import org.uimafit.factory.initializable.InitializableFactory;
  * All rights reserved.
  */
 public abstract class CleartkAnnotator<OUTCOME_TYPE> extends JCasAnnotator_ImplBase implements
-        Initializable {
+    Initializable {
 
   public static final String PARAM_CLASSIFIER_FACTORY_CLASS_NAME = ConfigurationParameterFactory
-          .createConfigurationParameterName(CleartkAnnotator.class, "classifierFactoryClassName");
+      .createConfigurationParameterName(CleartkAnnotator.class, "classifierFactoryClassName");
 
   @ConfigurationParameter(mandatory = false, description = "provides the full name of the ClassifierFactory class to be used.", defaultValue = "org.cleartk.classifier.jar.JarClassifierFactory")
   private String classifierFactoryClassName;
 
   public static final String PARAM_DATA_WRITER_FACTORY_CLASS_NAME = ConfigurationParameterFactory
-          .createConfigurationParameterName(CleartkAnnotator.class, "dataWriterFactoryClassName");
+      .createConfigurationParameterName(CleartkAnnotator.class, "dataWriterFactoryClassName");
 
   @ConfigurationParameter(mandatory = false, description = "provides the full name of the DataWriterFactory class to be used.")
   private String dataWriterFactoryClassName;
@@ -66,8 +66,10 @@ public abstract class CleartkAnnotator<OUTCOME_TYPE> extends JCasAnnotator_ImplB
 
     if (dataWriterFactoryClassName != null) {
       // create the factory and instantiate the data writer
-      DataWriterFactory<?> factory = InitializableFactory.create(context,
-              dataWriterFactoryClassName, DataWriterFactory.class);
+      DataWriterFactory<?> factory = InitializableFactory.create(
+          context,
+          dataWriterFactoryClassName,
+          DataWriterFactory.class);
       DataWriter<?> untypedDataWriter;
       try {
         untypedDataWriter = factory.createDataWriter();
@@ -81,8 +83,10 @@ public abstract class CleartkAnnotator<OUTCOME_TYPE> extends JCasAnnotator_ImplB
       this.dataWriter = ReflectionUtil.uncheckedCast(untypedDataWriter);
     } else {
       // create the factory and instantiate the classifier
-      ClassifierFactory<?> factory = InitializableFactory.create(context,
-              classifierFactoryClassName, ClassifierFactory.class);
+      ClassifierFactory<?> factory = InitializableFactory.create(
+          context,
+          classifierFactoryClassName,
+          ClassifierFactory.class);
       Classifier<?> untypedClassifier;
       try {
         untypedClassifier = factory.createClassifier();
@@ -93,8 +97,13 @@ public abstract class CleartkAnnotator<OUTCOME_TYPE> extends JCasAnnotator_ImplB
       }
 
       this.classifier = ReflectionUtil.uncheckedCast(untypedClassifier);
-      ReflectionUtil.checkTypeParameterIsAssignable(CleartkAnnotator.class, "OUTCOME_TYPE", this,
-              Classifier.class, "OUTCOME_TYPE", this.classifier);
+      ReflectionUtil.checkTypeParameterIsAssignable(
+          CleartkAnnotator.class,
+          "OUTCOME_TYPE",
+          this,
+          Classifier.class,
+          "OUTCOME_TYPE",
+          this.classifier);
       InitializableFactory.initialize(untypedClassifier, context);
 
     }

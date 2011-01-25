@@ -83,7 +83,7 @@ public class SubtokenizerTest {
     assertEquals(")", tokens.get(4).getTokenText());
 
     tokens = tokenizer
-            .getTokens("These findings should be useful for therapeutic strategies and the development of immunosuppressants targeting the CD28 costimulatory pathway. ");
+        .getTokens("These findings should be useful for therapeutic strategies and the development of immunosuppressants targeting the CD28 costimulatory pathway. ");
     assertEquals(20, tokens.size());
 
   }

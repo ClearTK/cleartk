@@ -76,11 +76,14 @@ public class PrecedingTokenTextBagExtractor implements SimpleFeatureExtractor {
 
   public List<Feature> extract(JCas jCas, Annotation focusAnnotation) throws CleartkException {
     List<Feature> features = new ArrayList<Feature>();
-    Token firstTokenBefore = AnnotationRetrieval.getAdjacentAnnotation(jCas, focusAnnotation,
-            Token.class, true);
+    Token firstTokenBefore = AnnotationRetrieval.getAdjacentAnnotation(
+        jCas,
+        focusAnnotation,
+        Token.class,
+        true);
     if (firstTokenBefore != null) {
       FSIterator<Annotation> iterator = jCas.getAnnotationIndex(
-              UIMAUtil.getCasType(jCas, Token.class)).iterator();
+          UIMAUtil.getCasType(jCas, Token.class)).iterator();
       iterator.moveTo(firstTokenBefore);
       for (int i = 0; i < this.nTokens && iterator.isValid(); ++i) {
         Token token = (Token) iterator.get();

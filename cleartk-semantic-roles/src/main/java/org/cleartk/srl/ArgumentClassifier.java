@@ -84,49 +84,63 @@ import org.uimafit.factory.AnalysisEngineFactory;
 public class ArgumentClassifier extends CleartkAnnotator<String> {
 
   public static AnalysisEngineDescription getWriterDescription(
-          Class<? extends DataWriterFactory<String>> dataWriterFactoryClass, File outputDirectory)
-          throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(ArgumentClassifier.class,
-            SrlComponents.TYPE_SYSTEM_DESCRIPTION,
-            CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-            dataWriterFactoryClass.getName(), JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
-            outputDirectory.toString());
+      Class<? extends DataWriterFactory<String>> dataWriterFactoryClass,
+      File outputDirectory) throws ResourceInitializationException {
+    return AnalysisEngineFactory.createPrimitiveDescription(
+        ArgumentClassifier.class,
+        SrlComponents.TYPE_SYSTEM_DESCRIPTION,
+        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        dataWriterFactoryClass.getName(),
+        JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        outputDirectory.toString());
   }
 
   public static AnalysisEngineDescription getClassifierDescription(File classifierJar)
-          throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(ArgumentClassifier.class,
-            SrlComponents.TYPE_SYSTEM_DESCRIPTION, JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
-            classifierJar.toString());
+      throws ResourceInitializationException {
+    return AnalysisEngineFactory.createPrimitiveDescription(
+        ArgumentClassifier.class,
+        SrlComponents.TYPE_SYSTEM_DESCRIPTION,
+        JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
+        classifierJar.toString());
   }
 
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
 
-    SimpleFeatureExtractor defaultTokenExtractorSet = new MatchingAnnotationExtractor(Token.class,
-            new SpannedTextExtractor(), new StemExtractor(), new POSExtractor());
+    SimpleFeatureExtractor defaultTokenExtractorSet = new MatchingAnnotationExtractor(
+        Token.class,
+        new SpannedTextExtractor(),
+        new StemExtractor(),
+        new POSExtractor());
 
     SimpleFeatureExtractor defaultConstituentExtractorSet = new CombinedExtractor(
-            new NodeTypeExtractor(),
-            // new TypePathExtractor(TreebankNode.class, "nodeTags"),
-            new HeadWordExtractor(defaultTokenExtractorSet), new FirstInstanceExtractor(
-                    Token.class, defaultTokenExtractorSet), new LastInstanceExtractor(Token.class,
-                    defaultTokenExtractorSet));
+        new NodeTypeExtractor(),
+        // new TypePathExtractor(TreebankNode.class, "nodeTags"),
+        new HeadWordExtractor(defaultTokenExtractorSet),
+        new FirstInstanceExtractor(Token.class, defaultTokenExtractorSet),
+        new LastInstanceExtractor(Token.class, defaultTokenExtractorSet));
 
-    this.predicateExtractor = new NamingExtractor("Predicate", defaultTokenExtractorSet,
-            new MatchingAnnotationExtractor(TreebankNode.class, new SubCategorizationExtractor()));
+    this.predicateExtractor = new NamingExtractor(
+        "Predicate",
+        defaultTokenExtractorSet,
+        new MatchingAnnotationExtractor(TreebankNode.class, new SubCategorizationExtractor()));
 
     this.constituentExtractor = new NamingExtractor("Constituent", new MatchingAnnotationExtractor(
-            TreebankNode.class, defaultConstituentExtractorSet, new ParentExtractor(
-                    defaultConstituentExtractorSet), new SiblingExtractor(-1,
-                    defaultConstituentExtractorSet), new SiblingExtractor(1,
-                    defaultConstituentExtractorSet), new NamedEntityExtractor()));
+        TreebankNode.class,
+        defaultConstituentExtractorSet,
+        new ParentExtractor(defaultConstituentExtractorSet),
+        new SiblingExtractor(-1, defaultConstituentExtractorSet),
+        new SiblingExtractor(1, defaultConstituentExtractorSet),
+        new NamedEntityExtractor()));
 
     this.predicateAndConstituentExtractor = new NamingAnnotationPairFeatureExtractor(
-            "PredicateAndConstituent", new MatchingAnnotationPairExtractor(TreebankNode.class,
-                    TreebankNode.class, new SyntacticPathExtractor(new NodeTypeExtractor()),
-                    new RelativePositionExtractor()));
+        "PredicateAndConstituent",
+        new MatchingAnnotationPairExtractor(
+            TreebankNode.class,
+            TreebankNode.class,
+            new SyntacticPathExtractor(new NodeTypeExtractor()),
+            new RelativePositionExtractor()));
 
   }
 
@@ -147,8 +161,10 @@ public class ArgumentClassifier extends CleartkAnnotator<String> {
       }
 
       logger.info(String.format(
-              "processed %d sentences, %d predicates, ~%d arguments per predicate", nSentences,
-              nPredicates, nPredicates == 0 ? 0 : nArguments / nPredicates));
+          "processed %d sentences, %d predicates, ~%d arguments per predicate",
+          nSentences,
+          nPredicates,
+          nPredicates == 0 ? 0 : nArguments / nPredicates));
     } catch (CleartkException e) {
       throw new AnalysisEngineProcessException(e);
     }
@@ -158,8 +174,9 @@ public class ArgumentClassifier extends CleartkAnnotator<String> {
     nSentences += 1;
 
     if (sentence.getCoveredText().length() > 40)
-      logger.fine(String.format("process sentence \"%s ...\"",
-              sentence.getCoveredText().substring(0, 39)));
+      logger.fine(String.format(
+          "process sentence \"%s ...\"",
+          sentence.getCoveredText().substring(0, 39)));
     else
       logger.fine(String.format("process sentence \"%s\"", sentence.getCoveredText()));
 
@@ -167,8 +184,9 @@ public class ArgumentClassifier extends CleartkAnnotator<String> {
      * Pre-compute sentence level data: sentenceConstituents: list of all constituents in sentence
      */
     List<TreebankNode> constituents = new ArrayList<TreebankNode>(200);
-    collectConstituents(AnnotationRetrieval.getContainingAnnotation(jCas, sentence,
-            TopTreebankNode.class, false), constituents);
+    collectConstituents(
+        AnnotationRetrieval.getContainingAnnotation(jCas, sentence, TopTreebankNode.class, false),
+        constituents);
 
     /*
      * Compute constituent features for all constituents in sentence
@@ -183,14 +201,16 @@ public class ArgumentClassifier extends CleartkAnnotator<String> {
      * Iterate over predicates in sentence
      */
     List<Predicate> predicates = AnnotationRetrieval
-            .getAnnotations(jCas, sentence, Predicate.class);
+        .getAnnotations(jCas, sentence, Predicate.class);
     for (Predicate predicate : predicates) {
       processPredicate(jCas, predicate, constituentFeatures);
     }
   }
 
-  public void processPredicate(JCas jCas, Predicate predicate,
-          Map<TreebankNode, List<Feature>> sentenceConstituentFeatures) throws CleartkException {
+  public void processPredicate(
+      JCas jCas,
+      Predicate predicate,
+      Map<TreebankNode, List<Feature>> sentenceConstituentFeatures) throws CleartkException {
     nPredicates += 1;
 
     /*
@@ -199,8 +219,9 @@ public class ArgumentClassifier extends CleartkAnnotator<String> {
     List<Feature> predicateFeatures = new ArrayList<Feature>(12);
     predicateFeatures.addAll(predicateExtractor.extract(jCas, predicate));
 
-    List<SemanticArgument> arguments = UIMAUtil.toList(predicate.getArguments(),
-            SemanticArgument.class);
+    List<SemanticArgument> arguments = UIMAUtil.toList(
+        predicate.getArguments(),
+        SemanticArgument.class);
 
     /*
      * Iterate over arguments
@@ -208,8 +229,8 @@ public class ArgumentClassifier extends CleartkAnnotator<String> {
     for (SemanticArgument arg : arguments) {
       if (!(arg.getAnnotation() instanceof TreebankNode)) {
         logger.warning(String.format(
-                "skipping argument of \"%s\", because it doesn't align with the parse tree",
-                predicate.getCoveredText()));
+            "skipping argument of \"%s\", because it doesn't align with the parse tree",
+            predicate.getCoveredText()));
         continue;
       }
 

@@ -52,16 +52,23 @@ public class MaltParserTest extends CleartkTestBase {
 
   @Override
   public String[] getTypeSystemDescriptorNames() {
-    return new String[] { "org.cleartk.token.TypeSystem",
+    return new String[] {
+        "org.cleartk.token.TypeSystem",
         "org.cleartk.syntax.dependency.TypeSystem" };
   }
 
   @Test
   public void test() throws UIMAException {
-    TokenBuilder<Token, Sentence> tokenBuilder = new TokenBuilder<Token, Sentence>(Token.class,
-            Sentence.class, "pos", "stem");
-    tokenBuilder.buildTokens(this.jCas, "The dog chased the fox down the road.",
-            "The dog chased the fox down the road .", "DT NN VBD DT NN IN DT NN .");
+    TokenBuilder<Token, Sentence> tokenBuilder = new TokenBuilder<Token, Sentence>(
+        Token.class,
+        Sentence.class,
+        "pos",
+        "stem");
+    tokenBuilder.buildTokens(
+        this.jCas,
+        "The dog chased the fox down the road.",
+        "The dog chased the fox down the road .",
+        "DT NN VBD DT NN IN DT NN .");
 
     AnalysisEngineDescription desc = MaltParser.getDescription();
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(desc);

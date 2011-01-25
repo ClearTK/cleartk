@@ -85,13 +85,15 @@ public class PosTaggerAnnotator extends JCasAnnotator_ImplBase {
   // }
 
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(PosTaggerAnnotator.class,
-            SyntaxComponents.TYPE_SYSTEM_DESCRIPTION, PARAM_POSTAG_MODEL_FILE,
-            ParamUtil.getParameterValue(PARAM_POSTAG_MODEL_FILE, "/models/en-pos-maxent.bin"));
+    return AnalysisEngineFactory.createPrimitiveDescription(
+        PosTaggerAnnotator.class,
+        SyntaxComponents.TYPE_SYSTEM_DESCRIPTION,
+        PARAM_POSTAG_MODEL_FILE,
+        ParamUtil.getParameterValue(PARAM_POSTAG_MODEL_FILE, "/models/en-pos-maxent.bin"));
   }
 
   public static final String PARAM_POSTAG_MODEL_FILE = ConfigurationParameterFactory
-          .createConfigurationParameterName(PosTaggerAnnotator.class, "postagModelFile");
+      .createConfigurationParameterName(PosTaggerAnnotator.class, "postagModelFile");
 
   @ConfigurationParameter(mandatory = true, description = "provides the path of the OpenNLP part-of-speech tagger model file, e.g.  resources/models/OpenNLP.POSTags.English.bin.gz.  See javadoc for opennlp.maxent.io.SuffixSensitiveGISModelReader.")
   private String postagModelFile;
@@ -102,8 +104,9 @@ public class PosTaggerAnnotator extends JCasAnnotator_ImplBase {
   public void initialize(UimaContext uimaContext) throws ResourceInitializationException {
     super.initialize(uimaContext);
     try {
-      InputStream modelInputStream = IOUtil.getInputStream(PosTaggerAnnotator.class,
-              postagModelFile);
+      InputStream modelInputStream = IOUtil.getInputStream(
+          PosTaggerAnnotator.class,
+          postagModelFile);
       POSModel posModel = new POSModel(modelInputStream);
       posTagger = new POSTaggerME(posModel);
     } catch (IOException ioe) {

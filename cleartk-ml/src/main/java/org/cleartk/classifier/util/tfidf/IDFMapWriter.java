@@ -80,8 +80,10 @@ public class IDFMapWriter<OUTCOME_TYPE> implements DataWriter<OUTCOME_TYPE> {
 
       IDFMap idfMap;
       if (idfMapFile.exists()) {
-        logger.info(String.format("load existing idf map \"%s\" from %s", identifier,
-                idfMapFile.toString()));
+        logger.info(String.format(
+            "load existing idf map \"%s\" from %s",
+            identifier,
+            idfMapFile.toString()));
         idfMap = IDFMap.read(idfMapFile);
       } else {
         logger.info(String.format("initialize new idf map \"%s\"", identifier));
@@ -132,8 +134,9 @@ public class IDFMapWriter<OUTCOME_TYPE> implements DataWriter<OUTCOME_TYPE> {
       File idfMapFile = getIDFMapFile(identifier);
       try {
         logger.info(String.format(
-                "write idf map \"%s\" to %s.  size=" + idfMap.getTotalDocumentCount(), identifier,
-                idfMapFile.toString()));
+            "write idf map \"%s\" to %s.  size=" + idfMap.getTotalDocumentCount(),
+            identifier,
+            idfMapFile.toString()));
         idfMap.write(idfMapFile);
       } catch (IOException e1) {
         exceptions.add(e1);
@@ -145,8 +148,10 @@ public class IDFMapWriter<OUTCOME_TYPE> implements DataWriter<OUTCOME_TYPE> {
       if (exceptions.size() == 1) {
         throw new CleartkException(exceptions.get(0));
       } else {
-        throw new CleartkException(String.format("%s and %d others", exceptions.get(0).toString(),
-                exceptions.size() - 1));
+        throw new CleartkException(String.format(
+            "%s and %d others",
+            exceptions.get(0).toString(),
+            exceptions.size() - 1));
       }
     }
   }

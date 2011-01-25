@@ -74,7 +74,7 @@ public class SRLWriter extends JCasAnnotator_ImplBase {
   private File outputFile;
 
   public static final String PARAM_OUTPUT_FILE = ConfigurationParameterFactory
-          .createConfigurationParameterName(SRLWriter.class, "outputFile");
+      .createConfigurationParameterName(SRLWriter.class, "outputFile");
 
   private PrintWriter output;
 
@@ -102,12 +102,14 @@ public class SRLWriter extends JCasAnnotator_ImplBase {
 
       List<Token> sentenceTokens = AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class);
 
-      List<Predicate> predicates = AnnotationRetrieval.getAnnotations(jCas, sentence,
-              Predicate.class);
+      List<Predicate> predicates = AnnotationRetrieval.getAnnotations(
+          jCas,
+          sentence,
+          Predicate.class);
       for (Predicate predicate : predicates) {
         ListSpecification predicateTokenList = tokenList(
-                AnnotationRetrieval.getAnnotations(jCas, predicate.getAnnotation(), Token.class),
-                sentenceTokens);
+            AnnotationRetrieval.getAnnotations(jCas, predicate.getAnnotation(), Token.class),
+            sentenceTokens);
 
         StringBuffer line = new StringBuffer();
         line.append(ViewURIUtil.getURI(jCas));
@@ -116,8 +118,9 @@ public class SRLWriter extends JCasAnnotator_ImplBase {
         line.append(" ");
         line.append(predicateTokenList);
 
-        List<Argument> args = predicate.getArguments() == null ? new ArrayList<Argument>()
-                : UIMAUtil.toList(predicate.getArguments(), Argument.class);
+        List<Argument> args = predicate.getArguments() == null
+            ? new ArrayList<Argument>()
+            : UIMAUtil.toList(predicate.getArguments(), Argument.class);
         for (Argument arg : args) {
           SemanticArgument sArg;
           try {
@@ -134,17 +137,22 @@ public class SRLWriter extends JCasAnnotator_ImplBase {
             line.append("-" + sArg.getFeature());
           line.append(":");
           if (sArg.getAnnotation() != null) {
-            List<Token> argTokens = AnnotationRetrieval.getAnnotations(jCas, sArg.getAnnotation(),
-                    Token.class);
+            List<Token> argTokens = AnnotationRetrieval.getAnnotations(
+                jCas,
+                sArg.getAnnotation(),
+                Token.class);
             if (argTokens.size() > 0)
               line.append(tokenList(argTokens, sentenceTokens));
           } else {
-            List<Annotation> corefAnnotations = UIMAUtil.toList(sArg.getCoreferenceAnnotations(),
-                    Annotation.class);
+            List<Annotation> corefAnnotations = UIMAUtil.toList(
+                sArg.getCoreferenceAnnotations(),
+                Annotation.class);
             boolean first = true;
             for (Annotation corefAnnotation : corefAnnotations) {
-              List<Token> argTokens = AnnotationRetrieval.getAnnotations(jCas, corefAnnotation,
-                      Token.class);
+              List<Token> argTokens = AnnotationRetrieval.getAnnotations(
+                  jCas,
+                  corefAnnotation,
+                  Token.class);
               if (argTokens.size() > 0) {
                 if (!first)
                   line.append("*");

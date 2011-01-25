@@ -40,32 +40,38 @@ import org.cleartk.util.AnnotationRetrieval;
  */
 public class FirstInstanceExtractor implements SimpleFeatureExtractor {
 
-  public FirstInstanceExtractor(Class<? extends Annotation> targetAnnotationClass,
-          SimpleFeatureExtractor subExtractor) {
+  public FirstInstanceExtractor(
+      Class<? extends Annotation> targetAnnotationClass,
+      SimpleFeatureExtractor subExtractor) {
     this.targetAnnotationClass = targetAnnotationClass;
     this.subExtractor = subExtractor;
   }
 
-  public FirstInstanceExtractor(Class<? extends Annotation> targetAnnotationClass,
-          SimpleFeatureExtractor... subExtractors) {
+  public FirstInstanceExtractor(
+      Class<? extends Annotation> targetAnnotationClass,
+      SimpleFeatureExtractor... subExtractors) {
     this(targetAnnotationClass, new CombinedExtractor(subExtractors));
   }
 
   public List<Feature> extract(JCas view, Annotation windowAnnotation) throws CleartkException {
 
     Annotation firstAnnotation;
-    firstAnnotation = AnnotationRetrieval.getFirstAnnotation(view, windowAnnotation,
-            targetAnnotationClass);
+    firstAnnotation = AnnotationRetrieval.getFirstAnnotation(
+        view,
+        windowAnnotation,
+        targetAnnotationClass);
 
     if (firstAnnotation == null) {
-      throw new CleartkException(String.format("no %s annotation found within %s window",
-              targetAnnotationClass.getSimpleName(), windowAnnotation.getClass().getSimpleName()));
+      throw new CleartkException(String.format(
+          "no %s annotation found within %s window",
+          targetAnnotationClass.getSimpleName(),
+          windowAnnotation.getClass().getSimpleName()));
     }
 
     List<Feature> features = subExtractor.extract(view, firstAnnotation);
     for (Feature f : features) {
       String name = Feature
-              .createName("First" + targetAnnotationClass.getSimpleName(), f.getName());
+          .createName("First" + targetAnnotationClass.getSimpleName(), f.getName());
       f.setName(name);
     }
 

@@ -52,18 +52,27 @@ public class ParseProbankExample {
     String outputDirectory = args[3];
 
     CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-            PropbankGoldReader.class,
-            TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
-            PropbankGoldReader.PARAM_PROPBANK_FILE_NAME, propbankFileName,
-            PropbankGoldReader.PARAM_PENNTREEBANK_DIRECTORY_NAME, penntreebankDirectoryName,
-            PropbankGoldReader.PARAM_WSJ_SECTIONS, wsjSections);
+        PropbankGoldReader.class,
+        TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
+        PropbankGoldReader.PARAM_PROPBANK_FILE_NAME,
+        propbankFileName,
+        PropbankGoldReader.PARAM_PENNTREEBANK_DIRECTORY_NAME,
+        penntreebankDirectoryName,
+        PropbankGoldReader.PARAM_WSJ_SECTIONS,
+        wsjSections);
     AnalysisEngine treebankEngine = AnalysisEngineFactory.createPrimitive(
-            TreebankGoldAnnotator.class, SrlComponents.TYPE_SYSTEM_DESCRIPTION);
+        TreebankGoldAnnotator.class,
+        SrlComponents.TYPE_SYSTEM_DESCRIPTION);
     AnalysisEngine propbankEngine = AnalysisEngineFactory.createPrimitive(
-            PropbankGoldAnnotator.class, SrlComponents.TYPE_SYSTEM_DESCRIPTION);
-    AnalysisEngine xWriter = AnalysisEngineFactory.createPrimitive(XWriter.class,
-            SrlComponents.TYPE_SYSTEM_DESCRIPTION, XWriter.PARAM_OUTPUT_DIRECTORY_NAME,
-            outputDirectory, XWriter.PARAM_FILE_NAMER_CLASS_NAME, ViewURIFileNamer.class.getName());
+        PropbankGoldAnnotator.class,
+        SrlComponents.TYPE_SYSTEM_DESCRIPTION);
+    AnalysisEngine xWriter = AnalysisEngineFactory.createPrimitive(
+        XWriter.class,
+        SrlComponents.TYPE_SYSTEM_DESCRIPTION,
+        XWriter.PARAM_OUTPUT_DIRECTORY_NAME,
+        outputDirectory,
+        XWriter.PARAM_FILE_NAMER_CLASS_NAME,
+        ViewURIFileNamer.class.getName());
 
     SimplePipeline.runPipeline(reader, treebankEngine, propbankEngine, xWriter);
   }

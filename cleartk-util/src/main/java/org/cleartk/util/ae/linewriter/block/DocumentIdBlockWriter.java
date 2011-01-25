@@ -47,7 +47,7 @@ public class DocumentIdBlockWriter implements BlockWriter<Annotation> {
   private static String newline = System.getProperty("line.separator");
 
   public String writeBlock(JCas jCas, Annotation blockAnnotation)
-          throws AnalysisEngineProcessException {
+      throws AnalysisEngineProcessException {
     return ViewURIUtil.getURI(jCas) + newline;
   }
 

@@ -72,9 +72,10 @@ public class ChunkTokenizerFeatureExtractor implements ChunkerFeatureExtractor {
   public void initialize(UimaContext context) throws ResourceInitializationException {
 
     String labeledAnnotationClassName = (String) context
-            .getConfigParameterValue(Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME);
-    labeledAnnotationClass = InitializableFactory.getClass(labeledAnnotationClassName,
-            Annotation.class);
+        .getConfigParameterValue(Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME);
+    labeledAnnotationClass = InitializableFactory.getClass(
+        labeledAnnotationClassName,
+        Annotation.class);
 
     this.simpleFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
     this.windowExtractors = new ArrayList<WindowExtractor>();
@@ -85,35 +86,58 @@ public class ChunkTokenizerFeatureExtractor implements ChunkerFeatureExtractor {
     int fromLeft = CharacterNGramProliferator.LEFT_TO_RIGHT;
     int fromRight = CharacterNGramProliferator.RIGHT_TO_LEFT;
 
-    this.simpleFeatureExtractors.add(new ProliferatingExtractor(wordExtractor,
-            new CapitalTypeProliferator(), new ContainsHyphenProliferator(),
-            new LowerCaseProliferator(), new NumericTypeProliferator(),
-            new CharacterNGramProliferator(fromLeft, 0, 1, 1, true),
-            new CharacterNGramProliferator(fromLeft, 0, 2, 2, true),
-            new CharacterNGramProliferator(fromLeft, 0, 3, 3, true),
-            new CharacterNGramProliferator(fromRight, 0, 1, 1, true),
-            new CharacterNGramProliferator(fromRight, 0, 2, 2, true),
-            new CharacterNGramProliferator(fromRight, 0, 3, 3, true)));
+    this.simpleFeatureExtractors.add(new ProliferatingExtractor(
+        wordExtractor,
+        new CapitalTypeProliferator(),
+        new ContainsHyphenProliferator(),
+        new LowerCaseProliferator(),
+        new NumericTypeProliferator(),
+        new CharacterNGramProliferator(fromLeft, 0, 1, 1, true),
+        new CharacterNGramProliferator(fromLeft, 0, 2, 2, true),
+        new CharacterNGramProliferator(fromLeft, 0, 3, 3, true),
+        new CharacterNGramProliferator(fromRight, 0, 1, 1, true),
+        new CharacterNGramProliferator(fromRight, 0, 2, 2, true),
+        new CharacterNGramProliferator(fromRight, 0, 3, 3, true)));
 
     this.simpleFeatureExtractors.add(new WhiteSpaceExtractor());
 
     // add 2 stems to the left and right
-    this.windowExtractors.add(new WindowExtractor(labeledAnnotationClass, wordExtractor,
-            WindowFeature.ORIENTATION_RIGHT, 0, 2));
-    this.windowExtractors.add(new WindowExtractor(labeledAnnotationClass, wordExtractor,
-            WindowFeature.ORIENTATION_LEFT, 0, 2));
+    this.windowExtractors.add(new WindowExtractor(
+        labeledAnnotationClass,
+        wordExtractor,
+        WindowFeature.ORIENTATION_RIGHT,
+        0,
+        2));
+    this.windowExtractors.add(new WindowExtractor(
+        labeledAnnotationClass,
+        wordExtractor,
+        WindowFeature.ORIENTATION_LEFT,
+        0,
+        2));
 
-    this.windowNGramExtractors.add(new WindowNGramExtractor(labeledAnnotationClass, wordExtractor,
-            WindowNGramFeature.ORIENTATION_LEFT, WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT, "_",
-            0, 2));
+    this.windowNGramExtractors.add(new WindowNGramExtractor(
+        labeledAnnotationClass,
+        wordExtractor,
+        WindowNGramFeature.ORIENTATION_LEFT,
+        WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT,
+        "_",
+        0,
+        2));
 
-    this.windowNGramExtractors.add(new WindowNGramExtractor(labeledAnnotationClass, wordExtractor,
-            WindowNGramFeature.ORIENTATION_RIGHT, WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT, "_",
-            0, 2));
+    this.windowNGramExtractors.add(new WindowNGramExtractor(
+        labeledAnnotationClass,
+        wordExtractor,
+        WindowNGramFeature.ORIENTATION_RIGHT,
+        WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT,
+        "_",
+        0,
+        2));
   }
 
-  public Instance<String> extractFeatures(JCas jCas, Annotation labeledAnnotation,
-          Annotation sequence) throws CleartkException {
+  public Instance<String> extractFeatures(
+      JCas jCas,
+      Annotation labeledAnnotation,
+      Annotation sequence) throws CleartkException {
 
     Instance<String> instance = new Instance<String>();
 

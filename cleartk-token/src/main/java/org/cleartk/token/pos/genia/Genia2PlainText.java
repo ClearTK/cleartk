@@ -51,8 +51,10 @@ public class Genia2PlainText {
   public static void main(String[] args) throws UIMAException, IOException {
     CollectionReader geniaReader = GeniaPosGoldReader.getDescription(args[0]);
     AnalysisEngineDescription plainTextWriter = AnalysisEngineFactory.createPrimitiveDescription(
-            PlainTextWriter.class, TokenComponents.TYPE_SYSTEM_DESCRIPTION,
-            PlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME, args[1]);
+        PlainTextWriter.class,
+        TokenComponents.TYPE_SYSTEM_DESCRIPTION,
+        PlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME,
+        args[1]);
     SimplePipeline.runPipeline(geniaReader, plainTextWriter);
 
   }

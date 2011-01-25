@@ -76,7 +76,7 @@ public class Step3TrainModel {
     System.arraycopy(trainingArgs.toArray(), 0, modelArgs, 1, trainingArgs.size());
 
     System.out.println("Training the model with the following arguments: "
-            + Arrays.asList(modelArgs));
+        + Arrays.asList(modelArgs));
     Train.main(modelArgs);
 
   }

@@ -58,18 +58,25 @@ public class ExamplePOSAnnotatorTest extends ExamplesTestBase {
   @Test
   public void testSimpleSentence() throws Exception {
 
-    AnalysisEngineDescription desc = CleartkAnnotatorDescriptionFactory.createCleartkSequentialAnnotator(
-            ExamplePOSAnnotator.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-            InstanceCollector.StringFactory.class, ".");
+    AnalysisEngineDescription desc = CleartkAnnotatorDescriptionFactory
+        .createCleartkSequentialAnnotator(
+            ExamplePOSAnnotator.class,
+            ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+            InstanceCollector.StringFactory.class,
+            ".");
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(desc);
 
     // create some tokens, stems and part of speech tags
-    tokenBuilder.buildTokens(jCas, "The Absurdis retreated in 2003.",
-            "The Absurdis retreated in 2003 .", "DT NNP VBD IN CD .",
-            "The Absurdi retreat in 2003 .");
+    tokenBuilder.buildTokens(
+        jCas,
+        "The Absurdis retreated in 2003.",
+        "The Absurdis retreated in 2003 .",
+        "DT NNP VBD IN CD .",
+        "The Absurdi retreat in 2003 .");
 
-    List<Instance<String>> instances = InstanceCollector.StringFactory.collectInstances(engine,
-            jCas);
+    List<Instance<String>> instances = InstanceCollector.StringFactory.collectInstances(
+        engine,
+        jCas);
 
     List<String> featureValues;
 
@@ -81,8 +88,10 @@ public class ExamplePOSAnnotatorTest extends ExamplesTestBase {
         "he", // last 2 chars
         "The", // last 3 chars
         "The", // stem (thrown away if null)
-        null, null, // left 2 stems
-        "Absurdi", "retreat", // right 2 stems
+        null,
+        null, // left 2 stems
+        "Absurdi",
+        "retreat", // right 2 stems
     });
     Assert.assertEquals(featureValues, this.getFeatureValues(instances.get(0)));
     Assert.assertEquals("DT", instances.get(0).getOutcome());
@@ -95,8 +104,10 @@ public class ExamplePOSAnnotatorTest extends ExamplesTestBase {
         "is", // last 2 chars
         "dis", // last 3 chars
         "Absurdi", // stem (thrown away if null)
-        "The", null, // left 2 stems
-        "retreat", "in", // right 2 stems
+        "The",
+        null, // left 2 stems
+        "retreat",
+        "in", // right 2 stems
     });
     Assert.assertEquals(featureValues, this.getFeatureValues(instances.get(1)));
     Assert.assertEquals("NNP", instances.get(1).getOutcome());
@@ -109,8 +120,10 @@ public class ExamplePOSAnnotatorTest extends ExamplesTestBase {
         "ed", // last 2 chars
         "ted", // last 3 chars
         "retreat", // stem (thrown away if null)
-        "Absurdi", "The", // left 2 stems
-        "in", "2003", // right 2 stems
+        "Absurdi",
+        "The", // left 2 stems
+        "in",
+        "2003", // right 2 stems
     });
     Assert.assertEquals(featureValues, this.getFeatureValues(instances.get(2)));
     Assert.assertEquals("VBD", instances.get(2).getOutcome());
@@ -123,8 +136,10 @@ public class ExamplePOSAnnotatorTest extends ExamplesTestBase {
         "in", // last 2 chars
         // last 3 chars
         "in", // stem (thrown away if null)
-        "retreat", "Absurdi", // left 2 stems
-        "2003", ".", // right 2 stems
+        "retreat",
+        "Absurdi", // left 2 stems
+        "2003",
+        ".", // right 2 stems
     });
     Assert.assertEquals(featureValues, this.getFeatureValues(instances.get(3)));
     Assert.assertEquals("IN", instances.get(3).getOutcome());
@@ -137,8 +152,10 @@ public class ExamplePOSAnnotatorTest extends ExamplesTestBase {
         "03", // last 2 chars
         "003", // last 3 chars
         "2003", // stem (thrown away if null)
-        "in", "retreat", // left 2 stems
-        ".", null, // right 2 stems
+        "in",
+        "retreat", // left 2 stems
+        ".",
+        null, // right 2 stems
     });
     Assert.assertEquals(featureValues, this.getFeatureValues(instances.get(4)));
     Assert.assertEquals("CD", instances.get(4).getOutcome());
@@ -151,8 +168,10 @@ public class ExamplePOSAnnotatorTest extends ExamplesTestBase {
         // last 2 chars
         // last 3 chars
         ".", // stem (thrown away if null)
-        "2003", "in", // left 2 stems
-        null, null, // right 2 stems
+        "2003",
+        "in", // left 2 stems
+        null,
+        null, // right 2 stems
     });
     Assert.assertEquals(featureValues, this.getFeatureValues(instances.get(5)));
     Assert.assertEquals(".", instances.get(5).getOutcome());
@@ -161,11 +180,11 @@ public class ExamplePOSAnnotatorTest extends ExamplesTestBase {
   @Test
   public void testAnnotatorDescriptor() throws UIMAException, IOException {
     AnalysisEngineDescription posTaggerDescription = ExamplePOSAnnotator
-            .getClassifierDescription(ExamplePOSAnnotator.DEFAULT_MODEL);
+        .getClassifierDescription(ExamplePOSAnnotator.DEFAULT_MODEL);
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(posTaggerDescription);
 
     Object classifierJar = engine
-            .getConfigParameterValue(JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH);
+        .getConfigParameterValue(JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH);
     Assert.assertEquals(ExamplePOSAnnotator.DEFAULT_MODEL, classifierJar);
 
     engine.collectionProcessComplete();
@@ -174,15 +193,15 @@ public class ExamplePOSAnnotatorTest extends ExamplesTestBase {
   @Test
   public void testDataWriterDescriptor() throws UIMAException, IOException {
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(ExamplePOSAnnotator
-            .getWriterDescription(ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY));
+        .getWriterDescription(ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY));
 
     Object outputDir = engine
-            .getConfigParameterValue(ViterbiDataWriterFactory.PARAM_OUTPUT_DIRECTORY);
+        .getConfigParameterValue(ViterbiDataWriterFactory.PARAM_OUTPUT_DIRECTORY);
     Assert.assertEquals(ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY, outputDir);
 
     String expectedDataWriterFactory = (ViterbiDataWriterFactory.class.getName());
     Object dataWriter = engine
-            .getConfigParameterValue(CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME);
+        .getConfigParameterValue(CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME);
     Assert.assertEquals(expectedDataWriterFactory, dataWriter);
     engine.collectionProcessComplete();
   }

@@ -48,21 +48,29 @@ import org.uimafit.factory.TypeSystemDescriptionFactory;
 public class TokenComponents {
 
   public static TypeSystemDescription TYPE_SYSTEM_DESCRIPTION = TypeSystemDescriptionFactory
-          .createTypeSystemDescription("org.cleartk.token.TypeSystem");
+      .createTypeSystemDescription("org.cleartk.token.TypeSystem");
 
   public static AnalysisEngineDescription createPennTokenizer()
-          throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(TokenAnnotator.class,
-            TYPE_SYSTEM_DESCRIPTION, TokenAnnotator.PARAM_TOKEN_TYPE_NAME, Token.class.getName(),
-            TokenAnnotator.PARAM_TOKENIZER_NAME, PennTreebankTokenizer.class.getName(),
-            TokenAnnotator.PARAM_WINDOW_TYPE_NAME, Sentence.class.getName());
+      throws ResourceInitializationException {
+    return AnalysisEngineFactory.createPrimitiveDescription(
+        TokenAnnotator.class,
+        TYPE_SYSTEM_DESCRIPTION,
+        TokenAnnotator.PARAM_TOKEN_TYPE_NAME,
+        Token.class.getName(),
+        TokenAnnotator.PARAM_TOKENIZER_NAME,
+        PennTreebankTokenizer.class.getName(),
+        TokenAnnotator.PARAM_WINDOW_TYPE_NAME,
+        Sentence.class.getName());
   }
 
   public static AnalysisEngineDescription createSubtokenizer()
-          throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(TokenAnnotator.class,
-            TYPE_SYSTEM_DESCRIPTION, TokenAnnotator.PARAM_TOKEN_TYPE_NAME,
-            Subtoken.class.getName(), TokenAnnotator.PARAM_TOKENIZER_NAME,
-            Subtokenizer.class.getName());
+      throws ResourceInitializationException {
+    return AnalysisEngineFactory.createPrimitiveDescription(
+        TokenAnnotator.class,
+        TYPE_SYSTEM_DESCRIPTION,
+        TokenAnnotator.PARAM_TOKEN_TYPE_NAME,
+        Subtoken.class.getName(),
+        TokenAnnotator.PARAM_TOKENIZER_NAME,
+        Subtokenizer.class.getName());
   }
 }

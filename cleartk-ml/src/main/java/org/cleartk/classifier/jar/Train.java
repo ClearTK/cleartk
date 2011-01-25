@@ -35,8 +35,8 @@ public class Train {
   public static void main(String... args) throws Exception {
     String programName = Train.class.getName();
     String usage = String.format("usage: java %s DIR\n\n"
-            + "The directory DIR should contain the training-data.xxx file as\n"
-            + "created by a classifier DataWriter\n", programName);
+        + "The directory DIR should contain the training-data.xxx file as\n"
+        + "created by a classifier DataWriter\n", programName);
 
     // usage message for wrong number of arguments
     if (args.length < 1) {

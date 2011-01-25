@@ -67,7 +67,7 @@ public class GrmmClassifier extends JarSequentialClassifier<String[], String[], 
     ObjectInputStream objectStream = new ObjectInputStream(gzipInputStream);
     this.acrf = (ACRF) objectStream.readObject();
     ZipEntry outcomeExampleEntry = modelFile
-            .getEntry(GrmmClassifierBuilder.JAR_ENTRY_OUTCOME_EXAMPLE);
+        .getEntry(GrmmClassifierBuilder.JAR_ENTRY_OUTCOME_EXAMPLE);
     this.outcomeExample = outcomeExampleEntry.getComment();
   }
 
@@ -82,7 +82,7 @@ public class GrmmClassifier extends JarSequentialClassifier<String[], String[], 
    * @throws CleartkException
    */
   public List<String[]> classifySequence(final List<List<Feature>> features)
-          throws CleartkException {
+      throws CleartkException {
     // generate format that is appropriate for the acrf input pipe:
     String data = "";
     {

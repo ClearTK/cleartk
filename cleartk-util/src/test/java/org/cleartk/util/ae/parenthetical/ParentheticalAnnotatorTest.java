@@ -56,13 +56,28 @@ public class ParentheticalAnnotatorTest extends UtilTestBase {
     AnalysisEngineDescription aed = ParentheticalAnnotator.getDescription(typeSystemDescription);
     testParens("(hello!)", aed, "(hello!)");
     testParens("((a) and b)", aed, "((a) and b)", "(a)");
-    testParens("from the following options ((a) and (b) and (c)).", aed, "((a) and (b) and (c))",
-            "(a)", "(b)", "(c)");
     testParens(
-            "Brain weights of the two high strains, BXD5 (540 9 mg SEM) and BALB / cJ (527 13 mg), are significantly greater (P < .001)",
-            aed, "(540 9 mg SEM)", "(527 13 mg)", "(P < .001)");
-    testParens("(A (B C (D E)) F)(G H I)(J K (L M N) O)", aed, "(A (B C (D E)) F)", "(B C (D E))",
-            "(D E)", "(G H I)", "(J K (L M N) O)", "(L M N)");
+        "from the following options ((a) and (b) and (c)).",
+        aed,
+        "((a) and (b) and (c))",
+        "(a)",
+        "(b)",
+        "(c)");
+    testParens(
+        "Brain weights of the two high strains, BXD5 (540 9 mg SEM) and BALB / cJ (527 13 mg), are significantly greater (P < .001)",
+        aed,
+        "(540 9 mg SEM)",
+        "(527 13 mg)",
+        "(P < .001)");
+    testParens(
+        "(A (B C (D E)) F)(G H I)(J K (L M N) O)",
+        aed,
+        "(A (B C (D E)) F)",
+        "(B C (D E))",
+        "(D E)",
+        "(G H I)",
+        "(J K (L M N) O)",
+        "(L M N)");
     testParens("(ASDF (FDSA)", aed, "(FDSA)");
     testParens("ASDF FDSA)", aed);
   }
@@ -75,15 +90,17 @@ public class ParentheticalAnnotatorTest extends UtilTestBase {
    */
   @Test
   public void testNoSentence() throws Exception {
-    AnalysisEngineDescription aed = ParentheticalAnnotator.getDescription(typeSystemDescription,
-            Sentence.class);
+    AnalysisEngineDescription aed = ParentheticalAnnotator.getDescription(
+        typeSystemDescription,
+        Sentence.class);
     testParens("(hello!)", aed);
   }
 
   @Test
   public void testSentence() throws Exception {
-    AnalysisEngineDescription aed = ParentheticalAnnotator.getDescription(typeSystemDescription,
-            Sentence.class);
+    AnalysisEngineDescription aed = ParentheticalAnnotator.getDescription(
+        typeSystemDescription,
+        Sentence.class);
     tokenBuilder.buildTokens(jCas, "(hello!)");
     testParens(aed, "(hello!)");
 
@@ -101,19 +118,23 @@ public class ParentheticalAnnotatorTest extends UtilTestBase {
     // here's a more typical case of why we might not want parenthesis matching across sentences.
     // if you don't reset parenthesis matching at each sentence, then
     // "(because they were fond of both. 2)" would get annotated.
-    tokenBuilder.buildTokens(jCas,
-            "1) They lauged and cried (because they were fond of both. 2) Then did neither.",
-            "1) They lauged and cried (because they were fond of both.\n 2) Then did neither.");
+    tokenBuilder.buildTokens(
+        jCas,
+        "1) They lauged and cried (because they were fond of both. 2) Then did neither.",
+        "1) They lauged and cried (because they were fond of both.\n 2) Then did neither.");
     testParens(aed);
 
   }
 
   @Test
   public void testTypes() throws Exception {
-    AnalysisEngineDescription aed = ParentheticalAnnotator.getDescription(typeSystemDescription,
-            NamedEntityMention.class);
-    ConfigurationParameterFactory.addConfigurationParameter(aed,
-            ParentheticalAnnotator.PARAM_PARENTHETICAL_TYPE_NAME, Chunk.class.getName());
+    AnalysisEngineDescription aed = ParentheticalAnnotator.getDescription(
+        typeSystemDescription,
+        NamedEntityMention.class);
+    ConfigurationParameterFactory.addConfigurationParameter(
+        aed,
+        ParentheticalAnnotator.PARAM_PARENTHETICAL_TYPE_NAME,
+        Chunk.class.getName());
     AnalysisEngine ae = AnalysisEngineFactory.createPrimitive(aed);
 
     String text = "((a))(((abc)bc)def)";
@@ -133,16 +154,22 @@ public class ParentheticalAnnotatorTest extends UtilTestBase {
   @Test
   public void testBrackets() throws Exception {
     AnalysisEngineDescription aed = AnalysisEngineFactory.createPrimitiveDescription(
-            ParentheticalAnnotator.class, typeSystemDescription,
-            ParentheticalAnnotator.PARAM_LEFT_PARENTHESIS, "[",
-            ParentheticalAnnotator.PARAM_RIGHT_PARENTHESIS, "]");
+        ParentheticalAnnotator.class,
+        typeSystemDescription,
+        ParentheticalAnnotator.PARAM_LEFT_PARENTHESIS,
+        "[",
+        ParentheticalAnnotator.PARAM_RIGHT_PARENTHESIS,
+        "]");
     testParens("[[[a]b]ccc]", aed, "[[[a]b]ccc]", "[[a]b]", "[a]");
 
     AnalysisEngineDescription aed2 = ParentheticalAnnotator.getDescription(typeSystemDescription);
     AnalysisEngineDescription aed3 = AnalysisEngineFactory.createPrimitiveDescription(
-            ParentheticalAnnotator.class, typeSystemDescription,
-            ParentheticalAnnotator.PARAM_LEFT_PARENTHESIS, "{",
-            ParentheticalAnnotator.PARAM_RIGHT_PARENTHESIS, "}");
+        ParentheticalAnnotator.class,
+        typeSystemDescription,
+        ParentheticalAnnotator.PARAM_LEFT_PARENTHESIS,
+        "{",
+        ParentheticalAnnotator.PARAM_RIGHT_PARENTHESIS,
+        "}");
 
     jCas.reset();
     jCas.setDocumentText("testBrackets(){ //[some code here]}");
@@ -156,7 +183,7 @@ public class ParentheticalAnnotatorTest extends UtilTestBase {
   }
 
   private void testParens(String text, AnalysisEngineDescription aed, String... parenStrings)
-          throws Exception {
+      throws Exception {
     jCas.reset();
     jCas.setDocumentText(text);
     testParens(aed, parenStrings);

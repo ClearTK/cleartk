@@ -49,11 +49,10 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  */
 
 public class DefaultMultiClassLIBSVMDataWriterFactory extends
-        JarDataWriterFactory<FeatureVector, String, Integer> {
+    JarDataWriterFactory<FeatureVector, String, Integer> {
 
   public static final String PARAM_CUTOFF = ConfigurationParameterFactory
-          .createConfigurationParameterName(DefaultMultiClassLIBSVMDataWriterFactory.class,
-                  "cutoff");
+      .createConfigurationParameterName(DefaultMultiClassLIBSVMDataWriterFactory.class, "cutoff");
 
   @ConfigurationParameter(defaultValue = "5", description = "features that occur less than this number of times over the whole training set will not be encoded during testing")
   protected int cutoff = 5;

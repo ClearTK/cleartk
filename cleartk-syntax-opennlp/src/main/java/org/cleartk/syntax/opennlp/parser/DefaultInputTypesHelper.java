@@ -60,8 +60,10 @@ public class DefaultInputTypesHelper extends InputTypesHelper<Token, Sentence> {
 
   public List<Sentence> getSentences(JCas jCas) {
     ArrayList<Sentence> result = new ArrayList<Sentence>();
-    FSIterator<Annotation> sentences = jCas.getJFSIndexRepository()
-            .getAnnotationIndex(Sentence.type).iterator();
+    FSIterator<Annotation> sentences = jCas
+        .getJFSIndexRepository()
+        .getAnnotationIndex(Sentence.type)
+        .iterator();
 
     while (sentences.hasNext()) {
       result.add((Sentence) sentences.next());

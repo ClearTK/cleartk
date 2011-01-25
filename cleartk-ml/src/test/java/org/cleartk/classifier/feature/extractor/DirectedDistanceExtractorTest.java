@@ -46,9 +46,10 @@ public class DirectedDistanceExtractorTest extends DefaultTestBase {
 
   @Test
   public void test1() throws Exception {
-    tokenBuilder.buildTokens(jCas,
-            "A simple sentence to test the distance of tokens from each other.",
-            "A simple sentence to test the distance of tokens from each other .");
+    tokenBuilder.buildTokens(
+        jCas,
+        "A simple sentence to test the distance of tokens from each other.",
+        "A simple sentence to test the distance of tokens from each other .");
 
     DirectedDistanceExtractor extractor = new DirectedDistanceExtractor(null, Token.class);
 

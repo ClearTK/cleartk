@@ -64,8 +64,15 @@ public class WindowNGramFeature extends Feature {
 
   private List<Feature> windowedFeatures = null;
 
-  public WindowNGramFeature(String name, Object value, String orientation, String direction,
-          String separator, Integer size, Integer index, List<Feature> windowedFeatures) {
+  public WindowNGramFeature(
+      String name,
+      Object value,
+      String orientation,
+      String direction,
+      String separator,
+      Integer size,
+      Integer index,
+      List<Feature> windowedFeatures) {
     super(value);
     this.orientation = orientation;
     this.direction = direction;

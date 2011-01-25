@@ -59,8 +59,10 @@ public class ArrayFeatureVector extends FeatureVector {
 
   public void set(int index, double value) throws CleartkException {
     if (Double.isInfinite(value) || Double.isNaN(value))
-      throw new CleartkException(String.format("trying to set illegal value in %d:%.7f", index,
-              value));
+      throw new CleartkException(String.format(
+          "trying to set illegal value in %d:%.7f",
+          index,
+          value));
 
     for (int i = features.size(); i <= index; i++)
       features.add(0.0);

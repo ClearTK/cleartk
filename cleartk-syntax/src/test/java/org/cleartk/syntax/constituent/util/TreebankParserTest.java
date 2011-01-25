@@ -134,20 +134,20 @@ public class TreebankParserTest {
     List<TreebankNode> children = topNode.getChildren();
     testNode(children.get(0), "(", "-LRB-", "(-LRB- -LRB- )");
     testNode(
-            children.get(1),
-            "i.e., a residual of -116,000; n = 12",
-            "S",
-            "(S-ADV (ADVP (FW i.e. )) (, , ) (NP (NP (NP (DT a ) (NN residual )) (PP (IN of ) (-NONE- CD_) (HYPH - ) (NP (CD 116,000 )))) (: ; ) (S (NP-SBJ (NN n )) (VP (SYM = ) (NP (CD 12 ))))))");
+        children.get(1),
+        "i.e., a residual of -116,000; n = 12",
+        "S",
+        "(S-ADV (ADVP (FW i.e. )) (, , ) (NP (NP (NP (DT a ) (NN residual )) (PP (IN of ) (-NONE- CD_) (HYPH - ) (NP (CD 116,000 )))) (: ; ) (S (NP-SBJ (NN n )) (VP (SYM = ) (NP (CD 12 ))))))");
     testNode(children.get(2), ")", "-RRB-", "(-RRB- -RRB- )");
 
     children = children.get(1).getChildren();
     testNode(children.get(0), "i.e.", "ADVP", "(ADVP (FW i.e. ))");
     testNode(children.get(1), ",", ",", "(, , )");
     testNode(
-            children.get(2),
-            "a residual of -116,000; n = 12",
-            "NP",
-            "(NP (NP (NP (DT a ) (NN residual )) (PP (IN of ) (-NONE- CD_) (HYPH - ) (NP (CD 116,000 )))) (: ; ) (S (NP-SBJ (NN n )) (VP (SYM = ) (NP (CD 12 )))))");
+        children.get(2),
+        "a residual of -116,000; n = 12",
+        "NP",
+        "(NP (NP (NP (DT a ) (NN residual )) (PP (IN of ) (-NONE- CD_) (HYPH - ) (NP (CD 116,000 )))) (: ; ) (S (NP-SBJ (NN n )) (VP (SYM = ) (NP (CD 12 )))))");
 
     TreebankNode node1 = children.get(2);
 
@@ -155,8 +155,11 @@ public class TreebankParserTest {
     testNode(children.get(0), "i.e.", "FW", "(FW i.e. )");
 
     children = node1.getChildren();
-    testNode(children.get(0), "a residual of -116,000", "NP",
-            "(NP (NP (DT a ) (NN residual )) (PP (IN of ) (-NONE- CD_) (HYPH - ) (NP (CD 116,000 ))))");
+    testNode(
+        children.get(0),
+        "a residual of -116,000",
+        "NP",
+        "(NP (NP (DT a ) (NN residual )) (PP (IN of ) (-NONE- CD_) (HYPH - ) (NP (CD 116,000 ))))");
     testNode(children.get(1), ";", ":", "(: ; )");
     testNode(children.get(2), "n = 12", "S", "(S (NP-SBJ (NN n )) (VP (SYM = ) (NP (CD 12 ))))");
 
@@ -165,8 +168,11 @@ public class TreebankParserTest {
 
     children = node1.getChildren();
     testNode(children.get(0), "a residual", "NP", "(NP (DT a ) (NN residual ))");
-    testNode(children.get(1), "of -116,000", "PP",
-            "(PP (IN of ) (-NONE- CD_) (HYPH - ) (NP (CD 116,000 )))");
+    testNode(
+        children.get(1),
+        "of -116,000",
+        "PP",
+        "(PP (IN of ) (-NONE- CD_) (HYPH - ) (NP (CD 116,000 )))");
     children = children.get(0).getChildren();
     testNode(children.get(0), "a", "DT", "(DT a )");
     testNode(children.get(1), "residual", "NN", "(NN residual )");
@@ -191,8 +197,10 @@ public class TreebankParserTest {
   private void testNode(TreebankNode node, String text, String type, String expectedParse) {
     assertEquals(text, node.getText());
     assertEquals(type, node.getType());
-    String actualParse = node.getTopNode().getTreebankParse()
-            .substring(node.getParseBegin(), node.getParseEnd());
+    String actualParse = node
+        .getTopNode()
+        .getTreebankParse()
+        .substring(node.getParseBegin(), node.getParseEnd());
     assertEquals(expectedParse, actualParse);
   }
 
@@ -201,11 +209,12 @@ public class TreebankParserTest {
       String text1 = node.getText();
       String text2 = text.substring(node.getTextBegin(), node.getTextEnd());
       assertEquals(
-              docId + ": " + node.getTreebankParse() + node.getTextBegin() + ":"
-                      + node.getTextEnd(), text1, text2);
+          docId + ": " + node.getTreebankParse() + node.getTextBegin() + ":" + node.getTextEnd(),
+          text1,
+          text2);
     } catch (StringIndexOutOfBoundsException sioobe) {
       throw new RuntimeException("exception on node - " + node.getTopNode().getTreebankParse()
-              + node.getTextBegin() + ":" + node.getTextEnd(), sioobe);
+          + node.getTextBegin() + ":" + node.getTextEnd(), sioobe);
     }
   }
 
@@ -218,14 +227,18 @@ public class TreebankParserTest {
 
   @Test
   public void testCraftDocs() throws Exception {
-    testPairedFiles("src/test/resources/data/treebank/11597317.txt",
-            "src/test/resources/data/treebank/11597317.tree");
-    testPairedFiles("src/test/resources/data/treebank/12079497.txt",
-            "src/test/resources/data/treebank/12079497.tree");
-    testPairedFiles("src/test/resources/data/treebank/12546709.txt",
-            "src/test/resources/data/treebank/12546709.tree");
-    testPairedFiles("src/test/resources/data/treebank/12585968.txt",
-            "src/test/resources/data/treebank/12585968.tree");
+    testPairedFiles(
+        "src/test/resources/data/treebank/11597317.txt",
+        "src/test/resources/data/treebank/11597317.tree");
+    testPairedFiles(
+        "src/test/resources/data/treebank/12079497.txt",
+        "src/test/resources/data/treebank/12079497.tree");
+    testPairedFiles(
+        "src/test/resources/data/treebank/12546709.txt",
+        "src/test/resources/data/treebank/12546709.tree");
+    testPairedFiles(
+        "src/test/resources/data/treebank/12585968.txt",
+        "src/test/resources/data/treebank/12585968.tree");
   }
 
   private void testPairedFiles(String plainTextFile, String treebankFile) throws Exception {
@@ -251,28 +264,29 @@ public class TreebankParserTest {
     List<TopTreebankNode> nodes = parseFile("src/test/resources/data/treebank/11597317.tree");
     assertEquals("BRCA2 and homologous recombination", nodes.get(0).getText());
     assertEquals(
-            "In BRCA - defective cells, Rad51 fails to associate with sites of damage due to lack of an assembly factor.",
-            nodes.get(nodes.size() - 1).getText());
+        "In BRCA - defective cells, Rad51 fails to associate with sites of damage due to lack of an assembly factor.",
+        nodes.get(nodes.size() - 1).getText());
     nodes = parseFile("src/test/resources/data/treebank/12079497.tree");
     assertEquals(
-            "Embryonic stem cells and mice expressing different GFP variants for multiple non - invasive reporter usage within a single animal",
-            nodes.get(0).getText());
-    assertEquals("This work was supported by grants from the National Cancer Institute of Canada.",
-            nodes.get(nodes.size() - 1).getText());
+        "Embryonic stem cells and mice expressing different GFP variants for multiple non - invasive reporter usage within a single animal",
+        nodes.get(0).getText());
+    assertEquals(
+        "This work was supported by grants from the National Cancer Institute of Canada.",
+        nodes.get(nodes.size() - 1).getText());
     nodes = parseFile("src/test/resources/data/treebank/12546709.tree");
     assertEquals(
-            "Morphological characterization of the AlphaA - and AlphaB - crystallin double knockout mouse lens",
-            nodes.get(0).getText());
+        "Morphological characterization of the AlphaA - and AlphaB - crystallin double knockout mouse lens",
+        nodes.get(0).getText());
     assertEquals(
-            "This research was supported in part by a NIH Grant for Vision Research EY02932 awarded to LT.",
-            nodes.get(nodes.size() - 1).getText());
+        "This research was supported in part by a NIH Grant for Vision Research EY02932 awarded to LT.",
+        nodes.get(nodes.size() - 1).getText());
     nodes = parseFile("src/test/resources/data/treebank/12585968.tree");
     assertEquals(
-            "Brn3c null mutant mice show long - term, incomplete retention of some afferent inner ear innervation",
-            nodes.get(0).getText());
+        "Brn3c null mutant mice show long - term, incomplete retention of some afferent inner ear innervation",
+        nodes.get(0).getText());
     assertEquals(
-            "Supported by the National Eye Institute (EY12020, MX), the March of Dimes Birth Defects Foundation (MX), the Egyptian Government (AM), the Juselius Foundation (UP), the NIDCD (2 P01 DC00215, BF; DC04594, M.X.), the Taub foundation (BF) and NASA (01 - OBPR - 06; BF).",
-            nodes.get(nodes.size() - 1).getText());
+        "Supported by the National Eye Institute (EY12020, MX), the March of Dimes Birth Defects Foundation (MX), the Egyptian Government (AM), the Juselius Foundation (UP), the NIDCD (2 P01 DC00215, BF; DC04594, M.X.), the Taub foundation (BF) and NASA (01 - OBPR - 06; BF).",
+        nodes.get(nodes.size() - 1).getText());
 
   }
 
@@ -325,16 +339,16 @@ public class TreebankParserTest {
   @Test
   public void testSplitSentences() throws IOException {
     String[] sentences = TreebankFormatParser.splitSentences(FileUtils.file2String(new File(
-            "src/test/resources/data/treebank/11597317.tree")));
+        "src/test/resources/data/treebank/11597317.tree")));
     assertEquals(99, sentences.length);
     sentences = TreebankFormatParser.splitSentences(FileUtils.file2String(new File(
-            "src/test/resources/data/treebank/12079497.tree")));
+        "src/test/resources/data/treebank/12079497.tree")));
     assertEquals(149, sentences.length);
     sentences = TreebankFormatParser.splitSentences(FileUtils.file2String(new File(
-            "src/test/resources/data/treebank/12546709.tree")));
+        "src/test/resources/data/treebank/12546709.tree")));
     assertEquals(243, sentences.length);
     sentences = TreebankFormatParser.splitSentences(FileUtils.file2String(new File(
-            "src/test/resources/data/treebank/12585968.tree")));
+        "src/test/resources/data/treebank/12585968.tree")));
     assertEquals(283, sentences.length);
 
     sentences = TreebankFormatParser.splitSentences("()\n()");
@@ -414,14 +428,26 @@ public class TreebankParserTest {
     treebankParse = "( (X (NP (NN Abstract))) )";
     paragraphText = "Abstract";
     expectedText = "Abstract";
-    testSentenceParse(treebankParse, paragraphText, expectedText, "NN", "Abstract", "NN",
-            "Abstract");
+    testSentenceParse(
+        treebankParse,
+        paragraphText,
+        expectedText,
+        "NN",
+        "Abstract",
+        "NN",
+        "Abstract");
 
     treebankParse = "( (X (NP (NN Background))) )";
     paragraphText = "Background";
     expectedText = "Background";
-    testSentenceParse(treebankParse, paragraphText, expectedText, "NN", "Background", "NN",
-            "Background");
+    testSentenceParse(
+        treebankParse,
+        paragraphText,
+        expectedText,
+        "NN",
+        "Background",
+        "NN",
+        "Background");
 
     treebankParse = "( (S (NP-SBJ-1 (DT The ) (NN striatum )) (VP (VBZ plays ) (NP (DT a ) (JJ pivotal ) (NN role )) (PP (IN in ) (S-NOM (NP-SBJ-1 (-NONE- *PRO*)) (VP (VBG modulating ) (NP (NP (NN motor ) (NN activity )) (CC and ) (NP (JJR higher ) (JJ cognitive ) (NN function ))))))) (. .)) )";
     paragraphText = "The striatum plays a pivotal role in modulating motor activity and higher cognitive function.     We analyzed variation in striatal volume and neuron number in mice and initiated a complex trait analysis to discover polymorphic genes that modulate the structure of the basal ganglia.      \n ";
@@ -436,13 +462,25 @@ public class TreebankParserTest {
     treebankParse = "(NP (QP (CD 84,800 ) (NN � ) (CD 3,500 )) (NN_SPLIT neurons))";
     paragraphText = "84,800 � 3,500 neurons";
     expectedText = "84,800 � 3,500 neurons";
-    testSentenceParse(treebankParse, paragraphText, expectedText, "CD", "84,800", "NN_SPLIT",
-            "neurons");
+    testSentenceParse(
+        treebankParse,
+        paragraphText,
+        expectedText,
+        "CD",
+        "84,800",
+        "NN_SPLIT",
+        "neurons");
 
   }
 
-  private void testSentenceParse(String treebankParse, String paragraphText, String expectedText,
-          String firstNodeType, String firstNodeText, String lastNodeType, String lastNodeText) {
+  private void testSentenceParse(
+      String treebankParse,
+      String paragraphText,
+      String expectedText,
+      String firstNodeType,
+      String firstNodeText,
+      String lastNodeType,
+      String lastNodeText) {
     TopTreebankNode topNode = TreebankFormatParser.parse(treebankParse, paragraphText, 0);
     assertEquals(expectedText, topNode.getText());
     TreebankNode node = topNode.getTerminal(0);
@@ -575,9 +613,9 @@ public class TreebankParserTest {
     assertTrue(TreebankFormatParser.parensMatch("(((())))"));
     assertFalse(TreebankFormatParser.parensMatch("((())))"));
     assertTrue(TreebankFormatParser
-            .parensMatch("( (S (NP-SBJ-1 (DT The) (NN striatum)) (VP (VBZ plays) (NP (DT a) (JJ pivotal) (NN role)) (PP (IN in) (S-NOM (NP-SBJ-1 (-NONE- *PRO*)) (VP (VBG modulating) (NP (NP (NN motor) (NN activity)) (CC and) (NP (JJR higher) (JJ cognitive) (NN function))))))) (. .)) )"));
+        .parensMatch("( (S (NP-SBJ-1 (DT The) (NN striatum)) (VP (VBZ plays) (NP (DT a) (JJ pivotal) (NN role)) (PP (IN in) (S-NOM (NP-SBJ-1 (-NONE- *PRO*)) (VP (VBG modulating) (NP (NP (NN motor) (NN activity)) (CC and) (NP (JJR higher) (JJ cognitive) (NN function))))))) (. .)) )"));
     assertFalse(TreebankFormatParser
-            .parensMatch("(NP-SBJ-1 (DT The) (NN striatum)) (VP (VBZ plays) (NP (DT a) (JJ pivotal) (NN role)) (PP (IN in) (S-NOM (NP-SBJ-1 (-NONE- *PRO*)) (VP (VBG modulating) (NP (NP (NN motor) (NN activity)) (CC and) (NP (JJR higher) (JJ cognitive) (NN function))))))) (. .)) )"));
+        .parensMatch("(NP-SBJ-1 (DT The) (NN striatum)) (VP (VBZ plays) (NP (DT a) (JJ pivotal) (NN role)) (PP (IN in) (S-NOM (NP-SBJ-1 (-NONE- *PRO*)) (VP (VBG modulating) (NP (NP (NN motor) (NN activity)) (CC and) (NP (JJR higher) (JJ cognitive) (NN function))))))) (. .)) )"));
   }
 
 }

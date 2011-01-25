@@ -43,10 +43,8 @@ public class TargetPathExtractor {
     List<TreebankNode> sourceToRoot = this.pathToRoot(source);
     List<TreebankNode> targetToRoot = this.pathToRoot(target);
     // TreebankNode commonParent = null;
-    while (!sourceToRoot.isEmpty()
-            && !targetToRoot.isEmpty()
-            && sourceToRoot.get(sourceToRoot.size() - 1) == targetToRoot
-                    .get(targetToRoot.size() - 1)) {
+    while (!sourceToRoot.isEmpty() && !targetToRoot.isEmpty()
+        && sourceToRoot.get(sourceToRoot.size() - 1) == targetToRoot.get(targetToRoot.size() - 1)) {
       // commonParent = sourceToRoot.get(sourceToRoot.size() - 1);
       sourceToRoot.remove(sourceToRoot.size() - 1);
       targetToRoot.remove(targetToRoot.size() - 1);

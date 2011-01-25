@@ -51,7 +51,7 @@ import org.cleartk.classifier.jar.JarClassifier;
  * 
  */
 public abstract class MaxentClassifier_ImplBase<OUTCOME_TYPE> extends
-        JarClassifier<OUTCOME_TYPE, String, List<NameNumber>> {
+    JarClassifier<OUTCOME_TYPE, String, List<NameNumber>> {
 
   protected MaxentModel model;
 
@@ -59,19 +59,20 @@ public abstract class MaxentClassifier_ImplBase<OUTCOME_TYPE> extends
     super(modelFile);
     ZipEntry modelEntry = modelFile.getEntry("model.maxent");
     this.model = new BinaryGISModelReader(new DataInputStream(new GZIPInputStream(
-            modelFile.getInputStream(modelEntry)))).getModel();
+        modelFile.getInputStream(modelEntry)))).getModel();
   }
 
   public OUTCOME_TYPE classify(List<Feature> features) throws CleartkException {
     EvalParams evalParams = convertToEvalParams(features);
-    String encodedOutcome = this.model.getBestOutcome(this.model.eval(evalParams.getContext(),
-            evalParams.getValues()));
+    String encodedOutcome = this.model.getBestOutcome(this.model.eval(
+        evalParams.getContext(),
+        evalParams.getValues()));
     return outcomeEncoder.decode(encodedOutcome);
   }
 
   @Override
   public List<ScoredOutcome<OUTCOME_TYPE>> score(List<Feature> features, int maxResults)
-          throws CleartkException {
+      throws CleartkException {
     EvalParams evalParams = convertToEvalParams(features);
     double[] evalResults = this.model.eval(evalParams.getContext(), evalParams.getValues());
     String[] encodedOutcomes = (String[]) this.model.getDataStructures()[2];
@@ -87,8 +88,9 @@ public abstract class MaxentClassifier_ImplBase<OUTCOME_TYPE> extends
     }
 
     for (int i = 0; i < evalResults.length; i++) {
-      returnValues.add(new ScoredOutcome<OUTCOME_TYPE>(outcomeEncoder.decode(encodedOutcomes[i]),
-              evalResults[i]));
+      returnValues.add(new ScoredOutcome<OUTCOME_TYPE>(
+          outcomeEncoder.decode(encodedOutcomes[i]),
+          evalResults[i]));
     }
 
     Collections.sort(returnValues);

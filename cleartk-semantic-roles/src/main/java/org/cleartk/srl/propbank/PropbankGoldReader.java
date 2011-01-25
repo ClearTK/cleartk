@@ -64,29 +64,31 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * @author Philip Ogren, Philipp Wetzler
  */
 
-@SofaCapability(outputSofas = { PropbankConstants.PROPBANK_VIEW, TreebankConstants.TREEBANK_VIEW,
+@SofaCapability(outputSofas = {
+    PropbankConstants.PROPBANK_VIEW,
+    TreebankConstants.TREEBANK_VIEW,
     ViewURIUtil.URI })
 public class PropbankGoldReader extends JCasCollectionReader_ImplBase {
 
   public static final String PARAM_PROPBANK_FILE_NAME = ConfigurationParameterFactory
-          .createConfigurationParameterName(PropbankGoldReader.class, "propbankFileName");
+      .createConfigurationParameterName(PropbankGoldReader.class, "propbankFileName");
 
   @ConfigurationParameter(description = "points to propbank data file", mandatory = true)
   private String propbankFileName;
 
   public static final String PARAM_PENNTREEBANK_DIRECTORY_NAME = ConfigurationParameterFactory
-          .createConfigurationParameterName(PropbankGoldReader.class, "penntreebankDirectoryName");
+      .createConfigurationParameterName(PropbankGoldReader.class, "penntreebankDirectoryName");
 
   private static final String PENN_TREEBANK_DIRECTORY_DESCRIPTION = "points to the PennTreebank corpus. "
-          + "The directory should contain subdirectories corresponding to the sections (e.g. \"00\", \"01\", etc.)  "
-          + "That is, if a local copy of PennTreebank sits at C:/Data/PTB/wsj/mrg, then the subdirectory C:/Data/PTB/wsj/mrg/00 should exist. "
-          + "There are 24 sections in PTB corresponding to the directories 00, 01, 02, ... 24.";
+      + "The directory should contain subdirectories corresponding to the sections (e.g. \"00\", \"01\", etc.)  "
+      + "That is, if a local copy of PennTreebank sits at C:/Data/PTB/wsj/mrg, then the subdirectory C:/Data/PTB/wsj/mrg/00 should exist. "
+      + "There are 24 sections in PTB corresponding to the directories 00, 01, 02, ... 24.";
 
   @ConfigurationParameter(description = PENN_TREEBANK_DIRECTORY_DESCRIPTION, mandatory = true)
   private String penntreebankDirectoryName;
 
   public static final String PARAM_WSJ_SECTIONS = ConfigurationParameterFactory
-          .createConfigurationParameterName(PropbankGoldReader.class, "wsjSections");
+      .createConfigurationParameterName(PropbankGoldReader.class, "wsjSections");
 
   @ConfigurationParameter(description = "Determines which sections of WSJ will be used.  The format allows for comma-separated section numbers and section ranges, for example \"02,07-12,16\".", mandatory = true)
   private String wsjSections;
@@ -112,7 +114,7 @@ public class PropbankGoldReader extends JCasCollectionReader_ImplBase {
       File propbankFile = new File(propbankFileName);
       if (!propbankFile.exists()) {
         throw new ResourceInitializationException(new IllegalArgumentException(
-                "could not find file: " + propbankFile.getPath()));
+            "could not find file: " + propbankFile.getPath()));
       }
       BufferedReader reader = new BufferedReader(new FileReader(propbankFile));
       propbankData = new LinkedList<String>();
@@ -128,10 +130,10 @@ public class PropbankGoldReader extends JCasCollectionReader_ImplBase {
       File wsjDirectory = new File(treebankDirectory, "wsj");
       if (!wsjDirectory.exists()) {
         throw new ResourceInitializationException(
-                new IllegalArgumentException(
-                        "could not find file: "
-                                + treebankDirectory.getPath()
-                                + " or this directory does not contain a sub-directory named 'wsj' as expected by propbank data."));
+            new IllegalArgumentException(
+                "could not find file: "
+                    + treebankDirectory.getPath()
+                    + " or this directory does not contain a sub-directory named 'wsj' as expected by propbank data."));
       }
       PennTreebankReader.collectSections(wsjDirectory, this.treebankFiles, this.wsjSpecification);
       Collections.sort(treebankFiles);
@@ -173,7 +175,7 @@ public class PropbankGoldReader extends JCasCollectionReader_ImplBase {
      */
     while (propbankData.size() > 0) {
       File nextPbFile = new File(treebankDirectory.getPath() + File.separator
-              + Propbank.filenameFromString(propbankData.getFirst())).getCanonicalFile();
+          + Propbank.filenameFromString(propbankData.getFirst())).getCanonicalFile();
 
       int c = treebankFile.getCanonicalFile().compareTo(nextPbFile);
       if (c < 0) {
@@ -194,8 +196,10 @@ public class PropbankGoldReader extends JCasCollectionReader_ImplBase {
   }
 
   public Progress[] getProgress() {
-    return new Progress[] { new ProgressImpl(totalTreebankFiles - treebankFiles.size(),
-            totalTreebankFiles, Progress.ENTITIES) };
+    return new Progress[] { new ProgressImpl(
+        totalTreebankFiles - treebankFiles.size(),
+        totalTreebankFiles,
+        Progress.ENTITIES) };
   }
 
   public boolean hasNext() throws IOException, CollectionException {

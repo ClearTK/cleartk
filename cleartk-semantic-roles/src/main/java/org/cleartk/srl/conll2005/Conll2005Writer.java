@@ -55,7 +55,7 @@ public class Conll2005Writer extends JCasAnnotator_ImplBase {
   private File outputFile;
 
   public static final String PARAM_OUTPUT_FILE = ConfigurationParameterFactory
-          .createConfigurationParameterName(Conll2005Writer.class, "outputFile");
+      .createConfigurationParameterName(Conll2005Writer.class, "outputFile");
 
   private PrintWriter output;
 
@@ -83,7 +83,7 @@ public class Conll2005Writer extends JCasAnnotator_ImplBase {
 
       List<PredicateWriter> predicateWriters = new ArrayList<PredicateWriter>();
       for (Predicate predicate : AnnotationRetrieval
-              .getAnnotations(jCas, sentence, Predicate.class)) {
+          .getAnnotations(jCas, sentence, Predicate.class)) {
         predicateWriters.add(new PredicateWriter(jCas, predicate));
       }
 
@@ -199,8 +199,9 @@ public class Conll2005Writer extends JCasAnnotator_ImplBase {
     List<ArgumentWriter> argumentWriters;
 
     PredicateWriter(JCas jCas, Predicate predicate) {
-      this.token = AnnotationRetrieval.getAnnotations(jCas, predicate.getAnnotation(), Token.class)
-              .get(0);
+      this.token = AnnotationRetrieval
+          .getAnnotations(jCas, predicate.getAnnotation(), Token.class)
+          .get(0);
       this.baseform = predicate.getBaseForm();
       this.frameset = 1;
 
