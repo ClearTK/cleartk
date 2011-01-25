@@ -33,7 +33,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.CleartkComponents;
+import org.cleartk.classifier.CleartkAnnotatorDescriptionFactory;
 import org.cleartk.classifier.CleartkSequentialAnnotator;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.WindowFeature;
@@ -51,6 +51,7 @@ import org.cleartk.examples.ExampleComponents;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
+import org.uimafit.factory.ConfigurationParameterFactory;
 
 /**
  * <br>
@@ -155,14 +156,17 @@ public class ExamplePOSAnnotator extends CleartkSequentialAnnotator<String> {
 
   public static AnalysisEngineDescription getClassifierDescription(String modelFileName)
           throws ResourceInitializationException {
-    return CleartkComponents.createCleartkSequentialAnnotator(ExamplePOSAnnotator.class,
-            ExampleComponents.TYPE_SYSTEM_DESCRIPTION, modelFileName, (List<Class<?>>) null);
+    return CleartkAnnotatorDescriptionFactory.createCleartkSequentialAnnotator(ExamplePOSAnnotator.class,
+            ExampleComponents.TYPE_SYSTEM_DESCRIPTION, modelFileName);
   }
 
   public static AnalysisEngineDescription getWriterDescription(String outputDirectory)
           throws ResourceInitializationException {
-    return CleartkComponents.createViterbiAnnotator(ExamplePOSAnnotator.class,
-            ExampleComponents.TYPE_SYSTEM_DESCRIPTION, DefaultMaxentDataWriterFactory.class,
-            outputDirectory, DefaultMaxentDataWriterFactory.PARAM_COMPRESS, true);
+    AnalysisEngineDescription aed = CleartkAnnotatorDescriptionFactory.createViterbiAnnotator(
+            ExamplePOSAnnotator.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+            DefaultMaxentDataWriterFactory.class, outputDirectory);
+    ConfigurationParameterFactory.addConfigurationParameter(aed,
+            DefaultMaxentDataWriterFactory.PARAM_COMPRESS, true);
+    return aed;
   }
 }

@@ -28,20 +28,19 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.util.List;
 import java.util.Locale;
 
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.pear.util.FileUtil;
-import org.cleartk.classifier.CleartkComponents;
+import org.cleartk.classifier.CleartkAnnotatorDescriptionFactory;
 import org.cleartk.classifier.libsvm.DefaultMultiClassLIBSVMDataWriterFactory;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.classifier.svmlight.DefaultOVASVMlightDataWriterFactory;
 import org.cleartk.example.ExamplesTestBase;
 import org.cleartk.examples.ExampleComponents;
 import org.cleartk.examples.pos.ExamplePOSPlainTextWriter;
-import org.cleartk.syntax.constituent.TreebankGoldAnnotator;
 import org.cleartk.syntax.constituent.TreebankConstants;
+import org.cleartk.syntax.constituent.TreebankGoldAnnotator;
 import org.cleartk.token.breakit.BreakIteratorAnnotatorFactory;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.tokenizer.TokenAnnotator;
@@ -64,10 +63,9 @@ public class NonSequentialExamplePOSAnnotatorTest extends ExamplesTestBase {
   @Test
   public void testLibsvm() throws Exception {
     String libsvmDirectoryName = outputDirectory + "/libsvm";
-    AnalysisEngineDescription dataWriter = CleartkComponents.createCleartkAnnotator(
+    AnalysisEngineDescription dataWriter = CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
             NonSequentialExamplePOSAnnotator.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-            DefaultMultiClassLIBSVMDataWriterFactory.class, libsvmDirectoryName,
-            (List<Class<?>>) null);
+            DefaultMultiClassLIBSVMDataWriterFactory.class, libsvmDirectoryName);
     testClassifier(dataWriter, libsvmDirectoryName, "-t", "0");
 
     String firstLine = FileUtil.loadListOfStrings(new File(libsvmDirectoryName
@@ -79,9 +77,9 @@ public class NonSequentialExamplePOSAnnotatorTest extends ExamplesTestBase {
   @Test
   public void testMaxent() throws Exception {
     String maxentDirectoryName = outputDirectoryName + "/maxent";
-    AnalysisEngineDescription dataWriter = CleartkComponents.createCleartkAnnotator(
+    AnalysisEngineDescription dataWriter = CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
             NonSequentialExamplePOSAnnotator.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-            DefaultMaxentDataWriterFactory.class, maxentDirectoryName, (List<Class<?>>) null);
+            DefaultMaxentDataWriterFactory.class, maxentDirectoryName);
     testClassifier(dataWriter, maxentDirectoryName);
 
     String firstLine = FileUtil.loadListOfStrings(new File(maxentDirectoryName
@@ -95,11 +93,9 @@ public class NonSequentialExamplePOSAnnotatorTest extends ExamplesTestBase {
   @Test
   public void testSVMLIGHT() throws Exception {
     String svmlightDirectoryName = outputDirectoryName + "/svmlight";
-    AnalysisEngineDescription dataWriter = CleartkComponents
-            .createCleartkAnnotator(NonSequentialExamplePOSAnnotator.class,
-                    ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-                    DefaultOVASVMlightDataWriterFactory.class, svmlightDirectoryName,
-                    (List<Class<?>>) null);
+    AnalysisEngineDescription dataWriter = CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+            NonSequentialExamplePOSAnnotator.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+            DefaultOVASVMlightDataWriterFactory.class, svmlightDirectoryName);
     testClassifier(dataWriter, svmlightDirectoryName);
 
     String firstLine = FileUtil.loadListOfStrings(new File(svmlightDirectoryName
@@ -129,7 +125,7 @@ public class NonSequentialExamplePOSAnnotatorTest extends ExamplesTestBase {
     org.cleartk.classifier.jar.Train.main(args);
     hider.restoreOutput();
 
-    AnalysisEngineDescription taggerDescription = CleartkComponents.createCleartkAnnotator(
+    AnalysisEngineDescription taggerDescription = CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
             NonSequentialExamplePOSAnnotator.class, ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
             outDirectoryName + "/model.jar");
 

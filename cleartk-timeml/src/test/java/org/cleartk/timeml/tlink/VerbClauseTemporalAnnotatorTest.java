@@ -36,7 +36,7 @@ import org.cleartk.CleartkException;
 import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.ClassifierFactory;
 import org.cleartk.classifier.CleartkAnnotator;
-import org.cleartk.classifier.CleartkComponents;
+import org.cleartk.classifier.CleartkAnnotatorDescriptionFactory;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.ScoredOutcome;
@@ -84,9 +84,9 @@ public class VerbClauseTemporalAnnotatorTest extends TimeMLTestBase {
 
   @Test
   public void test() throws UIMAException, CleartkException {
-    AnalysisEngineDescription desc = CleartkComponents.createCleartkAnnotator(
+    AnalysisEngineDescription desc = CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
             VerbClauseTemporalAnnotator.class, typeSystemDescription,
-            InstanceCollector.StringFactory.class, ".", (List<Class<?>>) null);
+            InstanceCollector.StringFactory.class, ".");
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(desc);
 
     tokenBuilder.buildTokens(jCas, "He said she bought milk.", "He said she bought milk .",

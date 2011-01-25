@@ -39,7 +39,7 @@ import org.cleartk.chunker.ChunkLabeler_ImplBase;
 import org.cleartk.chunker.Chunker;
 import org.cleartk.chunker.ChunkerFeatureExtractor;
 import org.cleartk.chunker.DefaultChunkLabeler;
-import org.cleartk.classifier.CleartkComponents;
+import org.cleartk.classifier.CleartkAnnotatorDescriptionFactory;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.WindowExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
@@ -52,6 +52,7 @@ import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
+import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.InitializableFactory;
 
 /**
@@ -69,13 +70,16 @@ public class EventAnnotator {
 
   public static AnalysisEngineDescription getWriterDescription(String modelDir)
           throws ResourceInitializationException {
-    return CleartkComponents.createCleartkSequentialAnnotator(Chunker.class,
-            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION, DefaultMalletCRFDataWriterFactory.class,
-            modelDir, (List<Class<?>>) null, Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME,
-            Token.class.getName(), Chunker.PARAM_SEQUENCE_CLASS_NAME, Sentence.class.getName(),
+    AnalysisEngineDescription aed = CleartkAnnotatorDescriptionFactory.createCleartkSequentialAnnotator(
+            Chunker.class, TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
+            DefaultMalletCRFDataWriterFactory.class, modelDir);
+    ConfigurationParameterFactory.addConfigurationParameters(aed,
+            Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME, Token.class.getName(),
+            Chunker.PARAM_SEQUENCE_CLASS_NAME, Sentence.class.getName(),
             Chunker.PARAM_CHUNK_LABELER_CLASS_NAME, DefaultChunkLabeler.class.getName(),
             Chunker.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME, FeatureExtractor.class.getName(),
             ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME, Event.class.getName());
+    return aed;
   }
 
   public static AnalysisEngineDescription getWriterDescription()
@@ -85,13 +89,15 @@ public class EventAnnotator {
 
   public static AnalysisEngineDescription getAnnotatorDescription(String modelDir)
           throws ResourceInitializationException {
-    return CleartkComponents.createCleartkSequentialAnnotator(Chunker.class,
-            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION, modelDir, null,
+    AnalysisEngineDescription aed = CleartkAnnotatorDescriptionFactory.createCleartkSequentialAnnotator(
+            Chunker.class, TimeMLComponents.TYPE_SYSTEM_DESCRIPTION, modelDir);
+    ConfigurationParameterFactory.addConfigurationParameters(aed,
             Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME, Token.class.getName(),
             Chunker.PARAM_SEQUENCE_CLASS_NAME, Sentence.class.getName(),
             Chunker.PARAM_CHUNK_LABELER_CLASS_NAME, DefaultChunkLabeler.class.getName(),
             Chunker.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME, FeatureExtractor.class.getName(),
             ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME, Event.class.getName());
+    return aed;
   }
 
   public static AnalysisEngineDescription getAnnotatorDescription()

@@ -73,6 +73,13 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
 			</plugin>
+			<!-- increase max memory for tests since models must be loaded -->
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<argLine>-Xmx512m</argLine>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 </project>

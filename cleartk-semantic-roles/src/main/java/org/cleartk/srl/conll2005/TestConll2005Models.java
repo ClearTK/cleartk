@@ -25,7 +25,7 @@ package org.cleartk.srl.conll2005;
 
 import java.io.File;
 
-import org.cleartk.classifier.CleartkComponents;
+import org.cleartk.classifier.CleartkAnnotatorDescriptionFactory;
 import org.cleartk.srl.ArgumentClassifier;
 import org.cleartk.srl.ArgumentIdentifier;
 import org.cleartk.srl.SrlComponents;
@@ -66,9 +66,9 @@ public class TestConll2005Models {
             // CleartkComponents.createCleartkAnnotator(
             // PredicateAnnotator.class,
             // predicateIdentificationModel.toString()),
-            CleartkComponents.createCleartkAnnotator(ArgumentIdentifier.class,
+            CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(ArgumentIdentifier.class,
                     SrlComponents.TYPE_SYSTEM_DESCRIPTION, argumentIdentificationModel.toString()),
-            CleartkComponents.createCleartkAnnotator(ArgumentClassifier.class,
+            CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(ArgumentClassifier.class,
                     SrlComponents.TYPE_SYSTEM_DESCRIPTION, argumentClassificationModel.toString()),
             AnalysisEngineFactory.createPrimitiveDescription(Conll2005Writer.class,
                     SrlComponents.TYPE_SYSTEM_DESCRIPTION, Conll2005Writer.PARAM_OUTPUT_FILE,

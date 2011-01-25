@@ -36,7 +36,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.CleartkComponents;
+import org.cleartk.classifier.CleartkAnnotatorDescriptionFactory;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.util.InstanceCollector;
@@ -62,9 +62,9 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
   @Test
   public void testArgumentAnnotationNoPredicate() throws UIMAException, CleartkException {
     // create the document
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkComponents
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkAnnotatorDescriptionFactory
             .createCleartkAnnotator(ArgumentAnnotator.class, typeSystemDescription,
-                    InstanceCollector.StringFactory.class, ".", (List<Class<?>>) null));
+                    InstanceCollector.StringFactory.class, "."));
     this.setTokens(jCas);
     this.setTrees(jCas);
 
@@ -77,9 +77,9 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
   @Test
   public void testArgumentIdentificationNoPredicate() throws UIMAException, CleartkException {
     // create the document
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkComponents
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkAnnotatorDescriptionFactory
             .createCleartkAnnotator(ArgumentIdentifier.class, typeSystemDescription,
-                    InstanceCollector.BooleanFactory.class, ".", (List<Class<?>>) null));
+                    InstanceCollector.BooleanFactory.class, "."));
     this.setTokens(jCas);
     this.setTrees(jCas);
 
@@ -92,9 +92,9 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
   @Test
   public void testArgumentClassificationNoPredicate() throws UIMAException, CleartkException {
     // create the document
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkComponents
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkAnnotatorDescriptionFactory
             .createCleartkAnnotator(ArgumentClassifier.class, typeSystemDescription,
-                    InstanceCollector.StringFactory.class, ".", (List<Class<?>>) null));
+                    InstanceCollector.StringFactory.class, "."));
     this.setTokens(jCas);
     this.setTrees(jCas);
 
@@ -107,9 +107,9 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
   @Test
   public void testArgumentAnnotationNoTree() throws UIMAException, CleartkException {
     // create the document
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkComponents
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkAnnotatorDescriptionFactory
             .createCleartkAnnotator(ArgumentAnnotator.class, typeSystemDescription,
-                    InstanceCollector.StringFactory.class, ".", (List<Class<?>>) null));
+                    InstanceCollector.StringFactory.class, "."));
     this.setTokens(jCas);
     this.setPredicates(jCas);
 
@@ -127,9 +127,9 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
   @Test
   public void testArgumentIdentificationNoTree() throws UIMAException, CleartkException {
     // create the document
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkComponents
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkAnnotatorDescriptionFactory
             .createCleartkAnnotator(ArgumentIdentifier.class, typeSystemDescription,
-                    InstanceCollector.BooleanFactory.class, ".", (List<Class<?>>) null));
+                    InstanceCollector.BooleanFactory.class, "."));
     this.setTokens(jCas);
     this.setPredicates(jCas);
 
@@ -147,9 +147,9 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
   @Test
   public void testArgumentClassificationNoTree() throws UIMAException, CleartkException {
     // create the document
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkComponents
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkAnnotatorDescriptionFactory
             .createCleartkAnnotator(ArgumentClassifier.class, typeSystemDescription,
-                    InstanceCollector.StringFactory.class, ".", (List<Class<?>>) null));
+                    InstanceCollector.StringFactory.class, "."));
     this.setTokens(jCas);
     this.setPredicates(jCas);
 
@@ -167,9 +167,9 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
   @Test
   public void testPredicateAnnotation() throws UIMAException, CleartkException {
     // create the document
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkComponents
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkAnnotatorDescriptionFactory
             .createCleartkAnnotator(PredicateAnnotator.class, typeSystemDescription,
-                    InstanceCollector.BooleanFactory.class, ".", (List<Class<?>>) null));
+                    InstanceCollector.BooleanFactory.class, "."));
     this.setTokens(jCas);
     this.setTrees(jCas);
     this.setPredicates(jCas);

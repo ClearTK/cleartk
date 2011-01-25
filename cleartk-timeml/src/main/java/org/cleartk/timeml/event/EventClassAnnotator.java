@@ -23,12 +23,10 @@
  */
 package org.cleartk.timeml.event;
 
-import java.util.List;
-
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.classifier.CleartkComponents;
+import org.cleartk.classifier.CleartkAnnotatorDescriptionFactory;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.timeml.TimeMLComponents;
 import org.cleartk.timeml.type.Event;
@@ -50,9 +48,9 @@ public class EventClassAnnotator extends EventAttributeAnnotator<String> {
 
   public static AnalysisEngineDescription getWriterDescription(String modelDir)
           throws ResourceInitializationException {
-    return CleartkComponents.createCleartkAnnotator(EventClassAnnotator.class,
+    return CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(EventClassAnnotator.class,
             TimeMLComponents.TYPE_SYSTEM_DESCRIPTION, DefaultMaxentDataWriterFactory.class,
-            modelDir, (List<Class<?>>) null);
+            modelDir);
   }
 
   public static AnalysisEngineDescription getWriterDescription()
@@ -62,8 +60,8 @@ public class EventClassAnnotator extends EventAttributeAnnotator<String> {
 
   public static AnalysisEngineDescription getAnnotatorDescription(String modelDir)
           throws ResourceInitializationException {
-    return CleartkComponents.createCleartkAnnotator(EventClassAnnotator.class,
-            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION, modelDir, (List<Class<?>>) null);
+    return CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(EventClassAnnotator.class,
+            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION, modelDir);
   }
 
   public static AnalysisEngineDescription getAnnotatorDescription()

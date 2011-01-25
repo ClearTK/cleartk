@@ -39,7 +39,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Level;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkAnnotator;
-import org.cleartk.classifier.CleartkComponents;
+import org.cleartk.classifier.CleartkAnnotatorDescriptionFactory;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.simple.BagExtractor;
 import org.cleartk.classifier.feature.extractor.simple.NamingExtractor;
@@ -117,25 +117,28 @@ public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
 
   public static AnalysisEngineDescription getWriterDescription()
           throws ResourceInitializationException {
-    return CleartkComponents.createCleartkAnnotator(VerbClauseTemporalAnnotator.class,
+    return CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(VerbClauseTemporalAnnotator.class,
             TimeMLComponents.TYPE_SYSTEM_DESCRIPTION, DefaultMaxentDataWriterFactory.class,
-            VerbClauseTemporalAnnotator.MODEL_DIR, (List<Class<?>>) null);
+            VerbClauseTemporalAnnotator.MODEL_DIR);
   }
 
   public static AnalysisEngineDescription getAnnotatorDescription()
           throws ResourceInitializationException {
-    return CleartkComponents.createCleartkAnnotator(VerbClauseTemporalAnnotator.class,
+    return CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(VerbClauseTemporalAnnotator.class,
             TimeMLComponents.TYPE_SYSTEM_DESCRIPTION, VerbClauseTemporalAnnotator.class
-                    .getResource(VerbClauseTemporalAnnotator.MODEL_RESOURCE).getFile(),
-            (List<Class<?>>) null);
+                    .getResource(VerbClauseTemporalAnnotator.MODEL_RESOURCE).getFile());
   }
 
   public static AnalysisEngineDescription getEventCreatingAnnotatorDescription()
           throws ResourceInitializationException {
-    return CleartkComponents.createCleartkAnnotator(VerbClauseTemporalAnnotator.class,
-            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION, VerbClauseTemporalAnnotator.class
-                    .getResource(VerbClauseTemporalAnnotator.MODEL_RESOURCE).getFile(),
-            (List<Class<?>>) null, VerbClauseTemporalAnnotator.PARAM_CREATE_EVENTS, true);
+    AnalysisEngineDescription desc = CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+            VerbClauseTemporalAnnotator.class,
+            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
+            VerbClauseTemporalAnnotator.class.getResource(
+                    VerbClauseTemporalAnnotator.MODEL_RESOURCE).getFile());
+    ConfigurationParameterFactory.addConfigurationParameters(desc,
+            VerbClauseTemporalAnnotator.PARAM_CREATE_EVENTS, true);
+    return desc;
   }
 
   public VerbClauseTemporalAnnotator() {
