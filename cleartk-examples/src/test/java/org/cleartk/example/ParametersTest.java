@@ -37,6 +37,6 @@ public class ParametersTest {
 
   @Test
   public void testParameterNames() throws ClassNotFoundException {
-    ParametersTestUtil.testParameterDefinitions("src/main/java");
+    ParametersTestUtil.testParameterDefinitions("src/main/java", "package-info.java");
   }
 }
