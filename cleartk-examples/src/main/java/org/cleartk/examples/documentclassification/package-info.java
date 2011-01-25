@@ -24,6 +24,8 @@
  */
 
 /**
+ * Copyright (c) 2011, Regents of the University of Colorado 
+ * All rights reserved.
  * <p>
  * The code in this package provides a simple example of document classification.  The example
  * code assumes that the documents you want to classify are place in directories corresponding to
