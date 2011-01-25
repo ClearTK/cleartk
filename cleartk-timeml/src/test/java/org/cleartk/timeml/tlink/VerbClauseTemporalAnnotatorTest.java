@@ -142,9 +142,25 @@ public class VerbClauseTemporalAnnotatorTest extends TimeMLTestBase {
     Assert.assertEquals(0, tlinks.size());
 
     // and run the annotator again, asking it to annotate this time
+    // but don't let it add any events
     desc = AnalysisEngineFactory.createPrimitiveDescription(VerbClauseTemporalAnnotator.class,
             typeSystemDescription, CleartkAnnotator.PARAM_CLASSIFIER_FACTORY_CLASS_NAME,
             AfterNewClassifier.class.getName());
+    engine = AnalysisEngineFactory.createPrimitive(desc);
+    engine.process(jCas);
+    engine.collectionProcessComplete();
+
+    // check that no TimeML annotations were created
+    events = AnnotationRetrieval.getAnnotations(jCas, Event.class);
+    tlinks = AnnotationRetrieval.getAnnotations(jCas, TemporalLink.class);
+    Assert.assertEquals(0, events.size());
+    Assert.assertEquals(0, tlinks.size());
+
+    // run the annotator again, but let it add events this time
+    desc = AnalysisEngineFactory.createPrimitiveDescription(VerbClauseTemporalAnnotator.class,
+            typeSystemDescription, CleartkAnnotator.PARAM_CLASSIFIER_FACTORY_CLASS_NAME,
+            AfterNewClassifier.class.getName(), VerbClauseTemporalAnnotator.PARAM_CREATE_EVENTS,
+            true);
     engine = AnalysisEngineFactory.createPrimitive(desc);
     engine.process(jCas);
     engine.collectionProcessComplete();
@@ -193,7 +209,7 @@ public class VerbClauseTemporalAnnotatorTest extends TimeMLTestBase {
 
     // run annotator
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(VerbClauseTemporalAnnotator
-            .getAnnotatorDescription());
+            .getEventCreatingAnnotatorDescription());
     engine.process(jCas);
 
     // check output

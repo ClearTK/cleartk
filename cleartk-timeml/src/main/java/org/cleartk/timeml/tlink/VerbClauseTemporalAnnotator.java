@@ -59,6 +59,9 @@ import org.cleartk.timeml.util.TokenStemExtractor;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
+import org.uimafit.descriptor.ConfigurationParameter;
+import org.uimafit.descriptor.TypeCapability;
+import org.uimafit.factory.ConfigurationParameterFactory;
 
 /**
  * <br>
@@ -69,6 +72,9 @@ import org.cleartk.util.AnnotationRetrieval;
  * 
  * @author Steven Bethard
  */
+@TypeCapability(outputs = {
+        "org.cleartk.timeml.type.TemporalLink",
+        "org.cleartk.timeml.type.Event"})
 public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
 
   public static final String MODEL_BASE = "/models/timeml/tlink/verb-clause";
@@ -100,6 +106,14 @@ public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
   private TargetPathExtractor pathExtractor;
 
   private int eventID;
+  
+  @ConfigurationParameter(defaultValue = "false", description = "Create events for all verbs in "
+          + "verb-clause relations (using existing events if present, but adding new ones "
+          + "wherever they are not present).")
+  private boolean createEvents;
+
+  public static final String PARAM_CREATE_EVENTS = ConfigurationParameterFactory
+          .createConfigurationParameterName(VerbClauseTemporalAnnotator.class, "createEvents");
 
   public static AnalysisEngineDescription getWriterDescription()
           throws ResourceInitializationException {
@@ -114,6 +128,14 @@ public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
             TimeMLComponents.TYPE_SYSTEM_DESCRIPTION, VerbClauseTemporalAnnotator.class
                     .getResource(VerbClauseTemporalAnnotator.MODEL_RESOURCE).getFile(),
             (List<Class<?>>) null);
+  }
+
+  public static AnalysisEngineDescription getEventCreatingAnnotatorDescription()
+          throws ResourceInitializationException {
+    return CleartkComponents.createCleartkAnnotator(VerbClauseTemporalAnnotator.class,
+            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION, VerbClauseTemporalAnnotator.class
+                    .getResource(VerbClauseTemporalAnnotator.MODEL_RESOURCE).getFile(),
+            (List<Class<?>>) null, VerbClauseTemporalAnnotator.PARAM_CREATE_EVENTS, true);
   }
 
   public VerbClauseTemporalAnnotator() {
@@ -216,16 +238,19 @@ public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
         // if we're classifying create new TLINKs from the
         // classification outcomes
         else {
-          String relationType = this.classifier.classify(instance.getFeatures());
           source = this.getOrCreateEvent(jCas, source, link.source);
           target = this.getOrCreateEvent(jCas, target, link.target);
-          TemporalLink tlink = new TemporalLink(jCas, docEnd, docEnd);
-          tlink.setSource(source);
-          tlink.setTarget(target);
-          tlink.setRelationType(relationType);
-          tlink.setEventID(source.getId());
-          tlink.setRelatedToEvent(target.getId());
-          tlink.addToIndexes();
+          // only create TLINKs for events that exist (or were created, if requested)
+          if (source != null && target != null) {
+            String relationType = this.classifier.classify(instance.getFeatures());
+            TemporalLink tlink = new TemporalLink(jCas, docEnd, docEnd);
+            tlink.setSource(source);
+            tlink.setTarget(target);
+            tlink.setRelationType(relationType);
+            tlink.setEventID(source.getId());
+            tlink.setRelatedToEvent(target.getId());
+            tlink.addToIndexes();
+          }
         }
       }
     }
@@ -234,12 +259,15 @@ public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
   private Event getOrCreateEvent(JCas jCas, Anchor anchor, TreebankNode node) {
     if (anchor != null && anchor instanceof Event) {
       return (Event) anchor;
+    } else if (this.createEvents) {
+      Event event = new Event(jCas, node.getBegin(), node.getEnd());
+      event.setId("e" + this.eventID);
+      this.eventID++;
+      event.addToIndexes();
+      return event;
+    } else {
+      return null;
     }
-    Event event = new Event(jCas, node.getBegin(), node.getEnd());
-    event.setId("e" + this.eventID);
-    this.eventID++;
-    event.addToIndexes();
-    return event;
   }
 
   private Map<String, TemporalLink> getTemporalLinks(JCas jCas) {
