@@ -27,14 +27,17 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.uima.UimaContext;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.timeml.TimeMLComponents;
 import org.cleartk.timeml.type.Anchor;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.type.TemporalLink;
 import org.cleartk.timeml.type.Time;
 import org.uimafit.component.JCasAnnotator_ImplBase;
+import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.util.JCasUtil;
 
 /**
@@ -49,6 +52,11 @@ import org.uimafit.util.JCasUtil;
  * @author Steven Bethard
  */
 public class EventIdAnnotator extends JCasAnnotator_ImplBase {
+
+  public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
+    return AnalysisEngineFactory.createPrimitiveDescription(EventIdAnnotator.class,
+            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION);
+  }
 
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
