@@ -40,6 +40,7 @@ import org.uimafit.component.xwriter.XWriter;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.CollectionReaderFactory;
 import org.uimafit.pipeline.JCasIterable;
+import org.uimafit.pipeline.SimplePipeline;
 import org.uimafit.util.JCasUtil;
 
 /**
@@ -53,6 +54,18 @@ import org.uimafit.util.JCasUtil;
  * @author Philip Ogren
  */
 public class XReaderTest extends DefaultTestBase {
+
+  @Test
+  public void testReader() throws IOException, UIMAException {
+    CollectionReader reader = CollectionReaderFactory.createCollectionReader(
+        XReader.class,
+        typeSystemDescription,
+        FilesCollectionReader.PARAM_ROOT_FILE,
+        "src/test/resources/data/xreader-test/xmi",
+        FilesCollectionReader.PARAM_SUFFIXES,
+        new String[] { ".xmi" });
+    testCollectionReaderCount(reader, 11);
+  }
 
   @Test
   public void testReaderXmi() throws IOException, UIMAException {
@@ -147,6 +160,64 @@ public class XReaderTest extends DefaultTestBase {
 
     Object fileOrDirectory = reader.getConfigParameterValue(FilesCollectionReader.PARAM_ROOT_FILE);
     Assert.assertEquals(outputDirectory.getPath(), fileOrDirectory);
+
+  }
+
+  public static void main(String[] args) throws Exception {
+    XReaderTest xrt = new XReaderTest();
+    xrt.buildTestXmiFiles();
+  }
+
+  private void buildTestXmiFiles() throws Exception {
+    AnalysisEngine xWriter = AnalysisEngineFactory.createPrimitive(
+        XWriter.class,
+        typeSystemDescription,
+        XWriter.PARAM_OUTPUT_DIRECTORY_NAME,
+        "src/test/resources/data/xreader-test/xmi");
+    super.setUp();
+
+    tokenBuilder.buildTokens(jCas, "This is a test.", "This is a test .", "t1 t2 t3 t4 t5");
+    SimplePipeline.runPipeline(jCas, xWriter); // 1.xmi
+    jCas.reset();
+    tokenBuilder.buildTokens(
+        jCas,
+        "This is only a test.",
+        "This is only a test .",
+        "t1 t2 t3 t4 t5 t6");
+    jCas.reset();
+    tokenBuilder.buildTokens(jCas, "A B C D", "A B C D", "t1 t2 t3 t4");
+    SimplePipeline.runPipeline(jCas, xWriter); // 2.xmi
+    jCas.reset();
+    tokenBuilder.buildTokens(jCas, "1 2 3 4", "1 2 3 4", "tA tB tC tD");
+    SimplePipeline.runPipeline(jCas, xWriter); // 3.xmi
+    jCas.reset();
+    tokenBuilder.buildTokens(jCas, "1 2 3 4", "1 2 3 4", "tA tB tC tD");
+    SimplePipeline.runPipeline(jCas, xWriter); // 4.xmi
+    jCas.reset();
+    tokenBuilder.buildTokens(jCas, "10 20 30 40 50", "10 20 30 40 50", "1 2 3 4 5");
+    SimplePipeline.runPipeline(jCas, xWriter); // 5.xmi
+    jCas.reset();
+    tokenBuilder.buildTokens(
+        jCas,
+        "first sentence. second sentence.",
+        "first sentence . \n second sentence .",
+        "1 2 3 1 2 3");
+    SimplePipeline.runPipeline(jCas, xWriter); // 6.xmi
+    jCas.reset();
+    tokenBuilder.buildTokens(jCas, "A1 A1 B2 B2", "A1 A1 B2 B2", "A A B B");
+    SimplePipeline.runPipeline(jCas, xWriter); // 7.xmi
+    jCas.reset();
+    tokenBuilder.buildTokens(jCas, "AAAA", "A A A A", "1 2 3 4");
+    SimplePipeline.runPipeline(jCas, xWriter); // 8.xmi
+    jCas.reset();
+    tokenBuilder.buildTokens(jCas, "AA AA", "AA AA", "1 2");
+    SimplePipeline.runPipeline(jCas, xWriter); // 9.xmi
+    jCas.reset();
+    tokenBuilder.buildTokens(jCas, "A", "A", "1");
+    SimplePipeline.runPipeline(jCas, xWriter); // 10.xmi
+    jCas.reset();
+    tokenBuilder.buildTokens(jCas, "b", "b", "BB1");
+    SimplePipeline.runPipeline(jCas, xWriter); // 11.xmi
 
   }
 

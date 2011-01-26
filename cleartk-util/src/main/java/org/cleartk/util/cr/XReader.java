@@ -23,7 +23,6 @@
  */
 package org.cleartk.util.cr;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
@@ -73,8 +72,11 @@ public class XReader extends FilesCollectionReader {
   }
 
   public void getNext(JCas jCas) throws IOException, CollectionException {
-    File file = (File) this.files.next();
-    FileInputStream inputStream = new FileInputStream(file);
+    if (!hasNext()) {
+      throw new RuntimeException("getNext(jCas) was called but hasNext() returns false");
+    }
+
+    FileInputStream inputStream = new FileInputStream(currentFile);
 
     try {
       if (xmlScheme.equals(XMI))
@@ -88,6 +90,7 @@ public class XReader extends FilesCollectionReader {
     }
 
     completed++;
+    currentFile = null;
   }
 
 }
