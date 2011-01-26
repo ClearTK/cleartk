@@ -35,6 +35,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.FSIndex;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.token.TokenComponents;
 import org.cleartk.token.TokenTestBase;
@@ -278,7 +279,9 @@ public class TokenizerAndTokenAnnotatorTest extends TokenTestBase {
         TokenAnnotator.PARAM_TOKEN_TYPE_NAME,
         Subtoken.class.getName(),
         TokenAnnotator.PARAM_TOKENIZER_NAME,
-        Subtokenizer.class.getName());
+        Subtokenizer.class.getName(),
+        TokenAnnotator.PARAM_WINDOW_TYPE_NAME,
+        DocumentAnnotation.class.getName());
     jCas.setDocumentText("AA;BB-CC   DD!@#$EE(FF)GGG \tH,.");
     engine.process(jCas);
 

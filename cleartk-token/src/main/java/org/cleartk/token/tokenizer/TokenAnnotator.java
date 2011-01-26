@@ -88,7 +88,7 @@ public class TokenAnnotator extends JCasAnnotator_ImplBase {
   // do not set the default value to 'org.cleartk.token.type.Sentence'. If you do, then unit tests
   // will break. The symptom will be a tokenizer that doesn't generate any tokens (because there
   // are no sentences to iterate over.
-  @ConfigurationParameter(description = WINDOW_TYPE_DESCRIPTION)
+  @ConfigurationParameter(description = WINDOW_TYPE_DESCRIPTION, defaultValue="org.cleartk.token.type.Sentence")
   private String windowTypeName;
 
   Tokenizer tokenizer;
