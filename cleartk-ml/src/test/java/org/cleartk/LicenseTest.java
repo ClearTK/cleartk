@@ -41,8 +41,15 @@ public class LicenseTest {
 
   @Test
   public void testLicenseStatedInSource() throws Exception {
-    List<String> excludeJavaFiles = Collections.emptyList();
-    LicenseTestUtil.testJavaFiles("src/main/java", Arrays.asList("evaluation"), excludeJavaFiles);
+    List<String> excludePackages = Collections.emptyList();
+    List<String> excludeJavaFiles = Arrays.asList(
+        "Evaluation.java",
+        "CorpusFactory.java",
+        "EngineFactory.java",
+        "EvaluationFactory.java",
+        "CorpusFactory_ImplBase.java");
+
+    LicenseTestUtil.testJavaFiles("src/main/java", excludePackages, excludeJavaFiles);
   }
 
   @Test
