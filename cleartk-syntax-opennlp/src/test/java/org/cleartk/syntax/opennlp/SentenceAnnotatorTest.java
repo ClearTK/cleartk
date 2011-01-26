@@ -26,16 +26,20 @@ package org.cleartk.syntax.opennlp;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Iterator;
 
 import opennlp.tools.cmdline.CLI;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.cleartk.token.TokenTestBase;
 import org.cleartk.token.type.Sentence;
 import org.junit.Before;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.JCasUtil;
 
 /**
@@ -190,6 +194,30 @@ public class SentenceAnnotatorTest extends TokenTestBase {
     Sentence sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 0);
     assertEquals("It was a Wednesday morning.", sentence.getCoveredText());
 
+  }
+
+  @Test
+  public void testWindowClassNames() throws Exception {
+    String text = "I bought a lamp. I love lamp. Lamps are great!";
+    this.jCas.setDocumentText(text);
+    Sentence window = new Sentence(this.jCas, 0, 30);
+    window.addToIndexes();
+    
+    AnalysisEngineDescription desc = SentenceAnnotator.getDescription();
+    ConfigurationParameterFactory.addConfigurationParameter(
+        desc,
+        SentenceAnnotator.PARAM_WINDOW_CLASS_NAMES,
+        new String[] { "org.cleartk.token.type.Sentence" });
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(desc);
+    engine.process(this.jCas);
+    engine.collectionProcessComplete();
+
+    Collection<Sentence> sentences = JCasUtil.select(this.jCas, Sentence.class);
+    Iterator<Sentence> sentenceIter = sentences.iterator();
+    assertEquals(3, sentences.size());
+    assertEquals(window, sentenceIter.next());
+    assertEquals("I bought a lamp.", sentenceIter.next().getCoveredText());
+    assertEquals("I love lamp.", sentenceIter.next().getCoveredText());
   }
 
   public static void main(String[] args) {

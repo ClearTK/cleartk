@@ -60,6 +60,7 @@ import org.uimafit.factory.initializable.InitializableFactory;
  * 
  * 
  * @author Philip Ogren
+ * @author Lee Becker
  * 
  *         This sentence segmenter is a simple wrapper around the OpenNLP SentenceDetector with
  *         additional sentence detection added that handles multiple newlines (i.e. if multiple
@@ -104,7 +105,7 @@ public class SentenceAnnotator extends JCasAnnotator_ImplBase {
 
   Class<? extends Annotation> sentenceClass;
 
-  protected Class<? extends Annotation>[] windowClasses;
+  protected List<Class<? extends Annotation>> windowClasses;
 
 
   Constructor<? extends Annotation> sentenceConstructor;
@@ -130,20 +131,12 @@ public class SentenceAnnotator extends JCasAnnotator_ImplBase {
           Integer.TYPE,
           Integer.TYPE });
 
-      if ( windowClassNames == null) {
-          windowClasses = null;
-      } else {
-        // Initialize window classes from the array of strings
-        int length = windowClassNames.length;
-        if (length > 0) {
-          windowClasses = new Class[length];
-          for (int i = 0; i < length; i++) {
-              System.out.println(windowClassNames[i]);
-              windowClasses[i] = InitializableFactory.getClass(windowClassNames[i], Annotation.class);
-          }
+      if (windowClassNames != null && windowClassNames.length > 0) {
+        windowClasses = new ArrayList<Class<? extends Annotation>>();
+        for (String windowClassName : windowClassNames) {
+          windowClasses.add(InitializableFactory.getClass(windowClassName, Annotation.class));
         }
       }
-      
 
       InputStream modelInputStream = IOUtil.getInputStream(
           SentenceAnnotator.class,
@@ -162,19 +155,18 @@ public class SentenceAnnotator extends JCasAnnotator_ImplBase {
   @Override
   public void process(JCas jCas) throws AnalysisEngineProcessException {
     if (windowClasses == null) {
-        // No window class names are set, operate on the entirety of the CAS' document text
-    String text = jCas.getDocumentText();
-        processText(jCas, text, 0);
+      // No window class names are set, operate on the entirety of the CAS' document text
+      String text = jCas.getDocumentText();
+      processText(jCas, text, 0);
     } else {
-        // Window class names are specified, iterate over all annotations of the specified classes
-        for (Class<? extends Annotation> windowClass : windowClasses) {
-            for (Annotation window : AnnotationRetrieval.getAnnotations(jCas, windowClass)) {
-                String text = window.getCoveredText();
-                processText(jCas, text, window.getBegin());
-            }
+      // Window class names are specified, iterate over all annotations of the specified classes
+      for (Class<? extends Annotation> windowClass : windowClasses) {
+        for (Annotation window : AnnotationRetrieval.getAnnotations(jCas, windowClass)) {
+          String text = window.getCoveredText();
+          processText(jCas, text, window.getBegin());
         }
+      }
     }
-    
   }
 
   protected void processText(JCas jCas, String text, int textOffset) throws AnalysisEngineProcessException {
@@ -223,11 +215,6 @@ public class SentenceAnnotator extends JCasAnnotator_ImplBase {
     } catch (Exception e) {
       throw new AnalysisEngineProcessException(e);
     }
-  }
-
-  
-  public void setWindowClassNames(String[] windowClassNames) {
-     this.windowClassNames = windowClassNames;
   }
 
   /**
