@@ -31,8 +31,10 @@ import org.apache.uima.collection.CollectionReader;
 import org.cleartk.examples.ExampleComponents;
 import org.cleartk.syntax.opennlp.SentenceAnnotator;
 import org.cleartk.token.type.Sentence;
+import org.cleartk.util.Options_ImplBase;
 import org.cleartk.util.ae.linewriter.LineWriter;
 import org.cleartk.util.cr.FilesCollectionReader;
+import org.kohsuke.args4j.Option;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.pipeline.SimplePipeline;
 
@@ -42,24 +44,38 @@ import org.uimafit.pipeline.SimplePipeline;
  * All rights reserved.
  * 
  * @author Philip Ogren
+ * 
+ *         <p>
+ *         This is a very simple example that takes a collection of files in a directory, reads them
+ *         in one at a time, performs sentence segmentation, and writes each sentence to a single
+ *         file - one per line.
+ * 
  */
 public class Docs2Sentences {
 
+  public static class Options extends Options_ImplBase {
+    @Option(name = "-i", aliases = "--inputFileName", usage = "specify the directory to read plain text files from", required = true)
+    public String inputDirectoryName;
+
+    @Option(name = "-o", aliases = "--outputFileName", usage = "specify the file to write sentences to", required = true)
+    public String outputFileName;
+
+  }
+
   public static void main(String[] args) throws UIMAException, IOException {
-    String inputDirectoryName = args[0];
-    String outputFileName = args[1];
+    Options options = new Options();
+    options.parseOptions(args);
 
     CollectionReader filesReader = FilesCollectionReader.getCollectionReader(
         ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-        inputDirectoryName);
-    AnalysisEngine sentences = AnalysisEngineFactory.createPrimitive(
-        SentenceAnnotator.class,
-        ExampleComponents.TYPE_SYSTEM_DESCRIPTION);
+        options.inputDirectoryName);
+    AnalysisEngine sentences = AnalysisEngineFactory.createPrimitive(SentenceAnnotator
+        .getDescription());
     AnalysisEngine lineWriter = AnalysisEngineFactory.createPrimitive(
         LineWriter.class,
         ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
         LineWriter.PARAM_OUTPUT_FILE_NAME,
-        outputFileName,
+        options.outputFileName,
         LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
         Sentence.class.getName());
 
