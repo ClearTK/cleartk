@@ -10,6 +10,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<modules>
+		<module>clearparser</module>
 		<module>grmm</module>
 		<module>jgrapht</module>
 		<module>libsvm</module>
