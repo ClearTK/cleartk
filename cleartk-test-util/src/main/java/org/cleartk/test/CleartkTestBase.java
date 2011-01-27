@@ -23,15 +23,24 @@
  */
 package org.cleartk.test;
 
-import java.io.File;
+import static org.junit.Assert.assertEquals;
 
+import java.io.File;
+import java.io.IOException;
+
+import org.apache.uima.UIMAException;
+import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.TemporaryFolder;
+import org.uimafit.component.JCasAnnotatorAdapter;
+import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.JCasFactory;
 import org.uimafit.factory.TypeSystemDescriptionFactory;
+import org.uimafit.pipeline.JCasIterable;
 
 /**
  * <br>
@@ -64,5 +73,24 @@ public abstract class CleartkTestBase {
   }
 
   public abstract String[] getTypeSystemDescriptorNames();
+
+  public int getCollectionReaderCount(CollectionReader reader) throws UIMAException, IOException {
+
+    AnalysisEngine aeAdapter = AnalysisEngineFactory.createPrimitive(
+        JCasAnnotatorAdapter.class,
+        typeSystemDescription);
+
+    int count = 0;
+    JCasIterable jCases = new JCasIterable(reader, aeAdapter);
+    for (@SuppressWarnings("unused") JCas jcs : jCases) {
+      count++;
+    }
+    return count;
+  }
+
+  public void testCollectionReaderCount(CollectionReader reader, int expectedCount)
+      throws UIMAException, IOException {
+    assertEquals(expectedCount, getCollectionReaderCount(reader));
+  }
 
 }
