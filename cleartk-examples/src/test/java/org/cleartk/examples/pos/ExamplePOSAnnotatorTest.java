@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.example.pos;
+package org.cleartk.examples.pos;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -38,8 +38,8 @@ import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.classifier.util.InstanceCollector;
 import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
-import org.cleartk.example.ExamplesTestBase;
 import org.cleartk.examples.ExampleComponents;
+import org.cleartk.examples.ExamplesTestBase;
 import org.cleartk.examples.pos.ExamplePOSAnnotator;
 import org.junit.Assert;
 import org.junit.Test;

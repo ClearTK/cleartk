@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2010, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -21,33 +21,22 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.example;
+package org.cleartk.examples;
 
-import java.util.Collections;
-import java.util.List;
-
-import org.cleartk.test.util.LicenseTestUtil;
+import org.cleartk.test.util.ParametersTestUtil;
 import org.junit.Test;
 
 /**
  * <br>
  * Copyright (c) 2010, Regents of the University of Colorado <br>
  * All rights reserved.
- * <p>
+ * 
+ * @author Philip Ogren
  */
-
-public class LicenseTest {
-
-  @Test
-  public void testLicenseStatedInSource() throws Exception {
-    List<String> emptyList = Collections.emptyList();
-    LicenseTestUtil.testJavaFiles("src/main/java", emptyList, emptyList);
-  }
+public class ParametersTest {
 
   @Test
-  public void testLicenseStatedInTestSource() throws Exception {
-    List<String> excludeJavaFiles = Collections.emptyList();
-    LicenseTestUtil.testJavaFiles("src/test/java", excludeJavaFiles, excludeJavaFiles);
+  public void testParameterNames() throws ClassNotFoundException {
+    ParametersTestUtil.testParameterDefinitions("src/main/java", "package-info.java");
   }
-
 }

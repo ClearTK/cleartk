@@ -22,7 +22,7 @@
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
-package org.cleartk.example.pos;
+package org.cleartk.examples.pos;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -36,8 +36,8 @@ import org.cleartk.classifier.CleartkAnnotatorDescriptionFactory;
 import org.cleartk.classifier.libsvm.DefaultMultiClassLIBSVMDataWriterFactory;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.classifier.svmlight.DefaultOVASVMlightDataWriterFactory;
-import org.cleartk.example.ExamplesTestBase;
 import org.cleartk.examples.ExampleComponents;
+import org.cleartk.examples.ExamplesTestBase;
 import org.cleartk.examples.pos.ExamplePOSPlainTextWriter;
 import org.cleartk.syntax.constituent.TreebankConstants;
 import org.cleartk.syntax.constituent.TreebankGoldAnnotator;

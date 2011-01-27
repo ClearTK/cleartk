@@ -22,7 +22,7 @@
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
-package org.cleartk.example;
+package org.cleartk.examples;
 
 import org.cleartk.test.CleartkTestBase;
 import org.cleartk.token.type.Sentence;

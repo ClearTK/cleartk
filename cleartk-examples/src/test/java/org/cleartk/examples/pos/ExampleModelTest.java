@@ -22,7 +22,7 @@
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
-package org.cleartk.example.pos;
+package org.cleartk.examples.pos;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -30,7 +30,7 @@ import static org.junit.Assert.assertNull;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-import org.cleartk.example.ExamplesTestBase;
+import org.cleartk.examples.ExamplesTestBase;
 import org.cleartk.examples.pos.ExamplePOSAnnotator;
 import org.cleartk.token.type.Token;
 import org.junit.Test;
