@@ -81,13 +81,9 @@ public class TokenAnnotator extends JCasAnnotator_ImplBase {
       .createConfigurationParameterName(TokenAnnotator.class, "windowTypeName");
 
   private static final String WINDOW_TYPE_DESCRIPTION = "specifies the class type of annotations that will be tokenized. "
-      + "If no value is given, then the entire document will be tokenized at once. "
-      + "A good value for this parameter would be 'org.cleartk.token.type.Sentence' "
-      + " (especially when using the PennTreebankTokenizer).";
+      + "By default, the tokenizer will tokenize a document sentence by sentence.  If you do not want to precede tokenization with" +
+      		"sentence segmentation, then a reasonable value for this parameter is 'org.apache.uima.jcas.tcas.DocumentAnnotation'";
 
-  // do not set the default value to 'org.cleartk.token.type.Sentence'. If you do, then unit tests
-  // will break. The symptom will be a tokenizer that doesn't generate any tokens (because there
-  // are no sentences to iterate over.
   @ConfigurationParameter(description = WINDOW_TYPE_DESCRIPTION, defaultValue="org.cleartk.token.type.Sentence")
   private String windowTypeName;
 
