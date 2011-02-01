@@ -39,7 +39,7 @@ import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkSequentialAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.jar.JarSequentialDataWriterFactory;
+import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.test.DefaultTestBase;
 import org.junit.Test;
@@ -143,7 +143,7 @@ public class GrmmDataWriterTest extends DefaultTestBase {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         Test1Annotator.class,
         typeSystemDescription,
-        JarSequentialDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME,
         DefaultGrmmDataWriterFactory.class.getName());
@@ -151,9 +151,8 @@ public class GrmmDataWriterTest extends DefaultTestBase {
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
 
-    String[] lines = FileUtil.loadListOfStrings(new File(
-        outputDirectoryName,
-        GrmmDataWriter.TRAINING_DATA_FILE_NAME));
+    File trainFile = new GrmmClassifierBuilder().getTrainingDataFile(this.outputDirectory);
+    String[] lines = FileUtil.loadListOfStrings(trainFile);
     assertEquals("A X ---- pos_NN:1.0 distance:3.0 precision:1.234", lines[0]);
     assertEquals("B Y ---- name_2PO:1.0 ps:2", lines[1]);
     assertEquals("C Z ---- name_2PO:1.0 ps:2", lines[2]);

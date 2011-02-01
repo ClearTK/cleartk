@@ -23,8 +23,9 @@
  */
 package org.cleartk.classifier.libsvm;
 
-import java.io.IOException;
-import java.util.jar.JarFile;
+import org.cleartk.classifier.encoder.features.FeaturesEncoder;
+import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
+import org.cleartk.classifier.util.featurevector.FeatureVector;
 
 /**
  * <br>
@@ -34,8 +35,11 @@ import java.util.jar.JarFile;
 
 public class BinaryLIBSVMClassifier extends LIBSVMClassifier<Boolean, Boolean> {
 
-  public BinaryLIBSVMClassifier(JarFile modelFile) throws IOException {
-    super(modelFile);
+  public BinaryLIBSVMClassifier(
+      FeaturesEncoder<FeatureVector> featuresEncoder,
+      OutcomeEncoder<Boolean, Boolean> outcomeEncoder,
+      libsvm.svm_model model) {
+    super(featuresEncoder, outcomeEncoder, model);
   }
 
   @Override

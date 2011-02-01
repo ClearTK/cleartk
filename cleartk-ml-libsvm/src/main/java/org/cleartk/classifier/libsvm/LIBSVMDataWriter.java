@@ -25,14 +25,11 @@ package org.cleartk.classifier.libsvm;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Locale;
-import java.util.Map;
-import java.util.jar.Attributes;
 
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.jar.ClassifierBuilder;
-import org.cleartk.classifier.jar.JarDataWriter;
+import org.cleartk.classifier.Classifier;
+import org.cleartk.classifier.jar.DataWriter_ImplBase;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
 /**
@@ -42,34 +39,16 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
  * <p>
  */
 
-public abstract class LIBSVMDataWriter<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE> extends
-    JarDataWriter<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE, FeatureVector> {
-
-  public static final String TRAINING_DATA_FILE_NAME = "training-data.libsvm";
+public abstract class LIBSVMDataWriter<CLASSIFIER_BUILDER_TYPE extends GenericLIBSVMClassifierBuilder<? extends Classifier<OUTCOME_TYPE>, OUTCOME_TYPE, ENCODED_OUTCOME_TYPE, MODEL_TYPE>, OUTCOME_TYPE, ENCODED_OUTCOME_TYPE, MODEL_TYPE>
+    extends
+    DataWriter_ImplBase<CLASSIFIER_BUILDER_TYPE, FeatureVector, OUTCOME_TYPE, ENCODED_OUTCOME_TYPE> {
 
   public LIBSVMDataWriter(File outputDirectory) throws IOException {
     super(outputDirectory);
-
-    // set up files
-    File trainingDataFile = getFile(TRAINING_DATA_FILE_NAME);
-    trainingDataFile.delete();
-
-    // set up writer
-    trainingDataWriter = this.getPrintWriter(TRAINING_DATA_FILE_NAME);
-
-    // set manifest attributes for classifier
-    Map<String, Attributes> entries = classifierManifest.getEntries();
-    if (!entries.containsKey(LIBSVMClassifier.ATTRIBUTES_NAME)) {
-      entries.put(LIBSVMClassifier.ATTRIBUTES_NAME, new Attributes());
-    }
-    Attributes attributes = entries.get(LIBSVMClassifier.ATTRIBUTES_NAME);
-    attributes.putValue(
-        LIBSVMClassifier.SCALE_FEATURES_KEY,
-        LIBSVMClassifier.SCALE_FEATURES_VALUE_NORMALIZEL2);
   }
 
   @Override
-  public void writeEncoded(FeatureVector features, OUTPUTOUTCOME_TYPE outcome)
+  public void writeEncoded(FeatureVector features, ENCODED_OUTCOME_TYPE outcome)
       throws CleartkException {
     String classString = encode(outcome);
 
@@ -89,19 +68,6 @@ public abstract class LIBSVMDataWriter<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE> ex
     trainingDataWriter.println(output);
   }
 
-  @Override
-  public void finish() throws CleartkException {
-    super.finish();
-
-    // flush and close writer
-    trainingDataWriter.flush();
-    trainingDataWriter.close();
-  }
-
-  public abstract Class<? extends ClassifierBuilder<INPUTOUTCOME_TYPE>> getDefaultClassifierBuilderClass();
-
-  protected abstract String encode(OUTPUTOUTCOME_TYPE outcome);
-
-  private PrintWriter trainingDataWriter;
+  protected abstract String encode(ENCODED_OUTCOME_TYPE outcome);
 
 }

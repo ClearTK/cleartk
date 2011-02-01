@@ -1,5 +1,5 @@
 /** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+ * Copyright (c) 2007-2011, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -25,9 +25,18 @@ package org.cleartk.classifier.jar;
 
 import java.io.File;
 
+
 /**
+ * Command line tool for training a classifier from an output directory that has been filled by a
+ * {@link DirectoryDataWriter}.
+ * 
+ * Usage: <code>java org.cleartk.classifier.jar.Train model-dir ...</code>
+ * 
+ * Some classifiers may accept additional arguments to train, see the documentation for the various
+ * {@link JarClassifierBuilder} subclasses for details.
+ * 
  * <br>
- * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * Copyright (c) 2007-2011, Regents of the University of Colorado <br>
  * All rights reserved.
  */
 
@@ -45,15 +54,14 @@ public class Train {
     }
     File dir = new File(args[0]);
 
-    // get the classifier class from the manifest
-    ClassifierManifest manifest = new ClassifierManifest(dir);
-    ClassifierBuilder<?> classifierBuilder = manifest.getClassifierBuilder();
+    // get the classifier builder from the training directory
+    JarClassifierBuilder<?> classifierBuilder = JarClassifierBuilder.fromTrainingDirectory(dir);
 
     // clip the first item off the command line arguments, and call train
     String[] remainingArgs = new String[args.length - 1];
     System.arraycopy(args, 1, remainingArgs, 0, remainingArgs.length);
-    classifierBuilder.train(dir, remainingArgs);
-    classifierBuilder.buildJar(dir, remainingArgs);
+    classifierBuilder.trainClassifier(dir, remainingArgs);
+    classifierBuilder.packageClassifier(dir);
   }
 
 }

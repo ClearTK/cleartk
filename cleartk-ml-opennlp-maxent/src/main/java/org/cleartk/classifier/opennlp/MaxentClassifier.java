@@ -1,5 +1,5 @@
 /** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+ * Copyright (c) 2007-2011, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -23,22 +23,28 @@
  */
 package org.cleartk.classifier.opennlp;
 
-import java.io.IOException;
-import java.util.jar.JarFile;
+import java.util.List;
+
+import opennlp.model.MaxentModel;
+
+import org.cleartk.classifier.encoder.features.FeaturesEncoder;
+import org.cleartk.classifier.encoder.features.NameNumber;
+import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 
 /**
  * <br>
- * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * Copyright (c) 2007-2011, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
  * 
  * @author Philip Ogren
- * 
+ * @author Steven Bethard
  */
 public class MaxentClassifier extends MaxentClassifier_ImplBase<String> {
-
-  public MaxentClassifier(JarFile modelFile) throws IOException {
-    super(modelFile);
+  public MaxentClassifier(
+      FeaturesEncoder<List<NameNumber>> featuresEncoder,
+      OutcomeEncoder<String, String> outcomeEncoder,
+      MaxentModel model) {
+    super(featuresEncoder, outcomeEncoder, model);
   }
-
 }

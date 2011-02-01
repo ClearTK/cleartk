@@ -75,13 +75,12 @@ public class SentenceAnnotator extends JCasAnnotator_ImplBase {
 
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
     return AnalysisEngineFactory.createPrimitiveDescription(
-    		SentenceAnnotator.class,
-            SyntaxComponents.TYPE_SYSTEM_DESCRIPTION, 
-            PARAM_SENTENCE_MODEL_PATH,
-            ParamUtil.getParameterValue(PARAM_SENTENCE_MODEL_PATH, "/models/en-sent.bin"),
-            PARAM_WINDOW_CLASS_NAMES, 
-            ParamUtil.getParameterValue(PARAM_WINDOW_CLASS_NAMES, null)
-            );
+        SentenceAnnotator.class,
+        SyntaxComponents.TYPE_SYSTEM_DESCRIPTION,
+        PARAM_SENTENCE_MODEL_PATH,
+        ParamUtil.getParameterValue(PARAM_SENTENCE_MODEL_PATH, "/models/en-sent.bin"),
+        PARAM_WINDOW_CLASS_NAMES,
+        ParamUtil.getParameterValue(PARAM_WINDOW_CLASS_NAMES, null));
   }
 
   public static final String PARAM_SENTENCE_MODEL_PATH = ConfigurationParameterFactory
@@ -94,19 +93,17 @@ public class SentenceAnnotator extends JCasAnnotator_ImplBase {
       .createConfigurationParameterName(SentenceAnnotator.class, "sentenceTypeName");
 
   public static final String PARAM_WINDOW_CLASS_NAMES = ConfigurationParameterFactory
-          .createConfigurationParameterName(SentenceAnnotator.class, "windowClassNames");
-  
+      .createConfigurationParameterName(SentenceAnnotator.class, "windowClassNames");
+
   @ConfigurationParameter(mandatory = false, description = "provides an array of the annotation types that will be processed by this sentence annotator.  If the parameter is not filled, then SentenceAnnotator will process on the contents of jCas.getDocumentText().  It us up to the caller to ensure annotations do not overlap.")
   private String[] windowClassNames;
 
-  
   @ConfigurationParameter(description = "class type of the sentences that are created by this annotator. If this parameter is not filled, then sentencesof type org.cleartk.type.Sentence will be created.", defaultValue = "org.cleartk.token.type.Sentence")
   private String sentenceTypeName;
 
   Class<? extends Annotation> sentenceClass;
 
   protected List<Class<? extends Annotation>> windowClasses;
-
 
   Constructor<? extends Annotation> sentenceConstructor;
 
@@ -169,7 +166,8 @@ public class SentenceAnnotator extends JCasAnnotator_ImplBase {
     }
   }
 
-  protected void processText(JCas jCas, String text, int textOffset) throws AnalysisEngineProcessException {
+  protected void processText(JCas jCas, String text, int textOffset)
+      throws AnalysisEngineProcessException {
     List<Integer> sentenceOffsets = getSentenceOffsets(text);
 
     int begin = 0;
@@ -193,7 +191,9 @@ public class SentenceAnnotator extends JCasAnnotator_ImplBase {
           if (matcher.find()) {
             end -= matcher.group().length();
           }
-          sentenceConstructor.newInstance(jCas, textOffset + begin, textOffset + end).addToIndexes();
+          sentenceConstructor
+              .newInstance(jCas, textOffset + begin, textOffset + end)
+              .addToIndexes();
         }
         begin = offset; // we need to advance begin regardless of whether a sentence was created.
       }
@@ -209,7 +209,9 @@ public class SentenceAnnotator extends JCasAnnotator_ImplBase {
           if (matcher.find()) {
             end -= matcher.group().length();
           }
-          sentenceConstructor.newInstance(jCas, textOffset + begin, textOffset + end).addToIndexes();
+          sentenceConstructor
+              .newInstance(jCas, textOffset + begin, textOffset + end)
+              .addToIndexes();
         }
       }
     } catch (Exception e) {

@@ -38,8 +38,8 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
+import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.JarClassifierFactory;
-import org.cleartk.classifier.jar.JarDataWriterFactory;
 import org.cleartk.classifier.test.DefaultStringTestDataWriterFactory;
 import org.cleartk.classifier.util.InstanceFactory;
 import org.cleartk.test.DefaultTestBase;
@@ -144,7 +144,7 @@ public class CleartkAnnotatorTest extends DefaultTestBase {
       AnalysisEngineFactory.createPrimitive(
           StringTestAnnotator.class,
           typeSystemDescription,
-          JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+          DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
           outputDirectoryName);
       Assert.fail("expected exception with missing classifier jar");
     } catch (ResourceInitializationException e) {
@@ -153,7 +153,7 @@ public class CleartkAnnotatorTest extends DefaultTestBase {
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         StringTestAnnotator.class,
         typeSystemDescription,
-        JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         DefaultStringTestDataWriterFactory.class.getName());
@@ -162,7 +162,8 @@ public class CleartkAnnotatorTest extends DefaultTestBase {
         .getConfigParameterValue(CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME);
     Assert.assertEquals(DefaultStringTestDataWriterFactory.class.getName(), dataWriter);
 
-    Object outputDir = engine.getConfigParameterValue(JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY);
+    Object outputDir = engine
+        .getConfigParameterValue(DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY);
     Assert.assertEquals(outputDirectoryName, outputDir);
 
     engine.collectionProcessComplete();

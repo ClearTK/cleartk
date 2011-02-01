@@ -34,7 +34,7 @@ import org.cleartk.classifier.encoder.features.StringEncoder;
 import org.cleartk.classifier.encoder.features.normalizer.EuclidianNormalizer;
 import org.cleartk.classifier.encoder.features.normalizer.NameNumberNormalizer;
 import org.cleartk.classifier.encoder.outcome.BooleanToBooleanOutcomeEncoder;
-import org.cleartk.classifier.jar.JarDataWriterFactory;
+import org.cleartk.classifier.jar.DataWriterFactory_ImplBase;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
@@ -49,7 +49,7 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  */
 
 public class DefaultBinaryLIBLINEARDataWriterFactory extends
-    JarDataWriterFactory<FeatureVector, Boolean, Boolean> {
+    DataWriterFactory_ImplBase<FeatureVector, Boolean, Boolean> {
 
   public static final String PARAM_CUTOFF = ConfigurationParameterFactory
       .createConfigurationParameterName(DefaultBinaryLIBLINEARDataWriterFactory.class, "cutoff");

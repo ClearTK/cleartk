@@ -23,21 +23,17 @@
  */
 package org.cleartk.classifier.svmlight;
 
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
-import java.util.jar.JarFile;
-import java.util.zip.ZipEntry;
 
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.ScoredOutcome;
-import org.cleartk.classifier.jar.JarClassifier;
+import org.cleartk.classifier.encoder.features.FeaturesEncoder;
+import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
+import org.cleartk.classifier.jar.Classifier_ImplBase;
 import org.cleartk.classifier.sigmoid.Sigmoid;
 import org.cleartk.classifier.svmlight.model.SVMlightModel;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
@@ -47,38 +43,20 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
  */
-public class OVASVMlightClassifier extends JarClassifier<String, Integer, FeatureVector> {
+public class OVASVMlightClassifier extends Classifier_ImplBase<FeatureVector, String, Integer> {
 
   Map<Integer, SVMlightModel> models;
 
   Map<Integer, Sigmoid> sigmoids;
 
-  public OVASVMlightClassifier(JarFile modelFile) throws IOException, CleartkException {
-    super(modelFile);
-    this.models = new TreeMap<Integer, SVMlightModel>();
-    this.sigmoids = new TreeMap<Integer, Sigmoid>();
-
-    try {
-      int i = 1;
-      ZipEntry modelEntry = modelFile.getEntry(String.format("model-%d.svmlight", i));
-      while (modelEntry != null) {
-        SVMlightModel m = SVMlightModel.fromInputStream(modelFile.getInputStream(modelEntry));
-        this.models.put(i, m);
-        modelEntry = modelFile.getEntry(String.format("model-%d.sigmoid", i));
-        ObjectInput in = new ObjectInputStream(modelFile.getInputStream(modelEntry));
-        this.sigmoids.put(i, (Sigmoid) in.readObject());
-        in.close();
-
-        i += 1;
-        modelEntry = modelFile.getEntry(String.format("model-%d.svmlight", i));
-      }
-
-      if (this.models.isEmpty()) {
-        throw new IOException(String.format("no models found in %s", modelFile.getName()));
-      }
-    } catch (ClassNotFoundException e) {
-      throw new CleartkException(e);
-    }
+  public OVASVMlightClassifier(
+      FeaturesEncoder<FeatureVector> featuresEncoder,
+      OutcomeEncoder<String, Integer> outcomeEncoder,
+      Map<Integer, SVMlightModel> models,
+      Map<Integer, Sigmoid> sigmoids) {
+    super(featuresEncoder, outcomeEncoder);
+    this.models = models;
+    this.sigmoids = sigmoids;
   }
 
   public String classify(List<Feature> features) throws CleartkException {

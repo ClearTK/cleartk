@@ -1,5 +1,5 @@
 /** 
- * Copyright (c) 2009, Regents of the University of Colorado 
+ * Copyright (c) 2009-2011, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -28,21 +28,21 @@ import java.util.List;
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.encoder.features.NameNumber;
-import org.cleartk.classifier.jar.JarDataWriterFactory;
+import org.cleartk.classifier.jar.DataWriterFactory_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 
 /**
  * <br>
- * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * Copyright (c) 2009-2011, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
  * @author Philip Ogren
- * 
+ * @author Steven Bethard
  */
 
 public abstract class MaxentDataWriterFactory_ImplBase<OUTCOME_TYPE> extends
-    JarDataWriterFactory<List<NameNumber>, OUTCOME_TYPE, String> {
+    DataWriterFactory_ImplBase<List<NameNumber>, OUTCOME_TYPE, String> {
 
   public static final String PARAM_COMPRESS = ConfigurationParameterFactory
       .createConfigurationParameterName(MaxentDataWriterFactory_ImplBase.class, "compress");

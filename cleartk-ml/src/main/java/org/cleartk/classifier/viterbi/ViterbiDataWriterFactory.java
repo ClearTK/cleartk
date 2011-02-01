@@ -27,15 +27,16 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.uima.UimaContext;
-import org.apache.uima.impl.UimaContext_ImplBase;
+import org.apache.uima.UimaContextAdmin;
 import org.apache.uima.resource.ConfigurationManager;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.DataWriter;
+import org.cleartk.classifier.DataWriterFactory;
 import org.cleartk.classifier.SequentialDataWriter;
 import org.cleartk.classifier.SequentialDataWriterFactory;
 import org.cleartk.classifier.feature.extractor.outcome.OutcomeFeatureExtractor;
-import org.cleartk.classifier.jar.JarDataWriterFactory;
+import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
@@ -51,7 +52,7 @@ import org.uimafit.factory.initializable.InitializableFactory;
  * 
  */
 
-public class ViterbiDataWriterFactory<OUTCOME_TYPE> implements
+public class ViterbiDataWriterFactory<OUTCOME_TYPE> extends DirectoryDataWriterFactory implements
     SequentialDataWriterFactory<OUTCOME_TYPE>, Initializable {
 
   public static final String PARAM_OUTCOME_FEATURE_EXTRACTOR_NAMES = ConfigurationParameterFactory
@@ -76,13 +77,6 @@ public class ViterbiDataWriterFactory<OUTCOME_TYPE> implements
       + "the full name of the DataWriterFactory class that will be " + "wrapped.")
   protected String delegatedDataWriterFactoryClass;
 
-  public static final String PARAM_OUTPUT_DIRECTORY = ConfigurationParameterFactory
-      .createConfigurationParameterName(ViterbiDataWriterFactory.class, "outputDirectory");
-
-  @ConfigurationParameter(mandatory = true, description = "provides the name of the directory where the "
-      + "training data will be written.")
-  protected File outputDirectory;
-
   public void initialize(UimaContext context) throws ResourceInitializationException {
     ConfigurationParameterInitializer.initialize(this, context);
 
@@ -102,19 +96,29 @@ public class ViterbiDataWriterFactory<OUTCOME_TYPE> implements
 
       dataWriter = new ViterbiDataWriter<OUTCOME_TYPE>(outputDirectory, outcomeFeatureExtractors);
 
-      UimaContext_ImplBase contextImpl = (UimaContext_ImplBase) context;
-      ConfigurationManager c = contextImpl.getConfigurationManager();
-      c.setConfigParameterValue(contextImpl.getQualifiedContextName()
-          + JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY, dataWriter
-          .getDelegatedModelDirectory()
-          .toString());
+      // set the output directory parameter to the delegated directory
+      UimaContextAdmin contextAdmin = (UimaContextAdmin) context;
+      ConfigurationManager manager = contextAdmin.getConfigurationManager();
+      ViterbiClassifierBuilder<OUTCOME_TYPE> builder = dataWriter.getClassifierBuilder();
+      File delegatedDir = builder.getDelegatedModelDirectory(this.outputDirectory);
+      manager.setConfigParameterValue(contextAdmin.getQualifiedContextName()
+          + DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY, delegatedDir.getPath());
 
-      JarDataWriterFactory<?, OUTCOME_TYPE, ?> delegatedDataWriterFactory = createDelegatedDataWriterFactory(
-          delegatedDataWriterFactoryClass,
-          context);
+      // initialize the delegated data writer
+      try {
+        DataWriterFactory<OUTCOME_TYPE> delegatedDataWriterFactory = createDelegatedDataWriterFactory(
+            delegatedDataWriterFactoryClass,
+            context);
+        DataWriter<OUTCOME_TYPE> delegatedDataWriter = delegatedDataWriterFactory
+            .createDataWriter();
+        dataWriter.setDelegatedDataWriter(delegatedDataWriter);
+      }
 
-      DataWriter<OUTCOME_TYPE> delegatedDataWriter = delegatedDataWriterFactory.createDataWriter();
-      dataWriter.setDelegatedDataWriter(delegatedDataWriter);
+      // restore the output directory parameter
+      finally {
+        manager.setConfigParameterValue(contextAdmin.getQualifiedContextName()
+            + DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY, this.outputDirectory.getPath());
+      }
     } catch (IOException e) {
       throw new ResourceInitializationException(e);
     } catch (CleartkException e) {
@@ -127,13 +131,13 @@ public class ViterbiDataWriterFactory<OUTCOME_TYPE> implements
   }
 
   @SuppressWarnings("unchecked")
-  private JarDataWriterFactory<?, OUTCOME_TYPE, ?> createDelegatedDataWriterFactory(
+  private DataWriterFactory<OUTCOME_TYPE> createDelegatedDataWriterFactory(
       String delegatedDataWriterFactoryClassName,
       UimaContext context) throws ResourceInitializationException {
     return InitializableFactory.create(
         context,
         delegatedDataWriterFactoryClassName,
-        JarDataWriterFactory.class);
+        DataWriterFactory.class);
   }
 
   private ViterbiDataWriter<OUTCOME_TYPE> dataWriter;

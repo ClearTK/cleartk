@@ -51,8 +51,8 @@ import org.cleartk.classifier.feature.extractor.simple.MatchingAnnotationExtract
 import org.cleartk.classifier.feature.extractor.simple.NamingExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
+import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.JarClassifierFactory;
-import org.cleartk.classifier.jar.JarDataWriterFactory;
 import org.cleartk.srl.feature.NamedEntityExtractor;
 import org.cleartk.srl.feature.NodeTypeExtractor;
 import org.cleartk.srl.feature.POSExtractor;
@@ -91,7 +91,7 @@ public class ArgumentClassifier extends CleartkAnnotator<String> {
         SrlComponents.TYPE_SYSTEM_DESCRIPTION,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         dataWriterFactoryClass.getName(),
-        JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectory.toString());
   }
 

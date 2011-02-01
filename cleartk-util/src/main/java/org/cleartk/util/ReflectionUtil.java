@@ -23,6 +23,7 @@
  */
 package org.cleartk.util;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
@@ -214,6 +215,79 @@ public class ReflectionUtil {
           object2.getClass().getSimpleName(),
           paramName2,
           type2)));
+    }
+  }
+
+  /**
+   * Checks that the given type parameters of the given objects are exactly equal.
+   * 
+   * Type parameters are identified by providing the class in which the type parameter is defined,
+   * and the declared name of the type parameter.
+   * 
+   * Throws an instance of the given exception class if type parameters are not exactly equal.
+   * 
+   * @param <T>
+   *          Type of the class declaring the first type parameter
+   * @param <U>
+   *          Type of the class declaring the second type parameter
+   * @param paramDefiningClass1
+   *          The class declaring the first type parameter
+   * @param paramName1
+   *          The declared name of the first type parameter
+   * @param object1
+   *          The target object
+   * @param paramDefiningClass2
+   *          The class declaring the second type parameter
+   * @param paramName2
+   *          The declared name of the second type parameter
+   * @param object2
+   *          The source object
+   */
+  public static <T, U, E extends Exception> void checkTypeParametersAreEqual(
+      Class<T> paramDefiningClass1,
+      String paramName1,
+      T object1,
+      Class<U> paramDefiningClass2,
+      String paramName2,
+      U object2,
+      Class<E> exceptionClass) throws E {
+
+    // get the type arguments from the objects
+    java.lang.reflect.Type type1 = ReflectionUtil.getTypeArgument(
+        paramDefiningClass1,
+        paramName1,
+        object1);
+    java.lang.reflect.Type type2 = ReflectionUtil.getTypeArgument(
+        paramDefiningClass2,
+        paramName2,
+        object2);
+
+    // both arguments missing is equal
+    if (type1 == null && type2 == null) {
+      return;
+    }
+
+    // if the second type is not equal to the first, raise an exception
+    if (type1 == null || type2 == null || !type1.equals(type2)) {
+      try {
+        throw exceptionClass.getConstructor(String.class).newInstance(
+            String.format(
+                "%s with %s %s is not equal to %s with %s %s",
+                object1.getClass().getSimpleName(),
+                paramName1,
+                type1,
+                object2.getClass().getSimpleName(),
+                paramName2,
+                type2));
+      } catch (InstantiationException e) {
+        throw new RuntimeException(e);
+      } catch (IllegalAccessException e) {
+        throw new RuntimeException(e);
+      } catch (InvocationTargetException e) {
+        throw new RuntimeException(e);
+      } catch (NoSuchMethodException e) {
+        throw new RuntimeException(e);
+      }
     }
   }
 

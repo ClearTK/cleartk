@@ -24,11 +24,18 @@
 package org.cleartk.classifier.mallet;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.List;
+import java.util.jar.JarInputStream;
+import java.util.jar.JarOutputStream;
 
-import org.cleartk.classifier.jar.BuildJar;
-import org.cleartk.classifier.jar.ClassifierBuilder;
+import org.cleartk.classifier.encoder.features.NameNumber;
+import org.cleartk.classifier.jar.JarStreams;
+import org.cleartk.classifier.jar.SequentialClassifierBuilder_ImplBase;
 
 import cc.mallet.fst.SimpleTagger;
+import cc.mallet.fst.Transducer;
 
 /**
  * <br>
@@ -40,27 +47,48 @@ import cc.mallet.fst.SimpleTagger;
  * 
  */
 
-public class MalletCRFClassifierBuilder implements ClassifierBuilder<String> {
+public class MalletCRFClassifierBuilder extends
+    SequentialClassifierBuilder_ImplBase<MalletCRFClassifier, List<NameNumber>, String, String> {
 
-  public void train(File dir, String[] args) throws Exception {
+  private static final String MODEL_NAME = "model.malletcrf";
+
+  public File getTrainingDataFile(File dir) {
+    return new File(dir, "training-data.malletcrf");
+  }
+
+  public void trainClassifier(File dir, String... args) throws Exception {
     String[] malletArgs = new String[args.length + 5];
     System.arraycopy(args, 0, malletArgs, 0, args.length);
     malletArgs[malletArgs.length - 5] = "--train";
     malletArgs[malletArgs.length - 4] = "true";
     malletArgs[malletArgs.length - 3] = "--model-file";
-    malletArgs[malletArgs.length - 2] = new File(dir, "model.malletcrf").getPath();
-    malletArgs[malletArgs.length - 1] = new File(dir, "training-data.malletcrf").getPath();
+    malletArgs[malletArgs.length - 2] = new File(dir, MODEL_NAME).getPath();
+    malletArgs[malletArgs.length - 1] = getTrainingDataFile(dir).getPath();
     SimpleTagger.main(malletArgs);
   }
 
-  public void buildJar(File dir, String[] args) throws Exception {
-    BuildJar.OutputStream stream = new BuildJar.OutputStream(dir);
-    stream.write("model.malletcrf", new File(dir, "model.malletcrf"));
-    stream.close();
+  @Override
+  protected void packageClassifier(File dir, JarOutputStream modelStream) throws IOException {
+    super.packageClassifier(dir, modelStream);
+    JarStreams.putNextJarEntry(modelStream, MODEL_NAME, new File(dir, MODEL_NAME));
   }
 
-  public Class<?> getClassifierClass() {
-    return MalletCRFClassifier.class;
+  protected Transducer transducer;
+
+  @Override
+  protected void unpackageClassifier(JarInputStream modelStream) throws IOException {
+    super.unpackageClassifier(modelStream);
+    JarStreams.getNextJarEntry(modelStream, MODEL_NAME);
+    ObjectInputStream objectStream = new ObjectInputStream(modelStream);
+    try {
+      this.transducer = (Transducer) objectStream.readObject();
+    } catch (ClassNotFoundException e) {
+      throw new IOException(e);
+    }
   }
 
+  @Override
+  protected MalletCRFClassifier newClassifier() {
+    return new MalletCRFClassifier(this.featuresEncoder, this.outcomeEncoder, this.transducer);
+  }
 }

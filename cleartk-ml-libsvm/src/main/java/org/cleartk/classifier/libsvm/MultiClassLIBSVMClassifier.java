@@ -23,8 +23,11 @@
  */
 package org.cleartk.classifier.libsvm;
 
-import java.io.IOException;
-import java.util.jar.JarFile;
+import libsvm.svm_model;
+
+import org.cleartk.classifier.encoder.features.FeaturesEncoder;
+import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
+import org.cleartk.classifier.util.featurevector.FeatureVector;
 
 /**
  * <br>
@@ -33,8 +36,11 @@ import java.util.jar.JarFile;
  */
 public class MultiClassLIBSVMClassifier extends LIBSVMClassifier<String, Integer> {
 
-  public MultiClassLIBSVMClassifier(JarFile modelFile) throws IOException {
-    super(modelFile);
+  public MultiClassLIBSVMClassifier(
+      FeaturesEncoder<FeatureVector> featuresEncoder,
+      OutcomeEncoder<String, Integer> outcomeEncoder,
+      svm_model model) {
+    super(featuresEncoder, outcomeEncoder, model);
   }
 
   @Override

@@ -26,23 +26,29 @@ package org.cleartk.classifier.liblinear;
 import java.io.File;
 import java.io.IOException;
 
-import org.cleartk.classifier.jar.ClassifierBuilder;
-import org.cleartk.classifier.libsvm.BinaryLIBSVMDataWriter;
+import org.cleartk.classifier.liblinear.model.LIBLINEARModel;
+import org.cleartk.classifier.libsvm.LIBSVMDataWriter;
 
 /**
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
  */
-public class BinaryLIBLINEARDataWriter extends BinaryLIBSVMDataWriter {
+public class BinaryLIBLINEARDataWriter extends
+    LIBSVMDataWriter<BinaryLIBLINEARClassifierBuilder, Boolean, Boolean, LIBLINEARModel> {
 
   public BinaryLIBLINEARDataWriter(File outputDirectory) throws IOException {
     super(outputDirectory);
   }
 
   @Override
-  public Class<? extends ClassifierBuilder<Boolean>> getDefaultClassifierBuilderClass() {
-    return BinaryLIBLINEARClassifierBuilder.class;
+  protected String encode(Boolean outcome) {
+    return this.classifierBuilder.getOutcomeEncoder().encode(outcome).booleanValue() ? "+1" : "-1";
+  }
+
+  @Override
+  protected BinaryLIBLINEARClassifierBuilder newClassifierBuilder() {
+    return new BinaryLIBLINEARClassifierBuilder();
   }
 
 }

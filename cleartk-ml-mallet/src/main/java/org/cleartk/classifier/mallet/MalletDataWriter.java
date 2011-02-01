@@ -26,8 +26,6 @@ package org.cleartk.classifier.mallet;
 import java.io.File;
 import java.io.IOException;
 
-import org.cleartk.classifier.jar.ClassifierBuilder;
-
 /**
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
@@ -43,14 +41,15 @@ import org.cleartk.classifier.jar.ClassifierBuilder;
  * 
  * @author Philip Ogren
  */
-public class MalletDataWriter extends MalletDataWriter_ImplBase<String> {
+public class MalletDataWriter extends MalletDataWriter_ImplBase<MalletClassifierBuilder, String> {
 
   public MalletDataWriter(File outputDirectory) throws IOException {
     super(outputDirectory);
   }
 
-  public Class<? extends ClassifierBuilder<String>> getDefaultClassifierBuilderClass() {
-    return MalletClassifierBuilder.class;
+  @Override
+  protected MalletClassifierBuilder newClassifierBuilder() {
+    return new MalletClassifierBuilder();
   }
 
 }

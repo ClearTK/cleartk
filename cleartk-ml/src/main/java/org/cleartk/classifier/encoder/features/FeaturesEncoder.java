@@ -35,8 +35,8 @@ import org.cleartk.classifier.Feature;
  * All rights reserved.
  */
 
-public interface FeaturesEncoder<FEATURES_TYPE> extends Serializable {
-  public FEATURES_TYPE encodeAll(Iterable<Feature> features) throws CleartkException;
+public interface FeaturesEncoder<ENCODED_FEATURES_TYPE> extends Serializable {
+  public ENCODED_FEATURES_TYPE encodeAll(Iterable<Feature> features) throws CleartkException;
 
   public void finalizeFeatureSet(File outputDirectory) throws CleartkException;
 }

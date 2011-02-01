@@ -24,10 +24,13 @@
 package org.cleartk.classifier.test;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.jar.JarOutputStream;
 
+import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
-import org.cleartk.classifier.jar.BuildJar;
-import org.cleartk.classifier.jar.ClassifierBuilder;
+import org.cleartk.classifier.jar.ClassifierBuilder_ImplBase;
+import org.cleartk.classifier.jar.JarStreams;
 
 /**
  * <br>
@@ -37,20 +40,30 @@ import org.cleartk.classifier.jar.ClassifierBuilder;
  * @author Philip Ogren
  * 
  */
-public abstract class TestClassifierBuilder_ImplBase<OUTCOME_TYPE> implements
-    ClassifierBuilder<OUTCOME_TYPE> {
+public abstract class TestClassifierBuilder_ImplBase<CLASSIFIER_TYPE extends Classifier<OUTCOME_TYPE>, ENCODED_FEATURES_TYPE, OUTCOME_TYPE, ENCODED_OUTCOME_TYPE>
+    extends
+    ClassifierBuilder_ImplBase<CLASSIFIER_TYPE, ENCODED_FEATURES_TYPE, OUTCOME_TYPE, ENCODED_OUTCOME_TYPE> {
 
-  public void train(File dir, String[] args) throws Exception {
+  private static final String TRAINING_DATA_FILE_NAME = "training-data.test";
+
+  public File getTrainingDataFile(File dir) {
+    return new File(dir, TRAINING_DATA_FILE_NAME);
   }
 
-  public void buildJar(File dir, String[] args) throws Exception {
-    BuildJar.OutputStream stream = new BuildJar.OutputStream(dir);
-    stream.write("training-data.test", new File(dir, "training-data.test"));
+  @Override
+  public void trainClassifier(File dir, String... args) throws Exception {
+    // Nothing to train
+  }
+
+  @Override
+  public void packageClassifier(File dir, JarOutputStream modelStream) throws IOException {
+    super.packageClassifier(dir, modelStream);
+
+    File testFile = new File(dir, "training-data.test");
+    JarStreams.putNextJarEntry(modelStream, "training-data.test", testFile);
     File featureLookup = new File(dir, NameNumberFeaturesEncoder.LOOKUP_FILE_NAME);
     if (featureLookup.exists()) {
-      stream.write("name-lookup.txt", featureLookup);
+      JarStreams.putNextJarEntry(modelStream, "name-lookup.txt", featureLookup);
     }
-    stream.close();
   }
-
 }

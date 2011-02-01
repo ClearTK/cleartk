@@ -23,19 +23,18 @@
  */
 package org.cleartk.classifier.mallet;
 
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.jar.JarFile;
-import java.util.zip.ZipEntry;
 
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.ScoredOutcome;
+import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.NameNumber;
-import org.cleartk.classifier.jar.JarClassifier;
+import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
+import org.cleartk.classifier.jar.Classifier_ImplBase;
 
 import cc.mallet.classify.Classification;
 import cc.mallet.classify.Classifier;
@@ -55,20 +54,19 @@ import cc.mallet.types.Labeling;
  * 
  */
 public abstract class MalletClassifier_ImplBase<OUTCOME_TYPE> extends
-    JarClassifier<OUTCOME_TYPE, String, List<NameNumber>> {
+    Classifier_ImplBase<List<NameNumber>, OUTCOME_TYPE, String> {
 
   protected Classifier classifier;
 
   Alphabet alphabet;
 
-  public MalletClassifier_ImplBase(JarFile modelFile) throws Exception {
-    super(modelFile);
-
-    ZipEntry modelEntry = modelFile.getEntry("model.mallet");
-    ObjectInputStream objectStream = new ObjectInputStream(modelFile.getInputStream(modelEntry));
-    this.classifier = (Classifier) objectStream.readObject();
+  public MalletClassifier_ImplBase(
+      FeaturesEncoder<List<NameNumber>> featuresEncoder,
+      OutcomeEncoder<OUTCOME_TYPE, String> outcomeEncoder,
+      Classifier classifier) {
+    super(featuresEncoder, outcomeEncoder);
+    this.classifier = classifier;
     this.alphabet = classifier.getAlphabet();
-
   }
 
   /**

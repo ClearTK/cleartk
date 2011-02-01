@@ -23,7 +23,9 @@
  */
 package org.cleartk.classifier.test;
 
-import org.cleartk.classifier.Classifier;
+import java.util.List;
+
+import org.cleartk.classifier.encoder.features.NameNumber;
 
 /**
  * <br>
@@ -33,9 +35,11 @@ import org.cleartk.classifier.Classifier;
  * @author Philip Ogren
  * 
  */
-public class StringTestClassifierBuilder extends TestClassifierBuilder_ImplBase<String> {
+public class StringTestClassifierBuilder extends
+    TestClassifierBuilder_ImplBase<StringTestClassifier, List<NameNumber>, String, String> {
 
-  public Class<? extends Classifier<String>> getClassifierClass() {
-    return StringTestClassifier.class;
+  @Override
+  protected StringTestClassifier newClassifier() {
+    return new StringTestClassifier(this.featuresEncoder, this.outcomeEncoder);
   }
 }

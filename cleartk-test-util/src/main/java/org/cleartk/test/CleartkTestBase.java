@@ -82,7 +82,8 @@ public abstract class CleartkTestBase {
 
     int count = 0;
     JCasIterable jCases = new JCasIterable(reader, aeAdapter);
-    for (@SuppressWarnings("unused") JCas jcs : jCases) {
+    for (@SuppressWarnings("unused")
+    JCas jcs : jCases) {
       count++;
     }
     return count;

@@ -23,16 +23,16 @@
  */
 package org.cleartk.classifier.test;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.jar.JarFile;
 
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.ScoredOutcome;
+import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.NameNumber;
-import org.cleartk.classifier.jar.JarClassifier;
+import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
+import org.cleartk.classifier.jar.Classifier_ImplBase;
 
 /**
  * <br>
@@ -44,10 +44,12 @@ import org.cleartk.classifier.jar.JarClassifier;
  * 
  */
 public abstract class TestClassifier_ImplBase<OUTCOME_TYPE> extends
-    JarClassifier<OUTCOME_TYPE, String, List<NameNumber>> {
+    Classifier_ImplBase<List<NameNumber>, OUTCOME_TYPE, String> {
 
-  public TestClassifier_ImplBase(JarFile modelFile) throws IOException {
-    super(modelFile);
+  public TestClassifier_ImplBase(
+      FeaturesEncoder<List<NameNumber>> featuresEncoder,
+      OutcomeEncoder<OUTCOME_TYPE, String> outcomeEncoder) {
+    super(featuresEncoder, outcomeEncoder);
   }
 
   public OUTCOME_TYPE classify(List<Feature> features) throws CleartkException {

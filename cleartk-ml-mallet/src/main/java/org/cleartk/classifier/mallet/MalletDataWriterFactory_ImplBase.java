@@ -26,7 +26,7 @@ package org.cleartk.classifier.mallet;
 import java.util.List;
 
 import org.cleartk.classifier.encoder.features.NameNumber;
-import org.cleartk.classifier.jar.JarDataWriterFactory;
+import org.cleartk.classifier.jar.DataWriterFactory_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 
@@ -39,7 +39,7 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * 
  */
 public abstract class MalletDataWriterFactory_ImplBase<OUTCOME_TYPE> extends
-    JarDataWriterFactory<List<NameNumber>, OUTCOME_TYPE, String> {
+    DataWriterFactory_ImplBase<List<NameNumber>, OUTCOME_TYPE, String> {
 
   public static final String PARAM_COMPRESS = ConfigurationParameterFactory
       .createConfigurationParameterName(MalletDataWriterFactory_ImplBase.class, "compress");

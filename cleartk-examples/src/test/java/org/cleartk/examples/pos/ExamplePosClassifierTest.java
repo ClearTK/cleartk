@@ -33,7 +33,7 @@ import java.util.logging.Logger;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.pear.util.FileUtil;
 import org.cleartk.classifier.CleartkAnnotatorDescriptionFactory;
-import org.cleartk.classifier.jar.JarDataWriterFactory;
+import org.cleartk.classifier.jar.EncodingDirectoryDataWriterFactory;
 import org.cleartk.classifier.libsvm.DefaultMultiClassLIBSVMDataWriterFactory;
 import org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory;
 import org.cleartk.classifier.mallet.DefaultMalletDataWriterFactory;
@@ -42,8 +42,6 @@ import org.cleartk.classifier.svmlight.DefaultOVASVMlightDataWriterFactory;
 import org.cleartk.classifier.viterbi.ViterbiClassifier;
 import org.cleartk.examples.ExampleComponents;
 import org.cleartk.examples.ExamplesTestBase;
-import org.cleartk.examples.pos.ExamplePOSAnnotator;
-import org.cleartk.examples.pos.ExamplePOSPlainTextWriter;
 import org.cleartk.syntax.constituent.TreebankConstants;
 import org.cleartk.syntax.constituent.TreebankGoldAnnotator;
 import org.cleartk.syntax.opennlp.SentenceAnnotator;
@@ -89,7 +87,7 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
             outDirectoryName);
     ConfigurationParameterFactory.addConfigurationParameter(
         dataWriter,
-        JarDataWriterFactory.PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM,
+        EncodingDirectoryDataWriterFactory.PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM,
         false);
 
     testClassifier(dataWriter, outDirectoryName, 1, "-t", "0"); // MultiClassLIBSVMClassifier.score

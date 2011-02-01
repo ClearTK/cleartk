@@ -29,8 +29,7 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import org.cleartk.classifier.encoder.features.NameNumber;
-import org.cleartk.classifier.jar.ClassifierBuilder;
-import org.cleartk.classifier.jar.JarSequentialDataWriter;
+import org.cleartk.classifier.jar.SequentialDataWriter_ImplBase;
 
 /**
  * <br>
@@ -40,25 +39,11 @@ import org.cleartk.classifier.jar.JarSequentialDataWriter;
  * 
  * @author Martin Toepfer
  */
-public class GrmmDataWriter extends JarSequentialDataWriter<String[], String[], List<NameNumber>> {
-
-  public static final String TRAINING_DATA_FILE_NAME = "training-data.grmm";
-
-  protected PrintWriter trainingDataWriter;
+public class GrmmDataWriter extends
+    SequentialDataWriter_ImplBase<GrmmClassifierBuilder, List<NameNumber>, String[], String[]> {
 
   public GrmmDataWriter(File outputDirectory) throws IOException {
     super(outputDirectory);
-    // initialize output writer and Classifier class:
-    this.trainingDataWriter = this.getPrintWriter(TRAINING_DATA_FILE_NAME);
-  }
-
-  public GrmmDataWriter(PrintWriter writer) throws IOException {
-    super(null);
-    this.trainingDataWriter = writer;
-  }
-
-  public Class<? extends ClassifierBuilder<String[]>> getDefaultClassifierBuilderClass() {
-    return GrmmClassifierBuilder.class;
   }
 
   @Override
@@ -69,6 +54,11 @@ public class GrmmDataWriter extends JarSequentialDataWriter<String[], String[], 
   @Override
   public void writeEndSequence() {
     this.trainingDataWriter.println();
+  }
+
+  @Override
+  protected GrmmClassifierBuilder newClassifierBuilder() {
+    return new GrmmClassifierBuilder();
   }
 
   public static void writeEncoded(List<NameNumber> features, String[] outcome, PrintWriter writer) {
@@ -89,5 +79,4 @@ public class GrmmDataWriter extends JarSequentialDataWriter<String[], String[], 
     }
     writer.println();
   }
-
 }

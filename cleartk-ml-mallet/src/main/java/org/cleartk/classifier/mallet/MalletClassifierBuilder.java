@@ -23,8 +23,6 @@
  */
 package org.cleartk.classifier.mallet;
 
-import org.cleartk.classifier.Classifier;
-
 /**
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
@@ -35,10 +33,12 @@ import org.cleartk.classifier.Classifier;
  * @author Philip Ogren
  */
 
-public class MalletClassifierBuilder extends MalletClassifierBuilder_ImplBase<String> {
+public class MalletClassifierBuilder extends
+    MalletClassifierBuilder_ImplBase<MalletClassifier, String> {
 
-  public Class<? extends Classifier<String>> getClassifierClass() {
-    return MalletClassifier.class;
+  @Override
+  protected MalletClassifier newClassifier() {
+    return new MalletClassifier(this.featuresEncoder, this.outcomeEncoder, this.classifier);
   }
 
 }

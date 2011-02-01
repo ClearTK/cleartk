@@ -27,17 +27,23 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.PrintStream;
+import java.util.jar.JarInputStream;
+import java.util.jar.JarOutputStream;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.util.Level;
 import org.apache.uima.util.Logger;
-import org.cleartk.classifier.Classifier;
-import org.cleartk.classifier.jar.BuildJar;
-import org.cleartk.classifier.jar.ClassifierBuilder;
+import org.cleartk.CleartkException;
+import org.cleartk.classifier.jar.ClassifierBuilder_ImplBase;
+import org.cleartk.classifier.jar.JarStreams;
 import org.cleartk.classifier.sigmoid.Sigmoid;
+import org.cleartk.classifier.svmlight.model.SVMlightModel;
+import org.cleartk.classifier.util.featurevector.FeatureVector;
 
 /**
  * <br>
@@ -45,7 +51,8 @@ import org.cleartk.classifier.sigmoid.Sigmoid;
  * All rights reserved.
  */
 
-public class SVMlightClassifierBuilder implements ClassifierBuilder<Boolean> {
+public class SVMlightClassifierBuilder extends
+    ClassifierBuilder_ImplBase<SVMlightClassifier, FeatureVector, Boolean, Boolean> {
 
   static Logger logger = UIMAFramework.getLogger(SVMlightClassifierBuilder.class);
 
@@ -78,36 +85,75 @@ public class SVMlightClassifierBuilder implements ClassifierBuilder<Boolean> {
     process.waitFor();
   }
 
+  public File getTrainingDataFile(File dir) {
+    return new File(dir, "training-data.svmlight");
+  }
+
+  private File getModelFile(File dir) {
+    return new File(dir, "training-data.svmlight.model");
+  }
+
+  private File getSigmoidFile(File dir) {
+    return new File(dir, "training-data.svmlight.sigmoid");
+  }
+
+  public void trainClassifier(File dir, String... args) throws Exception {
+    File trainingDataFile = getTrainingDataFile(dir);
+    train(trainingDataFile.getPath(), args);
+
+    Sigmoid s = FitSigmoid.fit(getModelFile(dir), trainingDataFile);
+    System.out.println("Computed output mapping function: " + s.toString());
+
+    ObjectOutput o = new ObjectOutputStream(new FileOutputStream(getSigmoidFile(dir)));
+    o.writeObject(s);
+    o.close();
+  }
+
+  @Override
+  protected void packageClassifier(File dir, JarOutputStream modelStream) throws IOException {
+    super.packageClassifier(dir, modelStream);
+    JarStreams.putNextJarEntry(modelStream, "model.svmlight", getModelFile(dir));
+    JarStreams.putNextJarEntry(modelStream, "model.sigmoid", getSigmoidFile(dir));
+  }
+
+  private SVMlightModel model;
+
+  private Sigmoid sigmoid;
+
+  @Override
+  protected void unpackageClassifier(JarInputStream modelStream) throws IOException {
+    super.unpackageClassifier(modelStream);
+    JarStreams.getNextJarEntry(modelStream, "model.svmlight");
+    try {
+      this.model = SVMlightModel.fromInputStream(modelStream);
+    } catch (CleartkException e) {
+      throw new IOException(e);
+    }
+    JarStreams.getNextJarEntry(modelStream, "model.sigmoid");
+    ObjectInput in = new ObjectInputStream(modelStream);
+    try {
+      this.sigmoid = (Sigmoid) in.readObject();
+    } catch (ClassNotFoundException e) {
+      throw new IOException(e);
+    }
+    in.close();
+  }
+
+  @Override
+  protected SVMlightClassifier newClassifier() {
+    return new SVMlightClassifier(
+        this.featuresEncoder,
+        this.outcomeEncoder,
+        this.model,
+        this.sigmoid);
+  }
+
   private static String toString(String[] command) {
     StringBuilder sb = new StringBuilder();
     for (String cmmnd : command) {
       sb.append(cmmnd + " ");
     }
     return sb.toString();
-  }
-
-  public void train(File dir, String[] args) throws Exception {
-    File trainingDataFile = new File(dir, "training-data.svmlight");
-    train(trainingDataFile.getPath(), args);
-
-    Sigmoid s = FitSigmoid.fit(new File(trainingDataFile.toString() + ".model"), trainingDataFile);
-    System.out.println("Computed output mapping function: " + s.toString());
-
-    ObjectOutput o = new ObjectOutputStream(new FileOutputStream(new File(
-        trainingDataFile.toString() + ".sigmoid")));
-    o.writeObject(s);
-    o.close();
-  }
-
-  public void buildJar(File dir, String[] args) throws Exception {
-    BuildJar.OutputStream stream = new BuildJar.OutputStream(dir);
-    stream.write("model.svmlight", new File(dir, "training-data.svmlight.model"));
-    stream.write("model.sigmoid", new File(dir, "training-data.svmlight.sigmoid"));
-    stream.close();
-  }
-
-  public Class<? extends Classifier<Boolean>> getClassifierClass() {
-    return SVMlightClassifier.class;
   }
 
   private static void output(InputStream input, PrintStream output) throws IOException {

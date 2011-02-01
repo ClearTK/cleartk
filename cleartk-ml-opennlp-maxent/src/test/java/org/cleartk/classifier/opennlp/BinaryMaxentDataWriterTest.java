@@ -1,5 +1,5 @@
 /** 
- * Copyright (c) 2009, Regents of the University of Colorado 
+ * Copyright (c) 2009-2011, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -43,7 +43,7 @@ import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
-import org.cleartk.classifier.jar.JarDataWriterFactory;
+import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.classifier.util.InstanceFactory;
 import org.cleartk.test.DefaultTestBase;
@@ -53,7 +53,7 @@ import org.uimafit.testing.util.HideOutput;
 
 /**
  * <br>
- * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * Copyright (c) 2009-2011, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
  * @author Philip Ogren
@@ -94,7 +94,7 @@ public class BinaryMaxentDataWriterTest extends DefaultTestBase {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         Test1Annotator.class,
         typeSystemDescription,
-        JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         DefaultBinaryMaxentDataWriterFactory.class.getName());
@@ -102,9 +102,8 @@ public class BinaryMaxentDataWriterTest extends DefaultTestBase {
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
 
-    String[] lines = FileUtil.loadListOfStrings(new File(
-        outputDirectoryName,
-        BinaryMaxentDataWriter.TRAINING_DATA_FILE_NAME));
+    File trainFile = new BinaryMaxentClassifierBuilder().getTrainingDataFile(this.outputDirectory);
+    String[] lines = FileUtil.loadListOfStrings(trainFile);
     assertEquals("true pos_NN distance=3.0 precision=1.234", lines[0]);
     assertEquals("false name_2PO p's=2", lines[1]);
     assertEquals("true null=0", lines[2]);
@@ -128,7 +127,7 @@ public class BinaryMaxentDataWriterTest extends DefaultTestBase {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         Test1Annotator.class,
         typeSystemDescription,
-        JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         DefaultBinaryMaxentDataWriterFactory.class.getName(),
@@ -138,9 +137,8 @@ public class BinaryMaxentDataWriterTest extends DefaultTestBase {
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
 
-    String[] lines = FileUtil.loadListOfStrings(new File(
-        outputDirectoryName,
-        MaxentDataWriter.TRAINING_DATA_FILE_NAME));
+    File trainFile = new BinaryMaxentClassifierBuilder().getTrainingDataFile(this.outputDirectory);
+    String[] lines = FileUtil.loadListOfStrings(trainFile);
     assertEquals("true 0 1=3.0 2=1.234", lines[0]);
     assertEquals("false 3 4=2", lines[1]);
     assertEquals("true null=0", lines[2]);
@@ -179,7 +177,7 @@ public class BinaryMaxentDataWriterTest extends DefaultTestBase {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         Test1Annotator.class,
         typeSystemDescription,
-        JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         DefaultBinaryMaxentDataWriterFactory.class.getName(),
@@ -191,9 +189,8 @@ public class BinaryMaxentDataWriterTest extends DefaultTestBase {
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
 
-    String[] lines = FileUtil.loadListOfStrings(new File(
-        outputDirectoryName,
-        MaxentDataWriter.TRAINING_DATA_FILE_NAME));
+    File trainFile = new BinaryMaxentClassifierBuilder().getTrainingDataFile(this.outputDirectory);
+    String[] lines = FileUtil.loadListOfStrings(trainFile);
     assertEquals("true 0 1=3.0 2=1.234", lines[0]);
     assertEquals("false 3 4=2", lines[1]);
     assertEquals("true null=0", lines[2]);
@@ -251,7 +248,7 @@ public class BinaryMaxentDataWriterTest extends DefaultTestBase {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         Test4Annotator.class,
         typeSystemDescription,
-        JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         DefaultBinaryMaxentDataWriterFactory.class.getName(),
@@ -300,7 +297,7 @@ public class BinaryMaxentDataWriterTest extends DefaultTestBase {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         Test5Annotator.class,
         typeSystemDescription,
-        JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         DefaultBinaryMaxentDataWriterFactory.class.getName(),
@@ -310,9 +307,8 @@ public class BinaryMaxentDataWriterTest extends DefaultTestBase {
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
 
-    String[] lines = FileUtil.loadListOfStrings(new File(
-        outputDirectoryName,
-        MaxentDataWriter.TRAINING_DATA_FILE_NAME));
+    File trainFile = new BinaryMaxentClassifierBuilder().getTrainingDataFile(this.outputDirectory);
+    String[] lines = FileUtil.loadListOfStrings(trainFile);
     assertEquals("true 0 1 2", lines[0]);
   }
 

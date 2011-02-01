@@ -25,13 +25,20 @@ package org.cleartk.classifier.mallet;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.List;
+import java.util.jar.JarInputStream;
+import java.util.jar.JarOutputStream;
 
-import org.cleartk.classifier.jar.BuildJar;
-import org.cleartk.classifier.jar.ClassifierBuilder;
+import org.cleartk.classifier.encoder.features.NameNumber;
+import org.cleartk.classifier.jar.ClassifierBuilder_ImplBase;
+import org.cleartk.classifier.jar.JarStreams;
 import org.cleartk.classifier.mallet.factory.ClassifierTrainerFactory;
 import org.cleartk.util.ReflectionUtil;
 
+import cc.mallet.classify.Classifier;
 import cc.mallet.classify.ClassifierTrainer;
 import cc.mallet.types.InstanceList;
 
@@ -45,15 +52,20 @@ import cc.mallet.types.InstanceList;
  * @author Philip Ogren
  */
 
-public abstract class MalletClassifierBuilder_ImplBase<OUTCOME_TYPE> implements
-    ClassifierBuilder<OUTCOME_TYPE> {
+public abstract class MalletClassifierBuilder_ImplBase<CLASSIFIER_TYPE extends MalletClassifier_ImplBase<OUTCOME_TYPE>, OUTCOME_TYPE>
+    extends ClassifierBuilder_ImplBase<CLASSIFIER_TYPE, List<NameNumber>, OUTCOME_TYPE, String> {
 
-  public void train(File dir, String[] args) throws Exception {
+  private static final String MODEL_NAME = "model.mallet";
+
+  @Override
+  public File getTrainingDataFile(File dir) {
+    return new File(dir, "training-data.mallet");
+  }
+
+  public void trainClassifier(File dir, String... args) throws Exception {
 
     InstanceListCreator instanceListCreator = new InstanceListCreator();
-    InstanceList instanceList = instanceListCreator.createInstanceList(new File(
-        dir,
-        "training-data.mallet"));
+    InstanceList instanceList = instanceListCreator.createInstanceList(getTrainingDataFile(dir));
     instanceList.save(new File(dir, "training-data.ser"));
 
     String factoryName = args[0];
@@ -89,9 +101,7 @@ public abstract class MalletClassifierBuilder_ImplBase<OUTCOME_TYPE> implements
 
     cc.mallet.classify.Classifier classifier = trainer.train(instanceList);
 
-    ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File(
-        dir,
-        "model.mallet")));
+    ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File(dir, MODEL_NAME)));
     oos.writeObject(classifier);
     oos.close();
 
@@ -105,24 +115,23 @@ public abstract class MalletClassifierBuilder_ImplBase<OUTCOME_TYPE> implements
     }
   }
 
-  public void buildJar(File dir, String[] args) throws Exception {
-    BuildJar.OutputStream stream = new BuildJar.OutputStream(dir);
-    stream.write("model.mallet", new File(dir, "model.mallet"));
-    stream.close();
+  @Override
+  protected void packageClassifier(File dir, JarOutputStream modelStream) throws IOException {
+    super.packageClassifier(dir, modelStream);
+    JarStreams.putNextJarEntry(modelStream, MODEL_NAME, new File(dir, MODEL_NAME));
   }
 
-}
+  protected Classifier classifier;
 
-//
-// String[] malletArgs = new String[6];
-// malletArgs[0] = "--input";
-// malletArgs[1] = new File(dir, "training-data.ser").getPath();
-// malletArgs[2] = "--output-classifier";
-// malletArgs[3] = new File(dir, "model.mallet").getPath();
-// malletArgs[4] = "--trainer";
-// malletArgs[5] = args[0];
-//
-// for (String string : malletArgs) {
-// System.out.println(string);
-// }
-// Vectors2Classify.main(malletArgs);
+  @Override
+  protected void unpackageClassifier(JarInputStream modelStream) throws IOException {
+    super.unpackageClassifier(modelStream);
+    JarStreams.getNextJarEntry(modelStream, MODEL_NAME);
+    ObjectInputStream objectStream = new ObjectInputStream(modelStream);
+    try {
+      this.classifier = (Classifier) objectStream.readObject();
+    } catch (ClassNotFoundException e) {
+      throw new IOException(e);
+    }
+  }
+}

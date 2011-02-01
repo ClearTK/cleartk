@@ -1,5 +1,5 @@
 /** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+ * Copyright (c) 2007-2011, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -26,11 +26,11 @@ package org.cleartk.classifier.opennlp;
 import java.io.File;
 import java.io.IOException;
 
-import org.cleartk.classifier.jar.ClassifierBuilder;
+import opennlp.model.RealValueFileEventStream;
 
 /**
  * <br>
- * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * Copyright (c) 2007-2011, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
  * <p>
@@ -39,15 +39,15 @@ import org.cleartk.classifier.jar.ClassifierBuilder;
  * @author Steven Bethard
  * @see RealValueFileEventStream
  */
-public class MaxentDataWriter extends MaxentDataWriter_ImplBase<String> {
+public class MaxentDataWriter extends MaxentDataWriter_ImplBase<MaxentClassifierBuilder, String> {
 
   public MaxentDataWriter(File outputDirectory) throws IOException {
     super(outputDirectory);
   }
 
   @Override
-  public Class<? extends ClassifierBuilder<String>> getDefaultClassifierBuilderClass() {
-    return MaxentClassifierBuilder.class;
+  protected MaxentClassifierBuilder newClassifierBuilder() {
+    return new MaxentClassifierBuilder();
   }
 
 }

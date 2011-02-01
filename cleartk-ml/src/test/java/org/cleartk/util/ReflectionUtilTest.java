@@ -31,8 +31,7 @@ import java.util.List;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.ScoredOutcome;
-import org.cleartk.classifier.jar.ClassifierBuilder;
-import org.cleartk.classifier.jar.JarDataWriter;
+import org.cleartk.classifier.jar.ClassifierBuilder_ImplBase;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -67,18 +66,24 @@ public class ReflectionUtilTest {
     }
   }
 
-  public static class TestDataWriterOutcomeType extends JarDataWriter<String, Double, Boolean> {
-    public TestDataWriterOutcomeType(File outputDirectory) {
-      super(outputDirectory);
+  public static class TestClassifierBuilderType extends
+      ClassifierBuilder_ImplBase<TestClassifierOutcomeType, Boolean, String, Double> {
+
+    @Override
+    public void trainClassifier(File dir, String... args) throws Exception {
+      // Do nothing
     }
 
     @Override
-    public void writeEncoded(Boolean features, Double outcome) {
-    }
-
-    public Class<? extends ClassifierBuilder<String>> getDefaultClassifierBuilderClass() {
+    protected TestClassifierOutcomeType newClassifier() {
       return null;
     }
+
+    @Override
+    public File getTrainingDataFile(File dir) {
+      return null;
+    }
+
   }
 
   @Test
@@ -101,15 +106,15 @@ public class ReflectionUtilTest {
     Assert.assertEquals(String.class, type);
 
     type = ReflectionUtil.getTypeArgument(
-        JarDataWriter.class,
-        "INPUTOUTCOME_TYPE",
-        new TestDataWriterOutcomeType(null));
+        ClassifierBuilder_ImplBase.class,
+        "OUTCOME_TYPE",
+        new TestClassifierBuilderType());
     Assert.assertEquals(String.class, type);
 
     type = ReflectionUtil.getTypeArgument(
-        JarDataWriter.class,
-        "OUTPUTOUTCOME_TYPE",
-        new TestDataWriterOutcomeType(null));
+        ClassifierBuilder_ImplBase.class,
+        "ENCODED_OUTCOME_TYPE",
+        new TestClassifierBuilderType());
     Assert.assertEquals(Double.class, type);
   }
 }

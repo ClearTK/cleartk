@@ -23,20 +23,17 @@
  */
 package org.cleartk.classifier.grmm;
 
-import java.io.InputStream;
-import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.jar.JarFile;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.ZipEntry;
 
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.NameNumber;
-import org.cleartk.classifier.jar.JarSequentialClassifier;
+import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
+import org.cleartk.classifier.jar.SequentialClassifier_ImplBase;
 
 import edu.umass.cs.mallet.base.pipe.Pipe;
 import edu.umass.cs.mallet.base.types.Instance;
@@ -52,23 +49,21 @@ import edu.umass.cs.mallet.grmm.learning.ACRF;
  * 
  * @author Martin Toepfer
  */
-public class GrmmClassifier extends JarSequentialClassifier<String[], String[], List<NameNumber>> {
+public class GrmmClassifier extends
+    SequentialClassifier_ImplBase<List<NameNumber>, String[], String[]> {
 
   protected ACRF acrf;
 
   protected String outcomeExample;
 
-  public GrmmClassifier(JarFile modelFile) throws Exception {
-    super(modelFile);
-
-    ZipEntry modelEntry = modelFile.getEntry(GrmmClassifierBuilder.JAR_ENTRY_MODEL);
-    InputStream stream = modelFile.getInputStream(modelEntry);
-    GZIPInputStream gzipInputStream = new GZIPInputStream(stream);
-    ObjectInputStream objectStream = new ObjectInputStream(gzipInputStream);
-    this.acrf = (ACRF) objectStream.readObject();
-    ZipEntry outcomeExampleEntry = modelFile
-        .getEntry(GrmmClassifierBuilder.JAR_ENTRY_OUTCOME_EXAMPLE);
-    this.outcomeExample = outcomeExampleEntry.getComment();
+  public GrmmClassifier(
+      FeaturesEncoder<List<NameNumber>> featuresEncoder,
+      OutcomeEncoder<String[], String[]> outcomeEncoder,
+      ACRF acrf,
+      String outcomeExample) {
+    super(featuresEncoder, outcomeEncoder);
+    this.acrf = acrf;
+    this.outcomeExample = outcomeExample;
   }
 
   /**

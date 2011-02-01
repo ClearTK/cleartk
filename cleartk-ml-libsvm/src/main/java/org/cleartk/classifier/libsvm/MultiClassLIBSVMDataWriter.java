@@ -26,8 +26,6 @@ package org.cleartk.classifier.libsvm;
 import java.io.File;
 import java.io.IOException;
 
-import org.cleartk.classifier.jar.ClassifierBuilder;
-
 /**
  * <br>
  * Copyright (c) 2009, Regents of the University of Colorado <br>
@@ -35,20 +33,21 @@ import org.cleartk.classifier.jar.ClassifierBuilder;
  * <p>
  */
 
-public class MultiClassLIBSVMDataWriter extends LIBSVMDataWriter<String, Integer> {
+public class MultiClassLIBSVMDataWriter extends
+    LIBSVMDataWriter<MultiClassLIBSVMClassifierBuilder, String, Integer, libsvm.svm_model> {
 
   public MultiClassLIBSVMDataWriter(File outputDirectory) throws IOException {
     super(outputDirectory);
   }
 
   @Override
-  public Class<? extends ClassifierBuilder<String>> getDefaultClassifierBuilderClass() {
-    return MultiClassLIBSVMClassifierBuilder.class;
+  protected String encode(Integer outcome) {
+    return outcome.toString();
   }
 
   @Override
-  protected String encode(Integer outcome) {
-    return outcome.toString();
+  protected MultiClassLIBSVMClassifierBuilder newClassifierBuilder() {
+    return new MultiClassLIBSVMClassifierBuilder();
   }
 
 }

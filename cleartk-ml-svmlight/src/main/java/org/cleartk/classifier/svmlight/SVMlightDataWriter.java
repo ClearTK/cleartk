@@ -25,12 +25,10 @@ package org.cleartk.classifier.svmlight;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Locale;
 
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.jar.ClassifierBuilder;
-import org.cleartk.classifier.jar.JarDataWriter;
+import org.cleartk.classifier.jar.DataWriter_ImplBase;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
 /**
@@ -40,11 +38,11 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
  * <p>
  */
 
-public class SVMlightDataWriter extends JarDataWriter<Boolean, Boolean, FeatureVector> {
+public class SVMlightDataWriter extends
+    DataWriter_ImplBase<SVMlightClassifierBuilder, FeatureVector, Boolean, Boolean> {
 
   public SVMlightDataWriter(File outputDirectory) throws IOException {
     super(outputDirectory);
-    this.outputWriter = getPrintWriter("training-data.svmlight");
   }
 
   @Override
@@ -68,13 +66,12 @@ public class SVMlightDataWriter extends JarDataWriter<Boolean, Boolean, FeatureV
       output.append(String.format(Locale.US, " %d:%.7f", entry.index, entry.value));
     }
 
-    outputWriter.println(output);
+    this.trainingDataWriter.println(output);
   }
 
-  public Class<? extends ClassifierBuilder<Boolean>> getDefaultClassifierBuilderClass() {
-    return SVMlightClassifierBuilder.class;
+  @Override
+  protected SVMlightClassifierBuilder newClassifierBuilder() {
+    return new SVMlightClassifierBuilder();
   }
-
-  private PrintWriter outputWriter;
 
 }

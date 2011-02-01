@@ -23,7 +23,13 @@
  */
 package org.cleartk.classifier.mallet;
 
-import java.util.jar.JarFile;
+import java.util.List;
+
+import org.cleartk.classifier.encoder.features.FeaturesEncoder;
+import org.cleartk.classifier.encoder.features.NameNumber;
+import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
+
+import cc.mallet.classify.Classifier;
 
 /**
  * <br>
@@ -36,7 +42,10 @@ import java.util.jar.JarFile;
  * 
  */
 public class BinaryMalletClassifier extends MalletClassifier_ImplBase<Boolean> {
-  public BinaryMalletClassifier(JarFile modelFile) throws Exception {
-    super(modelFile);
+  public BinaryMalletClassifier(
+      FeaturesEncoder<List<NameNumber>> featuresEncoder,
+      OutcomeEncoder<Boolean, String> outcomeEncoder,
+      Classifier classifier) {
+    super(featuresEncoder, outcomeEncoder, classifier);
   }
 }

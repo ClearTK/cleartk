@@ -202,7 +202,7 @@ public class SentenceAnnotatorTest extends TokenTestBase {
     this.jCas.setDocumentText(text);
     Sentence window = new Sentence(this.jCas, 0, 30);
     window.addToIndexes();
-    
+
     AnalysisEngineDescription desc = SentenceAnnotator.getDescription();
     ConfigurationParameterFactory.addConfigurationParameter(
         desc,

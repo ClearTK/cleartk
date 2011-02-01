@@ -23,20 +23,14 @@
  */
 package org.cleartk.classifier.viterbi;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.jar.JarFile;
-import java.util.zip.ZipEntry;
 
 import org.apache.uima.UimaContext;
-import org.apache.uima.pear.util.FileUtil;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.Classifier;
@@ -44,7 +38,6 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.SequentialClassifier;
 import org.cleartk.classifier.feature.extractor.outcome.OutcomeFeatureExtractor;
-import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.ReflectionUtil.TypeArgumentDelegator;
 import org.uimafit.component.initialize.ConfigurationParameterInitializer;
@@ -86,34 +79,11 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
       + "true means that the scores will be summed. A value of false means that the scores will be multiplied. ", defaultValue = "false")
   protected boolean addScores = false;
 
-  public ViterbiClassifier(JarFile modelFile) throws IOException {
-    File modelFileDirectory = new File(modelFile.getName()).getParentFile();
-    modelFile
-        .getInputStream(modelFile.getEntry(ViterbiClassifierBuilder.DELEGATED_MODEL_FILE_NAME));
-    FileUtil.extractFilesWithExtFromJar(modelFile, ".jar", modelFileDirectory);
-
-    File delegatedModelFile = new File(
-        modelFileDirectory,
-        ViterbiClassifierBuilder.DELEGATED_MODEL_FILE_NAME);
-    delegatedClassifier = ReflectionUtil.uncheckedCast(JarClassifierFactory
-        .createClassifierFromJar(delegatedModelFile.getPath(), Classifier.class));
-
-    ZipEntry zipEntry = modelFile.getEntry(ViterbiDataWriter.OUTCOME_FEATURE_EXTRACTOR_FILE_NAME);
-    if (zipEntry == null) {
-      outcomeFeatureExtractors = new OutcomeFeatureExtractor[0];
-    } else {
-      ObjectInputStream is = new ObjectInputStream(modelFile.getInputStream(zipEntry));
-
-      try {
-        outcomeFeatureExtractors = (OutcomeFeatureExtractor[]) is.readObject();
-      } catch (ClassNotFoundException e) {
-        throw new RuntimeException(e);
-      }
-    }
-  }
-
-  public ViterbiClassifier() {
-    // you generally do not want call this constructor.
+  public ViterbiClassifier(
+      Classifier<OUTCOME_TYPE> delegatedClassifier,
+      OutcomeFeatureExtractor[] outcomeFeatureExtractors) {
+    this.delegatedClassifier = delegatedClassifier;
+    this.outcomeFeatureExtractors = outcomeFeatureExtractors;
   }
 
   public void initialize(UimaContext context) throws ResourceInitializationException {

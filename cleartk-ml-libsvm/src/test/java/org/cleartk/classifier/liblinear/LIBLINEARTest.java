@@ -27,7 +27,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.List;
-import java.util.jar.JarFile;
 
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
@@ -35,7 +34,7 @@ import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.jar.JarDataWriterFactory;
+import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.classifier.libsvm.ExampleInstanceFactory;
 import org.cleartk.test.DefaultTestBase;
@@ -61,7 +60,7 @@ public class LIBLINEARTest extends DefaultTestBase {
     // create the data writer
     BinaryAnnotator annotator = new BinaryAnnotator();
     annotator.initialize(UimaContextFactory.createUimaContext(
-        JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         this.outputDirectoryName,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         DefaultBinaryLIBLINEARDataWriterFactory.class.getName()));
@@ -84,9 +83,9 @@ public class LIBLINEARTest extends DefaultTestBase {
     hider.restoreOutput();
 
     // read in the classifier and test it on new instances
-    JarFile modelFile = new JarFile(new File(this.outputDirectoryName, "model.jar"));
-    BinaryLIBLINEARClassifier classifier = new BinaryLIBLINEARClassifier(modelFile);
-    modelFile.close();
+    BinaryLIBLINEARClassifierBuilder builder = new BinaryLIBLINEARClassifierBuilder();
+    BinaryLIBLINEARClassifier classifier;
+    classifier = builder.loadClassifierFromTrainingDirectory(this.outputDirectory);
     for (Instance<Boolean> instance : ExampleInstanceFactory.generateBooleanInstances(1000)) {
       List<Feature> features = instance.getFeatures();
       Boolean outcome = instance.getOutcome();

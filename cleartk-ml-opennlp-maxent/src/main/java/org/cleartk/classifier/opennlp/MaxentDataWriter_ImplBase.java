@@ -1,5 +1,5 @@
 /** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+ * Copyright (c) 2007-2011, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -25,16 +25,17 @@ package org.cleartk.classifier.opennlp;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
+
+import opennlp.model.RealValueFileEventStream;
 
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.encoder.features.NameNumber;
-import org.cleartk.classifier.jar.JarDataWriter;
+import org.cleartk.classifier.jar.DataWriter_ImplBase;
 
 /**
  * <br>
- * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * Copyright (c) 2007-2011, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
  * <p>
@@ -51,18 +52,12 @@ import org.cleartk.classifier.jar.JarDataWriter;
  * @author Steven Bethard
  * @see RealValueFileEventStream
  */
-public abstract class MaxentDataWriter_ImplBase<OUTCOME_TYPE> extends
-    JarDataWriter<OUTCOME_TYPE, String, List<NameNumber>> {
-
-  public static final String TRAINING_DATA_FILE_NAME = "training-data.maxent";
+public abstract class MaxentDataWriter_ImplBase<CLASSIFIER_BUILDER_TYPE extends MaxentClassifierBuilder_ImplBase<? extends MaxentClassifier_ImplBase<OUTCOME_TYPE>, OUTCOME_TYPE>, OUTCOME_TYPE>
+    extends DataWriter_ImplBase<CLASSIFIER_BUILDER_TYPE, List<NameNumber>, OUTCOME_TYPE, String> {
 
   public MaxentDataWriter_ImplBase(File outputDirectory) throws IOException {
     super(outputDirectory);
-    // initialize output writer and Classifier class
-    this.trainingDataWriter = this.getPrintWriter(TRAINING_DATA_FILE_NAME);
   }
-
-  protected PrintWriter trainingDataWriter;
 
   @Override
   public void writeEncoded(List<NameNumber> features, String outcome) throws CleartkException {

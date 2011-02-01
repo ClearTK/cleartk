@@ -36,8 +36,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.jar.ClassifierBuilder;
-import org.cleartk.classifier.jar.JarDataWriter;
+import org.cleartk.classifier.jar.DataWriter_ImplBase;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
 /**
@@ -47,18 +46,17 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
  * <p>
  */
 
-public class OVASVMlightDataWriter extends JarDataWriter<String, Integer, FeatureVector> {
+public class OVASVMlightDataWriter extends
+    DataWriter_ImplBase<OVASVMlightClassifierBuilder, FeatureVector, String, Integer> {
 
   public OVASVMlightDataWriter(File outputDirectory) throws IOException {
     super(outputDirectory);
 
-    // prepare output files
-    String allFalseName = "training-data-allfalse.svmlight";
-    allFalseFile = getFile(allFalseName);
-    allFalseFile.delete();
+    // aliases to make it easy to remember what the "main" file is being used for
+    allFalseFile = this.trainingDataFile;
+    allFalseWriter = this.trainingDataWriter;
 
     // create the output writers
-    allFalseWriter = this.getPrintWriter(allFalseName);
     trainingDataWriters = new TreeMap<Integer, PrintWriter>();
   }
 
@@ -98,8 +96,6 @@ public class OVASVMlightDataWriter extends JarDataWriter<String, Integer, Featur
 
   @Override
   public void finish() throws CleartkException {
-    super.finish();
-
     // close and remove all-false file
     allFalseWriter.close();
     allFalseFile.delete();
@@ -109,14 +105,18 @@ public class OVASVMlightDataWriter extends JarDataWriter<String, Integer, Featur
       pw.flush();
       pw.close();
     }
+
+    // finish in the superclass
+    super.finish();
   }
 
-  public Class<? extends ClassifierBuilder<String>> getDefaultClassifierBuilderClass() {
-    return OVASVMlightClassifierBuilder.class;
+  @Override
+  protected OVASVMlightClassifierBuilder newClassifierBuilder() {
+    return new OVASVMlightClassifierBuilder();
   }
 
   private void addClass(int label) {
-    File newTDFile = getFile(String.format("training-data-%d.svmlight", label));
+    File newTDFile = this.classifierBuilder.getTrainingDataFile(this.outputDirectory, label);
     newTDFile.delete();
 
     allFalseWriter.flush();

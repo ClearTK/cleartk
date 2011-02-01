@@ -25,12 +25,10 @@ package org.cleartk.classifier.mallet;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 import org.cleartk.classifier.encoder.features.NameNumber;
-import org.cleartk.classifier.jar.ClassifierBuilder;
-import org.cleartk.classifier.jar.JarSequentialDataWriter;
+import org.cleartk.classifier.jar.SequentialDataWriter_ImplBase;
 
 /**
  * <br>
@@ -48,19 +46,11 @@ import org.cleartk.classifier.jar.JarSequentialDataWriter;
  * @author Philip Ogren
  * @author Steven Bethard
  */
-public class MalletCRFDataWriter extends JarSequentialDataWriter<String, String, List<NameNumber>> {
-
-  public static final String TRAINING_DATA_FILE_NAME = "training-data.malletcrf";
-
-  protected PrintWriter trainingDataWriter;
+public class MalletCRFDataWriter extends
+    SequentialDataWriter_ImplBase<MalletCRFClassifierBuilder, List<NameNumber>, String, String> {
 
   public MalletCRFDataWriter(File outputDirectory) throws IOException {
     super(outputDirectory);
-    this.trainingDataWriter = this.getPrintWriter(TRAINING_DATA_FILE_NAME);
-  }
-
-  public Class<? extends ClassifierBuilder<String>> getDefaultClassifierBuilderClass() {
-    return MalletCRFClassifierBuilder.class;
   }
 
   @Override
@@ -77,5 +67,10 @@ public class MalletCRFDataWriter extends JarSequentialDataWriter<String, String,
   @Override
   public void writeEndSequence() {
     this.trainingDataWriter.println();
+  }
+
+  @Override
+  protected MalletCRFClassifierBuilder newClassifierBuilder() {
+    return new MalletCRFClassifierBuilder();
   }
 }

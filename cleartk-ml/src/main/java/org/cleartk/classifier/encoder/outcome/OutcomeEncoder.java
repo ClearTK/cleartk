@@ -33,10 +33,10 @@ import org.cleartk.CleartkException;
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
  */
-public interface OutcomeEncoder<INPUTOUTCOME_TYPE, OUTPUTOUTCOME_TYPE> extends Serializable {
-  public OUTPUTOUTCOME_TYPE encode(INPUTOUTCOME_TYPE outcome);
+public interface OutcomeEncoder<OUTCOME_TYPE, ENCODED_OUTCOME_TYPE> extends Serializable {
+  public ENCODED_OUTCOME_TYPE encode(OUTCOME_TYPE outcome);
 
-  public INPUTOUTCOME_TYPE decode(OUTPUTOUTCOME_TYPE outcome);
+  public OUTCOME_TYPE decode(ENCODED_OUTCOME_TYPE outcome);
 
   public void finalizeOutcomeSet(File outputDirectory) throws CleartkException;
 }

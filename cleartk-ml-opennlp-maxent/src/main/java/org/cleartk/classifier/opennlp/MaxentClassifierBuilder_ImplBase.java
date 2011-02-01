@@ -1,5 +1,5 @@
 /** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+ * Copyright (c) 2007-2011, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -23,38 +23,64 @@
  */
 package org.cleartk.classifier.opennlp;
 
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.IOException;
+import java.util.List;
+import java.util.jar.JarInputStream;
+import java.util.jar.JarOutputStream;
+import java.util.zip.GZIPInputStream;
 
+import opennlp.maxent.io.BinaryGISModelReader;
+import opennlp.model.MaxentModel;
+
+import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
-import org.cleartk.classifier.jar.BuildJar;
-import org.cleartk.classifier.jar.ClassifierBuilder;
+import org.cleartk.classifier.jar.ClassifierBuilder_ImplBase;
+import org.cleartk.classifier.jar.JarStreams;
 
 /**
  * <br>
- * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * Copyright (c) 2007-2011, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
  * @author Philip Ogren
- * 
+ * @author Steven Bethard
  */
-public abstract class MaxentClassifierBuilder_ImplBase<OUTCOME_TYPE> implements
-    ClassifierBuilder<OUTCOME_TYPE> {
+public abstract class MaxentClassifierBuilder_ImplBase<CLASSIFIER_TYPE extends MaxentClassifier_ImplBase<OUTCOME_TYPE>, OUTCOME_TYPE>
+    extends ClassifierBuilder_ImplBase<CLASSIFIER_TYPE, List<NameNumber>, OUTCOME_TYPE, String> {
 
-  public void train(File dir, String[] args) throws Exception {
+  private static final String MODEL_NAME = "model.maxent";
+
+  public File getTrainingDataFile(File dir) {
+    return new File(dir, "training-data.maxent");
+  }
+
+  public void trainClassifier(File dir, String... args) throws Exception {
     String[] maxentArgs = new String[args.length + 1];
-    maxentArgs[0] = new File(dir, "training-data.maxent").getPath();
+    maxentArgs[0] = getTrainingDataFile(dir).getPath();
     System.arraycopy(args, 0, maxentArgs, 1, args.length);
     opennlp.model.RealValueFileEventStream.main(maxentArgs);
   }
 
-  public void buildJar(File dir, String[] args) throws Exception {
-    BuildJar.OutputStream stream = new BuildJar.OutputStream(dir);
-    stream.write("model.maxent", new File(dir, "training-data.maxent.bin.gz"));
+  @Override
+  protected void packageClassifier(File dir, JarOutputStream modelStream) throws IOException {
+    super.packageClassifier(dir, modelStream);
+    JarStreams.putNextJarEntry(modelStream, MODEL_NAME, new File(dir, "training-data.maxent.bin.gz"));
     File featureLookup = new File(dir, NameNumberFeaturesEncoder.LOOKUP_FILE_NAME);
     if (featureLookup.exists()) {
-      stream.write("name-lookup.txt", featureLookup);
+      JarStreams.putNextJarEntry(modelStream, "name-lookup.txt", featureLookup);
     }
-    stream.close();
+  }
+
+  protected MaxentModel model;
+
+  @Override
+  protected void unpackageClassifier(JarInputStream modelStream) throws IOException {
+    super.unpackageClassifier(modelStream);
+    JarStreams.getNextJarEntry(modelStream, MODEL_NAME);
+    this.model = new BinaryGISModelReader(new DataInputStream(new GZIPInputStream(modelStream)))
+        .getModel();
   }
 
 }

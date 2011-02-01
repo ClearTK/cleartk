@@ -38,7 +38,6 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.Counts;
 import org.cleartk.classifier.feature.FeatureCollection;
-import org.cleartk.classifier.jar.ClassifierBuilder;
 
 /**
  * <br>
@@ -97,10 +96,6 @@ public class IDFMapWriter<OUTCOME_TYPE> implements DataWriter<OUTCOME_TYPE> {
 
   public boolean isTraining() {
     return false;
-  }
-
-  public Class<? extends ClassifierBuilder<OUTCOME_TYPE>> getDefaultClassifierBuilderClass() {
-    return null;
   }
 
   public void write(Instance<OUTCOME_TYPE> instance) throws CleartkException {

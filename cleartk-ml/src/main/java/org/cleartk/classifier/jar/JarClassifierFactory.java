@@ -1,5 +1,5 @@
 /** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+ * Copyright (c) 2007-2011, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -23,8 +23,13 @@
  */
 package org.cleartk.classifier.jar;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.jar.JarFile;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.jar.JarInputStream;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -33,7 +38,6 @@ import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.ClassifierFactory;
 import org.cleartk.classifier.SequentialClassifier;
 import org.cleartk.classifier.SequentialClassifierFactory;
-import org.cleartk.util.ReflectionUtil;
 import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
@@ -41,7 +45,7 @@ import org.uimafit.factory.initializable.Initializable;
 
 /**
  * <br>
- * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * Copyright (c) 2007-2011, Regents of the University of Colorado <br>
  * All rights reserved.
  */
 
@@ -54,65 +58,40 @@ public class JarClassifierFactory<OUTCOME_TYPE> implements ClassifierFactory<OUT
   @ConfigurationParameter(mandatory = true, description = "provides the path to the jar file that should be used to instantiate the classifier.")
   private String classifierJarPath;
 
+  public void setClassifierJarPath(String classifierJarPath) {
+    this.classifierJarPath = classifierJarPath;
+  }
+
   public void initialize(UimaContext context) throws ResourceInitializationException {
     ConfigurationParameterInitializer.initialize(this, context);
   }
 
+  @SuppressWarnings("unchecked")
   public Classifier<OUTCOME_TYPE> createClassifier() throws IOException, CleartkException {
-    return createClassifierFromJar(classifierJarPath);
+    return this.createUntypedClassifier(Classifier.class);
   }
 
+  @SuppressWarnings("unchecked")
   public SequentialClassifier<OUTCOME_TYPE> createSequentialClassifier() throws IOException,
       CleartkException {
-    return createSequentialClassifierFromJar(classifierJarPath);
+    return this.createUntypedClassifier(SequentialClassifier.class);
   }
 
-  /**
-   * Every classifier should be able to instantiated from a jar file. This factory method reads the
-   * class of the classifier from manifest of the jar file from the attribute "classifier". e.g.:
-   * <p>
-   * <code>classifier: org.cleartk.classifier.OpenNLPMaxentClassifier</code>
-   * </p>
-   * The value of the classifier attribute of the manifest is used to instantiate a classifier using
-   * reflection and the constructor that takes a jar file.
-   * 
-   * @param jarFileName
-   *          the name of a jar file
-   * @return a classifier defined by the contents of the jar file.
-   * @throws IOException
-   */
-  public Classifier<OUTCOME_TYPE> createClassifierFromJar(String jarFileName) throws IOException {
-    return ReflectionUtil.uncheckedCast(createClassifierFromJar(jarFileName, Classifier.class));
-  }
-
-  public SequentialClassifier<OUTCOME_TYPE> createSequentialClassifierFromJar(String jarFileName)
-      throws IOException {
-    return ReflectionUtil.uncheckedCast(createClassifierFromJar(
-        jarFileName,
-        SequentialClassifier.class));
-  }
-
-  public static <CLASSIFIER_TYPE> CLASSIFIER_TYPE createClassifierFromJar(
-      String jarFileName,
-      Class<CLASSIFIER_TYPE> cls) throws IOException {
-    // get the jar file manifest
-    JarFile modelFile = new JarFile(jarFileName);
-    ClassifierManifest manifest = new ClassifierManifest(modelFile);
-
-    // get the classifier class
-    ClassifierBuilder<?> builder = manifest.getClassifierBuilder();
-    Class<? extends CLASSIFIER_TYPE> classifierClass = builder.getClassifierClass().asSubclass(cls);
-
-    // create the classifier, passing in the jar file
+  private <CLASSIFIER_TYPE> CLASSIFIER_TYPE createUntypedClassifier(
+      Class<CLASSIFIER_TYPE> superClass) throws IOException {
+    InputStream stream;
     try {
-      return classifierClass.getConstructor(JarFile.class).newInstance(modelFile);
-    } catch (Exception e) {
-      IOException exception = new IOException();
-      exception.initCause(e);
-      throw exception;
+      stream = new URL(this.classifierJarPath).openStream();
+    } catch (MalformedURLException e) {
+      stream = new FileInputStream(this.classifierJarPath);
+    }
+    stream = new BufferedInputStream(stream);
+    JarInputStream modelStream = new JarInputStream(stream);
+    JarClassifierBuilder<?> builder = JarClassifierBuilder.fromManifest(modelStream.getManifest());
+    try {
+      return superClass.cast(builder.loadClassifier(modelStream));
     } finally {
-      modelFile.close();
+      stream.close();
     }
   }
-
 }

@@ -27,8 +27,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.UimaContext;
@@ -36,7 +34,6 @@ import org.apache.uima.util.FileUtils;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.DataWriter;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
-import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
 import org.cleartk.classifier.test.DefaultStringTestDataWriterFactory;
@@ -61,8 +58,7 @@ public class JarDataWriterTest extends DefaultTestBase {
     String expectedManifest = ("Manifest-Version: 1.0\n"
         + "classifierBuilderClass: org.cleartk.classifier.test.StringTestClassifi\n" + " erBuilder");
 
-    JarDataWriter<String, String, List<NameNumber>> dataWriter = new StringTestDataWriter(
-        outputDirectory);
+    StringTestDataWriter dataWriter = new StringTestDataWriter(outputDirectory);
     dataWriter.setFeaturesEncoder(new NameNumberFeaturesEncoder(false, false));
     dataWriter.setOutcomeEncoder(new StringToStringOutcomeEncoder());
     dataWriter.finish();
@@ -72,30 +68,10 @@ public class JarDataWriterTest extends DefaultTestBase {
   }
 
   @Test
-  public void testPrintWriter() throws UIMAException, IOException, CleartkException {
-
-    JarDataWriter<String, String, List<NameNumber>> dataWriter = new StringTestDataWriter(
-        outputDirectory);
-    dataWriter.setFeaturesEncoder(new NameNumberFeaturesEncoder(false, false));
-    dataWriter.setOutcomeEncoder(new StringToStringOutcomeEncoder());
-    PrintWriter printWriter = dataWriter.getPrintWriter("foo.txt");
-    printWriter.println("foo");
-    dataWriter.finish();
-    String actualText = FileUtils.file2String(new File(outputDirectory, "foo.txt"));
-    Assert.assertEquals("foo\n", actualText.replaceAll("\r", ""));
-
-    try {
-      printWriter = dataWriter.getPrintWriter(".");
-      Assert.fail("expected exception on bad file name");
-    } catch (IOException ioe) {
-    }
-  }
-
-  @Test
   public void testFinish() throws UIMAException, IOException, CleartkException {
 
     UimaContext uimaContext = UimaContextFactory.createUimaContext(
-        JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName);
     DefaultStringTestDataWriterFactory factory = new DefaultStringTestDataWriterFactory();
     factory.initialize(uimaContext);

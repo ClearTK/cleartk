@@ -26,8 +26,6 @@ package org.cleartk.classifier.test;
 import java.io.File;
 import java.io.IOException;
 
-import org.cleartk.classifier.jar.ClassifierBuilder;
-
 /**
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
@@ -39,15 +37,16 @@ import org.cleartk.classifier.jar.ClassifierBuilder;
  * @author Steven Bethard
  * @see RealValueFileEventStream
  */
-public class StringTestDataWriter extends TestDataWriter_ImplBase<String> {
+public class StringTestDataWriter extends
+    TestDataWriter_ImplBase<StringTestClassifierBuilder, String> {
 
   public StringTestDataWriter(File outputDirectory) throws IOException {
     super(outputDirectory);
   }
 
   @Override
-  public Class<? extends ClassifierBuilder<String>> getDefaultClassifierBuilderClass() {
-    return StringTestClassifierBuilder.class;
+  public StringTestClassifierBuilder newClassifierBuilder() {
+    return new StringTestClassifierBuilder();
   }
 
 }

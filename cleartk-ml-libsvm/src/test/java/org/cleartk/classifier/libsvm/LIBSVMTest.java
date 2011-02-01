@@ -27,7 +27,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.List;
-import java.util.jar.JarFile;
 
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
@@ -35,7 +34,7 @@ import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.jar.JarDataWriterFactory;
+import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.test.DefaultTestBase;
 import org.junit.Assert;
@@ -58,7 +57,7 @@ public class LIBSVMTest extends DefaultTestBase {
     // create the data writer
     BinaryAnnotator annotator = new BinaryAnnotator();
     annotator.initialize(UimaContextFactory.createUimaContext(
-        JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         this.outputDirectoryName,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         DefaultBinaryLIBSVMDataWriterFactory.class.getName()));
@@ -81,9 +80,9 @@ public class LIBSVMTest extends DefaultTestBase {
     hider.restoreOutput();
 
     // read in the classifier and test it on new instances
-    JarFile modelFile = new JarFile(new File(this.outputDirectoryName, "model.jar"));
-    BinaryLIBSVMClassifier classifier = new BinaryLIBSVMClassifier(modelFile);
-    modelFile.close();
+    BinaryLIBSVMClassifierBuilder builder = new BinaryLIBSVMClassifierBuilder();
+    BinaryLIBSVMClassifier classifier;
+    classifier = builder.loadClassifierFromTrainingDirectory(this.outputDirectory);
     for (Instance<Boolean> instance : ExampleInstanceFactory.generateBooleanInstances(1000)) {
       List<Feature> features = instance.getFeatures();
       Boolean outcome = instance.getOutcome();
@@ -97,7 +96,7 @@ public class LIBSVMTest extends DefaultTestBase {
     // create the data writer
     StringAnnotator annotator = new StringAnnotator();
     annotator.initialize(UimaContextFactory.createUimaContext(
-        JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         this.outputDirectoryName,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         DefaultMultiClassLIBSVMDataWriterFactory.class.getName()));
@@ -120,10 +119,9 @@ public class LIBSVMTest extends DefaultTestBase {
     hider.restoreOutput();
 
     // read in the classifier and test it on new instances
-    JarFile modelFile = new JarFile(new File(this.outputDirectoryName, "model.jar"));
-    MultiClassLIBSVMClassifier classifier = new MultiClassLIBSVMClassifier(modelFile);
-    modelFile.close();
-
+    MultiClassLIBSVMClassifierBuilder builder = new MultiClassLIBSVMClassifierBuilder();
+    MultiClassLIBSVMClassifier classifier;
+    classifier = builder.loadClassifierFromTrainingDirectory(this.outputDirectory);
     for (Instance<String> instance : ExampleInstanceFactory.generateStringInstances(1000)) {
       List<Feature> features = instance.getFeatures();
       String outcome = instance.getOutcome();

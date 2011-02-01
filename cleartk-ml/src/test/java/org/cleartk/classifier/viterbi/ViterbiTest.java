@@ -344,7 +344,7 @@ public class ViterbiTest {
   public static class TestViterbiClassifier extends ViterbiClassifier<String> {
 
     public TestViterbiClassifier() throws IOException {
-      super();
+      super(null, null);
     }
 
     public void setOutcomeFeatureExctractors(OutcomeFeatureExtractor[] ofes) {

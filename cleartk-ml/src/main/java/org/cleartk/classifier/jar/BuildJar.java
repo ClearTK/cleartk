@@ -1,5 +1,5 @@
 /** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+ * Copyright (c) 2007-2011, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -24,23 +24,19 @@
 package org.cleartk.classifier.jar;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.jar.JarEntry;
-import java.util.jar.JarOutputStream;
 
-import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
 
 /**
+ * Command line tool for building a model jar file from a directory where a model has been trained,
+ * e.g. by {@link Train}.
+ * 
+ * Usage: <code>java org.cleartk.classifier.jar.BuildJar model-dir</code>
+ * 
  * <br>
- * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * Copyright (c) 2007-2011, Regents of the University of Colorado <br>
  * All rights reserved.
  */
-
 public class BuildJar {
-
-  public static final String MODEL_FILE_NAME = "model.jar";
 
   public static void main(String... args) throws Exception {
     String programName = BuildJar.class.getName();
@@ -56,37 +52,8 @@ public class BuildJar {
     }
     File dir = new File(args[0]);
 
-    // get the classifier class from the manifest
-    ClassifierManifest manifest = new ClassifierManifest(dir);
-    ClassifierBuilder<?> classifierBuilder = manifest.getClassifierBuilder();
-
-    // clip the first item off the command line arguments, and call buildJar
-    String[] remainingArgs = new String[args.length - 1];
-    System.arraycopy(args, 1, remainingArgs, 0, remainingArgs.length);
-    classifierBuilder.buildJar(dir, remainingArgs);
+    // get the classifier builder from the training directory
+    JarClassifierBuilder<?> classifierBuilder = JarClassifierBuilder.fromTrainingDirectory(dir);
+    classifierBuilder.packageClassifier(dir);
   }
-
-  public static class OutputStream extends JarOutputStream {
-    public OutputStream(File dir) throws IOException {
-      super(getOutputStream(dir), new ClassifierManifest(dir));
-      String encodersFileName = FeaturesEncoder_ImplBase.ENCODERS_FILE_NAME;
-      File encodersFile = new File(dir, encodersFileName);
-      if (encodersFile.exists())
-        this.write(encodersFileName, encodersFile);
-    }
-
-    public void write(String entryName, File file) throws IOException {
-      this.putNextEntry(new JarEntry(entryName));
-      FileInputStream stream = new FileInputStream(file);
-      byte[] byteArray = new byte[stream.available()];
-      stream.read(byteArray);
-      stream.close();
-      this.write(byteArray);
-    }
-
-    private static FileOutputStream getOutputStream(File dir) throws IOException {
-      return new FileOutputStream(new File(dir, MODEL_FILE_NAME));
-    }
-  }
-
 }

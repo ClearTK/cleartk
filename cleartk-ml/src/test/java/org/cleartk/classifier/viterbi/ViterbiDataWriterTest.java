@@ -33,16 +33,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.pear.util.FileUtil;
-import org.apache.uima.util.FileUtils;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkSequentialAnnotator;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
+import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.classifier.test.DefaultStringTestDataWriterFactory;
@@ -105,7 +106,7 @@ public class ViterbiDataWriterTest extends DefaultTestBase {
         .createPrimitive(
             TestAnnotator.class,
             typeSystemDescription,
-            ViterbiDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+            DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
             outputDirectoryName,
             CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME,
             ViterbiDataWriterFactory.class.getName(),
@@ -128,12 +129,11 @@ public class ViterbiDataWriterTest extends DefaultTestBase {
         + "classifierBuilderClass: org.cleartk.classifier.viterbi.ViterbiClassifi\n" + " erBuilder";
 
     File manifestFile = new File(outputDirectoryName, "MANIFEST.MF");
-    String actualManifest = FileUtils.file2String(manifestFile);
+    String actualManifest = FileUtils.readFileToString(manifestFile);
     Assert.assertEquals(expectedManifest, actualManifest.replaceAll("\r", "").trim());
 
-    File delegatedOutputDirectory = new File(
-        outputDirectoryName,
-        ViterbiDataWriter.DELEGATED_MODEL_DIRECTORY_NAME);
+    ViterbiClassifierBuilder<String> builder = new ViterbiClassifierBuilder<String>();
+    File delegatedOutputDirectory = builder.getDelegatedModelDirectory(outputDirectory);
     String[] trainingData = FileUtil.loadListOfStrings(new File(
         delegatedOutputDirectory,
         "training-data.test"));

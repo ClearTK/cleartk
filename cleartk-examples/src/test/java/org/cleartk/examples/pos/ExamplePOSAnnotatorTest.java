@@ -35,12 +35,12 @@ import org.cleartk.classifier.CleartkAnnotatorDescriptionFactory;
 import org.cleartk.classifier.CleartkSequentialAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.classifier.util.InstanceCollector;
 import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
 import org.cleartk.examples.ExampleComponents;
 import org.cleartk.examples.ExamplesTestBase;
-import org.cleartk.examples.pos.ExamplePOSAnnotator;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -196,7 +196,7 @@ public class ExamplePOSAnnotatorTest extends ExamplesTestBase {
         .getWriterDescription(ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY));
 
     Object outputDir = engine
-        .getConfigParameterValue(ViterbiDataWriterFactory.PARAM_OUTPUT_DIRECTORY);
+        .getConfigParameterValue(DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY);
     Assert.assertEquals(ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY, outputDir);
 
     String expectedDataWriterFactory = (ViterbiDataWriterFactory.class.getName());

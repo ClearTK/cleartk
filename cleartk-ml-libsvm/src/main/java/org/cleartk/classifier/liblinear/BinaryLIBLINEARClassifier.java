@@ -23,16 +23,15 @@
  */
 package org.cleartk.classifier.liblinear;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.jar.JarFile;
-import java.util.zip.ZipEntry;
 
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.ScoredOutcome;
-import org.cleartk.classifier.jar.JarClassifier;
+import org.cleartk.classifier.encoder.features.FeaturesEncoder;
+import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
+import org.cleartk.classifier.jar.Classifier_ImplBase;
 import org.cleartk.classifier.liblinear.model.LIBLINEARModel;
 import org.cleartk.classifier.liblinear.model.LIBLINEARModel.ScoredPrediction;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
@@ -48,17 +47,16 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
  * 
  */
 
-public class BinaryLIBLINEARClassifier extends JarClassifier<Boolean, Boolean, FeatureVector> {
-
-  public static final String MODEL_NAME = "model.liblinear";
+public class BinaryLIBLINEARClassifier extends Classifier_ImplBase<FeatureVector, Boolean, Boolean> {
 
   protected LIBLINEARModel model;
 
-  public BinaryLIBLINEARClassifier(JarFile modelFile) throws IOException, CleartkException {
-    super(modelFile);
-
-    ZipEntry modelEntry = modelFile.getEntry(BinaryLIBLINEARClassifier.MODEL_NAME);
-    this.model = LIBLINEARModel.fromInputStream(modelFile.getInputStream(modelEntry));
+  public BinaryLIBLINEARClassifier(
+      FeaturesEncoder<FeatureVector> featuresEncoder,
+      OutcomeEncoder<Boolean, Boolean> outcomeEncoder,
+      LIBLINEARModel model) {
+    super(featuresEncoder, outcomeEncoder);
+    this.model = model;
   }
 
   public Boolean classify(List<Feature> features) throws CleartkException {

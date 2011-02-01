@@ -23,8 +23,6 @@
  */
 package org.cleartk.classifier.mallet;
 
-import org.cleartk.classifier.Classifier;
-
 /**
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
@@ -35,10 +33,12 @@ import org.cleartk.classifier.Classifier;
  * @author Philip Ogren
  */
 
-public class BinaryMalletClassifierBuilder extends MalletClassifierBuilder_ImplBase<Boolean> {
+public class BinaryMalletClassifierBuilder extends
+    MalletClassifierBuilder_ImplBase<BinaryMalletClassifier, Boolean> {
 
-  public Class<? extends Classifier<Boolean>> getClassifierClass() {
-    return BinaryMalletClassifier.class;
+  @Override
+  protected BinaryMalletClassifier newClassifier() {
+    return new BinaryMalletClassifier(this.featuresEncoder, this.outcomeEncoder, this.classifier);
   }
 
 }

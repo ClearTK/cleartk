@@ -81,10 +81,10 @@ public class TokenAnnotator extends JCasAnnotator_ImplBase {
       .createConfigurationParameterName(TokenAnnotator.class, "windowTypeName");
 
   private static final String WINDOW_TYPE_DESCRIPTION = "specifies the class type of annotations that will be tokenized. "
-      + "By default, the tokenizer will tokenize a document sentence by sentence.  If you do not want to precede tokenization with" +
-      		"sentence segmentation, then a reasonable value for this parameter is 'org.apache.uima.jcas.tcas.DocumentAnnotation'";
+      + "By default, the tokenizer will tokenize a document sentence by sentence.  If you do not want to precede tokenization with"
+      + "sentence segmentation, then a reasonable value for this parameter is 'org.apache.uima.jcas.tcas.DocumentAnnotation'";
 
-  @ConfigurationParameter(description = WINDOW_TYPE_DESCRIPTION, defaultValue="org.cleartk.token.type.Sentence")
+  @ConfigurationParameter(description = WINDOW_TYPE_DESCRIPTION, defaultValue = "org.cleartk.token.type.Sentence")
   private String windowTypeName;
 
   Tokenizer tokenizer;

@@ -36,7 +36,6 @@ import org.cleartk.classifier.DataWriterFactory;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.SequentialDataWriter;
 import org.cleartk.classifier.SequentialDataWriterFactory;
-import org.cleartk.classifier.jar.ClassifierBuilder;
 
 /**
  * <br>
@@ -60,10 +59,6 @@ public class InstanceCollector<T> implements DataWriter<T>, SequentialDataWriter
   }
 
   public void finish() throws CleartkException {
-  }
-
-  public Class<? extends ClassifierBuilder<T>> getDefaultClassifierBuilderClass() {
-    return null;
   }
 
   public void write(Instance<T> instance) throws CleartkException {

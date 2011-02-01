@@ -30,7 +30,7 @@ import java.util.List;
 
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.encoder.features.NameNumber;
-import org.cleartk.classifier.jar.JarDataWriter;
+import org.cleartk.classifier.jar.DataWriter_ImplBase;
 
 /**
  * <br>
@@ -42,18 +42,17 @@ import org.cleartk.classifier.jar.JarDataWriter;
  * @author Philip Ogren
  * @author Steven Bethard
  */
-public abstract class TestDataWriter_ImplBase<OUTCOME_TYPE> extends
-    JarDataWriter<OUTCOME_TYPE, String, List<NameNumber>> {
+public abstract class TestDataWriter_ImplBase<CLASSIFIER_BUILDER_TYPE extends TestClassifierBuilder_ImplBase<? extends TestClassifier_ImplBase<OUTCOME_TYPE>, List<NameNumber>, OUTCOME_TYPE, String>, OUTCOME_TYPE>
+    extends DataWriter_ImplBase<CLASSIFIER_BUILDER_TYPE, List<NameNumber>, OUTCOME_TYPE, String> {
 
-  public static final String TRAINING_DATA_FILE_NAME = "training-data.test";
+  protected PrintWriter trainingDataWriter;
 
   public TestDataWriter_ImplBase(File outputDirectory) throws IOException {
     super(outputDirectory);
     // initialize output writer and Classifier class
-    this.trainingDataWriter = this.getPrintWriter(TRAINING_DATA_FILE_NAME);
+    File trainFile = this.classifierBuilder.getTrainingDataFile(this.outputDirectory);
+    this.trainingDataWriter = new PrintWriter(trainFile);
   }
-
-  protected PrintWriter trainingDataWriter;
 
   @Override
   public void writeEncoded(List<NameNumber> features, String outcome) throws CleartkException {
@@ -78,6 +77,13 @@ public abstract class TestDataWriter_ImplBase<OUTCOME_TYPE> extends
 
     // complete the feature line
     this.trainingDataWriter.println();
+  }
+
+  @Override
+  public void finish() throws CleartkException {
+    // close the data writer
+    this.trainingDataWriter.close();
+    super.finish();
   }
 
 }

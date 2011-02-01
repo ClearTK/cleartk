@@ -23,11 +23,20 @@
  */
 package org.cleartk.classifier.viterbi;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.jar.JarInputStream;
+import java.util.jar.JarOutputStream;
+import java.util.jar.Manifest;
 
-import org.apache.uima.pear.util.FileUtil;
-import org.cleartk.classifier.jar.BuildJar;
-import org.cleartk.classifier.jar.ClassifierBuilder;
+import org.cleartk.classifier.Classifier;
+import org.cleartk.classifier.feature.extractor.outcome.OutcomeFeatureExtractor;
+import org.cleartk.classifier.jar.JarClassifierBuilder;
+import org.cleartk.classifier.jar.JarStreams;
 import org.cleartk.classifier.jar.Train;
 
 /**
@@ -39,35 +48,94 @@ import org.cleartk.classifier.jar.Train;
  * 
  */
 
-public class ViterbiClassifierBuilder<OUTCOME_TYPE> implements ClassifierBuilder<OUTCOME_TYPE> {
+public class ViterbiClassifierBuilder<OUTCOME_TYPE> extends
+    JarClassifierBuilder<ViterbiClassifier<OUTCOME_TYPE>> {
 
-  public static final String DELEGATED_MODEL_FILE_NAME = "delegated-model.jar";
+  private static final String OUTCOME_FEATURE_EXTRACTOR_FILE_NAME = "outcome-features-extractors.ser";
 
-  public void buildJar(File dir, String[] args) throws Exception {
-    File delegatedOutputDirectory = new File(dir, ViterbiDataWriter.DELEGATED_MODEL_DIRECTORY_NAME);
-    FileUtil.copyFile(new File(delegatedOutputDirectory, BuildJar.MODEL_FILE_NAME), new File(
-        dir,
-        DELEGATED_MODEL_FILE_NAME));
+  private static final String DELEGATED_MODEL_DIRECTORY_NAME = "delegated-model";
 
-    BuildJar.OutputStream stream = new BuildJar.OutputStream(dir);
-    stream.write(DELEGATED_MODEL_FILE_NAME, new File(dir, DELEGATED_MODEL_FILE_NAME));
-    stream.write(ViterbiDataWriter.OUTCOME_FEATURE_EXTRACTOR_FILE_NAME, new File(
-        dir,
-        ViterbiDataWriter.OUTCOME_FEATURE_EXTRACTOR_FILE_NAME));
-    stream.close();
+  private static final String DELEGATED_MODEL_FILE_NAME = "delegated-model.jar";
 
+  private static File getOutcomeFeatureExtractorsFile(File dir) {
+    return new File(dir, OUTCOME_FEATURE_EXTRACTOR_FILE_NAME);
   }
 
-  public Class<?> getClassifierClass() {
-    return ViterbiClassifier.class;
+  public File getDelegatedModelDirectory(File dir) {
+    return new File(dir, DELEGATED_MODEL_DIRECTORY_NAME);
   }
 
-  public void train(File dir, String[] args) throws Exception {
-    File delegatedOutputDirectory = new File(dir, ViterbiDataWriter.DELEGATED_MODEL_DIRECTORY_NAME);
+  private OutcomeFeatureExtractor[] outcomeFeatureExtractors;
+
+  public void setOutcomeFeatureExtractors(OutcomeFeatureExtractor[] outcomeFeatureExtractors) {
+    this.outcomeFeatureExtractors = outcomeFeatureExtractors;
+  }
+
+  private Classifier<OUTCOME_TYPE> delegatedClassifier;
+
+  @Override
+  public void saveToTrainingDirectory(File dir) throws IOException {
+    super.saveToTrainingDirectory(dir);
+    ObjectOutputStream extractorsStream = new ObjectOutputStream(new BufferedOutputStream(
+        new FileOutputStream(getOutcomeFeatureExtractorsFile(dir))));
+    extractorsStream.writeObject(this.outcomeFeatureExtractors);
+    extractorsStream.close();
+  }
+
+  @Override
+  public void trainClassifier(File dir, String... args) throws Exception {
     String[] delegatedArgs = new String[args.length + 1];
     System.arraycopy(args, 0, delegatedArgs, 1, args.length);
-    delegatedArgs[0] = delegatedOutputDirectory.getPath();
+    delegatedArgs[0] = this.getDelegatedModelDirectory(dir).getPath();
     Train.main(delegatedArgs);
+  }
+
+  @Override
+  public void packageClassifier(File dir, JarOutputStream modelStream) throws IOException {
+    super.packageClassifier(dir, modelStream);
+
+    JarStreams.putNextJarEntry(
+        modelStream,
+        DELEGATED_MODEL_FILE_NAME,
+        this.getModelJarFile(this.getDelegatedModelDirectory(dir)));
+
+    JarStreams.putNextJarEntry(
+        modelStream,
+        OUTCOME_FEATURE_EXTRACTOR_FILE_NAME,
+        getOutcomeFeatureExtractorsFile(dir));
+  }
+
+  @Override
+  public void unpackageClassifier(JarInputStream modelStream) throws IOException {
+    JarStreams.getNextJarEntry(modelStream, DELEGATED_MODEL_FILE_NAME);
+    JarInputStream delegatedModelStream = new JarInputStream(modelStream);
+    Manifest delegatedManifest = delegatedModelStream.getManifest();
+    JarClassifierBuilder<?> delegatedBuilder = JarClassifierBuilder.fromManifest(delegatedManifest);
+    this.delegatedClassifier = this.cast(delegatedBuilder.loadClassifier(delegatedModelStream));
+
+    JarStreams.getNextJarEntry(modelStream, OUTCOME_FEATURE_EXTRACTOR_FILE_NAME);
+    ObjectInputStream objectStream = new ObjectInputStream(modelStream);
+    try {
+      this.outcomeFeatureExtractors = (OutcomeFeatureExtractor[]) objectStream.readObject();
+    } catch (ClassNotFoundException e) {
+      throw new IOException(e);
+    }
+  }
+
+  @Override
+  public ViterbiClassifier<OUTCOME_TYPE> newClassifier() {
+    return new ViterbiClassifier<OUTCOME_TYPE>(
+        this.delegatedClassifier,
+        this.outcomeFeatureExtractors);
+  }
+
+  @SuppressWarnings("unchecked")
+  private Classifier<OUTCOME_TYPE> cast(Object object) {
+    Classifier<OUTCOME_TYPE> classifier = (Classifier<OUTCOME_TYPE>) object;
+    // Can't check that OUTCOME_TYPE matches - ViterbiClassifier is generic and so has no concrete
+    // OUTCOME_TYPE at runtime. But ViterbiClassifier should work with any classifier, so this
+    // should be okay.
+    return classifier;
   }
 
 }

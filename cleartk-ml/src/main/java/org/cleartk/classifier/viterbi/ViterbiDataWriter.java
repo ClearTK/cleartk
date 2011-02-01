@@ -24,8 +24,6 @@
 package org.cleartk.classifier.viterbi;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,8 +36,7 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.SequentialDataWriter;
 import org.cleartk.classifier.feature.extractor.outcome.OutcomeFeatureExtractor;
-import org.cleartk.classifier.jar.ClassifierBuilder;
-import org.cleartk.classifier.jar.ClassifierManifest;
+import org.cleartk.classifier.jar.DirectoryDataWriter;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.ReflectionUtil.TypeArgumentDelegator;
 
@@ -50,24 +47,23 @@ import org.cleartk.util.ReflectionUtil.TypeArgumentDelegator;
  * <p>
  */
 
-public class ViterbiDataWriter<OUTCOME_TYPE> implements SequentialDataWriter<OUTCOME_TYPE>,
-    TypeArgumentDelegator {
-
-  public static final String OUTCOME_FEATURE_EXTRACTOR_FILE_NAME = "outcome-features-extractors.ser";
-
-  public static final String DELEGATED_MODEL_DIRECTORY_NAME = "delegated-model";
+public class ViterbiDataWriter<OUTCOME_TYPE> extends
+    DirectoryDataWriter<ViterbiClassifierBuilder<OUTCOME_TYPE>, ViterbiClassifier<OUTCOME_TYPE>>
+    implements SequentialDataWriter<OUTCOME_TYPE>, TypeArgumentDelegator {
 
   public ViterbiDataWriter(File outputDirectory, OutcomeFeatureExtractor outcomeFeatureExtractors[]) {
-    this.outputDirectory = outputDirectory;
+    super(outputDirectory);
     this.outcomeFeatureExtractors = outcomeFeatureExtractors;
+    this.classifierBuilder.setOutcomeFeatureExtractors(this.outcomeFeatureExtractors);
+  }
+
+  @Override
+  protected ViterbiClassifierBuilder<OUTCOME_TYPE> newClassifierBuilder() {
+    return new ViterbiClassifierBuilder<OUTCOME_TYPE>();
   }
 
   public void setDelegatedDataWriter(DataWriter<OUTCOME_TYPE> delegatedDataWriter) {
     this.delegatedDataWriter = delegatedDataWriter;
-  }
-
-  public File getDelegatedModelDirectory() {
-    return new File(outputDirectory, DELEGATED_MODEL_DIRECTORY_NAME);
   }
 
   public void writeSequence(List<Instance<OUTCOME_TYPE>> instances) throws CleartkException {
@@ -90,28 +86,8 @@ public class ViterbiDataWriter<OUTCOME_TYPE> implements SequentialDataWriter<OUT
     if (this.delegatedDataWriter == null)
       throw new CleartkException("delegatedDataWriter must be set before calling finish");
 
-    try {
-      this.delegatedDataWriter.finish();
-
-      ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(new File(
-          outputDirectory,
-          OUTCOME_FEATURE_EXTRACTOR_FILE_NAME)));
-      os.writeObject(this.outcomeFeatureExtractors);
-      os.close();
-
-      ClassifierManifest classifierManifest = new ClassifierManifest();
-      Class<? extends ClassifierBuilder<? extends OUTCOME_TYPE>> classifierBuilderClass = this
-          .getDefaultClassifierBuilderClass();
-      classifierManifest.setClassifierBuilder(classifierBuilderClass.newInstance());
-      classifierManifest.write(this.outputDirectory);
-
-    } catch (Exception e) {
-      throw new CleartkException(e);
-    }
-  }
-
-  public Class<? extends ClassifierBuilder<OUTCOME_TYPE>> getDefaultClassifierBuilderClass() {
-    return ReflectionUtil.uncheckedCast(ViterbiClassifierBuilder.class);
+    this.delegatedDataWriter.finish();
+    super.finish();
   }
 
   public Map<String, Type> getTypeArguments(Class<?> genericType) {

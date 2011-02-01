@@ -25,15 +25,22 @@ package org.cleartk.classifier.svmlight;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.TreeMap;
+import java.util.jar.JarEntry;
+import java.util.jar.JarInputStream;
+import java.util.jar.JarOutputStream;
 
-import org.cleartk.classifier.Classifier;
-import org.cleartk.classifier.jar.BuildJar;
-import org.cleartk.classifier.jar.ClassifierBuilder;
+import org.cleartk.CleartkException;
+import org.cleartk.classifier.jar.ClassifierBuilder_ImplBase;
+import org.cleartk.classifier.jar.JarStreams;
 import org.cleartk.classifier.sigmoid.Sigmoid;
+import org.cleartk.classifier.svmlight.model.SVMlightModel;
+import org.cleartk.classifier.util.featurevector.FeatureVector;
 
 /**
  * <br>
@@ -41,9 +48,18 @@ import org.cleartk.classifier.sigmoid.Sigmoid;
  * All rights reserved.
  */
 
-public class OVASVMlightClassifierBuilder implements ClassifierBuilder<String> {
+public class OVASVMlightClassifierBuilder extends
+    ClassifierBuilder_ImplBase<OVASVMlightClassifier, FeatureVector, String, Integer> {
 
-  public void train(File dir, String[] args) throws Exception {
+  public File getTrainingDataFile(File dir) {
+    return new File(dir, "training-data-allfalse.svmlight");
+  }
+
+  public File getTrainingDataFile(File dir, int label) {
+    return new File(dir, String.format("training-data-%d.svmlight", label));
+  }
+
+  public void trainClassifier(File dir, String... args) throws Exception {
     for (File file : dir.listFiles()) {
       if (file.getName().matches("training-data-\\d+.svmlight")) {
         SVMlightClassifierBuilder.train(file.getPath(), args);
@@ -58,30 +74,89 @@ public class OVASVMlightClassifierBuilder implements ClassifierBuilder<String> {
     }
   }
 
-  public void buildJar(File dir, String[] args) throws Exception {
-    BuildJar.OutputStream stream = new BuildJar.OutputStream(dir);
+  @Override
+  protected void packageClassifier(File dir, JarOutputStream modelStream) throws IOException {
+    super.packageClassifier(dir, modelStream);
 
-    Pattern modelPattern = Pattern.compile("training-data-(\\d+)\\.svmlight\\.model");
-    Matcher modelMatcher;
-    Pattern sigmoidPattern = Pattern.compile("training-data-(\\d+)\\.svmlight\\.sigmoid");
-    Matcher sigmoidMatcher;
-
-    for (File file : dir.listFiles()) {
-      modelMatcher = modelPattern.matcher(file.getName());
-      sigmoidMatcher = sigmoidPattern.matcher(file.getName());
-      if (modelMatcher.matches()) {
-        String name = String.format("model-%d.svmlight", new Integer(modelMatcher.group(1)));
-        stream.write(name, file);
-      } else if (sigmoidMatcher.matches()) {
-        String name = String.format("model-%d.sigmoid", new Integer(sigmoidMatcher.group(1)));
-        stream.write(name, file);
+    int label = 1;
+    while (true) {
+      File modelFile = new File(dir, String.format("training-data-%d.svmlight.model", label));
+      File sigmoidFile = new File(dir, String.format("training-data-%d.svmlight.sigmoid", label));
+      if (!modelFile.exists()) {
+        break;
       }
+
+      String modelName = String.format("model-%d.svmlight", label);
+      String sigmoidName = String.format("model-%d.sigmoid", label);
+      JarStreams.putNextJarEntry(modelStream, modelName, modelFile);
+      JarStreams.putNextJarEntry(modelStream, sigmoidName, sigmoidFile);
+
+      label += 1;
     }
-    stream.close();
   }
 
-  public Class<? extends Classifier<String>> getClassifierClass() {
-    return OVASVMlightClassifier.class;
+  private TreeMap<Integer, SVMlightModel> models;
+
+  private TreeMap<Integer, Sigmoid> sigmoids;
+
+  @Override
+  protected void unpackageClassifier(JarInputStream modelStream) throws IOException {
+    super.unpackageClassifier(modelStream);
+    this.models = new TreeMap<Integer, SVMlightModel>();
+    this.sigmoids = new TreeMap<Integer, Sigmoid>();
+
+    int label = 1;
+    SVMlightModel model;
+    while ((model = getNextModel(modelStream, label)) != null) {
+      this.models.put(label, model);
+
+      JarStreams.getNextJarEntry(modelStream, String.format("model-%d.sigmoid", label));
+      ObjectInput in = new ObjectInputStream(modelStream);
+      try {
+        this.sigmoids.put(label, (Sigmoid) in.readObject());
+      } catch (ClassNotFoundException e) {
+        throw new IOException(e);
+      }
+
+      label += 1;
+    }
+
+    if (this.models.isEmpty()) {
+      throw new IOException(String.format("no models found in %s", modelStream));
+    }
   }
 
+  @Override
+  protected OVASVMlightClassifier newClassifier() {
+    return new OVASVMlightClassifier(
+        this.featuresEncoder,
+        this.outcomeEncoder,
+        this.models,
+        this.sigmoids);
+  }
+
+  private static SVMlightModel getNextModel(JarInputStream modelStream, int label)
+      throws IOException {
+    // look for a next entry or return null if there isn't one
+    JarEntry entry = modelStream.getNextJarEntry();
+    if (entry == null) {
+      return null;
+    }
+
+    // make sure the name was the model we expected
+    String expectedName = String.format("model-%d.svmlight", label);
+    if (!entry.getName().equals(expectedName)) {
+      throw new IOException(String.format(
+          "expected next jar entry to be %s, found %s",
+          expectedName,
+          entry.getName()));
+    }
+
+    // read the model from the jar stream
+    try {
+      return SVMlightModel.fromInputStream(modelStream);
+    } catch (CleartkException e) {
+      throw new IOException(e);
+    }
+  }
 }

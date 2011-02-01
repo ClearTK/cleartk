@@ -36,7 +36,7 @@ import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 import org.cleartk.classifier.encoder.features.NumberEncoder;
 import org.cleartk.classifier.encoder.features.StringEncoder;
 import org.cleartk.classifier.encoder.outcome.StringArrayToStringArrayEncoder;
-import org.cleartk.classifier.jar.JarSequentialDataWriterFactory;
+import org.cleartk.classifier.jar.SequentialDataWriterFactory_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 
@@ -49,7 +49,7 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * @author Martin Toepfer
  */
 public class DefaultGrmmDataWriterFactory extends
-    JarSequentialDataWriterFactory<List<NameNumber>, String[], String[]> {
+    SequentialDataWriterFactory_ImplBase<List<NameNumber>, String[], String[]> {
 
   public static final String PARAM_COMPRESS = ConfigurationParameterFactory
       .createConfigurationParameterName(DefaultGrmmDataWriterFactory.class, "compress");

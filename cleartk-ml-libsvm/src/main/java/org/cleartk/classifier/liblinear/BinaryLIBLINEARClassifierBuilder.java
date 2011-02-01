@@ -23,8 +23,12 @@
  */
 package org.cleartk.classifier.liblinear;
 
-import org.cleartk.classifier.Classifier;
-import org.cleartk.classifier.libsvm.BinaryLIBSVMClassifierBuilder;
+import java.io.IOException;
+import java.io.InputStream;
+
+import org.cleartk.CleartkException;
+import org.cleartk.classifier.liblinear.model.LIBLINEARModel;
+import org.cleartk.classifier.libsvm.GenericLIBSVMClassifierBuilder;
 
 /**
  * <br>
@@ -32,7 +36,8 @@ import org.cleartk.classifier.libsvm.BinaryLIBSVMClassifierBuilder;
  * All rights reserved.
  */
 
-public class BinaryLIBLINEARClassifierBuilder extends BinaryLIBSVMClassifierBuilder {
+public class BinaryLIBLINEARClassifierBuilder extends
+    GenericLIBSVMClassifierBuilder<BinaryLIBLINEARClassifier, Boolean, Boolean, LIBLINEARModel> {
 
   @Override
   public String getCommand() {
@@ -41,11 +46,21 @@ public class BinaryLIBLINEARClassifierBuilder extends BinaryLIBSVMClassifierBuil
 
   @Override
   public String getModelName() {
-    return BinaryLIBLINEARClassifier.MODEL_NAME;
+    return "model.liblinear";
   }
 
   @Override
-  public Class<? extends Classifier<Boolean>> getClassifierClass() {
-    return BinaryLIBLINEARClassifier.class;
+  protected BinaryLIBLINEARClassifier newClassifier() {
+    return new BinaryLIBLINEARClassifier(this.featuresEncoder, this.outcomeEncoder, this.model);
   }
+
+  @Override
+  protected LIBLINEARModel loadModel(InputStream inputStream) throws IOException {
+    try {
+      return LIBLINEARModel.fromInputStream(inputStream);
+    } catch (CleartkException e) {
+      throw new IOException(e);
+    }
+  }
+
 }

@@ -27,9 +27,8 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor;
+import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.JarClassifierFactory;
-import org.cleartk.classifier.jar.JarDataWriterFactory;
-import org.cleartk.classifier.jar.JarSequentialDataWriterFactory;
 import org.cleartk.classifier.viterbi.ViterbiClassifier;
 import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -82,7 +81,7 @@ public class CleartkAnnotatorDescriptionFactory {
         typeSystemDescription,
         CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME,
         ViterbiDataWriterFactory.class.getName(),
-        ViterbiDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDir,
         ViterbiDataWriterFactory.PARAM_DELEGATED_DATA_WRITER_FACTORY_CLASS,
         delegatedDataWriterFactoryClass.getName(),
@@ -150,7 +149,7 @@ public class CleartkAnnotatorDescriptionFactory {
         dataWriterFactoryClass.getName());
     ConfigurationParameterFactory.addConfigurationParameter(
         aed,
-        JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDir);
     return aed;
   }
@@ -215,11 +214,7 @@ public class CleartkAnnotatorDescriptionFactory {
         dataWriterFactoryClass.getName());
     ConfigurationParameterFactory.addConfigurationParameter(
         aed,
-        JarSequentialDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
-        outputDir);
-    ConfigurationParameterFactory.addConfigurationParameter(
-        aed,
-        ViterbiDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDir);
     return aed;
   }

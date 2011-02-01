@@ -53,8 +53,7 @@ import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
-import org.cleartk.classifier.jar.JarDataWriterFactory;
-import org.cleartk.classifier.jar.JarSequentialDataWriterFactory;
+import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.classifier.mallet.factory.ClassifierTrainerFactory;
 import org.cleartk.classifier.util.InstanceFactory;
@@ -113,7 +112,7 @@ public class MalletDataWriterTest extends DefaultTestBase {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         Test1Annotator.class,
         typeSystemDescription,
-        JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         DefaultMalletDataWriterFactory.class.getName());
@@ -121,9 +120,8 @@ public class MalletDataWriterTest extends DefaultTestBase {
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
 
-    String[] lines = FileUtil.loadListOfStrings(new File(
-        outputDirectoryName,
-        MalletDataWriter.TRAINING_DATA_FILE_NAME));
+    File trainFile = new MalletClassifierBuilder().getTrainingDataFile(this.outputDirectory);
+    String[] lines = FileUtil.loadListOfStrings(trainFile);
     assertEquals("pos_NN:1.0 distance:3.0 precision:1.234 A", lines[0]);
     assertEquals("name_2PO:1.0 p's:2 B", lines[1]);
     assertEquals("null:0 Z", lines[2]);
@@ -157,7 +155,7 @@ public class MalletDataWriterTest extends DefaultTestBase {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         Test1Annotator.class,
         typeSystemDescription,
-        JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         DefaultMalletDataWriterFactory.class.getName(),
@@ -167,9 +165,8 @@ public class MalletDataWriterTest extends DefaultTestBase {
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
 
-    String[] lines = FileUtil.loadListOfStrings(new File(
-        outputDirectoryName,
-        MalletDataWriter.TRAINING_DATA_FILE_NAME));
+    File trainFile = new MalletClassifierBuilder().getTrainingDataFile(this.outputDirectory);
+    String[] lines = FileUtil.loadListOfStrings(trainFile);
     assertEquals("0:1.0 1:3.0 2:1.234 A", lines[0]);
     assertEquals("3:1.0 4:2 B", lines[1]);
     assertEquals("null:0 Z", lines[2]);
@@ -210,7 +207,7 @@ public class MalletDataWriterTest extends DefaultTestBase {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         Test1Annotator.class,
         typeSystemDescription,
-        JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         DefaultMalletDataWriterFactory.class.getName(),
@@ -222,9 +219,8 @@ public class MalletDataWriterTest extends DefaultTestBase {
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
 
-    String[] lines = FileUtil.loadListOfStrings(new File(
-        outputDirectoryName,
-        MalletDataWriter.TRAINING_DATA_FILE_NAME));
+    File trainFile = new MalletClassifierBuilder().getTrainingDataFile(this.outputDirectory);
+    String[] lines = FileUtil.loadListOfStrings(trainFile);
     assertEquals("0:1.0 1:3.0 2:1.234 A", lines[0]);
     assertEquals("3:1.0 4:2 B", lines[1]);
     assertEquals("null:0 Z", lines[2]);
@@ -280,7 +276,7 @@ public class MalletDataWriterTest extends DefaultTestBase {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         Test4Annotator.class,
         typeSystemDescription,
-        JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         DefaultMalletDataWriterFactory.class.getName(),
@@ -325,7 +321,7 @@ public class MalletDataWriterTest extends DefaultTestBase {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         Test5Annotator.class,
         typeSystemDescription,
-        JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         DefaultMalletDataWriterFactory.class.getName(),
@@ -335,9 +331,8 @@ public class MalletDataWriterTest extends DefaultTestBase {
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
 
-    String[] lines = FileUtil.loadListOfStrings(new File(
-        outputDirectoryName,
-        MalletDataWriter.TRAINING_DATA_FILE_NAME));
+    File trainFile = new MalletClassifierBuilder().getTrainingDataFile(this.outputDirectory);
+    String[] lines = FileUtil.loadListOfStrings(trainFile);
     assertEquals("0:1.0 1:1.0 2:1.0 a", lines[0]);
   }
 
@@ -378,7 +373,7 @@ public class MalletDataWriterTest extends DefaultTestBase {
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         TestAnnotator.class,
         typeSystemDescription,
-        JarSequentialDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME,
         DefaultMalletCRFDataWriterFactory.class.getName());
@@ -395,9 +390,8 @@ public class MalletDataWriterTest extends DefaultTestBase {
     engine.process(jCas);
     engine.collectionProcessComplete();
 
-    BufferedReader input = new BufferedReader(new FileReader(new File(
-        outputDirectoryName,
-        MalletCRFDataWriter.TRAINING_DATA_FILE_NAME)));
+    File trainFile = new MalletCRFClassifierBuilder().getTrainingDataFile(this.outputDirectory);
+    BufferedReader input = new BufferedReader(new FileReader(trainFile));
     String line = input.readLine();
     assertNotNull(line);
     assertTrue(line.endsWith(" WDT"));

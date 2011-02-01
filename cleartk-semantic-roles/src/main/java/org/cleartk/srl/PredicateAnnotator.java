@@ -46,8 +46,8 @@ import org.cleartk.classifier.feature.extractor.simple.CombinedExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
+import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.JarClassifierFactory;
-import org.cleartk.classifier.jar.JarDataWriterFactory;
 import org.cleartk.srl.type.Predicate;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
@@ -73,7 +73,7 @@ public class PredicateAnnotator extends CleartkAnnotator<Boolean> {
         SrlComponents.TYPE_SYSTEM_DESCRIPTION,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         dataWriterFactoryClass.getName(),
-        JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectory.toString());
   }
 

@@ -23,16 +23,15 @@
  */
 package org.cleartk.classifier.mallet;
 
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.jar.JarFile;
-import java.util.zip.ZipEntry;
 
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.NameNumber;
-import org.cleartk.classifier.jar.JarSequentialClassifier;
+import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
+import org.cleartk.classifier.jar.SequentialClassifier_ImplBase;
 import org.cleartk.util.ReflectionUtil;
 
 import cc.mallet.fst.Transducer;
@@ -53,15 +52,17 @@ import cc.mallet.types.Sequence;
  *         Random Field (CRF) tagger</a>. Annotators that use a sequential learner such as this one
  *         will need to support classification of a sequence of instances.
  */
-public class MalletCRFClassifier extends JarSequentialClassifier<String, String, List<NameNumber>> {
+public class MalletCRFClassifier extends
+    SequentialClassifier_ImplBase<List<NameNumber>, String, String> {
+
   protected Transducer transducer;
 
-  public MalletCRFClassifier(JarFile modelFile) throws Exception {
-    super(modelFile);
-
-    ZipEntry modelEntry = modelFile.getEntry("model.malletcrf");
-    ObjectInputStream objectStream = new ObjectInputStream(modelFile.getInputStream(modelEntry));
-    this.transducer = (Transducer) objectStream.readObject();
+  public MalletCRFClassifier(
+      FeaturesEncoder<List<NameNumber>> featuresEncoder,
+      OutcomeEncoder<String, String> outcomeEncoder,
+      Transducer transducer) {
+    super(featuresEncoder, outcomeEncoder);
+    this.transducer = transducer;
   }
 
   /**

@@ -23,8 +23,11 @@
  */
 package org.cleartk.classifier.test;
 
-import java.io.IOException;
-import java.util.jar.JarFile;
+import java.util.List;
+
+import org.cleartk.classifier.encoder.features.FeaturesEncoder;
+import org.cleartk.classifier.encoder.features.NameNumber;
+import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 
 /**
  * <br>
@@ -37,8 +40,10 @@ import java.util.jar.JarFile;
  */
 public class StringTestClassifier extends TestClassifier_ImplBase<String> {
 
-  public StringTestClassifier(JarFile modelFile) throws IOException {
-    super(modelFile);
+  public StringTestClassifier(
+      FeaturesEncoder<List<NameNumber>> featuresEncoder,
+      OutcomeEncoder<String, String> outcomeEncoder) {
+    super(featuresEncoder, outcomeEncoder);
   }
 
 }

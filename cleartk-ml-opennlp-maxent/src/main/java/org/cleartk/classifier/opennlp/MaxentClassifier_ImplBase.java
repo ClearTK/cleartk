@@ -1,5 +1,5 @@
 /** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+ * Copyright (c) 2007-2011, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -23,43 +23,40 @@
  */
 package org.cleartk.classifier.opennlp;
 
-import java.io.DataInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.jar.JarFile;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.ZipEntry;
 
 import opennlp.model.MaxentModel;
-import opennlp.maxent.io.BinaryGISModelReader;
 
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.ScoredOutcome;
+import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.NameNumber;
-import org.cleartk.classifier.jar.JarClassifier;
+import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
+import org.cleartk.classifier.jar.Classifier_ImplBase;
 
 /**
  * <br>
- * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * Copyright (c) 2007-2011, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
  * 
  * @author Philip Ogren
- * 
+ * @author Steven Bethard
  */
 public abstract class MaxentClassifier_ImplBase<OUTCOME_TYPE> extends
-    JarClassifier<OUTCOME_TYPE, String, List<NameNumber>> {
+    Classifier_ImplBase<List<NameNumber>, OUTCOME_TYPE, String> {
 
   protected MaxentModel model;
 
-  public MaxentClassifier_ImplBase(JarFile modelFile) throws IOException {
-    super(modelFile);
-    ZipEntry modelEntry = modelFile.getEntry("model.maxent");
-    this.model = new BinaryGISModelReader(new DataInputStream(new GZIPInputStream(
-        modelFile.getInputStream(modelEntry)))).getModel();
+  public MaxentClassifier_ImplBase(
+      FeaturesEncoder<List<NameNumber>> featuresEncoder,
+      OutcomeEncoder<OUTCOME_TYPE, String> outcomeEncoder,
+      MaxentModel model) {
+    super(featuresEncoder, outcomeEncoder);
+    this.model = model;
   }
 
   public OUTCOME_TYPE classify(List<Feature> features) throws CleartkException {

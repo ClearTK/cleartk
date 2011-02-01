@@ -1,5 +1,5 @@
 /** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+ * Copyright (c) 2007-2011, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -31,7 +31,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.List;
-import java.util.jar.JarFile;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -41,8 +40,8 @@ import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.ScoredOutcome;
+import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.JarClassifierFactory;
-import org.cleartk.classifier.jar.JarDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.test.DefaultTestBase;
 import org.junit.Test;
@@ -51,7 +50,7 @@ import org.uimafit.testing.util.HideOutput;
 
 /**
  * <br>
- * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * Copyright (c) 2007-2011, Regents of the University of Colorado <br>
  * All rights reserved.
  */
 
@@ -125,7 +124,7 @@ public class MaxentClassifierTest extends DefaultTestBase {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         Test1Annotator.class,
         typeSystemDescription,
-        JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         DefaultMaxentDataWriterFactory.class.getName());
@@ -133,9 +132,8 @@ public class MaxentClassifierTest extends DefaultTestBase {
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
 
-    BufferedReader reader = new BufferedReader(new FileReader(new File(
-        outputDirectoryName,
-        MaxentDataWriter.TRAINING_DATA_FILE_NAME)));
+    File trainFile = new MaxentClassifierBuilder().getTrainingDataFile(this.outputDirectory);
+    BufferedReader reader = new BufferedReader(new FileReader(trainFile));
     String line = reader.readLine();
     assertEquals("A hello=1234", line);
     reader.close();
@@ -144,9 +142,8 @@ public class MaxentClassifierTest extends DefaultTestBase {
     Train.main(outputDirectoryName);
     hider.restoreOutput();
 
-    JarFile modelFile = new JarFile(new File(outputDirectoryName, "model.jar"));
-    MaxentClassifier classifier = new MaxentClassifier(modelFile);
-    modelFile.close();
+    MaxentClassifierBuilder builder = new MaxentClassifierBuilder();
+    MaxentClassifier classifier = builder.loadClassifierFromTrainingDirectory(this.outputDirectory);
     String classification = classifier.classify(createInstance(null, "hello", 1000).getFeatures());
     assertEquals("A", classification);
     classification = classifier.classify(createInstance(null, "hello", 1).getFeatures());
@@ -366,7 +363,7 @@ public class MaxentClassifierTest extends DefaultTestBase {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         Test2Annotator.class,
         typeSystemDescription,
-        JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         DefaultMaxentDataWriterFactory.class.getName(),
@@ -376,9 +373,8 @@ public class MaxentClassifierTest extends DefaultTestBase {
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
 
-    BufferedReader reader = new BufferedReader(new FileReader(new File(
-        outputDirectoryName,
-        MaxentDataWriter.TRAINING_DATA_FILE_NAME)));
+    File trainFile = new MaxentClassifierBuilder().getTrainingDataFile(this.outputDirectory);
+    BufferedReader reader = new BufferedReader(new FileReader(trainFile));
     reader.readLine();
     reader.close();
 
@@ -386,9 +382,8 @@ public class MaxentClassifierTest extends DefaultTestBase {
     Train.main(outputDirectoryName + "/", "10", "1");
     hider.restoreOutput();
 
-    JarFile modelFile = new JarFile(new File(outputDirectoryName, "model.jar"));
-    MaxentClassifier classifier = new MaxentClassifier(modelFile);
-    modelFile.close();
+    MaxentClassifierBuilder builder = new MaxentClassifierBuilder();
+    MaxentClassifier classifier = builder.loadClassifierFromTrainingDirectory(this.outputDirectory);
     List<Feature> features1 = createInstance(
         "B-GENE",
         "Word_pol LCWord_pol CapitalType_ALL_LOWERCASE L0_( L0_TypePath_Pos_-LRB- L0_TypePath_Stem_( L1_I L1_TypePath_Pos_PRP L1_TypePath_Stem_I R0_I R0_TypePath_Pos_PRP R0_TypePath_Stem_I R1_) R1_TypePath_Pos_-RRB- R1_TypePath_Stem_) TypePath_Pos_NN TypePath_Stem_pol PrevNEMTokenLabel_L0_O PrevNEMTokenLabel_L1_I-GENE Gazetteer_entrez_genes.txt")

@@ -32,7 +32,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkSequentialAnnotator;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.jar.JarSequentialDataWriterFactory;
+import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.test.DefaultTestBase;
 import org.junit.Before;
@@ -82,7 +82,7 @@ public class GrmmClassifierBuilderTest extends DefaultTestBase {
       dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
           Test1Annotator.class,
           typeSystemDescription,
-          JarSequentialDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+          DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
           outputDirectoryName,
           CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME,
           DefaultGrmmDataWriterFactory.class.getName());

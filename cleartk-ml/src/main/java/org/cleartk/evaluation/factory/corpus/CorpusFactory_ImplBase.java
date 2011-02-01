@@ -27,27 +27,29 @@ import org.uimafit.factory.AnalysisEngineFactory;
 /**
  * 
  * @author Philip Ogren
- *
+ * 
  */
 
 public abstract class CorpusFactory_ImplBase implements CorpusFactory {
 
   protected TypeSystemDescription typeSystemDescription;
-  
+
   public CorpusFactory_ImplBase(TypeSystemDescription typeSystemDescription) {
     this.typeSystemDescription = typeSystemDescription;
   }
 
-	public AnalysisEngineDescription createPreprocessor()
-			throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveDescription(JCasAnnotatorAdapter.class, typeSystemDescription);
-	}
+  public AnalysisEngineDescription createPreprocessor() throws ResourceInitializationException {
+    return AnalysisEngineFactory.createPrimitiveDescription(
+        JCasAnnotatorAdapter.class,
+        typeSystemDescription);
+  }
 
-	protected void verifyFoldValue(int fold) {
-		if(fold > 0 && fold <= numberOfFolds()) {
-			return;
-		}
-		throw new RuntimeException("fold number must be greater than 0 and less than or equal to "+numberOfFolds());
-	}
+  protected void verifyFoldValue(int fold) {
+    if (fold > 0 && fold <= numberOfFolds()) {
+      return;
+    }
+    throw new RuntimeException("fold number must be greater than 0 and less than or equal to "
+        + numberOfFolds());
+  }
 
 }

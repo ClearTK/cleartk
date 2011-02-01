@@ -26,8 +26,6 @@ package org.cleartk.classifier.libsvm;
 import java.io.File;
 import java.io.IOException;
 
-import org.cleartk.classifier.jar.ClassifierBuilder;
-
 /**
  * <br>
  * Copyright (c) 2009, Regents of the University of Colorado <br>
@@ -35,21 +33,21 @@ import org.cleartk.classifier.jar.ClassifierBuilder;
  * <p>
  */
 
-public class BinaryLIBSVMDataWriter extends LIBSVMDataWriter<Boolean, Boolean> {
+public class BinaryLIBSVMDataWriter extends
+    LIBSVMDataWriter<BinaryLIBSVMClassifierBuilder, Boolean, Boolean, libsvm.svm_model> {
 
   public BinaryLIBSVMDataWriter(File outputDirectory) throws IOException {
     super(outputDirectory);
   }
 
   @Override
-  public Class<? extends ClassifierBuilder<Boolean>> getDefaultClassifierBuilderClass() {
-    return BinaryLIBSVMClassifierBuilder.class;
+  protected String encode(Boolean outcome) {
+    return this.classifierBuilder.getOutcomeEncoder().encode(outcome).booleanValue() ? "+1" : "-1";
   }
 
   @Override
-  protected String encode(Boolean outcome) {
-    Boolean encodedOutcome = this.outcomeEncoder.encode(outcome);
-    return encodedOutcome.booleanValue() ? "+1" : "-1";
+  protected BinaryLIBSVMClassifierBuilder newClassifierBuilder() {
+    return new BinaryLIBSVMClassifierBuilder();
   }
 
 }

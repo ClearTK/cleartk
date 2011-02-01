@@ -30,7 +30,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.Random;
-import java.util.jar.JarFile;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -39,8 +38,8 @@ import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.JarClassifierFactory;
-import org.cleartk.classifier.jar.JarDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.test.DefaultTestBase;
 import org.junit.Before;
@@ -118,7 +117,7 @@ public class MalletClassifierTest extends DefaultTestBase {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         TestAnnotator.class,
         typeSystemDescription,
-        JarDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         DefaultMalletDataWriterFactory.class.getName());
@@ -126,9 +125,8 @@ public class MalletClassifierTest extends DefaultTestBase {
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
 
-    BufferedReader reader = new BufferedReader(new FileReader(new File(
-        outputDirectoryName,
-        MalletDataWriter.TRAINING_DATA_FILE_NAME)));
+    File trainFile = new MalletClassifierBuilder().getTrainingDataFile(this.outputDirectory);
+    BufferedReader reader = new BufferedReader(new FileReader(trainFile));
     reader.readLine();
     reader.close();
 
@@ -152,9 +150,8 @@ public class MalletClassifierTest extends DefaultTestBase {
     Train.main(new String[] { outputDirectoryName, "C45" });
     hider.restoreOutput();
 
-    JarFile modelFile = new JarFile(new File(outputDirectoryName, "model.jar"));
-    MalletClassifier classifier = new MalletClassifier(modelFile);
-    modelFile.close();
+    MalletClassifierBuilder builder = new MalletClassifierBuilder();
+    MalletClassifier classifier = builder.loadClassifierFromTrainingDirectory(this.outputDirectory);
 
     Instance<String> testInstance = new Instance<String>();
     testInstance.add(new Feature("hello", random.nextInt(1000) + 1000));

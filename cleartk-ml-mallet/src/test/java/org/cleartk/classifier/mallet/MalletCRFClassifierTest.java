@@ -31,7 +31,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.jar.JarFile;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngine;
@@ -43,8 +42,8 @@ import org.cleartk.classifier.CleartkSequentialAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.SequentialClassifier;
+import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.JarClassifierFactory;
-import org.cleartk.classifier.jar.JarSequentialDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.test.DefaultTestBase;
 import org.junit.Test;
@@ -107,7 +106,7 @@ public class MalletCRFClassifierTest extends DefaultTestBase {
     AnalysisEngine sequentialDataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         TestAnnotator.class,
         typeSystemDescription,
-        JarSequentialDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME,
         DefaultMalletCRFDataWriterFactory.class.getName());
@@ -115,18 +114,17 @@ public class MalletCRFClassifierTest extends DefaultTestBase {
     sequentialDataWriterAnnotator.process(jCas);
     sequentialDataWriterAnnotator.collectionProcessComplete();
 
-    BufferedReader reader = new BufferedReader(new FileReader(new File(
-        outputDirectoryName,
-        MalletCRFDataWriter.TRAINING_DATA_FILE_NAME)));
+    File trainFile = new MalletCRFClassifierBuilder().getTrainingDataFile(this.outputDirectory);
+    BufferedReader reader = new BufferedReader(new FileReader(trainFile));
     reader.readLine();
     reader.close();
     HideOutput hider = new HideOutput();
     Train.main(outputDirectoryName);
     hider.restoreOutput();
 
-    JarFile modelFile = new JarFile(new File(outputDirectoryName, "model.jar"));
-    MalletCRFClassifier classifier = new MalletCRFClassifier(modelFile);
-    modelFile.close();
+    MalletCRFClassifierBuilder builder = new MalletCRFClassifierBuilder();
+    MalletCRFClassifier classifier;
+    classifier = builder.loadClassifierFromTrainingDirectory(this.outputDirectory);
     assertTrue(classifier instanceof SequentialClassifier<?>);
 
     List<List<Feature>> sequenceFeatures = new ArrayList<List<Feature>>();

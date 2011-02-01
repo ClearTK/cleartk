@@ -25,12 +25,11 @@ package org.cleartk.classifier.mallet;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.encoder.features.NameNumber;
-import org.cleartk.classifier.jar.JarDataWriter;
+import org.cleartk.classifier.jar.DataWriter_ImplBase;
 
 /**
  * <br>
@@ -47,17 +46,11 @@ import org.cleartk.classifier.jar.JarDataWriter;
  * 
  * @author Philip Ogren
  */
-public abstract class MalletDataWriter_ImplBase<OUTCOME_TYPE> extends
-    JarDataWriter<OUTCOME_TYPE, String, List<NameNumber>> {
-
-  public static final String TRAINING_DATA_FILE_NAME = "training-data.mallet";
+public abstract class MalletDataWriter_ImplBase<CLASSIFIER_BUILDER_TYPE extends MalletClassifierBuilder_ImplBase<? extends MalletClassifier_ImplBase<OUTCOME_TYPE>, OUTCOME_TYPE>, OUTCOME_TYPE>
+    extends DataWriter_ImplBase<CLASSIFIER_BUILDER_TYPE, List<NameNumber>, OUTCOME_TYPE, String> {
 
   public MalletDataWriter_ImplBase(File outputDirectory) throws IOException {
     super(outputDirectory);
-
-    // initialize output writer and Classifier class
-    this.trainingDataWriter = this.getPrintWriter(TRAINING_DATA_FILE_NAME);
-
   }
 
   @Override
@@ -75,7 +68,5 @@ public abstract class MalletDataWriter_ImplBase<OUTCOME_TYPE> extends
     this.trainingDataWriter.print(outcome);
     this.trainingDataWriter.println();
   }
-
-  protected PrintWriter trainingDataWriter;
 
 }

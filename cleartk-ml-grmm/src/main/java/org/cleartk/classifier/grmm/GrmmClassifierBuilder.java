@@ -25,14 +25,21 @@ package org.cleartk.classifier.grmm;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.LineNumberReader;
-import java.util.Arrays;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.jar.JarEntry;
+import java.util.jar.JarInputStream;
+import java.util.jar.JarOutputStream;
+import java.util.zip.GZIPInputStream;
 
-import org.cleartk.classifier.jar.BuildJar;
-import org.cleartk.classifier.jar.ClassifierBuilder;
+import org.cleartk.classifier.encoder.features.NameNumber;
+import org.cleartk.classifier.jar.JarStreams;
+import org.cleartk.classifier.jar.SequentialClassifierBuilder_ImplBase;
 
+import edu.umass.cs.mallet.grmm.learning.ACRF;
 import edu.umass.cs.mallet.grmm.learning.GenericAcrfTui;
 
 /**
@@ -44,13 +51,19 @@ import edu.umass.cs.mallet.grmm.learning.GenericAcrfTui;
  * @author Martin Toepfer
  * 
  */
-public class GrmmClassifierBuilder implements ClassifierBuilder<String[]> {
+public class GrmmClassifierBuilder extends
+    SequentialClassifierBuilder_ImplBase<GrmmClassifier, List<NameNumber>, String[], String[]> {
 
-  public static String DEFAULT_MODEL_FILENAME = "acrf.model.ser.gz";
+  private static String DEFAULT_MODEL_FILENAME = "acrf.model.ser.gz";
 
-  public static String JAR_ENTRY_MODEL = "model.grmm";
+  private static String JAR_ENTRY_MODEL = "model.grmm";
 
-  public static String JAR_ENTRY_OUTCOME_EXAMPLE = "dummy.outcome";
+  private static String JAR_ENTRY_OUTCOME_EXAMPLE = "dummy.outcome";
+
+  @Override
+  public File getTrainingDataFile(File dir) {
+    return new File(dir, "training-data.grmm");
+  }
 
   /**
    * Parameters:<br>
@@ -89,79 +102,93 @@ public class GrmmClassifierBuilder implements ClassifierBuilder<String[]> {
    * </tr>
    * </table>
    */
-  public void train(File dir, String[] args) throws Exception {
+  public void trainClassifier(File dir, String... args) throws Exception {
     if (dir == null || !dir.isDirectory()) {
-      throw new IllegalArgumentException("invalid directory \"" + dir == null
-          ? "null"
-          : dir.getPath() + "\"passed.");
+      throw new IllegalArgumentException(String.format("invalid directory \"%s\"", dir));
     }
-    String template;
-    if (args == null || args.length == 0) {
-      throw new IllegalArgumentException("no template file passed.");
+    if (args == null || args.length == 0 || args[0] == null) {
+      throw new IllegalArgumentException("missing template file in \"args\"");
     }
-    if (!new File(template = dir + "/" + args[0]).exists()) {
-      throw new IllegalArgumentException("template file \"" + template + "\" does not exist!");
+    File template = new File(dir, args[0]);
+    if (!template.exists()) {
+      String msg = "template file \"%s\" does not exist!";
+      throw new IllegalArgumentException(String.format(msg, template));
     }
-    String outputFileName = dir.getAbsolutePath() + "/" + DEFAULT_MODEL_FILENAME;
+    File outputFile = new File(dir, DEFAULT_MODEL_FILENAME);
 
     String inferencer = args.length < 2 ? "LoopyBP" : args[1];
     String maxInferencer = args.length < 3 ? "LoopyBP.createForMaxProduct()" : args[2];
 
     // usage of GRMM:
     // (modified version with minor changes in the arguments)
-    List<String> argList = Arrays.asList(
+    String[] grmmArgs = new String[] {
         "--output-file",
-        outputFileName,
+        outputFile.getAbsolutePath(),
         "--training",
-        dir.getAbsolutePath() + "/training-data.grmm",
+        new File(dir, "training-data.grmm").getAbsolutePath(),
         "--testing",
-        dir.getAbsolutePath() + "/training-data.grmm",
+        new File(dir, "training-data.grmm").getAbsolutePath(),
         "--template-file",
-        template,
+        template.getAbsolutePath(),
         "--inferencer",
         inferencer,
         "--max-inferencer",
-        maxInferencer);
-    String[] grmmArgs = new String[args.length + 11];
-    argList.toArray(grmmArgs);
+        maxInferencer };
 
     // GenericAcrfTui exists in the mallet library and the GRMM library;
     // use the class from GRMM:
     GenericAcrfTui.main(grmmArgs);
   }
 
-  public void buildJar(File dir, String[] args) throws Exception {
-    BuildJar.OutputStream stream = new BuildJar.OutputStream(dir);
-    File model = new File(dir + "/" + DEFAULT_MODEL_FILENAME);
-    File trainingData = new File(dir.getAbsolutePath() + "/training-data.grmm");
+  @Override
+  protected void packageClassifier(File dir, JarOutputStream modelStream) throws IOException {
+    super.packageClassifier(dir, modelStream);
+
+    File model = new File(dir, DEFAULT_MODEL_FILENAME);
+    File trainingData = new File(dir, "training-data.grmm");
     if (!model.exists()) {
-      throw new IllegalArgumentException("model file \"" + model.getName() + "\" not found.");
+      String msg = "model file \"%s\" not found";
+      throw new IllegalArgumentException(String.format(msg, model));
     }
     if (!trainingData.exists()) {
-      throw new IllegalArgumentException("training data file \"" + trainingData.getName()
-          + "\" not found.");
+      String msg = "training data file \"%s\" not found";
+      throw new IllegalArgumentException(String.format(msg, trainingData));
     }
     // handle an outcome example from the training data over to the
     // classifier
     // through a special jar-file-entry:
     LineNumberReader lnr = new LineNumberReader(new FileReader(trainingData));
     String outcomeExample = lnr.readLine().split("----")[0];
-    System.out.println(outcomeExample);
     lnr.close();
-    try {
-      stream.write(JAR_ENTRY_MODEL, model);
-      JarEntry outcomeExampleEntry = new JarEntry(JAR_ENTRY_OUTCOME_EXAMPLE);
-      outcomeExampleEntry.setComment(outcomeExample);
-      stream.putNextEntry(outcomeExampleEntry);
-      stream.flush();
-    } finally {
-      stream.close();
-    }
-
+    JarStreams.putNextJarEntry(modelStream, JAR_ENTRY_MODEL, model);
+    modelStream.putNextEntry(new JarEntry(JAR_ENTRY_OUTCOME_EXAMPLE));
+    new ObjectOutputStream(modelStream).writeObject(outcomeExample);
   }
 
-  public Class<?> getClassifierClass() {
-    return GrmmClassifier.class;
+  protected ACRF acrf;
+
+  protected String outcomeExample;
+
+  @Override
+  protected void unpackageClassifier(JarInputStream modelStream) throws IOException {
+    super.unpackageClassifier(modelStream);
+    try {
+      JarStreams.getNextJarEntry(modelStream, JAR_ENTRY_MODEL);
+      this.acrf = (ACRF) new ObjectInputStream(new GZIPInputStream(modelStream)).readObject();
+      JarStreams.getNextJarEntry(modelStream, JAR_ENTRY_OUTCOME_EXAMPLE);
+      this.outcomeExample = (String) new ObjectInputStream(modelStream).readObject();
+    } catch (ClassNotFoundException e) {
+      throw new IOException(e);
+    }
+  }
+
+  @Override
+  protected GrmmClassifier newClassifier() {
+    return new GrmmClassifier(
+        this.featuresEncoder,
+        this.outcomeEncoder,
+        this.acrf,
+        this.outcomeExample);
   }
 
 }

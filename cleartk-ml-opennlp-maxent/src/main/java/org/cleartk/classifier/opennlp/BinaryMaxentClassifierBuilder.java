@@ -1,5 +1,5 @@
 /** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+ * Copyright (c) 2007-2011, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -23,19 +23,19 @@
  */
 package org.cleartk.classifier.opennlp;
 
-import org.cleartk.classifier.Classifier;
-
 /**
  * <br>
- * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * Copyright (c) 2007-2011, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
  * @author Philip Ogren
- * 
+ * @author Steven Bethard
  */
-public class BinaryMaxentClassifierBuilder extends MaxentClassifierBuilder_ImplBase<Boolean> {
+public class BinaryMaxentClassifierBuilder extends
+    MaxentClassifierBuilder_ImplBase<BinaryMaxentClassifier, Boolean> {
 
-  public Class<? extends Classifier<Boolean>> getClassifierClass() {
-    return BinaryMaxentClassifier.class;
+  @Override
+  protected BinaryMaxentClassifier newClassifier() {
+    return new BinaryMaxentClassifier(this.featuresEncoder, this.outcomeEncoder, this.model);
   }
 }

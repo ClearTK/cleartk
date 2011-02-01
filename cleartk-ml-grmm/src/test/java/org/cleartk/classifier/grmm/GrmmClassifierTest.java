@@ -31,7 +31,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.List;
-import java.util.jar.JarFile;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngine;
@@ -42,8 +41,8 @@ import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkSequentialAnnotator;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.SequentialClassifier;
+import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.JarClassifierFactory;
-import org.cleartk.classifier.jar.JarSequentialDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.test.DefaultTestBase;
 import org.junit.Test;
@@ -113,7 +112,7 @@ public class GrmmClassifierTest extends DefaultTestBase {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         Test1Annotator.class,
         typeSystemDescription,
-        JarSequentialDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME,
         DefaultGrmmDataWriterFactory.class.getName());
@@ -121,9 +120,9 @@ public class GrmmClassifierTest extends DefaultTestBase {
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
 
-    BufferedReader reader = new BufferedReader(new FileReader(new File(
-        outputDirectoryName,
-        GrmmDataWriter.TRAINING_DATA_FILE_NAME)));
+    GrmmClassifierBuilder builder = new GrmmClassifierBuilder();
+    File trainFile = builder.getTrainingDataFile(this.outputDirectory);
+    BufferedReader reader = new BufferedReader(new FileReader(trainFile));
     reader.readLine();
     reader.close();
 
@@ -137,20 +136,16 @@ public class GrmmClassifierTest extends DefaultTestBase {
     hider.restoreOutput();
 
     // try to use model for classification:
-    File mFile = new File(outputDirectoryName, "model.jar");
-    assertTrue(mFile.exists());
-    JarFile modelFile = new JarFile(mFile);
-    assertNotNull(modelFile);
-    GrmmClassifier classifier = new GrmmClassifier(modelFile);
-    modelFile.close();
+    File modelJarFile = builder.getModelJarFile(this.outputDirectory);
+    assertNotNull(modelJarFile);
+    GrmmClassifier classifier = builder.loadClassifierFromTrainingDirectory(this.outputDirectory);
     assertTrue(classifier instanceof SequentialClassifier<?>);
 
-    String modelJar = outputDirectoryName + "/model.jar";
     AnalysisEngine sequentialClassifierAnnotator = AnalysisEngineFactory.createPrimitive(
         Test1Annotator.class,
         typeSystemDescription,
         JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
-        modelJar);
+        modelJarFile.getPath());
     jCas.reset();
     sequentialClassifierAnnotator.process(jCas);
     sequentialClassifierAnnotator.collectionProcessComplete();
