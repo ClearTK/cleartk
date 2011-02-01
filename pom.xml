@@ -318,6 +318,7 @@
 					<version>1.2</version>
 					<executions>
 						<execution>
+							<id>run-jcasgen-${project.artifactId}</id>
 							<phase>process-resources</phase>
 							<goals>
 								<goal>java</goal>
@@ -340,7 +341,7 @@
 					<version>1.5</version>
 					<executions>
 						<execution>
-							<id>add-source</id>
+							<id>add-jcasgen-sources-${project.artifactId}</id>
 							<phase>process-resources</phase>
 							<goals>
 								<goal>add-source</goal>
