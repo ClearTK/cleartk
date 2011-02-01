@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.examples.sentence;
+package org.cleartk.examples.linewriter;
 
 import java.io.IOException;
 
@@ -54,11 +54,11 @@ import org.uimafit.pipeline.SimplePipeline;
 public class Docs2Sentences {
 
   public static class Options extends Options_ImplBase {
-    @Option(name = "-i", aliases = "--inputFileName", usage = "specify the directory to read plain text files from", required = true)
-    public String inputDirectoryName;
+    @Option(name = "-i", aliases = "--inputFileName", usage = "specify the directory to read plain text files from", required = false)
+    public String inputDirectoryName = "src/test/resources/data/twain";
 
-    @Option(name = "-o", aliases = "--outputFileName", usage = "specify the file to write sentences to", required = true)
-    public String outputFileName;
+    @Option(name = "-o", aliases = "--outputFileName", usage = "specify the file to write sentences to", required = false)
+    public String outputFileName = "target/test/twain-sentences.txt";
 
   }
 
@@ -80,5 +80,7 @@ public class Docs2Sentences {
         Sentence.class.getName());
 
     SimplePipeline.runPipeline(filesReader, sentences, lineWriter);
+    System.out.println("results written to " + options.outputFileName);
+
   }
 }

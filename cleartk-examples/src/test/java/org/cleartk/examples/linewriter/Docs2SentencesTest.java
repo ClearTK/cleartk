@@ -22,13 +22,14 @@
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
-package org.cleartk.examples.sentence;
+package org.cleartk.examples.linewriter;
 
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
 import org.apache.uima.pear.util.FileUtil;
+import org.cleartk.examples.linewriter.Docs2Sentences;
 import org.junit.Test;
 
 /**
