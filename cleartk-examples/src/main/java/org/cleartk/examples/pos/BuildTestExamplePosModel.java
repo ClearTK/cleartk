@@ -25,8 +25,8 @@
 package org.cleartk.examples.pos;
 
 import org.cleartk.examples.ExampleComponents;
-import org.cleartk.syntax.constituent.TreebankGoldAnnotator;
 import org.cleartk.syntax.constituent.TreebankConstants;
+import org.cleartk.syntax.constituent.TreebankGoldAnnotator;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 import org.cleartk.util.cr.FilesCollectionReader;
 import org.uimafit.pipeline.SimplePipeline;
@@ -54,7 +54,10 @@ public class BuildTestExamplePosModel {
         .getDescription("English"), ExamplePOSAnnotator
         .getWriterDescription(ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY));
 
-    org.cleartk.classifier.jar.Train.main("src/main/resources/model/pos");
+    System.out.println("training data written to " + ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY);
+    System.out.println("training model...");
+    org.cleartk.classifier.jar.Train.main(ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY);
+    System.out.println("model written to " + ExamplePOSAnnotator.DEFAULT_MODEL);
 
   }
 }

@@ -64,9 +64,9 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  */
 public class ExamplePOSAnnotator extends CleartkSequentialAnnotator<String> {
 
-  public static final String DEFAULT_OUTPUT_DIRECTORY = "src/main/resources/model/pos";
+  public static final String DEFAULT_OUTPUT_DIRECTORY = "target/examples/pos";
 
-  public static final String DEFAULT_MODEL = "src/main/resources/model/pos/model.jar";
+  public static final String DEFAULT_MODEL = "target/examples/pos/model.jar";
 
   private List<SimpleFeatureExtractor> tokenFeatureExtractors;
 

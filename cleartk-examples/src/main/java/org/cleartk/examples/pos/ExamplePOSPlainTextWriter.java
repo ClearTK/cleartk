@@ -48,7 +48,7 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  */
 public class ExamplePOSPlainTextWriter extends JCasAnnotator_ImplBase {
 
-  public static final String DEFAULT_OUTPUT_DIRECTORY = "src/main/resources/data/pos";
+  public static final String DEFAULT_OUTPUT_DIRECTORY = "target/examples/pos";
 
   public static final String PARAM_OUTPUT_DIRECTORY_NAME = ConfigurationParameterFactory
       .createConfigurationParameterName(ExamplePOSPlainTextWriter.class, "outputDirectoryName");
