@@ -158,7 +158,7 @@ public class GrmmClassifierBuilder extends
     // classifier
     // through a special jar-file-entry:
     LineNumberReader lnr = new LineNumberReader(new FileReader(trainingData));
-    String outcomeExample = lnr.readLine().split("----")[0];
+    this.outcomeExample = lnr.readLine().split("----")[0];
     lnr.close();
     JarStreams.putNextJarEntry(modelStream, JAR_ENTRY_MODEL, model);
     modelStream.putNextEntry(new JarEntry(JAR_ENTRY_OUTCOME_EXAMPLE));
