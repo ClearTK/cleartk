@@ -31,7 +31,7 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.cleartk.classifier.CleartkAnnotatorDescriptionFactory;
-import org.cleartk.classifier.CleartkSequentialAnnotator;
+import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
@@ -58,7 +58,7 @@ public class ExamplePOSAnnotatorTest extends ExamplesTestBase {
   public void testSimpleSentence() throws Exception {
 
     AnalysisEngineDescription desc = CleartkAnnotatorDescriptionFactory
-        .createCleartkSequentialAnnotator(
+        .createCleartkSequenceAnnotator(
             ExamplePOSAnnotator.class,
             ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
             InstanceCollector.StringFactory.class,
@@ -200,7 +200,7 @@ public class ExamplePOSAnnotatorTest extends ExamplesTestBase {
 
     String expectedDataWriterFactory = (ViterbiDataWriterFactory.class.getName());
     Object dataWriter = engine
-        .getConfigParameterValue(CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME);
+        .getConfigParameterValue(CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME);
     Assert.assertEquals(expectedDataWriterFactory, dataWriter);
     engine.collectionProcessComplete();
   }

@@ -36,7 +36,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.CleartkSequentialAnnotator;
+import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.WindowFeature;
 import org.cleartk.classifier.feature.extractor.WindowExtractor;
@@ -125,7 +125,7 @@ public class ChunkerTest extends DefaultTestBase {
     }
 
     @Override
-    public List<String> classifySequence(List<Instance<String>> instances) {
+    public List<String> classify(List<Instance<String>> instances) {
       return Arrays.asList(new String[] {
           "B-1",
           "I-1",
@@ -188,7 +188,7 @@ public class ChunkerTest extends DefaultTestBase {
         Chunk.class.getName(),
         DefaultChunkLabeler.PARAM_CHUNK_LABEL_FEATURE_NAME,
         "chunkType",
-        CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME,
+        CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         InstanceCollector.StringFactory.class.getName());
     TestChunkerAnnotator copy = new TestChunkerAnnotator();
     copy.initialize(engine.getUimaContext());

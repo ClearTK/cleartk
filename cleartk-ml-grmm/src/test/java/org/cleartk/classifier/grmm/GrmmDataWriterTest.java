@@ -36,7 +36,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.pear.util.FileUtil;
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.CleartkSequentialAnnotator;
+import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
@@ -56,7 +56,7 @@ import org.uimafit.testing.util.HideOutput;
  */
 public class GrmmDataWriterTest extends DefaultTestBase {
 
-  public static class Test1Annotator extends CleartkSequentialAnnotator<String[]> {
+  public static class Test1Annotator extends CleartkSequenceAnnotator<String[]> {
 
     public void process(JCas cas) throws AnalysisEngineProcessException {
       try {
@@ -99,7 +99,7 @@ public class GrmmDataWriterTest extends DefaultTestBase {
       instance = new Instance<String[]>(el.toArray(new String[2]), features);
       instances.add(instance);
 
-      this.sequentialDataWriter.writeSequence(instances);
+      this.dataWriter.write(instances);
 
       // twice:
       instances = new ArrayList<Instance<String[]>>();
@@ -134,7 +134,7 @@ public class GrmmDataWriterTest extends DefaultTestBase {
       instance = new Instance<String[]>(el.toArray(new String[2]), features);
       instances.add(instance);
 
-      this.sequentialDataWriter.writeSequence(instances);
+      this.dataWriter.write(instances);
     }
   }
 
@@ -145,7 +145,7 @@ public class GrmmDataWriterTest extends DefaultTestBase {
         typeSystemDescription,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
-        CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME,
+        CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         DefaultGrmmDataWriterFactory.class.getName());
 
     dataWriterAnnotator.process(jCas);

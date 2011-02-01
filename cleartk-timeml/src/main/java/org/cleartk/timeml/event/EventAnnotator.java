@@ -73,7 +73,7 @@ public class EventAnnotator {
   public static AnalysisEngineDescription getWriterDescription(String modelDir)
       throws ResourceInitializationException {
     AnalysisEngineDescription aed = CleartkAnnotatorDescriptionFactory
-        .createCleartkSequentialAnnotator(
+        .createCleartkSequenceAnnotator(
             Chunker.class,
             TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
             DefaultMalletCRFDataWriterFactory.class,
@@ -101,7 +101,7 @@ public class EventAnnotator {
   public static AnalysisEngineDescription getAnnotatorDescription(String modelDir)
       throws ResourceInitializationException {
     AnalysisEngineDescription aed = CleartkAnnotatorDescriptionFactory
-        .createCleartkSequentialAnnotator(
+        .createCleartkSequenceAnnotator(
             Chunker.class,
             TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
             modelDir);

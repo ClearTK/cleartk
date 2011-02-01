@@ -56,7 +56,7 @@ import org.uimafit.factory.initializable.Initializable;
  * 
  * @author Steven Bethard
  */
-public class NonSequentialExamplePOSAnnotator extends CleartkAnnotator<String> implements
+public class NonSequenceExamplePOSAnnotator extends CleartkAnnotator<String> implements
     Initializable {
 
   public static final String DEFAULT_OUTPUT_DIRECTORY = "example/model";

@@ -29,12 +29,12 @@ import java.io.PrintWriter;
 
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.DataWriter;
-import org.cleartk.classifier.SequentialDataWriter;
+import org.cleartk.classifier.SequenceDataWriter;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 
 /**
- * Superclass for {@link DataWriter} and {@link SequentialDataWriter} implementations that write
+ * Superclass for {@link DataWriter} and {@link SequenceDataWriter} implementations that write
  * training data to a file using a classifier builder with {@link FeaturesEncoder}s and
  * {@link OutcomeEncoder}s
  * 

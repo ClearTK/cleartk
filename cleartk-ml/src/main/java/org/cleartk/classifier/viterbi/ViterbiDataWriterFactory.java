@@ -33,8 +33,8 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.DataWriter;
 import org.cleartk.classifier.DataWriterFactory;
-import org.cleartk.classifier.SequentialDataWriter;
-import org.cleartk.classifier.SequentialDataWriterFactory;
+import org.cleartk.classifier.SequenceDataWriter;
+import org.cleartk.classifier.SequenceDataWriterFactory;
 import org.cleartk.classifier.feature.extractor.outcome.OutcomeFeatureExtractor;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.uimafit.component.initialize.ConfigurationParameterInitializer;
@@ -53,7 +53,7 @@ import org.uimafit.factory.initializable.InitializableFactory;
  */
 
 public class ViterbiDataWriterFactory<OUTCOME_TYPE> extends DirectoryDataWriterFactory implements
-    SequentialDataWriterFactory<OUTCOME_TYPE>, Initializable {
+    SequenceDataWriterFactory<OUTCOME_TYPE>, Initializable {
 
   public static final String PARAM_OUTCOME_FEATURE_EXTRACTOR_NAMES = ConfigurationParameterFactory
       .createConfigurationParameterName(
@@ -126,7 +126,7 @@ public class ViterbiDataWriterFactory<OUTCOME_TYPE> extends DirectoryDataWriterF
     }
   }
 
-  public SequentialDataWriter<OUTCOME_TYPE> createSequentialDataWriter() throws IOException {
+  public SequenceDataWriter<OUTCOME_TYPE> createSequenceDataWriter() throws IOException {
     return dataWriter;
   }
 

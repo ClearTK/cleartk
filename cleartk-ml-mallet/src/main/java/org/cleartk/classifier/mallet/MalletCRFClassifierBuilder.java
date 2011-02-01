@@ -32,7 +32,7 @@ import java.util.jar.JarOutputStream;
 
 import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.jar.JarStreams;
-import org.cleartk.classifier.jar.SequentialClassifierBuilder_ImplBase;
+import org.cleartk.classifier.jar.SequenceClassifierBuilder_ImplBase;
 
 import cc.mallet.fst.SimpleTagger;
 import cc.mallet.fst.Transducer;
@@ -48,7 +48,7 @@ import cc.mallet.fst.Transducer;
  */
 
 public class MalletCRFClassifierBuilder extends
-    SequentialClassifierBuilder_ImplBase<MalletCRFClassifier, List<NameNumber>, String, String> {
+    SequenceClassifierBuilder_ImplBase<MalletCRFClassifier, List<NameNumber>, String, String> {
 
   private static final String MODEL_NAME = "model.malletcrf";
 

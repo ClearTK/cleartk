@@ -26,14 +26,14 @@ package org.cleartk.classifier.jar;
 import java.io.File;
 
 import org.cleartk.classifier.DataWriterFactory;
-import org.cleartk.classifier.SequentialDataWriterFactory;
+import org.cleartk.classifier.SequenceDataWriterFactory;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 
 /**
- * Superclass for {@link DataWriterFactory} and {@link SequentialDataWriterFactory} implementations
+ * Superclass for {@link DataWriterFactory} and {@link SequenceDataWriterFactory} implementations
  * that use {@link FeaturesEncoder}s and {@link OutcomeEncoder}s.
  * 
  * Note that it does not declare that it implements either of the DataWriterFactory interfaces.

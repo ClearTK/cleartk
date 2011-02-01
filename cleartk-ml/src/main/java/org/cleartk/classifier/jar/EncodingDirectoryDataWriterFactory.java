@@ -30,7 +30,7 @@ import java.io.ObjectInputStream;
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.DataWriterFactory;
-import org.cleartk.classifier.SequentialDataWriterFactory;
+import org.cleartk.classifier.SequenceDataWriterFactory;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
@@ -41,7 +41,7 @@ import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.Initializable;
 
 /**
- * Superclass for {@link DataWriterFactory} and {@link SequentialDataWriterFactory} implementations
+ * Superclass for {@link DataWriterFactory} and {@link SequenceDataWriterFactory} implementations
  * that use {@link FeaturesEncoder}s and {@link OutcomeEncoder}s.
  * 
  * Note that it does not declare that it implements either of the DataWriterFactory interfaces.

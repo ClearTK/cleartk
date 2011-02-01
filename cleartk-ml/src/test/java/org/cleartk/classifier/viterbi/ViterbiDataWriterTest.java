@@ -39,7 +39,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.pear.util.FileUtil;
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.CleartkSequentialAnnotator;
+import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
@@ -67,7 +67,7 @@ import org.uimafit.testing.util.HideOutput;
 
 public class ViterbiDataWriterTest extends DefaultTestBase {
 
-  public static class TestAnnotator extends CleartkSequentialAnnotator<String> {
+  public static class TestAnnotator extends CleartkSequenceAnnotator<String> {
 
     private SimpleFeatureExtractor extractor = new SpannedTextExtractor();
 
@@ -91,9 +91,9 @@ public class ViterbiDataWriterTest extends DefaultTestBase {
           instances.add(instance);
         }
         if (this.isTraining()) {
-          this.sequentialDataWriter.writeSequence(instances);
+          this.dataWriter.write(instances);
         } else {
-          this.classifySequence(instances);
+          this.classify(instances);
         }
       }
     }
@@ -108,7 +108,7 @@ public class ViterbiDataWriterTest extends DefaultTestBase {
             typeSystemDescription,
             DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
             outputDirectoryName,
-            CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME,
+            CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
             ViterbiDataWriterFactory.class.getName(),
             ViterbiDataWriterFactory.PARAM_DELEGATED_DATA_WRITER_FACTORY_CLASS,
             DefaultStringTestDataWriterFactory.class.getName(),

@@ -33,7 +33,7 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
-import org.cleartk.classifier.jar.SequentialClassifier_ImplBase;
+import org.cleartk.classifier.jar.SequenceClassifier_ImplBase;
 
 import edu.umass.cs.mallet.base.pipe.Pipe;
 import edu.umass.cs.mallet.base.types.Instance;
@@ -50,7 +50,7 @@ import edu.umass.cs.mallet.grmm.learning.ACRF;
  * @author Martin Toepfer
  */
 public class GrmmClassifier extends
-    SequentialClassifier_ImplBase<List<NameNumber>, String[], String[]> {
+    SequenceClassifier_ImplBase<List<NameNumber>, String[], String[]> {
 
   protected ACRF acrf;
 
@@ -76,7 +76,7 @@ public class GrmmClassifier extends
    *          model that has been built for this classifier.
    * @throws CleartkException
    */
-  public List<String[]> classifySequence(final List<List<Feature>> features)
+  public List<String[]> classify(final List<List<Feature>> features)
       throws CleartkException {
     // generate format that is appropriate for the acrf input pipe:
     String data = "";

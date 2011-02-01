@@ -36,11 +36,11 @@ import org.uimafit.factory.ConfigurationParameterFactory;
 
 /**
  * A factory class that simplifies the creation of descriptors for {@link CleartkAnnotator} and
- * {@link CleartkSequentialAnnotator} classes. The factory methods here wrap common patterns of
- * calls to {@link AnalysisEngineFactory#createPrimitiveDescription} and
+ * {@link CleartkSequenceAnnotator} classes. The factory methods here wrap common patterns of calls
+ * to {@link AnalysisEngineFactory#createPrimitiveDescription} and
  * {@link ConfigurationParameterFactory#addConfigurationParameter} for setting classifier classes,
  * output directories, etc. that are necessary when creating a CleartkAnnotator or
- * CleartkSequentialAnnotator.
+ * CleartkSequenceAnnotator.
  * 
  * <br>
  * Copyright (c) 2009, Regents of the University of Colorado <br>
@@ -51,27 +51,27 @@ import org.uimafit.factory.ConfigurationParameterFactory;
 public class CleartkAnnotatorDescriptionFactory {
 
   /**
-   * Create an {@link AnalysisEngineDescription} for using a {@link CleartkSequentialAnnotator} to
+   * Create an {@link AnalysisEngineDescription} for using a {@link CleartkSequenceAnnotator} to
    * write training data for a {@link ViterbiClassifier}. Note that data is written with a
-   * {@link DataWriterFactory}, not a {@link SequentialDataWriterFactory} - A ViterbiClassifier
-   * wraps a non-sequential classifier to work as a sequential classifier.
+   * {@link DataWriterFactory}, not a {@link SequenceDataWriterFactory} - A ViterbiClassifier wraps
+   * a non-sequence classifier to work as a sequence classifier.
    * 
    * @param <OUTCOME_TYPE>
    *          The outcome type of the classifier (must be the same for both the
-   *          CleartkSequentialAnnotator and the DataWriterFactory).
+   *          CleartkSequenceAnnotator and the DataWriterFactory).
    * @param annotatorClass
    *          The main annotator for the AnalysisEngineDescription.
    * @param typeSystemDescription
    *          The type system used by the annotator.
    * @param delegatedDataWriterFactoryClass
-   *          The non-sequential DataWriterFactory that will be used to write the training data (and
+   *          The non-sequence DataWriterFactory that will be used to write the training data (and
    *          indicate the type of classifier that will be trained from this data).
    * @param outputDir
    *          The directory where the training data should be written.
-   * @return An AnalysisEngineDescription for the CleartkSequentialAnnotator.
+   * @return An AnalysisEngineDescription for the CleartkSequenceAnnotator.
    */
   public static <OUTCOME_TYPE> AnalysisEngineDescription createViterbiAnnotator(
-      Class<? extends CleartkSequentialAnnotator<OUTCOME_TYPE>> annotatorClass,
+      Class<? extends CleartkSequenceAnnotator<OUTCOME_TYPE>> annotatorClass,
       TypeSystemDescription typeSystemDescription,
       Class<? extends DataWriterFactory<OUTCOME_TYPE>> delegatedDataWriterFactoryClass,
       String outputDir) throws ResourceInitializationException {
@@ -79,7 +79,7 @@ public class CleartkAnnotatorDescriptionFactory {
     return AnalysisEngineFactory.createPrimitiveDescription(
         annotatorClass,
         typeSystemDescription,
-        CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME,
+        CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         ViterbiDataWriterFactory.class.getName(),
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDir,
@@ -155,24 +155,24 @@ public class CleartkAnnotatorDescriptionFactory {
   }
 
   /**
-   * Create an {@link AnalysisEngineDescription} for using a {@link CleartkSequentialAnnotator} to
+   * Create an {@link AnalysisEngineDescription} for using a {@link CleartkSequenceAnnotator} to
    * create new annotations based on the predictions of a classifier.
    * 
-   * @param sequentialClassifierAnnotatorClass
+   * @param sequenceClassifierAnnotatorClass
    *          The main annotator for the AnalysisEngineDescription.
    * @param typeSystemDescription
    *          The type system used by the annotator.
    * @param classifierJar
    *          The jar file containing the classifier that will make predictions.
-   * @return An AnalysisEngineDescription for the CleartkSequentialAnnotator.
+   * @return An AnalysisEngineDescription for the CleartkSequenceAnnotator.
    */
-  public static AnalysisEngineDescription createCleartkSequentialAnnotator(
-      Class<? extends CleartkSequentialAnnotator<?>> sequentialClassifierAnnotatorClass,
+  public static AnalysisEngineDescription createCleartkSequenceAnnotator(
+      Class<? extends CleartkSequenceAnnotator<?>> sequenceClassifierAnnotatorClass,
       TypeSystemDescription typeSystemDescription,
       String classifierJar) throws ResourceInitializationException {
 
     AnalysisEngineDescription aed = AnalysisEngineFactory.createPrimitiveDescription(
-        sequentialClassifierAnnotatorClass,
+        sequenceClassifierAnnotatorClass,
         typeSystemDescription);
     ConfigurationParameterFactory.addConfigurationParameter(
         aed,
@@ -182,35 +182,35 @@ public class CleartkAnnotatorDescriptionFactory {
   }
 
   /**
-   * Create an {@link AnalysisEngineDescription} for using a {@link CleartkSequentialAnnotator} to
+   * Create an {@link AnalysisEngineDescription} for using a {@link CleartkSequenceAnnotator} to
    * write training data.
    * 
    * @param <OUTCOME_TYPE>
    *          The outcome type of the classifier (must be the same for both the
-   *          CleartkSequentialAnnotator and the SequentialDataWriterFactory).
-   * @param sequentialClassifierAnnotatorClass
+   *          CleartkSequenceAnnotator and the SequenceDataWriterFactory).
+   * @param sequenceClassifierAnnotatorClass
    *          The main annotator for the AnalysisEngineDescription.
    * @param typeSystemDescription
    *          The type system used by the annotator.
    * @param dataWriterFactoryClass
-   *          The SequentialDataWriterFactory that will be used to write the training data (and
+   *          The SequenceDataWriterFactory that will be used to write the training data (and
    *          indicate the type of classifier that will be trained from this data).
    * @param outputDir
    *          The directory where the training data should be written.
-   * @return An AnalysisEngineDescription for the CleartkSequentialAnnotator.
+   * @return An AnalysisEngineDescription for the CleartkSequenceAnnotator.
    */
-  public static <OUTCOME_TYPE> AnalysisEngineDescription createCleartkSequentialAnnotator(
-      Class<? extends CleartkSequentialAnnotator<OUTCOME_TYPE>> sequentialClassifierAnnotatorClass,
+  public static <OUTCOME_TYPE> AnalysisEngineDescription createCleartkSequenceAnnotator(
+      Class<? extends CleartkSequenceAnnotator<OUTCOME_TYPE>> sequenceClassifierAnnotatorClass,
       TypeSystemDescription typeSystemDescription,
-      Class<? extends SequentialDataWriterFactory<OUTCOME_TYPE>> dataWriterFactoryClass,
+      Class<? extends SequenceDataWriterFactory<OUTCOME_TYPE>> dataWriterFactoryClass,
       String outputDir) throws ResourceInitializationException {
 
     AnalysisEngineDescription aed = AnalysisEngineFactory.createPrimitiveDescription(
-        sequentialClassifierAnnotatorClass,
+        sequenceClassifierAnnotatorClass,
         typeSystemDescription);
     ConfigurationParameterFactory.addConfigurationParameter(
         aed,
-        CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME,
+        CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         dataWriterFactoryClass.getName());
     ConfigurationParameterFactory.addConfigurationParameter(
         aed,

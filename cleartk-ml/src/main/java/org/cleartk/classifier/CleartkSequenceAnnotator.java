@@ -45,71 +45,71 @@ import org.uimafit.factory.initializable.InitializableFactory;
  * <p>
  */
 
-public abstract class CleartkSequentialAnnotator<OUTCOME_TYPE> extends JCasAnnotator_ImplBase
+public abstract class CleartkSequenceAnnotator<OUTCOME_TYPE> extends JCasAnnotator_ImplBase
     implements Initializable {
 
-  public static final String PARAM_SEQUENTIAL_CLASSIFIER_FACTORY_CLASS_NAME = ConfigurationParameterFactory
+  public static final String PARAM_CLASSIFIER_FACTORY_CLASS_NAME = ConfigurationParameterFactory
       .createConfigurationParameterName(
-          CleartkSequentialAnnotator.class,
-          "sequentialClassifierFactoryClassName");
+          CleartkSequenceAnnotator.class,
+          "classifierFactoryClassName");
 
-  @ConfigurationParameter(mandatory = false, description = "provides the full name of the SequentialClassifierFactory class to be used.", defaultValue = "org.cleartk.classifier.jar.JarClassifierFactory")
-  private String sequentialClassifierFactoryClassName;
+  @ConfigurationParameter(mandatory = false, description = "provides the full name of the SequenceClassifierFactory class to be used.", defaultValue = "org.cleartk.classifier.jar.JarClassifierFactory")
+  private String classifierFactoryClassName;
 
-  public static final String PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME = ConfigurationParameterFactory
+  public static final String PARAM_DATA_WRITER_FACTORY_CLASS_NAME = ConfigurationParameterFactory
       .createConfigurationParameterName(
-          CleartkSequentialAnnotator.class,
-          "sequentialDataWriterFactoryClassName");
+          CleartkSequenceAnnotator.class,
+          "dataWriterFactoryClassName");
 
-  @ConfigurationParameter(mandatory = false, description = "provides the full name of the SequentialDataWriterFactory class to be used.")
-  private String sequentialDataWriterFactoryClassName;
+  @ConfigurationParameter(mandatory = false, description = "provides the full name of the SequenceDataWriterFactory class to be used.")
+  private String dataWriterFactoryClassName;
 
-  protected SequentialDataWriter<OUTCOME_TYPE> sequentialDataWriter;
+  protected SequenceDataWriter<OUTCOME_TYPE> dataWriter;
 
-  protected SequentialClassifier<OUTCOME_TYPE> sequentialClassifier;
+  protected SequenceClassifier<OUTCOME_TYPE> classifier;
 
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
 
-    if (sequentialDataWriterFactoryClassName != null) {
+    if (dataWriterFactoryClassName != null) {
       // create the factory and instantiate the data writer
-      SequentialDataWriterFactory<?> factory = InitializableFactory.create(
+      SequenceDataWriterFactory<?> factory = InitializableFactory.create(
           context,
-          sequentialDataWriterFactoryClassName,
-          SequentialDataWriterFactory.class);
-      SequentialDataWriter<?> untypedDataWriter;
+          dataWriterFactoryClassName,
+          SequenceDataWriterFactory.class);
+      SequenceDataWriter<?> untypedDataWriter;
       try {
-        untypedDataWriter = factory.createSequentialDataWriter();
+        untypedDataWriter = factory.createSequenceDataWriter();
       } catch (IOException e) {
         throw new ResourceInitializationException(e);
       }
       InitializableFactory.initialize(untypedDataWriter, context);
-      this.sequentialDataWriter = ReflectionUtil.uncheckedCast(untypedDataWriter);
+      this.dataWriter = ReflectionUtil.uncheckedCast(untypedDataWriter);
     } else {
       // create the factory and instantiate the classifier
-      SequentialClassifierFactory<?> factory = InitializableFactory.create(
+      SequenceClassifierFactory<?> factory = InitializableFactory.create(
           context,
-          sequentialClassifierFactoryClassName,
-          SequentialClassifierFactory.class);
-      SequentialClassifier<?> untypedClassifier;
+          classifierFactoryClassName,
+          SequenceClassifierFactory.class);
+      SequenceClassifier<?> untypedClassifier;
       try {
-        untypedClassifier = factory.createSequentialClassifier();
+        untypedClassifier = factory.createSequenceClassifier();
       } catch (IOException e) {
         throw new ResourceInitializationException(e);
       } catch (CleartkException e) {
         throw new ResourceInitializationException(e);
       }
 
-      this.sequentialClassifier = ReflectionUtil.uncheckedCast(untypedClassifier);
+      this.classifier = ReflectionUtil.uncheckedCast(untypedClassifier);
 
       ReflectionUtil.checkTypeParameterIsAssignable(
-          CleartkSequentialAnnotator.class,
+          CleartkSequenceAnnotator.class,
           "OUTCOME_TYPE",
           this,
-          SequentialClassifier.class,
+          SequenceClassifier.class,
           "OUTCOME_TYPE",
-          this.sequentialClassifier);
+          this.classifier);
 
       InitializableFactory.initialize(untypedClassifier, context);
     }
@@ -121,7 +121,7 @@ public abstract class CleartkSequentialAnnotator<OUTCOME_TYPE> extends JCasAnnot
 
     if (isTraining()) {
       try {
-        sequentialDataWriter.finish();
+        dataWriter.finish();
       } catch (CleartkException ctke) {
         throw new AnalysisEngineProcessException(ctke);
       }
@@ -129,17 +129,17 @@ public abstract class CleartkSequentialAnnotator<OUTCOME_TYPE> extends JCasAnnot
   }
 
   protected boolean isTraining() {
-    return sequentialDataWriter != null ? true : false;
+    return dataWriter != null ? true : false;
 
   }
 
-  protected List<OUTCOME_TYPE> classifySequence(List<Instance<OUTCOME_TYPE>> instances)
+  protected List<OUTCOME_TYPE> classify(List<Instance<OUTCOME_TYPE>> instances)
       throws CleartkException {
     List<List<Feature>> instanceFeatures = new ArrayList<List<Feature>>();
     for (Instance<OUTCOME_TYPE> instance : instances) {
       instanceFeatures.add(instance.getFeatures());
     }
-    return this.sequentialClassifier.classifySequence(instanceFeatures);
+    return this.classifier.classify(instanceFeatures);
   }
 
 }

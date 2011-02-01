@@ -23,17 +23,20 @@
  */
 package org.cleartk.classifier.jar;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.List;
 
-import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.ScoredOutcome;
-import org.cleartk.classifier.SequentialClassifier;
+import org.cleartk.CleartkException;
+import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.SequenceClassifier;
+import org.cleartk.classifier.SequenceDataWriter;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 
 /**
- * Superclass for {@link SequentialClassifier} implementations that use {@link FeaturesEncoder}s and
- * {@link OutcomeEncoder}s.
+ * Superclass for {@link SequenceDataWriter} implementations that write training data to a file
+ * using {@link FeaturesEncoder}s and {@link OutcomeEncoder}s.
  * 
  * <br>
  * Copyright (c) 2011, Regents of the University of Colorado <br>
@@ -42,21 +45,39 @@ import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
  * @author Steven Bethard
  * @author Philip Ogren
  */
-public abstract class SequentialClassifier_ImplBase<ENCODED_FEATURES_TYPE, OUTCOME_TYPE, ENCODED_OUTCOME_TYPE>
-    extends EncodingJarClassifier<ENCODED_FEATURES_TYPE, OUTCOME_TYPE, ENCODED_OUTCOME_TYPE>
-    implements SequentialClassifier<OUTCOME_TYPE> {
+public abstract class SequenceDataWriter_ImplBase<CLASSIFIER_BUILDER_TYPE extends EncodingJarClassifierBuilder<? extends SequenceClassifier<OUTCOME_TYPE>, ENCODED_FEATURES_TYPE, OUTCOME_TYPE, ENCODED_OUTCOME_TYPE>, ENCODED_FEATURES_TYPE, OUTCOME_TYPE, ENCODED_OUTCOME_TYPE>
+    extends
+    EncodingDirectoryDataWriter<CLASSIFIER_BUILDER_TYPE, SequenceClassifier<OUTCOME_TYPE>, ENCODED_FEATURES_TYPE, OUTCOME_TYPE, ENCODED_OUTCOME_TYPE>
+    implements SequenceDataWriter<OUTCOME_TYPE> {
 
-  public SequentialClassifier_ImplBase(
-      FeaturesEncoder<ENCODED_FEATURES_TYPE> featuresEncoder,
-      OutcomeEncoder<OUTCOME_TYPE, ENCODED_OUTCOME_TYPE> outcomeEncoder) {
-    super(featuresEncoder, outcomeEncoder);
+  public SequenceDataWriter_ImplBase(File outputDirectory) throws FileNotFoundException {
+    super(outputDirectory);
   }
 
-  public List<ScoredOutcome<List<OUTCOME_TYPE>>> scoreSequence(
-      List<List<Feature>> features,
-      int maxResults) {
-    throw new UnsupportedOperationException(
-        "there is no default implementation of the score method.");
+  public void write(List<Instance<OUTCOME_TYPE>> instances) throws CleartkException {
+    for (Instance<OUTCOME_TYPE> instance : instances) {
+      writeEncoded(
+          this.classifierBuilder.getFeaturesEncoder().encodeAll(instance.getFeatures()),
+          this.classifierBuilder.getOutcomeEncoder().encode(instance.getOutcome()));
+    }
+    this.writeEndSequence();
   }
+
+  /**
+   * Write the encoded features and encoded outcome to the output directory.
+   * 
+   * @param features
+   *          The encoded features.
+   * @param outcome
+   *          The encoded outcome.
+   */
+  protected abstract void writeEncoded(ENCODED_FEATURES_TYPE features, ENCODED_OUTCOME_TYPE outcome)
+      throws CleartkException;
+
+  /**
+   * Write the marker for the end of a sequence. This will be called at the end of each
+   * {@link #writeSequence}, after all instances have been written by {@link #writeEncoded}.
+   */
+  protected abstract void writeEndSequence();
 
 }

@@ -30,7 +30,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.CleartkSequentialAnnotator;
+import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
@@ -50,7 +50,7 @@ import org.uimafit.testing.util.HideOutput;
  */
 public class GrmmClassifierBuilderTest extends DefaultTestBase {
 
-  public static class Test1Annotator extends CleartkSequentialAnnotator<String[]> {
+  public static class Test1Annotator extends CleartkSequenceAnnotator<String[]> {
     public void process(JCas cas) throws AnalysisEngineProcessException {
       try {
         this.processSimple(cas);
@@ -63,11 +63,11 @@ public class GrmmClassifierBuilderTest extends DefaultTestBase {
       if (this.isTraining()) {
         for (int i = 0; i < 5; i++) {
           List<Instance<String[]>> instances = GrmmTestDataGenerator.createInstances2();
-          this.sequentialDataWriter.writeSequence(instances);
+          this.dataWriter.write(instances);
           instances = GrmmTestDataGenerator.createInstances1();
-          this.sequentialDataWriter.writeSequence(instances);
+          this.dataWriter.write(instances);
           instances = GrmmTestDataGenerator.createInstances3();
-          this.sequentialDataWriter.writeSequence(instances);
+          this.dataWriter.write(instances);
         }
       }
     }
@@ -84,7 +84,7 @@ public class GrmmClassifierBuilderTest extends DefaultTestBase {
           typeSystemDescription,
           DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
           outputDirectoryName,
-          CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME,
+          CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
           DefaultGrmmDataWriterFactory.class.getName());
       dataWriterAnnotator.process(jCas);
       dataWriterAnnotator.collectionProcessComplete();

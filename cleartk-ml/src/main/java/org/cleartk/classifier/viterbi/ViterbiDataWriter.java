@@ -34,7 +34,7 @@ import org.cleartk.CleartkRuntimeException;
 import org.cleartk.classifier.DataWriter;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.SequentialDataWriter;
+import org.cleartk.classifier.SequenceDataWriter;
 import org.cleartk.classifier.feature.extractor.outcome.OutcomeFeatureExtractor;
 import org.cleartk.classifier.jar.DirectoryDataWriter;
 import org.cleartk.util.ReflectionUtil;
@@ -49,7 +49,7 @@ import org.cleartk.util.ReflectionUtil.TypeArgumentDelegator;
 
 public class ViterbiDataWriter<OUTCOME_TYPE> extends
     DirectoryDataWriter<ViterbiClassifierBuilder<OUTCOME_TYPE>, ViterbiClassifier<OUTCOME_TYPE>>
-    implements SequentialDataWriter<OUTCOME_TYPE>, TypeArgumentDelegator {
+    implements SequenceDataWriter<OUTCOME_TYPE>, TypeArgumentDelegator {
 
   public ViterbiDataWriter(File outputDirectory, OutcomeFeatureExtractor outcomeFeatureExtractors[]) {
     super(outputDirectory);
@@ -66,7 +66,7 @@ public class ViterbiDataWriter<OUTCOME_TYPE> extends
     this.delegatedDataWriter = delegatedDataWriter;
   }
 
-  public void writeSequence(List<Instance<OUTCOME_TYPE>> instances) throws CleartkException {
+  public void write(List<Instance<OUTCOME_TYPE>> instances) throws CleartkException {
     if (this.delegatedDataWriter == null)
       throw new CleartkException("delegatedDataWriter must be set before calling writeSequence");
 
@@ -95,7 +95,7 @@ public class ViterbiDataWriter<OUTCOME_TYPE> extends
       throw new CleartkRuntimeException(
           "delegatedDataWriter must be set before calling getTypeArguments");
 
-    if (genericType.equals(SequentialDataWriter.class)) {
+    if (genericType.equals(SequenceDataWriter.class)) {
       genericType = DataWriter.class;
     }
     return ReflectionUtil.getTypeArguments(genericType, this.delegatedDataWriter);

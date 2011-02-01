@@ -1,5 +1,5 @@
 /** 
- * Copyright (c) 2011, Regents of the University of Colorado 
+ * Copyright (c) 2009, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -21,26 +21,20 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.classifier.jar;
 
-import org.cleartk.classifier.SequentialDataWriterFactory;
-import org.cleartk.classifier.encoder.features.FeaturesEncoder;
-import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
+package org.cleartk.classifier;
+
+import java.io.IOException;
 
 /**
- * Superclass for {@link SequentialDataWriterFactory} implementations that use
- * {@link FeaturesEncoder}s and {@link OutcomeEncoder}s.
- * 
  * <br>
- * Copyright (c) 2011, Regents of the University of Colorado <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
  * All rights reserved.
- * 
- * @author Steven Bethard
- * @author Philip Ogren
+ * <p>
  */
-public abstract class SequentialDataWriterFactory_ImplBase<ENCODED_FEATURES_TYPE, OUTCOME_TYPE, ENCODED_OUTCOME_TYPE>
-    extends
-    EncodingDirectoryDataWriterFactory<ENCODED_FEATURES_TYPE, OUTCOME_TYPE, ENCODED_OUTCOME_TYPE>
-    implements SequentialDataWriterFactory<OUTCOME_TYPE> {
+
+public interface SequenceDataWriterFactory<OUTCOME_TYPE> {
+
+  public SequenceDataWriter<OUTCOME_TYPE> createSequenceDataWriter() throws IOException;
 
 }

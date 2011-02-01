@@ -1,5 +1,5 @@
 /** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+ * Copyright (c) 2009, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -23,19 +23,38 @@
  */
 package org.cleartk.classifier;
 
-import java.io.IOException;
+import java.util.List;
 
 import org.cleartk.CleartkException;
 
 /**
  * <br>
- * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
  * All rights reserved.
+ * <p>
  */
 
-public interface SequentialClassifierFactory<OUTCOME_TYPE> {
+public interface SequenceClassifier<OUTCOME_TYPE> {
 
-  public SequentialClassifier<OUTCOME_TYPE> createSequentialClassifier() throws IOException,
-      CleartkException;
+  /**
+   * Classifies a sequence of feature lists.
+   * 
+   * @param features
+   *          a list of features for each member in the sequence
+   * @return a list of the classifications made.
+   */
+  public List<OUTCOME_TYPE> classify(List<List<Feature>> features) throws CleartkException;
+
+  /**
+   * Get the N best sequence classifications along with their scores.
+   * 
+   * @param features
+   *          a list of features for each member in the sequence
+   * @param maxResults
+   *          the maximum number of classifications to return.
+   * @return a sorted list of the best N sequence classifications with their scores.
+   */
+  public List<ScoredOutcome<List<OUTCOME_TYPE>>> score(List<List<Feature>> features, int maxResults)
+      throws CleartkException;
 
 }

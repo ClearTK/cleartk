@@ -34,8 +34,8 @@ import org.cleartk.CleartkException;
 import org.cleartk.classifier.DataWriter;
 import org.cleartk.classifier.DataWriterFactory;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.SequentialDataWriter;
-import org.cleartk.classifier.SequentialDataWriterFactory;
+import org.cleartk.classifier.SequenceDataWriter;
+import org.cleartk.classifier.SequenceDataWriterFactory;
 
 /**
  * <br>
@@ -50,7 +50,7 @@ import org.cleartk.classifier.SequentialDataWriterFactory;
  * @author Philip Ogren
  * @author Steven Bethard
  */
-public class InstanceCollector<T> implements DataWriter<T>, SequentialDataWriter<T> {
+public class InstanceCollector<T> implements DataWriter<T>, SequenceDataWriter<T> {
 
   public List<Instance<T>> instances;
 
@@ -65,7 +65,7 @@ public class InstanceCollector<T> implements DataWriter<T>, SequentialDataWriter
     this.instances.add(instance);
   }
 
-  public void writeSequence(List<Instance<T>> instance) throws CleartkException {
+  public void write(List<Instance<T>> instance) throws CleartkException {
     this.instances.addAll(instance);
   }
 
@@ -73,14 +73,14 @@ public class InstanceCollector<T> implements DataWriter<T>, SequentialDataWriter
    * Returns a single static instance of InstanceCollector<String>.
    */
   public static class StringFactory implements DataWriterFactory<String>,
-      SequentialDataWriterFactory<String> {
+      SequenceDataWriterFactory<String> {
     private static InstanceCollector<String> collector = new InstanceCollector<String>();
 
     public DataWriter<String> createDataWriter() throws IOException {
       return collector;
     }
 
-    public SequentialDataWriter<String> createSequentialDataWriter() throws IOException {
+    public SequenceDataWriter<String> createSequenceDataWriter() throws IOException {
       return collector;
     }
 

@@ -36,7 +36,7 @@ import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
 
 import org.cleartk.classifier.DataWriter;
-import org.cleartk.classifier.SequentialDataWriter;
+import org.cleartk.classifier.SequenceDataWriter;
 
 /**
  * Superclass for builders which package classifiers as jar files. Saves a manifest from which new
@@ -123,7 +123,7 @@ public abstract class JarClassifierBuilder<CLASSIFIER_TYPE> {
 
   /**
    * Write all information stored in the classifier builder to the training directory. Typically
-   * called by {@link DataWriter#finish()} or {@link SequentialDataWriter#finish()}.
+   * called by {@link DataWriter#finish()} or {@link SequenceDataWriter#finish()}.
    * 
    * @param dir
    *          The directory where classifier information should be written.

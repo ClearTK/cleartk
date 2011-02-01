@@ -1,5 +1,5 @@
 /** 
- * Copyright (c) 2009, Regents of the University of Colorado 
+ * Copyright (c) 2011, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -21,23 +21,26 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.classifier;
+package org.cleartk.classifier.jar;
 
-import java.util.List;
-
-import org.cleartk.CleartkException;
+import org.cleartk.classifier.SequenceDataWriterFactory;
+import org.cleartk.classifier.encoder.features.FeaturesEncoder;
+import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 
 /**
+ * Superclass for {@link SequenceDataWriterFactory} implementations that use
+ * {@link FeaturesEncoder}s and {@link OutcomeEncoder}s.
+ * 
  * <br>
- * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * Copyright (c) 2011, Regents of the University of Colorado <br>
  * All rights reserved.
- * <p>
+ * 
+ * @author Steven Bethard
+ * @author Philip Ogren
  */
-
-public interface SequentialDataWriter<OUTCOME_TYPE> {
-
-  public void writeSequence(List<Instance<OUTCOME_TYPE>> instances) throws CleartkException;
-
-  public void finish() throws CleartkException;
+public abstract class SequenceDataWriterFactory_ImplBase<ENCODED_FEATURES_TYPE, OUTCOME_TYPE, ENCODED_OUTCOME_TYPE>
+    extends
+    EncodingDirectoryDataWriterFactory<ENCODED_FEATURES_TYPE, OUTCOME_TYPE, ENCODED_OUTCOME_TYPE>
+    implements SequenceDataWriterFactory<OUTCOME_TYPE> {
 
 }

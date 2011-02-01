@@ -47,7 +47,7 @@ import org.apache.uima.pear.util.FileUtil;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkAnnotator;
-import org.cleartk.classifier.CleartkSequentialAnnotator;
+import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
@@ -336,7 +336,7 @@ public class MalletDataWriterTest extends DefaultTestBase {
     assertEquals("0:1.0 1:1.0 2:1.0 a", lines[0]);
   }
 
-  public static class TestAnnotator extends CleartkSequentialAnnotator<String> {
+  public static class TestAnnotator extends CleartkSequenceAnnotator<String> {
 
     private SimpleFeatureExtractor extractor = new SpannedTextExtractor();
 
@@ -362,20 +362,20 @@ public class MalletDataWriterTest extends DefaultTestBase {
           instance.setOutcome(token.getPos());
           instances.add(instance);
         }
-        this.sequentialDataWriter.writeSequence(instances);
+        this.dataWriter.write(instances);
       }
     }
 
   }
 
   @Test
-  public void testSequentialDataWriterAnnotator() throws IOException, UIMAException {
+  public void testSequenceDataWriterAnnotator() throws IOException, UIMAException {
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         TestAnnotator.class,
         typeSystemDescription,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
-        CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME,
+        CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         DefaultMalletCRFDataWriterFactory.class.getName());
 
     // create some tokens and sentences

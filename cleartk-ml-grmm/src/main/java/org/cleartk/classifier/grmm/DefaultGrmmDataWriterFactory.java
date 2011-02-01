@@ -29,14 +29,14 @@ import java.util.List;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.classifier.SequentialDataWriter;
+import org.cleartk.classifier.SequenceDataWriter;
 import org.cleartk.classifier.encoder.features.BooleanEncoder;
 import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 import org.cleartk.classifier.encoder.features.NumberEncoder;
 import org.cleartk.classifier.encoder.features.StringEncoder;
 import org.cleartk.classifier.encoder.outcome.StringArrayToStringArrayEncoder;
-import org.cleartk.classifier.jar.SequentialDataWriterFactory_ImplBase;
+import org.cleartk.classifier.jar.SequenceDataWriterFactory_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 
@@ -49,7 +49,7 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * @author Martin Toepfer
  */
 public class DefaultGrmmDataWriterFactory extends
-    SequentialDataWriterFactory_ImplBase<List<NameNumber>, String[], String[]> {
+    SequenceDataWriterFactory_ImplBase<List<NameNumber>, String[], String[]> {
 
   public static final String PARAM_COMPRESS = ConfigurationParameterFactory
       .createConfigurationParameterName(DefaultGrmmDataWriterFactory.class, "compress");
@@ -68,7 +68,7 @@ public class DefaultGrmmDataWriterFactory extends
     super.initialize(uimaContext);
   }
 
-  public SequentialDataWriter<String[]> createSequentialDataWriter() throws IOException {
+  public SequenceDataWriter<String[]> createSequenceDataWriter() throws IOException {
     GrmmDataWriter dataWriter = new GrmmDataWriter(outputDirectory);
 
     if (!this.setEncodersFromFileSystem(dataWriter)) {

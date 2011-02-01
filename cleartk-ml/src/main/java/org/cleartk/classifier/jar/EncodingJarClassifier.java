@@ -24,12 +24,12 @@
 package org.cleartk.classifier.jar;
 
 import org.cleartk.classifier.Classifier;
-import org.cleartk.classifier.SequentialClassifier;
+import org.cleartk.classifier.SequenceClassifier;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 
 /**
- * Superclass for {@link Classifier} and {@link SequentialClassifier} implementations that use
+ * Superclass for {@link Classifier} and {@link SequenceClassifier} implementations that use
  * {@link FeaturesEncoder}s and {@link OutcomeEncoder}s.
  * 
  * Note that it does not declare that it implements either of the Classifier interfaces. Subclasses

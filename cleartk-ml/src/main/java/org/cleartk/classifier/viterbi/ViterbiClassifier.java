@@ -36,7 +36,7 @@ import org.cleartk.CleartkException;
 import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.ScoredOutcome;
-import org.cleartk.classifier.SequentialClassifier;
+import org.cleartk.classifier.SequenceClassifier;
 import org.cleartk.classifier.feature.extractor.outcome.OutcomeFeatureExtractor;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.ReflectionUtil.TypeArgumentDelegator;
@@ -51,7 +51,7 @@ import org.uimafit.factory.initializable.Initializable;
  * All rights reserved.
  */
 
-public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUTCOME_TYPE>,
+public class ViterbiClassifier<OUTCOME_TYPE> implements SequenceClassifier<OUTCOME_TYPE>,
     Initializable, TypeArgumentDelegator {
 
   protected Classifier<OUTCOME_TYPE> delegatedClassifier;
@@ -95,7 +95,7 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
     }
   }
 
-  public List<OUTCOME_TYPE> classifySequence(List<List<Feature>> features) throws CleartkException {
+  public List<OUTCOME_TYPE> classify(List<List<Feature>> features) throws CleartkException {
     if (stackSize == 1) {
       List<Object> outcomes = new ArrayList<Object>();
       List<OUTCOME_TYPE> returnValues = new ArrayList<OUTCOME_TYPE>();
@@ -232,7 +232,7 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
     return null;
   }
 
-  public List<ScoredOutcome<List<OUTCOME_TYPE>>> scoreSequence(
+  public List<ScoredOutcome<List<OUTCOME_TYPE>>> score(
       List<List<Feature>> features,
       int maxResults) throws CleartkException {
     // TODO Auto-generated method stub
@@ -240,7 +240,7 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequentialClassifier<OUT
   }
 
   public Map<String, Type> getTypeArguments(Class<?> genericType) {
-    if (genericType.equals(SequentialClassifier.class)) {
+    if (genericType.equals(SequenceClassifier.class)) {
       genericType = Classifier.class;
     }
     return ReflectionUtil.getTypeArguments(genericType, this.delegatedClassifier);

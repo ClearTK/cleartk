@@ -35,7 +35,7 @@ import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.CleartkSequentialAnnotator;
+import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.util.ReflectionUtil;
@@ -54,7 +54,7 @@ import org.uimafit.factory.initializable.InitializableFactory;
  */
 
 public abstract class POSAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation>
-    extends CleartkSequentialAnnotator<String> {
+    extends CleartkSequenceAnnotator<String> {
 
   public static final String PARAM_FEATURE_EXTRACTOR_CLASS_NAME = ConfigurationParameterFactory
       .createConfigurationParameterName(POSAnnotator.class, "featureExtractorClassName");
@@ -152,9 +152,9 @@ public abstract class POSAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE 
       }
 
       if (this.isTraining()) {
-        this.sequentialDataWriter.writeSequence(instances);
+        this.dataWriter.write(instances);
       } else {
-        List<String> tags = this.classifySequence(instances);
+        List<String> tags = this.classify(instances);
         tokens.moveToFirst();
         for (int i = 0; tokens.hasNext(); i++) {
           TOKEN_TYPE token = (TOKEN_TYPE) tokens.next();

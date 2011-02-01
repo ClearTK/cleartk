@@ -31,7 +31,7 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
-import org.cleartk.classifier.jar.SequentialClassifier_ImplBase;
+import org.cleartk.classifier.jar.SequenceClassifier_ImplBase;
 import org.cleartk.util.ReflectionUtil;
 
 import cc.mallet.fst.Transducer;
@@ -49,11 +49,11 @@ import cc.mallet.types.Sequence;
  * 
  *         This classifier provides an interface to the <a
  *         href="http://mallet.cs.umass.edu/index.php/SimpleTagger_example"> Mallet Conditional
- *         Random Field (CRF) tagger</a>. Annotators that use a sequential learner such as this one
+ *         Random Field (CRF) tagger</a>. Annotators that use a sequence learner such as this one
  *         will need to support classification of a sequence of instances.
  */
 public class MalletCRFClassifier extends
-    SequentialClassifier_ImplBase<List<NameNumber>, String, String> {
+    SequenceClassifier_ImplBase<List<NameNumber>, String, String> {
 
   protected Transducer transducer;
 
@@ -75,7 +75,7 @@ public class MalletCRFClassifier extends
    *          model that has been built for this classifier.
    * @throws CleartkException
    */
-  public List<String> classifySequence(List<List<Feature>> features) throws CleartkException {
+  public List<String> classify(List<List<Feature>> features) throws CleartkException {
     String[][] featureStringArray = toStrings(features);
     Pipe pipe = transducer.getInputPipe();
 

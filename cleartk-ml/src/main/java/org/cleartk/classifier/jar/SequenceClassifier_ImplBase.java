@@ -23,19 +23,17 @@
  */
 package org.cleartk.classifier.jar;
 
-import java.io.File;
-import java.io.IOException;
+import java.util.List;
 
-import org.cleartk.CleartkException;
-import org.cleartk.classifier.DataWriter;
-import org.cleartk.classifier.SequenceDataWriter;
+import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.ScoredOutcome;
+import org.cleartk.classifier.SequenceClassifier;
+import org.cleartk.classifier.encoder.features.FeaturesEncoder;
+import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 
 /**
- * Superclass for {@link DataWriter} and {@link SequenceDataWriter} implementations that saves
- * files to a training directory using a {@link JarClassifierBuilder}.
- * 
- * Note that it does not declare that it implements either of the DataWriter interfaces. Subclasses
- * should do this.
+ * Superclass for {@link SequenceClassifier} implementations that use {@link FeaturesEncoder}s and
+ * {@link OutcomeEncoder}s.
  * 
  * <br>
  * Copyright (c) 2011, Regents of the University of Colorado <br>
@@ -44,44 +42,21 @@ import org.cleartk.classifier.SequenceDataWriter;
  * @author Steven Bethard
  * @author Philip Ogren
  */
-public abstract class DirectoryDataWriter<CLASSIFIER_BUILDER extends JarClassifierBuilder<? extends CLASSIFIER_TYPE>, CLASSIFIER_TYPE> {
+public abstract class SequenceClassifier_ImplBase<ENCODED_FEATURES_TYPE, OUTCOME_TYPE, ENCODED_OUTCOME_TYPE>
+    extends EncodingJarClassifier<ENCODED_FEATURES_TYPE, OUTCOME_TYPE, ENCODED_OUTCOME_TYPE>
+    implements SequenceClassifier<OUTCOME_TYPE> {
 
-  protected File outputDirectory;
-
-  protected CLASSIFIER_BUILDER classifierBuilder;
-
-  public DirectoryDataWriter(File outputDirectory) {
-    this.outputDirectory = outputDirectory;
-    if (!this.outputDirectory.exists()) {
-      this.outputDirectory.mkdirs();
-    }
-    this.classifierBuilder = this.newClassifierBuilder();
+  public SequenceClassifier_ImplBase(
+      FeaturesEncoder<ENCODED_FEATURES_TYPE> featuresEncoder,
+      OutcomeEncoder<OUTCOME_TYPE, ENCODED_OUTCOME_TYPE> outcomeEncoder) {
+    super(featuresEncoder, outcomeEncoder);
   }
 
-  /**
-   * Constructs a new {@link JarClassifierBuilder} that will be set as the
-   * {@link #classifierBuilder} during object construction.
-   */
-  protected abstract CLASSIFIER_BUILDER newClassifierBuilder();
-
-  /**
-   * Get the {@link JarClassifierBuilder} associated with this DataWriter.
-   * 
-   * @return The classifier builder.
-   */
-  public CLASSIFIER_BUILDER getClassifierBuilder() {
-    return classifierBuilder;
+  public List<ScoredOutcome<List<OUTCOME_TYPE>>> score(
+      List<List<Feature>> features,
+      int maxResults) {
+    throw new UnsupportedOperationException(
+        "there is no default implementation of the score method.");
   }
 
-  /**
-   * Basic implementation of {@link DataWriter#finish()} and {@link SequenceDataWriter#finish()}
-   * that calls {@link ClassifierBuilder#saveToTrainingDirectory(File)}
-   */
-  public void finish() throws CleartkException {
-    try {
-      this.classifierBuilder.saveToTrainingDirectory(this.outputDirectory);
-    } catch (IOException e) {
-      throw new CleartkException(e);
-    }
-  }
 }

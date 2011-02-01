@@ -38,10 +38,10 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.CleartkSequentialAnnotator;
+import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.SequentialClassifier;
+import org.cleartk.classifier.SequenceClassifier;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.classifier.jar.Train;
@@ -67,7 +67,7 @@ import org.uimafit.testing.util.HideOutput;
 
 public class MalletCRFClassifierTest extends DefaultTestBase {
 
-  public static class TestAnnotator extends CleartkSequentialAnnotator<String> {
+  public static class TestAnnotator extends CleartkSequenceAnnotator<String> {
 
     @Override
     public void initialize(UimaContext context) throws ResourceInitializationException {
@@ -87,11 +87,11 @@ public class MalletCRFClassifierTest extends DefaultTestBase {
         List<Instance<String>> instances = createInstances();
         // consume 100 identical sequences
         for (int i = 0; i < 100; i++) {
-          this.sequentialDataWriter.writeSequence(instances);
+          this.dataWriter.write(instances);
         }
       } else {
         List<Instance<String>> instances = createInstances();
-        List<String> outcomes = this.classifySequence(instances);
+        List<String> outcomes = this.classify(instances);
         assertEquals(instances.size(), outcomes.size());
         testLabels(
             outcomes,
@@ -103,16 +103,16 @@ public class MalletCRFClassifierTest extends DefaultTestBase {
   @Test
   public void runTest1() throws Exception {
 
-    AnalysisEngine sequentialDataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         TestAnnotator.class,
         typeSystemDescription,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
-        CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME,
+        CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         DefaultMalletCRFDataWriterFactory.class.getName());
 
-    sequentialDataWriterAnnotator.process(jCas);
-    sequentialDataWriterAnnotator.collectionProcessComplete();
+    dataWriterAnnotator.process(jCas);
+    dataWriterAnnotator.collectionProcessComplete();
 
     File trainFile = new MalletCRFClassifierBuilder().getTrainingDataFile(this.outputDirectory);
     BufferedReader reader = new BufferedReader(new FileReader(trainFile));
@@ -125,7 +125,7 @@ public class MalletCRFClassifierTest extends DefaultTestBase {
     MalletCRFClassifierBuilder builder = new MalletCRFClassifierBuilder();
     MalletCRFClassifier classifier;
     classifier = builder.loadClassifierFromTrainingDirectory(this.outputDirectory);
-    assertTrue(classifier instanceof SequentialClassifier<?>);
+    assertTrue(classifier instanceof SequenceClassifier<?>);
 
     List<List<Feature>> sequenceFeatures = new ArrayList<List<Feature>>();
     List<Instance<String>> instances = createInstances();
@@ -133,20 +133,20 @@ public class MalletCRFClassifierTest extends DefaultTestBase {
       sequenceFeatures.add(instance.getFeatures());
     }
 
-    List<String> outcomes = classifier.classifySequence(sequenceFeatures);
+    List<String> outcomes = classifier.classify(sequenceFeatures);
     assertEquals(sequenceFeatures.size(), outcomes.size());
     testLabels(
         outcomes,
         "O O O O O O O O O O O O O O O B-GENE I-GENE I-GENE O B-GENE I-GENE O O O O O O O O O O O O O O O O O O O O O");
 
-    AnalysisEngine sequentialClassifierAnnotator = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createPrimitive(
         TestAnnotator.class,
         typeSystemDescription,
         JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
         outputDirectoryName + "/model.jar");
     jCas.reset();
-    sequentialClassifierAnnotator.process(jCas);
-    sequentialClassifierAnnotator.collectionProcessComplete();
+    classifierAnnotator.process(jCas);
+    classifierAnnotator.collectionProcessComplete();
 
   }
 

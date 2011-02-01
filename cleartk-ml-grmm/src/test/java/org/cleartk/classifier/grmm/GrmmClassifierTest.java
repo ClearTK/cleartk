@@ -37,7 +37,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.CleartkSequentialAnnotator;
+import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.JarClassifierFactory;
@@ -57,7 +57,7 @@ import org.uimafit.testing.util.HideOutput;
  */
 public class GrmmClassifierTest extends DefaultTestBase {
 
-  public static class Test1Annotator extends CleartkSequentialAnnotator<String[]> {
+  public static class Test1Annotator extends CleartkSequenceAnnotator<String[]> {
 
     @Override
     public void initialize(UimaContext context) throws ResourceInitializationException {
@@ -76,21 +76,21 @@ public class GrmmClassifierTest extends DefaultTestBase {
       if (this.isTraining()) {
         for (int i = 0; i < 5; i++) {
           List<Instance<String[]>> instances = GrmmTestDataGenerator.createInstances2();
-          this.sequentialDataWriter.writeSequence(instances);
+          this.dataWriter.write(instances);
           instances = GrmmTestDataGenerator.createInstances1();
-          this.sequentialDataWriter.writeSequence(instances);
+          this.dataWriter.write(instances);
           instances = GrmmTestDataGenerator.createInstances3();
-          this.sequentialDataWriter.writeSequence(instances);
+          this.dataWriter.write(instances);
         }
       } else {
         // simple test
         List<Instance<String[]>> instances = GrmmTestDataGenerator.createInstances1test();
-        List<String[]> outcomes = this.classifySequence(instances);
+        List<String[]> outcomes = this.classify(instances);
         assertEquals(instances.size(), outcomes.size());
 
         // test classification with outcomes
         instances = GrmmTestDataGenerator.createInstances2test();
-        outcomes = this.classifySequence(instances);
+        outcomes = this.classify(instances);
         assertEquals(instances.size(), outcomes.size());
         List<Instance<String[]>> gold = GrmmTestDataGenerator.createInstances2();
         for (int i = 0; i < gold.size(); i++) {
@@ -112,7 +112,7 @@ public class GrmmClassifierTest extends DefaultTestBase {
         typeSystemDescription,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
-        CleartkSequentialAnnotator.PARAM_SEQUENTIAL_DATA_WRITER_FACTORY_CLASS_NAME,
+        CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         DefaultGrmmDataWriterFactory.class.getName());
 
     dataWriterAnnotator.process(jCas);
@@ -139,14 +139,14 @@ public class GrmmClassifierTest extends DefaultTestBase {
     builder.loadClassifierFromTrainingDirectory(this.outputDirectory);
 
     // try to use model for classification:
-    AnalysisEngine sequentialClassifierAnnotator = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createPrimitive(
         Test1Annotator.class,
         typeSystemDescription,
         JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
         modelJarFile.getPath());
     jCas.reset();
-    sequentialClassifierAnnotator.process(jCas);
-    sequentialClassifierAnnotator.collectionProcessComplete();
+    classifierAnnotator.process(jCas);
+    classifierAnnotator.collectionProcessComplete();
   }
 
 }

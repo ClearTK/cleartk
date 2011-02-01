@@ -36,8 +36,8 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.ClassifierFactory;
-import org.cleartk.classifier.SequentialClassifier;
-import org.cleartk.classifier.SequentialClassifierFactory;
+import org.cleartk.classifier.SequenceClassifier;
+import org.cleartk.classifier.SequenceClassifierFactory;
 import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
@@ -50,7 +50,7 @@ import org.uimafit.factory.initializable.Initializable;
  */
 
 public class JarClassifierFactory<OUTCOME_TYPE> implements ClassifierFactory<OUTCOME_TYPE>,
-    SequentialClassifierFactory<OUTCOME_TYPE>, Initializable {
+    SequenceClassifierFactory<OUTCOME_TYPE>, Initializable {
 
   public static final String PARAM_CLASSIFIER_JAR_PATH = ConfigurationParameterFactory
       .createConfigurationParameterName(JarClassifierFactory.class, "classifierJarPath");
@@ -72,9 +72,9 @@ public class JarClassifierFactory<OUTCOME_TYPE> implements ClassifierFactory<OUT
   }
 
   @SuppressWarnings("unchecked")
-  public SequentialClassifier<OUTCOME_TYPE> createSequentialClassifier() throws IOException,
+  public SequenceClassifier<OUTCOME_TYPE> createSequenceClassifier() throws IOException,
       CleartkException {
-    return this.createUntypedClassifier(SequentialClassifier.class);
+    return this.createUntypedClassifier(SequenceClassifier.class);
   }
 
   private <CLASSIFIER_TYPE> CLASSIFIER_TYPE createUntypedClassifier(

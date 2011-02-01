@@ -58,14 +58,14 @@ import org.uimafit.testing.util.HideOutput;
  * @author Philip Ogren
  */
 
-public class NonSequentialExamplePOSAnnotatorTest extends ExamplesTestBase {
+public class NonSequenceExamplePOSAnnotatorTest extends ExamplesTestBase {
 
   @Test
   public void testLibsvm() throws Exception {
     String libsvmDirectoryName = outputDirectory + "/libsvm";
     AnalysisEngineDescription dataWriter = CleartkAnnotatorDescriptionFactory
         .createCleartkAnnotator(
-            NonSequentialExamplePOSAnnotator.class,
+            NonSequenceExamplePOSAnnotator.class,
             ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
             DefaultMultiClassLIBSVMDataWriterFactory.class,
             libsvmDirectoryName);
@@ -82,7 +82,7 @@ public class NonSequentialExamplePOSAnnotatorTest extends ExamplesTestBase {
     String maxentDirectoryName = outputDirectoryName + "/maxent";
     AnalysisEngineDescription dataWriter = CleartkAnnotatorDescriptionFactory
         .createCleartkAnnotator(
-            NonSequentialExamplePOSAnnotator.class,
+            NonSequenceExamplePOSAnnotator.class,
             ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
             DefaultMaxentDataWriterFactory.class,
             maxentDirectoryName);
@@ -101,7 +101,7 @@ public class NonSequentialExamplePOSAnnotatorTest extends ExamplesTestBase {
     String svmlightDirectoryName = outputDirectoryName + "/svmlight";
     AnalysisEngineDescription dataWriter = CleartkAnnotatorDescriptionFactory
         .createCleartkAnnotator(
-            NonSequentialExamplePOSAnnotator.class,
+            NonSequenceExamplePOSAnnotator.class,
             ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
             DefaultOVASVMlightDataWriterFactory.class,
             svmlightDirectoryName);
@@ -141,7 +141,7 @@ public class NonSequentialExamplePOSAnnotatorTest extends ExamplesTestBase {
 
     AnalysisEngineDescription taggerDescription = CleartkAnnotatorDescriptionFactory
         .createCleartkAnnotator(
-            NonSequentialExamplePOSAnnotator.class,
+            NonSequenceExamplePOSAnnotator.class,
             ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
             outDirectoryName + "/model.jar");
 

@@ -21,10 +21,11 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-
 package org.cleartk.classifier;
 
-import java.io.IOException;
+import java.util.List;
+
+import org.cleartk.CleartkException;
 
 /**
  * <br>
@@ -33,8 +34,10 @@ import java.io.IOException;
  * <p>
  */
 
-public interface SequentialDataWriterFactory<OUTCOME_TYPE> {
+public interface SequenceDataWriter<OUTCOME_TYPE> {
 
-  public SequentialDataWriter<OUTCOME_TYPE> createSequentialDataWriter() throws IOException;
+  public void write(List<Instance<OUTCOME_TYPE>> instances) throws CleartkException;
+
+  public void finish() throws CleartkException;
 
 }

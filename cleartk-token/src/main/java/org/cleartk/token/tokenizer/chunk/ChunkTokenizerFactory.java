@@ -47,7 +47,7 @@ public class ChunkTokenizerFactory {
   public static AnalysisEngineDescription createChunkTokenizer(String modelFileName)
       throws ResourceInitializationException {
     AnalysisEngineDescription aed = CleartkAnnotatorDescriptionFactory
-        .createCleartkSequentialAnnotator(
+        .createCleartkSequenceAnnotator(
             Chunker.class,
             TokenComponents.TYPE_SYSTEM_DESCRIPTION,
             modelFileName);
@@ -73,7 +73,7 @@ public class ChunkTokenizerFactory {
   public static AnalysisEngineDescription createChunkTokenizerDataWriter(String outputDirectoryName)
       throws ResourceInitializationException {
     AnalysisEngineDescription aed = CleartkAnnotatorDescriptionFactory
-        .createCleartkSequentialAnnotator(
+        .createCleartkSequenceAnnotator(
             Chunker.class,
             TokenComponents.TYPE_SYSTEM_DESCRIPTION,
             DefaultMalletCRFDataWriterFactory.class,

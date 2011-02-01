@@ -34,7 +34,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.CleartkSequentialAnnotator;
+import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Instance;
 import org.cleartk.util.UIMAUtil;
 import org.uimafit.descriptor.ConfigurationParameter;
@@ -47,7 +47,7 @@ import org.uimafit.factory.initializable.InitializableFactory;
  * All rights reserved.
  */
 
-public class Chunker extends CleartkSequentialAnnotator<String> {
+public class Chunker extends CleartkSequenceAnnotator<String> {
 
   // The name is hard coded here as a string because it needs to be referenced as a constant in
   // ChunkLabeler_ImplBase
@@ -162,12 +162,12 @@ public class Chunker extends CleartkSequentialAnnotator<String> {
 
       // write data while training
       if (this.isTraining()) {
-        this.sequentialDataWriter.writeSequence(instances);
+        this.dataWriter.write(instances);
       }
 
       // set labels during classification
       else {
-        List<String> results = this.classifySequence(instances);
+        List<String> results = this.classify(instances);
         for (int i = 0; i < results.size(); i++) {
           Annotation labeledAnnotation = labeledAnnotationList.get(i);
           String label = results.get(i);

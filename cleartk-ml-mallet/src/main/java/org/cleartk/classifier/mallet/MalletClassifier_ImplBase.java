@@ -69,12 +69,6 @@ public abstract class MalletClassifier_ImplBase<OUTCOME_TYPE> extends
     this.alphabet = classifier.getAlphabet();
   }
 
-  /**
-   * This method simply throws an UnsupportedOperationException because CRF is a sequential
-   * classifier.
-   * 
-   * @throws CleartkException
-   */
   public OUTCOME_TYPE classify(List<Feature> features) throws UnsupportedOperationException,
       CleartkException {
     Classification classification = classifier.classify(toInstance(features));

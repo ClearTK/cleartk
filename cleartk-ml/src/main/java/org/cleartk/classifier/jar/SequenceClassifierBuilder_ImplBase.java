@@ -27,13 +27,13 @@ import java.io.File;
 import java.util.jar.JarInputStream;
 import java.util.jar.JarOutputStream;
 
-import org.cleartk.classifier.SequentialClassifier;
+import org.cleartk.classifier.SequenceClassifier;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 
 /**
  * Superclass for builders which write to a training data file using {@link FeaturesEncoder}s and
- * {@link OutcomeEncoder}s, and build and package {@link SequentialClassifier}s as jar files.
+ * {@link OutcomeEncoder}s, and build and package {@link SequenceClassifier}s as jar files.
  * 
  * Subclasses will typically override:
  * <ul>
@@ -49,7 +49,7 @@ import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
  * 
  * @author Steven Bethard
  */
-public abstract class SequentialClassifierBuilder_ImplBase<CLASSIFIER_TYPE extends SequentialClassifier<OUTCOME_TYPE>, ENCODED_FEATURES_TYPE, OUTCOME_TYPE, ENCODED_OUTCOME_TYPE>
+public abstract class SequenceClassifierBuilder_ImplBase<CLASSIFIER_TYPE extends SequenceClassifier<OUTCOME_TYPE>, ENCODED_FEATURES_TYPE, OUTCOME_TYPE, ENCODED_OUTCOME_TYPE>
     extends
     EncodingJarClassifierBuilder<CLASSIFIER_TYPE, ENCODED_FEATURES_TYPE, OUTCOME_TYPE, ENCODED_OUTCOME_TYPE> {
 

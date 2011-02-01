@@ -115,7 +115,7 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
 
     String outDirectoryName = outputDirectoryName + "/malletcrf";
     AnalysisEngineDescription dataWriter = CleartkAnnotatorDescriptionFactory
-        .createCleartkSequentialAnnotator(
+        .createCleartkSequenceAnnotator(
             ExamplePOSAnnotator.class,
             ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
             DefaultMalletCRFDataWriterFactory.class,
@@ -141,7 +141,7 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
 
     String outDirectoryName = outputDirectoryName + "/malletcrf-compressed";
     AnalysisEngineDescription dataWriter = CleartkAnnotatorDescriptionFactory
-        .createCleartkSequentialAnnotator(
+        .createCleartkSequenceAnnotator(
             ExamplePOSAnnotator.class,
             ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
             DefaultMalletCRFDataWriterFactory.class,

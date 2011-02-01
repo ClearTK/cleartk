@@ -28,7 +28,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.cleartk.classifier.encoder.features.NameNumber;
-import org.cleartk.classifier.jar.SequentialDataWriter_ImplBase;
+import org.cleartk.classifier.jar.SequenceDataWriter_ImplBase;
 
 /**
  * <br>
@@ -47,7 +47,7 @@ import org.cleartk.classifier.jar.SequentialDataWriter_ImplBase;
  * @author Steven Bethard
  */
 public class MalletCRFDataWriter extends
-    SequentialDataWriter_ImplBase<MalletCRFClassifierBuilder, List<NameNumber>, String, String> {
+    SequenceDataWriter_ImplBase<MalletCRFClassifierBuilder, List<NameNumber>, String, String> {
 
   public MalletCRFDataWriter(File outputDirectory) throws IOException {
     super(outputDirectory);

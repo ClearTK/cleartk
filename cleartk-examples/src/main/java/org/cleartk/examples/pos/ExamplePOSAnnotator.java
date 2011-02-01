@@ -34,7 +34,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkAnnotatorDescriptionFactory;
-import org.cleartk.classifier.CleartkSequentialAnnotator;
+import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.WindowFeature;
 import org.cleartk.classifier.feature.extractor.WindowExtractor;
@@ -62,7 +62,7 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * 
  * @author Steven Bethard
  */
-public class ExamplePOSAnnotator extends CleartkSequentialAnnotator<String> {
+public class ExamplePOSAnnotator extends CleartkSequenceAnnotator<String> {
 
   public static final String DEFAULT_OUTPUT_DIRECTORY = "target/examples/pos";
 
@@ -150,13 +150,13 @@ public class ExamplePOSAnnotator extends CleartkSequentialAnnotator<String> {
 
         // for training, write instances to the data write
         if (this.isTraining()) {
-          this.sequentialDataWriter.writeSequence(instances);
+          this.dataWriter.write(instances);
         }
 
         // for classification, set the labels as the token POS labels
         else {
           Iterator<Token> tokensIter = tokens.iterator();
-          for (String label : this.classifySequence(instances)) {
+          for (String label : this.classify(instances)) {
             tokensIter.next().setPos(label.toString());
           }
         }
@@ -168,7 +168,7 @@ public class ExamplePOSAnnotator extends CleartkSequentialAnnotator<String> {
 
   public static AnalysisEngineDescription getClassifierDescription(String modelFileName)
       throws ResourceInitializationException {
-    return CleartkAnnotatorDescriptionFactory.createCleartkSequentialAnnotator(
+    return CleartkAnnotatorDescriptionFactory.createCleartkSequenceAnnotator(
         ExamplePOSAnnotator.class,
         ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
         modelFileName);

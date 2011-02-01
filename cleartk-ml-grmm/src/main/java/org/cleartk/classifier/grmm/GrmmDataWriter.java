@@ -29,7 +29,7 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import org.cleartk.classifier.encoder.features.NameNumber;
-import org.cleartk.classifier.jar.SequentialDataWriter_ImplBase;
+import org.cleartk.classifier.jar.SequenceDataWriter_ImplBase;
 
 /**
  * <br>
@@ -40,7 +40,7 @@ import org.cleartk.classifier.jar.SequentialDataWriter_ImplBase;
  * @author Martin Toepfer
  */
 public class GrmmDataWriter extends
-    SequentialDataWriter_ImplBase<GrmmClassifierBuilder, List<NameNumber>, String[], String[]> {
+    SequenceDataWriter_ImplBase<GrmmClassifierBuilder, List<NameNumber>, String[], String[]> {
 
   public GrmmDataWriter(File outputDirectory) throws IOException {
     super(outputDirectory);

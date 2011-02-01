@@ -37,7 +37,7 @@ import java.util.zip.GZIPInputStream;
 
 import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.jar.JarStreams;
-import org.cleartk.classifier.jar.SequentialClassifierBuilder_ImplBase;
+import org.cleartk.classifier.jar.SequenceClassifierBuilder_ImplBase;
 
 import edu.umass.cs.mallet.grmm.learning.ACRF;
 import edu.umass.cs.mallet.grmm.learning.GenericAcrfTui;
@@ -52,7 +52,7 @@ import edu.umass.cs.mallet.grmm.learning.GenericAcrfTui;
  * 
  */
 public class GrmmClassifierBuilder extends
-    SequentialClassifierBuilder_ImplBase<GrmmClassifier, List<NameNumber>, String[], String[]> {
+    SequenceClassifierBuilder_ImplBase<GrmmClassifier, List<NameNumber>, String[], String[]> {
 
   private static String DEFAULT_MODEL_FILENAME = "acrf.model.ser.gz";
 
