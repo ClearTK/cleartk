@@ -99,7 +99,7 @@ public abstract class MalletClassifierBuilder_ImplBase<CLASSIFIER_TYPE extends M
           + factoryClass.getCanonicalName() + ": " + factory.getUsageMessage(), t);
     }
 
-    cc.mallet.classify.Classifier classifier = trainer.train(instanceList);
+    this.classifier = trainer.train(instanceList);
 
     ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File(dir, MODEL_NAME)));
     oos.writeObject(classifier);
