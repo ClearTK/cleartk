@@ -78,7 +78,7 @@ public class VerbClauseTemporalTrain {
             TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
             timeBankDir,
             TimeMLViewName.TIMEML,
-            "wsj"),
+            "wsj_.*[.]tml"),
         TimeMLGoldAnnotator.getDescriptionNoTLINKs(),
         PlainTextTLINKGoldAnnotator.getDescription(),
         TreebankAligningAnnotator.getDescription(treeBankDir),
@@ -89,10 +89,11 @@ public class VerbClauseTemporalTrain {
     FileUtils.deleteRecursive(cleanedTimeBankDir);
 
     // train the model
-    Train.main(VerbClauseTemporalAnnotator.MODEL_DIR);
+    String trainingDirectory = VerbClauseTemporalAnnotator.MODEL_LOCATOR.getTrainingDirectory();
+    Train.main(trainingDirectory);
 
     // delete the generated files
-    for (File file : new File(VerbClauseTemporalAnnotator.MODEL_DIR).listFiles()) {
+    for (File file : new File(trainingDirectory).listFiles()) {
       if (!file.isDirectory() && !file.getName().equals("model.jar")) {
         file.delete();
       }

@@ -48,6 +48,7 @@ import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory;
 import org.cleartk.timeml.TimeMLComponents;
 import org.cleartk.timeml.type.Event;
+import org.cleartk.timeml.util.CleartkInternalModelLocator;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.uimafit.component.initialize.ConfigurationParameterInitializer;
@@ -66,7 +67,8 @@ import org.uimafit.factory.initializable.InitializableFactory;
  */
 public class EventAnnotator {
 
-  public static final String MODEL_DIR = "src/main/resources/models/timeml/event";
+  public static final CleartkInternalModelLocator MODEL_LOCATOR = new CleartkInternalModelLocator(
+      EventAnnotator.class);
 
   public static AnalysisEngineDescription getWriterDescription(String modelDir)
       throws ResourceInitializationException {
@@ -93,7 +95,7 @@ public class EventAnnotator {
 
   public static AnalysisEngineDescription getWriterDescription()
       throws ResourceInitializationException {
-    return getWriterDescription(MODEL_DIR);
+    return getWriterDescription(MODEL_LOCATOR.getTrainingDirectory());
   }
 
   public static AnalysisEngineDescription getAnnotatorDescription(String modelDir)
@@ -120,7 +122,7 @@ public class EventAnnotator {
 
   public static AnalysisEngineDescription getAnnotatorDescription()
       throws ResourceInitializationException {
-    return getAnnotatorDescription(MODEL_DIR + "/model.jar");
+    return getAnnotatorDescription(MODEL_LOCATOR.getClassifierJarURL().toString());
   }
 
   public static class FeatureExtractor implements ChunkerFeatureExtractor {

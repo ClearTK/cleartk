@@ -87,21 +87,21 @@ public class EventTrain {
         EventModalityAnnotator.getWriterDescription());
 
     // train models for each aspect of event identification
-    // Train.main(EventAnnotator.MODEL_DIR, "--forbidden", "O,I-Event");
-    Train.main(EventTenseAnnotator.MODEL_DIR);
-    Train.main(EventAspectAnnotator.MODEL_DIR);
-    Train.main(EventClassAnnotator.MODEL_DIR);
-    Train.main(EventPolarityAnnotator.MODEL_DIR);
-    Train.main(EventModalityAnnotator.MODEL_DIR);
+    Train.main(EventAnnotator.MODEL_LOCATOR.getTrainingDirectory(), "--forbidden", "O,I-Event");
+    Train.main(EventTenseAnnotator.MODEL_LOCATOR.getTrainingDirectory());
+    Train.main(EventAspectAnnotator.MODEL_LOCATOR.getTrainingDirectory());
+    Train.main(EventClassAnnotator.MODEL_LOCATOR.getTrainingDirectory());
+    Train.main(EventPolarityAnnotator.MODEL_LOCATOR.getTrainingDirectory());
+    Train.main(EventModalityAnnotator.MODEL_LOCATOR.getTrainingDirectory());
 
     // clean up unnecessary files
     List<String> modelDirs = Arrays.asList(
-        EventAnnotator.MODEL_DIR,
-        EventTenseAnnotator.MODEL_DIR,
-        EventAspectAnnotator.MODEL_DIR,
-        EventClassAnnotator.MODEL_DIR,
-        EventPolarityAnnotator.MODEL_DIR,
-        EventModalityAnnotator.MODEL_DIR);
+        EventAnnotator.MODEL_LOCATOR.getTrainingDirectory(),
+        EventTenseAnnotator.MODEL_LOCATOR.getTrainingDirectory(),
+        EventAspectAnnotator.MODEL_LOCATOR.getTrainingDirectory(),
+        EventClassAnnotator.MODEL_LOCATOR.getTrainingDirectory(),
+        EventPolarityAnnotator.MODEL_LOCATOR.getTrainingDirectory(),
+        EventModalityAnnotator.MODEL_LOCATOR.getTrainingDirectory());
     for (String dir : modelDirs) {
       for (File file : new File(dir).listFiles()) {
         if (!file.isDirectory() && !file.getName().equals("model.jar")) {

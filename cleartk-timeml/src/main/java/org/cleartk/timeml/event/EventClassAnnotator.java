@@ -30,6 +30,7 @@ import org.cleartk.classifier.CleartkAnnotatorDescriptionFactory;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.timeml.TimeMLComponents;
 import org.cleartk.timeml.type.Event;
+import org.cleartk.timeml.util.CleartkInternalModelLocator;
 import org.cleartk.timeml.util.TokenPOSBagExtractor;
 import org.cleartk.timeml.util.TokenStemBagExtractor;
 
@@ -44,7 +45,8 @@ import org.cleartk.timeml.util.TokenStemBagExtractor;
  */
 public class EventClassAnnotator extends EventAttributeAnnotator<String> {
 
-  public static final String MODEL_DIR = "src/main/resources/models/timeml/event/class";
+  public static final CleartkInternalModelLocator MODEL_LOCATOR = new CleartkInternalModelLocator(
+      EventClassAnnotator.class);
 
   public static AnalysisEngineDescription getWriterDescription(String modelDir)
       throws ResourceInitializationException {
@@ -57,7 +59,7 @@ public class EventClassAnnotator extends EventAttributeAnnotator<String> {
 
   public static AnalysisEngineDescription getWriterDescription()
       throws ResourceInitializationException {
-    return getWriterDescription(MODEL_DIR);
+    return getWriterDescription(MODEL_LOCATOR.getTrainingDirectory());
   }
 
   public static AnalysisEngineDescription getAnnotatorDescription(String modelDir)
@@ -70,7 +72,7 @@ public class EventClassAnnotator extends EventAttributeAnnotator<String> {
 
   public static AnalysisEngineDescription getAnnotatorDescription()
       throws ResourceInitializationException {
-    return getAnnotatorDescription(MODEL_DIR + "/model.jar");
+    return getAnnotatorDescription(MODEL_LOCATOR.getClassifierJarURL().toString());
   }
 
   @Override

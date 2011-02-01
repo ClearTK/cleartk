@@ -52,6 +52,7 @@ import org.cleartk.timeml.TimeMLComponents;
 import org.cleartk.timeml.type.Anchor;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.type.TemporalLink;
+import org.cleartk.timeml.util.CleartkInternalModelLocator;
 import org.cleartk.timeml.util.PrecedingTokenTextBagExtractor;
 import org.cleartk.timeml.util.TargetPathExtractor;
 import org.cleartk.timeml.util.TokenPOSExtractor;
@@ -75,11 +76,8 @@ import org.uimafit.factory.ConfigurationParameterFactory;
 @TypeCapability(outputs = { "org.cleartk.timeml.type.TemporalLink", "org.cleartk.timeml.type.Event" })
 public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
 
-  public static final String MODEL_BASE = "/models/timeml/tlink/verb-clause";
-
-  public static final String MODEL_DIR = "src/main/resources" + MODEL_BASE;
-
-  public static final String MODEL_RESOURCE = MODEL_BASE + "/model.jar";
+  public static final CleartkInternalModelLocator MODEL_LOCATOR = new CleartkInternalModelLocator(
+      VerbClauseTemporalAnnotator.class);
 
   private static final Map<String, String[]> headMap = new HashMap<String, String[]>();
   static {
@@ -119,7 +117,7 @@ public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
         VerbClauseTemporalAnnotator.class,
         TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
         DefaultMaxentDataWriterFactory.class,
-        VerbClauseTemporalAnnotator.MODEL_DIR);
+        MODEL_LOCATOR.getTrainingDirectory());
   }
 
   public static AnalysisEngineDescription getAnnotatorDescription()
@@ -127,9 +125,7 @@ public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
     return CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
         VerbClauseTemporalAnnotator.class,
         TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
-        VerbClauseTemporalAnnotator.class
-            .getResource(VerbClauseTemporalAnnotator.MODEL_RESOURCE)
-            .getFile());
+        MODEL_LOCATOR.getClassifierJarURL().getFile());
   }
 
   public static AnalysisEngineDescription getEventCreatingAnnotatorDescription()
@@ -137,9 +133,7 @@ public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
     AnalysisEngineDescription desc = CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
         VerbClauseTemporalAnnotator.class,
         TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
-        VerbClauseTemporalAnnotator.class
-            .getResource(VerbClauseTemporalAnnotator.MODEL_RESOURCE)
-            .getFile());
+        MODEL_LOCATOR.getClassifierJarURL().getFile());
     ConfigurationParameterFactory.addConfigurationParameters(
         desc,
         VerbClauseTemporalAnnotator.PARAM_CREATE_EVENTS,
