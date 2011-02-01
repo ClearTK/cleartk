@@ -43,8 +43,6 @@ public abstract class LIBSVMClassifierBuilder<CLASSIFIER_TYPE extends LIBSVMClas
     extends
     GenericLIBSVMClassifierBuilder<CLASSIFIER_TYPE, OUTCOME_TYPE, ENCODED_OUTCOME_TYPE, libsvm.svm_model> {
 
-  public static final String ATTRIBUTES_NAME = "LIBSVM";
-
   public static final String SCALE_FEATURES_KEY = "scaleFeatures";
 
   public static final String SCALE_FEATURES_VALUE_NORMALIZEL2 = "normalizeL2";
