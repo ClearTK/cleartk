@@ -46,11 +46,11 @@ public class CleartkInternalModelLocator {
   }
   
   public String getTrainingDirectory() {
-    return "src/main/resources/" + this.annotatorClass.getName().replace('.', '/');
+    return "src/main/resources/" + this.annotatorClass.getName().toLowerCase().replace('.', '/');
   }
   
   public URL getClassifierJarURL() {
-    String resourceName = this.annotatorClass.getSimpleName() + "/model.jar";
+    String resourceName = this.annotatorClass.getSimpleName().toLowerCase() + "/model.jar";
     URL url = this.annotatorClass.getResource(resourceName);
     if (url == null) {
       String className = this.annotatorClass.getName();
