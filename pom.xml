@@ -148,6 +148,11 @@
 				<artifactId>snowball</artifactId>
 				<version>2.2.0-cleartk-modified</version>
 			</dependency>
+			<dependency>
+				<groupId>clearparser</groupId>
+				<artifactId>clearparser</artifactId>
+				<version>0.2-beta</version>
+			</dependency>
 
 			<!-- ClearTK-internal Dependencies -->
 			<dependency>
