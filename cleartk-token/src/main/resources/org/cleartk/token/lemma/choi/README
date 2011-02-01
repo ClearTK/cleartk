@@ -1,0 +1,9 @@
+The file wordnet-3.0-lemma-data.jar is a data file that can be used by LemmaAnnotator.  
+It was built using WordNet version 3.0 data and is therefore subject to any 
+restrictions imposed by the WordNet license which appears to be very similar
+to the BSD license (both WordNet software and database.)
+
+http://wordnet.princeton.edu/wordnet/license/
+
+The file wordnet-3.0-lemma-data.jar was obtained directly from the author of
+clear.morph.MorphEnAnalyzer, Jinho Choi, and was called en_dict-1.0.jar. 

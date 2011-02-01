@@ -43,6 +43,11 @@
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-ml-mallet</artifactId>
 		</dependency>
+				<dependency>
+			<groupId>clearparser</groupId>
+			<artifactId>clearparser</artifactId>
+		</dependency>
+		
 	</dependencies>
 	<build>
 		<plugins>
