@@ -95,6 +95,8 @@ public class LIBLINEARTest extends DefaultTestBase {
   }
 
   private static class BinaryAnnotator extends CleartkAnnotator<Boolean> {
+    public BinaryAnnotator() {
+    }
     @Override
     public void process(JCas aJCas) throws AnalysisEngineProcessException {
       for (Instance<Boolean> instance : ExampleInstanceFactory.generateBooleanInstances(1000)) {

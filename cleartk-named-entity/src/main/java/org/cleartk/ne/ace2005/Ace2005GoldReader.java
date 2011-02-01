@@ -166,7 +166,7 @@ public class Ace2005GoldReader extends JCasCollectionReader_ImplBase {
     return null;
   }
 
-  private String getDocumentText(String sgmText) throws IOException {
+  private String getDocumentText(String sgmText) {
     StringBuffer rawDocumentText = new StringBuffer(sgmText);
     Matcher tagMatcher = tagPattern.matcher(rawDocumentText);
     String documentText = tagMatcher.replaceAll("");

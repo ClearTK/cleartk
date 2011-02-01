@@ -25,7 +25,6 @@ package org.cleartk.token.stem.snowball;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -48,7 +47,7 @@ import org.uimafit.factory.AnalysisEngineFactory;
 public class SnowballStemmerTest extends TokenTestBase {
 
   @Test
-  public void testBadStemmerName() throws UIMAException {
+  public void testBadStemmerName() {
     try {
       AnalysisEngineFactory.createPrimitive(
           SnowballStemmer.class,
@@ -65,7 +64,7 @@ public class SnowballStemmerTest extends TokenTestBase {
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         DefaultSnowballStemmer.class,
         typeSystemDescription,
-        DefaultSnowballStemmer.PARAM_STEMMER_NAME,
+        SnowballStemmer.PARAM_STEMMER_NAME,
         "English");
     String text = "The brown foxes jumped quickly over the lazy dog.";
     String tokens = "The brown foxes jumped quickly over the lazy dog .";
@@ -103,7 +102,7 @@ public class SnowballStemmerTest extends TokenTestBase {
   }
 
   @Test
-  public void testDescriptor() throws UIMAException, IOException {
+  public void testDescriptor() throws UIMAException {
     ResourceInitializationException rie = null;
     try {
       AnalysisEngineFactory.createPrimitive(DefaultSnowballStemmer.class, typeSystemDescription);

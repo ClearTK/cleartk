@@ -59,7 +59,7 @@ public class GrmmClassifierBuilderTest extends DefaultTestBase {
       }
     }
 
-    public void processSimple(JCas cas) throws AnalysisEngineProcessException, CleartkException {
+    public void processSimple(JCas cas) throws CleartkException {
       if (this.isTraining()) {
         for (int i = 0; i < 5; i++) {
           List<Instance<String[]>> instances = GrmmTestDataGenerator.createInstances2();

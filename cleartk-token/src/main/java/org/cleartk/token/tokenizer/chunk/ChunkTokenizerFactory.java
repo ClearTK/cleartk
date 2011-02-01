@@ -26,6 +26,7 @@ package org.cleartk.token.tokenizer.chunk;
 
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.chunker.ChunkLabeler_ImplBase;
 import org.cleartk.chunker.Chunker;
 import org.cleartk.classifier.CleartkAnnotatorDescriptionFactory;
 import org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory;
@@ -64,7 +65,7 @@ public class ChunkTokenizerFactory {
         ChunkTokenizerLabeler.class.getName(),
         Chunker.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME,
         ChunkTokenizerFeatureExtractor.class.getName(),
-        ChunkTokenizerLabeler.PARAM_CHUNK_ANNOTATION_CLASS_NAME,
+        ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME,
         Token.class.getName());
     return aed;
   }
@@ -91,7 +92,7 @@ public class ChunkTokenizerFactory {
         ChunkTokenizerLabeler.class.getName(),
         Chunker.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME,
         ChunkTokenizerFeatureExtractor.class.getName(),
-        ChunkTokenizerLabeler.PARAM_CHUNK_ANNOTATION_CLASS_NAME,
+        ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME,
         Token.class.getName());
     return aed;
   }

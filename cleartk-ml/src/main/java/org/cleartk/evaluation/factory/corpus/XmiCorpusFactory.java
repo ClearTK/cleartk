@@ -132,7 +132,7 @@ public abstract class XmiCorpusFactory extends CorpusFactory_ImplBase {
     CollectionReader collectionReader = CollectionReaderFactory.createCollectionReader(
         XReader.class,
         typeSystemDescription,
-        XReader.PARAM_ROOT_FILE,
+        FilesCollectionReader.PARAM_ROOT_FILE,
         directory,
         FilesCollectionReader.PARAM_NAME_FILES_FILE_NAMES,
         foldNames);
@@ -149,7 +149,7 @@ public abstract class XmiCorpusFactory extends CorpusFactory_ImplBase {
     CollectionReader collectionReader = CollectionReaderFactory.createCollectionReader(
         XReader.class,
         typeSystemDescription,
-        XReader.PARAM_ROOT_FILE,
+        FilesCollectionReader.PARAM_ROOT_FILE,
         directory,
         FilesCollectionReader.PARAM_NAME_FILES_FILE_NAMES,
         new String[] { testFoldNames });
@@ -163,7 +163,7 @@ public abstract class XmiCorpusFactory extends CorpusFactory_ImplBase {
     CollectionReader collectionReader = CollectionReaderFactory.createCollectionReader(
         XReader.class,
         typeSystemDescription,
-        XReader.PARAM_ROOT_FILE,
+        FilesCollectionReader.PARAM_ROOT_FILE,
         directory,
         FilesCollectionReader.PARAM_NAME_FILES_FILE_NAMES,
         new String[] { evaluationNames });
@@ -179,7 +179,7 @@ public abstract class XmiCorpusFactory extends CorpusFactory_ImplBase {
     CollectionReader collectionReader = CollectionReaderFactory.createCollectionReader(
         XReader.class,
         typeSystemDescription,
-        XReader.PARAM_ROOT_FILE,
+        FilesCollectionReader.PARAM_ROOT_FILE,
         directory,
         FilesCollectionReader.PARAM_NAME_FILES_FILE_NAMES,
         new String[] { evaluationNames });
@@ -193,7 +193,7 @@ public abstract class XmiCorpusFactory extends CorpusFactory_ImplBase {
     return CollectionReaderFactory.createCollectionReader(
         XReader.class,
         typeSystemDescription,
-        XReader.PARAM_ROOT_FILE,
+        FilesCollectionReader.PARAM_ROOT_FILE,
         directory,
         FilesCollectionReader.PARAM_NAME_FILES_FILE_NAMES,
         new String[] { getTestNames(), getTrainNames() });
@@ -212,7 +212,7 @@ public abstract class XmiCorpusFactory extends CorpusFactory_ImplBase {
     CollectionReader collectionReader = CollectionReaderFactory.createCollectionReader(
         XReader.class,
         typeSystemDescription,
-        XReader.PARAM_ROOT_FILE,
+        FilesCollectionReader.PARAM_ROOT_FILE,
         directory,
         FilesCollectionReader.PARAM_NAME_FILES_FILE_NAMES,
         names);

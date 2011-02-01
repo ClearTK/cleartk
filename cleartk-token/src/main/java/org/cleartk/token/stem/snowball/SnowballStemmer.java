@@ -80,7 +80,7 @@ public abstract class SnowballStemmer<TOKEN_TYPE extends Annotation> extends JCa
         .getTypeArgument(SnowballStemmer.class, "TOKEN_TYPE", this));
   }
 
-  private void initializeTypes(JCas jCas) throws AnalysisEngineProcessException {
+  private void initializeTypes(JCas jCas) {
     if (tokenClass != null) {
       tokenType = UIMAUtil.getCasType(jCas, tokenClass);
     }

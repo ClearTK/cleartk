@@ -37,7 +37,9 @@ import org.cleartk.classifier.jar.EncodingDirectoryDataWriterFactory;
 import org.cleartk.classifier.libsvm.DefaultMultiClassLIBSVMDataWriterFactory;
 import org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory;
 import org.cleartk.classifier.mallet.DefaultMalletDataWriterFactory;
+import org.cleartk.classifier.mallet.MalletDataWriterFactory_ImplBase;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
+import org.cleartk.classifier.opennlp.MaxentDataWriterFactory_ImplBase;
 import org.cleartk.classifier.svmlight.DefaultOVASVMlightDataWriterFactory;
 import org.cleartk.classifier.viterbi.ViterbiClassifier;
 import org.cleartk.examples.ExampleComponents;
@@ -190,7 +192,7 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
             outDirectoryName);
     ConfigurationParameterFactory.addConfigurationParameter(
         dataWriter,
-        DefaultMaxentDataWriterFactory.PARAM_COMPRESS,
+        MaxentDataWriterFactory_ImplBase.PARAM_COMPRESS,
         true);
     testClassifier(dataWriter, outDirectoryName, 10);
 
@@ -251,7 +253,7 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
             outDirectoryName);
     ConfigurationParameterFactory.addConfigurationParameter(
         dataWriter,
-        DefaultMalletDataWriterFactory.PARAM_COMPRESS,
+        MalletDataWriterFactory_ImplBase.PARAM_COMPRESS,
         true);
     testClassifier(dataWriter, outDirectoryName, 10, "NaiveBayes");
 

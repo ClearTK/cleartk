@@ -30,6 +30,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import opennlp.tools.parser.AbstractBottomUpParser;
 import opennlp.tools.parser.Parse;
 import opennlp.tools.parser.ParserModel;
 import opennlp.tools.util.Span;
@@ -86,9 +87,9 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
 
   public static final String DEFAULT_PARSER_MODEL_PATH = "/models/en-parser-chunking.bin";
 
-  public static final int DEFAULT_BEAM_SIZE = Parser.defaultBeamSize;
+  public static final int DEFAULT_BEAM_SIZE = AbstractBottomUpParser.defaultBeamSize;
 
-  public static final float DEFAULT_ADVANCE_PERCENTAGE = (float) Parser.defaultAdvancePercentage;
+  public static final float DEFAULT_ADVANCE_PERCENTAGE = (float) AbstractBottomUpParser.defaultAdvancePercentage;
 
   public static final String PARAM_PARSER_MODEL_PATH = ConfigurationParameterFactory
       .createConfigurationParameterName(ParserAnnotator.class, "parserModelPath");
@@ -105,7 +106,7 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
   public static final String PARAM_ADVANCE_PERCENTAGE = ConfigurationParameterFactory
       .createConfigurationParameterName(ParserAnnotator.class, "advancePercentage");
 
-  @ConfigurationParameter(defaultValue = "" + Parser.defaultAdvancePercentage, description = "indicates \"the amount of probability mass required of advanced outcomes\".  See javadoc for opennlp.tools.parser.chunking.Parser.")
+  @ConfigurationParameter(defaultValue = "" + AbstractBottomUpParser.defaultAdvancePercentage, description = "indicates \"the amount of probability mass required of advanced outcomes\".  See javadoc for opennlp.tools.parser.chunking.Parser.")
   private float advancePercentage;
 
   public static final String PARAM_INPUT_TYPES_HELPER_CLASS_NAME = ConfigurationParameterFactory
@@ -161,7 +162,7 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
       Parse parse = new Parse(
           text,
           new Span(sentence.getBegin(), sentence.getEnd()),
-          Parser.INC_NODE,
+          AbstractBottomUpParser.INC_NODE,
           1,
           null);
 
@@ -171,7 +172,7 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
         parse.insert(new Parse(
             text,
             new Span(token.getBegin(), token.getEnd()),
-            Parser.TOK_NODE,
+            AbstractBottomUpParser.TOK_NODE,
             0,
             0));
       }
@@ -184,7 +185,7 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
 
       // if the sentence was successfully parsed, add the tree to the
       // sentence
-      if (parse.getType() == Parser.TOP_NODE) {
+      if (parse.getType() == AbstractBottomUpParser.TOP_NODE) {
         TopTreebankNode topNode = (TopTreebankNode) buildAnnotation(parse, jCas);
         topNode.addToIndexes();
       }
@@ -198,7 +199,7 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
 
   protected TreebankNode buildAnnotation(Parse p, JCas jCas) {
     TreebankNode myNode;
-    if (p.getType() == Parser.TOP_NODE) {
+    if (p.getType() == AbstractBottomUpParser.TOP_NODE) {
       TopTreebankNode topNode = new TopTreebankNode(jCas);
       topNode.setParent(null);
 
@@ -215,7 +216,7 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
     myNode.setBegin(p.getSpan().getStart());
     myNode.setEnd(p.getSpan().getEnd());
 
-    if (p.getChildCount() == 1 && p.getChildren()[0].getType() == Parser.TOK_NODE) {
+    if (p.getChildCount() == 1 && p.getChildren()[0].getType() == AbstractBottomUpParser.TOK_NODE) {
       myNode.setLeaf(true);
       myNode.setNodeValue(p.getChildren()[0].toString());
       myNode.setChildren(new FSArray(jCas, 0));
@@ -241,7 +242,7 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
       myNode.setChildren(cFSArray);
     }
 
-    if (p.getType() == Parser.TOP_NODE) {
+    if (p.getType() == AbstractBottomUpParser.TOP_NODE) {
       List<TreebankNode> tList = getTerminals(myNode);
       FSArray tfsa = new FSArray(jCas, tList.size());
       tfsa.copyFromArray(tList.toArray(new FeatureStructure[tList.size()]), 0, 0, tList.size());

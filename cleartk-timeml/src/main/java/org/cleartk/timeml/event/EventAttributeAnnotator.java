@@ -111,7 +111,7 @@ public abstract class EventAttributeAnnotator<OUTCOME_TYPE> extends CleartkAnnot
   /**
    * Helper method to work around CleartkException annoyance.
    */
-  private void processSimple(JCas jCas) throws AnalysisEngineProcessException, CleartkException {
+  private void processSimple(JCas jCas) throws CleartkException {
     for (Sentence sentence : AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
       for (Event event : AnnotationRetrieval.getAnnotations(jCas, sentence, Event.class)) {
 

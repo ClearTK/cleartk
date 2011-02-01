@@ -23,10 +23,8 @@
  */
 package org.cleartk.classifier.feature.proliferate;
 
-import java.io.IOException;
 import java.util.List;
 
-import org.apache.uima.UIMAException;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
@@ -63,13 +61,13 @@ public class FeatureProliferatorTest extends DefaultTestBase {
   }
 
   @Test
-  public void testLowerCaseProliferator() throws UIMAException, IOException {
+  public void testLowerCaseProliferator() {
     this.testOne(new LowerCaseProliferator(), null, "HI", "LowerCase", "hi");
     this.testOne(new LowerCaseProliferator("TestName"), "OrigName", "", "TestName_OrigName", "");
   }
 
   @Test
-  public void testCapitalTypeProliferator() throws UIMAException, IOException {
+  public void testCapitalTypeProliferator() {
     FeatureProliferator caps = new CapitalTypeProliferator();
     FeatureProliferator foo = new CapitalTypeProliferator("Foo");
 
@@ -95,7 +93,7 @@ public class FeatureProliferatorTest extends DefaultTestBase {
   }
 
   @Test
-  public void testNumericTypeProliferator() throws UIMAException, IOException {
+  public void testNumericTypeProliferator() {
     FeatureProliferator nums = new NumericTypeProliferator();
     FeatureProliferator bar = new NumericTypeProliferator("BAR");
 
@@ -129,7 +127,7 @@ public class FeatureProliferatorTest extends DefaultTestBase {
   }
 
   @Test
-  public void testCharacterNGramProliferator() throws UIMAException, IOException {
+  public void testCharacterNGramProliferator() {
     FeatureProliferator triSuff = new CharacterNGramProliferator(
         CharacterNGramProliferator.RIGHT_TO_LEFT,
         0,
@@ -186,7 +184,7 @@ public class FeatureProliferatorTest extends DefaultTestBase {
   }
 
   @Test
-  public void testProliferatingExtractor() throws UIMAException, IOException, CleartkException {
+  public void testProliferatingExtractor() throws CleartkException {
     jCas.setDocumentText("Hello World 2008!");
     Token hello = new Token(jCas, 0, 5);
     Token year = new Token(jCas, 12, 16);
@@ -229,7 +227,7 @@ public class FeatureProliferatorTest extends DefaultTestBase {
   }
 
   @Test
-  public void testDeprecatedLowerCaseProliferator() throws UIMAException, IOException {
+  public void testDeprecatedLowerCaseProliferator() {
     Feature feature = new Feature("OrigName", "HI");
 
     FeatureProliferator proliferator = new LowerCaseProliferator("NewName");
@@ -246,7 +244,7 @@ public class FeatureProliferatorTest extends DefaultTestBase {
   }
 
   @Test
-  public void testDeprecatedCapitalTypeProliferator() throws UIMAException, IOException {
+  public void testDeprecatedCapitalTypeProliferator() {
     FeatureProliferator proliferator = new CapitalTypeProliferator("NewName");
     Feature feature = new Feature("OrigName", "HI");
     List<Feature> caseTypeFeatures = proliferator.proliferate(feature);
@@ -287,7 +285,7 @@ public class FeatureProliferatorTest extends DefaultTestBase {
   }
 
   @Test
-  public void testDeprecatedNumericTypeProliferator() throws UIMAException, IOException {
+  public void testDeprecatedNumericTypeProliferator() {
     FeatureProliferator proliferator = new NumericTypeProliferator("NumericName");
 
     Feature feature = new Feature("OrigName", "HI");
@@ -365,7 +363,7 @@ public class FeatureProliferatorTest extends DefaultTestBase {
   }
 
   @Test
-  public void testDeprecatedCharacterNGramProliferator() throws UIMAException, IOException {
+  public void testDeprecatedCharacterNGramProliferator() {
     FeatureProliferator proliferator = new CharacterNGramProliferator(
         "CharNGram",
         CharacterNGramProliferator.RIGHT_TO_LEFT,

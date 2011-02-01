@@ -66,7 +66,7 @@ public class GrmmDataWriterTest extends DefaultTestBase {
       }
     }
 
-    public void processSimple(JCas cas) throws AnalysisEngineProcessException, CleartkException {
+    public void processSimple(JCas cas) throws CleartkException {
       List<Instance<String[]>> instances = new ArrayList<Instance<String[]>>();
       List<Feature> features = Arrays.asList(
           new Feature("pos", "NN"),

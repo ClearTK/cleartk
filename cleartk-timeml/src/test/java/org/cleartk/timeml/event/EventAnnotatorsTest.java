@@ -24,7 +24,6 @@
 package org.cleartk.timeml.event;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -52,7 +51,7 @@ import org.junit.Test;
 public class EventAnnotatorsTest extends TimeMLTestBase {
 
   @Test
-  public void testModel() throws UIMAException, IOException {
+  public void testModel() throws UIMAException {
     this.tokenBuilder.buildTokens(
         this.jCas,
         "He was thinking he would not have eaten yesterday.",

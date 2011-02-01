@@ -94,11 +94,11 @@ public class CompressedStringBidiMap extends DualHashBidiMap<String, String> imp
 
   }
 
-  public void write(Writer writer) throws IOException {
+  public void write(Writer writer) {
     write(writer, false);
   }
 
-  public void write(Writer writer, boolean sortOutput) throws IOException {
+  public void write(Writer writer, boolean sortOutput) {
     PrintWriter out = new PrintWriter(new BufferedWriter(writer));
     out.println(count);
     if (sortOutput) {

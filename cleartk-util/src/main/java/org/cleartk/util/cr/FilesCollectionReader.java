@@ -262,10 +262,7 @@ public class FilesCollectionReader extends JCasCollectionReader_ImplBase {
       directoryFilter = new RegexFileFilter("^[^\\.]*$");
     }
 
-    return (Iterator<File>) org.apache.commons.io.FileUtils.iterateFiles(
-        rootFile,
-        fileFilter,
-        directoryFilter);
+    return org.apache.commons.io.FileUtils.iterateFiles(rootFile, fileFilter, directoryFilter);
 
   }
 

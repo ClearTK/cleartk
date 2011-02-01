@@ -32,8 +32,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.uima.UIMAException;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.TypePathFeature;
@@ -50,8 +48,7 @@ import org.junit.Test;
 public class NameNumberFeatureEncoderTest extends DefaultTestBase {
 
   @Test
-  public void testEncodeCompress() throws CleartkException, ResourceInitializationException,
-      IOException {
+  public void testEncodeCompress() throws CleartkException, IOException {
 
     NameNumberFeaturesEncoder nnfe = getDefaultEncoder(true, true);
 
@@ -85,7 +82,7 @@ public class NameNumberFeatureEncoderTest extends DefaultTestBase {
   }
 
   @Test
-  public void testOnTypePathFeatures() throws ResourceInitializationException {
+  public void testOnTypePathFeatures() {
     NameNumberFeaturesEncoder nnfe = getDefaultEncoder(false, false);
 
     testNN("_hello", 1.0f, new Feature("", "hello"), nnfe);
@@ -124,7 +121,7 @@ public class NameNumberFeatureEncoderTest extends DefaultTestBase {
   }
 
   @Test
-  public void testOnWindowFeatures() throws UIMAException, IOException {
+  public void testOnWindowFeatures() {
     NameNumberFeaturesEncoder nnfe = getDefaultEncoder(false, false);
 
     testNN("Ccccccc_aaaaaa", 1.0f, new Feature("Ccccccc", "aaaaaa"), nnfe);

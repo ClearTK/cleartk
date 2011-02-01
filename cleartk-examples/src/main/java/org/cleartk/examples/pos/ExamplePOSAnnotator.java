@@ -47,6 +47,7 @@ import org.cleartk.classifier.feature.proliferate.LowerCaseProliferator;
 import org.cleartk.classifier.feature.proliferate.NumericTypeProliferator;
 import org.cleartk.classifier.feature.proliferate.ProliferatingExtractor;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
+import org.cleartk.classifier.opennlp.MaxentDataWriterFactory_ImplBase;
 import org.cleartk.examples.ExampleComponents;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
@@ -182,7 +183,7 @@ public class ExamplePOSAnnotator extends CleartkSequentialAnnotator<String> {
         outputDirectory);
     ConfigurationParameterFactory.addConfigurationParameter(
         aed,
-        DefaultMaxentDataWriterFactory.PARAM_COMPRESS,
+        MaxentDataWriterFactory_ImplBase.PARAM_COMPRESS,
         true);
     return aed;
   }

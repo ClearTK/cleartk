@@ -174,7 +174,7 @@ public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
     }
   }
 
-  public void processSimple(JCas jCas) throws AnalysisEngineProcessException, CleartkException {
+  public void processSimple(JCas jCas) throws CleartkException {
     int docEnd = jCas.getDocumentText().length();
 
     // collect TLINKs if necessary

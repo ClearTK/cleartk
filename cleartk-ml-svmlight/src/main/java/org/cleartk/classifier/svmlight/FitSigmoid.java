@@ -81,7 +81,7 @@ public class FitSigmoid {
 
   }
 
-  private static TrainingInstance parseTI(String line) throws IOException, CleartkException {
+  private static TrainingInstance parseTI(String line) throws CleartkException {
     String[] fields = line.split(" ");
 
     boolean label = fields[0].trim().equals("+1");

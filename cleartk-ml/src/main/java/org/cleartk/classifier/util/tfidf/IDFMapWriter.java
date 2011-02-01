@@ -49,7 +49,7 @@ import org.cleartk.classifier.feature.FeatureCollection;
  */
 public class IDFMapWriter<OUTCOME_TYPE> implements DataWriter<OUTCOME_TYPE> {
 
-  public IDFMapWriter(File outputDirectory) throws IOException {
+  public IDFMapWriter(File outputDirectory) {
     this.outputDirectory = outputDirectory;
   }
 

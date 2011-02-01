@@ -23,8 +23,6 @@
  */
 package org.cleartk.srl.conll2005;
 
-import java.io.IOException;
-
 import org.apache.uima.UIMAException;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -44,7 +42,7 @@ public class Conll2005GoldReaderTest extends SrlTestBase {
   private final String oneSentencePath = "src/test/resources/data/propbank-1.0/README";
 
   @Test
-  public void testDescriptor() throws UIMAException, IOException {
+  public void testDescriptor() throws UIMAException {
     try {
       CollectionReaderFactory.createCollectionReader(
           Conll2005GoldReader.class,

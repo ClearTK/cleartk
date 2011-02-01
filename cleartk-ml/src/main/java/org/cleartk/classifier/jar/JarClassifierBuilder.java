@@ -172,6 +172,8 @@ public abstract class JarClassifierBuilder<CLASSIFIER_TYPE> {
    *          The directory where the classifier model was trained.
    * @param modelStream
    *          The jar where the classifier is being written.
+   * @throws IOException
+   *           For errors reading the directory or writing to the jar.
    */
   protected void packageClassifier(File dir, JarOutputStream modelStream) throws IOException {
     // Used by subclasses
@@ -232,8 +234,9 @@ public abstract class JarClassifierBuilder<CLASSIFIER_TYPE> {
    * instance variables in preparation for a call to {@link #newClassifier()}.
    * 
    * @param modelStream
-   *          The
+   *          The classifier jar
    * @throws IOException
+   *           For errors reading from the jar.
    */
   protected void unpackageClassifier(JarInputStream modelStream) throws IOException {
     // Used by subclasses

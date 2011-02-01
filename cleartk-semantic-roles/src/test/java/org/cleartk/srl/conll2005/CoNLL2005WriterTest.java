@@ -24,7 +24,6 @@
 package org.cleartk.srl.conll2005;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
@@ -42,7 +41,7 @@ import org.uimafit.factory.AnalysisEngineFactory;
 public class CoNLL2005WriterTest extends SrlTestBase {
 
   @Test
-  public void testCoNLL2005WriterDescriptor() throws UIMAException, IOException {
+  public void testCoNLL2005WriterDescriptor() throws UIMAException {
     try {
       AnalysisEngineFactory.createPrimitive(Conll2005Writer.class, typeSystemDescription);
       Assert.fail("expected exception without output file parameter");

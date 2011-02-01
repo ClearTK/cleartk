@@ -491,6 +491,9 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
     NamedEntityAnnotation currentAnnotation = null;
 
     private static class NamedEntityAnnotation {
+      public NamedEntityAnnotation() {
+      }
+
       int begin;
 
       int end;

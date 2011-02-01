@@ -118,7 +118,7 @@ public abstract class ChunkLabeler_ImplBase implements ChunkLabeler, Initializab
         .getAnnotationIndex(chunkAnnotationType)
         .subiterator(sequence);
     while (chunkAnnotations.hasNext()) {
-      Annotation chunkAnnotation = (Annotation) chunkAnnotations.next();
+      Annotation chunkAnnotation = chunkAnnotations.next();
       String labelBase = getChunkLabel(jCas, chunkAnnotation);
       String label = labelBase;
 
@@ -153,7 +153,7 @@ public abstract class ChunkLabeler_ImplBase implements ChunkLabeler, Initializab
     List<Annotation> currentLabeledAnnotations = new ArrayList<Annotation>();
 
     while (labeledAnnotations.hasNext()) {
-      Annotation labeledAnnotation = (Annotation) labeledAnnotations.next();
+      Annotation labeledAnnotation = labeledAnnotations.next();
       String label = getLabel(labeledAnnotation);
       if (label == null)
         label = OUTSIDE_LABEL;

@@ -54,7 +54,7 @@ import org.uimafit.factory.UimaContextFactory;
 public class JarDataWriterTest extends DefaultTestBase {
 
   @Test
-  public void testManifest() throws UIMAException, IOException, CleartkException {
+  public void testManifest() throws IOException, CleartkException {
     String expectedManifest = ("Manifest-Version: 1.0\n"
         + "classifierBuilderClass: org.cleartk.classifier.test.StringTestClassifi\n" + " erBuilder");
 

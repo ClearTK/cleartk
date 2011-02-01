@@ -80,7 +80,7 @@ public class ViterbiDataWriterTest extends DefaultTestBase {
       }
     }
 
-    public void processSimple(JCas jCas) throws AnalysisEngineProcessException, CleartkException {
+    public void processSimple(JCas jCas) throws CleartkException {
       for (Sentence sentence : AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
         List<Instance<String>> instances = new ArrayList<Instance<String>>();
         List<Token> tokens = AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class);

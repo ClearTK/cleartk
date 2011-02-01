@@ -158,6 +158,9 @@ public class LIBSVMTest extends DefaultTestBase {
   // }
 
   private static class BinaryAnnotator extends CleartkAnnotator<Boolean> {
+    public BinaryAnnotator() {
+    }
+
     @Override
     public void process(JCas aJCas) throws AnalysisEngineProcessException {
       for (Instance<Boolean> instance : ExampleInstanceFactory.generateBooleanInstances(1000)) {
@@ -171,6 +174,9 @@ public class LIBSVMTest extends DefaultTestBase {
   }
 
   private static class StringAnnotator extends CleartkAnnotator<String> {
+    public StringAnnotator() {
+    }
+
     @Override
     public void process(JCas aJCas) throws AnalysisEngineProcessException {
       for (Instance<String> instance : ExampleInstanceFactory.generateStringInstances(1000)) {

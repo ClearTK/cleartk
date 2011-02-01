@@ -179,6 +179,9 @@ public class RunSVMlightTest extends DefaultTestBase {
   }
 
   private static class EmptyAnnotator<T> extends CleartkAnnotator<T> {
+    public EmptyAnnotator() {
+    }
+
     @Override
     public void process(JCas aJCas) throws AnalysisEngineProcessException {
     }

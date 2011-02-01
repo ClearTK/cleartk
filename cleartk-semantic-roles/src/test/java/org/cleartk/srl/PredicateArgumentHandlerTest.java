@@ -35,7 +35,6 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkAnnotatorDescriptionFactory;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
@@ -60,7 +59,7 @@ import org.uimafit.factory.AnalysisEngineFactory;
 public class PredicateArgumentHandlerTest extends SrlTestBase {
 
   @Test
-  public void testArgumentAnnotationNoPredicate() throws UIMAException, CleartkException {
+  public void testArgumentAnnotationNoPredicate() throws UIMAException {
     // create the document
     AnalysisEngine engine = AnalysisEngineFactory
         .createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
@@ -79,7 +78,7 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
   }
 
   @Test
-  public void testArgumentIdentificationNoPredicate() throws UIMAException, CleartkException {
+  public void testArgumentIdentificationNoPredicate() throws UIMAException {
     // create the document
     AnalysisEngine engine = AnalysisEngineFactory
         .createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
@@ -98,7 +97,7 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
   }
 
   @Test
-  public void testArgumentClassificationNoPredicate() throws UIMAException, CleartkException {
+  public void testArgumentClassificationNoPredicate() throws UIMAException {
     // create the document
     AnalysisEngine engine = AnalysisEngineFactory
         .createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
@@ -117,7 +116,7 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
   }
 
   @Test
-  public void testArgumentAnnotationNoTree() throws UIMAException, CleartkException {
+  public void testArgumentAnnotationNoTree() throws UIMAException {
     // create the document
     AnalysisEngine engine = AnalysisEngineFactory
         .createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
@@ -140,7 +139,7 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
   }
 
   @Test
-  public void testArgumentIdentificationNoTree() throws UIMAException, CleartkException {
+  public void testArgumentIdentificationNoTree() throws UIMAException {
     // create the document
     AnalysisEngine engine = AnalysisEngineFactory
         .createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
@@ -163,7 +162,7 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
   }
 
   @Test
-  public void testArgumentClassificationNoTree() throws UIMAException, CleartkException {
+  public void testArgumentClassificationNoTree() throws UIMAException {
     // create the document
     AnalysisEngine engine = AnalysisEngineFactory
         .createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
@@ -186,7 +185,7 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
   }
 
   @Test
-  public void testPredicateAnnotation() throws UIMAException, CleartkException {
+  public void testPredicateAnnotation() throws UIMAException {
     // create the document
     AnalysisEngine engine = AnalysisEngineFactory
         .createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(

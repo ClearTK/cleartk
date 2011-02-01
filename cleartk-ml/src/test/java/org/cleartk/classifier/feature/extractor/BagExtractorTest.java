@@ -162,7 +162,7 @@ public class BagExtractorTest extends DefaultTestBase {
       BagExtractor bagExtractor,
       String bagNameString,
       String featuresNameString,
-      List<List<String>> expectedValuesLists) throws UIMAException, IOException, CleartkException {
+      List<List<String>> expectedValuesLists) throws CleartkException {
     String nameString = Feature.createName(bagNameString, featuresNameString);
 
     // run a BagExtractor on each document

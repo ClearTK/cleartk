@@ -36,7 +36,6 @@ import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Chunk;
 import org.cleartk.type.test.NamedEntityMention;
@@ -594,7 +593,7 @@ public class AnnotationRetrievalTest extends DefaultTestBase {
   }
 
   @Test
-  public void testGetAnnotationIndex() throws UIMAException, IOException {
+  public void testGetAnnotationIndex() throws UIMAException {
     // original joke by Philip Ogren
     String text = "Police Officer: Put down that gun!\n"
         + "Hooligan (turning toward his gun): Stupid gun!";
@@ -606,7 +605,7 @@ public class AnnotationRetrievalTest extends DefaultTestBase {
     Assert.assertEquals(13, tokenIndex.size());
     FSIterator<Annotation> iterator = tokenIndex.iterator();
     while (iterator.hasNext()) {
-      Token token = (Token) iterator.next();
+      Annotation token = iterator.next();
       Assert.assertTrue(token instanceof Token);
     }
 
@@ -618,7 +617,7 @@ public class AnnotationRetrievalTest extends DefaultTestBase {
   }
 
   @Test
-  public void testGetAtIndex() throws ResourceInitializationException {
+  public void testGetAtIndex() {
     // original joke by Philip Ogren
     String text = "Police Officer: Put down that gun!\n"
         + "Hooligan (turning toward his gun): Stupid gun!";

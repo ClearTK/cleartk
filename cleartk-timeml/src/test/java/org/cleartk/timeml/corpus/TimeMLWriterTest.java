@@ -103,7 +103,7 @@ public class TimeMLWriterTest extends TimeMLTestBase {
   }
 
   @Test
-  public void testDescriptor() throws UIMAException, IOException {
+  public void testDescriptor() throws UIMAException {
     try {
       AnalysisEngineFactory.createPrimitive(TimeMLWriter.class, typeSystemDescription);
       Assert.fail("expected failure with no OutputDirectory specified");

@@ -24,14 +24,12 @@
 package org.cleartk.examples.pos;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.util.FileUtils;
 import org.cleartk.examples.ExampleComponents;
 import org.cleartk.examples.ExamplesTestBase;
-import org.cleartk.examples.pos.ExamplePOSPlainTextWriter;
 import org.cleartk.util.ViewURIUtil;
 import org.junit.After;
 import org.junit.Assert;
@@ -87,7 +85,7 @@ public class ExamplePOSPlainTextWriterTest extends ExamplesTestBase {
   }
 
   @Test
-  public void testDescriptor() throws UIMAException, IOException {
+  public void testDescriptor() throws UIMAException {
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         ExamplePOSPlainTextWriter.class,
         ExampleComponents.TYPE_SYSTEM_DESCRIPTION);

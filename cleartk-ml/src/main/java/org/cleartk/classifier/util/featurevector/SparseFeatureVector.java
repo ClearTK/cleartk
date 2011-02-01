@@ -88,7 +88,7 @@ public class SparseFeatureVector extends FeatureVector {
 
     SortedMap<Integer, Double> itValues;
 
-    private Iterator(SortedMap<Integer, Double> values) {
+    Iterator(SortedMap<Integer, Double> values) {
       this.itValues = values;
       this.subIterator = values.entrySet().iterator();
     }

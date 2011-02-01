@@ -23,8 +23,6 @@
  */
 package org.cleartk.srl.conll2005;
 
-import java.io.IOException;
-
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.cleartk.srl.SrlTestBase;
@@ -39,7 +37,7 @@ import org.uimafit.factory.AnalysisEngineFactory;
 public class Conll2005GoldAnnotatorTest extends SrlTestBase {
 
   @Test
-  public void testDescriptor() throws UIMAException, IOException {
+  public void testDescriptor() throws UIMAException {
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         Conll2005GoldAnnotator.class,
         typeSystemDescription,

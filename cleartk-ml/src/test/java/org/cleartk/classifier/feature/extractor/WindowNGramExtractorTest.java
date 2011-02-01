@@ -25,8 +25,6 @@ package org.cleartk.classifier.feature.extractor;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.IOException;
-
 import org.apache.uima.UIMAException;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
@@ -48,7 +46,7 @@ import org.uimafit.util.JCasUtil;
 public class WindowNGramExtractorTest extends DefaultTestBase {
 
   @Test
-  public void testLeftGrams() throws IOException, UIMAException, CleartkException {
+  public void testLeftGrams() throws UIMAException, CleartkException {
     WindowNGramExtractor extractor = new WindowNGramExtractor(
         Token.class,
         new SpannedTextExtractor(),
@@ -197,7 +195,7 @@ public class WindowNGramExtractorTest extends DefaultTestBase {
   }
 
   @Test
-  public void testRightGrams() throws IOException, UIMAException, CleartkException {
+  public void testRightGrams() throws UIMAException, CleartkException {
     WindowNGramExtractor extractor = new WindowNGramExtractor(
         Token.class,
         new SpannedTextExtractor(),

@@ -25,8 +25,6 @@ package org.cleartk.syntax.constituent;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.IOException;
-
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
@@ -100,7 +98,7 @@ public class TreebankGoldReaderAndAnnotatorTest extends SyntaxTestBase {
   }
 
   @Test
-  public void testAED() throws UIMAException, IOException {
+  public void testAED() throws UIMAException {
     AnalysisEngineDescription description = AnalysisEngineFactory.createPrimitiveDescription(
         TreebankGoldAnnotator.class,
         typeSystemDescription);

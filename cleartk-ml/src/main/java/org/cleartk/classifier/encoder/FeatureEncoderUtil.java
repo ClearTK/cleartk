@@ -23,6 +23,7 @@
  */
 package org.cleartk.classifier.encoder;
 
+import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 
 /**
@@ -41,7 +42,7 @@ public class FeatureEncoderUtil {
     StringBuffer escapedBuffer = new StringBuffer();
     StringCharacterIterator it = new StringCharacterIterator(source);
 
-    for (char c = it.first(); c != StringCharacterIterator.DONE; c = it.next()) {
+    for (char c = it.first(); c != CharacterIterator.DONE; c = it.next()) {
       /*
        * 92 is \ 37 is % 33 is A 126 is ~
        */

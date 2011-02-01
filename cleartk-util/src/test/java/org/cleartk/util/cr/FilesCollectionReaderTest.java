@@ -387,7 +387,7 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
   }
 
   @Test
-  public void testDescriptor() throws UIMAException, IOException {
+  public void testDescriptor() throws UIMAException {
     try {
       CollectionReaderFactory.createCollectionReader(
           FilesCollectionReader.class,

@@ -101,7 +101,7 @@ public class ViterbiTest {
   }
 
   @Test
-  public void test1b() throws ResourceInitializationException, IOException, CleartkException {
+  public void test1b() throws ResourceInitializationException, CleartkException {
     List<List<Feature>> features = new ArrayList<List<Feature>>();
     features.add(createFeatures("0"));
     features.add(createFeatures("1"));
@@ -266,6 +266,9 @@ public class ViterbiTest {
 
   private class Test2Classifier implements Classifier<String> {
 
+    public Test2Classifier() {
+    }
+
     public String classify(List<Feature> features) {
       return null;
     }
@@ -343,7 +346,7 @@ public class ViterbiTest {
 
   public static class TestViterbiClassifier extends ViterbiClassifier<String> {
 
-    public TestViterbiClassifier() throws IOException {
+    public TestViterbiClassifier() {
       super(null, null);
     }
 

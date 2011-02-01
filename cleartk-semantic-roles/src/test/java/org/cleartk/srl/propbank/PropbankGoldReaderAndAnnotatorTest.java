@@ -25,8 +25,6 @@ package org.cleartk.srl.propbank;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.io.IOException;
-
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;
@@ -45,7 +43,7 @@ import org.uimafit.factory.CollectionReaderFactory;
 public class PropbankGoldReaderAndAnnotatorTest extends SrlTestBase {
 
   @Test
-  public void testReaderDescriptor() throws UIMAException, IOException {
+  public void testReaderDescriptor() throws UIMAException {
     CollectionReader reader;
 
     ResourceInitializationException rie = null;
@@ -107,7 +105,7 @@ public class PropbankGoldReaderAndAnnotatorTest extends SrlTestBase {
   }
 
   @Test
-  public void testAnnotatorDescriptor() throws UIMAException, IOException {
+  public void testAnnotatorDescriptor() throws UIMAException {
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         PropbankGoldAnnotator.class,
         typeSystemDescription);

@@ -72,7 +72,7 @@ public class AnnotationRetrieval {
         cursor.moveToPrevious();
     }
     if (cursor.isValid()) {
-      Annotation relativeAnnotation = (Annotation) cursor.get();
+      Annotation relativeAnnotation = cursor.get();
 
       T returnValue = ReflectionUtil.<Class<T>> uncheckedCast(annotation.getClass()).cast(
           relativeAnnotation);
@@ -139,8 +139,7 @@ public class AnnotationRetrieval {
     if (!cursor.isValid())
       cursor.moveToLast();
 
-    while (cursor.isValid()
-        && ((Annotation) cursor.get()).getBegin() >= windowAnnotation.getBegin()) {
+    while (cursor.isValid() && cursor.get().getBegin() >= windowAnnotation.getBegin()) {
       cursor.moveToPrevious();
     }
 
@@ -172,8 +171,8 @@ public class AnnotationRetrieval {
     FSIterator<Annotation> cursor = initializeWindowCursor(jCas, windowAnnotation);
 
     T currentBestGuess = null;
-    while (cursor.isValid() && ((Annotation) cursor.get()).getBegin() <= windowAnnotation.getEnd()) {
-      Annotation annotation = (Annotation) cursor.get();
+    while (cursor.isValid() && cursor.get().getBegin() <= windowAnnotation.getEnd()) {
+      Annotation annotation = cursor.get();
 
       if (cls.isInstance(annotation) && annotation.getEnd() <= windowAnnotation.getEnd())
         currentBestGuess = cls.cast(annotation);
@@ -202,8 +201,8 @@ public class AnnotationRetrieval {
 
     // I left in the while loop because the first annotation we see might
     // not be the right class
-    while (cursor.isValid() && ((Annotation) cursor.get()).getBegin() <= windowAnnotation.getEnd()) {
-      Annotation annotation = (Annotation) cursor.get();
+    while (cursor.isValid() && cursor.get().getBegin() <= windowAnnotation.getEnd()) {
+      Annotation annotation = cursor.get();
       if (cls.isInstance(annotation) && annotation.getEnd() <= windowAnnotation.getEnd())
         return cls.cast(annotation);
       cursor.moveToNext();
@@ -225,7 +224,7 @@ public class AnnotationRetrieval {
     cursor.moveToFirst();
 
     while (cursor.isValid()) {
-      Annotation annotation = (Annotation) cursor.get();
+      Annotation annotation = cursor.get();
       if (cls.isInstance(annotation))
         return cls.cast(annotation);
       cursor.moveToNext();
@@ -251,7 +250,7 @@ public class AnnotationRetrieval {
     FSIterator<Annotation> cursor = jCas.getAnnotationIndex().iterator();
 
     cursor.moveTo(windowAnnotation);
-    Annotation cursorAnnotation = (Annotation) cursor.get();
+    Annotation cursorAnnotation = cursor.get();
     if (cursorAnnotation.getBegin() != windowAnnotation.getBegin()
         || cursorAnnotation.getEnd() != windowAnnotation.getEnd())
       return null;
@@ -260,17 +259,17 @@ public class AnnotationRetrieval {
         && cursorAnnotation.getEnd() == windowAnnotation.getEnd()) {
       cursor.moveToPrevious();
       if (cursor.isValid())
-        cursorAnnotation = (Annotation) cursor.get();
+        cursorAnnotation = cursor.get();
       else
         cursorAnnotation = null;
     }
 
     if (cursor.isValid()) {
       cursor.moveToNext();
-      cursorAnnotation = (Annotation) cursor.get();
+      cursorAnnotation = cursor.get();
     } else {
       cursor.moveToFirst();
-      cursorAnnotation = (Annotation) cursor.get();
+      cursorAnnotation = cursor.get();
     }
 
     while (cursor.isValid() && cursorAnnotation.getBegin() == windowAnnotation.getBegin()
@@ -279,7 +278,7 @@ public class AnnotationRetrieval {
         return cls.cast(cursorAnnotation);
       cursor.moveToNext();
       if (cursor.isValid())
-        cursorAnnotation = (Annotation) cursor.get();
+        cursorAnnotation = cursor.get();
       else
         cursorAnnotation = null;
     }
@@ -351,8 +350,8 @@ public class AnnotationRetrieval {
     FSIterator<Annotation> cursor = initializeWindowCursor(jCas, windowAnnotation);
 
     List<T> annotations = new ArrayList<T>();
-    while (cursor.isValid() && ((Annotation) cursor.get()).getBegin() <= windowAnnotation.getEnd()) {
-      Annotation annotation = (Annotation) cursor.get();
+    while (cursor.isValid() && cursor.get().getBegin() <= windowAnnotation.getEnd()) {
+      Annotation annotation = cursor.get();
 
       if (cls.isInstance(annotation) && annotation.getEnd() <= windowAnnotation.getEnd())
         annotations.add(cls.cast(annotation));
@@ -372,9 +371,8 @@ public class AnnotationRetrieval {
     else {
       FSIterator<Annotation> cursor = initializeWindowCursor(jCas, windowAnnotation);
       List<T> annotations = new ArrayList<T>();
-      while (cursor.isValid()
-          && ((Annotation) cursor.get()).getBegin() <= windowAnnotation.getEnd()) {
-        Annotation annotation = (Annotation) cursor.get();
+      while (cursor.isValid() && cursor.get().getBegin() <= windowAnnotation.getEnd()) {
+        Annotation annotation = cursor.get();
 
         if (cls.isInstance(annotation) && annotation.getBegin() == windowAnnotation.getBegin()
             && annotation.getEnd() == windowAnnotation.getEnd())
@@ -496,7 +494,7 @@ public class AnnotationRetrieval {
       // if we have moved to an annotation that does not be begin at the same index as the focus
       // annotation,
       // then move to previous.
-      Annotation nextAnnotation = (Annotation) cursor.get();
+      Annotation nextAnnotation = cursor.get();
       if (nextAnnotation.getBegin() != focusAnnotation.getBegin()) {
         cursor.moveToPrevious();
         break;
@@ -504,7 +502,7 @@ public class AnnotationRetrieval {
     }
 
     while (cursor.isValid()) {
-      Annotation annotation = (Annotation) cursor.get();
+      Annotation annotation = cursor.get();
       if (exclusiveContain) {
         if (cls.isInstance(annotation) && annotation.getBegin() <= focusAnnotation.getBegin()
             && annotation.getEnd() >= focusAnnotation.getEnd()
@@ -648,7 +646,7 @@ public class AnnotationRetrieval {
         if (adjacentBefore) {
           while (cursor.isValid()) {
             cursor.moveToPrevious();
-            Annotation annotation = (Annotation) cursor.get();
+            Annotation annotation = cursor.get();
             if (adjacentClass.isInstance(annotation)
                 && annotation.getEnd() <= focusAnnotation.getBegin())
               return adjacentClass.cast(annotation);
@@ -656,7 +654,7 @@ public class AnnotationRetrieval {
         } else {
           while (cursor.isValid()) {
             cursor.moveToNext();
-            Annotation annotation = (Annotation) cursor.get();
+            Annotation annotation = cursor.get();
             if (adjacentClass.isInstance(annotation)
                 && annotation.getBegin() >= focusAnnotation.getEnd())
               return adjacentClass.cast(annotation);

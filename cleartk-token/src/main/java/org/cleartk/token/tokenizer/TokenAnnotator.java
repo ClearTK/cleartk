@@ -115,7 +115,7 @@ public class TokenAnnotator extends JCasAnnotator_ImplBase {
     }
   }
 
-  private void initializeTypes(JCas jCas) throws AnalysisEngineProcessException {
+  private void initializeTypes(JCas jCas) {
     if (windowClass != null) {
       windowType = UIMAUtil.getCasType(jCas, windowClass);
     }
@@ -129,7 +129,7 @@ public class TokenAnnotator extends JCasAnnotator_ImplBase {
       if (windowType != null) {
         FSIterator<Annotation> windows = jCas.getAnnotationIndex(windowType).iterator();
         while (windows.hasNext()) {
-          Annotation window = (Annotation) windows.next();
+          Annotation window = windows.next();
           List<Token> pojoTokens = tokenizer.getTokens(window.getCoveredText());
           createTokens(pojoTokens, window.getBegin(), jCas);
         }

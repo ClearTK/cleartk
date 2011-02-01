@@ -60,7 +60,7 @@ public class ChunkTokenizerLabeler extends DefaultChunkLabeler {
         .getAnnotationIndex(chunkAnnotationType)
         .iterator();
     while (chunkAnnotations.hasNext()) {
-      Annotation chunkAnnotation = (Annotation) chunkAnnotations.next();
+      Annotation chunkAnnotation = chunkAnnotations.next();
       String label = getChunkLabel(jCas, chunkAnnotation);
 
       List<? extends Annotation> labeledAnnotations = AnnotationRetrieval.getAnnotations(

@@ -258,7 +258,7 @@ public class TokenizerAndTokenAnnotatorTest extends TokenTestBase {
   }
 
   @Test
-  public void testDescriptor() throws UIMAException, IOException {
+  public void testDescriptor() throws UIMAException {
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         TokenAnnotator.class,
         typeSystemDescription);

@@ -129,7 +129,7 @@ public class CleartkAnnotatorTest extends DefaultTestBase {
   }
 
   @Test
-  public void testDescriptor() throws UIMAException, IOException {
+  public void testDescriptor() throws UIMAException {
     try {
       AnalysisEngineFactory.createPrimitive(
           StringTestAnnotator.class,

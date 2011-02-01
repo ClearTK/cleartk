@@ -49,7 +49,7 @@ import org.junit.Test;
 public class HeadWordExtractorTest extends SyntaxTestBase {
 
   @Test
-  public void testNoTreebankNode() throws UIMAException, CleartkException {
+  public void testNoTreebankNode() throws CleartkException {
     HeadWordExtractor extractor = new HeadWordExtractor(null);
     jCas.setDocumentText("foo");
     Token token = new Token(jCas, 0, 3);
@@ -59,7 +59,7 @@ public class HeadWordExtractorTest extends SyntaxTestBase {
   }
 
   @Test
-  public void testNoTokens() throws UIMAException, CleartkException {
+  public void testNoTokens() throws CleartkException {
     HeadWordExtractor extractor = new HeadWordExtractor(new SpannedTextExtractor(), true);
     jCas.setDocumentText("foo");
     TreebankNode node = TreebankTestsUtil.newNode(jCas, 0, 3, "NN");
@@ -68,7 +68,7 @@ public class HeadWordExtractorTest extends SyntaxTestBase {
   }
 
   @Test
-  public void testNoNodeTypes() throws UIMAException, CleartkException {
+  public void testNoNodeTypes() {
     try {
       HeadWordExtractor extractor = new HeadWordExtractor(null);
       jCas.setDocumentText("foo");

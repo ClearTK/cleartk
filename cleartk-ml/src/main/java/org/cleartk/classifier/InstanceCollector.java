@@ -101,7 +101,7 @@ public class InstanceCollector<T> implements DataWriter<T>, SequentialDataWriter
     }
   }
 
-  private static <T> List<Instance<T>> collectInstances(
+  static <T> List<Instance<T>> collectInstances(
       AnalysisEngine engine,
       JCas jCas,
       InstanceCollector<T> collector) throws AnalysisEngineProcessException {

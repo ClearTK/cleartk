@@ -109,6 +109,9 @@ public class CountsExtractor implements SimpleFeatureExtractor {
   }
 
   private static class FeatureName {
+    public FeatureName() {
+    }
+
     public void setFeatureName(String f) {
       if (featureName != null && !featureName.equals(f))
         throw new CleartkRuntimeException(

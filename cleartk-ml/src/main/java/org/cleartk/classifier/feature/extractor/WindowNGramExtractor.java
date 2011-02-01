@@ -184,7 +184,7 @@ public class WindowNGramExtractor {
       // here.
       if (outOfBoundsDistance == 0 && startAnnotation != null
           && featureAnnotationIterator.isValid()) {
-        Annotation featureAnnotation = (Annotation) featureAnnotationIterator.get();
+        Annotation featureAnnotation = featureAnnotationIterator.get();
         if (isWithinBoundaries(featureAnnotation, focusAnnotation, ngramAnnotation)) {
           if (i >= start) {
             Feature ngrammedFeature = extactNGrammedFeature(jCas, i, featureAnnotation);

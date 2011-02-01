@@ -25,7 +25,6 @@ package org.cleartk.classifier.encoder.features;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -98,8 +97,6 @@ public class NameNumberFeaturesEncoder extends
         writer.close();
       }
     } catch (FileNotFoundException e) {
-      throw new CleartkException(e);
-    } catch (IOException e) {
       throw new CleartkException(e);
     }
   }

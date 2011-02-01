@@ -145,7 +145,7 @@ public class XReaderTest extends DefaultTestBase {
   }
 
   @Test
-  public void testDescriptor() throws UIMAException, IOException {
+  public void testDescriptor() throws UIMAException {
     try {
       CollectionReaderFactory.createCollectionReader(XReader.class, typeSystemDescription);
       Assert.fail("expected exception with no file or directory specified");

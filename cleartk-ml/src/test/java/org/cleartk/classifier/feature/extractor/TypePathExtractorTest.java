@@ -26,7 +26,6 @@ package org.cleartk.classifier.feature.extractor;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.apache.uima.UIMAException;
@@ -124,7 +123,7 @@ public class TypePathExtractorTest extends DefaultTestBase {
   }
 
   @Test
-  public void testExtract() throws IOException, UIMAException, CleartkException {
+  public void testExtract() throws UIMAException, CleartkException {
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         TypePathExtractorTest.Annotator.class,
         typeSystemDescription);
@@ -145,7 +144,7 @@ public class TypePathExtractorTest extends DefaultTestBase {
     TypePathExtractor typePathExtractor = new TypePathExtractor(Token.class, "lemma/value");
     List<Feature> features = typePathExtractor.extract(jCas, token1);
     assertEquals(features.size(), 1);
-    TypePathFeature feature = (TypePathFeature) (TypePathFeature) features.get(0);
+    TypePathFeature feature = (TypePathFeature) features.get(0);
     assertEquals(feature.getValue().toString(), "wwwwwwww");
     assertEquals(feature.getTypePath(), "lemma/value");
 
@@ -275,7 +274,7 @@ public class TypePathExtractorTest extends DefaultTestBase {
   }
 
   @Test
-  public void testIsValidatePath() throws IOException, UIMAException {
+  public void testIsValidatePath() {
     assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(POSTag.type), "value", jCas));
     assertTrue(TypePathExtractor
         .isValidPath(jCas.getCasType(Header.type), "authors/lastName", jCas));
@@ -306,7 +305,7 @@ public class TypePathExtractorTest extends DefaultTestBase {
   }
 
   @Test
-  public void testIsValidType() throws IOException, UIMAException {
+  public void testIsValidType() {
     assertTrue(TypePathExtractor.isValidType(jCas.getCasType(POSTag.type), jCas.getTypeSystem()));
     assertTrue(TypePathExtractor.isValidType(jCas.getCasType(Token.type), jCas.getTypeSystem()));
 
@@ -324,7 +323,7 @@ public class TypePathExtractorTest extends DefaultTestBase {
   }
 
   @Test
-  public void testTicket23() throws IOException, UIMAException, CleartkException {
+  public void testTicket23() throws UIMAException, CleartkException {
 
     // token "place" in "wide. This place was a tolerable long,");
     tokenBuilder.buildTokens(jCas, "wide .\nThis place was a tolerable long ,");

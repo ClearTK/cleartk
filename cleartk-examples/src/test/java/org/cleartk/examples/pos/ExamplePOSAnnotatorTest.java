@@ -23,7 +23,6 @@
  */
 package org.cleartk.examples.pos;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -178,7 +177,7 @@ public class ExamplePOSAnnotatorTest extends ExamplesTestBase {
   }
 
   @Test
-  public void testAnnotatorDescriptor() throws UIMAException, IOException {
+  public void testAnnotatorDescriptor() throws UIMAException {
     AnalysisEngineDescription posTaggerDescription = ExamplePOSAnnotator
         .getClassifierDescription(ExamplePOSAnnotator.DEFAULT_MODEL);
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(posTaggerDescription);
@@ -191,7 +190,7 @@ public class ExamplePOSAnnotatorTest extends ExamplesTestBase {
   }
 
   @Test
-  public void testDataWriterDescriptor() throws UIMAException, IOException {
+  public void testDataWriterDescriptor() throws UIMAException {
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(ExamplePOSAnnotator
         .getWriterDescription(ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY));
 

@@ -23,8 +23,6 @@
  */
 package org.cleartk.syntax.constituent.ptb;
 
-import java.io.IOException;
-
 import org.apache.uima.UIMAException;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -52,7 +50,7 @@ public class PennTreebankReaderTest extends SyntaxTestBase {
   private final String inputDir = "data/treebank/wsj";
 
   @Test
-  public void testReaderDescriptor() throws UIMAException, IOException {
+  public void testReaderDescriptor() throws UIMAException {
     try {
       CollectionReaderFactory.createCollectionReader(
           PennTreebankReader.class,

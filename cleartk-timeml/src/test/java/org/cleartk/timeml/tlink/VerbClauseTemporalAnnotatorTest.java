@@ -83,7 +83,7 @@ public class VerbClauseTemporalAnnotatorTest extends TimeMLTestBase {
   }
 
   @Test
-  public void test() throws UIMAException, CleartkException {
+  public void test() throws UIMAException {
     AnalysisEngineDescription desc = CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
         VerbClauseTemporalAnnotator.class,
         typeSystemDescription,

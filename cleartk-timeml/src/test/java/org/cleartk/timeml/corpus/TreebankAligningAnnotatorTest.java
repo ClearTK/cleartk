@@ -23,8 +23,6 @@
  */
 package org.cleartk.timeml.corpus;
 
-import java.io.IOException;
-
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -44,7 +42,7 @@ import org.uimafit.factory.AnalysisEngineFactory;
 public class TreebankAligningAnnotatorTest extends TimeMLTestBase {
 
   @Test
-  public void testDescriptor() throws UIMAException, IOException {
+  public void testDescriptor() throws UIMAException {
     try {
       AnalysisEngineFactory.createPrimitive(TreebankAligningAnnotator.class, typeSystemDescription);
       Assert.fail("expected exception with TreebankDirectory unspecified");

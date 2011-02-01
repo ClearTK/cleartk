@@ -172,7 +172,7 @@ public class ChunkerTest extends DefaultTestBase {
   }
 
   @Test
-  public void testChunkHandler() throws UIMAException, CleartkException {
+  public void testChunkHandler() throws UIMAException {
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         TestChunkerAnnotator.class,
         typeSystemDescription,

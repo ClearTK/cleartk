@@ -24,7 +24,6 @@
 package org.cleartk.ne.ace2005;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
@@ -148,7 +147,7 @@ public class Ace2005WriterTest extends NeTestBase {
   }
 
   @Test
-  public void testDescriptor() throws UIMAException, IOException {
+  public void testDescriptor() throws UIMAException {
     try {
       AnalysisEngineFactory.createPrimitive(Ace2005Writer.class, typeSystemDescription);
       Assert.fail("expected exception with output directory not specified");

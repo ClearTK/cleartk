@@ -158,7 +158,7 @@ public class WindowExtractor {
       // here.
       if (outOfBoundsDistance == 0 && startAnnotation != null
           && featureAnnotationIterator.isValid()) {
-        Annotation featureAnnotation = (Annotation) featureAnnotationIterator.get();
+        Annotation featureAnnotation = featureAnnotationIterator.get();
         if (isWithinBoundaries(featureAnnotation, focusAnnotation, windowAnnotation)) {
           if (i >= windowStart) {
             returnValues.addAll(extractWindowedFeatures(jCas, i, featureAnnotation));

@@ -135,7 +135,7 @@ public class AnnotationUtilTest extends DefaultTestBase {
   }
 
   @Test
-  public void testOverlaps() throws UIMAException, IOException {
+  public void testOverlaps() {
     Token token1 = new Token(jCas, 0, 0);
     Token token2 = new Token(jCas, 0, 0);
     assertTrue(AnnotationUtil.overlaps(token1, token2));
@@ -169,7 +169,7 @@ public class AnnotationUtilTest extends DefaultTestBase {
   }
 
   @Test
-  public void testSort() throws UIMAException {
+  public void testSort() {
     List<Annotation> annotations = new ArrayList<Annotation>();
     annotations.add(new Token(jCas, 19, 21));
     annotations.add(new Token(jCas, 0, 15));

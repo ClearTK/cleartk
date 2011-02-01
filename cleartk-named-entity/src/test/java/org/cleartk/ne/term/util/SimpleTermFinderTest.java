@@ -33,7 +33,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.uima.UIMAException;
 import org.cleartk.token.tokenizer.PennTreebankTokenizer;
 import org.cleartk.token.tokenizer.Token;
 import org.cleartk.token.tokenizer.Tokenizer;
@@ -142,7 +141,7 @@ public class SimpleTermFinderTest {
   }
 
   @Test
-  public void testGetMatches() throws UIMAException, IOException {
+  public void testGetMatches() {
 
     Tokenizer tokenizer = new PennTreebankTokenizer();
 
@@ -197,7 +196,7 @@ public class SimpleTermFinderTest {
 
   }
 
-  @SuppressWarnings("unused")
+  @SuppressWarnings({ "unused", "null" })
   @Test
   public void testTime() throws IOException {
     long startLoad = System.nanoTime();

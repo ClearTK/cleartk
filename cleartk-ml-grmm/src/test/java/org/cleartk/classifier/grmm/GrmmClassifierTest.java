@@ -25,7 +25,6 @@ package org.cleartk.classifier.grmm;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -40,7 +39,6 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkSequentialAnnotator;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.SequentialClassifier;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.classifier.jar.Train;
@@ -74,7 +72,7 @@ public class GrmmClassifierTest extends DefaultTestBase {
       }
     }
 
-    public void processSimple(JCas cas) throws AnalysisEngineProcessException, CleartkException {
+    public void processSimple(JCas cas) throws CleartkException {
       if (this.isTraining()) {
         for (int i = 0; i < 5; i++) {
           List<Instance<String[]>> instances = GrmmTestDataGenerator.createInstances2();
@@ -135,12 +133,12 @@ public class GrmmClassifierTest extends DefaultTestBase {
     Train.main(outputDirectoryName, templateFilename);
     hider.restoreOutput();
 
-    // try to use model for classification:
+    // check that the classifier is successfully loaded from the model
     File modelJarFile = builder.getModelJarFile(this.outputDirectory);
     assertNotNull(modelJarFile);
-    GrmmClassifier classifier = builder.loadClassifierFromTrainingDirectory(this.outputDirectory);
-    assertTrue(classifier instanceof SequentialClassifier<?>);
+    builder.loadClassifierFromTrainingDirectory(this.outputDirectory);
 
+    // try to use model for classification:
     AnalysisEngine sequentialClassifierAnnotator = AnalysisEngineFactory.createPrimitive(
         Test1Annotator.class,
         typeSystemDescription,

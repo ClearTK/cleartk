@@ -24,7 +24,6 @@
 package org.cleartk.srl;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
@@ -50,7 +49,7 @@ public class SRLWriterTest extends SrlTestBase {
   }
 
   @Test
-  public void testSRLWriterDescriptor() throws UIMAException, IOException {
+  public void testSRLWriterDescriptor() throws UIMAException {
     try {
       AnalysisEngineFactory.createPrimitive(SRLWriter.class, typeSystemDescription);
       Assert.fail("expected exception without output file parameter");

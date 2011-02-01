@@ -28,7 +28,6 @@ import static org.junit.Assert.assertEquals;
 import java.util.List;
 
 import org.apache.uima.jcas.cas.FSArray;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Token;
 import org.junit.Test;
@@ -52,7 +51,7 @@ public class UIMAUtilTest extends DefaultTestBase {
   }
 
   @Test
-  public void testToFSArray() throws ResourceInitializationException {
+  public void testToFSArray() {
     FSArray tokens = UIMAUtil.toFSArray(jCas, null);
     assertEquals(0, tokens.size());
 

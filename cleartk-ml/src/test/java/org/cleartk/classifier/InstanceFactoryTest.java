@@ -73,7 +73,7 @@ public class InstanceFactoryTest {
 
   @Test
   public void testConstrucor() {
-    new InstanceFactory();
+    assertNotNull(new InstanceFactory());
   }
 
 }

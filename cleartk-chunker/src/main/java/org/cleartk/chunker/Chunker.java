@@ -141,7 +141,7 @@ public class Chunker extends CleartkSequentialAnnotator<String> {
     FSIterator<Annotation> sequences = sequences(jCas);
 
     while (sequences.hasNext()) {
-      Annotation sequence = (Annotation) sequences.next();
+      Annotation sequence = sequences.next();
       if (this.isTraining()) {
         chunkLabeler.chunks2Labels(jCas, sequence);
       }
@@ -150,7 +150,7 @@ public class Chunker extends CleartkSequentialAnnotator<String> {
 
       FSIterator<Annotation> labeledAnnotations = labeledAnnotations(jCas, sequence);
       while (labeledAnnotations.hasNext()) {
-        Annotation labeledAnnotation = (Annotation) labeledAnnotations.next();
+        Annotation labeledAnnotation = labeledAnnotations.next();
         labeledAnnotationList.add(labeledAnnotation);
 
         instance = featureExtractor.extractFeatures(jCas, labeledAnnotation, sequence);

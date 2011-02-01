@@ -98,7 +98,7 @@ public class IDFMap implements Serializable {
     }
   }
 
-  public IDFMap() throws IOException {
+  public IDFMap() {
     this.totalDocumentCount = 0;
     this.documentCounts = new HashMap<String, Integer>();
   }

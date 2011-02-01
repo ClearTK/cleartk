@@ -23,7 +23,6 @@
  */
 package org.cleartk.ne.term;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.apache.uima.UIMAException;
@@ -47,7 +46,7 @@ import org.uimafit.factory.AnalysisEngineFactory;
 public class TermFinderAnnotatorTest extends NeTestBase {
 
   @Test
-  public void test() throws UIMAException, IOException {
+  public void test() throws UIMAException {
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         TermFinderAnnotator.class,
         typeSystemDescription,

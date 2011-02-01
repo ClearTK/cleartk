@@ -132,7 +132,7 @@ public class CountCollection<T> implements Serializable {
       denominator += count;
       numerator += value * count;
     }
-    return (double) numerator / (double) denominator;
+    return numerator / denominator;
   }
 
   public List<CountObject<T>> sortCounts(boolean sortAscending, boolean sortTiesAscending) {
@@ -191,7 +191,7 @@ public class CountCollection<T> implements Serializable {
     }
   }
 
-  private static int compareCounts(CountObject<?> co1, CountObject<?> co2) {
+  static int compareCounts(CountObject<?> co1, CountObject<?> co2) {
     if (co1.getCount() < co2.getCount())
       return -1;
     else if (co1.getCount() > co2.getCount())
@@ -201,7 +201,7 @@ public class CountCollection<T> implements Serializable {
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
-  private static int compareObjects(CountObject<?> co1, CountObject<?> co2) {
+  static int compareObjects(CountObject<?> co1, CountObject<?> co2) {
     Object o1 = co1.getObject();
     Object o2 = co2.getObject();
     if (o1 instanceof Comparable) {
