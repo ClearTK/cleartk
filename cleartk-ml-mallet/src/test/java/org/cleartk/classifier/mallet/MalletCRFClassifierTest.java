@@ -24,7 +24,6 @@
 package org.cleartk.classifier.mallet;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -41,7 +40,6 @@ import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.SequenceClassifier;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.JarClassifierFactory;
 import org.cleartk.classifier.jar.Train;
@@ -82,7 +80,7 @@ public class MalletCRFClassifierTest extends DefaultTestBase {
       }
     }
 
-    public void processSimple(JCas cas) throws AnalysisEngineProcessException, CleartkException {
+    public void processSimple(JCas cas) throws CleartkException {
       if (this.isTraining()) {
         List<Instance<String>> instances = createInstances();
         // consume 100 identical sequences
@@ -125,7 +123,6 @@ public class MalletCRFClassifierTest extends DefaultTestBase {
     MalletCRFClassifierBuilder builder = new MalletCRFClassifierBuilder();
     MalletCRFClassifier classifier;
     classifier = builder.loadClassifierFromTrainingDirectory(this.outputDirectory);
-    assertTrue(classifier instanceof SequenceClassifier<?>);
 
     List<List<Feature>> sequenceFeatures = new ArrayList<List<Feature>>();
     List<Instance<String>> instances = createInstances();
@@ -150,7 +147,7 @@ public class MalletCRFClassifierTest extends DefaultTestBase {
 
   }
 
-  private static void testLabels(List<String> outcomes, String expectedData) {
+  static void testLabels(List<String> outcomes, String expectedData) {
     String[] expectedValues = expectedData.split(" ");
     assertEquals(expectedValues.length, outcomes.size());
     for (int i = 0; i < expectedValues.length; i++) {
@@ -168,7 +165,7 @@ public class MalletCRFClassifierTest extends DefaultTestBase {
     return instance;
   }
 
-  private static List<Instance<String>> createInstances() {
+  static List<Instance<String>> createInstances() {
     List<Instance<String>> instances = new ArrayList<Instance<String>>();
     instances
         .add(createInstance("O Word_Three LCWord_three CapitalType_INITIAL_UPPERCASE L0OOB1 L1OOB2 R0_sequence R0_TypePath_Pos_NN R0_TypePath_Stem_sequenc R1_elements R1_TypePath_Pos_NNS R1_TypePath_Stem_element TypePath_Pos_CD TypePath_Stem_Three PrevNEMTokenLabel_L0OOB1 PrevNEMTokenLabel_L1OOB2"));

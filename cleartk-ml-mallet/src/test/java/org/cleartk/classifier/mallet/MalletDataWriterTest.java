@@ -86,7 +86,7 @@ public class MalletDataWriterTest extends DefaultTestBase {
       }
     }
 
-    public void processSimple(JCas cas) throws AnalysisEngineProcessException, CleartkException {
+    public void processSimple(JCas cas) throws CleartkException {
       List<Feature> features = Arrays.asList(
           new Feature("pos", "NN"),
           new Feature("distance", 3.0),
@@ -159,7 +159,7 @@ public class MalletDataWriterTest extends DefaultTestBase {
         outputDirectoryName,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         DefaultMalletDataWriterFactory.class.getName(),
-        DefaultMalletDataWriterFactory.PARAM_COMPRESS,
+        MalletDataWriterFactory_ImplBase.PARAM_COMPRESS,
         true);
 
     dataWriterAnnotator.process(jCas);
@@ -211,9 +211,9 @@ public class MalletDataWriterTest extends DefaultTestBase {
         outputDirectoryName,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         DefaultMalletDataWriterFactory.class.getName(),
-        DefaultMalletDataWriterFactory.PARAM_COMPRESS,
+        MalletDataWriterFactory_ImplBase.PARAM_COMPRESS,
         true,
-        DefaultMalletDataWriterFactory.PARAM_SORT,
+        MalletDataWriterFactory_ImplBase.PARAM_SORT,
         true);
 
     dataWriterAnnotator.process(jCas);
@@ -254,7 +254,7 @@ public class MalletDataWriterTest extends DefaultTestBase {
       }
     }
 
-    public void processSimple(JCas cas) throws AnalysisEngineProcessException, CleartkException {
+    public void processSimple(JCas cas) throws CleartkException {
       List<Feature> features = Arrays.asList(
           new Feature("pos", "NN"),
           new Feature("distance", 3.0),
@@ -280,9 +280,9 @@ public class MalletDataWriterTest extends DefaultTestBase {
         outputDirectoryName,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         DefaultMalletDataWriterFactory.class.getName(),
-        DefaultMalletDataWriterFactory.PARAM_COMPRESS,
+        MalletDataWriterFactory_ImplBase.PARAM_COMPRESS,
         true,
-        DefaultMalletDataWriterFactory.PARAM_SORT,
+        MalletDataWriterFactory_ImplBase.PARAM_SORT,
         true);
 
     AnalysisEngineProcessException aepe = null;
@@ -304,7 +304,7 @@ public class MalletDataWriterTest extends DefaultTestBase {
       }
     }
 
-    public void processSimple(JCas cas) throws AnalysisEngineProcessException, CleartkException {
+    public void processSimple(JCas cas) throws CleartkException {
       Instance<String> instance = InstanceFactory.createInstance("a", "b c d");
       this.dataWriter.write(instance);
     }
@@ -325,7 +325,7 @@ public class MalletDataWriterTest extends DefaultTestBase {
         outputDirectoryName,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         DefaultMalletDataWriterFactory.class.getName(),
-        DefaultMalletDataWriterFactory.PARAM_COMPRESS,
+        MalletDataWriterFactory_ImplBase.PARAM_COMPRESS,
         true);
 
     dataWriterAnnotator.process(jCas);
@@ -352,7 +352,7 @@ public class MalletDataWriterTest extends DefaultTestBase {
       }
     }
 
-    public void processSimple(JCas jCas) throws AnalysisEngineProcessException, CleartkException {
+    public void processSimple(JCas jCas) throws CleartkException {
       for (Sentence sentence : AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
         List<Instance<String>> instances = new ArrayList<Instance<String>>();
         List<Token> tokens = AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class);

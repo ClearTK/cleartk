@@ -67,7 +67,7 @@ public class MalletClassifierTest extends DefaultTestBase {
     random = new Random(System.currentTimeMillis());
   }
 
-  private static Instance<String> generateInstance(Random random) {
+  static Instance<String> generateInstance(Random random) {
     Instance<String> instance = new Instance<String>();
 
     int outcome = random.nextInt(2);
@@ -93,7 +93,7 @@ public class MalletClassifierTest extends DefaultTestBase {
       }
     }
 
-    public void processSimple(JCas cas) throws AnalysisEngineProcessException, CleartkException {
+    public void processSimple(JCas cas) throws CleartkException {
       if (this.isTraining()) {
         for (int i = 0; i < 1000; i++) {
           this.dataWriter.write(generateInstance(random));

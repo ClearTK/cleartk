@@ -367,7 +367,7 @@ public class MaxentClassifierTest extends DefaultTestBase {
         outputDirectoryName,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         DefaultMaxentDataWriterFactory.class.getName(),
-        DefaultMaxentDataWriterFactory.PARAM_COMPRESS,
+        MaxentDataWriterFactory_ImplBase.PARAM_COMPRESS,
         false);
 
     dataWriterAnnotator.process(jCas);

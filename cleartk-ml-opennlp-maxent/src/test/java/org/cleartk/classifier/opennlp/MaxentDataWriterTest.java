@@ -136,7 +136,7 @@ public class MaxentDataWriterTest extends DefaultTestBase {
         outputDirectoryName,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         DefaultMaxentDataWriterFactory.class.getName(),
-        DefaultMaxentDataWriterFactory.PARAM_COMPRESS,
+        MaxentDataWriterFactory_ImplBase.PARAM_COMPRESS,
         true);
 
     dataWriterAnnotator.process(jCas);
@@ -252,9 +252,9 @@ public class MaxentDataWriterTest extends DefaultTestBase {
         outputDirectoryName,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         DefaultMaxentDataWriterFactory.class.getName(),
-        DefaultMaxentDataWriterFactory.PARAM_COMPRESS,
+        MaxentDataWriterFactory_ImplBase.PARAM_COMPRESS,
         true,
-        DefaultMaxentDataWriterFactory.PARAM_SORT,
+        MaxentDataWriterFactory_ImplBase.PARAM_SORT,
         true);
 
     AnalysisEngineProcessException aepe = null;
@@ -297,7 +297,7 @@ public class MaxentDataWriterTest extends DefaultTestBase {
         outputDirectoryName,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         DefaultMaxentDataWriterFactory.class.getName(),
-        DefaultMaxentDataWriterFactory.PARAM_COMPRESS,
+        MaxentDataWriterFactory_ImplBase.PARAM_COMPRESS,
         true);
 
     dataWriterAnnotator.process(jCas);
