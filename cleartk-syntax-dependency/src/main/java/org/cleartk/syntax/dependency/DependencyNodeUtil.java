@@ -1,3 +1,27 @@
+/** 
+ * Copyright (c) 2011, Regents of the University of Colorado 
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. 
+ * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. 
+ * Neither the name of the University of Colorado at Boulder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. 
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE. 
+ */
+
 package org.cleartk.syntax.dependency;
 
 import static org.junit.Assert.assertEquals;
@@ -10,6 +34,14 @@ import org.cleartk.syntax.dependency.type.DependencyNode;
 import org.cleartk.util.UIMAUtil;
 import org.junit.Test;
 
+/**
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * <p>
+ * @author Philip Ogren
+ */
+
 public class DependencyNodeUtil {
 
   public static void print(PrintStream out, DependencyNode topNode) {
@@ -18,9 +50,13 @@ public class DependencyNodeUtil {
 
   private static void print(PrintStream out, DependencyNode node, int tabs) {
     String indent = getIndent(tabs);
-    out.println(indent+node.getCoveredText()+"\t"+node.getDependencyType()+"\t["+node.getBegin()+","+node.getEnd()+"]");
     if(tabs == 0) {
+      out.println(indent+node.getCoveredText());
       out.println(getNumberString(node.getCoveredText().length()));
+      out.println(getTics(node.getCoveredText().length()));
+      out.println();
+    } else {
+      out.println(indent+node.getCoveredText()+"\t"+node.getDependencyType()+"\t["+node.getBegin()+","+node.getEnd()+"]");
     }
     List<DependencyNode> children = UIMAUtil.toList(node.getChildren(), DependencyNode.class);
     for(DependencyNode child : children) {
@@ -35,6 +71,14 @@ public class DependencyNodeUtil {
       sb.append(numbers);
     }
     sb.append(numbers.substring(0, length % 10));
+    return sb.toString();
+  }
+
+  private static String getTics(int length) {
+    StringBuilder sb = new StringBuilder();
+    for(int i=0; i < length / 10; i++) {
+      sb.append(""+i+"         ");
+    }
     return sb.toString();
   }
 
