@@ -11,6 +11,12 @@
 		<groupId>org.cleartk</groupId>
 		<version>0.5.0-SNAPSHOT</version>
 	</parent>
+<dependencies>
+		<dependency>
+			<groupId>org.cleartk</groupId>
+			<artifactId>cleartk-util</artifactId>
+		</dependency>
+	</dependencies>
 	<!-- Generate type system files using ${jcasgen.typesystem} -->
 	<properties>
 		<jcasgen.typesystem>org/cleartk/syntax/dependency/TypeSystem.xml</jcasgen.typesystem>
