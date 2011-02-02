@@ -16,6 +16,11 @@
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-util</artifactId>
 		</dependency>
+				<dependency>
+			<groupId>org.cleartk</groupId>
+			<artifactId>cleartk-test-util</artifactId>
+		</dependency>
+		
 	</dependencies>
 	<!-- Generate type system files using ${jcasgen.typesystem} -->
 	<properties>
