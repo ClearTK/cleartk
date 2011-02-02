@@ -1,3 +1,27 @@
+/*
+ * Copyright (c) 2010, Regents of the University of Colorado 
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. 
+ * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. 
+ * Neither the name of the University of Colorado at Boulder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. 
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE. 
+ */
+
 package org.cleartk.syntax.dependency.clear;
 
 import java.io.IOException;
@@ -26,122 +50,121 @@ import clear.dep.DepTree;
 import clear.parse.AbstractDepParser;
 
 /**
- * This class provides a UIMA wrapper for the CLEAR parser.  This parser is available here:
+ * <br>
+ * Copyright (c) 2011, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * <p>
+ * This class provides a UIMA wrapper for the CLEAR parser. This parser is available here:
  * <p>
  * http://code.google.com/p/clearparser/
  * <p>
- * Please see /cleartk-syntax-dependency-clear/src/main/resources/org/cleartk/syntax/dependency/clear/README
- * for important information pertaining to the models provided for this parser.  In particular, note that 
- * the output of the CLEAR parser is different than that of the Malt parser and so these two parsers may not
- * be interchangeable (without some effort) for most use cases.
- * <p>   
+ * Please see
+ * /cleartk-syntax-dependency-clear/src/main/resources/org/cleartk/syntax/dependency/clear/README
+ * for important information pertaining to the models provided for this parser. In particular, note
+ * that the output of the CLEAR parser is different than that of the Malt parser and so these two
+ * parsers may not be interchangeable (without some effort) for most use cases.
+ * <p>
+ * 
  * @author Philip Ogren
- *
+ * 
  */
-@TypeCapability(inputs = { "org.cleartk.token.type.Token:pos",
-		"org.cleartk.token.type.Token:lemma" })
+@TypeCapability(inputs = { "org.cleartk.token.type.Token:pos", "org.cleartk.token.type.Token:lemma" })
 public class ClearParser extends JCasAnnotator_ImplBase {
 
-	public static final String PARAM_PARSER_MODEL_FILE_NAME = ConfigurationParameterFactory
-			.createConfigurationParameterName(ClearParser.class,
-					"parserModelFileName");
-	@ConfigurationParameter(defaultValue = "../cleartk-syntax-dependency-clear/src/main/resources/org/cleartk/syntax/dependency/clear/conll-2009-dev-shift-pop.jar", mandatory = true, description = "This parameter provides the file name of the dependency parser model required by the factory method provided by ClearParserUtil.")
-	private String parserModelFileName;
+  public static final String PARAM_PARSER_MODEL_FILE_NAME = ConfigurationParameterFactory
+      .createConfigurationParameterName(ClearParser.class, "parserModelFileName");
 
-	public static final String PARAM_PARSER_ALGORITHM_NAME = ConfigurationParameterFactory
-			.createConfigurationParameterName(ClearParser.class,
-					"parserAlgorithmName");
+  @ConfigurationParameter(defaultValue = "../cleartk-syntax-dependency-clear/src/main/resources/org/cleartk/syntax/dependency/clear/conll-2009-dev-shift-pop.jar", mandatory = true, description = "This parameter provides the file name of the dependency parser model required by the factory method provided by ClearParserUtil.")
+  private String parserModelFileName;
 
-	@ConfigurationParameter(defaultValue = AbstractDepParser.ALG_SHIFT_POP, mandatory = true, description = "This parameter provides the algorithm name used by the dependency parser that is required by the factory method provided by ClearParserUtil.  If in doubt, do not change from the default value.")
-	private String parserAlgorithmName;
+  public static final String PARAM_PARSER_ALGORITHM_NAME = ConfigurationParameterFactory
+      .createConfigurationParameterName(ClearParser.class, "parserAlgorithmName");
 
-	private AbstractDepParser parser;
+  @ConfigurationParameter(defaultValue = AbstractDepParser.ALG_SHIFT_POP, mandatory = true, description = "This parameter provides the algorithm name used by the dependency parser that is required by the factory method provided by ClearParserUtil.  If in doubt, do not change from the default value.")
+  private String parserAlgorithmName;
 
-	@Override
-	public void initialize(UimaContext context)
-			throws ResourceInitializationException {
-		super.initialize(context);
+  private AbstractDepParser parser;
 
-		try {
-			parser = ClearParserUtil.createParser(parserModelFileName,
-					parserAlgorithmName);
-		} catch (IOException e) {
-			throw new ResourceInitializationException(e);
-		}
-	}
+  @Override
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    super.initialize(context);
 
-	@Override
-	public void process(JCas jCas) throws AnalysisEngineProcessException {
-		for (Sentence sentence : JCasUtil.select(jCas, Sentence.class)) {
-			List<Token> tokens = JCasUtil.selectCovered(jCas, Token.class,
-					sentence);
-			DepTree tree = new DepTree();
+    try {
+      parser = ClearParserUtil.createParser(parserModelFileName, parserAlgorithmName);
+    } catch (IOException e) {
+      throw new ResourceInitializationException(e);
+    }
+  }
 
-			for (int i = 0; i < tokens.size(); i++) {
-				Token token = tokens.get(i);
-				DepNode node = new DepNode();
-				node.id = i + 1;
-				node.form = token.getCoveredText();
-				node.pos = token.getPos();
-				node.lemma = token.getLemma();
-				tree.add(node);
-			}
-			parser.parse(tree);
-			System.out.println(tree);
+  @Override
+  public void process(JCas jCas) throws AnalysisEngineProcessException {
+    for (Sentence sentence : JCasUtil.select(jCas, Sentence.class)) {
+      List<Token> tokens = JCasUtil.selectCovered(jCas, Token.class, sentence);
+      DepTree tree = new DepTree();
 
-			addTree(jCas, sentence, tokens, tree);
-		}
-	}
+      for (int i = 0; i < tokens.size(); i++) {
+        Token token = tokens.get(i);
+        DepNode node = new DepNode();
+        node.id = i + 1;
+        node.form = token.getCoveredText();
+        node.pos = token.getPos();
+        node.lemma = token.getLemma();
+        tree.add(node);
+      }
+      parser.parse(tree);
+      System.out.println(tree);
 
-	private void addTree(JCas jCas, Sentence sentence, List<Token> tokens, DepTree tree) {
-		Map<DependencyNode, List<DependencyNode>> nodeChildren = new HashMap<DependencyNode, List<DependencyNode>>();
+      addTree(jCas, sentence, tokens, tree);
+    }
+  }
 
-		DependencyNode[] nodes = new DependencyNode[tree.size()];
+  private void addTree(JCas jCas, Sentence sentence, List<Token> tokens, DepTree tree) {
+    Map<DependencyNode, List<DependencyNode>> nodeChildren = new HashMap<DependencyNode, List<DependencyNode>>();
 
-		DepNode parserRootNode = tree.get(0);
-		DependencyNode rootNode = new DependencyNode(jCas, sentence.getBegin(), sentence.getEnd());
-		rootNode.setDependencyType(parserRootNode.deprel);
-		rootNode.addToIndexes();
-		nodes[0] = rootNode;
+    DependencyNode[] nodes = new DependencyNode[tree.size()];
 
-		for (int i = 0; i < tokens.size(); i++) {
-			Token token = tokens.get(i);
-			DepNode parserNode = tree.get(i + 1);
-			DependencyNode node = new DependencyNode(jCas, token.getBegin(),
-					token.getEnd());
-			node.setDependencyType(parserNode.deprel);
-			node.addToIndexes();
-			nodes[i + 1] = node;
-		}
+    DepNode parserRootNode = tree.get(0);
+    DependencyNode rootNode = new DependencyNode(jCas, sentence.getBegin(), sentence.getEnd());
+    rootNode.setDependencyType(parserRootNode.deprel);
+    rootNode.addToIndexes();
+    nodes[0] = rootNode;
 
-		for (int i = 0; i < tree.size(); i++) {
-			DepNode parserNode = tree.get(i);
-			if (parserNode.hasHead) {
-				int headIndex = parserNode.headId;
+    for (int i = 0; i < tokens.size(); i++) {
+      Token token = tokens.get(i);
+      DepNode parserNode = tree.get(i + 1);
+      DependencyNode node = new DependencyNode(jCas, token.getBegin(), token.getEnd());
+      node.setDependencyType(parserNode.deprel);
+      node.addToIndexes();
+      nodes[i + 1] = node;
+    }
 
-				DependencyNode node = nodes[i];
-				DependencyNode headNode = nodes[headIndex];
-				node.setHead(headNode);
+    for (int i = 0; i < tree.size(); i++) {
+      DepNode parserNode = tree.get(i);
+      if (parserNode.hasHead) {
+        int headIndex = parserNode.headId;
 
-				// collect child information
-				if (!nodeChildren.containsKey(headNode)) {
-					nodeChildren.put(headNode, new ArrayList<DependencyNode>());
-				}
-				nodeChildren.get(headNode).add(node);
-			}
-		}
+        DependencyNode node = nodes[i];
+        DependencyNode headNode = nodes[headIndex];
+        node.setHead(headNode);
 
-		// add child links between node annotations
-		for (DependencyNode headNode : nodeChildren.keySet()) {
-			headNode.setChildren(UIMAUtil.toFSArray(jCas,
-					nodeChildren.get(headNode)));
-		}
-		for (DependencyNode node : JCasUtil.iterate(jCas, DependencyNode.class)) {
-			if (node.getChildren() == null) {
-				node.setChildren(new FSArray(jCas, 0));
-			}
-		}
+        // collect child information
+        if (!nodeChildren.containsKey(headNode)) {
+          nodeChildren.put(headNode, new ArrayList<DependencyNode>());
+        }
+        nodeChildren.get(headNode).add(node);
+      }
+    }
 
-	}
+    // add child links between node annotations
+    for (DependencyNode headNode : nodeChildren.keySet()) {
+      headNode.setChildren(UIMAUtil.toFSArray(jCas, nodeChildren.get(headNode)));
+    }
+    for (DependencyNode node : JCasUtil.iterate(jCas, DependencyNode.class)) {
+      if (node.getChildren() == null) {
+        node.setChildren(new FSArray(jCas, 0));
+      }
+    }
+
+  }
 
 }
