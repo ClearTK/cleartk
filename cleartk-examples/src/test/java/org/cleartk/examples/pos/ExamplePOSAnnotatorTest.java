@@ -23,6 +23,7 @@
  */
 package org.cleartk.examples.pos;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -199,8 +200,9 @@ public class ExamplePOSAnnotatorTest extends ExamplesTestBase {
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(ExamplePOSAnnotator
         .getWriterDescription(ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY));
 
-    Object outputDir = engine
+    String outputDir = (String) engine
         .getConfigParameterValue(DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY);
+    outputDir = outputDir.replace(File.separatorChar, '/');
     Assert.assertEquals(ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY, outputDir);
 
     String expectedDataWriterFactory = (ViterbiDataWriterFactory.class.getName());
