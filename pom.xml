@@ -157,114 +157,114 @@
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-test-util</artifactId>
-				<version>0.9.9-SNAPSHOT</version>
+				<version>0.9.10-SNAPSHOT</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-util</artifactId>
-				<version>0.7.0-SNAPSHOT</version>
+				<version>0.7.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-ml</artifactId>
-				<version>0.9.9-SNAPSHOT</version>
+				<version>0.9.10-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-ml-opennlp-maxent</artifactId>
-				<version>0.9.9-SNAPSHOT</version>
+				<version>0.9.10-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-ml-svmlight</artifactId>
-				<version>0.9.9-SNAPSHOT</version>
+				<version>0.9.10-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-ml-libsvm</artifactId>
-				<version>0.9.0-SNAPSHOT</version>
+				<version>0.9.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-ml-mallet</artifactId>
-				<version>0.9.9-SNAPSHOT</version>
+				<version>0.9.10-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-ml-grmm</artifactId>
-				<version>0.5.0-SNAPSHOT</version>
+				<version>0.5.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-chunker</artifactId>
-				<version>0.9.9-SNAPSHOT</version>
+				<version>0.9.10-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-token</artifactId>
-				<version>0.7.0-SNAPSHOT</version>
+				<version>0.7.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-token</artifactId>
-				<version>0.7.0-SNAPSHOT</version>
+				<version>0.7.1-SNAPSHOT</version>
 				<type>test-jar</type>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-named-entity</artifactId>
-				<version>0.1.0-SNAPSHOT</version>
+				<version>0.1.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-syntax</artifactId>
-				<version>0.5.0-SNAPSHOT</version>
+				<version>0.5.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-syntax</artifactId>
-				<version>0.5.0-SNAPSHOT</version>
+				<version>0.5.1-SNAPSHOT</version>
 				<type>test-jar</type>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-syntax-opennlp</artifactId>
-				<version>0.8.0-SNAPSHOT</version>
+				<version>0.8.1-SNAPSHOT</version>
 				<optional>false</optional>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-syntax-berkeley</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>0.0.2-SNAPSHOT</version>
 				<optional>false</optional>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-syntax-dependency</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>0.0.2-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-syntax-dependency-malt</artifactId>
-				<version>0.5.0-SNAPSHOT</version>
+				<version>0.5.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-semantic-roles</artifactId>
-				<version>0.5.0-SNAPSHOT</version>
+				<version>0.5.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-timeml</artifactId>
-				<version>0.7.0-SNAPSHOT</version>
+				<version>0.7.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-examples</artifactId>
-				<version>0.5.0-SNAPSHOT</version>
+				<version>0.5.1-SNAPSHOT</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
