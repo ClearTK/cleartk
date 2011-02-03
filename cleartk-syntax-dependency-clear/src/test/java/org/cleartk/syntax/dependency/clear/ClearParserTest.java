@@ -27,7 +27,6 @@ package org.cleartk.syntax.dependency.clear;
 import static org.junit.Assert.assertEquals;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.cleartk.syntax.dependency.DependencyNodeUtil;
 import org.cleartk.syntax.dependency.type.DependencyNode;
 import org.cleartk.test.CleartkTestBase;
 import org.cleartk.token.lemma.choi.LemmaAnnotator;
@@ -126,7 +125,6 @@ public class ClearParserTest extends CleartkTestBase {
     testNode(wasNode.getChildren(2).getChildren(3), "mi", "NMOD");
     testNode(wasNode.getChildren(3), ".", "P");
 
-    DependencyNodeUtil.print(System.out, topNode);
   }
 
   private void testNode(DependencyNode node, String expectedText, String expectedDependencyType) {

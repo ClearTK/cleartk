@@ -112,7 +112,6 @@ public class ClearParser extends JCasAnnotator_ImplBase {
         tree.add(node);
       }
       parser.parse(tree);
-      System.out.println(tree);
 
       addTree(jCas, sentence, tokens, tree);
     }
