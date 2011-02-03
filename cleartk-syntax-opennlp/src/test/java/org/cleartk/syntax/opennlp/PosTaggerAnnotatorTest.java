@@ -29,7 +29,6 @@ import java.util.List;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.cleartk.syntax.SyntaxTestBase;
 import org.cleartk.token.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Assert;
@@ -41,7 +40,7 @@ import org.uimafit.factory.AnalysisEngineFactory;
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
  */
-public class PosTaggerAnnotatorTest extends SyntaxTestBase {
+public class PosTaggerAnnotatorTest extends OpennlpSyntaxTestBase {
 
   @Test
   public void testSimple() throws UIMAException {

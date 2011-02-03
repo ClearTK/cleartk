@@ -34,7 +34,6 @@ import opennlp.tools.cmdline.CLI;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-import org.cleartk.token.TokenTestBase;
 import org.cleartk.token.type.Sentence;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,7 +49,7 @@ import org.uimafit.util.JCasUtil;
  * 
  * @author Philip Ogren, Steven Bethard
  */
-public class SentenceAnnotatorTest extends TokenTestBase {
+public class SentenceAnnotatorTest extends OpennlpSyntaxTestBase {
 
   AnalysisEngine sentenceSegmenter;
 

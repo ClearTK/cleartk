@@ -25,11 +25,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
-			<artifactId>cleartk-token</artifactId>
-			<type>test-jar</type>
-		</dependency>
-		<dependency>
-			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-ml</artifactId>
 		</dependency>
 		<dependency>

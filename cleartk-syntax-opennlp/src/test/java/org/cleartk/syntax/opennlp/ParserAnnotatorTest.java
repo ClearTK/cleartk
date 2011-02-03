@@ -30,7 +30,6 @@ import opennlp.tools.cmdline.CLI;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
-import org.cleartk.syntax.SyntaxTestBase;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.token.type.Sentence;
@@ -46,7 +45,7 @@ import org.uimafit.testing.util.DisableLogging;
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
  */
-public class ParserAnnotatorTest extends SyntaxTestBase {
+public class ParserAnnotatorTest extends OpennlpSyntaxTestBase {
 
   private static final String MODEL_PATH = "/data/parser/craft_test/craft_test.bin";
 

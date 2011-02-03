@@ -24,7 +24,11 @@
 
 package org.cleartk.ne;
 
-import org.cleartk.token.TokenTestBase;
+import org.cleartk.test.CleartkTestBase;
+import org.cleartk.token.type.Sentence;
+import org.cleartk.token.type.Token;
+import org.junit.Before;
+import org.uimafit.testing.factory.TokenBuilder;
 
 /**
  * <br>
@@ -33,7 +37,15 @@ import org.cleartk.token.TokenTestBase;
  * 
  * @author Philip Ogren
  */
-public class NeTestBase extends TokenTestBase {
+public class NeTestBase extends CleartkTestBase {
+
+  protected TokenBuilder<Token, Sentence> tokenBuilder;
+
+  @Before
+  public void setUp() throws Exception {
+    super.setUp();
+    tokenBuilder = new TokenBuilder<Token, Sentence>(Token.class, Sentence.class, "pos", "stem");
+  }
 
   @Override
   public String[] getTypeSystemDescriptorNames() {

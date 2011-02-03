@@ -41,9 +41,9 @@ import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.util.InstanceCollector;
 import org.cleartk.srl.type.Predicate;
 import org.cleartk.srl.type.SemanticArgument;
-import org.cleartk.syntax.TreebankTestsUtil;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
+import org.cleartk.syntax.constituent.util.TreebankNodeUtility;
 import org.cleartk.token.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.UIMAUtil;
@@ -258,18 +258,18 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
   }
 
   private void setTrees(JCas jCas) {
-    TreebankNode sNode = TreebankTestsUtil.newNode(jCas, "S", TreebankTestsUtil.newNode(
+    TreebankNode sNode = TreebankNodeUtility.newNode(jCas, "S", TreebankNodeUtility.newNode(
         jCas,
         "NP",
-        TreebankTestsUtil.newNode(jCas, 0, 4, "NNP")), TreebankTestsUtil.newNode(
+        TreebankNodeUtility.newNode(jCas, 0, 4, "NNP")), TreebankNodeUtility.newNode(
         jCas,
         "VP",
-        TreebankTestsUtil.newNode(jCas, 5, 10, "VBD"),
-        TreebankTestsUtil.newNode(
+        TreebankNodeUtility.newNode(jCas, 5, 10, "VBD"),
+        TreebankNodeUtility.newNode(
             jCas,
             "NP",
-            TreebankTestsUtil.newNode(jCas, 11, 14, "DT"),
-            TreebankTestsUtil.newNode(jCas, 15, 19, "NN"))), TreebankTestsUtil.newNode(
+            TreebankNodeUtility.newNode(jCas, 11, 14, "DT"),
+            TreebankNodeUtility.newNode(jCas, 15, 19, "NN"))), TreebankNodeUtility.newNode(
         jCas,
         19,
         20,

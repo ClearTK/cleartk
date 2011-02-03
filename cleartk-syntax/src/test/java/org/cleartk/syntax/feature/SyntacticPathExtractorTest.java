@@ -31,8 +31,8 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.syntax.SyntaxTestBase;
-import org.cleartk.syntax.TreebankTestsUtil;
 import org.cleartk.syntax.constituent.type.TreebankNode;
+import org.cleartk.syntax.constituent.util.TreebankNodeUtility;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -50,13 +50,13 @@ public class SyntacticPathExtractorTest extends SyntaxTestBase {
   @Test
   public void test() throws UIMAException, CleartkException {
     tokenBuilder.buildTokens(jCas, "I ran home", "I ran home", "PRP VBD NN");
-    TreebankNode iNode = TreebankTestsUtil.newNode(jCas, 0, 1, "PRP");
-    TreebankNode inpNode = TreebankTestsUtil.newNode(jCas, "NP", iNode);
-    TreebankNode ranNode = TreebankTestsUtil.newNode(jCas, 2, 5, "VBD");
-    TreebankNode homeNode = TreebankTestsUtil.newNode(jCas, 6, 10, "NN");
-    TreebankNode homenpNode = TreebankTestsUtil.newNode(jCas, "NP", homeNode);
-    TreebankNode ranvpNode = TreebankTestsUtil.newNode(jCas, "VP", ranNode, homenpNode);
-    TreebankNode topNode = TreebankTestsUtil.newNode(jCas, "S", inpNode, ranvpNode);
+    TreebankNode iNode = TreebankNodeUtility.newNode(jCas, 0, 1, "PRP");
+    TreebankNode inpNode = TreebankNodeUtility.newNode(jCas, "NP", iNode);
+    TreebankNode ranNode = TreebankNodeUtility.newNode(jCas, 2, 5, "VBD");
+    TreebankNode homeNode = TreebankNodeUtility.newNode(jCas, 6, 10, "NN");
+    TreebankNode homenpNode = TreebankNodeUtility.newNode(jCas, "NP", homeNode);
+    TreebankNode ranvpNode = TreebankNodeUtility.newNode(jCas, "VP", ranNode, homenpNode);
+    TreebankNode topNode = TreebankNodeUtility.newNode(jCas, "S", inpNode, ranvpNode);
 
     SpannedTextExtractor textExtractor = new SpannedTextExtractor();
     TypePathExtractor tagExtractor = new TypePathExtractor(TreebankNode.class, "nodeType");
