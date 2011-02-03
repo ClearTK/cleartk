@@ -43,6 +43,7 @@ import org.cleartk.examples.ExamplesTestBase;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.testing.util.HideOutput;
 
 /**
  * <br>
@@ -177,7 +178,11 @@ public class ExamplePOSAnnotatorTest extends ExamplesTestBase {
   }
 
   @Test
-  public void testAnnotatorDescriptor() throws UIMAException {
+  public void testAnnotatorDescriptor() throws Exception {
+    HideOutput hider = new HideOutput();
+    BuildTestExamplePosModel.main();
+    hider.restoreOutput();
+
     AnalysisEngineDescription posTaggerDescription = ExamplePOSAnnotator
         .getClassifierDescription(ExamplePOSAnnotator.DEFAULT_MODEL);
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(posTaggerDescription);

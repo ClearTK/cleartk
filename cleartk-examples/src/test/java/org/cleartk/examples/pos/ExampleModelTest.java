@@ -31,10 +31,10 @@ import static org.junit.Assert.assertNull;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.cleartk.examples.ExamplesTestBase;
-import org.cleartk.examples.pos.ExamplePOSAnnotator;
 import org.cleartk.token.type.Token;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.testing.util.HideOutput;
 import org.uimafit.util.JCasUtil;
 
 /**
@@ -49,6 +49,10 @@ public class ExampleModelTest extends ExamplesTestBase {
 
   @Test
   public void testModel() throws Exception {
+    HideOutput hider = new HideOutput();
+    BuildTestExamplePosModel.main();
+    hider.restoreOutput();
+
     AnalysisEngineDescription posTaggerDescription = ExamplePOSAnnotator
         .getClassifierDescription(ExamplePOSAnnotator.DEFAULT_MODEL);
     AnalysisEngine posTagger = AnalysisEngineFactory.createPrimitive(posTaggerDescription);

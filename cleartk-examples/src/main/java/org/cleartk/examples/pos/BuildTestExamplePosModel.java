@@ -44,7 +44,7 @@ import org.uimafit.pipeline.SimplePipeline;
 
 public class BuildTestExamplePosModel {
 
-  public static void main(String[] args) throws Exception {
+  public static void main(String... args) throws Exception {
 
     SimplePipeline.runPipeline(FilesCollectionReader.getCollectionReaderWithSuffixes(
         ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
