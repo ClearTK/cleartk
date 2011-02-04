@@ -46,7 +46,7 @@ import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
-import org.cleartk.classifier.jar.JarClassifierFactory;
+import org.cleartk.classifier.jar.GenericJarClassifierFactory;
 import org.cleartk.srl.type.Argument;
 import org.cleartk.srl.type.Predicate;
 import org.cleartk.srl.type.SemanticArgument;
@@ -89,7 +89,7 @@ public class ArgumentAnnotator extends CleartkAnnotator<String> {
     return AnalysisEngineFactory.createPrimitiveDescription(
         ArgumentAnnotator.class,
         SrlComponents.TYPE_SYSTEM_DESCRIPTION,
-        JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
+        GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
         classifierJar.toString());
   }
 

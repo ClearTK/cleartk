@@ -45,8 +45,8 @@ import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.proliferate.CharacterNGramProliferator;
 import org.cleartk.classifier.feature.proliferate.LowerCaseProliferator;
 import org.cleartk.classifier.feature.proliferate.ProliferatingExtractor;
-import org.cleartk.classifier.jar.JarClassifierFactory;
-import org.cleartk.classifier.util.InstanceCollector;
+import org.cleartk.classifier.jar.GenericJarClassifierFactory;
+import org.cleartk.classifier.util.PublicFieldSequenceDataWriter;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Chunk;
 import org.cleartk.type.test.Sentence;
@@ -189,7 +189,7 @@ public class ChunkerTest extends DefaultTestBase {
         DefaultChunkLabeler.PARAM_CHUNK_LABEL_FEATURE_NAME,
         "chunkType",
         CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-        InstanceCollector.StringFactory.class.getName());
+        PublicFieldSequenceDataWriter.StringFactory.class.getName());
     TestChunkerAnnotator copy = new TestChunkerAnnotator();
     copy.initialize(engine.getUimaContext());
     ChunkLabeler chunkLabeler = copy.getChunkLabeler();
@@ -248,7 +248,7 @@ public class ChunkerTest extends DefaultTestBase {
         Chunk.class.getName(),
         DefaultChunkLabeler.PARAM_CHUNK_LABEL_FEATURE_NAME,
         "chunkType",
-        JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
+        GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
         "example/pos/model/model.jar");
     InitializableFactory.initialize(chunkLabeler, engine.getUimaContext());
     engine.process(jCas);

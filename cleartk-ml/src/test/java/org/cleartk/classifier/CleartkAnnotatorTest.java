@@ -39,7 +39,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
-import org.cleartk.classifier.jar.JarClassifierFactory;
+import org.cleartk.classifier.jar.GenericJarClassifierFactory;
 import org.cleartk.classifier.test.DefaultStringTestDataWriterFactory;
 import org.cleartk.classifier.util.InstanceFactory;
 import org.cleartk.test.DefaultTestBase;
@@ -69,7 +69,7 @@ public class CleartkAnnotatorTest extends DefaultTestBase {
     try {
       CleartkAnnotator<String> classifierAnnotator = new StringTestAnnotator();
       classifierAnnotator.initialize(UimaContextFactory.createUimaContext(
-          JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
+          GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
           new File(outputDirectoryName, "asdf.jar").getPath()));
       classifierAnnotator.classifier.classify(InstanceFactory
           .createInstance("hello", 1, 1)

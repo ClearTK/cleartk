@@ -23,25 +23,8 @@
  */
 package org.cleartk.classifier.jar;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.jar.JarInputStream;
-
-import org.apache.uima.UimaContext;
-import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.ClassifierFactory;
-import org.cleartk.classifier.SequenceClassifier;
-import org.cleartk.classifier.SequenceClassifierFactory;
-import org.uimafit.component.initialize.ConfigurationParameterInitializer;
-import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.ConfigurationParameterFactory;
-import org.uimafit.factory.initializable.Initializable;
 
 /**
  * <br>
@@ -49,49 +32,14 @@ import org.uimafit.factory.initializable.Initializable;
  * All rights reserved.
  */
 
-public class JarClassifierFactory<OUTCOME_TYPE> implements ClassifierFactory<OUTCOME_TYPE>,
-    SequenceClassifierFactory<OUTCOME_TYPE>, Initializable {
+public class JarClassifierFactory<OUTCOME_TYPE> extends
+    GenericJarClassifierFactory<Classifier<OUTCOME_TYPE>> implements
+    ClassifierFactory<OUTCOME_TYPE> {
 
-  public static final String PARAM_CLASSIFIER_JAR_PATH = ConfigurationParameterFactory
-      .createConfigurationParameterName(JarClassifierFactory.class, "classifierJarPath");
-
-  @ConfigurationParameter(mandatory = true, description = "provides the path to the jar file that should be used to instantiate the classifier.")
-  private String classifierJarPath;
-
-  public void setClassifierJarPath(String classifierJarPath) {
-    this.classifierJarPath = classifierJarPath;
-  }
-
-  public void initialize(UimaContext context) throws ResourceInitializationException {
-    ConfigurationParameterInitializer.initialize(this, context);
-  }
-
+  @Override
   @SuppressWarnings("unchecked")
-  public Classifier<OUTCOME_TYPE> createClassifier() throws IOException, CleartkException {
-    return this.createUntypedClassifier(Classifier.class);
+  protected Class<Classifier<OUTCOME_TYPE>> getClassifierClass() {
+    return (Class<Classifier<OUTCOME_TYPE>>) (Class<?>) Classifier.class;
   }
 
-  @SuppressWarnings("unchecked")
-  public SequenceClassifier<OUTCOME_TYPE> createSequenceClassifier() throws IOException,
-      CleartkException {
-    return this.createUntypedClassifier(SequenceClassifier.class);
-  }
-
-  private <CLASSIFIER_TYPE> CLASSIFIER_TYPE createUntypedClassifier(
-      Class<CLASSIFIER_TYPE> superClass) throws IOException {
-    InputStream stream;
-    try {
-      stream = new URL(this.classifierJarPath).openStream();
-    } catch (MalformedURLException e) {
-      stream = new FileInputStream(this.classifierJarPath);
-    }
-    stream = new BufferedInputStream(stream);
-    JarInputStream modelStream = new JarInputStream(stream);
-    JarClassifierBuilder<?> builder = JarClassifierBuilder.fromManifest(modelStream.getManifest());
-    try {
-      return superClass.cast(builder.loadClassifier(modelStream));
-    } finally {
-      stream.close();
-    }
-  }
 }

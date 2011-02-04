@@ -37,7 +37,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.CleartkException;
-import org.cleartk.classifier.jar.JarClassifierFactory;
+import org.cleartk.classifier.jar.GenericJarClassifierFactory;
 import org.cleartk.classifier.util.InstanceFactory;
 import org.cleartk.test.DefaultTestBase;
 import org.junit.Test;
@@ -64,7 +64,7 @@ public class CleartkSequenceAnnotatorTest extends DefaultTestBase {
     try {
       CleartkSequenceAnnotator<String> classifierAnnotator = new StringTestAnnotator();
       classifierAnnotator.initialize(UimaContextFactory.createUimaContext(
-          JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
+          GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
           new File(outputDirectoryName, "asdf.jar").getPath()));
       classifierAnnotator.classify(Collections.singletonList(InstanceFactory
           .createInstance("hello", 1, 1)));
@@ -144,7 +144,7 @@ public class CleartkSequenceAnnotatorTest extends DefaultTestBase {
 
   public static class TestClassifierFactory<T> implements SequenceClassifierFactory<T> {
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public SequenceClassifier<T> createSequenceClassifier() throws IOException,
+    public SequenceClassifier<T> createClassifier() throws IOException,
         CleartkException {
       return new TestClassifier();
     }
@@ -172,7 +172,7 @@ public class CleartkSequenceAnnotatorTest extends DefaultTestBase {
   }
 
   public static class StringTestClassifierFactory implements SequenceClassifierFactory<String> {
-    public SequenceClassifier<String> createSequenceClassifier() throws IOException,
+    public SequenceClassifier<String> createClassifier() throws IOException,
         CleartkException {
       return new StringTestBuilder();
     }
@@ -182,7 +182,7 @@ public class CleartkSequenceAnnotatorTest extends DefaultTestBase {
   }
 
   public static class IntegerTestClassifierFactory implements SequenceClassifierFactory<Integer> {
-    public SequenceClassifier<Integer> createSequenceClassifier() throws IOException,
+    public SequenceClassifier<Integer> createClassifier() throws IOException,
         CleartkException {
       return new IntegerTestBuilder();
     }
@@ -192,7 +192,7 @@ public class CleartkSequenceAnnotatorTest extends DefaultTestBase {
   }
 
   public static class ParentTestClassifierFactory implements SequenceClassifierFactory<Parent> {
-    public SequenceClassifier<Parent> createSequenceClassifier() throws IOException,
+    public SequenceClassifier<Parent> createClassifier() throws IOException,
         CleartkException {
       return new ParentTestBuilder();
     }
@@ -202,7 +202,7 @@ public class CleartkSequenceAnnotatorTest extends DefaultTestBase {
   }
 
   public static class ChildTestClassifierFactory implements SequenceClassifierFactory<Child> {
-    public SequenceClassifier<Child> createSequenceClassifier() throws IOException,
+    public SequenceClassifier<Child> createClassifier() throws IOException,
         CleartkException {
       return new ChildTestBuilder();
     }

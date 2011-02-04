@@ -40,7 +40,7 @@ import org.cleartk.classifier.CleartkAnnotatorDescriptionFactory;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.ScoredOutcome;
-import org.cleartk.classifier.util.InstanceCollector;
+import org.cleartk.classifier.util.PublicFieldDataWriter;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.syntax.constituent.util.TreebankNodeUtility;
@@ -87,7 +87,7 @@ public class VerbClauseTemporalAnnotatorTest extends TimeMLTestBase {
     AnalysisEngineDescription desc = CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
         VerbClauseTemporalAnnotator.class,
         typeSystemDescription,
-        InstanceCollector.StringFactory.class,
+        PublicFieldDataWriter.StringFactory.class,
         ".");
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(desc);
 
@@ -140,7 +140,7 @@ public class VerbClauseTemporalAnnotatorTest extends TimeMLTestBase {
 
     // collect the single instance from the annotator
     List<Instance<String>> instances;
-    instances = InstanceCollector.StringFactory.collectInstances(engine, jCas);
+    instances = PublicFieldDataWriter.StringFactory.collectInstances(engine, jCas);
     Assert.assertEquals(1, instances.size());
 
     // check the outcome

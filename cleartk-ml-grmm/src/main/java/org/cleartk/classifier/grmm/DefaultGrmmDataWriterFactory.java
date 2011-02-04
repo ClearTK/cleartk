@@ -68,7 +68,7 @@ public class DefaultGrmmDataWriterFactory extends
     super.initialize(uimaContext);
   }
 
-  public SequenceDataWriter<String[]> createSequenceDataWriter() throws IOException {
+  public SequenceDataWriter<String[]> createDataWriter() throws IOException {
     GrmmDataWriter dataWriter = new GrmmDataWriter(outputDirectory);
 
     if (!this.setEncodersFromFileSystem(dataWriter)) {

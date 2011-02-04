@@ -126,7 +126,7 @@ public class ViterbiDataWriterFactory<OUTCOME_TYPE> extends DirectoryDataWriterF
     }
   }
 
-  public SequenceDataWriter<OUTCOME_TYPE> createSequenceDataWriter() throws IOException {
+  public SequenceDataWriter<OUTCOME_TYPE> createDataWriter() throws IOException {
     return dataWriter;
   }
 

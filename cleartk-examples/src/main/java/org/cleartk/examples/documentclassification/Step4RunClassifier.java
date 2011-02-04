@@ -28,7 +28,7 @@ import java.io.IOException;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-import org.cleartk.classifier.jar.JarClassifierFactory;
+import org.cleartk.classifier.jar.GenericJarClassifierFactory;
 import org.cleartk.examples.ExampleComponents;
 import org.cleartk.syntax.opennlp.SentenceAnnotator;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
@@ -82,7 +82,7 @@ public class Step4RunClassifier {
         .createPrimitiveDescription(
             DocumentClassificationAnnotator.class,
             ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-            JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
+            GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
             modelFileName);
 
     System.out.println("classifying documents located in '" + documentDirectory + "'");

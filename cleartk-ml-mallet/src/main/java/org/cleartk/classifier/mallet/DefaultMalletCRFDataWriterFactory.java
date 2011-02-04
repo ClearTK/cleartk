@@ -62,7 +62,7 @@ public class DefaultMalletCRFDataWriterFactory extends
   @ConfigurationParameter(description = "indicates that the FeaturesEncoder should write the feature names in sorted order", defaultValue = "false")
   private boolean sort;
 
-  public SequenceDataWriter<String> createSequenceDataWriter() throws IOException {
+  public SequenceDataWriter<String> createDataWriter() throws IOException {
     MalletCRFDataWriter mdw = new MalletCRFDataWriter(outputDirectory);
 
     if (!this.setEncodersFromFileSystem(mdw)) {

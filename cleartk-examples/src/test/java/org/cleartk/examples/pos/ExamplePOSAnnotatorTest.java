@@ -36,8 +36,8 @@ import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
-import org.cleartk.classifier.jar.JarClassifierFactory;
-import org.cleartk.classifier.util.InstanceCollector;
+import org.cleartk.classifier.jar.GenericJarClassifierFactory;
+import org.cleartk.classifier.util.PublicFieldSequenceDataWriter;
 import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
 import org.cleartk.examples.ExampleComponents;
 import org.cleartk.examples.ExamplesTestBase;
@@ -63,7 +63,7 @@ public class ExamplePOSAnnotatorTest extends ExamplesTestBase {
         .createCleartkSequenceAnnotator(
             ExamplePOSAnnotator.class,
             ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-            InstanceCollector.StringFactory.class,
+            PublicFieldSequenceDataWriter.StringFactory.class,
             ".");
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(desc);
 
@@ -75,9 +75,8 @@ public class ExamplePOSAnnotatorTest extends ExamplesTestBase {
         "DT NNP VBD IN CD .",
         "The Absurdi retreat in 2003 .");
 
-    List<Instance<String>> instances = InstanceCollector.StringFactory.collectInstances(
-        engine,
-        jCas);
+    List<Instance<String>> instances = PublicFieldSequenceDataWriter.StringFactory
+        .collectInstances(engine, jCas);
 
     List<String> featureValues;
 
@@ -189,7 +188,7 @@ public class ExamplePOSAnnotatorTest extends ExamplesTestBase {
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(posTaggerDescription);
 
     Object classifierJar = engine
-        .getConfigParameterValue(JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH);
+        .getConfigParameterValue(GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH);
     Assert.assertEquals(ExamplePOSAnnotator.DEFAULT_MODEL, classifierJar);
 
     engine.collectionProcessComplete();

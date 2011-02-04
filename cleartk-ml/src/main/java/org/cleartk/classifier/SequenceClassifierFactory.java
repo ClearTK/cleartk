@@ -35,7 +35,7 @@ import org.cleartk.CleartkException;
 
 public interface SequenceClassifierFactory<OUTCOME_TYPE> {
 
-  public SequenceClassifier<OUTCOME_TYPE> createSequenceClassifier() throws IOException,
+  public SequenceClassifier<OUTCOME_TYPE> createClassifier() throws IOException,
       CleartkException;
 
 }

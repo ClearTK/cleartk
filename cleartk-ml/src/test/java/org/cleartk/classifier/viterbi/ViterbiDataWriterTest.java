@@ -44,7 +44,7 @@ import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
-import org.cleartk.classifier.jar.JarClassifierFactory;
+import org.cleartk.classifier.jar.GenericJarClassifierFactory;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.classifier.test.DefaultStringTestDataWriterFactory;
 import org.cleartk.test.DefaultTestBase;
@@ -165,7 +165,7 @@ public class ViterbiDataWriterTest extends DefaultTestBase {
     engine = AnalysisEngineFactory.createPrimitive(
         TestAnnotator.class,
         typeSystemDescription,
-        JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
+        GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
         new File(outputDirectoryName, "model.jar").getPath());
 
     engine.process(jCas);

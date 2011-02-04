@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.classifier;
+package org.cleartk.classifier.util;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,25 +31,26 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.CleartkException;
+import org.cleartk.classifier.DataWriter;
+import org.cleartk.classifier.DataWriterFactory;
+import org.cleartk.classifier.Instance;
 
 /**
+ * A simple {@link DataWriter} that stores all instances in a public attribute. Intended only for
+ * testing.
+ * 
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
- * <p>
- * 
- * A simple instance consumer that stores all instances in a public attribute. Intended only for
- * testing.
- * 
  * @author Philip Ogren
  * @author Steven Bethard
  */
-public class InstanceCollector<T> implements DataWriter<T>, SequenceDataWriter<T> {
+public class PublicFieldDataWriter<T> implements DataWriter<T> {
 
   public List<Instance<T>> instances;
 
-  public InstanceCollector() {
+  public PublicFieldDataWriter() {
     this.instances = new ArrayList<Instance<T>>();
   }
 
@@ -60,28 +61,19 @@ public class InstanceCollector<T> implements DataWriter<T>, SequenceDataWriter<T
     this.instances.add(instance);
   }
 
-  public void write(List<Instance<T>> instance) throws CleartkException {
-    this.instances.addAll(instance);
-  }
-
   /**
    * Returns a single static instance of InstanceCollector<String>.
    */
-  public static class StringFactory implements DataWriterFactory<String>,
-      SequenceDataWriterFactory<String> {
-    private static InstanceCollector<String> collector = new InstanceCollector<String>();
+  public static class StringFactory implements DataWriterFactory<String> {
+    private static PublicFieldDataWriter<String> collector = new PublicFieldDataWriter<String>();
 
     public DataWriter<String> createDataWriter() throws IOException {
       return collector;
     }
 
-    public SequenceDataWriter<String> createSequenceDataWriter() throws IOException {
-      return collector;
-    }
-
     public static List<Instance<String>> collectInstances(AnalysisEngine engine, JCas jCas)
         throws AnalysisEngineProcessException {
-      return InstanceCollector.collectInstances(engine, jCas, collector);
+      return PublicFieldDataWriter.collectInstances(engine, jCas, collector);
     }
   }
 
@@ -89,7 +81,7 @@ public class InstanceCollector<T> implements DataWriter<T>, SequenceDataWriter<T
    * Returns a single static instance of InstanceCollector<String>.
    */
   public static class BooleanFactory implements DataWriterFactory<Boolean> {
-    private static InstanceCollector<Boolean> collector = new InstanceCollector<Boolean>();
+    private static PublicFieldDataWriter<Boolean> collector = new PublicFieldDataWriter<Boolean>();
 
     public DataWriter<Boolean> createDataWriter() throws IOException {
       return collector;
@@ -97,14 +89,14 @@ public class InstanceCollector<T> implements DataWriter<T>, SequenceDataWriter<T
 
     public static List<Instance<Boolean>> collectInstances(AnalysisEngine engine, JCas jCas)
         throws AnalysisEngineProcessException {
-      return InstanceCollector.collectInstances(engine, jCas, collector);
+      return PublicFieldDataWriter.collectInstances(engine, jCas, collector);
     }
   }
 
   static <T> List<Instance<T>> collectInstances(
       AnalysisEngine engine,
       JCas jCas,
-      InstanceCollector<T> collector) throws AnalysisEngineProcessException {
+      PublicFieldDataWriter<T> collector) throws AnalysisEngineProcessException {
     collector.instances.clear();
     engine.process(jCas);
     engine.collectionProcessComplete();

@@ -35,6 +35,6 @@ import java.io.IOException;
 
 public interface SequenceDataWriterFactory<OUTCOME_TYPE> {
 
-  public SequenceDataWriter<OUTCOME_TYPE> createSequenceDataWriter() throws IOException;
+  public SequenceDataWriter<OUTCOME_TYPE> createDataWriter() throws IOException;
 
 }

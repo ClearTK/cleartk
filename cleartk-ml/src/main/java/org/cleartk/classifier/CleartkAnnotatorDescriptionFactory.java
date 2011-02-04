@@ -28,7 +28,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
-import org.cleartk.classifier.jar.JarClassifierFactory;
+import org.cleartk.classifier.jar.GenericJarClassifierFactory;
 import org.cleartk.classifier.viterbi.ViterbiClassifier;
 import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -111,7 +111,7 @@ public class CleartkAnnotatorDescriptionFactory {
         typeSystemDescription);
     ConfigurationParameterFactory.addConfigurationParameter(
         aed,
-        JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
+        GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
         classifierJar);
     return aed;
   }
@@ -176,7 +176,7 @@ public class CleartkAnnotatorDescriptionFactory {
         typeSystemDescription);
     ConfigurationParameterFactory.addConfigurationParameter(
         aed,
-        JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
+        GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
         classifierJar);
     return aed;
   }

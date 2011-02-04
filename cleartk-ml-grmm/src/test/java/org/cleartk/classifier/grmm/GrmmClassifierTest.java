@@ -40,7 +40,7 @@ import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
-import org.cleartk.classifier.jar.JarClassifierFactory;
+import org.cleartk.classifier.jar.GenericJarClassifierFactory;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.test.DefaultTestBase;
 import org.junit.Test;
@@ -142,7 +142,7 @@ public class GrmmClassifierTest extends DefaultTestBase {
     AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createPrimitive(
         Test1Annotator.class,
         typeSystemDescription,
-        JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
+        GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
         modelJarFile.getPath());
     jCas.reset();
     classifierAnnotator.process(jCas);

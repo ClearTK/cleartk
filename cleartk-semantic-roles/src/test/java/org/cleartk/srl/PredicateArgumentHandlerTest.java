@@ -38,7 +38,7 @@ import org.apache.uima.jcas.cas.FSArray;
 import org.cleartk.classifier.CleartkAnnotatorDescriptionFactory;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.util.InstanceCollector;
+import org.cleartk.classifier.util.PublicFieldDataWriter;
 import org.cleartk.srl.type.Predicate;
 import org.cleartk.srl.type.SemanticArgument;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
@@ -65,13 +65,13 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
         .createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
             ArgumentAnnotator.class,
             typeSystemDescription,
-            InstanceCollector.StringFactory.class,
+            PublicFieldDataWriter.StringFactory.class,
             "."));
     this.setTokens(jCas);
     this.setTrees(jCas);
 
     // make sure the handler produces no instances
-    List<Instance<String>> instances = InstanceCollector.StringFactory.collectInstances(
+    List<Instance<String>> instances = PublicFieldDataWriter.StringFactory.collectInstances(
         engine,
         jCas);
     Assert.assertEquals(0, instances.size());
@@ -84,13 +84,13 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
         .createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
             ArgumentIdentifier.class,
             typeSystemDescription,
-            InstanceCollector.BooleanFactory.class,
+            PublicFieldDataWriter.BooleanFactory.class,
             "."));
     this.setTokens(jCas);
     this.setTrees(jCas);
 
     // make sure the handler produces no instances
-    List<Instance<Boolean>> instances = InstanceCollector.BooleanFactory.collectInstances(
+    List<Instance<Boolean>> instances = PublicFieldDataWriter.BooleanFactory.collectInstances(
         engine,
         jCas);
     Assert.assertEquals(0, instances.size());
@@ -103,13 +103,13 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
         .createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
             ArgumentClassifier.class,
             typeSystemDescription,
-            InstanceCollector.StringFactory.class,
+            PublicFieldDataWriter.StringFactory.class,
             "."));
     this.setTokens(jCas);
     this.setTrees(jCas);
 
     // make sure the handler produces no instances
-    List<Instance<String>> instances = InstanceCollector.StringFactory.collectInstances(
+    List<Instance<String>> instances = PublicFieldDataWriter.StringFactory.collectInstances(
         engine,
         jCas);
     Assert.assertEquals(0, instances.size());
@@ -122,7 +122,7 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
         .createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
             ArgumentAnnotator.class,
             typeSystemDescription,
-            InstanceCollector.StringFactory.class,
+            PublicFieldDataWriter.StringFactory.class,
             "."));
     this.setTokens(jCas);
     this.setPredicates(jCas);
@@ -130,7 +130,7 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
     // make sure the handler produces an exception
     HideLogging hider = new HideLogging();
     try {
-      InstanceCollector.StringFactory.collectInstances(engine, jCas);
+      PublicFieldDataWriter.StringFactory.collectInstances(engine, jCas);
       Assert.fail("expected exception for missing TopTreebankNode");
     } catch (AnalysisEngineProcessException e) {
     } finally {
@@ -145,7 +145,7 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
         .createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
             ArgumentIdentifier.class,
             typeSystemDescription,
-            InstanceCollector.BooleanFactory.class,
+            PublicFieldDataWriter.BooleanFactory.class,
             "."));
     this.setTokens(jCas);
     this.setPredicates(jCas);
@@ -153,7 +153,7 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
     // make sure the handler produces an exception
     HideLogging hider = new HideLogging();
     try {
-      InstanceCollector.BooleanFactory.collectInstances(engine, jCas);
+      PublicFieldDataWriter.BooleanFactory.collectInstances(engine, jCas);
       Assert.fail("expected exception for missing TopTreebankNode");
     } catch (AnalysisEngineProcessException e) {
     } finally {
@@ -168,7 +168,7 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
         .createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
             ArgumentClassifier.class,
             typeSystemDescription,
-            InstanceCollector.StringFactory.class,
+            PublicFieldDataWriter.StringFactory.class,
             "."));
     this.setTokens(jCas);
     this.setPredicates(jCas);
@@ -176,7 +176,7 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
     // make sure the handler produces an exception
     HideLogging hider = new HideLogging();
     try {
-      InstanceCollector.StringFactory.collectInstances(engine, jCas);
+      PublicFieldDataWriter.StringFactory.collectInstances(engine, jCas);
       Assert.fail("expected exception for missing TopTreebankNode");
     } catch (AnalysisEngineProcessException e) {
     } finally {
@@ -191,14 +191,14 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
         .createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
             PredicateAnnotator.class,
             typeSystemDescription,
-            InstanceCollector.BooleanFactory.class,
+            PublicFieldDataWriter.BooleanFactory.class,
             "."));
     this.setTokens(jCas);
     this.setTrees(jCas);
     this.setPredicates(jCas);
 
     // get the instances produced by the handler
-    List<Instance<Boolean>> instances = InstanceCollector.BooleanFactory.collectInstances(
+    List<Instance<Boolean>> instances = PublicFieldDataWriter.BooleanFactory.collectInstances(
         engine,
         jCas);
     Assert.assertEquals(5, instances.size());

@@ -53,7 +53,7 @@ public abstract class CleartkSequenceAnnotator<OUTCOME_TYPE> extends JCasAnnotat
           CleartkSequenceAnnotator.class,
           "classifierFactoryClassName");
 
-  @ConfigurationParameter(mandatory = false, description = "provides the full name of the SequenceClassifierFactory class to be used.", defaultValue = "org.cleartk.classifier.jar.JarClassifierFactory")
+  @ConfigurationParameter(mandatory = false, description = "provides the full name of the SequenceClassifierFactory class to be used.", defaultValue = "org.cleartk.classifier.jar.SequenceJarClassifierFactory")
   private String classifierFactoryClassName;
 
   public static final String PARAM_DATA_WRITER_FACTORY_CLASS_NAME = ConfigurationParameterFactory
@@ -80,7 +80,7 @@ public abstract class CleartkSequenceAnnotator<OUTCOME_TYPE> extends JCasAnnotat
           SequenceDataWriterFactory.class);
       SequenceDataWriter<?> untypedDataWriter;
       try {
-        untypedDataWriter = factory.createSequenceDataWriter();
+        untypedDataWriter = factory.createDataWriter();
       } catch (IOException e) {
         throw new ResourceInitializationException(e);
       }
@@ -94,7 +94,7 @@ public abstract class CleartkSequenceAnnotator<OUTCOME_TYPE> extends JCasAnnotat
           SequenceClassifierFactory.class);
       SequenceClassifier<?> untypedClassifier;
       try {
-        untypedClassifier = factory.createSequenceClassifier();
+        untypedClassifier = factory.createClassifier();
       } catch (IOException e) {
         throw new ResourceInitializationException(e);
       } catch (CleartkException e) {

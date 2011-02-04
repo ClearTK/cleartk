@@ -39,7 +39,7 @@ import org.cleartk.classifier.feature.extractor.simple.BagExtractor;
 import org.cleartk.classifier.feature.extractor.simple.CountsExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
-import org.cleartk.classifier.jar.JarClassifierFactory;
+import org.cleartk.classifier.jar.GenericJarClassifierFactory;
 import org.cleartk.examples.ExampleComponents;
 import org.cleartk.token.type.Token;
 import org.cleartk.util.ViewURIUtil;
@@ -99,7 +99,7 @@ public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
     return AnalysisEngineFactory.createPrimitiveDescription(
         DocumentClassificationAnnotator.class,
         ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-        JarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
+        GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
         classifierJarFile.toString());
   }
 
