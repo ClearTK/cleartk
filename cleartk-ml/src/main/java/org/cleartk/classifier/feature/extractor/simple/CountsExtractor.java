@@ -31,11 +31,10 @@ import java.util.Map;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.CleartkException;
-import org.cleartk.CleartkRuntimeException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.Counts;
 import org.cleartk.classifier.feature.FeatureCollection;
+import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 
 /**
  * <br>
@@ -68,7 +67,7 @@ public class CountsExtractor implements SimpleFeatureExtractor {
     this(null, annotationType, subExtractor);
   }
 
-  public List<Feature> extract(JCas view, Annotation annotation) throws CleartkException {
+  public List<Feature> extract(JCas view, Annotation annotation) throws CleartkExtractorException {
     Map<Object, Integer> countsMap = new HashMap<Object, Integer>();
     FeatureName featureName = new FeatureName();
 
@@ -83,7 +82,7 @@ public class CountsExtractor implements SimpleFeatureExtractor {
   private void count(
       Collection<Feature> features,
       Map<Object, Integer> countsMap,
-      FeatureName featureName) {
+      FeatureName featureName) throws CleartkExtractorException {
     for (Feature feature : features) {
       if (feature.getValue() instanceof FeatureCollection) {
         FeatureCollection fc = (FeatureCollection) feature.getValue();
@@ -112,10 +111,9 @@ public class CountsExtractor implements SimpleFeatureExtractor {
     public FeatureName() {
     }
 
-    public void setFeatureName(String f) {
+    public void setFeatureName(String f) throws CleartkExtractorException {
       if (featureName != null && !featureName.equals(f))
-        throw new CleartkRuntimeException(
-            "sub-extractor of CountsExtractor must only extract features of one name");
+        throw CleartkExtractorException.moreThanOneName(featureName, f);
 
       featureName = f;
     }

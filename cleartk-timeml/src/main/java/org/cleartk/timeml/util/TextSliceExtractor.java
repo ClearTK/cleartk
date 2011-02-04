@@ -28,7 +28,6 @@ import java.util.List;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 
@@ -80,7 +79,7 @@ public class TextSliceExtractor implements SimpleFeatureExtractor {
     this(start, Integer.MAX_VALUE);
   }
 
-  public List<Feature> extract(JCas view, Annotation focusAnnotation) throws CleartkException {
+  public List<Feature> extract(JCas view, Annotation focusAnnotation) {
     String text = focusAnnotation.getCoveredText();
     int startOffset = this.start;
     if (startOffset < 0) {

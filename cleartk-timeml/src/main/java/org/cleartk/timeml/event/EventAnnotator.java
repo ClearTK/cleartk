@@ -34,13 +34,13 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.CleartkException;
 import org.cleartk.chunker.ChunkLabeler_ImplBase;
 import org.cleartk.chunker.Chunker;
 import org.cleartk.chunker.ChunkerFeatureExtractor;
 import org.cleartk.chunker.DefaultChunkLabeler;
 import org.cleartk.classifier.CleartkAnnotatorDescriptionFactory;
 import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.WindowExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
@@ -169,7 +169,7 @@ public class EventAnnotator {
     public Instance<String> extractFeatures(
         JCas jCas,
         Annotation labeledAnnotation,
-        Annotation sequence) throws CleartkException {
+        Annotation sequence) throws CleartkExtractorException {
       Instance<String> instance = new Instance<String>();
       for (SimpleFeatureExtractor extractor : this.tokenFeatureExtractors) {
         instance.addAll(extractor.extract(jCas, labeledAnnotation));

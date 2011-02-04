@@ -30,7 +30,6 @@ import java.util.List;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.CleartkException;
 import org.cleartk.util.ReflectionUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
@@ -97,8 +96,6 @@ public abstract class CleartkSequenceAnnotator<OUTCOME_TYPE> extends JCasAnnotat
         untypedClassifier = factory.createClassifier();
       } catch (IOException e) {
         throw new ResourceInitializationException(e);
-      } catch (CleartkException e) {
-        throw new ResourceInitializationException(e);
       }
 
       this.classifier = ReflectionUtil.uncheckedCast(untypedClassifier);
@@ -120,11 +117,7 @@ public abstract class CleartkSequenceAnnotator<OUTCOME_TYPE> extends JCasAnnotat
     super.collectionProcessComplete();
 
     if (isTraining()) {
-      try {
-        dataWriter.finish();
-      } catch (CleartkException ctke) {
-        throw new AnalysisEngineProcessException(ctke);
-      }
+      dataWriter.finish();
     }
   }
 
@@ -134,7 +127,7 @@ public abstract class CleartkSequenceAnnotator<OUTCOME_TYPE> extends JCasAnnotat
   }
 
   protected List<OUTCOME_TYPE> classify(List<Instance<OUTCOME_TYPE>> instances)
-      throws CleartkException {
+      throws CleartkProcessingException {
     List<List<Feature>> instanceFeatures = new ArrayList<List<Feature>>();
     for (Instance<OUTCOME_TYPE> instance : instances) {
       instanceFeatures.add(instance.getFeatures());

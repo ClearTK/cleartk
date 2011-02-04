@@ -34,9 +34,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.util.featurevector.ArrayFeatureVector;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
+import org.cleartk.classifier.util.featurevector.InvalidFeatureVectorValueException;
 
 /**
  * <br>
@@ -51,15 +51,14 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
 
 public class LIBLINEARModel {
 
-  public static LIBLINEARModel fromFile(File modelFile) throws IOException, CleartkException {
+  public static LIBLINEARModel fromFile(File modelFile) throws IOException {
     InputStream modelStream = new FileInputStream(modelFile);
     LIBLINEARModel model = fromInputStream(modelStream);
     modelStream.close();
     return model;
   }
 
-  public static LIBLINEARModel fromInputStream(InputStream modelStream) throws IOException,
-      CleartkException {
+  public static LIBLINEARModel fromInputStream(InputStream modelStream) throws IOException {
     LIBLINEARModel model = new LIBLINEARModel();
 
     BufferedReader in = new BufferedReader(new InputStreamReader(modelStream));
@@ -98,7 +97,11 @@ public class LIBLINEARModel {
       buffer = in.readLine();
       fields = buffer.trim().split(" ");
       for (int j = 0; j < model.numberOfClassifiers; j++) {
-        model.classifiers[j].weightVector.set(i + 1, Double.valueOf(fields[j]));
+        try {
+          model.classifiers[j].weightVector.set(i + 1, Double.valueOf(fields[j]));
+        } catch (InvalidFeatureVectorValueException e) {
+          throw new IOException(e);
+        }
       }
     }
 

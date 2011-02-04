@@ -38,7 +38,6 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.pear.util.FileUtil;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
@@ -66,14 +65,6 @@ public class MaxentDataWriterTest extends DefaultTestBase {
 
     @Override
     public void process(JCas cas) throws AnalysisEngineProcessException {
-      try {
-        this.processSimple(cas);
-      } catch (CleartkException e) {
-        throw new AnalysisEngineProcessException(e);
-      }
-    }
-
-    public void processSimple(JCas cas) throws CleartkException {
       List<Feature> features = Arrays.asList(
           new Feature("pos", "NN"),
           new Feature("distance", 3.0),
@@ -222,15 +213,12 @@ public class MaxentDataWriterTest extends DefaultTestBase {
 
     @Override
     public void process(JCas cas) throws AnalysisEngineProcessException {
-      try {
-        List<Feature> features = Arrays.asList(new Feature("pos", "NN"), new Feature(
-            "distance",
-            3.0), new Feature("precision", 1.234));
-        Instance<String> instance = new Instance<String>(features);
-        this.dataWriter.write(instance);
-      } catch (CleartkException e) {
-        throw new AnalysisEngineProcessException(e);
-      }
+      List<Feature> features = Arrays.asList(
+          new Feature("pos", "NN"),
+          new Feature("distance", 3.0),
+          new Feature("precision", 1.234));
+      Instance<String> instance = new Instance<String>(features);
+      this.dataWriter.write(instance);
     }
 
   }
@@ -273,12 +261,8 @@ public class MaxentDataWriterTest extends DefaultTestBase {
 
     @Override
     public void process(JCas cas) throws AnalysisEngineProcessException {
-      try {
-        Instance<String> instance = InstanceFactory.createInstance("a", "b c d");
-        this.dataWriter.write(instance);
-      } catch (CleartkException e) {
-        throw new AnalysisEngineProcessException(e);
-      }
+      Instance<String> instance = InstanceFactory.createInstance("a", "b c d");
+      this.dataWriter.write(instance);
     }
   }
 

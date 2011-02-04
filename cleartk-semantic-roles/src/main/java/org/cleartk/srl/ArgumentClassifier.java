@@ -35,11 +35,11 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.DataWriterFactory;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.annotationpair.AnnotationPairFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.annotationpair.MatchingAnnotationPairExtractor;
 import org.cleartk.classifier.feature.extractor.annotationpair.NamingAnnotationPairFeatureExtractor;
@@ -151,26 +151,22 @@ public class ArgumentClassifier extends CleartkAnnotator<String> {
      */
     List<Sentence> sentences = AnnotationRetrieval.getAnnotations(jCas, Sentence.class);
 
-    try {
-      nSentences = 0;
-      nPredicates = 0;
-      nArguments = 0;
+    nSentences = 0;
+    nPredicates = 0;
+    nArguments = 0;
 
-      for (Sentence sentence : sentences) {
-        processSentence(jCas, sentence);
-      }
-
-      logger.info(String.format(
-          "processed %d sentences, %d predicates, ~%d arguments per predicate",
-          nSentences,
-          nPredicates,
-          nPredicates == 0 ? 0 : nArguments / nPredicates));
-    } catch (CleartkException e) {
-      throw new AnalysisEngineProcessException(e);
+    for (Sentence sentence : sentences) {
+      processSentence(jCas, sentence);
     }
+
+    logger.info(String.format(
+        "processed %d sentences, %d predicates, ~%d arguments per predicate",
+        nSentences,
+        nPredicates,
+        nPredicates == 0 ? 0 : nArguments / nPredicates));
   }
 
-  void processSentence(JCas jCas, Sentence sentence) throws CleartkException {
+  void processSentence(JCas jCas, Sentence sentence) throws AnalysisEngineProcessException {
     nSentences += 1;
 
     if (sentence.getCoveredText().length() > 40)
@@ -183,10 +179,13 @@ public class ArgumentClassifier extends CleartkAnnotator<String> {
     /*
      * Pre-compute sentence level data: sentenceConstituents: list of all constituents in sentence
      */
+    TopTreebankNode top;
+    top = AnnotationRetrieval.getContainingAnnotation(jCas, sentence, TopTreebankNode.class, false);
+    if (top == null) {
+      throw CleartkExtractorException.noAnnotationInWindow(TopTreebankNode.class, sentence);
+    }
     List<TreebankNode> constituents = new ArrayList<TreebankNode>(200);
-    collectConstituents(
-        AnnotationRetrieval.getContainingAnnotation(jCas, sentence, TopTreebankNode.class, false),
-        constituents);
+    collectConstituents(top, constituents);
 
     /*
      * Compute constituent features for all constituents in sentence
@@ -210,7 +209,8 @@ public class ArgumentClassifier extends CleartkAnnotator<String> {
   public void processPredicate(
       JCas jCas,
       Predicate predicate,
-      Map<TreebankNode, List<Feature>> sentenceConstituentFeatures) throws CleartkException {
+      Map<TreebankNode, List<Feature>> sentenceConstituentFeatures)
+      throws AnalysisEngineProcessException {
     nPredicates += 1;
 
     /*
@@ -275,9 +275,6 @@ public class ArgumentClassifier extends CleartkAnnotator<String> {
    *          list of nodes to add to
    */
   protected void collectConstituents(TreebankNode top, List<TreebankNode> constituents) {
-    if (top == null)
-      throw new IllegalArgumentException();
-
     if (!(top instanceof TopTreebankNode))
       constituents.add(top);
 

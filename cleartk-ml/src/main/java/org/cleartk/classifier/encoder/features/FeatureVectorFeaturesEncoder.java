@@ -24,16 +24,16 @@
 package org.cleartk.classifier.encoder.features;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.encoder.CleartkEncoderException;
 import org.cleartk.classifier.encoder.features.normalizer.NOPNormalizer;
 import org.cleartk.classifier.encoder.features.normalizer.NameNumberNormalizer;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
+import org.cleartk.classifier.util.featurevector.InvalidFeatureVectorValueException;
 import org.cleartk.classifier.util.featurevector.SparseFeatureVector;
 import org.cleartk.util.collection.GenericStringMapper;
 import org.cleartk.util.collection.StringMapper;
@@ -64,7 +64,7 @@ public class FeatureVectorFeaturesEncoder extends
   }
 
   @Override
-  public FeatureVector encodeAll(Iterable<Feature> features) throws CleartkException {
+  public FeatureVector encodeAll(Iterable<Feature> features) throws CleartkEncoderException {
     List<NameNumber> fves = new ArrayList<NameNumber>();
     for (Feature feature : features) {
       fves.addAll(this.encode(feature));
@@ -80,17 +80,21 @@ public class FeatureVectorFeaturesEncoder extends
       if (value.doubleValue() == 0.0)
         continue;
 
-      if (expandIndex) {
-        int i = stringMapper.getOrGenerateInteger(name);
-        double v = fv.get(i) + value.doubleValue();
-        fv.set(i, v);
-      } else {
-        try {
-          int i = stringMapper.getInteger(name);
+      try {
+        if (expandIndex) {
+          int i = stringMapper.getOrGenerateInteger(name);
           double v = fv.get(i) + value.doubleValue();
           fv.set(i, v);
-        } catch (UnknownKeyException e) {
+        } else {
+          try {
+            int i = stringMapper.getInteger(name);
+            double v = fv.get(i) + value.doubleValue();
+            fv.set(i, v);
+          } catch (UnknownKeyException e) {
+          }
         }
+      } catch (InvalidFeatureVectorValueException e) {
+        throw CleartkEncoderException.invalidFeatureVectorValue(e.getIndex(), e.getValue());
       }
     }
 
@@ -98,20 +102,14 @@ public class FeatureVectorFeaturesEncoder extends
   }
 
   @Override
-  public void finalizeFeatureSet(File outputDirectory) throws CleartkException {
-    try {
-      expandIndex = false;
-      stringMapper.finalizeMap();
+  public void finalizeFeatureSet(File outputDirectory) throws IOException {
+    expandIndex = false;
+    stringMapper.finalizeMap();
 
-      if (stringMapper instanceof Writable) {
-        Writable writableMap = (Writable) stringMapper;
-        File outputFile = new File(outputDirectory, LOOKUP_FILE_NAME);
-        writableMap.write(outputFile);
-      }
-    } catch (FileNotFoundException e) {
-      throw new CleartkException(e);
-    } catch (IOException e) {
-      throw new CleartkException(e);
+    if (stringMapper instanceof Writable) {
+      Writable writableMap = (Writable) stringMapper;
+      File outputFile = new File(outputDirectory, LOOKUP_FILE_NAME);
+      writableMap.write(outputFile);
     }
   }
 

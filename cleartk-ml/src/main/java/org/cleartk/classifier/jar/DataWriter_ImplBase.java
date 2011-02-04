@@ -26,8 +26,8 @@ package org.cleartk.classifier.jar;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.Classifier;
+import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.DataWriter;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
@@ -53,7 +53,7 @@ public abstract class DataWriter_ImplBase<CLASSIFIER_BUILDER_TYPE extends Encodi
     super(outputDirectory);
   }
 
-  public void write(Instance<OUTCOME_TYPE> instance) throws CleartkException {
+  public void write(Instance<OUTCOME_TYPE> instance) throws CleartkProcessingException {
     writeEncoded(
         this.classifierBuilder.getFeaturesEncoder().encodeAll(instance.getFeatures()),
         this.classifierBuilder.getOutcomeEncoder().encode(instance.getOutcome()));
@@ -68,6 +68,6 @@ public abstract class DataWriter_ImplBase<CLASSIFIER_BUILDER_TYPE extends Encodi
    *          The encoded outcome.
    */
   protected abstract void writeEncoded(ENCODED_FEATURES_TYPE features, ENCODED_OUTCOME_TYPE outcome)
-      throws CleartkException;
+      throws CleartkProcessingException;
 
 }

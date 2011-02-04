@@ -46,7 +46,7 @@ import org.apache.uima.jcas.cas.LongArray;
 import org.apache.uima.jcas.cas.ShortArray;
 import org.apache.uima.jcas.cas.StringArray;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.CleartkException;
+import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.util.UIMAUtil;
 
 /**
@@ -132,21 +132,19 @@ public class TypePathExtractor implements SimpleFeatureExtractor {
   /**
    * calls this(type, typePath, false, false, true, jCas)
    */
-  public TypePathExtractor(Class<? extends Annotation> focusClass, String typePath)
-      throws IllegalArgumentException {
+  public TypePathExtractor(Class<? extends Annotation> focusClass, String typePath) {
     this(focusClass, typePath, false, false, true);
   }
 
   public List<org.cleartk.classifier.Feature> extract(JCas view, Annotation focusAnnotation)
-      throws CleartkException {
+      throws CleartkExtractorException {
     if (this.type == null)
       this.type = UIMAUtil.getCasType(view, this.focusClass);
 
     this.typeSystem = view.getTypeSystem();
 
     if (!isValidPath(view))
-      throw new IllegalArgumentException("The path " + path + " is not valid for the type "
-          + type.getName());
+      throw CleartkExtractorException.invalidTypePath(path, type);
 
     String[] pathMembers = path.split("/");
     List<Object> pathValues = new ArrayList<Object>();
@@ -180,7 +178,7 @@ public class TypePathExtractor implements SimpleFeatureExtractor {
       JCas view,
       FeatureStructure featureStructure,
       String[] pathMembers,
-      List<Object> pathValues) {
+      List<Object> pathValues) throws CleartkExtractorException {
     if (pathMembers.length == 1) {
       Feature feature = featureStructure.getType().getFeatureByBaseName(pathMembers[0]);
       if (feature == null) {
@@ -322,7 +320,7 @@ public class TypePathExtractor implements SimpleFeatureExtractor {
   private static Object getPrimitiveFeatureValue(
       JCas view,
       FeatureStructure featureStructure,
-      Feature feature) {
+      Feature feature) throws CleartkExtractorException {
     TypeSystem typeSystem = view.getTypeSystem();
     Type type = feature.getRange();
     if (type.equals(typeSystem.getType("uima.cas.Boolean")))
@@ -342,15 +340,13 @@ public class TypePathExtractor implements SimpleFeatureExtractor {
     else if (type.equals(typeSystem.getType("uima.cas.String")))
       return featureStructure.getStringValue(feature);
     else
-      throw new IllegalArgumentException("The feature of the featureStructure is not primitive.  "
-          + "Feature domain type = " + feature.getDomain() + ".  Feature range type = "
-          + feature.getRange());
+      throw CleartkExtractorException.notPrimitive(feature);
   }
 
   private static Object[] getPrimitiveArrayFeatureValue(
       JCas view,
       FeatureStructure featureStructure,
-      Feature feature) {
+      Feature feature) throws CleartkExtractorException {
     TypeSystem typeSystem = view.getTypeSystem();
     Type type = feature.getRange();
     if (type.isArray()) {
@@ -374,10 +370,7 @@ public class TypePathExtractor implements SimpleFeatureExtractor {
         return Arrays.asList(((LongArray) featureValue).toArray()).toArray();
       }
     } else
-      throw new IllegalArgumentException(
-          "The feature of the featureStructure is not a primitive array.  "
-              + "Feature domain type = " + feature.getDomain() + ".  Feature range type = "
-              + feature.getRange());
+      throw CleartkExtractorException.notPrimitiveArray(feature);
     return null;
   }
 

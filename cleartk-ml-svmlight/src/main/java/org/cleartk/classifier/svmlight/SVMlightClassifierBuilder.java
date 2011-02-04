@@ -38,7 +38,6 @@ import java.util.jar.JarOutputStream;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.util.Level;
 import org.apache.uima.util.Logger;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.jar.ClassifierBuilder_ImplBase;
 import org.cleartk.classifier.jar.JarStreams;
 import org.cleartk.classifier.sigmoid.Sigmoid;
@@ -124,11 +123,7 @@ public class SVMlightClassifierBuilder extends
   protected void unpackageClassifier(JarInputStream modelStream) throws IOException {
     super.unpackageClassifier(modelStream);
     JarStreams.getNextJarEntry(modelStream, "model.svmlight");
-    try {
-      this.model = SVMlightModel.fromInputStream(modelStream);
-    } catch (CleartkException e) {
-      throw new IOException(e);
-    }
+    this.model = SVMlightModel.fromInputStream(modelStream);
     JarStreams.getNextJarEntry(modelStream, "model.sigmoid");
     ObjectInput in = new ObjectInputStream(modelStream);
     try {

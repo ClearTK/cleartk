@@ -27,8 +27,8 @@ import java.util.List;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 
 /**
  * <br>
@@ -48,7 +48,8 @@ public class NamingExtractor implements SimpleFeatureExtractor {
     this(name, new CombinedExtractor(subExtractors));
   }
 
-  public List<Feature> extract(JCas view, Annotation focusAnnotation) throws CleartkException {
+  public List<Feature> extract(JCas view, Annotation focusAnnotation)
+      throws CleartkExtractorException {
     List<Feature> features = subExtractor.extract(view, focusAnnotation);
 
     for (Feature feature : features) {

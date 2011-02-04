@@ -32,9 +32,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import junit.framework.Assert;
+
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.ScoredOutcome;
@@ -63,7 +64,7 @@ public class ViterbiTest {
    * @throws CleartkException
    */
   @Test
-  public void test1() throws ResourceInitializationException, IOException, CleartkException {
+  public void test1() throws Throwable {
     List<List<Feature>> features = new ArrayList<List<Feature>>();
     features.add(createFeatures("0"));
     features.add(createFeatures("1"));
@@ -101,7 +102,7 @@ public class ViterbiTest {
   }
 
   @Test
-  public void test1b() throws ResourceInitializationException, CleartkException {
+  public void test1b() throws Throwable {
     List<List<Feature>> features = new ArrayList<List<Feature>>();
     features.add(createFeatures("0"));
     features.add(createFeatures("1"));
@@ -211,7 +212,8 @@ public class ViterbiTest {
         return scores;
       }
 
-      throw new RuntimeException();
+      Assert.fail("Invalid position");
+      return scores;
     }
 
   }
@@ -225,7 +227,7 @@ public class ViterbiTest {
    * @throws IOException
    */
   @Test
-  public void test2() throws ResourceInitializationException, CleartkException, IOException {
+  public void test2() throws Throwable {
     List<List<Feature>> features = new ArrayList<List<Feature>>();
     features.add(createFeatures("1"));
     features.add(createFeatures("2"));

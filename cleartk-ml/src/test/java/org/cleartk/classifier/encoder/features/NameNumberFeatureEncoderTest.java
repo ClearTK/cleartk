@@ -28,12 +28,11 @@ import static org.junit.Assert.assertEquals;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.encoder.CleartkEncoderException;
 import org.cleartk.classifier.feature.TypePathFeature;
 import org.cleartk.classifier.feature.WindowFeature;
 import org.cleartk.test.DefaultTestBase;
@@ -48,7 +47,7 @@ import org.junit.Test;
 public class NameNumberFeatureEncoderTest extends DefaultTestBase {
 
   @Test
-  public void testEncodeCompress() throws CleartkException, IOException {
+  public void testEncodeCompress() throws Throwable {
 
     NameNumberFeaturesEncoder nnfe = getDefaultEncoder(true, true);
 
@@ -82,7 +81,7 @@ public class NameNumberFeatureEncoderTest extends DefaultTestBase {
   }
 
   @Test
-  public void testOnTypePathFeatures() {
+  public void testOnTypePathFeatures() throws CleartkEncoderException {
     NameNumberFeaturesEncoder nnfe = getDefaultEncoder(false, false);
 
     testNN("_hello", 1.0f, new Feature("", "hello"), nnfe);
@@ -121,7 +120,7 @@ public class NameNumberFeatureEncoderTest extends DefaultTestBase {
   }
 
   @Test
-  public void testOnWindowFeatures() {
+  public void testOnWindowFeatures() throws CleartkEncoderException {
     NameNumberFeaturesEncoder nnfe = getDefaultEncoder(false, false);
 
     testNN("Ccccccc_aaaaaa", 1.0f, new Feature("Ccccccc", "aaaaaa"), nnfe);
@@ -201,7 +200,8 @@ public class NameNumberFeatureEncoderTest extends DefaultTestBase {
 
   }
 
-  private void testNN(String name, Number number, Feature feature, NameNumberFeaturesEncoder nnfe) {
+  private void testNN(String name, Number number, Feature feature, NameNumberFeaturesEncoder nnfe)
+      throws CleartkEncoderException {
     List<NameNumber> cvs = nnfe.encodeAll(Arrays.asList(feature));
     if (cvs == null || cvs.size() == 0)
       return;

@@ -28,7 +28,6 @@ import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.Type;
 import java.util.List;
 
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.jar.ClassifierBuilder_ImplBase;
@@ -55,13 +54,13 @@ public class ReflectionUtilTest {
   }
 
   public static class TestClassifierOutcomeType implements Classifier<String> {
-    public String classify(List<org.cleartk.classifier.Feature> features) throws CleartkException {
+    public String classify(List<org.cleartk.classifier.Feature> features) {
       return null;
     }
 
     public List<ScoredOutcome<String>> score(
         List<org.cleartk.classifier.Feature> features,
-        int maxResults) throws CleartkException {
+        int maxResults) {
       return null;
     }
   }
@@ -70,7 +69,7 @@ public class ReflectionUtilTest {
       ClassifierBuilder_ImplBase<TestClassifierOutcomeType, Boolean, String, Double> {
 
     @Override
-    public void trainClassifier(File dir, String... args) throws Exception {
+    public void trainClassifier(File dir, String... args) {
       // Do nothing
     }
 

@@ -25,7 +25,6 @@ package org.cleartk.classifier.feature.proliferate;
 
 import java.util.List;
 
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
@@ -184,7 +183,7 @@ public class FeatureProliferatorTest extends DefaultTestBase {
   }
 
   @Test
-  public void testProliferatingExtractor() throws CleartkException {
+  public void testProliferatingExtractor() throws Throwable {
     jCas.setDocumentText("Hello World 2008!");
     Token hello = new Token(jCas, 0, 5);
     Token year = new Token(jCas, 12, 16);

@@ -29,8 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.cleartk.CleartkException;
-import org.cleartk.CleartkRuntimeException;
+import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.DataWriter;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
@@ -66,9 +65,10 @@ public class ViterbiDataWriter<OUTCOME_TYPE> extends
     this.delegatedDataWriter = delegatedDataWriter;
   }
 
-  public void write(List<Instance<OUTCOME_TYPE>> instances) throws CleartkException {
+  public void write(List<Instance<OUTCOME_TYPE>> instances) throws CleartkProcessingException {
     if (this.delegatedDataWriter == null)
-      throw new CleartkException("delegatedDataWriter must be set before calling writeSequence");
+      throw new IllegalStateException(
+          "delegatedDataWriter must be set before calling writeSequence");
 
     List<Object> outcomes = new ArrayList<Object>();
     for (Instance<OUTCOME_TYPE> instance : instances) {
@@ -82,9 +82,9 @@ public class ViterbiDataWriter<OUTCOME_TYPE> extends
 
   }
 
-  public void finish() throws CleartkException {
+  public void finish() throws CleartkProcessingException {
     if (this.delegatedDataWriter == null)
-      throw new CleartkException("delegatedDataWriter must be set before calling finish");
+      throw new IllegalStateException("delegatedDataWriter must be set before calling finish");
 
     this.delegatedDataWriter.finish();
     super.finish();
@@ -92,7 +92,7 @@ public class ViterbiDataWriter<OUTCOME_TYPE> extends
 
   public Map<String, Type> getTypeArguments(Class<?> genericType) {
     if (this.delegatedDataWriter == null)
-      throw new CleartkRuntimeException(
+      throw new IllegalStateException(
           "delegatedDataWriter must be set before calling getTypeArguments");
 
     if (genericType.equals(SequenceDataWriter.class)) {

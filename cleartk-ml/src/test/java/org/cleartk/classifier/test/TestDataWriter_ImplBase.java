@@ -28,7 +28,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-import org.cleartk.CleartkException;
+import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.jar.DataWriter_ImplBase;
 
@@ -55,9 +55,10 @@ public abstract class TestDataWriter_ImplBase<CLASSIFIER_BUILDER_TYPE extends Te
   }
 
   @Override
-  public void writeEncoded(List<NameNumber> features, String outcome) throws CleartkException {
+  public void writeEncoded(List<NameNumber> features, String outcome)
+      throws CleartkProcessingException {
     if (outcome == null) {
-      throw new CleartkException("all consumed instances must have an outcome.  outcome=" + outcome);
+      throw CleartkProcessingException.noInstanceOutcome(features);
     }
     this.trainingDataWriter.print(outcome);
 
@@ -80,7 +81,7 @@ public abstract class TestDataWriter_ImplBase<CLASSIFIER_BUILDER_TYPE extends Te
   }
 
   @Override
-  public void finish() throws CleartkException {
+  public void finish() throws CleartkProcessingException {
     // close the data writer
     this.trainingDataWriter.close();
     super.finish();

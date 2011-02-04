@@ -25,8 +25,6 @@ package org.cleartk.classifier;
 
 import java.io.IOException;
 
-import org.cleartk.CleartkException;
-
 /**
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
@@ -35,7 +33,6 @@ import org.cleartk.CleartkException;
 
 public interface SequenceClassifierFactory<OUTCOME_TYPE> {
 
-  public SequenceClassifier<OUTCOME_TYPE> createClassifier() throws IOException,
-      CleartkException;
+  public SequenceClassifier<OUTCOME_TYPE> createClassifier() throws IOException;
 
 }

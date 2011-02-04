@@ -98,7 +98,7 @@ public class ReflectionUtil {
     } else if (type instanceof Class<?>) {
       return getTypeArguments(genericType, (Class<?>) type, typeMap);
     } else {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException("type must be a ParameterizedType or Class");
     }
   }
 
@@ -207,14 +207,13 @@ public class ReflectionUtil {
 
     // if the second type is not assignable to the first, raise an exception
     if (type1 == null || type2 == null || !ReflectionUtil.isAssignableFrom(type1, type2)) {
-      throw new ResourceInitializationException(new RuntimeException(String.format(
-          "%s with %s %s is incompatible with %s with %s %s",
-          object1.getClass().getSimpleName(),
+      throw CleartkInitializationException.incompatibleTypeParameters(
+          object1,
           paramName1,
           type1,
-          object2.getClass().getSimpleName(),
+          object2,
           paramName2,
-          type2)));
+          type2);
     }
   }
 

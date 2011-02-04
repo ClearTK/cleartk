@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import org.cleartk.CleartkException;
+import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.DataWriter;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
@@ -98,11 +98,11 @@ public class IDFMapWriter<OUTCOME_TYPE> implements DataWriter<OUTCOME_TYPE> {
     return false;
   }
 
-  public void write(Instance<OUTCOME_TYPE> instance) throws CleartkException {
+  public void write(Instance<OUTCOME_TYPE> instance) throws CleartkProcessingException {
     consumeFeatures(instance.getFeatures());
   }
 
-  private void consumeFeatures(Collection<Feature> features) throws CleartkException {
+  private void consumeFeatures(Collection<Feature> features) throws CleartkProcessingException {
     for (Feature feature : features) {
       if (feature.getValue() instanceof Counts) {
         Counts counts = (Counts) feature.getValue();
@@ -111,7 +111,7 @@ public class IDFMapWriter<OUTCOME_TYPE> implements DataWriter<OUTCOME_TYPE> {
         try {
           idfMap = getIDFMap(counts.getIdentifier());
         } catch (IOException e) {
-          throw new CleartkException(e);
+          throw new CleartkProcessingException(e);
         }
         idfMap.consume(counts);
       } else if (feature.getValue() instanceof FeatureCollection) {
@@ -121,8 +121,8 @@ public class IDFMapWriter<OUTCOME_TYPE> implements DataWriter<OUTCOME_TYPE> {
     }
   }
 
-  public void finish() throws CleartkException {
-    List<Exception> exceptions = new ArrayList<Exception>();
+  public void finish() throws CleartkProcessingException {
+    List<IOException> exceptions = new ArrayList<IOException>();
 
     for (String identifier : idfMaps.keySet()) {
       IDFMap idfMap = idfMaps.get(identifier);
@@ -141,12 +141,9 @@ public class IDFMapWriter<OUTCOME_TYPE> implements DataWriter<OUTCOME_TYPE> {
 
     if (exceptions.size() > 0) {
       if (exceptions.size() == 1) {
-        throw new CleartkException(exceptions.get(0));
+        throw new CleartkProcessingException(exceptions.get(0));
       } else {
-        throw new CleartkException(String.format(
-            "%s and %d others",
-            exceptions.get(0).toString(),
-            exceptions.size() - 1));
+        throw CleartkProcessingException.multipleExceptions(exceptions);
       }
     }
   }

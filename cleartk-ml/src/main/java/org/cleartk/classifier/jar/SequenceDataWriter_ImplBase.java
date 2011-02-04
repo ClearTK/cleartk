@@ -27,7 +27,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
 
-import org.cleartk.CleartkException;
+import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.SequenceClassifier;
 import org.cleartk.classifier.SequenceDataWriter;
@@ -54,7 +54,7 @@ public abstract class SequenceDataWriter_ImplBase<CLASSIFIER_BUILDER_TYPE extend
     super(outputDirectory);
   }
 
-  public void write(List<Instance<OUTCOME_TYPE>> instances) throws CleartkException {
+  public void write(List<Instance<OUTCOME_TYPE>> instances) throws CleartkProcessingException {
     for (Instance<OUTCOME_TYPE> instance : instances) {
       writeEncoded(
           this.classifierBuilder.getFeaturesEncoder().encodeAll(instance.getFeatures()),
@@ -72,7 +72,7 @@ public abstract class SequenceDataWriter_ImplBase<CLASSIFIER_BUILDER_TYPE extend
    *          The encoded outcome.
    */
   protected abstract void writeEncoded(ENCODED_FEATURES_TYPE features, ENCODED_OUTCOME_TYPE outcome)
-      throws CleartkException;
+      throws CleartkProcessingException;
 
   /**
    * Write the marker for the end of a sequence. This will be called at the end of each

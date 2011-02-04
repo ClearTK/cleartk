@@ -38,7 +38,6 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.pear.util.FileUtil;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
@@ -73,14 +72,6 @@ public class ViterbiDataWriterTest extends DefaultTestBase {
 
     @Override
     public void process(JCas jCas) throws AnalysisEngineProcessException {
-      try {
-        this.processSimple(jCas);
-      } catch (CleartkException e) {
-        throw new AnalysisEngineProcessException(e);
-      }
-    }
-
-    public void processSimple(JCas jCas) throws CleartkException {
       for (Sentence sentence : AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
         List<Instance<String>> instances = new ArrayList<Instance<String>>();
         List<Token> tokens = AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class);

@@ -26,8 +26,6 @@ package org.cleartk.classifier.util.featurevector;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.cleartk.CleartkException;
-
 /**
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
@@ -39,13 +37,13 @@ import org.cleartk.CleartkException;
  */
 public abstract class FeatureVector implements Iterable<FeatureVector.Entry> {
 
-  public void add(FeatureVector other) throws CleartkException {
+  public void add(FeatureVector other) throws InvalidFeatureVectorValueException {
     for (FeatureVector.Entry entry : other) {
       this.set(entry.index, this.get(entry.index) + entry.value);
     }
   }
 
-  public void multiply(double factor) throws CleartkException {
+  public void multiply(double factor) throws InvalidFeatureVectorValueException {
     for (FeatureVector.Entry entry : this) {
       this.set(entry.index, this.get(entry.index) * factor);
     }
@@ -104,7 +102,7 @@ public abstract class FeatureVector implements Iterable<FeatureVector.Entry> {
    * @param index
    * @param value
    */
-  public abstract void set(int index, double value) throws CleartkException;
+  public abstract void set(int index, double value) throws InvalidFeatureVectorValueException;
 
   /**
    * Return the value at index.

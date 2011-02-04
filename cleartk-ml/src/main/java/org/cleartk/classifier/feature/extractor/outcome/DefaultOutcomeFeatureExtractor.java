@@ -33,6 +33,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.WindowFeature;
 import org.cleartk.classifier.feature.WindowNGramFeature;
+import org.cleartk.util.CleartkInitializationException;
 import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
@@ -84,16 +85,17 @@ public class DefaultOutcomeFeatureExtractor implements OutcomeFeatureExtractor {
     ConfigurationParameterInitializer.initialize(this, context);
 
     if (mostRecentOutcome < 1) {
-      throw new ResourceInitializationException(new IllegalArgumentException(String.format(
-          "the parameter '%1$s' must be greater than 1.",
-          PARAM_MOST_RECENT_OUTCOME)));
+      throw CleartkInitializationException.parameterLessThan(
+          PARAM_MOST_RECENT_OUTCOME,
+          1,
+          mostRecentOutcome);
     }
 
     if (leastRecentOutcome < mostRecentOutcome) {
-      throw new ResourceInitializationException(new IllegalArgumentException(String.format(
-          "the parameter '%1$s' must be greater than the value for parameter '%2$s'.",
+      throw CleartkInitializationException.parameterLessThan(
           PARAM_LEAST_RECENT_OUTCOME,
-          PARAM_MOST_RECENT_OUTCOME)));
+          mostRecentOutcome,
+          leastRecentOutcome);
     }
 
   }

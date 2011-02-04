@@ -24,9 +24,7 @@
 package org.cleartk.classifier.encoder.features;
 
 import java.io.File;
-
-import org.cleartk.CleartkException;
-import org.cleartk.classifier.Feature;
+import java.io.IOException;
 
 /**
  * <br>
@@ -42,10 +40,7 @@ public abstract class FeaturesEncoder_ImplBase<ENCODED_FEATURES_TYPE, ENCODED_FE
 
   public static final String ENCODERS_FILE_NAME = "encoders.ser";
 
-  public abstract ENCODED_FEATURES_TYPE encodeAll(Iterable<Feature> features)
-      throws CleartkException;
-
-  public void finalizeFeatureSet(File outputDirectory) throws CleartkException {
+  public void finalizeFeatureSet(File outputDirectory) throws IOException {
   }
 
 }

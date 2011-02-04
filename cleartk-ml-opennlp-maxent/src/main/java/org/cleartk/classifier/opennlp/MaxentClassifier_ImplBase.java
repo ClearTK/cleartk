@@ -29,9 +29,10 @@ import java.util.List;
 
 import opennlp.model.MaxentModel;
 
-import org.cleartk.CleartkException;
+import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.ScoredOutcome;
+import org.cleartk.classifier.encoder.CleartkEncoderException;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
@@ -59,7 +60,7 @@ public abstract class MaxentClassifier_ImplBase<OUTCOME_TYPE> extends
     this.model = model;
   }
 
-  public OUTCOME_TYPE classify(List<Feature> features) throws CleartkException {
+  public OUTCOME_TYPE classify(List<Feature> features) throws CleartkProcessingException {
     EvalParams evalParams = convertToEvalParams(features);
     String encodedOutcome = this.model.getBestOutcome(this.model.eval(
         evalParams.getContext(),
@@ -69,7 +70,7 @@ public abstract class MaxentClassifier_ImplBase<OUTCOME_TYPE> extends
 
   @Override
   public List<ScoredOutcome<OUTCOME_TYPE>> score(List<Feature> features, int maxResults)
-      throws CleartkException {
+      throws CleartkProcessingException {
     EvalParams evalParams = convertToEvalParams(features);
     double[] evalResults = this.model.eval(evalParams.getContext(), evalParams.getValues());
     String[] encodedOutcomes = (String[]) this.model.getDataStructures()[2];
@@ -98,7 +99,7 @@ public abstract class MaxentClassifier_ImplBase<OUTCOME_TYPE> extends
     return returnValues;
   }
 
-  protected EvalParams convertToEvalParams(List<Feature> features) throws CleartkException {
+  protected EvalParams convertToEvalParams(List<Feature> features) throws CleartkEncoderException {
 
     List<NameNumber> contexts = featuresEncoder.encodeAll(features);
 

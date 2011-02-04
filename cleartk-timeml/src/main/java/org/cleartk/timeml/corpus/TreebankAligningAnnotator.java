@@ -34,6 +34,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.Level;
+import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.syntax.constituent.util.TreebankFormatParser;
@@ -109,8 +110,7 @@ public class TreebankAligningAnnotator extends JCasAnnotator_ImplBase {
     // we need a TEXT element to know where to start
     List<Text> texts = AnnotationRetrieval.getAnnotations(jCas, Text.class);
     if (texts.size() != 1) {
-      throw new AnalysisEngineProcessException(new RuntimeException(
-          "expected 1 TEXT element, found " + texts.size()));
+      throw CleartkExtractorException.wrongNumberOfAnnotations(Text.class, 1, texts.size());
     }
 
     // parse the trees, skipping the document if there are alignment

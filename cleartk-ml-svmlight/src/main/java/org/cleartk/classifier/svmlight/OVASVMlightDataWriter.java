@@ -35,7 +35,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.cleartk.CleartkException;
+import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.jar.DataWriter_ImplBase;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
@@ -61,9 +61,14 @@ public class OVASVMlightDataWriter extends
   }
 
   @Override
-  public void writeEncoded(FeatureVector features, Integer outcome) {
+  public void writeEncoded(FeatureVector features, Integer outcome)
+      throws CleartkProcessingException {
     if (outcome != null && !trainingDataWriters.containsKey(outcome)) {
-      addClass(outcome);
+      try {
+        addClass(outcome);
+      } catch (IOException e) {
+        throw new CleartkProcessingException(e);
+      }
     }
 
     StringBuffer featureString = new StringBuffer();
@@ -95,7 +100,7 @@ public class OVASVMlightDataWriter extends
   }
 
   @Override
-  public void finish() throws CleartkException {
+  public void finish() throws CleartkProcessingException {
     // close and remove all-false file
     allFalseWriter.close();
     allFalseFile.delete();
@@ -115,19 +120,15 @@ public class OVASVMlightDataWriter extends
     return new OVASVMlightClassifierBuilder();
   }
 
-  private void addClass(int label) {
+  private void addClass(int label) throws IOException {
     File newTDFile = this.classifierBuilder.getTrainingDataFile(this.outputDirectory, label);
     newTDFile.delete();
 
     allFalseWriter.flush();
-    try {
-      copyFile(allFalseFile, newTDFile);
-      trainingDataWriters.put(label, new PrintWriter(new BufferedWriter(new FileWriter(
-          newTDFile,
-          true))));
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
+    copyFile(allFalseFile, newTDFile);
+    trainingDataWriters.put(label, new PrintWriter(new BufferedWriter(new FileWriter(
+        newTDFile,
+        true))));
   }
 
   private void copyFile(File source, File target) throws IOException {

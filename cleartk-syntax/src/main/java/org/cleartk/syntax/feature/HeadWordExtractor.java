@@ -33,8 +33,8 @@ import java.util.Set;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.util.UIMAUtil;
@@ -240,7 +240,8 @@ public class HeadWordExtractor implements SimpleFeatureExtractor {
     this(subExtractor, false);
   }
 
-  public List<Feature> extract(JCas jCas, Annotation focusAnnotation) throws CleartkException {
+  public List<Feature> extract(JCas jCas, Annotation focusAnnotation)
+      throws CleartkExtractorException {
     if (!(focusAnnotation instanceof TreebankNode))
       return new ArrayList<Feature>();
 
@@ -265,7 +266,7 @@ public class HeadWordExtractor implements SimpleFeatureExtractor {
   }
 
   List<Feature> extractNode(JCas jCas, TreebankNode node, boolean specialCasePP)
-      throws CleartkException {
+      throws CleartkExtractorException {
     List<Feature> features = subExtractor.extract(jCas, node);
 
     for (Feature feature : features) {

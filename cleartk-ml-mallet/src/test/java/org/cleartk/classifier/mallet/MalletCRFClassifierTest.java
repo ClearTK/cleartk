@@ -36,7 +36,6 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
@@ -73,14 +72,6 @@ public class MalletCRFClassifierTest extends DefaultTestBase {
     }
 
     public void process(JCas cas) throws AnalysisEngineProcessException {
-      try {
-        this.processSimple(cas);
-      } catch (CleartkException e) {
-        throw new AnalysisEngineProcessException(e);
-      }
-    }
-
-    public void processSimple(JCas cas) throws CleartkException {
       if (this.isTraining()) {
         List<Instance<String>> instances = createInstances();
         // consume 100 identical sequences

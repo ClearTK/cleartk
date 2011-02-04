@@ -29,10 +29,10 @@ import java.util.List;
 import org.apache.uima.UimaContext;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.WindowFeature;
 import org.cleartk.classifier.feature.WindowNGramFeature;
+import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.WindowExtractor;
 import org.cleartk.classifier.feature.extractor.WindowNGramExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
@@ -121,7 +121,7 @@ public class DefaultFeatureExtractor implements POSFeatureExtractor<Token, Sente
   }
 
   public List<Feature> extractFeatures(JCas jCas, Token token, Sentence sentence)
-      throws CleartkException {
+      throws CleartkExtractorException {
     List<Feature> features = new ArrayList<Feature>();
 
     for (SimpleFeatureExtractor extractor : simpleExtractors) {

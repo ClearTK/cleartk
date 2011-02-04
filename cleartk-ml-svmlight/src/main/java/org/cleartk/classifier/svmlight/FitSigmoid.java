@@ -28,12 +28,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.sigmoid.LinWengPlatt;
 import org.cleartk.classifier.sigmoid.LinWengPlatt.ConvergenceFailure;
 import org.cleartk.classifier.sigmoid.Sigmoid;
 import org.cleartk.classifier.svmlight.model.SVMlightModel;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
+import org.cleartk.classifier.util.featurevector.InvalidFeatureVectorValueException;
 import org.cleartk.classifier.util.featurevector.SparseFeatureVector;
 
 /**
@@ -54,7 +54,7 @@ import org.cleartk.classifier.util.featurevector.SparseFeatureVector;
 public class FitSigmoid {
 
   public static Sigmoid fit(File svmlightModelFile, File trainingDataFile)
-      throws ConvergenceFailure, IOException, CleartkException {
+      throws ConvergenceFailure, IOException, InvalidFeatureVectorValueException {
     SVMlightModel model = SVMlightModel.fromFile(svmlightModelFile);
 
     BufferedReader r = new BufferedReader(new FileReader(trainingDataFile));
@@ -81,7 +81,7 @@ public class FitSigmoid {
 
   }
 
-  private static TrainingInstance parseTI(String line) throws CleartkException {
+  private static TrainingInstance parseTI(String line) throws InvalidFeatureVectorValueException {
     String[] fields = line.split(" ");
 
     boolean label = fields[0].trim().equals("+1");

@@ -24,10 +24,11 @@
 package org.cleartk.classifier.encoder.features;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.encoder.CleartkEncoderException;
 
 /**
  * <br>
@@ -36,7 +37,7 @@ import org.cleartk.classifier.Feature;
  */
 
 public interface FeaturesEncoder<ENCODED_FEATURES_TYPE> extends Serializable {
-  public ENCODED_FEATURES_TYPE encodeAll(Iterable<Feature> features) throws CleartkException;
+  public ENCODED_FEATURES_TYPE encodeAll(Iterable<Feature> features) throws CleartkEncoderException;
 
-  public void finalizeFeatureSet(File outputDirectory) throws CleartkException;
+  public void finalizeFeatureSet(File outputDirectory) throws IOException;
 }

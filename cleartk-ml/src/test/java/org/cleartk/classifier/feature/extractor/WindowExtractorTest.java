@@ -30,7 +30,6 @@ import java.util.List;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.WindowFeature;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
@@ -159,7 +158,7 @@ public class WindowExtractorTest extends DefaultTestBase {
   }
 
   @Test
-  public void testExtractLeft() throws UIMAException, CleartkException {
+  public void testExtractLeft() throws Throwable {
     WindowExtractor leftEx03 = new WindowExtractor(
         Token.class,
         new SpannedTextExtractor(),
@@ -272,7 +271,7 @@ public class WindowExtractorTest extends DefaultTestBase {
   }
 
   @Test
-  public void testExtractRight() throws UIMAException, CleartkException {
+  public void testExtractRight() throws Throwable {
     WindowExtractor rightEx03 = new WindowExtractor(
         Token.class,
         new SpannedTextExtractor(),
@@ -380,7 +379,7 @@ public class WindowExtractorTest extends DefaultTestBase {
   }
 
   @Test
-  public void testExtractMiddle() throws UIMAException, CleartkException {
+  public void testExtractMiddle() throws Throwable {
     tokenBuilder.buildTokens(jCas, "because the island was only");
     Annotation spanningToken = new Annotation(jCas);
     spanningToken.setBegin(JCasUtil.selectByIndex(jCas, Token.class, 1).getBegin());
@@ -413,7 +412,7 @@ public class WindowExtractorTest extends DefaultTestBase {
   }
 
   @Test
-  public void testTicket23() throws UIMAException, CleartkException {
+  public void testTicket23() throws Throwable {
     // token "place" in "wide. This place was a tolerable long,"
     tokenBuilder.buildTokens(jCas, "a mile wide .\nThis place was a tolerable long ,");
     Token token = JCasUtil.selectByIndex(jCas, Token.class, 5);
@@ -453,7 +452,7 @@ public class WindowExtractorTest extends DefaultTestBase {
    * @throws CleartkException
    */
   @Test
-  public void testIssue158() throws UIMAException, CleartkException {
+  public void testIssue158() throws Throwable {
     tokenBuilder.buildTokens(jCas, "1 2 3 4 5 6 7 8 9 10");
 
     Token token5 = JCasUtil.selectByIndex(jCas, Token.class, 4);

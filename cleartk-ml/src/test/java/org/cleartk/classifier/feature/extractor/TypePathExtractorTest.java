@@ -28,7 +28,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.FSIndex;
@@ -37,7 +36,6 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.cas.StringArray;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.TypePathFeature;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
@@ -123,7 +121,7 @@ public class TypePathExtractorTest extends DefaultTestBase {
   }
 
   @Test
-  public void testExtract() throws UIMAException, CleartkException {
+  public void testExtract() throws Throwable {
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         TypePathExtractorTest.Annotator.class,
         typeSystemDescription);
@@ -323,7 +321,7 @@ public class TypePathExtractorTest extends DefaultTestBase {
   }
 
   @Test
-  public void testTicket23() throws UIMAException, CleartkException {
+  public void testTicket23() throws Throwable {
 
     // token "place" in "wide. This place was a tolerable long,");
     tokenBuilder.buildTokens(jCas, "wide .\nThis place was a tolerable long ,");

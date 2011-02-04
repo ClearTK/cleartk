@@ -28,8 +28,9 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cleartk.CleartkException;
+import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.encoder.CleartkEncoderException;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
@@ -74,10 +75,11 @@ public class GrmmClassifier extends
    *          classified. The list should correspond to some logical sequence of instances to be
    *          classified (e.g. tokens in a sentence or lines in a document) that corresponds to the
    *          model that has been built for this classifier.
+   * @throws CleartkEncoderException
    * @throws CleartkException
    */
   public List<String[]> classify(final List<List<Feature>> features)
-      throws CleartkException {
+      throws CleartkProcessingException {
     // generate format that is appropriate for the acrf input pipe:
     String data = "";
     {

@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.encoder.CleartkEncoderException;
 import org.cleartk.classifier.encoder.features.normalizer.NOPNormalizer;
 import org.cleartk.classifier.encoder.features.normalizer.NameNumberNormalizer;
 import org.cleartk.classifier.feature.FeatureCollection;
@@ -67,7 +68,7 @@ public class FeatureCollectionEncoder implements FeatureEncoder<NameNumber> {
     this(null, subEncoder, new NOPNormalizer());
   }
 
-  public List<NameNumber> encode(Feature feature) throws IllegalArgumentException {
+  public List<NameNumber> encode(Feature feature) throws CleartkEncoderException {
     FeatureCollection fc = (FeatureCollection) feature.getValue();
     List<NameNumber> fves = new ArrayList<NameNumber>();
 

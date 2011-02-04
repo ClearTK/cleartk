@@ -24,7 +24,6 @@
 package org.cleartk.examples.documentclassification;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -52,7 +51,7 @@ public class IDFMapWriterFactory implements DataWriterFactory<String>, Initializ
   @ConfigurationParameter(mandatory = true, description = "provides the name of the directory where the training data will be written.")
   protected File outputDirectory;
 
-  public DataWriter<String> createDataWriter() throws IOException {
+  public DataWriter<String> createDataWriter() {
     return new IDFMapWriter<String>(outputDirectory);
   }
 

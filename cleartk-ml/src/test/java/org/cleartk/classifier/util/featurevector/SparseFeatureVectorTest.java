@@ -29,7 +29,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Iterator;
 
-import org.cleartk.CleartkException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -43,7 +42,7 @@ import org.junit.Test;
 public class SparseFeatureVectorTest {
 
   @Before
-  public void setUp() throws CleartkException {
+  public void setUp() throws Throwable {
     fv1 = new SparseFeatureVector();
     fv2 = new SparseFeatureVector();
     fv2.set(1, 4.5);
@@ -62,7 +61,7 @@ public class SparseFeatureVectorTest {
   }
 
   @Test
-  public void testCopyConstructor() throws CleartkException {
+  public void testCopyConstructor() throws Throwable {
     FeatureVector fv = new SparseFeatureVector(fv2);
 
     assertEquals(fv, fv2);
@@ -85,7 +84,7 @@ public class SparseFeatureVectorTest {
   }
 
   @Test
-  public void testEquals() throws CleartkException {
+  public void testEquals() throws Throwable {
     FeatureVector fv = new SparseFeatureVector();
     fv.set(1, 4.5);
     fv.set(5, 7.1);
@@ -115,7 +114,7 @@ public class SparseFeatureVectorTest {
   }
 
   @Test
-  public void testInnerProduct() throws CleartkException {
+  public void testInnerProduct() throws Throwable {
     FeatureVector fv = new SparseFeatureVector();
     fv.set(1, 1);
     fv.set(3, 2.5);

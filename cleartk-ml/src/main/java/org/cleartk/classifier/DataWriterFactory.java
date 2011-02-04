@@ -26,8 +26,6 @@ package org.cleartk.classifier;
 
 import java.io.IOException;
 
-import org.cleartk.CleartkException;
-
 /**
  * <br>
  * Copyright (c) 2009, Regents of the University of Colorado <br>
@@ -37,6 +35,6 @@ import org.cleartk.CleartkException;
 
 public interface DataWriterFactory<OUTCOME_TYPE> {
 
-  public DataWriter<OUTCOME_TYPE> createDataWriter() throws IOException, CleartkException;
+  public DataWriter<OUTCOME_TYPE> createDataWriter() throws IOException;
 
 }

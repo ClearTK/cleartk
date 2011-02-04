@@ -1,5 +1,5 @@
 /** 
- * Copyright (c) 2010, Regents of the University of Colorado 
+ * Copyright (c) 2011, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -21,34 +21,54 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk;
+package org.cleartk.classifier.encoder;
+
+import java.util.List;
+
+import org.cleartk.classifier.CleartkProcessingException;
+import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.encoder.features.FeatureEncoder;
 
 /**
  * <br>
- * Copyright (c) 2010, Regents of the University of Colorado <br>
+ * Copyright (c) 2011, Regents of the University of Colorado <br>
  * All rights reserved.
- * 
- * @author Philipp Wetzler
- * 
  */
-public class CleartkRuntimeException extends RuntimeException {
+public class CleartkEncoderException extends CleartkProcessingException {
 
-  private static final long serialVersionUID = -4550657626985537362L;
+  private static final String KEY_PREFIX = CleartkEncoderException.class.getName() + ".";
 
-  public CleartkRuntimeException() {
-    super();
+  private static final long serialVersionUID = 1L;
+
+  public static CleartkEncoderException invalidFeatureVectorValue(int index, double value) {
+    String key = KEY_PREFIX + "invalidFeatureVectorValue";
+    return new CleartkEncoderException(
+        CleartkProcessingException.DEFAULT_RESOURCE_BUNDLE,
+        key,
+        index,
+        value);
   }
 
-  public CleartkRuntimeException(String message, Throwable cause) {
-    super(message, cause);
+  public static CleartkEncoderException noMatchingEncoder(
+      Feature feature,
+      List<? extends FeatureEncoder<?>> encoders) {
+    String key = KEY_PREFIX + "noMatchingEncoder";
+    return new CleartkEncoderException(DEFAULT_RESOURCE_BUNDLE, key, feature, encoders);
   }
 
-  public CleartkRuntimeException(String message) {
-    super(message);
+  public CleartkEncoderException(
+      Throwable cause,
+      String resourceBundleName,
+      String messageKey,
+      Object... arguments) {
+    super(resourceBundleName, messageKey, arguments, cause);
   }
 
-  public CleartkRuntimeException(Throwable cause) {
+  public CleartkEncoderException(String resourceBundleName, String messageKey, Object... arguments) {
+    super(resourceBundleName, messageKey, arguments);
+  }
+
+  public CleartkEncoderException(Throwable cause) {
     super(cause);
   }
-
 }

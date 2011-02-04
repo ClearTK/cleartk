@@ -26,7 +26,7 @@ package org.cleartk.classifier.test;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cleartk.CleartkException;
+import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
@@ -52,14 +52,14 @@ public abstract class TestClassifier_ImplBase<OUTCOME_TYPE> extends
     super(featuresEncoder, outcomeEncoder);
   }
 
-  public OUTCOME_TYPE classify(List<Feature> features) throws CleartkException {
+  public OUTCOME_TYPE classify(List<Feature> features) throws CleartkProcessingException {
     String encodedOutcome = "" + features.size();
     return outcomeEncoder.decode(encodedOutcome);
   }
 
   @Override
   public List<ScoredOutcome<OUTCOME_TYPE>> score(List<Feature> features, int maxResults)
-      throws CleartkException {
+      throws CleartkProcessingException {
     List<ScoredOutcome<OUTCOME_TYPE>> returnValues = new ArrayList<ScoredOutcome<OUTCOME_TYPE>>();
     OUTCOME_TYPE outcome = outcomeEncoder.decode("" + features.size());
     returnValues.add(new ScoredOutcome<OUTCOME_TYPE>(outcome, 1.0d));

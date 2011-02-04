@@ -27,6 +27,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.encoder.CleartkEncoderException;
 
 /**
  * <br>
@@ -35,7 +36,7 @@ import org.cleartk.classifier.Feature;
  */
 
 public interface FeatureEncoder<T> extends Serializable {
-  public List<T> encode(Feature feature) throws IllegalArgumentException;
+  public List<T> encode(Feature feature) throws CleartkEncoderException;
 
   public boolean encodes(Feature feature);
 }

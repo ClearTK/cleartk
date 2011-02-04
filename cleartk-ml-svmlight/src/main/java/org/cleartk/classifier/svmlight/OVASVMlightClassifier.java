@@ -28,7 +28,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.cleartk.CleartkException;
+import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
@@ -59,7 +59,7 @@ public class OVASVMlightClassifier extends Classifier_ImplBase<FeatureVector, St
     this.sigmoids = sigmoids;
   }
 
-  public String classify(List<Feature> features) throws CleartkException {
+  public String classify(List<Feature> features) throws CleartkProcessingException {
     FeatureVector featureVector = this.featuresEncoder.encodeAll(features);
 
     int maxScoredIndex = 0;
@@ -79,7 +79,7 @@ public class OVASVMlightClassifier extends Classifier_ImplBase<FeatureVector, St
 
   @Override
   public List<ScoredOutcome<String>> score(List<Feature> features, int maxResults)
-      throws CleartkException {
+      throws CleartkProcessingException {
     FeatureVector featureVector = this.featuresEncoder.encodeAll(features);
 
     List<ScoredOutcome<String>> results = new ArrayList<ScoredOutcome<String>>();

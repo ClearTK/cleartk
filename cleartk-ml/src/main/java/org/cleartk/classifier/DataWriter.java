@@ -23,7 +23,6 @@
  */
 package org.cleartk.classifier;
 
-import org.cleartk.CleartkException;
 
 /**
  * <br>
@@ -33,8 +32,8 @@ import org.cleartk.CleartkException;
  */
 
 public interface DataWriter<OUTCOME_TYPE> {
-  public void write(Instance<OUTCOME_TYPE> instance) throws CleartkException;
+  public void write(Instance<OUTCOME_TYPE> instance) throws CleartkProcessingException;
 
-  public void finish() throws CleartkException;
+  public void finish() throws CleartkProcessingException;
 
 }

@@ -32,12 +32,13 @@ import java.util.Map;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.Classifier;
+import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.SequenceClassifier;
 import org.cleartk.classifier.feature.extractor.outcome.OutcomeFeatureExtractor;
+import org.cleartk.util.CleartkInitializationException;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.ReflectionUtil.TypeArgumentDelegator;
 import org.uimafit.component.initialize.ConfigurationParameterInitializer;
@@ -89,13 +90,12 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequenceClassifier<OUTCO
   public void initialize(UimaContext context) throws ResourceInitializationException {
     ConfigurationParameterInitializer.initialize(this, context);
     if (stackSize < 1) {
-      throw new ResourceInitializationException(new IllegalArgumentException(String.format(
-          "the parameter '%1$s' must be greater than 0.",
-          PARAM_STACK_SIZE)));
+      throw CleartkInitializationException.parameterLessThan(PARAM_STACK_SIZE, 1, stackSize);
     }
   }
 
-  public List<OUTCOME_TYPE> classify(List<List<Feature>> features) throws CleartkException {
+  public List<OUTCOME_TYPE> classify(List<List<Feature>> features)
+      throws CleartkProcessingException {
     if (stackSize == 1) {
       List<Object> outcomes = new ArrayList<Object>();
       List<OUTCOME_TYPE> returnValues = new ArrayList<OUTCOME_TYPE>();
@@ -112,11 +112,11 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequenceClassifier<OUTCO
       try {
         return viterbi(features);
       } catch (UnsupportedOperationException uoe) {
-        throw new IllegalArgumentException(
-            "The configuration parameter "
-                + PARAM_STACK_SIZE
-                + " must be set to 1 if the delegated classifier does not implement the score method.  The classifier you are using is: "
-                + delegatedClassifier.getClass().getName());
+        throw CleartkProcessingException.unsupportedOperationSetParameter(
+            delegatedClassifier,
+            "score",
+            PARAM_STACK_SIZE,
+            1);
       }
     }
 
@@ -134,7 +134,7 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequenceClassifier<OUTCO
    * @see #PARAM_STACK_SIZE
    * @see OutcomeFeatureExtractor
    */
-  public List<OUTCOME_TYPE> viterbi(List<List<Feature>> features) throws CleartkException {
+  public List<OUTCOME_TYPE> viterbi(List<List<Feature>> features) throws CleartkProcessingException {
 
     List<ScoredOutcome<List<OUTCOME_TYPE>>> nbestSequences = new ArrayList<ScoredOutcome<List<OUTCOME_TYPE>>>();
 
@@ -232,9 +232,8 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequenceClassifier<OUTCO
     return null;
   }
 
-  public List<ScoredOutcome<List<OUTCOME_TYPE>>> score(
-      List<List<Feature>> features,
-      int maxResults) throws CleartkException {
+  public List<ScoredOutcome<List<OUTCOME_TYPE>>> score(List<List<Feature>> features, int maxResults)
+      throws CleartkProcessingException {
     // TODO Auto-generated method stub
     return null;
   }

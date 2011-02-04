@@ -32,7 +32,6 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkAnnotatorDescriptionFactory;
 import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Instance;
@@ -118,51 +117,47 @@ public class ExamplePOSAnnotator extends CleartkSequenceAnnotator<String> {
   }
 
   public void process(JCas jCas) throws AnalysisEngineProcessException {
-    try {
-      // generate a list of training instances for each sentence in the
-      // document
-      for (Sentence sentence : AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
-        List<Instance<String>> instances = new ArrayList<Instance<String>>();
-        List<Token> tokens = AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class);
+    // generate a list of training instances for each sentence in the
+    // document
+    for (Sentence sentence : AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
+      List<Instance<String>> instances = new ArrayList<Instance<String>>();
+      List<Token> tokens = AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class);
 
-        // for each token, extract all feature values and the label
-        for (Token token : tokens) {
-          Instance<String> instance = new Instance<String>();
+      // for each token, extract all feature values and the label
+      for (Token token : tokens) {
+        Instance<String> instance = new Instance<String>();
 
-          // extract all features that require only the token
-          // annotation
-          for (SimpleFeatureExtractor extractor : this.tokenFeatureExtractors) {
-            instance.addAll(extractor.extract(jCas, token));
-          }
-
-          // extract all features that require the token and sentence
-          // annotations
-          for (WindowExtractor extractor : this.tokenSentenceFeatureExtractors) {
-            instance.addAll(extractor.extract(jCas, token, sentence));
-          }
-
-          // set the instance label from the token's part of speech
-          instance.setOutcome(token.getPos());
-
-          // add the instance to the list
-          instances.add(instance);
+        // extract all features that require only the token
+        // annotation
+        for (SimpleFeatureExtractor extractor : this.tokenFeatureExtractors) {
+          instance.addAll(extractor.extract(jCas, token));
         }
 
-        // for training, write instances to the data write
-        if (this.isTraining()) {
-          this.dataWriter.write(instances);
+        // extract all features that require the token and sentence
+        // annotations
+        for (WindowExtractor extractor : this.tokenSentenceFeatureExtractors) {
+          instance.addAll(extractor.extract(jCas, token, sentence));
         }
 
-        // for classification, set the labels as the token POS labels
-        else {
-          Iterator<Token> tokensIter = tokens.iterator();
-          for (String label : this.classify(instances)) {
-            tokensIter.next().setPos(label.toString());
-          }
+        // set the instance label from the token's part of speech
+        instance.setOutcome(token.getPos());
+
+        // add the instance to the list
+        instances.add(instance);
+      }
+
+      // for training, write instances to the data write
+      if (this.isTraining()) {
+        this.dataWriter.write(instances);
+      }
+
+      // for classification, set the labels as the token POS labels
+      else {
+        Iterator<Token> tokensIter = tokens.iterator();
+        for (String label : this.classify(instances)) {
+          tokensIter.next().setPos(label.toString());
         }
       }
-    } catch (CleartkException e) {
-      throw new AnalysisEngineProcessException(e);
     }
   }
 

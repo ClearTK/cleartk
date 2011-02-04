@@ -38,7 +38,7 @@ public class NumberEncoder implements FeatureEncoder<NameNumber> {
 
   private static final long serialVersionUID = -2672054364576304344L;
 
-  public List<NameNumber> encode(Feature feature) throws IllegalArgumentException {
+  public List<NameNumber> encode(Feature feature) {
     String name = feature.getName();
     Number number = (Number) feature.getValue();
 

@@ -29,8 +29,8 @@ import java.util.ListIterator;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.annotationpair.AnnotationPairFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.syntax.constituent.type.TreebankNode;
@@ -94,14 +94,16 @@ public class SyntacticPathExtractor implements AnnotationPairFeatureExtractor {
    * 
    */
   public List<Feature> extract(JCas view, Annotation leftAnnotation, Annotation rightAnnotation)
-      throws CleartkException {
+      throws CleartkExtractorException {
     TreebankNode leftConstituent;
     TreebankNode rightConstituent;
+    Annotation currentAnnotation = leftAnnotation;
     try {
       leftConstituent = (TreebankNode) leftAnnotation;
+      currentAnnotation = rightAnnotation;
       rightConstituent = (TreebankNode) rightAnnotation;
     } catch (ClassCastException e) {
-      throw new CleartkException("annotation is not of type TreebankNode");
+      throw CleartkExtractorException.wrongAnnotationType(TreebankNode.class, currentAnnotation);
     }
 
     List<TreebankNode> fromStart = getPathToRoot(leftConstituent);

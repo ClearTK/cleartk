@@ -35,10 +35,10 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.WindowFeature;
+import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.WindowExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
@@ -73,7 +73,7 @@ public class ChunkerTest extends DefaultTestBase {
     public Instance<String> extractFeatures(
         JCas jCas,
         Annotation labeledAnnotation,
-        Annotation sequence) throws CleartkException {
+        Annotation sequence) throws CleartkExtractorException {
       Instance<String> instance = new Instance<String>();
 
       // extract all features that require only the token annotation

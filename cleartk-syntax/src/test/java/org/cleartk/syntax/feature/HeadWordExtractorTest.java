@@ -25,9 +25,8 @@ package org.cleartk.syntax.feature;
 
 import java.util.List;
 
-import org.apache.uima.UIMAException;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.syntax.SyntaxTestBase;
@@ -49,7 +48,7 @@ import org.junit.Test;
 public class HeadWordExtractorTest extends SyntaxTestBase {
 
   @Test
-  public void testNoTreebankNode() throws CleartkException {
+  public void testNoTreebankNode() throws Throwable {
     HeadWordExtractor extractor = new HeadWordExtractor(null);
     jCas.setDocumentText("foo");
     Token token = new Token(jCas, 0, 3);
@@ -59,7 +58,7 @@ public class HeadWordExtractorTest extends SyntaxTestBase {
   }
 
   @Test
-  public void testNoTokens() throws CleartkException {
+  public void testNoTokens() throws Throwable {
     HeadWordExtractor extractor = new HeadWordExtractor(new SpannedTextExtractor(), true);
     jCas.setDocumentText("foo");
     TreebankNode node = TreebankNodeUtility.newNode(jCas, 0, 3, "NN");
@@ -81,7 +80,7 @@ public class HeadWordExtractorTest extends SyntaxTestBase {
     } catch (NullPointerException e) {
       // that's what we should expect when passing in a null extractor!
       return;
-    } catch (CleartkException e) {
+    } catch (CleartkExtractorException e) {
       // this is ok, too
       return;
     }
@@ -90,7 +89,7 @@ public class HeadWordExtractorTest extends SyntaxTestBase {
   }
 
   @Test
-  public void testSimpleSentence() throws UIMAException, CleartkException {
+  public void testSimpleSentence() throws Throwable {
     tokenBuilder.buildTokens(jCas, "I ran home", "I ran home", "PRP VBD NN");
     TreebankNode iNode = TreebankNodeUtility.newNode(jCas, 0, 1, "PRP");
     TreebankNode ranNode = TreebankNodeUtility.newNode(jCas, 2, 5, "VBD");
@@ -117,7 +116,7 @@ public class HeadWordExtractorTest extends SyntaxTestBase {
   }
 
   @Test
-  public void testNPandPP() throws UIMAException, CleartkException {
+  public void testNPandPP() throws Throwable {
     tokenBuilder.buildTokens(
         jCas,
         "cat's toy under the box",

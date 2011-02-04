@@ -28,8 +28,8 @@ import java.util.List;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.filter.AlwaysIncludeAnnotationFilter;
 import org.cleartk.classifier.feature.extractor.filter.AnnotationFilter;
 import org.cleartk.util.AnnotationRetrieval;
@@ -78,7 +78,7 @@ public class BagExtractor implements SimpleFeatureExtractor {
   }
 
   public List<Feature> extract(JCas jCas, Annotation focusAnnotation)
-      throws UnsupportedOperationException, CleartkException {
+      throws CleartkExtractorException {
     List<Feature> features = new ArrayList<Feature>();
 
     for (Annotation ann : AnnotationRetrieval.getAnnotations(

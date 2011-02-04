@@ -28,8 +28,8 @@ import java.util.List;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 
 /**
@@ -59,7 +59,8 @@ public class ProliferatingExtractor implements SimpleFeatureExtractor {
     this.proliferators = proliferators;
   }
 
-  public List<Feature> extract(JCas jCas, Annotation focusAnnotation) throws CleartkException {
+  public List<Feature> extract(JCas jCas, Annotation focusAnnotation)
+      throws CleartkExtractorException {
     List<Feature> features = new ArrayList<Feature>();
     List<Feature> baseFeatures = this.extractor.extract(jCas, focusAnnotation);
     features.addAll(baseFeatures);

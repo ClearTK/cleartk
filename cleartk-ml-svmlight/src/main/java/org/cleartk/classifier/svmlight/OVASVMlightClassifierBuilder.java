@@ -35,7 +35,6 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 import java.util.jar.JarOutputStream;
 
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.jar.ClassifierBuilder_ImplBase;
 import org.cleartk.classifier.jar.JarStreams;
 import org.cleartk.classifier.sigmoid.Sigmoid;
@@ -153,10 +152,6 @@ public class OVASVMlightClassifierBuilder extends
     }
 
     // read the model from the jar stream
-    try {
-      return SVMlightModel.fromInputStream(modelStream);
-    } catch (CleartkException e) {
-      throw new IOException(e);
-    }
+    return SVMlightModel.fromInputStream(modelStream);
   }
 }

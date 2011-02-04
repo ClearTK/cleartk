@@ -38,7 +38,7 @@ public class BooleanEncoder implements FeatureEncoder<NameNumber> {
 
   private static final long serialVersionUID = -8610226952086030638L;
 
-  public List<NameNumber> encode(Feature feature) throws IllegalArgumentException {
+  public List<NameNumber> encode(Feature feature) {
     String name = feature.getName();
     Number number = ((Boolean) feature.getValue()).booleanValue() ? 1.0 : 0.0;
     return Collections.singletonList(new NameNumber(name, number));

@@ -23,14 +23,12 @@
  */
 package org.cleartk.classifier.util;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.DataWriter;
 import org.cleartk.classifier.DataWriterFactory;
 import org.cleartk.classifier.Instance;
@@ -54,10 +52,10 @@ public class PublicFieldDataWriter<T> implements DataWriter<T> {
     this.instances = new ArrayList<Instance<T>>();
   }
 
-  public void finish() throws CleartkException {
+  public void finish() {
   }
 
-  public void write(Instance<T> instance) throws CleartkException {
+  public void write(Instance<T> instance) {
     this.instances.add(instance);
   }
 
@@ -67,7 +65,7 @@ public class PublicFieldDataWriter<T> implements DataWriter<T> {
   public static class StringFactory implements DataWriterFactory<String> {
     private static PublicFieldDataWriter<String> collector = new PublicFieldDataWriter<String>();
 
-    public DataWriter<String> createDataWriter() throws IOException {
+    public DataWriter<String> createDataWriter() {
       return collector;
     }
 
@@ -83,7 +81,7 @@ public class PublicFieldDataWriter<T> implements DataWriter<T> {
   public static class BooleanFactory implements DataWriterFactory<Boolean> {
     private static PublicFieldDataWriter<Boolean> collector = new PublicFieldDataWriter<Boolean>();
 
-    public DataWriter<Boolean> createDataWriter() throws IOException {
+    public DataWriter<Boolean> createDataWriter() {
       return collector;
     }
 

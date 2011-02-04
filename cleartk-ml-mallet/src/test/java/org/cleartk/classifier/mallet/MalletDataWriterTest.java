@@ -45,7 +45,6 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.pear.util.FileUtil;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Feature;
@@ -79,14 +78,6 @@ public class MalletDataWriterTest extends DefaultTestBase {
   public static class Test1Annotator extends CleartkAnnotator<String> {
 
     public void process(JCas cas) throws AnalysisEngineProcessException {
-      try {
-        this.processSimple(cas);
-      } catch (CleartkException e) {
-        throw new AnalysisEngineProcessException(e);
-      }
-    }
-
-    public void processSimple(JCas cas) throws CleartkException {
       List<Feature> features = Arrays.asList(
           new Feature("pos", "NN"),
           new Feature("distance", 3.0),
@@ -247,14 +238,6 @@ public class MalletDataWriterTest extends DefaultTestBase {
 
   public static class Test4Annotator extends CleartkAnnotator<String> {
     public void process(JCas cas) throws AnalysisEngineProcessException {
-      try {
-        this.processSimple(cas);
-      } catch (CleartkException e) {
-        throw new AnalysisEngineProcessException(e);
-      }
-    }
-
-    public void processSimple(JCas cas) throws CleartkException {
       List<Feature> features = Arrays.asList(
           new Feature("pos", "NN"),
           new Feature("distance", 3.0),
@@ -297,14 +280,6 @@ public class MalletDataWriterTest extends DefaultTestBase {
 
   public static class Test5Annotator extends CleartkAnnotator<String> {
     public void process(JCas cas) throws AnalysisEngineProcessException {
-      try {
-        this.processSimple(cas);
-      } catch (CleartkException e) {
-        throw new AnalysisEngineProcessException(e);
-      }
-    }
-
-    public void processSimple(JCas cas) throws CleartkException {
       Instance<String> instance = InstanceFactory.createInstance("a", "b c d");
       this.dataWriter.write(instance);
     }
@@ -345,14 +320,6 @@ public class MalletDataWriterTest extends DefaultTestBase {
     }
 
     public void process(JCas jCas) throws AnalysisEngineProcessException {
-      try {
-        this.processSimple(jCas);
-      } catch (CleartkException e) {
-        throw new AnalysisEngineProcessException(e);
-      }
-    }
-
-    public void processSimple(JCas jCas) throws CleartkException {
       for (Sentence sentence : AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
         List<Instance<String>> instances = new ArrayList<Instance<String>>();
         List<Token> tokens = AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class);

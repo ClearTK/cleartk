@@ -32,7 +32,6 @@ import java.util.Set;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.token.type.Token;
@@ -74,7 +73,7 @@ public class PrecedingTokenTextBagExtractor implements SimpleFeatureExtractor {
     return "PrecedingToken";
   }
 
-  public List<Feature> extract(JCas jCas, Annotation focusAnnotation) throws CleartkException {
+  public List<Feature> extract(JCas jCas, Annotation focusAnnotation) {
     List<Feature> features = new ArrayList<Feature>();
     Token firstTokenBefore = AnnotationRetrieval.getAdjacentAnnotation(
         jCas,

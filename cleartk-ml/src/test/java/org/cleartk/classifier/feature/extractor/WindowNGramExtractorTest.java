@@ -25,8 +25,6 @@ package org.cleartk.classifier.feature.extractor;
 
 import static org.junit.Assert.assertEquals;
 
-import org.apache.uima.UIMAException;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.WindowNGramFeature;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
@@ -46,7 +44,7 @@ import org.uimafit.util.JCasUtil;
 public class WindowNGramExtractorTest extends DefaultTestBase {
 
   @Test
-  public void testLeftGrams() throws UIMAException, CleartkException {
+  public void testLeftGrams() throws Throwable {
     WindowNGramExtractor extractor = new WindowNGramExtractor(
         Token.class,
         new SpannedTextExtractor(),
@@ -195,7 +193,7 @@ public class WindowNGramExtractorTest extends DefaultTestBase {
   }
 
   @Test
-  public void testRightGrams() throws UIMAException, CleartkException {
+  public void testRightGrams() throws Throwable {
     WindowNGramExtractor extractor = new WindowNGramExtractor(
         Token.class,
         new SpannedTextExtractor(),
@@ -306,7 +304,7 @@ public class WindowNGramExtractorTest extends DefaultTestBase {
   }
 
   @Test
-  public void testIssue158() throws UIMAException, CleartkException {
+  public void testIssue158() throws Throwable {
     tokenBuilder.buildTokens(jCas, "1 2 3 4 5 6 7 8 9 10");
 
     Token token5 = JCasUtil.selectByIndex(jCas, Token.class, 4);

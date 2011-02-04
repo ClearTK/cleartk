@@ -26,7 +26,6 @@ package org.cleartk.classifier.liblinear;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.liblinear.model.LIBLINEARModel;
 import org.cleartk.classifier.libsvm.GenericLIBSVMClassifierBuilder;
 
@@ -56,11 +55,7 @@ public class BinaryLIBLINEARClassifierBuilder extends
 
   @Override
   protected LIBLINEARModel loadModel(InputStream inputStream) throws IOException {
-    try {
-      return LIBLINEARModel.fromInputStream(inputStream);
-    } catch (CleartkException e) {
-      throw new IOException(e);
-    }
+    return LIBLINEARModel.fromInputStream(inputStream);
   }
 
 }

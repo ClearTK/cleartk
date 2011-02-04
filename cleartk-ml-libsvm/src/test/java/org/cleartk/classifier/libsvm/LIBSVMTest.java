@@ -30,7 +30,6 @@ import java.util.List;
 
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
@@ -164,11 +163,7 @@ public class LIBSVMTest extends DefaultTestBase {
     @Override
     public void process(JCas aJCas) throws AnalysisEngineProcessException {
       for (Instance<Boolean> instance : ExampleInstanceFactory.generateBooleanInstances(1000)) {
-        try {
-          this.dataWriter.write(instance);
-        } catch (CleartkException e) {
-          throw new AnalysisEngineProcessException(e);
-        }
+        this.dataWriter.write(instance);
       }
     }
   }
@@ -180,11 +175,7 @@ public class LIBSVMTest extends DefaultTestBase {
     @Override
     public void process(JCas aJCas) throws AnalysisEngineProcessException {
       for (Instance<String> instance : ExampleInstanceFactory.generateStringInstances(1000)) {
-        try {
-          this.dataWriter.write(instance);
-        } catch (CleartkException e) {
-          throw new AnalysisEngineProcessException(e);
-        }
+        this.dataWriter.write(instance);
       }
     }
   }

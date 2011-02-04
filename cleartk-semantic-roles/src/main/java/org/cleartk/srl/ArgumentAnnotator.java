@@ -32,12 +32,12 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.DataWriterFactory;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.WindowFeature;
+import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.WindowExtractor;
 import org.cleartk.classifier.feature.extractor.annotationpair.DistanceExtractor;
 import org.cleartk.classifier.feature.extractor.annotationpair.RelativePositionExtractor;
@@ -130,23 +130,20 @@ public class ArgumentAnnotator extends CleartkAnnotator<String> {
 
   @Override
   public void process(JCas jCas) throws AnalysisEngineProcessException {
-    List<Sentence> sentences = AnnotationRetrieval.getAnnotations(jCas, Sentence.class);
-
-    try {
-      for (Sentence sentence : sentences) {
-        processSentence(jCas, sentence);
-      }
-    } catch (CleartkException e) {
-      throw new AnalysisEngineProcessException(e);
+    for (Sentence sentence : AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
+      processSentence(jCas, sentence);
     }
   }
 
-  private void processSentence(JCas jCas, Sentence sentence) throws CleartkException {
+  private void processSentence(JCas jCas, Sentence sentence) throws AnalysisEngineProcessException {
 
     List<TreebankNode> sentenceConstituents = new ArrayList<TreebankNode>(80);
-    collectConstituents(
-        AnnotationRetrieval.getContainingAnnotation(jCas, sentence, TopTreebankNode.class, false),
-        sentenceConstituents);
+    TopTreebankNode top;
+    top = AnnotationRetrieval.getContainingAnnotation(jCas, sentence, TopTreebankNode.class, false);
+    if (top == null) {
+      throw CleartkExtractorException.noAnnotationInWindow(TopTreebankNode.class, sentence);
+    }
+    collectConstituents(top, sentenceConstituents);
 
     List<List<Feature>> sentenceConstituentFeatures = new ArrayList<List<Feature>>(
         sentenceConstituents.size());
@@ -166,7 +163,7 @@ public class ArgumentAnnotator extends CleartkAnnotator<String> {
       Sentence sentence,
       Predicate predicate,
       List<TreebankNode> constituents,
-      List<List<Feature>> constituentFeatures) throws CleartkException {
+      List<List<Feature>> constituentFeatures) throws AnalysisEngineProcessException {
     TreebankNode predicateNode = AnnotationRetrieval.getMatchingAnnotation(
         jCas,
         predicate.getAnnotation(),
@@ -243,7 +240,7 @@ public class ArgumentAnnotator extends CleartkAnnotator<String> {
   private List<Feature> extractConstituentFeatures(
       JCas jCas,
       TreebankNode constituent,
-      Sentence sentence) throws CleartkException {
+      Sentence sentence) throws CleartkExtractorException {
     List<Feature> features = new ArrayList<Feature>(20);
     features.addAll(constituentExtractor.extract(jCas, constituent));
     features.addAll(firstWordExtractor.extract(jCas, constituent, sentence));
@@ -272,9 +269,6 @@ public class ArgumentAnnotator extends CleartkAnnotator<String> {
   }
 
   private void collectConstituents(TreebankNode top, List<TreebankNode> constituents) {
-    if (top == null)
-      throw new IllegalArgumentException();
-
     if (!(top instanceof TopTreebankNode))
       constituents.add(top);
 

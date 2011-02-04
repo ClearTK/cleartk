@@ -27,7 +27,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.cleartk.CleartkException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -41,7 +40,7 @@ import org.junit.Test;
 public class FeatureVectorTest {
 
   @Before
-  public void setUp() throws CleartkException {
+  public void setUp() throws Throwable {
     fv1 = new SparseFeatureVector();
     fv2 = new SparseFeatureVector();
     fv2.set(1, 4.5);
@@ -58,7 +57,7 @@ public class FeatureVectorTest {
   }
 
   @Test
-  public void testAdd() throws CleartkException {
+  public void testAdd() throws Throwable {
     fv1.add(fv2);
     assertTrue(fv1.equals(fv2));
 
@@ -78,7 +77,7 @@ public class FeatureVectorTest {
   }
 
   @Test
-  public void testMultiply() throws CleartkException {
+  public void testMultiply() throws Throwable {
     fv1.multiply(3.3);
     assertTrue(fv1.equals(new ArrayFeatureVector()));
 

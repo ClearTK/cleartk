@@ -27,8 +27,8 @@ import java.util.List;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.util.AnnotationRetrieval;
 
 /**
@@ -53,7 +53,8 @@ public class MatchingAnnotationExtractor implements SimpleFeatureExtractor {
     this(annotationType, new CombinedExtractor(subExtractors));
   }
 
-  public List<Feature> extract(JCas view, Annotation focusAnnotation) throws CleartkException {
+  public List<Feature> extract(JCas view, Annotation focusAnnotation)
+      throws CleartkExtractorException {
 
     if (!annotationType.isInstance(focusAnnotation)) {
       Annotation newFocusAnnotation = AnnotationRetrieval.getMatchingAnnotation(
@@ -61,10 +62,7 @@ public class MatchingAnnotationExtractor implements SimpleFeatureExtractor {
           focusAnnotation,
           annotationType);
       if (newFocusAnnotation == null)
-        throw new IllegalArgumentException(String.format(
-            "no matching %s for annotation %s",
-            annotationType.getSimpleName(),
-            focusAnnotation));
+        throw CleartkExtractorException.noAnnotationMatchingWindow(annotationType, focusAnnotation);
       focusAnnotation = newFocusAnnotation;
     }
 

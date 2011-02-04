@@ -28,7 +28,6 @@ import java.io.IOException;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.CleartkException;
 import org.cleartk.util.ReflectionUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
@@ -75,8 +74,6 @@ public abstract class CleartkAnnotator<OUTCOME_TYPE> extends JCasAnnotator_ImplB
         untypedDataWriter = factory.createDataWriter();
       } catch (IOException e) {
         throw new ResourceInitializationException(e);
-      } catch (CleartkException e) {
-        throw new ResourceInitializationException(e);
       }
 
       InitializableFactory.initialize(untypedDataWriter, context);
@@ -91,8 +88,6 @@ public abstract class CleartkAnnotator<OUTCOME_TYPE> extends JCasAnnotator_ImplB
       try {
         untypedClassifier = factory.createClassifier();
       } catch (IOException e) {
-        throw new ResourceInitializationException(e);
-      } catch (CleartkException e) {
         throw new ResourceInitializationException(e);
       }
 
@@ -113,11 +108,7 @@ public abstract class CleartkAnnotator<OUTCOME_TYPE> extends JCasAnnotator_ImplB
   public void collectionProcessComplete() throws AnalysisEngineProcessException {
     super.collectionProcessComplete();
     if (isTraining()) {
-      try {
-        dataWriter.finish();
-      } catch (CleartkException ctke) {
-        throw new AnalysisEngineProcessException(ctke);
-      }
+      dataWriter.finish();
     }
   }
 

@@ -25,7 +25,6 @@ package org.cleartk.classifier;
 
 import java.util.List;
 
-import org.cleartk.CleartkException;
 
 /**
  * <br>
@@ -36,8 +35,8 @@ import org.cleartk.CleartkException;
 
 public interface SequenceDataWriter<OUTCOME_TYPE> {
 
-  public void write(List<Instance<OUTCOME_TYPE>> instances) throws CleartkException;
+  public void write(List<Instance<OUTCOME_TYPE>> instances) throws CleartkProcessingException;
 
-  public void finish() throws CleartkException;
+  public void finish() throws CleartkProcessingException;
 
 }

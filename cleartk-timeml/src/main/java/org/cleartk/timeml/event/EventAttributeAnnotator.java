@@ -28,7 +28,6 @@ import java.util.List;
 
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
@@ -101,17 +100,6 @@ public abstract class EventAttributeAnnotator<OUTCOME_TYPE> extends CleartkAnnot
 
   @Override
   public void process(JCas jCas) throws AnalysisEngineProcessException {
-    try {
-      this.processSimple(jCas);
-    } catch (CleartkException e) {
-      throw new AnalysisEngineProcessException(e);
-    }
-  }
-
-  /**
-   * Helper method to work around CleartkException annoyance.
-   */
-  private void processSimple(JCas jCas) throws CleartkException {
     for (Sentence sentence : AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
       for (Event event : AnnotationRetrieval.getAnnotations(jCas, sentence, Event.class)) {
 

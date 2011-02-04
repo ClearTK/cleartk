@@ -27,7 +27,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import org.cleartk.CleartkException;
+import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.jar.DataWriter_ImplBase;
 
@@ -54,9 +54,10 @@ public abstract class MalletDataWriter_ImplBase<CLASSIFIER_BUILDER_TYPE extends 
   }
 
   @Override
-  public void writeEncoded(List<NameNumber> features, String outcome) throws CleartkException {
+  public void writeEncoded(List<NameNumber> features, String outcome)
+      throws CleartkProcessingException {
     if (outcome == null) {
-      throw new CleartkException("all consumed instances must have an outcome.  outcome=" + outcome);
+      throw CleartkProcessingException.noInstanceOutcome(features);
     }
     if (features.size() == 0) {
       trainingDataWriter.print("null:0 ");

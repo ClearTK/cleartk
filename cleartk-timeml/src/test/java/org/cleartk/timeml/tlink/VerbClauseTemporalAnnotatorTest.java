@@ -23,7 +23,6 @@
  */
 package org.cleartk.timeml.tlink;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.apache.uima.UIMAException;
@@ -32,7 +31,6 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.ClassifierFactory;
 import org.cleartk.classifier.CleartkAnnotator;
@@ -68,16 +66,15 @@ public class VerbClauseTemporalAnnotatorTest extends TimeMLTestBase {
     public AfterNewClassifier() {
     }
 
-    public String classify(List<Feature> features) throws CleartkException {
+    public String classify(List<Feature> features) {
       return "AFTER-NEW";
     }
 
-    public List<ScoredOutcome<String>> score(List<Feature> features, int maxResults)
-        throws CleartkException {
+    public List<ScoredOutcome<String>> score(List<Feature> features, int maxResults) {
       return null;
     }
 
-    public Classifier<String> createClassifier() throws IOException, CleartkException {
+    public Classifier<String> createClassifier() {
       return new AfterNewClassifier();
     }
   }

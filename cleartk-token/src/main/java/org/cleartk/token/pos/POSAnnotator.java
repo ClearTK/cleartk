@@ -34,7 +34,6 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
@@ -122,20 +121,12 @@ public abstract class POSAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE 
 
   @Override
   public void process(JCas jCas) throws AnalysisEngineProcessException {
-    try {
-      this.processSimple(jCas);
-    } catch (CleartkException e) {
-      throw new AnalysisEngineProcessException(e);
-    }
-  }
-
-  @SuppressWarnings("unchecked")
-  public void processSimple(JCas jCas) throws AnalysisEngineProcessException, CleartkException {
     if (!typesInitialized)
       initializeTypes(jCas);
 
     FSIterator<Annotation> sentences = jCas.getAnnotationIndex(sentenceType).iterator();
     while (sentences.hasNext()) {
+      @SuppressWarnings("unchecked")
       SENTENCE_TYPE sentence = (SENTENCE_TYPE) sentences.next();
 
       List<Instance<String>> instances = new ArrayList<Instance<String>>();
@@ -143,6 +134,7 @@ public abstract class POSAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE 
       FSIterator<Annotation> tokens = jCas.getAnnotationIndex(tokenType).subiterator(sentence);
 
       while (tokens.hasNext()) {
+        @SuppressWarnings("unchecked")
         TOKEN_TYPE token = (TOKEN_TYPE) tokens.next();
         List<Feature> features = featureExtractor.extractFeatures(jCas, token, sentence);
         Instance<String> instance = new Instance<String>();
@@ -157,6 +149,7 @@ public abstract class POSAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE 
         List<String> tags = this.classify(instances);
         tokens.moveToFirst();
         for (int i = 0; tokens.hasNext(); i++) {
+          @SuppressWarnings("unchecked")
           TOKEN_TYPE token = (TOKEN_TYPE) tokens.next();
           setTag(jCas, token, tags.get(i));
         }

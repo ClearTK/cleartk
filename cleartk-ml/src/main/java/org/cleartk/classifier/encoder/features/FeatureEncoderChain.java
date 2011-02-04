@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.encoder.features.FeatureEncoder;
+import org.cleartk.classifier.encoder.CleartkEncoderException;
 
 /**
  * <br>
@@ -44,13 +44,13 @@ public class FeatureEncoderChain<ENCODED_TYPE> implements FeatureEncoder<ENCODED
     featureEncoders.add(encoder);
   }
 
-  public List<ENCODED_TYPE> encode(Feature feature) {
+  public List<ENCODED_TYPE> encode(Feature feature) throws CleartkEncoderException {
     for (FeatureEncoder<ENCODED_TYPE> featureEncoder : featureEncoders) {
       if (featureEncoder.encodes(feature))
         return featureEncoder.encode(feature);
     }
 
-    throw new IllegalArgumentException();
+    throw CleartkEncoderException.noMatchingEncoder(feature, featureEncoders);
   }
 
   public boolean encodes(Feature feature) {

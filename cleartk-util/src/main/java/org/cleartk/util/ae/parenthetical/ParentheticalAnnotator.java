@@ -25,8 +25,6 @@
 package org.cleartk.util.ae.parenthetical;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.EmptyStackException;
 import java.util.Stack;
 
 import org.apache.uima.UimaContext;
@@ -36,6 +34,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
+import org.cleartk.util.CleartkInitializationException;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -97,16 +96,16 @@ public class ParentheticalAnnotator extends JCasAnnotator_ImplBase {
       windowClass = InitializableFactory.getClass(windowTypeName, Annotation.class);
 
     if (leftParenthesis.length() != 1) {
-      throw new ResourceInitializationException(new IllegalArgumentException(
-          "the value for the configuration parameter " + PARAM_LEFT_PARENTHESIS
-              + " must be a single character."));
+      throw CleartkInitializationException.notSingleCharacter(
+          PARAM_LEFT_PARENTHESIS,
+          leftParenthesis);
     }
     leftParen = leftParenthesis.charAt(0);
 
     if (rightParenthesis.length() != 1) {
-      throw new ResourceInitializationException(new IllegalArgumentException(
-          "the value for the configuration parameter " + PARAM_RIGHT_PARENTHESIS
-              + " must be a single character."));
+      throw CleartkInitializationException.notSingleCharacter(
+          PARAM_RIGHT_PARENTHESIS,
+          rightParenthesis);
     }
     rightParen = rightParenthesis.charAt(0);
 
@@ -126,24 +125,19 @@ public class ParentheticalAnnotator extends JCasAnnotator_ImplBase {
 
   @Override
   public void process(JCas jCas) throws AnalysisEngineProcessException {
-    try {
-      if (windowClass != null) {
-        for (Annotation window : JCasUtil.iterate(jCas, windowClass)) {
-          String text = window.getCoveredText();
-          createParentheticals(jCas, text, window.getBegin());
-        }
-      } else {
-        String text = jCas.getDocumentText();
-        createParentheticals(jCas, text, 0);
+    if (windowClass != null) {
+      for (Annotation window : JCasUtil.iterate(jCas, windowClass)) {
+        String text = window.getCoveredText();
+        createParentheticals(jCas, text, window.getBegin());
       }
-    } catch (Exception e) {
-      throw new AnalysisEngineProcessException(e);
+    } else {
+      String text = jCas.getDocumentText();
+      createParentheticals(jCas, text, 0);
     }
   }
 
   private void createParentheticals(JCas jCas, String text, int offset)
-      throws IllegalArgumentException, InstantiationException, IllegalAccessException,
-      InvocationTargetException {
+      throws AnalysisEngineProcessException {
     Stack<Integer> leftRoundedParens = new Stack<Integer>();
     leftRoundedParens.clear();
     for (int ci = 0; ci < text.length(); ci++) {
@@ -151,14 +145,15 @@ public class ParentheticalAnnotator extends JCasAnnotator_ImplBase {
       if (c == leftParen) {
         leftRoundedParens.push(ci);
       }
-      if (c == rightParen) {
+      if (c == rightParen && !leftRoundedParens.isEmpty()) {
+        int leftOffset = leftRoundedParens.pop();
+        Annotation ann;
         try {
-          int leftOffset = leftRoundedParens.pop();
-          parentheticalConstructor
-              .newInstance(jCas, offset + leftOffset, offset + ci + 1)
-              .addToIndexes();
-        } catch (EmptyStackException ese) {
+          ann = parentheticalConstructor.newInstance(jCas, offset + leftOffset, offset + ci + 1);
+        } catch (Exception e) {
+          throw new AnalysisEngineProcessException(e);
         }
+        ann.addToIndexes();
       }
     }
   }

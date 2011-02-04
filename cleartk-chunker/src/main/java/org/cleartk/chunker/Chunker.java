@@ -33,7 +33,6 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Instance;
 import org.cleartk.util.UIMAUtil;
@@ -122,14 +121,6 @@ public class Chunker extends CleartkSequenceAnnotator<String> {
 
   @Override
   public void process(JCas jCas) throws AnalysisEngineProcessException {
-    try {
-      this.processSimple(jCas);
-    } catch (CleartkException e) {
-      throw new AnalysisEngineProcessException(e);
-    }
-  }
-
-  public void processSimple(JCas jCas) throws AnalysisEngineProcessException, CleartkException {
     if (!typesInitialized)
       initializeTypes(jCas);
 

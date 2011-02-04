@@ -26,7 +26,7 @@ package org.cleartk.classifier.svmlight;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cleartk.CleartkException;
+import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
@@ -57,7 +57,7 @@ public class SVMlightClassifier extends Classifier_ImplBase<FeatureVector, Boole
     this.sigmoid = sigmoid;
   }
 
-  public Boolean classify(List<Feature> features) throws CleartkException {
+  public Boolean classify(List<Feature> features) throws CleartkProcessingException {
     FeatureVector featureVector = featuresEncoder.encodeAll(features);
 
     double prediction = sigmoid.evaluate(model.evaluate(featureVector));
@@ -68,7 +68,7 @@ public class SVMlightClassifier extends Classifier_ImplBase<FeatureVector, Boole
 
   @Override
   public List<ScoredOutcome<Boolean>> score(List<Feature> features, int maxResults)
-      throws CleartkException {
+      throws CleartkProcessingException {
 
     List<ScoredOutcome<Boolean>> resultList = new ArrayList<ScoredOutcome<Boolean>>();
     if (maxResults > 0)
@@ -81,7 +81,7 @@ public class SVMlightClassifier extends Classifier_ImplBase<FeatureVector, Boole
     return resultList;
   }
 
-  private ScoredOutcome<Boolean> score(List<Feature> features) throws CleartkException {
+  private ScoredOutcome<Boolean> score(List<Feature> features) throws CleartkProcessingException {
     FeatureVector featureVector = featuresEncoder.encodeAll(features);
 
     double prediction = sigmoid.evaluate(model.evaluate(featureVector));

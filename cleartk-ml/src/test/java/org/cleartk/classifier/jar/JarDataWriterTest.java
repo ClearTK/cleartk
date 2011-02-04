@@ -26,12 +26,9 @@ package org.cleartk.classifier.jar;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.io.IOException;
 
-import org.apache.uima.UIMAException;
 import org.apache.uima.UimaContext;
 import org.apache.uima.util.FileUtils;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.DataWriter;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
 import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
@@ -54,7 +51,7 @@ import org.uimafit.factory.UimaContextFactory;
 public class JarDataWriterTest extends DefaultTestBase {
 
   @Test
-  public void testManifest() throws IOException, CleartkException {
+  public void testManifest() throws Throwable {
     String expectedManifest = ("Manifest-Version: 1.0\n"
         + "classifierBuilderClass: org.cleartk.classifier.test.StringTestClassifi\n" + " erBuilder");
 
@@ -68,7 +65,7 @@ public class JarDataWriterTest extends DefaultTestBase {
   }
 
   @Test
-  public void testFinish() throws UIMAException, IOException, CleartkException {
+  public void testFinish() throws Throwable {
 
     UimaContext uimaContext = UimaContextFactory.createUimaContext(
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,

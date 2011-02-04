@@ -30,7 +30,6 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.WindowFeature;
@@ -114,39 +113,35 @@ public class NonSequenceExamplePOSAnnotator extends CleartkAnnotator<String> imp
   }
 
   public void process(JCas jCas) throws AnalysisEngineProcessException {
-    try {
-      // generate a list of training instances for each sentence in the document
-      for (Sentence sentence : AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
-        List<Token> tokens = AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class);
+    // generate a list of training instances for each sentence in the document
+    for (Sentence sentence : AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
+      List<Token> tokens = AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class);
 
-        // for each token, extract all feature values and the label
-        for (Token token : tokens) {
-          Instance<String> instance = new Instance<String>();
+      // for each token, extract all feature values and the label
+      for (Token token : tokens) {
+        Instance<String> instance = new Instance<String>();
 
-          // extract all features that require only the token annotation
-          for (SimpleFeatureExtractor extractor : this.tokenFeatureExtractors) {
-            instance.addAll(extractor.extract(jCas, token));
-          }
-
-          // extract all features that require the token and sentence annotations
-          for (WindowExtractor extractor : this.tokenSentenceFeatureExtractors) {
-            instance.addAll(extractor.extract(jCas, token, sentence));
-          }
-
-          // during training, set the outcome from the CAS and write the instance
-          if (this.isTraining()) {
-            instance.setOutcome(token.getPos());
-            this.dataWriter.write(instance);
-          }
-
-          // during classification, set the POS from the classifier's outcome
-          else {
-            token.setPos(this.classifier.classify(instance.getFeatures()));
-          }
+        // extract all features that require only the token annotation
+        for (SimpleFeatureExtractor extractor : this.tokenFeatureExtractors) {
+          instance.addAll(extractor.extract(jCas, token));
         }
 
+        // extract all features that require the token and sentence annotations
+        for (WindowExtractor extractor : this.tokenSentenceFeatureExtractors) {
+          instance.addAll(extractor.extract(jCas, token, sentence));
+        }
+
+        // during training, set the outcome from the CAS and write the instance
+        if (this.isTraining()) {
+          instance.setOutcome(token.getPos());
+          this.dataWriter.write(instance);
+        }
+
+        // during classification, set the POS from the classifier's outcome
+        else {
+          token.setPos(this.classifier.classify(instance.getFeatures()));
+        }
       }
-    } catch (CleartkException ce) {
 
     }
   }

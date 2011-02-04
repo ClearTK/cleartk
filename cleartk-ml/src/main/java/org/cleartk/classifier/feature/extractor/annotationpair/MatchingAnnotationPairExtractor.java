@@ -27,8 +27,8 @@ import java.util.List;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.util.AnnotationRetrieval;
 
 /**
@@ -57,7 +57,7 @@ public class MatchingAnnotationPairExtractor implements AnnotationPairFeatureExt
   }
 
   public List<Feature> extract(JCas view, Annotation leftAnnotation, Annotation rightAnnotation)
-      throws CleartkException {
+      throws CleartkExtractorException {
 
     Annotation leftMatchingAnnotation;
     Annotation rightMatchingAnnotation;
@@ -68,9 +68,7 @@ public class MatchingAnnotationPairExtractor implements AnnotationPairFeatureExt
           leftAnnotation,
           leftType);
       if (leftMatchingAnnotation == null)
-        throw new CleartkException(String.format(
-            "no matching %s annotation on the left",
-            leftType.getSimpleName()));
+        throw CleartkExtractorException.noAnnotationMatchingWindow(leftType, leftAnnotation);
     } else {
       leftMatchingAnnotation = leftType.cast(leftAnnotation);
     }
@@ -81,9 +79,7 @@ public class MatchingAnnotationPairExtractor implements AnnotationPairFeatureExt
           rightAnnotation,
           rightType);
       if (rightMatchingAnnotation == null)
-        throw new CleartkException(String.format(
-            "no matching %s annotation on the right",
-            rightType.getSimpleName()));
+        throw CleartkExtractorException.noAnnotationMatchingWindow(rightType, rightAnnotation);
     } else {
       rightMatchingAnnotation = rightType.cast(rightAnnotation);
     }

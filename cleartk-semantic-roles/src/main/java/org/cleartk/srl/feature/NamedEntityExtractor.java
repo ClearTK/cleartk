@@ -28,7 +28,6 @@ import java.util.List;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.ne.type.NamedEntityMention;
@@ -44,7 +43,7 @@ import org.cleartk.util.AnnotationRetrieval;
  */
 public class NamedEntityExtractor implements SimpleFeatureExtractor {
 
-  public List<Feature> extract(JCas view, Annotation focusAnnotation) throws CleartkException {
+  public List<Feature> extract(JCas view, Annotation focusAnnotation) {
     NamedEntityMention nem = null;
 
     nem = AnnotationRetrieval

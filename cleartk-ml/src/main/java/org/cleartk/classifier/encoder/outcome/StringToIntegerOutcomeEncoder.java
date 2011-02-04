@@ -24,15 +24,13 @@
 package org.cleartk.classifier.encoder.outcome;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
-import org.cleartk.CleartkException;
 
 /**
  * <br>
@@ -73,21 +71,17 @@ public class StringToIntegerOutcomeEncoder implements OutcomeEncoder<String, Int
     return reverseMap.get(outcome);
   }
 
-  public void finalizeOutcomeSet(File outputDirectory) throws CleartkException {
-    try {
-      File outputFile = new File(outputDirectory, LOOKUP_FILE_NAME);
-      PrintWriter writer = new PrintWriter(outputFile);
-      List<Integer> values = new ArrayList<Integer>(map.values());
-      Collections.sort(values);
+  public void finalizeOutcomeSet(File outputDirectory) throws IOException {
+    File outputFile = new File(outputDirectory, LOOKUP_FILE_NAME);
+    PrintWriter writer = new PrintWriter(outputFile);
+    List<Integer> values = new ArrayList<Integer>(map.values());
+    Collections.sort(values);
 
-      for (int value : values) {
-        writer.format("%d %s\n", value, reverseMap.get(value));
-      }
-
-      writer.close();
-    } catch (FileNotFoundException e) {
-      throw new CleartkException(e);
+    for (int value : values) {
+      writer.format("%d %s\n", value, reverseMap.get(value));
     }
+
+    writer.close();
   }
 
   private Map<String, Integer> map = new TreeMap<String, Integer>();

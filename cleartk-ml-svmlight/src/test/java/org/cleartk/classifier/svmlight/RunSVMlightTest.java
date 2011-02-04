@@ -33,10 +33,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkAnnotator;
+import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
@@ -116,7 +115,7 @@ public class RunSVMlightTest extends DefaultTestBase {
   }
 
   private void trainAndTest(File trainingFile, File testFile, String[] args, String name)
-      throws IOException, InterruptedException, CleartkException {
+      throws Exception {
     File modelFile = new File(this.outputDirectoryName, "model.svmlight");
 
     String[] command = new String[3 + args.length];
@@ -183,10 +182,10 @@ public class RunSVMlightTest extends DefaultTestBase {
     }
 
     @Override
-    public void process(JCas aJCas) throws AnalysisEngineProcessException {
+    public void process(JCas aJCas) {
     }
 
-    public void write(Instance<T> instance) throws CleartkException {
+    public void write(Instance<T> instance) throws CleartkProcessingException {
       this.dataWriter.write(instance);
     }
   }

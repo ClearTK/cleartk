@@ -30,8 +30,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
+import org.cleartk.classifier.util.featurevector.InvalidFeatureVectorValueException;
 import org.cleartk.classifier.util.featurevector.SparseFeatureVector;
 
 /**
@@ -40,15 +40,14 @@ import org.cleartk.classifier.util.featurevector.SparseFeatureVector;
  * All rights reserved.
  */
 public class SVMlightModel {
-  public static SVMlightModel fromFile(File modelFile) throws IOException, CleartkException {
+  public static SVMlightModel fromFile(File modelFile) throws IOException {
     InputStream modelStream = new FileInputStream(modelFile);
     SVMlightModel model = fromInputStream(modelStream);
     modelStream.close();
     return model;
   }
 
-  public static SVMlightModel fromInputStream(InputStream modelStream) throws IOException,
-      CleartkException {
+  public static SVMlightModel fromInputStream(InputStream modelStream) throws IOException {
     SVMlightModel model = new SVMlightModel();
 
     SVMlightReader in = new SVMlightReader(modelStream);
@@ -104,7 +103,11 @@ public class SVMlightModel {
       model.supportVectors[i] = readSV(in);
     }
 
-    model.compress();
+    try {
+      model.compress();
+    } catch (InvalidFeatureVectorValueException e) {
+      throw new IOException(e);
+    }
 
     return model;
   }
@@ -130,7 +133,7 @@ public class SVMlightModel {
     return result;
   }
 
-  private static SupportVector readSV(SVMlightReader in) throws IOException, CleartkException {
+  private static SupportVector readSV(SVMlightReader in) throws IOException {
     String[] fields = in.readLine().split(" ");
     double alpha_y = Double.valueOf(fields[0]);
 
@@ -140,13 +143,17 @@ public class SVMlightModel {
       String[] parts = fields[i].split(":");
       int featureIndex = Integer.valueOf(parts[0]);
       double featureValue = Double.valueOf(parts[1]);
-      fv.set(featureIndex, featureValue);
+      try {
+        fv.set(featureIndex, featureValue);
+      } catch (InvalidFeatureVectorValueException e) {
+        throw new IOException(e);
+      }
     }
 
     return new SupportVector(alpha_y, fv);
   }
 
-  private void compress() throws CleartkException {
+  private void compress() throws InvalidFeatureVectorValueException {
     if (!(kernel instanceof LinearKernel))
       return;
 

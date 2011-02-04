@@ -27,9 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.uima.UIMAException;
 import org.apache.uima.jcas.tcas.DocumentAnnotation;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.simple.NGramExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
@@ -52,7 +50,7 @@ import org.junit.Test;
 public class NGramExtractorTest extends DefaultTestBase {
 
   @Test
-  public void test() throws UIMAException, CleartkException {
+  public void test() throws Throwable {
     String text = "She sells seashells by the sea shore";
 
     tokenBuilder.buildTokens(jCas, text, text, "PRP VBZ NNS IN DT NN NN");

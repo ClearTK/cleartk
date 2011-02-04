@@ -23,14 +23,12 @@
  */
 package org.cleartk.classifier.util;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.SequenceDataWriter;
 import org.cleartk.classifier.SequenceDataWriterFactory;
@@ -54,10 +52,10 @@ public class PublicFieldSequenceDataWriter<T> implements SequenceDataWriter<T> {
     this.instances = new ArrayList<Instance<T>>();
   }
 
-  public void finish() throws CleartkException {
+  public void finish() {
   }
 
-  public void write(List<Instance<T>> instance) throws CleartkException {
+  public void write(List<Instance<T>> instance) {
     this.instances.addAll(instance);
   }
 
@@ -67,7 +65,7 @@ public class PublicFieldSequenceDataWriter<T> implements SequenceDataWriter<T> {
   public static class StringFactory implements SequenceDataWriterFactory<String> {
     private static PublicFieldSequenceDataWriter<String> collector = new PublicFieldSequenceDataWriter<String>();
 
-    public SequenceDataWriter<String> createDataWriter() throws IOException {
+    public SequenceDataWriter<String> createDataWriter() {
       return collector;
     }
 
@@ -83,7 +81,7 @@ public class PublicFieldSequenceDataWriter<T> implements SequenceDataWriter<T> {
   public static class BooleanFactory implements SequenceDataWriterFactory<Boolean> {
     private static PublicFieldSequenceDataWriter<Boolean> collector = new PublicFieldSequenceDataWriter<Boolean>();
 
-    public SequenceDataWriter<Boolean> createDataWriter() throws IOException {
+    public SequenceDataWriter<Boolean> createDataWriter() {
       return collector;
     }
 

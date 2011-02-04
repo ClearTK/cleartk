@@ -34,6 +34,7 @@ import org.cleartk.classifier.SequenceDataWriterFactory;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
+import org.cleartk.util.CleartkInitializationException;
 import org.cleartk.util.ReflectionUtil;
 import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
@@ -74,9 +75,7 @@ public abstract class EncodingDirectoryDataWriterFactory<ENCODED_FEATURES_TYPE, 
         File encoderFile = new File(outputDirectory, FeaturesEncoder_ImplBase.ENCODERS_FILE_NAME);
 
         if (!encoderFile.exists()) {
-          throw new RuntimeException(String.format(
-              "No encoder found in directory %s",
-              outputDirectory));
+          throw CleartkInitializationException.fileNotFound(encoderFile);
         }
 
         ObjectInputStream is = new ObjectInputStream(new FileInputStream(encoderFile));

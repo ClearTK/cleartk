@@ -28,8 +28,8 @@ import java.util.List;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.simple.CombinedExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.syntax.constituent.type.TreebankNode;
@@ -68,7 +68,8 @@ public class SiblingExtractor implements SimpleFeatureExtractor {
     this(offset, new CombinedExtractor(subExtractors));
   }
 
-  public List<Feature> extract(JCas jCas, Annotation focusAnnotation) throws CleartkException {
+  public List<Feature> extract(JCas jCas, Annotation focusAnnotation)
+      throws CleartkExtractorException {
     TreebankNode node = (TreebankNode) focusAnnotation;
     TreebankNode parent = node.getParent();
 

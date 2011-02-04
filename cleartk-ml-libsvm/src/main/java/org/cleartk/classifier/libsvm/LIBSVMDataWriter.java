@@ -27,8 +27,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.Classifier;
+import org.cleartk.classifier.CleartkProcessingException;
+import org.cleartk.classifier.encoder.CleartkEncoderException;
 import org.cleartk.classifier.jar.DataWriter_ImplBase;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
@@ -49,7 +50,7 @@ public abstract class LIBSVMDataWriter<CLASSIFIER_BUILDER_TYPE extends GenericLI
 
   @Override
   public void writeEncoded(FeatureVector features, ENCODED_OUTCOME_TYPE outcome)
-      throws CleartkException {
+      throws CleartkProcessingException {
     String classString = encode(outcome);
 
     StringBuffer output = new StringBuffer();
@@ -58,16 +59,13 @@ public abstract class LIBSVMDataWriter<CLASSIFIER_BUILDER_TYPE extends GenericLI
 
     for (FeatureVector.Entry entry : features) {
       if (Double.isInfinite(entry.value) || Double.isNaN(entry.value))
-        throw new CleartkException(String.format(
-            "illegal value in entry %d:%.7f",
-            entry.index,
-            entry.value));
+        throw CleartkEncoderException.invalidFeatureVectorValue(entry.index, entry.value);
       output.append(String.format(Locale.US, " %d:%.7f", entry.index, entry.value));
     }
 
     trainingDataWriter.println(output);
   }
 
-  protected abstract String encode(ENCODED_OUTCOME_TYPE outcome);
+  protected abstract String encode(ENCODED_OUTCOME_TYPE outcome) throws CleartkEncoderException;
 
 }

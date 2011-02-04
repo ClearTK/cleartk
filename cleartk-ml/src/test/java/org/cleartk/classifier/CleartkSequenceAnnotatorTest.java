@@ -29,14 +29,12 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.jar.GenericJarClassifierFactory;
 import org.cleartk.classifier.util.InstanceFactory;
 import org.cleartk.test.DefaultTestBase;
@@ -60,14 +58,16 @@ public class CleartkSequenceAnnotatorTest extends DefaultTestBase {
   }
 
   @Test
-  public void testBadFileName() throws CleartkException {
+  public void testBadFileName() throws Throwable {
     try {
       CleartkSequenceAnnotator<String> classifierAnnotator = new StringTestAnnotator();
       classifierAnnotator.initialize(UimaContextFactory.createUimaContext(
           GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
           new File(outputDirectoryName, "asdf.jar").getPath()));
-      classifierAnnotator.classify(Collections.singletonList(InstanceFactory
-          .createInstance("hello", 1, 1)));
+      classifierAnnotator.classify(Collections.singletonList(InstanceFactory.createInstance(
+          "hello",
+          1,
+          1)));
       fail("expected exception for invalid classifier name");
     } catch (ResourceInitializationException e) {
     }
@@ -130,22 +130,20 @@ public class CleartkSequenceAnnotatorTest extends DefaultTestBase {
   }
 
   public static class TestClassifier<T> implements SequenceClassifier<T> {
-    public List<T> classify(List<List<Feature>> features) throws CleartkException {
+    public List<T> classify(List<List<Feature>> features) {
       assertEquals(1, features.size());
       assertEquals(1, features.get(0).size());
       return null;
     }
 
-    public List<ScoredOutcome<List<T>>> score(List<List<Feature>> features, int maxResults)
-        throws CleartkException {
+    public List<ScoredOutcome<List<T>>> score(List<List<Feature>> features, int maxResults) {
       return null;
     }
   }
 
   public static class TestClassifierFactory<T> implements SequenceClassifierFactory<T> {
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public SequenceClassifier<T> createClassifier() throws IOException,
-        CleartkException {
+    public SequenceClassifier<T> createClassifier() {
       return new TestClassifier();
     }
   }
@@ -172,8 +170,7 @@ public class CleartkSequenceAnnotatorTest extends DefaultTestBase {
   }
 
   public static class StringTestClassifierFactory implements SequenceClassifierFactory<String> {
-    public SequenceClassifier<String> createClassifier() throws IOException,
-        CleartkException {
+    public SequenceClassifier<String> createClassifier() {
       return new StringTestBuilder();
     }
   }
@@ -182,8 +179,7 @@ public class CleartkSequenceAnnotatorTest extends DefaultTestBase {
   }
 
   public static class IntegerTestClassifierFactory implements SequenceClassifierFactory<Integer> {
-    public SequenceClassifier<Integer> createClassifier() throws IOException,
-        CleartkException {
+    public SequenceClassifier<Integer> createClassifier() {
       return new IntegerTestBuilder();
     }
   }
@@ -192,8 +188,7 @@ public class CleartkSequenceAnnotatorTest extends DefaultTestBase {
   }
 
   public static class ParentTestClassifierFactory implements SequenceClassifierFactory<Parent> {
-    public SequenceClassifier<Parent> createClassifier() throws IOException,
-        CleartkException {
+    public SequenceClassifier<Parent> createClassifier() {
       return new ParentTestBuilder();
     }
   }
@@ -202,8 +197,7 @@ public class CleartkSequenceAnnotatorTest extends DefaultTestBase {
   }
 
   public static class ChildTestClassifierFactory implements SequenceClassifierFactory<Child> {
-    public SequenceClassifier<Child> createClassifier() throws IOException,
-        CleartkException {
+    public SequenceClassifier<Child> createClassifier() {
       return new ChildTestBuilder();
     }
   }

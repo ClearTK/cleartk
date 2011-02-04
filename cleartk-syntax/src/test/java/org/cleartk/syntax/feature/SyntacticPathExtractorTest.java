@@ -25,8 +25,6 @@ package org.cleartk.syntax.feature;
 
 import java.util.List;
 
-import org.apache.uima.UIMAException;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
@@ -48,7 +46,7 @@ import org.junit.Test;
 public class SyntacticPathExtractorTest extends SyntaxTestBase {
 
   @Test
-  public void test() throws UIMAException, CleartkException {
+  public void test() throws Throwable {
     tokenBuilder.buildTokens(jCas, "I ran home", "I ran home", "PRP VBD NN");
     TreebankNode iNode = TreebankNodeUtility.newNode(jCas, 0, 1, "PRP");
     TreebankNode inpNode = TreebankNodeUtility.newNode(jCas, "NP", iNode);

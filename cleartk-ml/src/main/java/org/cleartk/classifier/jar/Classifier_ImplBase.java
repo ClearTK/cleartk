@@ -25,8 +25,8 @@ package org.cleartk.classifier.jar;
 
 import java.util.List;
 
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.Classifier;
+import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
@@ -54,7 +54,7 @@ public abstract class Classifier_ImplBase<ENCODED_FEATURES_TYPE, OUTCOME_TYPE, E
   }
 
   public List<ScoredOutcome<OUTCOME_TYPE>> score(List<Feature> features, int maxResults)
-      throws CleartkException {
+      throws CleartkProcessingException {
     throw new UnsupportedOperationException(
         "there is no default implementation of the score method.");
   }

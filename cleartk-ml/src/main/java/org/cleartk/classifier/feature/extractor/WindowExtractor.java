@@ -31,7 +31,6 @@ import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.WindowFeature;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
@@ -124,7 +123,7 @@ public class WindowExtractor {
   public List<Feature> extract(
       JCas jCas,
       Annotation focusAnnotation,
-      Class<? extends Annotation> cls) throws CleartkException {
+      Class<? extends Annotation> cls) throws CleartkExtractorException {
     Annotation windowAnnotation = AnnotationRetrieval.getContainingAnnotation(
         jCas,
         focusAnnotation,
@@ -133,7 +132,7 @@ public class WindowExtractor {
   }
 
   public List<Feature> extract(JCas jCas, Annotation focusAnnotation, Annotation windowAnnotation)
-      throws CleartkException {
+      throws CleartkExtractorException {
     if (this.featureType == null)
       this.featureType = UIMAUtil.getCasType(jCas, this.featureClass);
 
@@ -204,7 +203,7 @@ public class WindowExtractor {
   }
 
   private List<Feature> extractWindowedFeatures(JCas jCas, int i, Annotation annotation)
-      throws CleartkException {
+      throws CleartkExtractorException {
     List<Feature> windowedFeatures = featureExtractor.extract(jCas, annotation);
     List<Feature> returnValues = new ArrayList<Feature>();
     if (windowedFeatures != null && windowedFeatures.size() > 0) {

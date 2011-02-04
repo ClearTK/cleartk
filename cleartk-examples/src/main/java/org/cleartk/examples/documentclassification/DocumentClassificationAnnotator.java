@@ -32,7 +32,6 @@ import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.simple.BagExtractor;
@@ -69,12 +68,12 @@ public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
   }
 
   public void process(JCas jCas) throws AnalysisEngineProcessException {
+    DocumentAnnotation doc = (DocumentAnnotation) jCas.getDocumentAnnotationFs();
+
+    Instance<String> instance = new Instance<String>();
+    instance.addAll(extractor.extract(jCas, doc));
+
     try {
-      DocumentAnnotation doc = (DocumentAnnotation) jCas.getDocumentAnnotationFs();
-
-      Instance<String> instance = new Instance<String>();
-      instance.addAll(extractor.extract(jCas, doc));
-
       if (isTraining()) {
         JCas goldView = jCas.getView(GoldAnnotator.GOLD_VIEW_NAME);
         instance.setOutcome(goldView.getSofaDataString());
@@ -86,8 +85,6 @@ public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
         System.out.println("classified " + ViewURIUtil.getURI(jCas) + " as " + result + ".");
       }
     } catch (CASException e) {
-      throw new AnalysisEngineProcessException(e);
-    } catch (CleartkException e) {
       throw new AnalysisEngineProcessException(e);
     }
   }

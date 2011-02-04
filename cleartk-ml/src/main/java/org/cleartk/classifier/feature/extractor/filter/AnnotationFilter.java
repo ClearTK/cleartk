@@ -31,11 +31,11 @@ package org.cleartk.classifier.feature.extractor.filter;
  */
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.CleartkException;
+import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 
 public interface AnnotationFilter {
 
-  public boolean include(JCas jCas, Annotation annotation) throws CleartkException;
+  public boolean include(JCas jCas, Annotation annotation) throws CleartkExtractorException;
 
   public String filterName();
 

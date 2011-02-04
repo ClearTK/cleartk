@@ -27,7 +27,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 
-import org.cleartk.CleartkException;
+import org.cleartk.classifier.CleartkProcessingException;
+import org.cleartk.classifier.encoder.CleartkEncoderException;
 import org.cleartk.classifier.jar.DataWriter_ImplBase;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
@@ -46,7 +47,8 @@ public class SVMlightDataWriter extends
   }
 
   @Override
-  public void writeEncoded(FeatureVector features, Boolean outcome) throws CleartkException {
+  public void writeEncoded(FeatureVector features, Boolean outcome)
+      throws CleartkProcessingException {
     StringBuffer output = new StringBuffer();
 
     if (outcome == null) {
@@ -59,10 +61,7 @@ public class SVMlightDataWriter extends
 
     for (FeatureVector.Entry entry : features) {
       if (Double.isInfinite(entry.value) || Double.isNaN(entry.value))
-        throw new CleartkException(String.format(
-            "illegal value in entry %d:%.7f",
-            entry.index,
-            entry.value));
+        throw CleartkEncoderException.invalidFeatureVectorValue(entry.index, entry.value);
       output.append(String.format(Locale.US, " %d:%.7f", entry.index, entry.value));
     }
 

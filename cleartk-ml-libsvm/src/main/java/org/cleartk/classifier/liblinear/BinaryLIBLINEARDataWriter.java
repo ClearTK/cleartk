@@ -26,6 +26,7 @@ package org.cleartk.classifier.liblinear;
 import java.io.File;
 import java.io.IOException;
 
+import org.cleartk.classifier.encoder.CleartkEncoderException;
 import org.cleartk.classifier.liblinear.model.LIBLINEARModel;
 import org.cleartk.classifier.libsvm.LIBSVMDataWriter;
 
@@ -42,7 +43,7 @@ public class BinaryLIBLINEARDataWriter extends
   }
 
   @Override
-  protected String encode(Boolean outcome) {
+  protected String encode(Boolean outcome) throws CleartkEncoderException {
     return this.classifierBuilder.getOutcomeEncoder().encode(outcome).booleanValue() ? "+1" : "-1";
   }
 

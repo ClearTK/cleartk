@@ -35,7 +35,6 @@ import java.util.List;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
@@ -60,14 +59,6 @@ public class BinaryMaxentClassifierTest extends DefaultTestBase {
 
     @Override
     public void process(JCas cas) throws AnalysisEngineProcessException {
-      try {
-        this.processSimple(cas);
-      } catch (CleartkException e) {
-        throw new AnalysisEngineProcessException(e);
-      }
-    }
-
-    public void processSimple(JCas cas) throws CleartkException {
       if (this.isTraining()) {
         this.dataWriter.write(createInstance(Boolean.TRUE, "hello", 1234));
         this.dataWriter.write(createInstance(Boolean.TRUE, "hello", 1000));
@@ -166,14 +157,6 @@ public class BinaryMaxentClassifierTest extends DefaultTestBase {
 
     @Override
     public void process(JCas cas) throws AnalysisEngineProcessException {
-      try {
-        this.processSimple(cas);
-      } catch (CleartkException e) {
-        throw new AnalysisEngineProcessException(e);
-      }
-    }
-
-    public void processSimple(JCas cas) throws CleartkException {
       if (this.isTraining()) {
         this.dataWriter
             .write(createInstance(

@@ -25,6 +25,7 @@ package org.cleartk.util.cr;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Arrays;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.cas.impl.XCASDeserializer;
@@ -34,6 +35,7 @@ import org.apache.uima.cas.impl.XmiCasSerializer;
 import org.apache.uima.collection.CollectionException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.util.CleartkInitializationException;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.xml.sax.SAXException;
@@ -64,11 +66,10 @@ public class XReader extends FilesCollectionReader {
     super.initialize(context);
 
     if (!xmlScheme.equals(XMI) && !xmlScheme.equals(XCAS))
-      throw new ResourceInitializationException(new IllegalArgumentException(String.format(
-          "parameter '%1$s' must be either '%2$s' or '%3$s' or left empty.",
+      throw CleartkInitializationException.invalidParameterValueSelectFrom(
           PARAM_XML_SCHEME,
-          XMI,
-          XCAS)));
+          Arrays.asList(XMI, XCAS),
+          xmlScheme);
   }
 
   public void getNext(JCas jCas) throws IOException, CollectionException {

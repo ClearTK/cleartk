@@ -27,7 +27,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
-import org.cleartk.CleartkException;
+import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.DataWriter;
 import org.cleartk.classifier.SequenceDataWriter;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
@@ -70,7 +70,7 @@ public abstract class EncodingDirectoryDataWriter<CLASSIFIER_BUILDER_TYPE extend
   }
 
   @Override
-  public void finish() throws CleartkException {
+  public void finish() throws CleartkProcessingException {
     this.trainingDataWriter.close();
     super.finish();
   }

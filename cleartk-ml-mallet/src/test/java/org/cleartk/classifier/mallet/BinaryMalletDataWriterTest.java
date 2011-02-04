@@ -38,7 +38,6 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.pear.util.FileUtil;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
@@ -69,26 +68,23 @@ public class BinaryMalletDataWriterTest extends DefaultTestBase {
 
     @Override
     public void process(JCas cas) throws AnalysisEngineProcessException {
-      try {
-        List<Feature> features = Arrays.asList(new Feature("pos", "NN"), new Feature(
-            "distance",
-            3.0), new Feature("precision", 1.234));
-        Instance<Boolean> instance = new Instance<Boolean>(Boolean.TRUE, features);
-        this.dataWriter.write(instance);
+      List<Feature> features = Arrays.asList(
+          new Feature("pos", "NN"),
+          new Feature("distance", 3.0),
+          new Feature("precision", 1.234));
+      Instance<Boolean> instance = new Instance<Boolean>(Boolean.TRUE, features);
+      this.dataWriter.write(instance);
 
-        features = Arrays.asList(new Feature("name", "2PO"), new Feature("p's", 2));
-        instance = new Instance<Boolean>(Boolean.FALSE, features);
-        this.dataWriter.write(instance);
+      features = Arrays.asList(new Feature("name", "2PO"), new Feature("p's", 2));
+      instance = new Instance<Boolean>(Boolean.FALSE, features);
+      this.dataWriter.write(instance);
 
-        instance = new Instance<Boolean>(Boolean.TRUE);
-        this.dataWriter.write(instance);
+      instance = new Instance<Boolean>(Boolean.TRUE);
+      this.dataWriter.write(instance);
 
-        features = Arrays.asList(new Feature("A_B", "AB"));
-        instance = new Instance<Boolean>(Boolean.FALSE, features);
-        this.dataWriter.write(instance);
-      } catch (CleartkException e) {
-        throw new AnalysisEngineProcessException(e);
-      }
+      features = Arrays.asList(new Feature("A_B", "AB"));
+      instance = new Instance<Boolean>(Boolean.FALSE, features);
+      this.dataWriter.write(instance);
     }
   }
 
@@ -224,14 +220,6 @@ public class BinaryMalletDataWriterTest extends DefaultTestBase {
 
     @Override
     public void process(JCas cas) throws AnalysisEngineProcessException {
-      try {
-        this.processSimple(cas);
-      } catch (CleartkException e) {
-        throw new AnalysisEngineProcessException(e);
-      }
-    }
-
-    public void processSimple(JCas cas) throws CleartkException {
       List<Feature> features = Arrays.asList(
           new Feature("pos", "NN"),
           new Feature("distance", 3.0),
@@ -239,7 +227,6 @@ public class BinaryMalletDataWriterTest extends DefaultTestBase {
       Instance<Boolean> instance = new Instance<Boolean>(features);
       this.dataWriter.write(instance);
     }
-
   }
 
   /**
@@ -280,14 +267,6 @@ public class BinaryMalletDataWriterTest extends DefaultTestBase {
 
     @Override
     public void process(JCas cas) throws AnalysisEngineProcessException {
-      try {
-        this.processSimple(cas);
-      } catch (CleartkException e) {
-        throw new AnalysisEngineProcessException(e);
-      }
-    }
-
-    public void processSimple(JCas cas) throws CleartkException {
       Instance<Boolean> instance = InstanceFactory.createInstance(Boolean.TRUE, "b c d");
       this.dataWriter.write(instance);
     }

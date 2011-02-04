@@ -28,9 +28,10 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import org.cleartk.CleartkException;
+import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.ScoredOutcome;
+import org.cleartk.classifier.encoder.CleartkEncoderException;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
@@ -69,8 +70,7 @@ public abstract class MalletClassifier_ImplBase<OUTCOME_TYPE> extends
     this.alphabet = classifier.getAlphabet();
   }
 
-  public OUTCOME_TYPE classify(List<Feature> features) throws UnsupportedOperationException,
-      CleartkException {
+  public OUTCOME_TYPE classify(List<Feature> features) throws CleartkProcessingException {
     Classification classification = classifier.classify(toInstance(features));
     String returnValue = classification.getLabeling().getBestLabel().toString();
     return outcomeEncoder.decode(returnValue);
@@ -78,7 +78,7 @@ public abstract class MalletClassifier_ImplBase<OUTCOME_TYPE> extends
 
   @Override
   public List<ScoredOutcome<OUTCOME_TYPE>> score(List<Feature> features, int maxResults)
-      throws CleartkException {
+      throws CleartkProcessingException {
     Classification classification = classifier.classify(toInstance(features));
     List<ScoredOutcome<OUTCOME_TYPE>> returnValues = new ArrayList<ScoredOutcome<OUTCOME_TYPE>>(
         maxResults);
@@ -108,7 +108,7 @@ public abstract class MalletClassifier_ImplBase<OUTCOME_TYPE> extends
 
   }
 
-  public Instance[] toInstances(List<List<Feature>> features) throws CleartkException {
+  public Instance[] toInstances(List<List<Feature>> features) throws CleartkEncoderException {
 
     Instance[] instances = new Instance[features.size()];
     for (int i = 0; i < features.size(); i++) {
@@ -117,7 +117,7 @@ public abstract class MalletClassifier_ImplBase<OUTCOME_TYPE> extends
     return instances;
   }
 
-  public Instance toInstance(List<Feature> features) throws CleartkException {
+  public Instance toInstance(List<Feature> features) throws CleartkEncoderException {
     List<NameNumber> nameNumbers = featuresEncoder.encodeAll(features);
 
     Iterator<NameNumber> nameNumberIterator = nameNumbers.iterator();

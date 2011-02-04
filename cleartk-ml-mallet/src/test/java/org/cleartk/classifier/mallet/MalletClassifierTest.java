@@ -34,7 +34,6 @@ import java.util.Random;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
@@ -86,14 +85,6 @@ public class MalletClassifierTest extends DefaultTestBase {
     Random random = new Random(System.currentTimeMillis());
 
     public void process(JCas cas) throws AnalysisEngineProcessException {
-      try {
-        this.processSimple(cas);
-      } catch (CleartkException e) {
-        throw new AnalysisEngineProcessException(e);
-      }
-    }
-
-    public void processSimple(JCas cas) throws CleartkException {
       if (this.isTraining()) {
         for (int i = 0; i < 1000; i++) {
           this.dataWriter.write(generateInstance(random));

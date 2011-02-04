@@ -26,8 +26,6 @@ package org.cleartk.classifier.util.featurevector;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cleartk.CleartkException;
-
 /**
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
@@ -57,12 +55,9 @@ public class ArrayFeatureVector extends FeatureVector {
     return new Iterator(features);
   }
 
-  public void set(int index, double value) throws CleartkException {
+  public void set(int index, double value) throws InvalidFeatureVectorValueException {
     if (Double.isInfinite(value) || Double.isNaN(value))
-      throw new CleartkException(String.format(
-          "trying to set illegal value in %d:%.7f",
-          index,
-          value));
+      throw new InvalidFeatureVectorValueException(index, value);
 
     for (int i = features.size(); i <= index; i++)
       features.add(0.0);

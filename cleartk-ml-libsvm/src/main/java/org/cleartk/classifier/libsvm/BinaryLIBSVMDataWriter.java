@@ -26,6 +26,8 @@ package org.cleartk.classifier.libsvm;
 import java.io.File;
 import java.io.IOException;
 
+import org.cleartk.classifier.encoder.CleartkEncoderException;
+
 /**
  * <br>
  * Copyright (c) 2009, Regents of the University of Colorado <br>
@@ -41,7 +43,7 @@ public class BinaryLIBSVMDataWriter extends
   }
 
   @Override
-  protected String encode(Boolean outcome) {
+  protected String encode(Boolean outcome) throws CleartkEncoderException {
     return this.classifierBuilder.getOutcomeEncoder().encode(outcome).booleanValue() ? "+1" : "-1";
   }
 

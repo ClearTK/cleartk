@@ -27,8 +27,8 @@ import java.util.List;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.util.AnnotationRetrieval;
 
 /**
@@ -53,7 +53,8 @@ public class LastInstanceExtractor implements SimpleFeatureExtractor {
     this(targetAnnotationClass, new CombinedExtractor(subExtractors));
   }
 
-  public List<Feature> extract(JCas view, Annotation windowAnnotation) throws CleartkException {
+  public List<Feature> extract(JCas view, Annotation windowAnnotation)
+      throws CleartkExtractorException {
 
     Annotation lastAnnotation;
     lastAnnotation = AnnotationRetrieval.getLastAnnotation(
@@ -62,10 +63,7 @@ public class LastInstanceExtractor implements SimpleFeatureExtractor {
         targetAnnotationClass);
 
     if (lastAnnotation == null) {
-      throw new CleartkException(String.format(
-          "no %s annotation found within %s window",
-          targetAnnotationClass.getSimpleName(),
-          windowAnnotation.getClass().getSimpleName()));
+      throw CleartkExtractorException.noAnnotationInWindow(targetAnnotationClass, windowAnnotation);
     }
 
     List<Feature> features = subExtractor.extract(view, lastAnnotation);

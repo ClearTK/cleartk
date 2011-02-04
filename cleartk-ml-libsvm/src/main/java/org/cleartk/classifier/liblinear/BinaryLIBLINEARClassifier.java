@@ -26,7 +26,7 @@ package org.cleartk.classifier.liblinear;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cleartk.CleartkException;
+import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
@@ -59,7 +59,7 @@ public class BinaryLIBLINEARClassifier extends Classifier_ImplBase<FeatureVector
     this.model = model;
   }
 
-  public Boolean classify(List<Feature> features) throws CleartkException {
+  public Boolean classify(List<Feature> features) throws CleartkProcessingException {
     FeatureVector featureVector = this.featuresEncoder.encodeAll(features);
 
     boolean encodedOutcome = (model.predict(featureVector) > 0);
@@ -68,7 +68,7 @@ public class BinaryLIBLINEARClassifier extends Classifier_ImplBase<FeatureVector
 
   @Override
   public List<ScoredOutcome<Boolean>> score(List<Feature> features, int maxResults)
-      throws CleartkException {
+      throws CleartkProcessingException {
     List<ScoredOutcome<Boolean>> returnValues = new ArrayList<ScoredOutcome<Boolean>>();
 
     FeatureVector featureVector = this.featuresEncoder.encodeAll(features);

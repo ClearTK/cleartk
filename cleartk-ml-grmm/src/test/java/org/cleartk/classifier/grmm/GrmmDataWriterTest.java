@@ -35,7 +35,6 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.pear.util.FileUtil;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
@@ -59,14 +58,6 @@ public class GrmmDataWriterTest extends DefaultTestBase {
   public static class Test1Annotator extends CleartkSequenceAnnotator<String[]> {
 
     public void process(JCas cas) throws AnalysisEngineProcessException {
-      try {
-        this.processSimple(cas);
-      } catch (CleartkException e) {
-        throw new AnalysisEngineProcessException(e);
-      }
-    }
-
-    public void processSimple(JCas cas) throws CleartkException {
       List<Instance<String[]>> instances = new ArrayList<Instance<String[]>>();
       List<Feature> features = Arrays.asList(
           new Feature("pos", "NN"),

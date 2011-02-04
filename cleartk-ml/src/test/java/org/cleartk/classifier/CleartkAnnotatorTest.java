@@ -29,15 +29,12 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.GenericJarClassifierFactory;
 import org.cleartk.classifier.test.DefaultStringTestDataWriterFactory;
@@ -65,7 +62,7 @@ public class CleartkAnnotatorTest extends DefaultTestBase {
   }
 
   @Test
-  public void testBadFileName() throws CleartkException {
+  public void testBadFileName() throws Throwable {
     try {
       CleartkAnnotator<String> classifierAnnotator = new StringTestAnnotator();
       classifierAnnotator.initialize(UimaContextFactory.createUimaContext(
@@ -171,19 +168,19 @@ public class CleartkAnnotatorTest extends DefaultTestBase {
 
   public static class TestAnnotator<T> extends CleartkAnnotator<T> {
     @Override
-    public void process(JCas aJCas) throws AnalysisEngineProcessException {
+    public void process(JCas aJCas) {
     }
   }
 
   public static class TestClassifier<T> implements Classifier<T> {
 
-    public T classify(List<Feature> features) throws CleartkException {
+    public T classify(List<Feature> features) {
       assertEquals(1, features.size());
       return null;
     }
 
     public List<ScoredOutcome<T>> score(List<Feature> features, int maxResults)
-        throws CleartkException {
+        throws CleartkProcessingException {
       return null;
     }
   }
@@ -191,7 +188,7 @@ public class CleartkAnnotatorTest extends DefaultTestBase {
   public static class TestClassifierFactory<T> implements ClassifierFactory<T> {
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public Classifier<T> createClassifier() throws IOException, CleartkException {
+    public Classifier<T> createClassifier() {
       return new TestClassifier();
     }
 
@@ -219,7 +216,7 @@ public class CleartkAnnotatorTest extends DefaultTestBase {
   }
 
   public static class StringTestClassifierFactory implements ClassifierFactory<String> {
-    public Classifier<String> createClassifier() throws IOException, CleartkException {
+    public Classifier<String> createClassifier() {
       return new StringTestClassifier();
     }
   }
@@ -228,7 +225,7 @@ public class CleartkAnnotatorTest extends DefaultTestBase {
   }
 
   public static class IntegerTestClassifierFactory implements ClassifierFactory<Integer> {
-    public Classifier<Integer> createClassifier() throws IOException, CleartkException {
+    public Classifier<Integer> createClassifier() {
       return new IntegerTestClassifier();
     }
   }
@@ -237,7 +234,7 @@ public class CleartkAnnotatorTest extends DefaultTestBase {
   }
 
   public static class ParentClassifierFactory implements ClassifierFactory<Parent> {
-    public Classifier<Parent> createClassifier() throws IOException, CleartkException {
+    public Classifier<Parent> createClassifier() {
       return new ParentClassifier();
     }
   }
@@ -246,7 +243,7 @@ public class CleartkAnnotatorTest extends DefaultTestBase {
   }
 
   public static class ChildClassifierFactory implements ClassifierFactory<Child> {
-    public Classifier<Child> createClassifier() throws IOException, CleartkException {
+    public Classifier<Child> createClassifier() {
       return new ChildClassifier();
     }
   }

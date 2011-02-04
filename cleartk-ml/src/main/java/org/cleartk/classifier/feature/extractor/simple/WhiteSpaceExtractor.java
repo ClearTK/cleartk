@@ -29,8 +29,8 @@ import java.util.regex.Pattern;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 
 /**
  * <br>
@@ -48,7 +48,8 @@ public class WhiteSpaceExtractor implements SimpleFeatureExtractor {
 
   public static final String ORIENTATION_RIGHT = "R";
 
-  public List<Feature> extract(JCas view, Annotation focusAnnotation) throws CleartkException {
+  public List<Feature> extract(JCas view, Annotation focusAnnotation)
+      throws CleartkExtractorException {
     List<Feature> features = new ArrayList<Feature>();
 
     String text = view.getDocumentText();

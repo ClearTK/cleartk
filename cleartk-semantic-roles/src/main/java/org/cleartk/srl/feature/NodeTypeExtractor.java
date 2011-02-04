@@ -28,8 +28,8 @@ import java.util.List;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 
@@ -43,9 +43,10 @@ import org.cleartk.syntax.constituent.type.TreebankNode;
  */
 public class NodeTypeExtractor implements SimpleFeatureExtractor {
 
-  public List<Feature> extract(JCas jCas, Annotation focusAnnotation) throws CleartkException {
+  public List<Feature> extract(JCas jCas, Annotation focusAnnotation)
+      throws CleartkExtractorException {
     if (!(focusAnnotation instanceof TreebankNode))
-      throw new CleartkException("annotation is not of type TreebankNode");
+      throw CleartkExtractorException.wrongAnnotationType(TreebankNode.class, focusAnnotation);
 
     TreebankNode node = (TreebankNode) focusAnnotation;
 

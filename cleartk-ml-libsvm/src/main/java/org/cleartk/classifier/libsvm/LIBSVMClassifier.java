@@ -26,7 +26,7 @@ package org.cleartk.classifier.libsvm;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cleartk.CleartkException;
+import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
@@ -53,7 +53,7 @@ public abstract class LIBSVMClassifier<OUTCOME_TYPE, ENCODED_OUTCOME_TYPE> exten
     this.model = model;
   }
 
-  public OUTCOME_TYPE classify(List<Feature> features) throws CleartkException {
+  public OUTCOME_TYPE classify(List<Feature> features) throws CleartkProcessingException {
     FeatureVector featureVector = this.featuresEncoder.encodeAll(features);
 
     ENCODED_OUTCOME_TYPE encodedOutcome = decodePrediction(libsvm.svm.svm_predict(

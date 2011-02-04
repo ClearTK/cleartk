@@ -26,13 +26,13 @@ package org.cleartk.classifier.jar;
 import java.io.File;
 import java.io.IOException;
 
-import org.cleartk.CleartkException;
+import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.DataWriter;
 import org.cleartk.classifier.SequenceDataWriter;
 
 /**
- * Superclass for {@link DataWriter} and {@link SequenceDataWriter} implementations that saves
- * files to a training directory using a {@link JarClassifierBuilder}.
+ * Superclass for {@link DataWriter} and {@link SequenceDataWriter} implementations that saves files
+ * to a training directory using a {@link JarClassifierBuilder}.
  * 
  * Note that it does not declare that it implements either of the DataWriter interfaces. Subclasses
  * should do this.
@@ -77,11 +77,11 @@ public abstract class DirectoryDataWriter<CLASSIFIER_BUILDER extends JarClassifi
    * Basic implementation of {@link DataWriter#finish()} and {@link SequenceDataWriter#finish()}
    * that calls {@link ClassifierBuilder#saveToTrainingDirectory(File)}
    */
-  public void finish() throws CleartkException {
+  public void finish() throws CleartkProcessingException {
     try {
       this.classifierBuilder.saveToTrainingDirectory(this.outputDirectory);
     } catch (IOException e) {
-      throw new CleartkException(e);
+      throw new CleartkProcessingException(e);
     }
   }
 }

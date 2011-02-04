@@ -30,7 +30,6 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.UimaContextAdmin;
 import org.apache.uima.resource.ConfigurationManager;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.DataWriter;
 import org.cleartk.classifier.DataWriterFactory;
 import org.cleartk.classifier.SequenceDataWriter;
@@ -80,53 +79,48 @@ public class ViterbiDataWriterFactory<OUTCOME_TYPE> extends DirectoryDataWriterF
   public void initialize(UimaContext context) throws ResourceInitializationException {
     ConfigurationParameterInitializer.initialize(this, context);
 
+    OutcomeFeatureExtractor outcomeFeatureExtractors[];
+    if (outcomeFeatureExtractorNames == null) {
+      outcomeFeatureExtractors = new OutcomeFeatureExtractor[0];
+    } else {
+      outcomeFeatureExtractors = new OutcomeFeatureExtractor[outcomeFeatureExtractorNames.length];
+      for (int i = 0; i < outcomeFeatureExtractorNames.length; i++) {
+        outcomeFeatureExtractors[i] = InitializableFactory.create(
+            context,
+            outcomeFeatureExtractorNames[i],
+            OutcomeFeatureExtractor.class);
+      }
+    }
+
+    dataWriter = new ViterbiDataWriter<OUTCOME_TYPE>(outputDirectory, outcomeFeatureExtractors);
+
+    // set the output directory parameter to the delegated directory
+    UimaContextAdmin contextAdmin = (UimaContextAdmin) context;
+    ConfigurationManager manager = contextAdmin.getConfigurationManager();
+    ViterbiClassifierBuilder<OUTCOME_TYPE> builder = dataWriter.getClassifierBuilder();
+    File delegatedDir = builder.getDelegatedModelDirectory(this.outputDirectory);
+    manager.setConfigParameterValue(contextAdmin.getQualifiedContextName()
+        + DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY, delegatedDir.getPath());
+
+    // initialize the delegated data writer
     try {
-      OutcomeFeatureExtractor outcomeFeatureExtractors[];
-      if (outcomeFeatureExtractorNames == null) {
-        outcomeFeatureExtractors = new OutcomeFeatureExtractor[0];
-      } else {
-        outcomeFeatureExtractors = new OutcomeFeatureExtractor[outcomeFeatureExtractorNames.length];
-        for (int i = 0; i < outcomeFeatureExtractorNames.length; i++) {
-          outcomeFeatureExtractors[i] = InitializableFactory.create(
-              context,
-              outcomeFeatureExtractorNames[i],
-              OutcomeFeatureExtractor.class);
-        }
-      }
-
-      dataWriter = new ViterbiDataWriter<OUTCOME_TYPE>(outputDirectory, outcomeFeatureExtractors);
-
-      // set the output directory parameter to the delegated directory
-      UimaContextAdmin contextAdmin = (UimaContextAdmin) context;
-      ConfigurationManager manager = contextAdmin.getConfigurationManager();
-      ViterbiClassifierBuilder<OUTCOME_TYPE> builder = dataWriter.getClassifierBuilder();
-      File delegatedDir = builder.getDelegatedModelDirectory(this.outputDirectory);
-      manager.setConfigParameterValue(contextAdmin.getQualifiedContextName()
-          + DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY, delegatedDir.getPath());
-
-      // initialize the delegated data writer
-      try {
-        DataWriterFactory<OUTCOME_TYPE> delegatedDataWriterFactory = createDelegatedDataWriterFactory(
-            delegatedDataWriterFactoryClass,
-            context);
-        DataWriter<OUTCOME_TYPE> delegatedDataWriter = delegatedDataWriterFactory
-            .createDataWriter();
-        dataWriter.setDelegatedDataWriter(delegatedDataWriter);
-      }
-
-      // restore the output directory parameter
-      finally {
-        manager.setConfigParameterValue(contextAdmin.getQualifiedContextName()
-            + DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY, this.outputDirectory.getPath());
-      }
+      DataWriterFactory<OUTCOME_TYPE> delegatedDataWriterFactory = createDelegatedDataWriterFactory(
+          delegatedDataWriterFactoryClass,
+          context);
+      DataWriter<OUTCOME_TYPE> delegatedDataWriter = delegatedDataWriterFactory.createDataWriter();
+      dataWriter.setDelegatedDataWriter(delegatedDataWriter);
     } catch (IOException e) {
       throw new ResourceInitializationException(e);
-    } catch (CleartkException e) {
-      throw new ResourceInitializationException(e);
+    }
+
+    // restore the output directory parameter
+    finally {
+      manager.setConfigParameterValue(contextAdmin.getQualifiedContextName()
+          + DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY, this.outputDirectory.getPath());
     }
   }
 
-  public SequenceDataWriter<OUTCOME_TYPE> createDataWriter() throws IOException {
+  public SequenceDataWriter<OUTCOME_TYPE> createDataWriter() {
     return dataWriter;
   }
 

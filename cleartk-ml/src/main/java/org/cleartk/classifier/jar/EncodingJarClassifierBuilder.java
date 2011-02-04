@@ -33,7 +33,6 @@ import java.io.OutputStream;
 import java.util.jar.JarInputStream;
 import java.util.jar.JarOutputStream;
 
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
@@ -92,12 +91,8 @@ public abstract class EncodingJarClassifierBuilder<CLASSIFIER_TYPE, ENCODED_FEAT
   public void saveToTrainingDirectory(File dir) throws IOException {
     super.saveToTrainingDirectory(dir);
     // finalize the encoder feature set
-    try {
-      this.featuresEncoder.finalizeFeatureSet(dir);
-      this.outcomeEncoder.finalizeOutcomeSet(dir);
-    } catch (CleartkException e) {
-      throw new IOException(e);
-    }
+    this.featuresEncoder.finalizeFeatureSet(dir);
+    this.outcomeEncoder.finalizeOutcomeSet(dir);
 
     // save the encoders to the directory
     File encodersFile = getEncodersFile(dir);

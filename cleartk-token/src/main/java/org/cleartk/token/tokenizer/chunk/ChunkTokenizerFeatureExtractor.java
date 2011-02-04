@@ -30,12 +30,12 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.CleartkException;
 import org.cleartk.chunker.Chunker;
 import org.cleartk.chunker.ChunkerFeatureExtractor;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.WindowFeature;
 import org.cleartk.classifier.feature.WindowNGramFeature;
+import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.WindowExtractor;
 import org.cleartk.classifier.feature.extractor.WindowNGramExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
@@ -137,7 +137,7 @@ public class ChunkTokenizerFeatureExtractor implements ChunkerFeatureExtractor {
   public Instance<String> extractFeatures(
       JCas jCas,
       Annotation labeledAnnotation,
-      Annotation sequence) throws CleartkException {
+      Annotation sequence) throws CleartkExtractorException {
 
     Instance<String> instance = new Instance<String>();
 

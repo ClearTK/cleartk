@@ -24,13 +24,13 @@
 package org.cleartk.classifier.encoder.features;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.encoder.CleartkEncoderException;
 import org.cleartk.classifier.encoder.FeatureEncoderUtil;
 import org.cleartk.util.collection.CompressedStringBidiMap;
 
@@ -71,7 +71,7 @@ public class NameNumberFeaturesEncoder extends
   }
 
   @Override
-  public List<NameNumber> encodeAll(Iterable<Feature> features) {
+  public List<NameNumber> encodeAll(Iterable<Feature> features) throws CleartkEncoderException {
     List<NameNumber> returnValues = new ArrayList<NameNumber>();
 
     for (Feature feature : features) {
@@ -86,18 +86,14 @@ public class NameNumberFeaturesEncoder extends
   }
 
   @Override
-  public void finalizeFeatureSet(File outputDirectory) throws CleartkException {
-    try {
-      this.allowNewFeatures = false;
+  public void finalizeFeatureSet(File outputDirectory) throws IOException {
+    this.allowNewFeatures = false;
 
-      if (compressFeatures) {
-        File lookupFile = new File(outputDirectory, LOOKUP_FILE_NAME);
-        PrintWriter writer = new PrintWriter(lookupFile);
-        csbm.write(writer, sortNameLookup);
-        writer.close();
-      }
-    } catch (FileNotFoundException e) {
-      throw new CleartkException(e);
+    if (compressFeatures) {
+      File lookupFile = new File(outputDirectory, LOOKUP_FILE_NAME);
+      PrintWriter writer = new PrintWriter(lookupFile);
+      csbm.write(writer, sortNameLookup);
+      writer.close();
     }
   }
 

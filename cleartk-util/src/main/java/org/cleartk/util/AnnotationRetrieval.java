@@ -304,8 +304,6 @@ public class AnnotationRetrieval {
     int type;
     try {
       type = annotationClass.getField("type").getInt(null);
-    } catch (IllegalArgumentException e) {
-      throw new RuntimeException(e);
     } catch (SecurityException e) {
       throw new RuntimeException(e);
     } catch (IllegalAccessException e) {

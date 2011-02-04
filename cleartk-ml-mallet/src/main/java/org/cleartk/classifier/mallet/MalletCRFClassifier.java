@@ -26,8 +26,9 @@ package org.cleartk.classifier.mallet;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cleartk.CleartkException;
+import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.encoder.CleartkEncoderException;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
@@ -73,9 +74,8 @@ public class MalletCRFClassifier extends
    *          classified. The list should correspond to some logical sequence of instances to be
    *          classified (e.g. tokens in a sentence or lines in a document) that corresponds to the
    *          model that has been built for this classifier.
-   * @throws CleartkException
    */
-  public List<String> classify(List<List<Feature>> features) throws CleartkException {
+  public List<String> classify(List<List<Feature>> features) throws CleartkProcessingException {
     String[][] featureStringArray = toStrings(features);
     Pipe pipe = transducer.getInputPipe();
 
@@ -104,9 +104,8 @@ public class MalletCRFClassifier extends
    * @param features
    *          the features to be converted.
    * @return a 2D string array that Mallet can use.
-   * @throws CleartkException
    */
-  private String[][] toStrings(List<List<Feature>> features) throws CleartkException {
+  private String[][] toStrings(List<List<Feature>> features) throws CleartkEncoderException {
     List<List<String>> encodedFeatures = new ArrayList<List<String>>(features.size());
     for (List<Feature> features1 : features) {
       List<NameNumber> nameNumbers = this.featuresEncoder.encodeAll(features1);

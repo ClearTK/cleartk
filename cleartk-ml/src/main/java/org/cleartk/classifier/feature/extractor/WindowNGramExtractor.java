@@ -30,7 +30,6 @@ import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.WindowNGramFeature;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
@@ -149,7 +148,7 @@ public class WindowNGramExtractor {
   }
 
   public Feature extract(JCas jCas, Annotation focusAnnotation, Class<? extends Annotation> cls)
-      throws CleartkException {
+      throws CleartkExtractorException {
     Annotation ngramAnnotation = AnnotationRetrieval.getContainingAnnotation(
         jCas,
         focusAnnotation,
@@ -158,7 +157,7 @@ public class WindowNGramExtractor {
   }
 
   public Feature extract(JCas jCas, Annotation focusAnnotation, Annotation ngramAnnotation)
-      throws CleartkException {
+      throws CleartkExtractorException {
     if (this.featureType == null)
       this.featureType = UIMAUtil.getCasType(jCas, this.featureClass);
 
@@ -259,7 +258,7 @@ public class WindowNGramExtractor {
   }
 
   private Feature extactNGrammedFeature(JCas jCas, int i, Annotation annotation)
-      throws CleartkException {
+      throws CleartkExtractorException {
     List<Feature> ngramedFeatures = featureExtractor.extract(jCas, annotation);
 
     if (ngramedFeatures != null && ngramedFeatures.size() > 0) {

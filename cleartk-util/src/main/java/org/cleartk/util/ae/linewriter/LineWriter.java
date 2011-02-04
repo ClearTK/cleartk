@@ -35,6 +35,7 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.util.CleartkInitializationException;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.UIMAUtil;
 import org.cleartk.util.ViewURIUtil;
@@ -208,13 +209,11 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 
       if ((outputDirectoryName == null && outputFileName == null)
           || (outputDirectoryName != null && outputFileName != null)) {
-        String message = String.format(
-            "One of the parameters %1$s or %2$s must be set but not both: %1$s=%3$s %2$s=%4$s",
+        throw CleartkInitializationException.notExactlyOneParameterSet(
             PARAM_OUTPUT_DIRECTORY_NAME,
-            PARAM_OUTPUT_FILE_NAME,
             outputDirectoryName,
+            PARAM_OUTPUT_FILE_NAME,
             outputFileName);
-        throw new ResourceInitializationException(new IllegalArgumentException(message));
       }
 
       if (outputDirectoryName != null) {
@@ -251,14 +250,11 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
           this.annotationWriter);
 
       if (!ReflectionUtil.isAssignableFrom(annotationType, outputAnnotationClass)) {
-        String message = String
-            .format(
-                "ANNOTATION_TYPE of annotation writer is not assignable from output annotation class: %1$s=%2$s, %3$s=%4$s",
-                PARAM_ANNOTATION_WRITER_CLASS_NAME,
-                annotationWriterClassName,
-                PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
-                outputAnnotationClassName);
-        throw new ResourceInitializationException(new IllegalArgumentException(message));
+        throw CleartkInitializationException.incompatibleTypeParameterAndType(
+            this.annotationWriter,
+            "ANNOTATION_TYPE",
+            annotationType,
+            outputAnnotationClass);
       }
 
       if (blockAnnotationClassName != null) {
@@ -282,14 +278,11 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
               this.blockWriter);
 
           if (!ReflectionUtil.isAssignableFrom(blockType, blockAnnotationClass)) {
-            String message = String
-                .format(
-                    "BLOCK_TYPE of block writer is not assignable from block annotation class: %1$s=%2$s, %3$s=%4$s",
-                    PARAM_BLOCK_WRITER_CLASS_NAME,
-                    blockWriterClassName,
-                    PARAM_BLOCK_ANNOTATION_CLASS_NAME,
-                    blockAnnotationClassName);
-            throw new ResourceInitializationException(new IllegalArgumentException(message));
+            throw CleartkInitializationException.incompatibleTypeParameterAndType(
+                this.blockWriter,
+                "BLOCK_TYPE",
+                blockType,
+                blockAnnotationClass);
           }
         }
       }

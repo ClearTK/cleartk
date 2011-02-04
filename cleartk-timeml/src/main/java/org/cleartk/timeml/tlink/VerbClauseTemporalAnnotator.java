@@ -37,7 +37,6 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Level;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.CleartkAnnotatorDescriptionFactory;
 import org.cleartk.classifier.Instance;
@@ -167,14 +166,6 @@ public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
   }
 
   public void process(JCas jCas) throws AnalysisEngineProcessException {
-    try {
-      this.processSimple(jCas);
-    } catch (CleartkException e) {
-      throw new AnalysisEngineProcessException(e);
-    }
-  }
-
-  public void processSimple(JCas jCas) throws CleartkException {
     int docEnd = jCas.getDocumentText().length();
 
     // collect TLINKs if necessary

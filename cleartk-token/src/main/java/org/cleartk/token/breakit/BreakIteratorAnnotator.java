@@ -25,7 +25,6 @@
 package org.cleartk.token.breakit;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.text.BreakIterator;
 import java.util.Locale;
 
@@ -105,15 +104,6 @@ public class BreakIteratorAnnotator extends JCasAnnotator_ImplBase {
 
   @Override
   public void process(JCas jCas) throws AnalysisEngineProcessException {
-    try {
-      processAnnotations(jCas);
-    } catch (Exception e) {
-      throw new AnalysisEngineProcessException(e);
-    }
-  }
-
-  private void processAnnotations(JCas jCas) throws IllegalArgumentException,
-      InstantiationException, IllegalAccessException, InvocationTargetException {
     String text = jCas.getDocumentText();
     breakIterator.setText(text);
 
@@ -122,7 +112,11 @@ public class BreakIteratorAnnotator extends JCasAnnotator_ImplBase {
     while ((endIndex = breakIterator.next()) != BreakIterator.DONE) {
       String annotationText = text.substring(index, endIndex);
       if (!annotationText.trim().equals("")) {
-        annotationConstructor.newInstance(jCas, index, endIndex).addToIndexes();
+        try {
+          annotationConstructor.newInstance(jCas, index, endIndex).addToIndexes();
+        } catch (Exception e) {
+          throw new AnalysisEngineProcessException(e);
+        }
       }
       index = endIndex;
     }

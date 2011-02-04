@@ -43,6 +43,7 @@ import org.cleartk.srl.propbank.util.Propbank;
 import org.cleartk.syntax.constituent.TreebankConstants;
 import org.cleartk.syntax.constituent.ptb.ListSpecification;
 import org.cleartk.syntax.constituent.ptb.PennTreebankReader;
+import org.cleartk.util.CleartkInitializationException;
 import org.cleartk.util.ViewURIUtil;
 import org.uimafit.component.JCasCollectionReader_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
@@ -113,8 +114,7 @@ public class PropbankGoldReader extends JCasCollectionReader_ImplBase {
 
       File propbankFile = new File(propbankFileName);
       if (!propbankFile.exists()) {
-        throw new ResourceInitializationException(new IllegalArgumentException(
-            "could not find file: " + propbankFile.getPath()));
+        throw CleartkInitializationException.fileNotFound(propbankFile);
       }
       BufferedReader reader = new BufferedReader(new FileReader(propbankFile));
       propbankData = new LinkedList<String>();
@@ -129,11 +129,7 @@ public class PropbankGoldReader extends JCasCollectionReader_ImplBase {
       // don't forget that the paths in props.txt have "wsj" in the name.
       File wsjDirectory = new File(treebankDirectory, "wsj");
       if (!wsjDirectory.exists()) {
-        throw new ResourceInitializationException(
-            new IllegalArgumentException(
-                "could not find file: "
-                    + treebankDirectory.getPath()
-                    + " or this directory does not contain a sub-directory named 'wsj' as expected by propbank data."));
+        throw CleartkInitializationException.fileNotFound(wsjDirectory);
       }
       PennTreebankReader.collectSections(wsjDirectory, this.treebankFiles, this.wsjSpecification);
       Collections.sort(treebankFiles);

@@ -35,7 +35,6 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.DocumentAnnotation;
-import org.cleartk.CleartkException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.simple.BagExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
@@ -61,7 +60,7 @@ import org.uimafit.factory.AnalysisEngineFactory;
 public class BagExtractorTest extends DefaultTestBase {
 
   @Before
-  public void localSetUp() throws Exception {
+  public void localSetUp() throws Throwable {
     this.engine = AnalysisEngineFactory.createPrimitive(
         JCasAnnotatorAdapter.class,
         typeSystemDescription);
@@ -94,7 +93,7 @@ public class BagExtractorTest extends DefaultTestBase {
    * @throws IOException
    */
   @Test
-  public void testSpannedText() throws UIMAException, IOException, CleartkException {
+  public void testSpannedText() throws Throwable {
     SpannedTextExtractor textExtractor = new SpannedTextExtractor();
     BagExtractor bagExtractor = new BagExtractor(Token.class, textExtractor);
     this.testOne(bagExtractor, "Bag(Token)", null, this.expectedTokenLists);
@@ -108,7 +107,7 @@ public class BagExtractorTest extends DefaultTestBase {
    * @throws IOException
    */
   @Test
-  public void testNamedSpannedText() throws UIMAException, IOException, CleartkException {
+  public void testNamedSpannedText() throws Throwable {
     SpannedTextExtractor textExtractor = new SpannedTextExtractor();
     BagExtractor bagExtractor = new BagExtractor(Token.class, textExtractor);
     this.testOne(bagExtractor, "Bag(Token)", null, this.expectedTokenLists);
@@ -121,7 +120,7 @@ public class BagExtractorTest extends DefaultTestBase {
    * @throws IOException
    */
   @Test
-  public void testPartOfSpeech() throws UIMAException, IOException, CleartkException {
+  public void testPartOfSpeech() throws Throwable {
     TypePathExtractor posExtractor = new TypePathExtractor(Token.class, "pos");
     BagExtractor bagExtractor = new BagExtractor(Token.class, posExtractor);
     this.testOne(bagExtractor, "Bag(Token)", "TypePath(Pos)", this.expectedPOSLists);
@@ -135,7 +134,7 @@ public class BagExtractorTest extends DefaultTestBase {
    * @throws IOException
    */
   @Test
-  public void testNamedPartOfSpeech() throws UIMAException, IOException, CleartkException {
+  public void testNamedPartOfSpeech() throws Throwable {
     TypePathExtractor posExtractor = new TypePathExtractor(Token.class, "pos");
     BagExtractor bagExtractor = new BagExtractor(Token.class, posExtractor);
     this.testOne(bagExtractor, "Bag(Token)", "TypePath(Pos)", this.expectedPOSLists);
@@ -162,7 +161,7 @@ public class BagExtractorTest extends DefaultTestBase {
       BagExtractor bagExtractor,
       String bagNameString,
       String featuresNameString,
-      List<List<String>> expectedValuesLists) throws CleartkException {
+      List<List<String>> expectedValuesLists) throws Throwable {
     String nameString = Feature.createName(bagNameString, featuresNameString);
 
     // run a BagExtractor on each document
