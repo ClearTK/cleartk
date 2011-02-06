@@ -25,25 +25,18 @@
 						<excludes>
 							<exclude>org.cleartk:cleartk-chunker</exclude>
 							<exclude>org.cleartk:cleartk-examples</exclude>
-							<exclude>org.cleartk:cleartk-jcasgen</exclude>
 							<exclude>org.cleartk:cleartk-ml</exclude>
-							<exclude>org.cleartk:cleartk-ml-grmm</exclude>
 							<exclude>org.cleartk:cleartk-ml-libsvm</exclude>
 							<exclude>org.cleartk:cleartk-ml-mallet</exclude>
 							<exclude>org.cleartk:cleartk-ml-opennlp-maxent</exclude>
 							<exclude>org.cleartk:cleartk-ml-svmlight</exclude>
 							<exclude>org.cleartk:cleartk-named-entity</exclude>
-							<exclude>org.cleartk:cleartk-semantic-roles</exclude>
 							<exclude>org.cleartk:cleartk-syntax</exclude>
-							<exclude>org.cleartk:cleartk-syntax-berkeley</exclude>
 							<exclude>org.cleartk:cleartk-syntax-opennlp</exclude>
 							<exclude>org.cleartk:cleartk-syntax-dependency</exclude>
-							<exclude>org.cleartk:cleartk-syntax-dependency-malt</exclude>
-							<exclude>org.cleartk:cleartk-test-util</exclude>
 							<exclude>org.cleartk:cleartk-timeml</exclude>
 							<exclude>org.cleartk:cleartk-token</exclude>
 							<exclude>org.cleartk:cleartk-util</exclude>
-							<exclude>org.cleartk:cleartk-distribution</exclude>
 						</excludes>
 					</dependencySet>
 				</dependencySets>
