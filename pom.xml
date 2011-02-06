@@ -207,13 +207,6 @@
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
-				<artifactId>cleartk-token</artifactId>
-				<version>0.7.1-SNAPSHOT</version>
-				<type>test-jar</type>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-named-entity</artifactId>
 				<version>0.1.1-SNAPSHOT</version>
 			</dependency>
@@ -224,22 +217,13 @@
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
-				<artifactId>cleartk-syntax</artifactId>
-				<version>0.5.1-SNAPSHOT</version>
-				<type>test-jar</type>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-syntax-opennlp</artifactId>
 				<version>0.8.1-SNAPSHOT</version>
-				<optional>false</optional>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-syntax-berkeley</artifactId>
 				<version>0.0.2-SNAPSHOT</version>
-				<optional>false</optional>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
