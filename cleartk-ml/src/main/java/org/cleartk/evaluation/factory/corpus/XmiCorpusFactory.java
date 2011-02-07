@@ -173,9 +173,7 @@ public abstract class XmiCorpusFactory extends CorpusFactory_ImplBase {
   @Override
   public CollectionReader createTestReader() throws ResourceInitializationException {
     String evaluationNames = getTestNames();
-    System.out.println(evaluationNames);
     String directory = getXmiDirectory();
-    System.out.println(directory);
     CollectionReader collectionReader = CollectionReaderFactory.createCollectionReader(
         XReader.class,
         typeSystemDescription,
