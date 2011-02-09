@@ -30,7 +30,7 @@ import java.util.List;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
-import org.cleartk.evaluation.factory.CorpusFactory;
+import org.cleartk.evaluation.factory.CorpusReaderFactory;
 import org.cleartk.util.cr.FilesCollectionReader;
 import org.cleartk.util.cr.XReader;
 import org.uimafit.factory.CollectionReaderFactory;
@@ -54,7 +54,7 @@ import org.uimafit.factory.CollectionReaderFactory;
  *         /cleartk-ml/src/test/resources/evaluation/factory/corpus/xmi-factory-test-data and
  *         consult the README in that directory.
  *         <p>
- *         Please see {@link CorpusFactory} for a description, broadly speaking, of how you should
+ *         Please see {@link CorpusReaderFactory} for a description, broadly speaking, of how you should
  *         set up your corpus. Here, this is implemented by simply creating files that contain file
  *         names for the different sets and folds. The names of the files that you should create
  *         might be:
@@ -124,7 +124,7 @@ public abstract class XmiCorpusFactory extends CorpusFactory_ImplBase {
   public abstract String getTestNames();
 
   @Override
-  public CollectionReader createTrainReader(int fold) throws ResourceInitializationException {
+  public CollectionReader getTrainReader(int fold) throws ResourceInitializationException {
     verifyFoldValue(fold);
     String[] foldNames = getTrainNames(fold);
 
@@ -140,7 +140,7 @@ public abstract class XmiCorpusFactory extends CorpusFactory_ImplBase {
   }
 
   @Override
-  public CollectionReader createTestReader(int fold) throws ResourceInitializationException {
+  public CollectionReader getTestReader(int fold) throws ResourceInitializationException {
     verifyFoldValue(fold);
 
     String testFoldNames = getTestNames(fold);
@@ -157,7 +157,7 @@ public abstract class XmiCorpusFactory extends CorpusFactory_ImplBase {
   }
 
   @Override
-  public CollectionReader createTrainReader() throws ResourceInitializationException {
+  public CollectionReader getTrainReader() throws ResourceInitializationException {
     String evaluationNames = getTrainNames();
     String directory = getXmiDirectory();
     CollectionReader collectionReader = CollectionReaderFactory.createCollectionReader(
@@ -171,7 +171,7 @@ public abstract class XmiCorpusFactory extends CorpusFactory_ImplBase {
   }
 
   @Override
-  public CollectionReader createTestReader() throws ResourceInitializationException {
+  public CollectionReader getTestReader() throws ResourceInitializationException {
     String evaluationNames = getTestNames();
     String directory = getXmiDirectory();
     CollectionReader collectionReader = CollectionReaderFactory.createCollectionReader(
@@ -186,7 +186,7 @@ public abstract class XmiCorpusFactory extends CorpusFactory_ImplBase {
   }
 
   @Override
-  public CollectionReader createReader() throws ResourceInitializationException {
+  public CollectionReader getReader() throws ResourceInitializationException {
     String directory = getXmiDirectory();
     return CollectionReaderFactory.createCollectionReader(
         XReader.class,

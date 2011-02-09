@@ -17,10 +17,10 @@
 
 package org.cleartk.evaluation.factory.corpus;
 
-import org.apache.uima.analysis_engine.AnalysisEngineDescription;
+import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
-import org.cleartk.evaluation.factory.CorpusFactory;
+import org.cleartk.evaluation.factory.CorpusReaderFactory;
 import org.uimafit.component.JCasAnnotatorAdapter;
 import org.uimafit.factory.AnalysisEngineFactory;
 
@@ -30,7 +30,7 @@ import org.uimafit.factory.AnalysisEngineFactory;
  * 
  */
 
-public abstract class CorpusFactory_ImplBase implements CorpusFactory {
+public abstract class CorpusFactory_ImplBase implements CorpusReaderFactory {
 
   protected TypeSystemDescription typeSystemDescription;
 
@@ -38,10 +38,8 @@ public abstract class CorpusFactory_ImplBase implements CorpusFactory {
     this.typeSystemDescription = typeSystemDescription;
   }
 
-  public AnalysisEngineDescription createPreprocessor() throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(
-        JCasAnnotatorAdapter.class,
-        typeSystemDescription);
+  public AnalysisEngine getPreprocessor() throws ResourceInitializationException {
+    return AnalysisEngineFactory.createPrimitive(JCasAnnotatorAdapter.class, typeSystemDescription);
   }
 
   protected void verifyFoldValue(int fold) {

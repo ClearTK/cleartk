@@ -20,6 +20,7 @@
 
 package org.cleartk.evaluation.factory;
 
+import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -40,7 +41,7 @@ import org.uimafit.component.JCasAnnotatorAdapter;
  * @author Philip Ogren
  * 
  */
-public interface CorpusFactory {
+public interface CorpusReaderFactory {
 
   /**
    * This method returns the training set for the corpus.
@@ -48,7 +49,7 @@ public interface CorpusFactory {
    * @return a collection reader for the training set from the corpus
    * @throws ResourceInitializationException
    */
-  public CollectionReader createTrainReader() throws ResourceInitializationException;
+  public CollectionReader getTrainReader() throws ResourceInitializationException;
 
   /**
    * This method returns the testing set for the corpus.
@@ -56,7 +57,7 @@ public interface CorpusFactory {
    * @return a collection reader for the tresting set from the corpus
    * @throws ResourceInitializationException
    */
-  public CollectionReader createTestReader() throws ResourceInitializationException;
+  public CollectionReader getTestReader() throws ResourceInitializationException;
 
   /**
    * This method returns a training set for a given fold from the training set.
@@ -66,7 +67,7 @@ public interface CorpusFactory {
    * @return a collection reader for a training set for the fold from the training set.
    * @throws ResourceInitializationException
    */
-  public CollectionReader createTrainReader(int fold) throws ResourceInitializationException;
+  public CollectionReader getTrainReader(int fold) throws ResourceInitializationException;
 
   /**
    * This method returns a testing set for a given fold from the training set.
@@ -76,7 +77,7 @@ public interface CorpusFactory {
    * @return a collection reader for a testing set for the fold from the training set.
    * @throws ResourceInitializationException
    */
-  public CollectionReader createTestReader(int fold) throws ResourceInitializationException;
+  public CollectionReader getTestReader(int fold) throws ResourceInitializationException;
 
   /**
    * This method provides a collection reader for the entire corpus. This is useful if, for example,
@@ -86,7 +87,7 @@ public interface CorpusFactory {
    * @return a collection reader for the entire corpus.
    * @throws ResourceInitializationException
    */
-  public CollectionReader createReader() throws ResourceInitializationException;
+  public CollectionReader getReader() throws ResourceInitializationException;
 
   /**
    * Some corpora will require some preprocessing in order to populate e.g. the gold view with all
@@ -98,13 +99,13 @@ public interface CorpusFactory {
    * method should return a valid {@link AnalysisEngineDescription} regardless of whether there is
    * any preprocessing to do. If no preprocessing is required, then return an
    * AnalysisEngineDescription for the {@link JCasAnnotatorAdapter} class as is done in
-   * {@link GeniaFactory#createPreprocessor()}.
+   * {@link GeniaFactory#getPreprocessor()}.
    * 
    * @return an analysis engine description that defines all of the preprocessing that needs to be
    *         done for each document in the corpus
    * @throws ResourceInitializationException
    */
-  public AnalysisEngineDescription createPreprocessor() throws ResourceInitializationException;
+  public AnalysisEngine getPreprocessor() throws ResourceInitializationException;
 
   /**
    * Provides the number of folds in the training set that can be used for cross-validation. This

@@ -22,9 +22,8 @@
 package org.cleartk.evaluation.factory;
 
 import java.io.File;
-import java.util.List;
 
-import org.apache.uima.analysis_engine.AnalysisEngineDescription;
+import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.resource.ResourceInitializationException;
 
 /**
@@ -47,8 +46,7 @@ public interface EvaluationFactory {
    * @return
    * @throws ResourceInitializationException
    */
-  public AnalysisEngineDescription createEvaluationAggregate(File evaluationDirectory)
-      throws ResourceInitializationException;
+  public AnalysisEngine getEvaluationAggregate(String name) throws ResourceInitializationException;
 
   /**
    * This method aggregates results from a number of directories and writes the aggregated results
@@ -56,12 +54,13 @@ public interface EvaluationFactory {
    * 
    * @param evaluationDirectories
    *          a list of evaluation directories that correspond directly to the evaluation
-   *          directories passed into multiple calls to {@link #createEvaluationAggregate(File)}
+   *          directories passed into multiple calls to {@link #getEvaluationAggregate(File)}
    * @param outputDirectory
    *          a directory where aggregated results are written to.
    * @throws Exception
    */
-  public void aggregateEvaluationResults(List<File> evaluationDirectories, File outputDirectory)
-      throws Exception;
+  public void aggregateResults() throws Exception;
+
+  public void complete(String name);
 
 }

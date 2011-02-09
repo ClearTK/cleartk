@@ -22,7 +22,7 @@ package org.cleartk.evaluation.factory;
 
 import java.io.File;
 
-import org.apache.uima.analysis_engine.AnalysisEngineDescription;
+import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.ClassifierFactory;
 import org.cleartk.classifier.CleartkAnnotator;
@@ -38,7 +38,7 @@ import org.cleartk.classifier.DataWriterFactory;
  * 
  */
 
-public interface EngineFactory {
+public interface CleartkAnnotatorFactory {
 
   /**
    * This method creates an aggregate analysis engine that will create a training data file(s) for
@@ -55,8 +55,7 @@ public interface EngineFactory {
    * @return
    * @throws ResourceInitializationException
    */
-  public AnalysisEngineDescription createDataWritingAggregate(File modelDirectory)
-      throws ResourceInitializationException;
+  public AnalysisEngine getTrainingAggregate(String name) throws ResourceInitializationException;
 
   /**
    * This method trains a model(s) using the contents of the model directory. If your task involves
@@ -71,7 +70,7 @@ public interface EngineFactory {
    *          arguments that are passed on to the classifiers model trainer.
    * @throws Exception
    */
-  public void train(File modelDirectory, String... trainingArguments) throws Exception;
+  public void train(String name, String... trainingArguments) throws Exception;
 
   /**
    * This method creates an aggregate analysis engine that will run the task using the model(s)
@@ -88,7 +87,6 @@ public interface EngineFactory {
    * @throws ResourceInitializationException
    */
 
-  public AnalysisEngineDescription createClassifierAggregate(File modelDirectory)
-      throws ResourceInitializationException;
+  public AnalysisEngine getClassifierAggregate(String name) throws ResourceInitializationException;
 
 }
