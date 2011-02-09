@@ -32,7 +32,7 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.collection.CollectionReader;
-import org.cleartk.evaluation.EvaluationConstants;
+import org.cleartk.eval.EvaluationConstants;
 import org.cleartk.examples.ExampleComponents;
 import org.cleartk.syntax.constituent.TreebankConstants;
 import org.cleartk.syntax.constituent.TreebankGoldAnnotator;
