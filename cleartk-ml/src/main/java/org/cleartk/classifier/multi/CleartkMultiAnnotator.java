@@ -34,6 +34,7 @@ import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.DataWriter;
+import org.cleartk.util.CleartkInitializationException;
 import org.cleartk.util.ReflectionUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
@@ -80,6 +81,14 @@ public abstract class CleartkMultiAnnotator<OUTCOME_TYPE> extends JCasAnnotator_
   @ConfigurationParameter(mandatory = false, description = "provides the full name of the MultiDataWriterFactory class to be used.")
   private String multiDataWriterFactoryClassName;
 
+  public static final String PARAM_IS_TRAINING = ConfigurationParameterFactory
+      .createConfigurationParameterName(CleartkAnnotator.class, "isTraining");
+
+  @ConfigurationParameter(mandatory = false, description = "determines whether this annotator is writing training data or using a classifier to annotate. Normally inferred automatically based on whether or not a DataWriterFactory class has been set.")
+  private Boolean isTraining;
+
+  private boolean primitiveIsTraining;
+
   private MultiDataWriterFactory<?> multiDataWriterFactory;
 
   private MultiClassifierFactory<?> multiClassifierFactory;
@@ -92,7 +101,23 @@ public abstract class CleartkMultiAnnotator<OUTCOME_TYPE> extends JCasAnnotator_
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
 
-    if (multiDataWriterFactoryClassName != null) {
+    if (multiDataWriterFactoryClassName == null && multiClassifierFactoryClassName == null) {
+      CleartkInitializationException.neitherParameterSet(
+          PARAM_MULTI_DATA_WRITER_FACTORY_CLASS_NAME,
+          multiDataWriterFactoryClassName,
+          PARAM_MULTI_CLASSIFIER_FACTORY_CLASS_NAME,
+          multiClassifierFactoryClassName);
+    }
+
+    // determine whether we start out as training or predicting
+    if (this.isTraining == null) {
+      this.primitiveIsTraining = multiDataWriterFactoryClassName != null;
+    } else {
+      this.primitiveIsTraining = this.isTraining;
+    }
+
+    if (this.isTraining()) {
+
       // create the multiDataWriter factory and initialize a Map to hold the data writers
       this.dataWriters = new HashMap<String, DataWriter<OUTCOME_TYPE>>();
 
@@ -116,7 +141,7 @@ public abstract class CleartkMultiAnnotator<OUTCOME_TYPE> extends JCasAnnotator_
   @Override
   public void collectionProcessComplete() throws AnalysisEngineProcessException {
     super.collectionProcessComplete();
-    if (isTraining()) {
+    if (this.isTraining()) {
       try {
         for (DataWriter<OUTCOME_TYPE> dataWriter : dataWriters.values()) {
           dataWriter.finish();
@@ -128,7 +153,7 @@ public abstract class CleartkMultiAnnotator<OUTCOME_TYPE> extends JCasAnnotator_
   }
 
   protected boolean isTraining() {
-    return dataWriters != null;
+    return this.primitiveIsTraining;
   }
 
   /**
