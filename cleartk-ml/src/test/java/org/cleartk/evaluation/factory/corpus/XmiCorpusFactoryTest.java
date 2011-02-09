@@ -49,24 +49,24 @@ public class XmiCorpusFactoryTest extends DefaultTestBase {
   @Test
   public void testCorpusCounts() throws Exception {
     XmiTestCorpusFactory testFactory = new XmiTestCorpusFactory(typeSystemDescription);
-    testCollectionReaderCount(testFactory.createReader(), 11); // 11 files total (8+3 see next 2
+    testCollectionReaderCount(testFactory.getReader(), 11); // 11 files total (8+3 see next 2
                                                                // lines)
-    testCollectionReaderCount(testFactory.createTrainReader(), 8); // 8 files in training set
-    testCollectionReaderCount(testFactory.createTestReader(), 3); // 3 files in test set
+    testCollectionReaderCount(testFactory.getTrainReader(), 8); // 8 files in training set
+    testCollectionReaderCount(testFactory.getTestReader(), 3); // 3 files in test set
     // all of the following pairs should add up to 8 because the union of the training and test sets
     // for a given fold should be the collection's training set
     // fold1
-    testCollectionReaderCount(testFactory.createTestReader(1), 3);
-    testCollectionReaderCount(testFactory.createTrainReader(1), 5);
+    testCollectionReaderCount(testFactory.getTestReader(1), 3);
+    testCollectionReaderCount(testFactory.getTrainReader(1), 5);
     // fold2
-    testCollectionReaderCount(testFactory.createTestReader(2), 1);
-    testCollectionReaderCount(testFactory.createTrainReader(2), 7);
+    testCollectionReaderCount(testFactory.getTestReader(2), 1);
+    testCollectionReaderCount(testFactory.getTrainReader(2), 7);
     // fold3
-    testCollectionReaderCount(testFactory.createTestReader(3), 2);
-    testCollectionReaderCount(testFactory.createTrainReader(3), 6);
+    testCollectionReaderCount(testFactory.getTestReader(3), 2);
+    testCollectionReaderCount(testFactory.getTrainReader(3), 6);
     // fold4
-    testCollectionReaderCount(testFactory.createTestReader(4), 2);
-    testCollectionReaderCount(testFactory.createTrainReader(3), 6);
+    testCollectionReaderCount(testFactory.getTestReader(4), 2);
+    testCollectionReaderCount(testFactory.getTrainReader(3), 6);
 
     testCollectionReaderCount(testFactory.createReader(1, 2, 3), 6);
     testCollectionReaderCount(testFactory.createReader(1, 2), 4);
@@ -77,7 +77,7 @@ public class XmiCorpusFactoryTest extends DefaultTestBase {
   @Test
   public void testXmiCorpusFactory() throws Exception {
     XmiTestCorpusFactory testFactory = new XmiTestCorpusFactory(typeSystemDescription);
-    CollectionReader reader = testFactory.createTestReader(1);
+    CollectionReader reader = testFactory.getTestReader(1);
 
     AnalysisEngine aeAdapter = AnalysisEngineFactory.createPrimitive(
         JCasAnnotatorAdapter.class,
