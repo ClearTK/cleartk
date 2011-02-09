@@ -44,8 +44,8 @@ public class LicenseTest {
     List<String> excludePackages = Collections.emptyList();
     List<String> excludeJavaFiles = Arrays.asList(
         "Evaluation.java",
-        "CorpusFactory.java",
-        "EngineFactory.java",
+        "CorpusReaderFactory.java",
+        "CleartkAnnotatorFactory.java",
         "EvaluationFactory.java",
         "CorpusFactory_ImplBase.java");
 
