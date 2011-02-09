@@ -1,5 +1,5 @@
 /** 
- * Copyright (c) 2009, Regents of the University of Colorado 
+ * Copyright (c) 2009-2011, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -30,6 +30,7 @@ import java.util.List;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.util.CleartkInitializationException;
 import org.cleartk.util.ReflectionUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
@@ -39,7 +40,7 @@ import org.uimafit.factory.initializable.InitializableFactory;
 
 /**
  * <br>
- * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * Copyright (c) 2009-2011, Regents of the University of Colorado <br>
  * All rights reserved.
  * <p>
  */
@@ -63,6 +64,14 @@ public abstract class CleartkSequenceAnnotator<OUTCOME_TYPE> extends JCasAnnotat
   @ConfigurationParameter(mandatory = false, description = "provides the full name of the SequenceDataWriterFactory class to be used.")
   private String dataWriterFactoryClassName;
 
+  public static final String PARAM_IS_TRAINING = ConfigurationParameterFactory
+      .createConfigurationParameterName(CleartkSequenceAnnotator.class, "isTraining");
+
+  @ConfigurationParameter(mandatory = false, description = "determines whether this annotator is writing training data or using a classifier to annotate. Normally inferred automatically based on whether or not a DataWriterFactory class has been set.")
+  private Boolean isTraining;
+
+  private boolean primitiveIsTraining;
+
   protected SequenceDataWriter<OUTCOME_TYPE> dataWriter;
 
   protected SequenceClassifier<OUTCOME_TYPE> classifier;
@@ -71,7 +80,22 @@ public abstract class CleartkSequenceAnnotator<OUTCOME_TYPE> extends JCasAnnotat
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
 
-    if (dataWriterFactoryClassName != null) {
+    if (dataWriterFactoryClassName == null && classifierFactoryClassName == null) {
+      CleartkInitializationException.neitherParameterSet(
+          PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+          dataWriterFactoryClassName,
+          PARAM_CLASSIFIER_FACTORY_CLASS_NAME,
+          classifierFactoryClassName);
+    }
+
+    // determine whether we start out as training or predicting
+    if (this.isTraining == null) {
+      this.primitiveIsTraining = dataWriterFactoryClassName != null;
+    } else {
+      this.primitiveIsTraining = this.isTraining;
+    }
+
+    if (this.isTraining()) {
       // create the factory and instantiate the data writer
       SequenceDataWriterFactory<?> factory = InitializableFactory.create(
           context,
@@ -83,6 +107,7 @@ public abstract class CleartkSequenceAnnotator<OUTCOME_TYPE> extends JCasAnnotat
       } catch (IOException e) {
         throw new ResourceInitializationException(e);
       }
+
       InitializableFactory.initialize(untypedDataWriter, context);
       this.dataWriter = ReflectionUtil.uncheckedCast(untypedDataWriter);
     } else {
@@ -99,7 +124,6 @@ public abstract class CleartkSequenceAnnotator<OUTCOME_TYPE> extends JCasAnnotat
       }
 
       this.classifier = ReflectionUtil.uncheckedCast(untypedClassifier);
-
       ReflectionUtil.checkTypeParameterIsAssignable(
           CleartkSequenceAnnotator.class,
           "OUTCOME_TYPE",
@@ -107,7 +131,6 @@ public abstract class CleartkSequenceAnnotator<OUTCOME_TYPE> extends JCasAnnotat
           SequenceClassifier.class,
           "OUTCOME_TYPE",
           this.classifier);
-
       InitializableFactory.initialize(untypedClassifier, context);
     }
   }
@@ -115,15 +138,13 @@ public abstract class CleartkSequenceAnnotator<OUTCOME_TYPE> extends JCasAnnotat
   @Override
   public void collectionProcessComplete() throws AnalysisEngineProcessException {
     super.collectionProcessComplete();
-
     if (isTraining()) {
       dataWriter.finish();
     }
   }
 
   protected boolean isTraining() {
-    return dataWriter != null ? true : false;
-
+    return this.primitiveIsTraining;
   }
 
   protected List<OUTCOME_TYPE> classify(List<Instance<OUTCOME_TYPE>> instances)

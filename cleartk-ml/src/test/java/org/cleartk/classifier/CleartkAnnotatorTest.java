@@ -26,9 +26,11 @@ package org.cleartk.classifier;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import org.apache.uima.UIMAException;
@@ -57,8 +59,32 @@ import org.uimafit.factory.UimaContextFactory;
 public class CleartkAnnotatorTest extends DefaultTestBase {
 
   @Test
-  public void testIsTraining() {
-    assertFalse(new StringTestAnnotator().isTraining());
+  public void testIsTraining() throws Throwable {
+    StringTestAnnotator annotator = new StringTestAnnotator();
+    assertFalse(annotator.isTraining());
+
+    annotator.initialize(UimaContextFactory.createUimaContext(
+        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        StringDataWriter.class.getName()));
+    assertTrue(annotator.isTraining());
+
+    annotator.initialize(UimaContextFactory.createUimaContext(
+        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        StringDataWriter.class.getName(),
+        CleartkAnnotator.PARAM_CLASSIFIER_FACTORY_CLASS_NAME,
+        StringTestClassifierFactory.class.getName(),
+        CleartkAnnotator.PARAM_IS_TRAINING,
+        false));
+    assertFalse(annotator.isTraining());
+
+    annotator.initialize(UimaContextFactory.createUimaContext(
+        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        StringDataWriter.class.getName(),
+        CleartkAnnotator.PARAM_CLASSIFIER_FACTORY_CLASS_NAME,
+        StringTestClassifierFactory.class.getName(),
+        CleartkAnnotator.PARAM_IS_TRAINING,
+        true));
+    assertTrue(annotator.isTraining());
   }
 
   @Test
@@ -248,4 +274,9 @@ public class CleartkAnnotatorTest extends DefaultTestBase {
     }
   }
 
+  public static class StringDataWriter implements DataWriterFactory<String> {
+    public DataWriter<String> createDataWriter() throws IOException {
+      return null;
+    }
+  }
 }
