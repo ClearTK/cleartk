@@ -27,8 +27,8 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.classifier.jar.Train;
-import org.cleartk.evaluation.factory.CorpusReaderFactory;
 import org.cleartk.evaluation.factory.CleartkAnnotatorFactory;
+import org.cleartk.evaluation.factory.CorpusReaderFactory;
 import org.cleartk.evaluation.factory.EvaluationFactory;
 import org.uimafit.pipeline.JCasIterable;
 import org.uimafit.pipeline.SimplePipeline;
@@ -56,7 +56,8 @@ public class Evaluation {
    *          An engine factory provides methods for creating aggregate analysis engines that
    *          process training data to generate a training data file suitable for the machine
    *          learning library that is being used, train a model using the training data file, and
-   *          test the model using the testing data for a given fold. See {@link CleartkAnnotatorFactory}.
+   *          test the model using the testing data for a given fold. See
+   *          {@link CleartkAnnotatorFactory}.
    * @param evaluationFactory
    *          An evaluation factory provides methods for creating aggregate analysis engines which
    *          perform evaluation. Generally, this involves comparing the contents of the gold view
@@ -81,7 +82,7 @@ public class Evaluation {
 
     int folds = corpusFactory.numberOfFolds();
     for (int fold = 1; fold <= folds; fold++) {
-      String foldName = createFoldName(fold);
+      String foldName = createFoldName(fold, folds);
 
       run(
           foldName,
@@ -96,13 +97,12 @@ public class Evaluation {
     evaluationFactory.aggregateResults();
   }
 
-  private static String createFoldName(int fold) {
-    // TODO this is pretty dumb. Esp. if you have less than 10 folds or more than 100.
-    if (fold < 10) {
-      return "fold0" + fold;
-    } else {
-      return "fold" + fold;
-    }
+  public static String createFoldName(int fold, int totalFolds) {
+    int totalPower = (int) Math.log10(totalFolds); // TOTAL POWERRRRRR!!!
+    int foldPower = (int) Math.log10(fold);
+    char[] zeros = new char[totalPower - foldPower];
+    Arrays.fill(zeros, '0');
+    return "fold-" + new String(zeros) + fold;
   }
 
   public static void run(
