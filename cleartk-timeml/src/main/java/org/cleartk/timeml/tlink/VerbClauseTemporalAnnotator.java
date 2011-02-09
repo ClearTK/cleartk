@@ -124,7 +124,7 @@ public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
     return CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
         VerbClauseTemporalAnnotator.class,
         TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
-        MODEL_LOCATOR.getClassifierJarURL().getFile());
+        MODEL_LOCATOR.getClassifierJarURL().toString());
   }
 
   public static AnalysisEngineDescription getEventCreatingAnnotatorDescription()
@@ -132,7 +132,7 @@ public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
     AnalysisEngineDescription desc = CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
         VerbClauseTemporalAnnotator.class,
         TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
-        MODEL_LOCATOR.getClassifierJarURL().getFile());
+        MODEL_LOCATOR.getClassifierJarURL().toString());
     ConfigurationParameterFactory.addConfigurationParameters(
         desc,
         VerbClauseTemporalAnnotator.PARAM_CREATE_EVENTS,
