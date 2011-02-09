@@ -50,7 +50,7 @@ public class XmiTestCorpusFactory extends XmiCorpusFactory {
       "src/test/resources/eval/provider/corpus/xmi-factory-test-data/filenames/fold-4.txt" };
 
   @Override
-  public int numberOfFolds() {
+  public int getNumberOfFolds() {
     return 4;
   }
 
@@ -80,6 +80,11 @@ public class XmiTestCorpusFactory extends XmiCorpusFactory {
   @Override
   public String getTestNames() {
     return "src/test/resources/eval/provider/corpus/xmi-factory-test-data/filenames/test.txt";
+  }
+
+  @Override
+  public void setNumberOfFolds(int numberOfFolds) {
+    throw new UnsupportedOperationException();
   }
 
 }

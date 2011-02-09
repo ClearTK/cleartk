@@ -82,7 +82,7 @@ public class Evaluation {
       EvaluationPipelineProvider evaluationFactory,
       String... trainingArguments) throws Exception {
 
-    int folds = corpusFactory.numberOfFolds();
+    int folds = corpusFactory.getNumberOfFolds();
     for (int fold = 1; fold <= folds; fold++) {
       String foldName = createFoldName(fold, folds);
 

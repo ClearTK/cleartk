@@ -63,7 +63,7 @@ public interface CorpusReaderPipeline {
    * This method returns a training set for a given fold from the training set.
    * 
    * @param fold
-   *          a number between 1 and the value returned by {@link #numberOfFolds()}.
+   *          a number between 1 and the value returned by {@link #getNumberOfFolds()}.
    * @return a collection reader for a training set for the fold from the training set.
    * @throws ResourceInitializationException
    */
@@ -73,7 +73,7 @@ public interface CorpusReaderPipeline {
    * This method returns a testing set for a given fold from the training set.
    * 
    * @param fold
-   *          a number between 1 and the value returned by {@link #numberOfFolds()}.
+   *          a number between 1 and the value returned by {@link #getNumberOfFolds()}.
    * @return a collection reader for a testing set for the fold from the training set.
    * @throws ResourceInitializationException
    */
@@ -114,6 +114,8 @@ public interface CorpusReaderPipeline {
    * 
    * @return the number of folds in the training set
    */
-  public int numberOfFolds();
+  public int getNumberOfFolds();
+
+  public void setNumberOfFolds(int numberOfFolds);
 
 }
