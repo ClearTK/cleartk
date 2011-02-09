@@ -56,7 +56,7 @@ import org.uimafit.testing.factory.TokenBuilder;
 public class MaltParserTest extends CleartkTestBase {
 
   @Rule
-  public MethodRule memoryRule = new MemoryRule(1900000000L);
+  public MethodRule memoryRule = new MemoryRule(2000000000L);
 
   public static class MemoryRule implements MethodRule {
 
