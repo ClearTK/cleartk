@@ -81,6 +81,11 @@ public class CleartkExceptionsTest {
     Assert.assertTrue(e.getMessage(), e.getMessage().contains("TYPE=" + boolean.class.getName()));
     Assert.assertTrue(e.getMessage(), e.getMessage().contains("TYPE=" + Object.class.getName()));
 
+    e = CleartkInitializationException.neitherParameterSet("x", 1, "y", 2);
+    Assert.assertTrue(e.getMessage(), e.getMessage().contains("one of"));
+    Assert.assertTrue(e.getMessage(), e.getMessage().contains("x=1"));
+    Assert.assertTrue(e.getMessage(), e.getMessage().contains("y=2"));
+
     e = CleartkInitializationException.notExactlyOneParameterSet("x", 1, "y", 2);
     Assert.assertTrue(e.getMessage(), e.getMessage().contains("not both"));
     Assert.assertTrue(e.getMessage(), e.getMessage().contains("x=1"));

@@ -97,6 +97,21 @@ public class CleartkInitializationException extends ResourceInitializationExcept
         actualValue);
   }
 
+  public static CleartkInitializationException neitherParameterSet(
+      String param1,
+      Object value1,
+      String param2,
+      Object value2) {
+    String key = KEY_PREFIX + "neitherParameterSet";
+    return new CleartkInitializationException(
+        DEFAULT_RESOURCE_BUNDLE,
+        key,
+        param1,
+        value1,
+        param2,
+        value2);
+  }
+
   public static CleartkInitializationException notExactlyOneParameterSet(
       String param1,
       Object value1,
