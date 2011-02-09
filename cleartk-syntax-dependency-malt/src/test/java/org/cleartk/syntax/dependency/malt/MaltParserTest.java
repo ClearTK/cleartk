@@ -39,7 +39,12 @@ import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.UIMAUtil;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.internal.AssumptionViolatedException;
+import org.junit.rules.MethodRule;
+import org.junit.runners.model.FrameworkMethod;
+import org.junit.runners.model.Statement;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.testing.factory.TokenBuilder;
 
@@ -49,6 +54,34 @@ import org.uimafit.testing.factory.TokenBuilder;
  * All rights reserved.
  */
 public class MaltParserTest extends CleartkTestBase {
+
+  @Rule
+  public MethodRule memoryRule = new MemoryRule(1900000000L);
+
+  public static class MemoryRule implements MethodRule {
+
+    private long minMemory;
+
+    public MemoryRule(long minMemory) {
+      this.minMemory = minMemory;
+    }
+
+    @Override
+    public Statement apply(Statement statement, FrameworkMethod method, Object object) {
+      long maxMemory = Runtime.getRuntime().maxMemory();
+      boolean enoughMemory = maxMemory >= this.minMemory;
+      if (!enoughMemory) {
+        String message = String.format(
+            "Skipping %s: expected %s bytes memory, found %s",
+            method.getName(),
+            this.minMemory,
+            maxMemory);
+        System.err.println(message);
+        throw new AssumptionViolatedException(message);
+      }
+      return statement;
+    }
+  }
 
   @Override
   public String[] getTypeSystemDescriptorNames() {
