@@ -17,6 +17,7 @@
 	<modules>
 		<module>cleartk-test-util</module>
 		<module>cleartk-util</module>
+		<module>cleartk-eval</module>
 		<module>cleartk-ml</module>
 		<module>cleartk-ml-opennlp-maxent</module>
 		<module>cleartk-ml-svmlight</module>
