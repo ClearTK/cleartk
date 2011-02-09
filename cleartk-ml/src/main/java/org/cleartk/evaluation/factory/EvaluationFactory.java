@@ -61,6 +61,6 @@ public interface EvaluationFactory {
    */
   public void aggregateResults() throws Exception;
 
-  public void complete(String name);
+  public void writeResults(String name);
 
 }

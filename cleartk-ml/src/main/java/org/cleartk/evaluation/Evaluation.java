@@ -129,7 +129,7 @@ public class Evaluation {
         evaluationAggregate)) {
       assert jCas != null;
     }
-    evaluationFactory.complete(runName);
+    evaluationFactory.writeResults(runName);
 
   }
 
