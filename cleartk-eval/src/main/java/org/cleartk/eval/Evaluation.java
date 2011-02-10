@@ -133,7 +133,7 @@ public class Evaluation {
 
     pipeline.clear();
     pipeline.add(preprocessing);
-    pipeline.addAll(cleartkPipelineProvider.getClassifierPipeline(runName));
+    pipeline.addAll(cleartkPipelineProvider.getClassifyingPipeline(runName));
     pipeline.addAll(evaluationPipelineProvider.getEvaluationPipeline(runName));
     runPipeline(testingReader, pipeline, false);
 

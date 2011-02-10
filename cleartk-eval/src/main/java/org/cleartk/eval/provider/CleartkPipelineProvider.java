@@ -87,7 +87,7 @@ public interface CleartkPipelineProvider {
    * @throws ResourceInitializationException
    */
 
-  public List<AnalysisEngine> getClassifierPipeline(String name)
+  public List<AnalysisEngine> getClassifyingPipeline(String name)
       throws ResourceInitializationException;
 
 }
