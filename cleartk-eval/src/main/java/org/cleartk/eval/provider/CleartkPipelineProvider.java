@@ -22,8 +22,8 @@ package org.cleartk.eval.provider;
 
 import java.util.List;
 
+import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.ClassifierFactory;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.DataWriterFactory;
@@ -49,12 +49,13 @@ public interface CleartkPipelineProvider {
    *          method to provide to the pipeline it returns that serves as a key for that pipeline.
    *          One expected use of the name is for naming a subdirectory that a data writer could use
    *          to write training data to.
-   * 
-   * @return
-   * @throws ResourceInitializationException
    */
-  public List<AnalysisEngine> getTrainingPipeline(String name)
-      throws ResourceInitializationException;
+  public List<AnalysisEngine> getTrainingPipeline(String name) throws UIMAException;
+
+  public void trainingPipelineComplete(String name, List<AnalysisEngine> engines)
+      throws UIMAException;
+
+  public void trainingComplete() throws UIMAException;
 
   /**
    * This method trains a model(s) for a given training pipeline (identified by name) using whatever
@@ -70,7 +71,6 @@ public interface CleartkPipelineProvider {
    *          the name is to identify a subdirectory where training data is located.
    * @param trainingArguments
    *          arguments that are passed on to the classifiers model trainer.
-   * @throws Exception
    */
   public void train(String name, String... trainingArguments) throws Exception;
 
@@ -81,13 +81,11 @@ public interface CleartkPipelineProvider {
    * number of other analysis engines may also be required depending on what data from the
    * gold-standard corpus is provided and what needs to be generated. This pipeline of analysis
    * engines should generally operate on the {@link ViewNames#SYSTEM_VIEW}.
-   * 
-   * @param name
-   * @return
-   * @throws ResourceInitializationException
    */
+  public List<AnalysisEngine> getClassifyingPipeline(String name) throws UIMAException;
 
-  public List<AnalysisEngine> getClassifyingPipeline(String name)
-      throws ResourceInitializationException;
+  public void classifyingPipelineComplete(String name, List<AnalysisEngine> engines)
+      throws UIMAException;
 
+  public void classifyingComplete() throws UIMAException;
 }

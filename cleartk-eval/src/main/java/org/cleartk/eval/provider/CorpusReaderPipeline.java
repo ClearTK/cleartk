@@ -20,10 +20,10 @@
 
 package org.cleartk.eval.provider;
 
+import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.collection.CollectionReader;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.uimafit.component.JCasAnnotatorAdapter;
 
 /**
@@ -47,17 +47,15 @@ public interface CorpusReaderPipeline {
    * This method returns the training set for the corpus.
    * 
    * @return a collection reader for the training set from the corpus
-   * @throws ResourceInitializationException
    */
-  public CollectionReader getTrainReader() throws ResourceInitializationException;
+  public CollectionReader getTrainReader() throws UIMAException;
 
   /**
    * This method returns the testing set for the corpus.
    * 
    * @return a collection reader for the tresting set from the corpus
-   * @throws ResourceInitializationException
    */
-  public CollectionReader getTestReader() throws ResourceInitializationException;
+  public CollectionReader getTestReader() throws UIMAException;
 
   /**
    * This method returns a training set for a given fold from the training set.
@@ -65,9 +63,8 @@ public interface CorpusReaderPipeline {
    * @param fold
    *          a number between 1 and the value returned by {@link #getNumberOfFolds()}.
    * @return a collection reader for a training set for the fold from the training set.
-   * @throws ResourceInitializationException
    */
-  public CollectionReader getTrainReader(int fold) throws ResourceInitializationException;
+  public CollectionReader getTrainReader(int fold) throws UIMAException;
 
   /**
    * This method returns a testing set for a given fold from the training set.
@@ -75,9 +72,8 @@ public interface CorpusReaderPipeline {
    * @param fold
    *          a number between 1 and the value returned by {@link #getNumberOfFolds()}.
    * @return a collection reader for a testing set for the fold from the training set.
-   * @throws ResourceInitializationException
    */
-  public CollectionReader getTestReader(int fold) throws ResourceInitializationException;
+  public CollectionReader getTestReader(int fold) throws UIMAException;
 
   /**
    * This method provides a collection reader for the entire corpus. This is useful if, for example,
@@ -85,9 +81,8 @@ public interface CorpusReaderPipeline {
    * (i.e. evaluation is not going to be performed.)
    * 
    * @return a collection reader for the entire corpus.
-   * @throws ResourceInitializationException
    */
-  public CollectionReader getReader() throws ResourceInitializationException;
+  public CollectionReader getReader() throws UIMAException;
 
   /**
    * Some corpora will require some preprocessing in order to populate e.g. the gold view with all
@@ -103,9 +98,8 @@ public interface CorpusReaderPipeline {
    * 
    * @return an analysis engine description that defines all of the preprocessing that needs to be
    *         done for each document in the corpus
-   * @throws ResourceInitializationException
    */
-  public AnalysisEngine getPreprocessor() throws ResourceInitializationException;
+  public AnalysisEngine getPreprocessor() throws UIMAException;
 
   /**
    * Provides the number of folds in the training set that can be used for cross-validation. This

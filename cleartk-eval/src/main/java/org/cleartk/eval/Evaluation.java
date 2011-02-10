@@ -23,7 +23,6 @@ package org.cleartk.eval;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
@@ -36,11 +35,9 @@ import org.apache.uima.resource.Resource;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.ResourceMetaData;
 import org.apache.uima.util.CasCreationUtils;
-import org.cleartk.classifier.jar.Train;
 import org.cleartk.eval.provider.CleartkPipelineProvider;
 import org.cleartk.eval.provider.CorpusReaderPipeline;
 import org.cleartk.eval.provider.EvaluationPipelineProvider;
-import org.uimafit.pipeline.SimplePipeline;
 
 /**
  * 
@@ -89,63 +86,79 @@ public class Evaluation {
       String... trainingArguments) throws Exception {
 
     int folds = corpusReaderPipeline.getNumberOfFolds();
-    for (int fold = 1; fold <= folds; fold++) {
+    for (int fold = 0; fold < folds; fold++) {
       String foldName = createFoldName(fold, folds);
 
-      run(
+      train(
           foldName,
           corpusReaderPipeline.getTrainReader(fold),
+          corpusReaderPipeline.getPreprocessor(),
+          cleartkPipelineProvider,
+          trainingArguments);
+      evaluate(
+          foldName,
           corpusReaderPipeline.getTestReader(fold),
           corpusReaderPipeline.getPreprocessor(),
           cleartkPipelineProvider,
-          evaluationPipelineProvider,
-          trainingArguments);
+          evaluationPipelineProvider);
     }
 
-    evaluationPipelineProvider.aggregateResults();
+    cleartkPipelineProvider.trainingComplete();
+    cleartkPipelineProvider.classifyingComplete();
+    evaluationPipelineProvider.evaluationComplete();
   }
 
   public static String createFoldName(int fold, int totalFolds) {
-    int totalPower = (int) Math.log10(totalFolds); // TOTAL POWERRRRRR!!!
-    int foldPower = (int) Math.log10(fold);
-    char[] zeros = new char[totalPower - foldPower];
-    Arrays.fill(zeros, '0');
-    return "fold-" + new String(zeros) + fold;
+    int requiredDigits = (int) Math.ceil(Math.log10(totalFolds));
+    String fillWithZerosFormat = String.format("%%0%dd", requiredDigits);
+    return String.format(fillWithZerosFormat, fold);
   }
 
-  public static void run(
+  private static void train(
       String runName,
       CollectionReader trainingReader,
+      AnalysisEngine preprocessing,
+      CleartkPipelineProvider cleartkPipelineProvider,
+      String... trainingArguments) throws Exception {
+
+    List<AnalysisEngine> trainingPipeline = cleartkPipelineProvider.getTrainingPipeline(runName);
+
+    List<AnalysisEngine> pipeline = new ArrayList<AnalysisEngine>();
+    pipeline.add(preprocessing);
+    pipeline.addAll(trainingPipeline);
+
+    runPipeline(trainingReader, pipeline);
+    preprocessing.collectionProcessComplete();
+    cleartkPipelineProvider.trainingPipelineComplete(runName, trainingPipeline);
+
+    cleartkPipelineProvider.train(runName, trainingArguments);
+  }
+
+  private static void evaluate(
+      String runName,
       CollectionReader testingReader,
       AnalysisEngine preprocessing,
       CleartkPipelineProvider cleartkPipelineProvider,
-      EvaluationPipelineProvider evaluationPipelineProvider,
-      String... trainingArguments) throws Exception {
+      EvaluationPipelineProvider evaluationPipelineProvider) throws Exception {
+    List<AnalysisEngine> classifyingPipeline = cleartkPipelineProvider
+        .getClassifyingPipeline(runName);
+    List<AnalysisEngine> evaluationPipeline = evaluationPipelineProvider
+        .getEvaluationPipeline(runName);
 
     List<AnalysisEngine> pipeline = new ArrayList<AnalysisEngine>();
-
     pipeline.add(preprocessing);
-    List<AnalysisEngine> dataWritingPipeline = cleartkPipelineProvider.getTrainingPipeline(runName);
-    pipeline.addAll(dataWritingPipeline);
-    runPipeline(trainingReader, pipeline, true);
+    pipeline.addAll(classifyingPipeline);
+    pipeline.addAll(evaluationPipeline);
 
-    cleartkPipelineProvider.train(runName, trainingArguments);
-
-    pipeline.clear();
-    pipeline.add(preprocessing);
-    pipeline.addAll(cleartkPipelineProvider.getClassifyingPipeline(runName));
-    pipeline.addAll(evaluationPipelineProvider.getEvaluationPipeline(runName));
-    runPipeline(testingReader, pipeline, false);
-
-    evaluationPipelineProvider.writeResults(runName);
-
+    runPipeline(testingReader, pipeline);
+    preprocessing.collectionProcessComplete();
+    cleartkPipelineProvider.classifyingPipelineComplete(runName, classifyingPipeline);
+    evaluationPipelineProvider.evaluationPipelineComplete(runName, evaluationPipeline);
   }
 
-  private static void runPipeline(
-      CollectionReader reader,
-      List<AnalysisEngine> pipeline,
-      boolean callCollectionProcessComplete) throws ResourceInitializationException,
-      AnalysisEngineProcessException, CollectionException, CASAdminException, IOException {
+  private static void runPipeline(CollectionReader reader, List<AnalysisEngine> pipeline)
+      throws ResourceInitializationException, AnalysisEngineProcessException, CollectionException,
+      CASAdminException, IOException {
     List<ResourceMetaData> metaData = new ArrayList<ResourceMetaData>();
     metaData.add(reader.getMetaData());
     for (Resource resource : pipeline) {
@@ -158,12 +171,6 @@ public class Evaluation {
       reader.getNext(cas);
       for (AnalysisEngine engine : pipeline) {
         engine.process(cas);
-      }
-    }
-
-    if (callCollectionProcessComplete) {
-      for (AnalysisEngine engine : pipeline) {
-        engine.collectionProcessComplete();
       }
     }
   }
@@ -192,15 +199,23 @@ public class Evaluation {
       EvaluationPipelineProvider evaluationPipelineProvider,
       String... trainingArguments) throws Exception {
 
-    run(
-        "holdout",
+    String name = "holdout";
+    train(
+        name,
         corpusReaderPipeline.getTrainReader(),
+        corpusReaderPipeline.getPreprocessor(),
+        cleartkPipelineProvider,
+        trainingArguments);
+    cleartkPipelineProvider.trainingComplete();
+
+    evaluate(
+        name,
         corpusReaderPipeline.getTestReader(),
         corpusReaderPipeline.getPreprocessor(),
         cleartkPipelineProvider,
-        evaluationPipelineProvider,
-        trainingArguments);
-
+        evaluationPipelineProvider);
+    cleartkPipelineProvider.classifyingComplete();
+    evaluationPipelineProvider.evaluationComplete();
   }
 
   /**
@@ -220,50 +235,16 @@ public class Evaluation {
    * @throws Exception
    */
   public static void buildCorpusModel(
-      File outputDirectory,
+      String name,
       CorpusReaderPipeline corpusReaderPipeline,
       CleartkPipelineProvider cleartkPipelineProvider,
       String... trainingArguments) throws Exception {
-    if (!outputDirectory.exists()) {
-      outputDirectory.mkdirs();
-    }
-    File modelDirectory = new File(outputDirectory, "model");
-    modelDirectory.mkdir();
-
-    CollectionReader reader = corpusReaderPipeline.getReader();
-    AnalysisEngine preprocessing = corpusReaderPipeline.getPreprocessor();
-    List<AnalysisEngine> dataWritingPipeline = cleartkPipelineProvider.getTrainingPipeline("model");
-
-    dataWritingPipeline.add(0, preprocessing);
-    SimplePipeline.runPipeline(
-        reader,
-        dataWritingPipeline.toArray(new AnalysisEngine[dataWritingPipeline.size()]));
-
-    cleartkPipelineProvider.train("model", trainingArguments);
+    train(
+        name,
+        corpusReaderPipeline.getReader(),
+        corpusReaderPipeline.getPreprocessor(),
+        cleartkPipelineProvider,
+        trainingArguments);
+    cleartkPipelineProvider.trainingComplete();
   }
-
-  /**
-   * This method is provided as a convenience method for training a model. It basically just creates
-   * a single string array from the model directory and the training arguments to be passed to
-   * {@link Train#main(String...)}.
-   * 
-   * @param modelDirectory
-   *          the directory containing the training data file
-   * @param trainingArguments
-   *          the training arguments to pass on to the learner
-   * @throws Exception
-   */
-  public static void train(File modelDirectory, String... trainingArguments) throws Exception {
-    String[] args;
-    if (trainingArguments == null || trainingArguments.length == 0) {
-      args = new String[] { modelDirectory.getPath() };
-    } else {
-      args = new String[trainingArguments.length + 1];
-      System.arraycopy(trainingArguments, 0, args, 1, trainingArguments.length);
-      args[0] = modelDirectory.getPath();
-    }
-    System.out.println("training model: " + Arrays.asList(args));
-    Train.main(args);
-  }
-
 }

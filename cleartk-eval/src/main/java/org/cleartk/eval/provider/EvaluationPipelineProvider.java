@@ -24,6 +24,7 @@ package org.cleartk.eval.provider;
 import java.io.File;
 import java.util.List;
 
+import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.resource.ResourceInitializationException;
 
@@ -47,8 +48,10 @@ public interface EvaluationPipelineProvider {
    * @return
    * @throws ResourceInitializationException
    */
-  public List<AnalysisEngine> getEvaluationPipeline(String name)
-      throws ResourceInitializationException;
+  public List<AnalysisEngine> getEvaluationPipeline(String name) throws UIMAException;
+
+  public void evaluationPipelineComplete(String name, List<AnalysisEngine> engines)
+      throws UIMAException;
 
   /**
    * This method aggregates results from a number of directories and writes the aggregated results
@@ -61,8 +64,6 @@ public interface EvaluationPipelineProvider {
    *          a directory where aggregated results are written to.
    * @throws Exception
    */
-  public void aggregateResults() throws Exception;
-
-  public void writeResults(String name);
+  public void evaluationComplete() throws UIMAException;
 
 }
