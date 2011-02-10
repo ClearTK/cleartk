@@ -29,6 +29,7 @@ import static org.junit.Assert.assertNull;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
@@ -54,6 +55,8 @@ import org.uimafit.testing.factory.TokenBuilder;
  * All rights reserved.
  */
 public class MaltParserTest extends CleartkTestBase {
+
+  private static final Logger LOGGER = Logger.getLogger(MaltParserTest.class.getName());
 
   @Rule
   public MethodRule memoryRule = new MemoryRule(2000000000L);
@@ -92,6 +95,12 @@ public class MaltParserTest extends CleartkTestBase {
 
   @Test
   public void test() throws UIMAException {
+    if (!RUN_LONG_TESTS) {
+      LOGGER.info(LONG_TEST_MESSAGE);
+      return;
+    }
+
+    
     TokenBuilder<Token, Sentence> tokenBuilder = new TokenBuilder<Token, Sentence>(
         Token.class,
         Sentence.class,
