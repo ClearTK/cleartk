@@ -111,6 +111,24 @@ public abstract class JarClassifierBuilder<CLASSIFIER_TYPE> {
   }
 
   /**
+   * Loads a classifier builder from the training directory and invokes
+   * {@link #trainClassifier(File, String...)} and {@link #packageClassifier(File)}.
+   * 
+   * @param trainingDirectory
+   *          The directory where {@link #saveToTrainingDirectory(File)} has saved the model
+   *          training files.
+   * @param trainingArguments
+   *          Any additional arguments that should be passed to the classifier trainer via
+   *          {@link #trainClassifier(File, String...)}.
+   */
+  public static void trainAndPackage(File trainingDirectory, String... trainingArguments)
+      throws Exception {
+    JarClassifierBuilder<?> classifierBuilder = fromTrainingDirectory(trainingDirectory);
+    classifierBuilder.trainClassifier(trainingDirectory, trainingArguments);
+    classifierBuilder.packageClassifier(trainingDirectory);
+  }
+
+  /**
    * Creates a new classifier builder with a default manifest.
    */
   public JarClassifierBuilder() {
