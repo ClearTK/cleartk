@@ -52,6 +52,17 @@ import org.uimafit.pipeline.JCasIterable;
 
 public abstract class CleartkTestBase {
 
+  protected static final String RUN_LONG_TESTS_PROP = "cleartk.longtests";
+
+  protected static final boolean RUN_LONG_TESTS = System.getProperty(RUN_LONG_TESTS_PROP) != null;
+
+  protected static final String LONG_TEST_MESSAGE = String.format(
+      "Skipping test because it takes a long time to run. To run this test, supply -D%s at the "
+          + "command line.",
+      RUN_LONG_TESTS_PROP);
+
+  
+  
   protected JCas jCas;
 
   protected TypeSystemDescription typeSystemDescription;
