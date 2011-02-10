@@ -23,6 +23,7 @@ package org.cleartk.eval;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
@@ -109,9 +110,12 @@ public class Evaluation {
   }
 
   public static String createFoldName(int fold, int totalFolds) {
-    int requiredDigits = (int) Math.ceil(Math.log10(totalFolds));
-    String fillWithZerosFormat = String.format("%%0%dd", requiredDigits);
-    return String.format(fillWithZerosFormat, fold);
+    fold++;
+    int totalPower = (int) Math.log10(totalFolds); // TOTAL POWERRRRRR!!!
+    int foldPower = (int) Math.log10(fold);
+    char[] zeros = new char[totalPower - foldPower];
+    Arrays.fill(zeros, '0');
+    return "fold-" + new String(zeros) + fold;
   }
 
   private static void train(

@@ -40,16 +40,16 @@ public class EvaluationTest {
 
   @Test
   public void testCreateFoldName() throws Exception {
-    assertEquals("fold-1", Evaluation.createFoldName(1, 1));
-    assertEquals("fold-01", Evaluation.createFoldName(1, 10));
-    assertEquals("fold-001", Evaluation.createFoldName(1, 100));
-    assertEquals("fold-0004", Evaluation.createFoldName(4, 1000));
-    assertEquals("fold-0004", Evaluation.createFoldName(4, 4444));
-    assertEquals("fold-0987", Evaluation.createFoldName(987, 1200));
-    assertEquals("fold-4444", Evaluation.createFoldName(4444, 4444));
-    assertEquals("fold-10", Evaluation.createFoldName(10, 10));
-    assertEquals("fold-9999", Evaluation.createFoldName(9999, 9999));
-    assertEquals("fold-09999", Evaluation.createFoldName(9999, 10000));
-    assertEquals("fold-090", Evaluation.createFoldName(90, 100));
+    assertEquals("fold-1", Evaluation.createFoldName(0, 1));
+    assertEquals("fold-01", Evaluation.createFoldName(0, 10));
+    assertEquals("fold-001", Evaluation.createFoldName(0, 100));
+    assertEquals("fold-0004", Evaluation.createFoldName(3, 1000));
+    assertEquals("fold-0004", Evaluation.createFoldName(3, 4444));
+    assertEquals("fold-0987", Evaluation.createFoldName(986, 1200));
+    assertEquals("fold-4444", Evaluation.createFoldName(4443, 4444));
+    assertEquals("fold-10", Evaluation.createFoldName(9, 10));
+    assertEquals("fold-9999", Evaluation.createFoldName(9998, 9999));
+    assertEquals("fold-09999", Evaluation.createFoldName(9998, 10000));
+    assertEquals("fold-090", Evaluation.createFoldName(89, 100));
   }
 }
