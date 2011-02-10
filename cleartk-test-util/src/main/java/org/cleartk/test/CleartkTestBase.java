@@ -61,6 +61,16 @@ public abstract class CleartkTestBase {
           + "command line.",
       RUN_LONG_TESTS_PROP);
 
+  protected static final String RUN_BIGMEM_TESTS_PROP = "cleartk.bigmem";
+
+  protected static final boolean RUN_BIGMEM_TESTS = System.getProperty(RUN_BIGMEM_TESTS_PROP) != null;
+
+  protected static final String BIGMEM_TEST_MESSAGE = String.format(
+      "Skipping test because it takes a lot of memory to run. To run this test, supply -D%s at the "
+          + "command line.",
+          RUN_BIGMEM_TESTS_PROP);
+
+  
   
   
   protected JCas jCas;

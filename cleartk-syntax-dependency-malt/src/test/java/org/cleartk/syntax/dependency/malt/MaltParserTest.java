@@ -95,8 +95,8 @@ public class MaltParserTest extends CleartkTestBase {
 
   @Test
   public void test() throws UIMAException {
-    if (!RUN_LONG_TESTS) {
-      LOGGER.info(LONG_TEST_MESSAGE);
+    if (!RUN_BIGMEM_TESTS) {
+      LOGGER.info(BIGMEM_TEST_MESSAGE);
       return;
     }
 
