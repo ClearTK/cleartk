@@ -28,7 +28,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.uima.resource.metadata.TypeSystemDescription;
-import org.cleartk.eval.provider.corpus.xmi.FixedFoldsXmiCorpusFactory;
 
 /**
  * Copyright (c) 2011, Regents of the University of Colorado <br>
@@ -40,7 +39,9 @@ import org.cleartk.eval.provider.corpus.xmi.FixedFoldsXmiCorpusFactory;
 public class FixedFoldsXmiTestCorpusFactory extends FixedFoldsXmiCorpusFactory {
 
   public FixedFoldsXmiTestCorpusFactory(TypeSystemDescription typeSystemDescription) {
-    super(typeSystemDescription);
+    super(
+        typeSystemDescription,
+        "src/test/resources/eval/provider/corpus/xmi-factory-test-data/xmi");
   }
 
   public static String[] FOLDS = new String[] {
@@ -48,11 +49,6 @@ public class FixedFoldsXmiTestCorpusFactory extends FixedFoldsXmiCorpusFactory {
       "src/test/resources/eval/provider/corpus/xmi-factory-test-data/filenames/fold-2.txt",
       "src/test/resources/eval/provider/corpus/xmi-factory-test-data/filenames/fold-3.txt",
       "src/test/resources/eval/provider/corpus/xmi-factory-test-data/filenames/fold-4.txt" };
-
-  @Override
-  public String getXmiDirectory() {
-    return "src/test/resources/eval/provider/corpus/xmi-factory-test-data/xmi";
-  }
 
   @Override
   public String getTrainFile() {

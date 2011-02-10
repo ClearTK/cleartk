@@ -54,8 +54,18 @@ import org.uimafit.factory.CollectionReaderFactory;
 
 public abstract class XmiCorpusFactory extends CorpusFactory_ImplBase {
 
-  public XmiCorpusFactory(TypeSystemDescription typeSystemDescription) {
+  protected String xmiDirectoryName;
+
+  /**
+   * 
+   * @param typeSystemDescription
+   * @param xmiDirectoryName
+   *          directory contains all of the xmi files in the corpus
+   */
+
+  public XmiCorpusFactory(TypeSystemDescription typeSystemDescription, String xmiDirectoryName) {
     super(typeSystemDescription);
+    this.xmiDirectoryName = xmiDirectoryName;
   }
 
   /**
@@ -77,13 +87,6 @@ public abstract class XmiCorpusFactory extends CorpusFactory_ImplBase {
   public abstract String[] getTestNames(int fold) throws ResourceInitializationException;
 
   /**
-   * This directory contains all of the xmi files in the corpus
-   * 
-   * @return a path name to the directory containing the xmi files.
-   */
-  public abstract String getXmiDirectory() throws ResourceInitializationException;
-
-  /**
    * Provides the file names for the training set.
    * 
    * @return an array of file names used for the training set for this corpus.
@@ -98,12 +101,11 @@ public abstract class XmiCorpusFactory extends CorpusFactory_ImplBase {
   public abstract String[] getTestNames() throws ResourceInitializationException;
 
   private CollectionReader getReader(String[] fileNames) throws ResourceInitializationException {
-    String directory = getXmiDirectory();
     CollectionReader collectionReader = CollectionReaderFactory.createCollectionReader(
         XReader.class,
         typeSystemDescription,
         FilesCollectionReader.PARAM_ROOT_FILE,
-        directory,
+        xmiDirectoryName,
         FilesCollectionReader.PARAM_FILE_NAMES,
         fileNames);
     return collectionReader;

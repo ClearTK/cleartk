@@ -65,8 +65,10 @@ import org.cleartk.eval.provider.CorpusReaderPipeline;
 
 public abstract class FixedFoldsXmiCorpusFactory extends XmiCorpusFactory {
 
-  public FixedFoldsXmiCorpusFactory(TypeSystemDescription typeSystemDescription) {
-    super(typeSystemDescription);
+  public FixedFoldsXmiCorpusFactory(
+      TypeSystemDescription typeSystemDescription,
+      String xmiDirectoryName) {
+    super(typeSystemDescription, xmiDirectoryName);
   }
 
   /**
