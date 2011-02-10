@@ -82,7 +82,7 @@ public abstract class CleartkMultiAnnotator<OUTCOME_TYPE> extends JCasAnnotator_
   private String multiDataWriterFactoryClassName;
 
   public static final String PARAM_IS_TRAINING = ConfigurationParameterFactory
-      .createConfigurationParameterName(CleartkAnnotator.class, "isTraining");
+      .createConfigurationParameterName(CleartkMultiAnnotator.class, "isTraining");
 
   @ConfigurationParameter(mandatory = false, description = "determines whether this annotator is writing training data or using a classifier to annotate. Normally inferred automatically based on whether or not a DataWriterFactory class has been set.")
   private Boolean isTraining;
