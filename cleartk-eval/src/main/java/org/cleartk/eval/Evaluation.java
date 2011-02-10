@@ -21,18 +21,25 @@
 package org.cleartk.eval;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.cas.CAS;
+import org.apache.uima.cas.admin.CASAdminException;
+import org.apache.uima.collection.CollectionException;
 import org.apache.uima.collection.CollectionReader;
-import org.apache.uima.jcas.JCas;
+import org.apache.uima.resource.Resource;
+import org.apache.uima.resource.ResourceInitializationException;
+import org.apache.uima.resource.metadata.ResourceMetaData;
+import org.apache.uima.util.CasCreationUtils;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.eval.provider.CleartkPipelineProvider;
 import org.cleartk.eval.provider.CorpusReaderPipeline;
 import org.cleartk.eval.provider.EvaluationPipelineProvider;
-import org.uimafit.pipeline.JCasIterable;
 import org.uimafit.pipeline.SimplePipeline;
 
 /**
@@ -51,21 +58,20 @@ public class Evaluation {
    * evaluated against the data in the fold. After all folds have been evaluated in this way, the
    * evaluation results are aggregated so that overall performance for the experiment is given.
    * 
-   * @param corpusFactory
-   *          A corpus factory provides methods for creating collection readers corresponding to
-   *          training data and testing data for each fold. Please see {@link CorpusReaderPipeline}.
-   * @param engineFactory
-   *          An engine factory provides methods for creating aggregate analysis engines that
-   *          process training data to generate a training data file suitable for the machine
-   *          learning library that is being used, train a model using the training data file, and
-   *          test the model using the testing data for a given fold. See
-   *          {@link CleartkPipelineProvider}.
-   * @param evaluationFactory
-   *          An evaluation factory provides methods for creating aggregate analysis engines which
-   *          perform evaluation. Generally, this involves comparing the contents of the gold view
-   *          with the contents of the system view and collecting performance numbers (i.e. true
-   *          positives, false positives) and then generating and writing evalOut evaluation results
-   *          to the output directory.
+   * @param corpusReaderPipeline
+   *          A CorpusReaderPipeline provides collection readers corresponding to training data and
+   *          testing data for each fold. Please see {@link CorpusReaderPipeline}.
+   * @param cleartkPipelineProvider
+   *          An CleartkPipelineProvider provides aggregate analysis engines that process training
+   *          data to generate a training data file suitable for the machine learning library that
+   *          is being used, train a model using the training data file, and test the model using
+   *          the testing data for a given fold. See {@link CleartkPipelineProvider}.
+   * @param evaluationPipelineProvider
+   *          An EvaluationPipelineProvider provides methods for creating aggregate analysis engines
+   *          which perform evaluation. Generally, this involves comparing the contents of the gold
+   *          view with the contents of the system view and collecting performance numbers (i.e.
+   *          true positives, false positives) and then generating and writing out evaluation
+   *          results to the output directory.
    * @param trainingArguments
    *          The training arguments are arguments that are passed directly to the machine learning
    *          library that is being used for learning a model when the model learner is invoked.
@@ -77,26 +83,26 @@ public class Evaluation {
    */
 
   public static void runCrossValidation(
-      CorpusReaderPipeline corpusFactory,
-      CleartkPipelineProvider engineFactory,
-      EvaluationPipelineProvider evaluationFactory,
+      CorpusReaderPipeline corpusReaderPipeline,
+      CleartkPipelineProvider cleartkPipelineProvider,
+      EvaluationPipelineProvider evaluationPipelineProvider,
       String... trainingArguments) throws Exception {
 
-    int folds = corpusFactory.getNumberOfFolds();
+    int folds = corpusReaderPipeline.getNumberOfFolds();
     for (int fold = 1; fold <= folds; fold++) {
       String foldName = createFoldName(fold, folds);
 
       run(
           foldName,
-          corpusFactory.getTrainReader(fold),
-          corpusFactory.getTestReader(fold),
-          corpusFactory.getPreprocessor(),
-          engineFactory,
-          evaluationFactory,
+          corpusReaderPipeline.getTrainReader(fold),
+          corpusReaderPipeline.getTestReader(fold),
+          corpusReaderPipeline.getPreprocessor(),
+          cleartkPipelineProvider,
+          evaluationPipelineProvider,
           trainingArguments);
     }
 
-    evaluationFactory.aggregateResults();
+    evaluationPipelineProvider.aggregateResults();
   }
 
   public static String createFoldName(int fold, int totalFolds) {
@@ -112,48 +118,67 @@ public class Evaluation {
       CollectionReader trainingReader,
       CollectionReader testingReader,
       AnalysisEngine preprocessing,
-      CleartkPipelineProvider engineFactory,
-      EvaluationPipelineProvider evaluationFactory,
+      CleartkPipelineProvider cleartkPipelineProvider,
+      EvaluationPipelineProvider evaluationPipelineProvider,
       String... trainingArguments) throws Exception {
 
     List<AnalysisEngine> pipeline = new ArrayList<AnalysisEngine>();
+
     pipeline.add(preprocessing);
-
-    List<AnalysisEngine> dataWritingPipeline = engineFactory.getTrainingPipeline(runName);
+    List<AnalysisEngine> dataWritingPipeline = cleartkPipelineProvider.getTrainingPipeline(runName);
     pipeline.addAll(dataWritingPipeline);
-    SimplePipeline.runPipeline(
-        trainingReader,
-        pipeline.toArray(new AnalysisEngine[pipeline.size()]));
+    runPipeline(trainingReader, pipeline, true);
 
-    engineFactory.train(runName, trainingArguments);
-
-    List<AnalysisEngine> classifierPipeline = engineFactory.getClassifierPipeline(runName);
-    List<AnalysisEngine> evaluationPipeline = evaluationFactory.getEvaluationPipeline(runName);
+    cleartkPipelineProvider.train(runName, trainingArguments);
 
     pipeline.clear();
     pipeline.add(preprocessing);
-    pipeline.addAll(classifierPipeline);
-    pipeline.addAll(evaluationPipeline);
+    pipeline.addAll(cleartkPipelineProvider.getClassifierPipeline(runName));
+    pipeline.addAll(evaluationPipelineProvider.getEvaluationPipeline(runName));
+    runPipeline(testingReader, pipeline, false);
 
-    for (JCas jCas : new JCasIterable(testingReader, pipeline.toArray(new AnalysisEngine[pipeline
-        .size()]))) {
-      assert jCas != null;
+    evaluationPipelineProvider.writeResults(runName);
+
+  }
+
+  private static void runPipeline(
+      CollectionReader reader,
+      List<AnalysisEngine> pipeline,
+      boolean callCollectionProcessComplete) throws ResourceInitializationException,
+      AnalysisEngineProcessException, CollectionException, CASAdminException, IOException {
+    List<ResourceMetaData> metaData = new ArrayList<ResourceMetaData>();
+    metaData.add(reader.getMetaData());
+    for (Resource resource : pipeline) {
+      metaData.add(resource.getMetaData());
     }
-    evaluationFactory.writeResults(runName);
 
+    CAS cas = CasCreationUtils.createCas(metaData);
+    while (reader.hasNext()) {
+      cas.reset();
+      reader.getNext(cas);
+      for (AnalysisEngine engine : pipeline) {
+        engine.process(cas);
+      }
+    }
+
+    if (callCollectionProcessComplete) {
+      for (AnalysisEngine engine : pipeline) {
+        engine.collectionProcessComplete();
+      }
+    }
   }
 
   /**
    * This method runs "holdout" evaluation on your gold-standard data - i.e. it trains a model on
    * your training data and tests it using the holdout evaluation data.
    * 
-   * @param corpusFactory
+   * @param corpusReaderPipeline
    *          see
    *          {@link #runCrossValidation(File, CorpusReaderPipeline, CleartkPipelineProvider, EvaluationPipelineProvider, String...)}
-   * @param engineFactory
+   * @param cleartkPipelineProvider
    *          see
    *          {@link #runCrossValidation(File, CorpusReaderPipeline, CleartkPipelineProvider, EvaluationPipelineProvider, String...)}
-   * @param evaluationFactory
+   * @param evaluationPipelineProvider
    *          see
    *          {@link #runCrossValidation(File, CorpusReaderPipeline, CleartkPipelineProvider, EvaluationPipelineProvider, String...)}
    * @param trainingArguments
@@ -162,18 +187,18 @@ public class Evaluation {
    * @throws Exception
    */
   public static void runHoldoutEvaluation(
-      CorpusReaderPipeline corpusFactory,
-      CleartkPipelineProvider engineFactory,
-      EvaluationPipelineProvider evaluationFactory,
+      CorpusReaderPipeline corpusReaderPipeline,
+      CleartkPipelineProvider cleartkPipelineProvider,
+      EvaluationPipelineProvider evaluationPipelineProvider,
       String... trainingArguments) throws Exception {
 
     run(
         "holdout",
-        corpusFactory.getTrainReader(),
-        corpusFactory.getTestReader(),
-        corpusFactory.getPreprocessor(),
-        engineFactory,
-        evaluationFactory,
+        corpusReaderPipeline.getTrainReader(),
+        corpusReaderPipeline.getTestReader(),
+        corpusReaderPipeline.getPreprocessor(),
+        cleartkPipelineProvider,
+        evaluationPipelineProvider,
         trainingArguments);
 
   }
@@ -183,10 +208,10 @@ public class Evaluation {
    * completed your experimentation and you now want to build a model that will be used in your
    * applications.
    * 
-   * @param corpusFactory
+   * @param corpusReaderPipeline
    *          see
    *          {@link #runCrossValidation(File, CorpusReaderPipeline, CleartkPipelineProvider, EvaluationPipelineProvider, String...)}
-   * @param engineFactory
+   * @param cleartkPipelineProvider
    *          see
    *          {@link #runCrossValidation(File, CorpusReaderPipeline, CleartkPipelineProvider, EvaluationPipelineProvider, String...)}
    * @param trainingArguments
@@ -196,8 +221,8 @@ public class Evaluation {
    */
   public static void buildCorpusModel(
       File outputDirectory,
-      CorpusReaderPipeline corpusFactory,
-      CleartkPipelineProvider engineFactory,
+      CorpusReaderPipeline corpusReaderPipeline,
+      CleartkPipelineProvider cleartkPipelineProvider,
       String... trainingArguments) throws Exception {
     if (!outputDirectory.exists()) {
       outputDirectory.mkdirs();
@@ -205,16 +230,16 @@ public class Evaluation {
     File modelDirectory = new File(outputDirectory, "model");
     modelDirectory.mkdir();
 
-    CollectionReader reader = corpusFactory.getReader();
-    AnalysisEngine preprocessing = corpusFactory.getPreprocessor();
-    List<AnalysisEngine> dataWritingPipeline = engineFactory.getTrainingPipeline("model");
+    CollectionReader reader = corpusReaderPipeline.getReader();
+    AnalysisEngine preprocessing = corpusReaderPipeline.getPreprocessor();
+    List<AnalysisEngine> dataWritingPipeline = cleartkPipelineProvider.getTrainingPipeline("model");
 
     dataWritingPipeline.add(0, preprocessing);
     SimplePipeline.runPipeline(
         reader,
         dataWritingPipeline.toArray(new AnalysisEngine[dataWritingPipeline.size()]));
 
-    engineFactory.train("model", trainingArguments);
+    cleartkPipelineProvider.train("model", trainingArguments);
   }
 
   /**
