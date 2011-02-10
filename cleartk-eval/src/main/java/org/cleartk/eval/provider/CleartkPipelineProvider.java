@@ -23,7 +23,6 @@ package org.cleartk.eval.provider;
 import java.util.List;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.ClassifierFactory;
 import org.cleartk.classifier.CleartkAnnotator;
@@ -90,7 +89,5 @@ public interface CleartkPipelineProvider {
 
   public List<AnalysisEngine> getClassifierPipeline(String name)
       throws ResourceInitializationException;
-
-  public void completeClassifierPipeline(String name) throws AnalysisEngineProcessException;
 
 }
