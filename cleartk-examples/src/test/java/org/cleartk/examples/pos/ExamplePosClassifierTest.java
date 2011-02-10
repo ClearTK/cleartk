@@ -66,15 +66,6 @@ import org.uimafit.testing.util.HideOutput;
 
 public class ExamplePosClassifierTest extends ExamplesTestBase {
 
-  private static final String RUN_LONG_TESTS_PROP = "cleartk.longtests";
-
-  private static final boolean RUN_LONG_TESTS = System.getProperty(RUN_LONG_TESTS_PROP) != null;
-
-  private static final String LONG_TEST_FORMAT = String.format(
-      "Skipping test because training takes ~%%s. To run this test, supply -D%s at the "
-          + "command line.",
-      RUN_LONG_TESTS_PROP);
-
   private static final Logger LOGGER = Logger.getLogger(ExamplePosClassifierTest.class.getName());
 
   @Test
@@ -109,7 +100,7 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
   @Test
   public void testMalletCRF() throws Exception {
     if (!RUN_LONG_TESTS) {
-      LOGGER.info(String.format(LONG_TEST_FORMAT, "2 minutes"));
+      LOGGER.info(LONG_TEST_MESSAGE);
       return;
     }
 
@@ -135,7 +126,7 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
   @Test
   public void testMalletCRF2() throws Exception {
     if (!RUN_LONG_TESTS) {
-      LOGGER.info(String.format(LONG_TEST_FORMAT, "2 minutes"));
+      LOGGER.info(LONG_TEST_MESSAGE);
       return;
     }
 
@@ -267,7 +258,7 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
   @Test
   public void testMalletC45() throws Exception {
     if (!RUN_LONG_TESTS) {
-      LOGGER.info(String.format(LONG_TEST_FORMAT, "20 minutes"));
+      LOGGER.info(LONG_TEST_MESSAGE);
       return;
     }
     String outDirectoryName = outputDirectoryName + "/mallet-c45";
