@@ -22,7 +22,7 @@
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
-package org.cleartk.eval.provider.corpus;
+package org.cleartk.eval.provider.corpus.xmi;
 
 import static org.junit.Assert.assertEquals;
 
@@ -44,11 +44,12 @@ import org.uimafit.pipeline.SimplePipeline;
  * @author Philip Ogren
  */
 
-public class XmiCorpusFactoryTest extends DefaultTestBase {
+public class FixedFoldsXmiCorpusFactoryTest extends DefaultTestBase {
 
   @Test
   public void testCorpusCounts() throws Exception {
-    XmiTestCorpusFactory testFactory = new XmiTestCorpusFactory(typeSystemDescription);
+    FixedFoldsXmiTestCorpusFactory testFactory = new FixedFoldsXmiTestCorpusFactory(
+        typeSystemDescription);
     testCollectionReaderCount(testFactory.getReader(), 11); // 11 files total (8+3 see next 2
                                                             // lines)
     testCollectionReaderCount(testFactory.getTrainReader(), 8); // 8 files in training set
@@ -56,28 +57,29 @@ public class XmiCorpusFactoryTest extends DefaultTestBase {
     // all of the following pairs should add up to 8 because the union of the training and test sets
     // for a given fold should be the collection's training set
     // fold1
-    testCollectionReaderCount(testFactory.getTestReader(1), 3);
-    testCollectionReaderCount(testFactory.getTrainReader(1), 5);
+    testCollectionReaderCount(testFactory.getTestReader(0), 3);
+    testCollectionReaderCount(testFactory.getTrainReader(0), 5);
     // fold2
-    testCollectionReaderCount(testFactory.getTestReader(2), 1);
-    testCollectionReaderCount(testFactory.getTrainReader(2), 7);
+    testCollectionReaderCount(testFactory.getTestReader(1), 1);
+    testCollectionReaderCount(testFactory.getTrainReader(1), 7);
     // fold3
+    testCollectionReaderCount(testFactory.getTestReader(2), 2);
+    testCollectionReaderCount(testFactory.getTrainReader(2), 6);
+    // fold4
     testCollectionReaderCount(testFactory.getTestReader(3), 2);
     testCollectionReaderCount(testFactory.getTrainReader(3), 6);
-    // fold4
-    testCollectionReaderCount(testFactory.getTestReader(4), 2);
-    testCollectionReaderCount(testFactory.getTrainReader(3), 6);
 
-    testCollectionReaderCount(testFactory.createReader(1, 2, 3), 6);
-    testCollectionReaderCount(testFactory.createReader(1, 2), 4);
-    testCollectionReaderCount(testFactory.createReader(2, 4), 3);
+    testCollectionReaderCount(testFactory.createReader(0, 1, 2), 6);
+    testCollectionReaderCount(testFactory.createReader(0, 1), 4);
+    testCollectionReaderCount(testFactory.createReader(1, 3), 3);
 
   }
 
   @Test
   public void testXmiCorpusFactory() throws Exception {
-    XmiTestCorpusFactory testFactory = new XmiTestCorpusFactory(typeSystemDescription);
-    CollectionReader reader = testFactory.getTestReader(1);
+    FixedFoldsXmiTestCorpusFactory testFactory = new FixedFoldsXmiTestCorpusFactory(
+        typeSystemDescription);
+    CollectionReader reader = testFactory.getTestReader(0);
 
     AnalysisEngine aeAdapter = AnalysisEngineFactory.createPrimitive(
         JCasAnnotatorAdapter.class,
@@ -99,7 +101,7 @@ public class XmiCorpusFactoryTest extends DefaultTestBase {
   }
 
   public static void main(String[] args) throws Exception {
-    XmiCorpusFactoryTest xcft = new XmiCorpusFactoryTest();
+    FixedFoldsXmiCorpusFactoryTest xcft = new FixedFoldsXmiCorpusFactoryTest();
     xcft.buildTestXmiFiles();
   }
 

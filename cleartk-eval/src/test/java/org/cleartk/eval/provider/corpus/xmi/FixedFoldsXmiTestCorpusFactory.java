@@ -22,13 +22,13 @@
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
-package org.cleartk.eval.provider.corpus;
+package org.cleartk.eval.provider.corpus.xmi;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.apache.uima.resource.metadata.TypeSystemDescription;
+import org.cleartk.eval.provider.corpus.xmi.FixedFoldsXmiCorpusFactory;
 
 /**
  * Copyright (c) 2011, Regents of the University of Colorado <br>
@@ -37,9 +37,9 @@ import org.apache.uima.resource.metadata.TypeSystemDescription;
  * @author Philip Ogren
  */
 
-public class XmiTestCorpusFactory extends XmiCorpusFactory {
+public class FixedFoldsXmiTestCorpusFactory extends FixedFoldsXmiCorpusFactory {
 
-  public XmiTestCorpusFactory(TypeSystemDescription typeSystemDescription) {
+  public FixedFoldsXmiTestCorpusFactory(TypeSystemDescription typeSystemDescription) {
     super(typeSystemDescription);
   }
 
@@ -50,41 +50,28 @@ public class XmiTestCorpusFactory extends XmiCorpusFactory {
       "src/test/resources/eval/provider/corpus/xmi-factory-test-data/filenames/fold-4.txt" };
 
   @Override
-  public int getNumberOfFolds() {
-    return 4;
-  }
-
-  @Override
-  public String[] getTrainNames(int fold) {
-    List<String> foldNames = new ArrayList<String>(Arrays.asList(FOLDS));
-    foldNames.remove(fold - 1);
-    return foldNames.toArray(new String[foldNames.size()]);
-  }
-
-  @Override
-  public String getTestNames(int fold) {
-    verifyFoldValue(fold);
-    return FOLDS[fold - 1];
-  }
-
-  @Override
   public String getXmiDirectory() {
     return "src/test/resources/eval/provider/corpus/xmi-factory-test-data/xmi";
   }
 
   @Override
-  public String getTrainNames() {
+  public String getTrainFile() {
     return "src/test/resources/eval/provider/corpus/xmi-factory-test-data/filenames/train.txt";
   }
 
   @Override
-  public String getTestNames() {
+  public String getTestFile() {
     return "src/test/resources/eval/provider/corpus/xmi-factory-test-data/filenames/test.txt";
   }
 
   @Override
   public void setNumberOfFolds(int numberOfFolds) {
     throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public List<String> getFoldFiles() {
+    return Arrays.asList(FOLDS);
   }
 
 }

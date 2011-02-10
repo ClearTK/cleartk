@@ -43,7 +43,7 @@ public abstract class CorpusFactory_ImplBase implements CorpusReaderPipeline {
   }
 
   protected void verifyFoldValue(int fold) {
-    if (fold > 0 && fold <= getNumberOfFolds()) {
+    if (fold >= 0 && fold < getNumberOfFolds()) {
       return;
     }
     throw new RuntimeException("fold number must be greater than 0 and less than or equal to "
