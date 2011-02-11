@@ -32,7 +32,7 @@ import java.util.Set;
 /**
  * This data structure is convenient if you want to stratify evaluation across different dimensions.
  * For example, if you wanted to see how good a part-of-speech tagger works for different tags you
- * might declare a FCollection of type String. Another example is a named-entity recoginizer for
+ * might declare a FCollection of type String. Another example is a named-entity recognizer for
  * which you want to measure performance for different lengths of named entities (in tokens). For
  * this example, you could declare a FCollection of type Integer.
  * 
