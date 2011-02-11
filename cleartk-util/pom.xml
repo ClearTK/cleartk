@@ -2,13 +2,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.cleartk</groupId>
 	<artifactId>cleartk-util</artifactId>
-	<version>0.7.1</version>
+	<version>0.7.2-SNAPSHOT</version>
 	<name>cleartk-util</name>
 	<url>http://cleartk.googlecode.com/</url>
 	<parent>
 		<artifactId>cleartk</artifactId>
 		<groupId>org.cleartk</groupId>
-		<version>0.5.1</version>
+		<version>0.5.2-SNAPSHOT</version>
 	</parent>
 	<properties>
 		<jcasgen.typesystem>org/cleartk/util/TypeSystem.xml</jcasgen.typesystem>

@@ -2,13 +2,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.cleartk</groupId>
 	<artifactId>cleartk-named-entity</artifactId>
-	<version>0.1.1</version>
+	<version>0.1.2-SNAPSHOT</version>
 	<name>cleartk-named-entity</name>
 	<url>http://cleartk.googlecode.com/</url>
 	<parent>
 		<artifactId>cleartk</artifactId>
 		<groupId>org.cleartk</groupId>
-		<version>0.5.1</version>
+		<version>0.5.2-SNAPSHOT</version>
 	</parent>
 	<dependencies>
 		<dependency>

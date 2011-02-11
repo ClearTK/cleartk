@@ -2,14 +2,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.cleartk</groupId>
 	<artifactId>cleartk-ml-opennlp-maxent</artifactId>
-	<version>0.9.10</version>
+	<version>0.9.11-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>cleartk-ml-opennlp-maxent</name>
 	<url>http://cleartk.googlecode.com/</url>
 	<parent>
 		<artifactId>cleartk</artifactId>
 		<groupId>org.cleartk</groupId>
-		<version>0.5.1</version>
+		<version>0.5.2-SNAPSHOT</version>
 	</parent>
 
 	<repositories>

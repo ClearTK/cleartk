@@ -3,13 +3,13 @@
 	<groupId>org.cleartk</groupId>
 	<artifactId>cleartk-eval</artifactId>
 	<packaging>jar</packaging>
-	<version>0.7.0</version>
+	<version>0.7.1-SNAPSHOT</version>
 	<name>cleartk-eval</name>
 	<url>http://cleartk.googlecode.com/</url>
 	<parent>
 		<artifactId>cleartk</artifactId>
 		<groupId>org.cleartk</groupId>
-		<version>0.5.1</version>
+		<version>0.5.2-SNAPSHOT</version>
 	</parent>
 	<dependencies>
 		<dependency>
