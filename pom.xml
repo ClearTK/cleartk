@@ -249,12 +249,12 @@
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-timeml</artifactId>
-				<version>0.7.2-SNAPSHOT</version>
+				<version>0.7.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-examples</artifactId>
-				<version>0.5.2-SNAPSHOT</version>
+				<version>0.5.3-SNAPSHOT</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

@@ -8,7 +8,7 @@
 	<parent>
 		<artifactId>cleartk</artifactId>
 		<groupId>org.cleartk</groupId>
-		<version>0.5.2-SNAPSHOT</version>
+		<version>0.5.1</version>
 	</parent>
 	<!-- Declare dependencies to guarantee that this module runs after all others -->
 	<dependencies>
