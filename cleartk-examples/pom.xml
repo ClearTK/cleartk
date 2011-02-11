@@ -2,13 +2,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.cleartk</groupId>
 	<artifactId>cleartk-examples</artifactId>
-	<version>0.5.2-SNAPSHOT</version>
+	<version>0.5.2</version>
 	<name>cleartk-examples</name>
 	<url>http://cleartk.googlecode.com/</url>
 	<parent>
 		<artifactId>cleartk</artifactId>
 		<groupId>org.cleartk</groupId>
-		<version>0.5.2-SNAPSHOT</version>
+		<version>0.5.1</version>
 	</parent>
 	<dependencies>
 		<dependency>
@@ -60,4 +60,10 @@
 			<artifactId>cleartk-syntax-opennlp</artifactId>
 		</dependency>
 	</dependencies>
+
+  <scm>
+    <connection>scm:svn:http://cleartk.googlecode.com/svn/tags/cleartk-examples-0.5.2</connection>
+    <developerConnection>scm:svn:https://cleartk.googlecode.com/svn/tags/cleartk-examples-0.5.2</developerConnection>
+    <url>http://cleartk.googlecode.com/svn/tags/cleartk-examples-0.5.2</url>
+  </scm>
 </project>
