@@ -5,6 +5,16 @@
 	<version>0.5.2-SNAPSHOT</version>
 	<name>cleartk-ml-grmm</name>
 	<url>http://cleartk.googlecode.com/</url>
+	<repositories>
+		<repository>
+			<id>cleartk-googlecode</id>
+			<name>ClearTK Google Code repository</name>
+			<url>http://cleartk.googlecode.com/svn/repo/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 	<parent>
 		<artifactId>cleartk</artifactId>
 		<groupId>org.cleartk</groupId>

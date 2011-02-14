@@ -5,6 +5,16 @@
 	<version>0.0.3-SNAPSHOT</version>
 	<url>http://cleartk.googlecode.com/</url>
 	<name>cleartk-syntax-berkeley</name>
+	<repositories>
+		<repository>
+			<id>cleartk-googlecode</id>
+			<name>ClearTK Google Code repository</name>
+			<url>http://cleartk.googlecode.com/svn/repo/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 	<parent>
 		<artifactId>cleartk</artifactId>
 		<groupId>org.cleartk</groupId>

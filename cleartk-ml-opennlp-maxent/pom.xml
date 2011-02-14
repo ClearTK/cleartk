@@ -6,18 +6,25 @@
 	<packaging>jar</packaging>
 	<name>cleartk-ml-opennlp-maxent</name>
 	<url>http://cleartk.googlecode.com/</url>
-	<parent>
-		<artifactId>cleartk</artifactId>
-		<groupId>org.cleartk</groupId>
-		<version>0.5.1</version>
-	</parent>
-
 	<repositories>
+		<repository>
+			<id>cleartk-googlecode</id>
+			<name>ClearTK Google Code repository</name>
+			<url>http://cleartk.googlecode.com/svn/repo/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
 		<repository>
 			<id>opennlp.sf.net</id>
 			<url>http://opennlp.sourceforge.net/maven2</url>
 		</repository>
 	</repositories>
+	<parent>
+		<artifactId>cleartk</artifactId>
+		<groupId>org.cleartk</groupId>
+		<version>0.5.1</version>
+	</parent>
 	<dependencies>
 		<dependency>
 			<groupId>org.cleartk</groupId>

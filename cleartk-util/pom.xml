@@ -5,15 +5,15 @@
 	<version>0.7.2-SNAPSHOT</version>
 	<name>cleartk-util</name>
 	<url>http://cleartk.googlecode.com/</url>
-	<parent>
-		<artifactId>cleartk</artifactId>
-		<groupId>org.cleartk</groupId>
-		<version>0.5.1</version>
-	</parent>
-	<properties>
-		<jcasgen.typesystem>org/cleartk/util/TypeSystem.xml</jcasgen.typesystem>
-	</properties>
 	<repositories>
+		<repository>
+			<id>cleartk-googlecode</id>
+			<name>ClearTK Google Code repository</name>
+			<url>http://cleartk.googlecode.com/svn/repo/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
 		<repository>
 			<snapshots>
 				<enabled>false</enabled>
@@ -23,6 +23,14 @@
 			<url>http://repository.carrotsearch.com/labs/releases/</url>
 		</repository>
 	</repositories>
+	<parent>
+		<artifactId>cleartk</artifactId>
+		<groupId>org.cleartk</groupId>
+		<version>0.5.1</version>
+	</parent>
+	<properties>
+		<jcasgen.typesystem>org/cleartk/util/TypeSystem.xml</jcasgen.typesystem>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.cleartk</groupId>
