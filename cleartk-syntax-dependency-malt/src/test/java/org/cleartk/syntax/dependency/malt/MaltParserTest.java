@@ -25,6 +25,7 @@ package org.cleartk.syntax.dependency.malt;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assume.assumeTrue;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -95,11 +96,14 @@ public class MaltParserTest extends CleartkTestBase {
 
   @Test
   public void test() throws UIMAException {
+    
     if (!RUN_BIGMEM_TESTS) {
       LOGGER.info(BIGMEM_TEST_MESSAGE);
-      return;
     }
-
+    
+    assumeTrue(RUN_BIGMEM_TESTS);
+    
+    
     
     TokenBuilder<Token, Sentence> tokenBuilder = new TokenBuilder<Token, Sentence>(
         Token.class,

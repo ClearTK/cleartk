@@ -26,6 +26,7 @@ package org.cleartk.examples.pos;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assume.assumeTrue;
 
 import java.io.File;
 import java.util.logging.Logger;
@@ -101,8 +102,8 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
   public void testMalletCRF() throws Exception {
     if (!RUN_LONG_TESTS) {
       LOGGER.info(LONG_TEST_MESSAGE);
-      return;
     }
+    assumeTrue(RUN_LONG_TESTS);
 
     String outDirectoryName = outputDirectoryName + "/malletcrf";
     AnalysisEngineDescription dataWriter = CleartkAnnotatorDescriptionFactory
@@ -127,8 +128,8 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
   public void testMalletCRF2() throws Exception {
     if (!RUN_LONG_TESTS) {
       LOGGER.info(LONG_TEST_MESSAGE);
-      return;
     }
+    assumeTrue(RUN_LONG_TESTS);
 
     String outDirectoryName = outputDirectoryName + "/malletcrf-compressed";
     AnalysisEngineDescription dataWriter = CleartkAnnotatorDescriptionFactory
@@ -259,8 +260,9 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
   public void testMalletC45() throws Exception {
     if (!RUN_LONG_TESTS) {
       LOGGER.info(LONG_TEST_MESSAGE);
-      return;
     }
+    assumeTrue(RUN_LONG_TESTS);
+
     String outDirectoryName = outputDirectoryName + "/mallet-c45";
 
     AnalysisEngineDescription dataWriter = CleartkAnnotatorDescriptionFactory
