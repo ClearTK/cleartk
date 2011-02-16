@@ -47,7 +47,6 @@ import org.cleartk.syntax.opennlp.parser.Parser;
 import org.cleartk.util.IOUtil;
 import org.cleartk.util.ParamUtil;
 import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.descriptor.TypeCapability;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.InitializableFactory;
@@ -72,10 +71,7 @@ import org.uimafit.factory.initializable.InitializableFactory;
  * 
  * @author Philipp Wetzler, Philip Ogren.
  */
-@TypeCapability(outputs = {
-    "org.cleartk.syntax.constituent.type.TreebankNode",
-    "org.cleartk.syntax.constituent.type.TerminalTreebankNode",
-    "org.cleartk.syntax.constituent.type.TopTreebankNode" })
+
 public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation, TOP_NODE_TYPE extends Annotation>
     extends ParserWrapper_ImplBase<TOKEN_TYPE, SENTENCE_TYPE, Parse, TOP_NODE_TYPE>{
 
