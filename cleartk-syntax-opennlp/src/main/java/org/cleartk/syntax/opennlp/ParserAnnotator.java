@@ -25,8 +25,6 @@ package org.cleartk.syntax.opennlp;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -38,20 +36,16 @@ import opennlp.tools.util.Span;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
-import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.syntax.SyntaxComponents;
-import org.cleartk.syntax.constituent.type.TopTreebankNode;
-import org.cleartk.syntax.constituent.type.TreebankNode;
+import org.cleartk.syntax.constituent.ParserWrapper_ImplBase;
+import org.cleartk.syntax.constituent.types.InputTypesHelper;
 import org.cleartk.syntax.opennlp.parser.CasPosTagger;
-import org.cleartk.syntax.opennlp.parser.InputTypesHelper;
 import org.cleartk.syntax.opennlp.parser.Parser;
 import org.cleartk.util.IOUtil;
 import org.cleartk.util.ParamUtil;
-import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.TypeCapability;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -82,8 +76,8 @@ import org.uimafit.factory.initializable.InitializableFactory;
     "org.cleartk.syntax.constituent.type.TreebankNode",
     "org.cleartk.syntax.constituent.type.TerminalTreebankNode",
     "org.cleartk.syntax.constituent.type.TopTreebankNode" })
-public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation>
-    extends JCasAnnotator_ImplBase {
+public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation, TOP_NODE_TYPE extends Annotation>
+    extends ParserWrapper_ImplBase<TOKEN_TYPE, SENTENCE_TYPE, Parse, TOP_NODE_TYPE>{
 
   public static final String DEFAULT_PARSER_MODEL_PATH = "/models/en-parser-chunking.bin";
 
@@ -108,14 +102,6 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
 
   @ConfigurationParameter(defaultValue = "" + AbstractBottomUpParser.defaultAdvancePercentage, description = "indicates \"the amount of probability mass required of advanced outcomes\".  See javadoc for opennlp.tools.parser.chunking.Parser.")
   private float advancePercentage;
-
-  public static final String PARAM_INPUT_TYPES_HELPER_CLASS_NAME = ConfigurationParameterFactory
-      .createConfigurationParameterName(ParserAnnotator.class, "inputTypesHelperClassName");
-
-  @ConfigurationParameter(defaultValue = "org.cleartk.syntax.opennlp.parser.DefaultInputTypesHelper", description = "provides the class name of the class used to read sentences from the document")
-  private String inputTypesHelperClassName;
-
-  protected InputTypesHelper<TOKEN_TYPE, SENTENCE_TYPE> inputTypesHelper;
 
   public static final String PARAM_USE_TAGS_FROM_CAS = ConfigurationParameterFactory
       .createConfigurationParameterName(ParserAnnotator.class, "useTagsFromCas");
@@ -168,7 +154,7 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
 
       List<TOKEN_TYPE> tokenList = inputTypesHelper.getTokens(jCas, sentence);
 
-      for (Annotation token : tokenList) {
+      for (TOKEN_TYPE token : tokenList) {
         parse.insert(new Parse(
             text,
             new Span(token.getBegin(), token.getEnd()),
@@ -186,8 +172,7 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
       // if the sentence was successfully parsed, add the tree to the
       // sentence
       if (parse.getType() == AbstractBottomUpParser.TOP_NODE) {
-        TopTreebankNode topNode = (TopTreebankNode) buildAnnotation(parse, jCas);
-        topNode.addToIndexes();
+        outputTypesHelper.addParse(jCas, parse, sentence, tokenList);
       }
 
       // add the POS tags to the tokens
@@ -197,59 +182,6 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
     }
   }
 
-  protected TreebankNode buildAnnotation(Parse p, JCas jCas) {
-    TreebankNode myNode;
-    if (p.getType() == AbstractBottomUpParser.TOP_NODE) {
-      TopTreebankNode topNode = new TopTreebankNode(jCas);
-      topNode.setParent(null);
-
-      StringBuffer sb = new StringBuffer();
-      p.show(sb);
-      topNode.setTreebankParse(sb.toString());
-
-      myNode = topNode;
-    } else {
-      myNode = new TreebankNode(jCas);
-    }
-
-    myNode.setNodeType(p.getType());
-    myNode.setBegin(p.getSpan().getStart());
-    myNode.setEnd(p.getSpan().getEnd());
-
-    if (p.getChildCount() == 1 && p.getChildren()[0].getType() == AbstractBottomUpParser.TOK_NODE) {
-      myNode.setLeaf(true);
-      myNode.setNodeValue(p.getChildren()[0].toString());
-      myNode.setChildren(new FSArray(jCas, 0));
-    } else {
-      myNode.setNodeValue(null);
-      myNode.setLeaf(false);
-
-      List<FeatureStructure> cArray = new ArrayList<FeatureStructure>(p.getChildCount());
-
-      for (Parse cp : p.getChildren()) {
-        TreebankNode cNode = buildAnnotation(cp, jCas);
-        cNode.setParent(myNode);
-        cNode.addToIndexes();
-        cArray.add(cNode);
-      }
-
-      FSArray cFSArray = new FSArray(jCas, cArray.size());
-      cFSArray.copyFromArray(
-          cArray.toArray(new FeatureStructure[cArray.size()]),
-          0,
-          0,
-          cArray.size());
-      myNode.setChildren(cFSArray);
-    }
-
-    if (p.getType() == AbstractBottomUpParser.TOP_NODE) {
-      List<TreebankNode> tList = getTerminals(myNode);
-      FSArray tfsa = new FSArray(jCas, tList.size());
-      tfsa.copyFromArray(tList.toArray(new FeatureStructure[tList.size()]), 0, 0, tList.size());
-      ((TopTreebankNode) myNode).setTerminals(tfsa);
-    }
-    return myNode;
-  }
 
   protected void setPOSTags(Parse p, Iterator<TOKEN_TYPE> tokenIterator, JCas view) {
     if (p.isPosTag()) {
@@ -262,22 +194,6 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
     }
   }
 
-  protected List<TreebankNode> getTerminals(TreebankNode node) {
-    List<TreebankNode> tList = new ArrayList<TreebankNode>();
-
-    if (node.getChildren().size() == 0) {
-      tList.add(node);
-      return tList;
-    }
-
-    TreebankNode[] children = Arrays.asList(node.getChildren().toArray()).toArray(
-        new TreebankNode[node.getChildren().size()]);
-
-    for (TreebankNode child : children) {
-      tList.addAll(getTerminals(child));
-    }
-    return tList;
-  }
 
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
     return AnalysisEngineFactory.createPrimitiveDescription(

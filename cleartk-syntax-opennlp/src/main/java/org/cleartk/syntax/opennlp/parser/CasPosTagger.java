@@ -29,6 +29,7 @@ import opennlp.tools.postag.POSTagger;
 import opennlp.tools.util.Sequence;
 
 import org.apache.uima.jcas.tcas.Annotation;
+import org.cleartk.syntax.constituent.types.InputTypesHelper;
 import org.cleartk.syntax.opennlp.ParserAnnotator;
 
 /**

@@ -29,7 +29,7 @@ import java.util.List;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.syntax.opennlp.parser.InputTypesHelper;
+import org.cleartk.syntax.constituent.types.InputTypesHelper;
 import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
 import org.cleartk.util.AnnotationRetrieval;

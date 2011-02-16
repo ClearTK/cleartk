@@ -30,8 +30,10 @@ import opennlp.tools.cmdline.CLI;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.cleartk.syntax.constituent.ParserWrapper_ImplBase;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
+import org.cleartk.syntax.opennlp.parser.DefaultOutputTypesHelper;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Assert;
@@ -57,7 +59,9 @@ public class ParserAnnotatorTest extends OpennlpSyntaxTestBase {
         ParserAnnotator.PARAM_PARSER_MODEL_PATH,
         MODEL_PATH,
         ParserAnnotator.PARAM_USE_TAGS_FROM_CAS,
-        true);
+        true,
+        ParserWrapper_ImplBase.PARAM_OUTPUT_TYPES_HELPER_CLASS_NAME,
+        DefaultOutputTypesHelper.class.getName());
     tokenBuilder
         .buildTokens(
             jCas,
@@ -133,8 +137,10 @@ public class ParserAnnotatorTest extends OpennlpSyntaxTestBase {
         MODEL_PATH,
         ParserAnnotator.PARAM_USE_TAGS_FROM_CAS,
         false,
-        ParserAnnotator.PARAM_INPUT_TYPES_HELPER_CLASS_NAME,
-        TestInputTypesHelper.class.getName());
+        ParserWrapper_ImplBase.PARAM_INPUT_TYPES_HELPER_CLASS_NAME,
+        TestInputTypesHelper.class.getName(),
+        ParserWrapper_ImplBase.PARAM_OUTPUT_TYPES_HELPER_CLASS_NAME,
+        DefaultOutputTypesHelper.class.getName());
     TokenBuilder<org.cleartk.type.test.Token, org.cleartk.type.test.Sentence> tokBuilder = new TokenBuilder<org.cleartk.type.test.Token, org.cleartk.type.test.Sentence>(
         org.cleartk.type.test.Token.class,
         org.cleartk.type.test.Sentence.class);
@@ -203,7 +209,10 @@ public class ParserAnnotatorTest extends OpennlpSyntaxTestBase {
         ParserAnnotator.PARAM_PARSER_MODEL_PATH,
         MODEL_PATH,
         ParserAnnotator.PARAM_USE_TAGS_FROM_CAS,
-        true);
+        true,
+        ParserWrapper_ImplBase.PARAM_OUTPUT_TYPES_HELPER_CLASS_NAME,
+        DefaultOutputTypesHelper.class.getName()
+        );
     tokenBuilder.buildTokens(
         jCas,
         "The brown fox jumped quickly over the lazy dog.",
