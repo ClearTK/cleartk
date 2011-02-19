@@ -31,10 +31,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.uima.UimaContext;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.cleartk.syntax.dependency.type.DependencyNode;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
@@ -42,7 +44,9 @@ import org.cleartk.util.UIMAUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.TypeCapability;
+import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
+import org.uimafit.factory.TypeSystemDescriptionFactory;
 import org.uimafit.util.JCasUtil;
 
 import clear.dep.DepNode;
@@ -71,19 +75,52 @@ import clear.parse.AbstractDepParser;
 @TypeCapability(inputs = { "org.cleartk.token.type.Token:pos", "org.cleartk.token.type.Token:lemma" })
 public class ClearParser extends JCasAnnotator_ImplBase {
 
+  public static final String DEFAULT_MODEL_FILE_NAME = "../cleartk-syntax-dependency-clear/src/main/resources/org/cleartk/syntax/dependency/clear/conll-2009-dev-shift-pop.jar";
+
+  public static final String DEFAULT_PARSER_ALGORITHM_NAME = AbstractDepParser.ALG_SHIFT_POP;
+
   public static final String PARAM_PARSER_MODEL_FILE_NAME = ConfigurationParameterFactory
       .createConfigurationParameterName(ClearParser.class, "parserModelFileName");
 
-  @ConfigurationParameter(defaultValue = "../cleartk-syntax-dependency-clear/src/main/resources/org/cleartk/syntax/dependency/clear/conll-2009-dev-shift-pop.jar", mandatory = true, description = "This parameter provides the file name of the dependency parser model required by the factory method provided by ClearParserUtil.")
+  @ConfigurationParameter(defaultValue = DEFAULT_MODEL_FILE_NAME, mandatory = true, description = "This parameter provides the file name of the dependency parser model required by the factory method provided by ClearParserUtil.")
   private String parserModelFileName;
 
   public static final String PARAM_PARSER_ALGORITHM_NAME = ConfigurationParameterFactory
       .createConfigurationParameterName(ClearParser.class, "parserAlgorithmName");
 
-  @ConfigurationParameter(defaultValue = AbstractDepParser.ALG_SHIFT_POP, mandatory = true, description = "This parameter provides the algorithm name used by the dependency parser that is required by the factory method provided by ClearParserUtil.  If in doubt, do not change from the default value.")
+  @ConfigurationParameter(defaultValue = DEFAULT_PARSER_ALGORITHM_NAME, mandatory = true, description = "This parameter provides the algorithm name used by the dependency parser that is required by the factory method provided by ClearParserUtil.  If in doubt, do not change from the default value.")
   private String parserAlgorithmName;
 
   private AbstractDepParser parser;
+
+  private static TypeSystemDescription getTypeSystem() {
+    return TypeSystemDescriptionFactory.createTypeSystemDescription(
+        "org.cleartk.token.TypeSystem",
+        "org.cleartk.syntax.dependency.TypeSystem");
+  }
+
+  public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
+    String fileName = ClearParser.class.getResource(DEFAULT_MODEL_FILE_NAME).getFile();
+    return getDescription(fileName);
+  }
+
+  public static AnalysisEngineDescription getDescription(String modelFileName)
+      throws ResourceInitializationException {
+    String algorithmName = DEFAULT_PARSER_ALGORITHM_NAME;
+    return getDescription(modelFileName, algorithmName);
+  }
+
+  public static AnalysisEngineDescription getDescription(
+      String modelFileName,
+      String parserAlgorithmName) throws ResourceInitializationException {
+    return AnalysisEngineFactory.createPrimitiveDescription(
+        ClearParser.class,
+        getTypeSystem(),
+        PARAM_PARSER_MODEL_FILE_NAME,
+        modelFileName,
+        PARAM_PARSER_ALGORITHM_NAME,
+        parserAlgorithmName);
+  }
 
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {

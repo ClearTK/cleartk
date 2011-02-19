@@ -25,14 +25,18 @@
 package org.cleartk.token.lemma.choi;
 
 import org.apache.uima.UimaContext;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.cleartk.token.type.Token;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.TypeCapability;
+import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
+import org.uimafit.factory.TypeSystemDescriptionFactory;
 import org.uimafit.util.JCasUtil;
 
 import clear.morph.MorphEnAnalyzer;
@@ -58,13 +62,37 @@ import clear.morph.MorphEnAnalyzer;
 
 @TypeCapability(inputs = "org.cleartk.token.type.Token:pos", outputs = "org.cleartk.token.type.Token:lemma")
 public class LemmaAnnotator extends JCasAnnotator_ImplBase {
+  
+  public static final String ENG_LEMMATIZER_DATA_FILE = "../cleartk-token/src/main/resources/org/cleartk/token/lemma/choi/wordnet-3.0-lemma-data.jar";
 
   public static final String PARAM_LEMMATIZER_DATA_FILE_NAME = ConfigurationParameterFactory
       .createConfigurationParameterName(LemmaAnnotator.class, "lemmatizerDataFileName");
 
-  @ConfigurationParameter(defaultValue = "../cleartk-token/src/main/resources/org/cleartk/token/lemma/choi/wordnet-3.0-lemma-data.jar", mandatory = true, description = "This parameter provides the file name of the lemmatizer data file required by the constructor of MorphEnAnalyzer.")
+  @ConfigurationParameter(defaultValue = ENG_LEMMATIZER_DATA_FILE, mandatory = true, description = "This parameter provides the file name of the lemmatizer data file required by the constructor of MorphEnAnalyzer.")
   private String lemmatizerDataFileName;
 
+  private static TypeSystemDescription getTypeSystem() {
+    return TypeSystemDescriptionFactory.createTypeSystemDescription(
+        "org.cleartk.token.TypeSystem");
+  }
+  
+  public static AnalysisEngineDescription getDescription() 
+      throws ResourceInitializationException {
+    String fileName = LemmaAnnotator.class.getResource(ENG_LEMMATIZER_DATA_FILE).getFile();
+    return getDescription(fileName); 
+    
+  }
+
+  public static AnalysisEngineDescription getDescription(String lemmatizerDataFileName)
+      throws ResourceInitializationException {
+    return AnalysisEngineFactory.createPrimitiveDescription(
+        LemmaAnnotator.class,
+        getTypeSystem(),
+        PARAM_LEMMATIZER_DATA_FILE_NAME,
+        lemmatizerDataFileName);
+  }
+
+  
   private MorphEnAnalyzer lemmatizer;
 
   @Override
