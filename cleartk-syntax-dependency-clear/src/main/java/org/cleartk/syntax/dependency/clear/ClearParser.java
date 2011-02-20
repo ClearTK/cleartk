@@ -36,7 +36,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.apache.uima.resource.metadata.TypeSystemDescription;
+import org.cleartk.syntax.dependency.DependencyComponents;
 import org.cleartk.syntax.dependency.type.DependencyNode;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
@@ -46,7 +46,6 @@ import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.TypeCapability;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
-import org.uimafit.factory.TypeSystemDescriptionFactory;
 import org.uimafit.util.JCasUtil;
 
 import clear.dep.DepNode;
@@ -93,12 +92,6 @@ public class ClearParser extends JCasAnnotator_ImplBase {
 
   private AbstractDepParser parser;
 
-  private static TypeSystemDescription getTypeSystem() {
-    return TypeSystemDescriptionFactory.createTypeSystemDescription(
-        "org.cleartk.token.TypeSystem",
-        "org.cleartk.syntax.dependency.TypeSystem");
-  }
-
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
     String fileName = ClearParser.class.getResource(DEFAULT_MODEL_FILE_NAME).getFile();
     return getDescription(fileName);
@@ -115,7 +108,7 @@ public class ClearParser extends JCasAnnotator_ImplBase {
       String parserAlgorithmName) throws ResourceInitializationException {
     return AnalysisEngineFactory.createPrimitiveDescription(
         ClearParser.class,
-        getTypeSystem(),
+        DependencyComponents.TYPE_SYSTEM_DESCRIPTION,
         PARAM_PARSER_MODEL_FILE_NAME,
         modelFileName,
         PARAM_PARSER_ALGORITHM_NAME,
