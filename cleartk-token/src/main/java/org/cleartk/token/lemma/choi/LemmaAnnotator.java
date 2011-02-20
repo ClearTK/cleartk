@@ -29,14 +29,13 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.apache.uima.resource.metadata.TypeSystemDescription;
+import org.cleartk.token.TokenComponents;
 import org.cleartk.token.type.Token;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.TypeCapability;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
-import org.uimafit.factory.TypeSystemDescriptionFactory;
 import org.uimafit.util.JCasUtil;
 
 import clear.morph.MorphEnAnalyzer;
@@ -71,11 +70,7 @@ public class LemmaAnnotator extends JCasAnnotator_ImplBase {
   @ConfigurationParameter(defaultValue = ENG_LEMMATIZER_DATA_FILE, mandatory = true, description = "This parameter provides the file name of the lemmatizer data file required by the constructor of MorphEnAnalyzer.")
   private String lemmatizerDataFileName;
 
-  private static TypeSystemDescription getTypeSystem() {
-    return TypeSystemDescriptionFactory.createTypeSystemDescription(
-        "org.cleartk.token.TypeSystem");
-  }
-  
+
   public static AnalysisEngineDescription getDescription() 
       throws ResourceInitializationException {
     String fileName = LemmaAnnotator.class.getResource(ENG_LEMMATIZER_DATA_FILE).getFile();
@@ -87,7 +82,7 @@ public class LemmaAnnotator extends JCasAnnotator_ImplBase {
       throws ResourceInitializationException {
     return AnalysisEngineFactory.createPrimitiveDescription(
         LemmaAnnotator.class,
-        getTypeSystem(),
+        TokenComponents.TYPE_SYSTEM_DESCRIPTION,
         PARAM_LEMMATIZER_DATA_FILE_NAME,
         lemmatizerDataFileName);
   }
