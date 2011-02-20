@@ -259,7 +259,8 @@ public class FilesCollectionReader extends JCasCollectionReader_ImplBase {
     IOFileFilter directoryFilter = TrueFileFilter.INSTANCE;
 
     if (ignoreSystemFiles) {
-      directoryFilter = new RegexFileFilter("^[^\\.]*$");
+      directoryFilter = new RegexFileFilter("^[^\\.].*$");
+      fileFilter = new AndFileFilter(fileFilter, new RegexFileFilter("^[^\\.].*$"));
     }
 
     return org.apache.commons.io.FileUtils.iterateFiles(rootFile, fileFilter, directoryFilter);
