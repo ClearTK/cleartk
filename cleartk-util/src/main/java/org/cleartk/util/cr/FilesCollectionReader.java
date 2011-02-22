@@ -35,7 +35,6 @@ import org.apache.commons.io.filefilter.AndFileFilter;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.NameFileFilter;
 import org.apache.commons.io.filefilter.OrFileFilter;
-import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.uima.UimaContext;
@@ -229,6 +228,7 @@ public class FilesCollectionReader extends JCasCollectionReader_ImplBase {
     }
 
     if (patterns != null && patterns.length > 0) {
+
       IOFileFilter patternFilter = new RegexFileFilter(Pattern.compile(patterns[0]));
       if (patterns.length > 1) {
         for (int i = 1; i < patterns.length; i++) {
