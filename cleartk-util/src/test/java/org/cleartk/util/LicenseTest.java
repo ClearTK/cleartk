@@ -42,7 +42,7 @@ public class LicenseTest {
   @Test
   public void testLicenseStatedInSource() throws Exception {
     List<String> excludePackageNames = Collections.emptyList();
-    List<String> excludeJavaFiles = Arrays.asList("Files.java");
+    List<String> excludeJavaFiles = Arrays.asList("RegexFileFilter.java");
 
     LicenseTestUtil.testJavaFiles("src/main/java", excludePackageNames, excludeJavaFiles);
   }

@@ -240,49 +240,54 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
   }
 
   @Test
-  public void testPatterns() throws IOException, UIMAException {
+  public void testPatterns() throws Exception {
 
-    // create the PlainTextCollectionReader with the HTML input directory
+    test(
+        new File(inputDir),
+        new String[] { "[\\.]1[\\.].*$", "3\\.h" },
+        "2/2.1.html",
+        "3.html",
+        "4/1/4.1.1.html");
+
+    test(new File(inputDir), new String[] { "[\\.]1[\\.]" }, "4/1/4.1.1.html", "2/2.1.html");
+
+    new File(outputDirectory, "test.txt").createNewFile();
+    new File(outputDirectory, "tenth.txt").createNewFile();
+    new File(outputDirectory, "teeth.txt").createNewFile();
+    new File(outputDirectory, "tess.txt").createNewFile();
+    new File(outputDirectory, "testter.txt").createNewFile();
+    new File(outputDirectory, "best.txt").createNewFile();
+    new File(outputDirectory, "abest.txt").createNewFile();
+
+    test(
+        outputDirectory,
+        new String[] { "t[^\\.x]*t" },
+        "test.txt",
+        "tenth.txt",
+        "teeth.txt",
+        "testter.txt");
+
+    test(outputDirectory, new String[] { "^[bt]est" }, "test.txt", "best.txt", "testter.txt");
+
+  }
+
+  private void test(File inputDirectory, String[] patterns, String... expectedFiles)
+      throws Exception {
     CollectionReader reader = CollectionReaderFactory.createCollectionReader(
         FilesCollectionReader.class,
         null,
         FilesCollectionReader.PARAM_ROOT_FILE,
-        this.inputDir,
+        inputDirectory.getPath(),
         FilesCollectionReader.PARAM_PATTERNS,
-        new String[] { "^.*[.]1[.].*$", "^.*3.*$" });
+        patterns);
 
-    // the expected files
     Set<String> expected = new HashSet<String>();
-    expected.add(toURI("2/2.1.html"));
-    expected.add(toURI("3.html"));
-    expected.add(toURI("4/1/4.1.1.html"));
-
-    // collect paths from the CAS
-    Set<String> actual = new HashSet<String>();
-    for (JCas jc : new JCasIterable(reader)) {
-      actual.add(ViewURIUtil.getURI(jc).replace('\\', '/'));
+    for (String expectedFile : expectedFiles) {
+      expected.add(new File(inputDirectory, expectedFile).toURI().toString());
     }
-    reader.close();
 
-    // check that the expected paths were in the CAS
-    assertEquals(expected, actual);
+    Set<String> actual = new HashSet<String>();
 
-    reader = CollectionReaderFactory.createCollectionReader(
-        FilesCollectionReader.class,
-        null,
-        FilesCollectionReader.PARAM_ROOT_FILE,
-        this.inputDir,
-        FilesCollectionReader.PARAM_PATTERNS,
-        new String[] { "^.*[.]1[.].*$" },
-        FilesCollectionReader.PARAM_SUFFIXES,
-        new String[] { ".1.1.html" });
-
-    // the expected files
-    expected = new HashSet<String>();
-    expected.add(toURI("4/1/4.1.1.html"));
-
-    // collect paths from the CAS
-    actual = new HashSet<String>();
     for (JCas jc : new JCasIterable(reader)) {
       actual.add(ViewURIUtil.getURI(jc).replace('\\', '/'));
     }
