@@ -115,6 +115,7 @@ public class Ace2005GoldAnnotator extends JCasAnnotator_ImplBase {
           parsedText = ampMatcher.replaceAll("&");
 
           NamedEntityMention mention = new NamedEntityMention(initialView, start, end + 1);
+          mention.setMentionId(entityMention.getAttributeValue("ID"));
           mention.setMentionType(entityMention.getAttributeValue("TYPE"));
           mention.setMentionedEntity(namedEntity);
 

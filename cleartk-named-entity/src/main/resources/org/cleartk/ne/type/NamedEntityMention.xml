@@ -53,6 +53,11 @@ POSSIBILITY OF SUCH DAMAGE.</description>
           <description/>
           <rangeTypeName>uima.tcas.Annotation</rangeTypeName>
         </featureDescription>
+        <featureDescription>
+          <name>mentionId</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
       </features>
     </typeDescription>
   </types>
