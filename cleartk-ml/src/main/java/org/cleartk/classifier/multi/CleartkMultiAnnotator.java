@@ -71,7 +71,7 @@ public abstract class CleartkMultiAnnotator<OUTCOME_TYPE> extends JCasAnnotator_
           "multiClassifierFactoryClassName");
 
   @ConfigurationParameter(mandatory = false, description = "provides the full name of the MultiClassifierFactory class to be used.", defaultValue = "org.cleartk.classifier.multi.jar.JarMultiClassifierFactory")
-  private String multiClassifierFactoryClassName;
+  protected String multiClassifierFactoryClassName;
 
   public static final String PARAM_MULTI_DATA_WRITER_FACTORY_CLASS_NAME = ConfigurationParameterFactory
       .createConfigurationParameterName(
@@ -79,7 +79,7 @@ public abstract class CleartkMultiAnnotator<OUTCOME_TYPE> extends JCasAnnotator_
           "multiDataWriterFactoryClassName");
 
   @ConfigurationParameter(mandatory = false, description = "provides the full name of the MultiDataWriterFactory class to be used.")
-  private String multiDataWriterFactoryClassName;
+  protected String multiDataWriterFactoryClassName;
 
   public static final String PARAM_IS_TRAINING = ConfigurationParameterFactory
       .createConfigurationParameterName(CleartkMultiAnnotator.class, "isTraining");
@@ -89,9 +89,9 @@ public abstract class CleartkMultiAnnotator<OUTCOME_TYPE> extends JCasAnnotator_
 
   private boolean primitiveIsTraining;
 
-  private MultiDataWriterFactory<?> multiDataWriterFactory;
+  protected MultiDataWriterFactory<?> multiDataWriterFactory;
 
-  private MultiClassifierFactory<?> multiClassifierFactory;
+  protected MultiClassifierFactory<?> multiClassifierFactory;
 
   protected Map<String, Classifier<OUTCOME_TYPE>> classifiers;
 
@@ -117,7 +117,6 @@ public abstract class CleartkMultiAnnotator<OUTCOME_TYPE> extends JCasAnnotator_
     }
 
     if (this.isTraining()) {
-
       // create the multiDataWriter factory and initialize a Map to hold the data writers
       this.dataWriters = new HashMap<String, DataWriter<OUTCOME_TYPE>>();
 
@@ -126,16 +125,17 @@ public abstract class CleartkMultiAnnotator<OUTCOME_TYPE> extends JCasAnnotator_
           context,
           multiDataWriterFactoryClassName,
           MultiDataWriterFactory.class);
-
-    } else {
-      // create the multi classifier factory and initialize a map to hold the classifiers
-      this.classifiers = new HashMap<String, Classifier<OUTCOME_TYPE>>();
-      // create the factory and instantiate the classifier
-      multiClassifierFactory = InitializableFactory.create(
-          context,
-          multiClassifierFactoryClassName,
-          MultiClassifierFactory.class);
     }
+
+    // create the multi classifier factory and initialize a map to hold the classifiers
+    // While this may be superfluous in some cases, this is done in all instances because some
+    // MultiAnnotators utilize other classifiers during training
+    this.classifiers = new HashMap<String, Classifier<OUTCOME_TYPE>>();
+    // create the factory and instantiate the classifier
+    multiClassifierFactory = InitializableFactory.create(
+        context,
+        multiClassifierFactoryClassName,
+        MultiClassifierFactory.class);
   }
 
   @Override
