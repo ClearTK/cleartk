@@ -46,7 +46,7 @@ import org.cleartk.eval.provider.EvaluationPipelineProvider;
  * 
  */
 
-public class Evaluation implements Evaluator {
+public class Evaluation {
 
   // private static Logger logger = UIMAFramework.getLogger(Evaluation.class);
 
@@ -90,18 +90,10 @@ public class Evaluation implements Evaluator {
     for (int fold = 0; fold < folds; fold++) {
       String foldName = createFoldName(fold, folds);
 
-      train(
-          foldName,
-          corpusReaderPipeline.getTrainReader(fold),
-          corpusReaderPipeline.getPreprocessor(),
-          cleartkPipelineProvider,
-          trainingArguments);
-      evaluate(
-          foldName,
-          corpusReaderPipeline.getTestReader(fold),
-          corpusReaderPipeline.getPreprocessor(),
-          cleartkPipelineProvider,
-          evaluationPipelineProvider);
+      train(foldName, corpusReaderPipeline.getTrainReader(fold), corpusReaderPipeline
+          .getPreprocessor(), cleartkPipelineProvider, trainingArguments);
+      evaluate(foldName, corpusReaderPipeline.getTestReader(fold), corpusReaderPipeline
+          .getPreprocessor(), cleartkPipelineProvider, evaluationPipelineProvider);
     }
 
     cleartkPipelineProvider.trainingComplete();
