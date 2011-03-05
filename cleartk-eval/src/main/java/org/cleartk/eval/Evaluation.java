@@ -46,7 +46,7 @@ import org.cleartk.eval.provider.EvaluationPipelineProvider;
  * 
  */
 
-public class Evaluation {
+public class Evaluation implements Evaluator {
 
   // private static Logger logger = UIMAFramework.getLogger(Evaluation.class);
 
@@ -80,7 +80,7 @@ public class Evaluation {
    * @throws Exception
    */
 
-  public static void runCrossValidation(
+  public void runCrossValidation(
       CorpusReaderPipeline corpusReaderPipeline,
       CleartkPipelineProvider cleartkPipelineProvider,
       EvaluationPipelineProvider evaluationPipelineProvider,
@@ -118,7 +118,7 @@ public class Evaluation {
     return "fold-" + new String(zeros) + fold;
   }
 
-  private static void train(
+  public void train(
       String runName,
       CollectionReader trainingReader,
       AnalysisEngine preprocessing,
@@ -138,7 +138,7 @@ public class Evaluation {
     cleartkPipelineProvider.train(runName, trainingArguments);
   }
 
-  private static void evaluate(
+  public void evaluate(
       String runName,
       CollectionReader testingReader,
       AnalysisEngine preprocessing,
@@ -160,7 +160,7 @@ public class Evaluation {
     evaluationPipelineProvider.evaluationPipelineComplete(runName, evaluationPipeline);
   }
 
-  private static void runPipeline(CollectionReader reader, List<AnalysisEngine> pipeline)
+  public void runPipeline(CollectionReader reader, List<AnalysisEngine> pipeline)
       throws ResourceInitializationException, AnalysisEngineProcessException, CollectionException,
       CASAdminException, IOException {
     List<ResourceMetaData> metaData = new ArrayList<ResourceMetaData>();
@@ -197,7 +197,7 @@ public class Evaluation {
    *          {@link #runCrossValidation(File, CorpusReaderPipeline, CleartkPipelineProvider, EvaluationPipelineProvider, String...)}
    * @throws Exception
    */
-  public static void runHoldoutEvaluation(
+  public void runHoldoutEvaluation(
       CorpusReaderPipeline corpusReaderPipeline,
       CleartkPipelineProvider cleartkPipelineProvider,
       EvaluationPipelineProvider evaluationPipelineProvider,
@@ -238,7 +238,7 @@ public class Evaluation {
    *          {@link #runCrossValidation(File, CorpusReaderPipeline, CleartkPipelineProvider, EvaluationPipelineProvider, String...)}
    * @throws Exception
    */
-  public static void buildCorpusModel(
+  public void buildCorpusModel(
       String name,
       CorpusReaderPipeline corpusReaderPipeline,
       CleartkPipelineProvider cleartkPipelineProvider,
