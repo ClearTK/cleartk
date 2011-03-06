@@ -318,7 +318,7 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 
     try {
       if (outputDirectory != null) {
-        String id = ViewURIUtil.getURI(jCas);
+        String id = (new File(ViewURIUtil.getURI(jCas))).getName();
         while (id.endsWith(".")) {
           id = id.substring(0, id.length() - 1);
         }

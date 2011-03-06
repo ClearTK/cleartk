@@ -75,7 +75,7 @@ public class ExamplePOSPlainTextWriterTest extends ExamplesTestBase {
         "I walked home. It was a nice day!",
         "I walked home .\nIt was a nice day !",
         "PRP VBD NN . PRP VBD DT JJ NN .");
-    ViewURIUtil.setURI(jCas, "xxx");
+    ViewURIUtil.setURI(jCas, new File("xxx").toURI());
     engine.process(jCas);
     engine.collectionProcessComplete();
 

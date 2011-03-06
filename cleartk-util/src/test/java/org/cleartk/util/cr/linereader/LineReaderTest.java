@@ -188,7 +188,7 @@ public class LineReaderTest {
   private void test(JCasIterable jCasIterable, String text, String uri) throws Exception {
     JCas jCas = jCasIterable.next();
     assertEquals(text, jCas.getDocumentText());
-    assertEquals(uri, ViewURIUtil.getURI(jCas));
+    assertEquals(uri, ViewURIUtil.getURI(jCas).toString());
   }
 
 }

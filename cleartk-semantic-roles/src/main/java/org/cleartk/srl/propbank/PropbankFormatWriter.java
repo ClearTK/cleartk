@@ -23,6 +23,7 @@
  */
 package org.cleartk.srl.propbank;
 
+import java.io.File;
 import java.util.List;
 
 import org.apache.uima.UimaContext;
@@ -54,7 +55,7 @@ public class PropbankFormatWriter implements AnnotationWriter<Predicate> {
       throws AnalysisEngineProcessException {
     StringBuilder sb = new StringBuilder();
 
-    String uri = ViewURIUtil.getURI(jCas);
+    String uri = new File(ViewURIUtil.getURI(jCas)).getPath();
     sb.append(uri + "\t");
 
     List<Sentence> sentences = AnnotationRetrieval.getAnnotations(jCas, Sentence.class);

@@ -111,7 +111,7 @@ public class PlainTextTLINKGoldAnnotator extends JCasAnnotator_ImplBase {
 
   @Override
   public void process(JCas jCas) throws AnalysisEngineProcessException {
-    String filePath = ViewURIUtil.getURI(jCas);
+    String filePath = ViewURIUtil.getURI(jCas).getPath();
     String fileBase = new File(filePath).getName().replaceAll("\\..*", "");
     if (this.fileTLINKs.containsKey(fileBase)) {
       Map<String, Anchor> anchors = new HashMap<String, Anchor>();

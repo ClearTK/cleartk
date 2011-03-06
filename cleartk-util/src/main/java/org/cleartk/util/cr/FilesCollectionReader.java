@@ -289,7 +289,7 @@ public class FilesCollectionReader extends JCasCollectionReader_ImplBase {
     }
 
     // set the document URI
-    ViewURIUtil.setURI(jCas, currentFile.toURI().toString());
+    ViewURIUtil.setURI(jCas, currentFile.toURI());
 
     completed++;
     currentFile = null;

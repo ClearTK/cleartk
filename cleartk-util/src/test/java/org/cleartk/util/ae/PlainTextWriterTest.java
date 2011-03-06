@@ -61,7 +61,7 @@ public class PlainTextWriterTest extends DefaultTestBase {
         text,
         "What if we built a large \n, wooden badger ?",
         "WDT TO PRP VBN DT JJ , JJ NN .");
-    ViewURIUtil.setURI(jCas, "identifier");
+    ViewURIUtil.setURI(jCas, new File("identifier").toURI());
     engine.process(jCas);
     engine.collectionProcessComplete();
 
@@ -76,7 +76,7 @@ public class PlainTextWriterTest extends DefaultTestBase {
         text,
         "What if we built a large \n, wooden badger ?",
         "WDT TO PRP VBN DT JJ , JJ NN .");
-    ViewURIUtil.setURI(jCas, "1234");
+    ViewURIUtil.setURI(jCas, new File("1234").toURI());
     engine.process(jCas);
     engine.collectionProcessComplete();
 

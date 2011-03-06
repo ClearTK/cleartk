@@ -92,7 +92,7 @@ public class Ace2005Writer extends JCasAnnotator_ImplBase {
 
   @Override
   public void process(JCas jCas) throws AnalysisEngineProcessException {
-    String uri = ViewURIUtil.getURI(jCas);
+    String uri = new File(ViewURIUtil.getURI(jCas)).getName();
     String docId = uri.substring(0, uri.indexOf(".sgm"));
     Ace2005Document document;
     document = AnnotationRetrieval.getAnnotations(jCas, Ace2005Document.class).iterator().next();

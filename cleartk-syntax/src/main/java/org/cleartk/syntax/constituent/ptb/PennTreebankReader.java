@@ -177,7 +177,7 @@ public class PennTreebankReader extends JCasCollectionReader_ImplBase {
     getUimaContext().getLogger().log(
         Level.FINEST,
         "reading treebank file: " + treebankFile.getPath());
-    ViewURIUtil.setURI(jCas, treebankFile.toURI().toString());
+    ViewURIUtil.setURI(jCas, treebankFile.toURI());
     try {
       JCas treebankView = ViewCreatorAnnotator.createViewSafely(
           jCas,

@@ -214,7 +214,7 @@ public class Conll2003GoldReader extends JCasCollectionReader_ImplBase {
     jCas.setDocumentText(documentText.toString());
 
     String identifier = String.format("%s#%s", dataFileName, documentIndex);
-    ViewURIUtil.setURI(jCas, identifier);
+    ViewURIUtil.setURI(jCas, new File(identifier).toURI());
     ++documentIndex;
 
   }

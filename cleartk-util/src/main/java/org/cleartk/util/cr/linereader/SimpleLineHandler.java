@@ -25,6 +25,8 @@ package org.cleartk.util.cr.linereader;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.collection.CollectionException;
@@ -59,7 +61,12 @@ public class SimpleLineHandler implements LineHandler {
     String text = line.substring(line.indexOf(delimiter) + 1);
     jCas.setSofaDataString(text, "text/plain");
 
-    String uri = String.format("%s#%s", file.toURI().toString(), id);
+    URI uri;
+    try {
+      uri = new URI(String.format("%s#%s", file.toURI().toString(), id));
+    } catch (URISyntaxException e) {
+      throw new CollectionException(e);
+    }
     ViewURIUtil.setURI(jCas, uri);
   }
 

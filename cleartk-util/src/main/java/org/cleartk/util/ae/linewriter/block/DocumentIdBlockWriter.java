@@ -23,6 +23,7 @@
  */
 package org.cleartk.util.ae.linewriter.block;
 
+import java.io.File;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
@@ -48,7 +49,7 @@ public class DocumentIdBlockWriter implements BlockWriter<Annotation> {
 
   public String writeBlock(JCas jCas, Annotation blockAnnotation)
       throws AnalysisEngineProcessException {
-    return ViewURIUtil.getURI(jCas) + newline;
+    return new File(ViewURIUtil.getURI(jCas)).getName() + newline;
   }
 
 }

@@ -25,8 +25,6 @@
 package org.cleartk.util;
 
 import java.io.File;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
@@ -45,14 +43,9 @@ public class ViewURIFileNamer implements XWriterFileNamer {
 
   public String nameFile(JCas jCas) {
     try {
-      String uri = ViewURIUtil.getURI(jCas);
-      File file = new File(new URI(uri));
-      return file.getName();
+      return new File(ViewURIUtil.getURI(jCas)).getName();
     } catch (AnalysisEngineProcessException e) {
-      throw new RuntimeException("attempting to name a file using ViewURIUtil", e);
-    } catch (URISyntaxException e) {
       throw new RuntimeException("attempting to name a file using ViewURIUtil", e);
     }
   }
-
 }

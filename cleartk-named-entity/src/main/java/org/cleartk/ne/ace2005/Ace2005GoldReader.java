@@ -204,7 +204,7 @@ public class Ace2005GoldReader extends JCasCollectionReader_ImplBase {
       String source = apfSource.getAttributeValue("SOURCE");
       String type = apfSource.getAttributeValue("TYPE");
 
-      ViewURIUtil.setURI(jCas, sgmFile.getName());
+      ViewURIUtil.setURI(jCas, sgmFile.toURI());
       Ace2005Document document = new Ace2005Document(initialView);
       document.setAceUri(uri);
       document.setAceSource(source);

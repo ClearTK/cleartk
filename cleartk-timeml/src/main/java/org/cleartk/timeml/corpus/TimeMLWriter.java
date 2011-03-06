@@ -140,7 +140,7 @@ public class TimeMLWriter extends JCasAnnotator_ImplBase {
     xmlString = new XMLOutputter().outputString(document);
 
     // write the TimeML to the output file
-    String filePath = ViewURIUtil.getURI(jCas);
+    String filePath = ViewURIUtil.getURI(jCas).getPath();
     String fileName = new File(filePath).getName();
     if (!fileName.endsWith(".tml")) {
       fileName += ".tml";

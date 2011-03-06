@@ -166,7 +166,7 @@ public class GeniaPosGoldReader extends JCasCollectionReader_ImplBase {
         }
       }
 
-      ViewURIUtil.setURI(jCas, parse.getMedline());
+      ViewURIUtil.setURI(jCas, new File(parse.getMedline()).toURI());
 
       JCas geniaView = jCas.createView(GeniaPosViewName.GENIA_POS);
       geniaView.setDocumentText(parse.getXml());

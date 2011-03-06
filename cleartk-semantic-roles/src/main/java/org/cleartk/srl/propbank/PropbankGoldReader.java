@@ -161,7 +161,7 @@ public class PropbankGoldReader extends JCasCollectionReader_ImplBase {
     }
 
     File treebankFile = treebankFiles.removeFirst();
-    ViewURIUtil.setURI(jCas, treebankFile.getPath());
+    ViewURIUtil.setURI(jCas, treebankFile.toURI());
 
     StringBuffer propbankText = new StringBuffer();
 

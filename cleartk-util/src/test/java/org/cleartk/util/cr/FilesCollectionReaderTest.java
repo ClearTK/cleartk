@@ -30,7 +30,6 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -176,7 +175,7 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
     Set<String> pathsSet = new HashSet<String>();
     pathsSet.addAll(Arrays.asList(this.paths));
     for (JCas jc : new JCasIterable(reader)) {
-      String docPath = ViewURIUtil.getURI(jc);
+      String docPath = ViewURIUtil.getURI(jc).toString();
       assertTrue(pathsSet.contains(docPath));
       pathsSet.remove(docPath);
     }
@@ -203,7 +202,7 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
     Set<String> pathsSet = new HashSet<String>();
     pathsSet.addAll(Arrays.asList(this.pathsSuffix1));
     for (JCas jc : new JCasIterable(reader)) {
-      String docPath = ViewURIUtil.getURI(jc);
+      String docPath = ViewURIUtil.getURI(jc).toString();
       assertTrue(pathsSet.contains(docPath));
       pathsSet.remove(docPath);
     }
@@ -229,7 +228,7 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
     Set<String> pathsSet = new HashSet<String>();
     pathsSet.addAll(Arrays.asList(this.pathsSuffix2));
     for (JCas jc : new JCasIterable(reader)) {
-      String docPath = ViewURIUtil.getURI(jc);
+      String docPath = ViewURIUtil.getURI(jc).toString();
       assertTrue(pathsSet.contains(docPath));
       pathsSet.remove(docPath);
     }
@@ -289,7 +288,7 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
     Set<String> actual = new HashSet<String>();
 
     for (JCas jc : new JCasIterable(reader)) {
-      actual.add(ViewURIUtil.getURI(jc).replace('\\', '/'));
+      actual.add(ViewURIUtil.getURI(jc).toString().replace('\\', '/'));
     }
     reader.close();
 
@@ -321,7 +320,7 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
     fileNamesSet.addAll(Arrays.asList(this.fileNames));
     int i = 0;
     for (JCas jc : new JCasIterable(reader)) {
-      String fileName = ViewURIUtil.getURI(jc).replace('\\', '/');
+      String fileName = ViewURIUtil.getURI(jc).toString().replace('\\', '/');
       fileName = fileName.substring(fileName.lastIndexOf("/") + 1);
       assertTrue(fileNamesSet.contains(fileName));
       fileNamesSet.remove(fileName);
@@ -355,7 +354,7 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
 
     List<String> pathsList = new ArrayList<String>();
     for (JCas jc : new JCasIterable(reader)) {
-      pathsList.add(ViewURIUtil.getURI(jc).replace('\\', '/'));
+      pathsList.add(ViewURIUtil.getURI(jc).toString().replace('\\', '/'));
     }
     reader.close();
 
@@ -387,7 +386,7 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
    * @throws IOException
    */
   private String getFileText(JCas jc) throws Exception {
-    File docFile = new File(new URI(ViewURIUtil.getURI(jc)));
+    File docFile = new File(ViewURIUtil.getURI(jc));
     return FileUtils.file2String(docFile);
   }
 

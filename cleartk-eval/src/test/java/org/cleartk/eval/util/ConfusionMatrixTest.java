@@ -36,7 +36,7 @@ import org.junit.Test;
 public class ConfusionMatrixTest {
   public enum TestClassType {
     TAG1, TAG2
-  };
+  }
 
   @Test
   public void countsTest() {
@@ -92,9 +92,9 @@ public class ConfusionMatrixTest {
     ConfusionMatrix<String> confusionMatrix2 = new ConfusionMatrix<String>(confusionMatrix);
     for (String actual : confusionMatrix2.getClasses()) {
       for (String predicted : confusionMatrix2.getClasses()) {
-        assertEquals(confusionMatrix.getCount(actual, predicted), confusionMatrix2.getCount(
-            actual,
-            predicted));
+        assertEquals(
+            confusionMatrix.getCount(actual, predicted),
+            confusionMatrix2.getCount(actual, predicted));
       }
     }
   }

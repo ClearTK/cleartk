@@ -117,7 +117,7 @@ public class Ace2005WriterTest extends NeTestBase {
       item.addToIndexes();
     }
 
-    ViewURIUtil.setURI(jCas, "uri.sgm");
+    ViewURIUtil.setURI(jCas, new File("uri.sgm").toURI());
     engine.process(jCas);
     engine.collectionProcessComplete();
 

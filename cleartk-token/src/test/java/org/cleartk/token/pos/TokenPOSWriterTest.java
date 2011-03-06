@@ -120,7 +120,7 @@ public class TokenPOSWriterTest extends TokenTestBase {
         text,
         "Me and all my friends are non-conformists . \n I will subjugate my freedom oppressor . ",
         "1 2 3 4 5 6 7 8 9 10 11 12 13 14 15");
-    ViewURIUtil.setURI(jCas, "1234");
+    ViewURIUtil.setURI(jCas, new File("1234").toURI());
     engine.process(jCas);
     engine.collectionProcessComplete();
 
@@ -155,7 +155,7 @@ public class TokenPOSWriterTest extends TokenTestBase {
     jCas.setDocumentText(text);
     new Sentence(jCas, 0, s1.length()).addToIndexes();
     new Sentence(jCas, s1.length() + 1, text.length()).addToIndexes();
-    ViewURIUtil.setURI(jCas, "id");
+    ViewURIUtil.setURI(jCas, new File("id").toURI());
     for (AnalysisEngine engine : engines) {
       engine.process(jCas);
     }

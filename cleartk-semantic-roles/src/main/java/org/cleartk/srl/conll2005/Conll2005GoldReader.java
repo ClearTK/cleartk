@@ -146,7 +146,7 @@ public class Conll2005GoldReader extends JCasCollectionReader_ImplBase {
       }
 
       conllView.setSofaDataString(docBuffer.toString(), "text/plain");
-      ViewURIUtil.setURI(jCas, String.valueOf(documentNumber));
+      ViewURIUtil.setURI(jCas, new File(String.valueOf(documentNumber)).toURI());
     } catch (CASException e) {
       throw new CollectionException(e);
     }

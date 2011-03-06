@@ -25,6 +25,7 @@ package org.cleartk.util.cr;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
@@ -78,7 +79,7 @@ public class XReaderTest extends DefaultTestBase {
         XWriter.PARAM_FILE_NAMER_CLASS_NAME,
         ViewURIFileNamer.class.getName());
     tokenBuilder.buildTokens(jCas, "I like\nspam!", "I like spam !", "PRP VB NN .");
-    String uri = new File(outputDirectory, "test").toURI().toString();
+    URI uri = new File(outputDirectory, "test").toURI();
     ViewURIUtil.setURI(jCas, uri);
     engine.process(jCas);
     engine.collectionProcessComplete();
@@ -117,7 +118,7 @@ public class XReaderTest extends DefaultTestBase {
         ViewURIFileNamer.class.getName());
     tokenBuilder.buildTokens(jCas, "I like\nspam!", "I like spam !", "PRP VB NN .");
 
-    String uri = new File(outputDirectory, "test").toURI().toString();
+    URI uri = new File(outputDirectory, "test").toURI();
     ViewURIUtil.setURI(jCas, uri);
     engine.process(jCas);
     engine.collectionProcessComplete();

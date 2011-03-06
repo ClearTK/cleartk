@@ -89,7 +89,7 @@ public class LineWriterTest extends DefaultTestBase {
             text,
             "What if we built a rocket ship made of cheese ?\nWe could fly it to the moon for repairs .",
             "A B C D E F G H I J K L M N O P Q R S T U");
-    ViewURIUtil.setURI(jCas, "1234");
+    ViewURIUtil.setURI(jCas, new File("1234").toURI());
     engine.process(jCas);
     engine.collectionProcessComplete();
 
@@ -111,7 +111,7 @@ public class LineWriterTest extends DefaultTestBase {
             text,
             "What if we \n built a rocket \n ship made of cheese ?\nWe could fly it \nto the moon for repairs .",
             "A B C D E F G H I J K L M N O P Q R S T U");
-    ViewURIUtil.setURI(jCas, "1234");
+    ViewURIUtil.setURI(jCas, new File("1234").toURI());
     engine.process(jCas);
     engine.collectionProcessComplete();
 
@@ -408,7 +408,7 @@ public class LineWriterTest extends DefaultTestBase {
 
     String spacedTokens = "What if we built a large , wooden badger ?\nHmm? ";
     tokenBuilder.buildTokens(jCas, "What if we built\na large, wooden badger? Hmm?", spacedTokens);
-    ViewURIUtil.setURI(jCas, "identifier");
+    ViewURIUtil.setURI(jCas, new File("identifier").toURI());
     engine.process(jCas);
     engine.collectionProcessComplete();
 

@@ -23,6 +23,8 @@
  */
 package org.cleartk.util;
 
+import java.net.URISyntaxException;
+
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
@@ -53,9 +55,9 @@ public class ViewURIUtil {
    * @param uri
    *          The primary URI for the CAS and all its views.
    */
-  public static void setURI(CAS cas, String uri) {
+  public static void setURI(CAS cas, java.net.URI uri) {
     CAS view = cas.createView(URI);
-    view.setSofaDataURI(uri, null);
+    view.setSofaDataURI(uri.toString(), null);
   }
 
   /**
@@ -67,7 +69,7 @@ public class ViewURIUtil {
    * @param uri
    *          The primary URI for the CAS and all its views.
    */
-  public static void setURI(JCas jCas, String uri) {
+  public static void setURI(JCas jCas, java.net.URI uri) {
     ViewURIUtil.setURI(jCas.getCas(), uri);
   }
 
@@ -80,10 +82,12 @@ public class ViewURIUtil {
    * @return The primary URI for the JCas and all its views.
    * @throws CASException
    */
-  public static String getURI(JCas jCas) throws AnalysisEngineProcessException {
+  public static java.net.URI getURI(JCas jCas) throws AnalysisEngineProcessException {
     try {
-      return jCas.getView(URI).getSofaDataURI();
+      return new java.net.URI(jCas.getView(URI).getSofaDataURI());
     } catch (CASException e) {
+      throw new AnalysisEngineProcessException(e);
+    } catch (URISyntaxException e) {
       throw new AnalysisEngineProcessException(e);
     }
   }
