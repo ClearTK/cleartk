@@ -38,6 +38,7 @@ import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.token.type.Sentence;
 import org.junit.Assert;
 import org.junit.Test;
+import org.uimafit.component.ViewCreatorAnnotator;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.util.JCasUtil;
 
@@ -120,5 +121,35 @@ public class TreebankGoldReaderAndAnnotatorTest extends SyntaxTestBase {
         typeSystemDescription,
         TreebankGoldAnnotator.PARAM_POST_TREES,
         true);
+  }
+  
+  @Test
+  public void testWhenDefaultViewDocumentTextIsSet() throws Exception {
+    String treebankParse = "( (X (NP (NP (NML (NN Complex ) (NN trait )) (NN analysis )) (PP (IN of ) (NP (DT the ) (NN mouse ) (NN striatum )))) (: : ) (S (NP-SBJ (JJ independent ) (NNS QTLs )) (VP (VBP modulate ) (NP (NP (NN volume )) (CC and ) (NP (NN neuron ) (NN number)))))) )";
+//    String expectedText = "Complex trait analysis of the mouse striatum: independent QTLs modulate volume and neuron number";
+    String expectedText = "Complex  trait  analysis  of  the  mouse  striatum  :  independent  QTLs  modulate  volume  and  neuron  number";
+
+    /* set the document text for the default view as it might be set by a collection reader, e.g. {@link FilesCollectionReader} */
+    JCas view = ViewCreatorAnnotator.createViewSafely(jCas, CAS.NAME_DEFAULT_SOFA);
+    view.setSofaDataString(expectedText, "text/plain");
+    
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TreebankGoldAnnotator.class,
+        typeSystemDescription);
+    TreebankGoldAnnotator treebankGoldAnnotator = new TreebankGoldAnnotator();
+    treebankGoldAnnotator.initialize(engine.getUimaContext());
+
+    JCas tbView = jCas.createView(TreebankConstants.TREEBANK_VIEW);
+    tbView.setDocumentText(treebankParse);
+
+//    treebankGoldAnnotator.process(jCas);
+    engine.process(jCas);
+
+    JCas goldView = jCas.getView(CAS.NAME_DEFAULT_SOFA);
+
+    FSIndex<Annotation> sentenceIndex = goldView.getAnnotationIndex(Sentence.type);
+    assertEquals(1, sentenceIndex.size());
+
+    Sentence firstSentence = JCasUtil.selectByIndex(goldView, Sentence.class, 0);
+    assertEquals(expectedText, firstSentence.getCoveredText());
   }
 }

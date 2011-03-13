@@ -103,7 +103,7 @@ public class TreebankGoldAnnotator extends JCasAnnotator_ImplBase {
     } catch (CASException e) {
       throw new AnalysisEngineProcessException(e);
     }
-    String docText = jCas.getDocumentText();
+    String docText = docView.getDocumentText();
 
     if (docText == null) {
       docText = TreebankFormatParser.inferPlainText(tbText);
