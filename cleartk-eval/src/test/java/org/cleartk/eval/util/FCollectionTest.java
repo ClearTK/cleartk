@@ -25,67 +25,38 @@ package org.cleartk.eval.util;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.List;
-
 import org.junit.Test;
 
 /**
  * <br>
  * Copyright (c) 2011, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
+ * @author Philip Ogren
  */
+
 public class FCollectionTest {
 
   @Test
-  public void testInteger() throws Exception {
-    FCollection<Integer> fc = new FCollection<Integer>();
-    // ten true positives for '1'
-    fc.addTruePositives(1, 9);
-    fc.addTruePositive(1);
-    // five false positives for '1'
-    fc.addFalsePositives(1, 4);
-    fc.addFalsePositive(1);
-    // fifteen false negatives for '1'
-    fc.addFalseNegatives(1, 14);
-    fc.addFalseNegative(1);
+  public void testFCollection() throws Exception {
+    FCollection f = new FCollection();
+    f.addTruePositive();
+    f.addTruePositives(5);
+    f.addFalsePositive();
+    f.addFalsePositives(3);
+    f.addFalseNegative();
+    f.addFalseNegatives(10);
 
-    // add one of each for '2'
-    fc.addTruePositive(2);
-    fc.addFalsePositive(2);
-    fc.addFalseNegative(2);
+    assertEquals(6, f.getTruePositivesCount());
+    assertEquals(4, f.getFalsePositivesCount());
+    assertEquals(11, f.getFalseNegativesCount());
 
-    // key = 1
-    assertEquals(10, fc.getTruePositivesCount(1));
-    assertEquals(5, fc.getFalsePositivesCount(1));
-    assertEquals(15, fc.getFalseNegativesCount(1));
+    // precision = 6 / (6 + 4)
+    assertEquals(0.6f, f.getPrecision(), 0.01);
+    // recall = 6 / (6 + 11)
+    assertEquals(0.35294, f.getRecall(), 0.01);
+    // F = (2*6) / (2*6 + 4 + 11)
+    assertEquals(0.444, f.getF(), 0.01);
 
-    assertEquals(0.6666667d, fc.getPrecision(1), 0.0001d); // 10 / (10 + 5)
-    assertEquals(0.4d, fc.getRecall(1), 0.0001d); // 10 / (10 + 15)
-    assertEquals(0.5d, fc.getF(1), 0.0001d); // (2 * 10) / (2 * 10 + 10 + 15)
-
-    // key = 2
-    assertEquals(1, fc.getTruePositivesCount(2));
-    assertEquals(1, fc.getFalsePositivesCount(2));
-    assertEquals(1, fc.getFalseNegativesCount(2));
-
-    assertEquals(0.5d, fc.getPrecision(2), 0.0001d); // 1 / (1 + 1)
-    assertEquals(0.5d, fc.getRecall(2), 0.0001d); // 1 / (1 + 1)
-    assertEquals(0.5d, fc.getF(2), 0.0001d); // (2 * 1) / (2 * 1 + 1 + 1)
-
-    // aggregate
-    assertEquals(11, fc.getTruePositivesCount());
-    assertEquals(6, fc.getFalsePositivesCount());
-    assertEquals(16, fc.getFalseNegativesCount());
-
-    assertEquals(0.64706d, fc.getPrecision(), 0.0001d); // 11 / (11 + 6)
-    assertEquals(0.40741d, fc.getRecall(), 0.0001d); // 11 / (11 + 16)
-    assertEquals(0.5d, fc.getF(), 0.0001d); // (2 * 11) / (2 * 11 + 6 + 16)
-
-    List<Integer> keys = fc.getSortedObjects();
-    assertEquals(2, keys.size());
-    assertEquals(Integer.valueOf(1), keys.get(0));
-    assertEquals(Integer.valueOf(2), keys.get(1));
-
-    assertEquals(Double.NaN, fc.getF(3), 0.0001d);
   }
 }
