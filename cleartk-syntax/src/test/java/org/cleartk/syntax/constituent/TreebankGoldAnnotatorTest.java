@@ -51,7 +51,7 @@ import org.uimafit.util.JCasUtil;
  * @author Philip Ogren
  * 
  */
-public class TreebankGoldReaderAndAnnotatorTest extends SyntaxTestBase {
+public class TreebankGoldAnnotatorTest extends SyntaxTestBase {
 
   @Test
   public void craftTest1() throws Exception {
@@ -61,13 +61,11 @@ public class TreebankGoldReaderAndAnnotatorTest extends SyntaxTestBase {
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         TreebankGoldAnnotator.class,
         typeSystemDescription);
-    TreebankGoldAnnotator treebankGoldAnnotator = new TreebankGoldAnnotator();
-    treebankGoldAnnotator.initialize(engine.getUimaContext());
 
     JCas tbView = jCas.createView(TreebankConstants.TREEBANK_VIEW);
     tbView.setDocumentText(treebankParse);
 
-    treebankGoldAnnotator.process(jCas);
+    engine.process(jCas);
 
     JCas goldView = jCas.getView(CAS.NAME_DEFAULT_SOFA);
 
@@ -122,26 +120,28 @@ public class TreebankGoldReaderAndAnnotatorTest extends SyntaxTestBase {
         TreebankGoldAnnotator.PARAM_POST_TREES,
         true);
   }
-  
+
   @Test
   public void testWhenDefaultViewDocumentTextIsSet() throws Exception {
     String treebankParse = "( (X (NP (NP (NML (NN Complex ) (NN trait )) (NN analysis )) (PP (IN of ) (NP (DT the ) (NN mouse ) (NN striatum )))) (: : ) (S (NP-SBJ (JJ independent ) (NNS QTLs )) (VP (VBP modulate ) (NP (NP (NN volume )) (CC and ) (NP (NN neuron ) (NN number)))))) )";
-//    String expectedText = "Complex trait analysis of the mouse striatum: independent QTLs modulate volume and neuron number";
+    // String expectedText =
+    // "Complex trait analysis of the mouse striatum: independent QTLs modulate volume and neuron number";
     String expectedText = "Complex  trait  analysis  of  the  mouse  striatum  :  independent  QTLs  modulate  volume  and  neuron  number";
 
-    /* set the document text for the default view as it might be set by a collection reader, e.g. {@link FilesCollectionReader} */
+    /*
+     * set the document text for the default view as it might be set by a collection reader, e.g.
+     * {@link FilesCollectionReader}
+     */
     JCas view = ViewCreatorAnnotator.createViewSafely(jCas, CAS.NAME_DEFAULT_SOFA);
     view.setSofaDataString(expectedText, "text/plain");
-    
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TreebankGoldAnnotator.class,
+
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+        TreebankGoldAnnotator.class,
         typeSystemDescription);
-    TreebankGoldAnnotator treebankGoldAnnotator = new TreebankGoldAnnotator();
-    treebankGoldAnnotator.initialize(engine.getUimaContext());
 
     JCas tbView = jCas.createView(TreebankConstants.TREEBANK_VIEW);
     tbView.setDocumentText(treebankParse);
 
-//    treebankGoldAnnotator.process(jCas);
     engine.process(jCas);
 
     JCas goldView = jCas.getView(CAS.NAME_DEFAULT_SOFA);
