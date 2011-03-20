@@ -161,4 +161,59 @@ public class LicenseTestUtil {
     return false;
   }
 
+  
+  public static void testJavaFilesGPL(String directoryName) throws IOException {
+    List<String> excludePackageNames = Collections.emptyList();
+    List<String> excludeJavaFiles = Collections.emptyList();
+    testJavaFilesGPL(directoryName, excludePackageNames, excludeJavaFiles);
+  }
+
+  public static void testJavaFilesGPL(
+      String directoryName,
+      List<String> excludePackageNames,
+      List<String> excludeJavaFiles) throws IOException {
+
+    List<String> filesMissingLicense = new ArrayList<String>();
+    File directory = new File(directoryName);
+    Iterator<?> files = org.apache.commons.io.FileUtils.iterateFiles(
+        directory,
+        new SuffixFileFilter(".java"),
+        TrueFileFilter.INSTANCE);
+
+    while (files.hasNext()) {
+      File file = (File) files.next();
+      String fileText = FileUtils.file2String(file);
+
+      if (excludePackage(file, excludePackageNames)) {
+        continue;
+      }
+      if (excludeJava(file, excludeJavaFiles)) {
+        continue;
+      }
+
+      if (fileText.indexOf("Copyright (c) ") == -1
+          || fileText
+              .indexOf("GNU General Public License") == -1) {
+        filesMissingLicense.add(file.getPath());
+      } else {
+        if (fileText.indexOf("Copyright (c) ", 300) == -1)
+          filesMissingLicense.add(file.getPath());
+      }
+
+    }
+
+    if (filesMissingLicense.size() > 0) {
+      String message = String.format(
+          "%d source files with no license. ",
+          filesMissingLicense.size());
+      System.err.println(message);
+      Collections.sort(filesMissingLicense);
+      for (String path : filesMissingLicense) {
+        System.err.println(path);
+      }
+      Assert.fail(message);
+    }
+
+  }
+
 }
