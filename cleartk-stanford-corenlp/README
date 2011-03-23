@@ -1,6 +1,18 @@
 This sub-project of ClearTK, cleartk-stanford-corenlp, provides a UIMA wrapper for
 the Stanford CoreNLP tools (http://nlp.stanford.edu/software/corenlp.shtml).
 
+
+== Dependencies ==
+
+Stanford CoreNLP is not available via maven, so currently you must download it
+yourself and specify the location of the jars via properties, e.g.:
+
+   -Dedu.stanford.corenlp=stanford-corenlp-2010-11-12.jar
+   -Dedu.stanford.corenlp.models=stanford-corenlp-models-2010-11-06.jar
+
+
+== Licensing ==
+
 In order to comply with the license used by Stanford CoreNLP, GPL v2.0, this project
 is also provided under the terms of the GPL v2.0 license.  This project should be
 considered as a separate project from the rest of ClearTK and should not be distributed
