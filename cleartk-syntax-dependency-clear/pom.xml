@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.cleartk</groupId>
 	<artifactId>cleartk-syntax-dependency-clear</artifactId>
-	<version>0.5.2-SNAPSHOT</version>
+	<version>0.6.0-SNAPSHOT</version>
 	<name>cleartk-syntax-dependency-clear</name>
 	<url>http://cleartk.googlecode.com/</url>
 	<parent>
