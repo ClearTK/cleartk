@@ -43,6 +43,7 @@ import org.cleartk.syntax.SyntaxComponents;
 import org.cleartk.syntax.constituent.ParserWrapper_ImplBase;
 import org.cleartk.syntax.constituent.types.InputTypesHelper;
 import org.cleartk.syntax.opennlp.parser.CasPosTagger;
+import org.cleartk.syntax.opennlp.parser.DefaultOutputTypesHelper;
 import org.cleartk.syntax.opennlp.parser.Parser;
 import org.cleartk.util.IOUtil;
 import org.cleartk.util.ParamUtil;
@@ -196,6 +197,8 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
         ParserAnnotator.class,
         SyntaxComponents.TYPE_SYSTEM_DESCRIPTION,
         PARAM_PARSER_MODEL_PATH,
-        ParamUtil.getParameterValue(PARAM_PARSER_MODEL_PATH, "/models/en-parser-chunking.bin"));
+        ParamUtil.getParameterValue(PARAM_PARSER_MODEL_PATH, "/models/en-parser-chunking.bin"),
+        PARAM_OUTPUT_TYPES_HELPER_CLASS_NAME,
+        DefaultOutputTypesHelper.class.getName());
   }
 }

@@ -230,6 +230,11 @@ public class ParserAnnotatorTest extends OpennlpSyntaxTestBase {
     }
   }
 
+  @Test
+  public void testDescriptor() throws UIMAException {
+    AnalysisEngineFactory.createPrimitive(ParserAnnotator.getDescription());
+  }
+
   public static void main(String[] args) {
     CLI.main(new String[] {
         "ParserTrainer",
