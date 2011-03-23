@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.cleartk</groupId>
 	<artifactId>cleartk</artifactId>
@@ -33,6 +34,7 @@
 		<module>cleartk-syntax-dependency</module>
 		<module>cleartk-syntax-dependency-clear</module>
 		<module>cleartk-syntax-dependency-malt</module>
+		<module>cleartk-stanford-corenlp</module>
 		<module>cleartk-semantic-roles</module>
 		<module>cleartk-timeml</module>
 		<module>cleartk-examples</module>
@@ -83,6 +85,11 @@
 				<groupId>org.jdom</groupId>
 				<artifactId>jdom</artifactId>
 				<version>1.1</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava</artifactId>
+				<version>r08</version>
 			</dependency>
 			<dependency>
 				<groupId>net.sourceforge.collections</groupId>
@@ -239,6 +246,11 @@
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
+				<artifactId>cleartk-stanford-corenlp</artifactId>
+				<version>0.5.0-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-semantic-roles</artifactId>
 				<version>0.5.2-SNAPSHOT</version>
 			</dependency>
@@ -363,7 +375,7 @@
 					<notimestamp>true</notimestamp>
 					<linksource>true</linksource>
 					<links>
-					<link>http://uima.apache.org/d/uimaj-2.3.1/api/</link>
+						<link>http://uima.apache.org/d/uimaj-2.3.1/api/</link>
 						<link>http://download.oracle.com/javase/6/docs/api/</link>
 						<link>http://junit.sourceforge.net/javadoc/</link>
 						<link>http://maxent.sourceforge.net/api/</link>

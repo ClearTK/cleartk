@@ -1,0 +1,92 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>cleartk</artifactId>
+		<groupId>org.cleartk</groupId>
+		<version>0.5.2-SNAPSHOT</version>
+	</parent>
+	<groupId>org.cleartk</groupId>
+	<artifactId>cleartk-stanford-corenlp</artifactId>
+	<version>0.5.0-SNAPSHOT</version>
+	<description>ClearTK wrapper for Stanford CoreNLP</description>
+	<properties>
+		<edu.stanford.corenlp>${project.basedir}/stanford-corenlp-2010-11-12.jar</edu.stanford.corenlp>
+		<edu.stanford.corenlp.models>${project.basedir}/stanford-corenlp-models-2010-11-06.jar</edu.stanford.corenlp.models>
+	</properties>
+	<dependencies>
+
+		<!-- Stanford CoreNLP code and models -->
+		<dependency>
+			<groupId>edu.stanford.nlp</groupId>
+			<artifactId>stanford-corenlp</artifactId>
+			<version>1.0.2</version>
+			<scope>system</scope>
+			<systemPath>${edu.stanford.corenlp}</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>edu.stanford.nlp</groupId>
+			<artifactId>stanford-corenlp-models</artifactId>
+			<version>1.0.2</version>
+			<scope>system</scope>
+			<systemPath>${edu.stanford.corenlp.models}</systemPath>
+		</dependency>
+
+		<!-- Stanford CoreNLP dependencies -->
+		<dependency>
+			<groupId>xom</groupId>
+			<artifactId>xom</artifactId>
+			<version>1.2.5</version>
+		</dependency>
+		<dependency>
+			<groupId>jgraph</groupId>
+			<artifactId>jgraph</artifactId>
+			<version>5.13.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jgrapht</groupId>
+			<artifactId>jgrapht-jdk1.5</artifactId>
+			<version>0.7.3</version>
+		</dependency>
+
+		<!-- project-specific dependencies -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+		</dependency>
+
+		<!-- ClearTK-internal dependencies -->
+		<dependency>
+			<groupId>org.cleartk</groupId>
+			<artifactId>cleartk-test-util</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.cleartk</groupId>
+			<artifactId>cleartk-token</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.cleartk</groupId>
+			<artifactId>cleartk-named-entity</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.cleartk</groupId>
+			<artifactId>cleartk-syntax</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.cleartk</groupId>
+			<artifactId>cleartk-syntax-dependency</artifactId>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<!-- increase max memory for tests since model must be loaded -->
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<argLine>-Xmx3g</argLine>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
