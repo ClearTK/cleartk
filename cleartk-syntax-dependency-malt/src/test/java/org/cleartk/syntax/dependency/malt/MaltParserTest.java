@@ -24,9 +24,10 @@
 package org.cleartk.syntax.dependency.malt;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeTrue;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -36,11 +37,11 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.cleartk.syntax.dependency.type.DependencyNode;
+import org.cleartk.syntax.dependency.type.TopDependencyNode;
 import org.cleartk.test.CleartkTestBase;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.UIMAUtil;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.internal.AssumptionViolatedException;
@@ -152,24 +153,32 @@ public class MaltParserTest extends CleartkTestBase {
     DependencyNode period = nodes.get(8);
 
     // check node heads and dependency types
-    assertEquals(dog, the1.getHead());
-    assertEquals("det", the1.getDependencyType());
-    assertEquals(chased, dog.getHead());
-    assertEquals("nsubj", dog.getDependencyType());
-    assertNull(chased.getHead());
-    assertNull(chased.getDependencyType());
-    assertEquals(fox, the2.getHead());
-    assertEquals("det", the2.getDependencyType());
-    assertEquals(chased, fox.getHead());
-    assertEquals("dobj", fox.getDependencyType());
-    assertEquals(chased, down.getHead());
-    assertEquals("advmod", down.getDependencyType());
-    assertEquals(road, the3.getHead());
-    assertEquals("det", the3.getDependencyType());
-    assertEquals(down, road.getHead());
-    assertEquals("pobj", road.getDependencyType());
-    assertEquals(chased, period.getHead());
-    assertEquals("punct", period.getDependencyType());
+    assertEquals(1, the1.getHeadRelations().size());
+    assertEquals(dog, the1.getHeadRelations(0).getHead());
+    assertEquals("det", the1.getHeadRelations(0).getRelation());
+    assertEquals(1, dog.getHeadRelations().size());
+    assertEquals(chased, dog.getHeadRelations(0).getHead());
+    assertEquals("nsubj", dog.getHeadRelations(0).getRelation());
+    assertEquals(0, chased.getHeadRelations().size());
+    assertTrue(chased instanceof TopDependencyNode);
+    assertEquals(1, the2.getHeadRelations().size());
+    assertEquals(fox, the2.getHeadRelations(0).getHead());
+    assertEquals("det", the2.getHeadRelations(0).getRelation());
+    assertEquals(1, fox.getHeadRelations().size());
+    assertEquals(chased, fox.getHeadRelations(0).getHead());
+    assertEquals("dobj", fox.getHeadRelations(0).getRelation());
+    assertEquals(1, down.getHeadRelations().size());
+    assertEquals(chased, down.getHeadRelations(0).getHead());
+    assertEquals("advmod", down.getHeadRelations(0).getRelation());
+    assertEquals(1, the3.getHeadRelations().size());
+    assertEquals(road, the3.getHeadRelations(0).getHead());
+    assertEquals("det", the3.getHeadRelations(0).getRelation());
+    assertEquals(1, road.getHeadRelations().size());
+    assertEquals(down, road.getHeadRelations(0).getHead());
+    assertEquals("pobj", road.getHeadRelations(0).getRelation());
+    assertEquals(1, period.getHeadRelations().size());
+    assertEquals(chased, period.getHeadRelations(0).getHead());
+    assertEquals("punct", period.getHeadRelations(0).getRelation());
 
     // check node children
     List<DependencyNode> emptyList = Collections.emptyList();
@@ -182,9 +191,16 @@ public class MaltParserTest extends CleartkTestBase {
     assertEquals(emptyList, getChildren(the3));
     assertEquals(Arrays.asList(the3), getChildren(road));
     assertEquals(emptyList, getChildren(period));
+
+    // check node parents
+    // TODO
   }
 
   private static List<DependencyNode> getChildren(DependencyNode node) {
-    return UIMAUtil.toList(node.getChildren(), DependencyNode.class);
+    List<DependencyNode> children = new ArrayList<DependencyNode>();
+    for (int i = 0; i < node.getChildRelations().size(); ++i) {
+      children.add(node.getChildRelations(i).getChild());
+    }
+    return children;
   }
 }

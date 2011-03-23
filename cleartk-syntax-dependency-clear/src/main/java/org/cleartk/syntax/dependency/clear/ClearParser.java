@@ -34,10 +34,11 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.syntax.dependency.DependencyComponents;
 import org.cleartk.syntax.dependency.type.DependencyNode;
+import org.cleartk.syntax.dependency.type.DependencyRelation;
+import org.cleartk.syntax.dependency.type.TopDependencyNode;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.cleartk.util.UIMAUtil;
@@ -148,25 +149,21 @@ public class ClearParser extends JCasAnnotator_ImplBase {
   }
 
   private void addTree(JCas jCas, Sentence sentence, List<Token> tokens, DepTree tree) {
-    Map<DependencyNode, List<DependencyNode>> nodeChildren = new HashMap<DependencyNode, List<DependencyNode>>();
-
     DependencyNode[] nodes = new DependencyNode[tree.size()];
 
-    DepNode parserRootNode = tree.get(0);
-    DependencyNode rootNode = new DependencyNode(jCas, sentence.getBegin(), sentence.getEnd());
-    rootNode.setDependencyType(parserRootNode.deprel);
+    DependencyNode rootNode = new TopDependencyNode(jCas, sentence.getBegin(), sentence.getEnd());
     rootNode.addToIndexes();
     nodes[0] = rootNode;
 
     for (int i = 0; i < tokens.size(); i++) {
       Token token = tokens.get(i);
-      DepNode parserNode = tree.get(i + 1);
-      DependencyNode node = new DependencyNode(jCas, token.getBegin(), token.getEnd());
-      node.setDependencyType(parserNode.deprel);
-      node.addToIndexes();
-      nodes[i + 1] = node;
+      nodes[i + 1] = new DependencyNode(jCas, token.getBegin(), token.getEnd());
     }
 
+    Map<DependencyNode, List<DependencyRelation>> headRelations;
+    headRelations = new HashMap<DependencyNode, List<DependencyRelation>>();
+    Map<DependencyNode, List<DependencyRelation>> childRelations;
+    childRelations = new HashMap<DependencyNode, List<DependencyRelation>>();
     for (int i = 0; i < tree.size(); i++) {
       DepNode parserNode = tree.get(i);
       if (parserNode.hasHead) {
@@ -174,26 +171,28 @@ public class ClearParser extends JCasAnnotator_ImplBase {
 
         DependencyNode node = nodes[i];
         DependencyNode headNode = nodes[headIndex];
-        node.setHead(headNode);
+        DependencyRelation rel = new DependencyRelation(jCas);
+        rel.setChild(node);
+        rel.setHead(headNode);
+        rel.setRelation(parserNode.deprel);
 
-        // collect child information
-        if (!nodeChildren.containsKey(headNode)) {
-          nodeChildren.put(headNode, new ArrayList<DependencyNode>());
+        if (!headRelations.containsKey(node)) {
+          headRelations.put(node, new ArrayList<DependencyRelation>());
         }
-        nodeChildren.get(headNode).add(node);
+        headRelations.get(node).add(rel);
+        if (!childRelations.containsKey(headNode)) {
+          childRelations.put(headNode, new ArrayList<DependencyRelation>());
+        }
+        childRelations.get(headNode).add(rel);
       }
     }
 
-    // add child links between node annotations
-    for (DependencyNode headNode : nodeChildren.keySet()) {
-      headNode.setChildren(UIMAUtil.toFSArray(jCas, nodeChildren.get(headNode)));
+    // finalize nodes: add links between nodes and relations
+    for (DependencyNode node : nodes) {
+      node.setHeadRelations(UIMAUtil.toFSArray(jCas, headRelations.get(node)));
+      node.setChildRelations(UIMAUtil.toFSArray(jCas, childRelations.get(node)));
+      node.addToIndexes();
     }
-    for (DependencyNode node : JCasUtil.iterate(jCas, DependencyNode.class)) {
-      if (node.getChildren() == null) {
-        node.setChildren(new FSArray(jCas, 0));
-      }
-    }
-
   }
 
 }

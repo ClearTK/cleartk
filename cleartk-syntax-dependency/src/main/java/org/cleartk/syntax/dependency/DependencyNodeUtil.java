@@ -26,9 +26,9 @@ package org.cleartk.syntax.dependency;
 
 import java.io.PrintStream;
 import java.util.Arrays;
-import java.util.List;
 
 import org.cleartk.syntax.dependency.type.DependencyNode;
+import org.cleartk.syntax.dependency.type.DependencyRelation;
 import org.cleartk.util.UIMAUtil;
 
 /**
@@ -53,11 +53,24 @@ public class DependencyNodeUtil {
       out.println(getTics(node.getCoveredText().length()));
       out.println();
     } else {
-      out.println(indent+node.getCoveredText()+"\t"+node.getDependencyType()+"\t["+node.getBegin()+","+node.getEnd()+"]");
+      StringBuilder depType = new StringBuilder();
+      for (DependencyRelation depRel : UIMAUtil.toList(
+          node.getHeadRelations(),
+          DependencyRelation.class)) {
+        depType.append(depRel.getRelation());
+      }
+      out.printf(
+          "%s%s\t%s\t[%d,%d]\n",
+          indent,
+          node.getCoveredText(),
+          depType,
+          node.getBegin(),
+          node.getEnd());
     }
-    List<DependencyNode> children = UIMAUtil.toList(node.getChildren(), DependencyNode.class);
-    for(DependencyNode child : children) {
-      print(out, child, tabs + 1);
+    for (DependencyRelation depRel : UIMAUtil.toList(
+        node.getChildRelations(),
+        DependencyRelation.class)) {
+      print(out, depRel.getChild(), tabs + 1);
     }
   }
   

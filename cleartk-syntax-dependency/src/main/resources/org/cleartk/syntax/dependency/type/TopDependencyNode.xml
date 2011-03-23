@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
-  <name>TypeSystem</name>
+  <name>TopDependencyNode</name>
   <description/>
   <version>1.0</version>
   <vendor/>
   <imports>
     <import name="org.cleartk.syntax.dependency.type.DependencyNode"/>
-    <import name="org.cleartk.syntax.dependency.type.DependencyRelation"/>
-    <import name="org.cleartk.syntax.dependency.type.TopDependencyNode"/>
   </imports>
+  <types>
+    <typeDescription>
+      <name>org.cleartk.syntax.dependency.type.TopDependencyNode</name>
+      <description/>
+      <supertypeName>org.cleartk.syntax.dependency.type.DependencyNode</supertypeName>
+    </typeDescription>
+  </types>
 </typeSystemDescription>

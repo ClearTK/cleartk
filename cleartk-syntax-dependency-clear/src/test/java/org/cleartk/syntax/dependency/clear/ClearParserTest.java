@@ -25,9 +25,12 @@
 package org.cleartk.syntax.dependency.clear;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.cleartk.syntax.dependency.type.DependencyNode;
+import org.cleartk.syntax.dependency.type.DependencyRelation;
+import org.cleartk.syntax.dependency.type.TopDependencyNode;
 import org.cleartk.test.CleartkTestBase;
 import org.cleartk.token.lemma.choi.LemmaAnnotator;
 import org.cleartk.token.type.Sentence;
@@ -83,17 +86,18 @@ public class ClearParserTest extends CleartkTestBase {
         jCas,
         sentence,
         DependencyNode.class);
-    testNode(topNode, "This is a test.", "#$ROOT$#");
-    DependencyNode isNode = topNode.getChildren(0);
-    testNode(isNode, "is", "ROOT");
-    DependencyNode thisNode = isNode.getChildren(0);
-    testNode(thisNode, "This", "SBJ");
-    DependencyNode testNode = isNode.getChildren(1);
-    testNode(testNode, "test", "PRD");
-    DependencyNode dotNode = isNode.getChildren(2);
-    testNode(dotNode, ".", "P");
-    DependencyNode aNode = testNode.getChildren(0);
-    testNode(aNode, "a", "NMOD");
+    assertTrue(topNode instanceof TopDependencyNode);
+    assertEquals("This is a test.", topNode.getCoveredText());
+    DependencyRelation isRel = topNode.getChildRelations(0);
+    testRelationChild(isRel, "is", "ROOT");
+    DependencyRelation thisRel = isRel.getChild().getChildRelations(0);
+    testRelationChild(thisRel, "This", "SBJ");
+    DependencyRelation testRel = isRel.getChild().getChildRelations(1);
+    testRelationChild(testRel, "test", "PRD");
+    DependencyRelation dotRel = isRel.getChild().getChildRelations(2);
+    testRelationChild(dotRel, ".", "P");
+    DependencyRelation aRel = testRel.getChild().getChildRelations(0);
+    testRelationChild(aRel, "a", "NMOD");
 
     jCas.reset();
     tokenBuilder
@@ -107,29 +111,52 @@ public class ClearParserTest extends CleartkTestBase {
 
     sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 0);
     topNode = AnnotationRetrieval.getContainingAnnotation(jCas, sentence, DependencyNode.class);
-    testNode(
-        topNode,
+    assertTrue(topNode instanceof TopDependencyNode);
+    assertEquals(
         "The epicenter was 90 kilometres (55 miles) west-northwest of Chengdu, the capital of Sichuan, with a depth of 19 kilometres (12 mi).",
-        "#$ROOT$#");
-    DependencyNode wasNode = topNode.getChildren(0);
-    testNode(wasNode, "was", "ROOT");
-    testNode(wasNode.getChildren(0), "epicenter", "SBJ");
-    testNode(wasNode.getChildren(0).getChildren(0), "The", "NMOD");
-    testNode(wasNode.getChildren(0).getChildren(1), "capital", "APPO");
-    testNode(wasNode.getChildren(1), "90", "VC");
-    testNode(wasNode.getChildren(1).getChildren(0), "kilometres", "ADV");
-    testNode(wasNode.getChildren(2), ")", "P");
-    testNode(wasNode.getChildren(2).getChildren(0), ",", "P");
-    testNode(wasNode.getChildren(2).getChildren(1), "(", "P");
-    testNode(wasNode.getChildren(2).getChildren(2), "12", "NMOD");
-    testNode(wasNode.getChildren(2).getChildren(3), "mi", "NMOD");
-    testNode(wasNode.getChildren(3), ".", "P");
+        topNode.getCoveredText());
+    DependencyRelation wasRel = topNode.getChildRelations(0);
+    testRelationChild(wasRel, "was", "ROOT");
+    testRelationChild(wasRel.getChild().getChildRelations(0), "epicenter", "SBJ");
+    testRelationChild(
+        wasRel.getChild().getChildRelations(0).getChild().getChildRelations(0),
+        "The",
+        "NMOD");
+    testRelationChild(
+        wasRel.getChild().getChildRelations(0).getChild().getChildRelations(1),
+        "capital",
+        "APPO");
+    testRelationChild(wasRel.getChild().getChildRelations(1), "90", "VC");
+    testRelationChild(
+        wasRel.getChild().getChildRelations(1).getChild().getChildRelations(0),
+        "kilometres",
+        "ADV");
+    testRelationChild(wasRel.getChild().getChildRelations(2), ")", "P");
+    testRelationChild(
+        wasRel.getChild().getChildRelations(2).getChild().getChildRelations(0),
+        ",",
+        "P");
+    testRelationChild(
+        wasRel.getChild().getChildRelations(2).getChild().getChildRelations(1),
+        "(",
+        "P");
+    testRelationChild(
+        wasRel.getChild().getChildRelations(2).getChild().getChildRelations(2),
+        "12",
+        "NMOD");
+    testRelationChild(
+        wasRel.getChild().getChildRelations(2).getChild().getChildRelations(3),
+        "mi",
+        "NMOD");
+    testRelationChild(wasRel.getChild().getChildRelations(3), ".", "P");
 
   }
 
-  private void testNode(DependencyNode node, String expectedText, String expectedDependencyType) {
-    assertEquals(expectedText, node.getCoveredText());
-    assertEquals(expectedDependencyType, node.getDependencyType());
-
+  private void testRelationChild(
+      DependencyRelation rel,
+      String expectedChildText,
+      String expectedRelation) {
+    assertEquals(expectedChildText, rel.getChild().getCoveredText());
+    assertEquals(expectedRelation, rel.getRelation());
   }
 }

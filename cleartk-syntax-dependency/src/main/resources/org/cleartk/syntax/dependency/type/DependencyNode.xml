@@ -4,6 +4,9 @@
   <description/>
   <version>1.0</version>
   <vendor/>
+  <imports>
+    <import name="org.cleartk.syntax.dependency.type.DependencyRelation"/>
+  </imports>
   <types>
     <typeDescription>
       <name>org.cleartk.syntax.dependency.type.DependencyNode</name>
@@ -11,20 +14,16 @@
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
         <featureDescription>
-          <name>Head</name>
-          <description/>
-          <rangeTypeName>org.cleartk.syntax.dependency.type.DependencyNode</rangeTypeName>
-        </featureDescription>
-        <featureDescription>
-          <name>DependencyType</name>
-          <description/>
-          <rangeTypeName>uima.cas.String</rangeTypeName>
-        </featureDescription>
-        <featureDescription>
-          <name>Children</name>
+          <name>HeadRelations</name>
           <description/>
           <rangeTypeName>uima.cas.FSArray</rangeTypeName>
-          <elementType>org.cleartk.syntax.dependency.type.DependencyNode</elementType>
+          <elementType>org.cleartk.syntax.dependency.type.DependencyRelation</elementType>
+        </featureDescription>
+        <featureDescription>
+          <name>ChildRelations</name>
+          <description/>
+          <rangeTypeName>uima.cas.FSArray</rangeTypeName>
+          <elementType>org.cleartk.syntax.dependency.type.DependencyRelation</elementType>
         </featureDescription>
       </features>
     </typeDescription>

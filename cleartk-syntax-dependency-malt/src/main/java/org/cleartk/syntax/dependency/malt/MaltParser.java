@@ -34,10 +34,11 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.syntax.dependency.DependencyComponents;
 import org.cleartk.syntax.dependency.type.DependencyNode;
+import org.cleartk.syntax.dependency.type.DependencyRelation;
+import org.cleartk.syntax.dependency.type.TopDependencyNode;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
@@ -51,7 +52,6 @@ import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
-import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -143,15 +143,21 @@ public class MaltParser extends JCasAnnotator_ImplBase {
         for (int i : tokenIndices) {
           org.maltparser.core.syntaxgraph.node.DependencyNode maltNode = graph.getTokenNode(i);
           Token token = tokens.get(maltNode.getIndex() - 1);
-          DependencyNode node = new DependencyNode(jCas, token.getBegin(), token.getEnd());
-          node.addToIndexes();
+          DependencyNode node;
+          if (maltNode.getHead().getIndex() != 0) {
+            node = new DependencyNode(jCas, token.getBegin(), token.getEnd());
+          } else {
+            node = new TopDependencyNode(jCas, token.getBegin(), token.getEnd());
+          }
           nodes.put(i, node);
         }
 
-        // add head links between node annotations
+        // add relation annotations
+        Map<DependencyNode, List<DependencyRelation>> headRelations;
+        headRelations = new HashMap<DependencyNode, List<DependencyRelation>>();
+        Map<DependencyNode, List<DependencyRelation>> childRelations;
+        childRelations = new HashMap<DependencyNode, List<DependencyRelation>>();
         SymbolTable table = graph.getSymbolTables().getSymbolTable("DEPREL");
-        Map<DependencyNode, List<DependencyNode>> nodeChildren;
-        nodeChildren = new HashMap<DependencyNode, List<DependencyNode>>();
         for (int i : tokenIndices) {
           org.maltparser.core.syntaxgraph.node.DependencyNode maltNode = graph.getTokenNode(i);
           int headIndex = maltNode.getHead().getIndex();
@@ -159,25 +165,27 @@ public class MaltParser extends JCasAnnotator_ImplBase {
             String label = maltNode.getHeadEdge().getLabelSymbol(table);
             DependencyNode node = nodes.get(i);
             DependencyNode head = nodes.get(headIndex);
-            node.setHead(head);
-            node.setDependencyType(label);
-
-            // collect child information
-            if (!nodeChildren.containsKey(head)) {
-              nodeChildren.put(head, new ArrayList<DependencyNode>());
+            DependencyRelation rel = new DependencyRelation(jCas);
+            rel.setHead(head);
+            rel.setChild(node);
+            rel.setRelation(label);
+            rel.addToIndexes();
+            if (!headRelations.containsKey(node)) {
+              headRelations.put(node, new ArrayList<DependencyRelation>());
             }
-            nodeChildren.get(head).add(node);
+            headRelations.get(node).add(rel);
+            if (!childRelations.containsKey(head)) {
+              childRelations.put(head, new ArrayList<DependencyRelation>());
+            }
+            childRelations.get(head).add(rel);
           }
         }
 
-        // add child links between node annotations
-        for (DependencyNode head : nodeChildren.keySet()) {
-          head.setChildren(UIMAUtil.toFSArray(jCas, nodeChildren.get(head)));
-        }
-        for (DependencyNode node : JCasUtil.iterate(jCas, DependencyNode.class)) {
-          if (node.getChildren() == null) {
-            node.setChildren(new FSArray(jCas, 0));
-          }
+        // finalize nodes: add links between nodes and relations
+        for (DependencyNode node : nodes.values()) {
+          node.setHeadRelations(UIMAUtil.toFSArray(jCas, headRelations.get(node)));
+          node.setChildRelations(UIMAUtil.toFSArray(jCas, childRelations.get(node)));
+          node.addToIndexes();
         }
 
       } catch (MaltChainedException e) {

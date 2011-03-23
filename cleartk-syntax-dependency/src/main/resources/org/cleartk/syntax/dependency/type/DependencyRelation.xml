@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <name>DependencyRelation</name>
+  <description/>
+  <version>1.0</version>
+  <vendor/>
+  <imports>
+    <import name="org.cleartk.syntax.dependency.type.DependencyNode"/>
+  </imports>
+  <types>
+    <typeDescription>
+      <name>org.cleartk.syntax.dependency.type.DependencyRelation</name>
+      <description/>
+      <supertypeName>uima.cas.TOP</supertypeName>
+      <features>
+        <featureDescription>
+          <name>Head</name>
+          <description/>
+          <rangeTypeName>org.cleartk.syntax.dependency.type.DependencyNode</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>Relation</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>Child</name>
+          <description/>
+          <rangeTypeName>org.cleartk.syntax.dependency.type.DependencyNode</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+  </types>
+</typeSystemDescription>
