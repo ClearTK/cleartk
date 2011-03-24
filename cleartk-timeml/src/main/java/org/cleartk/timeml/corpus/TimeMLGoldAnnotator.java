@@ -131,7 +131,7 @@ public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
       JCas jCas,
       Element element,
       StringBuffer textBuffer,
-      Map<String, Anchor> anchors) {
+      Map<String, Anchor> anchors) throws AnalysisEngineProcessException {
     int startOffset = textBuffer.length();
     for (Object content : element.getContent()) {
       if (content instanceof org.jdom.Text) {
@@ -174,8 +174,8 @@ public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
           "relatedToEventInstance",
           "relatedToEvent",
           "relatedToTime");
-      Anchor source = this.getAnchor(anchors, sourceID);
-      Anchor target = this.getAnchor(anchors, targetID);
+      Anchor source = this.getAnchor(jCas, anchors, sourceID);
+      Anchor target = this.getAnchor(jCas, anchors, targetID);
       if (source instanceof Event) {
         temporalLink.setEventID(source.getId());
       }
@@ -204,10 +204,14 @@ public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
         Arrays.asList(attributeNames)));
   }
 
-  private Anchor getAnchor(Map<String, Anchor> anchors, String id) {
+  private Anchor getAnchor(JCas jCas, Map<String, Anchor> anchors, String id)
+      throws AnalysisEngineProcessException {
     Anchor anchor = anchors.get(id);
     if (anchor == null) {
-      throw new RuntimeException(String.format("no anchor for id %s", id));
+      throw new RuntimeException(String.format(
+          "%s: no anchor for id %s",
+          ViewURIUtil.getURI(jCas),
+          id));
     }
     return anchor;
   }
