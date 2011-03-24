@@ -87,13 +87,13 @@ public class CorefGraph {
 
   public Map<CoreMap, Set<CoreMap>> getMentionEntityMap(CoreMap documentMap) {
     // for each entity, map its mentions to the entity object
-    Map<CoreMap, Set<CoreMap>> mentionEntityMap = new HashMap<CoreMap, Set<CoreMap>>();
+    Map<CoreMap, Set<CoreMap>> result = new HashMap<CoreMap, Set<CoreMap>>();
     for (Set<CoreMap> entity : this.getEntities(documentMap)) {
       for (CoreMap mention : entity) {
-        mentionEntityMap.put(mention, entity);
+        result.put(mention, entity);
       }
     }
-    return mentionEntityMap;
+    return result;
   }
 
   public Set<Set<CoreMap>> getEntities(CoreMap documentMap) {
