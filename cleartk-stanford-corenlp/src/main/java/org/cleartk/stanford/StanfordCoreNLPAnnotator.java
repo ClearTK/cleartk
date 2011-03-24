@@ -28,6 +28,7 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.apache.uima.UimaContext;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
@@ -44,6 +45,7 @@ import org.cleartk.token.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.UIMAUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
+import org.uimafit.factory.AnalysisEngineFactory;
 
 import com.google.common.collect.ArrayListMultimap;
 
@@ -77,6 +79,12 @@ import edu.stanford.nlp.util.CoreMap;
  * @author Steven Bethard
  */
 public class StanfordCoreNLPAnnotator extends JCasAnnotator_ImplBase {
+
+  public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
+    return AnalysisEngineFactory.createPrimitiveDescription(
+        StanfordCoreNLPAnnotator.class,
+        StanfordCoreNLPComponents.TYPE_SYSTEM_DESCRIPTION);
+  }
 
   private StanfordCoreNLP processor;
 

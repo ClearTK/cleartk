@@ -60,19 +60,16 @@ public class StanfordCoreNLPTest extends CleartkTestBase {
 
   @Override
   public String[] getTypeSystemDescriptorNames() {
-    return new String[] {
-        "org.cleartk.token.TypeSystem",
-        "org.cleartk.ne.TypeSystem",
-        "org.cleartk.syntax.TypeSystem",
-        "org.cleartk.syntax.dependency.TypeSystem" };
+    return StanfordCoreNLPComponents.TYPE_SYSTEM_DESCRIPTOR_NAMES;
   }
-  
+
   @Test
   public void test() throws Throwable {
     String sent1 = "The Stanford-based Dr. Smith bought \n milk for Martha.";
     String sent2 = "So she thanked him for it \n and put the milk into her bag.";
     this.jCas.setDocumentText(String.format("%s %s", sent1, sent2));
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(StanfordCoreNLPAnnotator.class);
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(StanfordCoreNLPAnnotator
+        .getDescription());
     engine.process(this.jCas);
     engine.collectionProcessComplete();
 
