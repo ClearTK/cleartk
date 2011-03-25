@@ -33,7 +33,7 @@ import java.util.List;
 import org.apache.uima.pear.util.FileUtil;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
-import org.cleartk.eval.provider.CorpusReaderPipeline;
+import org.cleartk.eval.provider.CorpusReaderProvider;
 
 /**
  * Copyright (c) 2011, Regents of the University of Colorado <br>
@@ -43,7 +43,7 @@ import org.cleartk.eval.provider.CorpusReaderPipeline;
  * example, {@link #getTrainFile()} might return a file named "<your-path>/train.txt" that contains
  * a list of those XMI files that belong in the training data set.
  * <p>
- * Please see {@link CorpusReaderPipeline} for a description, broadly speaking, of how you should
+ * Please see {@link CorpusReaderProvider} for a description, broadly speaking, of how you should
  * set up your corpus. Here, this is implemented by simply creating files that contain file names
  * for the different sets and folds. The names of the files that you should create might be:
  * <ul>

@@ -27,10 +27,10 @@ import org.apache.uima.collection.CollectionReader;
 import org.uimafit.component.JCasAnnotatorAdapter;
 
 /**
- * CorpusFactory assumes that your corpus is split into two sets - a training set and a testing set.
- * To get the training set call createTrainReader(). To get the testing set call createTestReader().
- * It further assumes that the training set is split up into n folds which can be used for
- * cross-validation. In this way the testing set is a "holdout" evaluation set not to be
+ * CorpusReaderProvider assumes that your corpus is split into two sets - a training set and a
+ * testing set. To get the training set call createTrainReader(). To get the testing set call
+ * createTestReader(). It further assumes that the training set is split up into n folds which can
+ * be used for cross-validation. In this way the testing set is a "holdout" evaluation set not to be
  * polluted/burned by repeated evaluation that occurs with cross-validation. To get a training set
  * for a fold call createTrainReader(int). This should return a fraction of the training set equal
  * to (n-1)/n where n is the number of folds (generally 4/5 or 9/10). To get a testing set for a
@@ -41,7 +41,7 @@ import org.uimafit.component.JCasAnnotatorAdapter;
  * @author Philip Ogren
  * 
  */
-public interface CorpusReaderPipeline {
+public interface CorpusReaderProvider {
 
   /**
    * This method returns the training set for the corpus.
@@ -102,14 +102,19 @@ public interface CorpusReaderPipeline {
   public AnalysisEngine getPreprocessor() throws UIMAException;
 
   /**
-   * Provides the number of folds in the training set that can be used for cross-validation. This
-   * number is generally 10 or 5 for 10-fold and 5-fold cross-validation, respectively. See
-   * class-level javadoc comment above.
+   * Provides the number of folds in the training set that will be used for cross-validation.
    * 
    * @return the number of folds in the training set
    */
   public int getNumberOfFolds();
 
+  /**
+   * Set the number of folds to be used for cross-validation. If the desired number of folds cannot
+   * be accommodated by this collection, an {@link IllegalArgumentException} should be thrown.
+   * 
+   * @param numberOfFolds
+   *          The desired number of folds.
+   */
   public void setNumberOfFolds(int numberOfFolds);
 
 }

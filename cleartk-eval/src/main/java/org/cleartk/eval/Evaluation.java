@@ -37,7 +37,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.ResourceMetaData;
 import org.apache.uima.util.CasCreationUtils;
 import org.cleartk.eval.provider.CleartkPipelineProvider;
-import org.cleartk.eval.provider.CorpusReaderPipeline;
+import org.cleartk.eval.provider.CorpusReaderProvider;
 import org.cleartk.eval.provider.EvaluationPipelineProvider;
 
 /**
@@ -58,7 +58,7 @@ public class Evaluation {
    * 
    * @param corpusReaderPipeline
    *          A CorpusReaderPipeline provides collection readers corresponding to training data and
-   *          testing data for each fold. Please see {@link CorpusReaderPipeline}.
+   *          testing data for each fold. Please see {@link CorpusReaderProvider}.
    * @param cleartkPipelineProvider
    *          An CleartkPipelineProvider provides aggregate analysis engines that process training
    *          data to generate a training data file suitable for the machine learning library that
@@ -81,7 +81,7 @@ public class Evaluation {
    */
 
   public void runCrossValidation(
-      CorpusReaderPipeline corpusReaderPipeline,
+      CorpusReaderProvider corpusReaderPipeline,
       CleartkPipelineProvider cleartkPipelineProvider,
       EvaluationPipelineProvider evaluationPipelineProvider,
       String... trainingArguments) throws Exception {
@@ -177,20 +177,20 @@ public class Evaluation {
    * 
    * @param corpusReaderPipeline
    *          see
-   *          {@link #runCrossValidation(File, CorpusReaderPipeline, CleartkPipelineProvider, EvaluationPipelineProvider, String...)}
+   *          {@link #runCrossValidation(File, CorpusReaderProvider, CleartkPipelineProvider, EvaluationPipelineProvider, String...)}
    * @param cleartkPipelineProvider
    *          see
-   *          {@link #runCrossValidation(File, CorpusReaderPipeline, CleartkPipelineProvider, EvaluationPipelineProvider, String...)}
+   *          {@link #runCrossValidation(File, CorpusReaderProvider, CleartkPipelineProvider, EvaluationPipelineProvider, String...)}
    * @param evaluationPipelineProvider
    *          see
-   *          {@link #runCrossValidation(File, CorpusReaderPipeline, CleartkPipelineProvider, EvaluationPipelineProvider, String...)}
+   *          {@link #runCrossValidation(File, CorpusReaderProvider, CleartkPipelineProvider, EvaluationPipelineProvider, String...)}
    * @param trainingArguments
    *          see
-   *          {@link #runCrossValidation(File, CorpusReaderPipeline, CleartkPipelineProvider, EvaluationPipelineProvider, String...)}
+   *          {@link #runCrossValidation(File, CorpusReaderProvider, CleartkPipelineProvider, EvaluationPipelineProvider, String...)}
    * @throws Exception
    */
   public void runHoldoutEvaluation(
-      CorpusReaderPipeline corpusReaderPipeline,
+      CorpusReaderProvider corpusReaderPipeline,
       CleartkPipelineProvider cleartkPipelineProvider,
       EvaluationPipelineProvider evaluationPipelineProvider,
       String... trainingArguments) throws Exception {
@@ -221,18 +221,18 @@ public class Evaluation {
    * 
    * @param corpusReaderPipeline
    *          see
-   *          {@link #runCrossValidation(File, CorpusReaderPipeline, CleartkPipelineProvider, EvaluationPipelineProvider, String...)}
+   *          {@link #runCrossValidation(File, CorpusReaderProvider, CleartkPipelineProvider, EvaluationPipelineProvider, String...)}
    * @param cleartkPipelineProvider
    *          see
-   *          {@link #runCrossValidation(File, CorpusReaderPipeline, CleartkPipelineProvider, EvaluationPipelineProvider, String...)}
+   *          {@link #runCrossValidation(File, CorpusReaderProvider, CleartkPipelineProvider, EvaluationPipelineProvider, String...)}
    * @param trainingArguments
    *          see
-   *          {@link #runCrossValidation(File, CorpusReaderPipeline, CleartkPipelineProvider, EvaluationPipelineProvider, String...)}
+   *          {@link #runCrossValidation(File, CorpusReaderProvider, CleartkPipelineProvider, EvaluationPipelineProvider, String...)}
    * @throws Exception
    */
   public void buildCorpusModel(
       String name,
-      CorpusReaderPipeline corpusReaderPipeline,
+      CorpusReaderProvider corpusReaderPipeline,
       CleartkPipelineProvider cleartkPipelineProvider,
       String... trainingArguments) throws Exception {
     train(

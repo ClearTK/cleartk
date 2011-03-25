@@ -20,7 +20,7 @@ package org.cleartk.eval.provider.corpus;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
-import org.cleartk.eval.provider.CorpusReaderPipeline;
+import org.cleartk.eval.provider.CorpusReaderProvider;
 import org.uimafit.component.JCasAnnotatorAdapter;
 import org.uimafit.factory.AnalysisEngineFactory;
 
@@ -30,7 +30,7 @@ import org.uimafit.factory.AnalysisEngineFactory;
  * 
  */
 
-public abstract class CorpusFactory_ImplBase implements CorpusReaderPipeline {
+public abstract class CorpusFactory_ImplBase implements CorpusReaderProvider {
 
   protected TypeSystemDescription typeSystemDescription;
 
