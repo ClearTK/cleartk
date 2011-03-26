@@ -66,9 +66,8 @@ public class Docs2Sentences {
     Options options = new Options();
     options.parseOptions(args);
 
-    CollectionReader filesReader = FilesCollectionReader.getCollectionReader(
-        ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-        options.inputDirectoryName);
+    CollectionReader filesReader = FilesCollectionReader
+        .getCollectionReader(options.inputDirectoryName);
     AnalysisEngine sentences = AnalysisEngineFactory.createPrimitive(SentenceAnnotator
         .getDescription());
     AnalysisEngine lineWriter = AnalysisEngineFactory.createPrimitive(

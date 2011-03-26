@@ -29,7 +29,6 @@ import org.apache.uima.util.Level;
 import org.apache.uima.util.Logger;
 import org.cleartk.syntax.opennlp.PosTaggerAnnotator;
 import org.cleartk.syntax.opennlp.SentenceAnnotator;
-import org.cleartk.timeml.TimeMLComponents;
 import org.cleartk.timeml.corpus.TimeMLWriter;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.tokenizer.TokenAnnotator;
@@ -72,9 +71,7 @@ public class EventAnnotate {
 
     // run the components on the selected documents
     SimplePipeline.runPipeline(
-        FilesCollectionReader.getCollectionReader(
-            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
-            inputFileOrDir),
+        FilesCollectionReader.getCollectionReader(inputFileOrDir),
         SentenceAnnotator.getDescription(),
         TokenAnnotator.getDescription(),
         PosTaggerAnnotator.getDescription(),

@@ -30,7 +30,6 @@ import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.Level;
 import org.apache.uima.util.Logger;
 import org.cleartk.classifier.jar.Train;
-import org.cleartk.timeml.TimeMLComponents;
 import org.cleartk.timeml.TimeMLViewName;
 import org.cleartk.timeml.corpus.PlainTextTLINKGoldAnnotator;
 import org.cleartk.timeml.corpus.TimeMLGoldAnnotator;
@@ -75,7 +74,6 @@ public class VerbClauseTemporalTrain {
     // run the components that write out the training data
     SimplePipeline.runPipeline(
         FilesCollectionReader.getCollectionReaderWithPatterns(
-            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
             timeBankDir,
             TimeMLViewName.TIMEML,
             "wsj_.*[.]tml"),

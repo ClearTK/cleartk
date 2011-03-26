@@ -38,7 +38,6 @@ import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.classifier.svmlight.DefaultOVASVMlightDataWriterFactory;
 import org.cleartk.examples.ExampleComponents;
 import org.cleartk.examples.ExamplesTestBase;
-import org.cleartk.examples.pos.ExamplePOSPlainTextWriter;
 import org.cleartk.syntax.constituent.TreebankConstants;
 import org.cleartk.syntax.constituent.TreebankGoldAnnotator;
 import org.cleartk.token.breakit.BreakIteratorAnnotatorFactory;
@@ -119,7 +118,6 @@ public class NonSequenceExamplePOSAnnotatorTest extends ExamplesTestBase {
       String... trainingArgs) throws Exception {
     SimplePipeline.runPipeline(
         FilesCollectionReader.getCollectionReaderWithView(
-            ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
             "src/test/resources/data/treebank/11597317.tree",
             TreebankConstants.TREEBANK_VIEW),
         TreebankGoldAnnotator.getDescriptionPOSTagsOnly(),
@@ -146,9 +144,8 @@ public class NonSequenceExamplePOSAnnotatorTest extends ExamplesTestBase {
             outDirectoryName + "/model.jar");
 
     SimplePipeline.runPipeline(
-        FilesCollectionReader.getCollectionReader(
-            ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-            "src/test/resources/data/2008_Sichuan_earthquake.txt"),
+        FilesCollectionReader
+            .getCollectionReader("src/test/resources/data/2008_Sichuan_earthquake.txt"),
         BreakIteratorAnnotatorFactory.createSentenceAnnotator(Locale.US),
         TokenAnnotator.getDescription(),
         DefaultSnowballStemmer.getDescription("English"),

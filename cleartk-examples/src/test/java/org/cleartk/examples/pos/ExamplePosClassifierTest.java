@@ -315,7 +315,6 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
 
     SimplePipeline.runPipeline(
         FilesCollectionReader.getCollectionReaderWithView(
-            ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
             "src/test/resources/data/treebank/11597317.tree",
             TreebankConstants.TREEBANK_VIEW),
         TreebankGoldAnnotator.getDescriptionPOSTagsOnly(),
@@ -346,9 +345,8 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
         stackSize);
 
     SimplePipeline.runPipeline(
-        FilesCollectionReader.getCollectionReader(
-            ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-            "src/test/resources/data/2008_Sichuan_earthquake.txt"),
+        FilesCollectionReader
+            .getCollectionReader("src/test/resources/data/2008_Sichuan_earthquake.txt"),
         SentenceAnnotator.getDescription(),
         TokenAnnotator.getDescription(),
         DefaultSnowballStemmer.getDescription("English"),

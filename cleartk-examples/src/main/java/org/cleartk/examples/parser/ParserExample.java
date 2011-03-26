@@ -52,9 +52,7 @@ public class ParserExample {
     String filesDirectory = args[0];
     String outputDirectory = args[1];
 
-    CollectionReader reader = FilesCollectionReader.getCollectionReader(
-        ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-        filesDirectory);
+    CollectionReader reader = FilesCollectionReader.getCollectionReader(filesDirectory);
 
     AnalysisEngineDescription sentences = AnalysisEngineFactory.createPrimitiveDescription(
         SentenceAnnotator.class,

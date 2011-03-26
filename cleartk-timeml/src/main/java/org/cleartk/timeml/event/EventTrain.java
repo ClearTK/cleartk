@@ -32,7 +32,6 @@ import org.apache.uima.util.Logger;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.syntax.opennlp.PosTaggerAnnotator;
 import org.cleartk.syntax.opennlp.SentenceAnnotator;
-import org.cleartk.timeml.TimeMLComponents;
 import org.cleartk.timeml.TimeMLViewName;
 import org.cleartk.timeml.corpus.TimeMLGoldAnnotator;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
@@ -71,7 +70,6 @@ public class EventTrain {
     // run pipeline to extract features and write training data
     SimplePipeline.runPipeline(
         FilesCollectionReader.getCollectionReaderWithView(
-            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
             timebankDirectory,
             TimeMLViewName.TIMEML),
         TimeMLGoldAnnotator.getDescriptionNoTLINKs(),

@@ -92,9 +92,7 @@ public class Step1BuildIDFMap {
             idfmapDirectory.getPath());
 
     SimplePipeline.runPipeline(
-        FilesCollectionReader.getCollectionReader(
-            ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-            documentDirectory),
+        FilesCollectionReader.getCollectionReader(documentDirectory),
         SentenceAnnotator.getDescription(),
         TokenAnnotator.getDescription(),
         DefaultSnowballStemmer.getDescription("English"),

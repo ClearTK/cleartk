@@ -45,13 +45,14 @@ import org.uimafit.pipeline.SimplePipeline;
 public class RunExamplePOSAnnotator {
 
   public static void main(String[] args) throws Exception {
-    SimplePipeline.runPipeline(FilesCollectionReader.getCollectionReader(
-        ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-        "src/main/resources/data/pos/2008_Sichuan_earthquake.txt"), SentenceAnnotator
-        .getDescription(), TokenAnnotator.getDescription(), DefaultSnowballStemmer
-        .getDescription("English"), ExamplePOSAnnotator
-        .getClassifierDescription(ExamplePOSAnnotator.DEFAULT_MODEL), AnalysisEngineFactory
-        .createPrimitiveDescription(
+    SimplePipeline.runPipeline(
+        FilesCollectionReader
+            .getCollectionReader("src/main/resources/data/pos/2008_Sichuan_earthquake.txt"),
+        SentenceAnnotator.getDescription(),
+        TokenAnnotator.getDescription(),
+        DefaultSnowballStemmer.getDescription("English"),
+        ExamplePOSAnnotator.getClassifierDescription(ExamplePOSAnnotator.DEFAULT_MODEL),
+        AnalysisEngineFactory.createPrimitiveDescription(
             ExamplePOSPlainTextWriter.class,
             ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
             ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME,

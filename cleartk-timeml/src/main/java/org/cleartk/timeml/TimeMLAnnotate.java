@@ -88,9 +88,7 @@ public class TimeMLAnnotate {
 
     // run the components on the selected documents
     SimplePipeline.runPipeline(
-        FilesCollectionReader.getCollectionReader(
-            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
-            inputFileOrDir),
+        FilesCollectionReader.getCollectionReader(inputFileOrDir),
         SentenceAnnotator.getDescription(),
         TokenAnnotator.getDescription(),
         PosTaggerAnnotator.getDescription(),

@@ -87,9 +87,7 @@ public class Step4RunClassifier {
 
     System.out.println("classifying documents located in '" + documentDirectory + "'");
     SimplePipeline.runPipeline(
-        FilesCollectionReader.getCollectionReader(
-            ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-            documentDirectory),
+        FilesCollectionReader.getCollectionReader(documentDirectory),
         SentenceAnnotator.getDescription(),
         TokenAnnotator.getDescription(),
         DefaultSnowballStemmer.getDescription("English"),

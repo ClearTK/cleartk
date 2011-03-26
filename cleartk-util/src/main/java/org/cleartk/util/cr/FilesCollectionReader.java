@@ -45,7 +45,6 @@ import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.pear.util.FileUtil;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
@@ -74,23 +73,20 @@ import org.uimafit.factory.ConfigurationParameterFactory;
 @SofaCapability(outputSofas = ViewURIUtil.URI)
 public class FilesCollectionReader extends JCasCollectionReader_ImplBase {
 
-  public static CollectionReader getCollectionReader(
-      TypeSystemDescription typeSystemDescription,
-      String fileOrDir) throws ResourceInitializationException {
+  public static CollectionReader getCollectionReader(String fileOrDir)
+      throws ResourceInitializationException {
     return CollectionReaderFactory.createCollectionReader(
         FilesCollectionReader.class,
-        typeSystemDescription,
+        null,
         PARAM_ROOT_FILE,
         fileOrDir);
   }
 
-  public static CollectionReader getCollectionReaderWithView(
-      TypeSystemDescription typeSystemDescription,
-      String dir,
-      String viewName) throws ResourceInitializationException {
+  public static CollectionReader getCollectionReaderWithView(String dir, String viewName)
+      throws ResourceInitializationException {
     return CollectionReaderFactory.createCollectionReader(
         FilesCollectionReader.class,
-        typeSystemDescription,
+        null,
         PARAM_ROOT_FILE,
         dir,
         PARAM_VIEW_NAME,
@@ -98,13 +94,12 @@ public class FilesCollectionReader extends JCasCollectionReader_ImplBase {
   }
 
   public static CollectionReader getCollectionReaderWithPatterns(
-      TypeSystemDescription typeSystemDescription,
       String dir,
       String viewName,
       String... patterns) throws ResourceInitializationException {
     return CollectionReaderFactory.createCollectionReader(
         FilesCollectionReader.class,
-        typeSystemDescription,
+        null,
         PARAM_ROOT_FILE,
         dir,
         PARAM_VIEW_NAME,
@@ -114,13 +109,12 @@ public class FilesCollectionReader extends JCasCollectionReader_ImplBase {
   }
 
   public static CollectionReader getCollectionReaderWithSuffixes(
-      TypeSystemDescription typeSystemDescription,
       String dir,
       String viewName,
       String... suffixes) throws ResourceInitializationException {
     return CollectionReaderFactory.createCollectionReader(
         FilesCollectionReader.class,
-        typeSystemDescription,
+        null,
         PARAM_ROOT_FILE,
         dir,
         PARAM_VIEW_NAME,
