@@ -45,6 +45,7 @@ import org.cleartk.timeml.type.TemporalLink;
 import org.cleartk.timeml.type.Text;
 import org.cleartk.timeml.type.Time;
 import org.cleartk.timeml.util.TimeMLUtil;
+import org.cleartk.token.type.Sentence;
 import org.cleartk.util.ViewURIUtil;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -188,6 +189,9 @@ public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
     } else if (element.getName().equals("TEXT")) {
       Text text = new Text(jCas, startOffset, endOffset);
       text.addToIndexes();
+    } else if (element.getName().toLowerCase().equals("s")) {
+      Sentence sentence = new Sentence(jCas, startOffset, endOffset);
+      sentence.addToIndexes();
     }
   }
 
