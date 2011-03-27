@@ -26,10 +26,8 @@ package org.cleartk.examples.pos;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assume.assumeTrue;
 
 import java.io.File;
-import java.util.logging.Logger;
 
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.pear.util.FileUtil;
@@ -67,8 +65,6 @@ import org.uimafit.testing.util.HideOutput;
 
 public class ExamplePosClassifierTest extends ExamplesTestBase {
 
-  private static final Logger LOGGER = Logger.getLogger(ExamplePosClassifierTest.class.getName());
-
   @Test
   public void testLibsvm() throws Exception {
     String outDirectoryName = outputDirectoryName + "/libsvm";
@@ -100,10 +96,8 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
 
   @Test
   public void testMalletCRF() throws Exception {
-    if (!RUN_LONG_TESTS) {
-      LOGGER.info(LONG_TEST_MESSAGE);
-    }
-    assumeTrue(RUN_LONG_TESTS);
+    this.assumeLongTestsEnabled();
+    this.logger.info(LONG_TEST_MESSAGE);
 
     String outDirectoryName = outputDirectoryName + "/malletcrf";
     AnalysisEngineDescription dataWriter = CleartkAnnotatorDescriptionFactory
@@ -126,10 +120,8 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
 
   @Test
   public void testMalletCRF2() throws Exception {
-    if (!RUN_LONG_TESTS) {
-      LOGGER.info(LONG_TEST_MESSAGE);
-    }
-    assumeTrue(RUN_LONG_TESTS);
+    this.assumeLongTestsEnabled();
+    this.logger.info(LONG_TEST_MESSAGE);
 
     String outDirectoryName = outputDirectoryName + "/malletcrf-compressed";
     AnalysisEngineDescription dataWriter = CleartkAnnotatorDescriptionFactory
@@ -258,10 +250,8 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
 
   @Test
   public void testMalletC45() throws Exception {
-    if (!RUN_LONG_TESTS) {
-      LOGGER.info(LONG_TEST_MESSAGE);
-    }
-    assumeTrue(RUN_LONG_TESTS);
+    this.assumeLongTestsEnabled();
+    this.logger.info(LONG_TEST_MESSAGE);
 
     String outDirectoryName = outputDirectoryName + "/mallet-c45";
 

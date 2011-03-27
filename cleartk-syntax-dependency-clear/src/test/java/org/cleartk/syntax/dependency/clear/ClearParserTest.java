@@ -70,6 +70,9 @@ public class ClearParserTest extends CleartkTestBase {
 
   @Test
   public void testClearParser() throws Exception {
+    this.assumeBigMemoryTestsEnabled();
+    this.logger.info(BIG_MEMORY_TEST_MESSAGE);
+
     AnalysisEngine lemmatizer = AnalysisEngineFactory.createPrimitive(
         LemmaAnnotator.class,
         typeSystemDescription);

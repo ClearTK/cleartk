@@ -25,13 +25,11 @@ package org.cleartk.syntax.dependency.malt;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Logger;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
@@ -42,12 +40,7 @@ import org.cleartk.test.CleartkTestBase;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.internal.AssumptionViolatedException;
-import org.junit.rules.MethodRule;
-import org.junit.runners.model.FrameworkMethod;
-import org.junit.runners.model.Statement;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.testing.factory.TokenBuilder;
 
@@ -58,36 +51,6 @@ import org.uimafit.testing.factory.TokenBuilder;
  */
 public class MaltParserTest extends CleartkTestBase {
 
-  private static final Logger LOGGER = Logger.getLogger(MaltParserTest.class.getName());
-
-  @Rule
-  public MethodRule memoryRule = new MemoryRule(2000000000L);
-
-  public static class MemoryRule implements MethodRule {
-
-    private long minMemory;
-
-    public MemoryRule(long minMemory) {
-      this.minMemory = minMemory;
-    }
-
-    @Override
-    public Statement apply(Statement statement, FrameworkMethod method, Object object) {
-      long maxMemory = Runtime.getRuntime().maxMemory();
-      boolean enoughMemory = maxMemory >= this.minMemory;
-      if (!enoughMemory) {
-        String message = String.format(
-            "Skipping %s: expected %s bytes memory, found %s",
-            method.getName(),
-            this.minMemory,
-            maxMemory);
-        System.err.println(message);
-        throw new AssumptionViolatedException(message);
-      }
-      return statement;
-    }
-  }
-
   @Override
   public String[] getTypeSystemDescriptorNames() {
     return new String[] {
@@ -97,14 +60,8 @@ public class MaltParserTest extends CleartkTestBase {
 
   @Test
   public void test() throws UIMAException {
-    
-    if (!RUN_BIGMEM_TESTS) {
-      LOGGER.info(BIGMEM_TEST_MESSAGE);
-    }
-    
-    assumeTrue(RUN_BIGMEM_TESTS);
-    
-    
+    this.assumeBigMemoryTestsEnabled();
+    this.logger.info(BIG_MEMORY_TEST_MESSAGE);
     
     TokenBuilder<Token, Sentence> tokenBuilder = new TokenBuilder<Token, Sentence>(
         Token.class,

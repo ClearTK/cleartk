@@ -65,6 +65,9 @@ public class StanfordCoreNLPTest extends CleartkTestBase {
 
   @Test
   public void test() throws Throwable {
+    this.assumeBigMemoryTestsEnabled();
+    this.logger.info(BIG_MEMORY_TEST_MESSAGE);
+
     String sent1 = "The Stanford-based Dr. Smith bought \n milk for Martha.";
     String sent2 = "So she thanked him for it \n and put the milk into her bag.";
     this.jCas.setDocumentText(String.format("%s %s", sent1, sent2));

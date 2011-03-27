@@ -27,12 +27,14 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.TemporaryFolder;
@@ -52,27 +54,98 @@ import org.uimafit.pipeline.JCasIterable;
 
 public abstract class CleartkTestBase {
 
-  protected static final String RUN_LONG_TESTS_PROP = "cleartk.longtests";
+  /**
+   * A {@link Logger} instance associated with the class, intended for use by subclasses.
+   */
+  protected Logger logger;
 
-  protected static final boolean RUN_LONG_TESTS = System.getProperty(RUN_LONG_TESTS_PROP) != null;
+  /**
+   * The name of the property that can be set to skip some tests. The property value will be parsed
+   * as a comma-separated list of values, where each value can designate one type of test to skip,
+   * e.g. {@value #LONG_TESTS_PROPERTY_VALUE} or {@value #BIG_MEMORY_TESTS_PROPERTY_VALUE}. Example
+   * usage: <br/>
+   * <code>-Dcleartk.skipTests=long,bigMem</code>
+   */
+  public static final String SKIP_TESTS_PROPERTY = "cleartk.skipTests";
 
+  /**
+   * Value for the {@link #SKIP_TESTS_PROPERTY} property that indicates that long-running tests
+   * should be disabled. Current value: {@value #LONG_TESTS_PROPERTY_VALUE}.
+   */
+  public static final String LONG_TESTS_PROPERTY_VALUE = "long";
+  
+  /**
+   * Value for the {@link #SKIP_TESTS_PROPERTY} property that indicates that tests requiring a lot
+   * of memory should be disabled. Current value: {@value #BIG_MEMORY_TESTS_PROPERTY_VALUE}.
+   */
+  public static final String BIG_MEMORY_TESTS_PROPERTY_VALUE = "bigMem";
+
+  private boolean skipLongTests;
+
+  private boolean skipBigMemoryTests;
+
+  public CleartkTestBase() {
+    super();
+    this.logger = Logger.getLogger(this.getClass().getName());
+    String skipTests = System.getProperty(SKIP_TESTS_PROPERTY);
+    if (skipTests != null) {
+      for (String skip : skipTests.split("\\s*[,]\\s*")) {
+        if (skip.equals(LONG_TESTS_PROPERTY_VALUE)) {
+          this.skipLongTests = true;
+        } else if (skip.equals(BIG_MEMORY_TESTS_PROPERTY_VALUE)) {
+          this.skipBigMemoryTests = true;
+        } else {
+          throw new IllegalArgumentException(String.format(
+              "expected %s to be one of [%s, %s], found %s",
+              SKIP_TESTS_PROPERTY,
+              LONG_TESTS_PROPERTY_VALUE,
+              BIG_MEMORY_TESTS_PROPERTY_VALUE,
+              skip));
+        }
+      }
+    }
+  }
+
+  /**
+   * Subclasses should call this method at the beginning of a test that will take a long time to
+   * run. Immediately after calling this method, they should also call
+   * <code>this.logger.info({@link #LONG_TEST_MESSAGE})</code>.
+   */
+  protected void assumeLongTestsEnabled() {
+    // note that we can't log the message here as well, or it the log will display the wrong method
+    Assume.assumeTrue(!this.skipLongTests);
+  }
+
+  /**
+   * A message indicating that the current test runs for a long time, and giving instructions how to
+   * skip it. Should be logged immediately after calling {@link #assumeLongTestsEnabled()}.
+   */
   protected static final String LONG_TEST_MESSAGE = String.format(
-      "Skipping test because it takes a long time to run. To run this test, supply -D%s at the "
-          + "command line.",
-      RUN_LONG_TESTS_PROP);
+      "This test takes a long time to run. To skip it, set -D%s=%s",
+      SKIP_TESTS_PROPERTY,
+      LONG_TESTS_PROPERTY_VALUE);
 
-  protected static final String RUN_BIGMEM_TESTS_PROP = "cleartk.bigmem";
+  /**
+   * Subclasses should call this method at the beginning of a test that will take a long time to
+   * run. Immediately after calling this method, they should also call
+   * <code>this.logger.info({@link #BIG_MEMORY_TEST_MESSAGE})</code>.
+   */
+  protected void assumeBigMemoryTestsEnabled() {
+    // note that we can't log the message here as well, or it the log will display the wrong method
+    Assume.assumeTrue(!this.skipBigMemoryTests);
+  }
 
-  protected static final boolean RUN_BIGMEM_TESTS = System.getProperty(RUN_BIGMEM_TESTS_PROP) != null;
+  /**
+   * A message indicating that the current test requires a lot of memory, and giving instructions
+   * how to skip it. Should be logged immediately after calling
+   * {@link #assumeBigMemoryTestsEnabled()}.
+   */
+  public static final String BIG_MEMORY_TEST_MESSAGE = String.format(
+      "This test requires a lot of memory. To skip it, set -D%s=%s",
+      SKIP_TESTS_PROPERTY,
+      BIG_MEMORY_TESTS_PROPERTY_VALUE);
 
-  protected static final String BIGMEM_TEST_MESSAGE = String.format(
-      "Skipping test because it takes a lot of memory to run. To run this test, supply -D%s at the "
-          + "command line.",
-          RUN_BIGMEM_TESTS_PROP);
 
-  
-  
-  
   protected JCas jCas;
 
   protected TypeSystemDescription typeSystemDescription;
