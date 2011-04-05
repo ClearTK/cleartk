@@ -32,6 +32,7 @@ import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.timeml.TimeMLTestBase;
 import org.cleartk.timeml.TimeMLViewName;
+import org.cleartk.timeml.type.DocumentCreationTime;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.type.TemporalLink;
 import org.cleartk.timeml.type.Time;
@@ -56,22 +57,19 @@ public class TimeMLGoldAnnotatorTest extends TimeMLTestBase {
 
   @Test
   public void testTimeBank() throws UIMAException, IOException {
-    CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-        FilesCollectionReader.class,
-        typeSystemDescription,
-        FilesCollectionReader.PARAM_VIEW_NAME,
-        TimeMLViewName.TIMEML,
-        FilesCollectionReader.PARAM_ROOT_FILE,
-        "src/test/resources/data/timeml/wsj_0106.tml");
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-        TimeMLGoldAnnotator.class,
-        typeSystemDescription);
-    JCas jcas = new JCasIterable(reader, engine).next();
+    CollectionReader reader = FilesCollectionReader.getCollectionReaderWithView(
+        "src/test/resources/data/timeml/wsj_0106.tml",
+        TimeMLViewName.TIMEML);
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TimeMLGoldAnnotator
+        .getDescription());
+    reader.getNext(this.jCas.getCas());
+    engine.process(this.jCas);
+    engine.collectionProcessComplete();
 
     // <EVENT eid="e1" class="REPORTING">said</EVENT>
     // <MAKEINSTANCE eventID="e1" eiid="ei128" tense="PAST" aspect="NONE"
     // polarity="POS" pos="VERB"/>
-    List<Event> events = AnnotationRetrieval.getAnnotations(jcas, Event.class);
+    List<Event> events = AnnotationRetrieval.getAnnotations(this.jCas, Event.class);
     Assert.assertEquals("said", events.get(0).getCoveredText());
     Assert.assertEquals("e1", events.get(0).getId());
     Assert.assertEquals("ei128", events.get(0).getEventInstanceID());
@@ -87,7 +85,7 @@ public class TimeMLGoldAnnotatorTest extends TimeMLTestBase {
     // <TIMEX3 tid="t26" type="DATE" value="1989-11-02"
     // temporalFunction="false"
     // functionInDocument="CREATION_TIME">11/02/89</TIMEX3>
-    List<Time> times = AnnotationRetrieval.getAnnotations(jcas, Time.class);
+    List<Time> times = AnnotationRetrieval.getAnnotations(this.jCas, Time.class);
     Time docTime = times.get(0);
     Assert.assertEquals("11/02/89", docTime.getCoveredText());
     Assert.assertEquals("t26", docTime.getId());
@@ -95,10 +93,11 @@ public class TimeMLGoldAnnotatorTest extends TimeMLTestBase {
     Assert.assertEquals("1989-11-02", docTime.getValue());
     Assert.assertEquals("false", docTime.getTemporalFunction());
     Assert.assertEquals("CREATION_TIME", docTime.getFunctionInDocument());
+    Assert.assertTrue(docTime instanceof DocumentCreationTime);
 
     // <TLINK lid="l1" relType="BEFORE" eventInstanceID="ei128"
     // relatedToTime="t26"/>
-    List<TemporalLink> tlinks = AnnotationRetrieval.getAnnotations(jcas, TemporalLink.class);
+    List<TemporalLink> tlinks = AnnotationRetrieval.getAnnotations(this.jCas, TemporalLink.class);
     Assert.assertEquals("l1", tlinks.get(0).getId());
     Assert.assertEquals("BEFORE", tlinks.get(0).getRelationType());
     Assert.assertEquals("ei128", tlinks.get(0).getEventInstanceID());

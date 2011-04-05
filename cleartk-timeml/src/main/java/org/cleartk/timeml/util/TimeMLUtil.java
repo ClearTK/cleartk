@@ -33,6 +33,7 @@ import java.util.Set;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.cleartk.timeml.type.DocumentCreationTime;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.type.TemporalLink;
 import org.cleartk.timeml.type.Time;
@@ -73,6 +74,7 @@ public class TimeMLUtil {
     elementNames.put("Document", "TimeML");
     elementNames.put(Event.class.getName(), "EVENT");
     elementNames.put(Time.class.getName(), "TIMEX3");
+    elementNames.put(DocumentCreationTime.class.getName(), "TIMEX3");
     elementNames.put(TemporalLink.class.getName(), "TLINK");
 
     eventAttributes.add(new NamePair("eid", "id"));

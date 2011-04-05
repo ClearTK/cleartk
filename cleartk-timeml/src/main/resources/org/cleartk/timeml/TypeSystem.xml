@@ -12,5 +12,6 @@
     <import name="org.cleartk.timeml.type.TemporalLink"/>
     <import name="org.cleartk.timeml.type.Text"/>
     <import name="org.cleartk.timeml.type.Time"/>
+    <import name="org.cleartk.timeml.type.DocumentCreationTime"/>
   </imports>
 </typeSystemDescription>

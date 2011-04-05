@@ -27,9 +27,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
@@ -41,9 +39,8 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.CasToInlineXml;
 import org.cleartk.timeml.TimeMLComponents;
-import org.cleartk.timeml.type.Event;
+import org.cleartk.timeml.type.Anchor;
 import org.cleartk.timeml.type.TemporalLink;
-import org.cleartk.timeml.type.Time;
 import org.cleartk.timeml.util.TimeMLUtil;
 import org.cleartk.util.ViewURIUtil;
 import org.jdom.Document;
@@ -94,14 +91,7 @@ public class TimeMLWriter extends JCasAnnotator_ImplBase {
     }
   }
 
-  @Override
-  public void process(JCas jCas) throws AnalysisEngineProcessException {
-
-    // the set of types to be output as XML
-    final Set<String> includedTypes = new HashSet<String>();
-    includedTypes.add(Event.class.getName());
-    includedTypes.add(Time.class.getName());
-    includedTypes.add(TemporalLink.class.getName());
+  public static String toTimeML(JCas jCas) throws AnalysisEngineProcessException {
 
     // convert the CAS to inline XML - this will use UIMA style XML names,
     // not TimeML names, so we'll have to fix this up afterwards
@@ -111,7 +101,7 @@ public class TimeMLWriter extends JCasAnnotator_ImplBase {
         private static final long serialVersionUID = 1L;
 
         public boolean match(FeatureStructure fs) {
-          return includedTypes.contains(fs.getType().getName());
+          return fs instanceof Anchor || fs instanceof TemporalLink;
         }
       });
     } catch (CASException e) {
@@ -137,7 +127,12 @@ public class TimeMLWriter extends JCasAnnotator_ImplBase {
         TimeMLUtil.uimaToTimemlNames((Element) contentObj);
       }
     }
-    xmlString = new XMLOutputter().outputString(document);
+    return new XMLOutputter().outputString(document);
+  }
+
+  @Override
+  public void process(JCas jCas) throws AnalysisEngineProcessException {
+    String xmlString = toTimeML(jCas);
 
     // write the TimeML to the output file
     String filePath = ViewURIUtil.getURI(jCas).getPath();

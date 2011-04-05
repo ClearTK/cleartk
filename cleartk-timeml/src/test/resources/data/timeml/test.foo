@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TimeML>
+<TIMEX3 tid="t0" type="DATE" value="2008-10-05" functionInDocument="CREATION_TIME">2008-10-05</TIMEX3>
 President Bush had
 <EVENT eid="e1" class="OCCURRENCE" stem="sign" aspect="PERFECTIVE" tense="PAST" polarity="POS" pos="VERB">signed</EVENT>
 the bill into law within hours of its

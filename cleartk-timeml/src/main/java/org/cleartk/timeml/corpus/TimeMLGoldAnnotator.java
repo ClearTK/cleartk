@@ -40,6 +40,7 @@ import org.apache.uima.util.Level;
 import org.cleartk.timeml.TimeMLComponents;
 import org.cleartk.timeml.TimeMLViewName;
 import org.cleartk.timeml.type.Anchor;
+import org.cleartk.timeml.type.DocumentCreationTime;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.type.TemporalLink;
 import org.cleartk.timeml.type.Text;
@@ -144,7 +145,11 @@ public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
     int endOffset = textBuffer.length();
 
     if (element.getName().equals("TIMEX3")) {
-      Time time = new Time(jCas, startOffset, endOffset);
+      String funcInDoc = element.getAttributeValue("functionInDocument");
+      boolean isCreationTime = funcInDoc != null && funcInDoc.equals("CREATION_TIME");
+      Time time = isCreationTime
+          ? new DocumentCreationTime(jCas, startOffset, endOffset)
+          : new Time(jCas, startOffset, endOffset);
       TimeMLUtil.copyAttributes(element, time, jCas);
       anchors.put(time.getId(), time);
       time.addToIndexes();

@@ -33,7 +33,6 @@ import java.util.Map;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;
-import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
 import org.cleartk.timeml.TimeMLTestBase;
@@ -47,8 +46,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.CollectionReaderFactory;
-import org.uimafit.pipeline.JCasIterable;
 
 /**
  * <br>
@@ -74,25 +71,17 @@ public class TimeMLWriterTest extends TimeMLTestBase {
 
   @Test
   public void test() throws UIMAException, IOException, JDOMException {
-    CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-        FilesCollectionReader.class,
-        typeSystemDescription,
-        FilesCollectionReader.PARAM_VIEW_NAME,
-        TimeMLViewName.TIMEML,
-        FilesCollectionReader.PARAM_ROOT_FILE,
-        this.inputFile.getPath());
-    AnalysisEngine annotator = AnalysisEngineFactory.createPrimitive(
-        TimeMLGoldAnnotator.class,
-        typeSystemDescription);
-    AnalysisEngine writer = AnalysisEngineFactory.createPrimitive(
-        TimeMLWriter.class,
-        typeSystemDescription,
-        TimeMLWriter.PARAM_OUTPUT_DIRECTORY_NAME,
-        this.outputDirectory.getPath());
+    CollectionReader reader = FilesCollectionReader.getCollectionReaderWithView(
+        this.inputFile.getPath(),
+        TimeMLViewName.TIMEML);
+    AnalysisEngine annotator = AnalysisEngineFactory.createPrimitive(TimeMLGoldAnnotator
+        .getDescription());
+    AnalysisEngine writer = AnalysisEngineFactory.createPrimitive(TimeMLWriter
+        .getDescription(this.outputDirectory.getPath()));
 
-    for (JCas jcas : new JCasIterable(reader, annotator, writer)) {
-      Assert.assertNotNull(jcas);
-    }
+    reader.getNext(this.jCas.getCas());
+    annotator.process(this.jCas);
+    writer.process(this.jCas);
     reader.close();
     annotator.collectionProcessComplete();
     writer.collectionProcessComplete();
