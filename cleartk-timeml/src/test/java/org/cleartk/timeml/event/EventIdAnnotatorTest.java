@@ -114,9 +114,7 @@ public class EventIdAnnotatorTest extends TimeMLTestBase {
     Assert.assertEquals(1, tlinks.size());
     tlink = tlinks.get(0);
     Assert.assertEquals("e1", tlink.getSource().getId());
-    Assert.assertEquals("e1", tlink.getEventID());
     Assert.assertEquals("e3", tlink.getTarget().getId());
-    Assert.assertEquals("e3", tlink.getRelatedToEvent());
     Assert.assertEquals("BEFORE", tlink.getRelationType());
 
     // clear all EVENT IDs
@@ -140,9 +138,7 @@ public class EventIdAnnotatorTest extends TimeMLTestBase {
     Assert.assertEquals(1, tlinks.size());
     tlink = tlinks.get(0);
     Assert.assertEquals("e2", tlink.getSource().getId());
-    Assert.assertEquals("e2", tlink.getEventID());
     Assert.assertEquals("e3", tlink.getTarget().getId());
-    Assert.assertEquals("e3", tlink.getRelatedToEvent());
     Assert.assertEquals("BEFORE", tlink.getRelationType());
   }
 

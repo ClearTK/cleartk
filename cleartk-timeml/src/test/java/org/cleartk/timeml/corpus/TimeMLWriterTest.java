@@ -37,6 +37,9 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
 import org.cleartk.timeml.TimeMLTestBase;
 import org.cleartk.timeml.TimeMLViewName;
+import org.cleartk.timeml.type.Event;
+import org.cleartk.timeml.type.TemporalLink;
+import org.cleartk.timeml.type.Time;
 import org.cleartk.util.cr.FilesCollectionReader;
 import org.jdom.Attribute;
 import org.jdom.Element;
@@ -89,6 +92,40 @@ public class TimeMLWriterTest extends TimeMLTestBase {
     String expected = FileUtils.file2String(this.inputFile);
     String actual = FileUtils.file2String(this.outputFile);
     this.assertEquals(this.getRoot(expected), this.getRoot(actual));
+  }
+
+  @Test
+  public void testToTimeML() throws Throwable {
+    this.jCas.setDocumentText("\nHe bought milk yesterday.\n\n\n");
+    Event event = new Event(this.jCas, 4, 10);
+    event.setId("e1");
+    event.setEventInstanceID("ei1");
+    event.addToIndexes();
+    Assert.assertEquals("bought", event.getCoveredText());
+
+    Time time = new Time(this.jCas, 16, 25);
+    time.setId("t1");
+    time.addToIndexes();
+    Assert.assertEquals("yesterday", time.getCoveredText());
+
+    TemporalLink tlink1 = new TemporalLink(this.jCas, 27, 27);
+    tlink1.setSource(event);
+    tlink1.setTarget(time);
+    tlink1.setRelationType("OVERLAP");
+    tlink1.addToIndexes();
+
+    TemporalLink tlink2 = new TemporalLink(this.jCas, 28, 28);
+    tlink2.setSource(time);
+    tlink2.setTarget(event);
+    tlink2.setRelationType("OVERLAP");
+    tlink2.addToIndexes();
+
+    String expected = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><TimeML>\n"
+        + "He <EVENT eid=\"e1\" eiid=\"ei1\">bought</EVENT> milk <TIMEX3 tid=\"t1\">yesterday</TIMEX3>.\n"
+        + "<TLINK relType=\"OVERLAP\" eventID=\"e1\" eventInstanceID=\"ei1\" relatedToTime=\"t1\"/>\n"
+        + "<TLINK relType=\"OVERLAP\" timeID=\"t1\" relatedToEvent=\"e1\" relatedToEventInstance=\"ei1\"/>\n"
+        + "</TimeML>";
+    Assert.assertEquals(expected, TimeMLWriter.toTimeML(this.jCas));
   }
 
   @Test

@@ -32,10 +32,8 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.timeml.TimeMLComponents;
-import org.cleartk.timeml.type.Anchor;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.type.TemporalLink;
-import org.cleartk.timeml.type.Time;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.util.JCasUtil;
@@ -92,28 +90,6 @@ public class EventIdAnnotator extends JCasAnnotator_ImplBase {
           }
         }
         event.setId(nextId);
-      }
-    }
-
-    // update TLINK attributes based on new EVENT ids
-    for (TemporalLink tlink : JCasUtil.iterate(jCas, TemporalLink.class)) {
-      Anchor source = tlink.getSource();
-      if (source instanceof Event) {
-        tlink.setEventID(source.getId());
-        tlink.setEventInstanceID(((Event) source).getEventInstanceID());
-      } else if (source instanceof Time) {
-        tlink.setTimeID(source.getId());
-      } else {
-        throw new RuntimeException("unknown Anchor type: " + source.getClass());
-      }
-      Anchor target = tlink.getTarget();
-      if (target instanceof Event) {
-        tlink.setRelatedToEvent(target.getId());
-        tlink.setRelatedToEventInstance(((Event) target).getEventInstanceID());
-      } else if (target instanceof Time) {
-        tlink.setRelatedToTime(target.getId());
-      } else {
-        throw new RuntimeException("unknown Anchor type: " + source.getClass());
       }
     }
   }

@@ -25,20 +25,21 @@ package org.cleartk.timeml.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.uima.cas.Feature;
+import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.cleartk.timeml.type.Anchor;
 import org.cleartk.timeml.type.DocumentCreationTime;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.type.TemporalLink;
 import org.cleartk.timeml.type.Time;
-import org.jdom.Attribute;
 import org.jdom.Element;
+import org.xml.sax.Attributes;
+import org.xml.sax.helpers.AttributesImpl;
 
 /**
  * <br>
@@ -110,16 +111,7 @@ public class TimeMLUtil {
 
     tlinkAttributes.add(new NamePair("lid", "id"));
     tlinkAttributes.add(new NamePair("relType", "relationType"));
-    for (String name : new String[] {
-        "eventInstanceID",
-        "eventID",
-        "timeID",
-        "relatedToEventInstance",
-        "relatedToEvent",
-        "relatedToTime",
-        "signalID" }) {
-      tlinkAttributes.add(new NamePair(name, name));
-    }
+    tlinkAttributes.add(new NamePair("signalID", "signalID"));
 
     timemlAttributeLists.put("EVENT", eventAttributes);
     timemlAttributeLists.put("MAKEINSTANCE", eventAttributes);
@@ -156,32 +148,51 @@ public class TimeMLUtil {
     }
   }
 
-  public static void uimaToTimemlNames(Element element) {
-    String name = element.getName();
-    String replacementName = elementNames.get(name);
-    if (replacementName != null) {
-      element.setName(replacementName);
+  public static String toTimeMLElementName(AnnotationFS annotation) {
+    if (annotation instanceof Event) {
+      return "EVENT";
+    } else if (annotation instanceof Time) {
+      return "TIMEX3";
+    } else if (annotation instanceof TemporalLink) {
+      return "TLINK";
+    } else {
+      return null;
     }
-    List<NamePair> namePairs = timemlAttributeLists.get(element.getName());
-    if (namePairs != null) {
-      Set<String> validNames = new HashSet<String>();
-      for (NamePair names : namePairs) {
-        validNames.add(names.timemlName);
-        Attribute attribute = element.getAttribute(names.uimaName);
-        if (attribute != null) {
-          if (attribute.getValue().equals("null")) {
-            element.removeAttribute(attribute);
-          } else {
-            attribute.setName(names.timemlName);
-          }
-        }
+  }
+
+  public static Attributes toTimeMLAttributes(AnnotationFS annotation, String elementName) {
+    // add attributes that have a simple one-to-one mapping
+    AttributesImpl attributes = new AttributesImpl();
+    for (NamePair names : timemlAttributeLists.get(elementName)) {
+      Feature feature = annotation.getType().getFeatureByBaseName(names.uimaName);
+      addAttribute(attributes, names.timemlName, annotation.getFeatureValueAsString(feature));
+    }
+    // add un-mappable attributes
+    if (annotation instanceof TemporalLink) {
+      TemporalLink tlink = (TemporalLink) annotation;
+      Anchor source = tlink.getSource();
+      Anchor target = tlink.getTarget();
+      if (source instanceof Event) {
+        Event event = (Event) source;
+        addAttribute(attributes, "eventID", event.getId());
+        addAttribute(attributes, "eventInstanceID", event.getEventInstanceID());
+      } else if (source instanceof Time) {
+        addAttribute(attributes, "timeID", source.getId());
       }
-      for (Object attrObj : element.getAttributes().toArray()) {
-        Attribute attribute = (Attribute) attrObj;
-        if (!validNames.contains(attribute.getName())) {
-          element.removeAttribute(attribute);
-        }
+      if (target instanceof Event) {
+        Event event = (Event) target;
+        addAttribute(attributes, "relatedToEvent", event.getId());
+        addAttribute(attributes, "relatedToEventInstance", event.getEventInstanceID());
+      } else if (target instanceof Time) {
+        addAttribute(attributes, "relatedToTime", target.getId());
       }
+    }
+    return attributes;
+  }
+
+  private static void addAttribute(AttributesImpl attributes, String name, String value) {
+    if (value != null) {
+      attributes.addAttribute("", name, name, "CDATA", value);
     }
   }
 

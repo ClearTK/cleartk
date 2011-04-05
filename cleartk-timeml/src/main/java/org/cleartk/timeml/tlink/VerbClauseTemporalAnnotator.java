@@ -244,8 +244,6 @@ public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
             tlink.setSource(source);
             tlink.setTarget(target);
             tlink.setRelationType(relationType);
-            tlink.setEventID(source.getId());
-            tlink.setRelatedToEvent(target.getId());
             tlink.addToIndexes();
           }
         }

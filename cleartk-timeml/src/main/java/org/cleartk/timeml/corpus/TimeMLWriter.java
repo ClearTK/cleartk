@@ -23,35 +23,32 @@
  */
 package org.cleartk.timeml.corpus;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.StringReader;
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
-import org.apache.uima.cas.CASException;
-import org.apache.uima.cas.FSMatchConstraint;
-import org.apache.uima.cas.FeatureStructure;
+import org.apache.uima.cas.CAS;
+import org.apache.uima.cas.FSIterator;
+import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.apache.uima.util.CasToInlineXml;
+import org.apache.uima.util.XMLSerializer;
 import org.cleartk.timeml.TimeMLComponents;
-import org.cleartk.timeml.type.Anchor;
-import org.cleartk.timeml.type.TemporalLink;
 import org.cleartk.timeml.util.TimeMLUtil;
 import org.cleartk.util.ViewURIUtil;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
-import org.jdom.output.XMLOutputter;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
+import org.xml.sax.ContentHandler;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.AttributesImpl;
 
 /**
  * <br>
@@ -92,42 +89,11 @@ public class TimeMLWriter extends JCasAnnotator_ImplBase {
   }
 
   public static String toTimeML(JCas jCas) throws AnalysisEngineProcessException {
-
-    // convert the CAS to inline XML - this will use UIMA style XML names,
-    // not TimeML names, so we'll have to fix this up afterwards
-    String xmlString;
     try {
-      xmlString = new CasToInlineXml().generateXML(jCas.getCas(), new FSMatchConstraint() {
-        private static final long serialVersionUID = 1L;
-
-        public boolean match(FeatureStructure fs) {
-          return fs instanceof Anchor || fs instanceof TemporalLink;
-        }
-      });
-    } catch (CASException e) {
+      return toXML(jCas.getCas(), new TimeMLAnnotationsToElements());
+    } catch (SAXException e) {
       throw new AnalysisEngineProcessException(e);
     }
-
-    // parse the inline XML into a jDom document
-    SAXBuilder builder = new SAXBuilder();
-    builder.setDTDHandler(null);
-    Document document;
-    try {
-      document = builder.build(new StringReader(xmlString));
-    } catch (JDOMException e) {
-      throw new AnalysisEngineProcessException(e);
-    } catch (IOException e) {
-      throw new AnalysisEngineProcessException(e);
-    }
-
-    // reformat each element, converting UIMA names to TimeML names
-    for (Iterator<?> iter = document.getDescendants(); iter.hasNext();) {
-      Object contentObj = iter.next();
-      if (contentObj instanceof Element) {
-        TimeMLUtil.uimaToTimemlNames((Element) contentObj);
-      }
-    }
-    return new XMLOutputter().outputString(document);
   }
 
   @Override
@@ -152,5 +118,160 @@ public class TimeMLWriter extends JCasAnnotator_ImplBase {
 
   public void setOutputDirectoryName(String outputDirectoryName) {
     this.outputDirectoryName = outputDirectoryName;
+  }
+
+  private static interface AnnotationsToElements {
+    public void startRootElement(ContentHandler handler) throws SAXException;
+
+    public void endRootElement(ContentHandler handler) throws SAXException;
+
+    public void startAnnotationElement(AnnotationFS annotation, ContentHandler handler)
+        throws SAXException;
+
+    public void endAnnotationElement(AnnotationFS annotation, ContentHandler handler)
+        throws SAXException;
+  }
+
+  private static class TimeMLAnnotationsToElements implements AnnotationsToElements {
+
+    public TimeMLAnnotationsToElements() {
+    }
+
+    @Override
+    public void startRootElement(ContentHandler handler) throws SAXException {
+      handler.startElement("", "TimeML", "TimeML", new AttributesImpl());
+    }
+
+    @Override
+    public void endRootElement(ContentHandler handler) throws SAXException {
+      handler.endElement("", "TimeML", "TimeML");
+    }
+
+    @Override
+    public void startAnnotationElement(AnnotationFS annotation, ContentHandler handler)
+        throws SAXException {
+      String name = TimeMLUtil.toTimeMLElementName(annotation);
+      if (name != null) {
+        handler.startElement("", name, name, TimeMLUtil.toTimeMLAttributes(annotation, name));
+      }
+    }
+
+    @Override
+    public void endAnnotationElement(AnnotationFS annotation, ContentHandler handler)
+        throws SAXException {
+      String name = TimeMLUtil.toTimeMLElementName(annotation);
+      if (name != null) {
+        handler.endElement("", name, name);
+      }
+    }
+  }
+
+  /**
+   * Copied and modified from {@link org.apache.uima.util.CasToInlineXml}
+   */
+  private static String toXML(CAS cas, AnnotationsToElements converter) throws SAXException {
+    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+    XMLSerializer sax2xml = new XMLSerializer(byteArrayOutputStream, false);
+
+    // get document text
+    String docText = cas.getDocumentText();
+    char[] docCharArray = docText.toCharArray();
+
+    // get iterator over annotations sorted by increasing start position and
+    // decreasing end position
+    FSIterator<AnnotationFS> iterator = cas.getAnnotationIndex().iterator();
+
+    // This is basically a recursive algorithm that has had the recursion
+    // removed through the use of an explicit Stack. We iterate over the
+    // annotations, and if an annotation contains other annotations, we
+    // push the parent annotation on the stack, process the children, and
+    // then come back to the parent later.
+    List<AnnotationFS> stack = new ArrayList<AnnotationFS>();
+    int pos = 0;
+
+    ContentHandler handler = sax2xml.getContentHandler();
+    handler.startDocument();
+    // write the start tag
+    converter.startRootElement(handler);
+    // now use null is a placeholder for this artificial Document annotation
+    AnnotationFS curAnnot = null;
+
+    while (iterator.isValid()) {
+      AnnotationFS nextAnnot = iterator.get();
+
+      if (curAnnot == null || nextAnnot.getBegin() < curAnnot.getEnd()) {
+        // nextAnnot's start point is within the span of curAnnot
+        if (curAnnot == null || nextAnnot.getEnd() <= curAnnot.getEnd()) // crossover span check
+        {
+          // nextAnnot is contained within curAnnot
+
+          // write text between current pos and beginning of nextAnnot
+          try {
+            handler.characters(docCharArray, pos, nextAnnot.getBegin() - pos);
+            pos = nextAnnot.getBegin();
+            converter.startAnnotationElement(nextAnnot, handler);
+
+            // push parent annotation on stack
+            stack.add(curAnnot);
+            // move on to next annotation
+            curAnnot = nextAnnot;
+          } catch (StringIndexOutOfBoundsException e) {
+            System.err.println("Invalid annotation range: " + nextAnnot.getBegin() + ","
+                + nextAnnot.getEnd() + " in document of length " + docText.length());
+          }
+        }
+        iterator.moveToNext();
+      } else {
+        // nextAnnot begins after curAnnot ends
+        // write text between current pos and end of curAnnot
+        try {
+          handler.characters(docCharArray, pos, curAnnot.getEnd() - pos);
+          pos = curAnnot.getEnd();
+        } catch (StringIndexOutOfBoundsException e) {
+          System.err.println("Invalid annotation range: " + curAnnot.getBegin() + ","
+              + curAnnot.getEnd() + " in document of length " + docText.length());
+        }
+        converter.endAnnotationElement(curAnnot, handler);
+
+        // pop next containing annotation off stack
+        curAnnot = stack.remove(stack.size() - 1);
+      }
+    }
+
+    // finished writing all start tags, now finish up
+    if (curAnnot != null) {
+      try {
+        handler.characters(docCharArray, pos, curAnnot.getEnd() - pos);
+        pos = curAnnot.getEnd();
+      } catch (StringIndexOutOfBoundsException e) {
+        System.err.println("Invalid annotation range: " + curAnnot.getBegin() + ","
+            + curAnnot.getEnd() + "in document of length " + docText.length());
+      }
+      converter.endAnnotationElement(curAnnot, handler);
+
+      while (!stack.isEmpty()) {
+        curAnnot = stack.remove(stack.size() - 1); // pop
+        if (curAnnot == null) {
+          break;
+        }
+        try {
+          handler.characters(docCharArray, pos, curAnnot.getEnd() - pos);
+          pos = curAnnot.getEnd();
+        } catch (StringIndexOutOfBoundsException e) {
+          System.err.println("Invalid annotation range: " + curAnnot.getBegin() + ","
+              + curAnnot.getEnd() + "in document of length " + docText.length());
+        }
+        converter.endAnnotationElement(curAnnot, handler);
+      }
+    }
+
+    if (pos < docCharArray.length) {
+      handler.characters(docCharArray, pos, docCharArray.length - pos);
+    }
+    converter.endRootElement(handler);
+    handler.endDocument();
+
+    // return XML string
+    return new String(byteArrayOutputStream.toByteArray());
   }
 }

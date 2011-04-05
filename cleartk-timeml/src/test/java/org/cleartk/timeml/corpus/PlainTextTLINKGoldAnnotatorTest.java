@@ -35,6 +35,7 @@ import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.timeml.TimeMLTestBase;
 import org.cleartk.timeml.TimeMLViewName;
+import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.type.TemporalLink;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.cr.FilesCollectionReader;
@@ -94,27 +95,19 @@ public class PlainTextTLINKGoldAnnotatorTest extends TimeMLTestBase {
     TemporalLink tlink = tlinkMap.get("e1");
     Assert.assertEquals(null, tlink.getId());
     Assert.assertEquals("OVERLAP", tlink.getRelationType());
-    Assert.assertEquals("ei128", tlink.getEventInstanceID());
-    Assert.assertEquals("e1", tlink.getEventID());
-    Assert.assertEquals(null, tlink.getTimeID());
-    Assert.assertEquals(null, tlink.getRelatedToTime());
-    Assert.assertEquals("e2", tlink.getRelatedToEvent());
-    Assert.assertEquals("ei129", tlink.getRelatedToEventInstance());
     Assert.assertEquals("e1", tlink.getSource().getId());
     Assert.assertEquals("e2", tlink.getTarget().getId());
+    Assert.assertEquals("ei128", ((Event)tlink.getSource()).getEventInstanceID());
+    Assert.assertEquals("ei129", ((Event)tlink.getTarget()).getEventInstanceID());
 
     // wsj_0106 ei129 ei130 BEFORE
     tlink = tlinkMap.get("e2");
     Assert.assertEquals(null, tlink.getId());
     Assert.assertEquals("BEFORE", tlink.getRelationType());
-    Assert.assertEquals("ei129", tlink.getEventInstanceID());
-    Assert.assertEquals("e2", tlink.getEventID());
-    Assert.assertEquals(null, tlink.getTimeID());
-    Assert.assertEquals(null, tlink.getRelatedToTime());
-    Assert.assertEquals("e4", tlink.getRelatedToEvent());
-    Assert.assertEquals("ei130", tlink.getRelatedToEventInstance());
     Assert.assertEquals("e2", tlink.getSource().getId());
     Assert.assertEquals("e4", tlink.getTarget().getId());
+    Assert.assertEquals("ei129", ((Event)tlink.getSource()).getEventInstanceID());
+    Assert.assertEquals("ei130", ((Event)tlink.getTarget()).getEventInstanceID());
   }
 
   @Test
@@ -149,26 +142,16 @@ public class PlainTextTLINKGoldAnnotatorTest extends TimeMLTestBase {
     TemporalLink tlink = tlinkMap.get("e1");
     Assert.assertEquals(null, tlink.getId());
     Assert.assertEquals("BEFORE", tlink.getRelationType());
-    Assert.assertEquals("ei128", tlink.getEventInstanceID());
-    Assert.assertEquals("e1", tlink.getEventID());
-    Assert.assertEquals(null, tlink.getTimeID());
-    Assert.assertEquals("t26", tlink.getRelatedToTime());
-    Assert.assertEquals(null, tlink.getRelatedToEvent());
-    Assert.assertEquals(null, tlink.getRelatedToEventInstance());
     Assert.assertEquals("e1", tlink.getSource().getId());
     Assert.assertEquals("t26", tlink.getTarget().getId());
+    Assert.assertEquals("ei128", ((Event) tlink.getSource()).getEventInstanceID());
 
     // wsj_0106 t26 ei132 AFTER
     tlink = tlinkMap.get("t26");
     Assert.assertEquals(null, tlink.getId());
     Assert.assertEquals("AFTER", tlink.getRelationType());
-    Assert.assertEquals(null, tlink.getEventInstanceID());
-    Assert.assertEquals(null, tlink.getEventID());
-    Assert.assertEquals("t26", tlink.getTimeID());
-    Assert.assertEquals(null, tlink.getRelatedToTime());
-    Assert.assertEquals("e7", tlink.getRelatedToEvent());
-    Assert.assertEquals("ei132", tlink.getRelatedToEventInstance());
     Assert.assertEquals("t26", tlink.getSource().getId());
     Assert.assertEquals("e7", tlink.getTarget().getId());
+    Assert.assertEquals("ei132", ((Event) tlink.getTarget()).getEventInstanceID());
   }
 }

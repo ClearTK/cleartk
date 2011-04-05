@@ -100,12 +100,6 @@ public class TimeMLGoldAnnotatorTest extends TimeMLTestBase {
     List<TemporalLink> tlinks = AnnotationRetrieval.getAnnotations(this.jCas, TemporalLink.class);
     Assert.assertEquals("l1", tlinks.get(0).getId());
     Assert.assertEquals("BEFORE", tlinks.get(0).getRelationType());
-    Assert.assertEquals("ei128", tlinks.get(0).getEventInstanceID());
-    Assert.assertEquals("e1", tlinks.get(0).getEventID());
-    Assert.assertEquals(null, tlinks.get(0).getTimeID());
-    Assert.assertEquals("t26", tlinks.get(0).getRelatedToTime());
-    Assert.assertEquals(null, tlinks.get(0).getRelatedToEvent());
-    Assert.assertEquals(null, tlinks.get(0).getRelatedToEventInstance());
     Assert.assertEquals("e1", tlinks.get(0).getSource().getId());
     Assert.assertEquals("t26", tlinks.get(0).getTarget().getId());
     Assert.assertEquals(events.get(0), tlinks.get(0).getSource());
@@ -114,12 +108,6 @@ public class TimeMLGoldAnnotatorTest extends TimeMLTestBase {
     // relatedToEventInstance="ei130"/>
     Assert.assertEquals("l2", tlinks.get(1).getId());
     Assert.assertEquals("SIMULTANEOUS", tlinks.get(1).getRelationType());
-    Assert.assertEquals("ei131", tlinks.get(1).getEventInstanceID());
-    Assert.assertEquals("e5", tlinks.get(1).getEventID());
-    Assert.assertEquals(null, tlinks.get(1).getTimeID());
-    Assert.assertEquals(null, tlinks.get(1).getRelatedToTime());
-    Assert.assertEquals("e4", tlinks.get(1).getRelatedToEvent());
-    Assert.assertEquals("ei130", tlinks.get(1).getRelatedToEventInstance());
     Assert.assertEquals("e5", tlinks.get(1).getSource().getId());
     Assert.assertEquals("e4", tlinks.get(1).getTarget().getId());
   }
@@ -170,12 +158,6 @@ public class TimeMLGoldAnnotatorTest extends TimeMLTestBase {
     List<TemporalLink> tlinks = AnnotationRetrieval.getAnnotations(jcas, TemporalLink.class);
     Assert.assertEquals("l6", tlinks.get(5).getId());
     Assert.assertEquals("OVERLAP", tlinks.get(5).getRelationType());
-    Assert.assertEquals(null, tlinks.get(5).getEventInstanceID());
-    Assert.assertEquals("e54", tlinks.get(5).getEventID());
-    Assert.assertEquals(null, tlinks.get(5).getTimeID());
-    Assert.assertEquals("t56", tlinks.get(5).getRelatedToTime());
-    Assert.assertEquals(null, tlinks.get(5).getRelatedToEvent());
-    Assert.assertEquals(null, tlinks.get(5).getRelatedToEventInstance());
     Assert.assertEquals("e54", tlinks.get(5).getSource().getId());
     Assert.assertEquals("t56", tlinks.get(5).getTarget().getId());
   }

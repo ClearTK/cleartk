@@ -42,7 +42,6 @@ import org.cleartk.timeml.TimeMLComponents;
 import org.cleartk.timeml.type.Anchor;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.type.TemporalLink;
-import org.cleartk.timeml.type.Time;
 import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.ParamUtil;
 import org.cleartk.util.ViewURIUtil;
@@ -129,18 +128,6 @@ public class PlainTextTLINKGoldAnnotator extends JCasAnnotator_ImplBase {
         Anchor target = this.getAnchor(anchors, tlink.targetID);
         temporalLink.setSource(source);
         temporalLink.setTarget(target);
-        if (source instanceof Event) {
-          temporalLink.setEventID(source.getId());
-          temporalLink.setEventInstanceID(((Event) source).getEventInstanceID());
-        } else if (source instanceof Time) {
-          temporalLink.setTimeID(source.getId());
-        }
-        if (target instanceof Event) {
-          temporalLink.setRelatedToEvent(target.getId());
-          temporalLink.setRelatedToEventInstance(((Event) target).getEventInstanceID());
-        } else if (target instanceof Time) {
-          temporalLink.setRelatedToTime(target.getId());
-        }
         temporalLink.setRelationType(tlink.relationType);
         temporalLink.addToIndexes();
       }

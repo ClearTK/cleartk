@@ -182,12 +182,6 @@ public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
           "relatedToTime");
       Anchor source = this.getAnchor(jCas, anchors, sourceID);
       Anchor target = this.getAnchor(jCas, anchors, targetID);
-      if (source instanceof Event) {
-        temporalLink.setEventID(source.getId());
-      }
-      if (target instanceof Event) {
-        temporalLink.setRelatedToEvent(target.getId());
-      }
       temporalLink.setSource(source);
       temporalLink.setTarget(target);
       temporalLink.addToIndexes();
