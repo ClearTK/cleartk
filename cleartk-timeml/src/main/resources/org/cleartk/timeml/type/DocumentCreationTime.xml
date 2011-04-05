@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <name>DocumentCreationTime</name>
+  <description/>
+  <version>1.0</version>
+  <vendor/>
+  <imports>
+    <import name="org.cleartk.timeml.type.Time"/>
+  </imports>
+  <types>
+    <typeDescription>
+      <name>org.cleartk.timeml.type.DocumentCreationTime</name>
+      <description/>
+      <supertypeName>org.cleartk.timeml.type.Time</supertypeName>
+    </typeDescription>
+  </types>
+</typeSystemDescription>
