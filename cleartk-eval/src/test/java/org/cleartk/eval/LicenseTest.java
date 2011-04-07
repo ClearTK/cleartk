@@ -23,28 +23,31 @@
  */
 package org.cleartk.eval;
 
-import java.io.File;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.rules.TemporaryFolder;
+import org.cleartk.test.util.LicenseTestUtil;
+import org.junit.Test;
 
 /**
  * 
  * <br>
  * Copyright (c) 2011, Regents of the University of Colorado <br>
- * All rights reserved. <br>
+ * All rights reserved.
  */
-public class EvaluationTestBase {
+public class LicenseTest {
 
-  @Rule
-  public TemporaryFolder folder = new TemporaryFolder();
+  @Test
+  public void testLicenseStatedInSource() throws Exception {
+    List<String> excludePackages = Collections.emptyList();
+    List<String> excludeFiles = Arrays.asList("CorpusFactory_ImplBase.java");
+    LicenseTestUtil.testJavaFiles("src/main/java", excludePackages, excludeFiles);
+  }
 
-  protected File outputDirectory;
-
-  @Before
-  public void setUp() throws Exception {
-    outputDirectory = folder.newFolder("output");
+  @Test
+  public void testLicenseStatedInTestSource() throws Exception {
+    LicenseTestUtil.testJavaFiles("src/test/java");
   }
 
 }

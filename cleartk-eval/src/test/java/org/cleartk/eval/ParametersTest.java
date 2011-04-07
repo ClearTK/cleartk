@@ -1,4 +1,4 @@
-/*
+/* 
  * Copyright (c) 2011, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -23,28 +23,19 @@
  */
 package org.cleartk.eval;
 
-import java.io.File;
-
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.rules.TemporaryFolder;
+import org.cleartk.test.util.ParametersTestUtil;
+import org.junit.Test;
 
 /**
  * 
  * <br>
  * Copyright (c) 2011, Regents of the University of Colorado <br>
- * All rights reserved. <br>
+ * All rights reserved.
  */
-public class EvaluationTestBase {
+public class ParametersTest {
 
-  @Rule
-  public TemporaryFolder folder = new TemporaryFolder();
-
-  protected File outputDirectory;
-
-  @Before
-  public void setUp() throws Exception {
-    outputDirectory = folder.newFolder("output");
+  @Test
+  public void testParameterNames() throws ClassNotFoundException {
+    ParametersTestUtil.testParameterDefinitions("src/main/java");
   }
-
 }
