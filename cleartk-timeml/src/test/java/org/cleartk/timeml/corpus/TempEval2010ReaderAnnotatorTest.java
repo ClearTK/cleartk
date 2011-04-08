@@ -1,0 +1,423 @@
+/*
+ * Copyright (c) 2011, Regents of the University of Colorado 
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. 
+ * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. 
+ * Neither the name of the University of Colorado at Boulder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. 
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE. 
+ */
+package org.cleartk.timeml.corpus;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Iterator;
+
+import junit.framework.Assert;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.cas.CASException;
+import org.apache.uima.collection.CollectionReader;
+import org.cleartk.timeml.TimeMLTestBase;
+import org.cleartk.timeml.TimeMLViewName;
+import org.cleartk.timeml.type.DocumentCreationTime;
+import org.cleartk.timeml.type.Event;
+import org.cleartk.timeml.type.TemporalLink;
+import org.cleartk.timeml.type.TemporalLinkEventToDocumentCreationTime;
+import org.cleartk.timeml.type.TemporalLinkEventToSameSentenceTime;
+import org.cleartk.timeml.type.TemporalLinkEventToSyntacticallyDominatedEvent;
+import org.cleartk.timeml.type.TemporalLinkMainEventToNextSentenceMainEvent;
+import org.cleartk.timeml.type.Time;
+import org.cleartk.token.type.Sentence;
+import org.cleartk.token.type.Token;
+import org.junit.Before;
+import org.junit.Test;
+import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.util.JCasUtil;
+
+/**
+ * <br>
+ * Copyright (c) 2011, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * @author Steven Bethard
+ */
+public class TempEval2010ReaderAnnotatorTest extends TimeMLTestBase {
+
+  @Override
+  public String[] getTypeSystemDescriptorNames() {
+    return new String[] { "org.cleartk.timeml.TypeSystem", "org.cleartk.token.TypeSystem" };
+  }
+
+  public static final String BASE_SEGMENTATION =
+        "wsj_0032	0	0	Italian\n" +
+        "wsj_0032	0	1	chemical\n" +
+        "wsj_0032	0	2	giant\n" +
+        "wsj_0032	0	3	Montedison\n" +
+        "wsj_0032	0	4	S.p.A\n" +
+        "wsj_0032	0	5	.\n" +
+        "wsj_0032	0	6	,\n" +
+        "wsj_0032	0	7	through\n" +
+        "wsj_0032	0	8	its\n" +
+        "wsj_0032	0	9	Montedison\n" +
+        "wsj_0032	0	10	Acquisition\n" +
+        "wsj_0032	0	11	N.V.\n" +
+        "wsj_0032	0	12	indirect\n" +
+        "wsj_0032	0	13	unit\n" +
+        "wsj_0032	0	14	,\n" +
+        "wsj_0032	0	15	began\n" +
+        "wsj_0032	0	16	its\n" +
+        "wsj_0032	0	17	$37-a-share\n" +
+        "wsj_0032	0	18	tender\n" +
+        "wsj_0032	0	19	offer\n" +
+        "wsj_0032	0	20	for\n" +
+        "wsj_0032	0	21	all\n" +
+        "wsj_0032	0	22	the\n" +
+        "wsj_0032	0	23	common\n" +
+        "wsj_0032	0	24	shares\n" +
+        "wsj_0032	0	25	outstanding\n" +
+        "wsj_0032	0	26	of\n" +
+        "wsj_0032	0	27	Erbamont\n" +
+        "wsj_0032	0	28	N.V.\n" +
+        "wsj_0032	0	29	,\n" +
+        "wsj_0032	0	30	a\n" +
+        "wsj_0032	0	31	maker\n" +
+        "wsj_0032	0	32	of\n" +
+        "wsj_0032	0	33	pharmaceuticals\n" +
+        "wsj_0032	0	34	incorporated\n" +
+        "wsj_0032	0	35	in\n" +
+        "wsj_0032	0	36	the\n" +
+        "wsj_0032	0	37	Netherlands\n" +
+        "wsj_0032	0	38	.\n" +
+        "wsj_0032	1	0	The\n" +
+        "wsj_0032	1	1	offer\n" +
+        "wsj_0032	1	2	,\n" +
+        "wsj_0032	1	3	advertised\n" +
+        "wsj_0032	1	4	in\n" +
+        "wsj_0032	1	5	today\n" +
+        "wsj_0032	1	6	's\n" +
+        "wsj_0032	1	7	editions\n" +
+        "wsj_0032	1	8	of\n" +
+        "wsj_0032	1	9	The\n" +
+        "wsj_0032	1	10	Wall\n" +
+        "wsj_0032	1	11	Street\n" +
+        "wsj_0032	1	12	Journal\n" +
+        "wsj_0032	1	13	,\n" +
+        "wsj_0032	1	14	is\n" +
+        "wsj_0032	1	15	scheduled\n" +
+        "wsj_0032	1	16	to\n" +
+        "wsj_0032	1	17	expire\n" +
+        "wsj_0032	1	18	at\n" +
+        "wsj_0032	1	19	the\n" +
+        "wsj_0032	1	20	the\n" +
+        "wsj_0032	1	21	end\n" +
+        "wsj_0032	1	22	of\n" +
+        "wsj_0032	1	23	November\n" +
+        "wsj_0032	1	24	.\n" +
+        "wsj_0032	2	0	Montedison\n" +
+        "wsj_0032	2	1	currently\n" +
+        "wsj_0032	2	2	owns\n" +
+        "wsj_0032	2	3	about\n" +
+        "wsj_0032	2	4	72%\n" +
+        "wsj_0032	2	5	of\n" +
+        "wsj_0032	2	6	Erbamont\n" +
+        "wsj_0032	2	7	's\n" +
+        "wsj_0032	2	8	common\n" +
+        "wsj_0032	2	9	shares\n" +
+        "wsj_0032	2	10	outstanding\n" +
+        "wsj_0032	2	11	.\n" +
+        "wsj_0032	3	0	The\n" +
+        "wsj_0032	3	1	offer\n" +
+        "wsj_0032	3	2	is\n" +
+        "wsj_0032	3	3	being\n" +
+        "wsj_0032	3	4	launched\n" +
+        "wsj_0032	3	5	pursuant\n" +
+        "wsj_0032	3	6	to\n" +
+        "wsj_0032	3	7	a\n" +
+        "wsj_0032	3	8	previously\n" +
+        "wsj_0032	3	9	announced\n" +
+        "wsj_0032	3	10	agreement\n" +
+        "wsj_0032	3	11	between\n" +
+        "wsj_0032	3	12	the\n" +
+        "wsj_0032	3	13	companies\n" +
+        "wsj_0032	3	14	.\n";
+    
+  public static final String EVENT_ATTRIBUTES =
+        "wsj_0032	0	15	event	e1	1	polarity	POS\n" +
+        "wsj_0032	0	15	event	e1	1	modality	NONE\n" +
+        "wsj_0032	0	15	event	e1	1	pos	VERB\n" +
+        "wsj_0032	0	15	event	e1	1	tense	PAST\n" +
+        "wsj_0032	0	15	event	e1	1	aspect	NONE\n" +
+        "wsj_0032	0	15	event	e1	1	class	ASPECTUAL\n" +
+        "wsj_0032	0	19	event	e2	1	polarity	POS\n" +
+        "wsj_0032	0	19	event	e2	1	modality	NONE\n" +
+        "wsj_0032	0	19	event	e2	1	pos	NOUN\n" +
+        "wsj_0032	0	19	event	e2	1	tense	NONE\n" +
+        "wsj_0032	0	19	event	e2	1	aspect	NONE\n" +
+        "wsj_0032	0	19	event	e2	1	class	OCCURRENCE\n" +
+        "wsj_0032	1	1	event	e3	1	polarity	POS\n" +
+        "wsj_0032	1	1	event	e3	1	modality	NONE\n" +
+        "wsj_0032	1	1	event	e3	1	pos	NOUN\n" +
+        "wsj_0032	1	1	event	e3	1	tense	NONE\n" +
+        "wsj_0032	1	1	event	e3	1	aspect	NONE\n" +
+        "wsj_0032	1	1	event	e3	1	class	OCCURRENCE\n" +
+        "wsj_0032	1	3	event	e4	1	polarity	POS\n" +
+        "wsj_0032	1	3	event	e4	1	modality	NONE\n" +
+        "wsj_0032	1	3	event	e4	1	pos	VERB\n" +
+        "wsj_0032	1	3	event	e4	1	tense	PASTPART\n" +
+        "wsj_0032	1	3	event	e4	1	aspect	NONE\n" +
+        "wsj_0032	1	3	event	e4	1	class	OCCURRENCE\n" +
+        "wsj_0032	1	15	event	e5	1	polarity	POS\n" +
+        "wsj_0032	1	15	event	e5	1	modality	NONE\n" +
+        "wsj_0032	1	15	event	e5	1	pos	VERB\n" +
+        "wsj_0032	1	15	event	e5	1	tense	PRESENT\n" +
+        "wsj_0032	1	15	event	e5	1	aspect	NONE\n" +
+        "wsj_0032	1	15	event	e5	1	class	I_ACTION\n" +
+        "wsj_0032	1	17	event	e6	1	polarity	POS\n" +
+        "wsj_0032	1	17	event	e6	1	modality	NONE\n" +
+        "wsj_0032	1	17	event	e6	1	pos	VERB\n" +
+        "wsj_0032	1	17	event	e6	1	tense	INFINITIVE\n" +
+        "wsj_0032	1	17	event	e6	1	aspect	NONE\n" +
+        "wsj_0032	1	17	event	e6	1	class	OCCURRENCE\n" +
+        "wsj_0032	2	2	event	e7	1	polarity	POS\n" +
+        "wsj_0032	2	2	event	e7	1	modality	NONE\n" +
+        "wsj_0032	2	2	event	e7	1	pos	VERB\n" +
+        "wsj_0032	2	2	event	e7	1	tense	PRESENT\n" +
+        "wsj_0032	2	2	event	e7	1	aspect	NONE\n" +
+        "wsj_0032	2	2	event	e7	1	class	STATE\n" +
+        "wsj_0032	3	1	event	e8	1	polarity	POS\n" +
+        "wsj_0032	3	1	event	e8	1	modality	NONE\n" +
+        "wsj_0032	3	1	event	e8	1	pos	NOUN\n" +
+        "wsj_0032	3	1	event	e8	1	tense	NONE\n" +
+        "wsj_0032	3	1	event	e8	1	aspect	NONE\n" +
+        "wsj_0032	3	1	event	e8	1	class	OCCURRENCE\n" +
+        "wsj_0032	3	4	event	e9	1	polarity	POS\n" +
+        "wsj_0032	3	4	event	e9	1	modality	NONE\n" +
+        "wsj_0032	3	4	event	e9	1	pos	VERB\n" +
+        "wsj_0032	3	4	event	e9	1	tense	PRESENT\n" +
+        "wsj_0032	3	4	event	e9	1	aspect	PROGRESSIVE\n" +
+        "wsj_0032	3	4	event	e9	1	class	I_ACTION\n" +
+        "wsj_0032	3	9	event	e10	1	polarity	POS\n" +
+        "wsj_0032	3	9	event	e10	1	modality	NONE\n" +
+        "wsj_0032	3	9	event	e10	1	pos	ADJECTIVE\n" +
+        "wsj_0032	3	9	event	e10	1	tense	NONE\n" +
+        "wsj_0032	3	9	event	e10	1	aspect	NONE\n" +
+        "wsj_0032	3	9	event	e10	1	class	REPORTING\n" +
+        "wsj_0032	3	10	event	e11	1	polarity	POS\n" +
+        "wsj_0032	3	10	event	e11	1	modality	NONE\n" +
+        "wsj_0032	3	10	event	e11	1	pos	NOUN\n" +
+        "wsj_0032	3	10	event	e11	1	tense	NONE\n" +
+        "wsj_0032	3	10	event	e11	1	aspect	NONE\n" +
+        "wsj_0032	3	10	event	e11	1	class	OCCURRENCE\n";
+
+  public static final String EVENT_EXTENTS =
+        "wsj_0032	0	15	event	e1	1\n" +
+        "wsj_0032	0	19	event	e2	1\n" +
+        "wsj_0032	1	1	event	e3	1\n" +
+        "wsj_0032	1	3	event	e4	1\n" +
+        "wsj_0032	1	15	event	e5	1\n" +
+        "wsj_0032	1	17	event	e6	1\n" +
+        "wsj_0032	2	2	event	e7	1\n" +
+        "wsj_0032	3	1	event	e8	1\n" +
+        "wsj_0032	3	4	event	e9	1\n" +
+        "wsj_0032	3	9	event	e10	1\n" +
+        "wsj_0032	3	10	event	e11	1\n";
+
+  public static final String TIMEX_ATTRIBUTES =
+        "wsj_0032	1	5	timex3	t19	1	value	1989-11-02\n" +
+        "wsj_0032	1	5	timex3	t19	1	type	DATE\n" +
+        "wsj_0032	1	20	timex3	t18	1	value	1989-11\n" +
+        "wsj_0032	1	20	timex3	t18	1	type	TIME\n" +
+        "wsj_0032	2	1	timex3	t17	1	value	PRESENT_REF\n" +
+        "wsj_0032	2	1	timex3	t17	1	type	DATE\n" +
+        "wsj_0032	3	8	timex3	t21	1	value	PAST_REF\n" +
+        "wsj_0032	3	8	timex3	t21	1	type	TIME\n";
+
+  public static final String TIMEX_EXTENTS =
+        "wsj_0032	1	5	timex3	t19	1\n" +
+        "wsj_0032	1	20	timex3	t18	1\n" +
+        "wsj_0032	1	21	timex3	t18	1\n" +
+        "wsj_0032	1	22	timex3	t18	1\n" +
+        "wsj_0032	1	23	timex3	t18	1\n" +
+        "wsj_0032	2	1	timex3	t17	1\n" +
+        "wsj_0032	3	8	timex3	t21	1\n";
+
+  public static final String TLINKS_DCT_EVENT =
+        "wsj_0032	e1	t0	BEFORE\n" +
+        "wsj_0032	e2	t0	OVERLAP\n" +
+        "wsj_0032	e3	t0	OVERLAP\n" +
+        "wsj_0032	e8	t0	OVERLAP\n" +
+        "wsj_0032	e11	t0	BEFORE\n";
+
+  public static final String TLINKS_MAIN_EVENTS =
+        "wsj_0032	e1	e5	BEFORE\n" +
+        "wsj_0032	e5	e7	OVERLAP\n" +
+        "wsj_0032	e7	e9	OVERLAP\n";
+
+  public static final String TLINKS_SUBORDINATED_EVENTS =
+        "wsj_0032	e4	e3	OVERLAP\n" +
+        "wsj_0032	e5	e6	BEFORE\n" +
+        "wsj_0032	e9	e8	BEFORE-OR-OVERLAP\n" +
+        "wsj_0032	e10	e11	OVERLAP\n";
+
+  public static final String TLINKS_TIMEX_EVENT =
+        "wsj_0032	e3	t19	OVERLAP\n" +
+        "wsj_0032	e8	t21	AFTER\n" +
+        "wsj_0032	e11	t21	OVERLAP\n";
+    
+  public static final String DCT =
+        "wsj_0032	19891102\n";
+
+  @Before
+  public void setUp() throws Exception {
+    super.setUp();
+    this.write("data/base-segmentation.tab", BASE_SEGMENTATION);
+    this.write("key/event-attributes.tab", EVENT_ATTRIBUTES);
+    this.write("key/event-extents.tab", EVENT_EXTENTS);
+    this.write("key/timex-attributes.tab", TIMEX_ATTRIBUTES);
+    this.write("key/timex-extents.tab", TIMEX_EXTENTS);
+    this.write("key/tlinks-dct-event.tab", TLINKS_DCT_EVENT);
+    this.write("key/tlinks-main-events.tab", TLINKS_MAIN_EVENTS);
+    this.write("key/tlinks-subordinated-events.tab", TLINKS_SUBORDINATED_EVENTS);
+    this.write("key/tlinks-timex-event.tab", TLINKS_TIMEX_EVENT);
+    this.write("dct-en.txt", DCT);
+  }
+  
+  private void write(String filePath, String text) throws IOException {
+    FileUtils.writeStringToFile(new File(this.outputDirectory, filePath), text);
+  }
+  
+  @Test
+  public void testTempEval2010CollectionReader() throws Exception {
+    CollectionReader reader = TempEval2010CollectionReader.getCollectionReader(
+        this.outputDirectory.getPath());
+    Assert.assertTrue(reader.hasNext());
+    reader.getNext(this.jCas.getCas());
+    Assert.assertFalse(reader.hasNext());
+    assertViewText(BASE_SEGMENTATION, TimeMLViewName.TEMPEVAL_BASE_SEGMENTATION);
+    assertViewText(EVENT_ATTRIBUTES, TimeMLViewName.TEMPEVAL_EVENT_ATTRIBUTES);
+    assertViewText(EVENT_EXTENTS, TimeMLViewName.TEMPEVAL_EVENT_EXTENTS);
+    assertViewText(TIMEX_ATTRIBUTES, TimeMLViewName.TEMPEVAL_TIMEX_ATTRIBUTES);
+    assertViewText(TIMEX_EXTENTS, TimeMLViewName.TEMPEVAL_TIMEX_EXTENTS);
+    assertViewText(TLINKS_DCT_EVENT, TimeMLViewName.TEMPEVAL_TLINK_DCT_EVENT);
+    assertViewText(TLINKS_MAIN_EVENTS, TimeMLViewName.TEMPEVAL_TLINK_MAIN_EVENTS);
+    assertViewText(TLINKS_SUBORDINATED_EVENTS, TimeMLViewName.TEMPEVAL_TLINK_SUBORDINATED_EVENTS);
+    assertViewText(TLINKS_TIMEX_EVENT, TimeMLViewName.TEMPEVAL_TLINK_TIMEX_EVENT);
+    assertViewText(DCT, TimeMLViewName.TEMPEVAL_DCT);
+  }
+
+  private void assertViewText(String expected, String viewName) throws CASException {
+    Assert.assertEquals(expected, this.jCas.getView(viewName).getDocumentText());
+  }
+  
+  @Test
+  public void testTempEval2010GoldAnnotator() throws Exception {
+    CollectionReader reader = TempEval2010CollectionReader.getCollectionReader(
+        this.outputDirectory.getPath());
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+        TempEval2010GoldAnnotator.getDescription());
+    reader.getNext(this.jCas.getCas());
+    engine.process(this.jCas);
+    engine.collectionProcessComplete();
+    
+    String expectedText =
+      "Italian chemical giant Montedison S.p.A . , through its Montedison Acquisition N.V. indirect unit , began its $37-a-share tender offer for all the common shares outstanding of Erbamont N.V. , a maker of pharmaceuticals incorporated in the Netherlands .\n" +
+      "The offer , advertised in today 's editions of The Wall Street Journal , is scheduled to expire at the the end of November .\n" +
+      "Montedison currently owns about 72% of Erbamont 's common shares outstanding .\n" +
+      "The offer is being launched pursuant to a previously announced agreement between the companies .";
+    Assert.assertEquals(expectedText, this.jCas.getDocumentText().trim());
+    
+    Collection<Sentence> sentences = JCasUtil.select(this.jCas, Sentence.class);
+    Assert.assertEquals(4, sentences.size());
+    Assert.assertEquals(
+        "Montedison currently owns about 72% of Erbamont 's common shares outstanding .",
+        itemAtIndex(sentences, 2).getCoveredText());
+    
+    Collection<Token> tokens = JCasUtil.select(this.jCas, Token.class);
+    Assert.assertEquals(91, tokens.size());
+    Assert.assertEquals("Montedison", itemAtIndex(tokens, 3).getCoveredText());
+    
+    Collection<Event> events = JCasUtil.select(this.jCas, Event.class);
+    Assert.assertEquals(11, events.size());
+    Event e10 = itemAtIndex(events, 9);
+    Assert.assertEquals("e10", e10.getId());
+    Assert.assertEquals("announced", e10.getCoveredText());
+    Assert.assertEquals("POS", e10.getPolarity());
+    Assert.assertEquals("NONE", e10.getModality());
+    Assert.assertEquals("ADJECTIVE", e10.getPos());
+    Assert.assertEquals("NONE", e10.getTense());
+    Assert.assertEquals("NONE", e10.getAspect());
+    Assert.assertEquals("REPORTING", e10.getEventClass());
+
+    Collection<Time> times = JCasUtil.select(this.jCas, Time.class);
+    Assert.assertEquals(5, times.size());
+    Time t18 = itemAtIndex(times, 2);
+    Assert.assertEquals("t18", t18.getId());
+    Assert.assertEquals("the end of November", t18.getCoveredText());
+    Assert.assertEquals("1989-11", t18.getValue());
+    Assert.assertEquals("TIME", t18.getTimeType()); // wrong, but that's what the data says
+
+    Collection<DocumentCreationTime> dcts = JCasUtil.select(this.jCas, DocumentCreationTime.class);
+    Assert.assertEquals(1, dcts.size());
+    Assert.assertEquals(itemAtIndex(times, 0), itemAtIndex(dcts, 0));
+    Time dct = itemAtIndex(dcts, 0);
+    Assert.assertEquals("t0", dct.getId());
+    Assert.assertEquals("1989-11-02", dct.getValue());
+    Assert.assertEquals("CREATION_TIME", dct.getFunctionInDocument());
+    
+    Collection<? extends TemporalLink> tlinks = JCasUtil.select(this.jCas, TemporalLink.class);
+    Assert.assertEquals(15, tlinks.size());
+    
+    tlinks = JCasUtil.select(this.jCas, TemporalLinkEventToDocumentCreationTime.class);
+    Assert.assertEquals(5, tlinks.size());
+    TemporalLink e1t0 = itemAtIndex(tlinks, 0);
+    Assert.assertEquals("BEFORE", e1t0.getRelationType());
+    Assert.assertEquals("began", e1t0.getSource().getCoveredText());
+    Assert.assertTrue(e1t0.getTarget() instanceof DocumentCreationTime);
+
+    tlinks = JCasUtil.select(this.jCas, TemporalLinkMainEventToNextSentenceMainEvent.class);
+    Assert.assertEquals(3, tlinks.size());
+    TemporalLink e5e7 = itemAtIndex(tlinks, 1);
+    Assert.assertEquals("OVERLAP", e5e7.getRelationType());
+    Assert.assertEquals("scheduled", e5e7.getSource().getCoveredText());
+    Assert.assertEquals("owns", e5e7.getTarget().getCoveredText());
+    
+    tlinks = JCasUtil.select(this.jCas, TemporalLinkEventToSyntacticallyDominatedEvent.class);
+    Assert.assertEquals(4, tlinks.size());
+    TemporalLink e9e8 = itemAtIndex(tlinks, 2);
+    Assert.assertEquals("BEFORE-OR-OVERLAP", e9e8.getRelationType());
+    Assert.assertEquals("launched", e9e8.getSource().getCoveredText());
+    Assert.assertEquals("offer", e9e8.getTarget().getCoveredText());
+
+    tlinks = JCasUtil.select(this.jCas, TemporalLinkEventToSameSentenceTime.class);
+    Assert.assertEquals(3, tlinks.size());
+    TemporalLink e8t21 = itemAtIndex(tlinks, 1);
+    Assert.assertEquals("AFTER", e8t21.getRelationType());
+    Assert.assertEquals("offer", e8t21.getSource().getCoveredText());
+    Assert.assertEquals("previously", e8t21.getTarget().getCoveredText());
+  }
+  
+  private <T> T itemAtIndex(Collection<T> items, int index) {
+    Iterator<T> iter = items.iterator();
+    for (int i = 0; i < index; ++i) {
+      iter.next();
+    }
+    return iter.next();
+  }
+}

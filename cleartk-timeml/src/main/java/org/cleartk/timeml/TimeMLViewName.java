@@ -35,4 +35,24 @@ public interface TimeMLViewName {
    */
   public static final String TIMEML = "TimeMLView";
 
+  public static final String TEMPEVAL_BASE_SEGMENTATION = "base-segmentation.tab";
+
+  public static final String TEMPEVAL_DCT = "dct.txt";
+
+  public static final String TEMPEVAL_EVENT_EXTENTS = "event-extents.tab";
+
+  public static final String TEMPEVAL_EVENT_ATTRIBUTES = "event-attributes.tab";
+
+  public static final String TEMPEVAL_TIMEX_EXTENTS = "timex-extents.tab";
+
+  public static final String TEMPEVAL_TIMEX_ATTRIBUTES = "timex-attributes.tab";
+
+  public static final String TEMPEVAL_TLINK_DCT_EVENT = "tlinks-dct-event.tab";
+
+  public static final String TEMPEVAL_TLINK_MAIN_EVENTS = "tlinks-main-events.tab";
+
+  public static final String TEMPEVAL_TLINK_SUBORDINATED_EVENTS = "tlinks-subordinated-events.tab";
+
+  public static final String TEMPEVAL_TLINK_TIMEX_EVENT = "tlinks-timex-event.tab";
+
 }
