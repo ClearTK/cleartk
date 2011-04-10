@@ -55,20 +55,23 @@ public class Chunker extends CleartkSequenceAnnotator<String> {
   @ConfigurationParameter(mandatory = true, description = "names the class of the type system type used to associate B, I, and O (for example) labels with.  An example value might be 'org.cleartk.type.Token'")
   protected String labeledAnnotationClassName;
 
-  public static final String PARAM_SEQUENCE_CLASS_NAME = ConfigurationParameterFactory
-      .createConfigurationParameterName(Chunker.class, "sequenceClassName");
+  public static final String PARAM_SEQUENCE_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
+      Chunker.class,
+      "sequenceClassName");
 
   @ConfigurationParameter(mandatory = true, description = "names the class of the type system type that specifies a 'sequence' of labels.  An example might be something like 'org.cleartk.type.Sentence'")
   protected String sequenceClassName;
 
-  public static final String PARAM_CHUNK_LABELER_CLASS_NAME = ConfigurationParameterFactory
-      .createConfigurationParameterName(Chunker.class, "chunkLabelerClassName");
+  public static final String PARAM_CHUNK_LABELER_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
+      Chunker.class,
+      "chunkLabelerClassName");
 
   @ConfigurationParameter(mandatory = true, description = "provides the class name of a class that extends org.cleartk.chunk.ChunkLabeler.")
   protected String chunkLabelerClassName;
 
-  public static final String PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME = ConfigurationParameterFactory
-      .createConfigurationParameterName(Chunker.class, "chunkerFeatureExtractorClassName");
+  public static final String PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
+      Chunker.class,
+      "chunkerFeatureExtractorClassName");
 
   @ConfigurationParameter(mandatory = true, description = "provides the class name of a class that extends org.cleartk.chunk.ChunkFeatureExtractor.")
   protected String chunkerFeatureExtractorClassName;
@@ -140,6 +143,15 @@ public class Chunker extends CleartkSequenceAnnotator<String> {
       labeledAnnotationList.clear();
 
       FSIterator<Annotation> labeledAnnotations = labeledAnnotations(jCas, sequence);
+      if (!labeledAnnotations.hasNext()) {
+        throw new RuntimeException(String.format(
+            "Found %s containing no %s: \"%s\" %s",
+            this.sequenceClassName,
+            this.labeledAnnotationClassName,
+            sequence.getCoveredText(),
+            sequence));
+      }
+
       while (labeledAnnotations.hasNext()) {
         Annotation labeledAnnotation = labeledAnnotations.next();
         labeledAnnotationList.add(labeledAnnotation);
