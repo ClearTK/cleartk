@@ -32,6 +32,7 @@ import java.util.List;
 import org.apache.uima.UIMAException;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -161,8 +162,7 @@ public class ChunkerTest extends DefaultTestBase {
           labeledAnnotationClassName,
           Annotation.class);
       sequenceClass = InitializableFactory.getClass(sequenceClassName, Annotation.class);
-      chunkLabeler = InitializableFactory
-          .create(context, chunkLabelerClassName, ChunkLabeler.class);
+      chunkLabeler = InitializableFactory.create(context, chunkLabelerClassName, ChunkLabeler.class);
       featureExtractor = InitializableFactory.create(
           context,
           chunkerFeatureExtractorClassName,
@@ -280,6 +280,42 @@ public class ChunkerTest extends DefaultTestBase {
     assertEquals("We could", chunk.getCoveredText());
     assertEquals("2", chunk.getChunkType());
 
+  }
+
+  /**
+   * This test is here to make sure we're not using {@link AnnotationIndex#subiterator} which can
+   * skip annotations contained within another annotation if the smaller annotation appeared earlier
+   * than the larger annotation in the type system description (stupid UIMA type priorities!).
+   */
+  @Test
+  public void testSingleTokenSentence() throws Exception {
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+        TestChunkerAnnotator.class,
+        typeSystemDescription,
+        Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME,
+        Sentence.class.getName(),
+        Chunker.PARAM_SEQUENCE_CLASS_NAME,
+        Token.class.getName(),
+        Chunker.PARAM_CHUNK_LABELER_CLASS_NAME,
+        DefaultChunkLabeler.class.getName(),
+        Chunker.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME,
+        TestFeatureExtractor.class.getName(),
+        ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME,
+        Chunk.class.getName(),
+        DefaultChunkLabeler.PARAM_CHUNK_LABEL_FEATURE_NAME,
+        "chunkType",
+        CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        PublicFieldSequenceDataWriter.StringFactory.class.getName());
+
+    // note the intentional reversal of Sentence and Token types
+    this.jCas.setDocumentText(".");
+    Token sentence = new Token(this.jCas, 0, 1);
+    sentence.addToIndexes();
+    Sentence token = new Sentence(this.jCas, 0, 1);
+    token.addToIndexes();
+    List<Instance<String>> instances;
+    instances = PublicFieldSequenceDataWriter.StringFactory.collectInstances(engine, this.jCas);
+    assertEquals(1, instances.size());
   }
 
 }

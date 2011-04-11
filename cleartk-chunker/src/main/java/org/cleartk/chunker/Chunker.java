@@ -24,21 +24,20 @@
 package org.cleartk.chunker;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
-import org.apache.uima.cas.FSIterator;
-import org.apache.uima.cas.Type;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Instance;
-import org.cleartk.util.UIMAUtil;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.InitializableFactory;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -78,17 +77,11 @@ public class Chunker extends CleartkSequenceAnnotator<String> {
 
   protected Class<? extends Annotation> labeledAnnotationClass;
 
-  private Type labeledAnnotationType;
-
   protected Class<? extends Annotation> sequenceClass;
-
-  private Type sequenceType;
 
   protected ChunkLabeler chunkLabeler;
 
   protected ChunkerFeatureExtractor featureExtractor;
-
-  protected boolean typesInitialized = false;
 
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
@@ -104,46 +97,25 @@ public class Chunker extends CleartkSequenceAnnotator<String> {
         ChunkerFeatureExtractor.class);
   }
 
-  protected void initializeTypes(JCas jCas) throws AnalysisEngineProcessException {
-    try {
-      labeledAnnotationType = UIMAUtil.getCasType(jCas, labeledAnnotationClass);
-      sequenceType = UIMAUtil.getCasType(jCas, sequenceClass);
-    } catch (Exception e) {
-      throw new AnalysisEngineProcessException(e);
-    }
-    typesInitialized = true;
-  }
-
-  protected FSIterator<Annotation> sequences(JCas jCas) {
-    return jCas.getAnnotationIndex(sequenceType).iterator();
-  }
-
-  protected FSIterator<Annotation> labeledAnnotations(JCas jCas, Annotation sequence) {
-    return jCas.getAnnotationIndex(labeledAnnotationType).subiterator(sequence);
-  }
-
   @Override
   public void process(JCas jCas) throws AnalysisEngineProcessException {
-    if (!typesInitialized)
-      initializeTypes(jCas);
 
     List<Instance<String>> instances = new ArrayList<Instance<String>>();
     Instance<String> instance;
 
     List<Annotation> labeledAnnotationList = new ArrayList<Annotation>();
 
-    FSIterator<Annotation> sequences = sequences(jCas);
-
-    while (sequences.hasNext()) {
-      Annotation sequence = sequences.next();
+    for (Annotation sequence : JCasUtil.select(jCas, this.sequenceClass)) {
       if (this.isTraining()) {
         chunkLabeler.chunks2Labels(jCas, sequence);
       }
       instances.clear();
       labeledAnnotationList.clear();
 
-      FSIterator<Annotation> labeledAnnotations = labeledAnnotations(jCas, sequence);
-      if (!labeledAnnotations.hasNext()) {
+      // select the sub-annotations within this sequence
+      Collection<? extends Annotation> labeledAnnotations;
+      labeledAnnotations = JCasUtil.selectCovered(jCas, this.labeledAnnotationClass, sequence);
+      if (labeledAnnotations.size() == 0) {
         throw new RuntimeException(String.format(
             "Found %s containing no %s: \"%s\" %s",
             this.sequenceClassName,
@@ -152,12 +124,10 @@ public class Chunker extends CleartkSequenceAnnotator<String> {
             sequence));
       }
 
-      while (labeledAnnotations.hasNext()) {
-        Annotation labeledAnnotation = labeledAnnotations.next();
+      // create an instance for each sub-annotation
+      for (Annotation labeledAnnotation : labeledAnnotations) {
         labeledAnnotationList.add(labeledAnnotation);
-
         instance = featureExtractor.extractFeatures(jCas, labeledAnnotation, sequence);
-
         String label = chunkLabeler.getLabel(labeledAnnotation);
         instance.setOutcome(label);
         instances.add(instance);
