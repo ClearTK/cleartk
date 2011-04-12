@@ -74,7 +74,7 @@ public class TempEval2010GoldAnnotator extends JCasAnnotator_ImplBase {
   @ConfigurationParameter(defaultValue = CAS.NAME_DEFAULT_SOFA, description = "Views where document text should be placed")
   private String[] textViews;
 
-  @ConfigurationParameter(defaultValue = CAS.NAME_DEFAULT_SOFA, description = "Views where Time annotations should be placed")
+  @ConfigurationParameter(defaultValue = CAS.NAME_DEFAULT_SOFA, description = "Views where DocumentCreationTime annotations should be placed")
   private String[] documentCreationTimeViews;
 
   @ConfigurationParameter(defaultValue = CAS.NAME_DEFAULT_SOFA, description = "Views where Time annotations should be placed")

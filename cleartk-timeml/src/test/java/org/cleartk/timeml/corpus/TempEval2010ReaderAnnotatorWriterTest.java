@@ -32,6 +32,7 @@ import junit.framework.Assert;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
@@ -46,7 +47,11 @@ import org.cleartk.token.type.Token;
 import org.junit.Before;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.pipeline.SimplePipeline;
 import org.uimafit.util.JCasUtil;
+
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
 
 /**
  * <br>
@@ -55,7 +60,7 @@ import org.uimafit.util.JCasUtil;
  * 
  * @author Steven Bethard
  */
-public class TempEval2010ReaderAnnotatorTest extends TimeMLTestBase {
+public class TempEval2010ReaderAnnotatorWriterTest extends TimeMLTestBase {
 
   @Override
   public String[] getTypeSystemDescriptorNames() {
@@ -529,6 +534,71 @@ public class TempEval2010ReaderAnnotatorTest extends TimeMLTestBase {
     Assert.assertEquals("OVERLAP", e5e7.getRelationType());
     Assert.assertEquals("scheduled", e5e7.getSource().getCoveredText());
     Assert.assertEquals("owns", e5e7.getTarget().getCoveredText());
+  }
+
+  @Test
+  public void testTempEval2010Writer() throws Exception {
+    File writerDirectory = new File(this.outputDirectory, "writer");
+    CollectionReader reader = TempEval2010CollectionReader.getCollectionReader(this.outputDirectory.getPath());
+    AnalysisEngine annotator = AnalysisEngineFactory.createPrimitive(
+        TempEval2010GoldAnnotator.getDescription(),
+        TempEval2010GoldAnnotator.PARAM_TEXT_VIEWS,
+        new String[] { CAS.NAME_DEFAULT_SOFA, "E2DCT", "E2SST", "E2SE", "ME2ME" },
+        TempEval2010GoldAnnotator.PARAM_DOCUMENT_CREATION_TIME_VIEWS,
+        new String[] { CAS.NAME_DEFAULT_SOFA, "E2DCT" },
+        TempEval2010GoldAnnotator.PARAM_TIME_EXTENT_VIEWS,
+        new String[] { CAS.NAME_DEFAULT_SOFA, "E2SST" },
+        TempEval2010GoldAnnotator.PARAM_TIME_ATTRIBUTE_VIEWS,
+        new String[] { CAS.NAME_DEFAULT_SOFA, "E2SST" },
+        TempEval2010GoldAnnotator.PARAM_EVENT_EXTENT_VIEWS,
+        new String[] { CAS.NAME_DEFAULT_SOFA, "E2DCT", "E2SST", "E2SE", "ME2ME" },
+        TempEval2010GoldAnnotator.PARAM_EVENT_ATTRIBUTE_VIEWS,
+        new String[] { CAS.NAME_DEFAULT_SOFA, "E2DCT", "E2SST", "E2SE", "ME2ME" },
+        TempEval2010GoldAnnotator.PARAM_TEMPORAL_LINK_EVENT_TO_DOCUMENT_CREATION_TIME_VIEWS,
+        new String[] { "E2DCT" },
+        TempEval2010GoldAnnotator.PARAM_TEMPORAL_LINK_EVENT_TO_SAME_SENTENCE_TIME_VIEWS,
+        new String[] { "E2SST" },
+        TempEval2010GoldAnnotator.PARAM_TEMPORAL_LINK_EVENT_TO_SUBORDINATED_EVENT_VIEWS,
+        new String[] { "E2SE" },
+        TempEval2010GoldAnnotator.PARAM_TEMPORAL_LINK_MAIN_EVENT_TO_NEXT_SENTENCE_MAIN_EVENT_VIEWS,
+        new String[] { "ME2ME" });
+    AnalysisEngine writer = AnalysisEngineFactory.createPrimitive(
+        TempEval2010Writer.getDescription(writerDirectory),
+        TempEval2010Writer.PARAM_TEMPORAL_LINK_EVENT_TO_DOCUMENT_CREATION_TIME_VIEW,
+        "E2DCT",
+        TempEval2010Writer.PARAM_TEMPORAL_LINK_EVENT_TO_SAME_SENTENCE_TIME_VIEW,
+        "E2SST",
+        TempEval2010Writer.PARAM_TEMPORAL_LINK_EVENT_TO_SUBORDINATED_EVENT_VIEW,
+        "E2SE",
+        TempEval2010Writer.PARAM_TEMPORAL_LINK_MAIN_EVENT_TO_NEXT_SENTENCE_MAIN_EVENT_VIEW,
+        "ME2ME");
+    SimplePipeline.runPipeline(reader, annotator, writer);
+
+    this.assertFileText("base-segmentation.tab", "data", "writer");
+    this.assertFileText("timex-extents.tab", "key", "writer");
+    this.assertFileText("timex-attributes.tab", "key", "writer");
+    this.assertFileText("event-extents.tab", "key", "writer");
+    this.assertFileText("event-attributes.tab", "key", "writer");
+    this.assertFileText("tlinks-dct-event.tab", "key", "writer");
+    this.assertFileText("tlinks-timex-event.tab", "key", "writer");
+    this.assertFileText("tlinks-subordinated-events.tab", "key", "writer");
+    this.assertFileText("tlinks-main-events.tab", "key", "writer");
+
+    File dctInput = new File(this.outputDirectory, "dct-en.txt");
+    File dctOutput = new File(this.outputDirectory, "writer/dct.txt");
+    this.assertFileText("dct.txt", dctInput, dctOutput);
+  }
+
+  private void assertFileText(String fileName, String subdir1, String subdir2) throws Exception {
+    File file1 = new File(new File(this.outputDirectory, subdir1), fileName);
+    File file2 = new File(new File(this.outputDirectory, subdir2), fileName);
+    this.assertFileText(fileName, file1, file2);
+  }
+
+  private void assertFileText(String fileName, File file1, File file2) throws Exception {
+    String file1Text = Files.toString(file1, Charsets.US_ASCII);
+    String file2Text = Files.toString(file2, Charsets.US_ASCII);
+    Assert.assertEquals(fileName, file1Text, file2Text);
   }
 
   private <T> T itemAtIndex(Collection<T> items, int index) {
