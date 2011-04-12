@@ -10,6 +10,11 @@ yourself and specify the location of the jars via properties, e.g.:
    -Dedu.stanford.corenlp=stanford-corenlp-2010-11-12.jar
    -Dedu.stanford.corenlp.models=stanford-corenlp-models-2010-11-06.jar
 
+With the current default settings for these properties, you can also create the
+following directory and place the two jar files there:
+
+    lib/stanford-corenlp-2010-11-12
+
 
 == Licensing ==
 
