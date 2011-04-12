@@ -24,13 +24,13 @@
 package org.cleartk.timeml.corpus;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
@@ -40,15 +40,13 @@ import org.cleartk.timeml.type.Anchor;
 import org.cleartk.timeml.type.DocumentCreationTime;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.type.TemporalLink;
-import org.cleartk.timeml.type.TemporalLinkEventToDocumentCreationTime;
-import org.cleartk.timeml.type.TemporalLinkEventToSameSentenceTime;
-import org.cleartk.timeml.type.TemporalLinkEventToSyntacticallyDominatedEvent;
-import org.cleartk.timeml.type.TemporalLinkMainEventToNextSentenceMainEvent;
 import org.cleartk.timeml.type.Time;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.uimafit.component.JCasAnnotator_ImplBase;
+import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.TypeSystemDescriptionFactory;
 import org.uimafit.util.JCasUtil;
 
@@ -73,6 +71,76 @@ public class TempEval2010GoldAnnotator extends JCasAnnotator_ImplBase {
             "org.cleartk.timeml.TypeSystem"));
   }
 
+  @ConfigurationParameter(defaultValue = CAS.NAME_DEFAULT_SOFA, description = "Views where document text should be placed")
+  private String[] textViews;
+
+  @ConfigurationParameter(defaultValue = CAS.NAME_DEFAULT_SOFA, description = "Views where Time annotations should be placed")
+  private String[] documentCreationTimeViews;
+
+  @ConfigurationParameter(defaultValue = CAS.NAME_DEFAULT_SOFA, description = "Views where Time annotations should be placed")
+  private String[] timeExtentViews;
+
+  @ConfigurationParameter(defaultValue = CAS.NAME_DEFAULT_SOFA, description = "Views where Time annotation attributes should be placed")
+  private String[] timeAttributeViews;
+
+  @ConfigurationParameter(defaultValue = CAS.NAME_DEFAULT_SOFA, description = "Views where Event annotations should be placed")
+  private String[] eventExtentViews;
+
+  @ConfigurationParameter(defaultValue = CAS.NAME_DEFAULT_SOFA, description = "Views where Event annotation attributes should be placed")
+  private String[] eventAttributeViews;
+
+  @ConfigurationParameter(defaultValue = CAS.NAME_DEFAULT_SOFA, description = "Views where TemporalLink annotations between events and the document creation time should be placed")
+  private String[] temporalLinkEventToDocumentCreationTimeViews;
+
+  @ConfigurationParameter(defaultValue = CAS.NAME_DEFAULT_SOFA, description = "Views where TemporalLink annotations between events and times within the same sentence should be placed")
+  private String[] temporalLinkEventToSameSentenceTimeViews;
+
+  @ConfigurationParameter(defaultValue = CAS.NAME_DEFAULT_SOFA, description = "Views where TemporalLink annotations between events and syntactically dominated events should be placed")
+  private String[] temporalLinkEventToSubordinatedEventViews;
+
+  @ConfigurationParameter(defaultValue = CAS.NAME_DEFAULT_SOFA, description = "Views where TemporalLink annotations between main events in adjacent sentences should be placed")
+  private String[] temporalLinkMainEventToNextSentenceMainEventViews;
+
+  public static final String PARAM_TEXT_VIEWS = ConfigurationParameterFactory.createConfigurationParameterName(
+      TempEval2010GoldAnnotator.class,
+      "textViews");
+
+  public static final String PARAM_DOCUMENT_CREATION_TIME_VIEWS = ConfigurationParameterFactory.createConfigurationParameterName(
+      TempEval2010GoldAnnotator.class,
+      "documentCreationTimeViews");
+
+  public static final String PARAM_TIME_EXTENT_VIEWS = ConfigurationParameterFactory.createConfigurationParameterName(
+      TempEval2010GoldAnnotator.class,
+      "timeExtentViews");
+
+  public static final String PARAM_TIME_ATTRIBUTE_VIEWS = ConfigurationParameterFactory.createConfigurationParameterName(
+      TempEval2010GoldAnnotator.class,
+      "timeAttributeViews");
+
+  public static final String PARAM_EVENT_EXTENT_VIEWS = ConfigurationParameterFactory.createConfigurationParameterName(
+      TempEval2010GoldAnnotator.class,
+      "eventExtentViews");
+
+  public static final String PARAM_EVENT_ATTRIBUTE_VIEWS = ConfigurationParameterFactory.createConfigurationParameterName(
+      TempEval2010GoldAnnotator.class,
+      "eventAttributeViews");
+
+  public static final String PARAM_TEMPORAL_LINK_EVENT_TO_DOCUMENT_CREATION_TIME_VIEWS = ConfigurationParameterFactory.createConfigurationParameterName(
+      TempEval2010GoldAnnotator.class,
+      "temporalLinkEventToDocumentCreationTimeViews");
+
+  public static final String PARAM_TEMPORAL_LINK_EVENT_TO_SAME_SENTENCE_TIME_VIEWS = ConfigurationParameterFactory.createConfigurationParameterName(
+      TempEval2010GoldAnnotator.class,
+      "temporalLinkEventToSameSentenceTimeViews");
+
+  public static final String PARAM_TEMPORAL_LINK_EVENT_TO_SUBORDINATED_EVENT_VIEWS = ConfigurationParameterFactory.createConfigurationParameterName(
+      TempEval2010GoldAnnotator.class,
+      "temporalLinkEventToSubordinatedEventViews");
+
+  public static final String PARAM_TEMPORAL_LINK_MAIN_EVENT_TO_NEXT_SENTENCE_MAIN_EVENT_VIEWS = ConfigurationParameterFactory.createConfigurationParameterName(
+      TempEval2010GoldAnnotator.class,
+      "temporalLinkMainEventToNextSentenceMainEventViews");
+
   @Override
   public void process(JCas jCas) throws AnalysisEngineProcessException {
 
@@ -86,47 +154,51 @@ public class TempEval2010GoldAnnotator extends JCasAnnotator_ImplBase {
     }
 
     // create the sentences and tokens
-    StringBuilder textBuilder = new StringBuilder("\n\n"); // leave line for document time
-    List<List<Token>> sentenceTokens = new ArrayList<List<Token>>();
-    for (int i = 0; i < sentTokens.keySet().size(); ++i) {
-      int sentBegin = textBuilder.length();
-      List<Token> tokens = new ArrayList<Token>();
-      for (String tokenText : sentTokens.get(i)) {
-        int tokenBegin = textBuilder.length();
-        textBuilder.append(tokenText);
-        int tokenEnd = textBuilder.length();
-        textBuilder.append(' ');
-        Token token = new Token(jCas, tokenBegin, tokenEnd);
-        token.addToIndexes();
-        tokens.add(token);
+    Map<String, StringBuilder> textBuilders = new HashMap<String, StringBuilder>();
+    for (String viewName : this.textViews) {
+      StringBuilder textBuilder = new StringBuilder("\n\n"); // leave line for document time
+      JCas view = JCasUtil.getView(jCas, viewName, true);
+      for (int i = 0; i < sentTokens.keySet().size(); ++i) {
+        int sentBegin = textBuilder.length();
+        List<Token> tokens = new ArrayList<Token>();
+        for (String tokenText : sentTokens.get(i)) {
+          int tokenBegin = textBuilder.length();
+          textBuilder.append(tokenText);
+          int tokenEnd = textBuilder.length();
+          textBuilder.append(' ');
+          Token token = new Token(view, tokenBegin, tokenEnd);
+          token.addToIndexes();
+          tokens.add(token);
+        }
+        int sentEnd = textBuilder.length() - 1;
+        textBuilder.setCharAt(sentEnd, '\n');
+        Sentence sentence = new Sentence(view, sentBegin, sentEnd);
+        sentence.addToIndexes();
       }
-      sentenceTokens.add(tokens);
-      int sentEnd = textBuilder.length() - 1;
-      textBuilder.setCharAt(sentEnd, '\n');
-      Sentence sentence = new Sentence(jCas, sentBegin, sentEnd);
-      sentence.addToIndexes();
+      textBuilders.put(viewName, textBuilder);
     }
 
     // add the document creation time
     for (String line : lines(jCas, TimeMLViewName.TEMPEVAL_DCT)) {
       String[] dctColumns = split(line, "<filename>", "<dct>");
       String dctValue = dctColumns[1].replaceAll("(\\d{4})(\\d{2})(\\d{2})", "$1-$2-$3");
-      DocumentCreationTime docTime = new DocumentCreationTime(jCas, 1, 1);
-      docTime.setId("t0");
-      docTime.setTimeType("DATE");
-      docTime.setValue(dctValue);
-      docTime.setFunctionInDocument("CREATION_TIME");
-      docTime.addToIndexes();
+      for (String viewName : this.documentCreationTimeViews) {
+        JCas view = JCasUtil.getView(jCas, viewName, true);
+        DocumentCreationTime docTime = new DocumentCreationTime(view, 1, 1);
+        docTime.setId("t0");
+        docTime.setTimeType("DATE");
+        docTime.setValue(dctValue);
+        docTime.setFunctionInDocument("CREATION_TIME");
+        docTime.addToIndexes();
+      }
     }
 
     // add Time annotations
-    Map<String, Time> idTimeMap = new HashMap<String, Time>();
     addSpans(
         jCas,
-        sentenceTokens,
         TimeMLViewName.TEMPEVAL_TIMEX_EXTENTS,
         "timex3",
-        idTimeMap,
+        this.timeExtentViews,
         new AnnotationConstructor<Time>() {
           @Override
           public Time apply(JCas aJCas, int begin, int end) {
@@ -138,29 +210,28 @@ public class TempEval2010GoldAnnotator extends JCasAnnotator_ImplBase {
     addAttributes(
         jCas,
         TimeMLViewName.TEMPEVAL_TIMEX_ATTRIBUTES,
-        idTimeMap,
+        Time.class,
+        this.timeAttributeViews,
         new AttributeSetter<Time>() {
-      @Override
-      public void apply(Time time, String attrName, String attrValue) {
-        if (attrName.equals("type")) {
-          time.setTimeType(attrValue);
-        } else if (attrName.equals("value")) {
-          time.setValue(attrValue);
-        } else {
-          String message = "Unexpected TIMEX attribute %s=%s";
-          throw new IllegalArgumentException(String.format(message, attrName, attrValue));
-        }
-      }
-    });
+          @Override
+          public void apply(Time time, String attrName, String attrValue) {
+            if (attrName.equals("type")) {
+              time.setTimeType(attrValue);
+            } else if (attrName.equals("value")) {
+              time.setValue(attrValue);
+            } else {
+              String message = "Unexpected TIMEX attribute %s=%s";
+              throw new IllegalArgumentException(String.format(message, attrName, attrValue));
+            }
+          }
+        });
 
     // add Event annotations
-    Map<String, Event> idEventMap = new HashMap<String, Event>();
     addSpans(
         jCas,
-        sentenceTokens,
         TimeMLViewName.TEMPEVAL_EVENT_EXTENTS,
         "event",
-        idEventMap,
+        this.eventExtentViews,
         new AnnotationConstructor<Event>() {
           @Override
           public Event apply(JCas aJCas, int begin, int end) {
@@ -172,7 +243,8 @@ public class TempEval2010GoldAnnotator extends JCasAnnotator_ImplBase {
     addAttributes(
         jCas,
         TimeMLViewName.TEMPEVAL_EVENT_ATTRIBUTES,
-        idEventMap,
+        Event.class,
+        this.eventAttributeViews,
         new AttributeSetter<Event>() {
           @Override
           public void apply(Event event, String attrName, String attrValue) {
@@ -195,42 +267,33 @@ public class TempEval2010GoldAnnotator extends JCasAnnotator_ImplBase {
           }
         });
 
-    // add tlinks
-    Map<String, Anchor> idAnchors = new HashMap<String, Anchor>();
-    for (Anchor anchor : JCasUtil.select(jCas, Anchor.class)) {
-      idAnchors.put(anchor.getId(), anchor);
-    }
-    for (String viewName : Arrays.asList(
+    // add TemporalLink annotations
+    addTemporalLinks(
+        jCas,
         TimeMLViewName.TEMPEVAL_TLINK_DCT_EVENT,
-        TimeMLViewName.TEMPEVAL_TLINK_MAIN_EVENTS,
+        textBuilders,
+        this.temporalLinkEventToDocumentCreationTimeViews);
+    addTemporalLinks(
+        jCas,
+        TimeMLViewName.TEMPEVAL_TLINK_TIMEX_EVENT,
+        textBuilders,
+        this.temporalLinkEventToSameSentenceTimeViews);
+    addTemporalLinks(
+        jCas,
         TimeMLViewName.TEMPEVAL_TLINK_SUBORDINATED_EVENTS,
-        TimeMLViewName.TEMPEVAL_TLINK_TIMEX_EVENT)) {
-      for (String line : lines(jCas, viewName)) {
-        String[] columns = split(line, "<filename>", "<eid>", "<tid>", "<relation>");
-        String sourceID = columns[1];
-        String targetID = columns[2];
-        String relation = columns[3];
-        TemporalLink tlink = null;
-        int offset = textBuilder.length();
-        if (viewName.equals(TimeMLViewName.TEMPEVAL_TLINK_DCT_EVENT)) {
-          tlink = new TemporalLinkEventToDocumentCreationTime(jCas, offset, offset);
-        } else if (viewName.equals(TimeMLViewName.TEMPEVAL_TLINK_TIMEX_EVENT)) {
-          tlink = new TemporalLinkEventToSameSentenceTime(jCas, offset, offset);
-        } else if (viewName.equals(TimeMLViewName.TEMPEVAL_TLINK_MAIN_EVENTS)) {
-          tlink = new TemporalLinkMainEventToNextSentenceMainEvent(jCas, offset, offset);
-        } else if (viewName.equals(TimeMLViewName.TEMPEVAL_TLINK_SUBORDINATED_EVENTS)) {
-          tlink = new TemporalLinkEventToSyntacticallyDominatedEvent(jCas, offset, offset);
-        }
-        tlink.setSource(idAnchors.get(sourceID));
-        tlink.setTarget(idAnchors.get(targetID));
-        tlink.setRelationType(relation);
-        tlink.addToIndexes();
-        textBuilder.append('\n');
-      }
-    }
+        textBuilders,
+        this.temporalLinkEventToSubordinatedEventViews);
+    addTemporalLinks(
+        jCas,
+        TimeMLViewName.TEMPEVAL_TLINK_MAIN_EVENTS,
+        textBuilders,
+        this.temporalLinkMainEventToNextSentenceMainEventViews);
 
     // set the document text
-    jCas.setDocumentText(textBuilder.toString());
+    for (String viewName : this.textViews) {
+      JCas view = JCasUtil.getView(jCas, viewName, true);
+      view.setDocumentText(textBuilders.get(viewName).toString());
+    }
   }
 
   private static String[] split(String line, String... expected) {
@@ -266,36 +329,44 @@ public class TempEval2010GoldAnnotator extends JCasAnnotator_ImplBase {
 
   private static <T extends Anchor> void addSpans(
       JCas jCas,
-      List<List<Token>> sentenceTokens,
-      String viewName,
+      String tabViewName,
       String elementName,
-      Map<String, T> idMap,
+      String[] annotationViewNames,
       AnnotationConstructor<T> constructor) throws AnalysisEngineProcessException {
-    for (String line : lines(jCas, viewName)) {
-      String[] columns = split(
-          line,
-          "<filename>",
-          "<sent_no>",
-          "<token_no>",
-          elementName,
-          "<id>",
-          "1");
-      int sentIndex = Integer.parseInt(columns[1]);
-      int tokenIndex = Integer.parseInt(columns[2]);
-      String id = columns[4];
-      Token token = sentenceTokens.get(sentIndex).get(tokenIndex);
-      if (!idMap.containsKey(id)) {
-        T ann = constructor.apply(jCas, token.getBegin(), token.getEnd());
-        ann.setId(id);
-        ann.addToIndexes();
-        idMap.put(id, ann);
-      } else {
-        T ann = idMap.get(id);
-        if (token.getBegin() < ann.getBegin()) {
-          ann.setBegin(token.getBegin());
-        }
-        if (token.getEnd() > ann.getEnd()) {
-          ann.setEnd(token.getEnd());
+    String[] lines = lines(jCas, tabViewName);
+    for (String annotationViewName : annotationViewNames) {
+      JCas view = JCasUtil.getView(jCas, annotationViewName, true);
+      Map<String, T> idMap = new HashMap<String, T>();
+      List<List<Token>> sentenceTokens = new ArrayList<List<Token>>();
+      for (Sentence sentence : JCasUtil.select(view, Sentence.class)) {
+        sentenceTokens.add(JCasUtil.selectCovered(view, Token.class, sentence));
+      }
+      for (String line : lines) {
+        String[] columns = split(
+            line,
+            "<filename>",
+            "<sent_no>",
+            "<token_no>",
+            elementName,
+            "<id>",
+            "1");
+        int sentIndex = Integer.parseInt(columns[1]);
+        int tokenIndex = Integer.parseInt(columns[2]);
+        String id = columns[4];
+        Token token = sentenceTokens.get(sentIndex).get(tokenIndex);
+        if (!idMap.containsKey(id)) {
+          T ann = constructor.apply(view, token.getBegin(), token.getEnd());
+          ann.setId(id);
+          ann.addToIndexes();
+          idMap.put(id, ann);
+        } else {
+          T ann = idMap.get(id);
+          if (token.getBegin() < ann.getBegin()) {
+            ann.setBegin(token.getBegin());
+          }
+          if (token.getEnd() > ann.getEnd()) {
+            ann.setEnd(token.getEnd());
+          }
         }
       }
     }
@@ -305,26 +376,64 @@ public class TempEval2010GoldAnnotator extends JCasAnnotator_ImplBase {
     public void apply(T ann, String attrName, String attrValue);
   }
 
-  private static <T extends Annotation> void addAttributes(
+  private static <T extends Anchor> void addAttributes(
       JCas jCas,
-      String viewName,
-      Map<String, T> idMap,
+      String tabViewName,
+      Class<T> cls,
+      String[] annotationViewNames,
       AttributeSetter<T> setter) throws AnalysisEngineProcessException {
-    for (String line : lines(jCas, viewName)) {
-      String[] columns = split(
-          line,
-          "<filename>",
-          "<sent_no>",
-          "<token_no>",
-          "timex3",
-          "<id>",
-          "1",
-          "<attribute>",
-          "<value>");
-      String id = columns[4];
-      String attrName = columns[6];
-      String attrValue = columns[7];
-      setter.apply(idMap.get(id), attrName, attrValue);
+    String[] lines = lines(jCas, tabViewName);
+    for (String annotationViewName : annotationViewNames) {
+      JCas view = JCasUtil.getView(jCas, annotationViewName, false);
+      Map<String, T> idMap = new HashMap<String, T>();
+      for (T anchor : JCasUtil.select(view, cls)) {
+        idMap.put(anchor.getId(), anchor);
+      }
+      for (String line : lines) {
+        String[] columns = split(
+            line,
+            "<filename>",
+            "<sent_no>",
+            "<token_no>",
+            "timex3",
+            "<id>",
+            "1",
+            "<attribute>",
+            "<value>");
+        String id = columns[4];
+        String attrName = columns[6];
+        String attrValue = columns[7];
+        setter.apply(idMap.get(id), attrName, attrValue);
+      }
+    }
+  }
+
+  private static void addTemporalLinks(
+      JCas jCas,
+      String tabViewName,
+      Map<String, StringBuilder> textBuilders,
+      String[] annotationViewNames) throws AnalysisEngineProcessException {
+    String[] lines = lines(jCas, tabViewName);
+    for (String annotationViewName : annotationViewNames) {
+      JCas view = JCasUtil.getView(jCas, annotationViewName, true);
+      Map<String, Anchor> idAnchors = new HashMap<String, Anchor>();
+      for (Anchor anchor : JCasUtil.select(view, Anchor.class)) {
+        idAnchors.put(anchor.getId(), anchor);
+      }
+      StringBuilder textBuilder = textBuilders.get(annotationViewName);
+      for (String line : lines) {
+        String[] columns = split(line, "<filename>", "<eid>", "<tid>", "<relation>");
+        String sourceID = columns[1];
+        String targetID = columns[2];
+        String relation = columns[3];
+        int offset = textBuilder.length();
+        TemporalLink tlink = new TemporalLink(view, offset, offset);
+        tlink.setSource(idAnchors.get(sourceID));
+        tlink.setTarget(idAnchors.get(targetID));
+        tlink.setRelationType(relation);
+        tlink.addToIndexes();
+        textBuilder.append('\n');
+      }
     }
   }
 }

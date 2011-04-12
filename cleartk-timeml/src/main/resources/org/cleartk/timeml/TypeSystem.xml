@@ -13,9 +13,5 @@
     <import name="org.cleartk.timeml.type.Text"/>
     <import name="org.cleartk.timeml.type.Time"/>
     <import name="org.cleartk.timeml.type.DocumentCreationTime"/>
-    <import name="org.cleartk.timeml.type.TemporalLinkEventToDocumentCreationTime"/>
-    <import name="org.cleartk.timeml.type.TemporalLinkEventToSameSentenceTime"/>
-    <import name="org.cleartk.timeml.type.TemporalLinkEventToSyntacticallyDominatedEvent"/>
-    <import name="org.cleartk.timeml.type.TemporalLinkMainEventToNextSentenceMainEvent"/>
   </imports>
 </typeSystemDescription>

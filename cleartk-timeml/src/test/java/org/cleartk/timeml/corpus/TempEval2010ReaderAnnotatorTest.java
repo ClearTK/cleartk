@@ -34,15 +34,12 @@ import org.apache.commons.io.FileUtils;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.collection.CollectionReader;
+import org.apache.uima.jcas.JCas;
 import org.cleartk.timeml.TimeMLTestBase;
 import org.cleartk.timeml.TimeMLViewName;
 import org.cleartk.timeml.type.DocumentCreationTime;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.type.TemporalLink;
-import org.cleartk.timeml.type.TemporalLinkEventToDocumentCreationTime;
-import org.cleartk.timeml.type.TemporalLinkEventToSameSentenceTime;
-import org.cleartk.timeml.type.TemporalLinkEventToSyntacticallyDominatedEvent;
-import org.cleartk.timeml.type.TemporalLinkMainEventToNextSentenceMainEvent;
 import org.cleartk.timeml.type.Time;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
@@ -65,7 +62,8 @@ public class TempEval2010ReaderAnnotatorTest extends TimeMLTestBase {
     return new String[] { "org.cleartk.timeml.TypeSystem", "org.cleartk.token.TypeSystem" };
   }
 
-  public static final String BASE_SEGMENTATION =
+  // @formatter:off
+  public static final String WSJ_0032_BASE_SEGMENTATION =
         "wsj_0032	0	0	Italian\n" +
         "wsj_0032	0	1	chemical\n" +
         "wsj_0032	0	2	giant\n" +
@@ -157,7 +155,13 @@ public class TempEval2010ReaderAnnotatorTest extends TimeMLTestBase {
         "wsj_0032	3	12	the\n" +
         "wsj_0032	3	13	companies\n" +
         "wsj_0032	3	14	.\n";
-    
+
+  public static final String SJMN91_BASE_SEGMENTATION =
+        "SJMN91-06338157	0	0	.\n" +
+        "SJMN91-06338157	1	0	.\n";
+
+  public static final String BASE_SEGMENTATION = WSJ_0032_BASE_SEGMENTATION + SJMN91_BASE_SEGMENTATION;
+
   public static final String EVENT_ATTRIBUTES =
         "wsj_0032	0	15	event	e1	1	polarity	POS\n" +
         "wsj_0032	0	15	event	e1	1	modality	NONE\n" +
@@ -283,6 +287,8 @@ public class TempEval2010ReaderAnnotatorTest extends TimeMLTestBase {
     
   public static final String DCT =
         "wsj_0032	19891102\n";
+  
+  // @formatter:on
 
   @Before
   public void setUp() throws Exception {
@@ -298,19 +304,17 @@ public class TempEval2010ReaderAnnotatorTest extends TimeMLTestBase {
     this.write("key/tlinks-timex-event.tab", TLINKS_TIMEX_EVENT);
     this.write("dct-en.txt", DCT);
   }
-  
+
   private void write(String filePath, String text) throws IOException {
     FileUtils.writeStringToFile(new File(this.outputDirectory, filePath), text);
   }
-  
+
   @Test
   public void testTempEval2010CollectionReader() throws Exception {
-    CollectionReader reader = TempEval2010CollectionReader.getCollectionReader(
-        this.outputDirectory.getPath());
+    CollectionReader reader = TempEval2010CollectionReader.getCollectionReader(this.outputDirectory.getPath());
     Assert.assertTrue(reader.hasNext());
     reader.getNext(this.jCas.getCas());
-    Assert.assertFalse(reader.hasNext());
-    assertViewText(BASE_SEGMENTATION, TimeMLViewName.TEMPEVAL_BASE_SEGMENTATION);
+    assertViewText(WSJ_0032_BASE_SEGMENTATION, TimeMLViewName.TEMPEVAL_BASE_SEGMENTATION);
     assertViewText(EVENT_ATTRIBUTES, TimeMLViewName.TEMPEVAL_EVENT_ATTRIBUTES);
     assertViewText(EVENT_EXTENTS, TimeMLViewName.TEMPEVAL_EVENT_EXTENTS);
     assertViewText(TIMEX_ATTRIBUTES, TimeMLViewName.TEMPEVAL_TIMEX_ATTRIBUTES);
@@ -320,39 +324,49 @@ public class TempEval2010ReaderAnnotatorTest extends TimeMLTestBase {
     assertViewText(TLINKS_SUBORDINATED_EVENTS, TimeMLViewName.TEMPEVAL_TLINK_SUBORDINATED_EVENTS);
     assertViewText(TLINKS_TIMEX_EVENT, TimeMLViewName.TEMPEVAL_TLINK_TIMEX_EVENT);
     assertViewText(DCT, TimeMLViewName.TEMPEVAL_DCT);
+
+    Assert.assertTrue(reader.hasNext());
+    this.jCas.reset();
+    reader.getNext(this.jCas.getCas());
+    assertViewText(SJMN91_BASE_SEGMENTATION, TimeMLViewName.TEMPEVAL_BASE_SEGMENTATION);
+    assertViewText("", TimeMLViewName.TEMPEVAL_EVENT_ATTRIBUTES);
+    assertViewText("", TimeMLViewName.TEMPEVAL_EVENT_EXTENTS);
+    assertViewText("", TimeMLViewName.TEMPEVAL_TIMEX_ATTRIBUTES);
+    assertViewText("", TimeMLViewName.TEMPEVAL_TIMEX_EXTENTS);
+    assertViewText("", TimeMLViewName.TEMPEVAL_TLINK_DCT_EVENT);
+    assertViewText("", TimeMLViewName.TEMPEVAL_TLINK_MAIN_EVENTS);
+    assertViewText("", TimeMLViewName.TEMPEVAL_TLINK_SUBORDINATED_EVENTS);
+    assertViewText("", TimeMLViewName.TEMPEVAL_TLINK_TIMEX_EVENT);
+    assertViewText("", TimeMLViewName.TEMPEVAL_DCT);
   }
 
   private void assertViewText(String expected, String viewName) throws CASException {
     Assert.assertEquals(expected, this.jCas.getView(viewName).getDocumentText());
   }
-  
+
   @Test
   public void testTempEval2010GoldAnnotator() throws Exception {
-    CollectionReader reader = TempEval2010CollectionReader.getCollectionReader(
-        this.outputDirectory.getPath());
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-        TempEval2010GoldAnnotator.getDescription());
+    CollectionReader reader = TempEval2010CollectionReader.getCollectionReader(this.outputDirectory.getPath());
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TempEval2010GoldAnnotator.getDescription());
     reader.getNext(this.jCas.getCas());
     engine.process(this.jCas);
-    engine.collectionProcessComplete();
-    
-    String expectedText =
-      "Italian chemical giant Montedison S.p.A . , through its Montedison Acquisition N.V. indirect unit , began its $37-a-share tender offer for all the common shares outstanding of Erbamont N.V. , a maker of pharmaceuticals incorporated in the Netherlands .\n" +
-      "The offer , advertised in today 's editions of The Wall Street Journal , is scheduled to expire at the the end of November .\n" +
-      "Montedison currently owns about 72% of Erbamont 's common shares outstanding .\n" +
-      "The offer is being launched pursuant to a previously announced agreement between the companies .";
+
+    String expectedText = "Italian chemical giant Montedison S.p.A . , through its Montedison Acquisition N.V. indirect unit , began its $37-a-share tender offer for all the common shares outstanding of Erbamont N.V. , a maker of pharmaceuticals incorporated in the Netherlands .\n"
+        + "The offer , advertised in today 's editions of The Wall Street Journal , is scheduled to expire at the the end of November .\n"
+        + "Montedison currently owns about 72% of Erbamont 's common shares outstanding .\n"
+        + "The offer is being launched pursuant to a previously announced agreement between the companies .";
     Assert.assertEquals(expectedText, this.jCas.getDocumentText().trim());
-    
+
     Collection<Sentence> sentences = JCasUtil.select(this.jCas, Sentence.class);
     Assert.assertEquals(4, sentences.size());
     Assert.assertEquals(
         "Montedison currently owns about 72% of Erbamont 's common shares outstanding .",
         itemAtIndex(sentences, 2).getCoveredText());
-    
+
     Collection<Token> tokens = JCasUtil.select(this.jCas, Token.class);
     Assert.assertEquals(91, tokens.size());
     Assert.assertEquals("Montedison", itemAtIndex(tokens, 3).getCoveredText());
-    
+
     Collection<Event> events = JCasUtil.select(this.jCas, Event.class);
     Assert.assertEquals(11, events.size());
     Event e10 = itemAtIndex(events, 9);
@@ -380,39 +394,143 @@ public class TempEval2010ReaderAnnotatorTest extends TimeMLTestBase {
     Assert.assertEquals("t0", dct.getId());
     Assert.assertEquals("1989-11-02", dct.getValue());
     Assert.assertEquals("CREATION_TIME", dct.getFunctionInDocument());
-    
-    Collection<? extends TemporalLink> tlinks = JCasUtil.select(this.jCas, TemporalLink.class);
+
+    Collection<TemporalLink> tlinks = JCasUtil.select(this.jCas, TemporalLink.class);
     Assert.assertEquals(15, tlinks.size());
-    
-    tlinks = JCasUtil.select(this.jCas, TemporalLinkEventToDocumentCreationTime.class);
+
+    this.jCas.reset();
+    reader.getNext(this.jCas.getCas());
+    engine.process(this.jCas);
+    engine.collectionProcessComplete();
+
+    sentences = JCasUtil.select(this.jCas, Sentence.class);
+    Assert.assertEquals(2, sentences.size());
+    tokens = JCasUtil.select(this.jCas, Token.class);
+    Assert.assertEquals(2, tokens.size());
+  }
+
+  @Test
+  public void testTempEval2010GoldAnnotatorViews() throws Exception {
+
+    CollectionReader reader = TempEval2010CollectionReader.getCollectionReader(this.outputDirectory.getPath());
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+        TempEval2010GoldAnnotator.getDescription(),
+        TempEval2010GoldAnnotator.PARAM_TEXT_VIEWS,
+        new String[] { "DCT", "TE", "TA", "EE", "EA", "E2DCT", "E2SST", "E2SE", "ME2ME" },
+        TempEval2010GoldAnnotator.PARAM_DOCUMENT_CREATION_TIME_VIEWS,
+        new String[] { "DCT", "E2DCT" },
+        TempEval2010GoldAnnotator.PARAM_TIME_EXTENT_VIEWS,
+        new String[] { "TE", "TA", "E2SST" },
+        TempEval2010GoldAnnotator.PARAM_TIME_ATTRIBUTE_VIEWS,
+        new String[] { "TA" },
+        TempEval2010GoldAnnotator.PARAM_EVENT_EXTENT_VIEWS,
+        new String[] { "EE", "EA", "E2DCT", "E2SST", "E2SE", "ME2ME" },
+        TempEval2010GoldAnnotator.PARAM_EVENT_ATTRIBUTE_VIEWS,
+        new String[] { "EA" },
+        TempEval2010GoldAnnotator.PARAM_TEMPORAL_LINK_EVENT_TO_DOCUMENT_CREATION_TIME_VIEWS,
+        new String[] { "E2DCT" },
+        TempEval2010GoldAnnotator.PARAM_TEMPORAL_LINK_EVENT_TO_SAME_SENTENCE_TIME_VIEWS,
+        new String[] { "E2SST" },
+        TempEval2010GoldAnnotator.PARAM_TEMPORAL_LINK_EVENT_TO_SUBORDINATED_EVENT_VIEWS,
+        new String[] { "E2SE" },
+        TempEval2010GoldAnnotator.PARAM_TEMPORAL_LINK_MAIN_EVENT_TO_NEXT_SENTENCE_MAIN_EVENT_VIEWS,
+        new String[] { "ME2ME" });
+    reader.getNext(this.jCas.getCas());
+    engine.process(this.jCas);
+
+    for (String viewName : new String[] { "DCT", "TE", "EA", "E2SE", "ME2ME" }) {
+      JCas view = JCasUtil.getView(this.jCas, viewName, false);
+      Collection<Sentence> sentences = JCasUtil.select(view, Sentence.class);
+      Assert.assertEquals(viewName, 4, sentences.size());
+
+      Collection<Token> tokens = JCasUtil.select(view, Token.class);
+      Assert.assertEquals(viewName, 91, tokens.size());
+    }
+
+    for (String viewName : new String[] { "TE", "TA", "E2SST" }) {
+      JCas view = JCasUtil.getView(this.jCas, viewName, false);
+      Collection<Time> times = JCasUtil.select(view, Time.class);
+      Assert.assertEquals(viewName, 4, times.size());
+      Time t18 = itemAtIndex(times, 1);
+      Assert.assertEquals(viewName, "t18", t18.getId());
+      Assert.assertEquals(viewName, "the end of November", t18.getCoveredText());
+      if (!viewName.equals("TA")) {
+        for (Time time : times) {
+          Assert.assertNull(time.getTimeType());
+          Assert.assertNull(time.getValue());
+        }
+      } else {
+        Assert.assertEquals(viewName, "1989-11", t18.getValue());
+        Assert.assertEquals(viewName, "TIME", t18.getTimeType());
+      }
+    }
+
+    for (String viewName : new String[] { "EE", "EA", "E2DCT", "E2SST", "E2SE", "ME2ME" }) {
+      JCas view = JCasUtil.getView(this.jCas, viewName, false);
+      Collection<Event> events = JCasUtil.select(view, Event.class);
+      Assert.assertEquals(11, events.size());
+      Event e10 = itemAtIndex(events, 9);
+      Assert.assertEquals("e10", e10.getId());
+      Assert.assertEquals("announced", e10.getCoveredText());
+      if (viewName.equals("EA")) {
+        Assert.assertEquals(viewName, "POS", e10.getPolarity());
+        Assert.assertEquals(viewName, "NONE", e10.getModality());
+        Assert.assertEquals(viewName, "ADJECTIVE", e10.getPos());
+        Assert.assertEquals(viewName, "NONE", e10.getTense());
+        Assert.assertEquals(viewName, "NONE", e10.getAspect());
+        Assert.assertEquals(viewName, "REPORTING", e10.getEventClass());
+      } else {
+        Assert.assertNull(viewName, e10.getPolarity());
+        Assert.assertNull(viewName, e10.getModality());
+        Assert.assertNull(viewName, e10.getPos());
+        Assert.assertNull(viewName, e10.getTense());
+        Assert.assertNull(viewName, e10.getAspect());
+        Assert.assertNull(viewName, e10.getEventClass());
+      }
+    }
+
+    for (String viewName : new String[] { "DCT", "E2DCT" }) {
+      JCas view = JCasUtil.getView(this.jCas, viewName, false);
+      Collection<DocumentCreationTime> dcts = JCasUtil.select(view, DocumentCreationTime.class);
+      Assert.assertEquals(1, dcts.size());
+      Collection<Time> times = JCasUtil.select(view, Time.class);
+      Assert.assertEquals(itemAtIndex(times, 0), itemAtIndex(dcts, 0));
+      Time dct = itemAtIndex(dcts, 0);
+      Assert.assertEquals("t0", dct.getId());
+      Assert.assertEquals("1989-11-02", dct.getValue());
+      Assert.assertEquals("CREATION_TIME", dct.getFunctionInDocument());
+    }
+
+    Collection<TemporalLink> tlinks;
+    tlinks = JCasUtil.select(JCasUtil.getView(this.jCas, "E2DCT", false), TemporalLink.class);
     Assert.assertEquals(5, tlinks.size());
     TemporalLink e1t0 = itemAtIndex(tlinks, 0);
     Assert.assertEquals("BEFORE", e1t0.getRelationType());
     Assert.assertEquals("began", e1t0.getSource().getCoveredText());
     Assert.assertTrue(e1t0.getTarget() instanceof DocumentCreationTime);
 
-    tlinks = JCasUtil.select(this.jCas, TemporalLinkMainEventToNextSentenceMainEvent.class);
+    tlinks = JCasUtil.select(JCasUtil.getView(this.jCas, "E2SST", false), TemporalLink.class);
     Assert.assertEquals(3, tlinks.size());
-    TemporalLink e5e7 = itemAtIndex(tlinks, 1);
-    Assert.assertEquals("OVERLAP", e5e7.getRelationType());
-    Assert.assertEquals("scheduled", e5e7.getSource().getCoveredText());
-    Assert.assertEquals("owns", e5e7.getTarget().getCoveredText());
-    
-    tlinks = JCasUtil.select(this.jCas, TemporalLinkEventToSyntacticallyDominatedEvent.class);
+    TemporalLink e8t21 = itemAtIndex(tlinks, 1);
+    Assert.assertEquals("AFTER", e8t21.getRelationType());
+    Assert.assertEquals("offer", e8t21.getSource().getCoveredText());
+    Assert.assertEquals("previously", e8t21.getTarget().getCoveredText());
+
+    tlinks = JCasUtil.select(JCasUtil.getView(this.jCas, "E2SE", false), TemporalLink.class);
     Assert.assertEquals(4, tlinks.size());
     TemporalLink e9e8 = itemAtIndex(tlinks, 2);
     Assert.assertEquals("BEFORE-OR-OVERLAP", e9e8.getRelationType());
     Assert.assertEquals("launched", e9e8.getSource().getCoveredText());
     Assert.assertEquals("offer", e9e8.getTarget().getCoveredText());
 
-    tlinks = JCasUtil.select(this.jCas, TemporalLinkEventToSameSentenceTime.class);
+    tlinks = JCasUtil.select(JCasUtil.getView(this.jCas, "ME2ME", false), TemporalLink.class);
     Assert.assertEquals(3, tlinks.size());
-    TemporalLink e8t21 = itemAtIndex(tlinks, 1);
-    Assert.assertEquals("AFTER", e8t21.getRelationType());
-    Assert.assertEquals("offer", e8t21.getSource().getCoveredText());
-    Assert.assertEquals("previously", e8t21.getTarget().getCoveredText());
+    TemporalLink e5e7 = itemAtIndex(tlinks, 1);
+    Assert.assertEquals("OVERLAP", e5e7.getRelationType());
+    Assert.assertEquals("scheduled", e5e7.getSource().getCoveredText());
+    Assert.assertEquals("owns", e5e7.getTarget().getCoveredText());
   }
-  
+
   private <T> T itemAtIndex(Collection<T> items, int index) {
     Iterator<T> iter = items.iterator();
     for (int i = 0; i < index; ++i) {
