@@ -31,6 +31,7 @@ import java.util.List;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -38,13 +39,15 @@ import org.cleartk.chunker.ChunkLabeler_ImplBase;
 import org.cleartk.chunker.Chunker;
 import org.cleartk.chunker.ChunkerFeatureExtractor;
 import org.cleartk.chunker.DefaultChunkLabeler;
-import org.cleartk.classifier.CleartkAnnotatorDescriptionFactory;
+import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.WindowExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
+import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
+import org.cleartk.classifier.jar.GenericJarClassifierFactory;
 import org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory;
 import org.cleartk.timeml.TimeMLComponents;
 import org.cleartk.timeml.type.Event;
@@ -53,8 +56,10 @@ import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
+import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.InitializableFactory;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -65,21 +70,16 @@ import org.uimafit.factory.initializable.InitializableFactory;
  * 
  * @author Steven Bethard
  */
-public class EventAnnotator {
+public class EventAnnotator extends Chunker {
 
   public static final CleartkInternalModelLocator MODEL_LOCATOR = new CleartkInternalModelLocator(
       EventAnnotator.class);
 
-  public static AnalysisEngineDescription getWriterDescription(String modelDir)
+  public static AnalysisEngineDescription getBaseDescription()
       throws ResourceInitializationException {
-    AnalysisEngineDescription aed = CleartkAnnotatorDescriptionFactory
-        .createCleartkSequenceAnnotator(
-            Chunker.class,
-            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
-            DefaultMalletCRFDataWriterFactory.class,
-            modelDir);
-    ConfigurationParameterFactory.addConfigurationParameters(
-        aed,
+    return AnalysisEngineFactory.createPrimitiveDescription(
+        EventAnnotator.class,
+        TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
         Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME,
         Token.class.getName(),
         Chunker.PARAM_SEQUENCE_CLASS_NAME,
@@ -90,7 +90,18 @@ public class EventAnnotator {
         FeatureExtractor.class.getName(),
         ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME,
         Event.class.getName());
-    return aed;
+  }
+
+  public static AnalysisEngineDescription getWriterDescription(String modelDir)
+      throws ResourceInitializationException {
+    AnalysisEngineDescription desc = getBaseDescription();
+    ConfigurationParameterFactory.addConfigurationParameters(
+        desc,
+        CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        DefaultMalletCRFDataWriterFactory.class.getName(),
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        modelDir);
+    return desc;
   }
 
   public static AnalysisEngineDescription getWriterDescription()
@@ -98,31 +109,31 @@ public class EventAnnotator {
     return getWriterDescription(MODEL_LOCATOR.getTrainingDirectory());
   }
 
-  public static AnalysisEngineDescription getAnnotatorDescription(String modelDir)
+  public static AnalysisEngineDescription getAnnotatorDescription(String modelJarPath)
       throws ResourceInitializationException {
-    AnalysisEngineDescription aed = CleartkAnnotatorDescriptionFactory
-        .createCleartkSequenceAnnotator(
-            Chunker.class,
-            TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
-            modelDir);
+    AnalysisEngineDescription desc = getBaseDescription();
     ConfigurationParameterFactory.addConfigurationParameters(
-        aed,
-        Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME,
-        Token.class.getName(),
-        Chunker.PARAM_SEQUENCE_CLASS_NAME,
-        Sentence.class.getName(),
-        Chunker.PARAM_CHUNK_LABELER_CLASS_NAME,
-        DefaultChunkLabeler.class.getName(),
-        Chunker.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME,
-        FeatureExtractor.class.getName(),
-        ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME,
-        Event.class.getName());
-    return aed;
+        desc,
+        GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
+        modelJarPath);
+    return desc;
   }
 
   public static AnalysisEngineDescription getAnnotatorDescription()
       throws ResourceInitializationException {
     return getAnnotatorDescription(MODEL_LOCATOR.getClassifierJarURL().toString());
+  }
+
+  @Override
+  public void process(JCas jCas) throws AnalysisEngineProcessException {
+    super.process(jCas);
+
+    int timeIndex = 1;
+    for (Event event : JCasUtil.select(jCas, Event.class)) {
+      String id = String.format("e%d", timeIndex);
+      event.setId(id);
+      timeIndex += 1;
+    }
   }
 
   public static class FeatureExtractor implements ChunkerFeatureExtractor {

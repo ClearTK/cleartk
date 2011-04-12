@@ -76,6 +76,7 @@ public class EventAnnotatorsTest extends TimeMLTestBase {
     Assert.assertEquals(2, events.size());
 
     Event thinking = events.get(0);
+    Assert.assertEquals("e1", thinking.getId());
     Assert.assertEquals("thinking", thinking.getCoveredText());
     Assert.assertEquals("PAST", thinking.getTense());
     Assert.assertEquals("PROGRESSIVE", thinking.getAspect());
@@ -84,6 +85,7 @@ public class EventAnnotatorsTest extends TimeMLTestBase {
     Assert.assertEquals(null, thinking.getModality());
 
     Event eaten = events.get(1);
+    Assert.assertEquals("e2", eaten.getId());
     Assert.assertEquals("eaten", eaten.getCoveredText());
     Assert.assertEquals("PRESENT", eaten.getTense());
     Assert.assertEquals("PERFECTIVE", eaten.getAspect());
