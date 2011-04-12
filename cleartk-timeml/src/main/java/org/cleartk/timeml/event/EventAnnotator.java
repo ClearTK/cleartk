@@ -160,20 +160,13 @@ public class EventAnnotator extends Chunker {
       this.tokenFeatureExtractors.add(new TypePathExtractor(tokenClass, "stem"));
       this.tokenFeatureExtractors.add(new TypePathExtractor(tokenClass, "pos"));
 
-      // add window of features 2 before and 2 after
+      // add window of features before and after
+      WindowExtractor windowExtractor;
       for (SimpleFeatureExtractor extractor : this.tokenFeatureExtractors) {
-        this.windowFeatureExtractors.add(new WindowExtractor(
-            tokenClass,
-            extractor,
-            ORIENTATION_RIGHT,
-            0,
-            3));
-        this.windowFeatureExtractors.add(new WindowExtractor(
-            tokenClass,
-            extractor,
-            ORIENTATION_LEFT,
-            0,
-            3));
+        windowExtractor = new WindowExtractor(tokenClass, extractor, ORIENTATION_RIGHT, 0, 3);
+        this.windowFeatureExtractors.add(windowExtractor);
+        windowExtractor = new WindowExtractor(tokenClass, extractor, ORIENTATION_LEFT, 0, 3);
+        this.windowFeatureExtractors.add(windowExtractor);
       }
     }
 
