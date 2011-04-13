@@ -26,7 +26,9 @@ package org.cleartk.timeml.corpus;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -72,38 +74,60 @@ public class TempEval2010Writer extends JCasAnnotator_ImplBase {
         TempEval2010Writer.class,
         TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
         PARAM_OUTPUT_DIRECTORY,
-        outputDirectory.getPath());
+        outputDirectory.getPath(),
+        TempEval2010Writer.PARAM_TEXT_VIEW,
+        CAS.NAME_DEFAULT_SOFA);
   }
 
   public static final String PARAM_OUTPUT_DIRECTORY = ConfigurationParameterFactory.createConfigurationParameterName(
       TempEval2010Writer.class,
       "outputDirectory");
 
-  @ConfigurationParameter(description = "The directory where the TempEval .tab files should be written.", mandatory = true)
+  @ConfigurationParameter(mandatory = true, description = "The directory where the TempEval .tab "
+      + "files should be written.")
   private File outputDirectory;
 
-  @ConfigurationParameter(defaultValue = CAS.NAME_DEFAULT_SOFA, description = "View containing the document text")
+  @ConfigurationParameter(mandatory = true, description = "View containing the document text.")
   private String textView;
 
-  @ConfigurationParameter(defaultValue = CAS.NAME_DEFAULT_SOFA, description = "View containing DocumentCreationTime annotations")
+  @ConfigurationParameter(description = "View containing DocumentCreationTime annotations. If "
+      + "provided, the document creation times file will be written.")
   private String documentCreationTimeView;
 
-  @ConfigurationParameter(defaultValue = CAS.NAME_DEFAULT_SOFA, description = "View containing Time annotations (with attributes)")
-  private String timeView;
+  @ConfigurationParameter(description = "View containing Time annotations. If provided, the time "
+      + "extents file will be written.")
+  private String timeExtentView;
 
-  @ConfigurationParameter(defaultValue = CAS.NAME_DEFAULT_SOFA, description = "View containing Event annotations (with attributes)")
-  private String eventView;
+  @ConfigurationParameter(description = "View containing Time annotations with their attributes. "
+      + "If provided, the time attributes file will be written.")
+  private String timeAttributeView;
 
-  @ConfigurationParameter(defaultValue = CAS.NAME_DEFAULT_SOFA, description = "View containing TemporalLink annotations between events and the document creation time")
+  @ConfigurationParameter(description = "View containing Event annotations. If provided, the "
+      + "event extents will be written.")
+  private String eventExtentView;
+
+  @ConfigurationParameter(description = "View containing Event annotations with their attributes. "
+      + "If provided, the event attributes file will be written.")
+  private String eventAttributeView;
+
+  @ConfigurationParameter(description = "View containing TemporalLink annotations between events "
+      + "and the document creation time. If provided, the corresponding temporal links file will "
+      + "be written.")
   private String temporalLinkEventToDocumentCreationTimeView;
 
-  @ConfigurationParameter(defaultValue = CAS.NAME_DEFAULT_SOFA, description = "View containing TemporalLink annotations between events and times within the same sentence")
+  @ConfigurationParameter(description = "View containing TemporalLink annotations between events "
+      + "and times within the same sentence. If provided, the corresponding temporal links file "
+      + "will be written.")
   private String temporalLinkEventToSameSentenceTimeView;
 
-  @ConfigurationParameter(defaultValue = CAS.NAME_DEFAULT_SOFA, description = "View containing TemporalLink annotations between events and syntactically dominated events")
+  @ConfigurationParameter(description = "View containing TemporalLink annotations between events "
+      + "and syntactically dominated events. If provided, the corresponding temporal links file "
+      + "will be written.")
   private String temporalLinkEventToSubordinatedEventView;
 
-  @ConfigurationParameter(defaultValue = CAS.NAME_DEFAULT_SOFA, description = "View containing TemporalLink annotations between main events in adjacent sentences")
+  @ConfigurationParameter(description = "View containing TemporalLink annotations between main "
+      + "events in adjacent sentences. If provided, the corresponding temporal links file will be "
+      + "written.")
   private String temporalLinkMainEventToNextSentenceMainEventView;
 
   public static final String PARAM_TEXT_VIEW = ConfigurationParameterFactory.createConfigurationParameterName(
@@ -114,13 +138,21 @@ public class TempEval2010Writer extends JCasAnnotator_ImplBase {
       TempEval2010Writer.class,
       "documentCreationTimeView");
 
-  public static final String PARAM_TIME_VIEW = ConfigurationParameterFactory.createConfigurationParameterName(
+  public static final String PARAM_TIME_EXTENT_VIEW = ConfigurationParameterFactory.createConfigurationParameterName(
       TempEval2010Writer.class,
-      "timeView");
+      "timeExtentView");
 
-  public static final String PARAM_EVENT_VIEW = ConfigurationParameterFactory.createConfigurationParameterName(
+  public static final String PARAM_TIME_ATTRIBUTE_VIEW = ConfigurationParameterFactory.createConfigurationParameterName(
       TempEval2010Writer.class,
-      "eventView");
+      "timeAttributeView");
+
+  public static final String PARAM_EVENT_EXTENT_VIEW = ConfigurationParameterFactory.createConfigurationParameterName(
+      TempEval2010Writer.class,
+      "eventExtentView");
+
+  public static final String PARAM_EVENT_ATTRIBUTE_VIEW = ConfigurationParameterFactory.createConfigurationParameterName(
+      TempEval2010Writer.class,
+      "eventAttributeView");
 
   public static final String PARAM_TEMPORAL_LINK_EVENT_TO_DOCUMENT_CREATION_TIME_VIEW = ConfigurationParameterFactory.createConfigurationParameterName(
       TempEval2010Writer.class,
@@ -167,44 +199,92 @@ public class TempEval2010Writer extends JCasAnnotator_ImplBase {
       this.outputDirectory.mkdirs();
     }
     this.writers = new ArrayList<PrintWriter>();
-    this.baseWriter = this.createWriter(TimeMLViewName.TEMPEVAL_BASE_SEGMENTATION);
-    this.dctWriter = this.createWriter(TimeMLViewName.TEMPEVAL_DCT);
-    this.timexExtentWriter = this.createWriter(TimeMLViewName.TEMPEVAL_TIMEX_EXTENTS);
-    this.timexAttributeWriter = this.createWriter(TimeMLViewName.TEMPEVAL_TIMEX_ATTRIBUTES);
-    this.eventExtentWriter = this.createWriter(TimeMLViewName.TEMPEVAL_EVENT_EXTENTS);
-    this.eventAttributeWriter = this.createWriter(TimeMLViewName.TEMPEVAL_EVENT_ATTRIBUTES);
-    this.tlinkDCTEventWriter = this.createWriter(TimeMLViewName.TEMPEVAL_TLINK_DCT_EVENT);
-    this.tlinkMainEventsWriter = this.createWriter(TimeMLViewName.TEMPEVAL_TLINK_MAIN_EVENTS);
-    this.tlinkSubordinatedEventsWriter = this.createWriter(TimeMLViewName.TEMPEVAL_TLINK_SUBORDINATED_EVENTS);
-    this.tlinkTimexEventWriter = this.createWriter(TimeMLViewName.TEMPEVAL_TLINK_TIMEX_EVENT);
+    this.baseWriter = this.createWriter(TimeMLViewName.TEMPEVAL_BASE_SEGMENTATION, this.textView);
+    this.dctWriter = this.createWriter(TimeMLViewName.TEMPEVAL_DCT, this.documentCreationTimeView);
+    this.timexExtentWriter = this.createWriter(
+        TimeMLViewName.TEMPEVAL_TIMEX_EXTENTS,
+        this.timeExtentView);
+    this.timexAttributeWriter = this.createWriter(
+        TimeMLViewName.TEMPEVAL_TIMEX_ATTRIBUTES,
+        this.timeAttributeView);
+    this.eventExtentWriter = this.createWriter(
+        TimeMLViewName.TEMPEVAL_EVENT_EXTENTS,
+        this.eventExtentView);
+    this.eventAttributeWriter = this.createWriter(
+        TimeMLViewName.TEMPEVAL_EVENT_ATTRIBUTES,
+        this.eventAttributeView);
+    this.tlinkDCTEventWriter = this.createWriter(
+        TimeMLViewName.TEMPEVAL_TLINK_DCT_EVENT,
+        this.temporalLinkEventToDocumentCreationTimeView);
+    this.tlinkTimexEventWriter = this.createWriter(
+        TimeMLViewName.TEMPEVAL_TLINK_TIMEX_EVENT,
+        this.temporalLinkEventToSameSentenceTimeView);
+    this.tlinkSubordinatedEventsWriter = this.createWriter(
+        TimeMLViewName.TEMPEVAL_TLINK_SUBORDINATED_EVENTS,
+        this.temporalLinkEventToSubordinatedEventView);
+    this.tlinkMainEventsWriter = this.createWriter(
+        TimeMLViewName.TEMPEVAL_TLINK_MAIN_EVENTS,
+        this.temporalLinkMainEventToNextSentenceMainEventView);
   }
 
   @Override
   public void process(JCas jCas) throws AnalysisEngineProcessException {
-    String fileName = ViewURIUtil.getURI(jCas).getFragment();
+    // determine the filename
+    URI uri = ViewURIUtil.getURI(jCas);
+    String fileName = uri.getFragment();
+    if (fileName == null) {
+      fileName = new File(uri.getPath()).getName();
+    }
+
+    // get the view with text, sentences and tokens
     JCas textJCas = JCasUtil.getView(jCas, this.textView, false);
-    JCas dctJCas = JCasUtil.getView(jCas, this.documentCreationTimeView, false);
-    JCas timeJCas = JCasUtil.getView(jCas, this.timeView, false);
-    JCas eventJCas = JCasUtil.getView(jCas, this.eventView, false);
 
     // write the document creation time
-    for (DocumentCreationTime time : JCasUtil.select(dctJCas, DocumentCreationTime.class)) {
-      this.write(this.dctWriter, fileName, time.getValue().replaceAll("-", ""));
+    if (this.documentCreationTimeView != null) {
+      JCas dctJCas = JCasUtil.getView(jCas, this.documentCreationTimeView, false);
+      for (DocumentCreationTime time : JCasUtil.select(dctJCas, DocumentCreationTime.class)) {
+        this.write(this.dctWriter, fileName, time.getValue().replaceAll("-", ""));
+      }
     }
 
     // align tokens to times
-    Map<Token, Time> tokenTimexes = new HashMap<Token, Time>();
-    for (Time time : JCasUtil.select(timeJCas, Time.class)) {
-      for (Token token : JCasUtil.selectCovered(textJCas, Token.class, time)) {
-        tokenTimexes.put(token, time);
+    Map<Token, Time> tokenTimeExtents = new HashMap<Token, Time>();
+    if (this.timeExtentView != null) {
+      JCas timeExtentJCas = JCasUtil.getView(jCas, this.timeExtentView, false);
+      for (Time time : JCasUtil.select(timeExtentJCas, Time.class)) {
+        for (Token token : JCasUtil.selectCovered(textJCas, Token.class, time)) {
+          tokenTimeExtents.put(token, time);
+        }
+      }
+    }
+    Map<Token, Time> tokenTimeAttributes = new HashMap<Token, Time>();
+    if (this.timeAttributeView != null) {
+      JCas timeAttributeJCas = JCasUtil.getView(jCas, this.timeAttributeView, false);
+      for (Time time : JCasUtil.select(timeAttributeJCas, Time.class)) {
+        for (Token token : JCasUtil.selectCovered(textJCas, Token.class, time)) {
+          tokenTimeAttributes.put(token, time);
+        }
       }
     }
 
     // align tokens to events
-    Map<Token, Event> tokenEvents = new HashMap<Token, Event>();
-    for (Event event : JCasUtil.select(eventJCas, Event.class)) {
-      for (Token token : JCasUtil.selectCovered(textJCas, Token.class, event)) {
-        tokenEvents.put(token, event);
+    Map<Token, Event> tokenEventExtents = new HashMap<Token, Event>();
+    if (this.eventExtentView != null) {
+      JCas eventExtentJCas = JCasUtil.getView(jCas, this.eventExtentView, false);
+      for (Event event : JCasUtil.select(eventExtentJCas, Event.class)) {
+        for (Token token : JCasUtil.selectCovered(textJCas, Token.class, event)) {
+          tokenEventExtents.put(token, event);
+        }
+      }
+    }
+
+    Map<Token, Event> tokenEventAttributes = new HashMap<Token, Event>();
+    if (this.eventAttributeView != null) {
+      JCas eventAttributeJCas = JCasUtil.getView(jCas, this.eventAttributeView, false);
+      for (Event event : JCasUtil.select(eventAttributeJCas, Event.class)) {
+        for (Token token : JCasUtil.selectCovered(textJCas, Token.class, event)) {
+          tokenEventAttributes.put(token, event);
+        }
       }
     }
 
@@ -223,7 +303,8 @@ public class TempEval2010Writer extends JCasAnnotator_ImplBase {
         this.writeAnchors(
             this.timexExtentWriter,
             this.timexAttributeWriter,
-            tokenTimexes,
+            tokenTimeExtents,
+            tokenTimeAttributes,
             "timex3",
             token,
             fileName,
@@ -242,7 +323,8 @@ public class TempEval2010Writer extends JCasAnnotator_ImplBase {
         this.writeAnchors(
             this.eventExtentWriter,
             this.eventAttributeWriter,
-            tokenEvents,
+            tokenEventExtents,
+            tokenEventAttributes,
             "event",
             token,
             fileName,
@@ -302,12 +384,22 @@ public class TempEval2010Writer extends JCasAnnotator_ImplBase {
     }
   }
 
-  private PrintWriter createWriter(String tabFileName) throws ResourceInitializationException {
+  private PrintWriter createWriter(String tabFileName, String viewParam)
+      throws ResourceInitializationException {
     PrintWriter writer;
-    try {
-      writer = new PrintWriter(new FileWriter(new File(this.outputDirectory, tabFileName)));
-    } catch (IOException e) {
-      throw new ResourceInitializationException(e);
+    if (viewParam != null) {
+      try {
+        writer = new PrintWriter(new FileWriter(new File(this.outputDirectory, tabFileName)));
+      } catch (IOException e) {
+        throw new ResourceInitializationException(e);
+      }
+    } else {
+      writer = new PrintWriter(new OutputStream() {
+        @Override
+        public void write(int b) throws IOException {
+          // do nothing
+        }
+      });
     }
     this.writers.add(writer);
     return writer;
@@ -335,19 +427,22 @@ public class TempEval2010Writer extends JCasAnnotator_ImplBase {
   private <T extends Anchor> void writeAnchors(
       PrintWriter extentWriter,
       PrintWriter attrWriter,
-      Map<Token, T> tokenAnchors,
+      Map<Token, T> tokenAnchorExtents,
+      Map<Token, T> tokenAnchorAttributes,
       String anchorType,
       Token token,
       String fileName,
       int sentIndex,
       int tokenIndex,
       AttributeGetter<T> attributeGetter) {
-    T anchor = tokenAnchors.get(token);
+    T anchor = tokenAnchorExtents.get(token);
     if (anchor != null) {
       String id = anchor.getId();
       this.write(extentWriter, fileName, sentIndex, tokenIndex, anchorType, id, "1");
-
-      // write to the time attributes file
+    }
+    anchor = tokenAnchorAttributes.get(token);
+    if (anchor != null) {
+      String id = anchor.getId();
       boolean isFirstToken = token.getBegin() == anchor.getBegin();
       if (isFirstToken) {
         for (Attribute attr : attributeGetter.getAttributes(anchor)) {
@@ -370,14 +465,16 @@ public class TempEval2010Writer extends JCasAnnotator_ImplBase {
 
   private void writeTemporalLinks(PrintWriter writer, JCas jCas, String viewName, String fileName)
       throws AnalysisEngineProcessException {
-    JCas view = JCasUtil.getView(jCas, viewName, false);
-    for (TemporalLink tlink : JCasUtil.select(view, TemporalLink.class)) {
-      this.write(
-          writer,
-          fileName,
-          tlink.getSource().getId(),
-          tlink.getTarget().getId(),
-          tlink.getRelationType());
+    if (viewName != null) {
+      JCas view = JCasUtil.getView(jCas, viewName, false);
+      for (TemporalLink tlink : JCasUtil.select(view, TemporalLink.class)) {
+        this.write(
+            writer,
+            fileName,
+            tlink.getSource().getId(),
+            tlink.getTarget().getId(),
+            tlink.getRelationType());
+      }
     }
   }
 }

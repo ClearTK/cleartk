@@ -564,6 +564,18 @@ public class TempEval2010ReaderAnnotatorWriterTest extends TimeMLTestBase {
         new String[] { "ME2ME" });
     AnalysisEngine writer = AnalysisEngineFactory.createPrimitive(
         TempEval2010Writer.getDescription(writerDirectory),
+        TempEval2010Writer.PARAM_TEXT_VIEW,
+        CAS.NAME_DEFAULT_SOFA,
+        TempEval2010Writer.PARAM_DOCUMENT_CREATION_TIME_VIEW,
+        CAS.NAME_DEFAULT_SOFA,
+        TempEval2010Writer.PARAM_TIME_EXTENT_VIEW,
+        CAS.NAME_DEFAULT_SOFA,
+        TempEval2010Writer.PARAM_TIME_ATTRIBUTE_VIEW,
+        CAS.NAME_DEFAULT_SOFA,
+        TempEval2010Writer.PARAM_EVENT_EXTENT_VIEW,
+        CAS.NAME_DEFAULT_SOFA,
+        TempEval2010Writer.PARAM_EVENT_ATTRIBUTE_VIEW,
+        CAS.NAME_DEFAULT_SOFA,
         TempEval2010Writer.PARAM_TEMPORAL_LINK_EVENT_TO_DOCUMENT_CREATION_TIME_VIEW,
         "E2DCT",
         TempEval2010Writer.PARAM_TEMPORAL_LINK_EVENT_TO_SAME_SENTENCE_TIME_VIEW,
@@ -589,6 +601,33 @@ public class TempEval2010ReaderAnnotatorWriterTest extends TimeMLTestBase {
     this.assertFileText("dct.txt", dctInput, dctOutput);
   }
 
+  @Test
+  public void testTempEval2010WriterPartial() throws Exception {
+    File writerDirectory = new File(this.outputDirectory, "writer");
+    CollectionReader reader = TempEval2010CollectionReader.getCollectionReader(this.outputDirectory.getPath());
+    AnalysisEngine annotator = AnalysisEngineFactory.createPrimitive(TempEval2010GoldAnnotator.getDescription());
+    AnalysisEngine writer = AnalysisEngineFactory.createPrimitive(
+        TempEval2010Writer.getDescription(writerDirectory),
+        TempEval2010Writer.PARAM_TEXT_VIEW,
+        CAS.NAME_DEFAULT_SOFA,
+        TempEval2010Writer.PARAM_TIME_EXTENT_VIEW,
+        CAS.NAME_DEFAULT_SOFA,
+        TempEval2010Writer.PARAM_EVENT_ATTRIBUTE_VIEW,
+        CAS.NAME_DEFAULT_SOFA);
+    SimplePipeline.runPipeline(reader, annotator, writer);
+
+    this.assertFileText("base-segmentation.tab", "data", "writer");
+    this.assertFileText("timex-extents.tab", "key", "writer");
+    this.assertFileMissing("timex-attributes.tab", "writer");
+    this.assertFileMissing("event-extents.tab", "writer");
+    this.assertFileText("event-attributes.tab", "key", "writer");
+    this.assertFileMissing("tlinks-dct-event.tab", "writer");
+    this.assertFileMissing("tlinks-timex-event.tab", "writer");
+    this.assertFileMissing("tlinks-subordinated-events.tab", "writer");
+    this.assertFileMissing("tlinks-main-events.tab", "writer");
+    this.assertFileMissing("dct.txt", "writer");
+  }
+
   private void assertFileText(String fileName, String subdir1, String subdir2) throws Exception {
     File file1 = new File(new File(this.outputDirectory, subdir1), fileName);
     File file2 = new File(new File(this.outputDirectory, subdir2), fileName);
@@ -599,6 +638,11 @@ public class TempEval2010ReaderAnnotatorWriterTest extends TimeMLTestBase {
     String file1Text = Files.toString(file1, Charsets.US_ASCII);
     String file2Text = Files.toString(file2, Charsets.US_ASCII);
     Assert.assertEquals(fileName, file1Text, file2Text);
+  }
+
+  private void assertFileMissing(String fileName, String subdir) {
+    File file = new File(new File(this.outputDirectory, subdir), fileName);
+    Assert.assertFalse(file.exists());
   }
 
   private <T> T itemAtIndex(Collection<T> items, int index) {
