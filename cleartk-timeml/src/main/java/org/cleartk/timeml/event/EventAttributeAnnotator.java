@@ -129,9 +129,7 @@ public abstract class EventAttributeAnnotator<OUTCOME_TYPE> extends CleartkAnnot
         // event annotation
         else {
           OUTCOME_TYPE label = this.classifier.classify(features);
-          if (!this.getDefaultValue().equals(label)) {
-            this.setAttribute(event, label);
-          }
+          this.setAttribute(event, label);
         }
       }
     }
