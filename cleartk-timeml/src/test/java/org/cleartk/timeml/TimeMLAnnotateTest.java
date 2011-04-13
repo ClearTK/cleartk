@@ -66,12 +66,20 @@ public class TimeMLAnnotateTest {
     TimeMLAnnotate.main(this.inputFile.getPath(), this.tempDir.getPath());
     String output = FileUtils.readFileToString(this.outputFile);
     output = output.replaceAll("\r\n", "\n");
-    String expected = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "<TimeML>"
-        + "They <EVENT eid=\"e1\" tense=\"PAST\">met</EVENT> for dinner. "
-        + "He <EVENT eid=\"e2\" class=\"REPORTING\" tense=\"PAST\">said</EVENT> "
-        + "he <EVENT eid=\"e3\" tense=\"PAST\">bought</EVENT> stocks."
-        + "<TLINK relType=\"AFTER\" eventID=\"e2\" relatedToEvent=\"e3\"/>" + "</TimeML>";
+    // @formatter:off
+    String expected = 
+      "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+      "<TimeML>" +
+      "They " +
+      "<EVENT eid=\"e1\" class=\"OCCURRENCE\" tense=\"PAST\" aspect=\"NONE\" polarity=\"POS\" modality=\"none\">met</EVENT> " +
+      "for dinner. He " + 
+      "<EVENT eid=\"e2\" class=\"REPORTING\" tense=\"PAST\" aspect=\"NONE\" polarity=\"POS\" modality=\"none\">said</EVENT> " +
+      "he " +
+      "<EVENT eid=\"e3\" class=\"OCCURRENCE\" tense=\"PAST\" aspect=\"NONE\" polarity=\"POS\" modality=\"none\">bought</EVENT> " + 
+      "stocks." +
+      "<TLINK relType=\"AFTER\" eventID=\"e2\" relatedToEvent=\"e3\"/>" +
+      "</TimeML>";
+    // @formatter:on
     Assert.assertEquals("TimeML output should match", expected, output);
   }
-
 }
