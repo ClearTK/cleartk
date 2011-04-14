@@ -25,6 +25,7 @@ package org.cleartk.timeml.corpus;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -44,6 +45,7 @@ import org.cleartk.timeml.type.TemporalLink;
 import org.cleartk.timeml.type.Time;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
+import org.cleartk.util.ViewURIUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -626,6 +628,40 @@ public class TempEval2010ReaderAnnotatorWriterTest extends TimeMLTestBase {
     this.assertFileMissing("tlinks-subordinated-events.tab", "writer");
     this.assertFileMissing("tlinks-main-events.tab", "writer");
     this.assertFileMissing("dct.txt", "writer");
+  }
+
+  @Test
+  public void testTempEval2010WriterNullTemporalLink() throws Exception {
+    File writerDirectory = new File(this.outputDirectory, "writer");
+    AnalysisEngine writer = AnalysisEngineFactory.createPrimitive(
+        TempEval2010Writer.getDescription(writerDirectory),
+        TempEval2010Writer.PARAM_TEXT_VIEW,
+        CAS.NAME_DEFAULT_SOFA,
+        TempEval2010Writer.PARAM_TEMPORAL_LINK_EVENT_TO_DOCUMENT_CREATION_TIME_VIEW,
+        CAS.NAME_DEFAULT_SOFA);
+
+    this.tokenBuilder.buildTokens(this.jCas, "I woke up this morning.", "I woke up this morning .");
+    URI baseURI = new File("base").toURI();
+    URI uri = new URI(baseURI.getScheme(), baseURI.getHost(), baseURI.getPath(), "FILENAME");
+    ViewURIUtil.setURI(this.jCas, uri);
+    Event event = new Event(this.jCas, 2, 6);
+    event.setId("e1");
+    event.addToIndexes();
+    DocumentCreationTime dct = new DocumentCreationTime(this.jCas, 0, 0);
+    dct.setId("t0");
+    dct.addToIndexes();
+    TemporalLink tlink = new TemporalLink(this.jCas, 0, 0);
+    tlink.setSource(event);
+    tlink.setTarget(dct);
+    tlink.setRelationType(null);
+    tlink.addToIndexes();
+
+    writer.process(this.jCas);
+    writer.collectionProcessComplete();
+
+    File tlinksFile = new File(writerDirectory, "tlinks-dct-event.tab");
+    String text = Files.toString(tlinksFile, Charsets.US_ASCII);
+    Assert.assertEquals("FILENAME	e1	t0	NONE\n", text);
   }
 
   private void assertFileText(String fileName, String subdir1, String subdir2) throws Exception {

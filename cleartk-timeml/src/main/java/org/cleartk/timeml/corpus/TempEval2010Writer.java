@@ -468,12 +468,11 @@ public class TempEval2010Writer extends JCasAnnotator_ImplBase {
     if (viewName != null) {
       JCas view = JCasUtil.getView(jCas, viewName, false);
       for (TemporalLink tlink : JCasUtil.select(view, TemporalLink.class)) {
-        this.write(
-            writer,
-            fileName,
-            tlink.getSource().getId(),
-            tlink.getTarget().getId(),
-            tlink.getRelationType());
+        String relation = tlink.getRelationType();
+        if (relation == null) {
+          relation = "NONE";
+        }
+        this.write(writer, fileName, tlink.getSource().getId(), tlink.getTarget().getId(), relation);
       }
     }
   }
