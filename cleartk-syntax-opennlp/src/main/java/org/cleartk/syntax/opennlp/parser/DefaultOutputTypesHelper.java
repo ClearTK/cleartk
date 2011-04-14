@@ -25,19 +25,18 @@
 package org.cleartk.syntax.opennlp.parser;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import opennlp.tools.parser.AbstractBottomUpParser;
 import opennlp.tools.parser.Parse;
 
-import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.syntax.constituent.types.OutputTypesHelper;
+import org.cleartk.util.UIMAUtil;
 
 /**
  * <br>
@@ -48,8 +47,8 @@ import org.cleartk.syntax.constituent.types.OutputTypesHelper;
  * @author Philip Ogren
  */
 
-public class DefaultOutputTypesHelper<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation> implements
-    OutputTypesHelper<TOKEN_TYPE, SENTENCE_TYPE, Parse, TreebankNode> {
+public class DefaultOutputTypesHelper<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation>
+    implements OutputTypesHelper<TOKEN_TYPE, SENTENCE_TYPE, Parse, TreebankNode> {
 
   @Override
   public TreebankNode addParse(
@@ -58,74 +57,54 @@ public class DefaultOutputTypesHelper<TOKEN_TYPE extends Annotation, SENTENCE_TY
       SENTENCE_TYPE sentence,
       List<TOKEN_TYPE> tokens) {
 
-    TreebankNode myNode;
-      if (parse.getType() == AbstractBottomUpParser.TOP_NODE) {
-        TopTreebankNode topNode = new TopTreebankNode(jCas);
-        topNode.setParent(null);
+    TopTreebankNode node = new TopTreebankNode(jCas);
+    this.setAttributes(node, parse, null, jCas);
+    node.addToIndexes();
 
-        StringBuffer sb = new StringBuffer();
-        parse.show(sb);
-        topNode.setTreebankParse(sb.toString());
+    StringBuffer sb = new StringBuffer();
+    parse.show(sb);
+    node.setTreebankParse(sb.toString());
+    node.setTerminals(UIMAUtil.toFSArray(jCas, getTerminals(node)));
+    return node;
+  }
 
-        myNode = topNode;
-      } else {
-        myNode = new TreebankNode(jCas);
+  private void setAttributes(TreebankNode node, Parse parse, TreebankNode parent, JCas jCas) {
+    node.setParent(parent);
+    node.setNodeType(parse.getType());
+    node.setBegin(parse.getSpan().getStart());
+    node.setEnd(parse.getSpan().getEnd());
+
+    // leaf node
+    Parse[] childParses = parse.getChildren();
+    if (childParses.length == 1 && childParses[0].getType() == AbstractBottomUpParser.TOK_NODE) {
+      node.setLeaf(true);
+      node.setNodeValue(childParses[0].toString());
+      node.setChildren(new FSArray(jCas, 0));
+    }
+
+    // branch node
+    else {
+      node.setLeaf(false);
+      node.setNodeValue(null);
+      List<TreebankNode> childNodes = new ArrayList<TreebankNode>();
+      for (Parse childParse : childParses) {
+        TreebankNode childNode = new TreebankNode(jCas);
+        this.setAttributes(childNode, childParse, node, jCas);
+        childNode.addToIndexes();
+        childNodes.add(childNode);
       }
-
-      myNode.setNodeType(parse.getType());
-      myNode.setBegin(parse.getSpan().getStart());
-      myNode.setEnd(parse.getSpan().getEnd());
-
-      if (parse.getChildCount() == 1 && parse.getChildren()[0].getType() == AbstractBottomUpParser.TOK_NODE) {
-        myNode.setLeaf(true);
-        myNode.setNodeValue(parse.getChildren()[0].toString());
-        myNode.setChildren(new FSArray(jCas, 0));
-      } else {
-        myNode.setNodeValue(null);
-        myNode.setLeaf(false);
-
-        List<FeatureStructure> cArray = new ArrayList<FeatureStructure>(parse.getChildCount());
-
-        for (Parse cp : parse.getChildren()) {
-          TreebankNode cNode = addParse(jCas, cp, sentence, tokens);
-          cNode.setParent(myNode);
-          cNode.addToIndexes();
-          cArray.add(cNode);
-        }
-
-        FSArray cFSArray = new FSArray(jCas, cArray.size());
-        cFSArray.copyFromArray(
-            cArray.toArray(new FeatureStructure[cArray.size()]),
-            0,
-            0,
-            cArray.size());
-        myNode.setChildren(cFSArray);
-      }
-
-      if (parse.getType() == AbstractBottomUpParser.TOP_NODE) {
-        List<TreebankNode> tList = getTerminals(myNode);
-        FSArray tfsa = new FSArray(jCas, tList.size());
-        tfsa.copyFromArray(tList.toArray(new FeatureStructure[tList.size()]), 0, 0, tList.size());
-        ((TopTreebankNode) myNode).setTerminals(tfsa);
-      }
-      myNode.addToIndexes();
-      return myNode;
-
+      node.setChildren(UIMAUtil.toFSArray(jCas, childNodes));
+    }
   }
 
   protected List<TreebankNode> getTerminals(TreebankNode node) {
     List<TreebankNode> tList = new ArrayList<TreebankNode>();
-
-    if (node.getChildren().size() == 0) {
+    int nChildren = node.getChildren().size();
+    if (nChildren == 0) {
       tList.add(node);
-      return tList;
     }
-
-    TreebankNode[] children = Arrays.asList(node.getChildren().toArray()).toArray(
-        new TreebankNode[node.getChildren().size()]);
-
-    for (TreebankNode child : children) {
-      tList.addAll(getTerminals(child));
+    for (int i = 0; i < nChildren; ++i) {
+      tList.addAll(getTerminals(node.getChildren(i)));
     }
     return tList;
   }

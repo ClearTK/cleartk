@@ -41,6 +41,7 @@ import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.testing.factory.TokenBuilder;
 import org.uimafit.testing.util.DisableLogging;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -62,17 +63,16 @@ public class ParserAnnotatorTest extends OpennlpSyntaxTestBase {
         true,
         ParserWrapper_ImplBase.PARAM_OUTPUT_TYPES_HELPER_CLASS_NAME,
         DefaultOutputTypesHelper.class.getName());
-    tokenBuilder
-        .buildTokens(
-            jCas,
-            "Two recent papers provide new evidence relevant to the role of the breast cancer susceptibility gene BRCA2 in DNA repair.",
-            "Two recent papers provide new evidence relevant to the role of the breast cancer susceptibility gene BRCA2 in DNA repair .",
-            "DT JJ NN VBP JJ NN JJ IN DT NN IN DT NN NN NN NN NN IN NN NN ." // changed 1st
-                                                                             // tag from CD
-                                                                             // to DT and
-                                                                             // 3rd tag from
-                                                                             // NNS to NN
-        );
+    tokenBuilder.buildTokens(
+        jCas,
+        "Two recent papers provide new evidence relevant to the role of the breast cancer susceptibility gene BRCA2 in DNA repair.",
+        "Two recent papers provide new evidence relevant to the role of the breast cancer susceptibility gene BRCA2 in DNA repair .",
+        "DT JJ NN VBP JJ NN JJ IN DT NN IN DT NN NN NN NN NN IN NN NN ." // changed 1st
+                                                                         // tag from CD
+                                                                         // to DT and
+                                                                         // 3rd tag from
+                                                                         // NNS to NN
+    );
 
     engine.process(jCas);
     engine.collectionProcessComplete();
@@ -106,6 +106,8 @@ public class ParserAnnotatorTest extends OpennlpSyntaxTestBase {
     Assert.assertEquals(".", periodNode.getNodeType());
     Assert.assertEquals(3, npNode.getChildren().size());
 
+    Assert.assertEquals(3, npNode.getChildren().size());
+    Assert.assertEquals(3, JCasUtil.selectCovered(this.jCas, TreebankNode.class, npNode).size());
     TreebankNode twoNode = npNode.getChildren(0);
     TreebankNode recentNode = npNode.getChildren(1);
     TreebankNode papersNode = npNode.getChildren(2);
@@ -121,10 +123,9 @@ public class ParserAnnotatorTest extends OpennlpSyntaxTestBase {
     Assert.assertEquals("VBP", provideNode.getNodeType());
     Assert.assertEquals("provide", provideNode.getNodeValue());
     Assert.assertEquals("NP", newEvidenceNode.getNodeType());
-    Assert
-        .assertEquals(
-            "new evidence relevant to the role of the breast cancer susceptibility gene BRCA2 in DNA repair",
-            newEvidenceNode.getCoveredText());
+    Assert.assertEquals(
+        "new evidence relevant to the role of the breast cancer susceptibility gene BRCA2 in DNA repair",
+        newEvidenceNode.getCoveredText());
 
   }
 
@@ -144,11 +145,10 @@ public class ParserAnnotatorTest extends OpennlpSyntaxTestBase {
     TokenBuilder<org.cleartk.type.test.Token, org.cleartk.type.test.Sentence> tokBuilder = new TokenBuilder<org.cleartk.type.test.Token, org.cleartk.type.test.Sentence>(
         org.cleartk.type.test.Token.class,
         org.cleartk.type.test.Sentence.class);
-    tokBuilder
-        .buildTokens(
-            jCas,
-            "Two recent papers provide new evidence relevant to the role of the breast cancer susceptibility gene BRCA2 in DNA repair.",
-            "Two recent papers provide new evidence relevant to the role of the breast cancer susceptibility gene BRCA2 in DNA repair .");
+    tokBuilder.buildTokens(
+        jCas,
+        "Two recent papers provide new evidence relevant to the role of the breast cancer susceptibility gene BRCA2 in DNA repair.",
+        "Two recent papers provide new evidence relevant to the role of the breast cancer susceptibility gene BRCA2 in DNA repair .");
 
     engine.process(jCas);
     engine.collectionProcessComplete();
@@ -194,10 +194,9 @@ public class ParserAnnotatorTest extends OpennlpSyntaxTestBase {
     Assert.assertEquals("VBP", provideNode.getNodeType());
     Assert.assertEquals("provide", provideNode.getNodeValue());
     Assert.assertEquals("NP", newEvidenceNode.getNodeType());
-    Assert
-        .assertEquals(
-            "new evidence relevant to the role of the breast cancer susceptibility gene BRCA2 in DNA repair",
-            newEvidenceNode.getCoveredText());
+    Assert.assertEquals(
+        "new evidence relevant to the role of the breast cancer susceptibility gene BRCA2 in DNA repair",
+        newEvidenceNode.getCoveredText());
 
   }
 
@@ -211,8 +210,7 @@ public class ParserAnnotatorTest extends OpennlpSyntaxTestBase {
         ParserAnnotator.PARAM_USE_TAGS_FROM_CAS,
         true,
         ParserWrapper_ImplBase.PARAM_OUTPUT_TYPES_HELPER_CLASS_NAME,
-        DefaultOutputTypesHelper.class.getName()
-        );
+        DefaultOutputTypesHelper.class.getName());
     tokenBuilder.buildTokens(
         jCas,
         "The brown fox jumped quickly over the lazy dog.",
