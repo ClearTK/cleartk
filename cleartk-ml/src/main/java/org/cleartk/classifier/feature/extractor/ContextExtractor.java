@@ -89,11 +89,92 @@ public class ContextExtractor<T extends Annotation> implements SimpleFeatureExtr
   @Override
   public List<Feature> extract(JCas view, Annotation focusAnnotation)
       throws CleartkExtractorException {
+    return this.extract(view, focusAnnotation, new NoBounds());
+  }
+
+  /**
+   * Extract features from the annotations around the focus annotation and within the given bounds.
+   * 
+   * @param view
+   *          The JCas containing the focus annotation.
+   * @param focusAnnotation
+   *          The annotation whose context is to be searched.
+   * @param boundsAnnotation
+   *          The boundary within which context annotations may be identified.
+   * @return The features extracted in the context of the focus annotation.
+   */
+  public List<Feature> extractWithin(
+      JCas view,
+      Annotation focusAnnotation,
+      Annotation boundsAnnotation) throws CleartkExtractorException {
+    Bounds bounds = new SpanBounds(boundsAnnotation.getBegin(), boundsAnnotation.getEnd());
+    return this.extract(view, focusAnnotation, bounds);
+  }
+
+  private List<Feature> extract(JCas view, Annotation focusAnnotation, Bounds bounds)
+      throws CleartkExtractorException {
     List<Feature> features = new ArrayList<Feature>();
     for (Context context : this.contexts) {
-      features.addAll(context.extract(view, focusAnnotation, this.annotationClass, this.extractor));
+      features.addAll(context.extract(
+          view,
+          focusAnnotation,
+          bounds,
+          this.annotationClass,
+          this.extractor));
     }
     return features;
+  }
+
+  /**
+   * A class representing the bounds within which a {@link ContextExtractor} should look for
+   * annotations.
+   */
+  public static interface Bounds {
+
+    /**
+     * Determines whether or not an annotation lies within the given bounds.
+     * 
+     * @param annotation
+     *          The annotation to be checked.
+     * @return True if the annotation lies within the bounds.
+     */
+    public boolean contains(Annotation annotation);
+  }
+
+  /**
+   * A Bounds implementation that puts no restrictions on the context.
+   */
+  private static class NoBounds implements Bounds {
+
+    public NoBounds() {
+    }
+
+    @Override
+    public boolean contains(Annotation annotation) {
+      return true;
+    }
+
+  }
+
+  /**
+   * A Bounds implementation that restricts the context to annotations within a given span.
+   */
+  private static class SpanBounds implements Bounds {
+
+    private int begin;
+
+    private int end;
+
+    public SpanBounds(int begin, int end) {
+      this.begin = begin;
+      this.end = end;
+    }
+
+    @Override
+    public boolean contains(Annotation annotation) {
+      return annotation.getBegin() >= this.begin && annotation.getEnd() <= this.end;
+    }
+
   }
 
   /**
@@ -127,6 +208,7 @@ public class ContextExtractor<T extends Annotation> implements SimpleFeatureExtr
     public <T extends Annotation> List<Feature> extract(
         JCas jCas,
         Annotation focusAnnotation,
+        Bounds bounds,
         Class<T> annotationClass,
         SimpleFeatureExtractor extractor) throws CleartkExtractorException;
   }
@@ -220,18 +302,40 @@ public class ContextExtractor<T extends Annotation> implements SimpleFeatureExtr
     public <T extends Annotation> List<Feature> extract(
         JCas jCas,
         Annotation focusAnnotation,
+        Bounds bounds,
         Class<T> annotationClass,
         SimpleFeatureExtractor extractor) throws CleartkExtractorException {
+
+      // slice the appropriate annotations from the CAS
       List<T> anns = this.select(jCas, focusAnnotation, annotationClass, this.end);
+      anns = anns.subList(0, anns.size() - this.begin);
+      int missing = this.end - this.begin - anns.size();
+
+      // figure out how many items are out of bounds
+      int oobPos = missing;
+      for (T ann : anns) {
+        if (!bounds.contains(ann)) {
+          oobPos += 1;
+        }
+      }
+
+      // extract features at each position
       List<Feature> features = new ArrayList<Feature>();
-      Iterator<T> iter = anns.iterator();
       for (int pos = this.end - 1; pos >= this.begin; pos -= 1) {
-        if (pos >= anns.size()) {
-          features.add(new ContextFeature(this.getName(), pos, pos - anns.size() + 1));
-        } else {
-          for (Feature feature : extractor.extract(jCas, iter.next())) {
+
+        // if the annotation at the current position is in bounds, extract features from it
+        int adjustedPos = this.end - 1 - pos - missing;
+        T ann = adjustedPos >= 0 ? anns.get(adjustedPos) : null;
+        if (ann != null && bounds.contains(ann)) {
+          for (Feature feature : extractor.extract(jCas, ann)) {
             features.add(new ContextFeature(this.getName(), pos, feature));
           }
+        }
+
+        // if the annotation at the current position is out of bounds, add an out-of-bounds feature
+        else {
+          features.add(new ContextFeature(this.getName(), pos, oobPos));
+          oobPos -= 1;
         }
       }
       return features;
@@ -251,19 +355,22 @@ public class ContextExtractor<T extends Annotation> implements SimpleFeatureExtr
     public <T extends Annotation> List<Feature> extract(
         JCas jCas,
         Annotation focusAnnotation,
+        Bounds bounds,
         Class<T> annotationClass,
         SimpleFeatureExtractor extractor) throws CleartkExtractorException {
       List<T> anns = this.select(jCas, focusAnnotation, annotationClass, this.end);
       anns = anns.subList(this.begin, anns.size());
       List<Feature> features = new ArrayList<Feature>();
       Iterator<T> iter = anns.iterator();
-      for (int pos = this.begin; pos < this.end; pos += 1) {
-        if (iter.hasNext()) {
-          for (Feature feature : extractor.extract(jCas, iter.next())) {
+      for (int pos = this.begin, oobPos = 1; pos < this.end; pos += 1) {
+        T ann = iter.hasNext() ? iter.next() : null;
+        if (ann != null && bounds.contains(ann)) {
+          for (Feature feature : extractor.extract(jCas, ann)) {
             features.add(new ContextFeature(this.getName(), pos, feature));
           }
         } else {
-          features.add(new ContextFeature(this.getName(), pos, pos - this.begin));
+          features.add(new ContextFeature(this.getName(), pos, oobPos));
+          oobPos += 1;
         }
       }
       return features;
@@ -295,6 +402,7 @@ public class ContextExtractor<T extends Annotation> implements SimpleFeatureExtr
     public <T extends Annotation> List<Feature> extract(
         JCas jCas,
         Annotation focusAnnotation,
+        Bounds bounds,
         Class<T> annotationClass,
         SimpleFeatureExtractor extractor) throws CleartkExtractorException {
       if (!annotationClass.isInstance(focusAnnotation)) {
@@ -546,11 +654,17 @@ public class ContextExtractor<T extends Annotation> implements SimpleFeatureExtr
     public <T extends Annotation> List<Feature> extract(
         JCas jCas,
         Annotation focusAnnotation,
+        Bounds bounds,
         Class<T> annotationClass,
         SimpleFeatureExtractor extractor) throws CleartkExtractorException {
       List<Feature> features = new ArrayList<Feature>();
       for (Context context : this.contexts) {
-        for (Feature feature : context.extract(jCas, focusAnnotation, annotationClass, extractor)) {
+        for (Feature feature : context.extract(
+            jCas,
+            focusAnnotation,
+            bounds,
+            annotationClass,
+            extractor)) {
           ContextFeature contextFeature = (ContextFeature) feature;
           String fName = Feature.createName(this.name, contextFeature.feature.getName());
           features.add(new Feature(fName, feature.getValue()));
@@ -595,11 +709,17 @@ public class ContextExtractor<T extends Annotation> implements SimpleFeatureExtr
     public <T extends Annotation> List<Feature> extract(
         JCas jCas,
         Annotation focusAnnotation,
+        Bounds bounds,
         Class<T> annotationClass,
         SimpleFeatureExtractor extractor) throws CleartkExtractorException {
       List<String> values = new ArrayList<String>();
       for (Context context : this.contexts) {
-        for (Feature feature : context.extract(jCas, focusAnnotation, annotationClass, extractor)) {
+        for (Feature feature : context.extract(
+            jCas,
+            focusAnnotation,
+            bounds,
+            annotationClass,
+            extractor)) {
           values.add(String.valueOf(feature.getValue()));
         }
       }

@@ -23,6 +23,7 @@
  */
 package org.cleartk.classifier.feature.extractor;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -224,6 +225,62 @@ public class ContextExtractorTest extends CleartkTestBase {
       Assert.fail("Expected exception from Focus of wrong type");
     } catch (IllegalArgumentException e) {
     }
+  }
+
+  @Test
+  public void testBounds() throws Exception {
+    ContextExtractor<Token> extractor = new ContextExtractor<Token>(
+        Token.class,
+        new SpannedTextExtractor(),
+        new Preceding(2),
+        new LastCovered(1),
+        new Following(3));
+
+    this.tokenBuilder.buildTokens(
+        this.jCas,
+        "She bought milk.\nHe sold oranges.",
+        "She bought milk .\nHe sold oranges .");
+    Chunk boughMilk = new Chunk(this.jCas, 4, 15);
+    boughMilk.addToIndexes();
+    Assert.assertEquals("bought milk", boughMilk.getCoveredText());
+    Chunk soldOranges = new Chunk(this.jCas, 20, 32);
+    soldOranges.addToIndexes();
+    Assert.assertEquals("sold oranges", soldOranges.getCoveredText());
+    Collection<Sentence> sentences = JCasUtil.select(jCas, Sentence.class);
+    Assert.assertEquals(2, sentences.size());
+    Iterator<Sentence> sentIter = sentences.iterator();
+    Sentence sent1 = sentIter.next();
+    Sentence sent2 = sentIter.next();
+
+    List<Feature> features = extractor.extractWithin(this.jCas, boughMilk, sent1);
+    Assert.assertEquals(6, features.size());
+    Iterator<Feature> iter = features.iterator();
+    this.assertFeature("Preceding_0_2_1", "OOB1", iter.next());
+    this.assertFeature("Preceding_0_2_0", "She", iter.next());
+    this.assertFeature("LastCovered_0_1_0", "milk", iter.next());
+    this.assertFeature("Following_0_3_0", ".", iter.next());
+    this.assertFeature("Following_0_3_1", "OOB1", iter.next());
+    this.assertFeature("Following_0_3_2", "OOB2", iter.next());
+
+    features = extractor.extractWithin(this.jCas, boughMilk, sent2);
+    Assert.assertEquals(6, features.size());
+    iter = features.iterator();
+    this.assertFeature("Preceding_0_2_1", "OOB2", iter.next());
+    this.assertFeature("Preceding_0_2_0", "OOB1", iter.next());
+    this.assertFeature("LastCovered_0_1_0", "OOB1", iter.next());
+    this.assertFeature("Following_0_3_0", "OOB1", iter.next());
+    this.assertFeature("Following_0_3_1", "He", iter.next());
+    this.assertFeature("Following_0_3_2", "sold", iter.next());
+
+    features = extractor.extractWithin(this.jCas, soldOranges, sent2);
+    Assert.assertEquals(6, features.size());
+    iter = features.iterator();
+    this.assertFeature("Preceding_0_2_1", "OOB1", iter.next());
+    this.assertFeature("Preceding_0_2_0", "He", iter.next());
+    this.assertFeature("LastCovered_0_1_0", "oranges", iter.next());
+    this.assertFeature("Following_0_3_0", ".", iter.next());
+    this.assertFeature("Following_0_3_1", "OOB1", iter.next());
+    this.assertFeature("Following_0_3_2", "OOB2", iter.next());
   }
 
   private void assertFeature(String expectedName, Object expectedValue, Feature actualFeature) {
