@@ -111,6 +111,15 @@ public class ContextExtractor<T extends Annotation> implements SimpleFeatureExtr
     return this.extract(view, focusAnnotation, bounds);
   }
 
+  public List<Feature> extractBetween(JCas view, Annotation annotation1, Annotation annotation2)
+      throws CleartkExtractorException {
+    int begin = annotation1.getEnd();
+    int end = annotation2.getBegin();
+    // FIXME: creating a new annotation may leak memory - is there a better approach?
+    Annotation focusAnnotation = new Annotation(view, begin, end);
+    return this.extract(view, focusAnnotation, new NoBounds());
+  }
+
   private List<Feature> extract(JCas view, Annotation focusAnnotation, Bounds bounds)
       throws CleartkExtractorException {
     List<Feature> features = new ArrayList<Feature>();

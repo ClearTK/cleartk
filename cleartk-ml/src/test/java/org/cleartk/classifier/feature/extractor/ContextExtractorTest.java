@@ -287,6 +287,36 @@ public class ContextExtractorTest extends CleartkTestBase {
     this.assertFeature("Following_0_3_2", "OOB2", iter.next());
   }
 
+  @Test
+  public void testExtractBetween() throws Exception {
+    ContextExtractor<Token> extractor = new ContextExtractor<Token>(
+        Token.class,
+        new SpannedTextExtractor(),
+        new Bag(new Preceding(2)),
+        new Covered(),
+        new Ngram(new Following(3)));
+
+    this.tokenBuilder.buildTokens(
+        this.jCas,
+        "She bought milk.\nHe sold oranges.",
+        "She bought milk .\nHe sold oranges .");
+    Chunk boughMilk = new Chunk(this.jCas, 4, 15);
+    boughMilk.addToIndexes();
+    Assert.assertEquals("bought milk", boughMilk.getCoveredText());
+    Chunk soldOranges = new Chunk(this.jCas, 20, 32);
+    soldOranges.addToIndexes();
+    Assert.assertEquals("sold oranges", soldOranges.getCoveredText());
+
+    List<Feature> features = extractor.extractBetween(this.jCas, boughMilk, soldOranges);
+    Assert.assertEquals(5, features.size());
+    Iterator<Feature> iter = features.iterator();
+    this.assertFeature("Bag_Preceding_0_2", "bought", iter.next());
+    this.assertFeature("Bag_Preceding_0_2", "milk", iter.next());
+    this.assertFeature("Covered_0", ".", iter.next());
+    this.assertFeature("Covered_1", "He", iter.next());
+    this.assertFeature("Ngram_Following_0_3", "sold_oranges_.", iter.next());
+  }
+
   private void assertFeature(String expectedName, Object expectedValue, Feature actualFeature) {
     Assert.assertNotNull(actualFeature);
     Assert.assertEquals(expectedName, actualFeature.getName());
