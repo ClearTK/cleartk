@@ -31,6 +31,7 @@ import junit.framework.Assert;
 
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.ContextExtractor.Bag;
+import org.cleartk.classifier.feature.extractor.ContextExtractor.Covered;
 import org.cleartk.classifier.feature.extractor.ContextExtractor.FirstCovered;
 import org.cleartk.classifier.feature.extractor.ContextExtractor.Focus;
 import org.cleartk.classifier.feature.extractor.ContextExtractor.Following;
@@ -81,6 +82,7 @@ public class ContextExtractorTest extends CleartkTestBase {
         new SpannedTextExtractor(),
         new Preceding(2),
         new Preceding(3, 6),
+        new Covered(),
         new FirstCovered(1),
         new FirstCovered(1, 3),
         new LastCovered(1),
@@ -98,13 +100,15 @@ public class ContextExtractorTest extends CleartkTestBase {
     Assert.assertEquals("jumped over", chunk.getCoveredText());
 
     List<Feature> features = extractor.extract(this.jCas, chunk);
-    Assert.assertEquals(15, features.size());
+    Assert.assertEquals(17, features.size());
     Iterator<Feature> iter = features.iterator();
     this.assertFeature("Preceding_0_2_1", "brown", iter.next());
     this.assertFeature("Preceding_0_2_0", "fox", iter.next());
     this.assertFeature("Preceding_3_6_5", "OOB2", iter.next());
     this.assertFeature("Preceding_3_6_4", "OOB1", iter.next());
     this.assertFeature("Preceding_3_6_3", "The", iter.next());
+    this.assertFeature("Covered_0", "jumped", iter.next());
+    this.assertFeature("Covered_1", "over", iter.next());
     this.assertFeature("FirstCovered_0_1_0", "jumped", iter.next());
     this.assertFeature("FirstCovered_1_3_1", "over", iter.next());
     this.assertFeature("FirstCovered_1_3_2", "OOB1", iter.next());

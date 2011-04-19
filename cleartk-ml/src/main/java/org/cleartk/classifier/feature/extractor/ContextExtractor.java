@@ -527,6 +527,43 @@ public class ContextExtractor<T extends Annotation> implements SimpleFeatureExtr
   }
 
   /**
+   * A {@link Context} for extracting all annotations within the focus annotation.
+   */
+  public static class Covered implements Context {
+
+    /**
+     * Constructs a context that will extract features over all annotations within the focus
+     * annotation.
+     */
+    public Covered() {
+    }
+
+    @Override
+    public String getName() {
+      return "Covered";
+    }
+
+    @Override
+    public <T extends Annotation> List<Feature> extract(
+        JCas jCas,
+        Annotation focusAnnotation,
+        Bounds bounds,
+        Class<T> annotationClass,
+        SimpleFeatureExtractor extractor) throws CleartkExtractorException {
+      List<Feature> features = new ArrayList<Feature>();
+      int pos = 0;
+      for (T ann : JCasUtil.selectCovered(jCas, annotationClass, focusAnnotation)) {
+        for (Feature feature : extractor.extract(jCas, ann)) {
+          features.add(new ContextFeature(this.getName(), pos, feature));
+        }
+        pos += 1;
+      }
+      return features;
+    }
+
+  }
+
+  /**
    * A {@link Context} for extracting the first annotations within the focus annotation.
    */
   public static class FirstCovered extends LeftToRightContext {
