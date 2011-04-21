@@ -122,13 +122,68 @@ public class TreebankNodeUtil {
   public static List<TreebankNode> getPathToRoot(TreebankNode startNode) {
     List<TreebankNode> nlist = new ArrayList<TreebankNode>(20);
     TreebankNode cursorNode = startNode;
-  
+
     while (cursorNode != null) {
       nlist.add(cursorNode);
       cursorNode = cursorNode.getParent();
     }
-  
+
     return nlist;
   }
 
+  /**
+   * Representation of a path from one TreebankNode to another, via a common ancestor in the tree.
+   */
+  public static class TreebankNodePath {
+    private List<TreebankNode> sourceToAncestor;
+
+    private TreebankNode commonAncestor;
+
+    private List<TreebankNode> targetToAncestor;
+
+    public TreebankNodePath(
+        TreebankNode commonAncestor,
+        List<TreebankNode> sourceToAncestor,
+        List<TreebankNode> targetToAncestor) {
+      this.commonAncestor = commonAncestor;
+      this.sourceToAncestor = sourceToAncestor;
+      this.targetToAncestor = targetToAncestor;
+    }
+
+    public TreebankNode getCommonAncestor() {
+      return this.commonAncestor;
+    }
+
+    public List<TreebankNode> getSourceToAncestorPath() {
+      return this.sourceToAncestor;
+    }
+
+    public List<TreebankNode> getTargetToAncestorPath() {
+      return this.targetToAncestor;
+    }
+  }
+
+  /**
+   * Get the path from the source TreebankNode to the target TreebankNode via the least common
+   * ancestor.
+   * 
+   * @param source
+   *          The TreebankNode where the path should start.
+   * @param target
+   *          The TreebankNode where the path should end.
+   * @return The path from the source node to the target node.
+   */
+  public static TreebankNodePath getPath(TreebankNode source, TreebankNode target) {
+    List<TreebankNode> sourceToRoot = getPathToRoot(source);
+    List<TreebankNode> targetToRoot = getPathToRoot(target);
+
+    TreebankNode ancestor = null;
+    while (sourceToRoot.size() > 0 && targetToRoot.size() > 0
+        && sourceToRoot.get(sourceToRoot.size() - 1) == targetToRoot.get(targetToRoot.size() - 1)) {
+      ancestor = sourceToRoot.remove(sourceToRoot.size() - 1);
+      ancestor = targetToRoot.remove(targetToRoot.size() - 1);
+    }
+
+    return new TreebankNodePath(ancestor, sourceToRoot, targetToRoot);
+  }
 }

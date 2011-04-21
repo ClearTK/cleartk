@@ -31,6 +31,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.syntax.SyntaxTestBase;
 import org.cleartk.syntax.constituent.TreebankConstants;
 import org.cleartk.syntax.constituent.TreebankGoldAnnotator;
+import org.cleartk.syntax.constituent.type.TreebankNodeUtil.TreebankNodePath;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -192,6 +193,49 @@ public class TreebankNodeUtilTest extends SyntaxTestBase {
 
     TreebankNode mice = np2.getChildren(0);
     Assert.assertEquals(Arrays.asList(mice, np2, vp, root), TreebankNodeUtil.getPathToRoot(mice));
+  }
+
+  @Test
+  public void testGetPath() throws Exception {
+    this.jCas.setDocumentText("The cat chased mice.");
+
+    JCas tbView = this.jCas.createView(TreebankConstants.TREEBANK_VIEW);
+    tbView.setDocumentText("(S (NP (DT The) (NN cat)) (VP (VBD chased) (NP (NNS mice))) (. .))");
+
+    AnalysisEngine treeAnnotator = AnalysisEngineFactory.createPrimitive(
+        TreebankGoldAnnotator.class,
+        this.typeSystemDescription);
+    treeAnnotator.process(this.jCas);
+
+    TopTreebankNode root = JCasUtil.selectSingle(this.jCas, TopTreebankNode.class);
+    TreebankNode np = root.getChildren(0);
+    TreebankNode vp = root.getChildren(1);
+    TreebankNode period = root.getChildren(2);
+    TreebankNode the = np.getChildren(0);
+    TreebankNode cat = np.getChildren(1);
+    TreebankNode chased = vp.getChildren(0);
+    TreebankNode np2 = vp.getChildren(1);
+    TreebankNode mice = np2.getChildren(0);
+
+    TreebankNodePath path = TreebankNodeUtil.getPath(cat, mice);
+    Assert.assertEquals(root, path.getCommonAncestor());
+    Assert.assertEquals(Arrays.asList(cat, np), path.getSourceToAncestorPath());
+    Assert.assertEquals(Arrays.asList(mice, np2, vp), path.getTargetToAncestorPath());
+
+    path = TreebankNodeUtil.getPath(mice, chased);
+    Assert.assertEquals(vp, path.getCommonAncestor());
+    Assert.assertEquals(Arrays.asList(mice, np2), path.getSourceToAncestorPath());
+    Assert.assertEquals(Arrays.asList(chased), path.getTargetToAncestorPath());
+
+    path = TreebankNodeUtil.getPath(the, the);
+    Assert.assertEquals(the, path.getCommonAncestor());
+    Assert.assertEquals(Arrays.asList(), path.getSourceToAncestorPath());
+    Assert.assertEquals(Arrays.asList(), path.getTargetToAncestorPath());
+
+    path = TreebankNodeUtil.getPath(root, period);
+    Assert.assertEquals(root, path.getCommonAncestor());
+    Assert.assertEquals(Arrays.asList(), path.getSourceToAncestorPath());
+    Assert.assertEquals(Arrays.asList(period), path.getTargetToAncestorPath());
   }
 
   private Annotation newSpan(int begin, int end) {
