@@ -34,6 +34,7 @@ import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.annotationpair.AnnotationPairFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.syntax.constituent.type.TreebankNode;
+import org.cleartk.syntax.constituent.type.TreebankNodeUtil;
 
 /**
  * <br>
@@ -106,8 +107,8 @@ public class SyntacticPathExtractor implements AnnotationPairFeatureExtractor {
       throw CleartkExtractorException.wrongAnnotationType(TreebankNode.class, currentAnnotation);
     }
 
-    List<TreebankNode> fromStart = getPathToRoot(leftConstituent);
-    List<TreebankNode> fromEnd = getPathToRoot(rightConstituent);
+    List<TreebankNode> fromStart = TreebankNodeUtil.getPathToRoot(leftConstituent);
+    List<TreebankNode> fromEnd = TreebankNodeUtil.getPathToRoot(rightConstituent);
     String pathFeatureName = null;
     String lengthFeatureName = null;
 
@@ -162,26 +163,5 @@ public class SyntacticPathExtractor implements AnnotationPairFeatureExtractor {
     } catch (IndexOutOfBoundsException e) {
       return new ArrayList<Feature>(0);
     }
-  }
-
-  /**
-   * Find the path from a TreebankNode to the root of the tree it belongs to.
-   * 
-   * @param startNode
-   *          The start node of the path
-   * 
-   * @return A list of TreebankNodes that make up the path from <b>startNode</b> to the root of the
-   *         tree
-   */
-  protected static List<TreebankNode> getPathToRoot(TreebankNode startNode) {
-    List<TreebankNode> nlist = new ArrayList<TreebankNode>(20);
-    TreebankNode cursorNode = startNode;
-
-    while (cursorNode != null) {
-      nlist.add(cursorNode);
-      cursorNode = cursorNode.getParent();
-    }
-
-    return nlist;
   }
 }
