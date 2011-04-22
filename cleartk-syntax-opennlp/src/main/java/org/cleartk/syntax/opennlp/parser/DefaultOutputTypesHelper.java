@@ -33,6 +33,7 @@ import opennlp.tools.parser.Parse;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.cleartk.syntax.constituent.type.TerminalTreebankNode;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.syntax.constituent.types.OutputTypesHelper;
@@ -75,10 +76,9 @@ public class DefaultOutputTypesHelper<TOKEN_TYPE extends Annotation, SENTENCE_TY
     node.setEnd(parse.getSpan().getEnd());
 
     // leaf node
-    Parse[] childParses = parse.getChildren();
-    if (childParses.length == 1 && childParses[0].getType() == AbstractBottomUpParser.TOK_NODE) {
+    if (isLeaf(parse)) {
       node.setLeaf(true);
-      node.setNodeValue(childParses[0].toString());
+      node.setNodeValue(parse.getChildren()[0].toString());
       node.setChildren(new FSArray(jCas, 0));
     }
 
@@ -87,8 +87,10 @@ public class DefaultOutputTypesHelper<TOKEN_TYPE extends Annotation, SENTENCE_TY
       node.setLeaf(false);
       node.setNodeValue(null);
       List<TreebankNode> childNodes = new ArrayList<TreebankNode>();
-      for (Parse childParse : childParses) {
-        TreebankNode childNode = new TreebankNode(jCas);
+      for (Parse childParse : parse.getChildren()) {
+        TreebankNode childNode = isLeaf(childParse)
+            ? new TerminalTreebankNode(jCas)
+            : new TreebankNode(jCas);
         this.setAttributes(childNode, childParse, node, jCas);
         childNode.addToIndexes();
         childNodes.add(childNode);
@@ -109,4 +111,8 @@ public class DefaultOutputTypesHelper<TOKEN_TYPE extends Annotation, SENTENCE_TY
     return tList;
   }
 
+  private boolean isLeaf(Parse parse) {
+    Parse[] childParses = parse.getChildren();
+    return childParses.length == 1 && childParses[0].getType() == AbstractBottomUpParser.TOK_NODE;
+  }
 }

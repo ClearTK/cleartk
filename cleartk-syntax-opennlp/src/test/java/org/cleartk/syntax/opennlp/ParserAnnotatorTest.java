@@ -23,6 +23,7 @@
  */
 package org.cleartk.syntax.opennlp;
 
+import java.util.Collection;
 import java.util.logging.Level;
 
 import opennlp.tools.cmdline.CLI;
@@ -198,6 +199,38 @@ public class ParserAnnotatorTest extends OpennlpSyntaxTestBase {
         "new evidence relevant to the role of the breast cancer susceptibility gene BRCA2 in DNA repair",
         newEvidenceNode.getCoveredText());
 
+  }
+
+  @Test
+  public void testTerminals() throws UIMAException {
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+        ParserAnnotator.class,
+        typeSystemDescription,
+        ParserAnnotator.PARAM_PARSER_MODEL_PATH,
+        MODEL_PATH,
+        ParserAnnotator.PARAM_USE_TAGS_FROM_CAS,
+        true,
+        ParserWrapper_ImplBase.PARAM_OUTPUT_TYPES_HELPER_CLASS_NAME,
+        DefaultOutputTypesHelper.class.getName());
+    this.tokenBuilder.buildTokens(
+        jCas,
+        "The skunk thought the stump stunk.",
+        "The skunk thought the stump stunk .",
+        "DT NN VBD DT NN VBD .");
+
+    engine.process(this.jCas);
+    engine.collectionProcessComplete();
+
+    Collection<TopTreebankNode> roots = JCasUtil.select(jCas, TopTreebankNode.class);
+    Assert.assertEquals(1, roots.size());
+    TopTreebankNode root = roots.iterator().next();
+    Assert.assertEquals(7, root.getTerminals().size());
+    Assert.assertEquals("DT", root.getTerminals(0).getNodeType());
+    Assert.assertEquals("The", root.getTerminals(0).getCoveredText());
+    Assert.assertEquals("VBD", root.getTerminals(2).getNodeType());
+    Assert.assertEquals("thought", root.getTerminals(2).getCoveredText());
+    Assert.assertEquals(".", root.getTerminals(6).getNodeType());
+    Assert.assertEquals(".", root.getTerminals(6).getCoveredText());
   }
 
   @Test
