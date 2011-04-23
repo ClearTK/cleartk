@@ -238,6 +238,25 @@ public class TreebankNodeUtilTest extends SyntaxTestBase {
     Assert.assertEquals(Arrays.asList(period), path.getTargetToAncestorPath());
   }
 
+  @Test
+  public void testToTreebankString() throws Exception {
+    for (String parseText : Arrays.asList(
+        "(S (NP (DT The) (NN cat)) (VP (VBD chased) (NP (NNS mice))) (. .))",
+        "(S (NP (DT The) (NN skunk)) (VP (VBD thought) (S (NP (DT the) (NN stump)) (VP (VBD stunk)))) (. .))")) {
+      this.jCas.reset();
+      JCas tbView = this.jCas.createView(TreebankConstants.TREEBANK_VIEW);
+      tbView.setDocumentText(parseText);
+
+      AnalysisEngine treeAnnotator = AnalysisEngineFactory.createPrimitive(
+          TreebankGoldAnnotator.class,
+          this.typeSystemDescription);
+      treeAnnotator.process(this.jCas);
+
+      TopTreebankNode root = JCasUtil.selectSingle(this.jCas, TopTreebankNode.class);
+      Assert.assertEquals(parseText, TreebankNodeUtil.toTreebankString(root));
+    }
+  }
+
   private Annotation newSpan(int begin, int end) {
     return new Annotation(this.jCas, begin, end);
   }

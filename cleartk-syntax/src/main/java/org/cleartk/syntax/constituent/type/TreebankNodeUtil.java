@@ -29,6 +29,7 @@ import java.util.List;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.cleartk.util.UIMAUtil;
 import org.uimafit.util.JCasUtil;
 
 /**
@@ -185,5 +186,26 @@ public class TreebankNodeUtil {
     }
 
     return new TreebankNodePath(ancestor, sourceToRoot, targetToRoot);
+  }
+
+  /**
+   * Format the TreebankNode as a Penn-Treebank-style parenthesized string.
+   * 
+   * @param node
+   *          The TreebankNode to be formatted.
+   * @return A parenthesized Penn-Treebank-style string.
+   */
+  public static String toTreebankString(TreebankNode node) {
+    StringBuilder builder = new StringBuilder();
+    builder.append('(').append(node.getNodeType());
+    if (node.getLeaf()) {
+      builder.append(' ').append(node.getCoveredText());
+    } else {
+      for (TreebankNode child : UIMAUtil.toList(node.getChildren(), TreebankNode.class)) {
+        builder.append(' ').append(toTreebankString(child));
+      }
+    }
+    builder.append(')');
+    return builder.toString();
   }
 }
