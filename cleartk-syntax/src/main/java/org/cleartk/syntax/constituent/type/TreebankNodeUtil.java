@@ -79,7 +79,7 @@ public class TreebankNodeUtil {
    *          The Annotation whose span should be matched.
    * @return The highest TreebankNode matching the given span, or null if no such annotation exists.
    */
-  public static TreebankNode selectHighestCoveredTreebankNode(JCas jCas, Annotation annotation) {
+  public static TreebankNode selectHighestMatchingTreebankNode(JCas jCas, Annotation annotation) {
     TreebankNode highestNode = null;
     int smallestDepth = Integer.MAX_VALUE;
     for (TreebankNode node : JCasUtil.selectCovered(jCas, TreebankNode.class, annotation)) {
@@ -207,5 +207,19 @@ public class TreebankNodeUtil {
     }
     builder.append(')');
     return builder.toString();
+  }
+
+  public static TreebankNode getParent(TreebankNode node) {
+    if (node != null) {
+      node = node.getParent();
+    }
+    return node;
+  }
+
+  public static TreebankNode getAncestorWithType(TreebankNode node, String type) {
+    while (node != null && !node.getNodeType().equals(type)) {
+      node = node.getParent();
+    }
+    return node;
   }
 }

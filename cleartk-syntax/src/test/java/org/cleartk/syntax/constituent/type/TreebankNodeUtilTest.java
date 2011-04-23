@@ -78,7 +78,7 @@ public class TreebankNodeUtilTest extends SyntaxTestBase {
   }
 
   @Test
-  public void testSelectHighestCoveredTreebankNode() throws Exception {
+  public void testSelectHighestMatchingTreebankNode() throws Exception {
     this.jCas.setDocumentText("The cat chased mice.");
 
     JCas tbView = this.jCas.createView(TreebankConstants.TREEBANK_VIEW);
@@ -90,31 +90,31 @@ public class TreebankNodeUtilTest extends SyntaxTestBase {
     treeAnnotator.process(this.jCas);
 
     TreebankNode node;
-    node = TreebankNodeUtil.selectHighestCoveredTreebankNode(this.jCas, this.newSpan(0, 3));
+    node = TreebankNodeUtil.selectHighestMatchingTreebankNode(this.jCas, this.newSpan(0, 3));
     Assert.assertEquals("The", node.getCoveredText());
     Assert.assertEquals("DT", node.getNodeType());
     Assert.assertTrue(node.getLeaf());
 
-    node = TreebankNodeUtil.selectHighestCoveredTreebankNode(this.jCas, this.newSpan(15, 19));
+    node = TreebankNodeUtil.selectHighestMatchingTreebankNode(this.jCas, this.newSpan(15, 19));
     Assert.assertEquals("mice", node.getCoveredText());
     Assert.assertEquals("NP", node.getNodeType());
     Assert.assertFalse(node.getLeaf());
 
-    node = TreebankNodeUtil.selectHighestCoveredTreebankNode(this.jCas, this.newSpan(8, 19));
+    node = TreebankNodeUtil.selectHighestMatchingTreebankNode(this.jCas, this.newSpan(8, 19));
     Assert.assertEquals("chased mice", node.getCoveredText());
     Assert.assertEquals("VP", node.getNodeType());
     Assert.assertFalse(node.getLeaf());
 
     int end = this.jCas.getDocumentText().length();
-    node = TreebankNodeUtil.selectHighestCoveredTreebankNode(this.jCas, this.newSpan(0, end));
+    node = TreebankNodeUtil.selectHighestMatchingTreebankNode(this.jCas, this.newSpan(0, end));
     Assert.assertEquals("The cat chased mice.", node.getCoveredText());
     Assert.assertEquals("S", node.getNodeType());
     Assert.assertFalse(node.getLeaf());
 
-    node = TreebankNodeUtil.selectMatchingLeaf(this.jCas, this.newSpan(0, 4));
+    node = TreebankNodeUtil.selectHighestMatchingTreebankNode(this.jCas, this.newSpan(0, 4));
     Assert.assertNull(node);
 
-    node = TreebankNodeUtil.selectMatchingLeaf(this.jCas, this.newSpan(0, end - 1));
+    node = TreebankNodeUtil.selectHighestMatchingTreebankNode(this.jCas, this.newSpan(0, end - 1));
     Assert.assertNull(node);
   }
 
