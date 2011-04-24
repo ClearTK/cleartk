@@ -119,6 +119,51 @@ public class TreebankNodeUtilTest extends SyntaxTestBase {
   }
 
   @Test
+  public void testSelectHighestCoveredTreebankNode() throws Exception {
+    this.jCas.setDocumentText("The cat chased mice.");
+
+    JCas tbView = this.jCas.createView(TreebankConstants.TREEBANK_VIEW);
+    tbView.setDocumentText("(S (NP (DT The) (NN cat)) (VP (VBD chased) (NP (NNS mice))) (. .))");
+
+    AnalysisEngine treeAnnotator = AnalysisEngineFactory.createPrimitive(
+        TreebankGoldAnnotator.class,
+        this.typeSystemDescription);
+    treeAnnotator.process(this.jCas);
+
+    TreebankNode node;
+    node = TreebankNodeUtil.selectHighestCoveredTreebankNode(this.jCas, this.newSpan(0, 3));
+    Assert.assertEquals("The", node.getCoveredText());
+    Assert.assertEquals("DT", node.getNodeType());
+    Assert.assertTrue(node.getLeaf());
+
+    node = TreebankNodeUtil.selectHighestCoveredTreebankNode(this.jCas, this.newSpan(15, 19));
+    Assert.assertEquals("mice", node.getCoveredText());
+    Assert.assertEquals("NP", node.getNodeType());
+    Assert.assertFalse(node.getLeaf());
+
+    node = TreebankNodeUtil.selectHighestCoveredTreebankNode(this.jCas, this.newSpan(8, 19));
+    Assert.assertEquals("chased mice", node.getCoveredText());
+    Assert.assertEquals("VP", node.getNodeType());
+    Assert.assertFalse(node.getLeaf());
+
+    int end = this.jCas.getDocumentText().length();
+    node = TreebankNodeUtil.selectHighestCoveredTreebankNode(this.jCas, this.newSpan(0, end));
+    Assert.assertEquals("The cat chased mice.", node.getCoveredText());
+    Assert.assertEquals("S", node.getNodeType());
+    Assert.assertFalse(node.getLeaf());
+
+    node = TreebankNodeUtil.selectHighestCoveredTreebankNode(this.jCas, this.newSpan(0, 4));
+    Assert.assertEquals("The", node.getCoveredText());
+    Assert.assertEquals("DT", node.getNodeType());
+    Assert.assertTrue(node.getLeaf());
+
+    node = TreebankNodeUtil.selectHighestCoveredTreebankNode(this.jCas, this.newSpan(4, end - 1));
+    Assert.assertEquals("chased mice", node.getCoveredText());
+    Assert.assertEquals("VP", node.getNodeType());
+    Assert.assertFalse(node.getLeaf());
+  }
+
+  @Test
   public void testGetDepth() throws Exception {
     this.jCas.setDocumentText("The cat chased mice.");
 

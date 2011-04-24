@@ -95,6 +95,32 @@ public class TreebankNodeUtil {
   }
 
   /**
+   * Selects the highest TreebankNode in the parse tree that is at least partially covered by the
+   * given annotation.
+   * 
+   * @param jCas
+   *          The JCas containing the TreebankNodes.
+   * @param annotation
+   *          The Annotation whose span should be matched.
+   * @return The highest TreebankNode at least partially covered by the given span, or null if no
+   *         such annotation exists.
+   */
+  public static TreebankNode selectHighestCoveredTreebankNode(JCas jCas, Annotation annotation) {
+    TreebankNode highestNode = null;
+    int smallestDepth = Integer.MAX_VALUE;
+    for (TreebankNode node : JCasUtil.selectCovered(jCas, TreebankNode.class, annotation)) {
+      if (annotation.getBegin() <= node.getBegin() && node.getEnd() <= annotation.getEnd()) {
+        int depth = getDepth(node);
+        if (depth < smallestDepth) {
+          highestNode = node;
+          smallestDepth = depth;
+        }
+      }
+    }
+    return highestNode;
+  }
+
+  /**
    * Calculates the depth of the TreebankNode. The root node has depth 0, children of the root node
    * have depth 1, etc.
    * 
