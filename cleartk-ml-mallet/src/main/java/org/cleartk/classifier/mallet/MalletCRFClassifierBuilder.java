@@ -64,7 +64,17 @@ public class MalletCRFClassifierBuilder extends
     malletArgs[malletArgs.length - 3] = "--model-file";
     malletArgs[malletArgs.length - 2] = new File(dir, MODEL_NAME).getPath();
     malletArgs[malletArgs.length - 1] = getTrainingDataFile(dir).getPath();
-    SimpleTagger.main(malletArgs);
+    String leaveMyLoggingAloneMallet = "java.util.logging.config.file";
+    String propValue = System.getProperty(leaveMyLoggingAloneMallet);
+    System.setProperty(leaveMyLoggingAloneMallet, "anything-but-null");
+    try {
+      SimpleTagger.main(malletArgs);
+    } finally {
+      System.getProperties().remove(leaveMyLoggingAloneMallet);
+      if (propValue != null) {
+        System.setProperty(leaveMyLoggingAloneMallet, propValue);
+      }
+    }
   }
 
   @Override
