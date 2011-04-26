@@ -58,7 +58,8 @@ import org.uimafit.util.JCasUtil;
  * 
  * @author Steven Bethard
  */
-public class ContextExtractor<T extends Annotation> implements SimpleFeatureExtractor {
+public class ContextExtractor<T extends Annotation> implements SimpleFeatureExtractor,
+    BetweenAnnotationsFeatureExtractor {
 
   private Class<T> annotationClass;
 
@@ -111,6 +112,7 @@ public class ContextExtractor<T extends Annotation> implements SimpleFeatureExtr
     return this.extract(view, focusAnnotation, bounds);
   }
 
+  @Override
   public List<Feature> extractBetween(JCas view, Annotation annotation1, Annotation annotation2)
       throws CleartkExtractorException {
     int begin = annotation1.getEnd();
