@@ -76,12 +76,12 @@ public class EventAnnotate {
         TokenAnnotator.getDescription(),
         PosTaggerAnnotator.getDescription(),
         DefaultSnowballStemmer.getDescription("English"),
-        EventAnnotator.getAnnotatorDescription(),
-        EventTenseAnnotator.getAnnotatorDescription(),
-        EventAspectAnnotator.getAnnotatorDescription(),
-        EventClassAnnotator.getAnnotatorDescription(),
-        EventPolarityAnnotator.getAnnotatorDescription(),
-        EventModalityAnnotator.getAnnotatorDescription(),
+        EventAnnotator.FACTORY.getAnnotatorDescription(),
+        EventTenseAnnotator.FACTORY.getAnnotatorDescription(),
+        EventAspectAnnotator.FACTORY.getAnnotatorDescription(),
+        EventClassAnnotator.FACTORY.getAnnotatorDescription(),
+        EventPolarityAnnotator.FACTORY.getAnnotatorDescription(),
+        EventModalityAnnotator.FACTORY.getAnnotatorDescription(),
         TimeMLWriter.getDescription(outputDir.getPath()));
   }
 

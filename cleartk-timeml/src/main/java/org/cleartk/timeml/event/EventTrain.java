@@ -29,7 +29,7 @@ import java.util.List;
 
 import org.apache.uima.util.Level;
 import org.apache.uima.util.Logger;
-import org.cleartk.classifier.jar.Train;
+import org.cleartk.classifier.jar.JarClassifierBuilder;
 import org.cleartk.syntax.opennlp.PosTaggerAnnotator;
 import org.cleartk.syntax.opennlp.SentenceAnnotator;
 import org.cleartk.timeml.TimeMLViewName;
@@ -69,39 +69,40 @@ public class EventTrain {
 
     // run pipeline to extract features and write training data
     SimplePipeline.runPipeline(
-        FilesCollectionReader.getCollectionReaderWithView(
-            timebankDirectory,
-            TimeMLViewName.TIMEML),
+        FilesCollectionReader.getCollectionReaderWithView(timebankDirectory, TimeMLViewName.TIMEML),
         TimeMLGoldAnnotator.getDescriptionNoTLINKs(),
         SentenceAnnotator.getDescription(),
         TokenAnnotator.getDescription(),
         PosTaggerAnnotator.getDescription(),
         DefaultSnowballStemmer.getDescription("English"),
-        EventAnnotator.getWriterDescription(),
-        EventTenseAnnotator.getWriterDescription(),
-        EventAspectAnnotator.getWriterDescription(),
-        EventClassAnnotator.getWriterDescription(),
-        EventPolarityAnnotator.getWriterDescription(),
-        EventModalityAnnotator.getWriterDescription());
+        EventAnnotator.FACTORY.getWriterDescription(),
+        EventTenseAnnotator.FACTORY.getWriterDescription(),
+        EventAspectAnnotator.FACTORY.getWriterDescription(),
+        EventClassAnnotator.FACTORY.getWriterDescription(),
+        EventPolarityAnnotator.FACTORY.getWriterDescription(),
+        EventModalityAnnotator.FACTORY.getWriterDescription());
 
     // train models for each aspect of event identification
-    Train.main(EventAnnotator.MODEL_LOCATOR.getTrainingDirectory(), "--forbidden", "O,I-Event");
-    Train.main(EventTenseAnnotator.MODEL_LOCATOR.getTrainingDirectory());
-    Train.main(EventAspectAnnotator.MODEL_LOCATOR.getTrainingDirectory());
-    Train.main(EventClassAnnotator.MODEL_LOCATOR.getTrainingDirectory());
-    Train.main(EventPolarityAnnotator.MODEL_LOCATOR.getTrainingDirectory());
-    Train.main(EventModalityAnnotator.MODEL_LOCATOR.getTrainingDirectory());
+    JarClassifierBuilder.trainAndPackage(
+        EventAnnotator.FACTORY.getTrainingDirectory(),
+        "--forbidden",
+        "O,I-Event");
+    JarClassifierBuilder.trainAndPackage(EventTenseAnnotator.FACTORY.getTrainingDirectory());
+    JarClassifierBuilder.trainAndPackage(EventAspectAnnotator.FACTORY.getTrainingDirectory());
+    JarClassifierBuilder.trainAndPackage(EventClassAnnotator.FACTORY.getTrainingDirectory());
+    JarClassifierBuilder.trainAndPackage(EventPolarityAnnotator.FACTORY.getTrainingDirectory());
+    JarClassifierBuilder.trainAndPackage(EventModalityAnnotator.FACTORY.getTrainingDirectory());
 
     // clean up unnecessary files
-    List<String> modelDirs = Arrays.asList(
-        EventAnnotator.MODEL_LOCATOR.getTrainingDirectory(),
-        EventTenseAnnotator.MODEL_LOCATOR.getTrainingDirectory(),
-        EventAspectAnnotator.MODEL_LOCATOR.getTrainingDirectory(),
-        EventClassAnnotator.MODEL_LOCATOR.getTrainingDirectory(),
-        EventPolarityAnnotator.MODEL_LOCATOR.getTrainingDirectory(),
-        EventModalityAnnotator.MODEL_LOCATOR.getTrainingDirectory());
-    for (String dir : modelDirs) {
-      for (File file : new File(dir).listFiles()) {
+    List<File> modelDirs = Arrays.asList(
+        EventAnnotator.FACTORY.getTrainingDirectory(),
+        EventTenseAnnotator.FACTORY.getTrainingDirectory(),
+        EventAspectAnnotator.FACTORY.getTrainingDirectory(),
+        EventClassAnnotator.FACTORY.getTrainingDirectory(),
+        EventPolarityAnnotator.FACTORY.getTrainingDirectory(),
+        EventModalityAnnotator.FACTORY.getTrainingDirectory());
+    for (File dir : modelDirs) {
+      for (File file : dir.listFiles()) {
         if (!file.isDirectory() && !file.getName().equals("model.jar")) {
           file.delete();
         }

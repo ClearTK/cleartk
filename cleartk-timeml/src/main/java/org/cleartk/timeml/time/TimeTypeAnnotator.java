@@ -1,5 +1,5 @@
-/** 
- * Copyright (c) 2010, Regents of the University of Colorado 
+/*
+ * Copyright (c) 2011, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -21,34 +21,47 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.timeml.event;
+package org.cleartk.timeml.time;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.classifier.CleartkAnnotator;
+import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.feature.extractor.simple.BagExtractor;
+import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.timeml.TimeMLComponents;
-import org.cleartk.timeml.type.Event;
+import org.cleartk.timeml.time.TimeFeaturesExtractors.CharacterTypesExtractor;
+import org.cleartk.timeml.time.TimeFeaturesExtractors.TimeWordsExtractor;
+import org.cleartk.timeml.type.Time;
 import org.cleartk.timeml.util.CleartkInternalModelFactory;
-import org.cleartk.timeml.util.TokenPOSBagExtractor;
-import org.cleartk.timeml.util.TokenStemBagExtractor;
+import org.cleartk.token.type.Token;
 import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
- * Copyright (c) 2010, Regents of the University of Colorado <br>
+ * Copyright (c) 2011, Regents of the University of Colorado <br>
  * All rights reserved.
- * 
- * Annotator for the "class" attribute of TimeML EVENTs.
  * 
  * @author Steven Bethard
  */
-public class EventClassAnnotator extends EventAttributeAnnotator<String> {
+public class TimeTypeAnnotator extends CleartkAnnotator<String> {
 
   public static final CleartkInternalModelFactory FACTORY = new CleartkInternalModelFactory() {
     @Override
     public Class<?> getAnnotatorClass() {
-      return EventClassAnnotator.class;
+      return TimeTypeAnnotator.class;
     }
 
     @Override
@@ -59,30 +72,48 @@ public class EventClassAnnotator extends EventAttributeAnnotator<String> {
     @Override
     public AnalysisEngineDescription getBaseDescription() throws ResourceInitializationException {
       return AnalysisEngineFactory.createPrimitiveDescription(
-          EventClassAnnotator.class,
+          TimeTypeAnnotator.class,
           TimeMLComponents.TYPE_SYSTEM_DESCRIPTION);
     }
   };
 
+  private List<SimpleFeatureExtractor> featuresExtractors;
+
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
-    this.eventFeatureExtractors.add(new TokenStemBagExtractor());
-    this.eventFeatureExtractors.add(new TokenPOSBagExtractor());
+    this.featuresExtractors = new ArrayList<SimpleFeatureExtractor>();
+    this.featuresExtractors.add(new LastWordExtractor());
+    this.featuresExtractors.add(new CharacterTypesExtractor());
+    this.featuresExtractors.add(new TimeWordsExtractor());
+    this.featuresExtractors.add(new BagExtractor(Token.class, new SpannedTextExtractor()));
   }
 
   @Override
-  protected String getDefaultValue() {
-    return "OCCURRENCE";
+  public void process(JCas jCas) throws AnalysisEngineProcessException {
+    for (Time time : JCasUtil.select(jCas, Time.class)) {
+      List<Feature> features = new ArrayList<Feature>();
+      for (SimpleFeatureExtractor extractor : this.featuresExtractors) {
+        features.addAll(extractor.extract(jCas, time));
+      }
+      if (this.isTraining()) {
+        this.dataWriter.write(new Instance<String>(time.getTimeType(), features));
+      } else {
+        time.setTimeType(this.classifier.classify(features));
+      }
+    }
   }
 
-  @Override
-  protected String getAttribute(Event event) {
-    return event.getEventClass();
-  }
+  private static class LastWordExtractor implements SimpleFeatureExtractor {
 
-  @Override
-  protected void setAttribute(Event event, String value) {
-    event.setEventClass(value);
+    public LastWordExtractor() {
+    }
+
+    @Override
+    public List<Feature> extract(JCas view, Annotation focusAnnotation) {
+      String[] words = focusAnnotation.getCoveredText().split("\\W+");
+      return Arrays.asList(new Feature("LastWord", words[words.length - 1]));
+    }
+
   }
 }

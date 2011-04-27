@@ -81,7 +81,7 @@ public class VerbClauseTemporalAnnotate {
         PosTaggerAnnotator.getDescription(),
         DefaultSnowballStemmer.getDescription("English"),
         ParserAnnotator.getDescription(),
-        VerbClauseTemporalAnnotator.getAnnotatorDescription(),
+        VerbClauseTemporalAnnotator.FACTORY.getAnnotatorDescription(),
         TimeMLWriter.getDescription(outputDir.getPath()));
   }
 }

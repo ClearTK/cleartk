@@ -1,4 +1,4 @@
-/** 
+/*
  * Copyright (c) 2011, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -21,43 +21,48 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.timeml.util;
+package org.cleartk.timeml.eval;
 
-import java.net.URL;
-import java.util.MissingResourceException;
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import org.apache.uima.resource.ResourceConfigurationException;
+import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.eval.provider.NameBasedReaderProvider;
+import org.cleartk.timeml.corpus.TempEval2010CollectionReader;
 
 /**
- * For ClearTK internal use only.
- * 
- * Determines, from an annotator class name, where in the ClearTK file system (and jar file) the
- * model should be placed.
- * 
  * <br>
  * Copyright (c) 2011, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
  * @author Steven Bethard
  */
-public class CleartkInternalModelLocator {
-  private Class<?> annotatorClass;
+public class TempEval2010ReaderProvider extends NameBasedReaderProvider {
 
-  public CleartkInternalModelLocator(Class<?> annotatorClass) {
-    this.annotatorClass = annotatorClass;
+  public TempEval2010ReaderProvider(String trainDir, String testDir)
+      throws ResourceInitializationException, IOException {
+    this(new File(trainDir), new File(testDir));
   }
-  
-  public String getTrainingDirectory() {
-    return "src/main/resources/" + this.annotatorClass.getName().toLowerCase().replace('.', '/');
+
+  public TempEval2010ReaderProvider(File trainDir, File testDir)
+      throws ResourceInitializationException, IOException {
+    super(
+        TempEval2010CollectionReader.getAnnotatedFileNames(trainDir),
+        TempEval2010CollectionReader.getAnnotatedFileNames(testDir),
+        TempEval2010CollectionReader.getCollectionReader(
+            Arrays.asList(trainDir, testDir),
+            Collections.<String> emptySet()));
   }
-  
-  public URL getClassifierJarURL() {
-    String resourceName = this.annotatorClass.getSimpleName().toLowerCase() + "/model.jar";
-    URL url = this.annotatorClass.getResource(resourceName);
-    if (url == null) {
-      String className = this.annotatorClass.getName();
-      String format = "No classifier jar found at \"%s\" for class %s";
-      String message = String.format(format, resourceName, className);
-      throw new MissingResourceException(message, className, resourceName);
-    }
-    return url;
+
+  @Override
+  protected void configureReader(List<String> names) throws ResourceConfigurationException {
+    this.reader.setConfigParameterValue(
+        TempEval2010CollectionReader.PARAM_SELECTED_FILE_NAMES,
+        names.toArray(new String[names.size()]));
+    this.reader.reconfigure();
   }
 }

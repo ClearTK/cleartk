@@ -109,22 +109,21 @@ public class VerbClauseTemporalAnnotatorTest extends TimeMLTestBase {
     }
 
     // create the TreebankNode annotations
-    TreebankNode root = TreebankNodeUtility.newNode(
+    TreebankNode root = TreebankNodeUtility.newNode(jCas, "S", TreebankNodeUtility.newNode(
         jCas,
-        "S",
-        TreebankNodeUtility.newNode(jCas, "NP", this.newNode(jCas, tokens.get(0))),
-        TreebankNodeUtility.newNode(
+        "NP",
+        this.newNode(jCas, tokens.get(0))), TreebankNodeUtility.newNode(
+        jCas,
+        "VP",
+        this.newNode(jCas, tokens.get(1)),
+        TreebankNodeUtility.newNode(jCas, "SBAR", TreebankNodeUtility.newNode(
+            jCas,
+            "NP",
+            this.newNode(jCas, tokens.get(2))), TreebankNodeUtility.newNode(
             jCas,
             "VP",
-            this.newNode(jCas, tokens.get(1)),
-            TreebankNodeUtility.newNode(jCas, "SBAR", TreebankNodeUtility.newNode(
-                jCas,
-                "NP",
-                this.newNode(jCas, tokens.get(2))), TreebankNodeUtility.newNode(
-                jCas,
-                "VP",
-                this.newNode(jCas, tokens.get(3)),
-                TreebankNodeUtility.newNode(jCas, "NP", this.newNode(jCas, tokens.get(4)))))));
+            this.newNode(jCas, tokens.get(3)),
+            TreebankNodeUtility.newNode(jCas, "NP", this.newNode(jCas, tokens.get(4)))))));
 
     Sentence sentence = AnnotationRetrieval.getAnnotations(jCas, Sentence.class).get(0);
 
@@ -211,28 +210,26 @@ public class VerbClauseTemporalAnnotatorTest extends TimeMLTestBase {
     List<Token> tokens = AnnotationRetrieval.getAnnotations(jCas, Token.class);
 
     // fill in tree
-    TreebankNode root = TreebankNodeUtility.newNode(
+    TreebankNode root = TreebankNodeUtility.newNode(jCas, "S", TreebankNodeUtility.newNode(
         jCas,
-        "S",
-        TreebankNodeUtility.newNode(jCas, "NP", this.newNode(jCas, tokens.get(0))),
-        TreebankNodeUtility.newNode(
+        "NP",
+        this.newNode(jCas, tokens.get(0))), TreebankNodeUtility.newNode(
+        jCas,
+        "VP",
+        this.newNode(jCas, tokens.get(1)),
+        TreebankNodeUtility.newNode(jCas, "SBAR", TreebankNodeUtility.newNode(
+            jCas,
+            "NP",
+            this.newNode(jCas, tokens.get(2))), TreebankNodeUtility.newNode(
             jCas,
             "VP",
-            this.newNode(jCas, tokens.get(1)),
-            TreebankNodeUtility.newNode(jCas, "SBAR", TreebankNodeUtility.newNode(
+            this.newNode(jCas, tokens.get(3)),
+            TreebankNodeUtility.newNode(
                 jCas,
                 "NP",
-                this.newNode(jCas, tokens.get(2))), TreebankNodeUtility.newNode(
-                jCas,
-                "VP",
-                this.newNode(jCas, tokens.get(3)),
-                TreebankNodeUtility.newNode(
-                    jCas,
-                    "NP",
-                    this.newNode(jCas, tokens.get(4)),
-                    this.newNode(jCas, tokens.get(5))),
-                this.newNode(jCas, tokens.get(6))))),
-        this.newNode(jCas, tokens.get(7)));
+                this.newNode(jCas, tokens.get(4)),
+                this.newNode(jCas, tokens.get(5))),
+            this.newNode(jCas, tokens.get(6))))), this.newNode(jCas, tokens.get(7)));
     Sentence sentence = AnnotationRetrieval.getAnnotations(jCas, Sentence.class).get(0);
     TopTreebankNode tree = new TopTreebankNode(jCas, sentence.getBegin(), sentence.getEnd());
     tree.setNodeType("TOP");
@@ -241,8 +238,10 @@ public class VerbClauseTemporalAnnotatorTest extends TimeMLTestBase {
     tree.addToIndexes();
 
     // run annotator
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(VerbClauseTemporalAnnotator
-        .getEventCreatingAnnotatorDescription());
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+        VerbClauseTemporalAnnotator.FACTORY.getAnnotatorDescription(),
+        VerbClauseTemporalAnnotator.PARAM_CREATE_EVENTS,
+        true);
     engine.process(jCas);
 
     // check output

@@ -1,5 +1,5 @@
-/** 
- * Copyright (c) 2010, Regents of the University of Colorado 
+/*
+ * Copyright (c) 2011, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -21,34 +21,43 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.timeml.event;
+package org.cleartk.timeml.tlink;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Map;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
+import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.timeml.TimeMLComponents;
+import org.cleartk.timeml.type.DocumentCreationTime;
 import org.cleartk.timeml.type.Event;
+import org.cleartk.timeml.type.TemporalLink;
 import org.cleartk.timeml.util.CleartkInternalModelFactory;
-import org.cleartk.timeml.util.TokenPOSBagExtractor;
-import org.cleartk.timeml.util.TokenStemBagExtractor;
+import org.cleartk.timeml.util.FilteringExtractor;
 import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
- * Copyright (c) 2010, Regents of the University of Colorado <br>
+ * Copyright (c) 2011, Regents of the University of Colorado <br>
  * All rights reserved.
- * 
- * Annotator for the "class" attribute of TimeML EVENTs.
  * 
  * @author Steven Bethard
  */
-public class EventClassAnnotator extends EventAttributeAnnotator<String> {
+public class TemporalLinkEventToDocumentCreationTimeAnnotator extends
+    TemporalLinkAnnotator_ImplBase<Event, DocumentCreationTime> {
 
   public static final CleartkInternalModelFactory FACTORY = new CleartkInternalModelFactory() {
     @Override
     public Class<?> getAnnotatorClass() {
-      return EventClassAnnotator.class;
+      return TemporalLinkEventToDocumentCreationTimeAnnotator.class;
     }
 
     @Override
@@ -59,30 +68,52 @@ public class EventClassAnnotator extends EventAttributeAnnotator<String> {
     @Override
     public AnalysisEngineDescription getBaseDescription() throws ResourceInitializationException {
       return AnalysisEngineFactory.createPrimitiveDescription(
-          EventClassAnnotator.class,
+          TemporalLinkEventToDocumentCreationTimeAnnotator.class,
           TimeMLComponents.TYPE_SYSTEM_DESCRIPTION);
     }
   };
 
+  public TemporalLinkEventToDocumentCreationTimeAnnotator() {
+    super(Event.class, DocumentCreationTime.class, "BEFORE", "OVERLAP", "AFTER");
+  }
+
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
-    this.eventFeatureExtractors.add(new TokenStemBagExtractor());
-    this.eventFeatureExtractors.add(new TokenPOSBagExtractor());
+
+    // I explored a ton of features here, and the following were the only ones that worked
+    // The only feature that I didn't try that seems like it might still have some promise
+    // would be to find any times within, say, 5 tokens, and do the time value comparison
+    // to see whether the nearby time is before, overlapping with or after the DCT
+    this.setSourceExtractors(Arrays.asList(
+        new TypePathExtractor(Event.class, "tense"),
+        new TypePathExtractor(Event.class, "aspect"),
+        new TypePathExtractor(Event.class, "eventClass"),
+        new TypePathExtractor(Event.class, "polarity"),
+        new TypePathExtractor(Event.class, "modality"),
+        // the word, but only if it's an aspectual event
+        new FilteringExtractor<Event>(Event.class, new SpannedTextExtractor()) {
+          @Override
+          protected boolean accept(Event event) {
+            return event.getEventClass().equals("ASPECTUAL");
+          }
+        }));
   }
 
   @Override
-  protected String getDefaultValue() {
-    return "OCCURRENCE";
-  }
+  public void process(JCas jCas) throws AnalysisEngineProcessException {
+    Map<Event, Map<DocumentCreationTime, TemporalLink>> links = this.getLinks(jCas);
 
-  @Override
-  protected String getAttribute(Event event) {
-    return event.getEventClass();
-  }
+    Collection<DocumentCreationTime> dcts = JCasUtil.select(jCas, DocumentCreationTime.class);
+    if (dcts.size() != 1) {
+      throw new RuntimeException("expected 1 DocumentCreationTime, found " + dcts.size());
+    }
+    DocumentCreationTime dct = dcts.iterator().next();
 
-  @Override
-  protected void setAttribute(Event event, String value) {
-    event.setEventClass(value);
+    for (Event event : JCasUtil.select(jCas, Event.class)) {
+      this.processLink(event, dct, links, jCas);
+    }
+
+    this.logSkippedLinks(jCas, links);
   }
 }

@@ -60,12 +60,12 @@ public class EventAnnotatorsTest extends TimeMLTestBase {
         "he was think he would not have eaten yesterday .");
 
     List<AnalysisEngineDescription> descs = Arrays.asList(
-        EventAnnotator.getAnnotatorDescription(),
-        EventTenseAnnotator.getAnnotatorDescription(),
-        EventAspectAnnotator.getAnnotatorDescription(),
-        EventClassAnnotator.getAnnotatorDescription(),
-        EventPolarityAnnotator.getAnnotatorDescription(),
-        EventModalityAnnotator.getAnnotatorDescription());
+        EventAnnotator.FACTORY.getAnnotatorDescription(),
+        EventTenseAnnotator.FACTORY.getAnnotatorDescription(),
+        EventAspectAnnotator.FACTORY.getAnnotatorDescription(),
+        EventClassAnnotator.FACTORY.getAnnotatorDescription(),
+        EventPolarityAnnotator.FACTORY.getAnnotatorDescription(),
+        EventModalityAnnotator.FACTORY.getAnnotatorDescription());
 
     for (AnalysisEngineDescription desc : descs) {
       AnalysisEngine engine = UIMAFramework.produceAnalysisEngine(desc);
@@ -108,20 +108,20 @@ public class EventAnnotatorsTest extends TimeMLTestBase {
     ate.setPolarity("POS");
     ate.addToIndexes();
 
-    String eventDir = this.folder.newFolder("event").getPath();
-    String tenseDir = this.folder.newFolder("tense").getPath();
-    String aspectDir = this.folder.newFolder("aspect").getPath();
-    String classDir = this.folder.newFolder("class").getPath();
-    String polarityDir = this.folder.newFolder("polarity").getPath();
-    String modalityDir = this.folder.newFolder("modality").getPath();
+    File eventDir = this.folder.newFolder("event");
+    File tenseDir = this.folder.newFolder("tense");
+    File aspectDir = this.folder.newFolder("aspect");
+    File classDir = this.folder.newFolder("class");
+    File polarityDir = this.folder.newFolder("polarity");
+    File modalityDir = this.folder.newFolder("modality");
 
     List<AnalysisEngineDescription> descs = Arrays.asList(
-        EventAnnotator.getWriterDescription(eventDir),
-        EventTenseAnnotator.getWriterDescription(tenseDir),
-        EventAspectAnnotator.getWriterDescription(aspectDir),
-        EventClassAnnotator.getWriterDescription(classDir),
-        EventPolarityAnnotator.getWriterDescription(polarityDir),
-        EventModalityAnnotator.getWriterDescription(modalityDir));
+        EventAnnotator.FACTORY.getWriterDescription(eventDir),
+        EventTenseAnnotator.FACTORY.getWriterDescription(tenseDir),
+        EventAspectAnnotator.FACTORY.getWriterDescription(aspectDir),
+        EventClassAnnotator.FACTORY.getWriterDescription(classDir),
+        EventPolarityAnnotator.FACTORY.getWriterDescription(polarityDir),
+        EventModalityAnnotator.FACTORY.getWriterDescription(modalityDir));
 
     for (AnalysisEngineDescription desc : descs) {
       AnalysisEngine engine = UIMAFramework.produceAnalysisEngine(desc);
@@ -129,21 +129,21 @@ public class EventAnnotatorsTest extends TimeMLTestBase {
       engine.collectionProcessComplete();
     }
 
-    List<String> paths = Arrays.asList(
+    List<File> paths = Arrays.asList(
         eventDir,
         tenseDir,
         aspectDir,
         classDir,
         polarityDir,
         modalityDir);
-    for (String path : paths) {
+    for (File path : paths) {
       boolean hasTrainingData = false;
-      for (File file : new File(path).listFiles()) {
+      for (File file : path.listFiles()) {
         if (file.getName().startsWith("training-data")) {
           hasTrainingData = true;
         }
       }
-      Assert.assertTrue("no training dat found in " + path, hasTrainingData);
+      Assert.assertTrue("no training data found in " + path, hasTrainingData);
     }
   }
 

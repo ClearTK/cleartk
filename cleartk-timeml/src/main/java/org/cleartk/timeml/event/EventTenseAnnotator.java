@@ -26,14 +26,14 @@ package org.cleartk.timeml.event;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.classifier.CleartkAnnotatorDescriptionFactory;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.timeml.TimeMLComponents;
 import org.cleartk.timeml.type.Event;
-import org.cleartk.timeml.util.CleartkInternalModelLocator;
+import org.cleartk.timeml.util.CleartkInternalModelFactory;
 import org.cleartk.timeml.util.PrecedingTokenTextExtractor;
 import org.cleartk.timeml.util.TextSliceExtractor;
 import org.cleartk.timeml.util.TokenPOSBagExtractor;
+import org.uimafit.factory.AnalysisEngineFactory;
 
 /**
  * <br>
@@ -46,35 +46,24 @@ import org.cleartk.timeml.util.TokenPOSBagExtractor;
  */
 public class EventTenseAnnotator extends EventAttributeAnnotator<String> {
 
-  public static final CleartkInternalModelLocator MODEL_LOCATOR = new CleartkInternalModelLocator(
-      EventTenseAnnotator.class);
+  public static final CleartkInternalModelFactory FACTORY = new CleartkInternalModelFactory() {
+    @Override
+    public Class<?> getAnnotatorClass() {
+      return EventTenseAnnotator.class;
+    }
 
-  public static AnalysisEngineDescription getWriterDescription(String modelDir)
-      throws ResourceInitializationException {
-    return CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
-        EventTenseAnnotator.class,
-        TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
-        DefaultMaxentDataWriterFactory.class,
-        modelDir);
-  }
+    @Override
+    public Class<?> getDataWriterFactoryClass() {
+      return DefaultMaxentDataWriterFactory.class;
+    }
 
-  public static AnalysisEngineDescription getWriterDescription()
-      throws ResourceInitializationException {
-    return getWriterDescription(MODEL_LOCATOR.getTrainingDirectory());
-  }
-
-  public static AnalysisEngineDescription getAnnotatorDescription(String classifierJar)
-      throws ResourceInitializationException {
-    return CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
-        EventTenseAnnotator.class,
-        TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
-        classifierJar);
-  }
-
-  public static AnalysisEngineDescription getAnnotatorDescription()
-      throws ResourceInitializationException {
-    return getAnnotatorDescription(MODEL_LOCATOR.getClassifierJarURL().toString());
-  }
+    @Override
+    public AnalysisEngineDescription getBaseDescription() throws ResourceInitializationException {
+      return AnalysisEngineFactory.createPrimitiveDescription(
+          EventTenseAnnotator.class,
+          TimeMLComponents.TYPE_SYSTEM_DESCRIPTION);
+    }
+  };
 
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {

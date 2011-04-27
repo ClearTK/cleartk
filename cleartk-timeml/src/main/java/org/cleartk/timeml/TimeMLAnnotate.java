@@ -93,15 +93,15 @@ public class TimeMLAnnotate {
         TokenAnnotator.getDescription(),
         PosTaggerAnnotator.getDescription(),
         DefaultSnowballStemmer.getDescription("English"),
-        EventAnnotator.getAnnotatorDescription(),
-        EventTenseAnnotator.getAnnotatorDescription(),
-        EventAspectAnnotator.getAnnotatorDescription(),
-        EventClassAnnotator.getAnnotatorDescription(),
-        EventPolarityAnnotator.getAnnotatorDescription(),
-        EventModalityAnnotator.getAnnotatorDescription(),
+        EventAnnotator.FACTORY.getAnnotatorDescription(),
+        EventTenseAnnotator.FACTORY.getAnnotatorDescription(),
+        EventAspectAnnotator.FACTORY.getAnnotatorDescription(),
+        EventClassAnnotator.FACTORY.getAnnotatorDescription(),
+        EventPolarityAnnotator.FACTORY.getAnnotatorDescription(),
+        EventModalityAnnotator.FACTORY.getAnnotatorDescription(),
         EventIdAnnotator.getDescription(),
         ParserAnnotator.getDescription(),
-        VerbClauseTemporalAnnotator.getAnnotatorDescription(),
+        VerbClauseTemporalAnnotator.FACTORY.getAnnotatorDescription(),
         TimeMLWriter.getDescription(outputDir.getPath()));
   }
 }

@@ -38,7 +38,6 @@ import java.util.Map;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
-import org.apache.uima.cas.CAS;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.timeml.TimeMLComponents;
@@ -68,20 +67,11 @@ import com.google.common.base.Joiner;
  */
 public class TempEval2010Writer extends JCasAnnotator_ImplBase {
 
-  public static AnalysisEngineDescription getDescription(File outputDirectory)
-      throws ResourceInitializationException {
+  public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
     return AnalysisEngineFactory.createPrimitiveDescription(
         TempEval2010Writer.class,
-        TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
-        PARAM_OUTPUT_DIRECTORY,
-        outputDirectory.getPath(),
-        TempEval2010Writer.PARAM_TEXT_VIEW,
-        CAS.NAME_DEFAULT_SOFA);
+        TimeMLComponents.TYPE_SYSTEM_DESCRIPTION);
   }
-
-  public static final String PARAM_OUTPUT_DIRECTORY = ConfigurationParameterFactory.createConfigurationParameterName(
-      TempEval2010Writer.class,
-      "outputDirectory");
 
   @ConfigurationParameter(mandatory = true, description = "The directory where the TempEval .tab "
       + "files should be written.")
@@ -129,6 +119,10 @@ public class TempEval2010Writer extends JCasAnnotator_ImplBase {
       + "events in adjacent sentences. If provided, the corresponding temporal links file will be "
       + "written.")
   private String temporalLinkMainEventToNextSentenceMainEventView;
+
+  public static final String PARAM_OUTPUT_DIRECTORY = ConfigurationParameterFactory.createConfigurationParameterName(
+      TempEval2010Writer.class,
+      "outputDirectory");
 
   public static final String PARAM_TEXT_VIEW = ConfigurationParameterFactory.createConfigurationParameterName(
       TempEval2010Writer.class,

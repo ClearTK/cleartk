@@ -1,5 +1,5 @@
-/** 
- * Copyright (c) 2010, Regents of the University of Colorado 
+/*
+ * Copyright (c) 2011, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -21,10 +21,9 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.timeml.event;
+package org.cleartk.timeml.time;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.uima.UimaContext;
@@ -47,29 +46,32 @@ import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory;
 import org.cleartk.timeml.TimeMLComponents;
-import org.cleartk.timeml.type.Event;
+import org.cleartk.timeml.time.TimeFeaturesExtractors.CharacterTypesExtractor;
+import org.cleartk.timeml.time.TimeFeaturesExtractors.TimeWordsExtractor;
+import org.cleartk.timeml.type.Time;
 import org.cleartk.timeml.util.CleartkInternalModelFactory;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
+import org.uimafit.component.initialize.ConfigurationParameterInitializer;
+import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.factory.initializable.InitializableFactory;
 import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
- * Copyright (c) 2010, Regents of the University of Colorado <br>
+ * Copyright (c) 2011, Regents of the University of Colorado <br>
  * All rights reserved.
- * 
- * Annotator for TimeML EVENT identification.
  * 
  * @author Steven Bethard
  */
-public class EventAnnotator extends Chunker {
+public class TimeAnnotator extends Chunker {
 
   public static final CleartkInternalModelFactory FACTORY = new CleartkInternalModelFactory() {
 
     @Override
     public Class<?> getAnnotatorClass() {
-      return EventAnnotator.class;
+      return TimeAnnotator.class;
     }
 
     @Override
@@ -80,7 +82,7 @@ public class EventAnnotator extends Chunker {
     @Override
     public AnalysisEngineDescription getBaseDescription() throws ResourceInitializationException {
       return AnalysisEngineFactory.createPrimitiveDescription(
-          EventAnnotator.class,
+          TimeAnnotator.class,
           TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
           Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME,
           Token.class.getName(),
@@ -91,7 +93,7 @@ public class EventAnnotator extends Chunker {
           Chunker.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME,
           FeatureExtractor.class.getName(),
           ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME,
-          Event.class.getName());
+          Time.class.getName());
     }
   };
 
@@ -99,32 +101,43 @@ public class EventAnnotator extends Chunker {
   public void process(JCas jCas) throws AnalysisEngineProcessException {
     super.process(jCas);
 
-    int index = 1;
-    for (Event event : JCasUtil.select(jCas, Event.class)) {
-      String id = String.format("e%d", index);
-      event.setId(id);
-      index += 1;
+    int timeIndex = 1;
+    for (Time time : JCasUtil.select(jCas, Time.class)) {
+      String id = String.format("t%d", timeIndex);
+      time.setId(id);
+      timeIndex += 1;
     }
   }
 
   public static class FeatureExtractor implements ChunkerFeatureExtractor {
+    @ConfigurationParameter(name = Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME)
+    private String labeledAnnotationClassName;
 
     private List<SimpleFeatureExtractor> tokenFeatureExtractors;
 
-    private List<ContextExtractor<Token>> contextExtractors;
+    private List<ContextExtractor<Token>> contextFeatureExtractors;
 
     public void initialize(UimaContext context) throws ResourceInitializationException {
+      // get configured annotation
+      ConfigurationParameterInitializer.initialize(this, context);
+      Class<? extends Annotation> tokenClass = InitializableFactory.getClass(
+          this.labeledAnnotationClassName,
+          Annotation.class);
 
-      // add features: word, stem, pos
-      this.tokenFeatureExtractors = Arrays.asList(
-          new SpannedTextExtractor(),
-          new TypePathExtractor(Token.class, "stem"),
-          new TypePathExtractor(Token.class, "pos"));
+      // initialize feature lists
+      this.tokenFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
+      this.contextFeatureExtractors = new ArrayList<ContextExtractor<Token>>();
+
+      // add features: word, character pattern, stem, pos
+      this.tokenFeatureExtractors.add(new SpannedTextExtractor());
+      this.tokenFeatureExtractors.add(new CharacterTypesExtractor());
+      this.tokenFeatureExtractors.add(new TimeWordsExtractor());
+      this.tokenFeatureExtractors.add(new TypePathExtractor(tokenClass, "stem"));
+      this.tokenFeatureExtractors.add(new TypePathExtractor(tokenClass, "pos"));
 
       // add window of features before and after
-      this.contextExtractors = new ArrayList<ContextExtractor<Token>>();
       for (SimpleFeatureExtractor extractor : this.tokenFeatureExtractors) {
-        this.contextExtractors.add(new ContextExtractor<Token>(
+        this.contextFeatureExtractors.add(new ContextExtractor<Token>(
             Token.class,
             extractor,
             new Preceding(3),
@@ -140,7 +153,7 @@ public class EventAnnotator extends Chunker {
       for (SimpleFeatureExtractor extractor : this.tokenFeatureExtractors) {
         instance.addAll(extractor.extract(jCas, labeledAnnotation));
       }
-      for (ContextExtractor<Token> extractor : this.contextExtractors) {
+      for (ContextExtractor<Token> extractor : this.contextFeatureExtractors) {
         instance.addAll(extractor.extractWithin(jCas, labeledAnnotation, sequence));
       }
       return instance;

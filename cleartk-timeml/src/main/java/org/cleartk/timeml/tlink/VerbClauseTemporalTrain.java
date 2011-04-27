@@ -29,7 +29,7 @@ import java.io.IOException;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.Level;
 import org.apache.uima.util.Logger;
-import org.cleartk.classifier.jar.Train;
+import org.cleartk.classifier.jar.JarClassifierBuilder;
 import org.cleartk.timeml.TimeMLViewName;
 import org.cleartk.timeml.corpus.PlainTextTLINKGoldAnnotator;
 import org.cleartk.timeml.corpus.TimeMLGoldAnnotator;
@@ -81,17 +81,17 @@ public class VerbClauseTemporalTrain {
         PlainTextTLINKGoldAnnotator.getDescription(),
         TreebankAligningAnnotator.getDescription(treeBankDir),
         DefaultSnowballStemmer.getDescription("English"),
-        VerbClauseTemporalAnnotator.getWriterDescription());
+        VerbClauseTemporalAnnotator.FACTORY.getWriterDescription());
 
     // remove the temporary directory containing the cleaned up TimeBank
     FileUtils.deleteRecursive(cleanedTimeBankDir);
 
     // train the model
-    String trainingDirectory = VerbClauseTemporalAnnotator.MODEL_LOCATOR.getTrainingDirectory();
-    Train.main(trainingDirectory);
+    File trainingDirectory = VerbClauseTemporalAnnotator.FACTORY.getTrainingDirectory();
+    JarClassifierBuilder.trainAndPackage(trainingDirectory);
 
     // delete the generated files
-    for (File file : new File(trainingDirectory).listFiles()) {
+    for (File file : trainingDirectory.listFiles()) {
       if (!file.isDirectory() && !file.getName().equals("model.jar")) {
         file.delete();
       }

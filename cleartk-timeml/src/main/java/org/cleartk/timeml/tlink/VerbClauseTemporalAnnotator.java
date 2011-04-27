@@ -38,7 +38,6 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Level;
 import org.cleartk.classifier.CleartkAnnotator;
-import org.cleartk.classifier.CleartkAnnotatorDescriptionFactory;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.simple.BagExtractor;
 import org.cleartk.classifier.feature.extractor.simple.NamingExtractor;
@@ -51,7 +50,7 @@ import org.cleartk.timeml.TimeMLComponents;
 import org.cleartk.timeml.type.Anchor;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.type.TemporalLink;
-import org.cleartk.timeml.util.CleartkInternalModelLocator;
+import org.cleartk.timeml.util.CleartkInternalModelFactory;
 import org.cleartk.timeml.util.PrecedingTokenTextBagExtractor;
 import org.cleartk.timeml.util.TargetPathExtractor;
 import org.cleartk.timeml.util.TokenPOSExtractor;
@@ -61,6 +60,7 @@ import org.cleartk.token.type.Token;
 import org.cleartk.util.AnnotationRetrieval;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.TypeCapability;
+import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
 
 /**
@@ -72,11 +72,28 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * 
  * @author Steven Bethard
  */
-@TypeCapability(outputs = { "org.cleartk.timeml.type.TemporalLink", "org.cleartk.timeml.type.Event" })
+@TypeCapability(
+    outputs = { "org.cleartk.timeml.type.TemporalLink", "org.cleartk.timeml.type.Event" })
 public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
 
-  public static final CleartkInternalModelLocator MODEL_LOCATOR = new CleartkInternalModelLocator(
-      VerbClauseTemporalAnnotator.class);
+  public static final CleartkInternalModelFactory FACTORY = new CleartkInternalModelFactory() {
+    @Override
+    public Class<?> getAnnotatorClass() {
+      return VerbClauseTemporalAnnotator.class;
+    }
+
+    @Override
+    public Class<?> getDataWriterFactoryClass() {
+      return DefaultMaxentDataWriterFactory.class;
+    }
+
+    @Override
+    public AnalysisEngineDescription getBaseDescription() throws ResourceInitializationException {
+      return AnalysisEngineFactory.createPrimitiveDescription(
+          VerbClauseTemporalAnnotator.class,
+          TimeMLComponents.TYPE_SYSTEM_DESCRIPTION);
+    }
+  };
 
   private static final Map<String, String[]> headMap = new HashMap<String, String[]>();
   static {
@@ -107,38 +124,9 @@ public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
       + "wherever they are not present).")
   private boolean createEvents;
 
-  public static final String PARAM_CREATE_EVENTS = ConfigurationParameterFactory
-      .createConfigurationParameterName(VerbClauseTemporalAnnotator.class, "createEvents");
-
-  public static AnalysisEngineDescription getWriterDescription()
-      throws ResourceInitializationException {
-    return CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
-        VerbClauseTemporalAnnotator.class,
-        TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
-        DefaultMaxentDataWriterFactory.class,
-        MODEL_LOCATOR.getTrainingDirectory());
-  }
-
-  public static AnalysisEngineDescription getAnnotatorDescription()
-      throws ResourceInitializationException {
-    return CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
-        VerbClauseTemporalAnnotator.class,
-        TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
-        MODEL_LOCATOR.getClassifierJarURL().toString());
-  }
-
-  public static AnalysisEngineDescription getEventCreatingAnnotatorDescription()
-      throws ResourceInitializationException {
-    AnalysisEngineDescription desc = CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
-        VerbClauseTemporalAnnotator.class,
-        TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
-        MODEL_LOCATOR.getClassifierJarURL().toString());
-    ConfigurationParameterFactory.addConfigurationParameters(
-        desc,
-        VerbClauseTemporalAnnotator.PARAM_CREATE_EVENTS,
-        true);
-    return desc;
-  }
+  public static final String PARAM_CREATE_EVENTS = ConfigurationParameterFactory.createConfigurationParameterName(
+      VerbClauseTemporalAnnotator.class,
+      "createEvents");
 
   public VerbClauseTemporalAnnotator() {
     this.eventID = 1;
@@ -214,10 +202,8 @@ public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
         instance.addAll(this.pathExtractor.extract(jCas, link.source, link.target));
 
         // find source and target anchors if they're available
-        Anchor source = AnnotationRetrieval
-            .getContainingAnnotation(jCas, link.source, Anchor.class);
-        Anchor target = AnnotationRetrieval
-            .getContainingAnnotation(jCas, link.target, Anchor.class);
+        Anchor source = AnnotationRetrieval.getContainingAnnotation(jCas, link.source, Anchor.class);
+        Anchor target = AnnotationRetrieval.getContainingAnnotation(jCas, link.target, Anchor.class);
 
         // if we're building training data, get the relation type from a
         // TLINK

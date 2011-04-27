@@ -565,7 +565,9 @@ public class TempEval2010ReaderAnnotatorWriterTest extends TimeMLTestBase {
         TempEval2010GoldAnnotator.PARAM_TEMPORAL_LINK_MAIN_EVENT_TO_NEXT_SENTENCE_MAIN_EVENT_VIEWS,
         new String[] { "ME2ME" });
     AnalysisEngine writer = AnalysisEngineFactory.createPrimitive(
-        TempEval2010Writer.getDescription(writerDirectory),
+        TempEval2010Writer.getDescription(),
+        TempEval2010Writer.PARAM_OUTPUT_DIRECTORY,
+        writerDirectory.getPath(),
         TempEval2010Writer.PARAM_TEXT_VIEW,
         CAS.NAME_DEFAULT_SOFA,
         TempEval2010Writer.PARAM_DOCUMENT_CREATION_TIME_VIEW,
@@ -609,7 +611,9 @@ public class TempEval2010ReaderAnnotatorWriterTest extends TimeMLTestBase {
     CollectionReader reader = TempEval2010CollectionReader.getCollectionReader(this.outputDirectory.getPath());
     AnalysisEngine annotator = AnalysisEngineFactory.createPrimitive(TempEval2010GoldAnnotator.getDescription());
     AnalysisEngine writer = AnalysisEngineFactory.createPrimitive(
-        TempEval2010Writer.getDescription(writerDirectory),
+        TempEval2010Writer.getDescription(),
+        TempEval2010Writer.PARAM_OUTPUT_DIRECTORY,
+        writerDirectory.getPath(),
         TempEval2010Writer.PARAM_TEXT_VIEW,
         CAS.NAME_DEFAULT_SOFA,
         TempEval2010Writer.PARAM_TIME_EXTENT_VIEW,
@@ -634,7 +638,9 @@ public class TempEval2010ReaderAnnotatorWriterTest extends TimeMLTestBase {
   public void testTempEval2010WriterNullTemporalLink() throws Exception {
     File writerDirectory = new File(this.outputDirectory, "writer");
     AnalysisEngine writer = AnalysisEngineFactory.createPrimitive(
-        TempEval2010Writer.getDescription(writerDirectory),
+        TempEval2010Writer.getDescription(),
+        TempEval2010Writer.PARAM_OUTPUT_DIRECTORY,
+        writerDirectory.getPath(),
         TempEval2010Writer.PARAM_TEXT_VIEW,
         CAS.NAME_DEFAULT_SOFA,
         TempEval2010Writer.PARAM_TEMPORAL_LINK_EVENT_TO_DOCUMENT_CREATION_TIME_VIEW,
