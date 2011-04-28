@@ -24,6 +24,7 @@
 package org.cleartk.examples.pos;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -35,8 +36,9 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.CleartkAnnotatorDescriptionFactory;
 import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.feature.WindowFeature;
-import org.cleartk.classifier.feature.extractor.WindowExtractor;
+import org.cleartk.classifier.feature.extractor.ContextExtractor;
+import org.cleartk.classifier.feature.extractor.ContextExtractor.Following;
+import org.cleartk.classifier.feature.extractor.ContextExtractor.Preceding;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
@@ -50,8 +52,8 @@ import org.cleartk.classifier.opennlp.MaxentDataWriterFactory_ImplBase;
 import org.cleartk.examples.ExampleComponents;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.AnnotationRetrieval;
 import org.uimafit.factory.ConfigurationParameterFactory;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -69,59 +71,42 @@ public class ExamplePOSAnnotator extends CleartkSequenceAnnotator<String> {
 
   private List<SimpleFeatureExtractor> tokenFeatureExtractors;
 
-  private List<WindowExtractor> tokenSentenceFeatureExtractors;
+  private List<ContextExtractor<Token>> contextFeatureExtractors;
 
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
-    // a list of feature extractors that require only the token
-    this.tokenFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
-
-    // a list of feature extractors that require the token and the sentence
-    this.tokenSentenceFeatureExtractors = new ArrayList<WindowExtractor>();
-
-    // basic feature extractors for word, stem and part-of-speech
-    SimpleFeatureExtractor wordExtractor, stemExtractor;
-    wordExtractor = new SpannedTextExtractor();
-    stemExtractor = new TypePathExtractor(Token.class, "stem");
-
-    // aliases for NGram feature parameters
+    // alias for NGram feature parameters
     int fromRight = CharacterNGramProliferator.RIGHT_TO_LEFT;
 
-    // add the feature extractor for the word itself
-    // also add proliferators which create new features from the word text
-    this.tokenFeatureExtractors.add(new ProliferatingExtractor(
-        wordExtractor,
-        new LowerCaseProliferator(),
-        new CapitalTypeProliferator(),
-        new NumericTypeProliferator(),
-        new CharacterNGramProliferator(fromRight, 0, 2),
-        new CharacterNGramProliferator(fromRight, 0, 3)));
+    // a list of feature extractors that require only the token:
+    // the stem of the word, the text of the word itself, plus
+    // features created from the word text like character ngrams
+    this.tokenFeatureExtractors = Arrays.asList(
+        new TypePathExtractor(Token.class, "stem"),
+        new ProliferatingExtractor(
+            new SpannedTextExtractor(),
+            new LowerCaseProliferator(),
+            new CapitalTypeProliferator(),
+            new NumericTypeProliferator(),
+            new CharacterNGramProliferator(fromRight, 0, 2),
+            new CharacterNGramProliferator(fromRight, 0, 3)));
 
-    // add the feature extractors for the stem and part of speech
-    this.tokenFeatureExtractors.add(stemExtractor);
-
-    // add 2 stems to the left and right
-    this.tokenSentenceFeatureExtractors.add(new WindowExtractor(
+    // a list of feature extractors that require the token and the sentence
+    this.contextFeatureExtractors = new ArrayList<ContextExtractor<Token>>();
+    this.contextFeatureExtractors.add(new ContextExtractor<Token>(
         Token.class,
-        stemExtractor,
-        WindowFeature.ORIENTATION_LEFT,
-        0,
-        2));
-    this.tokenSentenceFeatureExtractors.add(new WindowExtractor(
-        Token.class,
-        stemExtractor,
-        WindowFeature.ORIENTATION_RIGHT,
-        0,
-        2));
+        new TypePathExtractor(Token.class, "stem"),
+        new Preceding(2),
+        new Following(2)));
 
   }
 
   public void process(JCas jCas) throws AnalysisEngineProcessException {
     // generate a list of training instances for each sentence in the
     // document
-    for (Sentence sentence : AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
+    for (Sentence sentence : JCasUtil.select(jCas, Sentence.class)) {
       List<Instance<String>> instances = new ArrayList<Instance<String>>();
-      List<Token> tokens = AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class);
+      List<Token> tokens = JCasUtil.selectCovered(jCas, Token.class, sentence);
 
       // for each token, extract all feature values and the label
       for (Token token : tokens) {
@@ -133,14 +118,15 @@ public class ExamplePOSAnnotator extends CleartkSequenceAnnotator<String> {
           instance.addAll(extractor.extract(jCas, token));
         }
 
-        // extract all features that require the token and sentence
-        // annotations
-        for (WindowExtractor extractor : this.tokenSentenceFeatureExtractors) {
-          instance.addAll(extractor.extract(jCas, token, sentence));
+        // extract all features that require the token and sentence annotations
+        for (ContextExtractor<Token> extractor : this.contextFeatureExtractors) {
+          instance.addAll(extractor.extractWithin(jCas, token, sentence));
         }
 
         // set the instance label from the token's part of speech
-        instance.setOutcome(token.getPos());
+        if (this.isTraining()) {
+          instance.setOutcome(token.getPos());
+        }
 
         // add the instance to the list
         instances.add(instance);
@@ -155,7 +141,7 @@ public class ExamplePOSAnnotator extends CleartkSequenceAnnotator<String> {
       else {
         Iterator<Token> tokensIter = tokens.iterator();
         for (String label : this.classify(instances)) {
-          tokensIter.next().setPos(label.toString());
+          tokensIter.next().setPos(label);
         }
       }
     }

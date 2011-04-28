@@ -59,12 +59,11 @@ public class ExamplePOSAnnotatorTest extends ExamplesTestBase {
   @Test
   public void testSimpleSentence() throws Exception {
 
-    AnalysisEngineDescription desc = CleartkAnnotatorDescriptionFactory
-        .createCleartkSequenceAnnotator(
-            ExamplePOSAnnotator.class,
-            ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-            PublicFieldSequenceDataWriter.StringFactory.class,
-            ".");
+    AnalysisEngineDescription desc = CleartkAnnotatorDescriptionFactory.createCleartkSequenceAnnotator(
+        ExamplePOSAnnotator.class,
+        ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+        PublicFieldSequenceDataWriter.StringFactory.class,
+        ".");
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(desc);
 
     // create some tokens, stems and part of speech tags
@@ -75,104 +74,99 @@ public class ExamplePOSAnnotatorTest extends ExamplesTestBase {
         "DT NNP VBD IN CD .",
         "The Absurdi retreat in 2003 .");
 
-    List<Instance<String>> instances = PublicFieldSequenceDataWriter.StringFactory
-        .collectInstances(engine, jCas);
+    List<Instance<String>> instances = PublicFieldSequenceDataWriter.StringFactory.collectInstances(
+        engine,
+        jCas);
 
     List<String> featureValues;
 
     // check "The"
-    featureValues = Arrays.asList(new String[] { "The", // word
+    featureValues = Arrays.asList("The", // word
+        "The", // stem (thrown away if null)
         "the", // lower case
         "INITIAL_UPPERCASE", // capital type
         // numeric type
         "he", // last 2 chars
         "The", // last 3 chars
-        "The", // stem (thrown away if null)
-        null,
-        null, // left 2 stems
-        "Absurdi",
-        "retreat", // right 2 stems
-    });
+        "OOB2", // left 2 stems
+        "OOB1",
+        "Absurdi", // right 2 stems
+        "retreat");
     Assert.assertEquals(featureValues, this.getFeatureValues(instances.get(0)));
     Assert.assertEquals("DT", instances.get(0).getOutcome());
 
     // check "Absurdis"
-    featureValues = Arrays.asList(new String[] { "Absurdis", // word
+    featureValues = Arrays.asList("Absurdi", // word
+        "Absurdis", // stem (thrown away if null)
         "absurdis", // lower case
         "INITIAL_UPPERCASE", // capital type
         // numeric type
         "is", // last 2 chars
         "dis", // last 3 chars
-        "Absurdi", // stem (thrown away if null)
+        "OOB1", // left 2 stems
         "The",
-        null, // left 2 stems
-        "retreat",
-        "in", // right 2 stems
-    });
+        "retreat", // right 2 stems
+        "in");
     Assert.assertEquals(featureValues, this.getFeatureValues(instances.get(1)));
     Assert.assertEquals("NNP", instances.get(1).getOutcome());
 
     // check "retreated"
-    featureValues = Arrays.asList(new String[] { "retreated", // word
+    featureValues = Arrays.asList("retreat", // word
+        "retreated", // stem (thrown away if null)
         "retreated", // lower case
         "ALL_LOWERCASE", // capital type
         // numeric type
         "ed", // last 2 chars
         "ted", // last 3 chars
-        "retreat", // stem (thrown away if null)
-        "Absurdi",
         "The", // left 2 stems
+        "Absurdi", // right 2 stems
         "in",
-        "2003", // right 2 stems
-    });
+        "2003");
     Assert.assertEquals(featureValues, this.getFeatureValues(instances.get(2)));
     Assert.assertEquals("VBD", instances.get(2).getOutcome());
 
     // check "in"
-    featureValues = Arrays.asList(new String[] { "in", // word
+    featureValues = Arrays.asList("in", // word
+        "in", // stem (thrown away if null)
         "in", // lower case
         "ALL_LOWERCASE", // capital type
         // numeric type
         "in", // last 2 chars
         // last 3 chars
-        "in", // stem (thrown away if null)
-        "retreat",
         "Absurdi", // left 2 stems
-        "2003",
-        ".", // right 2 stems
-    });
+        "retreat",
+        "2003", // right 2 stems
+        ".");
     Assert.assertEquals(featureValues, this.getFeatureValues(instances.get(3)));
     Assert.assertEquals("IN", instances.get(3).getOutcome());
 
     // check "2003"
-    featureValues = Arrays.asList(new String[] { "2003", // word
+    featureValues = Arrays.asList("2003", // word
+        "2003", // stem (thrown away if null)
         "2003", // lower case
         // capital type
         "YEAR_DIGITS", // numeric type
         "03", // last 2 chars
         "003", // last 3 chars
-        "2003", // stem (thrown away if null)
-        "in",
         "retreat", // left 2 stems
-        ".",
-        null, // right 2 stems
-    });
+        "in",
+        ".", // right 2 stems
+        "OOB1");
     Assert.assertEquals(featureValues, this.getFeatureValues(instances.get(4)));
     Assert.assertEquals("CD", instances.get(4).getOutcome());
 
     // check "."
-    featureValues = Arrays.asList(new String[] { ".", // word
+    featureValues = Arrays.asList(".", // word
+        ".", // stem (thrown away if null)
         ".", // lower case
         // capital type
         // numeric type
         // last 2 chars
         // last 3 chars
-        ".", // stem (thrown away if null)
-        "2003",
         "in", // left 2 stems
-        null,
-        null, // right 2 stems
-    });
+        "2003",
+        "OOB1", // right 2 stems
+        "OOB2");
     Assert.assertEquals(featureValues, this.getFeatureValues(instances.get(5)));
     Assert.assertEquals(".", instances.get(5).getOutcome());
   }
@@ -183,12 +177,10 @@ public class ExamplePOSAnnotatorTest extends ExamplesTestBase {
     BuildTestExamplePosModel.main();
     hider.restoreOutput();
 
-    AnalysisEngineDescription posTaggerDescription = ExamplePOSAnnotator
-        .getClassifierDescription(ExamplePOSAnnotator.DEFAULT_MODEL);
+    AnalysisEngineDescription posTaggerDescription = ExamplePOSAnnotator.getClassifierDescription(ExamplePOSAnnotator.DEFAULT_MODEL);
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(posTaggerDescription);
 
-    Object classifierJar = engine
-        .getConfigParameterValue(GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH);
+    Object classifierJar = engine.getConfigParameterValue(GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH);
     Assert.assertEquals(ExamplePOSAnnotator.DEFAULT_MODEL, classifierJar);
 
     engine.collectionProcessComplete();
@@ -196,17 +188,14 @@ public class ExamplePOSAnnotatorTest extends ExamplesTestBase {
 
   @Test
   public void testDataWriterDescriptor() throws UIMAException {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(ExamplePOSAnnotator
-        .getWriterDescription(ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY));
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(ExamplePOSAnnotator.getWriterDescription(ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY));
 
-    String outputDir = (String) engine
-        .getConfigParameterValue(DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY);
+    String outputDir = (String) engine.getConfigParameterValue(DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY);
     outputDir = outputDir.replace(File.separatorChar, '/');
     Assert.assertEquals(ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY, outputDir);
 
     String expectedDataWriterFactory = (ViterbiDataWriterFactory.class.getName());
-    Object dataWriter = engine
-        .getConfigParameterValue(CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME);
+    Object dataWriter = engine.getConfigParameterValue(CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME);
     Assert.assertEquals(expectedDataWriterFactory, dataWriter);
     engine.collectionProcessComplete();
   }
