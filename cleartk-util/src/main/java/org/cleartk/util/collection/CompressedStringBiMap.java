@@ -1,5 +1,5 @@
-/** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+/*
+ * Copyright (c) 2007-2011, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -28,18 +28,23 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Reader;
+import java.io.Serializable;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-import org.apache.commons.collections15.bidimap.DualHashBidiMap;
 import org.cleartk.util.BaseConversion;
+
+import com.google.common.collect.BiMap;
+import com.google.common.collect.ForwardingMap;
+import com.google.common.collect.HashBiMap;
 
 /**
  * <br>
- * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * Copyright (c) 2007-2011, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
  * <p>
@@ -47,27 +52,61 @@ import org.cleartk.util.BaseConversion;
  * @author Philip
  * 
  */
-public class CompressedStringBidiMap extends DualHashBidiMap<String, String> implements
-    GenKeyBidiMap<String, String> {
+public class CompressedStringBiMap extends ForwardingMap<String, String> implements
+    GenKeyBiMap<String, String>, Serializable {
 
   private static final long serialVersionUID = 5362169827584657941L;
 
-  private int count = 0;
+  private HashBiMap<String, String> delegate;
 
+  private int count;
+
+  public CompressedStringBiMap() {
+    this.delegate = HashBiMap.create();
+    this.count = 0;
+  }
+
+  @Override
   public String getOrGenerateKey(String value) {
-    if (containsValue(value))
-      return getKey(value);
+    if (this.containsValue(value))
+      return this.inverse().get(value);
 
     synchronized (this) {
-      String key = BaseConversion.convertBase(count, 62);
-      put(key, value);
+      String key = BaseConversion.convertBase(this.count, 62);
+      this.put(key, value);
       return key;
     }
   }
 
+  @Override
   public String put(String key, String value) {
-    count++;
-    return super.put(key, value);
+    this.count++;
+    return this.delegate.put(key, value);
+  }
+
+  @Override
+  public String forcePut(String key, String value) {
+    return this.delegate.forcePut(key, value);
+  }
+
+  @Override
+  public void putAll(Map<? extends String, ? extends String> map) {
+    this.standardPutAll(map);
+  }
+
+  @Override
+  public BiMap<String, String> inverse() {
+    return this.delegate.inverse();
+  }
+
+  @Override
+  protected Map<String, String> delegate() {
+    return this.delegate;
+  }
+
+  @Override
+  public Set<String> values() {
+    return this.delegate.values();
   }
 
   public void read(Reader reader) throws IOException {

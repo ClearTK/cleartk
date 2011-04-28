@@ -42,11 +42,11 @@ import org.junit.Test;
  * All rights reserved.
  */
 
-public class CompressedStringBidiMapTest extends DefaultTestBase {
+public class CompressedStringBiMapTest extends DefaultTestBase {
 
   @Test
   public void testSerialization() throws FileNotFoundException, IOException {
-    CompressedStringBidiMap map = new CompressedStringBidiMap();
+    CompressedStringBiMap map = new CompressedStringBiMap();
     map.getOrGenerateKey("one");
     map.getOrGenerateKey("two");
     map.getOrGenerateKey("three");
@@ -57,26 +57,26 @@ public class CompressedStringBidiMapTest extends DefaultTestBase {
     Writer writer = new FileWriter(new File(outputDirectory, "csbm-test.txt"));
     map.write(writer, true);
 
-    map = new CompressedStringBidiMap();
+    map = new CompressedStringBiMap();
     map.read(new FileReader(new File(outputDirectory, "csbm-test.txt")));
 
-    assertEquals("0", map.getKey("one"));
-    assertEquals("1", map.getKey("two"));
-    assertEquals("2", map.getKey("three"));
-    assertEquals("3", map.getKey("four"));
-    assertEquals("4", map.getKey("five"));
-    assertEquals("5", map.getKey("six"));
+    assertEquals("0", map.inverse().get("one"));
+    assertEquals("1", map.inverse().get("two"));
+    assertEquals("2", map.inverse().get("three"));
+    assertEquals("3", map.inverse().get("four"));
+    assertEquals("4", map.inverse().get("five"));
+    assertEquals("5", map.inverse().get("six"));
 
-    assertNull(map.getKey("seven"));
+    assertNull(map.inverse().get("seven"));
     assertEquals("6", map.getOrGenerateKey("seven"));
 
-    map.removeValue("one");
-    assertNull(map.getKey("one"));
+    map.inverse().remove("one");
+    assertNull(map.inverse().get("one"));
     assertEquals("7", map.getOrGenerateKey("one"));
 
     writer = new FileWriter(new File(outputDirectory, "csbm-test.txt"));
     map.write(writer);
-    map = new CompressedStringBidiMap();
+    map = new CompressedStringBiMap();
     map.read(new FileReader(new File(outputDirectory, "csbm-test.txt")));
     assertEquals("7", map.getOrGenerateKey("one"));
     assertEquals("8", map.getOrGenerateKey("eight"));

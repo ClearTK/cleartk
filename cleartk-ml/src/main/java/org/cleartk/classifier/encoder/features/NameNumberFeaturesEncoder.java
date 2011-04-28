@@ -32,7 +32,7 @@ import java.util.List;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.encoder.CleartkEncoderException;
 import org.cleartk.classifier.encoder.FeatureEncoderUtil;
-import org.cleartk.util.collection.CompressedStringBidiMap;
+import org.cleartk.util.collection.CompressedStringBiMap;
 
 /**
  * <br>
@@ -49,7 +49,7 @@ public class NameNumberFeaturesEncoder extends
 
   public static final String LOOKUP_FILE_NAME = "names-lookup.txt";
 
-  private CompressedStringBidiMap csbm;
+  private CompressedStringBiMap csbm;
 
   private boolean compressFeatures;
 
@@ -66,7 +66,7 @@ public class NameNumberFeaturesEncoder extends
     this.compressFeatures = compressFeatures;
     this.sortNameLookup = sortNameLookup;
     if (compressFeatures) {
-      csbm = new CompressedStringBidiMap();
+      csbm = new CompressedStringBiMap();
     }
   }
 
@@ -106,7 +106,7 @@ public class NameNumberFeaturesEncoder extends
       if (allowNewFeatures) {
         return csbm.getOrGenerateKey(featureString);
       } else {
-        return csbm.getKey(featureString);
+        return csbm.inverse().get(featureString);
       }
     }
     return featureString;
