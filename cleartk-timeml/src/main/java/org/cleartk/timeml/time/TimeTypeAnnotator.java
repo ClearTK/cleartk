@@ -37,14 +37,15 @@ import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.simple.BagExtractor;
+import org.cleartk.classifier.feature.extractor.simple.CharacterCategoryPatternExtractor;
+import org.cleartk.classifier.feature.extractor.simple.CharacterCategoryPatternExtractor.PatternType;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.timeml.TimeMLComponents;
-import org.cleartk.timeml.time.TimeFeaturesExtractors.CharacterTypesExtractor;
-import org.cleartk.timeml.time.TimeFeaturesExtractors.TimeWordsExtractor;
 import org.cleartk.timeml.type.Time;
 import org.cleartk.timeml.util.CleartkInternalModelFactory;
+import org.cleartk.timeml.util.TimeWordsExtractor;
 import org.cleartk.token.type.Token;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.util.JCasUtil;
@@ -82,11 +83,11 @@ public class TimeTypeAnnotator extends CleartkAnnotator<String> {
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
-    this.featuresExtractors = new ArrayList<SimpleFeatureExtractor>();
-    this.featuresExtractors.add(new LastWordExtractor());
-    this.featuresExtractors.add(new CharacterTypesExtractor());
-    this.featuresExtractors.add(new TimeWordsExtractor());
-    this.featuresExtractors.add(new BagExtractor(Token.class, new SpannedTextExtractor()));
+    this.featuresExtractors = Arrays.asList(
+        new LastWordExtractor(),
+        new CharacterCategoryPatternExtractor(PatternType.REPEATS_MERGED),
+        new TimeWordsExtractor(),
+        new BagExtractor(Token.class, new SpannedTextExtractor()));
   }
 
   @Override

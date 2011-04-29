@@ -210,9 +210,11 @@ public class TempEval2010PipelineProvider extends CleartkPipelineProvider_ImplBa
     // if building to the pre-defined training directory, clean up non-model files
     for (CleartkInternalModelFactory factory : this.systemAnnotators.keySet()) {
       File modelDir = factory.getTrainingDirectory();
-      for (File file : modelDir.listFiles()) {
-        if (!file.isDirectory() && !file.getName().equals("model.jar")) {
-          file.delete();
+      if (modelDir.exists()) {
+        for (File file : modelDir.listFiles()) {
+          if (!file.isDirectory() && !file.getName().equals("model.jar")) {
+            file.delete();
+          }
         }
       }
     }

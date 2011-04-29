@@ -24,6 +24,7 @@
 package org.cleartk.timeml.time;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.uima.UimaContext;
@@ -41,21 +42,19 @@ import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.ContextExtractor;
 import org.cleartk.classifier.feature.extractor.ContextExtractor.Following;
 import org.cleartk.classifier.feature.extractor.ContextExtractor.Preceding;
+import org.cleartk.classifier.feature.extractor.simple.CharacterCategoryPatternExtractor;
+import org.cleartk.classifier.feature.extractor.simple.CharacterCategoryPatternExtractor.PatternType;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory;
 import org.cleartk.timeml.TimeMLComponents;
-import org.cleartk.timeml.time.TimeFeaturesExtractors.CharacterTypesExtractor;
-import org.cleartk.timeml.time.TimeFeaturesExtractors.TimeWordsExtractor;
 import org.cleartk.timeml.type.Time;
 import org.cleartk.timeml.util.CleartkInternalModelFactory;
+import org.cleartk.timeml.util.TimeWordsExtractor;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.uimafit.component.initialize.ConfigurationParameterInitializer;
-import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.initializable.InitializableFactory;
 import org.uimafit.util.JCasUtil;
 
 /**
@@ -110,32 +109,22 @@ public class TimeAnnotator extends Chunker {
   }
 
   public static class FeatureExtractor implements ChunkerFeatureExtractor {
-    @ConfigurationParameter(name = Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME)
-    private String labeledAnnotationClassName;
-
     private List<SimpleFeatureExtractor> tokenFeatureExtractors;
 
     private List<ContextExtractor<Token>> contextFeatureExtractors;
 
     public void initialize(UimaContext context) throws ResourceInitializationException {
-      // get configured annotation
-      ConfigurationParameterInitializer.initialize(this, context);
-      Class<? extends Annotation> tokenClass = InitializableFactory.getClass(
-          this.labeledAnnotationClassName,
-          Annotation.class);
-
-      // initialize feature lists
-      this.tokenFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
-      this.contextFeatureExtractors = new ArrayList<ContextExtractor<Token>>();
 
       // add features: word, character pattern, stem, pos
-      this.tokenFeatureExtractors.add(new SpannedTextExtractor());
-      this.tokenFeatureExtractors.add(new CharacterTypesExtractor());
-      this.tokenFeatureExtractors.add(new TimeWordsExtractor());
-      this.tokenFeatureExtractors.add(new TypePathExtractor(tokenClass, "stem"));
-      this.tokenFeatureExtractors.add(new TypePathExtractor(tokenClass, "pos"));
+      this.tokenFeatureExtractors = Arrays.asList(
+          new SpannedTextExtractor(),
+          new CharacterCategoryPatternExtractor(PatternType.REPEATS_MERGED),
+          new TimeWordsExtractor(),
+          new TypePathExtractor(Token.class, "stem"),
+          new TypePathExtractor(Token.class, "pos"));
 
       // add window of features before and after
+      this.contextFeatureExtractors = new ArrayList<ContextExtractor<Token>>();
       for (SimpleFeatureExtractor extractor : this.tokenFeatureExtractors) {
         this.contextFeatureExtractors.add(new ContextExtractor<Token>(
             Token.class,
