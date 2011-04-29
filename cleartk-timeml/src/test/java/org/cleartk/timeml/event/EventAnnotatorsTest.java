@@ -29,7 +29,6 @@ import java.util.List;
 
 import junit.framework.Assert;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.uima.UIMAException;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
@@ -145,16 +144,5 @@ public class EventAnnotatorsTest extends TimeMLTestBase {
       }
       Assert.assertTrue("no training data found in " + path, hasTrainingData);
     }
-  }
-
-  @Test
-  public void testAnnotateMain() throws Exception {
-    File textFile = this.folder.newFile("event.annotate.txt");
-    File tmlFile = new File(this.outputDirectory, textFile.getName() + ".tml");
-    FileUtils.writeStringToFile(textFile, "He said he bought a bed today.");
-    EventAnnotate.main(textFile.getPath(), this.outputDirectoryName);
-    String text = FileUtils.readFileToString(tmlFile);
-    Assert.assertTrue("Text must contain TimeML element", text.contains("<TimeML>"));
-    Assert.assertTrue("Text must contain EVENT element", text.contains("<EVENT"));
   }
 }

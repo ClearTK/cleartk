@@ -34,7 +34,6 @@ import org.cleartk.timeml.corpus.TimeMLWriter;
 import org.cleartk.timeml.event.EventAnnotator;
 import org.cleartk.timeml.event.EventAspectAnnotator;
 import org.cleartk.timeml.event.EventClassAnnotator;
-import org.cleartk.timeml.event.EventIdAnnotator;
 import org.cleartk.timeml.event.EventModalityAnnotator;
 import org.cleartk.timeml.event.EventPolarityAnnotator;
 import org.cleartk.timeml.event.EventTenseAnnotator;
@@ -93,14 +92,13 @@ public class TimeMLAnnotate {
         TokenAnnotator.getDescription(),
         PosTaggerAnnotator.getDescription(),
         DefaultSnowballStemmer.getDescription("English"),
+        ParserAnnotator.getDescription(),
         EventAnnotator.FACTORY.getAnnotatorDescription(),
         EventTenseAnnotator.FACTORY.getAnnotatorDescription(),
         EventAspectAnnotator.FACTORY.getAnnotatorDescription(),
         EventClassAnnotator.FACTORY.getAnnotatorDescription(),
         EventPolarityAnnotator.FACTORY.getAnnotatorDescription(),
         EventModalityAnnotator.FACTORY.getAnnotatorDescription(),
-        EventIdAnnotator.getDescription(),
-        ParserAnnotator.getDescription(),
         VerbClauseTemporalAnnotator.FACTORY.getAnnotatorDescription(),
         TimeMLWriter.getDescription(outputDir.getPath()));
   }

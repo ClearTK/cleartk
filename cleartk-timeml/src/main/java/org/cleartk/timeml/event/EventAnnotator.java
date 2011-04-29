@@ -37,6 +37,7 @@ import org.cleartk.chunker.ChunkLabeler_ImplBase;
 import org.cleartk.chunker.Chunker;
 import org.cleartk.chunker.ChunkerFeatureExtractor;
 import org.cleartk.chunker.DefaultChunkLabeler;
+import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.ContextExtractor;
@@ -46,6 +47,8 @@ import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory;
+import org.cleartk.syntax.constituent.type.TreebankNode;
+import org.cleartk.syntax.constituent.type.TreebankNodeUtil;
 import org.cleartk.timeml.TimeMLComponents;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.util.CleartkInternalModelFactory;
@@ -111,7 +114,7 @@ public class EventAnnotator extends Chunker {
 
     private List<SimpleFeatureExtractor> tokenFeatureExtractors;
 
-    private List<ContextExtractor<Token>> contextExtractors;
+    private List<ContextExtractor<?>> contextExtractors;
 
     public void initialize(UimaContext context) throws ResourceInitializationException {
 
@@ -119,17 +122,15 @@ public class EventAnnotator extends Chunker {
       this.tokenFeatureExtractors = Arrays.asList(
           new SpannedTextExtractor(),
           new TypePathExtractor(Token.class, "stem"),
-          new TypePathExtractor(Token.class, "pos"));
+          new TypePathExtractor(Token.class, "pos"),
+          new ParentNodeFeaturesExtractor());
 
       // add window of features before and after
-      this.contextExtractors = new ArrayList<ContextExtractor<Token>>();
-      for (SimpleFeatureExtractor extractor : this.tokenFeatureExtractors) {
-        this.contextExtractors.add(new ContextExtractor<Token>(
-            Token.class,
-            extractor,
-            new Preceding(3),
-            new Following(3)));
-      }
+      this.contextExtractors = Arrays.<ContextExtractor<?>> asList(new ContextExtractor<Token>(
+          Token.class,
+          new SpannedTextExtractor(),
+          new Preceding(3),
+          new Following(3)));
     }
 
     public Instance<String> extractFeatures(
@@ -140,10 +141,33 @@ public class EventAnnotator extends Chunker {
       for (SimpleFeatureExtractor extractor : this.tokenFeatureExtractors) {
         instance.addAll(extractor.extract(jCas, labeledAnnotation));
       }
-      for (ContextExtractor<Token> extractor : this.contextExtractors) {
+      for (ContextExtractor<?> extractor : this.contextExtractors) {
         instance.addAll(extractor.extractWithin(jCas, labeledAnnotation, sequence));
       }
       return instance;
+    }
+  }
+
+  private static class ParentNodeFeaturesExtractor implements SimpleFeatureExtractor {
+    public ParentNodeFeaturesExtractor() {
+    }
+
+    @Override
+    public List<Feature> extract(JCas view, Annotation focusAnnotation)
+        throws CleartkExtractorException {
+      TreebankNode node = TreebankNodeUtil.selectMatchingLeaf(view, focusAnnotation);
+      List<Feature> features = new ArrayList<Feature>();
+      if (node != null) {
+        TreebankNode parent = node.getParent();
+        if (parent != null) {
+          features.add(new Feature("ParentNodeType", parent.getNodeType()));
+          TreebankNode firstSibling = parent.getChildren(0);
+          if (firstSibling != node && firstSibling.getLeaf()) {
+            features.add(new Feature("FirstSiblingText", firstSibling.getCoveredText()));
+          }
+        }
+      }
+      return features;
     }
   }
 }

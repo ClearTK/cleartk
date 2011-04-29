@@ -30,6 +30,7 @@ import org.cleartk.eval.provider.AnnotationEvaluator;
 import org.cleartk.eval.provider.BatchBasedEvaluationPipelineProvider;
 import org.cleartk.eval.provider.CleartkPipelineProvider;
 import org.cleartk.eval.provider.EvaluationPipelineProvider;
+import org.cleartk.syntax.opennlp.ParserAnnotator;
 import org.cleartk.syntax.opennlp.PosTaggerAnnotator;
 import org.cleartk.timeml.corpus.TempEval2010GoldAnnotator;
 import org.cleartk.timeml.corpus.TempEval2010Writer;
@@ -67,7 +68,8 @@ public class TempEval2010TaskBExtents extends TempEval2010Main {
         TempEval2010GoldAnnotator.PARAM_EVENT_EXTENT_VIEWS,
         Arrays.asList(
             DefaultSnowballStemmer.getDescription("English"),
-            PosTaggerAnnotator.getDescription()),
+            PosTaggerAnnotator.getDescription(),
+            ParserAnnotator.getDescription()),
         Arrays.asList(EventAnnotator.FACTORY));
   }
 
