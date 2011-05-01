@@ -89,11 +89,11 @@ public class TempEval2010PipelineProvider extends CleartkPipelineProvider_ImplBa
 
   private List<String> viewParams;
 
-  private AnalysisEngine goldAnnotator;
+  protected AnalysisEngine goldAnnotator;
 
   private AnalysisEngine xmiAnnotator;
 
-  private Map<CleartkInternalModelFactory, AnalysisEngine> systemAnnotators;
+  protected Map<CleartkInternalModelFactory, AnalysisEngine> systemAnnotators;
 
   private List<AnalysisEngine> pipeline;
 

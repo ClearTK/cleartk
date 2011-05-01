@@ -112,21 +112,23 @@ public class EventAnnotator extends Chunker {
 
   public static class FeatureExtractor implements ChunkerFeatureExtractor {
 
-    private List<SimpleFeatureExtractor> tokenFeatureExtractors;
+    protected List<SimpleFeatureExtractor> tokenFeatureExtractors;
 
-    private List<ContextExtractor<?>> contextExtractors;
+    protected List<ContextExtractor<?>> contextExtractors;
 
     public void initialize(UimaContext context) throws ResourceInitializationException {
 
       // add features: word, stem, pos
-      this.tokenFeatureExtractors = Arrays.asList(
+      this.tokenFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
+      this.tokenFeatureExtractors.addAll(Arrays.asList(
           new SpannedTextExtractor(),
           new TypePathExtractor(Token.class, "stem"),
           new TypePathExtractor(Token.class, "pos"),
-          new ParentNodeFeaturesExtractor());
+          new ParentNodeFeaturesExtractor()));
 
       // add window of features before and after
-      this.contextExtractors = Arrays.<ContextExtractor<?>> asList(new ContextExtractor<Token>(
+      this.contextExtractors = new ArrayList<ContextExtractor<?>>();
+      this.contextExtractors.add(new ContextExtractor<Token>(
           Token.class,
           new SpannedTextExtractor(),
           new Preceding(3),
