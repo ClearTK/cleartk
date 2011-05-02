@@ -14,14 +14,6 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
-		<repository>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<id>carrotsearch</id>
-			<name>Carrot Search software releases repository</name>
-			<url>http://repository.carrotsearch.com/labs/releases/</url>
-		</repository>
 	</repositories>
 	<parent>
 		<artifactId>cleartk</artifactId>
