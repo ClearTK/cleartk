@@ -51,12 +51,10 @@ public class ParametersTestUtil {
     IOFileFilter includeFilter = new SuffixFileFilter(".java");
 
     if (excludeFiles != null) {
-      IOFileFilter excludeFilter = FileFilterUtils
-          .notFileFilter(new SuffixFileFilter(excludeFiles));
-      includeFilter = FileFilterUtils.andFileFilter(excludeFilter, includeFilter);
+      IOFileFilter excludeFilter = FileFilterUtils.notFileFilter(new SuffixFileFilter(excludeFiles));
+      includeFilter = FileFilterUtils.and(excludeFilter, includeFilter);
     }
 
-    @SuppressWarnings("unchecked")
     Iterator<File> files = org.apache.commons.io.FileUtils.iterateFiles(
         new File(outputDirectory),
         includeFilter,
@@ -78,8 +76,7 @@ public class ParametersTestUtil {
       Field[] fields = cls.getDeclaredFields();
       for (Field field : fields) {
         if (ConfigurationParameterFactory.isConfigurationParameterField(field)) {
-          org.uimafit.descriptor.ConfigurationParameter annotation = field
-              .getAnnotation(org.uimafit.descriptor.ConfigurationParameter.class);
+          org.uimafit.descriptor.ConfigurationParameter annotation = field.getAnnotation(org.uimafit.descriptor.ConfigurationParameter.class);
           String parameterName = annotation.name();
           String expectedName = className + "." + field.getName();
           if (parameterName.equals(org.uimafit.descriptor.ConfigurationParameter.USE_FIELD_NAME))
@@ -108,18 +105,16 @@ public class ParametersTestUtil {
     }
 
     if (badParameters.size() > 0 || missingParameterNameFields.size() > 0) {
-      String message = String
-          .format(
-              "%d descriptor parameters with bad names and %d descriptor parameters with no name field. ",
-              badParameters.size(),
-              missingParameterNameFields.size());
+      String message = String.format(
+          "%d descriptor parameters with bad names and %d descriptor parameters with no name field. ",
+          badParameters.size(),
+          missingParameterNameFields.size());
       System.err.println(message);
       System.err.println("descriptor parameters with bad names: ");
       for (String badParameter : badParameters) {
         System.err.println(badParameter);
       }
-      System.err
-          .println("each configuration parameter should have a public static final String that specifies its name.  The missing fields are: ");
+      System.err.println("each configuration parameter should have a public static final String that specifies its name.  The missing fields are: ");
       for (String missingParameterNameField : missingParameterNameFields) {
         System.err.println(missingParameterNameField + " should be named by "
             + missingParameterNameField.substring(0, missingParameterNameField.lastIndexOf('.'))

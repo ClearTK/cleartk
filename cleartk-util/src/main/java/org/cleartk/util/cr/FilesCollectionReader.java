@@ -123,67 +123,87 @@ public class FilesCollectionReader extends JCasCollectionReader_ImplBase {
         suffixes);
   }
 
-  public static final String PARAM_ROOT_FILE = ConfigurationParameterFactory
-      .createConfigurationParameterName(FilesCollectionReader.class, "rootFile");
+  public static final String PARAM_ROOT_FILE = ConfigurationParameterFactory.createConfigurationParameterName(
+      FilesCollectionReader.class,
+      "rootFile");
 
-  @ConfigurationParameter(mandatory = true, description = "takes either the name of a single file or the root directory containing all the files to be processed.")
+  @ConfigurationParameter(
+      mandatory = true,
+      description = "takes either the name of a single file or the root directory containing all the files to be processed.")
   protected File rootFile;
 
-  public static final String PARAM_VIEW_NAME = ConfigurationParameterFactory
-      .createConfigurationParameterName(FilesCollectionReader.class, "viewName");
+  public static final String PARAM_VIEW_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
+      FilesCollectionReader.class,
+      "viewName");
 
-  @ConfigurationParameter(description = "takes the the name that should be given to the JCas view that the document texts should be set to.", defaultValue = CAS.NAME_DEFAULT_SOFA)
+  @ConfigurationParameter(
+      description = "takes the the name that should be given to the JCas view that the document texts should be set to.",
+      defaultValue = CAS.NAME_DEFAULT_SOFA)
   private String viewName;
 
-  public static final String PARAM_LANGUAGE = ConfigurationParameterFactory
-      .createConfigurationParameterName(FilesCollectionReader.class, "language");
+  public static final String PARAM_LANGUAGE = ConfigurationParameterFactory.createConfigurationParameterName(
+      FilesCollectionReader.class,
+      "language");
 
-  @ConfigurationParameter(description = "takes the language code corresponding to the language of the documents being examined.  The value of this parameter "
-      + "is simply passed on to JCas.setDocumentLanguage(String).")
+  @ConfigurationParameter(
+      description = "takes the language code corresponding to the language of the documents being examined.  The value of this parameter "
+          + "is simply passed on to JCas.setDocumentLanguage(String).")
   private String language;
 
-  public static final String PARAM_ENCODING = ConfigurationParameterFactory
-      .createConfigurationParameterName(FilesCollectionReader.class, "encoding");
+  public static final String PARAM_ENCODING = ConfigurationParameterFactory.createConfigurationParameterName(
+      FilesCollectionReader.class,
+      "encoding");
 
-  @ConfigurationParameter(description = "takes the encoding of the text files (e.g. \"UTF-8\").  See javadoc for java.nio.charset.Charset for a list of encoding names.")
+  @ConfigurationParameter(
+      description = "takes the encoding of the text files (e.g. \"UTF-8\").  See javadoc for java.nio.charset.Charset for a list of encoding names.")
   private String encoding;
 
-  public static final String PARAM_SUFFIXES = ConfigurationParameterFactory
-      .createConfigurationParameterName(FilesCollectionReader.class, "suffixes");
+  public static final String PARAM_SUFFIXES = ConfigurationParameterFactory.createConfigurationParameterName(
+      FilesCollectionReader.class,
+      "suffixes");
 
-  @ConfigurationParameter(description = "takes suffixes (e.g. .txt) of the files that should be read in.")
+  @ConfigurationParameter(
+      description = "takes suffixes (e.g. .txt) of the files that should be read in.")
   private String[] suffixes;
 
-  public static final String PARAM_PATTERNS = ConfigurationParameterFactory
-      .createConfigurationParameterName(FilesCollectionReader.class, "patterns");
+  public static final String PARAM_PATTERNS = ConfigurationParameterFactory.createConfigurationParameterName(
+      FilesCollectionReader.class,
+      "patterns");
 
-  @ConfigurationParameter(description = "	takes regular expressions for matching the files that should be read in. Note that these will be searched for"
-      + " using java.util. regex.Matcher.find, so if you want to make sure the entire file name matches a pattern, you should start the string with ^ and end the"
-      + " string with $.")
+  @ConfigurationParameter(
+      description = "	takes regular expressions for matching the files that should be read in. Note that these will be searched for"
+          + " using java.util. regex.Matcher.find, so if you want to make sure the entire file name matches a pattern, you should start the string with ^ and end the"
+          + " string with $.")
   private String[] patterns;
 
-  public static final String PARAM_NAME_FILES_FILE_NAMES = ConfigurationParameterFactory
-      .createConfigurationParameterName(FilesCollectionReader.class, "nameFilesFileNames");
+  public static final String PARAM_NAME_FILES_FILE_NAMES = ConfigurationParameterFactory.createConfigurationParameterName(
+      FilesCollectionReader.class,
+      "nameFilesFileNames");
 
-  @ConfigurationParameter(description = "names files which contain lists of file names. For example, if the value 'mydata/mylist.txt' is provided, "
-      + "then the file 'mylist.txt' should contain a line delimited list of file names.  The file names in the list should not have directory information "
-      + "but should just be the names of the files. The directory is determined by 'rootFile' and the files that are processed result from "
-      + "traversing the directory structure provided and looking for files with a name found in the lists of file names. That is, no exception will be "
-      + "thrown if a file name in the list does not actually correspond to a file.")
+  @ConfigurationParameter(
+      description = "names files which contain lists of file names. For example, if the value 'mydata/mylist.txt' is provided, "
+          + "then the file 'mylist.txt' should contain a line delimited list of file names.  The file names in the list should not have directory information "
+          + "but should just be the names of the files. The directory is determined by 'rootFile' and the files that are processed result from "
+          + "traversing the directory structure provided and looking for files with a name found in the lists of file names. That is, no exception will be "
+          + "thrown if a file name in the list does not actually correspond to a file.")
   private String[] nameFilesFileNames;
 
-  public static final String PARAM_FILE_NAMES = ConfigurationParameterFactory
-      .createConfigurationParameterName(FilesCollectionReader.class, "fileNames");
+  public static final String PARAM_FILE_NAMES = ConfigurationParameterFactory.createConfigurationParameterName(
+      FilesCollectionReader.class,
+      "fileNames");
 
-  @ConfigurationParameter(description = "provides a list of file names that should be read in. The directory of the file names is determined by "
-      + "'rootFile' and the files that are processed result from traversing the directory structure provided and looking for files with a name found in the list of file names. "
-      + "That is, no exception will be thrown if a file name in the list does not actually correspond to a file.")
+  @ConfigurationParameter(
+      description = "provides a list of file names that should be read in. The directory of the file names is determined by "
+          + "'rootFile' and the files that are processed result from traversing the directory structure provided and looking for files with a name found in the list of file names. "
+          + "That is, no exception will be thrown if a file name in the list does not actually correspond to a file.")
   private String[] fileNames;
 
-  public static final String PARAM_IGNORE_SYSTEM_FILES = ConfigurationParameterFactory
-      .createConfigurationParameterName(FilesCollectionReader.class, "ignoreSystemFiles");
+  public static final String PARAM_IGNORE_SYSTEM_FILES = ConfigurationParameterFactory.createConfigurationParameterName(
+      FilesCollectionReader.class,
+      "ignoreSystemFiles");
 
-  @ConfigurationParameter(description = "This parameter provides a flag that determines whether file iteration will traverse into directories that begin with a period '.' - to loosely correspond to 'system' files.  Setting this parameter to true will not cause file names that begin with a period to be ignored - just directories. ")
+  @ConfigurationParameter(
+      description = "This parameter provides a flag that determines whether file iteration will traverse into directories that begin with a period '.' - to loosely correspond to 'system' files.  Setting this parameter to true will not cause file names that begin with a period to be ignored - just directories. ")
   private boolean ignoreSystemFiles = true;
 
   protected Iterator<File> files;
@@ -213,7 +233,6 @@ public class FilesCollectionReader extends JCasCollectionReader_ImplBase {
     }
   }
 
-  @SuppressWarnings("unchecked")
   protected Iterator<File> createFileIterator() throws ResourceInitializationException {
     IOFileFilter fileFilter = TrueFileFilter.INSTANCE;
 
@@ -237,8 +256,7 @@ public class FilesCollectionReader extends JCasCollectionReader_ImplBase {
       List<String> fileNamesFromLists = new ArrayList<String>();
       try {
         for (String fileNamesList : nameFilesFileNames) {
-          fileNamesFromLists.addAll(Arrays.asList(FileUtil
-              .loadListOfStrings(new File(fileNamesList))));
+          fileNamesFromLists.addAll(Arrays.asList(FileUtil.loadListOfStrings(new File(fileNamesList))));
         }
         fileFilter = new AndFileFilter(fileFilter, new NameFileFilter(fileNamesFromLists));
       } catch (IOException ioe) {

@@ -57,7 +57,6 @@ public class FCollectionsFileTest extends EvaluationTestBase {
     File outputFile = new File(outputDirectory, "bluegreen.txt");
     FCollectionsFile.writeFCollection(outputFile, fc, "comparison of blue and green", "color");
 
-    @SuppressWarnings("unchecked")
     List<String> lines = FileUtils.readLines(outputFile);
     assertEquals("comparison of blue and green", lines.get(0));
     assertEquals("", lines.get(1));
@@ -93,7 +92,6 @@ public class FCollectionsFileTest extends EvaluationTestBase {
     File outputFile = new File(outputDirectory, "123.txt");
     FCollectionsFile.writeFCollection(outputFile, fc, "comparison of 1, 2, and 3", "count");
 
-    @SuppressWarnings("unchecked")
     List<String> lines = FileUtils.readLines(outputFile);
     assertEquals("comparison of 1, 2, and 3", lines.get(0));
     assertEquals("", lines.get(1));
