@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2011, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -21,13 +21,15 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk;
+package org.cleartk.classifier.jar;
 
-import org.cleartk.test.CleartkTestBase;
-import org.cleartk.type.test.Sentence;
-import org.cleartk.type.test.Token;
-import org.junit.Before;
-import org.uimafit.testing.factory.TokenBuilder;
+import junit.framework.Assert;
+
+import org.apache.uima.UimaContext;
+import org.cleartk.test.DefaultTestBase;
+import org.junit.Test;
+import org.uimafit.factory.UimaContextFactory;
+import org.uimafit.factory.initializable.InitializableFactory;
 
 /**
  * <br>
@@ -36,23 +38,19 @@ import org.uimafit.testing.factory.TokenBuilder;
  * 
  * @author Steven Bethard
  */
-public class CleartkMLTestBase extends CleartkTestBase {
+public class DirectoryDataWriterFactoryTest extends DefaultTestBase {
 
-  protected TokenBuilder<Token, Sentence> tokenBuilder;
+  public static class Factory extends DirectoryDataWriterFactory {
 
-  @Override
-  public String[] getTypeSystemDescriptorNames() {
-    return new String[] { "org.cleartk.type.test.TestTypeSystem" };
   }
 
-  @Before
-  public void setUp() throws Exception {
-    super.setUp();
-    this.tokenBuilder = new TokenBuilder<Token, Sentence>(
-        Token.class,
-        Sentence.class,
-        "pos",
-        "stem");
+  @Test
+  public void testParameters() throws Exception {
+    UimaContext context = UimaContextFactory.createUimaContext(
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        this.outputDirectoryName);
+    Factory factory = new Factory();
+    InitializableFactory.initialize(factory, context);
+    Assert.assertNotNull(factory.getOutputDirectory());
   }
-
 }

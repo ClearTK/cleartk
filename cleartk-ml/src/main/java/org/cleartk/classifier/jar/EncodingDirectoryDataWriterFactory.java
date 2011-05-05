@@ -58,17 +58,20 @@ import org.uimafit.factory.initializable.Initializable;
 public abstract class EncodingDirectoryDataWriterFactory<ENCODED_FEATURES_TYPE, OUTCOME_TYPE, ENCODED_OUTCOME_TYPE>
     extends DirectoryDataWriterFactory implements Initializable {
 
-  public static final String PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM = ConfigurationParameterFactory
-      .createConfigurationParameterName(
-          EncodingDirectoryDataWriterFactory.class,
-          "loadEncodersFromFileSystem");
+  public static final String PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM = ConfigurationParameterFactory.createConfigurationParameterName(
+      EncodingDirectoryDataWriterFactory.class,
+      "loadEncodersFromFileSystem");
 
-  @ConfigurationParameter(mandatory = false, description = "when true indicates that the FeaturesEncoder and "
-      + "OutcomeEncoder should be loaded from the file system "
-      + "instead of being created by the DataWriterFactory", defaultValue = "false")
+  @ConfigurationParameter(
+      mandatory = false,
+      description = "when true indicates that the FeaturesEncoder and "
+          + "OutcomeEncoder should be loaded from the file system "
+          + "instead of being created by the DataWriterFactory",
+      defaultValue = "false")
   private boolean loadEncodersFromFileSystem = false;
 
   public void initialize(UimaContext context) throws ResourceInitializationException {
+    super.initialize(context);
     ConfigurationParameterInitializer.initialize(this, context);
     if (loadEncodersFromFileSystem) {
       try {

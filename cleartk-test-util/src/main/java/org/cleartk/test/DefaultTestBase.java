@@ -43,7 +43,7 @@ public class DefaultTestBase extends CleartkTestBase {
   @Before
   public void setUp() throws Exception {
     super.setUp();
-    tokenBuilder = new TokenBuilder<Token, Sentence>(Token.class, Sentence.class, "pos", null);
+    tokenBuilder = new TokenBuilder<Token, Sentence>(Token.class, Sentence.class, "pos", "stem");
   }
 
   @Override

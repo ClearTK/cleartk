@@ -25,12 +25,16 @@ package org.cleartk.classifier.jar;
 
 import java.io.File;
 
+import org.apache.uima.UimaContext;
+import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.DataWriterFactory;
 import org.cleartk.classifier.SequenceDataWriterFactory;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
+import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
+import org.uimafit.factory.initializable.Initializable;
 
 /**
  * Superclass for {@link DataWriterFactory} and {@link SequenceDataWriterFactory} implementations
@@ -46,14 +50,17 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * @author Steven Bethard
  * @author Philip Ogren
  */
-public abstract class DirectoryDataWriterFactory {
+public abstract class DirectoryDataWriterFactory implements Initializable {
 
-  public static final String PARAM_OUTPUT_DIRECTORY = ConfigurationParameterFactory
-      .createConfigurationParameterName(DirectoryDataWriterFactory.class, "outputDirectory");
+  public static final String PARAM_OUTPUT_DIRECTORY = ConfigurationParameterFactory.createConfigurationParameterName(
+      DirectoryDataWriterFactory.class,
+      "outputDirectory");
 
-  @ConfigurationParameter(mandatory = false, description = "provides the name of the directory where the "
-      + "training data will be written.  if you do not set this "
-      + "parameter, then you must call setOutputDirectory directly.")
+  @ConfigurationParameter(
+      mandatory = false,
+      description = "provides the name of the directory where the "
+          + "training data will be written.  if you do not set this "
+          + "parameter, then you must call setOutputDirectory directly.")
   protected File outputDirectory;
 
   public File getOutputDirectory() {
@@ -64,4 +71,8 @@ public abstract class DirectoryDataWriterFactory {
     this.outputDirectory = outputDirectory;
   }
 
+  @Override
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    ConfigurationParameterInitializer.initialize(this, context);
+  }
 }

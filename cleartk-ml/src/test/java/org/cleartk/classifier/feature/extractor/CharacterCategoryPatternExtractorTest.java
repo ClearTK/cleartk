@@ -29,10 +29,10 @@ import java.util.List;
 
 import junit.framework.Assert;
 
-import org.cleartk.CleartkMLTestBase;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.simple.CharacterCategoryPatternExtractor;
 import org.cleartk.classifier.feature.extractor.simple.CharacterCategoryPatternExtractor.PatternType;
+import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Token;
 import org.junit.Test;
 import org.uimafit.util.JCasUtil;
@@ -44,7 +44,7 @@ import org.uimafit.util.JCasUtil;
  * 
  * @author Steven Bethard
  */
-public class CharacterCategoryPatternExtractorTest extends CleartkMLTestBase {
+public class CharacterCategoryPatternExtractorTest extends DefaultTestBase {
 
   @Test
   public void testOnePerChar() throws Exception {

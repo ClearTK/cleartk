@@ -54,29 +54,32 @@ import org.uimafit.factory.initializable.InitializableFactory;
 public class ViterbiDataWriterFactory<OUTCOME_TYPE> extends DirectoryDataWriterFactory implements
     SequenceDataWriterFactory<OUTCOME_TYPE>, Initializable {
 
-  public static final String PARAM_OUTCOME_FEATURE_EXTRACTOR_NAMES = ConfigurationParameterFactory
-      .createConfigurationParameterName(
-          ViterbiDataWriterFactory.class,
-          "outcomeFeatureExtractorNames");
+  public static final String PARAM_OUTCOME_FEATURE_EXTRACTOR_NAMES = ConfigurationParameterFactory.createConfigurationParameterName(
+      ViterbiDataWriterFactory.class,
+      "outcomeFeatureExtractorNames");
 
-  @ConfigurationParameter(mandatory = false, description = "An optional, multi-valued, string parameter that "
-      + "specifies which OutcomeFeatureExtractors should be used. "
-      + "Each value of this parameter should be the name of a "
-      + "class that implements OutcomeFeatureExtractor. One valid "
-      + "value that you might use is "
-      + "org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor")
+  @ConfigurationParameter(
+      mandatory = false,
+      description = "An optional, multi-valued, string parameter that "
+          + "specifies which OutcomeFeatureExtractors should be used. "
+          + "Each value of this parameter should be the name of a "
+          + "class that implements OutcomeFeatureExtractor. One valid "
+          + "value that you might use is "
+          + "org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor")
   protected String outcomeFeatureExtractorNames[];
 
-  public static final String PARAM_DELEGATED_DATA_WRITER_FACTORY_CLASS = ConfigurationParameterFactory
-      .createConfigurationParameterName(
-          ViterbiDataWriterFactory.class,
-          "delegatedDataWriterFactoryClass");
+  public static final String PARAM_DELEGATED_DATA_WRITER_FACTORY_CLASS = ConfigurationParameterFactory.createConfigurationParameterName(
+      ViterbiDataWriterFactory.class,
+      "delegatedDataWriterFactoryClass");
 
-  @ConfigurationParameter(mandatory = true, description = "A single, required, string parameter that provides "
-      + "the full name of the DataWriterFactory class that will be " + "wrapped.")
+  @ConfigurationParameter(
+      mandatory = true,
+      description = "A single, required, string parameter that provides "
+          + "the full name of the DataWriterFactory class that will be " + "wrapped.")
   protected String delegatedDataWriterFactoryClass;
 
   public void initialize(UimaContext context) throws ResourceInitializationException {
+    super.initialize(context);
     ConfigurationParameterInitializer.initialize(this, context);
 
     OutcomeFeatureExtractor outcomeFeatureExtractors[];
