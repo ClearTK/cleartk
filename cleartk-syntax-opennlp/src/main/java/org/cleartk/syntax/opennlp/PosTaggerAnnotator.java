@@ -92,10 +92,13 @@ public class PosTaggerAnnotator extends JCasAnnotator_ImplBase {
         ParamUtil.getParameterValue(PARAM_POSTAG_MODEL_FILE, "/models/en-pos-maxent.bin"));
   }
 
-  public static final String PARAM_POSTAG_MODEL_FILE = ConfigurationParameterFactory
-      .createConfigurationParameterName(PosTaggerAnnotator.class, "postagModelFile");
+  public static final String PARAM_POSTAG_MODEL_FILE = ConfigurationParameterFactory.createConfigurationParameterName(
+      PosTaggerAnnotator.class,
+      "postagModelFile");
 
-  @ConfigurationParameter(mandatory = true, description = "provides the path of the OpenNLP part-of-speech tagger model file, e.g.  resources/models/OpenNLP.POSTags.English.bin.gz.  See javadoc for opennlp.maxent.io.SuffixSensitiveGISModelReader.")
+  @ConfigurationParameter(
+      mandatory = true,
+      description = "provides the path of the OpenNLP part-of-speech tagger model file, e.g.  resources/models/OpenNLP.POSTags.English.bin.gz.  See javadoc for opennlp.maxent.io.SuffixSensitiveGISModelReader.")
   private String postagModelFile;
 
   protected POSTagger posTagger;
@@ -116,14 +119,14 @@ public class PosTaggerAnnotator extends JCasAnnotator_ImplBase {
 
   @Override
   public void process(JCas jCas) throws AnalysisEngineProcessException {
-    for (Sentence sentence : JCasUtil.iterate(jCas, Sentence.class)) {
+    for (Sentence sentence : JCasUtil.select(jCas, Sentence.class)) {
       List<String> tokens = new ArrayList<String>();
-      for (Token token : JCasUtil.iterate(jCas, Token.class, sentence)) {
+      for (Token token : JCasUtil.selectCovered(jCas, Token.class, sentence)) {
         tokens.add(token.getCoveredText());
       }
       List<String> tags = posTagger.tag(tokens);
       int i = 0;
-      for (Token token : JCasUtil.iterate(jCas, Token.class, sentence)) {
+      for (Token token : JCasUtil.selectCovered(jCas, Token.class, sentence)) {
         token.setPos(tags.get(i));
         i++;
       }

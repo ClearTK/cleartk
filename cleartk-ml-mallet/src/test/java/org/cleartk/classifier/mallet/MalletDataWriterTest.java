@@ -59,10 +59,10 @@ import org.cleartk.classifier.util.InstanceFactory;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
-import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.testing.util.HideOutput;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -320,10 +320,9 @@ public class MalletDataWriterTest extends DefaultTestBase {
     }
 
     public void process(JCas jCas) throws AnalysisEngineProcessException {
-      for (Sentence sentence : AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
+      for (Sentence sentence : JCasUtil.select(jCas, Sentence.class)) {
         List<Instance<String>> instances = new ArrayList<Instance<String>>();
-        List<Token> tokens = AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class);
-        for (Token token : tokens) {
+        for (Token token : JCasUtil.selectCovered(jCas, Token.class, sentence)) {
           Instance<String> instance = new Instance<String>();
           instance.addAll(this.extractor.extract(jCas, token));
           instance.setOutcome(token.getPos());

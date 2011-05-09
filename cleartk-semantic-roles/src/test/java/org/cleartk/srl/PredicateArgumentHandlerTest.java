@@ -25,6 +25,7 @@ package org.cleartk.srl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Handler;
@@ -45,11 +46,11 @@ import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.syntax.constituent.util.TreebankNodeUtility;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.UIMAUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -61,12 +62,11 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
   @Test
   public void testArgumentAnnotationNoPredicate() throws UIMAException {
     // create the document
-    AnalysisEngine engine = AnalysisEngineFactory
-        .createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
-            ArgumentAnnotator.class,
-            typeSystemDescription,
-            PublicFieldDataWriter.StringFactory.class,
-            "."));
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+        ArgumentAnnotator.class,
+        typeSystemDescription,
+        PublicFieldDataWriter.StringFactory.class,
+        "."));
     this.setTokens(jCas);
     this.setTrees(jCas);
 
@@ -80,12 +80,11 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
   @Test
   public void testArgumentIdentificationNoPredicate() throws UIMAException {
     // create the document
-    AnalysisEngine engine = AnalysisEngineFactory
-        .createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
-            ArgumentIdentifier.class,
-            typeSystemDescription,
-            PublicFieldDataWriter.BooleanFactory.class,
-            "."));
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+        ArgumentIdentifier.class,
+        typeSystemDescription,
+        PublicFieldDataWriter.BooleanFactory.class,
+        "."));
     this.setTokens(jCas);
     this.setTrees(jCas);
 
@@ -99,12 +98,11 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
   @Test
   public void testArgumentClassificationNoPredicate() throws UIMAException {
     // create the document
-    AnalysisEngine engine = AnalysisEngineFactory
-        .createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
-            ArgumentClassifier.class,
-            typeSystemDescription,
-            PublicFieldDataWriter.StringFactory.class,
-            "."));
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+        ArgumentClassifier.class,
+        typeSystemDescription,
+        PublicFieldDataWriter.StringFactory.class,
+        "."));
     this.setTokens(jCas);
     this.setTrees(jCas);
 
@@ -118,12 +116,11 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
   @Test
   public void testArgumentAnnotationNoTree() throws UIMAException {
     // create the document
-    AnalysisEngine engine = AnalysisEngineFactory
-        .createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
-            ArgumentAnnotator.class,
-            typeSystemDescription,
-            PublicFieldDataWriter.StringFactory.class,
-            "."));
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+        ArgumentAnnotator.class,
+        typeSystemDescription,
+        PublicFieldDataWriter.StringFactory.class,
+        "."));
     this.setTokens(jCas);
     this.setPredicates(jCas);
 
@@ -141,12 +138,11 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
   @Test
   public void testArgumentIdentificationNoTree() throws UIMAException {
     // create the document
-    AnalysisEngine engine = AnalysisEngineFactory
-        .createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
-            ArgumentIdentifier.class,
-            typeSystemDescription,
-            PublicFieldDataWriter.BooleanFactory.class,
-            "."));
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+        ArgumentIdentifier.class,
+        typeSystemDescription,
+        PublicFieldDataWriter.BooleanFactory.class,
+        "."));
     this.setTokens(jCas);
     this.setPredicates(jCas);
 
@@ -164,12 +160,11 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
   @Test
   public void testArgumentClassificationNoTree() throws UIMAException {
     // create the document
-    AnalysisEngine engine = AnalysisEngineFactory
-        .createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
-            ArgumentClassifier.class,
-            typeSystemDescription,
-            PublicFieldDataWriter.StringFactory.class,
-            "."));
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+        ArgumentClassifier.class,
+        typeSystemDescription,
+        PublicFieldDataWriter.StringFactory.class,
+        "."));
     this.setTokens(jCas);
     this.setPredicates(jCas);
 
@@ -187,12 +182,11 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
   @Test
   public void testPredicateAnnotation() throws UIMAException {
     // create the document
-    AnalysisEngine engine = AnalysisEngineFactory
-        .createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
-            PredicateAnnotator.class,
-            typeSystemDescription,
-            PublicFieldDataWriter.BooleanFactory.class,
-            "."));
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+        PredicateAnnotator.class,
+        typeSystemDescription,
+        PublicFieldDataWriter.BooleanFactory.class,
+        "."));
     this.setTokens(jCas);
     this.setTrees(jCas);
     this.setPredicates(jCas);
@@ -282,13 +276,13 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
   }
 
   private void setPredicates(JCas jCas) {
-    List<Token> tokens = AnnotationRetrieval.getAnnotations(jCas, Token.class);
+    List<Token> tokens = new ArrayList<Token>(JCasUtil.select(jCas, Token.class));
     Token predToken = tokens.get(1);
     Predicate predicate = new Predicate(jCas, predToken.getBegin(), predToken.getEnd());
     predicate.setAnnotation(predToken);
     predicate.addToIndexes();
 
-    List<TreebankNode> nodes = AnnotationRetrieval.getAnnotations(jCas, TreebankNode.class);
+    Collection<TreebankNode> nodes = JCasUtil.select(jCas, TreebankNode.class);
     SemanticArgument arg0 = new SemanticArgument(jCas, 0, 4);
     arg0.setLabel("ARG0");
     arg0.setFeature("XXX");

@@ -25,8 +25,8 @@ package org.cleartk.timeml.corpus;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.uima.UIMAException;
@@ -37,7 +37,6 @@ import org.cleartk.timeml.TimeMLTestBase;
 import org.cleartk.timeml.TimeMLViewName;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.type.TemporalLink;
-import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.cr.FilesCollectionReader;
 import org.junit.Assert;
 import org.junit.Ignore;
@@ -45,6 +44,7 @@ import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.CollectionReaderFactory;
 import org.uimafit.pipeline.JCasIterable;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -84,7 +84,7 @@ public class PlainTextTLINKGoldAnnotatorTest extends TimeMLTestBase {
         this.webUrl);
     JCas jcas = new JCasIterable(reader, timemlEngine, plainTextEngine).next();
 
-    List<TemporalLink> tlinks = AnnotationRetrieval.getAnnotations(jcas, TemporalLink.class);
+    Collection<TemporalLink> tlinks = JCasUtil.select(jcas, TemporalLink.class);
     Assert.assertEquals(6, tlinks.size());
     Map<String, TemporalLink> tlinkMap = new HashMap<String, TemporalLink>();
     for (TemporalLink tlink : tlinks) {
@@ -97,8 +97,8 @@ public class PlainTextTLINKGoldAnnotatorTest extends TimeMLTestBase {
     Assert.assertEquals("OVERLAP", tlink.getRelationType());
     Assert.assertEquals("e1", tlink.getSource().getId());
     Assert.assertEquals("e2", tlink.getTarget().getId());
-    Assert.assertEquals("ei128", ((Event)tlink.getSource()).getEventInstanceID());
-    Assert.assertEquals("ei129", ((Event)tlink.getTarget()).getEventInstanceID());
+    Assert.assertEquals("ei128", ((Event) tlink.getSource()).getEventInstanceID());
+    Assert.assertEquals("ei129", ((Event) tlink.getTarget()).getEventInstanceID());
 
     // wsj_0106 ei129 ei130 BEFORE
     tlink = tlinkMap.get("e2");
@@ -106,8 +106,8 @@ public class PlainTextTLINKGoldAnnotatorTest extends TimeMLTestBase {
     Assert.assertEquals("BEFORE", tlink.getRelationType());
     Assert.assertEquals("e2", tlink.getSource().getId());
     Assert.assertEquals("e4", tlink.getTarget().getId());
-    Assert.assertEquals("ei129", ((Event)tlink.getSource()).getEventInstanceID());
-    Assert.assertEquals("ei130", ((Event)tlink.getTarget()).getEventInstanceID());
+    Assert.assertEquals("ei129", ((Event) tlink.getSource()).getEventInstanceID());
+    Assert.assertEquals("ei130", ((Event) tlink.getTarget()).getEventInstanceID());
   }
 
   @Test
@@ -131,7 +131,7 @@ public class PlainTextTLINKGoldAnnotatorTest extends TimeMLTestBase {
         this.fileUrl);
     JCas jcas = new JCasIterable(reader, timemlEngine, plainTextEngine).next();
 
-    List<TemporalLink> tlinks = AnnotationRetrieval.getAnnotations(jcas, TemporalLink.class);
+    Collection<TemporalLink> tlinks = JCasUtil.select(jcas, TemporalLink.class);
     Assert.assertEquals(2, tlinks.size());
     Map<String, TemporalLink> tlinkMap = new HashMap<String, TemporalLink>();
     for (TemporalLink tlink : tlinks) {

@@ -37,7 +37,6 @@ import org.cleartk.ne.type.NamedEntity;
 import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.CollectionReaderFactory;
@@ -75,9 +74,7 @@ public class Conll2003GoldReaderTest extends NeTestBase {
     Sentence firstSentence = JCasUtil.selectByIndex(jcas, Sentence.class, 0);
     Assert.assertEquals("ee rrrr ggg ccc tt bbbb BBBBBBB llll . ", firstSentence.getCoveredText());
 
-    Assert.assertEquals(9, AnnotationRetrieval
-        .getAnnotations(jcas, firstSentence, Token.class)
-        .size());
+    Assert.assertEquals(9, JCasUtil.selectCovered(jcas, Token.class, firstSentence).size());
 
     Token token = JCasUtil.selectByIndex(jcas, Token.class, 0);
     Assert.assertEquals("A", token.getPos());
@@ -124,12 +121,9 @@ public class Conll2003GoldReaderTest extends NeTestBase {
 
     Assert.assertEquals(1, sentenceIndex.size());
     firstSentence = JCasUtil.selectByIndex(jcas, Sentence.class, 0);
-    Assert
-        .assertEquals("CCCCC ssss tttt rrrrr fff TTTTTT ttttt . ", firstSentence.getCoveredText());
+    Assert.assertEquals("CCCCC ssss tttt rrrrr fff TTTTTT ttttt . ", firstSentence.getCoveredText());
 
-    Assert.assertEquals(8, AnnotationRetrieval
-        .getAnnotations(jcas, firstSentence, Token.class)
-        .size());
+    Assert.assertEquals(8, JCasUtil.selectCovered(jcas, Token.class, firstSentence).size());
 
     token = JCasUtil.selectByIndex(jcas, Token.class, 0);
     Assert.assertEquals("PPP", token.getPos());

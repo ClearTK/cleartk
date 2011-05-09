@@ -25,6 +25,8 @@ package org.cleartk.timeml.event;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import junit.framework.Assert;
@@ -35,8 +37,8 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.cleartk.timeml.TimeMLTestBase;
 import org.cleartk.timeml.type.Event;
-import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Test;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -71,10 +73,11 @@ public class EventAnnotatorsTest extends TimeMLTestBase {
       engine.process(this.jCas);
       engine.collectionProcessComplete();
     }
-    List<Event> events = AnnotationRetrieval.getAnnotations(jCas, Event.class);
+    Collection<Event> events = JCasUtil.select(jCas, Event.class);
     Assert.assertEquals(2, events.size());
 
-    Event thinking = events.get(0);
+    Iterator<Event> eventsIter = events.iterator();
+    Event thinking = eventsIter.next();
     Assert.assertEquals("e1", thinking.getId());
     Assert.assertEquals("thinking", thinking.getCoveredText());
     Assert.assertEquals("PAST", thinking.getTense());
@@ -83,7 +86,7 @@ public class EventAnnotatorsTest extends TimeMLTestBase {
     Assert.assertEquals("POS", thinking.getPolarity());
     Assert.assertEquals("none", thinking.getModality());
 
-    Event eaten = events.get(1);
+    Event eaten = eventsIter.next();
     Assert.assertEquals("e2", eaten.getId());
     Assert.assertEquals("eaten", eaten.getCoveredText());
     Assert.assertEquals("PRESENT", eaten.getTense());

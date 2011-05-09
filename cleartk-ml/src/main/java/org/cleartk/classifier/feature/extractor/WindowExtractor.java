@@ -34,9 +34,9 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.WindowFeature;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
-import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.AnnotationUtil;
 import org.cleartk.util.UIMAUtil;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -120,14 +120,17 @@ public class WindowExtractor {
     this.name = name;
   }
 
+  /**
+   * VERY SLOW! DO NOT USE!
+   */
   public List<Feature> extract(
       JCas jCas,
       Annotation focusAnnotation,
       Class<? extends Annotation> cls) throws CleartkExtractorException {
-    Annotation windowAnnotation = AnnotationRetrieval.getContainingAnnotation(
-        jCas,
-        focusAnnotation,
-        cls);
+    int annBegin = focusAnnotation.getBegin();
+    int annEnd = focusAnnotation.getEnd();
+    List<? extends Annotation> covering = JCasUtil.selectCovering(jCas, cls, annBegin, annEnd);
+    Annotation windowAnnotation = covering.size() > 0 ? covering.get(0) : null;
     return extract(jCas, focusAnnotation, windowAnnotation);
   }
 
@@ -140,9 +143,7 @@ public class WindowExtractor {
 
     Annotation startAnnotation = getStartAnnotation(jCas, focusAnnotation);
 
-    FSIterator<Annotation> featureAnnotationIterator = jCas
-        .getAnnotationIndex(featureType)
-        .iterator();
+    FSIterator<Annotation> featureAnnotationIterator = jCas.getAnnotationIndex(featureType).iterator();
 
     if (startAnnotation != null) {
       featureAnnotationIterator.moveTo(startAnnotation);
@@ -242,16 +243,7 @@ public class WindowExtractor {
    *         </ul>
    */
   public Annotation getStartAnnotation(JCas jCas, Annotation annotation) {
-    if (windowOrientation.equals(WindowFeature.ORIENTATION_LEFT)) {
-      return AnnotationRetrieval.getAdjacentAnnotation(jCas, annotation, featureClass, true);
-    } else if (windowOrientation.equals(WindowFeature.ORIENTATION_RIGHT)) {
-      return AnnotationRetrieval.getAdjacentAnnotation(jCas, annotation, featureClass, false);
-    } else if (windowOrientation.equals(WindowFeature.ORIENTATION_MIDDLE)) {
-      return AnnotationRetrieval.getFirstAnnotation(jCas, annotation, featureClass);
-    } else if (windowOrientation.equals(WindowFeature.ORIENTATION_MIDDLE_REVERSE)) {
-      return AnnotationRetrieval.getLastAnnotation(jCas, annotation, featureClass);
-    }
-    return null;
+    return WindowFeature.getStartAnnotation(jCas, featureClass, annotation, windowOrientation);
   }
 
   public Class<? extends Annotation> getFeatureClass() {

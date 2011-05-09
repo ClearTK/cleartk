@@ -43,7 +43,6 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.syntax.SyntaxComponents;
-import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.IOUtil;
 import org.cleartk.util.ParamUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
@@ -52,6 +51,7 @@ import org.uimafit.descriptor.TypeCapability;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.InitializableFactory;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -83,22 +83,31 @@ public class SentenceAnnotator extends JCasAnnotator_ImplBase {
         ParamUtil.getParameterValue(PARAM_WINDOW_CLASS_NAMES, null));
   }
 
-  public static final String PARAM_SENTENCE_MODEL_PATH = ConfigurationParameterFactory
-      .createConfigurationParameterName(SentenceAnnotator.class, "sentenceModelPath");
+  public static final String PARAM_SENTENCE_MODEL_PATH = ConfigurationParameterFactory.createConfigurationParameterName(
+      SentenceAnnotator.class,
+      "sentenceModelPath");
 
-  @ConfigurationParameter(mandatory = true, description = "provides the path of the OpenNLP sentence segmenter model file")
+  @ConfigurationParameter(
+      mandatory = true,
+      description = "provides the path of the OpenNLP sentence segmenter model file")
   private String sentenceModelPath;
 
-  public static final String PARAM_SENTENCE_TYPE_NAME = ConfigurationParameterFactory
-      .createConfigurationParameterName(SentenceAnnotator.class, "sentenceTypeName");
+  public static final String PARAM_SENTENCE_TYPE_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
+      SentenceAnnotator.class,
+      "sentenceTypeName");
 
-  public static final String PARAM_WINDOW_CLASS_NAMES = ConfigurationParameterFactory
-      .createConfigurationParameterName(SentenceAnnotator.class, "windowClassNames");
+  public static final String PARAM_WINDOW_CLASS_NAMES = ConfigurationParameterFactory.createConfigurationParameterName(
+      SentenceAnnotator.class,
+      "windowClassNames");
 
-  @ConfigurationParameter(mandatory = false, description = "provides an array of the annotation types that will be processed by this sentence annotator.  If the parameter is not filled, then SentenceAnnotator will process on the contents of jCas.getDocumentText().  It us up to the caller to ensure annotations do not overlap.")
+  @ConfigurationParameter(
+      mandatory = false,
+      description = "provides an array of the annotation types that will be processed by this sentence annotator.  If the parameter is not filled, then SentenceAnnotator will process on the contents of jCas.getDocumentText().  It us up to the caller to ensure annotations do not overlap.")
   private String[] windowClassNames;
 
-  @ConfigurationParameter(description = "class type of the sentences that are created by this annotator. If this parameter is not filled, then sentencesof type org.cleartk.type.Sentence will be created.", defaultValue = "org.cleartk.token.type.Sentence")
+  @ConfigurationParameter(
+      description = "class type of the sentences that are created by this annotator. If this parameter is not filled, then sentencesof type org.cleartk.type.Sentence will be created.",
+      defaultValue = "org.cleartk.token.type.Sentence")
   private String sentenceTypeName;
 
   Class<? extends Annotation> sentenceClass;
@@ -158,7 +167,8 @@ public class SentenceAnnotator extends JCasAnnotator_ImplBase {
     } else {
       // Window class names are specified, iterate over all annotations of the specified classes
       for (Class<? extends Annotation> windowClass : windowClasses) {
-        for (Annotation window : AnnotationRetrieval.getAnnotations(jCas, windowClass)) {
+        // make list copy to avoid concurrent modification
+        for (Annotation window : new ArrayList<Annotation>(JCasUtil.select(jCas, windowClass))) {
           String text = window.getCoveredText();
           processText(jCas, text, window.getBegin());
         }
@@ -191,9 +201,7 @@ public class SentenceAnnotator extends JCasAnnotator_ImplBase {
           if (matcher.find()) {
             end -= matcher.group().length();
           }
-          sentenceConstructor
-              .newInstance(jCas, textOffset + begin, textOffset + end)
-              .addToIndexes();
+          sentenceConstructor.newInstance(jCas, textOffset + begin, textOffset + end).addToIndexes();
         }
         begin = offset; // we need to advance begin regardless of whether a sentence was created.
       }
@@ -209,9 +217,7 @@ public class SentenceAnnotator extends JCasAnnotator_ImplBase {
           if (matcher.find()) {
             end -= matcher.group().length();
           }
-          sentenceConstructor
-              .newInstance(jCas, textOffset + begin, textOffset + end)
-              .addToIndexes();
+          sentenceConstructor.newInstance(jCas, textOffset + begin, textOffset + end).addToIndexes();
         }
       }
     } catch (Exception e) {

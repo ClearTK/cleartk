@@ -44,8 +44,8 @@ import org.cleartk.classifier.feature.proliferate.NumericTypeProliferator;
 import org.cleartk.classifier.feature.proliferate.ProliferatingExtractor;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.AnnotationRetrieval;
 import org.uimafit.factory.initializable.Initializable;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -114,8 +114,8 @@ public class NonSequenceExamplePOSAnnotator extends CleartkAnnotator<String> imp
 
   public void process(JCas jCas) throws AnalysisEngineProcessException {
     // generate a list of training instances for each sentence in the document
-    for (Sentence sentence : AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
-      List<Token> tokens = AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class);
+    for (Sentence sentence : JCasUtil.select(jCas, Sentence.class)) {
+      List<Token> tokens = JCasUtil.selectCovered(jCas, Token.class, sentence);
 
       // for each token, extract all feature values and the label
       for (Token token : tokens) {

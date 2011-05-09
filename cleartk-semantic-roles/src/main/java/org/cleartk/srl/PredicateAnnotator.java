@@ -24,15 +24,15 @@
 package org.cleartk.srl;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
-import org.apache.uima.cas.FSIterator;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.DataWriterFactory;
@@ -49,8 +49,8 @@ import org.cleartk.classifier.jar.GenericJarClassifierFactory;
 import org.cleartk.srl.type.Predicate;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.AnnotationRetrieval;
 import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -105,37 +105,29 @@ public class PredicateAnnotator extends CleartkAnnotator<Boolean> {
   public void process(JCas jCas) throws AnalysisEngineProcessException {
     nPredicates = 0;
     nSentences = 0;
-    List<Sentence> sentences = AnnotationRetrieval.getAnnotations(jCas, Sentence.class);
 
-    for (Sentence sentence : sentences) {
+    Set<Token> predicateTokens = new HashSet<Token>();
+    for (Predicate predicate : JCasUtil.select(jCas, Predicate.class)) {
+      for (Token token : JCasUtil.selectCovered(jCas, Token.class, predicate)) {
+        predicateTokens.add(token);
+      }
+    }
+
+    for (Sentence sentence : JCasUtil.select(jCas, Sentence.class)) {
       nSentences += 1;
-      List<Token> tokenList = AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class);
+      List<Token> tokenList = JCasUtil.selectCovered(jCas, Token.class, sentence);
       Token[] tokens = tokenList.toArray(new Token[tokenList.size()]);
       for (Token token : tokens) {
         Instance<Boolean> instance = new Instance<Boolean>();
         List<Feature> tokenFeatures = this.tokenExtractor.extract(jCas, token);
         List<Feature> leftWindowFeatures = this.leftWindowExtractor.extract(jCas, token, sentence);
-        List<Feature> rightWindowFeatures = this.rightWindowExtractor
-            .extract(jCas, token, sentence);
+        List<Feature> rightWindowFeatures = this.rightWindowExtractor.extract(jCas, token, sentence);
 
         instance.addAll(tokenFeatures);
         instance.addAll(leftWindowFeatures);
         instance.addAll(rightWindowFeatures);
 
-        instance.setOutcome(false);
-        FSIterator<Annotation> predicates = jCas.getAnnotationIndex(Predicate.type).subiterator(
-            sentence);
-        while (predicates.hasNext()) {
-          Predicate predicate = (Predicate) predicates.next();
-          List<Token> predicateTokens = AnnotationRetrieval.getAnnotations(
-              jCas,
-              predicate.getAnnotation(),
-              Token.class);
-          if (predicateTokens.contains(token)) {
-            instance.setOutcome(true);
-            break;
-          }
-        }
+        instance.setOutcome(predicateTokens.contains(token));
 
         if (this.isTraining()) {
           this.dataWriter.write(instance);

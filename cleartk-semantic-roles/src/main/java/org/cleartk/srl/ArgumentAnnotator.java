@@ -52,14 +52,16 @@ import org.cleartk.srl.type.Predicate;
 import org.cleartk.srl.type.SemanticArgument;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
+import org.cleartk.syntax.constituent.type.TreebankNodeUtil;
 import org.cleartk.syntax.feature.HeadWordExtractor;
 import org.cleartk.syntax.feature.SubCategorizationExtractor;
 import org.cleartk.syntax.feature.SyntacticPathExtractor;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.AnnotationRetrieval;
+import org.cleartk.util.AnnotationUtil;
 import org.cleartk.util.UIMAUtil;
 import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -130,7 +132,7 @@ public class ArgumentAnnotator extends CleartkAnnotator<String> {
 
   @Override
   public void process(JCas jCas) throws AnalysisEngineProcessException {
-    for (Sentence sentence : AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
+    for (Sentence sentence : JCasUtil.select(jCas, Sentence.class)) {
       processSentence(jCas, sentence);
     }
   }
@@ -138,8 +140,7 @@ public class ArgumentAnnotator extends CleartkAnnotator<String> {
   private void processSentence(JCas jCas, Sentence sentence) throws AnalysisEngineProcessException {
 
     List<TreebankNode> sentenceConstituents = new ArrayList<TreebankNode>(80);
-    TopTreebankNode top;
-    top = AnnotationRetrieval.getContainingAnnotation(jCas, sentence, TopTreebankNode.class, false);
+    TopTreebankNode top = AnnotationUtil.selectFirstMatching(jCas, TopTreebankNode.class, sentence);
     if (top == null) {
       throw CleartkExtractorException.noAnnotationInWindow(TopTreebankNode.class, sentence);
     }
@@ -150,8 +151,7 @@ public class ArgumentAnnotator extends CleartkAnnotator<String> {
     for (TreebankNode constituent : sentenceConstituents)
       sentenceConstituentFeatures.add(extractConstituentFeatures(jCas, constituent, sentence));
 
-    List<Predicate> predicates = AnnotationRetrieval
-        .getAnnotations(jCas, sentence, Predicate.class);
+    List<Predicate> predicates = JCasUtil.selectCovered(jCas, Predicate.class, sentence);
     for (Predicate predicate : predicates) {
       processPredicate(jCas, sentence, predicate, sentenceConstituents, sentenceConstituentFeatures);
     }
@@ -164,14 +164,14 @@ public class ArgumentAnnotator extends CleartkAnnotator<String> {
       Predicate predicate,
       List<TreebankNode> constituents,
       List<List<Feature>> constituentFeatures) throws AnalysisEngineProcessException {
-    TreebankNode predicateNode = AnnotationRetrieval.getMatchingAnnotation(
+    TreebankNode predicateNode = TreebankNodeUtil.selectMatchingLeaf(
         jCas,
-        predicate.getAnnotation(),
-        TreebankNode.class);
-    Token predicateToken = AnnotationRetrieval.getMatchingAnnotation(
+        predicate.getAnnotation());
+    List<Token> predicateTokens = JCasUtil.selectCovered(
         jCas,
-        predicate.getAnnotation(),
-        Token.class);
+        Token.class,
+        predicate.getAnnotation());
+    Token predicateToken = predicateTokens.get(0);
 
     List<Feature> predicateFeatures = new ArrayList<Feature>(20);
     predicateFeatures.addAll(predicateTokenExtractor.extract(jCas, predicateToken));

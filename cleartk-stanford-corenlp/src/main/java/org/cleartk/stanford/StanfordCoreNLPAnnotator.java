@@ -19,6 +19,7 @@
 package org.cleartk.stanford;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -42,10 +43,11 @@ import org.cleartk.syntax.dependency.type.DependencyRelation;
 import org.cleartk.syntax.dependency.type.TopDependencyNode;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.AnnotationRetrieval;
+import org.cleartk.util.AnnotationUtil;
 import org.cleartk.util.UIMAUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.util.JCasUtil;
 
 import com.google.common.collect.ArrayListMultimap;
 
@@ -167,8 +169,7 @@ public class StanfordCoreNLPAnnotator extends JCasAnnotator_ImplBase {
       this.addTreebankNodeToIndexes(root, jCas, tree, tokenAnns);
 
       // get the dependencies
-      SemanticGraph dependencies = sentenceAnn
-          .get(CollapsedCCProcessedDependenciesAnnotation.class);
+      SemanticGraph dependencies = sentenceAnn.get(CollapsedCCProcessedDependenciesAnnotation.class);
 
       // convert Stanford nodes to UIMA annotations
       List<Token> tokens = JCasUtil.selectCovered(jCas, Token.class, sentence);
@@ -188,10 +189,8 @@ public class StanfordCoreNLPAnnotator extends JCasAnnotator_ImplBase {
       }
 
       // create relation annotations for each Stanford dependency
-      ArrayListMultimap<DependencyNode, DependencyRelation> headRelations = ArrayListMultimap
-          .create();
-      ArrayListMultimap<DependencyNode, DependencyRelation> childRelations = ArrayListMultimap
-          .create();
+      ArrayListMultimap<DependencyNode, DependencyRelation> headRelations = ArrayListMultimap.create();
+      ArrayListMultimap<DependencyNode, DependencyRelation> childRelations = ArrayListMultimap.create();
       for (SemanticGraphEdge stanfordEdge : dependencies.edgeList()) {
         DependencyRelation relation = new DependencyRelation(jCas);
         DependencyNode head = stanfordToUima.get(stanfordEdge.getGovernor());
@@ -220,6 +219,18 @@ public class StanfordCoreNLPAnnotator extends JCasAnnotator_ImplBase {
       }
     }
 
+    // map from tokens to their smallest containing named entity mentions
+    Map<Span, NamedEntityMention> tokenMentionMap = new HashMap<Span, NamedEntityMention>();
+    for (NamedEntityMention mention : JCasUtil.select(jCas, NamedEntityMention.class)) {
+      for (Token token : JCasUtil.selectCovered(jCas, Token.class, mention)) {
+        Span span = new Span(token.getBegin(), token.getEnd());
+        NamedEntityMention oldMention = tokenMentionMap.get(span);
+        if (oldMention == null || AnnotationUtil.size(mention) < AnnotationUtil.size(oldMention)) {
+          tokenMentionMap.put(span, mention);
+        }
+      }
+    }
+
     // add mentions for all entities identified by the coreference system
     CorefGraph corefGraph = new CorefGraph(document.get(CorefGraphAnnotation.class));
     Map<CoreMap, NamedEntityMention> stanfordToUimaNE = new HashMap<CoreMap, NamedEntityMention>();
@@ -231,11 +242,11 @@ public class StanfordCoreNLPAnnotator extends JCasAnnotator_ImplBase {
       int end = tokenMap.get(CharacterOffsetEndAnnotation.class);
 
       // if a named entity already contains the token, use that
-      Token token = new Token(jCas, begin, end);
-      mention = AnnotationRetrieval.getContainingAnnotation(jCas, token, NamedEntityMention.class);
+      mention = tokenMentionMap.get(new Span(begin, end));
 
       // otherwise, create a new named entity mention
       if (mention == null) {
+        Token token = new Token(jCas, begin, end);
         for (TreebankNode node : JCasUtil.selectCovered(jCas, TreebankNode.class, token)) {
           // if the token is a PRP, use that
           if (node.getNodeType().startsWith("PRP")) {
@@ -289,7 +300,7 @@ public class StanfordCoreNLPAnnotator extends JCasAnnotator_ImplBase {
     }
 
     // add singleton entities for any named entities not picked up by coreference system
-    for (NamedEntityMention mention : JCasUtil.iterate(jCas, NamedEntityMention.class)) {
+    for (NamedEntityMention mention : JCasUtil.select(jCas, NamedEntityMention.class)) {
       if (mention.getMentionedEntity() == null) {
         NamedEntity entity = new NamedEntity(jCas);
         entity.setMentions(new FSArray(jCas, 1));
@@ -309,7 +320,7 @@ public class StanfordCoreNLPAnnotator extends JCasAnnotator_ImplBase {
 
       private int getFirstBegin(NamedEntity entity) {
         int min = Integer.MAX_VALUE;
-        for (NamedEntityMention mention : JCasUtil.iterate(
+        for (NamedEntityMention mention : JCasUtil.select(
             entity.getMentions(),
             NamedEntityMention.class)) {
           if (mention.getBegin() < min) {
@@ -375,5 +386,29 @@ public class StanfordCoreNLPAnnotator extends JCasAnnotator_ImplBase {
     node.setChildren(this.addTreebankNodeChildrenToIndexes(node, jCas, tokenAnns, tree));
     node.setLeaf(node.getChildren().size() == 0);
     node.addToIndexes();
+  }
+
+  private static class Span {
+    public int begin;
+
+    public int end;
+
+    public Span(int begin, int end) {
+      this.begin = begin;
+      this.end = end;
+    }
+
+    public boolean equals(Object object) {
+      if (object instanceof Span) {
+        Span that = (Span) object;
+        return this.begin == that.begin && this.end == that.end;
+      } else {
+        return false;
+      }
+    }
+
+    public int hashCode() {
+      return Arrays.hashCode(new int[] { this.begin, this.end });
+    }
   }
 }

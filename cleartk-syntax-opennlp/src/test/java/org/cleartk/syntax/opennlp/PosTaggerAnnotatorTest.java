@@ -30,10 +30,10 @@ import java.util.List;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -44,8 +44,7 @@ public class PosTaggerAnnotatorTest extends OpennlpSyntaxTestBase {
 
   @Test
   public void testSimple() throws UIMAException {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(PosTaggerAnnotator
-        .getDescription());
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(PosTaggerAnnotator.getDescription());
     tokenBuilder.buildTokens(
         jCas,
         "The brown fox jumped quickly over the lazy dog.",
@@ -54,7 +53,7 @@ public class PosTaggerAnnotatorTest extends OpennlpSyntaxTestBase {
 
     List<String> expected = Arrays.asList("DT JJ NN VBD RB IN DT JJ NN .".split(" "));
     List<String> actual = new ArrayList<String>();
-    for (Token token : AnnotationRetrieval.getAnnotations(jCas, Token.class)) {
+    for (Token token : JCasUtil.select(jCas, Token.class)) {
       actual.add(token.getPos());
     }
     Assert.assertEquals(expected, actual);

@@ -26,29 +26,33 @@ package org.cleartk.token.lemma.choi;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.Iterator;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.cleartk.token.TokenTestBase;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
  * Copyright (c) 2011, Regents of the University of Colorado <br>
  * All rights reserved.
  * <p>
+ * 
  * @author Philip Ogren
  */
 
 public class LemmaAnnotatorTest extends TokenTestBase {
-  
+
   @Test
   public void testLemmaAnnotator() throws Exception {
-    AnalysisEngine lemmatizer = AnalysisEngineFactory.createPrimitive(LemmaAnnotator.class, typeSystemDescription);
-    
+    AnalysisEngine lemmatizer = AnalysisEngineFactory.createPrimitive(
+        LemmaAnnotator.class,
+        typeSystemDescription);
+
     tokenBuilder.buildTokens(jCas, "This is a test.", "This is a test .", "DT VB DT NN .");
     lemmatizer.process(jCas);
     testLemmas("this be a test .");
@@ -61,10 +65,11 @@ public class LemmaAnnotatorTest extends TokenTestBase {
 
   private void testLemmas(String expectedLemmasString) {
     String[] expectedLemmas = expectedLemmasString.split("\\s+");
-    List<Token> tokens = AnnotationRetrieval.getAnnotations(jCas, Token.class);
+    Collection<Token> tokens = JCasUtil.select(jCas, Token.class);
     assertEquals(expectedLemmas.length, tokens.size());
-    for(int i=0; i<tokens.size(); i++) {
-      assertEquals(expectedLemmas[i], tokens.get(i).getLemma());
+    Iterator<Token> tokensIter = tokens.iterator();
+    for (int i = 0; i < tokens.size(); i++) {
+      assertEquals(expectedLemmas[i], tokensIter.next().getLemma());
     }
   }
 

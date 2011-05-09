@@ -34,10 +34,10 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.token.TokenTestBase;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -71,7 +71,7 @@ public class SnowballStemmerTest extends TokenTestBase {
     tokenBuilder.buildTokens(jCas, text, tokens);
     engine.process(jCas);
     List<String> actual = new ArrayList<String>();
-    for (Token token : AnnotationRetrieval.getAnnotations(jCas, Token.class)) {
+    for (Token token : JCasUtil.select(jCas, Token.class)) {
       actual.add(token.getStem());
     }
     String expected = "the brown fox jump quick over the lazi dog .";
@@ -91,10 +91,9 @@ public class SnowballStemmerTest extends TokenTestBase {
         "The brown foxes JumPEd QUICKLy over the lazY dog .");
     engine.process(jCas);
 
-    List<String> expected = Arrays
-        .asList("the brown fox jump quick over the lazi dog .".split(" "));
+    List<String> expected = Arrays.asList("the brown fox jump quick over the lazi dog .".split(" "));
     List<String> actual = new ArrayList<String>();
-    for (Token token : AnnotationRetrieval.getAnnotations(jCas, Token.class)) {
+    for (Token token : JCasUtil.select(jCas, Token.class)) {
       actual.add(token.getStem());
     }
     Assert.assertEquals(expected, actual);

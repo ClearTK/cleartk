@@ -324,7 +324,7 @@ public class AnnotationEvaluator<T extends Comparable<? super T>> extends JCasAn
 
   private Map<T, String> getSpanTags(JCas view) {
     Map<T, String> spans = new HashMap<T, String>();
-    for (Annotation ann : JCasUtil.iterate(view, this.annotationClass)) {
+    for (Annotation ann : JCasUtil.select(view, this.annotationClass)) {
       T span = this.spanExtractor.getSpan(ann);
       if (this.annotationAttributeName == null) {
         spans.put(span, null);

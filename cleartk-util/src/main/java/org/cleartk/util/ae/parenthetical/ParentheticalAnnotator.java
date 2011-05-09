@@ -52,8 +52,9 @@ import org.uimafit.util.JCasUtil;
 
 public class ParentheticalAnnotator extends JCasAnnotator_ImplBase {
 
-  public static final String PARAM_WINDOW_TYPE_NAME = ConfigurationParameterFactory
-      .createConfigurationParameterName(ParentheticalAnnotator.class, "windowTypeName");
+  public static final String PARAM_WINDOW_TYPE_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
+      ParentheticalAnnotator.class,
+      "windowTypeName");
 
   private static final String WINDOW_TYPE_DESCRIPTION = "specifies the class type of annotations that will be tokenized. "
       + "If no value is given, then the entire document will be tokenized at once. ";
@@ -64,22 +65,28 @@ public class ParentheticalAnnotator extends JCasAnnotator_ImplBase {
   @ConfigurationParameter(description = WINDOW_TYPE_DESCRIPTION)
   private String windowTypeName;
 
-  public static final String PARAM_PARENTHETICAL_TYPE_NAME = ConfigurationParameterFactory
-      .createConfigurationParameterName(ParentheticalAnnotator.class, "parentheticalTypeName");
+  public static final String PARAM_PARENTHETICAL_TYPE_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
+      ParentheticalAnnotator.class,
+      "parentheticalTypeName");
 
-  @ConfigurationParameter(description = "class name of the annotations that are created by this annotator.", defaultValue = "org.cleartk.util.type.Parenthetical", mandatory = true)
+  @ConfigurationParameter(
+      description = "class name of the annotations that are created by this annotator.",
+      defaultValue = "org.cleartk.util.type.Parenthetical",
+      mandatory = true)
   private String parentheticalTypeName;
 
-  public static final String PARAM_LEFT_PARENTHESIS = ConfigurationParameterFactory
-      .createConfigurationParameterName(ParentheticalAnnotator.class, "leftParenthesis");
+  public static final String PARAM_LEFT_PARENTHESIS = ConfigurationParameterFactory.createConfigurationParameterName(
+      ParentheticalAnnotator.class,
+      "leftParenthesis");
 
   @ConfigurationParameter(defaultValue = "(", mandatory = true)
   private String leftParenthesis;
 
   private char leftParen;
 
-  public static final String PARAM_RIGHT_PARENTHESIS = ConfigurationParameterFactory
-      .createConfigurationParameterName(ParentheticalAnnotator.class, "rightParenthesis");
+  public static final String PARAM_RIGHT_PARENTHESIS = ConfigurationParameterFactory.createConfigurationParameterName(
+      ParentheticalAnnotator.class,
+      "rightParenthesis");
 
   @ConfigurationParameter(defaultValue = ")", mandatory = true)
   private String rightParenthesis;
@@ -126,7 +133,7 @@ public class ParentheticalAnnotator extends JCasAnnotator_ImplBase {
   @Override
   public void process(JCas jCas) throws AnalysisEngineProcessException {
     if (windowClass != null) {
-      for (Annotation window : JCasUtil.iterate(jCas, windowClass)) {
+      for (Annotation window : JCasUtil.select(jCas, windowClass)) {
         String text = window.getCoveredText();
         createParentheticals(jCas, text, window.getBegin());
       }

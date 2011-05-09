@@ -29,7 +29,7 @@ import java.util.List;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
-import org.cleartk.util.AnnotationRetrieval;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -67,11 +67,11 @@ public class DistanceExtractor implements AnnotationPairFeatureExtractor {
     if (secondAnnotation.getBegin() <= firstAnnotation.getEnd()) {
       featureValue = 0;
     } else {
-      List<? extends Annotation> annotations = AnnotationRetrieval.getAnnotations(
+      List<? extends Annotation> annotations = JCasUtil.selectCovered(
           jCas,
+          unitClass,
           firstAnnotation.getEnd(),
-          secondAnnotation.getBegin(),
-          unitClass);
+          secondAnnotation.getBegin());
       featureValue = annotations.size();
     }
 

@@ -25,18 +25,17 @@ package org.cleartk.timeml.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.uima.cas.FSIterator;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.AnnotationRetrieval;
-import org.cleartk.util.UIMAUtil;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -75,29 +74,25 @@ public class PrecedingTokenTextBagExtractor implements SimpleFeatureExtractor {
 
   public List<Feature> extract(JCas jCas, Annotation focusAnnotation) {
     List<Feature> features = new ArrayList<Feature>();
-    Token firstTokenBefore = AnnotationRetrieval.getAdjacentAnnotation(
+    int i = 0;
+    List<Token> preceding = JCasUtil.selectPreceding(
         jCas,
-        focusAnnotation,
         Token.class,
-        true);
-    if (firstTokenBefore != null) {
-      FSIterator<Annotation> iterator = jCas.getAnnotationIndex(
-          UIMAUtil.getCasType(jCas, Token.class)).iterator();
-      iterator.moveTo(firstTokenBefore);
-      for (int i = 0; i < this.nTokens && iterator.isValid(); ++i) {
-        Token token = (Token) iterator.get();
-        String pos = token.getPos();
-        if (pos != null) {
-          if (pos.length() > 2) {
-            pos = pos.substring(0, 2);
-          }
-          if (this.acceptablePOSTags.contains(pos)) {
-            String name = this.getFeatureName(pos, i);
-            features.add(new Feature(name, token.getCoveredText()));
-          }
+        focusAnnotation,
+        this.nTokens);
+    Collections.reverse(preceding);
+    for (Token token : preceding) {
+      String pos = token.getPos();
+      if (pos != null) {
+        if (pos.length() > 2) {
+          pos = pos.substring(0, 2);
         }
-        iterator.moveToPrevious();
+        if (this.acceptablePOSTags.contains(pos)) {
+          String name = this.getFeatureName(pos, i);
+          features.add(new Feature(name, token.getCoveredText()));
+        }
       }
+      i += 1;
     }
     return features;
   }

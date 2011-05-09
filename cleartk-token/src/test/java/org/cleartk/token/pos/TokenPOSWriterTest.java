@@ -37,7 +37,6 @@ import org.cleartk.token.TokenTestBase;
 import org.cleartk.token.tokenizer.chunk.ChunkTokenizerFactory;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.ViewURIUtil;
 import org.cleartk.util.ae.linewriter.LineWriter;
 import org.cleartk.util.ae.linewriter.block.BlankLineBlockWriter;
@@ -45,6 +44,7 @@ import org.cleartk.util.ae.linewriter.block.DocumentIdBlockWriter;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -140,8 +140,7 @@ public class TokenPOSWriterTest extends TokenTestBase {
   public void testLineWriterAfterChunkTokenizer() throws Exception {
     AnalysisEngine[] engines = new AnalysisEngine[] {
         AnalysisEngineFactory.createPrimitive(TokenComponents.createSubtokenizer()),
-        AnalysisEngineFactory.createPrimitive(ChunkTokenizerFactory
-            .createChunkTokenizer("src/test/resources/token/chunk/model.jar")),
+        AnalysisEngineFactory.createPrimitive(ChunkTokenizerFactory.createChunkTokenizer("src/test/resources/token/chunk/model.jar")),
         AnalysisEngineFactory.createPrimitive(
             LineWriter.class,
             typeSystemDescription,
@@ -164,7 +163,7 @@ public class TokenPOSWriterTest extends TokenTestBase {
     }
 
     // make sure there were two sentences
-    int sentCount = AnnotationRetrieval.getAnnotations(jCas, Sentence.class).size();
+    int sentCount = JCasUtil.select(jCas, Sentence.class).size();
     Assert.assertEquals(2, sentCount);
 
     // make sure there no extra blank lines

@@ -23,12 +23,14 @@
  */
 package org.cleartk.util;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -40,6 +42,27 @@ import org.apache.uima.jcas.tcas.Annotation;
  * 
  */
 public class AnnotationUtil {
+
+  public static <T extends Annotation> T selectFirstMatching(
+      JCas jCas,
+      Class<T> selectedType,
+      Annotation annotation) {
+    List<T> selected = selectMatching(jCas, selectedType, annotation);
+    return selected.size() > 0 ? selected.get(0) : null;
+  }
+
+  public static <T extends Annotation> List<T> selectMatching(
+      JCas jCas,
+      Class<T> selectedType,
+      Annotation annotation) {
+    List<T> result = new ArrayList<T>();
+    for (T selected : JCasUtil.selectCovered(jCas, selectedType, annotation)) {
+      if (selected.getBegin() == annotation.getBegin() && selected.getEnd() == annotation.getEnd()) {
+        result.add(selected);
+      }
+    }
+    return result;
+  }
 
   public static boolean contains(Annotation bigAnnotation, Annotation smallAnnotation) {
     if (bigAnnotation == null || smallAnnotation == null)
@@ -72,11 +95,7 @@ public class AnnotationUtil {
   }
 
   public static int size(Annotation annotation) {
-    try {
-      return annotation.getEnd() - annotation.getBegin();
-    } catch (Exception e) {
-      return 0;
-    }
+    return annotation.getEnd() - annotation.getBegin();
   }
 
   /**
@@ -120,16 +139,17 @@ public class AnnotationUtil {
     if (before) {
       start = 0;
       end = annotation.getBegin();
-      Annotation startToken = AnnotationRetrieval
-          .get(jCas, annotation, tokenClass, -numberOfTokens);
-      if (startToken != null)
-        start = startToken.getBegin();
+      List<TOKEN_TYPE> anns = JCasUtil.selectPreceding(jCas, tokenClass, annotation, numberOfTokens);
+      if (anns.size() > 0) {
+        start = anns.get(0).getBegin();
+      }
     } else {
       start = annotation.getEnd();
       end = documentText.length();
-      Annotation endToken = AnnotationRetrieval.get(jCas, annotation, tokenClass, numberOfTokens);
-      if (endToken != null)
-        end = endToken.getEnd();
+      List<TOKEN_TYPE> anns = JCasUtil.selectFollowing(jCas, tokenClass, annotation, numberOfTokens);
+      if (anns.size() > 0) {
+        end = anns.get(anns.size() - 1).getEnd();
+      }
     }
 
     return documentText.substring(start, end);

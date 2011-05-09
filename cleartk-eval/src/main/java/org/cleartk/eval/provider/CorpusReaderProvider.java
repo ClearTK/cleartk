@@ -27,7 +27,7 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.collection.CollectionReader;
-import org.uimafit.component.JCasAnnotatorAdapter;
+import org.uimafit.component.NoOpAnnotator;
 
 /**
  * CorpusReaderProvider assumes that your corpus is split into two sets - a training set and a
@@ -100,7 +100,7 @@ public interface CorpusReaderProvider {
    * perform all the necessary work that needs to be done before the data is ready to go. This
    * method should return a valid {@link AnalysisEngineDescription} regardless of whether there is
    * any preprocessing to do. If no preprocessing is required, then return an
-   * AnalysisEngineDescription for the {@link JCasAnnotatorAdapter} class as is done in
+   * AnalysisEngineDescription for the {@link NoOpAnnotator} class as is done in
    * {@link GeniaFactory#getPreprocessor()}.
    * 
    * @return an analysis engine description that defines all of the preprocessing that needs to be

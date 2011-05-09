@@ -42,12 +42,12 @@ import org.cleartk.srl.type.SemanticArgument;
 import org.cleartk.syntax.constituent.ptb.ListSpecification;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.UIMAUtil;
 import org.cleartk.util.ViewURIUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
+import org.uimafit.util.JCasUtil;
 
 /**
  * /** <br>
@@ -70,11 +70,14 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  */
 public class SRLWriter extends JCasAnnotator_ImplBase {
 
-  @ConfigurationParameter(mandatory = true, description = "path where the PropBank-style file should be written")
+  @ConfigurationParameter(
+      mandatory = true,
+      description = "path where the PropBank-style file should be written")
   private File outputFile;
 
-  public static final String PARAM_OUTPUT_FILE = ConfigurationParameterFactory
-      .createConfigurationParameterName(SRLWriter.class, "outputFile");
+  public static final String PARAM_OUTPUT_FILE = ConfigurationParameterFactory.createConfigurationParameterName(
+      SRLWriter.class,
+      "outputFile");
 
   private PrintWriter output;
 
@@ -93,22 +96,19 @@ public class SRLWriter extends JCasAnnotator_ImplBase {
 
   @Override
   public void process(JCas jCas) throws AnalysisEngineProcessException {
-    DocumentAnnotation doc = AnnotationRetrieval.getDocument(jCas);
+    DocumentAnnotation doc = JCasUtil.selectSingle(jCas, DocumentAnnotation.class);
 
-    List<Sentence> sentences = AnnotationRetrieval.getAnnotations(jCas, doc, Sentence.class);
+    List<Sentence> sentences = JCasUtil.selectCovered(jCas, Sentence.class, doc);
     int sentenceIndex = 0;
     for (Sentence sentence : sentences) {
       sentenceIndex += 1;
 
-      List<Token> sentenceTokens = AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class);
+      List<Token> sentenceTokens = JCasUtil.selectCovered(jCas, Token.class, sentence);
 
-      List<Predicate> predicates = AnnotationRetrieval.getAnnotations(
-          jCas,
-          sentence,
-          Predicate.class);
+      List<Predicate> predicates = JCasUtil.selectCovered(jCas, Predicate.class, sentence);
       for (Predicate predicate : predicates) {
         ListSpecification predicateTokenList = tokenList(
-            AnnotationRetrieval.getAnnotations(jCas, predicate.getAnnotation(), Token.class),
+            JCasUtil.selectCovered(jCas, Token.class, predicate.getAnnotation()),
             sentenceTokens);
 
         StringBuffer line = new StringBuffer();
@@ -137,10 +137,7 @@ public class SRLWriter extends JCasAnnotator_ImplBase {
             line.append("-" + sArg.getFeature());
           line.append(":");
           if (sArg.getAnnotation() != null) {
-            List<Token> argTokens = AnnotationRetrieval.getAnnotations(
-                jCas,
-                sArg.getAnnotation(),
-                Token.class);
+            List<Token> argTokens = JCasUtil.selectCovered(jCas, Token.class, sArg.getAnnotation());
             if (argTokens.size() > 0)
               line.append(tokenList(argTokens, sentenceTokens));
           } else {
@@ -149,10 +146,7 @@ public class SRLWriter extends JCasAnnotator_ImplBase {
                 Annotation.class);
             boolean first = true;
             for (Annotation corefAnnotation : corefAnnotations) {
-              List<Token> argTokens = AnnotationRetrieval.getAnnotations(
-                  jCas,
-                  corefAnnotation,
-                  Token.class);
+              List<Token> argTokens = JCasUtil.selectCovered(jCas, Token.class, corefAnnotation);
               if (argTokens.size() > 0) {
                 if (!first)
                   line.append("*");

@@ -29,7 +29,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
-import org.cleartk.util.AnnotationRetrieval;
+import org.cleartk.util.AnnotationUtil;
 
 /**
  * <br>
@@ -63,23 +63,19 @@ public class MatchingAnnotationPairExtractor implements AnnotationPairFeatureExt
     Annotation rightMatchingAnnotation;
 
     if (!leftType.isInstance(leftAnnotation)) {
-      leftMatchingAnnotation = AnnotationRetrieval.getMatchingAnnotation(
-          view,
-          leftAnnotation,
-          leftType);
-      if (leftMatchingAnnotation == null)
+      leftMatchingAnnotation = AnnotationUtil.selectFirstMatching(view, leftType, leftAnnotation);
+      if (leftMatchingAnnotation == null) {
         throw CleartkExtractorException.noAnnotationMatchingWindow(leftType, leftAnnotation);
+      }
     } else {
       leftMatchingAnnotation = leftType.cast(leftAnnotation);
     }
 
     if (!rightType.isInstance(rightAnnotation)) {
-      rightMatchingAnnotation = AnnotationRetrieval.getMatchingAnnotation(
-          view,
-          rightAnnotation,
-          rightType);
-      if (rightMatchingAnnotation == null)
+      rightMatchingAnnotation = AnnotationUtil.selectFirstMatching(view, rightType, rightAnnotation);
+      if (rightMatchingAnnotation == null) {
         throw CleartkExtractorException.noAnnotationMatchingWindow(rightType, rightAnnotation);
+      }
     } else {
       rightMatchingAnnotation = rightType.cast(rightAnnotation);
     }

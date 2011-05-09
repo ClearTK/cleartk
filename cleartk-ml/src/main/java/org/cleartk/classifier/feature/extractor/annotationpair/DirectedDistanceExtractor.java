@@ -29,8 +29,8 @@ import java.util.List;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
-import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.AnnotationUtil;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -77,11 +77,11 @@ public class DirectedDistanceExtractor implements AnnotationPairFeatureExtractor
     if (AnnotationUtil.overlaps(annotation1, annotation2)) {
       featureValue = 0;
     } else {
-      List<? extends Annotation> annotations = AnnotationRetrieval.getAnnotations(
+      List<? extends Annotation> annotations = JCasUtil.selectCovered(
           jCas,
+          unitClass,
           firstAnnotation.getEnd(),
-          secondAnnotation.getBegin(),
-          unitClass);
+          secondAnnotation.getBegin());
       featureValue = annotations.size() + 1;
     }
     if (negate)

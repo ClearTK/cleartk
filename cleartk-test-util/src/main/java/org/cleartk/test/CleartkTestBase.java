@@ -38,7 +38,7 @@ import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.TemporaryFolder;
-import org.uimafit.component.JCasAnnotatorAdapter;
+import org.uimafit.component.NoOpAnnotator;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.JCasFactory;
 import org.uimafit.factory.TypeSystemDescriptionFactory;
@@ -73,7 +73,7 @@ public abstract class CleartkTestBase {
    * should be disabled. Current value: {@value #LONG_TESTS_PROPERTY_VALUE}.
    */
   public static final String LONG_TESTS_PROPERTY_VALUE = "long";
-  
+
   /**
    * Value for the {@link #SKIP_TESTS_PROPERTY} property that indicates that tests requiring a lot
    * of memory should be disabled. Current value: {@value #BIG_MEMORY_TESTS_PROPERTY_VALUE}.
@@ -145,7 +145,6 @@ public abstract class CleartkTestBase {
       SKIP_TESTS_PROPERTY,
       BIG_MEMORY_TESTS_PROPERTY_VALUE);
 
-
   protected JCas jCas;
 
   protected TypeSystemDescription typeSystemDescription;
@@ -159,8 +158,7 @@ public abstract class CleartkTestBase {
 
   @Before
   public void setUp() throws Exception {
-    typeSystemDescription = TypeSystemDescriptionFactory
-        .createTypeSystemDescription(getTypeSystemDescriptorNames());
+    typeSystemDescription = TypeSystemDescriptionFactory.createTypeSystemDescription(getTypeSystemDescriptorNames());
     jCas = JCasFactory.createJCas(typeSystemDescription);
     outputDirectory = folder.newFolder("output");
     outputDirectoryName = outputDirectory.getPath();
@@ -171,7 +169,7 @@ public abstract class CleartkTestBase {
   public int getCollectionReaderCount(CollectionReader reader) throws UIMAException, IOException {
 
     AnalysisEngine aeAdapter = AnalysisEngineFactory.createPrimitive(
-        JCasAnnotatorAdapter.class,
+        NoOpAnnotator.class,
         typeSystemDescription);
 
     int count = 0;

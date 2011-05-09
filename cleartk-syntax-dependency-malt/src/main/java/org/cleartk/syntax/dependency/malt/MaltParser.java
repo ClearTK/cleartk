@@ -41,7 +41,6 @@ import org.cleartk.syntax.dependency.type.DependencyRelation;
 import org.cleartk.syntax.dependency.type.TopDependencyNode;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.UIMAUtil;
 import org.maltparser.MaltParserService;
 import org.maltparser.core.exception.MaltChainedException;
@@ -52,6 +51,7 @@ import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -62,7 +62,6 @@ public class MaltParser extends JCasAnnotator_ImplBase {
 
   public static final String ENGMALT_RESOURCE_NAME = "/models/engmalt.linear.mco";
 
- 
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
     // get the resource path and strip the ".mco" suffix
     String fileName = MaltParser.class.getResource(ENGMALT_RESOURCE_NAME).getFile();
@@ -79,11 +78,14 @@ public class MaltParser extends JCasAnnotator_ImplBase {
         modelFileName);
   }
 
-  @ConfigurationParameter(description = "The path to the model file, without the .mco suffix.", mandatory = true)
+  @ConfigurationParameter(
+      description = "The path to the model file, without the .mco suffix.",
+      mandatory = true)
   private String modelFileName;
 
-  public static final String PARAM_MODEL_FILE_NAME = ConfigurationParameterFactory
-      .createConfigurationParameterName(MaltParser.class, "modelFileName");
+  public static final String PARAM_MODEL_FILE_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
+      MaltParser.class,
+      "modelFileName");
 
   private MaltParserService service;
 
@@ -116,8 +118,8 @@ public class MaltParser extends JCasAnnotator_ImplBase {
 
   @Override
   public void process(JCas jCas) throws AnalysisEngineProcessException {
-    for (Sentence sentence : AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
-      List<Token> tokens = AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class);
+    for (Sentence sentence : JCasUtil.select(jCas, Sentence.class)) {
+      List<Token> tokens = JCasUtil.selectCovered(jCas, Token.class, sentence);
 
       // convert tokens into MaltParser input array
       List<String> inputStrings = new ArrayList<String>();

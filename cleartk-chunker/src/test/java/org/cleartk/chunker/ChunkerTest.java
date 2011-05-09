@@ -27,6 +27,8 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.uima.UIMAException;
@@ -52,10 +54,10 @@ import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Chunk;
 import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
-import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.initializable.InitializableFactory;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -201,7 +203,7 @@ public class ChunkerTest extends DefaultTestBase {
         text,
         "What if we built a rocket ship made of cheese ? We could fly it to the moon for repairs",
         "A B C D E F G H I J K L M N O P Q R S T U");
-    List<Token> tokens = AnnotationRetrieval.getAnnotations(jCas, Token.class);
+    List<Token> tokens = new ArrayList<Token>(JCasUtil.select(jCas, Token.class));
     for (int i = 0; i < tokens.size(); i++) {
       Token token1 = tokens.get(i);
       Token token2 = tokens.get(++i);
@@ -225,12 +227,13 @@ public class ChunkerTest extends DefaultTestBase {
     token = tokens.get(5);
     assertEquals("I-chunk5", chunkLabeler.getLabel(token));
 
-    List<Chunk> chunks = AnnotationRetrieval.getAnnotations(jCas, Chunk.class);
+    Collection<Chunk> chunks = JCasUtil.select(jCas, Chunk.class);
     assertEquals(10, chunks.size());
-    for (Chunk chunk : chunks) {
+    // create list copy to avoid concurrent modification
+    for (Chunk chunk : new ArrayList<Chunk>(chunks)) {
       chunk.removeFromIndexes();
     }
-    chunks = AnnotationRetrieval.getAnnotations(jCas, Chunk.class);
+    chunks = JCasUtil.select(jCas, Chunk.class);
     assertEquals(0, chunks.size());
 
     engine = AnalysisEngineFactory.createPrimitive(
@@ -253,30 +256,31 @@ public class ChunkerTest extends DefaultTestBase {
     InitializableFactory.initialize(chunkLabeler, engine.getUimaContext());
     engine.process(jCas);
 
-    chunks = AnnotationRetrieval.getAnnotations(jCas, Chunk.class);
+    chunks = JCasUtil.select(jCas, Chunk.class);
     assertEquals(6, chunks.size());
 
-    Chunk chunk = chunks.get(0);
+    Iterator<Chunk> chunksIter = chunks.iterator();
+    Chunk chunk = chunksIter.next();
     assertEquals("What if we", chunk.getCoveredText());
     assertEquals("1", chunk.getChunkType());
 
-    chunk = chunks.get(1);
+    chunk = chunksIter.next();
     assertEquals("rocket ship", chunk.getCoveredText());
     assertEquals("nice", chunk.getChunkType());
 
-    chunk = chunks.get(2);
+    chunk = chunksIter.next();
     assertEquals("made", chunk.getCoveredText());
     assertEquals("nice", chunk.getChunkType());
 
-    chunk = chunks.get(3);
+    chunk = chunksIter.next();
     assertEquals("of", chunk.getCoveredText());
     assertEquals("twice", chunk.getChunkType());
 
-    chunk = chunks.get(4);
+    chunk = chunksIter.next();
     assertEquals("?", chunk.getCoveredText());
     assertEquals("twice", chunk.getChunkType());
 
-    chunk = chunks.get(5);
+    chunk = chunksIter.next();
     assertEquals("We could", chunk.getCoveredText());
     assertEquals("2", chunk.getChunkType());
 

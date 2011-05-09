@@ -35,7 +35,7 @@ import org.cleartk.classifier.feature.extractor.WindowExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.token.type.Sentence;
-import org.cleartk.util.AnnotationRetrieval;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -100,8 +100,8 @@ public abstract class EventAttributeAnnotator<OUTCOME_TYPE> extends CleartkAnnot
 
   @Override
   public void process(JCas jCas) throws AnalysisEngineProcessException {
-    for (Sentence sentence : AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
-      for (Event event : AnnotationRetrieval.getAnnotations(jCas, sentence, Event.class)) {
+    for (Sentence sentence : JCasUtil.select(jCas, Sentence.class)) {
+      for (Event event : JCasUtil.selectCovered(jCas, Event.class, sentence)) {
 
         // assemble features
         List<Feature> features = new ArrayList<Feature>();

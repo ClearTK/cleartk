@@ -35,7 +35,6 @@ import org.cleartk.test.CleartkTestBase;
 import org.cleartk.token.lemma.choi.LemmaAnnotator;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Before;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -85,10 +84,7 @@ public class ClearParserTest extends CleartkTestBase {
     parser.process(jCas);
 
     Sentence sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 0);
-    DependencyNode topNode = AnnotationRetrieval.getContainingAnnotation(
-        jCas,
-        sentence,
-        DependencyNode.class);
+    DependencyNode topNode = JCasUtil.selectCovered(jCas, DependencyNode.class, sentence).iterator().next();
     assertTrue(topNode instanceof TopDependencyNode);
     assertEquals("This is a test.", topNode.getCoveredText());
     DependencyRelation isRel = topNode.getChildRelations(0);
@@ -103,17 +99,16 @@ public class ClearParserTest extends CleartkTestBase {
     testRelationChild(aRel, "a", "NMOD");
 
     jCas.reset();
-    tokenBuilder
-        .buildTokens(
-            jCas,
-            "The epicenter was 90 kilometres (55 miles) west-northwest of Chengdu, the capital of Sichuan, with a depth of 19 kilometres (12 mi).",
-            "The epicenter was 90 kilometres ( 55 miles ) west-northwest of Chengdu , the capital of Sichuan , with a depth of 19 kilometres ( 12 mi ) .",
-            "DT NN VBD VBN IN ( NN NNS ) NN IN NN , DT NN IN NN , IN DT NN IN CD NNS ( CD JJ ) .");
+    tokenBuilder.buildTokens(
+        jCas,
+        "The epicenter was 90 kilometres (55 miles) west-northwest of Chengdu, the capital of Sichuan, with a depth of 19 kilometres (12 mi).",
+        "The epicenter was 90 kilometres ( 55 miles ) west-northwest of Chengdu , the capital of Sichuan , with a depth of 19 kilometres ( 12 mi ) .",
+        "DT NN VBD VBN IN ( NN NNS ) NN IN NN , DT NN IN NN , IN DT NN IN CD NNS ( CD JJ ) .");
     lemmatizer.process(jCas);
     parser.process(jCas);
 
     sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 0);
-    topNode = AnnotationRetrieval.getContainingAnnotation(jCas, sentence, DependencyNode.class);
+    topNode = JCasUtil.selectCovered(jCas, DependencyNode.class, sentence).iterator().next();
     assertTrue(topNode instanceof TopDependencyNode);
     assertEquals(
         "The epicenter was 90 kilometres (55 miles) west-northwest of Chengdu, the capital of Sichuan, with a depth of 19 kilometres (12 mi).",

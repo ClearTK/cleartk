@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.uima.UimaContext;
@@ -38,11 +39,11 @@ import org.cleartk.srl.type.Predicate;
 import org.cleartk.srl.type.SemanticArgument;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.UIMAUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -51,11 +52,14 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  */
 public class Conll2005Writer extends JCasAnnotator_ImplBase {
 
-  @ConfigurationParameter(mandatory = true, description = "the path where the CoNLL-2005-formatted text should be written")
+  @ConfigurationParameter(
+      mandatory = true,
+      description = "the path where the CoNLL-2005-formatted text should be written")
   private File outputFile;
 
-  public static final String PARAM_OUTPUT_FILE = ConfigurationParameterFactory
-      .createConfigurationParameterName(Conll2005Writer.class, "outputFile");
+  public static final String PARAM_OUTPUT_FILE = ConfigurationParameterFactory.createConfigurationParameterName(
+      Conll2005Writer.class,
+      "outputFile");
 
   private PrintWriter output;
 
@@ -74,7 +78,7 @@ public class Conll2005Writer extends JCasAnnotator_ImplBase {
 
   @Override
   public void process(JCas jCas) throws AnalysisEngineProcessException {
-    List<Sentence> sentences = AnnotationRetrieval.getAnnotations(jCas, Sentence.class);
+    Collection<Sentence> sentences = JCasUtil.select(jCas, Sentence.class);
     for (Sentence sentence : sentences) {
       if (first)
         first = false;
@@ -82,12 +86,11 @@ public class Conll2005Writer extends JCasAnnotator_ImplBase {
         output.println();
 
       List<PredicateWriter> predicateWriters = new ArrayList<PredicateWriter>();
-      for (Predicate predicate : AnnotationRetrieval
-          .getAnnotations(jCas, sentence, Predicate.class)) {
+      for (Predicate predicate : JCasUtil.selectCovered(jCas, Predicate.class, sentence)) {
         predicateWriters.add(new PredicateWriter(jCas, predicate));
       }
 
-      for (Token token : AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class)) {
+      for (Token token : JCasUtil.selectCovered(jCas, Token.class, sentence)) {
         CoNLL05Line line = new CoNLL05Line();
 
         // line.setLexeme(token.getCoveredText());
@@ -199,9 +202,7 @@ public class Conll2005Writer extends JCasAnnotator_ImplBase {
     List<ArgumentWriter> argumentWriters;
 
     PredicateWriter(JCas jCas, Predicate predicate) {
-      this.token = AnnotationRetrieval
-          .getAnnotations(jCas, predicate.getAnnotation(), Token.class)
-          .get(0);
+      this.token = JCasUtil.selectCovered(jCas, Token.class, predicate.getAnnotation()).get(0);
       this.baseform = predicate.getBaseForm();
       this.frameset = 1;
 
@@ -253,7 +254,7 @@ public class Conll2005Writer extends JCasAnnotator_ImplBase {
       this.label = arg.getLabel();
       this.feature = arg.getFeature();
       this.preposition = arg.getPreposition();
-      this.tokens = AnnotationRetrieval.getAnnotations(jCas, arg.getAnnotation(), Token.class);
+      this.tokens = JCasUtil.selectCovered(jCas, Token.class, arg.getAnnotation());
     }
 
     String getStartString(Token token) {

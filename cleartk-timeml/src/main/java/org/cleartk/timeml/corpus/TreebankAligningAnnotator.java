@@ -25,6 +25,7 @@ package org.cleartk.timeml.corpus;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.uima.UimaContext;
@@ -43,12 +44,12 @@ import org.cleartk.timeml.TimeMLComponents;
 import org.cleartk.timeml.type.Text;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.ViewURIUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -61,10 +62,13 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  */
 public class TreebankAligningAnnotator extends JCasAnnotator_ImplBase {
 
-  public static final String PARAM_TREEBANK_DIRECTORY_NAME = ConfigurationParameterFactory
-      .createConfigurationParameterName(TreebankAligningAnnotator.class, "treebankDirectoryName");
+  public static final String PARAM_TREEBANK_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
+      TreebankAligningAnnotator.class,
+      "treebankDirectoryName");
 
-  @ConfigurationParameter(mandatory = true, description = "the path to the treebank directory containing the XX/wsj_XXXX.mrg files.")
+  @ConfigurationParameter(
+      mandatory = true,
+      description = "the path to the treebank directory containing the XX/wsj_XXXX.mrg files.")
   private String treebankDirectoryName;
 
   public void setTreebankDirectoryName(String treebankDirectoryName) {
@@ -108,23 +112,23 @@ public class TreebankAligningAnnotator extends JCasAnnotator_ImplBase {
     }
 
     // we need a TEXT element to know where to start
-    List<Text> texts = AnnotationRetrieval.getAnnotations(jCas, Text.class);
+    Collection<Text> texts = JCasUtil.select(jCas, Text.class);
     if (texts.size() != 1) {
       throw CleartkExtractorException.wrongNumberOfAnnotations(Text.class, 1, texts.size());
     }
 
     // parse the trees, skipping the document if there are alignment
     // problems
-    int offset = texts.get(0).getBegin();
+    int offset = texts.iterator().next().getBegin();
     String text = jCas.getDocumentText();
     List<org.cleartk.syntax.constituent.util.TopTreebankNode> utilTrees;
     try {
       utilTrees = TreebankFormatParser.parseDocument(mrgText, offset, text);
     } catch (Exception e) {
-      this
-          .getContext()
-          .getLogger()
-          .log(Level.WARNING, String.format("Skipping %s due to alignment problems", wsjPath), e);
+      this.getContext().getLogger().log(
+          Level.WARNING,
+          String.format("Skipping %s due to alignment problems", wsjPath),
+          e);
       return;
     }
 

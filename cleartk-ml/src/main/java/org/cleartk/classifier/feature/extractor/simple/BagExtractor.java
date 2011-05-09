@@ -32,7 +32,7 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.filter.AlwaysIncludeAnnotationFilter;
 import org.cleartk.classifier.feature.extractor.filter.AnnotationFilter;
-import org.cleartk.util.AnnotationRetrieval;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -81,10 +81,7 @@ public class BagExtractor implements SimpleFeatureExtractor {
       throws CleartkExtractorException {
     List<Feature> features = new ArrayList<Feature>();
 
-    for (Annotation ann : AnnotationRetrieval.getAnnotations(
-        jCas,
-        focusAnnotation,
-        this.annotationClass)) {
+    for (Annotation ann : JCasUtil.selectCovered(jCas, this.annotationClass, focusAnnotation)) {
       if (!filter.include(jCas, ann))
         continue;
 

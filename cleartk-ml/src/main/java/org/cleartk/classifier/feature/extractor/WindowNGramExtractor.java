@@ -31,11 +31,12 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.feature.WindowFeature;
 import org.cleartk.classifier.feature.WindowNGramFeature;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
-import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.AnnotationUtil;
 import org.cleartk.util.UIMAUtil;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -147,12 +148,15 @@ public class WindowNGramExtractor {
     this.name = name;
   }
 
+  /**
+   * VERY SLOW! DO NOT USE!
+   */
   public Feature extract(JCas jCas, Annotation focusAnnotation, Class<? extends Annotation> cls)
       throws CleartkExtractorException {
-    Annotation ngramAnnotation = AnnotationRetrieval.getContainingAnnotation(
-        jCas,
-        focusAnnotation,
-        cls);
+    int annBegin = focusAnnotation.getBegin();
+    int annEnd = focusAnnotation.getEnd();
+    List<? extends Annotation> covering = JCasUtil.selectCovering(jCas, cls, annBegin, annEnd);
+    Annotation ngramAnnotation = covering.size() > 0 ? covering.get(0) : null;
     return extract(jCas, focusAnnotation, ngramAnnotation);
   }
 
@@ -165,9 +169,7 @@ public class WindowNGramExtractor {
 
     Annotation startAnnotation = getStartAnnotation(jCas, focusAnnotation);
 
-    FSIterator<Annotation> featureAnnotationIterator = jCas
-        .getAnnotationIndex(featureType)
-        .iterator();
+    FSIterator<Annotation> featureAnnotationIterator = jCas.getAnnotationIndex(featureType).iterator();
 
     if (startAnnotation != null) {
       featureAnnotationIterator.moveTo(startAnnotation);
@@ -205,19 +207,15 @@ public class WindowNGramExtractor {
     }
 
     StringBuffer featureValue = new StringBuffer();
-    if ((direction.equals(WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT) && orientation
-        .equals(WindowNGramFeature.ORIENTATION_RIGHT))
-        || (direction.equals(WindowNGramFeature.DIRECTION_RIGHT_TO_LEFT) && orientation
-            .equals(WindowNGramFeature.ORIENTATION_LEFT))) {
+    if ((direction.equals(WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT) && orientation.equals(WindowNGramFeature.ORIENTATION_RIGHT))
+        || (direction.equals(WindowNGramFeature.DIRECTION_RIGHT_TO_LEFT) && orientation.equals(WindowNGramFeature.ORIENTATION_LEFT))) {
       for (int i = 0; i < ngramValues.size(); i++) {
         featureValue.append(ngramValues.get(i));
         if (i < ngramValues.size() - 1)
           featureValue.append(separator);
       }
-    } else if ((direction.equals(WindowNGramFeature.DIRECTION_RIGHT_TO_LEFT) && orientation
-        .equals(WindowNGramFeature.ORIENTATION_RIGHT))
-        || (direction.equals(WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT) && orientation
-            .equals(WindowNGramFeature.ORIENTATION_LEFT))) {
+    } else if ((direction.equals(WindowNGramFeature.DIRECTION_RIGHT_TO_LEFT) && orientation.equals(WindowNGramFeature.ORIENTATION_RIGHT))
+        || (direction.equals(WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT) && orientation.equals(WindowNGramFeature.ORIENTATION_LEFT))) {
       for (int i = ngramValues.size() - 1; i >= 0; i--) {
         featureValue.append(ngramValues.get(i));
         if (i > 0)
@@ -285,22 +283,7 @@ public class WindowNGramExtractor {
    *         </ul>
    */
   public Annotation getStartAnnotation(JCas jCas, Annotation annotation) {
-    if (orientation.equals(WindowNGramFeature.ORIENTATION_LEFT)) {
-      if (annotation.getClass().equals(featureClass))
-        return annotation;
-      else
-        return AnnotationRetrieval.getAdjacentAnnotation(jCas, annotation, featureClass, true);
-    } else if (orientation.equals(WindowNGramFeature.ORIENTATION_RIGHT)) {
-      if (annotation.getClass().equals(featureClass))
-        return annotation;
-      else
-        return AnnotationRetrieval.getAdjacentAnnotation(jCas, annotation, featureClass, false);
-    } else if (orientation.equals(WindowNGramFeature.ORIENTATION_MIDDLE)) {
-      return AnnotationRetrieval.getFirstAnnotation(jCas, annotation, featureClass);
-    } else if (orientation.equals(WindowNGramFeature.ORIENTATION_MIDDLE_REVERSE)) {
-      return AnnotationRetrieval.getLastAnnotation(jCas, annotation, featureClass);
-    }
-    return null;
+    return WindowFeature.getStartAnnotation(jCas, featureClass, annotation, orientation);
   }
 
   public Class<? extends Annotation> getFeatureClass() {

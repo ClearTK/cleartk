@@ -49,11 +49,11 @@ import org.cleartk.classifier.test.DefaultStringTestDataWriterFactory;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
-import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.testing.util.HideOutput;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -72,9 +72,9 @@ public class ViterbiDataWriterTest extends DefaultTestBase {
 
     @Override
     public void process(JCas jCas) throws AnalysisEngineProcessException {
-      for (Sentence sentence : AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
+      for (Sentence sentence : JCasUtil.select(jCas, Sentence.class)) {
         List<Instance<String>> instances = new ArrayList<Instance<String>>();
-        List<Token> tokens = AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class);
+        List<Token> tokens = JCasUtil.selectCovered(jCas, Token.class, sentence);
         for (Token token : tokens) {
           Instance<String> instance = new Instance<String>();
           instance.addAll(this.extractor.extract(jCas, token));
@@ -93,18 +93,17 @@ public class ViterbiDataWriterTest extends DefaultTestBase {
   @Test
   public void testConsumeAll() throws Exception {
 
-    AnalysisEngine engine = AnalysisEngineFactory
-        .createPrimitive(
-            TestAnnotator.class,
-            typeSystemDescription,
-            DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
-            outputDirectoryName,
-            CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-            ViterbiDataWriterFactory.class.getName(),
-            ViterbiDataWriterFactory.PARAM_DELEGATED_DATA_WRITER_FACTORY_CLASS,
-            DefaultStringTestDataWriterFactory.class.getName(),
-            ViterbiDataWriterFactory.PARAM_OUTCOME_FEATURE_EXTRACTOR_NAMES,
-            new String[] { "org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor" });
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+        TestAnnotator.class,
+        typeSystemDescription,
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        outputDirectoryName,
+        CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        ViterbiDataWriterFactory.class.getName(),
+        ViterbiDataWriterFactory.PARAM_DELEGATED_DATA_WRITER_FACTORY_CLASS,
+        DefaultStringTestDataWriterFactory.class.getName(),
+        ViterbiDataWriterFactory.PARAM_OUTCOME_FEATURE_EXTRACTOR_NAMES,
+        new String[] { "org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor" });
 
     String text = "Do I really have to come up with some creative text, or can I just write anything?";
     tokenBuilder.buildTokens(

@@ -34,9 +34,9 @@ import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Token;
-import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Assert;
 import org.junit.Test;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -54,7 +54,7 @@ public class NGramExtractorTest extends DefaultTestBase {
     String text = "She sells seashells by the sea shore";
 
     tokenBuilder.buildTokens(jCas, text, text, "PRP VBZ NNS IN DT NN NN");
-    DocumentAnnotation document = AnnotationRetrieval.getDocument(jCas);
+    DocumentAnnotation document = JCasUtil.selectSingle(jCas, DocumentAnnotation.class);
 
     SpannedTextExtractor textExtractor = new SpannedTextExtractor();
     TypePathExtractor posExtractor = new TypePathExtractor(Token.class, "pos");

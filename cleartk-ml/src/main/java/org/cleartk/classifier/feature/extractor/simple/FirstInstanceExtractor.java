@@ -23,13 +23,14 @@
  */
 package org.cleartk.classifier.feature.extractor.simple;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
-import org.cleartk.util.AnnotationRetrieval;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -56,20 +57,19 @@ public class FirstInstanceExtractor implements SimpleFeatureExtractor {
   public List<Feature> extract(JCas view, Annotation windowAnnotation)
       throws CleartkExtractorException {
 
-    Annotation firstAnnotation;
-    firstAnnotation = AnnotationRetrieval.getFirstAnnotation(
+    Iterator<? extends Annotation> annsIter = JCasUtil.selectCovered(
         view,
-        windowAnnotation,
-        targetAnnotationClass);
+        targetAnnotationClass,
+        windowAnnotation).iterator();
 
-    if (firstAnnotation == null) {
+    if (!annsIter.hasNext()) {
       throw CleartkExtractorException.noAnnotationInWindow(targetAnnotationClass, windowAnnotation);
     }
 
+    Annotation firstAnnotation = annsIter.next();
     List<Feature> features = subExtractor.extract(view, firstAnnotation);
     for (Feature f : features) {
-      String name = Feature
-          .createName("First" + targetAnnotationClass.getSimpleName(), f.getName());
+      String name = Feature.createName("First" + targetAnnotationClass.getSimpleName(), f.getName());
       f.setName(name);
     }
 

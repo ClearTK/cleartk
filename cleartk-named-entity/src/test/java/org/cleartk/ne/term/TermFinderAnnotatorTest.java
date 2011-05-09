@@ -23,17 +23,17 @@
  */
 package org.cleartk.ne.term;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.cleartk.ne.NeTestBase;
 import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -62,11 +62,9 @@ public class TermFinderAnnotatorTest extends NeTestBase {
         "I would like to visit Alaska .");
     engine.process(jCas);
     engine.collectionProcessComplete();
-    List<NamedEntityMention> mentions = AnnotationRetrieval.getAnnotations(
-        jCas,
-        NamedEntityMention.class);
+    Collection<NamedEntityMention> mentions = JCasUtil.select(jCas, NamedEntityMention.class);
     Assert.assertEquals(mentions.size(), 1);
-    NamedEntityMention mention = mentions.get(0);
+    NamedEntityMention mention = mentions.iterator().next();
     Assert.assertEquals("Alaska", mention.getCoveredText());
   }
 

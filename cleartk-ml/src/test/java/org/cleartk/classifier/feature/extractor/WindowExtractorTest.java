@@ -38,7 +38,6 @@ import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Header;
 import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
-import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Test;
 import org.uimafit.util.JCasUtil;
 
@@ -110,12 +109,11 @@ public class WindowExtractorTest extends DefaultTestBase {
     assertEquals("so", startAnnotation.getCoveredText());
 
     jCas.reset();
-    tokenBuilder
-        .buildTokens(
-            jCas,
-            "the side towards Illinois .\n"
-                + "The cavern was as big as two or three rooms bunched together , and Jim could stand up straight in it .\n"
-                + "It was cool in there .");
+    tokenBuilder.buildTokens(
+        jCas,
+        "the side towards Illinois .\n"
+            + "The cavern was as big as two or three rooms bunched together , and Jim could stand up straight in it .\n"
+            + "It was cool in there .");
     focusAnnotation = JCasUtil.selectByIndex(jCas, Sentence.class, 1);
     assertEquals(
         "The cavern was as big as two or three rooms bunched together , and Jim could stand up straight in it .",
@@ -395,10 +393,7 @@ public class WindowExtractorTest extends DefaultTestBase {
     Annotation startAnnotation = windowExtractor.getStartAnnotation(jCas, spanningToken);
     assertEquals("the", startAnnotation.getCoveredText());
 
-    Sentence sentence = AnnotationRetrieval.getContainingAnnotation(
-        jCas,
-        spanningToken,
-        Sentence.class);
+    Sentence sentence = JCasUtil.selectSingle(jCas, Sentence.class);
     List<Feature> features = windowExtractor.extract(jCas, spanningToken, sentence);
     assertEquals(2, features.size());
     WindowFeature feature = (WindowFeature) features.get(0);

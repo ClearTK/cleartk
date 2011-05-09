@@ -55,27 +55,32 @@ import clear.morph.MorphEnAnalyzer;
  * This analysis engine requires part-of-speech tagged tokens to work correctly. The part-of-speech
  * tags should correspond to PennTreebank set of tags.
  * <p>
+ * 
  * @author Philip Ogren
  * 
  */
 
-@TypeCapability(inputs = "org.cleartk.token.type.Token:pos", outputs = "org.cleartk.token.type.Token:lemma")
+@TypeCapability(
+    inputs = "org.cleartk.token.type.Token:pos",
+    outputs = "org.cleartk.token.type.Token:lemma")
 public class LemmaAnnotator extends JCasAnnotator_ImplBase {
-  
+
   public static final String ENG_LEMMATIZER_DATA_FILE = "../cleartk-token/src/main/resources/org/cleartk/token/lemma/choi/wordnet-3.0-lemma-data.jar";
 
-  public static final String PARAM_LEMMATIZER_DATA_FILE_NAME = ConfigurationParameterFactory
-      .createConfigurationParameterName(LemmaAnnotator.class, "lemmatizerDataFileName");
+  public static final String PARAM_LEMMATIZER_DATA_FILE_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
+      LemmaAnnotator.class,
+      "lemmatizerDataFileName");
 
-  @ConfigurationParameter(defaultValue = ENG_LEMMATIZER_DATA_FILE, mandatory = true, description = "This parameter provides the file name of the lemmatizer data file required by the constructor of MorphEnAnalyzer.")
+  @ConfigurationParameter(
+      defaultValue = ENG_LEMMATIZER_DATA_FILE,
+      mandatory = true,
+      description = "This parameter provides the file name of the lemmatizer data file required by the constructor of MorphEnAnalyzer.")
   private String lemmatizerDataFileName;
 
-
-  public static AnalysisEngineDescription getDescription() 
-      throws ResourceInitializationException {
+  public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
     String fileName = LemmaAnnotator.class.getResource(ENG_LEMMATIZER_DATA_FILE).getFile();
-    return getDescription(fileName); 
-    
+    return getDescription(fileName);
+
   }
 
   public static AnalysisEngineDescription getDescription(String lemmatizerDataFileName)
@@ -87,7 +92,6 @@ public class LemmaAnnotator extends JCasAnnotator_ImplBase {
         lemmatizerDataFileName);
   }
 
-  
   private MorphEnAnalyzer lemmatizer;
 
   @Override
@@ -101,7 +105,7 @@ public class LemmaAnnotator extends JCasAnnotator_ImplBase {
   @Override
   public void process(JCas jCas) throws AnalysisEngineProcessException {
 
-    for (Token token : JCasUtil.iterate(jCas, Token.class)) {
+    for (Token token : JCasUtil.select(jCas, Token.class)) {
       token.setLemma(lemmatizer.getLemma(token.getCoveredText(), token.getPos()));
     }
 

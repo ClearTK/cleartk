@@ -457,8 +457,7 @@ public class TempEval2010Writer extends JCasAnnotator_ImplBase {
     }
   }
 
-  private void writeTemporalLinks(PrintWriter writer, JCas jCas, String viewName, String fileName)
-      throws AnalysisEngineProcessException {
+  private void writeTemporalLinks(PrintWriter writer, JCas jCas, String viewName, String fileName) {
     if (viewName != null) {
       JCas view = JCasUtil.getView(jCas, viewName, false);
       for (TemporalLink tlink : JCasUtil.select(view, TemporalLink.class)) {

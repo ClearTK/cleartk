@@ -31,7 +31,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.ne.type.NamedEntityMention;
-import org.cleartk.util.AnnotationRetrieval;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -44,24 +44,24 @@ import org.cleartk.util.AnnotationRetrieval;
 public class NamedEntityExtractor implements SimpleFeatureExtractor {
 
   public List<Feature> extract(JCas view, Annotation focusAnnotation) {
-    NamedEntityMention nem = null;
+    List<NamedEntityMention> nems = JCasUtil.selectCovered(
+        view,
+        NamedEntityMention.class,
+        focusAnnotation);
 
-    nem = AnnotationRetrieval
-        .getMatchingAnnotation(view, focusAnnotation, NamedEntityMention.class);
-    if (nem != null) {
-      List<Feature> features = new ArrayList<Feature>();
-      features.add(new Feature("NamedEntityType", nem.getMentionType()));
-      features.add(new Feature("IsNamedEntity", true));
-      features.add(new Feature("IsContainedByNamedEntity", false));
-      return features;
+    // look for perfect match to NE first
+    for (NamedEntityMention nem : nems) {
+      if (nem.getBegin() == focusAnnotation.getBegin() && nem.getEnd() == focusAnnotation.getEnd()) {
+        List<Feature> features = new ArrayList<Feature>();
+        features.add(new Feature("NamedEntityType", nem.getMentionType()));
+        features.add(new Feature("IsNamedEntity", true));
+        features.add(new Feature("IsContainedByNamedEntity", false));
+        return features;
+      }
     }
 
-    nem = AnnotationRetrieval.getContainingAnnotation(
-        view,
-        focusAnnotation,
-        NamedEntityMention.class,
-        true);
-    if (nem != null) {
+    // look for contained NEs
+    for (NamedEntityMention nem : nems) {
       List<Feature> features = new ArrayList<Feature>();
       features.add(new Feature("ContainingNamedEntityType", nem.getMentionType()));
       features.add(new Feature("IsNamedEntity", false));
@@ -69,10 +69,10 @@ public class NamedEntityExtractor implements SimpleFeatureExtractor {
       return features;
     }
 
+    // no contained NEs
     List<Feature> features = new ArrayList<Feature>();
     features.add(new Feature("IsNamedEntity", false));
     features.add(new Feature("IsContainedByNamedEntity", false));
     return features;
   }
-
 }

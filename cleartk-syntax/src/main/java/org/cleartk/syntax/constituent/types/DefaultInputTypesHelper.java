@@ -26,12 +26,10 @@ package org.cleartk.syntax.constituent.types;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.cas.FSIterator;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.AnnotationRetrieval;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -45,7 +43,7 @@ import org.cleartk.util.AnnotationRetrieval;
 public class DefaultInputTypesHelper extends InputTypesHelper<Token, Sentence> {
 
   public List<Token> getTokens(JCas jCas, Sentence sentence) {
-    return AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class);
+    return JCasUtil.selectCovered(jCas, Token.class, sentence);
   }
 
   @Override
@@ -59,17 +57,7 @@ public class DefaultInputTypesHelper extends InputTypesHelper<Token, Sentence> {
   }
 
   public List<Sentence> getSentences(JCas jCas) {
-    ArrayList<Sentence> result = new ArrayList<Sentence>();
-    FSIterator<Annotation> sentences = jCas
-        .getJFSIndexRepository()
-        .getAnnotationIndex(Sentence.type)
-        .iterator();
-
-    while (sentences.hasNext()) {
-      result.add((Sentence) sentences.next());
-    }
-
-    return result;
+    return new ArrayList<Sentence>(JCasUtil.select(jCas, Sentence.class));
   }
 
 }

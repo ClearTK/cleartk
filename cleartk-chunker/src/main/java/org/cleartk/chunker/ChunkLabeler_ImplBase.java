@@ -35,13 +35,13 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.UIMAUtil;
 import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.Initializable;
 import org.uimafit.factory.initializable.InitializableFactory;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -51,13 +51,19 @@ import org.uimafit.factory.initializable.InitializableFactory;
 
 public abstract class ChunkLabeler_ImplBase implements ChunkLabeler, Initializable {
 
-  public static final String PARAM_CHUNK_ANNOTATION_CLASS_NAME = ConfigurationParameterFactory
-      .createConfigurationParameterName(ChunkLabeler_ImplBase.class, "chunkAnnotationClassName");
+  public static final String PARAM_CHUNK_ANNOTATION_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
+      ChunkLabeler_ImplBase.class,
+      "chunkAnnotationClassName");
 
-  @ConfigurationParameter(mandatory = true, description = "names the class of the type system chunk annotation type. An example value might be something like: 'org.cleartk.type.ne.NamedEntityMention'")
+  @ConfigurationParameter(
+      mandatory = true,
+      description = "names the class of the type system chunk annotation type. An example value might be something like: 'org.cleartk.type.ne.NamedEntityMention'")
   private String chunkAnnotationClassName;
 
-  @ConfigurationParameter(name = Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME, mandatory = true, description = "names the class of the type system type used to associate B, I, and O (for example) labels with.  An example value might be 'org.cleartk.type.Token'")
+  @ConfigurationParameter(
+      name = Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME,
+      mandatory = true,
+      description = "names the class of the type system type used to associate B, I, and O (for example) labels with.  An example value might be 'org.cleartk.type.Token'")
   private String labeledAnnotationClassName;
 
   public static final String BEGIN_PREFIX = "B";
@@ -85,8 +91,7 @@ public abstract class ChunkLabeler_ImplBase implements ChunkLabeler, Initializab
     labeledAnnotationClass = InitializableFactory.getClass(
         labeledAnnotationClassName,
         Annotation.class);
-    chunkAnnotationClass = InitializableFactory
-        .getClass(chunkAnnotationClassName, Annotation.class);
+    chunkAnnotationClass = InitializableFactory.getClass(chunkAnnotationClassName, Annotation.class);
     annotationLabels = new HashMap<Annotation, String>();
   }
 
@@ -114,18 +119,17 @@ public abstract class ChunkLabeler_ImplBase implements ChunkLabeler, Initializab
 
     annotationLabels.clear();
 
-    FSIterator<Annotation> chunkAnnotations = jCas
-        .getAnnotationIndex(chunkAnnotationType)
-        .subiterator(sequence);
+    FSIterator<Annotation> chunkAnnotations = jCas.getAnnotationIndex(chunkAnnotationType).subiterator(
+        sequence);
     while (chunkAnnotations.hasNext()) {
       Annotation chunkAnnotation = chunkAnnotations.next();
       String labelBase = getChunkLabel(jCas, chunkAnnotation);
       String label = labelBase;
 
-      List<? extends Annotation> labeledAnnotations = AnnotationRetrieval.getAnnotations(
+      List<? extends Annotation> labeledAnnotations = JCasUtil.selectCovered(
           jCas,
-          chunkAnnotation,
-          labeledAnnotationClass);
+          labeledAnnotationClass,
+          chunkAnnotation);
 
       boolean begin = true;
       for (Annotation labelAnnotation : labeledAnnotations) {
@@ -145,9 +149,8 @@ public abstract class ChunkLabeler_ImplBase implements ChunkLabeler, Initializab
       initializeTypes(jCas);
 
     List<Annotation> returnValues = new ArrayList<Annotation>();
-    FSIterator<Annotation> labeledAnnotations = jCas
-        .getAnnotationIndex(labeledAnnotationType)
-        .subiterator(sequence);
+    FSIterator<Annotation> labeledAnnotations = jCas.getAnnotationIndex(labeledAnnotationType).subiterator(
+        sequence);
 
     String currentLabelValue = null;
     List<Annotation> currentLabeledAnnotations = new ArrayList<Annotation>();

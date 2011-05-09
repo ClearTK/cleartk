@@ -35,8 +35,6 @@ import org.cleartk.syntax.constituent.ParserWrapper_ImplBase;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.syntax.opennlp.parser.DefaultOutputTypesHelper;
-import org.cleartk.token.type.Sentence;
-import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -84,12 +82,7 @@ public class ParserAnnotatorTest extends OpennlpSyntaxTestBase {
      * (DT the) (NML (NN breast) (NN cancer) (NN susceptibility)) (NN gene)) (NP (NN BRCA2))))) (PP
      * (IN in) (NP (NN DNA) (NN repair))))))) (. .)) )
      */
-    Sentence sentence = AnnotationRetrieval.getAnnotations(jCas, Sentence.class).get(0);
-    TopTreebankNode tree = AnnotationRetrieval.getContainingAnnotation(
-        jCas,
-        sentence,
-        TopTreebankNode.class,
-        false);
+    TopTreebankNode tree = JCasUtil.selectSingle(jCas, TopTreebankNode.class);
 
     Assert.assertNotNull(tree);
     Assert.assertEquals("TOP", tree.getNodeType());
@@ -154,14 +147,7 @@ public class ParserAnnotatorTest extends OpennlpSyntaxTestBase {
     engine.process(jCas);
     engine.collectionProcessComplete();
 
-    org.cleartk.type.test.Sentence sentence = AnnotationRetrieval.getAnnotations(
-        jCas,
-        org.cleartk.type.test.Sentence.class).get(0);
-    TopTreebankNode tree = AnnotationRetrieval.getContainingAnnotation(
-        jCas,
-        sentence,
-        TopTreebankNode.class,
-        false);
+    TopTreebankNode tree = JCasUtil.selectSingle(jCas, TopTreebankNode.class);
     // TreebankNodeUtility.print(System.out, tree);
 
     Assert.assertNotNull(tree);

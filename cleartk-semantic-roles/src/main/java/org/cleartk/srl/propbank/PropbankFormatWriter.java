@@ -34,10 +34,10 @@ import org.cleartk.srl.type.Argument;
 import org.cleartk.srl.type.Predicate;
 import org.cleartk.srl.type.SemanticArgument;
 import org.cleartk.token.type.Sentence;
-import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.UIMAUtil;
 import org.cleartk.util.ViewURIUtil;
 import org.cleartk.util.ae.linewriter.AnnotationWriter;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -58,16 +58,13 @@ public class PropbankFormatWriter implements AnnotationWriter<Predicate> {
     String uri = new File(ViewURIUtil.getURI(jCas)).getPath();
     sb.append(uri + "\t");
 
-    List<Sentence> sentences = AnnotationRetrieval.getAnnotations(jCas, Sentence.class);
-    Sentence predicateSentence = AnnotationRetrieval.getContainingAnnotation(
-        jCas,
-        predicate,
-        Sentence.class);
     int sentenceId = -1;
-    for (int i = 0; i < sentences.size(); i++) {
-      if (sentences.get(i).equals(predicateSentence)) {
+    int i = 0;
+    for (Sentence sentence : JCasUtil.select(jCas, Sentence.class)) {
+      if (JCasUtil.selectCovered(jCas, Predicate.class, sentence).contains(predicate)) {
         sentenceId = i;
       }
+      i += 1;
     }
 
     String treeId = Integer.toString(sentenceId);
@@ -88,5 +85,4 @@ public class PropbankFormatWriter implements AnnotationWriter<Predicate> {
     }
     return sb.toString();
   }
-
 }

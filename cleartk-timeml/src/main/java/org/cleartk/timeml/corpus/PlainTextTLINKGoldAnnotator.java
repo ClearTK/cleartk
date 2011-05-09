@@ -42,13 +42,13 @@ import org.cleartk.timeml.TimeMLComponents;
 import org.cleartk.timeml.type.Anchor;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.type.TemporalLink;
-import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.ParamUtil;
 import org.cleartk.util.ViewURIUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -61,11 +61,14 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  */
 public class PlainTextTLINKGoldAnnotator extends JCasAnnotator_ImplBase {
 
-  public static final String PARAM_TLINK_FILE_URL = ConfigurationParameterFactory
-      .createConfigurationParameterName(PlainTextTLINKGoldAnnotator.class, "tlinkFileUrl");
+  public static final String PARAM_TLINK_FILE_URL = ConfigurationParameterFactory.createConfigurationParameterName(
+      PlainTextTLINKGoldAnnotator.class,
+      "tlinkFileUrl");
 
-  @ConfigurationParameter(mandatory = true, description = "the URL to a plain-text TLINK file, e.g."
-      + "http://people.cs.kuleuven.be/~steven.bethard/data/timebank-verb-clause.txt")
+  @ConfigurationParameter(
+      mandatory = true,
+      description = "the URL to a plain-text TLINK file, e.g."
+          + "http://people.cs.kuleuven.be/~steven.bethard/data/timebank-verb-clause.txt")
   private String tlinkFileUrl;
 
   public void setTlinkFileUrl(String tlinkFileUrl) {
@@ -114,7 +117,7 @@ public class PlainTextTLINKGoldAnnotator extends JCasAnnotator_ImplBase {
     String fileBase = new File(filePath).getName().replaceAll("\\..*", "");
     if (this.fileTLINKs.containsKey(fileBase)) {
       Map<String, Anchor> anchors = new HashMap<String, Anchor>();
-      for (Anchor anchor : AnnotationRetrieval.getAnnotations(jCas, Anchor.class)) {
+      for (Anchor anchor : JCasUtil.select(jCas, Anchor.class)) {
         anchors.put(anchor.getId(), anchor);
         if (anchor instanceof Event) {
           Event event = (Event) anchor;

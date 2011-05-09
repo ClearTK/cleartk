@@ -27,7 +27,8 @@ package org.cleartk.token.breakit;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Locale;
 
 import org.apache.uima.UIMAException;
@@ -36,9 +37,9 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.token.TokenTestBase;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Test;
 import org.uimafit.pipeline.SimplePipeline;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -53,8 +54,7 @@ public class BreakIteratorAnnotatorTest extends TokenTestBase {
 
   @Test
   public void testTokenAnnotator() throws Exception {
-    AnalysisEngineDescription tokenAnnotator = BreakIteratorAnnotatorFactory
-        .createTokenAnnotator(Locale.US);
+    AnalysisEngineDescription tokenAnnotator = BreakIteratorAnnotatorFactory.createTokenAnnotator(Locale.US);
     String text = "  : ;) Hey there!  I am going to the store.  Would you like to come with me?";
     String expectedText = ": ; ) Hey there ! I am going to the store . Would you like to come with me ?";
     test(tokenAnnotator, Token.class, text, expectedText);
@@ -62,8 +62,7 @@ public class BreakIteratorAnnotatorTest extends TokenTestBase {
 
   @Test
   public void testSentenceAnnotator() throws Exception {
-    AnalysisEngineDescription sentenceAnnotator = BreakIteratorAnnotatorFactory
-        .createSentenceAnnotator(Locale.US);
+    AnalysisEngineDescription sentenceAnnotator = BreakIteratorAnnotatorFactory.createSentenceAnnotator(Locale.US);
     String text = "  : ;) Hey there!  I am going to the store.  Would you like to come with me?";
     String[] expectedAnnotations = new String[] {
         "  : ;) Hey there!  ",
@@ -79,12 +78,11 @@ public class BreakIteratorAnnotatorTest extends TokenTestBase {
       String[] expectedAnnotations) throws UIMAException, IOException {
     jCas.setDocumentText(text);
     SimplePipeline.runPipeline(jCas, annotator);
-    List<? extends Annotation> actualAnnotations = AnnotationRetrieval.getAnnotations(
-        jCas,
-        annotationCls);
+    Collection<? extends Annotation> actualAnnotations = JCasUtil.select(jCas, annotationCls);
     assertEquals(expectedAnnotations.length, actualAnnotations.size());
+    Iterator<? extends Annotation> iter = actualAnnotations.iterator();
     for (int i = 0; i < expectedAnnotations.length; i++) {
-      assertEquals(expectedAnnotations[i], actualAnnotations.get(i).getCoveredText());
+      assertEquals(expectedAnnotations[i], iter.next().getCoveredText());
     }
   }
 

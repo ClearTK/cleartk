@@ -38,7 +38,6 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.ne.type.Ace2005Document;
 import org.cleartk.ne.type.NamedEntity;
 import org.cleartk.ne.type.NamedEntityMention;
-import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.ViewURIUtil;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -47,6 +46,7 @@ import org.jdom.output.XMLOutputter;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -60,10 +60,13 @@ import org.uimafit.factory.ConfigurationParameterFactory;
 
 public class Ace2005Writer extends JCasAnnotator_ImplBase {
 
-  public static final String PARAM_OUTPUT_DIRECTORY_NAME = ConfigurationParameterFactory
-      .createConfigurationParameterName(Ace2005Writer.class, "outputDirectoryName");
+  public static final String PARAM_OUTPUT_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
+      Ace2005Writer.class,
+      "outputDirectoryName");
 
-  @ConfigurationParameter(mandatory = true, description = "provides the path of the directory where the XML files should be written.")
+  @ConfigurationParameter(
+      mandatory = true,
+      description = "provides the path of the directory where the XML files should be written.")
   private String outputDirectoryName;
 
   private File outputDirectory;
@@ -95,7 +98,7 @@ public class Ace2005Writer extends JCasAnnotator_ImplBase {
     String uri = new File(ViewURIUtil.getURI(jCas)).getName();
     String docId = uri.substring(0, uri.indexOf(".sgm"));
     Ace2005Document document;
-    document = AnnotationRetrieval.getAnnotations(jCas, Ace2005Document.class).iterator().next();
+    document = JCasUtil.select(jCas, Ace2005Document.class).iterator().next();
 
     Document xml = new Document();
 

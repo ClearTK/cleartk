@@ -32,8 +32,8 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
 import org.cleartk.ne.type.GazetteerNamedEntityMention;
-import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.AnnotationUtil;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -58,10 +58,10 @@ public class GazetteerExtractor {
   public List<Feature> extract(JCas jCas, Annotation focusAnnotation, Annotation windowAnnotation)
       throws UnsupportedOperationException {
     List<Feature> returnValues = new ArrayList<Feature>();
-    List<GazetteerNamedEntityMention> gnems = AnnotationRetrieval.getAnnotations(
+    List<GazetteerNamedEntityMention> gnems = JCasUtil.selectCovered(
         jCas,
-        windowAnnotation,
-        GazetteerNamedEntityMention.class);
+        GazetteerNamedEntityMention.class,
+        windowAnnotation);
     for (GazetteerNamedEntityMention gnem : gnems) {
       if (gazetteerNames.contains(gnem.getMentionedEntity().getEntityType())
           && AnnotationUtil.contains(gnem, focusAnnotation)) {

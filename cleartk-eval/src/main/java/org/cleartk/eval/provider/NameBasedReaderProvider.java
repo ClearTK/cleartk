@@ -30,7 +30,7 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.resource.ResourceConfigurationException;
-import org.uimafit.component.JCasAnnotatorAdapter;
+import org.uimafit.component.NoOpAnnotator;
 import org.uimafit.factory.AnalysisEngineFactory;
 
 /**
@@ -65,7 +65,7 @@ public abstract class NameBasedReaderProvider implements CorpusReaderProvider {
 
   @Override
   public AnalysisEngine getPreprocessor() throws UIMAException {
-    return AnalysisEngineFactory.createPrimitive(JCasAnnotatorAdapter.class);
+    return AnalysisEngineFactory.createPrimitive(NoOpAnnotator.class);
   }
 
   @Override

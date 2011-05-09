@@ -63,32 +63,32 @@ public class WindowNGramExtractorTest extends DefaultTestBase {
     assertEquals("island", token.getCoveredText());
     Feature feature = extractor.extract(jCas, token, Sentence.class);
     assertEquals("WindowNGram_L0_3gram_L2R", feature.getName());
-    assertEquals("of the island", feature.getValue().toString());
+    assertEquals("middle of the", feature.getValue().toString());
 
     // "I" - the first word of the sentence
     token = JCasUtil.selectByIndex(jCas, Token.class, 4);
     feature = extractor.extract(jCas, token, Sentence.class);
-    assertEquals("OOB2 OOB1 I", feature.getValue().toString());
+    assertEquals("OOB3 OOB2 OOB1", feature.getValue().toString());
     // "WANTED"
     token = JCasUtil.selectByIndex(jCas, Token.class, 5);
     feature = extractor.extract(jCas, token, Sentence.class);
-    assertEquals("OOB1 I WANTED", feature.getValue().toString());
+    assertEquals("OOB2 OOB1 I", feature.getValue().toString());
     // "to"
     token = JCasUtil.selectByIndex(jCas, Token.class, 6);
     feature = extractor.extract(jCas, token, Sentence.class);
-    assertEquals("I WANTED to", feature.getValue().toString());
+    assertEquals("OOB1 I WANTED", feature.getValue().toString());
     // "go"
     token = JCasUtil.selectByIndex(jCas, Token.class, 7);
     feature = extractor.extract(jCas, token, Sentence.class);
-    assertEquals("WANTED to go", feature.getValue().toString());
+    assertEquals("I WANTED to", feature.getValue().toString());
     // "exploring"
     token = JCasUtil.selectByIndex(jCas, Token.class, 28);
     feature = extractor.extract(jCas, token, Sentence.class);
-    assertEquals("I was exploring", feature.getValue().toString());
+    assertEquals("when I was", feature.getValue().toString());
     // ";"
     token = JCasUtil.selectByIndex(jCas, Token.class, 29);
     feature = extractor.extract(jCas, token, Sentence.class);
-    assertEquals("was exploring ;", feature.getValue().toString());
+    assertEquals("I was exploring", feature.getValue().toString());
 
     // behavior when there is no encapsulating sentence
     jCas.reset();
@@ -116,23 +116,23 @@ public class WindowNGramExtractorTest extends DefaultTestBase {
     assertEquals("island", token.getCoveredText());
     feature = extractor.extract(jCas, token, Sentence.class);
     assertEquals("WindowNGram_L0_3gram_R2L", feature.getName());
-    assertEquals("island the of", feature.getValue().toString());
+    assertEquals("the of middle", feature.getValue().toString());
 
     token = JCasUtil.selectByIndex(jCas, Token.class, 4);
     feature = extractor.extract(jCas, token, Sentence.class);
-    assertEquals("I OOB1 OOB2", feature.getValue().toString());
+    assertEquals("OOB1 OOB2 OOB3", feature.getValue().toString());
 
     token = JCasUtil.selectByIndex(jCas, Token.class, 5);
     feature = extractor.extract(jCas, token, Sentence.class);
-    assertEquals("WANTED I OOB1", feature.getValue().toString());
+    assertEquals("I OOB1 OOB2", feature.getValue().toString());
 
     token = JCasUtil.selectByIndex(jCas, Token.class, 6);
     feature = extractor.extract(jCas, token, Sentence.class);
-    assertEquals("to WANTED I", feature.getValue().toString());
+    assertEquals("WANTED I OOB1", feature.getValue().toString());
 
     token = JCasUtil.selectByIndex(jCas, Token.class, 7);
     feature = extractor.extract(jCas, token, Sentence.class);
-    assertEquals("go to WANTED", feature.getValue().toString());
+    assertEquals("to WANTED I", feature.getValue().toString());
 
     // behavior when there is no encapsulating sentence
     jCas.reset();
@@ -160,28 +160,28 @@ public class WindowNGramExtractorTest extends DefaultTestBase {
     assertEquals("island", token.getCoveredText());
     feature = extractor.extract(jCas, token, Sentence.class);
     assertEquals("WindowNGram_L2_2gram_L2R", feature.getName());
-    assertEquals("middle of", feature.getValue().toString());
+    assertEquals("the middle", feature.getValue().toString());
 
     token = JCasUtil.selectByIndex(jCas, Token.class, 4);
     assertEquals("I", token.getCoveredText());
     feature = extractor.extract(jCas, token, Sentence.class);
-    assertEquals("OOB3 OOB2", feature.getValue().toString());
+    assertEquals("OOB4 OOB3", feature.getValue().toString());
 
     token = JCasUtil.selectByIndex(jCas, Token.class, 5);
     feature = extractor.extract(jCas, token, Sentence.class);
-    assertEquals("OOB2 OOB1", feature.getValue().toString());
+    assertEquals("OOB3 OOB2", feature.getValue().toString());
 
     token = JCasUtil.selectByIndex(jCas, Token.class, 6);
     feature = extractor.extract(jCas, token, Sentence.class);
-    assertEquals("OOB1 I", feature.getValue().toString());
+    assertEquals("OOB2 OOB1", feature.getValue().toString());
 
     token = JCasUtil.selectByIndex(jCas, Token.class, 7);
     feature = extractor.extract(jCas, token, Sentence.class);
-    assertEquals("I WANTED", feature.getValue().toString());
+    assertEquals("OOB1 I", feature.getValue().toString());
 
     token = JCasUtil.selectByIndex(jCas, Token.class, 8);
     feature = extractor.extract(jCas, token, Sentence.class);
-    assertEquals("WANTED to", feature.getValue().toString());
+    assertEquals("I WANTED", feature.getValue().toString());
 
     // behavior when there is no encapsulating sentence
     jCas.reset();
@@ -212,32 +212,32 @@ public class WindowNGramExtractorTest extends DefaultTestBase {
     assertEquals("island", token.getCoveredText());
     Feature feature = extractor.extract(jCas, token, Sentence.class);
     assertEquals("WindowNGram_R0_3gram_L2R", feature.getName());
-    assertEquals("island that I", feature.getValue().toString());
+    assertEquals("that I '", feature.getValue().toString());
 
     // "I" - the first word of the sentence
     token = JCasUtil.selectByIndex(jCas, Token.class, 4);
     feature = extractor.extract(jCas, token, Sentence.class);
-    assertEquals("I WANTED to", feature.getValue().toString());
+    assertEquals("WANTED to go", feature.getValue().toString());
     // "WANTED"
     token = JCasUtil.selectByIndex(jCas, Token.class, 5);
     feature = extractor.extract(jCas, token, Sentence.class);
-    assertEquals("WANTED to go", feature.getValue().toString());
-
+    assertEquals("to go and", feature.getValue().toString());
+    // ";"
     token = JCasUtil.selectByIndex(jCas, Token.class, 29);
     feature = extractor.extract(jCas, token, Sentence.class);
-    assertEquals("; OOB1 OOB2", feature.getValue().toString());
-
+    assertEquals("OOB1 OOB2 OOB3", feature.getValue().toString());
+    // "exploring"
     token = JCasUtil.selectByIndex(jCas, Token.class, 28);
     feature = extractor.extract(jCas, token, Sentence.class);
-    assertEquals("exploring ; OOB1", feature.getValue().toString());
-
+    assertEquals("; OOB1 OOB2", feature.getValue().toString());
+    // "was"
     token = JCasUtil.selectByIndex(jCas, Token.class, 27);
     feature = extractor.extract(jCas, token, Sentence.class);
-    assertEquals("was exploring ;", feature.getValue().toString());
-
+    assertEquals("exploring ; OOB1", feature.getValue().toString());
+    // "I"
     token = JCasUtil.selectByIndex(jCas, Token.class, 26);
     feature = extractor.extract(jCas, token, Sentence.class);
-    assertEquals("I was exploring", feature.getValue().toString());
+    assertEquals("was exploring ;", feature.getValue().toString());
 
     // behavior when there is no encapsulating sentence
     jCas.reset();
@@ -266,32 +266,32 @@ public class WindowNGramExtractorTest extends DefaultTestBase {
     assertEquals("island", token.getCoveredText());
     feature = extractor.extract(jCas, token, Sentence.class);
     assertEquals("WindowNGram_R2_6gram_R2L", feature.getName());
-    assertEquals("I when found d ' I", feature.getValue().toString());
+    assertEquals("was I when found d '", feature.getValue().toString());
 
     // "I" - the first word of the sentence
     token = JCasUtil.selectByIndex(jCas, Token.class, 4);
     feature = extractor.extract(jCas, token, Sentence.class);
-    assertEquals("a at look and go to", feature.getValue().toString());
+    assertEquals("place a at look and go", feature.getValue().toString());
     // "WANTED"
     token = JCasUtil.selectByIndex(jCas, Token.class, 5);
     feature = extractor.extract(jCas, token, Sentence.class);
-    assertEquals("place a at look and go", feature.getValue().toString());
-
+    assertEquals("right place a at look and", feature.getValue().toString());
+    // ";"
     token = JCasUtil.selectByIndex(jCas, Token.class, 29);
     feature = extractor.extract(jCas, token, Sentence.class);
-    assertEquals("OOB7 OOB6 OOB5 OOB4 OOB3 OOB2", feature.getValue().toString());
-
+    assertEquals("OOB8 OOB7 OOB6 OOB5 OOB4 OOB3", feature.getValue().toString());
+    // "exploring"
     token = JCasUtil.selectByIndex(jCas, Token.class, 28);
+    feature = extractor.extract(jCas, token, Sentence.class);
+    assertEquals("OOB7 OOB6 OOB5 OOB4 OOB3 OOB2", feature.getValue().toString());
+    // "was"
+    token = JCasUtil.selectByIndex(jCas, Token.class, 27);
     feature = extractor.extract(jCas, token, Sentence.class);
     assertEquals("OOB6 OOB5 OOB4 OOB3 OOB2 OOB1", feature.getValue().toString());
 
-    token = JCasUtil.selectByIndex(jCas, Token.class, 27);
-    feature = extractor.extract(jCas, token, Sentence.class);
-    assertEquals("OOB5 OOB4 OOB3 OOB2 OOB1 ;", feature.getValue().toString());
-
     token = JCasUtil.selectByIndex(jCas, Token.class, 26);
     feature = extractor.extract(jCas, token, Sentence.class);
-    assertEquals("OOB4 OOB3 OOB2 OOB1 ; exploring", feature.getValue().toString());
+    assertEquals("OOB5 OOB4 OOB3 OOB2 OOB1 ;", feature.getValue().toString());
 
     // behavior when there is no encapsulating sentence
     jCas.reset();
@@ -331,7 +331,7 @@ public class WindowNGramExtractorTest extends DefaultTestBase {
     Feature feature = ngramExtractor.extract(jCas, header, Sentence.class);
     assertEquals("3_4", feature.getValue().toString());
     feature = ngramExtractor.extract(jCas, token5, Sentence.class);
-    assertEquals("4_5", feature.getValue().toString());
+    assertEquals("3_4", feature.getValue().toString());
 
     ngramExtractor = new WindowNGramExtractor(
         Token.class,
@@ -346,7 +346,7 @@ public class WindowNGramExtractorTest extends DefaultTestBase {
     feature = ngramExtractor.extract(jCas, header, Sentence.class);
     assertEquals("7_8", feature.getValue().toString());
     feature = ngramExtractor.extract(jCas, token6, Sentence.class);
-    assertEquals("6_7", feature.getValue().toString());
+    assertEquals("7_8", feature.getValue().toString());
 
   }
 }

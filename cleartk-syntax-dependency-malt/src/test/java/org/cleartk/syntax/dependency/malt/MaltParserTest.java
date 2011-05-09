@@ -28,7 +28,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.uima.UIMAException;
@@ -39,10 +41,10 @@ import org.cleartk.syntax.dependency.type.TopDependencyNode;
 import org.cleartk.test.CleartkTestBase;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.testing.factory.TokenBuilder;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -62,7 +64,7 @@ public class MaltParserTest extends CleartkTestBase {
   public void test() throws UIMAException {
     this.assumeBigMemoryTestsEnabled();
     this.logger.info(BIG_MEMORY_TEST_MESSAGE);
-    
+
     TokenBuilder<Token, Sentence> tokenBuilder = new TokenBuilder<Token, Sentence>(
         Token.class,
         Sentence.class,
@@ -88,26 +90,28 @@ public class MaltParserTest extends CleartkTestBase {
     // the -det-> road
     // road -pobj-> down
     // . -punct-> chased
-    List<DependencyNode> nodes;
-    nodes = AnnotationRetrieval.getAnnotations(jCas, DependencyNode.class);
+    Collection<DependencyNode> nodes;
+    nodes = JCasUtil.select(jCas, DependencyNode.class);
 
     // check node spans
     String[] texts = "The dog chased the fox down the road .".split(" ");
     assertEquals(texts.length, nodes.size());
+    Iterator<DependencyNode> nodesIter = nodes.iterator();
     for (int i = 0; i < texts.length; ++i) {
-      assertEquals(texts[i], nodes.get(i).getCoveredText());
+      assertEquals(texts[i], nodesIter.next().getCoveredText());
     }
 
     // node aliases
-    DependencyNode the1 = nodes.get(0);
-    DependencyNode dog = nodes.get(1);
-    DependencyNode chased = nodes.get(2);
-    DependencyNode the2 = nodes.get(3);
-    DependencyNode fox = nodes.get(4);
-    DependencyNode down = nodes.get(5);
-    DependencyNode the3 = nodes.get(6);
-    DependencyNode road = nodes.get(7);
-    DependencyNode period = nodes.get(8);
+    nodesIter = nodes.iterator();
+    DependencyNode the1 = nodesIter.next();
+    DependencyNode dog = nodesIter.next();
+    DependencyNode chased = nodesIter.next();
+    DependencyNode the2 = nodesIter.next();
+    DependencyNode fox = nodesIter.next();
+    DependencyNode down = nodesIter.next();
+    DependencyNode the3 = nodesIter.next();
+    DependencyNode road = nodesIter.next();
+    DependencyNode period = nodesIter.next();
 
     // check node heads and dependency types
     assertEquals(1, the1.getHeadRelations().size());

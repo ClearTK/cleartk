@@ -23,7 +23,12 @@
  */
 package org.cleartk.classifier.feature;
 
+import java.util.List;
+
+import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -44,6 +49,64 @@ public class WindowFeature extends Feature {
   public static final String ORIENTATION_MIDDLE = "M";
 
   public static final String ORIENTATION_MIDDLE_REVERSE = "MR";
+
+  /**
+   * This method returns the annotation at index 0 w.r.t. the orientation of the extractor, the
+   * annotation we are extracting features for and the window the provides the boundaries for
+   * feature extraction.
+   * 
+   * @param jCas
+   *          The JCas containing the focus annotation
+   * @param itemClass
+   *          The type of Annotation around the focus annotation to select
+   * @param focusAnnotation
+   *          The annotation from which the orientation is defined.
+   * @param orientation
+   *          The orientation defining which annotation is the start.
+   * @return the annotation at index 0:
+   *         <ul>
+   *         <li>for ORIENTATION_LEFT return the annotation adjacent and to the left of annotation
+   *         <li>for ORIENTATION_RIGHT return the annotation adjacent and to the right of annotation
+   *         <li>for ORIENTATION_MIDDLE return the left most annotation completely contained in
+   *         annotation, null if does not exist
+   *         <li>for ORIENTATION_MIDDLE_REVERSE return the right most annotation completely
+   *         contained in annotation, null if does not exist
+   *         </ul>
+   */
+  public static <T extends Annotation> T getStartAnnotation(
+      JCas jCas,
+      Class<T> itemClass,
+      Annotation focusAnnotation,
+      String orientation) {
+    if (orientation.equals(WindowFeature.ORIENTATION_LEFT)) {
+      List<T> anns = JCasUtil.selectPreceding(jCas, itemClass, focusAnnotation, 1);
+      if (anns.size() > 0 && anns.get(0) == focusAnnotation) {
+        anns = JCasUtil.selectPreceding(jCas, itemClass, focusAnnotation, 2).subList(0, 1);
+      }
+      return anns.size() == 0 ? null : anns.get(0);
+    } else if (orientation.equals(WindowFeature.ORIENTATION_RIGHT)) {
+      List<T> anns = JCasUtil.selectFollowing(jCas, itemClass, focusAnnotation, 1);
+      if (anns.size() > 0 && anns.get(0) == focusAnnotation) {
+        anns = JCasUtil.selectFollowing(jCas, itemClass, focusAnnotation, 2).subList(1, 2);
+      }
+      return anns.size() == 0 ? null : anns.get(0);
+    } else if (orientation.equals(WindowFeature.ORIENTATION_MIDDLE)) {
+      List<T> anns = JCasUtil.selectCovered(jCas, itemClass, focusAnnotation);
+      if (anns.size() == 0) {
+        return itemClass.isInstance(focusAnnotation) ? itemClass.cast(focusAnnotation) : null;
+      } else {
+        return anns.get(0);
+      }
+    } else if (orientation.equals(WindowFeature.ORIENTATION_MIDDLE_REVERSE)) {
+      List<T> anns = JCasUtil.selectCovered(jCas, itemClass, focusAnnotation);
+      if (anns.size() == 0) {
+        return itemClass.isInstance(focusAnnotation) ? itemClass.cast(focusAnnotation) : null;
+      } else {
+        return anns.get(anns.size() - 1);
+      }
+    }
+    throw new IllegalArgumentException("Unknown orientation: " + orientation);
+  }
 
   private String orientation = null;
 

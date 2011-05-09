@@ -45,9 +45,9 @@ import org.cleartk.srl.type.Predicate;
 import org.cleartk.srl.type.SemanticArgument;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
+import org.cleartk.syntax.constituent.type.TreebankNodeUtil;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.AnnotationUtil;
 import org.cleartk.util.UIMAUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
@@ -60,14 +60,19 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
  */
-@SofaCapability(inputSofas = { Conll2005Constants.CONLL_2005_VIEW, CAS.NAME_DEFAULT_SOFA }, outputSofas = {})
+@SofaCapability(
+    inputSofas = { Conll2005Constants.CONLL_2005_VIEW, CAS.NAME_DEFAULT_SOFA },
+    outputSofas = {})
 public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
 
-  @ConfigurationParameter(mandatory = true, description = "does the data file contain verb sense tags")
+  @ConfigurationParameter(
+      mandatory = true,
+      description = "does the data file contain verb sense tags")
   private Boolean hasVerbSenses;
 
-  public static final String PARAM_HAS_VERB_SENSES = ConfigurationParameterFactory
-      .createConfigurationParameterName(Conll2005GoldAnnotator.class, "hasVerbSenses");
+  public static final String PARAM_HAS_VERB_SENSES = ConfigurationParameterFactory.createConfigurationParameterName(
+      Conll2005GoldAnnotator.class,
+      "hasVerbSenses");
 
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
@@ -356,10 +361,7 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
             int[] span = AnnotationUtil.getAnnotationsExtent(this.argumentTokens);
             SemanticArgument arg = new SemanticArgument(jCas, span[0], span[1]);
             arg.addToIndexes();
-            Annotation relation = AnnotationRetrieval.getMatchingAnnotation(
-                jCas,
-                arg,
-                TreebankNode.class);
+            Annotation relation = TreebankNodeUtil.selectHighestMatchingTreebankNode(jCas, arg);
             if (relation == null) {
               Chunk chunk = new Chunk(jCas, span[0], span[1]);
               relation = chunk;
@@ -447,7 +449,7 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
                 this.currentAnnotation.end);
             Annotation relation = null;
             try {
-              relation = AnnotationRetrieval.getMatchingAnnotation(view, nem, TreebankNode.class);
+              relation = TreebankNodeUtil.selectHighestMatchingTreebankNode(view, nem);
             } catch (NoSuchElementException e) {
             }
             nem.setAnnotation(relation);

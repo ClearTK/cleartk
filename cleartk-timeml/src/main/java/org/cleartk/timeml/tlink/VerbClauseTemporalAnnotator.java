@@ -57,11 +57,12 @@ import org.cleartk.timeml.util.TokenPOSExtractor;
 import org.cleartk.timeml.util.TokenStemExtractor;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.AnnotationRetrieval;
+import org.cleartk.util.AnnotationUtil;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.TypeCapability;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -163,11 +164,11 @@ public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
     }
 
     // look for verb-clause pairs in each sentence in the document
-    for (Sentence sentence : AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
-      TopTreebankNode tree = AnnotationRetrieval.getContainingAnnotation(
+    for (Sentence sentence : JCasUtil.select(jCas, Sentence.class)) {
+      TopTreebankNode tree = AnnotationUtil.selectFirstMatching(
           jCas,
-          sentence,
-          TopTreebankNode.class);
+          TopTreebankNode.class,
+          sentence);
       if (tree == null) {
         String fmt = "missing syntactic parse for sentence: %s";
         String msg = String.format(fmt, sentence.getCoveredText());
@@ -180,10 +181,8 @@ public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
       this.collectVerbClausePairs(tree, links);
       for (TreebankNodeLink link : links) {
 
-        Token sourceToken = AnnotationRetrieval.getAnnotations(jCas, link.source, Token.class).get(
-            0);
-        Token targetToken = AnnotationRetrieval.getAnnotations(jCas, link.target, Token.class).get(
-            0);
+        Token sourceToken = JCasUtil.selectCovered(jCas, Token.class, link.source).get(0);
+        Token targetToken = JCasUtil.selectCovered(jCas, Token.class, link.target).get(0);
         int firstEnd = Math.min(sourceToken.getEnd(), targetToken.getEnd());
         int lastBegin = Math.max(sourceToken.getBegin(), targetToken.getBegin());
 
@@ -202,8 +201,8 @@ public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
         instance.addAll(this.pathExtractor.extract(jCas, link.source, link.target));
 
         // find source and target anchors if they're available
-        Anchor source = AnnotationRetrieval.getContainingAnnotation(jCas, link.source, Anchor.class);
-        Anchor target = AnnotationRetrieval.getContainingAnnotation(jCas, link.target, Anchor.class);
+        Anchor source = AnnotationUtil.selectFirstMatching(jCas, Anchor.class, link.source);
+        Anchor target = AnnotationUtil.selectFirstMatching(jCas, Anchor.class, link.target);
 
         // if we're building training data, get the relation type from a
         // TLINK
@@ -253,7 +252,7 @@ public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
 
   private Map<String, TemporalLink> getTemporalLinks(JCas jCas) {
     Map<String, TemporalLink> tlinks = new HashMap<String, TemporalLink>();
-    for (TemporalLink tlink : AnnotationRetrieval.getAnnotations(jCas, TemporalLink.class)) {
+    for (TemporalLink tlink : JCasUtil.select(jCas, TemporalLink.class)) {
       String sourceID = tlink.getSource().getId();
       String targetID = tlink.getTarget().getId();
       String key = String.format("%s:%s", sourceID, targetID);

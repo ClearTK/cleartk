@@ -21,7 +21,7 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.cleartk.eval.provider.CorpusReaderProvider;
-import org.uimafit.component.JCasAnnotatorAdapter;
+import org.uimafit.component.NoOpAnnotator;
 import org.uimafit.factory.AnalysisEngineFactory;
 
 /**
@@ -39,7 +39,7 @@ public abstract class CorpusFactory_ImplBase implements CorpusReaderProvider {
   }
 
   public AnalysisEngine getPreprocessor() throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitive(JCasAnnotatorAdapter.class, typeSystemDescription);
+    return AnalysisEngineFactory.createPrimitive(NoOpAnnotator.class, typeSystemDescription);
   }
 
   protected void verifyFoldValue(int fold) {

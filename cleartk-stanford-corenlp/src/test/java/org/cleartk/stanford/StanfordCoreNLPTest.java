@@ -20,6 +20,7 @@ package org.cleartk.stanford;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -39,6 +40,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.testing.factory.TokenBuilder;
+import org.uimafit.util.JCasUtil;
 
 /**
  * 
@@ -71,8 +73,7 @@ public class StanfordCoreNLPTest extends CleartkTestBase {
     String sent1 = "The Stanford-based Dr. Smith bought \n milk for Martha.";
     String sent2 = "So she thanked him for it \n and put the milk into her bag.";
     this.jCas.setDocumentText(String.format("%s %s", sent1, sent2));
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(StanfordCoreNLPAnnotator
-        .getDescription());
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(StanfordCoreNLPAnnotator.getDescription());
     engine.process(this.jCas);
     engine.collectionProcessComplete();
 
@@ -101,54 +102,54 @@ public class StanfordCoreNLPTest extends CleartkTestBase {
         "her",
         "bag",
         ".");
-    List<String> actual = JCasUtil.toText(JCasUtil.iterate(this.jCas, Token.class));
+    List<String> actual = JCasUtil.toText(JCasUtil.select(this.jCas, Token.class));
     Assert.assertEquals(expected, actual);
 
     // check sentences
     expected = Arrays.asList(sent1, sent2);
-    actual = JCasUtil.toText(JCasUtil.iterate(this.jCas, Sentence.class));
+    actual = JCasUtil.toText(JCasUtil.select(this.jCas, Sentence.class));
     Assert.assertEquals(expected, actual);
 
     // check named entities
-    Iterator<NamedEntityMention> nes;
-    nes = JCasUtil.iterate(this.jCas, NamedEntityMention.class).iterator();
-    NamedEntityMention ne = nes.next();
+    Collection<NamedEntityMention> nes = JCasUtil.select(this.jCas, NamedEntityMention.class);
+    Iterator<NamedEntityMention> nesIter = nes.iterator();
+    NamedEntityMention ne = nesIter.next();
     Assert.assertEquals("Stanford-based", ne.getCoveredText());
     Assert.assertEquals("MISC", ne.getMentionType());
-    ne = nes.next();
+    ne = nesIter.next();
     Assert.assertEquals("Dr. Smith", ne.getCoveredText());
     Assert.assertEquals("PERSON", ne.getMentionType());
-    ne = nes.next();
+    ne = nesIter.next();
     Assert.assertEquals("milk", ne.getCoveredText());
     Assert.assertNull(ne.getMentionType());
-    ne = nes.next();
+    ne = nesIter.next();
     Assert.assertEquals("Martha", ne.getCoveredText());
     Assert.assertEquals("PERSON", ne.getMentionType());
-    ne = nes.next();
+    ne = nesIter.next();
     Assert.assertEquals("she", ne.getCoveredText());
     Assert.assertNull(ne.getMentionType());
-    ne = nes.next();
+    ne = nesIter.next();
     Assert.assertEquals("him", ne.getCoveredText());
     Assert.assertNull(ne.getMentionType());
-    ne = nes.next();
+    ne = nesIter.next();
     Assert.assertEquals("it", ne.getCoveredText());
     Assert.assertNull(ne.getMentionType());
-    ne = nes.next();
+    ne = nesIter.next();
     Assert.assertEquals("the milk", ne.getCoveredText());
     Assert.assertNull(ne.getMentionType());
-    ne = nes.next();
+    ne = nesIter.next();
     Assert.assertEquals("her", ne.getCoveredText());
     Assert.assertNull(ne.getMentionType());
-    Assert.assertFalse(nes.hasNext());
+    Assert.assertFalse(nesIter.hasNext());
 
     // check syntactic trees
     Iterator<TopTreebankNode> trees;
-    trees = JCasUtil.iterate(this.jCas, TopTreebankNode.class).iterator();
+    trees = JCasUtil.select(this.jCas, TopTreebankNode.class).iterator();
     TopTreebankNode tree = trees.next();
     Assert.assertEquals(sent1, tree.getCoveredText());
     Assert.assertEquals("The Stanford-based Dr. Smith", tree.getChildren(0).getCoveredText());
     int smiths = 0;
-    for (TreebankNode node : JCasUtil.iterate(jCas, TreebankNode.class)) {
+    for (TreebankNode node : JCasUtil.select(jCas, TreebankNode.class)) {
       if (node.getCoveredText().equals("Smith")) {
         smiths += 1;
       }
@@ -233,16 +234,16 @@ public class StanfordCoreNLPTest extends CleartkTestBase {
     expectedEntities.add(Arrays.asList("milk", "it", "the milk"));
     expectedEntities.add(Arrays.asList("Martha", "she", "her"));
     List<List<String>> actualEntities = new ArrayList<List<String>>();
-    for (NamedEntity entity : JCasUtil.iterate(this.jCas, NamedEntity.class)) {
+    for (NamedEntity entity : JCasUtil.select(this.jCas, NamedEntity.class)) {
       List<String> mentionTexts = new ArrayList<String>();
-      for (NamedEntityMention mention : JCasUtil.iterate(
+      for (NamedEntityMention mention : JCasUtil.select(
           entity.getMentions(),
           NamedEntityMention.class)) {
         mentionTexts.add(mention.getCoveredText());
       }
       actualEntities.add(mentionTexts);
     }
-    for (NamedEntityMention mention : JCasUtil.iterate(this.jCas, NamedEntityMention.class)) {
+    for (NamedEntityMention mention : JCasUtil.select(this.jCas, NamedEntityMention.class)) {
       Assert.assertNotNull(mention.getMentionedEntity());
     }
     Assert.assertEquals(expectedEntities, actualEntities);

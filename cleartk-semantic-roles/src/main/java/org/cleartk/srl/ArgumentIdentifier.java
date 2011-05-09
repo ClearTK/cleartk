@@ -25,6 +25,7 @@ package org.cleartk.srl;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -64,9 +65,10 @@ import org.cleartk.syntax.feature.SubCategorizationExtractor;
 import org.cleartk.syntax.feature.SyntacticPathExtractor;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.AnnotationRetrieval;
+import org.cleartk.util.AnnotationUtil;
 import org.cleartk.util.UIMAUtil;
 import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -148,7 +150,7 @@ public class ArgumentIdentifier extends CleartkAnnotator<Boolean> {
     /*
      * Iterate over sentences in document
      */
-    List<Sentence> sentences = AnnotationRetrieval.getAnnotations(jCas, Sentence.class);
+    Collection<Sentence> sentences = JCasUtil.select(jCas, Sentence.class);
 
     nSentences = 0;
     nPredicates = 0;
@@ -178,8 +180,7 @@ public class ArgumentIdentifier extends CleartkAnnotator<Boolean> {
     /*
      * Pre-compute sentence level data: sentenceConstituents: list of all constituents in sentence
      */
-    TopTreebankNode top;
-    top = AnnotationRetrieval.getContainingAnnotation(jCas, sentence, TopTreebankNode.class, false);
+    TopTreebankNode top = AnnotationUtil.selectFirstMatching(jCas, TopTreebankNode.class, sentence);
     if (top == null) {
       CleartkExtractorException.noAnnotationInWindow(TopTreebankNode.class, sentence);
     }
@@ -198,8 +199,7 @@ public class ArgumentIdentifier extends CleartkAnnotator<Boolean> {
     /*
      * Iterate over predicates in sentence
      */
-    List<Predicate> predicates = AnnotationRetrieval
-        .getAnnotations(jCas, sentence, Predicate.class);
+    List<Predicate> predicates = JCasUtil.selectCovered(jCas, Predicate.class, sentence);
     for (Predicate predicate : predicates) {
       processPredicate(jCas, predicate, sentenceConstituents, sentenceConstituentFeatures);
     }

@@ -23,15 +23,13 @@
  */
 package org.cleartk.token.tokenizer.chunk;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
-import org.apache.uima.cas.FSIterator;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.chunker.DefaultChunkLabeler;
-import org.cleartk.util.AnnotationRetrieval;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -56,27 +54,13 @@ public class ChunkTokenizerLabeler extends DefaultChunkLabeler {
     if (!typesInitialized)
       initializeTypes(jCas);
 
-    FSIterator<Annotation> chunkAnnotations = jCas
-        .getAnnotationIndex(chunkAnnotationType)
-        .iterator();
-    while (chunkAnnotations.hasNext()) {
-      Annotation chunkAnnotation = chunkAnnotations.next();
+    for (Annotation chunkAnnotation : JCasUtil.select(jCas, chunkAnnotationClass)) {
       String label = getChunkLabel(jCas, chunkAnnotation);
 
-      List<? extends Annotation> labeledAnnotations = AnnotationRetrieval.getAnnotations(
+      List<? extends Annotation> labeledAnnotations = JCasUtil.selectCovered(
           jCas,
-          chunkAnnotation,
-          labeledAnnotationClass);
-
-      if (labeledAnnotations.size() == 0) {
-        List<Annotation> anns = new ArrayList<Annotation>();
-        Annotation labeledAnnotation = AnnotationRetrieval.getContainingAnnotation(
-            jCas,
-            chunkAnnotation,
-            labeledAnnotationClass);
-        anns.add(labeledAnnotation);
-        labeledAnnotations = anns;
-      }
+          labeledAnnotationClass,
+          chunkAnnotation);
 
       boolean begin = true;
       for (Annotation labelAnnotation : labeledAnnotations) {

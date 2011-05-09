@@ -24,19 +24,22 @@
 package org.cleartk.srl.propbank;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
+import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.srl.propbank.util.Propbank;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.token.type.Sentence;
-import org.cleartk.util.AnnotationRetrieval;
+import org.cleartk.util.AnnotationUtil;
 import org.cleartk.util.UIMAUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.SofaCapability;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -62,18 +65,24 @@ public class PropbankGoldAnnotator extends JCasAnnotator_ImplBase {
     try {
       JCas pbView = jCas.getView(PropbankConstants.PROPBANK_VIEW);
       JCas docView = jCas.getView(CAS.NAME_DEFAULT_SOFA);
-      List<Sentence> sentenceList = AnnotationRetrieval.getAnnotations(docView, Sentence.class);
+      List<Sentence> sentenceList = new ArrayList<Sentence>(
+          JCasUtil.select(docView, Sentence.class));
 
       for (String propbankDatum : UIMAUtil.readSofa(pbView).trim().split("\n")) {
         if (propbankDatum.length() == 0)
           continue;
         Propbank propbank = Propbank.fromString(propbankDatum);
         Sentence sentence = sentenceList.get(propbank.getSentenceNumber());
-        propbank.convert(docView, AnnotationRetrieval.getContainingAnnotation(
-            docView,
-            sentence,
+        TopTreebankNode top = AnnotationUtil.selectFirstMatching(
+            jCas,
             TopTreebankNode.class,
-            false), sentence);
+            sentence);
+        if (top == null) {
+          throw CleartkExtractorException.noAnnotationMatchingWindow(
+              TopTreebankNode.class,
+              sentence);
+        }
+        propbank.convert(docView, top, sentence);
       }
     } catch (CASException e) {
       throw new AnalysisEngineProcessException(e);

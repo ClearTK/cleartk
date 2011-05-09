@@ -26,20 +26,21 @@ package org.cleartk.util.ae.parenthetical;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.Iterator;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.cleartk.type.test.Chunk;
 import org.cleartk.type.test.NamedEntityMention;
 import org.cleartk.type.test.Sentence;
-import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.UtilTestBase;
 import org.cleartk.util.type.Parenthetical;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.pipeline.SimplePipeline;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -141,13 +142,14 @@ public class ParentheticalAnnotatorTest extends UtilTestBase {
     jCas.setDocumentText(text);
     new NamedEntityMention(jCas, 0, text.length()).addToIndexes();
     SimplePipeline.runPipeline(jCas, ae);
-    List<Chunk> chunks = AnnotationRetrieval.getAnnotations(jCas, Chunk.class);
+    Collection<Chunk> chunks = JCasUtil.select(jCas, Chunk.class);
     assertEquals(5, chunks.size());
-    assertEquals("((a))", chunks.get(0).getCoveredText());
-    assertEquals("(a)", chunks.get(1).getCoveredText());
-    assertEquals("(((abc)bc)def)", chunks.get(2).getCoveredText());
-    assertEquals("((abc)bc)", chunks.get(3).getCoveredText());
-    assertEquals("(abc)", chunks.get(4).getCoveredText());
+    Iterator<Chunk> chunksIter = chunks.iterator();
+    assertEquals("((a))", chunksIter.next().getCoveredText());
+    assertEquals("(a)", chunksIter.next().getCoveredText());
+    assertEquals("(((abc)bc)def)", chunksIter.next().getCoveredText());
+    assertEquals("((abc)bc)", chunksIter.next().getCoveredText());
+    assertEquals("(abc)", chunksIter.next().getCoveredText());
 
   }
 
@@ -174,11 +176,12 @@ public class ParentheticalAnnotatorTest extends UtilTestBase {
     jCas.reset();
     jCas.setDocumentText("testBrackets(){ //[some code here]}");
     SimplePipeline.runPipeline(jCas, aed, aed2, aed3);
-    List<Parenthetical> chunks = AnnotationRetrieval.getAnnotations(jCas, Parenthetical.class);
+    Collection<Parenthetical> chunks = JCasUtil.select(jCas, Parenthetical.class);
+    Iterator<Parenthetical> chunksIter = chunks.iterator();
     assertEquals(3, chunks.size());
-    assertEquals("()", chunks.get(0).getCoveredText());
-    assertEquals("{ //[some code here]}", chunks.get(1).getCoveredText());
-    assertEquals("[some code here]", chunks.get(2).getCoveredText());
+    assertEquals("()", chunksIter.next().getCoveredText());
+    assertEquals("{ //[some code here]}", chunksIter.next().getCoveredText());
+    assertEquals("[some code here]", chunksIter.next().getCoveredText());
 
   }
 
@@ -195,10 +198,11 @@ public class ParentheticalAnnotatorTest extends UtilTestBase {
     SimplePipeline.runPipeline(jCas, ae);
 
     // ae.process(jCas);
-    List<Parenthetical> parens = AnnotationRetrieval.getAnnotations(jCas, Parenthetical.class);
+    Collection<Parenthetical> parens = JCasUtil.select(jCas, Parenthetical.class);
     assertEquals(parenStrings.length, parens.size());
+    Iterator<Parenthetical> parensIter = parens.iterator();
     for (int i = 0; i < parenStrings.length; i++) {
-      assertEquals(parenStrings[i], parens.get(i).getCoveredText());
+      assertEquals(parenStrings[i], parensIter.next().getCoveredText());
     }
   }
 

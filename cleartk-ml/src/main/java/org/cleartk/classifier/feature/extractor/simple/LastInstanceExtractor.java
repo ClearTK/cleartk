@@ -29,7 +29,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
-import org.cleartk.util.AnnotationRetrieval;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -56,20 +56,19 @@ public class LastInstanceExtractor implements SimpleFeatureExtractor {
   public List<Feature> extract(JCas view, Annotation windowAnnotation)
       throws CleartkExtractorException {
 
-    Annotation lastAnnotation;
-    lastAnnotation = AnnotationRetrieval.getLastAnnotation(
+    List<? extends Annotation> anns = JCasUtil.selectCovered(
         view,
-        windowAnnotation,
-        targetAnnotationClass);
+        targetAnnotationClass,
+        windowAnnotation);
 
-    if (lastAnnotation == null) {
+    if (anns.size() == 0) {
       throw CleartkExtractorException.noAnnotationInWindow(targetAnnotationClass, windowAnnotation);
     }
+    Annotation lastAnnotation = anns.get(anns.size() - 1);
 
     List<Feature> features = subExtractor.extract(view, lastAnnotation);
     for (Feature f : features) {
-      String name = Feature
-          .createName("First" + targetAnnotationClass.getSimpleName(), f.getName());
+      String name = Feature.createName("First" + targetAnnotationClass.getSimpleName(), f.getName());
       f.setName(name);
     }
 

@@ -32,7 +32,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
-import org.cleartk.util.AnnotationRetrieval;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -59,7 +59,10 @@ public class NGramExtractor implements SimpleFeatureExtractor {
 
     List<Feature> ngramFeatures = new ArrayList<Feature>();
 
-    annotations = AnnotationRetrieval.getAnnotations(view, focusAnnotation, annotationClass);
+    annotations = new ArrayList<Annotation>(JCasUtil.selectCovered(
+        view,
+        annotationClass,
+        focusAnnotation));
 
     Map<Annotation, List<Feature>> annotationFeatures = new HashMap<Annotation, List<Feature>>();
     for (Annotation annotation : annotations) {

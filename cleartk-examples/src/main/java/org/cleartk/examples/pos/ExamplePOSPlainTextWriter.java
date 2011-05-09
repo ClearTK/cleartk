@@ -33,11 +33,11 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.AnnotationRetrieval;
 import org.cleartk.util.ViewURIUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -50,10 +50,14 @@ public class ExamplePOSPlainTextWriter extends JCasAnnotator_ImplBase {
 
   public static final String DEFAULT_OUTPUT_DIRECTORY = "target/examples/pos";
 
-  public static final String PARAM_OUTPUT_DIRECTORY_NAME = ConfigurationParameterFactory
-      .createConfigurationParameterName(ExamplePOSPlainTextWriter.class, "outputDirectoryName");
+  public static final String PARAM_OUTPUT_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
+      ExamplePOSPlainTextWriter.class,
+      "outputDirectoryName");
 
-  @ConfigurationParameter(mandatory = true, defaultValue = DEFAULT_OUTPUT_DIRECTORY, description = "provides the directory where the token/pos text files will be written")
+  @ConfigurationParameter(
+      mandatory = true,
+      defaultValue = DEFAULT_OUTPUT_DIRECTORY,
+      description = "provides the directory where the token/pos text files will be written")
   private String outputDirectoryName;
 
   protected File outputDir;
@@ -76,8 +80,8 @@ public class ExamplePOSPlainTextWriter extends JCasAnnotator_ImplBase {
     } catch (FileNotFoundException e) {
       throw new AnalysisEngineProcessException(e);
     }
-    for (Sentence sentence : AnnotationRetrieval.getAnnotations(jCas, Sentence.class)) {
-      for (Token token : AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class)) {
+    for (Sentence sentence : JCasUtil.select(jCas, Sentence.class)) {
+      for (Token token : JCasUtil.selectCovered(jCas, Token.class, sentence)) {
         outputWriter.print(token.getCoveredText());
         outputWriter.print('/');
         outputWriter.print(token.getPos());

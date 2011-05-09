@@ -26,13 +26,11 @@ package org.cleartk.syntax.opennlp;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.cas.FSIterator;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.syntax.constituent.types.InputTypesHelper;
 import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
-import org.cleartk.util.AnnotationRetrieval;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -46,7 +44,7 @@ import org.cleartk.util.AnnotationRetrieval;
 public class TestInputTypesHelper extends InputTypesHelper<Token, Sentence> {
 
   public List<Token> getTokens(JCas jCas, Sentence sentence) {
-    return AnnotationRetrieval.getAnnotations(jCas, sentence, Token.class);
+    return JCasUtil.selectCovered(jCas, Token.class, sentence);
   }
 
   @Override
@@ -60,17 +58,7 @@ public class TestInputTypesHelper extends InputTypesHelper<Token, Sentence> {
   }
 
   public List<Sentence> getSentences(JCas jCas) {
-    ArrayList<Sentence> result = new ArrayList<Sentence>();
-    FSIterator<Annotation> sentences = jCas
-        .getJFSIndexRepository()
-        .getAnnotationIndex(Sentence.type)
-        .iterator();
-
-    while (sentences.hasNext()) {
-      result.add((Sentence) sentences.next());
-    }
-
-    return result;
+    return new ArrayList<Sentence>(JCasUtil.select(jCas, Sentence.class));
   }
 
 }

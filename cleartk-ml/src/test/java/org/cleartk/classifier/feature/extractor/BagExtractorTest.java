@@ -41,12 +41,12 @@ import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Token;
-import org.cleartk.util.AnnotationRetrieval;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.uimafit.component.JCasAnnotatorAdapter;
+import org.uimafit.component.NoOpAnnotator;
 import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -61,9 +61,7 @@ public class BagExtractorTest extends DefaultTestBase {
 
   @Before
   public void localSetUp() throws Throwable {
-    this.engine = AnalysisEngineFactory.createPrimitive(
-        JCasAnnotatorAdapter.class,
-        typeSystemDescription);
+    this.engine = AnalysisEngineFactory.createPrimitive(NoOpAnnotator.class, typeSystemDescription);
     this.jCasObjects = new ArrayList<JCas>();
     this.expectedTokenLists = new ArrayList<List<String>>();
     this.expectedPOSLists = new ArrayList<List<String>>();
@@ -167,7 +165,7 @@ public class BagExtractorTest extends DefaultTestBase {
     // run a BagExtractor on each document
     for (int i = 0; i < this.jCasObjects.size(); i++) {
       JCas jc = this.jCasObjects.get(i);
-      DocumentAnnotation document = AnnotationRetrieval.getDocument(jc);
+      DocumentAnnotation document = JCasUtil.selectSingle(jc, DocumentAnnotation.class);
       List<Feature> features = bagExtractor.extract(jc, document);
 
       // collect all feature values, and check all feature names

@@ -61,13 +61,22 @@ public class PrepareSentenceData {
 
   public static class Options extends Options_ImplBase {
 
-    @Option(name = "-i", aliases = "--inputDirectoryName", usage = "specify the name of the input directory for the wsj data.")
+    @Option(
+        name = "-i",
+        aliases = "--inputDirectoryName",
+        usage = "specify the name of the input directory for the wsj data.")
     public String inputDirectoryName = "../ClearTK Data/data/treebank/wsj";
 
-    @Option(name = "-o", aliases = "--outputDirectoryName", usage = "specify the name of the output directory for the sentence data.")
+    @Option(
+        name = "-o",
+        aliases = "--outputDirectoryName",
+        usage = "specify the name of the output directory for the sentence data.")
     public String outputDirectoryName = "../cleartk-token/src/main/resources/org/cleartk/sentence/english/ptb";
 
-    @Option(name = "-s", aliases = "--sectionsSpecifier", usage = "specify the sections that will be used.")
+    @Option(
+        name = "-s",
+        aliases = "--sectionsSpecifier",
+        usage = "specify the sections that will be used.")
     public String sectionsSpecifier = "00-24";
 
   }
@@ -115,7 +124,7 @@ public class PrepareSentenceData {
 
     @Override
     public void process(JCas jCas) throws AnalysisEngineProcessException {
-      for (Sentence sentence : JCasUtil.iterate(jCas, Sentence.class)) {
+      for (Sentence sentence : JCasUtil.select(jCas, Sentence.class)) {
         String sentenceText = sentence.getCoveredText();
         char lastChar = sentenceText.charAt(sentenceText.length() - 1);
         int count = 0;

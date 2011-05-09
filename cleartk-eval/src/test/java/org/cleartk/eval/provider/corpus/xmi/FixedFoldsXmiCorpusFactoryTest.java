@@ -31,7 +31,7 @@ import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.test.DefaultTestBase;
 import org.junit.Test;
-import org.uimafit.component.JCasAnnotatorAdapter;
+import org.uimafit.component.NoOpAnnotator;
 import org.uimafit.component.xwriter.XWriter;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.pipeline.JCasIterable;
@@ -82,7 +82,7 @@ public class FixedFoldsXmiCorpusFactoryTest extends DefaultTestBase {
     CollectionReader reader = testFactory.getTestReader(0);
 
     AnalysisEngine aeAdapter = AnalysisEngineFactory.createPrimitive(
-        JCasAnnotatorAdapter.class,
+        NoOpAnnotator.class,
         typeSystemDescription);
 
     JCasIterable jCases = new JCasIterable(reader, aeAdapter);
