@@ -42,6 +42,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.collection.CollectionException;
 import org.apache.uima.collection.CollectionReader;
+import org.apache.uima.collection.CollectionReaderDescription;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.pear.util.FileUtil;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -73,33 +74,41 @@ import org.uimafit.factory.ConfigurationParameterFactory;
 @SofaCapability(outputSofas = ViewURIUtil.URI)
 public class FilesCollectionReader extends JCasCollectionReader_ImplBase {
 
-  public static CollectionReader getCollectionReader(String fileOrDir)
+  public static CollectionReaderDescription getDescription(String fileOrDir)
       throws ResourceInitializationException {
-    return CollectionReaderFactory.createCollectionReader(
+    return CollectionReaderFactory.createDescription(
         FilesCollectionReader.class,
         null,
         PARAM_ROOT_FILE,
         fileOrDir);
   }
 
-  public static CollectionReader getCollectionReaderWithView(String dir, String viewName)
+  public static CollectionReader getCollectionReader(String fileOrDir)
       throws ResourceInitializationException {
-    return CollectionReaderFactory.createCollectionReader(
+    return CollectionReaderFactory.createCollectionReader(getDescription(fileOrDir));
+  }
+
+  public static CollectionReaderDescription getDescriptionWithView(String dir, String viewName)
+      throws ResourceInitializationException {
+    return CollectionReaderFactory.createDescription(
         FilesCollectionReader.class,
-        null,
         PARAM_ROOT_FILE,
         dir,
         PARAM_VIEW_NAME,
         viewName);
   }
 
-  public static CollectionReader getCollectionReaderWithPatterns(
+  public static CollectionReader getCollectionReaderWithView(String dir, String viewName)
+      throws ResourceInitializationException {
+    return CollectionReaderFactory.createCollectionReader(getDescriptionWithView(dir, viewName));
+  }
+
+  public static CollectionReaderDescription getDescriptionWithPatterns(
       String dir,
       String viewName,
       String... patterns) throws ResourceInitializationException {
-    return CollectionReaderFactory.createCollectionReader(
+    return CollectionReaderFactory.createDescription(
         FilesCollectionReader.class,
-        null,
         PARAM_ROOT_FILE,
         dir,
         PARAM_VIEW_NAME,
@@ -108,19 +117,38 @@ public class FilesCollectionReader extends JCasCollectionReader_ImplBase {
         patterns);
   }
 
-  public static CollectionReader getCollectionReaderWithSuffixes(
+  public static CollectionReader getCollectionReaderWithPatterns(
+      String dir,
+      String viewName,
+      String... patterns) throws ResourceInitializationException {
+    return CollectionReaderFactory.createCollectionReader(getDescriptionWithPatterns(
+        dir,
+        viewName,
+        patterns));
+  }
+
+  public static CollectionReaderDescription getDescriptionWithSuffixes(
       String dir,
       String viewName,
       String... suffixes) throws ResourceInitializationException {
-    return CollectionReaderFactory.createCollectionReader(
+    return CollectionReaderFactory.createDescription(
         FilesCollectionReader.class,
-        null,
         PARAM_ROOT_FILE,
         dir,
         PARAM_VIEW_NAME,
         viewName,
         PARAM_SUFFIXES,
         suffixes);
+  }
+
+  public static CollectionReader getCollectionReaderWithSuffixes(
+      String dir,
+      String viewName,
+      String... suffixes) throws ResourceInitializationException {
+    return CollectionReaderFactory.createCollectionReader(getDescriptionWithSuffixes(
+        dir,
+        viewName,
+        suffixes));
   }
 
   public static final String PARAM_ROOT_FILE = ConfigurationParameterFactory.createConfigurationParameterName(
