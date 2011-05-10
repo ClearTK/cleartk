@@ -1,0 +1,22 @@
+README
+------
+
+This is the tree kernel svmlight adapter for cleartk. It works with
+Alessandro Moschitti tree kernel version of svmlight. That can be
+found here: http://disi.unitn.it/moschitti/Tree-Kernel.htm
+
+Unforunately, when you you compile the tree kernel version of svm light,
+it creates two executables named svm_learn and svm_classify. These
+are the same executable names which the normal svmlight creates. Since
+you can only reference one of these executables (whichever comes first
+in the PATH variable) at a time, the adapter expects you to create a
+soft link to the tree kernel versions.
+
+% ln -s <tk_bin_path>/svm_learn <bin_path>/tk_svm_learn
+% ln -s <tk_bin_path>/svm_classify <bin_path>/tk_svm_classify
+
+Where <bin_path> is a path found in your PATH environment variable.
+
+This seemed the easiest way for both the tree kernel svmlight and the
+original svmlight to coexist (without unnecessary pom configuration
+needing to be done).
