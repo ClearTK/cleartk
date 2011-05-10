@@ -145,7 +145,8 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
   }
 
   public static void main(String[] args) {
-    ParserData parserData = ParserData.Load("data/experiment/berkeley/fold1.gr");
+//  ParserData parserData = ParserData.Load("data/experiment/berkeley/fold1.gr");
+    ParserData parserData = ParserData.Load("src/test/resources/models/11597317.gr");
     Grammar grammar = parserData.getGrammar();
     Lexicon lexicon = parserData.getLexicon();
     Numberer.setNumberers(parserData.getNumbs());
