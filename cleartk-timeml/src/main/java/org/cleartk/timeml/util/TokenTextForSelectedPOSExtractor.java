@@ -1,5 +1,5 @@
-/** 
- * Copyright (c) 2010, Regents of the University of Colorado 
+/*
+ * Copyright (c) 2011, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -23,25 +23,57 @@
  */
 package org.cleartk.timeml.util;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.Annotation;
+import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
+import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
+import org.cleartk.token.type.Token;
+
 /**
  * <br>
- * Copyright (c) 2010, Regents of the University of Colorado <br>
+ * Copyright (c) 2011, Regents of the University of Colorado <br>
  * All rights reserved.
- * 
- * Extract the text of Tokens preceding the focus annotation as in
- * {@link PrecedingTokenTextBagExtractor}, but include ordering information, i.e. features will look
- * like PrecedingToken_1, PrecedingToken_2, etc.
  * 
  * @author Steven Bethard
  */
-public class PrecedingTokenTextExtractor extends PrecedingTokenTextBagExtractor {
+public class TokenTextForSelectedPOSExtractor implements SimpleFeatureExtractor {
 
-  public PrecedingTokenTextExtractor(int nTokens, String... acceptablePOSTags) {
-    super(nTokens, acceptablePOSTags);
+  private Set<String> acceptablePOSTags;
+
+  private SimpleFeatureExtractor extractor;
+
+  public TokenTextForSelectedPOSExtractor(Collection<String> acceptablePOSTags) {
+    this.acceptablePOSTags = new HashSet<String>(acceptablePOSTags);
+    this.extractor = new SpannedTextExtractor();
+  }
+
+  public TokenTextForSelectedPOSExtractor(String... acceptablePOSTags) {
+    this(Arrays.asList(acceptablePOSTags));
   }
 
   @Override
-  public String getFeatureName(String pos, int index) {
-    return "PrecedingToken_" + index;
+  public List<Feature> extract(JCas view, Annotation focusAnnotation)
+      throws CleartkExtractorException {
+    List<Feature> features = new ArrayList<Feature>();
+    Token token = (Token) focusAnnotation;
+    String pos = token.getPos();
+    if (pos != null) {
+      if (pos.length() > 2) {
+        pos = pos.substring(0, 2);
+      }
+      if (this.acceptablePOSTags.contains(pos)) {
+        features.addAll(this.extractor.extract(view, token));
+      }
+    }
+    return features;
   }
 }

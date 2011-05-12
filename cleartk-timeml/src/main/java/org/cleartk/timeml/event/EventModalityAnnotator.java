@@ -26,11 +26,15 @@ package org.cleartk.timeml.event;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.classifier.feature.extractor.ContextExtractor;
+import org.cleartk.classifier.feature.extractor.ContextExtractor.Bag;
+import org.cleartk.classifier.feature.extractor.ContextExtractor.Preceding;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.timeml.TimeMLComponents;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.util.CleartkInternalModelFactory;
-import org.cleartk.timeml.util.PrecedingTokenTextBagExtractor;
+import org.cleartk.timeml.util.TokenTextForSelectedPOSExtractor;
+import org.cleartk.token.type.Token;
 import org.uimafit.factory.AnalysisEngineFactory;
 
 /**
@@ -66,7 +70,10 @@ public class EventModalityAnnotator extends EventAttributeAnnotator<String> {
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
-    this.eventFeatureExtractors.add(new PrecedingTokenTextBagExtractor(3, "RB", "MD", "TO", "IN"));
+    this.contextExtractors.add(new ContextExtractor<Token>(
+        Token.class,
+        new TokenTextForSelectedPOSExtractor("RB", "MD", "TO", "IN"),
+        new Bag(new Preceding(3))));
   }
 
   @Override
@@ -76,11 +83,12 @@ public class EventModalityAnnotator extends EventAttributeAnnotator<String> {
 
   @Override
   protected String getAttribute(Event event) {
-    return event.getModality();
+    String modality = event.getModality();
+    return modality == null ? null : modality.replace(' ', '_');
   }
 
   @Override
   protected void setAttribute(Event event, String value) {
-    event.setModality(value);
+    event.setModality(value == null ? null : value.replace('_', ' '));
   }
 }

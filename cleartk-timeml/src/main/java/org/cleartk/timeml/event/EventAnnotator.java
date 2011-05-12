@@ -25,7 +25,9 @@ package org.cleartk.timeml.event;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
@@ -33,10 +35,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.chunker.ChunkLabeler_ImplBase;
-import org.cleartk.chunker.Chunker;
-import org.cleartk.chunker.ChunkerFeatureExtractor;
-import org.cleartk.chunker.DefaultChunkLabeler;
+import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
@@ -46,7 +45,7 @@ import org.cleartk.classifier.feature.extractor.ContextExtractor.Preceding;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
-import org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory;
+import org.cleartk.classifier.mallet.DefaultMalletDataWriterFactory;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNodeUtil;
 import org.cleartk.timeml.TimeMLComponents;
@@ -66,7 +65,7 @@ import org.uimafit.util.JCasUtil;
  * 
  * @author Steven Bethard
  */
-public class EventAnnotator extends Chunker {
+public class EventAnnotator extends CleartkAnnotator<String> {
 
   public static final CleartkInternalModelFactory FACTORY = new CleartkInternalModelFactory() {
 
@@ -77,76 +76,75 @@ public class EventAnnotator extends Chunker {
 
     @Override
     public Class<?> getDataWriterFactoryClass() {
-      return DefaultMalletCRFDataWriterFactory.class;
+      return DefaultMalletDataWriterFactory.class;
     }
 
     @Override
     public AnalysisEngineDescription getBaseDescription() throws ResourceInitializationException {
       return AnalysisEngineFactory.createPrimitiveDescription(
           EventAnnotator.class,
-          TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
-          Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME,
-          Token.class.getName(),
-          Chunker.PARAM_SEQUENCE_CLASS_NAME,
-          Sentence.class.getName(),
-          Chunker.PARAM_CHUNK_LABELER_CLASS_NAME,
-          DefaultChunkLabeler.class.getName(),
-          Chunker.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME,
-          FeatureExtractor.class.getName(),
-          ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME,
-          Event.class.getName());
+          TimeMLComponents.TYPE_SYSTEM_DESCRIPTION);
     }
   };
 
-  @Override
-  public void process(JCas jCas) throws AnalysisEngineProcessException {
-    super.process(jCas);
+  protected List<SimpleFeatureExtractor> tokenFeatureExtractors;
 
-    int index = 1;
-    for (Event event : JCasUtil.select(jCas, Event.class)) {
-      String id = String.format("e%d", index);
-      event.setId(id);
-      index += 1;
-    }
+  protected List<ContextExtractor<?>> contextExtractors;
+
+  @Override
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    super.initialize(context);
+
+    // add features: word, stem, pos
+    this.tokenFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
+    this.tokenFeatureExtractors.addAll(Arrays.asList(
+        new SpannedTextExtractor(),
+        new TypePathExtractor(Token.class, "stem"),
+        new TypePathExtractor(Token.class, "pos"),
+        new ParentNodeFeaturesExtractor()));
+
+    // add window of features before and after
+    this.contextExtractors = new ArrayList<ContextExtractor<?>>();
+    this.contextExtractors.add(new ContextExtractor<Token>(
+        Token.class,
+        new SpannedTextExtractor(),
+        new Preceding(3),
+        new Following(3)));
   }
 
-  public static class FeatureExtractor implements ChunkerFeatureExtractor {
-
-    protected List<SimpleFeatureExtractor> tokenFeatureExtractors;
-
-    protected List<ContextExtractor<?>> contextExtractors;
-
-    public void initialize(UimaContext context) throws ResourceInitializationException {
-
-      // add features: word, stem, pos
-      this.tokenFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
-      this.tokenFeatureExtractors.addAll(Arrays.asList(
-          new SpannedTextExtractor(),
-          new TypePathExtractor(Token.class, "stem"),
-          new TypePathExtractor(Token.class, "pos"),
-          new ParentNodeFeaturesExtractor()));
-
-      // add window of features before and after
-      this.contextExtractors = new ArrayList<ContextExtractor<?>>();
-      this.contextExtractors.add(new ContextExtractor<Token>(
-          Token.class,
-          new SpannedTextExtractor(),
-          new Preceding(3),
-          new Following(3)));
+  @Override
+  public void process(JCas jCas) throws AnalysisEngineProcessException {
+    Set<Token> eventTokens = new HashSet<Token>();
+    if (this.isTraining()) {
+      for (Event event : JCasUtil.select(jCas, Event.class)) {
+        for (Token token : JCasUtil.selectCovered(jCas, Token.class, event)) {
+          eventTokens.add(token);
+        }
+      }
     }
 
-    public Instance<String> extractFeatures(
-        JCas jCas,
-        Annotation labeledAnnotation,
-        Annotation sequence) throws CleartkExtractorException {
-      Instance<String> instance = new Instance<String>();
-      for (SimpleFeatureExtractor extractor : this.tokenFeatureExtractors) {
-        instance.addAll(extractor.extract(jCas, labeledAnnotation));
+    int index = 1;
+    for (Sentence sentence : JCasUtil.select(jCas, Sentence.class)) {
+      for (Token token : JCasUtil.selectCovered(jCas, Token.class, sentence)) {
+        List<Feature> features = new ArrayList<Feature>();
+        for (SimpleFeatureExtractor extractor : this.tokenFeatureExtractors) {
+          features.addAll(extractor.extract(jCas, token));
+        }
+        for (ContextExtractor<?> extractor : this.contextExtractors) {
+          features.addAll(extractor.extractWithin(jCas, token, sentence));
+        }
+        if (this.isTraining()) {
+          String label = eventTokens.contains(token) ? "Event" : "O";
+          this.dataWriter.write(new Instance<String>(label, features));
+        } else {
+          if (this.classifier.classify(features).equals("Event")) {
+            Event event = new Event(jCas, token.getBegin(), token.getEnd());
+            event.setId(String.format("e%d", index));
+            event.addToIndexes();
+            index += 1;
+          }
+        }
       }
-      for (ContextExtractor<?> extractor : this.contextExtractors) {
-        instance.addAll(extractor.extractWithin(jCas, labeledAnnotation, sequence));
-      }
-      return instance;
     }
   }
 

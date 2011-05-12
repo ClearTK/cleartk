@@ -58,6 +58,11 @@ import org.uimafit.factory.AnalysisEngineFactory;
 public class TempEval2010TaskBExtents extends TempEval2010Main {
 
   @Override
+  protected String[] getTrainingArguments() {
+    return new String[] { "MaxEnt" };
+  }
+
+  @Override
   protected CleartkPipelineProvider getCleartkPipelineProvider(
       File modelDirectory,
       File xmiDirectory) throws Exception {

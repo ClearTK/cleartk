@@ -26,12 +26,14 @@ package org.cleartk.timeml.event;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.feature.extractor.WindowExtractor;
+import org.cleartk.classifier.feature.extractor.ContextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.token.type.Sentence;
@@ -53,7 +55,7 @@ public abstract class EventAttributeAnnotator<OUTCOME_TYPE> extends CleartkAnnot
    * 
    * Subclasses should override {@link #initialize(org.apache.uima.UimaContext)} to fill this list.
    */
-  protected List<SimpleFeatureExtractor> eventFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
+  protected List<SimpleFeatureExtractor> eventFeatureExtractors;
 
   /**
    * The list of feature extractors that will be applied to the Event annotation, with a Sentence
@@ -61,7 +63,7 @@ public abstract class EventAttributeAnnotator<OUTCOME_TYPE> extends CleartkAnnot
    * 
    * Subclasses should override {@link #initialize(org.apache.uima.UimaContext)} to fill this list.
    */
-  protected List<WindowExtractor> windowFeatureExtractors = new ArrayList<WindowExtractor>();
+  protected List<ContextExtractor<?>> contextExtractors;
 
   /**
    * The attribute value that should be considered as a default, e.g. "NONE". When the attribute
@@ -99,6 +101,13 @@ public abstract class EventAttributeAnnotator<OUTCOME_TYPE> extends CleartkAnnot
   protected abstract void setAttribute(Event event, OUTCOME_TYPE value);
 
   @Override
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    super.initialize(context);
+    this.eventFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
+    this.contextExtractors = new ArrayList<ContextExtractor<?>>();
+  }
+
+  @Override
   public void process(JCas jCas) throws AnalysisEngineProcessException {
     for (Sentence sentence : JCasUtil.select(jCas, Sentence.class)) {
       for (Event event : JCasUtil.selectCovered(jCas, Event.class, sentence)) {
@@ -108,8 +117,8 @@ public abstract class EventAttributeAnnotator<OUTCOME_TYPE> extends CleartkAnnot
         for (SimpleFeatureExtractor extractor : this.eventFeatureExtractors) {
           features.addAll(extractor.extract(jCas, event));
         }
-        for (WindowExtractor extractor : this.windowFeatureExtractors) {
-          features.addAll(extractor.extract(jCas, event, sentence));
+        for (ContextExtractor<?> extractor : this.contextExtractors) {
+          features.addAll(extractor.extractWithin(jCas, event, sentence));
         }
 
         // if training, determine the attribute value and write the

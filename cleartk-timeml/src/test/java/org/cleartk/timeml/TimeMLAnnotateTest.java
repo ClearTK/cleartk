@@ -71,11 +71,11 @@ public class TimeMLAnnotateTest {
       "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
       "<TimeML>" +
       "They " +
-      "<EVENT eid=\"e1\" class=\"OCCURRENCE\" tense=\"PAST\" aspect=\"NONE\" polarity=\"POS\" modality=\"none\">met</EVENT> " +
+      "<EVENT eid=\"e1\" class=\"OCCURRENCE\" tense=\"PAST\" aspect=\"NONE\" polarity=\"POS\" modality=\"NONE\">met</EVENT> " +
       "for dinner. He " + 
-      "<EVENT eid=\"e2\" class=\"REPORTING\" tense=\"PAST\" aspect=\"NONE\" polarity=\"POS\" modality=\"none\">said</EVENT> " +
+      "<EVENT eid=\"e2\" class=\"REPORTING\" tense=\"PAST\" aspect=\"NONE\" polarity=\"POS\" modality=\"NONE\">said</EVENT> " +
       "he " +
-      "<EVENT eid=\"e3\" class=\"OCCURRENCE\" tense=\"PAST\" aspect=\"NONE\" polarity=\"POS\" modality=\"none\">bought</EVENT> " + 
+      "<EVENT eid=\"e3\" class=\"OCCURRENCE\" tense=\"PAST\" aspect=\"NONE\" polarity=\"POS\" modality=\"NONE\">bought</EVENT> " + 
       "stocks." +
       "<TLINK relType=\"AFTER\" eventID=\"e2\" relatedToEvent=\"e3\"/>" +
       "</TimeML>";
