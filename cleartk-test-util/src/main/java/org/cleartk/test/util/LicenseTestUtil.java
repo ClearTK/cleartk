@@ -1,5 +1,5 @@
-/** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+/* 
+ * Copyright (c) 2007-2011, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -31,6 +31,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.uima.util.FileUtils;
@@ -38,7 +39,7 @@ import org.junit.Assert;
 
 /**
  * <br>
- * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * Copyright (c) 2007-2011, Regents of the University of Colorado <br>
  * All rights reserved.
  */
 
@@ -58,8 +59,7 @@ public class LicenseTestUtil {
       String fileText = FileUtils.file2String(file);
 
       if (fileText.indexOf("Copyright (c) ") == -1
-          || fileText
-              .indexOf("THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"") == -1) {
+          || fileText.indexOf("THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"") == -1) {
 
         if (file.getName().equals("GENIAcorpus3.02.articleA.pos.xml"))
           continue;
@@ -83,29 +83,33 @@ public class LicenseTestUtil {
   }
 
   public static void testJavaFiles(String directoryName) throws IOException {
-    List<String> excludePackageNames = Collections.emptyList();
-    List<String> excludeJavaFiles = Collections.emptyList();
-    testJavaFiles(directoryName, excludePackageNames, excludeJavaFiles);
+    testFiles(directoryName, new SuffixFileFilter(".java"));
   }
-
-  // if (file.getParentFile().getName().equals("type") || file.getName().equals("Files.java")
-  // || file.getParentFile().getName().equals("types")
-  // || file.getParentFile().getName().equals("pubmed")
-  // || file.getParentFile().getPath().endsWith("type"+File.separator+"test")
-  // || file.getName().equals("XWriter.java")) {
-  // continue;
-  // }
 
   public static void testJavaFiles(
       String directoryName,
       List<String> excludePackageNames,
       List<String> excludeJavaFiles) throws IOException {
+    testFiles(directoryName, new SuffixFileFilter(".java"), excludePackageNames, excludeJavaFiles);
+  }
+
+  public static void testFiles(String directoryName, IOFileFilter fileFilter) throws IOException {
+    List<String> excludePackageNames = Collections.emptyList();
+    List<String> excludeFiles = Collections.emptyList();
+    testFiles(directoryName, fileFilter, excludePackageNames, excludeFiles);
+  }
+
+  public static void testFiles(
+      String directoryName,
+      IOFileFilter fileFilter,
+      List<String> excludePackageNames,
+      List<String> excludeFiles) throws IOException {
 
     List<String> filesMissingLicense = new ArrayList<String>();
     File directory = new File(directoryName);
     Iterator<?> files = org.apache.commons.io.FileUtils.iterateFiles(
         directory,
-        new SuffixFileFilter(".java"),
+        fileFilter,
         TrueFileFilter.INSTANCE);
 
     while (files.hasNext()) {
@@ -115,13 +119,12 @@ public class LicenseTestUtil {
       if (excludePackage(file, excludePackageNames)) {
         continue;
       }
-      if (excludeJava(file, excludeJavaFiles)) {
+      if (excludeFile(file, excludeFiles)) {
         continue;
       }
 
       if (fileText.indexOf("Copyright (c) ") == -1
-          || fileText
-              .indexOf("THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"") == -1) {
+          || fileText.indexOf("THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"") == -1) {
         filesMissingLicense.add(file.getPath());
       } else {
         if (fileText.indexOf("Copyright (c) ", 300) == -1)
@@ -144,9 +147,9 @@ public class LicenseTestUtil {
 
   }
 
-  private static boolean excludeJava(File file, List<String> excludeJavaFiles) {
+  private static boolean excludeFile(File file, List<String> excludeFiles) {
     String fileName = file.getName();
-    return excludeJavaFiles.contains(fileName);
+    return excludeFiles.contains(fileName);
   }
 
   private static boolean excludePackage(File file, List<String> excludePackageNames) {
@@ -161,23 +164,34 @@ public class LicenseTestUtil {
     return false;
   }
 
-  
   public static void testJavaFilesGPL(String directoryName) throws IOException {
-    List<String> excludePackageNames = Collections.emptyList();
-    List<String> excludeJavaFiles = Collections.emptyList();
-    testJavaFilesGPL(directoryName, excludePackageNames, excludeJavaFiles);
+    testFilesGPL(directoryName, new SuffixFileFilter(".java"));
   }
 
   public static void testJavaFilesGPL(
       String directoryName,
       List<String> excludePackageNames,
-      List<String> excludeJavaFiles) throws IOException {
+      List<String> excludeFiles) throws IOException {
+    testFilesGPL(directoryName, new SuffixFileFilter(".java"), excludePackageNames, excludeFiles);
+  }
+
+  public static void testFilesGPL(String directoryName, IOFileFilter fileFilter) throws IOException {
+    List<String> excludePackageNames = Collections.emptyList();
+    List<String> excludeFiles = Collections.emptyList();
+    testFilesGPL(directoryName, fileFilter, excludePackageNames, excludeFiles);
+  }
+
+  public static void testFilesGPL(
+      String directoryName,
+      IOFileFilter fileFilter,
+      List<String> excludePackageNames,
+      List<String> excludeFiles) throws IOException {
 
     List<String> filesMissingLicense = new ArrayList<String>();
     File directory = new File(directoryName);
     Iterator<?> files = org.apache.commons.io.FileUtils.iterateFiles(
         directory,
-        new SuffixFileFilter(".java"),
+        fileFilter,
         TrueFileFilter.INSTANCE);
 
     while (files.hasNext()) {
@@ -187,13 +201,12 @@ public class LicenseTestUtil {
       if (excludePackage(file, excludePackageNames)) {
         continue;
       }
-      if (excludeJava(file, excludeJavaFiles)) {
+      if (excludeFile(file, excludeFiles)) {
         continue;
       }
 
       if (fileText.indexOf("Copyright (c) ") == -1
-          || fileText
-              .indexOf("GNU General Public License") == -1) {
+          || fileText.indexOf("GNU General Public License") == -1) {
         filesMissingLicense.add(file.getPath());
       } else {
         if (fileText.indexOf("Copyright (c) ", 300) == -1)
