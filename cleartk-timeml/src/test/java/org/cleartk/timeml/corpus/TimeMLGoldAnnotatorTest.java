@@ -184,4 +184,20 @@ public class TimeMLGoldAnnotatorTest extends TimeMLTestBase {
     }
   }
 
+  @Test
+  public void testAnchorTime() throws Exception {
+    JCas view = this.jCas.createView(TimeMLViewName.TIMEML);
+    view.setDocumentText("<TimeML>\n"
+        + "<TIMEX3 tid='t1' anchorTimeID='t0' value='2010-05-27'>One year ago</TIMEX3>...\n"
+        + "<TIMEX3 tid='t0' value='2011-05-27'>May 27, 2011</TIMEX3>\n</TimeML>");
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TimeMLGoldAnnotator.getDescription());
+    engine.process(this.jCas);
+    Iterator<Time> times = JCasUtil.select(this.jCas, Time.class).iterator();
+    Time time1 = times.next();
+    Time time0 = times.next();
+    Assert.assertFalse(times.hasNext());
+    Assert.assertEquals("2011-05-27", time0.getValue());
+    Assert.assertEquals("2010-05-27", time1.getValue());
+    Assert.assertEquals(time0, time1.getAnchorTime());
+  }
 }

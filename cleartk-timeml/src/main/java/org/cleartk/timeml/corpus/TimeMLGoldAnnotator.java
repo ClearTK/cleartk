@@ -25,8 +25,10 @@ package org.cleartk.timeml.corpus;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.uima.UimaContext;
@@ -70,10 +72,13 @@ import org.uimafit.factory.ConfigurationParameterFactory;
 @SofaCapability(inputSofas = { TimeMLViewName.TIMEML, CAS.NAME_DEFAULT_SOFA })
 public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
 
-  public static final String PARAM_LOAD_TLINKS = ConfigurationParameterFactory
-      .createConfigurationParameterName(TimeMLGoldAnnotator.class, "loadTlinks");
+  public static final String PARAM_LOAD_TLINKS = ConfigurationParameterFactory.createConfigurationParameterName(
+      TimeMLGoldAnnotator.class,
+      "loadTlinks");
 
-  @ConfigurationParameter(description = "when false indicates that annotation should not be created for TLINKs (though annotations will still be created for TIMEX3s, EVENTs, etc.).", defaultValue = "true")
+  @ConfigurationParameter(
+      description = "when false indicates that annotation should not be created for TLINKs (though annotations will still be created for TIMEX3s, EVENTs, etc.).",
+      defaultValue = "true")
   private boolean loadTlinks;
 
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
@@ -123,23 +128,77 @@ public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
       throw new AnalysisEngineProcessException(e);
     }
 
+    // collect the document text, add the Event, Time and TemporalLink annotations,
+    // and collect the necessary information to fill in the cross-annotation links
     StringBuffer textBuffer = new StringBuffer();
     Map<String, Anchor> anchors = new HashMap<String, Anchor>();
-    this.addAnnotations(initialView, root, textBuffer, anchors);
+    Map<Time, String> anchorTimeIDs = new HashMap<Time, String>();
+    List<Element> makeInstances = new ArrayList<Element>();
+    Map<TemporalLink, String> tlinkSourceIDs = new HashMap<TemporalLink, String>();
+    Map<TemporalLink, String> tlinkTargetIDs = new HashMap<TemporalLink, String>();
+    this.addAnnotations(
+        initialView,
+        root,
+        textBuffer,
+        anchors,
+        anchorTimeIDs,
+        makeInstances,
+        tlinkSourceIDs,
+        tlinkTargetIDs);
     initialView.setDocumentText(textBuffer.toString());
+
+    // point make-instance IDs to their events, and copy attributes over
+    for (Element makeInstance : makeInstances) {
+      String eventID = makeInstance.getAttributeValue("eventID");
+      String eventInstanceID = makeInstance.getAttributeValue("eiid");
+      Event event = (Event) this.getAnchor(jCas, anchors, eventID);
+      anchors.put(eventInstanceID, event);
+      eventInstanceID = event.getEventInstanceID();
+      if (eventInstanceID == null) {
+        TimeMLUtil.copyAttributes(makeInstance, event, jCas);
+      } else {
+        TimeMLUtil.removeInconsistentAttributes(makeInstance, event, jCas);
+        event.setId(eventID);
+        event.setEventInstanceID(eventInstanceID);
+      }
+    }
+
+    // set anchor times
+    for (Time time : anchorTimeIDs.keySet()) {
+      Time anchorTime = (Time) this.getAnchor(jCas, anchors, anchorTimeIDs.get(time));
+      time.setAnchorTime(anchorTime);
+    }
+
+    // set tlink sources and targets
+    for (TemporalLink tlink : tlinkSourceIDs.keySet()) {
+      tlink.setSource(this.getAnchor(jCas, anchors, tlinkSourceIDs.get(tlink)));
+      tlink.setTarget(this.getAnchor(jCas, anchors, tlinkTargetIDs.get(tlink)));
+    }
   }
 
   private void addAnnotations(
       JCas jCas,
       Element element,
       StringBuffer textBuffer,
-      Map<String, Anchor> anchors) throws AnalysisEngineProcessException {
+      Map<String, Anchor> anchors,
+      Map<Time, String> anchorTimeIDs,
+      List<Element> makeInstances,
+      Map<TemporalLink, String> tlinkSourceIDs,
+      Map<TemporalLink, String> tlinkTargetIDs) throws AnalysisEngineProcessException {
     int startOffset = textBuffer.length();
     for (Object content : element.getContent()) {
       if (content instanceof org.jdom.Text) {
         textBuffer.append(((org.jdom.Text) content).getText());
       } else if (content instanceof Element) {
-        this.addAnnotations(jCas, (Element) content, textBuffer, anchors);
+        this.addAnnotations(
+            jCas,
+            (Element) content,
+            textBuffer,
+            anchors,
+            anchorTimeIDs,
+            makeInstances,
+            tlinkSourceIDs,
+            tlinkTargetIDs);
       }
     }
     int endOffset = textBuffer.length();
@@ -151,6 +210,10 @@ public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
           ? new DocumentCreationTime(jCas, startOffset, endOffset)
           : new Time(jCas, startOffset, endOffset);
       TimeMLUtil.copyAttributes(element, time, jCas);
+      String anchorTimeID = element.getAttributeValue("anchorTimeID");
+      if (anchorTimeID != null) {
+        anchorTimeIDs.put(time, anchorTimeID);
+      }
       anchors.put(time.getId(), time);
       time.addToIndexes();
     } else if (element.getName().equals("EVENT")) {
@@ -159,18 +222,7 @@ public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
       anchors.put(event.getId(), event);
       event.addToIndexes();
     } else if (element.getName().equals("MAKEINSTANCE")) {
-      String eventID = element.getAttributeValue("eventID");
-      String eventInstanceID = element.getAttributeValue("eiid");
-      Event event = (Event) anchors.get(eventID);
-      anchors.put(eventInstanceID, event);
-      eventInstanceID = event.getEventInstanceID();
-      if (eventInstanceID == null) {
-        TimeMLUtil.copyAttributes(element, event, jCas);
-      } else {
-        TimeMLUtil.removeInconsistentAttributes(element, event, jCas);
-        event.setId(eventID);
-        event.setEventInstanceID(eventInstanceID);
-      }
+      makeInstances.add(element);
     } else if (element.getName().equals("TLINK") && this.loadTlinks) {
       TemporalLink temporalLink = new TemporalLink(jCas, startOffset, endOffset);
       TimeMLUtil.copyAttributes(element, temporalLink, jCas);
@@ -180,10 +232,8 @@ public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
           "relatedToEventInstance",
           "relatedToEvent",
           "relatedToTime");
-      Anchor source = this.getAnchor(jCas, anchors, sourceID);
-      Anchor target = this.getAnchor(jCas, anchors, targetID);
-      temporalLink.setSource(source);
-      temporalLink.setTarget(target);
+      tlinkSourceIDs.put(temporalLink, sourceID);
+      tlinkTargetIDs.put(temporalLink, targetID);
       temporalLink.addToIndexes();
     } else if (element.getName().equals("TEXT")) {
       Text text = new Text(jCas, startOffset, endOffset);

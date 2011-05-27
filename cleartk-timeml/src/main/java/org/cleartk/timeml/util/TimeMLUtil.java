@@ -104,8 +104,7 @@ public class TimeMLUtil {
         "temporalFunction",
         "value",
         "valueFromFunction",
-        "mod",
-        "anchorTimeID" }) {
+        "mod" }) {
       timeAttributes.add(new NamePair(name, name));
     }
 
