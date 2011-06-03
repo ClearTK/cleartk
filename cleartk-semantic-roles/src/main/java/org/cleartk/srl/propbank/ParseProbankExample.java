@@ -53,7 +53,7 @@ public class ParseProbankExample {
 
     CollectionReader reader = CollectionReaderFactory.createCollectionReader(
         PropbankGoldReader.class,
-        TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
+        TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.srl.TypeSystem"),
         PropbankGoldReader.PARAM_PROPBANK_FILE_NAME,
         propbankFileName,
         PropbankGoldReader.PARAM_PENNTREEBANK_DIRECTORY_NAME,

@@ -74,7 +74,7 @@ public class PropbankGoldAnnotator extends JCasAnnotator_ImplBase {
         Propbank propbank = Propbank.fromString(propbankDatum);
         Sentence sentence = sentenceList.get(propbank.getSentenceNumber());
         TopTreebankNode top = AnnotationUtil.selectFirstMatching(
-            jCas,
+            docView,
             TopTreebankNode.class,
             sentence);
         if (top == null) {
