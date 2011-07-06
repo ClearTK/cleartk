@@ -37,6 +37,10 @@ import org.cleartk.timeml.event.EventClassAnnotator;
 import org.cleartk.timeml.event.EventModalityAnnotator;
 import org.cleartk.timeml.event.EventPolarityAnnotator;
 import org.cleartk.timeml.event.EventTenseAnnotator;
+import org.cleartk.timeml.time.TimeAnnotator;
+import org.cleartk.timeml.time.TimeTypeAnnotator;
+import org.cleartk.timeml.tlink.TemporalLinkEventToSameSentenceTimeAnnotator;
+import org.cleartk.timeml.tlink.TemporalLinkMainEventToNextSentenceMainEventAnnotator;
 import org.cleartk.timeml.tlink.VerbClauseTemporalAnnotator;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.tokenizer.TokenAnnotator;
@@ -93,12 +97,18 @@ public class TimeMLAnnotate {
         PosTaggerAnnotator.getDescription(),
         DefaultSnowballStemmer.getDescription("English"),
         ParserAnnotator.getDescription(),
+        TimeAnnotator.FACTORY.getAnnotatorDescription(),
+        TimeTypeAnnotator.FACTORY.getAnnotatorDescription(),
         EventAnnotator.FACTORY.getAnnotatorDescription(),
         EventTenseAnnotator.FACTORY.getAnnotatorDescription(),
         EventAspectAnnotator.FACTORY.getAnnotatorDescription(),
         EventClassAnnotator.FACTORY.getAnnotatorDescription(),
         EventPolarityAnnotator.FACTORY.getAnnotatorDescription(),
         EventModalityAnnotator.FACTORY.getAnnotatorDescription(),
+        // TemporalLinkEventToDocumentCreationTimeAnnotator.FACTORY.getAnnotatorDescription(),
+        TemporalLinkEventToSameSentenceTimeAnnotator.FACTORY.getAnnotatorDescription(),
+        TemporalLinkMainEventToNextSentenceMainEventAnnotator.FACTORY.getAnnotatorDescription(),
+        // TemporalLinkEventToSubordinatedEventAnnotator.FACTORY.getAnnotatorDescription(),
         VerbClauseTemporalAnnotator.FACTORY.getAnnotatorDescription(),
         TimeMLWriter.getDescription(outputDir.getPath()));
   }
