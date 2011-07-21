@@ -88,12 +88,14 @@ public class GenericStringMapper implements StringMapper, Writable {
       }
     }
 
-    Logger.getLogger(this.getClass().getName()).info(
-        String.format(
-            "discarded %d features that occurred less than %d times; %d features remaining",
-            total - kept,
-            cutoff,
-            kept));
+    if (total - kept > 0) {
+      Logger.getLogger(this.getClass().getName()).info(
+          String.format(
+              "discarded %d features that occurred less than %d times; %d features remaining",
+              total - kept,
+              cutoff,
+              kept));
+    }
 
     countingMap = null;
     expandMap = false;
