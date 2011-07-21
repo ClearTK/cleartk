@@ -1,5 +1,5 @@
-/** 
- * Copyright (c) 2009, Regents of the University of Colorado 
+/*
+ * Copyright (c) 2011, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -28,31 +28,25 @@ import java.io.IOException;
 
 /**
  * <br>
- * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * Copyright (c) 2011, Regents of the University of Colorado <br>
  * All rights reserved.
- * <p>
+ * 
+ * @author Steven Bethard
  */
+public class SVMlightRegressionDataWriter extends
+    SVMlightDataWriter_ImplBase<SVMlightRegressionBuilder, Double, Double> {
 
-public class SVMlightDataWriter extends
-    SVMlightDataWriter_ImplBase<SVMlightClassifierBuilder, Boolean, Boolean> {
-
-  public SVMlightDataWriter(File outputDirectory) throws IOException {
+  public SVMlightRegressionDataWriter(File outputDirectory) throws IOException {
     super(outputDirectory);
   }
 
   @Override
-  protected String outcomeToString(Boolean outcome) {
-    if (outcome == null) {
-      return "0";
-    } else if (outcome.booleanValue()) {
-      return "+1";
-    } else {
-      return "-1";
-    }
+  protected String outcomeToString(Double outcome) {
+    return outcome.toString();
   }
 
   @Override
-  protected SVMlightClassifierBuilder newClassifierBuilder() {
-    return new SVMlightClassifierBuilder();
+  protected SVMlightRegressionBuilder newClassifierBuilder() {
+    return new SVMlightRegressionBuilder();
   }
 }

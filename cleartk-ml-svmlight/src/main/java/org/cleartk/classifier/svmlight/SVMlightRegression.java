@@ -1,5 +1,5 @@
-/** 
- * Copyright (c) 2009, Regents of the University of Colorado 
+/*
+ * Copyright (c) 2011, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -23,36 +23,29 @@
  */
 package org.cleartk.classifier.svmlight;
 
-import java.io.File;
-import java.io.IOException;
+import org.cleartk.classifier.encoder.features.FeaturesEncoder;
+import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
+import org.cleartk.classifier.svmlight.model.SVMlightModel;
+import org.cleartk.classifier.util.featurevector.FeatureVector;
 
 /**
  * <br>
- * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * Copyright (c) 2011, Regents of the University of Colorado <br>
  * All rights reserved.
- * <p>
+ * 
+ * @author Steven Bethard
  */
+public class SVMlightRegression extends SVMlightClassifier_ImplBase<Double, Double> {
 
-public class SVMlightDataWriter extends
-    SVMlightDataWriter_ImplBase<SVMlightClassifierBuilder, Boolean, Boolean> {
-
-  public SVMlightDataWriter(File outputDirectory) throws IOException {
-    super(outputDirectory);
+  public SVMlightRegression(
+      FeaturesEncoder<FeatureVector> featuresEncoder,
+      OutcomeEncoder<Double, Double> outcomeEncoder,
+      SVMlightModel model) {
+    super(featuresEncoder, outcomeEncoder, model);
   }
 
   @Override
-  protected String outcomeToString(Boolean outcome) {
-    if (outcome == null) {
-      return "0";
-    } else if (outcome.booleanValue()) {
-      return "+1";
-    } else {
-      return "-1";
-    }
-  }
-
-  @Override
-  protected SVMlightClassifierBuilder newClassifierBuilder() {
-    return new SVMlightClassifierBuilder();
+  protected Double predictionToOutcome(double prediction) {
+    return prediction;
   }
 }

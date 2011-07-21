@@ -1,5 +1,5 @@
 /** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+ * Copyright (c) 2007-2011, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -51,7 +52,7 @@ import org.uimafit.testing.util.HideOutput;
 
 /**
  * <br>
- * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * Copyright (c) 2007-2011, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
  * @author Steven Bethard, Philipp Wetzler
@@ -272,6 +273,44 @@ public class RunSVMlightTest extends DefaultTestBase {
       List<Feature> features = instance.getFeatures();
       String outcome = instance.getOutcome();
       Assert.assertEquals(outcome, classifier.classify(features));
+    }
+  }
+
+  @Test
+  public void testSVMlightRegression() throws Exception {
+    // create the data writer
+    EmptyAnnotator<Double> annotator = new EmptyAnnotator<Double>();
+    annotator.initialize(UimaContextFactory.createUimaContext(
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        this.outputDirectoryName,
+        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        DefaultSVMlightRegressionDataWriterFactory.class.getName()));
+
+    // add instances
+    for (double i = 0.0; i < 100; i += 2) {
+      annotator.write(new Instance<Double>(2.0 * i + 5.0, Arrays.asList(new Feature("x", i))));
+    }
+    annotator.collectionProcessComplete();
+
+    // check that the output file was written and is not empty
+    BufferedReader reader = new BufferedReader(new FileReader(new File(
+        this.outputDirectoryName,
+        "training-data.svmlight")));
+    Assert.assertTrue(reader.readLine().length() > 0);
+    reader.close();
+
+    // run the training command
+    HideOutput hider = new HideOutput();
+    Train.main(this.outputDirectoryName, "-c", "1", "-w", "0.0001");
+    hider.restoreOutput();
+
+    // read in the regression and test it on new instances
+    SVMlightRegressionBuilder builder = new SVMlightRegressionBuilder();
+    SVMlightRegression regression;
+    regression = builder.loadClassifierFromTrainingDirectory(this.outputDirectory);
+    for (double i = 1.0; i < 100; i += 2) {
+      double prediction = regression.classify(Arrays.asList(new Feature("x", i)));
+      Assert.assertEquals(2.0 * i + 5.0, prediction, 0.0005);
     }
   }
 

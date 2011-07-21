@@ -1,5 +1,5 @@
-/** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+/*
+ * Copyright (c) 2007-2011, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -43,10 +43,11 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
 
 /**
  * <br>
- * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * Copyright (c) 2007-2011, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
+ * @author Steven Bethard
  */
-
 public class OVASVMlightClassifierBuilder extends
     ClassifierBuilder_ImplBase<OVASVMlightClassifier, FeatureVector, String, Integer> {
 
@@ -59,9 +60,10 @@ public class OVASVMlightClassifierBuilder extends
   }
 
   public void trainClassifier(File dir, String... args) throws Exception {
+    SVMlightClassifierBuilder builder = new SVMlightClassifierBuilder();
     for (File file : dir.listFiles()) {
       if (file.getName().matches("training-data-\\d+.svmlight")) {
-        SVMlightClassifierBuilder.train(file.getPath(), args);
+        builder.trainClassifier(dir, file, args);
 
         Sigmoid s = FitSigmoid.fit(new File(file.toString() + ".model"), file);
 

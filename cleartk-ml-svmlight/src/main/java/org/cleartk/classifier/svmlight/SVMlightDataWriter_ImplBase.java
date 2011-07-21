@@ -1,5 +1,5 @@
-/** 
- * Copyright (c) 2009, Regents of the University of Colorado 
+/* 
+ * Copyright (c) 2009-2011, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -25,34 +25,45 @@ package org.cleartk.classifier.svmlight;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
+
+import org.cleartk.classifier.Classifier;
+import org.cleartk.classifier.CleartkProcessingException;
+import org.cleartk.classifier.encoder.CleartkEncoderException;
+import org.cleartk.classifier.jar.DataWriter_ImplBase;
+import org.cleartk.classifier.jar.EncodingJarClassifierBuilder;
+import org.cleartk.classifier.util.featurevector.FeatureVector;
 
 /**
  * <br>
- * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * Copyright (c) 2009-2011, Regents of the University of Colorado <br>
  * All rights reserved.
- * <p>
+ * 
+ * @author Steven Bethard
  */
+public abstract class SVMlightDataWriter_ImplBase<CLASSIFIER_BUILDER_TYPE extends EncodingJarClassifierBuilder<? extends Classifier<OUTCOME_TYPE>, FeatureVector, OUTCOME_TYPE, ENCODED_OUTCOME_TYPE>, OUTCOME_TYPE, ENCODED_OUTCOME_TYPE>
+    extends
+    DataWriter_ImplBase<CLASSIFIER_BUILDER_TYPE, FeatureVector, OUTCOME_TYPE, ENCODED_OUTCOME_TYPE> {
 
-public class SVMlightDataWriter extends
-    SVMlightDataWriter_ImplBase<SVMlightClassifierBuilder, Boolean, Boolean> {
-
-  public SVMlightDataWriter(File outputDirectory) throws IOException {
+  public SVMlightDataWriter_ImplBase(File outputDirectory) throws IOException {
     super(outputDirectory);
   }
 
-  @Override
-  protected String outcomeToString(Boolean outcome) {
-    if (outcome == null) {
-      return "0";
-    } else if (outcome.booleanValue()) {
-      return "+1";
-    } else {
-      return "-1";
-    }
-  }
+  protected abstract String outcomeToString(ENCODED_OUTCOME_TYPE outcome);
 
   @Override
-  protected SVMlightClassifierBuilder newClassifierBuilder() {
-    return new SVMlightClassifierBuilder();
+  public void writeEncoded(FeatureVector features, ENCODED_OUTCOME_TYPE outcome)
+      throws CleartkProcessingException {
+    StringBuffer output = new StringBuffer();
+
+    output.append(this.outcomeToString(outcome));
+
+    for (FeatureVector.Entry entry : features) {
+      if (Double.isInfinite(entry.value) || Double.isNaN(entry.value))
+        throw CleartkEncoderException.invalidFeatureVectorValue(entry.index, entry.value);
+      output.append(String.format(Locale.US, " %d:%.7f", entry.index, entry.value));
+    }
+
+    this.trainingDataWriter.println(output);
   }
 }

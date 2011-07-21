@@ -1,5 +1,5 @@
-/** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+/* 
+ * Copyright (c) 2007-2011, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -31,39 +31,33 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
-import org.cleartk.classifier.jar.Classifier_ImplBase;
 import org.cleartk.classifier.sigmoid.Sigmoid;
 import org.cleartk.classifier.svmlight.model.SVMlightModel;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
 /**
  * <br>
- * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * Copyright (c) 2007-2011, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
+ * @author Steven Bethard
  */
-public class SVMlightClassifier extends Classifier_ImplBase<FeatureVector, Boolean, Boolean> {
+public class SVMlightClassifier extends SVMlightClassifier_ImplBase<Boolean, Boolean> {
 
-  SVMlightModel model;
-
-  Sigmoid sigmoid;
+  protected Sigmoid sigmoid;
 
   public SVMlightClassifier(
       FeaturesEncoder<FeatureVector> featuresEncoder,
       OutcomeEncoder<Boolean, Boolean> outcomeEncoder,
       SVMlightModel model,
       Sigmoid sigmoid) {
-    super(featuresEncoder, outcomeEncoder);
-    this.model = model;
+    super(featuresEncoder, outcomeEncoder, model);
     this.sigmoid = sigmoid;
   }
 
-  public Boolean classify(List<Feature> features) throws CleartkProcessingException {
-    FeatureVector featureVector = featuresEncoder.encodeAll(features);
-
-    double prediction = sigmoid.evaluate(model.evaluate(featureVector));
-    boolean encodedResult = (prediction > 0.5);
-
-    return outcomeEncoder.decode(encodedResult);
+  @Override
+  protected Boolean predictionToOutcome(double prediction) {
+    return this.sigmoid.evaluate(prediction) > 0.5;
   }
 
   @Override

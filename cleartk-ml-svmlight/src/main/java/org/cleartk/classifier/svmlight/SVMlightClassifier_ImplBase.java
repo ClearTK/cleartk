@@ -1,5 +1,5 @@
-/** 
- * Copyright (c) 2009, Regents of the University of Colorado 
+/*
+ * Copyright (c) 2007-2011, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -23,36 +23,40 @@
  */
 package org.cleartk.classifier.svmlight;
 
-import java.io.File;
-import java.io.IOException;
+import java.util.List;
+
+import org.cleartk.classifier.CleartkProcessingException;
+import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.encoder.features.FeaturesEncoder;
+import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
+import org.cleartk.classifier.jar.Classifier_ImplBase;
+import org.cleartk.classifier.svmlight.model.SVMlightModel;
+import org.cleartk.classifier.util.featurevector.FeatureVector;
 
 /**
  * <br>
- * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * Copyright (c) 2011, Regents of the University of Colorado <br>
  * All rights reserved.
- * <p>
+ * 
+ * @author Steven Bethard
  */
+public abstract class SVMlightClassifier_ImplBase<OUTCOME_TYPE, ENCODED_OUTCOME_TYPE> extends
+    Classifier_ImplBase<FeatureVector, OUTCOME_TYPE, ENCODED_OUTCOME_TYPE> {
 
-public class SVMlightDataWriter extends
-    SVMlightDataWriter_ImplBase<SVMlightClassifierBuilder, Boolean, Boolean> {
+  protected SVMlightModel model;
 
-  public SVMlightDataWriter(File outputDirectory) throws IOException {
-    super(outputDirectory);
+  public SVMlightClassifier_ImplBase(
+      FeaturesEncoder<FeatureVector> featuresEncoder,
+      OutcomeEncoder<OUTCOME_TYPE, ENCODED_OUTCOME_TYPE> outcomeEncoder,
+      SVMlightModel model) {
+    super(featuresEncoder, outcomeEncoder);
+    this.model = model;
   }
 
-  @Override
-  protected String outcomeToString(Boolean outcome) {
-    if (outcome == null) {
-      return "0";
-    } else if (outcome.booleanValue()) {
-      return "+1";
-    } else {
-      return "-1";
-    }
+  public OUTCOME_TYPE classify(List<Feature> features) throws CleartkProcessingException {
+    double prediction = model.evaluate(this.featuresEncoder.encodeAll(features));
+    return this.outcomeEncoder.decode(this.predictionToOutcome(prediction));
   }
 
-  @Override
-  protected SVMlightClassifierBuilder newClassifierBuilder() {
-    return new SVMlightClassifierBuilder();
-  }
+  protected abstract ENCODED_OUTCOME_TYPE predictionToOutcome(double prediction);
 }

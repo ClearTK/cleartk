@@ -1,5 +1,5 @@
-/** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+/*
+ * Copyright (c) 2007-2011, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -26,81 +26,35 @@ package org.cleartk.classifier.svmlight;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
-import java.io.PrintStream;
 import java.util.jar.JarInputStream;
 import java.util.jar.JarOutputStream;
 
-import org.apache.uima.UIMAFramework;
-import org.apache.uima.util.Level;
-import org.apache.uima.util.Logger;
-import org.cleartk.classifier.jar.ClassifierBuilder_ImplBase;
 import org.cleartk.classifier.jar.JarStreams;
 import org.cleartk.classifier.sigmoid.Sigmoid;
-import org.cleartk.classifier.svmlight.model.SVMlightModel;
-import org.cleartk.classifier.util.featurevector.FeatureVector;
 
 /**
  * <br>
- * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * Copyright (c) 2007-2011, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
+ * @author Steven Bethard
  */
-
 public class SVMlightClassifierBuilder extends
-    ClassifierBuilder_ImplBase<SVMlightClassifier, FeatureVector, Boolean, Boolean> {
-
-  static Logger logger = UIMAFramework.getLogger(SVMlightClassifierBuilder.class);
-
-  public static String COMMAND_ARGUMENT = "--executable";
-
-  public static void train(String filePath, String[] args) throws Exception {
-    String executable = "svm_learn";
-    if (args.length > 0 && args[0].equals(COMMAND_ARGUMENT)) {
-      executable = args[1];
-      String[] tempArgs = new String[args.length - 2];
-      System.arraycopy(args, 2, tempArgs, 0, tempArgs.length);
-      args = tempArgs;
-    }
-
-    String[] command = new String[args.length + 3];
-    command[0] = executable;
-    System.arraycopy(args, 0, command, 1, args.length);
-    command[command.length - 2] = new File(filePath).getPath();
-    command[command.length - 1] = new File(filePath + ".model").getPath();
-
-    logger.log(Level.INFO, "training with svmlight using the following command: "
-        + toString(command));
-    logger
-        .log(
-            Level.INFO,
-            "if the svmlight learner does not seem to be working correctly, then try running the above command directly to see if e.g. svm_learn or svm_perf_learn gives a useful error message.");
-    Process process = Runtime.getRuntime().exec(command);
-    output(process.getInputStream(), System.out);
-    output(process.getErrorStream(), System.err);
-    process.waitFor();
-  }
-
-  public File getTrainingDataFile(File dir) {
-    return new File(dir, "training-data.svmlight");
-  }
-
-  private File getModelFile(File dir) {
-    return new File(dir, "training-data.svmlight.model");
-  }
+    SVMlightClassifierBuilder_ImplBase<SVMlightClassifier, Boolean, Boolean> {
 
   private File getSigmoidFile(File dir) {
     return new File(dir, "training-data.svmlight.sigmoid");
   }
 
+  @Override
   public void trainClassifier(File dir, String... args) throws Exception {
-    File trainingDataFile = getTrainingDataFile(dir);
-    train(trainingDataFile.getPath(), args);
+    super.trainClassifier(dir, args);
 
-    Sigmoid s = FitSigmoid.fit(getModelFile(dir), trainingDataFile);
+    Sigmoid s = FitSigmoid.fit(this.getModelFile(dir), this.getTrainingDataFile(dir));
     System.out.println("Computed output mapping function: " + s.toString());
 
     ObjectOutput o = new ObjectOutputStream(new FileOutputStream(getSigmoidFile(dir)));
@@ -111,19 +65,14 @@ public class SVMlightClassifierBuilder extends
   @Override
   protected void packageClassifier(File dir, JarOutputStream modelStream) throws IOException {
     super.packageClassifier(dir, modelStream);
-    JarStreams.putNextJarEntry(modelStream, "model.svmlight", getModelFile(dir));
     JarStreams.putNextJarEntry(modelStream, "model.sigmoid", getSigmoidFile(dir));
   }
 
-  private SVMlightModel model;
-
-  private Sigmoid sigmoid;
+  protected Sigmoid sigmoid;
 
   @Override
   protected void unpackageClassifier(JarInputStream modelStream) throws IOException {
     super.unpackageClassifier(modelStream);
-    JarStreams.getNextJarEntry(modelStream, "model.svmlight");
-    this.model = SVMlightModel.fromInputStream(modelStream);
     JarStreams.getNextJarEntry(modelStream, "model.sigmoid");
     ObjectInput in = new ObjectInputStream(modelStream);
     try {
@@ -142,22 +91,4 @@ public class SVMlightClassifierBuilder extends
         this.model,
         this.sigmoid);
   }
-
-  private static String toString(String[] command) {
-    StringBuilder sb = new StringBuilder();
-    for (String cmmnd : command) {
-      sb.append(cmmnd + " ");
-    }
-    return sb.toString();
-  }
-
-  private static void output(InputStream input, PrintStream output) throws IOException {
-    byte[] buffer = new byte[128];
-    int count = input.read(buffer);
-    while (count != -1) {
-      output.write(buffer, 0, count);
-      count = input.read(buffer);
-    }
-  }
-
 }
