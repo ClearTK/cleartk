@@ -78,10 +78,10 @@ public class CleartkInitializationException extends ResourceInitializationExcept
         key,
         class1,
         typeParamName1,
-        typeParamValue1.toString().replaceFirst("^class ", ""),
+        typeParamValue1 == null ? null : typeParamValue1.toString().replaceFirst("^class ", ""),
         class2,
         typeParamName2,
-        typeParamValue2.toString().replaceFirst("^class ", ""));
+        typeParamValue2 == null ? null : typeParamValue2.toString().replaceFirst("^class ", ""));
   }
 
   public static CleartkInitializationException invalidParameterValueSelectFrom(

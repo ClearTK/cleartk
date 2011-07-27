@@ -72,6 +72,18 @@ public class CleartkExceptionsTest {
     Assert.assertTrue(e.getMessage(), e.getMessage().contains(ArrayList.class.getName()));
     Assert.assertTrue(e.getMessage(), e.getMessage().contains("E=" + String.class.getName()));
 
+    e = CleartkInitializationException.incompatibleTypeParameters(
+        Arrays.asList(1, 2, 3),
+        "E",
+        null,
+        new ArrayList<String>(),
+        "E",
+        String.class);
+    Assert.assertTrue(e.getMessage(), e.getMessage().contains("incompatible"));
+    Assert.assertTrue(e.getMessage(), e.getMessage().contains("E=null"));
+    Assert.assertTrue(e.getMessage(), e.getMessage().contains(ArrayList.class.getName()));
+    Assert.assertTrue(e.getMessage(), e.getMessage().contains("E=" + String.class.getName()));
+
     e = CleartkInitializationException.incompatibleTypeParameterAndType(
         Arrays.asList(true, false),
         "TYPE",
