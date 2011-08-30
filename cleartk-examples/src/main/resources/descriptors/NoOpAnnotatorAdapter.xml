@@ -2,9 +2,9 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>org.uimafit.component.JCasAnnotatorAdapter</annotatorImplementationName>
+  <annotatorImplementationName>org.uimafit.component.NoOpAnnotator</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>JCasAnnotatorAdapter</name>
+    <name>NoOpAnnotator</name>
     <description/>
     <version>1.0</version>
     <vendor/>
