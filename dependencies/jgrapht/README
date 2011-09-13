@@ -1,8 +1,0 @@
-Name: JGraphT
-Version: 0.6.0
-Homepage: http://jgrapht.sourceforge.net
-License: LGPL - please see LGPL
-Notes:
-
-version 0.6.0 is used only because that is what mallet-2.0-RC4 requires.  
-
