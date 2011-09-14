@@ -29,8 +29,8 @@
 			<artifactId>jdom</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>lucene</groupId>
-			<artifactId>snowball</artifactId>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-snowball</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
