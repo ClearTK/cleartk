@@ -31,7 +31,7 @@
 			<artifactId>cleartk-ml</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>mallet</groupId>
+			<groupId>cc.mallet</groupId>
 			<artifactId>mallet</artifactId>
 		</dependency>
 	</dependencies>

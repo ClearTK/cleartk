@@ -118,9 +118,9 @@
 				<version>2.89</version>
 			</dependency>
 			<dependency>
-				<groupId>mallet</groupId>
+				<groupId>cc.mallet</groupId>
 				<artifactId>mallet</artifactId>
-				<version>2.0-RC4</version>
+				<version>2.0.7-RC2</version>
 			</dependency>
 			<dependency>
 				<groupId>edu.umass.cs.mallet</groupId>
