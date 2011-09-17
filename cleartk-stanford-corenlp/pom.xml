@@ -21,16 +21,13 @@
 		<dependency>
 			<groupId>edu.stanford.nlp</groupId>
 			<artifactId>stanford-corenlp</artifactId>
-			<version>1.0.2</version>
-			<scope>system</scope>
-			<systemPath>${edu.stanford.corenlp}</systemPath>
+			<version>1.2.0</version>
 		</dependency>
 		<dependency>
 			<groupId>edu.stanford.nlp</groupId>
-			<artifactId>stanford-corenlp-models</artifactId>
-			<version>1.0.2</version>
-			<scope>system</scope>
-			<systemPath>${edu.stanford.corenlp.models}</systemPath>
+			<artifactId>stanford-corenlp</artifactId>
+			<version>1.2.0</version>
+			<classifier>models</classifier>
 		</dependency>
 
 		<!-- Stanford CoreNLP dependencies -->

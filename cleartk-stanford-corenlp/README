@@ -4,16 +4,15 @@ the Stanford CoreNLP tools (http://nlp.stanford.edu/software/corenlp.shtml).
 
 == Dependencies ==
 
-Stanford CoreNLP is not available via maven, so currently you must download it
-yourself and specify the location of the jars via properties, e.g.:
+Stanford CoreNLP is not yet available via maven, so currently you must download it
+yourself and use the included pom.xml to install it from source:
 
-   -Dedu.stanford.corenlp=stanford-corenlp-2010-11-12.jar
-   -Dedu.stanford.corenlp.models=stanford-corenlp-models-2010-11-06.jar
-
-With the current default settings for these properties, you can also create the
-following directory and place the two jar files there:
-
-    lib/stanford-corenlp-2010-11-12
+$ curl -O http://nlp.stanford.edu/software/stanford-corenlp-2011-09-14.tgz
+$ tar xzvf stanford-corenlp-2011-09-14.tgz
+$ cp stanford-corenlp-pom.xml stanford-corenlp-2011-09-16/pom.xml
+$ cd stanford-corenlp-2011-09-16
+$ unzip stanford-corenlp-2011-09-16-sources.zip
+$ mvn install
 
 
 == Licensing ==

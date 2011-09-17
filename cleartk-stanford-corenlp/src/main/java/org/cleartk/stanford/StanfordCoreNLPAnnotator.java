@@ -26,7 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Set;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
@@ -43,7 +42,6 @@ import org.cleartk.syntax.dependency.type.DependencyRelation;
 import org.cleartk.syntax.dependency.type.TopDependencyNode;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.AnnotationUtil;
 import org.cleartk.util.UIMAUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -51,24 +49,26 @@ import org.uimafit.util.JCasUtil;
 
 import com.google.common.collect.ArrayListMultimap;
 
+import edu.stanford.nlp.dcoref.CorefChain;
+import edu.stanford.nlp.dcoref.CorefChain.CorefMention;
 import edu.stanford.nlp.ling.CoreAnnotations.BeginIndexAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.CharacterOffsetBeginAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.CharacterOffsetEndAnnotation;
-import edu.stanford.nlp.ling.CoreAnnotations.CollapsedCCProcessedDependenciesAnnotation;
-import edu.stanford.nlp.ling.CoreAnnotations.CorefGraphAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.EndIndexAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.LemmaAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.NamedEntityTagAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.PartOfSpeechAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.TokensAnnotation;
-import edu.stanford.nlp.ling.CoreAnnotations.TreeAnnotation;
 import edu.stanford.nlp.ling.CoreLabel;
+import edu.stanford.nlp.ling.CorefCoreAnnotations.CorefChainAnnotation;
 import edu.stanford.nlp.ling.IndexedWord;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.trees.Tree;
+import edu.stanford.nlp.trees.TreeCoreAnnotations.TreeAnnotation;
 import edu.stanford.nlp.trees.semgraph.SemanticGraph;
+import edu.stanford.nlp.trees.semgraph.SemanticGraphCoreAnnotations.CollapsedCCProcessedDependenciesAnnotation;
 import edu.stanford.nlp.trees.semgraph.SemanticGraphEdge;
 import edu.stanford.nlp.util.CoreMap;
 
@@ -191,7 +191,7 @@ public class StanfordCoreNLPAnnotator extends JCasAnnotator_ImplBase {
       // create relation annotations for each Stanford dependency
       ArrayListMultimap<DependencyNode, DependencyRelation> headRelations = ArrayListMultimap.create();
       ArrayListMultimap<DependencyNode, DependencyRelation> childRelations = ArrayListMultimap.create();
-      for (SemanticGraphEdge stanfordEdge : dependencies.edgeList()) {
+      for (SemanticGraphEdge stanfordEdge : dependencies.edgeIterable()) {
         DependencyRelation relation = new DependencyRelation(jCas);
         DependencyNode head = stanfordToUima.get(stanfordEdge.getGovernor());
         DependencyNode child = stanfordToUima.get(stanfordEdge.getDependent());
@@ -219,79 +219,50 @@ public class StanfordCoreNLPAnnotator extends JCasAnnotator_ImplBase {
       }
     }
 
-    // map from tokens to their smallest containing named entity mentions
-    Map<Span, NamedEntityMention> tokenMentionMap = new HashMap<Span, NamedEntityMention>();
+    // map from spans to named entity mentions
+    Map<Span, NamedEntityMention> spanMentionMap = new HashMap<Span, NamedEntityMention>();
     for (NamedEntityMention mention : JCasUtil.select(jCas, NamedEntityMention.class)) {
-      for (Token token : JCasUtil.selectCovered(jCas, Token.class, mention)) {
-        Span span = new Span(token.getBegin(), token.getEnd());
-        NamedEntityMention oldMention = tokenMentionMap.get(span);
-        if (oldMention == null || AnnotationUtil.size(mention) < AnnotationUtil.size(oldMention)) {
-          tokenMentionMap.put(span, mention);
-        }
-      }
+      spanMentionMap.put(new Span(mention.getBegin(), mention.getEnd()), mention);
     }
 
     // add mentions for all entities identified by the coreference system
-    CorefGraph corefGraph = new CorefGraph(document.get(CorefGraphAnnotation.class));
-    Map<CoreMap, NamedEntityMention> stanfordToUimaNE = new HashMap<CoreMap, NamedEntityMention>();
-    for (CoreMap tokenMap : corefGraph.getMentions(document)) {
-      NamedEntityMention mention = null;
+    List<NamedEntity> entities = new ArrayList<NamedEntity>();
+    List<List<Token>> sentenceTokens = new ArrayList<List<Token>>();
+    for (Sentence sentence : JCasUtil.select(jCas, Sentence.class)) {
+      sentenceTokens.add(JCasUtil.selectCovered(jCas, Token.class, sentence));
+    }
+    Map<Integer, CorefChain> corefChains = document.get(CorefChainAnnotation.class);
+    for (CorefChain chain : corefChains.values()) {
+      List<NamedEntityMention> mentions = new ArrayList<NamedEntityMention>();
+      for (CorefMention corefMention : chain.getCorefMentions()) {
 
-      // figure out the character span of the token
-      int begin = tokenMap.get(CharacterOffsetBeginAnnotation.class);
-      int end = tokenMap.get(CharacterOffsetEndAnnotation.class);
+        // figure out the character span of the token
+        List<Token> tokens = sentenceTokens.get(corefMention.sentNum - 1);
+        int begin = tokens.get(corefMention.startIndex - 1).getBegin();
+        int end = tokens.get(corefMention.endIndex - 2).getEnd();
 
-      // if a named entity already contains the token, use that
-      mention = tokenMentionMap.get(new Span(begin, end));
-
-      // otherwise, create a new named entity mention
-      if (mention == null) {
-        Token token = new Token(jCas, begin, end);
-        for (TreebankNode node : JCasUtil.selectCovered(jCas, TreebankNode.class, token)) {
-          // if the token is a PRP, use that
-          if (node.getNodeType().startsWith("PRP")) {
-            begin = node.getBegin();
-            end = node.getEnd();
-            break;
-          }
-          // if the token's parent is an NP, use that
-          TreebankNode parent = node.getParent();
-          if (node.getLeaf() && parent != null && parent.getNodeType().equals("NP")) {
-            begin = parent.getBegin();
-            end = parent.getEnd();
-            break;
-          }
+        // use an existing named entity mention when possible; otherwise create a new one
+        NamedEntityMention mention = spanMentionMap.get(new Span(begin, end));
+        if (mention == null) {
+          mention = new NamedEntityMention(jCas, begin, end);
+          mention.addToIndexes();
         }
-        // create the named entity mention (defaulting to the same span as the token)
-        mention = new NamedEntityMention(jCas, begin, end);
-        mention.addToIndexes();
+        mentions.add(mention);
       }
 
-      // update the token -> mention mapping
-      stanfordToUimaNE.put(tokenMap, mention);
-    }
-
-    // link mentions into their entities
-    List<NamedEntity> entities = new ArrayList<NamedEntity>();
-    for (Set<CoreMap> tokenMaps : corefGraph.getEntities(document)) {
-
-      // sort mentions by document order
-      List<CoreMap> tokenMapsList = new ArrayList<CoreMap>(tokenMaps);
-      Collections.sort(tokenMapsList, new Comparator<CoreMap>() {
+      // create an entity for the mentions
+      Collections.sort(mentions, new Comparator<NamedEntityMention>() {
         @Override
-        public int compare(CoreMap o1, CoreMap o2) {
-          int begin1 = o1.get(CharacterOffsetBeginAnnotation.class);
-          int begin2 = o2.get(CharacterOffsetBeginAnnotation.class);
-          return begin1 - begin2;
+        public int compare(NamedEntityMention m1, NamedEntityMention m2) {
+          return m1.getBegin() - m2.getBegin();
         }
       });
 
       // create mentions and add them to entity
       NamedEntity entity = new NamedEntity(jCas);
-      entity.setMentions(new FSArray(jCas, tokenMapsList.size()));
+      entity.setMentions(new FSArray(jCas, mentions.size()));
       int index = 0;
-      for (CoreMap tokenMap : tokenMapsList) {
-        NamedEntityMention mention = stanfordToUimaNE.get(tokenMap);
+      for (NamedEntityMention mention : mentions) {
         mention.setMentionedEntity(entity);
         entity.setMentions(index, mention);
         index += 1;
