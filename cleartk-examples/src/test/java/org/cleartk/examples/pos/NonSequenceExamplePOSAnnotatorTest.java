@@ -104,7 +104,6 @@ public class NonSequenceExamplePOSAnnotatorTest extends ExamplesTestBase {
 
     String firstLine = FileUtil.loadListOfStrings(new File(svmlightDirectoryName
         + "/2008_Sichuan_earthquake.txt.pos"))[0].trim();
-    System.err.println(firstLine);
     assertTrue(firstLine.startsWith("2008/NN Sichuan/NNP earthquake/NN From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/IN The/DT 2008/NN Sichuan/NN earthquake/NN occurred/VBN at/IN 14:28/JJ :/NN 01.42/NN CST/NN (/-LRB- 06:28/NN :/NN 01.42/NN UTC/NN )/-RRB- on/IN 12/CD May/MD 2008/NN ,/, with/IN its/NNS epicenter/NN in/IN Wenchuan/JJ County/NN"));
   }
 
