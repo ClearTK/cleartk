@@ -10,6 +10,13 @@
 		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/trunk/consistent-versions-plugin/</developerConnection>
 		<url>http://cleartk.googlecode.com/svn/trunk/consistent-versions-plugin/</url>
 	</scm>
+	<distributionManagement>
+		<repository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>googlecode</id>
+			<url>svn:https://cleartk.googlecode.com/svn/repo</url>
+		</repository>
+	</distributionManagement>
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.maven</groupId>
