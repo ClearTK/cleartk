@@ -17,54 +17,68 @@
 		</repository>
 	</repositories>
 	<parent>
-		<artifactId>cleartk</artifactId>
+		<artifactId>cleartk-parent</artifactId>
 		<groupId>org.cleartk</groupId>
-		<version>0.5.2-SNAPSHOT</version>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>../cleartk-parent</relativePath>
 	</parent>
 	<dependencies>
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.cleartk</groupId>
-			<artifactId>cleartk-test-util</artifactId>
+			<version>r09</version>
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-util</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.cleartk</groupId>
-			<artifactId>cleartk-token</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.cleartk</groupId>
-			<artifactId>cleartk-chunker</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.cleartk</groupId>
-			<artifactId>cleartk-syntax</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.cleartk</groupId>
-			<artifactId>cleartk-syntax-opennlp</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.cleartk</groupId>
-			<artifactId>cleartk-ml</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.cleartk</groupId>
-			<artifactId>cleartk-ml-mallet</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.cleartk</groupId>
-			<artifactId>cleartk-ml-opennlp-maxent</artifactId>
+			<version>0.7.2-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-eval</artifactId>
+			<version>0.8.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.cleartk</groupId>
+			<artifactId>cleartk-ml</artifactId>
+			<version>0.9.11-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.cleartk</groupId>
+			<artifactId>cleartk-ml-mallet</artifactId>
+			<version>0.9.11-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.cleartk</groupId>
+			<artifactId>cleartk-ml-opennlp-maxent</artifactId>
+			<version>0.9.11-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.cleartk</groupId>
+			<artifactId>cleartk-chunker</artifactId>
+			<version>0.9.11-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.cleartk</groupId>
+			<artifactId>cleartk-token</artifactId>
+			<version>0.7.2-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.cleartk</groupId>
+			<artifactId>cleartk-syntax</artifactId>
+			<version>0.5.2-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.cleartk</groupId>
+			<artifactId>cleartk-syntax-opennlp</artifactId>
+			<version>0.8.2-SNAPSHOT</version>
+		</dependency>
+		<!-- test only -->
+		<dependency>
+			<groupId>org.cleartk</groupId>
+			<artifactId>cleartk-test-util</artifactId>
+			<version>0.9.11-SNAPSHOT</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 	<!-- Generate type system files using ${jcasgen.typesystem} -->

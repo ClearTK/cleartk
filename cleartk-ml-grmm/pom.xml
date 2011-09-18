@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.cleartk</groupId>
 	<artifactId>cleartk-ml-grmm</artifactId>
@@ -16,26 +17,33 @@
 		</repository>
 	</repositories>
 	<parent>
-		<artifactId>cleartk</artifactId>
+		<artifactId>cleartk-parent</artifactId>
 		<groupId>org.cleartk</groupId>
-		<version>0.5.2-SNAPSHOT</version>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>../cleartk-parent</relativePath>
 	</parent>
 	<dependencies>
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-ml</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.cleartk</groupId>
-			<artifactId>cleartk-test-util</artifactId>
+			<version>0.9.11-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>edu.umass.cs.mallet</groupId>
 			<artifactId>grmm-mod</artifactId>
+			<version>0.1.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.beanshell</groupId>
 			<artifactId>bsh</artifactId>
+			<version>2.0b4</version>
+		</dependency>
+		<!-- test only -->
+		<dependency>
+			<groupId>org.cleartk</groupId>
+			<artifactId>cleartk-test-util</artifactId>
+			<version>0.9.11-SNAPSHOT</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>

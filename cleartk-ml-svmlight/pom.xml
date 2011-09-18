@@ -25,10 +25,12 @@
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-test-util</artifactId>
+			<version>0.9.11-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-ml</artifactId>
+			<version>0.9.11-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 </project>

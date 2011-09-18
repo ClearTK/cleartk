@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.cleartk</groupId>
 	<artifactId>cleartk-token</artifactId>
@@ -16,9 +17,10 @@
 		</repository>
 	</repositories>
 	<parent>
-		<artifactId>cleartk</artifactId>
+		<artifactId>cleartk-parent</artifactId>
 		<groupId>org.cleartk</groupId>
-		<version>0.5.2-SNAPSHOT</version>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>../cleartk-parent</relativePath>
 	</parent>
 	<properties>
 		<jcasgen.typesystem>org/cleartk/token/TypeSystem.xml</jcasgen.typesystem>
@@ -27,36 +29,51 @@
 		<dependency>
 			<groupId>org.jdom</groupId>
 			<artifactId>jdom</artifactId>
+			<version>1.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-snowball</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.cleartk</groupId>
-			<artifactId>cleartk-test-util</artifactId>
+			<version>3.0.3</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.lucene</groupId>
+					<artifactId>lucene-core</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-util</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.cleartk</groupId>
-			<artifactId>cleartk-chunker</artifactId>
+			<version>0.7.2-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-ml</artifactId>
+			<version>0.9.11-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-ml-mallet</artifactId>
+			<version>0.9.11-SNAPSHOT</version>
 		</dependency>
-				<dependency>
+		<dependency>
+			<groupId>org.cleartk</groupId>
+			<artifactId>cleartk-chunker</artifactId>
+			<version>0.9.11-SNAPSHOT</version>
+		</dependency>
+		<dependency>
 			<groupId>clearparser</groupId>
 			<artifactId>clearparser</artifactId>
+			<version>0.2-beta</version>
 		</dependency>
-		
+		<!-- test only -->
+		<dependency>
+			<groupId>org.cleartk</groupId>
+			<artifactId>cleartk-test-util</artifactId>
+			<version>0.9.11-SNAPSHOT</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

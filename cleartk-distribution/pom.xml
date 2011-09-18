@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.cleartk</groupId>
 	<artifactId>cleartk-distribution</artifactId>
@@ -16,19 +17,22 @@
 		</repository>
 	</repositories>
 	<parent>
-		<artifactId>cleartk</artifactId>
 		<groupId>org.cleartk</groupId>
-		<version>0.5.2-SNAPSHOT</version>
+		<artifactId>cleartk-parent</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>../cleartk-parent</relativePath>
 	</parent>
 	<!-- Declare dependencies to guarantee that this module runs after all others -->
 	<dependencies>
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-timeml</artifactId>
+			<version>0.8.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-examples</artifactId>
+			<version>0.5.3-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 
