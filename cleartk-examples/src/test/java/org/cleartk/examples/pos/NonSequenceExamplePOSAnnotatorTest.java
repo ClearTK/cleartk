@@ -62,29 +62,26 @@ public class NonSequenceExamplePOSAnnotatorTest extends ExamplesTestBase {
   @Test
   public void testLibsvm() throws Exception {
     String libsvmDirectoryName = outputDirectory + "/libsvm";
-    AnalysisEngineDescription dataWriter = CleartkAnnotatorDescriptionFactory
-        .createCleartkAnnotator(
-            NonSequenceExamplePOSAnnotator.class,
-            ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-            DefaultMultiClassLIBSVMDataWriterFactory.class,
-            libsvmDirectoryName);
+    AnalysisEngineDescription dataWriter = CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+        NonSequenceExamplePOSAnnotator.class,
+        ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+        DefaultMultiClassLIBSVMDataWriterFactory.class,
+        libsvmDirectoryName);
     testClassifier(dataWriter, libsvmDirectoryName, "-t", "0");
 
     String firstLine = FileUtil.loadListOfStrings(new File(libsvmDirectoryName
         + "/2008_Sichuan_earthquake.txt.pos"))[0].trim();
-    assertTrue(firstLine
-        .startsWith("2008/NN Sichuan/NN earthquake/NN From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/IN The/DT 2008/NN Sichuan/NN earthquake/NN occurred/VBN at/IN 14:28/NN :/NN 01.42/NN CST/NN "));
+    assertTrue(firstLine.startsWith("2008/NN Sichuan/NN earthquake/NN From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/IN The/DT 2008/NN Sichuan/NN earthquake/NN occurred/VBN at/IN 14:28/NN :/NN 01.42/NN CST/NN "));
   }
 
   @Test
   public void testMaxent() throws Exception {
     String maxentDirectoryName = outputDirectoryName + "/maxent";
-    AnalysisEngineDescription dataWriter = CleartkAnnotatorDescriptionFactory
-        .createCleartkAnnotator(
-            NonSequenceExamplePOSAnnotator.class,
-            ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-            DefaultMaxentDataWriterFactory.class,
-            maxentDirectoryName);
+    AnalysisEngineDescription dataWriter = CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+        NonSequenceExamplePOSAnnotator.class,
+        ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+        DefaultMaxentDataWriterFactory.class,
+        maxentDirectoryName);
     testClassifier(dataWriter, maxentDirectoryName);
 
     String firstLine = FileUtil.loadListOfStrings(new File(maxentDirectoryName
@@ -98,18 +95,17 @@ public class NonSequenceExamplePOSAnnotatorTest extends ExamplesTestBase {
   @Test
   public void testSVMLIGHT() throws Exception {
     String svmlightDirectoryName = outputDirectoryName + "/svmlight";
-    AnalysisEngineDescription dataWriter = CleartkAnnotatorDescriptionFactory
-        .createCleartkAnnotator(
-            NonSequenceExamplePOSAnnotator.class,
-            ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-            DefaultOVASVMlightDataWriterFactory.class,
-            svmlightDirectoryName);
+    AnalysisEngineDescription dataWriter = CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+        NonSequenceExamplePOSAnnotator.class,
+        ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+        DefaultOVASVMlightDataWriterFactory.class,
+        svmlightDirectoryName);
     testClassifier(dataWriter, svmlightDirectoryName);
 
     String firstLine = FileUtil.loadListOfStrings(new File(svmlightDirectoryName
         + "/2008_Sichuan_earthquake.txt.pos"))[0].trim();
-    assertTrue(firstLine
-        .startsWith("2008/NN Sichuan/NNP earthquake/NN From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/IN The/DT 2008/NN Sichuan/NN earthquake/NN occurred/VBN at/IN 14:28/JJ :/NN 01.42/NN CST/NN (/-LRB- 06:28/NN :/NN 01.42/NN UTC/NN )/-RRB- on/IN 12/CD May/MD 2008/NN ,/, with/IN its/NNS epicenter/NN in/IN Wenchuan/JJ County/NN"));
+    System.err.println(firstLine);
+    assertTrue(firstLine.startsWith("2008/NN Sichuan/NNP earthquake/NN From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/IN The/DT 2008/NN Sichuan/NN earthquake/NN occurred/VBN at/IN 14:28/JJ :/NN 01.42/NN CST/NN (/-LRB- 06:28/NN :/NN 01.42/NN UTC/NN )/-RRB- on/IN 12/CD May/MD 2008/NN ,/, with/IN its/NNS epicenter/NN in/IN Wenchuan/JJ County/NN"));
   }
 
   private void testClassifier(
@@ -137,15 +133,13 @@ public class NonSequenceExamplePOSAnnotatorTest extends ExamplesTestBase {
     org.cleartk.classifier.jar.Train.main(args);
     hider.restoreOutput();
 
-    AnalysisEngineDescription taggerDescription = CleartkAnnotatorDescriptionFactory
-        .createCleartkAnnotator(
-            NonSequenceExamplePOSAnnotator.class,
-            ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-            outDirectoryName + "/model.jar");
+    AnalysisEngineDescription taggerDescription = CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+        NonSequenceExamplePOSAnnotator.class,
+        ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+        outDirectoryName + "/model.jar");
 
     SimplePipeline.runPipeline(
-        FilesCollectionReader
-            .getCollectionReader("src/test/resources/data/2008_Sichuan_earthquake.txt"),
+        FilesCollectionReader.getCollectionReader("src/test/resources/data/2008_Sichuan_earthquake.txt"),
         BreakIteratorAnnotatorFactory.createSentenceAnnotator(Locale.US),
         TokenAnnotator.getDescription(),
         DefaultSnowballStemmer.getDescription("English"),

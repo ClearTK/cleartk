@@ -24,8 +24,6 @@
 
 package org.cleartk.examples.parser;
 
-import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-import org.apache.uima.collection.CollectionReader;
 import org.cleartk.examples.ExampleComponents;
 import org.cleartk.syntax.opennlp.ParserAnnotator;
 import org.cleartk.syntax.opennlp.PosTaggerAnnotator;
@@ -52,34 +50,18 @@ public class ParserExample {
     String filesDirectory = args[0];
     String outputDirectory = args[1];
 
-    CollectionReader reader = FilesCollectionReader.getCollectionReader(filesDirectory);
-
-    AnalysisEngineDescription sentences = AnalysisEngineFactory.createPrimitiveDescription(
-        SentenceAnnotator.class,
-        ExampleComponents.TYPE_SYSTEM_DESCRIPTION);
-    AnalysisEngineDescription tokenizer = AnalysisEngineFactory.createPrimitiveDescription(
-        TokenAnnotator.class,
-        ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-        TokenAnnotator.PARAM_WINDOW_TYPE_NAME,
-        org.cleartk.token.type.Sentence.class.getName());
-
-    AnalysisEngineDescription posTaggerDescription = PosTaggerAnnotator.getDescription();
-    AnalysisEngineDescription parserDescription = ParserAnnotator.getDescription();
-    AnalysisEngineDescription xWriterDescription = AnalysisEngineFactory
-        .createPrimitiveDescription(
+    SimplePipeline.runPipeline(
+        FilesCollectionReader.getCollectionReader(filesDirectory),
+        SentenceAnnotator.getDescription(),
+        TokenAnnotator.getDescription(),
+        PosTaggerAnnotator.getDescription(),
+        ParserAnnotator.getDescription(),
+        AnalysisEngineFactory.createPrimitiveDescription(
             XWriter.class,
             ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
             XWriter.PARAM_OUTPUT_DIRECTORY_NAME,
             outputDirectory,
             XWriter.PARAM_FILE_NAMER_CLASS_NAME,
-            ViewURIFileNamer.class.getName());
-
-    SimplePipeline.runPipeline(
-        reader,
-        sentences,
-        tokenizer,
-        posTaggerDescription,
-        parserDescription,
-        xWriterDescription);
+            ViewURIFileNamer.class.getName()));
   }
 }
