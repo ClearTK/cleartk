@@ -19,8 +19,7 @@
 	<parent>
 		<artifactId>cleartk-parent</artifactId>
 		<groupId>org.cleartk</groupId>
-		<version>1.0.0-SNAPSHOT</version>
-		<relativePath>../cleartk-parent</relativePath>
+		<version>1.0.0</version>
 	</parent>
 	<dependencies>
 		<dependency>

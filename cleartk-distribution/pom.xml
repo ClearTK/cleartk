@@ -16,10 +16,9 @@
 		</repository>
 	</repositories>
 	<parent>
-		<groupId>org.cleartk</groupId>
 		<artifactId>cleartk-parent</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
-		<relativePath>../cleartk-parent</relativePath>
+		<groupId>org.cleartk</groupId>
+		<version>1.0.0</version>
 	</parent>
 	<!-- Declare dependencies to guarantee that this module runs after all others -->
 	<dependencies>

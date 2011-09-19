@@ -6,10 +6,9 @@
 	<packaging>pom</packaging>
 	<description>The official ClearTK release</description>
 	<parent>
-		<groupId>org.cleartk</groupId>
 		<artifactId>cleartk-parent</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
-		<relativePath>../cleartk-parent</relativePath>
+		<groupId>org.cleartk</groupId>
+		<version>1.0.0</version>
 	</parent>
 	<dependencyManagement>
 		<dependencies>

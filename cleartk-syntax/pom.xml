@@ -17,8 +17,7 @@
 	<parent>
 		<artifactId>cleartk-parent</artifactId>
 		<groupId>org.cleartk</groupId>
-		<version>1.0.0-SNAPSHOT</version>
-		<relativePath>../cleartk-parent</relativePath>
+		<version>1.0.0</version>
 	</parent>
 	<properties>
 		<jcasgen.typesystem>org/cleartk/syntax/TypeSystem.xml</jcasgen.typesystem>
