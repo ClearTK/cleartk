@@ -26,6 +26,7 @@ package org.cleartk.eval.provider;
 import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
@@ -36,6 +37,7 @@ import java.util.logging.Logger;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.eval.EvaluationTestBase;
 import org.cleartk.type.test.Token;
 import org.cleartk.util.ViewURIUtil;
@@ -271,6 +273,122 @@ public class AnnotationEvaluatorTest extends EvaluationTestBase {
       assertProperty("recall", "0.667", warnings);
       assertProperty("f1", "0.727", warnings);
       Assert.assertFalse(warnings.matches(".*(WRONG|DROPPED|ADDED).*"));
+
+    } finally {
+      // restore original logging configuration
+      logger.removeHandler(warningHandler);
+      logger.removeHandler(infoHandler);
+      for (Handler consoleHandler : consoleHandlers.keySet()) {
+        consoleHandler.setLevel(consoleHandlers.get(consoleHandler));
+      }
+    }
+  }
+
+  public static class POSGrouper implements AnnotationEvaluator.AnnotationGrouper {
+
+    @Override
+    public List<String> getGroups(Annotation annotation) {
+      return Arrays.asList(((Token) annotation).getPos());
+    }
+
+  }
+
+  @Test
+  public void testGroups() throws Exception {
+    AnalysisEngineDescription desc = AnnotationEvaluator.getAttributeDescription(
+        Token.class,
+        "pos",
+        "Gold",
+        "System");
+    // necessary because test type system descriptors are not in their own files
+    desc.getAnalysisEngineMetaData().setTypeSystem(
+        TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.type.test.TestTypeSystem"));
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+        desc,
+        AnnotationEvaluator.PARAM_ANNOTATION_GROUPER_CLASS_NAME,
+        POSGrouper.class.getName());
+    JCas base = engine.newJCas();
+    ViewURIUtil.setURI(base, new File("testSpans").toURI());
+    JCas gold = base.createView("Gold");
+    JCas system = base.createView("System");
+    for (JCas jCas : Arrays.asList(gold, system)) {
+      jCas.setDocumentText("Cats like dogs.");
+    }
+    addToken(gold, 0, 4, "NNS");
+    addToken(gold, 5, 9, "VB");
+    addToken(gold, 10, 14, "NNS");
+    addToken(gold, 14, 15, ".");
+    addToken(system, 0, 5, "NNS"); // wrong span
+    addToken(system, 5, 9, "VB");
+    addToken(system, 10, 14, "NNS");
+    // missing period
+
+    // save old logging levels
+    Map<Handler, Level> consoleHandlers = new HashMap<Handler, Level>();
+    for (Handler handler : Logger.getLogger("").getHandlers()) {
+      if (handler instanceof ConsoleHandler) {
+        consoleHandlers.put(handler, handler.getLevel());
+      }
+    }
+
+    // handlers to collect warning and info messages
+    StringHandler warningHandler = new StringHandler();
+    warningHandler.setLevel(Level.WARNING);
+    StringHandler infoHandler = new StringHandler();
+    infoHandler.setLevel(Level.INFO);
+
+    Logger logger = Logger.getLogger(AnnotationEvaluator.class.getName());
+    try {
+      // turn off other logging and add new handlers
+      logger.addHandler(warningHandler);
+      logger.addHandler(infoHandler);
+      for (Handler consoleHandler : consoleHandlers.keySet()) {
+        consoleHandler.setLevel(Level.OFF);
+      }
+
+      // process document
+      engine.process(base);
+
+      // complete a batch
+      engine.batchProcessComplete();
+
+      // check the warnings
+      String warnings = warningHandler.logBuilder.toString();
+      assertSomeLineMatches(".*Token:pos Batch 0 \\.", warnings);
+      // @formatter:off
+      Assert.assertTrue(warnings.matches(
+          "(?s).*" +
+          "Token:pos Batch 0 \\.\n" +
+          "gold      = 1\n" + 
+          "system    = 0\n" +
+          "matching  = 0\n" +
+          "precision = 1.000\n" +
+          "recall    = 0.000\n" +
+          "f1        = 0.000\n" +
+          "Token:pos Batch 0 NNS\n" +
+          "gold      = 2\n" +
+          "system    = 2\n" +
+          "matching  = 1\n" +
+          "precision = 0.500\n" +
+          "recall    = 0.500\n" +
+          "f1        = 0.500\n" +
+          "Token:pos Batch 0 VB\n" +
+          "gold      = 1\n" +
+          "system    = 1\n" +
+          "matching  = 1\n" +
+          "precision = 1.000\n" +
+          "recall    = 1.000\n" +
+          "f1        = 1.000\n" +
+          ".*"));
+      // @formatter:on
+      Assert.assertFalse(warnings.matches(".*(WRONG|DROPPED|ADDED).*"));
+
+      // check the info
+      String info = infoHandler.logBuilder.toString();
+      assertSomeLineMatches(".*testSpans.*", info);
+      assertSomeLineMatches("DROPPED.*\\[Cats\\].*", info);
+      assertSomeLineMatches("ADDED.*\\[Cats \\].*", info);
+      assertSomeLineMatches("DROPPED.*\\[.\\].*", info);
 
     } finally {
       // restore original logging configuration

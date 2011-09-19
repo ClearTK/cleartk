@@ -85,6 +85,17 @@ public class AnnotationEvaluator<T extends Comparable<? super T>> extends JCasAn
     }
   }
 
+  public static interface AnnotationGrouper {
+    public List<String> getGroups(Annotation annotation);
+  }
+
+  public static class SingleGroupAnnotationGrouper implements AnnotationGrouper {
+    @Override
+    public List<String> getGroups(Annotation annotation) {
+      return Arrays.asList("");
+    }
+  }
+
   public static AnalysisEngineDescription getSpanDescription(
       Class<? extends Annotation> annotationClass,
       String goldView,
@@ -135,6 +146,12 @@ public class AnnotationEvaluator<T extends Comparable<? super T>> extends JCasAn
   private String spanExtractorClassName;
 
   @ConfigurationParameter(
+      defaultValue = "org.cleartk.eval.provider.AnnotationEvaluator$SingleGroupAnnotationGrouper",
+      description = "The name of a subclass of AnnotationGrouper that assigns a group to each "
+          + "annotation. This is useful for, e.g. reporting results split by part of speech.")
+  private String annotationGrouperClassName;
+
+  @ConfigurationParameter(
       mandatory = true,
       description = "The name of the CAS view containing the gold (manual) annotations")
   private String goldViewName;
@@ -163,6 +180,10 @@ public class AnnotationEvaluator<T extends Comparable<? super T>> extends JCasAn
       AnnotationEvaluator.class,
       "spanExtractorClassName");
 
+  public static final String PARAM_ANNOTATION_GROUPER_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
+      AnnotationEvaluator.class,
+      "annotationGrouperClassName");
+
   public static final String PARAM_GOLD_VIEW_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
       AnnotationEvaluator.class,
       "goldViewName");
@@ -179,11 +200,13 @@ public class AnnotationEvaluator<T extends Comparable<? super T>> extends JCasAn
 
   private SpanExtractor<T> spanExtractor;
 
+  private AnnotationGrouper grouper;
+
   private int batch;
 
-  private Stats collectionStats;
+  private Map<String, Stats> collectionGroupStats;
 
-  private Stats batchStats;
+  private Map<String, Stats> batchGroupStats;
 
   private Logger logger;
 
@@ -197,8 +220,12 @@ public class AnnotationEvaluator<T extends Comparable<? super T>> extends JCasAn
         context,
         this.spanExtractorClassName,
         SpanExtractor.class);
-    this.collectionStats = new Stats();
-    this.batchStats = new Stats();
+    this.grouper = InitializableFactory.create(
+        context,
+        this.annotationGrouperClassName,
+        AnnotationGrouper.class);
+    this.collectionGroupStats = new HashMap<String, Stats>();
+    this.batchGroupStats = new HashMap<String, Stats>();
     this.batch = 0;
   }
 
@@ -212,90 +239,136 @@ public class AnnotationEvaluator<T extends Comparable<? super T>> extends JCasAn
       throw new AnalysisEngineProcessException(e);
     }
 
-    // convert the annotations in the CAS views to span->tag maps
-    Map<T, String> goldSpanTags = this.getSpanTags(goldView);
-    Map<T, String> systemSpanTags = this.getSpanTags(systemView);
-    if (this.ignoreSystemSpansNotInGold) {
-      for (T span : new HashSet<T>(systemSpanTags.keySet())) {
-        if (!goldSpanTags.containsKey(span)) {
-          systemSpanTags.remove(span);
-        }
+    // convert the annotations in the CAS views to group->span->tag maps
+    Map<String, Map<T, String>> goldGroupedSpanTags = this.getGroupedSpanTags(goldView);
+    Map<String, Map<T, String>> systemGroupedSpanTags = this.getGroupedSpanTags(systemView);
+
+    // determine the groups, and make sure gold and system have all the same groups
+    Set<String> groups = new HashSet<String>();
+    groups.addAll(goldGroupedSpanTags.keySet());
+    groups.addAll(systemGroupedSpanTags.keySet());
+    for (String group : groups) {
+      if (!goldGroupedSpanTags.containsKey(group)) {
+        goldGroupedSpanTags.put(group, new HashMap<T, String>());
+      }
+      if (!systemGroupedSpanTags.containsKey(group)) {
+        systemGroupedSpanTags.put(group, new HashMap<T, String>());
       }
     }
 
-    // find the span+tags that were labeled correctly
-    Set<T> matchingSpans = new HashSet<T>();
-    matchingSpans.addAll(goldSpanTags.keySet());
-    matchingSpans.retainAll(systemSpanTags.keySet());
-    Map<T, String> matchingSpanTags = new HashMap<T, String>();
-    for (T span : matchingSpans) {
-      if (this.annotationAttributeName == null) {
-        matchingSpanTags.put(span, null);
-      } else {
-        String goldTag = goldSpanTags.get(span);
-        String systemTag = systemSpanTags.get(span);
-        if (goldTag.equals(systemTag)) {
-          matchingSpanTags.put(span, goldTag);
-        }
-      }
-    }
+    for (String group : groups) {
+      Map<T, String> goldSpanTags = goldGroupedSpanTags.get(group);
+      Map<T, String> systemSpanTags = systemGroupedSpanTags.get(group);
 
-    // update counts
-    int gold = goldSpanTags.size();
-    int system = systemSpanTags.size();
-    int matching = matchingSpanTags.size();
-    this.collectionStats.gold += gold;
-    this.collectionStats.system += system;
-    this.collectionStats.matching += matching;
-    this.batchStats.gold += gold;
-    this.batchStats.system += system;
-    this.batchStats.matching += matching;
-
-    // print out the errors
-    Set<T> spans = new HashSet<T>();
-    spans.addAll(goldSpanTags.keySet());
-    spans.addAll(systemSpanTags.keySet());
-    if (!spans.equals(matchingSpanTags.keySet())) {
-      StringBuilder message = new StringBuilder();
-      message.append(ViewURIUtil.getURI(jCas)).append('\n');
-      List<T> spansList = new ArrayList<T>(spans);
-      Collections.sort(spansList);
-      for (T span : spansList) {
-        String goldTag = goldSpanTags.get(span);
-        String systemTag = systemSpanTags.get(span);
-        if (!matchingSpanTags.containsKey(span)) {
-          boolean isGold = goldSpanTags.containsKey(span);
-          boolean isSystem = systemSpanTags.containsKey(span);
-          if (isGold && isSystem) {
-            message.append(String.format("WRONG: system=%s gold=%s %s\n", systemTag, goldTag, span));
-          } else if (isGold) {
-            String attr = goldTag == null ? "" : String.format("gold=%s ", goldTag);
-            message.append(String.format("DROPPED: %s%s\n", attr, span));
-          } else if (isSystem) {
-            if (!this.ignoreSystemSpansNotInGold) {
-              String attr = systemTag == null ? "" : String.format("system=%s ", systemTag);
-              message.append(String.format("ADDED: %s%s\n", attr, span));
-            }
+      // remove some system spans if requested
+      if (this.ignoreSystemSpansNotInGold) {
+        for (T span : new HashSet<T>(systemSpanTags.keySet())) {
+          if (!goldSpanTags.containsKey(span)) {
+            systemSpanTags.remove(span);
           }
         }
       }
-      this.logger.log(Level.INFO, message.toString().trim());
+
+      // find the span+tags that were labeled correctly
+      Set<T> matchingSpans = new HashSet<T>();
+      matchingSpans.addAll(goldSpanTags.keySet());
+      matchingSpans.retainAll(systemSpanTags.keySet());
+      Map<T, String> matchingSpanTags = new HashMap<T, String>();
+      for (T span : matchingSpans) {
+        if (this.annotationAttributeName == null) {
+          matchingSpanTags.put(span, null);
+        } else {
+          String goldTag = goldSpanTags.get(span);
+          String systemTag = systemSpanTags.get(span);
+          if (goldTag.equals(systemTag)) {
+            matchingSpanTags.put(span, goldTag);
+          }
+        }
+      }
+
+      // update collection-level counts
+      int gold = goldSpanTags.size();
+      int system = systemSpanTags.size();
+      int matching = matchingSpanTags.size();
+      if (!this.collectionGroupStats.containsKey(group)) {
+        this.collectionGroupStats.put(group, new Stats());
+      }
+      Stats collectionStats = this.collectionGroupStats.get(group);
+      collectionStats.gold += gold;
+      collectionStats.system += system;
+      collectionStats.matching += matching;
+
+      // update batch-level counts
+      if (!this.batchGroupStats.containsKey(group)) {
+        this.batchGroupStats.put(group, new Stats());
+      }
+      Stats batchStats = this.batchGroupStats.get(group);
+      batchStats.gold += gold;
+      batchStats.system += system;
+      batchStats.matching += matching;
+
+      // print out the errors
+      Set<T> spans = new HashSet<T>();
+      spans.addAll(goldSpanTags.keySet());
+      spans.addAll(systemSpanTags.keySet());
+      if (!spans.equals(matchingSpanTags.keySet())) {
+        StringBuilder message = new StringBuilder();
+        message.append(ViewURIUtil.getURI(jCas)).append('\n');
+        List<T> spansList = new ArrayList<T>(spans);
+        Collections.sort(spansList);
+        for (T span : spansList) {
+          String goldTag = goldSpanTags.get(span);
+          String systemTag = systemSpanTags.get(span);
+          if (!matchingSpanTags.containsKey(span)) {
+            boolean isGold = goldSpanTags.containsKey(span);
+            boolean isSystem = systemSpanTags.containsKey(span);
+            if (isGold && isSystem) {
+              message.append(String.format(
+                  "WRONG: system=%s gold=%s %s\n",
+                  systemTag,
+                  goldTag,
+                  span));
+            } else if (isGold) {
+              String attr = goldTag == null ? "" : String.format("gold=%s ", goldTag);
+              message.append(String.format("DROPPED: %s%s\n", attr, span));
+            } else if (isSystem) {
+              if (!this.ignoreSystemSpansNotInGold) {
+                String attr = systemTag == null ? "" : String.format("system=%s ", systemTag);
+                message.append(String.format("ADDED: %s%s\n", attr, span));
+              }
+            }
+          }
+        }
+        this.logger.log(Level.INFO, message.toString().trim());
+      }
     }
   }
 
   @Override
   public void collectionProcessComplete() throws AnalysisEngineProcessException {
     super.collectionProcessComplete();
-    this.logStats("Collection", this.collectionStats);
-    this.collectionStats = new Stats();
+    for (String group : this.getGroups(this.collectionGroupStats)) {
+      Stats collectionStats = this.collectionGroupStats.get(group);
+      this.logStats("Collection " + group, collectionStats);
+      this.collectionGroupStats.put(group, new Stats());
+    }
   }
 
   @Override
   public void batchProcessComplete() throws AnalysisEngineProcessException {
     super.batchProcessComplete();
-    this.logStats("Batch " + this.batch, this.batchStats);
-    this.batchStats = new Stats();
+    for (String group : this.getGroups(this.batchGroupStats)) {
+      Stats collectionStats = this.batchGroupStats.get(group);
+      this.logStats("Batch " + this.batch + " " + group, collectionStats);
+      this.batchGroupStats.put(group, new Stats());
+    }
     this.batch += 1;
+  }
+
+  private List<String> getGroups(Map<String, Stats> groupStats) {
+    List<String> groups = new ArrayList<String>(groupStats.keySet());
+    Collections.sort(groups);
+    return groups;
   }
 
   private void logStats(String heading, Stats stats) {
@@ -322,21 +395,31 @@ public class AnnotationEvaluator<T extends Comparable<? super T>> extends JCasAn
     this.logger.log(Level.WARNING, message);
   }
 
-  private Map<T, String> getSpanTags(JCas view) {
-    Map<T, String> spans = new HashMap<T, String>();
+  private Map<String, Map<T, String>> getGroupedSpanTags(JCas view) {
+    Map<String, Map<T, String>> groupedSpans = new HashMap<String, Map<T, String>>();
     for (Annotation ann : JCasUtil.select(view, this.annotationClass)) {
+      List<String> groups = this.grouper.getGroups(ann);
+      for (String group : groups) {
+        if (!groupedSpans.containsKey(group)) {
+          groupedSpans.put(group, new HashMap<T, String>());
+        }
+      }
       T span = this.spanExtractor.getSpan(ann);
       if (this.annotationAttributeName == null) {
-        spans.put(span, null);
+        for (String group : groups) {
+          groupedSpans.get(group).put(span, null);
+        }
       } else {
         Feature feature = ann.getType().getFeatureByBaseName(this.annotationAttributeName);
         String featureValue = ann.getFeatureValueAsString(feature);
         if (featureValue != null) {
-          spans.put(span, featureValue);
+          for (String group : groups) {
+            groupedSpans.get(group).put(span, featureValue);
+          }
         }
       }
     }
-    return spans;
+    return groupedSpans;
   }
 
   private static class Stats {
@@ -354,11 +437,11 @@ public class AnnotationEvaluator<T extends Comparable<? super T>> extends JCasAn
     }
 
     public double precision() {
-      return this.matching / (double) this.system;
+      return this.system == 0 ? 1.0 : this.matching / (double) this.system;
     }
 
     public double recall() {
-      return this.matching / (double) this.gold;
+      return this.gold == 0 ? 1.0 : this.matching / (double) this.gold;
     }
 
     public double f1() {
