@@ -37,14 +37,16 @@
 		<module>cleartk-release</module>
 		<module>cleartk-distribution</module>
 	</modules>
+	<repositories>
+		<repository>
+			<id>cleartk-googlecode</id>
+			<url>http://cleartk.googlecode.com/svn/repo/</url>
+		</repository>
+	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
 			<id>cleartk-googlecode</id>
-			<name>ClearTK Google Code repository</name>
 			<url>http://cleartk.googlecode.com/svn/repo/</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
 	<build>
