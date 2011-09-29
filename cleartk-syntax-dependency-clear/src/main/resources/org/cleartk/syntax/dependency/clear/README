@@ -14,7 +14,10 @@ This model uses the "shift pop" algorithm.  When using this model you should spe
 value AbstractDepParser.ALG_SHIFT_POP for the configuration parameter 
 org.cleartk.syntax.dependency.clear.ClearParser.parserAlgorithmName as annotated in 
 ClearParser.  Also, your default memory setting for your JVM may not suffice to load this 
-model.  It can load with the following argument "-Xmx1g".  
+model.  It can load with the following argument "-Xmx1g". 
+
+On 29 Sep 2011, the model was modified by adding a "1" before the "17" near the end of
+the "lexica" file, to accomodate a change in model format for the 0.4.0-SNAPSHOT release.
 
 #################
 additional models

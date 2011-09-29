@@ -24,6 +24,10 @@
 
 package org.cleartk.token.lemma.choi;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -65,22 +69,20 @@ import clear.morph.MorphEnAnalyzer;
     outputs = "org.cleartk.token.type.Token:lemma")
 public class LemmaAnnotator extends JCasAnnotator_ImplBase {
 
-  public static final String ENG_LEMMATIZER_DATA_FILE = "../cleartk-token/src/main/resources/org/cleartk/token/lemma/choi/wordnet-3.0-lemma-data.jar";
+  public static final String ENG_LEMMATIZER_DATA_FILE = "wordnet-3.0-lemma-data.jar";
 
   public static final String PARAM_LEMMATIZER_DATA_FILE_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
       LemmaAnnotator.class,
       "lemmatizerDataFileName");
 
   @ConfigurationParameter(
-      defaultValue = ENG_LEMMATIZER_DATA_FILE,
-      mandatory = true,
       description = "This parameter provides the file name of the lemmatizer data file required by the constructor of MorphEnAnalyzer.")
   private String lemmatizerDataFileName;
 
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-    String fileName = LemmaAnnotator.class.getResource(ENG_LEMMATIZER_DATA_FILE).getFile();
-    return getDescription(fileName);
-
+    return AnalysisEngineFactory.createPrimitiveDescription(
+        LemmaAnnotator.class,
+        TokenComponents.TYPE_SYSTEM_DESCRIPTION);
   }
 
   public static AnalysisEngineDescription getDescription(String lemmatizerDataFileName)
@@ -97,8 +99,17 @@ public class LemmaAnnotator extends JCasAnnotator_ImplBase {
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
+    if (this.lemmatizerDataFileName == null) {
+      this.lemmatizerDataFileName = this.getClass().getResource(ENG_LEMMATIZER_DATA_FILE).toString();
+    }
 
-    lemmatizer = new MorphEnAnalyzer(lemmatizerDataFileName);
+    try {
+      lemmatizer = new MorphEnAnalyzer(new URL(lemmatizerDataFileName));
+    } catch (MalformedURLException e) {
+      lemmatizer = new MorphEnAnalyzer(lemmatizerDataFileName);
+    } catch (IOException e) {
+      throw new ResourceInitializationException(e);
+    }
 
   }
 

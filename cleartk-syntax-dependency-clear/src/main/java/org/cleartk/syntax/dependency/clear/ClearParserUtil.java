@@ -26,8 +26,8 @@ package org.cleartk.syntax.dependency.clear;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -37,6 +37,7 @@ import clear.decode.OneVsAllDecoder;
 import clear.ftr.map.DepFtrMap;
 import clear.ftr.xml.DepFtrXml;
 import clear.parse.AbstractDepParser;
+import clear.parse.AbstractParser;
 import clear.parse.ShiftEagerParser;
 import clear.parse.ShiftPopParser;
 
@@ -55,9 +56,9 @@ import clear.parse.ShiftPopParser;
 
 public class ClearParserUtil {
 
-  public static AbstractDepParser createParser(String modelFileName, String algorithmName)
+  public static AbstractDepParser createParser(InputStream inputStream, String algorithmName)
       throws IOException {
-    ZipInputStream zin = new ZipInputStream(new FileInputStream(modelFileName));
+    ZipInputStream zin = new ZipInputStream(inputStream);
     ZipEntry zEntry;
 
     DepFtrXml xml = null;
@@ -86,7 +87,8 @@ public class ClearParserUtil {
 
       if (zEntry.getName().equals(ENTRY_LEXICA)) {
         System.out.println("- loading lexica");
-        map = new DepFtrMap(xml, new BufferedReader(new InputStreamReader(zin)));
+        map = new DepFtrMap(xml);
+        map.load(new BufferedReader(new InputStreamReader(zin)));
       } else if (zEntry.getName().equals(ENTRY_MODEL)) {
         System.out.println("- loading model");
         decoder = new OneVsAllDecoder(new BufferedReader(new InputStreamReader(zin)));
@@ -94,9 +96,9 @@ public class ClearParserUtil {
     }
 
     if (algorithmName.equals(AbstractDepParser.ALG_SHIFT_EAGER))
-      return new ShiftEagerParser(AbstractDepParser.FLAG_PREDICT, xml, map, decoder);
+      return new ShiftEagerParser(AbstractParser.FLAG_PREDICT, xml, map, decoder);
     else if (algorithmName.equals(AbstractDepParser.ALG_SHIFT_POP))
-      return new ShiftPopParser(AbstractDepParser.FLAG_PREDICT, xml, map, decoder);
+      return new ShiftPopParser(AbstractParser.FLAG_PREDICT, xml, map, decoder);
     else
       return null;
   }

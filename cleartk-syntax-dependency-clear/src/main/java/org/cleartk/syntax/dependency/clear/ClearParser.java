@@ -24,7 +24,10 @@
 
 package org.cleartk.syntax.dependency.clear;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -72,30 +75,38 @@ import clear.parse.AbstractDepParser;
  * @author Philip Ogren
  * 
  */
-@TypeCapability(inputs = { "org.cleartk.token.type.Token:pos", "org.cleartk.token.type.Token:lemma" })
+@TypeCapability(
+    inputs = { "org.cleartk.token.type.Token:pos", "org.cleartk.token.type.Token:lemma" })
 public class ClearParser extends JCasAnnotator_ImplBase {
 
-  public static final String DEFAULT_MODEL_FILE_NAME = "../cleartk-syntax-dependency-clear/src/main/resources/org/cleartk/syntax/dependency/clear/conll-2009-dev-shift-pop.jar";
+  public static final String DEFAULT_MODEL_FILE_NAME = "conll-2009-dev-shift-pop.jar";
 
   public static final String DEFAULT_PARSER_ALGORITHM_NAME = AbstractDepParser.ALG_SHIFT_POP;
 
-  public static final String PARAM_PARSER_MODEL_FILE_NAME = ConfigurationParameterFactory
-      .createConfigurationParameterName(ClearParser.class, "parserModelFileName");
+  public static final String PARAM_PARSER_MODEL_FILE_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
+      ClearParser.class,
+      "parserModelFileName");
 
-  @ConfigurationParameter(defaultValue = DEFAULT_MODEL_FILE_NAME, mandatory = true, description = "This parameter provides the file name of the dependency parser model required by the factory method provided by ClearParserUtil.")
+  @ConfigurationParameter(
+      description = "This parameter provides the file name of the dependency parser model required by the factory method provided by ClearParserUtil.")
   private String parserModelFileName;
 
-  public static final String PARAM_PARSER_ALGORITHM_NAME = ConfigurationParameterFactory
-      .createConfigurationParameterName(ClearParser.class, "parserAlgorithmName");
+  public static final String PARAM_PARSER_ALGORITHM_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
+      ClearParser.class,
+      "parserAlgorithmName");
 
-  @ConfigurationParameter(defaultValue = DEFAULT_PARSER_ALGORITHM_NAME, mandatory = true, description = "This parameter provides the algorithm name used by the dependency parser that is required by the factory method provided by ClearParserUtil.  If in doubt, do not change from the default value.")
+  @ConfigurationParameter(
+      defaultValue = DEFAULT_PARSER_ALGORITHM_NAME,
+      mandatory = true,
+      description = "This parameter provides the algorithm name used by the dependency parser that is required by the factory method provided by ClearParserUtil.  If in doubt, do not change from the default value.")
   private String parserAlgorithmName;
 
   private AbstractDepParser parser;
 
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-    String fileName = ClearParser.class.getResource(DEFAULT_MODEL_FILE_NAME).getFile();
-    return getDescription(fileName);
+    return AnalysisEngineFactory.createPrimitiveDescription(
+        ClearParser.class,
+        DependencyComponents.TYPE_SYSTEM_DESCRIPTION);
   }
 
   public static AnalysisEngineDescription getDescription(String modelFileName)
@@ -119,9 +130,13 @@ public class ClearParser extends JCasAnnotator_ImplBase {
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
-
     try {
-      parser = ClearParserUtil.createParser(parserModelFileName, parserAlgorithmName);
+      URL parserModelURL = this.parserModelFileName == null
+          ? ClearParser.class.getResource(DEFAULT_MODEL_FILE_NAME)
+          : new File(this.parserModelFileName).toURI().toURL();
+      parser = ClearParserUtil.createParser(parserModelURL.openStream(), parserAlgorithmName);
+    } catch (MalformedURLException e) {
+      throw new ResourceInitializationException(e);
     } catch (IOException e) {
       throw new ResourceInitializationException(e);
     }

@@ -22,9 +22,9 @@
 	</parent>
 	<dependencies>
 		<dependency>
-			<groupId>clearparser</groupId>
+			<groupId>com.googlecode.clearparser</groupId>
 			<artifactId>clearparser</artifactId>
-			<version>0.2-beta</version>
+			<version>0.4.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
@@ -40,6 +40,20 @@
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-syntax-dependency</artifactId>
 			<version>0.6.0-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.commons</groupId>
+					<artifactId>commons-compress</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.opennlp</groupId>
+					<artifactId>opennlp-maxent</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.opennlp</groupId>
+					<artifactId>opennlp-tools</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<!-- test only -->
 		<dependency>
