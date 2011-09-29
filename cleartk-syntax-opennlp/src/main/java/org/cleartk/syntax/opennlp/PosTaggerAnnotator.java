@@ -25,7 +25,6 @@ package org.cleartk.syntax.opennlp;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 import opennlp.tools.postag.POSModel;
@@ -120,15 +119,14 @@ public class PosTaggerAnnotator extends JCasAnnotator_ImplBase {
   @Override
   public void process(JCas jCas) throws AnalysisEngineProcessException {
     for (Sentence sentence : JCasUtil.select(jCas, Sentence.class)) {
-      List<String> tokens = new ArrayList<String>();
-      for (Token token : JCasUtil.selectCovered(jCas, Token.class, sentence)) {
-        tokens.add(token.getCoveredText());
+      List<Token> tokens = JCasUtil.selectCovered(jCas, Token.class, sentence);
+      String[] tokenTexts = new String[tokens.size()];
+      for (int i = 0; i < tokenTexts.length; ++i) {
+        tokenTexts[i] = tokens.get(i).getCoveredText();
       }
-      List<String> tags = posTagger.tag(tokens);
-      int i = 0;
-      for (Token token : JCasUtil.selectCovered(jCas, Token.class, sentence)) {
-        token.setPos(tags.get(i));
-        i++;
+      String[] tags = posTagger.tag(tokenTexts);
+      for (int i = 0; i < tags.length; ++i) {
+        tokens.get(i).setPos(tags[i]);
       }
     }
   }

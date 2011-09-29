@@ -14,10 +14,6 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
-		<repository>
-			<id>opennlp.sf.net</id>
-			<url>http://opennlp.sourceforge.net/maven2</url>
-		</repository>
 	</repositories>
 	<parent>
 		<artifactId>cleartk-parent</artifactId>
@@ -26,14 +22,14 @@
 	</parent>
 	<dependencies>
 		<dependency>
-			<groupId>opennlp</groupId>
-			<artifactId>maxent</artifactId>
-			<version>3.0.0</version>
+			<groupId>org.apache.opennlp</groupId>
+			<artifactId>opennlp-maxent</artifactId>
+			<version>3.0.1-incubating</version>
 		</dependency>
 		<dependency>
-			<groupId>opennlp</groupId>
-			<artifactId>tools</artifactId>
-			<version>1.5.0</version>
+			<groupId>org.apache.opennlp</groupId>
+			<artifactId>opennlp-tools</artifactId>
+			<version>1.5.1-incubating</version>
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
