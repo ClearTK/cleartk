@@ -1,4 +1,3 @@
-This version of ClearParser precedes the 0.2 release and was given to me directly by 
-the author Jinho Choi on January 11th, 2011. The code for ClearParser is available at:
-
-http://code.google.com/p/clearparser/
+The src directory of Clear Parser (http://code.google.com/p/clearparser/) is
+included here via svn:externals. The most recently deployed Clear Parser jar
+(0.4.0-SNAPSHOT) was built from revision 223.
