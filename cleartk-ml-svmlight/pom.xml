@@ -23,13 +23,15 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.cleartk</groupId>
-			<artifactId>cleartk-test-util</artifactId>
-			<version>1.0.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-ml</artifactId>
 			<version>1.0.0</version>
+		</dependency>
+		<!-- test only -->
+		<dependency>
+			<groupId>org.cleartk</groupId>
+			<artifactId>cleartk-test-util</artifactId>
+			<version>1.0.0</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>
