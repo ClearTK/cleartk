@@ -49,42 +49,42 @@
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-ml-opennlp-maxent</artifactId>
-				<version>1.0.1</version>
+				<version>1.0.2</version>
 				<type>jar</type>
 				<scope>compile</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-ml-svmlight</artifactId>
-				<version>1.0.1</version>
+				<version>1.0.2</version>
 				<type>jar</type>
 				<scope>compile</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-ml-tksvmlight</artifactId>
-				<version>0.3.1</version>
+				<version>0.3.2</version>
 				<type>jar</type>
 				<scope>compile</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-ml-libsvm</artifactId>
-				<version>1.0.0</version>
-				<type>jar</type>
-				<scope>compile</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.cleartk</groupId>
-				<artifactId>cleartk-ml-mallet</artifactId>
 				<version>1.0.1</version>
 				<type>jar</type>
 				<scope>compile</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
+				<artifactId>cleartk-ml-mallet</artifactId>
+				<version>1.0.2</version>
+				<type>jar</type>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-ml-grmm</artifactId>
-				<version>0.6.0</version>
+				<version>0.6.1</version>
 				<type>jar</type>
 				<scope>compile</scope>
 			</dependency>
