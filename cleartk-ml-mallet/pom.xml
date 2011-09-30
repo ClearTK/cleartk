@@ -53,7 +53,7 @@
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-test-util</artifactId>
-			<version>1.0.0</version>
+			<version>1.0.1</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
