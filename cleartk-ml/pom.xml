@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>cleartk-ml</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0.1-SNAPSHOT</version>
+	<version>1.0.1</version>
 	<name>cleartk-ml</name>
 	<url>http://cleartk.googlecode.com/</url>
 	<repositories>
@@ -39,4 +39,10 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+  <scm>
+    <connection>scm:svn:http://cleartk.googlecode.com/svn/tags/cleartk-ml-1.0.1</connection>
+    <developerConnection>scm:svn:https://cleartk.googlecode.com/svn/tags/cleartk-ml-1.0.1</developerConnection>
+    <url>http://cleartk.googlecode.com/svn/tags/cleartk-ml-1.0.1</url>
+  </scm>
 </project>
