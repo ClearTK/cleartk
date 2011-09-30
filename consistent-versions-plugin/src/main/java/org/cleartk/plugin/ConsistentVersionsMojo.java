@@ -1,7 +1,11 @@
 package org.cleartk.plugin;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -36,8 +40,8 @@ public class ConsistentVersionsMojo extends AbstractMojo {
   public void execute() throws MojoExecutionException, MojoFailureException {
     // Create a map from dependency names without versions to dependency names
     // with versions to the projects that declared those versions
-    Map<String, Map<String, Set<MavenProject>>> dependencyVersionProjects;
-    dependencyVersionProjects = new HashMap<String, Map<String, Set<MavenProject>>>();
+    Map<String, Map<String, Set<String>>> dependencyVersionProjects;
+    dependencyVersionProjects = new HashMap<String, Map<String, Set<String>>>();
 
     // iterate over the dependencies of all projects within this aggregator
     for (Object projectObject : this.mavenProject.getCollectedProjects()) {
@@ -46,9 +50,10 @@ public class ConsistentVersionsMojo extends AbstractMojo {
       // iterate over Artifacts - this includes all the transitive dependencies
       for (Object artifactObject : project.getArtifacts()) {
         Artifact artifact = (Artifact) artifactObject;
+        List<String> trail = artifact.getDependencyTrail();
         this.add(
             dependencyVersionProjects,
-            project,
+            trailToString(trail.subList(0, trail.size() - 1)),
             artifact.getDependencyConflictId(),
             artifact.getVersion());
       }
@@ -59,7 +64,7 @@ public class ConsistentVersionsMojo extends AbstractMojo {
         for (Dependency dependency : dependencyManagement.getDependencies()) {
           this.add(
               dependencyVersionProjects,
-              project,
+              project.getArtifactId(),
               dependency.getManagementKey(),
               dependency.getVersion());
         }
@@ -69,15 +74,15 @@ public class ConsistentVersionsMojo extends AbstractMojo {
     // if any dependency has multiple versions, create an error message
     StringBuilder error = new StringBuilder();
     for (String dependency : dependencyVersionProjects.keySet()) {
-      Map<String, Set<MavenProject>> versionProjects = dependencyVersionProjects.get(dependency);
+      Map<String, Set<String>> versionProjects = dependencyVersionProjects.get(dependency);
       if (versionProjects.size() > 1) {
 
         // the message lists all the versions of this dependency and the projects containing them
         error.append('\n');
         error.append(String.format("Found multiple versions of %s:\n", dependency));
         for (String version : versionProjects.keySet()) {
-          for (MavenProject project : versionProjects.get(version)) {
-            error.append(String.format("  %s in %s\n", version, project.getName()));
+          for (String project : versionProjects.get(version)) {
+            error.append(String.format("  %s in %s\n", version, project));
           }
         }
       }
@@ -89,9 +94,9 @@ public class ConsistentVersionsMojo extends AbstractMojo {
     }
   }
 
-  public void add(
-      Map<String, Map<String, Set<MavenProject>>> dependencyVersionProjects,
-      MavenProject project,
+  private void add(
+      Map<String, Map<String, Set<String>>> dependencyVersionProjects,
+      String source,
       String key,
       String version) {
 
@@ -99,11 +104,26 @@ public class ConsistentVersionsMojo extends AbstractMojo {
 
     // add the dependency -> version -> project entry to the map
     if (!dependencyVersionProjects.containsKey(key)) {
-      dependencyVersionProjects.put(key, new HashMap<String, Set<MavenProject>>());
+      dependencyVersionProjects.put(key, new HashMap<String, Set<String>>());
     }
     if (!dependencyVersionProjects.get(key).containsKey(keyWithVersion)) {
-      dependencyVersionProjects.get(key).put(keyWithVersion, new HashSet<MavenProject>());
+      dependencyVersionProjects.get(key).put(keyWithVersion, new HashSet<String>());
     }
-    dependencyVersionProjects.get(key).get(keyWithVersion).add(project);
+    dependencyVersionProjects.get(key).get(keyWithVersion).add(source);
+  }
+
+  private String trailToString(List<String> trail) {
+    List<String> reversedTrail = new ArrayList<String>(trail);
+    Collections.reverse(reversedTrail);
+    StringBuilder builder = new StringBuilder();
+    Iterator<String> iter = reversedTrail.iterator();
+    if (iter.hasNext()) {
+      builder.append(iter.next());
+    }
+    while (iter.hasNext()) {
+      builder.append(" -> ");
+      builder.append(iter.next());
+    }
+    return builder.toString();
   }
 }
