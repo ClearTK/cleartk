@@ -1,12 +1,11 @@
 package org.cleartk.plugin;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.DependencyManagement;
 import org.apache.maven.plugin.AbstractMojo;
@@ -20,6 +19,7 @@ import org.apache.maven.project.MavenProject;
  * @goal check-version-consistency
  * @phase validate
  * @aggregator true
+ * @requiresDependencyCollection compile
  */
 public class ConsistentVersionsMojo extends AbstractMojo {
 
@@ -42,27 +42,27 @@ public class ConsistentVersionsMojo extends AbstractMojo {
     // iterate over the dependencies of all projects within this aggregator
     for (Object projectObject : this.mavenProject.getCollectedProjects()) {
       MavenProject project = (MavenProject) projectObject;
-      List<Dependency> dependencies = new ArrayList<Dependency>();
-      dependencies.addAll(project.getDependencies());
+
+      // iterate over Artifacts - this includes all the transitive dependencies
+      for (Object artifactObject : project.getArtifacts()) {
+        Artifact artifact = (Artifact) artifactObject;
+        this.add(
+            dependencyVersionProjects,
+            project,
+            artifact.getDependencyConflictId(),
+            artifact.getVersion());
+      }
+
+      // also check the dependency management section for other potential dependencies
       DependencyManagement dependencyManagement = project.getDependencyManagement();
       if (dependencyManagement != null) {
-        dependencies.addAll(dependencyManagement.getDependencies());
-      }
-      for (Object dependencyObject : dependencies) {
-        Dependency dependency = (Dependency) dependencyObject;
-
-        // get the dependency name, both with and without the version
-        String key = dependency.getManagementKey();
-        String version = String.format("%s:%s", key, dependency.getVersion());
-
-        // add the dependency -> version -> project entry to the map
-        if (!dependencyVersionProjects.containsKey(key)) {
-          dependencyVersionProjects.put(key, new HashMap<String, Set<MavenProject>>());
+        for (Dependency dependency : dependencyManagement.getDependencies()) {
+          this.add(
+              dependencyVersionProjects,
+              project,
+              dependency.getManagementKey(),
+              dependency.getVersion());
         }
-        if (!dependencyVersionProjects.get(key).containsKey(version)) {
-          dependencyVersionProjects.get(key).put(version, new HashSet<MavenProject>());
-        }
-        dependencyVersionProjects.get(key).get(version).add(project);
       }
     }
 
@@ -87,5 +87,23 @@ public class ConsistentVersionsMojo extends AbstractMojo {
     if (error.length() > 0) {
       throw new MojoFailureException(error.toString());
     }
+  }
+
+  public void add(
+      Map<String, Map<String, Set<MavenProject>>> dependencyVersionProjects,
+      MavenProject project,
+      String key,
+      String version) {
+
+    String keyWithVersion = String.format("%s:%s", key, version);
+
+    // add the dependency -> version -> project entry to the map
+    if (!dependencyVersionProjects.containsKey(key)) {
+      dependencyVersionProjects.put(key, new HashMap<String, Set<MavenProject>>());
+    }
+    if (!dependencyVersionProjects.get(key).containsKey(keyWithVersion)) {
+      dependencyVersionProjects.get(key).put(keyWithVersion, new HashSet<MavenProject>());
+    }
+    dependencyVersionProjects.get(key).get(keyWithVersion).add(project);
   }
 }
