@@ -105,14 +105,14 @@
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-named-entity</artifactId>
-				<version>0.6.0</version>
+				<version>0.6.1</version>
 				<type>jar</type>
 				<scope>compile</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-syntax</artifactId>
-				<version>0.5.2-SNAPSHOT</version>
+				<version>0.6.0</version>
 				<type>jar</type>
 				<scope>compile</scope>
 			</dependency>
