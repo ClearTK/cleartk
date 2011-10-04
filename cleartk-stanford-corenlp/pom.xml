@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>cleartk-stanford-corenlp</artifactId>
-	<version>0.6.0</version>
+	<version>0.6.1-SNAPSHOT</version>
 	<description>ClearTK wrapper for Stanford CoreNLP</description>
 	<repositories>
 		<repository>
@@ -82,10 +82,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-  <scm>
-    <connection>scm:svn:http://cleartk.googlecode.com/svn/tags/cleartk-stanford-corenlp-0.6.0</connection>
-    <developerConnection>scm:svn:https://cleartk.googlecode.com/svn/tags/cleartk-stanford-corenlp-0.6.0</developerConnection>
-    <url>http://cleartk.googlecode.com/svn/tags/cleartk-stanford-corenlp-0.6.0</url>
-  </scm>
 </project>
