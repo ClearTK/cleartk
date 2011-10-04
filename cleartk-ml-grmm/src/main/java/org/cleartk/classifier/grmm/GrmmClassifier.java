@@ -26,6 +26,7 @@ package org.cleartk.classifier.grmm;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.cleartk.classifier.CleartkProcessingException;
@@ -36,11 +37,11 @@ import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 import org.cleartk.classifier.jar.SequenceClassifier_ImplBase;
 
-import edu.umass.cs.mallet.base.pipe.Pipe;
-import edu.umass.cs.mallet.base.types.Instance;
-import edu.umass.cs.mallet.base.types.Labels;
-import edu.umass.cs.mallet.base.types.LabelsSequence;
-import edu.umass.cs.mallet.grmm.learning.ACRF;
+import cc.mallet.grmm.learning.ACRF;
+import cc.mallet.pipe.Pipe;
+import cc.mallet.types.Instance;
+import cc.mallet.types.Labels;
+import cc.mallet.types.LabelsSequence;
 
 /**
  * <br>
@@ -93,7 +94,9 @@ public class GrmmClassifier extends
     }
     // classify:
     Pipe pipe = acrf.getInputPipe();
-    LabelsSequence bestLabels = acrf.getBestLabels(new Instance(data, null, "", null, pipe));
+    Instance unprocessedInstance = new Instance(data, null, "", null);
+    Instance instance = pipe.newIteratorFrom(Arrays.asList(unprocessedInstance).iterator()).next();
+    LabelsSequence bestLabels = acrf.getBestLabels(instance);
     List<String[]> returnValues = new ArrayList<String[]>(features.size());
     for (int i = 0; i < bestLabels.size(); i++) {
       Labels labels = bestLabels.getLabels(i);

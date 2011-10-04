@@ -39,8 +39,10 @@ import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.jar.JarStreams;
 import org.cleartk.classifier.jar.SequenceClassifierBuilder_ImplBase;
 
-import edu.umass.cs.mallet.grmm.learning.ACRF;
-import edu.umass.cs.mallet.grmm.learning.GenericAcrfTui;
+import cc.mallet.grmm.learning.ACRF;
+import cc.mallet.grmm.learning.GenericAcrfTui;
+
+import com.google.common.io.Files;
 
 /**
  * <br>
@@ -120,24 +122,21 @@ public class GrmmClassifierBuilder extends
     String maxInferencer = args.length < 3 ? "LoopyBP.createForMaxProduct()" : args[2];
 
     // usage of GRMM:
-    // (modified version with minor changes in the arguments)
     String[] grmmArgs = new String[] {
-        "--output-file",
-        outputFile.getAbsolutePath(),
         "--training",
         new File(dir, "training-data.grmm").getAbsolutePath(),
         "--testing",
         new File(dir, "training-data.grmm").getAbsolutePath(),
-        "--template-file",
+        "--model-file",
         template.getAbsolutePath(),
         "--inferencer",
         inferencer,
         "--max-inferencer",
         maxInferencer };
 
-    // GenericAcrfTui exists in the mallet library and the GRMM library;
-    // use the class from GRMM:
+    // GenericAcrfTui saves in the current directory; move to the appropriate directory
     GenericAcrfTui.main(grmmArgs);
+    Files.move(new File("acrf.ser.gz"), outputFile.getAbsoluteFile());
   }
 
   @Override

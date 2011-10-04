@@ -26,9 +26,27 @@
 			<version>1.0.1</version>
 		</dependency>
 		<dependency>
-			<groupId>edu.umass.cs.mallet</groupId>
-			<artifactId>grmm-mod</artifactId>
-			<version>0.1.3</version>
+			<groupId>cc.mallet</groupId>
+			<artifactId>mallet</artifactId>
+			<version>2.0.7-RC2</version>
+			<exclusions>
+				<exclusion>
+					<groupId>junit</groupId>
+					<artifactId>junit</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>jgrapht</groupId>
+					<artifactId>jgrapht</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>net.sf.jwordnet</groupId>
+					<artifactId>jwnl</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.googlecode.matrix-toolkits-java</groupId>
+					<artifactId>mtj</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.beanshell</groupId>
