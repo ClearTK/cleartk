@@ -9,6 +9,7 @@
 		<artifactId>cleartk-parent</artifactId>
 		<groupId>org.cleartk</groupId>
 		<version>1.0.0</version>
+		<relativePath></relativePath>
 	</parent>
 	<repositories>
 		<repository>
@@ -119,21 +120,21 @@
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-syntax-opennlp</artifactId>
-				<version>0.8.2-SNAPSHOT</version>
+				<version>0.9.0</version>
 				<type>jar</type>
 				<scope>compile</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-syntax-berkeley</artifactId>
-				<version>0.0.3-SNAPSHOT</version>
+				<version>0.1.0</version>
 				<type>jar</type>
 				<scope>compile</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-syntax-dependency</artifactId>
-				<version>0.6.0-SNAPSHOT</version>
+				<version>0.6.0</version>
 				<type>jar</type>
 				<scope>compile</scope>
 			</dependency>

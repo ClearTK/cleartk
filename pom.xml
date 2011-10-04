@@ -9,6 +9,7 @@
 		<groupId>org.cleartk</groupId>
 		<artifactId>cleartk-parent</artifactId>
 		<version>1.0.0</version>
+		<relativePath></relativePath>
 	</parent>
 	<modules>
 		<module>cleartk-test-util</module>
