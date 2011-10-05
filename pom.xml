@@ -36,7 +36,6 @@
 		<module>cleartk-timeml</module>
 		<module>cleartk-examples</module>
 		<module>cleartk-release</module>
-		<module>cleartk-distribution</module>
 	</modules>
 	<repositories>
 		<repository>

@@ -31,7 +31,7 @@
 				</plugin>
 				<plugin>
 					<artifactId>maven-deploy-plugin</artifactId>
-					<version>2.5</version>
+					<version>2.7</version>
 				</plugin>
 				<plugin>
 					<artifactId>maven-install-plugin</artifactId>
@@ -39,7 +39,7 @@
 				</plugin>
 				<plugin>
 					<artifactId>maven-jar-plugin</artifactId>
-					<version>2.3.1</version>
+					<version>2.3.2</version>
 				</plugin>
 				<plugin>
 					<artifactId>maven-resources-plugin</artifactId>
@@ -47,11 +47,11 @@
 				</plugin>
 				<plugin>
 					<artifactId>maven-site-plugin</artifactId>
-					<version>2.1.1</version>
+					<version>3.0</version>
 				</plugin>
 				<plugin>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.8.1</version>
+					<version>2.10</version>
 				</plugin>
 				<plugin>
 					<artifactId>maven-eclipse-plugin</artifactId>
@@ -63,13 +63,25 @@
 				</plugin>
 				<plugin>
 					<artifactId>maven-release-plugin</artifactId>
-					<version>2.1</version>
+					<version>2.2.1</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-gpg-plugin</artifactId>
+					<version>1.4</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>2.8</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>2.1.2</version>
 				</plugin>
 				<plugin>
 					<!-- This plugin generates java files with JCasGen -->
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>exec-maven-plugin</artifactId>
-					<version>1.2</version>
+					<version>1.2.1</version>
 					<executions>
 						<execution>
 							<id>run-jcasgen-${project.artifactId}</id>
@@ -83,7 +95,7 @@
 						<mainClass>org.uimafit.util.JCasGenPomFriendly</mainClass>
 						<arguments>
 							<argument>file:${project.basedir}/src/main/resources/${jcasgen.typesystem}
-						</argument>
+							</argument>
 							<argument>${project.build.directory}/generated-sources/jcasgen</argument>
 						</arguments>
 					</configuration>
@@ -93,7 +105,7 @@
 						project source folder -->
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>build-helper-maven-plugin</artifactId>
-					<version>1.5</version>
+					<version>1.7</version>
 					<executions>
 						<execution>
 							<id>add-jcasgen-sources-${project.artifactId}</id>
@@ -109,7 +121,8 @@
 						</execution>
 					</executions>
 				</plugin>
-				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
@@ -133,7 +146,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<execute/>
+										<execute />
 									</action>
 								</pluginExecution>
 								<pluginExecution>
@@ -152,7 +165,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<execute/>
+										<execute />
 									</action>
 								</pluginExecution>
 							</pluginExecutions>
@@ -169,28 +182,6 @@
 			</extension>
 		</extensions>
 	</build>
-	<reporting>
-		<plugins>
-			<plugin>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.7</version>
-				<configuration>
-					<notimestamp>true</notimestamp>
-					<linksource>true</linksource>
-					<links>
-						<link>http://uima.apache.org/d/uimaj-2.3.1/api/</link>
-						<link>http://download.oracle.com/javase/6/docs/api/</link>
-						<link>http://junit.sourceforge.net/javadoc/</link>
-						<link>http://maxent.sourceforge.net/api/</link>
-						<link>http://opennlp.sourceforge.net/api/</link>
-						<link>http://www.jdom.org/docs/apidocs/</link>
-						<link>http://mallet.cs.umass.edu/api/</link>
-						<link>http://lucene.apache.org/java/2_2_0/api/</link>
-					</links>
-				</configuration>
-			</plugin>
-		</plugins>
-	</reporting>
 	<distributionManagement>
 		<repository>
 			<uniqueVersion>false</uniqueVersion>
