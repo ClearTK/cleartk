@@ -5,18 +5,18 @@
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<description>The official ClearTK release</description>
-	<parent>
-		<groupId>org.cleartk</groupId>
-		<artifactId>cleartk-parent</artifactId>
-		<version>1.0.0</version>
-		<relativePath></relativePath>
-	</parent>
 	<repositories>
 		<repository>
 			<id>cleartk-googlecode</id>
 			<url>http://cleartk.googlecode.com/svn/repo/</url>
 		</repository>
 	</repositories>
+	<parent>
+		<groupId>org.cleartk</groupId>
+		<artifactId>cleartk-parent</artifactId>
+		<version>1.0.0</version>
+		<relativePath/>
+	</parent>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>

@@ -7,6 +7,25 @@
 	<packaging>pom</packaging>
 	<name>ClearTK Parent</name>
 	<description>The parent pom for ClearTK projects.</description>
+	<url>http://cleartk.googlecode.com/</url>
+	<licenses>
+		<license>
+			<name>BSD 2-Clause License</name>
+			<url>http://www.opensource.org/licenses/bsd-license.php</url>
+		</license>
+	</licenses>
+	<developers>
+		<developer>
+			<id>philip.ogren</id>
+			<name>Philip Ogren</name>
+			<email>philip@ogren.info</email>
+		</developer>
+		<developer>
+			<id>steven.bethard</id>
+			<name>Steven Bethard</name>
+			<email>steven.bethard@gmail.com</email>
+		</developer>
+	</developers>
 	<!-- Maven will append the child artifactId to each of these URLs -->
 	<scm>
 		<connection>scm:svn:http://cleartk.googlecode.com/svn/trunk/</connection>

@@ -2,23 +2,20 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>cleartk-timeml</artifactId>
 	<version>1.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 	<name>cleartk-timeml</name>
 	<url>http://cleartk.googlecode.com/</url>
 	<repositories>
 		<repository>
 			<id>cleartk-googlecode</id>
-			<name>ClearTK Google Code repository</name>
 			<url>http://cleartk.googlecode.com/svn/repo/</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
 		</repository>
 	</repositories>
 	<parent>
 		<artifactId>cleartk-parent</artifactId>
 		<groupId>org.cleartk</groupId>
 		<version>1.0.0</version>
-		<relativePath />
+		<relativePath/>
 	</parent>
 	<dependencies>
 		<dependency>

@@ -8,17 +8,14 @@
 	<repositories>
 		<repository>
 			<id>cleartk-googlecode</id>
-			<name>ClearTK Google Code repository</name>
 			<url>http://cleartk.googlecode.com/svn/repo/</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
 		</repository>
 	</repositories>
 	<parent>
 		<artifactId>cleartk-parent</artifactId>
 		<groupId>org.cleartk</groupId>
 		<version>1.0.0</version>
+		<relativePath/>
 	</parent>
 	<dependencies>
 		<dependency>

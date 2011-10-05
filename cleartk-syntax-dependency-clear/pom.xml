@@ -2,12 +2,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>cleartk-syntax-dependency-clear</artifactId>
 	<version>0.6.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 	<name>cleartk-syntax-dependency-clear</name>
 	<url>http://cleartk.googlecode.com/</url>
 	<repositories>
 		<repository>
 			<id>cleartk-googlecode</id>
-			<name>ClearTK Google Code repository</name>
 			<url>http://cleartk.googlecode.com/svn/repo/</url>
 		</repository>
 	</repositories>
@@ -15,7 +15,7 @@
 		<artifactId>cleartk-parent</artifactId>
 		<groupId>org.cleartk</groupId>
 		<version>1.0.0</version>
-		<relativePath />
+		<relativePath/>
 	</parent>
 	<dependencies>
 		<dependency>
