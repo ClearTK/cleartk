@@ -6,7 +6,14 @@
 	<formats>
 		<format>zip</format>
 	</formats>
-
+	<fileSets>
+		<fileSet>
+			<includes>
+				<include>README</include>
+				<include>LICENSE</include>
+			</includes>
+		</fileSet>
+	</fileSets>
 	<!-- Include all runtime dependencies of the modules -->
 	<dependencySets>
 		<dependencySet>
