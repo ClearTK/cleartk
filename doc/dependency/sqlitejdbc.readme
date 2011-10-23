@@ -1,7 +1,0 @@
-Name: SQLiteJDBC
-Version: v056
-Homepage: http://www.zentus.com/sqlitejdbc/
-License: ISC License - please see sqlitejdbc.license
-Notes: May incorporate parts of SQLite (http://www.sqlite.org/), which has been dedicated to the public domain.
-
-
