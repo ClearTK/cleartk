@@ -540,10 +540,12 @@
 					<groupId>org.cleartk</groupId>
 					<artifactId>cleartk-syntax-dependency-clear</artifactId>
 				</dependency>
+				<!-- omit because of jsr173 licensing issues 
 				<dependency>
 					<groupId>org.cleartk</groupId>
 					<artifactId>cleartk-syntax-dependency-malt</artifactId>
 				</dependency>
+				-->
 				<!-- omit because of GPL licensing issues 
 				<dependency>
 					<groupId>org.cleartk</groupId>
