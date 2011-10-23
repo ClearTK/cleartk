@@ -104,7 +104,16 @@ The trove4j library is a dependency of mallet and so this dependency will not go
 It is, however, possible to prune this dependency if you are not using the 
 cleartk-mallet project.   
 
+###################
+Malt Parser Wrapper
+###################
 
+The project cleartk-syntax-dependency-malt was not added to this release because it 
+made the ClearTK download too large (i.e. above 100MB).  We are working on releasing 
+a much smaller zip file that is not bloated with large classifier model files.  Please
+see issue http://code.google.com/p/cleartk/issues/detail?id=263 for details.  To obtain 
+this projects, please manually download them from our googlecode hosted maven repository:
 
-
+http://cleartk.googlecode.com/svn/repo/org/cleartk/cleartk-syntax-dependency-malt/
+  
   
