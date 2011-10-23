@@ -1,0 +1,4 @@
+to create cleartk-release-<version>-SNAPSHOT-bin.zip perform the following maven command
+from cleartk trunk:
+
+mvn -DskipTests -Pzip package
