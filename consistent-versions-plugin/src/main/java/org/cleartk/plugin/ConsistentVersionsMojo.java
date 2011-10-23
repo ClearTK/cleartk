@@ -36,7 +36,6 @@ public class ConsistentVersionsMojo extends AbstractMojo {
    */
   private MavenProject mavenProject;
 
-  @SuppressWarnings("unchecked")
   public void execute() throws MojoExecutionException, MojoFailureException {
     // Create a map from dependency names without versions to dependency names
     // with versions to the projects that declared those versions
