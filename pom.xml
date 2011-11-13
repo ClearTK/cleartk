@@ -20,7 +20,6 @@
 		<module>cleartk-ml-tksvmlight</module>
 		<module>cleartk-ml-libsvm</module>
 		<module>cleartk-ml-mallet</module>
-		<module>cleartk-ml-grmm</module>
 		<module>cleartk-eval</module>
 		<module>cleartk-chunker</module>
 		<module>cleartk-type-system</module>
