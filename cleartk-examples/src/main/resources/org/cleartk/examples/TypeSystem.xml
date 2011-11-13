@@ -6,7 +6,7 @@
   <vendor/>
   <imports>
     <import name="org.cleartk.token.TypeSystem"/>
-    <import name="org.cleartk.syntax.TypeSystem"/>
+    <import name="org.cleartk.syntax.constituent.TypeSystem"/>
     <import name="org.cleartk.ne.TypeSystem"/>
   </imports>
 </typeSystemDescription>

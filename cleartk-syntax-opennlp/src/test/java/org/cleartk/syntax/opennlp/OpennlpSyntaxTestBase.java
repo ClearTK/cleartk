@@ -49,7 +49,9 @@ public class OpennlpSyntaxTestBase extends CleartkTestBase {
 
   @Override
   public String[] getTypeSystemDescriptorNames() {
-    return new String[] { "org.cleartk.syntax.TypeSystem", "org.cleartk.type.test.TestTypeSystem" };
+    return new String[] {
+        "org.cleartk.syntax.constituent.TypeSystem",
+        "org.cleartk.type.test.TestTypeSystem" };
   }
 
 }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <name>TypeSystem</name>
+  <description/>
+  <version>1.0</version>
+  <vendor/>
+  <imports>
+    <import name="org.cleartk.token.TypeSystem"/>
+    <import name="org.cleartk.ne.TypeSystem"/>
+    <import name="org.cleartk.syntax.constituent.TypeSystem"/>
+    <import name="org.cleartk.syntax.dependency.TypeSystem"/>
+    <import name="org.cleartk.srl.TypeSystem"/>
+    <import name="org.cleartk.timeml.TypeSystem"/>
+  </imports>
+</typeSystemDescription>

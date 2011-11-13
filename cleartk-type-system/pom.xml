@@ -14,4 +14,33 @@
 		<version>1.0.0</version>
 		<relativePath />
 	</parent>
+	<dependencies>
+		<dependency>
+			<groupId>org.uimafit</groupId>
+			<artifactId>uimafit</artifactId>
+			<version>1.2.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-io</groupId>
+					<artifactId>commons-io</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+	</dependencies>
+	<!-- Generate type system files using ${jcasgen.typesystem} -->
+	<properties>
+		<jcasgen.typesystem>org/cleartk/TypeSystem.xml</jcasgen.typesystem>
+	</properties>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
 </project>
