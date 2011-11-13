@@ -25,7 +25,7 @@
 		<module>cleartk-token</module>
 		<module>cleartk-named-entity</module>
 		<module>cleartk-syntax</module>
-		<module>cleartk-syntax-opennlp</module>
+		<module>cleartk-opennlp-tools</module>
 		<module>cleartk-syntax-berkeley</module>
 		<module>cleartk-syntax-dependency</module>
 		<module>cleartk-clearparser</module>
