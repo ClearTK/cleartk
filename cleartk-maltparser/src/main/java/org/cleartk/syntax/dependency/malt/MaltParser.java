@@ -35,7 +35,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.syntax.dependency.DependencyComponents;
+import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.cleartk.syntax.dependency.type.DependencyNode;
 import org.cleartk.syntax.dependency.type.DependencyRelation;
 import org.cleartk.syntax.dependency.type.TopDependencyNode;
@@ -51,6 +51,7 @@ import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
+import org.uimafit.factory.TypeSystemDescriptionFactory;
 import org.uimafit.util.JCasUtil;
 
 /**
@@ -59,6 +60,10 @@ import org.uimafit.util.JCasUtil;
  * All rights reserved.
  */
 public class MaltParser extends JCasAnnotator_ImplBase {
+
+  public static TypeSystemDescription TYPE_SYSTEM_DESCRIPTION = TypeSystemDescriptionFactory.createTypeSystemDescription(
+      "org.cleartk.token.TypeSystem",
+      "org.cleartk.syntax.dependency.TypeSystem");
 
   public static final String ENGMALT_RESOURCE_NAME = "/models/engmalt.linear.mco";
 
@@ -73,7 +78,7 @@ public class MaltParser extends JCasAnnotator_ImplBase {
       throws ResourceInitializationException {
     return AnalysisEngineFactory.createPrimitiveDescription(
         MaltParser.class,
-        DependencyComponents.TYPE_SYSTEM_DESCRIPTION,
+        TYPE_SYSTEM_DESCRIPTION,
         PARAM_MODEL_FILE_NAME,
         modelFileName);
   }
