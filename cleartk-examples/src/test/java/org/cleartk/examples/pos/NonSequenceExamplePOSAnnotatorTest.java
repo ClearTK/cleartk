@@ -61,6 +61,8 @@ public class NonSequenceExamplePOSAnnotatorTest extends ExamplesTestBase {
 
   @Test
   public void testLibsvm() throws Exception {
+    assumeLibsvmEnabled();
+    this.logger.info(LIBSVM_TEST_MESSAGE);
     String libsvmDirectoryName = outputDirectory + "/libsvm";
     AnalysisEngineDescription dataWriter = CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
         NonSequenceExamplePOSAnnotator.class,
@@ -94,6 +96,9 @@ public class NonSequenceExamplePOSAnnotatorTest extends ExamplesTestBase {
 
   @Test
   public void testSVMLIGHT() throws Exception {
+    assumeSvmLightEnabled();
+    this.logger.info(SVMLIGHT_TEST_MESSAGE);
+
     String svmlightDirectoryName = outputDirectoryName + "/svmlight";
     AnalysisEngineDescription dataWriter = CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
         NonSequenceExamplePOSAnnotator.class,

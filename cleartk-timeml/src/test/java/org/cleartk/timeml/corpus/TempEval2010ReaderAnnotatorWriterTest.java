@@ -666,7 +666,7 @@ public class TempEval2010ReaderAnnotatorWriterTest extends TimeMLTestBase {
     writer.collectionProcessComplete();
 
     File tlinksFile = new File(writerDirectory, "tlinks-dct-event.tab");
-    String text = Files.toString(tlinksFile, Charsets.US_ASCII);
+    String text = Files.toString(tlinksFile, Charsets.US_ASCII).replaceAll("\r", "");
     Assert.assertEquals("FILENAME	e1	t0	NONE\n", text);
   }
 
@@ -677,8 +677,8 @@ public class TempEval2010ReaderAnnotatorWriterTest extends TimeMLTestBase {
   }
 
   private void assertFileText(String fileName, File file1, File file2) throws Exception {
-    String file1Text = Files.toString(file1, Charsets.US_ASCII);
-    String file2Text = Files.toString(file2, Charsets.US_ASCII);
+    String file1Text = Files.toString(file1, Charsets.US_ASCII).replaceAll("\r", "");
+    String file2Text = Files.toString(file2, Charsets.US_ASCII).replaceAll("\r", "");
     Assert.assertEquals(fileName, file1Text, file2Text);
   }
 

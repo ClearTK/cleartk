@@ -52,6 +52,8 @@ public class LIBSVMTest extends DefaultTestBase {
 
   @Test
   public void testBinaryLIBSVM() throws Exception {
+    assumeLibsvmEnabled();
+    this.logger.info(LIBSVM_TEST_MESSAGE);
 
     // create the data writer
     BinaryAnnotator annotator = new BinaryAnnotator();
@@ -91,6 +93,8 @@ public class LIBSVMTest extends DefaultTestBase {
 
   @Test
   public void testMultiClassLIBSVM() throws Exception {
+    assumeLibsvmEnabled();
+    this.logger.info(LIBSVM_TEST_MESSAGE);
 
     // create the data writer
     StringAnnotator annotator = new StringAnnotator();

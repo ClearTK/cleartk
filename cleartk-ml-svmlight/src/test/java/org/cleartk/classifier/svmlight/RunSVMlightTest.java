@@ -63,6 +63,9 @@ public class RunSVMlightTest extends DefaultTestBase {
 
   @Test
   public void testPath() throws Exception {
+    assumeSvmLightEnabled();
+    this.logger.info(SVMLIGHT_TEST_MESSAGE);
+
     String[] command = new String[] { "svm_learn" };
 
     try {
@@ -80,6 +83,9 @@ public class RunSVMlightTest extends DefaultTestBase {
 
   @Test
   public void testLinearKernel() throws Exception {
+    assumeSvmLightEnabled();
+    this.logger.info(SVMLIGHT_TEST_MESSAGE);
+
     File dir = new File(dataDirectory, "linear");
     File trainingFile = new File(dir, "training-data.svmlight");
     File testFile = new File(dir, "test-data.svmlight");
@@ -89,6 +95,9 @@ public class RunSVMlightTest extends DefaultTestBase {
 
   @Test
   public void testPolynomialKernel() throws Exception {
+    assumeSvmLightEnabled();
+    this.logger.info(SVMLIGHT_TEST_MESSAGE);
+
     File dir = new File(dataDirectory, "nonlinear");
     File trainingFile = new File(dir, "training-data.svmlight");
     File testFile = new File(dir, "test-data.svmlight");
@@ -99,6 +108,9 @@ public class RunSVMlightTest extends DefaultTestBase {
 
   @Test
   public void testRBFKernel() throws Exception {
+    assumeSvmLightEnabled();
+    this.logger.info(SVMLIGHT_TEST_MESSAGE);
+
     File dir = new File(dataDirectory, "nonlinear");
     File trainingFile = new File(dir, "training-data.svmlight");
     File testFile = new File(dir, "test-data.svmlight");
@@ -108,6 +120,8 @@ public class RunSVMlightTest extends DefaultTestBase {
 
   // @Test
   public void testSigmoidKernel() throws Exception {
+    assumeSvmLightEnabled();
+    this.logger.info(SVMLIGHT_TEST_MESSAGE);
     File dir = new File(dataDirectory, "nonlinear");
     File trainingFile = new File(dir, "training-data.svmlight");
     File testFile = new File(dir, "test-data.svmlight");
@@ -193,6 +207,8 @@ public class RunSVMlightTest extends DefaultTestBase {
 
   @Test
   public void testSVMlight() throws Exception {
+    assumeSvmLightEnabled();
+    this.logger.info(SVMLIGHT_TEST_MESSAGE);
 
     // create the data writer
     EmptyAnnotator<Boolean> annotator = new EmptyAnnotator<Boolean>();
@@ -233,6 +249,8 @@ public class RunSVMlightTest extends DefaultTestBase {
 
   @Test
   public void testOVASVMlight() throws Exception {
+    assumeSvmLightEnabled();
+    this.logger.info(SVMLIGHT_TEST_MESSAGE);
 
     // create the data writer
     EmptyAnnotator<String> annotator = new EmptyAnnotator<String>();
@@ -278,6 +296,9 @@ public class RunSVMlightTest extends DefaultTestBase {
 
   @Test
   public void testSVMlightRegression() throws Exception {
+    assumeSvmLightEnabled();
+    this.logger.info(SVMLIGHT_TEST_MESSAGE);
+
     // create the data writer
     EmptyAnnotator<Double> annotator = new EmptyAnnotator<Double>();
     annotator.initialize(UimaContextFactory.createUimaContext(

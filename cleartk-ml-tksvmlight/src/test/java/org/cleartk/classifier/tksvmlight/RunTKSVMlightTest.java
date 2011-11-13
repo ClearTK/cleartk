@@ -41,6 +41,7 @@ import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.test.DefaultTestBase;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.uimafit.factory.UimaContextFactory;
 import org.uimafit.testing.util.HideOutput;
@@ -50,15 +51,21 @@ import org.uimafit.testing.util.HideOutput;
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
- * @author Steven Bethard, Philipp Wetzler
+ * @author Daryl Lonnon
  */
 public class RunTKSVMlightTest extends DefaultTestBase {
 
   protected String dataDirectory = "src/test/resources/data/svmlight/tk";
 
-  @Test
-  public void testPath() throws Exception {
-    String[] command = new String[] { "svm_learn" };
+
+  @Override
+  @Before
+  public void setUp() throws Exception {
+    super.setUp();
+  }
+
+  protected boolean testPath() throws Exception {
+    String[] command = new String[] { "tk_svm_learn" };
 
     try {
       Process process = Runtime.getRuntime().exec(command);
@@ -68,20 +75,21 @@ public class RunTKSVMlightTest extends DefaultTestBase {
       slurp(process.getInputStream());
       slurp(process.getErrorStream());
       process.waitFor();
+      return true;
     } catch (IOException e) {
-      throw e;
+      return false;
     }
   }
 
   // @Test
-  public void testTreeKernel() throws Exception {
+//  public void testTreeKernel() throws Exception {
 /*    File dir = new File(dataDirectory, "nonlinear");
     File trainingFile = new File(dir, "training-data.svmlight");
     File testFile = new File(dir, "test-data.svmlight");
 
     trainAndTest(trainingFile, testFile, new String[] { "-t", "5" }, "tree kernel");
     */
-  }
+//  }
 /*
   private void trainAndTest(File trainingFile, File testFile, String[] args, String name)
       throws Exception {
@@ -161,7 +169,10 @@ public class RunTKSVMlightTest extends DefaultTestBase {
 
   @Test
   public void testTKSVMlight() throws Exception {
-    // create the data writer
+	  assumeTkSvmLightEnabled();  
+	  this.logger.info(TK_SVMLIGHT_TEST_MESSAGE);
+
+	  // create the data writer
     EmptyAnnotator<Boolean> annotator = new EmptyAnnotator<Boolean>();
     annotator.initialize(UimaContextFactory.createUimaContext(
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
@@ -200,7 +211,10 @@ public class RunTKSVMlightTest extends DefaultTestBase {
 
   @Test
   public void testOVATKSVMlight() throws Exception {
-    // create the data writer
+	  assumeTkSvmLightEnabled();
+	  this.logger.info(TK_SVMLIGHT_TEST_MESSAGE);
+
+	  // create the data writer
     EmptyAnnotator<String> annotator = new EmptyAnnotator<String>();
     annotator.initialize(UimaContextFactory.createUimaContext(
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
@@ -294,4 +308,12 @@ public class RunTKSVMlightTest extends DefaultTestBase {
     return instances;
   }
 
+  @Test
+public void testname() throws Exception {
+	  String skipTests = "long,bigMem,tkSvm"; 
+	  String[] values = skipTests.split("\\s*[,]\\s*");
+	  for (String string : values) {
+		System.out.println(string);
+	}
+}
 }

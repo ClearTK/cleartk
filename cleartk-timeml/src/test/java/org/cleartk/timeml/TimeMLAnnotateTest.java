@@ -39,7 +39,7 @@ import org.junit.Test;
  * 
  * @author Steven Bethard
  */
-public class TimeMLAnnotateTest {
+public class TimeMLAnnotateTest extends TimeMLTestBase{
   private File tempDir;
 
   private File inputFile;
@@ -65,6 +65,9 @@ public class TimeMLAnnotateTest {
 
   @Test
   public void test() throws Exception {
+    assumeBigMemoryTestsEnabled();
+    this.logger.info(BIG_MEMORY_TEST_MESSAGE);
+
     TimeMLAnnotate.main(this.inputFile.getPath(), this.tempDir.getPath());
     String output = FileUtils.readFileToString(this.outputFile);
     output = output.replaceAll("\r\n", "\n");

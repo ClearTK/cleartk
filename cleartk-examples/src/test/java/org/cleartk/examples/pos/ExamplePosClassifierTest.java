@@ -67,6 +67,9 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
 
   @Test
   public void testLibsvm() throws Exception {
+    assumeLibsvmEnabled();
+    this.logger.info(LIBSVM_TEST_MESSAGE);
+
     String outDirectoryName = outputDirectoryName + "/libsvm";
 
     AnalysisEngineDescription dataWriter = CleartkAnnotatorDescriptionFactory.createViterbiAnnotator(
@@ -262,6 +265,9 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
 
   @Test
   public void testSVMLIGHT() throws Exception {
+    assumeSvmLightEnabled();
+    this.logger.info(SVMLIGHT_TEST_MESSAGE);
+
     String outDirectoryName = outputDirectoryName + "/svmlight";
     AnalysisEngineDescription dataWriter = CleartkAnnotatorDescriptionFactory.createViterbiAnnotator(
         ExamplePOSAnnotator.class,

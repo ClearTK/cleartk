@@ -125,7 +125,7 @@ public class TimeMLWriterTest extends TimeMLTestBase {
         + "<TLINK relType=\"OVERLAP\" eventID=\"e1\" eventInstanceID=\"ei1\" relatedToTime=\"t1\"/>\n"
         + "<TLINK relType=\"OVERLAP\" timeID=\"t1\" relatedToEvent=\"e1\" relatedToEventInstance=\"ei1\"/>\n"
         + "</TimeML>";
-    Assert.assertEquals(expected, TimeMLWriter.toTimeML(this.jCas));
+    Assert.assertEquals(expected, TimeMLWriter.toTimeML(this.jCas).replaceAll("\r", ""));
   }
 
   @Test

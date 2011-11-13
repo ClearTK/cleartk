@@ -55,6 +55,8 @@ public class LIBLINEARTest extends DefaultTestBase {
 
   @Test
   public void testLIBLINEAR() throws Exception {
+    assumeLiblinearEnabled();
+    this.logger.info(LIBLINEAR_TEST_MESSAGE);
 
     // create the data writer
     BinaryAnnotator annotator = new BinaryAnnotator();
