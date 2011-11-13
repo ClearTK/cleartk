@@ -33,13 +33,14 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.token.TokenComponents;
+import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.cleartk.token.type.Token;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.TypeCapability;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
+import org.uimafit.factory.TypeSystemDescriptionFactory;
 import org.uimafit.util.JCasUtil;
 
 import clear.morph.MorphEnAnalyzer;
@@ -69,6 +70,8 @@ import clear.morph.MorphEnAnalyzer;
     outputs = "org.cleartk.token.type.Token:lemma")
 public class LemmaAnnotator extends JCasAnnotator_ImplBase {
 
+  public static TypeSystemDescription TYPE_SYSTEM_DESCRIPTION = TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.token.TypeSystem");
+
   public static final String ENG_LEMMATIZER_DATA_FILE = "wordnet-3.0-lemma-data.jar";
 
   public static final String PARAM_LEMMATIZER_DATA_FILE_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
@@ -82,14 +85,14 @@ public class LemmaAnnotator extends JCasAnnotator_ImplBase {
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
     return AnalysisEngineFactory.createPrimitiveDescription(
         LemmaAnnotator.class,
-        TokenComponents.TYPE_SYSTEM_DESCRIPTION);
+        TYPE_SYSTEM_DESCRIPTION);
   }
 
   public static AnalysisEngineDescription getDescription(String lemmatizerDataFileName)
       throws ResourceInitializationException {
     return AnalysisEngineFactory.createPrimitiveDescription(
         LemmaAnnotator.class,
-        TokenComponents.TYPE_SYSTEM_DESCRIPTION,
+        TYPE_SYSTEM_DESCRIPTION,
         PARAM_LEMMATIZER_DATA_FILE_NAME,
         lemmatizerDataFileName);
   }

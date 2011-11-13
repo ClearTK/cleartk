@@ -38,7 +38,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.syntax.dependency.DependencyComponents;
+import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.cleartk.syntax.dependency.type.DependencyNode;
 import org.cleartk.syntax.dependency.type.DependencyRelation;
 import org.cleartk.syntax.dependency.type.TopDependencyNode;
@@ -50,6 +50,7 @@ import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.TypeCapability;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
+import org.uimafit.factory.TypeSystemDescriptionFactory;
 import org.uimafit.util.JCasUtil;
 
 import clear.dep.DepNode;
@@ -79,6 +80,10 @@ import clear.parse.AbstractDepParser;
     inputs = { "org.cleartk.token.type.Token:pos", "org.cleartk.token.type.Token:lemma" })
 public class ClearParser extends JCasAnnotator_ImplBase {
 
+  public static TypeSystemDescription TYPE_SYSTEM_DESCRIPTION = TypeSystemDescriptionFactory.createTypeSystemDescription(
+      "org.cleartk.token.TypeSystem",
+      "org.cleartk.syntax.dependency.TypeSystem");
+
   public static final String DEFAULT_MODEL_FILE_NAME = "conll-2009-dev-shift-pop.jar";
 
   public static final String DEFAULT_PARSER_ALGORITHM_NAME = AbstractDepParser.ALG_SHIFT_POP;
@@ -106,7 +111,7 @@ public class ClearParser extends JCasAnnotator_ImplBase {
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
     return AnalysisEngineFactory.createPrimitiveDescription(
         ClearParser.class,
-        DependencyComponents.TYPE_SYSTEM_DESCRIPTION);
+        TYPE_SYSTEM_DESCRIPTION);
   }
 
   public static AnalysisEngineDescription getDescription(String modelFileName)
@@ -120,7 +125,7 @@ public class ClearParser extends JCasAnnotator_ImplBase {
       String parserAlgorithmName) throws ResourceInitializationException {
     return AnalysisEngineFactory.createPrimitiveDescription(
         ClearParser.class,
-        DependencyComponents.TYPE_SYSTEM_DESCRIPTION,
+        TYPE_SYSTEM_DESCRIPTION,
         PARAM_PARSER_MODEL_FILE_NAME,
         modelFileName,
         PARAM_PARSER_ALGORITHM_NAME,
