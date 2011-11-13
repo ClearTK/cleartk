@@ -32,11 +32,14 @@ import java.util.List;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.token.TokenTestBase;
+import org.cleartk.test.CleartkTestBase;
+import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.testing.factory.TokenBuilder;
 import org.uimafit.util.JCasUtil;
 
 /**
@@ -44,7 +47,20 @@ import org.uimafit.util.JCasUtil;
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
  */
-public class SnowballStemmerTest extends TokenTestBase {
+public class SnowballStemmerTest extends CleartkTestBase {
+
+  protected TokenBuilder<Token, Sentence> tokenBuilder;
+
+  @Before
+  public void setUp() throws Exception {
+    super.setUp();
+    tokenBuilder = new TokenBuilder<Token, Sentence>(Token.class, Sentence.class, "pos", "stem");
+  }
+
+  @Override
+  public String[] getTypeSystemDescriptorNames() {
+    return new String[] { "org.cleartk.token.TypeSystem" };
+  }
 
   @Test
   public void testBadStemmerName() {

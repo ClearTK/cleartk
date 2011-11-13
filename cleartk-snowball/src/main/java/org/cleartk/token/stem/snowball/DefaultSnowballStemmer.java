@@ -27,9 +27,10 @@ package org.cleartk.token.stem.snowball;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.token.TokenComponents;
+import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.cleartk.token.type.Token;
 import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.factory.TypeSystemDescriptionFactory;
 
 /**
  * <br>
@@ -46,11 +47,13 @@ import org.uimafit.factory.AnalysisEngineFactory;
 
 public class DefaultSnowballStemmer extends SnowballStemmer<Token> {
 
+  public static TypeSystemDescription TYPE_SYSTEM_DESCRIPTION = TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.token.TypeSystem");
+
   public static AnalysisEngineDescription getDescription(String language)
       throws ResourceInitializationException {
     return AnalysisEngineFactory.createPrimitiveDescription(
         DefaultSnowballStemmer.class,
-        TokenComponents.TYPE_SYSTEM_DESCRIPTION,
+        TYPE_SYSTEM_DESCRIPTION,
         SnowballStemmer.PARAM_STEMMER_NAME,
         language);
   }
