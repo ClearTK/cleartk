@@ -27,7 +27,7 @@
 		<module>cleartk-snowball</module>
 		<module>cleartk-syntax</module>
 		<module>cleartk-opennlp-tools</module>
-		<module>cleartk-syntax-berkeley</module>
+		<module>cleartk-berkeleyparser</module>
 		<module>cleartk-syntax-dependency</module>
 		<module>cleartk-clearparser</module>
 		<module>cleartk-maltparser</module>
