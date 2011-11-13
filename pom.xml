@@ -21,7 +21,6 @@
 		<module>cleartk-ml-libsvm</module>
 		<module>cleartk-ml-mallet</module>
 		<module>cleartk-eval</module>
-		<module>cleartk-chunker</module>
 		<module>cleartk-type-system</module>
 		<module>cleartk-token</module>
 		<module>cleartk-named-entity</module>
