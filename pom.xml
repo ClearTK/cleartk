@@ -24,6 +24,7 @@
 		<module>cleartk-type-system</module>
 		<module>cleartk-token</module>
 		<module>cleartk-named-entity</module>
+		<module>cleartk-snowball</module>
 		<module>cleartk-syntax</module>
 		<module>cleartk-opennlp-tools</module>
 		<module>cleartk-syntax-berkeley</module>
