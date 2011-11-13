@@ -28,7 +28,7 @@
 		<module>cleartk-syntax-opennlp</module>
 		<module>cleartk-syntax-berkeley</module>
 		<module>cleartk-syntax-dependency</module>
-		<module>cleartk-syntax-dependency-clear</module>
+		<module>cleartk-clearparser</module>
 		<module>cleartk-syntax-dependency-malt</module>
 		<module>cleartk-stanford-corenlp</module>
 		<module>cleartk-semantic-roles</module>

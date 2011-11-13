@@ -30,10 +30,13 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.cleartk.token.TokenTestBase;
+import org.cleartk.test.CleartkTestBase;
+import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
+import org.junit.Before;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.testing.factory.TokenBuilder;
 import org.uimafit.util.JCasUtil;
 
 /**
@@ -45,7 +48,20 @@ import org.uimafit.util.JCasUtil;
  * @author Philip Ogren
  */
 
-public class LemmaAnnotatorTest extends TokenTestBase {
+public class LemmaAnnotatorTest extends CleartkTestBase {
+
+  protected TokenBuilder<Token, Sentence> tokenBuilder;
+
+  @Before
+  public void setUp() throws Exception {
+    super.setUp();
+    tokenBuilder = new TokenBuilder<Token, Sentence>(Token.class, Sentence.class, "pos", "stem");
+  }
+
+  @Override
+  public String[] getTypeSystemDescriptorNames() {
+    return new String[] { "org.cleartk.token.TypeSystem" };
+  }
 
   @Test
   public void testLemmaAnnotator() throws Exception {
