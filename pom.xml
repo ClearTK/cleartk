@@ -12,28 +12,35 @@
 		<relativePath></relativePath>
 	</parent>
 	<modules>
+		<!-- basic util modules -->
 		<module>cleartk-test-util</module>
 		<module>cleartk-util</module>
+		<!-- machine learning modules -->
 		<module>cleartk-ml</module>
 		<module>cleartk-ml-opennlp-maxent</module>
 		<module>cleartk-ml-svmlight</module>
 		<module>cleartk-ml-tksvmlight</module>
 		<module>cleartk-ml-libsvm</module>
 		<module>cleartk-ml-mallet</module>
+		<!-- evaluation module -->
 		<module>cleartk-eval</module>
+		<!-- type system -->
 		<module>cleartk-type-system</module>
-		<module>cleartk-token</module>
-		<module>cleartk-named-entity</module>
+		<!-- wrappers for external components -->
 		<module>cleartk-snowball</module>
-		<module>cleartk-syntax</module>
 		<module>cleartk-opennlp-tools</module>
 		<module>cleartk-berkeleyparser</module>
 		<module>cleartk-clearparser</module>
 		<module>cleartk-maltparser</module>
 		<module>cleartk-stanford-corenlp</module>
+		<!-- home-grown components -->
+		<module>cleartk-token</module>
+		<module>cleartk-named-entity</module>
+		<module>cleartk-syntax</module>
 		<module>cleartk-semantic-roles</module>
 		<module>cleartk-timeml</module>
 		<module>cleartk-examples</module>
+		<!-- module declaring the official release versions -->
 		<module>cleartk-release</module>
 	</modules>
 	<repositories>
