@@ -4,6 +4,7 @@
 	<version>0.10.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>cleartk-opennlp-tools</name>
+	<description>ClearTK wrapper for OpenNLP tools</description>
 	<url>http://cleartk.googlecode.com/</url>
 	<repositories>
 		<repository>
@@ -11,10 +12,15 @@
 			<url>http://cleartk.googlecode.com/svn/repo/</url>
 		</repository>
 	</repositories>
+	<scm>
+		<connection>scm:svn:http://cleartk.googlecode.com/svn/trunk/${project.artifactId}</connection>
+		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/trunk/${project.artifactId}</developerConnection>
+		<url>http://cleartk.googlecode.com/svn/trunk/${project.artifactId}</url>
+	</scm>
 	<parent>
 		<artifactId>cleartk-parent</artifactId>
 		<groupId>org.cleartk</groupId>
-		<version>1.0.0</version>
+		<version>1.1.0</version>
 		<relativePath/>
 	</parent>
 	<dependencies>
