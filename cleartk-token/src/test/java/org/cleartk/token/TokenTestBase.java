@@ -49,7 +49,10 @@ public class TokenTestBase extends CleartkTestBase {
 
   @Override
   public String[] getTypeSystemDescriptorNames() {
-    return new String[] { "org.cleartk.token.TypeSystem", "org.cleartk.type.test.TestTypeSystem" };
+    return new String[] {
+        "org.cleartk.token.TypeSystem",
+        "org.cleartk.util.TypeSystem",
+        "org.cleartk.type.test.TestTypeSystem" };
   }
 
 }

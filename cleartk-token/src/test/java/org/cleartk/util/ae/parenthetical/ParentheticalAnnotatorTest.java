@@ -31,15 +31,18 @@ import java.util.Iterator;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
+import org.cleartk.test.CleartkTestBase;
 import org.cleartk.type.test.Chunk;
 import org.cleartk.type.test.NamedEntityMention;
 import org.cleartk.type.test.Sentence;
-import org.cleartk.util.UtilTestBase;
+import org.cleartk.type.test.Token;
 import org.cleartk.util.type.Parenthetical;
+import org.junit.Before;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.pipeline.SimplePipeline;
+import org.uimafit.testing.factory.TokenBuilder;
 import org.uimafit.util.JCasUtil;
 
 /**
@@ -50,7 +53,20 @@ import org.uimafit.util.JCasUtil;
  * @author Philip Ogren
  */
 
-public class ParentheticalAnnotatorTest extends UtilTestBase {
+public class ParentheticalAnnotatorTest extends CleartkTestBase {
+
+  protected TokenBuilder<Token, Sentence> tokenBuilder;
+
+  @Before
+  public void setUp() throws Exception {
+    super.setUp();
+    tokenBuilder = new TokenBuilder<Token, Sentence>(Token.class, Sentence.class, "pos", "stem");
+  }
+
+  @Override
+  public String[] getTypeSystemDescriptorNames() {
+    return new String[] { "org.cleartk.util.TypeSystem", "org.cleartk.type.test.TestTypeSystem" };
+  }
 
   @Test
   public void testDefault() throws Exception {

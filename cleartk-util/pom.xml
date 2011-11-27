@@ -17,9 +17,6 @@
 		<version>1.0.0</version>
 		<relativePath/>
 	</parent>
-	<properties>
-		<jcasgen.typesystem>org/cleartk/util/TypeSystem.xml</jcasgen.typesystem>
-	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.uima</groupId>
@@ -65,17 +62,4 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	<build>
-		<!-- Generate type system files using ${jcasgen.typesystem} -->
-		<plugins>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
 </project>
