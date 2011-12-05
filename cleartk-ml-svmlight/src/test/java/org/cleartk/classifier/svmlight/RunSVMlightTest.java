@@ -42,6 +42,10 @@ import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.classifier.svmlight.model.SVMlightModel;
+import org.cleartk.classifier.svmlight.rank.DefaultSVMlightRankDataWriterFactory;
+import org.cleartk.classifier.svmlight.rank.QidInstance;
+import org.cleartk.classifier.svmlight.rank.SVMlightRank;
+import org.cleartk.classifier.svmlight.rank.SVMlightRankBuilder;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 import org.cleartk.classifier.util.featurevector.SparseFeatureVector;
 import org.cleartk.test.DefaultTestBase;
@@ -335,6 +339,63 @@ public class RunSVMlightTest extends DefaultTestBase {
     }
   }
 
+    @Test
+  public void testSVMlightRank() throws Exception {
+    assumeSvmLightEnabled();
+    this.logger.info(SVMLIGHT_RANK_TEST_MESSAGE);
+
+    // create the data writer
+    EmptyAnnotator<Double> annotator = new EmptyAnnotator<Double>();
+    annotator.initialize(UimaContextFactory.createUimaContext(
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        this.outputDirectoryName,
+        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        DefaultSVMlightRankDataWriterFactory.class.getName()));
+    
+    System.out.println(outputDirectoryName);
+    // add instances
+    for (int qid = 10; qid < 15; qid++) {
+      for (double i = 0.0; i < 10; i+= 2) {
+        QidInstance<Double> inst = new QidInstance<Double>();
+        inst.setQid(Integer.toString(qid));
+        inst.addAll(Arrays.asList(new Feature("x", i)));
+        if (i >= 0.0 && i < 3) {
+            inst.setOutcome(3.0);
+        } else if (i >= 3 && i < 6) {
+            inst.setOutcome(2.0);
+        } else {
+            inst.setOutcome(1.0);
+        }
+        annotator.write(inst);
+      }
+      
+    }
+
+    annotator.collectionProcessComplete();
+
+    // check that the output file was written and is not empty
+    BufferedReader reader = new BufferedReader(new FileReader(new File(
+        this.outputDirectoryName,
+        "training-data.svmlight")));
+    Assert.assertTrue(reader.readLine().length() > 0);
+    reader.close();
+
+    // run the training command
+    HideOutput hider = new HideOutput();
+    Train.main(this.outputDirectoryName, "-c", "1", "-w", "0.0001");
+    hider.restoreOutput();
+
+    // read in the ranking SVM model and test it on new instances
+    SVMlightRankBuilder builder = new SVMlightRankBuilder();
+    SVMlightRank rank;
+    rank = builder.loadClassifierFromTrainingDirectory(this.outputDirectory);
+    for (double i = 1.0; i < 100; i += 2) {
+      double prediction = rank.classify(Arrays.asList(new Feature("x", i)));
+      Assert.assertEquals(i / -2.0, prediction, 0.0005);
+    }
+  }
+  
+  
   private static List<Instance<Boolean>> generateBooleanInstances(int n) {
     Random random = new Random(42);
     List<Instance<Boolean>> instances = new ArrayList<Instance<Boolean>>();
