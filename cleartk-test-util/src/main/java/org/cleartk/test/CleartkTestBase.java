@@ -96,6 +96,13 @@ public abstract class CleartkTestBase {
 
   /**
    * Value for the {@link #SKIP_TESTS_PROPERTY} property that indicates that tests requiring the
+   * SVMlight executables to be installed on your system's path should be disabled. Current value:
+   * {@value #SVMLIGHT_RANK_TESTS_PROPERTY_VALUE}.
+   */
+  public static final String SVMLIGHT_RANK_TESTS_PROPERTY_VALUE = "svmlightrank";
+  
+  /**
+   * Value for the {@link #SKIP_TESTS_PROPERTY} property that indicates that tests requiring the
    * LIBSVM executables to be installed on your system's path should be disabled. Current value:
    * {@value #LIBSVM_TESTS_PROPERTY_VALUE}.
    */
@@ -241,6 +248,11 @@ public abstract class CleartkTestBase {
 
   public static final String SVMLIGHT_TEST_MESSAGE = String.format(
       "This test requires installation of SVMlight executables.  To skip it, set -D%s=%s",
+      SKIP_TESTS_PROPERTY,
+      SVMLIGHT_TESTS_PROPERTY_VALUE);
+  
+  public static final String SVMLIGHT_RANK_TEST_MESSAGE = String.format(
+      "This test requires installation of SVMlightRank executables.  To skip it, set -D%s=%s",
       SKIP_TESTS_PROPERTY,
       SVMLIGHT_TESTS_PROPERTY_VALUE);
 
