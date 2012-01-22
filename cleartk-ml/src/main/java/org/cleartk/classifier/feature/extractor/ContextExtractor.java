@@ -25,14 +25,10 @@ package org.cleartk.classifier.feature.extractor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.uima.cas.FSIterator;
-import org.apache.uima.cas.Type;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
@@ -467,19 +463,7 @@ public class ContextExtractor<T extends Annotation> implements SimpleFeatureExtr
         Annotation focusAnnotation,
         Class<T> annotationClass,
         int count) {
-      // JCasUtil.selectPreceding in UimaFIT 1.1 is buggy
-      Type type = JCasUtil.getType(jCas, annotationClass);
-      FSIterator<Annotation> itr = jCas.getAnnotationIndex(type).iterator();
-      itr.moveTo(focusAnnotation);
-      while (itr.isValid() && itr.get().getEnd() > focusAnnotation.getBegin()) {
-        itr.moveToPrevious();
-      }
-      List<T> anns = new LinkedList<T>();
-      for (int i = 0; i < count && itr.isValid(); ++i, itr.moveToPrevious()) {
-        anns.add(annotationClass.cast(itr.get()));
-      }
-      Collections.reverse(anns);
-      return anns;
+      return JCasUtil.selectPreceding(jCas, annotationClass, focusAnnotation, count);
     }
   }
 
@@ -521,19 +505,7 @@ public class ContextExtractor<T extends Annotation> implements SimpleFeatureExtr
         Annotation focusAnnotation,
         Class<T> annotationClass,
         int count) {
-
-      // JCasUtil.selectFollowing in UimaFIT 1.1 is buggy
-      Type type = JCasUtil.getType(jCas, annotationClass);
-      FSIterator<Annotation> itr = jCas.getAnnotationIndex(type).iterator();
-      itr.moveTo(focusAnnotation);
-      while (itr.isValid() && itr.get().getBegin() < focusAnnotation.getEnd()) {
-        itr.moveToNext();
-      }
-      List<T> anns = new LinkedList<T>();
-      for (int i = 0; i < count && itr.isValid(); ++i, itr.moveToNext()) {
-        anns.add(annotationClass.cast(itr.get()));
-      }
-      return anns;
+      return JCasUtil.selectFollowing(jCas, annotationClass, focusAnnotation, count);
     }
   }
 

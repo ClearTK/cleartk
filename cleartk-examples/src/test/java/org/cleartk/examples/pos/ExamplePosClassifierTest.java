@@ -52,6 +52,7 @@ import org.cleartk.util.cr.FilesCollectionReader;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
+import org.uimafit.factory.ResourceCreationSpecifierFactory;
 import org.uimafit.pipeline.SimplePipeline;
 import org.uimafit.testing.util.HideOutput;
 
@@ -129,7 +130,7 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
         ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
         DefaultMalletCRFDataWriterFactory.class,
         outDirectoryName);
-    AnalysisEngineFactory.setConfigurationParameters(
+    ResourceCreationSpecifierFactory.setConfigurationParameters(
         dataWriter,
         DefaultMalletCRFDataWriterFactory.PARAM_COMPRESS,
         true);
@@ -323,7 +324,7 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
 
     AnalysisEngineDescription taggerDescription = ExamplePOSAnnotator.getClassifierDescription(outDirectoryName
         + "/model.jar");
-    AnalysisEngineFactory.setConfigurationParameters(
+    ResourceCreationSpecifierFactory.setConfigurationParameters(
         taggerDescription,
         ViterbiClassifier.PARAM_STACK_SIZE,
         stackSize);

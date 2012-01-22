@@ -102,7 +102,7 @@ public class AnnotationEvaluator<T extends Comparable<? super T>> extends JCasAn
       String systemView) throws ResourceInitializationException {
     return AnalysisEngineFactory.createPrimitiveDescription(
         AnnotationEvaluator.class,
-        TypeSystemDescriptionFactory.createTypeSystemDescription(annotationClass),
+        TypeSystemDescriptionFactory.createTypeSystemDescription(annotationClass.getName()),
         PARAM_ANNOTATION_CLASS_NAME,
         annotationClass.getName(),
         PARAM_GOLD_VIEW_NAME,
@@ -118,7 +118,7 @@ public class AnnotationEvaluator<T extends Comparable<? super T>> extends JCasAn
       String systemView) throws ResourceInitializationException {
     return AnalysisEngineFactory.createPrimitiveDescription(
         AnnotationEvaluator.class,
-        TypeSystemDescriptionFactory.createTypeSystemDescription(annotationClass),
+        TypeSystemDescriptionFactory.createTypeSystemDescription(annotationClass.getName()),
         PARAM_ANNOTATION_CLASS_NAME,
         annotationClass.getName(),
         PARAM_ANNOTATION_ATTRIBUTE_NAME,

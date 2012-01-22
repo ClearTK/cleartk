@@ -35,7 +35,7 @@ import org.cleartk.classifier.DataWriterFactory;
 import org.cleartk.classifier.SequenceDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.GenericJarClassifierFactory;
-import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.factory.ResourceCreationSpecifierFactory;
 
 /**
  * 
@@ -83,7 +83,7 @@ public abstract class CleartkInternalModelFactory {
       throw new RuntimeException("Invalid data writer factory class: " + dataWriterFactoryClass);
     }
     AnalysisEngineDescription desc = getBaseDescription();
-    AnalysisEngineFactory.setConfigurationParameters(
+    ResourceCreationSpecifierFactory.setConfigurationParameters(
         desc,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectory.getPath(),
@@ -99,7 +99,7 @@ public abstract class CleartkInternalModelFactory {
   public AnalysisEngineDescription getAnnotatorDescription(String modelFileName)
       throws ResourceInitializationException {
     AnalysisEngineDescription desc = getBaseDescription();
-    AnalysisEngineFactory.setConfigurationParameters(
+    ResourceCreationSpecifierFactory.setConfigurationParameters(
         desc,
         GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
         modelFileName);
