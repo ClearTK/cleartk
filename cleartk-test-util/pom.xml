@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>cleartk-test-util</artifactId>
-	<version>1.1.0</version>
+	<version>1.1.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>cleartk-test-util</name>
 	<description>ClearTK testing infrastructure</description>
@@ -13,9 +13,9 @@
 		</repository>
 	</repositories>
 	<scm>
-		<connection>scm:svn:http://cleartk.googlecode.com/svn/tags/cleartk-test-util-1.1.0</connection>
-		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/tags/cleartk-test-util-1.1.0</developerConnection>
-		<url>http://cleartk.googlecode.com/svn/tags/cleartk-test-util-1.1.0</url>
+		<connection>scm:svn:http://cleartk.googlecode.com/svn/trunk/cleartk-test-util</connection>
+		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/trunk/cleartk-test-util</developerConnection>
+		<url>http://cleartk.googlecode.com/svn/trunk/cleartk-test-util</url>
 	</scm>
 	<parent>
 		<artifactId>cleartk-parent</artifactId>
