@@ -104,7 +104,7 @@ public abstract class TempEval2010Main {
     String className = this.getClass().getName();
     if (args.length != 4) {
       System.err.printf(
-          "usage: java %s {cv,holdout} tempeval-training-dir tempeval-test-dir output-dir",
+          "usage: java %s {cv,test,train} tempeval-training-dir tempeval-test-dir output-dir",
           className);
       System.exit(1);
     }
