@@ -24,12 +24,11 @@
 
 package org.cleartk.examples.pos;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -62,13 +61,13 @@ import org.uimafit.testing.util.HideOutput;
 
 public class NonSequenceExamplePOSAnnotatorTest extends ExamplesTestBase {
 
-
-   public static String firstLineGold = "2008 Sichuan earthquake From Wikipedia , the free encyclopedia The 2008 Sichuan earthquake occurred at 14:28 : 01.42 CST ( 06:28 : 01.42 UTC ) on 12 May 2008 , with its epicenter in Wenchuan County ( Chinese : ? ? ?";
+  public static String firstLineGold = "2008 Sichuan earthquake From Wikipedia , the free encyclopedia The 2008 Sichuan earthquake occurred at 14:28 : 01.42 CST ( 06:28 : 01.42 UTC ) on 12 May 2008 , with its epicenter in Wenchuan County ( Chinese : ? ? ?";
 
   private void checkPOS(String posTaggedLine) {
     List<String> goldTokens = Arrays.asList(firstLineGold.split(" "));
-    List<String> sysTokens  = Arrays.asList(posTaggedLine.replaceAll("\\/[A-Z,.$-]{1,5}", "").split(" "));
-    List<String> diffTokens = new ArrayList(sysTokens);
+    List<String> sysTokens = Arrays.asList(posTaggedLine.replaceAll("\\/[A-Z,.$-]{1,5}", "").split(
+        " "));
+    List<String> diffTokens = new ArrayList<String>(sysTokens);
 
     // Check that tokens match
     diffTokens.removeAll(goldTokens);
@@ -87,7 +86,6 @@ public class NonSequenceExamplePOSAnnotatorTest extends ExamplesTestBase {
     assertTrue(posTaggedLine.contains(")/-RRB-"));
   }
 
-
   @Test
   public void testLibsvm() throws Exception {
     assumeLibsvmEnabled();
@@ -104,7 +102,6 @@ public class NonSequenceExamplePOSAnnotatorTest extends ExamplesTestBase {
         + "/2008_Sichuan_earthquake.txt.pos"))[0].trim();
     checkPOS(firstLine);
   }
-
 
   @Test
   public void testMaxent() throws Exception {
