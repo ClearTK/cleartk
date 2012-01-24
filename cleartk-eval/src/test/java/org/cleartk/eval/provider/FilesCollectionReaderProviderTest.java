@@ -27,7 +27,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.uima.cas.CAS;
@@ -80,16 +82,17 @@ public class FilesCollectionReaderProviderTest extends EvaluationTestBase {
   }
 
   private void checkNames(CollectionReader reader, String... expectedNames) throws Exception {
+    Set<URI> expected = new HashSet<URI>();
+    for (String expectedName : expectedNames) {
+      expected.add(new File(this.outputDirectory, expectedName).toURI());
+    }
     CAS cas = CasCreationUtils.createCas(Arrays.asList(reader.getMetaData()));
-    int i = 0;
+    Set<URI> actual = new HashSet<URI>();
     while (reader.hasNext()) {
       cas.reset();
       reader.getNext(cas);
-      URI expected = new File(this.outputDirectory, expectedNames[i]).toURI();
-      URI actual = ViewURIUtil.getURI(cas.getJCas());
-      Assert.assertEquals(expected, actual);
-      i += 1;
+      actual.add(ViewURIUtil.getURI(cas.getJCas()));
     }
-    Assert.assertEquals(expectedNames.length, i);
+    Assert.assertEquals(expected, actual);
   }
 }
