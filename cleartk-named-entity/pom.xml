@@ -27,17 +27,17 @@
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-util</artifactId>
-			<version>0.8.2-SNAPSHOT</version>
+			<version>0.8.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-ml</artifactId>
-			<version>1.1.0-SNAPSHOT</version>
+			<version>1.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-token</artifactId>
-			<version>0.8.3-SNAPSHOT</version>
+			<version>0.8.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jdom</groupId>
@@ -48,7 +48,7 @@
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-test-util</artifactId>
-			<version>1.1.0-SNAPSHOT</version>
+			<version>1.1.0</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
