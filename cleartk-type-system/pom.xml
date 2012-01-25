@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>cleartk-type-system</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>cleartk-type-system</name>
 	<description>ClearTK type system</description>
@@ -13,9 +13,9 @@
 		</repository>
 	</repositories>
 	<scm>
-		<connection>scm:svn:http://cleartk.googlecode.com/svn/tags/cleartk-type-system-1.0.0</connection>
-		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/tags/cleartk-type-system-1.0.0</developerConnection>
-		<url>http://cleartk.googlecode.com/svn/tags/cleartk-type-system-1.0.0</url>
+		<connection>scm:svn:http://cleartk.googlecode.com/svn/trunk/cleartk-type-system</connection>
+		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/trunk/cleartk-type-system</developerConnection>
+		<url>http://cleartk.googlecode.com/svn/trunk/cleartk-type-system</url>
 	</scm>
 	<parent>
 		<groupId>org.cleartk</groupId>
