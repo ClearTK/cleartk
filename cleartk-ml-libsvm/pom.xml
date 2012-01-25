@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>cleartk-ml-libsvm</artifactId>
-	<version>1.0.2</version>
+	<version>1.0.3-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>cleartk-ml-libsvm</name>
 	<description>ClearTK wrapper for LIBSVM</description>
@@ -13,9 +13,9 @@
 		</repository>
 	</repositories>
 	<scm>
-		<connection>scm:svn:http://cleartk.googlecode.com/svn/tags/cleartk-ml-libsvm-1.0.2</connection>
-		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/tags/cleartk-ml-libsvm-1.0.2</developerConnection>
-		<url>http://cleartk.googlecode.com/svn/tags/cleartk-ml-libsvm-1.0.2</url>
+		<connection>scm:svn:http://cleartk.googlecode.com/svn/trunk/cleartk-ml-libsvm</connection>
+		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/trunk/cleartk-ml-libsvm</developerConnection>
+		<url>http://cleartk.googlecode.com/svn/trunk/cleartk-ml-libsvm</url>
 	</scm>
 	<parent>
 		<artifactId>cleartk-parent</artifactId>
@@ -27,7 +27,7 @@
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-ml</artifactId>
-			<version>1.1.0</version>
+			<version>1.1.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>tw.edu.ntu.csie</groupId>
@@ -38,7 +38,7 @@
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-test-util</artifactId>
-			<version>1.1.0</version>
+			<version>1.1.1-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
