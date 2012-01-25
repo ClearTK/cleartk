@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>cleartk-ml</artifactId>
-	<version>1.1.1-SNAPSHOT</version>
+	<version>1.1.0</version>
 	<packaging>jar</packaging>
 	<name>cleartk-ml</name>
 	<description>ClearTK machine learning library and interfaces</description>
@@ -13,21 +13,21 @@
 		</repository>
 	</repositories>
 	<scm>
-		<connection>scm:svn:http://cleartk.googlecode.com/svn/trunk/cleartk-ml</connection>
-		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/trunk/cleartk-ml</developerConnection>
-		<url>http://cleartk.googlecode.com/svn/trunk/cleartk-ml</url>
+		<connection>scm:svn:http://cleartk.googlecode.com/svn/trunk/${project.artifactId}</connection>
+		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/trunk/${project.artifactId}</developerConnection>
+		<url>http://cleartk.googlecode.com/svn/trunk/${project.artifactId}</url>
 	</scm>
 	<parent>
 		<artifactId>cleartk-parent</artifactId>
 		<groupId>org.cleartk</groupId>
 		<version>1.1.0</version>
-		<relativePath />
+		<relativePath/>
 	</parent>
 	<dependencies>
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-util</artifactId>
-			<version>0.8.3-SNAPSHOT</version>
+			<version>0.8.2</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>
@@ -38,7 +38,7 @@
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-test-util</artifactId>
-			<version>1.1.1-SNAPSHOT</version>
+			<version>1.1.0</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
