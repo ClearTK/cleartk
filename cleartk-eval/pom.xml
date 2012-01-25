@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>cleartk-eval</artifactId>
-	<version>0.8.2</version>
+	<version>0.8.3-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>cleartk-eval</name>
 	<description>ClearTK annotator evaluation library</description>
@@ -13,9 +13,9 @@
 		</repository>
 	</repositories>
 	<scm>
-		<connection>scm:svn:http://cleartk.googlecode.com/svn/tags/cleartk-eval-0.8.2</connection>
-		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/tags/cleartk-eval-0.8.2</developerConnection>
-		<url>http://cleartk.googlecode.com/svn/tags/cleartk-eval-0.8.2</url>
+		<connection>scm:svn:http://cleartk.googlecode.com/svn/trunk/cleartk-eval</connection>
+		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/trunk/cleartk-eval</developerConnection>
+		<url>http://cleartk.googlecode.com/svn/trunk/cleartk-eval</url>
 	</scm>
 	<parent>
 		<artifactId>cleartk-parent</artifactId>
@@ -27,12 +27,12 @@
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-util</artifactId>
-			<version>0.8.2</version>
+			<version>0.8.3-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-ml</artifactId>
-			<version>1.1.0</version>
+			<version>1.1.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>
@@ -43,7 +43,7 @@
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-test-util</artifactId>
-			<version>1.1.0</version>
+			<version>1.1.1-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
