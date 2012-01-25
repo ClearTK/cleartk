@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>cleartk-semantic-roles</artifactId>
-	<version>0.6.1</version>
+	<version>0.6.2-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>cleartk-semantic-roles</name>
 	<description>ClearTK annotators for semantic role labeling</description>
@@ -13,9 +13,9 @@
 		</repository>
 	</repositories>
 	<scm>
-		<connection>scm:svn:http://cleartk.googlecode.com/svn/tags/cleartk-semantic-roles-0.6.1</connection>
-		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/tags/cleartk-semantic-roles-0.6.1</developerConnection>
-		<url>http://cleartk.googlecode.com/svn/tags/cleartk-semantic-roles-0.6.1</url>
+		<connection>scm:svn:http://cleartk.googlecode.com/svn/trunk/cleartk-semantic-roles</connection>
+		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/trunk/cleartk-semantic-roles</developerConnection>
+		<url>http://cleartk.googlecode.com/svn/trunk/cleartk-semantic-roles</url>
 	</scm>
 	<parent>
 		<artifactId>cleartk-parent</artifactId>
