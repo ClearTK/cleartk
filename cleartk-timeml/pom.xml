@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>cleartk-timeml</artifactId>
-	<version>1.0.1</version>
+	<version>1.0.2-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>cleartk-timeml</name>
 	<description>ClearTK annotators for temporal information extraction</description>
@@ -13,9 +13,9 @@
 		</repository>
 	</repositories>
 	<scm>
-		<connection>scm:svn:http://cleartk.googlecode.com/svn/tags/cleartk-timeml-1.0.1</connection>
-		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/tags/cleartk-timeml-1.0.1</developerConnection>
-		<url>http://cleartk.googlecode.com/svn/tags/cleartk-timeml-1.0.1</url>
+		<connection>scm:svn:http://cleartk.googlecode.com/svn/trunk/cleartk-timeml</connection>
+		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/trunk/cleartk-timeml</developerConnection>
+		<url>http://cleartk.googlecode.com/svn/trunk/cleartk-timeml</url>
 	</scm>
 	<parent>
 		<artifactId>cleartk-parent</artifactId>
