@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>cleartk-release</artifactId>
-	<version>1.0.1</version>
+	<version>1.0.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>cleartk-release</name>
 	<description>The official ClearTK release</description>
@@ -13,9 +13,9 @@
 		</repository>
 	</repositories>
 	<scm>
-		<connection>scm:svn:http://cleartk.googlecode.com/svn/tags/cleartk-release-1.0.1</connection>
-		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/tags/cleartk-release-1.0.1</developerConnection>
-		<url>http://cleartk.googlecode.com/svn/tags/cleartk-release-1.0.1</url>
+		<connection>scm:svn:http://cleartk.googlecode.com/svn/trunk/cleartk-release</connection>
+		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/trunk/cleartk-release</developerConnection>
+		<url>http://cleartk.googlecode.com/svn/trunk/cleartk-release</url>
 	</scm>
 	<parent>
 		<groupId>org.cleartk</groupId>
