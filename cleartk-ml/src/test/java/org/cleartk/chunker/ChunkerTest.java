@@ -40,9 +40,9 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.feature.WindowFeature;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
-import org.cleartk.classifier.feature.extractor.WindowExtractor;
+import org.cleartk.classifier.feature.extractor.ContextExtractor;
+import org.cleartk.classifier.feature.extractor.ContextExtractor.Preceding;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.proliferate.CharacterNGramProliferator;
@@ -71,7 +71,7 @@ public class ChunkerTest extends DefaultTestBase {
 
     private List<SimpleFeatureExtractor> simpleFeatureExtractors;
 
-    private List<WindowExtractor> windowExtractors;
+    private List<ContextExtractor<Token>> windowExtractors;
 
     public Instance<String> extractFeatures(
         JCas jCas,
@@ -85,8 +85,8 @@ public class ChunkerTest extends DefaultTestBase {
       }
 
       // extract all features that require the token and sentence annotations
-      for (WindowExtractor extractor : this.windowExtractors) {
-        instance.addAll(extractor.extract(jCas, labeledAnnotation, sequence));
+      for (ContextExtractor<Token> extractor : this.windowExtractors) {
+        instance.addAll(extractor.extractWithin(jCas, labeledAnnotation, sequence));
       }
 
       return instance;
@@ -94,7 +94,7 @@ public class ChunkerTest extends DefaultTestBase {
 
     public void initialize(UimaContext context) throws ResourceInitializationException {
       this.simpleFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
-      this.windowExtractors = new ArrayList<WindowExtractor>();
+      this.windowExtractors = new ArrayList<ContextExtractor<Token>>();
 
       SimpleFeatureExtractor wordExtractor = new SpannedTextExtractor();
 
@@ -104,12 +104,10 @@ public class ChunkerTest extends DefaultTestBase {
           new LowerCaseProliferator(),
           new CharacterNGramProliferator(fromLeft, 0, 3, 3, true)));
 
-      this.windowExtractors.add(new WindowExtractor(
+      this.windowExtractors.add(new ContextExtractor<Token>(
           Token.class,
           wordExtractor,
-          WindowFeature.ORIENTATION_LEFT,
-          0,
-          2));
+          new Preceding(2)));
 
     }
 

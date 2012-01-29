@@ -41,6 +41,7 @@ import org.uimafit.util.JCasUtil;
  * All rights reserved.
  */
 
+@SuppressWarnings("deprecation")
 public class WindowNGramExtractorTest extends DefaultTestBase {
 
   @Test

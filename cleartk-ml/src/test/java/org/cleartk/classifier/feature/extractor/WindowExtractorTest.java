@@ -51,6 +51,7 @@ import org.uimafit.util.JCasUtil;
  * @author Philip Ogren
  * 
  */
+@SuppressWarnings("deprecation")
 public class WindowExtractorTest extends DefaultTestBase {
 
   @Test

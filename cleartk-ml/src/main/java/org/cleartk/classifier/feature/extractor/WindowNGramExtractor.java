@@ -45,6 +45,7 @@ import org.uimafit.util.JCasUtil;
  * 
  * <p>
  * 
+ * @deprecated Use {@link ContextExtractor} instead.
  * @author Philip Ogren
  * 
  *         This class may change significantly per issue 19 as described here:
@@ -64,6 +65,7 @@ import org.uimafit.util.JCasUtil;
  *         is used to take string features and create prefix/suffix features.
  */
 
+@Deprecated
 public class WindowNGramExtractor {
 
   Class<? extends Annotation> featureClass;

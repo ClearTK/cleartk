@@ -45,12 +45,14 @@ import org.uimafit.util.JCasUtil;
  * 
  * <p>
  * 
+ * @deprecated Use {@link ContextExtractor} instead.
  * @author Philip Ogren
  * 
  *         This class may change significantly per issue 19 as described here:
  *         http://code.google.com/p/cleartk/issues/detail?id=19
  */
 
+@Deprecated
 public class WindowExtractor {
 
   Class<? extends Annotation> featureClass;
