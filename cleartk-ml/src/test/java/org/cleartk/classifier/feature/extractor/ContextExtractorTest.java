@@ -31,6 +31,7 @@ import junit.framework.Assert;
 
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.ContextExtractor.Bag;
+import org.cleartk.classifier.feature.extractor.ContextExtractor.Count;
 import org.cleartk.classifier.feature.extractor.ContextExtractor.Covered;
 import org.cleartk.classifier.feature.extractor.ContextExtractor.FirstCovered;
 import org.cleartk.classifier.feature.extractor.ContextExtractor.Focus;
@@ -158,6 +159,35 @@ public class ContextExtractorTest extends CleartkTestBase {
     this.assertFeature("Bag_Following_3_5", "OOB1", iter.next());
     this.assertFeature("Bag_Preceding_0_1_Following_0_1_TypePath(Pos)", "NN", iter.next());
     this.assertFeature("Bag_Preceding_0_1_Following_0_1_TypePath(Pos)", "DT", iter.next());
+  }
+
+  @Test
+  public void testCounts() throws Exception {
+    ContextExtractor<Token> extractor = new ContextExtractor<Token>(
+        Token.class,
+        new SpannedTextExtractor(),
+        new Count(new Preceding(2)),
+        new Count(new Covered()),
+        new Count(new Following(1, 5)),
+        new Count(new Preceding(3), new Following(4)));
+
+    this.tokenBuilder.buildTokens(this.jCas, "aa bb cc bb aa cc bb cc aa");
+    Chunk chunk = new Chunk(this.jCas, 9, 11);
+    chunk.addToIndexes();
+    Assert.assertEquals("bb", chunk.getCoveredText());
+
+    List<Feature> features = extractor.extract(this.jCas, chunk);
+    Assert.assertEquals(9, features.size());
+    Iterator<Feature> iter = features.iterator();
+    this.assertFeature("Count_Preceding_0_2_bb", 1, iter.next());
+    this.assertFeature("Count_Preceding_0_2_cc", 1, iter.next());
+    this.assertFeature("Count_Covered_bb", 1, iter.next());
+    this.assertFeature("Count_Following_1_5_cc", 2, iter.next());
+    this.assertFeature("Count_Following_1_5_bb", 1, iter.next());
+    this.assertFeature("Count_Following_1_5_aa", 1, iter.next());
+    this.assertFeature("Count_Preceding_0_3_Following_0_4_aa", 2, iter.next());
+    this.assertFeature("Count_Preceding_0_3_Following_0_4_bb", 2, iter.next());
+    this.assertFeature("Count_Preceding_0_3_Following_0_4_cc", 3, iter.next());
   }
 
   @Test

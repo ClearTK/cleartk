@@ -35,6 +35,9 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.uimafit.util.JCasUtil;
 
+import com.google.common.collect.LinkedHashMultiset;
+import com.google.common.collect.Multiset;
+
 /**
  * A feature extractor that finds other {@link Annotation}s in the context of a focus annotation and
  * extracts features from these. It can be used, for example, to:
@@ -689,6 +692,70 @@ public class ContextExtractor<T extends Annotation> implements SimpleFeatureExtr
           String fName = Feature.createName(this.name, contextFeature.feature.getName());
           features.add(new Feature(fName, feature.getValue()));
         }
+      }
+      return features;
+    }
+  }
+
+  /**
+   * A {@link Context} that aggregates the features of other contexts into a bag of counts where
+   * only the count of occurrence of each feature value is maintained. The span (offsets) of the bag
+   * of counts is encoded as part of the feature name.
+   */
+  public static class Count implements Context {
+
+    private Context[] contexts;
+
+    private String name;
+
+    /**
+     * Constructs a {@link Context} which converts the features extracted by the argument contexts
+     * into a bag of count features.
+     * 
+     * @param contexts
+     *          The contexts which should be combined into a bag.
+     */
+    public Count(Context... contexts) {
+      this.contexts = contexts;
+      String[] names = new String[contexts.length + 1];
+      names[0] = "Count";
+      for (int i = 1; i < names.length; ++i) {
+        names[i] = contexts[i - 1].getName();
+      }
+      this.name = Feature.createName(names);
+    }
+
+    @Override
+    public String getName() {
+      return this.name;
+    }
+
+    @Override
+    public <T extends Annotation> List<Feature> extract(
+        JCas jCas,
+        Annotation focusAnnotation,
+        Bounds bounds,
+        Class<T> annotationClass,
+        SimpleFeatureExtractor extractor) throws CleartkExtractorException {
+      Multiset<String> featureCounts = LinkedHashMultiset.create();
+      for (Context context : this.contexts) {
+        for (Feature feature : context.extract(
+            jCas,
+            focusAnnotation,
+            bounds,
+            annotationClass,
+            extractor)) {
+          ContextFeature contextFeature = (ContextFeature) feature;
+          String featureName = Feature.createName(
+              this.name,
+              contextFeature.feature.getName(),
+              String.valueOf(feature.getValue()));
+          featureCounts.add(featureName);
+        }
+      }
+      List<Feature> features = new ArrayList<Feature>();
+      for (String featureName : featureCounts.elementSet()) {
+        features.add(new Feature(featureName, featureCounts.count(featureName)));
       }
       return features;
     }
