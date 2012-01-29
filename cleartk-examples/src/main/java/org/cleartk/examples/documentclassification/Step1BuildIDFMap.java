@@ -53,10 +53,16 @@ import org.uimafit.pipeline.SimplePipeline;
 public class Step1BuildIDFMap {
 
   public static class Args {
-    @Option(name = "-d", aliases = "--documentDirectory", usage = "specify the directory containing the training documents")
+    @Option(
+        name = "-d",
+        aliases = "--documentDirectory",
+        usage = "specify the directory containing the training documents")
     public String documentDirectory = "../ClearTK Data/data/20newsgroups/20news-bydate-train/";
 
-    @Option(name = "-map", aliases = "--idfmapFileName", usage = "specify the directory name where the IDFMap file will be written")
+    @Option(
+        name = "-map",
+        aliases = "--idfmapFileName",
+        usage = "specify the directory name where the IDFMap file will be written")
     public String idfmapDirectoryName = "example/documentclassification";
 
     public static Args parseArguments(String[] stringArgs) {
@@ -75,6 +81,10 @@ public class Step1BuildIDFMap {
 
   public static void main(String[] stringArgs) throws UIMAException, IOException {
 
+    if (true) {
+      System.out.println("this example is broken.  Please see issue 261: http://code.google.com/p/cleartk/issues/detail?id=261");
+      System.exit(0);
+    }
     Args args = Args.parseArguments(stringArgs);
     String documentDirectory = args.documentDirectory;
     File idfmapDirectory = new File(args.idfmapDirectoryName);
@@ -82,14 +92,13 @@ public class Step1BuildIDFMap {
       idfmapDirectory.mkdirs();
     }
 
-    AnalysisEngineDescription documentClassificationAnnotatorDescription = AnalysisEngineFactory
-        .createPrimitiveDescription(
-            DocumentClassificationAnnotator.class,
-            ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-            CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-            IDFMapWriterFactory.class.getName(),
-            IDFMapWriterFactory.PARAM_OUTPUT_DIRECTORY,
-            idfmapDirectory.getPath());
+    AnalysisEngineDescription documentClassificationAnnotatorDescription = AnalysisEngineFactory.createPrimitiveDescription(
+        DocumentClassificationAnnotator.class,
+        ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        IDFMapWriterFactory.class.getName(),
+        IDFMapWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        idfmapDirectory.getPath());
 
     SimplePipeline.runPipeline(
         FilesCollectionReader.getCollectionReader(documentDirectory),
