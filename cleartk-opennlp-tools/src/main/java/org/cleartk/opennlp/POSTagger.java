@@ -23,73 +23,40 @@
  */
 package org.cleartk.opennlp;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.logging.Level;
+import opennlp.uima.postag.POSModelResourceImpl;
 
-import junit.framework.Assert;
-
-import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
+import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.testing.util.DisableLogging;
-import org.uimafit.util.JCasUtil;
+import org.uimafit.factory.ExternalResourceFactory;
 
 /**
+ * An OpenNLP {@link opennlp.tools.postag.POSTagger} that uses the ClearTK type system.
+ * 
  * <br>
  * Copyright (c) 2012, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
+ * @author Steven Bethard
  */
-public class TokenizerTest extends OpennlpTestBase {
-
-  @Test
-  public void test() throws Exception {
-    // note that the OpenNLP tokenizer isn't as good as the ClearTK one, so this is simpler than
-    // org.cleartk.token.tokenizer.TokenizerAndTokenAnnotatorTest.testMarysDog
-    this.jCas.setDocumentText("\"John & Mary's dog,\" Jane thought (to herself).\n"
-        + "\"What a #$%!\n" + "a- ``I like AT&T''.\"");
-    new Sentence(this.jCas, 0, 47).addToIndexes();
-    new Sentence(this.jCas, 48, 60).addToIndexes();
-    new Sentence(this.jCas, 61, 81).addToIndexes();
-    Level level = DisableLogging.disableLogging();
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(Tokenizer.getDescription("en"));
-    engine.process(this.jCas);
-    DisableLogging.enableLogging(level);
-    List<String> expected = Arrays.asList(
-        "\"",
-        "John",
-        "&",
-        "Mary",
-        "'s",
-        "dog",
-        ",",
-        "\"",
-        "Jane",
-        "thought",
-        "(",
-        "to",
-        "herself",
-        ")",
-        ".",
-        "\"",
-        "What",
-        "a",
-        "#",
-        "$",
-        "%",
-        "!",
-        "a",
-        "-",
-        "``",
-        "I",
-        "like",
-        "AT&T",
-        "''",
-        ".",
-        "\"");
-    List<String> actual = JCasUtil.toText(JCasUtil.select(this.jCas, Token.class));
-    Assert.assertEquals(expected, actual);
+public class POSTagger {
+  public static AnalysisEngineDescription getDescription(String languageCode)
+      throws ResourceInitializationException {
+    String modelPath = String.format("/models/%s-pos-maxent.bin", languageCode);
+    return AnalysisEngineFactory.createPrimitiveDescription(
+        opennlp.uima.postag.POSTagger.class,
+        opennlp.uima.util.UimaUtil.MODEL_PARAMETER,
+        ExternalResourceFactory.createExternalResourceDescription(
+            POSModelResourceImpl.class,
+            POSTagger.class.getResource(modelPath).toString()),
+        opennlp.uima.util.UimaUtil.SENTENCE_TYPE_PARAMETER,
+        Sentence.class.getName(),
+        opennlp.uima.util.UimaUtil.TOKEN_TYPE_PARAMETER,
+        Token.class.getName(),
+        opennlp.uima.util.UimaUtil.POS_FEATURE_PARAMETER,
+        "pos");
   }
+
 }
