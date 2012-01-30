@@ -62,7 +62,7 @@ public class WhiteSpaceExtractor implements SimpleFeatureExtractor {
       features.add(feature);
     } else {
       char leftChar = text.charAt(begin - 1);
-      if (isWhiteSpace(leftChar)) {
+      if (Character.isWhitespace(leftChar)) {
         Feature feature = new Feature("whitespace", ORIENTATION_LEFT);
         features.add(feature);
       }
@@ -74,7 +74,7 @@ public class WhiteSpaceExtractor implements SimpleFeatureExtractor {
       features.add(feature);
     } else {
       char rightChar = text.charAt(end);
-      if (isWhiteSpace(rightChar)) {
+      if (Character.isWhitespace(rightChar)) {
         Feature feature = new Feature("whitespace", ORIENTATION_RIGHT);
         features.add(feature);
       }
@@ -82,14 +82,4 @@ public class WhiteSpaceExtractor implements SimpleFeatureExtractor {
     return features;
   }
 
-  /**
-   * List of whitespace characters comes from java.util.regex.Pattern
-   * 
-   * @param chr
-   */
-  private boolean isWhiteSpace(char chr) {
-    if (chr == ' ' || chr == '\t' || chr == '\n' || chr == '\f' || chr == '\u000B' || chr == '\r')
-      return true;
-    return false;
-  }
 }
