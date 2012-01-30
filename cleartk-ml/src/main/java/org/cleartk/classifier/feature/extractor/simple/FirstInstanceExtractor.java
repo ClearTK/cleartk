@@ -30,6 +30,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
+import org.cleartk.classifier.feature.extractor.ContextExtractor;
 import org.uimafit.util.JCasUtil;
 
 /**
@@ -37,8 +38,10 @@ import org.uimafit.util.JCasUtil;
  * Copyright (c) 2007-2009, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
+ * @deprecated Use {@link ContextExtractor} instead.
  * @author Philipp Wetzler
  */
+@Deprecated
 public class FirstInstanceExtractor implements SimpleFeatureExtractor {
 
   public FirstInstanceExtractor(

@@ -57,6 +57,7 @@ import org.uimafit.util.JCasUtil;
  * 
  * @author Steven Bethard, Philipp Wetzler
  */
+@SuppressWarnings("deprecation")
 public class BagExtractorTest extends DefaultTestBase {
 
   @Before
