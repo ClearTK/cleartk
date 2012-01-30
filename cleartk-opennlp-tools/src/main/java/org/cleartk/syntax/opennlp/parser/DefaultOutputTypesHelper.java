@@ -36,7 +36,6 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.syntax.constituent.type.TerminalTreebankNode;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
-import org.cleartk.syntax.constituent.types.OutputTypesHelper;
 import org.cleartk.util.UIMAUtil;
 
 /**

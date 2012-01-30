@@ -36,13 +36,8 @@
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
-			<artifactId>cleartk-ml</artifactId>
-			<version>1.1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.cleartk</groupId>
-			<artifactId>cleartk-syntax</artifactId>
-			<version>0.6.1</version>
+			<artifactId>cleartk-type-system</artifactId>
+			<version>1.0.0</version>
 		</dependency>
 		<!-- test only -->
 		<dependency>

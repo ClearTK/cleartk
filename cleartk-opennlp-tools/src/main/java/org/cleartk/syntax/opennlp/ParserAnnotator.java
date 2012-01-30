@@ -39,17 +39,17 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.syntax.SyntaxComponents;
-import org.cleartk.syntax.constituent.ParserWrapper_ImplBase;
-import org.cleartk.syntax.constituent.types.InputTypesHelper;
 import org.cleartk.syntax.opennlp.parser.CasPosTagger;
 import org.cleartk.syntax.opennlp.parser.DefaultOutputTypesHelper;
+import org.cleartk.syntax.opennlp.parser.InputTypesHelper;
 import org.cleartk.syntax.opennlp.parser.Parser;
+import org.cleartk.syntax.opennlp.parser.ParserWrapper_ImplBase;
 import org.cleartk.util.IOUtil;
 import org.cleartk.util.ParamUtil;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
+import org.uimafit.factory.TypeSystemDescriptionFactory;
 import org.uimafit.factory.initializable.InitializableFactory;
 
 /**
@@ -74,7 +74,7 @@ import org.uimafit.factory.initializable.InitializableFactory;
  */
 
 public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation, TOP_NODE_TYPE extends Annotation>
-    extends ParserWrapper_ImplBase<TOKEN_TYPE, SENTENCE_TYPE, Parse, TOP_NODE_TYPE>{
+    extends ParserWrapper_ImplBase<TOKEN_TYPE, SENTENCE_TYPE, Parse, TOP_NODE_TYPE> {
 
   public static final String DEFAULT_PARSER_MODEL_PATH = "/models/en-parser-chunking.bin";
 
@@ -82,28 +82,40 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
 
   public static final float DEFAULT_ADVANCE_PERCENTAGE = (float) AbstractBottomUpParser.defaultAdvancePercentage;
 
-  public static final String PARAM_PARSER_MODEL_PATH = ConfigurationParameterFactory
-      .createConfigurationParameterName(ParserAnnotator.class, "parserModelPath");
+  public static final String PARAM_PARSER_MODEL_PATH = ConfigurationParameterFactory.createConfigurationParameterName(
+      ParserAnnotator.class,
+      "parserModelPath");
 
-  @ConfigurationParameter(defaultValue = DEFAULT_PARSER_MODEL_PATH, description = "provides the path of the OpenNLP parser model build file, e.g. /models/en-parser-chunking.bin.  See javadoc for opennlp.tools.parser.chunking.Parser.")
+  @ConfigurationParameter(
+      defaultValue = DEFAULT_PARSER_MODEL_PATH,
+      description = "provides the path of the OpenNLP parser model build file, e.g. /models/en-parser-chunking.bin.  See javadoc for opennlp.tools.parser.chunking.Parser.")
   private String parserModelPath;
 
-  public static final String PARAM_BEAM_SIZE = ConfigurationParameterFactory
-      .createConfigurationParameterName(ParserAnnotator.class, "beamSize");
+  public static final String PARAM_BEAM_SIZE = ConfigurationParameterFactory.createConfigurationParameterName(
+      ParserAnnotator.class,
+      "beamSize");
 
-  @ConfigurationParameter(defaultValue = "" + DEFAULT_BEAM_SIZE, description = "indicates the beam size that should be used in the parser's search.  See javadoc for opennlp.tools.parser.chunking.Parser.")
+  @ConfigurationParameter(
+      defaultValue = "" + DEFAULT_BEAM_SIZE,
+      description = "indicates the beam size that should be used in the parser's search.  See javadoc for opennlp.tools.parser.chunking.Parser.")
   private int beamSize;
 
-  public static final String PARAM_ADVANCE_PERCENTAGE = ConfigurationParameterFactory
-      .createConfigurationParameterName(ParserAnnotator.class, "advancePercentage");
+  public static final String PARAM_ADVANCE_PERCENTAGE = ConfigurationParameterFactory.createConfigurationParameterName(
+      ParserAnnotator.class,
+      "advancePercentage");
 
-  @ConfigurationParameter(defaultValue = "" + AbstractBottomUpParser.defaultAdvancePercentage, description = "indicates \"the amount of probability mass required of advanced outcomes\".  See javadoc for opennlp.tools.parser.chunking.Parser.")
+  @ConfigurationParameter(
+      defaultValue = "" + AbstractBottomUpParser.defaultAdvancePercentage,
+      description = "indicates \"the amount of probability mass required of advanced outcomes\".  See javadoc for opennlp.tools.parser.chunking.Parser.")
   private float advancePercentage;
 
-  public static final String PARAM_USE_TAGS_FROM_CAS = ConfigurationParameterFactory
-      .createConfigurationParameterName(ParserAnnotator.class, "useTagsFromCas");
+  public static final String PARAM_USE_TAGS_FROM_CAS = ConfigurationParameterFactory.createConfigurationParameterName(
+      ParserAnnotator.class,
+      "useTagsFromCas");
 
-  @ConfigurationParameter(defaultValue = "false", description = "determines whether or not part-of-speech tags that are already in the CAS will be used or not.")
+  @ConfigurationParameter(
+      defaultValue = "false",
+      description = "determines whether or not part-of-speech tags that are already in the CAS will be used or not.")
   private boolean useTagsFromCas;
 
   protected Parser parser;
@@ -179,7 +191,6 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
     }
   }
 
-
   protected void setPOSTags(Parse p, Iterator<TOKEN_TYPE> tokenIterator, JCas view) {
     if (p.isPosTag()) {
       TOKEN_TYPE t = tokenIterator.next();
@@ -191,11 +202,10 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
     }
   }
 
-
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
     return AnalysisEngineFactory.createPrimitiveDescription(
         ParserAnnotator.class,
-        SyntaxComponents.TYPE_SYSTEM_DESCRIPTION,
+        TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.syntax.constituent.TypeSystem"),
         PARAM_PARSER_MODEL_PATH,
         ParamUtil.getParameterValue(PARAM_PARSER_MODEL_PATH, "/models/en-parser-chunking.bin"),
         PARAM_OUTPUT_TYPES_HELPER_CLASS_NAME,

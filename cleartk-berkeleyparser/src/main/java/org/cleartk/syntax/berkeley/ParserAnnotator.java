@@ -32,7 +32,6 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.syntax.constituent.ParserWrapper_ImplBase;
 import org.cleartk.util.IOUtil;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
@@ -56,8 +55,9 @@ import edu.berkeley.nlp.util.Numberer;
 public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation, TOP_NODE_TYPE extends Annotation>
     extends ParserWrapper_ImplBase<TOKEN_TYPE, SENTENCE_TYPE, Tree<String>, TOP_NODE_TYPE> {
 
-  public static final String PARAM_PARSER_MODEL_PATH = ConfigurationParameterFactory
-      .createConfigurationParameterName(ParserAnnotator.class, "parserModelPath");
+  public static final String PARAM_PARSER_MODEL_PATH = ConfigurationParameterFactory.createConfigurationParameterName(
+      ParserAnnotator.class,
+      "parserModelPath");
 
   @ConfigurationParameter
   private String parserModelPath;
@@ -145,7 +145,7 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
   }
 
   public static void main(String[] args) {
-//  ParserData parserData = ParserData.Load("data/experiment/berkeley/fold1.gr");
+    // ParserData parserData = ParserData.Load("data/experiment/berkeley/fold1.gr");
     ParserData parserData = ParserData.Load("src/test/resources/models/11597317.gr");
     Grammar grammar = parserData.getGrammar();
     Lexicon lexicon = parserData.getLexicon();

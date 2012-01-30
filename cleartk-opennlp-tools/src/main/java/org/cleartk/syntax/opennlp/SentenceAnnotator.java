@@ -42,7 +42,6 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.syntax.SyntaxComponents;
 import org.cleartk.util.IOUtil;
 import org.cleartk.util.ParamUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
@@ -50,6 +49,7 @@ import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.TypeCapability;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
+import org.uimafit.factory.TypeSystemDescriptionFactory;
 import org.uimafit.factory.initializable.InitializableFactory;
 import org.uimafit.util.JCasUtil;
 
@@ -76,7 +76,7 @@ public class SentenceAnnotator extends JCasAnnotator_ImplBase {
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
     return AnalysisEngineFactory.createPrimitiveDescription(
         SentenceAnnotator.class,
-        SyntaxComponents.TYPE_SYSTEM_DESCRIPTION,
+        TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.syntax.constituent.TypeSystem"),
         PARAM_SENTENCE_MODEL_PATH,
         ParamUtil.getParameterValue(PARAM_SENTENCE_MODEL_PATH, "/models/en-sent.bin"),
         PARAM_WINDOW_CLASS_NAMES,

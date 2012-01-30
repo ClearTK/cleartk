@@ -1,5 +1,5 @@
-/** 
- * Copyright (c) 2011, Regents of the University of Colorado 
+/* 
+ * Copyright (c) 2012, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -21,27 +21,26 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.syntax.opennlp;
+package org.cleartk.syntax.opennlp.parser;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.jcas.JCas;
-import org.cleartk.syntax.opennlp.parser.InputTypesHelper;
-import org.cleartk.type.test.Sentence;
-import org.cleartk.type.test.Token;
+import org.cleartk.token.type.Sentence;
+import org.cleartk.token.type.Token;
 import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
- * Copyright (c) 2011, Regents of the University of Colorado <br>
+ * Copyright (c) 2012, Regents of the University of Colorado <br>
  * All rights reserved.
  * <p>
  * 
  * @author Philip Ogren
  */
 
-public class TestInputTypesHelper extends InputTypesHelper<Token, Sentence> {
+public class DefaultInputTypesHelper extends InputTypesHelper<Token, Sentence> {
 
   public List<Token> getTokens(JCas jCas, Sentence sentence) {
     return JCasUtil.selectCovered(jCas, Token.class, sentence);

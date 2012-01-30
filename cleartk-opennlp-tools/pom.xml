@@ -35,14 +35,14 @@
 			<version>1.5.2-incubating</version>
 		</dependency>
 		<dependency>
-			<groupId>org.cleartk</groupId>
-			<artifactId>cleartk-util</artifactId>
-			<version>0.8.2</version>
+			<groupId>org.apache.opennlp</groupId>
+			<artifactId>opennlp-uima</artifactId>
+			<version>1.5.2-incubating</version>
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
-			<artifactId>cleartk-syntax</artifactId>
-			<version>0.6.1</version>
+			<artifactId>cleartk-util</artifactId>
+			<version>0.8.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
@@ -55,11 +55,6 @@
 			<artifactId>cleartk-test-util</artifactId>
 			<version>1.1.0</version>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.opennlp</groupId>
-			<artifactId>opennlp-uima</artifactId>
-			<version>1.5.2-incubating</version>
 		</dependency>
 	</dependencies>
 	<build>

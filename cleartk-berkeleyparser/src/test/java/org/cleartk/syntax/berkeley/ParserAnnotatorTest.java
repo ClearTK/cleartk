@@ -21,7 +21,6 @@ package org.cleartk.syntax.berkeley;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.cleartk.syntax.constituent.ParserWrapper_ImplBase;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.junit.Assert;
@@ -40,7 +39,7 @@ import edu.berkeley.nlp.PCFGLA.GrammarTrainer;
  * @author Philip Ogren
  */
 
-public class ParserAnnotatorTest extends BerkeleyTestBase{
+public class ParserAnnotatorTest extends BerkeleyTestBase {
 
   private static final String MODEL_PATH = "/models/11597317.gr";
 
@@ -53,17 +52,16 @@ public class ParserAnnotatorTest extends BerkeleyTestBase{
         MODEL_PATH,
         ParserWrapper_ImplBase.PARAM_OUTPUT_TYPES_HELPER_CLASS_NAME,
         DefaultOutputTypesHelper.class.getName());
-    tokenBuilder
-        .buildTokens(
-            jCas,
-            "Two recent papers provide new evidence relevant to the role of the breast cancer susceptibility gene BRCA2 in DNA repair.",
-            "Two recent papers provide new evidence relevant to the role of the breast cancer susceptibility gene BRCA2 in DNA repair .",
-            "DT JJ NN VBP JJ NN JJ IN DT NN IN DT NN NN NN NN NN IN NN NN ." // changed 1st
-                                                                             // tag from CD
-                                                                             // to DT and
-                                                                             // 3rd tag from
-                                                                             // NNS to NN
-        );
+    tokenBuilder.buildTokens(
+        jCas,
+        "Two recent papers provide new evidence relevant to the role of the breast cancer susceptibility gene BRCA2 in DNA repair.",
+        "Two recent papers provide new evidence relevant to the role of the breast cancer susceptibility gene BRCA2 in DNA repair .",
+        "DT JJ NN VBP JJ NN JJ IN DT NN IN DT NN NN NN NN NN IN NN NN ." // changed 1st
+                                                                         // tag from CD
+                                                                         // to DT and
+                                                                         // 3rd tag from
+                                                                         // NNS to NN
+    );
 
     engine.process(jCas);
     engine.collectionProcessComplete();
@@ -74,7 +72,7 @@ public class ParserAnnotatorTest extends BerkeleyTestBase{
      * (DT the) (NML (NN breast) (NN cancer) (NN susceptibility)) (NN gene)) (NP (NN BRCA2))))) (PP
      * (IN in) (NP (NN DNA) (NN repair))))))) (. .)) )
      */
-    TopTreebankNode tree = JCasUtil.selectByIndex(jCas, TopTreebankNode.class, 0); 
+    TopTreebankNode tree = JCasUtil.selectByIndex(jCas, TopTreebankNode.class, 0);
     Assert.assertNotNull(tree);
     Assert.assertEquals("ROOT", tree.getNodeType());
     Assert.assertEquals(1, tree.getChildren().size());
@@ -102,14 +100,12 @@ public class ParserAnnotatorTest extends BerkeleyTestBase{
     Assert.assertEquals("VBP", provideNode.getNodeType());
     TreebankNode newEvidenceNode = vpNode.getChildren(1);
     Assert.assertEquals("NP", newEvidenceNode.getNodeType());
-    Assert
-        .assertEquals(
-            "new evidence relevant to the role of the breast cancer susceptibility gene BRCA2 in DNA repair",
-            newEvidenceNode.getCoveredText());
+    Assert.assertEquals(
+        "new evidence relevant to the role of the breast cancer susceptibility gene BRCA2 in DNA repair",
+        newEvidenceNode.getCoveredText());
 
   }
 
-  
   public static void main(String[] args) {
     GrammarTrainer.main(new String[] {
         "-path",
