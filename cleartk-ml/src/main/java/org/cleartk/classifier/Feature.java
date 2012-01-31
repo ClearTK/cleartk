@@ -23,6 +23,8 @@
  */
 package org.cleartk.classifier;
 
+import java.io.Serializable;
+
 /**
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
@@ -35,7 +37,12 @@ package org.cleartk.classifier;
  * @author Steven Bethard
  */
 
-public class Feature {
+public class Feature implements Serializable {
+
+  /**
+   * 
+   */
+  private static final long serialVersionUID = -3215288856677656204L;
 
   protected String name;
 

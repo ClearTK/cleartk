@@ -23,6 +23,7 @@
  */
 package org.cleartk.classifier;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -35,7 +36,12 @@ import java.util.List;
  * 
  * @author Steven Bethard
  */
-public class Instance<OUTCOME_TYPE> {
+public class Instance<OUTCOME_TYPE> implements Serializable {
+
+  /**
+   * 
+   */
+  private static final long serialVersionUID = -5115524159642754897L;
 
   /**
    * Create a new ClassifierInstance with an empty set of features and a null label.
