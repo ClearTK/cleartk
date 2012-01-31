@@ -50,8 +50,8 @@ import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
+import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
-import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.classifier.mallet.factory.ClassifierTrainerFactory;
@@ -313,7 +313,7 @@ public class MalletDataWriterTest extends DefaultTestBase {
 
   public static class TestAnnotator extends CleartkSequenceAnnotator<String> {
 
-    private SimpleFeatureExtractor extractor = new SpannedTextExtractor();
+    private SimpleFeatureExtractor extractor = new CoveredTextExtractor();
 
     public void initialize(UimaContext context) throws ResourceInitializationException {
       super.initialize(context);

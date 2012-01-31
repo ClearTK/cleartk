@@ -43,8 +43,8 @@ import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.ContextExtractor;
 import org.cleartk.classifier.feature.extractor.ContextExtractor.Preceding;
+import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
-import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.proliferate.CharacterNGramProliferator;
 import org.cleartk.classifier.feature.proliferate.LowerCaseProliferator;
 import org.cleartk.classifier.feature.proliferate.ProliferatingExtractor;
@@ -96,7 +96,7 @@ public class ChunkerTest extends DefaultTestBase {
       this.simpleFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
       this.windowExtractors = new ArrayList<ContextExtractor<Token>>();
 
-      SimpleFeatureExtractor wordExtractor = new SpannedTextExtractor();
+      SimpleFeatureExtractor wordExtractor = new CoveredTextExtractor();
 
       int fromLeft = CharacterNGramProliferator.LEFT_TO_RIGHT;
       this.simpleFeatureExtractors.add(new ProliferatingExtractor(

@@ -27,7 +27,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.WindowNGramFeature;
-import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
+import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Header;
 import org.cleartk.type.test.Sentence;
@@ -48,7 +48,7 @@ public class WindowNGramExtractorTest extends DefaultTestBase {
   public void testLeftGrams() throws Throwable {
     WindowNGramExtractor extractor = new WindowNGramExtractor(
         Token.class,
-        new SpannedTextExtractor(),
+        new CoveredTextExtractor(),
         WindowNGramFeature.ORIENTATION_LEFT,
         WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT,
         " ",
@@ -101,7 +101,7 @@ public class WindowNGramExtractorTest extends DefaultTestBase {
 
     extractor = new WindowNGramExtractor(
         Token.class,
-        new SpannedTextExtractor(),
+        new CoveredTextExtractor(),
         WindowNGramFeature.ORIENTATION_LEFT,
         WindowNGramFeature.DIRECTION_RIGHT_TO_LEFT,
         " ",
@@ -145,7 +145,7 @@ public class WindowNGramExtractorTest extends DefaultTestBase {
 
     extractor = new WindowNGramExtractor(
         Token.class,
-        new SpannedTextExtractor(),
+        new CoveredTextExtractor(),
         WindowNGramFeature.ORIENTATION_LEFT,
         WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT,
         " ",
@@ -197,7 +197,7 @@ public class WindowNGramExtractorTest extends DefaultTestBase {
   public void testRightGrams() throws Throwable {
     WindowNGramExtractor extractor = new WindowNGramExtractor(
         Token.class,
-        new SpannedTextExtractor(),
+        new CoveredTextExtractor(),
         WindowNGramFeature.ORIENTATION_RIGHT,
         WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT,
         " ",
@@ -250,7 +250,7 @@ public class WindowNGramExtractorTest extends DefaultTestBase {
 
     extractor = new WindowNGramExtractor(
         Token.class,
-        new SpannedTextExtractor(),
+        new CoveredTextExtractor(),
         WindowNGramFeature.ORIENTATION_RIGHT,
         WindowNGramFeature.DIRECTION_RIGHT_TO_LEFT,
         " ",
@@ -317,7 +317,7 @@ public class WindowNGramExtractorTest extends DefaultTestBase {
     header.addToIndexes();
     assertEquals("5 6", header.getCoveredText());
 
-    SpannedTextExtractor wordExtractor = new SpannedTextExtractor();
+    CoveredTextExtractor wordExtractor = new CoveredTextExtractor();
 
     WindowNGramExtractor ngramExtractor = new WindowNGramExtractor(
         Token.class,

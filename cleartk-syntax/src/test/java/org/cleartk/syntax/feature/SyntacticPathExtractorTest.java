@@ -26,7 +26,7 @@ package org.cleartk.syntax.feature;
 import java.util.List;
 
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
+import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.syntax.SyntaxTestBase;
 import org.cleartk.syntax.constituent.type.TreebankNode;
@@ -56,7 +56,7 @@ public class SyntacticPathExtractorTest extends SyntaxTestBase {
     TreebankNode ranvpNode = TreebankNodeUtility.newNode(jCas, "VP", ranNode, homenpNode);
     TreebankNode topNode = TreebankNodeUtility.newNode(jCas, "S", inpNode, ranvpNode);
 
-    SpannedTextExtractor textExtractor = new SpannedTextExtractor();
+    CoveredTextExtractor textExtractor = new CoveredTextExtractor();
     TypePathExtractor tagExtractor = new TypePathExtractor(TreebankNode.class, "nodeType");
     SyntacticPathExtractor extractor;
     List<Feature> features;

@@ -39,8 +39,8 @@ import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.ContextExtractor;
 import org.cleartk.classifier.feature.extractor.ContextExtractor.Following;
 import org.cleartk.classifier.feature.extractor.ContextExtractor.Preceding;
+import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
-import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.feature.proliferate.CapitalTypeProliferator;
 import org.cleartk.classifier.feature.proliferate.CharacterNGramProliferator;
@@ -84,7 +84,7 @@ public class ExamplePOSAnnotator extends CleartkSequenceAnnotator<String> {
     this.tokenFeatureExtractors = Arrays.asList(
         new TypePathExtractor(Token.class, "stem"),
         new ProliferatingExtractor(
-            new SpannedTextExtractor(),
+            new CoveredTextExtractor(),
             new LowerCaseProliferator(),
             new CapitalTypeProliferator(),
             new NumericTypeProliferator(),

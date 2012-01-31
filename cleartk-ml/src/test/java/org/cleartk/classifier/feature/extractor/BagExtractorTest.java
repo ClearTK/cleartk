@@ -37,7 +37,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.simple.BagExtractor;
-import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
+import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Token;
@@ -93,7 +93,7 @@ public class BagExtractorTest extends DefaultTestBase {
    */
   @Test
   public void testSpannedText() throws Throwable {
-    SpannedTextExtractor textExtractor = new SpannedTextExtractor();
+    CoveredTextExtractor textExtractor = new CoveredTextExtractor();
     BagExtractor bagExtractor = new BagExtractor(Token.class, textExtractor);
     this.testOne(bagExtractor, "Bag(Token)", null, this.expectedTokenLists);
   }
@@ -107,7 +107,7 @@ public class BagExtractorTest extends DefaultTestBase {
    */
   @Test
   public void testNamedSpannedText() throws Throwable {
-    SpannedTextExtractor textExtractor = new SpannedTextExtractor();
+    CoveredTextExtractor textExtractor = new CoveredTextExtractor();
     BagExtractor bagExtractor = new BagExtractor(Token.class, textExtractor);
     this.testOne(bagExtractor, "Bag(Token)", null, this.expectedTokenLists);
   }

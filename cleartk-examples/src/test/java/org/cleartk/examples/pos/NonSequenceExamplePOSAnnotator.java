@@ -34,8 +34,8 @@ import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.WindowFeature;
 import org.cleartk.classifier.feature.extractor.WindowExtractor;
+import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
-import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.feature.proliferate.CapitalTypeProliferator;
 import org.cleartk.classifier.feature.proliferate.CharacterNGramProliferator;
@@ -77,7 +77,7 @@ public class NonSequenceExamplePOSAnnotator extends CleartkAnnotator<String> imp
 
     // basic feature extractors for word, stem and part-of-speech
     SimpleFeatureExtractor wordExtractor, stemExtractor;
-    wordExtractor = new SpannedTextExtractor();
+    wordExtractor = new CoveredTextExtractor();
     stemExtractor = new TypePathExtractor(Token.class, "stem");
 
     // aliases for NGram feature parameters

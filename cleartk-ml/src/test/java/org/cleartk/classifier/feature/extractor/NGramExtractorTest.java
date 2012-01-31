@@ -30,7 +30,7 @@ import java.util.List;
 import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.simple.NGramExtractor;
-import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
+import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Token;
@@ -56,7 +56,7 @@ public class NGramExtractorTest extends DefaultTestBase {
     tokenBuilder.buildTokens(jCas, text, text, "PRP VBZ NNS IN DT NN NN");
     DocumentAnnotation document = JCasUtil.selectSingle(jCas, DocumentAnnotation.class);
 
-    SpannedTextExtractor textExtractor = new SpannedTextExtractor();
+    CoveredTextExtractor textExtractor = new CoveredTextExtractor();
     TypePathExtractor posExtractor = new TypePathExtractor(Token.class, "pos");
     NGramExtractor extractor;
     List<Feature> features;

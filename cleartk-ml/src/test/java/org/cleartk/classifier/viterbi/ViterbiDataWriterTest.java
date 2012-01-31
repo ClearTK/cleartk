@@ -41,7 +41,7 @@ import org.apache.uima.pear.util.FileUtil;
 import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
-import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
+import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.GenericJarClassifierFactory;
 import org.cleartk.classifier.jar.Train;
@@ -68,7 +68,7 @@ public class ViterbiDataWriterTest extends DefaultTestBase {
 
   public static class TestAnnotator extends CleartkSequenceAnnotator<String> {
 
-    private SimpleFeatureExtractor extractor = new SpannedTextExtractor();
+    private SimpleFeatureExtractor extractor = new CoveredTextExtractor();
 
     @Override
     public void process(JCas jCas) throws AnalysisEngineProcessException {

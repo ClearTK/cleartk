@@ -32,7 +32,7 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.WindowFeature;
-import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
+import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Header;
@@ -61,25 +61,25 @@ public class WindowExtractorTest extends DefaultTestBase {
     // of featureAnnotation
     WindowExtractor leftEx = new WindowExtractor(
         Token.class,
-        new SpannedTextExtractor(),
+        new CoveredTextExtractor(),
         WindowFeature.ORIENTATION_LEFT,
         0,
         3);
     WindowExtractor rightEx = new WindowExtractor(
         Token.class,
-        new SpannedTextExtractor(),
+        new CoveredTextExtractor(),
         WindowFeature.ORIENTATION_RIGHT,
         0,
         3);
     WindowExtractor middleEx = new WindowExtractor(
         Token.class,
-        new SpannedTextExtractor(),
+        new CoveredTextExtractor(),
         WindowFeature.ORIENTATION_MIDDLE,
         0,
         3);
     WindowExtractor middleRevEx = new WindowExtractor(
         Token.class,
-        new SpannedTextExtractor(),
+        new CoveredTextExtractor(),
         WindowFeature.ORIENTATION_MIDDLE_REVERSE,
         0,
         3);
@@ -160,13 +160,13 @@ public class WindowExtractorTest extends DefaultTestBase {
   public void testExtractLeft() throws Throwable {
     WindowExtractor leftEx03 = new WindowExtractor(
         Token.class,
-        new SpannedTextExtractor(),
+        new CoveredTextExtractor(),
         WindowFeature.ORIENTATION_LEFT,
         0,
         3);
     WindowExtractor leftEx24 = new WindowExtractor(
         Token.class,
-        new SpannedTextExtractor(),
+        new CoveredTextExtractor(),
         WindowFeature.ORIENTATION_LEFT,
         2,
         4);
@@ -273,13 +273,13 @@ public class WindowExtractorTest extends DefaultTestBase {
   public void testExtractRight() throws Throwable {
     WindowExtractor rightEx03 = new WindowExtractor(
         Token.class,
-        new SpannedTextExtractor(),
+        new CoveredTextExtractor(),
         WindowFeature.ORIENTATION_RIGHT,
         0,
         3);
     WindowExtractor rightEx1030 = new WindowExtractor(
         Token.class,
-        new SpannedTextExtractor(),
+        new CoveredTextExtractor(),
         WindowFeature.ORIENTATION_RIGHT,
         10,
         30);
@@ -386,7 +386,7 @@ public class WindowExtractorTest extends DefaultTestBase {
     assertEquals("the island was", spanningToken.getCoveredText());
     WindowExtractor windowExtractor = new WindowExtractor(
         Token.class,
-        new SpannedTextExtractor(),
+        new CoveredTextExtractor(),
         WindowFeature.ORIENTATION_MIDDLE,
         0,
         2);
@@ -460,7 +460,7 @@ public class WindowExtractorTest extends DefaultTestBase {
     header.addToIndexes();
     assertEquals("5 6", header.getCoveredText());
 
-    SpannedTextExtractor wordExtractor = new SpannedTextExtractor();
+    CoveredTextExtractor wordExtractor = new CoveredTextExtractor();
 
     WindowExtractor windowExtractor = new WindowExtractor(
         Token.class,

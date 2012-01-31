@@ -27,7 +27,7 @@ import java.util.List;
 
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
-import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
+import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Token;
 import org.junit.Assert;
@@ -189,7 +189,7 @@ public class FeatureProliferatorTest extends DefaultTestBase {
     Token year = new Token(jCas, 12, 16);
 
     SimpleFeatureExtractor textAndLower = new ProliferatingExtractor(
-        new SpannedTextExtractor(),
+        new CoveredTextExtractor(),
         new LowerCaseProliferator());
     List<Feature> features = textAndLower.extract(jCas, hello);
     Assert.assertEquals(2, features.size());
@@ -200,7 +200,7 @@ public class FeatureProliferatorTest extends DefaultTestBase {
 
     String yearDigits = NumericTypeProliferator.YEAR_DIGITS;
     SimpleFeatureExtractor textAndCapsAndNums = new ProliferatingExtractor(
-        new SpannedTextExtractor(),
+        new CoveredTextExtractor(),
         new CapitalTypeProliferator(),
         new NumericTypeProliferator());
     features = textAndCapsAndNums.extract(jCas, year);
@@ -212,7 +212,7 @@ public class FeatureProliferatorTest extends DefaultTestBase {
 
     String initialUpper = CapitalTypeProliferator.INITIAL_UPPERCASE;
     SimpleFeatureExtractor textAndCapsAndLower = new ProliferatingExtractor(
-        new SpannedTextExtractor(),
+        new CoveredTextExtractor(),
         new CapitalTypeProliferator(),
         new LowerCaseProliferator());
     features = textAndCapsAndLower.extract(jCas, hello);

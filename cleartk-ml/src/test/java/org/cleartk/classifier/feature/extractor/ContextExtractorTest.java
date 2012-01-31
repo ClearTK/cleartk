@@ -39,7 +39,7 @@ import org.cleartk.classifier.feature.extractor.ContextExtractor.Following;
 import org.cleartk.classifier.feature.extractor.ContextExtractor.LastCovered;
 import org.cleartk.classifier.feature.extractor.ContextExtractor.Ngram;
 import org.cleartk.classifier.feature.extractor.ContextExtractor.Preceding;
-import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
+import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.test.CleartkTestBase;
 import org.cleartk.type.test.Chunk;
@@ -80,7 +80,7 @@ public class ContextExtractorTest extends CleartkTestBase {
   public void testBasic() throws Exception {
     ContextExtractor<Token> extractor = new ContextExtractor<Token>(
         Token.class,
-        new SpannedTextExtractor(),
+        new CoveredTextExtractor(),
         new Preceding(2),
         new Preceding(3, 6),
         new Covered(),
@@ -165,7 +165,7 @@ public class ContextExtractorTest extends CleartkTestBase {
   public void testCounts() throws Exception {
     ContextExtractor<Token> extractor = new ContextExtractor<Token>(
         Token.class,
-        new SpannedTextExtractor(),
+        new CoveredTextExtractor(),
         new Count(new Preceding(2)),
         new Count(new Covered()),
         new Count(new Following(1, 5)),
@@ -194,7 +194,7 @@ public class ContextExtractorTest extends CleartkTestBase {
   public void testNgram() throws Exception {
     ContextExtractor<Token> extractor = new ContextExtractor<Token>(
         Token.class,
-        new SpannedTextExtractor(),
+        new CoveredTextExtractor(),
         new Ngram(new Preceding(2)),
         new Ngram(new Preceding(3, 6)),
         new Ngram(new Preceding(1), new FirstCovered(1), new LastCovered(1)),
@@ -229,7 +229,7 @@ public class ContextExtractorTest extends CleartkTestBase {
   public void testFocus() throws Exception {
     ContextExtractor<Token> extractor = new ContextExtractor<Token>(
         Token.class,
-        new SpannedTextExtractor(),
+        new CoveredTextExtractor(),
         new Focus(),
         new Bag(new Preceding(1), new Focus()),
         new Ngram(new Following(2), new Focus()));
@@ -252,7 +252,7 @@ public class ContextExtractorTest extends CleartkTestBase {
 
     ContextExtractor<Chunk> chunkExtractor = new ContextExtractor<Chunk>(
         Chunk.class,
-        new SpannedTextExtractor(),
+        new CoveredTextExtractor(),
         new Focus());
     try {
       chunkExtractor.extract(this.jCas, jumped);
@@ -265,7 +265,7 @@ public class ContextExtractorTest extends CleartkTestBase {
   public void testBounds() throws Exception {
     ContextExtractor<Token> extractor = new ContextExtractor<Token>(
         Token.class,
-        new SpannedTextExtractor(),
+        new CoveredTextExtractor(),
         new Preceding(2),
         new LastCovered(1),
         new Following(3));
@@ -321,7 +321,7 @@ public class ContextExtractorTest extends CleartkTestBase {
   public void testExtractBetween() throws Exception {
     ContextExtractor<Token> extractor = new ContextExtractor<Token>(
         Token.class,
-        new SpannedTextExtractor(),
+        new CoveredTextExtractor(),
         new Bag(new Preceding(2)),
         new Covered(),
         new Ngram(new Following(3)));

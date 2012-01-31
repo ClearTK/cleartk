@@ -27,7 +27,7 @@ import java.util.List;
 
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
-import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
+import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.syntax.SyntaxTestBase;
 import org.cleartk.syntax.constituent.type.TreebankNode;
@@ -59,7 +59,7 @@ public class HeadWordExtractorTest extends SyntaxTestBase {
 
   @Test
   public void testNoTokens() throws Throwable {
-    HeadWordExtractor extractor = new HeadWordExtractor(new SpannedTextExtractor(), true);
+    HeadWordExtractor extractor = new HeadWordExtractor(new CoveredTextExtractor(), true);
     jCas.setDocumentText("foo");
     TreebankNode node = TreebankNodeUtility.newNode(jCas, 0, 3, "NN");
 
@@ -96,7 +96,7 @@ public class HeadWordExtractorTest extends SyntaxTestBase {
     TreebankNode homeNode = TreebankNodeUtility.newNode(jCas, 6, 10, "NN");
     TreebankNode vpNode = TreebankNodeUtility.newNode(jCas, "VP", ranNode, homeNode);
 
-    SpannedTextExtractor textExtractor = new SpannedTextExtractor();
+    CoveredTextExtractor textExtractor = new CoveredTextExtractor();
     TypePathExtractor posExtractor = new TypePathExtractor(TreebankNode.class, "nodeType");
     HeadWordExtractor extractor = new HeadWordExtractor(textExtractor);
 
@@ -134,7 +134,7 @@ public class HeadWordExtractorTest extends SyntaxTestBase {
     TreebankNode undertheboxNode = TreebankNodeUtility.newNode(jCas, "PP", underNode, theboxNode);
     TreebankNode tree = TreebankNodeUtility.newNode(jCas, "NP", catstoyNode, undertheboxNode);
 
-    SpannedTextExtractor textExtractor = new SpannedTextExtractor();
+    CoveredTextExtractor textExtractor = new CoveredTextExtractor();
     TypePathExtractor posExtractor = new TypePathExtractor(TreebankNode.class, "nodeType");
     HeadWordExtractor extractor;
 

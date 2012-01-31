@@ -35,8 +35,8 @@ import org.cleartk.classifier.feature.WindowNGramFeature;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.WindowExtractor;
 import org.cleartk.classifier.feature.extractor.WindowNGramExtractor;
+import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
-import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.proliferate.CapitalTypeProliferator;
 import org.cleartk.classifier.feature.proliferate.CharacterNGramProliferator;
 import org.cleartk.classifier.feature.proliferate.LowerCaseProliferator;
@@ -67,7 +67,7 @@ public class DefaultFeatureExtractor implements POSFeatureExtractor<Token, Sente
   public void initialize(UimaContext context) throws ResourceInitializationException {
     simpleExtractors = new ArrayList<SimpleFeatureExtractor>();
 
-    SimpleFeatureExtractor wordExtractor = new SpannedTextExtractor();
+    SimpleFeatureExtractor wordExtractor = new CoveredTextExtractor();
 
     int fromLeft = CharacterNGramProliferator.LEFT_TO_RIGHT;
     int fromRight = CharacterNGramProliferator.RIGHT_TO_LEFT;
