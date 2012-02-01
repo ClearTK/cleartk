@@ -20,7 +20,6 @@ package org.cleartk.classifier.weka;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.cleartk.classifier.Feature;
@@ -28,7 +27,6 @@ import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 
 import weka.core.Attribute;
 import weka.core.FastVector;
-import weka.core.Instance;
 import weka.core.Utils;
 
 /**
@@ -38,7 +36,7 @@ import weka.core.Utils;
  * 
  */
 
-public class WekaFeaturesEncoder implements FeaturesEncoder<Instance> {
+public class WekaFeaturesEncoder implements FeaturesEncoder<Iterable<Feature>> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -50,26 +48,11 @@ public class WekaFeaturesEncoder implements FeaturesEncoder<Instance> {
 		attributeMap = new HashMap<String, Attribute>();
 	}
 	
-	public Instance encodeAll(Iterable<Feature> features)  {
-		List<Feature> featureList = (List<Feature>) features;
-		
-		Instance instance = new Instance(attributes.size()+featureList.size());
+	public Iterable<Feature> encodeAll(Iterable<Feature> features)  {
 		for(Feature feature : features) {
-			Attribute attribute = featureToAttribute(feature);
-			Object featureValue = feature.getValue();
-			
-			if(featureValue instanceof Number) {
-				double attributeValue = ((Number)feature.getValue()).doubleValue();
-				instance.setValue(attribute, attributeValue);
-			} else if(featureValue instanceof Boolean) {
-				double attributeValue = (Boolean) featureValue ? 1.0d : -1.0d;
-				instance.setValue(attribute, attributeValue);
-			} else {
-				instance.setValue(attribute, featureValue.toString());
-			}
+			featureToAttribute(feature);
 		}
-		
-		return instance;
+		return features;
 	}
 
 	/**
@@ -78,7 +61,6 @@ public class WekaFeaturesEncoder implements FeaturesEncoder<Instance> {
 	 */
 	private Attribute featureToAttribute(Feature feature) {
 		String name = feature.getName();
-		name = Utils.quote(name);
 		Attribute attribute = attributeMap.get(name);
 		if(attribute == null) {
 			attribute = featureToAttribute(feature, attributes.size());
@@ -89,16 +71,15 @@ public class WekaFeaturesEncoder implements FeaturesEncoder<Instance> {
 	}
 
 	public static Attribute featureToAttribute(Feature feature, int attributeIndex) {
+		String name = Utils.quote(feature.getName());
 		Object value = feature.getValue();
-		String name = feature.getName();
-		name = Utils.quote(name);
 		Attribute attribute;
 		// if value is a number then create a numeric attribute
 		if (value instanceof Number) {
-			attribute = new Attribute(name, attributeIndex);
+			attribute = new Attribute(name);
 		}// if value is a boolean then create a numeric attribute
 		if (value instanceof Boolean) {
-			attribute = new Attribute(name, attributeIndex);
+			attribute = new Attribute(name);
 		}
 		// if value is an Enum thene create a nominal attribute
 		else if (value instanceof Enum) {
@@ -107,12 +88,12 @@ public class WekaFeaturesEncoder implements FeaturesEncoder<Instance> {
 			for (Object enumConstant : enumConstants) {
 				attributeValues.addElement(enumConstant.toString());
 			}
-			attribute = new Attribute(name, attributeValues, attributeIndex);
+			attribute = new Attribute(name, attributeValues);
 		}
 		// if value is not a number, boolean, or enum, then we will create a
 		// string attribute
 		else {
-			attribute = new Attribute(name, (FastVector) null, attributeIndex);
+			attribute = new Attribute(name, (FastVector) null);
 		}
 		return attribute;
 	}
@@ -121,6 +102,10 @@ public class WekaFeaturesEncoder implements FeaturesEncoder<Instance> {
 	
 	public FastVector getWekaAttributes() {
 		return attributes;
+	}
+
+	public Map<String, Attribute> getWekaAttributeMap() {
+		return attributeMap;
 	}
 
 }

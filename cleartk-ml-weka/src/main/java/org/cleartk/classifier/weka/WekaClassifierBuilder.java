@@ -20,9 +20,8 @@ package org.cleartk.classifier.weka;
 
 import java.io.File;
 
+import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.jar.ClassifierBuilder_ImplBase;
-
-import weka.core.Instance;
 /**
  * Copyright (c) 2012, Regents of the University of Colorado <br>
  * All rights reserved.
@@ -30,7 +29,7 @@ import weka.core.Instance;
  * 
  */
 
-public class WekaClassifierBuilder extends ClassifierBuilder_ImplBase<WekaClassifier, Instance, String, String> {
+public class WekaClassifierBuilder extends ClassifierBuilder_ImplBase<WekaClassifier, Iterable<Feature>, String, String> {
 
 	@Override
 	public File getTrainingDataFile(File dir) {

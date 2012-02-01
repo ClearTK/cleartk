@@ -21,12 +21,11 @@ package org.cleartk.classifier.weka;
 import java.io.IOException;
 
 import org.cleartk.classifier.DataWriter;
+import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
 import org.cleartk.classifier.jar.DataWriterFactory_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
-
-import weka.core.Instance;
 
 /**
  * Copyright (c) 2012, Regents of the University of Colorado <br>
@@ -35,7 +34,7 @@ import weka.core.Instance;
  * 
  */
 
-public class DefaultWekaDataWriterFactory extends DataWriterFactory_ImplBase<Instance, String, String>{
+public class DefaultWekaDataWriterFactory extends DataWriterFactory_ImplBase<Iterable<Feature>, String, String>{
 
 	  public static final String PARAM_RELATION_TAG = ConfigurationParameterFactory.createConfigurationParameterName(
 			  DefaultWekaDataWriterFactory.class,
