@@ -1,0 +1,15 @@
+This sub-project of ClearTK, cleartk-ml-weka, provides a UIMA wrapper for 
+the Weka machine learning library which can be found at http://www.cs.waikato.ac.nz/ml/weka/.  
+In order to comply with the license used by Weka, GPL v2.0, this project
+is also provided under the terms of the GPL v2.0 license.  This project should be 
+considered as a separate project from the rest of ClearTK and should not be distributed
+with the rest of ClearTK.  If you have a project that depends or makes use of 
+cleartk-ml-weka, then you should be aware that the GPL license is quite 
+different than the BSD-style license used throughout most of the rest of ClearTK.  As
+such, compliance with the GPL license may be significantly different and may require
+you to release your software under the same license if you redistribute the software.
+This notice is not intended as legal advice but rather to bring your attention to the 
+different license used here.  Please seek legal advice as required by your situation.  
+If you are affiliated with the University of Colorado at Boulder, you may contact 
+the technology transfer office for questions pertaining to this license.   
+

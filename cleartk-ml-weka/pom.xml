@@ -1,0 +1,44 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>cleartk-parent</artifactId>
+		<groupId>org.cleartk</groupId>
+		<version>1.1.0</version>
+	</parent>
+	<artifactId>cleartk-ml-weka</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>cleartk-weka</name>
+	<description>ClearTK wrapper for the WEKA machine learning library</description>
+	<url>http://cleartk.googlecode.com/</url>
+	<repositories>
+		<repository>
+			<id>cleartk-googlecode</id>
+			<url>http://cleartk.googlecode.com/svn/repo/</url>
+		</repository>
+	</repositories>
+	<dependencies>
+		<dependency>
+			<groupId>org.cleartk</groupId>
+			<artifactId>cleartk-ml</artifactId>
+			<version>1.1.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>weka</groupId>
+			<artifactId>weka</artifactId>
+			<version>3.6.3</version>
+			<type>jar</type>
+			<optional>false</optional>
+		</dependency>
+
+		<dependency>
+			<groupId>org.cleartk</groupId>
+			<artifactId>cleartk-test-util</artifactId>
+			<version>1.1.0</version>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+
+</project>
