@@ -44,7 +44,7 @@ public class WekaFeaturesEncoder implements FeaturesEncoder<Iterable<Feature>> {
 	private Map<String, Attribute> attributeMap;
 	
 	public WekaFeaturesEncoder() {
-		attributes = new FastVector(1000);
+		attributes = new FastVector();
 		attributeMap = new HashMap<String, Attribute>();
 	}
 	
@@ -78,7 +78,7 @@ public class WekaFeaturesEncoder implements FeaturesEncoder<Iterable<Feature>> {
 		if (value instanceof Number) {
 			attribute = new Attribute(name);
 		}// if value is a boolean then create a numeric attribute
-		if (value instanceof Boolean) {
+		else if (value instanceof Boolean) {
 			attribute = new Attribute(name);
 		}
 		// if value is an Enum thene create a nominal attribute

@@ -30,7 +30,6 @@ import org.cleartk.classifier.CleartkAnnotatorDescriptionFactory;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.test.DefaultTestBase;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 
@@ -62,7 +61,7 @@ public class WekaDataWriterTest extends DefaultTestBase {
 		}
 	}
 
-	@Ignore
+//	@Ignore
 	@Test
 	public void test1() throws Exception {
 		AnalysisEngineDescription dataWriterDescription = CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(Test1Annotator.class, typeSystemDescription, DefaultWekaDataWriterFactory.class, "target/weka-temp");
@@ -94,11 +93,10 @@ public class WekaDataWriterTest extends DefaultTestBase {
 		}
 	}
 
-	@Ignore
 	@Test
 	public void test2() throws Exception {
-		AnalysisEngineDescription dataWriterDescription = CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(Test2Annotator.class, typeSystemDescription, DefaultWekaDataWriterFactory.class, "target/weka-temp");
-		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(dataWriterDescription, DefaultWekaDataWriterFactory.PARAM_RELATION_TAG, "test-relation");
+		AnalysisEngineDescription dataWriterDescription = CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(Test2Annotator.class, typeSystemDescription, DefaultWekaDataWriterFactory.class, "target/weka-temp2");
+		AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(dataWriterDescription, DefaultWekaDataWriterFactory.PARAM_RELATION_TAG, "test2-relation");
 		dataWriterAnnotator.process(jCas);
 		dataWriterAnnotator.collectionProcessComplete();
 	}

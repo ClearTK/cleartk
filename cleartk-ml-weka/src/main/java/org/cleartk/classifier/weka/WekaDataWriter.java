@@ -20,7 +20,6 @@ package org.cleartk.classifier.weka;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -33,8 +32,8 @@ import org.cleartk.classifier.jar.DataWriter_ImplBase;
 
 import weka.core.Attribute;
 import weka.core.FastVector;
-import weka.core.Instance;
 import weka.core.Instances;
+import weka.core.SparseInstance;
 
 /**
  * Copyright (c) 2012, Regents of the University of Colorado <br>
@@ -47,8 +46,6 @@ import weka.core.Instances;
 
 public class WekaDataWriter extends DataWriter_ImplBase<WekaClassifierBuilder, Iterable<Feature>, String, String> {
 
-	private PrintWriter trainingDataWriter;
-	
 	private final String relationTag; 
 	
 	List<Iterable<Feature>> instanceFeatures;
@@ -82,7 +79,8 @@ public class WekaDataWriter extends DataWriter_ImplBase<WekaClassifierBuilder, I
 		instances.setClass(outcomeAttribute);
 	
 		for(int i=0; i < instanceFeatures.size(); i++) {
-			Instance instance = new Instance(attributes.size());
+			SparseInstance instance = new SparseInstance(instances.numAttributes());
+			
 			Iterable<Feature> features = instanceFeatures.get(i);
 			for(Feature feature : features) {
 				Attribute attribute = attributeMap.get(feature.getName());
@@ -103,7 +101,6 @@ public class WekaDataWriter extends DataWriter_ImplBase<WekaClassifierBuilder, I
 			instances.add(instance);
 		}
 		
-		
 		trainingDataWriter.write(instances.toString());
 		super.finish();
 	}
@@ -113,6 +110,7 @@ public class WekaDataWriter extends DataWriter_ImplBase<WekaClassifierBuilder, I
 		for (String outcome : outcomeValues) {
 			attributeValues.addElement(outcome);
 		}
+		//TODO make sure that "outcome" is not the name of an existing feature.
 		Attribute attribute = new Attribute("outcome", attributeValues);
 		return attribute; 
 	}
