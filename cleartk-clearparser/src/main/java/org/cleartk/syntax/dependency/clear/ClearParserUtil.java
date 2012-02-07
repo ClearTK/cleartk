@@ -35,15 +35,20 @@ import java.util.zip.ZipInputStream;
 import clear.decode.AbstractMultiDecoder;
 import clear.decode.OneVsAllDecoder;
 import clear.ftr.map.DepFtrMap;
+import clear.ftr.map.SRLFtrMap;
 import clear.ftr.xml.DepFtrXml;
+import clear.ftr.xml.SRLFtrXml;
 import clear.parse.AbstractDepParser;
 import clear.parse.AbstractParser;
+import clear.parse.AbstractSRLParser;
+import clear.parse.SRLParser;
 import clear.parse.ShiftEagerParser;
 import clear.parse.ShiftPopParser;
+import clear.reader.AbstractReader;
 
 /**
  * <br>
- * Copyright (c) 2011, Regents of the University of Colorado <br>
+ * Copyright (c) 2012, Regents of the University of Colorado <br>
  * All rights reserved.
  * <p>
  * 
@@ -56,6 +61,14 @@ import clear.parse.ShiftPopParser;
 
 public class ClearParserUtil {
 
+  static protected final String ENTRY_PARSER = "parser";
+
+  static protected final String ENTRY_LEXICA = "lexica";
+
+  static protected final String ENTRY_MODEL = "model";
+
+  static protected final String ENTRY_FEATURE = "feature";
+
   public static AbstractDepParser createParser(InputStream inputStream, String algorithmName)
       throws IOException {
     ZipInputStream zin = new ZipInputStream(inputStream);
@@ -64,10 +77,6 @@ public class ClearParserUtil {
     DepFtrXml xml = null;
     DepFtrMap map = null;
     AbstractMultiDecoder decoder = null;
-
-    final String ENTRY_LEXICA = "lexica";
-    final String ENTRY_MODEL = "model";
-    final String ENTRY_FEATURE = "feature";
 
     while ((zEntry = zin.getNextEntry()) != null) {
       if (zEntry.getName().equals(ENTRY_FEATURE)) {
@@ -103,4 +112,44 @@ public class ClearParserUtil {
       return null;
   }
 
+  public static AbstractSRLParser createSRLParser(InputStream inputStream) throws IOException {
+    // Most of the code taken from ClearParser class AbstractCommon.java method getLabeler()
+    final String s_language = AbstractReader.LANG_EN;
+
+    ZipInputStream zin = new ZipInputStream(inputStream);
+    ZipEntry zEntry;
+    String entry;
+    SRLFtrXml xml = null;
+    SRLFtrMap[] map = new SRLFtrMap[2];
+    OneVsAllDecoder[] decoder = new OneVsAllDecoder[2];
+
+    while ((zEntry = zin.getNextEntry()) != null) {
+      if (zEntry.getName().equals(ENTRY_FEATURE)) {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(zin));
+        StringBuilder build = new StringBuilder();
+        String string;
+
+        while ((string = reader.readLine()) != null) {
+          build.append(string);
+          build.append("\n");
+        }
+
+        xml = new SRLFtrXml(new ByteArrayInputStream(build.toString().getBytes()));
+
+      } else if ((entry = zEntry.getName()).startsWith(ENTRY_LEXICA)) {
+        int i = Integer.parseInt(entry.substring(entry.lastIndexOf(".") + 1));
+        map[i] = new SRLFtrMap(new BufferedReader(new InputStreamReader(zin)));
+
+      } else if (zEntry.getName().startsWith(ENTRY_MODEL)) {
+        int i = Integer.parseInt(entry.substring(entry.lastIndexOf(".") + 1));
+        decoder[i] = new OneVsAllDecoder(new BufferedReader(new InputStreamReader(zin)));
+      }
+
+    }
+
+    AbstractSRLParser labeler = new SRLParser(AbstractParser.FLAG_PREDICT, xml, map, decoder);
+    labeler.setLanguage(s_language);
+
+    return labeler;
+  }
 }
