@@ -30,6 +30,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,7 +48,6 @@ import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.transform.TrainableExtractor_ImplBase;
 import org.cleartk.classifier.feature.transform.TransformableFeature;
-import org.cleartk.classifier.feature.transform.util.MeanStddevMap.MeanStddevTuple;
 
 /**
  * Scales features produced by its subextractor to have mean=0, stddev=1 for a given feature
@@ -93,7 +95,7 @@ public class ZeroMeanUnitStddevExtractor<OUTCOME_T> extends TrainableExtractor_I
       // We have trained / loaded a ZMUS model, so now fix up the values
       for (Feature feature : extracted) {
         String featureName = feature.getName();
-        MeanStddevTuple stats = this.meanStddevMap.getValues(featureName);
+        MeanStddevMap.MeanStddevTuple stats = this.meanStddevMap.getValues(featureName);
         double value = ((Number) feature.getValue()).doubleValue();
         result.add(new Feature("ZMUS_" + featureName, (value - stats.mean) / stats.stddev));
       }
@@ -186,5 +188,118 @@ public class ZeroMeanUnitStddevExtractor<OUTCOME_T> extends TrainableExtractor_I
     }
 
     this.isTrained = true;
+  }
+
+  private static class MeanStddevMap<KEY_T> {
+    public static class MeanStddevTuple {
+
+      public MeanStddevTuple(double mean, double stddev) {
+        this.mean = mean;
+        this.stddev = stddev;
+      }
+
+      public double mean;
+
+      public double stddev;
+    }
+
+    private Map<KEY_T, MeanStddevTuple> table;
+
+    public MeanStddevMap() {
+      this.table = new HashMap<KEY_T, MeanStddevTuple>();
+
+    }
+
+    public MeanStddevTuple getValues(KEY_T key) {
+      return this.table.get(key);
+    }
+
+    public void setValues(KEY_T key, double mean, double stddev) {
+      this.table.put(key, new MeanStddevTuple(mean, stddev));
+    }
+  }
+
+  public class MeanVarianceRunningStat implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    public MeanVarianceRunningStat() {
+      this.clear();
+    }
+
+    public void init(int n, double mean, double variance) {
+      this.numSamples = n;
+      this.meanNew = mean;
+      this.varNew = variance;
+    }
+
+    public void add(double x) {
+      numSamples++;
+
+      if (this.numSamples == 1) {
+        meanOld = meanNew = x;
+        varOld = 0.0;
+      } else {
+        meanNew = meanOld + (x - meanOld) / numSamples;
+        varNew = varOld + (x - meanOld) * (x - meanNew);
+
+        // set up for next iteration
+        meanOld = meanNew;
+        varOld = varNew;
+      }
+    }
+
+    public void clear() {
+      this.numSamples = 0;
+    }
+
+    public int getNumSamples() {
+      return this.numSamples;
+    }
+
+    public double mean() {
+      return (this.numSamples > 0) ? meanNew : 0.0;
+    }
+
+    public double variance() {
+      return (this.numSamples > 1) ? varNew / (this.numSamples) : 0.0;
+    }
+
+    public double stddev() {
+      return Math.sqrt(this.variance());
+    }
+
+    public double variancePop() {
+      return (this.numSamples > 1) ? varNew / (this.numSamples - 1) : 0.0;
+    }
+
+    public double stddevPop() {
+      return Math.sqrt(this.variancePop());
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+      out.defaultWriteObject();
+      out.writeInt(numSamples);
+      out.writeDouble(meanNew);
+      out.writeDouble(varNew);
+
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+      in.defaultReadObject();
+      numSamples = in.readInt();
+      meanOld = meanNew = in.readDouble();
+      varOld = varNew = in.readDouble();
+    }
+
+    private int numSamples;
+
+    private double meanOld;
+
+    private double meanNew;
+
+    private double varOld;
+
+    private double varNew;
   }
 }
