@@ -43,9 +43,8 @@ import org.cleartk.examples.ExampleComponents;
 import org.cleartk.syntax.opennlp.SentenceAnnotator;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.tokenizer.TokenAnnotator;
+import org.cleartk.util.Options_ImplBase;
 import org.cleartk.util.cr.FilesCollectionReader;
-import org.kohsuke.args4j.CmdLineException;
-import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.pipeline.SimplePipeline;
@@ -61,41 +60,28 @@ import org.uimafit.pipeline.SimplePipeline;
 
 public class Step1WriteTrainingData {
 
-  public static class Args {
+  public static class Options extends Options_ImplBase {
     @Option(
         name = "-d",
         aliases = "--documentDirectory",
         usage = "specify the directory containing the training documents.  When we run this example we point to a directory containing the 20 newsgroup corpus - i.e. a directory called '20news-bydate-train'")
-    public String documentDirectory = "src/main/resources/data/2newsgroups/2news-bydate-train";
+    public File documentDirectory = new File(
+        "src/main/resources/data/2newsgroups/2news-bydate-train");
 
     @Option(
         name = "-o",
-        aliases = "--outputDirectoryName",
+        aliases = "--outputDirectory",
         usage = "specify the directory to write the training data to")
-    public String outputDirectoryName = "target/examples/transform";
-
-    public static Args parseArguments(String[] stringArgs) {
-      Args args = new Args();
-      CmdLineParser parser = new CmdLineParser(args);
-      try {
-        parser.parseArgument(stringArgs);
-      } catch (CmdLineException e) {
-        e.printStackTrace();
-        parser.printUsage(System.err);
-        System.exit(1);
-      }
-      return args;
-    }
+    public File outputDirectory = new File("target/examples/transform");
   }
 
-  public static void main(String[] stringArgs) throws UIMAException, IOException {
+  public static void main(String[] args) throws UIMAException, IOException {
+    Options options = new Options();
+    options.parseOptions(args);
 
-    Args args = Args.parseArguments(stringArgs);
-    String documentDirectory = args.documentDirectory;
-    String outputDirectoryName = args.outputDirectoryName;
-    URI tfIdfDataURI = DocumentClassificationAnnotator.createTokenTfIdfDataURI(outputDirectoryName);
-    URI zmusDataURI = DocumentClassificationAnnotator.createZmusDataURI(outputDirectoryName);
-    URI minmaxDataURI = DocumentClassificationAnnotator.createMinMaxDataURI(outputDirectoryName);
+    URI tfIdfDataURI = DocumentClassificationAnnotator.createTokenTfIdfDataURI(options.outputDirectory);
+    URI zmusDataURI = DocumentClassificationAnnotator.createZmusDataURI(options.outputDirectory);
+    URI minmaxDataURI = DocumentClassificationAnnotator.createMinMaxDataURI(options.outputDirectory);
 
     // First pass just write serialized instances
     System.out.println("Write Instances");
@@ -105,16 +91,10 @@ public class Step1WriteTrainingData {
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         DefaultInstanceDataWriterFactory.class.getName(),
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
-        outputDirectoryName,
-        DocumentClassificationAnnotator.PARAM_TFIDF_URI,
-        null,
-        DocumentClassificationAnnotator.PARAM_ZMUS_URI,
-        null,
-        DocumentClassificationAnnotator.PARAM_MINMAX_URI,
-        null);
+        options.outputDirectory.getPath());
 
     SimplePipeline.runPipeline(
-        FilesCollectionReader.getCollectionReader(documentDirectory),
+        FilesCollectionReader.getCollectionReader(options.documentDirectory.getPath()),
         SentenceAnnotator.getDescription(),
         TokenAnnotator.getDescription(),
         DefaultSnowballStemmer.getDescription("English"),
@@ -124,8 +104,7 @@ public class Step1WriteTrainingData {
         documentClassificationAnnotatorDescription);
 
     // Collect TF*IDF stats
-    File outputDirectory = new File(outputDirectoryName);
-    Iterable<Instance<String>> instances = InstanceStream.loadFromDirectory(outputDirectory);
+    Iterable<Instance<String>> instances = InstanceStream.loadFromDirectory(options.outputDirectory);
     TfidfExtractor<String> extractor = new TfidfExtractor<String>(
         DocumentClassificationAnnotator.TFIDF_EXTRACTOR_KEY);
     extractor.train(instances);
@@ -150,7 +129,7 @@ public class Step1WriteTrainingData {
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         DefaultMultiClassLIBSVMDataWriterFactory.class.getName(),
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
-        outputDirectoryName,
+        options.outputDirectory.getPath(),
         DocumentClassificationAnnotator.PARAM_TFIDF_URI,
         tfIdfDataURI.toString(),
         DocumentClassificationAnnotator.PARAM_ZMUS_URI,
@@ -159,7 +138,7 @@ public class Step1WriteTrainingData {
         minmaxDataURI.toString());
 
     SimplePipeline.runPipeline(
-        FilesCollectionReader.getCollectionReader(documentDirectory),
+        FilesCollectionReader.getCollectionReader(options.documentDirectory.getPath()),
         SentenceAnnotator.getDescription(),
         TokenAnnotator.getDescription(),
         DefaultSnowballStemmer.getDescription("English"),

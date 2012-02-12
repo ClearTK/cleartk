@@ -105,17 +105,17 @@ public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
 
   private CombinedExtractor extractor;
 
-  public static URI createTokenTfIdfDataURI(String outputDirectoryName) {
+  public static URI createTokenTfIdfDataURI(File outputDirectoryName) {
     File f = new File(outputDirectoryName, TFIDF_EXTRACTOR_KEY + "_tfidf_extractor.dat");
     return f.toURI();
   }
 
-  public static URI createZmusDataURI(String outputDirectoryName) {
+  public static URI createZmusDataURI(File outputDirectoryName) {
     File f = new File(outputDirectoryName, ZMUS_EXTRACTOR_KEY + "_zmus_extractor.dat");
     return f.toURI();
   }
 
-  public static URI createMinMaxDataURI(String outputDirectoryName) {
+  public static URI createMinMaxDataURI(File outputDirectoryName) {
     File f = new File(outputDirectoryName, MINMAX_EXTRACTOR_KEY + "_minmax_extractor.dat");
     return f.toURI();
   }
