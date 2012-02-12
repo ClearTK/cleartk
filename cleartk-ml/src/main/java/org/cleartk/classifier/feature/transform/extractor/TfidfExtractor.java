@@ -109,7 +109,7 @@ public class TfidfExtractor<OUTCOME_T> extends TrainableExtractor_ImplBase<OUTCO
   }
 
   @Override
-  public void train(Iterable<Instance<OUTCOME_T>> instances) throws CleartkExtractorException {
+  public void train(Iterable<Instance<OUTCOME_T>> instances) {
 
     // Add instance's term frequencies to the global counts
     for (Instance<OUTCOME_T> instance : instances) {
@@ -135,12 +135,12 @@ public class TfidfExtractor<OUTCOME_T> extends TrainableExtractor_ImplBase<OUTCO
   }
 
   @Override
-  public void save(URI documentFreqDataURI) throws CleartkExtractorException {
+  public void save(URI documentFreqDataURI) throws IOException {
     this.idfMap.save(documentFreqDataURI);
   }
 
   @Override
-  public void load(URI documentFreqDataURI) throws CleartkExtractorException {
+  public void load(URI documentFreqDataURI) throws IOException {
     this.idfMap.load(documentFreqDataURI);
     this.isTrained = true;
   }
@@ -172,43 +172,34 @@ public class TfidfExtractor<OUTCOME_T> extends TrainableExtractor_ImplBase<OUTCO
       return Math.log((this.totalDocumentCount + 1) / (df + 1));
     }
 
-    public void save(URI outputURI) {
+    public void save(URI outputURI) throws IOException {
       File out = new File(outputURI);
       BufferedWriter writer = null;
-      try {
-        writer = new BufferedWriter(new FileWriter(out));
-        writer.append(String.format("#NUM DOCUMENTS\t%d\n", this.totalDocumentCount));
-        for (Multiset.Entry<String> entry : this.documentFreqMap.entrySet()) {
-          writer.append(String.format("%s\t%d\n", entry.getElement(), entry.getCount()));
-        }
-        writer.close();
-      } catch (IOException e) {
-        e.printStackTrace();
+      writer = new BufferedWriter(new FileWriter(out));
+      writer.append(String.format("#NUM DOCUMENTS\t%d\n", this.totalDocumentCount));
+      for (Multiset.Entry<String> entry : this.documentFreqMap.entrySet()) {
+        writer.append(String.format("%s\t%d\n", entry.getElement(), entry.getCount()));
       }
+      writer.close();
     }
 
-    public void load(URI inputURI) {
+    public void load(URI inputURI) throws IOException {
       File in = new File(inputURI);
       BufferedReader reader = null;
       // this.documentFreqMap = LinkedHashMultiset.create();
-      try {
-        reader = new BufferedReader(new FileReader(in));
-        // First line specifies the number of documents
-        String firstLine = reader.readLine();
-        String[] keyValuePair = firstLine.split("\\t");
-        this.totalDocumentCount = Integer.parseInt(keyValuePair[1]);
+      reader = new BufferedReader(new FileReader(in));
+      // First line specifies the number of documents
+      String firstLine = reader.readLine();
+      String[] keyValuePair = firstLine.split("\\t");
+      this.totalDocumentCount = Integer.parseInt(keyValuePair[1]);
 
-        // The rest of the lines are the term counts
-        String line = null;
-        while ((line = reader.readLine()) != null) {
-          String[] termFreqPair = line.split("\\t");
-          this.documentFreqMap.add(termFreqPair[0], Integer.parseInt(termFreqPair[1]));
-        }
-
-        reader.close();
-      } catch (IOException e) {
-        e.printStackTrace();
+      // The rest of the lines are the term counts
+      String line = null;
+      while ((line = reader.readLine()) != null) {
+        String[] termFreqPair = line.split("\\t");
+        this.documentFreqMap.add(termFreqPair[0], Integer.parseInt(termFreqPair[1]));
       }
+      reader.close();
     }
   }
 

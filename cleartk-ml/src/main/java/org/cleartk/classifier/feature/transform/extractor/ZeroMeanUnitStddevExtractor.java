@@ -39,7 +39,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
@@ -109,7 +108,7 @@ public class ZeroMeanUnitStddevExtractor<OUTCOME_T> extends TrainableExtractor_I
   }
 
   @Override
-  public void train(Iterable<Instance<OUTCOME_T>> instances) throws CleartkExtractorException {
+  public void train(Iterable<Instance<OUTCOME_T>> instances) {
 
     // keep a running mean and standard deviation for all applicable features
     for (Instance<OUTCOME_T> instance : instances) {
@@ -127,7 +126,7 @@ public class ZeroMeanUnitStddevExtractor<OUTCOME_T> extends TrainableExtractor_I
     this.isTrained = true;
   }
 
-  private void updateFeatureStats(Feature feature) throws CleartkExtractorException {
+  private void updateFeatureStats(Feature feature) {
     String featureName = feature.getName();
     Object featureValue = feature.getValue();
     if (featureValue instanceof Number) {
@@ -140,52 +139,41 @@ public class ZeroMeanUnitStddevExtractor<OUTCOME_T> extends TrainableExtractor_I
       }
       stats.add(((Number) featureValue).doubleValue());
     } else {
-      throw new CleartkExtractorException(
-          "Cannot normalize non-numeric feature values",
-          AnalysisEngineProcessException.ANNOTATOR_EXCEPTION,
-          (Object) null);
+      throw new IllegalArgumentException("Cannot normalize non-numeric feature values");
     }
   }
 
   @Override
-  public void save(URI zmusDataUri) throws CleartkExtractorException {
+  public void save(URI zmusDataUri) throws IOException {
     // Write out tab separated values: feature_name, mean, stddev
     File out = new File(zmusDataUri);
     BufferedWriter writer = null;
-    try {
-      writer = new BufferedWriter(new FileWriter(out));
+    writer = new BufferedWriter(new FileWriter(out));
 
-      for (Map.Entry<String, MeanVarianceRunningStat> entry : this.featureStatsMap.entrySet()) {
-        MeanVarianceRunningStat stats = entry.getValue();
-        writer.append(String.format("%s\t%f\t%f\n", entry.getKey(), stats.mean(), stats.stddev()));
-      }
-      writer.close();
-    } catch (IOException e) {
-      e.printStackTrace();
+    for (Map.Entry<String, MeanVarianceRunningStat> entry : this.featureStatsMap.entrySet()) {
+      MeanVarianceRunningStat stats = entry.getValue();
+      writer.append(String.format("%s\t%f\t%f\n", entry.getKey(), stats.mean(), stats.stddev()));
     }
+    writer.close();
   }
 
   @Override
-  public void load(URI zmusDataUri) throws CleartkExtractorException {
+  public void load(URI zmusDataUri) throws IOException {
     // Reads in tab separated values (feature name, mean, stddev)
     File in = new File(zmusDataUri);
     BufferedReader reader = null;
     this.meanStddevMap = new MeanStddevMap<String>();
-    try {
-      reader = new BufferedReader(new FileReader(in));
-      String line = null;
-      while ((line = reader.readLine()) != null) {
-        String[] featureMeanStddev = line.split("\\t");
-        this.meanStddevMap.setValues(
-            featureMeanStddev[0],
-            Double.parseDouble(featureMeanStddev[1]),
-            Double.parseDouble(featureMeanStddev[2]));
-      }
-
-      reader.close();
-    } catch (IOException e) {
-      e.printStackTrace();
+    reader = new BufferedReader(new FileReader(in));
+    String line = null;
+    while ((line = reader.readLine()) != null) {
+      String[] featureMeanStddev = line.split("\\t");
+      this.meanStddevMap.setValues(
+          featureMeanStddev[0],
+          Double.parseDouble(featureMeanStddev[1]),
+          Double.parseDouble(featureMeanStddev[2]));
     }
+
+    reader.close();
 
     this.isTrained = true;
   }

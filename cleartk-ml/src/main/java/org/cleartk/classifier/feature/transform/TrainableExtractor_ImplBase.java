@@ -22,8 +22,7 @@ public abstract class TrainableExtractor_ImplBase<OUTCOME_T> implements
    * @return True if feature is eligible, False if not
    * @throws CleartkExtractorException
    */
-  protected List<TransformableFeature> filter(List<Feature> features)
-      throws CleartkExtractorException {
+  protected List<TransformableFeature> filter(List<Feature> features) {
     ArrayList<TransformableFeature> filtered = new ArrayList<TransformableFeature>();
     for (Feature feature : features) {
       if (feature instanceof TransformableFeature && this.name.equals(feature.getName())) {

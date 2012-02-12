@@ -24,6 +24,7 @@
 package org.cleartk.examples.featuretransformation;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
@@ -122,14 +123,17 @@ public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
 
-    TfidfExtractor<String> tfIdfExtractor = initTfIdfExtractor();
-    ZeroMeanUnitStddevExtractor<String> zmusExtractor = initZmusExtractor();
-    MinMaxNormalizationExtractor<String> minmaxExtractor = initMinMaxExtractor();
-
-    this.extractor = new CombinedExtractor(tfIdfExtractor, zmusExtractor, minmaxExtractor);
+    try {
+      TfidfExtractor<String> tfIdfExtractor = initTfIdfExtractor();
+      ZeroMeanUnitStddevExtractor<String> zmusExtractor = initZmusExtractor();
+      MinMaxNormalizationExtractor<String> minmaxExtractor = initMinMaxExtractor();
+      this.extractor = new CombinedExtractor(tfIdfExtractor, zmusExtractor, minmaxExtractor);
+    } catch (IOException e) {
+      throw new ResourceInitializationException(e);
+    }
   }
 
-  private TfidfExtractor<String> initTfIdfExtractor() {
+  private TfidfExtractor<String> initTfIdfExtractor() throws IOException {
     ContextExtractor<Token> countsExtractor = new ContextExtractor<Token>(
         Token.class,
         new CoveredTextExtractor(),
@@ -140,16 +144,12 @@ public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
         countsExtractor);
 
     if (this.tfIdfUri != null) {
-      try {
-        tfIdfExtractor.load(this.tfIdfUri);
-      } catch (CleartkExtractorException e) {
-        e.printStackTrace();
-      }
+      tfIdfExtractor.load(this.tfIdfUri);
     }
     return tfIdfExtractor;
   }
 
-  private ZeroMeanUnitStddevExtractor<String> initZmusExtractor() {
+  private ZeroMeanUnitStddevExtractor<String> initZmusExtractor() throws IOException {
     CombinedExtractor featuresToNormalizeExtractor = new CombinedExtractor(
         new CountAnnotationExtractor(Sentence.class),
         new CountAnnotationExtractor(Token.class));
@@ -159,17 +159,13 @@ public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
         featuresToNormalizeExtractor);
 
     if (this.zmusUri != null) {
-      try {
-        zmusExtractor.load(this.zmusUri);
-      } catch (CleartkExtractorException e) {
-        e.printStackTrace();
-      }
+      zmusExtractor.load(this.zmusUri);
     }
 
     return zmusExtractor;
   }
 
-  private MinMaxNormalizationExtractor<String> initMinMaxExtractor() {
+  private MinMaxNormalizationExtractor<String> initMinMaxExtractor() throws IOException {
     CombinedExtractor featuresToNormalizeExtractor = new CombinedExtractor(
         new CountAnnotationExtractor(Sentence.class),
         new CountAnnotationExtractor(Token.class));
@@ -179,11 +175,7 @@ public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
         featuresToNormalizeExtractor);
 
     if (this.minmaxUri != null) {
-      try {
-        minmaxExtractor.load(this.minmaxUri);
-      } catch (CleartkExtractorException e) {
-        e.printStackTrace();
-      }
+      minmaxExtractor.load(this.minmaxUri);
     }
 
     return minmaxExtractor;

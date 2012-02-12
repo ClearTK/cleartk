@@ -1,5 +1,6 @@
 package org.cleartk.classifier.feature.transform;
 
+import java.io.IOException;
 import java.net.URI;
 
 import org.cleartk.classifier.Instance;
@@ -15,7 +16,7 @@ public interface TrainableExtractor<OUTCOME_T> {
    *          - URI pointing to the output location for saving statistics
    * @throws CleartkExtractorException
    */
-  public void train(Iterable<Instance<OUTCOME_T>> instances) throws CleartkExtractorException;
+  public void train(Iterable<Instance<OUTCOME_T>> instances);
 
   /**
    * Saves statistics from train in location URI
@@ -23,7 +24,7 @@ public interface TrainableExtractor<OUTCOME_T> {
    * @param uri
    * @throws CleartkExtractorException
    */
-  public void save(URI uri) throws CleartkExtractorException;
+  public void save(URI uri) throws IOException;
 
   /**
    * Loads statistics from location URI
@@ -31,5 +32,5 @@ public interface TrainableExtractor<OUTCOME_T> {
    * @param uri
    * @throws CleartkExtractorException
    */
-  public void load(URI uri) throws CleartkExtractorException;
+  public void load(URI uri) throws IOException;
 }
