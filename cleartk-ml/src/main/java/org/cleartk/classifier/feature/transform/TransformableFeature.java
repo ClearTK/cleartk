@@ -47,26 +47,31 @@ public class TransformableFeature extends Feature {
 
   protected List<Feature> features;
 
+  private static final String UNSUPPORTED_OPERATION_EXCEPTION_MESSAGE = "This is a temporary "
+      + "place-holder feature that cannot be written by most data writers. Instead, it must be "
+      + "written with an " + InstanceDataWriter.class.getName() + "and then the instances should"
+      + "be transformed by the appropriate " + TrainableFromInstances.class.getName();
+
   // Following are unsupported to prevent anything but InstanceDataWriter from writing transformable
   // features.
   @Override
   public Object getValue() {
-    throw new UnsupportedOperationException();
+    throw new UnsupportedOperationException(UNSUPPORTED_OPERATION_EXCEPTION_MESSAGE);
   }
 
   @Override
   public void setValue(Object value) {
-    throw new UnsupportedOperationException();
+    throw new UnsupportedOperationException(UNSUPPORTED_OPERATION_EXCEPTION_MESSAGE);
   }
 
   @Override
   public String getName() {
-    throw new UnsupportedOperationException();
+    throw new UnsupportedOperationException(UNSUPPORTED_OPERATION_EXCEPTION_MESSAGE);
   }
 
   @Override
   public void setName(String name) {
-    throw new UnsupportedOperationException();
+    throw new UnsupportedOperationException(UNSUPPORTED_OPERATION_EXCEPTION_MESSAGE);
   }
 
   public List<Feature> getFeatures() {
