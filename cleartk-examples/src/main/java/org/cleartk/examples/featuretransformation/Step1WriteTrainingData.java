@@ -133,5 +133,6 @@ public class Step1WriteTrainingData {
       instance = minmaxExtractor.transform(instance);
       dataWriter.write(instance);
     }
+    dataWriter.finish();
   }
 }
