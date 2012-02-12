@@ -22,7 +22,7 @@
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
-package org.cleartk.classifier.feature.transform.util;
+package org.cleartk.classifier.feature.transform.extractor;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

@@ -22,7 +22,7 @@
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
-package org.cleartk.classifier.feature.transform.util;
+package org.cleartk.classifier.feature.transform.extractor;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -30,6 +30,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.URI;
 import java.util.ArrayList;
@@ -48,8 +50,7 @@ import org.cleartk.classifier.feature.transform.TrainableExtractor_ImplBase;
 import org.cleartk.classifier.feature.transform.TransformableFeature;
 
 /**
- * Scales features extracted by its subextractor to range 0-1, by scaling by the minimum and maximum
- * values
+ * Scales features produced by its subextractor to have mean=0, stddev=1 for a given feature
  * <p>
  * 
  * Copyright (c) 2012, Regents of the University of Colorado <br>
@@ -58,32 +59,30 @@ import org.cleartk.classifier.feature.transform.TransformableFeature;
  * @author Lee Becker
  * 
  */
-public class MinMaxNormalizationExtractor<OUTCOME_T> extends TrainableExtractor_ImplBase<OUTCOME_T>
+public class ZeroMeanUnitStddevExtractor<OUTCOME_T> extends TrainableExtractor_ImplBase<OUTCOME_T>
     implements SimpleFeatureExtractor {
-
-  private String key;
 
   private SimpleFeatureExtractor subExtractor;
 
   private boolean isTrained;
 
   // This is accumulated, totaled, and written out during training
-  private Map<String, MinMaxRunningStat> featureStatsMap;
+  private Map<String, MeanVarianceRunningStat> featureStatsMap;
 
   // This is read in after training for use in transformation
-  private MinMaxMap<String> minMaxMap;
+  private MeanStddevMap<String> meanStddevMap;
 
-  public MinMaxNormalizationExtractor(String name) {
+  public ZeroMeanUnitStddevExtractor(String name) {
     super(name);
     this.isTrained = false;
-    this.featureStatsMap = new HashMap<String, MinMaxRunningStat>();
+    this.featureStatsMap = new HashMap<String, MeanVarianceRunningStat>();
   }
 
-  public MinMaxNormalizationExtractor(String name, SimpleFeatureExtractor subExtractor) {
+  public ZeroMeanUnitStddevExtractor(String name, SimpleFeatureExtractor subExtractor) {
     super(name);
     this.subExtractor = subExtractor;
     this.isTrained = false;
-    this.featureStatsMap = new HashMap<String, MinMaxRunningStat>();
+    this.featureStatsMap = new HashMap<String, MeanVarianceRunningStat>();
   }
 
   @Override
@@ -93,18 +92,17 @@ public class MinMaxNormalizationExtractor<OUTCOME_T> extends TrainableExtractor_
     List<Feature> extracted = this.subExtractor.extract(view, focusAnnotation);
     List<Feature> result = new ArrayList<Feature>();
     if (this.isTrained) {
-      // We have trained / loaded a MinMax model, so now fix up the values
+      // We have trained / loaded a ZMUS model, so now fix up the values
       for (Feature feature : extracted) {
         String featureName = feature.getName();
-        MinMaxNormalizationExtractor.MinMaxMap.MinMaxPair stats = this.minMaxMap.getValues(featureName);
+        MeanStddevMap.MeanStddevTuple stats = this.meanStddevMap.getValues(featureName);
         double value = ((Number) feature.getValue()).doubleValue();
-        result.add(new Feature("MINMAX_NORMED_" + featureName, (value - stats.min)
-            / (stats.max - stats.min)));
+        result.add(new Feature("ZMUS_" + featureName, (value - stats.mean) / stats.stddev));
       }
     } else {
       // We haven't trained this extractor yet, so just mark the existing features
       // for future modification, by creating one mega container feature
-      result.add(new TransformableFeature(this.key, extracted));
+      result.add(new TransformableFeature(this.name, extracted));
     }
 
     return result;
@@ -133,11 +131,11 @@ public class MinMaxNormalizationExtractor<OUTCOME_T> extends TrainableExtractor_
     String featureName = feature.getName();
     Object featureValue = feature.getValue();
     if (featureValue instanceof Number) {
-      MinMaxRunningStat stats;
+      MeanVarianceRunningStat stats;
       if (this.featureStatsMap.containsKey(featureName)) {
         stats = this.featureStatsMap.get(featureName);
       } else {
-        stats = new MinMaxRunningStat();
+        stats = new MeanVarianceRunningStat();
         this.featureStatsMap.put(featureName, stats);
       }
       stats.add(((Number) featureValue).doubleValue());
@@ -157,9 +155,9 @@ public class MinMaxNormalizationExtractor<OUTCOME_T> extends TrainableExtractor_
     try {
       writer = new BufferedWriter(new FileWriter(out));
 
-      for (Map.Entry<String, MinMaxRunningStat> entry : this.featureStatsMap.entrySet()) {
-        MinMaxRunningStat stats = entry.getValue();
-        writer.append(String.format("%s\t%f\t%f\n", entry.getKey(), stats.min(), stats.max()));
+      for (Map.Entry<String, MeanVarianceRunningStat> entry : this.featureStatsMap.entrySet()) {
+        MeanVarianceRunningStat stats = entry.getValue();
+        writer.append(String.format("%s\t%f\t%f\n", entry.getKey(), stats.mean(), stats.stddev()));
       }
       writer.close();
     } catch (IOException e) {
@@ -169,16 +167,16 @@ public class MinMaxNormalizationExtractor<OUTCOME_T> extends TrainableExtractor_
 
   @Override
   public void load(URI zmusDataUri) throws CleartkExtractorException {
-    // Reads in tab separated values (feature name, min, max)
+    // Reads in tab separated values (feature name, mean, stddev)
     File in = new File(zmusDataUri);
     BufferedReader reader = null;
-    this.minMaxMap = new MinMaxMap<String>();
+    this.meanStddevMap = new MeanStddevMap<String>();
     try {
       reader = new BufferedReader(new FileReader(in));
       String line = null;
       while ((line = reader.readLine()) != null) {
         String[] featureMeanStddev = line.split("\\t");
-        this.minMaxMap.setValues(
+        this.meanStddevMap.setValues(
             featureMeanStddev[0],
             Double.parseDouble(featureMeanStddev[1]),
             Double.parseDouble(featureMeanStddev[2]));
@@ -192,91 +190,116 @@ public class MinMaxNormalizationExtractor<OUTCOME_T> extends TrainableExtractor_
     this.isTrained = true;
   }
 
-  public static class MinMaxMap<KEY_T> {
-    public static class MinMaxPair {
+  private static class MeanStddevMap<KEY_T> {
+    public static class MeanStddevTuple {
 
-      public MinMaxPair(double min, double max) {
-        this.min = min;
-        this.max = max;
+      public MeanStddevTuple(double mean, double stddev) {
+        this.mean = mean;
+        this.stddev = stddev;
       }
 
-      public double min;
+      public double mean;
 
-      public double max;
+      public double stddev;
     }
 
-    private Map<KEY_T, MinMaxPair> table;
+    private Map<KEY_T, MeanStddevTuple> table;
 
-    public MinMaxMap() {
-      this.table = new HashMap<KEY_T, MinMaxPair>();
+    public MeanStddevMap() {
+      this.table = new HashMap<KEY_T, MeanStddevTuple>();
 
     }
 
-    public double getMin(KEY_T key) {
-      return this.table.get(key).min;
-    }
-
-    public double getMax(KEY_T key) {
-      return this.table.get(key).max;
-    }
-
-    public MinMaxPair getValues(KEY_T key) {
+    public MeanStddevTuple getValues(KEY_T key) {
       return this.table.get(key);
     }
 
-    public void setValues(KEY_T key, double min, double max) {
-      this.table.put(key, new MinMaxPair(min, max));
+    public void setValues(KEY_T key, double mean, double stddev) {
+      this.table.put(key, new MeanStddevTuple(mean, stddev));
     }
-
   }
 
-  public static class MinMaxRunningStat implements Serializable {
+  public class MeanVarianceRunningStat implements Serializable {
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = 1L;
 
-    public MinMaxRunningStat() {
+    public MeanVarianceRunningStat() {
       this.clear();
     }
 
+    public void init(int n, double mean, double variance) {
+      this.numSamples = n;
+      this.meanNew = mean;
+      this.varNew = variance;
+    }
+
     public void add(double x) {
-      this.n++;
+      numSamples++;
 
-      if (x < min) {
-        this.min = x;
-      }
+      if (this.numSamples == 1) {
+        meanOld = meanNew = x;
+        varOld = 0.0;
+      } else {
+        meanNew = meanOld + (x - meanOld) / numSamples;
+        varNew = varOld + (x - meanOld) * (x - meanNew);
 
-      if (x > max) {
-        this.max = x;
+        // set up for next iteration
+        meanOld = meanNew;
+        varOld = varNew;
       }
     }
 
     public void clear() {
-      this.n = 0;
-      this.min = Double.MAX_VALUE;
-      this.max = Double.MIN_VALUE;
+      this.numSamples = 0;
     }
 
     public int getNumSamples() {
-      return this.n;
+      return this.numSamples;
     }
 
-    public double min() {
-      return this.min;
+    public double mean() {
+      return (this.numSamples > 0) ? meanNew : 0.0;
     }
 
-    public double max() {
-      return this.max;
+    public double variance() {
+      return (this.numSamples > 1) ? varNew / (this.numSamples) : 0.0;
     }
 
-    private double min;
+    public double stddev() {
+      return Math.sqrt(this.variance());
+    }
 
-    private double max;
+    public double variancePop() {
+      return (this.numSamples > 1) ? varNew / (this.numSamples - 1) : 0.0;
+    }
 
-    private int n;
+    public double stddevPop() {
+      return Math.sqrt(this.variancePop());
+    }
 
+    private void writeObject(ObjectOutputStream out) throws IOException {
+      out.defaultWriteObject();
+      out.writeInt(numSamples);
+      out.writeDouble(meanNew);
+      out.writeDouble(varNew);
+
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+      in.defaultReadObject();
+      numSamples = in.readInt();
+      meanOld = meanNew = in.readDouble();
+      varOld = varNew = in.readDouble();
+    }
+
+    private int numSamples;
+
+    private double meanOld;
+
+    private double meanNew;
+
+    private double varOld;
+
+    private double varNew;
   }
-
 }
