@@ -47,6 +47,7 @@ import org.cleartk.classifier.feature.Counts;
  * @author Philipp Wetzler
  */
 
+@Deprecated
 public class IDFMap implements Serializable {
 
   private static final long serialVersionUID = 8053199003361771143L;

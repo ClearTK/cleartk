@@ -47,6 +47,7 @@ import org.cleartk.classifier.feature.FeatureCollection;
  * @author Philipp G. Wetzler
  * 
  */
+@Deprecated
 public class IDFMapWriter<OUTCOME_TYPE> implements DataWriter<OUTCOME_TYPE> {
 
   public IDFMapWriter(File outputDirectory) {
