@@ -21,66 +21,55 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.classifier.feature.transform;
+package org.cleartk.classifier.feature.transform.util;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * Iterative structure for tracking min and max. Intended for use with
- * <P>
+ * Simple table lookup data structure for min and max values on a term
+ * <p>
  * 
- * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * Copyright (c) 2012, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
  * @author Lee Becker
  * 
  */
-public class MinMaxRunningStat implements RunningStat {
+public class MinMaxMap<KEY_T> {
+  public static class MinMaxPair {
 
-  /**
-   * 
-   */
-  private static final long serialVersionUID = 1L;
-
-  public MinMaxRunningStat() {
-    this.clear();
-  }
-
-  @Override
-  public void add(double x) {
-    this.n++;
-
-    if (x < min) {
-      this.min = x;
+    public MinMaxPair(double min, double max) {
+      this.min = min;
+      this.max = max;
     }
 
-    if (x > max) {
-      this.max = x;
-    }
+    public double min;
+
+    public double max;
   }
 
-  @Override
-  public void clear() {
-    this.n = 0;
-    this.min = Double.MAX_VALUE;
-    this.max = Double.MIN_VALUE;
+  private Map<KEY_T, MinMaxPair> table;
+
+  public MinMaxMap() {
+    this.table = new HashMap<KEY_T, MinMaxPair>();
+
   }
 
-  @Override
-  public int getNumSamples() {
-    return this.n;
+  public double getMin(KEY_T key) {
+    return this.table.get(key).min;
   }
 
-  public double min() {
-    return this.min;
+  public double getMax(KEY_T key) {
+    return this.table.get(key).max;
   }
 
-  public double max() {
-    return this.max;
+  public MinMaxPair getValues(KEY_T key) {
+    return this.table.get(key);
   }
 
-  private double min;
-
-  private double max;
-
-  private int n;
+  public void setValues(KEY_T key, double min, double max) {
+    this.table.put(key, new MinMaxPair(min, max));
+  }
 
 }

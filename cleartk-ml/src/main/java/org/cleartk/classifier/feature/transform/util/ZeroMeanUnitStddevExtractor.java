@@ -22,7 +22,7 @@
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
-package org.cleartk.classifier.feature.transform;
+package org.cleartk.classifier.feature.transform.util;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -43,7 +43,9 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
-import org.cleartk.classifier.feature.transform.MeanStddevMap.MeanStddevTuple;
+import org.cleartk.classifier.feature.transform.TrainableExtractor_ImplBase;
+import org.cleartk.classifier.feature.transform.TransformableFeature;
+import org.cleartk.classifier.feature.transform.util.MeanStddevMap.MeanStddevTuple;
 
 /**
  * Scales features produced by its subextractor to have mean=0, stddev=1 for a given feature

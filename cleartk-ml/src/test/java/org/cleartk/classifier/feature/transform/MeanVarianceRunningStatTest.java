@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import org.cleartk.classifier.feature.transform.util.MeanVarianceRunningStat;
 import org.junit.Test;
 
 import com.google.common.io.Files;

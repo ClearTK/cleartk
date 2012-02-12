@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.classifier.feature.transform;
+package org.cleartk.classifier.feature.transform.util;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -21,11 +21,12 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.classifier.feature.transform;
+package org.cleartk.classifier.feature.transform.util;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 /**
  * Iterative algorithm for computing mean and variance For more information on the algorithm refer
@@ -37,7 +38,7 @@ import java.io.ObjectOutputStream;
  * @author Lee Becker
  * 
  */
-public class MeanVarianceRunningStat implements RunningStat {
+public class MeanVarianceRunningStat implements Serializable {
 
   /**
    * 
@@ -54,7 +55,6 @@ public class MeanVarianceRunningStat implements RunningStat {
     this.varNew = variance;
   }
 
-  @Override
   public void add(double x) {
     numSamples++;
 
@@ -71,12 +71,10 @@ public class MeanVarianceRunningStat implements RunningStat {
     }
   }
 
-  @Override
   public void clear() {
     this.numSamples = 0;
   }
 
-  @Override
   public int getNumSamples() {
     return this.numSamples;
   }
