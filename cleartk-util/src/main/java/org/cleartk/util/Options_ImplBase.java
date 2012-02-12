@@ -34,7 +34,7 @@ import org.kohsuke.args4j.CmdLineParser;
  * 
  * @author Philip Ogren
  */
-
+@Deprecated
 public abstract class Options_ImplBase {
 
   public void parseOptions(String[] args) {
