@@ -130,7 +130,7 @@ public class Step1WriteTrainingData {
         DefaultMultiClassLIBSVMDataWriterFactory.class.getName(),
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         options.outputDirectory.getPath(),
-        DocumentClassificationAnnotator.PARAM_TFIDF_URI,
+        DocumentClassificationAnnotator.PARAM_TF_IDF_URI,
         tfIdfDataURI.toString(),
         DocumentClassificationAnnotator.PARAM_ZMUS_URI,
         zmusDataURI.toString(),

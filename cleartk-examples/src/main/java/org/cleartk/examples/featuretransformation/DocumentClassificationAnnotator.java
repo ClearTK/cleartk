@@ -68,7 +68,7 @@ import org.uimafit.util.JCasUtil;
  */
 public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
 
-  public static final String PARAM_TFIDF_URI = ConfigurationParameterFactory.createConfigurationParameterName(
+  public static final String PARAM_TF_IDF_URI = ConfigurationParameterFactory.createConfigurationParameterName(
       DocumentClassificationAnnotator.class,
       "tfIdfUri");
 
