@@ -31,6 +31,7 @@ import java.net.URI;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.cleartk.classifier.CleartkAnnotator;
+import org.cleartk.classifier.DataWriter;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.transform.DefaultInstanceDataWriterFactory;
 import org.cleartk.classifier.feature.transform.InstanceStream;
@@ -123,29 +124,14 @@ public class Step1WriteTrainingData {
     minmaxExtractor.save(minmaxDataURI);
 
     // Rerun training data writer pipeline
-    AnalysisEngineDescription documentClassificationAnnotatorDescription2 = AnalysisEngineFactory.createPrimitiveDescription(
-        DocumentClassificationAnnotator.class,
-        ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-        DefaultMultiClassLIBSVMDataWriterFactory.class.getName(),
-        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
-        options.outputDirectory.getPath(),
-        DocumentClassificationAnnotator.PARAM_TF_IDF_URI,
-        tfIdfDataURI.toString(),
-        DocumentClassificationAnnotator.PARAM_ZMUS_URI,
-        zmusDataURI.toString(),
-        DocumentClassificationAnnotator.PARAM_MINMAX_URI,
-        minmaxDataURI.toString());
-
-    SimplePipeline.runPipeline(
-        FilesCollectionReader.getCollectionReader(options.documentDirectory.getPath()),
-        SentenceAnnotator.getDescription(),
-        TokenAnnotator.getDescription(),
-        DefaultSnowballStemmer.getDescription("English"),
-        AnalysisEngineFactory.createPrimitiveDescription(
-            GoldAnnotator.class,
-            ExampleComponents.TYPE_SYSTEM_DESCRIPTION),
-        documentClassificationAnnotatorDescription2);
-
+    DefaultMultiClassLIBSVMDataWriterFactory dataWriterFactory = new DefaultMultiClassLIBSVMDataWriterFactory();
+    dataWriterFactory.setOutputDirectory(options.outputDirectory);
+    DataWriter<String> dataWriter = dataWriterFactory.createDataWriter();
+    for (Instance<String> instance : instances) {
+      instance = extractor.transform(instance);
+      instance = zmusExtractor.transform(instance);
+      instance = minmaxExtractor.transform(instance);
+      dataWriter.write(instance);
+    }
   }
 }

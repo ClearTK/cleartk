@@ -65,23 +65,25 @@ public class ZeroMeanUnitStddevExtractor<OUTCOME_T> extends TrainableExtractor_I
 
   private boolean isTrained;
 
-  // This is accumulated, totaled, and written out during training
-  private Map<String, MeanVarianceRunningStat> featureStatsMap;
-
   // This is read in after training for use in transformation
-  private MeanStddevMap<String> meanStddevMap;
+  private Map<String, MeanStddevTuple> meanStddevMap;
 
   public ZeroMeanUnitStddevExtractor(String name) {
-    super(name);
-    this.isTrained = false;
-    this.featureStatsMap = new HashMap<String, MeanVarianceRunningStat>();
+    this(name, null);
   }
 
   public ZeroMeanUnitStddevExtractor(String name, SimpleFeatureExtractor subExtractor) {
     super(name);
     this.subExtractor = subExtractor;
     this.isTrained = false;
-    this.featureStatsMap = new HashMap<String, MeanVarianceRunningStat>();
+  }
+
+  @Override
+  protected Feature transform(Feature feature) {
+    String featureName = feature.getName();
+    MeanStddevTuple stats = this.meanStddevMap.get(featureName);
+    double value = ((Number) feature.getValue()).doubleValue();
+    return new Feature("ZMUS_" + featureName, (value - stats.mean) / stats.stddev);
   }
 
   @Override
@@ -93,10 +95,7 @@ public class ZeroMeanUnitStddevExtractor<OUTCOME_T> extends TrainableExtractor_I
     if (this.isTrained) {
       // We have trained / loaded a ZMUS model, so now fix up the values
       for (Feature feature : extracted) {
-        String featureName = feature.getName();
-        MeanStddevMap.MeanStddevTuple stats = this.meanStddevMap.getValues(featureName);
-        double value = ((Number) feature.getValue()).doubleValue();
-        result.add(new Feature("ZMUS_" + featureName, (value - stats.mean) / stats.stddev));
+        result.add(this.transform(feature));
       }
     } else {
       // We haven't trained this extractor yet, so just mark the existing features
@@ -109,38 +108,43 @@ public class ZeroMeanUnitStddevExtractor<OUTCOME_T> extends TrainableExtractor_I
 
   @Override
   public void train(Iterable<Instance<OUTCOME_T>> instances) {
+    Map<String, MeanVarianceRunningStat> featureStatsMap = new HashMap<String, MeanVarianceRunningStat>();
 
     // keep a running mean and standard deviation for all applicable features
     for (Instance<OUTCOME_T> instance : instances) {
       // Grab the matching zmus (zero mean, unit stddev) features from the set of all features in an
       // instance
-      for (TransformableFeature zmusFeature : this.filter(instance.getFeatures())) {
-        // ZMUS features contain a list of features, these are actually what get added
-        // to our document frequency map
-        for (Feature feature : zmusFeature.getFeatures()) {
-          updateFeatureStats(feature);
+      for (Feature feature : instance.getFeatures()) {
+        if (this.isTransformable(feature)) {
+          // ZMUS features contain a list of features, these are actually what get added
+          // to our document frequency map
+          for (Feature untransformedFeature : ((TransformableFeature) feature).getFeatures()) {
+            String featureName = untransformedFeature.getName();
+            Object featureValue = untransformedFeature.getValue();
+            if (featureValue instanceof Number) {
+              MeanVarianceRunningStat stats;
+              if (featureStatsMap.containsKey(featureName)) {
+                stats = featureStatsMap.get(featureName);
+              } else {
+                stats = new MeanVarianceRunningStat();
+                featureStatsMap.put(featureName, stats);
+              }
+              stats.add(((Number) featureValue).doubleValue());
+            } else {
+              throw new IllegalArgumentException("Cannot normalize non-numeric feature values");
+            }
+          }
         }
       }
     }
 
-    this.isTrained = true;
-  }
-
-  private void updateFeatureStats(Feature feature) {
-    String featureName = feature.getName();
-    Object featureValue = feature.getValue();
-    if (featureValue instanceof Number) {
-      MeanVarianceRunningStat stats;
-      if (this.featureStatsMap.containsKey(featureName)) {
-        stats = this.featureStatsMap.get(featureName);
-      } else {
-        stats = new MeanVarianceRunningStat();
-        this.featureStatsMap.put(featureName, stats);
-      }
-      stats.add(((Number) featureValue).doubleValue());
-    } else {
-      throw new IllegalArgumentException("Cannot normalize non-numeric feature values");
+    this.meanStddevMap = new HashMap<String, MeanStddevTuple>();
+    for (Map.Entry<String, MeanVarianceRunningStat> entry : featureStatsMap.entrySet()) {
+      MeanVarianceRunningStat stats = entry.getValue();
+      this.meanStddevMap.put(entry.getKey(), new MeanStddevTuple(stats.mean(), stats.stddev()));
     }
+
+    this.isTrained = true;
   }
 
   @Override
@@ -150,9 +154,9 @@ public class ZeroMeanUnitStddevExtractor<OUTCOME_T> extends TrainableExtractor_I
     BufferedWriter writer = null;
     writer = new BufferedWriter(new FileWriter(out));
 
-    for (Map.Entry<String, MeanVarianceRunningStat> entry : this.featureStatsMap.entrySet()) {
-      MeanVarianceRunningStat stats = entry.getValue();
-      writer.append(String.format("%s\t%f\t%f\n", entry.getKey(), stats.mean(), stats.stddev()));
+    for (Map.Entry<String, MeanStddevTuple> entry : this.meanStddevMap.entrySet()) {
+      MeanStddevTuple tuple = entry.getValue();
+      writer.append(String.format("%s\t%f\t%f\n", entry.getKey(), tuple.mean, tuple.stddev));
     }
     writer.close();
   }
@@ -162,15 +166,16 @@ public class ZeroMeanUnitStddevExtractor<OUTCOME_T> extends TrainableExtractor_I
     // Reads in tab separated values (feature name, mean, stddev)
     File in = new File(zmusDataUri);
     BufferedReader reader = null;
-    this.meanStddevMap = new MeanStddevMap<String>();
+    this.meanStddevMap = new HashMap<String, MeanStddevTuple>();
     reader = new BufferedReader(new FileReader(in));
     String line = null;
     while ((line = reader.readLine()) != null) {
       String[] featureMeanStddev = line.split("\\t");
-      this.meanStddevMap.setValues(
+      this.meanStddevMap.put(
           featureMeanStddev[0],
-          Double.parseDouble(featureMeanStddev[1]),
-          Double.parseDouble(featureMeanStddev[2]));
+          new MeanStddevTuple(
+              Double.parseDouble(featureMeanStddev[1]),
+              Double.parseDouble(featureMeanStddev[2])));
     }
 
     reader.close();
@@ -178,33 +183,16 @@ public class ZeroMeanUnitStddevExtractor<OUTCOME_T> extends TrainableExtractor_I
     this.isTrained = true;
   }
 
-  private static class MeanStddevMap<KEY_T> {
-    public static class MeanStddevTuple {
+  private static class MeanStddevTuple {
 
-      public MeanStddevTuple(double mean, double stddev) {
-        this.mean = mean;
-        this.stddev = stddev;
-      }
-
-      public double mean;
-
-      public double stddev;
+    public MeanStddevTuple(double mean, double stddev) {
+      this.mean = mean;
+      this.stddev = stddev;
     }
 
-    private Map<KEY_T, MeanStddevTuple> table;
+    public double mean;
 
-    public MeanStddevMap() {
-      this.table = new HashMap<KEY_T, MeanStddevTuple>();
-
-    }
-
-    public MeanStddevTuple getValues(KEY_T key) {
-      return this.table.get(key);
-    }
-
-    public void setValues(KEY_T key, double mean, double stddev) {
-      this.table.put(key, new MeanStddevTuple(mean, stddev));
-    }
+    public double stddev;
   }
 
   public static class MeanVarianceRunningStat implements Serializable {

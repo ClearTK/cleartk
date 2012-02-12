@@ -60,4 +60,14 @@ public interface TrainableExtractor<OUTCOME_T> {
    * @throws CleartkExtractorException
    */
   public void load(URI uri) throws IOException;
+
+  /**
+   * Transforms all features handled by this extractor. Called on an Instance that was created
+   * before {@link #train(Iterable)} was called, to complete the processing of the Instance.
+   * 
+   * @param instance
+   *          An instance that was created before {@link #train(Iterable)} was called.
+   * @return A copy of the instance, where processing of the instances is complete.
+   */
+  public Instance<OUTCOME_T> transform(Instance<OUTCOME_T> instance);
 }

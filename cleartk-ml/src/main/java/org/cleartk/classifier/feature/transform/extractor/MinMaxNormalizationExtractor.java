@@ -60,29 +60,30 @@ import org.cleartk.classifier.feature.transform.TransformableFeature;
 public class MinMaxNormalizationExtractor<OUTCOME_T> extends TrainableExtractor_ImplBase<OUTCOME_T>
     implements SimpleFeatureExtractor {
 
-  private String key;
-
   private SimpleFeatureExtractor subExtractor;
 
   private boolean isTrained;
 
-  // This is accumulated, totaled, and written out during training
-  private Map<String, MinMaxRunningStat> featureStatsMap;
-
   // This is read in after training for use in transformation
-  private MinMaxMap<String> minMaxMap;
+  private Map<String, MinMaxPair> minMaxMap;
 
   public MinMaxNormalizationExtractor(String name) {
-    super(name);
-    this.isTrained = false;
-    this.featureStatsMap = new HashMap<String, MinMaxRunningStat>();
+    this(name, null);
   }
 
   public MinMaxNormalizationExtractor(String name, SimpleFeatureExtractor subExtractor) {
     super(name);
     this.subExtractor = subExtractor;
     this.isTrained = false;
-    this.featureStatsMap = new HashMap<String, MinMaxRunningStat>();
+  }
+
+  @Override
+  protected Feature transform(Feature feature) {
+    String featureName = feature.getName();
+    MinMaxPair stats = this.minMaxMap.get(featureName);
+    double value = ((Number) feature.getValue()).doubleValue();
+    return new Feature("MINMAX_NORMED_" + featureName, (value - stats.min)
+        / (stats.max - stats.min));
   }
 
   @Override
@@ -94,16 +95,12 @@ public class MinMaxNormalizationExtractor<OUTCOME_T> extends TrainableExtractor_
     if (this.isTrained) {
       // We have trained / loaded a MinMax model, so now fix up the values
       for (Feature feature : extracted) {
-        String featureName = feature.getName();
-        MinMaxNormalizationExtractor.MinMaxMap.MinMaxPair stats = this.minMaxMap.getValues(featureName);
-        double value = ((Number) feature.getValue()).doubleValue();
-        result.add(new Feature("MINMAX_NORMED_" + featureName, (value - stats.min)
-            / (stats.max - stats.min)));
+        result.add(this.transform(feature));
       }
     } else {
       // We haven't trained this extractor yet, so just mark the existing features
       // for future modification, by creating one mega container feature
-      result.add(new TransformableFeature(this.key, extracted));
+      result.add(new TransformableFeature(this.name, extracted));
     }
 
     return result;
@@ -111,38 +108,43 @@ public class MinMaxNormalizationExtractor<OUTCOME_T> extends TrainableExtractor_
 
   @Override
   public void train(Iterable<Instance<OUTCOME_T>> instances) {
+    Map<String, MinMaxRunningStat> featureStatsMap = new HashMap<String, MinMaxRunningStat>();
 
     // keep a running mean and standard deviation for all applicable features
     for (Instance<OUTCOME_T> instance : instances) {
       // Grab the matching zmus (zero mean, unit stddev) features from the set of all features in an
       // instance
-      for (TransformableFeature zmusFeature : this.filter(instance.getFeatures())) {
-        // ZMUS features contain a list of features, these are actually what get added
-        // to our document frequency map
-        for (Feature feature : zmusFeature.getFeatures()) {
-          updateFeatureStats(feature);
+      for (Feature feature : instance.getFeatures()) {
+        if (this.isTransformable(feature)) {
+          // ZMUS features contain a list of features, these are actually what get added
+          // to our document frequency map
+          for (Feature untransformedFeature : ((TransformableFeature) feature).getFeatures()) {
+            String featureName = untransformedFeature.getName();
+            Object featureValue = untransformedFeature.getValue();
+            if (featureValue instanceof Number) {
+              MinMaxRunningStat stats;
+              if (featureStatsMap.containsKey(featureName)) {
+                stats = featureStatsMap.get(featureName);
+              } else {
+                stats = new MinMaxRunningStat();
+                featureStatsMap.put(featureName, stats);
+              }
+              stats.add(((Number) featureValue).doubleValue());
+            } else {
+              throw new IllegalArgumentException("Cannot normalize non-numeric feature values");
+            }
+          }
         }
       }
     }
 
-    this.isTrained = true;
-  }
-
-  private void updateFeatureStats(Feature feature) {
-    String featureName = feature.getName();
-    Object featureValue = feature.getValue();
-    if (featureValue instanceof Number) {
-      MinMaxRunningStat stats;
-      if (this.featureStatsMap.containsKey(featureName)) {
-        stats = this.featureStatsMap.get(featureName);
-      } else {
-        stats = new MinMaxRunningStat();
-        this.featureStatsMap.put(featureName, stats);
-      }
-      stats.add(((Number) featureValue).doubleValue());
-    } else {
-      throw new IllegalArgumentException("Cannot normalize non-numeric feature values");
+    this.minMaxMap = new HashMap<String, MinMaxPair>();
+    for (Map.Entry<String, MinMaxRunningStat> entry : featureStatsMap.entrySet()) {
+      MinMaxRunningStat stats = entry.getValue();
+      this.minMaxMap.put(entry.getKey(), new MinMaxPair(stats.min(), stats.max()));
     }
+
+    this.isTrained = true;
   }
 
   @Override
@@ -152,9 +154,9 @@ public class MinMaxNormalizationExtractor<OUTCOME_T> extends TrainableExtractor_
     BufferedWriter writer = null;
     writer = new BufferedWriter(new FileWriter(out));
 
-    for (Map.Entry<String, MinMaxRunningStat> entry : this.featureStatsMap.entrySet()) {
-      MinMaxRunningStat stats = entry.getValue();
-      writer.append(String.format("%s\t%f\t%f\n", entry.getKey(), stats.min(), stats.max()));
+    for (Map.Entry<String, MinMaxPair> entry : this.minMaxMap.entrySet()) {
+      MinMaxPair pair = entry.getValue();
+      writer.append(String.format("%s\t%f\t%f\n", entry.getKey(), pair.min, pair.max));
     }
     writer.close();
   }
@@ -164,57 +166,32 @@ public class MinMaxNormalizationExtractor<OUTCOME_T> extends TrainableExtractor_
     // Reads in tab separated values (feature name, min, max)
     File in = new File(zmusDataUri);
     BufferedReader reader = null;
-    this.minMaxMap = new MinMaxMap<String>();
+    this.minMaxMap = new HashMap<String, MinMaxPair>();
     reader = new BufferedReader(new FileReader(in));
     String line = null;
     while ((line = reader.readLine()) != null) {
       String[] featureMeanStddev = line.split("\\t");
-      this.minMaxMap.setValues(
+      this.minMaxMap.put(
           featureMeanStddev[0],
-          Double.parseDouble(featureMeanStddev[1]),
-          Double.parseDouble(featureMeanStddev[2]));
+          new MinMaxPair(
+              Double.parseDouble(featureMeanStddev[1]),
+              Double.parseDouble(featureMeanStddev[2])));
     }
     reader.close();
 
     this.isTrained = true;
   }
 
-  public static class MinMaxMap<KEY_T> {
-    public static class MinMaxPair {
+  private static class MinMaxPair {
 
-      public MinMaxPair(double min, double max) {
-        this.min = min;
-        this.max = max;
-      }
-
-      public double min;
-
-      public double max;
+    public MinMaxPair(double min, double max) {
+      this.min = min;
+      this.max = max;
     }
 
-    private Map<KEY_T, MinMaxPair> table;
+    public double min;
 
-    public MinMaxMap() {
-      this.table = new HashMap<KEY_T, MinMaxPair>();
-
-    }
-
-    public double getMin(KEY_T key) {
-      return this.table.get(key).min;
-    }
-
-    public double getMax(KEY_T key) {
-      return this.table.get(key).max;
-    }
-
-    public MinMaxPair getValues(KEY_T key) {
-      return this.table.get(key);
-    }
-
-    public void setValues(KEY_T key, double min, double max) {
-      this.table.put(key, new MinMaxPair(min, max));
-    }
-
+    public double max;
   }
 
   public static class MinMaxRunningStat implements Serializable {
@@ -265,5 +242,4 @@ public class MinMaxNormalizationExtractor<OUTCOME_T> extends TrainableExtractor_
     private int n;
 
   }
-
 }

@@ -69,9 +69,7 @@ public class TfidfExtractor<OUTCOME_T> extends TrainableExtractor_ImplBase<OUTCO
   private IDFMap idfMap;
 
   public TfidfExtractor(String name) {
-    super(name);
-    this.isTrained = false;
-    this.idfMap = new IDFMap();
+    this(name, null);
   }
 
   /**
@@ -87,6 +85,13 @@ public class TfidfExtractor<OUTCOME_T> extends TrainableExtractor_ImplBase<OUTCO
   }
 
   @Override
+  protected Feature transform(Feature feature) {
+    int tf = (Integer) feature.getValue();
+    double tfidf = tf * this.idfMap.getIDF(feature.getName());
+    return new Feature("TF-IDF_" + feature.getName(), tfidf);
+  }
+
+  @Override
   public List<Feature> extract(JCas view, Annotation focusAnnotation)
       throws CleartkExtractorException {
 
@@ -95,9 +100,7 @@ public class TfidfExtractor<OUTCOME_T> extends TrainableExtractor_ImplBase<OUTCO
     if (this.isTrained) {
       // We have trained / loaded a tf*idf model, so now fix up the values
       for (Feature feature : extracted) {
-        int tf = (Integer) feature.getValue();
-        double tfidf = tf * this.idfMap.getIDF(feature.getName());
-        result.add(new Feature("TF-IDF_" + feature.getName(), tfidf));
+        result.add(this.transform(feature));
       }
     } else {
       // We haven't trained this extractor yet, so just mark the existing features
@@ -116,11 +119,13 @@ public class TfidfExtractor<OUTCOME_T> extends TrainableExtractor_ImplBase<OUTCO
 
       Set<String> featureNames = new HashSet<String>();
       // Grab the matching tf*idf features from the set of all features in an instance
-      for (TransformableFeature tfidfFeature : this.filter(instance.getFeatures())) {
-        // tf*idf features contain a list of features, these are actually what get added
-        // to our document frequency map
-        for (Feature feature : tfidfFeature.getFeatures()) {
-          featureNames.add(feature.getName());
+      for (Feature feature : instance.getFeatures()) {
+        if (this.isTransformable(feature)) {
+          // tf*idf features contain a list of features, these are actually what get added
+          // to our document frequency map
+          for (Feature untransformedFeature : ((TransformableFeature) feature).getFeatures()) {
+            featureNames.add(untransformedFeature.getName());
+          }
         }
       }
 
@@ -202,5 +207,4 @@ public class TfidfExtractor<OUTCOME_T> extends TrainableExtractor_ImplBase<OUTCO
       reader.close();
     }
   }
-
 }

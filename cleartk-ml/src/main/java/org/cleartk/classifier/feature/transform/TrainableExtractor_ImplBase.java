@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
+import org.cleartk.classifier.Instance;
 
 /**
  * Copyright (c) 2012, Regents of the University of Colorado <br>
@@ -43,20 +43,25 @@ public abstract class TrainableExtractor_ImplBase<OUTCOME_T> implements
     this.name = name;
   }
 
-  /**
-   * Returns a list of features that are eligible for transformation
-   * 
-   * @param features
-   * @return True if feature is eligible, False if not
-   * @throws CleartkExtractorException
-   */
-  protected List<TransformableFeature> filter(List<Feature> features) {
-    ArrayList<TransformableFeature> filtered = new ArrayList<TransformableFeature>();
-    for (Feature feature : features) {
-      if (feature instanceof TransformableFeature && this.name.equals(feature.getName())) {
-        filtered.add((TransformableFeature) feature);
+  @Override
+  public Instance<OUTCOME_T> transform(Instance<OUTCOME_T> instance) {
+    List<Feature> features = new ArrayList<Feature>();
+    for (Feature feature : instance.getFeatures()) {
+      if (this.isTransformable(feature)) {
+        for (Feature origFeature : ((TransformableFeature) feature).getFeatures()) {
+          features.add(this.transform(origFeature));
+        }
+      } else {
+        features.add(feature);
       }
     }
-    return filtered;
+    return new Instance<OUTCOME_T>(instance.getOutcome(), features);
   }
+
+  protected abstract Feature transform(Feature feature);
+
+  protected boolean isTransformable(Feature feature) {
+    return feature instanceof TransformableFeature && this.name.equals(feature.getName());
+  }
+
 }
