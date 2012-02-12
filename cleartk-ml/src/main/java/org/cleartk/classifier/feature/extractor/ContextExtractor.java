@@ -228,6 +228,8 @@ public class ContextExtractor<T extends Annotation> implements SimpleFeatureExtr
    * enables aggregating contexts like {@link Bag} or {@link Ngram} to name their features properly.
    */
   private static class ContextFeature extends Feature {
+    private static final long serialVersionUID = 1L;
+
     public Feature feature;
 
     public ContextFeature(String baseName, Feature feature) {

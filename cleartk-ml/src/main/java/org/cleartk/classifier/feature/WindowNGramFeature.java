@@ -40,6 +40,8 @@ import org.cleartk.classifier.Feature;
  */
 
 public class WindowNGramFeature extends Feature {
+  private static final long serialVersionUID = 1L;
+
   public static final String ORIENTATION_LEFT = "L";
 
   public static final String ORIENTATION_RIGHT = "R";

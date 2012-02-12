@@ -42,6 +42,8 @@ import org.uimafit.util.JCasUtil;
  */
 
 public class WindowFeature extends Feature {
+  private static final long serialVersionUID = 1L;
+
   public static final String ORIENTATION_LEFT = "L";
 
   public static final String ORIENTATION_RIGHT = "R";

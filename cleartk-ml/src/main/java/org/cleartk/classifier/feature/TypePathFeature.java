@@ -40,6 +40,8 @@ import org.cleartk.classifier.Feature;
  */
 
 public class TypePathFeature extends Feature {
+  private static final long serialVersionUID = 1L;
+
   private String typePath;
 
   Pattern pattern = Pattern.compile("/([^/])?");
