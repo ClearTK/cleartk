@@ -22,7 +22,7 @@
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
-package org.cleartk.classifier.feature.extractor.outcome;
+package org.cleartk.classifier.viterbi;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -37,6 +37,8 @@ import java.util.Set;
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.outcome.OutcomeFeatureExtractor;
 import org.junit.Test;
 import org.uimafit.factory.UimaContextFactory;
 

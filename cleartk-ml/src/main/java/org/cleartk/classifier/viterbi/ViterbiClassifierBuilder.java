@@ -34,7 +34,6 @@ import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
 
 import org.cleartk.classifier.Classifier;
-import org.cleartk.classifier.feature.extractor.outcome.OutcomeFeatureExtractor;
 import org.cleartk.classifier.jar.JarClassifierBuilder;
 import org.cleartk.classifier.jar.JarStreams;
 import org.cleartk.classifier.jar.Train;

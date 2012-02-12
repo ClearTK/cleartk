@@ -45,40 +45,56 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * 
  * 
  * @author Philip Ogren
+ * @deprecated moved to org.cleartk.classifier.viterbi
  */
-
+@Deprecated
 public class DefaultOutcomeFeatureExtractor implements OutcomeFeatureExtractor {
 
   private static final long serialVersionUID = 7476684786572310025L;
 
-  public static final String PARAM_MOST_RECENT_OUTCOME = ConfigurationParameterFactory
-      .createConfigurationParameterName(DefaultOutcomeFeatureExtractor.class, "mostRecentOutcome");
+  public static final String PARAM_MOST_RECENT_OUTCOME = ConfigurationParameterFactory.createConfigurationParameterName(
+      DefaultOutcomeFeatureExtractor.class,
+      "mostRecentOutcome");
 
-  @ConfigurationParameter(description = "indicates the position of the first (most recent) outcome to include. For example, the default value of 1 means that if the outcomes produced so far by the classifier were [A, B, C, D], then the first outcome to be used as a feature would be D since it is the most recent.", defaultValue = "1")
+  @ConfigurationParameter(
+      description = "indicates the position of the first (most recent) outcome to include. For example, the default value of 1 means that if the outcomes produced so far by the classifier were [A, B, C, D], then the first outcome to be used as a feature would be D since it is the most recent.",
+      defaultValue = "1")
   private int mostRecentOutcome = 1;
 
-  public static final String PARAM_LEAST_RECENT_OUTCOME = ConfigurationParameterFactory
-      .createConfigurationParameterName(DefaultOutcomeFeatureExtractor.class, "leastRecentOutcome");
+  public static final String PARAM_LEAST_RECENT_OUTCOME = ConfigurationParameterFactory.createConfigurationParameterName(
+      DefaultOutcomeFeatureExtractor.class,
+      "leastRecentOutcome");
 
-  @ConfigurationParameter(description = "indicates the position of the last (least recent) outcome to include. For example, the default value of 3 means that if the outcomes produced so far by the classifier were [A, B, C, D], then the last outcome to be used as a feature would be B since and is considered the least recent.", defaultValue = "3")
+  @ConfigurationParameter(
+      description = "indicates the position of the last (least recent) outcome to include. For example, the default value of 3 means that if the outcomes produced so far by the classifier were [A, B, C, D], then the last outcome to be used as a feature would be B since and is considered the least recent.",
+      defaultValue = "3")
   private int leastRecentOutcome = 3;
 
-  public static final String PARAM_USE_BIGRAM = ConfigurationParameterFactory
-      .createConfigurationParameterName(DefaultOutcomeFeatureExtractor.class, "useBigram");
+  public static final String PARAM_USE_BIGRAM = ConfigurationParameterFactory.createConfigurationParameterName(
+      DefaultOutcomeFeatureExtractor.class,
+      "useBigram");
 
-  @ConfigurationParameter(description = "when true indicates that bigrams of outcomes should be included as features", defaultValue = "true")
+  @ConfigurationParameter(
+      description = "when true indicates that bigrams of outcomes should be included as features",
+      defaultValue = "true")
   private boolean useBigram = true;
 
-  public static final String PARAM_USE_TRIGRAM = ConfigurationParameterFactory
-      .createConfigurationParameterName(DefaultOutcomeFeatureExtractor.class, "useTrigram");
+  public static final String PARAM_USE_TRIGRAM = ConfigurationParameterFactory.createConfigurationParameterName(
+      DefaultOutcomeFeatureExtractor.class,
+      "useTrigram");
 
-  @ConfigurationParameter(defaultValue = "true", description = "indicates that trigrams of outcomes should be included as features")
+  @ConfigurationParameter(
+      defaultValue = "true",
+      description = "indicates that trigrams of outcomes should be included as features")
   private boolean useTrigram = true;
 
-  public static final String PARAM_USE4GRAM = ConfigurationParameterFactory
-      .createConfigurationParameterName(DefaultOutcomeFeatureExtractor.class, "use4gram");
+  public static final String PARAM_USE4GRAM = ConfigurationParameterFactory.createConfigurationParameterName(
+      DefaultOutcomeFeatureExtractor.class,
+      "use4gram");
 
-  @ConfigurationParameter(defaultValue = "false", description = "indicates that 4-grams of outcomes should be included as features")
+  @ConfigurationParameter(
+      defaultValue = "false",
+      description = "indicates that 4-grams of outcomes should be included as features")
   private boolean use4gram = false;
 
   public void initialize(UimaContext context) throws ResourceInitializationException {

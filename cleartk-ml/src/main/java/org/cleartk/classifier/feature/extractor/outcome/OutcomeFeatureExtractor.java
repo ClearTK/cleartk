@@ -40,8 +40,9 @@ import org.uimafit.factory.initializable.Initializable;
  * http://code.google.com/p/cleartk/wiki/OutcomeFeatureExtractors
  * 
  * @author Philip Ogren
- * 
+ * @deprecated moved to org.cleartk.classifier.viterbi
  */
+@Deprecated
 public interface OutcomeFeatureExtractor extends Serializable, Initializable {
 
   public void initialize(UimaContext context) throws ResourceInitializationException;

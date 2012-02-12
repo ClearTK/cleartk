@@ -37,7 +37,6 @@ import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.SequenceClassifier;
-import org.cleartk.classifier.feature.extractor.outcome.OutcomeFeatureExtractor;
 import org.cleartk.util.CleartkInitializationException;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.ReflectionUtil.TypeArgumentDelegator;
@@ -59,25 +58,31 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequenceClassifier<OUTCO
 
   protected OutcomeFeatureExtractor[] outcomeFeatureExtractors;
 
-  public static final String PARAM_STACK_SIZE = ConfigurationParameterFactory
-      .createConfigurationParameterName(ViterbiClassifier.class, "stackSize");
+  public static final String PARAM_STACK_SIZE = ConfigurationParameterFactory.createConfigurationParameterName(
+      ViterbiClassifier.class,
+      "stackSize");
 
-  @ConfigurationParameter(description = "specifies the maximum number of candidate paths to "
-      + "keep track of. In general, this number should be higher than the number "
-      + "of possible classifications at any given point in the sequence. This "
-      + "guarantees that highest-possible scoring sequence will be returned. If, "
-      + "however, the number of possible classifications is quite high and/or you "
-      + "are concerned about throughput performance, then you may want to reduce the number "
-      + "of candidate paths to maintain.  If Classifier.score is not implemented for the given delegated classifier, then "
-      + "the value of this parameter must be 1. ", defaultValue = "1")
+  @ConfigurationParameter(
+      description = "specifies the maximum number of candidate paths to "
+          + "keep track of. In general, this number should be higher than the number "
+          + "of possible classifications at any given point in the sequence. This "
+          + "guarantees that highest-possible scoring sequence will be returned. If, "
+          + "however, the number of possible classifications is quite high and/or you "
+          + "are concerned about throughput performance, then you may want to reduce the number "
+          + "of candidate paths to maintain.  If Classifier.score is not implemented for the given delegated classifier, then "
+          + "the value of this parameter must be 1. ",
+      defaultValue = "1")
   protected int stackSize;
 
-  public static final String PARAM_ADD_SCORES = ConfigurationParameterFactory
-      .createConfigurationParameterName(ViterbiClassifier.class, "addScores");
+  public static final String PARAM_ADD_SCORES = ConfigurationParameterFactory.createConfigurationParameterName(
+      ViterbiClassifier.class,
+      "addScores");
 
-  @ConfigurationParameter(description = "specifies whether the scores of candidate sequence classifications should be "
-      + "calculated by summing classfication scores for each member of the sequence or by multiplying them. A value of "
-      + "true means that the scores will be summed. A value of false means that the scores will be multiplied. ", defaultValue = "false")
+  @ConfigurationParameter(
+      description = "specifies whether the scores of candidate sequence classifications should be "
+          + "calculated by summing classfication scores for each member of the sequence or by multiplying them. A value of "
+          + "true means that the scores will be summed. A value of false means that the scores will be multiplied. ",
+      defaultValue = "false")
   protected boolean addScores = false;
 
   public ViterbiClassifier(

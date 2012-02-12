@@ -39,8 +39,6 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.ScoredOutcome;
-import org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor;
-import org.cleartk.classifier.feature.extractor.outcome.OutcomeFeatureExtractor;
 import org.junit.Test;
 import org.uimafit.factory.UimaContextFactory;
 

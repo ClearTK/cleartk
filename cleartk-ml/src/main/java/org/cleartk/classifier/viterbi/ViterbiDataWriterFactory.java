@@ -34,7 +34,6 @@ import org.cleartk.classifier.DataWriter;
 import org.cleartk.classifier.DataWriterFactory;
 import org.cleartk.classifier.SequenceDataWriter;
 import org.cleartk.classifier.SequenceDataWriterFactory;
-import org.cleartk.classifier.feature.extractor.outcome.OutcomeFeatureExtractor;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
