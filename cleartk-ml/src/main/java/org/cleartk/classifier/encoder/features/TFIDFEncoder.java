@@ -32,6 +32,7 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.encoder.features.normalizer.EuclidianNormalizer;
 import org.cleartk.classifier.encoder.features.normalizer.NameNumberNormalizer;
 import org.cleartk.classifier.feature.Counts;
+import org.cleartk.classifier.feature.transform.util.TfidfExtractor;
 import org.cleartk.classifier.util.tfidf.IDFMap;
 
 /**
@@ -47,7 +48,13 @@ import org.cleartk.classifier.util.tfidf.IDFMap;
  * If a name is supplied this encoder will only dispatch on features of that name.
  * 
  * @author Philipp Wetzler
+ * 
  */
+
+/**
+ * @deprecated replaced by {@link TfidfExtractor}
+ */
+@Deprecated
 public class TFIDFEncoder implements FeatureEncoder<NameNumber> {
 
   private static final long serialVersionUID = -5280514188425612793L;
