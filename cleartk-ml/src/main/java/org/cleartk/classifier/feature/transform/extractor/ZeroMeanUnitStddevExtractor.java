@@ -219,7 +219,7 @@ public class ZeroMeanUnitStddevExtractor<OUTCOME_T> extends TrainableExtractor_I
     }
   }
 
-  public class MeanVarianceRunningStat implements Serializable {
+  public static class MeanVarianceRunningStat implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
