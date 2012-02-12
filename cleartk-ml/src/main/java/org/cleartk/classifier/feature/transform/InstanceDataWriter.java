@@ -33,6 +33,9 @@ public class InstanceDataWriter<OUTCOME_T> implements DataWriter<OUTCOME_T> {
   public static String INSTANCES_OUTPUT_FILENAME = "training-data.instances";
 
   public InstanceDataWriter(File outputDirectory) {
+    if (!outputDirectory.exists()) {
+      outputDirectory.mkdirs();
+    }
 
     // Initialize Object Serializer
     File outputFile = new File(outputDirectory, INSTANCES_OUTPUT_FILENAME);

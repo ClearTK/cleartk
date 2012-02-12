@@ -50,8 +50,6 @@ import org.kohsuke.args4j.Option;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.pipeline.SimplePipeline;
 
-import com.google.common.io.Files;
-
 /**
  * <br>
  * Copyright (c) 2012, Regents of the University of Colorado <br>
@@ -74,7 +72,7 @@ public class Step1WriteTrainingData {
         name = "-o",
         aliases = "--outputDirectoryName",
         usage = "specify the directory to write the training data to")
-    public String outputDirectoryName = "/tmp";
+    public String outputDirectoryName = "target/examples/transform";
 
     public static Args parseArguments(String[] stringArgs) {
       Args args = new Args();
@@ -95,7 +93,6 @@ public class Step1WriteTrainingData {
     Args args = Args.parseArguments(stringArgs);
     String documentDirectory = args.documentDirectory;
     String outputDirectoryName = args.outputDirectoryName;
-    Files.createParentDirs(new File(outputDirectoryName));
     URI tfIdfDataURI = DocumentClassificationAnnotator.createTokenTfIdfDataURI(outputDirectoryName);
     URI zmusDataURI = DocumentClassificationAnnotator.createZmusDataURI(outputDirectoryName);
     URI minmaxDataURI = DocumentClassificationAnnotator.createMinMaxDataURI(outputDirectoryName);
