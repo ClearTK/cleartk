@@ -48,17 +48,26 @@ import org.uimafit.pipeline.SimplePipeline;
  * @author Philip Ogren
  * 
  */
-
+@Deprecated
 public class Step2WriteTrainingData {
 
   public static class Args {
-    @Option(name = "-d", aliases = "--documentDirectory", usage = "specify the directory containing the training documents.  When we run this example we point to a directory containing the 20 newsgroup corpus - i.e. a directory called '20news-bydate-train'")
+    @Option(
+        name = "-d",
+        aliases = "--documentDirectory",
+        usage = "specify the directory containing the training documents.  When we run this example we point to a directory containing the 20 newsgroup corpus - i.e. a directory called '20news-bydate-train'")
     public String documentDirectory = "../ClearTK Data/data/20newsgroups/20news-bydate-train";
 
-    @Option(name = "-map", aliases = "--idfmapFileName", usage = "specify the file name of the IDFMap")
+    @Option(
+        name = "-map",
+        aliases = "--idfmapFileName",
+        usage = "specify the file name of the IDFMap")
     public String idfmapFileName = "example/documentclassification/idfmap";
 
-    @Option(name = "-o", aliases = "--outputDirectoryName", usage = "specify the directory to write the training data to")
+    @Option(
+        name = "-o",
+        aliases = "--outputDirectoryName",
+        usage = "specify the directory to write the training data to")
     public String outputDirectoryName = "example/documentclassification/libsvm";
 
     public static Args parseArguments(String[] stringArgs) {
@@ -84,16 +93,15 @@ public class Step2WriteTrainingData {
 
     System.out.println("writing training data to: " + outputDirectoryName);
 
-    AnalysisEngineDescription documentClassificationAnnotatorDescription = AnalysisEngineFactory
-        .createPrimitiveDescription(
-            DocumentClassificationAnnotator.class,
-            ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-            CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-            LibsvmDataWriterFactory.class.getName(),
-            LibsvmDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
-            outputDirectoryName,
-            LibsvmDataWriterFactory.PARAM_IDFMAP_FILE_NAME,
-            idfmapFileName);
+    AnalysisEngineDescription documentClassificationAnnotatorDescription = AnalysisEngineFactory.createPrimitiveDescription(
+        DocumentClassificationAnnotator.class,
+        ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        LibsvmDataWriterFactory.class.getName(),
+        LibsvmDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        outputDirectoryName,
+        LibsvmDataWriterFactory.PARAM_IDFMAP_FILE_NAME,
+        idfmapFileName);
 
     SimplePipeline.runPipeline(
         FilesCollectionReader.getCollectionReader(documentDirectory),

@@ -42,6 +42,7 @@ import org.uimafit.descriptor.SofaCapability;
  * @author Philipp G. Wetzler
  * 
  */
+@Deprecated
 @SofaCapability(inputSofas = { ViewURIUtil.URI, GoldAnnotator.GOLD_VIEW_NAME })
 public class GoldAnnotator extends JCasAnnotator_ImplBase {
 

@@ -49,7 +49,7 @@ import org.uimafit.pipeline.SimplePipeline;
  * @author Philip Ogren
  * 
  */
-
+@Deprecated
 public class Step1BuildIDFMap {
 
   public static class Args {

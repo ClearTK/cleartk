@@ -42,13 +42,16 @@ import org.uimafit.factory.initializable.Initializable;
  * 
  * @author Philipp Wetzler
  */
-
+@Deprecated
 public class IDFMapWriterFactory implements DataWriterFactory<String>, Initializable {
 
-  public static final String PARAM_OUTPUT_DIRECTORY = ConfigurationParameterFactory
-      .createConfigurationParameterName(IDFMapWriterFactory.class, "outputDirectory");
+  public static final String PARAM_OUTPUT_DIRECTORY = ConfigurationParameterFactory.createConfigurationParameterName(
+      IDFMapWriterFactory.class,
+      "outputDirectory");
 
-  @ConfigurationParameter(mandatory = true, description = "provides the name of the directory where the training data will be written.")
+  @ConfigurationParameter(
+      mandatory = true,
+      description = "provides the name of the directory where the training data will be written.")
   protected File outputDirectory;
 
   public DataWriter<String> createDataWriter() {

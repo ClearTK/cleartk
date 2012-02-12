@@ -41,6 +41,7 @@ import org.uimafit.component.JCasAnnotator_ImplBase;
  * @author Philipp G. Wetzler
  * 
  */
+@Deprecated
 public class EvaluationAnnotator extends JCasAnnotator_ImplBase {
 
   int totalClassifications = 0;

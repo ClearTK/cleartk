@@ -52,6 +52,7 @@ import org.uimafit.factory.AnalysisEngineFactory;
  * @author Philipp G. Wetzler
  * 
  */
+@Deprecated
 public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
 
   public static final String PREDICTION_VIEW_NAME = "ExampleDocumentClassificationPredictionView";

@@ -51,26 +51,33 @@ import org.uimafit.factory.initializable.Initializable;
  * @author Philip Ogren
  * 
  */
-
+@Deprecated
 public class LibsvmDataWriterFactory implements org.cleartk.classifier.DataWriterFactory<String>,
     Initializable {
 
-  public static final String PARAM_OUTPUT_DIRECTORY = ConfigurationParameterFactory
-      .createConfigurationParameterName(LibsvmDataWriterFactory.class, "outputDirectory");
+  public static final String PARAM_OUTPUT_DIRECTORY = ConfigurationParameterFactory.createConfigurationParameterName(
+      LibsvmDataWriterFactory.class,
+      "outputDirectory");
 
-  @ConfigurationParameter(mandatory = true, description = "provides the name of the directory where the training data will be written.")
+  @ConfigurationParameter(
+      mandatory = true,
+      description = "provides the name of the directory where the training data will be written.")
   protected File outputDirectory;
 
-  public static final String PARAM_IDFMAP_FILE_NAME = ConfigurationParameterFactory
-      .createConfigurationParameterName(LibsvmDataWriterFactory.class, "idfmapFileName");
+  public static final String PARAM_IDFMAP_FILE_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
+      LibsvmDataWriterFactory.class,
+      "idfmapFileName");
 
   @ConfigurationParameter(mandatory = true, description = "provides the file name of the IDF Map")
   public String idfmapFileName;
 
-  public static final String PARAM_CUTOFF = ConfigurationParameterFactory
-      .createConfigurationParameterName(LibsvmDataWriterFactory.class, "cutoff");
+  public static final String PARAM_CUTOFF = ConfigurationParameterFactory.createConfigurationParameterName(
+      LibsvmDataWriterFactory.class,
+      "cutoff");
 
-  @ConfigurationParameter(defaultValue = "5", description = "features that occur less than this number of times over the whole training set will not be encoded during testing")
+  @ConfigurationParameter(
+      defaultValue = "5",
+      description = "features that occur less than this number of times over the whole training set will not be encoded during testing")
   protected int cutoff = 5;
 
   public void initialize(UimaContext context) throws ResourceInitializationException {

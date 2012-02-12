@@ -49,13 +49,20 @@ import org.uimafit.pipeline.SimplePipeline;
  * 
  */
 
+@Deprecated
 public class Step4RunClassifier {
 
   public static class Args {
-    @Option(name = "-d", aliases = "--documentDirectory", usage = "specify the directory containing the test documents")
+    @Option(
+        name = "-d",
+        aliases = "--documentDirectory",
+        usage = "specify the directory containing the test documents")
     public String documentDirectory = "../ClearTK Data/data/20newsgroups/20news-bydate-test/";
 
-    @Option(name = "-m", aliases = "--modelFileName", usage = "specify the file name of the model file")
+    @Option(
+        name = "-m",
+        aliases = "--modelFileName",
+        usage = "specify the file name of the model file")
     public String modelFileName = "example/documentclassification/libsvm/model.jar";
 
     public static Args parseArguments(String[] stringArgs) {
@@ -78,12 +85,11 @@ public class Step4RunClassifier {
     String documentDirectory = args.documentDirectory;
     String modelFileName = args.modelFileName;
 
-    AnalysisEngineDescription documentClassificationAnnotatorDescription = AnalysisEngineFactory
-        .createPrimitiveDescription(
-            DocumentClassificationAnnotator.class,
-            ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-            GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
-            modelFileName);
+    AnalysisEngineDescription documentClassificationAnnotatorDescription = AnalysisEngineFactory.createPrimitiveDescription(
+        DocumentClassificationAnnotator.class,
+        ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+        GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
+        modelFileName);
 
     System.out.println("classifying documents located in '" + documentDirectory + "'");
     SimplePipeline.runPipeline(

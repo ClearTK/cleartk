@@ -40,14 +40,20 @@ import org.kohsuke.args4j.Option;
  * @author Philip Ogren
  * 
  */
-
+@Deprecated
 public class Step3TrainModel {
 
   public static class Args {
-    @Option(name = "-t", aliases = "--trainingDataDirectoryName", usage = "specify the directory that contains the training data")
+    @Option(
+        name = "-t",
+        aliases = "--trainingDataDirectoryName",
+        usage = "specify the directory that contains the training data")
     public String trainingDataDirectoryName = "example/documentclassification/libsvm";
 
-    @Option(name = "-ta", aliases = "--trainingArgument", usage = "specify training arguments to be passed to the learner.  For multiple values specify -ta for each - e.g. '-ta -t -ta 0'")
+    @Option(
+        name = "-ta",
+        aliases = "--trainingArgument",
+        usage = "specify training arguments to be passed to the learner.  For multiple values specify -ta for each - e.g. '-ta -t -ta 0'")
     public List<String> trainingArguments = Arrays.asList("-t", "0");
 
     public static Args parseArguments(String[] stringArgs) {
