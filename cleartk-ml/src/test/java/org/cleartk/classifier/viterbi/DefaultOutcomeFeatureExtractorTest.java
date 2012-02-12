@@ -37,8 +37,6 @@ import java.util.Set;
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor;
-import org.cleartk.classifier.feature.extractor.outcome.OutcomeFeatureExtractor;
 import org.junit.Test;
 import org.uimafit.factory.UimaContextFactory;
 
@@ -100,8 +98,7 @@ public class DefaultOutcomeFeatureExtractorTest {
     OutcomeFeatureExtractor ofe = new DefaultOutcomeFeatureExtractor();
     ofe.initialize(context);
 
-    List<Feature> features = ofe
-        .extractFeatures(Arrays.asList(new Object[] { "A", "B", "C", "D" }));
+    List<Feature> features = ofe.extractFeatures(Arrays.asList(new Object[] { "A", "B", "C", "D" }));
     assertEquals(5, features.size());
     Set<String> featureNames = new HashSet<String>();
     for (Feature feature : features) {
