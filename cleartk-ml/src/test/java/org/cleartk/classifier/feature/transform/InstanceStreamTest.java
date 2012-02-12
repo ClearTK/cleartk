@@ -39,6 +39,11 @@ import org.junit.Test;
 
 import com.google.common.io.Files;
 
+/**
+ * Copyright (c) 2012, Regents of the University of Colorado <br>
+ * All rights reserved.
+ */
+
 public class InstanceStreamTest {
 
   @Test
