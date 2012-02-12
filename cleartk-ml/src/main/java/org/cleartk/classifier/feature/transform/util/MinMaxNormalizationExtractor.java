@@ -30,6 +30,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,7 +46,6 @@ import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.transform.TrainableExtractor_ImplBase;
 import org.cleartk.classifier.feature.transform.TransformableFeature;
-import org.cleartk.classifier.feature.transform.util.MinMaxMap.MinMaxPair;
 
 /**
  * Scales features extracted by its subextractor to range 0-1, by scaling by the minimum and maximum
@@ -96,7 +96,7 @@ public class MinMaxNormalizationExtractor<OUTCOME_T> extends TrainableExtractor_
       // We have trained / loaded a MinMax model, so now fix up the values
       for (Feature feature : extracted) {
         String featureName = feature.getName();
-        MinMaxPair stats = this.minMaxMap.getValues(featureName);
+        MinMaxNormalizationExtractor.MinMaxMap.MinMaxPair stats = this.minMaxMap.getValues(featureName);
         double value = ((Number) feature.getValue()).doubleValue();
         result.add(new Feature("MINMAX_NORMED_" + featureName, (value - stats.min)
             / (stats.max - stats.min)));
@@ -191,4 +191,92 @@ public class MinMaxNormalizationExtractor<OUTCOME_T> extends TrainableExtractor_
 
     this.isTrained = true;
   }
+
+  public static class MinMaxMap<KEY_T> {
+    public static class MinMaxPair {
+
+      public MinMaxPair(double min, double max) {
+        this.min = min;
+        this.max = max;
+      }
+
+      public double min;
+
+      public double max;
+    }
+
+    private Map<KEY_T, MinMaxPair> table;
+
+    public MinMaxMap() {
+      this.table = new HashMap<KEY_T, MinMaxPair>();
+
+    }
+
+    public double getMin(KEY_T key) {
+      return this.table.get(key).min;
+    }
+
+    public double getMax(KEY_T key) {
+      return this.table.get(key).max;
+    }
+
+    public MinMaxPair getValues(KEY_T key) {
+      return this.table.get(key);
+    }
+
+    public void setValues(KEY_T key, double min, double max) {
+      this.table.put(key, new MinMaxPair(min, max));
+    }
+
+  }
+
+  public static class MinMaxRunningStat implements Serializable {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
+    public MinMaxRunningStat() {
+      this.clear();
+    }
+
+    public void add(double x) {
+      this.n++;
+
+      if (x < min) {
+        this.min = x;
+      }
+
+      if (x > max) {
+        this.max = x;
+      }
+    }
+
+    public void clear() {
+      this.n = 0;
+      this.min = Double.MAX_VALUE;
+      this.max = Double.MIN_VALUE;
+    }
+
+    public int getNumSamples() {
+      return this.n;
+    }
+
+    public double min() {
+      return this.min;
+    }
+
+    public double max() {
+      return this.max;
+    }
+
+    private double min;
+
+    private double max;
+
+    private int n;
+
+  }
+
 }
