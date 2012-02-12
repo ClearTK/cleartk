@@ -40,8 +40,8 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.pear.util.FileUtil;
 import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
+import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.GenericJarClassifierFactory;
 import org.cleartk.classifier.jar.Train;
@@ -103,7 +103,7 @@ public class ViterbiDataWriterTest extends DefaultTestBase {
         ViterbiDataWriterFactory.PARAM_DELEGATED_DATA_WRITER_FACTORY_CLASS,
         DefaultStringTestDataWriterFactory.class.getName(),
         ViterbiDataWriterFactory.PARAM_OUTCOME_FEATURE_EXTRACTOR_NAMES,
-        new String[] { "org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor" });
+        new String[] { "org.cleartk.classifier.viterbi.DefaultOutcomeFeatureExtractor" });
 
     String text = "Do I really have to come up with some creative text, or can I just write anything?";
     tokenBuilder.buildTokens(
