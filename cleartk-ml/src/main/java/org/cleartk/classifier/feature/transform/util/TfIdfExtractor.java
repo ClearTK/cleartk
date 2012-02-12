@@ -24,6 +24,12 @@
 
 package org.cleartk.classifier.feature.transform.util;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -38,6 +44,9 @@ import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.transform.TrainableExtractor_ImplBase;
 import org.cleartk.classifier.feature.transform.TransformableFeature;
+
+import com.google.common.collect.LinkedHashMultiset;
+import com.google.common.collect.Multiset;
 
 /**
  * Transforms count features produced by its subextractor into TF*IDF values
@@ -135,4 +144,72 @@ public class TfIdfExtractor<OUTCOME_T> extends TrainableExtractor_ImplBase<OUTCO
     this.idfMap.load(documentFreqDataURI);
     this.isTrained = true;
   }
+
+  private static class IDFMap {
+    private Multiset<String> documentFreqMap;
+
+    private int totalDocumentCount;
+
+    public IDFMap() {
+      this.documentFreqMap = LinkedHashMultiset.create();
+      this.totalDocumentCount = 0;
+    }
+
+    public void add(String term) {
+      this.documentFreqMap.add(term);
+    }
+
+    public void incTotalDocumentCount() {
+      this.totalDocumentCount++;
+    }
+
+    public int getDF(String term) {
+      return this.documentFreqMap.count(term);
+    }
+
+    public double getIDF(String term) {
+      int df = this.getDF(term);
+      return Math.log((this.totalDocumentCount + 1) / (df + 1));
+    }
+
+    public void save(URI outputURI) {
+      File out = new File(outputURI);
+      BufferedWriter writer = null;
+      try {
+        writer = new BufferedWriter(new FileWriter(out));
+        writer.append(String.format("#NUM DOCUMENTS\t%d\n", this.totalDocumentCount));
+        for (Multiset.Entry<String> entry : this.documentFreqMap.entrySet()) {
+          writer.append(String.format("%s\t%d\n", entry.getElement(), entry.getCount()));
+        }
+        writer.close();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+
+    public void load(URI inputURI) {
+      File in = new File(inputURI);
+      BufferedReader reader = null;
+      // this.documentFreqMap = LinkedHashMultiset.create();
+      try {
+        reader = new BufferedReader(new FileReader(in));
+        // First line specifies the number of documents
+        String firstLine = reader.readLine();
+        String[] keyValuePair = firstLine.split("\\t");
+        this.totalDocumentCount = Integer.parseInt(keyValuePair[1]);
+
+        // The rest of the lines are the term counts
+        String line = null;
+        while ((line = reader.readLine()) != null) {
+          String[] termFreqPair = line.split("\\t");
+          this.documentFreqMap.add(termFreqPair[0], Integer.parseInt(termFreqPair[1]));
+        }
+
+        reader.close();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
 }
