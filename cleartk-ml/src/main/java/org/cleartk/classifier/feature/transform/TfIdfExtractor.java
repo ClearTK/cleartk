@@ -48,7 +48,7 @@ import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
  * @author Lee Becker
  * 
  */
-public class TfIdfExtractor<OUTCOME_T> implements TrainableFromInstances<OUTCOME_T>,
+public class TfIdfExtractor<OUTCOME_T> extends TrainableExtractor_ImplBase<OUTCOME_T> implements
     SimpleFeatureExtractor {
 
   private SimpleFeatureExtractor subExtractor;
@@ -57,10 +57,8 @@ public class TfIdfExtractor<OUTCOME_T> implements TrainableFromInstances<OUTCOME
 
   private IDFMap idfMap;
 
-  private String key;
-
-  public TfIdfExtractor(String key) {
-    this.key = key;
+  public TfIdfExtractor(String name) {
+    super(name);
     this.isTrained = false;
     this.idfMap = new IDFMap();
   }
@@ -70,8 +68,8 @@ public class TfIdfExtractor<OUTCOME_T> implements TrainableFromInstances<OUTCOME
    * @param extractor
    *          - This assumes that any extractors passed in will produce counts of some variety
    */
-  public TfIdfExtractor(String key, SimpleFeatureExtractor extractor) {
-    this.key = key;
+  public TfIdfExtractor(String name, SimpleFeatureExtractor extractor) {
+    super(name);
     this.subExtractor = extractor;
     this.isTrained = false;
     this.idfMap = new IDFMap();
@@ -82,15 +80,18 @@ public class TfIdfExtractor<OUTCOME_T> implements TrainableFromInstances<OUTCOME
       throws CleartkExtractorException {
 
     List<Feature> extracted = this.subExtractor.extract(view, focusAnnotation);
-    List<Feature> result;
+    List<Feature> result = new ArrayList<Feature>();
     if (this.isTrained) {
       // We have trained / loaded a tf*idf model, so now fix up the values
-      result = this.transform(extracted);
+      for (Feature feature : extracted) {
+        int tf = (Integer) feature.getValue();
+        double tfidf = tf * this.idfMap.getIDF(feature.getName());
+        result.add(new Feature("TF-IDF_" + feature.getName(), tfidf));
+      }
     } else {
       // We haven't trained this extractor yet, so just mark the existing features
       // for future modification, by creating one mega container feature
-      result = new ArrayList<Feature>();
-      result.add(new TfIdfFeature(this.key, extracted));
+      result.add(new TransformableFeature(this.name, extracted));
     }
 
     return result;
@@ -132,28 +133,4 @@ public class TfIdfExtractor<OUTCOME_T> implements TrainableFromInstances<OUTCOME
     this.idfMap.load(documentFreqDataURI);
     this.isTrained = true;
   }
-
-  @Override
-  public List<Feature> transform(List<Feature> features) {
-
-    List<Feature> transformed = new ArrayList<Feature>();
-    for (Feature feature : features) {
-      int tf = (Integer) feature.getValue();
-      double tfidf = tf * this.idfMap.getIDF(feature.getName());
-      transformed.add(new Feature("TF-IDF_" + feature.getName(), tfidf));
-    }
-    return transformed;
-  }
-
-  @Override
-  public List<TransformableFeature> filter(Iterable<Feature> features) {
-    ArrayList<TransformableFeature> filtered = new ArrayList<TransformableFeature>();
-    for (Feature feature : features) {
-      if (feature instanceof TfIdfFeature && ((TfIdfFeature) feature).getKey().equals(this.key)) {
-        filtered.add((TfIdfFeature) feature);
-      }
-    }
-    return filtered;
-  }
-
 }

@@ -50,7 +50,13 @@ public class TransformableFeature extends Feature {
   private static final String UNSUPPORTED_OPERATION_EXCEPTION_MESSAGE = "This is a temporary "
       + "place-holder feature that cannot be written by most data writers. Instead, it must be "
       + "written with an " + InstanceDataWriter.class.getName() + "and then the instances should"
-      + "be transformed by the appropriate " + TrainableFromInstances.class.getName();
+      + "be transformed by the appropriate " + TrainableExtractor.class.getName();
+
+  public TransformableFeature(String name, List<Feature> features) {
+    super();
+    this.setName(name);
+    this.features = features;
+  }
 
   // Following are unsupported to prevent anything but InstanceDataWriter from writing transformable
   // features.
@@ -61,16 +67,6 @@ public class TransformableFeature extends Feature {
 
   @Override
   public void setValue(Object value) {
-    throw new UnsupportedOperationException(UNSUPPORTED_OPERATION_EXCEPTION_MESSAGE);
-  }
-
-  @Override
-  public String getName() {
-    throw new UnsupportedOperationException(UNSUPPORTED_OPERATION_EXCEPTION_MESSAGE);
-  }
-
-  @Override
-  public void setName(String name) {
     throw new UnsupportedOperationException(UNSUPPORTED_OPERATION_EXCEPTION_MESSAGE);
   }
 

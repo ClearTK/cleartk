@@ -55,10 +55,8 @@ import org.cleartk.classifier.feature.transform.MeanStddevMap.MeanStddevTuple;
  * @author Lee Becker
  * 
  */
-public class ZeroMeanUnitStddevExtractor<OUTCOME_T> implements TrainableFromInstances<OUTCOME_T>,
-    SimpleFeatureExtractor {
-
-  private String key;
+public class ZeroMeanUnitStddevExtractor<OUTCOME_T> extends TrainableExtractor_ImplBase<OUTCOME_T>
+    implements SimpleFeatureExtractor {
 
   private SimpleFeatureExtractor subExtractor;
 
@@ -70,14 +68,14 @@ public class ZeroMeanUnitStddevExtractor<OUTCOME_T> implements TrainableFromInst
   // This is read in after training for use in transformation
   private MeanStddevMap<String> meanStddevMap;
 
-  public ZeroMeanUnitStddevExtractor(String key) {
-    this.key = key;
+  public ZeroMeanUnitStddevExtractor(String name) {
+    super(name);
     this.isTrained = false;
     this.featureStatsMap = new HashMap<String, MeanVarianceRunningStat>();
   }
 
-  public ZeroMeanUnitStddevExtractor(String key, SimpleFeatureExtractor subExtractor) {
-    this.key = key;
+  public ZeroMeanUnitStddevExtractor(String name, SimpleFeatureExtractor subExtractor) {
+    super(name);
     this.subExtractor = subExtractor;
     this.isTrained = false;
     this.featureStatsMap = new HashMap<String, MeanVarianceRunningStat>();
@@ -88,15 +86,19 @@ public class ZeroMeanUnitStddevExtractor<OUTCOME_T> implements TrainableFromInst
       throws CleartkExtractorException {
 
     List<Feature> extracted = this.subExtractor.extract(view, focusAnnotation);
-    List<Feature> result;
+    List<Feature> result = new ArrayList<Feature>();
     if (this.isTrained) {
       // We have trained / loaded a ZMUS model, so now fix up the values
-      result = this.transform(extracted);
+      for (Feature feature : extracted) {
+        String featureName = feature.getName();
+        MeanStddevTuple stats = this.meanStddevMap.getValues(featureName);
+        double value = ((Number) feature.getValue()).doubleValue();
+        result.add(new Feature("ZMUS_" + featureName, (value - stats.mean) / stats.stddev));
+      }
     } else {
       // We haven't trained this extractor yet, so just mark the existing features
       // for future modification, by creating one mega container feature
-      result = new ArrayList<Feature>();
-      result.add(new ZeroMeanUnitStddevFeature(this.key, extracted));
+      result.add(new TransformableFeature(this.name, extracted));
     }
 
     return result;
@@ -122,17 +124,17 @@ public class ZeroMeanUnitStddevExtractor<OUTCOME_T> implements TrainableFromInst
   }
 
   private void updateFeatureStats(Feature feature) throws CleartkExtractorException {
-    String name = feature.getName();
-    Object value = feature.getValue();
-    if (value instanceof Number) {
+    String featureName = feature.getName();
+    Object featureValue = feature.getValue();
+    if (featureValue instanceof Number) {
       MeanVarianceRunningStat stats;
-      if (this.featureStatsMap.containsKey(name)) {
-        stats = this.featureStatsMap.get(name);
+      if (this.featureStatsMap.containsKey(featureName)) {
+        stats = this.featureStatsMap.get(featureName);
       } else {
         stats = new MeanVarianceRunningStat();
-        this.featureStatsMap.put(name, stats);
+        this.featureStatsMap.put(featureName, stats);
       }
-      stats.add(((Number) value).doubleValue());
+      stats.add(((Number) featureValue).doubleValue());
     } else {
       throw new CleartkExtractorException(
           "Cannot normalize non-numeric feature values",
@@ -183,34 +185,4 @@ public class ZeroMeanUnitStddevExtractor<OUTCOME_T> implements TrainableFromInst
 
     this.isTrained = true;
   }
-
-  @Override
-  public List<Feature> transform(List<Feature> features) throws CleartkExtractorException {
-    List<Feature> transformed = new ArrayList<Feature>();
-    for (Feature feature : features) {
-      transformed.add(this.transformFeature(feature));
-    }
-    return transformed;
-  }
-
-  public Feature transformFeature(Feature feature) {
-    String name = feature.getName();
-    MeanStddevTuple stats = this.meanStddevMap.getValues(name);
-    double value = ((Number) feature.getValue()).doubleValue();
-    return new Feature("ZMUS_" + name, (value - stats.mean) / stats.stddev);
-  }
-
-  @Override
-  public List<TransformableFeature> filter(Iterable<Feature> features)
-      throws CleartkExtractorException {
-    ArrayList<TransformableFeature> filtered = new ArrayList<TransformableFeature>();
-    for (Feature feature : features) {
-      if (feature instanceof ZeroMeanUnitStddevFeature
-          && ((ZeroMeanUnitStddevFeature) feature).getKey().equals(this.key)) {
-        filtered.add((ZeroMeanUnitStddevFeature) feature);
-      }
-    }
-    return filtered;
-  }
-
 }
