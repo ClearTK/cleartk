@@ -45,7 +45,7 @@ import org.cleartk.classifier.feature.extractor.simple.CombinedExtractor;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.transform.util.MinMaxNormalizationExtractor;
-import org.cleartk.classifier.feature.transform.util.TfIdfExtractor;
+import org.cleartk.classifier.feature.transform.util.TfidfExtractor;
 import org.cleartk.classifier.feature.transform.util.ZeroMeanUnitStddevExtractor;
 import org.cleartk.classifier.jar.GenericJarClassifierFactory;
 import org.cleartk.examples.ExampleComponents;
@@ -122,20 +122,20 @@ public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
 
-    TfIdfExtractor<String> tfIdfExtractor = initTfIdfExtractor();
+    TfidfExtractor<String> tfIdfExtractor = initTfIdfExtractor();
     ZeroMeanUnitStddevExtractor<String> zmusExtractor = initZmusExtractor();
     MinMaxNormalizationExtractor<String> minmaxExtractor = initMinMaxExtractor();
 
     this.extractor = new CombinedExtractor(tfIdfExtractor, zmusExtractor, minmaxExtractor);
   }
 
-  private TfIdfExtractor<String> initTfIdfExtractor() {
+  private TfidfExtractor<String> initTfIdfExtractor() {
     ContextExtractor<Token> countsExtractor = new ContextExtractor<Token>(
         Token.class,
         new CoveredTextExtractor(),
         new ContextExtractor.Count(new ContextExtractor.Covered()));
 
-    TfIdfExtractor<String> tfIdfExtractor = new TfIdfExtractor<String>(
+    TfidfExtractor<String> tfIdfExtractor = new TfidfExtractor<String>(
         DocumentClassificationAnnotator.TFIDF_EXTRACTOR_KEY,
         countsExtractor);
 

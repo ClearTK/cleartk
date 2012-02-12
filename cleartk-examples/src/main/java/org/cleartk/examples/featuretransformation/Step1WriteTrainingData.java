@@ -35,7 +35,7 @@ import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.transform.DefaultInstanceDataWriterFactory;
 import org.cleartk.classifier.feature.transform.InstanceStream;
 import org.cleartk.classifier.feature.transform.util.MinMaxNormalizationExtractor;
-import org.cleartk.classifier.feature.transform.util.TfIdfExtractor;
+import org.cleartk.classifier.feature.transform.util.TfidfExtractor;
 import org.cleartk.classifier.feature.transform.util.ZeroMeanUnitStddevExtractor;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.libsvm.DefaultMultiClassLIBSVMDataWriterFactory;
@@ -126,7 +126,7 @@ public class Step1WriteTrainingData {
     // Collect TF*IDF stats
     File outputDirectory = new File(outputDirectoryName);
     Iterable<Instance<String>> instances = InstanceStream.loadFromDirectory(outputDirectory);
-    TfIdfExtractor<String> extractor = new TfIdfExtractor<String>(
+    TfidfExtractor<String> extractor = new TfidfExtractor<String>(
         DocumentClassificationAnnotator.TFIDF_EXTRACTOR_KEY);
     extractor.train(instances);
     extractor.save(tfIdfDataURI);
