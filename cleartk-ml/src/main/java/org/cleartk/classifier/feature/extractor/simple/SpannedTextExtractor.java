@@ -26,6 +26,8 @@ package org.cleartk.classifier.feature.extractor.simple;
 /**
  * Copyright (c) 2012, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
+ * @deprecated Replaced by {@link CoveredTextExtractor}.
  */
 
 @Deprecated
