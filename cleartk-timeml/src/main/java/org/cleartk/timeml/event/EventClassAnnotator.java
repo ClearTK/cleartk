@@ -26,7 +26,9 @@ package org.cleartk.timeml.event;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.classifier.feature.extractor.simple.BagExtractor;
+import org.cleartk.classifier.feature.extractor.ContextExtractor;
+import org.cleartk.classifier.feature.extractor.ContextExtractor.Bag;
+import org.cleartk.classifier.feature.extractor.ContextExtractor.Covered;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.timeml.TimeMLComponents;
@@ -68,12 +70,12 @@ public class EventClassAnnotator extends EventAttributeAnnotator<String> {
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
-    this.eventFeatureExtractors.add(new BagExtractor(Token.class, new TypePathExtractor(
+    this.eventFeatureExtractors.add(new ContextExtractor<Token>(Token.class, new TypePathExtractor(
         Token.class,
-        "stem")));
-    this.eventFeatureExtractors.add(new BagExtractor(Token.class, new TypePathExtractor(
+        "stem"), new Bag(new Covered())));
+    this.eventFeatureExtractors.add(new ContextExtractor<Token>(Token.class, new TypePathExtractor(
         Token.class,
-        "pos")));
+        "pos"), new Bag(new Covered())));
   }
 
   @Override

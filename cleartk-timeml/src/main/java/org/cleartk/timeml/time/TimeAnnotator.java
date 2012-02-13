@@ -44,8 +44,8 @@ import org.cleartk.classifier.feature.extractor.ContextExtractor.Following;
 import org.cleartk.classifier.feature.extractor.ContextExtractor.Preceding;
 import org.cleartk.classifier.feature.extractor.simple.CharacterCategoryPatternExtractor;
 import org.cleartk.classifier.feature.extractor.simple.CharacterCategoryPatternExtractor.PatternType;
+import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
-import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory;
 import org.cleartk.timeml.TimeMLComponents;
@@ -117,7 +117,7 @@ public class TimeAnnotator extends Chunker {
 
       // add features: word, character pattern, stem, pos
       this.tokenFeatureExtractors = Arrays.asList(
-          new SpannedTextExtractor(),
+          new CoveredTextExtractor(),
           new CharacterCategoryPatternExtractor(PatternType.REPEATS_MERGED),
           new TimeWordsExtractor(),
           new TypePathExtractor(Token.class, "stem"),

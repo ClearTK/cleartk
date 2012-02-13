@@ -32,7 +32,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
+import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.timeml.TimeMLComponents;
@@ -92,7 +92,7 @@ public class TemporalLinkEventToDocumentCreationTimeAnnotator extends
         new TypePathExtractor(Event.class, "polarity"),
         new TypePathExtractor(Event.class, "modality"),
         // the word, but only if it's an aspectual event
-        new FilteringExtractor<Event>(Event.class, new SpannedTextExtractor()) {
+        new FilteringExtractor<Event>(Event.class, new CoveredTextExtractor()) {
           @Override
           protected boolean accept(Event event) {
             return event.getEventClass().equals("ASPECTUAL");

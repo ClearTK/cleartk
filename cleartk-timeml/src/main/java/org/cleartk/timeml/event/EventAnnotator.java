@@ -42,8 +42,8 @@ import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.ContextExtractor;
 import org.cleartk.classifier.feature.extractor.ContextExtractor.Following;
 import org.cleartk.classifier.feature.extractor.ContextExtractor.Preceding;
+import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
-import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.mallet.DefaultMalletDataWriterFactory;
 import org.cleartk.syntax.constituent.type.TreebankNode;
@@ -98,7 +98,7 @@ public class EventAnnotator extends CleartkAnnotator<String> {
     // add features: word, stem, pos
     this.tokenFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
     this.tokenFeatureExtractors.addAll(Arrays.asList(
-        new SpannedTextExtractor(),
+        new CoveredTextExtractor(),
         new TypePathExtractor(Token.class, "stem"),
         new TypePathExtractor(Token.class, "pos"),
         new ParentNodeFeaturesExtractor()));
@@ -107,7 +107,7 @@ public class EventAnnotator extends CleartkAnnotator<String> {
     this.contextExtractors = new ArrayList<ContextExtractor<?>>();
     this.contextExtractors.add(new ContextExtractor<Token>(
         Token.class,
-        new SpannedTextExtractor(),
+        new CoveredTextExtractor(),
         new Preceding(3),
         new Following(3)));
   }

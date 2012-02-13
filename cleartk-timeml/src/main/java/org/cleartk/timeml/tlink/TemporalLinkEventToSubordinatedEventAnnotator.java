@@ -37,8 +37,8 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.feature.extractor.ContextExtractor;
 import org.cleartk.classifier.feature.extractor.ContextExtractor.Bag;
 import org.cleartk.classifier.feature.extractor.ContextExtractor.Covered;
+import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
-import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.syntax.constituent.type.TreebankNode;
@@ -102,7 +102,7 @@ public class TemporalLinkEventToSubordinatedEventAnnotator extends
     this.setTargetExtractors(extractors);
     this.setBetweenExtractors(Arrays.asList(
         new SyntacticLeafToLeafPathPartsExtractor(),
-        new ContextExtractor<Token>(Token.class, new SpannedTextExtractor(), new Bag(new Covered()))));
+        new ContextExtractor<Token>(Token.class, new CoveredTextExtractor(), new Bag(new Covered()))));
   }
 
   @Override

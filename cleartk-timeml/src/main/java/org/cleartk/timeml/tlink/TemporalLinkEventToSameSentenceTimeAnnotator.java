@@ -44,9 +44,8 @@ import org.cleartk.classifier.feature.extractor.ContextExtractor.Covered;
 import org.cleartk.classifier.feature.extractor.ContextExtractor.Following;
 import org.cleartk.classifier.feature.extractor.ContextExtractor.Ngram;
 import org.cleartk.classifier.feature.extractor.ContextExtractor.Preceding;
-import org.cleartk.classifier.feature.extractor.simple.BagExtractor;
+import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
-import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.syntax.constituent.type.TreebankNode;
@@ -103,7 +102,7 @@ public class TemporalLinkEventToSameSentenceTimeAnnotator extends
 
     final SimpleFeatureExtractor prepOrVerbExtractor = new FilteringExtractor<Token>(
         Token.class,
-        new SpannedTextExtractor()) {
+        new CoveredTextExtractor()) {
       @Override
       protected boolean accept(Token token) {
         return token.getPos().equals("TO") || token.getPos().equals("IN")
@@ -117,7 +116,7 @@ public class TemporalLinkEventToSameSentenceTimeAnnotator extends
         new ContextExtractor<Token>(Token.class, prepOrVerbExtractor, new Ngram(new Following(5)))));
 
     this.setTargetExtractors(Arrays.asList(
-        new BagExtractor(Token.class, new SpannedTextExtractor()),
+        new ContextExtractor<Token>(Token.class, new CoveredTextExtractor(), new Bag(new Covered())),
         new TypePathExtractor(Time.class, "timeType"),
         new TypePathExtractor(Time.class, "value"),
         new ContextExtractor<Token>(Token.class, prepOrVerbExtractor, new Ngram(new Preceding(5)))));
