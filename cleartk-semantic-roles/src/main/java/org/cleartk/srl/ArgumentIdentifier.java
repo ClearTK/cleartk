@@ -43,12 +43,12 @@ import org.cleartk.classifier.feature.extractor.annotationpair.AnnotationPairFea
 import org.cleartk.classifier.feature.extractor.annotationpair.MatchingAnnotationPairExtractor;
 import org.cleartk.classifier.feature.extractor.annotationpair.NamingAnnotationPairFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.annotationpair.RelativePositionExtractor;
+import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.FirstInstanceExtractor;
 import org.cleartk.classifier.feature.extractor.simple.LastInstanceExtractor;
 import org.cleartk.classifier.feature.extractor.simple.MatchingAnnotationExtractor;
 import org.cleartk.classifier.feature.extractor.simple.NamingExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
-import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.GenericJarClassifierFactory;
 import org.cleartk.srl.feature.NamedEntityExtractor;
@@ -119,7 +119,7 @@ public class ArgumentIdentifier extends CleartkAnnotator<Boolean> {
 
     SimpleFeatureExtractor defaultTokenExtractorSet = new MatchingAnnotationExtractor(
         Token.class,
-        new SpannedTextExtractor(),
+        new CoveredTextExtractor(),
         new StemExtractor(),
         new POSExtractor());
 

@@ -42,8 +42,8 @@ import org.cleartk.classifier.feature.extractor.WindowExtractor;
 import org.cleartk.classifier.feature.extractor.annotationpair.DistanceExtractor;
 import org.cleartk.classifier.feature.extractor.annotationpair.RelativePositionExtractor;
 import org.cleartk.classifier.feature.extractor.simple.CombinedExtractor;
+import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
-import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.GenericJarClassifierFactory;
@@ -100,7 +100,7 @@ public class ArgumentAnnotator extends CleartkAnnotator<String> {
     super.initialize(context);
 
     SimpleFeatureExtractor[] tokenExtractors = {
-        new SpannedTextExtractor(),
+        new CoveredTextExtractor(),
         new TypePathExtractor(Token.class, "stem"),
         new TypePathExtractor(Token.class, "pos") };
 

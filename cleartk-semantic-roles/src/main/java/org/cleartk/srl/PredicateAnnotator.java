@@ -41,8 +41,8 @@ import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.WindowFeature;
 import org.cleartk.classifier.feature.extractor.WindowExtractor;
 import org.cleartk.classifier.feature.extractor.simple.CombinedExtractor;
+import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
-import org.cleartk.classifier.feature.extractor.simple.SpannedTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.GenericJarClassifierFactory;
@@ -89,7 +89,7 @@ public class PredicateAnnotator extends CleartkAnnotator<Boolean> {
     super.initialize(context);
 
     SimpleFeatureExtractor[] tokenExtractors = {
-        new SpannedTextExtractor(),
+        new CoveredTextExtractor(),
         new TypePathExtractor(Token.class, "stem"),
         new TypePathExtractor(Token.class, "pos") };
 
