@@ -199,8 +199,8 @@ public class CentroidTfidfSimilarityExtractor<OUTCOME_T> extends TfidfExtractor<
     }
     reader.close();
 
+    this.simFunction = new FixedCosineSimilarity(this.centroidMap);
     this.isTrained = true;
-
   }
 
 }
