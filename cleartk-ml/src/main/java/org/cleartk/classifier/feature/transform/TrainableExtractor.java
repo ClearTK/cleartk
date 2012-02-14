@@ -30,6 +30,32 @@ import java.net.URI;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 
+/**
+ * Copyright (c) 2012, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * <p>
+ * TrainableExtractors defines a extractors that can be trained to fix up data based on a set of
+ * instances. Prototypical cases include computing statistics for normalization such as mean,
+ * standard deviation, min, max, or for computing corpus tf*idf values
+ * 
+ * <p>
+ * TrainableExtractors that have not yet been trained cannot be used as subextractors inside of any
+ * other feature extractor, though they can have subextractors of their own. So for example, while
+ * the following will work:
+ * <p>
+ * 
+ * <code>
+ * new TfidfExtractor(new ContextExtractor<Token>(Token.class, new CoveredTextExtractor(), new
+ * Preceding(2)))
+ * </code>
+ * <p>
+ * the following will not:
+ * <p>
+ * <code>
+ * new ContextExtractor<Token>(Token.class, new TfidfExtractor(new CoveredTextExtractor()), new
+ * Preceding(2))
+ * </code>
+ */
 public interface TrainableExtractor<OUTCOME_T> {
 
   /**
@@ -38,6 +64,8 @@ public interface TrainableExtractor<OUTCOME_T> {
    * <p>
    * In the prototypical case, train takes a collection of instances and computes statistics over
    * the values such as computing mean, standard deviation, TF*IDF, etc...
+   * <p>
+   * 
    * 
    * @param instances
    *          - URI pointing to the output location for saving statistics
@@ -70,4 +98,5 @@ public interface TrainableExtractor<OUTCOME_T> {
    * @return A copy of the instance, where processing of the instances is complete.
    */
   public Instance<OUTCOME_T> transform(Instance<OUTCOME_T> instance);
+
 }

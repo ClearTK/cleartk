@@ -43,7 +43,7 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
-import org.cleartk.classifier.feature.transform.TrainableExtractor_ImplBase;
+import org.cleartk.classifier.feature.transform.OneToOneTrainableExtractor_ImplBase;
 import org.cleartk.classifier.feature.transform.TransformableFeature;
 
 /**
@@ -57,8 +57,8 @@ import org.cleartk.classifier.feature.transform.TransformableFeature;
  * @author Lee Becker
  * 
  */
-public class MinMaxNormalizationExtractor<OUTCOME_T> extends TrainableExtractor_ImplBase<OUTCOME_T>
-    implements SimpleFeatureExtractor {
+public class MinMaxNormalizationExtractor<OUTCOME_T> extends
+    OneToOneTrainableExtractor_ImplBase<OUTCOME_T> implements SimpleFeatureExtractor {
 
   private SimpleFeatureExtractor subExtractor;
 

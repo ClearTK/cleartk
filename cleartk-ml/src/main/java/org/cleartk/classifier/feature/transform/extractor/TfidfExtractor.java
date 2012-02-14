@@ -42,7 +42,7 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
-import org.cleartk.classifier.feature.transform.TrainableExtractor_ImplBase;
+import org.cleartk.classifier.feature.transform.OneToOneTrainableExtractor_ImplBase;
 import org.cleartk.classifier.feature.transform.TransformableFeature;
 
 import com.google.common.collect.LinkedHashMultiset;
@@ -59,14 +59,14 @@ import com.google.common.collect.Multiset;
  * @author Lee Becker
  * 
  */
-public class TfidfExtractor<OUTCOME_T> extends TrainableExtractor_ImplBase<OUTCOME_T> implements
-    SimpleFeatureExtractor {
+public class TfidfExtractor<OUTCOME_T> extends OneToOneTrainableExtractor_ImplBase<OUTCOME_T>
+    implements SimpleFeatureExtractor {
 
-  private SimpleFeatureExtractor subExtractor;
+  protected SimpleFeatureExtractor subExtractor;
 
-  private boolean isTrained;
+  protected boolean isTrained;
 
-  private IDFMap idfMap;
+  protected IDFMap idfMap;
 
   public TfidfExtractor(String name) {
     this(name, null);
@@ -111,8 +111,8 @@ public class TfidfExtractor<OUTCOME_T> extends TrainableExtractor_ImplBase<OUTCO
     return result;
   }
 
-  @Override
-  public void train(Iterable<Instance<OUTCOME_T>> instances) {
+  protected IDFMap createIdfMap(Iterable<Instance<OUTCOME_T>> instances) {
+    IDFMap newIdfMap = new IDFMap();
 
     // Add instance's term frequencies to the global counts
     for (Instance<OUTCOME_T> instance : instances) {
@@ -130,12 +130,17 @@ public class TfidfExtractor<OUTCOME_T> extends TrainableExtractor_ImplBase<OUTCO
       }
 
       for (String featureName : featureNames) {
-        this.idfMap.add(featureName);
+        newIdfMap.add(featureName);
       }
-      this.idfMap.incTotalDocumentCount();
+      newIdfMap.incTotalDocumentCount();
 
     }
+    return newIdfMap;
+  }
 
+  @Override
+  public void train(Iterable<Instance<OUTCOME_T>> instances) {
+    this.idfMap = this.createIdfMap(instances);
     this.isTrained = true;
   }
 
@@ -150,7 +155,7 @@ public class TfidfExtractor<OUTCOME_T> extends TrainableExtractor_ImplBase<OUTCO
     this.isTrained = true;
   }
 
-  private static class IDFMap {
+  protected static class IDFMap {
     private Multiset<String> documentFreqMap;
 
     private int totalDocumentCount;
@@ -166,6 +171,10 @@ public class TfidfExtractor<OUTCOME_T> extends TrainableExtractor_ImplBase<OUTCO
 
     public void incTotalDocumentCount() {
       this.totalDocumentCount++;
+    }
+
+    public int getTotalDocumentCount() {
+      return this.totalDocumentCount;
     }
 
     public int getDF(String term) {

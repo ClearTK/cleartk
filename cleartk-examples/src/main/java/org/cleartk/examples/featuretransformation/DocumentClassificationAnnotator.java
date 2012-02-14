@@ -45,6 +45,7 @@ import org.cleartk.classifier.feature.extractor.ContextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.CombinedExtractor;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.transform.extractor.CentroidTfidfSimilarityExtractor;
 import org.cleartk.classifier.feature.transform.extractor.MinMaxNormalizationExtractor;
 import org.cleartk.classifier.feature.transform.extractor.TfidfExtractor;
 import org.cleartk.classifier.feature.transform.extractor.ZeroMeanUnitStddevExtractor;
@@ -77,6 +78,15 @@ public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
       description = "provides a URI where the tf*idf map will be written")
   protected URI tfIdfUri;
 
+  public static final String PARAM_TF_IDF_CENTROID_SIMILARITY_URI = ConfigurationParameterFactory.createConfigurationParameterName(
+      DocumentClassificationAnnotator.class,
+      "tfIdfCentroidSimilarityUri");
+
+  @ConfigurationParameter(
+      mandatory = false,
+      description = "provides a URI where the tf*idf centroid data will be written")
+  protected URI tfIdfCentroidSimilarityUri;
+
   public static final String PARAM_ZMUS_URI = ConfigurationParameterFactory.createConfigurationParameterName(
       DocumentClassificationAnnotator.class,
       "zmusUri");
@@ -99,6 +109,8 @@ public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
 
   public static final String TFIDF_EXTRACTOR_KEY = "Token";
 
+  public static final String CENTROID_TFIDF_SIM_EXTRACTOR_KEY = "CentroidTfIdfSimilarity";
+
   public static final String ZMUS_EXTRACTOR_KEY = "LengthFeatures";
 
   public static final String MINMAX_EXTRACTOR_KEY = "LengthFeatures";
@@ -107,6 +119,11 @@ public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
 
   public static URI createTokenTfIdfDataURI(File outputDirectoryName) {
     File f = new File(outputDirectoryName, TFIDF_EXTRACTOR_KEY + "_tfidf_extractor.dat");
+    return f.toURI();
+  }
+
+  public static URI createIdfCentroidSimilarityDataURI(File outputDirectoryName) {
+    File f = new File(outputDirectoryName, CENTROID_TFIDF_SIM_EXTRACTOR_KEY);
     return f.toURI();
   }
 
@@ -125,9 +142,14 @@ public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
 
     try {
       TfidfExtractor<String> tfIdfExtractor = initTfIdfExtractor();
+      CentroidTfidfSimilarityExtractor<String> simExtractor = initCentroidTfIdfSimilarityExtractor();
       ZeroMeanUnitStddevExtractor<String> zmusExtractor = initZmusExtractor();
       MinMaxNormalizationExtractor<String> minmaxExtractor = initMinMaxExtractor();
-      this.extractor = new CombinedExtractor(tfIdfExtractor, zmusExtractor, minmaxExtractor);
+      this.extractor = new CombinedExtractor(
+          tfIdfExtractor,
+          simExtractor,
+          zmusExtractor,
+          minmaxExtractor);
     } catch (IOException e) {
       throw new ResourceInitializationException(e);
     }
@@ -147,6 +169,23 @@ public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
       tfIdfExtractor.load(this.tfIdfUri);
     }
     return tfIdfExtractor;
+  }
+
+  private CentroidTfidfSimilarityExtractor<String> initCentroidTfIdfSimilarityExtractor()
+      throws IOException {
+    ContextExtractor<Token> countsExtractor = new ContextExtractor<Token>(
+        Token.class,
+        new CoveredTextExtractor(),
+        new ContextExtractor.Count(new ContextExtractor.Covered()));
+
+    CentroidTfidfSimilarityExtractor<String> simExtractor = new CentroidTfidfSimilarityExtractor<String>(
+        DocumentClassificationAnnotator.CENTROID_TFIDF_SIM_EXTRACTOR_KEY,
+        countsExtractor);
+
+    if (this.tfIdfCentroidSimilarityUri != null) {
+      simExtractor.load(this.tfIdfCentroidSimilarityUri);
+    }
+    return simExtractor;
   }
 
   private ZeroMeanUnitStddevExtractor<String> initZmusExtractor() throws IOException {

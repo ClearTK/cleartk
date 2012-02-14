@@ -25,6 +25,7 @@ package org.cleartk.classifier.feature.transform;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
@@ -43,25 +44,35 @@ public abstract class TrainableExtractor_ImplBase<OUTCOME_T> implements
     this.name = name;
   }
 
-  @Override
-  public Instance<OUTCOME_T> transform(Instance<OUTCOME_T> instance) {
-    List<Feature> features = new ArrayList<Feature>();
-    for (Feature feature : instance.getFeatures()) {
-      if (this.isTransformable(feature)) {
-        for (Feature origFeature : ((TransformableFeature) feature).getFeatures()) {
-          features.add(this.transform(origFeature));
-        }
-      } else {
-        features.add(feature);
-      }
-    }
-    return new Instance<OUTCOME_T>(instance.getOutcome(), features);
-  }
-
-  protected abstract Feature transform(Feature feature);
-
   protected boolean isTransformable(Feature feature) {
     return feature instanceof TransformableFeature && this.name.equals(feature.getName());
+  }
+
+  /**
+   * Recursively look through all features in an instance to find the features this extractor is
+   * responsible for extracting
+   * 
+   * @param instance
+   * @return
+   */
+  protected List<TransformableFeature> selectTransformableFeatures(Instance<OUTCOME_T> instance) {
+
+    List<TransformableFeature> features = new ArrayList<TransformableFeature>();
+    Stack<Feature> featuresToProcess = new Stack<Feature>();
+    featuresToProcess.addAll(instance.getFeatures());
+
+    while (!featuresToProcess.isEmpty()) {
+      Feature currFeature = featuresToProcess.pop();
+      if (currFeature instanceof TransformableFeature) {
+        TransformableFeature transformable = (TransformableFeature) currFeature;
+        if (transformable.getName() == this.name) {
+          features.add(transformable);
+        } else {
+          featuresToProcess.addAll(transformable.getFeatures());
+        }
+      }
+    }
+    return features;
   }
 
 }
