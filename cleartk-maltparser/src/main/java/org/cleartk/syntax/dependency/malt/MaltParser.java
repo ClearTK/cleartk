@@ -65,7 +65,7 @@ public class MaltParser extends JCasAnnotator_ImplBase {
       "org.cleartk.token.TypeSystem",
       "org.cleartk.syntax.dependency.TypeSystem");
 
-  public static final String ENGMALT_RESOURCE_NAME = "/models/engmalt.linear.mco";
+  public static final String ENGMALT_RESOURCE_NAME = "/models/engmalt.linear-1.7.mco";
 
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
     // get the resource path and strip the ".mco" suffix
