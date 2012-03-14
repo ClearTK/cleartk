@@ -528,12 +528,10 @@
 					<groupId>org.cleartk</groupId>
 					<artifactId>cleartk-clearparser</artifactId>
 				</dependency>
-				<!-- omit because of GPL licensing issues
 				<dependency>
 					<groupId>org.cleartk</groupId>
 					<artifactId>cleartk-maltparser</artifactId>
 				</dependency>
-				-->
 				<!-- omit because of GPL licensing issues
 				<dependency>
 					<groupId>org.cleartk</groupId>
