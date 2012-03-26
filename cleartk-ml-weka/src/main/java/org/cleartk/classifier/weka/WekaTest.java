@@ -18,67 +18,55 @@
  */
 package org.cleartk.classifier.weka;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import weka.core.Attribute;
-import weka.core.FastVector;
+import weka.core.DenseInstance;
 import weka.core.Instance;
 import weka.core.Instances;
 
 /**
  * Copyright (c) 2012, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
  * @author Philip Ogren
  * 
  */
 
 public class WekaTest {
 
-	public static void main(String[] args) {
-		 // Declare the class attribute along with its values
-		 FastVector fvClassVal = new FastVector(2);
-		 fvClassVal.addElement("positive");
-		 fvClassVal.addElement("negative");
-		 
-		 Attribute classAttribute = new Attribute("theClass", fvClassVal, 0);
+  public static void main(String[] args) {
+    // Declare the class attribute along with its values
+    Attribute classAttribute = new Attribute("theClass", Arrays.asList("positive", "negative"), 0);
 
-		Attribute attribute1 = new Attribute("firstNumeric", 1);
-		Attribute attribute2 = new Attribute("secondNumeric", 2);
-		 
-		 // Declare a nominal attribute along with its values
-		 FastVector fvNominalVal = new FastVector(3);
-		 fvNominalVal.addElement("blue");
-		 fvNominalVal.addElement("gray");
-		 fvNominalVal.addElement("black");
-		 Attribute attribute3 = new Attribute("aNominal", fvNominalVal, 3);
-		 
-		 
-		 // Declare the feature vector
-		 FastVector attributes = new FastVector(4);
-		 attributes.addElement(classAttribute);
-		 attributes.addElement(attribute1);    
+    Attribute attribute1 = new Attribute("firstNumeric", 1);
+    Attribute attribute2 = new Attribute("secondNumeric", 2);
 
-		 Instance instance = new Instance(4);
-		 instance.setValue((Attribute)attributes.elementAt(0), "positive");
-		 instance.setValue((Attribute)attributes.elementAt(1), 1.0);      
+    // Declare a nominal attribute along with its values
+    Attribute attribute3 = new Attribute("aNominal", Arrays.asList("blue", "gray", "black"), 3);
 
-		 
-		 attributes.addElement(attribute2);    
-		 attributes.addElement(attribute3);    
+    // Declare the feature vector
+    Instance instance = new DenseInstance(4);
+    instance.setValue(classAttribute, "positive");
+    instance.setValue(attribute1, 1.0);
 
-		 Instance instance1 = new Instance(4);
-		 instance1.setValue((Attribute)attributes.elementAt(0), "positive");
-		 instance1.setValue((Attribute)attributes.elementAt(1), 1.0);      
-		 instance1.setValue((Attribute)attributes.elementAt(2), 0.5);      
-		 instance1.setValue((Attribute)attributes.elementAt(3), "gray");
+    Instance instance1 = new DenseInstance(4);
+    instance1.setValue(classAttribute, "positive");
+    instance1.setValue(attribute1, 1.0);
+    instance1.setValue(attribute2, 0.5);
+    instance1.setValue(attribute3, "gray");
 
-		 Instances instances = new Instances("Rel", attributes, 10);           
+    List<Attribute> attributes = Arrays.asList(classAttribute, attribute1, attribute2, attribute3);
+    Instances instances = new Instances("Rel", new ArrayList<Attribute>(attributes), 10);
 
+    // Set class index
+    instances.setClassIndex(0);
+    // add the instance
+    instances.add(instance);
+    instances.add(instance1);
 
-		 // Set class index
-		 instances.setClassIndex(0);
-		 // add the instance
-		 instances.add(instance);
-		 instances.add(instance1);
-		 
-		 System.out.println(instances);
-	}
+    System.out.println(instances);
+  }
 }
