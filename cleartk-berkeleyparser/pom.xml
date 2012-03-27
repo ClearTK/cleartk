@@ -25,9 +25,9 @@
 	</parent>
 	<dependencies>
 		<dependency>
-			<groupId>berkeleyparser</groupId>
+			<groupId>edu.berkeley.nlp</groupId>
 			<artifactId>berkeleyparser</artifactId>
-			<version>09_2009_java6</version>
+			<version>r32</version>
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
