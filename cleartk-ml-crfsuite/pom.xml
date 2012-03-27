@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>cleartk-ml-crfsuite</groupId>
 	<artifactId>cleartk-ml-crfsuite</artifactId>
-	<version>0.1.0</version>
+	<version>0.1.1-SNAPSHOT</version>
 	<url>http://cleartk.googlecode.com/</url>
 	<description>ClearTK wrapper for the CrfSuite</description>
 	<repositories>
@@ -59,9 +59,9 @@
 		</dependency>
 	</dependencies>
 	<scm>
-		<connection>scm:svn:http://cleartk.googlecode.com/svn/tags/cleartk-ml-crfsuite-0.1.0</connection>
-		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/tags/cleartk-ml-crfsuite-0.1.0</developerConnection>
-		<url>http://cleartk.googlecode.com/svn/tags/cleartk-ml-crfsuite-0.1.0</url>
+		<connection>scm:svn:http://cleartk.googlecode.com/svn/trunk/cleartk-ml-crfsuite</connection>
+		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/trunk/cleartk-ml-crfsuite</developerConnection>
+		<url>http://cleartk.googlecode.com/svn/trunk/cleartk-ml-crfsuite</url>
 	</scm>
 
 </project>
