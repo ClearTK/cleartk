@@ -1,0 +1,23 @@
+TypePath(StemValue)_Pierr	Pierre	LowerCase_pierre	CapitalType_INITIAL_UPPERCASE	NNP
+TypePath(StemValue)_Vinken	Vinken	LowerCase_vinken	CapitalType_INITIAL_UPPERCASE	NNP
+TypePath(StemValue)_,	,	LowerCase_,	,
+TypePath(StemValue)_61	61	LowerCase_61	CD
+TypePath(StemValue)_year	years	LowerCase_years	CapitalType_ALL_LOWERCASE	NNS
+TypePath(StemValue)_old	old	LowerCase_old	CapitalType_ALL_LOWERCASE	JJ
+TypePath(StemValue)_,	,	LowerCase_,	,
+TypePath(StemValue)_will	will	LowerCase_will	CapitalType_ALL_LOWERCASE	MD
+TypePath(StemValue)_join	join	LowerCase_join	CapitalType_ALL_LOWERCASE	VB
+TypePath(StemValue)_the	the	LowerCase_the	CapitalType_ALL_LOWERCASE	DT
+TypePath(StemValue)_board	board	LowerCase_board	CapitalType_ALL_LOWERCASE	NN
+TypePath(StemValue)_as	as	LowerCase_as	CapitalType_ALL_LOWERCASE	IN
+TypePath(StemValue)_a	a	LowerCase_a	CapitalType_ALL_LOWERCASE	DT
+TypePath(StemValue)_nonexecut	nonexecutive	LowerCase_nonexecutive	CapitalType_ALL_LOWERCASE	JJ
+TypePath(StemValue)_director	director	LowerCase_director	CapitalType_ALL_LOWERCASE	NN
+TypePath(StemValue)_Nov.	Nov.	LowerCase_nov.	CapitalType_INITIAL_UPPERCASE	NNP
+TypePath(StemValue)_29	29	LowerCase_29	CD
+TypePath(StemValue)_.	.	LowerCase_.	.
+
+TypePath(StemValue)_Mr.	Mr.	LowerCase_mr.	CapitalType_INITIAL_UPPERCASE	NNP
+TypePath(StemValue)_Vinken	Vinken	LowerCase_vinken	CapitalType_INITIAL_UPPERCASE	NNP
+TypePath(StemValue)_is	is	LowerCase_is	CapitalType_ALL_LOWERCASE	VBZ
+TypePath(StemValue)_chairman	chairman	LowerCase_chairman	CapitalType_ALL_LOWERCASE	NN
