@@ -1,10 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>cleartk-ml-crfsuite</groupId>
 	<artifactId>cleartk-ml-crfsuite</artifactId>
-	<version>0.1.0-SNAPSHOT</version>
+	<version>0.1.0</version>
 	<url>http://cleartk.googlecode.com/</url>
 	<description>ClearTK wrapper for the CrfSuite</description>
 	<repositories>
@@ -60,9 +59,9 @@
 		</dependency>
 	</dependencies>
 	<scm>
-		<connection>scm:svn:http://cleartk.googlecode.com/svn/trunk/${project.artifactId}</connection>
-		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/trunk/${project.artifactId}</developerConnection>
-		<url>http://cleartk.googlecode.com/svn/trunk/${project.artifactId}</url>
+		<connection>scm:svn:http://cleartk.googlecode.com/svn/tags/cleartk-ml-crfsuite-0.1.0</connection>
+		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/tags/cleartk-ml-crfsuite-0.1.0</developerConnection>
+		<url>http://cleartk.googlecode.com/svn/tags/cleartk-ml-crfsuite-0.1.0</url>
 	</scm>
 
 </project>
