@@ -1,5 +1,7 @@
 /** 
- * Copyright (c) 2012, Regents of the University of Colorado 
+ * Copyright 2011-2012
+ * Ubiquitous Knowledge Processing (UKP) Lab
+ * Technische Universität Darmstadt
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -29,9 +31,10 @@ import java.util.List;
 
 import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.jar.SequenceDataWriter_ImplBase;
+
 /**
  * <br>
- * Copyright (c) 2012, Regents of the University of Colorado <br>
+ * Copyright (c) 2011-2012, Technische Universität Darmstadt <br>
  * All rights reserved.
  * 
  * 
@@ -41,13 +44,13 @@ import org.cleartk.classifier.jar.SequenceDataWriter_ImplBase;
 public class CRFSuiteDataWriter
 		extends
 		SequenceDataWriter_ImplBase<CRFSuiteClassifierBuilder, List<NameNumber>, String, String> {
-	
+
 	private String featureSeparator = "\t";
+
 	public CRFSuiteDataWriter(File outputDirectory)
 			throws FileNotFoundException {
 		super(outputDirectory);
 	}
-
 
 	@Override
 	public void writeEncoded(List<NameNumber> features, String outcome) {
@@ -58,7 +61,7 @@ public class CRFSuiteDataWriter
 		}
 		this.trainingDataWriter.println();
 	}
-	
+
 	@Override
 	public void writeEndSequence() {
 		this.trainingDataWriter.println();

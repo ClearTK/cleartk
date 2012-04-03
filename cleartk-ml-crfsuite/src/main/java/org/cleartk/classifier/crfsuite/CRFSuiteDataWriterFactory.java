@@ -1,5 +1,7 @@
 /** 
- * Copyright (c) 2012, Regents of the University of Colorado 
+ * Copyright 2011-2012
+ * Ubiquitous Knowledge Processing (UKP) Lab
+ * Technische Universität Darmstadt
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -22,6 +24,7 @@
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 package org.cleartk.classifier.crfsuite;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -33,31 +36,33 @@ import org.cleartk.classifier.encoder.features.NumberEncoder;
 import org.cleartk.classifier.encoder.features.StringEncoder;
 import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
 import org.cleartk.classifier.jar.SequenceDataWriterFactory_ImplBase;
+
 /**
  * <br>
- * Copyright (c) 2012, Regents of the University of Colorado <br>
+ * Copyright (c) 2011-2012, Technische Universität Darmstadt <br>
  * All rights reserved.
  * 
  * 
  * @author Martin Riedl
  */
 
-public class CRFSuiteDataWriterFactory extends SequenceDataWriterFactory_ImplBase<List<NameNumber>, String, String>{
-
+public class CRFSuiteDataWriterFactory extends
+		SequenceDataWriterFactory_ImplBase<List<NameNumber>, String, String> {
 
 	public SequenceDataWriter<String> createDataWriter() throws IOException {
-		CRFSuiteDataWriter mdw= new CRFSuiteDataWriter(outputDirectory);
-	    if (!this.setEncodersFromFileSystem(mdw)) {
-	      NameNumberFeaturesEncoder fe = new NameNumberFeaturesEncoder(false,false);
-	      fe.addEncoder(new NumberEncoder());
-	      fe.addEncoder(new BooleanEncoder());
-	      fe.addEncoder(new StringEncoder());
-	      mdw.setFeaturesEncoder(fe);
+		CRFSuiteDataWriter mdw = new CRFSuiteDataWriter(outputDirectory);
+		if (!this.setEncodersFromFileSystem(mdw)) {
+			NameNumberFeaturesEncoder fe = new NameNumberFeaturesEncoder(false,
+					false);
+			fe.addEncoder(new NumberEncoder());
+			fe.addEncoder(new BooleanEncoder());
+			fe.addEncoder(new StringEncoder());
+			mdw.setFeaturesEncoder(fe);
 
-	      mdw.setOutcomeEncoder(new StringToStringOutcomeEncoder());
-	    }
+			mdw.setOutcomeEncoder(new StringToStringOutcomeEncoder());
+		}
 
-	    return mdw;
+		return mdw;
 	}
 
 }

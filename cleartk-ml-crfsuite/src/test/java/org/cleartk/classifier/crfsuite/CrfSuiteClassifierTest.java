@@ -1,5 +1,7 @@
 /* 
- * Copyright (c) 2012, Regents of the University of Colorado 
+ * Copyright 2011-2012
+ * Ubiquitous Knowledge Processing (UKP) Lab
+ * Technische Universität Darmstadt
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -50,24 +52,25 @@ import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.testing.util.HideOutput;
 import static org.junit.Assert.*;
+
 /**
  * <br>
  * Copyright (c) 2007-2012, Regents of the University of Colorado <br>
+ * Copyright (c) 2011-2012, Technische Universität Darmstadt, Germany <br>
  * All rights reserved.
  * 
  * @author Steven Bethard, Philipp Wetzler, Martin Riedl
  */
 
-
-//class is taken from MalletCrf and adjusted to crfsuite
+// class is taken from MalletCrf and adjusted to crfsuite
 public class CrfSuiteClassifierTest extends DefaultTestBase {
-	static{
+	static {
 		Logger.getAnonymousLogger().setLevel(Level.ALL);
-		UIMAFramework.getLogger().setLevel(org.apache.uima.util.Level.ALL
-				);
+		UIMAFramework.getLogger().setLevel(org.apache.uima.util.Level.ALL);
 	}
+
 	public static class TestAnnotator extends CleartkSequenceAnnotator<String> {
-		
+
 		@Override
 		public void initialize(UimaContext context)
 				throws ResourceInitializationException {
@@ -142,22 +145,22 @@ public class CrfSuiteClassifierTest extends DefaultTestBase {
 		classifierAnnotator.collectionProcessComplete();
 
 	}
-	
+
 	@Test
 	public void testClassifier() throws IOException {
 		CRFSuiteWrapper wrapper = new CRFSuiteWrapper();
 		String model = "target/tmpModel";
 		File modelFile = new File(model);
 		modelFile.deleteOnExit();
-		
+
 		String trainingDataFile = "src/test/resources/test_features";
 		String featureFile = trainingDataFile;
 		String[] corr = new String[] { "NNP", "NNP", ",", "CD", "NNS", "JJ",
 				",", "MD", "VB", "DT", "NN", "IN", "DT", "JJ", "NN", "NNP",
 				"CD", ".", "", "NNP", "NNP", "VBZ", "NN" };
-		
+
 		int featureSize = corr.length;
-		wrapper.trainClassifier(model, trainingDataFile, new String[] {""});
+		wrapper.trainClassifier(model, trainingDataFile, new String[] { "" });
 		List<String> l = wrapper.classifyFeatures(featureFile, model,
 				featureSize);
 
@@ -171,7 +174,6 @@ public class CrfSuiteClassifierTest extends DefaultTestBase {
 			s++;
 		}
 		Assert.assertEquals(0.043478260869565216, 1.0 * c / s, 1e-10);
-		
 
 	}
 

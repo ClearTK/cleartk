@@ -1,5 +1,5 @@
 /** 
- * Copyright (c) 2012, Regents of the University of Colorado 
+ * Copyright (c) 2011-2012, Technische Universität Darmstadt 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,7 @@
 package org.cleartk.util;
 /**
  * <br>
- * Copyright (c) 2012, Regents of the University of Colorado <br>
+ * Copyright (c) 2011-2012, Technische Universität Darmstadt <br>
  * All rights reserved.
  * 
  * 

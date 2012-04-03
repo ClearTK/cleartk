@@ -1,5 +1,7 @@
 /** 
- * Copyright (c) 2012, Regents of the University of Colorado 
+ * Copyright 2011-2012
+ * Ubiquitous Knowledge Processing (UKP) Lab
+ * Technische Universität Darmstadt
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -38,7 +40,7 @@ import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 import org.cleartk.classifier.jar.SequenceClassifier_ImplBase;
 /**
  * <br>
- * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * Copyright (c) 2011-2012, Technische Universität Darmstadt <br>
  * All rights reserved.
  * 
  * 

@@ -1,5 +1,7 @@
 /** 
- * Copyright (c) 2012, Regents of the University of Colorado 
+ * Copyright 2011-2012
+ * Ubiquitous Knowledge Processing (UKP) Lab
+ * Technische Universität Darmstadt
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -23,8 +25,6 @@
  */
 package org.cleartk.classifier.crfsuite;
 
-
-
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -41,9 +41,10 @@ import org.apache.uima.util.Logger;
 import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.jar.JarStreams;
 import org.cleartk.classifier.jar.SequenceClassifierBuilder_ImplBase;
+
 /**
  * <br>
- * Copyright (c) 2012, Regents of the University of Colorado <br>
+ * Copyright (c) 2011-2012, Technische Universität Darmstadt <br>
  * All rights reserved.
  * 
  * 
@@ -75,15 +76,15 @@ public class CRFSuiteClassifierBuilder
 
 	@Override
 	public void trainClassifier(File dir, String... args) throws Exception {
-		logger.log(Level.INFO,"Start learning CRFsuite classifier");
+		logger.log(Level.INFO, "Start learning CRFsuite classifier");
 		CRFSuiteWrapper wrapper = new CRFSuiteWrapper();
 		String model = new File(dir, MODEL_NAME).getPath();
 		String trainingDataFile = getTrainingDataFile(dir).getPath();
 		wrapper.trainClassifier(model, trainingDataFile, args);
-		logger.log(Level.INFO,"Finished learning CRFsuite classifier");
+		logger.log(Level.INFO, "Finished learning CRFsuite classifier");
 	}
 
-	private File modelFile=null;
+	private File modelFile = null;
 
 	/**
 	 * As the filename of the model is not known the only solution is to write
@@ -96,18 +97,20 @@ public class CRFSuiteClassifierBuilder
 		JarStreams.getNextJarEntry(modelStream, MODEL_NAME);
 		this.modelFile = File.createTempFile("model", ".crfsuite");
 		this.modelFile.deleteOnExit();
-		logger.log(Level.FINE,"Start writing model to " + modelFile.getAbsolutePath());
-		
+		logger.log(Level.FINE,
+				"Start writing model to " + modelFile.getAbsolutePath());
+
 		InputStream inputStream = new DataInputStream(modelStream);
 		OutputStream out = new FileOutputStream(modelFile);
 		byte buf[] = new byte[1024];
 		int len;
-		while ((len = inputStream.read(buf)) > 0){
+		while ((len = inputStream.read(buf)) > 0) {
 			out.write(buf, 0, len);
 		}
 		out.close();
 		inputStream.close();
-		logger.log(Level.FINE,"Model is written to " + modelFile.getAbsolutePath());
+		logger.log(Level.FINE,
+				"Model is written to " + modelFile.getAbsolutePath());
 
 	}
 

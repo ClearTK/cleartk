@@ -28,7 +28,7 @@ import org.junit.Test;
 
 /**
  * <br>
- * Copyright (c) 2012, Regents of the University of Colorado <br>
+ * Copyright (c) 2011-2012, Technische Universität Darmstadt <br>
  * All rights reserved.
  * 
  * 
