@@ -17,8 +17,19 @@
  * For a complete copy of the license please see the file LICENSE distributed 
  * with the cleartk-syntax-berkeley project or visit 
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE. 
  */
-
 
 package org.cleartk.classifier.crfsuite;
 
@@ -49,7 +60,6 @@ import org.cleartk.util.PlatformDetection;
 
 import de.tudarmstadt.ukp.dkpro.core.api.resources.ResourceUtils;
 
-
 /**
  * <br>
  * Copyright (c) 2011-2012, Technische Universität Darmstadt <br>
@@ -58,8 +68,6 @@ import de.tudarmstadt.ukp.dkpro.core.api.resources.ResourceUtils;
  * 
  * @author Martin Riedl
  */
-
-
 
 public class CRFSuiteWrapper {
 	static Logger logger = UIMAFramework.getLogger(CRFSuiteWrapper.class);
@@ -71,23 +79,27 @@ public class CRFSuiteWrapper {
 			logger.log(Level.INFO, "The CRFSuite is installed on the system");
 			executable = new File(exec.getExecutableName());
 		} else {
-			
+
 			this.executable = exec.getExecutable();
-			if(!exec.isInstalled(this.executable.getAbsolutePath())){
-				logger.log(Level.WARNING, "The CRFSuite binary is not available for the current operation system, please install it!");	
-			}else{
-				logger.log(Level.INFO, "The CRFSuite binary is successfully extracted");
+			if (!exec.isInstalled(this.executable.getAbsolutePath())) {
+				logger.log(
+						Level.WARNING,
+						"The CRFSuite binary is not available for the current operation system, please install it!");
+			} else {
+				logger.log(Level.INFO,
+						"The CRFSuite binary is successfully extracted");
 			}
 		}
 	}
 
 	class Executables {
 		PlatformDetection pd = new PlatformDetection();
+
 		public Executables() {
-			
-			
+
 			// windows 64 should also be able to execute win32 files --> change
-			// it to win 32, this can be fixed, when a win 64 Bit executable is available
+			// it to win 32, this can be fixed, when a win 64 Bit executable is
+			// available
 			if (pd.getOs().equals(OS_WINDOWS)
 					&& pd.getArch().equals(ARCH_X86_64)) {
 				pd.setArch(ARCH_X86_32);
@@ -96,8 +108,7 @@ public class CRFSuiteWrapper {
 
 		public String getExecutablePath() {
 
-			String[] path = new String[] { "crfsuite", pd.toString(),
-					"bin" };
+			String[] path = new String[] { "crfsuite", pd.toString(), "bin" };
 			String sep = "/";
 			String p = "";
 			for (String s : path) {
@@ -127,18 +138,17 @@ public class CRFSuiteWrapper {
 					logger.log(Level.WARNING, e.getMessage());
 				}
 				StringBuffer buffer = output.getBuffer();
-				if(buffer.length()<8){
+				if (buffer.length() < 8) {
 					logger.log(Level.WARNING, "CRFSuite could not be executed!");
 				}
 				return (buffer.substring(0, 8).equals("CRFSuite"));
 			} catch (IOException e) {
-				//Path is not available
+				// Path is not available
 				logger.log(Level.FINE, e.getMessage());
 			}
 			return false;
 		}
 
-		
 		public String getExecutableName() {
 			return "crfsuite" + pd.getExecutableSuffix();
 		}
@@ -152,7 +162,7 @@ public class CRFSuiteWrapper {
 			File f;
 			try {
 				if (crfExecUrl != null) {
-					
+
 					f = new File(ResourceUtils.getUrlAsFile(crfExecUrl, true)
 							.toURI().getPath());
 					if (!f.exists()) {
@@ -168,7 +178,7 @@ public class CRFSuiteWrapper {
 				return null;
 			} catch (IOException e) {
 				e.printStackTrace();
-				
+
 				return null;
 			}
 
@@ -178,19 +188,23 @@ public class CRFSuiteWrapper {
 
 	public void trainClassifier(String model, String trainingDataFile,
 			String[] args) throws IOException {
-		
+
 		StringBuffer cmd = new StringBuffer();
-		cmd.append(executable.getPath());cmd.append(" ");
-		cmd.append("learn");cmd.append(" ");
-		cmd.append("-m");cmd.append(" ");
-		cmd.append(model);cmd.append(" ");
+		cmd.append(executable.getPath());
+		cmd.append(" ");
+		cmd.append("learn");
+		cmd.append(" ");
+		cmd.append("-m");
+		cmd.append(" ");
+		cmd.append(model);
+		cmd.append(" ");
 		for (String a : args) {
-			cmd.append(a);cmd.append(" ");
+			cmd.append(a);
+			cmd.append(" ");
 		}
 		cmd.append(trainingDataFile);
 		Process p = Runtime.getRuntime().exec(cmd.toString());
 
-		
 		InputStream stdIn = p.getInputStream();
 		InputStreamHandler<List<String>> ishIn = InputStreamHandler
 				.getInputStreamAsList(stdIn);
@@ -206,13 +220,18 @@ public class CRFSuiteWrapper {
 		} catch (InterruptedException e) {
 			logger.log(Level.WARNING, e.getMessage());
 		}
-	
-		logger.log(Level.WARNING, ishErr.getBuffer().toString().replaceAll("(^\\[)|([,])|(]$)", "\n"));
-		logger.log(Level.INFO, ishIn.getBuffer().toString().replaceAll("(^\\[)|([,])|(]$)", "\n"));
+
+		logger.log(
+				Level.WARNING,
+				ishErr.getBuffer().toString()
+						.replaceAll("(^\\[)|([,])|(]$)", "\n"));
+		logger.log(
+				Level.INFO,
+				ishIn.getBuffer().toString()
+						.replaceAll("(^\\[)|([,])|(]$)", "\n"));
 		stdErr.close();
 		stdIn.close();
-		
-		
+
 	}
 
 	public List<String> classifyFeatures(String featureFile, String modelFile,
@@ -271,13 +290,15 @@ public class CRFSuiteWrapper {
 			throws IOException {
 		List<String> posTags = new ArrayList<String>();
 		StringBuffer cmd = new StringBuffer();
-		
+
 		cmd.append(executable.getPath());
 		cmd.append(" tag -m ");
-		cmd.append(modelFile.getAbsolutePath());cmd.append(" ");
-		cmd.append(featureFile.getAbsolutePath());cmd.append(" ");
+		cmd.append(modelFile.getAbsolutePath());
+		cmd.append(" ");
+		cmd.append(featureFile.getAbsolutePath());
+		cmd.append(" ");
 		Process p = Runtime.getRuntime().exec(cmd.toString());
-		
+
 		InputStream stdIn = p.getInputStream();
 		InputStreamHandler<List<String>> ishIn = InputStreamHandler
 				.getInputStreamAsList(stdIn);
@@ -293,7 +314,10 @@ public class CRFSuiteWrapper {
 		} catch (InterruptedException e) {
 			logger.log(Level.WARNING, e.getMessage());
 		}
-		logger.log(Level.WARNING, ishErr.getBuffer().toString().replaceAll("(^\\[)|([,])|(]$)", "\n"));
+		logger.log(
+				Level.WARNING,
+				ishErr.getBuffer().toString()
+						.replaceAll("(^\\[)|([,])|(]$)", "\n"));
 		posTags = ishIn.getBuffer();
 		if (posTags.size() > 0) {
 			if (posTags.get(posTags.size() - 1).trim().length() == 0) {
