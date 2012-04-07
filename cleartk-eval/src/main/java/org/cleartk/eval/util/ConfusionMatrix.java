@@ -28,6 +28,9 @@ import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Multiset;
+
 /**
  * This data structure provides an easy way to build and output a confusion matrix. A confusion
  * matrix is a two dimensional table with a row and table for each class. Each element in the matrix
@@ -49,8 +52,8 @@ import java.util.TreeSet;
  *          The data type used to represent the class labels
  */
 
-public class ConfusionMatrix<T extends Comparable<T>> {
-  private Map<T, CountCollection<T>> matrix;
+public class ConfusionMatrix<T extends Comparable<? super T>> {
+  private Map<T, Multiset<T>> matrix;
 
   private SortedSet<T> classes;
 
@@ -58,7 +61,7 @@ public class ConfusionMatrix<T extends Comparable<T>> {
    * Creates an empty confusion Matrix
    */
   public ConfusionMatrix() {
-    this.matrix = new HashMap<T, CountCollection<T>>();
+    this.matrix = new HashMap<T, Multiset<T>>();
     this.classes = new TreeSet<T>();
   }
 
@@ -93,7 +96,7 @@ public class ConfusionMatrix<T extends Comparable<T>> {
     if (matrix.containsKey(actual)) {
       matrix.get(actual).add(predicted, count);
     } else {
-      CountCollection<T> counts = new CountCollection<T>();
+      Multiset<T> counts = HashMultiset.create();
       counts.add(predicted, count);
       matrix.put(actual, counts);
     }
@@ -109,9 +112,9 @@ public class ConfusionMatrix<T extends Comparable<T>> {
    */
   public void add(ConfusionMatrix<T> other) {
     for (T actual : other.matrix.keySet()) {
-      CountCollection<T> counts = other.matrix.get(actual);
-      for (T predicted : counts.getCountedObjects()) {
-        int count = counts.getCount(predicted);
+      Multiset<T> counts = other.matrix.get(actual);
+      for (T predicted : counts.elementSet()) {
+        int count = counts.count(predicted);
         this.add(actual, predicted, count);
       }
     }
@@ -138,7 +141,7 @@ public class ConfusionMatrix<T extends Comparable<T>> {
     if (!matrix.containsKey(actual)) {
       return 0;
     } else {
-      return matrix.get(actual).getCount(predicted);
+      return matrix.get(actual).count(predicted);
     }
   }
 
@@ -167,8 +170,8 @@ public class ConfusionMatrix<T extends Comparable<T>> {
       return 0;
     } else {
       int total = 0;
-      for (CountObject<T> countObj : matrix.get(actual).getCounts()) {
-        total += countObj.getCount();
+      for (T elem : matrix.get(actual).elementSet()) {
+        total += matrix.get(actual).count(elem);
       }
       return total;
     }
@@ -255,8 +258,7 @@ public class ConfusionMatrix<T extends Comparable<T>> {
     for (T actual : classes) {
       builder.append(firstColumnLabel);
       firstColumnLabel = "<tr>";
-      builder
-          .append(String.format("<th class=\"actual-class-header\" >%s</th>", actual.toString()));
+      builder.append(String.format("<th class=\"actual-class-header\" >%s</th>", actual.toString()));
 
       for (T predicted : classes) {
         builder.append("<td class=\"count-element\">");
