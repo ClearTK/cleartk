@@ -38,6 +38,7 @@ import org.cleartk.classifier.feature.extractor.ContextExtractor.Focus;
 import org.cleartk.classifier.feature.extractor.ContextExtractor.Following;
 import org.cleartk.classifier.feature.extractor.ContextExtractor.LastCovered;
 import org.cleartk.classifier.feature.extractor.ContextExtractor.Ngram;
+import org.cleartk.classifier.feature.extractor.ContextExtractor.Ngrams;
 import org.cleartk.classifier.feature.extractor.ContextExtractor.Preceding;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
@@ -223,6 +224,42 @@ public class ContextExtractorTest extends CleartkTestBase {
     this.assertFeature("Ngram_Following_1_3", "lazy_dog", iter.next());
     this.assertFeature("Ngram_Following_3_5", "._OOB1", iter.next());
     this.assertFeature("Ngram_Preceding_0_2_Following_1_2", "brown_fox_lazy", iter.next());
+  }
+
+  @Test
+  public void testNgrams() throws Exception {
+    ContextExtractor<Token> extractor = new ContextExtractor<Token>(
+        Token.class,
+        new CoveredTextExtractor(),
+        new Ngrams(2, new Preceding(3)),
+        new Ngrams(2, new Following(3)),
+        new Ngrams(4, new Preceding(3), new Following(3)),
+        new Ngrams(3, new Preceding(1, 5)),
+        new Ngrams(2, new Covered()),
+        new Ngrams(3, new Covered()));
+
+    this.tokenBuilder.buildTokens(
+        this.jCas,
+        "The quick brown fox jumped over the lazy dog.",
+        "The quick brown fox jumped over the lazy dog .",
+        "DT JJ JJ NN VBD IN DT JJ NN .");
+    Chunk chunk = new Chunk(this.jCas, 20, 31);
+    chunk.addToIndexes();
+    Assert.assertEquals("jumped over", chunk.getCoveredText());
+
+    List<Feature> features = extractor.extract(this.jCas, chunk);
+    Assert.assertEquals(10, features.size());
+    Iterator<Feature> iter = features.iterator();
+    this.assertFeature("2grams_Preceding_0_3", "quick_brown", iter.next());
+    this.assertFeature("2grams_Preceding_0_3", "brown_fox", iter.next());
+    this.assertFeature("2grams_Following_0_3", "the_lazy", iter.next());
+    this.assertFeature("2grams_Following_0_3", "lazy_dog", iter.next());
+    this.assertFeature("4grams_Preceding_0_3_Following_0_3", "quick_brown_fox_the", iter.next());
+    this.assertFeature("4grams_Preceding_0_3_Following_0_3", "brown_fox_the_lazy", iter.next());
+    this.assertFeature("4grams_Preceding_0_3_Following_0_3", "fox_the_lazy_dog", iter.next());
+    this.assertFeature("3grams_Preceding_1_5", "OOB1_The_quick", iter.next());
+    this.assertFeature("3grams_Preceding_1_5", "The_quick_brown", iter.next());
+    this.assertFeature("2grams_Covered", "jumped_over", iter.next());
   }
 
   @Test

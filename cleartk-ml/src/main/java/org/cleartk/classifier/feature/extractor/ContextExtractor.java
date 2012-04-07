@@ -35,6 +35,7 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.uimafit.util.JCasUtil;
 
+import com.google.common.base.Joiner;
 import com.google.common.collect.LinkedHashMultiset;
 import com.google.common.collect.Multiset;
 
@@ -813,6 +814,74 @@ public class ContextExtractor<T extends Annotation> implements SimpleFeatureExtr
         }
       }
       return Arrays.asList(new Feature(this.name, StringUtils.join(values, '_')));
+    }
+  }
+
+  /**
+   * A {@link Context} that aggregates the features of other contexts into several "ngrams"
+   * features, where sub-sequences of the feature values are concatenated together in order to form
+   * single values.
+   */
+  public static class Ngrams implements Context {
+    private int n;
+
+    private Context[] contexts;
+
+    private String name;
+
+    /**
+     * Constructs a {@link Context} which converts the features extracted by the argument contexts
+     * into ngram features where sub-sequences feature values have been concatenated together.
+     * 
+     * For example, Ngrams(2, context) will extract all bigrams of features generated in the given
+     * context.
+     * 
+     * @param n
+     *          The length of the n-gram features
+     * @param contexts
+     *          The contexts which should be combined into an ngram.
+     */
+    public Ngrams(int n, Context... contexts) {
+      this.n = n;
+      this.contexts = contexts;
+      String[] names = new String[contexts.length + 1];
+      names[0] = this.n + "grams";
+      for (int i = 1; i < names.length; ++i) {
+        names[i] = contexts[i - 1].getName();
+      }
+      this.name = Feature.createName(names);
+    }
+
+    @Override
+    public String getName() {
+      return this.name;
+    }
+
+    @Override
+    public <T extends Annotation> List<Feature> extract(
+        JCas jCas,
+        Annotation focusAnnotation,
+        Bounds bounds,
+        Class<T> annotationClass,
+        SimpleFeatureExtractor extractor) throws CleartkExtractorException {
+      List<Feature> extractedFeatures = new ArrayList<Feature>();
+      for (Context context : this.contexts) {
+        extractedFeatures.addAll(context.extract(
+            jCas,
+            focusAnnotation,
+            bounds,
+            annotationClass,
+            extractor));
+      }
+      List<Feature> features = new ArrayList<Feature>();
+      for (int i = 0; i < extractedFeatures.size() - this.n + 1; ++i) {
+        List<String> values = new ArrayList<String>();
+        for (Feature feature : extractedFeatures.subList(i, i + this.n)) {
+          values.add(feature.getValue().toString());
+        }
+        features.add(new Feature(this.name, Joiner.on('_').join(values)));
+      }
+      return features;
     }
   }
 }

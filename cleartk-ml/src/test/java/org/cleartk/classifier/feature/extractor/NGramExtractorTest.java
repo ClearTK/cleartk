@@ -29,8 +29,8 @@ import java.util.List;
 
 import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.simple.NGramExtractor;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
+import org.cleartk.classifier.feature.extractor.simple.NGramExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Token;
@@ -47,6 +47,7 @@ import org.uimafit.util.JCasUtil;
  * @author Steven Bethard
  */
 
+@SuppressWarnings("deprecation")
 public class NGramExtractorTest extends DefaultTestBase {
 
   @Test
