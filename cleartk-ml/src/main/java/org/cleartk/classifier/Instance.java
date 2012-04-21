@@ -28,6 +28,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.google.common.base.Objects;
+
 /**
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
@@ -111,6 +113,26 @@ public class Instance<OUTCOME_TYPE> implements Serializable {
    */
   public void setOutcome(OUTCOME_TYPE outcome) {
     this.outcome = outcome;
+  }
+
+  @Override
+  public String toString() {
+    String className = this.getClass().getSimpleName();
+    return String.format("%s(%s, %s)", className, this.outcome, this.features);
+  }
+
+  @Override
+  public boolean equals(Object object) {
+    if (!(object instanceof Instance)) {
+      return false;
+    }
+    Instance<?> that = (Instance<?>) object;
+    return Objects.equal(this.outcome, that.outcome) && Objects.equal(this.features, that.features);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(this.outcome, this.features);
   }
 
   private List<Feature> features;
