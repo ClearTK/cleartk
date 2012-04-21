@@ -89,7 +89,7 @@ public abstract class Chunking_ImplBase<SUB_CHUNK_TYPE extends Annotation, CHUNK
       List<CHUNK_TYPE> chunks);
 
   @Override
-  public List<String> toOutcomes(JCas jCas, List<SUB_CHUNK_TYPE> subChunks, List<CHUNK_TYPE> chunks)
+  public List<String> createOutcomes(JCas jCas, List<SUB_CHUNK_TYPE> subChunks, List<CHUNK_TYPE> chunks)
       throws AnalysisEngineProcessException {
 
     // get the mapping from sub-chunks to their outcomes
@@ -130,7 +130,7 @@ public abstract class Chunking_ImplBase<SUB_CHUNK_TYPE extends Annotation, CHUNK
       String nextLabel);
 
   @Override
-  public List<CHUNK_TYPE> toChunks(JCas jCas, List<SUB_CHUNK_TYPE> subChunks, List<String> outcomes)
+  public List<CHUNK_TYPE> createChunks(JCas jCas, List<SUB_CHUNK_TYPE> subChunks, List<String> outcomes)
       throws AnalysisEngineProcessException {
 
     // validate parameters

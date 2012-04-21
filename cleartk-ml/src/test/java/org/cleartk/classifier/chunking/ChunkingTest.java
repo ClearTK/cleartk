@@ -46,7 +46,7 @@ import org.uimafit.util.JCasUtil;
 public class ChunkingTest extends DefaultTestBase {
 
   @Test
-  public void testIOChunkingToOutcomes() throws Exception {
+  public void testIOChunkingCreateOutcomes() throws Exception {
     this.tokenBuilder.buildTokens(this.jCas, "The quick brown fox jumped over the lazy dog");
     List<Token> tokens = new ArrayList<Token>(JCasUtil.select(this.jCas, Token.class));
     // "quick brown"
@@ -69,17 +69,17 @@ public class ChunkingTest extends DefaultTestBase {
 
     chunking = new IOChunking<Token, Chunk>(Token.class, Chunk.class, "chunkType");
     expected = Arrays.asList("O", "I-foo", "I-foo", "I-bar", "O", "O", "O", "I-bar", "I-bar");
-    actual = chunking.toOutcomes(this.jCas, tokens, chunks);
+    actual = chunking.createOutcomes(this.jCas, tokens, chunks);
     Assert.assertEquals(expected, actual);
 
     chunking = new IOChunking<Token, Chunk>(Token.class, Chunk.class, null);
     expected = Arrays.asList("O", "I", "I", "I", "O", "O", "O", "I", "I");
-    actual = chunking.toOutcomes(this.jCas, tokens, chunks);
+    actual = chunking.createOutcomes(this.jCas, tokens, chunks);
     Assert.assertEquals(expected, actual);
   }
 
   @Test
-  public void testBIOChunkingToOutcomes() throws Exception {
+  public void testBIOChunkingCreateOutcomes() throws Exception {
     this.tokenBuilder.buildTokens(this.jCas, "The quick brown fox jumped over the lazy dog");
     List<Token> tokens = new ArrayList<Token>(JCasUtil.select(this.jCas, Token.class));
     // "quick brown"
@@ -102,17 +102,17 @@ public class ChunkingTest extends DefaultTestBase {
 
     chunking = new BIOChunking<Token, Chunk>(Token.class, Chunk.class, "chunkType");
     expected = Arrays.asList("O", "B-foo", "I-foo", "B-bar", "O", "O", "O", "I-bar", "I-bar");
-    actual = chunking.toOutcomes(this.jCas, tokens, chunks);
+    actual = chunking.createOutcomes(this.jCas, tokens, chunks);
     Assert.assertEquals(expected, actual);
 
     chunking = new BIOChunking<Token, Chunk>(Token.class, Chunk.class);
     expected = Arrays.asList("O", "B", "I", "B", "O", "O", "O", "I", "I");
-    actual = chunking.toOutcomes(this.jCas, tokens, chunks);
+    actual = chunking.createOutcomes(this.jCas, tokens, chunks);
     Assert.assertEquals(expected, actual);
   }
 
   @Test
-  public void testIOChunkingToChunks() throws Exception {
+  public void testIOChunkingCreateChunks() throws Exception {
     this.tokenBuilder.buildTokens(this.jCas, "The quick brown fox jumped over the lazy dog");
     List<Token> tokens = new ArrayList<Token>(JCasUtil.select(this.jCas, Token.class));
 
@@ -126,7 +126,7 @@ public class ChunkingTest extends DefaultTestBase {
     outcomes = Arrays.asList("O", "I-foo", "I-foo", "I-bar", "O", "O", "O", "I-bar", "I-bar");
     expectedTexts = Arrays.asList("quick brown", "fox", "lazy dog");
     expectedTypes = Arrays.asList("foo", "bar", "bar");
-    chunks = chunking.toChunks(this.jCas, tokens, outcomes);
+    chunks = chunking.createChunks(this.jCas, tokens, outcomes);
     Assert.assertEquals(expectedTexts, JCasUtil.toText(chunks));
     Assert.assertEquals(expectedTypes, getChunkTypes(chunks));
 
@@ -134,13 +134,13 @@ public class ChunkingTest extends DefaultTestBase {
     outcomes = Arrays.asList("O", "I", "I", "I", "O", "O", "O", "I", "I");
     expectedTexts = Arrays.asList("quick brown fox", "lazy dog");
     expectedTypes = Arrays.asList(null, null);
-    chunks = chunking.toChunks(this.jCas, tokens, outcomes);
+    chunks = chunking.createChunks(this.jCas, tokens, outcomes);
     Assert.assertEquals(expectedTexts, JCasUtil.toText(chunks));
     Assert.assertEquals(expectedTypes, getChunkTypes(chunks));
   }
 
   @Test
-  public void testBIOChunkingToChunks() throws Exception {
+  public void testBIOChunkingCreateChunks() throws Exception {
     this.tokenBuilder.buildTokens(this.jCas, "The quick brown fox jumped over the lazy dog");
     List<Token> tokens = new ArrayList<Token>(JCasUtil.select(this.jCas, Token.class));
 
@@ -154,7 +154,7 @@ public class ChunkingTest extends DefaultTestBase {
     outcomes = Arrays.asList("O", "B-foo", "I-foo", "B-bar", "O", "O", "O", "I-bar", "I-bar");
     expectedTexts = Arrays.asList("quick brown", "fox", "lazy dog");
     expectedTypes = Arrays.asList("foo", "bar", "bar");
-    chunks = chunking.toChunks(this.jCas, tokens, outcomes);
+    chunks = chunking.createChunks(this.jCas, tokens, outcomes);
     Assert.assertEquals(expectedTexts, JCasUtil.toText(chunks));
     Assert.assertEquals(expectedTypes, getChunkTypes(chunks));
 
@@ -162,7 +162,7 @@ public class ChunkingTest extends DefaultTestBase {
     outcomes = Arrays.asList("O", "B", "I", "B", "O", "O", "O", "I", "I");
     expectedTexts = Arrays.asList("quick brown", "fox", "lazy dog");
     expectedTypes = Arrays.asList(null, null, null);
-    chunks = chunking.toChunks(this.jCas, tokens, outcomes);
+    chunks = chunking.createChunks(this.jCas, tokens, outcomes);
     Assert.assertEquals(expectedTexts, JCasUtil.toText(chunks));
     Assert.assertEquals(expectedTypes, getChunkTypes(chunks));
   }

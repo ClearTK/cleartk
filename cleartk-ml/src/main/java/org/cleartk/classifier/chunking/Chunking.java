@@ -40,12 +40,12 @@ import org.apache.uima.jcas.tcas.Annotation;
  * @author Steven Bethard
  */
 public interface Chunking<OUTCOME_TYPE, SUB_CHUNK_TYPE extends Annotation, CHUNK_TYPE extends Annotation> {
-  public List<OUTCOME_TYPE> toOutcomes(
+  public List<OUTCOME_TYPE> createOutcomes(
       JCas jCas,
       List<SUB_CHUNK_TYPE> subChunks,
       List<CHUNK_TYPE> chunks) throws AnalysisEngineProcessException;
 
-  public List<CHUNK_TYPE> toChunks(
+  public List<CHUNK_TYPE> createChunks(
       JCas jCas,
       List<SUB_CHUNK_TYPE> subChunks,
       List<OUTCOME_TYPE> outcomes) throws AnalysisEngineProcessException;
