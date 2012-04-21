@@ -34,6 +34,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.chunking.Chunking;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.InitializableFactory;
@@ -43,36 +44,47 @@ import org.uimafit.util.JCasUtil;
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
+ * @deprecated Use {@link Chunking} instead.
  */
 
+@Deprecated
 public class Chunker extends CleartkSequenceAnnotator<String> {
 
   // The name is hard coded here as a string because it needs to be referenced as a constant in
   // ChunkLabeler_ImplBase
   public static final String PARAM_LABELED_ANNOTATION_CLASS_NAME = "org.cleartk.chunker.Chunker.labeledAnnotationClassName";
 
-  @ConfigurationParameter(mandatory = true, description = "names the class of the type system type used to associate B, I, and O (for example) labels with.  An example value might be 'org.cleartk.type.Token'")
+  @ConfigurationParameter(
+      mandatory = true,
+      description = "names the class of the type system type used to associate B, I, and O (for example) labels with.  An example value might be 'org.cleartk.type.Token'")
   protected String labeledAnnotationClassName;
 
   public static final String PARAM_SEQUENCE_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
       Chunker.class,
       "sequenceClassName");
 
-  @ConfigurationParameter(mandatory = true, description = "names the class of the type system type that specifies a 'sequence' of labels.  An example might be something like 'org.cleartk.type.Sentence'")
+  @ConfigurationParameter(
+      mandatory = true,
+      description = "names the class of the type system type that specifies a 'sequence' of labels.  An example might be something like 'org.cleartk.type.Sentence'")
   protected String sequenceClassName;
 
   public static final String PARAM_CHUNK_LABELER_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
       Chunker.class,
       "chunkLabelerClassName");
 
-  @ConfigurationParameter(mandatory = true, description = "provides the class name of a class that extends org.cleartk.chunk.ChunkLabeler.")
+  @ConfigurationParameter(
+      mandatory = true,
+      description = "provides the class name of a class that extends org.cleartk.chunk.ChunkLabeler.")
   protected String chunkLabelerClassName;
 
   public static final String PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
       Chunker.class,
       "chunkerFeatureExtractorClassName");
 
-  @ConfigurationParameter(mandatory = true, description = "provides the class name of a class that extends org.cleartk.chunk.ChunkFeatureExtractor.")
+  @ConfigurationParameter(
+      mandatory = true,
+      description = "provides the class name of a class that extends org.cleartk.chunk.ChunkFeatureExtractor.")
   protected String chunkerFeatureExtractorClassName;
 
   protected Class<? extends Annotation> labeledAnnotationClass;

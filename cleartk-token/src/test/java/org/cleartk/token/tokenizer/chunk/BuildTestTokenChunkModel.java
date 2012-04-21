@@ -42,6 +42,7 @@ import org.uimafit.pipeline.SimplePipeline;
  * 
  */
 
+@SuppressWarnings("deprecation")
 public class BuildTestTokenChunkModel {
 
   public static void main(String[] args) throws Exception {
@@ -55,12 +56,9 @@ public class BuildTestTokenChunkModel {
         GeniaPosGoldReader.PARAM_LOAD_SENTENCES,
         true);
 
-    AnalysisEngine subtokenizer = AnalysisEngineFactory.createPrimitive(TokenComponents
-        .createSubtokenizer());
+    AnalysisEngine subtokenizer = AnalysisEngineFactory.createPrimitive(TokenComponents.createSubtokenizer());
 
-    AnalysisEngine chunkTokenizerDataWriter = AnalysisEngineFactory
-        .createPrimitive(ChunkTokenizerFactory
-            .createChunkTokenizerDataWriter("src/test/resources/token/chunk"));
+    AnalysisEngine chunkTokenizerDataWriter = AnalysisEngineFactory.createPrimitive(ChunkTokenizerFactory.createChunkTokenizerDataWriter("src/test/resources/token/chunk"));
 
     SimplePipeline.runPipeline(reader, subtokenizer, chunkTokenizerDataWriter);
 

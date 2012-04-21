@@ -28,13 +28,17 @@ import java.util.List;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.cleartk.classifier.chunking.Chunking;
 
 /**
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
+ * @deprecated Use {@link Chunking} instead.
  */
 
+@Deprecated
 public interface ChunkLabeler {
 
   public void chunks2Labels(JCas jCas, Annotation sequenceAnnotation)

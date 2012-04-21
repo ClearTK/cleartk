@@ -31,6 +31,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.classifier.chunking.Chunking;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 
@@ -38,12 +39,16 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
+ * @deprecated Use {@link Chunking} instead.
  */
 
+@Deprecated
 public class DefaultChunkLabeler extends ChunkLabeler_ImplBase {
 
-  public static final String PARAM_CHUNK_LABEL_FEATURE_NAME = ConfigurationParameterFactory
-      .createConfigurationParameterName(DefaultChunkLabeler.class, "chunkLabelFeatureName");
+  public static final String PARAM_CHUNK_LABEL_FEATURE_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
+      DefaultChunkLabeler.class,
+      "chunkLabelFeatureName");
 
   private static final String CHUNK_LABEL_FEATURE_DESCRIPTION = "names  the feature of the type system chunk type that provides a label for each "
       + "chunk. The feature is queried and the value of the feature is used as the label for the chunk.  If this parameter has no value, then the name of the "

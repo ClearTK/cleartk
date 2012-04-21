@@ -26,6 +26,7 @@ package org.cleartk.chunker;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.chunking.Chunking;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.uimafit.factory.initializable.Initializable;
 
@@ -33,8 +34,11 @@ import org.uimafit.factory.initializable.Initializable;
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
+ * @deprecated Use {@link Chunking} instead.
  */
 
+@Deprecated
 public interface ChunkerFeatureExtractor extends Initializable {
 
   public Instance<String> extractFeatures(

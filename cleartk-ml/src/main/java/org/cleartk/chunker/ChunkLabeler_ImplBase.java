@@ -35,6 +35,7 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.classifier.chunking.Chunking;
 import org.cleartk.util.UIMAUtil;
 import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
@@ -47,8 +48,11 @@ import org.uimafit.util.JCasUtil;
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
+ * @deprecated Use {@link Chunking} instead.
  */
 
+@Deprecated
 public abstract class ChunkLabeler_ImplBase implements ChunkLabeler, Initializable {
 
   public static final String PARAM_CHUNK_ANNOTATION_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(

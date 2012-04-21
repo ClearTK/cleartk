@@ -59,6 +59,7 @@ import org.uimafit.factory.initializable.InitializableFactory;
  * @author Philip
  * 
  */
+@Deprecated
 public class ChunkTokenizerFeatureExtractor implements ChunkerFeatureExtractor {
 
   private List<SimpleFeatureExtractor> simpleFeatureExtractors;
@@ -71,8 +72,7 @@ public class ChunkTokenizerFeatureExtractor implements ChunkerFeatureExtractor {
 
   public void initialize(UimaContext context) throws ResourceInitializationException {
 
-    String labeledAnnotationClassName = (String) context
-        .getConfigParameterValue(Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME);
+    String labeledAnnotationClassName = (String) context.getConfigParameterValue(Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME);
     labeledAnnotationClass = InitializableFactory.getClass(
         labeledAnnotationClassName,
         Annotation.class);

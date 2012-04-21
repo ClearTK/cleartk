@@ -42,15 +42,15 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * All rights reserved.
  */
 
+@Deprecated
 public class ChunkTokenizerFactory {
 
   public static AnalysisEngineDescription createChunkTokenizer(String modelFileName)
       throws ResourceInitializationException {
-    AnalysisEngineDescription aed = CleartkAnnotatorDescriptionFactory
-        .createCleartkSequenceAnnotator(
-            Chunker.class,
-            TokenComponents.TYPE_SYSTEM_DESCRIPTION,
-            modelFileName);
+    AnalysisEngineDescription aed = CleartkAnnotatorDescriptionFactory.createCleartkSequenceAnnotator(
+        Chunker.class,
+        TokenComponents.TYPE_SYSTEM_DESCRIPTION,
+        modelFileName);
     ConfigurationParameterFactory.addConfigurationParameters(
         aed,
         Chunker.class,
@@ -72,12 +72,11 @@ public class ChunkTokenizerFactory {
 
   public static AnalysisEngineDescription createChunkTokenizerDataWriter(String outputDirectoryName)
       throws ResourceInitializationException {
-    AnalysisEngineDescription aed = CleartkAnnotatorDescriptionFactory
-        .createCleartkSequenceAnnotator(
-            Chunker.class,
-            TokenComponents.TYPE_SYSTEM_DESCRIPTION,
-            DefaultMalletCRFDataWriterFactory.class,
-            outputDirectoryName);
+    AnalysisEngineDescription aed = CleartkAnnotatorDescriptionFactory.createCleartkSequenceAnnotator(
+        Chunker.class,
+        TokenComponents.TYPE_SYSTEM_DESCRIPTION,
+        DefaultMalletCRFDataWriterFactory.class,
+        outputDirectoryName);
     ConfigurationParameterFactory.addConfigurationParameters(
         aed,
         Chunker.class,

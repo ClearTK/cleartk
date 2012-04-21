@@ -65,6 +65,7 @@ import org.uimafit.util.JCasUtil;
  * All rights reserved.
  */
 
+@SuppressWarnings("deprecation")
 public class ChunkerTest extends DefaultTestBase {
 
   public static class TestFeatureExtractor implements ChunkerFeatureExtractor {

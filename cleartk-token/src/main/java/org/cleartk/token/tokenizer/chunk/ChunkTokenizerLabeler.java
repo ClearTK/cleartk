@@ -38,6 +38,7 @@ import org.uimafit.util.JCasUtil;
  * 
  * <p>
  */
+@Deprecated
 public class ChunkTokenizerLabeler extends DefaultChunkLabeler {
 
   /**
