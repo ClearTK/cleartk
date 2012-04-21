@@ -31,14 +31,11 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.chunker.ChunkLabeler_ImplBase;
-import org.cleartk.chunker.Chunker;
-import org.cleartk.chunker.ChunkerFeatureExtractor;
-import org.cleartk.chunker.DefaultChunkLabeler;
-import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
+import org.cleartk.classifier.CleartkSequenceAnnotator;
+import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.Instances;
+import org.cleartk.classifier.chunking.BIOChunking;
 import org.cleartk.classifier.feature.extractor.ContextExtractor;
 import org.cleartk.classifier.feature.extractor.ContextExtractor.Following;
 import org.cleartk.classifier.feature.extractor.ContextExtractor.Preceding;
@@ -64,7 +61,7 @@ import org.uimafit.util.JCasUtil;
  * 
  * @author Steven Bethard
  */
-public class TimeAnnotator extends Chunker {
+public class TimeAnnotator extends CleartkSequenceAnnotator<String> {
 
   public static final CleartkInternalModelFactory FACTORY = new CleartkInternalModelFactory() {
 
@@ -82,70 +79,82 @@ public class TimeAnnotator extends Chunker {
     public AnalysisEngineDescription getBaseDescription() throws ResourceInitializationException {
       return AnalysisEngineFactory.createPrimitiveDescription(
           TimeAnnotator.class,
-          TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
-          Chunker.PARAM_LABELED_ANNOTATION_CLASS_NAME,
-          Token.class.getName(),
-          Chunker.PARAM_SEQUENCE_CLASS_NAME,
-          Sentence.class.getName(),
-          Chunker.PARAM_CHUNK_LABELER_CLASS_NAME,
-          DefaultChunkLabeler.class.getName(),
-          Chunker.PARAM_CHUNKER_FEATURE_EXTRACTOR_CLASS_NAME,
-          FeatureExtractor.class.getName(),
-          ChunkLabeler_ImplBase.PARAM_CHUNK_ANNOTATION_CLASS_NAME,
-          Time.class.getName());
+          TimeMLComponents.TYPE_SYSTEM_DESCRIPTION);
     }
   };
 
+  private List<SimpleFeatureExtractor> tokenFeatureExtractors;
+
+  private List<ContextExtractor<Token>> contextFeatureExtractors;
+
+  private BIOChunking<Token, Time> chunking;
+
+  @Override
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    super.initialize(context);
+
+    // define chunking type
+    this.chunking = new BIOChunking<Token, Time>(Token.class, Time.class);
+
+    // add features: word, character pattern, stem, pos
+    this.tokenFeatureExtractors = Arrays.asList(
+        new CoveredTextExtractor(),
+        new CharacterCategoryPatternExtractor(PatternType.REPEATS_MERGED),
+        new TimeWordsExtractor(),
+        new TypePathExtractor(Token.class, "stem"),
+        new TypePathExtractor(Token.class, "pos"));
+
+    // add window of features before and after
+    this.contextFeatureExtractors = new ArrayList<ContextExtractor<Token>>();
+    for (SimpleFeatureExtractor extractor : this.tokenFeatureExtractors) {
+      this.contextFeatureExtractors.add(new ContextExtractor<Token>(
+          Token.class,
+          extractor,
+          new Preceding(3),
+          new Following(3)));
+    }
+  }
+
   @Override
   public void process(JCas jCas) throws AnalysisEngineProcessException {
-    super.process(jCas);
 
+    // classify tokens within each sentence
+    for (Sentence sentence : JCasUtil.select(jCas, Sentence.class)) {
+      List<Token> tokens = JCasUtil.selectCovered(jCas, Token.class, sentence);
+
+      // extract features for all tokens
+      List<List<Feature>> featureLists = new ArrayList<List<Feature>>();
+      for (Token token : tokens) {
+        List<Feature> features = new ArrayList<Feature>();
+        for (SimpleFeatureExtractor extractor : this.tokenFeatureExtractors) {
+          features.addAll(extractor.extract(jCas, token));
+        }
+        for (ContextExtractor<Token> extractor : this.contextFeatureExtractors) {
+          features.addAll(extractor.extractWithin(jCas, token, sentence));
+        }
+        featureLists.add(features);
+      }
+
+      // during training, convert Times to chunk labels and write the training Instances
+      if (this.isTraining()) {
+        List<Time> times = JCasUtil.selectCovered(jCas, Time.class, sentence);
+        List<String> outcomes = this.chunking.createOutcomes(jCas, tokens, times);
+        this.dataWriter.write(Instances.toInstances(outcomes, featureLists));
+      }
+
+      // during prediction, convert chunk labels to Times and add them to the CAS
+      else {
+        List<String> outcomes = this.classifier.classify(featureLists);
+        this.chunking.createChunks(jCas, tokens, outcomes);
+      }
+    }
+
+    // add IDs to all Times
     int timeIndex = 1;
     for (Time time : JCasUtil.select(jCas, Time.class)) {
       String id = String.format("t%d", timeIndex);
       time.setId(id);
       timeIndex += 1;
-    }
-  }
-
-  public static class FeatureExtractor implements ChunkerFeatureExtractor {
-    private List<SimpleFeatureExtractor> tokenFeatureExtractors;
-
-    private List<ContextExtractor<Token>> contextFeatureExtractors;
-
-    public void initialize(UimaContext context) throws ResourceInitializationException {
-
-      // add features: word, character pattern, stem, pos
-      this.tokenFeatureExtractors = Arrays.asList(
-          new CoveredTextExtractor(),
-          new CharacterCategoryPatternExtractor(PatternType.REPEATS_MERGED),
-          new TimeWordsExtractor(),
-          new TypePathExtractor(Token.class, "stem"),
-          new TypePathExtractor(Token.class, "pos"));
-
-      // add window of features before and after
-      this.contextFeatureExtractors = new ArrayList<ContextExtractor<Token>>();
-      for (SimpleFeatureExtractor extractor : this.tokenFeatureExtractors) {
-        this.contextFeatureExtractors.add(new ContextExtractor<Token>(
-            Token.class,
-            extractor,
-            new Preceding(3),
-            new Following(3)));
-      }
-    }
-
-    public Instance<String> extractFeatures(
-        JCas jCas,
-        Annotation labeledAnnotation,
-        Annotation sequence) throws CleartkExtractorException {
-      Instance<String> instance = new Instance<String>();
-      for (SimpleFeatureExtractor extractor : this.tokenFeatureExtractors) {
-        instance.addAll(extractor.extract(jCas, labeledAnnotation));
-      }
-      for (ContextExtractor<Token> extractor : this.contextFeatureExtractors) {
-        instance.addAll(extractor.extractWithin(jCas, labeledAnnotation, sequence));
-      }
-      return instance;
     }
   }
 }
