@@ -41,14 +41,15 @@ import org.cleartk.classifier.DataWriterFactory;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
+import org.cleartk.classifier.feature.extractor.ContextExtractor;
+import org.cleartk.classifier.feature.extractor.ContextExtractor.FirstCovered;
+import org.cleartk.classifier.feature.extractor.ContextExtractor.LastCovered;
 import org.cleartk.classifier.feature.extractor.annotationpair.AnnotationPairFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.annotationpair.MatchingAnnotationPairExtractor;
 import org.cleartk.classifier.feature.extractor.annotationpair.NamingAnnotationPairFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.annotationpair.RelativePositionExtractor;
 import org.cleartk.classifier.feature.extractor.simple.CombinedExtractor;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
-import org.cleartk.classifier.feature.extractor.simple.FirstInstanceExtractor;
-import org.cleartk.classifier.feature.extractor.simple.LastInstanceExtractor;
 import org.cleartk.classifier.feature.extractor.simple.MatchingAnnotationExtractor;
 import org.cleartk.classifier.feature.extractor.simple.NamingExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
@@ -120,8 +121,8 @@ public class ArgumentClassifier extends CleartkAnnotator<String> {
         new NodeTypeExtractor(),
         // new TypePathExtractor(TreebankNode.class, "nodeTags"),
         new HeadWordExtractor(defaultTokenExtractorSet),
-        new FirstInstanceExtractor(Token.class, defaultTokenExtractorSet),
-        new LastInstanceExtractor(Token.class, defaultTokenExtractorSet));
+        new ContextExtractor<Token>(Token.class, defaultTokenExtractorSet, new FirstCovered(1)),
+        new ContextExtractor<Token>(Token.class, defaultTokenExtractorSet, new LastCovered(1)));
 
     this.predicateExtractor = new NamingExtractor(
         "Predicate",

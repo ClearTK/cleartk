@@ -24,7 +24,6 @@
 package org.cleartk.srl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -37,7 +36,6 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.cleartk.classifier.CleartkAnnotatorDescriptionFactory;
-import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.util.PublicFieldDataWriter;
 import org.cleartk.srl.type.Predicate;
@@ -179,64 +177,6 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
     }
   }
 
-  @Test
-  public void testPredicateAnnotation() throws UIMAException {
-    // create the document
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
-        PredicateAnnotator.class,
-        typeSystemDescription,
-        PublicFieldDataWriter.BooleanFactory.class,
-        "."));
-    this.setTokens(jCas);
-    this.setTrees(jCas);
-    this.setPredicates(jCas);
-
-    // get the instances produced by the handler
-    List<Instance<Boolean>> instances = PublicFieldDataWriter.BooleanFactory.collectInstances(
-        engine,
-        jCas);
-    Assert.assertEquals(5, instances.size());
-    Object[] featureValues;
-
-    // check "broke"
-    Instance<Boolean> brokeInstance = instances.get(1);
-    featureValues = new Object[] {
-        "broke",
-        "break",
-        "VBD",
-        "John",
-        "John",
-        "NNP",
-        null,
-        "the",
-        "the",
-        "DT",
-        "lamp",
-        "lamp",
-        "NN" };
-    Assert.assertEquals(Arrays.asList(featureValues), this.getFeatureValues(brokeInstance));
-    Assert.assertEquals(true, brokeInstance.getOutcome());
-
-    // check "lamp"
-    Instance<Boolean> lampInstance = instances.get(3);
-    featureValues = new Object[] {
-        "lamp",
-        "lamp",
-        "NN",
-        "the",
-        "the",
-        "DT",
-        "broke",
-        "break",
-        "VBD",
-        ".",
-        ".",
-        ".",
-        null };
-    Assert.assertEquals(Arrays.asList(featureValues), this.getFeatureValues(lampInstance));
-    Assert.assertEquals(false, lampInstance.getOutcome());
-  }
-
   /*
    * removed a few tests: makes no sense to test that produced features match an exact expectation
    * -- that's not part of the specification
@@ -301,15 +241,6 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
     predicate.setArguments(new FSArray(jCas, 2));
     predicate.setArguments(0, arg0);
     predicate.setArguments(1, arg1);
-  }
-
-  private List<String> getFeatureValues(Instance<?> instance) {
-    List<String> values = new ArrayList<String>();
-    for (Feature feature : instance.getFeatures()) {
-      Object value = feature == null ? null : feature.getValue();
-      values.add(value == null ? null : value.toString());
-    }
-    return values;
   }
 
   private static class HideLogging {

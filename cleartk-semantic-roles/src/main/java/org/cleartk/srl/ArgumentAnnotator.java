@@ -36,13 +36,15 @@ import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.DataWriterFactory;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.feature.WindowFeature;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
-import org.cleartk.classifier.feature.extractor.WindowExtractor;
+import org.cleartk.classifier.feature.extractor.ContextExtractor;
+import org.cleartk.classifier.feature.extractor.ContextExtractor.FirstCovered;
+import org.cleartk.classifier.feature.extractor.ContextExtractor.LastCovered;
 import org.cleartk.classifier.feature.extractor.annotationpair.DistanceExtractor;
 import org.cleartk.classifier.feature.extractor.annotationpair.RelativePositionExtractor;
 import org.cleartk.classifier.feature.extractor.simple.CombinedExtractor;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
+import org.cleartk.classifier.feature.extractor.simple.NamingExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
@@ -124,10 +126,9 @@ public class ArgumentAnnotator extends CleartkAnnotator<String> {
     leftSiblingExtractor = new CombinedExtractor(constituentExtractors);
     rightSiblingExtractor = new CombinedExtractor(constituentExtractors);
     parentExtractor = new CombinedExtractor(constituentExtractors);
-    firstWordExtractor = new WindowExtractor("Constituent", Token.class, new CombinedExtractor(
-        tokenExtractors), WindowFeature.ORIENTATION_MIDDLE, 0, 1);
-    lastWordExtractor = new WindowExtractor("Constituent", Token.class, new CombinedExtractor(
-        tokenExtractors), WindowFeature.ORIENTATION_MIDDLE_REVERSE, 0, 1);
+    firstAndLastWordExtractor = new ContextExtractor<Token>(Token.class, new NamingExtractor(
+        "Constituent",
+        new CombinedExtractor(tokenExtractors)), new FirstCovered(1), new LastCovered(1));
   }
 
   @Override
@@ -243,8 +244,7 @@ public class ArgumentAnnotator extends CleartkAnnotator<String> {
       Sentence sentence) throws CleartkExtractorException {
     List<Feature> features = new ArrayList<Feature>(20);
     features.addAll(constituentExtractor.extract(jCas, constituent));
-    features.addAll(firstWordExtractor.extract(jCas, constituent, sentence));
-    features.addAll(lastWordExtractor.extract(jCas, constituent, sentence));
+    features.addAll(firstAndLastWordExtractor.extractWithin(jCas, constituent, sentence));
 
     TreebankNode parent = constituent.getParent();
     if (parent != null) {
@@ -295,9 +295,7 @@ public class ArgumentAnnotator extends CleartkAnnotator<String> {
 
   private SimpleFeatureExtractor constituentExtractor;
 
-  private WindowExtractor firstWordExtractor;
-
-  private WindowExtractor lastWordExtractor;
+  private ContextExtractor<Token> firstAndLastWordExtractor;
 
   private SimpleFeatureExtractor leftSiblingExtractor;
 

@@ -38,10 +38,12 @@ import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.DataWriterFactory;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.feature.WindowFeature;
-import org.cleartk.classifier.feature.extractor.WindowExtractor;
+import org.cleartk.classifier.feature.extractor.ContextExtractor;
+import org.cleartk.classifier.feature.extractor.ContextExtractor.Following;
+import org.cleartk.classifier.feature.extractor.ContextExtractor.Preceding;
 import org.cleartk.classifier.feature.extractor.simple.CombinedExtractor;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
+import org.cleartk.classifier.feature.extractor.simple.NamingExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
@@ -95,10 +97,9 @@ public class PredicateAnnotator extends CleartkAnnotator<Boolean> {
 
     tokenExtractor = new CombinedExtractor(tokenExtractors);
 
-    leftWindowExtractor = new WindowExtractor("Token", Token.class, new CombinedExtractor(
-        tokenExtractors), WindowFeature.ORIENTATION_LEFT, 0, 2);
-    rightWindowExtractor = new WindowExtractor("Token", Token.class, new CombinedExtractor(
-        tokenExtractors), WindowFeature.ORIENTATION_RIGHT, 0, 2);
+    contextExtractor = new ContextExtractor<Token>(Token.class, new NamingExtractor(
+        "Token",
+        new CombinedExtractor(tokenExtractors)), new Preceding(2), new Following(2));
   }
 
   @Override
@@ -120,12 +121,10 @@ public class PredicateAnnotator extends CleartkAnnotator<Boolean> {
       for (Token token : tokens) {
         Instance<Boolean> instance = new Instance<Boolean>();
         List<Feature> tokenFeatures = this.tokenExtractor.extract(jCas, token);
-        List<Feature> leftWindowFeatures = this.leftWindowExtractor.extract(jCas, token, sentence);
-        List<Feature> rightWindowFeatures = this.rightWindowExtractor.extract(jCas, token, sentence);
+        List<Feature> windowFeatures = this.contextExtractor.extractWithin(jCas, token, sentence);
 
         instance.addAll(tokenFeatures);
-        instance.addAll(leftWindowFeatures);
-        instance.addAll(rightWindowFeatures);
+        instance.addAll(windowFeatures);
 
         instance.setOutcome(predicateTokens.contains(token));
 
@@ -156,7 +155,5 @@ public class PredicateAnnotator extends CleartkAnnotator<Boolean> {
 
   private CombinedExtractor tokenExtractor;
 
-  private WindowExtractor leftWindowExtractor;
-
-  private WindowExtractor rightWindowExtractor;
+  private ContextExtractor<Token> contextExtractor;
 }
