@@ -30,11 +30,11 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.WindowFeature;
-import org.cleartk.classifier.feature.WindowNGramFeature;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
-import org.cleartk.classifier.feature.extractor.WindowExtractor;
-import org.cleartk.classifier.feature.extractor.WindowNGramExtractor;
+import org.cleartk.classifier.feature.extractor.ContextExtractor;
+import org.cleartk.classifier.feature.extractor.ContextExtractor.Following;
+import org.cleartk.classifier.feature.extractor.ContextExtractor.Ngram;
+import org.cleartk.classifier.feature.extractor.ContextExtractor.Preceding;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.proliferate.CapitalTypeProliferator;
@@ -60,9 +60,9 @@ public class DefaultFeatureExtractor implements POSFeatureExtractor<Token, Sente
 
   private List<SimpleFeatureExtractor> simpleExtractors;
 
-  private List<WindowExtractor> windowExtractors;
+  private List<ContextExtractor<Token>> windowExtractors;
 
-  private List<WindowNGramExtractor> windowNGramExtractors;
+  private List<ContextExtractor<Token>> windowNGramExtractors;
 
   public void initialize(UimaContext context) throws ResourceInitializationException {
     simpleExtractors = new ArrayList<SimpleFeatureExtractor>();
@@ -86,38 +86,17 @@ public class DefaultFeatureExtractor implements POSFeatureExtractor<Token, Sente
         new CharacterNGramProliferator(fromRight, 0, 5),
         new CharacterNGramProliferator(fromRight, 0, 6)));
 
-    windowExtractors = new ArrayList<WindowExtractor>();
+    windowExtractors = new ArrayList<ContextExtractor<Token>>();
 
-    windowExtractors.add(new WindowExtractor(
+    windowExtractors.add(new ContextExtractor<Token>(
         Token.class,
         wordExtractor,
-        WindowFeature.ORIENTATION_LEFT,
-        0,
-        2));
-    windowExtractors.add(new WindowExtractor(
-        Token.class,
-        wordExtractor,
-        WindowFeature.ORIENTATION_RIGHT,
-        0,
-        2));
+        new Preceding(2),
+        new Following(2)));
 
-    windowNGramExtractors = new ArrayList<WindowNGramExtractor>();
-    windowNGramExtractors.add(new WindowNGramExtractor(
-        Token.class,
-        wordExtractor,
-        WindowNGramFeature.ORIENTATION_LEFT,
-        WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT,
-        "_",
-        0,
-        2));
-    windowNGramExtractors.add(new WindowNGramExtractor(
-        Token.class,
-        wordExtractor,
-        WindowNGramFeature.ORIENTATION_RIGHT,
-        WindowNGramFeature.DIRECTION_LEFT_TO_RIGHT,
-        "_",
-        0,
-        2));
+    windowNGramExtractors = new ArrayList<ContextExtractor<Token>>();
+    windowNGramExtractors.add(new ContextExtractor<Token>(Token.class, wordExtractor, new Ngram(
+        new Preceding(2)), new Ngram(new Following(2))));
   }
 
   public List<Feature> extractFeatures(JCas jCas, Token token, Sentence sentence)
@@ -128,12 +107,12 @@ public class DefaultFeatureExtractor implements POSFeatureExtractor<Token, Sente
       features.addAll(extractor.extract(jCas, token));
     }
 
-    for (WindowExtractor extractor : windowExtractors) {
-      features.addAll(extractor.extract(jCas, token, sentence));
+    for (ContextExtractor<Token> extractor : windowExtractors) {
+      features.addAll(extractor.extractWithin(jCas, token, sentence));
     }
 
-    for (WindowNGramExtractor extractor : windowNGramExtractors) {
-      features.add(extractor.extract(jCas, token, sentence));
+    for (ContextExtractor<Token> extractor : windowNGramExtractors) {
+      features.addAll(extractor.extractWithin(jCas, token, sentence));
     }
 
     return features;
