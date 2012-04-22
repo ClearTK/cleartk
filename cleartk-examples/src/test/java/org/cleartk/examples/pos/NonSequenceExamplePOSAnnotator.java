@@ -32,8 +32,9 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.feature.WindowFeature;
-import org.cleartk.classifier.feature.extractor.WindowExtractor;
+import org.cleartk.classifier.feature.extractor.ContextExtractor;
+import org.cleartk.classifier.feature.extractor.ContextExtractor.Following;
+import org.cleartk.classifier.feature.extractor.ContextExtractor.Preceding;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
@@ -64,7 +65,7 @@ public class NonSequenceExamplePOSAnnotator extends CleartkAnnotator<String> imp
 
   private List<SimpleFeatureExtractor> tokenFeatureExtractors;
 
-  private List<WindowExtractor> tokenSentenceFeatureExtractors;
+  private List<ContextExtractor<Token>> tokenSentenceFeatureExtractors;
 
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
@@ -73,7 +74,7 @@ public class NonSequenceExamplePOSAnnotator extends CleartkAnnotator<String> imp
     this.tokenFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
 
     // a list of feature extractors that require the token and the sentence
-    this.tokenSentenceFeatureExtractors = new ArrayList<WindowExtractor>();
+    this.tokenSentenceFeatureExtractors = new ArrayList<ContextExtractor<Token>>();
 
     // basic feature extractors for word, stem and part-of-speech
     SimpleFeatureExtractor wordExtractor, stemExtractor;
@@ -97,18 +98,11 @@ public class NonSequenceExamplePOSAnnotator extends CleartkAnnotator<String> imp
     this.tokenFeatureExtractors.add(stemExtractor);
 
     // add 2 stems to the left and right
-    this.tokenSentenceFeatureExtractors.add(new WindowExtractor(
+    this.tokenSentenceFeatureExtractors.add(new ContextExtractor<Token>(
         Token.class,
         stemExtractor,
-        WindowFeature.ORIENTATION_LEFT,
-        0,
-        2));
-    this.tokenSentenceFeatureExtractors.add(new WindowExtractor(
-        Token.class,
-        stemExtractor,
-        WindowFeature.ORIENTATION_RIGHT,
-        0,
-        2));
+        new Preceding(2),
+        new Following(2)));
 
   }
 
@@ -127,8 +121,8 @@ public class NonSequenceExamplePOSAnnotator extends CleartkAnnotator<String> imp
         }
 
         // extract all features that require the token and sentence annotations
-        for (WindowExtractor extractor : this.tokenSentenceFeatureExtractors) {
-          instance.addAll(extractor.extract(jCas, token, sentence));
+        for (ContextExtractor<?> extractor : this.tokenSentenceFeatureExtractors) {
+          instance.addAll(extractor.extractWithin(jCas, token, sentence));
         }
 
         // during training, set the outcome from the CAS and write the instance
