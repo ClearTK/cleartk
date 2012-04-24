@@ -42,7 +42,7 @@ import org.uimafit.pipeline.SimplePipeline;
  * 
  */
 
-@SuppressWarnings("deprecation")
+@Deprecated
 public class BuildTestTokenChunkModel {
 
   public static void main(String[] args) throws Exception {

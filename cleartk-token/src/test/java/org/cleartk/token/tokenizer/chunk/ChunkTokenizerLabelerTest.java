@@ -49,6 +49,7 @@ import org.uimafit.util.JCasUtil;
  * All rights reserved.
  */
 
+@Deprecated
 public class ChunkTokenizerLabelerTest extends TokenTestBase {
 
   /**
@@ -69,8 +70,7 @@ public class ChunkTokenizerLabelerTest extends TokenTestBase {
         context,
         DefaultChunkLabeler.class);
 
-    jCas
-        .setDocumentText("Technological progress is like an axe in the hands of a pathological criminal."); // Albert
+    jCas.setDocumentText("Technological progress is like an axe in the hands of a pathological criminal."); // Albert
                                                                                                             // Einstein
     Sentence sentence = new Sentence(jCas, 0, 78);
     sentence.addToIndexes();
@@ -149,8 +149,7 @@ public class ChunkTokenizerLabelerTest extends TokenTestBase {
         context,
         DefaultChunkLabeler.class);
 
-    jCas
-        .setDocumentText("Technological progress is like an axe in the hands of a pathological criminal."); // Albert
+    jCas.setDocumentText("Technological progress is like an axe in the hands of a pathological criminal."); // Albert
                                                                                                             // Einstein
     Sentence sentence = new Sentence(jCas, 0, 78);
     sentence.addToIndexes();
@@ -211,8 +210,7 @@ public class ChunkTokenizerLabelerTest extends TokenTestBase {
         context,
         DefaultChunkLabeler.class);
 
-    jCas
-        .setDocumentText("Technological progress is like an axe in the hands of a pathological criminal."); // Albert
+    jCas.setDocumentText("Technological progress is like an axe in the hands of a pathological criminal."); // Albert
                                                                                                             // Einstein
 
     Lemma lemma = AnnotationFactory.createAnnotation(jCas, 0, 22, Lemma.class);
