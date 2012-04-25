@@ -26,6 +26,8 @@ package org.cleartk.classifier.mallet;
 import java.io.File;
 import java.io.IOException;
 
+import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
+
 /**
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
@@ -45,6 +47,7 @@ public class MalletDataWriter extends MalletDataWriter_ImplBase<MalletClassifier
 
   public MalletDataWriter(File outputDirectory) throws IOException {
     super(outputDirectory);
+    this.setOutcomeEncoder(new StringToStringOutcomeEncoder());
   }
 
   @Override

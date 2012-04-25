@@ -35,8 +35,9 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
-import org.cleartk.classifier.CleartkAnnotatorDescriptionFactory;
+import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.util.PublicFieldDataWriter;
 import org.cleartk.srl.type.Predicate;
 import org.cleartk.srl.type.SemanticArgument;
@@ -60,11 +61,13 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
   @Test
   public void testArgumentAnnotationNoPredicate() throws UIMAException {
     // create the document
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         ArgumentAnnotator.class,
         typeSystemDescription,
-        PublicFieldDataWriter.StringFactory.class,
-        "."));
+        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        PublicFieldDataWriter.StringFactory.class.getName(),
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        ".");
     this.setTokens(jCas);
     this.setTrees(jCas);
 
@@ -78,11 +81,13 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
   @Test
   public void testArgumentIdentificationNoPredicate() throws UIMAException {
     // create the document
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         ArgumentIdentifier.class,
         typeSystemDescription,
-        PublicFieldDataWriter.BooleanFactory.class,
-        "."));
+        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        PublicFieldDataWriter.BooleanFactory.class.getName(),
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        ".");
     this.setTokens(jCas);
     this.setTrees(jCas);
 
@@ -96,11 +101,13 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
   @Test
   public void testArgumentClassificationNoPredicate() throws UIMAException {
     // create the document
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         ArgumentClassifier.class,
         typeSystemDescription,
-        PublicFieldDataWriter.StringFactory.class,
-        "."));
+        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        PublicFieldDataWriter.StringFactory.class.getName(),
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        ".");
     this.setTokens(jCas);
     this.setTrees(jCas);
 
@@ -114,11 +121,13 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
   @Test
   public void testArgumentAnnotationNoTree() throws UIMAException {
     // create the document
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         ArgumentAnnotator.class,
         typeSystemDescription,
-        PublicFieldDataWriter.StringFactory.class,
-        "."));
+        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        PublicFieldDataWriter.StringFactory.class.getName(),
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        ".");
     this.setTokens(jCas);
     this.setPredicates(jCas);
 
@@ -136,11 +145,13 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
   @Test
   public void testArgumentIdentificationNoTree() throws UIMAException {
     // create the document
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         ArgumentIdentifier.class,
         typeSystemDescription,
-        PublicFieldDataWriter.BooleanFactory.class,
-        "."));
+        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        PublicFieldDataWriter.BooleanFactory.class.getName(),
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        ".");
     this.setTokens(jCas);
     this.setPredicates(jCas);
 
@@ -158,11 +169,13 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
   @Test
   public void testArgumentClassificationNoTree() throws UIMAException {
     // create the document
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         ArgumentClassifier.class,
         typeSystemDescription,
-        PublicFieldDataWriter.StringFactory.class,
-        "."));
+        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        PublicFieldDataWriter.StringFactory.class.getName(),
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        ".");
     this.setTokens(jCas);
     this.setPredicates(jCas);
 

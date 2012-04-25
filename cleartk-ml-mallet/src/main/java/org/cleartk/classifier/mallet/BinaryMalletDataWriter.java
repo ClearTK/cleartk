@@ -26,6 +26,8 @@ package org.cleartk.classifier.mallet;
 import java.io.File;
 import java.io.IOException;
 
+import org.cleartk.classifier.encoder.outcome.BooleanToStringOutcomeEncoder;
+
 /**
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
@@ -46,6 +48,7 @@ public class BinaryMalletDataWriter extends
 
   public BinaryMalletDataWriter(File outputDirectory) throws IOException {
     super(outputDirectory);
+    this.setOutcomeEncoder(new BooleanToStringOutcomeEncoder());
   }
 
   @Override

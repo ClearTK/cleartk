@@ -36,6 +36,11 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.cleartk.classifier.CleartkProcessingException;
+import org.cleartk.classifier.encoder.features.BooleanEncoder;
+import org.cleartk.classifier.encoder.features.FeatureVectorFeaturesEncoder;
+import org.cleartk.classifier.encoder.features.NumberEncoder;
+import org.cleartk.classifier.encoder.features.StringEncoder;
+import org.cleartk.classifier.encoder.outcome.StringToIntegerOutcomeEncoder;
 import org.cleartk.classifier.jar.DataWriter_ImplBase;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
@@ -51,6 +56,12 @@ public class OVASVMlightDataWriter extends
 
   public OVASVMlightDataWriter(File outputDirectory) throws IOException {
     super(outputDirectory);
+    FeatureVectorFeaturesEncoder myFeaturesEncoder = new FeatureVectorFeaturesEncoder();
+    myFeaturesEncoder.addEncoder(new NumberEncoder());
+    myFeaturesEncoder.addEncoder(new BooleanEncoder());
+    myFeaturesEncoder.addEncoder(new StringEncoder());
+    this.setFeaturesEncoder(myFeaturesEncoder);
+    this.setOutcomeEncoder(new StringToIntegerOutcomeEncoder());
 
     // aliases to make it easy to remember what the "main" file is being used for
     allFalseFile = this.trainingDataFile;

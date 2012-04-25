@@ -30,17 +30,16 @@ import java.util.List;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.ClassifierFactory;
 import org.cleartk.classifier.CleartkAnnotator;
-import org.cleartk.classifier.CleartkAnnotatorDescriptionFactory;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.ScoredOutcome;
+import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.util.PublicFieldDataWriter;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
@@ -84,12 +83,13 @@ public class VerbClauseTemporalAnnotatorTest extends TimeMLTestBase {
 
   @Test
   public void test() throws UIMAException {
-    AnalysisEngineDescription desc = CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         VerbClauseTemporalAnnotator.class,
         typeSystemDescription,
-        PublicFieldDataWriter.StringFactory.class,
+        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        PublicFieldDataWriter.StringFactory.class.getName(),
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         ".");
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(desc);
 
     tokenBuilder.buildTokens(
         jCas,
@@ -158,12 +158,11 @@ public class VerbClauseTemporalAnnotatorTest extends TimeMLTestBase {
 
     // and run the annotator again, asking it to annotate this time
     // but don't let it add any events
-    desc = AnalysisEngineFactory.createPrimitiveDescription(
+    engine = AnalysisEngineFactory.createPrimitive(
         VerbClauseTemporalAnnotator.class,
         typeSystemDescription,
         CleartkAnnotator.PARAM_CLASSIFIER_FACTORY_CLASS_NAME,
         AfterNewClassifier.class.getName());
-    engine = AnalysisEngineFactory.createPrimitive(desc);
     engine.process(jCas);
     engine.collectionProcessComplete();
 
@@ -174,14 +173,13 @@ public class VerbClauseTemporalAnnotatorTest extends TimeMLTestBase {
     Assert.assertEquals(0, tlinks.size());
 
     // run the annotator again, but let it add events this time
-    desc = AnalysisEngineFactory.createPrimitiveDescription(
+    engine = AnalysisEngineFactory.createPrimitive(
         VerbClauseTemporalAnnotator.class,
         typeSystemDescription,
         CleartkAnnotator.PARAM_CLASSIFIER_FACTORY_CLASS_NAME,
         AfterNewClassifier.class.getName(),
         VerbClauseTemporalAnnotator.PARAM_CREATE_EVENTS,
         true);
-    engine = AnalysisEngineFactory.createPrimitive(desc);
     engine.process(jCas);
     engine.collectionProcessComplete();
 

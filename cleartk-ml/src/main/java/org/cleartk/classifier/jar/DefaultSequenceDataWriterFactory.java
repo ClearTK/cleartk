@@ -1,5 +1,5 @@
-/** 
- * Copyright (c) 2011, Regents of the University of Colorado 
+/* 
+ * Copyright (c) 2012, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -21,30 +21,42 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.classifier.baseline;
+package org.cleartk.classifier.jar;
 
 import java.io.IOException;
 
-import org.cleartk.classifier.DataWriter;
-import org.cleartk.classifier.DataWriterFactory;
-import org.cleartk.classifier.jar.DefaultDataWriterFactory;
-import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
+import org.cleartk.classifier.SequenceDataWriter;
+import org.cleartk.classifier.SequenceDataWriterFactory;
+import org.uimafit.descriptor.ConfigurationParameter;
+import org.uimafit.factory.ConfigurationParameterFactory;
 
 /**
+ * A {@link SequenceDataWriterFactory} that creates a data writer from the class given by
+ * {@link GenericDataWriterFactory#PARAM_DATA_WRITER_CLASS_NAME} and the directory given by
+ * {@link DirectoryDataWriterFactory#PARAM_OUTPUT_DIRECTORY}.
  * 
  * <br>
- * Copyright (c) 2011, Regents of the University of Colorado <br>
+ * Copyright (c) 2012, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
  * @author Steven Bethard
- * @deprecated Use {@link DefaultDataWriterFactory} with {@link MostFrequentStringDataWriter}.
  */
-@Deprecated
-public class DefaultMostFrequentStringDataWriterFactory extends DirectoryDataWriterFactory
-    implements DataWriterFactory<String> {
+public class DefaultSequenceDataWriterFactory<OUTCOME_TYPE> extends
+    GenericDataWriterFactory<OUTCOME_TYPE> implements SequenceDataWriterFactory<OUTCOME_TYPE> {
+
+  public static final String PARAM_DATA_WRITER_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
+      DefaultSequenceDataWriterFactory.class,
+      "dataWriterClassName");
+
+  @ConfigurationParameter(
+      mandatory = true,
+      description = "provides the full name of the data writer class to be used.")
+  private String dataWriterClassName;
 
   @Override
-  public DataWriter<String> createDataWriter() throws IOException {
-    return new MostFrequentStringDataWriter(this.outputDirectory);
+  @SuppressWarnings({ "unchecked" })
+  public SequenceDataWriter<OUTCOME_TYPE> createDataWriter() throws IOException {
+    return this.createDataWriter(this.dataWriterClassName, SequenceDataWriter.class);
   }
+
 }

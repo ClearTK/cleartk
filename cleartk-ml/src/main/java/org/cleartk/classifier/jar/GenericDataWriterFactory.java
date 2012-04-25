@@ -1,5 +1,5 @@
-/** 
- * Copyright (c) 2011, Regents of the University of Colorado 
+/* 
+ * Copyright (c) 2012, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -21,30 +21,45 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.classifier.baseline;
+package org.cleartk.classifier.jar;
 
+import java.io.File;
 import java.io.IOException;
-
-import org.cleartk.classifier.DataWriter;
-import org.cleartk.classifier.DataWriterFactory;
-import org.cleartk.classifier.jar.DefaultDataWriterFactory;
-import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
+import java.lang.reflect.InvocationTargetException;
 
 /**
+ * A data writer factory that creates a data writer from the class given by
+ * {@link #PARAM_DATA_WRITER_CLASS_NAME} and the directory given by
+ * {@link DirectoryDataWriterFactory#PARAM_OUTPUT_DIRECTORY}.
+ * 
+ * Serves as a base class for data writer factories such as {@link DefaultDataWriterFactory} and
+ * {@link DefaultSequenceDataWriterFactory}.
  * 
  * <br>
- * Copyright (c) 2011, Regents of the University of Colorado <br>
+ * Copyright (c) 2012, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
  * @author Steven Bethard
- * @deprecated Use {@link DefaultDataWriterFactory} with {@link MostFrequentStringDataWriter}.
  */
-@Deprecated
-public class DefaultMostFrequentStringDataWriterFactory extends DirectoryDataWriterFactory
-    implements DataWriterFactory<String> {
+public class GenericDataWriterFactory<OUTCOME_TYPE> extends DirectoryDataWriterFactory {
 
-  @Override
-  public DataWriter<String> createDataWriter() throws IOException {
-    return new MostFrequentStringDataWriter(this.outputDirectory);
+  protected <T> T createDataWriter(String dataWriterClassName, Class<T> superClass)
+      throws IOException {
+    try {
+      Class<?> untypedCls = Class.forName(dataWriterClassName);
+      Class<? extends T> cls = untypedCls.asSubclass(superClass);
+      return cls.getConstructor(File.class).newInstance(this.outputDirectory);
+    } catch (ClassNotFoundException e) {
+      throw new IOException(e);
+    } catch (InstantiationException e) {
+      throw new IOException(e);
+    } catch (IllegalAccessException e) {
+      throw new IOException(e);
+    } catch (InvocationTargetException e) {
+      throw new IOException(e);
+    } catch (NoSuchMethodException e) {
+      throw new IOException(e);
+    }
   }
+
 }

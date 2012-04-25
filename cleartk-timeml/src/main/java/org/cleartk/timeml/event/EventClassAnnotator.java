@@ -30,7 +30,7 @@ import org.cleartk.classifier.feature.extractor.ContextExtractor;
 import org.cleartk.classifier.feature.extractor.ContextExtractor.Bag;
 import org.cleartk.classifier.feature.extractor.ContextExtractor.Covered;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
-import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
+import org.cleartk.classifier.opennlp.MaxentDataWriter;
 import org.cleartk.timeml.TimeMLComponents;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.util.CleartkInternalModelFactory;
@@ -55,8 +55,8 @@ public class EventClassAnnotator extends EventAttributeAnnotator<String> {
     }
 
     @Override
-    public Class<?> getDataWriterFactoryClass() {
-      return DefaultMaxentDataWriterFactory.class;
+    public Class<?> getDataWriterClass() {
+      return MaxentDataWriter.class;
     }
 
     @Override

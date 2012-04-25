@@ -52,6 +52,8 @@ import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.jar.DefaultDataWriterFactory;
+import org.cleartk.classifier.jar.DefaultSequenceDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.classifier.mallet.factory.ClassifierTrainerFactory;
@@ -105,8 +107,8 @@ public class MalletDataWriterTest extends DefaultTestBase {
         typeSystemDescription,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
-        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-        DefaultMalletDataWriterFactory.class.getName());
+        DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+        MalletDataWriter.class.getName());
 
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
@@ -142,6 +144,7 @@ public class MalletDataWriterTest extends DefaultTestBase {
    * @throws Exception
    */
   @Test
+  @Deprecated
   public void test2() throws Exception {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         Test1Annotator.class,
@@ -194,6 +197,7 @@ public class MalletDataWriterTest extends DefaultTestBase {
    */
 
   @Test
+  @Deprecated
   public void test3() throws Exception {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         Test1Annotator.class,
@@ -261,12 +265,8 @@ public class MalletDataWriterTest extends DefaultTestBase {
         typeSystemDescription,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
-        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-        DefaultMalletDataWriterFactory.class.getName(),
-        MalletDataWriterFactory_ImplBase.PARAM_COMPRESS,
-        true,
-        MalletDataWriterFactory_ImplBase.PARAM_SORT,
-        true);
+        DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+        MalletDataWriter.class.getName());
 
     AnalysisEngineProcessException aepe = null;
     try {
@@ -292,6 +292,7 @@ public class MalletDataWriterTest extends DefaultTestBase {
    * @throws Exception
    */
   @Test
+  @Deprecated
   public void test5() throws Exception {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         Test5Annotator.class,
@@ -341,8 +342,8 @@ public class MalletDataWriterTest extends DefaultTestBase {
         typeSystemDescription,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
-        CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-        DefaultMalletCRFDataWriterFactory.class.getName());
+        DefaultSequenceDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+        MalletCRFDataWriter.class.getName());
 
     // create some tokens and sentences
     // add part-of-speech and stems to tokens

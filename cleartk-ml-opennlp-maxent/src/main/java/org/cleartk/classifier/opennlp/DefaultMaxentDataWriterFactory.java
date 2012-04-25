@@ -33,6 +33,7 @@ import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 import org.cleartk.classifier.encoder.features.NumberEncoder;
 import org.cleartk.classifier.encoder.features.StringEncoder;
 import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
+import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 
 /**
  * <br>
@@ -40,9 +41,9 @@ import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
  * All rights reserved.
  * 
  * @author Philip Ogren, Philipp Wetzler
- * 
+ * @deprecated Use {@link DefaultDataWriterFactory} with {@link MaxentDataWriter}.
  */
-
+@Deprecated
 public class DefaultMaxentDataWriterFactory extends MaxentDataWriterFactory_ImplBase<String> {
 
   @Override

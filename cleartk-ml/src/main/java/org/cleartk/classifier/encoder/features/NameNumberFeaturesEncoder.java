@@ -70,6 +70,10 @@ public class NameNumberFeaturesEncoder extends
     }
   }
 
+  public NameNumberFeaturesEncoder() {
+    this(false, false);
+  }
+
   @Override
   public List<NameNumber> encodeAll(Iterable<Feature> features) throws CleartkEncoderException {
     List<NameNumber> returnValues = new ArrayList<NameNumber>();

@@ -31,7 +31,6 @@ import java.util.List;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-import org.cleartk.classifier.CleartkAnnotatorDescriptionFactory;
 import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
@@ -58,13 +57,13 @@ public class ExamplePOSAnnotatorTest extends ExamplesTestBase {
 
   @Test
   public void testSimpleSentence() throws Exception {
-
-    AnalysisEngineDescription desc = CleartkAnnotatorDescriptionFactory.createCleartkSequenceAnnotator(
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         ExamplePOSAnnotator.class,
         ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-        PublicFieldSequenceDataWriter.StringFactory.class,
+        CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        PublicFieldSequenceDataWriter.StringFactory.class.getName(),
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         ".");
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(desc);
 
     // create some tokens, stems and part of speech tags
     tokenBuilder.buildTokens(

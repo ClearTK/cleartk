@@ -27,6 +27,7 @@ import java.util.List;
 
 import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.jar.DataWriterFactory_ImplBase;
+import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 
@@ -36,21 +37,28 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * All rights reserved.
  * 
  * @author Philip Ogren, Philipp Wetzler
- * 
+ * @deprecated Use {@link DefaultDataWriterFactory}.
  */
+@Deprecated
 public abstract class MalletDataWriterFactory_ImplBase<OUTCOME_TYPE> extends
     DataWriterFactory_ImplBase<List<NameNumber>, OUTCOME_TYPE, String> {
 
-  public static final String PARAM_COMPRESS = ConfigurationParameterFactory
-      .createConfigurationParameterName(MalletDataWriterFactory_ImplBase.class, "compress");
+  public static final String PARAM_COMPRESS = ConfigurationParameterFactory.createConfigurationParameterName(
+      MalletDataWriterFactory_ImplBase.class,
+      "compress");
 
-  @ConfigurationParameter(defaultValue = "false", description = "when true indicates that the FeaturesEncoder should compress the feature names.  See org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder")
+  @ConfigurationParameter(
+      defaultValue = "false",
+      description = "when true indicates that the FeaturesEncoder should compress the feature names.  See org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder")
   protected boolean compress;
 
-  public static final String PARAM_SORT = ConfigurationParameterFactory
-      .createConfigurationParameterName(MalletDataWriterFactory_ImplBase.class, "sort");
+  public static final String PARAM_SORT = ConfigurationParameterFactory.createConfigurationParameterName(
+      MalletDataWriterFactory_ImplBase.class,
+      "sort");
 
-  @ConfigurationParameter(defaultValue = "false", description = "when true indicates that the FeaturesEncoder should write the feature names in sorted order.")
+  @ConfigurationParameter(
+      defaultValue = "false",
+      description = "when true indicates that the FeaturesEncoder should write the feature names in sorted order.")
   protected boolean sort;
 
 }

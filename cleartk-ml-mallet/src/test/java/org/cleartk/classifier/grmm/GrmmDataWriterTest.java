@@ -38,6 +38,7 @@ import org.apache.uima.pear.util.FileUtil;
 import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.jar.DefaultSequenceDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.test.DefaultTestBase;
@@ -136,8 +137,8 @@ public class GrmmDataWriterTest extends DefaultTestBase {
         typeSystemDescription,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
-        CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-        DefaultGrmmDataWriterFactory.class.getName());
+        DefaultSequenceDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+        GrmmDataWriter.class.getName());
 
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
@@ -156,8 +157,7 @@ public class GrmmDataWriterTest extends DefaultTestBase {
 
     File template = new File(outputDirectoryName, "template.txt");
     FileWriter fileWriter = new FileWriter(template);
-    fileWriter
-        .write("new ACRF.BigramTemplate (0)\nnew ACRF.BigramTemplate (1)\nnew ACRF.PairwiseFactorTemplate (0,1)\n");
+    fileWriter.write("new ACRF.BigramTemplate (0)\nnew ACRF.BigramTemplate (1)\nnew ACRF.PairwiseFactorTemplate (0,1)\n");
     fileWriter.close();
 
     HideOutput hider = new HideOutput();

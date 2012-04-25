@@ -29,6 +29,7 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.DataWriter;
 import org.cleartk.classifier.DataWriterFactory;
+import org.cleartk.classifier.feature.transform.extractor.TfidfExtractor;
 import org.cleartk.classifier.util.tfidf.IDFMapWriter;
 import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
@@ -41,6 +42,7 @@ import org.uimafit.factory.initializable.Initializable;
  * All rights reserved.
  * 
  * @author Philipp Wetzler
+ * @deprecated Train a {@link TfidfExtractor} instead.
  */
 @Deprecated
 public class IDFMapWriterFactory implements DataWriterFactory<String>, Initializable {

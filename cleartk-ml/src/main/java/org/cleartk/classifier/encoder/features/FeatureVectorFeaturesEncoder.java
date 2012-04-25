@@ -63,6 +63,10 @@ public class FeatureVectorFeaturesEncoder extends
     this(cutoff, new NOPNormalizer());
   }
 
+  public FeatureVectorFeaturesEncoder() {
+    this(0, new NOPNormalizer());
+  }
+
   @Override
   public FeatureVector encodeAll(Iterable<Feature> features) throws CleartkEncoderException {
     List<NameNumber> fves = new ArrayList<NameNumber>();

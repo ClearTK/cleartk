@@ -33,6 +33,7 @@ import org.cleartk.classifier.encoder.features.NumberEncoder;
 import org.cleartk.classifier.encoder.features.StringEncoder;
 import org.cleartk.classifier.encoder.outcome.DoubleToDoubleOutcomeEncoder;
 import org.cleartk.classifier.jar.DataWriterFactory_ImplBase;
+import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
@@ -43,10 +44,11 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * All rights reserved.
  * 
  * @author Lee Becker
+ * @deprecated Use {@link DefaultDataWriterFactory} with {@link SVMlightRankDataWriter}.
  */
+@Deprecated
 public class DefaultSVMlightRankDataWriterFactory extends
-  DataWriterFactory_ImplBase<FeatureVector, Double, Double> {
-
+    DataWriterFactory_ImplBase<FeatureVector, Double, Double> {
 
   public static final String PARAM_CUTOFF = ConfigurationParameterFactory.createConfigurationParameterName(
       DefaultSVMlightRankDataWriterFactory.class,
@@ -70,5 +72,5 @@ public class DefaultSVMlightRankDataWriterFactory extends
     }
 
     return dataWriter;
-  } 
+  }
 }

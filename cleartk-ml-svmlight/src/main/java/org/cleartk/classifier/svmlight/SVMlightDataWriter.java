@@ -26,6 +26,8 @@ package org.cleartk.classifier.svmlight;
 import java.io.File;
 import java.io.IOException;
 
+import org.cleartk.classifier.encoder.outcome.BooleanToBooleanOutcomeEncoder;
+
 /**
  * <br>
  * Copyright (c) 2009, Regents of the University of Colorado <br>
@@ -38,6 +40,7 @@ public class SVMlightDataWriter extends
 
   public SVMlightDataWriter(File outputDirectory) throws IOException {
     super(outputDirectory);
+    this.setOutcomeEncoder(new BooleanToBooleanOutcomeEncoder());
   }
 
   @Override

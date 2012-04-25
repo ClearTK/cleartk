@@ -30,6 +30,10 @@ import java.util.Locale;
 import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.encoder.CleartkEncoderException;
+import org.cleartk.classifier.encoder.features.BooleanEncoder;
+import org.cleartk.classifier.encoder.features.FeatureVectorFeaturesEncoder;
+import org.cleartk.classifier.encoder.features.NumberEncoder;
+import org.cleartk.classifier.encoder.features.StringEncoder;
 import org.cleartk.classifier.jar.DataWriter_ImplBase;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
@@ -46,6 +50,11 @@ public abstract class LIBSVMDataWriter<CLASSIFIER_BUILDER_TYPE extends GenericLI
 
   public LIBSVMDataWriter(File outputDirectory) throws IOException {
     super(outputDirectory);
+    FeatureVectorFeaturesEncoder fe = new FeatureVectorFeaturesEncoder();
+    fe.addEncoder(new NumberEncoder());
+    fe.addEncoder(new BooleanEncoder());
+    fe.addEncoder(new StringEncoder());
+    this.setFeaturesEncoder(fe);
   }
 
   @Override

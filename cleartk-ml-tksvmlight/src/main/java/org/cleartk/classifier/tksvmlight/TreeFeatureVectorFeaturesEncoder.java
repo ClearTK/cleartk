@@ -48,7 +48,7 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
  * @author Daryl Lonnon
  * @version 0.2.1
  * 
- * An econder that is used for TreeFeatureVectors.
+ *          An econder that is used for TreeFeatureVectors.
  * 
  */
 public class TreeFeatureVectorFeaturesEncoder implements FeaturesEncoder<TreeFeatureVector> {
@@ -59,7 +59,7 @@ public class TreeFeatureVectorFeaturesEncoder implements FeaturesEncoder<TreeFea
   private static final long serialVersionUID = -3144134287152993099L;
 
   private FeatureVectorFeaturesEncoder nameNumberEncoder;
-  
+
   public TreeFeatureVectorFeaturesEncoder(int cutoff, NameNumberNormalizer normalizer) {
     nameNumberEncoder = new FeatureVectorFeaturesEncoder(cutoff, normalizer);
   }
@@ -67,7 +67,11 @@ public class TreeFeatureVectorFeaturesEncoder implements FeaturesEncoder<TreeFea
   public TreeFeatureVectorFeaturesEncoder(int cutoff) {
     this(cutoff, new NOPNormalizer());
   }
-  
+
+  public TreeFeatureVectorFeaturesEncoder() {
+    this(0, new NOPNormalizer());
+  }
+
   @Override
   public TreeFeatureVector encodeAll(Iterable<Feature> features) throws CleartkEncoderException {
     List<Feature> fves = new ArrayList<Feature>();
@@ -89,11 +93,11 @@ public class TreeFeatureVectorFeaturesEncoder implements FeaturesEncoder<TreeFea
   @Override
   public void finalizeFeatureSet(File outputDirectory) throws IOException {
     nameNumberEncoder.finalizeFeatureSet(outputDirectory);
-    
+
   }
 
   public void addEncoder(FeatureEncoder<NameNumber> numberEncoder) {
-     nameNumberEncoder.addEncoder(numberEncoder);
+    nameNumberEncoder.addEncoder(numberEncoder);
   }
 
   public void setNormalizer(NameNumberNormalizer normalizer) {

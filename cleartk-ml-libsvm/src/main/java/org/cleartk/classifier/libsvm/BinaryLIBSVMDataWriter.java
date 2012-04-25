@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.cleartk.classifier.encoder.CleartkEncoderException;
+import org.cleartk.classifier.encoder.outcome.BooleanToBooleanOutcomeEncoder;
 
 /**
  * <br>
@@ -40,6 +41,7 @@ public class BinaryLIBSVMDataWriter extends
 
   public BinaryLIBSVMDataWriter(File outputDirectory) throws IOException {
     super(outputDirectory);
+    this.setOutcomeEncoder(new BooleanToBooleanOutcomeEncoder());
   }
 
   @Override

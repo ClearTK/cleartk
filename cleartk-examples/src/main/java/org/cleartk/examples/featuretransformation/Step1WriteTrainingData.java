@@ -30,17 +30,16 @@ import java.net.URI;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-import org.cleartk.classifier.CleartkAnnotator;
-import org.cleartk.classifier.DataWriter;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.feature.transform.DefaultInstanceDataWriterFactory;
+import org.cleartk.classifier.feature.transform.InstanceDataWriter;
 import org.cleartk.classifier.feature.transform.InstanceStream;
 import org.cleartk.classifier.feature.transform.extractor.CentroidTfidfSimilarityExtractor;
 import org.cleartk.classifier.feature.transform.extractor.MinMaxNormalizationExtractor;
 import org.cleartk.classifier.feature.transform.extractor.TfidfExtractor;
 import org.cleartk.classifier.feature.transform.extractor.ZeroMeanUnitStddevExtractor;
+import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
-import org.cleartk.classifier.libsvm.DefaultMultiClassLIBSVMDataWriterFactory;
+import org.cleartk.classifier.libsvm.MultiClassLIBSVMDataWriter;
 import org.cleartk.examples.ExampleComponents;
 import org.cleartk.syntax.opennlp.SentenceAnnotator;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
@@ -93,8 +92,8 @@ public class Step1WriteTrainingData {
     AnalysisEngineDescription documentClassificationAnnotatorDescription = AnalysisEngineFactory.createPrimitiveDescription(
         DocumentClassificationAnnotator.class,
         ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-        DefaultInstanceDataWriterFactory.class.getName(),
+        DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+        InstanceDataWriter.class.getName(),
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         options.outputDirectory.getPath());
 
@@ -143,9 +142,7 @@ public class Step1WriteTrainingData {
     // reinitialize the DocumentClassifcationAnnotator above with the URIs for the feature
     // extractor. This approach
     System.out.println("Write out model training file");
-    DefaultMultiClassLIBSVMDataWriterFactory dataWriterFactory = new DefaultMultiClassLIBSVMDataWriterFactory();
-    dataWriterFactory.setOutputDirectory(options.outputDirectory);
-    DataWriter<String> dataWriter = dataWriterFactory.createDataWriter();
+    MultiClassLIBSVMDataWriter dataWriter = new MultiClassLIBSVMDataWriter(options.outputDirectory);
     for (Instance<String> instance : instances) {
       instance = extractor.transform(instance);
       instance = simExtractor.transform(instance);

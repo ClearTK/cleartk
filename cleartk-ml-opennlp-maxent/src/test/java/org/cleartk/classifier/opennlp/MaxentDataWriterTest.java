@@ -42,6 +42,7 @@ import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
+import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.classifier.util.InstanceFactory;
@@ -92,8 +93,8 @@ public class MaxentDataWriterTest extends DefaultTestBase {
         typeSystemDescription,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
-        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-        DefaultMaxentDataWriterFactory.class.getName());
+        DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+        MaxentDataWriter.class.getName());
 
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
@@ -119,6 +120,7 @@ public class MaxentDataWriterTest extends DefaultTestBase {
    * @throws Exception
    */
   @Test
+  @Deprecated
   public void test2() throws Exception {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         Test1Annotator.class,
@@ -169,6 +171,7 @@ public class MaxentDataWriterTest extends DefaultTestBase {
    */
 
   @Test
+  @Deprecated
   public void test3() throws Exception {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         Test1Annotator.class,
@@ -238,12 +241,8 @@ public class MaxentDataWriterTest extends DefaultTestBase {
         typeSystemDescription,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
-        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-        DefaultMaxentDataWriterFactory.class.getName(),
-        MaxentDataWriterFactory_ImplBase.PARAM_COMPRESS,
-        true,
-        MaxentDataWriterFactory_ImplBase.PARAM_SORT,
-        true);
+        DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+        MaxentDataWriter.class.getName());
 
     AnalysisEngineProcessException aepe = null;
     try {
@@ -273,6 +272,7 @@ public class MaxentDataWriterTest extends DefaultTestBase {
    * @throws Exception
    */
   @Test
+  @Deprecated
   public void test5() throws Exception {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         Test5Annotator.class,

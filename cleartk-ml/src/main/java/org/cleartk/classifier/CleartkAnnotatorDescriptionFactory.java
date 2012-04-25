@@ -69,7 +69,9 @@ public class CleartkAnnotatorDescriptionFactory {
    * @param outputDir
    *          The directory where the training data should be written.
    * @return An AnalysisEngineDescription for the CleartkSequenceAnnotator.
+   * @deprecated Use {@link AnalysisEngineFactory} directly.
    */
+  @Deprecated
   public static <OUTCOME_TYPE> AnalysisEngineDescription createViterbiAnnotator(
       Class<? extends CleartkSequenceAnnotator<OUTCOME_TYPE>> annotatorClass,
       TypeSystemDescription typeSystemDescription,
@@ -133,25 +135,21 @@ public class CleartkAnnotatorDescriptionFactory {
    * @param outputDir
    *          The directory where the training data should be written.
    * @return An AnalysisEngineDescription for the CleartkAnnotator.
+   * @deprecated Use {@link AnalysisEngineFactory} directly.
    */
+  @Deprecated
   public static <OUTCOME_TYPE> AnalysisEngineDescription createCleartkAnnotator(
       Class<? extends CleartkAnnotator<OUTCOME_TYPE>> cleartkAnnotatorClass,
       TypeSystemDescription typeSystemDescription,
       Class<? extends DataWriterFactory<OUTCOME_TYPE>> dataWriterFactoryClass,
       String outputDir) throws ResourceInitializationException {
-    AnalysisEngineDescription aed = AnalysisEngineFactory.createPrimitiveDescription(
+    return AnalysisEngineFactory.createPrimitiveDescription(
         cleartkAnnotatorClass,
-        typeSystemDescription);
-
-    ConfigurationParameterFactory.addConfigurationParameter(
-        aed,
+        typeSystemDescription,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-        dataWriterFactoryClass.getName());
-    ConfigurationParameterFactory.addConfigurationParameter(
-        aed,
+        dataWriterFactoryClass.getName(),
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDir);
-    return aed;
   }
 
   /**
@@ -198,24 +196,21 @@ public class CleartkAnnotatorDescriptionFactory {
    * @param outputDir
    *          The directory where the training data should be written.
    * @return An AnalysisEngineDescription for the CleartkSequenceAnnotator.
+   * @deprecated Use {@link AnalysisEngineFactory} directly.
    */
+  @Deprecated
   public static <OUTCOME_TYPE> AnalysisEngineDescription createCleartkSequenceAnnotator(
       Class<? extends CleartkSequenceAnnotator<OUTCOME_TYPE>> sequenceClassifierAnnotatorClass,
       TypeSystemDescription typeSystemDescription,
       Class<? extends SequenceDataWriterFactory<OUTCOME_TYPE>> dataWriterFactoryClass,
       String outputDir) throws ResourceInitializationException {
 
-    AnalysisEngineDescription aed = AnalysisEngineFactory.createPrimitiveDescription(
+    return AnalysisEngineFactory.createPrimitiveDescription(
         sequenceClassifierAnnotatorClass,
-        typeSystemDescription);
-    ConfigurationParameterFactory.addConfigurationParameter(
-        aed,
+        typeSystemDescription,
         CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-        dataWriterFactoryClass.getName());
-    ConfigurationParameterFactory.addConfigurationParameter(
-        aed,
+        dataWriterFactoryClass.getName(),
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDir);
-    return aed;
   }
 }

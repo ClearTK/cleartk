@@ -35,6 +35,10 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.cleartk.classifier.CleartkProcessingException;
+import org.cleartk.classifier.encoder.features.BooleanEncoder;
+import org.cleartk.classifier.encoder.features.NumberEncoder;
+import org.cleartk.classifier.encoder.features.StringEncoder;
+import org.cleartk.classifier.encoder.outcome.StringToIntegerOutcomeEncoder;
 import org.cleartk.classifier.jar.DataWriter_ImplBase;
 
 /**
@@ -50,13 +54,20 @@ import org.cleartk.classifier.jar.DataWriter_ImplBase;
 public class OVATKSVMlightDataWriter extends
     DataWriter_ImplBase<OVATKSVMlightClassifierBuilder, TreeFeatureVector, String, Integer> {
 
-/**
- * Constructor for the One verse All Tree Kernel SVMlight data writer.
- * @param outputDirectory
- * @throws IOException
- */
+  /**
+   * Constructor for the One verse All Tree Kernel SVMlight data writer.
+   * 
+   * @param outputDirectory
+   * @throws IOException
+   */
   public OVATKSVMlightDataWriter(File outputDirectory) throws IOException {
     super(outputDirectory);
+    TreeFeatureVectorFeaturesEncoder myFeaturesEncoder = new TreeFeatureVectorFeaturesEncoder();
+    myFeaturesEncoder.addEncoder(new NumberEncoder());
+    myFeaturesEncoder.addEncoder(new BooleanEncoder());
+    myFeaturesEncoder.addEncoder(new StringEncoder());
+    this.setFeaturesEncoder(myFeaturesEncoder);
+    this.setOutcomeEncoder(new StringToIntegerOutcomeEncoder());
 
     // aliases to make it easy to remember what the "main" file is being used for
     allFalseFile = this.trainingDataFile;
@@ -67,10 +78,14 @@ public class OVATKSVMlightDataWriter extends
   }
 
   /**
-   * Write the feature vector into the appropriate files (ultimately, it's one line in each of the model file.)
-   * @param features The feature vector to be written.
-   * @param outcome The index of the model file which this feature vector corresponds to. If null this feature
-   * vector has no known "outcome".
+   * Write the feature vector into the appropriate files (ultimately, it's one line in each of the
+   * model file.)
+   * 
+   * @param features
+   *          The feature vector to be written.
+   * @param outcome
+   *          The index of the model file which this feature vector corresponds to. If null this
+   *          feature vector has no known "outcome".
    */
   @Override
   public void writeEncoded(TreeFeatureVector features, Integer outcome)
@@ -109,7 +124,8 @@ public class OVATKSVMlightDataWriter extends
   }
 
   /**
-   * Callback called after the last feature vector has been written. Flushes the various streams and deletes the all false file.
+   * Callback called after the last feature vector has been written. Flushes the various streams and
+   * deletes the all false file.
    */
   @Override
   public void finish() throws CleartkProcessingException {

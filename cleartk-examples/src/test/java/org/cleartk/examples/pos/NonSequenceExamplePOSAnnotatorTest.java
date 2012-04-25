@@ -35,9 +35,11 @@ import java.util.Locale;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.pear.util.FileUtil;
 import org.cleartk.classifier.CleartkAnnotatorDescriptionFactory;
-import org.cleartk.classifier.libsvm.DefaultMultiClassLIBSVMDataWriterFactory;
-import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
-import org.cleartk.classifier.svmlight.DefaultOVASVMlightDataWriterFactory;
+import org.cleartk.classifier.jar.DefaultDataWriterFactory;
+import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
+import org.cleartk.classifier.libsvm.MultiClassLIBSVMDataWriter;
+import org.cleartk.classifier.opennlp.MaxentDataWriter;
+import org.cleartk.classifier.svmlight.OVASVMlightDataWriter;
 import org.cleartk.examples.ExampleComponents;
 import org.cleartk.examples.ExamplesTestBase;
 import org.cleartk.syntax.constituent.TreebankConstants;
@@ -91,12 +93,14 @@ public class NonSequenceExamplePOSAnnotatorTest extends ExamplesTestBase {
     assumeLibsvmEnabled();
     this.logger.info(LIBSVM_TEST_MESSAGE);
     String libsvmDirectoryName = outputDirectory + "/libsvm";
-    AnalysisEngineDescription dataWriter = CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+    AnalysisEngineDescription dataWriter = AnalysisEngineFactory.createPrimitiveDescription(
         NonSequenceExamplePOSAnnotator.class,
         ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-        DefaultMultiClassLIBSVMDataWriterFactory.class,
+        DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+        MultiClassLIBSVMDataWriter.class.getName(),
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         libsvmDirectoryName);
-    testClassifier(dataWriter, libsvmDirectoryName, "-t", "0");
+    testClassifier(dataWriter, libsvmDirectoryName, "-t", "0", "-c", "0.1");
 
     String firstLine = FileUtil.loadListOfStrings(new File(libsvmDirectoryName
         + "/2008_Sichuan_earthquake.txt.pos"))[0].trim();
@@ -106,10 +110,12 @@ public class NonSequenceExamplePOSAnnotatorTest extends ExamplesTestBase {
   @Test
   public void testMaxent() throws Exception {
     String maxentDirectoryName = outputDirectoryName + "/maxent";
-    AnalysisEngineDescription dataWriter = CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+    AnalysisEngineDescription dataWriter = AnalysisEngineFactory.createPrimitiveDescription(
         NonSequenceExamplePOSAnnotator.class,
         ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-        DefaultMaxentDataWriterFactory.class,
+        DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+        MaxentDataWriter.class.getName(),
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         maxentDirectoryName);
     testClassifier(dataWriter, maxentDirectoryName);
 
@@ -125,12 +131,14 @@ public class NonSequenceExamplePOSAnnotatorTest extends ExamplesTestBase {
     this.logger.info(SVMLIGHT_TEST_MESSAGE);
 
     String svmlightDirectoryName = outputDirectoryName + "/svmlight";
-    AnalysisEngineDescription dataWriter = CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+    AnalysisEngineDescription dataWriter = AnalysisEngineFactory.createPrimitiveDescription(
         NonSequenceExamplePOSAnnotator.class,
         ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-        DefaultOVASVMlightDataWriterFactory.class,
+        DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+        OVASVMlightDataWriter.class.getName(),
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         svmlightDirectoryName);
-    testClassifier(dataWriter, svmlightDirectoryName);
+    testClassifier(dataWriter, svmlightDirectoryName, "-c", "0.1");
 
     String firstLine = FileUtil.loadListOfStrings(new File(svmlightDirectoryName
         + "/2008_Sichuan_earthquake.txt.pos"))[0].trim();

@@ -25,10 +25,11 @@ package org.cleartk.srl.conll2005;
 
 import java.io.File;
 
-import org.cleartk.classifier.CleartkAnnotatorDescriptionFactory;
+import org.cleartk.classifier.jar.DefaultDataWriterFactory;
+import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
-import org.cleartk.classifier.libsvm.DefaultBinaryLIBSVMDataWriterFactory;
-import org.cleartk.classifier.libsvm.DefaultMultiClassLIBSVMDataWriterFactory;
+import org.cleartk.classifier.libsvm.BinaryLIBSVMDataWriter;
+import org.cleartk.classifier.libsvm.MultiClassLIBSVMDataWriter;
 import org.cleartk.srl.ArgumentClassifier;
 import org.cleartk.srl.ArgumentIdentifier;
 import org.cleartk.srl.SrlComponents;
@@ -73,15 +74,19 @@ public class TrainConll2005Models {
         // PredicateAnnotator.class,
         // DefaultSVMlightDataWriterFactory.class,
         // predicateIdentificationOutputDirectory.toString()),
-        CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+        AnalysisEngineFactory.createPrimitiveDescription(
             ArgumentIdentifier.class,
             SrlComponents.TYPE_SYSTEM_DESCRIPTION,
-            DefaultBinaryLIBSVMDataWriterFactory.class,
+            DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+            BinaryLIBSVMDataWriter.class.getName(),
+            DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
             argumentIdentificationOutputDirectory.toString()),
-        CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+        AnalysisEngineFactory.createPrimitiveDescription(
             ArgumentClassifier.class,
             SrlComponents.TYPE_SYSTEM_DESCRIPTION,
-            DefaultMultiClassLIBSVMDataWriterFactory.class,
+            DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+            MultiClassLIBSVMDataWriter.class.getName(),
+            DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
             argumentClassificationOutputDirectory.toString()));
 
     // train the model on the training data

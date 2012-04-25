@@ -27,6 +27,7 @@ import java.io.IOException;
 
 import org.cleartk.classifier.DataWriter;
 import org.cleartk.classifier.DataWriterFactory;
+import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 
 /**
@@ -36,7 +37,9 @@ import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
  * All rights reserved.
  * 
  * @author Steven Bethard
+ * @deprecated Use {@link DefaultDataWriterFactory} with {@link MeanValueDataWriter}.
  */
+@Deprecated
 public class DefaultMeanValueDataWriterFactory extends DirectoryDataWriterFactory implements
     DataWriterFactory<Double> {
 

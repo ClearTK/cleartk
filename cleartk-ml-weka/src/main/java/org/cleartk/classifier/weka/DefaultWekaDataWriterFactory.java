@@ -24,37 +24,39 @@ import org.cleartk.classifier.DataWriter;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
 import org.cleartk.classifier.jar.DataWriterFactory_ImplBase;
+import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 
 /**
  * Copyright (c) 2012, Regents of the University of Colorado <br>
  * All rights reserved.
- * @author Philip Ogren
  * 
+ * @author Philip Ogren
+ * @deprecated Use {@link DefaultDataWriterFactory} with {@link WekaDataWriter}.
  */
+@Deprecated
+public class DefaultWekaDataWriterFactory extends
+    DataWriterFactory_ImplBase<Iterable<Feature>, String, String> {
 
-public class DefaultWekaDataWriterFactory extends DataWriterFactory_ImplBase<Iterable<Feature>, String, String>{
+  public static final String PARAM_RELATION_TAG = ConfigurationParameterFactory.createConfigurationParameterName(
+      DefaultWekaDataWriterFactory.class,
+      "relationTag");
 
-	  public static final String PARAM_RELATION_TAG = ConfigurationParameterFactory.createConfigurationParameterName(
-			  DefaultWekaDataWriterFactory.class,
-		      "relationTag");
+  @ConfigurationParameter(
+      mandatory = true,
+      description = "determines the value that appears after @RELATION at the top of the ARFF file")
+  protected String relationTag;
 
-		  @ConfigurationParameter(
-		      mandatory = true,
-		      description = "determines the value that appears after @RELATION at the top of the ARFF file")
-		  protected String relationTag;
+  public DataWriter<String> createDataWriter() throws IOException {
+    WekaDataWriter swdw = new WekaDataWriter(outputDirectory, relationTag);
 
-	
-	public DataWriter<String> createDataWriter() throws IOException {
-		WekaDataWriter swdw = new WekaDataWriter(outputDirectory, relationTag);
-		
-		if(!this.setEncodersFromFileSystem(swdw)) {
-			swdw.setFeaturesEncoder(new WekaFeaturesEncoder());
-			swdw.setOutcomeEncoder(new StringToStringOutcomeEncoder());
-		}
-		
-		return swdw;
-	}
-	
+    if (!this.setEncodersFromFileSystem(swdw)) {
+      swdw.setFeaturesEncoder(new WekaFeaturesEncoder());
+      swdw.setOutcomeEncoder(new StringToStringOutcomeEncoder());
+    }
+
+    return swdw;
+  }
+
 }

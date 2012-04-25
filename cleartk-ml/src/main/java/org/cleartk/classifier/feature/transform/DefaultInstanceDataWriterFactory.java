@@ -27,6 +27,7 @@ import java.io.IOException;
 
 import org.cleartk.classifier.DataWriter;
 import org.cleartk.classifier.jar.DataWriterFactory_ImplBase;
+import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
 /**
@@ -34,8 +35,9 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
  * All rights reserved.
  * 
  * @author Lee Becker
- * 
+ * @deprecated Use {@link DefaultDataWriterFactory} with {@link InstanceDataWriter}.
  */
+@Deprecated
 public class DefaultInstanceDataWriterFactory<OUTCOME_TYPE> extends
     DataWriterFactory_ImplBase<FeatureVector, OUTCOME_TYPE, OUTCOME_TYPE> {
 

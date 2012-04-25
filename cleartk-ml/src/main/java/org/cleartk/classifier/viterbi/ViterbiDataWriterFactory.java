@@ -73,6 +73,7 @@ public class ViterbiDataWriterFactory<OUTCOME_TYPE> extends DirectoryDataWriterF
 
   @ConfigurationParameter(
       mandatory = true,
+      defaultValue = "org.cleartk.classifier.jar.DefaultDataWriterFactory",
       description = "A single, required, string parameter that provides "
           + "the full name of the DataWriterFactory class that will be " + "wrapped.")
   protected String delegatedDataWriterFactoryClass;

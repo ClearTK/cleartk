@@ -47,12 +47,15 @@ import org.cleartk.classifier.feature.proliferate.CharacterNGramProliferator;
 import org.cleartk.classifier.feature.proliferate.LowerCaseProliferator;
 import org.cleartk.classifier.feature.proliferate.NumericTypeProliferator;
 import org.cleartk.classifier.feature.proliferate.ProliferatingExtractor;
-import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
-import org.cleartk.classifier.opennlp.MaxentDataWriterFactory_ImplBase;
+import org.cleartk.classifier.jar.DefaultDataWriterFactory;
+import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
+import org.cleartk.classifier.opennlp.MaxentDataWriter;
+import org.cleartk.classifier.viterbi.DefaultOutcomeFeatureExtractor;
+import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
 import org.cleartk.examples.ExampleComponents;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.uimafit.factory.ConfigurationParameterFactory;
+import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.util.JCasUtil;
 
 /**
@@ -157,15 +160,18 @@ public class ExamplePOSAnnotator extends CleartkSequenceAnnotator<String> {
 
   public static AnalysisEngineDescription getWriterDescription(String outputDirectory)
       throws ResourceInitializationException {
-    AnalysisEngineDescription aed = CleartkAnnotatorDescriptionFactory.createViterbiAnnotator(
+    return AnalysisEngineFactory.createPrimitiveDescription(
         ExamplePOSAnnotator.class,
         ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-        DefaultMaxentDataWriterFactory.class,
-        outputDirectory);
-    ConfigurationParameterFactory.addConfigurationParameter(
-        aed,
-        MaxentDataWriterFactory_ImplBase.PARAM_COMPRESS,
-        true);
-    return aed;
+        CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        ViterbiDataWriterFactory.class.getName(),
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        outputDirectory,
+        ViterbiDataWriterFactory.PARAM_DELEGATED_DATA_WRITER_FACTORY_CLASS,
+        DefaultDataWriterFactory.class.getName(),
+        DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+        MaxentDataWriter.class.getName(),
+        ViterbiDataWriterFactory.PARAM_OUTCOME_FEATURE_EXTRACTOR_NAMES,
+        new String[] { DefaultOutcomeFeatureExtractor.class.getName() });
   }
 }

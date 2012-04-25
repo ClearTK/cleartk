@@ -39,13 +39,14 @@ import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.classifier.svmlight.model.SVMlightModel;
-import org.cleartk.classifier.svmlight.rank.DefaultSVMlightRankDataWriterFactory;
 import org.cleartk.classifier.svmlight.rank.QidInstance;
 import org.cleartk.classifier.svmlight.rank.SVMlightRank;
 import org.cleartk.classifier.svmlight.rank.SVMlightRankBuilder;
+import org.cleartk.classifier.svmlight.rank.SVMlightRankDataWriter;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 import org.cleartk.classifier.util.featurevector.SparseFeatureVector;
 import org.cleartk.test.DefaultTestBase;
@@ -219,8 +220,8 @@ public class RunSVMlightTest extends DefaultTestBase {
     annotator.initialize(UimaContextFactory.createUimaContext(
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         this.outputDirectoryName,
-        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-        DefaultSVMlightDataWriterFactory.class.getName()));
+        DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+        SVMlightDataWriter.class.getName()));
 
     // add a bunch of instances
     for (Instance<Boolean> instance : generateBooleanInstances(1000)) {
@@ -261,8 +262,8 @@ public class RunSVMlightTest extends DefaultTestBase {
     annotator.initialize(UimaContextFactory.createUimaContext(
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         this.outputDirectoryName,
-        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-        DefaultOVASVMlightDataWriterFactory.class.getName()));
+        DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+        OVASVMlightDataWriter.class.getName()));
 
     // add a bunch of instances
     for (Instance<String> instance : generateStringInstances(1000)) {
@@ -308,8 +309,8 @@ public class RunSVMlightTest extends DefaultTestBase {
     annotator.initialize(UimaContextFactory.createUimaContext(
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         this.outputDirectoryName,
-        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-        DefaultSVMlightRegressionDataWriterFactory.class.getName()));
+        DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+        SVMlightRegressionDataWriter.class.getName()));
 
     // add instances
     for (double i = 0.0; i < 100; i += 2) {
@@ -339,7 +340,7 @@ public class RunSVMlightTest extends DefaultTestBase {
     }
   }
 
-    @Test
+  @Test
   public void testSVMlightRank() throws Exception {
     assumeSvmLightEnabled();
     this.logger.info(SVMLIGHT_RANK_TEST_MESSAGE);
@@ -349,26 +350,26 @@ public class RunSVMlightTest extends DefaultTestBase {
     annotator.initialize(UimaContextFactory.createUimaContext(
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         this.outputDirectoryName,
-        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-        DefaultSVMlightRankDataWriterFactory.class.getName()));
-    
+        DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+        SVMlightRankDataWriter.class.getName()));
+
     System.out.println(outputDirectoryName);
     // add instances
     for (int qid = 10; qid < 15; qid++) {
-      for (double i = 0.0; i < 10; i+= 2) {
+      for (double i = 0.0; i < 10; i += 2) {
         QidInstance<Double> inst = new QidInstance<Double>();
         inst.setQid(Integer.toString(qid));
         inst.addAll(Arrays.asList(new Feature("x", i)));
         if (i >= 0.0 && i < 3) {
-            inst.setOutcome(3.0);
+          inst.setOutcome(3.0);
         } else if (i >= 3 && i < 6) {
-            inst.setOutcome(2.0);
+          inst.setOutcome(2.0);
         } else {
-            inst.setOutcome(1.0);
+          inst.setOutcome(1.0);
         }
         annotator.write(inst);
       }
-      
+
     }
 
     annotator.collectionProcessComplete();
@@ -394,8 +395,7 @@ public class RunSVMlightTest extends DefaultTestBase {
       Assert.assertEquals(i / -2.0, prediction, 0.0005);
     }
   }
-  
-  
+
   private static List<Instance<Boolean>> generateBooleanInstances(int n) {
     Random random = new Random(42);
     List<Instance<Boolean>> instances = new ArrayList<Instance<Boolean>>();

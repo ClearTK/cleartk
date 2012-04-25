@@ -35,6 +35,7 @@ import org.cleartk.classifier.encoder.features.normalizer.EuclidianNormalizer;
 import org.cleartk.classifier.encoder.features.normalizer.NameNumberNormalizer;
 import org.cleartk.classifier.encoder.outcome.BooleanToBooleanOutcomeEncoder;
 import org.cleartk.classifier.jar.DataWriterFactory_ImplBase;
+import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
@@ -45,16 +46,20 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * All rights reserved.
  * 
  * @author Philipp Wetzler
- * 
+ * @deprecated Use {@link DefaultDataWriterFactory} with {@link BinaryLIBLINEARDataWriter}.
  */
 
+@Deprecated
 public class DefaultBinaryLIBLINEARDataWriterFactory extends
     DataWriterFactory_ImplBase<FeatureVector, Boolean, Boolean> {
 
-  public static final String PARAM_CUTOFF = ConfigurationParameterFactory
-      .createConfigurationParameterName(DefaultBinaryLIBLINEARDataWriterFactory.class, "cutoff");
+  public static final String PARAM_CUTOFF = ConfigurationParameterFactory.createConfigurationParameterName(
+      DefaultBinaryLIBLINEARDataWriterFactory.class,
+      "cutoff");
 
-  @ConfigurationParameter(defaultValue = "5", description = "features that occur less than this number of times over the whole training set will not be encoded during testing")
+  @ConfigurationParameter(
+      defaultValue = "5",
+      description = "features that occur less than this number of times over the whole training set will not be encoded during testing")
   protected int cutoff = 5;
 
   public DataWriter<Boolean> createDataWriter() throws IOException {

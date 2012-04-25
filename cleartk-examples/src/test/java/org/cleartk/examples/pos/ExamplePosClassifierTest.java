@@ -32,15 +32,23 @@ import java.io.File;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.pear.util.FileUtil;
 import org.cleartk.classifier.CleartkAnnotatorDescriptionFactory;
-import org.cleartk.classifier.jar.EncodingDirectoryDataWriterFactory;
-import org.cleartk.classifier.libsvm.DefaultMultiClassLIBSVMDataWriterFactory;
+import org.cleartk.classifier.CleartkSequenceAnnotator;
+import org.cleartk.classifier.jar.DefaultDataWriterFactory;
+import org.cleartk.classifier.jar.DefaultSequenceDataWriterFactory;
+import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
+import org.cleartk.classifier.libsvm.MultiClassLIBSVMDataWriter;
 import org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory;
 import org.cleartk.classifier.mallet.DefaultMalletDataWriterFactory;
+import org.cleartk.classifier.mallet.MalletCRFDataWriter;
+import org.cleartk.classifier.mallet.MalletDataWriter;
 import org.cleartk.classifier.mallet.MalletDataWriterFactory_ImplBase;
 import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
+import org.cleartk.classifier.opennlp.MaxentDataWriter;
 import org.cleartk.classifier.opennlp.MaxentDataWriterFactory_ImplBase;
-import org.cleartk.classifier.svmlight.DefaultOVASVMlightDataWriterFactory;
+import org.cleartk.classifier.svmlight.OVASVMlightDataWriter;
+import org.cleartk.classifier.viterbi.DefaultOutcomeFeatureExtractor;
 import org.cleartk.classifier.viterbi.ViterbiClassifier;
+import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
 import org.cleartk.examples.ExampleComponents;
 import org.cleartk.examples.ExamplesTestBase;
 import org.cleartk.syntax.constituent.TreebankConstants;
@@ -73,15 +81,17 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
 
     String outDirectoryName = outputDirectoryName + "/libsvm";
 
-    AnalysisEngineDescription dataWriter = CleartkAnnotatorDescriptionFactory.createViterbiAnnotator(
+    AnalysisEngineDescription dataWriter = AnalysisEngineFactory.createPrimitiveDescription(
         ExamplePOSAnnotator.class,
         ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-        DefaultMultiClassLIBSVMDataWriterFactory.class,
-        outDirectoryName);
-    ConfigurationParameterFactory.addConfigurationParameter(
-        dataWriter,
-        EncodingDirectoryDataWriterFactory.PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM,
-        false);
+        CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        ViterbiDataWriterFactory.class.getName(),
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        outDirectoryName,
+        DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+        MultiClassLIBSVMDataWriter.class.getName(),
+        ViterbiDataWriterFactory.PARAM_OUTCOME_FEATURE_EXTRACTOR_NAMES,
+        new String[] { DefaultOutcomeFeatureExtractor.class.getName() });
 
     testClassifier(dataWriter, outDirectoryName, 1, "-t", "0"); // MultiClassLIBSVMClassifier.score
                                                                 // is not implemented so we cannot
@@ -102,10 +112,12 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
     this.logger.info(LONG_TEST_MESSAGE);
 
     String outDirectoryName = outputDirectoryName + "/malletcrf";
-    AnalysisEngineDescription dataWriter = CleartkAnnotatorDescriptionFactory.createCleartkSequenceAnnotator(
+    AnalysisEngineDescription dataWriter = AnalysisEngineFactory.createPrimitiveDescription(
         ExamplePOSAnnotator.class,
         ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-        DefaultMalletCRFDataWriterFactory.class,
+        DefaultSequenceDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+        MalletCRFDataWriter.class.getName(),
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outDirectoryName);
     testClassifier(dataWriter, outDirectoryName, -1); // viterbi stack size is meaningless here so
                                                       // pass in an invalid value to make sure it is
@@ -120,6 +132,7 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
   }
 
   @Test
+  @Deprecated
   public void testMalletCRF2() throws Exception {
     this.assumeLongTestsEnabled();
     this.logger.info(LONG_TEST_MESSAGE);
@@ -149,11 +162,17 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
   public void testMaxent() throws Exception {
     String outDirectoryName = outputDirectoryName + "/maxent";
 
-    AnalysisEngineDescription dataWriter = CleartkAnnotatorDescriptionFactory.createViterbiAnnotator(
+    AnalysisEngineDescription dataWriter = AnalysisEngineFactory.createPrimitiveDescription(
         ExamplePOSAnnotator.class,
         ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-        DefaultMaxentDataWriterFactory.class,
-        outDirectoryName);
+        CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        ViterbiDataWriterFactory.class.getName(),
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        outDirectoryName,
+        DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+        MaxentDataWriter.class.getName(),
+        ViterbiDataWriterFactory.PARAM_OUTCOME_FEATURE_EXTRACTOR_NAMES,
+        new String[] { DefaultOutcomeFeatureExtractor.class.getName() });
     testClassifier(dataWriter, outDirectoryName, 10);
 
     String firstLine = FileUtil.loadListOfStrings(new File(outDirectoryName
@@ -164,6 +183,7 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
   }
 
   @Test
+  @Deprecated
   public void testMaxent2() throws Exception {
     String outDirectoryName = outputDirectoryName + "/maxent2";
 
@@ -189,11 +209,17 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
   public void testMalletMaxent() throws Exception {
     String outDirectoryName = outputDirectoryName + "/mallet-maxent";
 
-    AnalysisEngineDescription dataWriter = CleartkAnnotatorDescriptionFactory.createViterbiAnnotator(
+    AnalysisEngineDescription dataWriter = AnalysisEngineFactory.createPrimitiveDescription(
         ExamplePOSAnnotator.class,
         ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-        DefaultMalletDataWriterFactory.class,
-        outDirectoryName);
+        CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        ViterbiDataWriterFactory.class.getName(),
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        outDirectoryName,
+        DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+        MalletDataWriter.class.getName(),
+        ViterbiDataWriterFactory.PARAM_OUTCOME_FEATURE_EXTRACTOR_NAMES,
+        new String[] { DefaultOutcomeFeatureExtractor.class.getName() });
     testClassifier(dataWriter, outDirectoryName, 10, "MaxEnt");
 
     String firstLine = FileUtil.loadListOfStrings(new File(outDirectoryName
@@ -207,11 +233,17 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
   public void testMalletNaiveBayes() throws Exception {
     String outDirectoryName = outputDirectoryName + "/mallet-naive-bayes";
 
-    AnalysisEngineDescription dataWriter = CleartkAnnotatorDescriptionFactory.createViterbiAnnotator(
+    AnalysisEngineDescription dataWriter = AnalysisEngineFactory.createPrimitiveDescription(
         ExamplePOSAnnotator.class,
         ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-        DefaultMalletDataWriterFactory.class,
-        outDirectoryName);
+        CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        ViterbiDataWriterFactory.class.getName(),
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        outDirectoryName,
+        DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+        MalletDataWriter.class.getName(),
+        ViterbiDataWriterFactory.PARAM_OUTCOME_FEATURE_EXTRACTOR_NAMES,
+        new String[] { DefaultOutcomeFeatureExtractor.class.getName() });
     testClassifier(dataWriter, outDirectoryName, 10, "NaiveBayes");
 
     String firstLine = FileUtil.loadListOfStrings(new File(outDirectoryName
@@ -222,6 +254,7 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
   }
 
   @Test
+  @Deprecated
   public void testMalletNaiveBayes2() throws Exception {
     String outDirectoryName = outputDirectoryName + "/mallet-naive-bayes";
 
@@ -250,11 +283,17 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
 
     String outDirectoryName = outputDirectoryName + "/mallet-c45";
 
-    AnalysisEngineDescription dataWriter = CleartkAnnotatorDescriptionFactory.createViterbiAnnotator(
+    AnalysisEngineDescription dataWriter = AnalysisEngineFactory.createPrimitiveDescription(
         ExamplePOSAnnotator.class,
         ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-        DefaultMalletDataWriterFactory.class,
-        outDirectoryName);
+        CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        ViterbiDataWriterFactory.class.getName(),
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        outDirectoryName,
+        DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+        MalletDataWriter.class.getName(),
+        ViterbiDataWriterFactory.PARAM_OUTCOME_FEATURE_EXTRACTOR_NAMES,
+        new String[] { DefaultOutcomeFeatureExtractor.class.getName() });
     testClassifier(dataWriter, outDirectoryName, 10, "C45");
 
     String firstLine = FileUtil.loadListOfStrings(new File(outDirectoryName
@@ -270,16 +309,17 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
     this.logger.info(SVMLIGHT_TEST_MESSAGE);
 
     String outDirectoryName = outputDirectoryName + "/svmlight";
-    AnalysisEngineDescription dataWriter = CleartkAnnotatorDescriptionFactory.createViterbiAnnotator(
+    AnalysisEngineDescription dataWriter = AnalysisEngineFactory.createPrimitiveDescription(
         ExamplePOSAnnotator.class,
         ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-        DefaultOVASVMlightDataWriterFactory.class,
-        outDirectoryName);
-    ConfigurationParameterFactory.addConfigurationParameter(
-        dataWriter,
-        DefaultOVASVMlightDataWriterFactory.PARAM_CUTOFF,
-        1);
-
+        CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+        ViterbiDataWriterFactory.class.getName(),
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        outDirectoryName,
+        DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+        OVASVMlightDataWriter.class.getName(),
+        ViterbiDataWriterFactory.PARAM_OUTCOME_FEATURE_EXTRACTOR_NAMES,
+        new String[] { DefaultOutcomeFeatureExtractor.class.getName() });
     testClassifier(dataWriter, outDirectoryName, 1);
 
     String firstLine = FileUtil.loadListOfStrings(new File(outDirectoryName

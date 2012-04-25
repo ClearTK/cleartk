@@ -37,6 +37,7 @@ import org.apache.uima.jcas.JCas;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.GenericJarClassifierFactory;
 import org.cleartk.classifier.jar.Train;
@@ -110,8 +111,8 @@ public class MalletClassifierTest extends DefaultTestBase {
         typeSystemDescription,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
-        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-        DefaultMalletDataWriterFactory.class.getName());
+        DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+        MalletDataWriter.class.getName());
 
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();

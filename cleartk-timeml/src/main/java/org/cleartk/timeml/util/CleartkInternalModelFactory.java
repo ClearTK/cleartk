@@ -29,10 +29,10 @@ import java.util.MissingResourceException;
 
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.classifier.CleartkAnnotator;
-import org.cleartk.classifier.CleartkSequenceAnnotator;
-import org.cleartk.classifier.DataWriterFactory;
-import org.cleartk.classifier.SequenceDataWriterFactory;
+import org.cleartk.classifier.DataWriter;
+import org.cleartk.classifier.SequenceDataWriter;
+import org.cleartk.classifier.jar.DefaultDataWriterFactory;
+import org.cleartk.classifier.jar.DefaultSequenceDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.GenericJarClassifierFactory;
 import org.uimafit.factory.ResourceCreationSpecifierFactory;
@@ -52,7 +52,7 @@ public abstract class CleartkInternalModelFactory {
 
   public abstract Class<?> getAnnotatorClass();
 
-  public abstract Class<?> getDataWriterFactoryClass();
+  public abstract Class<?> getDataWriterClass();
 
   public File getTrainingDirectory() {
     String path = this.getAnnotatorClass().getName().toLowerCase().replace('.', '/');
@@ -73,14 +73,14 @@ public abstract class CleartkInternalModelFactory {
 
   public AnalysisEngineDescription getWriterDescription(File outputDirectory)
       throws ResourceInitializationException {
-    Class<?> dataWriterFactoryClass = this.getDataWriterFactoryClass();
+    Class<?> dataWriterClass = this.getDataWriterClass();
     String paramName;
-    if (SequenceDataWriterFactory.class.isAssignableFrom(dataWriterFactoryClass)) {
-      paramName = CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME;
-    } else if (DataWriterFactory.class.isAssignableFrom(dataWriterFactoryClass)) {
-      paramName = CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME;
+    if (SequenceDataWriter.class.isAssignableFrom(dataWriterClass)) {
+      paramName = DefaultSequenceDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME;
+    } else if (DataWriter.class.isAssignableFrom(dataWriterClass)) {
+      paramName = DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME;
     } else {
-      throw new RuntimeException("Invalid data writer factory class: " + dataWriterFactoryClass);
+      throw new RuntimeException("Invalid data writer class: " + dataWriterClass);
     }
     AnalysisEngineDescription desc = getBaseDescription();
     ResourceCreationSpecifierFactory.setConfigurationParameters(
@@ -88,7 +88,7 @@ public abstract class CleartkInternalModelFactory {
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectory.getPath(),
         paramName,
-        dataWriterFactoryClass.getName());
+        dataWriterClass.getName());
     return desc;
   }
 

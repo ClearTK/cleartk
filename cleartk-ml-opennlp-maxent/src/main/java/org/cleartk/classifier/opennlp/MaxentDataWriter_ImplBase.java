@@ -30,7 +30,11 @@ import java.util.List;
 import opennlp.model.RealValueFileEventStream;
 
 import org.cleartk.classifier.CleartkProcessingException;
+import org.cleartk.classifier.encoder.features.BooleanEncoder;
 import org.cleartk.classifier.encoder.features.NameNumber;
+import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
+import org.cleartk.classifier.encoder.features.NumberEncoder;
+import org.cleartk.classifier.encoder.features.StringEncoder;
 import org.cleartk.classifier.jar.DataWriter_ImplBase;
 
 /**
@@ -57,6 +61,11 @@ public abstract class MaxentDataWriter_ImplBase<CLASSIFIER_BUILDER_TYPE extends 
 
   public MaxentDataWriter_ImplBase(File outputDirectory) throws IOException {
     super(outputDirectory);
+    NameNumberFeaturesEncoder ftrsNcdr = new NameNumberFeaturesEncoder();
+    ftrsNcdr.addEncoder(new NumberEncoder());
+    ftrsNcdr.addEncoder(new BooleanEncoder());
+    ftrsNcdr.addEncoder(new StringEncoder());
+    this.setFeaturesEncoder(ftrsNcdr);
   }
 
   @Override

@@ -28,6 +28,7 @@ import java.util.Set;
 
 import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
 import org.cleartk.classifier.jar.DataWriter_ImplBase;
 
 import weka.core.Attribute;
@@ -57,10 +58,16 @@ public class WekaDataWriter extends
 
   public WekaDataWriter(File outputDirectory, String relationTag) throws IOException {
     super(outputDirectory);
+    this.setFeaturesEncoder(new WekaFeaturesEncoder());
+    this.setOutcomeEncoder(new StringToStringOutcomeEncoder());
     this.relationTag = relationTag;
     instanceFeatures = new ArrayList<Iterable<Feature>>();
     instanceOutcomes = new ArrayList<String>();
     outcomeValues = new HashSet<String>();
+  }
+
+  public WekaDataWriter(File outputDirectory) throws IOException {
+    this(outputDirectory, "cleartk-generated");
   }
 
   @Override

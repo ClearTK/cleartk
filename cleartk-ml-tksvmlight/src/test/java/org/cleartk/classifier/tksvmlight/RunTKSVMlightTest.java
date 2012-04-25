@@ -37,6 +37,7 @@ import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.test.DefaultTestBase;
@@ -56,7 +57,6 @@ import org.uimafit.testing.util.HideOutput;
 public class RunTKSVMlightTest extends DefaultTestBase {
 
   protected String dataDirectory = "src/test/resources/data/svmlight/tk";
-
 
   @Override
   @Before
@@ -82,70 +82,45 @@ public class RunTKSVMlightTest extends DefaultTestBase {
   }
 
   // @Test
-//  public void testTreeKernel() throws Exception {
-/*    File dir = new File(dataDirectory, "nonlinear");
-    File trainingFile = new File(dir, "training-data.svmlight");
-    File testFile = new File(dir, "test-data.svmlight");
-
-    trainAndTest(trainingFile, testFile, new String[] { "-t", "5" }, "tree kernel");
-    */
-//  }
-/*
-  private void trainAndTest(File trainingFile, File testFile, String[] args, String name)
-      throws Exception {
-    File modelFile = new File(this.outputDirectoryName, "model.svmlight");
-
-    String[] command = new String[3 + args.length];
-    command[0] = "svm_learn";
-    for (int i = 0; i < args.length; i++)
-      command[i + 1] = args[i];
-    command[command.length - 2] = trainingFile.getPath();
-    command[command.length - 1] = modelFile.getPath();
-
-    Process process = Runtime.getRuntime().exec(command);
-    slurp(process.getInputStream());
-    output(process.getErrorStream(), System.err);
-    process.waitFor();
-
-    SVMlightModel model = SVMlightModel.fromFile(modelFile);
-    BufferedReader r = new BufferedReader(new FileReader(testFile));
-    float total = 0;
-    float correct = 0;
-    String line;
-    while ((line = r.readLine()) != null) {
-      String[] fields = line.split(" ");
-
-      boolean expectedResult = fields[0].equals("+1");
-
-      FeatureVector fv = new SparseFeatureVector();
-      for (int i = 1; i < fields.length; i++) {
-        String[] parts = fields[i].split(":");
-        int featureIndex = Integer.valueOf(parts[0]);
-        double featureValue = Double.valueOf(parts[1]);
-        fv.set(featureIndex, featureValue);
-      }
-
-      boolean actualResult = model.evaluate(fv) > 0;
-
-      total += 1;
-      if (expectedResult == actualResult)
-        correct += 1;
-    }
-    r.close();
-
-    if (correct < (total * 0.95))
-      Assert.fail("model accuracy using " + name + " is below 95%");
-  }
-
-  private static void output(InputStream input, PrintStream output) throws IOException {
-    byte[] buffer = new byte[128];
-    int count = input.read(buffer);
-    while (count != -1) {
-      output.write(buffer, 0, count);
-      count = input.read(buffer);
-    }
-  }
-*/
+  // public void testTreeKernel() throws Exception {
+  /*
+   * File dir = new File(dataDirectory, "nonlinear"); File trainingFile = new File(dir,
+   * "training-data.svmlight"); File testFile = new File(dir, "test-data.svmlight");
+   * 
+   * trainAndTest(trainingFile, testFile, new String[] { "-t", "5" }, "tree kernel");
+   */
+  // }
+  /*
+   * private void trainAndTest(File trainingFile, File testFile, String[] args, String name) throws
+   * Exception { File modelFile = new File(this.outputDirectoryName, "model.svmlight");
+   * 
+   * String[] command = new String[3 + args.length]; command[0] = "svm_learn"; for (int i = 0; i <
+   * args.length; i++) command[i + 1] = args[i]; command[command.length - 2] =
+   * trainingFile.getPath(); command[command.length - 1] = modelFile.getPath();
+   * 
+   * Process process = Runtime.getRuntime().exec(command); slurp(process.getInputStream());
+   * output(process.getErrorStream(), System.err); process.waitFor();
+   * 
+   * SVMlightModel model = SVMlightModel.fromFile(modelFile); BufferedReader r = new
+   * BufferedReader(new FileReader(testFile)); float total = 0; float correct = 0; String line;
+   * while ((line = r.readLine()) != null) { String[] fields = line.split(" ");
+   * 
+   * boolean expectedResult = fields[0].equals("+1");
+   * 
+   * FeatureVector fv = new SparseFeatureVector(); for (int i = 1; i < fields.length; i++) {
+   * String[] parts = fields[i].split(":"); int featureIndex = Integer.valueOf(parts[0]); double
+   * featureValue = Double.valueOf(parts[1]); fv.set(featureIndex, featureValue); }
+   * 
+   * boolean actualResult = model.evaluate(fv) > 0;
+   * 
+   * total += 1; if (expectedResult == actualResult) correct += 1; } r.close();
+   * 
+   * if (correct < (total * 0.95)) Assert.fail("model accuracy using " + name + " is below 95%"); }
+   * 
+   * private static void output(InputStream input, PrintStream output) throws IOException { byte[]
+   * buffer = new byte[128]; int count = input.read(buffer); while (count != -1) {
+   * output.write(buffer, 0, count); count = input.read(buffer); } }
+   */
   private static void slurp(InputStream input) throws IOException {
     byte[] buffer = new byte[128];
     int count = input.read();
@@ -169,16 +144,16 @@ public class RunTKSVMlightTest extends DefaultTestBase {
 
   @Test
   public void testTKSVMlight() throws Exception {
-	  assumeTkSvmLightEnabled();  
-	  this.logger.info(TK_SVMLIGHT_TEST_MESSAGE);
+    assumeTkSvmLightEnabled();
+    this.logger.info(TK_SVMLIGHT_TEST_MESSAGE);
 
-	  // create the data writer
+    // create the data writer
     EmptyAnnotator<Boolean> annotator = new EmptyAnnotator<Boolean>();
     annotator.initialize(UimaContextFactory.createUimaContext(
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         this.outputDirectoryName,
-        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-        DefaultTKSVMlightDataWriterFactory.class.getName()));
+        DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+        TKSVMlightDataWriter.class.getName()));
 
     // add a bunch of instances
     for (Instance<Boolean> instance : generateBooleanInstances(20)) {
@@ -211,16 +186,16 @@ public class RunTKSVMlightTest extends DefaultTestBase {
 
   @Test
   public void testOVATKSVMlight() throws Exception {
-	  assumeTkSvmLightEnabled();
-	  this.logger.info(TK_SVMLIGHT_TEST_MESSAGE);
+    assumeTkSvmLightEnabled();
+    this.logger.info(TK_SVMLIGHT_TEST_MESSAGE);
 
-	  // create the data writer
+    // create the data writer
     EmptyAnnotator<String> annotator = new EmptyAnnotator<String>();
     annotator.initialize(UimaContextFactory.createUimaContext(
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         this.outputDirectoryName,
-        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-        DefaultOVATKSVMlightDataWriterFactory.class.getName()));
+        DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+        OVATKSVMlightDataWriter.class.getName()));
 
     // add a bunch of instances
     for (Instance<String> instance : generateStringInstances(20)) {
@@ -254,7 +229,7 @@ public class RunTKSVMlightTest extends DefaultTestBase {
       String outcome = instance.getOutcome();
       Assert.assertEquals(outcome, classifier.classify(features));
     }
- 
+
   }
 
   private static List<Instance<Boolean>> generateBooleanInstances(int n) {
@@ -309,11 +284,11 @@ public class RunTKSVMlightTest extends DefaultTestBase {
   }
 
   @Test
-public void testname() throws Exception {
-	  String skipTests = "long,bigMem,tkSvm"; 
-	  String[] values = skipTests.split("\\s*[,]\\s*");
-	  for (String string : values) {
-		System.out.println(string);
-	}
-}
+  public void testname() throws Exception {
+    String skipTests = "long,bigMem,tkSvm";
+    String[] values = skipTests.split("\\s*[,]\\s*");
+    for (String string : values) {
+      System.out.println(string);
+    }
+  }
 }

@@ -33,6 +33,7 @@ import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.test.DefaultTestBase;
@@ -71,8 +72,8 @@ public class BaselineClassifiersTest extends DefaultTestBase {
     annotator.initialize(UimaContextFactory.createUimaContext(
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         this.outputDirectoryName,
-        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-        DefaultMostFrequentStringDataWriterFactory.class.getName()));
+        DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+        MostFrequentStringDataWriter.class.getName()));
 
     // add a bunch of instances, labels are about 1/3 "Three" and 2/3 "Not-Three"
     for (int i = 0; i < 100; ++i) {
@@ -110,8 +111,8 @@ public class BaselineClassifiersTest extends DefaultTestBase {
     annotator.initialize(UimaContextFactory.createUimaContext(
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         this.outputDirectoryName,
-        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-        DefaultMostFrequentBooleanDataWriterFactory.class.getName()));
+        DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+        MostFrequentBooleanDataWriter.class.getName()));
 
     // add a bunch of instances, labels are about 1/3 true and 2/3 false
     for (int i = 0; i < 100; ++i) {
@@ -148,8 +149,8 @@ public class BaselineClassifiersTest extends DefaultTestBase {
     annotator.initialize(UimaContextFactory.createUimaContext(
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         this.outputDirectoryName,
-        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-        DefaultMeanValueDataWriterFactory.class.getName()));
+        DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+        MeanValueDataWriter.class.getName()));
 
     // add a bunch of instances, labels are equally 0, 1, 2 and 3
     for (double i = 0.0; i < 100.0; ++i) {

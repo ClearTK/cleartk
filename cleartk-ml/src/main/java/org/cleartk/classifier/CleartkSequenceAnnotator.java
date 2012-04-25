@@ -30,6 +30,8 @@ import java.util.List;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
+import org.cleartk.classifier.jar.GenericJarClassifierFactory;
 import org.cleartk.util.CleartkInitializationException;
 import org.cleartk.util.ReflectionUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
@@ -48,26 +50,37 @@ import org.uimafit.factory.initializable.InitializableFactory;
 public abstract class CleartkSequenceAnnotator<OUTCOME_TYPE> extends JCasAnnotator_ImplBase
     implements Initializable {
 
-  public static final String PARAM_CLASSIFIER_FACTORY_CLASS_NAME = ConfigurationParameterFactory
-      .createConfigurationParameterName(
-          CleartkSequenceAnnotator.class,
-          "classifierFactoryClassName");
+  public static final String PARAM_CLASSIFIER_FACTORY_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
+      CleartkSequenceAnnotator.class,
+      "classifierFactoryClassName");
 
-  @ConfigurationParameter(mandatory = false, description = "provides the full name of the SequenceClassifierFactory class to be used.", defaultValue = "org.cleartk.classifier.jar.SequenceJarClassifierFactory")
+  private static final String DEFAULT_CLASSIFIER_FACTORY_CLASS_NAME = "org.cleartk.classifier.jar.SequenceJarClassifierFactory";
+
+  @ConfigurationParameter(
+      mandatory = false,
+      description = "provides the full name of the SequenceClassifierFactory class to be used.",
+      defaultValue = "org.cleartk.classifier.jar.SequenceJarClassifierFactory")
   private String classifierFactoryClassName;
 
-  public static final String PARAM_DATA_WRITER_FACTORY_CLASS_NAME = ConfigurationParameterFactory
-      .createConfigurationParameterName(
-          CleartkSequenceAnnotator.class,
-          "dataWriterFactoryClassName");
+  public static final String PARAM_DATA_WRITER_FACTORY_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
+      CleartkSequenceAnnotator.class,
+      "dataWriterFactoryClassName");
 
-  @ConfigurationParameter(mandatory = false, description = "provides the full name of the SequenceDataWriterFactory class to be used.")
+  private static final String DEFAULT_DATA_WRITER_FACTORY_CLASS_NAME = "org.cleartk.classifier.jar.DefaultSequenceDataWriterFactory";
+
+  @ConfigurationParameter(
+      mandatory = false,
+      description = "provides the full name of the SequenceDataWriterFactory class to be used.",
+      defaultValue = DEFAULT_DATA_WRITER_FACTORY_CLASS_NAME)
   private String dataWriterFactoryClassName;
 
-  public static final String PARAM_IS_TRAINING = ConfigurationParameterFactory
-      .createConfigurationParameterName(CleartkSequenceAnnotator.class, "isTraining");
+  public static final String PARAM_IS_TRAINING = ConfigurationParameterFactory.createConfigurationParameterName(
+      CleartkSequenceAnnotator.class,
+      "isTraining");
 
-  @ConfigurationParameter(mandatory = false, description = "determines whether this annotator is writing training data or using a classifier to annotate. Normally inferred automatically based on whether or not a DataWriterFactory class has been set.")
+  @ConfigurationParameter(
+      mandatory = false,
+      description = "determines whether this annotator is writing training data or using a classifier to annotate. Normally inferred automatically based on whether or not a DataWriterFactory class has been set.")
   private Boolean isTraining;
 
   private boolean primitiveIsTraining;
@@ -89,10 +102,19 @@ public abstract class CleartkSequenceAnnotator<OUTCOME_TYPE> extends JCasAnnotat
     }
 
     // determine whether we start out as training or predicting
-    if (this.isTraining == null) {
-      this.primitiveIsTraining = dataWriterFactoryClassName != null;
-    } else {
+    if (this.isTraining != null) {
       this.primitiveIsTraining = this.isTraining;
+    } else if (!DEFAULT_DATA_WRITER_FACTORY_CLASS_NAME.equals(this.dataWriterFactoryClassName)) {
+      this.primitiveIsTraining = true;
+    } else if (context.getConfigParameterValue(DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY) != null) {
+      this.primitiveIsTraining = true;
+    } else if (!DEFAULT_CLASSIFIER_FACTORY_CLASS_NAME.equals(this.classifierFactoryClassName)) {
+      this.primitiveIsTraining = false;
+    } else if (context.getConfigParameterValue(GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH) != null) {
+      this.primitiveIsTraining = false;
+    } else {
+      String message = "Please specify PARAM_IS_TRAINING - unable to infer it from context";
+      throw new IllegalArgumentException(message);
     }
 
     if (this.isTraining()) {

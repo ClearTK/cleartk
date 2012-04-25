@@ -32,6 +32,7 @@ import java.util.Map;
 import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.encoder.CleartkEncoderException;
+import org.cleartk.classifier.encoder.outcome.DoubleToDoubleOutcomeEncoder;
 import org.cleartk.classifier.svmlight.SVMlightDataWriter_ImplBase;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
@@ -42,17 +43,17 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
  * 
  * @author Lee Becker
  * 
- * Writes the training file for SVMlight's ranking classifier.
- * Because ranking requires an additional item/query id (qid),
- * instances passed into the write() method should be of type
- * QidInstance.
+ *         Writes the training file for SVMlight's ranking classifier. Because ranking requires an
+ *         additional item/query id (qid), instances passed into the write() method should be of
+ *         type QidInstance.
  * 
  */
 public class SVMlightRankDataWriter extends
     SVMlightDataWriter_ImplBase<SVMlightRankBuilder, Double, Double> {
-  
+
   public SVMlightRankDataWriter(File outputDirectory) throws IOException {
     super(outputDirectory);
+    this.setOutcomeEncoder(new DoubleToDoubleOutcomeEncoder());
     this.instQidToEncodedQidMap = new HashMap<String, Integer>();
     this.lastEncodedQid = 0;
   }
@@ -62,27 +63,27 @@ public class SVMlightRankDataWriter extends
     return outcome.toString();
   }
 
- @Override
+  @Override
   public void write(Instance<Double> instance) throws CleartkProcessingException {
-     if (!(instance instanceof QidInstance)) {
-       throw new CleartkProcessingException("", "Unable to write non-QidInstance");
-     }
-     String qid = ((QidInstance<Double>) instance).getQid();
+    if (!(instance instanceof QidInstance)) {
+      throw new CleartkProcessingException("", "Unable to write non-QidInstance");
+    }
+    String qid = ((QidInstance<Double>) instance).getQid();
 
-     writeEncoded(
-         this.getEncodedQid(qid),
-         this.classifierBuilder.getFeaturesEncoder().encodeAll(instance.getFeatures()),
-         this.classifierBuilder.getOutcomeEncoder().encode(instance.getOutcome()));
- }
-  
+    writeEncoded(
+        this.getEncodedQid(qid),
+        this.classifierBuilder.getFeaturesEncoder().encodeAll(instance.getFeatures()),
+        this.classifierBuilder.getOutcomeEncoder().encode(instance.getOutcome()));
+  }
+
   @Override
   protected SVMlightRankBuilder newClassifierBuilder() {
     return new SVMlightRankBuilder();
   }
-  
+
   public void writeEncoded(int qid, FeatureVector features, Double outcome)
       throws CleartkProcessingException {
-    
+
     StringBuffer output = new StringBuffer();
 
     // The following two lines should be the only difference between this and
@@ -96,21 +97,22 @@ public class SVMlightRankDataWriter extends
       output.append(String.format(Locale.US, " %d:%.7f", entry.index, entry.value));
     }
 
-    this.trainingDataWriter.println(output); 
-    
+    this.trainingDataWriter.println(output);
+
   }
-  
+
   private int getEncodedQid(String qid) {
-      if (this.instQidToEncodedQidMap.containsKey(qid)) {
-          return this.instQidToEncodedQidMap.get(qid);
-      } else {
-          this.lastEncodedQid++;
-          this.instQidToEncodedQidMap.put(qid, lastEncodedQid);
-          return lastEncodedQid;
-      }
+    if (this.instQidToEncodedQidMap.containsKey(qid)) {
+      return this.instQidToEncodedQidMap.get(qid);
+    } else {
+      this.lastEncodedQid++;
+      this.instQidToEncodedQidMap.put(qid, lastEncodedQid);
+      return lastEncodedQid;
+    }
   }
-  
+
   private Map<String, Integer> instQidToEncodedQidMap;
+
   private int lastEncodedQid;
-  
+
 }

@@ -27,7 +27,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import org.cleartk.classifier.encoder.features.BooleanEncoder;
 import org.cleartk.classifier.encoder.features.NameNumber;
+import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
+import org.cleartk.classifier.encoder.features.NumberEncoder;
+import org.cleartk.classifier.encoder.features.StringEncoder;
+import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
 import org.cleartk.classifier.jar.SequenceDataWriter_ImplBase;
 
 /**
@@ -51,6 +56,12 @@ public class MalletCRFDataWriter extends
 
   public MalletCRFDataWriter(File outputDirectory) throws IOException {
     super(outputDirectory);
+    NameNumberFeaturesEncoder fe = new NameNumberFeaturesEncoder();
+    fe.addEncoder(new NumberEncoder());
+    fe.addEncoder(new BooleanEncoder());
+    fe.addEncoder(new StringEncoder());
+    this.setFeaturesEncoder(fe);
+    this.setOutcomeEncoder(new StringToStringOutcomeEncoder());
   }
 
   @Override

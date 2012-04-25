@@ -33,6 +33,7 @@ import org.apache.uima.jcas.JCas;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.test.DefaultTestBase;
@@ -60,8 +61,8 @@ public class LIBSVMTest extends DefaultTestBase {
     annotator.initialize(UimaContextFactory.createUimaContext(
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         this.outputDirectoryName,
-        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-        DefaultBinaryLIBSVMDataWriterFactory.class.getName()));
+        DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+        BinaryLIBSVMDataWriter.class.getName()));
 
     // run process to produce a bunch of instances
     annotator.process(null);
@@ -101,8 +102,8 @@ public class LIBSVMTest extends DefaultTestBase {
     annotator.initialize(UimaContextFactory.createUimaContext(
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         this.outputDirectoryName,
-        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-        DefaultMultiClassLIBSVMDataWriterFactory.class.getName()));
+        DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+        MultiClassLIBSVMDataWriter.class.getName()));
 
     // run process to produce a bunch of instances
     annotator.process(null);

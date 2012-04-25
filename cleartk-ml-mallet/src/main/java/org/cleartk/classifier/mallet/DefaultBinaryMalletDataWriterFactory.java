@@ -31,6 +31,7 @@ import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 import org.cleartk.classifier.encoder.features.NumberEncoder;
 import org.cleartk.classifier.encoder.features.StringEncoder;
 import org.cleartk.classifier.encoder.outcome.BooleanToStringOutcomeEncoder;
+import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 
 /**
  * <br>
@@ -38,9 +39,9 @@ import org.cleartk.classifier.encoder.outcome.BooleanToStringOutcomeEncoder;
  * All rights reserved.
  * 
  * @author Philip Ogren, Philipp Wetzler
- * 
+ * @deprecated Use {@link DefaultDataWriterFactory} with {@link BinaryMalletDataWriter}.
  */
-
+@Deprecated
 public class DefaultBinaryMalletDataWriterFactory extends MalletDataWriterFactory_ImplBase<Boolean> {
 
   public DataWriter<Boolean> createDataWriter() throws IOException {

@@ -65,12 +65,12 @@ public class CleartkAnnotatorTest extends DefaultTestBase {
 
     annotator.initialize(UimaContextFactory.createUimaContext(
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-        StringDataWriter.class.getName()));
+        StringDataWriterFactory.class.getName()));
     assertTrue(annotator.isTraining());
 
     annotator.initialize(UimaContextFactory.createUimaContext(
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-        StringDataWriter.class.getName(),
+        StringDataWriterFactory.class.getName(),
         CleartkAnnotator.PARAM_CLASSIFIER_FACTORY_CLASS_NAME,
         StringTestClassifierFactory.class.getName(),
         CleartkAnnotator.PARAM_IS_TRAINING,
@@ -79,7 +79,7 @@ public class CleartkAnnotatorTest extends DefaultTestBase {
 
     annotator.initialize(UimaContextFactory.createUimaContext(
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-        StringDataWriter.class.getName(),
+        StringDataWriterFactory.class.getName(),
         CleartkAnnotator.PARAM_CLASSIFIER_FACTORY_CLASS_NAME,
         StringTestClassifierFactory.class.getName(),
         CleartkAnnotator.PARAM_IS_TRAINING,
@@ -274,7 +274,7 @@ public class CleartkAnnotatorTest extends DefaultTestBase {
     }
   }
 
-  public static class StringDataWriter implements DataWriterFactory<String> {
+  public static class StringDataWriterFactory implements DataWriterFactory<String> {
     public DataWriter<String> createDataWriter() throws IOException {
       return null;
     }

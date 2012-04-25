@@ -30,6 +30,10 @@ import java.util.Locale;
 import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.encoder.CleartkEncoderException;
+import org.cleartk.classifier.encoder.features.BooleanEncoder;
+import org.cleartk.classifier.encoder.features.FeatureVectorFeaturesEncoder;
+import org.cleartk.classifier.encoder.features.NumberEncoder;
+import org.cleartk.classifier.encoder.features.StringEncoder;
 import org.cleartk.classifier.jar.DataWriter_ImplBase;
 import org.cleartk.classifier.jar.EncodingJarClassifierBuilder;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
@@ -47,6 +51,11 @@ public abstract class SVMlightDataWriter_ImplBase<CLASSIFIER_BUILDER_TYPE extend
 
   public SVMlightDataWriter_ImplBase(File outputDirectory) throws IOException {
     super(outputDirectory);
+    FeatureVectorFeaturesEncoder myFeaturesEncoder = new FeatureVectorFeaturesEncoder();
+    myFeaturesEncoder.addEncoder(new NumberEncoder());
+    myFeaturesEncoder.addEncoder(new BooleanEncoder());
+    myFeaturesEncoder.addEncoder(new StringEncoder());
+    this.setFeaturesEncoder(myFeaturesEncoder);
   }
 
   protected abstract String outcomeToString(ENCODED_OUTCOME_TYPE outcome);

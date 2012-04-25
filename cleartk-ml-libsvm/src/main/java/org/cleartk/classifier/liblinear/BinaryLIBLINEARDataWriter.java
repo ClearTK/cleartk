@@ -27,6 +27,11 @@ import java.io.File;
 import java.io.IOException;
 
 import org.cleartk.classifier.encoder.CleartkEncoderException;
+import org.cleartk.classifier.encoder.features.BooleanEncoder;
+import org.cleartk.classifier.encoder.features.FeatureVectorFeaturesEncoder;
+import org.cleartk.classifier.encoder.features.NumberEncoder;
+import org.cleartk.classifier.encoder.features.StringEncoder;
+import org.cleartk.classifier.encoder.outcome.BooleanToBooleanOutcomeEncoder;
 import org.cleartk.classifier.liblinear.model.LIBLINEARModel;
 import org.cleartk.classifier.libsvm.LIBSVMDataWriter;
 
@@ -40,6 +45,12 @@ public class BinaryLIBLINEARDataWriter extends
 
   public BinaryLIBLINEARDataWriter(File outputDirectory) throws IOException {
     super(outputDirectory);
+    FeatureVectorFeaturesEncoder fe = new FeatureVectorFeaturesEncoder();
+    fe.addEncoder(new NumberEncoder());
+    fe.addEncoder(new BooleanEncoder());
+    fe.addEncoder(new StringEncoder());
+    this.setFeaturesEncoder(fe);
+    this.setOutcomeEncoder(new BooleanToBooleanOutcomeEncoder());
   }
 
   @Override

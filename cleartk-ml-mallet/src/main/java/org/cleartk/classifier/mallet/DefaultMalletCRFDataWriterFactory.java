@@ -34,6 +34,7 @@ import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 import org.cleartk.classifier.encoder.features.NumberEncoder;
 import org.cleartk.classifier.encoder.features.StringEncoder;
 import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
+import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.jar.SequenceDataWriterFactory_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
@@ -44,22 +45,28 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * All rights reserved.
  * 
  * @author Philip Ogren, Philipp Wetzler
- * 
+ * @deprecated Use {@link DefaultDataWriterFactory} with {@link MalletCRFDataWriter}.
  */
-
+@Deprecated
 public class DefaultMalletCRFDataWriterFactory extends
     SequenceDataWriterFactory_ImplBase<List<NameNumber>, String, String> {
 
-  public static final String PARAM_COMPRESS = ConfigurationParameterFactory
-      .createConfigurationParameterName(DefaultMalletCRFDataWriterFactory.class, "compress");
+  public static final String PARAM_COMPRESS = ConfigurationParameterFactory.createConfigurationParameterName(
+      DefaultMalletCRFDataWriterFactory.class,
+      "compress");
 
-  @ConfigurationParameter(description = "indicates whether the FeaturesEncoder should compress the feature names", defaultValue = "false")
+  @ConfigurationParameter(
+      description = "indicates whether the FeaturesEncoder should compress the feature names",
+      defaultValue = "false")
   private boolean compress;
 
-  public static final String PARAM_SORT = ConfigurationParameterFactory
-      .createConfigurationParameterName(DefaultMalletCRFDataWriterFactory.class, "sort");
+  public static final String PARAM_SORT = ConfigurationParameterFactory.createConfigurationParameterName(
+      DefaultMalletCRFDataWriterFactory.class,
+      "sort");
 
-  @ConfigurationParameter(description = "indicates that the FeaturesEncoder should write the feature names in sorted order", defaultValue = "false")
+  @ConfigurationParameter(
+      description = "indicates that the FeaturesEncoder should write the feature names in sorted order",
+      defaultValue = "false")
   private boolean sort;
 
   public SequenceDataWriter<String> createDataWriter() throws IOException {

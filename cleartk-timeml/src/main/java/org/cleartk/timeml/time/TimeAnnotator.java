@@ -44,7 +44,7 @@ import org.cleartk.classifier.feature.extractor.simple.CharacterCategoryPatternE
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
-import org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory;
+import org.cleartk.classifier.mallet.MalletCRFDataWriter;
 import org.cleartk.timeml.TimeMLComponents;
 import org.cleartk.timeml.type.Time;
 import org.cleartk.timeml.util.CleartkInternalModelFactory;
@@ -71,8 +71,8 @@ public class TimeAnnotator extends CleartkSequenceAnnotator<String> {
     }
 
     @Override
-    public Class<?> getDataWriterFactoryClass() {
-      return DefaultMalletCRFDataWriterFactory.class;
+    public Class<?> getDataWriterClass() {
+      return MalletCRFDataWriter.class;
     }
 
     @Override

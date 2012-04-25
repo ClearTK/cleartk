@@ -37,6 +37,8 @@ import org.cleartk.classifier.encoder.features.TFIDFEncoder;
 import org.cleartk.classifier.encoder.features.normalizer.EuclidianNormalizer;
 import org.cleartk.classifier.encoder.features.normalizer.NameNumberNormalizer;
 import org.cleartk.classifier.encoder.outcome.StringToIntegerOutcomeEncoder;
+import org.cleartk.classifier.feature.transform.extractor.TfidfExtractor;
+import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.libsvm.MultiClassLIBSVMDataWriter;
 import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
@@ -49,7 +51,8 @@ import org.uimafit.factory.initializable.Initializable;
  * All rights reserved.
  * 
  * @author Philip Ogren
- * 
+ * @deprecated Train a {@link TfidfExtractor} and use {@link DefaultDataWriterFactory} with
+ *             {@link MultiClassLIBSVMDataWriter} instead.
  */
 @Deprecated
 public class LibsvmDataWriterFactory implements org.cleartk.classifier.DataWriterFactory<String>,

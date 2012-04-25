@@ -45,7 +45,7 @@ import org.cleartk.classifier.feature.extractor.ContextExtractor.Preceding;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
-import org.cleartk.classifier.mallet.DefaultMalletDataWriterFactory;
+import org.cleartk.classifier.mallet.MalletDataWriter;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNodeUtil;
 import org.cleartk.timeml.TimeMLComponents;
@@ -75,8 +75,8 @@ public class EventAnnotator extends CleartkAnnotator<String> {
     }
 
     @Override
-    public Class<?> getDataWriterFactoryClass() {
-      return DefaultMalletDataWriterFactory.class;
+    public Class<?> getDataWriterClass() {
+      return MalletDataWriter.class;
     }
 
     @Override

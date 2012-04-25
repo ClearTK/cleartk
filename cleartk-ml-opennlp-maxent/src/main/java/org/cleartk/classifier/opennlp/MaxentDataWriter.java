@@ -28,6 +28,8 @@ import java.io.IOException;
 
 import opennlp.model.RealValueFileEventStream;
 
+import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
+
 /**
  * <br>
  * Copyright (c) 2007-2011, Regents of the University of Colorado <br>
@@ -43,6 +45,7 @@ public class MaxentDataWriter extends MaxentDataWriter_ImplBase<MaxentClassifier
 
   public MaxentDataWriter(File outputDirectory) throws IOException {
     super(outputDirectory);
+    this.setOutcomeEncoder(new StringToStringOutcomeEncoder());
   }
 
   @Override

@@ -33,6 +33,7 @@ import org.apache.uima.jcas.JCas;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.classifier.libsvm.ExampleInstanceFactory;
@@ -63,8 +64,8 @@ public class LIBLINEARTest extends DefaultTestBase {
     annotator.initialize(UimaContextFactory.createUimaContext(
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         this.outputDirectoryName,
-        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-        DefaultBinaryLIBLINEARDataWriterFactory.class.getName()));
+        DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+        BinaryLIBLINEARDataWriter.class.getName()));
 
     // run process to produce a bunch of instances
     annotator.process(null);
@@ -98,6 +99,7 @@ public class LIBLINEARTest extends DefaultTestBase {
   private static class BinaryAnnotator extends CleartkAnnotator<Boolean> {
     public BinaryAnnotator() {
     }
+
     @Override
     public void process(JCas aJCas) throws AnalysisEngineProcessException {
       for (Instance<Boolean> instance : ExampleInstanceFactory.generateBooleanInstances(1000)) {

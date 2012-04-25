@@ -34,6 +34,7 @@ import org.cleartk.classifier.encoder.features.normalizer.EuclidianNormalizer;
 import org.cleartk.classifier.encoder.features.normalizer.NameNumberNormalizer;
 import org.cleartk.classifier.encoder.outcome.StringToIntegerOutcomeEncoder;
 import org.cleartk.classifier.jar.DataWriterFactory_ImplBase;
+import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 
@@ -45,26 +46,32 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * @author Daryl Lonnon
  * @version 0.2.1
  * 
- * A Factory class for creating a one versus all tree kernel support vector model light data writer.
+ *          A Factory class for creating a one versus all tree kernel support vector model light
+ *          data writer.
  * 
- * It uses a TreeFeatureVector as it's feature vector which includes a SpareFeatureVector.
- * In addition it uses the following encoders for it's non tree features:
- * NumberEncoder, BooleanEncoder and StringEncoder. The default value for the cutoff is 5 (i.e.
- * features that occur less than this number of times over the entire training set will not
- * be encoded during testing). And it also uses a EuclideanNormalizer.
+ *          It uses a TreeFeatureVector as it's feature vector which includes a SpareFeatureVector.
+ *          In addition it uses the following encoders for it's non tree features: NumberEncoder,
+ *          BooleanEncoder and StringEncoder. The default value for the cutoff is 5 (i.e. features
+ *          that occur less than this number of times over the entire training set will not be
+ *          encoded during testing). And it also uses a EuclideanNormalizer.
+ * @deprecated Use {@link DefaultDataWriterFactory} with {@link OVATKSVMlightDataWriter}.
  */
-
+@Deprecated
 public class DefaultOVATKSVMlightDataWriterFactory extends
     DataWriterFactory_ImplBase<TreeFeatureVector, String, Integer> {
 
-  public static final String PARAM_CUTOFF = ConfigurationParameterFactory
-      .createConfigurationParameterName(DefaultOVATKSVMlightDataWriterFactory.class, "cutoff");
+  public static final String PARAM_CUTOFF = ConfigurationParameterFactory.createConfigurationParameterName(
+      DefaultOVATKSVMlightDataWriterFactory.class,
+      "cutoff");
 
-  @ConfigurationParameter(defaultValue = "5", description = "features that occur less than this number of times over the whole training set will not be encoded during testing")
+  @ConfigurationParameter(
+      defaultValue = "5",
+      description = "features that occur less than this number of times over the whole training set will not be encoded during testing")
   protected int cutoff = 5;
 
   /**
-   * @return A DataWriter templatized over Boolean which writes out the format expected by the Tree Kernel SVM Light. 
+   * @return A DataWriter templatized over Boolean which writes out the format expected by the Tree
+   *         Kernel SVM Light.
    */
   public DataWriter<String> createDataWriter() throws IOException {
     OVATKSVMlightDataWriter dataWriter = new OVATKSVMlightDataWriter(outputDirectory);
