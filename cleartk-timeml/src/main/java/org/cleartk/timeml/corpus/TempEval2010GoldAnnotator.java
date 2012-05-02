@@ -71,34 +71,54 @@ public class TempEval2010GoldAnnotator extends JCasAnnotator_ImplBase {
             "org.cleartk.timeml.TypeSystem"));
   }
 
-  @ConfigurationParameter(defaultValue = CAS.NAME_DEFAULT_SOFA, description = "Views where document text should be placed")
+  @ConfigurationParameter(
+      defaultValue = CAS.NAME_DEFAULT_SOFA,
+      description = "Views where document text should be placed")
   private String[] textViews;
 
-  @ConfigurationParameter(defaultValue = CAS.NAME_DEFAULT_SOFA, description = "Views where DocumentCreationTime annotations should be placed")
+  @ConfigurationParameter(
+      defaultValue = CAS.NAME_DEFAULT_SOFA,
+      description = "Views where DocumentCreationTime annotations should be placed")
   private String[] documentCreationTimeViews;
 
-  @ConfigurationParameter(defaultValue = CAS.NAME_DEFAULT_SOFA, description = "Views where Time annotations should be placed")
+  @ConfigurationParameter(
+      defaultValue = CAS.NAME_DEFAULT_SOFA,
+      description = "Views where Time annotations should be placed")
   private String[] timeExtentViews;
 
-  @ConfigurationParameter(defaultValue = CAS.NAME_DEFAULT_SOFA, description = "Views where Time annotation attributes should be placed")
+  @ConfigurationParameter(
+      defaultValue = CAS.NAME_DEFAULT_SOFA,
+      description = "Views where Time annotation attributes should be placed")
   private String[] timeAttributeViews;
 
-  @ConfigurationParameter(defaultValue = CAS.NAME_DEFAULT_SOFA, description = "Views where Event annotations should be placed")
+  @ConfigurationParameter(
+      defaultValue = CAS.NAME_DEFAULT_SOFA,
+      description = "Views where Event annotations should be placed")
   private String[] eventExtentViews;
 
-  @ConfigurationParameter(defaultValue = CAS.NAME_DEFAULT_SOFA, description = "Views where Event annotation attributes should be placed")
+  @ConfigurationParameter(
+      defaultValue = CAS.NAME_DEFAULT_SOFA,
+      description = "Views where Event annotation attributes should be placed")
   private String[] eventAttributeViews;
 
-  @ConfigurationParameter(defaultValue = CAS.NAME_DEFAULT_SOFA, description = "Views where TemporalLink annotations between events and the document creation time should be placed")
+  @ConfigurationParameter(
+      defaultValue = CAS.NAME_DEFAULT_SOFA,
+      description = "Views where TemporalLink annotations between events and the document creation time should be placed")
   private String[] temporalLinkEventToDocumentCreationTimeViews;
 
-  @ConfigurationParameter(defaultValue = CAS.NAME_DEFAULT_SOFA, description = "Views where TemporalLink annotations between events and times within the same sentence should be placed")
+  @ConfigurationParameter(
+      defaultValue = CAS.NAME_DEFAULT_SOFA,
+      description = "Views where TemporalLink annotations between events and times within the same sentence should be placed")
   private String[] temporalLinkEventToSameSentenceTimeViews;
 
-  @ConfigurationParameter(defaultValue = CAS.NAME_DEFAULT_SOFA, description = "Views where TemporalLink annotations between events and syntactically dominated events should be placed")
+  @ConfigurationParameter(
+      defaultValue = CAS.NAME_DEFAULT_SOFA,
+      description = "Views where TemporalLink annotations between events and syntactically dominated events should be placed")
   private String[] temporalLinkEventToSubordinatedEventViews;
 
-  @ConfigurationParameter(defaultValue = CAS.NAME_DEFAULT_SOFA, description = "Views where TemporalLink annotations between main events in adjacent sentences should be placed")
+  @ConfigurationParameter(
+      defaultValue = CAS.NAME_DEFAULT_SOFA,
+      description = "Views where TemporalLink annotations between main events in adjacent sentences should be placed")
   private String[] temporalLinkMainEventToNextSentenceMainEventViews;
 
   public static final String PARAM_TEXT_VIEWS = ConfigurationParameterFactory.createConfigurationParameterName(

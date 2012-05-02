@@ -24,12 +24,10 @@
 package org.cleartk.timeml.eval;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
-import org.cleartk.eval.provider.AnnotationEvaluator;
-import org.cleartk.eval.provider.BatchBasedEvaluationPipelineProvider;
-import org.cleartk.eval.provider.CleartkPipelineProvider;
-import org.cleartk.eval.provider.EvaluationPipelineProvider;
 import org.cleartk.syntax.opennlp.ParserAnnotator;
 import org.cleartk.syntax.opennlp.PosTaggerAnnotator;
 import org.cleartk.timeml.corpus.TempEval2010GoldAnnotator;
@@ -37,7 +35,6 @@ import org.cleartk.timeml.corpus.TempEval2010Writer;
 import org.cleartk.timeml.tlink.TemporalLinkMainEventToNextSentenceMainEventAnnotator;
 import org.cleartk.timeml.type.TemporalLink;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
-import org.uimafit.factory.AnalysisEngineFactory;
 
 /**
  * TempEval 2010 task E: main event to next sentence main event
@@ -52,13 +49,22 @@ import org.uimafit.factory.AnalysisEngineFactory;
  */
 public class TempEval2010TaskE extends TempEval2010Main {
 
+  public static void main(String[] args) throws Exception {
+    new TempEval2010TaskE().runMain(args);
+  }
+
   @Override
-  protected CleartkPipelineProvider getCleartkPipelineProvider(
-      File modelDirectory,
-      File xmiDirectory) throws Exception {
-    return new TempEval2010PipelineProvider(
-        modelDirectory,
-        xmiDirectory,
+  protected TempEval2010Evaluation getEvaluation(File trainDir, File testDir, File outputDir)
+      throws Exception {
+
+    List<ModelInfo<TemporalLink>> infos = new ArrayList<ModelInfo<TemporalLink>>();
+    infos.add(new TemporalLinkModelInfo(
+        TemporalLinkMainEventToNextSentenceMainEventAnnotator.FACTORY));
+
+    return new TempEval2010Evaluation(
+        trainDir,
+        testDir,
+        outputDir,
         Arrays.asList(
             TempEval2010GoldAnnotator.PARAM_TEXT_VIEWS,
             TempEval2010GoldAnnotator.PARAM_TIME_EXTENT_VIEWS,
@@ -66,42 +72,11 @@ public class TempEval2010TaskE extends TempEval2010Main {
             TempEval2010GoldAnnotator.PARAM_EVENT_EXTENT_VIEWS,
             TempEval2010GoldAnnotator.PARAM_EVENT_ATTRIBUTE_VIEWS),
         TempEval2010GoldAnnotator.PARAM_TEMPORAL_LINK_MAIN_EVENT_TO_NEXT_SENTENCE_MAIN_EVENT_VIEWS,
+        TempEval2010Writer.PARAM_TEMPORAL_LINK_MAIN_EVENT_TO_NEXT_SENTENCE_MAIN_EVENT_VIEW,
         Arrays.asList(
             DefaultSnowballStemmer.getDescription("English"),
             PosTaggerAnnotator.getDescription(),
             ParserAnnotator.getDescription()),
-        Arrays.asList(TemporalLinkMainEventToNextSentenceMainEventAnnotator.FACTORY));
-  }
-
-  @Override
-  protected EvaluationPipelineProvider getEvaluationPipelineProvider(File evalDirectory)
-      throws Exception {
-    return new BatchBasedEvaluationPipelineProvider(Arrays.asList(
-        AnalysisEngineFactory.createPrimitive(
-            TempEval2010Writer.getDescription(),
-            TempEval2010Writer.PARAM_OUTPUT_DIRECTORY,
-            evalDirectory.getPath(),
-            TempEval2010Writer.PARAM_TEXT_VIEW,
-            TempEval2010PipelineProvider.SYSTEM_VIEW_NAME,
-            TempEval2010Writer.PARAM_TEMPORAL_LINK_MAIN_EVENT_TO_NEXT_SENTENCE_MAIN_EVENT_VIEW,
-            TempEval2010PipelineProvider.SYSTEM_VIEW_NAME),
-        AnalysisEngineFactory.createPrimitive(
-            AnnotationEvaluator.class,
-            AnnotationEvaluator.PARAM_ANNOTATION_CLASS_NAME,
-            TemporalLink.class.getName(),
-            AnnotationEvaluator.PARAM_ANNOTATION_ATTRIBUTE_NAME,
-            "relationType",
-            AnnotationEvaluator.PARAM_SPAN_EXTRACTOR_CLASS_NAME,
-            TemporalLinkSpanExtractor.class.getName(),
-            AnnotationEvaluator.PARAM_GOLD_VIEW_NAME,
-            TempEval2010PipelineProvider.GOLD_VIEW_NAME,
-            AnnotationEvaluator.PARAM_SYSTEM_VIEW_NAME,
-            TempEval2010PipelineProvider.SYSTEM_VIEW_NAME,
-            AnnotationEvaluator.PARAM_IGNORE_SYSTEM_SPANS_NOT_IN_GOLD,
-            true)));
-  }
-
-  public static void main(String[] args) throws Exception {
-    new TempEval2010TaskE().runCommand(args);
+        infos);
   }
 }

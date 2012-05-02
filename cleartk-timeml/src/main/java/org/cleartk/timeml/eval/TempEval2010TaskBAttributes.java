@@ -28,11 +28,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.cleartk.eval.provider.AnnotationEvaluator;
-import org.cleartk.eval.provider.BatchBasedEvaluationPipelineProvider;
-import org.cleartk.eval.provider.CleartkPipelineProvider;
-import org.cleartk.eval.provider.EvaluationPipelineProvider;
 import org.cleartk.syntax.opennlp.PosTaggerAnnotator;
 import org.cleartk.timeml.corpus.TempEval2010GoldAnnotator;
 import org.cleartk.timeml.corpus.TempEval2010Writer;
@@ -43,7 +38,6 @@ import org.cleartk.timeml.event.EventPolarityAnnotator;
 import org.cleartk.timeml.event.EventTenseAnnotator;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
-import org.uimafit.factory.AnalysisEngineFactory;
 
 /**
  * TempEval 2010 task B: event attributes
@@ -65,60 +59,33 @@ import org.uimafit.factory.AnalysisEngineFactory;
  */
 public class TempEval2010TaskBAttributes extends TempEval2010Main {
 
+  public static void main(String[] args) throws Exception {
+    new TempEval2010TaskBAttributes().runMain(args);
+  }
+
   @Override
-  protected CleartkPipelineProvider getCleartkPipelineProvider(
-      File modelDirectory,
-      File xmiDirectory) throws Exception {
-    return new TempEval2010PipelineProvider(
-        modelDirectory,
-        xmiDirectory,
+  protected TempEval2010Evaluation getEvaluation(File trainDir, File testDir, File outputDir)
+      throws Exception {
+
+    List<ModelInfo<Event>> infos = new ArrayList<ModelInfo<Event>>();
+    infos.add(new EventModelInfo("aspect", EventAspectAnnotator.FACTORY));
+    infos.add(new EventModelInfo("eventClass", EventClassAnnotator.FACTORY));
+    infos.add(new EventModelInfo("modality", EventModalityAnnotator.FACTORY));
+    infos.add(new EventModelInfo("polarity", EventPolarityAnnotator.FACTORY));
+    infos.add(new EventModelInfo("tense", EventTenseAnnotator.FACTORY));
+
+    return new TempEval2010Evaluation(
+        trainDir,
+        testDir,
+        outputDir,
         Arrays.asList(
             TempEval2010GoldAnnotator.PARAM_TEXT_VIEWS,
             TempEval2010GoldAnnotator.PARAM_EVENT_EXTENT_VIEWS),
         TempEval2010GoldAnnotator.PARAM_EVENT_ATTRIBUTE_VIEWS,
+        TempEval2010Writer.PARAM_EVENT_ATTRIBUTE_VIEW,
         Arrays.asList(
             DefaultSnowballStemmer.getDescription("English"),
             PosTaggerAnnotator.getDescription()),
-        Arrays.asList(
-            EventAspectAnnotator.FACTORY,
-            EventClassAnnotator.FACTORY,
-            EventModalityAnnotator.FACTORY,
-            EventPolarityAnnotator.FACTORY,
-            EventTenseAnnotator.FACTORY));
-  }
-
-  @Override
-  protected EvaluationPipelineProvider getEvaluationPipelineProvider(File evalDirectory)
-      throws Exception {
-    AnalysisEngine tempEvalWriter = AnalysisEngineFactory.createPrimitive(
-        TempEval2010Writer.getDescription(),
-        TempEval2010Writer.PARAM_OUTPUT_DIRECTORY,
-        evalDirectory.getPath(),
-        TempEval2010Writer.PARAM_TEXT_VIEW,
-        TempEval2010PipelineProvider.SYSTEM_VIEW_NAME,
-        TempEval2010Writer.PARAM_EVENT_ATTRIBUTE_VIEW,
-        TempEval2010PipelineProvider.SYSTEM_VIEW_NAME);
-
-    List<AnalysisEngine> evaluationEngines = new ArrayList<AnalysisEngine>();
-    evaluationEngines.add(tempEvalWriter);
-    for (String attr : Arrays.asList("aspect", "eventClass", "modality", "polarity", "tense")) {
-      evaluationEngines.add(AnalysisEngineFactory.createPrimitive(
-          AnnotationEvaluator.class,
-          AnnotationEvaluator.PARAM_ANNOTATION_CLASS_NAME,
-          Event.class.getName(),
-          AnnotationEvaluator.PARAM_ANNOTATION_ATTRIBUTE_NAME,
-          attr,
-          AnnotationEvaluator.PARAM_GOLD_VIEW_NAME,
-          TempEval2010PipelineProvider.GOLD_VIEW_NAME,
-          AnnotationEvaluator.PARAM_SYSTEM_VIEW_NAME,
-          TempEval2010PipelineProvider.SYSTEM_VIEW_NAME,
-          AnnotationEvaluator.PARAM_IGNORE_SYSTEM_SPANS_NOT_IN_GOLD,
-          true));
-    }
-    return new BatchBasedEvaluationPipelineProvider(evaluationEngines);
-  }
-
-  public static void main(String[] args) throws Exception {
-    new TempEval2010TaskBAttributes().runCommand(args);
+        infos);
   }
 }
