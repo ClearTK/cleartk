@@ -99,4 +99,29 @@ public class ConfusionMatrixTest {
     }
   }
 
+  @Test
+  public void nullTest() {
+    ConfusionMatrix<String> confusionMatrix = new ConfusionMatrix<String>();
+    confusionMatrix.add("a", "a", 20);
+    confusionMatrix.add("a", null, 10);
+    confusionMatrix.add("a", null);
+    confusionMatrix.add(null, "a");
+    confusionMatrix.add(null, null, 2);
+
+    assertEquals(20, confusionMatrix.getCount("a", "a"));
+    assertEquals(11, confusionMatrix.getCount("a", null));
+    assertEquals(1, confusionMatrix.getCount(null, "a"));
+    assertEquals(2, confusionMatrix.getCount(null, null));
+
+    // Check totals
+    assertEquals(21, confusionMatrix.getPredictedTotal("a"));
+    assertEquals(13, confusionMatrix.getPredictedTotal(null));
+    assertEquals(31, confusionMatrix.getActualTotal("a"));
+    assertEquals(3, confusionMatrix.getActualTotal(null));
+
+    // make sure toString methods don't provoke NPEs
+    confusionMatrix.toString();
+    confusionMatrix.toCSV();
+    confusionMatrix.toHTML();
+  }
 }

@@ -28,8 +28,10 @@ import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import com.google.common.base.Objects;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
+import com.google.common.collect.Ordering;
 
 /**
  * This data structure provides an easy way to build and output a confusion matrix. A confusion
@@ -62,7 +64,7 @@ public class ConfusionMatrix<T extends Comparable<? super T>> {
    */
   public ConfusionMatrix() {
     this.matrix = new HashMap<T, Multiset<T>>();
-    this.classes = new TreeSet<T>();
+    this.classes = new TreeSet<T>(Ordering.natural().nullsFirst());
   }
 
   /**
@@ -177,6 +179,11 @@ public class ConfusionMatrix<T extends Comparable<? super T>> {
     }
   }
 
+  @Override
+  public String toString() {
+    return Objects.toStringHelper(this).add("matrix", this.matrix).toString();
+  }
+
   /**
    * Outputs the ConfusionMatrix as comma-separated values for easy import into spreadsheets
    * 
@@ -191,7 +198,7 @@ public class ConfusionMatrix<T extends Comparable<? super T>> {
     // Predicted Classes Header Row
     builder.append(",,");
     for (T predicted : classes) {
-      builder.append(String.format("%s,", predicted.toString()));
+      builder.append(String.format("%s,", predicted));
     }
     builder.append("Total\n");
 
@@ -200,7 +207,7 @@ public class ConfusionMatrix<T extends Comparable<? super T>> {
     for (T actual : classes) {
       builder.append(firstColumnLabel);
       firstColumnLabel = ",";
-      builder.append(String.format("%s,", actual.toString()));
+      builder.append(String.format("%s,", actual));
 
       for (T predicted : classes) {
         builder.append(getCount(actual, predicted));
@@ -245,7 +252,7 @@ public class ConfusionMatrix<T extends Comparable<? super T>> {
     // builder.append("<th></th><th></th>");
     for (T predicted : classes) {
       builder.append("<th class=\"predicted-class-header\">");
-      builder.append(predicted.toString());
+      builder.append(predicted);
       builder.append("</th>");
     }
     builder.append("<th class=\"predicted-class-header\">Total</th>");
@@ -258,7 +265,7 @@ public class ConfusionMatrix<T extends Comparable<? super T>> {
     for (T actual : classes) {
       builder.append(firstColumnLabel);
       firstColumnLabel = "<tr>";
-      builder.append(String.format("<th class=\"actual-class-header\" >%s</th>", actual.toString()));
+      builder.append(String.format("<th class=\"actual-class-header\" >%s</th>", actual));
 
       for (T predicted : classes) {
         builder.append("<td class=\"count-element\">");
