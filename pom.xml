@@ -22,6 +22,7 @@
 		<module>cleartk-ml-tksvmlight</module>
 		<module>cleartk-ml-libsvm</module>
 		<module>cleartk-ml-mallet</module>
+		<module>cleartk-ml-crfsuite</module>
 		<module>cleartk-ml-weka</module>
 		<!-- evaluation module -->
 		<module>cleartk-eval</module>
