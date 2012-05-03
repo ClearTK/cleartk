@@ -56,6 +56,13 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.cleartk</groupId>
+			<artifactId>cleartk-util</artifactId>
+			<version>0.8.3-SNAPSHOT</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 	<scm>
 		<connection>scm:svn:http://cleartk.googlecode.com/svn/trunk/cleartk-ml-crfsuite</connection>
