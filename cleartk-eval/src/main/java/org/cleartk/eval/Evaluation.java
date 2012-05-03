@@ -50,7 +50,9 @@ import org.cleartk.eval.provider.EvaluationPipelineProvider;
  * 
  * @author Philip Ogren
  * @author Steven Bethard
+ * @deprecated Use {@link Evaluation_ImplBase}
  */
+@Deprecated
 public class Evaluation {
 
   // private static Logger logger = UIMAFramework.getLogger(Evaluation.class);

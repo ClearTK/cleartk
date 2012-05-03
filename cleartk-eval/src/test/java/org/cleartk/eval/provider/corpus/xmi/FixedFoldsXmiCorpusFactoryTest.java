@@ -29,6 +29,7 @@ import static org.junit.Assert.assertEquals;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
+import org.cleartk.eval.Evaluation_ImplBase;
 import org.cleartk.test.DefaultTestBase;
 import org.junit.Test;
 import org.uimafit.component.NoOpAnnotator;
@@ -42,8 +43,9 @@ import org.uimafit.pipeline.SimplePipeline;
  * All rights reserved.
  * 
  * @author Philip Ogren
+ * @deprecated Tested classes have been replaced by {@link Evaluation_ImplBase}
  */
-
+@Deprecated
 public class FixedFoldsXmiCorpusFactoryTest extends DefaultTestBase {
 
   @Test

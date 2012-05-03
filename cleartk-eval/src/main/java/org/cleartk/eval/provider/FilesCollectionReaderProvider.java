@@ -28,6 +28,7 @@ import java.util.List;
 
 import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.eval.Evaluation_ImplBase;
 import org.cleartk.util.cr.FilesCollectionReader;
 import org.uimafit.factory.CollectionReaderFactory;
 
@@ -38,7 +39,9 @@ import org.uimafit.factory.CollectionReaderFactory;
  * All rights reserved. <br>
  * 
  * @author Steven Bethard
+ * @deprecated Use {@link Evaluation_ImplBase}
  */
+@Deprecated
 public class FilesCollectionReaderProvider extends NameBasedReaderProvider {
 
   public FilesCollectionReaderProvider(

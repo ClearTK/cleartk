@@ -42,6 +42,8 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Level;
 import org.apache.uima.util.Logger;
+import org.cleartk.eval.AnnotationStatistics;
+import org.cleartk.eval.Evaluation_ImplBase;
 import org.cleartk.util.ViewURIUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
@@ -71,7 +73,9 @@ import org.uimafit.util.JCasUtil;
  * All rights reserved.
  * 
  * @author Steven Bethard
+ * @deprecated Use {@link Evaluation_ImplBase} with {@link AnnotationStatistics}
  */
+@Deprecated
 public class AnnotationEvaluator<T extends Comparable<? super T>> extends JCasAnnotator_ImplBase {
 
   public static interface SpanExtractor<T extends Comparable<? super T>> {

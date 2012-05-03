@@ -28,14 +28,16 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.uima.resource.metadata.TypeSystemDescription;
+import org.cleartk.eval.Evaluation_ImplBase;
 
 /**
  * Copyright (c) 2011, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
  * @author Philip Ogren
+ * @deprecated Tested classes have been replaced by {@link Evaluation_ImplBase}
  */
-
+@Deprecated
 public class FixedFoldsXmiTestCorpusFactory extends FixedFoldsXmiCorpusFactory {
 
   public FixedFoldsXmiTestCorpusFactory(TypeSystemDescription typeSystemDescription) {

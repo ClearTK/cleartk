@@ -32,6 +32,7 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
+import org.cleartk.eval.Evaluation_ImplBase;
 import org.junit.Test;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -43,7 +44,9 @@ import org.uimafit.factory.AnalysisEngineFactory;
  * All rights reserved. <br>
  * 
  * @author Steven Bethard
+ * @deprecated Tested classes have been replaced by {@link Evaluation_ImplBase}
  */
+@Deprecated
 public class CleartkPipelineProvider_ImplBaseTest {
 
   public static class Provider extends CleartkPipelineProvider_ImplBase {

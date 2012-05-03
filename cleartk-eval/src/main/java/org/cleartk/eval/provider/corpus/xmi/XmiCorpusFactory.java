@@ -31,6 +31,7 @@ import java.util.List;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
+import org.cleartk.eval.Evaluation_ImplBase;
 import org.cleartk.eval.provider.corpus.CorpusFactory_ImplBase;
 import org.cleartk.util.cr.FilesCollectionReader;
 import org.cleartk.util.cr.XReader;
@@ -49,9 +50,9 @@ import org.uimafit.factory.CollectionReaderFactory;
  * names of the XMI files that belong to the various splits of the data.
  * 
  * @author Philip Ogren
- * 
+ * @deprecated Use {@link Evaluation_ImplBase}
  */
-
+@Deprecated
 public abstract class XmiCorpusFactory extends CorpusFactory_ImplBase {
 
   protected String xmiDirectoryName;

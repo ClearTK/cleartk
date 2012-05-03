@@ -33,6 +33,7 @@ import java.util.List;
 import org.apache.uima.pear.util.FileUtil;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
+import org.cleartk.eval.Evaluation_ImplBase;
 import org.cleartk.eval.provider.CorpusReaderProvider;
 
 /**
@@ -60,9 +61,9 @@ import org.cleartk.eval.provider.CorpusReaderProvider;
  * "train.txt" and {@link #getTestFile()} would return the path to the file "test.txt".
  * 
  * @author Philip Ogren
- * 
+ * @deprecated Use {@link Evaluation_ImplBase}
  */
-
+@Deprecated
 public abstract class FixedFoldsXmiCorpusFactory extends XmiCorpusFactory {
 
   public FixedFoldsXmiCorpusFactory(

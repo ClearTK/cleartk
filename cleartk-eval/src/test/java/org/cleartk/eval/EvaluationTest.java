@@ -34,8 +34,9 @@ import org.junit.Test;
  * All rights reserved. <br>
  * 
  * @author Philip Ogren
+ * @deprecated Tested classes have been replaced by {@link Evaluation_ImplBase}
  */
-
+@Deprecated
 public class EvaluationTest {
 
   @Test

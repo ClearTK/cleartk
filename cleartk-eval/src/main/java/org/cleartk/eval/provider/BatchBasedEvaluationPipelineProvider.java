@@ -29,6 +29,7 @@ import java.util.List;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.eval.Evaluation_ImplBase;
 
 /**
  * A simple {@link EvaluationPipelineProvider} that equates the folds in a cross-validation with
@@ -46,7 +47,9 @@ import org.apache.uima.resource.ResourceInitializationException;
  * All rights reserved.
  * 
  * @author Steven Bethard
+ * @deprecated Use {@link Evaluation_ImplBase}
  */
+@Deprecated
 public class BatchBasedEvaluationPipelineProvider implements EvaluationPipelineProvider {
 
   private List<AnalysisEngine> engines;

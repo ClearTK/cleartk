@@ -27,6 +27,7 @@ import java.util.List;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.cleartk.eval.Evaluation_ImplBase;
 
 /**
  * <br>
@@ -35,7 +36,9 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
  * 
  * @author Philip Ogren
  * @author Steven Bethard
+ * @deprecated Use {@link Evaluation_ImplBase}
  */
+@Deprecated
 public interface CleartkPipelineProvider {
 
   /**

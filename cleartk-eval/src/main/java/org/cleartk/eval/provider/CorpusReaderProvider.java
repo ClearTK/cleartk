@@ -27,6 +27,7 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.collection.CollectionReader;
+import org.cleartk.eval.Evaluation_ImplBase;
 import org.uimafit.component.NoOpAnnotator;
 
 /**
@@ -47,7 +48,9 @@ import org.uimafit.component.NoOpAnnotator;
  * 
  * @author Philip Ogren
  * @author Steven Bethard
+ * @deprecated Use {@link Evaluation_ImplBase}
  */
+@Deprecated
 public interface CorpusReaderProvider {
 
   /**

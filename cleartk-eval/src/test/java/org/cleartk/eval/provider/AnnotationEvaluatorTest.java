@@ -38,7 +38,9 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.cleartk.eval.AnnotationStatistics;
 import org.cleartk.eval.EvaluationTestBase;
+import org.cleartk.eval.Evaluation_ImplBase;
 import org.cleartk.type.test.Token;
 import org.cleartk.util.ViewURIUtil;
 import org.junit.Assert;
@@ -52,7 +54,10 @@ import org.uimafit.factory.TypeSystemDescriptionFactory;
  * All rights reserved.
  * 
  * @author Steven Bethard
+ * @deprecated Tested classes have been replaced by {@link Evaluation_ImplBase} and
+ *             {@link AnnotationStatistics}
  */
+@Deprecated
 public class AnnotationEvaluatorTest extends EvaluationTestBase {
 
   @Test

@@ -29,6 +29,7 @@ import java.util.List;
 import junit.framework.Assert;
 
 import org.apache.uima.resource.ResourceConfigurationException;
+import org.cleartk.eval.Evaluation_ImplBase;
 import org.junit.Test;
 
 /**
@@ -38,7 +39,9 @@ import org.junit.Test;
  * All rights reserved. <br>
  * 
  * @author Steven Bethard
+ * @deprecated Tested classes have been replaced by {@link Evaluation_ImplBase}
  */
+@Deprecated
 public class NameBasedReaderProviderTest {
 
   public static class Provider extends NameBasedReaderProvider {

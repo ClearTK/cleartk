@@ -36,6 +36,7 @@ import org.apache.uima.cas.CAS;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.util.CasCreationUtils;
 import org.cleartk.eval.EvaluationTestBase;
+import org.cleartk.eval.Evaluation_ImplBase;
 import org.cleartk.util.ViewURIUtil;
 import org.junit.Assert;
 import org.junit.Test;
@@ -47,7 +48,9 @@ import org.junit.Test;
  * All rights reserved. <br>
  * 
  * @author Steven Bethard
+ * @deprecated Tested classes have been replaced by {@link Evaluation_ImplBase}
  */
+@Deprecated
 public class FilesCollectionReaderProviderTest extends EvaluationTestBase {
 
   @Test

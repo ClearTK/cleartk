@@ -20,6 +20,7 @@ package org.cleartk.eval.provider.corpus;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
+import org.cleartk.eval.Evaluation_ImplBase;
 import org.cleartk.eval.provider.CorpusReaderProvider;
 import org.uimafit.component.NoOpAnnotator;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -27,9 +28,9 @@ import org.uimafit.factory.AnalysisEngineFactory;
 /**
  * 
  * @author Philip Ogren
- * 
+ * @deprecated Use {@link Evaluation_ImplBase}
  */
-
+@Deprecated
 public abstract class CorpusFactory_ImplBase implements CorpusReaderProvider {
 
   protected TypeSystemDescription typeSystemDescription;

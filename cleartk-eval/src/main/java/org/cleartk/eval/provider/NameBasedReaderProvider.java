@@ -30,6 +30,7 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.resource.ResourceConfigurationException;
+import org.cleartk.eval.Evaluation_ImplBase;
 import org.uimafit.component.NoOpAnnotator;
 import org.uimafit.factory.AnalysisEngineFactory;
 
@@ -40,7 +41,9 @@ import org.uimafit.factory.AnalysisEngineFactory;
  * All rights reserved. <br>
  * 
  * @author Steven Bethard
+ * @deprecated Use {@link Evaluation_ImplBase}
  */
+@Deprecated
 public abstract class NameBasedReaderProvider implements CorpusReaderProvider {
 
   protected List<String> trainNames;

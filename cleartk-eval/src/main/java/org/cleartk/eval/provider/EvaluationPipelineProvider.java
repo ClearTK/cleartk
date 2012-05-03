@@ -29,6 +29,7 @@ import java.util.List;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.eval.Evaluation_ImplBase;
 
 /**
  * 
@@ -38,7 +39,9 @@ import org.apache.uima.resource.ResourceInitializationException;
  * 
  * @author Philip Ogren
  * @author Steven Bethard
+ * @deprecated Use {@link Evaluation_ImplBase}
  */
+@Deprecated
 public interface EvaluationPipelineProvider {
 
   /**

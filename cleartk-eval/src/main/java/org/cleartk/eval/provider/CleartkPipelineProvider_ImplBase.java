@@ -27,6 +27,7 @@ import java.util.List;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.cleartk.eval.Evaluation_ImplBase;
 
 /**
  * 
@@ -35,7 +36,9 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
  * All rights reserved. <br>
  * 
  * @author Steven Bethard
+ * @deprecated Use {@link Evaluation_ImplBase}
  */
+@Deprecated
 public abstract class CleartkPipelineProvider_ImplBase implements CleartkPipelineProvider {
 
   @Override
