@@ -38,9 +38,9 @@
 				<scope>compile</scope>
 			</dependency>
 			<dependency>
-				<groupId>org.cleartk</groupId>
-				<artifactId>cleartk-util</artifactId>
-				<version>0.8.2</version>
+			<groupId>org.cleartk</groupId>
+			<artifactId>cleartk-util</artifactId>
+			<version>0.8.3-SNAPSHOT</version>
 				<type>jar</type>
 				<scope>compile</scope>
 			</dependency>
