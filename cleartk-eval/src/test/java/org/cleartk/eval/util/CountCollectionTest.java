@@ -33,11 +33,16 @@ import java.util.Set;
 
 import org.junit.Test;
 
+import com.google.common.collect.Multiset;
+
 /**
  * <br>
  * Copyright (c) 2011, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
+ * @deprecated The tested class was replaced by {@link Multiset}
  */
+@Deprecated
 public class CountCollectionTest {
 
   @Test

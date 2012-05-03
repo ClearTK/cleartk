@@ -33,14 +33,19 @@ package org.cleartk.eval.util;
  *                    - added documentation
  *    
  */
+
+import java.io.Serializable;
+
+import com.google.common.collect.Multiset;
+
 /**
  * <br>
  * Copyright (c) 2011, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
+ * @deprecated Existed only for {@link CountCollection}; use {@link Multiset} instead.
  */
-
-import java.io.Serializable;
-
+@Deprecated
 public class CountObject<T> implements Serializable {
 
   private static final long serialVersionUID = 2332993898844950325L;

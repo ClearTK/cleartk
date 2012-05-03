@@ -34,12 +34,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.common.collect.Multiset;
+
 /**
  * <br>
  * Copyright (c) 2011, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
+ * @deprecated Use {@link Multiset}
  */
-
+@Deprecated
 public class CountCollection<T> implements Serializable {
 
   private static final long serialVersionUID = 416048470395125772L;

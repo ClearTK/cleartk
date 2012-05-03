@@ -29,6 +29,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Multiset;
+
 /**
  * This data structure is convenient if you want to stratify evaluation across different dimensions.
  * For example, if you wanted to see how good a part-of-speech tagger works for different tags you
@@ -47,11 +50,11 @@ import java.util.Set;
 
 public class FCollections<T extends Comparable<T>> {
 
-  protected CountCollection<T> truePositives;
+  protected Multiset<T> truePositives;
 
-  protected CountCollection<T> falsePositives;
+  protected Multiset<T> falsePositives;
 
-  protected CountCollection<T> falseNegatives;
+  protected Multiset<T> falseNegatives;
 
   protected int totalTruePositives = 0;
 
@@ -62,9 +65,9 @@ public class FCollections<T extends Comparable<T>> {
   protected Set<T> objects;
 
   public FCollections() {
-    truePositives = new CountCollection<T>();
-    falsePositives = new CountCollection<T>();
-    falseNegatives = new CountCollection<T>();
+    truePositives = HashMultiset.create();
+    falsePositives = HashMultiset.create();
+    falseNegatives = HashMultiset.create();
     objects = new HashSet<T>();
   }
 
@@ -81,7 +84,7 @@ public class FCollections<T extends Comparable<T>> {
   }
 
   public int getTruePositivesCount(T object) {
-    return truePositives.getCount(object);
+    return truePositives.count(object);
   }
 
   public int getTruePositivesCount() {
@@ -101,7 +104,7 @@ public class FCollections<T extends Comparable<T>> {
   }
 
   public int getFalsePositivesCount(T object) {
-    return falsePositives.getCount(object);
+    return falsePositives.count(object);
   }
 
   public int getFalsePositivesCount() {
@@ -121,7 +124,7 @@ public class FCollections<T extends Comparable<T>> {
   }
 
   public int getFalseNegativesCount(T object) {
-    return falseNegatives.getCount(object);
+    return falseNegatives.count(object);
   }
 
   public int getFalseNegativesCount() {
