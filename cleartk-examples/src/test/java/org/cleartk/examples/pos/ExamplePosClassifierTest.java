@@ -126,7 +126,7 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
     String firstLine = FileUtil.loadListOfStrings(new File(outDirectoryName
         + "/2008_Sichuan_earthquake.txt.pos"))[0].trim();
     assertEquals(
-        "2008/NN Sichuan/CD earthquake/NNS From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/IN",
+        "2008/NN Sichuan/CD earthquake/NNS From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/NN",
         firstLine);
 
   }
@@ -154,7 +154,7 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
     String firstLine = FileUtil.loadListOfStrings(new File(outDirectoryName
         + "/2008_Sichuan_earthquake.txt.pos"))[0].trim();
     assertEquals(
-        "2008/DT Sichuan/JJ earthquake/NNS From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/IN",
+        "2008/DT Sichuan/JJ earthquake/NNS From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/NN",
         firstLine);
   }
 
@@ -178,7 +178,7 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
     String firstLine = FileUtil.loadListOfStrings(new File(outDirectoryName
         + "/2008_Sichuan_earthquake.txt.pos"))[0];
     assertEquals(
-        "2008/CD Sichuan/JJ earthquake/NNS From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/NN",
+        "2008/CD Sichuan/JJ earthquake/NNS From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/IN",
         firstLine);
   }
 
@@ -201,7 +201,7 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
     String firstLine = FileUtil.loadListOfStrings(new File(outDirectoryName
         + "/2008_Sichuan_earthquake.txt.pos"))[0];
     assertEquals(
-        "2008/CD Sichuan/JJ earthquake/NNS From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/NN",
+        "2008/CD Sichuan/JJ earthquake/NNS From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/IN",
         firstLine);
   }
 
@@ -299,7 +299,7 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
     String firstLine = FileUtil.loadListOfStrings(new File(outDirectoryName
         + "/2008_Sichuan_earthquake.txt.pos"))[0];
     assertEquals(
-        "2008/CD Sichuan/JJ earthquake/NN From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/NN",
+        "2008/CD Sichuan/JJ earthquake/NN From/NN Wikipedia/NN ,/, the/DT free/NN encyclopedia/NN",
         firstLine);
   }
 

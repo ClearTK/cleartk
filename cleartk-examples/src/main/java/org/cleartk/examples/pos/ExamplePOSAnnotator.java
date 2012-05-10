@@ -24,7 +24,6 @@
 package org.cleartk.examples.pos;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -41,7 +40,6 @@ import org.cleartk.classifier.feature.extractor.ContextExtractor.Following;
 import org.cleartk.classifier.feature.extractor.ContextExtractor.Preceding;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
-import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.feature.proliferate.CapitalTypeProliferator;
 import org.cleartk.classifier.feature.proliferate.CharacterNGramProliferator;
 import org.cleartk.classifier.feature.proliferate.LowerCaseProliferator;
@@ -63,6 +61,8 @@ import org.uimafit.util.JCasUtil;
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
+ * Changes to this class may require corresponding updates to the tutorial that describes this code
+ * in detail: http://code.google.com/p/cleartk/wiki/Tutorial
  * 
  * @author Steven Bethard
  */
@@ -72,7 +72,7 @@ public class ExamplePOSAnnotator extends CleartkSequenceAnnotator<String> {
 
   public static final String DEFAULT_MODEL = "target/examples/pos/model.jar";
 
-  private List<SimpleFeatureExtractor> tokenFeatureExtractors;
+  private SimpleFeatureExtractor tokenFeatureExtractor;
 
   private List<ContextExtractor<Token>> contextFeatureExtractors;
 
@@ -81,27 +81,24 @@ public class ExamplePOSAnnotator extends CleartkSequenceAnnotator<String> {
     // alias for NGram feature parameters
     int fromRight = CharacterNGramProliferator.RIGHT_TO_LEFT;
 
-    // a list of feature extractors that require only the token:
-    // the stem of the word, the text of the word itself, plus
-    // features created from the word text like character ngrams
-    this.tokenFeatureExtractors = Arrays.asList(
-        new TypePathExtractor(Token.class, "stem"),
-        new ProliferatingExtractor(
-            new CoveredTextExtractor(),
-            new LowerCaseProliferator(),
-            new CapitalTypeProliferator(),
-            new NumericTypeProliferator(),
-            new CharacterNGramProliferator(fromRight, 0, 2),
-            new CharacterNGramProliferator(fromRight, 0, 3)));
+    // a feature extractor that creates features corresponding to the word, the word lower cased
+    // the capitalization of the word, the numeric characterization of the word, and character ngram
+    // suffixes of length 2 and 3.
+    this.tokenFeatureExtractor = new ProliferatingExtractor(
+        new CoveredTextExtractor(),
+        new LowerCaseProliferator(),
+        new CapitalTypeProliferator(),
+        new NumericTypeProliferator(),
+        new CharacterNGramProliferator(fromRight, 0, 2),
+        new CharacterNGramProliferator(fromRight, 0, 3));
 
     // a list of feature extractors that require the token and the sentence
     this.contextFeatureExtractors = new ArrayList<ContextExtractor<Token>>();
     this.contextFeatureExtractors.add(new ContextExtractor<Token>(
         Token.class,
-        new TypePathExtractor(Token.class, "stem"),
+        new CoveredTextExtractor(),
         new Preceding(2),
         new Following(2)));
-
   }
 
   public void process(JCas jCas) throws AnalysisEngineProcessException {
@@ -115,11 +112,8 @@ public class ExamplePOSAnnotator extends CleartkSequenceAnnotator<String> {
       for (Token token : tokens) {
         Instance<String> instance = new Instance<String>();
 
-        // extract all features that require only the token
-        // annotation
-        for (SimpleFeatureExtractor extractor : this.tokenFeatureExtractors) {
-          instance.addAll(extractor.extract(jCas, token));
-        }
+        // extract all features that require only the token annotation
+        instance.addAll(tokenFeatureExtractor.extract(jCas, token));
 
         // extract all features that require the token and sentence annotations
         for (ContextExtractor<Token> extractor : this.contextFeatureExtractors) {

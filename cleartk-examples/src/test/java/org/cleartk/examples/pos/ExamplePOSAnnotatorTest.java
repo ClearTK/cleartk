@@ -65,13 +65,12 @@ public class ExamplePOSAnnotatorTest extends ExamplesTestBase {
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         ".");
 
-    // create some tokens, stems and part of speech tags
+    // create some tokens with part of speech tags
     tokenBuilder.buildTokens(
         jCas,
         "The Absurdis retreated in 2003.",
-        "The Absurdis retreated in 2003 .",
-        "DT NNP VBD IN CD .",
-        "The Absurdi retreat in 2003 .");
+        "The Absurdis retreated in 2003 .", // the tokenized version of the text
+        "DT NNP VBD IN CD .");
 
     List<Instance<String>> instances = PublicFieldSequenceDataWriter.StringFactory.collectInstances(
         engine,
@@ -81,44 +80,41 @@ public class ExamplePOSAnnotatorTest extends ExamplesTestBase {
 
     // check "The"
     featureValues = Arrays.asList("The", // word
-        "The", // stem (thrown away if null)
         "the", // lower case
         "INITIAL_UPPERCASE", // capital type
         // numeric type
         "he", // last 2 chars
         "The", // last 3 chars
-        "OOB2", // left 2 stems
+        "OOB2", // left 2 words
         "OOB1",
-        "Absurdi", // right 2 stems
-        "retreat");
+        "Absurdis", // right 2 words
+        "retreated");
     Assert.assertEquals(featureValues, this.getFeatureValues(instances.get(0)));
     Assert.assertEquals("DT", instances.get(0).getOutcome());
 
     // check "Absurdis"
-    featureValues = Arrays.asList("Absurdi", // word
-        "Absurdis", // stem (thrown away if null)
+    featureValues = Arrays.asList("Absurdis", // word
         "absurdis", // lower case
         "INITIAL_UPPERCASE", // capital type
         // numeric type
         "is", // last 2 chars
         "dis", // last 3 chars
-        "OOB1", // left 2 stems
+        "OOB1", // left 2 words
         "The",
-        "retreat", // right 2 stems
+        "retreated", // right 2 words
         "in");
     Assert.assertEquals(featureValues, this.getFeatureValues(instances.get(1)));
     Assert.assertEquals("NNP", instances.get(1).getOutcome());
 
     // check "retreated"
-    featureValues = Arrays.asList("retreat", // word
-        "retreated", // stem (thrown away if null)
+    featureValues = Arrays.asList("retreated", // word
         "retreated", // lower case
         "ALL_LOWERCASE", // capital type
         // numeric type
         "ed", // last 2 chars
         "ted", // last 3 chars
-        "The", // left 2 stems
-        "Absurdi", // right 2 stems
+        "The", // left 2 words
+        "Absurdis", // right 2 words
         "in",
         "2003");
     Assert.assertEquals(featureValues, this.getFeatureValues(instances.get(2)));
@@ -126,45 +122,42 @@ public class ExamplePOSAnnotatorTest extends ExamplesTestBase {
 
     // check "in"
     featureValues = Arrays.asList("in", // word
-        "in", // stem (thrown away if null)
         "in", // lower case
         "ALL_LOWERCASE", // capital type
         // numeric type
         "in", // last 2 chars
         // last 3 chars
-        "Absurdi", // left 2 stems
-        "retreat",
-        "2003", // right 2 stems
+        "Absurdis", // left 2 words
+        "retreated",
+        "2003", // right 2 words
         ".");
     Assert.assertEquals(featureValues, this.getFeatureValues(instances.get(3)));
     Assert.assertEquals("IN", instances.get(3).getOutcome());
 
     // check "2003"
     featureValues = Arrays.asList("2003", // word
-        "2003", // stem (thrown away if null)
         "2003", // lower case
         // capital type
         "YEAR_DIGITS", // numeric type
         "03", // last 2 chars
         "003", // last 3 chars
-        "retreat", // left 2 stems
+        "retreated", // left 2 words
         "in",
-        ".", // right 2 stems
+        ".", // right 2 words
         "OOB1");
     Assert.assertEquals(featureValues, this.getFeatureValues(instances.get(4)));
     Assert.assertEquals("CD", instances.get(4).getOutcome());
 
     // check "."
     featureValues = Arrays.asList(".", // word
-        ".", // stem (thrown away if null)
         ".", // lower case
         // capital type
         // numeric type
         // last 2 chars
         // last 3 chars
-        "in", // left 2 stems
+        "in", // left 2 words
         "2003",
-        "OOB1", // right 2 stems
+        "OOB1", // right 2 words
         "OOB2");
     Assert.assertEquals(featureValues, this.getFeatureValues(instances.get(5)));
     Assert.assertEquals(".", instances.get(5).getOutcome());

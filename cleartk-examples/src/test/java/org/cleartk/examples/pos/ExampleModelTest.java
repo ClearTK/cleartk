@@ -53,8 +53,7 @@ public class ExampleModelTest extends ExamplesTestBase {
     BuildTestExamplePosModel.main();
     hider.restoreOutput();
 
-    AnalysisEngineDescription posTaggerDescription = ExamplePOSAnnotator
-        .getClassifierDescription(ExamplePOSAnnotator.DEFAULT_MODEL);
+    AnalysisEngineDescription posTaggerDescription = ExamplePOSAnnotator.getClassifierDescription(ExamplePOSAnnotator.DEFAULT_MODEL);
     AnalysisEngine posTagger = AnalysisEngineFactory.createPrimitive(posTaggerDescription);
 
     tokenBuilder.buildTokens(
@@ -70,7 +69,7 @@ public class ExampleModelTest extends ExamplesTestBase {
     posTagger.process(jCas);
     token = JCasUtil.selectByIndex(jCas, Token.class, 0);
     assertNotNull(token.getPos());
-    assertEquals("RB", token.getPos());
+    assertEquals("IN", token.getPos());
     token = JCasUtil.selectByIndex(jCas, Token.class, 5);
     assertNotNull(token.getPos());
     assertEquals("NN", token.getPos());
