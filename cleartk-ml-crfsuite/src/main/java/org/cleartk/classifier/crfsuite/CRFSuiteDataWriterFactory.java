@@ -54,22 +54,21 @@ import org.cleartk.classifier.jar.SequenceDataWriterFactory_ImplBase;
  */
 
 public class CRFSuiteDataWriterFactory extends
-		SequenceDataWriterFactory_ImplBase<List<NameNumber>, String, String> {
+    SequenceDataWriterFactory_ImplBase<List<NameNumber>, String, String> {
 
-	public SequenceDataWriter<String> createDataWriter() throws IOException {
-		CRFSuiteDataWriter mdw = new CRFSuiteDataWriter(outputDirectory);
-		if (!this.setEncodersFromFileSystem(mdw)) {
-			NameNumberFeaturesEncoder fe = new NameNumberFeaturesEncoder(false,
-					false);
-			fe.addEncoder(new NumberEncoder());
-			fe.addEncoder(new BooleanEncoder());
-			fe.addEncoder(new StringEncoder());
-			mdw.setFeaturesEncoder(fe);
+  public SequenceDataWriter<String> createDataWriter() throws IOException {
+    CRFSuiteDataWriter mdw = new CRFSuiteDataWriter(outputDirectory);
+    if (!this.setEncodersFromFileSystem(mdw)) {
+      NameNumberFeaturesEncoder fe = new NameNumberFeaturesEncoder(false, false);
+      fe.addEncoder(new NumberEncoder());
+      fe.addEncoder(new BooleanEncoder());
+      fe.addEncoder(new StringEncoder());
+      mdw.setFeaturesEncoder(fe);
 
-			mdw.setOutcomeEncoder(new StringToStringOutcomeEncoder());
-		}
+      mdw.setOutcomeEncoder(new StringToStringOutcomeEncoder());
+    }
 
-		return mdw;
-	}
+    return mdw;
+  }
 
 }

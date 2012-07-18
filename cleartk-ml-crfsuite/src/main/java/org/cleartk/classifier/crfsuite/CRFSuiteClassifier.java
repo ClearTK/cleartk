@@ -53,31 +53,31 @@ import org.cleartk.classifier.jar.SequenceClassifier_ImplBase;
  */
 
 public class CRFSuiteClassifier extends
-		SequenceClassifier_ImplBase<List<NameNumber>, String, String> {
+    SequenceClassifier_ImplBase<List<NameNumber>, String, String> {
 
-	private File modelFile;
-	CRFSuiteWrapper wrapper;
+  private File modelFile;
 
-	public CRFSuiteClassifier(
-			FeaturesEncoder<List<NameNumber>> featuresEncoder,
-			OutcomeEncoder<String, String> outcomeEncoder, File modelFile) {
-		super(featuresEncoder, outcomeEncoder);
-		this.modelFile = modelFile;
-		this.wrapper = new CRFSuiteWrapper();
-	}
+  CRFSuiteWrapper wrapper;
 
-	public List<String> classify(List<List<Feature>> features)
-			throws CleartkProcessingException {
-		List<String> posTags = null;
+  public CRFSuiteClassifier(
+      FeaturesEncoder<List<NameNumber>> featuresEncoder,
+      OutcomeEncoder<String, String> outcomeEncoder,
+      File modelFile) {
+    super(featuresEncoder, outcomeEncoder);
+    this.modelFile = modelFile;
+    this.wrapper = new CRFSuiteWrapper();
+  }
 
-		try {
+  public List<String> classify(List<List<Feature>> features) throws CleartkProcessingException {
+    List<String> posTags = null;
 
-			posTags = wrapper.classifyFeatures(features, outcomeEncoder,
-					featuresEncoder, modelFile);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return posTags;
-	}
+    try {
+
+      posTags = wrapper.classifyFeatures(features, outcomeEncoder, featuresEncoder, modelFile);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return posTags;
+  }
 
 }

@@ -58,73 +58,66 @@ import org.cleartk.classifier.jar.SequenceClassifierBuilder_ImplBase;
  * @author Martin Riedl
  */
 
-public class CRFSuiteClassifierBuilder
-		extends
+public class CRFSuiteClassifierBuilder extends
 
-		SequenceClassifierBuilder_ImplBase<CRFSuiteClassifier, List<NameNumber>, String, String> {
-	public final String MODEL_NAME = "crfsuite.model";
-	public final String TRAINING_NAME = "crfsuite.training";
+SequenceClassifierBuilder_ImplBase<CRFSuiteClassifier, List<NameNumber>, String, String> {
+  public final String MODEL_NAME = "crfsuite.model";
 
-	static Logger logger = UIMAFramework
-			.getLogger(CRFSuiteClassifierBuilder.class);
+  public final String TRAINING_NAME = "crfsuite.training";
 
-	@Override
-	public File getTrainingDataFile(File dir) {
-		return new File(dir, TRAINING_NAME);
-	}
+  static Logger logger = UIMAFramework.getLogger(CRFSuiteClassifierBuilder.class);
 
-	@Override
-	protected void packageClassifier(File dir, JarOutputStream modelStream)
-			throws IOException {
-		super.packageClassifier(dir, modelStream);
-		JarStreams.putNextJarEntry(modelStream, MODEL_NAME, new File(dir,
-				MODEL_NAME));
-	}
+  @Override
+  public File getTrainingDataFile(File dir) {
+    return new File(dir, TRAINING_NAME);
+  }
 
-	@Override
-	public void trainClassifier(File dir, String... args) throws Exception {
-		logger.log(Level.INFO, "Start learning CRFsuite classifier");
-		CRFSuiteWrapper wrapper = new CRFSuiteWrapper();
-		String model = new File(dir, MODEL_NAME).getPath();
-		String trainingDataFile = getTrainingDataFile(dir).getPath();
-		wrapper.trainClassifier(model, trainingDataFile, args);
-		logger.log(Level.INFO, "Finished learning CRFsuite classifier");
-	}
+  @Override
+  protected void packageClassifier(File dir, JarOutputStream modelStream) throws IOException {
+    super.packageClassifier(dir, modelStream);
+    JarStreams.putNextJarEntry(modelStream, MODEL_NAME, new File(dir, MODEL_NAME));
+  }
 
-	private File modelFile = null;
+  @Override
+  public void trainClassifier(File dir, String... args) throws Exception {
+    logger.log(Level.INFO, "Start learning CRFsuite classifier");
+    CRFSuiteWrapper wrapper = new CRFSuiteWrapper();
+    String model = new File(dir, MODEL_NAME).getPath();
+    String trainingDataFile = getTrainingDataFile(dir).getPath();
+    wrapper.trainClassifier(model, trainingDataFile, args);
+    logger.log(Level.INFO, "Finished learning CRFsuite classifier");
+  }
 
-	/**
-	 * As the filename of the model is not known the only solution is to write
-	 * the model back to a temporary file
-	 */
-	@Override
-	protected void unpackageClassifier(JarInputStream modelStream)
-			throws IOException {
-		super.unpackageClassifier(modelStream);
-		JarStreams.getNextJarEntry(modelStream, MODEL_NAME);
-		this.modelFile = File.createTempFile("model", ".crfsuite");
-		this.modelFile.deleteOnExit();
-		logger.log(Level.FINE,
-				"Start writing model to " + modelFile.getAbsolutePath());
+  private File modelFile = null;
 
-		InputStream inputStream = new DataInputStream(modelStream);
-		OutputStream out = new FileOutputStream(modelFile);
-		byte buf[] = new byte[1024];
-		int len;
-		while ((len = inputStream.read(buf)) > 0) {
-			out.write(buf, 0, len);
-		}
-		out.close();
-		inputStream.close();
-		logger.log(Level.FINE,
-				"Model is written to " + modelFile.getAbsolutePath());
+  /**
+   * As the filename of the model is not known the only solution is to write the model back to a
+   * temporary file
+   */
+  @Override
+  protected void unpackageClassifier(JarInputStream modelStream) throws IOException {
+    super.unpackageClassifier(modelStream);
+    JarStreams.getNextJarEntry(modelStream, MODEL_NAME);
+    this.modelFile = File.createTempFile("model", ".crfsuite");
+    this.modelFile.deleteOnExit();
+    logger.log(Level.FINE, "Start writing model to " + modelFile.getAbsolutePath());
 
-	}
+    InputStream inputStream = new DataInputStream(modelStream);
+    OutputStream out = new FileOutputStream(modelFile);
+    byte buf[] = new byte[1024];
+    int len;
+    while ((len = inputStream.read(buf)) > 0) {
+      out.write(buf, 0, len);
+    }
+    out.close();
+    inputStream.close();
+    logger.log(Level.FINE, "Model is written to " + modelFile.getAbsolutePath());
 
-	@Override
-	protected CRFSuiteClassifier newClassifier() {
-		return new CRFSuiteClassifier(this.featuresEncoder,
-				this.outcomeEncoder, this.modelFile);
-	}
+  }
+
+  @Override
+  protected CRFSuiteClassifier newClassifier() {
+    return new CRFSuiteClassifier(this.featuresEncoder, this.outcomeEncoder, this.modelFile);
+  }
 
 }

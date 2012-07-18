@@ -48,35 +48,33 @@ import org.cleartk.classifier.jar.SequenceDataWriter_ImplBase;
  * @author Martin Riedl
  */
 
-public class CRFSuiteDataWriter
-		extends
-		SequenceDataWriter_ImplBase<CRFSuiteClassifierBuilder, List<NameNumber>, String, String> {
+public class CRFSuiteDataWriter extends
+    SequenceDataWriter_ImplBase<CRFSuiteClassifierBuilder, List<NameNumber>, String, String> {
 
-	private String featureSeparator = "\t";
+  private String featureSeparator = "\t";
 
-	public CRFSuiteDataWriter(File outputDirectory)
-			throws FileNotFoundException {
-		super(outputDirectory);
-	}
+  public CRFSuiteDataWriter(File outputDirectory) throws FileNotFoundException {
+    super(outputDirectory);
+  }
 
-	@Override
-	public void writeEncoded(List<NameNumber> features, String outcome) {
-		this.trainingDataWriter.print(outcome);
-		for (NameNumber nameNumber : features) {
-			this.trainingDataWriter.print(featureSeparator);
-			this.trainingDataWriter.print(nameNumber.name);
-		}
-		this.trainingDataWriter.println();
-	}
+  @Override
+  public void writeEncoded(List<NameNumber> features, String outcome) {
+    this.trainingDataWriter.print(outcome);
+    for (NameNumber nameNumber : features) {
+      this.trainingDataWriter.print(featureSeparator);
+      this.trainingDataWriter.print(nameNumber.name);
+    }
+    this.trainingDataWriter.println();
+  }
 
-	@Override
-	public void writeEndSequence() {
-		this.trainingDataWriter.println();
-	}
+  @Override
+  public void writeEndSequence() {
+    this.trainingDataWriter.println();
+  }
 
-	@Override
-	protected CRFSuiteClassifierBuilder newClassifierBuilder() {
-		return new CRFSuiteClassifierBuilder();
-	}
+  @Override
+  protected CRFSuiteClassifierBuilder newClassifierBuilder() {
+    return new CRFSuiteClassifierBuilder();
+  }
 
 }
