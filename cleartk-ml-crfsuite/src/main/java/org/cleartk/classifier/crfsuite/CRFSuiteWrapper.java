@@ -139,7 +139,7 @@ public class CRFSuiteWrapper {
         if (buffer.length() < 8) {
           logger.log(Level.WARNING, "CRFSuite could not be executed!");
         }
-        return (buffer.substring(0, 8).equals("CRFSuite"));
+        return buffer.length() >= 8 && buffer.substring(0, 8).equals("CRFSuite");
       } catch (IOException e) {
         // Path is not available
         logger.log(Level.FINE, e.getMessage());
