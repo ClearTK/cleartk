@@ -54,10 +54,25 @@ import org.uimafit.testing.util.HideOutput;
 
 public class LIBLINEARTest extends DefaultTestBase {
 
+  /**
+   * Value for the {@link #SKIP_TESTS_PROPERTY} property that indicates that tests requiring the
+   * LIBLINEAR executables to be installed on your system's path should be disabled. Current value:
+   * {@value #LIBLINEAR_TESTS_PROPERTY_VALUE}.
+   */
+  public static final String LIBLINEAR_TESTS_PROPERTY_VALUE = "liblinear";
+
+  /**
+   * Message that will be logged at the beginning of each test that requires the LIBLINEAR
+   * executables.
+   */
+  public static final String LIBLINEAR_TESTS_ENABLED_MESSAGE = createTestEnabledMessage(
+      LIBLINEAR_TESTS_PROPERTY_VALUE,
+      "This test requires installation of LIBLINEAR executables");
+
   @Test
   public void testLIBLINEAR() throws Exception {
-    assumeLiblinearEnabled();
-    this.logger.info(LIBLINEAR_TEST_MESSAGE);
+    this.assumeTestsEnabled(LIBLINEAR_TESTS_PROPERTY_VALUE);
+    this.logger.info(LIBLINEAR_TESTS_ENABLED_MESSAGE);
 
     // create the data writer
     BinaryAnnotator annotator = new BinaryAnnotator();

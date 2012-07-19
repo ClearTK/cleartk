@@ -36,6 +36,7 @@ import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.jar.DefaultSequenceDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
+import org.cleartk.classifier.libsvm.LIBSVMTest;
 import org.cleartk.classifier.libsvm.MultiClassLIBSVMDataWriter;
 import org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory;
 import org.cleartk.classifier.mallet.DefaultMalletDataWriterFactory;
@@ -46,6 +47,7 @@ import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.classifier.opennlp.MaxentDataWriter;
 import org.cleartk.classifier.opennlp.MaxentDataWriterFactory_ImplBase;
 import org.cleartk.classifier.svmlight.OVASVMlightDataWriter;
+import org.cleartk.classifier.svmlight.RunSVMlightTest;
 import org.cleartk.classifier.viterbi.DefaultOutcomeFeatureExtractor;
 import org.cleartk.classifier.viterbi.ViterbiClassifier;
 import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
@@ -76,8 +78,8 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
 
   @Test
   public void testLibsvm() throws Exception {
-    assumeLibsvmEnabled();
-    this.logger.info(LIBSVM_TEST_MESSAGE);
+    this.assumeTestsEnabled(LIBSVMTest.LIBSVM_TESTS_PROPERTY_VALUE);
+    this.logger.info(LIBSVMTest.LIBSVM_TESTS_ENABLED_MESSAGE);
 
     String outDirectoryName = outputDirectoryName + "/libsvm";
 
@@ -305,8 +307,8 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
 
   @Test
   public void testSVMLIGHT() throws Exception {
-    assumeSvmLightEnabled();
-    this.logger.info(SVMLIGHT_TEST_MESSAGE);
+    this.assumeTestsEnabled(RunSVMlightTest.SVMLIGHT_TESTS_PROPERTY_VALUE);
+    this.logger.info(RunSVMlightTest.SVMLIGHT_TESTS_ENABLED_MESSAGE);
 
     String outDirectoryName = outputDirectoryName + "/svmlight";
     AnalysisEngineDescription dataWriter = AnalysisEngineFactory.createPrimitiveDescription(

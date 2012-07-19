@@ -190,8 +190,7 @@ public class TypePathExtractor implements SimpleFeatureExtractor {
         if (pathValue != null)
           pathValues.add(pathValue);
       } else if (typeSystem.subsumes(typeSystem.getType("uima.tcas.Annotation"), featureType)) {
-        String coveredText = ((Annotation) featureStructure.getFeatureValue(feature))
-            .getCoveredText();
+        String coveredText = ((Annotation) featureStructure.getFeatureValue(feature)).getCoveredText();
         if (coveredText != null)
           pathValues.add(coveredText);
       } else if (featureType.isArray()) {

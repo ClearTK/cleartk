@@ -56,6 +56,21 @@ import org.uimafit.testing.util.HideOutput;
  */
 public class RunTKSVMlightTest extends DefaultTestBase {
 
+  /**
+   * Value for the {@link #SKIP_TESTS_PROPERTY} property that indicates that tests requiring the TK
+   * SvmLight executables to be installed on your system's path should be disabled. Current value:
+   * {@value #TK_SVMLIGHT_TESTS_PROPERTY_VALUE}.
+   */
+  public static final String TK_SVMLIGHT_TESTS_PROPERTY_VALUE = "tksvmlight";
+
+  /**
+   * Message that will be logged at the beginning of each test that requires the tree-kernel
+   * SVMlight executables.
+   */
+  public static final String TK_SVMLIGHT_TESTS_ENABLED_MESSAGE = createTestEnabledMessage(
+      TK_SVMLIGHT_TESTS_PROPERTY_VALUE,
+      "This test requires installation of tree-kernel SVMlight executables");
+
   protected String dataDirectory = "src/test/resources/data/svmlight/tk";
 
   @Override
@@ -144,8 +159,8 @@ public class RunTKSVMlightTest extends DefaultTestBase {
 
   @Test
   public void testTKSVMlight() throws Exception {
-    assumeTkSvmLightEnabled();
-    this.logger.info(TK_SVMLIGHT_TEST_MESSAGE);
+    this.assumeTestsEnabled(COMMON_TESTS_PROPERTY_VALUE, TK_SVMLIGHT_TESTS_PROPERTY_VALUE);
+    this.logger.info(TK_SVMLIGHT_TESTS_ENABLED_MESSAGE);
 
     // create the data writer
     EmptyAnnotator<Boolean> annotator = new EmptyAnnotator<Boolean>();
@@ -186,8 +201,8 @@ public class RunTKSVMlightTest extends DefaultTestBase {
 
   @Test
   public void testOVATKSVMlight() throws Exception {
-    assumeTkSvmLightEnabled();
-    this.logger.info(TK_SVMLIGHT_TEST_MESSAGE);
+    this.assumeTestsEnabled(COMMON_TESTS_PROPERTY_VALUE, TK_SVMLIGHT_TESTS_PROPERTY_VALUE);
+    this.logger.info(TK_SVMLIGHT_TESTS_ENABLED_MESSAGE);
 
     // create the data writer
     EmptyAnnotator<String> annotator = new EmptyAnnotator<String>();

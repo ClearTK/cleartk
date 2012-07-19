@@ -64,12 +64,27 @@ import org.uimafit.testing.util.HideOutput;
  */
 public class RunSVMlightTest extends DefaultTestBase {
 
+  /**
+   * Value for the {@link #SKIP_TESTS_PROPERTY} property that indicates that tests requiring the
+   * SVMlight executables to be installed on your system's path should be disabled. Current value:
+   * {@value #SVMLIGHT_TESTS_PROPERTY_VALUE}.
+   */
+  public static final String SVMLIGHT_TESTS_PROPERTY_VALUE = "svmlight";
+
+  /**
+   * Message that will be logged at the beginning of each test that requires the SVMlight
+   * executables.
+   */
+  public static final String SVMLIGHT_TESTS_ENABLED_MESSAGE = createTestEnabledMessage(
+      SVMLIGHT_TESTS_PROPERTY_VALUE,
+      "This test requires installation of SVMlight executables");
+
   protected String dataDirectory = "src/test/resources/data/svmlight";
 
   @Test
   public void testPath() throws Exception {
-    assumeSvmLightEnabled();
-    this.logger.info(SVMLIGHT_TEST_MESSAGE);
+    this.assumeTestsEnabled(SVMLIGHT_TESTS_PROPERTY_VALUE);
+    this.logger.info(SVMLIGHT_TESTS_ENABLED_MESSAGE);
 
     String[] command = new String[] { "svm_learn" };
 
@@ -88,8 +103,8 @@ public class RunSVMlightTest extends DefaultTestBase {
 
   @Test
   public void testLinearKernel() throws Exception {
-    assumeSvmLightEnabled();
-    this.logger.info(SVMLIGHT_TEST_MESSAGE);
+    this.assumeTestsEnabled(SVMLIGHT_TESTS_PROPERTY_VALUE);
+    this.logger.info(SVMLIGHT_TESTS_ENABLED_MESSAGE);
 
     File dir = new File(dataDirectory, "linear");
     File trainingFile = new File(dir, "training-data.svmlight");
@@ -100,8 +115,8 @@ public class RunSVMlightTest extends DefaultTestBase {
 
   @Test
   public void testPolynomialKernel() throws Exception {
-    assumeSvmLightEnabled();
-    this.logger.info(SVMLIGHT_TEST_MESSAGE);
+    this.assumeTestsEnabled(SVMLIGHT_TESTS_PROPERTY_VALUE);
+    this.logger.info(SVMLIGHT_TESTS_ENABLED_MESSAGE);
 
     File dir = new File(dataDirectory, "nonlinear");
     File trainingFile = new File(dir, "training-data.svmlight");
@@ -113,8 +128,8 @@ public class RunSVMlightTest extends DefaultTestBase {
 
   @Test
   public void testRBFKernel() throws Exception {
-    assumeSvmLightEnabled();
-    this.logger.info(SVMLIGHT_TEST_MESSAGE);
+    this.assumeTestsEnabled(SVMLIGHT_TESTS_PROPERTY_VALUE);
+    this.logger.info(SVMLIGHT_TESTS_ENABLED_MESSAGE);
 
     File dir = new File(dataDirectory, "nonlinear");
     File trainingFile = new File(dir, "training-data.svmlight");
@@ -125,8 +140,8 @@ public class RunSVMlightTest extends DefaultTestBase {
 
   // @Test
   public void testSigmoidKernel() throws Exception {
-    assumeSvmLightEnabled();
-    this.logger.info(SVMLIGHT_TEST_MESSAGE);
+    this.assumeTestsEnabled(SVMLIGHT_TESTS_PROPERTY_VALUE);
+    this.logger.info(SVMLIGHT_TESTS_ENABLED_MESSAGE);
     File dir = new File(dataDirectory, "nonlinear");
     File trainingFile = new File(dir, "training-data.svmlight");
     File testFile = new File(dir, "test-data.svmlight");
@@ -212,8 +227,8 @@ public class RunSVMlightTest extends DefaultTestBase {
 
   @Test
   public void testSVMlight() throws Exception {
-    assumeSvmLightEnabled();
-    this.logger.info(SVMLIGHT_TEST_MESSAGE);
+    this.assumeTestsEnabled(SVMLIGHT_TESTS_PROPERTY_VALUE);
+    this.logger.info(SVMLIGHT_TESTS_ENABLED_MESSAGE);
 
     // create the data writer
     EmptyAnnotator<Boolean> annotator = new EmptyAnnotator<Boolean>();
@@ -254,8 +269,8 @@ public class RunSVMlightTest extends DefaultTestBase {
 
   @Test
   public void testOVASVMlight() throws Exception {
-    assumeSvmLightEnabled();
-    this.logger.info(SVMLIGHT_TEST_MESSAGE);
+    this.assumeTestsEnabled(SVMLIGHT_TESTS_PROPERTY_VALUE);
+    this.logger.info(SVMLIGHT_TESTS_ENABLED_MESSAGE);
 
     // create the data writer
     EmptyAnnotator<String> annotator = new EmptyAnnotator<String>();
@@ -301,8 +316,8 @@ public class RunSVMlightTest extends DefaultTestBase {
 
   @Test
   public void testSVMlightRegression() throws Exception {
-    assumeSvmLightEnabled();
-    this.logger.info(SVMLIGHT_TEST_MESSAGE);
+    this.assumeTestsEnabled(SVMLIGHT_TESTS_PROPERTY_VALUE);
+    this.logger.info(SVMLIGHT_TESTS_ENABLED_MESSAGE);
 
     // create the data writer
     EmptyAnnotator<Double> annotator = new EmptyAnnotator<Double>();
@@ -342,8 +357,8 @@ public class RunSVMlightTest extends DefaultTestBase {
 
   @Test
   public void testSVMlightRank() throws Exception {
-    assumeSvmLightEnabled();
-    this.logger.info(SVMLIGHT_RANK_TEST_MESSAGE);
+    this.assumeTestsEnabled(SVMLIGHT_TESTS_PROPERTY_VALUE);
+    this.logger.info(SVMLIGHT_TESTS_ENABLED_MESSAGE);
 
     // create the data writer
     EmptyAnnotator<Double> annotator = new EmptyAnnotator<Double>();

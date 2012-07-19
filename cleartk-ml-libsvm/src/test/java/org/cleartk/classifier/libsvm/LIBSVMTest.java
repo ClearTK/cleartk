@@ -51,10 +51,24 @@ import org.uimafit.testing.util.HideOutput;
  */
 public class LIBSVMTest extends DefaultTestBase {
 
+  /**
+   * Value for the {@link #SKIP_TESTS_PROPERTY} property that indicates that tests requiring the
+   * LIBSVM executables to be installed on your system's path should be disabled. Current value:
+   * {@value #LIBSVM_TESTS_PROPERTY_VALUE}.
+   */
+  public static final String LIBSVM_TESTS_PROPERTY_VALUE = "libsvm";
+
+  /**
+   * Message that will be logged at the beginning of each test that requires the LIBSVM executables.
+   */
+  public static final String LIBSVM_TESTS_ENABLED_MESSAGE = createTestEnabledMessage(
+      LIBSVM_TESTS_PROPERTY_VALUE,
+      "This test requires installation of LIBSVM executables");
+
   @Test
   public void testBinaryLIBSVM() throws Exception {
-    assumeLibsvmEnabled();
-    this.logger.info(LIBSVM_TEST_MESSAGE);
+    this.assumeTestsEnabled(LIBSVM_TESTS_PROPERTY_VALUE);
+    this.logger.info(LIBSVM_TESTS_ENABLED_MESSAGE);
 
     // create the data writer
     BinaryAnnotator annotator = new BinaryAnnotator();
@@ -94,8 +108,8 @@ public class LIBSVMTest extends DefaultTestBase {
 
   @Test
   public void testMultiClassLIBSVM() throws Exception {
-    assumeLibsvmEnabled();
-    this.logger.info(LIBSVM_TEST_MESSAGE);
+    this.assumeTestsEnabled(LIBSVM_TESTS_PROPERTY_VALUE);
+    this.logger.info(LIBSVM_TESTS_ENABLED_MESSAGE);
 
     // create the data writer
     StringAnnotator annotator = new StringAnnotator();
