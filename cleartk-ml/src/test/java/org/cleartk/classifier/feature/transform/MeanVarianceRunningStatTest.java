@@ -88,11 +88,13 @@ public class MeanVarianceRunningStatTest {
     FileOutputStream fos = new FileOutputStream(new File(tmpDir, "zmus.dat"));
     ObjectOutputStream output = new ObjectOutputStream(fos);
     output.writeObject(stats);
+    output.close();
 
     // Read in file
     FileInputStream fis = new FileInputStream(new File(tmpDir, "zmus.dat"));
     ObjectInputStream input = new ObjectInputStream(fis);
     stats = (MeanVarianceRunningStat) input.readObject();
+    input.close();
 
     // Check values
     assertTrue(n == stats.getNumSamples());

@@ -110,18 +110,22 @@ public class FCollectionsFile {
 
     FCollections<T> fCollections = new FCollections<T>();
     BufferedReader input = new BufferedReader(new FileReader(inputFile));
-    input.readLine(); // read title
-    input.readLine(); // read blank line
-    input.readLine(); // read column headers
+    try {
+      input.readLine(); // read title
+      input.readLine(); // read blank line
+      input.readLine(); // read column headers
 
-    String line;
-    while ((line = input.readLine()) != null) {
-      String[] columns = line.split("\\t");
-      T label = labelConverter.convertLabel(columns[0]);
-      fCollections.addTruePositives(label, Integer.parseInt(columns[1]));
-      fCollections.addFalsePositives(label, Integer.parseInt(columns[2]));
-      fCollections.addFalseNegatives(label, Integer.parseInt(columns[3]));
+      String line;
+      while ((line = input.readLine()) != null) {
+        String[] columns = line.split("\\t");
+        T label = labelConverter.convertLabel(columns[0]);
+        fCollections.addTruePositives(label, Integer.parseInt(columns[1]));
+        fCollections.addFalsePositives(label, Integer.parseInt(columns[2]));
+        fCollections.addFalseNegatives(label, Integer.parseInt(columns[3]));
 
+      }
+    } finally {
+      input.close();
     }
     return fCollections;
   }

@@ -53,13 +53,14 @@ public class ParseProbankTest {
         "src/test/resources/data/propbank-1.0/prop.txt"));
     String line = null;
     try {
-
       while ((line = input.readLine()) != null) {
         Propbank.fromString(line);
         total++;
       }
     } catch (PropbankFormatException e) {
       fail("Parser unable to parser line=" + total + ": " + line);
+    } finally {
+      input.close();
     }
   }
 

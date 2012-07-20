@@ -71,14 +71,16 @@ import org.uimafit.factory.ConfigurationParameterFactory;
     ViewURIUtil.URI })
 public class PropbankGoldReader extends JCasCollectionReader_ImplBase {
 
-  public static final String PARAM_PROPBANK_FILE_NAME = ConfigurationParameterFactory
-      .createConfigurationParameterName(PropbankGoldReader.class, "propbankFileName");
+  public static final String PARAM_PROPBANK_FILE_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
+      PropbankGoldReader.class,
+      "propbankFileName");
 
   @ConfigurationParameter(description = "points to propbank data file", mandatory = true)
   private String propbankFileName;
 
-  public static final String PARAM_PENNTREEBANK_DIRECTORY_NAME = ConfigurationParameterFactory
-      .createConfigurationParameterName(PropbankGoldReader.class, "penntreebankDirectoryName");
+  public static final String PARAM_PENNTREEBANK_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
+      PropbankGoldReader.class,
+      "penntreebankDirectoryName");
 
   private static final String PENN_TREEBANK_DIRECTORY_DESCRIPTION = "points to the PennTreebank corpus. "
       + "The directory should contain subdirectories corresponding to the sections (e.g. \"00\", \"01\", etc.)  "
@@ -88,10 +90,13 @@ public class PropbankGoldReader extends JCasCollectionReader_ImplBase {
   @ConfigurationParameter(description = PENN_TREEBANK_DIRECTORY_DESCRIPTION, mandatory = true)
   private String penntreebankDirectoryName;
 
-  public static final String PARAM_WSJ_SECTIONS = ConfigurationParameterFactory
-      .createConfigurationParameterName(PropbankGoldReader.class, "wsjSections");
+  public static final String PARAM_WSJ_SECTIONS = ConfigurationParameterFactory.createConfigurationParameterName(
+      PropbankGoldReader.class,
+      "wsjSections");
 
-  @ConfigurationParameter(description = "Determines which sections of WSJ will be used.  The format allows for comma-separated section numbers and section ranges, for example \"02,07-12,16\".", mandatory = true)
+  @ConfigurationParameter(
+      description = "Determines which sections of WSJ will be used.  The format allows for comma-separated section numbers and section ranges, for example \"02,07-12,16\".",
+      mandatory = true)
   private String wsjSections;
 
   /**
@@ -117,10 +122,14 @@ public class PropbankGoldReader extends JCasCollectionReader_ImplBase {
         throw CleartkInitializationException.fileNotFound(propbankFile);
       }
       BufferedReader reader = new BufferedReader(new FileReader(propbankFile));
-      propbankData = new LinkedList<String>();
-      String line;
-      while ((line = reader.readLine()) != null) {
-        propbankData.add(line);
+      try {
+        propbankData = new LinkedList<String>();
+        String line;
+        while ((line = reader.readLine()) != null) {
+          propbankData.add(line);
+        }
+      } finally {
+        reader.close();
       }
       Collections.sort(propbankData);
 

@@ -161,16 +161,20 @@ public class OVATKSVMlightDataWriter extends
 
   private void copyFile(File source, File target) throws IOException {
     // Create channel on the source
-    FileChannel srcChannel = new FileInputStream(source).getChannel();
+    FileInputStream srcStream = new FileInputStream(source);
+    FileChannel srcChannel = srcStream.getChannel();
 
     // Create channel on the destination
-    FileChannel dstChannel = new FileOutputStream(target).getChannel();
+    FileOutputStream dstStream = new FileOutputStream(target);
+    FileChannel dstChannel = dstStream.getChannel();
 
     // Copy file contents from source to destination
     dstChannel.transferFrom(srcChannel, 0, srcChannel.size());
 
     // Close the channels
+    srcStream.close();
     srcChannel.close();
+    dstStream.close();
     dstChannel.close();
   }
 

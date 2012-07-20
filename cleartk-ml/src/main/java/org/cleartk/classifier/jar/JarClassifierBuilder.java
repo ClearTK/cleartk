@@ -240,11 +240,24 @@ public abstract class JarClassifierBuilder<CLASSIFIER_TYPE> {
    * @return The loaded classifier.
    */
   public CLASSIFIER_TYPE loadClassifier(InputStream inputStream) throws IOException {
-    JarInputStream modelStream = inputStream instanceof JarInputStream
-        ? (JarInputStream) inputStream
-        : new JarInputStream(inputStream);
-    this.unpackageClassifier(modelStream);
-    return this.newClassifier();
+
+    // if it's already a Jar stream, don't re-wrap it
+    if (inputStream instanceof JarInputStream) {
+      JarInputStream modelStream = (JarInputStream) inputStream;
+      this.unpackageClassifier(modelStream);
+      return this.newClassifier();
+    }
+
+    // if we need to wrap it in a Jar stream, be sure to close the stream afterwards
+    else {
+      JarInputStream modelStream = new JarInputStream(inputStream);
+      try {
+        this.unpackageClassifier(modelStream);
+        return this.newClassifier();
+      } finally {
+        modelStream.close();
+      }
+    }
   }
 
   /**

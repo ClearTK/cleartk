@@ -120,25 +120,28 @@ public class TermList {
     BufferedReader input = new BufferedReader(new FileReader(file));
     String line;
     int i = 1;
-    while ((line = input.readLine()) != null) {
-      line = line.trim();
-      String id;
-      String termText;
-      if (columnSeparator == null) {
-        id = "" + i++;
-        termText = line.trim();
-      } else {
-        String[] columns = line.split(Pattern.quote(columnSeparator));
-        id = columns[0];
-        termText = columns[1].trim();
+    try {
+      while ((line = input.readLine()) != null) {
+        line = line.trim();
+        String id;
+        String termText;
+        if (columnSeparator == null) {
+          id = "" + i++;
+          termText = line.trim();
+        } else {
+          String[] columns = line.split(Pattern.quote(columnSeparator));
+          id = columns[0];
+          termText = columns[1].trim();
+        }
+        Term term = new Term(id, termText, termList);
+        termList.add(term);
+        // if (i % 100000 == 0) System.out.println("loaded " + i + " terms from term list: " +
+        // file.getName() + ".");
       }
-      Term term = new Term(id, termText, termList);
-      termList.add(term);
-      // if (i % 100000 == 0) System.out.println("loaded " + i + " terms from term list: " +
-      // file.getName() + ".");
+      // System.out.println("loaded " + (i - 1) + " terms from term list: " + file.getName() + ".");
+    } finally {
+      input.close();
     }
-    // System.out.println("loaded " + (i - 1) + " terms from term list: " + file.getName() + ".");
-
     return termList;
   }
 }

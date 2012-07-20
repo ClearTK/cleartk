@@ -117,6 +117,8 @@ public class OVASVMlightClassifierBuilder extends
         this.sigmoids.put(label, (Sigmoid) in.readObject());
       } catch (ClassNotFoundException e) {
         throw new IOException(e);
+      } finally {
+        in.close();
       }
 
       label += 1;

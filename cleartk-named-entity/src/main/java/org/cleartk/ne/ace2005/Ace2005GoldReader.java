@@ -64,10 +64,13 @@ import org.uimafit.factory.ConfigurationParameterFactory;
 
 @SofaCapability(outputSofas = { Ace2005Constants.ACE_2005_APF_URI_VIEW, ViewURIUtil.URI })
 public class Ace2005GoldReader extends JCasCollectionReader_ImplBase {
-  public static final String PARAM_ACE_DIRECTORY_NAME = ConfigurationParameterFactory
-      .createConfigurationParameterName(Ace2005GoldReader.class, "aceDirectoryName");
+  public static final String PARAM_ACE_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
+      Ace2005GoldReader.class,
+      "aceDirectoryName");
 
-  @ConfigurationParameter(mandatory = true, description = "Takes the name of directory that contains ACE data.  Typically, a folder such as \".../ACE_2005/optimization/English/all\".  The folder should contain files that come in pairs - i.e. for each .sgm file there should be a corresponding .apf.xml file.")
+  @ConfigurationParameter(
+      mandatory = true,
+      description = "Takes the name of directory that contains ACE data.  Typically, a folder such as \".../ACE_2005/optimization/English/all\".  The folder should contain files that come in pairs - i.e. for each .sgm file there should be a corresponding .apf.xml file.")
   private String aceDirectoryName;
 
   private static final String PARAM_ACE_FILE_NAMES_DESCRIPTION = "takes a file that contains the names of the files to read.   \n"
@@ -76,8 +79,9 @@ public class Ace2005GoldReader extends JCasCollectionReader_ImplBase {
       + "If parameter value is not given, then all files will be read in. An example file might look like this: \n\n"
       + "AFP_ENG_20030304.0250\n" + "AFP_ENG_20030305.0918\n" + "...\n";
 
-  public static final String PARAM_ACE_FILE_NAMES_FILE = ConfigurationParameterFactory
-      .createConfigurationParameterName(Ace2005GoldReader.class, "aceFileNamesFile");
+  public static final String PARAM_ACE_FILE_NAMES_FILE = ConfigurationParameterFactory.createConfigurationParameterName(
+      Ace2005GoldReader.class,
+      "aceFileNamesFile");
 
   @ConfigurationParameter(description = PARAM_ACE_FILE_NAMES_DESCRIPTION)
   private String aceFileNamesFile;
@@ -108,12 +112,16 @@ public class Ace2005GoldReader extends JCasCollectionReader_ImplBase {
         List<File> files = new ArrayList<File>();
         BufferedReader reader = new BufferedReader(new FileReader(aceFileNamesFile));
         String line;
-        while ((line = reader.readLine()) != null) {
-          line = line.trim();
-          if (line.endsWith(".sgm"))
-            files.add(new File(aceDirectory, line));
-          else
-            files.add(new File(aceDirectory, line + ".sgm"));
+        try {
+          while ((line = reader.readLine()) != null) {
+            line = line.trim();
+            if (line.endsWith(".sgm"))
+              files.add(new File(aceDirectory, line));
+            else
+              files.add(new File(aceDirectory, line + ".sgm"));
+          }
+        } finally {
+          reader.close();
         }
         aceFiles = files.toArray(new File[files.size()]);
       } catch (IOException ioe) {
