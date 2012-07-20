@@ -23,11 +23,15 @@
  */
 package org.cleartk.classifier.liblinear;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 
 import org.cleartk.classifier.liblinear.model.LIBLINEARModel;
 import org.cleartk.classifier.libsvm.GenericLIBSVMClassifierBuilder;
+
+import de.bwaldvogel.liblinear.Train;
 
 /**
  * <br>
@@ -39,13 +43,21 @@ public class BinaryLIBLINEARClassifierBuilder extends
     GenericLIBSVMClassifierBuilder<BinaryLIBLINEARClassifier, Boolean, Boolean, LIBLINEARModel> {
 
   @Override
-  public String getCommand() {
-    return "train";
+  public String getTrainingDataName() {
+    return "training-data.liblinear";
   }
 
   @Override
   public String getModelName() {
     return "model.liblinear";
+  }
+
+  @Override
+  public void trainClassifier(File dir, String... args) throws Exception {
+    args = Arrays.copyOf(args, args.length + 2);
+    args[args.length - 2] = this.getTrainingDataFile(dir).getPath();
+    args[args.length - 1] = this.getModelFile(dir).getPath();
+    Train.main(args);
   }
 
   @Override

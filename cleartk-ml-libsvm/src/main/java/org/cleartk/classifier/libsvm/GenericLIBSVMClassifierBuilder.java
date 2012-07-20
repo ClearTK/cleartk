@@ -26,12 +26,9 @@ package org.cleartk.classifier.libsvm;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Map;
-import java.util.jar.Attributes;
 import java.util.jar.JarInputStream;
 import java.util.jar.JarOutputStream;
 
-import org.apache.commons.io.IOUtils;
 import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.jar.ClassifierBuilder_ImplBase;
 import org.cleartk.classifier.jar.JarStreams;
@@ -50,46 +47,20 @@ public abstract class GenericLIBSVMClassifierBuilder<CLASSIFIER_TYPE extends Cla
 
   @Override
   public File getTrainingDataFile(File dir) {
-    return new File(dir, "training-data.libsvm");
+    return new File(dir, this.getTrainingDataName());
   }
 
   public File getModelFile(File dir) {
     return new File(dir, this.getModelName());
   }
 
-  protected abstract String getCommand();
+  protected abstract String getTrainingDataName();
 
   protected abstract String getModelName();
 
   protected abstract MODEL_TYPE loadModel(InputStream inputStream) throws IOException;
 
   public static final String ATTRIBUTES_NAME = "LIBSVM";
-
-  public GenericLIBSVMClassifierBuilder() {
-    super();
-
-    // set manifest attributes for classifier
-    // TODO: Are these still needed? What code uses them?
-    Map<String, Attributes> entries = this.manifest.getEntries();
-    if (!entries.containsKey(ATTRIBUTES_NAME)) {
-      entries.put(ATTRIBUTES_NAME, new Attributes());
-    }
-    Attributes attributes = entries.get(ATTRIBUTES_NAME);
-    attributes.putValue("scaleFeatures", "normalizeL2");
-  }
-
-  @Override
-  public void trainClassifier(File dir, String... args) throws Exception {
-    String[] command = new String[args.length + 3];
-    command[0] = this.getCommand();
-    System.arraycopy(args, 0, command, 1, args.length);
-    command[command.length - 2] = new File(dir, "training-data.libsvm").getPath();
-    command[command.length - 1] = new File(dir, this.getModelName()).getPath();
-    Process process = Runtime.getRuntime().exec(command);
-    IOUtils.copy(process.getInputStream(), System.out);
-    IOUtils.copy(process.getErrorStream(), System.err);
-    process.waitFor();
-  }
 
   @Override
   protected void packageClassifier(File dir, JarOutputStream modelStream) throws IOException {

@@ -37,7 +37,6 @@ import org.apache.uima.pear.util.FileUtil;
 import org.cleartk.classifier.CleartkAnnotatorDescriptionFactory;
 import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
-import org.cleartk.classifier.libsvm.LIBSVMTest;
 import org.cleartk.classifier.libsvm.MultiClassLIBSVMDataWriter;
 import org.cleartk.classifier.opennlp.MaxentDataWriter;
 import org.cleartk.classifier.svmlight.OVASVMlightDataWriter;
@@ -92,8 +91,6 @@ public class NonSequenceExamplePOSAnnotatorTest extends ExamplesTestBase {
 
   @Test
   public void testLibsvm() throws Exception {
-    this.assumeTestsEnabled(LIBSVMTest.LIBSVM_TESTS_PROPERTY_VALUE);
-    this.logger.info(LIBSVMTest.LIBSVM_TESTS_ENABLED_MESSAGE);
     String libsvmDirectoryName = outputDirectory + "/libsvm";
     AnalysisEngineDescription dataWriter = AnalysisEngineFactory.createPrimitiveDescription(
         NonSequenceExamplePOSAnnotator.class,

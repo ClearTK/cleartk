@@ -27,10 +27,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 
 import libsvm.svm_model;
 
 import org.apache.commons.io.IOUtils;
+import org.cleartk.classifier.libsvm.util.LIBSVMTrain;
 
 /**
  * <br>
@@ -48,13 +50,21 @@ public abstract class LIBSVMClassifierBuilder<CLASSIFIER_TYPE extends LIBSVMClas
   public static final String SCALE_FEATURES_VALUE_NORMALIZEL2 = "normalizeL2";
 
   @Override
-  public String getCommand() {
-    return "svm-train";
+  public String getTrainingDataName() {
+    return "training-data.libsvm";
   }
 
   @Override
   protected String getModelName() {
     return "model.libsvm";
+  }
+
+  @Override
+  public void trainClassifier(File dir, String... args) throws Exception {
+    args = Arrays.copyOf(args, args.length + 2);
+    args[args.length - 2] = this.getTrainingDataFile(dir).getPath();
+    args[args.length - 1] = this.getModelFile(dir).getPath();
+    LIBSVMTrain.main(args);
   }
 
   @Override

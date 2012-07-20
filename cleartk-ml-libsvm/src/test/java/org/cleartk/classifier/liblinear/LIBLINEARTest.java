@@ -24,7 +24,6 @@
 package org.cleartk.classifier.liblinear;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.util.List;
 
@@ -54,26 +53,8 @@ import org.uimafit.testing.util.HideOutput;
 
 public class LIBLINEARTest extends DefaultTestBase {
 
-  /**
-   * Value for the {@link #SKIP_TESTS_PROPERTY} property that indicates that tests requiring the
-   * LIBLINEAR executables to be installed on your system's path should be disabled. Current value:
-   * {@value #LIBLINEAR_TESTS_PROPERTY_VALUE}.
-   */
-  public static final String LIBLINEAR_TESTS_PROPERTY_VALUE = "liblinear";
-
-  /**
-   * Message that will be logged at the beginning of each test that requires the LIBLINEAR
-   * executables.
-   */
-  public static final String LIBLINEAR_TESTS_ENABLED_MESSAGE = createTestEnabledMessage(
-      LIBLINEAR_TESTS_PROPERTY_VALUE,
-      "This test requires installation of LIBLINEAR executables");
-
   @Test
   public void testLIBLINEAR() throws Exception {
-    this.assumeTestsEnabled(LIBLINEAR_TESTS_PROPERTY_VALUE);
-    this.logger.info(LIBLINEAR_TESTS_ENABLED_MESSAGE);
-
     // create the data writer
     BinaryAnnotator annotator = new BinaryAnnotator();
     annotator.initialize(UimaContextFactory.createUimaContext(
@@ -88,9 +69,9 @@ public class LIBLINEARTest extends DefaultTestBase {
     annotator.collectionProcessComplete();
 
     // check that the output file was written and is not empty
-    BufferedReader reader = new BufferedReader(new FileReader(new File(
-        this.outputDirectoryName,
-        "training-data.libsvm")));
+    BinaryLIBLINEARClassifierBuilder builder = new BinaryLIBLINEARClassifierBuilder();
+    BufferedReader reader = new BufferedReader(new FileReader(
+        builder.getTrainingDataFile(this.outputDirectory)));
     Assert.assertTrue(reader.readLine().length() > 0);
     reader.close();
 
@@ -100,7 +81,6 @@ public class LIBLINEARTest extends DefaultTestBase {
     hider.restoreOutput();
 
     // read in the classifier and test it on new instances
-    BinaryLIBLINEARClassifierBuilder builder = new BinaryLIBLINEARClassifierBuilder();
     BinaryLIBLINEARClassifier classifier;
     classifier = builder.loadClassifierFromTrainingDirectory(this.outputDirectory);
     for (Instance<Boolean> instance : ExampleInstanceFactory.generateBooleanInstances(1000)) {
