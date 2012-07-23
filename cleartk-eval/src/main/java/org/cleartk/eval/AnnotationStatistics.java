@@ -133,8 +133,8 @@ public class AnnotationStatistics implements Serializable {
    *          The predicted annotations, typically identified by a model.
    */
   public <ANNOTATION_TYPE extends Annotation> void add(
-      Collection<ANNOTATION_TYPE> referenceAnnotations,
-      Collection<ANNOTATION_TYPE> predictedAnnotations) {
+      Collection<? extends ANNOTATION_TYPE> referenceAnnotations,
+      Collection<? extends ANNOTATION_TYPE> predictedAnnotations) {
     this.add(
         referenceAnnotations,
         predictedAnnotations,
@@ -154,8 +154,8 @@ public class AnnotationStatistics implements Serializable {
    *          provides an example function that could be used here.
    */
   public <ANNOTATION_TYPE extends TOP, SPAN_TYPE> void add(
-      Collection<ANNOTATION_TYPE> referenceAnnotations,
-      Collection<ANNOTATION_TYPE> predictedAnnotations,
+      Collection<? extends ANNOTATION_TYPE> referenceAnnotations,
+      Collection<? extends ANNOTATION_TYPE> predictedAnnotations,
       Function<ANNOTATION_TYPE, SPAN_TYPE> annotationToSpan) {
 
     // map gold spans to their outcomes
