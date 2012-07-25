@@ -44,8 +44,13 @@ import org.cleartk.classifier.Feature;
 public class CoveredTextExtractor implements SimpleFeatureExtractor {
 
   public List<Feature> extract(JCas jCas, Annotation focusAnnotation) {
-    String spannedText = focusAnnotation.getCoveredText();
+    // inline Annotation.getCoveredText() here, but use the right JCas instead
+    String jCasText = jCas.getDocumentText();
+    int begin = focusAnnotation.getBegin();
+    int end = focusAnnotation.getEnd();
+    String spannedText = jCasText == null ? null : jCasText.substring(begin, end);
 
+    // create a single feature from the text
     Feature feature = new Feature(spannedText);
     return Collections.singletonList(feature);
   }
