@@ -1,5 +1,5 @@
 /** 
- * Copyright (c) 2009, Regents of the University of Colorado 
+ * Copyright (c) 2012, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -30,32 +30,36 @@ import java.net.URISyntaxException;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
+import org.cleartk.examples.type.UsenetDocument;
 import org.cleartk.util.ViewURIUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
-import org.uimafit.descriptor.SofaCapability;
 
 /**
  * <br>
- * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * Copyright (c) 2012, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
- * @author Philipp G. Wetzler
+ * This class will assign the gold-standard document categories for the documents in this example by
+ * looking at their parent directory.
+ * 
+ * @author Lee Becker
  * 
  */
-@SofaCapability(inputSofas = { ViewURIUtil.URI, GoldAnnotator.GOLD_VIEW_NAME })
-public class GoldAnnotator extends JCasAnnotator_ImplBase {
-
-  public static final String GOLD_VIEW_NAME = "ExampleDocumentClassificationGoldView";
+public class GoldDocumentCategoryAnnotator extends JCasAnnotator_ImplBase {
 
   @Override
   public void process(JCas jCas) throws AnalysisEngineProcessException {
     try {
       JCas uriView = jCas.getView(ViewURIUtil.URI);
-      JCas goldView = jCas.createView(GOLD_VIEW_NAME);
       URI uri = new URI(uriView.getSofaDataURI());
       File file = new File(uri.getPath());
 
-      goldView.setSofaDataString(file.getParentFile().getName(), "text/plain");
+      // Create UsenetDocument annotation
+      // The document category will come from the document directory structure
+      UsenetDocument document = new UsenetDocument(jCas, 0, jCas.getDocumentText().length());
+      document.setCategory(file.getParentFile().getName());
+      document.addToIndexes();
+
     } catch (CASException e) {
       throw new AnalysisEngineProcessException(e);
     } catch (URISyntaxException e) {

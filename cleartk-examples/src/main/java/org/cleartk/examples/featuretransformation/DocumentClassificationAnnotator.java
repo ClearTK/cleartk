@@ -32,7 +32,6 @@ import java.util.List;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
-import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.jcas.tcas.DocumentAnnotation;
@@ -51,9 +50,9 @@ import org.cleartk.classifier.feature.transform.extractor.TfidfExtractor;
 import org.cleartk.classifier.feature.transform.extractor.ZeroMeanUnitStddevExtractor;
 import org.cleartk.classifier.jar.GenericJarClassifierFactory;
 import org.cleartk.examples.ExampleComponents;
+import org.cleartk.examples.type.UsenetDocument;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.ViewURIUtil;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
@@ -226,19 +225,17 @@ public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
     Instance<String> instance = new Instance<String>();
     instance.addAll(this.extractor.extract(jCas, doc));
 
-    try {
-      if (isTraining()) {
-        JCas goldView = jCas.getView(GoldAnnotator.GOLD_VIEW_NAME);
-        instance.setOutcome(goldView.getSofaDataString());
-        this.dataWriter.write(instance);
-      } else {
-        String result = this.classifier.classify(instance.getFeatures());
-        JCas predictionView = jCas.createView(PREDICTION_VIEW_NAME);
-        predictionView.setSofaDataString(result, "text/plain");
-        System.out.println("classified " + ViewURIUtil.getURI(jCas) + " as " + result + ".");
-      }
-    } catch (CASException e) {
-      throw new AnalysisEngineProcessException(e);
+    if (isTraining()) {
+      UsenetDocument document = JCasUtil.selectSingle(jCas, UsenetDocument.class);
+      instance.setOutcome(document.getCategory());
+      this.dataWriter.write(instance);
+    } else {
+      // This is classification, so classify and create UsenetDocument annotation
+      String result = this.classifier.classify(instance.getFeatures());
+      UsenetDocument document = new UsenetDocument(jCas, 0, jCas.getDocumentText().length());
+      document.setCategory(result);
+      document.addToIndexes();
+      // System.out.println("classified " + ViewURIUtil.getURI(jCas) + " as " + result + ".");
     }
   }
 
