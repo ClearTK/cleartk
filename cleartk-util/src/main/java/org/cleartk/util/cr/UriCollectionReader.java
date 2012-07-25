@@ -148,6 +148,10 @@ public class UriCollectionReader extends JCasCollectionReader_ImplBase {
       UriCollectionReader.class,
       "uriList");
 
+  @ConfigurationParameter(
+      description = "This parameter provides a list of URIs that should be written to the default sofa within the CAS.  Proper URI construction is the responsibility of the caller")
+  private List<URI> uriList = new ArrayList<URI>();
+
   public static final String PARAM_IGNORE_SYSTEM_FILES = ConfigurationParameterFactory.createConfigurationParameterName(
       FilesCollectionReader.class,
       "ignoreSystemFiles");
@@ -157,10 +161,6 @@ public class UriCollectionReader extends JCasCollectionReader_ImplBase {
           + "Setting this to true when PARAM_DIRECTORY is set will prevent traversal into such directories.  If PARAM_FILES is set, it will filter out any system files."
           + "This has no influence on PARAM_URIS as proper URI construction is the responsibility of the caller")
   private boolean ignoreSystemFiles = true;
-
-  @ConfigurationParameter(
-      description = "This parameter provides a list of URIs that should be written to the default sofa within the CAS.  Proper URI construction is the responsibility of the caller")
-  private List<String> uriList = new ArrayList<String>();
 
   protected Iterable<URI> uris;
 
@@ -200,11 +200,6 @@ public class UriCollectionReader extends JCasCollectionReader_ImplBase {
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
 
-    // Convert list of strings to URIs
-    Iterable<URI> urisFromUris = new ArrayList<URI>();
-    this.uriCount += this.uriList.size();
-    urisFromUris = Iterables.transform(this.uriList, this.stringToUri);
-
     // Convert list of files to URIs
     Iterable<URI> urisFromFiles = new ArrayList<URI>();
     Iterable<File> filteredFiles = (this.ignoreSystemFiles) ? Iterables.filter(
@@ -233,7 +228,7 @@ public class UriCollectionReader extends JCasCollectionReader_ImplBase {
     }
 
     // Combine URI iterables from all conditions and initialize iterator
-    this.uris = Iterables.concat(urisFromUris, urisFromFiles, urisFromDirectory);
+    this.uris = Iterables.concat(this.uriList, urisFromFiles, urisFromDirectory);
     this.uriIter = this.uris.iterator();
   }
 
