@@ -43,7 +43,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.uima.UIMAFramework;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -59,7 +58,6 @@ import org.cleartk.test.DefaultTestBase;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.testing.util.HideOutput;
 
 /**
  * <br>
@@ -87,11 +85,6 @@ public class CrfSuiteClassifierTest extends DefaultTestBase {
   public static final String CRF_SUITE_TESTS_ENABLED_MESSAGE = createTestEnabledMessage(
       CRF_SUITE_TESTS_PROPERTY_VALUE,
       "This test requires installation of CRFSuite executables");
-
-  static {
-    Logger.getAnonymousLogger().setLevel(Level.ALL);
-    UIMAFramework.getLogger().setLevel(org.apache.uima.util.Level.ALL);
-  }
 
   public static class TestAnnotator extends CleartkSequenceAnnotator<String> {
 
@@ -138,9 +131,15 @@ public class CrfSuiteClassifierTest extends DefaultTestBase {
     BufferedReader reader = new BufferedReader(new FileReader(trainFile));
     reader.readLine();
     reader.close();
-    HideOutput hider = new HideOutput();
-    Train.main(outputDirectoryName);
-    hider.restoreOutput();
+
+    Logger logger = Logger.getLogger("org.cleartk.classifier.crfsuite.CRFSuiteWrapper");
+    Level level = logger.getLevel();
+    logger.setLevel(Level.WARNING);
+    try {
+      Train.main(outputDirectoryName);
+    } finally {
+      logger.setLevel(level);
+    }
 
     CRFSuiteClassifierBuilder builder = new CRFSuiteClassifierBuilder();
     CRFSuiteClassifier classifier;
@@ -206,8 +205,16 @@ public class CrfSuiteClassifierTest extends DefaultTestBase {
         "VBZ",
         "NN" };
 
+    Logger logger = Logger.getLogger("org.cleartk.classifier.crfsuite.CRFSuiteWrapper");
+    Level level = logger.getLevel();
+    logger.setLevel(Level.WARNING);
+    try {
+      wrapper.trainClassifier(model, trainingDataFile, new String[] { "" });
+    } finally {
+      logger.setLevel(level);
+    }
+
     int featureSize = corr.length;
-    wrapper.trainClassifier(model, trainingDataFile, new String[] { "" });
     List<String> l = wrapper.classifyFeatures(featureFile, model, featureSize);
 
     Assert.assertEquals(corr.length, l.size());

@@ -80,12 +80,12 @@ SequenceClassifierBuilder_ImplBase<CRFSuiteClassifier, List<NameNumber>, String,
 
   @Override
   public void trainClassifier(File dir, String... args) throws Exception {
-    logger.log(Level.INFO, "Start learning CRFsuite classifier");
+    logger.log(Level.FINE, "Start learning CRFsuite classifier");
     CRFSuiteWrapper wrapper = new CRFSuiteWrapper();
     String model = new File(dir, MODEL_NAME).getPath();
     String trainingDataFile = getTrainingDataFile(dir).getPath();
     wrapper.trainClassifier(model, trainingDataFile, args);
-    logger.log(Level.INFO, "Finished learning CRFsuite classifier");
+    logger.log(Level.FINE, "Finished learning CRFsuite classifier");
   }
 
   private File modelFile = null;

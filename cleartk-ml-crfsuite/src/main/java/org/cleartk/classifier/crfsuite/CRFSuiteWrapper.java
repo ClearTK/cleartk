@@ -77,7 +77,7 @@ public class CRFSuiteWrapper {
   public CRFSuiteWrapper() {
     Executables exec = new Executables();
     if (exec.isInstalled()) {
-      logger.log(Level.INFO, "The CRFSuite is installed on the system");
+      logger.log(Level.FINE, "The CRFSuite is installed on the system");
       executable = new File(exec.getExecutableName());
     } else {
 
@@ -87,7 +87,7 @@ public class CRFSuiteWrapper {
             Level.WARNING,
             "The CRFSuite binary is not available for the current operation system, please install it!");
       } else {
-        logger.log(Level.INFO, "The CRFSuite binary is successfully extracted");
+        logger.log(Level.FINE, "The CRFSuite binary is successfully extracted");
       }
     }
   }
