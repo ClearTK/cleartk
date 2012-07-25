@@ -40,7 +40,6 @@ import org.cleartk.test.DefaultTestBase;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.UimaContextFactory;
-import org.uimafit.testing.util.HideOutput;
 
 /**
  * 
@@ -91,9 +90,7 @@ public class BaselineClassifiersTest extends DefaultTestBase {
     reader.close();
 
     // run the training command
-    HideOutput hider = new HideOutput();
     Train.main(this.outputDirectoryName);
-    hider.restoreOutput();
 
     // read in the classifier and test it on new instances
     SingleOutcomeClassifier<String> classifier;
@@ -129,9 +126,7 @@ public class BaselineClassifiersTest extends DefaultTestBase {
     reader.close();
 
     // run the training command
-    HideOutput hider = new HideOutput();
     Train.main(this.outputDirectoryName);
-    hider.restoreOutput();
 
     // read in the classifier and test it on new instances
     SingleOutcomeClassifier<Boolean> classifier;
@@ -167,9 +162,7 @@ public class BaselineClassifiersTest extends DefaultTestBase {
     reader.close();
 
     // run the training command
-    HideOutput hider = new HideOutput();
     Train.main(this.outputDirectoryName);
-    hider.restoreOutput();
 
     // read in the classifier and test it on new instances
     SingleOutcomeClassifier<Double> classifier;
