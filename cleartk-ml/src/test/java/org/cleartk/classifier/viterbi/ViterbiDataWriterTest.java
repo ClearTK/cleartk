@@ -52,7 +52,6 @@ import org.cleartk.type.test.Token;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.testing.util.HideOutput;
 import org.uimafit.util.JCasUtil;
 
 /**
@@ -148,9 +147,7 @@ public class ViterbiDataWriterTest extends DefaultTestBase {
         "PreviousOutcomes_L1_2gram_L2R_H_R",
         "PreviousOutcomes_L1_3gram_L2R_H_R_I");
 
-    HideOutput hider = new HideOutput();
     Train.main(outputDirectoryName + "/", "10", "1");
-    hider.restoreOutput();
 
     engine = AnalysisEngineFactory.createPrimitive(
         TestAnnotator.class,
