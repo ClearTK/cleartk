@@ -1,7 +1,29 @@
+/** 
+ * Copyright (c) 2007-2012, Regents of the University of Colorado 
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. 
+ * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. 
+ * Neither the name of the University of Colorado at Boulder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. 
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE. 
+ */
 package org.cleartk.examples.featuretransformation;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,8 +38,8 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.CleartkAnnotator;
-import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.transform.InstanceDataWriter;
 import org.cleartk.classifier.feature.transform.InstanceStream;
@@ -98,6 +120,10 @@ public class DocumentClassificationEvaluation extends
     public List<String> trainingArguments = Arrays.asList("-t", "0");
   }
 
+  public static enum AnnotatorMode {
+    TRAINING, TESTING, CLASSIFYING
+  }
+
   public static List<File> getFilesFromDirectory(File directory) {
     IOFileFilter svnFileFilter = FileFilterUtils.makeSVNAware(null);
     IOFileFilter dirFilter = FileFilterUtils.makeSVNAware(FileFilterUtils.directoryFileFilter());
@@ -111,10 +137,9 @@ public class DocumentClassificationEvaluation extends
     List<File> trainFiles = getFilesFromDirectory(options.trainDirectory);
     List<File> testFiles = getFilesFromDirectory(options.testDirectory);
 
-    String[] ta = { "-t", "0" };
     DocumentClassificationEvaluation evaluation = new DocumentClassificationEvaluation(
         options.modelsDirectory,
-        ta);
+        options.trainingArguments);
 
     // Run Cross Validation
     List<AnnotationStatistics> foldStats = evaluation.crossValidation(trainFiles, 2);
@@ -123,98 +148,64 @@ public class DocumentClassificationEvaluation extends
     System.err.println("Cross Validation Results:");
     System.err.print(crossValidationStats);
     System.err.println();
+    System.err.println(crossValidationStats.confusions());
+    System.err.println();
 
     // Run Holdout Set
     AnnotationStatistics holdoutStats = evaluation.trainAndTest(trainFiles, testFiles);
     System.err.println("Holdout Set Results:");
     System.err.print(holdoutStats);
     System.err.println();
+    System.err.println(holdoutStats.confusions());
   }
 
   public static final String GOLD_VIEW_NAME = "DocumentClassificationGoldView";
 
   public static final String SYSTEM_VIEW_NAME = CAS.NAME_DEFAULT_SOFA;
 
-  private String[] trainingArguments;
+  private List<String> trainingArguments;
 
-  public DocumentClassificationEvaluation(File baseDirectory, String[] trainingArguments) {
+  public DocumentClassificationEvaluation(File baseDirectory) {
+    super(baseDirectory);
+    this.trainingArguments = Arrays.<String> asList();
+  }
+
+  public DocumentClassificationEvaluation(File baseDirectory, List<String> trainingArguments) {
     super(baseDirectory);
     this.trainingArguments = trainingArguments;
   }
 
   @Override
   protected CollectionReader getCollectionReader(List<File> items) throws Exception {
-    // convert the List<File> to a String[]
-    String[] paths = new String[items.size()];
-    for (int i = 0; i < paths.length; ++i) {
-      paths[i] = items.get(i).getPath();
-    }
-
     return UriCollectionReader.getCollectionReaderFromFiles(items);
-    /*
-     * return CollectionReaderFactory.createCollectionReader( FilesCollectionReader.class,
-     * ExampleComponents.TYPE_SYSTEM_DESCRIPTION, //
-     * TypeSystemDescriptionFactory.createTypeSystemDescription(),
-     * FilesCollectionReader.PARAM_ROOT_FILE, new File(""), FilesCollectionReader.PARAM_FILE_NAMES,
-     * paths);
-     */
   }
 
   @Override
   public void train(CollectionReader collectionReader, File outputDirectory) throws Exception {
-
-    Iterable<Instance<String>> instances = this.extractFeaturesAndWriteInstances(
-        collectionReader,
-        outputDirectory);
-
-    this.transformFeaturesAndWriteTrainingData(instances, outputDirectory);
-    this.trainAndWriteModel(outputDirectory);
-  }
-
-  protected Iterable<Instance<String>> extractFeaturesAndWriteInstances(
-      CollectionReader collectionReader,
-      File outputDirectory) throws Exception {
-    // First pass: Extract features and serialize the instances
+    // ////////////////////////////////////////////////////////////////////////////////
+    // Step 1: Extract features and serialize the raw instance objects
     // Note: DocumentClassificationAnnotator sets the various extractor URI values to null by
     // default. This signals to the feature extractors that they are being written out for training
-    System.out.println("Extracting raw features and writing instances...");
+    // ////////////////////////////////////////////////////////////////////////////////
+    System.err.println("Step 1: Extracting features and writing raw instances data");
 
-    AggregateBuilder builder = new AggregateBuilder();
-
-    builder.add(UriToDocumentTextAnnotator.getDescription());
-
-    // NLP pre-processing components
-    builder.add(SentenceAnnotator.getDescription());
-    builder.add(TokenAnnotator.getDescription());
-    builder.add(DefaultSnowballStemmer.getDescription("English"));
-
-    // Annotates the text in the default view with a gold standard UsenetDocument category
-    builder.add(AnalysisEngineFactory.createPrimitiveDescription(
-        GoldDocumentCategoryAnnotator.class,
-        ExampleComponents.TYPE_SYSTEM_DESCRIPTION));
-
-    // Create the document classifier
-    AnalysisEngineDescription documentClassificationAnnotatorDescription = AnalysisEngineFactory.createPrimitiveDescription(
-        DocumentClassificationAnnotator.class,
-        ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-        DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
-        InstanceDataWriter.class.getName(),
-        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
-        outputDirectory.getPath());
-    builder.add(documentClassificationAnnotatorDescription);
-
-    // Run the pipeline
+    // Create and run the document classification training pipeline
+    AggregateBuilder builder = DocumentClassificationEvaluation.createDocumentClassificationAggregate(
+        outputDirectory,
+        AnnotatorMode.TRAINING);
     SimplePipeline.runPipeline(collectionReader, builder.createAggregateDescription());
 
-    // Load the serialized data
-    return InstanceStream.loadFromDirectory(outputDirectory);
-  }
+    // Load the serialized instance data
+    Iterable<Instance<String>> instances = InstanceStream.loadFromDirectory(outputDirectory);
 
-  protected void transformFeaturesAndWriteTrainingData(
-      Iterable<Instance<String>> instances,
-      File outputDirectory) throws IOException, CleartkProcessingException {
-
-    System.out.println("Transforming features and writing training data");
+    // ////////////////////////////////////////////////////////////////////////////////
+    // Step 2: Transform features and write training data
+    // In this phase, the normalization statistics are computed and the raw
+    // features are transformed into normalized features.
+    // Then the adjusted values are written with a DataWriter (libsvm in this case)
+    // for training
+    // ////////////////////////////////////////////////////////////////////////////////
+    System.err.println("Collection feature normalization statistics");
 
     // Collect TF*IDF stats for computing tf*idf values on extracted tokens
     URI tfIdfDataURI = DocumentClassificationAnnotator.createTokenTfIdfDataURI(outputDirectory);
@@ -245,12 +236,12 @@ public class DocumentClassificationEvaluation extends
     minmaxExtractor.save(minmaxDataURI);
 
     // Rerun training data writer pipeline, to transform the extracted instances -- an alternative,
-    // more costly approach would be to reinitialize the DocumentClassifcationAnnotator above with
+    // more costly approach would be to reinitialize the DocumentClassificationAnnotator above with
     // the URIs for the feature
     // extractor.
     //
     // In this example, we now write in the libsvm format
-    System.out.println("Write out model training file");
+    System.err.println("Write out model training data");
     MultiClassLIBSVMDataWriter dataWriter = new MultiClassLIBSVMDataWriter(outputDirectory);
     for (Instance<String> instance : instances) {
       instance = extractor.transform(instance);
@@ -261,19 +252,38 @@ public class DocumentClassificationEvaluation extends
     }
     dataWriter.finish();
 
-  }
-
-  protected void trainAndWriteModel(File outputDirectory) throws Exception {
-    System.out.println("Training and writing model file.");
-    // train the classifier and package it into a .jar file
+    // //////////////////////////////////////////////////////////////////////////////
+    // Stage 3: Train and write model
+    // Now that the features have been extracted and normalized, we can proceed
+    // in running machine learning to train and package a model
+    // //////////////////////////////////////////////////////////////////////////////
+    System.err.println("Train model and write model.jar file.");
     HideOutput hider = new HideOutput();
-    JarClassifierBuilder.trainAndPackage(outputDirectory, this.trainingArguments);
+    JarClassifierBuilder.trainAndPackage(
+        outputDirectory,
+        this.trainingArguments.toArray(new String[this.trainingArguments.size()]));
     hider.restoreOutput();
   }
 
-  @Override
-  protected AnnotationStatistics test(CollectionReader collectionReader, File directory)
-      throws Exception {
+  /**
+   * Creates the preprocessing pipeline needed for document classification. Specifically this
+   * consists of:
+   * <ul>
+   * <li>Populating the default view with the document text (as specified in the URIView)
+   * <li>Sentence segmentation
+   * <li>Tokenization
+   * <li>Stemming
+   * <li>[optional] labeling the document with gold-standard document categories
+   * </ul>
+   * 
+   * @param modelDirectory
+   * @param mode
+   * @return
+   * @throws ResourceInitializationException
+   */
+  public static AggregateBuilder createPreprocessingAggregate(
+      File modelDirectory,
+      AnnotatorMode mode) throws ResourceInitializationException {
     AggregateBuilder builder = new AggregateBuilder();
     builder.add(UriToDocumentTextAnnotator.getDescription());
 
@@ -282,42 +292,112 @@ public class DocumentClassificationEvaluation extends
     builder.add(TokenAnnotator.getDescription());
     builder.add(DefaultSnowballStemmer.getDescription("English"));
 
-    // Copies the text from the default view to a separate gold view
-    builder.add(AnalysisEngineFactory.createPrimitiveDescription(
-        ViewTextCopierAnnotator.class,
-        ViewTextCopierAnnotator.PARAM_SOURCE_VIEW_NAME,
-        CAS.NAME_DEFAULT_SOFA,
-        ViewTextCopierAnnotator.PARAM_DESTINATION_VIEW_NAME,
-        GOLD_VIEW_NAME));
+    // Now annotate documents with gold standard labels
+    switch (mode) {
+      case TRAINING:
+        // If this is training, put the label categories directly into the default view
+        builder.add(AnalysisEngineFactory.createPrimitiveDescription(
+            GoldDocumentCategoryAnnotator.class,
+            ExampleComponents.TYPE_SYSTEM_DESCRIPTION));
+        break;
 
-    // Annotates the text in the gold view with a UsenetDocument category
-    builder.add(AnalysisEngineFactory.createPrimitiveDescription(
-        GoldDocumentCategoryAnnotator.class,
-        ExampleComponents.TYPE_SYSTEM_DESCRIPTION), CAS.NAME_DEFAULT_SOFA, GOLD_VIEW_NAME);
+      case TESTING:
+        // Copies the text from the default view to a separate gold view
+        builder.add(AnalysisEngineFactory.createPrimitiveDescription(
+            ViewTextCopierAnnotator.class,
+            ViewTextCopierAnnotator.PARAM_SOURCE_VIEW_NAME,
+            CAS.NAME_DEFAULT_SOFA,
+            ViewTextCopierAnnotator.PARAM_DESTINATION_VIEW_NAME,
+            GOLD_VIEW_NAME));
 
-    // Create document classifier
-    AnalysisEngineDescription documentClassificationAnnotatorDescription = AnalysisEngineFactory.createPrimitiveDescription(
-        DocumentClassificationAnnotator.class,
-        ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
-        CleartkAnnotator.PARAM_IS_TRAINING,
-        false,
-        GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
-        new File(directory, "model.jar").getPath());
-    ConfigurationParameterFactory.addConfigurationParameters(
-        documentClassificationAnnotatorDescription,
-        DocumentClassificationAnnotator.PARAM_TF_IDF_URI,
-        DocumentClassificationAnnotator.createTokenTfIdfDataURI(directory),
-        DocumentClassificationAnnotator.PARAM_TF_IDF_CENTROID_SIMILARITY_URI,
-        DocumentClassificationAnnotator.createIdfCentroidSimilarityDataURI(directory),
-        DocumentClassificationAnnotator.PARAM_MINMAX_URI,
-        DocumentClassificationAnnotator.createMinMaxDataURI(directory),
-        DocumentClassificationAnnotator.PARAM_ZMUS_URI,
-        DocumentClassificationAnnotator.createZmusDataURI(directory));
-    builder.add(documentClassificationAnnotatorDescription);
+        // If this is testing, put the document categories in the gold view
+        // The extra parameters to add() map the default view to the gold view.
+        builder.add(AnalysisEngineFactory.createPrimitiveDescription(
+            GoldDocumentCategoryAnnotator.class,
+            ExampleComponents.TYPE_SYSTEM_DESCRIPTION), CAS.NAME_DEFAULT_SOFA, GOLD_VIEW_NAME);
+        break;
 
+      case CLASSIFYING:
+      default:
+        // In normal mode don't deal with gold labels
+        break;
+    }
+
+    return builder;
+  }
+
+  /**
+   * Creates the aggregate builder for the document classification pipeline
+   * 
+   * @param modelDirectory
+   * @param mode
+   * @return
+   * @throws ResourceInitializationException
+   */
+  public static AggregateBuilder createDocumentClassificationAggregate(
+      File modelDirectory,
+      AnnotatorMode mode) throws ResourceInitializationException {
+
+    AggregateBuilder builder = DocumentClassificationEvaluation.createPreprocessingAggregate(
+        modelDirectory,
+        mode);
+
+    switch (mode) {
+      case TRAINING:
+        // For training we will create DocumentClassificationAnnotator that
+        // Extracts the features as is, and then writes out the data to
+        // a serialized instance file.
+        builder.add(AnalysisEngineFactory.createPrimitiveDescription(
+            DocumentClassificationAnnotator.class,
+            ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+            DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+            InstanceDataWriter.class.getName(),
+            DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+            modelDirectory.getPath()));
+        break;
+      case TESTING:
+      case CLASSIFYING:
+      default:
+        // For testing and standalone classification, we want to create a
+        // DocumentClassificationAnnotator using
+        // all of the model data computed during training. This includes feature normalization data
+        // and thei model jar file for the classifying algorithm
+        AnalysisEngineDescription documentClassificationAnnotator = AnalysisEngineFactory.createPrimitiveDescription(
+            DocumentClassificationAnnotator.class,
+            ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+            CleartkAnnotator.PARAM_IS_TRAINING,
+            false,
+            GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
+            new File(modelDirectory, "model.jar").getPath());
+
+        ConfigurationParameterFactory.addConfigurationParameters(
+            documentClassificationAnnotator,
+            DocumentClassificationAnnotator.PARAM_TF_IDF_URI,
+            DocumentClassificationAnnotator.createTokenTfIdfDataURI(modelDirectory),
+            DocumentClassificationAnnotator.PARAM_TF_IDF_CENTROID_SIMILARITY_URI,
+            DocumentClassificationAnnotator.createIdfCentroidSimilarityDataURI(modelDirectory),
+            DocumentClassificationAnnotator.PARAM_MINMAX_URI,
+            DocumentClassificationAnnotator.createMinMaxDataURI(modelDirectory),
+            DocumentClassificationAnnotator.PARAM_ZMUS_URI,
+            DocumentClassificationAnnotator.createZmusDataURI(modelDirectory));
+        builder.add(documentClassificationAnnotator);
+        break;
+    }
+    return builder;
+  }
+
+  @Override
+  protected AnnotationStatistics test(CollectionReader collectionReader, File directory)
+      throws Exception {
     AnnotationStatistics stats = new AnnotationStatistics("category");
 
+    // Create the document classification pipeline
+    AggregateBuilder builder = DocumentClassificationEvaluation.createDocumentClassificationAggregate(
+        directory,
+        AnnotatorMode.TESTING);
     AnalysisEngine engine = builder.createAggregate();
+
+    // Run and evaluate
     for (JCas jCas : new JCasIterable(collectionReader, engine)) {
       JCas goldView = jCas.getView(GOLD_VIEW_NAME);
       JCas systemView = jCas.getView(DocumentClassificationEvaluation.SYSTEM_VIEW_NAME);

@@ -46,7 +46,6 @@ import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.classifier.opennlp.MaxentDataWriter;
 import org.cleartk.classifier.opennlp.MaxentDataWriterFactory_ImplBase;
 import org.cleartk.classifier.svmlight.OVASVMlightDataWriter;
-import org.cleartk.classifier.svmlight.RunSVMlightTest;
 import org.cleartk.classifier.viterbi.DefaultOutcomeFeatureExtractor;
 import org.cleartk.classifier.viterbi.ViterbiClassifier;
 import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
@@ -74,6 +73,21 @@ import org.uimafit.testing.util.HideOutput;
  */
 
 public class ExamplePosClassifierTest extends ExamplesTestBase {
+
+  /**
+   * Value for the {@link #SKIP_TESTS_PROPERTY} property that indicates that tests requiring the
+   * SVMlight executables to be installed on your system's path should be disabled. Current value:
+   * {@value #SVMLIGHT_TESTS_PROPERTY_VALUE}.
+   */
+  public static final String SVMLIGHT_TESTS_PROPERTY_VALUE = "svmlight";
+
+  /**
+   * Message that will be logged at the beginning of each test that requires the SVMlight
+   * executables.
+   */
+  public static final String SVMLIGHT_TESTS_ENABLED_MESSAGE = createTestEnabledMessage(
+      SVMLIGHT_TESTS_PROPERTY_VALUE,
+      "This test requires installation of SVMlight executables");
 
   @Test
   public void testLibsvm() throws Exception {
@@ -303,8 +317,8 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
 
   @Test
   public void testSVMLIGHT() throws Exception {
-    this.assumeTestsEnabled(RunSVMlightTest.SVMLIGHT_TESTS_PROPERTY_VALUE);
-    this.logger.info(RunSVMlightTest.SVMLIGHT_TESTS_ENABLED_MESSAGE);
+    this.assumeTestsEnabled(SVMLIGHT_TESTS_PROPERTY_VALUE);
+    this.logger.info(SVMLIGHT_TESTS_ENABLED_MESSAGE);
 
     String outDirectoryName = outputDirectoryName + "/svmlight";
     AnalysisEngineDescription dataWriter = AnalysisEngineFactory.createPrimitiveDescription(
