@@ -50,6 +50,7 @@ import org.uimafit.factory.CollectionReaderFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
 
 import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 
 /**
@@ -69,18 +70,24 @@ import com.google.common.collect.Iterables;
  */
 public class UriCollectionReader extends JCasCollectionReader_ImplBase {
 
-  public static CollectionReaderDescription getDescriptionFromDirectory(String directory)
-      throws ResourceInitializationException {
+  public static CollectionReaderDescription getDescriptionFromDirectory(
+      String directory,
+      boolean ignoreSystemFiles) throws ResourceInitializationException {
     return CollectionReaderFactory.createDescription(
         UriCollectionReader.class,
         null,
         PARAM_DIRECTORY,
-        directory);
+        directory,
+        PARAM_IGNORE_SYSTEM_FILES,
+        ignoreSystemFiles);
   }
 
-  public static CollectionReader getCollectionReaderFromDirectory(String directory)
-      throws ResourceInitializationException {
-    return CollectionReaderFactory.createCollectionReader(getDescriptionFromDirectory(directory));
+  public static CollectionReader getCollectionReaderFromDirectory(
+      String directory,
+      boolean ignoreSystemFiles) throws ResourceInitializationException {
+    return CollectionReaderFactory.createCollectionReader(getDescriptionFromDirectory(
+        directory,
+        ignoreSystemFiles));
   }
 
   public static CollectionReaderDescription getDescriptionFromFiles(List<File> files)
@@ -141,8 +148,18 @@ public class UriCollectionReader extends JCasCollectionReader_ImplBase {
       UriCollectionReader.class,
       "uriList");
 
+  public static final String PARAM_IGNORE_SYSTEM_FILES = ConfigurationParameterFactory.createConfigurationParameterName(
+      FilesCollectionReader.class,
+      "ignoreSystemFiles");
+
   @ConfigurationParameter(
-      description = "provides a list of URIs that should be written to the default sofa within the CAS")
+      description = "This parameter provides a flag for filtering out directories and files that begin with a period '.' to loosely correspond to 'system' files.  "
+          + "Setting this to true when PARAM_DIRECTORY is set will prevent traversal into such directories.  If PARAM_FILES is set, it will filter out any system files."
+          + "This has no influence on PARAM_URIS as proper URI construction is the responsibility of the caller")
+  private boolean ignoreSystemFiles = true;
+
+  @ConfigurationParameter(
+      description = "This parameter provides a list of URIs that should be written to the default sofa within the CAS.  Proper URI construction is the responsibility of the caller")
   private List<String> uriList = new ArrayList<String>();
 
   protected Iterable<URI> uris;
@@ -171,6 +188,15 @@ public class UriCollectionReader extends JCasCollectionReader_ImplBase {
     }
   };
 
+  protected RegexFileFilter systemFileFilter = new RegexFileFilter("^[^\\.].*$");
+
+  protected Predicate<File> rejectSystemFile = new Predicate<File>() {
+    @Override
+    public boolean apply(File input) {
+      return systemFileFilter.accept(input);
+    }
+  };
+
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
 
@@ -181,24 +207,37 @@ public class UriCollectionReader extends JCasCollectionReader_ImplBase {
 
     // Convert list of files to URIs
     Iterable<URI> urisFromFiles = new ArrayList<URI>();
+    Iterable<File> filteredFiles = (this.ignoreSystemFiles) ? Iterables.filter(
+        this.fileList,
+        this.rejectSystemFile) : this.fileList;
     this.uriCount += this.fileList.size();
-    urisFromFiles = Iterables.transform(this.fileList, this.fileToUri);
+    urisFromFiles = Iterables.transform(filteredFiles, this.fileToUri);
 
     // Read file names from directory and convert list of files to URI
     Iterable<URI> urisFromDirectory = new ArrayList<URI>();
-    if (this.isRootDirectoryValid()) {
-      IOFileFilter svnFileFilter = FileFilterUtils.makeSVNAware(null);
-      IOFileFilter dirFilter = FileFilterUtils.makeSVNAware(FileFilterUtils.directoryFileFilter());
-      Collection<File> files = FileUtils.listFiles(this.directory, svnFileFilter, dirFilter);
+    if (this.isDirectoryValid()) {
+      IOFileFilter dirFilter;
+      IOFileFilter fileFilter;
+
+      if (this.ignoreSystemFiles) {
+        dirFilter = FileFilterUtils.and(systemFileFilter, FileFilterUtils.directoryFileFilter());
+        fileFilter = FileFilterUtils.fileFileFilter();
+      } else {
+        dirFilter = FileFilterUtils.makeSVNAware(FileFilterUtils.directoryFileFilter());
+        fileFilter = FileFilterUtils.and(FileFilterUtils.fileFileFilter(), systemFileFilter);
+      }
+
+      Collection<File> files = FileUtils.listFiles(this.directory, fileFilter, dirFilter);
       this.uriCount += files.size();
       urisFromDirectory = Iterables.transform(files, this.fileToUri);
     }
 
+    // Combine URI iterables from all conditions and initialize iterator
     this.uris = Iterables.concat(urisFromUris, urisFromFiles, urisFromDirectory);
     this.uriIter = this.uris.iterator();
   }
 
-  private boolean isRootDirectoryValid() throws ResourceInitializationException {
+  private boolean isDirectoryValid() throws ResourceInitializationException {
     if (this.directory == null) {
       return false;
     }
