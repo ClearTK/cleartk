@@ -26,7 +26,6 @@ package org.cleartk.classifier.svmlight;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
@@ -112,13 +111,10 @@ public class OVASVMlightClassifierBuilder extends
       this.models.put(label, model);
 
       JarStreams.getNextJarEntry(modelStream, String.format("model-%d.sigmoid", label));
-      ObjectInput in = new ObjectInputStream(modelStream);
       try {
-        this.sigmoids.put(label, (Sigmoid) in.readObject());
+        this.sigmoids.put(label, (Sigmoid) new ObjectInputStream(modelStream).readObject());
       } catch (ClassNotFoundException e) {
         throw new IOException(e);
-      } finally {
-        in.close();
       }
 
       label += 1;
