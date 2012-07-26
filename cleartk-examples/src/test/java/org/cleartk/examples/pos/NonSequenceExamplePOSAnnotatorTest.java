@@ -40,7 +40,6 @@ import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.libsvm.MultiClassLIBSVMDataWriter;
 import org.cleartk.classifier.opennlp.MaxentDataWriter;
 import org.cleartk.classifier.svmlight.OVASVMlightDataWriter;
-import org.cleartk.classifier.svmlight.RunSVMlightTest;
 import org.cleartk.examples.ExampleComponents;
 import org.cleartk.examples.ExamplesTestBase;
 import org.cleartk.syntax.constituent.TreebankConstants;
@@ -126,8 +125,8 @@ public class NonSequenceExamplePOSAnnotatorTest extends ExamplesTestBase {
 
   @Test
   public void testSVMLIGHT() throws Exception {
-    this.assumeTestsEnabled(RunSVMlightTest.SVMLIGHT_TESTS_PROPERTY_VALUE);
-    this.logger.info(RunSVMlightTest.SVMLIGHT_TESTS_ENABLED_MESSAGE);
+    this.assumeTestsEnabled(ExamplePosClassifierTest.SVMLIGHT_TESTS_PROPERTY_VALUE);
+    this.logger.info(ExamplePosClassifierTest.SVMLIGHT_TESTS_ENABLED_MESSAGE);
 
     String svmlightDirectoryName = outputDirectoryName + "/svmlight";
     AnalysisEngineDescription dataWriter = AnalysisEngineFactory.createPrimitiveDescription(
