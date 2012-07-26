@@ -16,10 +16,6 @@
 			<id>cleartk-googlecode</id>
 			<url>http://cleartk.googlecode.com/svn/repo/</url>
 		</repository>
-		<repository>
-			<id>weka-releases</id>
-			<url>https://adams.cms.waikato.ac.nz/nexus/content/repositories/weka-releases/</url>
-		</repository>
 	</repositories>
 	<dependencies>
 		<dependency>
@@ -29,9 +25,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>weka-dev</groupId>
-			<artifactId>weka</artifactId>
-			<version>3.7.5</version>
+			<groupId>nz.ac.waikato.cms.weka</groupId>
+			<artifactId>weka-dev</artifactId>
+			<version>3.7.6</version>
 		</dependency>
 
 		<dependency>
