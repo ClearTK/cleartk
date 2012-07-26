@@ -130,11 +130,11 @@ public class UriCollectionReader extends JCasCollectionReader_ImplBase {
 
   public static final String PARAM_FILES = ConfigurationParameterFactory.createConfigurationParameterName(
       UriCollectionReader.class,
-      "fileList");
+      "files");
 
   @ConfigurationParameter(
       description = "provides a list of files whose URI should be written to the default sofa within the CAS")
-  private List<File> fileList = new ArrayList<File>();
+  private List<File> files = new ArrayList<File>();
 
   public static final String PARAM_DIRECTORY = ConfigurationParameterFactory.createConfigurationParameterName(
       UriCollectionReader.class,
@@ -146,23 +146,23 @@ public class UriCollectionReader extends JCasCollectionReader_ImplBase {
 
   public static final String PARAM_URIS = ConfigurationParameterFactory.createConfigurationParameterName(
       UriCollectionReader.class,
-      "uriList");
+      "uris");
 
   @ConfigurationParameter(
       description = "This parameter provides a list of URIs that should be written to the default sofa within the CAS.  Proper URI construction is the responsibility of the caller")
-  private List<URI> uriList = new ArrayList<URI>();
+  private List<URI> uris = new ArrayList<URI>();
 
   public static final String PARAM_IGNORE_SYSTEM_FILES = ConfigurationParameterFactory.createConfigurationParameterName(
-      FilesCollectionReader.class,
+      UriCollectionReader.class,
       "ignoreSystemFiles");
 
   @ConfigurationParameter(
+      defaultValue = "true",
+      mandatory = false,
       description = "This parameter provides a flag for filtering out directories and files that begin with a period '.' to loosely correspond to 'system' files.  "
           + "Setting this to true when PARAM_DIRECTORY is set will prevent traversal into such directories.  If PARAM_FILES is set, it will filter out any system files."
           + "This has no influence on PARAM_URIS as proper URI construction is the responsibility of the caller")
   private boolean ignoreSystemFiles = true;
-
-  protected Iterable<URI> uris;
 
   protected Iterator<URI> uriIter;
 
@@ -203,9 +203,9 @@ public class UriCollectionReader extends JCasCollectionReader_ImplBase {
     // Convert list of files to URIs
     Iterable<URI> urisFromFiles = new ArrayList<URI>();
     Iterable<File> filteredFiles = (this.ignoreSystemFiles) ? Iterables.filter(
-        this.fileList,
-        this.rejectSystemFile) : this.fileList;
-    this.uriCount += this.fileList.size();
+        this.files,
+        this.rejectSystemFile) : this.files;
+    this.uriCount += this.files.size();
     urisFromFiles = Iterables.transform(filteredFiles, this.fileToUri);
 
     // Read file names from directory and convert list of files to URI
@@ -222,14 +222,13 @@ public class UriCollectionReader extends JCasCollectionReader_ImplBase {
         fileFilter = FileFilterUtils.and(FileFilterUtils.fileFileFilter(), systemFileFilter);
       }
 
-      Collection<File> files = FileUtils.listFiles(this.directory, fileFilter, dirFilter);
-      this.uriCount += files.size();
-      urisFromDirectory = Iterables.transform(files, this.fileToUri);
+      Collection<File> allFiles = FileUtils.listFiles(this.directory, fileFilter, dirFilter);
+      this.uriCount += allFiles.size();
+      urisFromDirectory = Iterables.transform(allFiles, this.fileToUri);
     }
 
     // Combine URI iterables from all conditions and initialize iterator
-    this.uris = Iterables.concat(this.uriList, urisFromFiles, urisFromDirectory);
-    this.uriIter = this.uris.iterator();
+    this.uriIter = Iterables.concat(this.uris, urisFromFiles, urisFromDirectory).iterator();
   }
 
   private boolean isDirectoryValid() throws ResourceInitializationException {
