@@ -50,8 +50,7 @@ public class RunModel {
     public File trainDirectory = new File("src/main/resources/data/3news-bydate/train");
 
     @Option(
-        name = "-m",
-        aliases = "--modelsDirectory",
+        name = "--models-dir",
         usage = "specify the directory in which to write out the trained model files")
     public File modelsDirectory = new File("target/document_classification/models");
   }
@@ -68,7 +67,7 @@ public class RunModel {
 
     AggregateBuilder builder = DocumentClassificationEvaluation.createDocumentClassificationAggregate(
         options.modelsDirectory,
-        AnnotatorMode.CLASSIFYING);
+        AnnotatorMode.CLASSIFY);
 
     SimplePipeline.runPipeline(collectionReader, builder.createAggregateDescription());
   }
