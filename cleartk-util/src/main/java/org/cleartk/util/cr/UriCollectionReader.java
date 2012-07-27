@@ -71,7 +71,7 @@ import com.google.common.collect.Iterables;
 public class UriCollectionReader extends JCasCollectionReader_ImplBase {
 
   public static CollectionReaderDescription getDescriptionFromDirectory(
-      String directory,
+      File directory,
       boolean ignoreSystemFiles) throws ResourceInitializationException {
     return CollectionReaderFactory.createDescription(
         UriCollectionReader.class,
@@ -83,7 +83,7 @@ public class UriCollectionReader extends JCasCollectionReader_ImplBase {
   }
 
   public static CollectionReader getCollectionReaderFromDirectory(
-      String directory,
+      File directory,
       boolean ignoreSystemFiles) throws ResourceInitializationException {
     return CollectionReaderFactory.createCollectionReader(getDescriptionFromDirectory(
         directory,
