@@ -387,7 +387,7 @@ public class DocumentClassificationEvaluation extends
   @Override
   protected AnnotationStatistics test(CollectionReader collectionReader, File directory)
       throws Exception {
-    AnnotationStatistics stats = new AnnotationStatistics("category");
+    AnnotationStatistics stats = new AnnotationStatistics();
 
     // Create the document classification pipeline
     AggregateBuilder builder = DocumentClassificationEvaluation.createDocumentClassificationAggregate(
@@ -405,7 +405,7 @@ public class DocumentClassificationEvaluation extends
       Collection<UsenetDocument> systemCategories = JCasUtil.select(
           systemView,
           UsenetDocument.class);
-      stats.add(goldCategories, systemCategories);
+      stats.add(goldCategories, systemCategories, "category");
     }
 
     return stats;

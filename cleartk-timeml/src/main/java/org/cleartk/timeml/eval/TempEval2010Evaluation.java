@@ -63,7 +63,6 @@ import org.uimafit.pipeline.JCasIterable;
 import org.uimafit.pipeline.SimplePipeline;
 import org.xml.sax.SAXException;
 
-
 /**
  * <br>
  * Copyright (c) 2011, Regents of the University of Colorado <br>
@@ -182,8 +181,7 @@ public class TempEval2010Evaluation extends
     Map<ModelInfo<?>, AnnotationStatistics> modelInfoToStatistics;
     modelInfoToStatistics = new HashMap<ModelInfo<?>, AnnotationStatistics>();
     for (ModelInfo<?> modelInfo : this.modelInfos) {
-      String featureName = modelInfo.annotatedFeatureName;
-      modelInfoToStatistics.put(modelInfo, new AnnotationStatistics(featureName));
+      modelInfoToStatistics.put(modelInfo, new AnnotationStatistics());
     }
 
     // gather statistics over all the CASes in the test set

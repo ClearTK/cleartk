@@ -87,8 +87,8 @@ public class AnnotationStatisticsTest extends DefaultTestBase {
         predictedView,
         Token.class));
 
-    AnnotationStatistics stats = new AnnotationStatistics("pos");
-    stats.add(referenceTokens, predictedTokens);
+    AnnotationStatistics stats = new AnnotationStatistics();
+    stats.add(referenceTokens, predictedTokens, "pos");
 
     Assert.assertEquals(0.5, stats.precision(), 1e-10);
     Assert.assertEquals(0.25, stats.recall(), 1e-10);
@@ -140,13 +140,15 @@ public class AnnotationStatisticsTest extends DefaultTestBase {
         Token.class));
 
     // use the text of the annotation, rather than its span, to determine match
-    AnnotationStatistics stats = new AnnotationStatistics("pos");
-    stats.add(referenceTokens, predictedTokens, new Function<Token, String>() {
+    Function<Token, String> tokenToCoveredText = new Function<Token, String>() {
       @Override
       public String apply(Token token) {
         return token.getCoveredText();
       }
-    });
+    };
+    Function<Token, String> tokenToPOS = AnnotationStatistics.<Token> annotationToFeatureValue("pos");
+    AnnotationStatistics stats = new AnnotationStatistics();
+    stats.add(referenceTokens, predictedTokens, tokenToCoveredText, tokenToPOS);
 
     Assert.assertEquals(0.5, stats.precision(), 1e-10);
     Assert.assertEquals(0.5, stats.recall(), 1e-10);
@@ -171,5 +173,4 @@ public class AnnotationStatisticsTest extends DefaultTestBase {
     Assert.assertEquals(1, stats.confusions().getCount(null, "B"));
     Assert.assertEquals(0, stats.confusions().getCount(null, null));
   }
-
 }

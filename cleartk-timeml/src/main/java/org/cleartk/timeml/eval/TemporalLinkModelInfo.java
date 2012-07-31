@@ -76,7 +76,11 @@ public class TemporalLinkModelInfo extends ModelInfo<TemporalLink> {
         systemTlinksWithGoldSpans.add(tlink);
       }
     }
-    statistics.add(goldTlinks, systemTlinksWithGoldSpans, this.annotationConverter);
+    statistics.add(
+        goldTlinks,
+        systemTlinksWithGoldSpans,
+        this.annotationConverter,
+        AnnotationStatistics.<TemporalLink> annotationToFeatureValue(this.annotatedFeatureName));
   }
 
   private static class TemporalLinkSpan {

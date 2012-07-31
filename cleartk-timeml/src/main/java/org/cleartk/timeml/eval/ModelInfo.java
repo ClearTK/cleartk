@@ -74,6 +74,10 @@ public class ModelInfo<ANNOTATION_TYPE extends TOP> {
   public void updateStatistics(AnnotationStatistics statistics, JCas goldView, JCas systemView) {
     Collection<ANNOTATION_TYPE> goldAnns = JCasUtil.select(goldView, this.annotatedClass);
     Collection<ANNOTATION_TYPE> systemAnns = JCasUtil.select(systemView, this.annotatedClass);
-    statistics.add(goldAnns, systemAnns, this.annotationConverter);
+    statistics.add(
+        goldAnns,
+        systemAnns,
+        this.annotationConverter,
+        AnnotationStatistics.<ANNOTATION_TYPE> annotationToFeatureValue(this.annotatedFeatureName));
   }
 }

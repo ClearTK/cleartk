@@ -58,8 +58,6 @@ public class AnnotationStatistics implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
-  private String outcomeFeatureName;
-
   private Multiset<String> referenceOutcomes;
 
   private Multiset<String> predictedOutcomes;
@@ -69,16 +67,52 @@ public class AnnotationStatistics implements Serializable {
   private ConfusionMatrix<String> confusionMatrix;
 
   /**
-   * Converter from an {@link Annotation} to a hashable representation of its begin and end offsets.
+   * Creates a {@link Function} that converts an {@link Annotation} into a hashable representation
+   * of its begin and end offsets.
    * 
-   * The {@link Function} created by this method is suitable for passing to
-   * {@link #add(Collection, Collection, Function)}.
+   * The {@link Function} created by this method is suitable for passing to the first
+   * {@link Function} argument of {@link #add(Collection, Collection, Function, Function)}.
    */
   public static <ANNOTATION_TYPE extends Annotation> Function<ANNOTATION_TYPE, Span> annotationToSpan() {
     return new Function<ANNOTATION_TYPE, Span>() {
       @Override
       public Span apply(ANNOTATION_TYPE annotation) {
         return new Span(annotation);
+      }
+    };
+  }
+
+  /**
+   * Creates a {@link Function} that extracts a feature value from a {@link TOP}.
+   * 
+   * The {@link Function} created by this method is suitable for passing to the second
+   * {@link Function} argument of {@link #add(Collection, Collection, Function, Function)}.
+   * 
+   * @param featureName
+   *          The name of the feature whose value is to be extracted.
+   */
+  public static <ANNOTATION_TYPE extends TOP> Function<ANNOTATION_TYPE, String> annotationToFeatureValue(
+      final String featureName) {
+    return new Function<ANNOTATION_TYPE, String>() {
+      @Override
+      public String apply(ANNOTATION_TYPE annotation) {
+        Feature feature = annotation.getType().getFeatureByBaseName(featureName);
+        return annotation.getFeatureValueAsString(feature);
+      }
+    };
+  }
+
+  /**
+   * Creates a {@link Function} that always returns null.
+   * 
+   * This may be useful when only the span of the offset is important, but you still need to pass in
+   * the final argument of {@link #add(Collection, Collection, Function, Function)}.
+   */
+  public static <ANNOTATION_TYPE> Function<ANNOTATION_TYPE, String> annotationToNull() {
+    return new Function<ANNOTATION_TYPE, String>() {
+      @Override
+      public String apply(ANNOTATION_TYPE annotation) {
+        return null;
       }
     };
   }
@@ -102,22 +136,13 @@ public class AnnotationStatistics implements Serializable {
   }
 
   /**
-   * Create an AnnotationStatistics that only compares {@link Annotation}s based only on their begin
-   * and end offsets.
-   */
-  public AnnotationStatistics() {
-    this(null);
-  }
-
-  /**
    * Create an AnnotationStatistics that compares {@link Annotation}s based on their begin and end
    * offsets, plus a {@link Feature} of the {@link Annotation} that represents the outcome or label.
    * 
    * @param outcomeFeatureName
    *          The name of the feature that represents the outcome.
    */
-  public AnnotationStatistics(String outcomeFeatureName) {
-    this.outcomeFeatureName = outcomeFeatureName;
+  public AnnotationStatistics() {
     this.referenceOutcomes = HashMultiset.create();
     this.predictedOutcomes = HashMultiset.create();
     this.correctOutcomes = HashMultiset.create();
@@ -127,6 +152,8 @@ public class AnnotationStatistics implements Serializable {
   /**
    * Update the statistics, comparing the reference annotations to the predicted annotations.
    * 
+   * Annotations are considered to match if they have the same character offsets in the text.
+   * 
    * @param referenceAnnotations
    *          The reference annotations, typically identified by humans.
    * @param predictedAnnotations
@@ -135,14 +162,41 @@ public class AnnotationStatistics implements Serializable {
   public <ANNOTATION_TYPE extends Annotation> void add(
       Collection<? extends ANNOTATION_TYPE> referenceAnnotations,
       Collection<? extends ANNOTATION_TYPE> predictedAnnotations) {
-    this.add(
-        referenceAnnotations,
-        predictedAnnotations,
-        AnnotationStatistics.<ANNOTATION_TYPE> annotationToSpan());
+    this.add(referenceAnnotations, predictedAnnotations, null);
   }
 
   /**
    * Update the statistics, comparing the reference annotations to the predicted annotations.
+   * 
+   * Annotations are considered to match if they have the same character offsets in the text, and if
+   * they have the same value for the specified annotation feature.
+   * 
+   * @param referenceAnnotations
+   *          The reference annotations, typically identified by humans.
+   * @param predictedAnnotations
+   *          The predicted annotations, typically identified by a model.
+   * @param outcomeFeatureName
+   *          The name of the feature
+   */
+  public <ANNOTATION_TYPE extends Annotation> void add(
+      Collection<? extends ANNOTATION_TYPE> referenceAnnotations,
+      Collection<? extends ANNOTATION_TYPE> predictedAnnotations,
+      String outcomeFeatureName) {
+    this.add(
+        referenceAnnotations,
+        predictedAnnotations,
+        AnnotationStatistics.<ANNOTATION_TYPE> annotationToSpan(),
+        outcomeFeatureName == null
+            ? AnnotationStatistics.<ANNOTATION_TYPE> annotationToNull()
+            : AnnotationStatistics.<ANNOTATION_TYPE> annotationToFeatureValue(outcomeFeatureName));
+  }
+
+  /**
+   * Update the statistics, comparing the reference annotations to the predicted annotations.
+   * 
+   * Annotations are considered to match if they have the same span (according to
+   * {@code annotationToSpan}) and if they have the same outcome (according to
+   * {@code annotationToOutcome}).
    * 
    * @param referenceAnnotations
    *          The reference annotations, typically identified by humans.
@@ -152,22 +206,28 @@ public class AnnotationStatistics implements Serializable {
    *          A function that defines how to convert an annotation into a hashable object that
    *          represents the span of that annotation. The {@link #annotationToSpan()} method
    *          provides an example function that could be used here.
+   * @param annotationToOutcome
+   *          A function that defines how to convert an annotation into an object that represents
+   *          the outcome (or "label") assigned to that annotation. The
+   *          {@link #annotationToFeatureValue(String)} method provides a sample function that could
+   *          be used here.
    */
-  public <ANNOTATION_TYPE extends TOP, SPAN_TYPE> void add(
+  public <ANNOTATION_TYPE, SPAN_TYPE> void add(
       Collection<? extends ANNOTATION_TYPE> referenceAnnotations,
       Collection<? extends ANNOTATION_TYPE> predictedAnnotations,
-      Function<ANNOTATION_TYPE, SPAN_TYPE> annotationToSpan) {
+      Function<ANNOTATION_TYPE, SPAN_TYPE> annotationToSpan,
+      Function<ANNOTATION_TYPE, String> annotationToOutcome) {
 
     // map gold spans to their outcomes
     Map<SPAN_TYPE, String> referenceSpanOutcomes = new HashMap<SPAN_TYPE, String>();
     for (ANNOTATION_TYPE ann : referenceAnnotations) {
-      referenceSpanOutcomes.put(annotationToSpan.apply(ann), this.getOutcome(ann));
+      referenceSpanOutcomes.put(annotationToSpan.apply(ann), annotationToOutcome.apply(ann));
     }
 
     // map system spans to their outcomes
     Map<SPAN_TYPE, String> predictedSpanOutcomes = new HashMap<SPAN_TYPE, String>();
     for (ANNOTATION_TYPE ann : predictedAnnotations) {
-      predictedSpanOutcomes.put(annotationToSpan.apply(ann), this.getOutcome(ann));
+      predictedSpanOutcomes.put(annotationToSpan.apply(ann), annotationToOutcome.apply(ann));
     }
 
     // update the gold and system outcomes
@@ -285,15 +345,6 @@ public class AnnotationStatistics implements Serializable {
       }
     }
     return result.toString();
-  }
-
-  private String getOutcome(TOP top) {
-    if (this.outcomeFeatureName == null) {
-      return null;
-    } else {
-      Feature feature = top.getType().getFeatureByBaseName(this.outcomeFeatureName);
-      return top.getFeatureValueAsString(feature);
-    }
   }
 
   private static class Span {
