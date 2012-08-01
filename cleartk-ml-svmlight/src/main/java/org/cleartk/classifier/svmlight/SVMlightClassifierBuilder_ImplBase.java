@@ -39,6 +39,8 @@ import org.cleartk.classifier.jar.JarStreams;
 import org.cleartk.classifier.svmlight.model.SVMlightModel;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
+import com.google.common.base.Joiner;
+
 /**
  * <br>
  * Copyright (c) 2007-2011, Regents of the University of Colorado <br>
@@ -82,14 +84,10 @@ public abstract class SVMlightClassifierBuilder_ImplBase<CLASSIFIER_TYPE extends
     command[command.length - 2] = trainingDataFile.getPath();
     command[command.length - 1] = trainingDataFile.getPath() + ".model";
 
-    logger.log(Level.INFO, String.format(
-        "%s\n%s\n%s",
-        "training with svmlight using the following command:",
-        toString(command),
-        "If the svmlight learner does not seem to be working correctly, then try running the "
-            + "above command directly to see if e.g. svm_learn or svm_perf_learn gives a useful "
-            + "error message."));
+    logger.log(Level.FINE, "training svmlight using the following command: "
+        + Joiner.on(" ").join(command));
     Process process = Runtime.getRuntime().exec(command);
+    process.getOutputStream().close();
     output(process.getInputStream(), System.out);
     output(process.getErrorStream(), System.err);
     process.waitFor();
@@ -108,14 +106,6 @@ public abstract class SVMlightClassifierBuilder_ImplBase<CLASSIFIER_TYPE extends
     super.unpackageClassifier(modelStream);
     JarStreams.getNextJarEntry(modelStream, "model.svmlight");
     this.model = SVMlightModel.fromInputStream(modelStream);
-  }
-
-  private static String toString(String[] command) {
-    StringBuilder sb = new StringBuilder();
-    for (String cmmnd : command) {
-      sb.append(cmmnd + " ");
-    }
-    return sb.toString();
   }
 
   private static void output(InputStream input, PrintStream output) throws IOException {

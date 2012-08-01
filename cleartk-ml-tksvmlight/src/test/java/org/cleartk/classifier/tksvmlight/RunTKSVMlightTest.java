@@ -195,7 +195,9 @@ public class RunTKSVMlightTest extends DefaultTestBase {
     for (Instance<Boolean> instance : generateBooleanInstances(20)) {
       List<Feature> features = instance.getFeatures();
       Boolean outcome = instance.getOutcome();
+      hider = new HideOutput();
       Assert.assertEquals(outcome, classifier.classify(features));
+      hider.restoreOutput();
     }
   }
 
@@ -242,7 +244,9 @@ public class RunTKSVMlightTest extends DefaultTestBase {
     for (Instance<String> instance : generateStringInstances(20)) {
       List<Feature> features = instance.getFeatures();
       String outcome = instance.getOutcome();
+      hider = new HideOutput();
       Assert.assertEquals(outcome, classifier.classify(features));
+      hider.restoreOutput();
     }
 
   }
@@ -296,14 +300,5 @@ public class RunTKSVMlightTest extends DefaultTestBase {
       instances.add(instance);
     }
     return instances;
-  }
-
-  @Test
-  public void testname() throws Exception {
-    String skipTests = "long,bigMem,tkSvm";
-    String[] values = skipTests.split("\\s*[,]\\s*");
-    for (String string : values) {
-      System.out.println(string);
-    }
   }
 }

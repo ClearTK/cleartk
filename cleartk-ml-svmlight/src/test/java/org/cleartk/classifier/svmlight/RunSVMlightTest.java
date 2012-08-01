@@ -25,6 +25,7 @@ package org.cleartk.classifier.svmlight;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -267,6 +268,39 @@ public class RunSVMlightTest extends DefaultTestBase {
     }
   }
 
+  @Test(timeout = 2000)
+  public void testSVMlightBadCommand() throws Exception {
+    this.assumeTestsEnabled(SVMLIGHT_TESTS_PROPERTY_VALUE);
+    this.logger.info(SVMLIGHT_TESTS_ENABLED_MESSAGE);
+
+    // create the data writer
+    EmptyAnnotator<Boolean> annotator = new EmptyAnnotator<Boolean>();
+    annotator.initialize(UimaContextFactory.createUimaContext(
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        this.outputDirectoryName,
+        DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+        SVMlightDataWriter.class.getName()));
+
+    // add a bunch of instances
+    for (Instance<Boolean> instance : generateBooleanInstances(1000)) {
+      annotator.write(instance);
+    }
+    annotator.collectionProcessComplete();
+
+    // run svmlight with a bad "-42" option (make sure it doesn't hang)
+    try {
+      HideOutput hider = new HideOutput();
+      try {
+        Train.main(this.outputDirectoryName, "-42");
+      } finally {
+        hider.restoreOutput();
+      }
+      Assert.fail("expected FileNotFoundException");
+    } catch (FileNotFoundException e) {
+      // expected since no model file will have been written
+    }
+  }
+
   @Test
   public void testOVASVMlight() throws Exception {
     this.assumeTestsEnabled(SVMLIGHT_TESTS_PROPERTY_VALUE);
@@ -368,7 +402,6 @@ public class RunSVMlightTest extends DefaultTestBase {
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
         SVMlightRankDataWriter.class.getName()));
 
-    System.out.println(outputDirectoryName);
     // add instances
     for (int qid = 10; qid < 15; qid++) {
       for (double i = 0.0; i < 10; i += 2) {

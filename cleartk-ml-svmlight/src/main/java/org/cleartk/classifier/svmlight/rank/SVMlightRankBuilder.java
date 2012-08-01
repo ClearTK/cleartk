@@ -33,6 +33,8 @@ import org.apache.uima.util.Level;
 import org.apache.uima.util.Logger;
 import org.cleartk.classifier.svmlight.SVMlightClassifierBuilder_ImplBase;
 
+import com.google.common.base.Joiner;
+
 /**
  * <br>
  * Copyright (c) 2011, Regents of the University of Colorado <br>
@@ -40,13 +42,13 @@ import org.cleartk.classifier.svmlight.SVMlightClassifierBuilder_ImplBase;
  * 
  * @author Lee Becker
  * 
- * Trains an svm_light ranking model.
+ *         Trains an svm_light ranking model.
  */
 public class SVMlightRankBuilder extends
     SVMlightClassifierBuilder_ImplBase<SVMlightRank, Double, Double> {
-  
+
   static Logger logger = UIMAFramework.getLogger(SVMlightClassifierBuilder_ImplBase.class);
-  
+
   @Override
   public void trainClassifier(File dir, String... args) throws Exception {
     File trainingDataFile = getTrainingDataFile(dir);
@@ -68,32 +70,20 @@ public class SVMlightRankBuilder extends
     command[command.length - 2] = trainingDataFile.getPath();
     command[command.length - 1] = trainingDataFile.getPath() + ".model";
 
-    logger.log(Level.INFO, String.format(
-        "%s\n%s\n%s",
-        "training with svmlight rank using the following command:",
-        toString(command),
-        "If the svmlight rank learner does not seem to be working correctly, then try running the "
-            + "above command directly to see if e.g. svm_rank_learn gives a useful "
-            + "error message."));
-    Process process = Runtime.getRuntime().exec(toString(command));
+    logger.log(Level.FINE, "training svmlight rank using the following command: "
+        + Joiner.on(" ").join(command));
+    Process process = Runtime.getRuntime().exec(command);
+    process.getOutputStream().close();
     output(process.getInputStream(), System.out);
     output(process.getErrorStream(), System.err);
     process.waitFor();
   }
-  
+
   @Override
   protected SVMlightRank newClassifier() {
     return new SVMlightRank(this.featuresEncoder, this.outcomeEncoder, this.model);
   }
-  
-  private static String toString(String[] command) {
-    StringBuilder sb = new StringBuilder();
-    for (String cmmnd : command) {
-      sb.append(cmmnd + " ");
-    }
-    return sb.toString();
-  }
-  
+
   private static void output(InputStream input, PrintStream output) throws IOException {
     byte[] buffer = new byte[128];
     int count = input.read(buffer);

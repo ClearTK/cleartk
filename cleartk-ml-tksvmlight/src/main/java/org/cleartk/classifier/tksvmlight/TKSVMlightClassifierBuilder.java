@@ -40,6 +40,8 @@ import org.apache.uima.util.Logger;
 import org.cleartk.classifier.jar.ClassifierBuilder_ImplBase;
 import org.cleartk.classifier.jar.JarStreams;
 
+import com.google.common.base.Joiner;
+
 /**
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
@@ -48,7 +50,8 @@ import org.cleartk.classifier.jar.JarStreams;
  * @author Daryl Lonnon
  * @version 0.2.1
  * 
- * A class that provided interfaces to train, package and unpackage a SVMTKClassifier into a jar file.
+ *          A class that provided interfaces to train, package and unpackage a SVMTKClassifier into
+ *          a jar file.
  */
 
 public class TKSVMlightClassifierBuilder extends
@@ -59,12 +62,15 @@ public class TKSVMlightClassifierBuilder extends
   public static String COMMAND_ARGUMENT = "--executable";
 
   /**
-   * Train a SVMTK classifier. Assumes the executable name is "tk_svm_learn". Note: this is public so
-   * the One verse All TK SVMlight classifier may take advantage of it, casual users probably shouldn't use this
-   * interface.
-   * @param dir The directory where the training data has been written.
-   * @param args The arguments to be used by the tk_svm_classify command. Note: -t 5 is used to specify
-   * the use of Tree Kernels.
+   * Train a SVMTK classifier. Assumes the executable name is "tk_svm_learn". Note: this is public
+   * so the One verse All TK SVMlight classifier may take advantage of it, casual users probably
+   * shouldn't use this interface.
+   * 
+   * @param dir
+   *          The directory where the training data has been written.
+   * @param args
+   *          The arguments to be used by the tk_svm_classify command. Note: -t 5 is used to specify
+   *          the use of Tree Kernels.
    */
   public static void train(String filePath, String[] args) throws Exception {
     String executable = "tk_svm_learn";
@@ -81,13 +87,10 @@ public class TKSVMlightClassifierBuilder extends
     command[command.length - 2] = new File(filePath).getPath();
     command[command.length - 1] = new File(filePath + ".model").getPath();
 
-    logger.log(Level.INFO, "training with tree kernel svmlight using the following command: "
-        + toString(command));
-    logger
-        .log(
-            Level.INFO,
-            "if the tree kernel svmlight learner does not seem to be working correctly, then try running the above command directly to see if e.g. svm_learn or svm_perf_learn gives a useful error message.");
+    logger.log(Level.FINE, "training with tree kernel svmlight using the following command: "
+        + Joiner.on(" ").join(command));
     Process process = Runtime.getRuntime().exec(command);
+    process.getOutputStream().close();
     output(process.getInputStream(), System.out);
     output(process.getErrorStream(), System.err);
     process.waitFor();
@@ -103,9 +106,12 @@ public class TKSVMlightClassifierBuilder extends
 
   /**
    * Train this SVMTK classifier.
-   * @param dir The directory where the training data has been written.
-   * @param args The arguments to be used by the tk_svm_classify command. Note: -t 5 is used to specify
-   * the use of Tree Kernels.
+   * 
+   * @param dir
+   *          The directory where the training data has been written.
+   * @param args
+   *          The arguments to be used by the tk_svm_classify command. Note: -t 5 is used to specify
+   *          the use of Tree Kernels.
    */
   public void trainClassifier(File dir, String... args) throws Exception {
     File trainingDataFile = getTrainingDataFile(dir);
@@ -138,7 +144,7 @@ public class TKSVMlightClassifierBuilder extends
       out.append(line);
       out.append("\n");
     }
-    out.close();    
+    out.close();
   }
 
   /**
@@ -146,10 +152,7 @@ public class TKSVMlightClassifierBuilder extends
    */
   @Override
   protected TKSVMlightClassifier newClassifier() {
-    return new TKSVMlightClassifier(
-        this.featuresEncoder,
-        this.outcomeEncoder,
-        this.modelFile);
+    return new TKSVMlightClassifier(this.featuresEncoder, this.outcomeEncoder, this.modelFile);
   }
 
   private static String toString(String[] command) {

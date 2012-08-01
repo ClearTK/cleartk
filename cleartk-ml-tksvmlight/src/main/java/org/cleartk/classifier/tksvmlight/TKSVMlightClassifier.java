@@ -44,15 +44,18 @@ import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 import org.cleartk.classifier.jar.Classifier_ImplBase;
 
+import com.google.common.base.Joiner;
+
 /**
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
  * @author Daryl Lonnon
  * @version 0.2.1
  * 
- * A Tree Kernel SVM light classifier implementation. All features named with the prefix "TK_"
- * treated as Tree Kernels.
+ *          A Tree Kernel SVM light classifier implementation. All features named with the prefix
+ *          "TK_" treated as Tree Kernels.
  * 
  * @uses TreeFeatureVector
  * @see OVATKSVMlightClassifier
@@ -60,14 +63,18 @@ import org.cleartk.classifier.jar.Classifier_ImplBase;
 public class TKSVMlightClassifier extends Classifier_ImplBase<TreeFeatureVector, Boolean, Boolean> {
 
   static Logger logger = UIMAFramework.getLogger(TKSVMlightClassifier.class);
-  
+
   File mFile;
 
   /**
    * Constructor
-   * @param featuresEncoder The features encoder used by this classifier.
-   * @param outcomeEncoder The outcome encoder used by this classifier.
-   * @param models The files for the models used by this classifier.
+   * 
+   * @param featuresEncoder
+   *          The features encoder used by this classifier.
+   * @param outcomeEncoder
+   *          The outcome encoder used by this classifier.
+   * @param models
+   *          The files for the models used by this classifier.
    */
   public TKSVMlightClassifier(
       FeaturesEncoder<TreeFeatureVector> featuresEncoder,
@@ -79,7 +86,9 @@ public class TKSVMlightClassifier extends Classifier_ImplBase<TreeFeatureVector,
 
   /**
    * Classify a features list.
-   * @param features The feature list to classify.
+   * 
+   * @param features
+   *          The feature list to classify.
    * @returns A Boolean of whether the features match this classification.
    */
   public Boolean classify(List<Feature> features) throws CleartkProcessingException {
@@ -90,8 +99,11 @@ public class TKSVMlightClassifier extends Classifier_ImplBase<TreeFeatureVector,
 
   /**
    * Score a list of features against the model.
-   * @param features The features to classify
-   * @param maxResult The maximum number of results to return in the list (at most 2).
+   * 
+   * @param features
+   *          The features to classify
+   * @param maxResult
+   *          The maximum number of results to return in the list (at most 2).
    * @returns A list of scored outcomes ordered by likelihood.
    */
   @Override
@@ -112,8 +124,9 @@ public class TKSVMlightClassifier extends Classifier_ImplBase<TreeFeatureVector,
   private ScoredOutcome<Boolean> score(List<Feature> features) throws CleartkProcessingException {
     TreeFeatureVector featureVector = featuresEncoder.encodeAll(features);
     double prediction = tkSvmLightPredict(mFile, featureVector);
-    
-    // I got this from the svmlight classifier, shouldn't this be over 0.0 (doesn't it range from -1.0 to 1.0
+
+    // I got this from the svmlight classifier, shouldn't this be over 0.0 (doesn't it range from
+    // -1.0 to 1.0
     boolean encodedResult = (prediction > 0.5);
 
     if (encodedResult) {
@@ -124,16 +137,21 @@ public class TKSVMlightClassifier extends Classifier_ImplBase<TreeFeatureVector,
   }
 
   /**
-   * Predict which side of the line a feature vector resides upon for a particular svm model. 
-   * @param mFile The model file to predict against.
-   * @param featureVector The feature vector to predict for.
-   * @return A double that represents which side of the line the feature vector resides (negative below, positive above).
+   * Predict which side of the line a feature vector resides upon for a particular svm model.
+   * 
+   * @param mFile
+   *          The model file to predict against.
+   * @param featureVector
+   *          The feature vector to predict for.
+   * @return A double that represents which side of the line the feature vector resides (negative
+   *         below, positive above).
    * @throws CleartkProcessingException
    */
   // Moving this into public space so it can be used by one versus all thing.
-  public static double tkSvmLightPredict(File mFile, TreeFeatureVector featureVector) throws CleartkProcessingException {
+  public static double tkSvmLightPredict(File mFile, TreeFeatureVector featureVector)
+      throws CleartkProcessingException {
     double prediction;
-    
+
     try {
       File cFile = File.createTempFile("tkclassify", ".txt");
       File oFile = File.createTempFile("tkoutput", ".out");
@@ -141,7 +159,7 @@ public class TKSVMlightClassifier extends Classifier_ImplBase<TreeFeatureVector,
       out.write("0");
       out.write(TKSVMlightDataWriter.createString(featureVector));
       out.close();
-      
+
       String executable = "tk_svm_classify";
       String[] command = new String[4];
       command[0] = executable;
@@ -149,11 +167,10 @@ public class TKSVMlightClassifier extends Classifier_ImplBase<TreeFeatureVector,
       command[2] = mFile.getPath();
       command[3] = oFile.getPath();
 
-      logger.log(Level.INFO, "classifying with tree kernel svmlight using the following command: "
-          + toString(command));
-      logger.log(Level.INFO,
-        "if the tree kernel svmlight classifier does not seem to be working correctly, then try running the above command directly to see if e.g. svm_classify gives a useful error message.");
+      logger.log(Level.FINE, "classifying with tree kernel svmlight using the following command: "
+          + Joiner.on(" ").join(command));
       Process process = Runtime.getRuntime().exec(command);
+      process.getOutputStream().close();
       output(process.getInputStream(), System.out);
       output(process.getErrorStream(), System.err);
       process.waitFor();
@@ -168,15 +185,7 @@ public class TKSVMlightClassifier extends Classifier_ImplBase<TreeFeatureVector,
     }
     return prediction;
   }
-  
-  private static String toString(String[] command) {
-    StringBuilder sb = new StringBuilder();
-    for (String cmmnd : command) {
-      sb.append(cmmnd + " ");
-    }
-    return sb.toString();
-  }
-  
+
   private static void output(InputStream input, PrintStream output) throws IOException {
     byte[] buffer = new byte[128];
     int count = input.read(buffer);
