@@ -32,6 +32,7 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
+import org.apache.commons.io.filefilter.HiddenFileFilter;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
@@ -122,9 +123,11 @@ public class DocumentClassificationEvaluation extends
   }
 
   public static List<File> getFilesFromDirectory(File directory) {
-    IOFileFilter svnFileFilter = FileFilterUtils.makeSVNAware(null);
-    IOFileFilter dirFilter = FileFilterUtils.makeSVNAware(FileFilterUtils.directoryFileFilter());
-    return new ArrayList<File>(FileUtils.listFiles(directory, svnFileFilter, dirFilter));
+    IOFileFilter fileFilter = FileFilterUtils.makeSVNAware(HiddenFileFilter.VISIBLE);
+    IOFileFilter dirFilter = FileFilterUtils.makeSVNAware(FileFilterUtils.and(
+        FileFilterUtils.directoryFileFilter(),
+        HiddenFileFilter.VISIBLE));
+    return new ArrayList<File>(FileUtils.listFiles(directory, fileFilter, dirFilter));
   }
 
   public static void main(String[] args) throws Exception {

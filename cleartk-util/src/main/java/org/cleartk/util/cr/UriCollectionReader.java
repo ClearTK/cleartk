@@ -24,6 +24,7 @@
 package org.cleartk.util.cr;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -34,6 +35,7 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
+import org.apache.commons.io.filefilter.HiddenFileFilter;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.uima.UimaContext;
 import org.apache.uima.collection.CollectionException;
@@ -50,7 +52,6 @@ import org.uimafit.factory.CollectionReaderFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
 
 import com.google.common.base.Function;
-import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 
 /**
@@ -70,24 +71,56 @@ import com.google.common.collect.Iterables;
  */
 public class UriCollectionReader extends JCasCollectionReader_ImplBase {
 
+  public static class RejectSystemFiles implements IOFileFilter {
+    FileFilter f = FileFilterUtils.fileFileFilter();
+
+    @Override
+    public boolean accept(File file) {
+      return FileFilterUtils.fileFileFilter().accept(file) && HiddenFileFilter.VISIBLE.accept(file);
+    }
+
+    @Override
+    public boolean accept(File dir, String name) {
+      File file = new File(dir, name);
+      return FileFilterUtils.directoryFileFilter().accept(file)
+          && HiddenFileFilter.VISIBLE.accept(file) && this.accept(file);
+    }
+  }
+
+  public static class RejectSystemDirectories implements IOFileFilter {
+
+    @Override
+    public boolean accept(File file) {
+      return FileFilterUtils.directoryFileFilter().accept(file)
+          && HiddenFileFilter.VISIBLE.accept(file);
+    }
+
+    @Override
+    public boolean accept(File dir, String name) {
+      File file = new File(dir, name);
+      return FileFilterUtils.directoryFileFilter().accept(file)
+          && HiddenFileFilter.VISIBLE.accept(file) && this.accept(file);
+    }
+  }
+
   public static CollectionReaderDescription getDescriptionFromDirectory(
       File directory,
-      boolean ignoreSystemFiles) throws ResourceInitializationException {
+      Class<? extends IOFileFilter> fileFilterClass) throws ResourceInitializationException {
     return CollectionReaderFactory.createDescription(
         UriCollectionReader.class,
         null,
         PARAM_DIRECTORY,
         directory,
-        PARAM_IGNORE_SYSTEM_FILES,
-        ignoreSystemFiles);
+        PARAM_FILE_FILTER_CLASS,
+        fileFilterClass);
   }
 
   public static CollectionReader getCollectionReaderFromDirectory(
       File directory,
-      boolean ignoreSystemFiles) throws ResourceInitializationException {
+      Class<? extends IOFileFilter> fileFilterClass) throws ResourceInitializationException {
     return CollectionReaderFactory.createCollectionReader(getDescriptionFromDirectory(
         directory,
-        ignoreSystemFiles));
+        fileFilterClass));
   }
 
   public static CollectionReaderDescription getDescriptionFromFiles(List<File> files)
@@ -152,17 +185,25 @@ public class UriCollectionReader extends JCasCollectionReader_ImplBase {
       description = "This parameter provides a list of URIs that should be written to the default sofa within the CAS.  Proper URI construction is the responsibility of the caller")
   private List<URI> uris = new ArrayList<URI>();
 
-  public static final String PARAM_IGNORE_SYSTEM_FILES = ConfigurationParameterFactory.createConfigurationParameterName(
+  public static final String PARAM_FILE_FILTER_CLASS = ConfigurationParameterFactory.createConfigurationParameterName(
       UriCollectionReader.class,
-      "ignoreSystemFiles");
+      "fileFilterClass");
 
   @ConfigurationParameter(
-      defaultValue = "true",
+      defaultValue = "org.cleartk.util.cr.UriCollectionReader.RejectSystemFiles",
       mandatory = false,
-      description = "This parameter provides a flag for filtering out directories and files that begin with a period '.' to loosely correspond to 'system' files.  "
-          + "Setting this to true when PARAM_DIRECTORY is set will prevent traversal into such directories.  If PARAM_FILES is set, it will filter out any system files."
-          + "This has no influence on PARAM_URIS as proper URI construction is the responsibility of the caller")
-  private boolean ignoreSystemFiles = true;
+      description = "The class used for filtering files when PARAM_DIRECTORY is set")
+  private Class<? extends IOFileFilter> fileFilterClass;
+
+  public static final String PARAM_DIRECTORY_FILTER_CLASS = ConfigurationParameterFactory.createConfigurationParameterName(
+      UriCollectionReader.class,
+      "directoryFilterClass");
+
+  @ConfigurationParameter(
+      defaultValue = "org.cleartk.util.cr.UriCollectionReader.RejectSystemDirectories",
+      mandatory = false,
+      description = "The class used for filtering sub-directories when PARAM_DIRECTORY is set.  To disable recursion, pass in a directory filter that rejects all directory files")
+  private Class<? extends IOFileFilter> directoryFilterClass;
 
   protected Iterator<URI> uriIter;
 
@@ -188,43 +229,32 @@ public class UriCollectionReader extends JCasCollectionReader_ImplBase {
     }
   };
 
-  protected RegexFileFilter systemFileFilter = new RegexFileFilter("^[^\\.].*$");
-
-  protected Predicate<File> rejectSystemFile = new Predicate<File>() {
-    @Override
-    public boolean apply(File input) {
-      return systemFileFilter.accept(input);
-    }
-  };
-
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
 
     // Convert list of files to URIs
-    Iterable<URI> urisFromFiles = new ArrayList<URI>();
-    Iterable<File> filteredFiles = (this.ignoreSystemFiles) ? Iterables.filter(
-        this.files,
-        this.rejectSystemFile) : this.files;
+    // Iterable<File> filteredFiles = Iterables.filter(this.files, this.directoryFilesFilter);
     this.uriCount += this.files.size();
-    urisFromFiles = Iterables.transform(filteredFiles, this.fileToUri);
+    Iterable<URI> urisFromFiles = Iterables.transform(this.files, this.fileToUri);
 
     // Read file names from directory and convert list of files to URI
     Iterable<URI> urisFromDirectory = new ArrayList<URI>();
     if (this.isDirectoryValid()) {
-      IOFileFilter dirFilter;
       IOFileFilter fileFilter;
+      IOFileFilter directoryFilter;
 
-      if (this.ignoreSystemFiles) {
-        dirFilter = FileFilterUtils.and(systemFileFilter, FileFilterUtils.directoryFileFilter());
-        fileFilter = FileFilterUtils.fileFileFilter();
-      } else {
-        dirFilter = FileFilterUtils.makeSVNAware(FileFilterUtils.directoryFileFilter());
-        fileFilter = FileFilterUtils.and(FileFilterUtils.fileFileFilter(), systemFileFilter);
+      try {
+        fileFilter = this.fileFilterClass.newInstance();
+        directoryFilter = this.directoryFilterClass.newInstance();
+      } catch (InstantiationException e) {
+        throw new ResourceInitializationException(e);
+      } catch (IllegalAccessException e) {
+        throw new ResourceInitializationException(e);
       }
 
-      Collection<File> allFiles = FileUtils.listFiles(this.directory, fileFilter, dirFilter);
-      this.uriCount += allFiles.size();
-      urisFromDirectory = Iterables.transform(allFiles, this.fileToUri);
+      Collection<File> filesInDir = FileUtils.listFiles(this.directory, fileFilter, directoryFilter);
+      urisFromDirectory = Iterables.transform(filesInDir, this.fileToUri);
+      this.uriCount += filesInDir.size();
     }
 
     // Combine URI iterables from all conditions and initialize iterator
