@@ -103,24 +103,43 @@ public class UriCollectionReader extends JCasCollectionReader_ImplBase {
     }
   }
 
+  public static CollectionReaderDescription getDescriptionFromDirectory(File directory)
+      throws ResourceInitializationException {
+    return CollectionReaderFactory.createDescription(
+        UriCollectionReader.class,
+        null,
+        PARAM_DIRECTORY,
+        directory);
+  }
+
   public static CollectionReaderDescription getDescriptionFromDirectory(
       File directory,
-      Class<? extends IOFileFilter> fileFilterClass) throws ResourceInitializationException {
+      Class<? extends IOFileFilter> fileFilterClass,
+      Class<? extends IOFileFilter> dirFilterClass) throws ResourceInitializationException {
     return CollectionReaderFactory.createDescription(
         UriCollectionReader.class,
         null,
         PARAM_DIRECTORY,
         directory,
         PARAM_FILE_FILTER_CLASS,
-        fileFilterClass);
+        fileFilterClass,
+        PARAM_DIRECTORY_FILTER_CLASS,
+        dirFilterClass);
+  }
+
+  public static CollectionReader getCollectionReaderFromDirectory(File directory)
+      throws ResourceInitializationException {
+    return CollectionReaderFactory.createCollectionReader(getDescriptionFromDirectory(directory));
   }
 
   public static CollectionReader getCollectionReaderFromDirectory(
       File directory,
-      Class<? extends IOFileFilter> fileFilterClass) throws ResourceInitializationException {
+      Class<? extends IOFileFilter> fileFilterClass,
+      Class<? extends IOFileFilter> dirFilterClass) throws ResourceInitializationException {
     return CollectionReaderFactory.createCollectionReader(getDescriptionFromDirectory(
         directory,
-        fileFilterClass));
+        fileFilterClass,
+        dirFilterClass));
   }
 
   public static CollectionReaderDescription getDescriptionFromFiles(List<File> files)
