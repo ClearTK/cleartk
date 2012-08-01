@@ -58,7 +58,6 @@ import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AggregateBuilder;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
-import org.uimafit.factory.TypeSystemDescriptionFactory;
 import org.uimafit.pipeline.JCasIterable;
 import org.uimafit.pipeline.SimplePipeline;
 import org.xml.sax.SAXException;
@@ -265,7 +264,6 @@ public class TempEval2010Evaluation extends
       AggregateBuilder builder = new AggregateBuilder();
       builder.add(AnalysisEngineFactory.createPrimitiveDescription(
           TempEval2010GoldAnnotator.class,
-          TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem"),
           goldAnnotatorParams.toArray()));
       for (AnalysisEngineDescription desc : this.preprocessingAnnotators) {
         builder.add(desc);

@@ -46,13 +46,4 @@ public class TokenTestBase extends CleartkTestBase {
     super.setUp();
     tokenBuilder = new TokenBuilder<Token, Sentence>(Token.class, Sentence.class, "pos", "stem");
   }
-
-  @Override
-  public String[] getTypeSystemDescriptorNames() {
-    return new String[] {
-        "org.cleartk.token.TypeSystem",
-        "org.cleartk.util.TypeSystem",
-        "org.cleartk.type.test.TestTypeSystem" };
-  }
-
 }

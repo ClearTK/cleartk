@@ -116,14 +116,11 @@ public class TimeMLGoldAnnotatorTest extends TimeMLTestBase {
   public void testTempEval() throws UIMAException, IOException {
     CollectionReader reader = CollectionReaderFactory.createCollectionReader(
         FilesCollectionReader.class,
-        typeSystemDescription,
         FilesCollectionReader.PARAM_VIEW_NAME,
         TimeMLViewName.TIMEML,
         FilesCollectionReader.PARAM_ROOT_FILE,
         "src/test/resources/data/timeml/AP900815-0044.tml");
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-        TimeMLGoldAnnotator.class,
-        typeSystemDescription);
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TimeMLGoldAnnotator.class);
     JCas jcas = new JCasIterable(reader, engine).next();
 
     // <EVENT eid="e5" class="STATE" stem="face" aspect="NONE"
@@ -165,7 +162,6 @@ public class TimeMLGoldAnnotatorTest extends TimeMLTestBase {
   public void testNoTLINKs() throws UIMAException, IOException {
     CollectionReader reader = CollectionReaderFactory.createCollectionReader(
         FilesCollectionReader.class,
-        typeSystemDescription,
         FilesCollectionReader.PARAM_VIEW_NAME,
         TimeMLViewName.TIMEML,
         FilesCollectionReader.PARAM_ROOT_FILE,
@@ -174,7 +170,6 @@ public class TimeMLGoldAnnotatorTest extends TimeMLTestBase {
         new String[] { ".tml" });
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         TimeMLGoldAnnotator.class,
-        typeSystemDescription,
         TimeMLGoldAnnotator.PARAM_LOAD_TLINKS,
         false);
     for (JCas jcas : new JCasIterable(reader, engine)) {

@@ -73,7 +73,6 @@ public class GrmmClassifierBuilderTest extends DefaultTestBase {
     try {
       dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
           Test1Annotator.class,
-          typeSystemDescription,
           DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
           outputDirectoryName,
           DefaultSequenceDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,

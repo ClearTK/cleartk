@@ -39,7 +39,6 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.XMLSerializer;
-import org.cleartk.timeml.TimeMLComponents;
 import org.cleartk.timeml.util.TimeMLUtil;
 import org.cleartk.util.ViewURIUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
@@ -61,17 +60,19 @@ import org.xml.sax.helpers.AttributesImpl;
  */
 public class TimeMLWriter extends JCasAnnotator_ImplBase {
 
-  public static final String PARAM_OUTPUT_DIRECTORY_NAME = ConfigurationParameterFactory
-      .createConfigurationParameterName(TimeMLWriter.class, "outputDirectoryName");
+  public static final String PARAM_OUTPUT_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
+      TimeMLWriter.class,
+      "outputDirectoryName");
 
-  @ConfigurationParameter(description = "Provides the path where the TimeML documents should be written.", mandatory = true)
+  @ConfigurationParameter(
+      description = "Provides the path where the TimeML documents should be written.",
+      mandatory = true)
   private String outputDirectoryName;
 
   public static AnalysisEngineDescription getDescription(String outputDir)
       throws ResourceInitializationException {
     return AnalysisEngineFactory.createPrimitiveDescription(
         TimeMLWriter.class,
-        TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
         PARAM_OUTPUT_DIRECTORY_NAME,
         outputDir);
   }

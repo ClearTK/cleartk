@@ -28,7 +28,6 @@ import java.io.File;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.util.FileUtils;
-import org.cleartk.examples.ExampleComponents;
 import org.cleartk.examples.ExamplesTestBase;
 import org.cleartk.util.ViewURIUtil;
 import org.junit.After;
@@ -66,7 +65,6 @@ public class ExamplePOSPlainTextWriterTest extends ExamplesTestBase {
 
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         ExamplePOSPlainTextWriter.class,
-        ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
         ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME,
         this.outputDirectory.getPath());
 
@@ -86,11 +84,8 @@ public class ExamplePOSPlainTextWriterTest extends ExamplesTestBase {
 
   @Test
   public void testDescriptor() throws UIMAException {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-        ExamplePOSPlainTextWriter.class,
-        ExampleComponents.TYPE_SYSTEM_DESCRIPTION);
-    Object outDirectory = engine
-        .getConfigParameterValue(ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME);
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(ExamplePOSPlainTextWriter.class);
+    Object outDirectory = engine.getConfigParameterValue(ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME);
     Assert.assertEquals(ExamplePOSPlainTextWriter.DEFAULT_OUTPUT_DIRECTORY, outDirectory);
   }
 }

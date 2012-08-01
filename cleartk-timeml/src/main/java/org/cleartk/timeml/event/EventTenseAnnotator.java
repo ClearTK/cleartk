@@ -32,7 +32,6 @@ import org.cleartk.classifier.feature.extractor.ContextExtractor.Covered;
 import org.cleartk.classifier.feature.extractor.ContextExtractor.Preceding;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.opennlp.MaxentDataWriter;
-import org.cleartk.timeml.TimeMLComponents;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.util.CleartkInternalModelFactory;
 import org.cleartk.timeml.util.TextSliceExtractor;
@@ -64,9 +63,7 @@ public class EventTenseAnnotator extends EventAttributeAnnotator<String> {
 
     @Override
     public AnalysisEngineDescription getBaseDescription() throws ResourceInitializationException {
-      return AnalysisEngineFactory.createPrimitiveDescription(
-          EventTenseAnnotator.class,
-          TimeMLComponents.TYPE_SYSTEM_DESCRIPTION);
+      return AnalysisEngineFactory.createPrimitiveDescription(EventTenseAnnotator.class);
     }
   };
 

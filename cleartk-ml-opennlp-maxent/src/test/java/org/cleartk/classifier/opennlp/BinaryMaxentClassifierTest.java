@@ -114,7 +114,6 @@ public class BinaryMaxentClassifierTest extends DefaultTestBase {
   public void test1() throws Exception {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         Test1Annotator.class,
-        typeSystemDescription,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
@@ -145,7 +144,6 @@ public class BinaryMaxentClassifierTest extends DefaultTestBase {
 
     AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createPrimitive(
         Test1Annotator.class,
-        typeSystemDescription,
         GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
         outputDirectoryName + "/model.jar");
     jCas.reset();
@@ -304,7 +302,6 @@ public class BinaryMaxentClassifierTest extends DefaultTestBase {
   public void test2() throws Exception {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         Test2Annotator.class,
-        typeSystemDescription,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
@@ -368,7 +365,6 @@ public class BinaryMaxentClassifierTest extends DefaultTestBase {
 
     AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createPrimitive(
         Test2Annotator.class,
-        typeSystemDescription,
         GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
         outputDirectoryName + "/model.jar");
     jCas.reset();

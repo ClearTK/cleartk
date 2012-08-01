@@ -191,6 +191,7 @@ public abstract class CleartkTestBase {
 
   protected JCas jCas;
 
+  @Deprecated
   protected TypeSystemDescription typeSystemDescription;
 
   @Rule
@@ -202,13 +203,21 @@ public abstract class CleartkTestBase {
 
   @Before
   public void setUp() throws Exception {
-    typeSystemDescription = TypeSystemDescriptionFactory.createTypeSystemDescription(getTypeSystemDescriptorNames());
+    String[] typeSystemDescriptorNames = getTypeSystemDescriptorNames();
+    if (typeSystemDescriptorNames == null) {
+      typeSystemDescription = TypeSystemDescriptionFactory.createTypeSystemDescription();
+    } else {
+      typeSystemDescription = TypeSystemDescriptionFactory.createTypeSystemDescription(typeSystemDescriptorNames);
+    }
     jCas = JCasFactory.createJCas(typeSystemDescription);
     outputDirectory = folder.newFolder("output");
     outputDirectoryName = outputDirectory.getPath();
   }
 
-  public abstract String[] getTypeSystemDescriptorNames();
+  @Deprecated
+  public String[] getTypeSystemDescriptorNames() {
+    return null;
+  }
 
   public int getCollectionReaderCount(CollectionReader reader) throws UIMAException, IOException {
 

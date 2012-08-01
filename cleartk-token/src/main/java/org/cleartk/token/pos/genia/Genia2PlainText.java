@@ -29,7 +29,6 @@ import java.io.IOException;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.collection.CollectionReader;
-import org.cleartk.token.TokenComponents;
 import org.cleartk.util.ae.PlainTextWriter;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.pipeline.SimplePipeline;
@@ -52,7 +51,6 @@ public class Genia2PlainText {
     CollectionReader geniaReader = GeniaPosGoldReader.getDescription(args[0]);
     AnalysisEngineDescription plainTextWriter = AnalysisEngineFactory.createPrimitiveDescription(
         PlainTextWriter.class,
-        TokenComponents.TYPE_SYSTEM_DESCRIPTION,
         PlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME,
         args[1]);
     SimplePipeline.runPipeline(geniaReader, plainTextWriter);

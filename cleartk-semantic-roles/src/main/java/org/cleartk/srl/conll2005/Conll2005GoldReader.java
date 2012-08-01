@@ -39,7 +39,6 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
-import org.cleartk.srl.SrlComponents;
 import org.cleartk.util.ViewURIUtil;
 import org.uimafit.component.JCasCollectionReader_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
@@ -59,7 +58,6 @@ public class Conll2005GoldReader extends JCasCollectionReader_ImplBase {
       throws ResourceInitializationException {
     return CollectionReaderFactory.createCollectionReader(
         Conll2005GoldReader.class,
-        SrlComponents.TYPE_SYSTEM_DESCRIPTION,
         PARAM_CONLL2005_DATA_FILE,
         conll2005DataFile);
   }
@@ -67,8 +65,9 @@ public class Conll2005GoldReader extends JCasCollectionReader_ImplBase {
   @ConfigurationParameter(mandatory = true, description = "the path of the CoNLL 2005 data file")
   private File conll2005DataFile;
 
-  public static final String PARAM_CONLL2005_DATA_FILE = ConfigurationParameterFactory
-      .createConfigurationParameterName(Conll2005GoldReader.class, "conll2005DataFile");
+  public static final String PARAM_CONLL2005_DATA_FILE = ConfigurationParameterFactory.createConfigurationParameterName(
+      Conll2005GoldReader.class,
+      "conll2005DataFile");
 
   private BufferedReader reader;
 

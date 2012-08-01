@@ -259,9 +259,7 @@ public class TokenizerAndTokenAnnotatorTest extends TokenTestBase {
 
   @Test
   public void testDescriptor() throws UIMAException {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-        TokenAnnotator.class,
-        typeSystemDescription);
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TokenAnnotator.class);
     assertEquals(
         PennTreebankTokenizer.class.getName(),
         engine.getConfigParameterValue(TokenAnnotator.PARAM_TOKENIZER_NAME));
@@ -275,7 +273,6 @@ public class TokenizerAndTokenAnnotatorTest extends TokenTestBase {
   public void ticket176() throws ResourceInitializationException, AnalysisEngineProcessException {
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         TokenAnnotator.class,
-        typeSystemDescription,
         TokenAnnotator.PARAM_TOKEN_TYPE_NAME,
         Subtoken.class.getName(),
         TokenAnnotator.PARAM_TOKENIZER_NAME,

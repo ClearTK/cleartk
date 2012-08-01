@@ -44,7 +44,7 @@ public class TreebankAligningAnnotatorTest extends TimeMLTestBase {
   @Test
   public void testDescriptor() throws UIMAException {
     try {
-      AnalysisEngineFactory.createPrimitive(TreebankAligningAnnotator.class, typeSystemDescription);
+      AnalysisEngineFactory.createPrimitive(TreebankAligningAnnotator.class);
       Assert.fail("expected exception with TreebankDirectory unspecified");
     } catch (ResourceInitializationException e) {
     }
@@ -52,12 +52,10 @@ public class TreebankAligningAnnotatorTest extends TimeMLTestBase {
     String treebankPath = "data/treebank/wsj";
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         TreebankAligningAnnotator.class,
-        typeSystemDescription,
         TreebankAligningAnnotator.PARAM_TREEBANK_DIRECTORY_NAME,
         treebankPath);
 
-    Object treebankDirectory = engine
-        .getConfigParameterValue(TreebankAligningAnnotator.PARAM_TREEBANK_DIRECTORY_NAME);
+    Object treebankDirectory = engine.getConfigParameterValue(TreebankAligningAnnotator.PARAM_TREEBANK_DIRECTORY_NAME);
     Assert.assertEquals(treebankPath, treebankDirectory);
 
     engine.collectionProcessComplete();

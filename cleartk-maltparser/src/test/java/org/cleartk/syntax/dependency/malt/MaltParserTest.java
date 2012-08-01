@@ -53,13 +53,6 @@ import org.uimafit.util.JCasUtil;
  */
 public class MaltParserTest extends CleartkTestBase {
 
-  @Override
-  public String[] getTypeSystemDescriptorNames() {
-    return new String[] {
-        "org.cleartk.token.TypeSystem",
-        "org.cleartk.syntax.dependency.TypeSystem" };
-  }
-
   @Test
   public void test() throws UIMAException {
     this.assumeBigMemoryTestsEnabled();

@@ -49,7 +49,6 @@ import org.cleartk.util.ParamUtil;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
-import org.uimafit.factory.TypeSystemDescriptionFactory;
 import org.uimafit.factory.initializable.InitializableFactory;
 
 /**
@@ -205,7 +204,6 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
     return AnalysisEngineFactory.createPrimitiveDescription(
         ParserAnnotator.class,
-        TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.syntax.constituent.TypeSystem"),
         PARAM_PARSER_MODEL_PATH,
         ParamUtil.getParameterValue(PARAM_PARSER_MODEL_PATH, "/models/en-parser-chunking.bin"),
         PARAM_OUTPUT_TYPES_HELPER_CLASS_NAME,

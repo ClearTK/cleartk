@@ -47,7 +47,6 @@ public class ParserAnnotatorTest extends BerkeleyTestBase {
   public void test() throws UIMAException {
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         ParserAnnotator.class,
-        typeSystemDescription,
         ParserAnnotator.PARAM_PARSER_MODEL_PATH,
         MODEL_PATH,
         ParserWrapper_ImplBase.PARAM_OUTPUT_TYPES_HELPER_CLASS_NAME,

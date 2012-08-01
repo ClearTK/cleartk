@@ -134,7 +134,6 @@ public class GrmmDataWriterTest extends DefaultTestBase {
   public void test1DataWriter() throws Exception {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         Test1Annotator.class,
-        typeSystemDescription,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         DefaultSequenceDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,

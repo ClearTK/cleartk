@@ -101,7 +101,6 @@ public class GrmmClassifierTest extends DefaultTestBase {
 
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         Test1Annotator.class,
-        typeSystemDescription,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         DefaultSequenceDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
@@ -133,7 +132,6 @@ public class GrmmClassifierTest extends DefaultTestBase {
     // try to use model for classification:
     AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createPrimitive(
         Test1Annotator.class,
-        typeSystemDescription,
         GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
         modelJarFile.getPath());
     jCas.reset();

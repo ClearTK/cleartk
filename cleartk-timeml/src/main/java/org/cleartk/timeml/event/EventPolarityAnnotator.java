@@ -30,7 +30,6 @@ import org.cleartk.classifier.feature.extractor.ContextExtractor;
 import org.cleartk.classifier.feature.extractor.ContextExtractor.Bag;
 import org.cleartk.classifier.feature.extractor.ContextExtractor.Preceding;
 import org.cleartk.classifier.opennlp.MaxentDataWriter;
-import org.cleartk.timeml.TimeMLComponents;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.util.CleartkInternalModelFactory;
 import org.cleartk.timeml.util.TokenTextForSelectedPOSExtractor;
@@ -61,9 +60,7 @@ public class EventPolarityAnnotator extends EventAttributeAnnotator<String> {
 
     @Override
     public AnalysisEngineDescription getBaseDescription() throws ResourceInitializationException {
-      return AnalysisEngineFactory.createPrimitiveDescription(
-          EventPolarityAnnotator.class,
-          TimeMLComponents.TYPE_SYSTEM_DESCRIPTION);
+      return AnalysisEngineFactory.createPrimitiveDescription(EventPolarityAnnotator.class);
     }
   };
 

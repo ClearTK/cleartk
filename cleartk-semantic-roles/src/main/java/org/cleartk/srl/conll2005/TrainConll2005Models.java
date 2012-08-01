@@ -32,7 +32,6 @@ import org.cleartk.classifier.libsvm.BinaryLIBSVMDataWriter;
 import org.cleartk.classifier.libsvm.MultiClassLIBSVMDataWriter;
 import org.cleartk.srl.ArgumentClassifier;
 import org.cleartk.srl.ArgumentIdentifier;
-import org.cleartk.srl.SrlComponents;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.pipeline.SimplePipeline;
@@ -66,7 +65,6 @@ public class TrainConll2005Models {
         Conll2005GoldReader.getCollectionReader(conll2005File.toString()),
         AnalysisEngineFactory.createPrimitiveDescription(
             Conll2005GoldAnnotator.class,
-            SrlComponents.TYPE_SYSTEM_DESCRIPTION,
             Conll2005GoldAnnotator.PARAM_HAS_VERB_SENSES,
             true),
         DefaultSnowballStemmer.getDescription("English"),
@@ -76,14 +74,12 @@ public class TrainConll2005Models {
         // predicateIdentificationOutputDirectory.toString()),
         AnalysisEngineFactory.createPrimitiveDescription(
             ArgumentIdentifier.class,
-            SrlComponents.TYPE_SYSTEM_DESCRIPTION,
             DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
             BinaryLIBSVMDataWriter.class.getName(),
             DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
             argumentIdentificationOutputDirectory.toString()),
         AnalysisEngineFactory.createPrimitiveDescription(
             ArgumentClassifier.class,
-            SrlComponents.TYPE_SYSTEM_DESCRIPTION,
             DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
             MultiClassLIBSVMDataWriter.class.getName(),
             DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,

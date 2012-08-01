@@ -94,7 +94,6 @@ public class ViterbiDataWriterTest extends DefaultTestBase {
 
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         TestAnnotator.class,
-        typeSystemDescription,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
@@ -151,7 +150,6 @@ public class ViterbiDataWriterTest extends DefaultTestBase {
 
     engine = AnalysisEngineFactory.createPrimitive(
         TestAnnotator.class,
-        typeSystemDescription,
         GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
         new File(outputDirectoryName, "model.jar").getPath());
 

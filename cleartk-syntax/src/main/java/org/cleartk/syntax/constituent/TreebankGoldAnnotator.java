@@ -32,7 +32,6 @@ import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.syntax.SyntaxComponents;
 import org.cleartk.syntax.constituent.type.TerminalTreebankNode;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.util.TreebankFormatParser;
@@ -59,33 +58,36 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * @author Philipp Wetzler
  */
 
-@SofaCapability(inputSofas = { TreebankConstants.TREEBANK_VIEW, CAS.NAME_DEFAULT_SOFA }, outputSofas = {})
+@SofaCapability(
+    inputSofas = { TreebankConstants.TREEBANK_VIEW, CAS.NAME_DEFAULT_SOFA },
+    outputSofas = {})
 public class TreebankGoldAnnotator extends JCasAnnotator_ImplBase {
 
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(
-        TreebankGoldAnnotator.class,
-        SyntaxComponents.TYPE_SYSTEM_DESCRIPTION);
+    return AnalysisEngineFactory.createPrimitiveDescription(TreebankGoldAnnotator.class);
   }
 
   public static AnalysisEngineDescription getDescriptionPOSTagsOnly()
       throws ResourceInitializationException {
     return AnalysisEngineFactory.createPrimitiveDescription(
         TreebankGoldAnnotator.class,
-        SyntaxComponents.TYPE_SYSTEM_DESCRIPTION,
         TreebankGoldAnnotator.PARAM_POST_TREES,
         false);
   }
 
-  public static final String PARAM_POST_TREES = ConfigurationParameterFactory
-      .createConfigurationParameterName(TreebankGoldAnnotator.class, "postTrees");
+  public static final String PARAM_POST_TREES = ConfigurationParameterFactory.createConfigurationParameterName(
+      TreebankGoldAnnotator.class,
+      "postTrees");
 
   private static final String POST_TREES_DESCRIPTION = "specifies whether or not to post trees (i.e. annotations of type TreebankNode) to the CAS.  "
       + "Sometimes treebank data is used only for the part-of-speech data that it contains.  "
       + "For such uses, it is not necessary to post the entire constituent parse to the CAS. "
       + "Instead, this parameter can be set to false which results in  only the part-of-speech data being added.";
 
-  @ConfigurationParameter(description = POST_TREES_DESCRIPTION, mandatory = false, defaultValue = "true")
+  @ConfigurationParameter(
+      description = POST_TREES_DESCRIPTION,
+      mandatory = false,
+      defaultValue = "true")
   private boolean postTrees;
 
   @Override

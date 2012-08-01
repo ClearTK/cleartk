@@ -46,12 +46,4 @@ public class OpennlpSyntaxTestBase extends CleartkTestBase {
     super.setUp();
     tokenBuilder = new TokenBuilder<Token, Sentence>(Token.class, Sentence.class, "pos", "stem");
   }
-
-  @Override
-  public String[] getTypeSystemDescriptorNames() {
-    return new String[] {
-        "org.cleartk.syntax.constituent.TypeSystem",
-        "org.cleartk.type.test.TestTypeSystem" };
-  }
-
 }

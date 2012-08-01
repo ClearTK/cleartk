@@ -108,7 +108,6 @@ public class MalletClassifierTest extends DefaultTestBase {
   public void runTest1() throws Exception {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         TestAnnotator.class,
-        typeSystemDescription,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
@@ -161,7 +160,6 @@ public class MalletClassifierTest extends DefaultTestBase {
 
     AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createPrimitive(
         TestAnnotator.class,
-        typeSystemDescription,
         GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
         outputDirectoryName + "/model.jar");
     jCas.reset();

@@ -95,7 +95,6 @@ public class MalletCRFClassifierTest extends DefaultTestBase {
 
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         TestAnnotator.class,
-        typeSystemDescription,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         DefaultSequenceDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
@@ -130,7 +129,6 @@ public class MalletCRFClassifierTest extends DefaultTestBase {
 
     AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createPrimitive(
         TestAnnotator.class,
-        typeSystemDescription,
         GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
         outputDirectoryName + "/model.jar");
     jCas.reset();

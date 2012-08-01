@@ -376,16 +376,13 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
   @Test
   public void testDescriptor() throws UIMAException {
     try {
-      CollectionReaderFactory.createCollectionReader(
-          FilesCollectionReader.class,
-          typeSystemDescription);
+      CollectionReaderFactory.createCollectionReader(FilesCollectionReader.class);
       fail("expected exception with no file or directory specified");
     } catch (ResourceInitializationException e) {
     }
 
     CollectionReader reader = CollectionReaderFactory.createCollectionReader(
         FilesCollectionReader.class,
-        typeSystemDescription,
         FilesCollectionReader.PARAM_ROOT_FILE,
         this.inputDir);
 

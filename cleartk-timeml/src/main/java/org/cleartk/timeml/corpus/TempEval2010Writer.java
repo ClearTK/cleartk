@@ -40,7 +40,6 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.timeml.TimeMLComponents;
 import org.cleartk.timeml.TimeMLViewName;
 import org.cleartk.timeml.type.Anchor;
 import org.cleartk.timeml.type.DocumentCreationTime;
@@ -68,9 +67,7 @@ import com.google.common.base.Joiner;
 public class TempEval2010Writer extends JCasAnnotator_ImplBase {
 
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(
-        TempEval2010Writer.class,
-        TimeMLComponents.TYPE_SYSTEM_DESCRIPTION);
+    return AnalysisEngineFactory.createPrimitiveDescription(TempEval2010Writer.class);
   }
 
   @ConfigurationParameter(mandatory = true, description = "The directory where the TempEval .tab "

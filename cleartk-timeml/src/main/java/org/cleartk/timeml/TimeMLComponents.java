@@ -31,8 +31,8 @@ import org.uimafit.factory.TypeSystemDescriptionFactory;
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
  */
+@Deprecated
 public class TimeMLComponents {
 
-  public static TypeSystemDescription TYPE_SYSTEM_DESCRIPTION = TypeSystemDescriptionFactory
-      .createTypeSystemDescription("org.cleartk.timeml.TypeSystem");
+  public static TypeSystemDescription TYPE_SYSTEM_DESCRIPTION = TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem");
 }

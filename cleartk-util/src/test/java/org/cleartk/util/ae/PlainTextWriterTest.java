@@ -45,14 +45,13 @@ public class PlainTextWriterTest extends DefaultTestBase {
   @Test
   public void test() throws Exception {
     try {
-      AnalysisEngineFactory.createPrimitive(PlainTextWriter.class, typeSystemDescription);
+      AnalysisEngineFactory.createPrimitive(PlainTextWriter.class);
       Assert.fail("expected exception with output directory not specified");
     } catch (ResourceInitializationException e) {
     }
 
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         PlainTextWriter.class,
-        typeSystemDescription,
         PlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME,
         this.outputDirectory.getPath());
     String text = "What if we built a large\r\n, wooden badger?";

@@ -63,7 +63,6 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
     // create the document
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         ArgumentAnnotator.class,
-        typeSystemDescription,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         PublicFieldDataWriter.StringFactory.class.getName(),
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
@@ -83,7 +82,6 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
     // create the document
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         ArgumentIdentifier.class,
-        typeSystemDescription,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         PublicFieldDataWriter.BooleanFactory.class.getName(),
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
@@ -103,7 +101,6 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
     // create the document
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         ArgumentClassifier.class,
-        typeSystemDescription,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         PublicFieldDataWriter.StringFactory.class.getName(),
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
@@ -123,7 +120,6 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
     // create the document
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         ArgumentAnnotator.class,
-        typeSystemDescription,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         PublicFieldDataWriter.StringFactory.class.getName(),
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
@@ -147,7 +143,6 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
     // create the document
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         ArgumentIdentifier.class,
-        typeSystemDescription,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         PublicFieldDataWriter.BooleanFactory.class.getName(),
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
@@ -171,7 +166,6 @@ public class PredicateArgumentHandlerTest extends SrlTestBase {
     // create the document
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         ArgumentClassifier.class,
-        typeSystemDescription,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         PublicFieldDataWriter.StringFactory.class.getName(),
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,

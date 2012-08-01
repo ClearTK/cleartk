@@ -90,7 +90,6 @@ public class MaxentDataWriterTest extends DefaultTestBase {
   public void test1() throws Exception {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         Test1Annotator.class,
-        typeSystemDescription,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
@@ -124,7 +123,6 @@ public class MaxentDataWriterTest extends DefaultTestBase {
   public void test2() throws Exception {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         Test1Annotator.class,
-        typeSystemDescription,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
@@ -175,7 +173,6 @@ public class MaxentDataWriterTest extends DefaultTestBase {
   public void test3() throws Exception {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         Test1Annotator.class,
-        typeSystemDescription,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
@@ -238,7 +235,6 @@ public class MaxentDataWriterTest extends DefaultTestBase {
 
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         Test4Annotator.class,
-        typeSystemDescription,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
@@ -276,7 +272,6 @@ public class MaxentDataWriterTest extends DefaultTestBase {
   public void test5() throws Exception {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         Test5Annotator.class,
-        typeSystemDescription,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,

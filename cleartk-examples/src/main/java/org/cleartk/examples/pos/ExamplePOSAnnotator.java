@@ -32,7 +32,6 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.classifier.CleartkAnnotatorDescriptionFactory;
 import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.ContextExtractor;
@@ -47,10 +46,10 @@ import org.cleartk.classifier.feature.proliferate.NumericTypeProliferator;
 import org.cleartk.classifier.feature.proliferate.ProliferatingExtractor;
 import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
+import org.cleartk.classifier.jar.GenericJarClassifierFactory;
 import org.cleartk.classifier.opennlp.MaxentDataWriter;
 import org.cleartk.classifier.viterbi.DefaultOutcomeFeatureExtractor;
 import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
-import org.cleartk.examples.ExampleComponents;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -146,9 +145,9 @@ public class ExamplePOSAnnotator extends CleartkSequenceAnnotator<String> {
 
   public static AnalysisEngineDescription getClassifierDescription(String modelFileName)
       throws ResourceInitializationException {
-    return CleartkAnnotatorDescriptionFactory.createCleartkSequenceAnnotator(
+    return AnalysisEngineFactory.createPrimitiveDescription(
         ExamplePOSAnnotator.class,
-        ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+        GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
         modelFileName);
   }
 
@@ -156,7 +155,6 @@ public class ExamplePOSAnnotator extends CleartkSequenceAnnotator<String> {
       throws ResourceInitializationException {
     return AnalysisEngineFactory.createPrimitiveDescription(
         ExamplePOSAnnotator.class,
-        ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
         CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         ViterbiDataWriterFactory.class.getName(),
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,

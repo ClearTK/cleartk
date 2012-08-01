@@ -46,7 +46,6 @@ import org.cleartk.util.ViewURIUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.TypeSystemDescriptionFactory;
 
 /**
  * <br>
@@ -66,9 +65,6 @@ public class AnnotationEvaluatorTest extends EvaluationTestBase {
         Token.class,
         "Gold",
         "System");
-    // necessary because test type system descriptors are not in their own files
-    desc.getAnalysisEngineMetaData().setTypeSystem(
-        TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.type.test.TestTypeSystem"));
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(desc);
     JCas base = engine.newJCas();
     ViewURIUtil.setURI(base, new File("testSpans").toURI());
@@ -180,9 +176,6 @@ public class AnnotationEvaluatorTest extends EvaluationTestBase {
         "pos",
         "Gold",
         "System");
-    // necessary because test type system descriptors are not in their own files
-    desc.getAnalysisEngineMetaData().setTypeSystem(
-        TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.type.test.TestTypeSystem"));
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         desc,
         AnnotationEvaluator.PARAM_IGNORE_SYSTEM_SPANS_NOT_IN_GOLD,
@@ -305,9 +298,6 @@ public class AnnotationEvaluatorTest extends EvaluationTestBase {
         "pos",
         "Gold",
         "System");
-    // necessary because test type system descriptors are not in their own files
-    desc.getAnalysisEngineMetaData().setTypeSystem(
-        TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.type.test.TestTypeSystem"));
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         desc,
         AnnotationEvaluator.PARAM_ANNOTATION_GROUPER_CLASS_NAME,

@@ -43,7 +43,7 @@ public class CoNLL2005WriterTest extends SrlTestBase {
   @Test
   public void testCoNLL2005WriterDescriptor() throws UIMAException {
     try {
-      AnalysisEngineFactory.createPrimitive(Conll2005Writer.class, typeSystemDescription);
+      AnalysisEngineFactory.createPrimitive(Conll2005Writer.class);
       Assert.fail("expected exception without output file parameter");
     } catch (ResourceInitializationException e) {
     }
@@ -52,7 +52,6 @@ public class CoNLL2005WriterTest extends SrlTestBase {
 
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         Conll2005Writer.class,
-        typeSystemDescription,
         Conll2005Writer.PARAM_OUTPUT_FILE,
         outputFile.getPath());
 

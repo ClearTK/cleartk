@@ -54,7 +54,6 @@ import org.cleartk.classifier.jar.JarClassifierBuilder;
 import org.cleartk.classifier.libsvm.MultiClassLIBSVMDataWriter;
 import org.cleartk.eval.AnnotationStatistics;
 import org.cleartk.eval.Evaluation_ImplBase;
-import org.cleartk.examples.ExampleComponents;
 import org.cleartk.examples.type.UsenetDocument;
 import org.cleartk.syntax.opennlp.SentenceAnnotator;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
@@ -294,9 +293,7 @@ public class DocumentClassificationEvaluation extends
     switch (mode) {
       case TRAIN:
         // If this is training, put the label categories directly into the default view
-        builder.add(AnalysisEngineFactory.createPrimitiveDescription(
-            GoldDocumentCategoryAnnotator.class,
-            ExampleComponents.TYPE_SYSTEM_DESCRIPTION));
+        builder.add(AnalysisEngineFactory.createPrimitiveDescription(GoldDocumentCategoryAnnotator.class));
         break;
 
       case TEST:
@@ -310,9 +307,10 @@ public class DocumentClassificationEvaluation extends
 
         // If this is testing, put the document categories in the gold view
         // The extra parameters to add() map the default view to the gold view.
-        builder.add(AnalysisEngineFactory.createPrimitiveDescription(
-            GoldDocumentCategoryAnnotator.class,
-            ExampleComponents.TYPE_SYSTEM_DESCRIPTION), CAS.NAME_DEFAULT_SOFA, GOLD_VIEW_NAME);
+        builder.add(
+            AnalysisEngineFactory.createPrimitiveDescription(GoldDocumentCategoryAnnotator.class),
+            CAS.NAME_DEFAULT_SOFA,
+            GOLD_VIEW_NAME);
         break;
 
       case CLASSIFY:
@@ -347,7 +345,6 @@ public class DocumentClassificationEvaluation extends
         // a serialized instance file.
         builder.add(AnalysisEngineFactory.createPrimitiveDescription(
             DocumentClassificationAnnotator.class,
-            ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
             DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
             InstanceDataWriter.class.getName(),
             DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
@@ -362,7 +359,6 @@ public class DocumentClassificationEvaluation extends
         // and thei model jar file for the classifying algorithm
         AnalysisEngineDescription documentClassificationAnnotator = AnalysisEngineFactory.createPrimitiveDescription(
             DocumentClassificationAnnotator.class,
-            ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
             CleartkAnnotator.PARAM_IS_TRAINING,
             false,
             GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,

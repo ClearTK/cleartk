@@ -60,7 +60,6 @@ public class GeniaPosGoldReaderTest extends TokenTestBase {
   public void testReader() throws CASException, UIMAException, IOException {
     CollectionReader reader = CollectionReaderFactory.createCollectionReader(
         GeniaPosGoldReader.class,
-        typeSystemDescription,
         GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
         "src/test/resources/token/genia/GENIAcorpus3.02.articleA.pos.xml",
         GeniaPosGoldReader.PARAM_LOAD_TOKENS,
@@ -86,7 +85,6 @@ public class GeniaPosGoldReaderTest extends TokenTestBase {
 
     reader = CollectionReaderFactory.createCollectionReader(
         GeniaPosGoldReader.class,
-        typeSystemDescription,
         GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
         "src/test/resources/token/genia/GENIAcorpus3.02.articleA.pos.xml",
         GeniaPosGoldReader.PARAM_LOAD_TOKENS,
@@ -105,16 +103,13 @@ public class GeniaPosGoldReaderTest extends TokenTestBase {
     sentence = JCasUtil.selectByIndex(jcas, Sentence.class, 0);
     assertNull(null);
 
-    assertTrue(jcas
-        .getDocumentText()
-        .startsWith(
-            "IL-2 gene expression and NF-kappa B activation through CD28 requires reactive oxygen production by 5-lipoxygenase."));
+    assertTrue(jcas.getDocumentText().startsWith(
+        "IL-2 gene expression and NF-kappa B activation through CD28 requires reactive oxygen production by 5-lipoxygenase."));
 
     IOException ioe = null;
     try {
       reader = CollectionReaderFactory.createCollectionReader(
           GeniaPosGoldReader.class,
-          typeSystemDescription,
           GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
           "src/test/resources/token/genia/GENIAcorpus3.02.articleA.pos.xml",
           GeniaPosGoldReader.PARAM_LOAD_TOKENS,
@@ -134,7 +129,6 @@ public class GeniaPosGoldReaderTest extends TokenTestBase {
     try {
       reader = CollectionReaderFactory.createCollectionReader(
           GeniaPosGoldReader.class,
-          typeSystemDescription,
           GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
           "src/test/resources/token/genia/article_ids.txt");
     } catch (ResourceInitializationException rie) {
@@ -144,7 +138,6 @@ public class GeniaPosGoldReaderTest extends TokenTestBase {
 
     reader = CollectionReaderFactory.createCollectionReader(
         GeniaPosGoldReader.class,
-        typeSystemDescription,
         GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
         "src/test/resources/token/genia/GENIAcorpus3.02.articleA.pos.xml",
         GeniaPosGoldReader.PARAM_LOAD_TOKENS,

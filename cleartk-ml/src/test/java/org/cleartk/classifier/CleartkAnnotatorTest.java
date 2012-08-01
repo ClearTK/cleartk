@@ -94,9 +94,7 @@ public class CleartkAnnotatorTest extends DefaultTestBase {
       classifierAnnotator.initialize(UimaContextFactory.createUimaContext(
           GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
           new File(outputDirectoryName, "asdf.jar").getPath()));
-      classifierAnnotator.classifier.classify(InstanceFactory
-          .createInstance("hello", 1, 1)
-          .getFeatures());
+      classifierAnnotator.classifier.classify(InstanceFactory.createInstance("hello", 1, 1).getFeatures());
       fail("expected exception for invalid classifier name");
     } catch (ResourceInitializationException e) {
     }
@@ -108,9 +106,7 @@ public class CleartkAnnotatorTest extends DefaultTestBase {
     classifierAnnotator.initialize(UimaContextFactory.createUimaContext(
         CleartkAnnotator.PARAM_CLASSIFIER_FACTORY_CLASS_NAME,
         StringTestClassifierFactory.class.getName()));
-    classifierAnnotator.classifier.classify(InstanceFactory
-        .createInstance("hello", 1, 1)
-        .getFeatures());
+    classifierAnnotator.classifier.classify(InstanceFactory.createInstance("hello", 1, 1).getFeatures());
   }
 
   @Test
@@ -156,7 +152,6 @@ public class CleartkAnnotatorTest extends DefaultTestBase {
     try {
       AnalysisEngineFactory.createPrimitive(
           StringTestAnnotator.class,
-          typeSystemDescription,
           CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
           DefaultStringTestDataWriterFactory.class.getName());
       Assert.fail("expected exception with missing output directory");
@@ -166,7 +161,6 @@ public class CleartkAnnotatorTest extends DefaultTestBase {
     try {
       AnalysisEngineFactory.createPrimitive(
           StringTestAnnotator.class,
-          typeSystemDescription,
           DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
           outputDirectoryName);
       Assert.fail("expected exception with missing classifier jar");
@@ -175,18 +169,15 @@ public class CleartkAnnotatorTest extends DefaultTestBase {
 
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         StringTestAnnotator.class,
-        typeSystemDescription,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         DefaultStringTestDataWriterFactory.class.getName());
 
-    Object dataWriter = engine
-        .getConfigParameterValue(CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME);
+    Object dataWriter = engine.getConfigParameterValue(CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME);
     Assert.assertEquals(DefaultStringTestDataWriterFactory.class.getName(), dataWriter);
 
-    Object outputDir = engine
-        .getConfigParameterValue(DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY);
+    Object outputDir = engine.getConfigParameterValue(DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY);
     Assert.assertEquals(outputDirectoryName, outputDir);
 
     engine.collectionProcessComplete();

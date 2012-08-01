@@ -58,16 +58,9 @@ public class LemmaAnnotatorTest extends CleartkTestBase {
     tokenBuilder = new TokenBuilder<Token, Sentence>(Token.class, Sentence.class, "pos", "stem");
   }
 
-  @Override
-  public String[] getTypeSystemDescriptorNames() {
-    return new String[] { "org.cleartk.token.TypeSystem" };
-  }
-
   @Test
   public void testLemmaAnnotator() throws Exception {
-    AnalysisEngine lemmatizer = AnalysisEngineFactory.createPrimitive(
-        LemmaAnnotator.class,
-        typeSystemDescription);
+    AnalysisEngine lemmatizer = AnalysisEngineFactory.createPrimitive(LemmaAnnotator.class);
 
     tokenBuilder.buildTokens(jCas, "This is a test.", "This is a test .", "DT VB DT NN .");
     lemmatizer.process(jCas);

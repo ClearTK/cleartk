@@ -24,7 +24,6 @@
 
 package org.cleartk.examples.parser;
 
-import org.cleartk.examples.ExampleComponents;
 import org.cleartk.syntax.opennlp.ParserAnnotator;
 import org.cleartk.syntax.opennlp.PosTaggerAnnotator;
 import org.cleartk.syntax.opennlp.SentenceAnnotator;
@@ -58,7 +57,6 @@ public class ParserExample {
         ParserAnnotator.getDescription(),
         AnalysisEngineFactory.createPrimitiveDescription(
             XWriter.class,
-            ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
             XWriter.PARAM_OUTPUT_DIRECTORY_NAME,
             outputDirectory,
             XWriter.PARAM_FILE_NAMER_CLASS_NAME,

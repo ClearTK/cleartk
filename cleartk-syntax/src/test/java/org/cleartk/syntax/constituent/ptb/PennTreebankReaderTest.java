@@ -52,23 +52,19 @@ public class PennTreebankReaderTest extends SyntaxTestBase {
   @Test
   public void testReaderDescriptor() throws UIMAException {
     try {
-      CollectionReaderFactory.createCollectionReader(
-          PennTreebankReader.class,
-          typeSystemDescription);
+      CollectionReaderFactory.createCollectionReader(PennTreebankReader.class);
       Assert.fail("expected exception with no file or directory specified");
     } catch (ResourceInitializationException e) {
     }
 
     CollectionReader reader = CollectionReaderFactory.createCollectionReader(
         PennTreebankReader.class,
-        typeSystemDescription,
         PennTreebankReader.PARAM_CORPUS_DIRECTORY_NAME,
         this.inputDir,
         PennTreebankReader.PARAM_SECTIONS_SPECIFIER,
         "02-21");
 
-    Object directory = reader
-        .getConfigParameterValue(PennTreebankReader.PARAM_CORPUS_DIRECTORY_NAME);
+    Object directory = reader.getConfigParameterValue(PennTreebankReader.PARAM_CORPUS_DIRECTORY_NAME);
     Assert.assertEquals(this.inputDir, directory);
 
     Object sections = reader.getConfigParameterValue(PennTreebankReader.PARAM_SECTIONS_SPECIFIER);

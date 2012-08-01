@@ -44,7 +44,6 @@ import org.cleartk.classifier.feature.extractor.simple.CharacterCategoryPatternE
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.opennlp.MaxentDataWriter;
-import org.cleartk.timeml.TimeMLComponents;
 import org.cleartk.timeml.type.Time;
 import org.cleartk.timeml.util.CleartkInternalModelFactory;
 import org.cleartk.timeml.util.TimeWordsExtractor;
@@ -74,9 +73,7 @@ public class TimeTypeAnnotator extends CleartkAnnotator<String> {
 
     @Override
     public AnalysisEngineDescription getBaseDescription() throws ResourceInitializationException {
-      return AnalysisEngineFactory.createPrimitiveDescription(
-          TimeTypeAnnotator.class,
-          TimeMLComponents.TYPE_SYSTEM_DESCRIPTION);
+      return AnalysisEngineFactory.createPrimitiveDescription(TimeTypeAnnotator.class);
     }
   };
 

@@ -83,9 +83,7 @@ import edu.stanford.nlp.util.CoreMap;
 public class StanfordCoreNLPAnnotator extends JCasAnnotator_ImplBase {
 
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(
-        StanfordCoreNLPAnnotator.class,
-        StanfordCoreNLPComponents.TYPE_SYSTEM_DESCRIPTION);
+    return AnalysisEngineFactory.createPrimitiveDescription(StanfordCoreNLPAnnotator.class);
   }
 
   private StanfordCoreNLP processor;

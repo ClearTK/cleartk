@@ -77,10 +77,8 @@ public class TimeMLWriterTest extends TimeMLTestBase {
     CollectionReader reader = FilesCollectionReader.getCollectionReaderWithView(
         this.inputFile.getPath(),
         TimeMLViewName.TIMEML);
-    AnalysisEngine annotator = AnalysisEngineFactory.createPrimitive(TimeMLGoldAnnotator
-        .getDescription());
-    AnalysisEngine writer = AnalysisEngineFactory.createPrimitive(TimeMLWriter
-        .getDescription(this.outputDirectory.getPath()));
+    AnalysisEngine annotator = AnalysisEngineFactory.createPrimitive(TimeMLGoldAnnotator.getDescription());
+    AnalysisEngine writer = AnalysisEngineFactory.createPrimitive(TimeMLWriter.getDescription(this.outputDirectory.getPath()));
 
     reader.getNext(this.jCas.getCas());
     annotator.process(this.jCas);
@@ -131,14 +129,13 @@ public class TimeMLWriterTest extends TimeMLTestBase {
   @Test
   public void testDescriptor() throws UIMAException {
     try {
-      AnalysisEngineFactory.createPrimitive(TimeMLWriter.class, typeSystemDescription);
+      AnalysisEngineFactory.createPrimitive(TimeMLWriter.class);
       Assert.fail("expected failure with no OutputDirectory specified");
     } catch (ResourceInitializationException e) {
     }
 
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         TimeMLWriter.class,
-        typeSystemDescription,
         TimeMLWriter.PARAM_OUTPUT_DIRECTORY_NAME,
         this.outputDirectory.getPath());
     Assert.assertEquals(

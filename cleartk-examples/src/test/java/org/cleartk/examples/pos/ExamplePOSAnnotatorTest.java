@@ -38,7 +38,6 @@ import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.GenericJarClassifierFactory;
 import org.cleartk.classifier.util.PublicFieldSequenceDataWriter;
 import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
-import org.cleartk.examples.ExampleComponents;
 import org.cleartk.examples.ExamplesTestBase;
 import org.junit.Assert;
 import org.junit.Test;
@@ -59,7 +58,6 @@ public class ExamplePOSAnnotatorTest extends ExamplesTestBase {
   public void testSimpleSentence() throws Exception {
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         ExamplePOSAnnotator.class,
-        ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
         CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         PublicFieldSequenceDataWriter.StringFactory.class.getName(),
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,

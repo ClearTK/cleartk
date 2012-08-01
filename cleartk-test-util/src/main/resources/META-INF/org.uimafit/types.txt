@@ -1,0 +1,1 @@
+classpath*:org/cleartk/type/test/TestTypeSystem.xml

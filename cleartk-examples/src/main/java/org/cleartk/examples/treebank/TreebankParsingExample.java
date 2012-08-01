@@ -33,7 +33,6 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.collection.CollectionReader;
 import org.cleartk.eval.EvaluationConstants;
-import org.cleartk.examples.ExampleComponents;
 import org.cleartk.syntax.constituent.TreebankConstants;
 import org.cleartk.syntax.constituent.TreebankGoldAnnotator;
 import org.cleartk.util.Options_ImplBase;
@@ -76,13 +75,25 @@ import org.uimafit.pipeline.SimplePipeline;
 public class TreebankParsingExample {
 
   public static class Options extends Options_ImplBase {
-    @Option(name = "-td", aliases = "--treebankDirectory", usage = "specify the directory containing treebank files", required = true)
+    @Option(
+        name = "-td",
+        aliases = "--treebankDirectory",
+        usage = "specify the directory containing treebank files",
+        required = true)
     public String treebankDirectory;
 
-    @Option(name = "-o", aliases = "--outputDirectory", usage = "specify the directory to write the XMI files to", required = true)
+    @Option(
+        name = "-o",
+        aliases = "--outputDirectory",
+        usage = "specify the directory to write the XMI files to",
+        required = true)
     public String outputDirectory;
 
-    @Option(name = "-suf", aliases = "--treebankFileSuffixes", usage = "specify file suffixes of the treebank files in the treebank directory", multiValued = true)
+    @Option(
+        name = "-suf",
+        aliases = "--treebankFileSuffixes",
+        usage = "specify file suffixes of the treebank files in the treebank directory",
+        multiValued = true)
     public List<String> treebankFileSuffixes = new ArrayList<String>();
   }
 
@@ -90,12 +101,10 @@ public class TreebankParsingExample {
     Options options = new Options();
     options.parseOptions(args);
 
-    String[] suffixes = options.treebankFileSuffixes
-        .toArray(new String[options.treebankFileSuffixes.size()]);
+    String[] suffixes = options.treebankFileSuffixes.toArray(new String[options.treebankFileSuffixes.size()]);
 
     CollectionReader reader = CollectionReaderFactory.createCollectionReader(
         FilesCollectionReader.class,
-        ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
         FilesCollectionReader.PARAM_ROOT_FILE,
         options.treebankDirectory,
         FilesCollectionReader.PARAM_VIEW_NAME,
@@ -105,21 +114,16 @@ public class TreebankParsingExample {
 
     AnalysisEngine viewCreator = AnalysisEngineFactory.createPrimitive(
         ViewCreatorAnnotator.class,
-        ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
         ViewCreatorAnnotator.PARAM_VIEW_NAME,
         EvaluationConstants.GOLD_VIEW);
 
-    AnalysisEngineDescription treebankParserDescription = AnalysisEngineFactory
-        .createPrimitiveDescription(
-            TreebankGoldAnnotator.class,
-            ExampleComponents.TYPE_SYSTEM_DESCRIPTION);
+    AnalysisEngineDescription treebankParserDescription = AnalysisEngineFactory.createPrimitiveDescription(TreebankGoldAnnotator.class);
     AnalysisEngine treebankParser = AnalysisEngineFactory.createAnalysisEngine(
         treebankParserDescription,
         EvaluationConstants.GOLD_VIEW);
 
     AnalysisEngine xWriter = AnalysisEngineFactory.createPrimitive(
         XWriter.class,
-        ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
         XWriter.PARAM_OUTPUT_DIRECTORY_NAME,
         options.outputDirectory,
         XWriter.PARAM_FILE_NAMER_CLASS_NAME,

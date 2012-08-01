@@ -32,12 +32,10 @@ import org.uimafit.factory.TypeSystemDescriptionFactory;
  * Copyright (c) 2011, Regents of the University of Colorado <br>
  * All rights reserved.
  * <p>
-*/
+ */
+@Deprecated
 public class DependencyComponents {
 
-  public static TypeSystemDescription TYPE_SYSTEM_DESCRIPTION = TypeSystemDescriptionFactory
-      .createTypeSystemDescription(
-          "org.cleartk.token.TypeSystem",
-          "org.cleartk.syntax.dependency.TypeSystem");
+  public static TypeSystemDescription TYPE_SYSTEM_DESCRIPTION = TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem");
 
 }

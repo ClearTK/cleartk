@@ -67,19 +67,16 @@ public class PlainTextTLINKGoldAnnotatorTest extends TimeMLTestBase {
   public void test_wsj_0106() throws UIMAException, IOException {
     CollectionReader reader = CollectionReaderFactory.createCollectionReader(
         FilesCollectionReader.class,
-        typeSystemDescription,
         FilesCollectionReader.PARAM_VIEW_NAME,
         TimeMLViewName.TIMEML,
         FilesCollectionReader.PARAM_ROOT_FILE,
         "src/test/resources/data/timeml/wsj_0106.tml");
     AnalysisEngine timemlEngine = AnalysisEngineFactory.createPrimitive(
         TimeMLGoldAnnotator.class,
-        typeSystemDescription,
         TimeMLGoldAnnotator.PARAM_LOAD_TLINKS,
         false);
     AnalysisEngine plainTextEngine = AnalysisEngineFactory.createPrimitive(
         PlainTextTLINKGoldAnnotator.class,
-        typeSystemDescription,
         PlainTextTLINKGoldAnnotator.PARAM_TLINK_FILE_URL,
         this.webUrl);
     JCas jcas = new JCasIterable(reader, timemlEngine, plainTextEngine).next();
@@ -114,19 +111,16 @@ public class PlainTextTLINKGoldAnnotatorTest extends TimeMLTestBase {
   public void test_wsj_0106_alternate() throws UIMAException, IOException {
     CollectionReader reader = CollectionReaderFactory.createCollectionReader(
         FilesCollectionReader.class,
-        typeSystemDescription,
         FilesCollectionReader.PARAM_VIEW_NAME,
         TimeMLViewName.TIMEML,
         FilesCollectionReader.PARAM_ROOT_FILE,
         "src/test/resources/data/timeml/wsj_0106.tml");
     AnalysisEngine timemlEngine = AnalysisEngineFactory.createPrimitive(
         TimeMLGoldAnnotator.class,
-        typeSystemDescription,
         TimeMLGoldAnnotator.PARAM_LOAD_TLINKS,
         false);
     AnalysisEngine plainTextEngine = AnalysisEngineFactory.createPrimitive(
         PlainTextTLINKGoldAnnotator.class,
-        typeSystemDescription,
         PlainTextTLINKGoldAnnotator.PARAM_TLINK_FILE_URL,
         this.fileUrl);
     JCas jcas = new JCasIterable(reader, timemlEngine, plainTextEngine).next();

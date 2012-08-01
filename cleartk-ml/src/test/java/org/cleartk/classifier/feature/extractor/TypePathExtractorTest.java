@@ -122,9 +122,7 @@ public class TypePathExtractorTest extends DefaultTestBase {
 
   @Test
   public void testExtract() throws Throwable {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-        TypePathExtractorTest.Annotator.class,
-        typeSystemDescription);
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(Annotator.class);
 
     engine.process(jCas);
     engine.collectionProcessComplete();
@@ -274,8 +272,7 @@ public class TypePathExtractorTest extends DefaultTestBase {
   @Test
   public void testIsValidatePath() {
     assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(POSTag.type), "value", jCas));
-    assertTrue(TypePathExtractor
-        .isValidPath(jCas.getCasType(Header.type), "authors/lastName", jCas));
+    assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(Header.type), "authors/lastName", jCas));
     assertTrue(!TypePathExtractor.isValidPath(
         jCas.getCasType(Header.type),
         "authors/lastNames",
@@ -294,8 +291,7 @@ public class TypePathExtractorTest extends DefaultTestBase {
         jCas.getCasType(Token.type),
         "depRel/head/orthogr",
         jCas));
-    assertTrue(TypePathExtractor
-        .isValidPath(jCas.getCasType(Token.type), "depRel/projective", jCas));
+    assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(Token.type), "depRel/projective", jCas));
     assertTrue(TypePathExtractor.isValidPath(
         jCas.getCasType(Token.type),
         "depRel/head/depRel/projective",

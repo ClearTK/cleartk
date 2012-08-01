@@ -44,20 +44,16 @@ public class Conll2005GoldReaderTest extends SrlTestBase {
   @Test
   public void testDescriptor() throws UIMAException {
     try {
-      CollectionReaderFactory.createCollectionReader(
-          Conll2005GoldReader.class,
-          typeSystemDescription);
+      CollectionReaderFactory.createCollectionReader(Conll2005GoldReader.class);
       Assert.fail("expected error for missing CoNLL 2005 data file");
     } catch (ResourceInitializationException e) {
     }
 
     CollectionReader reader = CollectionReaderFactory.createCollectionReader(
         Conll2005GoldReader.class,
-        typeSystemDescription,
         Conll2005GoldReader.PARAM_CONLL2005_DATA_FILE,
         this.oneSentencePath);
-    Object dataFileName = reader
-        .getConfigParameterValue(Conll2005GoldReader.PARAM_CONLL2005_DATA_FILE);
+    Object dataFileName = reader.getConfigParameterValue(Conll2005GoldReader.PARAM_CONLL2005_DATA_FILE);
     Assert.assertEquals(this.oneSentencePath, dataFileName);
   }
 }

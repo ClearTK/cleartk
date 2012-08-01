@@ -88,10 +88,8 @@ import clear.reader.AbstractReader;
     "org.cleartk.syntax.dependency.type.DependencyNode" })
 public class ClearParserSRL extends JCasAnnotator_ImplBase {
 
-  public static TypeSystemDescription TYPE_SYSTEM_DESCRIPTION = TypeSystemDescriptionFactory.createTypeSystemDescription(
-      "org.cleartk.token.TypeSystem",
-      "org.cleartk.syntax.dependency.TypeSystem",
-      "org.cleartk.srl.TypeSystem");
+  @Deprecated
+  public static TypeSystemDescription TYPE_SYSTEM_DESCRIPTION = TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem");
 
   // TODO: change this
   public static final String DEFAULT_MODEL_FILE_NAME = "en_srl_ontonotes.jar";

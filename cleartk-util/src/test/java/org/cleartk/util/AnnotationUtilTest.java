@@ -37,7 +37,6 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Chunk;
 import org.cleartk.type.test.NamedEntityMention;
@@ -60,11 +59,8 @@ import org.uimafit.util.JCasUtil;
 public class AnnotationUtilTest extends DefaultTestBase {
 
   public static class Annotator extends JCasAnnotator_ImplBase {
-    public static void getProcessedJCas(JCas jCas, TypeSystemDescription typeSystemDescription)
-        throws UIMAException, IOException {
-      AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-          Annotator.class,
-          typeSystemDescription);
+    public static void getProcessedJCas(JCas jCas) throws UIMAException, IOException {
+      AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(Annotator.class);
       AnalysisEngineFactory.process(jCas, engine, "src/test/resources/docs/huckfinn.txt");
     }
 
@@ -113,7 +109,7 @@ public class AnnotationUtilTest extends DefaultTestBase {
 
   @Test
   public void testContains() throws UIMAException, IOException {
-    AnnotationUtilTest.Annotator.getProcessedJCas(jCas, typeSystemDescription);
+    AnnotationUtilTest.Annotator.getProcessedJCas(jCas);
 
     Token token6 = JCasUtil.selectByIndex(jCas, Token.class, 6);
     Token token7 = JCasUtil.selectByIndex(jCas, Token.class, 7);

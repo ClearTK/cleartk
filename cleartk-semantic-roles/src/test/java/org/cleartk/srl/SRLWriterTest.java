@@ -51,14 +51,13 @@ public class SRLWriterTest extends SrlTestBase {
   @Test
   public void testSRLWriterDescriptor() throws UIMAException {
     try {
-      AnalysisEngineFactory.createPrimitive(SRLWriter.class, typeSystemDescription);
+      AnalysisEngineFactory.createPrimitive(SRLWriter.class);
       Assert.fail("expected exception without output file parameter");
     } catch (ResourceInitializationException e) {
     }
 
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         SRLWriter.class,
-        typeSystemDescription,
         SRLWriter.PARAM_OUTPUT_FILE,
         outputFile.getPath());
 

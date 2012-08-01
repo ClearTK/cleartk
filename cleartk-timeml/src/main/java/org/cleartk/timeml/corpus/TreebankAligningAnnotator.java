@@ -40,7 +40,6 @@ import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.syntax.constituent.util.TreebankFormatParser;
 import org.cleartk.syntax.constituent.util.TreebankNodeUtility;
-import org.cleartk.timeml.TimeMLComponents;
 import org.cleartk.timeml.type.Text;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
@@ -79,7 +78,6 @@ public class TreebankAligningAnnotator extends JCasAnnotator_ImplBase {
       throws ResourceInitializationException {
     return AnalysisEngineFactory.createPrimitiveDescription(
         TreebankAligningAnnotator.class,
-        TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
         PARAM_TREEBANK_DIRECTORY_NAME,
         treeBankDir);
 

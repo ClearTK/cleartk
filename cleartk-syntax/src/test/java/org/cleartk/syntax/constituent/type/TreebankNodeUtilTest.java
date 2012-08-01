@@ -53,9 +53,7 @@ public class TreebankNodeUtilTest extends SyntaxTestBase {
     JCas tbView = this.jCas.createView(TreebankConstants.TREEBANK_VIEW);
     tbView.setDocumentText("(S (NP (DT The) (NN cat)) (VP (VBD chased) (NP (DT the) (NN mouse))) (. .))");
 
-    AnalysisEngine treeAnnotator = AnalysisEngineFactory.createPrimitive(
-        TreebankGoldAnnotator.class,
-        this.typeSystemDescription);
+    AnalysisEngine treeAnnotator = AnalysisEngineFactory.createPrimitive(TreebankGoldAnnotator.class);
     treeAnnotator.process(this.jCas);
 
     TreebankNode node;
@@ -84,9 +82,7 @@ public class TreebankNodeUtilTest extends SyntaxTestBase {
     JCas tbView = this.jCas.createView(TreebankConstants.TREEBANK_VIEW);
     tbView.setDocumentText("(S (NP (DT The) (NN cat)) (VP (VBD chased) (NP (NNS mice))) (. .))");
 
-    AnalysisEngine treeAnnotator = AnalysisEngineFactory.createPrimitive(
-        TreebankGoldAnnotator.class,
-        this.typeSystemDescription);
+    AnalysisEngine treeAnnotator = AnalysisEngineFactory.createPrimitive(TreebankGoldAnnotator.class);
     treeAnnotator.process(this.jCas);
 
     TreebankNode node;
@@ -125,9 +121,7 @@ public class TreebankNodeUtilTest extends SyntaxTestBase {
     JCas tbView = this.jCas.createView(TreebankConstants.TREEBANK_VIEW);
     tbView.setDocumentText("(S (NP (DT The) (NN cat)) (VP (VBD chased) (NP (NNS mice))) (. .))");
 
-    AnalysisEngine treeAnnotator = AnalysisEngineFactory.createPrimitive(
-        TreebankGoldAnnotator.class,
-        this.typeSystemDescription);
+    AnalysisEngine treeAnnotator = AnalysisEngineFactory.createPrimitive(TreebankGoldAnnotator.class);
     treeAnnotator.process(this.jCas);
 
     TreebankNode node;
@@ -170,9 +164,7 @@ public class TreebankNodeUtilTest extends SyntaxTestBase {
     JCas tbView = this.jCas.createView(TreebankConstants.TREEBANK_VIEW);
     tbView.setDocumentText("(S (NP (DT The) (NN cat)) (VP (VBD chased) (NP (NNS mice))) (. .))");
 
-    AnalysisEngine treeAnnotator = AnalysisEngineFactory.createPrimitive(
-        TreebankGoldAnnotator.class,
-        this.typeSystemDescription);
+    AnalysisEngine treeAnnotator = AnalysisEngineFactory.createPrimitive(TreebankGoldAnnotator.class);
     treeAnnotator.process(this.jCas);
 
     for (TreebankNode node : JCasUtil.select(this.jCas, TreebankNode.class)) {
@@ -211,9 +203,7 @@ public class TreebankNodeUtilTest extends SyntaxTestBase {
     JCas tbView = this.jCas.createView(TreebankConstants.TREEBANK_VIEW);
     tbView.setDocumentText("(S (NP (DT The) (NN cat)) (VP (VBD chased) (NP (NNS mice))) (. .))");
 
-    AnalysisEngine treeAnnotator = AnalysisEngineFactory.createPrimitive(
-        TreebankGoldAnnotator.class,
-        this.typeSystemDescription);
+    AnalysisEngine treeAnnotator = AnalysisEngineFactory.createPrimitive(TreebankGoldAnnotator.class);
     treeAnnotator.process(this.jCas);
 
     TopTreebankNode root = JCasUtil.selectSingle(this.jCas, TopTreebankNode.class);
@@ -247,9 +237,7 @@ public class TreebankNodeUtilTest extends SyntaxTestBase {
     JCas tbView = this.jCas.createView(TreebankConstants.TREEBANK_VIEW);
     tbView.setDocumentText("(S (NP (DT The) (NN cat)) (VP (VBD chased) (NP (NNS mice))) (. .))");
 
-    AnalysisEngine treeAnnotator = AnalysisEngineFactory.createPrimitive(
-        TreebankGoldAnnotator.class,
-        this.typeSystemDescription);
+    AnalysisEngine treeAnnotator = AnalysisEngineFactory.createPrimitive(TreebankGoldAnnotator.class);
     treeAnnotator.process(this.jCas);
 
     TopTreebankNode root = JCasUtil.selectSingle(this.jCas, TopTreebankNode.class);
@@ -292,9 +280,7 @@ public class TreebankNodeUtilTest extends SyntaxTestBase {
       JCas tbView = this.jCas.createView(TreebankConstants.TREEBANK_VIEW);
       tbView.setDocumentText(parseText);
 
-      AnalysisEngine treeAnnotator = AnalysisEngineFactory.createPrimitive(
-          TreebankGoldAnnotator.class,
-          this.typeSystemDescription);
+      AnalysisEngine treeAnnotator = AnalysisEngineFactory.createPrimitive(TreebankGoldAnnotator.class);
       treeAnnotator.process(this.jCas);
 
       TopTreebankNode root = JCasUtil.selectSingle(this.jCas, TopTreebankNode.class);

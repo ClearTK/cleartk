@@ -60,7 +60,6 @@ public class XReaderTest extends DefaultTestBase {
   public void testReader() throws IOException, UIMAException {
     CollectionReader reader = CollectionReaderFactory.createCollectionReader(
         XReader.class,
-        typeSystemDescription,
         FilesCollectionReader.PARAM_ROOT_FILE,
         "src/test/resources/data/xreader-test/xmi",
         FilesCollectionReader.PARAM_SUFFIXES,
@@ -73,7 +72,6 @@ public class XReaderTest extends DefaultTestBase {
 
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         XWriter.class,
-        typeSystemDescription,
         XWriter.PARAM_OUTPUT_DIRECTORY_NAME,
         this.outputDirectory.getPath(),
         XWriter.PARAM_FILE_NAMER_CLASS_NAME,
@@ -86,7 +84,6 @@ public class XReaderTest extends DefaultTestBase {
 
     CollectionReader reader = CollectionReaderFactory.createCollectionReader(
         XReader.class,
-        typeSystemDescription,
         FilesCollectionReader.PARAM_ROOT_FILE,
         new File(outputDirectory, "test.xmi").getPath());
 
@@ -109,7 +106,6 @@ public class XReaderTest extends DefaultTestBase {
 
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         XWriter.class,
-        typeSystemDescription,
         XWriter.PARAM_OUTPUT_DIRECTORY_NAME,
         this.outputDirectory.getPath(),
         XWriter.PARAM_XML_SCHEME_NAME,
@@ -125,7 +121,6 @@ public class XReaderTest extends DefaultTestBase {
 
     CollectionReader reader = CollectionReaderFactory.createCollectionReader(
         XReader.class,
-        typeSystemDescription,
         FilesCollectionReader.PARAM_ROOT_FILE,
         new File(outputDirectory, "test.xcas").getPath(),
         XReader.PARAM_XML_SCHEME,
@@ -148,14 +143,13 @@ public class XReaderTest extends DefaultTestBase {
   @Test
   public void testDescriptor() throws UIMAException {
     try {
-      CollectionReaderFactory.createCollectionReader(XReader.class, typeSystemDescription);
+      CollectionReaderFactory.createCollectionReader(XReader.class);
       Assert.fail("expected exception with no file or directory specified");
     } catch (ResourceInitializationException e) {
     }
 
     CollectionReader reader = CollectionReaderFactory.createCollectionReader(
         XReader.class,
-        typeSystemDescription,
         FilesCollectionReader.PARAM_ROOT_FILE,
         outputDirectory.getPath());
 
@@ -172,7 +166,6 @@ public class XReaderTest extends DefaultTestBase {
   private void buildTestXmiFiles() throws Exception {
     AnalysisEngine xWriter = AnalysisEngineFactory.createPrimitive(
         XWriter.class,
-        typeSystemDescription,
         XWriter.PARAM_OUTPUT_DIRECTORY_NAME,
         "src/test/resources/data/xreader-test/xmi");
     super.setUp();

@@ -85,7 +85,6 @@ public class VerbClauseTemporalAnnotatorTest extends TimeMLTestBase {
   public void test() throws UIMAException {
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         VerbClauseTemporalAnnotator.class,
-        typeSystemDescription,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         PublicFieldDataWriter.StringFactory.class.getName(),
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
@@ -160,7 +159,6 @@ public class VerbClauseTemporalAnnotatorTest extends TimeMLTestBase {
     // but don't let it add any events
     engine = AnalysisEngineFactory.createPrimitive(
         VerbClauseTemporalAnnotator.class,
-        typeSystemDescription,
         CleartkAnnotator.PARAM_CLASSIFIER_FACTORY_CLASS_NAME,
         AfterNewClassifier.class.getName());
     engine.process(jCas);
@@ -175,7 +173,6 @@ public class VerbClauseTemporalAnnotatorTest extends TimeMLTestBase {
     // run the annotator again, but let it add events this time
     engine = AnalysisEngineFactory.createPrimitive(
         VerbClauseTemporalAnnotator.class,
-        typeSystemDescription,
         CleartkAnnotator.PARAM_CLASSIFIER_FACTORY_CLASS_NAME,
         AfterNewClassifier.class.getName(),
         VerbClauseTemporalAnnotator.PARAM_CREATE_EVENTS,

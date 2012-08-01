@@ -57,17 +57,11 @@ public class SnowballStemmerTest extends CleartkTestBase {
     tokenBuilder = new TokenBuilder<Token, Sentence>(Token.class, Sentence.class, "pos", "stem");
   }
 
-  @Override
-  public String[] getTypeSystemDescriptorNames() {
-    return new String[] { "org.cleartk.token.TypeSystem" };
-  }
-
   @Test
   public void testBadStemmerName() {
     try {
       AnalysisEngineFactory.createPrimitive(
           SnowballStemmer.class,
-          typeSystemDescription,
           SnowballStemmer.PARAM_STEMMER_NAME,
           "FooBar");
       Assert.fail("Expected exception for bad stemmer name");
@@ -79,7 +73,6 @@ public class SnowballStemmerTest extends CleartkTestBase {
   public void testSimple() throws UIMAException {
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         DefaultSnowballStemmer.class,
-        typeSystemDescription,
         SnowballStemmer.PARAM_STEMMER_NAME,
         "English");
     String text = "The brown foxes jumped quickly over the lazy dog.";
@@ -98,7 +91,6 @@ public class SnowballStemmerTest extends CleartkTestBase {
   public void testUppercase() throws UIMAException {
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         DefaultSnowballStemmer.class,
-        typeSystemDescription,
         SnowballStemmer.PARAM_STEMMER_NAME,
         "English");
     tokenBuilder.buildTokens(
@@ -120,7 +112,7 @@ public class SnowballStemmerTest extends CleartkTestBase {
   public void testDescriptor() throws UIMAException {
     ResourceInitializationException rie = null;
     try {
-      AnalysisEngineFactory.createPrimitive(DefaultSnowballStemmer.class, typeSystemDescription);
+      AnalysisEngineFactory.createPrimitive(DefaultSnowballStemmer.class);
     } catch (ResourceInitializationException e) {
       rie = e;
     }
@@ -129,7 +121,6 @@ public class SnowballStemmerTest extends CleartkTestBase {
 
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         DefaultSnowballStemmer.class,
-        typeSystemDescription,
         SnowballStemmer.PARAM_STEMMER_NAME,
         "English");
 

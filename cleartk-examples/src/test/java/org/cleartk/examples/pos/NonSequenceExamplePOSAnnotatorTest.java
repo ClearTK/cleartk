@@ -34,13 +34,12 @@ import java.util.Locale;
 
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.pear.util.FileUtil;
-import org.cleartk.classifier.CleartkAnnotatorDescriptionFactory;
 import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
+import org.cleartk.classifier.jar.GenericJarClassifierFactory;
 import org.cleartk.classifier.libsvm.MultiClassLIBSVMDataWriter;
 import org.cleartk.classifier.opennlp.MaxentDataWriter;
 import org.cleartk.classifier.svmlight.OVASVMlightDataWriter;
-import org.cleartk.examples.ExampleComponents;
 import org.cleartk.examples.ExamplesTestBase;
 import org.cleartk.syntax.constituent.TreebankConstants;
 import org.cleartk.syntax.constituent.TreebankGoldAnnotator;
@@ -93,7 +92,6 @@ public class NonSequenceExamplePOSAnnotatorTest extends ExamplesTestBase {
     String libsvmDirectoryName = outputDirectory + "/libsvm";
     AnalysisEngineDescription dataWriter = AnalysisEngineFactory.createPrimitiveDescription(
         NonSequenceExamplePOSAnnotator.class,
-        ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
         MultiClassLIBSVMDataWriter.class.getName(),
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
@@ -110,7 +108,6 @@ public class NonSequenceExamplePOSAnnotatorTest extends ExamplesTestBase {
     String maxentDirectoryName = outputDirectoryName + "/maxent";
     AnalysisEngineDescription dataWriter = AnalysisEngineFactory.createPrimitiveDescription(
         NonSequenceExamplePOSAnnotator.class,
-        ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
         MaxentDataWriter.class.getName(),
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
@@ -131,7 +128,6 @@ public class NonSequenceExamplePOSAnnotatorTest extends ExamplesTestBase {
     String svmlightDirectoryName = outputDirectoryName + "/svmlight";
     AnalysisEngineDescription dataWriter = AnalysisEngineFactory.createPrimitiveDescription(
         NonSequenceExamplePOSAnnotator.class,
-        ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
         OVASVMlightDataWriter.class.getName(),
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
@@ -168,9 +164,9 @@ public class NonSequenceExamplePOSAnnotatorTest extends ExamplesTestBase {
     org.cleartk.classifier.jar.Train.main(args);
     hider.restoreOutput();
 
-    AnalysisEngineDescription taggerDescription = CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+    AnalysisEngineDescription taggerDescription = AnalysisEngineFactory.createPrimitiveDescription(
         NonSequenceExamplePOSAnnotator.class,
-        ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
+        GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
         outDirectoryName + "/model.jar");
 
     SimplePipeline.runPipeline(
@@ -181,7 +177,6 @@ public class NonSequenceExamplePOSAnnotatorTest extends ExamplesTestBase {
         taggerDescription,
         AnalysisEngineFactory.createPrimitiveDescription(
             ExamplePOSPlainTextWriter.class,
-            ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
             ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME,
             outDirectoryName));
 

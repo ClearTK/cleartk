@@ -55,7 +55,6 @@ public class ParserAnnotatorTest extends OpennlpSyntaxTestBase {
   public void test() throws UIMAException {
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         ParserAnnotator.class,
-        typeSystemDescription,
         ParserAnnotator.PARAM_PARSER_MODEL_PATH,
         MODEL_PATH,
         ParserAnnotator.PARAM_USE_TAGS_FROM_CAS,
@@ -127,7 +126,6 @@ public class ParserAnnotatorTest extends OpennlpSyntaxTestBase {
   public void test2() throws UIMAException {
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         ParserAnnotator.class,
-        typeSystemDescription,
         ParserAnnotator.PARAM_PARSER_MODEL_PATH,
         MODEL_PATH,
         ParserAnnotator.PARAM_USE_TAGS_FROM_CAS,
@@ -191,7 +189,6 @@ public class ParserAnnotatorTest extends OpennlpSyntaxTestBase {
   public void testTerminals() throws UIMAException {
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         ParserAnnotator.class,
-        typeSystemDescription,
         ParserAnnotator.PARAM_PARSER_MODEL_PATH,
         MODEL_PATH,
         ParserAnnotator.PARAM_USE_TAGS_FROM_CAS,
@@ -223,7 +220,6 @@ public class ParserAnnotatorTest extends OpennlpSyntaxTestBase {
   public void testNoPos() throws UIMAException {
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         ParserAnnotator.class,
-        typeSystemDescription,
         ParserAnnotator.PARAM_PARSER_MODEL_PATH,
         MODEL_PATH,
         ParserAnnotator.PARAM_USE_TAGS_FROM_CAS,

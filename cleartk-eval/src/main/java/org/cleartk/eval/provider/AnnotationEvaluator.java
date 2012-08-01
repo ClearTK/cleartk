@@ -49,7 +49,6 @@ import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
-import org.uimafit.factory.TypeSystemDescriptionFactory;
 import org.uimafit.factory.initializable.InitializableFactory;
 import org.uimafit.util.JCasUtil;
 
@@ -106,7 +105,6 @@ public class AnnotationEvaluator<T extends Comparable<? super T>> extends JCasAn
       String systemView) throws ResourceInitializationException {
     return AnalysisEngineFactory.createPrimitiveDescription(
         AnnotationEvaluator.class,
-        TypeSystemDescriptionFactory.createTypeSystemDescription(annotationClass.getName()),
         PARAM_ANNOTATION_CLASS_NAME,
         annotationClass.getName(),
         PARAM_GOLD_VIEW_NAME,
@@ -122,7 +120,6 @@ public class AnnotationEvaluator<T extends Comparable<? super T>> extends JCasAn
       String systemView) throws ResourceInitializationException {
     return AnalysisEngineFactory.createPrimitiveDescription(
         AnnotationEvaluator.class,
-        TypeSystemDescriptionFactory.createTypeSystemDescription(annotationClass.getName()),
         PARAM_ANNOTATION_CLASS_NAME,
         annotationClass.getName(),
         PARAM_ANNOTATION_ATTRIBUTE_NAME,

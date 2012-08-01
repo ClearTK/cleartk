@@ -52,7 +52,7 @@ public class Ace2005WriterTest extends NeTestBase {
   @Test
   public void testMissingParameters() throws Exception {
     try {
-      AnalysisEngineFactory.createPrimitive(Ace2005Writer.class, typeSystemDescription);
+      AnalysisEngineFactory.createPrimitive(Ace2005Writer.class);
       Assert.fail("expected exception with output directory not specified");
     } catch (ResourceInitializationException e) {
     }
@@ -62,7 +62,6 @@ public class Ace2005WriterTest extends NeTestBase {
   public void testOutputFile() throws Exception {
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         Ace2005Writer.class,
-        typeSystemDescription,
         Ace2005Writer.PARAM_OUTPUT_DIRECTORY_NAME,
         this.outputDirectory.getPath());
 
@@ -149,14 +148,13 @@ public class Ace2005WriterTest extends NeTestBase {
   @Test
   public void testDescriptor() throws UIMAException {
     try {
-      AnalysisEngineFactory.createPrimitive(Ace2005Writer.class, typeSystemDescription);
+      AnalysisEngineFactory.createPrimitive(Ace2005Writer.class);
       Assert.fail("expected exception with output directory not specified");
     } catch (ResourceInitializationException e) {
     }
 
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         Ace2005Writer.class,
-        typeSystemDescription,
         Ace2005Writer.PARAM_OUTPUT_DIRECTORY_NAME,
         this.outputDirectory.getPath());
     Object outDirectory = engine.getConfigParameterValue(Ace2005Writer.PARAM_OUTPUT_DIRECTORY_NAME);

@@ -91,7 +91,6 @@ public class ArgumentClassifier extends CleartkAnnotator<String> {
       File outputDirectory) throws ResourceInitializationException {
     return AnalysisEngineFactory.createPrimitiveDescription(
         ArgumentClassifier.class,
-        SrlComponents.TYPE_SYSTEM_DESCRIPTION,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         dataWriterFactoryClass.getName(),
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
@@ -102,7 +101,6 @@ public class ArgumentClassifier extends CleartkAnnotator<String> {
       throws ResourceInitializationException {
     return AnalysisEngineFactory.createPrimitiveDescription(
         ArgumentClassifier.class,
-        SrlComponents.TYPE_SYSTEM_DESCRIPTION,
         GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
         classifierJar.toString());
   }

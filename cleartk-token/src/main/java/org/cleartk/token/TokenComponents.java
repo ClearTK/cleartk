@@ -47,14 +47,13 @@ import org.uimafit.factory.TypeSystemDescriptionFactory;
 
 public class TokenComponents {
 
-  public static TypeSystemDescription TYPE_SYSTEM_DESCRIPTION = TypeSystemDescriptionFactory
-      .createTypeSystemDescription("org.cleartk.token.TypeSystem");
+  @Deprecated
+  public static TypeSystemDescription TYPE_SYSTEM_DESCRIPTION = TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.token.TypeSystem");
 
   public static AnalysisEngineDescription createPennTokenizer()
       throws ResourceInitializationException {
     return AnalysisEngineFactory.createPrimitiveDescription(
         TokenAnnotator.class,
-        TYPE_SYSTEM_DESCRIPTION,
         TokenAnnotator.PARAM_TOKEN_TYPE_NAME,
         Token.class.getName(),
         TokenAnnotator.PARAM_TOKENIZER_NAME,
@@ -67,7 +66,6 @@ public class TokenComponents {
       throws ResourceInitializationException {
     return AnalysisEngineFactory.createPrimitiveDescription(
         TokenAnnotator.class,
-        TYPE_SYSTEM_DESCRIPTION,
         TokenAnnotator.PARAM_TOKEN_TYPE_NAME,
         Subtoken.class.getName(),
         TokenAnnotator.PARAM_TOKENIZER_NAME,

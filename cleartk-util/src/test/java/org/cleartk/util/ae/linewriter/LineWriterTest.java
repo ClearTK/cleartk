@@ -69,7 +69,6 @@ public class LineWriterTest extends DefaultTestBase {
   public void test1() throws Exception {
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         LineWriter.class,
-        typeSystemDescription,
         LineWriter.PARAM_OUTPUT_DIRECTORY_NAME,
         this.outputDirectory.getPath(),
         LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
@@ -83,12 +82,11 @@ public class LineWriterTest extends DefaultTestBase {
 
     String text = "What if we built a rocket ship made of cheese?" + newline
         + "We could fly it to the moon for repairs.";
-    tokenBuilder
-        .buildTokens(
-            jCas,
-            text,
-            "What if we built a rocket ship made of cheese ?\nWe could fly it to the moon for repairs .",
-            "A B C D E F G H I J K L M N O P Q R S T U");
+    tokenBuilder.buildTokens(
+        jCas,
+        text,
+        "What if we built a rocket ship made of cheese ?\nWe could fly it to the moon for repairs .",
+        "A B C D E F G H I J K L M N O P Q R S T U");
     ViewURIUtil.setURI(jCas, new File("1234").toURI());
     engine.process(jCas);
     engine.collectionProcessComplete();
@@ -105,12 +103,11 @@ public class LineWriterTest extends DefaultTestBase {
     Assert.assertEquals(expectedText, actualText);
 
     jCas.reset();
-    tokenBuilder
-        .buildTokens(
-            jCas,
-            text,
-            "What if we \n built a rocket \n ship made of cheese ?\nWe could fly it \nto the moon for repairs .",
-            "A B C D E F G H I J K L M N O P Q R S T U");
+    tokenBuilder.buildTokens(
+        jCas,
+        text,
+        "What if we \n built a rocket \n ship made of cheese ?\nWe could fly it \nto the moon for repairs .",
+        "A B C D E F G H I J K L M N O P Q R S T U");
     ViewURIUtil.setURI(jCas, new File("1234").toURI());
     engine.process(jCas);
     engine.collectionProcessComplete();
@@ -132,7 +129,6 @@ public class LineWriterTest extends DefaultTestBase {
   public void test2() throws Exception {
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         LineWriter.class,
-        typeSystemDescription,
         LineWriter.PARAM_OUTPUT_FILE_NAME,
         new File(outputDirectory, "output.txt").getPath(),
         LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
@@ -165,7 +161,6 @@ public class LineWriterTest extends DefaultTestBase {
   public void test3() throws Exception {
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         LineWriter.class,
-        typeSystemDescription,
         LineWriter.PARAM_OUTPUT_FILE_NAME,
         new File(outputDirectory, "output.txt").getPath(),
         LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
@@ -374,7 +369,7 @@ public class LineWriterTest extends DefaultTestBase {
       throws Exception {
     ResourceInitializationException rie = null;
     try {
-      AnalysisEngineFactory.createPrimitive(LineWriter.class, typeSystemDescription, params);
+      AnalysisEngineFactory.createPrimitive(LineWriter.class, params);
     } catch (ResourceInitializationException e) {
       rie = e;
     }
@@ -392,7 +387,6 @@ public class LineWriterTest extends DefaultTestBase {
   public void testTokenWriter() throws Exception {
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
         LineWriter.class,
-        typeSystemDescription,
         LineWriter.PARAM_OUTPUT_DIRECTORY_NAME,
         this.outputDirectory.getPath(),
         LineWriter.PARAM_BLOCK_ANNOTATION_CLASS_NAME,

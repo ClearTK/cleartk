@@ -39,7 +39,6 @@ import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Level;
-import org.cleartk.timeml.TimeMLComponents;
 import org.cleartk.timeml.TimeMLViewName;
 import org.cleartk.timeml.type.Anchor;
 import org.cleartk.timeml.type.DocumentCreationTime;
@@ -82,16 +81,13 @@ public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
   private boolean loadTlinks;
 
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(
-        TimeMLGoldAnnotator.class,
-        TimeMLComponents.TYPE_SYSTEM_DESCRIPTION);
+    return AnalysisEngineFactory.createPrimitiveDescription(TimeMLGoldAnnotator.class);
   }
 
   public static AnalysisEngineDescription getDescriptionNoTLINKs()
       throws ResourceInitializationException {
     return AnalysisEngineFactory.createPrimitiveDescription(
         TimeMLGoldAnnotator.class,
-        TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
         PARAM_LOAD_TLINKS,
         false);
   }

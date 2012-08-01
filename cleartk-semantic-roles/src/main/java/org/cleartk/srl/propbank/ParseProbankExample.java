@@ -28,13 +28,11 @@ import java.io.IOException;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;
-import org.cleartk.srl.SrlComponents;
 import org.cleartk.syntax.constituent.TreebankGoldAnnotator;
 import org.cleartk.util.ViewURIFileNamer;
 import org.uimafit.component.xwriter.XWriter;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.CollectionReaderFactory;
-import org.uimafit.factory.TypeSystemDescriptionFactory;
 import org.uimafit.pipeline.SimplePipeline;
 
 /**
@@ -53,22 +51,16 @@ public class ParseProbankExample {
 
     CollectionReader reader = CollectionReaderFactory.createCollectionReader(
         PropbankGoldReader.class,
-        TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.srl.TypeSystem"),
         PropbankGoldReader.PARAM_PROPBANK_FILE_NAME,
         propbankFileName,
         PropbankGoldReader.PARAM_PENNTREEBANK_DIRECTORY_NAME,
         penntreebankDirectoryName,
         PropbankGoldReader.PARAM_WSJ_SECTIONS,
         wsjSections);
-    AnalysisEngine treebankEngine = AnalysisEngineFactory.createPrimitive(
-        TreebankGoldAnnotator.class,
-        SrlComponents.TYPE_SYSTEM_DESCRIPTION);
-    AnalysisEngine propbankEngine = AnalysisEngineFactory.createPrimitive(
-        PropbankGoldAnnotator.class,
-        SrlComponents.TYPE_SYSTEM_DESCRIPTION);
+    AnalysisEngine treebankEngine = AnalysisEngineFactory.createPrimitive(TreebankGoldAnnotator.class);
+    AnalysisEngine propbankEngine = AnalysisEngineFactory.createPrimitive(PropbankGoldAnnotator.class);
     AnalysisEngine xWriter = AnalysisEngineFactory.createPrimitive(
         XWriter.class,
-        SrlComponents.TYPE_SYSTEM_DESCRIPTION,
         XWriter.PARAM_OUTPUT_DIRECTORY_NAME,
         outputDirectory,
         XWriter.PARAM_FILE_NAMER_CLASS_NAME,

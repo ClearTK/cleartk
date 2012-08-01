@@ -70,6 +70,7 @@ import clear.morph.MorphEnAnalyzer;
     outputs = "org.cleartk.token.type.Token:lemma")
 public class LemmaAnnotator extends JCasAnnotator_ImplBase {
 
+  @Deprecated
   public static TypeSystemDescription TYPE_SYSTEM_DESCRIPTION = TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.token.TypeSystem");
 
   public static final String ENG_LEMMATIZER_DATA_FILE = "wordnet-3.0-lemma-data.jar";
@@ -83,16 +84,13 @@ public class LemmaAnnotator extends JCasAnnotator_ImplBase {
   private String lemmatizerDataFileName;
 
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(
-        LemmaAnnotator.class,
-        TYPE_SYSTEM_DESCRIPTION);
+    return AnalysisEngineFactory.createPrimitiveDescription(LemmaAnnotator.class);
   }
 
   public static AnalysisEngineDescription getDescription(String lemmatizerDataFileName)
       throws ResourceInitializationException {
     return AnalysisEngineFactory.createPrimitiveDescription(
         LemmaAnnotator.class,
-        TYPE_SYSTEM_DESCRIPTION,
         PARAM_LEMMATIZER_DATA_FILE_NAME,
         lemmatizerDataFileName);
   }

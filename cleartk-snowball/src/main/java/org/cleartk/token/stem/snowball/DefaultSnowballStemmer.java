@@ -47,13 +47,13 @@ import org.uimafit.factory.TypeSystemDescriptionFactory;
 
 public class DefaultSnowballStemmer extends SnowballStemmer<Token> {
 
-  public static TypeSystemDescription TYPE_SYSTEM_DESCRIPTION = TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.token.TypeSystem");
+  @Deprecated
+  public static TypeSystemDescription TYPE_SYSTEM_DESCRIPTION = TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem");
 
   public static AnalysisEngineDescription getDescription(String language)
       throws ResourceInitializationException {
     return AnalysisEngineFactory.createPrimitiveDescription(
         DefaultSnowballStemmer.class,
-        TYPE_SYSTEM_DESCRIPTION,
         SnowballStemmer.PARAM_STEMMER_NAME,
         language);
   }

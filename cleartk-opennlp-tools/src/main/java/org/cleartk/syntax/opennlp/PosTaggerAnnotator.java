@@ -45,7 +45,6 @@ import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.TypeCapability;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
-import org.uimafit.factory.TypeSystemDescriptionFactory;
 import org.uimafit.util.JCasUtil;
 
 /**
@@ -86,7 +85,6 @@ public class PosTaggerAnnotator extends JCasAnnotator_ImplBase {
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
     return AnalysisEngineFactory.createPrimitiveDescription(
         PosTaggerAnnotator.class,
-        TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.syntax.constituent.TypeSystem"),
         PARAM_POSTAG_MODEL_FILE,
         ParamUtil.getParameterValue(PARAM_POSTAG_MODEL_FILE, "/models/en-pos-maxent.bin"));
   }

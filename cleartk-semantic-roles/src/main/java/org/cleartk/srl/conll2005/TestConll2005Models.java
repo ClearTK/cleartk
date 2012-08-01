@@ -25,10 +25,9 @@ package org.cleartk.srl.conll2005;
 
 import java.io.File;
 
-import org.cleartk.classifier.CleartkAnnotatorDescriptionFactory;
+import org.cleartk.classifier.jar.GenericJarClassifierFactory;
 import org.cleartk.srl.ArgumentClassifier;
 import org.cleartk.srl.ArgumentIdentifier;
-import org.cleartk.srl.SrlComponents;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.pipeline.SimplePipeline;
@@ -61,24 +60,22 @@ public class TestConll2005Models {
         Conll2005GoldReader.getCollectionReader(conll2005File.toString()),
         AnalysisEngineFactory.createPrimitiveDescription(
             Conll2005GoldAnnotator.class,
-            SrlComponents.TYPE_SYSTEM_DESCRIPTION,
             Conll2005GoldAnnotator.PARAM_HAS_VERB_SENSES,
             false),
         DefaultSnowballStemmer.getDescription("English"),
         // CleartkComponents.createCleartkAnnotator(
         // PredicateAnnotator.class,
         // predicateIdentificationModel.toString()),
-        CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+        AnalysisEngineFactory.createPrimitiveDescription(
             ArgumentIdentifier.class,
-            SrlComponents.TYPE_SYSTEM_DESCRIPTION,
+            GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
             argumentIdentificationModel.toString()),
-        CleartkAnnotatorDescriptionFactory.createCleartkAnnotator(
+        AnalysisEngineFactory.createPrimitiveDescription(
             ArgumentClassifier.class,
-            SrlComponents.TYPE_SYSTEM_DESCRIPTION,
+            GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
             argumentClassificationModel.toString()),
         AnalysisEngineFactory.createPrimitiveDescription(
             Conll2005Writer.class,
-            SrlComponents.TYPE_SYSTEM_DESCRIPTION,
             Conll2005Writer.PARAM_OUTPUT_FILE,
             outputFile.toString()));
   }

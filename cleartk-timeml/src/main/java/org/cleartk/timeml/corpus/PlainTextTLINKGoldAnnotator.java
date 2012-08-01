@@ -38,7 +38,6 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.timeml.TimeMLComponents;
 import org.cleartk.timeml.type.Anchor;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.type.TemporalLink;
@@ -78,7 +77,6 @@ public class PlainTextTLINKGoldAnnotator extends JCasAnnotator_ImplBase {
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
     return AnalysisEngineFactory.createPrimitiveDescription(
         PlainTextTLINKGoldAnnotator.class,
-        TimeMLComponents.TYPE_SYSTEM_DESCRIPTION,
         PARAM_TLINK_FILE_URL,
         ParamUtil.getParameterValue(
             PARAM_TLINK_FILE_URL,

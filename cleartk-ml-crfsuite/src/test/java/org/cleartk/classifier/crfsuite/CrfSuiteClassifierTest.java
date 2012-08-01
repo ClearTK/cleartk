@@ -118,7 +118,6 @@ public class CrfSuiteClassifierTest extends DefaultTestBase {
 
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         TestAnnotator.class,
-        typeSystemDescription,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
@@ -159,7 +158,6 @@ public class CrfSuiteClassifierTest extends DefaultTestBase {
 
     AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createPrimitive(
         TestAnnotator.class,
-        typeSystemDescription,
         GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
         outputDirectoryName + "/model.jar");
     jCas.reset();

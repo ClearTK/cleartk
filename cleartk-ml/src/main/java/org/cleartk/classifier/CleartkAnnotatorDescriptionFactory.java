@@ -47,7 +47,9 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * All rights reserved.
  * 
  * @author Steven Bethard
+ * @deprecated Use {@link AnalysisEngineFactory} directly.
  */
+@Deprecated
 public class CleartkAnnotatorDescriptionFactory {
 
   /**
@@ -102,7 +104,9 @@ public class CleartkAnnotatorDescriptionFactory {
    * @param classifierJar
    *          The jar file containing the classifier that will make predictions.
    * @return An AnalysisEngineDescription for the CleartkAnnotator.
+   * @deprecated Use {@link AnalysisEngineFactory} directly.
    */
+  @Deprecated
   public static AnalysisEngineDescription createCleartkAnnotator(
       Class<? extends CleartkAnnotator<?>> cleartkAnnotatorClass,
       TypeSystemDescription typeSystemDescription,
@@ -163,7 +167,9 @@ public class CleartkAnnotatorDescriptionFactory {
    * @param classifierJar
    *          The jar file containing the classifier that will make predictions.
    * @return An AnalysisEngineDescription for the CleartkSequenceAnnotator.
+   * @deprecated Use {@link AnalysisEngineFactory} directly.
    */
+  @Deprecated
   public static AnalysisEngineDescription createCleartkSequenceAnnotator(
       Class<? extends CleartkSequenceAnnotator<?>> sequenceClassifierAnnotatorClass,
       TypeSystemDescription typeSystemDescription,

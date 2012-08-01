@@ -42,13 +42,11 @@ import org.cleartk.classifier.feature.extractor.ContextExtractor.Ngrams;
 import org.cleartk.classifier.feature.extractor.ContextExtractor.Preceding;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
-import org.cleartk.test.CleartkTestBase;
+import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Chunk;
 import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
-import org.junit.Before;
 import org.junit.Test;
-import org.uimafit.testing.factory.TokenBuilder;
 import org.uimafit.util.JCasUtil;
 
 /**
@@ -58,24 +56,7 @@ import org.uimafit.util.JCasUtil;
  * 
  * @author Steven Bethard
  */
-public class ContextExtractorTest extends CleartkTestBase {
-
-  protected TokenBuilder<Token, Sentence> tokenBuilder;
-
-  @Before
-  public void setUp() throws Exception {
-    super.setUp();
-    this.tokenBuilder = new TokenBuilder<Token, Sentence>(
-        Token.class,
-        Sentence.class,
-        "pos",
-        "stem");
-  }
-
-  @Override
-  public String[] getTypeSystemDescriptorNames() {
-    return new String[] { "org.cleartk.type.test.TestTypeSystem" };
-  }
+public class ContextExtractorTest extends DefaultTestBase {
 
   @Test
   public void testBasic() throws Exception {

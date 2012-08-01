@@ -54,14 +54,6 @@ import org.uimafit.util.JCasUtil;
 
 public class ClearParserSRLTest extends CleartkTestBase {
 
-  @Override
-  public String[] getTypeSystemDescriptorNames() {
-    return new String[] {
-        "org.cleartk.token.TypeSystem",
-        "org.cleartk.syntax.dependency.TypeSystem",
-        "org.cleartk.srl.TypeSystem" };
-  }
-
   protected TokenBuilder<Token, Sentence> tokenBuilder;
 
   @Before
@@ -75,15 +67,9 @@ public class ClearParserSRLTest extends CleartkTestBase {
     this.assumeBigMemoryTestsEnabled();
     this.logger.info(BIG_MEMORY_TEST_MESSAGE);
 
-    AnalysisEngine lemmatizer = AnalysisEngineFactory.createPrimitive(
-        LemmaAnnotator.class,
-        typeSystemDescription);
-    AnalysisEngine depparser = AnalysisEngineFactory.createPrimitive(
-        ClearParser.class,
-        typeSystemDescription);
-    AnalysisEngine srlparser = AnalysisEngineFactory.createPrimitive(
-        ClearParserSRL.class,
-        typeSystemDescription);
+    AnalysisEngine lemmatizer = AnalysisEngineFactory.createPrimitive(LemmaAnnotator.class);
+    AnalysisEngine depparser = AnalysisEngineFactory.createPrimitive(ClearParser.class);
+    AnalysisEngine srlparser = AnalysisEngineFactory.createPrimitive(ClearParserSRL.class);
 
     tokenBuilder.buildTokens(
         jCas,

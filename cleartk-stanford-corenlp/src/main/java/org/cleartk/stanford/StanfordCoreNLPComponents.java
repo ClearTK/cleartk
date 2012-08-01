@@ -29,6 +29,7 @@ import org.uimafit.factory.TypeSystemDescriptionFactory;
  * 
  * @author Steven Bethard
  */
+@Deprecated
 public class StanfordCoreNLPComponents {
 
   public static String[] TYPE_SYSTEM_DESCRIPTOR_NAMES = new String[] {

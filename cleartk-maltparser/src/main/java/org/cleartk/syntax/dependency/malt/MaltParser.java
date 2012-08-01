@@ -61,9 +61,8 @@ import org.uimafit.util.JCasUtil;
  */
 public class MaltParser extends JCasAnnotator_ImplBase {
 
-  public static TypeSystemDescription TYPE_SYSTEM_DESCRIPTION = TypeSystemDescriptionFactory.createTypeSystemDescription(
-      "org.cleartk.token.TypeSystem",
-      "org.cleartk.syntax.dependency.TypeSystem");
+  @Deprecated
+  public static TypeSystemDescription TYPE_SYSTEM_DESCRIPTION = TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem");
 
   public static final String ENGMALT_RESOURCE_NAME = "/models/engmalt.linear-1.7.mco";
 

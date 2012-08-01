@@ -49,7 +49,6 @@ import org.cleartk.classifier.feature.transform.extractor.MinMaxNormalizationExt
 import org.cleartk.classifier.feature.transform.extractor.TfidfExtractor;
 import org.cleartk.classifier.feature.transform.extractor.ZeroMeanUnitStddevExtractor;
 import org.cleartk.classifier.jar.GenericJarClassifierFactory;
-import org.cleartk.examples.ExampleComponents;
 import org.cleartk.examples.type.UsenetDocument;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
@@ -243,7 +242,6 @@ public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
       throws ResourceInitializationException {
     return AnalysisEngineFactory.createPrimitiveDescription(
         DocumentClassificationAnnotator.class,
-        ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
         GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
         classifierJarFile.toString());
   }

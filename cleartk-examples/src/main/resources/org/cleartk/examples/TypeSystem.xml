@@ -5,9 +5,6 @@
   <version>1.0</version>
   <vendor/>
   <imports>
-    <import name="org.cleartk.token.TypeSystem"/>
-    <import name="org.cleartk.syntax.constituent.TypeSystem"/>
-    <import name="org.cleartk.ne.TypeSystem"/>
     <import name="org.cleartk.examples.type.UsenetDocument"/>
   </imports>
 </typeSystemDescription>

@@ -93,7 +93,6 @@ public class BinaryMalletDataWriterTest extends DefaultTestBase {
   public void test1() throws Exception {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         Test1Annotator.class,
-        typeSystemDescription,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
@@ -244,7 +243,6 @@ public class BinaryMalletDataWriterTest extends DefaultTestBase {
 
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         Test4Annotator.class,
-        typeSystemDescription,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,

@@ -47,7 +47,6 @@ import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
-import org.uimafit.factory.TypeSystemDescriptionFactory;
 import org.uimafit.util.JCasUtil;
 
 import com.google.common.base.Joiner;
@@ -64,11 +63,7 @@ import com.google.common.collect.ListMultimap;
 public class TempEval2010GoldAnnotator extends JCasAnnotator_ImplBase {
 
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(
-        TempEval2010GoldAnnotator.class,
-        TypeSystemDescriptionFactory.createTypeSystemDescription(
-            "org.cleartk.token.TypeSystem",
-            "org.cleartk.timeml.TypeSystem"));
+    return AnalysisEngineFactory.createPrimitiveDescription(TempEval2010GoldAnnotator.class);
   }
 
   @ConfigurationParameter(

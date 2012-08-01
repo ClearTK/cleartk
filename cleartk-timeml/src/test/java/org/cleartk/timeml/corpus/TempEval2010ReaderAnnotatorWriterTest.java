@@ -64,11 +64,6 @@ import com.google.common.io.Files;
  */
 public class TempEval2010ReaderAnnotatorWriterTest extends TimeMLTestBase {
 
-  @Override
-  public String[] getTypeSystemDescriptorNames() {
-    return new String[] { "org.cleartk.timeml.TypeSystem", "org.cleartk.token.TypeSystem" };
-  }
-
   // @formatter:off
   public static final String WSJ_0032_BASE_SEGMENTATION =
         "wsj_0032	0	0	Italian\n" +

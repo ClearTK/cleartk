@@ -60,11 +60,6 @@ public class StanfordCoreNLPTest extends CleartkTestBase {
     tokenBuilder = new TokenBuilder<Token, Sentence>(Token.class, Sentence.class, "pos", "stem");
   }
 
-  @Override
-  public String[] getTypeSystemDescriptorNames() {
-    return StanfordCoreNLPComponents.TYPE_SYSTEM_DESCRIPTOR_NAMES;
-  }
-
   @Test
   public void test() throws Throwable {
     this.assumeBigMemoryTestsEnabled();

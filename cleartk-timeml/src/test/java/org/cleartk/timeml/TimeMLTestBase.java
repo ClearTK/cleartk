@@ -46,9 +46,4 @@ public class TimeMLTestBase extends CleartkTestBase {
     super.setUp();
     tokenBuilder = new TokenBuilder<Token, Sentence>(Token.class, Sentence.class, "pos", "stem");
   }
-
-  @Override
-  public String[] getTypeSystemDescriptorNames() {
-    return new String[] { "org.cleartk.timeml.TypeSystem" };
-  }
 }

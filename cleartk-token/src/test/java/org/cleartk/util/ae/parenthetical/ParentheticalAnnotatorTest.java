@@ -31,18 +31,15 @@ import java.util.Iterator;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-import org.cleartk.test.CleartkTestBase;
+import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Chunk;
 import org.cleartk.type.test.NamedEntityMention;
 import org.cleartk.type.test.Sentence;
-import org.cleartk.type.test.Token;
 import org.cleartk.util.type.Parenthetical;
-import org.junit.Before;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.pipeline.SimplePipeline;
-import org.uimafit.testing.factory.TokenBuilder;
 import org.uimafit.util.JCasUtil;
 
 /**
@@ -53,24 +50,11 @@ import org.uimafit.util.JCasUtil;
  * @author Philip Ogren
  */
 
-public class ParentheticalAnnotatorTest extends CleartkTestBase {
-
-  protected TokenBuilder<Token, Sentence> tokenBuilder;
-
-  @Before
-  public void setUp() throws Exception {
-    super.setUp();
-    tokenBuilder = new TokenBuilder<Token, Sentence>(Token.class, Sentence.class, "pos", "stem");
-  }
-
-  @Override
-  public String[] getTypeSystemDescriptorNames() {
-    return new String[] { "org.cleartk.util.TypeSystem", "org.cleartk.type.test.TestTypeSystem" };
-  }
+public class ParentheticalAnnotatorTest extends DefaultTestBase {
 
   @Test
   public void testDefault() throws Exception {
-    AnalysisEngineDescription aed = ParentheticalAnnotator.getDescription(typeSystemDescription);
+    AnalysisEngineDescription aed = ParentheticalAnnotator.getDescription();
     testParens("(hello!)", aed, "(hello!)");
     testParens("((a) and b)", aed, "((a) and b)", "(a)");
     testParens(
@@ -107,17 +91,13 @@ public class ParentheticalAnnotatorTest extends CleartkTestBase {
    */
   @Test
   public void testNoSentence() throws Exception {
-    AnalysisEngineDescription aed = ParentheticalAnnotator.getDescription(
-        typeSystemDescription,
-        Sentence.class);
+    AnalysisEngineDescription aed = ParentheticalAnnotator.getDescription(Sentence.class);
     testParens("(hello!)", aed);
   }
 
   @Test
   public void testSentence() throws Exception {
-    AnalysisEngineDescription aed = ParentheticalAnnotator.getDescription(
-        typeSystemDescription,
-        Sentence.class);
+    AnalysisEngineDescription aed = ParentheticalAnnotator.getDescription(Sentence.class);
     tokenBuilder.buildTokens(jCas, "(hello!)");
     testParens(aed, "(hello!)");
 
@@ -145,9 +125,7 @@ public class ParentheticalAnnotatorTest extends CleartkTestBase {
 
   @Test
   public void testTypes() throws Exception {
-    AnalysisEngineDescription aed = ParentheticalAnnotator.getDescription(
-        typeSystemDescription,
-        NamedEntityMention.class);
+    AnalysisEngineDescription aed = ParentheticalAnnotator.getDescription(NamedEntityMention.class);
     ConfigurationParameterFactory.addConfigurationParameter(
         aed,
         ParentheticalAnnotator.PARAM_PARENTHETICAL_TYPE_NAME,
@@ -173,17 +151,15 @@ public class ParentheticalAnnotatorTest extends CleartkTestBase {
   public void testBrackets() throws Exception {
     AnalysisEngineDescription aed = AnalysisEngineFactory.createPrimitiveDescription(
         ParentheticalAnnotator.class,
-        typeSystemDescription,
         ParentheticalAnnotator.PARAM_LEFT_PARENTHESIS,
         "[",
         ParentheticalAnnotator.PARAM_RIGHT_PARENTHESIS,
         "]");
     testParens("[[[a]b]ccc]", aed, "[[[a]b]ccc]", "[[a]b]", "[a]");
 
-    AnalysisEngineDescription aed2 = ParentheticalAnnotator.getDescription(typeSystemDescription);
+    AnalysisEngineDescription aed2 = ParentheticalAnnotator.getDescription();
     AnalysisEngineDescription aed3 = AnalysisEngineFactory.createPrimitiveDescription(
         ParentheticalAnnotator.class,
-        typeSystemDescription,
         ParentheticalAnnotator.PARAM_LEFT_PARENTHESIS,
         "{",
         ParentheticalAnnotator.PARAM_RIGHT_PARENTHESIS,

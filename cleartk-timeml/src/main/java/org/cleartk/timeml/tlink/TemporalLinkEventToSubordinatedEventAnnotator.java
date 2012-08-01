@@ -43,7 +43,6 @@ import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.opennlp.MaxentDataWriter;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNodeUtil;
-import org.cleartk.timeml.TimeMLComponents;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.type.TemporalLink;
 import org.cleartk.timeml.util.CleartkInternalModelFactory;
@@ -77,9 +76,7 @@ public class TemporalLinkEventToSubordinatedEventAnnotator extends
 
     @Override
     public AnalysisEngineDescription getBaseDescription() throws ResourceInitializationException {
-      return AnalysisEngineFactory.createPrimitiveDescription(
-          TemporalLinkEventToSubordinatedEventAnnotator.class,
-          TimeMLComponents.TYPE_SYSTEM_DESCRIPTION);
+      return AnalysisEngineFactory.createPrimitiveDescription(TemporalLinkEventToSubordinatedEventAnnotator.class);
     }
   };
 

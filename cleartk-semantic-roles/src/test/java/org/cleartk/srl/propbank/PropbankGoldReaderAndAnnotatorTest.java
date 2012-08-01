@@ -48,9 +48,7 @@ public class PropbankGoldReaderAndAnnotatorTest extends SrlTestBase {
 
     ResourceInitializationException rie = null;
     try {
-      reader = CollectionReaderFactory.createCollectionReader(
-          PropbankGoldReader.class,
-          typeSystemDescription);
+      reader = CollectionReaderFactory.createCollectionReader(PropbankGoldReader.class);
     } catch (ResourceInitializationException e) {
       rie = e;
     }
@@ -60,7 +58,6 @@ public class PropbankGoldReaderAndAnnotatorTest extends SrlTestBase {
     try {
       reader = CollectionReaderFactory.createCollectionReader(
           PropbankGoldReader.class,
-          typeSystemDescription,
           PropbankGoldReader.PARAM_WSJ_SECTIONS,
           "02-21");
     } catch (ResourceInitializationException e) {
@@ -71,7 +68,6 @@ public class PropbankGoldReaderAndAnnotatorTest extends SrlTestBase {
     try {
       reader = CollectionReaderFactory.createCollectionReader(
           PropbankGoldReader.class,
-          typeSystemDescription,
           PropbankGoldReader.PARAM_WSJ_SECTIONS,
           "02-21",
           PropbankGoldReader.PARAM_PROPBANK_FILE_NAME,
@@ -83,7 +79,6 @@ public class PropbankGoldReaderAndAnnotatorTest extends SrlTestBase {
 
     reader = CollectionReaderFactory.createCollectionReader(
         PropbankGoldReader.class,
-        typeSystemDescription,
         PropbankGoldReader.PARAM_WSJ_SECTIONS,
         "02-21",
         PropbankGoldReader.PARAM_PROPBANK_FILE_NAME,
@@ -91,12 +86,10 @@ public class PropbankGoldReaderAndAnnotatorTest extends SrlTestBase {
         PropbankGoldReader.PARAM_PENNTREEBANK_DIRECTORY_NAME,
         "src/test/resources/data/propbank-1.0/treebank");
 
-    Object propbankCorpusFile = reader
-        .getConfigParameterValue(PropbankGoldReader.PARAM_PROPBANK_FILE_NAME);
+    Object propbankCorpusFile = reader.getConfigParameterValue(PropbankGoldReader.PARAM_PROPBANK_FILE_NAME);
     Assert.assertEquals("src/test/resources/data/propbank-1.0/prop.txt", propbankCorpusFile);
 
-    Object treebankCorpusDirectory = reader
-        .getConfigParameterValue(PropbankGoldReader.PARAM_PENNTREEBANK_DIRECTORY_NAME);
+    Object treebankCorpusDirectory = reader.getConfigParameterValue(PropbankGoldReader.PARAM_PENNTREEBANK_DIRECTORY_NAME);
     Assert.assertEquals("src/test/resources/data/propbank-1.0/treebank", treebankCorpusDirectory);
 
     Object wsjSections = reader.getConfigParameterValue(PropbankGoldReader.PARAM_WSJ_SECTIONS);
@@ -106,9 +99,7 @@ public class PropbankGoldReaderAndAnnotatorTest extends SrlTestBase {
 
   @Test
   public void testAnnotatorDescriptor() throws UIMAException {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-        PropbankGoldAnnotator.class,
-        typeSystemDescription);
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(PropbankGoldAnnotator.class);
     engine.collectionProcessComplete();
   }
 

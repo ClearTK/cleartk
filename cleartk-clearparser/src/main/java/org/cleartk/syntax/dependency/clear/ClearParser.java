@@ -80,9 +80,8 @@ import clear.parse.AbstractDepParser;
     inputs = { "org.cleartk.token.type.Token:pos", "org.cleartk.token.type.Token:lemma" })
 public class ClearParser extends JCasAnnotator_ImplBase {
 
-  public static TypeSystemDescription TYPE_SYSTEM_DESCRIPTION = TypeSystemDescriptionFactory.createTypeSystemDescription(
-      "org.cleartk.token.TypeSystem",
-      "org.cleartk.syntax.dependency.TypeSystem");
+  @Deprecated
+  public static TypeSystemDescription TYPE_SYSTEM_DESCRIPTION = TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem");
 
   public static final String DEFAULT_MODEL_FILE_NAME = "conll-2009-dev-shift-pop.jar";
 

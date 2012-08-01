@@ -28,7 +28,6 @@ import java.io.IOException;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;
-import org.cleartk.examples.ExampleComponents;
 import org.cleartk.syntax.opennlp.SentenceAnnotator;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.util.Options_ImplBase;
@@ -54,10 +53,18 @@ import org.uimafit.pipeline.SimplePipeline;
 public class Docs2Sentences {
 
   public static class Options extends Options_ImplBase {
-    @Option(name = "-i", aliases = "--inputFileName", usage = "specify the directory to read plain text files from", required = false)
+    @Option(
+        name = "-i",
+        aliases = "--inputFileName",
+        usage = "specify the directory to read plain text files from",
+        required = false)
     public String inputDirectoryName = "src/test/resources/data/twain";
 
-    @Option(name = "-o", aliases = "--outputFileName", usage = "specify the file to write sentences to", required = false)
+    @Option(
+        name = "-o",
+        aliases = "--outputFileName",
+        usage = "specify the file to write sentences to",
+        required = false)
     public String outputFileName = "target/test/twain-sentences.txt";
 
   }
@@ -66,13 +73,10 @@ public class Docs2Sentences {
     Options options = new Options();
     options.parseOptions(args);
 
-    CollectionReader filesReader = FilesCollectionReader
-        .getCollectionReader(options.inputDirectoryName);
-    AnalysisEngine sentences = AnalysisEngineFactory.createPrimitive(SentenceAnnotator
-        .getDescription());
+    CollectionReader filesReader = FilesCollectionReader.getCollectionReader(options.inputDirectoryName);
+    AnalysisEngine sentences = AnalysisEngineFactory.createPrimitive(SentenceAnnotator.getDescription());
     AnalysisEngine lineWriter = AnalysisEngineFactory.createPrimitive(
         LineWriter.class,
-        ExampleComponents.TYPE_SYSTEM_DESCRIPTION,
         LineWriter.PARAM_OUTPUT_FILE_NAME,
         options.outputFileName,
         LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
