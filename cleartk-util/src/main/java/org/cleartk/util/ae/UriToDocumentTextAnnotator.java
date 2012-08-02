@@ -30,10 +30,13 @@ import java.net.URI;
 
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.cas.CAS;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.util.ViewURIUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
+import org.uimafit.component.ViewCreatorAnnotator;
+import org.uimafit.factory.AggregateBuilder;
 import org.uimafit.factory.AnalysisEngineFactory;
 
 import com.google.common.io.CharStreams;
@@ -55,11 +58,30 @@ public class UriToDocumentTextAnnotator extends JCasAnnotator_ImplBase {
     return AnalysisEngineFactory.createPrimitiveDescription(UriToDocumentTextAnnotator.class);
   }
 
+  /**
+   * Use this aggregate description if UriToDocumentTextAnnotator will be writing to a mapped view.
+   * 
+   * @param targetViewName
+   * @return
+   * @throws ResourceInitializationException
+   */
+  public static AnalysisEngineDescription getCreateViewAggregateDescription(String targetViewName)
+      throws ResourceInitializationException {
+    AggregateBuilder builder = new AggregateBuilder();
+    builder.add(AnalysisEngineFactory.createPrimitiveDescription(
+        ViewCreatorAnnotator.class,
+        ViewCreatorAnnotator.PARAM_VIEW_NAME,
+        targetViewName));
+    builder.add(UriToDocumentTextAnnotator.getDescription(), CAS.NAME_DEFAULT_SOFA, targetViewName);
+    return builder.createAggregateDescription();
+  }
+
   @Override
   public void process(JCas jCas) throws AnalysisEngineProcessException {
 
     URI uri = ViewURIUtil.getURI(jCas);
     String content;
+
     try {
       content = CharStreams.toString(new InputStreamReader(uri.toURL().openStream()));
       jCas.setSofaDataString(content, "text/plain");

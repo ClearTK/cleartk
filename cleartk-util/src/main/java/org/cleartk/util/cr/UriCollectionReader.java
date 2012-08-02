@@ -31,7 +31,6 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
@@ -142,40 +141,32 @@ public class UriCollectionReader extends JCasCollectionReader_ImplBase {
         dirFilterClass));
   }
 
-  public static CollectionReaderDescription getDescriptionFromFiles(List<File> files)
+  public static CollectionReaderDescription getDescriptionFromFiles(Collection<File> files)
       throws ResourceInitializationException {
 
-    String[] paths = new String[files.size()];
-    for (int i = 0; i < paths.length; ++i) {
-      paths[i] = files.get(i).getPath();
-    }
     return CollectionReaderFactory.createDescription(
         UriCollectionReader.class,
         null,
         PARAM_FILES,
-        paths);
+        files);
   }
 
-  public static CollectionReader getCollectionReaderFromFiles(List<File> files)
+  public static CollectionReader getCollectionReaderFromFiles(Collection<File> files)
       throws ResourceInitializationException {
     return CollectionReaderFactory.createCollectionReader(getDescriptionFromFiles(files));
   }
 
-  public static CollectionReaderDescription getDescriptionFromUris(List<URI> uris)
+  public static CollectionReaderDescription getDescriptionFromUris(Collection<URI> uris)
       throws ResourceInitializationException {
 
-    String[] uriStrings = new String[uris.size()];
-    for (int i = 0; i < uriStrings.length; ++i) {
-      uriStrings[i] = uris.get(i).toString();
-    }
     return CollectionReaderFactory.createDescription(
         UriCollectionReader.class,
         null,
-        PARAM_FILES,
-        uriStrings);
+        PARAM_URIS,
+        uris);
   }
 
-  public static CollectionReader getCollectionReaderFromUris(List<URI> uris)
+  public static CollectionReader getCollectionReaderFromUris(Collection<URI> uris)
       throws ResourceInitializationException {
     return CollectionReaderFactory.createCollectionReader(getDescriptionFromUris(uris));
   }
@@ -186,7 +177,7 @@ public class UriCollectionReader extends JCasCollectionReader_ImplBase {
 
   @ConfigurationParameter(
       description = "provides a list of files whose URI should be written to the default sofa within the CAS")
-  private List<File> files = new ArrayList<File>();
+  private Collection<File> files = new ArrayList<File>();
 
   public static final String PARAM_DIRECTORY = ConfigurationParameterFactory.createConfigurationParameterName(
       UriCollectionReader.class,
@@ -202,7 +193,7 @@ public class UriCollectionReader extends JCasCollectionReader_ImplBase {
 
   @ConfigurationParameter(
       description = "This parameter provides a list of URIs that should be written to the default sofa within the CAS.  Proper URI construction is the responsibility of the caller")
-  private List<URI> uris = new ArrayList<URI>();
+  private Collection<URI> uris = new ArrayList<URI>();
 
   public static final String PARAM_FILE_FILTER_CLASS = ConfigurationParameterFactory.createConfigurationParameterName(
       UriCollectionReader.class,
@@ -292,7 +283,7 @@ public class UriCollectionReader extends JCasCollectionReader_ImplBase {
     }
 
     if (!this.directory.isDirectory()) {
-      String format = "Directory %s is not a directory.  For specifi files set PARAM_FILES instead of PARAM_DIRECTORY.";
+      String format = "Directory %s is not a directory.  For specific files set PARAM_FILES instead of PARAM_DIRECTORY.";
       String message = String.format(format, directory.getPath());
       throw new ResourceInitializationException(new IOException(message));
     }
