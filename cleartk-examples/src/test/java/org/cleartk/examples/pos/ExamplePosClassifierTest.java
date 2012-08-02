@@ -350,7 +350,7 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
     SimplePipeline.runPipeline(
         UriCollectionReader.getCollectionReaderFromFiles(Arrays.asList(new File(
             "src/test/resources/data/treebank/11597317.tree"))),
-        UriToDocumentTextAnnotator.getCreateViewAggregateDescription(TreebankConstants.TREEBANK_VIEW),
+        UriToDocumentTextAnnotator.getDescriptionForView(TreebankConstants.TREEBANK_VIEW),
         TreebankGoldAnnotator.getDescriptionPOSTagsOnly(),
         DefaultSnowballStemmer.getDescription("English"),
         dataWriter);

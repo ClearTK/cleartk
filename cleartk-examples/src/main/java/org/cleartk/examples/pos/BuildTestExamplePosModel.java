@@ -67,7 +67,7 @@ public class BuildTestExamplePosModel {
     AggregateBuilder builder = new AggregateBuilder();
 
     // Combined view creation + URI text loading into one aggregate engine
-    builder.add(UriToDocumentTextAnnotator.getCreateViewAggregateDescription(TreebankConstants.TREEBANK_VIEW));
+    builder.add(UriToDocumentTextAnnotator.getDescriptionForView(TreebankConstants.TREEBANK_VIEW));
 
     // Parse the treebank view and populate the initial view
     builder.add(TreebankGoldAnnotator.getDescriptionPOSTagsOnly()); // Run Stemming

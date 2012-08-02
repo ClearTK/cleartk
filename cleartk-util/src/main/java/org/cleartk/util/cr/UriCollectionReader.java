@@ -61,9 +61,10 @@ import com.google.common.collect.Iterables;
  * 
  * A CollectionReader that populates the default sofa with URI. This can accept a Collection of
  * Files, Collection of URIs or a single directory. If given a directory it will create a jCas for
- * each file within the directory (recursive).
+ * each file within the directory. Recursion is controlled using the directoryFilter parameter. By
+ * default this will reject system files and recurse into subdirectories.
  * <p>
- * This should be used in conjunction with UriToDocumentTextAnnotator.
+ * This should be used in conjunction with UriToDocumentTextAnnotator or UriToXmiCasAnnotator
  * 
  * @author Lee Becker
  * 

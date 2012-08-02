@@ -114,7 +114,7 @@ public class TreebankParsingExample {
     AggregateBuilder builder = new AggregateBuilder();
 
     // Reads text into TREEBANK_VIEW
-    builder.add(UriToDocumentTextAnnotator.getCreateViewAggregateDescription(TreebankConstants.TREEBANK_VIEW));
+    builder.add(UriToDocumentTextAnnotator.getDescriptionForView(TreebankConstants.TREEBANK_VIEW));
 
     // Ensures GOLD_VIEW is present
     builder.add(AnalysisEngineFactory.createPrimitiveDescription(

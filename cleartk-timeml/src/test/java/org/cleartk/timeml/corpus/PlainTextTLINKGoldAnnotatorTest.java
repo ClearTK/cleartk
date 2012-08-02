@@ -68,7 +68,7 @@ public class PlainTextTLINKGoldAnnotatorTest extends TimeMLTestBase {
   public void test_wsj_0106() throws UIMAException, IOException {
     CollectionReader reader = UriCollectionReader.getCollectionReaderFromFiles(Arrays.asList(new File("src/test/resources/data/timeml/wsj_0106.tml")));
     
-    AnalysisEngine uriToText = AnalysisEngineFactory.createPrimitive(UriToDocumentTextAnnotator.getCreateViewAggregateDescription(TimeMLViewName.TIMEML));
+    AnalysisEngine uriToText = AnalysisEngineFactory.createPrimitive(UriToDocumentTextAnnotator.getDescriptionForView(TimeMLViewName.TIMEML));
     AnalysisEngine timemlEngine = AnalysisEngineFactory.createPrimitive(
         TimeMLGoldAnnotator.class,
         TimeMLGoldAnnotator.PARAM_LOAD_TLINKS,
@@ -109,7 +109,7 @@ public class PlainTextTLINKGoldAnnotatorTest extends TimeMLTestBase {
   public void test_wsj_0106_alternate() throws UIMAException, IOException {
     CollectionReader reader = UriCollectionReader.getCollectionReaderFromFiles(Arrays.asList(new File("src/test/resources/data/timeml/wsj_0106.tml")));
     
-    AnalysisEngine uriToText = AnalysisEngineFactory.createPrimitive(UriToDocumentTextAnnotator.getCreateViewAggregateDescription(TimeMLViewName.TIMEML));
+    AnalysisEngine uriToText = AnalysisEngineFactory.createPrimitive(UriToDocumentTextAnnotator.getDescriptionForView(TimeMLViewName.TIMEML));
     AnalysisEngine timemlEngine = AnalysisEngineFactory.createPrimitive(
         TimeMLGoldAnnotator.class,
         TimeMLGoldAnnotator.PARAM_LOAD_TLINKS,
