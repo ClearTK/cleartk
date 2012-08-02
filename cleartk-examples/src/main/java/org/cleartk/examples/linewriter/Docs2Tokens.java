@@ -23,6 +23,7 @@
  */
 package org.cleartk.examples.linewriter;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.apache.uima.UIMAException;
@@ -37,9 +38,10 @@ import org.cleartk.syntax.opennlp.SentenceAnnotator;
 import org.cleartk.token.tokenizer.TokenAnnotator;
 import org.cleartk.token.type.Token;
 import org.cleartk.util.Options_ImplBase;
+import org.cleartk.util.ae.UriToDocumentTextAnnotator;
 import org.cleartk.util.ae.linewriter.AnnotationWriter;
 import org.cleartk.util.ae.linewriter.LineWriter;
-import org.cleartk.util.cr.FilesCollectionReader;
+import org.cleartk.util.cr.UriCollectionReader;
 import org.kohsuke.args4j.Option;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.pipeline.SimplePipeline;
@@ -57,7 +59,7 @@ public class Docs2Tokens {
         aliases = "--inputFileName",
         usage = "specify the directory to read plain text files from",
         required = false)
-    public String inputDirectoryName = "src/test/resources/data/twain";
+    public File inputDirectoryName = new File("src/test/resources/data/twain");
 
     @Option(
         name = "-o",
@@ -73,7 +75,9 @@ public class Docs2Tokens {
     Options options = new Options();
     options.parseOptions(args);
 
-    CollectionReader filesReader = FilesCollectionReader.getCollectionReader(options.inputDirectoryName);
+    CollectionReader reader = UriCollectionReader.getCollectionReaderFromDirectory(options.inputDirectoryName);
+
+    AnalysisEngineDescription uriToText = UriToDocumentTextAnnotator.getDescription();
 
     AnalysisEngineDescription sentences = SentenceAnnotator.getDescription();
 
@@ -90,7 +94,7 @@ public class Docs2Tokens {
         LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME,
         TokenAnnotationWriter.class.getName());
 
-    SimplePipeline.runPipeline(filesReader, sentences, tokenizer, posTagger, lineWriter);
+    SimplePipeline.runPipeline(reader, uriToText, sentences, tokenizer, posTagger, lineWriter);
     System.out.println("results written to " + options.outputFileName);
   }
 

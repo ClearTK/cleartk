@@ -25,6 +25,7 @@ package org.cleartk.timeml.corpus;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,12 +38,12 @@ import org.cleartk.timeml.TimeMLTestBase;
 import org.cleartk.timeml.TimeMLViewName;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.type.TemporalLink;
-import org.cleartk.util.cr.FilesCollectionReader;
+import org.cleartk.util.ae.UriToDocumentTextAnnotator;
+import org.cleartk.util.cr.UriCollectionReader;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.CollectionReaderFactory;
 import org.uimafit.pipeline.JCasIterable;
 import org.uimafit.util.JCasUtil;
 
@@ -65,12 +66,9 @@ public class PlainTextTLINKGoldAnnotatorTest extends TimeMLTestBase {
   @Test
   @Ignore
   public void test_wsj_0106() throws UIMAException, IOException {
-    CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-        FilesCollectionReader.class,
-        FilesCollectionReader.PARAM_VIEW_NAME,
-        TimeMLViewName.TIMEML,
-        FilesCollectionReader.PARAM_ROOT_FILE,
-        "src/test/resources/data/timeml/wsj_0106.tml");
+    CollectionReader reader = UriCollectionReader.getCollectionReaderFromFiles(Arrays.asList(new File("src/test/resources/data/timeml/wsj_0106.tml")));
+    
+    AnalysisEngine uriToText = AnalysisEngineFactory.createPrimitive(UriToDocumentTextAnnotator.getCreateViewAggregateDescription(TimeMLViewName.TIMEML));
     AnalysisEngine timemlEngine = AnalysisEngineFactory.createPrimitive(
         TimeMLGoldAnnotator.class,
         TimeMLGoldAnnotator.PARAM_LOAD_TLINKS,
@@ -79,7 +77,7 @@ public class PlainTextTLINKGoldAnnotatorTest extends TimeMLTestBase {
         PlainTextTLINKGoldAnnotator.class,
         PlainTextTLINKGoldAnnotator.PARAM_TLINK_FILE_URL,
         this.webUrl);
-    JCas jcas = new JCasIterable(reader, timemlEngine, plainTextEngine).next();
+    JCas jcas = new JCasIterable(reader, uriToText, timemlEngine, plainTextEngine).next();
 
     Collection<TemporalLink> tlinks = JCasUtil.select(jcas, TemporalLink.class);
     Assert.assertEquals(6, tlinks.size());
@@ -109,12 +107,9 @@ public class PlainTextTLINKGoldAnnotatorTest extends TimeMLTestBase {
 
   @Test
   public void test_wsj_0106_alternate() throws UIMAException, IOException {
-    CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-        FilesCollectionReader.class,
-        FilesCollectionReader.PARAM_VIEW_NAME,
-        TimeMLViewName.TIMEML,
-        FilesCollectionReader.PARAM_ROOT_FILE,
-        "src/test/resources/data/timeml/wsj_0106.tml");
+    CollectionReader reader = UriCollectionReader.getCollectionReaderFromFiles(Arrays.asList(new File("src/test/resources/data/timeml/wsj_0106.tml")));
+    
+    AnalysisEngine uriToText = AnalysisEngineFactory.createPrimitive(UriToDocumentTextAnnotator.getCreateViewAggregateDescription(TimeMLViewName.TIMEML));
     AnalysisEngine timemlEngine = AnalysisEngineFactory.createPrimitive(
         TimeMLGoldAnnotator.class,
         TimeMLGoldAnnotator.PARAM_LOAD_TLINKS,
@@ -123,7 +118,7 @@ public class PlainTextTLINKGoldAnnotatorTest extends TimeMLTestBase {
         PlainTextTLINKGoldAnnotator.class,
         PlainTextTLINKGoldAnnotator.PARAM_TLINK_FILE_URL,
         this.fileUrl);
-    JCas jcas = new JCasIterable(reader, timemlEngine, plainTextEngine).next();
+    JCas jcas = new JCasIterable(reader, uriToText, timemlEngine, plainTextEngine).next();
 
     Collection<TemporalLink> tlinks = JCasUtil.select(jcas, TemporalLink.class);
     Assert.assertEquals(2, tlinks.size());

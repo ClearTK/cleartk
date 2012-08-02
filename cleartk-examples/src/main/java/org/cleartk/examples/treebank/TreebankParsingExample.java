@@ -24,25 +24,29 @@
 
 package org.cleartk.examples.treebank;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.uima.UIMAException;
-import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
+import org.apache.uima.cas.CAS;
 import org.apache.uima.collection.CollectionReader;
 import org.cleartk.eval.EvaluationConstants;
 import org.cleartk.syntax.constituent.TreebankConstants;
 import org.cleartk.syntax.constituent.TreebankGoldAnnotator;
 import org.cleartk.util.Options_ImplBase;
 import org.cleartk.util.ViewURIFileNamer;
-import org.cleartk.util.cr.FilesCollectionReader;
+import org.cleartk.util.ae.UriToDocumentTextAnnotator;
+import org.cleartk.util.cr.UriCollectionReader;
 import org.kohsuke.args4j.Option;
 import org.uimafit.component.ViewCreatorAnnotator;
 import org.uimafit.component.xwriter.XWriter;
+import org.uimafit.factory.AggregateBuilder;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.CollectionReaderFactory;
 import org.uimafit.pipeline.SimplePipeline;
 
 /**
@@ -59,7 +63,7 @@ import org.uimafit.pipeline.SimplePipeline;
  * <ul>
  * <li>-td src/main/resources/data/pos/treebank</li>
  * <li>-o src/main/resources/data/pos/treebank</li>
- * <li>-suf .tree</li>
+ * <li>-suf tree</li>
  * </ul>
  * 
  * To view the resulting xmi file in the CAS Visual Debugger you can run the eclipse launch
@@ -101,36 +105,36 @@ public class TreebankParsingExample {
     Options options = new Options();
     options.parseOptions(args);
 
+    // Loads URIS specified by files into URI view
     String[] suffixes = options.treebankFileSuffixes.toArray(new String[options.treebankFileSuffixes.size()]);
+    File treebankDir = new File(options.treebankDirectory);
+    Collection<File> files = FileUtils.listFiles(treebankDir, suffixes, false);
+    CollectionReader reader = UriCollectionReader.getCollectionReaderFromFiles(files);
 
-    CollectionReader reader = CollectionReaderFactory.createCollectionReader(
-        FilesCollectionReader.class,
-        FilesCollectionReader.PARAM_ROOT_FILE,
-        options.treebankDirectory,
-        FilesCollectionReader.PARAM_VIEW_NAME,
-        TreebankConstants.TREEBANK_VIEW,
-        FilesCollectionReader.PARAM_SUFFIXES,
-        suffixes);
+    AggregateBuilder builder = new AggregateBuilder();
 
-    AnalysisEngine viewCreator = AnalysisEngineFactory.createPrimitive(
+    // Reads text into TREEBANK_VIEW
+    builder.add(UriToDocumentTextAnnotator.getCreateViewAggregateDescription(TreebankConstants.TREEBANK_VIEW));
+
+    // Ensures GOLD_VIEW is present
+    builder.add(AnalysisEngineFactory.createPrimitiveDescription(
         ViewCreatorAnnotator.class,
         ViewCreatorAnnotator.PARAM_VIEW_NAME,
-        EvaluationConstants.GOLD_VIEW);
+        EvaluationConstants.GOLD_VIEW));
 
+    // Parses treebank text into gold view (instead of default sofa view)
     AnalysisEngineDescription treebankParserDescription = AnalysisEngineFactory.createPrimitiveDescription(TreebankGoldAnnotator.class);
-    AnalysisEngine treebankParser = AnalysisEngineFactory.createAnalysisEngine(
-        treebankParserDescription,
-        EvaluationConstants.GOLD_VIEW);
+    builder.add(treebankParserDescription, CAS.NAME_DEFAULT_SOFA, EvaluationConstants.GOLD_VIEW);
 
-    AnalysisEngine xWriter = AnalysisEngineFactory.createPrimitive(
+    // XMI Writer
+    builder.add(AnalysisEngineFactory.createPrimitiveDescription(
         XWriter.class,
         XWriter.PARAM_OUTPUT_DIRECTORY_NAME,
         options.outputDirectory,
         XWriter.PARAM_FILE_NAMER_CLASS_NAME,
-        ViewURIFileNamer.class.getName());
+        ViewURIFileNamer.class.getName()));
 
-    SimplePipeline.runPipeline(reader, viewCreator, treebankParser, xWriter);
+    SimplePipeline.runPipeline(reader, builder.createAggregateDescription());
 
   }
-
 }

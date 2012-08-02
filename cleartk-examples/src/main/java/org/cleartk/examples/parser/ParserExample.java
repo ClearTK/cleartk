@@ -24,12 +24,15 @@
 
 package org.cleartk.examples.parser;
 
+import java.io.File;
+
 import org.cleartk.syntax.opennlp.ParserAnnotator;
 import org.cleartk.syntax.opennlp.PosTaggerAnnotator;
 import org.cleartk.syntax.opennlp.SentenceAnnotator;
 import org.cleartk.token.tokenizer.TokenAnnotator;
 import org.cleartk.util.ViewURIFileNamer;
-import org.cleartk.util.cr.FilesCollectionReader;
+import org.cleartk.util.ae.UriToDocumentTextAnnotator;
+import org.cleartk.util.cr.UriCollectionReader;
 import org.uimafit.component.xwriter.XWriter;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.pipeline.SimplePipeline;
@@ -46,11 +49,12 @@ public class ParserExample {
 
   public static void main(String[] args) throws Exception {
 
-    String filesDirectory = args[0];
+    File filesDirectory = new File(args[0]);
     String outputDirectory = args[1];
 
     SimplePipeline.runPipeline(
-        FilesCollectionReader.getCollectionReader(filesDirectory),
+        UriCollectionReader.getCollectionReaderFromDirectory(filesDirectory),
+        UriToDocumentTextAnnotator.getDescription(),
         SentenceAnnotator.getDescription(),
         TokenAnnotator.getDescription(),
         PosTaggerAnnotator.getDescription(),

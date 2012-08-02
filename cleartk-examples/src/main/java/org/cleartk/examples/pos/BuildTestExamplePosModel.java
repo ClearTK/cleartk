@@ -24,10 +24,19 @@
 
 package org.cleartk.examples.pos;
 
+import java.io.File;
+import java.util.Collection;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.FileFilterUtils;
+import org.apache.uima.collection.CollectionReader;
 import org.cleartk.syntax.constituent.TreebankConstants;
 import org.cleartk.syntax.constituent.TreebankGoldAnnotator;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
-import org.cleartk.util.cr.FilesCollectionReader;
+import org.cleartk.util.ae.UriToDocumentTextAnnotator;
+import org.cleartk.util.cr.UriCollectionReader;
+import org.uimafit.factory.AggregateBuilder;
+import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.pipeline.SimplePipeline;
 
 /**
@@ -45,12 +54,27 @@ public class BuildTestExamplePosModel {
 
   public static void main(String... args) throws Exception {
 
-    SimplePipeline.runPipeline(FilesCollectionReader.getCollectionReaderWithSuffixes(
-        "src/main/resources/data/pos/treebank",
-        TreebankConstants.TREEBANK_VIEW,
-        ".tree"), TreebankGoldAnnotator.getDescriptionPOSTagsOnly(), DefaultSnowballStemmer
-        .getDescription("English"), ExamplePOSAnnotator
-        .getWriterDescription(ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY));
+    AnalysisEngineFactory.createPrimitiveDescription(UriToDocumentTextAnnotator.class);
+
+    // Collection Reader reads in files and saves URI location in URIView
+    Collection<File> files = FileUtils.listFiles(
+        new File("src/main/resources/data/pos/treebank"),
+        FileFilterUtils.suffixFileFilter(".tree"),
+        null);
+    CollectionReader reader = UriCollectionReader.getCollectionReaderFromFiles(files);
+
+    // Build an aggregate pipeline
+    AggregateBuilder builder = new AggregateBuilder();
+
+    // Combined view creation + URI text loading into one aggregate engine
+    builder.add(UriToDocumentTextAnnotator.getCreateViewAggregateDescription(TreebankConstants.TREEBANK_VIEW));
+
+    // Parse the treebank view and populate the initial view
+    builder.add(TreebankGoldAnnotator.getDescriptionPOSTagsOnly()); // Run Stemming
+    builder.add(DefaultSnowballStemmer.getDescription("English")); // Run the example POS
+    builder.add(ExamplePOSAnnotator.getWriterDescription(ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY));
+
+    SimplePipeline.runPipeline(reader, builder.createAggregateDescription());
 
     System.out.println("training data written to " + ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY);
     System.out.println("training model...");

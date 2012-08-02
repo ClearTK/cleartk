@@ -28,6 +28,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import java.io.File;
+import java.util.Arrays;
 
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.pear.util.FileUtil;
@@ -54,7 +55,8 @@ import org.cleartk.syntax.constituent.TreebankGoldAnnotator;
 import org.cleartk.syntax.opennlp.SentenceAnnotator;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.tokenizer.TokenAnnotator;
-import org.cleartk.util.cr.FilesCollectionReader;
+import org.cleartk.util.ae.UriToDocumentTextAnnotator;
+import org.cleartk.util.cr.UriCollectionReader;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ResourceCreationSpecifierFactory;
@@ -346,9 +348,9 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
       String... trainingArgs) throws Exception {
 
     SimplePipeline.runPipeline(
-        FilesCollectionReader.getCollectionReaderWithView(
-            "src/test/resources/data/treebank/11597317.tree",
-            TreebankConstants.TREEBANK_VIEW),
+        UriCollectionReader.getCollectionReaderFromFiles(Arrays.asList(new File(
+            "src/test/resources/data/treebank/11597317.tree"))),
+        UriToDocumentTextAnnotator.getCreateViewAggregateDescription(TreebankConstants.TREEBANK_VIEW),
         TreebankGoldAnnotator.getDescriptionPOSTagsOnly(),
         DefaultSnowballStemmer.getDescription("English"),
         dataWriter);
@@ -377,7 +379,9 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
         stackSize);
 
     SimplePipeline.runPipeline(
-        FilesCollectionReader.getCollectionReader("src/test/resources/data/2008_Sichuan_earthquake.txt"),
+        UriCollectionReader.getCollectionReaderFromFiles(Arrays.asList(new File(
+            "src/test/resources/data/2008_Sichuan_earthquake.txt"))),
+        UriToDocumentTextAnnotator.getDescription(),
         SentenceAnnotator.getDescription(),
         TokenAnnotator.getDescription(),
         DefaultSnowballStemmer.getDescription("English"),
@@ -387,5 +391,4 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
             ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME,
             outDirectoryName));
   }
-
 }

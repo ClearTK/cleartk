@@ -24,7 +24,9 @@
 package org.cleartk.timeml.tlink;
 
 import java.io.File;
+import java.util.Arrays;
 
+import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.util.Level;
 import org.apache.uima.util.Logger;
 import org.cleartk.syntax.opennlp.ParserAnnotator;
@@ -33,7 +35,8 @@ import org.cleartk.syntax.opennlp.SentenceAnnotator;
 import org.cleartk.timeml.corpus.TimeMLWriter;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.tokenizer.TokenAnnotator;
-import org.cleartk.util.cr.FilesCollectionReader;
+import org.cleartk.util.ae.UriToDocumentTextAnnotator;
+import org.cleartk.util.cr.UriCollectionReader;
 import org.uimafit.factory.UimaContextFactory;
 import org.uimafit.pipeline.SimplePipeline;
 
@@ -62,7 +65,7 @@ public class VerbClauseTemporalAnnotate {
     }
 
     // parse arguments
-    String inputFileOrDir = args[0];
+    File inputFileOrDir = new File(args[0]);
     File outputDir;
     if (args.length == 2) {
       outputDir = new File(args[1]);
@@ -72,10 +75,15 @@ public class VerbClauseTemporalAnnotate {
     if (!outputDir.exists()) {
       outputDir.mkdirs();
     }
-
+    
+    CollectionReader uriReader = (inputFileOrDir.isDirectory()) 
+        ? UriCollectionReader.getCollectionReaderFromDirectory(inputFileOrDir) 
+        : UriCollectionReader.getCollectionReaderFromFiles(Arrays.asList(inputFileOrDir));
+        
     // run the components on the selected documents
     SimplePipeline.runPipeline(
-        FilesCollectionReader.getCollectionReader(inputFileOrDir),
+        uriReader,
+        UriToDocumentTextAnnotator.getDescription(),
         SentenceAnnotator.getDescription(),
         TokenAnnotator.getDescription(),
         PosTaggerAnnotator.getDescription(),

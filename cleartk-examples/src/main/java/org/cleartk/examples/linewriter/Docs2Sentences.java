@@ -23,17 +23,19 @@
  */
 package org.cleartk.examples.linewriter;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.apache.uima.UIMAException;
-import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;
 import org.cleartk.syntax.opennlp.SentenceAnnotator;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.util.Options_ImplBase;
+import org.cleartk.util.ae.UriToDocumentTextAnnotator;
 import org.cleartk.util.ae.linewriter.LineWriter;
-import org.cleartk.util.cr.FilesCollectionReader;
+import org.cleartk.util.cr.UriCollectionReader;
 import org.kohsuke.args4j.Option;
+import org.uimafit.factory.AggregateBuilder;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.pipeline.SimplePipeline;
 
@@ -73,16 +75,20 @@ public class Docs2Sentences {
     Options options = new Options();
     options.parseOptions(args);
 
-    CollectionReader filesReader = FilesCollectionReader.getCollectionReader(options.inputDirectoryName);
-    AnalysisEngine sentences = AnalysisEngineFactory.createPrimitive(SentenceAnnotator.getDescription());
-    AnalysisEngine lineWriter = AnalysisEngineFactory.createPrimitive(
+    CollectionReader reader = UriCollectionReader.getCollectionReaderFromDirectory(new File(
+        options.inputDirectoryName));
+
+    AggregateBuilder builder = new AggregateBuilder();
+    builder.add(UriToDocumentTextAnnotator.getDescription());
+    builder.add(SentenceAnnotator.getDescription());
+    builder.add(AnalysisEngineFactory.createPrimitiveDescription(
         LineWriter.class,
         LineWriter.PARAM_OUTPUT_FILE_NAME,
         options.outputFileName,
         LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
-        Sentence.class.getName());
+        Sentence.class.getName()));
 
-    SimplePipeline.runPipeline(filesReader, sentences, lineWriter);
+    SimplePipeline.runPipeline(reader, builder.createAggregateDescription());
     System.out.println("results written to " + options.outputFileName);
 
   }
