@@ -54,17 +54,18 @@ import com.google.common.collect.Multiset;
  * 
  * @author Steven Bethard
  */
-public class AnnotationStatistics implements Serializable {
+public class AnnotationStatistics<OUTCOME_TYPE extends Comparable<? super OUTCOME_TYPE>> implements
+    Serializable {
 
   private static final long serialVersionUID = 1L;
 
-  private Multiset<String> referenceOutcomes;
+  private Multiset<OUTCOME_TYPE> referenceOutcomes;
 
-  private Multiset<String> predictedOutcomes;
+  private Multiset<OUTCOME_TYPE> predictedOutcomes;
 
-  private Multiset<String> correctOutcomes;
+  private Multiset<OUTCOME_TYPE> correctOutcomes;
 
-  private ConfusionMatrix<String> confusionMatrix;
+  private ConfusionMatrix<OUTCOME_TYPE> confusionMatrix;
 
   /**
    * Creates a {@link Function} that converts an {@link Annotation} into a hashable representation
@@ -108,10 +109,10 @@ public class AnnotationStatistics implements Serializable {
    * This may be useful when only the span of the offset is important, but you still need to pass in
    * the final argument of {@link #add(Collection, Collection, Function, Function)}.
    */
-  public static <ANNOTATION_TYPE> Function<ANNOTATION_TYPE, String> annotationToNull() {
-    return new Function<ANNOTATION_TYPE, String>() {
+  public static <ANNOTATION_TYPE, OUTCOME_TYPE> Function<ANNOTATION_TYPE, OUTCOME_TYPE> annotationToNull() {
+    return new Function<ANNOTATION_TYPE, OUTCOME_TYPE>() {
       @Override
-      public String apply(ANNOTATION_TYPE annotation) {
+      public OUTCOME_TYPE apply(ANNOTATION_TYPE annotation) {
         return null;
       }
     };
@@ -127,9 +128,10 @@ public class AnnotationStatistics implements Serializable {
    *          The sequence of statistics that should be combined.
    * @return The combination of all the individual statistics.
    */
-  public static AnnotationStatistics addAll(Iterable<AnnotationStatistics> statistics) {
-    AnnotationStatistics result = new AnnotationStatistics();
-    for (AnnotationStatistics item : statistics) {
+  public static <OUTCOME_TYPE extends Comparable<? super OUTCOME_TYPE>> AnnotationStatistics<OUTCOME_TYPE> addAll(
+      Iterable<AnnotationStatistics<OUTCOME_TYPE>> statistics) {
+    AnnotationStatistics<OUTCOME_TYPE> result = new AnnotationStatistics<OUTCOME_TYPE>();
+    for (AnnotationStatistics<OUTCOME_TYPE> item : statistics) {
       result.addAll(item);
     }
     return result;
@@ -146,7 +148,7 @@ public class AnnotationStatistics implements Serializable {
     this.referenceOutcomes = HashMultiset.create();
     this.predictedOutcomes = HashMultiset.create();
     this.correctOutcomes = HashMultiset.create();
-    this.confusionMatrix = new ConfusionMatrix<String>();
+    this.confusionMatrix = new ConfusionMatrix<OUTCOME_TYPE>();
   }
 
   /**
@@ -162,33 +164,11 @@ public class AnnotationStatistics implements Serializable {
   public <ANNOTATION_TYPE extends Annotation> void add(
       Collection<? extends ANNOTATION_TYPE> referenceAnnotations,
       Collection<? extends ANNOTATION_TYPE> predictedAnnotations) {
-    this.add(referenceAnnotations, predictedAnnotations, null);
-  }
-
-  /**
-   * Update the statistics, comparing the reference annotations to the predicted annotations.
-   * 
-   * Annotations are considered to match if they have the same character offsets in the text, and if
-   * they have the same value for the specified annotation feature.
-   * 
-   * @param referenceAnnotations
-   *          The reference annotations, typically identified by humans.
-   * @param predictedAnnotations
-   *          The predicted annotations, typically identified by a model.
-   * @param outcomeFeatureName
-   *          The name of the feature
-   */
-  public <ANNOTATION_TYPE extends Annotation> void add(
-      Collection<? extends ANNOTATION_TYPE> referenceAnnotations,
-      Collection<? extends ANNOTATION_TYPE> predictedAnnotations,
-      String outcomeFeatureName) {
     this.add(
         referenceAnnotations,
         predictedAnnotations,
         AnnotationStatistics.<ANNOTATION_TYPE> annotationToSpan(),
-        outcomeFeatureName == null
-            ? AnnotationStatistics.<ANNOTATION_TYPE> annotationToNull()
-            : AnnotationStatistics.<ANNOTATION_TYPE> annotationToFeatureValue(outcomeFeatureName));
+        AnnotationStatistics.<ANNOTATION_TYPE, OUTCOME_TYPE> annotationToNull());
   }
 
   /**
@@ -216,16 +196,16 @@ public class AnnotationStatistics implements Serializable {
       Collection<? extends ANNOTATION_TYPE> referenceAnnotations,
       Collection<? extends ANNOTATION_TYPE> predictedAnnotations,
       Function<ANNOTATION_TYPE, SPAN_TYPE> annotationToSpan,
-      Function<ANNOTATION_TYPE, String> annotationToOutcome) {
+      Function<ANNOTATION_TYPE, OUTCOME_TYPE> annotationToOutcome) {
 
     // map gold spans to their outcomes
-    Map<SPAN_TYPE, String> referenceSpanOutcomes = new HashMap<SPAN_TYPE, String>();
+    Map<SPAN_TYPE, OUTCOME_TYPE> referenceSpanOutcomes = new HashMap<SPAN_TYPE, OUTCOME_TYPE>();
     for (ANNOTATION_TYPE ann : referenceAnnotations) {
       referenceSpanOutcomes.put(annotationToSpan.apply(ann), annotationToOutcome.apply(ann));
     }
 
     // map system spans to their outcomes
-    Map<SPAN_TYPE, String> predictedSpanOutcomes = new HashMap<SPAN_TYPE, String>();
+    Map<SPAN_TYPE, OUTCOME_TYPE> predictedSpanOutcomes = new HashMap<SPAN_TYPE, OUTCOME_TYPE>();
     for (ANNOTATION_TYPE ann : predictedAnnotations) {
       predictedSpanOutcomes.put(annotationToSpan.apply(ann), annotationToOutcome.apply(ann));
     }
@@ -239,8 +219,8 @@ public class AnnotationStatistics implements Serializable {
     intersection.addAll(referenceSpanOutcomes.keySet());
     intersection.retainAll(predictedSpanOutcomes.keySet());
     for (SPAN_TYPE span : intersection) {
-      String goldOutcome = referenceSpanOutcomes.get(span);
-      String systemOutcome = predictedSpanOutcomes.get(span);
+      OUTCOME_TYPE goldOutcome = referenceSpanOutcomes.get(span);
+      OUTCOME_TYPE systemOutcome = predictedSpanOutcomes.get(span);
       if (Objects.equal(goldOutcome, systemOutcome)) {
         this.correctOutcomes.add(goldOutcome);
       }
@@ -251,8 +231,8 @@ public class AnnotationStatistics implements Serializable {
     union.addAll(referenceSpanOutcomes.keySet());
     union.addAll(predictedSpanOutcomes.keySet());
     for (SPAN_TYPE span : union) {
-      String goldOutcome = referenceSpanOutcomes.get(span);
-      String systemOutcome = predictedSpanOutcomes.get(span);
+      OUTCOME_TYPE goldOutcome = referenceSpanOutcomes.get(span);
+      OUTCOME_TYPE systemOutcome = predictedSpanOutcomes.get(span);
       this.confusionMatrix.add(goldOutcome, systemOutcome);
     }
   }
@@ -263,7 +243,7 @@ public class AnnotationStatistics implements Serializable {
    * @param that
    *          The other statistics that should be added to this one.
    */
-  public void addAll(AnnotationStatistics that) {
+  public void addAll(AnnotationStatistics<OUTCOME_TYPE> that) {
     this.referenceOutcomes.addAll(that.referenceOutcomes);
     this.predictedOutcomes.addAll(that.predictedOutcomes);
     this.correctOutcomes.addAll(that.correctOutcomes);
@@ -279,7 +259,7 @@ public class AnnotationStatistics implements Serializable {
    * 
    * @return The confusion matrix.
    */
-  public ConfusionMatrix<String> confusions() {
+  public ConfusionMatrix<OUTCOME_TYPE> confusions() {
     return this.confusionMatrix;
   }
 
@@ -288,7 +268,7 @@ public class AnnotationStatistics implements Serializable {
     return nSystem == 0 ? 1.0 : ((double) this.correctOutcomes.size()) / nSystem;
   }
 
-  public double precision(String outcome) {
+  public double precision(OUTCOME_TYPE outcome) {
     int nSystem = this.predictedOutcomes.count(outcome);
     return nSystem == 0 ? 1.0 : ((double) this.correctOutcomes.count(outcome)) / nSystem;
   }
@@ -298,7 +278,7 @@ public class AnnotationStatistics implements Serializable {
     return nGold == 0 ? 1.0 : ((double) this.correctOutcomes.size()) / nGold;
   }
 
-  public double recall(String outcome) {
+  public double recall(OUTCOME_TYPE outcome) {
     int nGold = this.referenceOutcomes.count(outcome);
     return nGold == 0 ? 1.0 : ((double) this.correctOutcomes.count(outcome)) / nGold;
   }
@@ -310,7 +290,7 @@ public class AnnotationStatistics implements Serializable {
     return sum == 0.0 ? 0.0 : (2 * p * r) / sum;
   }
 
-  public double f1(String outcome) {
+  public double f1(OUTCOME_TYPE outcome) {
     double p = this.precision(outcome);
     double r = this.recall(outcome);
     double sum = p + r;
@@ -329,10 +309,10 @@ public class AnnotationStatistics implements Serializable {
         this.referenceOutcomes.size(),
         this.predictedOutcomes.size(),
         this.correctOutcomes.size()));
-    List<String> outcomes = new ArrayList<String>(this.referenceOutcomes.elementSet());
+    List<OUTCOME_TYPE> outcomes = new ArrayList<OUTCOME_TYPE>(this.referenceOutcomes.elementSet());
     if (outcomes.size() > 1) {
       Collections.sort(outcomes);
-      for (String outcome : outcomes) {
+      for (OUTCOME_TYPE outcome : outcomes) {
         result.append(String.format(
             "%.3f\t%.3f\t%.3f\t%d\t%d\t%d\t%s\n",
             this.precision(outcome),

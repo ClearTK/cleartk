@@ -71,7 +71,10 @@ public class ModelInfo<ANNOTATION_TYPE extends TOP> {
     return new File(new File(directory, "models"), annotatorName);
   }
 
-  public void updateStatistics(AnnotationStatistics statistics, JCas goldView, JCas systemView) {
+  public void updateStatistics(
+      AnnotationStatistics<String> statistics,
+      JCas goldView,
+      JCas systemView) {
     Collection<ANNOTATION_TYPE> goldAnns = JCasUtil.select(goldView, this.annotatedClass);
     Collection<ANNOTATION_TYPE> systemAnns = JCasUtil.select(systemView, this.annotatedClass);
     statistics.add(

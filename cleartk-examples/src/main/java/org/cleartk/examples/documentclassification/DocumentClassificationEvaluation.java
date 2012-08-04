@@ -72,6 +72,8 @@ import org.uimafit.pipeline.SimplePipeline;
 import org.uimafit.testing.util.HideOutput;
 import org.uimafit.util.JCasUtil;
 
+import com.google.common.base.Function;
+
 /**
  * <br>
  * Copyright (c) 2012, Regents of the University of Colorado <br>
@@ -92,7 +94,7 @@ import org.uimafit.util.JCasUtil;
  * @author Lee Becker
  */
 public class DocumentClassificationEvaluation extends
-    Evaluation_ImplBase<File, AnnotationStatistics> {
+    Evaluation_ImplBase<File, AnnotationStatistics<String>> {
 
   public static class Options extends Options_ImplBase {
     @Option(
@@ -142,8 +144,8 @@ public class DocumentClassificationEvaluation extends
         options.trainingArguments);
 
     // Run Cross Validation
-    List<AnnotationStatistics> foldStats = evaluation.crossValidation(trainFiles, 2);
-    AnnotationStatistics crossValidationStats = AnnotationStatistics.addAll(foldStats);
+    List<AnnotationStatistics<String>> foldStats = evaluation.crossValidation(trainFiles, 2);
+    AnnotationStatistics<String> crossValidationStats = AnnotationStatistics.addAll(foldStats);
 
     System.err.println("Cross Validation Results:");
     System.err.print(crossValidationStats);
@@ -152,7 +154,7 @@ public class DocumentClassificationEvaluation extends
     System.err.println();
 
     // Run Holdout Set
-    AnnotationStatistics holdoutStats = evaluation.trainAndTest(trainFiles, testFiles);
+    AnnotationStatistics<String> holdoutStats = evaluation.trainAndTest(trainFiles, testFiles);
     System.err.println("Holdout Set Results:");
     System.err.print(holdoutStats);
     System.err.println();
@@ -384,9 +386,9 @@ public class DocumentClassificationEvaluation extends
   }
 
   @Override
-  protected AnnotationStatistics test(CollectionReader collectionReader, File directory)
+  protected AnnotationStatistics<String> test(CollectionReader collectionReader, File directory)
       throws Exception {
-    AnnotationStatistics stats = new AnnotationStatistics();
+    AnnotationStatistics<String> stats = new AnnotationStatistics<String>();
 
     // Create the document classification pipeline
     AggregateBuilder builder = DocumentClassificationEvaluation.createDocumentClassificationAggregate(
@@ -395,6 +397,8 @@ public class DocumentClassificationEvaluation extends
     AnalysisEngine engine = builder.createAggregate();
 
     // Run and evaluate
+    Function<UsenetDocument, ?> getSpan = AnnotationStatistics.annotationToSpan();
+    Function<UsenetDocument, String> getCategory = AnnotationStatistics.annotationToFeatureValue("category");
     for (JCas jCas : new JCasIterable(collectionReader, engine)) {
       JCas goldView = jCas.getView(GOLD_VIEW_NAME);
       JCas systemView = jCas.getView(DocumentClassificationEvaluation.SYSTEM_VIEW_NAME);
@@ -404,7 +408,7 @@ public class DocumentClassificationEvaluation extends
       Collection<UsenetDocument> systemCategories = JCasUtil.select(
           systemView,
           UsenetDocument.class);
-      stats.add(goldCategories, systemCategories, "category");
+      stats.add(goldCategories, systemCategories, getSpan, getCategory);
     }
 
     return stats;

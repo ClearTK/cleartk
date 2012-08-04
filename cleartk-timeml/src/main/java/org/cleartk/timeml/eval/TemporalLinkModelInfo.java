@@ -62,7 +62,10 @@ public class TemporalLinkModelInfo extends ModelInfo<TemporalLink> {
   }
 
   @Override
-  public void updateStatistics(AnnotationStatistics statistics, JCas goldView, JCas systemView) {
+  public void updateStatistics(
+      AnnotationStatistics<String> statistics,
+      JCas goldView,
+      JCas systemView) {
     // restrict evaluation to only the TLINKs that were present in the gold data
     Collection<TemporalLink> goldTlinks = JCasUtil.select(goldView, this.annotatedClass);
     Collection<TemporalLink> systemTlinks = JCasUtil.select(systemView, this.annotatedClass);

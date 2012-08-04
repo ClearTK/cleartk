@@ -87,15 +87,15 @@ public abstract class TempEval2010Main {
 
     switch (command) {
       case CV:
-        List<Map<ModelInfo<?>, AnnotationStatistics>> foldResults = evaluation.crossValidation(
+        List<Map<ModelInfo<?>, AnnotationStatistics<String>>> foldResults = evaluation.crossValidation(
             TempEval2010CollectionReader.getAnnotatedFileNames(tempEvalTrainingDir),
             5);
-        Map<String, AnnotationStatistics> overallResults = new HashMap<String, AnnotationStatistics>();
-        for (Map<ModelInfo<?>, AnnotationStatistics> results : foldResults) {
+        Map<String, AnnotationStatistics<String>> overallResults = new HashMap<String, AnnotationStatistics<String>>();
+        for (Map<ModelInfo<?>, AnnotationStatistics<String>> results : foldResults) {
           for (ModelInfo<?> modelInfo : results.keySet()) {
             String key = modelInfo.annotatedFeatureName;
             if (!overallResults.containsKey(key)) {
-              overallResults.put(key, new AnnotationStatistics());
+              overallResults.put(key, new AnnotationStatistics<String>());
             }
             overallResults.get(key).addAll(results.get(modelInfo));
           }
@@ -106,7 +106,7 @@ public abstract class TempEval2010Main {
         }
         break;
       case TEST:
-        Map<ModelInfo<?>, AnnotationStatistics> results = evaluation.trainAndTest(
+        Map<ModelInfo<?>, AnnotationStatistics<String>> results = evaluation.trainAndTest(
             TempEval2010CollectionReader.getAnnotatedFileNames(tempEvalTrainingDir),
             TempEval2010CollectionReader.getAnnotatedFileNames(tempEvalTestDir));
         for (ModelInfo<?> modelInfo : results.keySet()) {

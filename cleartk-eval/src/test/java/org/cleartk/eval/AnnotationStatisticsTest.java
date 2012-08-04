@@ -54,7 +54,7 @@ public class AnnotationStatisticsTest extends DefaultTestBase {
     List<Token> referenceTokens = tokens.subList(0, 8);
     List<Token> predictedTokens = tokens.subList(6, 10);
 
-    AnnotationStatistics stats = new AnnotationStatistics();
+    AnnotationStatistics<String> stats = new AnnotationStatistics<String>();
     stats.add(referenceTokens, predictedTokens);
     Assert.assertEquals(0.5, stats.precision(), 1e-10);
     Assert.assertEquals(0.25, stats.recall(), 1e-10);
@@ -87,8 +87,10 @@ public class AnnotationStatisticsTest extends DefaultTestBase {
         predictedView,
         Token.class));
 
-    AnnotationStatistics stats = new AnnotationStatistics();
-    stats.add(referenceTokens, predictedTokens, "pos");
+    AnnotationStatistics<String> stats = new AnnotationStatistics<String>();
+    Function<Token, ?> getSpan = AnnotationStatistics.annotationToSpan();
+    Function<Token, String> getPOS = AnnotationStatistics.annotationToFeatureValue("pos");
+    stats.add(referenceTokens, predictedTokens, getSpan, getPOS);
 
     Assert.assertEquals(0.5, stats.precision(), 1e-10);
     Assert.assertEquals(0.25, stats.recall(), 1e-10);
@@ -147,7 +149,7 @@ public class AnnotationStatisticsTest extends DefaultTestBase {
       }
     };
     Function<Token, String> tokenToPOS = AnnotationStatistics.<Token> annotationToFeatureValue("pos");
-    AnnotationStatistics stats = new AnnotationStatistics();
+    AnnotationStatistics<String> stats = new AnnotationStatistics<String>();
     stats.add(referenceTokens, predictedTokens, tokenToCoveredText, tokenToPOS);
 
     Assert.assertEquals(0.5, stats.precision(), 1e-10);

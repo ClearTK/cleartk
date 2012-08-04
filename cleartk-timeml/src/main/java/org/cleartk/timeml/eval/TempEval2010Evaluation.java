@@ -70,7 +70,7 @@ import org.xml.sax.SAXException;
  * @author Steven Bethard
  */
 public class TempEval2010Evaluation extends
-    Evaluation_ImplBase<String, Map<ModelInfo<?>, AnnotationStatistics>> {
+    Evaluation_ImplBase<String, Map<ModelInfo<?>, AnnotationStatistics<String>>> {
 
   public static final String GOLD_VIEW_NAME = "GoldView";
 
@@ -154,7 +154,7 @@ public class TempEval2010Evaluation extends
   }
 
   @Override
-  protected Map<ModelInfo<?>, AnnotationStatistics> test(
+  protected Map<ModelInfo<?>, AnnotationStatistics<String>> test(
       CollectionReader collectionReader,
       File directory) throws Exception {
     // prepare the XMI reader, the classifiers and the TempEval writer
@@ -177,10 +177,10 @@ public class TempEval2010Evaluation extends
         SYSTEM_VIEW_NAME));
 
     // create statistics for each feature that is classified
-    Map<ModelInfo<?>, AnnotationStatistics> modelInfoToStatistics;
-    modelInfoToStatistics = new HashMap<ModelInfo<?>, AnnotationStatistics>();
+    Map<ModelInfo<?>, AnnotationStatistics<String>> modelInfoToStatistics;
+    modelInfoToStatistics = new HashMap<ModelInfo<?>, AnnotationStatistics<String>>();
     for (ModelInfo<?> modelInfo : this.modelInfos) {
-      modelInfoToStatistics.put(modelInfo, new AnnotationStatistics());
+      modelInfoToStatistics.put(modelInfo, new AnnotationStatistics<String>());
     }
 
     // gather statistics over all the CASes in the test set
@@ -189,7 +189,7 @@ public class TempEval2010Evaluation extends
       JCas goldView = jCas.getView(GOLD_VIEW_NAME);
       JCas systemView = jCas.getView(SYSTEM_VIEW_NAME);
       for (ModelInfo<?> modelInfo : this.modelInfos) {
-        AnnotationStatistics statistics = modelInfoToStatistics.get(modelInfo);
+        AnnotationStatistics<String> statistics = modelInfoToStatistics.get(modelInfo);
         modelInfo.updateStatistics(statistics, goldView, systemView);
       }
     }
