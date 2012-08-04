@@ -36,9 +36,9 @@ import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instances;
 import org.cleartk.classifier.chunking.BIOChunking;
-import org.cleartk.classifier.feature.extractor.ContextExtractor;
-import org.cleartk.classifier.feature.extractor.ContextExtractor.Following;
-import org.cleartk.classifier.feature.extractor.ContextExtractor.Preceding;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.Following;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.Preceding;
 import org.cleartk.classifier.feature.extractor.simple.CharacterCategoryPatternExtractor;
 import org.cleartk.classifier.feature.extractor.simple.CharacterCategoryPatternExtractor.PatternType;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
@@ -82,7 +82,7 @@ public class TimeAnnotator extends CleartkSequenceAnnotator<String> {
 
   private List<SimpleFeatureExtractor> tokenFeatureExtractors;
 
-  private List<ContextExtractor<Token>> contextFeatureExtractors;
+  private List<CleartkExtractor> contextFeatureExtractors;
 
   private BIOChunking<Token, Time> chunking;
 
@@ -102,13 +102,10 @@ public class TimeAnnotator extends CleartkSequenceAnnotator<String> {
         new TypePathExtractor(Token.class, "pos"));
 
     // add window of features before and after
-    this.contextFeatureExtractors = new ArrayList<ContextExtractor<Token>>();
+    this.contextFeatureExtractors = new ArrayList<CleartkExtractor>();
     for (SimpleFeatureExtractor extractor : this.tokenFeatureExtractors) {
-      this.contextFeatureExtractors.add(new ContextExtractor<Token>(
-          Token.class,
-          extractor,
-          new Preceding(3),
-          new Following(3)));
+      this.contextFeatureExtractors.add(new CleartkExtractor(Token.class, extractor, new Preceding(
+          3), new Following(3)));
     }
   }
 
@@ -126,7 +123,7 @@ public class TimeAnnotator extends CleartkSequenceAnnotator<String> {
         for (SimpleFeatureExtractor extractor : this.tokenFeatureExtractors) {
           features.addAll(extractor.extract(jCas, token));
         }
-        for (ContextExtractor<Token> extractor : this.contextFeatureExtractors) {
+        for (CleartkExtractor extractor : this.contextFeatureExtractors) {
           features.addAll(extractor.extractWithin(jCas, token, sentence));
         }
         featureLists.add(features);

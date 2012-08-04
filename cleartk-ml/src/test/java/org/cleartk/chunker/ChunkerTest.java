@@ -40,9 +40,9 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.Preceding;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
-import org.cleartk.classifier.feature.extractor.ContextExtractor;
-import org.cleartk.classifier.feature.extractor.ContextExtractor.Preceding;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.proliferate.CharacterNGramProliferator;
@@ -72,7 +72,7 @@ public class ChunkerTest extends DefaultTestBase {
 
     private List<SimpleFeatureExtractor> simpleFeatureExtractors;
 
-    private List<ContextExtractor<Token>> windowExtractors;
+    private List<CleartkExtractor> windowExtractors;
 
     public Instance<String> extractFeatures(
         JCas jCas,
@@ -86,7 +86,7 @@ public class ChunkerTest extends DefaultTestBase {
       }
 
       // extract all features that require the token and sentence annotations
-      for (ContextExtractor<Token> extractor : this.windowExtractors) {
+      for (CleartkExtractor extractor : this.windowExtractors) {
         instance.addAll(extractor.extractWithin(jCas, labeledAnnotation, sequence));
       }
 
@@ -95,7 +95,7 @@ public class ChunkerTest extends DefaultTestBase {
 
     public void initialize(UimaContext context) throws ResourceInitializationException {
       this.simpleFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
-      this.windowExtractors = new ArrayList<ContextExtractor<Token>>();
+      this.windowExtractors = new ArrayList<CleartkExtractor>();
 
       SimpleFeatureExtractor wordExtractor = new CoveredTextExtractor();
 
@@ -105,10 +105,7 @@ public class ChunkerTest extends DefaultTestBase {
           new LowerCaseProliferator(),
           new CharacterNGramProliferator(fromLeft, 0, 3, 3, true)));
 
-      this.windowExtractors.add(new ContextExtractor<Token>(
-          Token.class,
-          wordExtractor,
-          new Preceding(2)));
+      this.windowExtractors.add(new CleartkExtractor(Token.class, wordExtractor, new Preceding(2)));
 
     }
 

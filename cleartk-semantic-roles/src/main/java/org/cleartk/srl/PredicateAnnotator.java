@@ -38,9 +38,9 @@ import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.DataWriterFactory;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.feature.extractor.ContextExtractor;
-import org.cleartk.classifier.feature.extractor.ContextExtractor.Following;
-import org.cleartk.classifier.feature.extractor.ContextExtractor.Preceding;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.Following;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.Preceding;
 import org.cleartk.classifier.feature.extractor.simple.CombinedExtractor;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.NamingExtractor;
@@ -95,7 +95,7 @@ public class PredicateAnnotator extends CleartkAnnotator<Boolean> {
 
     tokenExtractor = new CombinedExtractor(tokenExtractors);
 
-    contextExtractor = new ContextExtractor<Token>(Token.class, new NamingExtractor(
+    contextExtractor = new CleartkExtractor(Token.class, new NamingExtractor(
         "Token",
         new CombinedExtractor(tokenExtractors)), new Preceding(2), new Following(2));
   }
@@ -153,5 +153,5 @@ public class PredicateAnnotator extends CleartkAnnotator<Boolean> {
 
   private CombinedExtractor tokenExtractor;
 
-  private ContextExtractor<Token> contextExtractor;
+  private CleartkExtractor contextExtractor;
 }

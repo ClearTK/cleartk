@@ -36,9 +36,9 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.feature.extractor.ContextExtractor;
-import org.cleartk.classifier.feature.extractor.ContextExtractor.Bag;
-import org.cleartk.classifier.feature.extractor.ContextExtractor.Covered;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.Bag;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.Covered;
 import org.cleartk.classifier.feature.extractor.simple.CharacterCategoryPatternExtractor;
 import org.cleartk.classifier.feature.extractor.simple.CharacterCategoryPatternExtractor.PatternType;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
@@ -86,7 +86,7 @@ public class TimeTypeAnnotator extends CleartkAnnotator<String> {
         new LastWordExtractor(),
         new CharacterCategoryPatternExtractor(PatternType.REPEATS_MERGED),
         new TimeWordsExtractor(),
-        new ContextExtractor<Token>(Token.class, new CoveredTextExtractor(), new Bag(new Covered())));
+        new CleartkExtractor(Token.class, new CoveredTextExtractor(), new Bag(new Covered())));
   }
 
   @Override

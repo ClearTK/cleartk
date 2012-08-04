@@ -39,8 +39,8 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
-import org.cleartk.classifier.feature.extractor.ContextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.CombinedExtractor;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
@@ -154,10 +154,10 @@ public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
   }
 
   private TfidfExtractor<String> initTfIdfExtractor() throws IOException {
-    ContextExtractor<Token> countsExtractor = new ContextExtractor<Token>(
+    CleartkExtractor countsExtractor = new CleartkExtractor(
         Token.class,
         new CoveredTextExtractor(),
-        new ContextExtractor.Count(new ContextExtractor.Covered()));
+        new CleartkExtractor.Count(new CleartkExtractor.Covered()));
 
     TfidfExtractor<String> tfIdfExtractor = new TfidfExtractor<String>(
         DocumentClassificationAnnotator.TFIDF_EXTRACTOR_KEY,
@@ -171,10 +171,10 @@ public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
 
   private CentroidTfidfSimilarityExtractor<String> initCentroidTfIdfSimilarityExtractor()
       throws IOException {
-    ContextExtractor<Token> countsExtractor = new ContextExtractor<Token>(
+    CleartkExtractor countsExtractor = new CleartkExtractor(
         Token.class,
         new CoveredTextExtractor(),
-        new ContextExtractor.Count(new ContextExtractor.Covered()));
+        new CleartkExtractor.Count(new CleartkExtractor.Covered()));
 
     CentroidTfidfSimilarityExtractor<String> simExtractor = new CentroidTfidfSimilarityExtractor<String>(
         DocumentClassificationAnnotator.CENTROID_TFIDF_SIM_EXTRACTOR_KEY,

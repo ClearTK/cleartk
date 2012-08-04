@@ -36,10 +36,10 @@ import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.DataWriterFactory;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.FirstCovered;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.LastCovered;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
-import org.cleartk.classifier.feature.extractor.ContextExtractor;
-import org.cleartk.classifier.feature.extractor.ContextExtractor.FirstCovered;
-import org.cleartk.classifier.feature.extractor.ContextExtractor.LastCovered;
 import org.cleartk.classifier.feature.extractor.annotationpair.DistanceExtractor;
 import org.cleartk.classifier.feature.extractor.annotationpair.RelativePositionExtractor;
 import org.cleartk.classifier.feature.extractor.simple.CombinedExtractor;
@@ -124,7 +124,7 @@ public class ArgumentAnnotator extends CleartkAnnotator<String> {
     leftSiblingExtractor = new CombinedExtractor(constituentExtractors);
     rightSiblingExtractor = new CombinedExtractor(constituentExtractors);
     parentExtractor = new CombinedExtractor(constituentExtractors);
-    firstAndLastWordExtractor = new ContextExtractor<Token>(Token.class, new NamingExtractor(
+    firstAndLastWordExtractor = new CleartkExtractor(Token.class, new NamingExtractor(
         "Constituent",
         new CombinedExtractor(tokenExtractors)), new FirstCovered(1), new LastCovered(1));
   }
@@ -293,7 +293,7 @@ public class ArgumentAnnotator extends CleartkAnnotator<String> {
 
   private SimpleFeatureExtractor constituentExtractor;
 
-  private ContextExtractor<Token> firstAndLastWordExtractor;
+  private CleartkExtractor firstAndLastWordExtractor;
 
   private SimpleFeatureExtractor leftSiblingExtractor;
 

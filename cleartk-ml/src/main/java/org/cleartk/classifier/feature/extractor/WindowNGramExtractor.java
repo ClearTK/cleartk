@@ -45,7 +45,7 @@ import org.uimafit.util.JCasUtil;
  * 
  * <p>
  * 
- * @deprecated Use {@link ContextExtractor} instead.
+ * @deprecated Use {@link CleartkExtractor} instead.
  * @author Philip Ogren
  * 
  *         This class may change significantly per issue 19 as described here:

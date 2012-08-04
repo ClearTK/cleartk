@@ -39,10 +39,10 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Level;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.feature.extractor.ContextExtractor;
-import org.cleartk.classifier.feature.extractor.ContextExtractor.Bag;
-import org.cleartk.classifier.feature.extractor.ContextExtractor.Covered;
-import org.cleartk.classifier.feature.extractor.ContextExtractor.Preceding;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.Bag;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.Covered;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.Preceding;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.NamingExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
@@ -131,7 +131,7 @@ public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
   public VerbClauseTemporalAnnotator() {
     this.eventID = 1;
 
-    SimpleFeatureExtractor precedingAuxiliaries = new ContextExtractor<Token>(
+    SimpleFeatureExtractor precedingAuxiliaries = new CleartkExtractor(
         Token.class,
         new TokenTextForSelectedPOSExtractor("MD", "TO", "IN", "VB", "RB"),
         new Preceding(3));
@@ -153,7 +153,7 @@ public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
     this.betweenAnchorsFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
     this.betweenAnchorsFeatureExtractors.add(new NamingExtractor(
         "WordsBetween",
-        new ContextExtractor<Token>(Token.class, new CoveredTextExtractor(), new Bag(new Covered()))));
+        new CleartkExtractor(Token.class, new CoveredTextExtractor(), new Bag(new Covered()))));
     this.pathExtractor = new TargetPathExtractor();
   }
 

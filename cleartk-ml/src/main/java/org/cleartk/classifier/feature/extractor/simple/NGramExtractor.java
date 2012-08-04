@@ -32,8 +32,8 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
-import org.cleartk.classifier.feature.extractor.ContextExtractor;
-import org.cleartk.classifier.feature.extractor.ContextExtractor.Ngrams;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.Ngrams;
 import org.uimafit.util.JCasUtil;
 
 /**
@@ -43,7 +43,7 @@ import org.uimafit.util.JCasUtil;
  * 
  * 
  * @author Philip Ogren
- * @deprecated Use {@link ContextExtractor} with the {@link Ngrams} context.
+ * @deprecated Use {@link CleartkExtractor} with the {@link Ngrams} context.
  */
 @Deprecated
 public class NGramExtractor implements SimpleFeatureExtractor {

@@ -33,7 +33,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.feature.extractor.ContextExtractor;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.token.type.Sentence;
@@ -63,7 +63,7 @@ public abstract class EventAttributeAnnotator<OUTCOME_TYPE> extends CleartkAnnot
    * 
    * Subclasses should override {@link #initialize(org.apache.uima.UimaContext)} to fill this list.
    */
-  protected List<ContextExtractor<?>> contextExtractors;
+  protected List<CleartkExtractor> contextExtractors;
 
   /**
    * The attribute value that should be considered as a default, e.g. "NONE". When the attribute
@@ -104,7 +104,7 @@ public abstract class EventAttributeAnnotator<OUTCOME_TYPE> extends CleartkAnnot
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
     this.eventFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
-    this.contextExtractors = new ArrayList<ContextExtractor<?>>();
+    this.contextExtractors = new ArrayList<CleartkExtractor>();
   }
 
   @Override
@@ -117,7 +117,7 @@ public abstract class EventAttributeAnnotator<OUTCOME_TYPE> extends CleartkAnnot
         for (SimpleFeatureExtractor extractor : this.eventFeatureExtractors) {
           features.addAll(extractor.extract(jCas, event));
         }
-        for (ContextExtractor<?> extractor : this.contextExtractors) {
+        for (CleartkExtractor extractor : this.contextExtractors) {
           features.addAll(extractor.extractWithin(jCas, event, sentence));
         }
 

@@ -35,14 +35,14 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.Counts;
 import org.cleartk.classifier.feature.FeatureCollection;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
-import org.cleartk.classifier.feature.extractor.ContextExtractor;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor;
 
 /**
  * <br>
  * Copyright (c) 2009-2010, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
- * @deprecated Use {@link ContextExtractor} instead.
+ * @deprecated Use {@link CleartkExtractor} instead.
  * @author Philip Wetzler
  */
 @Deprecated

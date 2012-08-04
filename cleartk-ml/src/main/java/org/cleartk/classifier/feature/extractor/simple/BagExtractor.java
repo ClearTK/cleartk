@@ -30,7 +30,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
-import org.cleartk.classifier.feature.extractor.ContextExtractor;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor;
 import org.cleartk.classifier.feature.extractor.filter.AlwaysIncludeAnnotationFilter;
 import org.cleartk.classifier.feature.extractor.filter.AnnotationFilter;
 import org.uimafit.util.JCasUtil;
@@ -43,7 +43,7 @@ import org.uimafit.util.JCasUtil;
  * A class for extracting bag-of-words style features. It allows any type of Annotation to serve as
  * the "words", and allows any type of feature extractor to be applied to each of these "words".
  * 
- * @deprecated Use {@link ContextExtractor} instead.
+ * @deprecated Use {@link CleartkExtractor} instead.
  * @author Steven Bethard, Philipp Wetzler
  */
 @Deprecated

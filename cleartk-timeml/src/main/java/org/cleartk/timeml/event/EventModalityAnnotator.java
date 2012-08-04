@@ -26,9 +26,9 @@ package org.cleartk.timeml.event;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.classifier.feature.extractor.ContextExtractor;
-import org.cleartk.classifier.feature.extractor.ContextExtractor.Bag;
-import org.cleartk.classifier.feature.extractor.ContextExtractor.Preceding;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.Bag;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.Preceding;
 import org.cleartk.classifier.opennlp.MaxentDataWriter;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.util.CleartkInternalModelFactory;
@@ -67,7 +67,7 @@ public class EventModalityAnnotator extends EventAttributeAnnotator<String> {
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
-    this.contextExtractors.add(new ContextExtractor<Token>(
+    this.contextExtractors.add(new CleartkExtractor(
         Token.class,
         new TokenTextForSelectedPOSExtractor("RB", "MD", "TO", "IN"),
         new Bag(new Preceding(3))));

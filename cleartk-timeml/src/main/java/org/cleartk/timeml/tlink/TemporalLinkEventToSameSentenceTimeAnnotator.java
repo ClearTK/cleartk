@@ -38,12 +38,12 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.feature.extractor.BetweenAnnotationsFeatureExtractor;
-import org.cleartk.classifier.feature.extractor.ContextExtractor;
-import org.cleartk.classifier.feature.extractor.ContextExtractor.Bag;
-import org.cleartk.classifier.feature.extractor.ContextExtractor.Covered;
-import org.cleartk.classifier.feature.extractor.ContextExtractor.Following;
-import org.cleartk.classifier.feature.extractor.ContextExtractor.Ngram;
-import org.cleartk.classifier.feature.extractor.ContextExtractor.Preceding;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.Bag;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.Covered;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.Following;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.Ngram;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.Preceding;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
@@ -110,16 +110,16 @@ public class TemporalLinkEventToSameSentenceTimeAnnotator extends
     this.setSourceExtractors(Arrays.asList(
         new TypePathExtractor(Event.class, "tense"),
         new TypePathExtractor(Event.class, "eventClass"),
-        new ContextExtractor<Token>(Token.class, prepOrVerbExtractor, new Ngram(new Following(5)))));
+        new CleartkExtractor(Token.class, prepOrVerbExtractor, new Ngram(new Following(5)))));
 
     this.setTargetExtractors(Arrays.asList(
-        new ContextExtractor<Token>(Token.class, new CoveredTextExtractor(), new Bag(new Covered())),
+        new CleartkExtractor(Token.class, new CoveredTextExtractor(), new Bag(new Covered())),
         new TypePathExtractor(Time.class, "timeType"),
         new TypePathExtractor(Time.class, "value"),
-        new ContextExtractor<Token>(Token.class, prepOrVerbExtractor, new Ngram(new Preceding(5)))));
+        new CleartkExtractor(Token.class, prepOrVerbExtractor, new Ngram(new Preceding(5)))));
 
     // this will probably only extract when the source (Event) precedes the target (Time)
-    this.setBetweenExtractors(Arrays.<BetweenAnnotationsFeatureExtractor> asList(new ContextExtractor<Token>(
+    this.setBetweenExtractors(Arrays.<BetweenAnnotationsFeatureExtractor> asList(new CleartkExtractor(
         Token.class,
         prepOrVerbExtractor,
         new Bag(new Covered()))));

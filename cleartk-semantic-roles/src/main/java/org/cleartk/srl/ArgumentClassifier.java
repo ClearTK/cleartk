@@ -40,10 +40,10 @@ import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.DataWriterFactory;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.FirstCovered;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.LastCovered;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
-import org.cleartk.classifier.feature.extractor.ContextExtractor;
-import org.cleartk.classifier.feature.extractor.ContextExtractor.FirstCovered;
-import org.cleartk.classifier.feature.extractor.ContextExtractor.LastCovered;
 import org.cleartk.classifier.feature.extractor.annotationpair.AnnotationPairFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.annotationpair.MatchingAnnotationPairExtractor;
 import org.cleartk.classifier.feature.extractor.annotationpair.NamingAnnotationPairFeatureExtractor;
@@ -119,8 +119,8 @@ public class ArgumentClassifier extends CleartkAnnotator<String> {
         new NodeTypeExtractor(),
         // new TypePathExtractor(TreebankNode.class, "nodeTags"),
         new HeadWordExtractor(defaultTokenExtractorSet),
-        new ContextExtractor<Token>(Token.class, defaultTokenExtractorSet, new FirstCovered(1)),
-        new ContextExtractor<Token>(Token.class, defaultTokenExtractorSet, new LastCovered(1)));
+        new CleartkExtractor(Token.class, defaultTokenExtractorSet, new FirstCovered(1)),
+        new CleartkExtractor(Token.class, defaultTokenExtractorSet, new LastCovered(1)));
 
     this.predicateExtractor = new NamingExtractor(
         "Predicate",

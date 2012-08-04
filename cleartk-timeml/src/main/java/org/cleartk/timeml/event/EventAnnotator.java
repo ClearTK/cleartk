@@ -38,10 +38,10 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.Following;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.Preceding;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
-import org.cleartk.classifier.feature.extractor.ContextExtractor;
-import org.cleartk.classifier.feature.extractor.ContextExtractor.Following;
-import org.cleartk.classifier.feature.extractor.ContextExtractor.Preceding;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
@@ -86,7 +86,7 @@ public class EventAnnotator extends CleartkAnnotator<String> {
 
   protected List<SimpleFeatureExtractor> tokenFeatureExtractors;
 
-  protected List<ContextExtractor<?>> contextExtractors;
+  protected List<CleartkExtractor> contextExtractors;
 
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
@@ -101,8 +101,8 @@ public class EventAnnotator extends CleartkAnnotator<String> {
         new ParentNodeFeaturesExtractor()));
 
     // add window of features before and after
-    this.contextExtractors = new ArrayList<ContextExtractor<?>>();
-    this.contextExtractors.add(new ContextExtractor<Token>(
+    this.contextExtractors = new ArrayList<CleartkExtractor>();
+    this.contextExtractors.add(new CleartkExtractor(
         Token.class,
         new CoveredTextExtractor(),
         new Preceding(3),
@@ -127,7 +127,7 @@ public class EventAnnotator extends CleartkAnnotator<String> {
         for (SimpleFeatureExtractor extractor : this.tokenFeatureExtractors) {
           features.addAll(extractor.extract(jCas, token));
         }
-        for (ContextExtractor<?> extractor : this.contextExtractors) {
+        for (CleartkExtractor extractor : this.contextExtractors) {
           features.addAll(extractor.extractWithin(jCas, token, sentence));
         }
         if (this.isTraining()) {

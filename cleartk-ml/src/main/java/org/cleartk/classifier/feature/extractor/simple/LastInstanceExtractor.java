@@ -29,7 +29,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
-import org.cleartk.classifier.feature.extractor.ContextExtractor;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor;
 import org.uimafit.util.JCasUtil;
 
 /**
@@ -37,7 +37,7 @@ import org.uimafit.util.JCasUtil;
  * Copyright (c) 2007-2009, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
- * @deprecated Use {@link ContextExtractor} instead.
+ * @deprecated Use {@link CleartkExtractor} instead.
  * @author Philipp Wetzler
  */
 @Deprecated

@@ -57,13 +57,10 @@ import com.google.common.collect.Multiset;
  * All rights reserved.
  * 
  * @author Steven Bethard
- * @deprecated Use {@link CleartkExtractor} instead.
  */
-@Deprecated
-public class ContextExtractor<T extends Annotation> implements SimpleFeatureExtractor,
-    BetweenAnnotationsFeatureExtractor {
+public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotationsFeatureExtractor {
 
-  private Class<T> annotationClass;
+  private Class<? extends Annotation> annotationClass;
 
   private SimpleFeatureExtractor extractor;
 
@@ -80,8 +77,8 @@ public class ContextExtractor<T extends Annotation> implements SimpleFeatureExtr
    * @param contexts
    *          The contexts where the extractor should look for annotations.
    */
-  public ContextExtractor(
-      Class<T> annotationClass,
+  public CleartkExtractor(
+      Class<? extends Annotation> annotationClass,
       SimpleFeatureExtractor extractor,
       Context... contexts) {
     this.annotationClass = annotationClass;
@@ -139,7 +136,7 @@ public class ContextExtractor<T extends Annotation> implements SimpleFeatureExtr
   }
 
   /**
-   * A class representing the bounds within which a {@link ContextExtractor} should look for
+   * A class representing the bounds within which a {@link CleartkExtractor} should look for
    * annotations.
    */
   public static interface Bounds {
@@ -191,7 +188,7 @@ public class ContextExtractor<T extends Annotation> implements SimpleFeatureExtr
   }
 
   /**
-   * A class representing a location that a {@link ContextExtractor} should look for annotations.
+   * A class representing a location that a {@link CleartkExtractor} should look for annotations.
    */
   public static interface Context {
 

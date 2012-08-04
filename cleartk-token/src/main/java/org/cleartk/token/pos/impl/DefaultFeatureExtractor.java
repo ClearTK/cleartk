@@ -30,11 +30,11 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.Following;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.Ngram;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.Preceding;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
-import org.cleartk.classifier.feature.extractor.ContextExtractor;
-import org.cleartk.classifier.feature.extractor.ContextExtractor.Following;
-import org.cleartk.classifier.feature.extractor.ContextExtractor.Ngram;
-import org.cleartk.classifier.feature.extractor.ContextExtractor.Preceding;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.proliferate.CapitalTypeProliferator;
@@ -60,9 +60,9 @@ public class DefaultFeatureExtractor implements POSFeatureExtractor<Token, Sente
 
   private List<SimpleFeatureExtractor> simpleExtractors;
 
-  private List<ContextExtractor<Token>> windowExtractors;
+  private List<CleartkExtractor> windowExtractors;
 
-  private List<ContextExtractor<Token>> windowNGramExtractors;
+  private List<CleartkExtractor> windowNGramExtractors;
 
   public void initialize(UimaContext context) throws ResourceInitializationException {
     simpleExtractors = new ArrayList<SimpleFeatureExtractor>();
@@ -86,16 +86,16 @@ public class DefaultFeatureExtractor implements POSFeatureExtractor<Token, Sente
         new CharacterNGramProliferator(fromRight, 0, 5),
         new CharacterNGramProliferator(fromRight, 0, 6)));
 
-    windowExtractors = new ArrayList<ContextExtractor<Token>>();
+    windowExtractors = new ArrayList<CleartkExtractor>();
 
-    windowExtractors.add(new ContextExtractor<Token>(
+    windowExtractors.add(new CleartkExtractor(
         Token.class,
         wordExtractor,
         new Preceding(2),
         new Following(2)));
 
-    windowNGramExtractors = new ArrayList<ContextExtractor<Token>>();
-    windowNGramExtractors.add(new ContextExtractor<Token>(Token.class, wordExtractor, new Ngram(
+    windowNGramExtractors = new ArrayList<CleartkExtractor>();
+    windowNGramExtractors.add(new CleartkExtractor(Token.class, wordExtractor, new Ngram(
         new Preceding(2)), new Ngram(new Following(2))));
   }
 
@@ -107,11 +107,11 @@ public class DefaultFeatureExtractor implements POSFeatureExtractor<Token, Sente
       features.addAll(extractor.extract(jCas, token));
     }
 
-    for (ContextExtractor<Token> extractor : windowExtractors) {
+    for (CleartkExtractor extractor : windowExtractors) {
       features.addAll(extractor.extractWithin(jCas, token, sentence));
     }
 
-    for (ContextExtractor<Token> extractor : windowNGramExtractors) {
+    for (CleartkExtractor extractor : windowNGramExtractors) {
       features.addAll(extractor.extractWithin(jCas, token, sentence));
     }
 

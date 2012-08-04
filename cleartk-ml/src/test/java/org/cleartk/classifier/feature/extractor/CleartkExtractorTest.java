@@ -30,16 +30,16 @@ import java.util.List;
 import junit.framework.Assert;
 
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.ContextExtractor.Bag;
-import org.cleartk.classifier.feature.extractor.ContextExtractor.Count;
-import org.cleartk.classifier.feature.extractor.ContextExtractor.Covered;
-import org.cleartk.classifier.feature.extractor.ContextExtractor.FirstCovered;
-import org.cleartk.classifier.feature.extractor.ContextExtractor.Focus;
-import org.cleartk.classifier.feature.extractor.ContextExtractor.Following;
-import org.cleartk.classifier.feature.extractor.ContextExtractor.LastCovered;
-import org.cleartk.classifier.feature.extractor.ContextExtractor.Ngram;
-import org.cleartk.classifier.feature.extractor.ContextExtractor.Ngrams;
-import org.cleartk.classifier.feature.extractor.ContextExtractor.Preceding;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.Bag;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.Count;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.Covered;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.FirstCovered;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.Focus;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.Following;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.LastCovered;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.Ngram;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.Ngrams;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.Preceding;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.test.DefaultTestBase;
@@ -56,11 +56,11 @@ import org.uimafit.util.JCasUtil;
  * 
  * @author Steven Bethard
  */
-public class ContextExtractorTest extends DefaultTestBase {
+public class CleartkExtractorTest extends DefaultTestBase {
 
   @Test
   public void testBasic() throws Exception {
-    ContextExtractor<Token> extractor = new ContextExtractor<Token>(
+    CleartkExtractor extractor = new CleartkExtractor(
         Token.class,
         new CoveredTextExtractor(),
         new Preceding(2),
@@ -106,15 +106,13 @@ public class ContextExtractorTest extends DefaultTestBase {
 
   @Test
   public void testBag() throws Exception {
-    ContextExtractor<Token> extractor = new ContextExtractor<Token>(
+    CleartkExtractor extractor = new CleartkExtractor(Token.class, new TypePathExtractor(
         Token.class,
-        new TypePathExtractor(Token.class, "pos"),
-        new Bag(new Preceding(2)),
-        new Bag(new Preceding(3, 6)),
-        new Bag(new FirstCovered(1), new LastCovered(1)),
-        new Bag(new Following(1, 3)),
-        new Bag(new Following(3, 5)),
-        new Bag(new Preceding(1), new Following(1)));
+        "pos"), new Bag(new Preceding(2)), new Bag(new Preceding(3, 6)), new Bag(
+        new FirstCovered(1),
+        new LastCovered(1)), new Bag(new Following(1, 3)), new Bag(new Following(3, 5)), new Bag(
+        new Preceding(1),
+        new Following(1)));
 
     this.tokenBuilder.buildTokens(
         this.jCas,
@@ -145,7 +143,7 @@ public class ContextExtractorTest extends DefaultTestBase {
 
   @Test
   public void testCounts() throws Exception {
-    ContextExtractor<Token> extractor = new ContextExtractor<Token>(
+    CleartkExtractor extractor = new CleartkExtractor(
         Token.class,
         new CoveredTextExtractor(),
         new Count(new Preceding(2)),
@@ -174,7 +172,7 @@ public class ContextExtractorTest extends DefaultTestBase {
 
   @Test
   public void testNgram() throws Exception {
-    ContextExtractor<Token> extractor = new ContextExtractor<Token>(
+    CleartkExtractor extractor = new CleartkExtractor(
         Token.class,
         new CoveredTextExtractor(),
         new Ngram(new Preceding(2)),
@@ -209,7 +207,7 @@ public class ContextExtractorTest extends DefaultTestBase {
 
   @Test
   public void testNgrams() throws Exception {
-    ContextExtractor<Token> extractor = new ContextExtractor<Token>(
+    CleartkExtractor extractor = new CleartkExtractor(
         Token.class,
         new CoveredTextExtractor(),
         new Ngrams(2, new Preceding(3)),
@@ -245,7 +243,7 @@ public class ContextExtractorTest extends DefaultTestBase {
 
   @Test
   public void testFocus() throws Exception {
-    ContextExtractor<Token> extractor = new ContextExtractor<Token>(
+    CleartkExtractor extractor = new CleartkExtractor(
         Token.class,
         new CoveredTextExtractor(),
         new Focus(),
@@ -268,7 +266,7 @@ public class ContextExtractorTest extends DefaultTestBase {
     this.assertFeature("Bag_Preceding_0_1_Focus", "jumped", iter.next());
     this.assertFeature("Ngram_Following_0_2_Focus", "over_the_jumped", iter.next());
 
-    ContextExtractor<Chunk> chunkExtractor = new ContextExtractor<Chunk>(
+    CleartkExtractor chunkExtractor = new CleartkExtractor(
         Chunk.class,
         new CoveredTextExtractor(),
         new Focus());
@@ -281,7 +279,7 @@ public class ContextExtractorTest extends DefaultTestBase {
 
   @Test
   public void testBounds() throws Exception {
-    ContextExtractor<Token> extractor = new ContextExtractor<Token>(
+    CleartkExtractor extractor = new CleartkExtractor(
         Token.class,
         new CoveredTextExtractor(),
         new Preceding(2),
@@ -337,7 +335,7 @@ public class ContextExtractorTest extends DefaultTestBase {
 
   @Test
   public void testExtractBetween() throws Exception {
-    ContextExtractor<Token> extractor = new ContextExtractor<Token>(
+    CleartkExtractor extractor = new CleartkExtractor(
         Token.class,
         new CoveredTextExtractor(),
         new Bag(new Preceding(2)),

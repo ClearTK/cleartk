@@ -34,9 +34,9 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.feature.extractor.ContextExtractor;
-import org.cleartk.classifier.feature.extractor.ContextExtractor.Following;
-import org.cleartk.classifier.feature.extractor.ContextExtractor.Preceding;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.Following;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.Preceding;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.proliferate.CapitalTypeProliferator;
@@ -73,7 +73,7 @@ public class ExamplePOSAnnotator extends CleartkSequenceAnnotator<String> {
 
   private SimpleFeatureExtractor tokenFeatureExtractor;
 
-  private List<ContextExtractor<Token>> contextFeatureExtractors;
+  private List<CleartkExtractor> contextFeatureExtractors;
 
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
@@ -92,8 +92,8 @@ public class ExamplePOSAnnotator extends CleartkSequenceAnnotator<String> {
         new CharacterNGramProliferator(fromRight, 0, 3));
 
     // a list of feature extractors that require the token and the sentence
-    this.contextFeatureExtractors = new ArrayList<ContextExtractor<Token>>();
-    this.contextFeatureExtractors.add(new ContextExtractor<Token>(
+    this.contextFeatureExtractors = new ArrayList<CleartkExtractor>();
+    this.contextFeatureExtractors.add(new CleartkExtractor(
         Token.class,
         new CoveredTextExtractor(),
         new Preceding(2),
@@ -115,7 +115,7 @@ public class ExamplePOSAnnotator extends CleartkSequenceAnnotator<String> {
         instance.addAll(tokenFeatureExtractor.extract(jCas, token));
 
         // extract all features that require the token and sentence annotations
-        for (ContextExtractor<Token> extractor : this.contextFeatureExtractors) {
+        for (CleartkExtractor extractor : this.contextFeatureExtractors) {
           instance.addAll(extractor.extractWithin(jCas, token, sentence));
         }
 
