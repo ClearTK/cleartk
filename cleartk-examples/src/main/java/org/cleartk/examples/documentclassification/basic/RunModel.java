@@ -97,7 +97,7 @@ public class RunModel {
         new File(options.modelsDirectory, "model.jar").getPath()));
 
     // //////////////////////////////////////////////////////////////////////////////
-    // Train and write model
+    // Run pipeline and classify documents
     // //////////////////////////////////////////////////////////////////////////////
     SimplePipeline.runPipeline(reader, builder.createAggregateDescription());
   }
