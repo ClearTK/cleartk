@@ -47,7 +47,7 @@ public class RunModel {
 
   public static class Options extends Options_ImplBase {
     @Option(name = "--test-dir", usage = "Specify the directory containing the documents to label.")
-    public File trainDirectory = new File("src/main/resources/data/3news-bydate/train");
+    public File testDirectory = new File("src/main/resources/data/3news-bydate/train");
 
     @Option(
         name = "--models-dir",
@@ -59,11 +59,11 @@ public class RunModel {
     Options options = new Options();
     options.parseOptions(args);
 
-    List<File> trainFiles = DocumentClassificationEvaluation.getFilesFromDirectory(options.trainDirectory);
+    List<File> testFiles = DocumentClassificationEvaluation.getFilesFromDirectory(options.testDirectory);
 
     DocumentClassificationEvaluation evaluation = new DocumentClassificationEvaluation(
         options.modelsDirectory);
-    CollectionReader collectionReader = evaluation.getCollectionReader(trainFiles);
+    CollectionReader collectionReader = evaluation.getCollectionReader(testFiles);
 
     AggregateBuilder builder = DocumentClassificationEvaluation.createDocumentClassificationAggregate(
         options.modelsDirectory,
