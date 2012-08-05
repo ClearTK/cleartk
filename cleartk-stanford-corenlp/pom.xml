@@ -38,13 +38,6 @@
 			<classifier>models</classifier>
 		</dependency>
 
-		<!-- project-specific dependencies -->
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>11.0.1</version>
-		</dependency>
-
 		<!-- ClearTK-internal dependencies -->
 		<dependency>
 			<groupId>org.cleartk</groupId>

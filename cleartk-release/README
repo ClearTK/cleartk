@@ -56,7 +56,7 @@ redistributed here subject to the respective licensing terms provided by
 each library.  We have been careful to use only libraries that are 
 commercially friendly.  Please see the notes below for exceptions.  For a 
 complete listing of the dependencies and their respective licenses please
-see the file   
+see the file licenses/index.html.
 
 ################
 GPL Dependencies
@@ -77,32 +77,30 @@ SVMLIGHT
 ########
 
 ClearTK also has two projects called cleartk-ml-svmlight and cleartk-ml-tksvmlight
-which have special licensing considerations.  The ClearTK project does not 
-redistribute SVMlight.  ClearTK does, however, facilitate the building of SVMlight 
-models via the ClassifierBuilder interface.  In order to use the implementations 
-of this interface to good effect (e.g. org.cleartk.classifier.svmlight.OVASVMlightClassifierBuilder) 
-you will need to have SVMlight installed on your machine.  The ClassifierBuilder's 
-for SVMlight simply call the executable "svm_learn" provided by the SVMlight 
-distribution.  ClearTK does not use SVMlight at classification time - it only uses 
-the models that are build by SVMlight.  Instead, ClearTK provides its own code for 
-classification that makes use of an SVMlight generated model.  This code is provided 
-with ClearTK and is available with the above BSD license as is all of the other code 
-written for ClearTK.  Therefore, be advised that while ClearTK is not required (or 
-compelled) to redistribute the code or license of SVMlight or to comply with it 
-(i.e. the noncommercial license provided by SVMlight is not compatible with our BSD 
-License) - it would be very difficult to use the SVMlight wrappers we provide in a 
-commercial setting without obtaining a license for SVMlight directly from its authors.  
+which have special licensing considerations. The ClearTK project does not 
+redistribute SVMlight. ClearTK does, however, facilitate the building of SVMlight 
+models via the ClassifierBuilder interface. In order to use the implementations of
+this interface to good effect you will need to have SVMlight installed on your
+machine. The ClassifierBuilders for SVMlight simply call the executable "svm_learn"
+provided by the SVMlight distribution. ClearTK does not use SVMlight at
+classification time - it only uses the models that are build by SVMlight. Instead,
+ClearTK provides its own code for classification that makes use of an SVMlight
+generated model.  This code is provided with ClearTK and is available with the
+above BSD license as is all of the other code written for ClearTK. Therefore, be
+advised that while ClearTK is not required (or compelled) to redistribute the code
+or license of SVMlight or to comply with it (i.e. the noncommercial license
+provided by SVMlight is not compatible with our BSD License) - it would be very
+difficult to use the SVMlight wrappers we provide in a commercial setting without
+obtaining a license for SVMlight directly from its authors.  
 
 ####
 LGPL
 ####
 
-There are two libraries that are released under the LGPL license: jsr305-1.3.9.jar 
-(findbugs) and trove4j-2.0.2.jar.  We are working on removing the findbugs library
-from this distribution as it is pulled in by Guava which is not actually using it.  
-The trove4j library is a dependency of mallet and so this dependency will not go away.  
-It is, however, possible to prune this dependency if you are not using the 
-cleartk-mallet project.   
+The cleartk-ml-mallet project depends on Mallet (http://mallet.cs.umass.edu/),
+which depends on trove4j (http://trove.starlight-systems.com/), which is
+released under the LGPL license. If you do not need Mallet classifiers and would
+like to avoid the LGPL license, you can omit the cleartk-ml-mallet dependency.
 
 ###################
 Malt Parser Wrapper
