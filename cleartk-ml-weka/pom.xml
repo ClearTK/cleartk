@@ -8,7 +8,7 @@
 	</parent>
 	<artifactId>cleartk-ml-weka</artifactId>
 	<version>0.1.0-SNAPSHOT</version>
-	<name>cleartk-weka</name>
+	<name>cleartk-ml-weka</name>
 	<description>ClearTK wrapper for the WEKA machine learning library</description>
 	<url>http://cleartk.googlecode.com/</url>
 	<repositories>
