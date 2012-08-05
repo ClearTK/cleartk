@@ -28,9 +28,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.PrintStream;
 import java.util.jar.JarInputStream;
 import java.util.jar.JarOutputStream;
 
@@ -41,6 +39,7 @@ import org.cleartk.classifier.jar.ClassifierBuilder_ImplBase;
 import org.cleartk.classifier.jar.JarStreams;
 
 import com.google.common.base.Joiner;
+import com.google.common.io.ByteStreams;
 
 /**
  * <br>
@@ -91,8 +90,8 @@ public class TKSVMlightClassifierBuilder extends
         + Joiner.on(" ").join(command));
     Process process = Runtime.getRuntime().exec(command);
     process.getOutputStream().close();
-    output(process.getInputStream(), System.out);
-    output(process.getErrorStream(), System.err);
+    ByteStreams.copy(process.getInputStream(), System.out);
+    ByteStreams.copy(process.getErrorStream(), System.err);
     process.waitFor();
   }
 
@@ -154,22 +153,4 @@ public class TKSVMlightClassifierBuilder extends
   protected TKSVMlightClassifier newClassifier() {
     return new TKSVMlightClassifier(this.featuresEncoder, this.outcomeEncoder, this.modelFile);
   }
-
-  private static String toString(String[] command) {
-    StringBuilder sb = new StringBuilder();
-    for (String cmmnd : command) {
-      sb.append(cmmnd + " ");
-    }
-    return sb.toString();
-  }
-
-  private static void output(InputStream input, PrintStream output) throws IOException {
-    byte[] buffer = new byte[128];
-    int count = input.read(buffer);
-    while (count != -1) {
-      output.write(buffer, 0, count);
-      count = input.read(buffer);
-    }
-  }
-
 }

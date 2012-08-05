@@ -25,8 +25,6 @@ package org.cleartk.classifier.svmlight;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintStream;
 import java.util.jar.JarInputStream;
 import java.util.jar.JarOutputStream;
 
@@ -40,6 +38,7 @@ import org.cleartk.classifier.svmlight.model.SVMlightModel;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
 import com.google.common.base.Joiner;
+import com.google.common.io.ByteStreams;
 
 /**
  * <br>
@@ -84,12 +83,13 @@ public abstract class SVMlightClassifierBuilder_ImplBase<CLASSIFIER_TYPE extends
     command[command.length - 2] = trainingDataFile.getPath();
     command[command.length - 1] = trainingDataFile.getPath() + ".model";
 
-    logger.log(Level.FINE, "training svmlight using the following command: "
-        + Joiner.on(" ").join(command));
+    logger.log(
+        Level.FINE,
+        "training svmlight using the following command: " + Joiner.on(" ").join(command));
     Process process = Runtime.getRuntime().exec(command);
     process.getOutputStream().close();
-    output(process.getInputStream(), System.out);
-    output(process.getErrorStream(), System.err);
+    ByteStreams.copy(process.getInputStream(), System.out);
+    ByteStreams.copy(process.getErrorStream(), System.err);
     process.waitFor();
   }
 
@@ -107,14 +107,4 @@ public abstract class SVMlightClassifierBuilder_ImplBase<CLASSIFIER_TYPE extends
     JarStreams.getNextJarEntry(modelStream, "model.svmlight");
     this.model = SVMlightModel.fromInputStream(modelStream);
   }
-
-  private static void output(InputStream input, PrintStream output) throws IOException {
-    byte[] buffer = new byte[128];
-    int count = input.read(buffer);
-    while (count != -1) {
-      output.write(buffer, 0, count);
-      count = input.read(buffer);
-    }
-  }
-
 }
