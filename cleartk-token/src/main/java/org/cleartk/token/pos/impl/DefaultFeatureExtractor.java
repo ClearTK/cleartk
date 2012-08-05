@@ -37,11 +37,11 @@ import org.cleartk.classifier.feature.extractor.CleartkExtractor.Preceding;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
-import org.cleartk.classifier.feature.proliferate.CapitalTypeProliferator;
-import org.cleartk.classifier.feature.proliferate.CharacterNGramProliferator;
-import org.cleartk.classifier.feature.proliferate.LowerCaseProliferator;
-import org.cleartk.classifier.feature.proliferate.NumericTypeProliferator;
-import org.cleartk.classifier.feature.proliferate.ProliferatingExtractor;
+import org.cleartk.classifier.feature.function.CapitalTypeFeatureFunction;
+import org.cleartk.classifier.feature.function.CharacterNGramFeatureFunction;
+import org.cleartk.classifier.feature.function.FeatureFunctionExtractor;
+import org.cleartk.classifier.feature.function.LowerCaseFeatureFunction;
+import org.cleartk.classifier.feature.function.NumericTypeFeatureFunction;
 import org.cleartk.token.pos.POSFeatureExtractor;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
@@ -69,22 +69,22 @@ public class DefaultFeatureExtractor implements POSFeatureExtractor<Token, Sente
 
     SimpleFeatureExtractor wordExtractor = new CoveredTextExtractor();
 
-    int fromLeft = CharacterNGramProliferator.LEFT_TO_RIGHT;
-    int fromRight = CharacterNGramProliferator.RIGHT_TO_LEFT;
-    simpleExtractors.add(new ProliferatingExtractor(
+    CharacterNGramFeatureFunction.Orientation fromLeft = CharacterNGramFeatureFunction.Orientation.LEFT_TO_RIGHT;
+    CharacterNGramFeatureFunction.Orientation fromRight = CharacterNGramFeatureFunction.Orientation.RIGHT_TO_LEFT;
+    simpleExtractors.add(new FeatureFunctionExtractor(
         wordExtractor,
-        new LowerCaseProliferator(),
-        new CapitalTypeProliferator(),
-        new NumericTypeProliferator(),
-        new CharacterNGramProliferator(fromLeft, 0, 1),
-        new CharacterNGramProliferator(fromLeft, 0, 2),
-        new CharacterNGramProliferator(fromLeft, 0, 3),
-        new CharacterNGramProliferator(fromRight, 0, 1),
-        new CharacterNGramProliferator(fromRight, 0, 2),
-        new CharacterNGramProliferator(fromRight, 0, 3),
-        new CharacterNGramProliferator(fromRight, 0, 4),
-        new CharacterNGramProliferator(fromRight, 0, 5),
-        new CharacterNGramProliferator(fromRight, 0, 6)));
+        new LowerCaseFeatureFunction(),
+        new CapitalTypeFeatureFunction(),
+        new NumericTypeFeatureFunction(),
+        new CharacterNGramFeatureFunction(fromLeft, 0, 1),
+        new CharacterNGramFeatureFunction(fromLeft, 0, 2),
+        new CharacterNGramFeatureFunction(fromLeft, 0, 3),
+        new CharacterNGramFeatureFunction(fromRight, 0, 1),
+        new CharacterNGramFeatureFunction(fromRight, 0, 2),
+        new CharacterNGramFeatureFunction(fromRight, 0, 3),
+        new CharacterNGramFeatureFunction(fromRight, 0, 4),
+        new CharacterNGramFeatureFunction(fromRight, 0, 5),
+        new CharacterNGramFeatureFunction(fromRight, 0, 6)));
 
     windowExtractors = new ArrayList<CleartkExtractor>();
 

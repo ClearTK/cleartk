@@ -39,11 +39,11 @@ import org.cleartk.classifier.feature.extractor.CleartkExtractor.Following;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Preceding;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
-import org.cleartk.classifier.feature.proliferate.CapitalTypeProliferator;
-import org.cleartk.classifier.feature.proliferate.CharacterNGramProliferator;
-import org.cleartk.classifier.feature.proliferate.LowerCaseProliferator;
-import org.cleartk.classifier.feature.proliferate.NumericTypeProliferator;
-import org.cleartk.classifier.feature.proliferate.ProliferatingExtractor;
+import org.cleartk.classifier.feature.function.CapitalTypeFeatureFunction;
+import org.cleartk.classifier.feature.function.CharacterNGramFeatureFunction;
+import org.cleartk.classifier.feature.function.FeatureFunctionExtractor;
+import org.cleartk.classifier.feature.function.LowerCaseFeatureFunction;
+import org.cleartk.classifier.feature.function.NumericTypeFeatureFunction;
 import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.GenericJarClassifierFactory;
@@ -78,18 +78,18 @@ public class ExamplePOSAnnotator extends CleartkSequenceAnnotator<String> {
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
     // alias for NGram feature parameters
-    int fromRight = CharacterNGramProliferator.RIGHT_TO_LEFT;
+    CharacterNGramFeatureFunction.Orientation fromRight = CharacterNGramFeatureFunction.Orientation.RIGHT_TO_LEFT;
 
     // a feature extractor that creates features corresponding to the word, the word lower cased
     // the capitalization of the word, the numeric characterization of the word, and character ngram
     // suffixes of length 2 and 3.
-    this.tokenFeatureExtractor = new ProliferatingExtractor(
+    this.tokenFeatureExtractor = new FeatureFunctionExtractor(
         new CoveredTextExtractor(),
-        new LowerCaseProliferator(),
-        new CapitalTypeProliferator(),
-        new NumericTypeProliferator(),
-        new CharacterNGramProliferator(fromRight, 0, 2),
-        new CharacterNGramProliferator(fromRight, 0, 3));
+        new LowerCaseFeatureFunction(),
+        new CapitalTypeFeatureFunction(),
+        new NumericTypeFeatureFunction(),
+        new CharacterNGramFeatureFunction(fromRight, 0, 2),
+        new CharacterNGramFeatureFunction(fromRight, 0, 3));
 
     // a list of feature extractors that require the token and the sentence
     this.contextFeatureExtractors = new ArrayList<CleartkExtractor>();

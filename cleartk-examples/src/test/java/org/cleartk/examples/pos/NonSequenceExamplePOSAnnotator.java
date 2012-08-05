@@ -38,11 +38,11 @@ import org.cleartk.classifier.feature.extractor.CleartkExtractor.Preceding;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
-import org.cleartk.classifier.feature.proliferate.CapitalTypeProliferator;
-import org.cleartk.classifier.feature.proliferate.CharacterNGramProliferator;
-import org.cleartk.classifier.feature.proliferate.LowerCaseProliferator;
-import org.cleartk.classifier.feature.proliferate.NumericTypeProliferator;
-import org.cleartk.classifier.feature.proliferate.ProliferatingExtractor;
+import org.cleartk.classifier.feature.function.CapitalTypeFeatureFunction;
+import org.cleartk.classifier.feature.function.CharacterNGramFeatureFunction;
+import org.cleartk.classifier.feature.function.FeatureFunctionExtractor;
+import org.cleartk.classifier.feature.function.LowerCaseFeatureFunction;
+import org.cleartk.classifier.feature.function.NumericTypeFeatureFunction;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.uimafit.factory.initializable.Initializable;
@@ -82,17 +82,17 @@ public class NonSequenceExamplePOSAnnotator extends CleartkAnnotator<String> imp
     stemExtractor = new TypePathExtractor(Token.class, "stem");
 
     // aliases for NGram feature parameters
-    int fromRight = CharacterNGramProliferator.RIGHT_TO_LEFT;
+    CharacterNGramFeatureFunction.Orientation fromRight = CharacterNGramFeatureFunction.Orientation.RIGHT_TO_LEFT;
 
     // add the feature extractor for the word itself
     // also add proliferators which create new features from the word text
-    this.tokenFeatureExtractors.add(new ProliferatingExtractor(
+    this.tokenFeatureExtractors.add(new FeatureFunctionExtractor(
         wordExtractor,
-        new LowerCaseProliferator(),
-        new CapitalTypeProliferator(),
-        new NumericTypeProliferator(),
-        new CharacterNGramProliferator(fromRight, 0, 2),
-        new CharacterNGramProliferator(fromRight, 0, 3)));
+        new LowerCaseFeatureFunction(),
+        new CapitalTypeFeatureFunction(),
+        new NumericTypeFeatureFunction(),
+        new CharacterNGramFeatureFunction(fromRight, 0, 2),
+        new CharacterNGramFeatureFunction(fromRight, 0, 3)));
 
     // add the feature extractors for the stem and part of speech
     this.tokenFeatureExtractors.add(stemExtractor);
