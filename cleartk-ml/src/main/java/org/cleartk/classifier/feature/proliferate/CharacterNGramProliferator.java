@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.feature.function.CharacterNGramFeatureFunction;
 
 /**
  * <br>
@@ -35,8 +36,9 @@ import org.cleartk.classifier.Feature;
  * 
  * 
  * @author Philip Ogren
- * 
+ * @deprecated Use {@link CharacterNGramFeatureFunction}
  */
+@Deprecated
 public class CharacterNGramProliferator extends FeatureProliferator {
 
   public static final int RIGHT_TO_LEFT = 0;

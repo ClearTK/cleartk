@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.feature.function.LowerCaseFeatureFunction;
 
 /**
  * <br>
@@ -35,8 +36,9 @@ import org.cleartk.classifier.Feature;
  * 
  * 
  * @author Philip Ogren
- * 
+ * @deprecated Use {@link LowerCaseFeatureFunction}
  */
+@Deprecated
 public class LowerCaseProliferator extends FeatureProliferator {
 
   public LowerCaseProliferator() {
@@ -56,9 +58,9 @@ public class LowerCaseProliferator extends FeatureProliferator {
     String featureName = Feature.createName(this.getFeatureName(), feature.getName());
     Object featureValue = feature.getValue();
     if (featureValue instanceof String) {
-      return Collections.singletonList(new Feature(featureName, featureValue
-          .toString()
-          .toLowerCase()));
+      return Collections.singletonList(new Feature(
+          featureName,
+          featureValue.toString().toLowerCase()));
     } else
       return Collections.emptyList();
   }

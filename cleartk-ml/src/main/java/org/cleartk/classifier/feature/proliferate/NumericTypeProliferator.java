@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.feature.function.NumericTypeFeatureFunction;
 import org.cleartk.classifier.feature.util.NumericTypeUtil;
 
 /**
@@ -37,9 +38,9 @@ import org.cleartk.classifier.feature.util.NumericTypeUtil;
  * 
  * 
  * @author Philip Ogren
- * 
+ * @deprecated Use {@link NumericTypeFeatureFunction}
  */
-
+@Deprecated
 public class NumericTypeProliferator extends FeatureProliferator {
 
   public static final String DEFAULT_NAME = "NumericType";
@@ -76,8 +77,7 @@ public class NumericTypeProliferator extends FeatureProliferator {
 
   static Pattern someLetters = Pattern.compile("[a-zA-Z]");
 
-  static Pattern romanNumeralPattern = Pattern
-      .compile("^M?M?M?(CM|CD|D?C?C?C?)(XC|XL|L?X?X?X?)(IX|IV|V?I?I?I?)$");
+  static Pattern romanNumeralPattern = Pattern.compile("^M?M?M?(CM|CD|D?C?C?C?)(XC|XL|L?X?X?X?)(IX|IV|V?I?I?I?)$");
 
   public NumericTypeProliferator() {
     super(NumericTypeProliferator.DEFAULT_NAME);

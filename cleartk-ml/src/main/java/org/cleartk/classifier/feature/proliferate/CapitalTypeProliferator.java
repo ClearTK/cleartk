@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.feature.function.CapitalTypeFeatureFunction;
 import org.cleartk.classifier.feature.util.CaseUtil;
 
 /**
@@ -36,8 +37,9 @@ import org.cleartk.classifier.feature.util.CaseUtil;
  * 
  * 
  * @author Philip Ogren
- * 
+ * @deprecated Use {@link CapitalTypeFeatureFunction}
  */
+@Deprecated
 public class CapitalTypeProliferator extends FeatureProliferator {
 
   public static final String DEFAULT_NAME = "CapitalType";

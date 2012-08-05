@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.feature.function.ContainsHyphenFeatureFunction;
 import org.cleartk.classifier.feature.util.HyphenUtil;
 
 /**
@@ -36,9 +37,9 @@ import org.cleartk.classifier.feature.util.HyphenUtil;
  * 
  * 
  * @author Philip Ogren
- * 
+ * @deprecated Use {@link ContainsHyphenFeatureFunction}
  */
-
+@Deprecated
 public class ContainsHyphenProliferator extends FeatureProliferator {
 
   public static final String DEFAULT_NAME = "ContainsHyphen";

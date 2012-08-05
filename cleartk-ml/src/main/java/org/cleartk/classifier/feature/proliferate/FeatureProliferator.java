@@ -43,7 +43,9 @@ import org.cleartk.classifier.Feature;
  * 
  * @author Philip Ogren
  * @author Steven Bethard
+ * @deprecated
  */
+@Deprecated
 public abstract class FeatureProliferator {
   /**
    * Creates a FeatureProliferator which will assign the given name to all features it creates.

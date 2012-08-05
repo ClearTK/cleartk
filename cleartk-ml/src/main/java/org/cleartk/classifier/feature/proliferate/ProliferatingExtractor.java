@@ -31,6 +31,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.function.FeatureFunctionExtractor;
 
 /**
  * <br>
@@ -39,7 +40,9 @@ import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
  * 
  * 
  * @author Steven Bethard
+ * @deprecated Use {@link FeatureFunctionExtractor}
  */
+@Deprecated
 public class ProliferatingExtractor implements SimpleFeatureExtractor {
 
   /**
