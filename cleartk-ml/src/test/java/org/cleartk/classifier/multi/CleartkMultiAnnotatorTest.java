@@ -28,18 +28,28 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
+import java.io.IOException;
 import java.util.List;
 
+import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.Classifier;
+import org.cleartk.classifier.ClassifierFactory;
+import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.ScoredOutcome;
-import org.cleartk.classifier.multi.jar.JarMultiClassifierFactory;
+import org.cleartk.classifier.feature.transform.InstanceDataWriter;
+import org.cleartk.classifier.jar.DefaultDataWriterFactory;
+import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
+import org.cleartk.classifier.jar.GenericJarClassifierFactory;
+import org.cleartk.classifier.test.DefaultStringTestDataWriterFactory;
 import org.cleartk.classifier.util.InstanceFactory;
 import org.cleartk.test.DefaultTestBase;
+import org.junit.Assert;
 import org.junit.Test;
+import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.UimaContextFactory;
 
 /**
@@ -63,7 +73,7 @@ public class CleartkMultiAnnotatorTest extends DefaultTestBase {
     try {
       StringTestAnnotator multiClassifierAnnotator = new StringTestAnnotator();
       multiClassifierAnnotator.initialize(UimaContextFactory.createUimaContext(
-          JarMultiClassifierFactory.PARAM_CLASSIFIER_JAR_DIR,
+          GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
           outputDirectoryName));
       multiClassifierAnnotator.getClassifier("asdf").classify(
           InstanceFactory.createInstance("hello", 1, 1).getFeatures());
@@ -76,7 +86,7 @@ public class CleartkMultiAnnotatorTest extends DefaultTestBase {
   public void testStringClassifierStringAnnotator() throws Exception {
     StringTestAnnotator multiClassifierAnnotator = new StringTestAnnotator();
     multiClassifierAnnotator.initialize(UimaContextFactory.createUimaContext(
-        CleartkMultiAnnotator.PARAM_MULTI_CLASSIFIER_FACTORY_CLASS_NAME,
+        CleartkMultiAnnotator.PARAM_CLASSIFIER_FACTORY_CLASS_NAME,
         StringTestClassifierFactory.class.getName()));
     multiClassifierAnnotator.getClassifier("test").classify(
         InstanceFactory.createInstance("hello", 1, 1).getFeatures());
@@ -89,7 +99,7 @@ public class CleartkMultiAnnotatorTest extends DefaultTestBase {
     try {
       StringTestAnnotator stringTestAnnotator = new StringTestAnnotator();
       stringTestAnnotator.initialize(UimaContextFactory.createUimaContext(
-          CleartkMultiAnnotator.PARAM_MULTI_CLASSIFIER_FACTORY_CLASS_NAME,
+          CleartkMultiAnnotator.PARAM_CLASSIFIER_FACTORY_CLASS_NAME,
           IntegerTestClassifierFactory.class.getName()));
       stringTestAnnotator.getClassifier("NameDoesNotMatter");
       fail("expected exception for Integer classifier and String annotator");
@@ -101,7 +111,7 @@ public class CleartkMultiAnnotatorTest extends DefaultTestBase {
   public void testChildClassifierParentAnnotator() throws Exception {
     CleartkMultiAnnotator<Parent> multiClassifierAnnotator = new ParentTestAnnotator();
     multiClassifierAnnotator.initialize(UimaContextFactory.createUimaContext(
-        CleartkMultiAnnotator.PARAM_MULTI_CLASSIFIER_FACTORY_CLASS_NAME,
+        CleartkMultiAnnotator.PARAM_CLASSIFIER_FACTORY_CLASS_NAME,
         ChildClassifierFactory.class.getName()));
   }
 
@@ -110,7 +120,7 @@ public class CleartkMultiAnnotatorTest extends DefaultTestBase {
     try {
       CleartkMultiAnnotator<Child> multiClassifierAnnotator = new ChildTestAnnotator();
       multiClassifierAnnotator.initialize(UimaContextFactory.createUimaContext(
-          CleartkMultiAnnotator.PARAM_MULTI_CLASSIFIER_FACTORY_CLASS_NAME,
+          CleartkMultiAnnotator.PARAM_CLASSIFIER_FACTORY_CLASS_NAME,
           ParentClassifierFactory.class.getName()));
       multiClassifierAnnotator.getClassifier("test");
       fail("expected exception for Parent classifier and Child annotator");
@@ -122,7 +132,7 @@ public class CleartkMultiAnnotatorTest extends DefaultTestBase {
   public void testGenericClassifierGenericAnnotator() throws Exception {
     CleartkMultiAnnotator<Object> classifierAnnotator = new TestMultiAnnotator<Object>();
     classifierAnnotator.initialize(UimaContextFactory.createUimaContext(
-        CleartkMultiAnnotator.PARAM_MULTI_CLASSIFIER_FACTORY_CLASS_NAME,
+        CleartkMultiAnnotator.PARAM_CLASSIFIER_FACTORY_CLASS_NAME,
         TestClassifierFactory.class.getName()));
   }
 
@@ -132,23 +142,59 @@ public class CleartkMultiAnnotatorTest extends DefaultTestBase {
     }
   }
 
-  public static class TestMultiClassifier<T> implements Classifier<T> {
+  @Test
+  public void testDescriptor() throws Exception {
+    try {
+      AnalysisEngineFactory.createPrimitive(
+          StringTestAnnotator.class,
+          CleartkMultiAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+          DefaultStringTestDataWriterFactory.class.getName());
+      Assert.fail("expected exception with missing output directory");
+    } catch (ResourceInitializationException e) {
+    }
+
+    try {
+      AnalysisEngineFactory.createPrimitive(
+          StringTestAnnotator.class,
+          DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+          outputDirectoryName);
+      Assert.fail("expected exception with missing classifier jar");
+    } catch (ResourceInitializationException e) {
+    }
+
+    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+        StringTestAnnotator.class,
+        DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+        InstanceDataWriter.class.getName(),
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        outputDirectoryName);
+
+    Object outputDir = engine.getConfigParameterValue(DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY);
+    Assert.assertEquals(outputDirectoryName, outputDir);
+
+    engine.collectionProcessComplete();
+
+  }
+
+  public static class TestClassifier<T> implements Classifier<T> {
 
     public T classify(List<Feature> features) {
       assertEquals(1, features.size());
       return null;
     }
 
-    public List<ScoredOutcome<T>> score(List<Feature> features, int maxResults) {
+    public List<ScoredOutcome<T>> score(List<Feature> features, int maxResults)
+        throws CleartkProcessingException {
       return null;
     }
   }
 
-  public static class TestClassifierFactory<T> implements MultiClassifierFactory<T> {
+  public static class TestClassifierFactory<T> implements ClassifierFactory<T> {
 
-    @SuppressWarnings( { "unchecked", "rawtypes" })
-    public Classifier<T> createClassifier(String name) {
-      return new TestMultiClassifier();
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Override
+    public Classifier<T> createClassifier() throws IOException {
+      return new TestClassifier();
     }
 
   }
@@ -171,38 +217,38 @@ public class CleartkMultiAnnotatorTest extends DefaultTestBase {
   public static class ChildTestAnnotator extends TestMultiAnnotator<Child> {
   }
 
-  public static class StringTestClassifier extends TestMultiClassifier<String> {
+  public static class StringTestClassifier extends TestClassifier<String> {
   }
 
-  public static class StringTestClassifierFactory implements MultiClassifierFactory<String> {
-    public Classifier<String> createClassifier(String name) {
+  public static class StringTestClassifierFactory implements ClassifierFactory<String> {
+    public Classifier<String> createClassifier() {
       return new StringTestClassifier();
     }
   }
 
-  public static class IntegerTestClassifier extends TestMultiClassifier<Integer> {
+  public static class IntegerTestClassifier extends TestClassifier<Integer> {
   }
 
-  public static class IntegerTestClassifierFactory implements MultiClassifierFactory<Integer> {
-    public Classifier<Integer> createClassifier(String name) {
+  public static class IntegerTestClassifierFactory implements ClassifierFactory<Integer> {
+    public Classifier<Integer> createClassifier() {
       return new IntegerTestClassifier();
     }
   }
 
-  public static class ParentClassifier extends TestMultiClassifier<Parent> {
+  public static class ParentClassifier extends TestClassifier<Parent> {
   }
 
-  public static class ParentClassifierFactory implements MultiClassifierFactory<Parent> {
-    public Classifier<Parent> createClassifier(String name) {
+  public static class ParentClassifierFactory implements ClassifierFactory<Parent> {
+    public Classifier<Parent> createClassifier() {
       return new ParentClassifier();
     }
   }
 
-  public static class ChildClassifier extends TestMultiClassifier<Child> {
+  public static class ChildClassifier extends TestClassifier<Child> {
   }
 
-  public static class ChildClassifierFactory implements MultiClassifierFactory<Child> {
-    public Classifier<Child> createClassifier(String name) {
+  public static class ChildClassifierFactory implements ClassifierFactory<Child> {
+    public Classifier<Child> createClassifier() {
       return new ChildClassifier();
     }
   }

@@ -57,7 +57,7 @@ public abstract class DirectoryDataWriterFactory implements Initializable {
       "outputDirectory");
 
   @ConfigurationParameter(
-      mandatory = false,
+      mandatory = true,
       description = "provides the name of the directory where the "
           + "training data will be written.  if you do not set this "
           + "parameter, then you must call setOutputDirectory directly.")

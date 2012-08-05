@@ -23,17 +23,24 @@
  */
 package org.cleartk.classifier.multi;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.uima.UimaContext;
+import org.apache.uima.UimaContextAdmin;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.resource.ConfigurationManager;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.Classifier;
+import org.cleartk.classifier.ClassifierFactory;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.DataWriter;
+import org.cleartk.classifier.DataWriterFactory;
+import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
+import org.cleartk.classifier.jar.GenericJarClassifierFactory;
 import org.cleartk.util.CleartkInitializationException;
 import org.cleartk.util.ReflectionUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
@@ -65,77 +72,108 @@ import org.uimafit.factory.initializable.InitializableFactory;
 public abstract class CleartkMultiAnnotator<OUTCOME_TYPE> extends JCasAnnotator_ImplBase implements
     Initializable {
 
-  public static final String PARAM_MULTI_CLASSIFIER_FACTORY_CLASS_NAME = ConfigurationParameterFactory
-      .createConfigurationParameterName(
-          CleartkMultiAnnotator.class,
-          "multiClassifierFactoryClassName");
+  public static final String PARAM_CLASSIFIER_FACTORY_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
+      CleartkMultiAnnotator.class,
+      "classifierFactoryClassName");
 
-  @ConfigurationParameter(mandatory = false, description = "provides the full name of the MultiClassifierFactory class to be used.", defaultValue = "org.cleartk.classifier.multi.jar.JarMultiClassifierFactory")
-  protected String multiClassifierFactoryClassName;
+  private static final String DEFAULT_CLASSIFIER_FACTORY_CLASS_NAME = "org.cleartk.classifier.jar.JarClassifierFactory";
 
-  public static final String PARAM_MULTI_DATA_WRITER_FACTORY_CLASS_NAME = ConfigurationParameterFactory
-      .createConfigurationParameterName(
-          CleartkMultiAnnotator.class,
-          "multiDataWriterFactoryClassName");
+  @ConfigurationParameter(
+      mandatory = false,
+      description = "provides the full name of the ClassifierFactory class to be used.",
+      defaultValue = DEFAULT_CLASSIFIER_FACTORY_CLASS_NAME)
+  private String classifierFactoryClassName;
 
-  @ConfigurationParameter(mandatory = false, description = "provides the full name of the MultiDataWriterFactory class to be used.")
-  protected String multiDataWriterFactoryClassName;
+  public static final String PARAM_DATA_WRITER_FACTORY_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
+      CleartkMultiAnnotator.class,
+      "dataWriterFactoryClassName");
 
-  public static final String PARAM_IS_TRAINING = ConfigurationParameterFactory
-      .createConfigurationParameterName(CleartkMultiAnnotator.class, "isTraining");
+  private static final String DEFAULT_DATA_WRITER_FACTORY_CLASS_NAME = "org.cleartk.classifier.jar.DefaultDataWriterFactory";
 
-  @ConfigurationParameter(mandatory = false, description = "determines whether this annotator is writing training data or using a classifier to annotate. Normally inferred automatically based on whether or not a DataWriterFactory class has been set.")
+  @ConfigurationParameter(
+      mandatory = false,
+      description = "provides the full name of the DataWriterFactory class to be used.",
+      defaultValue = DEFAULT_DATA_WRITER_FACTORY_CLASS_NAME)
+  private String dataWriterFactoryClassName;
+
+  public static final String PARAM_IS_TRAINING = ConfigurationParameterFactory.createConfigurationParameterName(
+      CleartkMultiAnnotator.class,
+      "isTraining");
+
+  @ConfigurationParameter(
+      mandatory = false,
+      description = "determines whether this annotator is writing training data or using a classifier to annotate. Normally inferred automatically based on whether or not a DataWriterFactory class has been set.")
   private Boolean isTraining;
 
   private boolean primitiveIsTraining;
 
-  protected MultiDataWriterFactory<?> multiDataWriterFactory;
+  protected ClassifierFactory<?> classifierFactory;
 
-  protected MultiClassifierFactory<?> multiClassifierFactory;
+  protected DataWriterFactory<?> dataWriterFactory;
 
   protected Map<String, Classifier<OUTCOME_TYPE>> classifiers;
 
   protected Map<String, DataWriter<OUTCOME_TYPE>> dataWriters;
 
+  private UimaContext uimaContext;
+
+  protected File outputDirectoryRoot;
+
+  protected File classifierJarPathRoot;
+
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
 
-    if (multiDataWriterFactoryClassName == null && multiClassifierFactoryClassName == null) {
+    if (this.dataWriterFactoryClassName == null && this.classifierFactoryClassName == null) {
       CleartkInitializationException.neitherParameterSet(
-          PARAM_MULTI_DATA_WRITER_FACTORY_CLASS_NAME,
-          multiDataWriterFactoryClassName,
-          PARAM_MULTI_CLASSIFIER_FACTORY_CLASS_NAME,
-          multiClassifierFactoryClassName);
+          PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+          this.dataWriterFactoryClassName,
+          PARAM_CLASSIFIER_FACTORY_CLASS_NAME,
+          this.classifierFactoryClassName);
     }
 
     // determine whether we start out as training or predicting
-    if (this.isTraining == null) {
-      this.primitiveIsTraining = multiDataWriterFactoryClassName != null;
-    } else {
+    if (this.isTraining != null) {
       this.primitiveIsTraining = this.isTraining;
+    } else if (!DEFAULT_DATA_WRITER_FACTORY_CLASS_NAME.equals(this.dataWriterFactoryClassName)) {
+      this.primitiveIsTraining = true;
+    } else if (context.getConfigParameterValue(DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY) != null) {
+      this.primitiveIsTraining = true;
+    } else if (!DEFAULT_CLASSIFIER_FACTORY_CLASS_NAME.equals(this.classifierFactoryClassName)) {
+      this.primitiveIsTraining = false;
+    } else if (context.getConfigParameterValue(GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH) != null) {
+      this.primitiveIsTraining = false;
+    } else {
+      String message = "Please specify PARAM_IS_TRAINING - unable to infer it from context";
+      throw new IllegalArgumentException(message);
     }
+
+    this.uimaContext = context;
+    UimaContextAdmin contextAdmin = (UimaContextAdmin) this.uimaContext;
+    ConfigurationManager manager = contextAdmin.getConfigurationManager();
 
     if (this.isTraining()) {
-      // create the multiDataWriter factory and initialize a Map to hold the data writers
+      // Create the data writer factory and initialize a Map to hold the data writers
+      // Individual data writers will be created dynamically with the getDataWriter method
       this.dataWriters = new HashMap<String, DataWriter<OUTCOME_TYPE>>();
-
-      // create the factory and instantiate the data writer
-      this.multiDataWriterFactory = InitializableFactory.create(
+      this.outputDirectoryRoot = (File) manager.getConfigParameterValue(DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY);
+      this.dataWriterFactory = InitializableFactory.create(
           context,
-          multiDataWriterFactoryClassName,
-          MultiDataWriterFactory.class);
-    }
+          dataWriterFactoryClassName,
+          DataWriterFactory.class);
+    } else {
 
-    // create the multi classifier factory and initialize a map to hold the classifiers
-    // While this may be superfluous in some cases, this is done in all instances because some
-    // MultiAnnotators utilize other classifiers during training
-    this.classifiers = new HashMap<String, Classifier<OUTCOME_TYPE>>();
-    // create the factory and instantiate the classifier
-    multiClassifierFactory = InitializableFactory.create(
-        context,
-        multiClassifierFactoryClassName,
-        MultiClassifierFactory.class);
+      // Create the classifier factory and initialize a map to hold the classifiers
+      // Individual classifiers will be created dynamically with the getClassifier method
+      this.classifiers = new HashMap<String, Classifier<OUTCOME_TYPE>>();
+      this.classifierJarPathRoot = (File) manager.getConfigParameterValue(GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH);
+
+      this.classifierFactory = InitializableFactory.create(
+          context,
+          classifierFactoryClassName,
+          ClassifierFactory.class);
+    }
   }
 
   @Override
@@ -158,7 +196,7 @@ public abstract class CleartkMultiAnnotator<OUTCOME_TYPE> extends JCasAnnotator_
 
   /**
    * Gets the classifier associated with name. If it does not exist, this method will use the
-   * {@link MultiClassifierFactory} specified at initialization to create a new one.
+   * {@link ClassifierFactory} specified at initialization to create a new one.
    * 
    * @param name
    * @return the classifier associated with name
@@ -170,9 +208,20 @@ public abstract class CleartkMultiAnnotator<OUTCOME_TYPE> extends JCasAnnotator_
       return classifiers.get(name);
     }
 
+    File classifierJarPath = new File(this.classifierJarPathRoot, name);
+    UimaContextAdmin contextAdmin = (UimaContextAdmin) this.uimaContext;
+    ConfigurationManager manager = contextAdmin.getConfigurationManager();
+    manager.setConfigParameterValue(contextAdmin.getQualifiedContextName()
+        + GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH, classifierJarPath.getPath());
+
+    // create the factory and instantiate the classifier
+    ClassifierFactory<?> factory = InitializableFactory.create(
+        uimaContext,
+        classifierFactoryClassName,
+        ClassifierFactory.class);
     Classifier<?> untypedClassifier;
     try {
-      untypedClassifier = multiClassifierFactory.createClassifier(name);
+      untypedClassifier = factory.createClassifier();
     } catch (IOException e) {
       throw new ResourceInitializationException(e);
     }
@@ -188,13 +237,12 @@ public abstract class CleartkMultiAnnotator<OUTCOME_TYPE> extends JCasAnnotator_
     InitializableFactory.initialize(untypedClassifier, this.getContext());
     this.classifiers.put(name, classifier);
     return classifier;
-
   }
 
   /**
    * Gets the dataWriter associated with name. If it does not exist, this method will use the
-   * {@link MultiDataWriterFactory} specified during initialization to create a dataWriter
-   * associated with the name parameter.
+   * {@link DataWriterFactory} specified during initialization to create a dataWriter associated
+   * with the name parameter.
    * 
    * @param name
    * @return the data writer associated with name
@@ -207,15 +255,22 @@ public abstract class CleartkMultiAnnotator<OUTCOME_TYPE> extends JCasAnnotator_
     }
 
     DataWriter<?> untypedDataWriter;
-    try {
-      untypedDataWriter = multiDataWriterFactory.createDataWriter(name);
-      DataWriter<OUTCOME_TYPE> dataWriter = ReflectionUtil.uncheckedCast(untypedDataWriter);
-      this.dataWriters.put(name, dataWriter);
-      return dataWriter;
+    File dataWriterPath = new File(this.outputDirectoryRoot, name);
+    UimaContextAdmin contextAdmin = (UimaContextAdmin) this.uimaContext;
+    ConfigurationManager manager = contextAdmin.getConfigurationManager();
+    manager.setConfigParameterValue(contextAdmin.getQualifiedContextName()
+        + DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY, dataWriterPath);
 
+    try {
+      untypedDataWriter = this.dataWriterFactory.createDataWriter();
     } catch (IOException e) {
       throw new ResourceInitializationException(e);
     }
+
+    InitializableFactory.initialize(untypedDataWriter, uimaContext);
+    DataWriter<OUTCOME_TYPE> dataWriter = ReflectionUtil.uncheckedCast(untypedDataWriter);
+    this.dataWriters.put(name, dataWriter);
+    return dataWriter;
   }
 
 }
