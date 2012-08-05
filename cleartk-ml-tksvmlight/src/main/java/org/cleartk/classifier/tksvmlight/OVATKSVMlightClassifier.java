@@ -37,28 +37,35 @@ import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 import org.cleartk.classifier.jar.Classifier_ImplBase;
 
 /**
+ * A One versus All Tree Kernel SVM light classifier implementation. All features named with the
+ * prefix "TK_" treated as Tree Kernels.
+ * 
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
  * @author Daryl Lonnon
  * @version 0.2.1
- * 
- * A One versus All Tree Kernel SVM light classifier implementation. All features named with the prefix "TK_"
- * treated as Tree Kernels.
- * 
  * @uses TreeFeatureVector
  * @see TKSVMlightClassifier
+ * @deprecated Use {@link TKSVMlightStringOutcomeClassifier} instead.
  */
-public class OVATKSVMlightClassifier extends Classifier_ImplBase<TreeFeatureVector, String, Integer> {
+@Deprecated
+public class OVATKSVMlightClassifier extends
+    Classifier_ImplBase<TreeFeatureVector, String, Integer> {
 
   Map<Integer, File> models;
-  
-/**
- * Constructor
- * @param featuresEncoder The features encoder used by this classifier.
- * @param outcomeEncoder The outcome encoder used by this classifier.
- * @param models The files for the models used by this classifier.
- */
+
+  /**
+   * Constructor
+   * 
+   * @param featuresEncoder
+   *          The features encoder used by this classifier.
+   * @param outcomeEncoder
+   *          The outcome encoder used by this classifier.
+   * @param models
+   *          The files for the models used by this classifier.
+   */
   public OVATKSVMlightClassifier(
       FeaturesEncoder<TreeFeatureVector> featuresEncoder,
       OutcomeEncoder<String, Integer> outcomeEncoder,
@@ -67,11 +74,13 @@ public class OVATKSVMlightClassifier extends Classifier_ImplBase<TreeFeatureVect
     this.models = models;
   }
 
-/**
- * Classify a features list.
- * @param features The feature list to classify.
- * @returns A String of the most likely classification.
- */
+  /**
+   * Classify a features list.
+   * 
+   * @param features
+   *          The feature list to classify.
+   * @returns A String of the most likely classification.
+   */
   public String classify(List<Feature> features) throws CleartkProcessingException {
     TreeFeatureVector featureVector = this.featuresEncoder.encodeAll(features);
 
@@ -89,13 +98,16 @@ public class OVATKSVMlightClassifier extends Classifier_ImplBase<TreeFeatureVect
 
     return outcomeEncoder.decode(maxScoredIndex);
   }
-  
-/**
- * Score a list of features against the various models used by the One Verse All SVM classifier.
- * @param features The features to classify
- * @param maxResult The maximum number of results to return in the list.
- * @returns A list of scored outcomes ordered by likelihood.
- */
+
+  /**
+   * Score a list of features against the various models used by the One Verse All SVM classifier.
+   * 
+   * @param features
+   *          The features to classify
+   * @param maxResult
+   *          The maximum number of results to return in the list.
+   * @returns A list of scored outcomes ordered by likelihood.
+   */
   @Override
   public List<ScoredOutcome<String>> score(List<Feature> features, int maxResults)
       throws CleartkProcessingException {
@@ -114,7 +126,8 @@ public class OVATKSVMlightClassifier extends Classifier_ImplBase<TreeFeatureVect
   }
 
   private double score(TreeFeatureVector featureVector, int i) throws CleartkProcessingException {
-    // TD: Use the modelsFile hashmap to get the models, write out the line. Classify the line versus the model
+    // TD: Use the modelsFile hashmap to get the models, write out the line. Classify the line
+    // versus the model
     // and get the prediction.
     File mFile = models.get(i);
     return TKSVMlightClassifier.tkSvmLightPredict(mFile, featureVector);

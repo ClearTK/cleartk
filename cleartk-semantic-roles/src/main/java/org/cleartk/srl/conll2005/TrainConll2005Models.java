@@ -28,8 +28,8 @@ import java.io.File;
 import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
-import org.cleartk.classifier.libsvm.BinaryLIBSVMDataWriter;
-import org.cleartk.classifier.libsvm.MultiClassLIBSVMDataWriter;
+import org.cleartk.classifier.libsvm.LIBSVMBooleanOutcomeDataWriter;
+import org.cleartk.classifier.libsvm.LIBSVMStringOutcomeDataWriter;
 import org.cleartk.srl.ArgumentClassifier;
 import org.cleartk.srl.ArgumentIdentifier;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
@@ -75,13 +75,13 @@ public class TrainConll2005Models {
         AnalysisEngineFactory.createPrimitiveDescription(
             ArgumentIdentifier.class,
             DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
-            BinaryLIBSVMDataWriter.class.getName(),
+            LIBSVMBooleanOutcomeDataWriter.class.getName(),
             DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
             argumentIdentificationOutputDirectory.toString()),
         AnalysisEngineFactory.createPrimitiveDescription(
             ArgumentClassifier.class,
             DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
-            MultiClassLIBSVMDataWriter.class.getName(),
+            LIBSVMStringOutcomeDataWriter.class.getName(),
             DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
             argumentClassificationOutputDirectory.toString()));
 

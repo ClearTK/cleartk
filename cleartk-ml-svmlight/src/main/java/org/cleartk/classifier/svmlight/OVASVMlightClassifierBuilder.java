@@ -46,7 +46,9 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
  * All rights reserved.
  * 
  * @author Steven Bethard
+ * @deprecated Use {@link SVMlightStringOutcomeClassifierBuilder} instead.
  */
+@Deprecated
 public class OVASVMlightClassifierBuilder extends
     ClassifierBuilder_ImplBase<OVASVMlightClassifier, FeatureVector, String, Integer> {
 

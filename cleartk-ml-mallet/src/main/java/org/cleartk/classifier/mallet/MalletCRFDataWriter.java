@@ -50,7 +50,9 @@ import org.cleartk.classifier.jar.SequenceDataWriter_ImplBase;
  * 
  * @author Philip Ogren
  * @author Steven Bethard
+ * @deprecated Use {@link MalletCRFStringOutcomeDataWriter} instead.
  */
+@Deprecated
 public class MalletCRFDataWriter extends
     SequenceDataWriter_ImplBase<MalletCRFClassifierBuilder, List<NameNumber>, String, String> {
 

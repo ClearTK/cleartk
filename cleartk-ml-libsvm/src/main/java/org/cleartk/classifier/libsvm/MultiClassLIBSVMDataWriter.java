@@ -33,8 +33,10 @@ import org.cleartk.classifier.encoder.outcome.StringToIntegerOutcomeEncoder;
  * Copyright (c) 2009, Regents of the University of Colorado <br>
  * All rights reserved.
  * <p>
+ * 
+ * @deprecated Use {@link LIBSVMStringOutcomeDataWriter} instead.
  */
-
+@Deprecated
 public class MultiClassLIBSVMDataWriter extends
     LIBSVMDataWriter<MultiClassLIBSVMClassifierBuilder, String, Integer, libsvm.svm_model> {
 

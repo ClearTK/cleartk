@@ -40,7 +40,9 @@ import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
  * @author Philip Ogren
  * @author Steven Bethard
  * @see RealValueFileEventStream
+ * @deprecated Use {@link MaxentStringOutcomeDataWriter} instead.
  */
+@Deprecated
 public class MaxentDataWriter extends MaxentDataWriter_ImplBase<MaxentClassifierBuilder, String> {
 
   public MaxentDataWriter(File outputDirectory) throws IOException {

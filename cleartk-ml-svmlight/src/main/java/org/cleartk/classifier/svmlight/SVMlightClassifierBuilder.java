@@ -42,7 +42,9 @@ import org.cleartk.classifier.sigmoid.Sigmoid;
  * All rights reserved.
  * 
  * @author Steven Bethard
+ * @deprecated Use {@link SVMlightBooleanOutcomeClassifierBuilder} instead.
  */
+@Deprecated
 public class SVMlightClassifierBuilder extends
     SVMlightClassifierBuilder_ImplBase<SVMlightClassifier, Boolean, Boolean> {
 

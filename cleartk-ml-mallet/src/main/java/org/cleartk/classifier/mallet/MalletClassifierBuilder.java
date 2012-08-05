@@ -31,8 +31,9 @@ package org.cleartk.classifier.mallet;
  * <p>
  * 
  * @author Philip Ogren
+ * @deprecated Use {@link MalletStringOutcomeClassifierBuilder} instead.
  */
-
+@Deprecated
 public class MalletClassifierBuilder extends
     MalletClassifierBuilder_ImplBase<MalletClassifier, String> {
 

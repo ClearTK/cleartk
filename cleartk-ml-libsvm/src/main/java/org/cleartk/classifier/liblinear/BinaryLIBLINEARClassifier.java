@@ -44,9 +44,9 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
  * 
  * @author Philipp Wetzler
  * @author Philip Ogren
- * 
+ * @deprecated Use {@link LIBLINEARBooleanOutcomeClassifier} instead.
  */
-
+@Deprecated
 public class BinaryLIBLINEARClassifier extends Classifier_ImplBase<FeatureVector, Boolean, Boolean> {
 
   protected LIBLINEARModel model;
@@ -75,8 +75,9 @@ public class BinaryLIBLINEARClassifier extends Classifier_ImplBase<FeatureVector
     List<ScoredPrediction> encodedPredictions = model.score(featureVector);
     for (ScoredPrediction prediction : encodedPredictions) {
       boolean encodedOutcome = prediction.getPrediction() > 0;
-      returnValues.add(new ScoredOutcome<Boolean>(outcomeEncoder.decode(encodedOutcome), prediction
-          .getScore()));
+      returnValues.add(new ScoredOutcome<Boolean>(
+          outcomeEncoder.decode(encodedOutcome),
+          prediction.getScore()));
       if (maxResults == 1)
         return returnValues;
     }

@@ -41,7 +41,9 @@ import org.cleartk.classifier.encoder.outcome.BooleanToStringOutcomeEncoder;
  * @author Steven Bethard
  * @author Steven Bethard
  * @see RealValueFileEventStream
+ * @deprecated Use {@link MaxentBooleanOutcomeDataWriter} instead.
  */
+@Deprecated
 public class BinaryMaxentDataWriter extends
     MaxentDataWriter_ImplBase<BinaryMaxentClassifierBuilder, Boolean> {
 

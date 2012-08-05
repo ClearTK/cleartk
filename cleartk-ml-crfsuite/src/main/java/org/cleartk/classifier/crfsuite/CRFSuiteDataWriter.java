@@ -46,8 +46,9 @@ import org.cleartk.classifier.jar.SequenceDataWriter_ImplBase;
  * 
  * 
  * @author Martin Riedl
+ * @deprecated Use {@link CRFSuiteStringOutcomeDataWriter} instead.
  */
-
+@Deprecated
 public class CRFSuiteDataWriter extends
     SequenceDataWriter_ImplBase<CRFSuiteClassifierBuilder, List<NameNumber>, String, String> {
 

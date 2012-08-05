@@ -33,8 +33,10 @@ import org.cleartk.classifier.encoder.outcome.BooleanToBooleanOutcomeEncoder;
  * Copyright (c) 2009, Regents of the University of Colorado <br>
  * All rights reserved.
  * <p>
+ * 
+ * @deprecated Use {@link SVMlightBooleanOutcomeDataWriter} instead.
  */
-
+@Deprecated
 public class SVMlightDataWriter extends
     SVMlightDataWriter_ImplBase<SVMlightClassifierBuilder, Boolean, Boolean> {
 

@@ -42,7 +42,9 @@ import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
  * label/result for that instance.
  * 
  * @author Philip Ogren
+ * @deprecated Use {@link MalletStringOutcomeDataWriter} instead.
  */
+@Deprecated
 public class MalletDataWriter extends MalletDataWriter_ImplBase<MalletClassifierBuilder, String> {
 
   public MalletDataWriter(File outputDirectory) throws IOException {

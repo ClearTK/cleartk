@@ -41,18 +41,19 @@ import cc.mallet.types.Instance;
 import cc.mallet.types.Sequence;
 
 /**
+ * This classifier provides an interface to the <a
+ * href="http://mallet.cs.umass.edu/index.php/SimpleTagger_example"> Mallet Conditional Random Field
+ * (CRF) tagger</a>. Annotators that use a sequence learner such as this one will need to support
+ * classification of a sequence of instances.
+ * 
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
- * 
  * @author Philip Ogren
- * 
- *         This classifier provides an interface to the <a
- *         href="http://mallet.cs.umass.edu/index.php/SimpleTagger_example"> Mallet Conditional
- *         Random Field (CRF) tagger</a>. Annotators that use a sequence learner such as this one
- *         will need to support classification of a sequence of instances.
+ * @deprecated Use {@link MalletCRFStringOutcomeClassifier} instead
  */
+@Deprecated
 public class MalletCRFClassifier extends
     SequenceClassifier_ImplBase<List<NameNumber>, String, String> {
 

@@ -33,7 +33,10 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
+ * @deprecated Use {@link LIBSVMStringOutcomeClassifier} instead.
  */
+@Deprecated
 public class MultiClassLIBSVMClassifier extends LIBSVMClassifier<String, Integer> {
 
   public MultiClassLIBSVMClassifier(

@@ -42,17 +42,19 @@ import com.google.common.base.Joiner;
 import com.google.common.io.ByteStreams;
 
 /**
+ * 
+ * A class that provided interfaces to train, package and unpackage a SVMTKClassifier into a jar
+ * file.
+ * 
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
  * @author Daryl Lonnon
  * @version 0.2.1
- * 
- *          A class that provided interfaces to train, package and unpackage a SVMTKClassifier into
- *          a jar file.
+ * @deprecated Use {@link TKSVMlightBooleanOutcomeClassifierBuilder} instead.
  */
-
+@Deprecated
 public class TKSVMlightClassifierBuilder extends
     ClassifierBuilder_ImplBase<TKSVMlightClassifier, TreeFeatureVector, Boolean, Boolean> {
 

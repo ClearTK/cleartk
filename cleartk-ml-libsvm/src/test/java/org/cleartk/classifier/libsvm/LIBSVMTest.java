@@ -59,7 +59,7 @@ public class LIBSVMTest extends DefaultTestBase {
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         this.outputDirectoryName,
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
-        BinaryLIBSVMDataWriter.class.getName()));
+        LIBSVMBooleanOutcomeDataWriter.class.getName()));
 
     // run process to produce a bunch of instances
     annotator.process(null);
@@ -79,8 +79,8 @@ public class LIBSVMTest extends DefaultTestBase {
     hider.restoreOutput();
 
     // read in the classifier and test it on new instances
-    BinaryLIBSVMClassifierBuilder builder = new BinaryLIBSVMClassifierBuilder();
-    BinaryLIBSVMClassifier classifier;
+    LIBSVMBooleanOutcomeClassifierBuilder builder = new LIBSVMBooleanOutcomeClassifierBuilder();
+    LIBSVMBooleanOutcomeClassifier classifier;
     classifier = builder.loadClassifierFromTrainingDirectory(this.outputDirectory);
     for (Instance<Boolean> instance : ExampleInstanceFactory.generateBooleanInstances(1000)) {
       List<Feature> features = instance.getFeatures();
@@ -97,7 +97,7 @@ public class LIBSVMTest extends DefaultTestBase {
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         this.outputDirectoryName,
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
-        MultiClassLIBSVMDataWriter.class.getName()));
+        LIBSVMStringOutcomeDataWriter.class.getName()));
 
     // run process to produce a bunch of instances
     annotator.process(null);
@@ -117,8 +117,8 @@ public class LIBSVMTest extends DefaultTestBase {
     hider.restoreOutput();
 
     // read in the classifier and test it on new instances
-    MultiClassLIBSVMClassifierBuilder builder = new MultiClassLIBSVMClassifierBuilder();
-    MultiClassLIBSVMClassifier classifier;
+    LIBSVMStringOutcomeClassifierBuilder builder = new LIBSVMStringOutcomeClassifierBuilder();
+    LIBSVMStringOutcomeClassifier classifier;
     classifier = builder.loadClassifierFromTrainingDirectory(this.outputDirectory);
     for (Instance<String> instance : ExampleInstanceFactory.generateStringInstances(1000)) {
       List<Feature> features = instance.getFeatures();

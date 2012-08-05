@@ -49,8 +49,9 @@ import org.cleartk.classifier.jar.DataWriter_ImplBase;
  * 
  * @author Daryl Lonnon
  * @version 0.2.1
+ * @deprecated Use {@link TKSVMlightStringOutcomeDataWriter} instead.
  */
-
+@Deprecated
 public class OVATKSVMlightDataWriter extends
     DataWriter_ImplBase<OVATKSVMlightClassifierBuilder, TreeFeatureVector, String, Integer> {
 

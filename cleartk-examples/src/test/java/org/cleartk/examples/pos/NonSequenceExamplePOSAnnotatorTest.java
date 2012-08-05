@@ -37,9 +37,9 @@ import org.apache.uima.pear.util.FileUtil;
 import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.GenericJarClassifierFactory;
-import org.cleartk.classifier.libsvm.MultiClassLIBSVMDataWriter;
-import org.cleartk.classifier.opennlp.MaxentDataWriter;
-import org.cleartk.classifier.svmlight.OVASVMlightDataWriter;
+import org.cleartk.classifier.libsvm.LIBSVMStringOutcomeDataWriter;
+import org.cleartk.classifier.opennlp.MaxentStringOutcomeDataWriter;
+import org.cleartk.classifier.svmlight.SVMlightStringOutcomeDataWriter;
 import org.cleartk.examples.ExamplesTestBase;
 import org.cleartk.syntax.constituent.TreebankConstants;
 import org.cleartk.syntax.constituent.TreebankGoldAnnotator;
@@ -93,7 +93,7 @@ public class NonSequenceExamplePOSAnnotatorTest extends ExamplesTestBase {
     AnalysisEngineDescription dataWriter = AnalysisEngineFactory.createPrimitiveDescription(
         NonSequenceExamplePOSAnnotator.class,
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
-        MultiClassLIBSVMDataWriter.class.getName(),
+        LIBSVMStringOutcomeDataWriter.class.getName(),
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         libsvmDirectoryName);
     testClassifier(dataWriter, libsvmDirectoryName, "-t", "0", "-c", "0.1");
@@ -109,7 +109,7 @@ public class NonSequenceExamplePOSAnnotatorTest extends ExamplesTestBase {
     AnalysisEngineDescription dataWriter = AnalysisEngineFactory.createPrimitiveDescription(
         NonSequenceExamplePOSAnnotator.class,
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
-        MaxentDataWriter.class.getName(),
+        MaxentStringOutcomeDataWriter.class.getName(),
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         maxentDirectoryName);
     testClassifier(dataWriter, maxentDirectoryName);
@@ -129,7 +129,7 @@ public class NonSequenceExamplePOSAnnotatorTest extends ExamplesTestBase {
     AnalysisEngineDescription dataWriter = AnalysisEngineFactory.createPrimitiveDescription(
         NonSequenceExamplePOSAnnotator.class,
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
-        OVASVMlightDataWriter.class.getName(),
+        SVMlightStringOutcomeDataWriter.class.getName(),
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         svmlightDirectoryName);
     testClassifier(dataWriter, svmlightDirectoryName, "-c", "0.1");

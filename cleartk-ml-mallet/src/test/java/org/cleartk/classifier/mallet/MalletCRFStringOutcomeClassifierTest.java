@@ -63,7 +63,7 @@ import org.uimafit.testing.util.HideOutput;
  * @author Philip Ogren
  */
 
-public class MalletCRFClassifierTest extends DefaultTestBase {
+public class MalletCRFStringOutcomeClassifierTest extends DefaultTestBase {
 
   public static class TestAnnotator extends CleartkSequenceAnnotator<String> {
 
@@ -98,12 +98,12 @@ public class MalletCRFClassifierTest extends DefaultTestBase {
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         DefaultSequenceDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
-        MalletCRFDataWriter.class.getName());
+        MalletCRFStringOutcomeDataWriter.class.getName());
 
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
 
-    File trainFile = new MalletCRFClassifierBuilder().getTrainingDataFile(this.outputDirectory);
+    File trainFile = new MalletCRFStringOutcomeClassifierBuilder().getTrainingDataFile(this.outputDirectory);
     BufferedReader reader = new BufferedReader(new FileReader(trainFile));
     reader.readLine();
     reader.close();
@@ -111,8 +111,8 @@ public class MalletCRFClassifierTest extends DefaultTestBase {
     Train.main(outputDirectoryName);
     hider.restoreOutput();
 
-    MalletCRFClassifierBuilder builder = new MalletCRFClassifierBuilder();
-    MalletCRFClassifier classifier;
+    MalletCRFStringOutcomeClassifierBuilder builder = new MalletCRFStringOutcomeClassifierBuilder();
+    MalletCRFStringOutcomeClassifier classifier;
     classifier = builder.loadClassifierFromTrainingDirectory(this.outputDirectory);
 
     List<List<Feature>> sequenceFeatures = new ArrayList<List<Feature>>();

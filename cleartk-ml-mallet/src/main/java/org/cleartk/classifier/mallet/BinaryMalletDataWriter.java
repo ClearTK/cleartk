@@ -42,7 +42,9 @@ import org.cleartk.classifier.encoder.outcome.BooleanToStringOutcomeEncoder;
  * label/result for that instance.
  * 
  * @author Philip Ogren
+ * @deprecated Use {@link MalletBooleanOutcomeDataWriter} instead.
  */
+@Deprecated
 public class BinaryMalletDataWriter extends
     MalletDataWriter_ImplBase<BinaryMalletClassifierBuilder, Boolean> {
 

@@ -37,8 +37,10 @@ import de.bwaldvogel.liblinear.Train;
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
+ * @deprecated Use {@link LIBLINEARBooleanOutcomeClassifierBuilder} instead.
  */
-
+@Deprecated
 public class BinaryLIBLINEARClassifierBuilder extends
     GenericLIBSVMClassifierBuilder<BinaryLIBLINEARClassifier, Boolean, Boolean, LIBLINEARModel> {
 

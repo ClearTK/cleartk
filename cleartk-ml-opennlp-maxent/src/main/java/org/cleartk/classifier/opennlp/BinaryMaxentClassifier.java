@@ -39,7 +39,9 @@ import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
  * 
  * @author Philip Ogren
  * @author Steven Bethard
+ * @deprecated Use {@link MaxentBooleanOutcomeClassifier} instead.
  */
+@Deprecated
 public class BinaryMaxentClassifier extends MaxentClassifier_ImplBase<Boolean> {
   public BinaryMaxentClassifier(
       FeaturesEncoder<List<NameNumber>> featuresEncoder,

@@ -42,7 +42,10 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
+ * @deprecated Use {@link SVMlightStringOutcomeClassifier} instead.
  */
+@Deprecated
 public class OVASVMlightClassifier extends Classifier_ImplBase<FeatureVector, String, Integer> {
 
   Map<Integer, SVMlightModel> models;

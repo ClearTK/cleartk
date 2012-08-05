@@ -168,7 +168,7 @@ public class RunTKSVMlightTest extends DefaultTestBase {
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         this.outputDirectoryName,
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
-        TKSVMlightDataWriter.class.getName()));
+        TKSVMlightBooleanOutcomeDataWriter.class.getName()));
 
     // add a bunch of instances
     for (Instance<Boolean> instance : generateBooleanInstances(20)) {
@@ -189,8 +189,8 @@ public class RunTKSVMlightTest extends DefaultTestBase {
     hider.restoreOutput();
 
     // read in the classifier and test it on new instances
-    TKSVMlightClassifierBuilder builder = new TKSVMlightClassifierBuilder();
-    TKSVMlightClassifier classifier;
+    TKSVMlightBooleanOutcomeClassifierBuilder builder = new TKSVMlightBooleanOutcomeClassifierBuilder();
+    TKSVMlightBooleanOutcomeClassifier classifier;
     classifier = builder.loadClassifierFromTrainingDirectory(this.outputDirectory);
     for (Instance<Boolean> instance : generateBooleanInstances(20)) {
       List<Feature> features = instance.getFeatures();
@@ -212,7 +212,7 @@ public class RunTKSVMlightTest extends DefaultTestBase {
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         this.outputDirectoryName,
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
-        OVATKSVMlightDataWriter.class.getName()));
+        TKSVMlightStringOutcomeDataWriter.class.getName()));
 
     // add a bunch of instances
     for (Instance<String> instance : generateStringInstances(20)) {
@@ -238,8 +238,8 @@ public class RunTKSVMlightTest extends DefaultTestBase {
     hider.restoreOutput();
 
     // read in the classifier and test it on new instances
-    OVATKSVMlightClassifierBuilder builder = new OVATKSVMlightClassifierBuilder();
-    OVATKSVMlightClassifier classifier;
+    TKSVMlightStringOutcomeClassifierBuilder builder = new TKSVMlightStringOutcomeClassifierBuilder();
+    TKSVMlightStringOutcomeClassifier classifier;
     classifier = builder.loadClassifierFromTrainingDirectory(this.outputDirectory);
     for (Instance<String> instance : generateStringInstances(20)) {
       List<Feature> features = instance.getFeatures();

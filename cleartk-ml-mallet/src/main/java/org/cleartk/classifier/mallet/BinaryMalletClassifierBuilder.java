@@ -31,8 +31,9 @@ package org.cleartk.classifier.mallet;
  * <p>
  * 
  * @author Philip Ogren
+ * @deprecated Use {@link MalletBooleanOutcomeClassifierBuilder} instead.
  */
-
+@Deprecated
 public class BinaryMalletClassifierBuilder extends
     MalletClassifierBuilder_ImplBase<BinaryMalletClassifier, Boolean> {
 

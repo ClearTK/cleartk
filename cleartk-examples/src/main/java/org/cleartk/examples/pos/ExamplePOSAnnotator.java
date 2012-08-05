@@ -47,7 +47,7 @@ import org.cleartk.classifier.feature.function.NumericTypeFeatureFunction;
 import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.GenericJarClassifierFactory;
-import org.cleartk.classifier.opennlp.MaxentDataWriter;
+import org.cleartk.classifier.opennlp.MaxentStringOutcomeDataWriter;
 import org.cleartk.classifier.viterbi.DefaultOutcomeFeatureExtractor;
 import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
 import org.cleartk.token.type.Sentence;
@@ -162,7 +162,7 @@ public class ExamplePOSAnnotator extends CleartkSequenceAnnotator<String> {
         ViterbiDataWriterFactory.PARAM_DELEGATED_DATA_WRITER_FACTORY_CLASS,
         DefaultDataWriterFactory.class.getName(),
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
-        MaxentDataWriter.class.getName(),
+        MaxentStringOutcomeDataWriter.class.getName(),
         ViterbiDataWriterFactory.PARAM_OUTCOME_FEATURE_EXTRACTOR_NAMES,
         new String[] { DefaultOutcomeFeatureExtractor.class.getName() });
   }

@@ -63,7 +63,7 @@ import org.uimafit.testing.util.HideOutput;
  * 
  */
 
-public class BinaryMalletDataWriterTest extends DefaultTestBase {
+public class MalletBooleanOutcomeDataWriterTest extends DefaultTestBase {
 
   public static class Test1Annotator extends CleartkAnnotator<Boolean> {
 
@@ -96,12 +96,12 @@ public class BinaryMalletDataWriterTest extends DefaultTestBase {
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
-        BinaryMalletDataWriter.class.getName());
+        MalletBooleanOutcomeDataWriter.class.getName());
 
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
 
-    File trainFile = new BinaryMalletClassifierBuilder().getTrainingDataFile(this.outputDirectory);
+    File trainFile = new MalletBooleanOutcomeClassifierBuilder().getTrainingDataFile(this.outputDirectory);
     String[] lines = FileUtil.loadListOfStrings(trainFile);
 
     assertEquals("pos_NN:1.0 distance:3.0 precision:1.234 true", lines[0]);
@@ -138,7 +138,7 @@ public class BinaryMalletDataWriterTest extends DefaultTestBase {
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
 
-    File trainFile = new BinaryMalletClassifierBuilder().getTrainingDataFile(this.outputDirectory);
+    File trainFile = new MalletBooleanOutcomeClassifierBuilder().getTrainingDataFile(this.outputDirectory);
     String[] lines = FileUtil.loadListOfStrings(trainFile);
 
     assertEquals("0:1.0 1:3.0 2:1.234 true", lines[0]);
@@ -193,7 +193,7 @@ public class BinaryMalletDataWriterTest extends DefaultTestBase {
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
 
-    File trainFile = new BinaryMalletClassifierBuilder().getTrainingDataFile(this.outputDirectory);
+    File trainFile = new MalletBooleanOutcomeClassifierBuilder().getTrainingDataFile(this.outputDirectory);
     String[] lines = FileUtil.loadListOfStrings(trainFile);
 
     assertEquals("0:1.0 1:3.0 2:1.234 true", lines[0]);
@@ -246,7 +246,7 @@ public class BinaryMalletDataWriterTest extends DefaultTestBase {
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
-        BinaryMalletDataWriter.class.getName());
+        MalletBooleanOutcomeDataWriter.class.getName());
 
     AnalysisEngineProcessException aepe = null;
     try {
@@ -291,7 +291,7 @@ public class BinaryMalletDataWriterTest extends DefaultTestBase {
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
 
-    File trainFile = new BinaryMalletClassifierBuilder().getTrainingDataFile(this.outputDirectory);
+    File trainFile = new MalletBooleanOutcomeClassifierBuilder().getTrainingDataFile(this.outputDirectory);
     String[] lines = FileUtil.loadListOfStrings(trainFile);
     assertEquals("0:1.0 1:1.0 2:1.0 true", lines[0]);
   }

@@ -32,27 +32,29 @@ import weka.core.Instance;
 /**
  * Copyright (c) 2012, Regents of the University of Colorado <br>
  * All rights reserved.
- * @author Philip Ogren
  * 
+ * @author Philip Ogren
+ * @deprecated Use {@link WekaStringOutcomeClassifier} instead.
  */
+@Deprecated
 public abstract class WekaClassifier extends Classifier_ImplBase<Instance, String, String> {
 
-	//TODO need to add the Weka model as a parameter
-	public WekaClassifier(       FeaturesEncoder<Instance> featuresEncoder,
-		      OutcomeEncoder<String, String> outcomeEncoder) throws Exception {
-		   		super(featuresEncoder, outcomeEncoder);
-     }
-	
-	//TODO no implementation of classify method
-	public String classify(List<Feature> features) throws UnsupportedOperationException {
-		throw new NotImplementedException();
-	}
-	
-	//TODO no implementation of the score method
-	@Override
-	public List<ScoredOutcome<String>> score(List<Feature> features, int maxResults) {
-		throw new NotImplementedException();
-	}
+  // TODO need to add the Weka model as a parameter
+  public WekaClassifier(
+      FeaturesEncoder<Instance> featuresEncoder,
+      OutcomeEncoder<String, String> outcomeEncoder) throws Exception {
+    super(featuresEncoder, outcomeEncoder);
+  }
 
+  // TODO no implementation of classify method
+  public String classify(List<Feature> features) throws UnsupportedOperationException {
+    throw new NotImplementedException();
+  }
+
+  // TODO no implementation of the score method
+  @Override
+  public List<ScoredOutcome<String>> score(List<Feature> features, int maxResults) {
+    throw new NotImplementedException();
+  }
 
 }

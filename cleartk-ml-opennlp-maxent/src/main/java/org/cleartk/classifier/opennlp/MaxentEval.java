@@ -26,10 +26,10 @@ package org.cleartk.classifier.opennlp;
 import java.io.File;
 import java.io.IOException;
 
+import opennlp.maxent.io.SuffixSensitiveGISModelReader;
 import opennlp.model.Event;
 import opennlp.model.MaxentModel;
 import opennlp.model.RealValueFileEventStream;
-import opennlp.maxent.io.SuffixSensitiveGISModelReader;
 
 /**
  * <br>
@@ -38,8 +38,9 @@ import opennlp.maxent.io.SuffixSensitiveGISModelReader;
  * 
  * 
  * @author Philipp Wetzler
- * 
+ * @deprecated Use the cleartk-eval module instead.
  */
+@Deprecated
 public class MaxentEval {
 
   /**
@@ -152,8 +153,7 @@ public class MaxentEval {
 
   private static void usage() {
     System.err.println("Usage:");
-    System.err
-        .println("java [...] org.cleartk.classifier.OpenNLPMaxentEval <model file> <data file>");
+    System.err.println("java [...] org.cleartk.classifier.OpenNLPMaxentEval <model file> <data file>");
     System.err.println();
   }
 

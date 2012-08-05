@@ -48,9 +48,10 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
  * <br>
  * Copyright (c) 2009, Regents of the University of Colorado <br>
  * All rights reserved.
- * <p>
+ * 
+ * @deprecated Use {@link SVMlightStringOutcomeDataWriter} instead.
  */
-
+@Deprecated
 public class OVASVMlightDataWriter extends
     DataWriter_ImplBase<OVASVMlightClassifierBuilder, FeatureVector, String, Integer> {
 

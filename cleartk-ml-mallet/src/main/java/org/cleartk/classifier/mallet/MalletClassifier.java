@@ -38,9 +38,9 @@ import cc.mallet.classify.Classifier;
  * 
  * 
  * @author Philip Ogren
- * 
- * 
+ * @deprecated Use {@link MalletStringOutcomeClassifier} instead.
  */
+@Deprecated
 public class MalletClassifier extends MalletClassifier_ImplBase<String> {
   public MalletClassifier(
       FeaturesEncoder<List<NameNumber>> featuresEncoder,

@@ -60,9 +60,9 @@ import org.uimafit.testing.util.HideOutput;
  * 
  */
 
-public class BinaryMaxentDataWriterTest extends DefaultTestBase {
+public class MaxentStringOutcomeDataWriterTest extends DefaultTestBase {
 
-  public static class Test1Annotator extends CleartkAnnotator<Boolean> {
+  public static class Test1Annotator extends CleartkAnnotator<String> {
 
     @Override
     public void process(JCas cas) throws AnalysisEngineProcessException {
@@ -70,18 +70,18 @@ public class BinaryMaxentDataWriterTest extends DefaultTestBase {
           new Feature("pos", "NN"),
           new Feature("distance", 3.0),
           new Feature("precision", 1.234));
-      Instance<Boolean> instance = new Instance<Boolean>(Boolean.TRUE, features);
+      Instance<String> instance = new Instance<String>("A", features);
       this.dataWriter.write(instance);
 
       features = Arrays.asList(new Feature("name", "2PO"), new Feature("p's", 2));
-      instance = new Instance<Boolean>(Boolean.FALSE, features);
+      instance = new Instance<String>("B", features);
       this.dataWriter.write(instance);
 
-      instance = new Instance<Boolean>(Boolean.TRUE);
+      instance = new Instance<String>("Z");
       this.dataWriter.write(instance);
 
       features = Arrays.asList(new Feature("A_B", "AB"));
-      instance = new Instance<Boolean>(Boolean.FALSE, features);
+      instance = new Instance<String>("A", features);
       this.dataWriter.write(instance);
     }
   }
@@ -93,17 +93,17 @@ public class BinaryMaxentDataWriterTest extends DefaultTestBase {
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
-        BinaryMaxentDataWriter.class.getName());
+        MaxentStringOutcomeDataWriter.class.getName());
 
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
 
-    File trainFile = new BinaryMaxentClassifierBuilder().getTrainingDataFile(this.outputDirectory);
+    File trainFile = new MaxentStringOutcomeClassifierBuilder().getTrainingDataFile(this.outputDirectory);
     String[] lines = FileUtil.loadListOfStrings(trainFile);
-    assertEquals("true pos_NN distance=3.0 precision=1.234", lines[0]);
-    assertEquals("false name_2PO p's=2", lines[1]);
-    assertEquals("true null=0", lines[2]);
-    assertEquals("false A_B_AB", lines[3]);
+    assertEquals("A pos_NN distance=3.0 precision=1.234", lines[0]);
+    assertEquals("B name_2PO p's=2", lines[1]);
+    assertEquals("Z null=0", lines[2]);
+    assertEquals("A A_B_AB", lines[3]);
 
     // simply train four different models where each one writes over the previous
     HideOutput hider = new HideOutput();
@@ -123,23 +123,22 @@ public class BinaryMaxentDataWriterTest extends DefaultTestBase {
   public void test2() throws Exception {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         Test1Annotator.class,
-        typeSystemDescription,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-        DefaultBinaryMaxentDataWriterFactory.class.getName(),
+        DefaultMaxentDataWriterFactory.class.getName(),
         MaxentDataWriterFactory_ImplBase.PARAM_COMPRESS,
         true);
 
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
 
-    File trainFile = new BinaryMaxentClassifierBuilder().getTrainingDataFile(this.outputDirectory);
+    File trainFile = new MaxentStringOutcomeClassifierBuilder().getTrainingDataFile(this.outputDirectory);
     String[] lines = FileUtil.loadListOfStrings(trainFile);
-    assertEquals("true 0 1=3.0 2=1.234", lines[0]);
-    assertEquals("false 3 4=2", lines[1]);
-    assertEquals("true null=0", lines[2]);
-    assertEquals("false 5", lines[3]);
+    assertEquals("A 0 1=3.0 2=1.234", lines[0]);
+    assertEquals("B 3 4=2", lines[1]);
+    assertEquals("Z null=0", lines[2]);
+    assertEquals("A 5", lines[3]);
 
     lines = FileUtil.loadListOfStrings(new File(
         outputDirectoryName,
@@ -174,11 +173,10 @@ public class BinaryMaxentDataWriterTest extends DefaultTestBase {
   public void test3() throws Exception {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         Test1Annotator.class,
-        typeSystemDescription,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-        DefaultBinaryMaxentDataWriterFactory.class.getName(),
+        DefaultMaxentDataWriterFactory.class.getName(),
         MaxentDataWriterFactory_ImplBase.PARAM_COMPRESS,
         true,
         MaxentDataWriterFactory_ImplBase.PARAM_SORT,
@@ -187,12 +185,12 @@ public class BinaryMaxentDataWriterTest extends DefaultTestBase {
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
 
-    File trainFile = new BinaryMaxentClassifierBuilder().getTrainingDataFile(this.outputDirectory);
+    File trainFile = new MaxentStringOutcomeClassifierBuilder().getTrainingDataFile(this.outputDirectory);
     String[] lines = FileUtil.loadListOfStrings(trainFile);
-    assertEquals("true 0 1=3.0 2=1.234", lines[0]);
-    assertEquals("false 3 4=2", lines[1]);
-    assertEquals("true null=0", lines[2]);
-    assertEquals("false 5", lines[3]);
+    assertEquals("A 0 1=3.0 2=1.234", lines[0]);
+    assertEquals("B 3 4=2", lines[1]);
+    assertEquals("Z null=0", lines[2]);
+    assertEquals("A 5", lines[3]);
 
     lines = FileUtil.loadListOfStrings(new File(
         outputDirectoryName,
@@ -211,7 +209,7 @@ public class BinaryMaxentDataWriterTest extends DefaultTestBase {
     hider.restoreOutput();
   }
 
-  public static class Test4Annotator extends CleartkAnnotator<Boolean> {
+  public static class Test4Annotator extends CleartkAnnotator<String> {
 
     @Override
     public void process(JCas cas) throws AnalysisEngineProcessException {
@@ -219,7 +217,7 @@ public class BinaryMaxentDataWriterTest extends DefaultTestBase {
           new Feature("pos", "NN"),
           new Feature("distance", 3.0),
           new Feature("precision", 1.234));
-      Instance<Boolean> instance = new Instance<Boolean>(features);
+      Instance<String> instance = new Instance<String>(features);
       this.dataWriter.write(instance);
     }
 
@@ -240,7 +238,7 @@ public class BinaryMaxentDataWriterTest extends DefaultTestBase {
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
-        BinaryMaxentDataWriter.class.getName());
+        MaxentStringOutcomeDataWriter.class.getName());
 
     AnalysisEngineProcessException aepe = null;
     try {
@@ -254,11 +252,11 @@ public class BinaryMaxentDataWriterTest extends DefaultTestBase {
 
   }
 
-  public static class Test5Annotator extends CleartkAnnotator<Boolean> {
+  public static class Test5Annotator extends CleartkAnnotator<String> {
 
     @Override
     public void process(JCas cas) throws AnalysisEngineProcessException {
-      Instance<Boolean> instance = InstanceFactory.createInstance(Boolean.TRUE, "b c d");
+      Instance<String> instance = InstanceFactory.createInstance("a", "b c d");
       this.dataWriter.write(instance);
     }
   }
@@ -274,20 +272,19 @@ public class BinaryMaxentDataWriterTest extends DefaultTestBase {
   public void test5() throws Exception {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         Test5Annotator.class,
-        typeSystemDescription,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-        DefaultBinaryMaxentDataWriterFactory.class.getName(),
+        DefaultMaxentDataWriterFactory.class.getName(),
         MaxentDataWriterFactory_ImplBase.PARAM_COMPRESS,
         true);
 
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
 
-    File trainFile = new BinaryMaxentClassifierBuilder().getTrainingDataFile(this.outputDirectory);
+    File trainFile = new MaxentStringOutcomeClassifierBuilder().getTrainingDataFile(this.outputDirectory);
     String[] lines = FileUtil.loadListOfStrings(trainFile);
-    assertEquals("true 0 1 2", lines[0]);
+    assertEquals("a 0 1 2", lines[0]);
   }
 
 }

@@ -126,7 +126,7 @@ public class CrfSuiteClassifierTest extends DefaultTestBase {
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
 
-    File trainFile = new CRFSuiteClassifierBuilder().getTrainingDataFile(this.outputDirectory);
+    File trainFile = new CRFSuiteStringOutcomeClassifierBuilder().getTrainingDataFile(this.outputDirectory);
     BufferedReader reader = new BufferedReader(new FileReader(trainFile));
     reader.readLine();
     reader.close();
@@ -140,8 +140,8 @@ public class CrfSuiteClassifierTest extends DefaultTestBase {
       logger.setLevel(level);
     }
 
-    CRFSuiteClassifierBuilder builder = new CRFSuiteClassifierBuilder();
-    CRFSuiteClassifier classifier;
+    CRFSuiteStringOutcomeClassifierBuilder builder = new CRFSuiteStringOutcomeClassifierBuilder();
+    CRFSuiteStringOutcomeClassifier classifier;
     classifier = builder.loadClassifierFromTrainingDirectory(this.outputDirectory);
 
     List<List<Feature>> sequenceFeatures = new ArrayList<List<Feature>>();

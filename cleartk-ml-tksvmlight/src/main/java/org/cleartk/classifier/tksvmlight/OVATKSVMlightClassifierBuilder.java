@@ -38,42 +38,50 @@ import org.cleartk.classifier.jar.ClassifierBuilder_ImplBase;
 import org.cleartk.classifier.jar.JarStreams;
 
 /**
+ * A class that provided interfaces to package and unpackage a OVASVMTKClassifier into a jar file.
+ * 
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
  * @author Daryl Lonnon
  * @version 0.2.1
- * 
- * A class that provided interfaces to package and unpackage a OVASVMTKClassifier into a jar file.
+ * @deprecated Use {@link TKSVMlightStringOutcomeClassifierBuilder} instead.
  */
-
+@Deprecated
 public class OVATKSVMlightClassifierBuilder extends
     ClassifierBuilder_ImplBase<OVATKSVMlightClassifier, TreeFeatureVector, String, Integer> {
 
-/**
- * @param dir The directory that contains the all false training data.
- */
+  /**
+   * @param dir
+   *          The directory that contains the all false training data.
+   */
   public File getTrainingDataFile(File dir) {
     return new File(dir, "training-data-allfalse.svmlight");
   }
 
-/**
- * Get the training data file for a specific label.
- * @param dir The directory to keep the training data.
- * @param label The integer number that represents an index for a particular label.
- * @return The file of the training data to be used to train the model.
- */
+  /**
+   * Get the training data file for a specific label.
+   * 
+   * @param dir
+   *          The directory to keep the training data.
+   * @param label
+   *          The integer number that represents an index for a particular label.
+   * @return The file of the training data to be used to train the model.
+   */
   public File getTrainingDataFile(File dir, int label) {
     return new File(dir, String.format("training-data-%d.svmlight", label));
   }
 
-/**
- * Train the OVASVMTK classifier.
- * @param dir The directory where the training data has been written.
- * @param args The arguments to be used by the tk_svm_classify command. Note: -t 5 is used to specify
- * the use of Tree Kernels.
- */
+  /**
+   * Train the OVASVMTK classifier.
+   * 
+   * @param dir
+   *          The directory where the training data has been written.
+   * @param args
+   *          The arguments to be used by the tk_svm_classify command. Note: -t 5 is used to specify
+   *          the use of Tree Kernels.
+   */
   public void trainClassifier(File dir, String... args) throws Exception {
     for (File file : dir.listFiles()) {
       if (file.getName().matches("training-data-\\d+.svmlight")) {
@@ -92,7 +100,7 @@ public class OVATKSVMlightClassifierBuilder extends
     int label = 1;
     while (true) {
       File modelFile = new File(dir, String.format("training-data-%d.svmlight.model", label));
-      
+
       if (!modelFile.exists()) {
         break;
       }
@@ -114,7 +122,7 @@ public class OVATKSVMlightClassifierBuilder extends
     super.unpackageClassifier(modelStream);
     this.models = new TreeMap<Integer, File>();
     File model;
-    
+
     int label = 1;
     while ((model = getNextModel(modelStream, label)) != null) {
       this.models.put(label, model);
@@ -131,14 +139,10 @@ public class OVATKSVMlightClassifierBuilder extends
    */
   @Override
   protected OVATKSVMlightClassifier newClassifier() {
-    return new OVATKSVMlightClassifier(
-        this.featuresEncoder,
-        this.outcomeEncoder,
-        this.models);
+    return new OVATKSVMlightClassifier(this.featuresEncoder, this.outcomeEncoder, this.models);
   }
 
-  private static File getNextModel(JarInputStream modelStream, int label)
-      throws IOException {
+  private static File getNextModel(JarInputStream modelStream, int label) throws IOException {
     File mFile = File.createTempFile(String.format("model-%d", label), ".svmlight");
     // look for a next entry or return null if there isn't one
     JarEntry entry = modelStream.getNextJarEntry();
@@ -154,7 +158,7 @@ public class OVATKSVMlightClassifierBuilder extends
           expectedName,
           entry.getName()));
     }
-    
+
     BufferedWriter out = new BufferedWriter(new FileWriter(mFile));
     BufferedReader in = new BufferedReader(new InputStreamReader(modelStream));
     String line;
@@ -162,7 +166,7 @@ public class OVATKSVMlightClassifierBuilder extends
       out.append(line);
       out.append("\n");
     }
-    out.close();   
+    out.close();
     // read the model from the jar stream
     return mFile;
   }

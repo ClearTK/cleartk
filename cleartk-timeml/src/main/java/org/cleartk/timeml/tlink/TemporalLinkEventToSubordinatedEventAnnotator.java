@@ -40,7 +40,7 @@ import org.cleartk.classifier.feature.extractor.CleartkExtractor.Covered;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
-import org.cleartk.classifier.opennlp.MaxentDataWriter;
+import org.cleartk.classifier.opennlp.MaxentStringOutcomeDataWriter;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNodeUtil;
 import org.cleartk.timeml.type.Event;
@@ -71,7 +71,7 @@ public class TemporalLinkEventToSubordinatedEventAnnotator extends
 
     @Override
     public Class<?> getDataWriterClass() {
-      return MaxentDataWriter.class;
+      return MaxentStringOutcomeDataWriter.class;
     }
 
     @Override

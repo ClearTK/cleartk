@@ -59,7 +59,9 @@ import com.google.common.base.Joiner;
  * 
  * @uses TreeFeatureVector
  * @see OVATKSVMlightClassifier
+ * @deprecated Use {@link TKSVMlightBooleanOutcomeClassifier} instead.
  */
+@Deprecated
 public class TKSVMlightClassifier extends Classifier_ImplBase<TreeFeatureVector, Boolean, Boolean> {
 
   static Logger logger = UIMAFramework.getLogger(TKSVMlightClassifier.class);

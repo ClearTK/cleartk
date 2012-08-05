@@ -56,8 +56,9 @@ import org.cleartk.classifier.jar.SequenceClassifierBuilder_ImplBase;
  * 
  * 
  * @author Martin Riedl
+ * @deprecated Use {@link CRFSuiteStringOutcomeClassifierBuilder} instead.
  */
-
+@Deprecated
 public class CRFSuiteClassifierBuilder extends
 
 SequenceClassifierBuilder_ImplBase<CRFSuiteClassifier, List<NameNumber>, String, String> {

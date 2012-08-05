@@ -22,39 +22,33 @@ import java.io.File;
 
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.jar.ClassifierBuilder_ImplBase;
+
 /**
  * Copyright (c) 2012, Regents of the University of Colorado <br>
  * All rights reserved.
- * @author Philip Ogren
  * 
+ * @author Philip Ogren
+ * @deprecated Use {@link WekaStringOutcomeClassifierBuilder} instead.
  */
+@Deprecated
+public class WekaClassifierBuilder extends
+    ClassifierBuilder_ImplBase<WekaClassifier, Iterable<Feature>, String, String> {
 
-public class WekaClassifierBuilder extends ClassifierBuilder_ImplBase<WekaClassifier, Iterable<Feature>, String, String> {
+  @Override
+  public File getTrainingDataFile(File dir) {
+    return new File(dir, "training-data.arff");
+  }
 
-	@Override
-	public File getTrainingDataFile(File dir) {
-	    return new File(dir, "training-data.arff");
-	}
+  @Override
+  public void trainClassifier(File dir, String... args) throws Exception {
+    // TODO Auto-generated method stub
 
-	@Override
-	public void trainClassifier(File dir, String... args) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
+  }
 
-	@Override
-	protected WekaClassifier newClassifier() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+  @Override
+  protected WekaClassifier newClassifier() {
+    // TODO Auto-generated method stub
+    return null;
+  }
 
 }
-
-
-
-
-
-
-
-

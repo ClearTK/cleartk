@@ -42,6 +42,7 @@ import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 import org.cleartk.classifier.encoder.features.NumberEncoder;
 import org.cleartk.classifier.encoder.features.StringEncoder;
 import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
+import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.jar.SequenceDataWriterFactory_ImplBase;
 
 /**
@@ -51,8 +52,9 @@ import org.cleartk.classifier.jar.SequenceDataWriterFactory_ImplBase;
  * 
  * 
  * @author Martin Riedl
+ * @deprecated Use {@link DefaultDataWriterFactory} with {@link CRFSuiteStringOutcomeDataWriter}.
  */
-
+@Deprecated
 public class CRFSuiteDataWriterFactory extends
     SequenceDataWriterFactory_ImplBase<List<NameNumber>, String, String> {
 

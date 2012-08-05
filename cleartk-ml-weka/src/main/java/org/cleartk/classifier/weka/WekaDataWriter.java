@@ -36,15 +36,15 @@ import weka.core.Instances;
 import weka.core.SparseInstance;
 
 /**
+ * http://weka.wikispaces.com/Creating+an+ARFF+file
+ * 
  * Copyright (c) 2012, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
  * @author Philip Ogren
- * 
- *         http://weka.wikispaces.com/Creating+an+ARFF+file
- * 
+ * @deprecated Use {@link WekaStringOutcomeDataWriter} instead.
  */
-
+@Deprecated
 public class WekaDataWriter extends
     DataWriter_ImplBase<WekaClassifierBuilder, Iterable<Feature>, String, String> {
 

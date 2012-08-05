@@ -44,9 +44,9 @@ import cc.mallet.fst.Transducer;
  * 
  * 
  * @author Philip Ogren
- * 
+ * @deprecated Use {@link MalletCRFStringOutcomeClassifierBuilder} instead.
  */
-
+@Deprecated
 public class MalletCRFClassifierBuilder extends
     SequenceClassifierBuilder_ImplBase<MalletCRFClassifier, List<NameNumber>, String, String> {
 

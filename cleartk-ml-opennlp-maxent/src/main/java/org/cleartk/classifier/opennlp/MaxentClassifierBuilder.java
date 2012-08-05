@@ -30,7 +30,9 @@ package org.cleartk.classifier.opennlp;
  * 
  * @author Philip Ogren
  * @author Steven Bethard
+ * @deprecated Use {@link MaxentStringOutcomeClassifierBuilder} instead.
  */
+@Deprecated
 public class MaxentClassifierBuilder extends
     MaxentClassifierBuilder_ImplBase<MaxentClassifier, String> {
 

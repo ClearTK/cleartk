@@ -58,7 +58,7 @@ import cc.mallet.types.FeatureVector;
  * @author Philip Ogren
  */
 
-public class MalletClassifierTest extends DefaultTestBase {
+public class MalletStringOutcomeClassifierTest extends DefaultTestBase {
   private Random random;
 
   @Before
@@ -111,12 +111,12 @@ public class MalletClassifierTest extends DefaultTestBase {
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
-        MalletDataWriter.class.getName());
+        MalletStringOutcomeDataWriter.class.getName());
 
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
 
-    File trainFile = new MalletClassifierBuilder().getTrainingDataFile(this.outputDirectory);
+    File trainFile = new MalletStringOutcomeClassifierBuilder().getTrainingDataFile(this.outputDirectory);
     BufferedReader reader = new BufferedReader(new FileReader(trainFile));
     reader.readLine();
     reader.close();
@@ -141,8 +141,8 @@ public class MalletClassifierTest extends DefaultTestBase {
     Train.main(new String[] { outputDirectoryName, "C45" });
     hider.restoreOutput();
 
-    MalletClassifierBuilder builder = new MalletClassifierBuilder();
-    MalletClassifier classifier = builder.loadClassifierFromTrainingDirectory(this.outputDirectory);
+    MalletStringOutcomeClassifierBuilder builder = new MalletStringOutcomeClassifierBuilder();
+    MalletStringOutcomeClassifier classifier = builder.loadClassifierFromTrainingDirectory(this.outputDirectory);
 
     Instance<String> testInstance = new Instance<String>();
     testInstance.add(new Feature("hello", random.nextInt(1000) + 1000));

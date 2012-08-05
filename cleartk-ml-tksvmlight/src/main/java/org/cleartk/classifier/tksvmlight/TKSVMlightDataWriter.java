@@ -37,6 +37,8 @@ import org.cleartk.classifier.jar.DataWriter_ImplBase;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
 /**
+ * The data writer for the tree kernel svm light data writer.
+ * 
  * <br>
  * Copyright (c) 2009, Regents of the University of Colorado <br>
  * All rights reserved.
@@ -44,10 +46,9 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
  * 
  * @author Daryl Lonnon
  * @version 0.2.1
- * 
- *          The data writer for the tree kernel svm light data writer.
+ * @deprecated Use {@link TKSVMlightBooleanOutcomeDataWriter} instead.
  */
-
+@Deprecated
 public class TKSVMlightDataWriter extends
     DataWriter_ImplBase<TKSVMlightClassifierBuilder, TreeFeatureVector, Boolean, Boolean> {
 

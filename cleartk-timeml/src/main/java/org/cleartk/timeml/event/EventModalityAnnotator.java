@@ -29,7 +29,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Bag;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Preceding;
-import org.cleartk.classifier.opennlp.MaxentDataWriter;
+import org.cleartk.classifier.opennlp.MaxentStringOutcomeDataWriter;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.util.CleartkInternalModelFactory;
 import org.cleartk.timeml.util.TokenTextForSelectedPOSExtractor;
@@ -55,7 +55,7 @@ public class EventModalityAnnotator extends EventAttributeAnnotator<String> {
 
     @Override
     public Class<?> getDataWriterClass() {
-      return MaxentDataWriter.class;
+      return MaxentStringOutcomeDataWriter.class;
     }
 
     @Override

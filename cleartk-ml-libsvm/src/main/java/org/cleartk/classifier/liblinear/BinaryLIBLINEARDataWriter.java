@@ -39,7 +39,10 @@ import org.cleartk.classifier.libsvm.LIBSVMDataWriter;
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
+ * @deprecated Use {@link LIBLINEARBooleanOutcomeDataWriter} instead.
  */
+@Deprecated
 public class BinaryLIBLINEARDataWriter extends
     LIBSVMDataWriter<BinaryLIBLINEARClassifierBuilder, Boolean, Boolean, LIBLINEARModel> {
 

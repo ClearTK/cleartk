@@ -237,7 +237,7 @@ public class RunSVMlightTest extends DefaultTestBase {
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         this.outputDirectoryName,
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
-        SVMlightDataWriter.class.getName()));
+        SVMlightBooleanOutcomeDataWriter.class.getName()));
 
     // add a bunch of instances
     for (Instance<Boolean> instance : generateBooleanInstances(1000)) {
@@ -258,8 +258,8 @@ public class RunSVMlightTest extends DefaultTestBase {
     hider.restoreOutput();
 
     // read in the classifier and test it on new instances
-    SVMlightClassifierBuilder builder = new SVMlightClassifierBuilder();
-    SVMlightClassifier classifier;
+    SVMlightBooleanOutcomeClassifierBuilder builder = new SVMlightBooleanOutcomeClassifierBuilder();
+    SVMlightBooleanOutcomeClassifier classifier;
     classifier = builder.loadClassifierFromTrainingDirectory(this.outputDirectory);
     for (Instance<Boolean> instance : generateBooleanInstances(1000)) {
       List<Feature> features = instance.getFeatures();
@@ -279,7 +279,7 @@ public class RunSVMlightTest extends DefaultTestBase {
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         this.outputDirectoryName,
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
-        SVMlightDataWriter.class.getName()));
+        SVMlightBooleanOutcomeDataWriter.class.getName()));
 
     // add a bunch of instances
     for (Instance<Boolean> instance : generateBooleanInstances(1000)) {
@@ -312,7 +312,7 @@ public class RunSVMlightTest extends DefaultTestBase {
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         this.outputDirectoryName,
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
-        OVASVMlightDataWriter.class.getName()));
+        SVMlightStringOutcomeDataWriter.class.getName()));
 
     // add a bunch of instances
     for (Instance<String> instance : generateStringInstances(1000)) {
@@ -338,8 +338,8 @@ public class RunSVMlightTest extends DefaultTestBase {
     hider.restoreOutput();
 
     // read in the classifier and test it on new instances
-    OVASVMlightClassifierBuilder builder = new OVASVMlightClassifierBuilder();
-    OVASVMlightClassifier classifier;
+    SVMlightStringOutcomeClassifierBuilder builder = new SVMlightStringOutcomeClassifierBuilder();
+    SVMlightStringOutcomeClassifier classifier;
     classifier = builder.loadClassifierFromTrainingDirectory(this.outputDirectory);
     for (Instance<String> instance : generateStringInstances(1000)) {
       List<Feature> features = instance.getFeatures();

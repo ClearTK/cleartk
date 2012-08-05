@@ -34,8 +34,10 @@ import org.cleartk.classifier.encoder.outcome.BooleanToBooleanOutcomeEncoder;
  * Copyright (c) 2009, Regents of the University of Colorado <br>
  * All rights reserved.
  * <p>
+ * 
+ * @deprecated Use {@link LIBSVMBooleanOutcomeDataWriter} instead.
  */
-
+@Deprecated
 public class BinaryLIBSVMDataWriter extends
     LIBSVMDataWriter<BinaryLIBSVMClassifierBuilder, Boolean, Boolean, libsvm.svm_model> {
 

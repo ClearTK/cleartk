@@ -38,9 +38,9 @@ import cc.mallet.classify.Classifier;
  * 
  * 
  * @author Philip Ogren
- * 
- * 
+ * @deprecated Use {@link MalletBooleanOutcomeClassifier} instead.
  */
+@Deprecated
 public class BinaryMalletClassifier extends MalletClassifier_ImplBase<Boolean> {
   public BinaryMalletClassifier(
       FeaturesEncoder<List<NameNumber>> featuresEncoder,

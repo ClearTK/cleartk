@@ -61,7 +61,7 @@ public class LIBLINEARTest extends DefaultTestBase {
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         this.outputDirectoryName,
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
-        BinaryLIBLINEARDataWriter.class.getName()));
+        LIBLINEARBooleanOutcomeDataWriter.class.getName()));
 
     // run process to produce a bunch of instances
     annotator.process(null);
@@ -69,7 +69,7 @@ public class LIBLINEARTest extends DefaultTestBase {
     annotator.collectionProcessComplete();
 
     // check that the output file was written and is not empty
-    BinaryLIBLINEARClassifierBuilder builder = new BinaryLIBLINEARClassifierBuilder();
+    LIBLINEARBooleanOutcomeClassifierBuilder builder = new LIBLINEARBooleanOutcomeClassifierBuilder();
     BufferedReader reader = new BufferedReader(new FileReader(
         builder.getTrainingDataFile(this.outputDirectory)));
     Assert.assertTrue(reader.readLine().length() > 0);
@@ -81,7 +81,7 @@ public class LIBLINEARTest extends DefaultTestBase {
     hider.restoreOutput();
 
     // read in the classifier and test it on new instances
-    BinaryLIBLINEARClassifier classifier;
+    LIBLINEARBooleanOutcomeClassifier classifier;
     classifier = builder.loadClassifierFromTrainingDirectory(this.outputDirectory);
     for (Instance<Boolean> instance : ExampleInstanceFactory.generateBooleanInstances(1000)) {
       List<Feature> features = instance.getFeatures();

@@ -76,7 +76,7 @@ public class WekaDataWriterTest extends DefaultTestBase {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         Test1Annotator.class,
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
-        WekaDataWriter.class.getName(),
+        WekaStringOutcomeDataWriter.class.getName(),
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         "target/weka-temp");
     dataWriterAnnotator.process(jCas);
@@ -111,7 +111,7 @@ public class WekaDataWriterTest extends DefaultTestBase {
     AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
         Test2Annotator.class,
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
-        WekaDataWriter.class.getName(),
+        WekaStringOutcomeDataWriter.class.getName(),
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         "target/weka-temp");
     dataWriterAnnotator.process(jCas);

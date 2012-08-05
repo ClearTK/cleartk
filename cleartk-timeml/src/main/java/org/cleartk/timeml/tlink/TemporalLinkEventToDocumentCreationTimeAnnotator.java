@@ -34,7 +34,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
-import org.cleartk.classifier.opennlp.MaxentDataWriter;
+import org.cleartk.classifier.opennlp.MaxentStringOutcomeDataWriter;
 import org.cleartk.timeml.type.DocumentCreationTime;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.type.TemporalLink;
@@ -61,7 +61,7 @@ public class TemporalLinkEventToDocumentCreationTimeAnnotator extends
 
     @Override
     public Class<?> getDataWriterClass() {
-      return MaxentDataWriter.class;
+      return MaxentStringOutcomeDataWriter.class;
     }
 
     @Override

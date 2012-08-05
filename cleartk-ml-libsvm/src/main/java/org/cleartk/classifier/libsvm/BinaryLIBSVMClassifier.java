@@ -31,8 +31,10 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
+ * @deprecated Use {@link LIBSVMBooleanOutcomeClassifier} instead.
  */
-
+@Deprecated
 public class BinaryLIBSVMClassifier extends LIBSVMClassifier<Boolean, Boolean> {
 
   public BinaryLIBSVMClassifier(

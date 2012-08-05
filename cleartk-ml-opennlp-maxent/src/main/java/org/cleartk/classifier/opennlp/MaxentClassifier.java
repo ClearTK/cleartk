@@ -39,7 +39,9 @@ import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
  * 
  * @author Philip Ogren
  * @author Steven Bethard
+ * @deprecated Use {@link MaxentStringOutcomeClassifier} instead.
  */
+@Deprecated
 public class MaxentClassifier extends MaxentClassifier_ImplBase<String> {
   public MaxentClassifier(
       FeaturesEncoder<List<NameNumber>> featuresEncoder,

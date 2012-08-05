@@ -41,7 +41,9 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
  * All rights reserved.
  * 
  * @author Steven Bethard
+ * @deprecated Use {@link SVMlightBooleanOutcomeClassifier} instead.
  */
+@Deprecated
 public class SVMlightClassifier extends SVMlightClassifier_ImplBase<Boolean, Boolean> {
 
   protected Sigmoid sigmoid;

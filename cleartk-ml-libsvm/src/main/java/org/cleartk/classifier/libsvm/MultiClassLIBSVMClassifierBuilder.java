@@ -27,8 +27,10 @@ package org.cleartk.classifier.libsvm;
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
+ * @deprecated Use {@link LIBSVMStringOutcomeClassifierBuilder} instead.
  */
-
+@Deprecated
 public class MultiClassLIBSVMClassifierBuilder extends
     LIBSVMClassifierBuilder<MultiClassLIBSVMClassifier, String, Integer, libsvm.svm_model> {
 

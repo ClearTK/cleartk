@@ -30,7 +30,9 @@ package org.cleartk.classifier.opennlp;
  * 
  * @author Philip Ogren
  * @author Steven Bethard
+ * @deprecated Use {@link MaxentBooleanOutcomeClassifierBuilder} instead.
  */
+@Deprecated
 public class BinaryMaxentClassifierBuilder extends
     MaxentClassifierBuilder_ImplBase<BinaryMaxentClassifier, Boolean> {
 
