@@ -43,7 +43,6 @@ import org.kohsuke.args4j.Option;
 import org.uimafit.factory.AggregateBuilder;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.pipeline.SimplePipeline;
-import org.uimafit.testing.util.HideOutput;
 
 /**
  * Copyright (c) 2012, Regents of the University of Colorado <br>
@@ -122,11 +121,9 @@ public class TrainModel {
     // //////////////////////////////////////////////////////////////////////////////
     // Train and write model
     // //////////////////////////////////////////////////////////////////////////////
-    HideOutput hider = new HideOutput();
     JarClassifierBuilder.trainAndPackage(
         options.modelsDirectory,
         options.trainingArguments.toArray(new String[options.trainingArguments.size()]));
-    hider.restoreOutput();
   }
 
 }

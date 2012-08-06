@@ -23,25 +23,22 @@
  */
 package org.cleartk.examples.documentclassification.basic;
 
-import java.io.File;
+import java.util.List;
 
 import org.apache.uima.UimaContext;
-import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.CleartkAnnotator;
+import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Count;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Covered;
-import org.cleartk.classifier.feature.extractor.simple.CombinedExtractor;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
-import org.cleartk.classifier.jar.GenericJarClassifierFactory;
 import org.cleartk.examples.type.UsenetDocument;
 import org.cleartk.token.type.Token;
-import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.util.JCasUtil;
 
 /**
@@ -59,43 +56,33 @@ import org.uimafit.util.JCasUtil;
  */
 public class BasicDocumentClassificationAnnotator extends CleartkAnnotator<String> {
 
-  private CombinedExtractor extractor;
+  private CleartkExtractor extractor;
 
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
 
     // Create an extractor that gives word counts for a document
-    this.extractor = new CombinedExtractor(new CleartkExtractor(
-        Token.class,
-        new CoveredTextExtractor(),
-        new Count(new Covered())));
+    this.extractor = new CleartkExtractor(Token.class, new CoveredTextExtractor(), new Count(
+        new Covered()));
   }
 
   public void process(JCas jCas) throws AnalysisEngineProcessException {
+    // use the extractor to create features for the document
     DocumentAnnotation doc = (DocumentAnnotation) jCas.getDocumentAnnotationFs();
+    List<Feature> features = this.extractor.extract(jCas, doc);
 
-    Instance<String> instance = new Instance<String>();
-    instance.addAll(this.extractor.extract(jCas, doc));
-
+    // during training, get the label for this document from the CAS
     if (isTraining()) {
       UsenetDocument document = JCasUtil.selectSingle(jCas, UsenetDocument.class);
-      instance.setOutcome(document.getCategory());
-      this.dataWriter.write(instance);
-    } else {
-      // This is classification, so classify and create UsenetDocument annotation
-      String result = this.classifier.classify(instance.getFeatures());
+      this.dataWriter.write(new Instance<String>(document.getCategory(), features));
+    }
+
+    // during classification, use the classifier's output to create a CAS annotation
+    else {
+      String category = this.classifier.classify(features);
       UsenetDocument document = new UsenetDocument(jCas, 0, jCas.getDocumentText().length());
-      document.setCategory(result);
+      document.setCategory(category);
       document.addToIndexes();
     }
   }
-
-  public static AnalysisEngineDescription getClassifierDescription(File classifierJarFile)
-      throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(
-        BasicDocumentClassificationAnnotator.class,
-        GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
-        classifierJarFile.toString());
-  }
-
 }
