@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graph xmlns="http://www.xces.org/ns/GrAF/1.0/">
+    <header>
+        <tagsDecl>
+            <tagUsage gi="person" occurs="17"/>
+            <tagUsage gi="location" occurs="22"/>
+            <tagUsage gi="date" occurs="2"/>
+            <tagUsage gi="org" occurs="23"/>
+        </tagsDecl>
+        <dependencies>
+            <dependsOn type="penn"/>
+        </dependencies>
+        <annotationSets>
+            <annotationSet name="xces" type="http://www.xces.org/schema/2003"/>
+        </annotationSets>
+    </header>
+    <node xml:id="n0"/>
+    <a label="person" ref="n0" as="xces">
+        <fs>
+            <f name="sex" value="female"/>
+        </fs>
+    </a>
+    <node xml:id="n1"/>
+    <a label="location" ref="n1" as="xces">
+        <fs>
+            <f name="type" value="region"/>
+        </fs>
+    </a>
+    <node xml:id="n10"/>
+    <a label="person" ref="n10" as="xces">
+        <fs>
+            <f name="sex" value="male"/>
+        </fs>
+    </a>
+    <node xml:id="n11"/>
+    <a label="person" ref="n11" as="xces">
+        <fs>
+            <f name="sex" value="male"/>
+        </fs>
+    </a>
+    <node xml:id="n12"/>
+    <a label="location" ref="n12" as="xces">
+        <fs>
+            <f name="type" value="country"/>
+        </fs>
+    </a>
+    <node xml:id="n13"/>
+    <a label="org" ref="n13" as="xces">
+        <fs>
+            <f name="type" value="political"/>
+        </fs>
+    </a>
+    <node xml:id="n14"/>
+    <a label="org" ref="n14" as="xces">
+        <fs>
+            <f name="type" value="newspaper/media"/>
+        </fs>
+    </a>
+    <node xml:id="n15"/>
+    <a label="location" ref="n15" as="xces">
+        <fs>
+            <f name="type" value="region"/>
+        </fs>
+    </a>
+    <node xml:id="n16"/>
+    <a label="person" ref="n16" as="xces">
+        <fs>
+            <f name="sex" value="male"/>
+        </fs>
+    </a>
+    <node xml:id="n17"/>
+    <a label="location" ref="n17" as="xces">
+        <fs>
+            <f name="type" value="country"/>
+        </fs>
+    </a>
+    <node xml:id="n18"/>
+    <a label="location" ref="n18" as="xces">
+        <fs>
+            <f name="type" value="country"/>
+        </fs>
+    </a>
+    <node xml:id="n19"/>
+    <a label="location" ref="n19" as="xces">
+        <fs>
+            <f name="type" value="country"/>
+        </fs>
+    </a>
+    <node xml:id="n2"/>
+    <a label="org" ref="n2" as="xces">
+        <fs>
+            <f name="type" value="newspaper/media"/>
+        </fs>
+    </a>
+    <node xml:id="n20"/>
+    <a label="location" ref="n20" as="xces">
+        <fs>
+            <f name="type" value="country"/>
+        </fs>
+    </a>
+    <node xml:id="n21"/>
+    <a label="location" ref="n21" as="xces">
+        <fs>
+            <f name="type" value="country"/>
+        </fs>
+    </a>
+    <node xml:id="n22"/>
+    <a label="location" ref="n22" as="xces">
+        <fs>
+            <f name="type" value="country"/>
+        </fs>
+    </a>
+    <node xml:id="n23"/>
+    <a label="location" ref="n23" as="xces">
+        <fs>
+            <f name="type" value="region"/>
+        </fs>
+    </a>
+    <node xml:id="n24"/>
+    <a label="location" ref="n24" as="xces">
+        <fs>
+            <f name="type" value="country"/>
+        </fs>
+    </a>
+    <node xml:id="n25"/>
+    <a label="location" ref="n25" as="xces">
+        <fs>
+            <f name="type" value="country"/>
+        </fs>
+    </a>
+    <node xml:id="n26"/>
+    <a label="org" ref="n26" as="xces">
+        <fs>
+            <f name="type" value="newspaper/media"/>
+        </fs>
+    </a>
+    <node xml:id="n27"/>
+    <a label="org" ref="n27" as="xces">
+        <fs>
+            <f name="type" value="government"/>
+        </fs>
+    </a>
+    <node xml:id="n28"/>
+    <a label="location" ref="n28" as="xces">
+        <fs>
+            <f name="type" value="country"/>
+        </fs>
+    </a>
+    <node xml:id="n29"/>
+    <a label="location" ref="n29" as="xces">
+        <fs>
+            <f name="type" value="city"/>
+        </fs>
+    </a>
+    <node xml:id="n3"/>
+    <a label="org" ref="n3" as="xces">
+        <fs>
+            <f name="type" value="newspaper/media"/>
+        </fs>
+    </a>
+    <node xml:id="n30"/>
+    <a label="person" ref="n30" as="xces">
+        <fs>
+            <f name="sex" value="male"/>
+        </fs>
+    </a>
+    <node xml:id="n31"/>
+    <a label="date" ref="n31" as="xces">
+        <fs>
+            <f name="kind" value="date"/>
+        </fs>
+    </a>
+    <node xml:id="n32"/>
+    <a label="location" ref="n32" as="xces">
+        <fs>
+            <f name="type" value="country"/>
+        </fs>
+    </a>
+    <node xml:id="n33"/>
+    <a label="location" ref="n33" as="xces">
+        <fs>
+            <f name="type" value="country"/>
+        </fs>
+    </a>
+    <node xml:id="n34"/>
+    <a label="org" ref="n34" as="xces">
+        <fs>
+            <f name="type" value="corporation"/>
+        </fs>
+    </a>
+    <node xml:id="n35"/>
+    <a label="org" ref="n35" as="xces">
+        <fs>
+            <f name="type" value="corporation"/>
+        </fs>
+    </a>
+    <node xml:id="n36"/>
+    <a label="org" ref="n36" as="xces">
+        <fs>
+            <f name="type" value="newspaper/media"/>
+        </fs>
+    </a>
+    <node xml:id="n37"/>
+    <a label="org" ref="n37" as="xces">
+        <fs>
+            <f name="type" value="corporation"/>
+        </fs>
+    </a>
+    <node xml:id="n38"/>
+    <a label="org" ref="n38" as="xces">
+        <fs>
+            <f name="type" value="newspaper/media"/>
+        </fs>
+    </a>
+    <node xml:id="n39"/>
+    <a label="location" ref="n39" as="xces">
+        <fs>
+            <f name="type" value="country"/>
+        </fs>
+    </a>
+    <node xml:id="n4"/>
+    <a label="org" ref="n4" as="xces">
+        <fs>
+            <f name="type" value="newspaper/media"/>
+        </fs>
+    </a>
+    <node xml:id="n40"/>
+    <a label="org" ref="n40" as="xces">
+        <fs>
+            <f name="type" value="newspaper/media"/>
+        </fs>
+    </a>
+    <node xml:id="n41"/>
+    <a label="person" ref="n41" as="xces">
+        <fs>
+            <f name="sex" value="female"/>
+        </fs>
+    </a>
+    <node xml:id="n42"/>
+    <a label="org" ref="n42" as="xces">
+        <fs>
+            <f name="type" value="newspaper/media"/>
+        </fs>
+    </a>
+    <node xml:id="n43"/>
+    <a label="location" ref="n43" as="xces">
+        <fs>
+            <f name="type" value="country"/>
+        </fs>
+    </a>
+    <node xml:id="n44"/>
+    <a label="org" ref="n44" as="xces">
+        <fs>
+            <f name="type" value="newspaper/media"/>
+        </fs>
+    </a>
+    <node xml:id="n45"/>
+    <a label="org" ref="n45" as="xces">
+        <fs>
+            <f name="type" value="newspaper/media"/>
+        </fs>
+    </a>
+    <node xml:id="n46"/>
+    <a label="person" ref="n46" as="xces">
+        <fs>
+            <f name="sex" value="female"/>
+        </fs>
+    </a>
+    <node xml:id="n47"/>
+    <a label="person" ref="n47" as="xces">
+        <fs>
+            <f name="sex" value="male"/>
+        </fs>
+    </a>
+    <node xml:id="n48"/>
+    <a label="person" ref="n48" as="xces">
+        <fs>
+            <f name="sex" value="female"/>
+        </fs>
+    </a>
+    <node xml:id="n49"/>
+    <a label="org" ref="n49" as="xces">
+        <fs>
+            <f name="type" value="newspaper/media"/>
+        </fs>
+    </a>
+    <node xml:id="n5"/>
+    <a label="org" ref="n5" as="xces">
+        <fs>
+            <f name="type" value="newspaper/media"/>
+        </fs>
+    </a>
+    <node xml:id="n50"/>
+    <a label="org" ref="n50" as="xces">
+        <fs>
+            <f name="type" value="newspaper/media"/>
+        </fs>
+    </a>
+    <node xml:id="n51"/>
+    <a label="person" ref="n51" as="xces">
+        <fs>
+            <f name="sex" value="female"/>
+        </fs>
+    </a>
+    <node xml:id="n52"/>
+    <a label="org" ref="n52" as="xces">
+        <fs>
+            <f name="type" value="newspaper/media"/>
+        </fs>
+    </a>
+    <node xml:id="n53"/>
+    <a label="person" ref="n53" as="xces">
+        <fs>
+            <f name="sex" value="female"/>
+        </fs>
+    </a>
+    <node xml:id="n54"/>
+    <a label="location" ref="n54" as="xces">
+        <fs>
+            <f name="type" value="city"/>
+        </fs>
+    </a>
+    <node xml:id="n55"/>
+    <a label="location" ref="n55" as="xces">
+        <fs>
+            <f name="type" value="country"/>
+        </fs>
+    </a>
+    <node xml:id="n56"/>
+    <a label="org" ref="n56" as="xces">
+        <fs>
+            <f name="type" value="newspaper/media"/>
+        </fs>
+    </a>
+    <node xml:id="n57"/>
+    <a label="person" ref="n57" as="xces">
+        <fs>
+            <f name="sex" value="male"/>
+        </fs>
+    </a>
+    <node xml:id="n58"/>
+    <a label="org" ref="n58" as="xces">
+        <fs>
+            <f name="type" value="newspaper/media"/>
+        </fs>
+    </a>
+    <node xml:id="n59"/>
+    <a label="person" ref="n59" as="xces">
+        <fs>
+            <f name="sex" value="female"/>
+        </fs>
+    </a>
+    <node xml:id="n6"/>
+    <a label="person" ref="n6" as="xces">
+        <fs>
+            <f name="sex" value="female"/>
+        </fs>
+    </a>
+    <node xml:id="n60"/>
+    <a label="person" ref="n60" as="xces">
+        <fs>
+            <f name="sex" value="female"/>
+        </fs>
+    </a>
+    <node xml:id="n61"/>
+    <a label="location" ref="n61" as="xces">
+        <fs>
+            <f name="type" value="country"/>
+        </fs>
+    </a>
+    <node xml:id="n62"/>
+    <a label="location" ref="n62" as="xces">
+        <fs>
+            <f name="type" value="region"/>
+        </fs>
+    </a>
+    <node xml:id="n63"/>
+    <a label="person" ref="n63" as="xces">
+        <fs>
+            <f name="sex" value="female"/>
+        </fs>
+    </a>
+    <node xml:id="n7"/>
+    <a label="org" ref="n7" as="xces">
+        <fs>
+            <f name="type" value="newspaper/media"/>
+        </fs>
+    </a>
+    <node xml:id="n8"/>
+    <a label="person" ref="n8" as="xces">
+        <fs>
+            <f name="sex" value="female"/>
+        </fs>
+    </a>
+    <node xml:id="n9"/>
+    <a label="date" ref="n9" as="xces">
+        <fs>
+            <f name="kind" value="date"/>
+        </fs>
+    </a>
+    <edge xml:id="lnk69" from="n49" to="penn-n499"/>
+    <edge xml:id="lnk68" from="n48" to="penn-n487"/>
+    <edge xml:id="lnk67" from="n47" to="penn-n483"/>
+    <edge xml:id="lnk66" from="n47" to="penn-n482"/>
+    <edge xml:id="lnk65" from="n46" to="penn-n474"/>
+    <edge xml:id="lnk64" from="n45" to="penn-n468"/>
+    <edge xml:id="lnk63" from="n44" to="penn-n465"/>
+    <edge xml:id="lnk62" from="n43" to="penn-n456"/>
+    <edge xml:id="lnk61" from="n42" to="penn-n440"/>
+    <edge xml:id="lnk60" from="n41" to="penn-n426"/>
+    <edge xml:id="lnk59" from="n40" to="penn-n409"/>
+    <edge xml:id="lnk58" from="n4" to="penn-n28"/>
+    <edge xml:id="lnk57" from="n4" to="penn-n27"/>
+    <edge xml:id="lnk56" from="n39" to="penn-n335"/>
+    <edge xml:id="lnk55" from="n39" to="penn-n334"/>
+    <edge xml:id="lnk54" from="n39" to="penn-n333"/>
+    <edge xml:id="lnk53" from="n39" to="penn-n332"/>
+    <edge xml:id="lnk52" from="n38" to="penn-n323"/>
+    <edge xml:id="lnk51" from="n38" to="penn-n322"/>
+    <edge xml:id="lnk50" from="n38" to="penn-n321"/>
+    <edge xml:id="lnk49" from="n37" to="penn-n312"/>
+    <edge xml:id="lnk48" from="n36" to="penn-n307"/>
+    <edge xml:id="lnk47" from="n35" to="penn-n301"/>
+    <edge xml:id="lnk46" from="n34" to="penn-n291"/>
+    <edge xml:id="lnk45" from="n34" to="penn-n290"/>
+    <edge xml:id="lnk44" from="n34" to="penn-n289"/>
+    <edge xml:id="lnk43" from="n34" to="penn-n288"/>
+    <edge xml:id="lnk42" from="n33" to="penn-n267"/>
+    <edge xml:id="lnk41" from="n32" to="penn-n264"/>
+    <edge xml:id="lnk40" from="n31" to="penn-n262"/>
+    <edge xml:id="lnk39" from="n30" to="penn-n255"/>
+    <edge xml:id="lnk38" from="n30" to="penn-n254"/>
+    <edge xml:id="lnk37" from="n3" to="penn-n25"/>
+    <edge xml:id="lnk36" from="n3" to="penn-n24"/>
+    <edge xml:id="lnk35" from="n3" to="penn-n23"/>
+    <edge xml:id="lnk34" from="n29" to="penn-n209"/>
+    <edge xml:id="lnk33" from="n28" to="penn-n201"/>
+    <edge xml:id="lnk32" from="n27" to="penn-n196"/>
+    <edge xml:id="lnk96" from="n9" to="penn-n52"/>
+    <edge xml:id="lnk31" from="n27" to="penn-n195"/>
+    <edge xml:id="lnk95" from="n8" to="penn-n48"/>
+    <edge xml:id="lnk30" from="n26" to="penn-n188"/>
+    <edge xml:id="lnk94" from="n7" to="penn-n44"/>
+    <edge xml:id="lnk93" from="n63" to="penn-n772"/>
+    <edge xml:id="lnk92" from="n62" to="penn-n721"/>
+    <edge xml:id="lnk91" from="n61" to="penn-n714"/>
+    <edge xml:id="lnk90" from="n61" to="penn-n713"/>
+    <edge xml:id="lnk9" from="n14" to="penn-n113"/>
+    <edge xml:id="lnk8" from="n13" to="penn-n100"/>
+    <edge xml:id="lnk7" from="n12" to="penn-n87"/>
+    <edge xml:id="lnk6" from="n11" to="penn-n77"/>
+    <edge xml:id="lnk5" from="n10" to="penn-n64"/>
+    <edge xml:id="lnk4" from="n10" to="penn-n63"/>
+    <edge xml:id="lnk3" from="n1" to="penn-n16"/>
+    <edge xml:id="lnk2" from="n1" to="penn-n15"/>
+    <edge xml:id="lnk29" from="n25" to="penn-n182"/>
+    <edge xml:id="lnk1" from="n1" to="penn-n14"/>
+    <edge xml:id="lnk28" from="n24" to="penn-n180"/>
+    <edge xml:id="lnk0" from="n0" to="penn-n9"/>
+    <edge xml:id="lnk27" from="n23" to="penn-n176"/>
+    <edge xml:id="lnk26" from="n23" to="penn-n175"/>
+    <edge xml:id="lnk25" from="n22" to="penn-n160"/>
+    <edge xml:id="lnk89" from="n61" to="penn-n712"/>
+    <edge xml:id="lnk24" from="n22" to="penn-n159"/>
+    <edge xml:id="lnk88" from="n61" to="penn-n711"/>
+    <edge xml:id="lnk23" from="n22" to="penn-n158"/>
+    <edge xml:id="lnk87" from="n60" to="penn-n705"/>
+    <edge xml:id="lnk22" from="n22" to="penn-n157"/>
+    <edge xml:id="lnk86" from="n60" to="penn-n704"/>
+    <edge xml:id="lnk21" from="n21" to="penn-n150"/>
+    <edge xml:id="lnk85" from="n6" to="penn-n41"/>
+    <edge xml:id="lnk20" from="n21" to="penn-n149"/>
+    <edge xml:id="lnk84" from="n59" to="penn-n700"/>
+    <edge xml:id="lnk83" from="n59" to="penn-n699"/>
+    <edge xml:id="lnk82" from="n58" to="penn-n693"/>
+    <edge xml:id="lnk81" from="n57" to="penn-n649"/>
+    <edge xml:id="lnk80" from="n57" to="penn-n648"/>
+    <edge xml:id="lnk19" from="n20" to="penn-n147"/>
+    <edge xml:id="lnk18" from="n2" to="penn-n21"/>
+    <edge xml:id="lnk17" from="n2" to="penn-n20"/>
+    <edge xml:id="lnk16" from="n2" to="penn-n19"/>
+    <edge xml:id="lnk15" from="n19" to="penn-n144"/>
+    <edge xml:id="lnk79" from="n56" to="penn-n636"/>
+    <edge xml:id="lnk14" from="n18" to="penn-n142"/>
+    <edge xml:id="lnk78" from="n55" to="penn-n554"/>
+    <edge xml:id="lnk13" from="n17" to="penn-n136"/>
+    <edge xml:id="lnk77" from="n54" to="penn-n551"/>
+    <edge xml:id="lnk12" from="n16" to="penn-n134"/>
+    <edge xml:id="lnk76" from="n53" to="penn-n527"/>
+    <edge xml:id="lnk11" from="n15" to="penn-n127"/>
+    <edge xml:id="lnk75" from="n52" to="penn-n522"/>
+    <edge xml:id="lnk10" from="n15" to="penn-n126"/>
+    <edge xml:id="lnk74" from="n51" to="penn-n507"/>
+    <edge xml:id="lnk73" from="n50" to="penn-n503"/>
+    <edge xml:id="lnk72" from="n50" to="penn-n502"/>
+    <edge xml:id="lnk71" from="n5" to="penn-n37"/>
+    <edge xml:id="lnk70" from="n5" to="penn-n36"/>
+</graph>

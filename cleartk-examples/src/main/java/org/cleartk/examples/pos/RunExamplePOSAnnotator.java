@@ -53,7 +53,7 @@ public class RunExamplePOSAnnotator {
 
     // Create reader
     CollectionReader reader = UriCollectionReader.getCollectionReaderFromFiles(Arrays.asList(new File(
-        "src/main/resources/data/pos/2008_Sichuan_earthquake.txt")));
+        "src/main/resources/data/sample/2008_Sichuan_earthquake.txt")));
 
     // Create aggregate engine
     AggregateBuilder builder = new AggregateBuilder();

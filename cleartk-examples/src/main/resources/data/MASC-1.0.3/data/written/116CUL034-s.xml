@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graph xmlns="http://www.xces.org/ns/GrAF/1.0/">
+    <header>
+        <tagsDecl>
+            <tagUsage gi="s" occurs="32"/>
+        </tagsDecl>
+        <annotationSets>
+            <annotationSet name="xces" type="http://www.xces.org/schema/2003"/>
+        </annotationSets>
+    </header>
+    <region xml:id="r0" anchors="18 33"/>
+    <region xml:id="r1" anchors="40 65"/>
+    <region xml:id="r2" anchors="72 82"/>
+    <region xml:id="r3" anchors="89 219"/>
+    <region xml:id="r4" anchors="220 327"/>
+    <region xml:id="r5" anchors="328 548"/>
+    <region xml:id="r6" anchors="555 789"/>
+    <region xml:id="r7" anchors="796 978"/>
+    <region xml:id="r8" anchors="979 1118"/>
+    <region xml:id="r9" anchors="1119 1359"/>
+    <region xml:id="r10" anchors="1366 1602"/>
+    <region xml:id="r11" anchors="1603 1818"/>
+    <region xml:id="r12" anchors="1819 2067"/>
+    <region xml:id="r13" anchors="2074 2422"/>
+    <region xml:id="r14" anchors="2423 2505"/>
+    <region xml:id="r15" anchors="2512 2631"/>
+    <region xml:id="r16" anchors="2638 2804"/>
+    <region xml:id="r17" anchors="2805 2864"/>
+    <region xml:id="r18" anchors="2865 2973"/>
+    <region xml:id="r19" anchors="2980 3105"/>
+    <region xml:id="r20" anchors="3112 3224"/>
+    <region xml:id="r21" anchors="3231 3425"/>
+    <region xml:id="r23" anchors="3426 3634"/>
+    <region xml:id="r24" anchors="3635 3760"/>
+    <region xml:id="r25" anchors="3761 3935"/>
+    <region xml:id="r26" anchors="3936 4115"/>
+    <region xml:id="r27" anchors="4122 4331"/>
+    <region xml:id="r28" anchors="4332 4519"/>
+    <region xml:id="r29" anchors="4526 4578"/>
+    <region xml:id="r30" anchors="4585 4595"/>
+    <region xml:id="r31" anchors="4602 4655"/>
+    <region xml:id="r32" anchors="4662 4696"/>
+    <node xml:id="n0">
+        <link targets="r0"/>
+    </node>
+    <a label="s" ref="n0" as="xces">
+        <fs>
+            <f name="id" value="p1s1"/>
+        </fs>
+    </a>
+    <node xml:id="n1">
+        <link targets="r1"/>
+    </node>
+    <a label="s" ref="n1" as="xces">
+        <fs>
+            <f name="id" value="p2s1"/>
+        </fs>
+    </a>
+    <node xml:id="n10">
+        <link targets="r10"/>
+    </node>
+    <a label="s" ref="n10" as="xces">
+        <fs>
+            <f name="id" value="p7s1"/>
+        </fs>
+    </a>
+    <node xml:id="n11">
+        <link targets="r11"/>
+    </node>
+    <a label="s" ref="n11" as="xces">
+        <fs>
+            <f name="id" value="p7s2"/>
+        </fs>
+    </a>
+    <node xml:id="n12">
+        <link targets="r12"/>
+    </node>
+    <a label="s" ref="n12" as="xces">
+        <fs>
+            <f name="id" value="p7s3"/>
+        </fs>
+    </a>
+    <node xml:id="n13">
+        <link targets="r13"/>
+    </node>
+    <a label="s" ref="n13" as="xces">
+        <fs>
+            <f name="id" value="p8s1"/>
+        </fs>
+    </a>
+    <node xml:id="n14">
+        <link targets="r14"/>
+    </node>
+    <a label="s" ref="n14" as="xces">
+        <fs>
+            <f name="id" value="p8s2"/>
+        </fs>
+    </a>
+    <node xml:id="n15">
+        <link targets="r15"/>
+    </node>
+    <a label="s" ref="n15" as="xces">
+        <fs>
+            <f name="id" value="p8s2.1"/>
+        </fs>
+    </a>
+    <node xml:id="n16">
+        <link targets="r16"/>
+    </node>
+    <a label="s" ref="n16" as="xces">
+        <fs>
+            <f name="id" value="p8s2.2"/>
+        </fs>
+    </a>
+    <node xml:id="n17">
+        <link targets="r17"/>
+    </node>
+    <a label="s" ref="n17" as="xces">
+        <fs>
+            <f name="id" value="p8s2.3"/>
+        </fs>
+    </a>
+    <node xml:id="n18">
+        <link targets="r18"/>
+    </node>
+    <a label="s" ref="n18" as="xces">
+        <fs>
+            <f name="id" value="p8s2.4"/>
+        </fs>
+    </a>
+    <node xml:id="n19">
+        <link targets="r19"/>
+    </node>
+    <a label="s" ref="n19" as="xces">
+        <fs>
+            <f name="id" value="p11s1"/>
+        </fs>
+    </a>
+    <node xml:id="n2">
+        <link targets="r2"/>
+    </node>
+    <a label="s" ref="n2" as="xces">
+        <fs>
+            <f name="id" value="p3s1"/>
+        </fs>
+    </a>
+    <node xml:id="n20">
+        <link targets="r20"/>
+    </node>
+    <a label="s" ref="n20" as="xces">
+        <fs>
+            <f name="id" value="p12s1"/>
+        </fs>
+    </a>
+    <node xml:id="n21">
+        <link targets="r21"/>
+    </node>
+    <a label="s" ref="n21" as="xces">
+        <fs>
+            <f name="id" value="p13s1"/>
+        </fs>
+    </a>
+    <node xml:id="n22">
+        <link targets="r23"/>
+    </node>
+    <a label="s" ref="n22" as="xces">
+        <fs>
+            <f name="id" value="p13s1.1"/>
+        </fs>
+    </a>
+    <node xml:id="n23">
+        <link targets="r24"/>
+    </node>
+    <a label="s" ref="n23" as="xces">
+        <fs>
+            <f name="id" value="p14s2"/>
+        </fs>
+    </a>
+    <node xml:id="n24">
+        <link targets="r25"/>
+    </node>
+    <a label="s" ref="n24" as="xces">
+        <fs>
+            <f name="id" value="p14s3"/>
+        </fs>
+    </a>
+    <node xml:id="n25">
+        <link targets="r26"/>
+    </node>
+    <a label="s" ref="n25" as="xces">
+        <fs>
+            <f name="id" value="p14s4"/>
+        </fs>
+    </a>
+    <node xml:id="n26">
+        <link targets="r27"/>
+    </node>
+    <a label="s" ref="n26" as="xces">
+        <fs>
+            <f name="id" value="p15s1"/>
+        </fs>
+    </a>
+    <node xml:id="n27">
+        <link targets="r28"/>
+    </node>
+    <a label="s" ref="n27" as="xces">
+        <fs>
+            <f name="id" value="p15s2"/>
+        </fs>
+    </a>
+    <node xml:id="n28">
+        <link targets="r29"/>
+    </node>
+    <a label="s" ref="n28" as="xces">
+        <fs>
+            <f name="id" value="p16s1"/>
+        </fs>
+    </a>
+    <node xml:id="n29">
+        <link targets="r30"/>
+    </node>
+    <a label="s" ref="n29" as="xces">
+        <fs>
+            <f name="id" value="p17s1"/>
+        </fs>
+    </a>
+    <node xml:id="n3">
+        <link targets="r3"/>
+    </node>
+    <a label="s" ref="n3" as="xces">
+        <fs>
+            <f name="id" value="p4s1"/>
+        </fs>
+    </a>
+    <node xml:id="n30">
+        <link targets="r31"/>
+    </node>
+    <a label="s" ref="n30" as="xces">
+        <fs>
+            <f name="id" value="p18s1"/>
+        </fs>
+    </a>
+    <node xml:id="n31">
+        <link targets="r32"/>
+    </node>
+    <a label="s" ref="n31" as="xces">
+        <fs>
+            <f name="id" value="p19s1"/>
+        </fs>
+    </a>
+    <node xml:id="n4">
+        <link targets="r4"/>
+    </node>
+    <a label="s" ref="n4" as="xces">
+        <fs>
+            <f name="id" value="p4s2"/>
+        </fs>
+    </a>
+    <node xml:id="n5">
+        <link targets="r5"/>
+    </node>
+    <a label="s" ref="n5" as="xces">
+        <fs>
+            <f name="id" value="p4s3"/>
+        </fs>
+    </a>
+    <node xml:id="n6">
+        <link targets="r6"/>
+    </node>
+    <a label="s" ref="n6" as="xces">
+        <fs>
+            <f name="id" value="p5s1"/>
+        </fs>
+    </a>
+    <node xml:id="n7">
+        <link targets="r7"/>
+    </node>
+    <a label="s" ref="n7" as="xces">
+        <fs>
+            <f name="id" value="p6s1"/>
+        </fs>
+    </a>
+    <node xml:id="n8">
+        <link targets="r8"/>
+    </node>
+    <a label="s" ref="n8" as="xces">
+        <fs>
+            <f name="id" value="p6s2"/>
+        </fs>
+    </a>
+    <node xml:id="n9">
+        <link targets="r9"/>
+    </node>
+    <a label="s" ref="n9" as="xces">
+        <fs>
+            <f name="id" value="p6s3"/>
+        </fs>
+    </a>
+</graph>

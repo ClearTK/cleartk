@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graph xmlns="http://www.xces.org/ns/GrAF/1.0/">
+    <header>
+        <tagsDecl>
+            <tagUsage gi="person" occurs="1"/>
+            <tagUsage gi="location" occurs="1"/>
+            <tagUsage gi="date" occurs="2"/>
+            <tagUsage gi="org" occurs="9"/>
+        </tagsDecl>
+        <dependencies>
+            <dependsOn type="penn"/>
+        </dependencies>
+        <annotationSets>
+            <annotationSet name="xces" type="http://www.xces.org/schema/2003"/>
+        </annotationSets>
+    </header>
+    <node xml:id="n0"/>
+    <a label="date" ref="n0" as="xces">
+        <fs>
+            <f name="kind" value="date"/>
+        </fs>
+    </a>
+    <node xml:id="n1"/>
+    <a label="org" ref="n1" as="xces">
+        <fs>
+            <f name="type" value="other"/>
+        </fs>
+    </a>
+    <node xml:id="n10"/>
+    <a label="org" ref="n10" as="xces">
+        <fs>
+            <f name="type" value="other"/>
+        </fs>
+    </a>
+    <node xml:id="n11"/>
+    <a label="person" ref="n11" as="xces">
+        <fs>
+            <f name="sex" value="female"/>
+        </fs>
+    </a>
+    <node xml:id="n12"/>
+    <a label="org" ref="n12" as="xces">
+        <fs>
+            <f name="type" value="religious"/>
+        </fs>
+    </a>
+    <node xml:id="n2"/>
+    <a label="org" ref="n2" as="xces">
+        <fs>
+            <f name="type" value="other"/>
+        </fs>
+    </a>
+    <node xml:id="n3"/>
+    <a label="org" ref="n3" as="xces">
+        <fs>
+            <f name="type" value="corporation"/>
+        </fs>
+    </a>
+    <node xml:id="n4"/>
+    <a label="org" ref="n4" as="xces">
+        <fs>
+            <f name="type" value="other"/>
+        </fs>
+    </a>
+    <node xml:id="n5"/>
+    <a label="org" ref="n5" as="xces">
+        <fs>
+            <f name="type" value="other"/>
+        </fs>
+    </a>
+    <node xml:id="n6"/>
+    <a label="org" ref="n6" as="xces">
+        <fs>
+            <f name="type" value="other"/>
+        </fs>
+    </a>
+    <node xml:id="n7"/>
+    <a label="date" ref="n7" as="xces">
+        <fs>
+            <f name="kind" value="date"/>
+        </fs>
+    </a>
+    <node xml:id="n8"/>
+    <a label="org" ref="n8" as="xces">
+        <fs>
+            <f name="type" value="other"/>
+        </fs>
+    </a>
+    <node xml:id="n9"/>
+    <a label="location" ref="n9" as="xces">
+        <fs>
+            <f name="type" value="region"/>
+        </fs>
+    </a>
+    <edge xml:id="lnk35" from="n8" to="penn-n326"/>
+    <edge xml:id="lnk34" from="n8" to="penn-n325"/>
+    <edge xml:id="lnk33" from="n7" to="penn-n324"/>
+    <edge xml:id="lnk32" from="n6" to="penn-n313"/>
+    <edge xml:id="lnk31" from="n6" to="penn-n312"/>
+    <edge xml:id="lnk30" from="n5" to="penn-n216"/>
+    <edge xml:id="lnk9" from="n11" to="penn-n398"/>
+    <edge xml:id="lnk8" from="n11" to="penn-n397"/>
+    <edge xml:id="lnk7" from="n10" to="penn-n375"/>
+    <edge xml:id="lnk6" from="n10" to="penn-n374"/>
+    <edge xml:id="lnk5" from="n1" to="penn-n65"/>
+    <edge xml:id="lnk4" from="n1" to="penn-n64"/>
+    <edge xml:id="lnk3" from="n0" to="penn-n3"/>
+    <edge xml:id="lnk2" from="n0" to="penn-n2"/>
+    <edge xml:id="lnk1" from="n0" to="penn-n1"/>
+    <edge xml:id="lnk0" from="n0" to="penn-n0"/>
+    <edge xml:id="lnk29" from="n5" to="penn-n215"/>
+    <edge xml:id="lnk28" from="n4" to="penn-n168"/>
+    <edge xml:id="lnk27" from="n4" to="penn-n167"/>
+    <edge xml:id="lnk26" from="n4" to="penn-n166"/>
+    <edge xml:id="lnk25" from="n4" to="penn-n165"/>
+    <edge xml:id="lnk24" from="n4" to="penn-n164"/>
+    <edge xml:id="lnk23" from="n3" to="penn-n157"/>
+    <edge xml:id="lnk22" from="n3" to="penn-n156"/>
+    <edge xml:id="lnk21" from="n3" to="penn-n155"/>
+    <edge xml:id="lnk20" from="n3" to="penn-n154"/>
+    <edge xml:id="lnk19" from="n2" to="penn-n88"/>
+    <edge xml:id="lnk18" from="n2" to="penn-n87"/>
+    <edge xml:id="lnk17" from="n12" to="penn-n412"/>
+    <edge xml:id="lnk16" from="n12" to="penn-n411"/>
+    <edge xml:id="lnk15" from="n12" to="penn-n410"/>
+    <edge xml:id="lnk14" from="n12" to="penn-n409"/>
+    <edge xml:id="lnk13" from="n12" to="penn-n408"/>
+    <edge xml:id="lnk12" from="n12" to="penn-n407"/>
+    <edge xml:id="lnk11" from="n12" to="penn-n406"/>
+    <edge xml:id="lnk10" from="n11" to="penn-n399"/>
+    <edge xml:id="lnk37" from="n9" to="penn-n335"/>
+    <edge xml:id="lnk36" from="n9" to="penn-n334"/>
+</graph>

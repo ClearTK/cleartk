@@ -1,0 +1,5188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graph xmlns="http://www.xces.org/ns/GrAF/1.0/">
+    <header>
+        <tagsDecl>
+            <tagUsage gi="tok" occurs="374"/>
+        </tagsDecl>
+        <dependencies>
+            <dependsOn type="seg"/>
+        </dependencies>
+        <annotationSets>
+            <annotationSet name="xces" type="http://www.xces.org/schema/2003"/>
+        </annotationSets>
+    </header>
+    <node xml:id="penn-n0">
+        <link targets="seg-r0"/>
+    </node>
+    <a label="tok" ref="penn-n0" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n0"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="June"/>
+            <f name="length" value="4"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n1">
+        <link targets="seg-r2"/>
+    </node>
+    <a label="tok" ref="penn-n1" as="xces">
+        <fs>
+            <f name="kind" value="number"/>
+            <f name="msd" value="CD"/>
+            <f name="length" value="1"/>
+            <f name="string" value="6"/>
+            <f name="graf:id" value="penn-n1"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n10">
+        <link targets="seg-r18"/>
+    </node>
+    <a label="tok" ref="penn-n10" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n10"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Dear"/>
+            <f name="length" value="4"/>
+            <f name="msd" value="RB"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n100">
+        <link targets="seg-r184"/>
+    </node>
+    <a label="tok" ref="penn-n100" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n100"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Young"/>
+            <f name="length" value="5"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n101">
+        <link targets="seg-r186"/>
+    </node>
+    <a label="tok" ref="penn-n101" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n101"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Friends"/>
+            <f name="length" value="7"/>
+            <f name="msd" value="NNPS"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n102">
+        <link targets="seg-r188"/>
+    </node>
+    <a label="tok" ref="penn-n102" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n102"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="of"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="IN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n103">
+        <link targets="seg-r190"/>
+    </node>
+    <a label="tok" ref="penn-n103" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n103"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Art"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n104">
+        <link targets="seg-r192"/>
+    </node>
+    <a label="tok" ref="penn-n104" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n104"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="group"/>
+            <f name="length" value="5"/>
+            <f name="msd" value="NN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n105">
+        <link targets="seg-r193"/>
+    </node>
+    <a label="tok" ref="penn-n105" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value="."/>
+            <f name="length" value="1"/>
+            <f name="string" value="."/>
+            <f name="graf:id" value="penn-n105"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n106">
+        <link targets="seg-r195"/>
+    </node>
+    <a label="tok" ref="penn-n106" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n106"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Additionally"/>
+            <f name="length" value="12"/>
+            <f name="msd" value="RB"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n107">
+        <link targets="seg-r196"/>
+    </node>
+    <a label="tok" ref="penn-n107" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value=","/>
+            <f name="length" value="1"/>
+            <f name="string" value=","/>
+            <f name="graf:id" value="penn-n107"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n108">
+        <link targets="seg-r198"/>
+    </node>
+    <a label="tok" ref="penn-n108" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n108"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="I"/>
+            <f name="length" value="1"/>
+            <f name="msd" value="PRP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n109">
+        <link targets="seg-r200"/>
+    </node>
+    <a label="tok" ref="penn-n109" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n109"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="am"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="VBP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n11">
+        <link targets="seg-r20"/>
+    </node>
+    <a label="tok" ref="penn-n11" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n11"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Name"/>
+            <f name="length" value="4"/>
+            <f name="msd" value="NN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n110">
+        <link targets="seg-r202"/>
+    </node>
+    <a label="tok" ref="penn-n110" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n110"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="sending"/>
+            <f name="length" value="7"/>
+            <f name="msd" value="VBG"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n111">
+        <link targets="seg-r204"/>
+    </node>
+    <a label="tok" ref="penn-n111" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n111"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="traditional"/>
+            <f name="length" value="11"/>
+            <f name="msd" value="JJ"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n112">
+        <link targets="seg-r206"/>
+    </node>
+    <a label="tok" ref="penn-n112" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n112"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="background"/>
+            <f name="length" value="10"/>
+            <f name="msd" value="NN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n113">
+        <link targets="seg-r208"/>
+    </node>
+    <a label="tok" ref="penn-n113" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n113"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="materials"/>
+            <f name="length" value="9"/>
+            <f name="msd" value="NNS"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n114">
+        <link targets="seg-r210"/>
+    </node>
+    <a label="tok" ref="penn-n114" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n114"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="on"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="IN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n115">
+        <link targets="seg-r212"/>
+    </node>
+    <a label="tok" ref="penn-n115" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n115"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="the"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="DT"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n116">
+        <link targets="seg-r214"/>
+    </node>
+    <a label="tok" ref="penn-n116" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n116"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Museum"/>
+            <f name="length" value="6"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n117">
+        <link targets="seg-r216"/>
+    </node>
+    <a label="tok" ref="penn-n117" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n117"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="and"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="CC"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n118">
+        <link targets="seg-r218"/>
+    </node>
+    <a label="tok" ref="penn-n118" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n118"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="the"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="DT"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n119">
+        <link targets="seg-r220"/>
+    </node>
+    <a label="tok" ref="penn-n119" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n119"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="two"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="CD"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n12">
+        <link targets="seg-r21"/>
+    </node>
+    <a label="tok" ref="penn-n12" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value=":"/>
+            <f name="length" value="1"/>
+            <f name="string" value=":"/>
+            <f name="graf:id" value="penn-n12"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n120">
+        <link targets="seg-r222"/>
+    </node>
+    <a label="tok" ref="penn-n120" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n120"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="latest"/>
+            <f name="length" value="6"/>
+            <f name="msd" value="JJS"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n121">
+        <link targets="seg-r224"/>
+    </node>
+    <a label="tok" ref="penn-n121" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n121"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="issues"/>
+            <f name="length" value="6"/>
+            <f name="msd" value="NNS"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n122">
+        <link targets="seg-r226"/>
+    </node>
+    <a label="tok" ref="penn-n122" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n122"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="of"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="IN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n123">
+        <link targets="seg-r228"/>
+    </node>
+    <a label="tok" ref="penn-n123" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n123"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="our"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="PRP$"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n124">
+        <link targets="seg-r230"/>
+    </node>
+    <a label="tok" ref="penn-n124" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n124"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Previews"/>
+            <f name="length" value="8"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n125">
+        <link targets="seg-r232"/>
+    </node>
+    <a label="tok" ref="penn-n125" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n125"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Magazine"/>
+            <f name="length" value="8"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n126">
+        <link targets="seg-r234"/>
+    </node>
+    <a label="tok" ref="penn-n126" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n126"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="detailing"/>
+            <f name="length" value="9"/>
+            <f name="msd" value="VBG"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n127">
+        <link targets="seg-r236"/>
+    </node>
+    <a label="tok" ref="penn-n127" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n127"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="upcoming"/>
+            <f name="length" value="8"/>
+            <f name="msd" value="JJ"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n128">
+        <link targets="seg-r238"/>
+    </node>
+    <a label="tok" ref="penn-n128" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n128"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="events"/>
+            <f name="length" value="6"/>
+            <f name="msd" value="NNS"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n129">
+        <link targets="seg-r239"/>
+    </node>
+    <a label="tok" ref="penn-n129" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value=","/>
+            <f name="length" value="1"/>
+            <f name="string" value=","/>
+            <f name="graf:id" value="penn-n129"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n13">
+        <link targets="seg-r23"/>
+    </node>
+    <a label="tok" ref="penn-n13" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n13"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Pat"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n130">
+        <link targets="seg-r241"/>
+    </node>
+    <a label="tok" ref="penn-n130" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n130"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="exhibitions"/>
+            <f name="length" value="11"/>
+            <f name="msd" value="NNS"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n131">
+        <link targets="seg-r242"/>
+    </node>
+    <a label="tok" ref="penn-n131" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value=","/>
+            <f name="length" value="1"/>
+            <f name="string" value=","/>
+            <f name="graf:id" value="penn-n131"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n132">
+        <link targets="seg-r244"/>
+    </node>
+    <a label="tok" ref="penn-n132" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n132"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="and"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="CC"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n133">
+        <link targets="seg-r246"/>
+    </node>
+    <a label="tok" ref="penn-n133" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n133"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="educational"/>
+            <f name="length" value="11"/>
+            <f name="msd" value="JJ"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n134">
+        <link targets="seg-r248"/>
+    </node>
+    <a label="tok" ref="penn-n134" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n134"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="programs"/>
+            <f name="length" value="8"/>
+            <f name="msd" value="NNS"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n135">
+        <link targets="seg-r249"/>
+    </node>
+    <a label="tok" ref="penn-n135" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value="."/>
+            <f name="length" value="1"/>
+            <f name="string" value="."/>
+            <f name="graf:id" value="penn-n135"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n136">
+        <link targets="seg-r251"/>
+    </node>
+    <a label="tok" ref="penn-n136" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n136"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="These"/>
+            <f name="length" value="5"/>
+            <f name="msd" value="DT"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n137">
+        <link targets="seg-r253"/>
+    </node>
+    <a label="tok" ref="penn-n137" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n137"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="are"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="VBP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n138">
+        <link targets="seg-r255"/>
+    </node>
+    <a label="tok" ref="penn-n138" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n138"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="particularly"/>
+            <f name="length" value="12"/>
+            <f name="msd" value="RB"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n139">
+        <link targets="seg-r257"/>
+    </node>
+    <a label="tok" ref="penn-n139" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n139"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="exciting"/>
+            <f name="length" value="8"/>
+            <f name="msd" value="JJ"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n14">
+        <link targets="seg-r25"/>
+    </node>
+    <a label="tok" ref="penn-n14" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n14"/>
+            <f name="orth" value="mixedCaps"/>
+            <f name="string" value="LaCrosse"/>
+            <f name="length" value="8"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n140">
+        <link targets="seg-r259"/>
+    </node>
+    <a label="tok" ref="penn-n140" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n140"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="times"/>
+            <f name="length" value="5"/>
+            <f name="msd" value="NNS"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n141">
+        <link targets="seg-r261"/>
+    </node>
+    <a label="tok" ref="penn-n141" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n141"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="at"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="IN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n142">
+        <link targets="seg-r263"/>
+    </node>
+    <a label="tok" ref="penn-n142" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n142"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="the"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="DT"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n143">
+        <link targets="seg-r265"/>
+    </node>
+    <a label="tok" ref="penn-n143" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n143"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Indianapolis"/>
+            <f name="length" value="12"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n144">
+        <link targets="seg-r267"/>
+    </node>
+    <a label="tok" ref="penn-n144" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n144"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Museum"/>
+            <f name="length" value="6"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n145">
+        <link targets="seg-r269"/>
+    </node>
+    <a label="tok" ref="penn-n145" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n145"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="of"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="IN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n146">
+        <link targets="seg-r271"/>
+    </node>
+    <a label="tok" ref="penn-n146" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n146"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Art"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n147">
+        <link targets="seg-r272"/>
+    </node>
+    <a label="tok" ref="penn-n147" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value=":"/>
+            <f name="length" value="1"/>
+            <f name="string" value=":"/>
+            <f name="graf:id" value="penn-n147"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n148">
+        <link targets="seg-r274"/>
+    </node>
+    <a label="tok" ref="penn-n148" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n148"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Progress"/>
+            <f name="length" value="8"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n149">
+        <link targets="seg-r276"/>
+    </node>
+    <a label="tok" ref="penn-n149" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n149"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="continues"/>
+            <f name="length" value="9"/>
+            <f name="msd" value="VBZ"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n15">
+        <link targets="seg-r27"/>
+    </node>
+    <a label="tok" ref="penn-n15" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n15"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="asked"/>
+            <f name="length" value="5"/>
+            <f name="msd" value="VBD"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n150">
+        <link targets="seg-r278"/>
+    </node>
+    <a label="tok" ref="penn-n150" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n150"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="on"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="IN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n151">
+        <link targets="seg-r280"/>
+    </node>
+    <a label="tok" ref="penn-n151" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n151"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="the"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="DT"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n152">
+        <link targets="seg-r282"/>
+    </node>
+    <a label="tok" ref="penn-n152" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n152"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="J"/>
+            <f name="length" value="1"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n153">
+        <link targets="seg-r283"/>
+    </node>
+    <a label="tok" ref="penn-n153" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value="."/>
+            <f name="length" value="1"/>
+            <f name="string" value="."/>
+            <f name="graf:id" value="penn-n153"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n154">
+        <link targets="seg-r284"/>
+    </node>
+    <a label="tok" ref="penn-n154" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n154"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="K"/>
+            <f name="length" value="1"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n155">
+        <link targets="seg-r285"/>
+    </node>
+    <a label="tok" ref="penn-n155" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value="."/>
+            <f name="length" value="1"/>
+            <f name="string" value="."/>
+            <f name="graf:id" value="penn-n155"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n156">
+        <link targets="seg-r287"/>
+    </node>
+    <a label="tok" ref="penn-n156" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n156"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Lilly"/>
+            <f name="length" value="5"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n157">
+        <link targets="seg-r289 seg-r290"/>
+    </node>
+    <a label="tok" ref="penn-n157" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n157"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="estate-"/>
+            <f name="length" value="7"/>
+            <f name="msd" value="NN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n158">
+        <link targets="seg-r291"/>
+    </node>
+    <a label="tok" ref="penn-n158" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n158"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Oldfields"/>
+            <f name="length" value="9"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n159">
+        <link targets="seg-r292"/>
+    </node>
+    <a label="tok" ref="penn-n159" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value=","/>
+            <f name="length" value="1"/>
+            <f name="string" value=","/>
+            <f name="graf:id" value="penn-n159"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n16">
+        <link targets="seg-r29"/>
+    </node>
+    <a label="tok" ref="penn-n16" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n16"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="me"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="PRP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n160">
+        <link targets="seg-r294"/>
+    </node>
+    <a label="tok" ref="penn-n160" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n160"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="our"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="PRP$"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n161">
+        <link targets="seg-r296"/>
+    </node>
+    <a label="tok" ref="penn-n161" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n161"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Ravine"/>
+            <f name="length" value="6"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n162">
+        <link targets="seg-r298"/>
+    </node>
+    <a label="tok" ref="penn-n162" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n162"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Garden"/>
+            <f name="length" value="6"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n163">
+        <link targets="seg-r300"/>
+    </node>
+    <a label="tok" ref="penn-n163" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n163"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="has"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="VBZ"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n164">
+        <link targets="seg-r302"/>
+    </node>
+    <a label="tok" ref="penn-n164" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n164"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="been"/>
+            <f name="length" value="4"/>
+            <f name="msd" value="VBN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n165">
+        <link targets="seg-r304"/>
+    </node>
+    <a label="tok" ref="penn-n165" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n165"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="restored"/>
+            <f name="length" value="8"/>
+            <f name="msd" value="VBN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n166">
+        <link targets="seg-r306"/>
+    </node>
+    <a label="tok" ref="penn-n166" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n166"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="to"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="TO"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n167">
+        <link targets="seg-r308"/>
+    </node>
+    <a label="tok" ref="penn-n167" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n167"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="its"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="PRP$"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n168">
+        <link targets="seg-r310"/>
+    </node>
+    <a label="tok" ref="penn-n168" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n168"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="original"/>
+            <f name="length" value="8"/>
+            <f name="msd" value="JJ"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n169">
+        <link targets="seg-r312"/>
+    </node>
+    <a label="tok" ref="penn-n169" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n169"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="splendor"/>
+            <f name="length" value="8"/>
+            <f name="msd" value="NN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n17">
+        <link targets="seg-r31"/>
+    </node>
+    <a label="tok" ref="penn-n17" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n17"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="to"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="TO"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n170">
+        <link targets="seg-r313"/>
+    </node>
+    <a label="tok" ref="penn-n170" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value=","/>
+            <f name="length" value="1"/>
+            <f name="string" value=","/>
+            <f name="graf:id" value="penn-n170"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n171">
+        <link targets="seg-r315"/>
+    </node>
+    <a label="tok" ref="penn-n171" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n171"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="and"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="CC"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n172">
+        <link targets="seg-r317"/>
+    </node>
+    <a label="tok" ref="penn-n172" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n172"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="there"/>
+            <f name="length" value="5"/>
+            <f name="msd" value="EX"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n173">
+        <link targets="seg-r319"/>
+    </node>
+    <a label="tok" ref="penn-n173" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n173"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="is"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="VBZ"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n174">
+        <link targets="seg-r321"/>
+    </node>
+    <a label="tok" ref="penn-n174" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n174"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="national"/>
+            <f name="length" value="8"/>
+            <f name="msd" value="JJ"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n175">
+        <link targets="seg-r323"/>
+    </node>
+    <a label="tok" ref="penn-n175" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n175"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="attention"/>
+            <f name="length" value="9"/>
+            <f name="msd" value="NN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n176">
+        <link targets="seg-r325"/>
+    </node>
+    <a label="tok" ref="penn-n176" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n176"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="showered"/>
+            <f name="length" value="8"/>
+            <f name="msd" value="JJ"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n177">
+        <link targets="seg-r327"/>
+    </node>
+    <a label="tok" ref="penn-n177" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n177"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="on"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="IN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n178">
+        <link targets="seg-r329"/>
+    </node>
+    <a label="tok" ref="penn-n178" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n178"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="our"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="PRP$"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n179">
+        <link targets="seg-r331"/>
+    </node>
+    <a label="tok" ref="penn-n179" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n179"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="current"/>
+            <f name="length" value="7"/>
+            <f name="msd" value="JJ"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n18">
+        <link targets="seg-r33"/>
+    </node>
+    <a label="tok" ref="penn-n18" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n18"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="send"/>
+            <f name="length" value="4"/>
+            <f name="msd" value="VB"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n180">
+        <link targets="seg-r333"/>
+    </node>
+    <a label="tok" ref="penn-n180" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n180"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="exhibition"/>
+            <f name="length" value="10"/>
+            <f name="msd" value="NN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n181">
+        <link targets="seg-r335"/>
+    </node>
+    <a label="tok" ref="penn-n181" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n181"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="of"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="IN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n182">
+        <link targets="seg-r337"/>
+    </node>
+    <a label="tok" ref="penn-n182" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n182"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Japanese"/>
+            <f name="length" value="8"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n183">
+        <link targets="seg-r339"/>
+    </node>
+    <a label="tok" ref="penn-n183" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n183"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Painting"/>
+            <f name="length" value="8"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n184">
+        <link targets="seg-r340"/>
+    </node>
+    <a label="tok" ref="penn-n184" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value="."/>
+            <f name="length" value="1"/>
+            <f name="string" value="."/>
+            <f name="graf:id" value="penn-n184"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n185">
+        <link targets="seg-r342"/>
+    </node>
+    <a label="tok" ref="penn-n185" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n185"/>
+            <f name="position" value="startpunct"/>
+            <f name="string" value="("/>
+            <f name="length" value="1"/>
+            <f name="msd" value="("/>
+            <f name="kind" value="punctuation"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n186">
+        <link targets="seg-r343"/>
+    </node>
+    <a label="tok" ref="penn-n186" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n186"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="please"/>
+            <f name="length" value="6"/>
+            <f name="msd" value="VB"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n187">
+        <link targets="seg-r345"/>
+    </node>
+    <a label="tok" ref="penn-n187" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n187"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="see"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="VB"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n188">
+        <link targets="seg-r347"/>
+    </node>
+    <a label="tok" ref="penn-n188" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n188"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="The"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="DT"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n189">
+        <link targets="seg-r349"/>
+    </node>
+    <a label="tok" ref="penn-n189" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n189"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="New"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n19">
+        <link targets="seg-r35"/>
+    </node>
+    <a label="tok" ref="penn-n19" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n19"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="this"/>
+            <f name="length" value="4"/>
+            <f name="msd" value="DT"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n190">
+        <link targets="seg-r351"/>
+    </node>
+    <a label="tok" ref="penn-n190" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n190"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="York"/>
+            <f name="length" value="4"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n191">
+        <link targets="seg-r353"/>
+    </node>
+    <a label="tok" ref="penn-n191" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n191"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Times"/>
+            <f name="length" value="5"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n192">
+        <link targets="seg-r355"/>
+    </node>
+    <a label="tok" ref="penn-n192" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n192"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="article"/>
+            <f name="length" value="7"/>
+            <f name="msd" value="NN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n193">
+        <link targets="seg-r357"/>
+    </node>
+    <a label="tok" ref="penn-n193" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n193"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="I"/>
+            <f name="length" value="1"/>
+            <f name="msd" value="PRP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n194">
+        <link targets="seg-r359"/>
+    </node>
+    <a label="tok" ref="penn-n194" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n194"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="have"/>
+            <f name="length" value="4"/>
+            <f name="msd" value="VBP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n195">
+        <link targets="seg-r361"/>
+    </node>
+    <a label="tok" ref="penn-n195" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n195"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="included"/>
+            <f name="length" value="8"/>
+            <f name="msd" value="VBN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n196">
+        <link targets="seg-r362"/>
+    </node>
+    <a label="tok" ref="penn-n196" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value="."/>
+            <f name="length" value="1"/>
+            <f name="string" value="."/>
+            <f name="graf:id" value="penn-n196"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n197">
+        <link targets="seg-r363"/>
+    </node>
+    <a label="tok" ref="penn-n197" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n197"/>
+            <f name="position" value="endpunct"/>
+            <f name="string" value=")"/>
+            <f name="length" value="1"/>
+            <f name="msd" value=")"/>
+            <f name="kind" value="punctuation"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n198">
+        <link targets="seg-r365"/>
+    </node>
+    <a label="tok" ref="penn-n198" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n198"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="With"/>
+            <f name="length" value="4"/>
+            <f name="msd" value="IN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n199">
+        <link targets="seg-r367"/>
+    </node>
+    <a label="tok" ref="penn-n199" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n199"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="thousands"/>
+            <f name="length" value="9"/>
+            <f name="msd" value="NNS"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n2">
+        <link targets="seg-r3"/>
+    </node>
+    <a label="tok" ref="penn-n2" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value=","/>
+            <f name="length" value="1"/>
+            <f name="string" value=","/>
+            <f name="graf:id" value="penn-n2"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n20">
+        <link targets="seg-r37"/>
+    </node>
+    <a label="tok" ref="penn-n20" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n20"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="information"/>
+            <f name="length" value="11"/>
+            <f name="msd" value="NN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n200">
+        <link targets="seg-r369"/>
+    </node>
+    <a label="tok" ref="penn-n200" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n200"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="of"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="IN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n201">
+        <link targets="seg-r371"/>
+    </node>
+    <a label="tok" ref="penn-n201" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n201"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="trees"/>
+            <f name="length" value="5"/>
+            <f name="msd" value="NNS"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n202">
+        <link targets="seg-r373"/>
+    </node>
+    <a label="tok" ref="penn-n202" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n202"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="and"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="CC"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n203">
+        <link targets="seg-r375"/>
+    </node>
+    <a label="tok" ref="penn-n203" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n203"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="flowers"/>
+            <f name="length" value="7"/>
+            <f name="msd" value="NNS"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n204">
+        <link targets="seg-r377"/>
+    </node>
+    <a label="tok" ref="penn-n204" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n204"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="in"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="IN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n205">
+        <link targets="seg-r379"/>
+    </node>
+    <a label="tok" ref="penn-n205" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n205"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="bloom"/>
+            <f name="length" value="5"/>
+            <f name="msd" value="NN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n206">
+        <link targets="seg-r380"/>
+    </node>
+    <a label="tok" ref="penn-n206" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value=","/>
+            <f name="length" value="1"/>
+            <f name="string" value=","/>
+            <f name="graf:id" value="penn-n206"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n207">
+        <link targets="seg-r382"/>
+    </node>
+    <a label="tok" ref="penn-n207" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n207"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="we"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="PRP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n208">
+        <link targets="seg-r384"/>
+    </node>
+    <a label="tok" ref="penn-n208" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n208"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="are"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="VBP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n209">
+        <link targets="seg-r386"/>
+    </node>
+    <a label="tok" ref="penn-n209" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n209"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="having"/>
+            <f name="length" value="6"/>
+            <f name="msd" value="VBG"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n21">
+        <link targets="seg-r39"/>
+    </node>
+    <a label="tok" ref="penn-n21" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n21"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="inviting"/>
+            <f name="length" value="8"/>
+            <f name="msd" value="VBG"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n210">
+        <link targets="seg-r388"/>
+    </node>
+    <a label="tok" ref="penn-n210" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n210"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="a"/>
+            <f name="length" value="1"/>
+            <f name="msd" value="DT"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n211">
+        <link targets="seg-r390"/>
+    </node>
+    <a label="tok" ref="penn-n211" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n211"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="beautiful"/>
+            <f name="length" value="9"/>
+            <f name="msd" value="JJ"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n212">
+        <link targets="seg-r392"/>
+    </node>
+    <a label="tok" ref="penn-n212" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n212"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Spring"/>
+            <f name="length" value="6"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n213">
+        <link targets="seg-r393"/>
+    </node>
+    <a label="tok" ref="penn-n213" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value="."/>
+            <f name="length" value="1"/>
+            <f name="string" value="!"/>
+            <f name="graf:id" value="penn-n213"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n214">
+        <link targets="seg-r395"/>
+    </node>
+    <a label="tok" ref="penn-n214" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n214"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Our"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="PRP$"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n215">
+        <link targets="seg-r397"/>
+    </node>
+    <a label="tok" ref="penn-n215" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n215"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="extraordinary"/>
+            <f name="length" value="13"/>
+            <f name="msd" value="JJ"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n216">
+        <link targets="seg-r399"/>
+    </node>
+    <a label="tok" ref="penn-n216" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n216"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="permanent"/>
+            <f name="length" value="9"/>
+            <f name="msd" value="JJ"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n217">
+        <link targets="seg-r401"/>
+    </node>
+    <a label="tok" ref="penn-n217" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n217"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="collection"/>
+            <f name="length" value="10"/>
+            <f name="msd" value="NN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n218">
+        <link targets="seg-r402"/>
+    </node>
+    <a label="tok" ref="penn-n218" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value=","/>
+            <f name="length" value="1"/>
+            <f name="string" value=","/>
+            <f name="graf:id" value="penn-n218"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n219">
+        <link targets="seg-r404"/>
+    </node>
+    <a label="tok" ref="penn-n219" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n219"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="facility"/>
+            <f name="length" value="8"/>
+            <f name="msd" value="NN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n22">
+        <link targets="seg-r41"/>
+    </node>
+    <a label="tok" ref="penn-n22" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n22"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="you"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="PRP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n220">
+        <link targets="seg-r405"/>
+    </node>
+    <a label="tok" ref="penn-n220" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value=","/>
+            <f name="length" value="1"/>
+            <f name="string" value=","/>
+            <f name="graf:id" value="penn-n220"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n221">
+        <link targets="seg-r407"/>
+    </node>
+    <a label="tok" ref="penn-n221" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n221"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="and"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="CC"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n222">
+        <link targets="seg-r409"/>
+    </node>
+    <a label="tok" ref="penn-n222" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n222"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="grounds"/>
+            <f name="length" value="7"/>
+            <f name="msd" value="NNS"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n223">
+        <link targets="seg-r410"/>
+    </node>
+    <a label="tok" ref="penn-n223" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value=","/>
+            <f name="length" value="1"/>
+            <f name="string" value=","/>
+            <f name="graf:id" value="penn-n223"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n224">
+        <link targets="seg-r412"/>
+    </node>
+    <a label="tok" ref="penn-n224" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n224"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="we"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="PRP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n225">
+        <link targets="seg-r414"/>
+    </node>
+    <a label="tok" ref="penn-n225" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n225"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="understand"/>
+            <f name="length" value="10"/>
+            <f name="msd" value="VBP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n226">
+        <link targets="seg-r416"/>
+    </node>
+    <a label="tok" ref="penn-n226" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n226"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="full"/>
+            <f name="length" value="4"/>
+            <f name="msd" value="JJ"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n227">
+        <link targets="seg-r418"/>
+    </node>
+    <a label="tok" ref="penn-n227" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n227"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="well"/>
+            <f name="length" value="4"/>
+            <f name="msd" value="RB"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n228">
+        <link targets="seg-r419"/>
+    </node>
+    <a label="tok" ref="penn-n228" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value=","/>
+            <f name="length" value="1"/>
+            <f name="string" value=","/>
+            <f name="graf:id" value="penn-n228"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n229">
+        <link targets="seg-r421"/>
+    </node>
+    <a label="tok" ref="penn-n229" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n229"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="would"/>
+            <f name="length" value="5"/>
+            <f name="msd" value="MD"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n23">
+        <link targets="seg-r43"/>
+    </node>
+    <a label="tok" ref="penn-n23" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n23"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="to"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="TO"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n230">
+        <link targets="seg-r423"/>
+    </node>
+    <a label="tok" ref="penn-n230" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n230"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="not"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="RB"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n231">
+        <link targets="seg-r425"/>
+    </node>
+    <a label="tok" ref="penn-n231" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n231"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="be"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="VB"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n232">
+        <link targets="seg-r427"/>
+    </node>
+    <a label="tok" ref="penn-n232" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n232"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="possible"/>
+            <f name="length" value="8"/>
+            <f name="msd" value="JJ"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n233">
+        <link targets="seg-r429"/>
+    </node>
+    <a label="tok" ref="penn-n233" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n233"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="without"/>
+            <f name="length" value="7"/>
+            <f name="msd" value="IN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n234">
+        <link targets="seg-r431"/>
+    </node>
+    <a label="tok" ref="penn-n234" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n234"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="the"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="DT"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n235">
+        <link targets="seg-r433"/>
+    </node>
+    <a label="tok" ref="penn-n235" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n235"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="philanthropic"/>
+            <f name="length" value="13"/>
+            <f name="msd" value="JJ"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n236">
+        <link targets="seg-r435"/>
+    </node>
+    <a label="tok" ref="penn-n236" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n236"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="support"/>
+            <f name="length" value="7"/>
+            <f name="msd" value="NN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n237">
+        <link targets="seg-r437"/>
+    </node>
+    <a label="tok" ref="penn-n237" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n237"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="of"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="IN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n238">
+        <link targets="seg-r439"/>
+    </node>
+    <a label="tok" ref="penn-n238" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n238"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="civic-minded"/>
+            <f name="length" value="12"/>
+            <f name="msd" value="JJ"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n239">
+        <link targets="seg-r441"/>
+    </node>
+    <a label="tok" ref="penn-n239" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n239"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="men"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="NNS"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n24">
+        <link targets="seg-r45"/>
+    </node>
+    <a label="tok" ref="penn-n24" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n24"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="join"/>
+            <f name="length" value="4"/>
+            <f name="msd" value="VB"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n240">
+        <link targets="seg-r443"/>
+    </node>
+    <a label="tok" ref="penn-n240" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n240"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="and"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="CC"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n241">
+        <link targets="seg-r445"/>
+    </node>
+    <a label="tok" ref="penn-n241" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n241"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="women"/>
+            <f name="length" value="5"/>
+            <f name="msd" value="NNS"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n242">
+        <link targets="seg-r446"/>
+    </node>
+    <a label="tok" ref="penn-n242" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value="."/>
+            <f name="length" value="1"/>
+            <f name="string" value="."/>
+            <f name="graf:id" value="penn-n242"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n243">
+        <link targets="seg-r448"/>
+    </node>
+    <a label="tok" ref="penn-n243" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n243"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="In"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="IN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n244">
+        <link targets="seg-r450"/>
+    </node>
+    <a label="tok" ref="penn-n244" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n244"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="joining"/>
+            <f name="length" value="7"/>
+            <f name="msd" value="VBG"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n245">
+        <link targets="seg-r452"/>
+    </node>
+    <a label="tok" ref="penn-n245" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n245"/>
+            <f name="orth" value="allCaps"/>
+            <f name="string" value="SCS"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n246">
+        <link targets="seg-r453"/>
+    </node>
+    <a label="tok" ref="penn-n246" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value=","/>
+            <f name="length" value="1"/>
+            <f name="string" value=","/>
+            <f name="graf:id" value="penn-n246"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n247">
+        <link targets="seg-r455"/>
+    </node>
+    <a label="tok" ref="penn-n247" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n247"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="you"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="PRP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n248">
+        <link targets="seg-r457"/>
+    </node>
+    <a label="tok" ref="penn-n248" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n248"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="join"/>
+            <f name="length" value="4"/>
+            <f name="msd" value="VBP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n249">
+        <link targets="seg-r459"/>
+    </node>
+    <a label="tok" ref="penn-n249" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n249"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="the"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="DT"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n25">
+        <link targets="seg-r47"/>
+    </node>
+    <a label="tok" ref="penn-n25" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n25"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="the"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="DT"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n250">
+        <link targets="seg-r461"/>
+    </node>
+    <a label="tok" ref="penn-n250" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n250"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="ranks"/>
+            <f name="length" value="5"/>
+            <f name="msd" value="NNS"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n251">
+        <link targets="seg-r463"/>
+    </node>
+    <a label="tok" ref="penn-n251" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n251"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="of"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="IN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n252">
+        <link targets="seg-r465"/>
+    </node>
+    <a label="tok" ref="penn-n252" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n252"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="those"/>
+            <f name="length" value="5"/>
+            <f name="msd" value="DT"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n253">
+        <link targets="seg-r467"/>
+    </node>
+    <a label="tok" ref="penn-n253" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n253"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="who"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="WP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n254">
+        <link targets="seg-r469"/>
+    </node>
+    <a label="tok" ref="penn-n254" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n254"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="believe"/>
+            <f name="length" value="7"/>
+            <f name="msd" value="VBP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n255">
+        <link targets="seg-r471"/>
+    </node>
+    <a label="tok" ref="penn-n255" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n255"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="that"/>
+            <f name="length" value="4"/>
+            <f name="msd" value="IN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n256">
+        <link targets="seg-r473"/>
+    </node>
+    <a label="tok" ref="penn-n256" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n257"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="bringing"/>
+            <f name="length" value="8"/>
+            <f name="msd" value="VBG"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n257">
+        <link targets="seg-r475"/>
+    </node>
+    <a label="tok" ref="penn-n257" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n258"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="art"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="NN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n258">
+        <link targets="seg-r477"/>
+    </node>
+    <a label="tok" ref="penn-n258" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n259"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="and"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="CC"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n259">
+        <link targets="seg-r479"/>
+    </node>
+    <a label="tok" ref="penn-n259" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n260"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="art"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="NN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n26">
+        <link targets="seg-r49"/>
+    </node>
+    <a label="tok" ref="penn-n26" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n26"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Georgia"/>
+            <f name="length" value="7"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n260">
+        <link targets="seg-r481"/>
+    </node>
+    <a label="tok" ref="penn-n260" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n261"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="education"/>
+            <f name="length" value="9"/>
+            <f name="msd" value="NN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n261">
+        <link targets="seg-r483"/>
+    </node>
+    <a label="tok" ref="penn-n261" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n262"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="to"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="TO"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n262">
+        <link targets="seg-r485"/>
+    </node>
+    <a label="tok" ref="penn-n262" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n263"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="the"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="DT"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n263">
+        <link targets="seg-r487"/>
+    </node>
+    <a label="tok" ref="penn-n263" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n264"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="city"/>
+            <f name="length" value="4"/>
+            <f name="msd" value="NN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n264">
+        <link targets="seg-r489"/>
+    </node>
+    <a label="tok" ref="penn-n264" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n265"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="makes"/>
+            <f name="length" value="5"/>
+            <f name="msd" value="VBZ"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n265">
+        <link targets="seg-r491"/>
+    </node>
+    <a label="tok" ref="penn-n265" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n266"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="life"/>
+            <f name="length" value="4"/>
+            <f name="msd" value="NN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n266">
+        <link targets="seg-r493"/>
+    </node>
+    <a label="tok" ref="penn-n266" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n267"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="better"/>
+            <f name="length" value="6"/>
+            <f name="msd" value="JJR"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n267">
+        <link targets="seg-r494"/>
+    </node>
+    <a label="tok" ref="penn-n267" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value=","/>
+            <f name="length" value="1"/>
+            <f name="string" value=","/>
+            <f name="graf:id" value="penn-n268"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n268">
+        <link targets="seg-r496"/>
+    </node>
+    <a label="tok" ref="penn-n268" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n269"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="richer"/>
+            <f name="length" value="6"/>
+            <f name="msd" value="JJR"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n269">
+        <link targets="seg-r497"/>
+    </node>
+    <a label="tok" ref="penn-n269" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value=","/>
+            <f name="length" value="1"/>
+            <f name="string" value=","/>
+            <f name="graf:id" value="penn-n270"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n27">
+        <link targets="seg-r51"/>
+    </node>
+    <a label="tok" ref="penn-n27" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n27"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="O"/>
+            <f name="length" value="1"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n270">
+        <link targets="seg-r499"/>
+    </node>
+    <a label="tok" ref="penn-n270" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n271"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="and"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="CC"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n271">
+        <link targets="seg-r501"/>
+    </node>
+    <a label="tok" ref="penn-n271" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n272"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="more"/>
+            <f name="length" value="4"/>
+            <f name="msd" value="RBR"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n272">
+        <link targets="seg-r503"/>
+    </node>
+    <a label="tok" ref="penn-n272" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n273"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="rewarding"/>
+            <f name="length" value="9"/>
+            <f name="msd" value="VBG"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n273">
+        <link targets="seg-r505"/>
+    </node>
+    <a label="tok" ref="penn-n273" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n274"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="for"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="IN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n274">
+        <link targets="seg-r507"/>
+    </node>
+    <a label="tok" ref="penn-n274" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n275"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="the"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="DT"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n275">
+        <link targets="seg-r509"/>
+    </node>
+    <a label="tok" ref="penn-n275" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n276"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="entire"/>
+            <f name="length" value="6"/>
+            <f name="msd" value="JJ"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n276">
+        <link targets="seg-r511"/>
+    </node>
+    <a label="tok" ref="penn-n276" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n277"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="community"/>
+            <f name="length" value="9"/>
+            <f name="msd" value="NN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n277">
+        <link targets="seg-r512"/>
+    </node>
+    <a label="tok" ref="penn-n277" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value="."/>
+            <f name="length" value="1"/>
+            <f name="string" value="."/>
+            <f name="graf:id" value="penn-n278"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n278">
+        <link targets="seg-r514"/>
+    </node>
+    <a label="tok" ref="penn-n278" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n279"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="A"/>
+            <f name="length" value="1"/>
+            <f name="msd" value="DT"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n279">
+        <link targets="seg-r516"/>
+    </node>
+    <a label="tok" ref="penn-n279" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n280"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Second"/>
+            <f name="length" value="6"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n28">
+        <link targets="seg-r52"/>
+    </node>
+    <a label="tok" ref="penn-n28" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value="POS"/>
+            <f name="length" value="1"/>
+            <f name="string" value="'"/>
+            <f name="graf:id" value="penn-n28"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n280">
+        <link targets="seg-r518"/>
+    </node>
+    <a label="tok" ref="penn-n280" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n281"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Century"/>
+            <f name="length" value="7"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n281">
+        <link targets="seg-r520"/>
+    </node>
+    <a label="tok" ref="penn-n281" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n282"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Society"/>
+            <f name="length" value="7"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n282">
+        <link targets="seg-r522"/>
+    </node>
+    <a label="tok" ref="penn-n282" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n283"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="response"/>
+            <f name="length" value="8"/>
+            <f name="msd" value="NN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n283">
+        <link targets="seg-r524"/>
+    </node>
+    <a label="tok" ref="penn-n283" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n284"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="card"/>
+            <f name="length" value="4"/>
+            <f name="msd" value="NN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n284">
+        <link targets="seg-r526"/>
+    </node>
+    <a label="tok" ref="penn-n284" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n285"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="and"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="CC"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n285">
+        <link targets="seg-r528"/>
+    </node>
+    <a label="tok" ref="penn-n285" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n286"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="return"/>
+            <f name="length" value="6"/>
+            <f name="msd" value="NN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n286">
+        <link targets="seg-r530"/>
+    </node>
+    <a label="tok" ref="penn-n286" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n287"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="envelope"/>
+            <f name="length" value="8"/>
+            <f name="msd" value="NN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n287">
+        <link targets="seg-r532"/>
+    </node>
+    <a label="tok" ref="penn-n287" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n288"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="are"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="VBP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n288">
+        <link targets="seg-r534"/>
+    </node>
+    <a label="tok" ref="penn-n288" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n289"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="enclosed"/>
+            <f name="length" value="8"/>
+            <f name="msd" value="VBN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n289">
+        <link targets="seg-r535"/>
+    </node>
+    <a label="tok" ref="penn-n289" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value="."/>
+            <f name="length" value="1"/>
+            <f name="string" value="."/>
+            <f name="graf:id" value="penn-n290"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n29">
+        <link targets="seg-r53"/>
+    </node>
+    <a label="tok" ref="penn-n29" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n29"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Keeffe"/>
+            <f name="length" value="6"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n290">
+        <link targets="seg-r537"/>
+    </node>
+    <a label="tok" ref="penn-n290" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n291"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Should"/>
+            <f name="length" value="6"/>
+            <f name="msd" value="MD"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n291">
+        <link targets="seg-r539"/>
+    </node>
+    <a label="tok" ref="penn-n291" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n292"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="you"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="PRP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n292">
+        <link targets="seg-r541"/>
+    </node>
+    <a label="tok" ref="penn-n292" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n293"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="have"/>
+            <f name="length" value="4"/>
+            <f name="msd" value="VB"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n293">
+        <link targets="seg-r543"/>
+    </node>
+    <a label="tok" ref="penn-n293" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n294"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="questions"/>
+            <f name="length" value="9"/>
+            <f name="msd" value="NNS"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n294">
+        <link targets="seg-r545"/>
+    </node>
+    <a label="tok" ref="penn-n294" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n295"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="or"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="CC"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n295">
+        <link targets="seg-r547"/>
+    </node>
+    <a label="tok" ref="penn-n295" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n296"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="if"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="IN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n296">
+        <link targets="seg-r549"/>
+    </node>
+    <a label="tok" ref="penn-n296" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n297"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="I"/>
+            <f name="length" value="1"/>
+            <f name="msd" value="PRP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n297">
+        <link targets="seg-r551"/>
+    </node>
+    <a label="tok" ref="penn-n297" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n298"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="can"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="MD"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n298">
+        <link targets="seg-r553"/>
+    </node>
+    <a label="tok" ref="penn-n298" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n299"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="be"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="VB"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n299">
+        <link targets="seg-r555"/>
+    </node>
+    <a label="tok" ref="penn-n299" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n300"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="of"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="IN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n3">
+        <link targets="seg-r5"/>
+    </node>
+    <a label="tok" ref="penn-n3" as="xces">
+        <fs>
+            <f name="kind" value="number"/>
+            <f name="msd" value="CD"/>
+            <f name="length" value="4"/>
+            <f name="string" value="2000"/>
+            <f name="graf:id" value="penn-n3"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n30">
+        <link targets="seg-r55"/>
+    </node>
+    <a label="tok" ref="penn-n30" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n30"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Circle"/>
+            <f name="length" value="6"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n300">
+        <link targets="seg-r557"/>
+    </node>
+    <a label="tok" ref="penn-n300" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n301"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="assistance"/>
+            <f name="length" value="10"/>
+            <f name="msd" value="NN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n301">
+        <link targets="seg-r559"/>
+    </node>
+    <a label="tok" ref="penn-n301" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n302"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="in"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="IN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n302">
+        <link targets="seg-r561"/>
+    </node>
+    <a label="tok" ref="penn-n302" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n303"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="any"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="DT"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n303">
+        <link targets="seg-r563"/>
+    </node>
+    <a label="tok" ref="penn-n303" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n304"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="way"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="NN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n304">
+        <link targets="seg-r564"/>
+    </node>
+    <a label="tok" ref="penn-n304" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value=","/>
+            <f name="length" value="1"/>
+            <f name="string" value=","/>
+            <f name="graf:id" value="penn-n305"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n305">
+        <link targets="seg-r566"/>
+    </node>
+    <a label="tok" ref="penn-n305" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n306"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="please"/>
+            <f name="length" value="6"/>
+            <f name="msd" value="VB"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n306">
+        <link targets="seg-r568"/>
+    </node>
+    <a label="tok" ref="penn-n306" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n307"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="call"/>
+            <f name="length" value="4"/>
+            <f name="msd" value="NN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n307">
+        <link targets="seg-r570"/>
+    </node>
+    <a label="tok" ref="penn-n307" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n308"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="me"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="PRP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n308">
+        <link targets="seg-r571"/>
+    </node>
+    <a label="tok" ref="penn-n308" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value=":"/>
+            <f name="length" value="1"/>
+            <f name="string" value=":"/>
+            <f name="graf:id" value="penn-n309"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n309">
+        <link targets="seg-r573"/>
+    </node>
+    <a label="tok" ref="penn-n309" as="xces">
+        <fs>
+            <f name="kind" value="number"/>
+            <f name="msd" value="CD"/>
+            <f name="length" value="3"/>
+            <f name="string" value="317"/>
+            <f name="graf:id" value="penn-n310"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n31">
+        <link targets="seg-r57"/>
+    </node>
+    <a label="tok" ref="penn-n31" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n31"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="of"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="IN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n310">
+        <link targets="seg-r574"/>
+    </node>
+    <a label="tok" ref="penn-n310" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value="."/>
+            <f name="length" value="1"/>
+            <f name="string" value="."/>
+            <f name="graf:id" value="penn-n311"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n311">
+        <link targets="seg-r575"/>
+    </node>
+    <a label="tok" ref="penn-n311" as="xces">
+        <fs>
+            <f name="kind" value="number"/>
+            <f name="msd" value="CD"/>
+            <f name="length" value="3"/>
+            <f name="string" value="923"/>
+            <f name="graf:id" value="penn-n312"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n312">
+        <link targets="seg-r576"/>
+    </node>
+    <a label="tok" ref="penn-n312" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value="."/>
+            <f name="length" value="1"/>
+            <f name="string" value="."/>
+            <f name="graf:id" value="penn-n313"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n313">
+        <link targets="seg-r577"/>
+    </node>
+    <a label="tok" ref="penn-n313" as="xces">
+        <fs>
+            <f name="kind" value="number"/>
+            <f name="msd" value="CD"/>
+            <f name="length" value="4"/>
+            <f name="string" value="1331"/>
+            <f name="graf:id" value="penn-n314"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n314">
+        <link targets="seg-r578"/>
+    </node>
+    <a label="tok" ref="penn-n314" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value=","/>
+            <f name="length" value="1"/>
+            <f name="string" value=","/>
+            <f name="graf:id" value="penn-n315"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n315">
+        <link targets="seg-r580"/>
+    </node>
+    <a label="tok" ref="penn-n315" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n316"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="ext"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="NN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n316">
+        <link targets="seg-r581"/>
+    </node>
+    <a label="tok" ref="penn-n316" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value="."/>
+            <f name="length" value="1"/>
+            <f name="string" value="."/>
+            <f name="graf:id" value="penn-n317"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n317">
+        <link targets="seg-r583"/>
+    </node>
+    <a label="tok" ref="penn-n317" as="xces">
+        <fs>
+            <f name="kind" value="number"/>
+            <f name="msd" value="CD"/>
+            <f name="length" value="3"/>
+            <f name="string" value="248"/>
+            <f name="graf:id" value="penn-n318"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n318">
+        <link targets="seg-r584"/>
+    </node>
+    <a label="tok" ref="penn-n318" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value="."/>
+            <f name="length" value="1"/>
+            <f name="string" value="."/>
+            <f name="graf:id" value="penn-n319"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n319">
+        <link targets="seg-r586"/>
+    </node>
+    <a label="tok" ref="penn-n319" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n320"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Sincerely"/>
+            <f name="length" value="9"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n32">
+        <link targets="seg-r59"/>
+    </node>
+    <a label="tok" ref="penn-n32" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n32"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="the"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="DT"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n320">
+        <link targets="seg-r587"/>
+    </node>
+    <a label="tok" ref="penn-n320" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value=","/>
+            <f name="length" value="1"/>
+            <f name="string" value=","/>
+            <f name="graf:id" value="penn-n321"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n321">
+        <link targets="seg-r590"/>
+    </node>
+    <a label="tok" ref="penn-n321" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n322"/>
+            <f name="orth" value="allCaps"/>
+            <f name="string" value="ARLETTA"/>
+            <f name="length" value="7"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n322">
+        <link targets="seg-r592"/>
+    </node>
+    <a label="tok" ref="penn-n322" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n323"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="B"/>
+            <f name="length" value="1"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n323">
+        <link targets="seg-r593"/>
+    </node>
+    <a label="tok" ref="penn-n323" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value="."/>
+            <f name="length" value="1"/>
+            <f name="string" value="."/>
+            <f name="graf:id" value="penn-n324"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n324">
+        <link targets="seg-r594"/>
+    </node>
+    <a label="tok" ref="penn-n324" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n325"/>
+            <f name="orth" value="allCaps"/>
+            <f name="string" value="NEWTON"/>
+            <f name="length" value="6"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n325">
+        <link targets="seg-r596"/>
+    </node>
+    <a label="tok" ref="penn-n325" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n326"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Donor"/>
+            <f name="length" value="5"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n326">
+        <link targets="seg-r598"/>
+    </node>
+    <a label="tok" ref="penn-n326" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n327"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Relations"/>
+            <f name="length" value="9"/>
+            <f name="msd" value="NNPS"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n327">
+        <link targets="seg-r600"/>
+    </node>
+    <a label="tok" ref="penn-n327" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n328"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Coordinator"/>
+            <f name="length" value="11"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n328">
+        <link targets="seg-r602"/>
+    </node>
+    <a label="tok" ref="penn-n328" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n329"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Enclosures"/>
+            <f name="length" value="10"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n329">
+        <link targets="seg-r603"/>
+    </node>
+    <a label="tok" ref="penn-n329" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value="NN"/>
+            <f name="length" value="1"/>
+            <f name="string" value="/"/>
+            <f name="graf:id" value="penn-n330"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n33">
+        <link targets="seg-r61"/>
+    </node>
+    <a label="tok" ref="penn-n33" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n33"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Indianapolis"/>
+            <f name="length" value="12"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n330">
+        <link targets="seg-r605"/>
+    </node>
+    <a label="tok" ref="penn-n330" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n331"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="P"/>
+            <f name="length" value="1"/>
+            <f name="msd" value="NN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n331">
+        <link targets="seg-r607"/>
+    </node>
+    <a label="tok" ref="penn-n331" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value="."/>
+            <f name="length" value="1"/>
+            <f name="string" value="."/>
+            <f name="graf:id" value="penn-n332"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n332">
+        <link targets="seg-r608"/>
+    </node>
+    <a label="tok" ref="penn-n332" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n333"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="S"/>
+            <f name="length" value="1"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n333">
+        <link targets="seg-r609"/>
+    </node>
+    <a label="tok" ref="penn-n333" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value="."/>
+            <f name="length" value="1"/>
+            <f name="string" value="."/>
+            <f name="graf:id" value="penn-n334"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n334">
+        <link targets="seg-r611"/>
+    </node>
+    <a label="tok" ref="penn-n334" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n335"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Both"/>
+            <f name="length" value="4"/>
+            <f name="msd" value="DT"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n335">
+        <link targets="seg-r613"/>
+    </node>
+    <a label="tok" ref="penn-n335" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n336"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="our"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="PRP$"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n336">
+        <link targets="seg-r615"/>
+    </node>
+    <a label="tok" ref="penn-n336" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n337"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Barefoot"/>
+            <f name="length" value="8"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n337">
+        <link targets="seg-r617"/>
+    </node>
+    <a label="tok" ref="penn-n337" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n338"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="in"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="IN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n338">
+        <link targets="seg-r619"/>
+    </node>
+    <a label="tok" ref="penn-n338" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n339"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="the"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="DT"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n339">
+        <link targets="seg-r621"/>
+    </node>
+    <a label="tok" ref="penn-n339" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n340"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Grass"/>
+            <f name="length" value="5"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n34">
+        <link targets="seg-r63"/>
+    </node>
+    <a label="tok" ref="penn-n34" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n34"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Museum"/>
+            <f name="length" value="6"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n340">
+        <link targets="seg-r623"/>
+    </node>
+    <a label="tok" ref="penn-n340" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n341"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="family"/>
+            <f name="length" value="6"/>
+            <f name="msd" value="NN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n341">
+        <link targets="seg-r625"/>
+    </node>
+    <a label="tok" ref="penn-n341" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n342"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="picnic"/>
+            <f name="length" value="6"/>
+            <f name="msd" value="NN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n342">
+        <link targets="seg-r627"/>
+    </node>
+    <a label="tok" ref="penn-n342" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n343"/>
+            <f name="position" value="startpunct"/>
+            <f name="string" value="("/>
+            <f name="length" value="1"/>
+            <f name="msd" value="("/>
+            <f name="kind" value="punctuation"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n343">
+        <link targets="seg-r628"/>
+    </node>
+    <a label="tok" ref="penn-n343" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n344"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="July"/>
+            <f name="length" value="4"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n344">
+        <link targets="seg-r630"/>
+    </node>
+    <a label="tok" ref="penn-n344" as="xces">
+        <fs>
+            <f name="kind" value="number"/>
+            <f name="msd" value="CD"/>
+            <f name="length" value="2"/>
+            <f name="string" value="23"/>
+            <f name="graf:id" value="penn-n345"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n345">
+        <link targets="seg-r631"/>
+    </node>
+    <a label="tok" ref="penn-n345" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value=","/>
+            <f name="length" value="1"/>
+            <f name="string" value=","/>
+            <f name="graf:id" value="penn-n346"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n346">
+        <link targets="seg-r632"/>
+    </node>
+    <a label="tok" ref="penn-n346" as="xces">
+        <fs>
+            <f name="kind" value="number"/>
+            <f name="msd" value="CD"/>
+            <f name="length" value="4"/>
+            <f name="string" value="2000"/>
+            <f name="graf:id" value="penn-n347"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n347">
+        <link targets="seg-r633"/>
+    </node>
+    <a label="tok" ref="penn-n347" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n348"/>
+            <f name="position" value="endpunct"/>
+            <f name="string" value=")"/>
+            <f name="length" value="1"/>
+            <f name="msd" value=")"/>
+            <f name="kind" value="punctuation"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n348">
+        <link targets="seg-r635"/>
+    </node>
+    <a label="tok" ref="penn-n348" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n349"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="and"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="CC"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n349">
+        <link targets="seg-r637"/>
+    </node>
+    <a label="tok" ref="penn-n349" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n350"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="the"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="DT"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n35">
+        <link targets="seg-r65"/>
+    </node>
+    <a label="tok" ref="penn-n35" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n35"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="of"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="IN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n350">
+        <link targets="seg-r639"/>
+    </node>
+    <a label="tok" ref="penn-n350" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n351"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="annual"/>
+            <f name="length" value="6"/>
+            <f name="msd" value="JJ"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n351">
+        <link targets="seg-r641"/>
+    </node>
+    <a label="tok" ref="penn-n351" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n352"/>
+            <f name="orth" value="allCaps"/>
+            <f name="string" value="SCS"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n352">
+        <link targets="seg-r643"/>
+    </node>
+    <a label="tok" ref="penn-n352" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n353"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Founders"/>
+            <f name="length" value="8"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n353">
+        <link targets="seg-r645"/>
+    </node>
+    <a label="tok" ref="penn-n353" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n354"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Day"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n354">
+        <link targets="seg-r647"/>
+    </node>
+    <a label="tok" ref="penn-n354" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n355"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="celebration"/>
+            <f name="length" value="11"/>
+            <f name="msd" value="NN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n355">
+        <link targets="seg-r649"/>
+    </node>
+    <a label="tok" ref="penn-n355" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n356"/>
+            <f name="position" value="startpunct"/>
+            <f name="string" value="("/>
+            <f name="length" value="1"/>
+            <f name="msd" value="("/>
+            <f name="kind" value="punctuation"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n356">
+        <link targets="seg-r650"/>
+    </node>
+    <a label="tok" ref="penn-n356" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n357"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="October"/>
+            <f name="length" value="7"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n357">
+        <link targets="seg-r652"/>
+    </node>
+    <a label="tok" ref="penn-n357" as="xces">
+        <fs>
+            <f name="kind" value="number"/>
+            <f name="msd" value="CD"/>
+            <f name="length" value="2"/>
+            <f name="string" value="11"/>
+            <f name="graf:id" value="penn-n358"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n358">
+        <link targets="seg-r653"/>
+    </node>
+    <a label="tok" ref="penn-n358" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value=","/>
+            <f name="length" value="1"/>
+            <f name="string" value=","/>
+            <f name="graf:id" value="penn-n359"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n359">
+        <link targets="seg-r654"/>
+    </node>
+    <a label="tok" ref="penn-n359" as="xces">
+        <fs>
+            <f name="kind" value="number"/>
+            <f name="msd" value="CD"/>
+            <f name="length" value="4"/>
+            <f name="string" value="2000"/>
+            <f name="graf:id" value="penn-n360"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n36">
+        <link targets="seg-r67"/>
+    </node>
+    <a label="tok" ref="penn-n36" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n36"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Art"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n360">
+        <link targets="seg-r655"/>
+    </node>
+    <a label="tok" ref="penn-n360" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n361"/>
+            <f name="position" value="endpunct"/>
+            <f name="string" value=")"/>
+            <f name="length" value="1"/>
+            <f name="msd" value=")"/>
+            <f name="kind" value="punctuation"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n361">
+        <link targets="seg-r657"/>
+    </node>
+    <a label="tok" ref="penn-n361" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n362"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="are"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="VBP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n362">
+        <link targets="seg-r659"/>
+    </node>
+    <a label="tok" ref="penn-n362" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n363"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="free"/>
+            <f name="length" value="4"/>
+            <f name="msd" value="JJ"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n363">
+        <link targets="seg-r661"/>
+    </node>
+    <a label="tok" ref="penn-n363" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n364"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="for"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="IN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n364">
+        <link targets="seg-r663"/>
+    </node>
+    <a label="tok" ref="penn-n364" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n365"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Georgia"/>
+            <f name="length" value="7"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n365">
+        <link targets="seg-r665"/>
+    </node>
+    <a label="tok" ref="penn-n365" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n366"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="O"/>
+            <f name="length" value="1"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n366">
+        <link targets="seg-r666"/>
+    </node>
+    <a label="tok" ref="penn-n366" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value="POS"/>
+            <f name="length" value="1"/>
+            <f name="string" value="'"/>
+            <f name="graf:id" value="penn-n367"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n367">
+        <link targets="seg-r667"/>
+    </node>
+    <a label="tok" ref="penn-n367" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n368"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Keeffe"/>
+            <f name="length" value="6"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n368">
+        <link targets="seg-r669"/>
+    </node>
+    <a label="tok" ref="penn-n368" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n369"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="members"/>
+            <f name="length" value="7"/>
+            <f name="msd" value="NNS"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n369">
+        <link targets="seg-r670"/>
+    </node>
+    <a label="tok" ref="penn-n369" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value="."/>
+            <f name="length" value="1"/>
+            <f name="string" value="."/>
+            <f name="graf:id" value="penn-n370"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n37">
+        <link targets="seg-r68"/>
+    </node>
+    <a label="tok" ref="penn-n37" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n37"/>
+            <f name="orth" value="apostrophe"/>
+            <f name="string" value="'s"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="POS"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n370">
+        <link targets="seg-r672"/>
+    </node>
+    <a label="tok" ref="penn-n370" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n371"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Mark"/>
+            <f name="length" value="4"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n371">
+        <link targets="seg-r674"/>
+    </node>
+    <a label="tok" ref="penn-n371" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n372"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="your"/>
+            <f name="length" value="4"/>
+            <f name="msd" value="PRP$"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n372">
+        <link targets="seg-r676"/>
+    </node>
+    <a label="tok" ref="penn-n372" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n373"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="calendars"/>
+            <f name="length" value="9"/>
+            <f name="msd" value="NNS"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n373">
+        <link targets="seg-r677"/>
+    </node>
+    <a label="tok" ref="penn-n373" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value="."/>
+            <f name="length" value="1"/>
+            <f name="string" value="!"/>
+            <f name="graf:id" value="penn-n374"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n38">
+        <link targets="seg-r70"/>
+    </node>
+    <a label="tok" ref="penn-n38" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n38"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Second"/>
+            <f name="length" value="6"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n39">
+        <link targets="seg-r72"/>
+    </node>
+    <a label="tok" ref="penn-n39" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n39"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Century"/>
+            <f name="length" value="7"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n4">
+        <link targets="seg-r7"/>
+    </node>
+    <a label="tok" ref="penn-n4" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n4"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Name"/>
+            <f name="length" value="4"/>
+            <f name="msd" value="NN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n40">
+        <link targets="seg-r74"/>
+    </node>
+    <a label="tok" ref="penn-n40" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n40"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Society"/>
+            <f name="length" value="7"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n41">
+        <link targets="seg-r76"/>
+    </node>
+    <a label="tok" ref="penn-n41" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n41"/>
+            <f name="position" value="startpunct"/>
+            <f name="string" value="("/>
+            <f name="length" value="1"/>
+            <f name="msd" value="("/>
+            <f name="kind" value="punctuation"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n42">
+        <link targets="seg-r77"/>
+    </node>
+    <a label="tok" ref="penn-n42" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n42"/>
+            <f name="orth" value="allCaps"/>
+            <f name="string" value="SCS"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n43">
+        <link targets="seg-r78"/>
+    </node>
+    <a label="tok" ref="penn-n43" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n43"/>
+            <f name="position" value="endpunct"/>
+            <f name="string" value=")"/>
+            <f name="length" value="1"/>
+            <f name="msd" value=")"/>
+            <f name="kind" value="punctuation"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n44">
+        <link targets="seg-r79"/>
+    </node>
+    <a label="tok" ref="penn-n44" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value="."/>
+            <f name="length" value="1"/>
+            <f name="string" value="."/>
+            <f name="graf:id" value="penn-n44"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n45">
+        <link targets="seg-r81"/>
+    </node>
+    <a label="tok" ref="penn-n45" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n45"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="The"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="DT"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n46">
+        <link targets="seg-r83"/>
+    </node>
+    <a label="tok" ref="penn-n46" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n46"/>
+            <f name="orth" value="allCaps"/>
+            <f name="string" value="SCS"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n47">
+        <link targets="seg-r85"/>
+    </node>
+    <a label="tok" ref="penn-n47" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n47"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="brochure"/>
+            <f name="length" value="8"/>
+            <f name="msd" value="NN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n48">
+        <link targets="seg-r87"/>
+    </node>
+    <a label="tok" ref="penn-n48" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n48"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="I"/>
+            <f name="length" value="1"/>
+            <f name="msd" value="PRP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n49">
+        <link targets="seg-r89"/>
+    </node>
+    <a label="tok" ref="penn-n49" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n49"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="am"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="VBP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n5">
+        <link targets="seg-r9"/>
+    </node>
+    <a label="tok" ref="penn-n5" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n5"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Address"/>
+            <f name="length" value="7"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n50">
+        <link targets="seg-r91"/>
+    </node>
+    <a label="tok" ref="penn-n50" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n50"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="enclosing"/>
+            <f name="length" value="9"/>
+            <f name="msd" value="VBG"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n51">
+        <link targets="seg-r93"/>
+    </node>
+    <a label="tok" ref="penn-n51" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n51"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="will"/>
+            <f name="length" value="4"/>
+            <f name="msd" value="MD"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n52">
+        <link targets="seg-r95"/>
+    </node>
+    <a label="tok" ref="penn-n52" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n52"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="give"/>
+            <f name="length" value="4"/>
+            <f name="msd" value="VB"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n53">
+        <link targets="seg-r97"/>
+    </node>
+    <a label="tok" ref="penn-n53" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n53"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="you"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="PRP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n54">
+        <link targets="seg-r99"/>
+    </node>
+    <a label="tok" ref="penn-n54" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n54"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="the"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="DT"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n55">
+        <link targets="seg-r101"/>
+    </node>
+    <a label="tok" ref="penn-n55" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n55"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="historic"/>
+            <f name="length" value="8"/>
+            <f name="msd" value="JJ"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n56">
+        <link targets="seg-r103"/>
+    </node>
+    <a label="tok" ref="penn-n56" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n56"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="significance"/>
+            <f name="length" value="12"/>
+            <f name="msd" value="NN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n57">
+        <link targets="seg-r105"/>
+    </node>
+    <a label="tok" ref="penn-n57" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n57"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="of"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="IN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n58">
+        <link targets="seg-r107"/>
+    </node>
+    <a label="tok" ref="penn-n58" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n58"/>
+            <f name="orth" value="allCaps"/>
+            <f name="string" value="SCS"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n59">
+        <link targets="seg-r108"/>
+    </node>
+    <a label="tok" ref="penn-n59" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value=","/>
+            <f name="length" value="1"/>
+            <f name="string" value=","/>
+            <f name="graf:id" value="penn-n59"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n6">
+        <link targets="seg-r11"/>
+    </node>
+    <a label="tok" ref="penn-n6" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n6"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="City"/>
+            <f name="length" value="4"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n60">
+        <link targets="seg-r110"/>
+    </node>
+    <a label="tok" ref="penn-n60" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n60"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="as"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="RB"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n61">
+        <link targets="seg-r112"/>
+    </node>
+    <a label="tok" ref="penn-n61" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n61"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="well"/>
+            <f name="length" value="4"/>
+            <f name="msd" value="RB"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n62">
+        <link targets="seg-r114"/>
+    </node>
+    <a label="tok" ref="penn-n62" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n62"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="as"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="IN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n63">
+        <link targets="seg-r116"/>
+    </node>
+    <a label="tok" ref="penn-n63" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n63"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="listing"/>
+            <f name="length" value="7"/>
+            <f name="msd" value="NN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n64">
+        <link targets="seg-r118"/>
+    </node>
+    <a label="tok" ref="penn-n64" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n64"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="activities"/>
+            <f name="length" value="10"/>
+            <f name="msd" value="NNS"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n65">
+        <link targets="seg-r120"/>
+    </node>
+    <a label="tok" ref="penn-n65" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n65"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="and"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="CC"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n66">
+        <link targets="seg-r122"/>
+    </node>
+    <a label="tok" ref="penn-n66" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n66"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="specific"/>
+            <f name="length" value="8"/>
+            <f name="msd" value="JJ"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n67">
+        <link targets="seg-r124"/>
+    </node>
+    <a label="tok" ref="penn-n67" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n67"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="benefits"/>
+            <f name="length" value="8"/>
+            <f name="msd" value="NNS"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n68">
+        <link targets="seg-r126"/>
+    </node>
+    <a label="tok" ref="penn-n68" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n68"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="awarded"/>
+            <f name="length" value="7"/>
+            <f name="msd" value="VBD"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n69">
+        <link targets="seg-r128"/>
+    </node>
+    <a label="tok" ref="penn-n69" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n69"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="to"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="TO"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n7">
+        <link targets="seg-r12"/>
+    </node>
+    <a label="tok" ref="penn-n7" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value=","/>
+            <f name="length" value="1"/>
+            <f name="string" value=","/>
+            <f name="graf:id" value="penn-n7"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n70">
+        <link targets="seg-r130"/>
+    </node>
+    <a label="tok" ref="penn-n70" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n70"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="donors"/>
+            <f name="length" value="6"/>
+            <f name="msd" value="NNS"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n71">
+        <link targets="seg-r132"/>
+    </node>
+    <a label="tok" ref="penn-n71" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n71"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="at"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="IN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n72">
+        <link targets="seg-r134"/>
+    </node>
+    <a label="tok" ref="penn-n72" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n72"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="the"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="DT"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n73">
+        <link targets="seg-r136"/>
+    </node>
+    <a label="tok" ref="penn-n73" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n73"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Georgia"/>
+            <f name="length" value="7"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n74">
+        <link targets="seg-r138"/>
+    </node>
+    <a label="tok" ref="penn-n74" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n74"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="O"/>
+            <f name="length" value="1"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n75">
+        <link targets="seg-r139"/>
+    </node>
+    <a label="tok" ref="penn-n75" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value="POS"/>
+            <f name="length" value="1"/>
+            <f name="string" value="'"/>
+            <f name="graf:id" value="penn-n75"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n76">
+        <link targets="seg-r140"/>
+    </node>
+    <a label="tok" ref="penn-n76" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n76"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Keeffe"/>
+            <f name="length" value="6"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n77">
+        <link targets="seg-r142"/>
+    </node>
+    <a label="tok" ref="penn-n77" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n77"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="level"/>
+            <f name="length" value="5"/>
+            <f name="msd" value="NN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n78">
+        <link targets="seg-r143"/>
+    </node>
+    <a label="tok" ref="penn-n78" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value="."/>
+            <f name="length" value="1"/>
+            <f name="string" value="."/>
+            <f name="graf:id" value="penn-n78"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n79">
+        <link targets="seg-r145"/>
+    </node>
+    <a label="tok" ref="penn-n79" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n79"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Your"/>
+            <f name="length" value="4"/>
+            <f name="msd" value="PRP$"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n8">
+        <link targets="seg-r14"/>
+    </node>
+    <a label="tok" ref="penn-n8" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n8"/>
+            <f name="orth" value="allCaps"/>
+            <f name="string" value="ST"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n80">
+        <link targets="seg-r147"/>
+    </node>
+    <a label="tok" ref="penn-n80" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n80"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Georgia"/>
+            <f name="length" value="7"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n81">
+        <link targets="seg-r149"/>
+    </node>
+    <a label="tok" ref="penn-n81" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n81"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="O"/>
+            <f name="length" value="1"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n82">
+        <link targets="seg-r150"/>
+    </node>
+    <a label="tok" ref="penn-n82" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value="POS"/>
+            <f name="length" value="1"/>
+            <f name="string" value="'"/>
+            <f name="graf:id" value="penn-n82"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n83">
+        <link targets="seg-r151"/>
+    </node>
+    <a label="tok" ref="penn-n83" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n83"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Keeffe"/>
+            <f name="length" value="6"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n84">
+        <link targets="seg-r153"/>
+    </node>
+    <a label="tok" ref="penn-n84" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n84"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="membership"/>
+            <f name="length" value="10"/>
+            <f name="msd" value="NN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n85">
+        <link targets="seg-r154"/>
+    </node>
+    <a label="tok" ref="penn-n85" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value=","/>
+            <f name="length" value="1"/>
+            <f name="string" value=","/>
+            <f name="graf:id" value="penn-n85"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n86">
+        <link targets="seg-r156"/>
+    </node>
+    <a label="tok" ref="penn-n86" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n86"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="please"/>
+            <f name="length" value="6"/>
+            <f name="msd" value="VB"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n87">
+        <link targets="seg-r158"/>
+    </node>
+    <a label="tok" ref="penn-n87" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n87"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="note"/>
+            <f name="length" value="4"/>
+            <f name="msd" value="NN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n88">
+        <link targets="seg-r159"/>
+    </node>
+    <a label="tok" ref="penn-n88" as="xces">
+        <fs>
+            <f name="kind" value="punctuation"/>
+            <f name="msd" value=","/>
+            <f name="length" value="1"/>
+            <f name="string" value=","/>
+            <f name="graf:id" value="penn-n88"/>
+            <f name="graf:set" value="xces"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n89">
+        <link targets="seg-r161"/>
+    </node>
+    <a label="tok" ref="penn-n89" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n89"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="includes"/>
+            <f name="length" value="8"/>
+            <f name="msd" value="VBZ"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n9">
+        <link targets="seg-r16"/>
+    </node>
+    <a label="tok" ref="penn-n9" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n9"/>
+            <f name="orth" value="upperInitial"/>
+            <f name="string" value="Zip"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n90">
+        <link targets="seg-r163"/>
+    </node>
+    <a label="tok" ref="penn-n90" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n90"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="free"/>
+            <f name="length" value="4"/>
+            <f name="msd" value="JJ"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n91">
+        <link targets="seg-r165"/>
+    </node>
+    <a label="tok" ref="penn-n91" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n91"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="admission"/>
+            <f name="length" value="9"/>
+            <f name="msd" value="NN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n92">
+        <link targets="seg-r167"/>
+    </node>
+    <a label="tok" ref="penn-n92" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n92"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="to"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="TO"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n93">
+        <link targets="seg-r169"/>
+    </node>
+    <a label="tok" ref="penn-n93" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n93"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="all"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="DT"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n94">
+        <link targets="seg-r171 seg-r172 seg-r173"/>
+    </node>
+    <a label="tok" ref="penn-n94" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n94"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="art-related"/>
+            <f name="length" value="11"/>
+            <f name="msd" value="JJ"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n95">
+        <link targets="seg-r175"/>
+    </node>
+    <a label="tok" ref="penn-n95" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n95"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="activities"/>
+            <f name="length" value="10"/>
+            <f name="msd" value="NNS"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n96">
+        <link targets="seg-r177"/>
+    </node>
+    <a label="tok" ref="penn-n96" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n96"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="of"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="IN"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n97">
+        <link targets="seg-r179"/>
+    </node>
+    <a label="tok" ref="penn-n97" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n97"/>
+            <f name="orth" value="lowercase"/>
+            <f name="string" value="the"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="DT"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n98">
+        <link targets="seg-r181"/>
+    </node>
+    <a label="tok" ref="penn-n98" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n98"/>
+            <f name="orth" value="allCaps"/>
+            <f name="string" value="IMA"/>
+            <f name="length" value="3"/>
+            <f name="msd" value="NNP"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+    <node xml:id="penn-n99">
+        <link targets="seg-r182"/>
+    </node>
+    <a label="tok" ref="penn-n99" as="xces">
+        <fs>
+            <f name="graf:set" value="xces"/>
+            <f name="graf:id" value="penn-n99"/>
+            <f name="orth" value="apostrophe"/>
+            <f name="string" value="'s"/>
+            <f name="length" value="2"/>
+            <f name="msd" value="POS"/>
+            <f name="kind" value="word"/>
+        </fs>
+    </a>
+</graph>

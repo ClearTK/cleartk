@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graph xmlns="http://www.xces.org/ns/GrAF/1.0/">
+    <header>
+        <tagsDecl>
+            <tagUsage gi="person" occurs="1"/>
+            <tagUsage gi="location" occurs="1"/>
+            <tagUsage gi="date" occurs="2"/>
+            <tagUsage gi="org" occurs="7"/>
+        </tagsDecl>
+        <dependencies>
+            <dependsOn type="penn"/>
+        </dependencies>
+        <annotationSets>
+            <annotationSet name="xces" type="http://www.xces.org/schema/2003"/>
+        </annotationSets>
+    </header>
+    <node xml:id="ne-n0"/>
+    <a label="date" ref="ne-n0" as="xces">
+        <fs>
+            <f name="kind" value="date"/>
+        </fs>
+    </a>
+    <node xml:id="ne-n1"/>
+    <a label="org" ref="ne-n1" as="xces">
+        <fs>
+            <f name="type" value="other"/>
+        </fs>
+    </a>
+    <node xml:id="ne-n10"/>
+    <a label="person" ref="ne-n10" as="xces">
+        <fs>
+            <f name="sex" value="female"/>
+        </fs>
+    </a>
+    <node xml:id="ne-n2"/>
+    <a label="org" ref="ne-n2" as="xces">
+        <fs>
+            <f name="type" value="other"/>
+        </fs>
+    </a>
+    <node xml:id="ne-n3"/>
+    <a label="location" ref="ne-n3" as="xces">
+        <fs>
+            <f name="type" value="city"/>
+        </fs>
+    </a>
+    <node xml:id="ne-n4"/>
+    <a label="date" ref="ne-n4" as="xces">
+        <fs>
+            <f name="kind" value="date"/>
+        </fs>
+    </a>
+    <node xml:id="ne-n5"/>
+    <a label="org" ref="ne-n5" as="xces">
+        <fs>
+            <f name="type" value="other"/>
+        </fs>
+    </a>
+    <node xml:id="ne-n6"/>
+    <a label="org" ref="ne-n6" as="xces">
+        <fs>
+            <f name="type" value="other"/>
+        </fs>
+    </a>
+    <node xml:id="ne-n7"/>
+    <a label="org" ref="ne-n7" as="xces">
+        <fs>
+            <f name="type" value="other"/>
+        </fs>
+    </a>
+    <node xml:id="ne-n8"/>
+    <a label="org" ref="ne-n8" as="xces">
+        <fs>
+            <f name="type" value="other"/>
+        </fs>
+    </a>
+    <node xml:id="ne-n9"/>
+    <a label="org" ref="ne-n9" as="xces">
+        <fs>
+            <f name="type" value="other"/>
+        </fs>
+    </a>
+    <edge xml:id="lnk10" from="ne-n6" to="n231"/>
+    <edge xml:id="lnk9" from="ne-n5" to="n196"/>
+    <edge xml:id="lnk8" from="ne-n5" to="n195"/>
+    <edge xml:id="lnk7" from="ne-n4" to="n143"/>
+    <edge xml:id="lnk6" from="ne-n3" to="n134"/>
+    <edge xml:id="lnk5" from="ne-n2" to="n88"/>
+    <edge xml:id="lnk4" from="ne-n1" to="n54"/>
+    <edge xml:id="lnk3" from="ne-n0" to="n3"/>
+    <edge xml:id="lnk2" from="ne-n0" to="n2"/>
+    <edge xml:id="lnk1" from="ne-n0" to="n1"/>
+    <edge xml:id="lnk0" from="ne-n0" to="n0"/>
+    <edge xml:id="lnk15" from="ne-n10" to="n412"/>
+    <edge xml:id="lnk14" from="ne-n10" to="n411"/>
+    <edge xml:id="lnk13" from="ne-n9" to="n334"/>
+    <edge xml:id="lnk12" from="ne-n8" to="n321"/>
+    <edge xml:id="lnk11" from="ne-n7" to="n266"/>
+</graph>

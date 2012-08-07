@@ -1,0 +1,3150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graph xmlns="http://www.xces.org/ns/GrAF/1.0/">
+    <header>
+        <tagsDecl>
+            <tagUsage gi="tok" occurs="340"/>
+        </tagsDecl>
+        <dependencies>
+            <dependsOn type="seg"/>
+        </dependencies>
+        <annotationSets>
+            <annotationSet name="xces" type="http://www.xces.org/schema/2003"/>
+        </annotationSets>
+    </header>
+    <node xml:id="n0">
+        <link targets="seg-r0"/>
+    </node>
+    <a label="tok" ref="n0" as="xces">
+        <fs>
+            <f name="base" value="july"/>
+            <f name="msd" value="NNP"/>
+        </fs>
+    </a>
+    <node xml:id="n1">
+        <link targets="seg-r2"/>
+    </node>
+    <a label="tok" ref="n1" as="xces">
+        <fs>
+            <f name="base" value="25"/>
+            <f name="msd" value="CD"/>
+        </fs>
+    </a>
+    <node xml:id="n10">
+        <link targets="seg-r16"/>
+    </node>
+    <a label="tok" ref="n10" as="xces">
+        <fs>
+            <f name="base" value="!"/>
+            <f name="msd" value="."/>
+        </fs>
+    </a>
+    <node xml:id="n100">
+        <link targets="seg-r186"/>
+    </node>
+    <a label="tok" ref="n100" as="xces">
+        <fs>
+            <f name="base" value="spot"/>
+            <f name="msd" value="NN"/>
+        </fs>
+    </a>
+    <node xml:id="n101">
+        <link targets="seg-r188"/>
+    </node>
+    <a label="tok" ref="n101" as="xces">
+        <fs>
+            <f name="base" value="should"/>
+            <f name="msd" value="MD"/>
+        </fs>
+    </a>
+    <node xml:id="n102">
+        <link targets="seg-r190"/>
+    </node>
+    <a label="tok" ref="n102" as="xces">
+        <fs>
+            <f name="base" value="open"/>
+            <f name="msd" value="VB"/>
+        </fs>
+    </a>
+    <node xml:id="n103">
+        <link targets="seg-r191"/>
+    </node>
+    <a label="tok" ref="n103" as="xces">
+        <fs>
+            <f name="base" value="."/>
+            <f name="msd" value="."/>
+        </fs>
+    </a>
+    <node xml:id="n104">
+        <link targets="seg-r193"/>
+    </node>
+    <a label="tok" ref="n104" as="xces">
+        <fs>
+            <f name="base" value="many"/>
+            <f name="msd" value="JJ"/>
+        </fs>
+    </a>
+    <node xml:id="n105">
+        <link targets="seg-r195"/>
+    </node>
+    <a label="tok" ref="n105" as="xces">
+        <fs>
+            <f name="base" value="more"/>
+            <f name="msd" value="JJR"/>
+        </fs>
+    </a>
+    <node xml:id="n106">
+        <link targets="seg-r197"/>
+    </node>
+    <a label="tok" ref="n106" as="xces">
+        <fs>
+            <f name="base" value="camper"/>
+            <f name="msd" value="NN"/>
+        </fs>
+    </a>
+    <node xml:id="n107">
+        <link targets="seg-r199"/>
+    </node>
+    <a label="tok" ref="n107" as="xces">
+        <fs>
+            <f name="base" value="referral"/>
+            <f name="affix" value="s"/>
+            <f name="msd" value="NNS"/>
+        </fs>
+    </a>
+    <node xml:id="n108">
+        <link targets="seg-r201"/>
+    </node>
+    <a label="tok" ref="n108" as="xces">
+        <fs>
+            <f name="base" value="be"/>
+            <f name="affix" value=""/>
+            <f name="msd" value="VBP"/>
+        </fs>
+    </a>
+    <node xml:id="n109">
+        <link targets="seg-r203"/>
+    </node>
+    <a label="tok" ref="n109" as="xces">
+        <fs>
+            <f name="base" value="come"/>
+            <f name="affix" value="ing"/>
+            <f name="msd" value="VBG"/>
+        </fs>
+    </a>
+    <node xml:id="n11">
+        <link targets="seg-r18"/>
+    </node>
+    <a label="tok" ref="n11" as="xces">
+        <fs>
+            <f name="base" value="and"/>
+            <f name="msd" value="CC"/>
+        </fs>
+    </a>
+    <node xml:id="n110">
+        <link targets="seg-r205"/>
+    </node>
+    <a label="tok" ref="n110" as="xces">
+        <fs>
+            <f name="base" value="from"/>
+            <f name="msd" value="IN"/>
+        </fs>
+    </a>
+    <node xml:id="n111">
+        <link targets="seg-r207"/>
+    </node>
+    <a label="tok" ref="n111" as="xces">
+        <fs>
+            <f name="base" value="new"/>
+            <f name="msd" value="JJ"/>
+        </fs>
+    </a>
+    <node xml:id="n112">
+        <link targets="seg-r209"/>
+    </node>
+    <a label="tok" ref="n112" as="xces">
+        <fs>
+            <f name="base" value="organization"/>
+            <f name="affix" value="s"/>
+            <f name="msd" value="NNS"/>
+        </fs>
+    </a>
+    <node xml:id="n113">
+        <link targets="seg-r211"/>
+    </node>
+    <a label="tok" ref="n113" as="xces">
+        <fs>
+            <f name="base" value="such"/>
+            <f name="msd" value="JJ"/>
+        </fs>
+    </a>
+    <node xml:id="n114">
+        <link targets="seg-r213"/>
+    </node>
+    <a label="tok" ref="n114" as="xces">
+        <fs>
+            <f name="base" value="as"/>
+            <f name="affix" value=" "/>
+            <f name="msd" value="IN"/>
+        </fs>
+    </a>
+    <node xml:id="n115">
+        <link targets="seg-r215"/>
+    </node>
+    <a label="tok" ref="n115" as="xces">
+        <fs>
+            <f name="base" value="school"/>
+            <f name="msd" value="NN"/>
+        </fs>
+    </a>
+    <node xml:id="n116">
+        <link targets="seg-r217"/>
+    </node>
+    <a label="tok" ref="n116" as="xces">
+        <fs>
+            <f name="base" value="social-worker"/>
+            <f name="affix" value="s"/>
+            <f name="msd" value="JJ"/>
+        </fs>
+    </a>
+    <node xml:id="n117">
+        <link targets="seg-r219"/>
+    </node>
+    <a label="tok" ref="n117" as="xces">
+        <fs>
+            <f name="base" value="and"/>
+            <f name="msd" value="CC"/>
+        </fs>
+    </a>
+    <node xml:id="n118">
+        <link targets="seg-r221"/>
+    </node>
+    <a label="tok" ref="n118" as="xces">
+        <fs>
+            <f name="base" value="family"/>
+            <f name="msd" value="NN"/>
+        </fs>
+    </a>
+    <node xml:id="n119">
+        <link targets="seg-r223"/>
+    </node>
+    <a label="tok" ref="n119" as="xces">
+        <fs>
+            <f name="base" value="counseling"/>
+            <f name="msd" value="NN"/>
+        </fs>
+    </a>
+    <node xml:id="n12">
+        <link targets="seg-r20"/>
+    </node>
+    <a label="tok" ref="n12" as="xces">
+        <fs>
+            <f name="base" value="we"/>
+            <f name="msd" value="PRP"/>
+        </fs>
+    </a>
+    <node xml:id="n120">
+        <link targets="seg-r225"/>
+    </node>
+    <a label="tok" ref="n120" as="xces">
+        <fs>
+            <f name="base" value="agency"/>
+            <f name="affix" value="s"/>
+            <f name="msd" value="NNS"/>
+        </fs>
+    </a>
+    <node xml:id="n121">
+        <link targets="seg-r226"/>
+    </node>
+    <a label="tok" ref="n121" as="xces">
+        <fs>
+            <f name="base" value="."/>
+            <f name="msd" value="."/>
+        </fs>
+    </a>
+    <node xml:id="n122">
+        <link targets="seg-r228"/>
+    </node>
+    <a label="tok" ref="n122" as="xces">
+        <fs>
+            <f name="base" value="it"/>
+            <f name="msd" value="PRP"/>
+        </fs>
+    </a>
+    <node xml:id="n123">
+        <link targets="seg-r230"/>
+    </node>
+    <a label="tok" ref="n123" as="xces">
+        <fs>
+            <f name="base" value="seem"/>
+            <f name="affix" value="s"/>
+            <f name="msd" value="VBZ"/>
+        </fs>
+    </a>
+    <node xml:id="n124">
+        <link targets="seg-r232"/>
+    </node>
+    <a label="tok" ref="n124" as="xces">
+        <fs>
+            <f name="base" value="summer"/>
+            <f name="msd" value="NN"/>
+        </fs>
+    </a>
+    <node xml:id="n125">
+        <link targets="seg-r234"/>
+    </node>
+    <a label="tok" ref="n125" as="xces">
+        <fs>
+            <f name="base" value="option"/>
+            <f name="affix" value="s"/>
+            <f name="msd" value="NNS"/>
+        </fs>
+    </a>
+    <node xml:id="n126">
+        <link targets="seg-r236"/>
+    </node>
+    <a label="tok" ref="n126" as="xces">
+        <fs>
+            <f name="affix" value=""/>
+            <f name="base" value="be"/>
+            <f name="msd" value="VBP"/>
+        </fs>
+    </a>
+    <node xml:id="n127">
+        <link targets="seg-r237"/>
+    </node>
+    <a label="tok" ref="n127" as="xces">
+        <fs>
+            <f name="base" value="n't"/>
+            <f name="msd" value="RB"/>
+        </fs>
+    </a>
+    <node xml:id="n128">
+        <link targets="seg-r239"/>
+    </node>
+    <a label="tok" ref="n128" as="xces">
+        <fs>
+            <f name="base" value="readily"/>
+            <f name="msd" value="RB"/>
+        </fs>
+    </a>
+    <node xml:id="n129">
+        <link targets="seg-r241"/>
+    </node>
+    <a label="tok" ref="n129" as="xces">
+        <fs>
+            <f name="base" value="available"/>
+            <f name="msd" value="JJ"/>
+        </fs>
+    </a>
+    <node xml:id="n13">
+        <link targets="seg-r21"/>
+    </node>
+    <a label="tok" ref="n13" as="xces">
+        <fs>
+            <f name="affix" value=""/>
+            <f name="base" value="be"/>
+            <f name="msd" value="VBP"/>
+        </fs>
+    </a>
+    <node xml:id="n130">
+        <link targets="seg-r243"/>
+    </node>
+    <a label="tok" ref="n130" as="xces">
+        <fs>
+            <f name="base" value="for"/>
+            <f name="msd" value="IN"/>
+        </fs>
+    </a>
+    <node xml:id="n131">
+        <link targets="seg-r245"/>
+    </node>
+    <a label="tok" ref="n131" as="xces">
+        <fs>
+            <f name="base" value="troubled"/>
+            <f name="msd" value="JJ"/>
+        </fs>
+    </a>
+    <node xml:id="n132">
+        <link targets="seg-r247"/>
+    </node>
+    <a label="tok" ref="n132" as="xces">
+        <fs>
+            <f name="base" value="kid"/>
+            <f name="affix" value="s"/>
+            <f name="msd" value="NNS"/>
+        </fs>
+    </a>
+    <node xml:id="n133">
+        <link targets="seg-r249"/>
+    </node>
+    <a label="tok" ref="n133" as="xces">
+        <fs>
+            <f name="base" value="whose"/>
+            <f name="msd" value="WP$"/>
+        </fs>
+    </a>
+    <node xml:id="n134">
+        <link targets="seg-r251"/>
+    </node>
+    <a label="tok" ref="n134" as="xces">
+        <fs>
+            <f name="base" value="family"/>
+            <f name="affix" value="s"/>
+            <f name="msd" value="NNS"/>
+        </fs>
+    </a>
+    <node xml:id="n135">
+        <link targets="seg-r253"/>
+    </node>
+    <a label="tok" ref="n135" as="xces">
+        <fs>
+            <f name="base" value="have"/>
+            <f name="msd" value="VBP"/>
+        </fs>
+    </a>
+    <node xml:id="n136">
+        <link targets="seg-r255"/>
+    </node>
+    <a label="tok" ref="n136" as="xces">
+        <fs>
+            <f name="base" value="limited"/>
+            <f name="msd" value="JJ"/>
+        </fs>
+    </a>
+    <node xml:id="n137">
+        <link targets="seg-r257"/>
+    </node>
+    <a label="tok" ref="n137" as="xces">
+        <fs>
+            <f name="base" value="income"/>
+            <f name="affix" value="s"/>
+            <f name="msd" value="NNS"/>
+        </fs>
+    </a>
+    <node xml:id="n138">
+        <link targets="seg-r258"/>
+    </node>
+    <a label="tok" ref="n138" as="xces">
+        <fs>
+            <f name="base" value=","/>
+            <f name="msd" value=","/>
+        </fs>
+    </a>
+    <node xml:id="n139">
+        <link targets="seg-r260"/>
+    </node>
+    <a label="tok" ref="n139" as="xces">
+        <fs>
+            <f name="base" value="so"/>
+            <f name="msd" value="IN"/>
+        </fs>
+    </a>
+    <node xml:id="n14">
+        <link targets="seg-r23"/>
+    </node>
+    <a label="tok" ref="n14" as="xces">
+        <fs>
+            <f name="base" value="just"/>
+            <f name="msd" value="RB"/>
+        </fs>
+    </a>
+    <node xml:id="n140">
+        <link targets="seg-r262"/>
+    </node>
+    <a label="tok" ref="n140" as="xces">
+        <fs>
+            <f name="base" value="we"/>
+            <f name="msd" value="PRP"/>
+        </fs>
+    </a>
+    <node xml:id="n141">
+        <link targets="seg-r263"/>
+    </node>
+    <a label="tok" ref="n141" as="xces">
+        <fs>
+            <f name="affix" value=""/>
+            <f name="base" value="be"/>
+            <f name="msd" value="VBP"/>
+        </fs>
+    </a>
+    <node xml:id="n142">
+        <link targets="seg-r265"/>
+    </node>
+    <a label="tok" ref="n142" as="xces">
+        <fs>
+            <f name="base" value="do"/>
+            <f name="affix" value="ing"/>
+            <f name="msd" value="VBG"/>
+        </fs>
+    </a>
+    <node xml:id="n143">
+        <link targets="seg-r267"/>
+    </node>
+    <a label="tok" ref="n143" as="xces">
+        <fs>
+            <f name="base" value="all"/>
+            <f name="msd" value="DT"/>
+        </fs>
+    </a>
+    <node xml:id="n144">
+        <link targets="seg-r269"/>
+    </node>
+    <a label="tok" ref="n144" as="xces">
+        <fs>
+            <f name="base" value="we"/>
+            <f name="msd" value="PRP"/>
+        </fs>
+    </a>
+    <node xml:id="n145">
+        <link targets="seg-r271"/>
+    </node>
+    <a label="tok" ref="n145" as="xces">
+        <fs>
+            <f name="base" value="can"/>
+            <f name="msd" value="MD"/>
+        </fs>
+    </a>
+    <node xml:id="n146">
+        <link targets="seg-r273"/>
+    </node>
+    <a label="tok" ref="n146" as="xces">
+        <fs>
+            <f name="base" value="to"/>
+            <f name="msd" value="TO"/>
+        </fs>
+    </a>
+    <node xml:id="n147">
+        <link targets="seg-r275"/>
+    </node>
+    <a label="tok" ref="n147" as="xces">
+        <fs>
+            <f name="base" value="make"/>
+            <f name="msd" value="VB"/>
+        </fs>
+    </a>
+    <node xml:id="n148">
+        <link targets="seg-r277"/>
+    </node>
+    <a label="tok" ref="n148" as="xces">
+        <fs>
+            <f name="base" value="jameson"/>
+            <f name="msd" value="NNP"/>
+        </fs>
+    </a>
+    <node xml:id="n149">
+        <link targets="seg-r279"/>
+    </node>
+    <a label="tok" ref="n149" as="xces">
+        <fs>
+            <f name="base" value="available"/>
+            <f name="msd" value="JJ"/>
+        </fs>
+    </a>
+    <node xml:id="n15">
+        <link targets="seg-r25"/>
+    </node>
+    <a label="tok" ref="n15" as="xces">
+        <fs>
+            <f name="base" value="get"/>
+            <f name="affix" value="ing"/>
+            <f name="msd" value="VBG"/>
+        </fs>
+    </a>
+    <node xml:id="n150">
+        <link targets="seg-r280"/>
+    </node>
+    <a label="tok" ref="n150" as="xces">
+        <fs>
+            <f name="base" value="."/>
+            <f name="msd" value="."/>
+        </fs>
+    </a>
+    <node xml:id="n151">
+        <link targets="seg-r282"/>
+    </node>
+    <a label="tok" ref="n151" as="xces">
+        <fs>
+            <f name="base" value="that"/>
+            <f name="msd" value="DT"/>
+        </fs>
+    </a>
+    <node xml:id="n152">
+        <link targets="seg-r284"/>
+    </node>
+    <a label="tok" ref="n152" as="xces">
+        <fs>
+            <f name="base" value="&amp;quot;"/>
+            <f name="msd" value="''"/>
+        </fs>
+    </a>
+    <node xml:id="n153">
+        <link targets="seg-r285"/>
+    </node>
+    <a label="tok" ref="n153" as="xces">
+        <fs>
+            <f name="base" value="we"/>
+            <f name="msd" value="PRP"/>
+        </fs>
+    </a>
+    <node xml:id="n154">
+        <link targets="seg-r286"/>
+    </node>
+    <a label="tok" ref="n154" as="xces">
+        <fs>
+            <f name="base" value="&amp;quot;"/>
+            <f name="msd" value="''"/>
+        </fs>
+    </a>
+    <node xml:id="n155">
+        <link targets="seg-r288"/>
+    </node>
+    <a label="tok" ref="n155" as="xces">
+        <fs>
+            <f name="base" value="include"/>
+            <f name="affix" value="s"/>
+            <f name="msd" value="VBZ"/>
+        </fs>
+    </a>
+    <node xml:id="n156">
+        <link targets="seg-r290"/>
+    </node>
+    <a label="tok" ref="n156" as="xces">
+        <fs>
+            <f name="base" value="the"/>
+            <f name="msd" value="DT"/>
+        </fs>
+    </a>
+    <node xml:id="n157">
+        <link targets="seg-r292"/>
+    </node>
+    <a label="tok" ref="n157" as="xces">
+        <fs>
+            <f name="base" value="youth"/>
+            <f name="msd" value="NNP"/>
+        </fs>
+    </a>
+    <node xml:id="n158">
+        <link targets="seg-r294"/>
+    </node>
+    <a label="tok" ref="n158" as="xces">
+        <fs>
+            <f name="base" value="leadership"/>
+            <f name="msd" value="NNP"/>
+        </fs>
+    </a>
+    <node xml:id="n159">
+        <link targets="seg-r296"/>
+    </node>
+    <a label="tok" ref="n159" as="xces">
+        <fs>
+            <f name="base" value="teens"/>
+            <f name="affix" value=" "/>
+            <f name="msd" value="NNS"/>
+        </fs>
+    </a>
+    <node xml:id="n16">
+        <link targets="seg-r27"/>
+    </node>
+    <a label="tok" ref="n16" as="xces">
+        <fs>
+            <f name="base" value="start"/>
+            <f name="affix" value="ed"/>
+            <f name="msd" value="VBN"/>
+        </fs>
+    </a>
+    <node xml:id="n160">
+        <link targets="seg-r297"/>
+    </node>
+    <a label="tok" ref="n160" as="xces">
+        <fs>
+            <f name="base" value="."/>
+            <f name="msd" value="."/>
+        </fs>
+    </a>
+    <node xml:id="n161">
+        <link targets="seg-r299"/>
+    </node>
+    <a label="tok" ref="n161" as="xces">
+        <fs>
+            <f name="base" value="these"/>
+            <f name="msd" value="DT"/>
+        </fs>
+    </a>
+    <node xml:id="n162">
+        <link targets="seg-r301"/>
+    </node>
+    <a label="tok" ref="n162" as="xces">
+        <fs>
+            <f name="base" value="60"/>
+            <f name="msd" value="CD"/>
+        </fs>
+    </a>
+    <node xml:id="n163">
+        <link targets="seg-r303"/>
+    </node>
+    <a label="tok" ref="n163" as="xces">
+        <fs>
+            <f name="base" value="or"/>
+            <f name="msd" value="CC"/>
+        </fs>
+    </a>
+    <node xml:id="n164">
+        <link targets="seg-r305"/>
+    </node>
+    <a label="tok" ref="n164" as="xces">
+        <fs>
+            <f name="base" value="so"/>
+            <f name="msd" value="RB"/>
+        </fs>
+    </a>
+    <node xml:id="n165">
+        <link targets="seg-r307"/>
+    </node>
+    <a label="tok" ref="n165" as="xces">
+        <fs>
+            <f name="base" value="camper"/>
+            <f name="affix" value="s"/>
+            <f name="msd" value="NNS"/>
+        </fs>
+    </a>
+    <node xml:id="n166">
+        <link targets="seg-r309"/>
+    </node>
+    <a label="tok" ref="n166" as="xces">
+        <fs>
+            <f name="base" value="have"/>
+            <f name="msd" value="VBP"/>
+        </fs>
+    </a>
+    <node xml:id="n167">
+        <link targets="seg-r311"/>
+    </node>
+    <a label="tok" ref="n167" as="xces">
+        <fs>
+            <f name="base" value="take"/>
+            <f name="msd" value="VBN"/>
+        </fs>
+    </a>
+    <node xml:id="n168">
+        <link targets="seg-r312"/>
+    </node>
+    <a label="tok" ref="n168" as="xces">
+        <fs>
+            <f name="base" value="on"/>
+            <f name="msd" value="RP"/>
+        </fs>
+    </a>
+    <node xml:id="n169">
+        <link targets="seg-r314"/>
+    </node>
+    <a label="tok" ref="n169" as="xces">
+        <fs>
+            <f name="base" value="a"/>
+            <f name="msd" value="DT"/>
+        </fs>
+    </a>
+    <node xml:id="n17">
+        <link targets="seg-r28"/>
+    </node>
+    <a label="tok" ref="n17" as="xces">
+        <fs>
+            <f name="base" value="!"/>
+            <f name="msd" value="."/>
+        </fs>
+    </a>
+    <node xml:id="n170">
+        <link targets="seg-r316"/>
+    </node>
+    <a label="tok" ref="n170" as="xces">
+        <fs>
+            <f name="base" value="fund"/>
+            <f name="msd" value="NN"/>
+        </fs>
+    </a>
+    <node xml:id="n171">
+        <link targets="seg-r318"/>
+    </node>
+    <a label="tok" ref="n171" as="xces">
+        <fs>
+            <f name="base" value="raiser"/>
+            <f name="msd" value="NN"/>
+        </fs>
+    </a>
+    <node xml:id="n172">
+        <link targets="seg-r320"/>
+    </node>
+    <a label="tok" ref="n172" as="xces">
+        <fs>
+            <f name="base" value="with"/>
+            <f name="msd" value="IN"/>
+        </fs>
+    </a>
+    <node xml:id="n173">
+        <link targets="seg-r322"/>
+    </node>
+    <a label="tok" ref="n173" as="xces">
+        <fs>
+            <f name="base" value="a"/>
+            <f name="msd" value="DT"/>
+        </fs>
+    </a>
+    <node xml:id="n174">
+        <link targets="seg-r324"/>
+    </node>
+    <a label="tok" ref="n174" as="xces">
+        <fs>
+            <f name="base" value="goal"/>
+            <f name="msd" value="NN"/>
+        </fs>
+    </a>
+    <node xml:id="n175">
+        <link targets="seg-r326"/>
+    </node>
+    <a label="tok" ref="n175" as="xces">
+        <fs>
+            <f name="base" value="of"/>
+            <f name="msd" value="IN"/>
+        </fs>
+    </a>
+    <node xml:id="n176">
+        <link targets="seg-r328"/>
+    </node>
+    <a label="tok" ref="n176" as="xces">
+        <fs>
+            <f name="base" value="raise"/>
+            <f name="affix" value="ing"/>
+            <f name="msd" value="VBG"/>
+        </fs>
+    </a>
+    <node xml:id="n177">
+        <link targets="seg-r330"/>
+    </node>
+    <a label="tok" ref="n177" as="xces">
+        <fs>
+            <f name="base" value="$"/>
+            <f name="msd" value="$"/>
+            <f name="type" value="currency"/>
+        </fs>
+    </a>
+    <node xml:id="n178">
+        <link targets="seg-r331"/>
+    </node>
+    <a label="tok" ref="n178" as="xces">
+        <fs>
+            <f name="base" value="16"/>
+            <f name="msd" value="CD"/>
+        </fs>
+    </a>
+    <node xml:id="n179">
+        <link targets="seg-r332"/>
+    </node>
+    <a label="tok" ref="n179" as="xces">
+        <fs>
+            <f name="base" value=","/>
+            <f name="msd" value=","/>
+        </fs>
+    </a>
+    <node xml:id="n18">
+        <link targets="seg-r30"/>
+    </node>
+    <a label="tok" ref="n18" as="xces">
+        <fs>
+            <f name="base" value="i"/>
+            <f name="msd" value="PRP"/>
+        </fs>
+    </a>
+    <node xml:id="n180">
+        <link targets="seg-r333"/>
+    </node>
+    <a label="tok" ref="n180" as="xces">
+        <fs>
+            <f name="base" value="000"/>
+            <f name="msd" value="CD"/>
+        </fs>
+    </a>
+    <node xml:id="n181">
+        <link targets="seg-r335"/>
+    </node>
+    <a label="tok" ref="n181" as="xces">
+        <fs>
+            <f name="base" value="for"/>
+            <f name="msd" value="IN"/>
+        </fs>
+    </a>
+    <node xml:id="n182">
+        <link targets="seg-r337"/>
+    </node>
+    <a label="tok" ref="n182" as="xces">
+        <fs>
+            <f name="base" value="campership"/>
+            <f name="affix" value="s"/>
+            <f name="msd" value="NNS"/>
+        </fs>
+    </a>
+    <node xml:id="n183">
+        <link targets="seg-r338"/>
+    </node>
+    <a label="tok" ref="n183" as="xces">
+        <fs>
+            <f name="base" value="."/>
+            <f name="msd" value="."/>
+        </fs>
+    </a>
+    <node xml:id="n184">
+        <link targets="seg-r340"/>
+    </node>
+    <a label="tok" ref="n184" as="xces">
+        <fs>
+            <f name="base" value="two"/>
+            <f name="msd" value="CD"/>
+        </fs>
+    </a>
+    <node xml:id="n185">
+        <link targets="seg-r342"/>
+    </node>
+    <a label="tok" ref="n185" as="xces">
+        <fs>
+            <f name="base" value="of"/>
+            <f name="msd" value="IN"/>
+        </fs>
+    </a>
+    <node xml:id="n186">
+        <link targets="seg-r344"/>
+    </node>
+    <a label="tok" ref="n186" as="xces">
+        <fs>
+            <f name="base" value="them"/>
+            <f name="msd" value="PRP"/>
+        </fs>
+    </a>
+    <node xml:id="n187">
+        <link targets="seg-r346"/>
+    </node>
+    <a label="tok" ref="n187" as="xces">
+        <fs>
+            <f name="base" value="tell"/>
+            <f name="affix" value="ed"/>
+            <f name="msd" value="VBD"/>
+        </fs>
+    </a>
+    <node xml:id="n188">
+        <link targets="seg-r348"/>
+    </node>
+    <a label="tok" ref="n188" as="xces">
+        <fs>
+            <f name="base" value="me"/>
+            <f name="msd" value="PRP"/>
+        </fs>
+    </a>
+    <node xml:id="n189">
+        <link targets="seg-r350"/>
+    </node>
+    <a label="tok" ref="n189" as="xces">
+        <fs>
+            <f name="base" value="yesterday"/>
+            <f name="msd" value="NN"/>
+        </fs>
+    </a>
+    <node xml:id="n19">
+        <link targets="seg-r32"/>
+    </node>
+    <a label="tok" ref="n19" as="xces">
+        <fs>
+            <f name="base" value="hope"/>
+            <f name="msd" value="VBP"/>
+        </fs>
+    </a>
+    <node xml:id="n190">
+        <link targets="seg-r352"/>
+    </node>
+    <a label="tok" ref="n190" as="xces">
+        <fs>
+            <f name="base" value="that"/>
+            <f name="msd" value="IN"/>
+        </fs>
+    </a>
+    <node xml:id="n191">
+        <link targets="seg-r354"/>
+    </node>
+    <a label="tok" ref="n191" as="xces">
+        <fs>
+            <f name="base" value="as"/>
+            <f name="affix" value=" "/>
+            <f name="msd" value="IN"/>
+        </fs>
+    </a>
+    <node xml:id="n192">
+        <link targets="seg-r356"/>
+    </node>
+    <a label="tok" ref="n192" as="xces">
+        <fs>
+            <f name="base" value="a"/>
+            <f name="msd" value="DT"/>
+        </fs>
+    </a>
+    <node xml:id="n193">
+        <link targets="seg-r358"/>
+    </node>
+    <a label="tok" ref="n193" as="xces">
+        <fs>
+            <f name="base" value="group"/>
+            <f name="msd" value="NN"/>
+        </fs>
+    </a>
+    <node xml:id="n194">
+        <link targets="seg-r360"/>
+    </node>
+    <a label="tok" ref="n194" as="xces">
+        <fs>
+            <f name="base" value="they"/>
+            <f name="msd" value="PRP"/>
+        </fs>
+    </a>
+    <node xml:id="n195">
+        <link targets="seg-r362"/>
+    </node>
+    <a label="tok" ref="n195" as="xces">
+        <fs>
+            <f name="base" value="decide"/>
+            <f name="affix" value="ed"/>
+            <f name="msd" value="VBD"/>
+        </fs>
+    </a>
+    <node xml:id="n196">
+        <link targets="seg-r364"/>
+    </node>
+    <a label="tok" ref="n196" as="xces">
+        <fs>
+            <f name="base" value="they"/>
+            <f name="msd" value="PRP"/>
+        </fs>
+    </a>
+    <node xml:id="n197">
+        <link targets="seg-r366"/>
+    </node>
+    <a label="tok" ref="n197" as="xces">
+        <fs>
+            <f name="base" value="have"/>
+            <f name="affix" value="ed"/>
+            <f name="msd" value="VBD"/>
+        </fs>
+    </a>
+    <node xml:id="n198">
+        <link targets="seg-r368"/>
+    </node>
+    <a label="tok" ref="n198" as="xces">
+        <fs>
+            <f name="base" value="to"/>
+            <f name="msd" value="TO"/>
+        </fs>
+    </a>
+    <node xml:id="n199">
+        <link targets="seg-r370"/>
+    </node>
+    <a label="tok" ref="n199" as="xces">
+        <fs>
+            <f name="base" value="earn"/>
+            <f name="msd" value="VB"/>
+        </fs>
+    </a>
+    <node xml:id="n2">
+        <link targets="seg-r3"/>
+    </node>
+    <a label="tok" ref="n2" as="xces">
+        <fs>
+            <f name="base" value=","/>
+            <f name="msd" value=","/>
+        </fs>
+    </a>
+    <node xml:id="n20">
+        <link targets="seg-r34"/>
+    </node>
+    <a label="tok" ref="n20" as="xces">
+        <fs>
+            <f name="base" value="you"/>
+            <f name="msd" value="PRP"/>
+        </fs>
+    </a>
+    <node xml:id="n200">
+        <link targets="seg-r372"/>
+    </node>
+    <a label="tok" ref="n200" as="xces">
+        <fs>
+            <f name="base" value="the"/>
+            <f name="msd" value="DT"/>
+        </fs>
+    </a>
+    <node xml:id="n201">
+        <link targets="seg-r374"/>
+    </node>
+    <a label="tok" ref="n201" as="xces">
+        <fs>
+            <f name="base" value="right"/>
+            <f name="msd" value="NN"/>
+        </fs>
+    </a>
+    <node xml:id="n202">
+        <link targets="seg-r376"/>
+    </node>
+    <a label="tok" ref="n202" as="xces">
+        <fs>
+            <f name="base" value="to"/>
+            <f name="msd" value="TO"/>
+        </fs>
+    </a>
+    <node xml:id="n203">
+        <link targets="seg-r378"/>
+    </node>
+    <a label="tok" ref="n203" as="xces">
+        <fs>
+            <f name="base" value="ask"/>
+            <f name="msd" value="VB"/>
+        </fs>
+    </a>
+    <node xml:id="n204">
+        <link targets="seg-r380"/>
+    </node>
+    <a label="tok" ref="n204" as="xces">
+        <fs>
+            <f name="base" value="other"/>
+            <f name="affix" value="s"/>
+            <f name="msd" value="NNS"/>
+        </fs>
+    </a>
+    <node xml:id="n205">
+        <link targets="seg-r382"/>
+    </node>
+    <a label="tok" ref="n205" as="xces">
+        <fs>
+            <f name="base" value="for"/>
+            <f name="msd" value="IN"/>
+        </fs>
+    </a>
+    <node xml:id="n206">
+        <link targets="seg-r384"/>
+    </node>
+    <a label="tok" ref="n206" as="xces">
+        <fs>
+            <f name="base" value="help"/>
+            <f name="msd" value="NN"/>
+        </fs>
+    </a>
+    <node xml:id="n207">
+        <link targets="seg-r386"/>
+    </node>
+    <a label="tok" ref="n207" as="xces">
+        <fs>
+            <f name="base" value="by"/>
+            <f name="msd" value="IN"/>
+        </fs>
+    </a>
+    <node xml:id="n208">
+        <link targets="seg-r388"/>
+    </node>
+    <a label="tok" ref="n208" as="xces">
+        <fs>
+            <f name="base" value="accomplish"/>
+            <f name="affix" value="ing"/>
+            <f name="msd" value="VBG"/>
+        </fs>
+    </a>
+    <node xml:id="n209">
+        <link targets="seg-r390"/>
+    </node>
+    <a label="tok" ref="n209" as="xces">
+        <fs>
+            <f name="base" value="something"/>
+            <f name="affix" value=" "/>
+            <f name="msd" value="NN"/>
+        </fs>
+    </a>
+    <node xml:id="n21">
+        <link targets="seg-r35"/>
+    </node>
+    <a label="tok" ref="n21" as="xces">
+        <fs>
+            <f name="base" value="'ll"/>
+            <f name="msd" value="MD"/>
+        </fs>
+    </a>
+    <node xml:id="n210">
+        <link targets="seg-r392"/>
+    </node>
+    <a label="tok" ref="n210" as="xces">
+        <fs>
+            <f name="base" value="real"/>
+            <f name="msd" value="JJ"/>
+        </fs>
+    </a>
+    <node xml:id="n211">
+        <link targets="seg-r394"/>
+    </node>
+    <a label="tok" ref="n211" as="xces">
+        <fs>
+            <f name="base" value="to"/>
+            <f name="msd" value="TO"/>
+        </fs>
+    </a>
+    <node xml:id="n212">
+        <link targets="seg-r396"/>
+    </node>
+    <a label="tok" ref="n212" as="xces">
+        <fs>
+            <f name="base" value="help"/>
+            <f name="msd" value="VB"/>
+        </fs>
+    </a>
+    <node xml:id="n213">
+        <link targets="seg-r398"/>
+    </node>
+    <a label="tok" ref="n213" as="xces">
+        <fs>
+            <f name="base" value="themselve"/>
+            <f name="affix" value="s"/>
+            <f name="msd" value="PRP"/>
+        </fs>
+    </a>
+    <node xml:id="n214">
+        <link targets="seg-r399"/>
+    </node>
+    <a label="tok" ref="n214" as="xces">
+        <fs>
+            <f name="base" value="."/>
+            <f name="msd" value="."/>
+        </fs>
+    </a>
+    <node xml:id="n215">
+        <link targets="seg-r401"/>
+    </node>
+    <a label="tok" ref="n215" as="xces">
+        <fs>
+            <f name="base" value="and"/>
+            <f name="msd" value="CC"/>
+        </fs>
+    </a>
+    <node xml:id="n216">
+        <link targets="seg-r403"/>
+    </node>
+    <a label="tok" ref="n216" as="xces">
+        <fs>
+            <f name="base" value="that"/>
+            <f name="msd" value="DT"/>
+        </fs>
+    </a>
+    <node xml:id="n217">
+        <link targets="seg-r404"/>
+    </node>
+    <a label="tok" ref="n217" as="xces">
+        <fs>
+            <f name="affix" value="s"/>
+            <f name="base" value="be"/>
+            <f name="msd" value="VBZ"/>
+        </fs>
+    </a>
+    <node xml:id="n218">
+        <link targets="seg-r406"/>
+    </node>
+    <a label="tok" ref="n218" as="xces">
+        <fs>
+            <f name="base" value="from"/>
+            <f name="msd" value="IN"/>
+        </fs>
+    </a>
+    <node xml:id="n219">
+        <link targets="seg-r408"/>
+    </node>
+    <a label="tok" ref="n219" as="xces">
+        <fs>
+            <f name="base" value="kid"/>
+            <f name="affix" value="s"/>
+            <f name="msd" value="NNS"/>
+        </fs>
+    </a>
+    <node xml:id="n22">
+        <link targets="seg-r37"/>
+    </node>
+    <a label="tok" ref="n22" as="xces">
+        <fs>
+            <f name="base" value="consider"/>
+            <f name="msd" value="VB"/>
+        </fs>
+    </a>
+    <node xml:id="n220">
+        <link targets="seg-r410"/>
+    </node>
+    <a label="tok" ref="n220" as="xces">
+        <fs>
+            <f name="base" value="many"/>
+            <f name="msd" value="JJ"/>
+        </fs>
+    </a>
+    <node xml:id="n221">
+        <link targets="seg-r412"/>
+    </node>
+    <a label="tok" ref="n221" as="xces">
+        <fs>
+            <f name="base" value="people"/>
+            <f name="msd" value="NNS"/>
+        </fs>
+    </a>
+    <node xml:id="n222">
+        <link targets="seg-r414"/>
+    </node>
+    <a label="tok" ref="n222" as="xces">
+        <fs>
+            <f name="base" value="see"/>
+            <f name="msd" value="VBP"/>
+        </fs>
+    </a>
+    <node xml:id="n223">
+        <link targets="seg-r416"/>
+    </node>
+    <a label="tok" ref="n223" as="xces">
+        <fs>
+            <f name="base" value="as"/>
+            <f name="affix" value=" "/>
+            <f name="msd" value="IN"/>
+        </fs>
+    </a>
+    <node xml:id="n224">
+        <link targets="seg-r418"/>
+    </node>
+    <a label="tok" ref="n224" as="xces">
+        <fs>
+            <f name="base" value="a"/>
+            <f name="msd" value="DT"/>
+        </fs>
+    </a>
+    <node xml:id="n225">
+        <link targets="seg-r420"/>
+    </node>
+    <a label="tok" ref="n225" as="xces">
+        <fs>
+            <f name="base" value="problem"/>
+            <f name="msd" value="NN"/>
+        </fs>
+    </a>
+    <node xml:id="n226">
+        <link targets="seg-r421"/>
+    </node>
+    <a label="tok" ref="n226" as="xces">
+        <fs>
+            <f name="base" value="."/>
+            <f name="msd" value="."/>
+        </fs>
+    </a>
+    <node xml:id="n227">
+        <link targets="seg-r423"/>
+    </node>
+    <a label="tok" ref="n227" as="xces">
+        <fs>
+            <f name="base" value="even"/>
+            <f name="msd" value="RB"/>
+        </fs>
+    </a>
+    <node xml:id="n228">
+        <link targets="seg-r425"/>
+    </node>
+    <a label="tok" ref="n228" as="xces">
+        <fs>
+            <f name="base" value="after"/>
+            <f name="msd" value="IN"/>
+        </fs>
+    </a>
+    <node xml:id="n229">
+        <link targets="seg-r427"/>
+    </node>
+    <a label="tok" ref="n229" as="xces">
+        <fs>
+            <f name="base" value="the"/>
+            <f name="msd" value="DT"/>
+        </fs>
+    </a>
+    <node xml:id="n23">
+        <link targets="seg-r39"/>
+    </node>
+    <a label="tok" ref="n23" as="xces">
+        <fs>
+            <f name="base" value="continue"/>
+            <f name="affix" value="ing"/>
+            <f name="msd" value="VBG"/>
+        </fs>
+    </a>
+    <node xml:id="n230">
+        <link targets="seg-r429"/>
+    </node>
+    <a label="tok" ref="n230" as="xces">
+        <fs>
+            <f name="base" value="summer"/>
+            <f name="msd" value="NN"/>
+        </fs>
+    </a>
+    <node xml:id="n231">
+        <link targets="seg-r431"/>
+    </node>
+    <a label="tok" ref="n231" as="xces">
+        <fs>
+            <f name="base" value="session"/>
+            <f name="affix" value="s"/>
+            <f name="msd" value="NNS"/>
+        </fs>
+    </a>
+    <node xml:id="n232">
+        <link targets="seg-r433"/>
+    </node>
+    <a label="tok" ref="n232" as="xces">
+        <fs>
+            <f name="base" value="come"/>
+            <f name="msd" value="VBP"/>
+        </fs>
+    </a>
+    <node xml:id="n233">
+        <link targets="seg-r435"/>
+    </node>
+    <a label="tok" ref="n233" as="xces">
+        <fs>
+            <f name="base" value="to"/>
+            <f name="msd" value="TO"/>
+        </fs>
+    </a>
+    <node xml:id="n234">
+        <link targets="seg-r437"/>
+    </node>
+    <a label="tok" ref="n234" as="xces">
+        <fs>
+            <f name="base" value="a"/>
+            <f name="msd" value="DT"/>
+        </fs>
+    </a>
+    <node xml:id="n235">
+        <link targets="seg-r439"/>
+    </node>
+    <a label="tok" ref="n235" as="xces">
+        <fs>
+            <f name="base" value="close"/>
+            <f name="msd" value="NN"/>
+        </fs>
+    </a>
+    <node xml:id="n236">
+        <link targets="seg-r440"/>
+    </node>
+    <a label="tok" ref="n236" as="xces">
+        <fs>
+            <f name="base" value=","/>
+            <f name="msd" value=","/>
+        </fs>
+    </a>
+    <node xml:id="n237">
+        <link targets="seg-r442"/>
+    </node>
+    <a label="tok" ref="n237" as="xces">
+        <fs>
+            <f name="base" value="jameson"/>
+            <f name="msd" value="NNP"/>
+        </fs>
+    </a>
+    <node xml:id="n238">
+        <link targets="seg-r444"/>
+    </node>
+    <a label="tok" ref="n238" as="xces">
+        <fs>
+            <f name="base" value="camper"/>
+            <f name="affix" value="s"/>
+            <f name="msd" value="NNS"/>
+        </fs>
+    </a>
+    <node xml:id="n239">
+        <link targets="seg-r446"/>
+    </node>
+    <a label="tok" ref="n239" as="xces">
+        <fs>
+            <f name="base" value="will"/>
+            <f name="msd" value="MD"/>
+        </fs>
+    </a>
+    <node xml:id="n24">
+        <link targets="seg-r41"/>
+    </node>
+    <a label="tok" ref="n24" as="xces">
+        <fs>
+            <f name="base" value="your"/>
+            <f name="msd" value="PRP$"/>
+        </fs>
+    </a>
+    <node xml:id="n240">
+        <link targets="seg-r448"/>
+    </node>
+    <a label="tok" ref="n240" as="xces">
+        <fs>
+            <f name="base" value="take"/>
+            <f name="msd" value="VB"/>
+        </fs>
+    </a>
+    <node xml:id="n241">
+        <link targets="seg-r450"/>
+    </node>
+    <a label="tok" ref="n241" as="xces">
+        <fs>
+            <f name="base" value="part"/>
+            <f name="msd" value="NN"/>
+        </fs>
+    </a>
+    <node xml:id="n242">
+        <link targets="seg-r452"/>
+    </node>
+    <a label="tok" ref="n242" as="xces">
+        <fs>
+            <f name="base" value="in"/>
+            <f name="msd" value="IN"/>
+        </fs>
+    </a>
+    <node xml:id="n243">
+        <link targets="seg-r454"/>
+    </node>
+    <a label="tok" ref="n243" as="xces">
+        <fs>
+            <f name="base" value="year-round"/>
+            <f name="msd" value="JJ"/>
+        </fs>
+    </a>
+    <node xml:id="n244">
+        <link targets="seg-r456"/>
+    </node>
+    <a label="tok" ref="n244" as="xces">
+        <fs>
+            <f name="base" value="program"/>
+            <f name="affix" value="s"/>
+            <f name="msd" value="NNS"/>
+        </fs>
+    </a>
+    <node xml:id="n245">
+        <link targets="seg-r458"/>
+    </node>
+    <a label="tok" ref="n245" as="xces">
+        <fs>
+            <f name="base" value="design"/>
+            <f name="affix" value="ed"/>
+            <f name="msd" value="VBN"/>
+        </fs>
+    </a>
+    <node xml:id="n246">
+        <link targets="seg-r460"/>
+    </node>
+    <a label="tok" ref="n246" as="xces">
+        <fs>
+            <f name="base" value="to"/>
+            <f name="msd" value="TO"/>
+        </fs>
+    </a>
+    <node xml:id="n247">
+        <link targets="seg-r462"/>
+    </node>
+    <a label="tok" ref="n247" as="xces">
+        <fs>
+            <f name="base" value="keep"/>
+            <f name="msd" value="VB"/>
+        </fs>
+    </a>
+    <node xml:id="n248">
+        <link targets="seg-r464"/>
+    </node>
+    <a label="tok" ref="n248" as="xces">
+        <fs>
+            <f name="base" value="that"/>
+            <f name="msd" value="IN"/>
+        </fs>
+    </a>
+    <node xml:id="n249">
+        <link targets="seg-r466"/>
+    </node>
+    <a label="tok" ref="n249" as="xces">
+        <fs>
+            <f name="base" value="positive"/>
+            <f name="msd" value="JJ"/>
+        </fs>
+    </a>
+    <node xml:id="n25">
+        <link targets="seg-r43"/>
+    </node>
+    <a label="tok" ref="n25" as="xces">
+        <fs>
+            <f name="base" value="support"/>
+            <f name="msd" value="NN"/>
+        </fs>
+    </a>
+    <node xml:id="n250">
+        <link targets="seg-r468"/>
+    </node>
+    <a label="tok" ref="n250" as="xces">
+        <fs>
+            <f name="base" value="contact"/>
+            <f name="msd" value="NN"/>
+        </fs>
+    </a>
+    <node xml:id="n251">
+        <link targets="seg-r470"/>
+    </node>
+    <a label="tok" ref="n251" as="xces">
+        <fs>
+            <f name="base" value="with"/>
+            <f name="msd" value="IN"/>
+        </fs>
+    </a>
+    <node xml:id="n252">
+        <link targets="seg-r472"/>
+    </node>
+    <a label="tok" ref="n252" as="xces">
+        <fs>
+            <f name="base" value="peer"/>
+            <f name="affix" value="s"/>
+            <f name="msd" value="NNS"/>
+        </fs>
+    </a>
+    <node xml:id="n253">
+        <link targets="seg-r474"/>
+    </node>
+    <a label="tok" ref="n253" as="xces">
+        <fs>
+            <f name="base" value="and"/>
+            <f name="msd" value="CC"/>
+        </fs>
+    </a>
+    <node xml:id="n254">
+        <link targets="seg-r476"/>
+    </node>
+    <a label="tok" ref="n254" as="xces">
+        <fs>
+            <f name="base" value="role"/>
+            <f name="msd" value="NN"/>
+        </fs>
+    </a>
+    <node xml:id="n255">
+        <link targets="seg-r478"/>
+    </node>
+    <a label="tok" ref="n255" as="xces">
+        <fs>
+            <f name="base" value="model"/>
+            <f name="affix" value="s"/>
+            <f name="msd" value="NNS"/>
+        </fs>
+    </a>
+    <node xml:id="n256">
+        <link targets="seg-r480"/>
+    </node>
+    <a label="tok" ref="n256" as="xces">
+        <fs>
+            <f name="base" value="alive"/>
+            <f name="msd" value="JJ"/>
+        </fs>
+    </a>
+    <node xml:id="n257">
+        <link targets="seg-r482"/>
+    </node>
+    <a label="tok" ref="n257" as="xces">
+        <fs>
+            <f name="base" value="and"/>
+            <f name="msd" value="CC"/>
+        </fs>
+    </a>
+    <node xml:id="n258">
+        <link targets="seg-r484"/>
+    </node>
+    <a label="tok" ref="n258" as="xces">
+        <fs>
+            <f name="base" value="important"/>
+            <f name="msd" value="JJ"/>
+        </fs>
+    </a>
+    <node xml:id="n259">
+        <link targets="seg-r485"/>
+    </node>
+    <a label="tok" ref="n259" as="xces">
+        <fs>
+            <f name="base" value="."/>
+            <f name="msd" value="."/>
+        </fs>
+    </a>
+    <node xml:id="n26">
+        <link targets="seg-r45"/>
+    </node>
+    <a label="tok" ref="n26" as="xces">
+        <fs>
+            <f name="base" value="of"/>
+            <f name="msd" value="IN"/>
+        </fs>
+    </a>
+    <node xml:id="n260">
+        <link targets="seg-r487"/>
+    </node>
+    <a label="tok" ref="n260" as="xces">
+        <fs>
+            <f name="base" value="we"/>
+            <f name="msd" value="PRP"/>
+        </fs>
+    </a>
+    <node xml:id="n261">
+        <link targets="seg-r488"/>
+    </node>
+    <a label="tok" ref="n261" as="xces">
+        <fs>
+            <f name="affix" value=""/>
+            <f name="base" value="have"/>
+            <f name="msd" value="VBP"/>
+        </fs>
+    </a>
+    <node xml:id="n262">
+        <link targets="seg-r490"/>
+    </node>
+    <a label="tok" ref="n262" as="xces">
+        <fs>
+            <f name="base" value="schedule"/>
+            <f name="affix" value="ed"/>
+            <f name="msd" value="VBN"/>
+        </fs>
+    </a>
+    <node xml:id="n263">
+        <link targets="seg-r492"/>
+    </node>
+    <a label="tok" ref="n263" as="xces">
+        <fs>
+            <f name="base" value="more"/>
+            <f name="msd" value="JJR"/>
+        </fs>
+    </a>
+    <node xml:id="n264">
+        <link targets="seg-r494"/>
+    </node>
+    <a label="tok" ref="n264" as="xces">
+        <fs>
+            <f name="base" value="than"/>
+            <f name="msd" value="IN"/>
+        </fs>
+    </a>
+    <node xml:id="n265">
+        <link targets="seg-r496"/>
+    </node>
+    <a label="tok" ref="n265" as="xces">
+        <fs>
+            <f name="base" value="15"/>
+            <f name="msd" value="CD"/>
+        </fs>
+    </a>
+    <node xml:id="n266">
+        <link targets="seg-r498"/>
+    </node>
+    <a label="tok" ref="n266" as="xces">
+        <fs>
+            <f name="base" value="follow-up"/>
+            <f name="msd" value="JJ"/>
+        </fs>
+    </a>
+    <node xml:id="n267">
+        <link targets="seg-r500"/>
+    </node>
+    <a label="tok" ref="n267" as="xces">
+        <fs>
+            <f name="base" value="camper"/>
+            <f name="msd" value="NN"/>
+        </fs>
+    </a>
+    <node xml:id="n268">
+        <link targets="seg-r502"/>
+    </node>
+    <a label="tok" ref="n268" as="xces">
+        <fs>
+            <f name="base" value="weekend"/>
+            <f name="affix" value="s"/>
+            <f name="msd" value="NNS"/>
+        </fs>
+    </a>
+    <node xml:id="n269">
+        <link targets="seg-r504"/>
+    </node>
+    <a label="tok" ref="n269" as="xces">
+        <fs>
+            <f name="base" value="begin"/>
+            <f name="affix" value="ing"/>
+            <f name="msd" value="VBG"/>
+        </fs>
+    </a>
+    <node xml:id="n27">
+        <link targets="seg-r47"/>
+    </node>
+    <a label="tok" ref="n27" as="xces">
+        <fs>
+            <f name="base" value="jameson"/>
+            <f name="msd" value="NNP"/>
+        </fs>
+    </a>
+    <node xml:id="n270">
+        <link targets="seg-r506"/>
+    </node>
+    <a label="tok" ref="n270" as="xces">
+        <fs>
+            <f name="base" value="in"/>
+            <f name="msd" value="IN"/>
+        </fs>
+    </a>
+    <node xml:id="n271">
+        <link targets="seg-r508"/>
+    </node>
+    <a label="tok" ref="n271" as="xces">
+        <fs>
+            <f name="base" value="september"/>
+            <f name="msd" value="NNP"/>
+        </fs>
+    </a>
+    <node xml:id="n272">
+        <link targets="seg-r510"/>
+    </node>
+    <a label="tok" ref="n272" as="xces">
+        <fs>
+            <f name="base" value="and"/>
+            <f name="msd" value="CC"/>
+        </fs>
+    </a>
+    <node xml:id="n273">
+        <link targets="seg-r512"/>
+    </node>
+    <a label="tok" ref="n273" as="xces">
+        <fs>
+            <f name="base" value="go"/>
+            <f name="affix" value="ing"/>
+            <f name="msd" value="VBG"/>
+        </fs>
+    </a>
+    <node xml:id="n274">
+        <link targets="seg-r514"/>
+    </node>
+    <a label="tok" ref="n274" as="xces">
+        <fs>
+            <f name="base" value="around"/>
+            <f name="msd" value="IN"/>
+        </fs>
+    </a>
+    <node xml:id="n275">
+        <link targets="seg-r516"/>
+    </node>
+    <a label="tok" ref="n275" as="xces">
+        <fs>
+            <f name="base" value="till"/>
+            <f name="msd" value="IN"/>
+        </fs>
+    </a>
+    <node xml:id="n276">
+        <link targets="seg-r518"/>
+    </node>
+    <a label="tok" ref="n276" as="xces">
+        <fs>
+            <f name="base" value="next"/>
+            <f name="msd" value="JJ"/>
+        </fs>
+    </a>
+    <node xml:id="n277">
+        <link targets="seg-r520 seg-r521"/>
+    </node>
+    <a label="tok" ref="n277" as="xces">
+        <fs>
+            <f name="base" value="summer"/>
+            <f name="affix" value="s"/>
+            <f name="msd" value="NNS"/>
+        </fs>
+    </a>
+    <node xml:id="n278">
+        <link targets="seg-r523"/>
+    </node>
+    <a label="tok" ref="n278" as="xces">
+        <fs>
+            <f name="base" value="camp"/>
+            <f name="affix" value="ing"/>
+            <f name="msd" value="VBG"/>
+        </fs>
+    </a>
+    <node xml:id="n279">
+        <link targets="seg-r525"/>
+    </node>
+    <a label="tok" ref="n279" as="xces">
+        <fs>
+            <f name="base" value="season"/>
+            <f name="msd" value="NN"/>
+        </fs>
+    </a>
+    <node xml:id="n28">
+        <link targets="seg-r48"/>
+    </node>
+    <a label="tok" ref="n28" as="xces">
+        <fs>
+            <f name="base" value="'s"/>
+            <f name="msd" value="POS"/>
+        </fs>
+    </a>
+    <node xml:id="n280">
+        <link targets="seg-r526"/>
+    </node>
+    <a label="tok" ref="n280" as="xces">
+        <fs>
+            <f name="base" value="."/>
+            <f name="msd" value="."/>
+        </fs>
+    </a>
+    <node xml:id="n281">
+        <link targets="seg-r528"/>
+    </node>
+    <a label="tok" ref="n281" as="xces">
+        <fs>
+            <f name="base" value="please"/>
+            <f name="msd" value="VB"/>
+        </fs>
+    </a>
+    <node xml:id="n282">
+        <link targets="seg-r529"/>
+    </node>
+    <a label="tok" ref="n282" as="xces">
+        <fs>
+            <f name="base" value=","/>
+            <f name="msd" value=","/>
+        </fs>
+    </a>
+    <node xml:id="n283">
+        <link targets="seg-r531"/>
+    </node>
+    <a label="tok" ref="n283" as="xces">
+        <fs>
+            <f name="base" value="consider"/>
+            <f name="msd" value="VB"/>
+        </fs>
+    </a>
+    <node xml:id="n284">
+        <link targets="seg-r533"/>
+    </node>
+    <a label="tok" ref="n284" as="xces">
+        <fs>
+            <f name="base" value="renew"/>
+            <f name="affix" value="ing"/>
+            <f name="msd" value="VBG"/>
+        </fs>
+    </a>
+    <node xml:id="n285">
+        <link targets="seg-r535"/>
+    </node>
+    <a label="tok" ref="n285" as="xces">
+        <fs>
+            <f name="base" value="your"/>
+            <f name="msd" value="PRP$"/>
+        </fs>
+    </a>
+    <node xml:id="n286">
+        <link targets="seg-r537"/>
+    </node>
+    <a label="tok" ref="n286" as="xces">
+        <fs>
+            <f name="base" value="support"/>
+            <f name="msd" value="NN"/>
+        </fs>
+    </a>
+    <node xml:id="n287">
+        <link targets="seg-r539"/>
+    </node>
+    <a label="tok" ref="n287" as="xces">
+        <fs>
+            <f name="base" value="of"/>
+            <f name="msd" value="IN"/>
+        </fs>
+    </a>
+    <node xml:id="n288">
+        <link targets="seg-r541"/>
+    </node>
+    <a label="tok" ref="n288" as="xces">
+        <fs>
+            <f name="base" value="these"/>
+            <f name="msd" value="DT"/>
+        </fs>
+    </a>
+    <node xml:id="n289">
+        <link targets="seg-r543"/>
+    </node>
+    <a label="tok" ref="n289" as="xces">
+        <fs>
+            <f name="base" value="great"/>
+            <f name="msd" value="JJ"/>
+        </fs>
+    </a>
+    <node xml:id="n29">
+        <link targets="seg-r50"/>
+    </node>
+    <a label="tok" ref="n29" as="xces">
+        <fs>
+            <f name="base" value="special"/>
+            <f name="msd" value="JJ"/>
+        </fs>
+    </a>
+    <node xml:id="n290">
+        <link targets="seg-r545"/>
+    </node>
+    <a label="tok" ref="n290" as="xces">
+        <fs>
+            <f name="base" value="kid"/>
+            <f name="affix" value="s"/>
+            <f name="msd" value="NNS"/>
+        </fs>
+    </a>
+    <node xml:id="n291">
+        <link targets="seg-r547"/>
+    </node>
+    <a label="tok" ref="n291" as="xces">
+        <fs>
+            <f name="base" value="today"/>
+            <f name="msd" value="NN"/>
+        </fs>
+    </a>
+    <node xml:id="n292">
+        <link targets="seg-r548"/>
+    </node>
+    <a label="tok" ref="n292" as="xces">
+        <fs>
+            <f name="base" value="."/>
+            <f name="msd" value="."/>
+        </fs>
+    </a>
+    <node xml:id="n293">
+        <link targets="seg-r550"/>
+    </node>
+    <a label="tok" ref="n293" as="xces">
+        <fs>
+            <f name="base" value="sincerely"/>
+            <f name="msd" value="NNP"/>
+        </fs>
+    </a>
+    <node xml:id="n294">
+        <link targets="seg-r551"/>
+    </node>
+    <a label="tok" ref="n294" as="xces">
+        <fs>
+            <f name="base" value=","/>
+            <f name="msd" value=","/>
+        </fs>
+    </a>
+    <node xml:id="n295">
+        <link targets="seg-r553"/>
+    </node>
+    <a label="tok" ref="n295" as="xces">
+        <fs>
+            <f name="base" value="julie"/>
+            <f name="msd" value="NNP"/>
+        </fs>
+    </a>
+    <node xml:id="n296">
+        <link targets="seg-r555"/>
+    </node>
+    <a label="tok" ref="n296" as="xces">
+        <fs>
+            <f name="base" value="marsh"/>
+            <f name="msd" value="NNP"/>
+        </fs>
+    </a>
+    <node xml:id="n297">
+        <link targets="seg-r557"/>
+    </node>
+    <a label="tok" ref="n297" as="xces">
+        <fs>
+            <f name="base" value="executive"/>
+            <f name="msd" value="NNP"/>
+        </fs>
+    </a>
+    <node xml:id="n298">
+        <link targets="seg-r559"/>
+    </node>
+    <a label="tok" ref="n298" as="xces">
+        <fs>
+            <f name="base" value="director"/>
+            <f name="msd" value="NNP"/>
+        </fs>
+    </a>
+    <node xml:id="n299">
+        <link targets="seg-r561"/>
+    </node>
+    <a label="tok" ref="n299" as="xces">
+        <fs>
+            <f name="base" value="p"/>
+            <f name="msd" value="NN"/>
+        </fs>
+    </a>
+    <node xml:id="n3">
+        <link targets="seg-r4"/>
+    </node>
+    <a label="tok" ref="n3" as="xces">
+        <fs>
+            <f name="base" value="1997"/>
+            <f name="msd" value="CD"/>
+        </fs>
+    </a>
+    <node xml:id="n30">
+        <link targets="seg-r52"/>
+    </node>
+    <a label="tok" ref="n30" as="xces">
+        <fs>
+            <f name="base" value="camper"/>
+            <f name="affix" value="s"/>
+            <f name="msd" value="NNS"/>
+        </fs>
+    </a>
+    <node xml:id="n300">
+        <link targets="seg-r562"/>
+    </node>
+    <a label="tok" ref="n300" as="xces">
+        <fs>
+            <f name="base" value="."/>
+            <f name="msd" value="."/>
+        </fs>
+    </a>
+    <node xml:id="n301">
+        <link targets="seg-r563"/>
+    </node>
+    <a label="tok" ref="n301" as="xces">
+        <fs>
+            <f name="base" value="s"/>
+            <f name="msd" value="NNP"/>
+        </fs>
+    </a>
+    <node xml:id="n302">
+        <link targets="seg-r564"/>
+    </node>
+    <a label="tok" ref="n302" as="xces">
+        <fs>
+            <f name="base" value="."/>
+            <f name="msd" value="."/>
+        </fs>
+    </a>
+    <node xml:id="n303">
+        <link targets="seg-r566"/>
+    </node>
+    <a label="tok" ref="n303" as="xces">
+        <fs>
+            <f name="base" value="we"/>
+            <f name="msd" value="PRP"/>
+        </fs>
+    </a>
+    <node xml:id="n304">
+        <link targets="seg-r568"/>
+    </node>
+    <a label="tok" ref="n304" as="xces">
+        <fs>
+            <f name="base" value="know"/>
+            <f name="msd" value="VBP"/>
+        </fs>
+    </a>
+    <node xml:id="n305">
+        <link targets="seg-r570"/>
+    </node>
+    <a label="tok" ref="n305" as="xces">
+        <fs>
+            <f name="base" value="our"/>
+            <f name="msd" value="PRP$"/>
+        </fs>
+    </a>
+    <node xml:id="n306">
+        <link targets="seg-r572"/>
+    </node>
+    <a label="tok" ref="n306" as="xces">
+        <fs>
+            <f name="base" value="follow-up"/>
+            <f name="msd" value="JJ"/>
+        </fs>
+    </a>
+    <node xml:id="n307">
+        <link targets="seg-r574"/>
+    </node>
+    <a label="tok" ref="n307" as="xces">
+        <fs>
+            <f name="base" value="weekend"/>
+            <f name="affix" value="s"/>
+            <f name="msd" value="NNS"/>
+        </fs>
+    </a>
+    <node xml:id="n308">
+        <link targets="seg-r576"/>
+    </node>
+    <a label="tok" ref="n308" as="xces">
+        <fs>
+            <f name="base" value="be"/>
+            <f name="affix" value=""/>
+            <f name="msd" value="VBP"/>
+        </fs>
+    </a>
+    <node xml:id="n309">
+        <link targets="seg-r578"/>
+    </node>
+    <a label="tok" ref="n309" as="xces">
+        <fs>
+            <f name="base" value="go"/>
+            <f name="affix" value="ing"/>
+            <f name="msd" value="VBG"/>
+        </fs>
+    </a>
+    <node xml:id="n31">
+        <link targets="seg-r54"/>
+    </node>
+    <a label="tok" ref="n31" as="xces">
+        <fs>
+            <f name="base" value="by"/>
+            <f name="msd" value="IN"/>
+        </fs>
+    </a>
+    <node xml:id="n310">
+        <link targets="seg-r580"/>
+    </node>
+    <a label="tok" ref="n310" as="xces">
+        <fs>
+            <f name="base" value="to"/>
+            <f name="msd" value="TO"/>
+        </fs>
+    </a>
+    <node xml:id="n311">
+        <link targets="seg-r582"/>
+    </node>
+    <a label="tok" ref="n311" as="xces">
+        <fs>
+            <f name="base" value="be"/>
+            <f name="msd" value="VB"/>
+        </fs>
+    </a>
+    <node xml:id="n312">
+        <link targets="seg-r584"/>
+    </node>
+    <a label="tok" ref="n312" as="xces">
+        <fs>
+            <f name="base" value="better"/>
+            <f name="msd" value="JJR"/>
+        </fs>
+    </a>
+    <node xml:id="n313">
+        <link targets="seg-r586"/>
+    </node>
+    <a label="tok" ref="n313" as="xces">
+        <fs>
+            <f name="base" value="attend"/>
+            <f name="affix" value="ed"/>
+            <f name="msd" value="VBN"/>
+        </fs>
+    </a>
+    <node xml:id="n314">
+        <link targets="seg-r588"/>
+    </node>
+    <a label="tok" ref="n314" as="xces">
+        <fs>
+            <f name="base" value="than"/>
+            <f name="msd" value="IN"/>
+        </fs>
+    </a>
+    <node xml:id="n315">
+        <link targets="seg-r590"/>
+    </node>
+    <a label="tok" ref="n315" as="xces">
+        <fs>
+            <f name="base" value="ever"/>
+            <f name="msd" value="RB"/>
+        </fs>
+    </a>
+    <node xml:id="n316">
+        <link targets="seg-r592"/>
+    </node>
+    <a label="tok" ref="n316" as="xces">
+        <fs>
+            <f name="base" value="this"/>
+            <f name="affix" value=" "/>
+            <f name="msd" value="DT"/>
+        </fs>
+    </a>
+    <node xml:id="n317">
+        <link targets="seg-r594"/>
+    </node>
+    <a label="tok" ref="n317" as="xces">
+        <fs>
+            <f name="base" value="fall"/>
+            <f name="msd" value="NN"/>
+        </fs>
+    </a>
+    <node xml:id="n318">
+        <link targets="seg-r596"/>
+    </node>
+    <a label="tok" ref="n318" as="xces">
+        <fs>
+            <f name="base" value="and"/>
+            <f name="msd" value="CC"/>
+        </fs>
+    </a>
+    <node xml:id="n319">
+        <link targets="seg-r598"/>
+    </node>
+    <a label="tok" ref="n319" as="xces">
+        <fs>
+            <f name="base" value="winter"/>
+            <f name="msd" value="NN"/>
+        </fs>
+    </a>
+    <node xml:id="n32">
+        <link targets="seg-r56"/>
+    </node>
+    <a label="tok" ref="n32" as="xces">
+        <fs>
+            <f name="base" value="renew"/>
+            <f name="affix" value="ing"/>
+            <f name="msd" value="VBG"/>
+        </fs>
+    </a>
+    <node xml:id="n320">
+        <link targets="seg-r599"/>
+    </node>
+    <a label="tok" ref="n320" as="xces">
+        <fs>
+            <f name="base" value="."/>
+            <f name="msd" value="."/>
+        </fs>
+    </a>
+    <node xml:id="n321">
+        <link targets="seg-r601"/>
+    </node>
+    <a label="tok" ref="n321" as="xces">
+        <fs>
+            <f name="base" value="if"/>
+            <f name="msd" value="IN"/>
+        </fs>
+    </a>
+    <node xml:id="n322">
+        <link targets="seg-r603"/>
+    </node>
+    <a label="tok" ref="n322" as="xces">
+        <fs>
+            <f name="base" value="you"/>
+            <f name="msd" value="PRP"/>
+        </fs>
+    </a>
+    <node xml:id="n323">
+        <link targets="seg-r605"/>
+    </node>
+    <a label="tok" ref="n323" as="xces">
+        <fs>
+            <f name="base" value="can"/>
+            <f name="msd" value="MD"/>
+        </fs>
+    </a>
+    <node xml:id="n324">
+        <link targets="seg-r607"/>
+    </node>
+    <a label="tok" ref="n324" as="xces">
+        <fs>
+            <f name="base" value="give"/>
+            <f name="msd" value="VB"/>
+        </fs>
+    </a>
+    <node xml:id="n325">
+        <link targets="seg-r609"/>
+    </node>
+    <a label="tok" ref="n325" as="xces">
+        <fs>
+            <f name="base" value="a"/>
+            <f name="msd" value="DT"/>
+        </fs>
+    </a>
+    <node xml:id="n326">
+        <link targets="seg-r611"/>
+    </node>
+    <a label="tok" ref="n326" as="xces">
+        <fs>
+            <f name="base" value="little"/>
+            <f name="msd" value="JJ"/>
+        </fs>
+    </a>
+    <node xml:id="n327">
+        <link targets="seg-r613"/>
+    </node>
+    <a label="tok" ref="n327" as="xces">
+        <fs>
+            <f name="base" value="more"/>
+            <f name="msd" value="JJR"/>
+        </fs>
+    </a>
+    <node xml:id="n328">
+        <link targets="seg-r615"/>
+    </node>
+    <a label="tok" ref="n328" as="xces">
+        <fs>
+            <f name="base" value="to"/>
+            <f name="msd" value="TO"/>
+        </fs>
+    </a>
+    <node xml:id="n329">
+        <link targets="seg-r617"/>
+    </node>
+    <a label="tok" ref="n329" as="xces">
+        <fs>
+            <f name="base" value="help"/>
+            <f name="msd" value="VB"/>
+        </fs>
+    </a>
+    <node xml:id="n33">
+        <link targets="seg-r58"/>
+    </node>
+    <a label="tok" ref="n33" as="xces">
+        <fs>
+            <f name="base" value="your"/>
+            <f name="msd" value="PRP$"/>
+        </fs>
+    </a>
+    <node xml:id="n330">
+        <link targets="seg-r619"/>
+    </node>
+    <a label="tok" ref="n330" as="xces">
+        <fs>
+            <f name="base" value="meet"/>
+            <f name="msd" value="VB"/>
+        </fs>
+    </a>
+    <node xml:id="n331">
+        <link targets="seg-r621"/>
+    </node>
+    <a label="tok" ref="n331" as="xces">
+        <fs>
+            <f name="base" value="this"/>
+            <f name="affix" value=" "/>
+            <f name="msd" value="DT"/>
+        </fs>
+    </a>
+    <node xml:id="n332">
+        <link targets="seg-r623"/>
+    </node>
+    <a label="tok" ref="n332" as="xces">
+        <fs>
+            <f name="base" value="increased"/>
+            <f name="msd" value="JJ"/>
+        </fs>
+    </a>
+    <node xml:id="n333">
+        <link targets="seg-r625"/>
+    </node>
+    <a label="tok" ref="n333" as="xces">
+        <fs>
+            <f name="base" value="expense"/>
+            <f name="msd" value="NN"/>
+        </fs>
+    </a>
+    <node xml:id="n334">
+        <link targets="seg-r627"/>
+    </node>
+    <a label="tok" ref="n334" as="xces">
+        <fs>
+            <f name="base" value="we"/>
+            <f name="msd" value="PRP"/>
+        </fs>
+    </a>
+    <node xml:id="n335">
+        <link targets="seg-r629"/>
+    </node>
+    <a label="tok" ref="n335" as="xces">
+        <fs>
+            <f name="base" value="would"/>
+            <f name="msd" value="MD"/>
+        </fs>
+    </a>
+    <node xml:id="n336">
+        <link targets="seg-r631"/>
+    </node>
+    <a label="tok" ref="n336" as="xces">
+        <fs>
+            <f name="base" value="appreciate"/>
+            <f name="msd" value="VB"/>
+        </fs>
+    </a>
+    <node xml:id="n337">
+        <link targets="seg-r633"/>
+    </node>
+    <a label="tok" ref="n337" as="xces">
+        <fs>
+            <f name="base" value="your"/>
+            <f name="msd" value="PRP$"/>
+        </fs>
+    </a>
+    <node xml:id="n338">
+        <link targets="seg-r635"/>
+    </node>
+    <a label="tok" ref="n338" as="xces">
+        <fs>
+            <f name="base" value="support"/>
+            <f name="msd" value="NN"/>
+        </fs>
+    </a>
+    <node xml:id="n339">
+        <link targets="seg-r636"/>
+    </node>
+    <a label="tok" ref="n339" as="xces">
+        <fs>
+            <f name="base" value="."/>
+            <f name="msd" value="."/>
+        </fs>
+    </a>
+    <node xml:id="n34">
+        <link targets="seg-r60"/>
+    </node>
+    <a label="tok" ref="n34" as="xces">
+        <fs>
+            <f name="base" value="last"/>
+            <f name="msd" value="JJ"/>
+        </fs>
+    </a>
+    <node xml:id="n35">
+        <link targets="seg-r62"/>
+    </node>
+    <a label="tok" ref="n35" as="xces">
+        <fs>
+            <f name="base" value="gift"/>
+            <f name="msd" value="NN"/>
+        </fs>
+    </a>
+    <node xml:id="n36">
+        <link targets="seg-r64"/>
+    </node>
+    <a label="tok" ref="n36" as="xces">
+        <fs>
+            <f name="base" value="of"/>
+            <f name="msd" value="IN"/>
+        </fs>
+    </a>
+    <node xml:id="n37">
+        <link targets="seg-r66"/>
+    </node>
+    <a label="tok" ref="n37" as="xces">
+        <fs>
+            <f name="base" value="$"/>
+            <f name="msd" value="$"/>
+            <f name="type" value="currency"/>
+        </fs>
+    </a>
+    <node xml:id="n38">
+        <link targets="seg-r68"/>
+    </node>
+    <a label="tok" ref="n38" as="xces">
+        <fs>
+            <f name="base" value="xxx"/>
+            <f name="msd" value="NN"/>
+        </fs>
+    </a>
+    <node xml:id="n39">
+        <link targets="seg-r69"/>
+    </node>
+    <a label="tok" ref="n39" as="xces">
+        <fs>
+            <f name="base" value="."/>
+            <f name="msd" value="."/>
+        </fs>
+    </a>
+    <node xml:id="n4">
+        <link targets="seg-r6"/>
+    </node>
+    <a label="tok" ref="n4" as="xces">
+        <fs>
+            <f name="base" value="dear"/>
+            <f name="msd" value="RB"/>
+        </fs>
+    </a>
+    <node xml:id="n40">
+        <link targets="seg-r71"/>
+    </node>
+    <a label="tok" ref="n40" as="xces">
+        <fs>
+            <f name="base" value="i"/>
+            <f name="msd" value="PRP"/>
+        </fs>
+    </a>
+    <node xml:id="n41">
+        <link targets="seg-r73"/>
+    </node>
+    <a label="tok" ref="n41" as="xces">
+        <fs>
+            <f name="base" value="can"/>
+            <f name="msd" value="MD"/>
+        </fs>
+    </a>
+    <node xml:id="n42">
+        <link targets="seg-r75"/>
+    </node>
+    <a label="tok" ref="n42" as="xces">
+        <fs>
+            <f name="base" value="tell"/>
+            <f name="msd" value="VB"/>
+        </fs>
+    </a>
+    <node xml:id="n43">
+        <link targets="seg-r77"/>
+    </node>
+    <a label="tok" ref="n43" as="xces">
+        <fs>
+            <f name="base" value="you"/>
+            <f name="msd" value="PRP"/>
+        </fs>
+    </a>
+    <node xml:id="n44">
+        <link targets="seg-r79"/>
+    </node>
+    <a label="tok" ref="n44" as="xces">
+        <fs>
+            <f name="base" value="we"/>
+            <f name="msd" value="PRP"/>
+        </fs>
+    </a>
+    <node xml:id="n45">
+        <link targets="seg-r81"/>
+    </node>
+    <a label="tok" ref="n45" as="xces">
+        <fs>
+            <f name="base" value="need"/>
+            <f name="affix" value=" "/>
+            <f name="msd" value="VBP"/>
+        </fs>
+    </a>
+    <node xml:id="n46">
+        <link targets="seg-r83"/>
+    </node>
+    <a label="tok" ref="n46" as="xces">
+        <fs>
+            <f name="base" value="your"/>
+            <f name="msd" value="PRP$"/>
+        </fs>
+    </a>
+    <node xml:id="n47">
+        <link targets="seg-r85"/>
+    </node>
+    <a label="tok" ref="n47" as="xces">
+        <fs>
+            <f name="base" value="help"/>
+            <f name="msd" value="NN"/>
+        </fs>
+    </a>
+    <node xml:id="n48">
+        <link targets="seg-r87"/>
+    </node>
+    <a label="tok" ref="n48" as="xces">
+        <fs>
+            <f name="base" value="now"/>
+            <f name="msd" value="RB"/>
+        </fs>
+    </a>
+    <node xml:id="n49">
+        <link targets="seg-r89"/>
+    </node>
+    <a label="tok" ref="n49" as="xces">
+        <fs>
+            <f name="base" value="as"/>
+            <f name="affix" value=" "/>
+            <f name="msd" value="RB"/>
+        </fs>
+    </a>
+    <node xml:id="n5">
+        <link targets="seg-r8"/>
+    </node>
+    <a label="tok" ref="n5" as="xces">
+        <fs>
+            <f name="base" value="name"/>
+            <f name="msd" value="NN"/>
+        </fs>
+    </a>
+    <node xml:id="n50">
+        <link targets="seg-r91"/>
+    </node>
+    <a label="tok" ref="n50" as="xces">
+        <fs>
+            <f name="base" value="much"/>
+            <f name="msd" value="JJ"/>
+        </fs>
+    </a>
+    <node xml:id="n51">
+        <link targets="seg-r93"/>
+    </node>
+    <a label="tok" ref="n51" as="xces">
+        <fs>
+            <f name="base" value="as"/>
+            <f name="affix" value=" "/>
+            <f name="msd" value="IN"/>
+        </fs>
+    </a>
+    <node xml:id="n52">
+        <link targets="seg-r95"/>
+    </node>
+    <a label="tok" ref="n52" as="xces">
+        <fs>
+            <f name="base" value="ever"/>
+            <f name="msd" value="RB"/>
+        </fs>
+    </a>
+    <node xml:id="n53">
+        <link targets="seg-r97"/>
+    </node>
+    <a label="tok" ref="n53" as="xces">
+        <fs>
+            <f name="base" value="before"/>
+            <f name="msd" value="RB"/>
+        </fs>
+    </a>
+    <node xml:id="n54">
+        <link targets="seg-r98"/>
+    </node>
+    <a label="tok" ref="n54" as="xces">
+        <fs>
+            <f name="base" value="."/>
+            <f name="msd" value="."/>
+        </fs>
+    </a>
+    <node xml:id="n55">
+        <link targets="seg-r100"/>
+    </node>
+    <a label="tok" ref="n55" as="xces">
+        <fs>
+            <f name="base" value="all"/>
+            <f name="msd" value="DT"/>
+        </fs>
+    </a>
+    <node xml:id="n56">
+        <link targets="seg-r102"/>
+    </node>
+    <a label="tok" ref="n56" as="xces">
+        <fs>
+            <f name="base" value="of"/>
+            <f name="msd" value="IN"/>
+        </fs>
+    </a>
+    <node xml:id="n57">
+        <link targets="seg-r104"/>
+    </node>
+    <a label="tok" ref="n57" as="xces">
+        <fs>
+            <f name="base" value="our"/>
+            <f name="msd" value="PRP$"/>
+        </fs>
+    </a>
+    <node xml:id="n58">
+        <link targets="seg-r106"/>
+    </node>
+    <a label="tok" ref="n58" as="xces">
+        <fs>
+            <f name="base" value="six"/>
+            <f name="msd" value="CD"/>
+        </fs>
+    </a>
+    <node xml:id="n59">
+        <link targets="seg-r108"/>
+    </node>
+    <a label="tok" ref="n59" as="xces">
+        <fs>
+            <f name="base" value="summer"/>
+            <f name="msd" value="NN"/>
+        </fs>
+    </a>
+    <node xml:id="n6">
+        <link targets="seg-r9"/>
+    </node>
+    <a label="tok" ref="n6" as="xces">
+        <fs>
+            <f name="base" value=","/>
+            <f name="msd" value=","/>
+        </fs>
+    </a>
+    <node xml:id="n60">
+        <link targets="seg-r110"/>
+    </node>
+    <a label="tok" ref="n60" as="xces">
+        <fs>
+            <f name="base" value="camp"/>
+            <f name="affix" value="ing"/>
+            <f name="msd" value="VBG"/>
+        </fs>
+    </a>
+    <node xml:id="n61">
+        <link targets="seg-r112"/>
+    </node>
+    <a label="tok" ref="n61" as="xces">
+        <fs>
+            <f name="base" value="session"/>
+            <f name="affix" value="s"/>
+            <f name="msd" value="NNS"/>
+        </fs>
+    </a>
+    <node xml:id="n62">
+        <link targets="seg-r114"/>
+    </node>
+    <a label="tok" ref="n62" as="xces">
+        <fs>
+            <f name="base" value="be"/>
+            <f name="affix" value=""/>
+            <f name="msd" value="VBP"/>
+        </fs>
+    </a>
+    <node xml:id="n63">
+        <link targets="seg-r116"/>
+    </node>
+    <a label="tok" ref="n63" as="xces">
+        <fs>
+            <f name="base" value="book"/>
+            <f name="affix" value="ed"/>
+            <f name="msd" value="VBN"/>
+        </fs>
+    </a>
+    <node xml:id="n64">
+        <link targets="seg-r118"/>
+    </node>
+    <a label="tok" ref="n64" as="xces">
+        <fs>
+            <f name="base" value="to"/>
+            <f name="msd" value="TO"/>
+        </fs>
+    </a>
+    <node xml:id="n65">
+        <link targets="seg-r120"/>
+    </node>
+    <a label="tok" ref="n65" as="xces">
+        <fs>
+            <f name="base" value="capacity"/>
+            <f name="msd" value="NN"/>
+        </fs>
+    </a>
+    <node xml:id="n66">
+        <link targets="seg-r122"/>
+    </node>
+    <a label="tok" ref="n66" as="xces">
+        <fs>
+            <f name="base" value="("/>
+            <f name="msd" value="("/>
+        </fs>
+    </a>
+    <node xml:id="n67">
+        <link targets="seg-r123"/>
+    </node>
+    <a label="tok" ref="n67" as="xces">
+        <fs>
+            <f name="base" value="and"/>
+            <f name="msd" value="CC"/>
+        </fs>
+    </a>
+    <node xml:id="n68">
+        <link targets="seg-r124"/>
+    </node>
+    <a label="tok" ref="n68" as="xces">
+        <fs>
+            <f name="base" value=","/>
+            <f name="msd" value=","/>
+        </fs>
+    </a>
+    <node xml:id="n69">
+        <link targets="seg-r126"/>
+    </node>
+    <a label="tok" ref="n69" as="xces">
+        <fs>
+            <f name="base" value="truth"/>
+            <f name="msd" value="NN"/>
+        </fs>
+    </a>
+    <node xml:id="n7">
+        <link targets="seg-r11"/>
+    </node>
+    <a label="tok" ref="n7" as="xces">
+        <fs>
+            <f name="base" value="what"/>
+            <f name="msd" value="WP"/>
+        </fs>
+    </a>
+    <node xml:id="n70">
+        <link targets="seg-r128"/>
+    </node>
+    <a label="tok" ref="n70" as="xces">
+        <fs>
+            <f name="base" value="be"/>
+            <f name="msd" value="VB"/>
+        </fs>
+    </a>
+    <node xml:id="n71">
+        <link targets="seg-r130"/>
+    </node>
+    <a label="tok" ref="n71" as="xces">
+        <fs>
+            <f name="base" value="tell"/>
+            <f name="affix" value="ed"/>
+            <f name="msd" value="VBN"/>
+        </fs>
+    </a>
+    <node xml:id="n72">
+        <link targets="seg-r131"/>
+    </node>
+    <a label="tok" ref="n72" as="xces">
+        <fs>
+            <f name="base" value=","/>
+            <f name="msd" value=","/>
+        </fs>
+    </a>
+    <node xml:id="n73">
+        <link targets="seg-r133"/>
+    </node>
+    <a label="tok" ref="n73" as="xces">
+        <fs>
+            <f name="base" value="with"/>
+            <f name="msd" value="IN"/>
+        </fs>
+    </a>
+    <node xml:id="n74">
+        <link targets="seg-r135"/>
+    </node>
+    <a label="tok" ref="n74" as="xces">
+        <fs>
+            <f name="base" value="maybe"/>
+            <f name="msd" value="RB"/>
+        </fs>
+    </a>
+    <node xml:id="n75">
+        <link targets="seg-r137"/>
+    </node>
+    <a label="tok" ref="n75" as="xces">
+        <fs>
+            <f name="base" value="one"/>
+            <f name="msd" value="CD"/>
+        </fs>
+    </a>
+    <node xml:id="n76">
+        <link targets="seg-r139"/>
+    </node>
+    <a label="tok" ref="n76" as="xces">
+        <fs>
+            <f name="base" value="or"/>
+            <f name="msd" value="CC"/>
+            <f name="note" value="error"/>
+        </fs>
+    </a>
+    <node xml:id="n77">
+        <link targets="seg-r141"/>
+    </node>
+    <a label="tok" ref="n77" as="xces">
+        <fs>
+            <f name="base" value="two"/>
+            <f name="msd" value="CD"/>
+        </fs>
+    </a>
+    <node xml:id="n78">
+        <link targets="seg-r143"/>
+    </node>
+    <a label="tok" ref="n78" as="xces">
+        <fs>
+            <f name="base" value="extra"/>
+            <f name="msd" value="JJ"/>
+        </fs>
+    </a>
+    <node xml:id="n79">
+        <link targets="seg-r145"/>
+    </node>
+    <a label="tok" ref="n79" as="xces">
+        <fs>
+            <f name="base" value="return"/>
+            <f name="affix" value="ing"/>
+            <f name="msd" value="VBG"/>
+        </fs>
+    </a>
+    <node xml:id="n8">
+        <link targets="seg-r13"/>
+    </node>
+    <a label="tok" ref="n8" as="xces">
+        <fs>
+            <f name="base" value="a"/>
+            <f name="msd" value="DT"/>
+        </fs>
+    </a>
+    <node xml:id="n80">
+        <link targets="seg-r147"/>
+    </node>
+    <a label="tok" ref="n80" as="xces">
+        <fs>
+            <f name="base" value="camper"/>
+            <f name="affix" value="s"/>
+            <f name="msd" value="NNS"/>
+        </fs>
+    </a>
+    <node xml:id="n81">
+        <link targets="seg-r149"/>
+    </node>
+    <a label="tok" ref="n81" as="xces">
+        <fs>
+            <f name="base" value="squeeze"/>
+            <f name="affix" value="ed"/>
+            <f name="msd" value="VBN"/>
+        </fs>
+    </a>
+    <node xml:id="n82">
+        <link targets="seg-r151"/>
+    </node>
+    <a label="tok" ref="n82" as="xces">
+        <fs>
+            <f name="base" value="in"/>
+            <f name="msd" value="IN"/>
+        </fs>
+    </a>
+    <node xml:id="n83">
+        <link targets="seg-r152"/>
+    </node>
+    <a label="tok" ref="n83" as="xces">
+        <fs>
+            <f name="base" value=")"/>
+            <f name="msd" value=")"/>
+        </fs>
+    </a>
+    <node xml:id="n84">
+        <link targets="seg-r154"/>
+    </node>
+    <a label="tok" ref="n84" as="xces">
+        <fs>
+            <f name="base" value="and"/>
+            <f name="msd" value="CC"/>
+        </fs>
+    </a>
+    <node xml:id="n85">
+        <link targets="seg-r156"/>
+    </node>
+    <a label="tok" ref="n85" as="xces">
+        <fs>
+            <f name="base" value="we"/>
+            <f name="msd" value="PRP"/>
+        </fs>
+    </a>
+    <node xml:id="n86">
+        <link targets="seg-r158"/>
+    </node>
+    <a label="tok" ref="n86" as="xces">
+        <fs>
+            <f name="base" value="have"/>
+            <f name="msd" value="VBP"/>
+        </fs>
+    </a>
+    <node xml:id="n87">
+        <link targets="seg-r160"/>
+    </node>
+    <a label="tok" ref="n87" as="xces">
+        <fs>
+            <f name="base" value="a"/>
+            <f name="msd" value="DT"/>
+        </fs>
+    </a>
+    <node xml:id="n88">
+        <link targets="seg-r162"/>
+    </node>
+    <a label="tok" ref="n88" as="xces">
+        <fs>
+            <f name="base" value="wait"/>
+            <f name="affix" value="ing"/>
+            <f name="msd" value="VBG"/>
+        </fs>
+    </a>
+    <node xml:id="n89">
+        <link targets="seg-r164"/>
+    </node>
+    <a label="tok" ref="n89" as="xces">
+        <fs>
+            <f name="base" value="list"/>
+            <f name="msd" value="NN"/>
+        </fs>
+    </a>
+    <node xml:id="n9">
+        <link targets="seg-r15"/>
+    </node>
+    <a label="tok" ref="n9" as="xces">
+        <fs>
+            <f name="base" value="summer"/>
+            <f name="msd" value="NNPS"/>
+        </fs>
+    </a>
+    <node xml:id="n90">
+        <link targets="seg-r166"/>
+    </node>
+    <a label="tok" ref="n90" as="xces">
+        <fs>
+            <f name="base" value="of"/>
+            <f name="msd" value="IN"/>
+        </fs>
+    </a>
+    <node xml:id="n91">
+        <link targets="seg-r168"/>
+    </node>
+    <a label="tok" ref="n91" as="xces">
+        <fs>
+            <f name="base" value="60"/>
+            <f name="msd" value="CD"/>
+        </fs>
+    </a>
+    <node xml:id="n92">
+        <link targets="seg-r170"/>
+    </node>
+    <a label="tok" ref="n92" as="xces">
+        <fs>
+            <f name="base" value="child"/>
+            <f name="affix" value="s"/>
+            <f name="msd" value="NNS"/>
+        </fs>
+    </a>
+    <node xml:id="n93">
+        <link targets="seg-r172"/>
+    </node>
+    <a label="tok" ref="n93" as="xces">
+        <fs>
+            <f name="base" value="who"/>
+            <f name="msd" value="WP"/>
+        </fs>
+    </a>
+    <node xml:id="n94">
+        <link targets="seg-r174"/>
+    </node>
+    <a label="tok" ref="n94" as="xces">
+        <fs>
+            <f name="base" value="be"/>
+            <f name="affix" value=""/>
+            <f name="msd" value="VBP"/>
+        </fs>
+    </a>
+    <node xml:id="n95">
+        <link targets="seg-r176"/>
+    </node>
+    <a label="tok" ref="n95" as="xces">
+        <fs>
+            <f name="base" value="hop"/>
+            <f name="affix" value="ing"/>
+            <f name="msd" value="VBG"/>
+        </fs>
+    </a>
+    <node xml:id="n96">
+        <link targets="seg-r178"/>
+    </node>
+    <a label="tok" ref="n96" as="xces">
+        <fs>
+            <f name="base" value="to"/>
+            <f name="msd" value="TO"/>
+        </fs>
+    </a>
+    <node xml:id="n97">
+        <link targets="seg-r180"/>
+    </node>
+    <a label="tok" ref="n97" as="xces">
+        <fs>
+            <f name="base" value="come"/>
+            <f name="msd" value="VB"/>
+        </fs>
+    </a>
+    <node xml:id="n98">
+        <link targets="seg-r182"/>
+    </node>
+    <a label="tok" ref="n98" as="xces">
+        <fs>
+            <f name="base" value="if"/>
+            <f name="msd" value="IN"/>
+        </fs>
+    </a>
+    <node xml:id="n99">
+        <link targets="seg-r184"/>
+    </node>
+    <a label="tok" ref="n99" as="xces">
+        <fs>
+            <f name="base" value="a"/>
+            <f name="msd" value="DT"/>
+        </fs>
+    </a>
+</graph>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cesHeader xmlns="http://www.xces.org/ns/GrAF/1.0/" creator="KBS" date.created="2005-9-5"
+           version="1.0.4">
+   <fileDesc>
+      <titleStmt>
+         <title>Article247_327</title>
+      </titleStmt>
+      <extent wordCount="782"/>
+      <sourceDesc>
+         <title>Even More "Proving Rape"</title>
+         <author>Timothy Noah</author>
+         <publisher type="org">Microsoft Corporation</publisher>
+         <pubDate value="1999-02-24">2/24/1999 1:11:00 PM</pubDate>
+         <pubName>Slate Magazine</pubName>
+         <pubPlace>http://www.slate.com/</pubPlace>
+      </sourceDesc>
+   </fileDesc>
+   <profileDesc>
+      <textClass catRef="WR JO">
+         <domain>Periodicals</domain>
+         <subdomain>Specialized Magazine</subdomain>
+         <subject>Media Coverage</subject>
+         <audience>Adult</audience>
+         <medium>Journal</medium>
+      </textClass>
+      <primaryData loc="Article247_327.txt" medium="text"/>
+      <annotations>
+         <annotation ann.loc="Article247_327-logical.xml" type="logical">Logical document
+                structure</annotation>
+         <annotation ann.loc="Article247_327-s.xml" type="s">Sentence boundaries</annotation>
+         <annotation ann.loc="Article247_327-nc.xml" type="nc">Noun chunks</annotation>
+         <annotation ann.loc="Article247_327-penn.xml" type="penn">Penn part of speech tags</annotation>
+         <annotation ann.loc="Article247_327-ptb.xml" type="ptb">Penn Tree Bank</annotation>
+         <annotation ann.loc="Article247_327-ptbtok.xml" type="ptbtok">Penn Tree Bank tokens and part of speech tags</annotation>
+         <annotation ann.loc="Article247_327-seg.xml" type="seg">Base segmentation (quarks)</annotation>
+         <annotation ann.loc="Article247_327-vc.xml" type="vc">Verb chunks</annotation>
+         <annotation ann.loc="Article247_327-mpqa.xml" type="mpqa">Multi-Perspective Question Answering opinion corpus</annotation>
+         <annotation ann.loc="Article247_327-ne.xml" type="ne">Named Entities</annotation>
+         <annotation ann.loc="Article247_327.txt" type="content">Document content</annotation>
+      </annotations>
+   </profileDesc>
+   <revisionDesc>
+      <change>
+         <changeDate value="2004-11-10"/>
+         <respName>Keith Suderman</respName>
+         <item>Converted to 2nd release standoff</item>
+      </change>
+      <change>
+         <changeDate value="2010-02-17"/>
+         <respName>Keith Suderman</respName>
+         <item>Added nc, NE, penn, ptb, ptbtok, seg, vc annotations.</item>
+      </change>
+      <change>
+         <changeDate value="2010-04-17"/>
+         <respName>Nancy Ide</respName>
+         <item>Added fileDesc information to the header</item>
+      </change>
+      <change>
+         <changeDate>2010-09-19</changeDate>
+         <respName>KBS</respName>
+         <item>Added mpqa, ne, content annotations.</item>
+      </change>
+   </revisionDesc>
+</cesHeader>
