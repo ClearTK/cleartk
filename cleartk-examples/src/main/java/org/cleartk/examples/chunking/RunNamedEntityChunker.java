@@ -32,6 +32,7 @@ import org.apache.uima.jcas.JCas;
 import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.jar.GenericJarClassifierFactory;
 import org.cleartk.ne.type.NamedEntityMention;
+import org.cleartk.syntax.opennlp.PosTaggerAnnotator;
 import org.cleartk.syntax.opennlp.SentenceAnnotator;
 import org.cleartk.token.tokenizer.TokenAnnotator;
 import org.cleartk.util.Options_ImplBase;
@@ -77,9 +78,10 @@ public class RunNamedEntityChunker {
     // an annotator that loads the text from the training file URIs
     aggregate.add(UriToDocumentTextAnnotator.getDescription());
 
-    // annotators that identify sentences and tokens in the text
+    // annotators that identify sentences, tokens and part-of-speech tags in the text
     aggregate.add(SentenceAnnotator.getDescription());
     aggregate.add(TokenAnnotator.getDescription());
+    aggregate.add(PosTaggerAnnotator.getDescription());
 
     // our NamedEntityChunker annotator, configured to classify on the new texts
     aggregate.add(AnalysisEngineFactory.createPrimitiveDescription(

@@ -42,6 +42,7 @@ import org.cleartk.classifier.feature.extractor.simple.CharacterCategoryPatternE
 import org.cleartk.classifier.feature.extractor.simple.CombinedExtractor;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
@@ -70,23 +71,21 @@ public class NamedEntityChunker extends CleartkSequenceAnnotator<String> {
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
 
-    // feature extractor for the text of a token, and the character pattern of a token (uppercase,
-    // lowercase, digits, etc.)
+    // the token feature extractor: text, char pattern (uppercase, digits, etc.), and part-of-speech
     this.extractor = new CombinedExtractor(
         new CoveredTextExtractor(),
-        new CharacterCategoryPatternExtractor(PatternType.REPEATS_MERGED));
+        new CharacterCategoryPatternExtractor(PatternType.REPEATS_MERGED),
+        new TypePathExtractor(Token.class, "pos"));
 
-    // create a feature extractor that will apply the base feature extractors on the 3 preceding and
-    // 3 following tokens
+    // the context feature extractor: the features above for the 3 preceding and 3 following tokens
     this.contextExtractor = new CleartkExtractor(
         Token.class,
         this.extractor,
         new Preceding(3),
         new Following(3));
 
-    // create the object for chunking Tokens into NamedEntityMentions, with labels like B-LOC, I-PER
-    // and O. (The suffixes LOC and PER will come from inspecting the "mentionType" attribute of a
-    // NamedEntityMention.)
+    // the chunking definition: Tokens will be combined to form NamedEntityMentions, with labels
+    // from the "mentionType" attribute so that we get B-location, I-person, etc.
     this.chunking = new BIOChunking<Token, NamedEntityMention>(
         Token.class,
         NamedEntityMention.class,
@@ -133,7 +132,5 @@ public class NamedEntityChunker extends CleartkSequenceAnnotator<String> {
         this.chunking.createChunks(jCas, tokens, outcomes);
       }
     }
-
   }
-
 }
