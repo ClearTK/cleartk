@@ -25,6 +25,8 @@ package org.cleartk.classifier.jar;
 
 import java.io.File;
 
+import org.cleartk.classifier.DataWriter;
+import org.cleartk.classifier.SequenceDataWriter;
 
 /**
  * Command line tool for training a classifier from an output directory that has been filled by a
@@ -41,6 +43,22 @@ import java.io.File;
  */
 
 public class Train {
+
+  /**
+   * Trains a classifier in the given directory.
+   * 
+   * The directory should already contain training data as written by a {@link DataWriter} or
+   * {@link SequenceDataWriter}.
+   * 
+   * @param directory
+   *          The directory containing the training data.
+   * @param trainingArguments
+   *          Additional command-line arguments that should be passed to the classifier.
+   */
+  public static void main(File directory, String... trainingArguments) throws Exception {
+    JarClassifierBuilder.trainAndPackage(directory, trainingArguments);
+  }
+
   public static void main(String... args) throws Exception {
     String programName = Train.class.getName();
     String usage = String.format("usage: java %s DIR\n\n"
@@ -52,16 +70,14 @@ public class Train {
       System.err.format("error: wrong number of arguments\n%s", usage);
       System.exit(1);
     }
+
+    // parse out the training directory from the arguments
     File dir = new File(args[0]);
-
-    // get the classifier builder from the training directory
-    JarClassifierBuilder<?> classifierBuilder = JarClassifierBuilder.fromTrainingDirectory(dir);
-
-    // clip the first item off the command line arguments, and call train
     String[] remainingArgs = new String[args.length - 1];
     System.arraycopy(args, 1, remainingArgs, 0, remainingArgs.length);
-    classifierBuilder.trainClassifier(dir, remainingArgs);
-    classifierBuilder.packageClassifier(dir);
+
+    // train and package the classifier
+    Train.main(dir, remainingArgs);
   }
 
 }
