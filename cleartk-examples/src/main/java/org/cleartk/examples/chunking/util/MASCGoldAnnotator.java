@@ -144,15 +144,25 @@ public class MASCGoldAnnotator extends JCasAnnotator_ImplBase {
     Map<String, NamedEntityMention> idMentionMap = new HashMap<String, NamedEntityMention>();
     for (Element edgeElem : neRoot.getChildren("edge", grafNS)) {
       String mentionID = getAttributeValue(edgeElem, "from");
-      String tokenID = getAttributeValue(edgeElem, "to");
+      NamedEntityMention mention = idMentionMap.get(mentionID);
+      if (mention == null) {
+        mention = new NamedEntityMention(jCas, jCas.getDocumentText().length(), 0);
+        idMentionMap.put(mentionID, mention);
+      }
 
+      String tokenID = getAttributeValue(edgeElem, "to");
       Token token = idTokenMap.get(tokenID);
       if (token == null) {
         throw new IllegalStateException("no token with id " + tokenID);
       }
 
-      NamedEntityMention mention = new NamedEntityMention(jCas, token.getBegin(), token.getEnd());
-      idMentionMap.put(mentionID, mention);
+      // simplifying assumption - named entity spans continuously across all tokens
+      if (token.getBegin() < mention.getBegin()) {
+        mention.setBegin(token.getBegin());
+      }
+      if (token.getEnd() > mention.getEnd()) {
+        mention.setEnd(token.getEnd());
+      }
     }
     for (Element aElem : neRoot.getChildren("a", grafNS)) {
       String label = getAttributeValue(aElem, "label");
