@@ -42,10 +42,10 @@ import org.cleartk.ne.type.Chunk;
 import org.cleartk.ne.type.NamedEntity;
 import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.util.UIMAUtil;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.SofaCapability;
 
@@ -62,7 +62,9 @@ import org.uimafit.descriptor.SofaCapability;
  * @author Philip Ogren
  * 
  */
-@SofaCapability(inputSofas = { Ace2005Constants.ACE_2005_APF_URI_VIEW, CAS.NAME_DEFAULT_SOFA }, outputSofas = {})
+@SofaCapability(
+    inputSofas = { Ace2005Constants.ACE_2005_APF_URI_VIEW, CAS.NAME_DEFAULT_SOFA },
+    outputSofas = {})
 public class Ace2005GoldAnnotator extends JCasAnnotator_ImplBase {
 
   Pattern ampPattern;
@@ -86,9 +88,7 @@ public class Ace2005GoldAnnotator extends JCasAnnotator_ImplBase {
 
       Element apfSource = doc.getRootElement();
       Element apfDocument = apfSource.getChild("document");
-      List<?> apfEntities = apfDocument.getChildren("entity");
-      for (int i = 0; i < apfEntities.size(); i++) {
-        Element apfEntity = (Element) apfEntities.get(i);
+      for (Element apfEntity : apfDocument.getChildren("entity")) {
         NamedEntity namedEntity = new NamedEntity(initialView);
         namedEntity.setEntityType(apfEntity.getAttributeValue("TYPE"));
         namedEntity.setEntitySubtype(apfEntity.getAttributeValue("SUBTYPE"));
@@ -98,17 +98,11 @@ public class Ace2005GoldAnnotator extends JCasAnnotator_ImplBase {
 
         List<NamedEntityMention> mentions = new ArrayList<NamedEntityMention>();
 
-        List<?> entityMentions = apfEntity.getChildren("entity_mention");
-        for (int j = 0; j < entityMentions.size(); j++) {
-          Element entityMention = (Element) entityMentions.get(j);
-          int start = Integer.parseInt(entityMention
-              .getChild("extent")
-              .getChild("charseq")
-              .getAttributeValue("START"));
-          int end = Integer.parseInt(entityMention
-              .getChild("extent")
-              .getChild("charseq")
-              .getAttributeValue("END"));
+        for (Element entityMention : apfEntity.getChildren("entity_mention")) {
+          int start = Integer.parseInt(entityMention.getChild("extent").getChild("charseq").getAttributeValue(
+              "START"));
+          int end = Integer.parseInt(entityMention.getChild("extent").getChild("charseq").getAttributeValue(
+              "END"));
           String givenText = entityMention.getChild("extent").getChild("charseq").getText();
           String parsedText = documentText.substring(start, end + 1);
           Matcher ampMatcher = ampPattern.matcher(parsedText);
@@ -122,14 +116,10 @@ public class Ace2005GoldAnnotator extends JCasAnnotator_ImplBase {
           Chunk chunk = new Chunk(initialView, start, end + 1);
           mention.setAnnotation(chunk);
 
-          int headStart = Integer.parseInt(entityMention
-              .getChild("head")
-              .getChild("charseq")
-              .getAttributeValue("START"));
-          int headEnd = Integer.parseInt(entityMention
-              .getChild("head")
-              .getChild("charseq")
-              .getAttributeValue("END"));
+          int headStart = Integer.parseInt(entityMention.getChild("head").getChild("charseq").getAttributeValue(
+              "START"));
+          int headEnd = Integer.parseInt(entityMention.getChild("head").getChild("charseq").getAttributeValue(
+              "END"));
           Chunk head = new Chunk(initialView, headStart, headEnd + 1);
           mention.setHead(head);
 

@@ -41,10 +41,11 @@ import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.type.TemporalLink;
 import org.cleartk.timeml.type.Time;
 import org.cleartk.util.cr.FilesCollectionReader;
-import org.jdom.Attribute;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
+import org.jdom2.Attribute;
+import org.jdom2.Content;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -153,16 +154,16 @@ public class TimeMLWriterTest extends TimeMLTestBase {
   private void assertEquals(Element element1, Element element2) {
     Assert.assertEquals(element1.getName(), element2.getName());
     Assert.assertEquals(this.getAttributes(element1), this.getAttributes(element2));
-    List<?> children1 = element1.getChildren();
-    List<?> children2 = element2.getChildren();
+    List<Content> children1 = element1.getContent();
+    List<Content> children2 = element2.getContent();
     Assert.assertEquals(children1.size(), children2.size());
     for (int i = 0; i < children1.size(); i++) {
-      Object child1 = children1.get(0);
-      Object child2 = children2.get(0);
+      Content child1 = children1.get(0);
+      Content child2 = children2.get(0);
       if (child1 instanceof Element) {
         this.assertEquals((Element) child1, (Element) child2);
       } else {
-        Assert.assertEquals(child1, child2);
+        Assert.assertEquals(child1.getValue(), child2.getValue());
       }
     }
   }

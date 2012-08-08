@@ -37,7 +37,7 @@ import org.cleartk.timeml.type.DocumentCreationTime;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.type.TemporalLink;
 import org.cleartk.timeml.type.Time;
-import org.jdom.Element;
+import org.jdom2.Element;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.AttributesImpl;
 

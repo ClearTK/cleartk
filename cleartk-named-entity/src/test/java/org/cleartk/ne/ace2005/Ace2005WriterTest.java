@@ -138,8 +138,7 @@ public class Ace2005WriterTest extends NeTestBase {
         + "          <charseq START=\"8\" END=\"20\">North Boulder</charseq>\n"
         + "        </extent>\n" + "        <head>\n"
         + "          <charseq START=\"14\" END=\"20\">Boulder</charseq>\n" + "        </head>\n"
-        + "      </entity_mention>\n" + "    </entity>\n" + "  </document>\n" + "</source_file>\n"
-        + "\n");
+        + "      </entity_mention>\n" + "    </entity>\n" + "  </document>\n" + "</source_file>\n");
     File outputFile = new File(this.outputDirectory, "uri.cleartk.xml");
     String actualText = FileUtils.file2String(outputFile).replace("\r", "");
     Assert.assertEquals(expectedText, actualText);

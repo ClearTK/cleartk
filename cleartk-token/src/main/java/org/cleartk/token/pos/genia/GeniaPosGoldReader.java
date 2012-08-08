@@ -47,7 +47,7 @@ import org.cleartk.token.pos.genia.util.Span;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.cleartk.util.ViewURIUtil;
-import org.jdom.JDOMException;
+import org.jdom2.JDOMException;
 import org.uimafit.component.JCasCollectionReader_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.SofaCapability;

@@ -27,9 +27,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.io.IOException;
 
-import org.jdom.JDOMException;
 import org.junit.Test;
 
 /**
@@ -41,16 +39,14 @@ import org.junit.Test;
 public class GeniaPOSParserTest {
 
   @Test
-  public void testArticleA() throws JDOMException, IOException {
+  public void testArticleA() throws Exception {
     File xmlFile = new File("src/test/resources/token/genia/GENIAcorpus3.02.articleA.pos.xml");
     GeniaPOSParser gp = new GeniaPOSParser(xmlFile);
     GeniaParse parse = gp.next();
 
     assertEquals("95369245", parse.getMedline());
-    assertTrue(parse
-        .getText()
-        .startsWith(
-            "IL-2 gene expression and NF-kappa B activation through CD28 requires reactive oxygen production by 5-lipoxygenase."));
+    assertTrue(parse.getText().startsWith(
+        "IL-2 gene expression and NF-kappa B activation through CD28 requires reactive oxygen production by 5-lipoxygenase."));
     assertEquals(144, parse.getPosTags().size());
     GeniaTag posTag = parse.getPosTags().get(0);
     assertEquals("NN", posTag.getLabel());

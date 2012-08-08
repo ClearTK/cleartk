@@ -49,10 +49,11 @@ import org.cleartk.timeml.type.Time;
 import org.cleartk.timeml.util.TimeMLUtil;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.util.ViewURIUtil;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
+import org.jdom2.Content;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.SofaCapability;
@@ -182,9 +183,9 @@ public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
       Map<TemporalLink, String> tlinkSourceIDs,
       Map<TemporalLink, String> tlinkTargetIDs) throws AnalysisEngineProcessException {
     int startOffset = textBuffer.length();
-    for (Object content : element.getContent()) {
-      if (content instanceof org.jdom.Text) {
-        textBuffer.append(((org.jdom.Text) content).getText());
+    for (Content content : element.getContent()) {
+      if (content instanceof org.jdom2.Text) {
+        textBuffer.append(((org.jdom2.Text) content).getText());
       } else if (content instanceof Element) {
         this.addAnnotations(
             jCas,

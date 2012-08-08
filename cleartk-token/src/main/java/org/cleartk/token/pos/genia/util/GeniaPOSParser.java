@@ -33,11 +33,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.Text;
-import org.jdom.input.SAXBuilder;
-import org.jdom.output.XMLOutputter;
+import org.jdom2.Content;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.Text;
+import org.jdom2.input.SAXBuilder;
+import org.jdom2.output.XMLOutputter;
 
 /**
  * <br>
@@ -154,15 +155,11 @@ public class GeniaPOSParser implements Iterator<GeniaParse> {
     List<GeniaTag> sentencePosTags = new ArrayList<GeniaTag>();
 
     List<GeniaTag> wildcardTags = new ArrayList<GeniaTag>();
-    Iterator<?> sentences = abstractElement.getChildren("sentence").iterator();
-    while (sentences.hasNext()) {
+    for (Element sentence : abstractElement.getChildren("sentence")) {
       sentencePosTags.clear();
       wildcardTags.clear();
-      Element sentence = (Element) sentences.next();
       int beginSentence = offset;
-      Iterator<?> contents = sentence.getContent().iterator();
-      while (contents.hasNext()) {
-        Object content = contents.next();
+      for (Content content : sentence.getContent()) {
         if (content instanceof Text) {
           Text contentText = (Text) content;
           text.append(contentText.getText());

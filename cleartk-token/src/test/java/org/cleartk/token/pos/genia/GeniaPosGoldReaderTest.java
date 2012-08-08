@@ -40,7 +40,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.token.TokenTestBase;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.jdom.JDOMException;
+import org.jdom2.JDOMException;
 import org.junit.Test;
 import org.uimafit.factory.CollectionReaderFactory;
 import org.uimafit.pipeline.JCasIterable;
