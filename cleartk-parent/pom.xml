@@ -1,9 +1,8 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.cleartk</groupId>
 	<artifactId>cleartk-parent</artifactId>
-	<version>1.2.0-SNAPSHOT</version>
+	<version>1.2.0</version>
 	<packaging>pom</packaging>
 	<name>ClearTK Parent</name>
 	<description>The parent pom for ClearTK projects.</description>
@@ -34,15 +33,15 @@
 	</developers>
 	<!-- Note that children *MUST* override these or Maven will use incorrect relative paths -->
 	<scm>
-		<connection>scm:svn:http://cleartk.googlecode.com/svn/trunk/cleartk-parent</connection>
-		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/trunk/cleartk-parent</developerConnection>
-		<url>http://cleartk.googlecode.com/svn/trunk/cleartk-parent</url>
+		<connection>scm:svn:http://cleartk.googlecode.com/svn/tags/cleartk-parent-1.2.0</connection>
+		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/tags/cleartk-parent-1.2.0</developerConnection>
+		<url>http://cleartk.googlecode.com/svn/tags/cleartk-parent-1.2.0</url>
 	</scm>
 	<parent>
 		<groupId>org.sonatype.oss</groupId>
 		<artifactId>oss-parent</artifactId>
 		<version>7</version>
-		<relativePath></relativePath>
+		<relativePath />
 	</parent>
 	<properties>
 		<maven.compiler.source>1.6</maven.compiler.source>
