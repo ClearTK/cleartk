@@ -4,15 +4,33 @@
 	<artifactId>cleartk-release</artifactId>
 	<version>1.1.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>cleartk-release</name>
+	<name>ClearTK Release</name>
 	<description>The official ClearTK release</description>
 	<url>http://cleartk.googlecode.com/</url>
-	<repositories>
-		<repository>
-			<id>cleartk-googlecode</id>
-			<url>http://cleartk.googlecode.com/svn/repo/</url>
-		</repository>
-	</repositories>
+	<licenses>
+		<license>
+			<name>The BSD 3-Clause License</name>
+			<url>http://cleartk.googlecode.com/svn/trunk/cleartk-semantic-roles/LICENSE</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<developers>
+		<developer>
+			<id>steven.bethard</id>
+			<email>steven.bethard@gmail.com</email>
+			<name>Steven Bethard</name>
+		</developer>
+		<developer>
+			<id>philip.ogren</id>
+			<email>philip@ogren.info</email>
+			<name>Philip Ogren</name>
+		</developer>
+		<developer>
+			<id>lee.becker</id>
+			<email>lee.becker@gmail.com</email>
+			<name>Lee Becker</name>
+		</developer>
+	</developers>
 	<scm>
 		<connection>scm:svn:http://cleartk.googlecode.com/svn/trunk/cleartk-release</connection>
 		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/trunk/cleartk-release</developerConnection>
@@ -21,8 +39,8 @@
 	<parent>
 		<groupId>org.cleartk</groupId>
 		<artifactId>cleartk-parent</artifactId>
-		<version>1.1.0</version>
-		<relativePath />
+		<version>1.2.0-SNAPSHOT</version>
+		<relativePath>../cleartk-parent</relativePath>
 	</parent>
 	<dependencyManagement>
 		<dependencies>
@@ -338,6 +356,14 @@
 					<groupId>org.cleartk</groupId>
 					<artifactId>cleartk-ml-mallet</artifactId>
 				</dependency>
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-ml-weka</artifactId>
+				</dependency>
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-ml-crfsuite</artifactId>
+				</dependency>
 				<!-- evaluation module -->
 				<dependency>
 					<groupId>org.cleartk</groupId>
@@ -458,6 +484,16 @@
 					<groupId>org.cleartk</groupId>
 					<artifactId>cleartk-ml-mallet</artifactId>
 				</dependency>
+				<!-- omit because of GPL licensing issues
+				<dependency>
+					<groupId>org.cleartk</groupId> 
+					<artifactId>cleartk-ml-weka</artifactId>
+				</dependency>
+				-->
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-ml-crfsuite</artifactId>
+				</dependency>
 				<!-- evaluation module -->
 				<dependency>
 					<groupId>org.cleartk</groupId>
@@ -477,8 +513,12 @@
 					<groupId>org.cleartk</groupId>
 					<artifactId>cleartk-opennlp-tools</artifactId>
 				</dependency>
-				<!-- omit because of GPL licensing issues <dependency> <groupId>org.cleartk</groupId> 
-					<artifactId>cleartk-berkeleyparser</artifactId> </dependency> -->
+				<!-- omit because of GPL licensing issues
+				<dependency>
+					<groupId>org.cleartk</groupId> 
+					<artifactId>cleartk-berkeleyparser</artifactId>
+				</dependency>
+				-->
 				<dependency>
 					<groupId>org.cleartk</groupId>
 					<artifactId>cleartk-clearparser</artifactId>
@@ -487,8 +527,12 @@
 					<groupId>org.cleartk</groupId>
 					<artifactId>cleartk-maltparser</artifactId>
 				</dependency>
-				<!-- omit because of GPL licensing issues <dependency> <groupId>org.cleartk</groupId> 
-					<artifactId>cleartk-stanford-corenlp</artifactId> </dependency> -->
+				<!-- omit because of GPL licensing issues
+				<dependency>
+					<groupId>org.cleartk</groupId> 
+					<artifactId>cleartk-stanford-corenlp</artifactId>
+				</dependency>
+				-->
 				<!-- home-grown components -->
 				<dependency>
 					<groupId>org.cleartk</groupId>

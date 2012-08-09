@@ -3,15 +3,33 @@
 	<artifactId>cleartk-util</artifactId>
 	<version>0.8.3-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>cleartk-util</name>
+	<name>ClearTK Util</name>
 	<description>ClearTK basic readers, annotators and utility code</description>
 	<url>http://cleartk.googlecode.com/</url>
-	<repositories>
-		<repository>
-			<id>cleartk-googlecode</id>
-			<url>http://cleartk.googlecode.com/svn/repo/</url>
-		</repository>
-	</repositories>
+	<licenses>
+		<license>
+			<name>The BSD 3-Clause License</name>
+			<url>http://cleartk.googlecode.com/svn/trunk/cleartk-util/LICENSE</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<developers>
+		<developer>
+			<id>steven.bethard</id>
+			<email>steven.bethard@gmail.com</email>
+			<name>Steven Bethard</name>
+		</developer>
+		<developer>
+			<id>philip.ogren</id>
+			<email>philip@ogren.info</email>
+			<name>Philip Ogren</name>
+		</developer>
+		<developer>
+			<id>lee.becker</id>
+			<email>lee.becker@gmail.com</email>
+			<name>Lee Becker</name>
+		</developer>
+	</developers>
 	<scm>
 		<connection>scm:svn:http://cleartk.googlecode.com/svn/trunk/${project.artifactId}</connection>
 		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/trunk/${project.artifactId}</developerConnection>
@@ -20,8 +38,8 @@
 	<parent>
 		<artifactId>cleartk-parent</artifactId>
 		<groupId>org.cleartk</groupId>
-		<version>1.1.0</version>
-		<relativePath/>
+		<version>1.2.0-SNAPSHOT</version>
+		<relativePath>../cleartk-parent</relativePath>
 	</parent>
 	<dependencies>
 		<dependency>

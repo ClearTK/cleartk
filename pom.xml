@@ -8,8 +8,8 @@
 	<parent>
 		<groupId>org.cleartk</groupId>
 		<artifactId>cleartk-parent</artifactId>
-		<version>1.0.0</version>
-		<relativePath></relativePath>
+		<version>1.2.0-SNAPSHOT</version>
+		<relativePath>cleartk-parent</relativePath>
 	</parent>
 	<modules>
 		<!-- basic util modules -->
@@ -45,12 +45,6 @@
 		<!-- module declaring the official release versions -->
 		<module>cleartk-release</module>
 	</modules>
-	<repositories>
-		<repository>
-			<id>cleartk-googlecode</id>
-			<url>http://cleartk.googlecode.com/svn/repo/</url>
-		</repository>
-	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
 			<id>cleartk-googlecode</id>
