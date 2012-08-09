@@ -1,9 +1,8 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.cleartk</groupId>
 	<artifactId>consistent-versions-plugin</artifactId>
-	<version>1.1.1-SNAPSHOT</version>
+	<version>1.1.1</version>
 	<packaging>maven-plugin</packaging>
 	<name>Consistent Versions Plugin</name>
 	<description>The Consistent Versions Plugin helps causes the build to fail if there are version conflicts in your dependencies.</description>
@@ -33,9 +32,9 @@
 		</developer>
 	</developers>
 	<scm>
-		<connection>scm:svn:http://cleartk.googlecode.com/svn/trunk/consistent-versions-plugin/</connection>
-		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/trunk/consistent-versions-plugin/</developerConnection>
-		<url>http://cleartk.googlecode.com/svn/trunk/consistent-versions-plugin/</url>
+		<connection>scm:svn:http://cleartk.googlecode.com/svn/tags/consistent-versions-plugin-1.1.1</connection>
+		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/tags/consistent-versions-plugin-1.1.1</developerConnection>
+		<url>http://cleartk.googlecode.com/svn/tags/consistent-versions-plugin-1.1.1</url>
 	</scm>
 	<prerequisites>
 		<maven>2.2.1</maven>
@@ -44,7 +43,7 @@
 		<groupId>org.sonatype.oss</groupId>
 		<artifactId>oss-parent</artifactId>
 		<version>7</version>
-		<relativePath></relativePath>
+		<relativePath />
 	</parent>
 	<distributionManagement>
 		<repository>
