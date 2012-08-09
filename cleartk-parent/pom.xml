@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.cleartk</groupId>
 	<artifactId>cleartk-parent</artifactId>
-	<version>1.2.0</version>
+	<version>1.2.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>ClearTK Parent</name>
 	<description>The parent pom for ClearTK projects.</description>
@@ -33,9 +33,9 @@
 	</developers>
 	<!-- Note that children *MUST* override these or Maven will use incorrect relative paths -->
 	<scm>
-		<connection>scm:svn:http://cleartk.googlecode.com/svn/tags/cleartk-parent-1.2.0</connection>
-		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/tags/cleartk-parent-1.2.0</developerConnection>
-		<url>http://cleartk.googlecode.com/svn/tags/cleartk-parent-1.2.0</url>
+		<connection>scm:svn:http://cleartk.googlecode.com/svn/trunk/cleartk-parent</connection>
+		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/trunk/cleartk-parent</developerConnection>
+		<url>http://cleartk.googlecode.com/svn/trunk/cleartk-parent</url>
 	</scm>
 	<parent>
 		<groupId>org.sonatype.oss</groupId>
