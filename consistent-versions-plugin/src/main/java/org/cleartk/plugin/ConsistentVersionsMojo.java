@@ -22,7 +22,7 @@ import org.apache.maven.project.MavenProject;
  * 
  * @goal check-version-consistency
  * @phase validate
- * @aggregator true
+ * @aggregator
  * @requiresDependencyCollection compile
  */
 public class ConsistentVersionsMojo extends AbstractMojo {
@@ -30,7 +30,7 @@ public class ConsistentVersionsMojo extends AbstractMojo {
   /**
    * The Maven Project.
    * 
-   * @parameter expression="${project}"
+   * @parameter property="project"
    * @required
    * @readonly
    */
