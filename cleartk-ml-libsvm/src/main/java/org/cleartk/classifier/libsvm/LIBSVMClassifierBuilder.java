@@ -61,7 +61,10 @@ public abstract class LIBSVMClassifierBuilder<CLASSIFIER_TYPE extends LIBSVMClas
 
   @Override
   public void trainClassifier(File dir, String... args) throws Exception {
-    args = Arrays.copyOf(args, args.length + 2);
+    args = Arrays.copyOf(args, args.length + 4);
+    // force probability estimates so we can implement Classifier.score
+    args[args.length - 4] = "-b";
+    args[args.length - 3] = "1";
     args[args.length - 2] = this.getTrainingDataFile(dir).getPath();
     args[args.length - 1] = this.getModelFile(dir).getPath();
     LIBSVMTrain.main(args);

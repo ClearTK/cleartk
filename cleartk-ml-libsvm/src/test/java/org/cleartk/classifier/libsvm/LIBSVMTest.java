@@ -33,6 +33,7 @@ import org.apache.uima.jcas.JCas;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
@@ -86,6 +87,14 @@ public class LIBSVMTest extends DefaultTestBase {
       List<Feature> features = instance.getFeatures();
       Boolean outcome = instance.getOutcome();
       Assert.assertEquals(outcome, classifier.classify(features));
+
+      List<ScoredOutcome<Boolean>> scoredOutcomes = classifier.score(features, 1);
+      Assert.assertEquals(1, scoredOutcomes.size());
+      Assert.assertEquals(outcome, scoredOutcomes.get(0).getOutcome());
+      scoredOutcomes = classifier.score(features, 2);
+      Assert.assertEquals(2, scoredOutcomes.size());
+      Assert.assertTrue(scoredOutcomes.get(0).getScore() > scoredOutcomes.get(1).getScore());
+      scoredOutcomes = classifier.score(features, Integer.MAX_VALUE);
     }
   }
 
@@ -124,6 +133,14 @@ public class LIBSVMTest extends DefaultTestBase {
       List<Feature> features = instance.getFeatures();
       String outcome = instance.getOutcome();
       Assert.assertEquals(outcome, classifier.classify(features));
+
+      List<ScoredOutcome<String>> scoredOutcomes = classifier.score(features, 1);
+      Assert.assertEquals(1, scoredOutcomes.size());
+      Assert.assertEquals(outcome, scoredOutcomes.get(0).getOutcome());
+      scoredOutcomes = classifier.score(features, 2);
+      Assert.assertEquals(2, scoredOutcomes.size());
+      Assert.assertTrue(scoredOutcomes.get(0).getScore() > scoredOutcomes.get(1).getScore());
+      scoredOutcomes = classifier.score(features, Integer.MAX_VALUE);
     }
   }
 
