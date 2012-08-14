@@ -37,14 +37,9 @@ import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.jar.DefaultSequenceDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.libsvm.LIBSVMStringOutcomeDataWriter;
-import org.cleartk.classifier.mallet.DefaultMalletCRFDataWriterFactory;
-import org.cleartk.classifier.mallet.DefaultMalletDataWriterFactory;
 import org.cleartk.classifier.mallet.MalletCRFStringOutcomeDataWriter;
 import org.cleartk.classifier.mallet.MalletStringOutcomeDataWriter;
-import org.cleartk.classifier.mallet.MalletDataWriterFactory_ImplBase;
-import org.cleartk.classifier.opennlp.DefaultMaxentDataWriterFactory;
 import org.cleartk.classifier.opennlp.MaxentStringOutcomeDataWriter;
-import org.cleartk.classifier.opennlp.MaxentDataWriterFactory_ImplBase;
 import org.cleartk.classifier.svmlight.SVMlightStringOutcomeDataWriter;
 import org.cleartk.classifier.viterbi.DefaultOutcomeFeatureExtractor;
 import org.cleartk.classifier.viterbi.ViterbiClassifier;
@@ -141,32 +136,6 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
   }
 
   @Test
-  @Deprecated
-  public void testMalletCRF2() throws Exception {
-    this.assumeLongTestsEnabled();
-    this.logger.info(LONG_TEST_MESSAGE);
-
-    String outDirectoryName = outputDirectoryName + "/malletcrf-compressed";
-    AnalysisEngineDescription dataWriter = AnalysisEngineFactory.createPrimitiveDescription(
-        ExamplePOSAnnotator.class,
-        CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-        DefaultMalletCRFDataWriterFactory.class.getName(),
-        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
-        outDirectoryName,
-        DefaultMalletCRFDataWriterFactory.PARAM_COMPRESS,
-        true);
-    testClassifier(dataWriter, outDirectoryName, -1); // viterbi stack size is meaningless here so
-                                                      // pass in an invalid value to make sure it is
-                                                      // ignored.
-
-    String firstLine = FileUtil.loadListOfStrings(new File(outDirectoryName
-        + "/2008_Sichuan_earthquake.txt.pos"))[0].trim();
-    assertEquals(
-        "2008/DT Sichuan/JJ earthquake/NNS From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/NN",
-        firstLine);
-  }
-
-  @Test
   public void testMaxent() throws Exception {
     String outDirectoryName = outputDirectoryName + "/maxent";
 
@@ -180,32 +149,6 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
         MaxentStringOutcomeDataWriter.class.getName(),
         ViterbiDataWriterFactory.PARAM_OUTCOME_FEATURE_EXTRACTOR_NAMES,
         new String[] { DefaultOutcomeFeatureExtractor.class.getName() });
-    testClassifier(dataWriter, outDirectoryName, 10);
-
-    String firstLine = FileUtil.loadListOfStrings(new File(outDirectoryName
-        + "/2008_Sichuan_earthquake.txt.pos"))[0];
-    assertEquals(
-        "2008/CD Sichuan/JJ earthquake/NNS From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/IN",
-        firstLine);
-  }
-
-  @Test
-  @Deprecated
-  public void testMaxent2() throws Exception {
-    String outDirectoryName = outputDirectoryName + "/maxent2";
-
-    AnalysisEngineDescription dataWriter = AnalysisEngineFactory.createPrimitiveDescription(
-        ExamplePOSAnnotator.class,
-        CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-        ViterbiDataWriterFactory.class.getName(),
-        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
-        outDirectoryName,
-        ViterbiDataWriterFactory.PARAM_DELEGATED_DATA_WRITER_FACTORY_CLASS,
-        DefaultMaxentDataWriterFactory.class.getName(),
-        ViterbiDataWriterFactory.PARAM_OUTCOME_FEATURE_EXTRACTOR_NAMES,
-        new String[] { DefaultOutcomeFeatureExtractor.class.getName() },
-        MaxentDataWriterFactory_ImplBase.PARAM_COMPRESS,
-        true);
     testClassifier(dataWriter, outDirectoryName, 10);
 
     String firstLine = FileUtil.loadListOfStrings(new File(outDirectoryName
@@ -252,32 +195,6 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
         MalletStringOutcomeDataWriter.class.getName(),
         ViterbiDataWriterFactory.PARAM_OUTCOME_FEATURE_EXTRACTOR_NAMES,
         new String[] { DefaultOutcomeFeatureExtractor.class.getName() });
-    testClassifier(dataWriter, outDirectoryName, 10, "NaiveBayes");
-
-    String firstLine = FileUtil.loadListOfStrings(new File(outDirectoryName
-        + "/2008_Sichuan_earthquake.txt.pos"))[0];
-    assertEquals(
-        "2008/DT Sichuan/JJ earthquake/NN From/IN Wikipedia/NN ,/, the/DT free/NN encyclopedia/IN",
-        firstLine);
-  }
-
-  @Test
-  @Deprecated
-  public void testMalletNaiveBayes2() throws Exception {
-    String outDirectoryName = outputDirectoryName + "/mallet-naive-bayes";
-
-    AnalysisEngineDescription dataWriter = AnalysisEngineFactory.createPrimitiveDescription(
-        ExamplePOSAnnotator.class,
-        CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-        ViterbiDataWriterFactory.class.getName(),
-        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
-        outDirectoryName,
-        ViterbiDataWriterFactory.PARAM_DELEGATED_DATA_WRITER_FACTORY_CLASS,
-        DefaultMalletDataWriterFactory.class.getName(),
-        ViterbiDataWriterFactory.PARAM_OUTCOME_FEATURE_EXTRACTOR_NAMES,
-        new String[] { DefaultOutcomeFeatureExtractor.class.getName() },
-        MalletDataWriterFactory_ImplBase.PARAM_COMPRESS,
-        true);
     testClassifier(dataWriter, outDirectoryName, 10, "NaiveBayes");
 
     String firstLine = FileUtil.loadListOfStrings(new File(outDirectoryName
