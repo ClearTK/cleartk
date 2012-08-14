@@ -51,6 +51,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.jar.DefaultSequenceDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.GenericJarClassifierFactory;
 import org.cleartk.classifier.jar.Train;
@@ -120,8 +121,8 @@ public class CrfSuiteClassifierTest extends DefaultTestBase {
         TestAnnotator.class,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
-        CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-        CRFSuiteDataWriterFactory.class.getName());
+        DefaultSequenceDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+        CRFSuiteStringOutcomeDataWriter.class);
 
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
