@@ -95,7 +95,7 @@
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-opennlp-tools</artifactId>
-			<version>0.10.1-SNAPSHOT</version>
+			<version>0.10.1</version>
 		</dependency>
 		<!-- test only -->
 		<dependency>
