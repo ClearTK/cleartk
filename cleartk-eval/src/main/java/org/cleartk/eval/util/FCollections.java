@@ -44,8 +44,6 @@ import com.google.common.collect.Multiset;
  * All rights reserved.
  * 
  * @author Philip Ogren
- * 
- * @param <T>
  */
 
 public class FCollections<T extends Comparable<T>> {
@@ -179,11 +177,7 @@ public class FCollections<T extends Comparable<T>> {
    * http://www.ncbi.nlm.nih.gov/pmc/articles/PMC1090460/
    * 
    * See equation 3.
-   * 
-   * @param object
-   * @return
    */
-
   public static double F(int tps, int fps, int fns) {
     return (double) (2 * tps) / (2 * tps + fps + fns);
   }

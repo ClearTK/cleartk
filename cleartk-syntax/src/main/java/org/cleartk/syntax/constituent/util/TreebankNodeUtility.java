@@ -85,8 +85,7 @@ public class TreebankNodeUtility {
       List<TerminalTreebankNode> terminals) {
     FSArray children = node.getChildren();
     for (int i = 0; i < children.size(); i++) {
-      org.cleartk.syntax.constituent.type.TreebankNode child = (org.cleartk.syntax.constituent.type.TreebankNode) children
-          .get(i);
+      org.cleartk.syntax.constituent.type.TreebankNode child = (org.cleartk.syntax.constituent.type.TreebankNode) children.get(i);
       if (child instanceof TerminalTreebankNode) {
         terminals.add((TerminalTreebankNode) child);
       } else
@@ -147,7 +146,7 @@ public class TreebankNodeUtility {
   }
 
   /**
-   * @return a "pretty print" of this node that may be useful for e.g. debugging.
+   * A "pretty print" of this node that may be useful for e.g. debugging.
    */
   public static void print(PrintStream out, org.cleartk.syntax.constituent.type.TreebankNode node) {
     out.println(print(node, 0));
@@ -192,15 +191,22 @@ public class TreebankNodeUtility {
    *          The part of speech tag of the node.
    * @return The TreebankNode which was added to the JCas.
    */
-  public static org.cleartk.syntax.constituent.type.TreebankNode newNode(JCas jCas, int begin, int end, String nodeType) {
-    org.cleartk.syntax.constituent.type.TreebankNode node = new org.cleartk.syntax.constituent.type.TreebankNode(jCas, begin, end);
+  public static org.cleartk.syntax.constituent.type.TreebankNode newNode(
+      JCas jCas,
+      int begin,
+      int end,
+      String nodeType) {
+    org.cleartk.syntax.constituent.type.TreebankNode node = new org.cleartk.syntax.constituent.type.TreebankNode(
+        jCas,
+        begin,
+        end);
     node.setNodeType(nodeType);
     node.setChildren(new FSArray(jCas, 0));
     node.setLeaf(true);
     node.addToIndexes();
     return node;
   }
-  
+
   /**
    * Create a branch TreebankNode in a JCas. The offsets of this node will be determined by its
    * children.
@@ -213,10 +219,16 @@ public class TreebankNodeUtility {
    *          The TreebankNode children of the node.
    * @return The TreebankNode which was added to the JCas.
    */
-  public static org.cleartk.syntax.constituent.type.TreebankNode newNode(JCas jCas, String nodeType, org.cleartk.syntax.constituent.type.TreebankNode... children) {
+  public static org.cleartk.syntax.constituent.type.TreebankNode newNode(
+      JCas jCas,
+      String nodeType,
+      org.cleartk.syntax.constituent.type.TreebankNode... children) {
     int begin = children[0].getBegin();
     int end = children[children.length - 1].getEnd();
-    org.cleartk.syntax.constituent.type.TreebankNode node = new org.cleartk.syntax.constituent.type.TreebankNode(jCas, begin, end);
+    org.cleartk.syntax.constituent.type.TreebankNode node = new org.cleartk.syntax.constituent.type.TreebankNode(
+        jCas,
+        begin,
+        end);
     node.setNodeType(nodeType);
     node.addToIndexes();
     FSArray fsArray = new FSArray(jCas, children.length);

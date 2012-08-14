@@ -140,9 +140,6 @@ public class AnnotationStatistics<OUTCOME_TYPE extends Comparable<? super OUTCOM
   /**
    * Create an AnnotationStatistics that compares {@link Annotation}s based on their begin and end
    * offsets, plus a {@link Feature} of the {@link Annotation} that represents the outcome or label.
-   * 
-   * @param outcomeFeatureName
-   *          The name of the feature that represents the outcome.
    */
   public AnnotationStatistics() {
     this.referenceOutcomes = HashMultiset.create();
@@ -154,7 +151,8 @@ public class AnnotationStatistics<OUTCOME_TYPE extends Comparable<? super OUTCOM
   /**
    * Update the statistics, comparing the reference annotations to the predicted annotations.
    * 
-   * Annotations are considered to match if they have the same character offsets in the text.
+   * Annotations are considered to match if they have the same character offsets in the text. All
+   * outcomes (e.g. as returned in {@link #confusions()}) will be <code>null</code>.
    * 
    * @param referenceAnnotations
    *          The reference annotations, typically identified by humans.
@@ -253,9 +251,6 @@ public class AnnotationStatistics<OUTCOME_TYPE extends Comparable<? super OUTCOM
   /**
    * Returns the {@link ConfusionMatrix} tabulating reference outcomes matched to predicted
    * outcomes.
-   * 
-   * Note that if no outcomeFeatureName was specified (via {@link #AnnotationStatistics(String)}
-   * then all outcomes (labels) will be null.
    * 
    * @return The confusion matrix.
    */

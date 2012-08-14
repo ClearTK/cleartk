@@ -33,8 +33,6 @@ package org.cleartk.eval.util;
  * All rights reserved.
  * 
  * @author Philip Ogren
- * 
- * @param <T>
  */
 
 public class FCollection {

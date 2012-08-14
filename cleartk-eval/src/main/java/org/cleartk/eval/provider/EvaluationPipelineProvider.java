@@ -23,12 +23,10 @@
  */
 package org.cleartk.eval.provider;
 
-import java.io.File;
 import java.util.List;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.eval.Evaluation_ImplBase;
 
 /**
@@ -46,15 +44,9 @@ public interface EvaluationPipelineProvider {
 
   /**
    * This method creates an aggregate analysis engine that performs task-specific evaluation using
-   * the gold-standard data which should be found in the {@link ViewNames#GOLD_VIEW} view against
-   * the system-generated data which should be found in the {@link ViewNames#SYSTEM_VIEW}. All
-   * results should be written to the evaluation directory provided. This directory will generally
-   * be specific to either a fold or the holdout evaluation.
-   * 
-   * @param evaluationDirectory
-   *          a directory where all evaluation results should be written to.
-   * @return
-   * @throws ResourceInitializationException
+   * the gold-standard data against the system-generated data. All results should be written to the
+   * evaluation directory provided. This directory will generally be specific to either a fold or
+   * the holdout evaluation.
    */
   public List<AnalysisEngine> getEvaluationPipeline(String name) throws UIMAException;
 
@@ -64,13 +56,6 @@ public interface EvaluationPipelineProvider {
   /**
    * This method aggregates results from a number of directories and writes the aggregated results
    * to the output directory.
-   * 
-   * @param evaluationDirectories
-   *          a list of evaluation directories that correspond directly to the evaluation
-   *          directories passed into multiple calls to {@link #getEvaluationPipeline(File)}
-   * @param outputDirectory
-   *          a directory where aggregated results are written to.
-   * @throws Exception
    */
   public void evaluationComplete() throws UIMAException;
 

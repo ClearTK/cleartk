@@ -23,7 +23,6 @@
  */
 package org.cleartk.eval;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -84,7 +83,6 @@ public class Evaluation {
    *          available by running the machine learning libraries learner from the command line
    *          without any arguments which will print evalOut a usage message including the training
    *          arguments specific to that learner.
-   * @throws Exception
    */
 
   public void runCrossValidation(
@@ -189,18 +187,13 @@ public class Evaluation {
    * your training data and tests it using the holdout evaluation data.
    * 
    * @param corpusReaderPipeline
-   *          see
-   *          {@link #runCrossValidation(File, CorpusReaderProvider, CleartkPipelineProvider, EvaluationPipelineProvider, String...)}
+   *          see {@link #runCrossValidation}
    * @param cleartkPipelineProvider
-   *          see
-   *          {@link #runCrossValidation(File, CorpusReaderProvider, CleartkPipelineProvider, EvaluationPipelineProvider, String...)}
+   *          see {@link #runCrossValidation}
    * @param evaluationPipelineProvider
-   *          see
-   *          {@link #runCrossValidation(File, CorpusReaderProvider, CleartkPipelineProvider, EvaluationPipelineProvider, String...)}
+   *          see {@link #runCrossValidation}
    * @param trainingArguments
-   *          see
-   *          {@link #runCrossValidation(File, CorpusReaderProvider, CleartkPipelineProvider, EvaluationPipelineProvider, String...)}
-   * @throws Exception
+   *          see {@link #runCrossValidation}
    */
   public void runHoldoutEvaluation(
       CorpusReaderProvider corpusReaderPipeline,
@@ -233,15 +226,11 @@ public class Evaluation {
    * applications.
    * 
    * @param corpusReaderPipeline
-   *          see
-   *          {@link #runCrossValidation(File, CorpusReaderProvider, CleartkPipelineProvider, EvaluationPipelineProvider, String...)}
+   *          see {@link #runCrossValidation}
    * @param cleartkPipelineProvider
-   *          see
-   *          {@link #runCrossValidation(File, CorpusReaderProvider, CleartkPipelineProvider, EvaluationPipelineProvider, String...)}
+   *          see {@link #runCrossValidation}
    * @param trainingArguments
-   *          see
-   *          {@link #runCrossValidation(File, CorpusReaderProvider, CleartkPipelineProvider, EvaluationPipelineProvider, String...)}
-   * @throws Exception
+   *          see {@link #runCrossValidation}
    */
   public void buildCorpusModel(
       String name,

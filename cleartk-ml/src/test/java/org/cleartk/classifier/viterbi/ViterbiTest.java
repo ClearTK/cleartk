@@ -26,7 +26,6 @@ package org.cleartk.classifier.viterbi;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,7 +34,6 @@ import java.util.Map;
 import junit.framework.Assert;
 
 import org.apache.uima.UimaContext;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.ScoredOutcome;
@@ -56,10 +54,6 @@ public class ViterbiTest {
   /**
    * This test was created from scratch using a small chart I wrote down on paper and solved by hand
    * before implementing here.
-   * 
-   * @throws ResourceInitializationException
-   * @throws IOException
-   * @throws CleartkException
    */
   @Test
   public void test1() throws Throwable {
@@ -219,10 +213,6 @@ public class ViterbiTest {
   /**
    * This test is based on Figure 15.2 in "Introduction to Algorithms 2nd Edition". Except that here
    * I am finding the most expensive path through the factory.
-   * 
-   * @throws ResourceInitializationException
-   * @throws CleartkException
-   * @throws IOException
    */
   @Test
   public void test2() throws Throwable {

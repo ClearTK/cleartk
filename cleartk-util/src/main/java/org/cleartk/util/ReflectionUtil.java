@@ -180,7 +180,6 @@ public class ReflectionUtil {
    *          The declared name of the second type parameter
    * @param object2
    *          The source object
-   * @throws ResourceInitializationException
    */
   public static <T, U> void checkTypeParameterIsAssignable(
       Class<T> paramDefiningClass1,

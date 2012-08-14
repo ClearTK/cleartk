@@ -154,11 +154,6 @@ public class PropbankGoldReader extends JCasCollectionReader_ImplBase {
   /**
    * Reads the next file and stores its text in <b>cas</b> as the "TreebankView" SOFA. Then stores
    * the corresponding Propbank entries in the "PropbankView" SOFA.
-   * 
-   * @param cas
-   * 
-   * @throws IOException
-   * @throws CollectionException
    */
   public void getNext(JCas jCas) throws IOException, CollectionException {
     JCas tbView, pbView;

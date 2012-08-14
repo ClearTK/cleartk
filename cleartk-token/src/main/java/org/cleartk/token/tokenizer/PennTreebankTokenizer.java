@@ -207,9 +207,6 @@ public class PennTreebankTokenizer extends Tokenizer_ImplBase {
 
   /**
    * Tokenizes the input text and returns a string array corresponding to the tokens.
-   * 
-   * @param text
-   * @return the tokens
    */
   public String[] getTokenTexts(String text) {
     for (Pattern pattern : patterns) {

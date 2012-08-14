@@ -46,8 +46,8 @@ import org.uimafit.factory.CollectionReaderFactory;
  * your annotations into a CAS, then you can create an XMI file - one for each document. Once you
  * have your XMI files, this factory class provides a simple way to split up your XMI files into a
  * training set, a test set, and folds from your training set. It assumes that all of your XMI files
- * are in single directory specified by {@link #getXmiDirectory()}. Your job is to serve up the
- * names of the XMI files that belong to the various splits of the data.
+ * are in single directory. Your job is to serve up the names of the XMI files that belong to the
+ * various splits of the data.
  * 
  * @author Philip Ogren
  * @deprecated Use {@link Evaluation_ImplBase}
@@ -59,7 +59,6 @@ public abstract class XmiCorpusFactory extends CorpusFactory_ImplBase {
 
   /**
    * 
-   * @param typeSystemDescription
    * @param xmiDirectoryName
    *          directory contains all of the xmi files in the corpus
    */

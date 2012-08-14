@@ -54,8 +54,6 @@ public interface TermFinder {
    * A term finder should typically be able to handle more than one term list. Furthermore, a term
    * list makes no guarantees that the terms are unique with respect to the term texts either within
    * a term list or across multiple term lists.
-   * 
-   * @param termList
    */
   public void addTermList(TermList termList);
 }

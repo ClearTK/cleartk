@@ -38,7 +38,6 @@ import org.cleartk.classifier.Instance;
 public class InstanceFactory {
 
   /**
-   * @param <T>
    * @param outcome
    *          the outcome of the returned instance
    * @param featureData
@@ -60,8 +59,6 @@ public class InstanceFactory {
   }
 
   /**
-   * 
-   * @param <T>
    * @param outcome
    *          the outcome of the returned instance
    * @param featureData

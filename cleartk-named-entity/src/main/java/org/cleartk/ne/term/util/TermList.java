@@ -66,8 +66,6 @@ public class TermList {
    * A term finder is not expected to automatically update its internal representation of a term
    * list when this method is called. This method should be called when populating the term list
    * before a term finder calls getTerms().
-   * 
-   * @param term
    */
   public void add(Term term) {
     this.terms.add(term);
@@ -85,7 +83,6 @@ public class TermList {
    * Calls loadSimpleFile(listName, file, null).
    * 
    * @see #loadSimpleFile(String, File, String)
-   * @throws IOException
    */
   public static TermList loadSimpleFile(String listName, File file) throws IOException {
     return loadSimpleFile(listName, file, null);
@@ -110,7 +107,6 @@ public class TermList {
    *          the string that separates the id from the term. If null is passed in then the id of
    *          each term will be the line number as it appears in the file.
    * @return a term list populated with the data in the provided file
-   * @throws IOException
    */
   public static TermList loadSimpleFile(String listName, File file, String columnSeparator)
       throws IOException {

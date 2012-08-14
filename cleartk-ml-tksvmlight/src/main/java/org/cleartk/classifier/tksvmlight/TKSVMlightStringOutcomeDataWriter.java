@@ -55,9 +55,6 @@ public class TKSVMlightStringOutcomeDataWriter
 
   /**
    * Constructor for the One verse All Tree Kernel SVMlight data writer.
-   * 
-   * @param outputDirectory
-   * @throws IOException
    */
   public TKSVMlightStringOutcomeDataWriter(File outputDirectory) throws IOException {
     super(outputDirectory);

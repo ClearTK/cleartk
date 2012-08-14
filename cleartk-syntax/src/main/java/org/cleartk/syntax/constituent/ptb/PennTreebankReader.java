@@ -38,8 +38,8 @@ import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.Level;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
-import org.cleartk.syntax.constituent.TreebankGoldAnnotator;
 import org.cleartk.syntax.constituent.TreebankConstants;
+import org.cleartk.syntax.constituent.TreebankGoldAnnotator;
 import org.cleartk.util.ViewURIUtil;
 import org.uimafit.component.JCasCollectionReader_ImplBase;
 import org.uimafit.component.ViewCreatorAnnotator;
@@ -79,8 +79,9 @@ import org.uimafit.factory.ConfigurationParameterFactory;
 
 @SofaCapability(outputSofas = { TreebankConstants.TREEBANK_VIEW, ViewURIUtil.URI })
 public class PennTreebankReader extends JCasCollectionReader_ImplBase {
-  public static final String PARAM_CORPUS_DIRECTORY_NAME = ConfigurationParameterFactory
-      .createConfigurationParameterName(PennTreebankReader.class, "corpusDirectoryName");
+  public static final String PARAM_CORPUS_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
+      PennTreebankReader.class,
+      "corpusDirectoryName");
 
   private static final String CORPUS_DIRECTORY_DESCRIPTION = "Specifies the location of WSJ/PennTreebank treebank files.  "
       + "The directory should contain subdirectories corresponding to the sections (e.g. '00', '01', etc.) "
@@ -90,8 +91,9 @@ public class PennTreebankReader extends JCasCollectionReader_ImplBase {
   @ConfigurationParameter(mandatory = true, description = CORPUS_DIRECTORY_DESCRIPTION)
   private String corpusDirectoryName;
 
-  public static final String PARAM_SECTIONS_SPECIFIER = ConfigurationParameterFactory
-      .createConfigurationParameterName(PennTreebankReader.class, "sectionsSpecifier");
+  public static final String PARAM_SECTIONS_SPECIFIER = ConfigurationParameterFactory.createConfigurationParameterName(
+      PennTreebankReader.class,
+      "sectionsSpecifier");
 
   private static final String SECTIONS_DESCRIPTION = "specifies which sections of PTB to read in.  "
       + "The required format for values of this parameter allows for comma-separated section numbers and section ranges, "
@@ -124,11 +126,12 @@ public class PennTreebankReader extends JCasCollectionReader_ImplBase {
    * This will add all the <tt>.mrg</tt> files in the given WSJ sections to <em>treebankFiles</em>.
    * 
    * @param wsjDirectory
-   *          is the top level of the WSJ part of Treebank. Underneath here are the section
+   *          The top level of the WSJ part of Treebank. Underneath here are the section
    *          subdirectories.
    * @param treebankFiles
+   *          The {@link List} to which the treebank files should be added.
    * @param wsjSections
-   *          is the set of sections to include.
+   *          The set of sections to include.
    */
   public static void collectSections(
       File wsjDirectory,
@@ -166,11 +169,6 @@ public class PennTreebankReader extends JCasCollectionReader_ImplBase {
 
   /**
    * Reads the next file and stores its text in <b>cas</b> as the "TreebankView" SOFA.
-   * 
-   * @param cas
-   * 
-   * @throws IOException
-   * @throws CollectionException
    */
   public void getNext(JCas jCas) throws IOException, CollectionException {
     File treebankFile = files.removeFirst();

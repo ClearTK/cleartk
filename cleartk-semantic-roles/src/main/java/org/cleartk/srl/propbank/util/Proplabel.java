@@ -185,6 +185,7 @@ public class Proplabel {
    * Convert to ClearTK <em>SemanticArgument</em> annotation and add it to <b>view</b>.
    * 
    * @param view
+   *          the view where the annotation will be added
    * @param topNode
    *          the top node annotation of the corresponding Treebank parse
    * @return the generated <em>SemanticArgument</em> annotation

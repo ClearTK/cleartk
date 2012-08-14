@@ -277,11 +277,6 @@ public class DocumentClassificationEvaluation extends
    * <li>Stemming
    * <li>[optional] labeling the document with gold-standard document categories
    * </ul>
-   * 
-   * @param modelDirectory
-   * @param mode
-   * @return
-   * @throws ResourceInitializationException
    */
   public static AggregateBuilder createPreprocessingAggregate(
       File modelDirectory,
@@ -329,11 +324,6 @@ public class DocumentClassificationEvaluation extends
 
   /**
    * Creates the aggregate builder for the document classification pipeline
-   * 
-   * @param modelDirectory
-   * @param mode
-   * @return
-   * @throws ResourceInitializationException
    */
   public static AggregateBuilder createDocumentClassificationAggregate(
       File modelDirectory,

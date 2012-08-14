@@ -72,7 +72,6 @@ public class FCollectionsFile {
    * @param countObjectLabel
    *          a label that names the objects being counted. Generally, this should be one or two
    *          words to keep the table in the produced file readable.
-   * @throws IOException
    */
   public static <T extends Comparable<T>> void writeFCollection(
       File outputFile,

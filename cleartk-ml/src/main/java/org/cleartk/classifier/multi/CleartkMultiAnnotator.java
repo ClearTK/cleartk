@@ -199,8 +199,8 @@ public abstract class CleartkMultiAnnotator<OUTCOME_TYPE> extends JCasAnnotator_
    * {@link ClassifierFactory} specified at initialization to create a new one.
    * 
    * @param name
-   * @return the classifier associated with name
-   * @throws ResourceInitializationException
+   *          The name of the classifier
+   * @return The classifier associated with the name
    */
   protected Classifier<OUTCOME_TYPE> getClassifier(String name)
       throws ResourceInitializationException {
@@ -240,13 +240,13 @@ public abstract class CleartkMultiAnnotator<OUTCOME_TYPE> extends JCasAnnotator_
   }
 
   /**
-   * Gets the dataWriter associated with name. If it does not exist, this method will use the
-   * {@link DataWriterFactory} specified during initialization to create a dataWriter associated
+   * Gets the {@link DataWriter} associated with name. If it does not exist, this method will use
+   * the {@link DataWriterFactory} specified during initialization to create a dataWriter associated
    * with the name parameter.
    * 
    * @param name
-   * @return the data writer associated with name
-   * @throws ResourceInitializationException
+   *          The name of the {@link DataWriter}
+   * @return The {@link DataWriter} associated with the name
    */
   protected DataWriter<OUTCOME_TYPE> getDataWriter(String name)
       throws ResourceInitializationException {

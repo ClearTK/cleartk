@@ -55,8 +55,6 @@ public class ChunkTokenizerLabelerTest extends TokenTestBase {
   /**
    * these tests represent what would typically happen when the InstanceConsumer is
    * ClassifierAnnotator
-   * 
-   * @throws UIMAException
    */
   @Test
   public void testClassifierAnnotator() throws UIMAException {
@@ -133,8 +131,6 @@ public class ChunkTokenizerLabelerTest extends TokenTestBase {
 
   /**
    * these tests represent what would typically happen when the InstanceConsumer is a DataWriter
-   * 
-   * @throws UIMAException
    */
 
   @Test

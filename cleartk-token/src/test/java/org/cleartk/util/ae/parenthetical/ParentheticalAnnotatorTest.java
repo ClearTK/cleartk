@@ -86,8 +86,6 @@ public class ParentheticalAnnotatorTest extends DefaultTestBase {
   /**
    * In this test a sentence type has been specified but no sentences are in the cas so no
    * parentheticals are found.
-   * 
-   * @throws Exception
    */
   @Test
   public void testNoSentence() throws Exception {

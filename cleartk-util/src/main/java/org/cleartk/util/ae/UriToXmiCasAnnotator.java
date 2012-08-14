@@ -65,10 +65,6 @@ public class UriToXmiCasAnnotator extends JCasAnnotator_ImplBase {
 
   /**
    * Use this aggregate description if UriToDocumentTextAnnotator will be writing to a mapped view.
-   * 
-   * @param targetViewName
-   * @return
-   * @throws ResourceInitializationException
    */
   public static AnalysisEngineDescription getCreateViewAggregateDescription(String targetViewName)
       throws ResourceInitializationException {

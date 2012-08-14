@@ -310,9 +310,6 @@ public class TokenizerAndTokenAnnotatorTest extends TokenTestBase {
    * sentences, then it does not handle tokenization correctly. This sentence was chosen because
    * this is exactly where it failed when I took out the iterating over sentences in the
    * TokenAnnotator.
-   * 
-   * @throws UIMAException
-   * @throws IOException
    */
   @Test
   public void testPeriod() throws UIMAException, IOException {

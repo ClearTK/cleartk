@@ -28,7 +28,6 @@ import java.io.IOException;
 import java.net.URI;
 
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 
 /**
  * Copyright (c) 2012, Regents of the University of Colorado <br>
@@ -59,33 +58,21 @@ import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 public interface TrainableExtractor<OUTCOME_T> {
 
   /**
-   * Copyright (c) 2012, Regents of the University of Colorado <br>
-   * All rights reserved.
-   * <p>
    * In the prototypical case, train takes a collection of instances and computes statistics over
    * the values such as computing mean, standard deviation, TF*IDF, etc...
-   * <p>
-   * 
    * 
    * @param instances
    *          - URI pointing to the output location for saving statistics
-   * @throws CleartkExtractorException
    */
   public void train(Iterable<Instance<OUTCOME_T>> instances);
 
   /**
    * Saves statistics from train in location URI
-   * 
-   * @param uri
-   * @throws CleartkExtractorException
    */
   public void save(URI uri) throws IOException;
 
   /**
    * Loads statistics from location URI
-   * 
-   * @param uri
-   * @throws CleartkExtractorException
    */
   public void load(URI uri) throws IOException;
 

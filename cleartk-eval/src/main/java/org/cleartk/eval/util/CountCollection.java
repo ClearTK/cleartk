@@ -122,9 +122,6 @@ public class CountCollection<T> implements Serializable {
    * </ul>
    * 
    * The "weighted" average = 1*5 + 2*7 + 3*2 / (5+7+2) = 25 / 14 = 1.78571
-   * 
-   * @param countObjects
-   * @return
    */
   public static double weightedAverage(CountCollection<? extends Number> countCollection) {
     double numerator = 0;

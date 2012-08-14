@@ -23,7 +23,6 @@
  */
 package org.cleartk.classifier.feature.extractor;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -87,9 +86,6 @@ public class BagExtractorTest extends DefaultTestBase {
 
   /**
    * Tests a bag of Tokens where texts are extracted from each token.
-   * 
-   * @throws UIMAException
-   * @throws IOException
    */
   @Test
   public void testSpannedText() throws Throwable {
@@ -101,9 +97,6 @@ public class BagExtractorTest extends DefaultTestBase {
   /**
    * Tests a bag of Tokens where texts are extracted from each token, and the extractor is given a
    * name.
-   * 
-   * @throws UIMAException
-   * @throws IOException
    */
   @Test
   public void testNamedSpannedText() throws Throwable {
@@ -114,9 +107,6 @@ public class BagExtractorTest extends DefaultTestBase {
 
   /**
    * Tests a bag of Tokens where part of speech tags are extracted from each token.
-   * 
-   * @throws UIMAException
-   * @throws IOException
    */
   @Test
   public void testPartOfSpeech() throws Throwable {
@@ -128,9 +118,6 @@ public class BagExtractorTest extends DefaultTestBase {
   /**
    * Tests a bag of Tokens where part of speech tags are extracted from each token and the extractor
    * is given a name.
-   * 
-   * @throws UIMAException
-   * @throws IOException
    */
   @Test
   public void testNamedPartOfSpeech() throws Throwable {

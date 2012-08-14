@@ -67,8 +67,6 @@ public class TKSVMlightClassifierBuilder extends
    * so the One verse All TK SVMlight classifier may take advantage of it, casual users probably
    * shouldn't use this interface.
    * 
-   * @param dir
-   *          The directory where the training data has been written.
    * @param args
    *          The arguments to be used by the tk_svm_classify command. Note: -t 5 is used to specify
    *          the use of Tree Kernels.

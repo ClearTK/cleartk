@@ -104,7 +104,7 @@ public class OVATKSVMlightClassifier extends
    * 
    * @param features
    *          The features to classify
-   * @param maxResult
+   * @param maxResults
    *          The maximum number of results to return in the list.
    * @returns A list of scored outcomes ordered by likelihood.
    */

@@ -443,9 +443,6 @@ public class WindowExtractorTest extends DefaultTestBase {
    * The assertions in this test demonstrate that WindowExtractor works consistently. They are
    * provided to contrast with what's in WindowNGramExtractorTest which demonstrates that the
    * WindowNGramExtractor does not work consistently.
-   * 
-   * @throws UIMAException
-   * @throws CleartkException
    */
   @Test
   public void testIssue158() throws Throwable {

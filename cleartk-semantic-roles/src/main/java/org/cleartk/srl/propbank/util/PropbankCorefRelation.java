@@ -70,10 +70,8 @@ public class PropbankCorefRelation extends PropbankRelation {
 
   /**
    * This is not implemented for PropbankCorefRelation and will always throw
-   * <em>UnsupportedOperationException</em>. Instead, the conversion of a PropbankCorefRelation
+   * {@link UnsupportedOperationException}. Instead, the conversion of a PropbankCorefRelation
    * happens during Predicate conversion.
-   * 
-   * @throws UnsupportedOperationException
    */
   @Override
   public Annotation convert(JCas jCas, TopTreebankNode topNode) {

@@ -98,9 +98,6 @@ public abstract class FeatureVector implements Iterable<FeatureVector.Entry> {
 
   /**
    * Set the feature at index to value.
-   * 
-   * @param index
-   * @param value
    */
   public abstract void set(int index, double value) throws InvalidFeatureVectorValueException;
 
@@ -108,7 +105,8 @@ public abstract class FeatureVector implements Iterable<FeatureVector.Entry> {
    * Return the value at index.
    * 
    * @param index
-   * @return value at index
+   *          The index
+   * @return The value at the index
    */
   public abstract double get(int index);
 

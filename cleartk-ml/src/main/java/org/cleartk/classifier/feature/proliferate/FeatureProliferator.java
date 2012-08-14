@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.feature.function.FeatureFunction;
 
 /**
  * <br>
@@ -43,7 +44,7 @@ import org.cleartk.classifier.Feature;
  * 
  * @author Philip Ogren
  * @author Steven Bethard
- * @deprecated
+ * @deprecated Use {@link FeatureFunction} instead.
  */
 @Deprecated
 public abstract class FeatureProliferator {

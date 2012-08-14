@@ -75,8 +75,8 @@ public class TKSVMlightClassifier extends Classifier_ImplBase<TreeFeatureVector,
    *          The features encoder used by this classifier.
    * @param outcomeEncoder
    *          The outcome encoder used by this classifier.
-   * @param models
-   *          The files for the models used by this classifier.
+   * @param modelFile
+   *          The file for the model used by this classifier.
    */
   public TKSVMlightClassifier(
       FeaturesEncoder<TreeFeatureVector> featuresEncoder,
@@ -104,7 +104,7 @@ public class TKSVMlightClassifier extends Classifier_ImplBase<TreeFeatureVector,
    * 
    * @param features
    *          The features to classify
-   * @param maxResult
+   * @param maxResults
    *          The maximum number of results to return in the list (at most 2).
    * @returns A list of scored outcomes ordered by likelihood.
    */
@@ -147,7 +147,6 @@ public class TKSVMlightClassifier extends Classifier_ImplBase<TreeFeatureVector,
    *          The feature vector to predict for.
    * @return A double that represents which side of the line the feature vector resides (negative
    *         below, positive above).
-   * @throws CleartkProcessingException
    */
   // Moving this into public space so it can be used by one versus all thing.
   public static double tkSvmLightPredict(File mFile, TreeFeatureVector featureVector)

@@ -55,6 +55,7 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  *          encoded during testing). And it also uses a EuclideanNormalizer.
  * @deprecated Use {@link DefaultDataWriterFactory} with {@link TKSVMlightDataWriter}.
  */
+@Deprecated
 public class DefaultTKSVMlightDataWriterFactory extends
     DataWriterFactory_ImplBase<TreeFeatureVector, Boolean, Boolean> {
 

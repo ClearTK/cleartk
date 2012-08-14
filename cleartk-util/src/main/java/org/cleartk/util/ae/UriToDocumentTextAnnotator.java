@@ -61,10 +61,6 @@ public class UriToDocumentTextAnnotator extends JCasAnnotator_ImplBase {
   /**
    * This description will read the contents into the specify view. If the view does not exist, it
    * will make it as needed.
-   * 
-   * @param targetViewName
-   * @return
-   * @throws ResourceInitializationException
    */
   public static AnalysisEngineDescription getDescriptionForView(String targetViewName)
       throws ResourceInitializationException {

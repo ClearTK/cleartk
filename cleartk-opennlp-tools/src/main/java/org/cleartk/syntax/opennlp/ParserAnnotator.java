@@ -42,6 +42,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.syntax.opennlp.parser.CasPosTagger;
 import org.cleartk.syntax.opennlp.parser.DefaultOutputTypesHelper;
 import org.cleartk.syntax.opennlp.parser.InputTypesHelper;
+import org.cleartk.syntax.opennlp.parser.OutputTypesHelper;
 import org.cleartk.syntax.opennlp.parser.Parser;
 import org.cleartk.syntax.opennlp.parser.ParserWrapper_ImplBase;
 import org.cleartk.util.IOUtil;
@@ -58,9 +59,8 @@ import org.uimafit.factory.initializable.InitializableFactory;
  * 
  * This class provides a uima wrapper for the OpenNLP chunking parser that is specific to the
  * ClearTK type system found in the cleartk-syntax project. However, by specifying your own
- * implementations of {@link SentenceHelper} and {@link InputTypesHelper} you can use your own input
- * types for sentences, tokens, and part-of-speech tags. Regardless, the resulting syntactic trees
- * will use the ClearTK type system.
+ * implementations of {@link InputTypesHelper} and {@link OutputTypesHelper} you can use your own
+ * types for sentences, tokens, and part-of-speech tags.
  * <p>
  * The default behavior of the OpenNLP chunking parser is to perform part-of-speech tagging in
  * addition to syntactic parsing. This may not be desirable in some situations where you have

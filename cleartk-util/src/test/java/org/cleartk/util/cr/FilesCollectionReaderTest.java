@@ -94,9 +94,6 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
   /**
    * Test that the text loaded into the CAS by the CollectionReader matches the text in the files on
    * disk.
-   * 
-   * @throws IOException
-   * @throws UIMAException
    */
   @Test
   public void testText() throws Exception {
@@ -126,9 +123,6 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
 
   /**
    * Test that that the CollectionReader can load the text into different CAS views when requested.
-   * 
-   * @throws IOException
-   * @throws UIMAException
    */
   @Test
   public void testViewText() throws Exception {
@@ -155,9 +149,6 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
 
   /**
    * Test that all files in the directory (and subdirectories) are loaded into the CAS.
-   * 
-   * @throws IOException
-   * @throws UIMAException
    */
   @Test
   public void testFilePaths() throws IOException, UIMAException {
@@ -329,9 +320,6 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
 
   /**
    * Check that the reader works with just a single file.
-   * 
-   * @throws IOException
-   * @throws UIMAException
    */
   @Test
   public void testSingleFile() throws IOException, UIMAException {
@@ -351,12 +339,9 @@ public class FilesCollectionReaderTest extends DefaultTestBase {
 
   /**
    * Check that the reader gives an error with an invalid file.
-   * 
-   * @throws IOException
-   * @throws UIMAException
    */
   @Test(expected = UIMAException.class)
-  public void testBadFileException() throws IOException, UIMAException {
+  public void testBadFileException() throws Exception {
     CollectionReaderFactory.createCollectionReader(FilesCollectionReader.getDescription("data/hmtl"));
   }
 

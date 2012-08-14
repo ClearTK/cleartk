@@ -50,8 +50,8 @@ public class GrmmTestDataGenerator {
 
   /**
    * 
-   * @return list of instances with the same features as {@link
-   *         GrmmClassifierTest.createInstances1()} but different outcomes
+   * @return list of instances with the same features as {@link #createInstances1} but different
+   *         outcomes
    */
   public static List<Instance<String[]>> createInstances1test() {
     List<Instance<String[]>> instances = new java.util.ArrayList<Instance<String[]>>();
@@ -71,8 +71,8 @@ public class GrmmTestDataGenerator {
 
   /**
    * 
-   * @return list of instances with the same features as {@link
-   *         GrmmClassifierTest.createInstances2()} but different outcomes
+   * @return list of instances with the same features as {@link #createInstances2} but different
+   *         outcomes
    */
   public static List<Instance<String[]>> createInstances2test() {
     List<Instance<String[]>> instances = new java.util.ArrayList<Instance<String[]>>();
@@ -108,8 +108,7 @@ public class GrmmTestDataGenerator {
       throws IOException {
     File f = new File(outputDirectoryName, filename);
     FileWriter fileWriter = new FileWriter(f);
-    fileWriter
-        .write("new ACRF.BigramTemplate (0)\nnew ACRF.BigramTemplate (1)\nnew ACRF.PairwiseFactorTemplate (0,1)\n");
+    fileWriter.write("new ACRF.BigramTemplate (0)\nnew ACRF.BigramTemplate (1)\nnew ACRF.PairwiseFactorTemplate (0,1)\n");
     fileWriter.close();
     return f;
   }

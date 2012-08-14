@@ -30,27 +30,24 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * This class was written to be a stand alone parser for the Penn Treebank data. Basically, I need a
+ * way to synch up the propbank data with extents of plain text that are labeled. This is not
+ * possible to do without parsing the treebank data first. The parse method will parse a single
+ * sentence from the treebank data from e.g. wsj/mrg/06/wsj_0656.mrg.
+ * 
+ * I initially looked at the OpenNLP treebank parser but they made a few assumptions about they
+ * wanted to keep for the parser that would make it difficult to align with the propbank data. See:
+ * http://sourceforge.net/projects/opennlp/forums/forum/9943/topic/1751983 for relevant discussion.
+ * I looked at their parsing implementation and tried to modify it. However, I think the code below
+ * bears little resemblance to theirs. But there may yet be some snippets taken directly out of that
+ * code. The two regular expressions used are very similar.
+ * 
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
  * 
  * @author Philip Ogren
- * 
- *         This class was written to be a stand alone parser for the Penn Treebank data. Basically,
- *         I need a way to synch up the propbank data with extents of plain text that are labeled.
- *         This is not possible to do without parsing the treebank data first. The parse method will
- *         parse a single sentence from the treebank data from e.g. wsj/mrg/06/wsj_0656.mrg.
- * 
- *         I initially looked at the OpenNLP treebank parser but they made a few assumptions about
- *         they wanted to keep for the parser that would make it difficult to align with the
- *         propbank data. See: https://sourceforge
- *         .net/forum/forum.php?thread_id=1751983&forum_id=9943 for relevant discussion. I looked at
- *         their parsing implementation and tried to modify it. However, I think the code below
- *         bears little resemblance to theirs. But there may yet be some snippets taken directly out
- *         of that code. The two regular expressions used are very similar.
- * 
- * @see opennlp.tools.parser.Parse#parseParse(String)
  */
 public class TreebankFormatParser {
   /**
@@ -477,7 +474,6 @@ public class TreebankFormatParser {
    * 
    * Splits an .mrg file (e.g. wsj/mrg/00/wsj_0020.mrg) into sentence parses.
    * 
-   * @param mrgContents
    * @return individual sentence parses from treebank - i.e. strings of the form "( (S..."
    */
 
@@ -527,6 +523,7 @@ public class TreebankFormatParser {
    * This method parses an entire documents worth of treebanked sentences.
    * 
    * @param parse
+   *          a single document provided as treebank parenthesized parses
    * @param textOffset
    *          a value that corresponds to the character offset of the first character of the
    *          document. The appropriate value for this method will typically be 0.

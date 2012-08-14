@@ -69,8 +69,6 @@ public class ConfusionMatrix<T extends Comparable<? super T>> {
 
   /**
    * Creates a new ConfusionMatrix initialized with the contents of another ConfusionMatrix.
-   * 
-   * @param other
    */
   public ConfusionMatrix(ConfusionMatrix<T> other) {
     this();
@@ -79,9 +77,6 @@ public class ConfusionMatrix<T extends Comparable<? super T>> {
 
   /**
    * Increments the entry specified by actual and predicted by one.
-   * 
-   * @param actual
-   * @param predicted
    */
   public void add(T actual, T predicted) {
     add(actual, predicted, 1);
@@ -89,10 +84,6 @@ public class ConfusionMatrix<T extends Comparable<? super T>> {
 
   /**
    * Increments the entry specified by actual and predicted by count.
-   * 
-   * @param actual
-   * @param predicted
-   * @param count
    */
   public void add(T actual, T predicted, int count) {
     if (matrix.containsKey(actual)) {
@@ -109,8 +100,6 @@ public class ConfusionMatrix<T extends Comparable<? super T>> {
 
   /**
    * Adds the entries from another confusion matrix to this one.
-   * 
-   * @param other
    */
   public void add(ConfusionMatrix<T> other) {
     for (T actual : other.matrix.keySet()) {
@@ -124,8 +113,6 @@ public class ConfusionMatrix<T extends Comparable<? super T>> {
 
   /**
    * Gives the set of all classes in the confusion matrix.
-   * 
-   * @return
    */
   public SortedSet<T> getClasses() {
     return classes;
@@ -134,10 +121,6 @@ public class ConfusionMatrix<T extends Comparable<? super T>> {
   /**
    * Gives the count of the number of times the "predicted" class was predicted for the "actual"
    * class.
-   * 
-   * @param actual
-   * @param predicted
-   * @return
    */
   public int getCount(T actual, T predicted) {
     if (!matrix.containsKey(actual)) {
@@ -149,9 +132,6 @@ public class ConfusionMatrix<T extends Comparable<? super T>> {
 
   /**
    * Computes the total number of times the class was predicted by the classifier.
-   * 
-   * @param predicted
-   * @return
    */
   public int getPredictedTotal(T predicted) {
     int total = 0;
@@ -163,9 +143,6 @@ public class ConfusionMatrix<T extends Comparable<? super T>> {
 
   /**
    * Computes the total number of times the class actually appeared in the data.
-   * 
-   * @param actual
-   * @return
    */
   public int getActualTotal(T actual) {
     if (!matrix.containsKey(actual)) {
@@ -186,8 +163,6 @@ public class ConfusionMatrix<T extends Comparable<? super T>> {
 
   /**
    * Outputs the ConfusionMatrix as comma-separated values for easy import into spreadsheets
-   * 
-   * @return
    */
   public String toCSV() {
     StringBuilder builder = new StringBuilder();

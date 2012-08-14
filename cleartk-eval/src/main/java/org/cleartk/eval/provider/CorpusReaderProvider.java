@@ -103,8 +103,7 @@ public interface CorpusReaderProvider {
    * perform all the necessary work that needs to be done before the data is ready to go. This
    * method should return a valid {@link AnalysisEngineDescription} regardless of whether there is
    * any preprocessing to do. If no preprocessing is required, then return an
-   * AnalysisEngineDescription for the {@link NoOpAnnotator} class as is done in
-   * {@link GeniaFactory#getPreprocessor()}.
+   * AnalysisEngineDescription for the {@link NoOpAnnotator} class.
    * 
    * @return an analysis engine description that defines all of the preprocessing that needs to be
    *         done for each document in the corpus

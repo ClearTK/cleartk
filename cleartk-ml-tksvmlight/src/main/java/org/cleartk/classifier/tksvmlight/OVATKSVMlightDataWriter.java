@@ -57,9 +57,6 @@ public class OVATKSVMlightDataWriter extends
 
   /**
    * Constructor for the One verse All Tree Kernel SVMlight data writer.
-   * 
-   * @param outputDirectory
-   * @throws IOException
    */
   public OVATKSVMlightDataWriter(File outputDirectory) throws IOException {
     super(outputDirectory);

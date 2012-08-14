@@ -76,7 +76,7 @@ public abstract class SequenceDataWriter_ImplBase<CLASSIFIER_BUILDER_TYPE extend
 
   /**
    * Write the marker for the end of a sequence. This will be called at the end of each
-   * {@link #writeSequence}, after all instances have been written by {@link #writeEncoded}.
+   * {@link #write}, after all instances have been written by {@link #writeEncoded}.
    */
   protected abstract void writeEndSequence();
 

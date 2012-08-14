@@ -41,8 +41,6 @@ import org.cleartk.classifier.Instance;
  * This class wraps the data written out by an InstanceDataWriter into an Iterable collection
  * 
  * @author Lee Becker
- * 
- * @param <OUTCOME_T>
  */
 public class InstanceStream<OUTCOME_T> implements Iterable<Instance<OUTCOME_T>> {
 
@@ -73,8 +71,6 @@ public class InstanceStream<OUTCOME_T> implements Iterable<Instance<OUTCOME_T>> 
   /**
    * 
    * @author Lee Becker
-   * 
-   * @param <OUTCOME_T>
    */
   public static class Iterator<OUTCOME_T> implements java.util.Iterator<Instance<OUTCOME_T>> {
 

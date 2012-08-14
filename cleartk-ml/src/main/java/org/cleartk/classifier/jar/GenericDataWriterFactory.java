@@ -28,12 +28,8 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 /**
- * A data writer factory that creates a data writer from the class given by
- * {@link #PARAM_DATA_WRITER_CLASS_NAME} and the directory given by
- * {@link DirectoryDataWriterFactory#PARAM_OUTPUT_DIRECTORY}.
- * 
- * Serves as a base class for data writer factories such as {@link DefaultDataWriterFactory} and
- * {@link DefaultSequenceDataWriterFactory}.
+ * Serves as a common base class for data writer factories such as {@link DefaultDataWriterFactory}
+ * and {@link DefaultSequenceDataWriterFactory}.
  * 
  * <br>
  * Copyright (c) 2012, Regents of the University of Colorado <br>

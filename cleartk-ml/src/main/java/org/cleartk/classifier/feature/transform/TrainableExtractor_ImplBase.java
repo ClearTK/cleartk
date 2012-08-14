@@ -51,9 +51,6 @@ public abstract class TrainableExtractor_ImplBase<OUTCOME_T> implements
   /**
    * Recursively look through all features in an instance to find the features this extractor is
    * responsible for extracting
-   * 
-   * @param instance
-   * @return
    */
   protected List<TransformableFeature> selectTransformableFeatures(Instance<OUTCOME_T> instance) {
 

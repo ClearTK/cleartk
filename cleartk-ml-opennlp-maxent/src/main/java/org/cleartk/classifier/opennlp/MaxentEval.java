@@ -43,10 +43,6 @@ import opennlp.model.RealValueFileEventStream;
 @Deprecated
 public class MaxentEval {
 
-  /**
-   * @param args
-   * @throws IOException
-   */
   public static void main(String[] args) throws IOException {
     if (args.length != 2) {
       usage();

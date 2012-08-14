@@ -119,8 +119,6 @@ public class MalletBooleanOutcomeDataWriterTest extends DefaultTestBase {
   /**
    * This test is identical to test1 except that the features are compressed by
    * NameNumberFeaturesEncoder.
-   * 
-   * @throws Exception
    */
   @Test
   @Deprecated
@@ -171,8 +169,6 @@ public class MalletBooleanOutcomeDataWriterTest extends DefaultTestBase {
   /**
    * This test is identical to test2 except that the feature lookup file is sorted by
    * NameNumberFeaturesEncoder.
-   * 
-   * @throws Exception
    */
 
   @Test
@@ -233,8 +229,6 @@ public class MalletBooleanOutcomeDataWriterTest extends DefaultTestBase {
 
   /**
    * Here we test that an exception is thrown if an instance with no outcome
-   * 
-   * @throws Exception
    */
   @Test
   public void test4() throws Exception {
@@ -272,8 +266,6 @@ public class MalletBooleanOutcomeDataWriterTest extends DefaultTestBase {
   /**
    * This test is identical to test1 except that the features are compressed by
    * NameNumberFeaturesEncoder.
-   * 
-   * @throws Exception
    */
   @Test
   @Deprecated

@@ -64,9 +64,10 @@ public abstract class PropbankRelation {
   }
 
   /**
-   * Convert to an appropriate ClearTK annotation and add it to <b>view</b> if necessary.
+   * Convert to an appropriate ClearTK annotation and add it to <b>jCas</b> if necessary.
    * 
    * @param jCas
+   *          the view where the annotation will be added
    * @param topNode
    *          the top node annotation of the corresponding Treebank parse
    * @return the corresponding annotation

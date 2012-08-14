@@ -54,7 +54,7 @@ public class IOUtil {
    * @param path
    *          should be the path of a resource on the classpath (e.g. "/models/en-sent.bin") or the
    *          path of a file on the local file system (e.g. "src/main/resources/models/en-sent.bin")
-   * @return
+   * @return A newly opened InputStream. The caller is responsible for closing the stream.
    * @throws IOException
    *           if the path was not found as a URL, resource or file.
    */

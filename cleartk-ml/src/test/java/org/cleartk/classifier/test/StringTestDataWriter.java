@@ -35,7 +35,6 @@ import java.io.IOException;
  * 
  * @author Philip Ogren
  * @author Steven Bethard
- * @see RealValueFileEventStream
  */
 public class StringTestDataWriter extends
     TestDataWriter_ImplBase<StringTestClassifierBuilder, String> {

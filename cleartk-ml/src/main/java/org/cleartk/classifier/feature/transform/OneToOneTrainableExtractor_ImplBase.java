@@ -37,10 +37,6 @@ import org.cleartk.classifier.Instance;
  * This implementation serves as a base for feature transformation from one feature into another
  * feature (normalizing, tf*idf, etc). Many to one transformation should extend directly from
  * {@link TrainableExtractor_ImplBase}.
- * 
- * 
- * @param instances
- *          - URI pointing to the output location for saving statistics
  */
 public abstract class OneToOneTrainableExtractor_ImplBase<OUTCOME_T> implements
     TrainableExtractor<OUTCOME_T> {

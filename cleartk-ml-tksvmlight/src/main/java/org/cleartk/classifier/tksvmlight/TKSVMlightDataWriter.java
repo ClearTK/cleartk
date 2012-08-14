@@ -57,7 +57,6 @@ public class TKSVMlightDataWriter extends
    * 
    * @param outputDirectory
    *          The directory the data/files should be written within.
-   * @throws IOException
    */
   public TKSVMlightDataWriter(File outputDirectory) throws IOException {
     super(outputDirectory);
@@ -74,9 +73,8 @@ public class TKSVMlightDataWriter extends
    * that the one versus all data writer may use it, not for casual use.
    * 
    * @param features
-   *          The featuers to write into a string format.
+   *          The features to write into a string format.
    * @return The string that represents the features in a format that tk_svm_classify can utilize.
-   * @throws CleartkProcessingException
    */
   public static String createString(TreeFeatureVector features) throws CleartkProcessingException {
     StringBuffer output = new StringBuffer();

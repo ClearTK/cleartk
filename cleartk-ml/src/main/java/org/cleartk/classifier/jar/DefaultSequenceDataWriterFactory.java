@@ -32,8 +32,7 @@ import org.uimafit.factory.ConfigurationParameterFactory;
 
 /**
  * A {@link SequenceDataWriterFactory} that creates a data writer from the class given by
- * {@link GenericDataWriterFactory#PARAM_DATA_WRITER_CLASS_NAME} and the directory given by
- * {@link DirectoryDataWriterFactory#PARAM_OUTPUT_DIRECTORY}.
+ * {@link #PARAM_DATA_WRITER_CLASS_NAME} and the directory given by {@link #PARAM_OUTPUT_DIRECTORY}.
  * 
  * <br>
  * Copyright (c) 2012, Regents of the University of Colorado <br>

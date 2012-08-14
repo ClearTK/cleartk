@@ -37,8 +37,6 @@ import org.apache.uima.resource.ResourceInitializationException;
  * <p>
  * 
  * @author Philip
- * 
- * @param <ANNOTATION_TYPE>
  */
 public interface AnnotationWriter<ANNOTATION_TYPE extends Annotation> {
 

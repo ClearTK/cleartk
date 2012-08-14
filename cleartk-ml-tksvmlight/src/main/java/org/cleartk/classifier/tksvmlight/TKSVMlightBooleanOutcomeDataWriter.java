@@ -54,7 +54,6 @@ public class TKSVMlightBooleanOutcomeDataWriter
    * 
    * @param outputDirectory
    *          The directory the data/files should be written within.
-   * @throws IOException
    */
   public TKSVMlightBooleanOutcomeDataWriter(File outputDirectory) throws IOException {
     super(outputDirectory);
@@ -73,7 +72,6 @@ public class TKSVMlightBooleanOutcomeDataWriter
    * @param features
    *          The featuers to write into a string format.
    * @return The string that represents the features in a format that tk_svm_classify can utilize.
-   * @throws CleartkProcessingException
    */
   public static String createString(TreeFeatureVector features) throws CleartkProcessingException {
     StringBuffer output = new StringBuffer();

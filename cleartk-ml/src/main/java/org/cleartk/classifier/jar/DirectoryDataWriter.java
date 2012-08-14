@@ -75,7 +75,7 @@ public abstract class DirectoryDataWriter<CLASSIFIER_BUILDER extends JarClassifi
 
   /**
    * Basic implementation of {@link DataWriter#finish()} and {@link SequenceDataWriter#finish()}
-   * that calls {@link ClassifierBuilder#saveToTrainingDirectory(File)}
+   * that calls {@link JarClassifierBuilder#saveToTrainingDirectory(File)}
    */
   public void finish() throws CleartkProcessingException {
     try {

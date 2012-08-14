@@ -131,13 +131,13 @@ public class CrfSuiteClassifierTest extends DefaultTestBase {
     reader.readLine();
     reader.close();
 
-    Logger logger = Logger.getLogger("org.cleartk.classifier.crfsuite.CRFSuiteWrapper");
-    Level level = logger.getLevel();
-    logger.setLevel(Level.WARNING);
+    Logger crfSuiteLogger = Logger.getLogger("org.cleartk.classifier.crfsuite.CRFSuiteWrapper");
+    Level level = crfSuiteLogger.getLevel();
+    crfSuiteLogger.setLevel(Level.WARNING);
     try {
       Train.main(outputDirectoryName);
     } finally {
-      logger.setLevel(level);
+      crfSuiteLogger.setLevel(level);
     }
 
     CRFSuiteStringOutcomeClassifierBuilder builder = new CRFSuiteStringOutcomeClassifierBuilder();
@@ -203,13 +203,13 @@ public class CrfSuiteClassifierTest extends DefaultTestBase {
         "VBZ",
         "NN" };
 
-    Logger logger = Logger.getLogger("org.cleartk.classifier.crfsuite.CRFSuiteWrapper");
-    Level level = logger.getLevel();
-    logger.setLevel(Level.WARNING);
+    Logger crfSuiteLogger = Logger.getLogger("org.cleartk.classifier.crfsuite.CRFSuiteWrapper");
+    Level level = crfSuiteLogger.getLevel();
+    crfSuiteLogger.setLevel(Level.WARNING);
     try {
       wrapper.trainClassifier(model, trainingDataFile, new String[] { "" });
     } finally {
-      logger.setLevel(level);
+      crfSuiteLogger.setLevel(level);
     }
 
     int featureSize = corr.length;

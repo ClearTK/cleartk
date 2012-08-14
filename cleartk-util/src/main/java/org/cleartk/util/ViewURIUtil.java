@@ -48,7 +48,7 @@ public class ViewURIUtil {
 
   /**
    * Set the primary Uniform Resource Identifier for this CAS and all its views. This creates the
-   * view {@link ViewNames#URI} and assigns the URI there.
+   * view {@link #URI} and assigns the URI there.
    * 
    * @param cas
    *          The CAS object.
@@ -62,7 +62,7 @@ public class ViewURIUtil {
 
   /**
    * Set the primary Uniform Resource Identifier for this JCas and all its views. This creates the
-   * view {@link ViewNames#URI} and assigns the URI there.
+   * view {@link #URI} and assigns the URI there.
    * 
    * @param jCas
    *          The CAS object.
@@ -75,12 +75,11 @@ public class ViewURIUtil {
 
   /**
    * Get the primary Uniform Resource Identifier for this JCas and all its views. This is obtained
-   * from the {@link ViewNames#URI} view of the JCas.
+   * from the {@link #URI} view of the JCas.
    * 
    * @param jCas
    *          The JCas object.
    * @return The primary URI for the JCas and all its views.
-   * @throws CASException
    */
   public static java.net.URI getURI(JCas jCas) throws AnalysisEngineProcessException {
     try {

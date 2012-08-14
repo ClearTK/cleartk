@@ -217,6 +217,7 @@ public class Propbank {
    * <b>view</b>.
    * 
    * @param view
+   *          the view where the annotations should be added
    * @param topNode
    *          the top node annotation of the corresponding Treebank parse
    * @param sentence

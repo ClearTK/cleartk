@@ -104,8 +104,6 @@ public class AnnotationUtil {
    * right of a named entity. This may be useful for e.g. creating a report that shows the output of
    * an annotator such that surrounding text is included.
    * 
-   * @param <TOKEN_TYPE>
-   * @param jCas
    * @param annotation
    *          an annotation to get surrounding/nearby text from. This can be any kind of annotation.
    * @param tokenClass
