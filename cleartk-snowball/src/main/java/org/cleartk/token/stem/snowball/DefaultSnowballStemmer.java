@@ -24,6 +24,7 @@
 
 package org.cleartk.token.stem.snowball;
 
+import org.apache.lucene.analysis.snowball.SnowballFilter;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -33,16 +34,14 @@ import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.TypeSystemDescriptionFactory;
 
 /**
+ * This class borrows from {@link SnowballFilter}
+ * 
  * <br>
  * Copyright (c) 2009, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
  * 
  * @author Philip Ogren
- * 
- * 
- *         This class borrows from org.apache.lucene.analysis.snowball.SnowballFilter
- * @see org.apache.lucene.analysis.snowball.SnowballFilter
  */
 
 public class DefaultSnowballStemmer extends SnowballStemmer<Token> {

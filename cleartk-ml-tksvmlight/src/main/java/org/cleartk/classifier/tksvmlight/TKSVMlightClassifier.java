@@ -47,17 +47,15 @@ import org.cleartk.classifier.jar.Classifier_ImplBase;
 import com.google.common.base.Joiner;
 
 /**
+ * A Tree Kernel SVM light classifier implementation. All features named with the prefix "TK_"
+ * treated as Tree Kernels.
+ * 
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
  * @author Daryl Lonnon
  * @version 0.2.1
- * 
- *          A Tree Kernel SVM light classifier implementation. All features named with the prefix
- *          "TK_" treated as Tree Kernels.
- * 
- * @uses TreeFeatureVector
  * @see OVATKSVMlightClassifier
  * @deprecated Use {@link TKSVMlightBooleanOutcomeClassifier} instead.
  */
@@ -91,7 +89,7 @@ public class TKSVMlightClassifier extends Classifier_ImplBase<TreeFeatureVector,
    * 
    * @param features
    *          The feature list to classify.
-   * @returns A Boolean of whether the features match this classification.
+   * @return A Boolean of whether the features match this classification.
    */
   public Boolean classify(List<Feature> features) throws CleartkProcessingException {
 
@@ -106,7 +104,7 @@ public class TKSVMlightClassifier extends Classifier_ImplBase<TreeFeatureVector,
    *          The features to classify
    * @param maxResults
    *          The maximum number of results to return in the list (at most 2).
-   * @returns A list of scored outcomes ordered by likelihood.
+   * @return A list of scored outcomes ordered by likelihood.
    */
   @Override
   public List<ScoredOutcome<Boolean>> score(List<Feature> features, int maxResults)

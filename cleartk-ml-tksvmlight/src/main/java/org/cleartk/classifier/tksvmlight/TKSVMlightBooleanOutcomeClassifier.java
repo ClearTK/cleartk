@@ -55,7 +55,6 @@ import com.google.common.base.Joiner;
  * All rights reserved.
  * 
  * @author Daryl Lonnon
- * @uses TreeFeatureVector
  * @see TKSVMlightStringOutcomeClassifier
  */
 public class TKSVMlightBooleanOutcomeClassifier extends
@@ -88,7 +87,7 @@ public class TKSVMlightBooleanOutcomeClassifier extends
    * 
    * @param features
    *          The feature list to classify.
-   * @returns A Boolean of whether the features match this classification.
+   * @return A Boolean of whether the features match this classification.
    */
   public Boolean classify(List<Feature> features) throws CleartkProcessingException {
 
@@ -103,7 +102,7 @@ public class TKSVMlightBooleanOutcomeClassifier extends
    *          The features to classify
    * @param maxResults
    *          The maximum number of results to return in the list (at most 2).
-   * @returns A list of scored outcomes ordered by likelihood.
+   * @return A list of scored outcomes ordered by likelihood.
    */
   @Override
   public List<ScoredOutcome<Boolean>> score(List<Feature> features, int maxResults)

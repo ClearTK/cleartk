@@ -46,7 +46,6 @@ import org.cleartk.classifier.jar.Classifier_ImplBase;
  * 
  * @author Daryl Lonnon
  * @version 0.2.1
- * @uses TreeFeatureVector
  * @see TKSVMlightClassifier
  * @deprecated Use {@link TKSVMlightStringOutcomeClassifier} instead.
  */
@@ -79,7 +78,7 @@ public class OVATKSVMlightClassifier extends
    * 
    * @param features
    *          The feature list to classify.
-   * @returns A String of the most likely classification.
+   * @return A String of the most likely classification.
    */
   public String classify(List<Feature> features) throws CleartkProcessingException {
     TreeFeatureVector featureVector = this.featuresEncoder.encodeAll(features);
@@ -106,7 +105,7 @@ public class OVATKSVMlightClassifier extends
    *          The features to classify
    * @param maxResults
    *          The maximum number of results to return in the list.
-   * @returns A list of scored outcomes ordered by likelihood.
+   * @return A list of scored outcomes ordered by likelihood.
    */
   @Override
   public List<ScoredOutcome<String>> score(List<Feature> features, int maxResults)
