@@ -161,7 +161,7 @@
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-examples</artifactId>
-				<version>0.6.2</version>
+				<version>0.6.3-SNAPSHOT</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
