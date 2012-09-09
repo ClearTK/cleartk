@@ -26,7 +26,6 @@ package org.cleartk.classifier.feature.transform;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -55,21 +54,14 @@ public class InstanceDataWriter<OUTCOME_T> implements DataWriter<OUTCOME_T> {
 
   public static String INSTANCES_OUTPUT_FILENAME = "training-data.instances";
 
-  public InstanceDataWriter(File outputDirectory) {
+  public InstanceDataWriter(File outputDirectory) throws IOException {
     if (!outputDirectory.exists()) {
       outputDirectory.mkdirs();
     }
 
     // Initialize Object Serializer
     File outputFile = new File(outputDirectory, INSTANCES_OUTPUT_FILENAME);
-    try {
-      this.objout = new ObjectOutputStream(new BufferedOutputStream(
-          new FileOutputStream(outputFile)));
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    this.objout = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(outputFile)));
   }
 
   @Override
