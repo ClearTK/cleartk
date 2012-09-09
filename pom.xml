@@ -40,6 +40,7 @@
 		<module>cleartk-named-entity</module>
 		<module>cleartk-syntax</module>
 		<module>cleartk-semantic-roles</module>
+		<module>cleartk-summarization</module>
 		<module>cleartk-timeml</module>
 		<module>cleartk-examples</module>
 		<!-- module declaring the official release versions -->
