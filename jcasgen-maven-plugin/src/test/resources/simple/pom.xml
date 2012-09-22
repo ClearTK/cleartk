@@ -10,7 +10,7 @@
 				<groupId>org.cleartk</groupId>
 				<artifactId>jcasgen-maven-plugin</artifactId>
 				<configuration>
-					<typeSystem>src/test/resources/simple/type/TypeSystem.xml</typeSystem>
+					<typeSystem>type/TypeSystem.xml</typeSystem>
 				</configuration>
 			</plugin>
 		</plugins>

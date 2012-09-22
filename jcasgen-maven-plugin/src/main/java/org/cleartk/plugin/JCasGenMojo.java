@@ -1,6 +1,9 @@
 package org.cleartk.plugin;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -37,20 +40,37 @@ public class JCasGenMojo extends AbstractMojo {
   /**
    * The Maven Project.
    * 
-   * @parameter
+   * @parameter property="project"
    * @required
    * @readonly
    */
   private MavenProject project;
 
   public void execute() throws MojoExecutionException, MojoFailureException {
+    String typeSystemPath = this.typeSystem;
+    boolean isFile = false;
+    try {
+      URL url = new URL(this.typeSystem);
+      url.toURI();
+    } catch (MalformedURLException e) {
+      isFile = true;
+    } catch (URISyntaxException e) {
+      isFile = true;
+    }
+    if (isFile) {
+      typeSystemPath = new File(this.project.getBasedir(), this.typeSystem).getAbsolutePath();
+    }
     Jg jCasGen = new Jg();
     String[] args = new String[] {
         "-jcasgeninput",
-        this.typeSystem,
+        typeSystemPath,
         "-jcasgenoutput",
-        this.outputDirectory.getPath() };
-    jCasGen.main1(args);
+        this.outputDirectory.getAbsolutePath() };
+    int result = jCasGen.main1(args);
+    if (result != 0) {
+      throw new MojoFailureException(
+          "JCasGen failed, see the \"JCasGen\" lines in the logged output for details");
+    }
     this.project.addCompileSourceRoot(this.outputDirectory.getPath());
   }
 }
