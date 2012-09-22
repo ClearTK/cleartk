@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.cleartk.plugin.jcasgen.m2e.feature"
+      label="%featureName"
+      version="0.9.0.qualifier"
+      provider-name="%providerName"
+      plugin="org.cleartk.plugin.jcasgen.m2e">
+
+   <description>
+      %description
+   </description>
+
+   <copyright>
+      %copyright
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <plugin
+         id="org.cleartk.plugin.jcasgen.m2e"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

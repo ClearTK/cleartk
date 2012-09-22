@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.cleartk</groupId>
+		<artifactId>jcasgen-m2e-connector</artifactId>
+		<version>0.9.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>org.cleartk.plugin.jcasgen.m2e.feature</artifactId>
+	<packaging>eclipse-feature</packaging>
+	<name>m2e connector for JCasGen feature</name>
+	<description>The feature for the m2e connector for the JCasGen Maven plugin</description>
+	<url>http://cleartk.googlecode.com/</url>
+	<licenses>
+		<license>
+			<name>The BSD 3-Clause License</name>
+			<url>http://cleartk.googlecode.com/svn/trunk/consistent-versions-plugin/LICENSE</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<developers>
+		<developer>
+			<id>steven.bethard</id>
+			<email>steven.bethard@gmail.com</email>
+			<name>Steven Bethard</name>
+		</developer>
+	</developers>
+	<scm>
+		<connection>scm:git:https://code.google.com/p/cleartk</connection>
+		<developerConnection>scm:git:https://code.google.com/p/cleartk</developerConnection>
+		<url>https://code.google.com/p/cleartk</url>
+	</scm>
+</project>
