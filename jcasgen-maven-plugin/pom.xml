@@ -20,16 +20,6 @@
 			<email>steven.bethard@gmail.com</email>
 			<name>Steven Bethard</name>
 		</developer>
-		<developer>
-			<id>philip.ogren</id>
-			<email>philip@ogren.info</email>
-			<name>Philip Ogren</name>
-		</developer>
-		<developer>
-			<id>lee.becker</id>
-			<email>lee.becker@gmail.com</email>
-			<name>Lee Becker</name>
-		</developer>
 	</developers>
 	<scm>
 		<connection>scm:git:https://code.google.com/p/cleartk</connection>
