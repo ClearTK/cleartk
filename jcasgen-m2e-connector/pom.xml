@@ -14,6 +14,7 @@
 		<module>org.cleartk.plugin.jcasgen.m2e</module>
 		<module>org.cleartk.plugin.jcasgen.m2e.feature</module>
 		<module>org.cleartk.plugin.jcasgen.m2e.tests</module>
+		<module>org.cleartk.plugin.jcasgen.m2e.repo</module>
 	</modules>
 	<repositories>
 		<repository>
