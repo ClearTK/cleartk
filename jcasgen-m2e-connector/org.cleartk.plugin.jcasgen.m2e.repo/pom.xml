@@ -30,4 +30,5 @@
 		<developerConnection>scm:git:https://code.google.com/p/cleartk</developerConnection>
 		<url>https://code.google.com/p/cleartk</url>
 	</scm>
+	<version>0.9.1.qualifier</version>
 </project>
