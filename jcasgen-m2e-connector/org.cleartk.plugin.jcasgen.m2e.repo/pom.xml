@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.cleartk</groupId>
 		<artifactId>jcasgen-m2e-connector</artifactId>
-		<version>0.9.0-SNAPSHOT</version>
+		<version>0.9.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>org.cleartk.plugin.jcasgen.m2e.repo</artifactId>
 	<packaging>eclipse-repository</packaging>
