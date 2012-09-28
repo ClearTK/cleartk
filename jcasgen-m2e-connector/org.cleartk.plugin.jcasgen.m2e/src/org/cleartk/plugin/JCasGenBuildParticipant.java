@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Set;
 
 import org.apache.maven.plugin.MojoExecution;
+import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.Scanner;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -29,14 +30,19 @@ public class JCasGenBuildParticipant extends MojoExecutionBuildParticipant {
         getMojoExecution(),
         "typeSystem",
         String.class);
-    File typeSystemFile = new File(typeSystem);
-    if (typeSystemFile.exists()) {
-      // scanner only sees files with content changes since the last build
-      Scanner scanner = buildContext.newScanner(typeSystemFile);
-      scanner.scan();
-      String[] includedFiles = scanner.getIncludedFiles();
-      if (includedFiles == null || includedFiles.length <= 0) {
-        return null;
+
+    // check for the type system file in the project base directory
+    for (MavenProject project : this.getSession().getProjects()) {
+      File typeSystemFile = new File(project.getBasedir(), typeSystem);
+      if (typeSystemFile.exists()) {
+
+        // scanner only sees files with content changes since the last build
+        Scanner scanner = buildContext.newScanner(typeSystemFile);
+        scanner.scan();
+        String[] includedFiles = scanner.getIncludedFiles();
+        if (includedFiles == null || includedFiles.length <= 0) {
+          return null;
+        }
       }
     }
 
