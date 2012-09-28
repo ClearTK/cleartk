@@ -24,24 +24,33 @@ public class JCasGenBuildParticipant extends MojoExecutionBuildParticipant {
     IMaven maven = MavenPlugin.getMaven();
     BuildContext buildContext = getBuildContext();
 
-    // check if the type system file has changed
+    // get the Mojo parameters
     String typeSystem = maven.getMojoParameterValue(
         getSession(),
         getMojoExecution(),
         "typeSystem",
         String.class);
+    File generatedSourcesDirectory = maven.getMojoParameterValue(
+        getSession(),
+        getMojoExecution(),
+        "outputDirectory",
+        File.class);
 
-    // check for the type system file in the project base directory
-    for (MavenProject project : this.getSession().getProjects()) {
-      File typeSystemFile = new File(project.getBasedir(), typeSystem);
-      if (typeSystemFile.exists()) {
+    // only run the Mojo if the type system was updated (or the sources were not yet generated)
+    if (generatedSourcesDirectory != null && generatedSourcesDirectory.exists()) {
+      for (MavenProject project : this.getSession().getProjects()) {
+        File typeSystemFile = new File(project.getBasedir(), typeSystem);
+        if (typeSystemFile.exists()) {
 
-        // scanner only sees files with content changes since the last build
-        Scanner scanner = buildContext.newScanner(typeSystemFile);
-        scanner.scan();
-        String[] includedFiles = scanner.getIncludedFiles();
-        if (includedFiles == null || includedFiles.length <= 0) {
-          return null;
+          // scanner only sees files with content changes since the last build
+          Scanner scanner = buildContext.newScanner(typeSystemFile);
+          scanner.scan();
+
+          // if no files have changed, don't run the Mojo
+          String[] includedFiles = scanner.getIncludedFiles();
+          if (includedFiles == null || includedFiles.length <= 0) {
+            return null;
+          }
         }
       }
     }
@@ -50,11 +59,6 @@ public class JCasGenBuildParticipant extends MojoExecutionBuildParticipant {
     Set<IProject> result = super.build(kind, monitor);
 
     // tell m2e builder to refresh generated files
-    File generatedSourcesDirectory = maven.getMojoParameterValue(
-        getSession(),
-        getMojoExecution(),
-        "outputDirectory",
-        File.class);
     if (generatedSourcesDirectory != null) {
       buildContext.refresh(generatedSourcesDirectory);
     }
