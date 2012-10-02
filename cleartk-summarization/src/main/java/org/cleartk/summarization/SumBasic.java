@@ -122,13 +122,13 @@ public class SumBasic extends Summarize_ImplBase<File> {
   }
 
   @Override
-  protected CollectionReader getCollectionReader(Collection<File> items) throws Exception {
-    return UriCollectionReader.getCollectionReaderFromFiles(items);
+  protected CollectionReader getCollectionReader(Collection<File> files) throws Exception {
+    return UriCollectionReader.getCollectionReaderFromFiles(files);
   }
 
   @Override
   protected void train() throws Exception {
-    AggregateBuilder builder = this.createTrainingAggregateBuilder();
+    AggregateBuilder builder = this.buildTrainingAggregate();
 
     // Run preprocessing and tfidf counts analyzer
     SimplePipeline.runPipeline(
@@ -156,17 +156,14 @@ public class SumBasic extends Summarize_ImplBase<File> {
 
     // This simply runs the model and tags the extracted sentences in the CAS and writes the output
     // to a file if specified.
-    AggregateBuilder builder = createExtractAggregate(
-        this.modelDirectory,
-        this.stopwordsFile,
-        this.tokenField);
+    AggregateBuilder builder = buildExtractAggregate();
 
     // Run preprocessing and tfidf counts analyzer
     SimplePipeline.runPipeline(this.getCollectionReader(xmis), builder.createAggregateDescription());
 
   }
 
-  public AggregateBuilder createTrainingAggregateBuilder() throws ResourceInitializationException {
+  public AggregateBuilder buildTrainingAggregate() throws ResourceInitializationException {
 
     AggregateBuilder builder = new AggregateBuilder();
 
@@ -193,21 +190,18 @@ public class SumBasic extends Summarize_ImplBase<File> {
     // Save off xmis for re-reading
     builder.add(AnalysisEngineFactory.createPrimitiveDescription(
         XMIWriter.class,
-        XMIWriter.PARAM_XMI_DIRECTORY,
+        XMIAnnotator.PARAM_XMI_DIRECTORY,
         xmiDirectory.getPath()));
 
     return builder;
   }
 
-  public AggregateBuilder createExtractAggregate(
-      File modelDirectory,
-      File stopwordsFile,
-      SumBasicAnnotator.TokenField tokenField) throws ResourceInitializationException {
+  public AggregateBuilder buildExtractAggregate() throws ResourceInitializationException {
     AggregateBuilder builder = new AggregateBuilder();
 
     builder.add(AnalysisEngineFactory.createPrimitiveDescription(
         XMIReader.class,
-        XMIReader.PARAM_XMI_DIRECTORY,
+        XMIAnnotator.PARAM_XMI_DIRECTORY,
         this.xmiDirectory));
 
     // This will extract the features for summarization
@@ -218,9 +212,9 @@ public class SumBasic extends Summarize_ImplBase<File> {
         GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
         new File(this.modelDirectory, "model.jar").getPath(),
         SumBasicAnnotator.PARAM_TOKEN_FIELD,
-        tokenField.name(),
+        this.tokenField.name(),
         SumBasicAnnotator.PARAM_STOPWORDS_URI,
-        stopwordsFile.toURI()));
+        this.stopwordsFile.toURI()));
 
     if (this.sentencesOutFile != null && this.outputSentences) {
       builder.add(SummarySentenceWriterAnnotator.getDescription(sentencesOutFile, this.outputScores));
