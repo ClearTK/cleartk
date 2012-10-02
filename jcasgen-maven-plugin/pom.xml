@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.cleartk</groupId>
 	<artifactId>jcasgen-maven-plugin</artifactId>
-	<version>0.9.1-SNAPSHOT</version>
+	<version>0.9.2-SNAPSHOT</version>
 	<packaging>maven-plugin</packaging>
 	<name>JCasGen Maven Plugin</name>
 	<description>A Maven Plugin for using JCasGen to generate Java classes from XML type system descriptions</description>

@@ -9,13 +9,21 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
+import org.apache.uima.UIMAFramework;
+import org.apache.uima.tools.jcasgen.IError;
 import org.apache.uima.tools.jcasgen.Jg;
+import org.apache.uima.util.Level;
+import org.apache.uima.util.Logger;
 
 /**
  * Applies JCasGen to create Java files from XML type system descriptions.
  * 
+ * Note that by default this runs at the process-resources phase because it requires the XML
+ * descriptor files to already be at the appropriate places on the classpath, and the
+ * generate-resources phase runs before resources are copied.
+ * 
  * @goal generate
- * @phase generate-sources
+ * @phase process-resources
  */
 public class JCasGenMojo extends AbstractMojo {
 
@@ -60,17 +68,48 @@ public class JCasGenMojo extends AbstractMojo {
     if (isFile) {
       typeSystemPath = new File(this.project.getBasedir(), this.typeSystem).getAbsolutePath();
     }
+    JCasGenErrors error = new JCasGenErrors();
     Jg jCasGen = new Jg();
+    jCasGen.error = error;
     String[] args = new String[] {
         "-jcasgeninput",
         typeSystemPath,
         "-jcasgenoutput",
-        this.outputDirectory.getAbsolutePath() };
-    int result = jCasGen.main1(args);
-    if (result != 0) {
-      throw new MojoFailureException(
-          "JCasGen failed, see the \"JCasGen\" lines in the logged output for details");
+        this.outputDirectory.getAbsolutePath(),
+        "=jcasgenclasspath",
+        this.project.getBuild().getOutputDirectory() };
+    try {
+      jCasGen.main1(args);
+    } catch (JCasGenException e) {
+      throw new MojoExecutionException("JCasGen could not generate sources", e.getCause());
     }
     this.project.addCompileSourceRoot(this.outputDirectory.getPath());
+  }
+
+  static class JCasGenErrors implements IError {
+
+    private static Level logLevels[] = new Level[3];
+    static {
+      logLevels[IError.INFO] = Level.INFO;
+      logLevels[IError.WARN] = Level.WARNING;
+      logLevels[IError.ERROR] = Level.SEVERE;
+    }
+
+    @Override
+    public void newError(int severity, String message, Exception exception) {
+      Logger log = UIMAFramework.getLogger();
+      log.log(logLevels[severity], "JCasGen: " + message, exception);
+      if (severity >= IError.ERROR) {
+        throw new JCasGenException(exception);
+      }
+    }
+  }
+
+  static class JCasGenException extends RuntimeException {
+    private static final long serialVersionUID = 1L;
+
+    public JCasGenException(Throwable cause) {
+      super(cause);
+    }
   }
 }

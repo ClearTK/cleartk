@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/org.cleartk.plugin.jcasgen.m2e.feature_0.9.0.qualifier.jar" id="org.cleartk.plugin.jcasgen.m2e.feature" version="0.9.0.qualifier"/>
+   <feature url="features/org.cleartk.plugin.jcasgen.m2e.feature_0.9.1.qualifier.jar" id="org.cleartk.plugin.jcasgen.m2e.feature" version="0.9.1.qualifier"/>
 </site>

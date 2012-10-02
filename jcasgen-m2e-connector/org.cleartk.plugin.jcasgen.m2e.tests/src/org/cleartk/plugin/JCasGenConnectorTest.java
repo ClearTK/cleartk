@@ -50,4 +50,30 @@ public class JCasGenConnectorTest extends AbstractMavenProjectTestCase {
     assertTrue(classpathEntries.contains("/simple/src/main/java"));
     assertTrue(classpathEntries.contains("/simple/target/generated-sources/jcasgen"));
   }
+
+  public void testEmptyOutputDirectory() throws Exception {
+    ResolverConfiguration configuration = new ResolverConfiguration();
+    IProject project = importProject("projects/jcasgen/simple/pom.xml", configuration);
+    waitForJobsToComplete();
+    assertNoErrors(project);
+
+    project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, monitor);
+    waitForJobsToComplete();
+    assertNoErrors(project);
+
+    // make sure the Java sources were generated
+    assertTrue(project.getFolder("target/generated-sources/jcasgen").exists());
+
+    // remove the generated directory
+    project.getFolder("target/generated-sources/jcasgen").delete(IProject.FORCE, monitor);
+    assertFalse(project.getFolder("target/generated-sources/jcasgen").exists());
+
+    // re-build
+    project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, monitor);
+    waitForJobsToComplete();
+    assertNoErrors(project);
+
+    // make sure the Java sources were generated
+    assertTrue(project.getFolder("target/generated-sources/jcasgen").exists());
+  }
 }
