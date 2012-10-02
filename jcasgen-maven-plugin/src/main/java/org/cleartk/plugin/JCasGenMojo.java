@@ -18,8 +18,12 @@ import org.apache.uima.util.Logger;
 /**
  * Applies JCasGen to create Java files from XML type system descriptions.
  * 
+ * Note that by default this runs at the process-resources phase because it requires the XML
+ * descriptor files to already be at the appropriate places on the classpath, and the
+ * generate-resources phase runs before resources are copied.
+ * 
  * @goal generate
- * @phase generate-sources
+ * @phase process-resources
  */
 public class JCasGenMojo extends AbstractMojo {
 
@@ -71,7 +75,9 @@ public class JCasGenMojo extends AbstractMojo {
         "-jcasgeninput",
         typeSystemPath,
         "-jcasgenoutput",
-        this.outputDirectory.getAbsolutePath() };
+        this.outputDirectory.getAbsolutePath(),
+        "=jcasgenclasspath",
+        this.project.getBuild().getOutputDirectory() };
     try {
       jCasGen.main1(args);
     } catch (JCasGenException e) {
