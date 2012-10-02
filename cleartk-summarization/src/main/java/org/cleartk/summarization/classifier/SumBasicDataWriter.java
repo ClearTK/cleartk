@@ -28,15 +28,16 @@ import java.io.FileNotFoundException;
 
 import org.cleartk.summarization.SumBasicModel;
 
-public class SumBasicDataWriter extends SummarizationDataWriter<SumBasicModel, SummarizationClassifierBuilder<SumBasicModel>>{
+public class SumBasicDataWriter extends
+    SummarizationDataWriter<SumBasicModel, SummarizationClassifierBuilder<SumBasicModel>> {
 
-	public SumBasicDataWriter(File outputDirectory) throws FileNotFoundException {
-		super(outputDirectory);
-	}
-	
-	@Override
-	protected SummarizationClassifierBuilder<SumBasicModel> newClassifierBuilder() {
-		return new SumBasicClassifierBuilder();
-	}
+  public SumBasicDataWriter(File outputDirectory) throws FileNotFoundException {
+    super(outputDirectory);
+  }
+
+  @Override
+  protected SummarizationClassifierBuilder<SumBasicModel> newClassifierBuilder() {
+    return new SumBasicClassifierBuilder();
+  }
 
 }

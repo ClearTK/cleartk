@@ -34,31 +34,33 @@ import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 
 /**
- * Feature that will prevent extraction with the subExtractor if the covered annotation text is a stopword
+ * Feature that will prevent extraction with the subExtractor if the covered annotation text is a
+ * stopword
  * 
  * @author Lee Becker
- *
+ * 
  */
-public class StopwordRemovingExtractor implements SimpleFeatureExtractor{
-	
-	private Set<String> stopwords;
-	private SimpleFeatureExtractor subExtractor;
+public class StopwordRemovingExtractor implements SimpleFeatureExtractor {
 
-	public StopwordRemovingExtractor(Set<String> stopwords, SimpleFeatureExtractor subExtractor) {
-		this.stopwords = stopwords;
-		this.subExtractor = subExtractor;
-	}
+  private Set<String> stopwords;
 
-	@Override
-	public List<Feature> extract(JCas view, Annotation focusAnnotation)
-			throws CleartkExtractorException {
-		
-		String spanText = focusAnnotation.getCoveredText();
-		List<Feature> features = new ArrayList<Feature>();
-		if (!stopwords.contains(spanText.toLowerCase())) {
-			features.addAll(this.subExtractor.extract(view, focusAnnotation));
-		}
-		return features;
-	}
+  private SimpleFeatureExtractor subExtractor;
+
+  public StopwordRemovingExtractor(Set<String> stopwords, SimpleFeatureExtractor subExtractor) {
+    this.stopwords = stopwords;
+    this.subExtractor = subExtractor;
+  }
+
+  @Override
+  public List<Feature> extract(JCas view, Annotation focusAnnotation)
+      throws CleartkExtractorException {
+
+    String spanText = focusAnnotation.getCoveredText();
+    List<Feature> features = new ArrayList<Feature>();
+    if (!stopwords.contains(spanText.toLowerCase())) {
+      features.addAll(this.subExtractor.extract(view, focusAnnotation));
+    }
+    return features;
+  }
 
 }

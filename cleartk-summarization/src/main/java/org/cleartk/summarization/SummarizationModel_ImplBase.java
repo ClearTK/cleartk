@@ -34,36 +34,37 @@ import java.util.Map;
 import org.cleartk.classifier.Feature;
 
 /**
- * Base class for summarization models.  Subclasses of this class will typically process the features and produce a map 
- * of the features of selected sentences and the summary score provided by the algorithm.
+ * Base class for summarization models. Subclasses of this class will typically process the features
+ * and produce a map of the features of selected sentences and the summary score provided by the
+ * algorithm.
  * 
  * @author Lee Becker
- *
+ * 
  */
 public abstract class SummarizationModel_ImplBase implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	
-	protected Map<List<Feature>, Double> selectedSentencesScores;
-	
-	public SummarizationModel_ImplBase(Map<List<Feature>, Double> selectedSentencesScores) {
-		this.selectedSentencesScores = selectedSentencesScores;
-	}
-	
-	public SummarizationModel_ImplBase(InputStream inputStream) throws IOException {
-		ObjectInputStream ois = new ObjectInputStream(inputStream);
-		try {
-			SummarizationModel_ImplBase summarizationModel = (SummarizationModel_ImplBase) ois.readObject();
-			this.selectedSentencesScores = summarizationModel.getSelectedSentenceScores();
-		} catch (ClassNotFoundException e) {
-			throw new IOException(e);
-		}
-	}
-	
-	public Map<List<Feature>, Double> getSelectedSentenceScores() {
-		return this.selectedSentencesScores;
-	}
-	
-	public abstract String getModelName();
+  private static final long serialVersionUID = 1L;
+
+  protected Map<List<Feature>, Double> selectedSentencesScores;
+
+  public SummarizationModel_ImplBase(Map<List<Feature>, Double> selectedSentencesScores) {
+    this.selectedSentencesScores = selectedSentencesScores;
+  }
+
+  public SummarizationModel_ImplBase(InputStream inputStream) throws IOException {
+    ObjectInputStream ois = new ObjectInputStream(inputStream);
+    try {
+      SummarizationModel_ImplBase summarizationModel = (SummarizationModel_ImplBase) ois.readObject();
+      this.selectedSentencesScores = summarizationModel.getSelectedSentenceScores();
+    } catch (ClassNotFoundException e) {
+      throw new IOException(e);
+    }
+  }
+
+  public Map<List<Feature>, Double> getSelectedSentenceScores() {
+    return this.selectedSentencesScores;
+  }
+
+  public abstract String getModelName();
 
 }

@@ -34,34 +34,35 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.summarization.SummarizationModel_ImplBase;
 
-public class SummarizationClassifier<MODEL_TYPE extends SummarizationModel_ImplBase> implements Classifier<Boolean> {
-	
-	protected MODEL_TYPE model;
-	protected Map<List<Feature>, Double> selectedSentencesScores;
+public class SummarizationClassifier<MODEL_TYPE extends SummarizationModel_ImplBase> implements
+    Classifier<Boolean> {
 
-	public SummarizationClassifier(MODEL_TYPE model) {
-		this.model = model;
-	}
-	
-	@Override
-	public Boolean classify(List<Feature> features)
-			throws CleartkProcessingException {
-		List<ScoredOutcome<Boolean>> scores = this.score(features, 1);
-		return scores.get(0).getOutcome();
-	}
-	
-	@Override
-	public List<ScoredOutcome<Boolean>> score(List<Feature> features, int maxResults)
-			throws CleartkProcessingException {
-		List<ScoredOutcome<Boolean>> scores = new ArrayList<ScoredOutcome<Boolean>>();
-		
-		Double sentenceScore = this.model.getSelectedSentenceScores().get(features);
-		if (sentenceScore == null) {
-			scores.add(new ScoredOutcome<Boolean>(false, -1));
-		} else {
-			scores.add(new ScoredOutcome<Boolean>(true, sentenceScore));
-		}
-		return scores;
-	}
-	
+  protected MODEL_TYPE model;
+
+  protected Map<List<Feature>, Double> selectedSentencesScores;
+
+  public SummarizationClassifier(MODEL_TYPE model) {
+    this.model = model;
+  }
+
+  @Override
+  public Boolean classify(List<Feature> features) throws CleartkProcessingException {
+    List<ScoredOutcome<Boolean>> scores = this.score(features, 1);
+    return scores.get(0).getOutcome();
+  }
+
+  @Override
+  public List<ScoredOutcome<Boolean>> score(List<Feature> features, int maxResults)
+      throws CleartkProcessingException {
+    List<ScoredOutcome<Boolean>> scores = new ArrayList<ScoredOutcome<Boolean>>();
+
+    Double sentenceScore = this.model.getSelectedSentenceScores().get(features);
+    if (sentenceScore == null) {
+      scores.add(new ScoredOutcome<Boolean>(false, -1));
+    } else {
+      scores.add(new ScoredOutcome<Boolean>(true, sentenceScore));
+    }
+    return scores;
+  }
+
 }

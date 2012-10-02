@@ -64,103 +64,105 @@ import org.uimafit.util.JCasUtil;
  * @author Lee Becker
  */
 public class SumBasicAnnotator extends CleartkAnnotator<Boolean> {
-	public static enum TokenField {
-		COVERED_TEXT,
-		STEM,
-		LEMMA
-	}
+  public static enum TokenField {
+    COVERED_TEXT, STEM, LEMMA
+  }
 
-	
-	public static final String PARAM_TOKEN_FIELD = ConfigurationParameterFactory
-			.createConfigurationParameterName(SumBasicAnnotator.class,
-					"tokenField");
+  public static final String PARAM_TOKEN_FIELD = ConfigurationParameterFactory.createConfigurationParameterName(
+      SumBasicAnnotator.class,
+      "tokenField");
 
-	@ConfigurationParameter(mandatory = false, description = "token field")
-	protected TokenField tokenField = TokenField.COVERED_TEXT;
-	
+  @ConfigurationParameter(mandatory = false, description = "token field")
+  protected TokenField tokenField = TokenField.COVERED_TEXT;
 
-	public static final String PARAM_STOPWORDS_URI = ConfigurationParameterFactory
-			.createConfigurationParameterName(SumBasicAnnotator.class,
-					"stopwordsUri");
+  public static final String PARAM_STOPWORDS_URI = ConfigurationParameterFactory.createConfigurationParameterName(
+      SumBasicAnnotator.class,
+      "stopwordsUri");
 
-	@ConfigurationParameter(mandatory = false, description = "provides a URI pointing to a file containing a whitespace separated list of stopwords")
-	protected URI stopwordsUri = null;
+  @ConfigurationParameter(
+      mandatory = false,
+      description = "provides a URI pointing to a file containing a whitespace separated list of stopwords")
+  protected URI stopwordsUri = null;
 
-	CombinedExtractor extractor;
-	Set<String> stopwords;
+  CombinedExtractor extractor;
 
-	public void initialize(UimaContext context)
-			throws ResourceInitializationException {
-		super.initialize(context);
+  Set<String> stopwords;
 
-		try {
-			this.stopwords = this.readStopwords(this.stopwordsUri);
-			this.extractor = new CombinedExtractor(
-					this.createTokenCountsExtractor());
-		} catch (IOException e) {
-			throw new ResourceInitializationException(e);
-		}
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    super.initialize(context);
 
-	}
+    try {
+      this.stopwords = this.readStopwords(this.stopwordsUri);
+      this.extractor = new CombinedExtractor(this.createTokenCountsExtractor());
+    } catch (IOException e) {
+      throw new ResourceInitializationException(e);
+    }
 
-	@Override
-	public void process(JCas jcas) throws AnalysisEngineProcessException {
-		for (Sentence sentence : JCasUtil.select(jcas, Sentence.class)) {
-			Instance<Boolean> instance = new Instance<Boolean>(false,
-					this.extractor.extract(jcas, sentence));
+  }
 
-			if (this.isTraining()) {
-				this.dataWriter.write(instance);
-			} else {
-				List<ScoredOutcome<Boolean>> scoredOutcomes = this.classifier.score(instance.getFeatures(), 1);
-				if (scoredOutcomes.get(0).getOutcome()) {
-					scoredOutcomes.get(0).getScore();
-					SummarySentence extractedSentence = new SummarySentence(jcas, sentence.getBegin(), sentence.getEnd());
-					extractedSentence.setScore(scoredOutcomes.get(0).getScore());
-					extractedSentence.addToIndexes();
-				}
-			}
-		}
-	}
+  @Override
+  public void process(JCas jcas) throws AnalysisEngineProcessException {
+    for (Sentence sentence : JCasUtil.select(jcas, Sentence.class)) {
+      Instance<Boolean> instance = new Instance<Boolean>(false, this.extractor.extract(
+          jcas,
+          sentence));
 
-	private Set<String> readStopwords(URI stopwordsUri) throws IOException {
-		Set<String> stopwords = new HashSet<String>();
-		if (stopwordsUri == null) {
-			return stopwords;
-		}
+      if (this.isTraining()) {
+        this.dataWriter.write(instance);
+      } else {
+        List<ScoredOutcome<Boolean>> scoredOutcomes = this.classifier.score(
+            instance.getFeatures(),
+            1);
+        if (scoredOutcomes.get(0).getOutcome()) {
+          scoredOutcomes.get(0).getScore();
+          SummarySentence extractedSentence = new SummarySentence(
+              jcas,
+              sentence.getBegin(),
+              sentence.getEnd());
+          extractedSentence.setScore(scoredOutcomes.get(0).getScore());
+          extractedSentence.addToIndexes();
+        }
+      }
+    }
+  }
 
-		File in = new File(stopwordsUri);
-		BufferedReader reader = null;
-		reader = new BufferedReader(new FileReader(in));
+  private Set<String> readStopwords(URI stopwordsUri) throws IOException {
+    Set<String> stopwords = new HashSet<String>();
+    if (stopwordsUri == null) {
+      return stopwords;
+    }
 
-		String line;
-		while ((line = reader.readLine()) != null) {
-			stopwords.addAll(Arrays.asList(line.split("\\s+")));
-		}
-		return stopwords;
-	}
+    File in = new File(stopwordsUri);
+    BufferedReader reader = null;
+    reader = new BufferedReader(new FileReader(in));
 
-	private SimpleFeatureExtractor createTokenCountsExtractor()
-			throws IOException {
-		SimpleFeatureExtractor tokenFieldExtractor = new CoveredTextExtractor();
-		switch(this.tokenField) {
-		case COVERED_TEXT:
-			tokenFieldExtractor = new CoveredTextExtractor();
-			break;
-		case STEM:
-			tokenFieldExtractor = new TypePathExtractor(Token.class, "stem");
-			break;
-		case LEMMA:
-			tokenFieldExtractor = new TypePathExtractor(Token.class, "lemma");
-			break;
-		}
+    String line;
+    while ((line = reader.readLine()) != null) {
+      stopwords.addAll(Arrays.asList(line.split("\\s+")));
+    }
+    return stopwords;
+  }
 
-		CleartkExtractor countsExtractor = new CleartkExtractor(Token.class,
-				new StopwordRemovingExtractor(this.stopwords,
-						tokenFieldExtractor), new CleartkExtractor.Count(
-						new CleartkExtractor.Covered()));
+  private SimpleFeatureExtractor createTokenCountsExtractor() throws IOException {
+    SimpleFeatureExtractor tokenFieldExtractor = new CoveredTextExtractor();
+    switch (this.tokenField) {
+      case COVERED_TEXT:
+        tokenFieldExtractor = new CoveredTextExtractor();
+        break;
+      case STEM:
+        tokenFieldExtractor = new TypePathExtractor(Token.class, "stem");
+        break;
+      case LEMMA:
+        tokenFieldExtractor = new TypePathExtractor(Token.class, "lemma");
+        break;
+    }
 
-		return countsExtractor;
-	}
+    CleartkExtractor countsExtractor = new CleartkExtractor(
+        Token.class,
+        new StopwordRemovingExtractor(this.stopwords, tokenFieldExtractor),
+        new CleartkExtractor.Count(new CleartkExtractor.Covered()));
+
+    return countsExtractor;
+  }
 
 }

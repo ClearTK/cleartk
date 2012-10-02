@@ -30,21 +30,24 @@ import java.util.Collection;
 import org.apache.uima.collection.CollectionReader;
 
 /**
- * A base class for training and running a sentence extraction based summarizer.
- * This defines the expected functionality of a summarizer
+ * A base class for training and running a sentence extraction based summarizer. This defines the
+ * expected functionality of a summarizer
  * 
  * <br>
  * Copyright (c) 2012, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
  * @param <ITEM_TYPE>
- *          The type of items that will be read in by the collection reader. A common
- *          choice for this parameter when working with data on a filesystem is {@link File}.
-
+ *          The type of items that will be read in by the collection reader. A common choice for
+ *          this parameter when working with data on a filesystem is {@link File}.
+ * 
  * @author Lee Becker
  */
 public abstract class Summarize_ImplBase<ITEM_TYPE> {
-	protected abstract CollectionReader getCollectionReader(Collection<ITEM_TYPE> items) throws Exception;
-	protected abstract void train() throws Exception;
-	public abstract void extract() throws Exception;
+  protected abstract CollectionReader getCollectionReader(Collection<ITEM_TYPE> items)
+      throws Exception;
+
+  protected abstract void train() throws Exception;
+
+  public abstract void extract() throws Exception;
 }

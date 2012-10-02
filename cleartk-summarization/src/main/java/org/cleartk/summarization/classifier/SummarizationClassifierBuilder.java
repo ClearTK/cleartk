@@ -35,30 +35,29 @@ import org.cleartk.classifier.jar.JarStreams;
 import org.cleartk.summarization.SummarizationModel_ImplBase;
 
 public abstract class SummarizationClassifierBuilder<MODEL_TYPE extends SummarizationModel_ImplBase>
-	extends JarClassifierBuilder<SummarizationClassifier<MODEL_TYPE>> {
+    extends JarClassifierBuilder<SummarizationClassifier<MODEL_TYPE>> {
 
-	protected MODEL_TYPE model;
-	
-	public File getModelFile(File dir) {
-		return new File(dir, this.getModelName());
-	}
-	
-	public abstract String getModelName();
+  protected MODEL_TYPE model;
 
-	@Override
-	protected void packageClassifier(File dir, JarOutputStream modelStream)
-			throws IOException {
-		super.packageClassifier(dir, modelStream);
-	    JarStreams.putNextJarEntry(modelStream, this.getModelName(), this.getModelFile(dir));
-	}
-	
-	@Override
-	protected void unpackageClassifier(JarInputStream modelStream) throws IOException {
-		super.unpackageClassifier(modelStream);
-		JarStreams.getNextJarEntry(modelStream, this.getModelName());
-		this.model = this.loadModel(modelStream);
-	}
+  public File getModelFile(File dir) {
+    return new File(dir, this.getModelName());
+  }
 
-	protected abstract MODEL_TYPE loadModel(InputStream inputStream) throws IOException;
+  public abstract String getModelName();
+
+  @Override
+  protected void packageClassifier(File dir, JarOutputStream modelStream) throws IOException {
+    super.packageClassifier(dir, modelStream);
+    JarStreams.putNextJarEntry(modelStream, this.getModelName(), this.getModelFile(dir));
+  }
+
+  @Override
+  protected void unpackageClassifier(JarInputStream modelStream) throws IOException {
+    super.unpackageClassifier(modelStream);
+    JarStreams.getNextJarEntry(modelStream, this.getModelName());
+    this.model = this.loadModel(modelStream);
+  }
+
+  protected abstract MODEL_TYPE loadModel(InputStream inputStream) throws IOException;
 
 }

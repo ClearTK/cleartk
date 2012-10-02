@@ -34,25 +34,24 @@ import org.cleartk.classifier.jar.DirectoryDataWriter;
 import org.cleartk.summarization.SummarizationModel_ImplBase;
 
 public abstract class SummarizationDataWriter<MODEL_TYPE extends SummarizationModel_ImplBase, CLASSIFIER_BUILDER_TYPE extends SummarizationClassifierBuilder<MODEL_TYPE>>
-	extends DirectoryDataWriter<CLASSIFIER_BUILDER_TYPE, SummarizationClassifier<MODEL_TYPE>> implements DataWriter<Boolean> {
-	
-	protected InstanceDataWriter<Boolean> instanceDataWriter;
+    extends DirectoryDataWriter<CLASSIFIER_BUILDER_TYPE, SummarizationClassifier<MODEL_TYPE>>
+    implements DataWriter<Boolean> {
 
-	public SummarizationDataWriter(File outputDirectory)
-			throws FileNotFoundException {
-		super(outputDirectory);
-		this.instanceDataWriter = new InstanceDataWriter<Boolean>(outputDirectory);
-	}
+  protected InstanceDataWriter<Boolean> instanceDataWriter;
 
-	@Override
-	public void write(Instance<Boolean> instance)
-			throws CleartkProcessingException {
-		this.instanceDataWriter.write(instance);
-	}
+  public SummarizationDataWriter(File outputDirectory) throws FileNotFoundException {
+    super(outputDirectory);
+    this.instanceDataWriter = new InstanceDataWriter<Boolean>(outputDirectory);
+  }
 
-	@Override
-	public void finish() throws CleartkProcessingException {
-		super.finish();
-	}
+  @Override
+  public void write(Instance<Boolean> instance) throws CleartkProcessingException {
+    this.instanceDataWriter.write(instance);
+  }
+
+  @Override
+  public void finish() throws CleartkProcessingException {
+    super.finish();
+  }
 
 }

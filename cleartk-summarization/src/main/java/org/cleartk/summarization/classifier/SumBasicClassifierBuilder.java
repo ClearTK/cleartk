@@ -30,27 +30,26 @@ import java.io.InputStream;
 
 import org.cleartk.summarization.SumBasicModel;
 
-public class SumBasicClassifierBuilder extends SummarizationClassifierBuilder<SumBasicModel>{
-	
-	@Override
-	public String getModelName() {
-		return SumBasicModel.MODEL_NAME;
-	};
+public class SumBasicClassifierBuilder extends SummarizationClassifierBuilder<SumBasicModel> {
 
-	@Override
-	protected SumBasicModel loadModel(InputStream inputStream)
-			throws IOException {
-		return new SumBasicModel(inputStream);
-	}
+  @Override
+  public String getModelName() {
+    return SumBasicModel.MODEL_NAME;
+  }
 
-	@Override
-	public void trainClassifier(File modelDir, String... args) throws Exception {
-		SumBasicModel.trainAndWriteModel(modelDir, args);
-	}
+  @Override
+  protected SumBasicModel loadModel(InputStream inputStream) throws IOException {
+    return new SumBasicModel(inputStream);
+  }
 
-	@Override
-	protected SummarizationClassifier<SumBasicModel> newClassifier() {
-		return new SummarizationClassifier<SumBasicModel>(model);
-	}
+  @Override
+  public void trainClassifier(File modelDir, String... args) throws Exception {
+    SumBasicModel.trainAndWriteModel(modelDir, args);
+  }
+
+  @Override
+  protected SummarizationClassifier<SumBasicModel> newClassifier() {
+    return new SummarizationClassifier<SumBasicModel>(model);
+  }
 
 }
