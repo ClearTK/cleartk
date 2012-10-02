@@ -1,5 +1,4 @@
 /** 
- * 
  * Copyright (c) 2007-2012, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -22,43 +21,22 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.summarize.classifier;
+package org.cleartk.summarization.classifier;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.jar.JarInputStream;
-import java.util.jar.JarOutputStream;
+import java.io.FileNotFoundException;
 
-import org.cleartk.classifier.jar.JarClassifierBuilder;
-import org.cleartk.classifier.jar.JarStreams;
-import org.cleartk.summarization.SummarizationModel_ImplBase;
+import org.cleartk.summarization.SumBasicModel;
 
-public abstract class SummarizationClassifierBuilder<MODEL_TYPE extends SummarizationModel_ImplBase>
-	extends JarClassifierBuilder<SummarizationClassifier<MODEL_TYPE>> {
+public class SumBasicDataWriter extends SummarizationDataWriter<SumBasicModel, SummarizationClassifierBuilder<SumBasicModel>>{
 
-	protected MODEL_TYPE model;
-	
-	public File getModelFile(File dir) {
-		return new File(dir, this.getModelName());
-	}
-	
-	public abstract String getModelName();
-
-	@Override
-	protected void packageClassifier(File dir, JarOutputStream modelStream)
-			throws IOException {
-		super.packageClassifier(dir, modelStream);
-	    JarStreams.putNextJarEntry(modelStream, this.getModelName(), this.getModelFile(dir));
+	public SumBasicDataWriter(File outputDirectory) throws FileNotFoundException {
+		super(outputDirectory);
 	}
 	
 	@Override
-	protected void unpackageClassifier(JarInputStream modelStream) throws IOException {
-		super.unpackageClassifier(modelStream);
-		JarStreams.getNextJarEntry(modelStream, this.getModelName());
-		this.model = this.loadModel(modelStream);
+	protected SummarizationClassifierBuilder<SumBasicModel> newClassifierBuilder() {
+		return new SumBasicClassifierBuilder();
 	}
-
-	protected abstract MODEL_TYPE loadModel(InputStream inputStream) throws IOException;
 
 }

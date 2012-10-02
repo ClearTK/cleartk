@@ -21,22 +21,38 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.summarize.classifier;
+package org.cleartk.summarization.classifier;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 
-import org.cleartk.summarization.SumBasicModel;
+import org.cleartk.classifier.CleartkProcessingException;
+import org.cleartk.classifier.DataWriter;
+import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.feature.transform.InstanceDataWriter;
+import org.cleartk.classifier.jar.DirectoryDataWriter;
+import org.cleartk.summarization.SummarizationModel_ImplBase;
 
-public class SumBasicDataWriter extends SummarizationDataWriter<SumBasicModel, SummarizationClassifierBuilder<SumBasicModel>>{
-
-	public SumBasicDataWriter(File outputDirectory) throws FileNotFoundException {
-		super(outputDirectory);
-	}
+public abstract class SummarizationDataWriter<MODEL_TYPE extends SummarizationModel_ImplBase, CLASSIFIER_BUILDER_TYPE extends SummarizationClassifierBuilder<MODEL_TYPE>>
+	extends DirectoryDataWriter<CLASSIFIER_BUILDER_TYPE, SummarizationClassifier<MODEL_TYPE>> implements DataWriter<Boolean> {
 	
+	protected InstanceDataWriter<Boolean> instanceDataWriter;
+
+	public SummarizationDataWriter(File outputDirectory)
+			throws FileNotFoundException {
+		super(outputDirectory);
+		this.instanceDataWriter = new InstanceDataWriter<Boolean>(outputDirectory);
+	}
+
 	@Override
-	protected SummarizationClassifierBuilder<SumBasicModel> newClassifierBuilder() {
-		return new SumBasicClassifierBuilder();
+	public void write(Instance<Boolean> instance)
+			throws CleartkProcessingException {
+		this.instanceDataWriter.write(instance);
+	}
+
+	@Override
+	public void finish() throws CleartkProcessingException {
+		super.finish();
 	}
 
 }

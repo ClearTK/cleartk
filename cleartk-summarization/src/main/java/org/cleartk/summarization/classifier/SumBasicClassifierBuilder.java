@@ -22,46 +22,35 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.summarize.classifier;
+package org.cleartk.summarization.classifier;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 
-import org.cleartk.classifier.Classifier;
-import org.cleartk.classifier.CleartkProcessingException;
-import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.ScoredOutcome;
-import org.cleartk.summarization.SummarizationModel_ImplBase;
+import org.cleartk.summarization.SumBasicModel;
 
-public class SummarizationClassifier<MODEL_TYPE extends SummarizationModel_ImplBase> implements Classifier<Boolean> {
-	
-	protected MODEL_TYPE model;
-	protected Map<List<Feature>, Double> selectedSentencesScores;
-
-	public SummarizationClassifier(MODEL_TYPE model) {
-		this.model = model;
-	}
+public class SumBasicClassifierBuilder extends SummarizationClassifierBuilder<SumBasicModel>{
 	
 	@Override
-	public Boolean classify(List<Feature> features)
-			throws CleartkProcessingException {
-		List<ScoredOutcome<Boolean>> scores = this.score(features, 1);
-		return scores.get(0).getOutcome();
-	}
-	
+	public String getModelName() {
+		return SumBasicModel.MODEL_NAME;
+	};
+
 	@Override
-	public List<ScoredOutcome<Boolean>> score(List<Feature> features, int maxResults)
-			throws CleartkProcessingException {
-		List<ScoredOutcome<Boolean>> scores = new ArrayList<ScoredOutcome<Boolean>>();
-		
-		Double sentenceScore = this.model.getSelectedSentenceScores().get(features);
-		if (sentenceScore == null) {
-			scores.add(new ScoredOutcome<Boolean>(false, -1));
-		} else {
-			scores.add(new ScoredOutcome<Boolean>(true, sentenceScore));
-		}
-		return scores;
+	protected SumBasicModel loadModel(InputStream inputStream)
+			throws IOException {
+		return new SumBasicModel(inputStream);
 	}
-	
+
+	@Override
+	public void trainClassifier(File modelDir, String... args) throws Exception {
+		SumBasicModel.trainAndWriteModel(modelDir, args);
+	}
+
+	@Override
+	protected SummarizationClassifier<SumBasicModel> newClassifier() {
+		return new SummarizationClassifier<SumBasicModel>(model);
+	}
+
 }

@@ -1,4 +1,5 @@
 /** 
+ * 
  * Copyright (c) 2007-2012, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -21,38 +22,46 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.summarize.classifier;
+package org.cleartk.summarization.classifier;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
+import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.CleartkProcessingException;
-import org.cleartk.classifier.DataWriter;
-import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.feature.transform.InstanceDataWriter;
-import org.cleartk.classifier.jar.DirectoryDataWriter;
+import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.summarization.SummarizationModel_ImplBase;
 
-public abstract class SummarizationDataWriter<MODEL_TYPE extends SummarizationModel_ImplBase, CLASSIFIER_BUILDER_TYPE extends SummarizationClassifierBuilder<MODEL_TYPE>>
-	extends DirectoryDataWriter<CLASSIFIER_BUILDER_TYPE, SummarizationClassifier<MODEL_TYPE>> implements DataWriter<Boolean> {
+public class SummarizationClassifier<MODEL_TYPE extends SummarizationModel_ImplBase> implements Classifier<Boolean> {
 	
-	protected InstanceDataWriter<Boolean> instanceDataWriter;
+	protected MODEL_TYPE model;
+	protected Map<List<Feature>, Double> selectedSentencesScores;
 
-	public SummarizationDataWriter(File outputDirectory)
-			throws FileNotFoundException {
-		super(outputDirectory);
-		this.instanceDataWriter = new InstanceDataWriter<Boolean>(outputDirectory);
+	public SummarizationClassifier(MODEL_TYPE model) {
+		this.model = model;
 	}
-
+	
 	@Override
-	public void write(Instance<Boolean> instance)
+	public Boolean classify(List<Feature> features)
 			throws CleartkProcessingException {
-		this.instanceDataWriter.write(instance);
+		List<ScoredOutcome<Boolean>> scores = this.score(features, 1);
+		return scores.get(0).getOutcome();
 	}
-
+	
 	@Override
-	public void finish() throws CleartkProcessingException {
-		super.finish();
+	public List<ScoredOutcome<Boolean>> score(List<Feature> features, int maxResults)
+			throws CleartkProcessingException {
+		List<ScoredOutcome<Boolean>> scores = new ArrayList<ScoredOutcome<Boolean>>();
+		
+		Double sentenceScore = this.model.getSelectedSentenceScores().get(features);
+		if (sentenceScore == null) {
+			scores.add(new ScoredOutcome<Boolean>(false, -1));
+		} else {
+			scores.add(new ScoredOutcome<Boolean>(true, sentenceScore));
+		}
+		return scores;
 	}
-
+	
 }

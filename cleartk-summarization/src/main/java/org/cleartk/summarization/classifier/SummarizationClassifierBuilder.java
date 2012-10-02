@@ -22,35 +22,43 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.summarize.classifier;
+package org.cleartk.summarization.classifier;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.jar.JarInputStream;
+import java.util.jar.JarOutputStream;
 
-import org.cleartk.summarization.SumBasicModel;
+import org.cleartk.classifier.jar.JarClassifierBuilder;
+import org.cleartk.classifier.jar.JarStreams;
+import org.cleartk.summarization.SummarizationModel_ImplBase;
 
-public class SumBasicClassifierBuilder extends SummarizationClassifierBuilder<SumBasicModel>{
+public abstract class SummarizationClassifierBuilder<MODEL_TYPE extends SummarizationModel_ImplBase>
+	extends JarClassifierBuilder<SummarizationClassifier<MODEL_TYPE>> {
+
+	protected MODEL_TYPE model;
+	
+	public File getModelFile(File dir) {
+		return new File(dir, this.getModelName());
+	}
+	
+	public abstract String getModelName();
+
+	@Override
+	protected void packageClassifier(File dir, JarOutputStream modelStream)
+			throws IOException {
+		super.packageClassifier(dir, modelStream);
+	    JarStreams.putNextJarEntry(modelStream, this.getModelName(), this.getModelFile(dir));
+	}
 	
 	@Override
-	public String getModelName() {
-		return SumBasicModel.MODEL_NAME;
-	};
-
-	@Override
-	protected SumBasicModel loadModel(InputStream inputStream)
-			throws IOException {
-		return new SumBasicModel(inputStream);
+	protected void unpackageClassifier(JarInputStream modelStream) throws IOException {
+		super.unpackageClassifier(modelStream);
+		JarStreams.getNextJarEntry(modelStream, this.getModelName());
+		this.model = this.loadModel(modelStream);
 	}
 
-	@Override
-	public void trainClassifier(File modelDir, String... args) throws Exception {
-		SumBasicModel.trainAndWriteModel(modelDir, args);
-	}
-
-	@Override
-	protected SummarizationClassifier<SumBasicModel> newClassifier() {
-		return new SummarizationClassifier<SumBasicModel>(model);
-	}
+	protected abstract MODEL_TYPE loadModel(InputStream inputStream) throws IOException;
 
 }
