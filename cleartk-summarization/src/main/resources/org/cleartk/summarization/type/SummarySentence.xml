@@ -26,7 +26,7 @@ POSSIBILITY OF SUCH DAMAGE.</description>
   <vendor>Copyright 2012 Regents of the University of Colorado.   All Rights Reserved.</vendor>
   <types>
     <typeDescription>
-      <name>org.cleartk.summarize.type.SummarySentence</name>
+      <name>org.cleartk.summarization.type.SummarySentence</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
