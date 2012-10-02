@@ -49,7 +49,6 @@ import org.cleartk.summarization.SumBasicModel.CompositionFunctionType;
 import org.cleartk.summarize.classifier.SumBasicDataWriter;
 import org.cleartk.syntax.opennlp.PosTaggerAnnotator;
 import org.cleartk.syntax.opennlp.SentenceAnnotator;
-import org.cleartk.token.lemma.choi.LemmaAnnotator;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.tokenizer.TokenAnnotator;
 import org.cleartk.util.Options_ImplBase;
@@ -67,7 +66,7 @@ import org.xml.sax.SAXException;
 
 import com.google.common.io.Files;
 
-public class SumBasic extends Summarize_ImplBase<File> {
+public class RunSumBasic extends Summarize_ImplBase<File> {
 
 	
 	private static final int DEFAULT_MAX_NUM_SENTENCES = 10;
@@ -91,7 +90,7 @@ public class SumBasic extends Summarize_ImplBase<File> {
 	private File sentencesOutFile;
 	
 
-	public SumBasic(File documentsDirectory, File modelDirectory, File xmiDirectory,
+	public RunSumBasic(File documentsDirectory, File modelDirectory, File xmiDirectory,
 			File stopwordsFile, SumBasicAnnotator.TokenField tokenField) {
 		this.documentsDirectory = documentsDirectory;
 		this.modelDirectory = modelDirectory;
@@ -157,7 +156,6 @@ public class SumBasic extends Summarize_ImplBase<File> {
 		builder.add(TokenAnnotator.getDescription());
 		builder.add(PosTaggerAnnotator.getDescription());
 		builder.add(DefaultSnowballStemmer.getDescription("English"));
-		builder.add(LemmaAnnotator.getDescription());
 
 		// This will extract the features for summarization
 		builder.add(AnalysisEngineFactory.createPrimitiveDescription(
@@ -253,7 +251,7 @@ public class SumBasic extends Summarize_ImplBase<File> {
 		Options options = new Options();
 		options.parseOptions(args);
 		
-		SumBasic summarizer = new SumBasic(
+		RunSumBasic summarizer = new RunSumBasic(
 				options.documentsDir,
 				options.modelDir,
 				options.xmiDir,
