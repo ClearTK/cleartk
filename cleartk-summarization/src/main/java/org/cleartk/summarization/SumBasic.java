@@ -46,7 +46,7 @@ import org.cleartk.classifier.jar.GenericJarClassifierFactory;
 import org.cleartk.classifier.jar.JarClassifierBuilder;
 import org.cleartk.summarization.SumBasicAnnotator.TokenField;
 import org.cleartk.summarization.SumBasicModel.CompositionFunctionType;
-import org.cleartk.summarize.classifier.SumBasicDataWriter;
+import org.cleartk.summarization.classifier.SumBasicDataWriter;
 import org.cleartk.syntax.opennlp.PosTaggerAnnotator;
 import org.cleartk.syntax.opennlp.SentenceAnnotator;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
@@ -66,7 +66,7 @@ import org.xml.sax.SAXException;
 
 import com.google.common.io.Files;
 
-public class RunSumBasic extends Summarize_ImplBase<File> {
+public class SumBasic extends Summarize_ImplBase<File> {
 
 	
 	private static final int DEFAULT_MAX_NUM_SENTENCES = 10;
@@ -90,7 +90,7 @@ public class RunSumBasic extends Summarize_ImplBase<File> {
 	private File sentencesOutFile;
 	
 
-	public RunSumBasic(File documentsDirectory, File modelDirectory, File xmiDirectory,
+	public SumBasic(File documentsDirectory, File modelDirectory, File xmiDirectory,
 			File stopwordsFile, SumBasicAnnotator.TokenField tokenField) {
 		this.documentsDirectory = documentsDirectory;
 		this.modelDirectory = modelDirectory;
@@ -251,7 +251,7 @@ public class RunSumBasic extends Summarize_ImplBase<File> {
 		Options options = new Options();
 		options.parseOptions(args);
 		
-		RunSumBasic summarizer = new RunSumBasic(
+		SumBasic summarizer = new SumBasic(
 				options.documentsDir,
 				options.modelDir,
 				options.xmiDir,

@@ -30,7 +30,8 @@ import java.util.Collection;
 import org.apache.uima.collection.CollectionReader;
 
 /**
- * A base class for training, testing and cross-validation of models.
+ * A base class for training and running a sentence extraction based summarizer.
+ * This defines the expected functionality of a summarizer
  * 
  * <br>
  * Copyright (c) 2012, Regents of the University of Colorado <br>
