@@ -47,6 +47,12 @@
 			<layout>p2</layout>
 			<url>http://download.eclipse.org/releases/juno</url>
 		</repository>
+		<!-- As of 4 Oct 2012, this doesn't resolve properly because it's old-style, not p2 -->
+		<repository>
+			<id>uima</id>
+			<layout>p2</layout>
+			<url>http://www.apache.org/dist/uima/eclipse-update-site</url>
+		</repository>
 	</repositories>
 	<build>
 		<plugins>
