@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -24,6 +25,7 @@ import org.apache.uima.util.Logger;
  * 
  * @goal generate
  * @phase process-resources
+ * @requiresDependencyResolution compile
  */
 public class JCasGenMojo extends AbstractMojo {
 
@@ -55,6 +57,8 @@ public class JCasGenMojo extends AbstractMojo {
   private MavenProject project;
 
   public void execute() throws MojoExecutionException, MojoFailureException {
+
+    // determine path to type system
     String typeSystemPath = this.typeSystem;
     boolean isFile = false;
     try {
@@ -68,6 +72,21 @@ public class JCasGenMojo extends AbstractMojo {
     if (isFile) {
       typeSystemPath = new File(this.project.getBasedir(), this.typeSystem).getAbsolutePath();
     }
+
+    // assemble classpath for JCasGen
+    StringBuilder classpath = new StringBuilder();
+    try {
+      for (String element : this.project.getCompileClasspathElements()) {
+        if (classpath.length() > 0) {
+          classpath.append(File.pathSeparatorChar);
+        }
+        classpath.append(element);
+      }
+    } catch (DependencyResolutionRequiredException e) {
+      throw new MojoExecutionException("could not resolve classpath", e);
+    }
+
+    // run JCasGen to generate the Java sources
     JCasGenErrors error = new JCasGenErrors();
     Jg jCasGen = new Jg();
     jCasGen.error = error;
@@ -77,12 +96,14 @@ public class JCasGenMojo extends AbstractMojo {
         "-jcasgenoutput",
         this.outputDirectory.getAbsolutePath(),
         "=jcasgenclasspath",
-        this.project.getBuild().getOutputDirectory() };
+        classpath.toString() };
     try {
       jCasGen.main1(args);
     } catch (JCasGenException e) {
-      throw new MojoExecutionException("JCasGen could not generate sources", e.getCause());
+      throw new MojoExecutionException(e.getMessage(), e.getCause());
     }
+
+    // add the generated sources to the build
     this.project.addCompileSourceRoot(this.outputDirectory.getPath());
   }
 
