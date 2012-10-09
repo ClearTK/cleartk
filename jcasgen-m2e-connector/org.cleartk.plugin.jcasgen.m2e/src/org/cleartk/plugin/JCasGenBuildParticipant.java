@@ -122,6 +122,7 @@ public class JCasGenBuildParticipant extends MojoExecutionBuildParticipant {
 
     // add prefix to type system path if necessary
     boolean isFile = false;
+    File typeSystemFile = null;
     try {
       URL url = new URL(typeSystemPath);
       url.toURI();
@@ -131,7 +132,17 @@ public class JCasGenBuildParticipant extends MojoExecutionBuildParticipant {
       isFile = true;
     }
     if (isFile) {
-      typeSystemPath = new File(project.getBasedir(), typeSystemPath).getAbsolutePath();
+      typeSystemFile = new File(project.getBasedir(), typeSystemPath);
+      typeSystemPath = typeSystemFile.getAbsolutePath();
+    }
+
+    // assemble the classpath
+    StringBuilder classpath = new StringBuilder();
+    for (String element : project.getCompileClasspathElements()) {
+      if (classpath.length() > 0) {
+        classpath.append(File.pathSeparatorChar);
+      }
+      classpath.append(element);
     }
 
     // load the type system and resolve imports
@@ -140,19 +151,24 @@ public class JCasGenBuildParticipant extends MojoExecutionBuildParticipant {
     imp.setLocation(typeSystemPath);
     typeSystemDescription.setImports(new Import[] { imp });
     ResourceManager resourceManager = UIMAFramework.newDefaultResourceManager();
-    resourceManager.setDataPath(project.getBuild().getOutputDirectory());
+    resourceManager.setDataPath(classpath.toString());
     typeSystemDescription.resolveImports(resourceManager);
 
-    // collect the source files for all type system descriptions
+    // collect the source files for all type system descriptions in the project
     Set<File> typeSystemFiles = new HashSet<File>();
+    if (isFile) {
+      typeSystemFiles.add(typeSystemFile);
+    }
     for (TypeDescription type : typeSystemDescription.getTypes()) {
       URL typeSystemURL = type.getSourceUrl();
       if (typeSystemURL != null) {
-        File typeSystemFile = new File(typeSystemURL.toURI());
-        if (targetToSource.containsKey(typeSystemFile)) {
-          typeSystemFiles.add(targetToSource.get(typeSystemFile));
-        } else {
-          typeSystemFiles.add(typeSystemFile);
+        try {
+          File sourceFile = targetToSource.get(new File(typeSystemURL.toURI()));
+          if (sourceFile != null) {
+            typeSystemFiles.add(sourceFile);
+          }
+        } catch (IllegalArgumentException e) {
+          // the URL is not a file, so do nothing
         }
       }
     }

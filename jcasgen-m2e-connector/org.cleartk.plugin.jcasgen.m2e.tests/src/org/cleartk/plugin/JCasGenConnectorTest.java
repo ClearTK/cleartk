@@ -110,17 +110,22 @@ public class JCasGenConnectorTest extends AbstractMavenProjectTestCase {
     assertNoErrors(project);
 
     // modify something unrelated to the type system
-    IFile pomFile = project.getFile("pom.xml");
-    pomFile.touch(monitor);
+    project.getFile("pom.xml").touch(monitor);
+    waitForJobsToComplete();
+
+    // re-run the build
+    project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, monitor);
+    waitForJobsToComplete();
+    assertNoErrors(project);
 
     // make sure no type system files were changed
     assertEquals(sentenceTime, sentenceFile.getModificationStamp(), 1e-10);
     assertEquals(tokenTime, tokenFile.getModificationStamp(), 1e-10);
     assertEquals(dependencyTime, dependencyFile.getModificationStamp(), 1e-10);
 
-    // now modify the token descriptor which is indirectly referenced from TypeSystem.xml
-    IFile tokenSourceFile = project.getFile("src/main/resources/type/Token.xml");
-    tokenSourceFile.touch(monitor);
+    // modify the type system file
+    project.getFile("src/main/resources/TypeSystem.xml").touch(monitor);
+    waitForJobsToComplete();
 
     // re-run the build
     project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, monitor);
@@ -132,5 +137,46 @@ public class JCasGenConnectorTest extends AbstractMavenProjectTestCase {
     assertTrue(tokenFile.getModificationStamp() > tokenTime);
     assertTrue(dependencyFile.getModificationStamp() > dependencyTime);
 
+    // update the modification times
+    sentenceTime = sentenceFile.getModificationStamp();
+    tokenTime = tokenFile.getModificationStamp();
+    dependencyTime = dependencyFile.getModificationStamp();
+
+    // now modify the token descriptor which is indirectly referenced from TypeSystem.xml
+    project.getFile("src/main/resources/type/Token.xml").touch(monitor);
+    waitForJobsToComplete();
+
+    // re-run the build
+    project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, monitor);
+    waitForJobsToComplete();
+    assertNoErrors(project);
+
+    // make sure all generated files were re-generated
+    assertTrue(sentenceFile.getModificationStamp() > sentenceTime);
+    assertTrue(tokenFile.getModificationStamp() > tokenTime);
+    assertTrue(dependencyFile.getModificationStamp() > dependencyTime);
+  }
+
+  public void testCrossProjectReferences() throws Exception {
+    ResolverConfiguration configuration = new ResolverConfiguration();
+    String[] projectPoms = new String[] { "crossref1/pom.xml", "crossref2/pom.xml" };
+    IProject[] projects = importProjects("projects/jcasgen", projectPoms, configuration);
+    waitForJobsToComplete();
+    for (IProject project : projects) {
+      assertNoErrors(project);
+    }
+    for (IProject project : projects) {
+      project.build(IncrementalProjectBuilder.FULL_BUILD, monitor);
+      project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, monitor);
+      waitForJobsToComplete();
+      assertNoErrors(project);
+    }
+
+    // make sure the Java sources were generated
+    String prefix = "target/generated-sources/jcasgen/type/";
+    IFile tokenFile = projects[0].getFile(prefix + "span/Token.java");
+    IFile dependencyFile = projects[1].getFile(prefix + "relation/Dependency.java");
+    assertTrue(tokenFile.isAccessible());
+    assertTrue(dependencyFile.isAccessible());
   }
 }
