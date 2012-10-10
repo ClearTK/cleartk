@@ -24,7 +24,6 @@
 package org.cleartk.summarization.classifier;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 
 import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.DataWriter;
@@ -39,7 +38,7 @@ public abstract class SummarizationDataWriter<MODEL_TYPE extends SummarizationMo
 
   protected InstanceDataWriter<Boolean> instanceDataWriter;
 
-  public SummarizationDataWriter(File outputDirectory) throws FileNotFoundException {
+  public SummarizationDataWriter(File outputDirectory) {
     super(outputDirectory);
     this.instanceDataWriter = new InstanceDataWriter<Boolean>(outputDirectory);
   }

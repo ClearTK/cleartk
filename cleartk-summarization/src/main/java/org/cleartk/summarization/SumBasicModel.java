@@ -49,8 +49,10 @@ import org.cleartk.classifier.feature.transform.InstanceStream;
 import org.cleartk.util.Options_ImplBase;
 import org.kohsuke.args4j.Option;
 
+import com.google.common.base.Function;
 import com.google.common.collect.LinkedHashMultiset;
 import com.google.common.collect.Multiset;
+import com.google.common.collect.Ordering;
 
 /**
  * 
@@ -90,17 +92,6 @@ public class SumBasicModel extends SummarizationModel_ImplBase {
         name = "--composition-function",
         usage = "Specifies how word probabilities are combined (AVERAGE|SUM|PRODUCT, default=AVERAGE)")
     public CompositionFunctionType cfType = CompositionFunctionType.AVERAGE;
-  }
-
-  public static class SentenceScorePair {
-    public List<Feature> sentence;
-
-    public double score;
-
-    public SentenceScorePair(List<Feature> sentence, double score) {
-      this.sentence = sentence;
-      this.score = score;
-    }
   }
 
   // Consider moving this elsewhere if needed by other classes
@@ -159,65 +150,51 @@ public class SumBasicModel extends SummarizationModel_ImplBase {
    */
   public static enum CompositionFunctionType {
     AVERAGE, PRODUCT, SUM;
-
-    public CompositionFunction function(double seenWordsProbability, TermFrequencyMap tfMap) {
-      CompositionFunction compositionFunction;
-      switch (this) {
-        case PRODUCT:
-          compositionFunction = new ProductCF(seenWordsProbability, tfMap);
-          break;
-        case SUM:
-          compositionFunction = new SumCF(seenWordsProbability, tfMap);
-          break;
-        case AVERAGE:
-        default:
-          compositionFunction = new AverageCF(seenWordsProbability, tfMap);
-          break;
-      }
-      return compositionFunction;
-    }
   }
 
-  private static abstract class CompositionFunction {
+  private static abstract class CompositionFunction implements Function<List<Feature>, Double> {
     protected Double seenWordProbability;
 
     protected TermFrequencyMap tfMap;
 
-    public CompositionFunction(Double seenWordProbability, TermFrequencyMap tfMap) {
+    protected Set<String> seenWords;
+
+    public CompositionFunction(
+        Double seenWordProbability,
+        TermFrequencyMap tfMap,
+        Set<String> seenWords) {
       this.seenWordProbability = seenWordProbability;
       this.tfMap = tfMap;
+      this.seenWords = seenWords;
     }
-
-    public abstract Double apply(List<Feature> sentence, Set<String> seenWords);
   }
 
   private static class AverageCF extends CompositionFunction {
     private SumCF sumcf;
 
-    public AverageCF(Double seenWordProbability, TermFrequencyMap tfMap) {
-      super(seenWordProbability, tfMap);
-      this.sumcf = new SumCF(seenWordProbability, tfMap);
+    public AverageCF(Double seenWordProbability, TermFrequencyMap tfMap, Set<String> seenWords) {
+      super(seenWordProbability, tfMap, seenWords);
+      this.sumcf = new SumCF(seenWordProbability, tfMap, seenWords);
     }
 
     @Override
-    public Double apply(List<Feature> wordFeatures, Set<String> seenWords) {
-      Integer numWords = wordFeatures.size();
-      return (numWords == 0) ? 0.0 : this.sumcf.apply(wordFeatures, seenWords)
-          / ((double) numWords);
+    public Double apply(List<Feature> wordFeatures) {
+      int numWords = wordFeatures.size();
+      return (numWords == 0) ? 0.0 : this.sumcf.apply(wordFeatures) / numWords;
     }
   }
 
   private static class ProductCF extends CompositionFunction {
 
-    public ProductCF(Double seenWordProbability, TermFrequencyMap tfMap) {
-      super(seenWordProbability, tfMap);
+    public ProductCF(Double seenWordProbability, TermFrequencyMap tfMap, Set<String> seenWords) {
+      super(seenWordProbability, tfMap, seenWords);
     }
 
     @Override
-    public Double apply(List<Feature> wordFeatures, Set<String> seenWords) {
-      Double sentenceWeight = 1.0;
+    public Double apply(List<Feature> wordFeatures) {
+      double sentenceWeight = 1.0;
       for (Feature feature : wordFeatures) {
-        if (seenWords.contains(feature.getName())) {
+        if (this.seenWords.contains(feature.getName())) {
           sentenceWeight *= this.seenWordProbability;
         } else {
           sentenceWeight *= this.tfMap.getProbability(feature.getName());
@@ -229,15 +206,15 @@ public class SumBasicModel extends SummarizationModel_ImplBase {
 
   private static class SumCF extends CompositionFunction {
 
-    public SumCF(Double seenWordProbability, TermFrequencyMap tfMap) {
-      super(seenWordProbability, tfMap);
+    public SumCF(Double seenWordProbability, TermFrequencyMap tfMap, Set<String> seenWords) {
+      super(seenWordProbability, tfMap, seenWords);
     }
 
     @Override
-    public Double apply(List<Feature> wordFeatures, Set<String> seenWords) {
+    public Double apply(List<Feature> wordFeatures) {
       Double sentenceWeight = 0.0;
       for (Feature feature : wordFeatures) {
-        if (seenWords.contains(feature.getName())) {
+        if (this.seenWords.contains(feature.getName())) {
           sentenceWeight += this.seenWordProbability;
         } else {
           sentenceWeight += this.tfMap.getProbability(feature.getName());
@@ -269,19 +246,35 @@ public class SumBasicModel extends SummarizationModel_ImplBase {
       }
     }
 
-    // Use frequency data to select sentences
-    Map<List<Feature>, Double> selectedSentences = new HashMap<List<Feature>, Double>();
-    Set<String> seenWords = new HashSet<String>();
-    CompositionFunction compositionFunction = cfType.function(seenWordsProbability, tfMap);
+    // the set of words in the summary (will change over time)
+    final Set<String> seenWords = new HashSet<String>();
 
-    // Select Sentence N sentences
+    // create scoring function
+    final CompositionFunction getScore;
+    switch (cfType) {
+      case PRODUCT:
+        getScore = new ProductCF(seenWordsProbability, tfMap, seenWords);
+        break;
+      case SUM:
+        getScore = new SumCF(seenWordsProbability, tfMap, seenWords);
+        break;
+      case AVERAGE:
+      default:
+        getScore = new AverageCF(seenWordsProbability, tfMap, seenWords);
+        break;
+    }
+
+    // Use frequency data to select N sentences
+    Map<List<Feature>, Double> selectedSentences = new HashMap<List<Feature>, Double>();
     for (int i = 0; i < maxNumSentences; i++) {
-      SentenceScorePair selected = selectSentence(sentences, seenWords, compositionFunction);
-      selectedSentences.put(selected.sentence, selected.score);
+
+      // find the sentence with the maximum score
+      List<Feature> selectedSentence = Ordering.natural().onResultOf(getScore).max(sentences);
+      selectedSentences.put(selectedSentence, getScore.apply(selectedSentence));
 
       // Update the set of seen words with the words in the selected sentence
       // These are used to discount words that have already made their way into the summary
-      for (Feature feature : selected.sentence) {
+      for (Feature feature : selectedSentence) {
         seenWords.add(feature.getName());
       }
     }
@@ -299,24 +292,6 @@ public class SumBasicModel extends SummarizationModel_ImplBase {
     } catch (IOException e) {
       throw new Exception(e);
     }
-  }
-
-  private static SentenceScorePair selectSentence(
-      List<List<Feature>> sentences,
-      Set<String> seenWords,
-      CompositionFunction compositionFunction) {
-    double maxScore = 0.0;
-    List<Feature> selectedSentence = null;
-
-    for (List<Feature> sentence : sentences) {
-      double score = compositionFunction.apply(sentence, seenWords);
-      if (score > maxScore) {
-        maxScore = score;
-        selectedSentence = sentence;
-      }
-    }
-
-    return new SentenceScorePair(selectedSentence, maxScore);
   }
 
   public SumBasicModel(Map<List<Feature>, Double> selectedSentencesScores) {

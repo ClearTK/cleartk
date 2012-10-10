@@ -55,7 +55,7 @@ public class SummarySentenceWriterAnnotator extends JCasAnnotator_ImplBase {
     } catch (IOException e) {
       throw new ResourceInitializationException(e);
     }
-  };
+  }
 
   @Override
   public void process(JCas aJCas) throws AnalysisEngineProcessException {
