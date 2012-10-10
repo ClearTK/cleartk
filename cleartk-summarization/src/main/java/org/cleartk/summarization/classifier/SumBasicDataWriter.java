@@ -24,14 +24,13 @@
 package org.cleartk.summarization.classifier;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 
 import org.cleartk.summarization.SumBasicModel;
 
 public class SumBasicDataWriter extends
     SummarizationDataWriter<SumBasicModel, SummarizationClassifierBuilder<SumBasicModel>> {
 
-  public SumBasicDataWriter(File outputDirectory) throws FileNotFoundException {
+  public SumBasicDataWriter(File outputDirectory) {
     super(outputDirectory);
   }
 

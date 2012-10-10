@@ -143,7 +143,7 @@ public class SumBasicAnnotator extends CleartkAnnotator<Boolean> {
     return stopwords;
   }
 
-  private SimpleFeatureExtractor createTokenCountsExtractor() throws IOException {
+  private SimpleFeatureExtractor createTokenCountsExtractor() {
     SimpleFeatureExtractor tokenFieldExtractor = new CoveredTextExtractor();
     switch (this.tokenField) {
       case COVERED_TEXT:
