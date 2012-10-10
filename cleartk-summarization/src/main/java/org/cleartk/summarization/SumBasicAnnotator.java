@@ -23,9 +23,6 @@
  */
 package org.cleartk.summarization;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Arrays;
@@ -51,6 +48,10 @@ import org.cleartk.token.type.Token;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.JCasUtil;
+
+import com.google.common.base.Charsets;
+import com.google.common.io.LineProcessor;
+import com.google.common.io.Resources;
 
 /**
  * <br>
@@ -92,7 +93,7 @@ public class SumBasicAnnotator extends CleartkAnnotator<Boolean> {
     super.initialize(context);
 
     try {
-      this.stopwords = this.readStopwords(this.stopwordsUri);
+      this.stopwords = this.readStopwords();
       this.extractor = new CombinedExtractor(this.createTokenCountsExtractor());
     } catch (IOException e) {
       throw new ResourceInitializationException(e);
@@ -126,21 +127,27 @@ public class SumBasicAnnotator extends CleartkAnnotator<Boolean> {
     }
   }
 
-  private Set<String> readStopwords(URI stopwordsUri) throws IOException {
-    Set<String> stopwords = new HashSet<String>();
-    if (stopwordsUri == null) {
-      return stopwords;
+  private Set<String> readStopwords() throws IOException {
+    return Resources.readLines(this.stopwordsUri.toURL(), Charsets.US_ASCII, new ParseWordSet());
+  }
+
+  private static class ParseWordSet implements LineProcessor<Set<String>> {
+    private Set<String> result;
+
+    public ParseWordSet() {
+      this.result = new HashSet<String>();
     }
 
-    File in = new File(stopwordsUri);
-    BufferedReader reader = null;
-    reader = new BufferedReader(new FileReader(in));
-
-    String line;
-    while ((line = reader.readLine()) != null) {
-      stopwords.addAll(Arrays.asList(line.split("\\s+")));
+    @Override
+    public boolean processLine(String line) throws IOException {
+      this.result.addAll(Arrays.asList(line.split("\\s+")));
+      return true;
     }
-    return stopwords;
+
+    @Override
+    public Set<String> getResult() {
+      return this.result;
+    }
   }
 
   private SimpleFeatureExtractor createTokenCountsExtractor() {
