@@ -159,23 +159,6 @@ public class SumBasicModel extends SummarizationModel_ImplBase {
    */
   public static enum CompositionFunctionType {
     AVERAGE, PRODUCT, SUM;
-
-    public CompositionFunction function(double seenWordsProbability, TermFrequencyMap tfMap) {
-      CompositionFunction compositionFunction;
-      switch (this) {
-        case PRODUCT:
-          compositionFunction = new ProductCF(seenWordsProbability, tfMap);
-          break;
-        case SUM:
-          compositionFunction = new SumCF(seenWordsProbability, tfMap);
-          break;
-        case AVERAGE:
-        default:
-          compositionFunction = new AverageCF(seenWordsProbability, tfMap);
-          break;
-      }
-      return compositionFunction;
-    }
   }
 
   private static abstract class CompositionFunction {
@@ -272,7 +255,21 @@ public class SumBasicModel extends SummarizationModel_ImplBase {
     // Use frequency data to select sentences
     Map<List<Feature>, Double> selectedSentences = new HashMap<List<Feature>, Double>();
     Set<String> seenWords = new HashSet<String>();
-    CompositionFunction compositionFunction = cfType.function(seenWordsProbability, tfMap);
+
+    // create composition function
+    CompositionFunction compositionFunction;
+    switch (cfType) {
+      case PRODUCT:
+        compositionFunction = new ProductCF(seenWordsProbability, tfMap);
+        break;
+      case SUM:
+        compositionFunction = new SumCF(seenWordsProbability, tfMap);
+        break;
+      case AVERAGE:
+      default:
+        compositionFunction = new AverageCF(seenWordsProbability, tfMap);
+        break;
+    }
 
     // Select Sentence N sentences
     for (int i = 0; i < maxNumSentences; i++) {
