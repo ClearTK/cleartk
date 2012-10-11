@@ -18,8 +18,6 @@ public abstract class FeatureSelectionExtractor<OUTCOME_T> extends
     super(name);
   }
 
-  // public abstract double UtilityMeasure(Feature feature, OUTCOME_T outcome);
-
   @Override
   public Instance<OUTCOME_T> transform(Instance<OUTCOME_T> instance) {
     List<Feature> features = new ArrayList<Feature>();

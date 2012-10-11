@@ -19,6 +19,8 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.selection.MutualInformationFeatureSelectionExtractor.CombineScoreType.CombineScoreFunction;
+import org.cleartk.classifier.feature.selection.MutualInformationFeatureSelectionExtractor.MutualInformationStats.ComputeScore;
 import org.cleartk.classifier.feature.transform.TransformableFeature;
 
 import com.google.common.base.Function;
@@ -28,21 +30,28 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multiset;
+import com.google.common.collect.Ordering;
 import com.google.common.collect.Sets;
 import com.google.common.collect.Table;
 
 public class MutualInformationFeatureSelectionExtractor<OUTCOME_T> extends
     FeatureSelectionExtractor<OUTCOME_T> implements SimpleFeatureExtractor/* , Predicate<Feature> */{
 
-  public static enum CombineUtilityMeasure {
+  /**
+   * Specifies how scores for each outcome should be combined/aggregated into a single score
+   */
+  public static enum CombineScoreType {
     AVERAGE, // Average mutual information across all classes and take features with k-largest
              // values
     MAX; // Take highest mutual information value for each class
     // MERGE, // Take k-largest mutual information values for each class and merge into a single
     // collection - currently omitted because it requires a different extraction flow
 
-    public static class AverageScores<OUTCOME_T> implements
+    public abstract static class CombineScoreFunction<OUTCOME_T> implements
         Function<Map<OUTCOME_T, Double>, Double> {
+    }
+
+    public static class AverageScores<OUTCOME_T> extends CombineScoreFunction<OUTCOME_T> {
       @Override
       public Double apply(Map<OUTCOME_T, Double> input) {
         Collection<Double> scores = input.values();
@@ -56,7 +65,7 @@ public class MutualInformationFeatureSelectionExtractor<OUTCOME_T> extends
       }
     }
 
-    public static class MaxScores<OUTCOME_T> implements Function<Map<OUTCOME_T, Double>, Double> {
+    public static class MaxScores<OUTCOME_T> extends CombineScoreFunction<OUTCOME_T> {
       @Override
       public Double apply(Map<OUTCOME_T, Double> input) {
         double max = Double.MIN_VALUE;
@@ -97,7 +106,11 @@ public class MutualInformationFeatureSelectionExtractor<OUTCOME_T> extends
     }
 
     public void update(String featureName, OUTCOME_T outcome, int occurrences) {
-      this.classConditionalCounts.put(featureName, outcome, occurrences);
+      Integer count = this.classConditionalCounts.get(featureName, outcome);
+      if (count == null) {
+        count = 0;
+      }
+      this.classConditionalCounts.put(featureName, outcome, count + occurrences);
       this.classCounts.add(outcome, occurrences);
     }
 
@@ -165,32 +178,53 @@ public class MutualInformationFeatureSelectionExtractor<OUTCOME_T> extends
       }
       writer.close();
     }
-  }
 
-  /**
-   * 
-   * Small data structure to make insertion into a sorted set easier for feature/score pairs
-   * 
-   */
-  private static class NameValuePair implements Comparable<NameValuePair> {
+    public double computeScore(
+        String featureName,
+        CombineScoreType.CombineScoreFunction<OUTCOME_T> combineScoreFunction) {
 
-    public String name;
+      Set<OUTCOME_T> outcomes = this.classConditionalCounts.columnKeySet();
+      Map<OUTCOME_T, Double> featureOutcomeMI = Maps.newHashMap();
+      for (OUTCOME_T outcome : outcomes) {
+        featureOutcomeMI.put(outcome, this.mutualInformation(featureName, outcome));
+      }
 
-    public Double value;
-
-    NameValuePair(String name, Double value) {
-      this.name = name;
-      this.value = value;
+      return combineScoreFunction.apply(featureOutcomeMI);
     }
 
-    @Override
-    public int compareTo(NameValuePair that) {
-      double scoreDelta = that.value - this.value;
-      if (scoreDelta == 0.0) {
-        return this.name.compareTo(that.name);
-      } else {
-        return (int) Math.signum(scoreDelta);
+    public ComputeScore<OUTCOME_T> getScoreFunction(CombineScoreType combineScoreType) {
+      return new ComputeScore<OUTCOME_T>(this, combineScoreType);
+    }
+
+    public static class ComputeScore<OUTCOME_T> implements Function<String, Double> {
+
+      private MutualInformationStats<OUTCOME_T> stats;
+
+      private CombineScoreFunction<OUTCOME_T> combineScoreFunction;
+
+      public ComputeScore(
+          MutualInformationStats<OUTCOME_T> stats,
+          CombineScoreType combineMeasureType) {
+        this.stats = stats;
+        switch (combineMeasureType) {
+          case AVERAGE:
+            this.combineScoreFunction = new CombineScoreType.AverageScores<OUTCOME_T>();
+          case MAX:
+            this.combineScoreFunction = new CombineScoreType.MaxScores<OUTCOME_T>();
+        }
+
       }
+
+      @Override
+      public Double apply(String featureName) {
+        Set<OUTCOME_T> outcomes = stats.classConditionalCounts.columnKeySet();
+        Map<OUTCOME_T, Double> featureOutcomeMI = Maps.newHashMap();
+        for (OUTCOME_T outcome : outcomes) {
+          featureOutcomeMI.put(outcome, stats.mutualInformation(featureName, outcome));
+        }
+        return this.combineScoreFunction.apply(featureOutcomeMI);
+      }
+
     }
 
   }
@@ -203,11 +237,7 @@ public class MutualInformationFeatureSelectionExtractor<OUTCOME_T> extends
 
   private int numFeatures;
 
-  private CombineUtilityMeasure combineMeasureType;
-
-  private Function<Map<OUTCOME_T, Double>, Double> combineMeasureFunction;
-
-  private Set<NameValuePair> featureScores;
+  private CombineScoreType combineScoreType;
 
   private Set<String> selectedFeatures;
 
@@ -215,21 +245,11 @@ public class MutualInformationFeatureSelectionExtractor<OUTCOME_T> extends
       String name,
       SimpleFeatureExtractor extractor,
       int numFeatures,
-      CombineUtilityMeasure combineMeasureType) {
+      CombineScoreType combineMeasureType) {
     super(name);
     this.subExtractor = extractor;
     this.numFeatures = numFeatures;
-    this.combineMeasureType = combineMeasureType;
-
-    switch (this.combineMeasureType) {
-      case AVERAGE:
-        this.combineMeasureFunction = new CombineUtilityMeasure.AverageScores<OUTCOME_T>();
-      case MAX:
-        this.combineMeasureFunction = new CombineUtilityMeasure.MaxScores<OUTCOME_T>();
-    }
-
-    this.featureScores = Sets.newTreeSet();
-    this.selectedFeatures = Sets.newHashSet();
+    this.combineScoreType = combineMeasureType;
   }
 
   @Override
@@ -256,39 +276,36 @@ public class MutualInformationFeatureSelectionExtractor<OUTCOME_T> extends
     this.mutualInfoStats = new MutualInformationStats<OUTCOME_T>();
 
     for (Instance<OUTCOME_T> instance : instances) {
-      mutualInfoStats.update(instance);
-    }
-
-    Set<String> featureNames = mutualInfoStats.classConditionalCounts.rowKeySet();
-    Set<OUTCOME_T> outcomes = mutualInfoStats.classConditionalCounts.columnKeySet();
-
-    // Compute mutual information for each feature
-    for (String featureName : featureNames) {
-      Map<OUTCOME_T, Double> featureOutcomeMI = Maps.newHashMap();
-      for (OUTCOME_T outcome : outcomes) {
-        featureOutcomeMI.put(outcome, mutualInfoStats.mutualInformation(featureName, outcome));
+      OUTCOME_T outcome = instance.getOutcome();
+      for (Feature feature : instance.getFeatures()) {
+        if (this.isTransformable(feature)) {
+          mutualInfoStats.update(feature.getName(), outcome, 1);
+        }
       }
-
-      // Add to our sorted set of feature/score pairs
-      featureScores.add(new NameValuePair(
-          featureName,
-          this.combineMeasureFunction.apply(featureOutcomeMI)));
     }
 
+    // Compute mutual information score for each feature
+    Set<String> featureNames = mutualInfoStats.classConditionalCounts.rowKeySet();
+    this.selectedFeatures = Sets.newTreeSet(Ordering.natural().onResultOf(
+        this.mutualInfoStats.getScoreFunction(this.combineScoreType)).reverse());
+    this.selectedFeatures.addAll(featureNames);
   }
 
   @Override
   public void save(URI uri) throws IOException {
+    if (!this.isTrained) {
+      throw new IOException("MutualInformationFeatureExtractor: Cannot save before training.");
+    }
     File out = new File(uri);
     BufferedWriter writer = new BufferedWriter(new FileWriter(out));
-    // writer.append(String.format("#NUM DOCUMENTS\t%d\n", this.totalDocumentCount));
-    writer.append(this.combineMeasureType.toString());
+    writer.append(this.combineScoreType.toString());
     writer.append("\n");
 
-    for (NameValuePair pair : this.featureScores) {
-      writer.append(String.format("%s\t%d\n", pair.name, pair.value));
-
+    ComputeScore<OUTCOME_T> computeScore = this.mutualInfoStats.getScoreFunction(this.combineScoreType);
+    for (String feature : this.selectedFeatures) {
+      writer.append(String.format("%s\t%d\n", feature, computeScore.apply(feature)));
     }
+
     writer.close();
 
   }
@@ -299,7 +316,7 @@ public class MutualInformationFeatureSelectionExtractor<OUTCOME_T> extends
     BufferedReader reader = new BufferedReader(new FileReader(in));
 
     // First line specifies the combine utility type
-    this.combineMeasureType = CombineUtilityMeasure.valueOf(reader.readLine());
+    this.combineScoreType = CombineScoreType.valueOf(reader.readLine());
 
     // The rest of the lines are feature + selection scores
     String line = null;
@@ -308,6 +325,7 @@ public class MutualInformationFeatureSelectionExtractor<OUTCOME_T> extends
       String[] featureValuePair = line.split("\\t");
       this.selectedFeatures.add(featureValuePair[0]);
     }
+
     reader.close();
   }
 
@@ -315,50 +333,5 @@ public class MutualInformationFeatureSelectionExtractor<OUTCOME_T> extends
   public boolean apply(Feature feature) {
     return this.selectedFeatures.contains(feature.getName());
   }
-
-  // public static void main(String[] args) throws IOException {
-  // MutualInformationStats<String> stats = new MutualInformationStats<String>();
-  // // stats.update("export", "poultry", 49);
-  // // stats.update("export", "not_poultry", 141);
-  // // stats.update("not_export", "poultry", 27652);
-  // // stats.update("not_export", "not_poultry", 774106);
-  // // System.out.println(stats.mutualInformation("export", "poultry"));
-  // // System.out.println(stats.mutualInformation("export", "not_poultry"));
-  // // System.out.println(stats.mutualInformation("not_export", "poultry"));
-  // // System.out.println(stats.mutualInformation("not_export", "not_poultry"));
-  //
-  // // stats.update("export", "poultry", 10);
-  // // stats.update("import", "poultry", 100);
-  // // stats.update("colonel", "poultry", 10000);
-  // // stats.update("export", "biz", 5000);
-  // // stats.update("import", "biz", 2500);
-  // // stats.update("colonel", "biz", 50);
-  // // stats.update("export", "other", 20);
-  // // stats.update("import", "other", 30);
-  // // stats.update("colonel", "other", 40);
-  //
-  // // stats.update("w1", "c1", 2);
-  // // stats.update("w1", "c2", 1);
-  // // stats.update("w1", "c3", 1);
-  // // stats.update("w2", "c1", 1);
-  // // stats.update("w2", "c2", 2);
-  // // stats.update("w2", "c3", 1);
-  // // stats.update("w3", "c1", 1);
-  // // stats.update("w3", "c2", 1);
-  // // stats.update("w3", "c3", 2);
-  //
-  // stats.update("w1", "c1", 100);
-  // stats.update("w1", "c2", 1);
-  // stats.update("w1", "c3", 1);
-  // stats.update("w2", "c1", 1);
-  // stats.update("w2", "c2", 500);
-  // stats.update("w2", "c3", 1);
-  // stats.update("w3", "c1", 1);
-  // stats.update("w3", "c2", 1);
-  // stats.update("w3", "c3", 100);
-  // File file = new File("/tmp/mi.txt");
-  // stats.save(file.toURI());
-  //
-  // }
 
 }
