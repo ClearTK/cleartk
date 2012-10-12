@@ -11,6 +11,17 @@ import org.cleartk.classifier.feature.transform.TransformableFeature;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 
+/**
+ * <br>
+ * Copyright (c) 2007-2012, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * <p>
+ * 
+ * Base class for defining feature selection extractors.
+ * 
+ * @author Lee Becker
+ * 
+ */
 public abstract class FeatureSelectionExtractor<OUTCOME_T> extends
     TrainableExtractor_ImplBase<OUTCOME_T> implements Predicate<Feature> {
 

@@ -34,8 +34,20 @@ import com.google.common.collect.Multiset;
 import com.google.common.collect.Ordering;
 import com.google.common.collect.Table;
 
+/**
+ * <br>
+ * Copyright (c) 2007-2012, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * <p>
+ * 
+ * Selects features via mutual information statistics between the features extracted from its
+ * sub-extractor and the outcome values they are paired with in classification instances.
+ * 
+ * @author Lee Becker
+ * 
+ */
 public class MutualInformationFeatureSelectionExtractor<OUTCOME_T> extends
-    FeatureSelectionExtractor<OUTCOME_T> implements SimpleFeatureExtractor/* , Predicate<Feature> */{
+    FeatureSelectionExtractor<OUTCOME_T> implements SimpleFeatureExtractor {
 
   /**
    * Specifies how scores for each outcome should be combined/aggregated into a single score
