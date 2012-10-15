@@ -1,22 +1,48 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <artifactId>cleartk-summarization</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>jar</packaging>
-  <scm>
-  	<url>http://cleartk.googlecode.com/svn/trunk/${project.artifactId}</url>
-  	<connection>scm:svn:http://cleartk.googlecode.com/svn/trunk/${project.artifactId}</connection>
-  	<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/trunk/${project.artifactId}</developerConnection>
-  </scm>
-  	<parent>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>cleartk-summarization</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+	<name>ClearTK Summarization</name>
+	<description>ClearTK annotators for extractive summarization</description>
+	<url>http://cleartk.googlecode.com/</url>
+	<licenses>
+		<license>
+			<name>The BSD 3-Clause License</name>
+			<url>http://cleartk.googlecode.com/svn/trunk/cleartk-token/LICENSE</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<developers>
+		<developer>
+			<id>steven.bethard</id>
+			<email>steven.bethard@gmail.com</email>
+			<name>Steven Bethard</name>
+		</developer>
+		<developer>
+			<id>philip.ogren</id>
+			<email>philip@ogren.info</email>
+			<name>Philip Ogren</name>
+		</developer>
+		<developer>
+			<id>lee.becker</id>
+			<email>lee.becker@gmail.com</email>
+			<name>Lee Becker</name>
+		</developer>
+	</developers>
+	<scm>
+		<url>http://cleartk.googlecode.com/svn/trunk/${project.artifactId}</url>
+		<connection>scm:svn:http://cleartk.googlecode.com/svn/trunk/${project.artifactId}</connection>
+		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/trunk/${project.artifactId}</developerConnection>
+	</scm>
+	<parent>
 		<artifactId>cleartk-parent</artifactId>
 		<groupId>org.cleartk</groupId>
 		<version>1.2.1-SNAPSHOT</version>
 		<relativePath>../cleartk-parent</relativePath>
 	</parent>
 	<dependencies>
-	
-
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-ml-opennlp-maxent</artifactId>
