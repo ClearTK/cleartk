@@ -1,20 +1,33 @@
 package org.cleartk.plugin;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
+import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.apache.uima.UIMAFramework;
+import org.apache.uima.resource.ResourceManager;
+import org.apache.uima.resource.metadata.TypeDescription;
+import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.tools.jcasgen.IError;
 import org.apache.uima.tools.jcasgen.Jg;
+import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.Level;
 import org.apache.uima.util.Logger;
+import org.apache.uima.util.XMLInputSource;
+import org.codehaus.plexus.util.DirectoryScanner;
+import org.sonatype.plexus.build.incremental.BuildContext;
 
 /**
  * Applies JCasGen to create Java files from XML type system descriptions.
@@ -56,34 +69,67 @@ public class JCasGenMojo extends AbstractMojo {
    */
   private MavenProject project;
 
+  /**
+   * The Plexus build context, used to see if files have changed.
+   * 
+   * @component
+   */
+  private BuildContext buildContext;
+
   public void execute() throws MojoExecutionException, MojoFailureException {
 
-    // determine path to type system
-    String typeSystemPath = this.typeSystem;
-    boolean isFile = false;
+    // the type system is relative to the base directory
+    File typeSystemFile = new File(this.project.getBasedir(), this.typeSystem);
+
+    // assemble the classpath
+    List<String> elements;
     try {
-      URL url = new URL(this.typeSystem);
-      url.toURI();
-    } catch (MalformedURLException e) {
-      isFile = true;
-    } catch (URISyntaxException e) {
-      isFile = true;
+      elements = this.project.getCompileClasspathElements();
+    } catch (DependencyResolutionRequiredException e) {
+      throw new MojoExecutionException(e.getMessage(), e);
     }
-    if (isFile) {
-      typeSystemPath = new File(this.project.getBasedir(), this.typeSystem).getAbsolutePath();
+    StringBuilder classpath = new StringBuilder();
+    for (String element : elements) {
+      if (classpath.length() > 0) {
+        classpath.append(File.pathSeparatorChar);
+      }
+      classpath.append(element);
     }
 
-    // assemble classpath for JCasGen
-    StringBuilder classpath = new StringBuilder();
+    // load the type system
+    XMLInputSource in;
     try {
-      for (String element : this.project.getCompileClasspathElements()) {
-        if (classpath.length() > 0) {
-          classpath.append(File.pathSeparatorChar);
-        }
-        classpath.append(element);
+      in = new XMLInputSource(typeSystemFile.toURI().toURL());
+    } catch (IOException e) {
+      throw new MojoExecutionException(e.getMessage(), e);
+    }
+    TypeSystemDescription typeSystemDescription;
+    try {
+      typeSystemDescription = UIMAFramework.getXMLParser().parseTypeSystemDescription(in);
+    } catch (InvalidXMLException e) {
+      throw new MojoExecutionException(e.getMessage(), e);
+    }
+
+    // resolve the type system imports using the classpath
+    ResourceManager resourceManager = UIMAFramework.newDefaultResourceManager();
+    try {
+      resourceManager.setExtensionClassPath(classpath.toString(), true);
+    } catch (MalformedURLException e) {
+      throw new MojoExecutionException(e.getMessage(), e);
+    }
+    try {
+      typeSystemDescription.resolveImports(resourceManager);
+    } catch (InvalidXMLException e) {
+      throw new MojoExecutionException(e.getMessage(), e);
+    }
+
+    // skip JCasGen if there are no changes in the type system file or the files it references
+    try {
+      if (!this.buildContext.hasDelta(this.typeSystem) && !this.hasDelta(typeSystemDescription)) {
+        return;
       }
-    } catch (DependencyResolutionRequiredException e) {
-      throw new MojoExecutionException("could not resolve classpath", e);
+    } catch (URISyntaxException e) {
+      throw new MojoExecutionException(e.getMessage(), e);
     }
 
     // run JCasGen to generate the Java sources
@@ -92,7 +138,7 @@ public class JCasGenMojo extends AbstractMojo {
     jCasGen.error = error;
     String[] args = new String[] {
         "-jcasgeninput",
-        typeSystemPath,
+        typeSystemFile.toString(),
         "-jcasgenoutput",
         this.outputDirectory.getAbsolutePath(),
         "=jcasgenclasspath",
@@ -132,5 +178,64 @@ public class JCasGenMojo extends AbstractMojo {
     public JCasGenException(Throwable cause) {
       super(cause);
     }
+  }
+
+  private boolean hasDelta(TypeSystemDescription typeSystemDescription) throws URISyntaxException {
+    File buildOutputDirectory = new File(this.project.getBuild().getOutputDirectory());
+
+    // map each resource from its target location to its source location
+    Map<File, File> targetToSource = new HashMap<File, File>();
+    for (Resource resource : this.project.getResources()) {
+      File resourceDir = new File(resource.getDirectory());
+      if (resourceDir.exists()) {
+
+        // scan for the resource files
+        List<String> includes = resource.getIncludes();
+        if (includes.isEmpty()) {
+          includes = Arrays.asList("**");
+        }
+        List<String> excludes = resource.getExcludes();
+        DirectoryScanner scanner = new DirectoryScanner();
+        scanner.setBasedir(resourceDir);
+        scanner.setIncludes(includes.toArray(new String[includes.size()]));
+        scanner.setExcludes(excludes.toArray(new String[excludes.size()]));
+        scanner.scan();
+
+        // map each of the resources from its target location to its source location
+        String targetPath = resource.getTargetPath();
+        for (String filePath : scanner.getIncludedFiles()) {
+          File sourceFile = new File(resourceDir, filePath);
+          File baseDirectory = targetPath != null
+              ? new File(buildOutputDirectory, targetPath)
+              : buildOutputDirectory;
+          File targetFile = new File(baseDirectory, filePath);
+          targetToSource.put(targetFile, sourceFile);
+        }
+      }
+    }
+
+    // search through the type system description for source files that have changed
+    for (TypeDescription type : typeSystemDescription.getTypes()) {
+      URL typeSystemURL = type.getSourceUrl();
+      if (typeSystemURL != null) {
+        File targetFile;
+        try {
+          targetFile = new File(typeSystemURL.toURI());
+        } catch (IllegalArgumentException e) {
+          // the URL is not a file, so assume it has changed
+          return true;
+        }
+        File sourceFile = targetToSource.get(targetFile);
+        if (sourceFile == null) {
+          // no resource corresponding to this file, so assume the file has changed
+          return true;
+        }
+        // the file was found, only return true if the file has actually changed
+        if (this.buildContext.hasDelta(sourceFile)) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 }
