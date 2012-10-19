@@ -88,48 +88,18 @@ public class JCasGenMojo extends AbstractMojo {
     } catch (DependencyResolutionRequiredException e) {
       throw new MojoExecutionException(e.getMessage(), e);
     }
-    StringBuilder classpath = new StringBuilder();
+    StringBuilder classpathBuilder = new StringBuilder();
     for (String element : elements) {
-      if (classpath.length() > 0) {
-        classpath.append(File.pathSeparatorChar);
+      if (classpathBuilder.length() > 0) {
+        classpathBuilder.append(File.pathSeparatorChar);
       }
-      classpath.append(element);
+      classpathBuilder.append(element);
     }
-
-    // load the type system
-    XMLInputSource in;
-    try {
-      in = new XMLInputSource(typeSystemFile.toURI().toURL());
-    } catch (IOException e) {
-      throw new MojoExecutionException(e.getMessage(), e);
-    }
-    TypeSystemDescription typeSystemDescription;
-    try {
-      typeSystemDescription = UIMAFramework.getXMLParser().parseTypeSystemDescription(in);
-    } catch (InvalidXMLException e) {
-      throw new MojoExecutionException(e.getMessage(), e);
-    }
-
-    // resolve the type system imports using the classpath
-    ResourceManager resourceManager = UIMAFramework.newDefaultResourceManager();
-    try {
-      resourceManager.setExtensionClassPath(classpath.toString(), true);
-    } catch (MalformedURLException e) {
-      throw new MojoExecutionException(e.getMessage(), e);
-    }
-    try {
-      typeSystemDescription.resolveImports(resourceManager);
-    } catch (InvalidXMLException e) {
-      throw new MojoExecutionException(e.getMessage(), e);
-    }
+    String classpath = classpathBuilder.toString();
 
     // skip JCasGen if there are no changes in the type system file or the files it references
-    try {
-      if (!this.buildContext.hasDelta(this.typeSystem) && !this.hasDelta(typeSystemDescription)) {
-        return;
-      }
-    } catch (URISyntaxException e) {
-      throw new MojoExecutionException(e.getMessage(), e);
+    if (!this.buildContext.hasDelta(this.typeSystem) && !this.hasDelta(typeSystemFile, classpath)) {
+      return;
     }
 
     // run JCasGen to generate the Java sources
@@ -142,12 +112,15 @@ public class JCasGenMojo extends AbstractMojo {
         "-jcasgenoutput",
         this.outputDirectory.getAbsolutePath(),
         "=jcasgenclasspath",
-        classpath.toString() };
+        classpath };
     try {
       jCasGen.main1(args);
     } catch (JCasGenException e) {
       throw new MojoExecutionException(e.getMessage(), e.getCause());
     }
+
+    // signal that the output directory has changed
+    this.buildContext.refresh(this.outputDirectory);
 
     // add the generated sources to the build
     this.project.addCompileSourceRoot(this.outputDirectory.getPath());
@@ -180,7 +153,35 @@ public class JCasGenMojo extends AbstractMojo {
     }
   }
 
-  private boolean hasDelta(TypeSystemDescription typeSystemDescription) throws URISyntaxException {
+  private boolean hasDelta(File typeSystemFile, String classpath) throws MojoExecutionException {
+    // load the type system
+    XMLInputSource in;
+    try {
+      in = new XMLInputSource(typeSystemFile.toURI().toURL());
+    } catch (IOException e) {
+      throw new MojoExecutionException(e.getMessage(), e);
+    }
+    TypeSystemDescription typeSystemDescription;
+    try {
+      typeSystemDescription = UIMAFramework.getXMLParser().parseTypeSystemDescription(in);
+    } catch (InvalidXMLException e) {
+      throw new MojoExecutionException(e.getMessage(), e);
+    }
+
+    // resolve the type system imports using the classpath
+    ResourceManager resourceManager = UIMAFramework.newDefaultResourceManager();
+    try {
+      resourceManager.setExtensionClassPath(classpath, true);
+      resourceManager.setDataPath(classpath);
+    } catch (MalformedURLException e) {
+      throw new MojoExecutionException(e.getMessage(), e);
+    }
+    try {
+      typeSystemDescription.resolveImports(resourceManager);
+    } catch (InvalidXMLException e) {
+      throw new MojoExecutionException(e.getMessage(), e);
+    }
+
     File buildOutputDirectory = new File(this.project.getBuild().getOutputDirectory());
 
     // map each resource from its target location to its source location
@@ -222,6 +223,9 @@ public class JCasGenMojo extends AbstractMojo {
         try {
           targetFile = new File(typeSystemURL.toURI());
         } catch (IllegalArgumentException e) {
+          // the URL is not a file, so assume it has changed
+          return true;
+        } catch (URISyntaxException e) {
           // the URL is not a file, so assume it has changed
           return true;
         }
