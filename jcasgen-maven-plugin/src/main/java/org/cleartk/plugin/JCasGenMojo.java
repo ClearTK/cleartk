@@ -78,6 +78,13 @@ public class JCasGenMojo extends AbstractMojo {
 
   public void execute() throws MojoExecutionException, MojoFailureException {
 
+    // add the generated sources to the build
+    if (!this.outputDirectory.exists()) {
+      this.outputDirectory.mkdirs();
+      this.buildContext.refresh(this.outputDirectory);
+    }
+    this.project.addCompileSourceRoot(this.outputDirectory.getPath());
+
     // the type system is relative to the base directory
     File typeSystemFile = new File(this.project.getBasedir(), this.typeSystem);
 
@@ -121,9 +128,6 @@ public class JCasGenMojo extends AbstractMojo {
 
     // signal that the output directory has changed
     this.buildContext.refresh(this.outputDirectory);
-
-    // add the generated sources to the build
-    this.project.addCompileSourceRoot(this.outputDirectory.getPath());
   }
 
   static class JCasGenErrors implements IError {
@@ -149,37 +153,26 @@ public class JCasGenMojo extends AbstractMojo {
     private static final long serialVersionUID = 1L;
 
     public JCasGenException(Throwable cause) {
-      super(cause);
+      super(cause.getMessage(), cause);
     }
   }
 
-  private boolean hasDelta(File typeSystemFile, String classpath) throws MojoExecutionException {
-    // load the type system
-    XMLInputSource in;
-    try {
-      in = new XMLInputSource(typeSystemFile.toURI().toURL());
-    } catch (IOException e) {
-      throw new MojoExecutionException(e.getMessage(), e);
-    }
+  private boolean hasDelta(File typeSystemFile, String classpath) {
+    // load the type system and resolve the imports using the classpath
     TypeSystemDescription typeSystemDescription;
     try {
+      XMLInputSource in = new XMLInputSource(typeSystemFile.toURI().toURL());
       typeSystemDescription = UIMAFramework.getXMLParser().parseTypeSystemDescription(in);
-    } catch (InvalidXMLException e) {
-      throw new MojoExecutionException(e.getMessage(), e);
-    }
-
-    // resolve the type system imports using the classpath
-    ResourceManager resourceManager = UIMAFramework.newDefaultResourceManager();
-    try {
+      ResourceManager resourceManager = UIMAFramework.newDefaultResourceManager();
       resourceManager.setExtensionClassPath(classpath, true);
-      resourceManager.setDataPath(classpath);
-    } catch (MalformedURLException e) {
-      throw new MojoExecutionException(e.getMessage(), e);
-    }
-    try {
       typeSystemDescription.resolveImports(resourceManager);
+      // on any exception, the type system was invalid, so assume no files have changed
     } catch (InvalidXMLException e) {
-      throw new MojoExecutionException(e.getMessage(), e);
+      return false;
+    } catch (MalformedURLException e) {
+      return false;
+    } catch (IOException e) {
+      return false;
     }
 
     File buildOutputDirectory = new File(this.project.getBuild().getOutputDirectory());
@@ -222,20 +215,19 @@ public class JCasGenMojo extends AbstractMojo {
         File targetFile;
         try {
           targetFile = new File(typeSystemURL.toURI());
-        } catch (IllegalArgumentException e) {
-          // the URL is not a file, so assume it has changed
-          return true;
+          // for any source that is not a File, assume it has not changed
         } catch (URISyntaxException e) {
-          // the URL is not a file, so assume it has changed
-          return true;
+          continue;
+        } catch (IllegalArgumentException e) {
+          continue;
         }
         File sourceFile = targetToSource.get(targetFile);
-        if (sourceFile == null) {
-          // no resource corresponding to this file, so assume the file has changed
+        // the file is a resource file, return true if the original resource file has changed
+        if (sourceFile != null && this.buildContext.hasDelta(sourceFile)) {
           return true;
         }
-        // the file was found, only return true if the file has actually changed
-        if (this.buildContext.hasDelta(sourceFile)) {
+        // the file is not a resource file, return true if it has changed
+        if (this.buildContext.hasDelta(targetFile)) {
           return true;
         }
       }
