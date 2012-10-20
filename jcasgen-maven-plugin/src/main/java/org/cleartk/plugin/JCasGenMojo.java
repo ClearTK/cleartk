@@ -21,6 +21,7 @@ import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.tools.jcasgen.IError;
+import org.apache.uima.tools.jcasgen.IProgressMonitor;
 import org.apache.uima.tools.jcasgen.Jg;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
@@ -104,15 +105,12 @@ public class JCasGenMojo extends AbstractMojo {
 
     // skip JCasGen if there are no changes in the type system file or the files it references
     if (!this.buildContext.hasDelta(this.typeSystem) && !this.hasDelta(typeSystemFile, classpath)) {
-      this.getLog().info("Skipping JCasGen since no type system changes were detected");
+      this.getLog().info("JCasGen: Skipped, since no type system changes were detected");
       return;
     }
 
     // run JCasGen to generate the Java sources
-    this.getLog().info("Invoking JCasGen on the type system " + this.typeSystem);
-    JCasGenErrors error = new JCasGenErrors();
     Jg jCasGen = new Jg();
-    jCasGen.error = error;
     String[] args = new String[] {
         "-jcasgeninput",
         typeSystemFile.toString(),
@@ -121,13 +119,36 @@ public class JCasGenMojo extends AbstractMojo {
         "=jcasgenclasspath",
         classpath };
     try {
-      jCasGen.main1(args);
+      jCasGen.main0(args, null, new JCasGenProgressMonitor(), new JCasGenErrors());
     } catch (JCasGenException e) {
       throw new MojoExecutionException(e.getMessage(), e.getCause());
     }
 
     // signal that the output directory has changed
     this.buildContext.refresh(this.outputDirectory);
+  }
+
+  private class JCasGenProgressMonitor implements IProgressMonitor {
+
+    public JCasGenProgressMonitor() {
+    }
+
+    @Override
+    public void done() {
+    }
+
+    @Override
+    public void beginTask(String name, int totalWorked) {
+    }
+
+    @Override
+    public void subTask(String message) {
+      getLog().info("JCasGen: " + message);
+    }
+
+    @Override
+    public void worked(int work) {
+    }
   }
 
   private class JCasGenErrors implements IError {
