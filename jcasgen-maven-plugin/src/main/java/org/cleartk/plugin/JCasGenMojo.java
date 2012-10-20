@@ -23,8 +23,6 @@ import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.tools.jcasgen.IError;
 import org.apache.uima.tools.jcasgen.Jg;
 import org.apache.uima.util.InvalidXMLException;
-import org.apache.uima.util.Level;
-import org.apache.uima.util.Logger;
 import org.apache.uima.util.XMLInputSource;
 import org.codehaus.plexus.util.DirectoryScanner;
 import org.sonatype.plexus.build.incremental.BuildContext;
@@ -106,10 +104,12 @@ public class JCasGenMojo extends AbstractMojo {
 
     // skip JCasGen if there are no changes in the type system file or the files it references
     if (!this.buildContext.hasDelta(this.typeSystem) && !this.hasDelta(typeSystemFile, classpath)) {
+      this.getLog().info("Skipping JCasGen since no type system changes were detected");
       return;
     }
 
     // run JCasGen to generate the Java sources
+    this.getLog().info("Invoking JCasGen on the type system " + this.typeSystem);
     JCasGenErrors error = new JCasGenErrors();
     Jg jCasGen = new Jg();
     jCasGen.error = error;
@@ -130,30 +130,31 @@ public class JCasGenMojo extends AbstractMojo {
     this.buildContext.refresh(this.outputDirectory);
   }
 
-  static class JCasGenErrors implements IError {
+  private class JCasGenErrors implements IError {
 
-    private static Level logLevels[] = new Level[3];
-    static {
-      logLevels[IError.INFO] = Level.INFO;
-      logLevels[IError.WARN] = Level.WARNING;
-      logLevels[IError.ERROR] = Level.SEVERE;
+    public JCasGenErrors() {
     }
 
     @Override
     public void newError(int severity, String message, Exception exception) {
-      Logger log = UIMAFramework.getLogger();
-      log.log(logLevels[severity], "JCasGen: " + message, exception);
-      if (severity >= IError.ERROR) {
-        throw new JCasGenException(exception);
+      String fullMessage = "JCasGen: " + message;
+      if (severity == IError.INFO) {
+        getLog().info(fullMessage, exception);
+      } else if (severity == IError.WARN) {
+        getLog().warn(fullMessage, exception);
+      } else if (severity == IError.ERROR) {
+        throw new JCasGenException(exception.getMessage(), exception);
+      } else {
+        throw new UnsupportedOperationException("Unknown severity level: " + severity);
       }
     }
   }
 
-  static class JCasGenException extends RuntimeException {
+  private static class JCasGenException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
-    public JCasGenException(Throwable cause) {
-      super(cause.getMessage(), cause);
+    public JCasGenException(String message, Throwable cause) {
+      super(message, cause);
     }
   }
 
@@ -215,23 +216,30 @@ public class JCasGenMojo extends AbstractMojo {
         File targetFile;
         try {
           targetFile = new File(typeSystemURL.toURI());
-          // for any source that is not a File, assume it has not changed
+          // for any type system source that is not a File, assume it has not changed
         } catch (URISyntaxException e) {
           continue;
         } catch (IllegalArgumentException e) {
           continue;
         }
         File sourceFile = targetToSource.get(targetFile);
-        // the file is a resource file, return true if the original resource file has changed
-        if (sourceFile != null && this.buildContext.hasDelta(sourceFile)) {
-          return true;
-        }
-        // the file is not a resource file, return true if it has changed
-        if (this.buildContext.hasDelta(targetFile)) {
-          return true;
+        if (sourceFile != null) {
+          // for any type system file that is also a resource file, return true if it has changed
+          if (this.buildContext.hasDelta(sourceFile)) {
+            this.getLog().info("Type system file " + sourceFile + " has changed");
+            return true;
+          }
+          // for any type system file that is in the same project, return true if it has changed
+          if (targetFile.getAbsolutePath().startsWith(this.project.getBasedir().getAbsolutePath())) {
+            if (this.buildContext.hasDelta(targetFile)) {
+              this.getLog().info("Type system file " + sourceFile + " has changed");
+              return true;
+            }
+          }
         }
       }
     }
+    // no type system files have changed
     return false;
   }
 }
