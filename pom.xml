@@ -45,6 +45,7 @@
 		<module>cleartk-examples</module>
 		<!-- module declaring the official release versions -->
 		<module>cleartk-release</module>
+		<module>cleartk-clearnlp</module>
 	</modules>
 	<build>
 		<plugins>
