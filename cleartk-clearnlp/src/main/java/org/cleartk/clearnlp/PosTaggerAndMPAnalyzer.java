@@ -108,12 +108,7 @@ public class PosTaggerAndMPAnalyzer extends JCasAnnotator_ImplBase {
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
 		for (Sentence sentence : JCasUtil.select(jCas, Sentence.class)) {
 			List<Token> tokens = JCasUtil.selectCovered(jCas, Token.class, sentence);	
-			List<String> tokenStrings = Lists.transform(tokens, new Function<Token, String>() {
-				@Override
-				public String apply(Token token) {
-					return token.getCoveredText();
-				}
-			});
+			List<String> tokenStrings = JCasUtil.toText(tokens);
 			
 			POSNode[] posNodes =  (this.lemmatize)
 					? EngineProcess.getPOSNodesWithLemmas(this.taggers, this.mpAnalyzer, tokenStrings)
