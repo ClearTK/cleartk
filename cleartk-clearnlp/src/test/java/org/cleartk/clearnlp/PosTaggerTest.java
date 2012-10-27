@@ -45,8 +45,6 @@ public class PosTaggerTest extends CleartkTestBase {
 		for (Token token : JCasUtil.select(this.jCas, Token.class)) {
 			actual.add(token.getPos());
 		}
-		System.out.println(actual);
-		System.out.println(expected);
 		Assert.assertEquals(expected, actual);
 	}
 }
