@@ -19,11 +19,11 @@ import org.uimafit.util.JCasUtil;
 
 public class PosTaggerTest extends CleartkTestBase {
 	protected TokenBuilder<Token, Sentence> tokenBuilder;
-	protected static AnalysisEngine tokenizer;
+	protected static AnalysisEngine posTagger;
 
 	static {
 		try {
-			tokenizer = AnalysisEngineFactory.createPrimitive(Tokenizer.getDescription());
+			posTagger = AnalysisEngineFactory.createPrimitive(Tokenizer.getDescription());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

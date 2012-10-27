@@ -4,11 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
-import junit.framework.Assert;
 
 
 import org.apache.commons.io.FileUtils;
@@ -22,11 +17,9 @@ import org.cleartk.token.type.Token;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.pipeline.SimplePipeline;
-import org.uimafit.testing.factory.TokenBuilder;
 import org.uimafit.util.JCasUtil;
 
 public class TokenizerTest extends CleartkTestBase {
-	protected TokenBuilder<Token, Sentence> tokenBuilder;
 	protected static AnalysisEngine tokenizer;
 
 	static {
@@ -47,9 +40,6 @@ public class TokenizerTest extends CleartkTestBase {
 		new Sentence(jCas, 54, 68).addToIndexes();
 		new Sentence(jCas, 70, 91).addToIndexes();
 		SimplePipeline.runPipeline(jCas, tokenizer);
-
-		Collection<Token> tokens = JCasUtil.select(jCas, Token.class);
-		System.out.println(JCasUtil.toText(tokens));
 		
 		FSIndex<Annotation> tokenIndex = jCas.getAnnotationIndex(Token.type);
 		assertEquals(37, tokenIndex.size());
@@ -95,57 +85,6 @@ public class TokenizerTest extends CleartkTestBase {
 	}
 
 
-	/*
-	@Test
-	public void tokenizerTest() throws Exception {
-		String text = FileUtils.readFileToString(new File("src/test/resources/token/marysdog.txt"));
-		this.jCas.setDocumentText(text);
-		//this.jCas.setDocumentText("\"John & Mary's dog,\" Jane thought (to herself).\n"
-		//+ "\"What a #$%!\n" + "a- ``I like AT&T''.\"");
-		new Sentence(this.jCas, 0, 47).addToIndexes();
-		new Sentence(this.jCas, 48, 60).addToIndexes();
-		new Sentence(this.jCas, 61, 81).addToIndexes();
-
-		tokenizer.process(this.jCas);
-
-		List<String> expected = Arrays.asList(
-				"\"",
-				"John",
-				"&",
-				"Mary",
-				"'s",
-				"dog",
-				",",
-				"\"",
-				"Jane",
-				"thought",
-				"(",
-				"to",
-				"herself",
-				")",
-				".",
-				"\"",
-				"What",
-				"a",
-				"#",
-				"$",
-				"%",
-				"!",
-				"a",
-				"-",
-				"``",
-				"I",
-				"like",
-				"AT&T",
-				"''",
-				".",
-				"\"");
-		List<String> actual = JCasUtil.toText(JCasUtil.select(this.jCas, Token.class));
-		System.err.println(actual);
-		System.err.println(expected);
-		Assert.assertEquals(expected, actual);
-	}
-	*/
 
 	@Test
 	public void testWatcha() throws UIMAException, IOException {
@@ -204,9 +143,6 @@ public class TokenizerTest extends CleartkTestBase {
 		new Sentence(jCas, 19, 59).addToIndexes();
 		SimplePipeline.runPipeline(jCas, tokenizer);
 
-		Collection<Token> tokens = JCasUtil.select(jCas, Token.class);
-		System.out.println(JCasUtil.toText(tokens));
-
 		FSIndex<Annotation> tokenIndex = jCas.getAnnotationIndex(Token.type);
 		assertEquals(16, tokenIndex.size());
 
@@ -239,9 +175,6 @@ public class TokenizerTest extends CleartkTestBase {
 		assertEquals(16, tokenIndex.size());
 
 
-		Collection<Token> tokens = JCasUtil.select(jCas, Token.class);
-		System.out.println(JCasUtil.toText(tokens));
-
 		int index = 0;
 		assertEquals("You", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
 		assertEquals("`", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
@@ -267,9 +200,6 @@ public class TokenizerTest extends CleartkTestBase {
 		jCas.setDocumentText(" 1. Buy a new Chevrolet (37%-owned in the U.S..) . 15%");
 		new Sentence(jCas, 0, 54).addToIndexes();
 		SimplePipeline.runPipeline(jCas, tokenizer);
-
-		Collection<Token> tokens = JCasUtil.select(jCas, Token.class);
-		System.out.println(JCasUtil.toText(tokens));
 
 		FSIndex<Annotation> tokenIndex = jCas.getAnnotationIndex(Token.type);
 		assertEquals(16, tokenIndex.size());

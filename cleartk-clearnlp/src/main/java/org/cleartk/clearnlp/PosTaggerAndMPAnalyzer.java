@@ -17,8 +17,6 @@ import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.JCasUtil;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
 import com.googlecode.clearnlp.engine.EngineGetter;
 import com.googlecode.clearnlp.engine.EngineProcess;
 import com.googlecode.clearnlp.morphology.AbstractMPAnalyzer;
@@ -70,9 +68,6 @@ public class PosTaggerAndMPAnalyzer extends JCasAnnotator_ImplBase {
 	
 	/**
 	 * Convenience method to create Analysis Engine for ClearNLP's POSTagger + Lemmatizer using default English models and dictionaries.
-	 * 
-	 * @return
-	 * @throws ResourceInitializationException
 	 */
 	public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
 		return AnalysisEngineFactory.createPrimitiveDescription(PosTaggerAndMPAnalyzer.class);

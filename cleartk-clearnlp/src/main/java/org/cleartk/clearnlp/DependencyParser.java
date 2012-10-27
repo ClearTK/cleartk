@@ -59,8 +59,6 @@ public class DependencyParser extends JCasAnnotator_ImplBase {
 	
 	/**
 	 * Convenience method for creating Analysis Engine for ClearNLP's dependency parser using default English model files
-	 * @return
-	 * @throws ResourceInitializationException
 	 */
 	public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
 		return AnalysisEngineFactory.createPrimitiveDescription(DependencyParser.class);

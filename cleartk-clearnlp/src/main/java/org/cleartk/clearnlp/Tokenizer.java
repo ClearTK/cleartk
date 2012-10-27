@@ -47,9 +47,6 @@ public class Tokenizer extends JCasAnnotator_ImplBase{
     
     /**
      * Convenience method for getting an Analysis Engine for ClearNLP's English tokenizer.
-     * 
-     * @return
-     * @throws ResourceInitializationException
      */
     public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
     	return AnalysisEngineFactory.createPrimitiveDescription(Tokenizer.class); 
