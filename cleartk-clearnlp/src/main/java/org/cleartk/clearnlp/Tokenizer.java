@@ -78,13 +78,14 @@ public class Tokenizer extends JCasAnnotator_ImplBase{
 			String sentenceText = sentence.getCoveredText();
 			int sentenceOffset = sentence.getBegin();
 			List<String> tokens = tokenizer.getTokens(sentence.getCoveredText());
+		    
 			int offset = 0;
 			for (String token : tokens) {
 				int tokenBegin = sentenceText.indexOf(token, offset);
 				int tokenEnd = tokenBegin + token.length();
 				Token cleartkToken = new Token(jCas, sentenceOffset + tokenBegin, sentenceOffset + tokenEnd);
 				cleartkToken.addToIndexes();
-				offset += tokenEnd;
+				offset = tokenEnd;
 			}
 		}
 	}
