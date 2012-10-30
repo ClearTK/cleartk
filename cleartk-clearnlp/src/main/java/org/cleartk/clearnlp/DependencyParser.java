@@ -49,7 +49,6 @@ public class DependencyParser extends JCasAnnotator_ImplBase {
 		super.initialize(aContext);
 		
 		try {
-		  System.out.println(parserModelUri);
 			URL parserModelURL = (this.parserModelUri == null)
 					? DependencyParser.class.getResource(DEFAULT_MODEL_FILE_NAME).toURI().toURL()
 					: this.parserModelUri.toURL();
