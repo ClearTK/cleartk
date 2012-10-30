@@ -1,7 +1,7 @@
 package org.cleartk.clearnlp;
 
-import java.io.File;
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -48,10 +48,10 @@ public class DependencyParser extends JCasAnnotator_ImplBase {
 		super.initialize(aContext);
 		
 		try {
-			File parserModelFile = (this.parserModelUri == null)
-					? new File(DependencyParser.class.getResource(DEFAULT_MODEL_FILE_NAME).toURI())
-					: new File(this.parserModelUri);
-			this.parser = EngineGetter.getDEPParser(parserModelFile.getPath());
+			URL parserModelURL = (this.parserModelUri == null)
+					? DependencyParser.class.getResource(DEFAULT_MODEL_FILE_NAME).toURI().toURL()
+					: this.parserModelUri.toURL();
+			this.parser = (DEPParser) EngineGetter.getDEPParser(parserModelURL.openStream());
 		} catch (Exception e) {
 			throw new ResourceInitializationException(e);
 		}

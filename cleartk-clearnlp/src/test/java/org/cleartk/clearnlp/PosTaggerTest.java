@@ -1,6 +1,7 @@
 package org.cleartk.clearnlp;
 
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,7 +24,9 @@ public class PosTaggerTest extends CleartkTestBase {
 
 	static {
 		try {
-			posTagger = AnalysisEngineFactory.createPrimitive(Tokenizer.getDescription());
+			posTagger = AnalysisEngineFactory.createPrimitive(PosTagger.getDescription(), 
+			    PosTagger.PARAM_MODEL_URI,
+			    new File("src/test/resources/models/sample-pos.jar").toURI());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -33,18 +36,24 @@ public class PosTaggerTest extends CleartkTestBase {
 	@Test
 	public void posTaggerTest() throws Exception {
 		this.jCas.reset();
-		AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(PosTaggerAndMPAnalyzer.getDescription());
+		//AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(PosTaggerAndMPAnalyzer.getDescription());
+		tokenBuilder = new TokenBuilder<Token, Sentence>(Token.class, Sentence.class, "pos", "stem");
+
 		this.tokenBuilder.buildTokens(
 				this.jCas,
 				"The brown fox jumped quickly over the lazy dog.",
 				"The brown fox jumped quickly over the lazy dog .");
-		engine.process(this.jCas);
-
-		List<String> expected = Arrays.asList("DT JJ NN VBD RB IN DT JJ NN .".split(" "));
+		posTagger.process(jCas);
+		
+		// Tags are wrong because using a dummy model file to conserve memory
+		// Correct output should be the following commented out line.
+		//List<String> expected = Arrays.asList("DT JJ NN VBD RB IN DT JJ NN .".split(" "));
+		List<String> expected = Arrays.asList("DT NN IN VBN RB IN DT NN NN .".split(" "));
 		List<String> actual = new ArrayList<String>();
 		for (Token token : JCasUtil.select(this.jCas, Token.class)) {
 			actual.add(token.getPos());
 		}
 		Assert.assertEquals(expected, actual);
 	}
+	
 }

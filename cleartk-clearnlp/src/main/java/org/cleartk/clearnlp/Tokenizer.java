@@ -1,7 +1,7 @@
 package org.cleartk.clearnlp;
 
-import java.io.File;
 import java.net.URI;
+import java.net.URL;
 import java.util.List;
 
 import org.apache.uima.UimaContext;
@@ -22,7 +22,7 @@ import com.googlecode.clearnlp.reader.AbstractReader;
 import com.googlecode.clearnlp.tokenization.AbstractTokenizer;
 
 public class Tokenizer extends JCasAnnotator_ImplBase{
-	public static final String DEFAULT_DICTIONARY_FILE_NAME= "dictionary-1.1.0.zip";
+	public static final String DEFAULT_DICTIONARY_FILE_NAME= "dictionary-1.2.0.zip";
 
     public static final String PARAM_LANGUAGE_CODE = ConfigurationParameterFactory.createConfigurationParameterName(
     		Tokenizer.class,
@@ -33,13 +33,13 @@ public class Tokenizer extends JCasAnnotator_ImplBase{
     		defaultValue= AbstractReader.LANG_EN)
     private String languageCode;
     
-    public static final String PARAM_TOKENIZER_DICTIONARY_URI = ConfigurationParameterFactory.createConfigurationParameterName(
+    public static final String PARAM_DICTIONARY_URI = ConfigurationParameterFactory.createConfigurationParameterName(
 			Tokenizer.class,
-			"tokenizerDictionaryUri");
+			"dictionaryUri");
 	
 	@ConfigurationParameter(
 			description = "This parameter provides the URI of the tokenizer dictionary file.")
-	private URI tokenizerDictionaryUri;
+	private URI dictionaryUri;
 
 	
     private AbstractTokenizer tokenizer;
@@ -58,11 +58,10 @@ public class Tokenizer extends JCasAnnotator_ImplBase{
 			throws ResourceInitializationException {
 		super.initialize(context);
 		try {
-			File dictionaryFile = (this.tokenizerDictionaryUri == null)
-				? new File(Tokenizer.class.getResource(DEFAULT_DICTIONARY_FILE_NAME).toURI())
-				: new File(this.tokenizerDictionaryUri.toURL().getPath());
-				
-			this.tokenizer = EngineGetter.getTokenizer(languageCode, dictionaryFile.getPath());
+		  URL dictionaryURL = (this.dictionaryUri == null)
+		    ? Tokenizer.class.getResource(DEFAULT_DICTIONARY_FILE_NAME).toURI().toURL()
+		    : this.dictionaryUri.toURL();
+			this.tokenizer = EngineGetter.getTokenizer(languageCode, dictionaryURL.openStream());
 		} catch (Exception e) {
 			throw new ResourceInitializationException(e);
 		}
