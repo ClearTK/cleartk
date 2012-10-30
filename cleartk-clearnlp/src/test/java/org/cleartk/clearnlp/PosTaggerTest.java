@@ -24,7 +24,7 @@ public class PosTaggerTest extends CleartkTestBase {
 
 	static {
 		try {
-			posTagger = AnalysisEngineFactory.createPrimitive(PosTagger.getDescription(), 
+			posTagger = AnalysisEngineFactory.createPrimitive(PosTagger.class,
 			    PosTagger.PARAM_MODEL_URI,
 			    new File("src/test/resources/models/sample-pos.jar").toURI());
 		} catch (Exception e) {

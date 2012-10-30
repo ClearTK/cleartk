@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.uima.UimaContext;
-import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
@@ -19,6 +18,7 @@ import org.cleartk.syntax.dependency.type.TopDependencyNode;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.cleartk.util.UIMAUtil;
+import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
@@ -28,6 +28,7 @@ import com.googlecode.clearnlp.dependency.DEPNode;
 import com.googlecode.clearnlp.dependency.DEPParser;
 import com.googlecode.clearnlp.dependency.DEPTree;
 import com.googlecode.clearnlp.engine.EngineGetter;
+import com.googlecode.clearnlp.pos.POSNode;
 
 public class DependencyParser extends JCasAnnotator_ImplBase {
 	
@@ -48,6 +49,7 @@ public class DependencyParser extends JCasAnnotator_ImplBase {
 		super.initialize(aContext);
 		
 		try {
+		  System.out.println(parserModelUri);
 			URL parserModelURL = (this.parserModelUri == null)
 					? DependencyParser.class.getResource(DEFAULT_MODEL_FILE_NAME).toURI().toURL()
 					: this.parserModelUri.toURL();
@@ -75,16 +77,12 @@ public class DependencyParser extends JCasAnnotator_ImplBase {
 			DEPTree tree = new DEPTree();
 			for (int i = 0; i < tokens.size(); i++) {
 		        Token token = tokens.get(i);
-				DEPNode node = new DEPNode();
-				node.id = i + 1;
-				node.form = token.getCoveredText();
-				node.pos = token.getPos();
-				node.lemma = token.getLemma();
+				POSNode posNode = new POSNode(token.getCoveredText(), token.getPos(), token.getLemma());
+				DEPNode node = new DEPNode(i+1, posNode);
 				tree.add(node);
 			}
 			this.parser.parse(tree);
 			this.addTreeToCas(jCas, tree, sentence, tokens);
-				
 		}
 	}
 	

@@ -48,6 +48,7 @@ public class PosTagger extends JCasAnnotator_ImplBase {
 			throws ResourceInitializationException {
 		super.initialize(context);
 		
+		System.out.println(this.modelUri);
 		try {
 		  URL modelURL = (this.modelUri == null) 
 		      ? PosTagger.class.getResource(DEFAULT_MODEL_FILE_NAME).toURI().toURL()
