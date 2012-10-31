@@ -38,7 +38,7 @@
 	<parent>
 		<artifactId>cleartk-parent</artifactId>
 		<groupId>org.cleartk</groupId>
-		<version>1.2.0</version>
+		<version>1.2.1-SNAPSHOT</version>
 		<relativePath>../cleartk-parent</relativePath>
 	</parent>
 	<dependencies>
@@ -54,12 +54,15 @@
 			</exclusions>
 		</dependency>
 	</dependencies>
-	<!-- Generate type system files using ${jcasgen.typesystem} -->
-	<properties>
-		<jcasgen.typesystem>org/cleartk/TypeSystem.xml</jcasgen.typesystem>
-	</properties>
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.cleartk</groupId>
+				<artifactId>jcasgen-maven-plugin</artifactId>
+				<configuration>
+					<typeSystem>src/main/resources/org/cleartk/TypeSystem.xml</typeSystem>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
@@ -82,14 +85,6 @@
 						</tag>
 					</tags>
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>
