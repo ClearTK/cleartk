@@ -64,7 +64,6 @@ public class TokenizerTest extends CleartkTestBase {
 		new Sentence(jCas, 70, 91).addToIndexes();
 		SimplePipeline.runPipeline(jCas, tokenizer);
 		
-		System.out.println(JCasUtil.toText(JCasUtil.select(jCas, Token.class)));
 		FSIndex<Annotation> tokenIndex = jCas.getAnnotationIndex(Token.type);
 		assertEquals(36, tokenIndex.size());
 
