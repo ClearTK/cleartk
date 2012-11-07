@@ -66,7 +66,7 @@ public class TokenizerTest extends CleartkTestBase {
 		
 		System.out.println(JCasUtil.toText(JCasUtil.select(jCas, Token.class)));
 		FSIndex<Annotation> tokenIndex = jCas.getAnnotationIndex(Token.type);
-		assertEquals(37, tokenIndex.size());
+		assertEquals(36, tokenIndex.size());
 
 		int index = 0;
 		assertEquals("\"", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
