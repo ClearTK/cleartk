@@ -91,7 +91,6 @@ public class PosTagger extends JCasAnnotator_ImplBase {
 			throws ResourceInitializationException {
 		super.initialize(context);
 		
-		System.out.println(this.modelUri);
 		try {
 		  URL modelURL = (this.modelUri == null) 
 		      ? PosTagger.class.getResource(DEFAULT_MODEL_FILE_NAME).toURI().toURL()
@@ -108,6 +107,8 @@ public class PosTagger extends JCasAnnotator_ImplBase {
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
 		for (Sentence sentence : JCasUtil.select(jCas, Sentence.class)) {
 			List<Token> tokens = JCasUtil.selectCovered(jCas, Token.class, sentence);	
+			if (tokens.size() <= 0) { return; }
+			
 			List<String> tokenStrings = JCasUtil.toText(tokens);
 			
 			POSNode[] posNodes = EngineProcess.getPOSNodes(this.taggers, tokenStrings);
