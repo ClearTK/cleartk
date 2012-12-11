@@ -29,12 +29,15 @@ import java.util.Collection;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
+import org.apache.commons.io.filefilter.IOFileFilter;
+import org.apache.uima.cas.CAS;
 import org.apache.uima.collection.CollectionReader;
+import org.cleartk.classifier.jar.Train;
 import org.cleartk.syntax.constituent.TreebankConstants;
 import org.cleartk.syntax.constituent.TreebankGoldAnnotator;
-import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
 import org.cleartk.util.cr.UriCollectionReader;
+import org.uimafit.component.ViewCreatorAnnotator;
 import org.uimafit.factory.AggregateBuilder;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.pipeline.SimplePipeline;
@@ -53,32 +56,46 @@ import org.uimafit.pipeline.SimplePipeline;
 public class BuildTestExamplePosModel {
 
   public static void main(String... args) throws Exception {
+    String outputDirectory = ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY;
 
-    AnalysisEngineFactory.createPrimitiveDescription(UriToDocumentTextAnnotator.class);
+    // select all the .tree files in the treebank directory
+    File treebankDirectory = new File("src/main/resources/data/pos/treebank");
+    IOFileFilter treeFileFilter = FileFilterUtils.suffixFileFilter(".tree");
+    Collection<File> files = FileUtils.listFiles(treebankDirectory, treeFileFilter, null);
 
-    // Collection Reader reads in files and saves URI location in URIView
-    Collection<File> files = FileUtils.listFiles(
-        new File("src/main/resources/data/pos/treebank"),
-        FileFilterUtils.suffixFileFilter(".tree"),
-        null);
+    // A collection reader that creates one CAS per file, containing the file's URI
     CollectionReader reader = UriCollectionReader.getCollectionReaderFromFiles(files);
 
-    // Build an aggregate pipeline
+    // The pipeline of annotators
     AggregateBuilder builder = new AggregateBuilder();
 
-    // Combined view creation + URI text loading into one aggregate engine
-    builder.add(UriToDocumentTextAnnotator.getDescriptionForView(TreebankConstants.TREEBANK_VIEW));
+    // An annotator that creates an empty treebank view in the CAS
+    builder.add(AnalysisEngineFactory.createPrimitiveDescription(
+        ViewCreatorAnnotator.class,
+        ViewCreatorAnnotator.PARAM_VIEW_NAME,
+        TreebankConstants.TREEBANK_VIEW));
 
-    // Parse the treebank view and populate the initial view
-    builder.add(TreebankGoldAnnotator.getDescriptionPOSTagsOnly()); // Run Stemming
-    builder.add(DefaultSnowballStemmer.getDescription("English")); // Run the example POS
-    builder.add(ExamplePOSAnnotator.getWriterDescription(ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY));
+    // An annotator that reads the treebank-formatted text into the treebank view
+    builder.add(
+        UriToDocumentTextAnnotator.getDescription(),
+        CAS.NAME_DEFAULT_SOFA,
+        TreebankConstants.TREEBANK_VIEW);
 
+    // An annotator that uses the treebank text to add tokens and POS tags to the CAS
+    builder.add(TreebankGoldAnnotator.getDescriptionPOSTagsOnly());
+
+    // The POS annotator, configured to write training data
+    builder.add(ExamplePOSAnnotator.getWriterDescription(outputDirectory));
+
+    // Run the pipeline of annotators on each of the CASes produced by the reader
     SimplePipeline.runPipeline(reader, builder.createAggregateDescription());
 
     System.out.println("training data written to " + ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY);
     System.out.println("training model...");
-    org.cleartk.classifier.jar.Train.main(ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY);
+
+    // Train a classifier on the training data, and package it into a .jar file
+    Train.main(outputDirectory);
+
     System.out.println("model written to " + ExamplePOSAnnotator.DEFAULT_MODEL);
 
   }
