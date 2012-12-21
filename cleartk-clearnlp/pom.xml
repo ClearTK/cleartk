@@ -36,7 +36,7 @@
   <dependency>
   	<groupId>com.googlecode.clearnlp</groupId>
   	<artifactId>clearnlp</artifactId>
-  	<version>1.2.1</version>
+  	<version>1.2.3</version>
   </dependency>
   <dependency>
   	<groupId>org.cleartk</groupId>
