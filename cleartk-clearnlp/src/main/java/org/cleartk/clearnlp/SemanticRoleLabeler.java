@@ -141,6 +141,7 @@ public class SemanticRoleLabeler extends JCasAnnotator_ImplBase {
   public void process(JCas jCas) throws AnalysisEngineProcessException {
 
     for (Sentence sentence : JCasUtil.select(jCas, Sentence.class)) {
+      boolean skipSentence = false;
       List<Token> tokens = JCasUtil.selectCovered(jCas, Token.class, sentence);
 
       // Build dependency tree from token information
@@ -171,22 +172,30 @@ public class SemanticRoleLabeler extends JCasAnnotator_ImplBase {
 
         // Determine node and head
         DependencyNode casDepNode = JCasUtil.selectCovered(jCas, DependencyNode.class, token).get(0);
-        DependencyRelation headRelation = (DependencyRelation) casDepNode.getHeadRelations().get(0);
-        DependencyNode head = headRelation.getHead();
+        if (casDepNode.getHeadRelations().size() == 0) {
+          // In cases where the sentence is unparseable we are left with only a root node
+          // Thus the Semantic Role Labeler should skip this sentence
+          skipSentence = true;
+        } else {
+          DependencyRelation headRelation = (DependencyRelation) casDepNode.getHeadRelations().get(0);
+          DependencyNode head = headRelation.getHead();
 
-        int id = i + 1;
-        DEPNode node = tree.get(id);
-        
-        int headId = depNodeToID.get(head);
-        DEPNode headNode = tree.get(headId);
-        node.setHead(headNode, headRelation.getRelation());
+          int id = i + 1;
+          DEPNode node = tree.get(id);
+
+          int headId = depNodeToID.get(head);
+          DEPNode headNode = tree.get(headId);
+          node.setHead(headNode, headRelation.getRelation());
+        }
       }
       
       // Run the SRL
-      EngineProcess.predictSRL(this.predIdentifier, this.srlabeler, tree);
+      if (!skipSentence) {
+        EngineProcess.predictSRL(this.predIdentifier, this.srlabeler, tree);
+        // Extract SRL information and create ClearTK CAS types
+        this.extractSRLInfo(jCas, tokens, tree);
+      }
       
-      // Extract SRL information and create ClearTK CAS types
-      this.extractSRLInfo(jCas, tokens, tree);
 
     }
   }
