@@ -65,8 +65,8 @@ public class Tokenizer extends JCasAnnotator_ImplBase{
 	private URI dictionaryUri;
 
 	
-    private AbstractTokenizer tokenizer;
-    
+	private AbstractTokenizer tokenizer;
+	
     
     /**
      * Convenience method for getting an Analysis Engine for ClearNLP's English tokenizer.

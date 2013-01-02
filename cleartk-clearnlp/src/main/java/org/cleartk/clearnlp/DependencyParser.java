@@ -48,11 +48,13 @@ import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.JCasUtil;
 
+import com.googlecode.clearnlp.component.AbstractComponent;
+import com.googlecode.clearnlp.dependency.DEPFeat;
 import com.googlecode.clearnlp.dependency.DEPNode;
-import com.googlecode.clearnlp.dependency.DEPParser;
 import com.googlecode.clearnlp.dependency.DEPTree;
 import com.googlecode.clearnlp.engine.EngineGetter;
-import com.googlecode.clearnlp.pos.POSNode;
+import com.googlecode.clearnlp.nlp.NLPLib;
+import com.googlecode.clearnlp.reader.AbstractReader;
 
 /**
  * <br>
@@ -83,7 +85,7 @@ import com.googlecode.clearnlp.pos.POSNode;
 public class DependencyParser extends JCasAnnotator_ImplBase {
 	
 
-	public static final String DEFAULT_MODEL_FILE_NAME = "ontonotes-en-dep-1.1.0b3.jar";
+	public static final String DEFAULT_MODEL_FILE_NAME = "ontonotes-en-dep-1.3.0.tgz";
 	
 	public static final String PARAM_PARSER_MODEL_URI = ConfigurationParameterFactory.createConfigurationParameterName(
 			DependencyParser.class,
@@ -92,6 +94,16 @@ public class DependencyParser extends JCasAnnotator_ImplBase {
 	@ConfigurationParameter(
 			description = "This parameter provides the file name of the dependency parser model required by the factory method provided by ClearParserUtil.")
 	private URI parserModelUri;
+	
+
+	public static final String PARAM_LANGUAGE_CODE = ConfigurationParameterFactory.createConfigurationParameterName(
+	    PosTagger.class, 
+	    "languageCode");
+
+	@ConfigurationParameter(
+	    description = "Language code for the pos tagger (default value=en).",
+	    defaultValue = AbstractReader.LANG_EN)
+	private String languageCode;
 
 	@Override
 	public void initialize(UimaContext aContext)
@@ -102,7 +114,9 @@ public class DependencyParser extends JCasAnnotator_ImplBase {
 			URL parserModelURL = (this.parserModelUri == null)
 					? DependencyParser.class.getResource(DEFAULT_MODEL_FILE_NAME).toURI().toURL()
 					: this.parserModelUri.toURL();
-			this.parser = (DEPParser) EngineGetter.getDEPParser(parserModelURL.openStream());
+					
+			this.parser = EngineGetter.getComponent(parserModelURL.openStream(), this.languageCode, NLPLib.MODE_DEP);
+			
 		} catch (Exception e) {
 			throw new ResourceInitializationException(e);
 		}
@@ -125,12 +139,12 @@ public class DependencyParser extends JCasAnnotator_ImplBase {
 			
 			DEPTree tree = new DEPTree();
 			for (int i = 0; i < tokens.size(); i++) {
-		        Token token = tokens.get(i);
-				POSNode posNode = new POSNode(token.getCoveredText(), token.getPos(), token.getLemma());
-				DEPNode node = new DEPNode(i+1, posNode);
+			  Token token = tokens.get(i);
+				DEPNode node = new DEPNode(i+1, token.getCoveredText(), token.getLemma(), token.getPos(), new DEPFeat());
 				tree.add(node);
 			}
-			this.parser.parse(tree);
+			
+			this.parser.process(tree);
 			this.addTreeToCas(jCas, tree, sentence, tokens);
 		}
 	}
@@ -187,5 +201,5 @@ public class DependencyParser extends JCasAnnotator_ImplBase {
 	    }
 	}
 	
-	private DEPParser parser;
+	private AbstractComponent parser;
 }

@@ -50,7 +50,7 @@ public class PosTaggerTest extends CleartkTestBase {
 	protected void initLowMemModel() throws ResourceInitializationException {
 			this.posTagger = AnalysisEngineFactory.createPrimitiveDescription(PosTagger.class,
 			    PosTagger.PARAM_MODEL_URI,
-			    new File("src/test/resources/models/sample-pos.jar").toURI());
+			    new File("src/test/resources/models/sample-en-pos-1.3.0.tgz").toURI());
 	} 
 	
 	protected void initDefaultModel() throws ResourceInitializationException {
@@ -71,7 +71,8 @@ public class PosTaggerTest extends CleartkTestBase {
         "The brown fox jumped quickly over the lazy dog .");
     SimplePipeline.runPipeline(jCas, posTagger);
     
-		List<String> expected = Arrays.asList("DT NN IN VBN RB IN DT NN NN .".split(" "));
+		//List<String> expected = Arrays.asList("DT NN IN VBN RB IN DT NN NN .".split(" "));
+		List<String> expected = Arrays.asList("DT NN IN JJ NNS CC DT JJ NN .".split(" "));
     List<String> actual = new ArrayList<String>();
     for (Token token : JCasUtil.select(this.jCas, Token.class)) {
       actual.add(token.getPos());

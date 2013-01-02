@@ -50,15 +50,15 @@ import org.uimafit.util.JCasUtil;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.googlecode.clearnlp.component.AbstractComponent;
 import com.googlecode.clearnlp.dependency.DEPArc;
 import com.googlecode.clearnlp.dependency.DEPLib;
 import com.googlecode.clearnlp.dependency.DEPNode;
 import com.googlecode.clearnlp.dependency.DEPTree;
-import com.googlecode.clearnlp.dependency.srl.AbstractSRLabeler;
 import com.googlecode.clearnlp.engine.EngineGetter;
-import com.googlecode.clearnlp.engine.EngineProcess;
-import com.googlecode.clearnlp.pos.POSNode;
-import com.googlecode.clearnlp.predicate.AbstractPredIdentifier;
+import com.googlecode.clearnlp.nlp.NLPDecode;
+import com.googlecode.clearnlp.nlp.NLPLib;
+import com.googlecode.clearnlp.reader.AbstractReader;
 
 /**
  * <br>
@@ -91,8 +91,9 @@ import com.googlecode.clearnlp.predicate.AbstractPredIdentifier;
 public class SemanticRoleLabeler extends JCasAnnotator_ImplBase {
 
 
-  public static final String DEFAULT_PRED_ID_MODEL_FILE_NAME = "ontonotes-en-pred-1.2.0.jar";
-  public static final String DEFAULT_SRL_MODEL_FILE_NAME = "ontonotes-en-srl-1.2.0b3.jar";
+  public static final String DEFAULT_PRED_ID_MODEL_FILE_NAME = "ontonotes-en-pred-1.3.0.tgz";
+  public static final String DEFAULT_ROLESET_MODEL_FILE_NAME = "ontonotes-en-role-1.3.0.tgz";
+  public static final String DEFAULT_SRL_MODEL_FILE_NAME = "ontonotes-en-srl-1.3.0.tgz";
 
   public static final String PARAM_SRL_MODEL_URI = ConfigurationParameterFactory.createConfigurationParameterName(
       SemanticRoleLabeler.class, 
@@ -105,10 +106,27 @@ public class SemanticRoleLabeler extends JCasAnnotator_ImplBase {
   public static final String PARAM_PRED_ID_MODEL_URI = ConfigurationParameterFactory.createConfigurationParameterName(
       SemanticRoleLabeler.class,
       "predIdModelUri");
-
   @ConfigurationParameter(
       description = "This parameter provides the URI pointing to the predicate identifier model.  If none is specified it will use the default ontonotes model.")
   private URI predIdModelUri;
+  
+  public static final String PARAM_ROLESET_MODEL_URI = ConfigurationParameterFactory.createConfigurationParameterName(
+      SemanticRoleLabeler.class,
+      "rolesetModelUri");
+
+  @ConfigurationParameter(
+      description = "This parameter provides the URI pointing to the role set classifier model.  If none is specified it will use the default ontonotes model.")
+  private URI rolesetModelUri;
+
+ 
+  public static final String PARAM_LANGUAGE_CODE = ConfigurationParameterFactory.createConfigurationParameterName(
+      Tokenizer.class,
+      "languageCode");
+  
+  @ConfigurationParameter(
+      description = "Language code for the semantic role labeler (default value=en).",
+      defaultValue= AbstractReader.LANG_EN)
+  private String languageCode;
 
 
   @Override
@@ -117,11 +135,23 @@ public class SemanticRoleLabeler extends JCasAnnotator_ImplBase {
     super.initialize(aContext);
 
     try {
-      URL predIdModelURL = (this.predIdModelUri == null) ? SemanticRoleLabeler.class.getResource(DEFAULT_PRED_ID_MODEL_FILE_NAME).toURI().toURL() : this.predIdModelUri.toURL();
-      this.predIdentifier = EngineGetter.getPredIdentifier(predIdModelURL.openStream());
+      URL predIdModelURL = (this.predIdModelUri == null) 
+          ? SemanticRoleLabeler.class.getResource(DEFAULT_PRED_ID_MODEL_FILE_NAME).toURI().toURL() 
+          : this.predIdModelUri.toURL();
+      this.predIdentifier = EngineGetter.getComponent(predIdModelURL.openStream(), languageCode, NLPLib.MODE_PRED);
+      
+      URL rolesetModelUrl = (this.rolesetModelUri == null)
+          ? SemanticRoleLabeler.class.getResource(DEFAULT_ROLESET_MODEL_FILE_NAME).toURI().toURL()
+          : this.rolesetModelUri.toURL();
+      this.roleSetClassifier = EngineGetter.getComponent(rolesetModelUrl.openStream(), languageCode, NLPLib.MODE_ROLE);
 
-      URL srlModelURL = (this.srlModelUri == null) ? SemanticRoleLabeler.class.getResource(DEFAULT_SRL_MODEL_FILE_NAME).toURI().toURL() : this.srlModelUri.toURL();
-      this.srlabeler = EngineGetter.getSRLabeler(srlModelURL.openStream());
+      URL srlModelURL = (this.srlModelUri == null) 
+          ? SemanticRoleLabeler.class.getResource(DEFAULT_SRL_MODEL_FILE_NAME).toURI().toURL() 
+          : this.srlModelUri.toURL();
+      this.srlabeler = EngineGetter.getComponent(srlModelURL.openStream(), languageCode, NLPLib.MODE_SRL);
+      
+      this.clearNlpDecoder = new NLPDecode();
+
 
     } catch (Exception e) {
       throw new ResourceInitializationException(e);
@@ -143,14 +173,21 @@ public class SemanticRoleLabeler extends JCasAnnotator_ImplBase {
     for (Sentence sentence : JCasUtil.select(jCas, Sentence.class)) {
       boolean skipSentence = false;
       List<Token> tokens = JCasUtil.selectCovered(jCas, Token.class, sentence);
+      List<String> tokenStrings = JCasUtil.toText(tokens);
 
       // Build dependency tree from token information
-      DEPTree tree = new DEPTree();
-      for (int i = 0; i < tokens.size(); i++) {
-            Token token = tokens.get(i);
-        POSNode posNode = new POSNode(token.getCoveredText(), token.getPos(), token.getLemma());
-        DEPNode node = new DEPNode(i+1, posNode);
-        tree.add(node);
+      DEPTree tree = clearNlpDecoder.toDEPTree(tokenStrings);
+      //DEPTree tree = new DEPTree();
+      for (int i = 1; i < tree.size(); i++) {
+        Token token = tokens.get(i-1);
+        DEPNode node = tree.get(i);
+        node.pos = token.getPos();
+        node.lemma = token.getLemma();
+        
+            //Token token = tokens.get(i);
+        //POSNode posNode = new POSNode(token.getCoveredText(), token.getPos(), token.getLemma());
+        //DEPNode node = new DEPNode(i+1, posNode);
+        //tree.add(node);
       }
 
       // Build map between CAS dependency node and id for later creation of
@@ -191,7 +228,10 @@ public class SemanticRoleLabeler extends JCasAnnotator_ImplBase {
       
       // Run the SRL
       if (!skipSentence) {
-        EngineProcess.predictSRL(this.predIdentifier, this.srlabeler, tree);
+        this.predIdentifier.process(tree);
+        this.roleSetClassifier.process(tree);
+        this.srlabeler.process(tree);
+        
         // Extract SRL information and create ClearTK CAS types
         this.extractSRLInfo(jCas, tokens, tree);
       }
@@ -268,6 +308,8 @@ public class SemanticRoleLabeler extends JCasAnnotator_ImplBase {
     return argument;
   }
 
-  private AbstractSRLabeler srlabeler;
-  private AbstractPredIdentifier predIdentifier;
+  private AbstractComponent predIdentifier;
+  private AbstractComponent roleSetClassifier;
+  private AbstractComponent srlabeler;
+  private NLPDecode clearNlpDecoder;
 }

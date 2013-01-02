@@ -68,13 +68,15 @@ public class ClearNLPTest extends CleartkTestBase {
 	  this.lemmatizer = MPAnalyzer.getDescription();
 	  this.depparser = AnalysisEngineFactory.createPrimitiveDescription(DependencyParser.class, 
 	      DependencyParser.PARAM_PARSER_MODEL_URI,
-	      new File("src/test/resources/models/sample-dep.jar").toURI());
+	      new File("src/test/resources/models/sample-en-dep-1.3.0.tgz").toURI());
 
 	  this.srlabeler = AnalysisEngineFactory.createPrimitiveDescription(SemanticRoleLabeler.class, 
 	      SemanticRoleLabeler.PARAM_PRED_ID_MODEL_URI,
-	      new File("src/test/resources/models/sample-pred.jar").toURI(),
+	      new File("src/test/resources/models/sample-en-pred-1.3.0.tgz").toURI(),
+	      SemanticRoleLabeler.PARAM_ROLESET_MODEL_URI,
+	      new File("src/test/resources/models/sample-en-role-1.3.0.tgz").toURI(),
 	      SemanticRoleLabeler.PARAM_SRL_MODEL_URI,
-	      new File("src/test/resources/models/sample-srl.jar").toURI());
+	      new File("src/test/resources/models/sample-en-srl-1.3.0.tgz").toURI());
 	}
 
 	private void initDefaultModels() throws ResourceInitializationException {
@@ -106,8 +108,10 @@ public class ClearNLPTest extends CleartkTestBase {
 		
 		// Check dependency relations
 		List<String> expectedDep = Arrays.asList(
+		    //"nsubj(drives, John)", "advmod(drives, still)", "root(TOP, drives)", "det(gave, the)", "nn(Mary, car)", "nsubj(gave, Mary)", 
+		    //"punct(drives, gave)", "punct(drives, him)", "prep(drives, in)", "pobj(in, 1982)", "punct(drives, .)");
 		    "nsubj(drives, John)", "advmod(drives, still)", "root(TOP, drives)", "det(gave, the)", "nn(Mary, car)", "nsubj(gave, Mary)", 
-		    "punct(drives, gave)", "punct(drives, him)", "prep(drives, in)", "pobj(in, 1982)", "punct(drives, .)");
+		    "punct(drives, gave)", "root(TOP, him)", "prep(him, in)", "root(TOP, 1982)", "punct(drives, .)");
 		List<String> actualDep = Lists.newArrayList();
 		for (DependencyNode depnode : JCasUtil.select(jCas, DependencyNode.class)) {
       for (DependencyRelation deprel : JCasUtil.select(depnode.getHeadRelations(), DependencyRelation.class)) {
@@ -124,8 +128,9 @@ public class ClearNLPTest extends CleartkTestBase {
     
     // Check SRL relations
 		List<String> expectedSrl = Arrays.asList(
-		    "A0(drives, John)", "AM-ADV(drives, still)", "A1(drives, gave)", "A1(drives, him)", 
-		    "AM-LOC(drives, in)", "A0(gave, Mary)", "A1(gave, him)", "AM-LOC(gave, in)");
+		    //"A0(drives, John)", "AM-ADV(drives, still)", "A1(drives, gave)", "A1(drives, him)", 
+		    //"AM-LOC(drives, in)", "A0(gave, Mary)", "A1(gave, him)", "AM-LOC(gave, in)");
+		    "A0(drives, John)", "AM-ADV(drives, still)", "A1(drives, gave)", "A0(gave, Mary)");
 		List<String> actualSrl = Lists.newArrayList();
     for (Predicate pred : JCasUtil.select(jCas, Predicate.class)) {
       pred.getArguments();
@@ -155,8 +160,8 @@ public class ClearNLPTest extends CleartkTestBase {
 		
 		// Check dependency relations
 		List<String> expectedDep = Arrays.asList(
-		    "nsubj(drives, John)", "advmod(drives, still)", "root(TOP, drives)", "det(car, the)", "dobj(drives, car)", "npadvmod(drives, Mary)", 
-		    "advcl(drives, gave)", "dobj(gave, him)", "prep(gave, in)", "pobj(in, 1982)", "punct(drives, .)");
+		    "nsubj(drives, John)", "advmod(drives, still)", "root(TOP, drives)", "det(car, the)", "dobj(drives, car)", "nsubj(gave, Mary)", 
+		    "rcmod(car, gave)", "dobj(gave, him)", "prep(gave, in)", "pobj(in, 1982)", "punct(drives, .)");
 
 		List<String> actualDep = Lists.newArrayList();
 		for (DependencyNode depnode : JCasUtil.select(jCas, DependencyNode.class)) {
@@ -175,7 +180,7 @@ public class ClearNLPTest extends CleartkTestBase {
 		
     // Check SRL relations
 		List<String> expectedSrl = Arrays.asList(
-		    "A0(drives, John)", "AM-TMP(drives, still)", "A1(drives, car)", "A2(drives, gave)", "A2(gave, him)", "AM-TMP(gave, in)");
+		    "A0(drives, John)", "AM-TMP(drives, still)", "A1(drives, car)", "A1(gave, car)", "A0(gave, Mary)", "A2(gave, him)", "AM-TMP(gave, in)");
 
 		List<String> actualSrl = Lists.newArrayList();
     for (Predicate pred : JCasUtil.select(jCas, Predicate.class)) {

@@ -25,6 +25,7 @@ package org.cleartk.clearnlp;
 
 import java.net.URI;
 import java.net.URL;
+import java.util.List;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
@@ -40,8 +41,12 @@ import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.JCasUtil;
 
+import com.googlecode.clearnlp.component.AbstractComponent;
+import com.googlecode.clearnlp.dependency.DEPNode;
+import com.googlecode.clearnlp.dependency.DEPTree;
 import com.googlecode.clearnlp.engine.EngineGetter;
-import com.googlecode.clearnlp.morphology.AbstractMPAnalyzer;
+import com.googlecode.clearnlp.nlp.NLPDecode;
+import com.googlecode.clearnlp.nlp.NLPLib;
 import com.googlecode.clearnlp.reader.AbstractReader;
 
 /**
@@ -109,7 +114,9 @@ public class MPAnalyzer extends JCasAnnotator_ImplBase {
 		      ? MPAnalyzer.class.getResource(DEFAULT_DICTIONARY_FILE_NAME).toURI().toURL()
 		      : dictionaryUri.toURL();
 
-		  this.mpAnalyzer = EngineGetter.getMPAnalyzer(this.languageCode, mpAnalyzerDictionaryURL.openStream());
+		  // initialize ClearNLP components
+		  this.mpAnalyzer  = EngineGetter.getComponent(mpAnalyzerDictionaryURL.openStream(), languageCode, NLPLib.MODE_MORPH);
+		  this.clearNlpDecoder = new NLPDecode();
 
 		} catch (Exception e) {
 			throw new ResourceInitializationException(e);
@@ -120,12 +127,30 @@ public class MPAnalyzer extends JCasAnnotator_ImplBase {
 	@Override
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
 		for (Sentence sentence : JCasUtil.select(jCas, Sentence.class)) {
-		  for (Token token : JCasUtil.selectCovered(jCas, Token.class, sentence))	{
-		    token.setLemma(this.mpAnalyzer.getLemma(token.getCoveredText(), token.getPos()));
+		  List<Token> tokens = JCasUtil.selectCovered(jCas, Token.class, sentence);
+		  List<String> tokenStrings = JCasUtil.toText(tokens);
+		  
+		  // All processing in ClearNLP goes through the DEPTree structures,
+		  // so populate it with token and POS tag info
+		  DEPTree depTree = this.clearNlpDecoder.toDEPTree(tokenStrings);
+		  for (int i = 1; i < depTree.size(); i++) {
+		    Token token = tokens.get(i-1);
+		    DEPNode node = depTree.get(i);
+		    node.pos = token.getPos();
+		  }
+		  // Run the morphological analyzer
+		  this.mpAnalyzer.process(depTree);
+		  
+		  // Pull out lemmas and stuff them back into the CAS tokens
+		  for (int i = 1; i < depTree.size(); i++) {
+		    Token token = tokens.get(i-1);
+		    DEPNode node = depTree.get(i);
+		    token.setLemma(node.lemma);
 		  }
 		}
 	}
 	
-	private AbstractMPAnalyzer mpAnalyzer;
+	private AbstractComponent mpAnalyzer;
+	private NLPDecode clearNlpDecoder;
 
 }
