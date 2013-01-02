@@ -33,7 +33,8 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.CleartkSequenceAnnotator;
-import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.Instances;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Following;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Preceding;
@@ -41,6 +42,7 @@ import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.function.CapitalTypeFeatureFunction;
 import org.cleartk.classifier.feature.function.CharacterNGramFeatureFunction;
+import org.cleartk.classifier.feature.function.CharacterNGramFeatureFunction.Orientation;
 import org.cleartk.classifier.feature.function.FeatureFunctionExtractor;
 import org.cleartk.classifier.feature.function.LowerCaseFeatureFunction;
 import org.cleartk.classifier.feature.function.NumericTypeFeatureFunction;
@@ -73,12 +75,10 @@ public class ExamplePOSAnnotator extends CleartkSequenceAnnotator<String> {
 
   private SimpleFeatureExtractor tokenFeatureExtractor;
 
-  private List<CleartkExtractor> contextFeatureExtractors;
+  private CleartkExtractor contextFeatureExtractor;
 
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
-    // alias for NGram feature parameters
-    CharacterNGramFeatureFunction.Orientation fromRight = CharacterNGramFeatureFunction.Orientation.RIGHT_TO_LEFT;
 
     // a feature extractor that creates features corresponding to the word, the word lower cased
     // the capitalization of the word, the numeric characterization of the word, and character ngram
@@ -88,56 +88,50 @@ public class ExamplePOSAnnotator extends CleartkSequenceAnnotator<String> {
         new LowerCaseFeatureFunction(),
         new CapitalTypeFeatureFunction(),
         new NumericTypeFeatureFunction(),
-        new CharacterNGramFeatureFunction(fromRight, 0, 2),
-        new CharacterNGramFeatureFunction(fromRight, 0, 3));
+        new CharacterNGramFeatureFunction(Orientation.RIGHT_TO_LEFT, 0, 2),
+        new CharacterNGramFeatureFunction(Orientation.RIGHT_TO_LEFT, 0, 3));
 
-    // a list of feature extractors that require the token and the sentence
-    this.contextFeatureExtractors = new ArrayList<CleartkExtractor>();
-    this.contextFeatureExtractors.add(new CleartkExtractor(
+    // a feature extractor that extracts the surrounding token texts (within the same sentence)
+    this.contextFeatureExtractor = new CleartkExtractor(
         Token.class,
         new CoveredTextExtractor(),
         new Preceding(2),
-        new Following(2)));
+        new Following(2));
   }
 
   public void process(JCas jCas) throws AnalysisEngineProcessException {
-    // generate a list of training instances for each sentence in the
-    // document
+    // for each sentence in the document, generate training/classification instances
     for (Sentence sentence : JCasUtil.select(jCas, Sentence.class)) {
-      List<Instance<String>> instances = new ArrayList<Instance<String>>();
+      List<List<Feature>> tokenFeatureLists = new ArrayList<List<Feature>>();
+      List<String> tokenOutcomes = new ArrayList<String>();
+
+      // for each token, extract features and the outcome
       List<Token> tokens = JCasUtil.selectCovered(jCas, Token.class, sentence);
-
-      // for each token, extract all feature values and the label
       for (Token token : tokens) {
-        Instance<String> instance = new Instance<String>();
 
-        // extract all features that require only the token annotation
-        instance.addAll(tokenFeatureExtractor.extract(jCas, token));
+        // apply the two feature extractors
+        List<Feature> tokenFeatures = new ArrayList<Feature>();
+        tokenFeatures.addAll(this.tokenFeatureExtractor.extract(jCas, token));
+        tokenFeatures.addAll(this.contextFeatureExtractor.extractWithin(jCas, token, sentence));
+        tokenFeatureLists.add(tokenFeatures);
 
-        // extract all features that require the token and sentence annotations
-        for (CleartkExtractor extractor : this.contextFeatureExtractors) {
-          instance.addAll(extractor.extractWithin(jCas, token, sentence));
-        }
-
-        // set the instance label from the token's part of speech
+        // add the expected token label from the part of speech
         if (this.isTraining()) {
-          instance.setOutcome(token.getPos());
+          tokenOutcomes.add(token.getPos());
         }
-
-        // add the instance to the list
-        instances.add(instance);
       }
 
       // for training, write instances to the data write
       if (this.isTraining()) {
-        this.dataWriter.write(instances);
+        this.dataWriter.write(Instances.toInstances(tokenOutcomes, tokenFeatureLists));
       }
 
-      // for classification, set the labels as the token POS labels
+      // for classification, set the token part of speech tags from the classifier outcomes.
       else {
+        List<String> outcomes = this.classifier.classify(tokenFeatureLists);
         Iterator<Token> tokensIter = tokens.iterator();
-        for (String label : this.classify(instances)) {
-          tokensIter.next().setPos(label);
+        for (String outcome : outcomes) {
+          tokensIter.next().setPos(outcome);
         }
       }
     }
