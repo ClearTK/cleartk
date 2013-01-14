@@ -31,9 +31,10 @@
 		</developer>
 	</developers>
 	<scm>
-		<connection>scm:svn:http://cleartk.googlecode.com/svn/trunk/${project.artifactId}</connection>
-		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/trunk/${project.artifactId}</developerConnection>
-		<url>http://cleartk.googlecode.com/svn/trunk/${project.artifactId}</url>
+        <connection>scm:git:https://code.google.com/p/cleartk/</connection>
+        <developerConnection>scm:git:https://code.google.com/p/cleartk/</developerConnection>
+        <url>https://code.google.com/p/cleartk/</url>
+
 	</scm>
 	<parent>
 		<artifactId>cleartk-parent</artifactId>
