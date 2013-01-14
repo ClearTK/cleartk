@@ -155,6 +155,7 @@ public class TKSVMlightBooleanOutcomeClassifier extends
       BufferedWriter out = new BufferedWriter(new FileWriter(cFile));
       out.write("0");
       out.write(TKSVMlightBooleanOutcomeDataWriter.createString(featureVector));
+      out.write("\n");
       out.close();
 
       String executable = "tk_svm_classify";
