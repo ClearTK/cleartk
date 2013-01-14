@@ -10,7 +10,7 @@
 	<licenses>
 		<license>
 			<name>The BSD 3-Clause License</name>
-			<url>http://cleartk.googlecode.com/svn/trunk/consistent-versions-plugin/LICENSE</url>
+			<url>http://cleartk.googlecode.com/git/consistent-versions-plugin/LICENSE</url>
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
@@ -32,9 +32,9 @@
 		</developer>
 	</developers>
 	<scm>
-		<connection>scm:svn:http://cleartk.googlecode.com/svn/trunk/consistent-versions-plugin/</connection>
-		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/trunk/consistent-versions-plugin/</developerConnection>
-		<url>http://cleartk.googlecode.com/svn/trunk/consistent-versions-plugin/</url>
+        <connection>scm:git:https://code.google.com/p/cleartk/</connection>
+        <developerConnection>scm:git:https://code.google.com/p/cleartk/</developerConnection>
+        <url>https://code.google.com/p/cleartk/</url>
 	</scm>
 	<prerequisites>
 		<maven>2.2.1</maven>

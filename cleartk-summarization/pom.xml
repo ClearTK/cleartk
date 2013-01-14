@@ -10,7 +10,7 @@
 	<licenses>
 		<license>
 			<name>The BSD 3-Clause License</name>
-			<url>http://cleartk.googlecode.com/svn/trunk/cleartk-token/LICENSE</url>
+			<url>http://cleartk.googlecode.com/git/cleartk-token/LICENSE</url>
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
@@ -32,9 +32,9 @@
 		</developer>
 	</developers>
 	<scm>
-		<url>http://cleartk.googlecode.com/svn/trunk/${project.artifactId}</url>
-		<connection>scm:svn:http://cleartk.googlecode.com/svn/trunk/${project.artifactId}</connection>
-		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/trunk/${project.artifactId}</developerConnection>
+        <connection>scm:git:https://code.google.com/p/cleartk/</connection>
+        <developerConnection>scm:git:https://code.google.com/p/cleartk/</developerConnection>
+        <url>https://code.google.com/p/cleartk/</url>
 	</scm>
 	<parent>
 		<artifactId>cleartk-parent</artifactId>

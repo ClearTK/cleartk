@@ -24,9 +24,9 @@
 	</modules>
 	<!-- Maven will append the child artifactId to each of these URLs -->
 	<scm>
-		<connection>scm:svn:http://cleartk.googlecode.com/svn/trunk/dependencies</connection>
-		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/trunk/dependencies</developerConnection>
-		<url>http://cleartk.googlecode.com/svn/trunk/dependencies</url>
+        <connection>scm:git:https://code.google.com/p/cleartk/</connection>
+        <developerConnection>scm:git:https://code.google.com/p/cleartk/</developerConnection>
+        <url>https://code.google.com/p/cleartk/</url>
 	</scm>
 	<build>
 		<pluginManagement>
