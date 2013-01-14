@@ -33,9 +33,9 @@
 	</developers>
 	<!-- Note that children *MUST* override these or Maven will use incorrect relative paths -->
 	<scm>
-		<connection>scm:svn:http://cleartk.googlecode.com/svn/trunk/cleartk-parent</connection>
-		<developerConnection>scm:svn:https://cleartk.googlecode.com/svn/trunk/cleartk-parent</developerConnection>
-		<url>http://cleartk.googlecode.com/svn/trunk/cleartk-parent</url>
+        <connection>scm:git:https://code.google.com/p/cleartk/</connection>
+        <developerConnection>scm:git:https://code.google.com/p/cleartk/</developerConnection>
+        <url>https://code.google.com/p/cleartk/</url>
 	</scm>
 	<parent>
 		<groupId>org.sonatype.oss</groupId>
