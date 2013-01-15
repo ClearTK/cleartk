@@ -131,7 +131,7 @@
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-clearnlp</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>0.5.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
