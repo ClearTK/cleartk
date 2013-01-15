@@ -65,7 +65,7 @@
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-ml-mallet</artifactId>
-			<version>1.2.0</version>
+			<version>1.2.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
@@ -80,7 +80,7 @@
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-token</artifactId>
-			<version>0.8.4</version>
+			<version>0.8.5-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
