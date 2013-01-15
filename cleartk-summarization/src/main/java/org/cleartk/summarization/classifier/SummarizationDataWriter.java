@@ -24,6 +24,7 @@
 package org.cleartk.summarization.classifier;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.DataWriter;
@@ -38,7 +39,7 @@ public abstract class SummarizationDataWriter<MODEL_TYPE extends SummarizationMo
 
   protected InstanceDataWriter<Boolean> instanceDataWriter;
 
-  public SummarizationDataWriter(File outputDirectory) {
+  public SummarizationDataWriter(File outputDirectory) throws IOException {
     super(outputDirectory);
     this.instanceDataWriter = new InstanceDataWriter<Boolean>(outputDirectory);
   }

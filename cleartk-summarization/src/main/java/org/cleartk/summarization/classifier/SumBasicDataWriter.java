@@ -24,13 +24,14 @@
 package org.cleartk.summarization.classifier;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.cleartk.summarization.SumBasicModel;
 
 public class SumBasicDataWriter extends
     SummarizationDataWriter<SumBasicModel, SummarizationClassifierBuilder<SumBasicModel>> {
 
-  public SumBasicDataWriter(File outputDirectory) {
+  public SumBasicDataWriter(File outputDirectory) throws IOException {
     super(outputDirectory);
   }
 
