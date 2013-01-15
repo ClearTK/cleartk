@@ -95,12 +95,12 @@
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-named-entity</artifactId>
-			<version>0.6.3</version>
+			<version>0.6.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-syntax</artifactId>
-			<version>0.6.2</version>
+			<version>0.6.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
